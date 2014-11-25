@@ -1,1 +1,1 @@
-// My class 1
+// My class 1&2
