@@ -21,5 +21,4 @@
  * Author   : Mikhail Shiryaev
  * Created  : 2010/11/24
  * Modified : 2010, 2012-2014
- * !!!
  */
