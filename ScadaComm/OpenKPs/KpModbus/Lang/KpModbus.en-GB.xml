@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<KpModbusDictionaries>
+  <Dictionary key="Scada.Comm.KP.FrmDevTemplate">
+    <Phrase key="this">MODBUS. Device template editor</Phrase>
+    <Phrase key="btnNew.ToolTip">Create new template</Phrase>
+    <Phrase key="btnOpen.ToolTip">Open template</Phrase>
+    <Phrase key="btnSave.ToolTip">Save template</Phrase>
+    <Phrase key="btnSaveAs.ToolTip">Save template as</Phrase>
+    <Phrase key="btnAddElemGroup.ToolTip">Add element group</Phrase>
+    <Phrase key="btnAddElem.ToolTip">Add element</Phrase>
+    <Phrase key="btnAddCmd.ToolTip">Add command</Phrase>
+    <Phrase key="btnMoveUp.ToolTip">Move up</Phrase>
+    <Phrase key="btnMoveDown.ToolTip">Move down</Phrase>
+    <Phrase key="btnDelete.ToolTip">Delete</Phrase>
+    <Phrase key="gbDevTemplate">Device template</Phrase>
+    <Phrase key="gbElemGroup">Element group parameters</Phrase>
+    <Phrase key="lblGrName">Name</Phrase>
+    <Phrase key="lblGrTableType">Data table</Phrase>
+    <Phrase key="cbGrTableType.Items[0]">Discretes Inputs (1X)</Phrase>
+    <Phrase key="cbGrTableType.Items[1]">Coils (0X)</Phrase>
+    <Phrase key="cbGrTableType.Items[2]">Input Registers (3X)</Phrase>
+    <Phrase key="cbGrTableType.Items[3]">Holding Registers (4X)</Phrase>
+    <Phrase key="lblGrAddress">Start element address</Phrase>
+    <Phrase key="lblGrElemCnt">Element count</Phrase>
+    <Phrase key="gbElem">Element parameters</Phrase>
+    <Phrase key="lblElemName">Name</Phrase>
+    <Phrase key="lblElemAddress">Address</Phrase>
+    <Phrase key="lblElemSignal">Signal</Phrase>
+    <Phrase key="lblElemType">Type:</Phrase>
+    <Phrase key="rbUShort">ushort (2 bytes)</Phrase>
+    <Phrase key="rbShort">short (2 bytes)</Phrase>
+    <Phrase key="rbUInt">uint (4 bytes)</Phrase>
+    <Phrase key="rbInt">int (4 bytes)</Phrase>
+    <Phrase key="rbFloat">float (4 bytes)</Phrase>
+    <Phrase key="rbBool">bool (1 bit)</Phrase>
+    <Phrase key="gbCmd">Command parameters</Phrase>
+    <Phrase key="lblCmdName">Name</Phrase>
+    <Phrase key="lblCmdTableType">Data table</Phrase>
+    <Phrase key="cbCmdTableType.Items[0]">Coils (0X)</Phrase>
+    <Phrase key="cbCmdTableType.Items[1]">Holding Registers (4X)</Phrase>
+    <Phrase key="chkCmdMultiple">Multiple</Phrase>
+    <Phrase key="lblCmdAddress">Element address</Phrase>
+    <Phrase key="lblCmdElemCnt">Element count</Phrase>
+    <Phrase key="lblCmdNum">Command number</Phrase>
+    <Phrase key="GrsNode">Element groups</Phrase>
+    <Phrase key="CmdsNode">Commands</Phrase>
+    <Phrase key="DefGrName">&lt;Element group&gt;</Phrase>
+    <Phrase key="DefElemName">&lt;Element&gt;</Phrase>
+    <Phrase key="DefCmdName">&lt;Command&gt;</Phrase>
+    <Phrase key="SaveTemplateConfirm">Template has been modified. Save the changes?</Phrase>
+    <Phrase key="ElemCntExceeded">Data table allows not more than {0} elements.</Phrase>
+    <Phrase key="ElemRemoveWarning">Data table allows not more than {0} elements.&#13;&#10;Extra items will be removed. Continue?</Phrase>
+  </Dictionary>
+</KpModbusDictionaries>

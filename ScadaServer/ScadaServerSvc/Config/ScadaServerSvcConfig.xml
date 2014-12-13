@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaServerSvcConfig>
+  <!--Common Parameters-->
+  <CommonParams>
+    <Param name="TcpPort" value="10000" descr="TCP port number" />
+    <Param name="UseAD" value="false" descr="Use Active Directory for users authentication" />
+    <Param name="LdapPath" value="LDAP://server" descr="Domain controller server path" />
+    <Param name="DetailedLog" value="false" descr="Write detailed information to the log" />
+  </CommonParams>
+  <!--Directories-->
+  <Directories>
+    <Param name="BaseDATDir" value="C:\SCADA\BaseDAT\" descr="The configuration database in DAT format directory" />
+    <Param name="ItfDir" value="C:\SCADA\Interface\" descr="The interface directory" />
+    <Param name="ArcDir" value="C:\SCADA\ArchiveDAT\" descr="The archive in DAT format directory" />
+    <Param name="ArcCopyDir" value="C:\SCADA\ArchiveDATCopy\" descr="The archive copy in DAT format directory" />
+  </Directories>
+  <!--Saving Parameters-->
+  <SaveParams>
+    <Param name="WriteCurPer" value="5" descr="Current data writing period, sec" />
+    <Param name="InactUnrelTime" value="5" descr="Unreliable on inactivity, min" />
+    <Param name="WriteCur" value="true" descr="Write current data" />
+    <Param name="WriteCurCopy" value="true" descr="Write current data copy" />
+    <Param name="WriteMinPer" value="60" descr="Minute data writing period, sec" />
+    <Param name="StoreMinPer" value="365" descr="Minute data storing period, days" />
+    <Param name="WriteMin" value="true" descr="Write minute data" />
+    <Param name="WriteMinCopy" value="true" descr="Write minute data copy" />
+    <Param name="WriteHrPer" value="60" descr="Hourly data writing period, min" />
+    <Param name="StoreHrPer" value="365" descr="Hourly data storing period, days" />
+    <Param name="WriteHr" value="true" descr="Write hourly data" />
+    <Param name="WriteHrCopy" value="true" descr="Write hourly data copy" />
+    <Param name="StoreEvPer" value="365" descr="Events storing period, days" />
+    <Param name="WriteEv" value="true" descr="Write events" />
+    <Param name="WriteEvCopy" value="true" descr="Write events copy" />
+  </SaveParams>
+  <!--Modules-->
+  <Modules>
+    <Module fileName="ModTest.dll" />
+  </Modules>
+</ScadaServerSvcConfig>

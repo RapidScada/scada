@@ -1,0 +1,274 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{28E34F89-F42C-40AC-9A42-D58A6B0CF50C}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ScadaAdmin</RootNamespace>
+    <AssemblyName>ScadaAdmin</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ApplicationIcon>database.ico</ApplicationIcon>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="KP, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ScadaComm\KP\bin\Release\KP.dll</HintPath>
+    </Reference>
+    <Reference Include="Log, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Log\bin\Release\Log.dll</HintPath>
+    </Reference>
+    <Reference Include="ScadaData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.SqlServerCe, Version=3.5.1.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\DLL\SQLServerCE 3.5\System.Data.SqlServerCe.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WinControl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\DLL\WinControl.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppData.cs" />
+    <Compile Include="AppPhrases.cs" />
+    <Compile Include="FrmLanguage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmLanguage.Designer.cs">
+      <DependentUpon>FrmLanguage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tables.cs" />
+    <Compile Include="FrmAbout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmAbout.Designer.cs">
+      <DependentUpon>FrmAbout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmCloneCnls.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmCloneCnls.Designer.cs">
+      <DependentUpon>FrmCloneCnls.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmCnlMap.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmCnlMap.Designer.cs">
+      <DependentUpon>FrmCnlMap.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmEditSource.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmEditSource.Designer.cs">
+      <DependentUpon>FrmEditSource.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmSelectColor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSelectColor.Designer.cs">
+      <DependentUpon>FrmSelectColor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmCreateCnls.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmCreateCnls.Designer.cs">
+      <DependentUpon>FrmCreateCnls.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmExport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmExport.Designer.cs">
+      <DependentUpon>FrmExport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmImport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmImport.Designer.cs">
+      <DependentUpon>FrmImport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmInCnlProps.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmInCnlProps.Designer.cs">
+      <DependentUpon>FrmInCnlProps.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmMain.Designer.cs">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmReplace.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmReplace.Designer.cs">
+      <DependentUpon>FrmReplace.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmTable.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmTable.Designer.cs">
+      <DependentUpon>FrmTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSettings.Designer.cs">
+      <DependentUpon>FrmSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FrmAbout.resx">
+      <DependentUpon>FrmAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmCloneCnls.resx">
+      <DependentUpon>FrmCloneCnls.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmCnlMap.resx">
+      <DependentUpon>FrmCnlMap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmEditSource.resx">
+      <DependentUpon>FrmEditSource.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmLanguage.resx">
+      <DependentUpon>FrmLanguage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSelectColor.resx">
+      <DependentUpon>FrmSelectColor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmCreateCnls.resx">
+      <DependentUpon>FrmCreateCnls.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmExport.resx">
+      <DependentUpon>FrmExport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmImport.resx">
+      <DependentUpon>FrmImport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmInCnlProps.resx">
+      <DependentUpon>FrmInCnlProps.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmMain.resx">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmReplace.resx">
+      <DependentUpon>FrmReplace.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmTable.resx">
+      <DependentUpon>FrmTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSettings.resx">
+      <DependentUpon>FrmSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="app.config" />
+    <None Include="app.manifest" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Settings.cs" />
+    <Compile Include="AppUtils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\ScadaData\ScadaData\Lang\ScadaData.en-GB.xml">
+      <Link>Lang\ScadaData.en-GB.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="About.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="About.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="database.ico" />
+    <Content Include="Lang\ScadaAdmin.en-GB.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

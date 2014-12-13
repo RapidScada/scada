@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<publishData>
+  <publishProfile publishUrl="D:\Misha\My progs\SCADA\Source\OpenSource\ScadaScheme\ScadaSchemeWebPublish" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="MainProfile" publishMethod="FileSystem" replaceMatchingFiles="False" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
+    <file relUrl="bin/Log.dll" publishTime="12/11/2014 23:56:00" />
+    <file relUrl="bin/ScadaSchemeWeb.pdb" publishTime="12/12/2014 16:28:41" />
+    <file relUrl="bin/ScadaSchemeWeb.dll" publishTime="12/12/2014 16:28:41" />
+    <file relUrl="bin/ScadaSchemeCommon.pdb" publishTime="12/12/2014 16:28:41" />
+    <file relUrl="bin/Log.pdb" publishTime="12/11/2014 23:56:00" />
+    <file relUrl="bin/ScadaSchemeCommon.dll" publishTime="12/12/2014 16:28:41" />
+    <file relUrl="ClientBin/ScadaScheme.xap" publishTime="12/12/2014 15:38:20" />
+    <file relUrl="config/WebSettings.xml" publishTime="12/12/2014 16:23:09" />
+    <file relUrl="scheme/ScadaScheme.aspx" publishTime="10/06/2014 00:20:00" />
+    <file relUrl="script/silverlight.js" publishTime="08/21/2012 08:01:39" />
+    <file relUrl="scheme/ScadaSchemeSvc.svc" publishTime="10/06/2014 13:45:41" />
+    <file relUrl="bin/ScadaWebCommon.xml" publishTime="12/11/2014 14:27:48" />
+    <file relUrl="bin/ScadaSchemeCommon.xml" publishTime="12/12/2014 16:28:41" />
+    <file relUrl="bin/ScadaWebCommon.dll" publishTime="12/11/2014 14:27:48" />
+    <file relUrl="bin/ScadaWebCommon.pdb" publishTime="12/11/2014 14:27:48" />
+    <file relUrl="bin/ScadaData.xml" publishTime="12/12/2014 11:26:45" />
+    <file relUrl="Web.config" publishTime="12/12/2014 16:29:27" />
+    <file relUrl="bin/Log.xml" publishTime="12/11/2014 23:56:00" />
+    <file relUrl="bin/ScadaData.dll" publishTime="12/12/2014 11:26:45" />
+    <file relUrl="bin/ScadaData.pdb" publishTime="12/12/2014 11:26:45" />
+  </publishProfile>
+</publishData>

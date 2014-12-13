@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaTableEditorDictionaries>
+  <Dictionary key="Scada.Web.TableView">
+    <Phrase key="LoadTableViewError">Error loading table view from file</Phrase>
+    <Phrase key="SaveTableViewError">Error saving table view to file</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaTableEditor.FrmMain">
+    <Phrase key="this">SCADA-Table Editor</Phrase>
+    <Phrase key="miFile">&amp;File</Phrase>
+    <Phrase key="miFileNew">Create</Phrase>
+    <Phrase key="miFileOpen">Open...</Phrase>
+    <Phrase key="miFileSave">Save</Phrase>
+    <Phrase key="miFileSaveAs">Save As...</Phrase>
+    <Phrase key="miFileExit">Exit</Phrase>
+    <Phrase key="miSettings">&amp;Settings</Phrase>
+    <Phrase key="miSettingsParams">Parameters...</Phrase>
+    <Phrase key="miHelp">&amp;Help</Phrase>
+    <Phrase key="miHelpAbout">About</Phrase>
+    <Phrase key="btnFileNew.ToolTip">Create new table view</Phrase>
+    <Phrase key="btnFileOpen.ToolTip">Open table view</Phrase>
+    <Phrase key="btnFileSave.ToolTip">Save table view</Phrase>
+    <Phrase key="btnSettingsParams.ToolTip">Parameters</Phrase>
+    <Phrase key="gbBase">Configuration database</Phrase>
+    <Phrase key="lblCnlFilterByObj">Object</Phrase>
+    <Phrase key="lblCnlFilterByKP">Device</Phrase>
+    <Phrase key="btnFilterCnlsByObj.ToolTip">Filter by objects</Phrase>
+    <Phrase key="btnFilterCnlsByKP.ToolTip">Filter by devices</Phrase>
+    <Phrase key="btnRefreshBase.ToolTip">Refresh configuration database data</Phrase>
+    <Phrase key="rbInCnls">Input channels</Phrase>
+    <Phrase key="rbCtrlCnls">Output channels</Phrase>
+    <Phrase key="colCnlNum">Num.</Phrase>
+    <Phrase key="colCnlName">Name</Phrase>
+    <Phrase key="gbTableView">Edited table view</Phrase>
+    <Phrase key="lblTableTitle">Title</Phrase>
+    <Phrase key="lblTableItems">Items</Phrase>
+    <Phrase key="btnAddItem.ToolTip">Add item from the configuration database</Phrase>
+    <Phrase key="btnAddEmptyItem.ToolTip">Add empty item</Phrase>
+    <Phrase key="btnMoveUpItem.ToolTip">Move selected item up</Phrase>
+    <Phrase key="btnMoveDownItem.ToolTip">Move selected item down</Phrase>
+    <Phrase key="btnDeleteItem.ToolTip">Delete selected items</Phrase>
+    <Phrase key="btnShowItemInfo.ToolTip">Show selected item information</Phrase>
+    <Phrase key="colItemCnlNum">In ch.</Phrase>
+    <Phrase key="colItemCtrlCnlNum">Out ch.</Phrase>
+    <Phrase key="colItemCaption">Caption</Phrase>
+    <Phrase key="colItemHidden">Hidden</Phrase>
+    <Phrase key="OpenFileFilter">Table Views (*.tbl; *.ofm)|*.tbl;*.ofm|All Files (*.*)|*.*</Phrase>
+    <Phrase key="SaveFileFilter">Table Views (*.tbl)|*.tbl|All Files (*.*)|*.*</Phrase>
+    <Phrase key="SaveConfirm">The table view has been modified. Save the changes?</Phrase>
+    <Phrase key="AllObjItem">&lt;All objects&gt;</Phrase>
+    <Phrase key="AllKPItem">&lt;All devices&gt;</Phrase>
+    <Phrase key="LoadBaseError">Error loading configuration database</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaTableEditor.FrmItemInfo">
+    <Phrase key="this">Item Information</Phrase>
+    <Phrase key="gbInCnl">Input channel</Phrase>
+    <Phrase key="lblInCnl">Channel</Phrase>
+    <Phrase key="lblInCnlObj">Object</Phrase>
+    <Phrase key="lblInCnlKP">Device</Phrase>
+    <Phrase key="gbCtrlCnl">Output channel</Phrase>
+    <Phrase key="lblCtrlCnl">Channel</Phrase>
+    <Phrase key="lblCtrlCnlObj">Object</Phrase>
+    <Phrase key="lblCtrlCnlKP">Device</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
+    <Phrase key="GetInCnlError">Error getting input channel information</Phrase>
+    <Phrase key="GetCtrlCnlError">Error getting output channel information</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaTableEditor.FrmSettings">
+    <Phrase key="this">Settings</Phrase>
+    <Phrase key="lblBaseDATDir">Configuration database directory for DAT format</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+  </Dictionary>
+</ScadaTableEditorDictionaries>

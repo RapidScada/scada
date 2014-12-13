@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KpModbus", "KpModbus\KpModbus.csproj", "{7CBF4A4B-E1A2-428E-8F68-EDD2FCE3088B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KpSms", "KpSms\KpSms.csproj", "{54BEF6C5-B63D-41E3-A123-03F1802A44F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KpTest", "KpTest\KpTest.csproj", "{D0AD784B-587D-4CD1-AF7F-7473A4FF7060}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7CBF4A4B-E1A2-428E-8F68-EDD2FCE3088B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CBF4A4B-E1A2-428E-8F68-EDD2FCE3088B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CBF4A4B-E1A2-428E-8F68-EDD2FCE3088B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CBF4A4B-E1A2-428E-8F68-EDD2FCE3088B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54BEF6C5-B63D-41E3-A123-03F1802A44F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54BEF6C5-B63D-41E3-A123-03F1802A44F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54BEF6C5-B63D-41E3-A123-03F1802A44F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54BEF6C5-B63D-41E3-A123-03F1802A44F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0AD784B-587D-4CD1-AF7F-7473A4FF7060}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0AD784B-587D-4CD1-AF7F-7473A4FF7060}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0AD784B-587D-4CD1-AF7F-7473A4FF7060}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0AD784B-587D-4CD1-AF7F-7473A4FF7060}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
