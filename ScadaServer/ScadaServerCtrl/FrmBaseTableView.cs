@@ -134,7 +134,8 @@ namespace Scada.Server.Ctrl
         {
             // перевод формы
             Localization.TranslateForm(this, "Scada.Server.Ctrl.FrmBaseTableView");
-            bindingNavigator.CountItemFormat = lblCount.Text;
+            if (!Localization.UseRussian)
+                bindingNavigator.CountItemFormat = lblCount.Text;
 
             // настройка элементов управления
             string tableTitle = BaseTableTitles.TryGetValue(baseAdapter.TableName, out tableTitle) ? 

@@ -362,7 +362,8 @@ namespace ScadaAdmin
         {
             // перевод формы
             Localization.TranslateForm(this, "ScadaAdmin.FrmTable");
-            bindingNavigator.CountItemFormat = bindingNavigatorCountItem.Text;
+            if (!Localization.UseRussian)
+                bindingNavigator.CountItemFormat = bindingNavigatorCountItem.Text;
         }
 
         private void FrmObj_Shown(object sender, EventArgs e)

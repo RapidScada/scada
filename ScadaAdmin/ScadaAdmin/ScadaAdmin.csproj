@@ -86,7 +86,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="WinControl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\DLL\WinControl.dll</HintPath>
+      <HintPath>..\..\..\DLL\WinControl.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

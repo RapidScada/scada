@@ -235,8 +235,11 @@ namespace Scada.Server.Ctrl
         {
             // перевод формы
             Localization.TranslateForm(this, "Scada.Server.Ctrl.FrmSrezTableEdit");
-            bindingNavigator1.CountItemFormat = lblCount1.Text;
-            bindingNavigator2.CountItemFormat = lblCount2.Text;
+            if (!Localization.UseRussian)
+            {
+                bindingNavigator1.CountItemFormat = lblCount1.Text;
+                bindingNavigator2.CountItemFormat = lblCount2.Text;
+            }
 
             // настройка элементов управления
             Text = (editMode ? AppPhrases.EditSrezTableTitle : AppPhrases.ViewSrezTableTitle) + 

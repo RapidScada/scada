@@ -134,7 +134,9 @@
     <Content Include="sound\event.mp3" />
     <Content Include="sound\event.wav" />
     <Content Include="templates\RepHrEvTable.xml" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

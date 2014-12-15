@@ -1,21 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <publishData>
   <publishProfile publishUrl="D:\Misha\My progs\SCADA\Source\OpenSource\ScadaWeb\WebPageSamplePublish" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="MainProfile" publishMethod="FileSystem" replaceMatchingFiles="False" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
-    <file relUrl="bin/Log.xml" publishTime="12/11/2014 23:56:00" />
+    <file relUrl="bin/Log.xml" publishTime="12/15/2014 22:01:47" />
     <file relUrl="custom/WebPageSample.aspx" publishTime="12/13/2014 20:42:22" />
     <file relUrl="bin/RepBuilder.dll" publishTime="04/10/2009 11:23:03" />
-    <file relUrl="bin/ScadaData.dll" publishTime="12/12/2014 11:26:45" />
-    <file relUrl="bin/Log.pdb" publishTime="12/11/2014 23:56:00" />
-    <file relUrl="bin/WebPageSample.pdb" publishTime="12/13/2014 21:58:31" />
-    <file relUrl="bin/ScadaWebCommon.pdb" publishTime="12/13/2014 20:36:37" />
-    <file relUrl="bin/WebPageSample.dll" publishTime="12/13/2014 21:58:31" />
-    <file relUrl="bin/ScadaWebCommon.dll" publishTime="12/13/2014 20:36:37" />
-    <file relUrl="Web.config" publishTime="12/13/2014 21:58:34" />
-    <file relUrl="bin/ScadaWebCommon.xml" publishTime="12/13/2014 20:36:37" />
-    <file relUrl="bin/ScadaWeb.dll" publishTime="12/13/2014 20:37:07" />
-    <file relUrl="bin/ScadaData.xml" publishTime="12/12/2014 11:26:45" />
-    <file relUrl="bin/Log.dll" publishTime="12/11/2014 23:56:00" />
-    <file relUrl="bin/ScadaWeb.pdb" publishTime="12/13/2014 20:37:07" />
-    <file relUrl="bin/ScadaData.pdb" publishTime="12/12/2014 11:26:45" />
+    <file relUrl="bin/Log.pdb" publishTime="12/15/2014 22:01:47" />
+    <file relUrl="bin/ScadaWebCommon.pdb" publishTime="12/15/2014 22:10:14" />
+    <file relUrl="bin/ScadaData.dll" publishTime="12/15/2014 22:02:29" />
+    <file relUrl="bin/Log.dll" publishTime="12/15/2014 22:01:47" />
+    <file relUrl="bin/WebPageSample.dll" publishTime="12/15/2014 22:13:07" />
+    <file relUrl="bin/ScadaWebCommon.dll" publishTime="12/15/2014 22:10:14" />
+    <file relUrl="Web.config" publishTime="12/15/2014 22:13:28" />
+    <file relUrl="bin/ScadaWebCommon.xml" publishTime="12/15/2014 22:10:14" />
+    <file relUrl="bin/ScadaWeb.dll" publishTime="12/15/2014 22:10:15" />
+    <file relUrl="bin/ScadaData.xml" publishTime="12/15/2014 22:02:29" />
+    <file relUrl="bin/WebPageSample.pdb" publishTime="12/15/2014 22:13:07" />
+    <file relUrl="bin/ScadaWeb.pdb" publishTime="12/15/2014 22:10:15" />
+    <file relUrl="bin/ScadaData.pdb" publishTime="12/15/2014 22:02:29" />
   </publishProfile>
 </publishData>

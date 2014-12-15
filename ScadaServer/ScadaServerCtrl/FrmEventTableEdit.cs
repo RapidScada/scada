@@ -173,7 +173,8 @@ namespace Scada.Server.Ctrl
         {
             // перевод формы
             Localization.TranslateForm(this, "Scada.Server.Ctrl.FrmEventTableEdit");
-            bindingNavigator.CountItemFormat = lblCount.Text;
+            if (!Localization.UseRussian)
+                bindingNavigator.CountItemFormat = lblCount.Text;
 
             // настройка элементов управления
             Text = (editMode ? AppPhrases.EditEventTableTitle : AppPhrases.ViewEventTableTitle) + 

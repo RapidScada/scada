@@ -90,7 +90,7 @@ namespace Scada.Comm.Ctrl
 
         private static void SetToDefault()
         {
-            ImportAlternateTitle = "Импорт КП - Линия {0}.";
+            ImportAlternateTitle = "Импорт КП - Линия {0}";
             NoImportData = "Отсутствуют данные для импорта.";
             PrepareImportFormError1 = "Ошибка при подготовке формы импорта линий связи и КП";
             PrepareImportFormError2 = "Ошибка при подготовке формы импорта КП";

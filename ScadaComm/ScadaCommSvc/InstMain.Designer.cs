@@ -33,8 +33,7 @@
             // 
             // serviceInstaller
             // 
-            this.serviceInstaller.Description = "SCADA-Коммуникатор предназначен для опроса и управления контроллерами и передачи " +
-                "данных службе SCADA-Сервер";
+            this.serviceInstaller.Description = "SCADA-Communicator interacts with controllers, transmits data to SCADA-Server";
             this.serviceInstaller.DisplayName = "ScadaCommService";
             this.serviceInstaller.ServiceName = "ScadaCommService";
             this.serviceInstaller.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
