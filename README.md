@@ -1,4 +1,4 @@
 Rapid SCADA
 ===========
 
-Rapid SCADA is a full featured SCADA system that supports MODBUS and OPC.
+Rapid SCADA is a full featured SCADA software that supports MODBUS and OPC.
