@@ -65,11 +65,14 @@ namespace Scada.Comm.Svc
             if (dirsExist)
             {
                 // локализация ScadaData.dll
-                string errMsg;
-                if (Localization.LoadDictionaries(Manager.LangDir, "ScadaData", out errMsg))
-                    CommonPhrases.Init();
-                else
-                    appLog.WriteAction(errMsg, Log.ActTypes.Error);
+                if (!Localization.UseRussian)
+                {
+                    string errMsg;
+                    if (Localization.LoadDictionaries(Manager.LangDir, "ScadaData", out errMsg))
+                        CommonPhrases.Init();
+                    else
+                        appLog.WriteAction(errMsg, Log.ActTypes.Error);
+                }
 
                 // считывание конфигурации и запуск потоков
                 if (mngr.ParseConfig())

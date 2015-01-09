@@ -1,4 +1,4 @@
-/*
+п»ї/*
  * Copyright 2014 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,18 +32,18 @@ namespace Scada.Client
 {
 	/// <summary>
     /// SCADA-Server connection settings
-    /// <para>Настройки соединения со SCADA-Сервером</para>
+    /// <para>РќР°СЃС‚СЂРѕР№РєРё СЃРѕРµРґРёРЅРµРЅРёСЏ СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј</para>
 	/// </summary>
 	public class CommSettings
 	{
         /// <summary>
-        /// Имя файла настроек соединения со SCADA-Сервером по умолчанию
+        /// РРјСЏ С„Р°Р№Р»Р° РЅР°СЃС‚СЂРѕРµРє СЃРѕРµРґРёРЅРµРЅРёСЏ СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
         /// </summary>
         public const string DefFileName = "CommSettings.xml";
 
 
         /// <summary>
-        /// Конструктор
+        /// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
         /// </summary>
 		public CommSettings()
 		{
@@ -51,7 +51,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Конструктор с установкой параметров связи
+        /// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ СЃ СѓСЃС‚Р°РЅРѕРІРєРѕР№ РїР°СЂР°РјРµС‚СЂРѕРІ СЃРІСЏР·Рё
         /// </summary>
         public CommSettings(string serverHost, int serverPort, string serverUser, string serverPwd, 
             int serverTimeout)
@@ -65,33 +65,33 @@ namespace Scada.Client
 
 
         /// <summary>
-        /// Получить или установить имя компьютера или IP-адрес SCADA-Сервера
+        /// РџРѕР»СѓС‡РёС‚СЊ РёР»Рё СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РёРјСЏ РєРѕРјРїСЊСЋС‚РµСЂР° РёР»Рё IP-Р°РґСЂРµСЃ SCADA-РЎРµСЂРІРµСЂР°
         /// </summary>
         public string ServerHost { get; set; }
 
         /// <summary>
-        /// Получить или установить номер TCP-порта SCADA-Сервера
+        /// РџРѕР»СѓС‡РёС‚СЊ РёР»Рё СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РЅРѕРјРµСЂ TCP-РїРѕСЂС‚Р° SCADA-РЎРµСЂРІРµСЂР°
         /// </summary>
         public int ServerPort { get; set; }
 
         /// <summary>
-        /// Получить или установить имя пользователя для подключения к SCADA-Серверу
+        /// РџРѕР»СѓС‡РёС‚СЊ РёР»Рё СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РёРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РґР»СЏ РїРѕРґРєР»СЋС‡РµРЅРёСЏ Рє SCADA-РЎРµСЂРІРµСЂСѓ
         /// </summary>
         public string ServerUser { get; set; }
 
         /// <summary>
-        /// Получить или установить пароль пользователя для подключения к SCADA-Серверу
+        /// РџРѕР»СѓС‡РёС‚СЊ РёР»Рё СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РїР°СЂРѕР»СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РґР»СЏ РїРѕРґРєР»СЋС‡РµРЅРёСЏ Рє SCADA-РЎРµСЂРІРµСЂСѓ
         /// </summary>
         public string ServerPwd { get; set; }
 
         /// <summary>
-        /// Получить или установить таймаут ожидания ответа SCADA-Сервера, мс
+        /// РџРѕР»СѓС‡РёС‚СЊ РёР»Рё СѓСЃС‚Р°РЅРѕРІРёС‚СЊ С‚Р°Р№РјР°СѓС‚ РѕР¶РёРґР°РЅРёСЏ РѕС‚РІРµС‚Р° SCADA-РЎРµСЂРІРµСЂР°, РјСЃ
         /// </summary>
         public int ServerTimeout { get; set; }
 
 
         /// <summary>
-        /// Установить значения настроек по умолчанию
+        /// РЈСЃС‚Р°РЅРѕРІРёС‚СЊ Р·РЅР°С‡РµРЅРёСЏ РЅР°СЃС‚СЂРѕРµРє РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
         /// </summary>
         private void SetToDefault()
         {
@@ -104,7 +104,7 @@ namespace Scada.Client
 
 
         /// <summary>
-        /// Определить, являются ли заданные параметры связи идентичными текущим параметрам
+        /// РћРїСЂРµРґРµР»РёС‚СЊ, СЏРІР»СЏСЋС‚СЃСЏ Р»Рё Р·Р°РґР°РЅРЅС‹Рµ РїР°СЂР°РјРµС‚СЂС‹ СЃРІСЏР·Рё РёРґРµРЅС‚РёС‡РЅС‹РјРё С‚РµРєСѓС‰РёРј РїР°СЂР°РјРµС‚СЂР°Рј
         /// </summary>
         public bool Equals(CommSettings commSettings)
         {
@@ -115,7 +115,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Создать копию настроек соединения со SCADA-Сервером
+        /// РЎРѕР·РґР°С‚СЊ РєРѕРїРёСЋ РЅР°СЃС‚СЂРѕРµРє СЃРѕРµРґРёРЅРµРЅРёСЏ СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј
         /// </summary>
         public CommSettings Clone()
         {
@@ -123,20 +123,20 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Загрузить настройки соединения со SCADA-Сервером из файла
+        /// Р—Р°РіСЂСѓР·РёС‚СЊ РЅР°СЃС‚СЂРѕР№РєРё СЃРѕРµРґРёРЅРµРЅРёСЏ СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј РёР· С„Р°Р№Р»Р°
         /// </summary>
         public bool LoadFromFile(string fileName, out string errMsg)
         {
-            // установка значений по умолчанию
+            // СѓСЃС‚Р°РЅРѕРІРєР° Р·РЅР°С‡РµРЅРёР№ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
             SetToDefault();
 
-            // загрузка настроек соединения со SCADA-Сервером
+            // Р·Р°РіСЂСѓР·РєР° РЅР°СЃС‚СЂРѕРµРє СЃРѕРµРґРёРЅРµРЅРёСЏ СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј
             try
             {
                 if (!File.Exists(fileName))
                     throw new FileNotFoundException(string.Format(CommonPhrases.NamedFileNotFound, fileName));
 
-                XmlDocument xmlDoc = new XmlDocument(); // обрабатываемый XML-документ
+                XmlDocument xmlDoc = new XmlDocument(); // РѕР±СЂР°Р±Р°С‚С‹РІР°РµРјС‹Р№ XML-РґРѕРєСѓРјРµРЅС‚
                 xmlDoc.Load(fileName);
 
                 XmlNodeList xmlNodeList = xmlDoc.DocumentElement.SelectNodes("Param");
@@ -176,14 +176,14 @@ namespace Scada.Client
         }
         
         /// <summary>
-        /// Загрузить настройки соединения со SCADA-Сервером из файла
+        /// Р—Р°РіСЂСѓР·РёС‚СЊ РЅР°СЃС‚СЂРѕР№РєРё СЃРѕРµРґРёРЅРµРЅРёСЏ СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј РёР· С„Р°Р№Р»Р°
         /// </summary>
         public void LoadFromFile(string fileName, Log log)
         {
             if (log == null)
                 throw new ArgumentNullException("log");
 
-            log.WriteAction(Localization.UseRussian ? "Загрузка настроек соединения с сервером" : 
+            log.WriteAction(Localization.UseRussian ? "Р—Р°РіСЂСѓР·РєР° РЅР°СЃС‚СЂРѕРµРє СЃРѕРµРґРёРЅРµРЅРёСЏ СЃ СЃРµСЂРІРµСЂРѕРј" : 
                 "Load server connection settings", Log.ActTypes.Action);
             string errMsg;
             if (!LoadFromFile(fileName, out errMsg))
@@ -191,7 +191,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Сохранить настройки соединения со SCADA-Сервером в файле
+        /// РЎРѕС…СЂР°РЅРёС‚СЊ РЅР°СЃС‚СЂРѕР№РєРё СЃРѕРµРґРёРЅРµРЅРёСЏ СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј РІ С„Р°Р№Р»Рµ
         /// </summary>
         public bool SaveToFile(string fileName, out string errMsg)
         {
@@ -206,15 +206,15 @@ namespace Scada.Client
                 xmlDoc.AppendChild(rootElem);
 
                 rootElem.AppendParamElem("ServerHost", ServerHost,
-                    "Имя компьютера или IP-адрес SCADA-Сервера", "SCADA-Server host or IP address");
+                    "РРјСЏ РєРѕРјРїСЊСЋС‚РµСЂР° РёР»Рё IP-Р°РґСЂРµСЃ SCADA-РЎРµСЂРІРµСЂР°", "SCADA-Server host or IP address");
                 rootElem.AppendParamElem("ServerPort", ServerPort,
-                    "Номер TCP-порта SCADA-Сервера", "SCADA-Server TCP port number");
+                    "РќРѕРјРµСЂ TCP-РїРѕСЂС‚Р° SCADA-РЎРµСЂРІРµСЂР°", "SCADA-Server TCP port number");
                 rootElem.AppendParamElem("ServerUser", ServerUser,
-                    "Имя пользователя для подключения", "User name for the connection");
+                    "РРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РґР»СЏ РїРѕРґРєР»СЋС‡РµРЅРёСЏ", "User name for the connection");
                 rootElem.AppendParamElem("ServerPwd", ServerPwd,
-                    "Пароль пользователя для подключения", "User password for the connection");
+                    "РџР°СЂРѕР»СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РґР»СЏ РїРѕРґРєР»СЋС‡РµРЅРёСЏ", "User password for the connection");
                 rootElem.AppendParamElem("ServerTimeout", ServerTimeout,
-                    "Таймаут ожидания ответа, мс", "Response timeout, ms");
+                    "РўР°Р№РјР°СѓС‚ РѕР¶РёРґР°РЅРёСЏ РѕС‚РІРµС‚Р°, РјСЃ", "Response timeout, ms");
 
                 xmlDoc.Save(fileName);
                 errMsg = "";

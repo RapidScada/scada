@@ -543,8 +543,10 @@ namespace Scada.Comm.Svc
                             tblKP.DefaultView.RowFilter = "KPNum = " + kpLogic.Number;
                             if (tblKP.DefaultView.Count > 0)
                             {
-                                kpLogic.Name = (string)tblKP.DefaultView[0]["Name"];
-                                kpLogic.Address = (int)tblKP.DefaultView[0]["Address"];
+                                DataRowView rowKP = tblKP.DefaultView[0];
+                                kpLogic.Name = (string)rowKP["Name"];
+                                kpLogic.Address = (int)rowKP["Address"];
+                                kpLogic.CallNum = (string)rowKP["CallNum"];
                             }
                         }
                     }

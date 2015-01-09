@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2012
+ * Modified : 2014
  */
 
 using System;
@@ -163,13 +163,14 @@ namespace Scada.Comm.Svc
             if (ReceiveCommand(out kpNum, out cmdNum, out cmdVal, out cmdData))
             {
                 cmd = new KPLogic.Command();
-                cmd.CmdType = cmdData == null ? double.IsNaN(cmdVal) ? 
-                    KPLogic.CmdType.Request : KPLogic.CmdType.Standard : KPLogic.CmdType.Binary;
+                cmd.CmdType = cmdData == null ? 
+                    (double.IsNaN(cmdVal) ? KPLogic.CmdType.Request : KPLogic.CmdType.Standard) :
+                    KPLogic.CmdType.Binary;
                 cmd.KPNum = kpNum;
                 cmd.CmdNum = cmdNum;
                 if (cmd.CmdType == KPLogic.CmdType.Standard)
                     cmd.CmdVal = cmdVal;
-                if (cmd.CmdType == KPLogic.CmdType.Request)
+                else if (cmd.CmdType == KPLogic.CmdType.Binary)
                     cmd.CmdData = cmdData;
                 return true;
             }

@@ -1581,14 +1581,22 @@ namespace Scada.Server.Svc
 
                 for (int i = 0; i < cnlCnt; i++)
                 {
-                    int cnlTypeID = inCnls.Values[i].CnlTypeID;
+                    InCnl inCnl = inCnls.Values[i];
+                    int cnlTypeID = inCnl.CnlTypeID;
 
                     if ((cnlTypeID == BaseValues.CnlTypes.TS || cnlTypeID == BaseValues.CnlTypes.TI) &&
                         curSrez.CnlData[i].Stat > BaseValues.ParamStat.Undefined && 
                         nowDT - activeDTs[i] > inactUnrelSpan)
                     {
-                        curSrez.CnlData[i].Stat = BaseValues.ParamStat.Unreliable;
+                        // установка недостоверного статуса
+                        SrezTableLight.CnlData oldCnlData = curSrez.CnlData[i];
+                        SrezTableLight.CnlData newCnlData = 
+                            new SrezTableLight.CnlData(oldCnlData.Val, BaseValues.ParamStat.Unreliable);
+                        curSrez.CnlData[i] = newCnlData;
                         curSrezMod = true;
+
+                        // генерация события
+                        GenEvent(inCnl, oldCnlData, newCnlData);
                     }
                 }
             }

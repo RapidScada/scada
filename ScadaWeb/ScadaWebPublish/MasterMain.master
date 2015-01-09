@@ -21,7 +21,7 @@
             </asp:ContentPlaceHolder>
         </div>
         <div id="divFooter">
-            <span>Copyright &copy; 2005-2014 Rapid SCADA. <a href="http://www.rapidscada.org" target="_blank">www.rapidscada.org</a></span>
+            <span>Copyright &copy; 2005-2015 Rapid SCADA. <a href="http://rapidscada.org" target="_blank">http://rapidscada.org</a></span>
         </div>
     </form>
 </body>

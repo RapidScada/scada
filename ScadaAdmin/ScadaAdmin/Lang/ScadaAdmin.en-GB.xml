@@ -242,8 +242,8 @@
     <Phrase key="btnPaste">Paste</Phrase>
     <Phrase key="btnGroupByObj">Group Channels by Objects</Phrase>
     <Phrase key="btnGroupByKP">Group Channels by Devices</Phrase>
-    <Phrase key="btnRestartServer">Restart SCADA-Server</Phrase>
-    <Phrase key="btnRestartComm">Restart SCADA-Communicator</Phrase>
+    <Phrase key="btnRestartServer">Restart SCADA-Server service</Phrase>
+    <Phrase key="btnRestartComm">Restart SCADA-Communicator service</Phrase>
     <Phrase key="btnParams">Parameters</Phrase>
     <Phrase key="SelectTable">Select a table for edit&#13;&#10;in the explorer</Phrase>
     <Phrase key="SaveReqCaption">Save Changes</Phrase>

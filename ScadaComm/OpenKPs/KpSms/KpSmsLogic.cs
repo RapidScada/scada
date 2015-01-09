@@ -521,9 +521,9 @@ namespace Scada.Comm.KP
         }
 
         /// <summary>
-        /// Установка параметра КП "Кол-во событий"
+        /// Увеличение параметра КП "Кол-во событий"
         /// </summary>
-        private void SetEventCount(int eventCnt)
+        private void IncEventCount(int eventCnt)
         {
             double newVal = CurData[1].Val + eventCnt;
             if (newVal > MaxEventCount) 
@@ -628,7 +628,7 @@ namespace Scada.Comm.KP
                 GetMessageObjList().Clear();
             }
 
-            SetEventCount(eventCnt);
+            IncEventCount(eventCnt);
             if (lastCommSucc)
                 WriteToLog((Localization.UseRussian ? "Количество полученных сообщений: " : 
                     "Received message count: ") + eventCnt);
@@ -713,7 +713,7 @@ namespace Scada.Comm.KP
                 }
             }
 
-            SetEventCount(eventCnt);
+            IncEventCount(eventCnt);
             WriteToLog((Localization.UseRussian ? "Количество полученных сообщений: " :
                 "Received message count: ") + eventCnt);
         }

@@ -121,14 +121,6 @@
     <value>17, 17</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="miSettingsParams.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        R0lGODlhEAAQAIIFAMHBwYaGhoCAAP//AAAAAP///wAAAAAAACH/C05FVFNDQVBFMi4wAwEBAAAh+QQB
-        AAAFACwAAAAAEAAQAAAIcAALCBRAkKDAgwgJEhgwgIAAAgQQHhTAsOKAhxILELwIkSLEiAkZEgAQYCFH
-        iRQbBgCwsKDBgRQfCgDwUORDkCkZ5qyIsYDDljE7NoR4UGhDkiZ7ThS5MinIiUEdDn261OLJjD9tEs0o
-        8ONWrmAFBgQAOw==
-</value>
-  </data>
   <data name="miDbConnect.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         R0lGODlhEAAQAIIGAMbGxoSEhACEhP//////AAAAAP///wAAACH/C05FVFNDQVBFMi4wAwEBAAAh+QQB
@@ -245,6 +237,14 @@
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEBAAAh+QQBAAAoACwAAAAAEAAQ
         AAAIcgBRCBxIsKDBgwgTFixwooDAAAEgIDwx4cTDAwEcHDxhwSKKAAcSLNBY8IQGjwISMIiwoEJJEygZ
         UGiAwMMFgic+eBxQosEIAwBC4ASBcgMCAxJElOywE4MCACQMnsiw8ymHgwROEBAIAMADhWDDikUYEAA7
+</value>
+  </data>
+  <data name="miSettingsParams.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        R0lGODlhEAAQAIIFAMHBwYaGhoCAAP//AAAAAP///wAAAAAAACH/C05FVFNDQVBFMi4wAwEBAAAh+QQB
+        AAAFACwAAAAAEAAQAAAIcAALCBRAkKDAgwgJEhgwgIAAAgQQHhTAsOKAhxILELwIkSLEiAkZEgAQYCFH
+        iRQbBgCwsKDBgRQfCgDwUORDkCkZ5qyIsYDDljE7NoR4UGhDkiZ7ThS5MinIiUEdDn261OLJjD9tEs0o
+        8ONWrmAFBgQAOw==
 </value>
   </data>
   <data name="miHelpAbout.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -400,7 +400,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAAAY
-        DwAAAk1TRnQBSQFMAgEBBwEAAcgBAwHIAQMBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        DwAAAk1TRnQBSQFMAgEBBwEAAdABAwHQAQMBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
         AwABQAMAASADAAEBAQABCAYAAQgYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
         AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
         AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA

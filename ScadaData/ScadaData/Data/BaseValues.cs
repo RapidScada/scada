@@ -195,15 +195,15 @@ namespace Scada.Data
         public static class ParamStat
         {
             /// <summary>
-            /// Параметр не определён
+            /// Не определён
             /// </summary>
             public const int Undefined = 0;
             /// <summary>
-            /// Параметр определён
+            /// Определён
             /// </summary>
             public const int Defined = 1;
             /// <summary>
-            /// Параметр архивный
+            /// Архивный
             /// </summary>
             public const int Archival = 2;
             /// <summary>
@@ -211,11 +211,11 @@ namespace Scada.Data
             /// </summary>
             public const int FormulaError = 3;
             /// <summary>
-            /// Параметр изменён
+            /// Изменён
             /// </summary>
             public const int Changed = 4;
             /// <summary>
-            /// Параметр недостоверен
+            /// Недостоверен
             /// </summary>
             public const int Unreliable = 5;
 
@@ -259,15 +259,15 @@ namespace Scada.Data
             /// <summary>
             /// Снят с охраны
             /// </summary>
-            public const int GuardOff = 112;
+            public const int Disarm = 112;
             /// <summary>
             /// Поставлен на охрану
             /// </summary>
-            public const int GuardOn = 113;
+            public const int Arm = 113;
             /// <summary>
             /// Тревога
             /// </summary>
-            public const int GuardAlarm = 114;
+            public const int Alarm = 114;
         }
     }
 }

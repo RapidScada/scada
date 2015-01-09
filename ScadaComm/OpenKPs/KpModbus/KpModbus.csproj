@@ -72,7 +72,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Lang\KpModbus.en-GB.xml" />
+    <Content Include="Lang\KpModbus.en-GB.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Res\cmd.png" />
     <Content Include="Res\cmds.png" />
     <Content Include="Res\delete.png" />

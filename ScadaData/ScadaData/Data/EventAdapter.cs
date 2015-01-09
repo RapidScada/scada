@@ -1,4 +1,4 @@
-/*
+п»ї/*
  * Copyright 2014 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -52,47 +52,47 @@ namespace Scada.Data
 {
     /// <summary>
     /// Adapter for reading and writing event tables
-    /// <para>Адаптер для чтения и записи таблиц событий</para>
+    /// <para>РђРґР°РїС‚РµСЂ РґР»СЏ С‡С‚РµРЅРёСЏ Рё Р·Р°РїРёСЃРё С‚Р°Р±Р»РёС† СЃРѕР±С‹С‚РёР№</para>
     /// </summary>
     public class EventAdapter
     {
         /// <summary>
-        /// Размер данных события в файле
+        /// Р Р°Р·РјРµСЂ РґР°РЅРЅС‹С… СЃРѕР±С‹С‚РёСЏ РІ С„Р°Р№Р»Рµ
         /// </summary>
         public const int EventDataSize = 189;
         /// <summary>
-        /// Макс. длина описания события
+        /// РњР°РєСЃ. РґР»РёРЅР° РѕРїРёСЃР°РЅРёСЏ СЃРѕР±С‹С‚РёСЏ
         /// </summary>
         public const int MaxDescrLen = 100;
         /// <summary>
-        /// Макс. длина дополнительных данных события
+        /// РњР°РєСЃ. РґР»РёРЅР° РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹С… РґР°РЅРЅС‹С… СЃРѕР±С‹С‚РёСЏ
         /// </summary>
         public const int MaxDataLen = 50;
 
         /// <summary>
-        /// Директория таблицы событий
+        /// Р”РёСЂРµРєС‚РѕСЂРёСЏ С‚Р°Р±Р»РёС†С‹ СЃРѕР±С‹С‚РёР№
         /// </summary>
         protected string directory;
         /// <summary>
-        /// Входной и выходной поток
+        /// Р’С…РѕРґРЅРѕР№ Рё РІС‹С…РѕРґРЅРѕР№ РїРѕС‚РѕРє
         /// </summary>
         protected Stream ioStream;
         /// <summary>
-        /// Имя файла таблицы событий
+        /// РРјСЏ С„Р°Р№Р»Р° С‚Р°Р±Р»РёС†С‹ СЃРѕР±С‹С‚РёР№
         /// </summary>
         protected string tableName;
         /// <summary>
-        /// Полное имя файла таблицы событий
+        /// РџРѕР»РЅРѕРµ РёРјСЏ С„Р°Р№Р»Р° С‚Р°Р±Р»РёС†С‹ СЃРѕР±С‹С‚РёР№
         /// </summary>
         protected string fileName;
         /// <summary>
-        /// Доступ к данным выполняется через файл на диске
+        /// Р”РѕСЃС‚СѓРї Рє РґР°РЅРЅС‹Рј РІС‹РїРѕР»РЅСЏРµС‚СЃСЏ С‡РµСЂРµР· С„Р°Р№Р» РЅР° РґРёСЃРєРµ
         /// </summary>
         protected bool fileMode;
 
 
         /// <summary>
-        /// Конструктор
+        /// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
         /// </summary>
         public EventAdapter()
         {
@@ -105,7 +105,7 @@ namespace Scada.Data
 
 
         /// <summary>
-        /// Получить или установить директорию таблицы событий
+        /// РџРѕР»СѓС‡РёС‚СЊ РёР»Рё СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РґРёСЂРµРєС‚РѕСЂРёСЋ С‚Р°Р±Р»РёС†С‹ СЃРѕР±С‹С‚РёР№
         /// </summary>
         public string Directory
         {
@@ -126,7 +126,7 @@ namespace Scada.Data
         }
 
         /// <summary>
-        /// Получить или установить входной и выходной поток (вместо директории)
+        /// РџРѕР»СѓС‡РёС‚СЊ РёР»Рё СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РІС…РѕРґРЅРѕР№ Рё РІС‹С…РѕРґРЅРѕР№ РїРѕС‚РѕРє (РІРјРµСЃС‚Рѕ РґРёСЂРµРєС‚РѕСЂРёРё)
         /// </summary>
         public Stream Stream
         {
@@ -144,7 +144,7 @@ namespace Scada.Data
         }
 
         /// <summary>
-        /// Получить или установить имя файла таблицы событий
+        /// РџРѕР»СѓС‡РёС‚СЊ РёР»Рё СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РёРјСЏ С„Р°Р№Р»Р° С‚Р°Р±Р»РёС†С‹ СЃРѕР±С‹С‚РёР№
         /// </summary>
         public string TableName
         {
@@ -163,7 +163,7 @@ namespace Scada.Data
         }
 
         /// <summary>
-        /// Получить или установить полное имя файла таблицы событий
+        /// РџРѕР»СѓС‡РёС‚СЊ РёР»Рё СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РїРѕР»РЅРѕРµ РёРјСЏ С„Р°Р№Р»Р° С‚Р°Р±Р»РёС†С‹ СЃРѕР±С‹С‚РёР№
         /// </summary>
         public string FileName
         {
@@ -186,7 +186,7 @@ namespace Scada.Data
 
 
         /// <summary>
-        /// Преобразовать массив байт в строку, 0-й байт - длина строки
+        /// РџСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ РјР°СЃСЃРёРІ Р±Р°Р№С‚ РІ СЃС‚СЂРѕРєСѓ, 0-Р№ Р±Р°Р№С‚ - РґР»РёРЅР° СЃС‚СЂРѕРєРё
         /// </summary>
         protected string BytesToStr(byte[] bytes, int startIndex)
         {
@@ -198,7 +198,7 @@ namespace Scada.Data
         }
 
         /// <summary>
-        /// Преобразовать объект в целое число
+        /// РџСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ РѕР±СЉРµРєС‚ РІ С†РµР»РѕРµ С‡РёСЃР»Рѕ
         /// </summary>
         protected int ConvertToInt(object obj)
         {
@@ -207,7 +207,7 @@ namespace Scada.Data
         }
 
         /// <summary>
-        /// Преобразовать объект в вещественное число
+        /// РџСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ РѕР±СЉРµРєС‚ РІ РІРµС‰РµСЃС‚РІРµРЅРЅРѕРµ С‡РёСЃР»Рѕ
         /// </summary>
         protected double ConvertToDouble(object obj)
         {
@@ -216,7 +216,7 @@ namespace Scada.Data
         }
 
         /// <summary>
-        /// Преобразовать объект в дату и время
+        /// РџСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ РѕР±СЉРµРєС‚ РІ РґР°С‚Сѓ Рё РІСЂРµРјСЏ
         /// </summary>
         protected DateTime ConvertToDateTime(object obj)
         {
@@ -225,7 +225,7 @@ namespace Scada.Data
         }
 
         /// <summary>
-        /// Преобразовать объект в логическое значение
+        /// РџСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ РѕР±СЉРµРєС‚ РІ Р»РѕРіРёС‡РµСЃРєРѕРµ Р·РЅР°С‡РµРЅРёРµ
         /// </summary>
         protected bool ConvertToBoolean(object obj)
         {
@@ -234,7 +234,7 @@ namespace Scada.Data
         }
 
         /// <summary>
-        /// Создать данные события на основе строки таблицы
+        /// РЎРѕР·РґР°С‚СЊ РґР°РЅРЅС‹Рµ СЃРѕР±С‹С‚РёСЏ РЅР° РѕСЃРЅРѕРІРµ СЃС‚СЂРѕРєРё С‚Р°Р±Р»РёС†С‹
         /// </summary>
         protected EventTableLight.Event CreateEvent(DataRowView rowView)
         {
@@ -257,7 +257,7 @@ namespace Scada.Data
         }
 
         /// <summary>
-        /// Создать буфер для записи события
+        /// РЎРѕР·РґР°С‚СЊ Р±СѓС„РµСЂ РґР»СЏ Р·Р°РїРёСЃРё СЃРѕР±С‹С‚РёСЏ
         /// </summary>
         protected byte[] CreateEventBuffer(EventTableLight.Event ev)
         {
@@ -292,7 +292,7 @@ namespace Scada.Data
         }
 
         /// <summary>
-        /// Заполнить объект dest из файла событий FileName
+        /// Р—Р°РїРѕР»РЅРёС‚СЊ РѕР±СЉРµРєС‚ dest РёР· С„Р°Р№Р»Р° СЃРѕР±С‹С‚РёР№ FileName
         /// </summary>
         protected void FillObj(object dest)
         {
@@ -312,10 +312,10 @@ namespace Scada.Data
                 else
                     throw new Exception("Destination object is invalid.");
 
-                // определение даты событий в таблице
+                // РѕРїСЂРµРґРµР»РµРЅРёРµ РґР°С‚С‹ СЃРѕР±С‹С‚РёР№ РІ С‚Р°Р±Р»РёС†Рµ
                 DateTime date = Arithmetic.ExtractDate(tableName);
 
-                // подготовка объекта для хранения данных
+                // РїРѕРґРіРѕС‚РѕРІРєР° РѕР±СЉРµРєС‚Р° РґР»СЏ С…СЂР°РЅРµРЅРёСЏ РґР°РЅРЅС‹С…
                 if (eventTableLight != null)
                 {
                     eventTableLight.Clear();
@@ -323,7 +323,7 @@ namespace Scada.Data
                 }
                 else // dataTable != null
                 {
-                    // формирование структуры таблицы
+                    // С„РѕСЂРјРёСЂРѕРІР°РЅРёРµ СЃС‚СЂСѓРєС‚СѓСЂС‹ С‚Р°Р±Р»РёС†С‹
                     dataTable.BeginLoadData();
                     dataTable.DefaultView.Sort = "";
 
@@ -356,21 +356,21 @@ namespace Scada.Data
                     }
                 }
 
-                // заполнение таблицы из файла
+                // Р·Р°РїРѕР»РЅРµРЅРёРµ С‚Р°Р±Р»РёС†С‹ РёР· С„Р°Р№Р»Р°
                 stream = ioStream == null ?
                     new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite) :
                     ioStream;
                 reader = new BinaryReader(stream);
 
-                Byte[] eventBuf = new byte[EventDataSize]; // буфер данных события
-                int evNum = 1; // порядковый номер события
+                Byte[] eventBuf = new byte[EventDataSize]; // Р±СѓС„РµСЂ РґР°РЅРЅС‹С… СЃРѕР±С‹С‚РёСЏ
+                int evNum = 1; // РїРѕСЂСЏРґРєРѕРІС‹Р№ РЅРѕРјРµСЂ СЃРѕР±С‹С‚РёСЏ
 
                 while (stream.Position < stream.Length)
                 {
                     int readSize = reader.Read(eventBuf, 0, EventDataSize);
                     if (readSize == EventDataSize)
                     {
-                        // создание события на основе считанных данных
+                        // СЃРѕР·РґР°РЅРёРµ СЃРѕР±С‹С‚РёСЏ РЅР° РѕСЃРЅРѕРІРµ СЃС‡РёС‚Р°РЅРЅС‹С… РґР°РЅРЅС‹С…
                         EventTableLight.Event ev = new EventTableLight.Event();
                         ev.Number = evNum;
                         evNum++;
@@ -393,10 +393,10 @@ namespace Scada.Data
                         ev.Descr = BytesToStr(eventBuf, 37);
                         ev.Data = BytesToStr(eventBuf, 138);
 
-                        // создание строки заполняемой таблицы
+                        // СЃРѕР·РґР°РЅРёРµ СЃС‚СЂРѕРєРё Р·Р°РїРѕР»РЅСЏРµРјРѕР№ С‚Р°Р±Р»РёС†С‹
                         if (eventTableLight != null)
                         {
-                            eventTableLight.AllEvents.Add(ev); // быстрее, чем eventTableLight.AddEvent(ev)
+                            eventTableLight.AllEvents.Add(ev); // Р±С‹СЃС‚СЂРµРµ, С‡РµРј eventTableLight.AddEvent(ev)
                         }
                         else // dataTable != null
                         {
@@ -422,7 +422,7 @@ namespace Scada.Data
             }
             catch (EndOfStreamException)
             {
-                // нормальная ситуация окончания файла
+                // РЅРѕСЂРјР°Р»СЊРЅР°СЏ СЃРёС‚СѓР°С†РёСЏ РѕРєРѕРЅС‡Р°РЅРёСЏ С„Р°Р№Р»Р°
             }
             catch
             {
@@ -454,7 +454,7 @@ namespace Scada.Data
 
 
         /// <summary>
-        /// Заполнить таблицу dataTable из файла или потока
+        /// Р—Р°РїРѕР»РЅРёС‚СЊ С‚Р°Р±Р»РёС†Сѓ dataTable РёР· С„Р°Р№Р»Р° РёР»Рё РїРѕС‚РѕРєР°
         /// </summary>
         public void Fill(DataTable dataTable)
         {
@@ -462,7 +462,7 @@ namespace Scada.Data
         }
 
         /// <summary>
-        /// Заполнить таблицу eventTableLight из файла или потока
+        /// Р—Р°РїРѕР»РЅРёС‚СЊ С‚Р°Р±Р»РёС†Сѓ eventTableLight РёР· С„Р°Р№Р»Р° РёР»Рё РїРѕС‚РѕРєР°
         /// </summary>
         public void Fill(EventTableLight eventTableLight)
         {
@@ -470,7 +470,7 @@ namespace Scada.Data
         }
         
         /// <summary>
-        /// Записать изменения таблицы dataTable в файл или поток
+        /// Р—Р°РїРёСЃР°С‚СЊ РёР·РјРµРЅРµРЅРёСЏ С‚Р°Р±Р»РёС†С‹ dataTable РІ С„Р°Р№Р» РёР»Рё РїРѕС‚РѕРє
         /// </summary>
         public void Update(DataTable dataTable)
         {
@@ -487,7 +487,7 @@ namespace Scada.Data
                    ioStream;
                 writer = new BinaryWriter(stream);
 
-                // запись изменённых событий
+                // Р·Р°РїРёСЃСЊ РёР·РјРµРЅС‘РЅРЅС‹С… СЃРѕР±С‹С‚РёР№
                 DataView dataView = new DataView(dataTable, "", "", DataViewRowState.ModifiedCurrent);
 
                 foreach (DataRowView rowView in dataView)
@@ -501,18 +501,18 @@ namespace Scada.Data
                     }
                 }
 
-                // запись добавленных событий
+                // Р·Р°РїРёСЃСЊ РґРѕР±Р°РІР»РµРЅРЅС‹С… СЃРѕР±С‹С‚РёР№
                 dataView = new DataView(dataTable, "", "", DataViewRowState.Added);
 
                 if (dataView.Count > 0)
                 {
-                    // установка позиции записи кратной размеру данных события
+                    // СѓСЃС‚Р°РЅРѕРІРєР° РїРѕР·РёС†РёРё Р·Р°РїРёСЃРё РєСЂР°С‚РЅРѕР№ СЂР°Р·РјРµСЂСѓ РґР°РЅРЅС‹С… СЃРѕР±С‹С‚РёСЏ
                     stream.Seek(0, SeekOrigin.End);
                     int evInd = (int)(stream.Position / EventDataSize);
                     int evNum = evInd + 1;
                     stream.Seek(evInd * EventDataSize, SeekOrigin.Begin);
 
-                    // запись событий и установка номеров событий
+                    // Р·Р°РїРёСЃСЊ СЃРѕР±С‹С‚РёР№ Рё СѓСЃС‚Р°РЅРѕРІРєР° РЅРѕРјРµСЂРѕРІ СЃРѕР±С‹С‚РёР№
                     foreach (DataRowView rowView in dataView)
                     {
                         EventTableLight.Event ev = CreateEvent(rowView);
@@ -521,7 +521,7 @@ namespace Scada.Data
                     }
                 }
 
-                // подтверждение успешного сохранения изменений
+                // РїРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ СѓСЃРїРµС€РЅРѕРіРѕ СЃРѕС…СЂР°РЅРµРЅРёСЏ РёР·РјРµРЅРµРЅРёР№
                 dataTable.AcceptChanges();
             }
             finally
@@ -537,7 +537,7 @@ namespace Scada.Data
         }
 
         /// <summary>
-        /// Добавить событие в файл или поток
+        /// Р”РѕР±Р°РІРёС‚СЊ СЃРѕР±С‹С‚РёРµ РІ С„Р°Р№Р» РёР»Рё РїРѕС‚РѕРє
         /// </summary>
         public void AppendEvent(EventTableLight.Event ev)
         {
@@ -554,12 +554,12 @@ namespace Scada.Data
                    ioStream;
                 writer = new BinaryWriter(stream);
 
-                // установка позиции записи кратной размеру данных события
+                // СѓСЃС‚Р°РЅРѕРІРєР° РїРѕР·РёС†РёРё Р·Р°РїРёСЃРё РєСЂР°С‚РЅРѕР№ СЂР°Р·РјРµСЂСѓ РґР°РЅРЅС‹С… СЃРѕР±С‹С‚РёСЏ
                 stream.Seek(0, SeekOrigin.End);
                 long offset = stream.Position / EventDataSize * EventDataSize;
                 stream.Seek(offset, SeekOrigin.Begin);
 
-                // запись события
+                // Р·Р°РїРёСЃСЊ СЃРѕР±С‹С‚РёСЏ
                 writer.Write(CreateEventBuffer(ev));
             }
             finally
@@ -575,7 +575,7 @@ namespace Scada.Data
         }
 
         /// <summary>
-        /// Квитировать событие в файле или потоке
+        /// РљРІРёС‚РёСЂРѕРІР°С‚СЊ СЃРѕР±С‹С‚РёРµ РІ С„Р°Р№Р»Рµ РёР»Рё РїРѕС‚РѕРєРµ
         /// </summary>
         public void CheckEvent(int evNum, int userID)
         {

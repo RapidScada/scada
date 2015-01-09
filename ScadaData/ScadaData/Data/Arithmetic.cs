@@ -1,4 +1,4 @@
-/*
+п»ї/*
  * Copyright 2014 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,29 +30,29 @@ namespace Scada.Data
 {
     /// <summary>
     /// Auxiliary math calculations
-    /// <para>Вспомогательные математические расчёты</para>
+    /// <para>Р’СЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Рµ РјР°С‚РµРјР°С‚РёС‡РµСЃРєРёРµ СЂР°СЃС‡С‘С‚С‹</para>
     /// </summary>
     public static class Arithmetic
     {
         /// <summary>
-        /// Начало отсчёта времени в Delphi
+        /// РќР°С‡Р°Р»Рѕ РѕС‚СЃС‡С‘С‚Р° РІСЂРµРјРµРЅРё РІ Delphi
         /// </summary>
         private static readonly DateTime DelphiTimeBegin = new DateTime(1899, 12, 30);
 
         /// <summary>
-        /// Выделить час, минуту и секунду из вещественного значения времени формата Delphi
+        /// Р’С‹РґРµР»РёС‚СЊ С‡Р°СЃ, РјРёРЅСѓС‚Сѓ Рё СЃРµРєСѓРЅРґСѓ РёР· РІРµС‰РµСЃС‚РІРµРЅРЅРѕРіРѕ Р·РЅР°С‡РµРЅРёСЏ РІСЂРµРјРµРЅРё С„РѕСЂРјР°С‚Р° Delphi
         /// </summary>
         public static void DecodeTime(double time, out int hour, out int min, out int sec)
         {
-            const double hh = 1.0 / 24;                  // 1 час
-            const double mm = 1.0 / 24 / 60;             // 1 мин
-            const double ms = 1.0 / 24 / 60 / 60 / 1000; // 1 мс
+            const double hh = 1.0 / 24;                  // 1 С‡Р°СЃ
+            const double mm = 1.0 / 24 / 60;             // 1 РјРёРЅ
+            const double ms = 1.0 / 24 / 60 / 60 / 1000; // 1 РјСЃ
 
             if (time < 0)
                 time = -time;
 
             time += ms;
-            time -= Math.Truncate(time); // (int)time работает некорректно для чисел time > int.MaxValue
+            time -= Math.Truncate(time); // (int)time СЂР°Р±РѕС‚Р°РµС‚ РЅРµРєРѕСЂСЂРµРєС‚РЅРѕ РґР»СЏ С‡РёСЃРµР» time > int.MaxValue
             hour = (int)(time * 24);
             time -= hour * hh;
             min = (int)(time * 24 * 60);
@@ -61,7 +61,7 @@ namespace Scada.Data
         }
 
         /// <summary>
-        /// Преобразовать дату и время в формат DateTime из вещественного значения времени формата Delphi
+        /// РџСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ РґР°С‚Сѓ Рё РІСЂРµРјСЏ РІ С„РѕСЂРјР°С‚ DateTime РёР· РІРµС‰РµСЃС‚РІРµРЅРЅРѕРіРѕ Р·РЅР°С‡РµРЅРёСЏ РІСЂРµРјРµРЅРё С„РѕСЂРјР°С‚Р° Delphi
         /// </summary>
         public static DateTime DecodeDateTime(double dateTime)
         {
@@ -69,7 +69,7 @@ namespace Scada.Data
         }
 
         /// <summary>
-        /// Закодировать дату и время в вещественное значение времени формата Delphi
+        /// Р—Р°РєРѕРґРёСЂРѕРІР°С‚СЊ РґР°С‚Сѓ Рё РІСЂРµРјСЏ РІ РІРµС‰РµСЃС‚РІРµРЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РІСЂРµРјРµРЅРё С„РѕСЂРјР°С‚Р° Delphi
         /// </summary>
         public static double EncodeDateTime(DateTime dateTime)
         {
@@ -77,7 +77,7 @@ namespace Scada.Data
         }
 
         /// <summary>
-        /// Извлечь дату из имени файла (без директории) таблицы срезов или событий
+        /// РР·РІР»РµС‡СЊ РґР°С‚Сѓ РёР· РёРјРµРЅРё С„Р°Р№Р»Р° (Р±РµР· РґРёСЂРµРєС‚РѕСЂРёРё) С‚Р°Р±Р»РёС†С‹ СЃСЂРµР·РѕРІ РёР»Рё СЃРѕР±С‹С‚РёР№
         /// </summary>
         public static DateTime ExtractDate(string fileName)
         {

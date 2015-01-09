@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <KpModbusDictionaries>
   <Dictionary key="Scada.Comm.KP.FrmDevTemplate">
-    <Phrase key="this">MODBUS. Device template editor</Phrase>
+    <Phrase key="this">MODBUS. Device Template Editor</Phrase>
     <Phrase key="btnNew.ToolTip">Create new template</Phrase>
     <Phrase key="btnOpen.ToolTip">Open template</Phrase>
     <Phrase key="btnSave.ToolTip">Save template</Phrase>

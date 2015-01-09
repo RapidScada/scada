@@ -525,16 +525,21 @@ namespace Scada.Web
                 eventView.Cnl = cnlProps.CnlName;
                 eventView.Sound = cnlProps.EvSound;
 
+                // проверка нового статуса канала
+                int newCnlStat = ev.NewCnlStat;
+                bool newValIsUndef = newCnlStat <= BaseValues.ParamStat.Undefined ||
+                    newCnlStat == BaseValues.ParamStat.FormulaError || newCnlStat == BaseValues.ParamStat.Unreliable;
+
                 // определение цвета
                 if (!cnlProps.ShowNumber && cnlProps.UnitArr != null && cnlProps.UnitArr.Length == 2)
                 {
-                    if (ev.NewCnlStat > 0)
-                        eventView.Color = ev.NewCnlVal <= 0 ? "red" : "green";
+                    if (!newValIsUndef)
+                        eventView.Color = ev.NewCnlVal > 0 ? "green" : "red";
                 }
                 else
                 {
                     string color;
-                    if (GetColorByStat(ev.NewCnlStat, out color))
+                    if (GetColorByStat(newCnlStat, out color))
                         eventView.Color = color;
                 }
 
@@ -542,11 +547,11 @@ namespace Scada.Web
                 if (eventView.Text == "")
                 {
                     // получение типа события
-                    tblEvType.DefaultView.RowFilter = "CnlStatus = " + ev.NewCnlStat;
+                    tblEvType.DefaultView.RowFilter = "CnlStatus = " + newCnlStat;
                     string evTypeName = tblEvType.DefaultView.Count > 0 ? 
                         (string)tblEvType.DefaultView[0]["Name"] : "";
 
-                    if (ev.NewCnlStat <= 0)
+                    if (newValIsUndef)
                     {
                         eventView.Text = evTypeName;
                     }
@@ -1508,7 +1513,7 @@ namespace Scada.Web
         {
             string roleName = ServerComm.GetRoleName(roleID);
 
-            if (roleID == (int)ServerComm.Roles.Custom)
+            if ((int)ServerComm.Roles.Custom <= roleID && roleID < (int)ServerComm.Roles.Err)
             {
                 // обновление таблиц базы конфигурации при необходимости
                 RefreshBase();

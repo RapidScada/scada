@@ -1259,8 +1259,8 @@ namespace Scada.Comm.Ctrl
         private void cmsLine_Opened(object sender, EventArgs e)
         {
             // настройка пунктов контекстного меню линии связи
-            miUpLine.Enabled = lastNode != null && lastNode.PrevNode != null;
-            miDownLine.Enabled = lastNode != null && lastNode.NextNode != null;
+            miMoveUpLine.Enabled = lastNode != null && lastNode.PrevNode != null;
+            miMoveDownLine.Enabled = lastNode != null && lastNode.NextNode != null;
             miImportLines.Enabled = origSettings.Params.ServerUse;
         }
 
@@ -1283,7 +1283,7 @@ namespace Scada.Comm.Ctrl
             }
         }
 
-        private void miUpLine_Click(object sender, EventArgs e)
+        private void miMoveUpLine_Click(object sender, EventArgs e)
         {
             // перемещение линии связи вверх
             TreeNode selNode = treeView.SelectedNode;
@@ -1309,7 +1309,7 @@ namespace Scada.Comm.Ctrl
             }
         }
 
-        private void miDownLine_Click(object sender, EventArgs e)
+        private void miMoveDownLine_Click(object sender, EventArgs e)
         {
             // перемещение линии связи вниз
             TreeNode selNode = treeView.SelectedNode;

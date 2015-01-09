@@ -1,4 +1,4 @@
-/*
+п»ї/*
  * Copyright 2014 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -45,39 +45,39 @@ namespace Scada.Data
 {
     /// <summary>
     /// Adapter for reading and writing data tables
-    /// <para>Адаптер для чтения и записи таблиц срезов</para>
+    /// <para>РђРґР°РїС‚РµСЂ РґР»СЏ С‡С‚РµРЅРёСЏ Рё Р·Р°РїРёСЃРё С‚Р°Р±Р»РёС† СЃСЂРµР·РѕРІ</para>
     /// </summary>
     public class SrezAdapter
     {
         /// <summary>
-        /// Буфер пустого списка номеров каналов в формате сохранения
+        /// Р‘СѓС„РµСЂ РїСѓСЃС‚РѕРіРѕ СЃРїРёСЃРєР° РЅРѕРјРµСЂРѕРІ РєР°РЅР°Р»РѕРІ РІ С„РѕСЂРјР°С‚Рµ СЃРѕС…СЂР°РЅРµРЅРёСЏ
         /// </summary>
         protected static readonly byte[] EmptyCnlNumsBuf = new byte[] { 0x00, 0x00, 0x01, 0x00 };
 
         /// <summary>
-        /// Директория таблицы срезов
+        /// Р”РёСЂРµРєС‚РѕСЂРёСЏ С‚Р°Р±Р»РёС†С‹ СЃСЂРµР·РѕРІ
         /// </summary>
         protected string directory;
         /// <summary>
-        /// Входной и выходной поток
+        /// Р’С…РѕРґРЅРѕР№ Рё РІС‹С…РѕРґРЅРѕР№ РїРѕС‚РѕРє
         /// </summary>
         protected Stream ioStream;
         /// <summary>
-        /// Имя файла таблицы срезов
+        /// РРјСЏ С„Р°Р№Р»Р° С‚Р°Р±Р»РёС†С‹ СЃСЂРµР·РѕРІ
         /// </summary>
         protected string tableName;
         /// <summary>
-        /// Полное имя файла таблицы срезов
+        /// РџРѕР»РЅРѕРµ РёРјСЏ С„Р°Р№Р»Р° С‚Р°Р±Р»РёС†С‹ СЃСЂРµР·РѕРІ
         /// </summary>
         protected string fileName;
         /// <summary>
-        /// Доступ к данным выполняется через файл на диске
+        /// Р”РѕСЃС‚СѓРї Рє РґР°РЅРЅС‹Рј РІС‹РїРѕР»РЅСЏРµС‚СЃСЏ С‡РµСЂРµР· С„Р°Р№Р» РЅР° РґРёСЃРєРµ
         /// </summary>
         protected bool fileMode;
 
 
         /// <summary>
-        /// Конструктор
+        /// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
         /// </summary>
         public SrezAdapter()
         {
@@ -90,7 +90,7 @@ namespace Scada.Data
 
 
         /// <summary>
-        /// Получить или установить директорию таблицы срезов
+        /// РџРѕР»СѓС‡РёС‚СЊ РёР»Рё СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РґРёСЂРµРєС‚РѕСЂРёСЋ С‚Р°Р±Р»РёС†С‹ СЃСЂРµР·РѕРІ
         /// </summary>
         public string Directory
         {
@@ -111,7 +111,7 @@ namespace Scada.Data
         }
 
         /// <summary>
-        /// Получить или установить входной и выходной поток (вместо директории)
+        /// РџРѕР»СѓС‡РёС‚СЊ РёР»Рё СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РІС…РѕРґРЅРѕР№ Рё РІС‹С…РѕРґРЅРѕР№ РїРѕС‚РѕРє (РІРјРµСЃС‚Рѕ РґРёСЂРµРєС‚РѕСЂРёРё)
         /// </summary>
         public Stream Stream
         {
@@ -129,7 +129,7 @@ namespace Scada.Data
         }
 
         /// <summary>
-        /// Получить или установить имя файла таблицы срезов
+        /// РџРѕР»СѓС‡РёС‚СЊ РёР»Рё СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РёРјСЏ С„Р°Р№Р»Р° С‚Р°Р±Р»РёС†С‹ СЃСЂРµР·РѕРІ
         /// </summary>
         public string TableName
         {
@@ -148,7 +148,7 @@ namespace Scada.Data
         }
 
         /// <summary>
-        /// Получить или установить полное имя файла таблицы срезов
+        /// РџРѕР»СѓС‡РёС‚СЊ РёР»Рё СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РїРѕР»РЅРѕРµ РёРјСЏ С„Р°Р№Р»Р° С‚Р°Р±Р»РёС†С‹ СЃСЂРµР·РѕРІ
         /// </summary>
         public string FileName
         {
@@ -171,7 +171,7 @@ namespace Scada.Data
 
 
         /// <summary>
-        /// Извлечь данные входного канала из бинарного буфера
+        /// РР·РІР»РµС‡СЊ РґР°РЅРЅС‹Рµ РІС…РѕРґРЅРѕРіРѕ РєР°РЅР°Р»Р° РёР· Р±РёРЅР°СЂРЅРѕРіРѕ Р±СѓС„РµСЂР°
         /// </summary>
         protected void ExtractCnlData(byte[] buf, ref int bufInd, out double cnlVal, out byte cnlStat)
         {
@@ -181,7 +181,7 @@ namespace Scada.Data
         }
 
         /// <summary>
-        /// Получить буфер описания структуры среза в формате сохранения
+        /// РџРѕР»СѓС‡РёС‚СЊ Р±СѓС„РµСЂ РѕРїРёСЃР°РЅРёСЏ СЃС‚СЂСѓРєС‚СѓСЂС‹ СЃСЂРµР·Р° РІ С„РѕСЂРјР°С‚Рµ СЃРѕС…СЂР°РЅРµРЅРёСЏ
         /// </summary>
         protected byte[] GetSrezDescrBuf(SrezTable.SrezDescr srezDescr)
         {
@@ -205,7 +205,7 @@ namespace Scada.Data
         }
 
         /// <summary>
-        /// Получить буфер данных среза в формате сохранения
+        /// РџРѕР»СѓС‡РёС‚СЊ Р±СѓС„РµСЂ РґР°РЅРЅС‹С… СЃСЂРµР·Р° РІ С„РѕСЂРјР°С‚Рµ СЃРѕС…СЂР°РЅРµРЅРёСЏ
         /// </summary>
         protected byte[] GetCnlDataBuf(SrezTable.CnlData[] cnlData)
         {
@@ -224,7 +224,7 @@ namespace Scada.Data
         }
 
         /// <summary>
-        /// Заполнить объект dest из файла срезов FileName
+        /// Р—Р°РїРѕР»РЅРёС‚СЊ РѕР±СЉРµРєС‚ dest РёР· С„Р°Р№Р»Р° СЃСЂРµР·РѕРІ FileName
         /// </summary>
         protected void FillObj(object dest)
         {
@@ -244,7 +244,7 @@ namespace Scada.Data
                 if (srezTableLight == null && dataTable == null && trend == null)
                     throw new Exception("Destination object is invalid.");
 
-                // подготовка объекта для хранения данных
+                // РїРѕРґРіРѕС‚РѕРІРєР° РѕР±СЉРµРєС‚Р° РґР»СЏ С…СЂР°РЅРµРЅРёСЏ РґР°РЅРЅС‹С…
                 if (srezTableLight != null)
                 {
                     srezTableLight.Clear();
@@ -255,7 +255,7 @@ namespace Scada.Data
                 }
                 else if (dataTable != null)
                 {
-                    // формирование структуры таблицы
+                    // С„РѕСЂРјРёСЂРѕРІР°РЅРёРµ СЃС‚СЂСѓРєС‚СѓСЂС‹ С‚Р°Р±Р»РёС†С‹
                     dataTable.BeginLoadData();
                     dataTable.DefaultView.Sort = "";
 
@@ -280,28 +280,28 @@ namespace Scada.Data
                     trend.TableName = tableName;
                 }
 
-                // заполнение объекта данными
+                // Р·Р°РїРѕР»РЅРµРЅРёРµ РѕР±СЉРµРєС‚Р° РґР°РЅРЅС‹РјРё
                 stream = ioStream == null ?
                     new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite) :
                     ioStream;
                 reader = new BinaryReader(stream);
 
-                DateTime date = Arithmetic.ExtractDate(tableName); // определение даты срезов
-                SrezTable.SrezDescr srezDescr = null;              // описание среза
-                int[] cnlNums = null; // ссылка на номера входных каналов из описания среза
+                DateTime date = Arithmetic.ExtractDate(tableName); // РѕРїСЂРµРґРµР»РµРЅРёРµ РґР°С‚С‹ СЃСЂРµР·РѕРІ
+                SrezTable.SrezDescr srezDescr = null;              // РѕРїРёСЃР°РЅРёРµ СЃСЂРµР·Р°
+                int[] cnlNums = null; // СЃСЃС‹Р»РєР° РЅР° РЅРѕРјРµСЂР° РІС…РѕРґРЅС‹С… РєР°РЅР°Р»РѕРІ РёР· РѕРїРёСЃР°РЅРёСЏ СЃСЂРµР·Р°
                 while (stream.Position < stream.Length)
                 {
-                    // считывание списка номеров каналов и КС
+                    // СЃС‡РёС‚С‹РІР°РЅРёРµ СЃРїРёСЃРєР° РЅРѕРјРµСЂРѕРІ РєР°РЅР°Р»РѕРІ Рё РљРЎ
                     int cnlNumCnt = reader.ReadUInt16();
                     if (cnlNumCnt > 0)
                     {
-                        // загрузка номеров каналов в буфер для увеличения скорости работы
+                        // Р·Р°РіСЂСѓР·РєР° РЅРѕРјРµСЂРѕРІ РєР°РЅР°Р»РѕРІ РІ Р±СѓС„РµСЂ РґР»СЏ СѓРІРµР»РёС‡РµРЅРёСЏ СЃРєРѕСЂРѕСЃС‚Рё СЂР°Р±РѕС‚С‹
                         int cnlNumSize = cnlNumCnt * 2;
                         byte[] buf = new byte[cnlNumSize];
                         int readSize = reader.Read(buf, 0, cnlNumSize);
 
-                        // создание описания среза и заполнение номеров каналов из буфера 
-                        // с проверкой их уникальности и упорядоченности
+                        // СЃРѕР·РґР°РЅРёРµ РѕРїРёСЃР°РЅРёСЏ СЃСЂРµР·Р° Рё Р·Р°РїРѕР»РЅРµРЅРёРµ РЅРѕРјРµСЂРѕРІ РєР°РЅР°Р»РѕРІ РёР· Р±СѓС„РµСЂР° 
+                        // СЃ РїСЂРѕРІРµСЂРєРѕР№ РёС… СѓРЅРёРєР°Р»СЊРЅРѕСЃС‚Рё Рё СѓРїРѕСЂСЏРґРѕС‡РµРЅРЅРѕСЃС‚Рё
                         if (readSize == cnlNumSize)
                         {
                             int prevCnlNum = -1;
@@ -322,13 +322,13 @@ namespace Scada.Data
                         throw new Exception("Table is incorrect.");
                     }
 
-                    // считывание и проверка КС
+                    // СЃС‡РёС‚С‹РІР°РЅРёРµ Рё РїСЂРѕРІРµСЂРєР° РљРЎ
                     ushort cs = reader.ReadUInt16();
                     bool csOk = cnlNumCnt > 0 ? srezDescr.CS == cs : cs == 1;
 
-                    // считывание данных среза
-                    int cnlCnt = cnlNums.Length;   // количество каналов в срезе
-                    int srezDataSize = cnlCnt * 9; // размер данных среза
+                    // СЃС‡РёС‚С‹РІР°РЅРёРµ РґР°РЅРЅС‹С… СЃСЂРµР·Р°
+                    int cnlCnt = cnlNums.Length;   // РєРѕР»РёС‡РµСЃС‚РІРѕ РєР°РЅР°Р»РѕРІ РІ СЃСЂРµР·Рµ
+                    int srezDataSize = cnlCnt * 9; // СЂР°Р·РјРµСЂ РґР°РЅРЅС‹С… СЃСЂРµР·Р°
                     if (csOk)
                     {
                         long srezPos = stream.Position;
@@ -337,7 +337,7 @@ namespace Scada.Data
                         Arithmetic.DecodeTime(time, out hour, out min, out sec);
                         DateTime srezDT = new DateTime(date.Year, date.Month, date.Day, hour, min, sec);
 
-                        // инициализация нового среза
+                        // РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РЅРѕРІРѕРіРѕ СЃСЂРµР·Р°
                         SrezTableLight.Srez srez;
                         if (srezTable != null)
                         {
@@ -357,13 +357,13 @@ namespace Scada.Data
                             srez = null;
                         }
 
-                        // считывание данных входных каналов
+                        // СЃС‡РёС‚С‹РІР°РЅРёРµ РґР°РЅРЅС‹С… РІС…РѕРґРЅС‹С… РєР°РЅР°Р»РѕРІ
                         int bufInd = 0;
                         double val;
                         byte stat;
                         if (trend != null)
                         {
-                            // выбор данных требуемого канала для тренда
+                            // РІС‹Р±РѕСЂ РґР°РЅРЅС‹С… С‚СЂРµР±СѓРµРјРѕРіРѕ РєР°РЅР°Р»Р° РґР»СЏ С‚СЂРµРЅРґР°
                             int index = Array.BinarySearch<int>(cnlNums, trend.CnlNum);
                             if (index >= 0)
                             {
@@ -385,11 +385,11 @@ namespace Scada.Data
                         }
                         else
                         {
-                            // загрузка данных среза в буфер для увеличения скорости работы
+                            // Р·Р°РіСЂСѓР·РєР° РґР°РЅРЅС‹С… СЃСЂРµР·Р° РІ Р±СѓС„РµСЂ РґР»СЏ СѓРІРµР»РёС‡РµРЅРёСЏ СЃРєРѕСЂРѕСЃС‚Рё СЂР°Р±РѕС‚С‹
                             byte[] buf = new byte[srezDataSize];
                             int readSize = reader.Read(buf, 0, srezDataSize);
 
-                            // заполение таблицы срезов из буфера
+                            // Р·Р°РїРѕР»РµРЅРёРµ С‚Р°Р±Р»РёС†С‹ СЃСЂРµР·РѕРІ РёР· Р±СѓС„РµСЂР°
                             if (srezTableLight != null)
                             {
                                 for (int i = 0; i < cnlCnt; i++)
@@ -428,14 +428,14 @@ namespace Scada.Data
                     }
                     else
                     {
-                        // пропустить срез, считая его размер так, как при повторяющемся списке номеров каналов
+                        // РїСЂРѕРїСѓСЃС‚РёС‚СЊ СЃСЂРµР·, СЃС‡РёС‚Р°СЏ РµРіРѕ СЂР°Р·РјРµСЂ С‚Р°Рє, РєР°Рє РїСЂРё РїРѕРІС‚РѕСЂСЏСЋС‰РµРјСЃСЏ СЃРїРёСЃРєРµ РЅРѕРјРµСЂРѕРІ РєР°РЅР°Р»РѕРІ
                         stream.Seek(srezDataSize + 8, SeekOrigin.Current);
                     }
                 }
             }
             catch (EndOfStreamException)
             {
-                // нормальная ситуация окончания файла
+                // РЅРѕСЂРјР°Р»СЊРЅР°СЏ СЃРёС‚СѓР°С†РёСЏ РѕРєРѕРЅС‡Р°РЅРёСЏ С„Р°Р№Р»Р°
             }
             catch
             {
@@ -477,7 +477,7 @@ namespace Scada.Data
 
 
         /// <summary>
-        /// Заполнить таблицу dataTable из файла или потока
+        /// Р—Р°РїРѕР»РЅРёС‚СЊ С‚Р°Р±Р»РёС†Сѓ dataTable РёР· С„Р°Р№Р»Р° РёР»Рё РїРѕС‚РѕРєР°
         /// </summary>
         public void Fill(DataTable dataTable)
         {
@@ -485,7 +485,7 @@ namespace Scada.Data
         }
 
         /// <summary>
-        /// Заполнить таблицу srezTableLight из файла или потока
+        /// Р—Р°РїРѕР»РЅРёС‚СЊ С‚Р°Р±Р»РёС†Сѓ srezTableLight РёР· С„Р°Р№Р»Р° РёР»Рё РїРѕС‚РѕРєР°
         /// </summary>
         public void Fill(SrezTableLight srezTableLight)
         {
@@ -493,7 +493,7 @@ namespace Scada.Data
         }
 
         /// <summary>
-        /// Заполнить тренд trend канала cnlNum из файла или потока
+        /// Р—Р°РїРѕР»РЅРёС‚СЊ С‚СЂРµРЅРґ trend РєР°РЅР°Р»Р° cnlNum РёР· С„Р°Р№Р»Р° РёР»Рё РїРѕС‚РѕРєР°
         /// </summary>
         public void Fill(Trend trend)
         {
@@ -501,9 +501,9 @@ namespace Scada.Data
         }
 
         /// <summary>
-        /// Создать таблицу, состоящую из одного среза, в файле или потоке
+        /// РЎРѕР·РґР°С‚СЊ С‚Р°Р±Р»РёС†Сѓ, СЃРѕСЃС‚РѕСЏС‰СѓСЋ РёР· РѕРґРЅРѕРіРѕ СЃСЂРµР·Р°, РІ С„Р°Р№Р»Рµ РёР»Рё РїРѕС‚РѕРєРµ
         /// </summary>
-        /// <remarks>Для записи таблицы текущего среза</remarks>
+        /// <remarks>Р”Р»СЏ Р·Р°РїРёСЃРё С‚Р°Р±Р»РёС†С‹ С‚РµРєСѓС‰РµРіРѕ СЃСЂРµР·Р°</remarks>
         public void Create(SrezTable.Srez srez, DateTime srezDT)
         {
             if (srez == null)
@@ -537,7 +537,7 @@ namespace Scada.Data
         }
 
         /// <summary>
-        /// Записать изменения таблицы срезов в файл или поток
+        /// Р—Р°РїРёСЃР°С‚СЊ РёР·РјРµРЅРµРЅРёСЏ С‚Р°Р±Р»РёС†С‹ СЃСЂРµР·РѕРІ РІ С„Р°Р№Р» РёР»Рё РїРѕС‚РѕРє
         /// </summary>
         public void Update(SrezTable srezTable)
         {
@@ -554,15 +554,15 @@ namespace Scada.Data
                    ioStream;
                 writer = new BinaryWriter(stream);
 
-                // запись изменённых срезов
+                // Р·Р°РїРёСЃСЊ РёР·РјРµРЅС‘РЅРЅС‹С… СЃСЂРµР·РѕРІ
                 foreach (SrezTable.Srez srez in srezTable.ModifiedSrezList)
                 {
                     stream.Seek(srez.Position + 8, SeekOrigin.Begin);
                     writer.Write(GetCnlDataBuf(srez.CnlData));
                 }
 
-                // установка позиции записи добавленных срезов в поток, 
-                // восстановление таблицы срезов в случае необходимости
+                // СѓСЃС‚Р°РЅРѕРІРєР° РїРѕР·РёС†РёРё Р·Р°РїРёСЃРё РґРѕР±Р°РІР»РµРЅРЅС‹С… СЃСЂРµР·РѕРІ РІ РїРѕС‚РѕРє, 
+                // РІРѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёРµ С‚Р°Р±Р»РёС†С‹ СЃСЂРµР·РѕРІ РІ СЃР»СѓС‡Р°Рµ РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚Рё
                 SrezTable.Srez lastSrez = srezTable.LastStoredSrez;
 
                 if (lastSrez == null)
@@ -585,12 +585,12 @@ namespace Scada.Data
                     }
                 }
 
-                // запись добавленных срезов
+                // Р·Р°РїРёСЃСЊ РґРѕР±Р°РІР»РµРЅРЅС‹С… СЃСЂРµР·РѕРІ
                 SrezTable.SrezDescr prevSrezDescr = lastSrez == null ? null : lastSrez.SrezDescr;
 
                 foreach (SrezTable.Srez srez in srezTable.AddedSrezList)
                 {
-                    // запись номеров каналов среза
+                    // Р·Р°РїРёСЃСЊ РЅРѕРјРµСЂРѕРІ РєР°РЅР°Р»РѕРІ СЃСЂРµР·Р°
                     if (srez.SrezDescr.Equals(prevSrezDescr))
                         writer.Write(EmptyCnlNumsBuf);
                     else
@@ -598,14 +598,14 @@ namespace Scada.Data
 
                     prevSrezDescr = srez.SrezDescr;
 
-                    // запись данных среза
+                    // Р·Р°РїРёСЃСЊ РґР°РЅРЅС‹С… СЃСЂРµР·Р°
                     srez.Position = stream.Position;
                     writer.Write(Arithmetic.EncodeDateTime(srez.DateTime));
                     writer.Write(GetCnlDataBuf(srez.CnlData));
                     lastSrez = srez;
                 }
 
-                // подтверждение успешного сохранения изменений
+                // РїРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ СѓСЃРїРµС€РЅРѕРіРѕ СЃРѕС…СЂР°РЅРµРЅРёСЏ РёР·РјРµРЅРµРЅРёР№
                 srezTable.AcceptChanges();
                 srezTable.LastStoredSrez = lastSrez;
             }

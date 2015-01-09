@@ -61,6 +61,7 @@
             this.miServiceRestartComm = new System.Windows.Forms.ToolStripMenuItem();
             this.miSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.miSettingsParams = new System.Windows.Forms.ToolStripMenuItem();
+            this.miSettingsLanguage = new System.Windows.Forms.ToolStripMenuItem();
             this.miWindow = new System.Windows.Forms.ToolStripMenuItem();
             this.miWindowCloseActive = new System.Windows.Forms.ToolStripMenuItem();
             this.miWindowCloseAll = new System.Windows.Forms.ToolStripMenuItem();
@@ -99,7 +100,6 @@
             this.miExplorerRefresh = new System.Windows.Forms.ToolStripMenuItem();
             this.contextInCnls = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miInCnlProps = new System.Windows.Forms.ToolStripMenuItem();
-            this.miSettingsLanguage = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain.SuspendLayout();
             this.toolMain.SuspendLayout();
             this.statusMain.SuspendLayout();
@@ -364,9 +364,16 @@
             // 
             this.miSettingsParams.Image = ((System.Drawing.Image)(resources.GetObject("miSettingsParams.Image")));
             this.miSettingsParams.Name = "miSettingsParams";
-            this.miSettingsParams.Size = new System.Drawing.Size(152, 22);
+            this.miSettingsParams.Size = new System.Drawing.Size(147, 22);
             this.miSettingsParams.Text = "Параметры...";
             this.miSettingsParams.Click += new System.EventHandler(this.miSettingsParams_Click);
+            // 
+            // miSettingsLanguage
+            // 
+            this.miSettingsLanguage.Name = "miSettingsLanguage";
+            this.miSettingsLanguage.Size = new System.Drawing.Size(147, 22);
+            this.miSettingsLanguage.Text = "Язык...";
+            this.miSettingsLanguage.Click += new System.EventHandler(this.miSettingsLanguage_Click);
             // 
             // miWindow
             // 
@@ -582,7 +589,7 @@
             this.btnRestartServer.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnRestartServer.Name = "btnRestartServer";
             this.btnRestartServer.Size = new System.Drawing.Size(23, 22);
-            this.btnRestartServer.Text = "Перезапустить SCADA-Сервер";
+            this.btnRestartServer.Text = "Перезапустить службу SCADA-Сервера";
             this.btnRestartServer.Click += new System.EventHandler(this.miServiceRestart_Click);
             // 
             // btnRestartComm
@@ -592,7 +599,7 @@
             this.btnRestartComm.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnRestartComm.Name = "btnRestartComm";
             this.btnRestartComm.Size = new System.Drawing.Size(23, 22);
-            this.btnRestartComm.Text = "Перезапустить SCADA-Коммуникатор";
+            this.btnRestartComm.Text = "Перезапустить службу SCADA-Коммуникатора";
             this.btnRestartComm.Click += new System.EventHandler(this.miServiceRestart_Click);
             // 
             // sepFifth
@@ -731,13 +738,6 @@
             this.miInCnlProps.Size = new System.Drawing.Size(166, 22);
             this.miInCnlProps.Text = "Свойства канала";
             this.miInCnlProps.Click += new System.EventHandler(this.miInCnlProps_Click);
-            // 
-            // miSettingsLanguage
-            // 
-            this.miSettingsLanguage.Name = "miSettingsLanguage";
-            this.miSettingsLanguage.Size = new System.Drawing.Size(152, 22);
-            this.miSettingsLanguage.Text = "Язык...";
-            this.miSettingsLanguage.Click += new System.EventHandler(this.miSettingsLanguage_Click);
             // 
             // FrmMain
             // 

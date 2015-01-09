@@ -1,4 +1,4 @@
-/*
+п»ї/*
  * Copyright 2014 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +23,7 @@
  * Modified : 2014
  */
 
-#undef DETAILED_LOG // выводить в журнал подробную информацию об обмене данными со SCADA-Сервером
+#undef DETAILED_LOG // РІС‹РІРѕРґРёС‚СЊ РІ Р¶СѓСЂРЅР°Р» РїРѕРґСЂРѕР±РЅСѓСЋ РёРЅС„РѕСЂРјР°С†РёСЋ РѕР± РѕР±РјРµРЅРµ РґР°РЅРЅС‹РјРё СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј
 
 using System;
 using System.Collections.Generic;
@@ -40,180 +40,180 @@ namespace Scada.Client
 {
     /// <summary>
     /// Communication with SCADA-Server
-    /// <para>Обмен данными со SCADA-Сервером</para>
+    /// <para>РћР±РјРµРЅ РґР°РЅРЅС‹РјРё СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј</para>
     /// </summary>
     public class ServerComm
     {
         /// <summary>
-        /// Состояния обмена данными со SCADA-Сервером
+        /// РЎРѕСЃС‚РѕСЏРЅРёСЏ РѕР±РјРµРЅР° РґР°РЅРЅС‹РјРё СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј
         /// </summary>
         public enum CommStates
         {
             /// <summary>
-            /// Соединение не установлено
+            /// РЎРѕРµРґРёРЅРµРЅРёРµ РЅРµ СѓСЃС‚Р°РЅРѕРІР»РµРЅРѕ
             /// </summary>
             Disconnected,
             /// <summary>
-            /// Соединение установлено
+            /// РЎРѕРµРґРёРЅРµРЅРёРµ СѓСЃС‚Р°РЅРѕРІР»РµРЅРѕ
             /// </summary>
             Connected,
             /// <summary>
-            /// Соединение установлено и программа авторизована
+            /// РЎРѕРµРґРёРЅРµРЅРёРµ СѓСЃС‚Р°РЅРѕРІР»РµРЅРѕ Рё РїСЂРѕРіСЂР°РјРјР° Р°РІС‚РѕСЂРёР·РѕРІР°РЅР°
             /// </summary>
             Authorized,
             /// <summary>
-            /// SCADA-Сервер не готов
+            /// SCADA-РЎРµСЂРІРµСЂ РЅРµ РіРѕС‚РѕРІ
             /// </summary>
             NotReady,
             /// <summary>
-            /// Ошибка обмена данными
+            /// РћС€РёР±РєР° РѕР±РјРµРЅР° РґР°РЅРЅС‹РјРё
             /// </summary>
             Error,
             /// <summary>
-            /// Ожидание ответа на команду или запрос
+            /// РћР¶РёРґР°РЅРёРµ РѕС‚РІРµС‚Р° РЅР° РєРѕРјР°РЅРґСѓ РёР»Рё Р·Р°РїСЂРѕСЃ
             /// </summary>
             WaitResponse
         }
 
         /// <summary>
-        /// Роли пользователей
+        /// Р РѕР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№
         /// </summary>
         public enum Roles
         {
             /// <summary>
-            /// Отключен
+            /// РћС‚РєР»СЋС‡РµРЅ
             /// </summary>
             Disabled = 0x00,
             /// <summary>
-            /// Администратор
+            /// РђРґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂ
             /// </summary>
             Admin = 0x01,
             /// <summary>
-            /// Диспетчер
+            /// Р”РёСЃРїРµС‚С‡РµСЂ
             /// </summary>
             Dispatcher = 0x02,
             /// <summary>
-            /// Гость
+            /// Р“РѕСЃС‚СЊ
             /// </summary>
             Guest = 0x03,
             /// <summary>
-            /// Приложение
+            /// РџСЂРёР»РѕР¶РµРЅРёРµ
             /// </summary>
             App = 0x04,
             /// <summary>
-            /// Настраиваемая роль
+            /// РќР°СЃС‚СЂР°РёРІР°РµРјР°СЏ СЂРѕР»СЊ
             /// </summary>
-            /// <remarks>Минимальный идентификатор настраиваемой роли равен 0x0B</remarks>
+            /// <remarks>РњРёРЅРёРјР°Р»СЊРЅС‹Р№ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РЅР°СЃС‚СЂР°РёРІР°РµРјРѕР№ СЂРѕР»Рё СЂР°РІРµРЅ 0x0B</remarks>
             Custom = 0x0B,
             /// <summary>
-            /// Ошибка (неверное имя пользователя или пароль)
+            /// РћС€РёР±РєР° (РЅРµРІРµСЂРЅРѕРµ РёРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РёР»Рё РїР°СЂРѕР»СЊ)
             /// </summary>
             Err = 0xFF
         }
 
         /// <summary>
-        /// Директории на SCADA-Сервере
+        /// Р”РёСЂРµРєС‚РѕСЂРёРё РЅР° SCADA-РЎРµСЂРІРµСЂРµ
         /// </summary>
         public enum Dirs
         {
             /// <summary>
-            /// Директория текущего среза
+            /// Р”РёСЂРµРєС‚РѕСЂРёСЏ С‚РµРєСѓС‰РµРіРѕ СЃСЂРµР·Р°
             /// </summary>
             Cur = 0x01,
             /// <summary>
-            /// Директория часовых срезов
+            /// Р”РёСЂРµРєС‚РѕСЂРёСЏ С‡Р°СЃРѕРІС‹С… СЃСЂРµР·РѕРІ
             /// </summary>
             Hour = 0x02,
             /// <summary>
-            /// Директория минутных срезов
+            /// Р”РёСЂРµРєС‚РѕСЂРёСЏ РјРёРЅСѓС‚РЅС‹С… СЃСЂРµР·РѕРІ
             /// </summary>
             Min = 0x03,
             /// <summary>
-            /// Директория событий
+            /// Р”РёСЂРµРєС‚РѕСЂРёСЏ СЃРѕР±С‹С‚РёР№
             /// </summary>
             Events = 0x04,
             /// <summary>
-            /// Директория базы конфигурации в формате DAT
+            /// Р”РёСЂРµРєС‚РѕСЂРёСЏ Р±Р°Р·С‹ РєРѕРЅС„РёРіСѓСЂР°С†РёРё РІ С„РѕСЂРјР°С‚Рµ DAT
             /// </summary>
             BaseDAT = 0x05,
             /// <summary>
-            /// Директория интерфейса (таблиц, схем и т.п.)
+            /// Р”РёСЂРµРєС‚РѕСЂРёСЏ РёРЅС‚РµСЂС„РµР№СЃР° (С‚Р°Р±Р»РёС†, СЃС…РµРј Рё С‚.Рї.)
             /// </summary>
             Itf = 0x06
         }
 
         /// <summary>
-        /// Делегат записи в журнал работы
+        /// Р”РµР»РµРіР°С‚ Р·Р°РїРёСЃРё РІ Р¶СѓСЂРЅР°Р» СЂР°Р±РѕС‚С‹
         /// </summary>
         public delegate void WriteToLogDelegate(string text);
 
 
         /// <summary>
-        /// Таймаут отправки данных по TCP, мс
+        /// РўР°Р№РјР°СѓС‚ РѕС‚РїСЂР°РІРєРё РґР°РЅРЅС‹С… РїРѕ TCP, РјСЃ
         /// </summary>
         protected const int TcpSendTimeout = 1000;
         /// <summary>
-        /// Таймаут приёма данных по TCP, мс
+        /// РўР°Р№РјР°СѓС‚ РїСЂРёС‘РјР° РґР°РЅРЅС‹С… РїРѕ TCP, РјСЃ
         /// </summary>
         protected const int TcpReceiveTimeout = 5000;
         /// <summary>
-        /// Интервал повторных попыток соединения
+        /// РРЅС‚РµСЂРІР°Р» РїРѕРІС‚РѕСЂРЅС‹С… РїРѕРїС‹С‚РѕРє СЃРѕРµРґРёРЅРµРЅРёСЏ
         /// </summary>
         protected readonly TimeSpan ConnectSpan = TimeSpan.FromSeconds(10);
         /// <summary>
-        /// Интервал проверки соединения путём запроса состояния сервера
+        /// РРЅС‚РµСЂРІР°Р» РїСЂРѕРІРµСЂРєРё СЃРѕРµРґРёРЅРµРЅРёСЏ РїСѓС‚С‘Рј Р·Р°РїСЂРѕСЃР° СЃРѕСЃС‚РѕСЏРЅРёСЏ СЃРµСЂРІРµСЂР°
         /// </summary>
         protected readonly TimeSpan PingSpan = TimeSpan.FromSeconds(30);
 
 
         /// <summary>
-        /// Настройки соединения со SCADA-Сервером
+        /// РќР°СЃС‚СЂРѕР№РєРё СЃРѕРµРґРёРЅРµРЅРёСЏ СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј
         /// </summary>
         protected CommSettings commSettings;
         /// <summary>
-        /// Журнал работы
+        /// Р–СѓСЂРЅР°Р» СЂР°Р±РѕС‚С‹
         /// </summary>
         protected Log log;
         /// <summary>
-        /// Метод записи в журнал работы
+        /// РњРµС‚РѕРґ Р·Р°РїРёСЃРё РІ Р¶СѓСЂРЅР°Р» СЂР°Р±РѕС‚С‹
         /// </summary>
         protected WriteToLogDelegate writeToLog { get; set; }
         /// <summary>
-        /// TCP-клиент для обмена данными со SCADA-Сервером
+        /// TCP-РєР»РёРµРЅС‚ РґР»СЏ РѕР±РјРµРЅР° РґР°РЅРЅС‹РјРё СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј
         /// </summary>
         protected TcpClient tcpClient;
         /// <summary>
-        /// Поток данных TCP-клиента
+        /// РџРѕС‚РѕРє РґР°РЅРЅС‹С… TCP-РєР»РёРµРЅС‚Р°
         /// </summary>
         protected NetworkStream netStream;
         /// <summary>
-        /// Объект для синхронизации обмена данными со SCADA-Сервером
+        /// РћР±СЉРµРєС‚ РґР»СЏ СЃРёРЅС…СЂРѕРЅРёР·Р°С†РёРё РѕР±РјРµРЅР° РґР°РЅРЅС‹РјРё СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј
         /// </summary>
         protected object tcpLock;
         /// <summary>
-        /// Состояние обмена данными со SCADA-Сервером
+        /// РЎРѕСЃС‚РѕСЏРЅРёРµ РѕР±РјРµРЅР° РґР°РЅРЅС‹РјРё СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј
         /// </summary>
         protected CommStates commState;
         /// <summary>
-        /// Версия SCADA-Сервера
+        /// Р’РµСЂСЃРёСЏ SCADA-РЎРµСЂРІРµСЂР°
         /// </summary>
         protected string serverVersion;
         /// <summary>
-        /// Время успешного вызова метода восстановления соединения
+        /// Р’СЂРµРјСЏ СѓСЃРїРµС€РЅРѕРіРѕ РІС‹Р·РѕРІР° РјРµС‚РѕРґР° РІРѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёСЏ СЃРѕРµРґРёРЅРµРЅРёСЏ
         /// </summary>
         protected DateTime restConnSuccDT;
         /// <summary>
-        /// Время неудачного вызова метода восстановления соединения
+        /// Р’СЂРµРјСЏ РЅРµСѓРґР°С‡РЅРѕРіРѕ РІС‹Р·РѕРІР° РјРµС‚РѕРґР° РІРѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёСЏ СЃРѕРµРґРёРЅРµРЅРёСЏ
         /// </summary>
         protected DateTime restConnErrDT;
         /// <summary>
-        /// Сообщение об ошибке
+        /// РЎРѕРѕР±С‰РµРЅРёРµ РѕР± РѕС€РёР±РєРµ
         /// </summary>
         protected string errMsg;
 
 
         /// <summary>
-        /// Конструктор
+        /// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
         /// </summary>
         protected ServerComm()
         {
@@ -228,9 +228,9 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Конструктор с установкой настроек соединения со SCADA-Сервером
+        /// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ СЃ СѓСЃС‚Р°РЅРѕРІРєРѕР№ РЅР°СЃС‚СЂРѕРµРє СЃРѕРµРґРёРЅРµРЅРёСЏ СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј
         /// </summary>
-        /// <remarks>Используется журнал работы Scada.Client.AppData.Log</remarks>
+        /// <remarks>РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ Р¶СѓСЂРЅР°Р» СЂР°Р±РѕС‚С‹ Scada.Client.AppData.Log</remarks>
         public ServerComm(CommSettings commSettings)
             : this()
         {
@@ -240,7 +240,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Конструктор с установкой настроек соединения со SCADA-Сервером и журнала работы
+        /// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ СЃ СѓСЃС‚Р°РЅРѕРІРєРѕР№ РЅР°СЃС‚СЂРѕРµРє СЃРѕРµРґРёРЅРµРЅРёСЏ СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј Рё Р¶СѓСЂРЅР°Р»Р° СЂР°Р±РѕС‚С‹
         /// </summary>
         public ServerComm(CommSettings commSettings, Log log)
             : this()
@@ -251,7 +251,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Конструктор с установкой настроек соединения со SCADA-Сервером и метода записи в журнал работы
+        /// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ СЃ СѓСЃС‚Р°РЅРѕРІРєРѕР№ РЅР°СЃС‚СЂРѕРµРє СЃРѕРµРґРёРЅРµРЅРёСЏ СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј Рё РјРµС‚РѕРґР° Р·Р°РїРёСЃРё РІ Р¶СѓСЂРЅР°Р» СЂР°Р±РѕС‚С‹
         /// </summary>
         public ServerComm(CommSettings commSettings, WriteToLogDelegate writeToLog)
             : this()
@@ -263,7 +263,7 @@ namespace Scada.Client
 
 
         /// <summary>
-        /// Получить настройки соединения со SCADA-Сервером
+        /// РџРѕР»СѓС‡РёС‚СЊ РЅР°СЃС‚СЂРѕР№РєРё СЃРѕРµРґРёРЅРµРЅРёСЏ СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј
         /// </summary>
         public CommSettings CommSettings
         {
@@ -274,7 +274,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить состояние обмена данными со SCADA-Сервером
+        /// РџРѕР»СѓС‡РёС‚СЊ СЃРѕСЃС‚РѕСЏРЅРёРµ РѕР±РјРµРЅР° РґР°РЅРЅС‹РјРё СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј
         /// </summary>
         public CommStates CommState
         {
@@ -285,7 +285,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить описание состояния обмена данными со SCADA-Сервером
+        /// РџРѕР»СѓС‡РёС‚СЊ РѕРїРёСЃР°РЅРёРµ СЃРѕСЃС‚РѕСЏРЅРёСЏ РѕР±РјРµРЅР° РґР°РЅРЅС‹РјРё СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј
         /// </summary>
         public string CommStateDescr
         {
@@ -293,33 +293,33 @@ namespace Scada.Client
             {
                 StringBuilder stateDescr = new StringBuilder();
                 if (serverVersion != "")
-                    stateDescr.Append(Localization.UseRussian ? "версия " : "version ").
+                    stateDescr.Append(Localization.UseRussian ? "РІРµСЂСЃРёСЏ " : "version ").
                         Append(serverVersion).Append(", ");
 
                 switch (commState)
                 {
                     case CommStates.Disconnected:
-                        stateDescr.Append(Localization.UseRussian ? "соединение не установлено" : 
+                        stateDescr.Append(Localization.UseRussian ? "СЃРѕРµРґРёРЅРµРЅРёРµ РЅРµ СѓСЃС‚Р°РЅРѕРІР»РµРЅРѕ" : 
                             "not connected");
                         break;
                     case CommStates.Connected:
-                        stateDescr.Append(Localization.UseRussian ? "соединение установлено" : 
+                        stateDescr.Append(Localization.UseRussian ? "СЃРѕРµРґРёРЅРµРЅРёРµ СѓСЃС‚Р°РЅРѕРІР»РµРЅРѕ" : 
                             "connected");
                         break;
                     case CommStates.Authorized:
-                        stateDescr.Append(Localization.UseRussian ? "авторизация успешна" : 
+                        stateDescr.Append(Localization.UseRussian ? "Р°РІС‚РѕСЂРёР·Р°С†РёСЏ СѓСЃРїРµС€РЅР°" : 
                             "authentication is successful");
                         break;
                     case CommStates.NotReady:
-                        stateDescr.Append(Localization.UseRussian ? "SCADA-Сервер не готов" : 
+                        stateDescr.Append(Localization.UseRussian ? "SCADA-РЎРµСЂРІРµСЂ РЅРµ РіРѕС‚РѕРІ" : 
                             "SCADA-Server isn't ready");
                         break;
                     case CommStates.Error:
-                        stateDescr.Append(Localization.UseRussian ? "ошибка обмена данными" : 
+                        stateDescr.Append(Localization.UseRussian ? "РѕС€РёР±РєР° РѕР±РјРµРЅР° РґР°РЅРЅС‹РјРё" : 
                             "communication error");
                         break;
                     case CommStates.WaitResponse:
-                        stateDescr.Append(Localization.UseRussian ? "ожидание ответа" : 
+                        stateDescr.Append(Localization.UseRussian ? "РѕР¶РёРґР°РЅРёРµ РѕС‚РІРµС‚Р°" : 
                             "waiting for response");
                         break;
                 }
@@ -332,7 +332,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить сообщение об ошибке
+        /// РџРѕР»СѓС‡РёС‚СЊ СЃРѕРѕР±С‰РµРЅРёРµ РѕР± РѕС€РёР±РєРµ
         /// </summary>
         public string ErrMsg
         {
@@ -344,7 +344,7 @@ namespace Scada.Client
 
 
         /// <summary>
-        /// Проверить формат данных для заданной команды при связи со SCADA-Сервером
+        /// РџСЂРѕРІРµСЂРёС‚СЊ С„РѕСЂРјР°С‚ РґР°РЅРЅС‹С… РґР»СЏ Р·Р°РґР°РЅРЅРѕР№ РєРѕРјР°РЅРґС‹ РїСЂРё СЃРІСЏР·Рё СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј
         /// </summary>
         protected bool CheckDataFormat(byte[] buffer, int cmdNum)
         {
@@ -352,7 +352,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Проверить формат данных для заданной команды при связи со SCADA-Сервером, указав используемую длину буфера
+        /// РџСЂРѕРІРµСЂРёС‚СЊ С„РѕСЂРјР°С‚ РґР°РЅРЅС‹С… РґР»СЏ Р·Р°РґР°РЅРЅРѕР№ РєРѕРјР°РЅРґС‹ РїСЂРё СЃРІСЏР·Рё СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј, СѓРєР°Р·Р°РІ РёСЃРїРѕР»СЊР·СѓРµРјСѓСЋ РґР»РёРЅСѓ Р±СѓС„РµСЂР°
         /// </summary>
         protected bool CheckDataFormat(byte[] buffer, int cmdNum, int bufLen)
         {
@@ -360,7 +360,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить строковое обозначение директории на SCADA-Сервере
+        /// РџРѕР»СѓС‡РёС‚СЊ СЃС‚СЂРѕРєРѕРІРѕРµ РѕР±РѕР·РЅР°С‡РµРЅРёРµ РґРёСЂРµРєС‚РѕСЂРёРё РЅР° SCADA-РЎРµСЂРІРµСЂРµ
         /// </summary>
         protected string DirToString(Dirs directory)
         {
@@ -384,7 +384,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Записать действие в журнал работы
+        /// Р—Р°РїРёСЃР°С‚СЊ РґРµР№СЃС‚РІРёРµ РІ Р¶СѓСЂРЅР°Р» СЂР°Р±РѕС‚С‹
         /// </summary>
         protected void WriteAction(string actText, Log.ActTypes actType)
         {
@@ -395,7 +395,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Установить соединение со SCADA-Сервером и произвести авторизацию
+        /// РЈСЃС‚Р°РЅРѕРІРёС‚СЊ СЃРѕРµРґРёРЅРµРЅРёРµ СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј Рё РїСЂРѕРёР·РІРµСЃС‚Рё Р°РІС‚РѕСЂРёР·Р°С†РёСЋ
         /// </summary>
         protected bool Connect()
         {
@@ -403,19 +403,19 @@ namespace Scada.Client
             {
                 commState = CommStates.Disconnected;
                 WriteAction(string.Format(Localization.UseRussian ? 
-                    "Установка соединения со SCADA-Сервером \"{0}\"" : 
+                    "РЈСЃС‚Р°РЅРѕРІРєР° СЃРѕРµРґРёРЅРµРЅРёСЏ СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј \"{0}\"" : 
                     "Connect to SCADA-Server \"{0}\"", commSettings.ServerHost), Log.ActTypes.Action);
 
-                // определение IP-адреса, если он указан в конфигурации программы
+                // РѕРїСЂРµРґРµР»РµРЅРёРµ IP-Р°РґСЂРµСЃР°, РµСЃР»Рё РѕРЅ СѓРєР°Р·Р°РЅ РІ РєРѕРЅС„РёРіСѓСЂР°С†РёРё РїСЂРѕРіСЂР°РјРјС‹
                 IPAddress ipAddress = null;
                 try { ipAddress = IPAddress.Parse(commSettings.ServerHost); }
                 catch { }
 
-                // создание, настройка и попытка установки соединения
+                // СЃРѕР·РґР°РЅРёРµ, РЅР°СЃС‚СЂРѕР№РєР° Рё РїРѕРїС‹С‚РєР° СѓСЃС‚Р°РЅРѕРІРєРё СЃРѕРµРґРёРЅРµРЅРёСЏ
                 tcpClient = new TcpClient();
                 tcpClient.NoDelay = true;            // sends data immediately upon calling NetworkStream.Write
-                tcpClient.ReceiveBufferSize = 16384; // 16 кБ
-                tcpClient.SendBufferSize = 8192;     // 8 кБ, размер по умолчанию
+                tcpClient.ReceiveBufferSize = 16384; // 16 РєР‘
+                tcpClient.SendBufferSize = 8192;     // 8 РєР‘, СЂР°Р·РјРµСЂ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
                 tcpClient.SendTimeout = TcpSendTimeout;
                 tcpClient.ReceiveTimeout = TcpReceiveTimeout;
 
@@ -426,17 +426,17 @@ namespace Scada.Client
 
                 netStream = tcpClient.GetStream();
 
-                // получение версии SCADA-Сервера
+                // РїРѕР»СѓС‡РµРЅРёРµ РІРµСЂСЃРёРё SCADA-РЎРµСЂРІРµСЂР°
                 byte[] buf = new byte[5];
                 int bytesRead = netStream.Read(buf, 0, 5);
 
-                // обработка считанных данных версии
+                // РѕР±СЂР°Р±РѕС‚РєР° СЃС‡РёС‚Р°РЅРЅС‹С… РґР°РЅРЅС‹С… РІРµСЂСЃРёРё
                 if (bytesRead == buf.Length && CheckDataFormat(buf, 0x00))
                 {
                     commState = CommStates.Connected;
                     serverVersion = buf[4] + "." + buf[3]; 
 
-                    // запрос правильности имени и пароля пользователя, его роли
+                    // Р·Р°РїСЂРѕСЃ РїСЂР°РІРёР»СЊРЅРѕСЃС‚Рё РёРјРµРЅРё Рё РїР°СЂРѕР»СЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ, РµРіРѕ СЂРѕР»Рё
                     byte userLen = (byte)commSettings.ServerUser.Length;
                     byte pwdLen = (byte)commSettings.ServerPwd.Length;
                     buf = new byte[5 + userLen + pwdLen];
@@ -451,11 +451,11 @@ namespace Scada.Client
 
                     netStream.Write(buf, 0, buf.Length);
 
-                    // приём результата
+                    // РїСЂРёС‘Рј СЂРµР·СѓР»СЊС‚Р°С‚Р°
                     buf = new byte[4];
                     bytesRead = netStream.Read(buf, 0, 4);
 
-                    // обработка считанных данных
+                    // РѕР±СЂР°Р±РѕС‚РєР° СЃС‡РёС‚Р°РЅРЅС‹С… РґР°РЅРЅС‹С…
                     if (bytesRead == buf.Length && CheckDataFormat(buf, 0x01))
                     {
                         Roles role = (Roles)buf[3];
@@ -466,14 +466,14 @@ namespace Scada.Client
                         }
                         else if (role < Roles.Err)
                         {
-                            errMsg = Localization.UseRussian ? "Недостаточно прав для соединения со SCADA-Сервером" :
+                            errMsg = Localization.UseRussian ? "РќРµРґРѕСЃС‚Р°С‚РѕС‡РЅРѕ РїСЂР°РІ РґР»СЏ СЃРѕРµРґРёРЅРµРЅРёСЏ СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј" :
                                 "Insufficient rights to connect to SCADA-Server";
                             WriteAction(errMsg, Log.ActTypes.Error);
                             commState = CommStates.Error;
                         }
                         else // role == Roles.Err
                         {
-                            errMsg = Localization.UseRussian ? "Неверное имя пользователя или пароль" :
+                            errMsg = Localization.UseRussian ? "РќРµРІРµСЂРЅРѕРµ РёРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РёР»Рё РїР°СЂРѕР»СЊ" :
                                 "User name or password is incorrect";
                             WriteAction(errMsg, Log.ActTypes.Error);
                             commState = CommStates.Error;
@@ -482,7 +482,7 @@ namespace Scada.Client
                     else
                     {
                         errMsg = Localization.UseRussian ? 
-                            "Неверный формат ответа SCADA-Сервера на запрос правильности имени и пароля" :
+                            "РќРµРІРµСЂРЅС‹Р№ С„РѕСЂРјР°С‚ РѕС‚РІРµС‚Р° SCADA-РЎРµСЂРІРµСЂР° РЅР° Р·Р°РїСЂРѕСЃ РїСЂР°РІРёР»СЊРЅРѕСЃС‚Рё РёРјРµРЅРё Рё РїР°СЂРѕР»СЏ" :
                             "Incorrect SCADA-Server response to check user name and password request";
                         WriteAction(errMsg, Log.ActTypes.Error);
                         commState = CommStates.Error;
@@ -490,7 +490,7 @@ namespace Scada.Client
                 }
                 else
                 {
-                    errMsg = Localization.UseRussian ? "Неверный формат ответа SCADA-Сервера на запрос версии" :
+                    errMsg = Localization.UseRussian ? "РќРµРІРµСЂРЅС‹Р№ С„РѕСЂРјР°С‚ РѕС‚РІРµС‚Р° SCADA-РЎРµСЂРІРµСЂР° РЅР° Р·Р°РїСЂРѕСЃ РІРµСЂСЃРёРё" :
                         "Incorrect SCADA-Server response to version request";
                     WriteAction(errMsg, Log.ActTypes.Error);
                     commState = CommStates.Error;
@@ -498,12 +498,12 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                errMsg = (Localization.UseRussian ? "Ошибка при установке соединения со SCADA-Сервером: " : 
+                errMsg = (Localization.UseRussian ? "РћС€РёР±РєР° РїСЂРё СѓСЃС‚Р°РЅРѕРІРєРµ СЃРѕРµРґРёРЅРµРЅРёСЏ СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј: " : 
                     "Error connecting to SCADA-Server: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
             }
 
-            // возврат результата
+            // РІРѕР·РІСЂР°С‚ СЂРµР·СѓР»СЊС‚Р°С‚Р°
             if (commState == CommStates.Authorized)
             {
                 return true;
@@ -516,7 +516,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Разорвать соединение со SCADA-Сервером
+        /// Р Р°Р·РѕСЂРІР°С‚СЊ СЃРѕРµРґРёРЅРµРЅРёРµ СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј
         /// </summary>
         protected void Disconnect()
         {
@@ -527,12 +527,12 @@ namespace Scada.Client
 
                 if (tcpClient != null)
                 {
-                    WriteAction(Localization.UseRussian ? "Разрыв соединения со SCADA-Сервером" : 
+                    WriteAction(Localization.UseRussian ? "Р Р°Р·СЂС‹РІ СЃРѕРµРґРёРЅРµРЅРёСЏ СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј" : 
                         "Disconnect from SCADA-Server", Log.ActTypes.Action);
 
                     if (netStream != null)
                     {
-                        // очистка (для корректного разъединения) и закрытие потока данных TCP-клиента
+                        // РѕС‡РёСЃС‚РєР° (РґР»СЏ РєРѕСЂСЂРµРєС‚РЅРѕРіРѕ СЂР°Р·СЉРµРґРёРЅРµРЅРёСЏ) Рё Р·Р°РєСЂС‹С‚РёРµ РїРѕС‚РѕРєР° РґР°РЅРЅС‹С… TCP-РєР»РёРµРЅС‚Р°
                         ClearNetStream();
                         netStream.Close();
                         netStream = null;
@@ -544,16 +544,16 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                errMsg = (Localization.UseRussian ? "Ошибка при разрыве соединения со SCADA-Сервером: " : 
+                errMsg = (Localization.UseRussian ? "РћС€РёР±РєР° РїСЂРё СЂР°Р·СЂС‹РІРµ СЃРѕРµРґРёРЅРµРЅРёСЏ СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј: " : 
                     "Error disconnecting from SCADA-Server: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
             }
         }
 
         /// <summary>
-        /// Считать информацию из потока данных TCP-клиента
+        /// РЎС‡РёС‚Р°С‚СЊ РёРЅС„РѕСЂРјР°С†РёСЋ РёР· РїРѕС‚РѕРєР° РґР°РЅРЅС‹С… TCP-РєР»РёРµРЅС‚Р°
         /// </summary>
-        /// <remarks>Метод используется для считывания "большого" объёма данных</remarks>
+        /// <remarks>РњРµС‚РѕРґ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґР»СЏ СЃС‡РёС‚С‹РІР°РЅРёСЏ "Р±РѕР»СЊС€РѕРіРѕ" РѕР±СЉС‘РјР° РґР°РЅРЅС‹С…</remarks>
         protected int ReadNetStream(byte[] buffer, int offset, int size)
         {
             int bytesRead = 0;
@@ -568,7 +568,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Очистить поток данных TCP-клиента
+        /// РћС‡РёСЃС‚РёС‚СЊ РїРѕС‚РѕРє РґР°РЅРЅС‹С… TCP-РєР»РёРµРЅС‚Р°
         /// </summary>
         protected void ClearNetStream()
         {
@@ -576,7 +576,7 @@ namespace Scada.Client
             {
                 if (netStream != null && netStream.DataAvailable)
                 {
-                    // считывание оставшихся данных из потока, но не более 100 кБ
+                    // СЃС‡РёС‚С‹РІР°РЅРёРµ РѕСЃС‚Р°РІС€РёС…СЃСЏ РґР°РЅРЅС‹С… РёР· РїРѕС‚РѕРєР°, РЅРѕ РЅРµ Р±РѕР»РµРµ 100 РєР‘
                     byte[] buf = new byte[1024];
                     int n = 0;
                     while (netStream.DataAvailable && ++n <= 100)
@@ -586,43 +586,43 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                errMsg = (Localization.UseRussian ? "Ошибка при очистке сетевого потока: " : 
+                errMsg = (Localization.UseRussian ? "РћС€РёР±РєР° РїСЂРё РѕС‡РёСЃС‚РєРµ СЃРµС‚РµРІРѕРіРѕ РїРѕС‚РѕРєР°: " : 
                     "Error clear network stream: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
             }
         }
 
         /// <summary>
-        /// Восстановить соединение со SCADA-Сервером и произвести авторизацию при необходимости
+        /// Р’РѕСЃСЃС‚Р°РЅРѕРІРёС‚СЊ СЃРѕРµРґРёРЅРµРЅРёРµ СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј Рё РїСЂРѕРёР·РІРµСЃС‚Рё Р°РІС‚РѕСЂРёР·Р°С†РёСЋ РїСЂРё РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚Рё
         /// </summary>
         protected bool RestoreConnection()
         {
-            bool connectNeeded = false; // требуется повторное соединение
+            bool connectNeeded = false; // С‚СЂРµР±СѓРµС‚СЃСЏ РїРѕРІС‚РѕСЂРЅРѕРµ СЃРѕРµРґРёРЅРµРЅРёРµ
             DateTime now = DateTime.Now;
 
             if (commState >= CommStates.Authorized)
             {
                 if (now - restConnSuccDT > PingSpan)
                 {
-                    // проверка соединения
+                    // РїСЂРѕРІРµСЂРєР° СЃРѕРµРґРёРЅРµРЅРёСЏ
                     try
                     {
-                        WriteAction(Localization.UseRussian ? "Запрос состояния SCADA-Сервера" : 
+                        WriteAction(Localization.UseRussian ? "Р—Р°РїСЂРѕСЃ СЃРѕСЃС‚РѕСЏРЅРёСЏ SCADA-РЎРµСЂРІРµСЂР°" : 
                             "Request SCADA-Server state", Log.ActTypes.Action);
                         commState = CommStates.WaitResponse;
 
-                        // запрос состояния SCADA-Сервера (ping)
+                        // Р·Р°РїСЂРѕСЃ СЃРѕСЃС‚РѕСЏРЅРёСЏ SCADA-РЎРµСЂРІРµСЂР° (ping)
                         byte[] buf = new byte[3];
                         buf[0] = 0x03;
                         buf[1] = 0x00;
                         buf[2] = 0x02;
                         netStream.Write(buf, 0, 3);
 
-                        // приём результата
+                        // РїСЂРёС‘Рј СЂРµР·СѓР»СЊС‚Р°С‚Р°
                         buf = new byte[4];
                         netStream.Read(buf, 0, 4);
 
-                        // обработка результата
+                        // РѕР±СЂР°Р±РѕС‚РєР° СЂРµР·СѓР»СЊС‚Р°С‚Р°
                         if (CheckDataFormat(buf, 0x02))
                         {
                             commState = buf[3] > 0 ? CommStates.Authorized : CommStates.NotReady;
@@ -630,7 +630,7 @@ namespace Scada.Client
                         else
                         {
                             errMsg = Localization.UseRussian ? 
-                                "Неверный формат ответа SCADA-Сервера на запрос состояния" : 
+                                "РќРµРІРµСЂРЅС‹Р№ С„РѕСЂРјР°С‚ РѕС‚РІРµС‚Р° SCADA-РЎРµСЂРІРµСЂР° РЅР° Р·Р°РїСЂРѕСЃ СЃРѕСЃС‚РѕСЏРЅРёСЏ" : 
                                 "Incorrect SCADA-Server response to state request";
                             WriteAction(errMsg, Log.ActTypes.Error);
                             commState = CommStates.Error;
@@ -648,7 +648,7 @@ namespace Scada.Client
                 connectNeeded = true;
             }
 
-            // соединение при необходимости
+            // СЃРѕРµРґРёРЅРµРЅРёРµ РїСЂРё РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚Рё
             if (connectNeeded)
             {
                 if (tcpClient != null) 
@@ -669,7 +669,7 @@ namespace Scada.Client
             }
             else
             {
-                ClearNetStream(); // очистка потока данных TCP-клиента
+                ClearNetStream(); // РѕС‡РёСЃС‚РєР° РїРѕС‚РѕРєР° РґР°РЅРЅС‹С… TCP-РєР»РёРµРЅС‚Р°
 
                 if (commState >= CommStates.Authorized)
                 {
@@ -678,7 +678,7 @@ namespace Scada.Client
                 }
                 else
                 {
-                    errMsg = Localization.UseRussian ? "Невозможно соединиться со SCADA-Сервером. Повторите попытку." :
+                    errMsg = Localization.UseRussian ? "РќРµРІРѕР·РјРѕР¶РЅРѕ СЃРѕРµРґРёРЅРёС‚СЊСЃСЏ СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј. РџРѕРІС‚РѕСЂРёС‚Рµ РїРѕРїС‹С‚РєСѓ." :
                         "Unable to connect to SCADA-Server. Try again.";
                     return false;
                 }
@@ -686,7 +686,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Восстановить значение таймаута приёма данных через TCP по умолчанию
+        /// Р’РѕСЃСЃС‚Р°РЅРѕРІРёС‚СЊ Р·РЅР°С‡РµРЅРёРµ С‚Р°Р№РјР°СѓС‚Р° РїСЂРёС‘РјР° РґР°РЅРЅС‹С… С‡РµСЂРµР· TCP РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
         /// </summary>
         protected void RestoreReceiveTimeout()
         {
@@ -699,7 +699,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Принять файл от SCADA-Сервера
+        /// РџСЂРёРЅСЏС‚СЊ С„Р°Р№Р» РѕС‚ SCADA-РЎРµСЂРІРµСЂР°
         /// </summary>
         protected bool ReceiveFile(Dirs dir, string fileName, Stream inStream)
         {
@@ -709,26 +709,26 @@ namespace Scada.Client
             try
             {
 #if DETAILED_LOG
-                WriteAction(string.Format(Localization.UseRussian ? "Приём файла {0} от SCADA-Сервера" : 
+                WriteAction(string.Format(Localization.UseRussian ? "РџСЂРёС‘Рј С„Р°Р№Р»Р° {0} РѕС‚ SCADA-РЎРµСЂРІРµСЂР°" : 
                     "Receive file {0} from SCADA-Server", filePath), Log.ActTypes.Action);
 #endif
 
                 commState = CommStates.WaitResponse;
                 tcpClient.ReceiveTimeout = commSettings.ServerTimeout;
 
-                const int dataSize = 10240; // размер запрашиваемых данных 10 кБ
+                const int dataSize = 10240; // СЂР°Р·РјРµСЂ Р·Р°РїСЂР°С€РёРІР°РµРјС‹С… РґР°РЅРЅС‹С… 10 РєР‘
                 const byte dataSizeL = dataSize % 256;
                 const byte dataSizeH = dataSize / 256;
 
-                byte[] buf = new byte[6 + dataSize]; // буфер отправляемых и получаемых данных
-                bool open = true;  // выполняется открытие файла
-                bool stop = false; // признак завершения приёма данных
+                byte[] buf = new byte[6 + dataSize]; // Р±СѓС„РµСЂ РѕС‚РїСЂР°РІР»СЏРµРјС‹С… Рё РїРѕР»СѓС‡Р°РµРјС‹С… РґР°РЅРЅС‹С…
+                bool open = true;  // РІС‹РїРѕР»РЅСЏРµС‚СЃСЏ РѕС‚РєСЂС‹С‚РёРµ С„Р°Р№Р»Р°
+                bool stop = false; // РїСЂРёР·РЅР°Рє Р·Р°РІРµСЂС€РµРЅРёСЏ РїСЂРёС‘РјР° РґР°РЅРЅС‹С…
 
                 while (!stop)
                 {
                     if (open)
                     {
-                        // отправка команды открытия файла и чтения данных
+                        // РѕС‚РїСЂР°РІРєР° РєРѕРјР°РЅРґС‹ РѕС‚РєСЂС‹С‚РёСЏ С„Р°Р№Р»Р° Рё С‡С‚РµРЅРёСЏ РґР°РЅРЅС‹С…
                         byte fileNameLen = (byte)fileName.Length;
                         int cmdLen = 7 + fileNameLen;
                         buf[0] = (byte)(cmdLen % 256);
@@ -743,7 +743,7 @@ namespace Scada.Client
                     }
                     else
                     {
-                        // отправка команды чтения данных из файла
+                        // РѕС‚РїСЂР°РІРєР° РєРѕРјР°РЅРґС‹ С‡С‚РµРЅРёСЏ РґР°РЅРЅС‹С… РёР· С„Р°Р№Р»Р°
                         buf[0] = 0x05;
                         buf[1] = 0x00;
                         buf[2] = 0x0A;
@@ -752,11 +752,11 @@ namespace Scada.Client
                         netStream.Write(buf, 0, 5);
                     }
 
-                    // приём результата открытия файла и считанных данных
+                    // РїСЂРёС‘Рј СЂРµР·СѓР»СЊС‚Р°С‚Р° РѕС‚РєСЂС‹С‚РёСЏ С„Р°Р№Р»Р° Рё СЃС‡РёС‚Р°РЅРЅС‹С… РґР°РЅРЅС‹С…
                     byte cmdNum = buf[2];
                     int headerLen = open ? 6 : 5;
                     int bytesRead = netStream.Read(buf, 0, headerLen);
-                    int dataSizeRead = 0; // размер считанных из файла данных                    
+                    int dataSizeRead = 0; // СЂР°Р·РјРµСЂ СЃС‡РёС‚Р°РЅРЅС‹С… РёР· С„Р°Р№Р»Р° РґР°РЅРЅС‹С…                    
 
                     if (bytesRead == headerLen)
                     {
@@ -771,7 +771,7 @@ namespace Scada.Client
                         {
                             open = false;
 
-                            if (buf[3] > 0) // файл открыт
+                            if (buf[3] > 0) // С„Р°Р№Р» РѕС‚РєСЂС‹С‚
                             {
                                 inStream.Write(buf, 6, dataSizeRead);
                                 commState = CommStates.Authorized;
@@ -780,7 +780,7 @@ namespace Scada.Client
                             else
                             {
                                 errMsg = string.Format(Localization.UseRussian ? 
-                                    "SCADA-Серверу не удалось открыть файл {0}" : 
+                                    "SCADA-РЎРµСЂРІРµСЂСѓ РЅРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р» {0}" : 
                                     "SCADA-Server unable to open file {0}", filePath);
                                 WriteAction(errMsg, Log.ActTypes.Action);
                                 commState = CommStates.NotReady;
@@ -797,7 +797,7 @@ namespace Scada.Client
                     else
                     {
                         errMsg = string.Format(Localization.UseRussian ? 
-                            "Неверный формат ответа SCADA-Сервера на команду открытия или чтения из файла {0}" :
+                            "РќРµРІРµСЂРЅС‹Р№ С„РѕСЂРјР°С‚ РѕС‚РІРµС‚Р° SCADA-РЎРµСЂРІРµСЂР° РЅР° РєРѕРјР°РЅРґСѓ РѕС‚РєСЂС‹С‚РёСЏ РёР»Рё С‡С‚РµРЅРёСЏ РёР· С„Р°Р№Р»Р° {0}" :
                             "Incorrect SCADA-Server response to open file or read from file {0} command ", filePath);
                         WriteAction(errMsg, Log.ActTypes.Error);
                         commState = CommStates.Error;
@@ -805,7 +805,7 @@ namespace Scada.Client
                     }
                 }
 
-                // определение результата
+                // РѕРїСЂРµРґРµР»РµРЅРёРµ СЂРµР·СѓР»СЊС‚Р°С‚Р°
                 if (commState == CommStates.Authorized)
                 {
                     if (inStream.Length > 0)
@@ -815,7 +815,7 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                errMsg = string.Format(Localization.UseRussian ? "Ошибка при приёме файла {0} от SCADA-Сервера: " :
+                errMsg = string.Format(Localization.UseRussian ? "РћС€РёР±РєР° РїСЂРё РїСЂРёС‘РјРµ С„Р°Р№Р»Р° {0} РѕС‚ SCADA-РЎРµСЂРІРµСЂР°: " :
                     "Error receiving file {0} from SCADA-Server: ", filePath) + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
                 Disconnect();
@@ -829,7 +829,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Отправить команду ТУ SCADA-Серверу
+        /// РћС‚РїСЂР°РІРёС‚СЊ РєРѕРјР°РЅРґСѓ РўРЈ SCADA-РЎРµСЂРІРµСЂСѓ
         /// </summary>
         protected bool SendCommand(int userID, int ctrlCnl, double cmdVal, byte[] cmdData, int kpNum, out bool result)
         {
@@ -842,13 +842,13 @@ namespace Scada.Client
             {
                 if (RestoreConnection())
                 {
-                    WriteAction(Localization.UseRussian ? "Отправка команды ТУ SCADA-Серверу" :
+                    WriteAction(Localization.UseRussian ? "РћС‚РїСЂР°РІРєР° РєРѕРјР°РЅРґС‹ РўРЈ SCADA-РЎРµСЂРІРµСЂСѓ" :
                         "Send telecommand to SCADA-Server", Log.ActTypes.Action);
 
                     commState = CommStates.WaitResponse;
                     tcpClient.ReceiveTimeout = commSettings.ServerTimeout;
 
-                    // отправка команды
+                    // РѕС‚РїСЂР°РІРєР° РєРѕРјР°РЅРґС‹
                     int cmdLen = double.IsNaN(cmdVal) ? cmdData == null ? 12 : 10 + cmdData.Length : 18;
                     byte[] buf = new byte[cmdLen];
                     buf[0] = (byte)(cmdLen % 256);
@@ -859,7 +859,7 @@ namespace Scada.Client
                     buf[6] = (byte)(ctrlCnl % 256);
                     buf[7] = (byte)(ctrlCnl / 256);
 
-                    if (!double.IsNaN(cmdVal)) // стандартная команда
+                    if (!double.IsNaN(cmdVal)) // СЃС‚Р°РЅРґР°СЂС‚РЅР°СЏ РєРѕРјР°РЅРґР°
                     {
                         buf[5] = 0x00;
                         buf[8] = 0x08;
@@ -867,7 +867,7 @@ namespace Scada.Client
                         byte[] bytes = BitConverter.GetBytes(cmdVal);
                         Array.Copy(bytes, 0, buf, 10, 8);
                     }
-                    else if (cmdData != null) // бинарная команда
+                    else if (cmdData != null) // Р±РёРЅР°СЂРЅР°СЏ РєРѕРјР°РЅРґР°
                     {
                         buf[5] = 0x01;
                         int cmdDataLen = cmdData.Length;
@@ -875,7 +875,7 @@ namespace Scada.Client
                         buf[9] = (byte)(cmdDataLen / 256);
                         Array.Copy(cmdData, 0, buf, 10, cmdDataLen);
                     }
-                    else // опрос КП
+                    else // РѕРїСЂРѕСЃ РљРџ
                     {
                         buf[5] = 0x02;
                         buf[8] = 0x02;
@@ -886,11 +886,11 @@ namespace Scada.Client
 
                     netStream.Write(buf, 0, cmdLen);
 
-                    // приём результата
+                    // РїСЂРёС‘Рј СЂРµР·СѓР»СЊС‚Р°С‚Р°
                     buf = new byte[4];
                     int bytesRead = netStream.Read(buf, 0, 4);
 
-                    // обработка полученных данных
+                    // РѕР±СЂР°Р±РѕС‚РєР° РїРѕР»СѓС‡РµРЅРЅС‹С… РґР°РЅРЅС‹С…
                     if (bytesRead == buf.Length && CheckDataFormat(buf, 0x06))
                     {
                         result = buf[3] > 0;
@@ -899,7 +899,7 @@ namespace Scada.Client
                     }
                     else
                     {
-                        errMsg = Localization.UseRussian ? "Неверный формат ответа SCADA-Сервера на команду ТУ" :
+                        errMsg = Localization.UseRussian ? "РќРµРІРµСЂРЅС‹Р№ С„РѕСЂРјР°С‚ РѕС‚РІРµС‚Р° SCADA-РЎРµСЂРІРµСЂР° РЅР° РєРѕРјР°РЅРґСѓ РўРЈ" :
                             "Incorrect SCADA-Server response to telecommand";
                         WriteAction(errMsg, Log.ActTypes.Error);
                         commState = CommStates.Error;
@@ -908,7 +908,7 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                errMsg = (Localization.UseRussian ? "Ошибка при отправке команды ТУ SCADA-Серверу: " :
+                errMsg = (Localization.UseRussian ? "РћС€РёР±РєР° РїСЂРё РѕС‚РїСЂР°РІРєРµ РєРѕРјР°РЅРґС‹ РўРЈ SCADA-РЎРµСЂРІРµСЂСѓ: " :
                     "Error sending telecommand to SCADA-Server: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
                 Disconnect();
@@ -924,8 +924,8 @@ namespace Scada.Client
 
 
         /// <summary>
-        /// Запросить правильность имени и пароля пользователя от SCADA-Сервера, получить его роль.
-        /// Возвращает успешность выполнения запроса
+        /// Р—Р°РїСЂРѕСЃРёС‚СЊ РїСЂР°РІРёР»СЊРЅРѕСЃС‚СЊ РёРјРµРЅРё Рё РїР°СЂРѕР»СЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РѕС‚ SCADA-РЎРµСЂРІРµСЂР°, РїРѕР»СѓС‡РёС‚СЊ РµРіРѕ СЂРѕР»СЊ.
+        /// Р’РѕР·РІСЂР°С‰Р°РµС‚ СѓСЃРїРµС€РЅРѕСЃС‚СЊ РІС‹РїРѕР»РЅРµРЅРёСЏ Р·Р°РїСЂРѕСЃР°
         /// </summary>
         public bool CheckUser(string login, string password, out int roleID)
         {
@@ -941,7 +941,7 @@ namespace Scada.Client
                     commState = CommStates.WaitResponse;
                     tcpClient.ReceiveTimeout = commSettings.ServerTimeout;
 
-                    // запрос правильности имени и пароля пользователя, его роли
+                    // Р·Р°РїСЂРѕСЃ РїСЂР°РІРёР»СЊРЅРѕСЃС‚Рё РёРјРµРЅРё Рё РїР°СЂРѕР»СЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ, РµРіРѕ СЂРѕР»Рё
                     byte userLen = login == null ? (byte)0 : (byte)login.Length;
                     byte pwdLen = password == null ? (byte)0 : (byte)password.Length;
                     byte[] buf = new byte[5 + userLen + pwdLen];
@@ -958,11 +958,11 @@ namespace Scada.Client
 
                     netStream.Write(buf, 0, buf.Length);
 
-                    // приём результата
+                    // РїСЂРёС‘Рј СЂРµР·СѓР»СЊС‚Р°С‚Р°
                     buf = new byte[4];
                     int bytesRead = netStream.Read(buf, 0, 4);
 
-                    // обработка полученных данных
+                    // РѕР±СЂР°Р±РѕС‚РєР° РїРѕР»СѓС‡РµРЅРЅС‹С… РґР°РЅРЅС‹С…
                     if (bytesRead == buf.Length && CheckDataFormat(buf, 0x01))
                     {
                         roleID = buf[3];
@@ -972,7 +972,7 @@ namespace Scada.Client
                     else
                     {
                         errMsg = Localization.UseRussian ? 
-                            "Неверный формат ответа SCADA-Сервера на запрос правильности имени и пароля" :
+                            "РќРµРІРµСЂРЅС‹Р№ С„РѕСЂРјР°С‚ РѕС‚РІРµС‚Р° SCADA-РЎРµСЂРІРµСЂР° РЅР° Р·Р°РїСЂРѕСЃ РїСЂР°РІРёР»СЊРЅРѕСЃС‚Рё РёРјРµРЅРё Рё РїР°СЂРѕР»СЏ" :
                             "Incorrect SCADA-Server response to check user name and password request";
                         WriteAction(errMsg, Log.ActTypes.Error);
                         commState = CommStates.Error;
@@ -982,7 +982,7 @@ namespace Scada.Client
             catch (Exception ex)
             {
                 errMsg = (Localization.UseRussian ? 
-                    "Ошибка при запросе правильности имени и пароля пользователя от SCADA-Сервера: " :
+                    "РћС€РёР±РєР° РїСЂРё Р·Р°РїСЂРѕСЃРµ РїСЂР°РІРёР»СЊРЅРѕСЃС‚Рё РёРјРµРЅРё Рё РїР°СЂРѕР»СЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РѕС‚ SCADA-РЎРµСЂРІРµСЂР°: " :
                     "Error requesting check user name and password to SCADA-Server: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
                 Disconnect();
@@ -997,7 +997,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Принять таблицу базы конфигурации от SCADA-Сервера
+        /// РџСЂРёРЅСЏС‚СЊ С‚Р°Р±Р»РёС†Сѓ Р±Р°Р·С‹ РєРѕРЅС„РёРіСѓСЂР°С†РёРё РѕС‚ SCADA-РЎРµСЂРІРµСЂР°
         /// </summary>
         public bool ReceiveBaseTable(string tableName, DataTable dataTable)
         {
@@ -1026,14 +1026,14 @@ namespace Scada.Client
                 }
                 finally
                 {
-                    // очистка таблицы, если не удалось получить новые данные
+                    // РѕС‡РёСЃС‚РєР° С‚Р°Р±Р»РёС†С‹, РµСЃР»Рё РЅРµ СѓРґР°Р»РѕСЃСЊ РїРѕР»СѓС‡РёС‚СЊ РЅРѕРІС‹Рµ РґР°РЅРЅС‹Рµ
                     if (!result)
                         dataTable.Rows.Clear();
                 }
             }
             catch (Exception ex)
             {
-                errMsg = (Localization.UseRussian ? "Ошибка при приёме таблицы базы конфигурации от SCADA-Сервера: " : 
+                errMsg = (Localization.UseRussian ? "РћС€РёР±РєР° РїСЂРё РїСЂРёС‘РјРµ С‚Р°Р±Р»РёС†С‹ Р±Р°Р·С‹ РєРѕРЅС„РёРіСѓСЂР°С†РёРё РѕС‚ SCADA-РЎРµСЂРІРµСЂР°: " : 
                     "Error receiving configuration database table from SCADA-Server: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
             }
@@ -1046,7 +1046,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Принять таблицу срезов от SCADA-Сервера
+        /// РџСЂРёРЅСЏС‚СЊ С‚Р°Р±Р»РёС†Сѓ СЃСЂРµР·РѕРІ РѕС‚ SCADA-РЎРµСЂРІРµСЂР°
         /// </summary>
         public bool ReceiveSrezTable(string tableName, SrezTableLight srezTableLight)
         {
@@ -1060,7 +1060,7 @@ namespace Scada.Client
                 {
                     if (RestoreConnection())
                     {
-                        // определение директории таблицы
+                        // РѕРїСЂРµРґРµР»РµРЅРёРµ РґРёСЂРµРєС‚РѕСЂРёРё С‚Р°Р±Р»РёС†С‹
                         Dirs dir = Dirs.Cur;
                         if (tableName.Length > 0)
                         {
@@ -1070,7 +1070,7 @@ namespace Scada.Client
                                 dir = Dirs.Min;
                         }
 
-                        // приём данных
+                        // РїСЂРёС‘Рј РґР°РЅРЅС‹С…
                         using (MemoryStream memStream = new MemoryStream())
                         {
                             if (ReceiveFile(dir, tableName, memStream))
@@ -1086,7 +1086,7 @@ namespace Scada.Client
                 }
                 finally
                 {
-                    // очистка таблицы, если не удалось получить новые данные
+                    // РѕС‡РёСЃС‚РєР° С‚Р°Р±Р»РёС†С‹, РµСЃР»Рё РЅРµ СѓРґР°Р»РѕСЃСЊ РїРѕР»СѓС‡РёС‚СЊ РЅРѕРІС‹Рµ РґР°РЅРЅС‹Рµ
                     if (!result)
                     {
                         srezTableLight.Clear();
@@ -1096,7 +1096,7 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                errMsg = (Localization.UseRussian ? "Ошибка при приёме таблицы срезов от SCADA-Сервера: " :
+                errMsg = (Localization.UseRussian ? "РћС€РёР±РєР° РїСЂРё РїСЂРёС‘РјРµ С‚Р°Р±Р»РёС†С‹ СЃСЂРµР·РѕРІ РѕС‚ SCADA-РЎРµСЂРІРµСЂР°: " :
                     "Error receiving data table from SCADA-Server: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
             }
@@ -1109,7 +1109,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Принять тренд входного канала от SCADA-Сервера
+        /// РџСЂРёРЅСЏС‚СЊ С‚СЂРµРЅРґ РІС…РѕРґРЅРѕРіРѕ РєР°РЅР°Р»Р° РѕС‚ SCADA-РЎРµСЂРІРµСЂР°
         /// </summary>
         public bool ReceiveTrend(string tableName, DateTime date, Trend trend)
         {
@@ -1124,15 +1124,15 @@ namespace Scada.Client
                     if (RestoreConnection())
                     {
                         WriteAction(string.Format(Localization.UseRussian ? 
-                            "Приём тренда входного канала {0} от SCADA-Сервера. Файл: {1}" : 
+                            "РџСЂРёС‘Рј С‚СЂРµРЅРґР° РІС…РѕРґРЅРѕРіРѕ РєР°РЅР°Р»Р° {0} РѕС‚ SCADA-РЎРµСЂРІРµСЂР°. Р¤Р°Р№Р»: {1}" : 
                             "Receive input channel {0} trend from SCADA-Server. File: {1}", 
                             trend.CnlNum, tableName), Log.ActTypes.Action);
 
                         commState = CommStates.WaitResponse;
                         tcpClient.ReceiveTimeout = commSettings.ServerTimeout;
 
-                        byte tableType;        // тип таблицы: текущая, часовая или минутная
-                        byte year, month, day; // дата запрашиваемых данных
+                        byte tableType;        // С‚РёРї С‚Р°Р±Р»РёС†С‹: С‚РµРєСѓС‰Р°СЏ, С‡Р°СЃРѕРІР°СЏ РёР»Рё РјРёРЅСѓС‚РЅР°СЏ
+                        byte year, month, day; // РґР°С‚Р° Р·Р°РїСЂР°С€РёРІР°РµРјС‹С… РґР°РЅРЅС‹С…
 
                         if (tableName == "current.dat")
                         {
@@ -1147,7 +1147,7 @@ namespace Scada.Client
                             day = (byte)date.Day;
                         }
 
-                        // отправка запроса тренда входного канала
+                        // РѕС‚РїСЂР°РІРєР° Р·Р°РїСЂРѕСЃР° С‚СЂРµРЅРґР° РІС…РѕРґРЅРѕРіРѕ РєР°РЅР°Р»Р°
                         byte[] buf = new byte[13];
                         buf[0] = 0x0D;
                         buf[1] = 0x00;
@@ -1162,7 +1162,7 @@ namespace Scada.Client
                         Array.Copy(bytes, 0, buf, 9, 4);
                         netStream.Write(buf, 0, 13);
 
-                        // приём данных тренда входного канала
+                        // РїСЂРёС‘Рј РґР°РЅРЅС‹С… С‚СЂРµРЅРґР° РІС…РѕРґРЅРѕРіРѕ РєР°РЅР°Р»Р°
                         buf = new byte[7];
                         int bytesRead = netStream.Read(buf, 0, 7);
                         int pointCnt = 0;
@@ -1178,7 +1178,7 @@ namespace Scada.Client
                             }
                         }
 
-                        // заполение тренда входного канала из полученных данных
+                        // Р·Р°РїРѕР»РµРЅРёРµ С‚СЂРµРЅРґР° РІС…РѕРґРЅРѕРіРѕ РєР°РЅР°Р»Р° РёР· РїРѕР»СѓС‡РµРЅРЅС‹С… РґР°РЅРЅС‹С…
                         if (bytesRead == buf.Length && buf[4] == 0x0D)
                         {
                             for (int i = 0; i < pointCnt; i++)
@@ -1199,7 +1199,7 @@ namespace Scada.Client
                         else
                         {
                             errMsg = Localization.UseRussian ? 
-                                "Неверный формат ответа SCADA-Сервера на запрос тренда входного канала" :
+                                "РќРµРІРµСЂРЅС‹Р№ С„РѕСЂРјР°С‚ РѕС‚РІРµС‚Р° SCADA-РЎРµСЂРІРµСЂР° РЅР° Р·Р°РїСЂРѕСЃ С‚СЂРµРЅРґР° РІС…РѕРґРЅРѕРіРѕ РєР°РЅР°Р»Р°" :
                                 "Incorrect SCADA-Server response to input channel trend request";
                             WriteAction(errMsg, Log.ActTypes.Error);
                             commState = CommStates.Error;
@@ -1208,7 +1208,7 @@ namespace Scada.Client
                 }
                 finally
                 {
-                    // очистка тренда, если не удалось получить новые данные
+                    // РѕС‡РёСЃС‚РєР° С‚СЂРµРЅРґР°, РµСЃР»Рё РЅРµ СѓРґР°Р»РѕСЃСЊ РїРѕР»СѓС‡РёС‚СЊ РЅРѕРІС‹Рµ РґР°РЅРЅС‹Рµ
                     if (!result)
                     {
                         trend.Clear();
@@ -1218,7 +1218,7 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                errMsg = (Localization.UseRussian ? "Ошибка при приёме тренда входного канала от SCADA-Сервера: " :
+                errMsg = (Localization.UseRussian ? "РћС€РёР±РєР° РїСЂРё РїСЂРёС‘РјРµ С‚СЂРµРЅРґР° РІС…РѕРґРЅРѕРіРѕ РєР°РЅР°Р»Р° РѕС‚ SCADA-РЎРµСЂРІРµСЂР°: " :
                     "Error receiving input channel trend from SCADA-Server: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
                 Disconnect();
@@ -1233,7 +1233,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Принять таблицу событий от SCADA-Сервера
+        /// РџСЂРёРЅСЏС‚СЊ С‚Р°Р±Р»РёС†Сѓ СЃРѕР±С‹С‚РёР№ РѕС‚ SCADA-РЎРµСЂРІРµСЂР°
         /// </summary>
         public bool ReceiveEventTable(string tableName, EventTableLight eventTableLight)
         {
@@ -1262,7 +1262,7 @@ namespace Scada.Client
                 }
                 finally
                 {
-                    // очистка таблицы, если не удалось получить новые данные
+                    // РѕС‡РёСЃС‚РєР° С‚Р°Р±Р»РёС†С‹, РµСЃР»Рё РЅРµ СѓРґР°Р»РѕСЃСЊ РїРѕР»СѓС‡РёС‚СЊ РЅРѕРІС‹Рµ РґР°РЅРЅС‹Рµ
                     if (!result)
                     {
                         eventTableLight.Clear();
@@ -1272,7 +1272,7 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                errMsg = (Localization.UseRussian ? "Ошибка при приёме таблицы событий от SCADA-Сервера: " : 
+                errMsg = (Localization.UseRussian ? "РћС€РёР±РєР° РїСЂРё РїСЂРёС‘РјРµ С‚Р°Р±Р»РёС†С‹ СЃРѕР±С‹С‚РёР№ РѕС‚ SCADA-РЎРµСЂРІРµСЂР°: " : 
                     "Error receiving event table from SCADA-Server: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
             }
@@ -1285,7 +1285,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Принять представление от SCADA-Сервера
+        /// РџСЂРёРЅСЏС‚СЊ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ РѕС‚ SCADA-РЎРµСЂРІРµСЂР°
         /// </summary>
         public bool ReceiveView(string fileName, BaseView view)
         {
@@ -1311,16 +1311,16 @@ namespace Scada.Client
                 }
                 finally
                 {
-                    // очистка представления, если не удалось получить новые данные
+                    // РѕС‡РёСЃС‚РєР° РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ, РµСЃР»Рё РЅРµ СѓРґР°Р»РѕСЃСЊ РїРѕР»СѓС‡РёС‚СЊ РЅРѕРІС‹Рµ РґР°РЅРЅС‹Рµ
                     if (!result)
                         view.Clear();
-                    // установка наименования объекта интерфейса
+                    // СѓСЃС‚Р°РЅРѕРІРєР° РЅР°РёРјРµРЅРѕРІР°РЅРёСЏ РѕР±СЉРµРєС‚Р° РёРЅС‚РµСЂС„РµР№СЃР°
                     view.ItfObjName = Path.GetFileName(fileName);
                 }
             }
             catch (Exception ex)
             {
-                errMsg = (Localization.UseRussian ? "Ошибка при приёме представления от SCADA-Сервера: " :
+                errMsg = (Localization.UseRussian ? "РћС€РёР±РєР° РїСЂРё РїСЂРёС‘РјРµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ РѕС‚ SCADA-РЎРµСЂРІРµСЂР°: " :
                     "Error receiving view from SCADA-Server: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
             }
@@ -1333,7 +1333,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Принять объект интерфейса от SCADA-Сервера
+        /// РџСЂРёРЅСЏС‚СЊ РѕР±СЉРµРєС‚ РёРЅС‚РµСЂС„РµР№СЃР° РѕС‚ SCADA-РЎРµСЂРІРµСЂР°
         /// </summary>
         public bool ReceiveItfObj(string fileName, Stream stream)
         {
@@ -1348,7 +1348,7 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                errMsg = (Localization.UseRussian ? "Ошибка при приёме объекта интерфейса от SCADA-Сервера: " :
+                errMsg = (Localization.UseRussian ? "РћС€РёР±РєР° РїСЂРё РїСЂРёС‘РјРµ РѕР±СЉРµРєС‚Р° РёРЅС‚РµСЂС„РµР№СЃР° РѕС‚ SCADA-РЎРµСЂРІРµСЂР°: " :
                     "Error receiving interface object from SCADA-Server: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
             }
@@ -1361,8 +1361,8 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Принять дату и время изменения файла от SCADA-Сервера.
-        /// В случае отсутствия файла возвращается минимальная дата
+        /// РџСЂРёРЅСЏС‚СЊ РґР°С‚Сѓ Рё РІСЂРµРјСЏ РёР·РјРµРЅРµРЅРёСЏ С„Р°Р№Р»Р° РѕС‚ SCADA-РЎРµСЂРІРµСЂР°.
+        /// Р’ СЃР»СѓС‡Р°Рµ РѕС‚СЃСѓС‚СЃС‚РІРёСЏ С„Р°Р№Р»Р° РІРѕР·РІСЂР°С‰Р°РµС‚СЃСЏ РјРёРЅРёРјР°Р»СЊРЅР°СЏ РґР°С‚Р°
 		/// </summary>
         public DateTime ReceiveFileAge(Dirs dir, string fileName)
         {
@@ -1377,7 +1377,7 @@ namespace Scada.Client
                 {
 #if DETAILED_LOG
                     WriteAction(string.Format(Localization.UseRussian ? 
-                        "Приём даты и времени изменения файла {0} от SCADA-Сервера" :
+                        "РџСЂРёС‘Рј РґР°С‚С‹ Рё РІСЂРµРјРµРЅРё РёР·РјРµРЅРµРЅРёСЏ С„Р°Р№Р»Р° {0} РѕС‚ SCADA-РЎРµСЂРІРµСЂР°" :
                         "Receive date and time of file {0} modification from SCADA-Server", filePath), 
                         Log.ActTypes.Action);
 #endif
@@ -1385,7 +1385,7 @@ namespace Scada.Client
                     commState = CommStates.WaitResponse;
                     tcpClient.ReceiveTimeout = commSettings.ServerTimeout;
 
-                    // отправка запроса даты и времени изменения файла
+                    // РѕС‚РїСЂР°РІРєР° Р·Р°РїСЂРѕСЃР° РґР°С‚С‹ Рё РІСЂРµРјРµРЅРё РёР·РјРµРЅРµРЅРёСЏ С„Р°Р№Р»Р°
                     int cmdLen = 6 + fileName.Length;
                     byte[] buf = new byte[cmdLen];
                     buf[0] = (byte)(cmdLen % 256);
@@ -1397,11 +1397,11 @@ namespace Scada.Client
                     Array.Copy(Encoding.Default.GetBytes(fileName), 0, buf, 6, fileName.Length);
                     netStream.Write(buf, 0, cmdLen);
 
-                    // приём даты и времени изменения файла
+                    // РїСЂРёС‘Рј РґР°С‚С‹ Рё РІСЂРµРјРµРЅРё РёР·РјРµРЅРµРЅРёСЏ С„Р°Р№Р»Р°
                     buf = new byte[12];
                     netStream.Read(buf, 0, 12);
 
-                    // обработка даты и времени изменения файла
+                    // РѕР±СЂР°Р±РѕС‚РєР° РґР°С‚С‹ Рё РІСЂРµРјРµРЅРё РёР·РјРµРЅРµРЅРёСЏ С„Р°Р№Р»Р°
                     if (CheckDataFormat(buf, 0x0C))
                     {
                         double dt = BitConverter.ToDouble(buf, 4);
@@ -1411,7 +1411,7 @@ namespace Scada.Client
                     else
                     {
                         errMsg = string.Format(Localization.UseRussian ? 
-                            "Неверный формат ответа SCADA-Сервера на запрос даты и времени изменения файла {0}" :
+                            "РќРµРІРµСЂРЅС‹Р№ С„РѕСЂРјР°С‚ РѕС‚РІРµС‚Р° SCADA-РЎРµСЂРІРµСЂР° РЅР° Р·Р°РїСЂРѕСЃ РґР°С‚С‹ Рё РІСЂРµРјРµРЅРё РёР·РјРµРЅРµРЅРёСЏ С„Р°Р№Р»Р° {0}" :
                             "Incorrect SCADA-Server response to file modification date and time request", filePath);
                         WriteAction(errMsg, Log.ActTypes.Error);
                         commState = CommStates.Error;
@@ -1421,7 +1421,7 @@ namespace Scada.Client
             catch (Exception ex)
             {
                 errMsg = string.Format(Localization.UseRussian ?
-                        "Ошибка при приёме даты и времени изменения файла {0} от SCADA-Сервера: " :
+                        "РћС€РёР±РєР° РїСЂРё РїСЂРёС‘РјРµ РґР°С‚С‹ Рё РІСЂРµРјРµРЅРё РёР·РјРµРЅРµРЅРёСЏ С„Р°Р№Р»Р° {0} РѕС‚ SCADA-РЎРµСЂРІРµСЂР°: " :
                         "Error receiving date and time of file {0} modification from SCADA-Server: ", filePath) + 
                         ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
@@ -1438,7 +1438,7 @@ namespace Scada.Client
 
 
         /// <summary>
-        /// Отправить стандартную команду ТУ SCADA-Серверу
+        /// РћС‚РїСЂР°РІРёС‚СЊ СЃС‚Р°РЅРґР°СЂС‚РЅСѓСЋ РєРѕРјР°РЅРґСѓ РўРЈ SCADA-РЎРµСЂРІРµСЂСѓ
         /// </summary>
         public bool SendStandardCommand(int userID, int ctrlCnl, double cmdVal, out bool result)
         {
@@ -1446,7 +1446,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Отправить бинарную команду ТУ SCADA-Серверу
+        /// РћС‚РїСЂР°РІРёС‚СЊ Р±РёРЅР°СЂРЅСѓСЋ РєРѕРјР°РЅРґСѓ РўРЈ SCADA-РЎРµСЂРІРµСЂСѓ
         /// </summary>
         public bool SendBinaryCommand(int userID, int ctrlCnl, byte[] cmdData, out bool result)
         {
@@ -1454,7 +1454,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Отправить команду внеочередного опроса КП SCADA-Серверу
+        /// РћС‚РїСЂР°РІРёС‚СЊ РєРѕРјР°РЅРґСѓ РІРЅРµРѕС‡РµСЂРµРґРЅРѕРіРѕ РѕРїСЂРѕСЃР° РљРџ SCADA-РЎРµСЂРІРµСЂСѓ
         /// </summary>
         public bool SendRequestCommand(int userID, int ctrlCnl, int kpNum, out bool result)
         {
@@ -1462,12 +1462,12 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Принять команду ТУ от SCADA-Сервера
+        /// РџСЂРёРЅСЏС‚СЊ РєРѕРјР°РЅРґСѓ РўРЈ РѕС‚ SCADA-РЎРµСЂРІРµСЂР°
         /// </summary>
         /// <remarks>
-        /// Для стандартной команды возвращаемые данные команды равны null.
-        /// Для бинарной команды возвращаемое значение команды равно double.NaN.
-        /// Для команды опроса КП возвращаемое значение команды равно double.NaN и данные команды равны null.</remarks>
+        /// Р”Р»СЏ СЃС‚Р°РЅРґР°СЂС‚РЅРѕР№ РєРѕРјР°РЅРґС‹ РІРѕР·РІСЂР°С‰Р°РµРјС‹Рµ РґР°РЅРЅС‹Рµ РєРѕРјР°РЅРґС‹ СЂР°РІРЅС‹ null.
+        /// Р”Р»СЏ Р±РёРЅР°СЂРЅРѕР№ РєРѕРјР°РЅРґС‹ РІРѕР·РІСЂР°С‰Р°РµРјРѕРµ Р·РЅР°С‡РµРЅРёРµ РєРѕРјР°РЅРґС‹ СЂР°РІРЅРѕ double.NaN.
+        /// Р”Р»СЏ РєРѕРјР°РЅРґС‹ РѕРїСЂРѕСЃР° РљРџ РІРѕР·РІСЂР°С‰Р°РµРјРѕРµ Р·РЅР°С‡РµРЅРёРµ РєРѕРјР°РЅРґС‹ СЂР°РІРЅРѕ double.NaN Рё РґР°РЅРЅС‹Рµ РєРѕРјР°РЅРґС‹ СЂР°РІРЅС‹ null.</remarks>
         public bool ReceiveCommand(out int kpNum, out int cmdNum, out double cmdVal, out byte[] cmdData)
         {
             Monitor.Enter(tcpLock);
@@ -1485,14 +1485,14 @@ namespace Scada.Client
                     commState = CommStates.WaitResponse;
                     tcpClient.ReceiveTimeout = commSettings.ServerTimeout;
 
-                    // запрос команды
+                    // Р·Р°РїСЂРѕСЃ РєРѕРјР°РЅРґС‹
                     byte[] buf = new byte[3];
                     buf[0] = 0x03;
                     buf[1] = 0x00;
                     buf[2] = 0x07;
                     netStream.Write(buf, 0, 3);
 
-                    // приём команды
+                    // РїСЂРёС‘Рј РєРѕРјР°РЅРґС‹
                     buf = new byte[5];
                     int bytesRead = netStream.Read(buf, 0, 5);
                     int cmdDataLen = 0;
@@ -1508,7 +1508,7 @@ namespace Scada.Client
                         }
                     }
 
-                    // обработка полученных данных
+                    // РѕР±СЂР°Р±РѕС‚РєР° РїРѕР»СѓС‡РµРЅРЅС‹С… РґР°РЅРЅС‹С…
                     if (CheckDataFormat(buf, 0x07) && bytesRead == buf.Length)
                     {
                         if (cmdDataLen > 0)
@@ -1531,7 +1531,7 @@ namespace Scada.Client
                             commState = CommStates.Authorized;
                             result = true;
                         }
-                        else // команд в очереди нет
+                        else // РєРѕРјР°РЅРґ РІ РѕС‡РµСЂРµРґРё РЅРµС‚
                         {
                             commState = CommStates.Authorized;
                         }
@@ -1539,7 +1539,7 @@ namespace Scada.Client
                     else
                     {
                         errMsg = Localization.UseRussian ?
-                            "Неверный формат ответа SCADA-Сервера на запрос команды ТУ" :
+                            "РќРµРІРµСЂРЅС‹Р№ С„РѕСЂРјР°С‚ РѕС‚РІРµС‚Р° SCADA-РЎРµСЂРІРµСЂР° РЅР° Р·Р°РїСЂРѕСЃ РєРѕРјР°РЅРґС‹ РўРЈ" :
                             "Incorrect SCADA-Server response to telecommand request";
                         WriteAction(errMsg, Log.ActTypes.Error);
                         commState = CommStates.Error;
@@ -1548,7 +1548,7 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                errMsg = (Localization.UseRussian ? "Ошибка при приёме команды ТУ от SCADA-Сервера: " : 
+                errMsg = (Localization.UseRussian ? "РћС€РёР±РєР° РїСЂРё РїСЂРёС‘РјРµ РєРѕРјР°РЅРґС‹ РўРЈ РѕС‚ SCADA-РЎРµСЂРІРµСЂР°: " : 
                     "Error requesting telecommand from SCADA-Server: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
                 Disconnect();
@@ -1564,7 +1564,7 @@ namespace Scada.Client
 
 
         /// <summary>
-        /// Отправить текущий срез SCADA-Серверу
+        /// РћС‚РїСЂР°РІРёС‚СЊ С‚РµРєСѓС‰РёР№ СЃСЂРµР· SCADA-РЎРµСЂРІРµСЂСѓ
         /// </summary>
         public bool SendSrez(SrezTableLight.Srez curSrez, out bool result)
         {
@@ -1580,7 +1580,7 @@ namespace Scada.Client
                     commState = CommStates.WaitResponse;
                     tcpClient.ReceiveTimeout = commSettings.ServerTimeout;
 
-                    // отправка команды записи текущего среза
+                    // РѕС‚РїСЂР°РІРєР° РєРѕРјР°РЅРґС‹ Р·Р°РїРёСЃРё С‚РµРєСѓС‰РµРіРѕ СЃСЂРµР·Р°
                     int cnlCnt = curSrez.CnlNums.Length;
                     int cmdLen = cnlCnt * 14 + 5;
 
@@ -1606,11 +1606,11 @@ namespace Scada.Client
 
                     netStream.Write(buf, 0, cmdLen);
 
-                    // приём результата
+                    // РїСЂРёС‘Рј СЂРµР·СѓР»СЊС‚Р°С‚Р°
                     buf = new byte[4];
                     int bytesRead = netStream.Read(buf, 0, 4);
 
-                    // обработка полученных данных
+                    // РѕР±СЂР°Р±РѕС‚РєР° РїРѕР»СѓС‡РµРЅРЅС‹С… РґР°РЅРЅС‹С…
                     if (bytesRead == buf.Length && CheckDataFormat(buf, 0x03))
                     {
                         result = buf[3] > 0;
@@ -1620,7 +1620,7 @@ namespace Scada.Client
                     else
                     {
                         errMsg = Localization.UseRussian ? 
-                            "Неверный формат ответа SCADA-Сервера на команду отправки текущего среза" :
+                            "РќРµРІРµСЂРЅС‹Р№ С„РѕСЂРјР°С‚ РѕС‚РІРµС‚Р° SCADA-РЎРµСЂРІРµСЂР° РЅР° РєРѕРјР°РЅРґСѓ РѕС‚РїСЂР°РІРєРё С‚РµРєСѓС‰РµРіРѕ СЃСЂРµР·Р°" :
                             "Incorrect SCADA-Server response to sending current data command";
                         WriteAction(errMsg, Log.ActTypes.Exception);
                         commState = CommStates.Error;
@@ -1629,7 +1629,7 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                errMsg = (Localization.UseRussian ? "Ошибка при отправке текущего среза SCADA-Серверу: " : 
+                errMsg = (Localization.UseRussian ? "РћС€РёР±РєР° РїСЂРё РѕС‚РїСЂР°РІРєРµ С‚РµРєСѓС‰РµРіРѕ СЃСЂРµР·Р° SCADA-РЎРµСЂРІРµСЂСѓ: " : 
                     "Error sending current data to SCADA-Server: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
                 Disconnect();
@@ -1644,7 +1644,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Отправить архивный срез SCADA-Серверу
+        /// РћС‚РїСЂР°РІРёС‚СЊ Р°СЂС…РёРІРЅС‹Р№ СЃСЂРµР· SCADA-РЎРµСЂРІРµСЂСѓ
         /// </summary>
         public bool SendArchive(SrezTableLight.Srez arcSrez, out bool result)
         {
@@ -1660,7 +1660,7 @@ namespace Scada.Client
                     commState = CommStates.WaitResponse;
                     tcpClient.ReceiveTimeout = commSettings.ServerTimeout;
 
-                    // отправка команды записи архивного среза
+                    // РѕС‚РїСЂР°РІРєР° РєРѕРјР°РЅРґС‹ Р·Р°РїРёСЃРё Р°СЂС…РёРІРЅРѕРіРѕ СЃСЂРµР·Р°
                     int cnlCnt = arcSrez.CnlNums.Length;
                     int cmdLen = cnlCnt * 14 + 13;
 
@@ -1691,11 +1691,11 @@ namespace Scada.Client
 
                     netStream.Write(buf, 0, cmdLen);
 
-                    // приём результата
+                    // РїСЂРёС‘Рј СЂРµР·СѓР»СЊС‚Р°С‚Р°
                     buf = new byte[4];
                     int bytesRead = netStream.Read(buf, 0, 4);
 
-                    // обработка полученных данных
+                    // РѕР±СЂР°Р±РѕС‚РєР° РїРѕР»СѓС‡РµРЅРЅС‹С… РґР°РЅРЅС‹С…
                     if (bytesRead == buf.Length && CheckDataFormat(buf, 0x04))
                     {
                         result = buf[3] > 0;
@@ -1705,7 +1705,7 @@ namespace Scada.Client
                     else
                     {
                         errMsg = Localization.UseRussian ?
-                            "Неверный формат ответа SCADA-Сервера на команду отправки архивного среза" :
+                            "РќРµРІРµСЂРЅС‹Р№ С„РѕСЂРјР°С‚ РѕС‚РІРµС‚Р° SCADA-РЎРµСЂРІРµСЂР° РЅР° РєРѕРјР°РЅРґСѓ РѕС‚РїСЂР°РІРєРё Р°СЂС…РёРІРЅРѕРіРѕ СЃСЂРµР·Р°" :
                             "Incorrect SCADA-Server response to sending archive data command";
                         WriteAction(errMsg, Log.ActTypes.Exception);
                         commState = CommStates.Error;
@@ -1714,7 +1714,7 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                errMsg = (Localization.UseRussian ? "Ошибка при отправке архивного среза SCADA-Серверу: " : 
+                errMsg = (Localization.UseRussian ? "РћС€РёР±РєР° РїСЂРё РѕС‚РїСЂР°РІРєРµ Р°СЂС…РёРІРЅРѕРіРѕ СЃСЂРµР·Р° SCADA-РЎРµСЂРІРµСЂСѓ: " : 
                     "Error sending archive data to SCADA-Server: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
                 Disconnect();
@@ -1729,7 +1729,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Отправить событие SCADA-Серверу
+        /// РћС‚РїСЂР°РІРёС‚СЊ СЃРѕР±С‹С‚РёРµ SCADA-РЎРµСЂРІРµСЂСѓ
         /// </summary>
         public bool SendEvent(EventTableLight.Event aEvent, out bool result)
         {
@@ -1745,7 +1745,7 @@ namespace Scada.Client
                     commState = CommStates.WaitResponse;
                     tcpClient.ReceiveTimeout = commSettings.ServerTimeout;
 
-                    // отправка команды записи события
+                    // РѕС‚РїСЂР°РІРєР° РєРѕРјР°РЅРґС‹ Р·Р°РїРёСЃРё СЃРѕР±С‹С‚РёСЏ
                     byte descrLen = (byte)aEvent.Descr.Length;
                     byte dataLen = (byte)aEvent.Data.Length;
                     int cmdLen = 46 + descrLen + dataLen;
@@ -1787,11 +1787,11 @@ namespace Scada.Client
 
                     netStream.Write(buf, 0, cmdLen);
 
-                    // приём результата
+                    // РїСЂРёС‘Рј СЂРµР·СѓР»СЊС‚Р°С‚Р°
                     buf = new byte[4];
                     int bytesRead = netStream.Read(buf, 0, 4);
 
-                    // обработка полученных данных
+                    // РѕР±СЂР°Р±РѕС‚РєР° РїРѕР»СѓС‡РµРЅРЅС‹С… РґР°РЅРЅС‹С…
                     if (bytesRead == buf.Length && CheckDataFormat(buf, 0x05))
                     {
                         result = buf[3] > 0;
@@ -1801,7 +1801,7 @@ namespace Scada.Client
                     else
                     {
                         errMsg = Localization.UseRussian ?
-                            "Неверный формат ответа SCADA-Сервера на команду отправки события" :
+                            "РќРµРІРµСЂРЅС‹Р№ С„РѕСЂРјР°С‚ РѕС‚РІРµС‚Р° SCADA-РЎРµСЂРІРµСЂР° РЅР° РєРѕРјР°РЅРґСѓ РѕС‚РїСЂР°РІРєРё СЃРѕР±С‹С‚РёСЏ" :
                             "Incorrect SCADA-Server response to sending event command";
                         WriteAction(errMsg, Log.ActTypes.Error);
                         commState = CommStates.Error;
@@ -1810,7 +1810,7 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                errMsg = (Localization.UseRussian ? "Ошибка при отправке события SCADA-Серверу: " :
+                errMsg = (Localization.UseRussian ? "РћС€РёР±РєР° РїСЂРё РѕС‚РїСЂР°РІРєРµ СЃРѕР±С‹С‚РёСЏ SCADA-РЎРµСЂРІРµСЂСѓ: " :
                     "Error sending event to SCADA-Server: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
                 Disconnect();
@@ -1825,7 +1825,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Отправить команду квитирования события SCADA-Серверу
+        /// РћС‚РїСЂР°РІРёС‚СЊ РєРѕРјР°РЅРґСѓ РєРІРёС‚РёСЂРѕРІР°РЅРёСЏ СЃРѕР±С‹С‚РёСЏ SCADA-РЎРµСЂРІРµСЂСѓ
         /// </summary>
         public bool CheckEvent(int userID, DateTime date, int evNum, out bool result)
         {
@@ -1838,13 +1838,13 @@ namespace Scada.Client
             {
                 if (RestoreConnection())
                 {
-                    WriteAction(Localization.UseRussian ? "Отправка команды квитирования события SCADA-Серверу" :
+                    WriteAction(Localization.UseRussian ? "РћС‚РїСЂР°РІРєР° РєРѕРјР°РЅРґС‹ РєРІРёС‚РёСЂРѕРІР°РЅРёСЏ СЃРѕР±С‹С‚РёСЏ SCADA-РЎРµСЂРІРµСЂСѓ" :
                         "Send check event command to SCADA-Server", Log.ActTypes.Action);
 
                     commState = CommStates.WaitResponse;
                     tcpClient.ReceiveTimeout = commSettings.ServerTimeout;
 
-                    // отправка команды
+                    // РѕС‚РїСЂР°РІРєР° РєРѕРјР°РЅРґС‹
                     byte[] buf = new byte[10];
                     buf[0] = 0x0A;
                     buf[1] = 0x00;
@@ -1858,11 +1858,11 @@ namespace Scada.Client
                     buf[9] = (byte)(evNum / 256);
                     netStream.Write(buf, 0, 10);
 
-                    // приём результата
+                    // РїСЂРёС‘Рј СЂРµР·СѓР»СЊС‚Р°С‚Р°
                     buf = new byte[4];
                     int bytesRead = netStream.Read(buf, 0, 4);
 
-                    // обработка полученных данных
+                    // РѕР±СЂР°Р±РѕС‚РєР° РїРѕР»СѓС‡РµРЅРЅС‹С… РґР°РЅРЅС‹С…
                     if (bytesRead == buf.Length && CheckDataFormat(buf, 0x0E))
                     {
                         result = buf[3] > 0;
@@ -1872,7 +1872,7 @@ namespace Scada.Client
                     else
                     {
                         errMsg = Localization.UseRussian ? 
-                            "Неверный формат ответа SCADA-Сервера на команду квитирования события" :
+                            "РќРµРІРµСЂРЅС‹Р№ С„РѕСЂРјР°С‚ РѕС‚РІРµС‚Р° SCADA-РЎРµСЂРІРµСЂР° РЅР° РєРѕРјР°РЅРґСѓ РєРІРёС‚РёСЂРѕРІР°РЅРёСЏ СЃРѕР±С‹С‚РёСЏ" :
                             "Incorrect SCADA-Server response to check event command";
                         WriteAction(errMsg, Log.ActTypes.Error);
                         commState = CommStates.Error;
@@ -1882,7 +1882,7 @@ namespace Scada.Client
             catch (Exception ex)
             {
                 errMsg = (Localization.UseRussian ? 
-                    "Ошибка при отправке команды квитирования события SCADA-Серверу: " :
+                    "РћС€РёР±РєР° РїСЂРё РѕС‚РїСЂР°РІРєРµ РєРѕРјР°РЅРґС‹ РєРІРёС‚РёСЂРѕРІР°РЅРёСЏ СЃРѕР±С‹С‚РёСЏ SCADA-РЎРµСЂРІРµСЂСѓ: " :
                     "Error sending check event command to SCADA-Server: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
                 Disconnect();
@@ -1897,7 +1897,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Завершить работу со SCADA-Сервером и освободить ресурсы
+        /// Р—Р°РІРµСЂС€РёС‚СЊ СЂР°Р±РѕС‚Сѓ СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј Рё РѕСЃРІРѕР±РѕРґРёС‚СЊ СЂРµСЃСѓСЂСЃС‹
         /// </summary>
         public void Close()
         {
@@ -1906,7 +1906,7 @@ namespace Scada.Client
 
 
         /// <summary>
-        /// Получить роль пользователя по её идентификатору
+        /// РџРѕР»СѓС‡РёС‚СЊ СЂРѕР»СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РїРѕ РµС‘ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂСѓ
         /// </summary>
         public static Roles GetRole(int roleID)
         {
@@ -1921,7 +1921,7 @@ namespace Scada.Client
         }
         
         /// <summary>
-        /// Получить наименование роли по её идентификатору
+        /// РџРѕР»СѓС‡РёС‚СЊ РЅР°РёРјРµРЅРѕРІР°РЅРёРµ СЂРѕР»Рё РїРѕ РµС‘ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂСѓ
         /// </summary>
         public static string GetRoleName(int roleID)
         {
@@ -1929,26 +1929,26 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить наименование роли
+        /// РџРѕР»СѓС‡РёС‚СЊ РЅР°РёРјРµРЅРѕРІР°РЅРёРµ СЂРѕР»Рё
         /// </summary>
         public static string GetRoleName(Roles role)
         {
             switch (role)
             {
                 case Roles.Admin:
-                    return Localization.UseRussian ? "Администратор" : "Administrator";
+                    return Localization.UseRussian ? "РђРґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂ" : "Administrator";
                 case Roles.Dispatcher:
-                    return Localization.UseRussian ? "Диспетчер" : "Dispatcher";
+                    return Localization.UseRussian ? "Р”РёСЃРїРµС‚С‡РµСЂ" : "Dispatcher";
                 case Roles.Guest:
-                    return Localization.UseRussian ? "Гость" : "Guest";
+                    return Localization.UseRussian ? "Р“РѕСЃС‚СЊ" : "Guest";
                 case Roles.App:
-                    return Localization.UseRussian ? "Приложение" : "Application";
+                    return Localization.UseRussian ? "РџСЂРёР»РѕР¶РµРЅРёРµ" : "Application";
                 case Roles.Custom:
-                    return Localization.UseRussian ? "Пользовательская роль" : "Custom role";
+                    return Localization.UseRussian ? "РџРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєР°СЏ СЂРѕР»СЊ" : "Custom role";
                 case Roles.Err:
-                    return Localization.UseRussian ? "Ошибка" : "Error";
+                    return Localization.UseRussian ? "РћС€РёР±РєР°" : "Error";
                 default: // Roles.Disabled
-                    return Localization.UseRussian ? "Отключен" : "Disabled";
+                    return Localization.UseRussian ? "РћС‚РєР»СЋС‡РµРЅ" : "Disabled";
             }
         }
     }

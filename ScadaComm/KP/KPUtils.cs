@@ -106,8 +106,8 @@ namespace Scada.Comm.KP
                 WriteLineImpossible = "Sending string is impossible because the port is not initialized";
                 ReadDataImpossible = "Receiving data is impossible because the port is not initialized";
                 ReadLinesImpossible = "Receiving string is impossible because the port is not initialized";
-                SendNotation = "Отправка";
-                ReceiveNotation = "Приём";
+                SendNotation = "Send";
+                ReceiveNotation = "Receive";
             }
         }
 

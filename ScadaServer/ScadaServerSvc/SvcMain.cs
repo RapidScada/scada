@@ -70,11 +70,14 @@ namespace Scada.Server.Svc
             if (dirsExist)
             {
                 // локализация ScadaData.dll
-                string errMsg;
-                if (Localization.LoadDictionaries(mainLogic.LangDir, "ScadaData", out errMsg))
-                    CommonPhrases.Init();
-                else
-                    appLog.WriteAction(errMsg, Log.ActTypes.Error);
+                if (!Localization.UseRussian)
+                {
+                    string errMsg;
+                    if (Localization.LoadDictionaries(mainLogic.LangDir, "ScadaData", out errMsg))
+                        CommonPhrases.Init();
+                    else
+                        appLog.WriteAction(errMsg, Log.ActTypes.Error);
+                }
 
                 // запуск работы SCADA-Сервера
                 if (!mainLogic.Start())

@@ -274,7 +274,7 @@
             this.Name = "FrmImport";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Импорт";
+            this.Text = "Импорт из файла";
             this.Load += new System.EventHandler(this.FrmImport_Load);
             this.gbIDs.ResumeLayout(false);
             this.gbIDs.PerformLayout();

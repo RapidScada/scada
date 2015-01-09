@@ -1,4 +1,4 @@
-/*
+п»ї/*
  * Copyright 2014 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,28 +40,28 @@ namespace Scada
 {
     /// <summary>
     /// The class contains utility methods for the whole system
-    /// <para>Класс, содержащий вспомогательные методы для всей системы</para>
+    /// <para>РљР»Р°СЃСЃ, СЃРѕРґРµСЂР¶Р°С‰РёР№ РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Рµ РјРµС‚РѕРґС‹ РґР»СЏ РІСЃРµР№ СЃРёСЃС‚РµРјС‹</para>
     /// </summary>
     public static partial class ScadaUtils
     {
         /// <summary>
-        /// Размер отображаемых данных журналов, 10 КБ
+        /// Р Р°Р·РјРµСЂ РѕС‚РѕР±СЂР°Р¶Р°РµРјС‹С… РґР°РЅРЅС‹С… Р¶СѓСЂРЅР°Р»РѕРІ, 10 РљР‘
         /// </summary>
         private const long LogViewSize = 10240;
         /// <summary>
-        /// Порог количества строк в таблице для выбора режима автоподбора ширины столбцов
+        /// РџРѕСЂРѕРі РєРѕР»РёС‡РµСЃС‚РІР° СЃС‚СЂРѕРє РІ С‚Р°Р±Р»РёС†Рµ РґР»СЏ РІС‹Р±РѕСЂР° СЂРµР¶РёРјР° Р°РІС‚РѕРїРѕРґР±РѕСЂР° С€РёСЂРёРЅС‹ СЃС‚РѕР»Р±С†РѕРІ
         /// </summary>
         private const int GridAutoResizeBoundary = 100;
         /// <summary>
-        /// Длительность хранения данных в cookies
+        /// Р”Р»РёС‚РµР»СЊРЅРѕСЃС‚СЊ С…СЂР°РЅРµРЅРёСЏ РґР°РЅРЅС‹С… РІ cookies
         /// </summary>
         public static readonly TimeSpan CookieExpiration = TimeSpan.FromDays(30);
 
-        private static NumberFormatInfo nfi; // формат вещественных чисел
+        private static NumberFormatInfo nfi; // С„РѕСЂРјР°С‚ РІРµС‰РµСЃС‚РІРµРЅРЅС‹С… С‡РёСЃРµР»
 
 
         /// <summary>
-        /// Конструктор
+        /// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
         /// </summary>
         static ScadaUtils()
         {
@@ -70,7 +70,7 @@ namespace Scada
 
 
         /// <summary>
-        /// Добавить "\" к имени директории, если необходимо
+        /// Р”РѕР±Р°РІРёС‚СЊ "\" Рє РёРјРµРЅРё РґРёСЂРµРєС‚РѕСЂРёРё, РµСЃР»Рё РЅРµРѕР±С…РѕРґРёРјРѕ
         /// </summary>
         public static string NormalDir(string dir)
         {
@@ -80,7 +80,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Определить, является ли заданная строка записью даты, используя Localization.Culture
+        /// РћРїСЂРµРґРµР»РёС‚СЊ, СЏРІР»СЏРµС‚СЃСЏ Р»Рё Р·Р°РґР°РЅРЅР°СЏ СЃС‚СЂРѕРєР° Р·Р°РїРёСЃСЊСЋ РґР°С‚С‹, РёСЃРїРѕР»СЊР·СѓСЏ Localization.Culture
         /// </summary>
         public static bool StrIsDate(string s)
         {
@@ -90,7 +90,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Преобразовать строку в дату, используя Localization.Culture
+        /// РџСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ СЃС‚СЂРѕРєСѓ РІ РґР°С‚Сѓ, РёСЃРїРѕР»СЊР·СѓСЏ Localization.Culture
         /// </summary>
         public static DateTime StrToDate(string s)
         {
@@ -102,10 +102,10 @@ namespace Scada
         }
 
         /// <summary>
-        /// Преобразовать строку в вещественное число
+        /// РџСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ СЃС‚СЂРѕРєСѓ РІ РІРµС‰РµСЃС‚РІРµРЅРЅРѕРµ С‡РёСЃР»Рѕ
         /// </summary>
-        /// <remarks>Метод работает с разделителями целой части '.' и ','.
-        /// Если преобразование невозможно, возвращается double.NaN</remarks>
+        /// <remarks>РњРµС‚РѕРґ СЂР°Р±РѕС‚Р°РµС‚ СЃ СЂР°Р·РґРµР»РёС‚РµР»СЏРјРё С†РµР»РѕР№ С‡Р°СЃС‚Рё '.' Рё ','.
+        /// Р•СЃР»Рё РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ РЅРµРІРѕР·РјРѕР¶РЅРѕ, РІРѕР·РІСЂР°С‰Р°РµС‚СЃСЏ double.NaN</remarks>
         public static double StrToDouble(string s)
         {
             try { return ParseDouble(s); }
@@ -113,9 +113,9 @@ namespace Scada
         }
 
         /// <summary>
-        /// Преобразовать строку в вещественное число. Метод работает с разделителями целой части '.' и ','
+        /// РџСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ СЃС‚СЂРѕРєСѓ РІ РІРµС‰РµСЃС‚РІРµРЅРЅРѕРµ С‡РёСЃР»Рѕ. РњРµС‚РѕРґ СЂР°Р±РѕС‚Р°РµС‚ СЃ СЂР°Р·РґРµР»РёС‚РµР»СЏРјРё С†РµР»РѕР№ С‡Р°СЃС‚Рё '.' Рё ','
         /// </summary>
-        /// <remarks>Если преобразование невозможно, вызывается исключение FormatException</remarks>
+        /// <remarks>Р•СЃР»Рё РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ РЅРµРІРѕР·РјРѕР¶РЅРѕ, РІС‹Р·С‹РІР°РµС‚СЃСЏ РёСЃРєР»СЋС‡РµРЅРёРµ FormatException</remarks>
         public static double StrToDoubleExc(string s)
         {
             try { return ParseDouble(s); }
@@ -123,7 +123,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Преобразовать строку в вещественное число. Метод работает с разделителями целой части '.' и ','
+        /// РџСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ СЃС‚СЂРѕРєСѓ РІ РІРµС‰РµСЃС‚РІРµРЅРЅРѕРµ С‡РёСЃР»Рѕ. РњРµС‚РѕРґ СЂР°Р±РѕС‚Р°РµС‚ СЃ СЂР°Р·РґРµР»РёС‚РµР»СЏРјРё С†РµР»РѕР№ С‡Р°СЃС‚Рё '.' Рё ','
         /// </summary>
         public static double ParseDouble(string s)
         {
@@ -132,7 +132,7 @@ namespace Scada
         }
         
         /// <summary>
-        /// Преобразовать массив байт в строку на основе 16-ричного представления
+        /// РџСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ РјР°СЃСЃРёРІ Р±Р°Р№С‚ РІ СЃС‚СЂРѕРєСѓ РЅР° РѕСЃРЅРѕРІРµ 16-СЂРёС‡РЅРѕРіРѕ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ
         /// </summary>
         public static string BytesToHex(byte[] bytes)
         {
@@ -144,7 +144,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Преобразовать строку 16-ричных чисел в массив байт
+        /// РџСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ СЃС‚СЂРѕРєСѓ 16-СЂРёС‡РЅС‹С… С‡РёСЃРµР» РІ РјР°СЃСЃРёРІ Р±Р°Р№С‚
         /// </summary>
         public static bool HexToBytes(string s, out byte[] bytes)
         {
@@ -171,7 +171,7 @@ namespace Scada
         }
         
         /// <summary>
-        /// Вычислить хеш-функцию MD5
+        /// Р’С‹С‡РёСЃР»РёС‚СЊ С…РµС€-С„СѓРЅРєС†РёСЋ MD5
         /// </summary>
         public static string ComputeHash(string s)
         {
@@ -179,9 +179,9 @@ namespace Scada
         }
         
         /// <summary>
-        /// Глубокое (полное) клонирование объекта
+        /// Р“Р»СѓР±РѕРєРѕРµ (РїРѕР»РЅРѕРµ) РєР»РѕРЅРёСЂРѕРІР°РЅРёРµ РѕР±СЉРµРєС‚Р°
         /// </summary>
-        /// <remarks>Все клонируемые объекты должны иметь атрибут Serializable</remarks>
+        /// <remarks>Р’СЃРµ РєР»РѕРЅРёСЂСѓРµРјС‹Рµ РѕР±СЉРµРєС‚С‹ РґРѕР»Р¶РЅС‹ РёРјРµС‚СЊ Р°С‚СЂРёР±СѓС‚ Serializable</remarks>
         public static object DeepClone(object obj, SerializationBinder binder = null)
         {
             using (MemoryStream ms = new MemoryStream())
@@ -198,7 +198,7 @@ namespace Scada
 
 
         /// <summary>
-        /// Показать информационное сообщение
+        /// РџРѕРєР°Р·Р°С‚СЊ РёРЅС„РѕСЂРјР°С†РёРѕРЅРЅРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ
         /// </summary>
         public static void ShowInfo(string message)
         {
@@ -206,7 +206,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Показать сообщение об ошибке
+        /// РџРѕРєР°Р·Р°С‚СЊ СЃРѕРѕР±С‰РµРЅРёРµ РѕР± РѕС€РёР±РєРµ
         /// </summary>
         public static void ShowError(string message)
         {
@@ -214,7 +214,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Показать предупреждение
+        /// РџРѕРєР°Р·Р°С‚СЊ РїСЂРµРґСѓРїСЂРµР¶РґРµРЅРёРµ
         /// </summary>
         public static void ShowWarning(string message)
         {
@@ -222,7 +222,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Установить значение элемента управления типа NumericUpDown в пределах допустимого диапазона
+        /// РЈСЃС‚Р°РЅРѕРІРёС‚СЊ Р·РЅР°С‡РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° СѓРїСЂР°РІР»РµРЅРёСЏ С‚РёРїР° NumericUpDown РІ РїСЂРµРґРµР»Р°С… РґРѕРїСѓСЃС‚РёРјРѕРіРѕ РґРёР°РїР°Р·РѕРЅР°
         /// </summary>
         public static void SetNumericValue(this NumericUpDown num, decimal val)
         {
@@ -235,7 +235,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Автоподбор ширины столбцов таблицы с выбором режима в зависимости от количества строк
+        /// РђРІС‚РѕРїРѕРґР±РѕСЂ С€РёСЂРёРЅС‹ СЃС‚РѕР»Р±С†РѕРІ С‚Р°Р±Р»РёС†С‹ СЃ РІС‹Р±РѕСЂРѕРј СЂРµР¶РёРјР° РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ РєРѕР»РёС‡РµСЃС‚РІР° СЃС‚СЂРѕРє
         /// </summary>
         public static void AutoResizeColumns(this DataGridView dataGridView)
         {
@@ -246,7 +246,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Загрузить из файлов изображение и гиперссылку для формы о программе
+        /// Р—Р°РіСЂСѓР·РёС‚СЊ РёР· С„Р°Р№Р»РѕРІ РёР·РѕР±СЂР°Р¶РµРЅРёРµ Рё РіРёРїРµСЂСЃСЃС‹Р»РєСѓ РґР»СЏ С„РѕСЂРјС‹ Рѕ РїСЂРѕРіСЂР°РјРјРµ
         /// </summary>
         public static bool LoadAboutForm(string imgFileName, string linkFileName,
             Form frmAbout, PictureBox pictureBox, WinForms.Label lblLink, 
@@ -255,7 +255,7 @@ namespace Scada
             errMsg = "";
             link = "";
 
-            // загрузка заставки из файла, если он существует
+            // Р·Р°РіСЂСѓР·РєР° Р·Р°СЃС‚Р°РІРєРё РёР· С„Р°Р№Р»Р°, РµСЃР»Рё РѕРЅ СЃСѓС‰РµСЃС‚РІСѓРµС‚
             try
             {
                 if (File.Exists(imgFileName))
@@ -263,7 +263,7 @@ namespace Scada
                     System.Drawing.Image image = System.Drawing.Image.FromFile(imgFileName);
                     pictureBox.Image = image;
 
-                    // проверка, корректировка и установка размеров формы и изображения
+                    // РїСЂРѕРІРµСЂРєР°, РєРѕСЂСЂРµРєС‚РёСЂРѕРІРєР° Рё СѓСЃС‚Р°РЅРѕРІРєР° СЂР°Р·РјРµСЂРѕРІ С„РѕСЂРјС‹ Рё РёР·РѕР±СЂР°Р¶РµРЅРёСЏ
                     int width;
                     if (image.Width < 100) width = 100;
                     else if (image.Width > 800) width = 800;
@@ -289,7 +289,7 @@ namespace Scada
 
             if (errMsg == "")
             {
-                // загрузка гиперссылки из файла, если он существует
+                // Р·Р°РіСЂСѓР·РєР° РіРёРїРµСЂСЃСЃС‹Р»РєРё РёР· С„Р°Р№Р»Р°, РµСЃР»Рё РѕРЅ СЃСѓС‰РµСЃС‚РІСѓРµС‚
                 StreamReader reader = null;
                 try
                 {
@@ -311,7 +311,7 @@ namespace Scada
                                 if (parts.Length >= 4 && int.TryParse(parts[0], out x) && int.TryParse(parts[1], out y) &&
                                     int.TryParse(parts[2], out w) && int.TryParse(parts[3], out h))
                                 {
-                                    // проверка положения и размеров
+                                    // РїСЂРѕРІРµСЂРєР° РїРѕР»РѕР¶РµРЅРёСЏ Рё СЂР°Р·РјРµСЂРѕРІ
                                     if (x < 0) x = 0;
                                     else if (x >= frmAbout.Width) x = frmAbout.Width - 1;
                                     if (y < 0) y = 0;
@@ -357,9 +357,9 @@ namespace Scada
         }
         
         /// <summary>
-        /// Загрузить строки из файла
+        /// Р—Р°РіСЂСѓР·РёС‚СЊ СЃС‚СЂРѕРєРё РёР· С„Р°Р№Р»Р°
         /// </summary>
-        /// <remarks>Если fullLoad равен false, то объём загружаемых данных не более LogViewSize</remarks>
+        /// <remarks>Р•СЃР»Рё fullLoad СЂР°РІРµРЅ false, С‚Рѕ РѕР±СЉС‘Рј Р·Р°РіСЂСѓР¶Р°РµРјС‹С… РґР°РЅРЅС‹С… РЅРµ Р±РѕР»РµРµ LogViewSize</remarks>
         private static List<string> LoadStrings(string fileName, bool fullLoad)
         {
             using (FileStream fileStream = 
@@ -393,7 +393,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Обновить список строк, загрузив данные из файла
+        /// РћР±РЅРѕРІРёС‚СЊ СЃРїРёСЃРѕРє СЃС‚СЂРѕРє, Р·Р°РіСЂСѓР·РёРІ РґР°РЅРЅС‹Рµ РёР· С„Р°Р№Р»Р°
         /// </summary>
         public static void RefreshListBox(this WinForms.ListBox listBox, string fileName, bool fullLoad, 
             ref DateTime fileAge)
@@ -408,16 +408,16 @@ namespace Scada
 
                     if (fileAge != newFileAge)
                     {
-                        // загрузка строк из файла
+                        // Р·Р°РіСЂСѓР·РєР° СЃС‚СЂРѕРє РёР· С„Р°Р№Р»Р°
                         List<string> stringList = LoadStrings(fileName, fullLoad);
                         int newLineCnt = stringList.Count;
 
-                        // проверка для исключения отображения данных, считыванных в момент записи файла
+                        // РїСЂРѕРІРµСЂРєР° РґР»СЏ РёСЃРєР»СЋС‡РµРЅРёСЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РґР°РЅРЅС‹С…, СЃС‡РёС‚С‹РІР°РЅРЅС‹С… РІ РјРѕРјРµРЅС‚ Р·Р°РїРёСЃРё С„Р°Р№Р»Р°
                         if (newLineCnt > 0 || (DateTime.Now - newFileAge).TotalMilliseconds > 50)
                         {
                             fileAge = newFileAge;
 
-                            // вывод данных в список
+                            // РІС‹РІРѕРґ РґР°РЅРЅС‹С… РІ СЃРїРёСЃРѕРє
                             int oldLineCnt = listBox.Items.Count;
                             int selectedIndex = listBox.SelectedIndex;
                             int topIndex = listBox.TopIndex;
@@ -435,11 +435,11 @@ namespace Scada
                             for (int i = newLineCnt; i < oldLineCnt; i++)
                                 listBox.Items.RemoveAt(newLineCnt);
 
-                            // установка позиции прокрутки списка
+                            // СѓСЃС‚Р°РЅРѕРІРєР° РїРѕР·РёС†РёРё РїСЂРѕРєСЂСѓС‚РєРё СЃРїРёСЃРєР°
                             if (listBox.SelectionMode == WinForms.SelectionMode.One && newLineCnt > 0)
                             {
                                 if (selectedIndex < 0 && !fullLoad)
-                                    listBox.SelectedIndex = newLineCnt - 1; // прокрутка в конец списка
+                                    listBox.SelectedIndex = newLineCnt - 1; // РїСЂРѕРєСЂСѓС‚РєР° РІ РєРѕРЅРµС† СЃРїРёСЃРєР°
                                 else
                                     listBox.TopIndex = topIndex;
                             }
@@ -485,7 +485,7 @@ namespace Scada
 
 
         /// <summary>
-        /// Отключить кэширование страницы
+        /// РћС‚РєР»СЋС‡РёС‚СЊ РєСЌС€РёСЂРѕРІР°РЅРёРµ СЃС‚СЂР°РЅРёС†С‹
         /// </summary>
         public static void DisablePageCache(HttpResponse response)
         {
@@ -497,7 +497,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Преобразовать строку для вывода на веб-страницу, заменив "\n" на тег "br"
+        /// РџСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ СЃС‚СЂРѕРєСѓ РґР»СЏ РІС‹РІРѕРґР° РЅР° РІРµР±-СЃС‚СЂР°РЅРёС†Сѓ, Р·Р°РјРµРЅРёРІ "\n" РЅР° С‚РµРі "br"
         /// </summary>
         public static string HtmlEncodeWithBreak(string s)
         {
