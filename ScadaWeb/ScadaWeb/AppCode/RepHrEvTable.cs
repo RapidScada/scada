@@ -1,4 +1,4 @@
-/*
+п»ї/*
  * Copyright 2014 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,27 +34,27 @@ namespace Scada.Web
 {
     /// <summary>
     /// Generate "Hourly data and events" report
-    /// <para>Генерация отчёта "Часовые срезы и события"</para>
+    /// <para>Р“РµРЅРµСЂР°С†РёСЏ РѕС‚С‡С‘С‚Р° "Р§Р°СЃРѕРІС‹Рµ СЃСЂРµР·С‹ Рё СЃРѕР±С‹С‚РёСЏ"</para>
     /// </summary>
     public class RepHrEvTable : ExcelRepBuilder
     {
-        private BaseView baseView;            // представление, по которому генерируется отчёт
-        private TableView tableView;          // представление, приведённое к типу табличного представления
-        private DateTime date;                // дата запрашиваемых данных
-        private int eventOut;                 // тип вывода событий
-        private DateTime genDT;               // дата и время генерации отчёта
+        private BaseView baseView;            // РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ, РїРѕ РєРѕС‚РѕСЂРѕРјСѓ РіРµРЅРµСЂРёСЂСѓРµС‚СЃСЏ РѕС‚С‡С‘С‚
+        private TableView tableView;          // РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ, РїСЂРёРІРµРґС‘РЅРЅРѕРµ Рє С‚РёРїСѓ С‚Р°Р±Р»РёС‡РЅРѕРіРѕ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ
+        private DateTime date;                // РґР°С‚Р° Р·Р°РїСЂР°С€РёРІР°РµРјС‹С… РґР°РЅРЅС‹С…
+        private int eventOut;                 // С‚РёРї РІС‹РІРѕРґР° СЃРѕР±С‹С‚РёР№
+        private DateTime genDT;               // РґР°С‚Р° Рё РІСЂРµРјСЏ РіРµРЅРµСЂР°С†РёРё РѕС‚С‡С‘С‚Р°
 
-        private Row templItemRow;             // строка-шаблон элемента таблицы часовых срезов
-        private Row templEventRow;            // строка-шаблон таблицы событий
+        private Row templItemRow;             // СЃС‚СЂРѕРєР°-С€Р°Р±Р»РѕРЅ СЌР»РµРјРµРЅС‚Р° С‚Р°Р±Р»РёС†С‹ С‡Р°СЃРѕРІС‹С… СЃСЂРµР·РѕРІ
+        private Row templEventRow;            // СЃС‚СЂРѕРєР°-С€Р°Р±Р»РѕРЅ С‚Р°Р±Р»РёС†С‹ СЃРѕР±С‹С‚РёР№
 
-        private SrezTableLight hourTable;     // таблица часовых срезов
-        private EventTableLight eventTable;   // таблица событий
-        private TableView.Item item;          // обрабатываемый элемент представления
-        private MainData.EventView eventView; // обрабатываемое событие
+        private SrezTableLight hourTable;     // С‚Р°Р±Р»РёС†Р° С‡Р°СЃРѕРІС‹С… СЃСЂРµР·РѕРІ
+        private EventTableLight eventTable;   // С‚Р°Р±Р»РёС†Р° СЃРѕР±С‹С‚РёР№
+        private TableView.Item item;          // РѕР±СЂР°Р±Р°С‚С‹РІР°РµРјС‹Р№ СЌР»РµРјРµРЅС‚ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ
+        private MainData.EventView eventView; // РѕР±СЂР°Р±Р°С‚С‹РІР°РµРјРѕРµ СЃРѕР±С‹С‚РёРµ
 
 
         /// <summary>
-        /// Конструктор
+        /// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
         /// </summary>
         public RepHrEvTable()
             : base()
@@ -63,7 +63,7 @@ namespace Scada.Web
 
 
         /// <summary>
-        /// Получить имя отчёта
+        /// РџРѕР»СѓС‡РёС‚СЊ РёРјСЏ РѕС‚С‡С‘С‚Р°
         /// </summary>
         public override string RepName
         {
@@ -74,7 +74,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Получить описание отчёта
+        /// РџРѕР»СѓС‡РёС‚СЊ РѕРїРёСЃР°РЅРёРµ РѕС‚С‡С‘С‚Р°
         /// </summary>
         public override string RepDescr
         {
@@ -85,7 +85,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Получить имя файла шаблона
+        /// РџРѕР»СѓС‡РёС‚СЊ РёРјСЏ С„Р°Р№Р»Р° С€Р°Р±Р»РѕРЅР°
         /// </summary>
         public override string TemplateFileName
         {
@@ -97,10 +97,10 @@ namespace Scada.Web
         
 
         /// <summary>
-        /// Установить параметры отчёта.
-        /// repParams[0] - табличное представление типа TableView,
-        /// repParams[1] - дата запрашиваемых данных типа DateTime,
-        /// repParams[2] - вывод событий типа int: 0 и меньше - не выводить, 1 - все события, иначе - по представлению
+        /// РЈСЃС‚Р°РЅРѕРІРёС‚СЊ РїР°СЂР°РјРµС‚СЂС‹ РѕС‚С‡С‘С‚Р°.
+        /// repParams[0] - С‚Р°Р±Р»РёС‡РЅРѕРµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ С‚РёРїР° TableView,
+        /// repParams[1] - РґР°С‚Р° Р·Р°РїСЂР°С€РёРІР°РµРјС‹С… РґР°РЅРЅС‹С… С‚РёРїР° DateTime,
+        /// repParams[2] - РІС‹РІРѕРґ СЃРѕР±С‹С‚РёР№ С‚РёРїР° int: 0 Рё РјРµРЅСЊС€Рµ - РЅРµ РІС‹РІРѕРґРёС‚СЊ, 1 - РІСЃРµ СЃРѕР±С‹С‚РёСЏ, РёРЅР°С‡Рµ - РїРѕ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЋ
         /// </summary>
         public override void SetParams(params object[] repParams)
         {
@@ -114,7 +114,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Начальная обработка дерева XML-документа
+        /// РќР°С‡Р°Р»СЊРЅР°СЏ РѕР±СЂР°Р±РѕС‚РєР° РґРµСЂРµРІР° XML-РґРѕРєСѓРјРµРЅС‚Р°
         /// </summary>
         protected override void StartXmlDocProc()
         {
@@ -137,19 +137,19 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Окончательная обработка дерева XML-документа
+        /// РћРєРѕРЅС‡Р°С‚РµР»СЊРЅР°СЏ РѕР±СЂР°Р±РѕС‚РєР° РґРµСЂРµРІР° XML-РґРѕРєСѓРјРµРЅС‚Р°
         /// </summary>
         protected override void FinalXmlDocProc()
         {
-            int hourDataWsInd = 0; // индекс листа часовых срезов
-            int eventsWsInd = 1;   // индекс листа событий
+            int hourDataWsInd = 0; // РёРЅРґРµРєСЃ Р»РёСЃС‚Р° С‡Р°СЃРѕРІС‹С… СЃСЂРµР·РѕРІ
+            int eventsWsInd = 1;   // РёРЅРґРµРєСЃ Р»РёСЃС‚Р° СЃРѕР±С‹С‚РёР№
             bool hourDataWsExists = workbook != null && workbook.Worksheets.Count > hourDataWsInd;
             bool eventsWsExists = workbook != null && workbook.Worksheets.Count > eventsWsInd;
 
-            // работа с листом часовых срезов
+            // СЂР°Р±РѕС‚Р° СЃ Р»РёСЃС‚РѕРј С‡Р°СЃРѕРІС‹С… СЃСЂРµР·РѕРІ
             if (tableView == null)
             {
-                // удаление листа часовых срезов
+                // СѓРґР°Р»РµРЅРёРµ Р»РёСЃС‚Р° С‡Р°СЃРѕРІС‹С… СЃСЂРµР·РѕРІ
                 if (hourDataWsExists)
                 {
                     workbook.RemoveWorksheet(hourDataWsInd);
@@ -158,17 +158,17 @@ namespace Scada.Web
             }
             else
             {
-                // перевод наименования листа
+                // РїРµСЂРµРІРѕРґ РЅР°РёРјРµРЅРѕРІР°РЅРёСЏ Р»РёСЃС‚Р°
                 if (hourDataWsExists)
                     workbook.Worksheets[hourDataWsInd].Name = WebPhrases.HourDataPage;
 
                 if (templItemRow != null)
                 {
-                    // удаление лишних атрибутов таблицы
+                    // СѓРґР°Р»РµРЅРёРµ Р»РёС€РЅРёС… Р°С‚СЂРёР±СѓС‚РѕРІ С‚Р°Р±Р»РёС†С‹
                     Table table = templItemRow.ParentTable;
                     table.RemoveTableNodeAttrs();
 
-                    // заполнение таблицы часовых срезов
+                    // Р·Р°РїРѕР»РЅРµРЅРёРµ С‚Р°Р±Р»РёС†С‹ С‡Р°СЃРѕРІС‹С… СЃСЂРµР·РѕРІ
                     for (int i = 0; i < tableView.VisibleCount; i++)
                     {
                         item = tableView.VisibleItems[i];
@@ -178,38 +178,38 @@ namespace Scada.Web
                     }
                     item = null;
 
-                    // удаление строки-шаблона
+                    // СѓРґР°Р»РµРЅРёРµ СЃС‚СЂРѕРєРё-С€Р°Р±Р»РѕРЅР°
                     int rowIndex = table.Rows.IndexOf(templItemRow);
                     table.RemoveRow(rowIndex);
                 }
             }
 
-            // работа с листом событий
+            // СЂР°Р±РѕС‚Р° СЃ Р»РёСЃС‚РѕРј СЃРѕР±С‹С‚РёР№
             if (eventOut <= 0)
             {
-                // удаление листа событий
+                // СѓРґР°Р»РµРЅРёРµ Р»РёСЃС‚Р° СЃРѕР±С‹С‚РёР№
                 if (eventsWsExists)
                     workbook.RemoveWorksheet(eventsWsInd);
             }
             else
             {
-                // перевод наименования листа
+                // РїРµСЂРµРІРѕРґ РЅР°РёРјРµРЅРѕРІР°РЅРёСЏ Р»РёСЃС‚Р°
                 if (eventsWsExists)
                     workbook.Worksheets[eventsWsInd].Name = WebPhrases.EventsPage;
 
                 if (templEventRow != null)
                 {
-                    // удаление лишних атрибутов таблицы
+                    // СѓРґР°Р»РµРЅРёРµ Р»РёС€РЅРёС… Р°С‚СЂРёР±СѓС‚РѕРІ С‚Р°Р±Р»РёС†С‹
                     Table table = templEventRow.ParentTable;
                     table.RemoveTableNodeAttrs();
 
-                    // выбор событий
+                    // РІС‹Р±РѕСЂ СЃРѕР±С‹С‚РёР№
                     List<MainData.EventView> eventViewList = 
                         AppData.MainData.ConvertEvents(eventOut == 1 ?
                             AppData.MainData.GetEvents(eventTable, null) :
                             AppData.MainData.GetEvents(eventTable, baseView.CnlList));
 
-                    // заполнение таблицы событий
+                    // Р·Р°РїРѕР»РЅРµРЅРёРµ С‚Р°Р±Р»РёС†С‹ СЃРѕР±С‹С‚РёР№
                     for (int i = 0; i < eventViewList.Count; i++)
                     {
                         eventView = eventViewList[i];
@@ -218,7 +218,7 @@ namespace Scada.Web
                         table.AppendRow(rowClone);
                     }
 
-                    // удаление строки-шаблона
+                    // СѓРґР°Р»РµРЅРёРµ СЃС‚СЂРѕРєРё-С€Р°Р±Р»РѕРЅР°
                     int rowIndex = table.Rows.IndexOf(templEventRow);
                     table.RemoveRow(rowIndex);
                 }
@@ -226,10 +226,10 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Обработка директивы, изменяющей значение элемента
+        /// РћР±СЂР°Р±РѕС‚РєР° РґРёСЂРµРєС‚РёРІС‹, РёР·РјРµРЅСЏСЋС‰РµР№ Р·РЅР°С‡РµРЅРёРµ СЌР»РµРјРµРЅС‚Р°
         /// </summary>
-        /// <param name="xmlNode">XML-узел, содержащий директиву</param>
-        /// <param name="valName">Имя элемента, заданное директивой</param>
+        /// <param name="xmlNode">XML-СѓР·РµР», СЃРѕРґРµСЂР¶Р°С‰РёР№ РґРёСЂРµРєС‚РёРІСѓ</param>
+        /// <param name="valName">РРјСЏ СЌР»РµРјРµРЅС‚Р°, Р·Р°РґР°РЅРЅРѕРµ РґРёСЂРµРєС‚РёРІРѕР№</param>
         protected override void ProcVal(Cell cell, string valName)
         {
             XmlNode dataNode = cell.DataNode;
@@ -353,10 +353,10 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Обработка директивы, создающей строки таблицы
+        /// РћР±СЂР°Р±РѕС‚РєР° РґРёСЂРµРєС‚РёРІС‹, СЃРѕР·РґР°СЋС‰РµР№ СЃС‚СЂРѕРєРё С‚Р°Р±Р»РёС†С‹
         /// </summary>
-        /// <param name="xmlNode">XML-узел, содержащий директиву</param>
-        /// <param name="rowName">Имя строки, заданное директивой</param>
+        /// <param name="xmlNode">XML-СѓР·РµР», СЃРѕРґРµСЂР¶Р°С‰РёР№ РґРёСЂРµРєС‚РёРІСѓ</param>
+        /// <param name="rowName">РРјСЏ СЃС‚СЂРѕРєРё, Р·Р°РґР°РЅРЅРѕРµ РґРёСЂРµРєС‚РёРІРѕР№</param>
         protected override void ProcRow(Cell cell, string rowName)
         {
             if (rowName == "Item")
