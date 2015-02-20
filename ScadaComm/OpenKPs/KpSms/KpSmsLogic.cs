@@ -1,4 +1,4 @@
-/*
+п»ї/*
  * Copyright 2014 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,23 +36,23 @@ namespace Scada.Comm.KP
 {
     /// <summary>
     /// Device communication logic
-    /// <para>Логика работы КП</para>
+    /// <para>Р›РѕРіРёРєР° СЂР°Р±РѕС‚С‹ РљРџ</para>
     /// </summary>
     public sealed class KpSmsLogic : KPLogic
     {
         /// <summary>
-        /// Сообщение
+        /// РЎРѕРѕР±С‰РµРЅРёРµ
         /// </summary>
         private class Message
         {
-            public int Index;          // индекс
-            public int Status;         // статус: 0 - не прочитано, 1 - прочитано, 2 - не отправлено, 3 - отправлено
-            public int Length;         // длина PDU без учёта номера центра сообщений
+            public int Index;          // РёРЅРґРµРєСЃ
+            public int Status;         // СЃС‚Р°С‚СѓСЃ: 0 - РЅРµ РїСЂРѕС‡РёС‚Р°РЅРѕ, 1 - РїСЂРѕС‡РёС‚Р°РЅРѕ, 2 - РЅРµ РѕС‚РїСЂР°РІР»РµРЅРѕ, 3 - РѕС‚РїСЂР°РІР»РµРЅРѕ
+            public int Length;         // РґР»РёРЅР° PDU Р±РµР· СѓС‡С‘С‚Р° РЅРѕРјРµСЂР° С†РµРЅС‚СЂР° СЃРѕРѕР±С‰РµРЅРёР№
 
-            public string Phone;       // телефонный номер отправителя
-            public DateTime TimeStamp; // временная метка центра сообщений
-            public string Text;        // текст сообщения
-            public object[] Reference; // ссылка на сообщение в списке общих свойств линии связи
+            public string Phone;       // С‚РµР»РµС„РѕРЅРЅС‹Р№ РЅРѕРјРµСЂ РѕС‚РїСЂР°РІРёС‚РµР»СЏ
+            public DateTime TimeStamp; // РІСЂРµРјРµРЅРЅР°СЏ РјРµС‚РєР° С†РµРЅС‚СЂР° СЃРѕРѕР±С‰РµРЅРёР№
+            public string Text;        // С‚РµРєСЃС‚ СЃРѕРѕР±С‰РµРЅРёСЏ
+            public object[] Reference; // СЃСЃС‹Р»РєР° РЅР° СЃРѕРѕР±С‰РµРЅРёРµ РІ СЃРїРёСЃРєРµ РѕР±С‰РёС… СЃРІРѕР№СЃС‚РІ Р»РёРЅРёРё СЃРІСЏР·Рё
 
             public Message()
             {
@@ -68,7 +68,7 @@ namespace Scada.Comm.KP
         }
 
         /// <summary>
-        /// Список сообщений для общих свойств линии связи
+        /// РЎРїРёСЃРѕРє СЃРѕРѕР±С‰РµРЅРёР№ РґР»СЏ РѕР±С‰РёС… СЃРІРѕР№СЃС‚РІ Р»РёРЅРёРё СЃРІСЏР·Рё
         /// </summary>
         private class MessageObjList : List<object[]>
         {
@@ -78,14 +78,14 @@ namespace Scada.Comm.KP
             }
         }
 
-        private const int MaxEventCount = 999999; // максимальное значение счётчика событий КП
+        private const int MaxEventCount = 999999; // РјР°РєСЃРёРјР°Р»СЊРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ СЃС‡С‘С‚С‡РёРєР° СЃРѕР±С‹С‚РёР№ РљРџ
 
-        private bool primary;          // основной КП на линии связи, обмен данными с GSM-терминалом
-        List<Message> messageList;     // список сообщений, полученных GSM-терминалом
+        private bool primary;          // РѕСЃРЅРѕРІРЅРѕР№ РљРџ РЅР° Р»РёРЅРёРё СЃРІСЏР·Рё, РѕР±РјРµРЅ РґР°РЅРЅС‹РјРё СЃ GSM-С‚РµСЂРјРёРЅР°Р»РѕРј
+        List<Message> messageList;     // СЃРїРёСЃРѕРє СЃРѕРѕР±С‰РµРЅРёР№, РїРѕР»СѓС‡РµРЅРЅС‹С… GSM-С‚РµСЂРјРёРЅР°Р»РѕРј
 
 
         /// <summary>
-        /// Конструктор
+        /// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
         /// </summary>
         public KpSmsLogic(int number)
             : base(number)
@@ -98,8 +98,8 @@ namespace Scada.Comm.KP
 
             if (Localization.UseRussian)
             {
-                KPParams[0] = new Param(1, "Связь");
-                KPParams[1] = new Param(2, "Кол-во событий");
+                KPParams[0] = new Param(1, "РЎРІСЏР·СЊ");
+                KPParams[1] = new Param(2, "РљРѕР»-РІРѕ СЃРѕР±С‹С‚РёР№");
             }
             else
             {
@@ -110,7 +110,7 @@ namespace Scada.Comm.KP
 
 
         /// <summary>
-        /// Заполнить список сообщений по входным данным, полученным от GSM-терминала
+        /// Р—Р°РїРѕР»РЅРёС‚СЊ СЃРїРёСЃРѕРє СЃРѕРѕР±С‰РµРЅРёР№ РїРѕ РІС…РѕРґРЅС‹Рј РґР°РЅРЅС‹Рј, РїРѕР»СѓС‡РµРЅРЅС‹Рј РѕС‚ GSM-С‚РµСЂРјРёРЅР°Р»Р°
         /// </summary>
         private bool FillMessageList(List<string> inData, out string errMsg)
         {
@@ -124,7 +124,7 @@ namespace Scada.Comm.KP
                 string line = inData[i - 1];
                 if (line.StartsWith("+CMGL: ") && line.Length > 7)
                 {
-                    // получение индекса, статуса и длины сообщения
+                    // РїРѕР»СѓС‡РµРЅРёРµ РёРЅРґРµРєСЃР°, СЃС‚Р°С‚СѓСЃР° Рё РґР»РёРЅС‹ СЃРѕРѕР±С‰РµРЅРёСЏ
                     Message msg = new Message();
                     string[] parts = line.Substring(7).Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                     if (parts.Length >= 3)
@@ -140,7 +140,7 @@ namespace Scada.Comm.KP
                         }
                     }
 
-                    // расшифровка PDU
+                    // СЂР°СЃС€РёС„СЂРѕРІРєР° PDU
                     if (msg.Index > 0)
                     {
                         if (i <= lineCnt)
@@ -148,17 +148,17 @@ namespace Scada.Comm.KP
                             line = inData[i - 1]; // PDU
                             try
                             {
-                                int scaLen = int.Parse(line.Substring(0, 2));         // длина номера центра сообщений
-                                int oaPos = scaLen * 2 + 4;                           // позиция номера отправителя
+                                int scaLen = int.Parse(line.Substring(0, 2));         // РґР»РёРЅР° РЅРѕРјРµСЂР° С†РµРЅС‚СЂР° СЃРѕРѕР±С‰РµРЅРёР№
+                                int oaPos = scaLen * 2 + 4;                           // РїРѕР·РёС†РёСЏ РЅРѕРјРµСЂР° РѕС‚РїСЂР°РІРёС‚РµР»СЏ
 
                                 if (msg.Length == (line.Length - oaPos + 2) / 2)
                                 {
                                     int oaLen = int.Parse(line.Substring(oaPos, 2),
-                                        NumberStyles.HexNumber);                      // длина номера отправителя
+                                        NumberStyles.HexNumber);                      // РґР»РёРЅР° РЅРѕРјРµСЂР° РѕС‚РїСЂР°РІРёС‚РµР»СЏ
                                     if (oaLen % 2 > 0) oaLen++;
                                     msg.Phone = DecodePhone(line.Substring(oaPos + 2, oaLen + 2));
 
-                                    int sctsPos = oaPos + oaLen + 8;                  // позиция временной метки
+                                    int sctsPos = oaPos + oaLen + 8;                  // РїРѕР·РёС†РёСЏ РІСЂРµРјРµРЅРЅРѕР№ РјРµС‚РєРё
                                     msg.TimeStamp = new DateTime(int.Parse("20" + line[sctsPos + 1] + line[sctsPos]),
                                         int.Parse(line[sctsPos + 3].ToString() + line[sctsPos + 2]),
                                         int.Parse(line[sctsPos + 5].ToString() + line[sctsPos + 4]),
@@ -166,11 +166,11 @@ namespace Scada.Comm.KP
                                         int.Parse(line[sctsPos + 9].ToString() + line[sctsPos + 8]),
                                         int.Parse(line[sctsPos + 11].ToString() + line[sctsPos + 10]));
 
-                                    string dcs = line.Substring(sctsPos - 2, 2);      // кодировка
-                                    int udPos = sctsPos + 16;                         // позиция текста сообщения
+                                    string dcs = line.Substring(sctsPos - 2, 2);      // РєРѕРґРёСЂРѕРІРєР°
+                                    int udPos = sctsPos + 16;                         // РїРѕР·РёС†РёСЏ С‚РµРєСЃС‚Р° СЃРѕРѕР±С‰РµРЅРёСЏ
                                     int udl = int.Parse(line.Substring(udPos - 2, 2),
-                                        NumberStyles.HexNumber);                      // длина текста сообщения
-                                    string ud = line.Substring(udPos);                // текст сообщения
+                                        NumberStyles.HexNumber);                      // РґР»РёРЅР° С‚РµРєСЃС‚Р° СЃРѕРѕР±С‰РµРЅРёСЏ
+                                    string ud = line.Substring(udPos);                // С‚РµРєСЃС‚ СЃРѕРѕР±С‰РµРЅРёСЏ
                                     if (dcs == "00" && ud.Length * 4 / 7 == udl || dcs != "00" && ud.Length == udl * 2)
                                     {
                                         if (dcs == "00")
@@ -185,35 +185,35 @@ namespace Scada.Comm.KP
                                     else
                                     {
                                         errMsgSB.AppendLine(string.Format(Localization.UseRussian ?
-                                            "Ошибка в строке {0}: некорректная длина текста сообщения" :
+                                            "РћС€РёР±РєР° РІ СЃС‚СЂРѕРєРµ {0}: РЅРµРєРѕСЂСЂРµРєС‚РЅР°СЏ РґР»РёРЅР° С‚РµРєСЃС‚Р° СЃРѕРѕР±С‰РµРЅРёСЏ" :
                                             "Error in line {0}: incorrect message length", i));
                                     }
                                 }
                                 else
                                 {
                                     errMsgSB.AppendLine(string.Format(Localization.UseRussian ?
-                                        "Ошибка в строке {0}: некорректная длина PDU" :
+                                        "РћС€РёР±РєР° РІ СЃС‚СЂРѕРєРµ {0}: РЅРµРєРѕСЂСЂРµРєС‚РЅР°СЏ РґР»РёРЅР° PDU" :
                                         "Error in line {0}: incorrect PDU length", i));
                                 }
                             }
                             catch
                             {
                                 errMsgSB.AppendLine(string.Format(Localization.UseRussian ?
-                                    "Ошибка в строке {0}: невозможно расшифровать PDU" :
+                                    "РћС€РёР±РєР° РІ СЃС‚СЂРѕРєРµ {0}: РЅРµРІРѕР·РјРѕР¶РЅРѕ СЂР°СЃС€РёС„СЂРѕРІР°С‚СЊ PDU" :
                                     "Error in line {0}: unable to decode PDU", i));
                             }
                         }
                         else
                         {
                             errMsgSB.AppendLine(Localization.UseRussian ?
-                                "Ошибка: некорректное завершение входных данных" :
+                                "РћС€РёР±РєР°: РЅРµРєРѕСЂСЂРµРєС‚РЅРѕРµ Р·Р°РІРµСЂС€РµРЅРёРµ РІС…РѕРґРЅС‹С… РґР°РЅРЅС‹С…" :
                                 "Error: incorrect termination of the input data");
                         }
                     }
                     else
                     {
                         errMsgSB.AppendLine(string.Format(Localization.UseRussian ?
-                            "Ошибка в строке {0}: некорректные параметры сообщения" :
+                            "РћС€РёР±РєР° РІ СЃС‚СЂРѕРєРµ {0}: РЅРµРєРѕСЂСЂРµРєС‚РЅС‹Рµ РїР°СЂР°РјРµС‚СЂС‹ СЃРѕРѕР±С‰РµРЅРёСЏ" :
                             "Error in line {0}: incorrect message parameters", i));
                     }
                 }
@@ -226,7 +226,7 @@ namespace Scada.Comm.KP
         }
 
         /// <summary>
-        /// Декодировать телефонный номер
+        /// Р”РµРєРѕРґРёСЂРѕРІР°С‚СЊ С‚РµР»РµС„РѕРЅРЅС‹Р№ РЅРѕРјРµСЂ
         /// </summary>
         private string DecodePhone(string phone)
         {
@@ -252,7 +252,7 @@ namespace Scada.Comm.KP
         }
 
         /// <summary>
-        /// Закодировать телефонный номер
+        /// Р—Р°РєРѕРґРёСЂРѕРІР°С‚СЊ С‚РµР»РµС„РѕРЅРЅС‹Р№ РЅРѕРјРµСЂ
         /// </summary>
         private string EncodePhone(string phone)
         {
@@ -288,7 +288,7 @@ namespace Scada.Comm.KP
         }
 
         /// <summary>
-        /// Преобразовать символьную запись 16-ричного числа в байт
+        /// РџСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ СЃРёРјРІРѕР»СЊРЅСѓСЋ Р·Р°РїРёСЃСЊ 16-СЂРёС‡РЅРѕРіРѕ С‡РёСЃР»Р° РІ Р±Р°Р№С‚
         /// </summary>
         private byte HexToByte(string s)
         {
@@ -297,20 +297,20 @@ namespace Scada.Comm.KP
         }
 
         /// <summary>
-        /// Декодировать текст в 7-битной кодировке
+        /// Р”РµРєРѕРґРёСЂРѕРІР°С‚СЊ С‚РµРєСЃС‚ РІ 7-Р±РёС‚РЅРѕР№ РєРѕРґРёСЂРѕРІРєРµ
         /// </summary>
         private string Decode7bitText(string text)
         {
             byte[] MaskL = new byte[] {0xFE, 0xFC, 0xF8, 0xF0, 0xE0, 0xC0, 0x80};
             byte[] MaskR = new byte[] {0x01, 0x03, 0x07, 0x0F, 0x1F, 0x3F, 0x7F};
 
-            // замена пар символов на их 16-ричные значения и запись в буфер
+            // Р·Р°РјРµРЅР° РїР°СЂ СЃРёРјРІРѕР»РѕРІ РЅР° РёС… 16-СЂРёС‡РЅС‹Рµ Р·РЅР°С‡РµРЅРёСЏ Рё Р·Р°РїРёСЃСЊ РІ Р±СѓС„РµСЂ
             byte[] buf = new byte[text.Length / 2];
             int bufPos = 0;
             for (int i = 0; i < text.Length - 1; i += 2)
                 buf[bufPos++] = HexToByte(text.Substring(i, 2));
 
-            // расшифровка
+            // СЂР°СЃС€РёС„СЂРѕРІРєР°
             byte[] result = new byte[text.Length];
             int resPos = 0;
             byte part = 0;
@@ -337,14 +337,14 @@ namespace Scada.Comm.KP
         }
 
         /// <summary>
-        /// Закодировать текст в 7-битную кодировку
+        /// Р—Р°РєРѕРґРёСЂРѕРІР°С‚СЊ С‚РµРєСЃС‚ РІ 7-Р±РёС‚РЅСѓСЋ РєРѕРґРёСЂРѕРІРєСѓ
         /// </summary>
         private List<byte> Encode7bitText(string text)
         {
             List<byte> result = new List<byte>();
             byte[] bytes = Encoding.Default.GetBytes(text);
 
-            byte bit = 7; // от 7 до 1
+            byte bit = 7; // РѕС‚ 7 РґРѕ 1
             int i = 0;
             int len = bytes.Length;
             while (i < len)
@@ -369,7 +369,7 @@ namespace Scada.Comm.KP
         }
 
         /// <summary>
-        /// Декодировать текст в 8-битной кодировке
+        /// Р”РµРєРѕРґРёСЂРѕРІР°С‚СЊ С‚РµРєСЃС‚ РІ 8-Р±РёС‚РЅРѕР№ РєРѕРґРёСЂРѕРІРєРµ
         /// </summary>
         private string Decode8bitText(string text)
         {
@@ -383,7 +383,7 @@ namespace Scada.Comm.KP
         }
 
         /// <summary>
-        /// Декодировать текст в кодировке Unicode
+        /// Р”РµРєРѕРґРёСЂРѕРІР°С‚СЊ С‚РµРєСЃС‚ РІ РєРѕРґРёСЂРѕРІРєРµ Unicode
         /// </summary>
         private string DecodeUnicodeText(string text)
         {
@@ -401,7 +401,7 @@ namespace Scada.Comm.KP
         }
 
         /// <summary>
-        /// Закодировать текст в кодировку Unicode
+        /// Р—Р°РєРѕРґРёСЂРѕРІР°С‚СЊ С‚РµРєСЃС‚ РІ РєРѕРґРёСЂРѕРІРєСѓ Unicode
         /// </summary>
         private List<byte> EncodeUnicodeText(string text)
         {
@@ -418,11 +418,11 @@ namespace Scada.Comm.KP
         }
 
         /// <summary>
-        /// Создать Protocol Data Unit для передачи сообщения
+        /// РЎРѕР·РґР°С‚СЊ Protocol Data Unit РґР»СЏ РїРµСЂРµРґР°С‡Рё СЃРѕРѕР±С‰РµРЅРёСЏ
         /// </summary>
         private string MakePDU(string phone, string text, out int pduLen)
         {
-            // выбор кодировки
+            // РІС‹Р±РѕСЂ РєРѕРґРёСЂРѕРІРєРё
             bool sevenBit = true;
             for (int i = 0; i < text.Length && sevenBit; i++)
             {
@@ -431,7 +431,7 @@ namespace Scada.Comm.KP
                     sevenBit = false;
             }
 
-            // установка длины текста, допустимой для передачи
+            // СѓСЃС‚Р°РЅРѕРІРєР° РґР»РёРЅС‹ С‚РµРєСЃС‚Р°, РґРѕРїСѓСЃС‚РёРјРѕР№ РґР»СЏ РїРµСЂРµРґР°С‡Рё
             if (sevenBit)
             {
                 if (text.Length > 140)
@@ -443,7 +443,7 @@ namespace Scada.Comm.KP
                     text = text.Substring(0, 70);
             }
 
-            // формирование PDU
+            // С„РѕСЂРјРёСЂРѕРІР°РЅРёРµ PDU
             StringBuilder pdu = new StringBuilder();
             pdu.Append("00");                     // Service Center Adress (SCA)
             pdu.Append("01");                     // PDU-type
@@ -462,7 +462,7 @@ namespace Scada.Comm.KP
         }
 
         /// <summary>
-        /// Получить из общих свойств линии связи или создать список сообщений, представленных в виде object[]
+        /// РџРѕР»СѓС‡РёС‚СЊ РёР· РѕР±С‰РёС… СЃРІРѕР№СЃС‚РІ Р»РёРЅРёРё СЃРІСЏР·Рё РёР»Рё СЃРѕР·РґР°С‚СЊ СЃРїРёСЃРѕРє СЃРѕРѕР±С‰РµРЅРёР№, РїСЂРµРґСЃС‚Р°РІР»РµРЅРЅС‹С… РІ РІРёРґРµ object[]
         /// </summary>
         private List<object[]> GetMessageObjList()
         {
@@ -479,9 +479,9 @@ namespace Scada.Comm.KP
         }
 
         /// <summary>
-        /// Преобразовать сообщение в object[]
+        /// РџСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ СЃРѕРѕР±С‰РµРЅРёРµ РІ object[]
         /// </summary>
-        /// <remarks>Вид результата: object[] {индекс, статус, телефон, время, текст, обработано}</remarks>
+        /// <remarks>Р’РёРґ СЂРµР·СѓР»СЊС‚Р°С‚Р°: object[] {РёРЅРґРµРєСЃ, СЃС‚Р°С‚СѓСЃ, С‚РµР»РµС„РѕРЅ, РІСЂРµРјСЏ, С‚РµРєСЃС‚, РѕР±СЂР°Р±РѕС‚Р°РЅРѕ}</remarks>
         private object[] ConvertMessage(Message message)
         {
             object[] msgObjArr = new object[6];
@@ -509,7 +509,7 @@ namespace Scada.Comm.KP
         }
 
         /// <summary>
-        /// Записать событие в список событий КП
+        /// Р—Р°РїРёСЃР°С‚СЊ СЃРѕР±С‹С‚РёРµ РІ СЃРїРёСЃРѕРє СЃРѕР±С‹С‚РёР№ РљРџ
         /// </summary>
         private void WriteEvent(DateTime timeStamp, string phone, string text, ref int eventCnt)
         {
@@ -521,7 +521,7 @@ namespace Scada.Comm.KP
         }
 
         /// <summary>
-        /// Увеличение параметра КП "Кол-во событий"
+        /// РЈРІРµР»РёС‡РµРЅРёРµ РїР°СЂР°РјРµС‚СЂР° РљРџ "РљРѕР»-РІРѕ СЃРѕР±С‹С‚РёР№"
         /// </summary>
         private void IncEventCount(int eventCnt)
         {
@@ -533,21 +533,21 @@ namespace Scada.Comm.KP
 
 
         /// <summary>
-        /// Сеанс опроса основного КП
+        /// РЎРµР°РЅСЃ РѕРїСЂРѕСЃР° РѕСЃРЅРѕРІРЅРѕРіРѕ РљРџ
         /// </summary>
         private void PrimarySession()
         {
-            string logText; // текст для вывода в log-файл линии связи
+            string logText; // С‚РµРєСЃС‚ РґР»СЏ РІС‹РІРѕРґР° РІ log-С„Р°Р№Р» Р»РёРЅРёРё СЃРІСЏР·Рё
             int i;
 
-            // отключение эхо
+            // РѕС‚РєР»СЋС‡РµРЅРёРµ СЌС…Рѕ
             if (WorkState != WorkStates.Normal)
             {
                 lastCommSucc = false;
                 i = 0;
                 while (i < CommLineParams.TriesCnt && !lastCommSucc && !Terminated)
                 {
-                    WriteToLog(Localization.UseRussian ? "Отключение эхо" : "Set echo off");
+                    WriteToLog(Localization.UseRussian ? "РћС‚РєР»СЋС‡РµРЅРёРµ СЌС…Рѕ" : "Set echo off");
                     KPUtils.WriteLineToSerialPort(SerialPort, "ATE0", out logText);
                     WriteToLog(logText);
 
@@ -560,14 +560,14 @@ namespace Scada.Comm.KP
                 }
             }
 
-            // сброс вызова
+            // СЃР±СЂРѕСЃ РІС‹Р·РѕРІР°
             if (lastCommSucc)
             {
                 lastCommSucc = false;
                 i = 0;
                 while (i < CommLineParams.TriesCnt && !lastCommSucc && !Terminated)
                 {
-                    WriteToLog(Localization.UseRussian ? "Сброс вызова" : "Drop call");
+                    WriteToLog(Localization.UseRussian ? "РЎР±СЂРѕСЃ РІС‹Р·РѕРІР°" : "Drop call");
                     KPUtils.WriteLineToSerialPort(SerialPort, "ATH" /*"AT+CHUP"*/, out logText);
                     WriteToLog(logText);
 
@@ -580,37 +580,37 @@ namespace Scada.Comm.KP
                 }
             }
 
-            // обработка и удаление сообщений, полученных ранее
-            int eventCnt = 0; // количество созданных событий
+            // РѕР±СЂР°Р±РѕС‚РєР° Рё СѓРґР°Р»РµРЅРёРµ СЃРѕРѕР±С‰РµРЅРёР№, РїРѕР»СѓС‡РµРЅРЅС‹С… СЂР°РЅРµРµ
+            int eventCnt = 0; // РєРѕР»РёС‡РµСЃС‚РІРѕ СЃРѕР·РґР°РЅРЅС‹С… СЃРѕР±С‹С‚РёР№
 
             if (lastCommSucc)
             {
                 foreach (Message msg in messageList)
                 {
-                    // обработка сообщения, если оно не обработано другими КП
+                    // РѕР±СЂР°Р±РѕС‚РєР° СЃРѕРѕР±С‰РµРЅРёСЏ, РµСЃР»Рё РѕРЅРѕ РЅРµ РѕР±СЂР°Р±РѕС‚Р°РЅРѕ РґСЂСѓРіРёРјРё РљРџ
                     try
                     {
                         object[] msgObjArr = msg.Reference;
-                        if (!(bool)msgObjArr[5] /*сообщение не обработано*/ && 
-                            (int)msgObjArr[1] <= 1 /*принятое сообщение*/)
+                        if (!(bool)msgObjArr[5] /*СЃРѕРѕР±С‰РµРЅРёРµ РЅРµ РѕР±СЂР°Р±РѕС‚Р°РЅРѕ*/ && 
+                            (int)msgObjArr[1] <= 1 /*РїСЂРёРЅСЏС‚РѕРµ СЃРѕРѕР±С‰РµРЅРёРµ*/)
                         {
-                            // запись события
+                            // Р·Р°РїРёСЃСЊ СЃРѕР±С‹С‚РёСЏ
                             WriteEvent(msg.TimeStamp, msg.Phone, msg.Text, ref eventCnt);
                             msgObjArr[5] = true;
                         }
                     }
                     catch
                     {
-                        WriteToLog((Localization.UseRussian ? "Ошибка при обработке сообщения " : 
+                        WriteToLog((Localization.UseRussian ? "РћС€РёР±РєР° РїСЂРё РѕР±СЂР°Р±РѕС‚РєРµ СЃРѕРѕР±С‰РµРЅРёСЏ " : 
                             "Error processing message ") + msg.Index);
                     }
 
-                    // удаление сообщений из памяти GSM-терминала
+                    // СѓРґР°Р»РµРЅРёРµ СЃРѕРѕР±С‰РµРЅРёР№ РёР· РїР°РјСЏС‚Рё GSM-С‚РµСЂРјРёРЅР°Р»Р°
                     bool deleteComplete = false;
                     i = 0;
                     while (i < CommLineParams.TriesCnt && !deleteComplete && !Terminated)
                     {
-                        WriteToLog((Localization.UseRussian ? "Удаление сообщения " : "Delete message ") + msg.Index);
+                        WriteToLog((Localization.UseRussian ? "РЈРґР°Р»РµРЅРёРµ СЃРѕРѕР±С‰РµРЅРёСЏ " : "Delete message ") + msg.Index);
                         KPUtils.WriteLineToSerialPort(SerialPort, "AT+CMGD=" + msg.Index, out logText);
                         WriteToLog(logText);
 
@@ -630,10 +630,10 @@ namespace Scada.Comm.KP
 
             IncEventCount(eventCnt);
             if (lastCommSucc)
-                WriteToLog((Localization.UseRussian ? "Количество полученных сообщений: " : 
+                WriteToLog((Localization.UseRussian ? "РљРѕР»РёС‡РµСЃС‚РІРѕ РїРѕР»СѓС‡РµРЅРЅС‹С… СЃРѕРѕР±С‰РµРЅРёР№: " : 
                     "Received message count: ") + eventCnt);
 
-            // запрос списка сообщений
+            // Р·Р°РїСЂРѕСЃ СЃРїРёСЃРєР° СЃРѕРѕР±С‰РµРЅРёР№
             if (lastCommSucc)
             {
                 lastCommSucc = false;
@@ -641,7 +641,7 @@ namespace Scada.Comm.KP
 
                 while (i < CommLineParams.TriesCnt && !lastCommSucc && !Terminated)
                 {
-                    WriteToLog(Localization.UseRussian ? "Запрос списка сообщений" : "Request message list");
+                    WriteToLog(Localization.UseRussian ? "Р—Р°РїСЂРѕСЃ СЃРїРёСЃРєР° СЃРѕРѕР±С‰РµРЅРёР№" : "Request message list");
                     KPUtils.WriteLineToSerialPort(SerialPort, "AT+CMGL=4", out logText);
                     WriteToLog(logText);
 
@@ -649,7 +649,7 @@ namespace Scada.Comm.KP
                         false, "OK", out lastCommSucc, out logText);
                     WriteToLog(logText);
 
-                    // расшифровка сообщений
+                    // СЂР°СЃС€РёС„СЂРѕРІРєР° СЃРѕРѕР±С‰РµРЅРёР№
                     if (lastCommSucc)
                     {
                         string errMsg;
@@ -664,7 +664,7 @@ namespace Scada.Comm.KP
                     i++;
                 }
 
-                // запись сообщений в общие свойства линии связи
+                // Р·Р°РїРёСЃСЊ СЃРѕРѕР±С‰РµРЅРёР№ РІ РѕР±С‰РёРµ СЃРІРѕР№СЃС‚РІР° Р»РёРЅРёРё СЃРІСЏР·Рё
                 List<object[]> msgObjList = GetMessageObjList();
                 foreach (Message msg in messageList)
                 {
@@ -674,30 +674,30 @@ namespace Scada.Comm.KP
                 }
             }
 
-            // определение наличия связи
+            // РѕРїСЂРµРґРµР»РµРЅРёРµ РЅР°Р»РёС‡РёСЏ СЃРІСЏР·Рё
             double newVal = lastCommSucc ? 1.0 : -1.0;
             SetParamData(0, newVal, 1);
         }
 
         /// <summary>
-        /// Сеанс опроса не основного КП
+        /// РЎРµР°РЅСЃ РѕРїСЂРѕСЃР° РЅРµ РѕСЃРЅРѕРІРЅРѕРіРѕ РљРџ
         /// </summary>
         private void SecondarySession()
         {
-            // обработка сообщений из общих свойств линии связи
+            // РѕР±СЂР°Р±РѕС‚РєР° СЃРѕРѕР±С‰РµРЅРёР№ РёР· РѕР±С‰РёС… СЃРІРѕР№СЃС‚РІ Р»РёРЅРёРё СЃРІСЏР·Рё
             List<object[]> msgObjList = GetMessageObjList();
-            int eventCnt = 0; // количество созданных событий
+            int eventCnt = 0; // РєРѕР»РёС‡РµСЃС‚РІРѕ СЃРѕР·РґР°РЅРЅС‹С… СЃРѕР±С‹С‚РёР№
 
             foreach (object[] msgObjArr in msgObjList)
             {
                 try
                 {
-                    if (!(bool)msgObjArr[5]) // сообщение не обработано
+                    if (!(bool)msgObjArr[5]) // СЃРѕРѕР±С‰РµРЅРёРµ РЅРµ РѕР±СЂР°Р±РѕС‚Р°РЅРѕ
                     {
-                        if ((string)msgObjArr[2] == CallNum /*совпадение телефонного номера*/ &&
-                            (int)msgObjArr[1] <= 1 /*принятое сообщение*/)
+                        if ((string)msgObjArr[2] == CallNum /*СЃРѕРІРїР°РґРµРЅРёРµ С‚РµР»РµС„РѕРЅРЅРѕРіРѕ РЅРѕРјРµСЂР°*/ &&
+                            (int)msgObjArr[1] <= 1 /*РїСЂРёРЅСЏС‚РѕРµ СЃРѕРѕР±С‰РµРЅРёРµ*/)
                         {
-                            // запись события
+                            // Р·Р°РїРёСЃСЊ СЃРѕР±С‹С‚РёСЏ
                             WriteEvent((DateTime)msgObjArr[3], "", (string)msgObjArr[4], ref eventCnt);
                             msgObjArr[5] = true;
                         }
@@ -708,19 +708,19 @@ namespace Scada.Comm.KP
                     int index;
                     try { index = (int)msgObjArr[0]; }
                     catch { index = 0; }
-                    WriteToLog((Localization.UseRussian ? "Ошибка при обработке сообщения" : 
+                    WriteToLog((Localization.UseRussian ? "РћС€РёР±РєР° РїСЂРё РѕР±СЂР°Р±РѕС‚РєРµ СЃРѕРѕР±С‰РµРЅРёСЏ" : 
                         "Error processing message") + (index > 0 ? " " + index : ""));
                 }
             }
 
             IncEventCount(eventCnt);
-            WriteToLog((Localization.UseRussian ? "Количество полученных сообщений: " :
+            WriteToLog((Localization.UseRussian ? "РљРѕР»РёС‡РµСЃС‚РІРѕ РїРѕР»СѓС‡РµРЅРЅС‹С… СЃРѕРѕР±С‰РµРЅРёР№: " :
                 "Received message count: ") + eventCnt);
         }
 
 
         /// <summary>
-        /// Выполнить сеанс опроса КП
+        /// Р’С‹РїРѕР»РЅРёС‚СЊ СЃРµР°РЅСЃ РѕРїСЂРѕСЃР° РљРџ
         /// </summary>
         public override void Session()
         {
@@ -735,7 +735,7 @@ namespace Scada.Comm.KP
         }
 
         /// <summary>
-        /// Отправить команду ТУ
+        /// РћС‚РїСЂР°РІРёС‚СЊ РєРѕРјР°РЅРґСѓ РўРЈ
         /// </summary>
         public override void SendCmd(Command cmd)
         {
@@ -744,15 +744,15 @@ namespace Scada.Comm.KP
 
             if (cmd.CmdType == CmdType.Binary && (cmd.CmdNum == 1 || cmd.CmdNum == 2))
             {
-                string logText; // текст для вывода в log-файл линии связи
+                string logText; // С‚РµРєСЃС‚ РґР»СЏ РІС‹РІРѕРґР° РІ log-С„Р°Р№Р» Р»РёРЅРёРё СЃРІСЏР·Рё
                 string cmdData = new string(Encoding.Default.GetChars(cmd.CmdData));
                 if (cmdData.Length > 0)
                 {
                     if (cmd.CmdNum == 1)
                     {
-                        // отправка сообщения
-                        // данные команды: <телефон>;<текст> 
-                        // телефонный номер указывается только для основного КП на линии связи
+                        // РѕС‚РїСЂР°РІРєР° СЃРѕРѕР±С‰РµРЅРёСЏ
+                        // РґР°РЅРЅС‹Рµ РєРѕРјР°РЅРґС‹: <С‚РµР»РµС„РѕРЅ>;<С‚РµРєСЃС‚> 
+                        // С‚РµР»РµС„РѕРЅРЅС‹Р№ РЅРѕРјРµСЂ СѓРєР°Р·С‹РІР°РµС‚СЃСЏ С‚РѕР»СЊРєРѕ РґР»СЏ РѕСЃРЅРѕРІРЅРѕРіРѕ РљРџ РЅР° Р»РёРЅРёРё СЃРІСЏР·Рё
                         int scPos = cmdData.IndexOf(';');
                         string phone = primary ? (scPos > 0 ? cmdData.Substring(0, scPos).Trim() : "") : CallNum;
                         string text = scPos < 0 ? cmdData : scPos + 1 < cmdData.Length ?
@@ -761,7 +761,7 @@ namespace Scada.Comm.KP
                         if (phone == "" || text == "")
                         {
                             WriteToLog(Localization.UseRussian ?
-                                "Отсутствует телефонный номер или текст сообщения" :
+                                "РћС‚СЃСѓС‚СЃС‚РІСѓРµС‚ С‚РµР»РµС„РѕРЅРЅС‹Р№ РЅРѕРјРµСЂ РёР»Рё С‚РµРєСЃС‚ СЃРѕРѕР±С‰РµРЅРёСЏ" :
                                 "No telephone number or message text");
                         }
                         else
@@ -793,7 +793,7 @@ namespace Scada.Comm.KP
                     }
                     else
                     {
-                        // произвольная AT-команда
+                        // РїСЂРѕРёР·РІРѕР»СЊРЅР°СЏ AT-РєРѕРјР°РЅРґР°
                         KPUtils.WriteLineToSerialPort(SerialPort, cmdData, out logText);
                         WriteToLog(logText);
 
@@ -806,32 +806,32 @@ namespace Scada.Comm.KP
                 }
                 else
                 {
-                    WriteToLog(Localization.UseRussian ? "Отсутствуют данные команды" : "No command data");
+                    WriteToLog(Localization.UseRussian ? "РћС‚СЃСѓС‚СЃС‚РІСѓСЋС‚ РґР°РЅРЅС‹Рµ РєРѕРјР°РЅРґС‹" : "No command data");
                 }
             }
             else
             {
-                WriteToLog(Localization.UseRussian ? "Недопустимая команда" : "Illegal command");
+                WriteToLog(Localization.UseRussian ? "РќРµРґРѕРїСѓСЃС‚РёРјР°СЏ РєРѕРјР°РЅРґР°" : "Illegal command");
             }
 
             CalcCmdStats();
         }
         
         /// <summary>
-        /// Выполнить действия при запуске линии связи
+        /// Р’С‹РїРѕР»РЅРёС‚СЊ РґРµР№СЃС‚РІРёСЏ РїСЂРё Р·Р°РїСѓСЃРєРµ Р»РёРЅРёРё СЃРІСЏР·Рё
         /// </summary>
         public override void OnCommLineStart()
         {
-            // определение, является ли КП основным на линии связи
+            // РѕРїСЂРµРґРµР»РµРЅРёРµ, СЏРІР»СЏРµС‚СЃСЏ Р»Рё РљРџ РѕСЃРЅРѕРІРЅС‹Рј РЅР° Р»РёРЅРёРё СЃРІСЏР·Рё
             primary = KPReqParams.CmdLine.Trim().ToLower() == "primary";
             
-            // установка символа конца строки для работы с последовательным портом
+            // СѓСЃС‚Р°РЅРѕРІРєР° СЃРёРјРІРѕР»Р° РєРѕРЅС†Р° СЃС‚СЂРѕРєРё РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅС‹Рј РїРѕСЂС‚РѕРј
             if (SerialPort != null)
                 SerialPort.NewLine = "\x0D";
         }
 
         /// <summary>
-        /// Преобразовать данные параметра КП в строку
+        /// РџСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ РґР°РЅРЅС‹Рµ РїР°СЂР°РјРµС‚СЂР° РљРџ РІ СЃС‚СЂРѕРєСѓ
         /// </summary>
         public override string ParamDataToStr(int signal, ParamData paramData)
         {
@@ -839,8 +839,8 @@ namespace Scada.Comm.KP
             {
                 if (signal == 1)
                     return paramData.Val > 0 ?
-                        (Localization.UseRussian ? "Есть" : "Yes") :
-                        (Localization.UseRussian ? "Нет" : "No");
+                        (Localization.UseRussian ? "Р•СЃС‚СЊ" : "Yes") :
+                        (Localization.UseRussian ? "РќРµС‚" : "No");
                 else if (signal == 2)
                     return ((int)paramData.Val).ToString();
             }

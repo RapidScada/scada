@@ -1,4 +1,4 @@
-/*
+п»ї/*
  * Copyright 2014 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,12 +31,12 @@ namespace Scada.Comm.KP
 {
     /// <summary>
     /// Device library user interface
-    /// <para>Пользовательский интерфейс библиотеки КП</para>
+    /// <para>РџРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРёР№ РёРЅС‚РµСЂС„РµР№СЃ Р±РёР±Р»РёРѕС‚РµРєРё РљРџ</para>
     /// </summary>
     public sealed class KpSmsView : KPView
     {
         /// <summary>
-        /// Конструктор для общей настройки библиотеки КП
+        /// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РґР»СЏ РѕР±С‰РµР№ РЅР°СЃС‚СЂРѕР№РєРё Р±РёР±Р»РёРѕС‚РµРєРё РљРџ
         /// </summary>
         public KpSmsView()
             : this(0)
@@ -44,42 +44,42 @@ namespace Scada.Comm.KP
         }
 
         /// <summary>
-        /// Конструктор для настройки конкретного КП
+        /// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РґР»СЏ РЅР°СЃС‚СЂРѕР№РєРё РєРѕРЅРєСЂРµС‚РЅРѕРіРѕ РљРџ
         /// </summary>
         public KpSmsView(int number)
             : base(number)
         {
-            // определение каналов КП по умолчанию
+            // РѕРїСЂРµРґРµР»РµРЅРёРµ РєР°РЅР°Р»РѕРІ РљРџ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
             DefaultCnls = new List<InCnlProps>();
-            InCnlProps inCnlProps = new InCnlProps(Localization.UseRussian ? "Связь" : "Connection", CnlType.TS);
+            InCnlProps inCnlProps = new InCnlProps(Localization.UseRussian ? "РЎРІСЏР·СЊ" : "Connection", CnlType.TS);
             inCnlProps.Signal = 1;
-            inCnlProps.ParamName = Localization.UseRussian ? "Связь" : "Connection";
+            inCnlProps.ParamName = Localization.UseRussian ? "РЎРІСЏР·СЊ" : "Connection";
             inCnlProps.ShowNumber = false;
-            inCnlProps.UnitName = Localization.UseRussian ? "Нет - Есть" : "No - Yes";
+            inCnlProps.UnitName = Localization.UseRussian ? "РќРµС‚ - Р•СЃС‚СЊ" : "No - Yes";
             inCnlProps.EvEnabled = true;
             inCnlProps.EvOnChange = true;
             DefaultCnls.Add(inCnlProps);
 
-            inCnlProps = new InCnlProps(Localization.UseRussian ? "Кол-во событий" : "Event count", CnlType.TI);
+            inCnlProps = new InCnlProps(Localization.UseRussian ? "РљРѕР»-РІРѕ СЃРѕР±С‹С‚РёР№" : "Event count", CnlType.TI);
             inCnlProps.Signal = 2;
-            inCnlProps.ParamName = Localization.UseRussian ? "Событие" : "Event";
+            inCnlProps.ParamName = Localization.UseRussian ? "РЎРѕР±С‹С‚РёРµ" : "Event";
             inCnlProps.DecDigits = 0;
-            inCnlProps.UnitName = Localization.UseRussian ? "Шт." : "Count";
+            inCnlProps.UnitName = Localization.UseRussian ? "РЁС‚." : "Count";
             DefaultCnls.Add(inCnlProps);
 
-            string cnlName = Localization.UseRussian ? "Отправка SMS" : "Send SMS message";
+            string cnlName = Localization.UseRussian ? "РћС‚РїСЂР°РІРєР° SMS" : "Send SMS message";
             inCnlProps = new InCnlProps(cnlName, CnlType.TS);
             inCnlProps.CtrlCnlProps = new CtrlCnlProps(cnlName, KPLogic.CmdType.Binary);
             inCnlProps.CtrlCnlProps.CmdNum = 1;
             DefaultCnls.Add(inCnlProps);
 
-            cnlName = Localization.UseRussian ? "AT-команда" : "AT command";
+            cnlName = Localization.UseRussian ? "AT-РєРѕРјР°РЅРґР°" : "AT command";
             inCnlProps = new InCnlProps(cnlName, CnlType.TS);
             inCnlProps.CtrlCnlProps = new CtrlCnlProps(cnlName, KPLogic.CmdType.Binary);
             inCnlProps.CtrlCnlProps.CmdNum = 2;
             DefaultCnls.Add(inCnlProps);
 
-            // определение параметров опроса КП по умолчанию
+            // РѕРїСЂРµРґРµР»РµРЅРёРµ РїР°СЂР°РјРµС‚СЂРѕРІ РѕРїСЂРѕСЃР° РљРџ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
             KPLogic.ReqParams reqParams = new KPLogic.ReqParams(false);
             reqParams.Timeout = 5000;
             reqParams.Delay = 500;
@@ -87,19 +87,19 @@ namespace Scada.Comm.KP
         }
 
         /// <summary>
-        /// Описание библиотеки КП
+        /// РћРїРёСЃР°РЅРёРµ Р±РёР±Р»РёРѕС‚РµРєРё РљРџ
         /// </summary>
         public override string KPDescr
         {
             get
             {
                 return Localization.UseRussian ? 
-                    "Отправка и приём SMS с использованием AT-команд.\n\n" +
-                    "Параметр командной строки:\n" +
-                    "primary - основной КП на линии связи, обмен данными с GSM-терминалом.\n\n" +
-                    "Команды ТУ:\n" +
-                    "1 (бинарная) - отправка SMS;\n" +
-                    "2 (бинарная) - произвольная AT-команда." :
+                    "РћС‚РїСЂР°РІРєР° Рё РїСЂРёС‘Рј SMS СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј AT-РєРѕРјР°РЅРґ.\n\n" +
+                    "РџР°СЂР°РјРµС‚СЂ РєРѕРјР°РЅРґРЅРѕР№ СЃС‚СЂРѕРєРё:\n" +
+                    "primary - РѕСЃРЅРѕРІРЅРѕР№ РљРџ РЅР° Р»РёРЅРёРё СЃРІСЏР·Рё, РѕР±РјРµРЅ РґР°РЅРЅС‹РјРё СЃ GSM-С‚РµСЂРјРёРЅР°Р»РѕРј.\n\n" +
+                    "РљРѕРјР°РЅРґС‹ РўРЈ:\n" +
+                    "1 (Р±РёРЅР°СЂРЅР°СЏ) - РѕС‚РїСЂР°РІРєР° SMS;\n" +
+                    "2 (Р±РёРЅР°СЂРЅР°СЏ) - РїСЂРѕРёР·РІРѕР»СЊРЅР°СЏ AT-РєРѕРјР°РЅРґР°." :
 
                     "Sending and receiving SMS messages using AT commands.\n\n" +
                     "Command line parameter:\n" +

@@ -1,4 +1,4 @@
-/*
+п»ї/*
  * Copyright 2014 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ namespace Scada.Comm.KP
 {
     /// <summary>
     /// Device communication logic
-    /// <para>Логика работы КП</para>
+    /// <para>Р›РѕРіРёРєР° СЂР°Р±РѕС‚С‹ РљРџ</para>
     /// </summary>
     public sealed class KpTestLogic : KPLogic
     {
@@ -80,13 +80,13 @@ namespace Scada.Comm.KP
             else
             {
                 // write to the serial port
-                // запись в последовательный порт
+                // Р·Р°РїРёСЃСЊ РІ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅС‹Р№ РїРѕСЂС‚
                 string outStr = "test " + Address;
                 SerialPort.WriteLine(outStr);
                 WriteToLog("Send: " + outStr);
 
                 // read from the serial port
-                // чтение из последовательного порта
+                // С‡С‚РµРЅРёРµ РёР· РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕРіРѕ РїРѕСЂС‚Р°
                 string buf = SerialPort.ReadExisting();
                 if (buf == null || buf == "")
                 {
@@ -99,17 +99,17 @@ namespace Scada.Comm.KP
                 }
 
                 // finish request
-                // завершение запроса
+                // Р·Р°РІРµСЂС€РµРЅРёРµ Р·Р°РїСЂРѕСЃР°
                 FinishRequest();
             }
 
             // generate current data
-            // генерация текущих значений
+            // РіРµРЅРµСЂР°С†РёСЏ С‚РµРєСѓС‰РёС… Р·РЅР°С‡РµРЅРёР№
             for (int i = 0; i < KPParams.Length; i++)
                 SetParamData(i, (double)random.Next(1000) / 10.0, 1);
 
             // generate archive data
-            // генерация архивного среза
+            // РіРµРЅРµСЂР°С†РёСЏ Р°СЂС…РёРІРЅРѕРіРѕ СЃСЂРµР·Р°
             /*ParamSrez srez = new ParamSrez(1);
             srez.DateTime = DateTime.Now;
             srez.KPParams[0] = KPParams[0];
@@ -119,14 +119,14 @@ namespace Scada.Comm.KP
             FlushKPArc();*/
 
             // generate event
-            // генерация события
+            // РіРµРЅРµСЂР°С†РёСЏ СЃРѕР±С‹С‚РёСЏ
             /*Event ev = new Event(DateTime.Now, Number, KPParams[0]);
             ev.Descr = "Test event " + random.Next(100);
             EventList.Add(ev);
             FlushKPArc();*/
 
             // calculate stats
-            // расчёт статистики
+            // СЂР°СЃС‡С‘С‚ СЃС‚Р°С‚РёСЃС‚РёРєРё
             CalcSessStats();
         }
 

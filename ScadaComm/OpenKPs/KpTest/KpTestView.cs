@@ -1,4 +1,4 @@
-/*
+п»ї/*
  * Copyright 2014 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,7 +31,7 @@ namespace Scada.Comm.KP
 {
     /// <summary>
     /// Device library user interface
-    /// <para>Пользовательский интерфейс библиотеки КП</para>
+    /// <para>РџРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРёР№ РёРЅС‚РµСЂС„РµР№СЃ Р±РёР±Р»РёРѕС‚РµРєРё РљРџ</para>
     /// </summary>
     public sealed class KpTestView : KPView
     {
@@ -39,7 +39,7 @@ namespace Scada.Comm.KP
         {
             get
             {
-                return Localization.UseRussian ? "Библиотека КП для тестирования." : "Device library for testing.";
+                return Localization.UseRussian ? "Р‘РёР±Р»РёРѕС‚РµРєР° РљРџ РґР»СЏ С‚РµСЃС‚РёСЂРѕРІР°РЅРёСЏ." : "Device library for testing.";
             }
         }
     }
