@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
@@ -44,6 +44,9 @@ namespace Scada.Server.Module
         [Serializable]
         public class Command
         {
+            private int kpNum;
+            private double cmdVal;
+
             /// <summary>
             /// Конструктор
             /// </summary>
@@ -67,7 +70,7 @@ namespace Scada.Server.Module
             /// <summary>
             /// Получить дату и время создания команды
             /// </summary>
-            public DateTime CreateDT { get; private set; }
+            public DateTime CreateDT { get; protected set; }
             /// <summary>
             /// Получить или установить идентификатор типа команды
             /// </summary>
@@ -75,7 +78,19 @@ namespace Scada.Server.Module
             /// <summary>
             /// Получить или установить номер КП
             /// </summary>
-            public int KPNum { get; set; }
+            public int KPNum
+            {
+                get
+                {
+                    return kpNum;
+                }
+                set
+                {
+                    kpNum = value;
+                    if (CmdTypeID == BaseValues.CmdTypes.Request)
+                        CmdData = BitConverter.GetBytes((UInt16)kpNum);
+                }
+            }
             /// <summary>
             /// Получить или установить номер команды
             /// </summary>
@@ -83,7 +98,19 @@ namespace Scada.Server.Module
             /// <summary>
             /// Получить или установить значение команды
             /// </summary>
-            public double CmdVal { get; set; }
+            public double CmdVal
+            {
+                get
+                {
+                    return cmdVal;
+                }
+                set
+                {
+                    cmdVal = value;
+                    if (CmdTypeID == BaseValues.CmdTypes.Standard)
+                        CmdData = BitConverter.GetBytes(cmdVal);
+                }
+            }
             /// <summary>
             /// Получить или установить данные команды
             /// </summary>
