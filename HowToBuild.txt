@@ -4,8 +4,8 @@ Microsoft Visual Studio 2010 Professional or higher is needed.
 Visual Studio Community 2013 is also acceptable.
 
 1. Download the source code from SCADA and DLL repositories:
-   https://github.com/RapidScada/SCADA
-   https://github.com/RapidScada/DLL
+   https://github.com/RapidScada/scada
+   https://github.com/RapidScada/dll
 
 2. Build the solutions using Visual Studio in the following sequence:
    Log,
