@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2007
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
@@ -195,6 +195,16 @@ namespace Scada
                 return bf.Deserialize(ms);
             }
         }
+
+        /// <summary>
+        /// Получить время последней записи в файл
+        /// </summary>
+        public static DateTime GetLastWriteTime(string fileName)
+        {
+            try { return File.GetLastWriteTime(fileName); }
+            catch { return DateTime.MinValue; }
+        }
+
 
 
         /// <summary>
@@ -404,7 +414,7 @@ namespace Scada
             {
                 if (File.Exists(fileName))
                 {
-                    DateTime newFileAge = File.GetLastWriteTime(fileName);
+                    DateTime newFileAge = GetLastWriteTime(fileName);
 
                     if (fileAge != newFileAge)
                     {
@@ -487,6 +497,7 @@ namespace Scada
         /// <summary>
         /// Отключить кэширование страницы
         /// </summary>
+        [Obsolete("Use Scada.Web.ScadaWebUtils")]
         public static void DisablePageCache(HttpResponse response)
         {
             if (response != null)
@@ -499,6 +510,7 @@ namespace Scada
         /// <summary>
         /// Преобразовать строку для вывода на веб-страницу, заменив "\n" на тег "br"
         /// </summary>
+        [Obsolete("Use Scada.Web.ScadaWebUtils")]
         public static string HtmlEncodeWithBreak(string s)
         {
             return HttpUtility.HtmlEncode(s).Replace("\n", "<br />");
