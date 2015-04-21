@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2008
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
@@ -2589,6 +2589,7 @@ namespace Scada.Comm.Ctrl
                         if (kpView.CanShowProps)
                         {
                             kpView.ConfigDir = configDir;
+                            kpView.LangDir = langDir;
                             kpView.CmdDir = cmdDir;
                             kpView.ShowProps();
                         }

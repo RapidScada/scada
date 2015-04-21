@@ -367,7 +367,7 @@
     <Phrase key="Descr">Description</Phrase>
   </Dictionary>
   <Dictionary key="ScadaAdmin.Tables.CtrlCnlTable">
-    <Phrase key="CnlNum">Number</Phrase>
+    <Phrase key="CtrlCnlNum">Number</Phrase>
     <Phrase key="Active">Active</Phrase>
     <Phrase key="Name">Name</Phrase>
     <Phrase key="CmdTypeID">Command type</Phrase>

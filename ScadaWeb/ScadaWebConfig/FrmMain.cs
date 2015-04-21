@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2010
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
@@ -688,7 +688,7 @@ namespace ScadaWebConfig
 
                 if (ext == ".tbl" || ext == ".ofm" || ext == ".sch" || ext == ".fcs")
                 {
-                    string dir = selViewSet == null ? "" : selViewSet.Directory;
+                    string dir = selViewSet == null ? "" : ScadaUtils.NormalDir(selViewSet.Directory);
                     int pos = dir == "" ? -1 : fname.IndexOf(dir);
                     viewFile = pos >= 0 ? fname.Substring(pos + dir.Length) : Path.GetFileName(fname);
 
