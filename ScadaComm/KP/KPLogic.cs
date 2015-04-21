@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
@@ -46,6 +46,23 @@ namespace Scada.Comm.KP
         public struct ReqParams
         {
             /// <summary>
+            /// Таймаут запросов по умолчанию, мс
+            /// </summary>
+            public const int DefaultTimeout = 1000;
+            /// <summary>
+            /// Задержка после запросов по умолчанию, мс
+            /// </summary>
+            public const int DefaultDelay = 200;
+            /// <summary>
+            /// Пустые параметры опроса КП
+            /// </summary>
+            public static readonly ReqParams EmptyReqParams = new ReqParams(true);
+            /// <summary>
+            /// Параметры опроса КП по умолчанию
+            /// </summary>
+            public static readonly ReqParams DefaultReqParams = new ReqParams(false);
+
+            /// <summary>
             /// Конструктор
             /// </summary>
             /// <param name="isEmpty">Признак, определяющий, что параметры опроса не заданы</param>
@@ -53,8 +70,8 @@ namespace Scada.Comm.KP
                 : this()
             {
                 IsEmpty = isEmpty;
-                Timeout = 0;
-                Delay = 0;
+                Timeout = DefaultTimeout;
+                Delay = DefaultDelay;
                 Time = DateTime.MinValue;
                 Period = TimeSpan.Zero;
                 CmdLine = "";
@@ -845,8 +862,6 @@ namespace Scada.Comm.KP
         /// <summary>
         /// Получить максимальную длину строки в массиве
         /// </summary>
-        /// <param name="strings">Массив строк</param>
-        /// <returns>Максимальная длина строки в массиве</returns>
         private int GetMaxLength(string[] strings)
         {
             int max = 0;
@@ -917,16 +932,19 @@ namespace Scada.Comm.KP
                         foreach (ParamGroup group in ParamGroups)
                         {
                             colSig[i] = "*";
-                            colName[i] = group.Name;
+                            colName[i] = group == null ? "" : group.Name;
                             colVal[i] = "";
                             colCnl[i] = "";
                             i++;
 
-                            foreach (Param param in group.KPParams)
+                            if (group != null)
                             {
-                                colSig[i] = param.Signal.ToString();
-                                colCnl[i] = param.CnlNum > 0 ? param.CnlNum.ToString() : "";
-                                i++;
+                                foreach (Param param in group.KPParams)
+                                {
+                                    colSig[i] = param == null ? "" : param.Signal.ToString();
+                                    colCnl[i] = param == null || param.CnlNum <= 0 ? "" : param.CnlNum.ToString();
+                                    i++;
+                                }
                             }
                         }
                     }
@@ -935,8 +953,8 @@ namespace Scada.Comm.KP
                         for (int i = 1; i < rowCnt; i++)
                         {
                             Param param = KPParams[i - 1];
-                            colSig[i] = param.Signal.ToString();
-                            colCnl[i] = param.CnlNum > 0 ? param.CnlNum.ToString() : "";
+                            colSig[i] = param == null ? "" : param.Signal.ToString();
+                            colCnl[i] = param == null || param.CnlNum <= 0 ? "" : param.CnlNum.ToString();
                         }
                     }
 
@@ -959,8 +977,16 @@ namespace Scada.Comm.KP
                     if (colSig[i] != "*")
                     {
                         Param param = KPParams[paramInd];
-                        colName[i] = param.Name;
-                        colVal[i] = ParamDataToStr(param.Signal, CurData[paramInd]);
+                        if (param == null)
+                        {
+                            colName[i] = "";
+                            colVal[i] = "";
+                        }
+                        else
+                        {
+                            colName[i] = param.Name;
+                            colVal[i] = ParamDataToStr(param.Signal, CurData[paramInd]);
+                        }
                         paramInd++;
                     }
                 }
@@ -1192,6 +1218,26 @@ namespace Scada.Comm.KP
         }
 
         /// <summary>
+        /// Установить группы параметров КП и входящие в них параметры
+        /// </summary>
+        protected void SetParamGroups(List<ParamGroup> srcParamGroups)
+        {
+            if (srcParamGroups != null && srcParamGroups.Count > 0)
+            {
+                int groupCnt = srcParamGroups.Count;
+                int paramCnt = 0;
+                
+                foreach (ParamGroup group in srcParamGroups)
+                    if (group.KPParams != null)
+                        paramCnt += group.KPParams.Length;
+
+                InitArrays(paramCnt, groupCnt);
+                srcParamGroups.CopyTo(ParamGroups);
+                CopyParamsFromGroups();
+            }
+        }
+
+        /// <summary>
         /// Установить текущие данные параметра КП и признак их изменения
         /// </summary>
         /// <param name="paramIndex">Индекс параметра КП</param>
@@ -1199,7 +1245,7 @@ namespace Scada.Comm.KP
         /// <param name="newStat">Новый статус параметра КП</param>
         protected void SetParamData(int paramIndex, double newVal, int newStat)
         {
-            if (0 <= paramIndex && paramIndex < KPParams.Length)
+            if (KPParams != null && 0 <= paramIndex && paramIndex < KPParams.Length)
             {
                 CurModified[paramIndex] = CurData[paramIndex].Val != newVal || CurData[paramIndex].Stat != newStat;
                 CurData[paramIndex].Val = newVal;
@@ -1214,7 +1260,7 @@ namespace Scada.Comm.KP
         /// <param name="newData">Новые данные параметра КП</param>
         protected void SetParamData(int paramIndex, ParamData newData)
         {
-            if (0 <= paramIndex && paramIndex < KPParams.Length)
+            if (KPParams != null && 0 <= paramIndex && paramIndex < KPParams.Length)
             {
                 CurModified[paramIndex] = CurData[paramIndex].Val != newData.Val || CurData[paramIndex].Stat != newData.Stat;
                 CurData[paramIndex] = newData;
@@ -1458,37 +1504,37 @@ namespace Scada.Comm.KP
 
             if (Localization.UseRussian)
             {
-                sbInfo.AppendLine("Состояние   : " + WorkStateStr).
-                    Append("Сеанс связи : ").
-                    Append(LastSessDT > DateTime.MinValue ? 
-                        LastSessDT.ToLocalizedString() : "время неопределено").AppendLine().
-                    Append("Команда ТУ  : ").
-                    Append(LastCmdDT > DateTime.MinValue ? 
-                        LastCmdDT.ToLocalizedString() : "время неопределено").AppendLine().
-                    AppendLine().
-                    Append("Сеансы связи (всего / ошибок) : ").
-                        Append(kpStats.SessCnt).Append(" / ").Append(kpStats.SessErrCnt).AppendLine().
-                    Append("Команды ТУ   (всего / ошибок) : ").
-                        Append(kpStats.CmdCnt).Append(" / ").Append(kpStats.CmdErrCnt).AppendLine().
-                    Append("Запросы      (всего / ошибок) : ").
-                        Append(kpStats.ReqCnt).Append(" / ").Append(kpStats.ReqErrCnt).AppendLine();
+                sbInfo.AppendLine("Состояние   : " + WorkStateStr)
+                    .Append("Сеанс связи : ")
+                    .Append(LastSessDT > DateTime.MinValue ? 
+                        LastSessDT.ToLocalizedString() : "время неопределено").AppendLine()
+                    .Append("Команда ТУ  : ")
+                    .Append(LastCmdDT > DateTime.MinValue ? 
+                        LastCmdDT.ToLocalizedString() : "время неопределено").AppendLine()
+                    .AppendLine()
+                    .Append("Сеансы связи (всего / ошибок) : ")
+                    .Append(kpStats.SessCnt).Append(" / ").Append(kpStats.SessErrCnt).AppendLine()
+                    .Append("Команды ТУ   (всего / ошибок) : ")
+                    .Append(kpStats.CmdCnt).Append(" / ").Append(kpStats.CmdErrCnt).AppendLine()
+                    .Append("Запросы      (всего / ошибок) : ")
+                    .Append(kpStats.ReqCnt).Append(" / ").Append(kpStats.ReqErrCnt).AppendLine();
             }
             else
             {
-                sbInfo.AppendLine("State         : " + WorkStateStr).
-                    Append("Comm. session : ").
-                    Append(LastSessDT > DateTime.MinValue ?
-                        LastSessDT.ToLocalizedString() : "time is undefined").AppendLine().
-                    Append("Command       : ").
-                    Append(LastCmdDT > DateTime.MinValue ?
-                        LastCmdDT.ToLocalizedString() : "time is undefined").AppendLine().
-                    AppendLine().
-                    Append("Comm. sessions (total / errors) : ").
-                        Append(kpStats.SessCnt).Append(" / ").Append(kpStats.SessErrCnt).AppendLine().
-                    Append("Commands       (total / errors) : ").
-                        Append(kpStats.CmdCnt).Append(" / ").Append(kpStats.CmdErrCnt).AppendLine().
-                    Append("Requests       (total / errors) : ").
-                        Append(kpStats.ReqCnt).Append(" / ").Append(kpStats.ReqErrCnt).AppendLine();
+                sbInfo.AppendLine("State         : " + WorkStateStr)
+                    .Append("Comm. session : ")
+                    .Append(LastSessDT > DateTime.MinValue ?
+                        LastSessDT.ToLocalizedString() : "time is undefined").AppendLine()
+                    .Append("Command       : ")
+                    .Append(LastCmdDT > DateTime.MinValue ?
+                        LastCmdDT.ToLocalizedString() : "time is undefined").AppendLine()
+                    .AppendLine()
+                    .Append("Comm. sessions (total / errors) : ").
+                        Append(kpStats.SessCnt).Append(" / ").Append(kpStats.SessErrCnt).AppendLine()
+                    .Append("Commands       (total / errors) : ")
+                    .Append(kpStats.CmdCnt).Append(" / ").Append(kpStats.CmdErrCnt).AppendLine()
+                    .Append("Requests       (total / errors) : ")
+                    .Append(kpStats.ReqCnt).Append(" / ").Append(kpStats.ReqErrCnt).AppendLine();
             }
 
             AppendKPParams(sbInfo);

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
@@ -40,6 +40,21 @@ namespace Scada.Comm.KP
     /// </summary>
     public static class KPUtils
     {
+        /// <summary>
+        /// Форматы вывода данных последовательного порта в журнал
+        /// </summary>
+        public enum SerialLogFormat
+        {
+            /// <summary>
+            /// 16-ричный формат
+            /// </summary>
+            Hex,
+            /// <summary>
+            /// Строковый формат
+            /// </summary>
+            String
+        }
+
         /// <summary>
         /// Время актуальности команды управления, с
         /// </summary>
@@ -151,7 +166,7 @@ namespace Scada.Comm.KP
         /// <param name="length">Длина преобразуемых данных</param>
         /// <param name="skipNonPrinting">Пропустить непечатные символы</param>
         /// <returns>Строка, символы которой закодированы в массиве</returns>
-        public static string BytesToString(byte[] buffer, int index, int length, bool skipNonPrinting)
+        public static string BytesToString(byte[] buffer, int index, int length, bool skipNonPrinting = false)
         {
             StringBuilder sbResult = new StringBuilder();
             bool notSkip = !skipNonPrinting;
@@ -183,7 +198,7 @@ namespace Scada.Comm.KP
         /// <returns>Строка, символы которой закодированы в массиве</returns>
         public static string BytesToString(byte[] buffer)
         {
-            return BytesToString(buffer, 0, buffer.Length, true);
+            return BytesToString(buffer, 0, buffer.Length);
         }
 
         /// <summary>
@@ -209,8 +224,10 @@ namespace Scada.Comm.KP
         /// <param name="buffer">Буфер передаваемых данных</param>
         /// <param name="index">Начальный индекс в буфере</param>
         /// <param name="count">Количество передаваемых байт</param>
+        /// <param name="logFormat">Формат вывода данных в журнал</param>
         /// <param name="logText">Строка для вывода в журнал</param>
-        public static void WriteToSerialPort(SerialPort serialPort, byte[] buffer, int index, int count, out string logText)
+        public static void WriteToSerialPort(SerialPort serialPort, byte[] buffer, int index, int count, 
+            SerialLogFormat logFormat, out string logText)
         {
             try
             {
@@ -223,7 +240,8 @@ namespace Scada.Comm.KP
                     serialPort.DiscardInBuffer();
                     serialPort.DiscardOutBuffer();
                     serialPort.Write(buffer, index, count);
-                    logText = SendNotation + " (" + count + "): " + KPUtils.BytesToHex(buffer, index, count);
+                    logText = SendNotation + " (" + count + "): " + (logFormat == SerialLogFormat.Hex ? 
+                        BytesToHex(buffer, index, count) : BytesToString(buffer, index, count));
                 }
             }
             catch (Exception ex)
@@ -231,6 +249,19 @@ namespace Scada.Comm.KP
                 logText = (Localization.UseRussian ? 
                     "Ошибка при отправке данных: " : "Error sending data: ") + ex.Message;
             }
+        }
+        
+        /// <summary>
+        /// Записать данные в последовательный порт
+        /// </summary>
+        /// <param name="serialPort">Последовательный порт</param>
+        /// <param name="buffer">Буфер передаваемых данных</param>
+        /// <param name="index">Начальный индекс в буфере</param>
+        /// <param name="count">Количество передаваемых байт</param>
+        /// <param name="logText">Строка для вывода в журнал</param>
+        public static void WriteToSerialPort(SerialPort serialPort, byte[] buffer, int index, int count, out string logText)
+        {
+            WriteToSerialPort(serialPort, buffer, index, count, SerialLogFormat.Hex, out logText);
         }
 
         /// <summary>
@@ -262,6 +293,7 @@ namespace Scada.Comm.KP
             }
         }
 
+
         /// <summary>
         /// Считать данные из последовательного порта
         /// </summary>
@@ -271,10 +303,11 @@ namespace Scada.Comm.KP
         /// <param name="count">Количество принимаемых байт</param>
         /// <param name="timeout">Таймаут чтения данных, мс</param>
         /// <param name="wait">Ожидать завершения таймаута после окончания чтения</param>
+        /// <param name="logFormat">Формат вывода данных в журнал</param>
         /// <param name="logText">Строка для вывода в журнал</param>
         /// <returns>Количество считанных байт</returns>
         public static int ReadFromSerialPort(SerialPort serialPort, byte[] buffer, int index, int count,
-            int timeout, bool wait, out string logText)
+            int timeout, bool wait, SerialLogFormat logFormat, out string logText)
         {
             int readCnt = 0;
 
@@ -302,8 +335,8 @@ namespace Scada.Comm.KP
                     nowDT = DateTime.Now;
                 }
 
-                logText = ReceiveNotation + " (" + readCnt + "/" + count + "): " + 
-                    KPUtils.BytesToHex(buffer, index, readCnt);
+                logText = ReceiveNotation + " (" + readCnt + "/" + count + "): " + (logFormat == SerialLogFormat.Hex ?
+                        BytesToHex(buffer, index, readCnt) : BytesToString(buffer, index, readCnt));
 
                 if (wait && startDT <= nowDT)
                 {
@@ -322,14 +355,33 @@ namespace Scada.Comm.KP
         /// <param name="serialPort">Последовательный порт</param>
         /// <param name="buffer">Буфер принимаемых данных</param>
         /// <param name="index">Начальный индекс в буфере</param>
-        /// <param name="maxCount">Максимальное количество принимаемых байт</param>
-        /// <param name="stopCode">Байт, означающий окончание считывания данных</param>
+        /// <param name="count">Количество принимаемых байт</param>
         /// <param name="timeout">Таймаут чтения данных, мс</param>
         /// <param name="wait">Ожидать завершения таймаута после окончания чтения</param>
         /// <param name="logText">Строка для вывода в журнал</param>
         /// <returns>Количество считанных байт</returns>
-        public static int ReadFromSerialPort(SerialPort serialPort, byte[] buffer, int index, int maxCount, 
-            byte stopCode, int timeout, bool wait, out string logText)
+        public static int ReadFromSerialPort(SerialPort serialPort, byte[] buffer, int index, int count,
+            int timeout, bool wait, out string logText)
+        {
+            return ReadFromSerialPort(serialPort, buffer, index, count, 
+                timeout, wait, SerialLogFormat.Hex, out logText);
+        }
+
+        /// <summary>
+        /// Считать данные из последовательного порта
+        /// </summary>
+        /// <param name="serialPort">Последовательный порт</param>
+        /// <param name="buffer">Буфер принимаемых данных</param>
+        /// <param name="index">Начальный индекс в буфере</param>
+        /// <param name="maxCount">Максимальное количество принимаемых байт</param>
+        /// <param name="stopCode">Байт, означающий окончание считывания данных</param>
+        /// <param name="timeout">Таймаут чтения данных, мс</param>
+        /// <param name="wait">Ожидать завершения таймаута после окончания чтения</param>
+        /// <param name="logFormat">Формат вывода данных в журнал</param>
+        /// <param name="logText">Строка для вывода в журнал</param>
+        /// <returns>Количество считанных байт</returns>
+        public static int ReadFromSerialPort(SerialPort serialPort, byte[] buffer, int index, int maxCount,
+            byte stopCode, int timeout, bool wait, SerialLogFormat logFormat, out string logText)
         {
             int readCnt = 0;
 
@@ -367,7 +419,8 @@ namespace Scada.Comm.KP
                     nowDT = DateTime.Now;
                 }
 
-                logText = ReceiveNotation + " (" + readCnt + "): " + KPUtils.BytesToHex(buffer, index, readCnt);
+                logText = ReceiveNotation + " (" + readCnt + "): " + (logFormat == SerialLogFormat.Hex ?
+                        BytesToHex(buffer, index, readCnt) : BytesToString(buffer, index, readCnt));
 
                 if (wait && startDT <= nowDT)
                 {
@@ -378,6 +431,25 @@ namespace Scada.Comm.KP
             }
 
             return readCnt;
+        }
+
+        /// <summary>
+        /// Считать данные из последовательного порта
+        /// </summary>
+        /// <param name="serialPort">Последовательный порт</param>
+        /// <param name="buffer">Буфер принимаемых данных</param>
+        /// <param name="index">Начальный индекс в буфере</param>
+        /// <param name="maxCount">Максимальное количество принимаемых байт</param>
+        /// <param name="stopCode">Байт, означающий окончание считывания данных</param>
+        /// <param name="timeout">Таймаут чтения данных, мс</param>
+        /// <param name="wait">Ожидать завершения таймаута после окончания чтения</param>
+        /// <param name="logText">Строка для вывода в журнал</param>
+        /// <returns>Количество считанных байт</returns>
+        public static int ReadFromSerialPort(SerialPort serialPort, byte[] buffer, int index, int maxCount,
+            byte stopCode, int timeout, bool wait, out string logText)
+        {
+            return ReadFromSerialPort(serialPort, buffer, index, maxCount, 
+                stopCode, timeout, wait, SerialLogFormat.Hex, out logText);
         }
 
         /// <summary>

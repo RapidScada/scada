@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2012
+ * Modified : 2015
  */
 
 using System;
@@ -282,7 +282,7 @@ namespace Scada.Comm.KP
             CmdDir = "";
             CanShowProps = false;
             DefaultCnls = null;
-            DefaultReqParams = new KPLogic.ReqParams(true);
+            DefaultReqParams = KPLogic.ReqParams.EmptyReqParams;
         }
 
 
