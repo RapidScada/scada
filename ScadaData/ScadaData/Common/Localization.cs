@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2014
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
@@ -433,7 +433,14 @@ namespace Scada
         public static bool LoadDictionaries(string directory, string fileNamePrefix, out string errMsg)
         {
             string fileName = GetDictionaryFileName(directory, fileNamePrefix);
+            return LoadDictionaries(fileName, out errMsg);
+        }
 
+        /// <summary>
+        /// Загрузить словари для считанной культуры
+        /// </summary>
+        public static bool LoadDictionaries(string fileName, out string errMsg)
+        {
             if (File.Exists(fileName))
             {
                 try
@@ -479,11 +486,39 @@ namespace Scada
         }
 
         /// <summary>
+        /// Обновить словарь, если он изменился
+        /// </summary>
+        public static bool RefreshDictionary(string directory, string fileNamePrefix, ref DateTime fileAge, 
+            out bool updated, out string errMsg)
+        {
+            string fileName = Localization.GetDictionaryFileName(directory, fileNamePrefix);
+            DateTime newFileAge = ScadaUtils.GetLastWriteTime(fileName);
+
+            if (fileAge == newFileAge)
+            {
+                updated = false;
+                errMsg = "";
+                return true;
+            }
+            else if (Localization.LoadDictionaries(fileName, out errMsg))
+            {
+                fileAge = newFileAge;
+                updated = true;
+                return true;
+            }
+            else
+            {
+                updated = false;
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Получить имя файла словаря
         /// </summary>
         public static string GetDictionaryFileName(string directory, string fileNamePrefix)
         {
-            return directory + fileNamePrefix + 
+            return directory + fileNamePrefix +
                 (string.IsNullOrEmpty(Culture.Name) ? "" : "." + Culture.Name) + ".xml";
         }
 
