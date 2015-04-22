@@ -11,8 +11,9 @@ Visual Studio Community 2013 is also acceptable.
    Log,
    Report,
    ScadaData,
-   ScadaAdmin,
    ScadaComm,
+   OpenKPs,
+   ScadaAdmin,
    ScadaServer,
    ScadaWeb,
    ScadaScheme.
