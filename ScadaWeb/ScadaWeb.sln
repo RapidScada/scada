@@ -1,5 +1,7 @@
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaWebConfig", "ScadaWebConfig\ScadaWebConfig.csproj", "{6CA05C15-A7D4-4140-AA3B-46AD6DC58A4A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaWeb", "ScadaWeb\ScadaWeb.csproj", "{E02ABCDA-33FB-4EE3-9E47-7C333AB5035B}"
