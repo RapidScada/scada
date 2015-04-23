@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KpModbus", "KpModbus\KpModbus.csproj", "{7CBF4A4B-E1A2-428E-8F68-EDD2FCE3088B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KpSms", "KpSms\KpSms.csproj", "{54BEF6C5-B63D-41E3-A123-03F1802A44F7}"

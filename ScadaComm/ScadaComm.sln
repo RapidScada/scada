@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaCommSvc", "ScadaCommSvc\ScadaCommSvc.csproj", "{004F8580-2350-4137-872E-8B0BE6D9FE40}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KP", "KP\KP.csproj", "{A33B8EC4-8F3E-453B-AA6B-5352CA1FE036}"
