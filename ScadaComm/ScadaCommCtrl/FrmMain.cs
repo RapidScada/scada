@@ -832,6 +832,7 @@ namespace Scada.Comm.Ctrl
                             kpDllInfo.KpView = Activator.CreateInstance(kpDllInfo.KpType) as KPView;
                             kpDllInfo.KpView.ConfigDir = configDir;
                             kpDllInfo.KpView.LangDir = langDir;
+                            kpDllInfo.KpView.LogDir = logDir;
                             kpDllInfo.KpView.CmdDir = cmdDir;
 
                             kpDllInfoList.Add(kpDllInfo.ShtName, kpDllInfo);
@@ -1500,6 +1501,7 @@ namespace Scada.Comm.Ctrl
                 {
                     kpView.ConfigDir = configDir;
                     kpView.LangDir = langDir;
+                    kpView.LogDir = logDir;
                     kpView.CmdDir = cmdDir;
                     kpView.ShowProps();
                 }
@@ -2590,6 +2592,7 @@ namespace Scada.Comm.Ctrl
                         {
                             kpView.ConfigDir = configDir;
                             kpView.LangDir = langDir;
+                            kpView.LogDir = logDir;
                             kpView.CmdDir = cmdDir;
                             kpView.ShowProps();
                         }

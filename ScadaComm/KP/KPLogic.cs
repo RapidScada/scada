@@ -833,7 +833,7 @@ namespace Scada.Comm.KP
         public string LangDir { get; set; }
 
         /// <summary>
-        /// Получить или установить директория файлов журналов программы
+        /// Получить или установить директорию файлов журналов программы
         /// </summary>
         public string LogDir { get; set; }
 

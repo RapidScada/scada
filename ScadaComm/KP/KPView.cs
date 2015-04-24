@@ -279,6 +279,7 @@ namespace Scada.Comm.KP
             Number = number;
             ConfigDir = "";
             LangDir = "";
+            LogDir = "";
             CmdDir = "";
             CanShowProps = false;
             DefaultCnls = null;
@@ -308,6 +309,11 @@ namespace Scada.Comm.KP
         /// Получить или установить директорию языковых файлов
         /// </summary>
         public string LangDir { get; set; }
+
+        /// <summary>
+        /// Получить или установить директорию файлов журналов программы
+        /// </summary>
+        public string LogDir { get; set; }
 
         /// <summary>
         /// Получить или установить директорию команд
