@@ -98,6 +98,14 @@ namespace Scada.Comm.KP
         /// Обозначение приёма данных
         /// </summary>
         public static readonly string ReceiveNotation;
+        /// <summary>
+        /// Сообщение о недопустимой команде
+        /// </summary>
+        public static readonly string IllegalCommand;
+        /// <summary>
+        /// Сообщение об отсутствии данных команды
+        /// </summary>
+        public static readonly string NoCommandData;
 
 
         /// <summary>
@@ -114,6 +122,8 @@ namespace Scada.Comm.KP
                 ReadLinesImpossible = "Приём строки невозможен, т.к. порт не инициализирован";
                 SendNotation = "Отправка";
                 ReceiveNotation = "Приём";
+                IllegalCommand = "Недопустимая команда";
+                NoCommandData = "Отсутствуют данные команды";
             }
             else
             {
@@ -123,6 +133,8 @@ namespace Scada.Comm.KP
                 ReadLinesImpossible = "Receiving string is impossible because the port is not initialized";
                 SendNotation = "Send";
                 ReceiveNotation = "Receive";
+                IllegalCommand = "Illegal command";
+                NoCommandData = "No command data";
             }
         }
 

@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2009
- * Modified : 2014
+ * Modified : 2015
  * 
  * Description
  * Sending and receiving SMS messages using AT commands.
@@ -806,12 +806,12 @@ namespace Scada.Comm.KP
                 }
                 else
                 {
-                    WriteToLog(Localization.UseRussian ? "Отсутствуют данные команды" : "No command data");
+                    WriteToLog(KPUtils.NoCommandData);
                 }
             }
             else
             {
-                WriteToLog(Localization.UseRussian ? "Недопустимая команда" : "Illegal command");
+                WriteToLog(KPUtils.IllegalCommand);
             }
 
             CalcCmdStats();

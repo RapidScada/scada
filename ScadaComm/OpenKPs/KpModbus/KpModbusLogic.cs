@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2014
+ * Modified : 2015
  * 
  * Description
  * Interacting with controllers via Modbus protocol.
@@ -469,7 +469,7 @@ namespace Scada.Comm.KP
                 else
                 {
                     lastCommSucc = false;
-                    WriteToLog(Localization.UseRussian ? "Недопустимая команда" : "Illegal command");
+                    WriteToLog(KPUtils.IllegalCommand);
                 }
             }
 
