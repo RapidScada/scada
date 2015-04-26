@@ -77,7 +77,6 @@ namespace Scada.Comm.KP
         private SendCmdDelegate sendCmd;        // метод отправки команды
         private RequestDelegate request;        // метод выполнения запроса
         private byte devAddr;                   // адрес устройства
-        private int tryNum;                     // номер попытки запроса
         private int elemGroupCnt;               // количество групп элементов
         private HashSet<int> floatSignals;      // множество сигналов, форматируемых как вещественное число
 
@@ -205,14 +204,6 @@ namespace Scada.Comm.KP
         }
 
         /// <summary>
-        /// Получить необходимость выполнения запроса
-        /// </summary>
-        private bool RequestNeeded()
-        {
-            return !lastCommSucc && tryNum < CommLineParams.TriesCnt && !Terminated;
-        }
-
-        /// <summary>
         /// Установить значения параметров КП в соответствии со значениями элементов группы
         /// </summary>
         private void SetParamsData(Modbus.ElemGroup elemGroup)
@@ -253,9 +244,9 @@ namespace Scada.Comm.KP
             {
                 Modbus.ElemGroup elemGroup = deviceModel.ElemGroups[elemGroupInd];
                 lastCommSucc = false;
-                tryNum = 0;
+                int tryNum = 0;
 
-                while (RequestNeeded())
+                while (RequestNeeded(ref tryNum))
                 {
                     // выполнение запроса
                     if (request(elemGroup))
@@ -299,9 +290,9 @@ namespace Scada.Comm.KP
                 {
                     Modbus.ElemGroup elemGroup = deviceModel.ElemGroups[elemGroupInd];
                     lastCommSucc = false;
-                    tryNum = 0;
+                    int tryNum = 0;
 
-                    while (RequestNeeded() && netStream != null)
+                    while (RequestNeeded(ref tryNum) && netStream != null)
                     {
                         // выполнение запроса
                         if (request(elemGroup))
@@ -352,9 +343,9 @@ namespace Scada.Comm.KP
         private void SerialSendCmd(Modbus.Cmd cmd)
         {
             lastCommSucc = false;
-            tryNum = 0;
+            int tryNum = 0;
 
-            while (RequestNeeded())
+            while (RequestNeeded(ref tryNum))
             {
                 // выполнение запроса
                 if (request(cmd))
@@ -374,9 +365,9 @@ namespace Scada.Comm.KP
             if (TcpConnect())
             {
                 lastCommSucc = false;
-                tryNum = 0;
+                int tryNum = 0;
 
-                while (RequestNeeded() && netStream != null)
+                while (RequestNeeded(ref tryNum) && netStream != null)
                 {
                     // выполнение запроса
                     if (request(cmd))

@@ -1277,6 +1277,14 @@ namespace Scada.Comm.KP
         }
 
         /// <summary>
+        /// Проверить необходимость выполнения запроса
+        /// </summary>
+        protected bool RequestNeeded(ref int tryNum)
+        {
+            return !lastCommSucc && tryNum < CommLineParams.TriesCnt && !Terminated;
+        }
+
+        /// <summary>
         /// Выполнить действия, необходимые для завершения запроса
         /// </summary>
         protected void FinishRequest()
