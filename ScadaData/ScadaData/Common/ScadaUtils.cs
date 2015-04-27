@@ -75,7 +75,7 @@ namespace Scada
         public static string NormalDir(string dir)
         {
             dir = dir == null ? "" : dir.Trim();
-            if (!dir.EndsWith(Path.DirectorySeparatorChar.ToString())) 
+            if (dir.Length > 0 && !dir.EndsWith(Path.DirectorySeparatorChar.ToString())) 
                 dir += Path.DirectorySeparatorChar;
             return dir;
         }
