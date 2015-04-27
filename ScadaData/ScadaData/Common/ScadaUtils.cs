@@ -75,7 +75,8 @@ namespace Scada
         public static string NormalDir(string dir)
         {
             dir = dir == null ? "" : dir.Trim();
-            if (dir.Length > 0 && dir[dir.Length - 1] != '\\') dir += @"\";
+            if (!dir.EndsWith(Path.DirectorySeparatorChar.ToString())) 
+                dir += Path.DirectorySeparatorChar;
             return dir;
         }
 
@@ -136,9 +137,17 @@ namespace Scada
         /// </summary>
         public static string BytesToHex(byte[] bytes)
         {
-            int len = bytes == null ? 0 : bytes.Length;
+            return BytesToHex(bytes, 0, bytes == null ? 0 : bytes.Length);
+        }
+
+        /// <summary>
+        /// Преобразовать заданный диапазон массива байт в строку на основе 16-ричного представления
+        /// </summary>
+        public static string BytesToHex(byte[] bytes, int index, int count)
+        {
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < len; i++)
+            int last = index + count;
+            for (int i = index; i < last; i++)
                 sb.Append(bytes[i].ToString("X2"));
             return sb.ToString();
         }
