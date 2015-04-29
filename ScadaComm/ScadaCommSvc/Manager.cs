@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
@@ -434,12 +434,14 @@ namespace Scada.Comm.Svc
                                 string typeFullName = "Scada.Comm.KP." + dllName + "Logic";
                                 Type kpType;
                                 if (kpTypes.ContainsKey(dllName))
+                                {
                                     kpType = kpTypes[dllName];
+                                }
                                 else
                                 {
                                     // загрузка типа из библиотеки
                                     string path = KpDir + dllName + ".dll";
-                                    Log.WriteAction((Localization.UseRussian ? "Загрузка библиотеки КП: " : 
+                                    Log.WriteAction((Localization.UseRussian ? "Загрузка библиотеки КП: " :
                                         "Load device library: ") + path, Log.ActTypes.Action);
 
                                     Assembly asm = Assembly.LoadFile(path);
@@ -462,7 +464,18 @@ namespace Scada.Comm.Svc
                                 reqParams.CmdLine = kpElem.GetAttribute("cmdLine");
 
                                 // создание экземпляра класса КП
-                                KPLogic kpLogic = Activator.CreateInstance(kpType, int.Parse(kpNumber)) as KPLogic;
+                                KPLogic kpLogic;
+                                try
+                                {
+                                    kpLogic = (KPLogic)Activator.CreateInstance(kpType, int.Parse(kpNumber));
+                                }
+                                catch (Exception ex)
+                                {
+                                    kpLogic = null;
+                                    throw new Exception((Localization.UseRussian ? 
+                                        "Ошибка при создании экземпляра класса КП: " : 
+                                        "Error creating device class instance: ") + ex.Message);
+                                }
                                 kpLogic.Bind = kpBind;
                                 kpLogic.Name = kpElem.GetAttribute("name");
                                 string address = kpElem.GetAttribute("address");
