@@ -399,7 +399,7 @@ namespace Scada.Comm.KP
 
             if (serialPort == null)
             {
-                logText = KPUtils.ReadDataImpossible;
+                logText = ReadDataImpossible;
             }
             else
             {
