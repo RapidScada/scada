@@ -92,6 +92,7 @@
   <ItemGroup>
     <Compile Include="AppData.cs" />
     <Compile Include="AppPhrases.cs" />
+    <Compile Include="ExportImport.cs" />
     <Compile Include="FrmLanguage.cs">
       <SubType>Form</SubType>
     </Compile>

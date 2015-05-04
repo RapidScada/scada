@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2010
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
@@ -48,24 +48,22 @@ namespace ScadaAdmin
             /// <summary>
             /// Конструктор
             /// </summary>
-            public TableInfo(string name, string header, GetTableDelegate getTable)
+            public TableInfo(string name, string header, GetTableDelegate getTable, string idColName)
             {
                 Name = name;
                 Header = header;
                 GetTable = getTable;
+                IdColName = idColName;
             }
 
-            
             /// <summary>
             /// Получить имя таблицы
             /// </summary>
             public string Name { get; private set; }
-
             /// <summary>
             /// Получить заголовок (пользовательское наименование) таблицы
             /// </summary>
             public string Header { get; private set; }
-
             /// <summary>
             /// Получить имя файла таблицы в формате DAT
             /// </summary>
@@ -76,12 +74,14 @@ namespace ScadaAdmin
                     return Name.ToLower() + ".dat";
                 }
             }
-
             /// <summary>
             /// Получить метод получения таблицы
             /// </summary>
             public GetTableDelegate GetTable { get; private set; }
-
+            /// <summary>
+            /// Получить наименование столбца идентификатора, если он числовой и определяется одним столбцом
+            /// </summary>
+            public string IdColName { get; private set; }
 
             /// <summary>
             /// Получить строковое представление объекта
@@ -117,32 +117,32 @@ namespace ScadaAdmin
         /// </summary>
         static Tables()
         {
-            TablesInfo = new List<TableInfo>();
-            TablesInfo.Add(new TableInfo("Obj", CommonPhrases.ObjTable, GetObjTable));
-            TablesInfo.Add(new TableInfo("CommLine", CommonPhrases.CommLineTable, GetCommLineTable));
-            TablesInfo.Add(new TableInfo("KP", CommonPhrases.KPTable, GetKPTable));
-            TablesInfo.Add(new TableInfo("InCnl", CommonPhrases.InCnlTable, GetInCnlTable));
-            TablesInfo.Add(new TableInfo("CtrlCnl", CommonPhrases.CtrlCnlTable, GetCtrlCnlTable));
-            TablesInfo.Add(new TableInfo("Role", CommonPhrases.RoleTable, GetRoleTable));
-            TablesInfo.Add(new TableInfo("User", CommonPhrases.UserTable, GetUserTable));
-            TablesInfo.Add(new TableInfo("Interface", CommonPhrases.InterfaceTable, GetInterfaceTable));
-            TablesInfo.Add(new TableInfo("Right", CommonPhrases.RightTable, GetRightTable));
-            TablesInfo.Add(new TableInfo("CnlType", CommonPhrases.CnlTypeTable, GetCnlTypeTable));
-            TablesInfo.Add(new TableInfo("CmdType", CommonPhrases.CmdTypeTable, GetCmdTypeTable));
-            TablesInfo.Add(new TableInfo("EvType", CommonPhrases.EvTypeTable, GetEvTypeTable));
-            TablesInfo.Add(new TableInfo("KPType", CommonPhrases.KPTypeTable, GetKPTypeTable));
-            TablesInfo.Add(new TableInfo("Param", CommonPhrases.ParamTable, GetParamTable));
-            TablesInfo.Add(new TableInfo("Unit", CommonPhrases.UnitTable, GetUnitTable));
-            TablesInfo.Add(new TableInfo("CmdVal", CommonPhrases.CmdValTable, GetCmdValTable));
-            TablesInfo.Add(new TableInfo("Format", CommonPhrases.FormatTable, GetFormatTable));
-            TablesInfo.Add(new TableInfo("Formula", CommonPhrases.FormulaTable, GetFormulaTable));
+            TableInfoList = new List<TableInfo>();
+            TableInfoList.Add(new TableInfo("Obj", CommonPhrases.ObjTable, GetObjTable, "ObjNum"));
+            TableInfoList.Add(new TableInfo("CommLine", CommonPhrases.CommLineTable, GetCommLineTable, "CommLineNum"));
+            TableInfoList.Add(new TableInfo("KP", CommonPhrases.KPTable, GetKPTable, "KPNum"));
+            TableInfoList.Add(new TableInfo("InCnl", CommonPhrases.InCnlTable, GetInCnlTable, "CnlNum"));
+            TableInfoList.Add(new TableInfo("CtrlCnl", CommonPhrases.CtrlCnlTable, GetCtrlCnlTable, "CtrlCnlNum"));
+            TableInfoList.Add(new TableInfo("Role", CommonPhrases.RoleTable, GetRoleTable, "RoleID"));
+            TableInfoList.Add(new TableInfo("User", CommonPhrases.UserTable, GetUserTable, "UserID"));
+            TableInfoList.Add(new TableInfo("Interface", CommonPhrases.InterfaceTable, GetInterfaceTable, "ItfID"));
+            TableInfoList.Add(new TableInfo("Right", CommonPhrases.RightTable, GetRightTable, ""));
+            TableInfoList.Add(new TableInfo("CnlType", CommonPhrases.CnlTypeTable, GetCnlTypeTable, "CnlTypeID"));
+            TableInfoList.Add(new TableInfo("CmdType", CommonPhrases.CmdTypeTable, GetCmdTypeTable, "CmdTypeID"));
+            TableInfoList.Add(new TableInfo("EvType", CommonPhrases.EvTypeTable, GetEvTypeTable, "CnlStatus"));
+            TableInfoList.Add(new TableInfo("KPType", CommonPhrases.KPTypeTable, GetKPTypeTable, "KPTypeID"));
+            TableInfoList.Add(new TableInfo("Param", CommonPhrases.ParamTable, GetParamTable, "ParamID"));
+            TableInfoList.Add(new TableInfo("Unit", CommonPhrases.UnitTable, GetUnitTable, "UnitID"));
+            TableInfoList.Add(new TableInfo("CmdVal", CommonPhrases.CmdValTable, GetCmdValTable, "CmdValID"));
+            TableInfoList.Add(new TableInfo("Format", CommonPhrases.FormatTable, GetFormatTable, "FormatID"));
+            TableInfoList.Add(new TableInfo("Formula", CommonPhrases.FormulaTable, GetFormulaTable, ""));
         }
 
 
         /// <summary>
-        /// Получить информацию о таблицах
+        /// Получить список информации о таблицах
         /// </summary>
-        public static List<TableInfo> TablesInfo { get; private set; }
+        public static List<TableInfo> TableInfoList { get; private set; }
 
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace ScadaAdmin
         /// </summary>
         private static string TranslateTableName(string tableName)
         {
-            foreach (TableInfo tableInfo in TablesInfo)
+            foreach (TableInfo tableInfo in TableInfoList)
                 if (tableInfo.Name == tableName)
                     return tableInfo.Header;
             return tableName;
