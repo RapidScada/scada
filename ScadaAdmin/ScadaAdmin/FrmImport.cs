@@ -75,7 +75,7 @@ namespace ScadaAdmin
             // заполнение выпадающего списка таблиц
             int selInd = 0;
 
-            foreach (Tables.TableInfo tableInfo in Tables.TablesInfo)
+            foreach (Tables.TableInfo tableInfo in Tables.TableInfoList)
             {
                 int ind = cbTable.Items.Add(tableInfo);
                 if (tableInfo.Name == DefaultTableName)

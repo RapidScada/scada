@@ -816,7 +816,7 @@ namespace ScadaAdmin
                         {
                             // сохранение таблиц базы конфигурации в формате DAT
                             BaseAdapter adapter = new BaseAdapter();
-                            foreach (Tables.TableInfo tableInfo in Tables.TablesInfo)
+                            foreach (Tables.TableInfo tableInfo in Tables.TableInfoList)
                             {
                                 DataTable table = tableInfo.GetTable();
                                 adapter.FileName = baseDatDir + tableInfo.FileName;
