@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2010
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
@@ -64,7 +64,7 @@ namespace ScadaAdmin
         {
             // перевод формы
             Localization.TranslateForm(this, "ScadaAdmin.FrmExport");
-            openFileDialog.Title = AppPhrases.ChooseTableBaseFile;
+            openFileDialog.Title = AppPhrases.ChooseBaseTableFile;
             openFileDialog.Filter = AppPhrases.BaseTableFileFilter;
 
             // заполнение выпадающего списка таблиц
@@ -86,7 +86,10 @@ namespace ScadaAdmin
             // установка имени файла таблицы
             Tables.TableInfo tableInfo = cbTable.SelectedItem as Tables.TableInfo;
             if (tableInfo != null)
+            {
                 txtFileName.Text = DefaultDirectory + tableInfo.FileName;
+                gbIDs.Enabled = tableInfo.IDColName != "";
+            }
         }
 
         private void btnBrowse_Click(object sender, EventArgs e)
@@ -102,42 +105,30 @@ namespace ScadaAdmin
             txtFileName.DeselectAll();
         }
 
+        private void chkStartID_CheckedChanged(object sender, EventArgs e)
+        {
+            numStartID.Enabled = chkStartID.Checked;
+        }
+
+        private void chkFinalID_CheckedChanged(object sender, EventArgs e)
+        {
+            numFinalID.Enabled = chkFinalID.Checked;
+        }
+
         private void btnExport_Click(object sender, EventArgs e)
         {
             // экспорт выбранной таблицы в формат DAT
-            try
-            {
-                Tables.TableInfo tableInfo = cbTable.SelectedItem as Tables.TableInfo;
+            Tables.TableInfo tableInfo = cbTable.SelectedItem as Tables.TableInfo;
 
-                if (tableInfo != null && AppData.Connected)
-                {
-                    string fileName = txtFileName.Text.Trim();
-                    string directory = fileName == "" ? "" : Path.GetDirectoryName(fileName);
-                    if (directory == "")
-                    {
-                        ScadaUtils.ShowError(AppPhrases.ExportDirUndefied);
-                    }
-                    else
-                    {
-                        if (Directory.Exists(directory))
-                        {
-                            BaseAdapter adapter = new BaseAdapter();
-                            DataTable table = tableInfo.GetTable();
-                            adapter.FileName = fileName;
-                            adapter.Update(table);
-
-                            ScadaUtils.ShowInfo(AppPhrases.ExportCompleted);
-                        }
-                        else
-                        {
-                            ScadaUtils.ShowError(AppPhrases.ExportDirNotExists);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
+            if (tableInfo != null && AppData.Connected)
             {
-                AppUtils.ProcError(AppPhrases.ExportError + ":\r\n" + ex.Message);
+                int minID = gbIDs.Enabled && chkStartID.Checked ? Convert.ToInt32(numStartID.Value) : 0;
+                int maxID = gbIDs.Enabled && chkFinalID.Checked ? Convert.ToInt32(numFinalID.Value) : int.MaxValue;
+                string msg;
+                if (ImportExport.ExportTable(tableInfo, txtFileName.Text, minID, maxID, out msg))
+                    ScadaUtils.ShowInfo(msg);
+                else
+                    AppUtils.ProcError(msg);
             }
         }
     }

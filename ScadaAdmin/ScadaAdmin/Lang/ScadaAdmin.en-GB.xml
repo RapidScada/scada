@@ -3,8 +3,37 @@
   <Dictionary key="ScadaAdmin">
     <Phrase key="BaseSDFFileNotFound">The configuration database file in SDF format {0} not found.</Phrase>
     <Phrase key="RefreshRequired">&#13;&#10;Update the open tables to display the changes.</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaAdmin.ImportExport">
     <Phrase key="ChooseBaseTableFile">Choose a configuration database table file</Phrase>
-    <Phrase key="BaseTableFileFilter">Configuration Database Tables (*.dat)|*.dat|All Files (*.*)|*.*</Phrase>
+    <Phrase key="ChooseBaseArchiveFile">Choose a configuration database archive file</Phrase>
+    <Phrase key="BaseTableFileFilter">Configuration Database Tables|*.dat|All Files|*.*</Phrase>
+    <Phrase key="BaseArchiveFileFilter">Configuration Database Archive|*.zip|All Files|*.*</Phrase>
+    <Phrase key="ImportFileUndefied">Import file is undefined.</Phrase>
+    <Phrase key="ImportFileNotExist">Import file does not exist.</Phrase>
+    <Phrase key="ImportTitle">Import Configuration Database</Phrase>
+    <Phrase key="ImportTableTitle">Import Configuration Database Table &quot;{0}&quot;</Phrase>
+    <Phrase key="ImportSource">Source file : </Phrase>
+    <Phrase key="LoadTableError">Error loading imported table</Phrase>
+    <Phrase key="SrcTableColumns">Columns of the Source Table</Phrase>
+    <Phrase key="DestTableColumns">Columns of the Destination Table</Phrase>
+    <Phrase key="NoColumns">No columns</Phrase>
+    <Phrase key="WriteDBError">Error writing to the database</Phrase>
+    <Phrase key="ImportCompleted">Import completed successfully.&#13;&#10;Added records: {0}.</Phrase>
+    <Phrase key="ImportCompletedWithErr">Import completed with errors.&#13;&#10;Added records: {0}. Errors: {1}.</Phrase>
+    <Phrase key="ImportTableCompleted">Import of the configuration database table completed successfully.&#13;&#10;Added records: {0}.</Phrase>
+    <Phrase key="ImportTableCompletedWithErr">Import of the configuration database table completed with errors.&#13;&#10;Added records: {0}. Errors: {1}.</Phrase>
+    <Phrase key="ImportResult">Import Result</Phrase>
+    <Phrase key="ImportTableResult">Import Table Result</Phrase>
+    <Phrase key="ImportTableErrors">Import Table Errors</Phrase>
+    <Phrase key="ImportError">Error import the configuration database table</Phrase>
+    <Phrase key="ExportFileUndefied">Export file is undefined.</Phrase>
+    <Phrase key="ExportDirUndefied">Export directory is undefined.</Phrase>
+    <Phrase key="ExportDirNotExists">Export directory does not exist.</Phrase>
+    <Phrase key="ExportCompleted">Export of the configuration database table completed successfully.</Phrase>
+    <Phrase key="ExportError">Error export the configuration database table</Phrase>
+    <Phrase key="DbPassCompleted">Passing the configuration database to SCADA-Server completed successfully.&#13;&#10;Changes will take effect after restarting SCADA-Server service.</Phrase>
+    <Phrase key="DbPassError">Error passing the configuration database to SCADA-Server</Phrase>
   </Dictionary>
   <Dictionary key="ScadaAdmin.FrmCloneCnls">
     <Phrase key="this">Clone Channels</Phrase>
@@ -113,12 +142,11 @@
     <Phrase key="this">Export to File</Phrase>
     <Phrase key="lblTable">Table</Phrase>
     <Phrase key="lblFileName">File</Phrase>
+    <Phrase key="gbIDs">Identifiers</Phrase>
+    <Phrase key="lblStartID">Start</Phrase>
+    <Phrase key="lblFinalID">Final</Phrase>
     <Phrase key="btnExport">Export</Phrase>
     <Phrase key="btnClose">Close</Phrase>
-    <Phrase key="ExportDirUndefied">Directory of the configuration database table is undefined.</Phrase>
-    <Phrase key="ExportDirNotExists">Directory of the configuration database table does not exist.</Phrase>
-    <Phrase key="ExportCompleted">Export of the configuration database table completed successfully.</Phrase>
-    <Phrase key="ExportError">Error export the configuration database table</Phrase>
   </Dictionary>
   <Dictionary key="ScadaAdmin.FrmImport">
     <Phrase key="this">Import from File</Phrase>
@@ -131,19 +159,7 @@
     <Phrase key="chkImportLog">Write to import log</Phrase>
     <Phrase key="btnImport">Import</Phrase>
     <Phrase key="btnClose">Close</Phrase>
-    <Phrase key="ImportTitle">Import Configuration Database Table</Phrase>
-    <Phrase key="ImportTable">Table : </Phrase>
-    <Phrase key="ImportFile">File  : </Phrase>
-    <Phrase key="LoadTableError">Error loading imported table</Phrase>
-    <Phrase key="SrcTableFields">Fields of the Imported Table</Phrase>
-    <Phrase key="DestTableFields">Fields of the Database Table</Phrase>
-    <Phrase key="NoFields">No fields</Phrase>
-    <Phrase key="WriteDBError">Error writing to the database</Phrase>
-    <Phrase key="ImportCompleted">Import of the configuration database table completed successfully.&#13;&#10;Added records: {0}.</Phrase>
-    <Phrase key="ImportCompletedWithErr">Import of the configuration database table completed with errors.&#13;&#10;Added records: {0}. Errors: {1}.</Phrase>
-    <Phrase key="ImportResult">Result</Phrase>
-    <Phrase key="ImportErrors">Import Errors</Phrase>
-    <Phrase key="ImportError">Error import the configuration database table</Phrase>
+    <Phrase key="ArchiveItem">Archive</Phrase>
   </Dictionary>
   <Dictionary key="ScadaAdmin.FrmInCnlProps">
     <Phrase key="this">Input Channel Properties</Phrase>
@@ -259,8 +275,6 @@
     <Phrase key="UndefObj">&lt;Undefined object&gt;</Phrase>
     <Phrase key="UndefKP">&lt;Undefined device&gt;</Phrase>
     <Phrase key="CnlGroupError">Error grouping channels</Phrase>
-    <Phrase key="DbPassCompleted">Passing the configuration database to SCADA-Server completed successfully.&#13;&#10;Changes will take effect after restarting SCADA-Server service.</Phrase>
-    <Phrase key="DbPassError">Error passing the configuration database to SCADA-Server</Phrase>
     <Phrase key="BackupCompleted">Backing up the configuration database completed successfully.&#13;&#10;The data saved in the file&#13;&#10;{0}</Phrase>
     <Phrase key="BackupError">Error backing up the configuration database</Phrase>
     <Phrase key="CompactCompleted">Compacting the configuration database completed successfully.</Phrase>

@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2010
- * Modified : 2013
+ * Modified : 2015
  */
 
 using System;
@@ -799,47 +799,14 @@ namespace ScadaAdmin
 
         private void miDbPassToServer_Click(object sender, EventArgs e)
         {
-            // перевод базы конфигурации в формат DAT
-            try
+            // конвертирование базы конфигурации в формат DAT
+            if (AppData.Connected)
             {
-                if (AppData.Connected)
-                {
-                    string baseDatDir = settings.AppSett.BaseDATDir;
-                    if (Directory.Exists(baseDatDir))
-                    {
-                        // создание файла блокировки базы конфигурации
-                        string baseLockPath = baseDatDir + "baselock";
-                        FileStream baseLockStream = new FileStream(baseLockPath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
-                        baseLockStream.Close();
-
-                        try
-                        {
-                            // сохранение таблиц базы конфигурации в формате DAT
-                            BaseAdapter adapter = new BaseAdapter();
-                            foreach (Tables.TableInfo tableInfo in Tables.TableInfoList)
-                            {
-                                DataTable table = tableInfo.GetTable();
-                                adapter.FileName = baseDatDir + tableInfo.FileName;
-                                adapter.Update(table);
-                            }
-                        }
-                        finally
-                        {
-                            // удаление файла блокировки базы конфигурации
-                            File.Delete(baseLockPath);
-                        }
-
-                        ScadaUtils.ShowInfo(AppPhrases.DbPassCompleted);
-                    }
-                    else
-                    {
-                        ScadaUtils.ShowError(CommonPhrases.BaseDATDirNotExists);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                AppUtils.ProcError(AppPhrases.DbPassError + ":\r\n" + ex.Message);
+                string msg;
+                if (ImportExport.PassBase(Tables.TableInfoList, settings.AppSett.BaseDATDir, out msg))
+                    ScadaUtils.ShowInfo(msg);
+                else
+                    AppUtils.ProcError(msg);
             }
         }
 

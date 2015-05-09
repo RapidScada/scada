@@ -56,7 +56,7 @@
             // 
             // btnImport
             // 
-            this.btnImport.Location = new System.Drawing.Point(178, 188);
+            this.btnImport.Location = new System.Drawing.Point(152, 188);
             this.btnImport.Name = "btnImport";
             this.btnImport.Size = new System.Drawing.Size(75, 23);
             this.btnImport.TabIndex = 7;
@@ -67,7 +67,7 @@
             // btnClose
             // 
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(259, 188);
+            this.btnClose.Location = new System.Drawing.Point(233, 188);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
             this.btnClose.TabIndex = 8;
@@ -78,7 +78,7 @@
             // 
             this.btnBrowse.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnBrowse.Image = ((System.Drawing.Image)(resources.GetObject("btnBrowse.Image")));
-            this.btnBrowse.Location = new System.Drawing.Point(314, 65);
+            this.btnBrowse.Location = new System.Drawing.Point(288, 65);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(20, 20);
             this.btnBrowse.TabIndex = 4;
@@ -89,7 +89,7 @@
             // 
             this.txtFileName.Location = new System.Drawing.Point(12, 65);
             this.txtFileName.Name = "txtFileName";
-            this.txtFileName.Size = new System.Drawing.Size(296, 20);
+            this.txtFileName.Size = new System.Drawing.Size(270, 20);
             this.txtFileName.TabIndex = 3;
             // 
             // lblFileName
@@ -116,9 +116,9 @@
             this.lblTable.AutoSize = true;
             this.lblTable.Location = new System.Drawing.Point(9, 9);
             this.lblTable.Name = "lblTable";
-            this.lblTable.Size = new System.Drawing.Size(50, 13);
+            this.lblTable.Size = new System.Drawing.Size(103, 13);
             this.lblTable.TabIndex = 0;
-            this.lblTable.Text = "Таблица";
+            this.lblTable.Text = "Таблица или архив";
             // 
             // gbIDs
             // 
@@ -245,6 +245,8 @@
             // chkImportLog
             // 
             this.chkImportLog.AutoSize = true;
+            this.chkImportLog.Checked = true;
+            this.chkImportLog.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkImportLog.Location = new System.Drawing.Point(25, 164);
             this.chkImportLog.Name = "chkImportLog";
             this.chkImportLog.Size = new System.Drawing.Size(169, 17);
@@ -258,7 +260,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(346, 223);
+            this.ClientSize = new System.Drawing.Size(320, 223);
             this.Controls.Add(this.chkImportLog);
             this.Controls.Add(this.gbIDs);
             this.Controls.Add(this.btnImport);

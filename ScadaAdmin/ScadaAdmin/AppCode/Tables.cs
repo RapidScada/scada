@@ -53,7 +53,7 @@ namespace ScadaAdmin
                 Name = name;
                 Header = header;
                 GetTable = getTable;
-                IdColName = idColName;
+                IDColName = idColName;
             }
 
             /// <summary>
@@ -81,7 +81,7 @@ namespace ScadaAdmin
             /// <summary>
             /// Получить наименование столбца идентификатора, если он числовой и определяется одним столбцом
             /// </summary>
-            public string IdColName { get; private set; }
+            public string IDColName { get; private set; }
 
             /// <summary>
             /// Получить строковое представление объекта

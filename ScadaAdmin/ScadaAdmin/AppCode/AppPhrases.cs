@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2014
- * Modified : 2014
+ * Modified : 2015
  */
 
 using Scada;
@@ -41,8 +41,38 @@ namespace ScadaAdmin
         // Словарь ScadaAdmin
         public static string BaseSDFFileNotFound { get; private set; }
         public static string RefreshRequired { get; private set; }
-        public static string ChooseTableBaseFile { get; private set; }
+
+        // Словарь ScadaAdmin.ImportExport
+        public static string ChooseBaseTableFile { get; private set; }
+        public static string ChooseBaseArchiveFile { get; private set; }
         public static string BaseTableFileFilter { get; private set; }
+        public static string BaseArchiveFileFilter { get; private set; }
+        public static string ImportFileUndefied { get; private set; }
+        public static string ImportFileNotExist { get; private set; }
+        public static string ImportTitle { get; private set; }
+        public static string ImportTableTitle { get; private set; }
+        public static string ImportSource { get; private set; }
+        public static string LoadTableError { get; private set; }
+        public static string SrcTableColumns { get; private set; }
+        public static string DestTableColumns { get; private set; }
+        public static string NoColumns { get; private set; }
+        public static string WriteDBError { get; private set; }
+        public static string ImportCompleted { get; private set; }
+        public static string ImportCompletedWithErr { get; private set; }
+        public static string ImportTableCompleted { get; private set; }
+        public static string ImportTableCompletedWithErr { get; private set; }
+        public static string ImportResult { get; private set; }
+        public static string ImportTableResult { get; private set; }
+        public static string ImportTableErrors { get; private set; }
+        public static string ImportTableError { get; private set; }
+        public static string ImportArchiveError { get; private set; }
+        public static string ExportFileUndefied { get; private set; }
+        public static string ExportDirUndefied { get; private set; }
+        public static string ExportDirNotExists { get; private set; }
+        public static string ExportCompleted { get; private set; }
+        public static string ExportError { get; private set; }
+        public static string DbPassCompleted { get; private set; }
+        public static string DbPassError { get; private set; }
 
         // Словарь ScadaAdmin.FrmCloneCnls
         public static string NotReplace { get; private set; }
@@ -97,26 +127,8 @@ namespace ScadaAdmin
         public static string DllNotFound { get; private set; }
         public static string FillKPGridError { get; private set; }
 
-        // Словарь ScadaAdmin.FrmExport
-        public static string ExportDirUndefied { get; private set; }
-        public static string ExportDirNotExists { get; private set; }
-        public static string ExportCompleted { get; private set; }
-        public static string ExportError { get; private set; }
-
         // Словарь ScadaAdmin.FrmImport
-        public static string ImportTitle { get; private set; }
-        public static string ImportTable { get; private set; }
-        public static string ImportFile { get; private set; }
-        public static string LoadTableError { get; private set; }
-        public static string SrcTableFields { get; private set; }
-        public static string DestTableFields { get; private set; }
-        public static string NoFields { get; private set; }
-        public static string WriteDBError { get; private set; }
-        public static string ImportCompleted { get; private set; }
-        public static string ImportCompletedWithErr { get; private set; }
-        public static string ImportResult { get; private set; }
-        public static string ImportErrors { get; private set; }
-        public static string ImportError { get; private set; }
+        public static string ArchiveItem { get; private set; }
 
         // Словарь ScadaAdmin.FrmInCnlProps
         public static string ShowInCnlPropsError { get; private set; }
@@ -150,8 +162,6 @@ namespace ScadaAdmin
         public static string UndefObj { get; private set; }
         public static string UndefKP { get; private set; }
         public static string CnlGroupError { get; private set; }
-        public static string DbPassCompleted { get; private set; }
-        public static string DbPassError { get; private set; }
         public static string BackupCompleted { get; private set; }
         public static string BackupError { get; private set; }
         public static string CompactCompleted { get; private set; }
@@ -199,8 +209,38 @@ namespace ScadaAdmin
         {
             BaseSDFFileNotFound = "Файл базы конфигурации в формате SDF {0} не найден.";
             RefreshRequired = "\r\nОбновите открытые таблицы, чтобы отобразить изменения.";
-            ChooseTableBaseFile = "Выберите файл таблицы базы конфигурации";
+
+            ChooseBaseTableFile = "Выберите файл таблицы базы конфигурации";
+            ChooseBaseArchiveFile = "Выберите файл архива базы конфигурации";
             BaseTableFileFilter = "Таблицы базы конфигурации|*.dat|Все файлы|*.*";
+            BaseArchiveFileFilter = "Архив базы конфигурации|*.zip|Все файлы|*.*";
+            ImportFileUndefied = "Импортируемый файл не определён.";
+            ImportFileNotExist = "Импортируемый файл не существует.";
+            ImportTitle = "Импорт базы конфигурации";
+            ImportTableTitle = "Импорт таблицы базы конфигурации \"{0}\"";
+            ImportSource = "Исходный файл : ";
+            LoadTableError = "Ошибка при загрузке импортируемой таблицы";
+            SrcTableColumns = "Поля исходной таблицы";
+            DestTableColumns = "Поля таблицы, в которую производится импорт";
+            NoColumns = "Отсутствуют";
+            WriteDBError = "Ошибка при записи информации в БД";
+            ImportCompleted = "Импорт завершён успешно.\r\nДобавлено записей: {0}.";
+            ImportCompletedWithErr = "Импорт завершён с ошибками.\r\nДобавлено записей: {0}. Ошибок: {1}.";
+            ImportTableCompleted = "Импорт таблицы базы конфигурации завершён успешно.\r\nДобавлено записей: {0}.";
+            ImportTableCompletedWithErr = "Импорт таблицы базы конфигурации завершён с ошибками.\r\n" + 
+                "Добавлено записей: {0}. Ошибок: {1}.";
+            ImportResult = "Результат импорта";
+            ImportTableResult = "Результат импорта таблицы";
+            ImportTableErrors = "Ошибки импорта таблицы";
+            ImportTableError = "Ошибка при импорте таблицы базы конфигурации";
+            ExportFileUndefied = "Файл экспорта не определён.";
+            ExportDirUndefied = "Директория экспорта не определена.";
+            ExportDirNotExists = "Директория экспорта не существует.";
+            ExportCompleted = "Экспорт таблицы базы конфигурации завершён успешно.";
+            ExportError = "Ошибка при экспорте таблицы базы конфигурации";
+            DbPassCompleted = "Передача базы конфигурации SCADA-Серверу завершена успешно.\r\n" +
+                "Изменения вступят в силу после перезапуска службы SCADA-Сервера.";
+            DbPassError = "Ошибка при передаче базы конфигурации SCADA-Серверу";
 
             NotReplace = "<Не заменять>";
             Undefined = "<Не определён>";
@@ -252,24 +292,7 @@ namespace ScadaAdmin
             DllNotFound = "Не найдена";
             FillKPGridError = "Ошибка при заполнении таблицы выбора КП";
 
-            ExportDirUndefied = "Директория экспортируемой таблицы не определена.";
-            ExportDirNotExists = "Директория экспортируемой таблицы не существует.";
-            ExportCompleted = "Экспорт таблицы базы конфигурации завершён успешно.";
-            ExportError = "Ошибка при экспорте таблицы базы конфигурации";
-
-            ImportTitle = "Импорт таблицы базы конфигурации";
-            ImportTable = "Таблица : ";
-            ImportFile = "Файл    : ";
-            LoadTableError = "Ошибка при загрузке импортируемой таблицы";
-            SrcTableFields = "Поля импортируемой таблицы";
-            DestTableFields = "Поля таблицы БД";
-            NoFields = "Отсутствуют";
-            WriteDBError = "Ошибка при записи информации в БД";
-            ImportCompleted = "Импорт таблицы базы конфигурации завершён успешно.\r\nДобавлено записей: {0}.";
-            ImportCompletedWithErr = "Импорт таблицы базы конфигурации завершён с ошибками.\r\nДобавлено записей: {0}. Ошибок: {1}.";
-            ImportResult = "Результат";
-            ImportErrors = "Ошибки импорта";
-            ImportError = "Ошибка при импорте таблицы базы конфигурации";
+            ArchiveItem = "Архив";
 
             ShowInCnlPropsError = "Ошибка при отображении свойств входного канала";
             IncorrectInCnlNum = "Некорректное значение номера входного канала:";
@@ -300,9 +323,6 @@ namespace ScadaAdmin
             UndefObj = "<Объект не опр.>";
             UndefKP = "<КП не опр.>";
             CnlGroupError = "Ошибка при группировке каналов";
-            DbPassCompleted = "Передача базы конфигурации SCADA-Серверу завершена успешно.\r\n" + 
-                "Изменения вступят в силу после перезапуска службы SCADA-Сервера.";
-            DbPassError = "Ошибка при передаче базы конфигурации SCADA-Серверу";
             BackupCompleted = "Резервирование базы конфигурации завершено успешно.\r\nДанные сохранены в файле\r\n{0}";
             BackupError = "Ошибка при резервировании базы конфигурации";
             CompactCompleted = "Упаковка базы конфигурации завершена успешно.";
@@ -350,8 +370,39 @@ namespace ScadaAdmin
             {
                 BaseSDFFileNotFound = dict.GetPhrase("BaseSDFFileNotFound", BaseSDFFileNotFound);
                 RefreshRequired = dict.GetPhrase("RefreshRequired", RefreshRequired);
-                ChooseTableBaseFile = dict.GetPhrase("ChooseTableBaseFile", ChooseTableBaseFile);
+            }
+
+            if (Localization.Dictionaries.TryGetValue("ScadaAdmin.ImportExport", out dict))
+            {
+                ChooseBaseTableFile = dict.GetPhrase("ChooseBaseTableFile", ChooseBaseTableFile);
+                ChooseBaseArchiveFile = dict.GetPhrase("ChooseBaseArchiveFile", ChooseBaseArchiveFile);
                 BaseTableFileFilter = dict.GetPhrase("BaseTableFileFilter", BaseTableFileFilter);
+                BaseArchiveFileFilter = dict.GetPhrase("BaseArchiveFileFilter", BaseArchiveFileFilter);
+                ImportFileUndefied = dict.GetPhrase("ImportFileUndefied", ImportFileUndefied);
+                ImportFileNotExist = dict.GetPhrase("ImportFileNotExist", ImportFileNotExist);
+                ImportTitle = dict.GetPhrase("ImportTitle", ImportTitle);
+                ImportTableTitle = dict.GetPhrase("ImportTableTitle", ImportTableTitle);
+                ImportSource = dict.GetPhrase("ImportSource", ImportSource);
+                LoadTableError = dict.GetPhrase("LoadTableError", LoadTableError);
+                SrcTableColumns = dict.GetPhrase("SrcTableColumns", SrcTableColumns);
+                DestTableColumns = dict.GetPhrase("DestTableColumns", DestTableColumns);
+                NoColumns = dict.GetPhrase("NoColumns", NoColumns);
+                WriteDBError = dict.GetPhrase("WriteDBError", WriteDBError);
+                ImportCompleted = dict.GetPhrase("ImportCompleted", ImportCompleted);
+                ImportCompletedWithErr = dict.GetPhrase("ImportCompletedWithErr", ImportCompletedWithErr);
+                ImportTableCompleted = dict.GetPhrase("ImportTableCompleted", ImportTableCompleted);
+                ImportTableCompletedWithErr = dict.GetPhrase("ImportTableCompletedWithErr", ImportTableCompletedWithErr);
+                ImportResult = dict.GetPhrase("ImportResult", ImportResult);
+                ImportTableResult = dict.GetPhrase("ImportTableResult", ImportTableResult);
+                ImportTableErrors = dict.GetPhrase("ImportTableErrors", ImportTableErrors);
+                ImportTableError = dict.GetPhrase("ImportError", ImportTableError);
+                ExportFileUndefied = dict.GetPhrase("ExportFileUndefied", ExportFileUndefied);
+                ExportDirUndefied = dict.GetPhrase("ExportDirUndefied", ExportDirUndefied);
+                ExportDirNotExists = dict.GetPhrase("ExportDirNotExists", ExportDirNotExists);
+                ExportCompleted = dict.GetPhrase("ExportCompleted", ExportCompleted);
+                ExportError = dict.GetPhrase("ExportError", ExportError);
+                DbPassCompleted = dict.GetPhrase("DbPassCompleted", DbPassCompleted);
+                DbPassError = dict.GetPhrase("DbPassError", DbPassError);
             }
 
             if (Localization.Dictionaries.TryGetValue("ScadaAdmin.FrmCloneCnls", out dict))
@@ -413,30 +464,8 @@ namespace ScadaAdmin
                 FillKPGridError = dict.GetPhrase("FillKPGridError", FillKPGridError);
             }
 
-            if (Localization.Dictionaries.TryGetValue("ScadaAdmin.FrmExport", out dict))
-            {
-                ExportDirUndefied = dict.GetPhrase("ExportDirUndefied", ExportDirUndefied);
-                ExportDirNotExists = dict.GetPhrase("ExportDirNotExists", ExportDirNotExists);
-                ExportCompleted = dict.GetPhrase("ExportCompleted", ExportCompleted);
-                ExportError = dict.GetPhrase("ExportError", ExportError);
-            }
-
             if (Localization.Dictionaries.TryGetValue("ScadaAdmin.FrmImport", out dict))
-            {
-                ImportTitle = dict.GetPhrase("ImportTitle", ImportTitle);
-                ImportTable = dict.GetPhrase("ImportTable", ImportTable);
-                ImportFile = dict.GetPhrase("ImportFile", ImportFile);
-                LoadTableError = dict.GetPhrase("LoadTableError", LoadTableError);
-                SrcTableFields = dict.GetPhrase("SrcTableFields", SrcTableFields);
-                DestTableFields = dict.GetPhrase("DestTableFields", DestTableFields);
-                NoFields = dict.GetPhrase("NoFields", NoFields);
-                WriteDBError = dict.GetPhrase("WriteDBError", WriteDBError);
-                ImportCompleted = dict.GetPhrase("ImportCompleted", ImportCompleted);
-                ImportCompletedWithErr = dict.GetPhrase("ImportCompletedWithErr", ImportCompletedWithErr);
-                ImportResult = dict.GetPhrase("ImportResult", ImportResult);
-                ImportErrors = dict.GetPhrase("ImportErrors", ImportErrors);
-                ImportError = dict.GetPhrase("ImportError", ImportError);
-            }
+                ArchiveItem = dict.GetPhrase("ArchiveItem", ArchiveItem);
 
             if (Localization.Dictionaries.TryGetValue("ScadaAdmin.FrmInCnlProps", out dict))
             {
@@ -473,8 +502,6 @@ namespace ScadaAdmin
                 UndefObj = dict.GetPhrase("UndefObj", UndefObj);
                 UndefKP = dict.GetPhrase("UndefKP", UndefKP);
                 CnlGroupError = dict.GetPhrase("CnlGroupError", CnlGroupError);
-                DbPassCompleted = dict.GetPhrase("DbPassCompleted", DbPassCompleted);
-                DbPassError = dict.GetPhrase("DbPassError", DbPassError);
                 BackupCompleted = dict.GetPhrase("BackupCompleted", BackupCompleted);
                 BackupError = dict.GetPhrase("BackupError", BackupError);
                 CompactCompleted = dict.GetPhrase("CompactCompleted", CompactCompleted);
