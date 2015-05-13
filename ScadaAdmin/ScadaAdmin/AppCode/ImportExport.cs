@@ -93,11 +93,24 @@ namespace ScadaAdmin
 
             // заполнение таблицы в формате SDF
             string idColName = destTableInfo.IDColName;
+            bool tryToUpdate = idColName != "" && srcTable.Columns.Contains(idColName);
 
             foreach (DataRowView srcRowView in srcTable.DefaultView)
             {
                 DataRow srcRow = srcRowView.Row;
-                DataRow newRow = destTable.NewRow();
+                DataRow destRow;
+
+                if (tryToUpdate)
+                {
+                    int newID = (int)srcRow[idColName] + shiftID;
+                    int rowInd = srcTable.DefaultView.Find(newID); // таблица отсортирована по ключу
+                    destRow = rowInd < 0 ? destTable.NewRow() : srcTable.DefaultView[rowInd].Row;
+                }
+                else
+                {
+                    destRow = destTable.NewRow();
+                    destTable.Rows.Add(destRow);
+                }
 
                 foreach (DataColumn destColumn in destTable.Columns)
                 {
@@ -105,12 +118,10 @@ namespace ScadaAdmin
                     if (ind >= 0 && destColumn.DataType == srcTable.Columns[ind].DataType)
                     {
                         object val = srcRow[ind];
-                        newRow[destColumn] = destColumn.ColumnName == idColName && shiftID > 0 ?
+                        destRow[destColumn] = destColumn.ColumnName == idColName && shiftID > 0 ?
                             (int)val /*ID*/ + shiftID : val;
                     }
                 }
-
-                destTable.Rows.Add(newRow);
             }
 
             // сохранение информации в базе конфигурации в формате SDF
@@ -429,6 +440,53 @@ namespace ScadaAdmin
             catch (Exception ex)
             {
                 msg = AppPhrases.DbPassError + ":\r\n" + ex.Message;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Создать резервную копию файла базы конфигурации в формате SDF
+        /// </summary>
+        public static bool BackupSDF(string baseSDFFileName, string backupDir, out string msg)
+        {
+            try
+            {
+                // проверка аргументов метода
+                if (!File.Exists(baseSDFFileName))
+                    throw new FileNotFoundException(AppPhrases.BaseSDFFileNotExists);
+
+                if (!Directory.Exists(backupDir))
+                    throw new DirectoryNotFoundException(AppPhrases.BackupDirNotExists);
+
+                // резервирование
+                bool wasConnected = AppData.Connected;
+                string backupFileName = backupDir + Path.GetFileNameWithoutExtension(baseSDFFileName) +
+                    DateTime.Now.ToString("_yyyy-MM-dd_HH-mm-ss") + ".zip";
+
+                try
+                {
+                    if (wasConnected)
+                        AppData.Conn.Close(); // для сохранения изменений
+
+                    // создание архива
+                    using (ZipFile zip = new ZipFile())
+                    {
+                        zip.AddFile(baseSDFFileName, "");
+                        zip.Save(backupFileName);
+                    }
+                }
+                finally
+                {
+                    if (wasConnected)
+                        AppData.Conn.Open();
+                }
+
+                msg = string.Format(AppPhrases.BackupCompleted, backupFileName);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                msg = AppPhrases.BackupError + ":\r\n" + ex.Message;
                 return false;
             }
         }
