@@ -45,6 +45,7 @@
             this.btnOK = new System.Windows.Forms.Button();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.chkAutoBackupBase = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // lblBaseSDFFile
@@ -158,19 +159,19 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(307, 168);
+            this.btnCancel.Location = new System.Drawing.Point(307, 191);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 13;
+            this.btnCancel.TabIndex = 14;
             this.btnCancel.Text = "Отмена";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(226, 168);
+            this.btnOK.Location = new System.Drawing.Point(226, 191);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 12;
+            this.btnOK.TabIndex = 13;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
@@ -182,13 +183,24 @@
             this.openFileDialog.Filter = "Базы конфигурации|*.sdf|Все файлы|*.*";
             this.openFileDialog.Title = "Выберите файл базы конфигурации SCADA-Администратора в формате SDF";
             // 
+            // chkAutoBackupBase
+            // 
+            this.chkAutoBackupBase.AutoSize = true;
+            this.chkAutoBackupBase.Location = new System.Drawing.Point(12, 168);
+            this.chkAutoBackupBase.Name = "chkAutoBackupBase";
+            this.chkAutoBackupBase.Size = new System.Drawing.Size(285, 17);
+            this.chkAutoBackupBase.TabIndex = 12;
+            this.chkAutoBackupBase.Text = "Автоматически резервировать базу конфигурации";
+            this.chkAutoBackupBase.UseVisualStyleBackColor = true;
+            // 
             // FrmSettings
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(394, 203);
+            this.ClientSize = new System.Drawing.Size(394, 226);
+            this.Controls.Add(this.chkAutoBackupBase);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnKPDir);
@@ -235,5 +247,6 @@
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.CheckBox chkAutoBackupBase;
     }
 }

@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2010
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
@@ -55,6 +55,7 @@ namespace ScadaAdmin
             txtBaseDATDir.Text = appSettings.BaseDATDir;
             txtBackupDir.Text = appSettings.BackupDir;
             txtKPDir.Text = appSettings.KPDir;
+            chkAutoBackupBase.Checked = appSettings.AutoBackupBase;
         }
 
         /// <summary>
@@ -66,6 +67,7 @@ namespace ScadaAdmin
             appSettings.BaseDATDir = txtBaseDATDir.Text;
             appSettings.BackupDir = txtBackupDir.Text;
             appSettings.KPDir = txtKPDir.Text;
+            appSettings.AutoBackupBase = chkAutoBackupBase.Checked;
         }
 
 

@@ -799,10 +799,15 @@ namespace ScadaAdmin
 
         private void miDbPassToServer_Click(object sender, EventArgs e)
         {
-            // конвертирование базы конфигурации в формат DAT
             if (AppData.Connected)
             {
+                // резервное копирование файла базы конфигурации
                 string msg;
+                if (settings.AppSett.AutoBackupBase && 
+                    !ImportExport.BackupSDF(settings.AppSett.BaseSDFFile, settings.AppSett.BackupDir, out msg))
+                    AppUtils.ProcError(msg);
+
+                // конвертирование базы конфигурации в формат DAT
                 if (ImportExport.PassBase(Tables.TableInfoList, settings.AppSett.BaseDATDir, out msg))
                     ScadaUtils.ShowInfo(msg);
                 else
@@ -813,47 +818,11 @@ namespace ScadaAdmin
         private void miDbBackup_Click(object sender, EventArgs e)
         {
             // резервное копирование файла базы конфигурации
-            try
-            {
-                string workFileName = settings.AppSett.BaseSDFFile;
-                string backupDir = settings.AppSett.BackupDir;
-
-                if (File.Exists(workFileName))
-                {
-                    if (Directory.Exists(backupDir))
-                    {
-                        bool wasConnected = AppData.Connected;
-                        string backupFileName = backupDir + Path.GetFileNameWithoutExtension(workFileName) +
-                            DateTime.Now.ToString(" yyyy-MM-dd HH-mm-ss") + ".sdf";
-
-                        try
-                        {
-                            if (wasConnected)
-                                AppData.Conn.Close(); // для сохранения изменений
-                            File.Copy(workFileName, backupFileName, true);
-                        }
-                        finally
-                        {
-                            if (wasConnected)
-                                AppData.Conn.Open();
-                        }
-
-                        ScadaUtils.ShowInfo(string.Format(AppPhrases.BackupCompleted, backupFileName));
-                    }
-                    else
-                    {
-                        ScadaUtils.ShowError(AppPhrases.BackupDirNotExists);
-                    }
-                }
-                else
-                {
-                    ScadaUtils.ShowError(AppPhrases.BaseSDFFileNotExists);
-                }
-            }
-            catch (Exception ex)
-            {
-                AppUtils.ProcError(AppPhrases.BackupError + ":\r\n" + ex.Message);
-            }
+            string msg;
+            if (ImportExport.BackupSDF(settings.AppSett.BaseSDFFile, settings.AppSett.BackupDir, out msg))
+                ScadaUtils.ShowInfo(msg);
+            else
+                AppUtils.ProcError(msg);
         }
 
         private void miDbCompact_Click(object sender, EventArgs e)

@@ -19,10 +19,10 @@
     <Phrase key="DestTableColumns">Columns of the Destination Table</Phrase>
     <Phrase key="NoColumns">No columns</Phrase>
     <Phrase key="WriteDBError">Error writing to the database</Phrase>
-    <Phrase key="ImportCompleted">Import completed successfully.&#13;&#10;Added records: {0}.</Phrase>
-    <Phrase key="ImportCompletedWithErr">Import completed with errors.&#13;&#10;Added records: {0}. Errors: {1}.</Phrase>
-    <Phrase key="ImportTableCompleted">Import of the configuration database table completed successfully.&#13;&#10;Added records: {0}.</Phrase>
-    <Phrase key="ImportTableCompletedWithErr">Import of the configuration database table completed with errors.&#13;&#10;Added records: {0}. Errors: {1}.</Phrase>
+    <Phrase key="ImportCompleted">Import completed successfully.&#13;&#10;Added/updated records: {0}.</Phrase>
+    <Phrase key="ImportCompletedWithErr">Import completed with errors.&#13;&#10;Added/updated records: {0}. Errors: {1}.</Phrase>
+    <Phrase key="ImportTableCompleted">Import of the configuration database table completed successfully.&#13;&#10;Added/updated records: {0}.</Phrase>
+    <Phrase key="ImportTableCompletedWithErr">Import of the configuration database table completed with errors.&#13;&#10;Added/updated records: {0}. Errors: {1}.</Phrase>
     <Phrase key="ImportResult">Import Result</Phrase>
     <Phrase key="ImportTableResult">Import Table Result</Phrase>
     <Phrase key="ImportTableErrors">Import Table Errors</Phrase>
@@ -313,6 +313,7 @@
     <Phrase key="lblBaseDATDir">Configuration database in DAT format directory</Phrase>
     <Phrase key="lblBackupDir">Configuration database backup directory</Phrase>
     <Phrase key="lblKPDir">Device libraries directory</Phrase>
+    <Phrase key="chkAutoBackupBase">Automatically backup the configuration database</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
     <Phrase key="ChooseBaseSDFFile">Choose the configuration database file in SDF format</Phrase>

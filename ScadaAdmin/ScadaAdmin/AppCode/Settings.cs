@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2010
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
@@ -66,6 +66,10 @@ namespace ScadaAdmin
             /// Получить или установить директорию библиотек КП
             /// </summary>
             public string KPDir { get; set; }
+            /// <summary>
+            /// Получить или установить признак автоматического резервирования базы конфигурации при передаче серверу
+            /// </summary>
+            public bool AutoBackupBase { get; set; }
 
             /// <summary>
             /// Установить настройки приложения по умолчанию
@@ -76,6 +80,7 @@ namespace ScadaAdmin
                 BaseDATDir = @"C:\SCADA\BaseDAT\";
                 BackupDir = @"C:\SCADA\ScadaAdmin\Backup\";
                 KPDir = @"C:\SCADA\ScadaComm\KP\";
+                AutoBackupBase = true;
             }
         }
 
@@ -195,14 +200,23 @@ namespace ScadaAdmin
                     string nameL = name.ToLower();
                     string val = xmlElement.GetAttribute("value");
 
-                    if (nameL == "basesdffile")
-                        AppSett.BaseSDFFile = val;
-                    else if (nameL == "basedatdir")
-                        AppSett.BaseDATDir = ScadaUtils.NormalDir(val);
-                    else if (nameL == "backupdir")
-                        AppSett.BackupDir = ScadaUtils.NormalDir(val);
-                    else if (nameL == "kpdir")
-                        AppSett.KPDir = ScadaUtils.NormalDir(val);
+                    try
+                    {
+                        if (nameL == "basesdffile")
+                            AppSett.BaseSDFFile = val;
+                        else if (nameL == "basedatdir")
+                            AppSett.BaseDATDir = ScadaUtils.NormalDir(val);
+                        else if (nameL == "backupdir")
+                            AppSett.BackupDir = ScadaUtils.NormalDir(val);
+                        else if (nameL == "kpdir")
+                            AppSett.KPDir = ScadaUtils.NormalDir(val);
+                        else if (nameL == "backuponpassbase")
+                            AppSett.AutoBackupBase = bool.Parse(val);
+                    }
+                    catch
+                    {
+                        throw new Exception(string.Format(CommonPhrases.IncorrectXmlParamVal, name));
+                    }
                 }
 
                 errMsg = "";
@@ -240,6 +254,8 @@ namespace ScadaAdmin
                     "Директория резервного копирования базы конфигурации", "Configuration database backup directory");
                 rootElem.AppendParamElem("KPDir", AppSett.KPDir,
                     "Директория библиотек КП", "Device libraries directory");
+                rootElem.AppendParamElem("AutoBackupBase", AppSett.AutoBackupBase,
+                    "Автоматически резервировать базу конфигурации", "Automatically backup the configuration database");
 
                 // сохранение в файле
                 xmlDoc.Save(AppData.ExeDir + AppSettingsFileName);
