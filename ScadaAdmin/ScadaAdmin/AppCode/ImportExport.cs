@@ -76,9 +76,23 @@ namespace ScadaAdmin
         private static void ImportTable(DataTable srcTable, Tables.TableInfo destTableInfo, int shiftID, 
             StreamWriter writer, out int updRowCnt, out int errRowCnt, out string msg)
         {
-            // определение столбцов таблицы в формате SDF, в которую производится импорт
-            DataTable destTable = new DataTable(destTableInfo.Name);
-            Tables.FillTableSchema(destTable);
+            // определение режима импорта: только добавление строк или добавление/обновление
+            string idColName = destTableInfo.IDColName;
+            bool tryToUpdate = idColName != "" && srcTable.Columns.Contains(idColName);
+
+            // получение таблицы, в которую производится импорт
+            DataTable destTable;
+            if (tryToUpdate)
+            {
+                // заполение столбцов и данных таблицы
+                destTable = destTableInfo.GetTable();
+            }
+            else
+            {
+                // заполение столбцов таблицы
+                destTable = new DataTable(destTableInfo.Name);
+                Tables.FillTableSchema(destTable);
+            }
 
             // вывод заголовка и стобцов в журнал импорта
             if (writer != null)
@@ -92,21 +106,20 @@ namespace ScadaAdmin
             }
 
             // заполнение таблицы в формате SDF
-            string idColName = destTableInfo.IDColName;
-            bool tryToUpdate = idColName != "" && srcTable.Columns.Contains(idColName);
-
             foreach (DataRowView srcRowView in srcTable.DefaultView)
             {
                 DataRow srcRow = srcRowView.Row;
-                DataRow destRow;
+                DataRow destRow = null;
 
                 if (tryToUpdate)
                 {
                     int newID = (int)srcRow[idColName] + shiftID;
-                    int rowInd = srcTable.DefaultView.Find(newID); // таблица отсортирована по ключу
-                    destRow = rowInd < 0 ? destTable.NewRow() : srcTable.DefaultView[rowInd].Row;
+                    int rowInd = destTable.DefaultView.Find(newID); // таблица отсортирована по ключу
+                    if (rowInd >= 0)
+                        destRow = destTable.DefaultView[rowInd].Row;
                 }
-                else
+
+                if (destRow == null)
                 {
                     destRow = destTable.NewRow();
                     destTable.Rows.Add(destRow);
