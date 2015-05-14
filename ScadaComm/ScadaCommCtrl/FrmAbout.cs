@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2008
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
@@ -53,9 +53,10 @@ namespace Scada.Comm.Ctrl
             if (frmAbout == null)
             {
                 frmAbout = new FrmAbout();
+                bool imgLoaded;
 
-                if (ScadaUtils.LoadAboutForm(exeDir + "About.jpg", exeDir + "About.txt",
-                    frmAbout, frmAbout.pictureBox, frmAbout.lblLink, out link, out errMsg))
+                if (ScadaUtils.LoadAboutForm(exeDir, frmAbout, frmAbout.pictureBox, frmAbout.lblLink, 
+                    out imgLoaded, out link, out errMsg))
                 {
                     frmAbout.ShowDialog();
                     return true;
