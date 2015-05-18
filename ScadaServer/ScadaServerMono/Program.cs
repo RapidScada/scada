@@ -45,10 +45,9 @@ namespace Scada.Server.Mono
         /// </summary>
         private class StopListener
         {
-            /// <summary>
-            /// Имя файла остановки сервиса
-            /// </summary>
-            private string stopFileName;
+            private string stopFileName; // имя файла остановки сервиса
+            private Thread thread;       // поток ожидания файла остановки сервиса
+
             /// <summary>
             /// Обнаружен файл остановки сервиса
             /// </summary>
@@ -61,7 +60,7 @@ namespace Scada.Server.Mono
             {
                 StopFileFound = false;
                 this.stopFileName = stopFileName;
-                Thread thread = new Thread(new ThreadStart(WaitForStopFile));
+                thread = new Thread(new ThreadStart(WaitForStopFile));
                 thread.Priority = ThreadPriority.BelowNormal;
                 thread.Start();
             }
@@ -79,7 +78,6 @@ namespace Scada.Server.Mono
                         Thread.Sleep(ThreadDelay);
                 }
             }
-
             /// <summary>
             /// Удалить файл остановки сервиса
             /// </summary>
@@ -90,6 +88,17 @@ namespace Scada.Server.Mono
                     File.Delete(stopFileName);
                 }
                 catch { }
+            }
+            /// <summary>
+            /// Прервать ожидание файла остановки сервиса
+            /// </summary>
+            public void Abort()
+            {
+                if (thread != null)
+                {
+                    thread.Abort();
+                    thread = null;
+                }
             }
         }
 
@@ -114,6 +123,7 @@ namespace Scada.Server.Mono
                 Thread.Sleep(ThreadDelay);
             manager.StopService();
             stopListener.DeleteStopFile();
+            stopListener.Abort();
             Console.WriteLine("SCADA-Server is stopped");
         }
     }
