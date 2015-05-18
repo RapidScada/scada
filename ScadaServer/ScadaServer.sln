@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaServerCtrl", "ScadaSer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaServerSvc", "ScadaServerSvc\ScadaServerSvc.csproj", "{D876BF85-C99B-4C16-A053-8877C84E7E02}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaServerMono", "ScadaServerMono\ScadaServerMono.csproj", "{2E5ADC08-CAB8-4CF3-B2B3-D856EFEBBEC1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,21 @@ Global
 		{D876BF85-C99B-4C16-A053-8877C84E7E02}.ReleaseEn|Any CPU.ActiveCfg = Release|Any CPU
 		{D876BF85-C99B-4C16-A053-8877C84E7E02}.ReleaseEn|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{D876BF85-C99B-4C16-A053-8877C84E7E02}.ReleaseEn|x86.ActiveCfg = Release|Any CPU
+		{2E5ADC08-CAB8-4CF3-B2B3-D856EFEBBEC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E5ADC08-CAB8-4CF3-B2B3-D856EFEBBEC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E5ADC08-CAB8-4CF3-B2B3-D856EFEBBEC1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2E5ADC08-CAB8-4CF3-B2B3-D856EFEBBEC1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2E5ADC08-CAB8-4CF3-B2B3-D856EFEBBEC1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2E5ADC08-CAB8-4CF3-B2B3-D856EFEBBEC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E5ADC08-CAB8-4CF3-B2B3-D856EFEBBEC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E5ADC08-CAB8-4CF3-B2B3-D856EFEBBEC1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2E5ADC08-CAB8-4CF3-B2B3-D856EFEBBEC1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{2E5ADC08-CAB8-4CF3-B2B3-D856EFEBBEC1}.Release|x86.ActiveCfg = Release|Any CPU
+		{2E5ADC08-CAB8-4CF3-B2B3-D856EFEBBEC1}.ReleaseEn|Any CPU.ActiveCfg = Release|Any CPU
+		{2E5ADC08-CAB8-4CF3-B2B3-D856EFEBBEC1}.ReleaseEn|Any CPU.Build.0 = Release|Any CPU
+		{2E5ADC08-CAB8-4CF3-B2B3-D856EFEBBEC1}.ReleaseEn|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2E5ADC08-CAB8-4CF3-B2B3-D856EFEBBEC1}.ReleaseEn|Mixed Platforms.Build.0 = Release|Any CPU
+		{2E5ADC08-CAB8-4CF3-B2B3-D856EFEBBEC1}.ReleaseEn|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
@@ -134,10 +134,18 @@ namespace Scada.Server.Svc
         /// Формат текста информации о работе приложения для вывода в файл
         /// </summary>
         private static readonly string AppInfoFormat = Localization.UseRussian ?
-            "SCADA-Сервер\r\n------------\r\n" +
-            "Запуск       : {0}\r\nВремя работы : {1}\r\nСостояние    : {2}\r\nВерсия       : {3}" :
-            "SCADA-Server\r\n------------\r\n" +
-            "Started        : {0}\r\nExecution time : {1}\r\nState          : {2}\r\nVersion        : {3}";
+            "SCADA-Сервер" + Environment.NewLine + 
+            "------------" + Environment.NewLine +
+            "Запуск       : {0}" + Environment.NewLine +
+            "Время работы : {1}" + Environment.NewLine + 
+            "Состояние    : {2}" + Environment.NewLine + 
+            "Версия       : {3}" :
+            "SCADA-Server" + Environment.NewLine + 
+            "------------" + Environment.NewLine +
+            "Started        : {0}" + Environment.NewLine +
+            "Execution time : {1}" + Environment.NewLine +
+            "State          : {2}" + Environment.NewLine +
+            "Version        : {3}";
         /// <summary>
         /// Формат описания события на команду ТУ
         /// </summary>
@@ -1096,9 +1104,9 @@ namespace Scada.Server.Svc
             catch (Exception ex)
             {
                 AppLog.WriteAction(string.Format(Localization.UseRussian ? 
-                    "Ошибка при очистке устаревших архивных данных: {0},\r\nДиректория: {1}" : 
-                    "Error clearing outdated archive data: {0}\r\nDirectory: {1}", 
-                    ex.Message, dir), Log.ActTypes.Exception);
+                    "Ошибка при очистке устаревших архивных данных: {0},{1}Директория: {2}" : 
+                    "Error clearing outdated archive data: {0}{1}Directory: {2}",
+                    ex.Message, Environment.NewLine, dir), Log.ActTypes.Exception);
             }
         }
 
@@ -1180,7 +1188,7 @@ namespace Scada.Server.Svc
             catch (Exception ex)
             {
                 string fileNameStr = string.IsNullOrEmpty(fileName) ? "" :
-                    (Localization.UseRussian ? "\r\nИмя файла: " : "\r\nFilename: ") + fileName;
+                    Environment.NewLine + (Localization.UseRussian ? "Имя файла: " : "Filename: ") + fileName;
                 AppLog.WriteAction(string.Format(Localization.UseRussian ? 
                     "Ошибка при записи среза в таблицу текущего среза: {0}{1}" :
                     "Error writing snapshot in the current data table: {0}{1}", 
@@ -1236,7 +1244,7 @@ namespace Scada.Server.Svc
             catch (Exception ex)
             {
                 string fileNameStr = string.IsNullOrEmpty(fileName) ? "" :
-                    (Localization.UseRussian ? "\r\nИмя файла: " : "\r\nFilename: ") + fileName;
+                    Environment.NewLine + (Localization.UseRussian ? "Имя файла: " : "Filename: ") + fileName;
                 AppLog.WriteAction(string.Format(Localization.UseRussian ?
                     "Ошибка при записи среза в таблицу архивных срезов: {0}{1}" :
                     "Error writing snapshot in the archive data table: {0}{1}",
@@ -1314,7 +1322,7 @@ namespace Scada.Server.Svc
             catch (Exception ex)
             {
                 string fileNameStr = string.IsNullOrEmpty(fileName) ? "" :
-                    (Localization.UseRussian ? "\r\nИмя файла: " : "\r\nFilename: ") + fileName;
+                    Environment.NewLine + (Localization.UseRussian ? "Имя файла: " : "Filename: ") + fileName;
                 AppLog.WriteAction(string.Format(Localization.UseRussian ?
                     "Ошибка при записи принятого срезы в таблицу архивных срезов: {0}{1}" :
                     "Error writing received snapshot in the archive data table: {0}{1}",
@@ -1358,7 +1366,7 @@ namespace Scada.Server.Svc
             catch (Exception ex)
             {
                 string fileNameStr = string.IsNullOrEmpty(fileName) ? "" :
-                    (Localization.UseRussian ? "\r\nИмя файла: " : "\r\nFilename: ") + fileName;
+                    Environment.NewLine + (Localization.UseRussian ? "Имя файла: " : "Filename: ") + fileName;
                 AppLog.WriteAction(string.Format(Localization.UseRussian ?
                     "Ошибка при записи события в таблицу событий: {0}{1}" :
                     "Error writing event in the event table: {0}{1}",
@@ -1417,7 +1425,7 @@ namespace Scada.Server.Svc
             catch (Exception ex)
             {
                 string fileNameStr = string.IsNullOrEmpty(fileName) ? "" :
-                    (Localization.UseRussian ? "\r\nИмя файла: " : "\r\nFilename: ") + fileName;
+                    Environment.NewLine + (Localization.UseRussian ? "Имя файла: " : "Filename: ") + fileName;
                 AppLog.WriteAction(string.Format(Localization.UseRussian ?
                     "Ошибка при записи квитирования события в таблицу событий: {0}{1}" :
                     "Error writing event check in the event table: {0}{1}",
