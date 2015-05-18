@@ -9,10 +9,10 @@
   </CommonParams>
   <!--Directories-->
   <Directories>
-    <Param name="BaseDATDir" value="C:\SCADA\BaseDAT\" descr="The configuration database in DAT format directory" />
-    <Param name="ItfDir" value="C:\SCADA\Interface\" descr="The interface directory" />
-    <Param name="ArcDir" value="C:\SCADA\ArchiveDAT\" descr="The archive in DAT format directory" />
-    <Param name="ArcCopyDir" value="C:\SCADA\ArchiveDATCopy\" descr="The archive copy in DAT format directory" />
+    <Param name="BaseDATDir" value="../BaseDAT/" descr="The configuration database in DAT format directory" />
+    <Param name="ItfDir" value="../Interface/" descr="The interface directory" />
+    <Param name="ArcDir" value="../ArchiveDAT/" descr="The archive in DAT format directory" />
+    <Param name="ArcCopyDir" value="../ArchiveDATCopy/" descr="The archive copy in DAT format directory" />
   </Directories>
   <!--Saving Parameters-->
   <SaveParams>

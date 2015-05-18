@@ -369,14 +369,14 @@ namespace Scada.Server.Svc
                 // создание поддиректорий архива, если они не существуют
                 try
                 {
-                    Directory.CreateDirectory(Settings.ArcDir + @"Cur\");
-                    Directory.CreateDirectory(Settings.ArcDir + @"Min\");
-                    Directory.CreateDirectory(Settings.ArcDir + @"Hour\");
-                    Directory.CreateDirectory(Settings.ArcDir + @"Events\");
-                    Directory.CreateDirectory(Settings.ArcCopyDir + @"Cur\");
-                    Directory.CreateDirectory(Settings.ArcCopyDir + @"Min\");
-                    Directory.CreateDirectory(Settings.ArcCopyDir + @"Hour\");
-                    Directory.CreateDirectory(Settings.ArcCopyDir + @"Events\");
+                    Directory.CreateDirectory(Settings.ArcDir + "Cur");
+                    Directory.CreateDirectory(Settings.ArcDir + "Min");
+                    Directory.CreateDirectory(Settings.ArcDir + "Hour");
+                    Directory.CreateDirectory(Settings.ArcDir + "Events");
+                    Directory.CreateDirectory(Settings.ArcCopyDir + "Cur");
+                    Directory.CreateDirectory(Settings.ArcCopyDir + "Min");
+                    Directory.CreateDirectory(Settings.ArcCopyDir + "Hour");
+                    Directory.CreateDirectory(Settings.ArcCopyDir + "Events");
 
                     AppLog.WriteAction(Localization.UseRussian ? 
                         "Проверка существования директорий данных выполнена успешно" :
@@ -446,7 +446,7 @@ namespace Scada.Server.Svc
                     // заполнение информации о каналах
                     DataTable tblInCnl = new DataTable();
                     BaseAdapter adapter = new BaseAdapter();
-                    adapter.FileName = Settings.BaseDATDir + @"\incnl.dat";
+                    adapter.FileName = Settings.BaseDATDir + "incnl.dat";
                     adapter.Fill(tblInCnl, false);
 
                     foreach (DataRow dataRow in tblInCnl.Rows)
@@ -544,7 +544,7 @@ namespace Scada.Server.Svc
                     ctrlCnls.Clear();
                     DataTable tblCtrlCnl = new DataTable();
                     BaseAdapter adapter = new BaseAdapter();
-                    adapter.FileName = Settings.BaseDATDir + @"\ctrlcnl.dat";
+                    adapter.FileName = Settings.BaseDATDir + "ctrlcnl.dat";
                     adapter.Fill(tblCtrlCnl, false);
 
                     foreach (DataRow dataRow in tblCtrlCnl.Rows)
@@ -591,7 +591,7 @@ namespace Scada.Server.Svc
                     users.Clear();
                     DataTable tblUser = new DataTable();
                     BaseAdapter adapter = new BaseAdapter();
-                    adapter.FileName = Settings.BaseDATDir + @"\user.dat";
+                    adapter.FileName = Settings.BaseDATDir + "user.dat";
                     adapter.Fill(tblUser, false);
 
                     foreach (DataRow dataRow in tblUser.Rows)
@@ -628,7 +628,7 @@ namespace Scada.Server.Svc
                 formulas.Clear();
                 DataTable tblFormula = new DataTable();
                 BaseAdapter adapter = new BaseAdapter();
-                adapter.FileName = Settings.BaseDATDir + @"\formula.dat";
+                adapter.FileName = Settings.BaseDATDir + "formula.dat";
                 adapter.Fill(tblFormula, false);
 
                 foreach (DataRow dataRow in tblFormula.Rows)
@@ -735,10 +735,10 @@ namespace Scada.Server.Svc
                 curSrezCopyAdapter = new SrezAdapter();
                 eventAdapter = new EventAdapter();
                 eventCopyAdapter = new EventAdapter();
-                curSrezAdapter.FileName = Settings.ArcDir + @"Cur\current.dat";
-                curSrezCopyAdapter.FileName = Settings.ArcCopyDir + @"Cur\current.dat";
-                eventAdapter.Directory = Settings.ArcDir + @"Events\";
-                eventCopyAdapter.Directory = Settings.ArcCopyDir + @"Events\";
+                curSrezAdapter.FileName = Settings.ArcDir + "Cur" + Path.DirectorySeparatorChar + "current.dat";
+                curSrezCopyAdapter.FileName = Settings.ArcCopyDir + "Cur" + Path.DirectorySeparatorChar + "current.dat";
+                eventAdapter.Directory = Settings.ArcDir + "Events" + Path.DirectorySeparatorChar;
+                eventCopyAdapter.Directory = Settings.ArcCopyDir + "Events" + Path.DirectorySeparatorChar;
 
                 // инициализация кэша таблиц минутных и часовых срезов
                 minSrezTableCache = new SortedList<DateTime, SrezTableCache>();
@@ -832,12 +832,12 @@ namespace Scada.Server.Svc
                     // удаление устаревших файлов срезов и событий при изменении даты или при первом проходе цикла
                     if (prevDT.Date != today)
                     {
-                        ClearArchive(Settings.ArcDir + @"Min\", "m*.dat", today.AddDays(-Settings.StoreMinPer));
-                        ClearArchive(Settings.ArcDir + @"Hour\", "h*.dat", today.AddDays(-Settings.StoreHrPer));
-                        ClearArchive(Settings.ArcDir + @"Events\", "e*.dat", today.AddDays(-Settings.StoreEvPer));
-                        ClearArchive(Settings.ArcCopyDir + @"Min\", "m*.dat", today.AddDays(-Settings.StoreMinPer));
-                        ClearArchive(Settings.ArcCopyDir + @"Hour\", "h*.dat", today.AddDays(-Settings.StoreHrPer));
-                        ClearArchive(Settings.ArcCopyDir + @"Events\", "e*.dat", today.AddDays(-Settings.StoreEvPer));
+                        ClearArchive(Settings.ArcDir + "Min", "m*.dat", today.AddDays(-Settings.StoreMinPer));
+                        ClearArchive(Settings.ArcDir + "Hour", "h*.dat", today.AddDays(-Settings.StoreHrPer));
+                        ClearArchive(Settings.ArcDir + "Events", "e*.dat", today.AddDays(-Settings.StoreEvPer));
+                        ClearArchive(Settings.ArcCopyDir + "Min", "m*.dat", today.AddDays(-Settings.StoreMinPer));
+                        ClearArchive(Settings.ArcCopyDir + "Hour", "h*.dat", today.AddDays(-Settings.StoreHrPer));
+                        ClearArchive(Settings.ArcCopyDir + "Events", "e*.dat", today.AddDays(-Settings.StoreEvPer));
                     }
 
                     lock (curSrez)
@@ -979,7 +979,7 @@ namespace Scada.Server.Svc
 
                     if (srezType == SrezTypes.Min)
                     {
-                        path = @"Min\m" + date.ToString("yyMMdd") + ".dat";
+                        path = "Min" + Path.DirectorySeparatorChar + "m" + date.ToString("yyMMdd") + ".dat";
                         if (Localization.UseRussian)
                         {
                             srezTableCache.SrezTable.Descr = "минутных срезов";
@@ -993,7 +993,7 @@ namespace Scada.Server.Svc
                     }
                     else
                     {
-                        path = @"Hour\h" + date.ToString("yyMMdd") + ".dat";
+                        path = "Hour" + Path.DirectorySeparatorChar + "h" + date.ToString("yyMMdd") + ".dat";
                         if (Localization.UseRussian)
                         {
                             srezTableCache.SrezTable.Descr = "часовых срезов";
@@ -1860,10 +1860,10 @@ namespace Scada.Server.Svc
         /// </summary>
         public void InitAppDirs(out bool dirsExist, out bool logDirExists)
         {
-            ConfigDir = ExeDir + "Config\\";
-            LangDir = ExeDir + "Lang\\";
-            LogDir = ExeDir + "Log\\";
-            ModDir = ExeDir + "Mod\\";
+            ConfigDir = ExeDir + "Config" + Path.DirectorySeparatorChar;
+            LangDir = ExeDir + "Lang" + Path.DirectorySeparatorChar;
+            LogDir = ExeDir + "Log" + Path.DirectorySeparatorChar;
+            ModDir = ExeDir + "Mod" + Path.DirectorySeparatorChar;
 
             AppLog.FileName = LogDir + LogFileName;
             infoFileName = LogDir + InfoFileName;
