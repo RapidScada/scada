@@ -49,6 +49,7 @@ namespace Scada.Server.Mono
             // остановка службы при нажатии 'x'
             while (Console.ReadKey(true).KeyChar != 'x') { }
             manager.StopService();
+            Console.WriteLine("SCADA-Server is stopped");
         }
     }
 }
