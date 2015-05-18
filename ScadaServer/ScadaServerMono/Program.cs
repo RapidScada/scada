@@ -38,12 +38,16 @@ namespace Scada.Server.Mono
     {
         static void Main(string[] args)
         {
+            // запуск службы
             Console.WriteLine("Starting SCADA-Server");
             Manager manager = new Manager();
             manager.StartService();
-            Console.WriteLine("SCADA-Server started. Press 'x' to exit.");
 
-            while (Console.ReadKey().KeyChar != 'x') { }
+            Console.WriteLine("SCADA-Server is started");
+            Console.WriteLine("Press 'x' to stop SCADA-Server");
+
+            // остановка службы при нажатии 'x'
+            while (Console.ReadKey(true).KeyChar != 'x') { }
             manager.StopService();
         }
     }

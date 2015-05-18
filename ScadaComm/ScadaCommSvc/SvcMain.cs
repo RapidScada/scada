@@ -94,7 +94,7 @@ namespace Scada.Comm.Svc
                 {
                     if (EventLog.SourceExists("ScadaCommService"))
                         EventLog.WriteEvent("ScadaCommService", 
-                            new EventInstance(0, 0, EventLogEntryType.Warning), errMsg);
+                            new EventInstance(0, 0, EventLogEntryType.Error), errMsg);
                 }
                 catch { }
 

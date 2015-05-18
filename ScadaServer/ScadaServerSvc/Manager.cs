@@ -109,7 +109,7 @@ namespace Scada.Server.Svc
                 {
                     if (EventLog.SourceExists("ScadaServerService"))
                         EventLog.WriteEvent("ScadaServerService",
-                            new EventInstance(0, 0, EventLogEntryType.Warning), errMsg);
+                            new EventInstance(0, 0, EventLogEntryType.Error), errMsg);
                 }
                 catch { }
 
