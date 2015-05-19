@@ -872,8 +872,8 @@ namespace Scada.Server.Svc
                         {
                             if (writeCurOnMod)
                             {
-                                curSrezMod = false;
                                 WriteSrez(SrezTypes.Cur, nowDT);
+                                curSrezMod = false;
                                 writeCurSrezDT = DateTime.MaxValue;
                             }
                             else
