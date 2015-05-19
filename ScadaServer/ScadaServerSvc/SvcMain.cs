@@ -23,10 +23,7 @@
  * Modified : 2015
  */
 
-using System;
-using System.Diagnostics;
 using System.ServiceProcess;
-using Utils;
 
 namespace Scada.Server.Svc
 {

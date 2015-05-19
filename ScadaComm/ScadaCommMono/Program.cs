@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : SCADA-Server Console Application for Mono .NET framework
+ * Module   : SCADA-Communicator Console Application for Mono .NET framework
  * Summary  : The main entry point for the application
  * 
  * Author   : Mikhail Shiryaev
@@ -23,7 +23,7 @@
  * Modified : 2015
  */
 
-using Scada.Server.Svc;
+using Scada.Comm.Svc;
 using System;
 using System.IO;
 using System.Threading;
@@ -38,21 +38,21 @@ namespace Scada.Server.Mono
         static void Main(string[] args)
         {
             // запуск службы
-            Console.WriteLine("Starting SCADA-Server...");
+            Console.WriteLine("Starting SCADA-Communicator...");
             Manager manager = new Manager();
             manager.StartService();
 
-            Console.WriteLine("SCADA-Server is started");
-            Console.WriteLine("Press 'x' or create 'serverstop' file to stop SCADA-Server");
+            Console.WriteLine("SCADA-Communicator is started");
+            Console.WriteLine("Press 'x' or create 'commstop' file to stop SCADA-Communicator");
 
             // остановка службы при нажатии 'x' или обнаружении файла остановки
-            FileListener stopFileListener = new FileListener("Cmd" + Path.DirectorySeparatorChar + "serverstop");
+            FileListener stopFileListener = new FileListener("Cmd" + Path.DirectorySeparatorChar + "commstop");
             while (!(Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.X || stopFileListener.FileFound))
                 Thread.Sleep(ScadaUtils.ThreadDelay);
             manager.StopService();
             stopFileListener.DeleteFile();
             stopFileListener.Abort();
-            Console.WriteLine("SCADA-Server is stopped");
+            Console.WriteLine("SCADA-Communicator is stopped");
         }
     }
 }
