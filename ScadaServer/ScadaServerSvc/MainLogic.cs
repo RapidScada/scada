@@ -870,10 +870,17 @@ namespace Scada.Server.Svc
                         // запись текущего среза
                         if ((writeCurSrezDT <= nowDT || writeCurOnMod && curSrezMod) && writeCur)
                         {
-                            WriteSrez(SrezTypes.Cur, writeCurSrezDT);
-                            curSrezMod = false;
-                            writeCurSrezDT = writeCurOnMod ? 
-                                DateTime.MaxValue : CalcNextTime(nowDT, Settings.WriteCurPer);
+                            if (writeCurOnMod)
+                            {
+                                curSrezMod = false;
+                                WriteSrez(SrezTypes.Cur, nowDT);
+                                writeCurSrezDT = DateTime.MaxValue;
+                            }
+                            else
+                            {
+                                WriteSrez(SrezTypes.Cur, writeCurSrezDT);
+                                writeCurSrezDT = CalcNextTime(nowDT, Settings.WriteCurPer);
+                            }
                         }
 
                         // запись минутного среза
