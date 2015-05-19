@@ -117,8 +117,7 @@ namespace Scada.Server.Mono
             Console.WriteLine("Press 'x' or create 'serverstop' file to stop SCADA-Server");
 
             // остановка службы при нажатии 'x' или обнаружении файла остановки
-            StopListener stopListener = 
-                new StopListener(string.Format("..{0}Cmd{0}serverstop", Path.DirectorySeparatorChar));
+            StopListener stopListener = new StopListener("Cmd" + Path.DirectorySeparatorChar + "serverstop");
             while (!(Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.X || stopListener.StopFileFound))
                 Thread.Sleep(ThreadDelay);
             manager.StopService();
