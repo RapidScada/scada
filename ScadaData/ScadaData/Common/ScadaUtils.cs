@@ -41,6 +41,11 @@ namespace Scada
     public static partial class ScadaUtils
     {
         /// <summary>
+        /// Задержка потока для экономии ресурсов, мс
+        /// </summary>
+        public const int ThreadDelay = 100;
+
+        /// <summary>
         /// Длительность хранения данных в cookies
         /// </summary>
         [Obsolete("Use Scada.Web.ScadaWebUtils")]

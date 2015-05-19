@@ -35,77 +35,6 @@ namespace Scada.Server.Mono
     /// </summary>
     class Program
     {
-        /// <summary>
-        /// Задержка потока для экономии ресурсов, мс
-        /// </summary>
-        private const int ThreadDelay = 200;
-
-        /// <summary>
-        /// Механизм для получения команды остановки сервиса из файла
-        /// </summary>
-        private class StopListener
-        {
-            private string stopFileName; // имя файла остановки сервиса
-            private Thread thread;       // поток ожидания файла остановки сервиса
-
-            /// <summary>
-            /// Обнаружен файл остановки сервиса
-            /// </summary>
-            public volatile bool StopFileFound;
-
-            /// <summary>
-            /// Конструктор
-            /// </summary>
-            public StopListener(string stopFileName)
-            {
-                StopFileFound = false;
-                this.stopFileName = stopFileName;
-                thread = new Thread(new ThreadStart(WaitForStopFile));
-                thread.Priority = ThreadPriority.BelowNormal;
-                thread.Start();
-            }
-
-            /// <summary>
-            /// Ожидать появления файла остановки сервиса
-            /// </summary>
-            private void WaitForStopFile()
-            {
-                while (!StopFileFound)
-                {
-                    if (File.Exists(stopFileName))
-                        StopFileFound = true;
-                    else
-                        Thread.Sleep(ThreadDelay);
-                }
-            }
-            /// <summary>
-            /// Удалить файл остановки сервиса
-            /// </summary>
-            public void DeleteStopFile()
-            {
-                try
-                {
-                    File.Delete(stopFileName);
-                }
-                catch { }
-            }
-            /// <summary>
-            /// Прервать ожидание файла остановки сервиса
-            /// </summary>
-            public void Abort()
-            {
-                if (thread != null)
-                {
-                    thread.Abort();
-                    thread = null;
-                }
-            }
-        }
-
-
-        /// <summary>
-        /// Основной цикл работы программы
-        /// </summary>
         static void Main(string[] args)
         {
             // запуск службы
@@ -117,12 +46,12 @@ namespace Scada.Server.Mono
             Console.WriteLine("Press 'x' or create 'serverstop' file to stop SCADA-Server");
 
             // остановка службы при нажатии 'x' или обнаружении файла остановки
-            StopListener stopListener = new StopListener("Cmd" + Path.DirectorySeparatorChar + "serverstop");
-            while (!(Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.X || stopListener.StopFileFound))
-                Thread.Sleep(ThreadDelay);
+            FileListener stopFileListener = new FileListener("Cmd" + Path.DirectorySeparatorChar + "serverstop");
+            while (!(Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.X || stopFileListener.FileFound))
+                Thread.Sleep(ScadaUtils.ThreadDelay);
             manager.StopService();
-            stopListener.DeleteStopFile();
-            stopListener.Abort();
+            stopFileListener.DeleteFile();
+            stopFileListener.Abort();
             Console.WriteLine("SCADA-Server is stopped");
         }
     }

@@ -55,6 +55,7 @@
     <Compile Include="Client\CommSettings.cs" />
     <Compile Include="Client\CtrlCnlProps.cs" />
     <Compile Include="Client\ServerComm.cs" />
+    <Compile Include="Common\FileListener.cs" />
     <Compile Include="Data\Arithmetic.cs" />
     <Compile Include="Data\BaseAdapter.cs" />
     <Compile Include="Data\BaseValues.cs" />
