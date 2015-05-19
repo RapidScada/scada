@@ -797,11 +797,11 @@ namespace Scada.Comm.Svc
         /// </summary>
         private void InitAppDirs(out bool dirsExist, out bool logDirExists)
         {
-            ConfigDir = ExeDir + "Config\\";
-            LangDir = ExeDir + "Lang\\";
-            LogDir = ExeDir + "Log\\";
-            KpDir = ExeDir + "KP\\";
-            CmdDir = ExeDir + "Cmd\\";
+            ConfigDir = ExeDir + "Config" + Path.DirectorySeparatorChar;
+            LangDir = ExeDir + "Lang" + Path.DirectorySeparatorChar;
+            LogDir = ExeDir + "Log" + Path.DirectorySeparatorChar;
+            KpDir = ExeDir + "KP" + Path.DirectorySeparatorChar;
+            CmdDir = ExeDir + "Cmd" + Path.DirectorySeparatorChar;
 
             Log.FileName = LogDir + LogFileName;
             infoFileName = LogDir + InfoFileName;
@@ -1193,11 +1193,11 @@ namespace Scada.Comm.Svc
             else
             {
                 string errMsg = string.Format(Localization.UseRussian ?
-                    "Не существуют необходимые директории:\r\n{0}\r\n{1}\r\n{2}\r\n{3}\r\n{4}\r\n" +
+                    "Не существуют необходимые директории:{0}{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}" +
                     "Нормальная работа программы невозможна." :
-                    "Required directories are not exist:\r\n{0}\r\n{1}\r\n{2}\r\n{3}\r\n{4}\r\n" +
+                    "Required directories are not exist:{0}{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}" +
                     "Normal program execution is impossible.",
-                    Manager.ConfigDir, Manager.LangDir, Manager.LogDir, Manager.KpDir, Manager.CmdDir);
+                    Environment.NewLine, Manager.ConfigDir, Manager.LangDir, Manager.LogDir, Manager.KpDir, Manager.CmdDir);
 
                 try
                 {
