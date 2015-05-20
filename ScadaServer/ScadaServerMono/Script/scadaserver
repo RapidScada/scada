@@ -40,7 +40,6 @@ do_stop()
 {
     if [ -f $PID_FILE_PATH ]; then
         echo "Sending stop $SERVICE_NAME command..."
-        PID=$(cat $PID_FILE_PATH);
         cd $EXE_DIR
         touch $STOP_FILE_PATH
         for i in $(seq 1 $MAX_DELAY); do
@@ -50,6 +49,7 @@ do_stop()
             fi
         done
 
+        PID=$(cat $PID_FILE_PATH);
         kill $PID;
         echo "$SERVICE_NAME must've been stopped"
         rm $PID_FILE_PATH
