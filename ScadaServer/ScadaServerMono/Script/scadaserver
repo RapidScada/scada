@@ -22,13 +22,14 @@ MAX_DELAY=12
 do_start()
 {
     if [ ! -f $PID_FILE_PATH ]; then
-        echo "Sending start $SERVICE_NAME command..."
         cd $EXE_DIR
-        mono $EXE_NAME & echo $! > $PID_FILE_PATH
         if [ -f $STOP_FILE_PATH ]; then
+            echo "Delete $STOP_FILE_PATH"
             rm  $STOP_FILE_PATH
         fi
 
+        echo "Sending start $SERVICE_NAME command..."
+        mono $EXE_NAME & echo $! > $PID_FILE_PATH
         echo "Start $SERVICE_NAME command is sent"
     else
         echo "$SERVICE_NAME is already running"
