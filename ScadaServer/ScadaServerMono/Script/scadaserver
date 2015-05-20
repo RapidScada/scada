@@ -10,7 +10,7 @@
 # X-Stop-After:      scadacomm
 ### END INIT INFO
 
-# This script was modified and adapted for Rapid SCADA by Nikita Yakuntsev
+# This script was modified and adapted for Rapid SCADA by Nikita Yakuntsev and Mikhail Shiryaev
 
 SERVICE_NAME=SCADA-Server
 EXE_DIR=/etc/scada/ScadaServer/
@@ -25,7 +25,7 @@ do_start()
         cd $EXE_DIR
         if [ -f $STOP_FILE_PATH ]; then
             echo "Delete $STOP_FILE_PATH"
-            rm  $STOP_FILE_PATH
+            rm $STOP_FILE_PATH
         fi
 
         echo "Sending start $SERVICE_NAME command..."
