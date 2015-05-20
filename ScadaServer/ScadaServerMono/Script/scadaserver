@@ -1,4 +1,4 @@
-﻿#!/bin/sh
+#!/bin/sh
 ### BEGIN INIT INFO
 # Provides:          scadaserver
 # Required-Start:    $remote_fs $network $time
@@ -15,21 +15,21 @@
 SERVICE_NAME=SCADA-Server
 EXE_DIR=/etc/scada/ScadaServer/
 EXE_NAME=ScadaServerMono.exe
-STOP_FILE_PATH=Cmd/serverstop
+STOP_FILE_PATH=./Cmd/serverstop
 PID_FILE_PATH=/tmp/scadaserver
 MAX_DELAY=12
 
 do_start()
 {
     if [ ! -f $PID_FILE_PATH ]; then
-        echo "Starting $SERVICE_NAME ..."
+        echo "Sending start $SERVICE_NAME command..."
         cd $EXE_DIR
         mono $EXE_NAME & echo $! > $PID_FILE_PATH
         if [ -f $STOP_FILE_PATH ]; then
             rm  $STOP_FILE_PATH
         fi
 
-        echo "$SERVICE_NAME is started"
+        echo "Start $SERVICE_NAME command is sent"
     else
         echo "$SERVICE_NAME is already running"
     fi
@@ -38,11 +38,11 @@ do_start()
 do_stop()
 {
     if [ -f $PID_FILE_PATH ]; then
-        echo "Terminating $SERVICE_NAME ..."
-        PID = $(cat $PID_FILE_PATH);
+        echo "Sending stop $SERVICE_NAME command..."
+        PID=$(cat $PID_FILE_PATH);
         cd $EXE_DIR
         touch $STOP_FILE_PATH
-        for (( i = 0; i < MAX_DELAY; i++ )) do
+        for i in $(seq 1 $MAX_DELAY); do
             sleep 1
             if [ ! -f $STOP_FILE_PATH ]; then
                 break;
@@ -50,7 +50,7 @@ do_stop()
         done
 
         kill $PID;
-        echo "$SERVICE_NAME is stopped"
+        echo "$SERVICE_NAME must've been stopped"
         rm $PID_FILE_PATH
     else
         echo "$SERVICE_NAME is not running"
