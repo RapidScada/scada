@@ -367,17 +367,17 @@ namespace Scada.Client
             switch (directory)
             {
                 case Dirs.Cur:
-                    return "[Srez]\\";
+                    return "[Srez]" + Path.DirectorySeparatorChar;
                 case Dirs.Hour:
-                    return "[Hr]\\";
+                    return "[Hr]" + Path.DirectorySeparatorChar;
                 case Dirs.Min:
-                    return "[Min]\\";
+                    return "[Min]" + Path.DirectorySeparatorChar;
                 case Dirs.Events:
-                    return "[Ev]\\";
+                    return "[Ev]" + Path.DirectorySeparatorChar;
                 case Dirs.BaseDAT:
-                    return "[Base]\\";
+                    return "[Base]" + Path.DirectorySeparatorChar;
                 case Dirs.Itf:
-                    return "[Itf]\\";
+                    return "[Itf]" + Path.DirectorySeparatorChar;
                 default:
                     return "";
             }

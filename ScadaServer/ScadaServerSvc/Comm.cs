@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
@@ -95,16 +95,16 @@ namespace Scada.Server.Svc
         /// </summary>
         private static readonly Dictionary<Dirs, string> DirNames = new Dictionary<Dirs, string>()
         {
-            { Dirs.Cur, @"[Cur]\" },
-            { Dirs.Hr, @"[Hr]\" },
-            { Dirs.Min, @"[Min]\" },
-            { Dirs.Ev, @"[Ev]\" },
-            { Dirs.BaseDAT, @"[Base]\" },
-            { Dirs.Itf, @"[Itf]\" },
-            { Dirs.CurCopy, @"[CurCopy]\" },
-            { Dirs.HrCopy, @"[HrCopy]\" },
-            { Dirs.MinCopy, @"[MinCopy]\" },
-            { Dirs.EvCopy, @"[EvCopy]\" }
+            { Dirs.Cur, "[Cur]" + Path.DirectorySeparatorChar },
+            { Dirs.Hr, "[Hr]" + Path.DirectorySeparatorChar },
+            { Dirs.Min, "[Min]" + Path.DirectorySeparatorChar },
+            { Dirs.Ev, "[Ev]" + Path.DirectorySeparatorChar },
+            { Dirs.BaseDAT, "[Base]" + Path.DirectorySeparatorChar },
+            { Dirs.Itf, "[Itf]" + Path.DirectorySeparatorChar },
+            { Dirs.CurCopy, "[CurCopy]" + Path.DirectorySeparatorChar },
+            { Dirs.HrCopy, "[HrCopy]" + Path.DirectorySeparatorChar },
+            { Dirs.MinCopy, "[MinCopy]" + Path.DirectorySeparatorChar },
+            { Dirs.EvCopy, "[EvCopy]" + Path.DirectorySeparatorChar }
         };
 
         /// <summary>
@@ -1213,28 +1213,31 @@ namespace Scada.Server.Svc
         /// </summary>
         private string GetFullFileName(Dirs dir, string fileName)
         {
+            fileName = ScadaUtils.CorrectDirectorySeparator(fileName);
+            string sepPlusFileName = Path.DirectorySeparatorChar + fileName;
+
             switch (dir)
             {
                 case Dirs.Cur:
-                    return settings.ArcDir + @"Cur\" + fileName;
+                    return settings.ArcDir + "Cur" + sepPlusFileName;
                 case Dirs.Hr:
-                    return settings.ArcDir + @"Hour\" + fileName;
+                    return settings.ArcDir + "Hour" + sepPlusFileName;
                 case Dirs.Min:
-                    return settings.ArcDir + @"Min\" + fileName;
+                    return settings.ArcDir + "Min" + sepPlusFileName;
                 case Dirs.Ev:
-                    return settings.ArcDir + @"Events\" + fileName;
+                    return settings.ArcDir + "Events" + sepPlusFileName;
                 case Dirs.BaseDAT:
                     return settings.BaseDATDir + fileName;
                 case Dirs.Itf:
                     return settings.ItfDir + fileName;
                 case Dirs.CurCopy:
-                    return settings.ArcCopyDir + @"Cur\" + fileName;
+                    return settings.ArcCopyDir + "Cur" + sepPlusFileName;
                 case Dirs.HrCopy:
-                    return settings.ArcCopyDir + @"Hour\" + fileName;
+                    return settings.ArcCopyDir + "Hour" + sepPlusFileName;
                 case Dirs.MinCopy:
-                    return settings.ArcCopyDir + @"Min\" + fileName;
+                    return settings.ArcCopyDir + "Min" + sepPlusFileName;
                 default: // Dirs.EvCopy
-                    return settings.ArcCopyDir + @"Events\" + fileName;
+                    return settings.ArcCopyDir + "Events" + sepPlusFileName;
             }
         }
 

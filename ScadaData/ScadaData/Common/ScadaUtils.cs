@@ -75,6 +75,15 @@ namespace Scada
         }
 
         /// <summary>
+        /// Скорректировать разделитель директории
+        /// </summary>
+        public static string CorrectDirectorySeparator(string path)
+        {
+            // Path.AltDirectorySeparatorChar == '/' для Mono, что некорректно
+            return path.Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar);
+        }
+
+        /// <summary>
         /// Определить, является ли заданная строка записью даты, используя Localization.Culture
         /// </summary>
         public static bool StrIsDate(string s)
