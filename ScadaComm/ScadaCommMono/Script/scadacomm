@@ -10,9 +10,9 @@
 
 # This script was modified and adapted for Rapid SCADA by Nikita Yakuntsev and Mikhail Shiryaev
 
-SERVICE_NAME=SCADA-Server
+SERVICE_NAME=SCADA-Communicator
 EXE_DIR=/etc/scada/ScadaComm/
-EXE_NAME=ScadaServerMono.exe
+EXE_NAME=ScadaCommMono.exe
 STOP_FILE_PATH=./Cmd/commstop
 PID_FILE_PATH=/tmp/scadacomm
 MAX_DELAY=12
