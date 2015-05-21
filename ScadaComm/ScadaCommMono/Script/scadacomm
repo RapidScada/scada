@@ -1,22 +1,20 @@
 #!/bin/sh
 ### BEGIN INIT INFO
-# Provides:          scadaserver
+# Provides:          scadacomm
 # Required-Start:    $remote_fs $network $time
 # Required-Stop:     $remote_fs
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: SCADA-Server daemon
-# X-Start-Before:    scadacomm
-# X-Stop-After:      scadacomm
+# Short-Description: SCADA-Communicator daemon
 ### END INIT INFO
 
 # This script was modified and adapted for Rapid SCADA by Nikita Yakuntsev and Mikhail Shiryaev
 
 SERVICE_NAME=SCADA-Server
-EXE_DIR=/etc/scada/ScadaServer/
+EXE_DIR=/etc/scada/ScadaComm/
 EXE_NAME=ScadaServerMono.exe
-STOP_FILE_PATH=./Cmd/serverstop
-PID_FILE_PATH=/tmp/scadaserver
+STOP_FILE_PATH=./Cmd/commstop
+PID_FILE_PATH=/tmp/scadacomm
 MAX_DELAY=12
 
 do_start()
