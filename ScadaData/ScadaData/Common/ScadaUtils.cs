@@ -79,7 +79,7 @@ namespace Scada
         /// </summary>
         public static string CorrectDirectorySeparator(string path)
         {
-            // Path.AltDirectorySeparatorChar == '/' для Mono, что некорректно
+            // Path.AltDirectorySeparatorChar == '/' для Mono, что некорректно 
             return path.Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar);
         }
 
