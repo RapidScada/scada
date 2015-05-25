@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2010
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
@@ -50,6 +50,33 @@ namespace ScadaAdmin
         /// </summary>
         private class KPParams
         {
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public KPParams()
+            {
+                Enabled = false;
+                Color = Color.Gray;
+                KPView = null;
+
+                Selected = false;
+                KPNum = 0;
+                KPName = "";
+                ObjNum = DBNull.Value;
+                DllFileName = "";
+                DllState = "";
+
+                InCnlsError = false;
+                InCnls = "";
+                FirstInCnlNum = 0;
+                LastInCnlNum = 0;
+
+                CtrlCnlsError = false;
+                CtrlCnls = "";
+                FirstCtrlCnlNum = 0;
+                LastCtrlCnlNum = 0;
+            }
+
             /// <summary>
             /// Получить или установить признак, что выбор разрешён
             /// </summary>
@@ -220,54 +247,34 @@ namespace ScadaAdmin
                     KPParams kpParams = new KPParams();
                     kpParams.KPNum = (int)rowKP["KPNum"];
                     kpParams.KPName = (string)rowKP["Name"];
-                    kpParams.ObjNum = DBNull.Value;
 
                     tblKPType.DefaultView.RowFilter = "KPTypeID = " + rowKP["KPTypeID"];
                     object dllFileName = tblKPType.DefaultView[0]["DllFileName"];
                     kpParams.DllFileName = dllFileName == null || dllFileName == DBNull.Value ? "" : (string)dllFileName;
 
-                    if (kpParams.DllFileName == "")
-                    {
-                        kpParams.Enabled = false;
-                        kpParams.Color = Color.Gray;
-                        kpParams.KPView = null;
-                        kpParams.Selected = false;
-                        kpParams.DllState = "";
-                    }
-                    else
+                    if (kpParams.DllFileName != "")
                     {
                         if (kpViewList.ContainsKey(kpParams.DllFileName))
                         {
                             kpParams.KPView = kpViewList[kpParams.DllFileName];
                             if (kpParams.KPView == null)
                             {
-                                kpParams.Enabled = false;
                                 kpParams.Color = Color.Red;
-                                kpParams.Selected = false;
                                 kpParams.DllState = AppPhrases.DllError;
                             }
                             else
                             {
                                 kpParams.Enabled = true;
                                 kpParams.Color = Color.Black;
-                                kpParams.Selected = true;
                                 kpParams.DllState = AppPhrases.DllLoaded;
                             }
                         }
                         else
                         {
-                            kpParams.Enabled = false;
-                            kpParams.Color = Color.Gray;
-                            kpParams.KPView = null;
-                            kpParams.Selected = false;
                             kpParams.DllState = AppPhrases.DllNotFound;
                         }
                     }
 
-                    kpParams.InCnlsError = false;
-                    kpParams.InCnls = "";
-                    kpParams.CtrlCnlsError = false;
-                    kpParams.CtrlCnls = "";
                     kpParamsList.Add(kpParams);
                 }
                 gvKPSel.DataSource = kpParamsList;
@@ -461,7 +468,6 @@ namespace ScadaAdmin
                     errMsg = AppPhrases.CalcCnlNumsErrors;
                 else if (!hasChannels)
                     errMsg = AppPhrases.CreatedCnlsMissing;
-                btnCalc.Enabled = false;
             }
             catch (Exception ex)
             {
@@ -470,6 +476,19 @@ namespace ScadaAdmin
             }
 
             return hasChannels && !hasErrors;
+        }
+
+        /// <summary>
+        /// Расчитать и отобразить номера каналов
+        /// </summary>
+        private void CalcAndShowCnls(bool showError)
+        {
+            string errMsg;
+            bool calcOk = CalcCnls(out errMsg);
+            SwitchCalcCreateEnabled(!calcOk);
+            gvKPSel.Invalidate();
+            if (showError && errMsg != "")
+                ScadaUtils.ShowError(errMsg);
         }
 
         /// <summary>
@@ -534,7 +553,7 @@ namespace ScadaAdmin
         /// <summary>
         /// Создать каналы
         /// </summary>
-        private void CreateCnls()
+        private void CreateCnls(bool insertKPName)
         {
             writer = null;
             bool logCreated = false;
@@ -624,6 +643,7 @@ namespace ScadaAdmin
                         {
                             int inCnlNum = kpParams.FirstInCnlNum;
                             int ctrlCnlNum = kpParams.FirstCtrlCnlNum;
+                            string kpNameToInsert = insertKPName ? kpParams.KPName + " - " : "";
 
                             foreach (KPView.InCnlProps inCnlProps in kpParams.KPView.DefaultCnls)
                             {
@@ -639,7 +659,7 @@ namespace ScadaAdmin
                                     DataRow newCtrlCnlRow = tblCtrlCnl.NewRow();
                                     newCtrlCnlRow["CtrlCnlNum"] = ctrlCnlNum;
                                     newCtrlCnlRow["Active"] = true;
-                                    newCtrlCnlRow["Name"] = ctrlCnlProps.Name;
+                                    newCtrlCnlRow["Name"] = kpNameToInsert + ctrlCnlProps.Name;
                                     newCtrlCnlRow["CmdTypeID"] = (int)ctrlCnlProps.CmdType;
                                     newCtrlCnlRow["ObjNum"] = kpParams.ObjNum;
                                     newCtrlCnlRow["KPNum"] = kpParams.KPNum;
@@ -661,7 +681,7 @@ namespace ScadaAdmin
                                 newInCnlRow["CnlNum"] = inCnlNum;
                                 newInCnlRow["Active"] = true;
                                 newInCnlRow["CnlNum"] = inCnlNum;
-                                newInCnlRow["Name"] = inCnlProps.Name;
+                                newInCnlRow["Name"] = kpNameToInsert + inCnlProps.Name;
                                 newInCnlRow["CnlTypeID"] = (int)inCnlProps.CnlType;
                                 newInCnlRow["ModifiedDT"] = DateTime.Now;
                                 newInCnlRow["ObjNum"] = kpParams.ObjNum;
@@ -756,6 +776,15 @@ namespace ScadaAdmin
                 Process.Start(logFileName);
         }
 
+        /// <summary>
+        /// Переключить доступность кнопок расчёта номеров каналов и создания каналов
+        /// </summary>
+        private void SwitchCalcCreateEnabled(bool calcEnabled)
+        {
+            btnCalc.Enabled = calcEnabled;
+            btnCreate.Enabled = !calcEnabled;
+        }
+
 
         private void FrmCreateCnls_Load(object sender, EventArgs e)
         {
@@ -772,9 +801,7 @@ namespace ScadaAdmin
             FillKPGrid();
 
             // расчёт и отображение номеров каналов
-            string errMsg;
-            btnCreate.Enabled = CalcCnls(out errMsg);
-            gvKPSel.Invalidate();
+            CalcAndShowCnls(false);
         }
 
         private void gvKPSel_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -800,11 +827,8 @@ namespace ScadaAdmin
                 if (kpParamsList[rowInd].Enabled)
                 {
                     if (e.ColumnIndex == colSelected.Index)
-                    {
-                        // разрешение расчёта и создания каналов
-                        btnCalc.Enabled = true;
-                        btnCreate.Enabled = true;
-                    }
+                        // разрешение расчёта каналов и запрет создания каналов
+                        SwitchCalcCreateEnabled(true);
                 }
                 else
                 {
@@ -816,8 +840,8 @@ namespace ScadaAdmin
 
         private void numCnls_ValueChanged(object sender, EventArgs e)
         {
-            btnCalc.Enabled = true;
-            btnCreate.Enabled = true;
+            // разрешение расчёта каналов и запрет создания каналов
+            SwitchCalcCreateEnabled(true);
         }
 
         private void btnSelectAll_Click(object sender, EventArgs e)
@@ -827,8 +851,8 @@ namespace ScadaAdmin
                 kpParams.Selected = kpParams.Enabled;
             gvKPSel.Invalidate();
 
-            btnCalc.Enabled = true;
-            btnCreate.Enabled = true;
+            // разрешение расчёта каналов и запрет создания каналов
+            SwitchCalcCreateEnabled(true);
         }
 
         private void btnDeselectAll_Click(object sender, EventArgs e)
@@ -838,28 +862,20 @@ namespace ScadaAdmin
                 kpParams.Selected = false;
             gvKPSel.Invalidate();
 
-            btnCalc.Enabled = true;
-            btnCreate.Enabled = true;
+            // разрешение расчёта каналов и запрет создания каналов
+            SwitchCalcCreateEnabled(true);
         }
 
         private void btnCalc_Click(object sender, EventArgs e)
         {
             // расчёт и отображение номеров каналов
-            string errMsg;
-            btnCreate.Enabled = CalcCnls(out errMsg);
-            gvKPSel.Invalidate();
-            if (errMsg != "")
-                ScadaUtils.ShowError(errMsg);
+            CalcAndShowCnls(true);
         }
 
         private void btnCreate_Click(object sender, EventArgs e)
         {
-            if (btnCalc.Enabled)
-                btnCalc_Click(null, null);
-
             // создание каналов
-            if (btnCreate.Enabled)
-                CreateCnls();
+            CreateCnls(chkInsertKPName.Checked);
         }
     }
 }
