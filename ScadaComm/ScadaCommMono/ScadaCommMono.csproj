@@ -67,8 +67,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Script\scadacomm" />
-    <None Include="Script\svc_install.sh" />
-    <None Include="Script\svc_uninstall.sh" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

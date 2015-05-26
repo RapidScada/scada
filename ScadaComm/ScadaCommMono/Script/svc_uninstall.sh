@@ -1,1 +1,0 @@
-sudo update-rc.d -f scadacomm remove
