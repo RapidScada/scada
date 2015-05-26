@@ -520,34 +520,34 @@ namespace ScadaAdmin
         /// <summary>
         /// Сохранить каналы в БД
         /// </summary>
-        private bool UpdateCnls(DataTable dataTable, string descr)
+        private bool UpdateCnls(DataTable dataTable, string descr, out int updRowCnt)
         {
-            int updRows = 0;
-            int errRows = 0;
+            updRowCnt = 0;
+            int errRowCnt = 0;
             DataRow[] rowsInError = null;
 
             SqlCeDataAdapter sqlAdapter = dataTable.ExtendedProperties["DataAdapter"] as SqlCeDataAdapter;
-            updRows = sqlAdapter.Update(dataTable);
+            updRowCnt = sqlAdapter.Update(dataTable);
 
             if (dataTable.HasErrors)
             {
                 rowsInError = dataTable.GetErrors();
-                errRows = rowsInError.Length;
+                errRowCnt = rowsInError.Length;
             }
 
-            if (errRows == 0)
+            if (errRowCnt == 0)
             {
-                writer.WriteLine(string.Format(descr, updRows));
+                writer.WriteLine(string.Format(descr, updRowCnt));
             }
             else
             {
-                writer.WriteLine(string.Format(descr, updRows) + ". " + 
-                    string.Format(AppPhrases.ErrorsCount, errRows));
+                writer.WriteLine(string.Format(descr, updRowCnt) + ". " + 
+                    string.Format(AppPhrases.ErrorsCount, errRowCnt));
                 foreach (DataRow row in rowsInError)
                     writer.WriteLine(string.Format(AppPhrases.CnlError,  row[0], row.RowError));
             }
 
-            return errRows == 0;
+            return errRowCnt == 0;
         }
 
         /// <summary>
@@ -743,20 +743,20 @@ namespace ScadaAdmin
                     }
 
                     // сохранение каналов в БД
-                    bool updateOk = UpdateCnls(tblCtrlCnl, AppPhrases.AddedCtrlCnlsCount);
-                    updateOk = UpdateCnls(tblInCnl, AppPhrases.AddedInCnlsCount) && updateOk;
-                    string msg = updateOk ? AppPhrases.CreateCnlsComplSucc : AppPhrases.CreateCnlsComplWithErr;
+                    int updRowCnt1, updRowCnt2;
+                    bool updateOK = UpdateCnls(tblCtrlCnl, AppPhrases.AddedCtrlCnlsCount, out updRowCnt1);
+                    updateOK = UpdateCnls(tblInCnl, AppPhrases.AddedInCnlsCount, out updRowCnt2) && updateOK;
+                    string msg = updateOK ? AppPhrases.CreateCnlsComplSucc : AppPhrases.CreateCnlsComplWithErr;
                     writer.WriteLine();
                     writer.WriteLine(msg);
-                    if (updateOk)
-                    {
-                        ScadaUtils.ShowInfo(msg + AppPhrases.RefreshRequired);
-                    }
+
+                    if (updRowCnt1 + updRowCnt2 > 0)
+                        msg += AppPhrases.RefreshRequired;
+
+                    if (updateOK)
+                        ScadaUtils.ShowInfo(msg);
                     else
-                    {
-                        AppData.ErrLog.WriteAction(msg, Log.ActTypes.Error);
-                        ScadaUtils.ShowError(msg + AppPhrases.RefreshRequired);
-                    }
+                        AppUtils.ProcError(msg);
                 }
             }
             catch (Exception ex)
