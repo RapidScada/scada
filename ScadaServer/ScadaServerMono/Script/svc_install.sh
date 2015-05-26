@@ -1,4 +1,4 @@
-cd /etc/init.d/
+cd /etc/init.d
 sudo chmod +x ./scadaserver
 sudo update-rc.d scadaserver defaults
 sudo chmod +x ./scadacomm
