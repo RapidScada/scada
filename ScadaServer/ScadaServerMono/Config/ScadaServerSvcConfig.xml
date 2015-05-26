@@ -33,7 +33,5 @@
     <Param name="WriteEvCopy" value="true" descr="Write events copy" />
   </SaveParams>
   <!--Modules-->
-  <Modules>
-    <Module fileName="ModTest.dll" />
-  </Modules>
+  <Modules />
 </ScadaServerSvcConfig>
