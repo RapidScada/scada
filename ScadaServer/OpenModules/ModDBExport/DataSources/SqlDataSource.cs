@@ -10,11 +10,6 @@ namespace Scada.Server.Module.DBExport
     {
         private SqlConnection sqlConn;
 
-        protected override void InitConnection()
-        {
-            if (Connection == null || Connection.ConnectionString != ConnectionString)
-                Connection = sqlConn = new SqlConnection(ConnectionString);
-        }
 
         protected override void ClearPool()
         {
@@ -22,9 +17,14 @@ namespace Scada.Server.Module.DBExport
                 SqlConnection.ClearPool(sqlConn);
         }
 
-        public override DbCommand CreateCommand(string sql)
+        protected override DbCommand CreateCommand(string sql)
         {
             return new SqlCommand(sql, sqlConn);
+        }
+
+        public override void InitConnection()
+        {
+            Connection = sqlConn = new SqlConnection(ConnectionString);
         }
 
         public override void AddCmdParamWithValue(DbCommand cmd, string paramName, object value)

@@ -28,7 +28,7 @@ namespace Scada.Server.Module
 
         private bool normalWork;             // признак нормальной работы модуля
         private Log log;                     // журнал работы модуля
-        private Config config;               // конфигурация библиотеки
+        private Config config;               // конфигурация модуля
 
 
         /// <summary>
@@ -71,7 +71,17 @@ namespace Scada.Server.Module
             config = new Config(ConfigDir);
             string errMsg;
 
-            if (!config.Load(out errMsg))
+            if (config.Load(out errMsg))
+            {
+                // инициализация источников данных
+                foreach (Config.ExportDestination expDest in config.ExportDestinations)
+                {
+                    expDest.DataSource.InitConnection();
+                    expDest.DataSource.InitCommands(expDest.ExportParams.ExportCurDataQuery,
+                        expDest.ExportParams.ExportArcDataQuery, expDest.ExportParams.ExportEventQuery);
+                }
+            }
+            else
             {
                 normalWork = false;
                 log.WriteAction(errMsg);
@@ -96,7 +106,7 @@ namespace Scada.Server.Module
                         try
                         {
                             dataSource.Connect();
-                            DbCommand cmd = dataSource.CreateCommand(expDest.ExportParams.ExportCurDataQuery);
+                            DbCommand cmd = dataSource.ExportCurDataCmd;
 
                             foreach (int cnlNum in cnlNums)
                             {
