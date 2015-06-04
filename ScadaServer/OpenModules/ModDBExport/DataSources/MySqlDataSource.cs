@@ -16,32 +16,32 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ModDBExport
- * Summary  : Microsoft SQL Server interacting traits
+ * Summary  : MySQL interacting traits
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
  * Modified : 2015
  */
 
+using MySql.Data.MySqlClient;
 using System;
 using System.Data.Common;
-using System.Data.SqlClient;
 
 namespace Scada.Server.Module.DBExport
 {
     /// <summary>
-    /// Microsoft SQL Server interacting traits
-    /// <para>Особенности взаимодействия с Microsoft SQL Server</para>
+    /// MySQL interacting traits
+    /// <para>Особенности взаимодействия с MySQL</para>
     /// </summary>
-    internal class SqlDataSource : DataSource
+    internal class MySqlDataSource : DataSource
     {
         /// <summary>
         /// Конструктор
         /// </summary>
-        public SqlDataSource()
+        public MySqlDataSource()
             : base()
         {
-            DBType = DBType.MSSQL;
+            DBType = DBType.MySQL;
         }
 
 
@@ -52,8 +52,8 @@ namespace Scada.Server.Module.DBExport
         {
             if (Connection == null)
                 throw new InvalidOperationException("Connection is not inited.");
-            if (!(Connection is SqlConnection))
-                throw new InvalidOperationException("SqlConnection is required.");
+            if (!(Connection is MySqlConnection))
+                throw new InvalidOperationException("MySqlConnection is required.");
         }
 
 
@@ -62,7 +62,7 @@ namespace Scada.Server.Module.DBExport
         /// </summary>
         protected override DbConnection CreateConnection()
         {
-            return new SqlConnection();
+            return new MySqlConnection();
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace Scada.Server.Module.DBExport
         protected override void ClearPool()
         {
             CheckConnection();
-            SqlConnection.ClearPool((SqlConnection)Connection);
+            MySqlConnection.ClearPool((MySqlConnection)Connection);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace Scada.Server.Module.DBExport
         protected override DbCommand CreateCommand(string cmdText)
         {
             CheckConnection();
-            return new SqlCommand(cmdText, (SqlConnection)Connection);
+            return new MySqlCommand(cmdText, (MySqlConnection)Connection);
         }
 
         /// <summary>
@@ -98,11 +98,11 @@ namespace Scada.Server.Module.DBExport
         {
             if (cmd == null)
                 throw new ArgumentNullException("cmd");
-            if (!(cmd is SqlCommand))
-                throw new ArgumentException("SqlCommand is required.", "cmd");
+            if (!(cmd is MySqlCommand))
+                throw new ArgumentException("MySqlCommand is required.", "cmd");
 
-            SqlCommand sqlCmd = (SqlCommand)cmd;
-            sqlCmd.Parameters.AddWithValue(paramName, value);
+            MySqlCommand mySqlCmd = (MySqlCommand)cmd;
+            mySqlCmd.Parameters.AddWithValue(paramName, value);
         }
     }
 }

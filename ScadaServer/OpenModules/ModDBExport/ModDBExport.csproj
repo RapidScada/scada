@@ -60,6 +60,10 @@
     <Compile Include="Config.cs" />
     <Compile Include="DataSources\DataSource.cs" />
     <Compile Include="DataSources\DBType.cs" />
+    <Compile Include="DataSources\PgSqlDataSource.cs" />
+    <Compile Include="DataSources\MySqlDataSource.cs" />
+    <Compile Include="DataSources\OraDataSource.cs" />
+    <Compile Include="DataSources\OleDbDataSource.cs" />
     <Compile Include="DataSources\SqlDataSource.cs" />
     <Compile Include="ModDBExportLogic.cs" />
     <Compile Include="ModDBExportView.cs" />

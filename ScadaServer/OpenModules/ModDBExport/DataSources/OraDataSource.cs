@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ModDBExport
- * Summary  : Microsoft SQL Server interacting traits
+ * Summary  : Oracle interacting traits
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
@@ -25,23 +25,26 @@
 
 using System;
 using System.Data.Common;
+using System.Data.OracleClient;
 using System.Data.SqlClient;
+
+#pragma warning disable 618 // отключить предупреждение об устаревших классах Oracle
 
 namespace Scada.Server.Module.DBExport
 {
     /// <summary>
-    /// Microsoft SQL Server interacting traits
-    /// <para>Особенности взаимодействия с Microsoft SQL Server</para>
+    /// Oracle interacting traits
+    /// <para>Особенности взаимодействия с Oracle</para>
     /// </summary>
-    internal class SqlDataSource : DataSource
+    internal class OraDataSource : DataSource
     {
         /// <summary>
         /// Конструктор
         /// </summary>
-        public SqlDataSource()
+        public OraDataSource()
             : base()
         {
-            DBType = DBType.MSSQL;
+            DBType = DBType.Oracle;
         }
 
 
@@ -52,8 +55,8 @@ namespace Scada.Server.Module.DBExport
         {
             if (Connection == null)
                 throw new InvalidOperationException("Connection is not inited.");
-            if (!(Connection is SqlConnection))
-                throw new InvalidOperationException("SqlConnection is required.");
+            if (!(Connection is OracleConnection))
+                throw new InvalidOperationException("OracleConnection is required.");
         }
 
 
@@ -62,7 +65,7 @@ namespace Scada.Server.Module.DBExport
         /// </summary>
         protected override DbConnection CreateConnection()
         {
-            return new SqlConnection();
+            return new OracleConnection();
         }
 
         /// <summary>
@@ -79,7 +82,7 @@ namespace Scada.Server.Module.DBExport
         protected override void ClearPool()
         {
             CheckConnection();
-            SqlConnection.ClearPool((SqlConnection)Connection);
+            OracleConnection.ClearPool((OracleConnection)Connection);
         }
 
         /// <summary>
@@ -88,7 +91,7 @@ namespace Scada.Server.Module.DBExport
         protected override DbCommand CreateCommand(string cmdText)
         {
             CheckConnection();
-            return new SqlCommand(cmdText, (SqlConnection)Connection);
+            return new OracleCommand(cmdText, (OracleConnection)Connection);
         }
 
         /// <summary>
@@ -98,11 +101,11 @@ namespace Scada.Server.Module.DBExport
         {
             if (cmd == null)
                 throw new ArgumentNullException("cmd");
-            if (!(cmd is SqlCommand))
-                throw new ArgumentException("SqlCommand is required.", "cmd");
+            if (!(cmd is OracleCommand))
+                throw new ArgumentException("OracleCommand is required.", "cmd");
 
-            SqlCommand sqlCmd = (SqlCommand)cmd;
-            sqlCmd.Parameters.AddWithValue(paramName, value);
+            OracleCommand oraCmd = (OracleCommand)cmd;
+            oraCmd.Parameters.AddWithValue(paramName, value);
         }
     }
 }

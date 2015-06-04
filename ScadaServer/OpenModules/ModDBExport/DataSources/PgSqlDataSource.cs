@@ -16,32 +16,32 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ModDBExport
- * Summary  : Microsoft SQL Server interacting traits
+ * Summary  : PostgreSQL interacting traits
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
  * Modified : 2015
  */
 
+using Npgsql;
 using System;
 using System.Data.Common;
-using System.Data.SqlClient;
 
-namespace Scada.Server.Module.DBExport
+namespace Scada.Server.Module.DBExport.DataSources
 {
     /// <summary>
-    /// Microsoft SQL Server interacting traits
-    /// <para>Особенности взаимодействия с Microsoft SQL Server</para>
+    /// PostgreSQL interacting traits
+    /// <para>Особенности взаимодействия с PostgreSQL</para>
     /// </summary>
-    internal class SqlDataSource : DataSource
+    internal class PgSqlDataSource : DataSource
     {
         /// <summary>
         /// Конструктор
         /// </summary>
-        public SqlDataSource()
+        public PgSqlDataSource()
             : base()
         {
-            DBType = DBType.MSSQL;
+            DBType = DBType.PostgreSQL;
         }
 
 
@@ -52,8 +52,8 @@ namespace Scada.Server.Module.DBExport
         {
             if (Connection == null)
                 throw new InvalidOperationException("Connection is not inited.");
-            if (!(Connection is SqlConnection))
-                throw new InvalidOperationException("SqlConnection is required.");
+            if (!(Connection is NpgsqlConnection))
+                throw new InvalidOperationException("NpgsqlConnection is required.");
         }
 
 
@@ -62,8 +62,9 @@ namespace Scada.Server.Module.DBExport
         /// </summary>
         protected override DbConnection CreateConnection()
         {
-            return new SqlConnection();
+            return new NpgsqlConnection();
         }
+
 
         /// <summary>
         /// Построить строку соединения с БД на основе остальных свойств соединения
@@ -78,8 +79,7 @@ namespace Scada.Server.Module.DBExport
         /// </summary>
         protected override void ClearPool()
         {
-            CheckConnection();
-            SqlConnection.ClearPool((SqlConnection)Connection);
+            NpgsqlConnection.ClearAllPools();
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace Scada.Server.Module.DBExport
         protected override DbCommand CreateCommand(string cmdText)
         {
             CheckConnection();
-            return new SqlCommand(cmdText, (SqlConnection)Connection);
+            return new NpgsqlCommand(cmdText, (NpgsqlConnection)Connection);
         }
 
         /// <summary>
@@ -98,11 +98,11 @@ namespace Scada.Server.Module.DBExport
         {
             if (cmd == null)
                 throw new ArgumentNullException("cmd");
-            if (!(cmd is SqlCommand))
-                throw new ArgumentException("SqlCommand is required.", "cmd");
+            if (!(cmd is NpgsqlCommand))
+                throw new ArgumentException("NpgsqlCommand is required.", "cmd");
 
-            SqlCommand sqlCmd = (SqlCommand)cmd;
-            sqlCmd.Parameters.AddWithValue(paramName, value);
+            NpgsqlCommand pgSqlCmd = (NpgsqlCommand)cmd;
+            pgSqlCmd.Parameters.AddWithValue(paramName, value);
         }
     }
 }

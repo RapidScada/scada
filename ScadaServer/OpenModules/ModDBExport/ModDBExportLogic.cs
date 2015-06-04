@@ -1,9 +1,29 @@
 ﻿/*
- * Модуль экспорта в БД
- * Логика работы серверного модуля
+ * Copyright 2015 Mikhail Shiryaev
  * 
- * Разработчик:
- * 2015, Ширяев Михаил
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ * 
+ * Product  : Rapid SCADA
+ * Module   : ModDBExport
+ * Summary  : Server module logic
+ * 
+ * Author   : Mikhail Shiryaev
+ * Created  : 2015
+ * Modified : 2015
+ * 
+ * Description
+ * Server module for real time data export from Rapid SCADA to DB.
  */
 
 using Scada.Data;
@@ -16,7 +36,8 @@ using Utils;
 namespace Scada.Server.Module
 {
     /// <summary>
-    /// Логика работы серверного модуля
+    /// Server module logic
+    /// <para>Логика работы серверного модуля</para>
     /// </summary>
     public class ModDBExportLogic : ModLogic
     {
@@ -113,10 +134,10 @@ namespace Scada.Server.Module
                                 SrezTableLight.CnlData cnlData;
 
                                 if (curSrez.GetCnlData(cnlNum, out cnlData))
-                                {   
-                                    dataSource.AddCmdParamWithValue(cmd, "cnlNum", cnlNum);
-                                    dataSource.AddCmdParamWithValue(cmd, "val", cnlData.Val);
-                                    dataSource.AddCmdParamWithValue(cmd, "stat", cnlData.Stat);
+                                {
+                                    dataSource.SetCmdParam(cmd, "cnlNum", cnlNum);
+                                    dataSource.SetCmdParam(cmd, "val", cnlData.Val);
+                                    dataSource.SetCmdParam(cmd, "stat", cnlData.Stat);
                                     cmd.ExecuteNonQuery();
                                 }
                             }

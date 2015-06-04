@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ModDBExport
- * Summary  : Microsoft SQL Server interacting traits
+ * Summary  : OLE DB interacting traits
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
@@ -25,23 +25,23 @@
 
 using System;
 using System.Data.Common;
-using System.Data.SqlClient;
+using System.Data.OleDb;
 
 namespace Scada.Server.Module.DBExport
 {
     /// <summary>
-    /// Microsoft SQL Server interacting traits
-    /// <para>Особенности взаимодействия с Microsoft SQL Server</para>
+    /// OLE DB interacting traits
+    /// <para>Особенности взаимодействия с OLE DB</para>
     /// </summary>
-    internal class SqlDataSource : DataSource
+    internal class OleDbDataSource : DataSource
     {
         /// <summary>
         /// Конструктор
         /// </summary>
-        public SqlDataSource()
+        public OleDbDataSource()
             : base()
         {
-            DBType = DBType.MSSQL;
+            DBType = DBType.OLEDB;
         }
 
 
@@ -52,8 +52,8 @@ namespace Scada.Server.Module.DBExport
         {
             if (Connection == null)
                 throw new InvalidOperationException("Connection is not inited.");
-            if (!(Connection is SqlConnection))
-                throw new InvalidOperationException("SqlConnection is required.");
+            if (!(Connection is OleDbConnection))
+                throw new InvalidOperationException("OleDbConnection is required.");
         }
 
 
@@ -62,7 +62,7 @@ namespace Scada.Server.Module.DBExport
         /// </summary>
         protected override DbConnection CreateConnection()
         {
-            return new SqlConnection();
+            return new OleDbConnection();
         }
 
         /// <summary>
@@ -78,8 +78,7 @@ namespace Scada.Server.Module.DBExport
         /// </summary>
         protected override void ClearPool()
         {
-            CheckConnection();
-            SqlConnection.ClearPool((SqlConnection)Connection);
+            // метод очистки пула соединений OLE DB отсутствует
         }
 
         /// <summary>
@@ -88,7 +87,7 @@ namespace Scada.Server.Module.DBExport
         protected override DbCommand CreateCommand(string cmdText)
         {
             CheckConnection();
-            return new SqlCommand(cmdText, (SqlConnection)Connection);
+            return new OleDbCommand(cmdText, (OleDbConnection)Connection);
         }
 
         /// <summary>
@@ -98,11 +97,11 @@ namespace Scada.Server.Module.DBExport
         {
             if (cmd == null)
                 throw new ArgumentNullException("cmd");
-            if (!(cmd is SqlCommand))
-                throw new ArgumentException("SqlCommand is required.", "cmd");
+            if (!(cmd is OleDbCommand))
+                throw new ArgumentException("OleDbCommand is required.", "cmd");
 
-            SqlCommand sqlCmd = (SqlCommand)cmd;
-            sqlCmd.Parameters.AddWithValue(paramName, value);
+            OleDbCommand oleDbCmd = (OleDbCommand)cmd;
+            oleDbCmd.Parameters.AddWithValue(paramName, value);
         }
     }
 }
