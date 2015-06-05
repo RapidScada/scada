@@ -8,7 +8,7 @@
     <ProjectGuid>{3CA67403-5B85-489A-B7B4-81D682B23146}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Scada.Server.Common</RootNamespace>
+    <RootNamespace>Scada.Server</RootNamespace>
     <AssemblyName>ScadaServerCommon</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -46,6 +46,7 @@
     <Compile Include="ModView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ModLogic.cs" />
+    <Compile Include="ModPhrases.cs" />
     <Compile Include="Settings.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

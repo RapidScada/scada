@@ -32,7 +32,7 @@ using System.Text;
 using System.Threading;
 using Microsoft.Win32;
 using Scada.Data;
-using Scada.Server.Module;
+using Scada.Server.Modules;
 using Utils;
 
 namespace Scada.Server.Svc
@@ -305,7 +305,7 @@ namespace Scada.Server.Svc
 
                         // создание экземпляра класса модуля
                         Assembly asm = Assembly.LoadFile(fullFileName);
-                        Type type = asm.GetType("Scada.Server.Module." + 
+                        Type type = asm.GetType("Scada.Server.Modules." + 
                             Path.GetFileNameWithoutExtension(fileName) + "Logic", true);
                         ModLogic modLogic = Activator.CreateInstance(type) as ModLogic;
                         modLogic.ConfigDir = ConfigDir;

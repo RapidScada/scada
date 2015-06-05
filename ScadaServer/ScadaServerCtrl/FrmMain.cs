@@ -35,7 +35,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Scada.Client;
 using Scada.Data;
-using Scada.Server.Module;
+using Scada.Server.Modules;
 using Utils;
 
 namespace Scada.Server.Ctrl
@@ -598,7 +598,7 @@ namespace Scada.Server.Ctrl
                 try
                 {
                     Assembly asm = Assembly.LoadFile(modDir + fileName);
-                    Type type = asm.GetType("Scada.Server.Module." +
+                    Type type = asm.GetType("Scada.Server.Modules." +
                         Path.GetFileNameWithoutExtension(fileName) + "View", true);
                     modView = Activator.CreateInstance(type) as ModView;
                     modView.ConfigDir = configDir;

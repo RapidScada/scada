@@ -26,7 +26,7 @@
 using Scada;
 using Scada.Client;
 
-namespace Scada.Server.Module
+namespace Scada.Server.Modules
 {
     /// <summary>
     /// The base class for server module user interface

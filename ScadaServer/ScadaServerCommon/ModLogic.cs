@@ -30,7 +30,7 @@ using System.Text;
 using Scada.Data;
 using Utils;
 
-namespace Scada.Server.Module
+namespace Scada.Server.Modules
 {
     /// <summary>
     /// The base class for server module logic

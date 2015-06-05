@@ -32,7 +32,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using Scada.Data;
-using Scada.Server.Module;
+using Scada.Server.Modules;
 using Utils;
 
 namespace Scada.Server.Svc
