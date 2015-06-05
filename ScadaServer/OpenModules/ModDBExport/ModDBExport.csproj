@@ -7,7 +7,7 @@
     <ProjectGuid>{CD5B2061-B57F-4FEB-9596-779DDCFAC2C7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Scada.Server.Module.DBExport</RootNamespace>
+    <RootNamespace>Scada.Server.Modules.DBExport</RootNamespace>
     <AssemblyName>ModDBExport</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -54,6 +54,8 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -65,12 +67,23 @@
     <Compile Include="DataSources\OraDataSource.cs" />
     <Compile Include="DataSources\OleDbDataSource.cs" />
     <Compile Include="DataSources\SqlDataSource.cs" />
+    <Compile Include="FrmDBExportConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmDBExportConfig.Designer.cs">
+      <DependentUpon>FrmDBExportConfig.cs</DependentUpon>
+    </Compile>
     <Compile Include="ModDBExportLogic.cs" />
     <Compile Include="ModDBExportView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FrmDBExportConfig.resx">
+      <DependentUpon>FrmDBExportConfig.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

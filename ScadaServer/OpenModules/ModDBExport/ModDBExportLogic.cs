@@ -47,9 +47,9 @@ namespace Scada.Server.Modules
         internal const string LogFileName = "ModDBExport.log";
 
 
-        private bool normalWork;             // признак нормальной работы модуля
-        private Log log;                     // журнал работы модуля
-        private Config config;               // конфигурация модуля
+        private bool normalWork; // признак нормальной работы модуля
+        private Log log;         // журнал работы модуля
+        private Config config;   // конфигурация модуля
 
 
         /// <summary>

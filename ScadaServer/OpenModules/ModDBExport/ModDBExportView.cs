@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : ModTest
+ * Module   : ModDBExport
  * Summary  : Server module user interface
  * 
  * Author   : Mikhail Shiryaev
@@ -23,6 +23,7 @@
  * Modified : 2015
  */
 
+using Scada.Server.Modules.DBExport;
 namespace Scada.Server.Modules
 {
     /// <summary>
@@ -32,6 +33,14 @@ namespace Scada.Server.Modules
     public class ModDBExportView : ModView
     {
         /// <summary>
+        /// Конструктор
+        /// </summary>
+        public ModDBExportView()
+        {
+            CanShowProps = true;
+        }
+
+        /// <summary>
         /// Получить описание модуля
         /// </summary>
         public override string Descr
@@ -40,6 +49,14 @@ namespace Scada.Server.Modules
             {
                 return Localization.UseRussian ? "Экспорт данных в БД в реальном времени." : "Real time data export to DB.";
             }
+        }
+
+        /// <summary>
+        /// Отобразить свойства модуля
+        /// </summary>
+        public override void ShowProps()
+        {
+            FrmDBExportConfig.ShowDialog(ConfigDir, LogDir);
         }
     }
 }
