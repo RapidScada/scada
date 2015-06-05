@@ -26,7 +26,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Scada.Server.Module.DBExport
+namespace Scada.Server.Modules.DBExport
 {
     /// <summary>
     /// Module configuration

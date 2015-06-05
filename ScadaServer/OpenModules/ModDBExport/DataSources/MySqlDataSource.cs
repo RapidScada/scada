@@ -27,7 +27,7 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Data.Common;
 
-namespace Scada.Server.Module.DBExport
+namespace Scada.Server.Modules.DBExport
 {
     /// <summary>
     /// MySQL interacting traits

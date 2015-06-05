@@ -30,7 +30,7 @@ using System.Data.SqlClient;
 
 #pragma warning disable 618 // отключить предупреждение об устаревших классах Oracle
 
-namespace Scada.Server.Module.DBExport
+namespace Scada.Server.Modules.DBExport
 {
     /// <summary>
     /// Oracle interacting traits

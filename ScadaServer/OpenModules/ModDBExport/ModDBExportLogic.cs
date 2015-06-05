@@ -27,13 +27,13 @@
  */
 
 using Scada.Data;
-using Scada.Server.Module.DBExport;
+using Scada.Server.Modules.DBExport;
 using System;
 using System.Data.Common;
 using System.Text;
 using Utils;
 
-namespace Scada.Server.Module
+namespace Scada.Server.Modules
 {
     /// <summary>
     /// Server module logic

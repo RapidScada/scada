@@ -23,7 +23,7 @@
  * Modified : 2014
  */
 
-namespace Scada.Server.Module
+namespace Scada.Server.Modules
 {
     /// <summary>
     /// Server module user interface

@@ -23,7 +23,7 @@
  * Modified : 2015
  */
 
-namespace Scada.Server.Module.DBExport
+namespace Scada.Server.Modules.DBExport
 {
     /// <summary>
     /// Database types

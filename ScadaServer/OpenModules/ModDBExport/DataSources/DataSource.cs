@@ -29,7 +29,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 
-namespace Scada.Server.Module.DBExport
+namespace Scada.Server.Modules.DBExport
 {
     /// <summary>
     /// The base class for interacting with database

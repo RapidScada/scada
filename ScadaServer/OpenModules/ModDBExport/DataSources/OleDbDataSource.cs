@@ -27,7 +27,7 @@ using System;
 using System.Data.Common;
 using System.Data.OleDb;
 
-namespace Scada.Server.Module.DBExport
+namespace Scada.Server.Modules.DBExport
 {
     /// <summary>
     /// OLE DB interacting traits

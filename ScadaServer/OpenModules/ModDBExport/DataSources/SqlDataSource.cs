@@ -27,7 +27,7 @@ using System;
 using System.Data.Common;
 using System.Data.SqlClient;
 
-namespace Scada.Server.Module.DBExport
+namespace Scada.Server.Modules.DBExport
 {
     /// <summary>
     /// Microsoft SQL Server interacting traits

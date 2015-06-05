@@ -27,7 +27,7 @@ using Npgsql;
 using System;
 using System.Data.Common;
 
-namespace Scada.Server.Module.DBExport.DataSources
+namespace Scada.Server.Modules.DBExport.DataSources
 {
     /// <summary>
     /// PostgreSQL interacting traits
