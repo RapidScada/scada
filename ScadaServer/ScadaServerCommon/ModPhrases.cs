@@ -40,8 +40,6 @@ namespace Scada.Server.Modules
         }
 
         // Словарь Scada.Server.Modules
-        public static string LoadCommSettingsError { get; private set; }
-        public static string SaveCommSettingsError { get; private set; }
         public static string LoadModSettingsError { get; private set; }
         public static string SaveModSettingsError { get; private set; }
 
@@ -52,8 +50,6 @@ namespace Scada.Server.Modules
 
         private static void SetToDefault()
         {
-            LoadCommSettingsError = "Ошибка при загрузке настроек соединения с сервером";
-            SaveCommSettingsError = "Ошибка при сохранении настроек соединения с сервером";
             LoadModSettingsError = "Ошибка при загрузке настроек модуля";
             SaveModSettingsError = "Ошибка при сохранении настроек модуля";
 
@@ -80,8 +76,6 @@ namespace Scada.Server.Modules
             Localization.Dict dict;
             if (Localization.Dictionaries.TryGetValue("Scada.Server", out dict))
             {
-                LoadCommSettingsError = dict.GetPhrase("LoadCommSettingsError", LoadCommSettingsError);
-                SaveCommSettingsError = dict.GetPhrase("SaveCommSettingsError", SaveCommSettingsError);
                 LoadModSettingsError = dict.GetPhrase("LoadModSettingsError", LoadModSettingsError);
                 SaveModSettingsError = dict.GetPhrase("SaveModSettingsError", SaveModSettingsError);
             }

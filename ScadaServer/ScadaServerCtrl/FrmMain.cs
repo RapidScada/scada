@@ -645,6 +645,7 @@ namespace Scada.Server.Ctrl
 
                 if (Localization.LoadDictionaries(langDir, "ScadaServer", out errMsg))
                 {
+                    ModPhrases.InitFromDictionaries();
                     Localization.TranslateForm(this, "Scada.Server.Ctrl.FrmMain", toolTip, cmsNotify);
                     AppPhrases.Init();
                     TranslateTree();

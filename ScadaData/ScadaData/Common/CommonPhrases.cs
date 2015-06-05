@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@
  * Summary  : The common phrases used in the system
  * 
  * Author   : Mikhail Shiryaev
- * Created  : 2014
- * Modified : 2014
+ * Created  : 2015
+ * Modified : 2015
  */
 
 #pragma warning disable 1591 // отключение warning CS1591: Missing XML comment for publicly visible type or member
@@ -57,8 +57,6 @@ namespace Scada
         public static string SaveAppSettingsError { get; private set; }
         public static string LoadCommSettingsError { get; private set; }
         public static string SaveCommSettingsError { get; private set; }
-        public static string LoadModSettingsError { get; private set; }
-        public static string SaveModSettingsError { get; private set; }
         public static string LoadKpSettingsError { get; private set; }
         public static string SaveKpSettingsError { get; private set; }
         public static string GridDataError { get; private set; }
@@ -126,8 +124,6 @@ namespace Scada
             SaveAppSettingsError = "Ошибка при сохранении настроек приложения";
             LoadCommSettingsError = "Ошибка при загрузке настроек соединения с сервером";
             SaveCommSettingsError = "Ошибка при сохранении настроек соединения с сервером";
-            LoadModSettingsError = "Ошибка при загрузке настроек модуля";
-            SaveModSettingsError = "Ошибка при сохранении настроек модуля";
             LoadKpSettingsError = "Ошибка при загрузке настроек КП";
             SaveKpSettingsError = "Ошибка при сохранении настроек КП";
             GridDataError = "Ошибка при работе с данными";
@@ -199,8 +195,6 @@ namespace Scada
                 SaveAppSettingsError = dict.GetPhrase("SaveAppSettingsError", SaveAppSettingsError);
                 LoadCommSettingsError = dict.GetPhrase("LoadCommSettingsError", LoadCommSettingsError);
                 SaveCommSettingsError = dict.GetPhrase("SaveCommSettingsError", SaveCommSettingsError);
-                LoadModSettingsError = dict.GetPhrase("LoadModSettingsError", LoadModSettingsError);
-                SaveModSettingsError = dict.GetPhrase("SaveModSettingsError", SaveModSettingsError);
                 LoadKpSettingsError = dict.GetPhrase("LoadKpSettingsError", LoadKpSettingsError);
                 SaveKpSettingsError = dict.GetPhrase("SaveKpSettingsError", SaveKpSettingsError);
                 GridDataError = dict.GetPhrase("GridDataError", GridDataError);

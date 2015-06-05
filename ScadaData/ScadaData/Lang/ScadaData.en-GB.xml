@@ -20,8 +20,6 @@
     <Phrase key="SaveAppSettingsError">Error saving application settings</Phrase>
     <Phrase key="LoadCommSettingsError">Error loading server connection settings</Phrase>
     <Phrase key="SaveCommSettingsError">Error saving server connection settings</Phrase>
-    <Phrase key="LoadModSettingsError">Error loading module settings</Phrase>
-    <Phrase key="SaveModSettingsError">Error saving module settings</Phrase>
     <Phrase key="LoadKpSettingsError">Error loading device settings</Phrase>
     <Phrase key="SaveKpSettingsError">Error saving device settings</Phrase>
     <Phrase key="GridDataError">Data error</Phrase>

@@ -85,8 +85,7 @@ namespace Scada.Server.Modules
             log.Encoding = Encoding.UTF8;
             log.FileName = LogDir + LogFileName;
             log.WriteBreak();
-            log.WriteAction(string.Format(Localization.UseRussian ?
-                "Запуск работы модуля {0}" : "Start {0} module", Name)); // !!! вынести в общие константы для сервера (рефакторинг констант)
+            log.WriteAction(string.Format(ModPhrases.StartModule, Name));
 
             // загрука конфигурации
             config = new Config(ConfigDir);
@@ -106,8 +105,7 @@ namespace Scada.Server.Modules
             {
                 normalWork = false;
                 log.WriteAction(errMsg);
-                log.WriteAction(Localization.UseRussian ?
-                    "Нормальная работа модуля невозможна" : "Normal module execution is impossible"); // !!! вынести в общие константы
+                log.WriteAction(ModPhrases.NormalModExecImpossible);
             }
         }
 
