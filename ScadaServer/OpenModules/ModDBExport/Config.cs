@@ -71,13 +71,6 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         public class ExportDestination
         {
-            public string Name
-            {
-                get
-                {
-                    return DataSource == null ? "" : DataSource.DBType + " - " + DataSource.Server;
-                }
-            }
             public DataSource DataSource { get; set; }
             public ExportParams ExportParams { get; set; }
         }

@@ -86,6 +86,18 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         public string ConnectionString { get; set; }
 
+        /// <summary>
+        /// Получить наименование источника данных
+        /// </summary>
+        public string Name
+        {
+            get
+            {
+                return DBType + " - " + Server;
+            }
+        }
+
+
 
         /// <summary>
         /// Получить соединение с БД
