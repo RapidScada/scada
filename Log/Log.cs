@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2005
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
@@ -33,12 +33,12 @@ namespace Utils
 {
     /// <summary>
     /// Log file implementation
-    /// <para>Реализация лог-файла</para>
+    /// <para>Реализация файла журнала</para>
     /// </summary>
     public class Log
     {
         /// <summary>
-        /// Типы действий, записываемые в лог-файл
+        /// Типы действий, записываемые в журнал
         /// </summary>
         public enum ActTypes
         {
@@ -61,7 +61,7 @@ namespace Utils
         }
 
         /// <summary>
-        /// Форматы лог-файла
+        /// Форматы журнала
         /// </summary>
         public enum Formats
         {
@@ -76,6 +76,11 @@ namespace Utils
         }
 
         /// <summary>
+        /// Делегат записи строки в журнал
+        /// </summary>
+        public delegate void WriteLineDelegate(string text);
+
+        /// <summary>
         /// Вместимость (макс. размер) файла по умолчанию, 1 МБ
         /// </summary>
         public const int DefCapacity = 1048576;
@@ -83,7 +88,7 @@ namespace Utils
         private Formats format;      // формат
         private StreamWriter writer; // объект для записи в файл
         private FileInfo fileInfo;   // информация о файле
-        private Object writeLock;    // объект для синхронизации обращения к лог-файлу из разных потоков
+        private Object writeLock;    // объект для синхронизации обращения к журналу из разных потоков
 
 
         /// <summary>
@@ -116,17 +121,17 @@ namespace Utils
 
 
         /// <summary>
-        /// Получить или установить имя лог-файла
+        /// Получить или установить имя журнала
         /// </summary>
         public string FileName { get; set; }
 
         /// <summary>
-        /// Получить или установить кодировку лог-файла
+        /// Получить или установить кодировку журнала
         /// </summary>
         public Encoding Encoding { get; set; }
 
         /// <summary>
-        /// Получить или установить вместимость (макс. размер) лог-файла
+        /// Получить или установить вместимость (макс. размер) журнала
         /// </summary>
         public int Capacity { get; set; }
 
@@ -152,7 +157,7 @@ namespace Utils
 
 
         /// <summary>
-        /// Открыть лог-файл для добавления информации
+        /// Открыть журнал для добавления информации
         /// </summary>
         protected void Open()
         {
@@ -167,7 +172,7 @@ namespace Utils
         }
 
         /// <summary>
-        /// Закрыть лог-файл
+        /// Закрыть журнал
         /// </summary>
         protected void Close()
         {
@@ -204,30 +209,30 @@ namespace Utils
 
 
         /// <summary>
-        /// Записать действие в лог-файл
+        /// Записать действие типа информация в журнал
         /// </summary>
-        public void WriteAction(string actText)
+        public void WriteAction(string text)
         {
-            WriteAction(actText, ActTypes.Information);
+            WriteAction(text, ActTypes.Information);
         }
 
         /// <summary>
-        /// Записать действие в лог-файл, указав его тип
+        /// Записать действие определённого типа в журнал
         /// </summary>
-        public void WriteAction(string actText, ActTypes actType)
+        public void WriteAction(string text, ActTypes actType)
         {
             string nowStr = DateTime.Now.ToString(DateTimeFormat);
             if (format == Formats.Simple)
-                WriteLine(nowStr + " " + actText);
+                WriteLine(nowStr + " " + text);
             else
                 WriteLine(new StringBuilder(nowStr).Append(" <").Append(CompName).Append("><").Append(UserName).
-                    Append("><").Append(ActTypeToStr(actType)).Append("> ").Append(actText).ToString());
+                    Append("><").Append(ActTypeToStr(actType)).Append("> ").Append(text).ToString());
         }
 
         /// <summary>
-        /// Записать строку в лог-файл
+        /// Записать строку в журнал
         /// </summary>
-        public void WriteLine(string s)
+        public void WriteLine(string text)
         {
             try
             {
@@ -242,7 +247,7 @@ namespace Utils
 
                     writer = new StreamWriter(FileName, true, Encoding);
                 }
-                writer.WriteLine(s);
+                writer.WriteLine(text);
                 writer.Flush();
             }
             catch
@@ -256,7 +261,7 @@ namespace Utils
         }
 
         /// <summary>
-        /// Записать пустую строку в лог-файл
+        /// Записать пустую строку в журнал
         /// </summary>
         public void WriteLine()
         {
@@ -264,7 +269,7 @@ namespace Utils
         }
 
         /// <summary>
-        /// Записать разделитель в лог-файл
+        /// Записать разделитель в журнал
         /// </summary>
         public void WriteBreak()
         {
