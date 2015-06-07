@@ -159,6 +159,19 @@ namespace Scada.Comm.KP
             /// Получить или установить количество неудачных запросов
             /// </summary>
             public int ReqErrCnt { get; set; }
+
+            /// <summary>
+            /// Сбросить статистику
+            /// </summary>
+            public void Reset()
+            {
+                SessCnt = 0;
+                SessErrCnt = 0;
+                CmdCnt = 0;
+                CmdErrCnt = 0;
+                ReqCnt = 0;
+                ReqErrCnt = 0;
+            }
         }
 
         /// <summary>
@@ -574,7 +587,7 @@ namespace Scada.Comm.KP
 
         #region Constructors
         /// <summary>
-        /// Конструктор
+        /// Конструктор, ограничивающий создание объекта без параметров
         /// </summary>
         private KPLogic()
         {
@@ -599,13 +612,7 @@ namespace Scada.Comm.KP
             nfi.NumberGroupSeparator = Localization.Culture.NumberFormat.NumberGroupSeparator;
 
             // protected fields
-            kpStats.SessCnt = 0;
-            kpStats.SessErrCnt = 0;
-            kpStats.CmdCnt = 0;
-            kpStats.CmdErrCnt = 0;
-            kpStats.ReqCnt = 0;
-            kpStats.ReqErrCnt = 0;
-
+            kpStats.Reset();
             lastCommSucc = false;
             commErrRepeat = 0;
             srezBufList = new List<ParamSrez>();
