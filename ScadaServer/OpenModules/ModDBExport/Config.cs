@@ -23,7 +23,10 @@
  * Modified : 2015
  */
 
+using System;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace Scada.Server.Modules.DBExport
@@ -32,8 +35,21 @@ namespace Scada.Server.Modules.DBExport
     /// Module configuration
     /// <para>Конфигурация модуля</para>
     /// </summary>
+    [Serializable]
     internal class Config
     {
+        /// <summary>
+        /// Контроль привязки сериализованных объектов к типам
+        /// </summary>
+        /// <remarks>Класс необходим из-за ошибки в .NET и должен быть расположен именно в данной сборке</remarks>
+        private class ConfigBinder : SerializationBinder
+        {
+            public override Type BindToType(string assemblyName, string typeName)
+            {
+                return ScadaUtils.GetType(Assembly.GetExecutingAssembly(), assemblyName, typeName);
+            }
+        }
+
         /// <summary>
         /// Параметры экспорта
         /// </summary>
@@ -144,6 +160,14 @@ namespace Scada.Server.Modules.DBExport
 
             errMsg = "";
             return true;
+        }
+
+        /// <summary>
+        /// Клонировать конфигурацию модуля
+        /// </summary>
+        public Config Clone()
+        {
+            return (Config)ScadaUtils.DeepClone(this, new ConfigBinder());
         }
     }
 }

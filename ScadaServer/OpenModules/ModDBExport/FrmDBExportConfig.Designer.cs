@@ -34,38 +34,38 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.tabControl = new System.Windows.Forms.TabControl();
+            this.tabConnection = new System.Windows.Forms.TabPage();
+            this.txtConnectionString = new System.Windows.Forms.TextBox();
+            this.lblConnectionString = new System.Windows.Forms.Label();
+            this.lblPassword = new System.Windows.Forms.Label();
+            this.txtPassword = new System.Windows.Forms.TextBox();
+            this.txtUser = new System.Windows.Forms.TextBox();
+            this.lblUser = new System.Windows.Forms.Label();
+            this.txtDatabase = new System.Windows.Forms.TextBox();
+            this.lblDatabase = new System.Windows.Forms.Label();
+            this.txtServer = new System.Windows.Forms.TextBox();
+            this.lblServer = new System.Windows.Forms.Label();
             this.tabExportCurDataQuery = new System.Windows.Forms.TabPage();
             this.tabExportArcDataQuery = new System.Windows.Forms.TabPage();
             this.tabExportEventQuery = new System.Windows.Forms.TabPage();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.ddbAddDataSource = new System.Windows.Forms.ToolStripDropDownButton();
             this.miAddSqlDataSource = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnDelDataSource = new System.Windows.Forms.ToolStripButton();
-            this.lblInstruction = new System.Windows.Forms.Label();
             this.miAddOraDataSource = new System.Windows.Forms.ToolStripMenuItem();
             this.miAddPgSqlDataSource = new System.Windows.Forms.ToolStripMenuItem();
             this.miAddMySqlDataSource = new System.Windows.Forms.ToolStripMenuItem();
             this.miAddOleDbDataSource = new System.Windows.Forms.ToolStripMenuItem();
-            this.tabConnection = new System.Windows.Forms.TabPage();
-            this.lblServer = new System.Windows.Forms.Label();
-            this.txtServer = new System.Windows.Forms.TextBox();
-            this.lblDatabase = new System.Windows.Forms.Label();
-            this.txtDatabase = new System.Windows.Forms.TextBox();
-            this.lblUser = new System.Windows.Forms.Label();
-            this.txtUser = new System.Windows.Forms.TextBox();
-            this.txtPassword = new System.Windows.Forms.TextBox();
-            this.lblPassword = new System.Windows.Forms.Label();
-            this.lblConnectionString = new System.Windows.Forms.Label();
-            this.txtConnectionString = new System.Windows.Forms.TextBox();
+            this.btnDelDataSource = new System.Windows.Forms.ToolStripButton();
+            this.lblInstruction = new System.Windows.Forms.Label();
             this.ctrlExportCurDataQuery = new Scada.Server.Modules.DBExport.CtrlExportQuery();
             this.ctrlExportArcDataQuery = new Scada.Server.Modules.DBExport.CtrlExportQuery();
             this.ctrlExportEventQuery = new Scada.Server.Modules.DBExport.CtrlExportQuery();
             this.tabControl.SuspendLayout();
+            this.tabConnection.SuspendLayout();
             this.tabExportCurDataQuery.SuspendLayout();
             this.tabExportArcDataQuery.SuspendLayout();
             this.tabExportEventQuery.SuspendLayout();
             this.toolStrip.SuspendLayout();
-            this.tabConnection.SuspendLayout();
             this.SuspendLayout();
             // 
             // treeView
@@ -114,6 +114,108 @@
             this.tabControl.SelectedIndex = 0;
             this.tabControl.Size = new System.Drawing.Size(485, 393);
             this.tabControl.TabIndex = 3;
+            // 
+            // tabConnection
+            // 
+            this.tabConnection.Controls.Add(this.txtConnectionString);
+            this.tabConnection.Controls.Add(this.lblConnectionString);
+            this.tabConnection.Controls.Add(this.lblPassword);
+            this.tabConnection.Controls.Add(this.txtPassword);
+            this.tabConnection.Controls.Add(this.txtUser);
+            this.tabConnection.Controls.Add(this.lblUser);
+            this.tabConnection.Controls.Add(this.txtDatabase);
+            this.tabConnection.Controls.Add(this.lblDatabase);
+            this.tabConnection.Controls.Add(this.txtServer);
+            this.tabConnection.Controls.Add(this.lblServer);
+            this.tabConnection.Location = new System.Drawing.Point(4, 22);
+            this.tabConnection.Name = "tabConnection";
+            this.tabConnection.Padding = new System.Windows.Forms.Padding(3);
+            this.tabConnection.Size = new System.Drawing.Size(477, 367);
+            this.tabConnection.TabIndex = 3;
+            this.tabConnection.Text = "Соединение";
+            this.tabConnection.UseVisualStyleBackColor = true;
+            // 
+            // txtConnectionString
+            // 
+            this.txtConnectionString.Location = new System.Drawing.Point(6, 136);
+            this.txtConnectionString.Multiline = true;
+            this.txtConnectionString.Name = "txtConnectionString";
+            this.txtConnectionString.Size = new System.Drawing.Size(465, 50);
+            this.txtConnectionString.TabIndex = 9;
+            // 
+            // lblConnectionString
+            // 
+            this.lblConnectionString.AutoSize = true;
+            this.lblConnectionString.Location = new System.Drawing.Point(3, 120);
+            this.lblConnectionString.Name = "lblConnectionString";
+            this.lblConnectionString.Size = new System.Drawing.Size(106, 13);
+            this.lblConnectionString.TabIndex = 8;
+            this.lblConnectionString.Text = "Строка соединения";
+            // 
+            // lblPassword
+            // 
+            this.lblPassword.AutoSize = true;
+            this.lblPassword.Location = new System.Drawing.Point(239, 81);
+            this.lblPassword.Name = "lblPassword";
+            this.lblPassword.Size = new System.Drawing.Size(45, 13);
+            this.lblPassword.TabIndex = 6;
+            this.lblPassword.Text = "Пароль";
+            // 
+            // txtPassword
+            // 
+            this.txtPassword.Location = new System.Drawing.Point(242, 97);
+            this.txtPassword.Name = "txtPassword";
+            this.txtPassword.Size = new System.Drawing.Size(229, 20);
+            this.txtPassword.TabIndex = 7;
+            this.txtPassword.UseSystemPasswordChar = true;
+            // 
+            // txtUser
+            // 
+            this.txtUser.Location = new System.Drawing.Point(6, 97);
+            this.txtUser.Name = "txtUser";
+            this.txtUser.Size = new System.Drawing.Size(230, 20);
+            this.txtUser.TabIndex = 5;
+            // 
+            // lblUser
+            // 
+            this.lblUser.AutoSize = true;
+            this.lblUser.Location = new System.Drawing.Point(3, 81);
+            this.lblUser.Name = "lblUser";
+            this.lblUser.Size = new System.Drawing.Size(80, 13);
+            this.lblUser.TabIndex = 4;
+            this.lblUser.Text = "Пользователь";
+            // 
+            // txtDatabase
+            // 
+            this.txtDatabase.Location = new System.Drawing.Point(6, 58);
+            this.txtDatabase.Name = "txtDatabase";
+            this.txtDatabase.Size = new System.Drawing.Size(465, 20);
+            this.txtDatabase.TabIndex = 3;
+            // 
+            // lblDatabase
+            // 
+            this.lblDatabase.AutoSize = true;
+            this.lblDatabase.Location = new System.Drawing.Point(3, 42);
+            this.lblDatabase.Name = "lblDatabase";
+            this.lblDatabase.Size = new System.Drawing.Size(72, 13);
+            this.lblDatabase.TabIndex = 2;
+            this.lblDatabase.Text = "База данных";
+            // 
+            // txtServer
+            // 
+            this.txtServer.Location = new System.Drawing.Point(6, 19);
+            this.txtServer.Name = "txtServer";
+            this.txtServer.Size = new System.Drawing.Size(465, 20);
+            this.txtServer.TabIndex = 1;
+            // 
+            // lblServer
+            // 
+            this.lblServer.AutoSize = true;
+            this.lblServer.Location = new System.Drawing.Point(3, 3);
+            this.lblServer.Name = "lblServer";
+            this.lblServer.Size = new System.Drawing.Size(44, 13);
+            this.lblServer.TabIndex = 0;
+            this.lblServer.Text = "Сервер";
             // 
             // tabExportCurDataQuery
             // 
@@ -180,26 +282,6 @@
             this.miAddSqlDataSource.Size = new System.Drawing.Size(184, 22);
             this.miAddSqlDataSource.Text = "Microsoft SQL Server";
             // 
-            // btnDelDataSource
-            // 
-            this.btnDelDataSource.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnDelDataSource.Image = ((System.Drawing.Image)(resources.GetObject("btnDelDataSource.Image")));
-            this.btnDelDataSource.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnDelDataSource.Name = "btnDelDataSource";
-            this.btnDelDataSource.Size = new System.Drawing.Size(23, 22);
-            this.btnDelDataSource.ToolTipText = "Удалить источник данных";
-            // 
-            // lblInstruction
-            // 
-            this.lblInstruction.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblInstruction.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.lblInstruction.Location = new System.Drawing.Point(200, 250);
-            this.lblInstruction.Name = "lblInstruction";
-            this.lblInstruction.Size = new System.Drawing.Size(485, 23);
-            this.lblInstruction.TabIndex = 2;
-            this.lblInstruction.Text = "Добавьте источники данных";
-            this.lblInstruction.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // miAddOraDataSource
             // 
             this.miAddOraDataSource.Image = ((System.Drawing.Image)(resources.GetObject("miAddOraDataSource.Image")));
@@ -227,126 +309,53 @@
             this.miAddOleDbDataSource.Size = new System.Drawing.Size(184, 22);
             this.miAddOleDbDataSource.Text = "OLE DB";
             // 
-            // tabConnection
+            // btnDelDataSource
             // 
-            this.tabConnection.Controls.Add(this.txtConnectionString);
-            this.tabConnection.Controls.Add(this.lblConnectionString);
-            this.tabConnection.Controls.Add(this.lblPassword);
-            this.tabConnection.Controls.Add(this.txtPassword);
-            this.tabConnection.Controls.Add(this.txtUser);
-            this.tabConnection.Controls.Add(this.lblUser);
-            this.tabConnection.Controls.Add(this.txtDatabase);
-            this.tabConnection.Controls.Add(this.lblDatabase);
-            this.tabConnection.Controls.Add(this.txtServer);
-            this.tabConnection.Controls.Add(this.lblServer);
-            this.tabConnection.Location = new System.Drawing.Point(4, 22);
-            this.tabConnection.Name = "tabConnection";
-            this.tabConnection.Padding = new System.Windows.Forms.Padding(3);
-            this.tabConnection.Size = new System.Drawing.Size(477, 367);
-            this.tabConnection.TabIndex = 3;
-            this.tabConnection.Text = "Соединение";
-            this.tabConnection.UseVisualStyleBackColor = true;
+            this.btnDelDataSource.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnDelDataSource.Image = ((System.Drawing.Image)(resources.GetObject("btnDelDataSource.Image")));
+            this.btnDelDataSource.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnDelDataSource.Name = "btnDelDataSource";
+            this.btnDelDataSource.Size = new System.Drawing.Size(23, 22);
+            this.btnDelDataSource.ToolTipText = "Удалить источник данных";
             // 
-            // lblServer
+            // lblInstruction
             // 
-            this.lblServer.AutoSize = true;
-            this.lblServer.Location = new System.Drawing.Point(3, 3);
-            this.lblServer.Name = "lblServer";
-            this.lblServer.Size = new System.Drawing.Size(44, 13);
-            this.lblServer.TabIndex = 0;
-            this.lblServer.Text = "Сервер";
-            // 
-            // txtServer
-            // 
-            this.txtServer.Location = new System.Drawing.Point(6, 19);
-            this.txtServer.Name = "txtServer";
-            this.txtServer.Size = new System.Drawing.Size(465, 20);
-            this.txtServer.TabIndex = 1;
-            // 
-            // lblDatabase
-            // 
-            this.lblDatabase.AutoSize = true;
-            this.lblDatabase.Location = new System.Drawing.Point(3, 42);
-            this.lblDatabase.Name = "lblDatabase";
-            this.lblDatabase.Size = new System.Drawing.Size(72, 13);
-            this.lblDatabase.TabIndex = 2;
-            this.lblDatabase.Text = "База данных";
-            // 
-            // txtDatabase
-            // 
-            this.txtDatabase.Location = new System.Drawing.Point(6, 58);
-            this.txtDatabase.Name = "txtDatabase";
-            this.txtDatabase.Size = new System.Drawing.Size(465, 20);
-            this.txtDatabase.TabIndex = 3;
-            // 
-            // lblUser
-            // 
-            this.lblUser.AutoSize = true;
-            this.lblUser.Location = new System.Drawing.Point(3, 81);
-            this.lblUser.Name = "lblUser";
-            this.lblUser.Size = new System.Drawing.Size(80, 13);
-            this.lblUser.TabIndex = 4;
-            this.lblUser.Text = "Пользователь";
-            // 
-            // txtUser
-            // 
-            this.txtUser.Location = new System.Drawing.Point(6, 97);
-            this.txtUser.Name = "txtUser";
-            this.txtUser.Size = new System.Drawing.Size(230, 20);
-            this.txtUser.TabIndex = 5;
-            // 
-            // txtPassword
-            // 
-            this.txtPassword.Location = new System.Drawing.Point(242, 97);
-            this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(229, 20);
-            this.txtPassword.TabIndex = 7;
-            this.txtPassword.UseSystemPasswordChar = true;
-            // 
-            // lblPassword
-            // 
-            this.lblPassword.AutoSize = true;
-            this.lblPassword.Location = new System.Drawing.Point(239, 81);
-            this.lblPassword.Name = "lblPassword";
-            this.lblPassword.Size = new System.Drawing.Size(45, 13);
-            this.lblPassword.TabIndex = 6;
-            this.lblPassword.Text = "Пароль";
-            // 
-            // lblConnectionString
-            // 
-            this.lblConnectionString.AutoSize = true;
-            this.lblConnectionString.Location = new System.Drawing.Point(3, 120);
-            this.lblConnectionString.Name = "lblConnectionString";
-            this.lblConnectionString.Size = new System.Drawing.Size(106, 13);
-            this.lblConnectionString.TabIndex = 8;
-            this.lblConnectionString.Text = "Строка соединения";
-            // 
-            // txtConnectionString
-            // 
-            this.txtConnectionString.Location = new System.Drawing.Point(6, 136);
-            this.txtConnectionString.Multiline = true;
-            this.txtConnectionString.Name = "txtConnectionString";
-            this.txtConnectionString.Size = new System.Drawing.Size(465, 50);
-            this.txtConnectionString.TabIndex = 9;
+            this.lblInstruction.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblInstruction.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.lblInstruction.Location = new System.Drawing.Point(200, 250);
+            this.lblInstruction.Name = "lblInstruction";
+            this.lblInstruction.Size = new System.Drawing.Size(485, 23);
+            this.lblInstruction.TabIndex = 2;
+            this.lblInstruction.Text = "Добавьте источники данных";
+            this.lblInstruction.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // ctrlExportCurDataQuery
             // 
+            this.ctrlExportCurDataQuery.Example = "";
+            this.ctrlExportCurDataQuery.Export = false;
             this.ctrlExportCurDataQuery.Location = new System.Drawing.Point(6, 6);
             this.ctrlExportCurDataQuery.Name = "ctrlExportCurDataQuery";
+            this.ctrlExportCurDataQuery.Query = "";
             this.ctrlExportCurDataQuery.Size = new System.Drawing.Size(465, 355);
             this.ctrlExportCurDataQuery.TabIndex = 0;
             // 
             // ctrlExportArcDataQuery
             // 
+            this.ctrlExportArcDataQuery.Example = "";
+            this.ctrlExportArcDataQuery.Export = false;
             this.ctrlExportArcDataQuery.Location = new System.Drawing.Point(6, 6);
             this.ctrlExportArcDataQuery.Name = "ctrlExportArcDataQuery";
+            this.ctrlExportArcDataQuery.Query = "";
             this.ctrlExportArcDataQuery.Size = new System.Drawing.Size(465, 355);
             this.ctrlExportArcDataQuery.TabIndex = 1;
             // 
             // ctrlExportEventQuery
             // 
+            this.ctrlExportEventQuery.Example = "";
+            this.ctrlExportEventQuery.Export = false;
             this.ctrlExportEventQuery.Location = new System.Drawing.Point(6, 6);
             this.ctrlExportEventQuery.Name = "ctrlExportEventQuery";
+            this.ctrlExportEventQuery.Query = "";
             this.ctrlExportEventQuery.Size = new System.Drawing.Size(465, 355);
             this.ctrlExportEventQuery.TabIndex = 2;
             // 
@@ -370,14 +379,15 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Экспорт в БД";
+            this.Load += new System.EventHandler(this.FrmDBExportConfig_Load);
             this.tabControl.ResumeLayout(false);
+            this.tabConnection.ResumeLayout(false);
+            this.tabConnection.PerformLayout();
             this.tabExportCurDataQuery.ResumeLayout(false);
             this.tabExportArcDataQuery.ResumeLayout(false);
             this.tabExportEventQuery.ResumeLayout(false);
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
-            this.tabConnection.ResumeLayout(false);
-            this.tabConnection.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

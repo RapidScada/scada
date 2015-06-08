@@ -62,6 +62,7 @@
             this.txtQuery.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.txtQuery.Size = new System.Drawing.Size(465, 150);
             this.txtQuery.TabIndex = 2;
+            this.txtQuery.TextChanged += new System.EventHandler(this.txtQuery_TextChanged);
             // 
             // lblQuery
             // 
@@ -81,6 +82,7 @@
             this.chkExport.TabIndex = 0;
             this.chkExport.Text = "Экспортировать";
             this.chkExport.UseVisualStyleBackColor = true;
+            this.chkExport.CheckedChanged += new System.EventHandler(this.chkExport_CheckedChanged);
             // 
             // CtrlExportQuery
             // 
