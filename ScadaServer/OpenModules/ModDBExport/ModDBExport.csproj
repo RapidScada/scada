@@ -106,9 +106,11 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="Res\delete.png" />
+    <Content Include="Res\mssql.png" />
     <Content Include="Res\mysql.png" />
+    <Content Include="Res\oledb.png" />
     <Content Include="Res\oracle.png" />
-    <Content Include="Res\plus_green.png" />
+    <Content Include="Res\plus.png" />
     <Content Include="Res\postgresql.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

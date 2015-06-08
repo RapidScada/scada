@@ -46,8 +46,11 @@
             this.txtServer = new System.Windows.Forms.TextBox();
             this.lblServer = new System.Windows.Forms.Label();
             this.tabExportCurDataQuery = new System.Windows.Forms.TabPage();
+            this.ctrlExportCurDataQuery = new Scada.Server.Modules.DBExport.CtrlExportQuery();
             this.tabExportArcDataQuery = new System.Windows.Forms.TabPage();
+            this.ctrlExportArcDataQuery = new Scada.Server.Modules.DBExport.CtrlExportQuery();
             this.tabExportEventQuery = new System.Windows.Forms.TabPage();
+            this.ctrlExportEventQuery = new Scada.Server.Modules.DBExport.CtrlExportQuery();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.ddbAddDataSource = new System.Windows.Forms.ToolStripDropDownButton();
             this.miAddSqlDataSource = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,9 +60,6 @@
             this.miAddOleDbDataSource = new System.Windows.Forms.ToolStripMenuItem();
             this.btnDelDataSource = new System.Windows.Forms.ToolStripButton();
             this.lblInstruction = new System.Windows.Forms.Label();
-            this.ctrlExportCurDataQuery = new Scada.Server.Modules.DBExport.CtrlExportQuery();
-            this.ctrlExportArcDataQuery = new Scada.Server.Modules.DBExport.CtrlExportQuery();
-            this.ctrlExportEventQuery = new Scada.Server.Modules.DBExport.CtrlExportQuery();
             this.tabControl.SuspendLayout();
             this.tabConnection.SuspendLayout();
             this.tabExportCurDataQuery.SuspendLayout();
@@ -228,6 +228,16 @@
             this.tabExportCurDataQuery.Text = "Текущие данные";
             this.tabExportCurDataQuery.UseVisualStyleBackColor = true;
             // 
+            // ctrlExportCurDataQuery
+            // 
+            this.ctrlExportCurDataQuery.Example = "";
+            this.ctrlExportCurDataQuery.Export = false;
+            this.ctrlExportCurDataQuery.Location = new System.Drawing.Point(6, 6);
+            this.ctrlExportCurDataQuery.Name = "ctrlExportCurDataQuery";
+            this.ctrlExportCurDataQuery.Query = "";
+            this.ctrlExportCurDataQuery.Size = new System.Drawing.Size(465, 355);
+            this.ctrlExportCurDataQuery.TabIndex = 0;
+            // 
             // tabExportArcDataQuery
             // 
             this.tabExportArcDataQuery.Controls.Add(this.ctrlExportArcDataQuery);
@@ -239,6 +249,16 @@
             this.tabExportArcDataQuery.Text = "Архивные данные";
             this.tabExportArcDataQuery.UseVisualStyleBackColor = true;
             // 
+            // ctrlExportArcDataQuery
+            // 
+            this.ctrlExportArcDataQuery.Example = "";
+            this.ctrlExportArcDataQuery.Export = false;
+            this.ctrlExportArcDataQuery.Location = new System.Drawing.Point(6, 6);
+            this.ctrlExportArcDataQuery.Name = "ctrlExportArcDataQuery";
+            this.ctrlExportArcDataQuery.Query = "";
+            this.ctrlExportArcDataQuery.Size = new System.Drawing.Size(465, 355);
+            this.ctrlExportArcDataQuery.TabIndex = 1;
+            // 
             // tabExportEventQuery
             // 
             this.tabExportEventQuery.Controls.Add(this.ctrlExportEventQuery);
@@ -249,6 +269,16 @@
             this.tabExportEventQuery.TabIndex = 2;
             this.tabExportEventQuery.Text = "События";
             this.tabExportEventQuery.UseVisualStyleBackColor = true;
+            // 
+            // ctrlExportEventQuery
+            // 
+            this.ctrlExportEventQuery.Example = "";
+            this.ctrlExportEventQuery.Export = false;
+            this.ctrlExportEventQuery.Location = new System.Drawing.Point(6, 6);
+            this.ctrlExportEventQuery.Name = "ctrlExportEventQuery";
+            this.ctrlExportEventQuery.Query = "";
+            this.ctrlExportEventQuery.Size = new System.Drawing.Size(465, 355);
+            this.ctrlExportEventQuery.TabIndex = 2;
             // 
             // toolStrip
             // 
@@ -278,6 +308,7 @@
             // 
             // miAddSqlDataSource
             // 
+            this.miAddSqlDataSource.Image = ((System.Drawing.Image)(resources.GetObject("miAddSqlDataSource.Image")));
             this.miAddSqlDataSource.Name = "miAddSqlDataSource";
             this.miAddSqlDataSource.Size = new System.Drawing.Size(184, 22);
             this.miAddSqlDataSource.Text = "Microsoft SQL Server";
@@ -305,6 +336,7 @@
             // 
             // miAddOleDbDataSource
             // 
+            this.miAddOleDbDataSource.Image = ((System.Drawing.Image)(resources.GetObject("miAddOleDbDataSource.Image")));
             this.miAddOleDbDataSource.Name = "miAddOleDbDataSource";
             this.miAddOleDbDataSource.Size = new System.Drawing.Size(184, 22);
             this.miAddOleDbDataSource.Text = "OLE DB";
@@ -328,36 +360,6 @@
             this.lblInstruction.TabIndex = 2;
             this.lblInstruction.Text = "Добавьте источники данных";
             this.lblInstruction.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // ctrlExportCurDataQuery
-            // 
-            this.ctrlExportCurDataQuery.Example = "";
-            this.ctrlExportCurDataQuery.Export = false;
-            this.ctrlExportCurDataQuery.Location = new System.Drawing.Point(6, 6);
-            this.ctrlExportCurDataQuery.Name = "ctrlExportCurDataQuery";
-            this.ctrlExportCurDataQuery.Query = "";
-            this.ctrlExportCurDataQuery.Size = new System.Drawing.Size(465, 355);
-            this.ctrlExportCurDataQuery.TabIndex = 0;
-            // 
-            // ctrlExportArcDataQuery
-            // 
-            this.ctrlExportArcDataQuery.Example = "";
-            this.ctrlExportArcDataQuery.Export = false;
-            this.ctrlExportArcDataQuery.Location = new System.Drawing.Point(6, 6);
-            this.ctrlExportArcDataQuery.Name = "ctrlExportArcDataQuery";
-            this.ctrlExportArcDataQuery.Query = "";
-            this.ctrlExportArcDataQuery.Size = new System.Drawing.Size(465, 355);
-            this.ctrlExportArcDataQuery.TabIndex = 1;
-            // 
-            // ctrlExportEventQuery
-            // 
-            this.ctrlExportEventQuery.Example = "";
-            this.ctrlExportEventQuery.Export = false;
-            this.ctrlExportEventQuery.Location = new System.Drawing.Point(6, 6);
-            this.ctrlExportEventQuery.Name = "ctrlExportEventQuery";
-            this.ctrlExportEventQuery.Query = "";
-            this.ctrlExportEventQuery.Size = new System.Drawing.Size(465, 355);
-            this.ctrlExportEventQuery.TabIndex = 2;
             // 
             // FrmDBExportConfig
             // 
