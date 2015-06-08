@@ -26,6 +26,7 @@
 using System;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
@@ -205,6 +206,31 @@ namespace Scada
 
                 ms.Position = 0;
                 return bf.Deserialize(ms);
+            }
+        }
+
+        /// <summary>
+        /// Получить тип из сборки
+        /// </summary>
+        /// <remarks>Метод необходим для корректировки работы DeepClone</remarks>
+        public static Type GetType(Assembly executingAssembly, string assemblyName, string typeName)
+        {
+            try
+            {
+                return executingAssembly.GetType(typeName, true, true);
+            }
+            catch
+            {
+                if (typeName.Contains("System.Collections.Generic.List"))
+                {
+                    // удаление информации о сборке
+                    int ind1 = typeName.IndexOf(",");
+                    int ind2 = typeName.IndexOf("]");
+                    if (ind1 < ind2)
+                        typeName = typeName.Remove(ind1, ind2 - ind1);
+                }
+
+                return Type.GetType(string.Format("{0}, {1}", typeName, assemblyName), true, true);
             }
         }
 
