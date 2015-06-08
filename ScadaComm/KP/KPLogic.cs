@@ -180,6 +180,11 @@ namespace Scada.Comm.KP
         public struct ParamData
         {
             /// <summary>
+            /// Пустые данные параметра КП
+            /// </summary>
+            public static readonly ParamData Empty = new ParamData(0.0, 0);
+
+            /// <summary>
             /// Конструктор
             /// </summary>
             /// <param name="val">Значение</param>
