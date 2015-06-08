@@ -28,221 +28,393 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.treeView1 = new System.Windows.Forms.TreeView();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.panel1.SuspendLayout();
-            this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDBExportConfig));
+            this.treeView = new System.Windows.Forms.TreeView();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
+            this.tabControl = new System.Windows.Forms.TabControl();
+            this.tabExportCurDataQuery = new System.Windows.Forms.TabPage();
+            this.tabExportArcDataQuery = new System.Windows.Forms.TabPage();
+            this.tabExportEventQuery = new System.Windows.Forms.TabPage();
+            this.toolStrip = new System.Windows.Forms.ToolStrip();
+            this.ddbAddDataSource = new System.Windows.Forms.ToolStripDropDownButton();
+            this.miAddSqlDataSource = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnDelDataSource = new System.Windows.Forms.ToolStripButton();
+            this.lblInstruction = new System.Windows.Forms.Label();
+            this.miAddOraDataSource = new System.Windows.Forms.ToolStripMenuItem();
+            this.miAddPgSqlDataSource = new System.Windows.Forms.ToolStripMenuItem();
+            this.miAddMySqlDataSource = new System.Windows.Forms.ToolStripMenuItem();
+            this.miAddOleDbDataSource = new System.Windows.Forms.ToolStripMenuItem();
+            this.tabConnection = new System.Windows.Forms.TabPage();
+            this.lblServer = new System.Windows.Forms.Label();
+            this.txtServer = new System.Windows.Forms.TextBox();
+            this.lblDatabase = new System.Windows.Forms.Label();
+            this.txtDatabase = new System.Windows.Forms.TextBox();
+            this.lblUser = new System.Windows.Forms.Label();
+            this.txtUser = new System.Windows.Forms.TextBox();
+            this.txtPassword = new System.Windows.Forms.TextBox();
+            this.lblPassword = new System.Windows.Forms.Label();
+            this.lblConnectionString = new System.Windows.Forms.Label();
+            this.txtConnectionString = new System.Windows.Forms.TextBox();
+            this.ctrlExportCurDataQuery = new Scada.Server.Modules.DBExport.CtrlExportQuery();
+            this.ctrlExportArcDataQuery = new Scada.Server.Modules.DBExport.CtrlExportQuery();
+            this.ctrlExportEventQuery = new Scada.Server.Modules.DBExport.CtrlExportQuery();
+            this.tabControl.SuspendLayout();
+            this.tabExportCurDataQuery.SuspendLayout();
+            this.tabExportArcDataQuery.SuspendLayout();
+            this.tabExportEventQuery.SuspendLayout();
+            this.toolStrip.SuspendLayout();
+            this.tabConnection.SuspendLayout();
             this.SuspendLayout();
             // 
-            // treeView1
+            // treeView
             // 
-            this.treeView1.Location = new System.Drawing.Point(12, 12);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(200, 359);
-            this.treeView1.TabIndex = 0;
+            this.treeView.Location = new System.Drawing.Point(0, 28);
+            this.treeView.Name = "treeView";
+            this.treeView.Size = new System.Drawing.Size(200, 392);
+            this.treeView.TabIndex = 1;
             // 
-            // panel1
+            // btnSave
             // 
-            this.panel1.Controls.Add(this.textBox1);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Location = new System.Drawing.Point(218, 12);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(454, 359);
-            this.panel1.TabIndex = 1;
+            this.btnSave.Location = new System.Drawing.Point(435, 427);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.TabIndex = 4;
+            this.btnSave.Text = "Сохранить";
+            this.btnSave.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // btnCancel
             // 
-            this.button1.Location = new System.Drawing.Point(435, 377);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Сохранить";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnCancel.Location = new System.Drawing.Point(516, 427);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.TabIndex = 5;
+            this.btnCancel.Text = "Отмена";
+            this.btnCancel.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // btnClose
             // 
-            this.button2.Location = new System.Drawing.Point(516, 377);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "Отмена";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnClose.Location = new System.Drawing.Point(597, 427);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(75, 23);
+            this.btnClose.TabIndex = 6;
+            this.btnClose.Text = "Закрыть";
+            this.btnClose.UseVisualStyleBackColor = true;
             // 
-            // button3
+            // tabControl
             // 
-            this.button3.Location = new System.Drawing.Point(597, 377);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 4;
-            this.button3.Text = "Закрыть";
-            this.button3.UseVisualStyleBackColor = true;
+            this.tabControl.Controls.Add(this.tabConnection);
+            this.tabControl.Controls.Add(this.tabExportCurDataQuery);
+            this.tabControl.Controls.Add(this.tabExportArcDataQuery);
+            this.tabControl.Controls.Add(this.tabExportEventQuery);
+            this.tabControl.Location = new System.Drawing.Point(200, 28);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(485, 393);
+            this.tabControl.TabIndex = 3;
             // 
-            // label1
+            // tabExportCurDataQuery
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(-3, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(83, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Наименование";
+            this.tabExportCurDataQuery.Controls.Add(this.ctrlExportCurDataQuery);
+            this.tabExportCurDataQuery.Location = new System.Drawing.Point(4, 22);
+            this.tabExportCurDataQuery.Name = "tabExportCurDataQuery";
+            this.tabExportCurDataQuery.Padding = new System.Windows.Forms.Padding(3);
+            this.tabExportCurDataQuery.Size = new System.Drawing.Size(477, 367);
+            this.tabExportCurDataQuery.TabIndex = 0;
+            this.tabExportCurDataQuery.Text = "Текущие данные";
+            this.tabExportCurDataQuery.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // tabExportArcDataQuery
             // 
-            this.textBox1.Location = new System.Drawing.Point(0, 16);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(454, 20);
-            this.textBox1.TabIndex = 1;
+            this.tabExportArcDataQuery.Controls.Add(this.ctrlExportArcDataQuery);
+            this.tabExportArcDataQuery.Location = new System.Drawing.Point(4, 22);
+            this.tabExportArcDataQuery.Name = "tabExportArcDataQuery";
+            this.tabExportArcDataQuery.Padding = new System.Windows.Forms.Padding(3);
+            this.tabExportArcDataQuery.Size = new System.Drawing.Size(477, 367);
+            this.tabExportArcDataQuery.TabIndex = 1;
+            this.tabExportArcDataQuery.Text = "Архивные данные";
+            this.tabExportArcDataQuery.UseVisualStyleBackColor = true;
             // 
-            // tabControl1
+            // tabExportEventQuery
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Location = new System.Drawing.Point(218, 54);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(454, 317);
-            this.tabControl1.TabIndex = 2;
+            this.tabExportEventQuery.Controls.Add(this.ctrlExportEventQuery);
+            this.tabExportEventQuery.Location = new System.Drawing.Point(4, 22);
+            this.tabExportEventQuery.Name = "tabExportEventQuery";
+            this.tabExportEventQuery.Padding = new System.Windows.Forms.Padding(3);
+            this.tabExportEventQuery.Size = new System.Drawing.Size(477, 367);
+            this.tabExportEventQuery.TabIndex = 2;
+            this.tabExportEventQuery.Text = "События";
+            this.tabExportEventQuery.UseVisualStyleBackColor = true;
             // 
-            // tabPage1
+            // toolStrip
             // 
-            this.tabPage1.Controls.Add(this.textBox3);
-            this.tabPage1.Controls.Add(this.label3);
-            this.tabPage1.Controls.Add(this.textBox2);
-            this.tabPage1.Controls.Add(this.label2);
-            this.tabPage1.Controls.Add(this.checkBox1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(446, 291);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Текущие данные";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ddbAddDataSource,
+            this.btnDelDataSource});
+            this.toolStrip.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip.Name = "toolStrip";
+            this.toolStrip.Size = new System.Drawing.Size(684, 25);
+            this.toolStrip.TabIndex = 0;
+            this.toolStrip.Text = "toolStrip1";
             // 
-            // tabPage2
+            // ddbAddDataSource
             // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(446, 291);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Архивные данные";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.ddbAddDataSource.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ddbAddDataSource.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miAddSqlDataSource,
+            this.miAddOraDataSource,
+            this.miAddPgSqlDataSource,
+            this.miAddMySqlDataSource,
+            this.miAddOleDbDataSource});
+            this.ddbAddDataSource.Image = ((System.Drawing.Image)(resources.GetObject("ddbAddDataSource.Image")));
+            this.ddbAddDataSource.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ddbAddDataSource.Name = "ddbAddDataSource";
+            this.ddbAddDataSource.Size = new System.Drawing.Size(29, 22);
+            this.ddbAddDataSource.ToolTipText = "Добавить источник данных";
             // 
-            // tabPage3
+            // miAddSqlDataSource
             // 
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(446, 291);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "События";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.miAddSqlDataSource.Name = "miAddSqlDataSource";
+            this.miAddSqlDataSource.Size = new System.Drawing.Size(184, 22);
+            this.miAddSqlDataSource.Text = "Microsoft SQL Server";
             // 
-            // checkBox1
+            // btnDelDataSource
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(6, 6);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(109, 17);
-            this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "Экспортировать";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.btnDelDataSource.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnDelDataSource.Image = ((System.Drawing.Image)(resources.GetObject("btnDelDataSource.Image")));
+            this.btnDelDataSource.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnDelDataSource.Name = "btnDelDataSource";
+            this.btnDelDataSource.Size = new System.Drawing.Size(23, 22);
+            this.btnDelDataSource.ToolTipText = "Удалить источник данных";
             // 
-            // label2
+            // lblInstruction
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 26);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(28, 13);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "SQL";
+            this.lblInstruction.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblInstruction.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.lblInstruction.Location = new System.Drawing.Point(200, 250);
+            this.lblInstruction.Name = "lblInstruction";
+            this.lblInstruction.Size = new System.Drawing.Size(485, 23);
+            this.lblInstruction.TabIndex = 2;
+            this.lblInstruction.Text = "Добавьте источники данных";
+            this.lblInstruction.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // textBox2
+            // miAddOraDataSource
             // 
-            this.textBox2.Location = new System.Drawing.Point(6, 42);
-            this.textBox2.Multiline = true;
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(434, 75);
-            this.textBox2.TabIndex = 2;
+            this.miAddOraDataSource.Image = ((System.Drawing.Image)(resources.GetObject("miAddOraDataSource.Image")));
+            this.miAddOraDataSource.Name = "miAddOraDataSource";
+            this.miAddOraDataSource.Size = new System.Drawing.Size(184, 22);
+            this.miAddOraDataSource.Text = "Oracle";
             // 
-            // label3
+            // miAddPgSqlDataSource
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 120);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(47, 13);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "Пример";
+            this.miAddPgSqlDataSource.Image = ((System.Drawing.Image)(resources.GetObject("miAddPgSqlDataSource.Image")));
+            this.miAddPgSqlDataSource.Name = "miAddPgSqlDataSource";
+            this.miAddPgSqlDataSource.Size = new System.Drawing.Size(184, 22);
+            this.miAddPgSqlDataSource.Text = "PostgreSQL";
             // 
-            // textBox3
+            // miAddMySqlDataSource
             // 
-            this.textBox3.Location = new System.Drawing.Point(6, 136);
-            this.textBox3.Multiline = true;
-            this.textBox3.Name = "textBox3";
-            this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(434, 75);
-            this.textBox3.TabIndex = 4;
+            this.miAddMySqlDataSource.Image = ((System.Drawing.Image)(resources.GetObject("miAddMySqlDataSource.Image")));
+            this.miAddMySqlDataSource.Name = "miAddMySqlDataSource";
+            this.miAddMySqlDataSource.Size = new System.Drawing.Size(184, 22);
+            this.miAddMySqlDataSource.Text = "MySQL";
+            // 
+            // miAddOleDbDataSource
+            // 
+            this.miAddOleDbDataSource.Name = "miAddOleDbDataSource";
+            this.miAddOleDbDataSource.Size = new System.Drawing.Size(184, 22);
+            this.miAddOleDbDataSource.Text = "OLE DB";
+            // 
+            // tabConnection
+            // 
+            this.tabConnection.Controls.Add(this.txtConnectionString);
+            this.tabConnection.Controls.Add(this.lblConnectionString);
+            this.tabConnection.Controls.Add(this.lblPassword);
+            this.tabConnection.Controls.Add(this.txtPassword);
+            this.tabConnection.Controls.Add(this.txtUser);
+            this.tabConnection.Controls.Add(this.lblUser);
+            this.tabConnection.Controls.Add(this.txtDatabase);
+            this.tabConnection.Controls.Add(this.lblDatabase);
+            this.tabConnection.Controls.Add(this.txtServer);
+            this.tabConnection.Controls.Add(this.lblServer);
+            this.tabConnection.Location = new System.Drawing.Point(4, 22);
+            this.tabConnection.Name = "tabConnection";
+            this.tabConnection.Padding = new System.Windows.Forms.Padding(3);
+            this.tabConnection.Size = new System.Drawing.Size(477, 367);
+            this.tabConnection.TabIndex = 3;
+            this.tabConnection.Text = "Соединение";
+            this.tabConnection.UseVisualStyleBackColor = true;
+            // 
+            // lblServer
+            // 
+            this.lblServer.AutoSize = true;
+            this.lblServer.Location = new System.Drawing.Point(3, 3);
+            this.lblServer.Name = "lblServer";
+            this.lblServer.Size = new System.Drawing.Size(44, 13);
+            this.lblServer.TabIndex = 0;
+            this.lblServer.Text = "Сервер";
+            // 
+            // txtServer
+            // 
+            this.txtServer.Location = new System.Drawing.Point(6, 19);
+            this.txtServer.Name = "txtServer";
+            this.txtServer.Size = new System.Drawing.Size(465, 20);
+            this.txtServer.TabIndex = 1;
+            // 
+            // lblDatabase
+            // 
+            this.lblDatabase.AutoSize = true;
+            this.lblDatabase.Location = new System.Drawing.Point(3, 42);
+            this.lblDatabase.Name = "lblDatabase";
+            this.lblDatabase.Size = new System.Drawing.Size(72, 13);
+            this.lblDatabase.TabIndex = 2;
+            this.lblDatabase.Text = "База данных";
+            // 
+            // txtDatabase
+            // 
+            this.txtDatabase.Location = new System.Drawing.Point(6, 58);
+            this.txtDatabase.Name = "txtDatabase";
+            this.txtDatabase.Size = new System.Drawing.Size(465, 20);
+            this.txtDatabase.TabIndex = 3;
+            // 
+            // lblUser
+            // 
+            this.lblUser.AutoSize = true;
+            this.lblUser.Location = new System.Drawing.Point(3, 81);
+            this.lblUser.Name = "lblUser";
+            this.lblUser.Size = new System.Drawing.Size(80, 13);
+            this.lblUser.TabIndex = 4;
+            this.lblUser.Text = "Пользователь";
+            // 
+            // txtUser
+            // 
+            this.txtUser.Location = new System.Drawing.Point(6, 97);
+            this.txtUser.Name = "txtUser";
+            this.txtUser.Size = new System.Drawing.Size(230, 20);
+            this.txtUser.TabIndex = 5;
+            // 
+            // txtPassword
+            // 
+            this.txtPassword.Location = new System.Drawing.Point(242, 97);
+            this.txtPassword.Name = "txtPassword";
+            this.txtPassword.Size = new System.Drawing.Size(229, 20);
+            this.txtPassword.TabIndex = 7;
+            this.txtPassword.UseSystemPasswordChar = true;
+            // 
+            // lblPassword
+            // 
+            this.lblPassword.AutoSize = true;
+            this.lblPassword.Location = new System.Drawing.Point(239, 81);
+            this.lblPassword.Name = "lblPassword";
+            this.lblPassword.Size = new System.Drawing.Size(45, 13);
+            this.lblPassword.TabIndex = 6;
+            this.lblPassword.Text = "Пароль";
+            // 
+            // lblConnectionString
+            // 
+            this.lblConnectionString.AutoSize = true;
+            this.lblConnectionString.Location = new System.Drawing.Point(3, 120);
+            this.lblConnectionString.Name = "lblConnectionString";
+            this.lblConnectionString.Size = new System.Drawing.Size(106, 13);
+            this.lblConnectionString.TabIndex = 8;
+            this.lblConnectionString.Text = "Строка соединения";
+            // 
+            // txtConnectionString
+            // 
+            this.txtConnectionString.Location = new System.Drawing.Point(6, 136);
+            this.txtConnectionString.Multiline = true;
+            this.txtConnectionString.Name = "txtConnectionString";
+            this.txtConnectionString.Size = new System.Drawing.Size(465, 50);
+            this.txtConnectionString.TabIndex = 9;
+            // 
+            // ctrlExportCurDataQuery
+            // 
+            this.ctrlExportCurDataQuery.Location = new System.Drawing.Point(6, 6);
+            this.ctrlExportCurDataQuery.Name = "ctrlExportCurDataQuery";
+            this.ctrlExportCurDataQuery.Size = new System.Drawing.Size(465, 355);
+            this.ctrlExportCurDataQuery.TabIndex = 0;
+            // 
+            // ctrlExportArcDataQuery
+            // 
+            this.ctrlExportArcDataQuery.Location = new System.Drawing.Point(6, 6);
+            this.ctrlExportArcDataQuery.Name = "ctrlExportArcDataQuery";
+            this.ctrlExportArcDataQuery.Size = new System.Drawing.Size(465, 355);
+            this.ctrlExportArcDataQuery.TabIndex = 1;
+            // 
+            // ctrlExportEventQuery
+            // 
+            this.ctrlExportEventQuery.Location = new System.Drawing.Point(6, 6);
+            this.ctrlExportEventQuery.Name = "ctrlExportEventQuery";
+            this.ctrlExportEventQuery.Size = new System.Drawing.Size(465, 355);
+            this.ctrlExportEventQuery.TabIndex = 2;
             // 
             // FrmDBExportConfig
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(684, 412);
-            this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.treeView1);
+            this.CancelButton = this.btnClose;
+            this.ClientSize = new System.Drawing.Size(684, 462);
+            this.Controls.Add(this.lblInstruction);
+            this.Controls.Add(this.toolStrip);
+            this.Controls.Add(this.tabControl);
+            this.Controls.Add(this.btnClose);
+            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.btnSave);
+            this.Controls.Add(this.treeView);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FrmDBExportConfig";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "FrmDBExportConfig";
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
+            this.Text = "Экспорт в БД";
+            this.tabControl.ResumeLayout(false);
+            this.tabExportCurDataQuery.ResumeLayout(false);
+            this.tabExportArcDataQuery.ResumeLayout(false);
+            this.tabExportEventQuery.ResumeLayout(false);
+            this.toolStrip.ResumeLayout(false);
+            this.toolStrip.PerformLayout();
+            this.tabConnection.ResumeLayout(false);
+            this.tabConnection.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TreeView treeView1;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TreeView treeView;
+        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Button btnClose;
+        private System.Windows.Forms.TabControl tabControl;
+        private System.Windows.Forms.TabPage tabExportCurDataQuery;
+        private System.Windows.Forms.TabPage tabExportArcDataQuery;
+        private System.Windows.Forms.TabPage tabExportEventQuery;
+        private System.Windows.Forms.ToolStrip toolStrip;
+        private System.Windows.Forms.ToolStripDropDownButton ddbAddDataSource;
+        private System.Windows.Forms.ToolStripMenuItem miAddSqlDataSource;
+        private System.Windows.Forms.ToolStripButton btnDelDataSource;
+        private System.Windows.Forms.Label lblInstruction;
+        private CtrlExportQuery ctrlExportCurDataQuery;
+        private CtrlExportQuery ctrlExportArcDataQuery;
+        private CtrlExportQuery ctrlExportEventQuery;
+        private System.Windows.Forms.ToolStripMenuItem miAddOraDataSource;
+        private System.Windows.Forms.ToolStripMenuItem miAddPgSqlDataSource;
+        private System.Windows.Forms.ToolStripMenuItem miAddMySqlDataSource;
+        private System.Windows.Forms.ToolStripMenuItem miAddOleDbDataSource;
+        private System.Windows.Forms.TabPage tabConnection;
+        private System.Windows.Forms.TextBox txtServer;
+        private System.Windows.Forms.Label lblServer;
+        private System.Windows.Forms.TextBox txtDatabase;
+        private System.Windows.Forms.Label lblDatabase;
+        private System.Windows.Forms.TextBox txtPassword;
+        private System.Windows.Forms.TextBox txtUser;
+        private System.Windows.Forms.Label lblUser;
+        private System.Windows.Forms.Label lblPassword;
+        private System.Windows.Forms.Label lblConnectionString;
+        private System.Windows.Forms.TextBox txtConnectionString;
     }
 }

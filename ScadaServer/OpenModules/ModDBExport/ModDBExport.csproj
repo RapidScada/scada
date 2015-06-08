@@ -60,6 +60,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config.cs" />
+    <Compile Include="CtrlExportQuery.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CtrlExportQuery.Designer.cs">
+      <DependentUpon>CtrlExportQuery.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataSources\DataSource.cs" />
     <Compile Include="DataSources\DBType.cs" />
     <Compile Include="DataSources\PgSqlDataSource.cs" />
@@ -76,14 +82,34 @@
     <Compile Include="ModDBExportLogic.cs" />
     <Compile Include="ModDBExportView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="CtrlExportQuery.resx">
+      <DependentUpon>CtrlExportQuery.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmDBExportConfig.resx">
       <DependentUpon>FrmDBExportConfig.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Res\delete.png" />
+    <Content Include="Res\mysql.png" />
+    <Content Include="Res\oracle.png" />
+    <Content Include="Res\plus_green.png" />
+    <Content Include="Res\postgresql.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
