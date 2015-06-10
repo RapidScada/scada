@@ -66,14 +66,6 @@ namespace Scada.Server.Modules.DBExport
         }
 
         /// <summary>
-        /// Построить строку соединения с БД на основе остальных свойств соединения
-        /// </summary>
-        protected override string BuildConnectionString()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
         /// Очистить пул приложений
         /// </summary>
         protected override void ClearPool()
@@ -103,6 +95,14 @@ namespace Scada.Server.Modules.DBExport
 
             SqlCommand sqlCmd = (SqlCommand)cmd;
             sqlCmd.Parameters.AddWithValue(paramName, value);
+        }
+
+        /// <summary>
+        /// Построить строку соединения с БД на основе остальных свойств соединения
+        /// </summary>
+        public override string BuildConnectionString()
+        {
+            throw new NotImplementedException();
         }
     }
 }

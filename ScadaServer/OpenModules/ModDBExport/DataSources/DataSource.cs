@@ -126,11 +126,6 @@ namespace Scada.Server.Modules.DBExport
         protected abstract DbConnection CreateConnection();
 
         /// <summary>
-        /// Построить строку соединения с БД на основе остальных свойств соединения
-        /// </summary>
-        protected abstract string BuildConnectionString();
-
-        /// <summary>
         /// Очистить пул приложений
         /// </summary>
         protected abstract void ClearPool();
@@ -144,6 +139,18 @@ namespace Scada.Server.Modules.DBExport
         /// Добавить параметр команды со значением
         /// </summary>
         protected abstract void AddCmdParamWithValue(DbCommand cmd, string paramName, object value);
+
+
+        /// <summary>
+        /// Построить строку соединения с БД на основе остальных свойств соединения
+        /// </summary>
+        public abstract string BuildConnectionString();
+
+        /// <summary>
+        /// Получить пример SQL-запроса для экспорта текущих данных
+        /// </summary>
+        // INSERT INTO CnlData(DateTime, CnlNum, Val, Stat) VALUES (NOW(), @cnlNum, @val, @stat)
+        // public abstract string ExportCurDataQueryExample { get; }
 
 
         /// <summary>

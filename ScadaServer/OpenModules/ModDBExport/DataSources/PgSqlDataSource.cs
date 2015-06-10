@@ -27,7 +27,7 @@ using Npgsql;
 using System;
 using System.Data.Common;
 
-namespace Scada.Server.Modules.DBExport.DataSources
+namespace Scada.Server.Modules.DBExport
 {
     /// <summary>
     /// PostgreSQL interacting traits
@@ -65,15 +65,6 @@ namespace Scada.Server.Modules.DBExport.DataSources
             return new NpgsqlConnection();
         }
 
-
-        /// <summary>
-        /// Построить строку соединения с БД на основе остальных свойств соединения
-        /// </summary>
-        protected override string BuildConnectionString()
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
         /// Очистить пул приложений
         /// </summary>
@@ -103,6 +94,14 @@ namespace Scada.Server.Modules.DBExport.DataSources
 
             NpgsqlCommand pgSqlCmd = (NpgsqlCommand)cmd;
             pgSqlCmd.Parameters.AddWithValue(paramName, value);
+        }
+
+        /// <summary>
+        /// Построить строку соединения с БД на основе остальных свойств соединения
+        /// </summary>
+        public override string BuildConnectionString()
+        {
+            throw new NotImplementedException();
         }
     }
 }

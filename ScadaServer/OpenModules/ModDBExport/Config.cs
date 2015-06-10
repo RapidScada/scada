@@ -25,9 +25,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Xml;
 
 namespace Scada.Server.Modules.DBExport
 {
@@ -64,30 +66,42 @@ namespace Scada.Server.Modules.DBExport
         [Serializable]
         public class ExportParams
         {
-            public bool ExportCurData
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public ExportParams()
             {
-                get
-                {
-                    return string.IsNullOrEmpty(ExportCurDataQuery);
-                }
-            }
-            public bool ExportArcData
-            {
-                get
-                {
-                    return string.IsNullOrEmpty(ExportArcDataQuery);
-                }
-            }
-            public bool ExportEvent
-            {
-                get
-                {
-                    return string.IsNullOrEmpty(ExportEventQuery);
-                }
+                ExportCurData = false;
+                ExportCurDataQuery = "";
+                ExportArcData = false;
+                ExportArcDataQuery = "";
+                ExportEvent = false;
+                ExportEventQuery = "";
             }
 
+            /// <summary>
+            /// Получить или установить признак, экспортировать ли текущие данные
+            /// </summary>
+            public bool ExportCurData { get; set; }
+            /// <summary>
+            /// Получить или установить SQL-запрос для экспорта текущих данных
+            /// </summary>
             public string ExportCurDataQuery { get; set; }
+            /// <summary>
+            /// Получить или установить признак, экспортировать ли архивные данные
+            /// </summary>
+            public bool ExportArcData { get; set; }
+            /// <summary>
+            /// Получить или установить SQL-запрос для экспорта архивных данных
+            /// </summary>
             public string ExportArcDataQuery { get; set; }
+            /// <summary>
+            /// Получить или установить признак, экспортировать ли события
+            /// </summary>
+            public bool ExportEvent { get; set; }
+            /// <summary>
+            /// Получить или установить SQL-запрос для экспорта событий
+            /// </summary>
             public string ExportEventQuery { get; set; }
         }
 
@@ -97,8 +111,29 @@ namespace Scada.Server.Modules.DBExport
         [Serializable]
         public class ExportDestination
         {
-            public DataSource DataSource { get; set; }
-            public ExportParams ExportParams { get; set; }
+            /// <summary>
+            /// Конструктор, ограничивающий создание объекта без параметров
+            /// </summary>
+            private ExportDestination()
+            {
+            }
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public ExportDestination(DataSource dataSource, ExportParams exportParams)
+            {
+                this.DataSource = dataSource;
+                this.ExportParams = exportParams;
+            }
+
+            /// <summary>
+            /// Получить источник данных
+            /// </summary>
+            public DataSource DataSource { get; private set; }
+            /// <summary>
+            /// Получить параметры экспорта
+            /// </summary>
+            public ExportParams ExportParams { get; private set; }
         }
 
 
@@ -152,24 +187,162 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         public bool Load(out string errMsg)
         {
-            // временно
-            ExportDestination expDest = new ExportDestination();
-            expDest.DataSource = new MySqlDataSource()
-            {
-                Server = "localhost",
-                Database = "moddbexport",
-                User = "root",
-                Password = "mylittlesql"
-            };
-            expDest.ExportParams = new ExportParams()
-            {
-                ExportCurDataQuery = "INSERT INTO CnlData(DateTime, CnlNum, Val, Stat) VALUES (NOW(), @cnlNum, @val, @stat)"
-            };
+            SetToDefault();
 
-            ExportDestinations.Add(expDest);
+            try
+            {
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.Load(FileName);
+                XmlNode expDestsNode = xmlDoc.DocumentElement.SelectSingleNode("ExportDestinations");
 
-            errMsg = "";
-            return true;
+                if (expDestsNode != null)
+                {
+                    XmlNodeList expDestNodeList = expDestsNode.SelectNodes("ExportDestination");
+                    foreach (XmlElement expDestElem in expDestNodeList)
+                    {
+                        // загрузка источника данных
+                        DataSource dataSource = null;
+                        XmlNode dataSourceNode = expDestElem.SelectSingleNode("DataSource");
+
+                        if (dataSourceNode != null)
+                        {
+                            // получение типа источника данных
+                            DBType dbType;
+                            if (!Enum.TryParse<DBType>(dataSourceNode.GetChildAsString("DBType"), out dbType))
+                                dbType = DBType.Undefined;
+
+                            // создание источника данных
+                            switch (dbType)
+                            {
+                                case DBType.MSSQL:
+                                    dataSource = new SqlDataSource();
+                                    break;
+                                case DBType.Oracle:
+                                    dataSource = new OraDataSource();
+                                    break;
+                                case DBType.PostgreSQL:
+                                    dataSource = new PgSqlDataSource();
+                                    break;
+                                case DBType.MySQL:
+                                    dataSource = new MySqlDataSource();
+                                    break;
+                                case DBType.OLEDB:
+                                    dataSource = new OleDbDataSource();
+                                    break;
+                                default:
+                                    dataSource = null;
+                                    break;
+                            }
+
+                            if (dataSource != null)
+                            {
+                                dataSource.Server = dataSourceNode.GetChildAsString("Server");
+                                dataSource.Database = dataSourceNode.GetChildAsString("Database");
+                                dataSource.User = dataSourceNode.GetChildAsString("User");
+                                dataSource.Password = dataSourceNode.GetChildAsString("Password");
+                                dataSource.ConnectionString = dataSourceNode.GetChildAsString("ConnectionString");
+
+                                if (dataSource.ConnectionString == "")
+                                    dataSource.ConnectionString = dataSource.BuildConnectionString();
+                            }
+                        }
+
+                        // загрузка параметров экспорта
+                        ExportParams exportParams = null;
+                        XmlNode exportParamsNode = expDestElem.SelectSingleNode("ExportParams");
+
+                        if (dataSource != null && exportParamsNode != null)
+                        {
+                            exportParams = new ExportParams();
+                            exportParams.ExportCurData = exportParamsNode.GetChildAsBool("ExportCurData");
+                            exportParams.ExportCurDataQuery = exportParamsNode.GetChildAsString("ExportCurDataQuery");
+                            exportParams.ExportArcData = exportParamsNode.GetChildAsBool("ExportArcData");
+                            exportParams.ExportArcDataQuery = exportParamsNode.GetChildAsString("ExportArcDataQuery");
+                            exportParams.ExportEvent = exportParamsNode.GetChildAsBool("ExportEvent");
+                            exportParams.ExportEventQuery = exportParamsNode.GetChildAsString("ExportEventQuery");
+                        }
+
+                        // создание назначения экспорта
+                        if (dataSource != null && exportParams != null)
+                        {
+                            ExportDestination expDest = new ExportDestination(dataSource, exportParams);
+                            ExportDestinations.Add(expDest);
+                        }
+                    }
+                }
+
+                errMsg = "";
+                return true;
+            }
+            catch (FileNotFoundException ex)
+            {
+                errMsg = ModPhrases.LoadModSettingsError + ": " + ex.Message + 
+                    Environment.NewLine + ModPhrases.ConfigureModule;
+                return false;
+            }
+            catch (Exception ex)
+            {
+                errMsg = ModPhrases.LoadModSettingsError + ": " + ex.Message;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Сохранить конфигурацию модуля
+        /// </summary>
+        public bool Save(out string errMsg)
+        {
+            try
+            {
+                XmlDocument xmlDoc = new XmlDocument();
+
+                XmlDeclaration xmlDecl = xmlDoc.CreateXmlDeclaration("1.0", "utf-8", null);
+                xmlDoc.AppendChild(xmlDecl);
+
+                XmlElement rootElem = xmlDoc.CreateElement("ModDBExport");
+                xmlDoc.AppendChild(rootElem);
+
+                // сохранение назначений экспорта
+                XmlElement expDestsElem = xmlDoc.CreateElement("ExportDestinations");
+                rootElem.AppendChild(expDestsElem);
+
+                foreach (ExportDestination expDest in ExportDestinations)
+                {
+                    XmlElement expDestElem = xmlDoc.CreateElement("ExportDestination");
+                    expDestsElem.AppendChild(expDestElem);
+
+                    // сохранение источника данных
+                    DataSource dataSource = expDest.DataSource;
+                    XmlElement dataSourceElem = xmlDoc.CreateElement("DataSource");
+                    dataSourceElem.AppendElem("DBType", dataSource.DBType);
+                    dataSourceElem.AppendElem("Server", dataSource.Server);
+                    dataSourceElem.AppendElem("Database", dataSource.Database);
+                    dataSourceElem.AppendElem("User", dataSource.User);
+                    dataSourceElem.AppendElem("Password", dataSource.Password);
+                    dataSourceElem.AppendElem("ConnectionString", dataSource.ConnectionString);
+                    expDestElem.AppendChild(dataSourceElem);
+
+                    // сохранение параметров экспорта
+                    ExportParams exportParams = expDest.ExportParams;
+                    XmlElement exportParamsElem = xmlDoc.CreateElement("ExportParams");
+                    exportParamsElem.AppendElem("ExportCurData", exportParams.ExportCurData);
+                    exportParamsElem.AppendElem("ExportCurDataQuery", exportParams.ExportCurDataQuery);
+                    exportParamsElem.AppendElem("ExportArcData", exportParams.ExportArcData);
+                    exportParamsElem.AppendElem("ExportArcDataQuery", exportParams.ExportArcDataQuery);
+                    exportParamsElem.AppendElem("ExportEvent", exportParams.ExportEvent);
+                    exportParamsElem.AppendElem("ExportEventQuery", exportParams.ExportEventQuery);
+                    expDestElem.AppendChild(exportParamsElem);
+                }
+
+                xmlDoc.Save(FileName);
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = ModPhrases.SaveModSettingsError + ": " + ex.Message;
+                return false;
+            }
         }
 
         /// <summary>
