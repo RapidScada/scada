@@ -210,27 +210,17 @@ namespace Scada
         }
 
         /// <summary>
-        /// Получить тип из сборки
+        /// Скорректировать имя типа для работы DeepClone
         /// </summary>
-        /// <remarks>Метод необходим для корректировки работы DeepClone</remarks>
-        public static Type GetType(Assembly executingAssembly, string assemblyName, string typeName)
+        public static void CorrectTypeName(ref string typeName)
         {
-            try
+            if (typeName.Contains("System.Collections.Generic.List"))
             {
-                return executingAssembly.GetType(typeName, true, true);
-            }
-            catch
-            {
-                if (typeName.Contains("System.Collections.Generic.List"))
-                {
-                    // удаление информации о сборке
-                    int ind1 = typeName.IndexOf(",");
-                    int ind2 = typeName.IndexOf("]");
-                    if (ind1 < ind2)
-                        typeName = typeName.Remove(ind1, ind2 - ind1);
-                }
-
-                return Type.GetType(string.Format("{0}, {1}", typeName, assemblyName), true, true);
+                // удаление информации о сборке
+                int ind1 = typeName.IndexOf(",");
+                int ind2 = typeName.IndexOf("]");
+                if (ind1 < ind2)
+                    typeName = typeName.Remove(ind1, ind2 - ind1);
             }
         }
 

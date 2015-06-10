@@ -46,13 +46,22 @@ namespace Scada.Server.Modules.DBExport
         {
             public override Type BindToType(string assemblyName, string typeName)
             {
-                return ScadaUtils.GetType(Assembly.GetExecutingAssembly(), assemblyName, typeName);
+                try
+                {
+                    return Assembly.GetExecutingAssembly().GetType(typeName, true, true);
+                }
+                catch
+                {
+                    ScadaUtils.CorrectTypeName(ref typeName);
+                    return Type.GetType(string.Format("{0}, {1}", typeName, assemblyName), true, true);
+                }
             }
         }
 
         /// <summary>
         /// Параметры экспорта
         /// </summary>
+        [Serializable]
         public class ExportParams
         {
             public bool ExportCurData
@@ -85,6 +94,7 @@ namespace Scada.Server.Modules.DBExport
         /// <summary>
         /// Назначение экспорта
         /// </summary>
+        [Serializable]
         public class ExportDestination
         {
             public DataSource DataSource { get; set; }
