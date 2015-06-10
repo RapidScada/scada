@@ -75,7 +75,7 @@ namespace Scada.Server.Modules
         public static void InitFromDictionaries()
         {
             Localization.Dict dict;
-            if (Localization.Dictionaries.TryGetValue("Scada.Server", out dict))
+            if (Localization.Dictionaries.TryGetValue("Scada.Server.Modules", out dict))
             {
                 LoadModSettingsError = dict.GetPhrase("LoadModSettingsError", LoadModSettingsError);
                 SaveModSettingsError = dict.GetPhrase("SaveModSettingsError", SaveModSettingsError);
