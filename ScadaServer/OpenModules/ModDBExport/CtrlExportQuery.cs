@@ -79,21 +79,6 @@ namespace Scada.Server.Modules.DBExport
             }
         }
 
-        /// <summary>
-        /// Получить или установить пример SQL-запроса
-        /// </summary>
-        public string Example
-        {
-            get
-            {
-                return txtExample.Text;
-            }
-            set
-            {
-                txtExample.Text = value;
-            }
-        }
-
 
         /// <summary>
         /// Вызвать событие TriggerChanged

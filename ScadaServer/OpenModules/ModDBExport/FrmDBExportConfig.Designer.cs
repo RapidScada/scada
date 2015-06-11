@@ -230,7 +230,6 @@
             // 
             // ctrlExportCurDataQuery
             // 
-            this.ctrlExportCurDataQuery.Example = "";
             this.ctrlExportCurDataQuery.Export = false;
             this.ctrlExportCurDataQuery.Location = new System.Drawing.Point(6, 6);
             this.ctrlExportCurDataQuery.Name = "ctrlExportCurDataQuery";
@@ -251,7 +250,6 @@
             // 
             // ctrlExportArcDataQuery
             // 
-            this.ctrlExportArcDataQuery.Example = "";
             this.ctrlExportArcDataQuery.Export = false;
             this.ctrlExportArcDataQuery.Location = new System.Drawing.Point(6, 6);
             this.ctrlExportArcDataQuery.Name = "ctrlExportArcDataQuery";
@@ -272,7 +270,6 @@
             // 
             // ctrlExportEventQuery
             // 
-            this.ctrlExportEventQuery.Example = "";
             this.ctrlExportEventQuery.Export = false;
             this.ctrlExportEventQuery.Location = new System.Drawing.Point(6, 6);
             this.ctrlExportEventQuery.Name = "ctrlExportEventQuery";

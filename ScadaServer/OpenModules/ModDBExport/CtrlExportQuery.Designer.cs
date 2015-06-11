@@ -28,31 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.txtExample = new System.Windows.Forms.TextBox();
-            this.lblExample = new System.Windows.Forms.Label();
             this.txtQuery = new System.Windows.Forms.TextBox();
             this.lblQuery = new System.Windows.Forms.Label();
             this.chkExport = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
-            // 
-            // txtExample
-            // 
-            this.txtExample.Location = new System.Drawing.Point(0, 205);
-            this.txtExample.Multiline = true;
-            this.txtExample.Name = "txtExample";
-            this.txtExample.ReadOnly = true;
-            this.txtExample.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtExample.Size = new System.Drawing.Size(465, 150);
-            this.txtExample.TabIndex = 4;
-            // 
-            // lblExample
-            // 
-            this.lblExample.AutoSize = true;
-            this.lblExample.Location = new System.Drawing.Point(-3, 189);
-            this.lblExample.Name = "lblExample";
-            this.lblExample.Size = new System.Drawing.Size(47, 13);
-            this.lblExample.TabIndex = 3;
-            this.lblExample.Text = "Пример";
             // 
             // txtQuery
             // 
@@ -60,7 +39,7 @@
             this.txtQuery.Multiline = true;
             this.txtQuery.Name = "txtQuery";
             this.txtQuery.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtQuery.Size = new System.Drawing.Size(465, 150);
+            this.txtQuery.Size = new System.Drawing.Size(465, 319);
             this.txtQuery.TabIndex = 2;
             this.txtQuery.TextChanged += new System.EventHandler(this.txtQuery_TextChanged);
             // 
@@ -88,8 +67,6 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.txtExample);
-            this.Controls.Add(this.lblExample);
             this.Controls.Add(this.txtQuery);
             this.Controls.Add(this.lblQuery);
             this.Controls.Add(this.chkExport);
@@ -102,8 +79,6 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox txtExample;
-        private System.Windows.Forms.Label lblExample;
         private System.Windows.Forms.TextBox txtQuery;
         private System.Windows.Forms.Label lblQuery;
         private System.Windows.Forms.CheckBox chkExport;

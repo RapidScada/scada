@@ -167,40 +167,6 @@ namespace Scada.Server.Modules.DBExport
         public abstract string BuildConnectionString();
 
         /// <summary>
-        /// Получить пример SQL-запроса для экспорта текущих данных
-        /// </summary>
-        public virtual string ExportCurDataQueryExample
-        {
-            get
-            {
-                return "";
-            }
-        }
-
-        /// <summary>
-        /// Получить пример SQL-запроса для экспорта архивных данных
-        /// </summary>
-        public virtual string ExportArcDataQueryExample
-        {
-            get
-            {
-                return "";
-            }
-        }
-
-        /// <summary>
-        /// Получить пример SQL-запроса для экспорта события
-        /// </summary>
-        public virtual string ExportEventQueryExample
-        {
-            get
-            {
-                return "";
-            }
-        }
-
-
-        /// <summary>
         /// Инициализировать соединение с БД
         /// </summary>
         public void InitConnection()

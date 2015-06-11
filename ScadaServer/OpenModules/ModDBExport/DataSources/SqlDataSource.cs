@@ -105,38 +105,5 @@ namespace Scada.Server.Modules.DBExport
         {
             return string.Format("Server={0};Database={1};User ID={2};Password={3}", Server, Database, User, Password);
         }
-
-        /// <summary>
-        /// Получить пример SQL-запроса для экспорта текущих данных
-        /// </summary>
-        public override string ExportCurDataQueryExample
-        {
-            get
-            {
-                return "INSERT INTO CnlData(DateTime, CnlNum, Val, Stat) VALUES (@dateTime, @cnlNum, @val, @stat)";
-            }
-        }
-
-        /// <summary>
-        /// Получить пример SQL-запроса для экспорта архивных данных
-        /// </summary>
-        public override string ExportArcDataQueryExample
-        {
-            get
-            {
-                return "";
-            }
-        }
-
-        /// <summary>
-        /// Получить пример SQL-запроса для экспорта события
-        /// </summary>
-        public override string ExportEventQueryExample
-        {
-            get
-            {
-                return "";
-            }
-        }
     }
 }
