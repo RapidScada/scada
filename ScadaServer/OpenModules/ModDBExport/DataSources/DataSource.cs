@@ -140,6 +140,26 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         protected abstract void AddCmdParamWithValue(DbCommand cmd, string paramName, object value);
 
+        /// <summary>
+        /// Извлечь имя хоста и порт из имени сервера
+        /// </summary>
+        protected void ExtractHostAndPort(string server, int defaultPort, out string host, out int port)
+        {
+            int ind = Server.IndexOf(':');
+
+            if (ind >= 0)
+            {
+                host = Server.Substring(0, ind);
+                try { port = int.Parse(Server.Substring(ind + 1)); }
+                catch { port = defaultPort; }
+            }
+            else
+            {
+                host = Server;
+                port = defaultPort;
+            }
+        }
+
 
         /// <summary>
         /// Построить строку соединения с БД на основе остальных свойств соединения
@@ -149,8 +169,35 @@ namespace Scada.Server.Modules.DBExport
         /// <summary>
         /// Получить пример SQL-запроса для экспорта текущих данных
         /// </summary>
-        // INSERT INTO CnlData(DateTime, CnlNum, Val, Stat) VALUES (NOW(), @cnlNum, @val, @stat)
-        // public abstract string ExportCurDataQueryExample { get; }
+        public virtual string ExportCurDataQueryExample
+        {
+            get
+            {
+                return "";
+            }
+        }
+
+        /// <summary>
+        /// Получить пример SQL-запроса для экспорта архивных данных
+        /// </summary>
+        public virtual string ExportArcDataQueryExample
+        {
+            get
+            {
+                return "";
+            }
+        }
+
+        /// <summary>
+        /// Получить пример SQL-запроса для экспорта события
+        /// </summary>
+        public virtual string ExportEventQueryExample
+        {
+            get
+            {
+                return "";
+            }
+        }
 
 
         /// <summary>

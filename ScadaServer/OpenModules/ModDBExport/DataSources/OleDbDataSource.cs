@@ -96,12 +96,13 @@ namespace Scada.Server.Modules.DBExport
             oleDbCmd.Parameters.AddWithValue(paramName, value);
         }
 
+
         /// <summary>
         /// Построить строку соединения с БД на основе остальных свойств соединения
         /// </summary>
         public override string BuildConnectionString()
         {
-            throw new NotImplementedException();
+            return "";
         }
     }
 }

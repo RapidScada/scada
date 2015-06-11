@@ -192,6 +192,7 @@ namespace Scada.Server.Modules
                         try
                         {
                             dataSource.Connect();
+                            dataSource.SetCmdParam(dataSource.ExportArcDataCmd, "dateTime", DateTime.Now);
                             ExportSrez(dataSource, dataSource.ExportCurDataCmd, cnlNums, curSrez);
                         }
                         catch (Exception ex)

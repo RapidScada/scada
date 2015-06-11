@@ -319,7 +319,10 @@ namespace Scada.Server.Modules.DBExport
                     dataSourceElem.AppendElem("Database", dataSource.Database);
                     dataSourceElem.AppendElem("User", dataSource.User);
                     dataSourceElem.AppendElem("Password", dataSource.Password);
-                    dataSourceElem.AppendElem("ConnectionString", dataSource.ConnectionString);
+                    string connStr = dataSource.ConnectionString;
+                    string bldConnStr = dataSource.BuildConnectionString();
+                    dataSourceElem.AppendElem("ConnectionString", 
+                        bldConnStr != "" && bldConnStr == connStr ? "" : connStr);
                     expDestElem.AppendChild(dataSourceElem);
 
                     // сохранение параметров экспорта
