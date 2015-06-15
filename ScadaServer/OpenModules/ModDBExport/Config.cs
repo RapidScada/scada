@@ -109,7 +109,7 @@ namespace Scada.Server.Modules.DBExport
         /// Назначение экспорта
         /// </summary>
         [Serializable]
-        public class ExportDestination
+        public class ExportDestination : IComparable<ExportDestination>
         {
             /// <summary>
             /// Конструктор, ограничивающий создание объекта без параметров
@@ -122,6 +122,11 @@ namespace Scada.Server.Modules.DBExport
             /// </summary>
             public ExportDestination(DataSource dataSource, ExportParams exportParams)
             {
+                if (dataSource == null)
+                    throw new ArgumentNullException("dataSource");
+                if (exportParams == null)
+                    throw new ArgumentNullException("exportParams");
+                
                 this.DataSource = dataSource;
                 this.ExportParams = exportParams;
             }
@@ -134,6 +139,14 @@ namespace Scada.Server.Modules.DBExport
             /// Получить параметры экспорта
             /// </summary>
             public ExportParams ExportParams { get; private set; }
+
+            /// <summary>
+            /// Сравнить текущий объект с другим объектом такого же типа
+            /// </summary>
+            public int CompareTo(ExportDestination other)
+            {
+                return DataSource.CompareTo(other.DataSource);
+            }
         }
 
 
@@ -269,6 +282,9 @@ namespace Scada.Server.Modules.DBExport
                             ExportDestinations.Add(expDest);
                         }
                     }
+
+                    // сортировка назначений экспорта
+                    ExportDestinations.Sort();
                 }
 
                 errMsg = "";

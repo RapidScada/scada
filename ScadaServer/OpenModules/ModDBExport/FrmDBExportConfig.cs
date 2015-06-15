@@ -48,6 +48,8 @@ namespace Scada.Server.Modules.DBExport
         private Config config;     // конфигурация модуля
         private Config configCopy; // копия конфигурации модуля для реализации отмены изменений
         private bool modified;     // признак изменения конфигурации
+        private Config.ExportDestination selExpDest; // выбранное назначение экспорта
+        private TreeNode selExpDestNode;             // узел дерева выбранного назначения экспорта
 
 
         /// <summary>
@@ -60,6 +62,8 @@ namespace Scada.Server.Modules.DBExport
             config = null;
             configCopy = null;
             modified = false;
+            selExpDest = null;
+            selExpDestNode = null;
         }
 
 
@@ -93,11 +97,92 @@ namespace Scada.Server.Modules.DBExport
             frmDBExportConfig.ShowDialog();
         }
 
+
+        /// <summary>
+        /// Создать узел дерева, соответствующий назначению экспорта
+        /// </summary>
+        private TreeNode NewExpDestNode(Config.ExportDestination expDest)
+        {
+            TreeNode node = new TreeNode(expDest.DataSource.Name);
+            node.Tag = expDest;
+
+            string imageKey;
+            switch (expDest.DataSource.DBType)
+            {
+                case DBType.MSSQL:
+                    imageKey = "mssql.png";
+                    break;
+                case DBType.Oracle:
+                    imageKey = "oracle.png";
+                    break;
+                case DBType.PostgreSQL:
+                    imageKey = "postgresql.png";
+                    break;
+                case DBType.MySQL:
+                    imageKey = "mysql.png";
+                    break;
+                case DBType.OLEDB:
+                    imageKey = "oledb.png";
+                    break;
+                default:
+                    imageKey = "";
+                    break;
+            }
+
+            node.ImageKey = node.SelectedImageKey = imageKey;
+            return node;
+        }
+
         /// <summary>
         /// Отобразить конфигурацию
         /// </summary>
         private void ConfigToControls()
         {
+            // обнуление выбранного объекта
+            selExpDest = null;
+            selExpDestNode = null;
+
+            // очистка и заполнение дерева
+            treeView.BeginUpdate();
+            treeView.Nodes.Clear();
+
+            foreach (Config.ExportDestination expDest in config.ExportDestinations)
+                treeView.Nodes.Add(NewExpDestNode(expDest));
+
+            treeView.ExpandAll();
+            treeView.EndUpdate();
+
+            // выбор первого узла дерева
+            if (treeView.Nodes.Count > 0)
+                treeView.SelectedNode = treeView.Nodes[0];
+
+            SetExportParamsVisible();
+        }
+
+        /// <summary>
+        /// Отобразить параметры экспорта для выбранного назначения
+        /// </summary>
+        private void ShowSelectedExportParams()
+        {
+        }
+
+        /// <summary>
+        /// Установить видимость параметров экспорта
+        /// </summary>
+        private void SetExportParamsVisible()
+        {
+            if (selExpDest == null) // конфигурация пуста
+            {
+                btnDelDataSource.Enabled = false;
+                lblInstruction.Visible = true;
+                tabControl.Visible = false;
+            }
+            else
+            {
+                btnDelDataSource.Enabled = true;
+                lblInstruction.Visible = false;
+                tabControl.Visible = true;
+            }
         }
 
 
@@ -118,6 +203,9 @@ namespace Scada.Server.Modules.DBExport
                 }
             }
 
+            // настройка элементов управления
+            lblInstruction.Top = treeView.Top;
+
             // загрузка конфигурации
             config = new Config(configDir);
             if (File.Exists(config.FileName) && !config.Load(out errMsg))
@@ -131,6 +219,90 @@ namespace Scada.Server.Modules.DBExport
 
             // снятие признака изменения конфигурации
             Modified = false;
+        }
+
+        private void FrmDBExportConfig_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
+        }
+
+        private void treeView_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            // определение и отображение свойств выбранного объекта
+            TreeNode selNode = e.Node;
+            selExpDest = selNode.Tag as Config.ExportDestination;
+            selExpDestNode = selExpDest == null ? null : selNode;
+            ShowSelectedExportParams();
+        }
+
+        private void miAddDataSource_Click(object sender, EventArgs e)
+        {
+            // добавление назначения экспорта
+            DataSource dataSource = null;
+
+            if (sender == miAddSqlDataSource)
+                dataSource = new SqlDataSource();
+            else if (sender == miAddOraDataSource)
+                dataSource = new OraDataSource();
+            else if (sender == miAddPgSqlDataSource)
+                dataSource = new PgSqlDataSource();
+            else if (sender == miAddMySqlDataSource)
+                dataSource = new MySqlDataSource();
+            else if (sender == miAddOleDbDataSource)
+                dataSource = new OleDbDataSource();
+
+            if (dataSource != null)
+            {
+                Config.ExportDestination expDest = new Config.ExportDestination(dataSource, new Config.ExportParams());
+                TreeNode treeNode = NewExpDestNode(expDest);
+
+                int ind = config.ExportDestinations.BinarySearch(expDest);
+                if (ind >= 0)
+                    ind++;
+                else
+                    ind = ~ind;
+
+                config.ExportDestinations.Insert(ind, expDest);
+                treeView.Nodes.Insert(ind, treeNode);
+                treeView.SelectedNode = treeNode;
+
+                SetExportParamsVisible();
+                Modified = true;
+            }
+        }
+
+        private void btnDelDataSource_Click(object sender, EventArgs e)
+        {
+            // удаление назначения экспорта
+            if (selExpDestNode != null)
+            {
+                TreeNode prevNode = selExpDestNode.PrevNode;
+                TreeNode nextNode = selExpDestNode.NextNode;
+
+                int ind = selExpDestNode.Index;
+                config.ExportDestinations.RemoveAt(ind);
+                treeView.Nodes.RemoveAt(ind);
+
+                treeView.SelectedNode = nextNode == null ? prevNode : nextNode;
+                if (treeView.SelectedNode == null)
+                {
+                    selExpDest = null;
+                    selExpDestNode = null;
+                }
+
+                SetExportParamsVisible();
+                Modified = true;
+            }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

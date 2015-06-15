@@ -28,13 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDBExportConfig));
             this.treeView = new System.Windows.Forms.TreeView();
+            this.ilTree = new System.Windows.Forms.ImageList(this.components);
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.tabControl = new System.Windows.Forms.TabControl();
-            this.tabConnection = new System.Windows.Forms.TabPage();
+            this.pageConnection = new System.Windows.Forms.TabPage();
             this.txtConnectionString = new System.Windows.Forms.TextBox();
             this.lblConnectionString = new System.Windows.Forms.Label();
             this.lblPassword = new System.Windows.Forms.Label();
@@ -45,12 +47,9 @@
             this.lblDatabase = new System.Windows.Forms.Label();
             this.txtServer = new System.Windows.Forms.TextBox();
             this.lblServer = new System.Windows.Forms.Label();
-            this.tabExportCurDataQuery = new System.Windows.Forms.TabPage();
-            this.ctrlExportCurDataQuery = new Scada.Server.Modules.DBExport.CtrlExportQuery();
-            this.tabExportArcDataQuery = new System.Windows.Forms.TabPage();
-            this.ctrlExportArcDataQuery = new Scada.Server.Modules.DBExport.CtrlExportQuery();
-            this.tabExportEventQuery = new System.Windows.Forms.TabPage();
-            this.ctrlExportEventQuery = new Scada.Server.Modules.DBExport.CtrlExportQuery();
+            this.pageExportCurDataQuery = new System.Windows.Forms.TabPage();
+            this.pageExportArcDataQuery = new System.Windows.Forms.TabPage();
+            this.pageExportEventQuery = new System.Windows.Forms.TabPage();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.ddbAddDataSource = new System.Windows.Forms.ToolStripDropDownButton();
             this.miAddSqlDataSource = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,20 +59,38 @@
             this.miAddOleDbDataSource = new System.Windows.Forms.ToolStripMenuItem();
             this.btnDelDataSource = new System.Windows.Forms.ToolStripButton();
             this.lblInstruction = new System.Windows.Forms.Label();
+            this.ctrlExportCurDataQuery = new Scada.Server.Modules.DBExport.CtrlExportQuery();
+            this.ctrlExportArcDataQuery = new Scada.Server.Modules.DBExport.CtrlExportQuery();
+            this.ctrlExportEventQuery = new Scada.Server.Modules.DBExport.CtrlExportQuery();
             this.tabControl.SuspendLayout();
-            this.tabConnection.SuspendLayout();
-            this.tabExportCurDataQuery.SuspendLayout();
-            this.tabExportArcDataQuery.SuspendLayout();
-            this.tabExportEventQuery.SuspendLayout();
+            this.pageConnection.SuspendLayout();
+            this.pageExportCurDataQuery.SuspendLayout();
+            this.pageExportArcDataQuery.SuspendLayout();
+            this.pageExportEventQuery.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // treeView
             // 
+            this.treeView.ImageIndex = 0;
+            this.treeView.ImageList = this.ilTree;
             this.treeView.Location = new System.Drawing.Point(0, 28);
             this.treeView.Name = "treeView";
+            this.treeView.SelectedImageIndex = 0;
+            this.treeView.ShowRootLines = false;
             this.treeView.Size = new System.Drawing.Size(200, 392);
             this.treeView.TabIndex = 1;
+            this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
+            // 
+            // ilTree
+            // 
+            this.ilTree.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilTree.ImageStream")));
+            this.ilTree.TransparentColor = System.Drawing.Color.Transparent;
+            this.ilTree.Images.SetKeyName(0, "mssql.png");
+            this.ilTree.Images.SetKeyName(1, "oracle.png");
+            this.ilTree.Images.SetKeyName(2, "postgresql.png");
+            this.ilTree.Images.SetKeyName(3, "mysql.png");
+            this.ilTree.Images.SetKeyName(4, "oledb.png");
             // 
             // btnSave
             // 
@@ -83,6 +100,7 @@
             this.btnSave.TabIndex = 4;
             this.btnSave.Text = "Сохранить";
             this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnCancel
             // 
@@ -92,6 +110,7 @@
             this.btnCancel.TabIndex = 5;
             this.btnCancel.Text = "Отмена";
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnClose
             // 
@@ -105,35 +124,35 @@
             // 
             // tabControl
             // 
-            this.tabControl.Controls.Add(this.tabConnection);
-            this.tabControl.Controls.Add(this.tabExportCurDataQuery);
-            this.tabControl.Controls.Add(this.tabExportArcDataQuery);
-            this.tabControl.Controls.Add(this.tabExportEventQuery);
+            this.tabControl.Controls.Add(this.pageConnection);
+            this.tabControl.Controls.Add(this.pageExportCurDataQuery);
+            this.tabControl.Controls.Add(this.pageExportArcDataQuery);
+            this.tabControl.Controls.Add(this.pageExportEventQuery);
             this.tabControl.Location = new System.Drawing.Point(200, 28);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
             this.tabControl.Size = new System.Drawing.Size(485, 393);
             this.tabControl.TabIndex = 3;
             // 
-            // tabConnection
+            // pageConnection
             // 
-            this.tabConnection.Controls.Add(this.txtConnectionString);
-            this.tabConnection.Controls.Add(this.lblConnectionString);
-            this.tabConnection.Controls.Add(this.lblPassword);
-            this.tabConnection.Controls.Add(this.txtPassword);
-            this.tabConnection.Controls.Add(this.txtUser);
-            this.tabConnection.Controls.Add(this.lblUser);
-            this.tabConnection.Controls.Add(this.txtDatabase);
-            this.tabConnection.Controls.Add(this.lblDatabase);
-            this.tabConnection.Controls.Add(this.txtServer);
-            this.tabConnection.Controls.Add(this.lblServer);
-            this.tabConnection.Location = new System.Drawing.Point(4, 22);
-            this.tabConnection.Name = "tabConnection";
-            this.tabConnection.Padding = new System.Windows.Forms.Padding(3);
-            this.tabConnection.Size = new System.Drawing.Size(477, 367);
-            this.tabConnection.TabIndex = 3;
-            this.tabConnection.Text = "Соединение";
-            this.tabConnection.UseVisualStyleBackColor = true;
+            this.pageConnection.Controls.Add(this.txtConnectionString);
+            this.pageConnection.Controls.Add(this.lblConnectionString);
+            this.pageConnection.Controls.Add(this.lblPassword);
+            this.pageConnection.Controls.Add(this.txtPassword);
+            this.pageConnection.Controls.Add(this.txtUser);
+            this.pageConnection.Controls.Add(this.lblUser);
+            this.pageConnection.Controls.Add(this.txtDatabase);
+            this.pageConnection.Controls.Add(this.lblDatabase);
+            this.pageConnection.Controls.Add(this.txtServer);
+            this.pageConnection.Controls.Add(this.lblServer);
+            this.pageConnection.Location = new System.Drawing.Point(4, 22);
+            this.pageConnection.Name = "pageConnection";
+            this.pageConnection.Padding = new System.Windows.Forms.Padding(3);
+            this.pageConnection.Size = new System.Drawing.Size(477, 367);
+            this.pageConnection.TabIndex = 3;
+            this.pageConnection.Text = "Соединение";
+            this.pageConnection.UseVisualStyleBackColor = true;
             // 
             // txtConnectionString
             // 
@@ -217,65 +236,38 @@
             this.lblServer.TabIndex = 0;
             this.lblServer.Text = "Сервер";
             // 
-            // tabExportCurDataQuery
+            // pageExportCurDataQuery
             // 
-            this.tabExportCurDataQuery.Controls.Add(this.ctrlExportCurDataQuery);
-            this.tabExportCurDataQuery.Location = new System.Drawing.Point(4, 22);
-            this.tabExportCurDataQuery.Name = "tabExportCurDataQuery";
-            this.tabExportCurDataQuery.Padding = new System.Windows.Forms.Padding(3);
-            this.tabExportCurDataQuery.Size = new System.Drawing.Size(477, 367);
-            this.tabExportCurDataQuery.TabIndex = 0;
-            this.tabExportCurDataQuery.Text = "Текущие данные";
-            this.tabExportCurDataQuery.UseVisualStyleBackColor = true;
+            this.pageExportCurDataQuery.Controls.Add(this.ctrlExportCurDataQuery);
+            this.pageExportCurDataQuery.Location = new System.Drawing.Point(4, 22);
+            this.pageExportCurDataQuery.Name = "pageExportCurDataQuery";
+            this.pageExportCurDataQuery.Padding = new System.Windows.Forms.Padding(3);
+            this.pageExportCurDataQuery.Size = new System.Drawing.Size(477, 367);
+            this.pageExportCurDataQuery.TabIndex = 0;
+            this.pageExportCurDataQuery.Text = "Текущие данные";
+            this.pageExportCurDataQuery.UseVisualStyleBackColor = true;
             // 
-            // ctrlExportCurDataQuery
+            // pageExportArcDataQuery
             // 
-            this.ctrlExportCurDataQuery.Export = false;
-            this.ctrlExportCurDataQuery.Location = new System.Drawing.Point(6, 6);
-            this.ctrlExportCurDataQuery.Name = "ctrlExportCurDataQuery";
-            this.ctrlExportCurDataQuery.Query = "";
-            this.ctrlExportCurDataQuery.Size = new System.Drawing.Size(465, 355);
-            this.ctrlExportCurDataQuery.TabIndex = 0;
+            this.pageExportArcDataQuery.Controls.Add(this.ctrlExportArcDataQuery);
+            this.pageExportArcDataQuery.Location = new System.Drawing.Point(4, 22);
+            this.pageExportArcDataQuery.Name = "pageExportArcDataQuery";
+            this.pageExportArcDataQuery.Padding = new System.Windows.Forms.Padding(3);
+            this.pageExportArcDataQuery.Size = new System.Drawing.Size(477, 367);
+            this.pageExportArcDataQuery.TabIndex = 1;
+            this.pageExportArcDataQuery.Text = "Архивные данные";
+            this.pageExportArcDataQuery.UseVisualStyleBackColor = true;
             // 
-            // tabExportArcDataQuery
+            // pageExportEventQuery
             // 
-            this.tabExportArcDataQuery.Controls.Add(this.ctrlExportArcDataQuery);
-            this.tabExportArcDataQuery.Location = new System.Drawing.Point(4, 22);
-            this.tabExportArcDataQuery.Name = "tabExportArcDataQuery";
-            this.tabExportArcDataQuery.Padding = new System.Windows.Forms.Padding(3);
-            this.tabExportArcDataQuery.Size = new System.Drawing.Size(477, 367);
-            this.tabExportArcDataQuery.TabIndex = 1;
-            this.tabExportArcDataQuery.Text = "Архивные данные";
-            this.tabExportArcDataQuery.UseVisualStyleBackColor = true;
-            // 
-            // ctrlExportArcDataQuery
-            // 
-            this.ctrlExportArcDataQuery.Export = false;
-            this.ctrlExportArcDataQuery.Location = new System.Drawing.Point(6, 6);
-            this.ctrlExportArcDataQuery.Name = "ctrlExportArcDataQuery";
-            this.ctrlExportArcDataQuery.Query = "";
-            this.ctrlExportArcDataQuery.Size = new System.Drawing.Size(465, 355);
-            this.ctrlExportArcDataQuery.TabIndex = 1;
-            // 
-            // tabExportEventQuery
-            // 
-            this.tabExportEventQuery.Controls.Add(this.ctrlExportEventQuery);
-            this.tabExportEventQuery.Location = new System.Drawing.Point(4, 22);
-            this.tabExportEventQuery.Name = "tabExportEventQuery";
-            this.tabExportEventQuery.Padding = new System.Windows.Forms.Padding(3);
-            this.tabExportEventQuery.Size = new System.Drawing.Size(477, 367);
-            this.tabExportEventQuery.TabIndex = 2;
-            this.tabExportEventQuery.Text = "События";
-            this.tabExportEventQuery.UseVisualStyleBackColor = true;
-            // 
-            // ctrlExportEventQuery
-            // 
-            this.ctrlExportEventQuery.Export = false;
-            this.ctrlExportEventQuery.Location = new System.Drawing.Point(6, 6);
-            this.ctrlExportEventQuery.Name = "ctrlExportEventQuery";
-            this.ctrlExportEventQuery.Query = "";
-            this.ctrlExportEventQuery.Size = new System.Drawing.Size(465, 355);
-            this.ctrlExportEventQuery.TabIndex = 2;
+            this.pageExportEventQuery.Controls.Add(this.ctrlExportEventQuery);
+            this.pageExportEventQuery.Location = new System.Drawing.Point(4, 22);
+            this.pageExportEventQuery.Name = "pageExportEventQuery";
+            this.pageExportEventQuery.Padding = new System.Windows.Forms.Padding(3);
+            this.pageExportEventQuery.Size = new System.Drawing.Size(477, 367);
+            this.pageExportEventQuery.TabIndex = 2;
+            this.pageExportEventQuery.Text = "События";
+            this.pageExportEventQuery.UseVisualStyleBackColor = true;
             // 
             // toolStrip
             // 
@@ -309,6 +301,7 @@
             this.miAddSqlDataSource.Name = "miAddSqlDataSource";
             this.miAddSqlDataSource.Size = new System.Drawing.Size(184, 22);
             this.miAddSqlDataSource.Text = "Microsoft SQL Server";
+            this.miAddSqlDataSource.Click += new System.EventHandler(this.miAddDataSource_Click);
             // 
             // miAddOraDataSource
             // 
@@ -316,6 +309,7 @@
             this.miAddOraDataSource.Name = "miAddOraDataSource";
             this.miAddOraDataSource.Size = new System.Drawing.Size(184, 22);
             this.miAddOraDataSource.Text = "Oracle";
+            this.miAddOraDataSource.Click += new System.EventHandler(this.miAddDataSource_Click);
             // 
             // miAddPgSqlDataSource
             // 
@@ -323,6 +317,7 @@
             this.miAddPgSqlDataSource.Name = "miAddPgSqlDataSource";
             this.miAddPgSqlDataSource.Size = new System.Drawing.Size(184, 22);
             this.miAddPgSqlDataSource.Text = "PostgreSQL";
+            this.miAddPgSqlDataSource.Click += new System.EventHandler(this.miAddDataSource_Click);
             // 
             // miAddMySqlDataSource
             // 
@@ -330,6 +325,7 @@
             this.miAddMySqlDataSource.Name = "miAddMySqlDataSource";
             this.miAddMySqlDataSource.Size = new System.Drawing.Size(184, 22);
             this.miAddMySqlDataSource.Text = "MySQL";
+            this.miAddMySqlDataSource.Click += new System.EventHandler(this.miAddDataSource_Click);
             // 
             // miAddOleDbDataSource
             // 
@@ -337,6 +333,7 @@
             this.miAddOleDbDataSource.Name = "miAddOleDbDataSource";
             this.miAddOleDbDataSource.Size = new System.Drawing.Size(184, 22);
             this.miAddOleDbDataSource.Text = "OLE DB";
+            this.miAddOleDbDataSource.Click += new System.EventHandler(this.miAddDataSource_Click);
             // 
             // btnDelDataSource
             // 
@@ -346,6 +343,7 @@
             this.btnDelDataSource.Name = "btnDelDataSource";
             this.btnDelDataSource.Size = new System.Drawing.Size(23, 22);
             this.btnDelDataSource.ToolTipText = "Удалить источник данных";
+            this.btnDelDataSource.Click += new System.EventHandler(this.btnDelDataSource_Click);
             // 
             // lblInstruction
             // 
@@ -357,6 +355,33 @@
             this.lblInstruction.TabIndex = 2;
             this.lblInstruction.Text = "Добавьте источники данных";
             this.lblInstruction.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // ctrlExportCurDataQuery
+            // 
+            this.ctrlExportCurDataQuery.Export = false;
+            this.ctrlExportCurDataQuery.Location = new System.Drawing.Point(6, 6);
+            this.ctrlExportCurDataQuery.Name = "ctrlExportCurDataQuery";
+            this.ctrlExportCurDataQuery.Query = "";
+            this.ctrlExportCurDataQuery.Size = new System.Drawing.Size(465, 355);
+            this.ctrlExportCurDataQuery.TabIndex = 0;
+            // 
+            // ctrlExportArcDataQuery
+            // 
+            this.ctrlExportArcDataQuery.Export = false;
+            this.ctrlExportArcDataQuery.Location = new System.Drawing.Point(6, 6);
+            this.ctrlExportArcDataQuery.Name = "ctrlExportArcDataQuery";
+            this.ctrlExportArcDataQuery.Query = "";
+            this.ctrlExportArcDataQuery.Size = new System.Drawing.Size(465, 355);
+            this.ctrlExportArcDataQuery.TabIndex = 1;
+            // 
+            // ctrlExportEventQuery
+            // 
+            this.ctrlExportEventQuery.Export = false;
+            this.ctrlExportEventQuery.Location = new System.Drawing.Point(6, 6);
+            this.ctrlExportEventQuery.Name = "ctrlExportEventQuery";
+            this.ctrlExportEventQuery.Query = "";
+            this.ctrlExportEventQuery.Size = new System.Drawing.Size(465, 355);
+            this.ctrlExportEventQuery.TabIndex = 2;
             // 
             // FrmDBExportConfig
             // 
@@ -378,13 +403,14 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Экспорт в БД";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmDBExportConfig_FormClosing);
             this.Load += new System.EventHandler(this.FrmDBExportConfig_Load);
             this.tabControl.ResumeLayout(false);
-            this.tabConnection.ResumeLayout(false);
-            this.tabConnection.PerformLayout();
-            this.tabExportCurDataQuery.ResumeLayout(false);
-            this.tabExportArcDataQuery.ResumeLayout(false);
-            this.tabExportEventQuery.ResumeLayout(false);
+            this.pageConnection.ResumeLayout(false);
+            this.pageConnection.PerformLayout();
+            this.pageExportCurDataQuery.ResumeLayout(false);
+            this.pageExportArcDataQuery.ResumeLayout(false);
+            this.pageExportEventQuery.ResumeLayout(false);
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
             this.ResumeLayout(false);
@@ -399,9 +425,9 @@
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.TabControl tabControl;
-        private System.Windows.Forms.TabPage tabExportCurDataQuery;
-        private System.Windows.Forms.TabPage tabExportArcDataQuery;
-        private System.Windows.Forms.TabPage tabExportEventQuery;
+        private System.Windows.Forms.TabPage pageExportCurDataQuery;
+        private System.Windows.Forms.TabPage pageExportArcDataQuery;
+        private System.Windows.Forms.TabPage pageExportEventQuery;
         private System.Windows.Forms.ToolStrip toolStrip;
         private System.Windows.Forms.ToolStripDropDownButton ddbAddDataSource;
         private System.Windows.Forms.ToolStripMenuItem miAddSqlDataSource;
@@ -414,7 +440,7 @@
         private System.Windows.Forms.ToolStripMenuItem miAddPgSqlDataSource;
         private System.Windows.Forms.ToolStripMenuItem miAddMySqlDataSource;
         private System.Windows.Forms.ToolStripMenuItem miAddOleDbDataSource;
-        private System.Windows.Forms.TabPage tabConnection;
+        private System.Windows.Forms.TabPage pageConnection;
         private System.Windows.Forms.TextBox txtServer;
         private System.Windows.Forms.Label lblServer;
         private System.Windows.Forms.TextBox txtDatabase;
@@ -425,5 +451,6 @@
         private System.Windows.Forms.Label lblPassword;
         private System.Windows.Forms.Label lblConnectionString;
         private System.Windows.Forms.TextBox txtConnectionString;
+        private System.Windows.Forms.ImageList ilTree;
     }
 }

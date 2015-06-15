@@ -35,7 +35,7 @@ namespace Scada.Server.Modules.DBExport
     /// The base class for interacting with database
     /// <para>Базовый класс для взаимодействия с БД</para>
     /// </summary>
-    internal abstract class DataSource
+    internal abstract class DataSource : IComparable<DataSource>
     {
         /// <summary>
         /// Конструктор
@@ -93,7 +93,7 @@ namespace Scada.Server.Modules.DBExport
         {
             get
             {
-                return DBType + " - " + Server;
+                return DBType + (string.IsNullOrEmpty(Server) ? "" : " - " + Server);
             }
         }
 
@@ -228,6 +228,16 @@ namespace Scada.Server.Modules.DBExport
                 cmd.Parameters[paramName].Value = value;
             else
                 AddCmdParamWithValue(cmd, paramName, value);
+        }
+
+
+        /// <summary>
+        /// Сравнить текущий объект с другим объектом такого же типа
+        /// </summary>
+        public int CompareTo(DataSource other)
+        {
+            int comp = DBType.CompareTo(other.DBType);
+            return comp == 0 ? Name.CompareTo(other.Name) : comp;
         }
     }
 }
