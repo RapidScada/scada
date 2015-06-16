@@ -41,6 +41,7 @@
             this.txtQuery.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.txtQuery.Size = new System.Drawing.Size(465, 319);
             this.txtQuery.TabIndex = 2;
+            this.txtQuery.WordWrap = false;
             this.txtQuery.TextChanged += new System.EventHandler(this.txtQuery_TextChanged);
             // 
             // lblQuery

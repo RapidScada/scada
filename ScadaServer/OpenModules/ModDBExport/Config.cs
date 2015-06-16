@@ -37,33 +37,11 @@ namespace Scada.Server.Modules.DBExport
     /// Module configuration
     /// <para>Конфигурация модуля</para>
     /// </summary>
-    [Serializable]
     internal class Config
     {
         /// <summary>
-        /// Контроль привязки сериализованных объектов к типам
-        /// </summary>
-        /// <remarks>Класс необходим из-за ошибки в .NET и должен быть расположен именно в данной сборке</remarks>
-        private class ConfigBinder : SerializationBinder
-        {
-            public override Type BindToType(string assemblyName, string typeName)
-            {
-                try
-                {
-                    return Assembly.GetExecutingAssembly().GetType(typeName, true, true);
-                }
-                catch
-                {
-                    ScadaUtils.CorrectTypeName(ref typeName);
-                    return Type.GetType(string.Format("{0}, {1}", typeName, assemblyName), true, true);
-                }
-            }
-        }
-
-        /// <summary>
         /// Параметры экспорта
         /// </summary>
-        [Serializable]
         public class ExportParams
         {
             /// <summary>
@@ -103,12 +81,27 @@ namespace Scada.Server.Modules.DBExport
             /// Получить или установить SQL-запрос для экспорта событий
             /// </summary>
             public string ExportEventQuery { get; set; }
+
+            /// <summary>
+            /// Клонировать параметры экспорта
+            /// </summary>
+            public ExportParams Clone()
+            {
+                return new ExportParams()
+                    {
+                        ExportCurData = this.ExportCurData,
+                        ExportCurDataQuery = this.ExportCurDataQuery,
+                        ExportArcData = this.ExportArcData,
+                        ExportArcDataQuery = this.ExportArcDataQuery,
+                        ExportEvent = this.ExportEvent,
+                        ExportEventQuery = this.ExportEventQuery
+                    };
+            }
         }
 
         /// <summary>
         /// Назначение экспорта
         /// </summary>
-        [Serializable]
         public class ExportDestination : IComparable<ExportDestination>
         {
             /// <summary>
@@ -141,6 +134,13 @@ namespace Scada.Server.Modules.DBExport
             public ExportParams ExportParams { get; private set; }
 
             /// <summary>
+            /// Клонировать назначение экспорта
+            /// </summary>
+            public ExportDestination Clone()
+            {
+                return new ExportDestination(DataSource.Clone(), ExportParams.Clone());
+            }
+            /// <summary>
             /// Сравнить текущий объект с другим объектом такого же типа
             /// </summary>
             public int CompareTo(ExportDestination other)
@@ -153,7 +153,7 @@ namespace Scada.Server.Modules.DBExport
         /// <summary>
         /// Имя файла конфигурации
         /// </summary>
-        private const string ConfigFileName = "ModDBExportControl.xml";
+        private const string ConfigFileName = "ModDBExport.xml";
 
 
         /// <summary>
@@ -255,7 +255,7 @@ namespace Scada.Server.Modules.DBExport
                                 dataSource.Password = dataSourceNode.GetChildAsString("Password");
                                 dataSource.ConnectionString = dataSourceNode.GetChildAsString("ConnectionString");
 
-                                if (dataSource.ConnectionString == "")
+                                if (string.IsNullOrEmpty(dataSource.ConnectionString))
                                     dataSource.ConnectionString = dataSource.BuildConnectionString();
                             }
                         }
@@ -267,12 +267,15 @@ namespace Scada.Server.Modules.DBExport
                         if (dataSource != null && exportParamsNode != null)
                         {
                             exportParams = new ExportParams();
-                            exportParams.ExportCurData = exportParamsNode.GetChildAsBool("ExportCurData");
                             exportParams.ExportCurDataQuery = exportParamsNode.GetChildAsString("ExportCurDataQuery");
-                            exportParams.ExportArcData = exportParamsNode.GetChildAsBool("ExportArcData");
+                            exportParams.ExportCurData = !string.IsNullOrEmpty(exportParams.ExportCurDataQuery) && 
+                                exportParamsNode.GetChildAsBool("ExportCurData");
                             exportParams.ExportArcDataQuery = exportParamsNode.GetChildAsString("ExportArcDataQuery");
-                            exportParams.ExportEvent = exportParamsNode.GetChildAsBool("ExportEvent");
+                            exportParams.ExportArcData = !string.IsNullOrEmpty(exportParams.ExportArcDataQuery) && 
+                                exportParamsNode.GetChildAsBool("ExportArcData");
                             exportParams.ExportEventQuery = exportParamsNode.GetChildAsString("ExportEventQuery");
+                            exportParams.ExportEvent = !string.IsNullOrEmpty(exportParams.ExportEventQuery) &&
+                                exportParamsNode.GetChildAsBool("ExportEvent");
                         }
 
                         // создание назначения экспорта
@@ -338,7 +341,7 @@ namespace Scada.Server.Modules.DBExport
                     string connStr = dataSource.ConnectionString;
                     string bldConnStr = dataSource.BuildConnectionString();
                     dataSourceElem.AppendElem("ConnectionString", 
-                        bldConnStr != "" && bldConnStr == connStr ? "" : connStr);
+                        !string.IsNullOrEmpty(bldConnStr) && bldConnStr == connStr ? "" : connStr);
                     expDestElem.AppendChild(dataSourceElem);
 
                     // сохранение параметров экспорта
@@ -369,7 +372,14 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         public Config Clone()
         {
-            return (Config)ScadaUtils.DeepClone(this, new ConfigBinder());
+            Config configCopy = new Config();
+            configCopy.FileName = FileName;
+            configCopy.ExportDestinations = new List<ExportDestination>();
+
+            foreach (ExportDestination expDest in ExportDestinations)
+                configCopy.ExportDestinations.Add(expDest.Clone());
+
+            return configCopy;
         }
     }
 }

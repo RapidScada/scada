@@ -61,6 +61,7 @@ namespace Scada.Server.Modules.DBExport
             set
             {
                 chkExport.Checked = value;
+                txtQuery.ReadOnly = !chkExport.Checked;
             }
         }
 
@@ -83,27 +84,28 @@ namespace Scada.Server.Modules.DBExport
         /// <summary>
         /// Вызвать событие TriggerChanged
         /// </summary>
-        private void OnQueryChanged()
+        private void OnPropChanged()
         {
-            if (QueryChanged != null)
-                QueryChanged(this, EventArgs.Empty);
+            if (PropChanged != null)
+                PropChanged(this, EventArgs.Empty);
         }
 
         /// <summary>
         /// Событие возникающее при изменении свойств элемента управления
         /// </summary>
         [Category("Property Changed")]
-        public event EventHandler QueryChanged;
+        public event EventHandler PropChanged;
 
 
         private void chkExport_CheckedChanged(object sender, EventArgs e)
         {
-            OnQueryChanged();
+            txtQuery.ReadOnly = !chkExport.Checked;
+            OnPropChanged();
         }
 
         private void txtQuery_TextChanged(object sender, EventArgs e)
         {
-            OnQueryChanged();
+            OnPropChanged();
         }
     }
 }

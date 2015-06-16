@@ -72,6 +72,7 @@
             // 
             // treeView
             // 
+            this.treeView.HideSelection = false;
             this.treeView.ImageIndex = 0;
             this.treeView.ImageList = this.ilTree;
             this.treeView.Location = new System.Drawing.Point(0, 28);
@@ -161,6 +162,7 @@
             this.txtConnectionString.Name = "txtConnectionString";
             this.txtConnectionString.Size = new System.Drawing.Size(465, 50);
             this.txtConnectionString.TabIndex = 9;
+            this.txtConnectionString.TextChanged += new System.EventHandler(this.txtConnectionString_TextChanged);
             // 
             // lblConnectionString
             // 
@@ -187,6 +189,7 @@
             this.txtPassword.Size = new System.Drawing.Size(229, 20);
             this.txtPassword.TabIndex = 7;
             this.txtPassword.UseSystemPasswordChar = true;
+            this.txtPassword.TextChanged += new System.EventHandler(this.txtPassword_TextChanged);
             // 
             // txtUser
             // 
@@ -194,6 +197,7 @@
             this.txtUser.Name = "txtUser";
             this.txtUser.Size = new System.Drawing.Size(230, 20);
             this.txtUser.TabIndex = 5;
+            this.txtUser.TextChanged += new System.EventHandler(this.txtUser_TextChanged);
             // 
             // lblUser
             // 
@@ -210,6 +214,7 @@
             this.txtDatabase.Name = "txtDatabase";
             this.txtDatabase.Size = new System.Drawing.Size(465, 20);
             this.txtDatabase.TabIndex = 3;
+            this.txtDatabase.TextChanged += new System.EventHandler(this.txtDatabase_TextChanged);
             // 
             // lblDatabase
             // 
@@ -226,6 +231,7 @@
             this.txtServer.Name = "txtServer";
             this.txtServer.Size = new System.Drawing.Size(465, 20);
             this.txtServer.TabIndex = 1;
+            this.txtServer.TextChanged += new System.EventHandler(this.txtServer_TextChanged);
             // 
             // lblServer
             // 
@@ -364,6 +370,7 @@
             this.ctrlExportCurDataQuery.Query = "";
             this.ctrlExportCurDataQuery.Size = new System.Drawing.Size(465, 355);
             this.ctrlExportCurDataQuery.TabIndex = 0;
+            this.ctrlExportCurDataQuery.PropChanged += new System.EventHandler(this.ctrlExportCurDataQuery_PropChanged);
             // 
             // ctrlExportArcDataQuery
             // 
@@ -373,6 +380,7 @@
             this.ctrlExportArcDataQuery.Query = "";
             this.ctrlExportArcDataQuery.Size = new System.Drawing.Size(465, 355);
             this.ctrlExportArcDataQuery.TabIndex = 1;
+            this.ctrlExportArcDataQuery.PropChanged += new System.EventHandler(this.ctrlExportArcDataQuery_PropChanged);
             // 
             // ctrlExportEventQuery
             // 
@@ -382,6 +390,7 @@
             this.ctrlExportEventQuery.Query = "";
             this.ctrlExportEventQuery.Size = new System.Drawing.Size(465, 355);
             this.ctrlExportEventQuery.TabIndex = 2;
+            this.ctrlExportEventQuery.PropChanged += new System.EventHandler(this.ctrlExportEventQuery_PropChanged);
             // 
             // FrmDBExportConfig
             // 

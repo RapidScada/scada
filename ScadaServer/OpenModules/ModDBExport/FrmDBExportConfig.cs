@@ -48,6 +48,7 @@ namespace Scada.Server.Modules.DBExport
         private Config config;     // конфигурация модуля
         private Config configCopy; // копия конфигурации модуля для реализации отмены изменений
         private bool modified;     // признак изменения конфигурации
+        private bool changing;     // происходит изменение значений элементов управления
         private Config.ExportDestination selExpDest; // выбранное назначение экспорта
         private TreeNode selExpDestNode;             // узел дерева выбранного назначения экспорта
 
@@ -62,6 +63,7 @@ namespace Scada.Server.Modules.DBExport
             config = null;
             configCopy = null;
             modified = false;
+            changing = false;
             selExpDest = null;
             selExpDestNode = null;
         }
@@ -164,6 +166,76 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         private void ShowSelectedExportParams()
         {
+            if (selExpDest != null)
+            {
+                changing = true;
+
+                // вывод параметров соединения с БД
+                tabControl.SelectedIndex = 0;
+                DataSource dataSource = selExpDest.DataSource;
+                txtServer.Text = dataSource.Server;
+                txtDatabase.Text = dataSource.Database;
+                txtUser.Text = dataSource.User;
+                txtPassword.Text = dataSource.Password;
+                txtConnectionString.Text = dataSource.ConnectionString;
+
+                // установка фона элементов управления, соответствующих параметрам соединения с БД
+                string bldConnStr = dataSource.BuildConnectionString();
+                KnownColor connParamsColor;
+                KnownColor connStrColor;
+
+                if (!string.IsNullOrEmpty(bldConnStr) && bldConnStr == dataSource.ConnectionString)
+                {
+                    connParamsColor = KnownColor.Window;
+                    connStrColor = KnownColor.Control;
+                }
+                else
+                {
+                    connParamsColor = KnownColor.Control;
+                    connStrColor = KnownColor.Window;
+                }
+
+                SetConnControlsBackColor(connParamsColor, connStrColor);
+
+                // вывод параметров экспорта
+                Config.ExportParams expParams = selExpDest.ExportParams;
+                ctrlExportCurDataQuery.Export = expParams.ExportCurData;
+                ctrlExportCurDataQuery.Query = expParams.ExportCurDataQuery;
+                ctrlExportArcDataQuery.Export = expParams.ExportArcData;
+                ctrlExportArcDataQuery.Query = expParams.ExportArcDataQuery;
+                ctrlExportEventQuery.Export = expParams.ExportEvent;
+                ctrlExportEventQuery.Query = expParams.ExportEventQuery;
+                changing = false;
+            }
+        }
+
+        /// <summary>
+        /// Установить цвет фона элементов управления параметров соединения с БД
+        /// </summary>
+        private void SetConnControlsBackColor(KnownColor connParamsColor, KnownColor connStrColor)
+        {
+            txtServer.BackColor = txtDatabase.BackColor = txtUser.BackColor = txtPassword.BackColor = 
+                Color.FromKnownColor(connParamsColor);
+            txtConnectionString.BackColor = Color.FromKnownColor(connStrColor);
+        }
+
+        /// <summary>
+        /// Установить и отобразить автоматически построенную строку соединения
+        /// </summary>
+        private void SetConnectionString()
+        {
+            if (selExpDest != null)
+            {
+                string bldConnStr = selExpDest.DataSource.BuildConnectionString();
+                if (!string.IsNullOrEmpty(bldConnStr))
+                {
+                    selExpDest.DataSource.ConnectionString = bldConnStr;
+                    changing = true;
+                    txtConnectionString.Text = bldConnStr;
+                    changing = false;
+                    SetConnControlsBackColor(KnownColor.Window, KnownColor.Control);
+                }
+            }
         }
 
         /// <summary>
@@ -182,6 +254,31 @@ namespace Scada.Server.Modules.DBExport
                 btnDelDataSource.Enabled = true;
                 lblInstruction.Visible = false;
                 tabControl.Visible = true;
+            }
+        }
+
+        /// <summary>
+        /// Сохранить конфигурацию модуля
+        /// </summary>
+        private bool SaveConfig()
+        {
+            if (Modified)
+            {
+                string errMsg;
+                if (config.Save(out errMsg))
+                {
+                    Modified = false;
+                    return true;
+                }
+                else
+                {
+                    ScadaUtils.ShowError(errMsg);
+                    return false;
+                }
+            }
+            else
+            {
+                return true;
             }
         }
 
@@ -225,6 +322,7 @@ namespace Scada.Server.Modules.DBExport
         {
 
         }
+
 
         private void treeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
@@ -295,14 +393,102 @@ namespace Scada.Server.Modules.DBExport
             }
         }
 
+
+        private void txtServer_TextChanged(object sender, EventArgs e)
+        {
+            if (!changing && selExpDest != null && selExpDestNode != null)
+            {
+                selExpDest.DataSource.Server = txtServer.Text;
+                selExpDestNode.Text = selExpDest.DataSource.Name;
+                SetConnectionString();
+                Modified = true;
+            }
+        }
+
+        private void txtDatabase_TextChanged(object sender, EventArgs e)
+        {
+            if (!changing && selExpDest != null)
+            {
+                selExpDest.DataSource.Database = txtDatabase.Text;
+                SetConnectionString();
+                Modified = true;
+            }
+        }
+
+        private void txtUser_TextChanged(object sender, EventArgs e)
+        {
+            if (!changing && selExpDest != null)
+            {
+                selExpDest.DataSource.User = txtUser.Text;
+                SetConnectionString();
+                Modified = true;
+            }
+        }
+
+        private void txtPassword_TextChanged(object sender, EventArgs e)
+        {
+            if (!changing && selExpDest != null)
+            {
+                selExpDest.DataSource.Password = txtPassword.Text;
+                SetConnectionString();
+                Modified = true;
+            }
+        }
+
+        private void txtConnectionString_TextChanged(object sender, EventArgs e)
+        {
+            if (!changing && selExpDest != null)
+            {
+                selExpDest.DataSource.ConnectionString = txtConnectionString.Text;
+                SetConnControlsBackColor(KnownColor.Control, KnownColor.Window);
+                Modified = true;
+            }
+        }
+
+        private void ctrlExportCurDataQuery_PropChanged(object sender, EventArgs e)
+        {
+            if (!changing && selExpDest != null)
+            {
+                selExpDest.ExportParams.ExportCurData = ctrlExportCurDataQuery.Export;
+                selExpDest.ExportParams.ExportCurDataQuery = ctrlExportCurDataQuery.Query;
+                Modified = true;
+            }
+        }
+
+        private void ctrlExportArcDataQuery_PropChanged(object sender, EventArgs e)
+        {
+            if (!changing && selExpDest != null)
+            {
+                selExpDest.ExportParams.ExportArcData = ctrlExportArcDataQuery.Export;
+                selExpDest.ExportParams.ExportArcDataQuery = ctrlExportArcDataQuery.Query;
+                Modified = true;
+            }
+        }
+
+        private void ctrlExportEventQuery_PropChanged(object sender, EventArgs e)
+        {
+            if (!changing && selExpDest != null)
+            {
+                selExpDest.ExportParams.ExportEvent = ctrlExportEventQuery.Export;
+                selExpDest.ExportParams.ExportEventQuery = ctrlExportEventQuery.Query;
+                Modified = true;
+            }
+        }
+
+
         private void btnSave_Click(object sender, EventArgs e)
         {
-
+            // сохранение конфигурации модуля
+            SaveConfig();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-
+            // отмена изменений конфигурации
+            config = configCopy;
+            configCopy = config.Clone();
+            ConfigToControls();
+            Modified = false;
         }
     }
 }

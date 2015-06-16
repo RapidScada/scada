@@ -230,6 +230,20 @@ namespace Scada.Server.Modules.DBExport
                 AddCmdParamWithValue(cmd, paramName, value);
         }
 
+        /// <summary>
+        /// Клонировать источник данных
+        /// </summary>
+        public virtual DataSource Clone()
+        {
+            DataSource dataSourceCopy = (DataSource)Activator.CreateInstance(this.GetType());
+            dataSourceCopy.DBType = DBType;
+            dataSourceCopy.Server = Server;
+            dataSourceCopy.Database = Database;
+            dataSourceCopy.User = User;
+            dataSourceCopy.Password = Password;
+            dataSourceCopy.ConnectionString = ConnectionString;
+            return dataSourceCopy;
+        }
 
         /// <summary>
         /// Сравнить текущий объект с другим объектом такого же типа
