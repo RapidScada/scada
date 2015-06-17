@@ -73,6 +73,7 @@
             this.Controls.Add(this.chkExport);
             this.Name = "CtrlExportQuery";
             this.Size = new System.Drawing.Size(465, 355);
+            this.Load += new System.EventHandler(this.CtrlExportQuery_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

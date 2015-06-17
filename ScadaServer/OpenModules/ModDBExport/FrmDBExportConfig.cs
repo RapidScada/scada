@@ -320,7 +320,24 @@ namespace Scada.Server.Modules.DBExport
 
         private void FrmDBExportConfig_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (Modified)
+            {
+                DialogResult result = MessageBox.Show(CommonPhrases.SaveModSettingsConfirm,
+                    CommonPhrases.QuestionCaption, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 
+                switch (result)
+                {
+                    case DialogResult.Yes:
+                        if (!SaveConfig())
+                            e.Cancel = true;
+                        break;
+                    case DialogResult.No:
+                        break;
+                    default:
+                        e.Cancel = true;
+                        break;
+                }
+            }
         }
 
 

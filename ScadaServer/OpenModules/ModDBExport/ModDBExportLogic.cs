@@ -135,12 +135,15 @@ namespace Scada.Server.Modules
                 {
                     Config.ExportDestination expDest = config.ExportDestinations[i];
                     DataSource dataSource = expDest.DataSource;
+                    Config.ExportParams expParams = expDest.ExportParams;
 
                     try
                     {
                         dataSource.InitConnection();
-                        dataSource.InitCommands(expDest.ExportParams.ExportCurDataQuery,
-                            expDest.ExportParams.ExportArcDataQuery, expDest.ExportParams.ExportEventQuery);
+                        dataSource.InitCommands(
+                            expParams.ExportCurData ? expParams.ExportCurDataQuery : "",
+                            expParams.ExportArcData ? expParams.ExportArcDataQuery : "", 
+                            expParams.ExportEvent ? expParams.ExportEventQuery : "");
                         i++;
                     }
                     catch (Exception ex)
@@ -192,7 +195,7 @@ namespace Scada.Server.Modules
                         try
                         {
                             dataSource.Connect();
-                            dataSource.SetCmdParam(dataSource.ExportArcDataCmd, "dateTime", DateTime.Now);
+                            dataSource.SetCmdParam(dataSource.ExportCurDataCmd, "dateTime", DateTime.Now);
                             ExportSrez(dataSource, dataSource.ExportCurDataCmd, cnlNums, curSrez);
                         }
                         catch (Exception ex)
@@ -233,7 +236,7 @@ namespace Scada.Server.Modules
                         catch (Exception ex)
                         {
                             log.WriteAction(string.Format(Localization.UseRussian ?
-                                "Ошибка при экспорте текущих данных в БД {0}: {1}" :
+                                "Ошибка при экспорте архивных данных в БД {0}: {1}" :
                                 "Error export current data to DB {0}: {1}", dataSource.Name, ex.Message));
                         }
                         finally

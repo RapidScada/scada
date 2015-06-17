@@ -60,8 +60,10 @@ namespace Scada.Server.Modules.DBExport
             }
             set
             {
+                chkExport.CheckedChanged -= chkExport_CheckedChanged;
                 chkExport.Checked = value;
-                txtQuery.ReadOnly = !chkExport.Checked;
+                chkExport.CheckedChanged += chkExport_CheckedChanged;
+                SetQueryBackColor();
             }
         }
 
@@ -76,10 +78,20 @@ namespace Scada.Server.Modules.DBExport
             }
             set
             {
+                txtQuery.TextChanged -= txtQuery_TextChanged;
                 txtQuery.Text = value;
+                txtQuery.TextChanged += txtQuery_TextChanged;
             }
         }
 
+
+        /// <summary>
+        /// Установить цвет фона текстового поля запроса
+        /// </summary>
+        private void SetQueryBackColor()
+        {
+            txtQuery.BackColor = Color.FromKnownColor(chkExport.Checked ? KnownColor.Window : KnownColor.Control);
+        }
 
         /// <summary>
         /// Вызвать событие TriggerChanged
@@ -90,6 +102,7 @@ namespace Scada.Server.Modules.DBExport
                 PropChanged(this, EventArgs.Empty);
         }
 
+
         /// <summary>
         /// Событие возникающее при изменении свойств элемента управления
         /// </summary>
@@ -97,14 +110,20 @@ namespace Scada.Server.Modules.DBExport
         public event EventHandler PropChanged;
 
 
+        private void CtrlExportQuery_Load(object sender, EventArgs e)
+        {
+            SetQueryBackColor();
+        }
+
         private void chkExport_CheckedChanged(object sender, EventArgs e)
         {
-            txtQuery.ReadOnly = !chkExport.Checked;
+            SetQueryBackColor();
             OnPropChanged();
         }
 
         private void txtQuery_TextChanged(object sender, EventArgs e)
         {
+            Export = txtQuery.Text != "";
             OnPropChanged();
         }
     }
