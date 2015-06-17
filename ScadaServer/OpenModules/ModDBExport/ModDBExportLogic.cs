@@ -266,7 +266,6 @@ namespace Scada.Server.Modules
                         {
                             dataSource.Connect();
                             DbCommand cmd = dataSource.ExportEventCmd;
-                            dataSource.SetCmdParam(cmd, "number", ev.Number);
                             dataSource.SetCmdParam(cmd, "dateTime", ev.DateTime);
                             dataSource.SetCmdParam(cmd, "objNum", ev.ObjNum);
                             dataSource.SetCmdParam(cmd, "kpNum", ev.KPNum);
