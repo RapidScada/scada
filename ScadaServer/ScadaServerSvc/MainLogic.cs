@@ -1285,7 +1285,7 @@ namespace Scada.Server.Svc
                     addSrez = false;
                 }
 
-                if (arcSrez != null)
+                if (arcSrez == null)
                     arcSrez = srez;
 
                 // изменение архивного среза

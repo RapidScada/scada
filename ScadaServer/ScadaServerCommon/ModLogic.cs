@@ -227,8 +227,11 @@ namespace Scada.Server.Modules
         /// <summary>
         /// Выполнить действия после обработки новых архивных данных
         /// </summary>
-        /// <remarks>Номера каналов упорядочены по возрастанию.
-        /// Вычисление дорасчётных каналов архивного среза в момент вызова метода завершено</remarks>
+        /// <remarks>
+        /// Номера каналов упорядочены по возрастанию.
+        /// Вычисление дорасчётных каналов архивного среза в момент вызова метода завершено.
+        /// Параметр arcSrez равен null, если запись архивных срезов отключена
+        /// </remarks>
         public virtual void OnArcDataProcessed(int[] cnlNums, SrezTableLight.Srez arcSrez)
         {
         }
@@ -236,7 +239,7 @@ namespace Scada.Server.Modules
         /// <summary>
         /// Выполнить действия при создании события
         /// </summary>
-        /// <remarks>Событие вызывается до записи на диск, поэтому свойства события можно изменить</remarks>
+        /// <remarks>Метод вызывается до записи события на диск, поэтому свойства события можно изменить</remarks>
         public virtual void OnEventCreating(EventTableLight.Event ev)
         {
         }
@@ -244,7 +247,7 @@ namespace Scada.Server.Modules
         /// <summary>
         /// Выполнить действия после создания события и записи на диск
         /// </summary>
-        /// <remarks>Событие вызывается после записи на диск</remarks>
+        /// <remarks>Метод вызывается после записи на события диск</remarks>
         public virtual void OnEventCreated(EventTableLight.Event ev)
         {
         }
