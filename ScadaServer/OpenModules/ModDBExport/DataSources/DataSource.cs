@@ -213,7 +213,7 @@ namespace Scada.Server.Modules.DBExport
         {
             ExportCurDataCmd = string.IsNullOrEmpty(exportCurDataQuery) ? null : CreateCommand(exportCurDataQuery);
             ExportArcDataCmd = string.IsNullOrEmpty(exportArcDataQuery) ? null : CreateCommand(exportArcDataQuery);
-            ExportEventCmd = string.IsNullOrEmpty(exportArcDataQuery) ? null : CreateCommand(exportEventQuery);
+            ExportEventCmd = string.IsNullOrEmpty(exportEventQuery) ? null : CreateCommand(exportEventQuery);
         }
 
         /// <summary>
