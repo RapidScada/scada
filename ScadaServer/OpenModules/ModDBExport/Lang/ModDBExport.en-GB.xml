@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModDBExportDictionaries>
+  <Dictionary key="Scada.Server.Modules.FrmDBExportConfig">
+    <Phrase key="this">Export to DB</Phrase>
+    <Phrase key="ddbAddDataSource.ToolTip">Add data source</Phrase>
+    <Phrase key="btnDelDataSource.ToolTip">Delete data source</Phrase>
+    <Phrase key="lblInstruction">Add data sources</Phrase>
+    <Phrase key="pageConnection">Connection</Phrase>
+    <Phrase key="lblServer">Server</Phrase>
+    <Phrase key="lblDatabase">Database</Phrase>
+    <Phrase key="lblUser">User</Phrase>
+    <Phrase key="lblPassword">Password</Phrase>
+    <Phrase key="lblConnectionString">Connection string</Phrase>
+    <Phrase key="pageExportCurDataQuery">Current Data</Phrase>
+    <Phrase key="pageExportArcDataQuery">Archive Data</Phrase>
+    <Phrase key="pageExportEventQuery">Events</Phrase>
+    <Phrase key="chkExport">Export</Phrase>
+    <Phrase key="btnSave">Save</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
+  </Dictionary>
+</ModDBExportDictionaries>

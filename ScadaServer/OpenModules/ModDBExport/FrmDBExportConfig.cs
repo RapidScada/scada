@@ -290,14 +290,9 @@ namespace Scada.Server.Modules.DBExport
             if (!Localization.UseRussian)
             {
                 if (Localization.LoadDictionaries(langDir, "ModDBExport", out errMsg))
-                {
                     Localization.TranslateForm(this, "Scada.Server.Modules.FrmDBExportConfig");
-                    //ModPhrases.Init();
-                }
                 else
-                {
                     ScadaUtils.ShowError(errMsg);
-                }
             }
 
             // настройка элементов управления
@@ -381,6 +376,7 @@ namespace Scada.Server.Modules.DBExport
                 treeView.Nodes.Insert(ind, treeNode);
                 treeView.SelectedNode = treeNode;
 
+                SetConnectionString();
                 SetExportParamsVisible();
                 Modified = true;
             }
