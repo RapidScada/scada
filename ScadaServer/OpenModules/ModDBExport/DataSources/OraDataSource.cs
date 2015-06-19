@@ -106,7 +106,8 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         public override string BuildConnectionString()
         {
-            return string.Format("Server={0};User ID={2};Password={3}", Server, Database, User, Password);
+            return string.Format("Server={0}{1};User ID={2};Password={3}", 
+                Server, string.IsNullOrEmpty(Database) ? "" : "/" + Database, User, Password);
         }
     }
 }
