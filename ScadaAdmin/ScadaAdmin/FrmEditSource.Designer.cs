@@ -31,6 +31,7 @@
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.txtSource = new System.Windows.Forms.TextBox();
+            this.lblTextLength = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnOk
@@ -72,12 +73,24 @@
             this.txtSource.TextChanged += new System.EventHandler(this.txtSource_TextChanged);
             this.txtSource.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSource_KeyDown);
             // 
+            // lblTextLength
+            // 
+            this.lblTextLength.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblTextLength.AutoSize = true;
+            this.lblTextLength.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.lblTextLength.Location = new System.Drawing.Point(12, 332);
+            this.lblTextLength.Name = "lblTextLength";
+            this.lblTextLength.Size = new System.Drawing.Size(48, 13);
+            this.lblTextLength.TabIndex = 3;
+            this.lblTextLength.Text = "0 / 1000";
+            // 
             // FrmEditSource
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(384, 362);
+            this.Controls.Add(this.lblTextLength);
             this.Controls.Add(this.txtSource);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.btnCancel);
@@ -99,5 +112,6 @@
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.TextBox txtSource;
+        private System.Windows.Forms.Label lblTextLength;
     }
 }
