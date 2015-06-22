@@ -34,13 +34,16 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Log\bin\Release\Log.dll</HintPath>
     </Reference>
+    <Reference Include="Mono.Security">
+      <HintPath>..\..\..\..\dll\PostgreSQL\Mono.Security.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data, Version=6.9.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\dll\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="Npgsql, Version=2.2.3.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\dll\Npgsql.dll</HintPath>
+      <HintPath>..\..\..\..\dll\PostgreSQL\Npgsql.dll</HintPath>
     </Reference>
     <Reference Include="ScadaData, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
