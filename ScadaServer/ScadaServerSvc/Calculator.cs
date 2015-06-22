@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
@@ -46,9 +46,13 @@ namespace Scada.Server.Svc
         /// </summary>
         public delegate void CalcCnlDataDelegate(ref SrezTableLight.CnlData cnlData);
         /// <summary>
-        /// Делегат вычисления значения команды
+        /// Делегат вычисления значения стандартной команды
         /// </summary>
         public delegate void CalcCmdValDelegate(ref double cmdVal);
+        /// <summary>
+        /// Делегат вычисления данных бинарной команды
+        /// </summary>
+        public delegate void CalcCmdDataDelegate(ref byte[] cmdData);
 
         private MainLogic mainLogic;         // ссылка на объект основной логики приложения
         private Log appLog;                  // журнал приложения
@@ -96,12 +100,12 @@ namespace Scada.Server.Svc
 
                 string calcCnlValName = "CalcCnl" + cnlNum + "Val";
                 string calcCnlValExpr = part0 == "" ? "CnlVal" : "Convert.ToDouble(" + part0 + ")";
-                string calcCnlValSrc = "public double " + calcCnlValName + "() { return " + calcCnlValExpr + "; }";
+                string calcCnlValSrc = string.Format("public double {0}() { return {1}; }", calcCnlValName, calcCnlValExpr);
                 exprList.Add(calcCnlValSrc);
 
                 string calcCnlStatName = "CalcCnl" + cnlNum + "Stat";
                 string calcCnlStatExpr = part1 == "" ? "CnlStat" : "Convert.ToInt32(" + part1 + ")";
-                string calcCnlStatSrc = "public int " + calcCnlStatName + "() { return " + calcCnlStatExpr + "; }";
+                string calcCnlStatSrc = string.Format("public int {0}() { return {1}; }", calcCnlStatName, calcCnlStatExpr);
                 exprList.Add(calcCnlStatSrc);
 
                 string calcCnlDataSrc = "public void CalcCnl" + cnlNum +
@@ -113,18 +117,33 @@ namespace Scada.Server.Svc
         }
 
         /// <summary>
-        /// Добавить исходный код формулы канала управления
+        /// Добавить исходный код формулы канала управления для стандартной команды
         /// </summary>
-        public void AddCtrlCnlFormulaSource(int ctrlCnlNum, string source)
+        public void AddCtrlCnlStandardFormulaSource(int ctrlCnlNum, string source)
         {
             if (ctrlCnlNum > 0)
             {
-                source = source == null ? "" : source.Trim();
-                string calcCmdValExpr = source == "" ? "CmdVal" : "Convert.ToDouble(" + source + ")";
-                string calcCmdValSrc = "public void CalcCmdVal" + ctrlCnlNum +
-                    "(ref double cmdVal) { try { BeginCalcCmdVal(" + ctrlCnlNum +
-                    ", cmdVal); cmdVal = " + calcCmdValExpr + "; } finally { EndCalcCmdVal(); }}";
-                exprList.Add(calcCmdValSrc);
+                string calcCmdValExpr = string.IsNullOrEmpty(source) ? "CmdVal" : 
+                    string.Format("Convert.ToDouble({0})", source.Trim());
+                exprList.Add(string.Format(
+                    "public void CalcCmdVal{0}(ref double cmdVal) " +
+                    "{ try { BeginCalcCmdData({0}, cmdVal, null); cmdVal = {1}; } finally { EndCalcCmdData(); }}",
+                    ctrlCnlNum, calcCmdValExpr));
+            }
+        }
+
+        /// <summary>
+        /// Добавить исходный код формулы канала управления для бинарной команды
+        /// </summary>
+        public void AddCtrlCnlBinaryFormulaSource(int ctrlCnlNum, string source)
+        {
+            if (ctrlCnlNum > 0)
+            {
+                string calcCmdDataExpr = string.IsNullOrEmpty(source) ? "CmdData" : source.Trim();
+                exprList.Add(string.Format(
+                    "public void CalcCmdData{0}(ref byte[] cmdData) " +
+                    "{ try { BeginCalcCmdData({0}, 0.0, cmdData); cmdData = {1}; } finally { EndCalcCmdData(); }}",
+                    ctrlCnlNum, calcCmdDataExpr));
             }
         }
 
@@ -246,7 +265,7 @@ namespace Scada.Server.Svc
         }
 
         /// <summary>
-        /// Получить метод вычисления значения команды
+        /// Получить метод вычисления значения стандартной команды
         /// </summary>
         public CalcCmdValDelegate GetCalcCmdVal(int ctrlCnlNum)
         {
@@ -260,6 +279,26 @@ namespace Scada.Server.Svc
                 appLog.WriteAction(string.Format(Localization.UseRussian ? 
                     "Ошибка при получении метода вычисления значения команды для канала управления {0}: {1}" :
                     "Error getting calculation commmand value method for the output channel {0}: {1}", 
+                    ctrlCnlNum, ex.Message), Log.ActTypes.Exception);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Получить метод вычисления данных бинарной команды
+        /// </summary>
+        public CalcCmdDataDelegate GetCalcCmdData(int ctrlCnlNum)
+        {
+            try
+            {
+                return (CalcCmdDataDelegate)Delegate.CreateDelegate(typeof(CalcCmdDataDelegate),
+                    calcEngine, "CalcCmdData" + ctrlCnlNum, false, true);
+            }
+            catch (Exception ex)
+            {
+                appLog.WriteAction(string.Format(Localization.UseRussian ?
+                    "Ошибка при получении метода вычисления данных команды для канала управления {0}: {1}" :
+                    "Error getting calculation commmand data method for the output channel {0}: {1}",
                     ctrlCnlNum, ex.Message), Log.ActTypes.Exception);
                 return null;
             }

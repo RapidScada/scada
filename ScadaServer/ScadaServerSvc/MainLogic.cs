@@ -673,8 +673,13 @@ namespace Scada.Server.Svc
 
             foreach (CtrlCnl ctrlCnl in ctrlCnls.Values)
             {
-                if (ctrlCnl.FormulaUsed && ctrlCnl.CmdTypeID == 0 /*стандартная команда*/)
-                    calculator.AddCtrlCnlFormulaSource(ctrlCnl.CtrlCnlNum, ctrlCnl.Formula);
+                if (ctrlCnl.FormulaUsed)
+                {
+                    if (ctrlCnl.CmdTypeID == BaseValues.CmdTypes.Standard)
+                        calculator.AddCtrlCnlStandardFormulaSource(ctrlCnl.CtrlCnlNum, ctrlCnl.Formula);
+                    else if (ctrlCnl.CmdTypeID == BaseValues.CmdTypes.Binary)
+                        calculator.AddCtrlCnlBinaryFormulaSource(ctrlCnl.CtrlCnlNum, ctrlCnl.Formula);
+                }
             }
 
             // компиляция формул и получение методов вычисления каналов
@@ -696,15 +701,23 @@ namespace Scada.Server.Svc
 
                 foreach (CtrlCnl ctrlCnl in ctrlCnls.Values)
                 {
-                    if (ctrlCnl.FormulaUsed && ctrlCnl.CmdTypeID == 0 /*стандартная команда*/)
+                    ctrlCnl.CalcCmdVal = null;
+                    ctrlCnl.CalcCmdData = null;
+
+                    if (ctrlCnl.FormulaUsed)
                     {
-                        ctrlCnl.CalcCmdVal = calculator.GetCalcCmdVal(ctrlCnl.CtrlCnlNum);
-                        if (ctrlCnl.CalcCmdVal == null)
-                            return false;
-                    }
-                    else
-                    {
-                        ctrlCnl.CalcCmdVal = null;
+                        if (ctrlCnl.CmdTypeID == BaseValues.CmdTypes.Standard)
+                        {
+                            ctrlCnl.CalcCmdVal = calculator.GetCalcCmdVal(ctrlCnl.CtrlCnlNum);
+                            if (ctrlCnl.CalcCmdVal == null)
+                                return false;
+                        }
+                        else if (ctrlCnl.CmdTypeID == BaseValues.CmdTypes.Binary)
+                        {
+                            ctrlCnl.CalcCmdData = calculator.GetCalcCmdData(ctrlCnl.CtrlCnlNum);
+                            if (ctrlCnl.CalcCmdData == null)
+                                return false;
+                        }
                     }
                 }
 
