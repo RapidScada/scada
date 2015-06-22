@@ -2305,17 +2305,16 @@ namespace Scada.Server.Svc
         /// </summary>
         public void ProcCommand(CtrlCnl ctrlCnl, ModLogic.Command cmd, int userID, out bool passToClients)
         {
-            if (!serverIsReady || ctrlCnl == null)
-            {
-                passToClients = false;
-            }
-            else
+            passToClients = false;
+
+            if (serverIsReady && ctrlCnl != null)
             {
                 int ctrlCnlNum = ctrlCnl.CtrlCnlNum;
 
-                // вычисление значения команды
+                // вычисление значения или данных команды по формуле канала управления
                 if (ctrlCnl.CalcCmdVal != null)
                 {
+                    // вычисление значения стандартной команды
                     try
                     {
                         procSrez = curSrez; // необходимо для работы формул Val(n) и Stat(n)
@@ -2324,12 +2323,13 @@ namespace Scada.Server.Svc
                             lock (calculator)
                                 ctrlCnl.CalcCmdVal(ref cmdVal);
                         cmd.CmdVal = cmdVal;
+                        passToClients = !double.IsNaN(cmdVal);
                     }
                     catch (Exception ex)
                     {
                         AppLog.WriteAction(string.Format(Localization.UseRussian ? 
-                            "Ошибка при вычислении значения команды для канала управления {0}: {1}" : 
-                            "Error calculating command value for the output channel {0}: {1}", 
+                            "Ошибка при вычислении значения стандартной команды для канала управления {0}: {1}" : 
+                            "Error calculating standard command value for the output channel {0}: {1}", 
                             ctrlCnlNum, ex.Message), Log.ActTypes.Error);
                         cmd.CmdVal = double.NaN;
                     }
@@ -2338,9 +2338,38 @@ namespace Scada.Server.Svc
                         procSrez = null;
                     }
                 }
+                else if (ctrlCnl.CalcCmdData != null)
+                {
+                    // вычисление данных бинарной команды
+                    try
+                    {
+                        procSrez = curSrez;
+                        byte[] cmdData = cmd.CmdData;
+                        lock (curSrez)
+                            lock (calculator)
+                                ctrlCnl.CalcCmdData(ref cmdData);
+                        cmd.CmdData = cmdData;
+                        passToClients = cmdData != null;
+                    }
+                    catch (Exception ex)
+                    {
+                        AppLog.WriteAction(string.Format(Localization.UseRussian ?
+                            "Ошибка при вычислении данных бинарной команды для канала управления {0}: {1}" :
+                            "Error calculating binary command data for the output channel {0}: {1}",
+                            ctrlCnlNum, ex.Message), Log.ActTypes.Error);
+                        cmd.CmdVal = double.NaN;
+                    }
+                    finally
+                    {
+                        procSrez = null;
+                    }
+                }
+                else
+                {
+                    passToClients = true;
+                }
 
                 // выполнение действий модулей после приёма команды
-                passToClients = !double.IsNaN(cmd.CmdVal);
                 RaiseOnCommandReceived(ctrlCnlNum, cmd, userID, ref passToClients);
 
                 // создание события
