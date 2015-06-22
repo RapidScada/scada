@@ -172,7 +172,7 @@ namespace Scada.Server.Svc
         private SortedList<int, CtrlCnl> ctrlCnls; // активные каналы управления
         private SortedList<string, User> users;    // пользователи
         private List<string> formulas;             // формулы
-        private SrezTable.Srez curSrez;            // текущий срез, предназначенный для формироваться данных сервера
+        private SrezTable.Srez curSrez;            // текущий срез, предназначенный для формирования данных сервера
         private bool curSrezMod;                   // признак изменения текущего среза (для записи по изменению)
         private SrezTableLight.Srez procSrez;      // срез, обрабатываемый в настоящий момент
         private SrezTable.SrezDescr srezDescr;     // описание создаваемых срезов
@@ -2305,9 +2305,11 @@ namespace Scada.Server.Svc
                 {
                     try
                     {
+                        procSrez = curSrez; // необходимо для работы формул Val(n) и Stat(n)
                         double cmdVal = cmd.CmdVal;
-                        lock (calculator)
-                            ctrlCnl.CalcCmdVal(ref cmdVal);
+                        lock (curSrez) 
+                            lock (calculator)
+                                ctrlCnl.CalcCmdVal(ref cmdVal);
                         cmd.CmdVal = cmdVal;
                     }
                     catch (Exception ex)
@@ -2317,6 +2319,10 @@ namespace Scada.Server.Svc
                             "Error calculating command value for the output channel {0}: {1}", 
                             ctrlCnlNum, ex.Message), Log.ActTypes.Error);
                         cmd.CmdVal = double.NaN;
+                    }
+                    finally
+                    {
+                        procSrez = null;
                     }
                 }
 
