@@ -817,12 +817,7 @@ namespace Scada.Server.Ctrl
         private void btnAbout_Click(object sender, EventArgs e)
         {
             // отображение формы о программе
-            string errMsg;
-            if (!FrmAbout.ShowAbout(exeDir, out errMsg))
-            {
-                errLog.WriteAction(errMsg);
-                ScadaUtils.ShowError(errMsg);
-            }
+            FrmAbout.ShowAbout(exeDir, errLog);
         }
 
 
