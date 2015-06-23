@@ -185,7 +185,8 @@ namespace Scada.Server.Svc
                     FormulaUsed = this.FormulaUsed,
                     Formula = this.Formula,
                     EvEnabled = this.EvEnabled,
-                    CalcCmdVal = this.CalcCmdVal
+                    CalcCmdVal = this.CalcCmdVal,
+                    CalcCmdData = this.CalcCmdData
                 };
             }
         }

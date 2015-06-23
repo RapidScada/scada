@@ -150,8 +150,8 @@ namespace Scada.Server.Svc
         /// Формат описания события на команду ТУ
         /// </summary>
         private static readonly string EventOnCmdFormat = Localization.UseRussian ?
-            "Команда ТУ: канал упр. = {0}, значение = {1}, ид. польз. = {2}" :
-            "Command: out channel = {0}, value = {1}, user ID = {2}";
+            "Команда ТУ: канал упр. = {0}, ид. польз. = {1}, значение = {2}, данные = {3}" :
+            "Command: out channel = {0}, user ID = {1}, value = {2}, data = {3}";
 
         private string infoFileName;               // полное имя файла информации
         private Thread thread;                     // поток работы сервера
@@ -699,6 +699,7 @@ namespace Scada.Server.Svc
                     }
                 }
 
+                Thread.Sleep(5000);
                 foreach (CtrlCnl ctrlCnl in ctrlCnls.Values)
                 {
                     ctrlCnl.CalcCmdVal = null;
@@ -1930,7 +1931,7 @@ namespace Scada.Server.Svc
             catch (Exception ex)
             {
                 AppLog.WriteAction((Localization.UseRussian ? 
-                    "Ошибка при запуске работы сервера: " : "Error start server: ") +
+                    "Ошибка при запуске работы сервера: " : "Error starting server: ") +
                     ex.Message, Log.ActTypes.Exception);
                 return false;
             }
@@ -2379,7 +2380,15 @@ namespace Scada.Server.Svc
                     ev.DateTime = DateTime.Now;
                     ev.ObjNum = ctrlCnl.ObjNum;
                     ev.KPNum = ctrlCnl.KPNum;
-                    ev.Descr = string.Format(EventOnCmdFormat, ctrlCnlNum, cmd.CmdVal, userID);
+                    
+                    string cmdDataStr;
+                    if (cmd.CmdData == null)
+                        cmdDataStr = "null";
+                    else if (cmd.CmdData.Length == 0)
+                        cmdDataStr = "empty";
+                    else cmdDataStr = ScadaUtils.BytesToHex(cmd.CmdData);
+
+                    ev.Descr = string.Format(EventOnCmdFormat, ctrlCnlNum, userID, cmd.CmdVal, cmdDataStr);
 
                     // запись события и выполнение действий модулей
                     WriteEvent(ev);

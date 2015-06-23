@@ -100,18 +100,20 @@ namespace Scada.Server.Svc
 
                 string calcCnlValName = "CalcCnl" + cnlNum + "Val";
                 string calcCnlValExpr = part0 == "" ? "CnlVal" : "Convert.ToDouble(" + part0 + ")";
-                string calcCnlValSrc = string.Format("public double {0}() { return {1}; }", calcCnlValName, calcCnlValExpr);
+                string calcCnlValSrc = string.Format("public double {0}() {{ return {1}; }}", 
+                    calcCnlValName, calcCnlValExpr);
                 exprList.Add(calcCnlValSrc);
 
                 string calcCnlStatName = "CalcCnl" + cnlNum + "Stat";
                 string calcCnlStatExpr = part1 == "" ? "CnlStat" : "Convert.ToInt32(" + part1 + ")";
-                string calcCnlStatSrc = string.Format("public int {0}() { return {1}; }", calcCnlStatName, calcCnlStatExpr);
+                string calcCnlStatSrc = string.Format("public int {0}() {{ return {1}; }}", 
+                    calcCnlStatName, calcCnlStatExpr);
                 exprList.Add(calcCnlStatSrc);
 
-                string calcCnlDataSrc = "public void CalcCnl" + cnlNum +
-                    "Data(ref SrezTableLight.CnlData cnlData) { try { BeginCalcCnlData(" + cnlNum + 
-                    ", cnlData); cnlData = new SrezTableLight.CnlData(" + calcCnlValName + "(), " + 
-                    calcCnlStatName + "()); } finally { EndCalcCnlData(); }}";
+                string calcCnlDataSrc = string.Format("public void CalcCnl{0}" + 
+                    "Data(ref SrezTableLight.CnlData cnlData) {{ try {{ BeginCalcCnlData({0}, cnlData); " + 
+                    "cnlData = new SrezTableLight.CnlData({1}(), {2}()); }} finally {{ EndCalcCnlData(); }}}}",
+                    cnlNum, calcCnlValName, calcCnlStatName);
                 exprList.Add(calcCnlDataSrc);
             }
         }
@@ -127,8 +129,8 @@ namespace Scada.Server.Svc
                     string.Format("Convert.ToDouble({0})", source.Trim());
                 exprList.Add(string.Format(
                     "public void CalcCmdVal{0}(ref double cmdVal) " +
-                    "{ try { BeginCalcCmdData({0}, cmdVal, null); cmdVal = {1}; } finally { EndCalcCmdData(); }}",
-                    ctrlCnlNum, calcCmdValExpr));
+                    "{{ try {{ BeginCalcCmdData({0}, cmdVal, null); cmdVal = {1}; }} " + 
+                    "finally {{ EndCalcCmdData(); }}}}", ctrlCnlNum, calcCmdValExpr));
             }
         }
 
@@ -142,8 +144,8 @@ namespace Scada.Server.Svc
                 string calcCmdDataExpr = string.IsNullOrEmpty(source) ? "CmdData" : source.Trim();
                 exprList.Add(string.Format(
                     "public void CalcCmdData{0}(ref byte[] cmdData) " +
-                    "{ try { BeginCalcCmdData({0}, 0.0, cmdData); cmdData = {1}; } finally { EndCalcCmdData(); }}",
-                    ctrlCnlNum, calcCmdDataExpr));
+                    "{{ try {{ BeginCalcCmdData({0}, 0.0, cmdData); cmdData = {1}; }} " + 
+                    "finally {{ EndCalcCmdData(); }}}}", ctrlCnlNum, calcCmdDataExpr));
             }
         }
 
