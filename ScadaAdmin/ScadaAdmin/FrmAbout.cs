@@ -44,9 +44,9 @@ namespace ScadaAdmin
 
 
         /// <summary>
-        /// Конструктор
+        /// Конструктор, ограничивающий создание объекта без параметров
         /// </summary>
-        public FrmAbout()
+        private FrmAbout()
         {
             InitializeComponent();
             
