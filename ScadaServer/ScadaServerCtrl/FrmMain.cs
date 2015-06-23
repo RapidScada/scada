@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
@@ -78,10 +78,6 @@ namespace Scada.Server.Ctrl
         /// Имя файла ошибок
         /// </summary>
         private const string ErrFileName = "ScadaServerCtrl.err";
-        /// <summary>
-        /// Пароль для генератора
-        /// </summary>
-        private const string GenPwd = "12345";
         /// <summary>
         /// Интервал ожидания перезапуска службы
         /// </summary>
@@ -1196,7 +1192,7 @@ namespace Scada.Server.Ctrl
             txtGenPwd1.TextChanged += txtGenPwd_TextChanged;
             txtGenPwd2.TextChanged += txtGenPwd_TextChanged;
             txtGenPwd3.TextChanged += txtGenPwd_TextChanged;
-            gbGenSrez.Visible = gbGenEv.Visible = gbCheckEv.Visible = gbGenCmd.Visible = pwd == GenPwd;
+            gbGenSrez.Visible = gbGenEv.Visible = gbCheckEv.Visible = gbGenCmd.Visible = pwd == commSettings.ServerPwd;
         }
 
         private void rbArcSrez_CheckedChanged(object sender, EventArgs e)

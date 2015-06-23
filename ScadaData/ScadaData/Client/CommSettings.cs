@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2005
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
@@ -98,7 +98,7 @@ namespace Scada.Client
             ServerHost = "localhost";
             ServerPort = 10000;
             ServerUser = "";
-            ServerPwd = "";
+            ServerPwd = "12345";
             ServerTimeout = 10000;
         }
 
