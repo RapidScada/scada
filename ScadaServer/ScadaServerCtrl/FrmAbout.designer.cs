@@ -52,9 +52,9 @@
             // 
             this.lblWebsite.BackColor = System.Drawing.Color.Silver;
             this.lblWebsite.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblWebsite.Location = new System.Drawing.Point(138, 174);
+            this.lblWebsite.Location = new System.Drawing.Point(232, 174);
             this.lblWebsite.Name = "lblWebsite";
-            this.lblWebsite.Size = new System.Drawing.Size(150, 23);
+            this.lblWebsite.Size = new System.Drawing.Size(95, 23);
             this.lblWebsite.TabIndex = 1;
             this.lblWebsite.Click += new System.EventHandler(this.lblLink_Click);
             // 
@@ -63,12 +63,12 @@
             this.lblVersionRu.BackColor = System.Drawing.Color.White;
             this.lblVersionRu.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(204)));
             this.lblVersionRu.ForeColor = System.Drawing.Color.Black;
-            this.lblVersionRu.Location = new System.Drawing.Point(243, 58);
+            this.lblVersionRu.Location = new System.Drawing.Point(265, 77);
             this.lblVersionRu.Margin = new System.Windows.Forms.Padding(0);
             this.lblVersionRu.Name = "lblVersionRu";
             this.lblVersionRu.Size = new System.Drawing.Size(80, 12);
             this.lblVersionRu.TabIndex = 3;
-            this.lblVersionRu.Text = "Версия 4.4.0.0";
+            this.lblVersionRu.Text = "Версия 4.5.0.0";
             this.lblVersionRu.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // lblVersionEn
@@ -76,12 +76,12 @@
             this.lblVersionEn.BackColor = System.Drawing.Color.White;
             this.lblVersionEn.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(204)));
             this.lblVersionEn.ForeColor = System.Drawing.Color.Black;
-            this.lblVersionEn.Location = new System.Drawing.Point(243, 37);
+            this.lblVersionEn.Location = new System.Drawing.Point(278, 77);
             this.lblVersionEn.Margin = new System.Windows.Forms.Padding(0);
             this.lblVersionEn.Name = "lblVersionEn";
             this.lblVersionEn.Size = new System.Drawing.Size(80, 12);
             this.lblVersionEn.TabIndex = 4;
-            this.lblVersionEn.Text = "Version 4.4.0.0";
+            this.lblVersionEn.Text = "Version 4.5.0.0";
             // 
             // pbAboutEn
             // 

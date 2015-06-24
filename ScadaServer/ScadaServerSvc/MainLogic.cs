@@ -88,7 +88,11 @@ namespace Scada.Server.Svc
         /// <summary>
         /// Младший байт номера версии приложения
         /// </summary>
-        public const byte AppVersionLo = 4;
+        public const byte AppVersionLo = 5;
+        /// <summary>
+        /// Строковая запись версии приложения
+        /// </summary>
+        public const string AppVersion = "4.5.0.0";
         /// <summary>
         /// Имя файла журнала приложения
         /// </summary>
@@ -1644,8 +1648,7 @@ namespace Scada.Server.Svc
                     writer.WriteLine(AppInfoFormat,
                         startDT.ToLocalizedString(),
                         workSpan.Days > 0 ? workSpan.ToString(@"d\.hh\:mm\:ss") : workSpan.ToString(@"hh\:mm\:ss"),
-                        workState,
-                        AppVersionHi + "." + AppVersionLo);
+                        workState, AppVersion);
                     writer.WriteLine();
                     writer.Write(comm.GetClientsInfo());
                 }
