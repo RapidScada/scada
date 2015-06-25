@@ -126,6 +126,13 @@ namespace Scada.Server.Modules
             }
         }
 
+        
+        /// <summary>
+        /// Время ожидания остановки работы модуля, мс
+        /// </summary>
+        protected const int WaitForStop = 7000;
+
+
         /// <summary>
         /// Делегат записи в журнал приложения
         /// </summary>
