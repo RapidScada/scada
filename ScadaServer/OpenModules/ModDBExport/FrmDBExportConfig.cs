@@ -203,7 +203,7 @@ namespace Scada.Server.Modules.DBExport
                 ctrlExportCurDataQuery.Query = expParams.ExportCurDataQuery;
                 ctrlExportArcDataQuery.Export = expParams.ExportArcData;
                 ctrlExportArcDataQuery.Query = expParams.ExportArcDataQuery;
-                ctrlExportEventQuery.Export = expParams.ExportEvent;
+                ctrlExportEventQuery.Export = expParams.ExportEvents;
                 ctrlExportEventQuery.Query = expParams.ExportEventQuery;
                 changing = false;
             }
@@ -482,7 +482,7 @@ namespace Scada.Server.Modules.DBExport
         {
             if (!changing && selExpDest != null)
             {
-                selExpDest.ExportParams.ExportEvent = ctrlExportEventQuery.Export;
+                selExpDest.ExportParams.ExportEvents = ctrlExportEventQuery.Export;
                 selExpDest.ExportParams.ExportEventQuery = ctrlExportEventQuery.Query;
                 Modified = true;
             }

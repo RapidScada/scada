@@ -94,41 +94,6 @@ namespace Scada.Server.Modules
 
 
         /// <summary>
-        /// Разъединиться с БД с выводом возможной ошибки в журнал
-        /// </summary>
-        private void Disconnect(DataSource dataSource)
-        {
-            try
-            {
-                dataSource.Disconnect();
-            }
-            catch (Exception ex)
-            {
-                log.WriteAction(string.Format(Localization.UseRussian ? "Ошибка при разъединении с БД {0}: {1}" :
-                    "Error disconnecting from DB {0}: {1}", dataSource.Name, ex.Message));
-            }
-        }
-
-        /// <summary>
-        /// Экспортировать срез в БД
-        /// </summary>
-        private void ExportSrez(DataSource dataSource, DbCommand cmd, int[] cnlNums, SrezTableLight.Srez srez)
-        {
-            foreach (int cnlNum in cnlNums)
-            {
-                SrezTableLight.CnlData cnlData;
-
-                if (srez.GetCnlData(cnlNum, out cnlData))
-                {
-                    dataSource.SetCmdParam(cmd, "cnlNum", cnlNum);
-                    dataSource.SetCmdParam(cmd, "val", cnlData.Val);
-                    dataSource.SetCmdParam(cmd, "stat", cnlData.Stat);
-                    cmd.ExecuteNonQuery();
-                }
-            }
-        }
-
-        /// <summary>
         /// Создать срез с заданными номерами каналов, используя данные из исходного среза
         /// </summary>
         private SrezTableLight.Srez CreateSrez(DateTime srezDT, int[] cnlNums, SrezTableLight.Srez sourceSrez)
@@ -239,7 +204,7 @@ namespace Scada.Server.Modules
                         dataSource.InitCommands(
                             expParams.ExportCurData ? expParams.ExportCurDataQuery : "",
                             expParams.ExportArcData ? expParams.ExportArcDataQuery : "", 
-                            expParams.ExportEvent ? expParams.ExportEventQuery : "");
+                            expParams.ExportEvents ? expParams.ExportEventQuery : "");
                         i++;
                     }
                     catch (Exception ex)
@@ -280,10 +245,6 @@ namespace Scada.Server.Modules
         /// </summary>
         public override void OnServerStop()
         {
-            // разъединение с БД
-            foreach (Config.ExportDestination expDest in config.ExportDestinations)
-                Disconnect(expDest.DataSource);
-
             // остановка экспортёров
             foreach (Exporter exporter in exporters)
                 exporter.Terminate();
@@ -346,32 +307,6 @@ namespace Scada.Server.Modules
                 // добавление среза в очереди экспорта
                 foreach (Exporter exporter in exporters)
                     exporter.EnqueueCurData(srez);
-
-                // устарело:
-                /*foreach (Config.ExportDestination expDest in config.ExportDestinations)
-                {
-                    if (expDest.ExportParams.ExportCurData)
-                    {
-                        DataSource dataSource = expDest.DataSource;
-
-                        try
-                        {
-                            dataSource.Connect();
-                            dataSource.SetCmdParam(dataSource.ExportCurDataCmd, "dateTime", DateTime.Now);
-                            ExportSrez(dataSource, dataSource.ExportCurDataCmd, cnlNums, curSrez);
-                        }
-                        catch (Exception ex)
-                        {
-                            log.WriteAction(string.Format(Localization.UseRussian ? 
-                                "Ошибка при экспорте текущих данных в БД {0}: {1}" :
-                                "Error export current data to DB {0}: {1}", dataSource.Name, ex.Message));
-                        }
-                        finally
-                        {
-                            Disconnect(dataSource);
-                        }
-                    }
-                }*/
             }
         }
 
@@ -389,32 +324,6 @@ namespace Scada.Server.Modules
                 // добавление среза в очереди экспорта
                 foreach (Exporter exporter in exporters)
                     exporter.EnqueueArcData(srez);
-
-                // устарело:
-                /*foreach (Config.ExportDestination expDest in config.ExportDestinations)
-                {
-                    if (expDest.ExportParams.ExportArcData)
-                    {
-                        DataSource dataSource = expDest.DataSource;
-
-                        try
-                        {
-                            dataSource.Connect();
-                            dataSource.SetCmdParam(dataSource.ExportArcDataCmd, "dateTime", arcSrez.DateTime);
-                            ExportSrez(dataSource, dataSource.ExportArcDataCmd, cnlNums, arcSrez);
-                        }
-                        catch (Exception ex)
-                        {
-                            log.WriteAction(string.Format(Localization.UseRussian ?
-                                "Ошибка при экспорте архивных данных в БД {0}: {1}" :
-                                "Error export current data to DB {0}: {1}", dataSource.Name, ex.Message));
-                        }
-                        finally
-                        {
-                            Disconnect(dataSource);
-                        }
-                    }
-                }*/
             }
         }
 
@@ -429,45 +338,6 @@ namespace Scada.Server.Modules
                 // добавление события в очереди экспорта
                 foreach (Exporter exporter in exporters)
                     exporter.EnqueueEvent(ev);
-
-                // устарело:
-                /*foreach (Config.ExportDestination expDest in config.ExportDestinations)
-                {
-                    if (expDest.ExportParams.ExportEvent)
-                    {
-                        DataSource dataSource = expDest.DataSource;
-
-                        try
-                        {
-                            dataSource.Connect();
-                            DbCommand cmd = dataSource.ExportEventCmd;
-                            dataSource.SetCmdParam(cmd, "dateTime", ev.DateTime);
-                            dataSource.SetCmdParam(cmd, "objNum", ev.ObjNum);
-                            dataSource.SetCmdParam(cmd, "kpNum", ev.KPNum);
-                            dataSource.SetCmdParam(cmd, "paramID", ev.ParamID);
-                            dataSource.SetCmdParam(cmd, "cnlNum", ev.CnlNum);
-                            dataSource.SetCmdParam(cmd, "oldCnlVal", ev.OldCnlVal);
-                            dataSource.SetCmdParam(cmd, "oldCnlStat", ev.OldCnlStat);
-                            dataSource.SetCmdParam(cmd, "newCnlVal", ev.NewCnlVal);
-                            dataSource.SetCmdParam(cmd, "newCnlStat", ev.NewCnlStat);
-                            dataSource.SetCmdParam(cmd, "checked", ev.Checked);
-                            dataSource.SetCmdParam(cmd, "userID", ev.UserID);
-                            dataSource.SetCmdParam(cmd, "descr", ev.Descr);
-                            dataSource.SetCmdParam(cmd, "data", ev.Data);
-                            cmd.ExecuteNonQuery();
-                        }
-                        catch (Exception ex)
-                        {
-                            log.WriteAction(string.Format(Localization.UseRussian ?
-                                "Ошибка при экспорте события в БД {0}: {1}" :
-                                "Error export event to DB {0}: {1}", dataSource.Name, ex.Message));
-                        }
-                        finally
-                        {
-                            Disconnect(dataSource);
-                        }
-                    }
-                }*/
             }
         }
     }
