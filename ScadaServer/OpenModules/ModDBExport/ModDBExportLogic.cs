@@ -45,95 +45,6 @@ namespace Scada.Server.Modules
     public class ModDBExportLogic : ModLogic
     {
         /// <summary>
-        /// Экспортёр для одного назначения экспорта
-        /// </summary>
-        private class Exporter
-        {
-            private Log log; // журнал работы модуля
-
-            /// <summary>
-            /// Конструктор, ограничивающий создание объекта без параметров
-            /// </summary>
-            private Exporter()
-            {
-            }
-            /// <summary>
-            /// Конструктор
-            /// </summary>
-            public Exporter(Config.ExportDestination expDest, Log log)
-            {
-                if (expDest == null)
-                    throw new ArgumentNullException("expDest");
-
-                this.log = log;
-                DataSource = expDest.DataSource;
-                ExportParams = expDest.ExportParams;
-            }
-
-            /// <summary>
-            /// Получить источник данных
-            /// </summary>
-            public DataSource DataSource { get; private set; }
-            /// <summary>
-            /// Получить параметры экспорта
-            /// </summary>
-            public Config.ExportParams ExportParams { get; private set; }
-
-            /// <summary>
-            /// Получить признак, что работа экспортёра завершена
-            /// </summary>
-            public bool Terminated { get; private set; }
-
-            /// <summary>
-            /// Запустить работу экспортёра
-            /// </summary>
-            public void Start()
-            {
-
-            }
-            /// <summary>
-            /// Начать остановку работы экспортёра
-            /// </summary>
-            public void Terminate()
-            {
-
-            }
-            /// <summary>
-            /// Прервать работу экспортёра
-            /// </summary>
-            public void Abort()
-            {
-
-            }
-            /// <summary>
-            /// Добавить текущие данные в очередь экспорта
-            /// </summary>
-            public void EnqueueCurData(SrezTableLight.Srez curSrez)
-            {
-            }
-            /// <summary>
-            /// Добавить архивные данные в очередь экспорта
-            /// </summary>
-            public void EnqueueArcData(SrezTableLight.Srez arcSrez)
-            {
-            }
-            /// <summary>
-            /// Добавить событие в очередь экспорта
-            /// </summary>
-            public void EnqueueEvent(EventTableLight.Event ev)
-            {
-            }
-            /// <summary>
-            /// Получить информацию о работе экспортёра
-            /// </summary>
-            public string GetInfo()
-            {
-                return "";
-            }
-        }
-
-
-        /// <summary>
         /// Имя файла журнала работы модуля
         /// </summary>
         internal const string LogFileName = "ModDBExport.log";
@@ -145,20 +56,6 @@ namespace Scada.Server.Modules
         /// Задержка потока обновления файла информации, мс
         /// </summary>
         private const int InfoThreadDelay = 500;
-        /// <summary>
-        /// Формат текста информации о работе модуля
-        /// </summary>
-        private static readonly string ModInfoFormat = Localization.UseRussian ?
-            "Модуль экспорта данных" + Environment.NewLine +
-            "----------------------" + Environment.NewLine +
-            "Состояние: {0}" + Environment.NewLine + Environment.NewLine +
-            "Источники данных" + Environment.NewLine +
-            "----------------" + Environment.NewLine :
-            "Export Data Module" + Environment.NewLine +
-            "------------------" + Environment.NewLine +
-            "State: {0}" + Environment.NewLine + Environment.NewLine +
-            "Data Sources" + Environment.NewLine +
-            "------------" + Environment.NewLine;
 
         private bool normalWork;          // признак нормальной работы модуля
         private string workState;         // строковая запись состояния работы
@@ -261,7 +158,25 @@ namespace Scada.Server.Modules
             {
                 // формирование текста
                 StringBuilder sbInfo = new StringBuilder();
-                sbInfo.AppendLine(string.Format(ModInfoFormat, workState));
+
+                if (Localization.UseRussian)
+                {
+                    sbInfo
+                        .AppendLine("Модуль экспорта данных")
+                        .AppendLine("----------------------")
+                        .Append("Состояние: ").AppendLine(workState).AppendLine()
+                        .AppendLine("Источники данных")
+                        .AppendLine("----------------");
+                }
+                else
+                {
+                    sbInfo
+                        .AppendLine("Export Data Module")
+                        .AppendLine("------------------")
+                        .Append("State: ").AppendLine(workState).AppendLine()
+                        .AppendLine("Data Sources")
+                        .AppendLine("------------");
+                }
 
                 int cnt = exporters.Count;
                 if (cnt > 0)

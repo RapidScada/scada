@@ -76,6 +76,7 @@
     <Compile Include="DataSources\OraDataSource.cs" />
     <Compile Include="DataSources\OleDbDataSource.cs" />
     <Compile Include="DataSources\SqlDataSource.cs" />
+    <Compile Include="Exporter.cs" />
     <Compile Include="FrmDBExportConfig.cs">
       <SubType>Form</SubType>
     </Compile>
