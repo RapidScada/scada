@@ -29,6 +29,7 @@
 using Scada.Data;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Text;
 using System.Threading;
 using Utils;
@@ -123,8 +124,239 @@ namespace Scada.Server.Modules.DBExport
         {
             while (!terminated)
             {
+                try
+                {
+                    // экспорт данных
+                    if (Connect())
+                    {
+                        ExportCurData();
+                        ExportArcData();
+                        ExportEvents();
+                    }
+                }
+                catch (ThreadAbortException)
+                {
+                    log.WriteAction(Localization.UseRussian ? 
+                        "Экспорт прерван. Не все данные экспортированы" : 
+                        "Export is aborted. Not all data is exported");
+                }
+                catch (Exception ex)
+                {
+                    log.WriteAction(string.Format(Localization.UseRussian ?
+                        "Ошибка при экспорте в БД {0}: {1}" :
+                        "Error export to DB {0}: {1}", DataSource.Name, ex.Message));
+                }
+                finally
+                {
+                    Disconnect();
+                }
+
                 Thread.Sleep(ScadaUtils.ThreadDelay);
             }
+        }
+
+        /// <summary>
+        /// Соединиться с БД с выводом возможной ошибки в журнал
+        /// </summary>
+        private bool Connect()
+        {
+            try
+            {
+                DataSource.Connect();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                log.WriteAction(string.Format(Localization.UseRussian ? "Ошибка при соединении с БД {0}: {1}" :
+                    "Error connecting to DB {0}: {1}", DataSource.Name, ex.Message));
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Разъединиться с БД с выводом возможной ошибки в журнал
+        /// </summary>
+        private void Disconnect()
+        {
+            try
+            {
+                DataSource.Disconnect();
+            }
+            catch (Exception ex)
+            {
+                log.WriteAction(string.Format(Localization.UseRussian ? "Ошибка при разъединении с БД {0}: {1}" :
+                    "Error disconnecting from DB {0}: {1}", DataSource.Name, ex.Message));
+            }
+        }
+
+        /// <summary>
+        /// Экспортировать текущие данные
+        /// </summary>
+        private void ExportCurData()
+        {
+            if (ExportParams.ExportCurData)
+            {
+                SrezTableLight.Srez sres = null;
+                try
+                {
+                    for (int i = 0; i < BundleSize; i++)
+                    {
+                        // извлечение среза из очереди
+                        lock (curSrezQueue)
+                            sres = curSrezQueue.Count > 0 ? curSrezQueue.Dequeue() : null;
+
+                        // экспорт
+                        if (sres != null)
+                            ExportSrez(DataSource.ExportCurDataCmd, sres);
+                    }
+
+                    expCurSrezCnt++;
+                    exportError = false;
+                }
+                catch (Exception ex)
+                {
+                    // возврат среза в очередь
+                    if (sres != null)
+                        lock (curSrezQueue)
+                            curSrezQueue.Enqueue(sres);
+
+                    exportError = true;
+                    log.WriteAction(string.Format(Localization.UseRussian ?
+                        "Ошибка при экспорте текущих данных в БД {0}: {1}" :
+                        "Error export current data to DB {0}: {1}", DataSource.Name, ex.Message));
+                }
+                finally
+                {
+                    Disconnect();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Экспортировать архивные данные
+        /// </summary>
+        private void ExportArcData()
+        {
+            if (ExportParams.ExportArcData)
+            {
+                SrezTableLight.Srez sres = null;
+                try
+                {
+                    for (int i = 0; i < BundleSize; i++)
+                    {
+                        // извлечение среза из очереди
+                        lock (arcSrezQueue)
+                            sres = arcSrezQueue.Count > 0 ? arcSrezQueue.Dequeue() : null;
+
+                        // экспорт
+                        if (sres != null)
+                            ExportSrez(DataSource.ExportArcDataCmd, sres);
+                    }
+
+                    expArcSrezCnt++;
+                    exportError = false;
+                }
+                catch (Exception ex)
+                {
+                    // возврат среза в очередь
+                    if (sres != null)
+                        lock (arcSrezQueue)
+                            arcSrezQueue.Enqueue(sres);
+
+                    exportError = true;
+                    log.WriteAction(string.Format(Localization.UseRussian ?
+                        "Ошибка при экспорте архивных данных в БД {0}: {1}" :
+                        "Error export archive data to DB {0}: {1}", DataSource.Name, ex.Message));
+                }
+                finally
+                {
+                    Disconnect();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Экспортировать события
+        /// </summary>
+        private void ExportEvents()
+        {
+            if (ExportParams.ExportEvents)
+            {
+                EventTableLight.Event ev = null;
+                try
+                {
+                    for (int i = 0; i < BundleSize; i++)
+                    {
+                        // извлечение события из очереди
+                        lock (evQueue)
+                            ev = evQueue.Count > 0 ? evQueue.Dequeue() : null;
+
+                        // экспорт
+                        if (ev != null)
+                            ExportEvent(DataSource.ExportEventCmd, ev);
+                    }
+
+                    expEvCnt++;
+                    exportError = false;
+                }
+                catch (Exception ex)
+                {
+                    // возврат среза в очередь
+                    if (ev != null)
+                        lock (evQueue)
+                            evQueue.Enqueue(ev);
+
+                    exportError = true;
+                    log.WriteAction(string.Format(Localization.UseRussian ?
+                        "Ошибка при экспорте событий в БД {0}: {1}" :
+                        "Error export events to DB {0}: {1}", DataSource.Name, ex.Message));
+                }
+                finally
+                {
+                    Disconnect();
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Экспортировать срез
+        /// </summary>
+        private void ExportSrez(DbCommand cmd, SrezTableLight.Srez srez)
+        {
+            DataSource.SetCmdParam(cmd, "dateTime", srez.DateTime);
+
+            foreach (int cnlNum in srez.CnlNums)
+            {
+                SrezTableLight.CnlData cnlData;
+                if (srez.GetCnlData(cnlNum, out cnlData))
+                {
+                    DataSource.SetCmdParam(cmd, "cnlNum", cnlNum);
+                    DataSource.SetCmdParam(cmd, "val", cnlData.Val);
+                    DataSource.SetCmdParam(cmd, "stat", cnlData.Stat);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Экспортировать событие
+        /// </summary>
+        private void ExportEvent(DbCommand cmd, EventTableLight.Event ev)
+        {
+            DataSource.SetCmdParam(cmd, "dateTime", ev.DateTime);
+            DataSource.SetCmdParam(cmd, "objNum", ev.ObjNum);
+            DataSource.SetCmdParam(cmd, "kpNum", ev.KPNum);
+            DataSource.SetCmdParam(cmd, "paramID", ev.ParamID);
+            DataSource.SetCmdParam(cmd, "cnlNum", ev.CnlNum);
+            DataSource.SetCmdParam(cmd, "oldCnlVal", ev.OldCnlVal);
+            DataSource.SetCmdParam(cmd, "oldCnlStat", ev.OldCnlStat);
+            DataSource.SetCmdParam(cmd, "newCnlVal", ev.NewCnlVal);
+            DataSource.SetCmdParam(cmd, "newCnlStat", ev.NewCnlStat);
+            DataSource.SetCmdParam(cmd, "checked", ev.Checked);
+            DataSource.SetCmdParam(cmd, "userID", ev.UserID);
+            DataSource.SetCmdParam(cmd, "descr", ev.Descr);
+            DataSource.SetCmdParam(cmd, "data", ev.Data);
+            cmd.ExecuteNonQuery();
         }
 
 
@@ -133,7 +365,9 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         public void Start()
         {
-
+            terminated = false;
+            thread = new Thread(new ThreadStart(Execute));
+            thread.Start();
         }
 
         /// <summary>
@@ -141,7 +375,7 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         public void Terminate()
         {
-
+            terminated = true;
         }
 
         /// <summary>

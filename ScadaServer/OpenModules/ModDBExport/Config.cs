@@ -53,7 +53,7 @@ namespace Scada.Server.Modules.DBExport
                 ExportCurDataQuery = "";
                 ExportArcData = false;
                 ExportArcDataQuery = "";
-                ExportEvent = false;
+                ExportEvents = false;
                 ExportEventQuery = "";
             }
 
@@ -76,7 +76,7 @@ namespace Scada.Server.Modules.DBExport
             /// <summary>
             /// Получить или установить признак, экспортировать ли события
             /// </summary>
-            public bool ExportEvent { get; set; }
+            public bool ExportEvents { get; set; }
             /// <summary>
             /// Получить или установить SQL-запрос для экспорта событий
             /// </summary>
@@ -93,7 +93,7 @@ namespace Scada.Server.Modules.DBExport
                         ExportCurDataQuery = this.ExportCurDataQuery,
                         ExportArcData = this.ExportArcData,
                         ExportArcDataQuery = this.ExportArcDataQuery,
-                        ExportEvent = this.ExportEvent,
+                        ExportEvents = this.ExportEvents,
                         ExportEventQuery = this.ExportEventQuery
                     };
             }
@@ -274,8 +274,8 @@ namespace Scada.Server.Modules.DBExport
                             exportParams.ExportArcData = !string.IsNullOrEmpty(exportParams.ExportArcDataQuery) && 
                                 exportParamsNode.GetChildAsBool("ExportArcData");
                             exportParams.ExportEventQuery = exportParamsNode.GetChildAsString("ExportEventQuery");
-                            exportParams.ExportEvent = !string.IsNullOrEmpty(exportParams.ExportEventQuery) &&
-                                exportParamsNode.GetChildAsBool("ExportEvent");
+                            exportParams.ExportEvents = !string.IsNullOrEmpty(exportParams.ExportEventQuery) &&
+                                exportParamsNode.GetChildAsBool("ExportEvents");
                         }
 
                         // создание назначения экспорта
@@ -351,7 +351,7 @@ namespace Scada.Server.Modules.DBExport
                     exportParamsElem.AppendElem("ExportCurDataQuery", exportParams.ExportCurDataQuery);
                     exportParamsElem.AppendElem("ExportArcData", exportParams.ExportArcData);
                     exportParamsElem.AppendElem("ExportArcDataQuery", exportParams.ExportArcDataQuery);
-                    exportParamsElem.AppendElem("ExportEvent", exportParams.ExportEvent);
+                    exportParamsElem.AppendElem("ExportEvents", exportParams.ExportEvents);
                     exportParamsElem.AppendElem("ExportEventQuery", exportParams.ExportEventQuery);
                     expDestElem.AppendChild(exportParamsElem);
                 }
