@@ -159,7 +159,7 @@ namespace Scada.Server.Svc
 
         private string infoFileName;               // полное имя файла информации
         private Thread thread;                     // поток работы сервера
-        private volatile bool terminated;          // работа потока прервана
+        private volatile bool terminated;          // необходимо завершить работу потока
         private volatile bool serverIsReady;       // сервер готов к работе
         private DateTime startDT;                  // дата и время запуска работы
         private string workState;                  // состояние работы
@@ -735,7 +735,7 @@ namespace Scada.Server.Svc
         }
 
         /// <summary>
-        /// Цикл работы менеждера (метод вызывается в отдельном потоке)
+        /// Цикл работы сервера (метод вызывается в отдельном потоке)
         /// </summary>
         private void Execute()
         {
