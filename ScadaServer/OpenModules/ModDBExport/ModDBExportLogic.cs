@@ -190,40 +190,13 @@ namespace Scada.Server.Modules
 
             if (config.Load(out errMsg))
             {
-                // инициализация источников данных
-                int i = 0;
-                while (i < config.ExportDestinations.Count)
-                {
-                    Config.ExportDestination expDest = config.ExportDestinations[i];
-                    DataSource dataSource = expDest.DataSource;
-                    Config.ExportParams expParams = expDest.ExportParams;
-
-                    try
-                    {
-                        dataSource.InitConnection();
-                        dataSource.InitCommands(
-                            expParams.ExportCurData ? expParams.ExportCurDataQuery : "",
-                            expParams.ExportArcData ? expParams.ExportArcDataQuery : "", 
-                            expParams.ExportEvents ? expParams.ExportEventQuery : "");
-                        i++;
-                    }
-                    catch (Exception ex)
-                    {
-                        log.WriteAction(string.Format(Localization.UseRussian ? 
-                            "Ошибка при инициализации источника данных {0}: {1}" : 
-                            "Error initializing data source {0}: {1}", dataSource.Name, ex.Message));
-                        // исключение из работы назначения, источник данных которого не был успешно инициализирован
-                        config.ExportDestinations.RemoveAt(i);
-                    }
-                }
-
                 // создание и запуск экспортёров
                 exporters = new List<Exporter>();
                 foreach (Config.ExportDestination expDest in config.ExportDestinations)
                 {
                     Exporter exporter = new Exporter(expDest, log);
-                    exporter.Start();
                     exporters.Add(exporter);
+                    exporter.Start();
                 }
 
                 // создание и запуск потока для обновления файла информации
