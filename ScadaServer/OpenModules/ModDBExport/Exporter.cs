@@ -49,9 +49,8 @@ namespace Scada.Server.Modules.DBExport
         private Queue<SrezTableLight.Srez> curSrezQueue; // очередь экспортируемых текущих срезов
         private Queue<SrezTableLight.Srez> arcSrezQueue; // очередь экспортируемых архивных срезов
         private Queue<EventTableLight.Event> evQueue;    // очередь экспортируемых событий
-
-        private Thread thread;            // поток работы экспортёра
-        private volatile bool terminated; // необходимо завершить работу потока
+        private Thread thread;                           // поток работы экспортёра
+        private volatile bool terminated;                // необходимо завершить работу потока
 
         // Состояние и статистика
         private bool fatalError;    // фатальная ошибка экспортёра
@@ -82,18 +81,10 @@ namespace Scada.Server.Modules.DBExport
             curSrezQueue = new Queue<SrezTableLight.Srez>(MaxQueueSize);
             arcSrezQueue = new Queue<SrezTableLight.Srez>(MaxQueueSize);
             evQueue = new Queue<EventTableLight.Event>(MaxQueueSize);
-
             thread = null;
             terminated = false;
 
-            fatalError = false;
-            exportError = false;
-            expCurSrezCnt = 0;
-            expArcSrezCnt = 0;
-            expEvCnt = 0;
-            skipCurSrezCnt = 0;
-            skipArcSrezCnt = 0;
-            skipEvCnt = 0;
+            ResetStats();
 
             DataSource = expDest.DataSource;
             ExportParams = expDest.ExportParams;
@@ -116,6 +107,44 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         public bool Terminated { get; private set; }
 
+
+        /// <summary>
+        /// Инициализировать источник данных
+        /// </summary>
+        private bool InitDataSource()
+        {
+            try
+            {
+                DataSource.InitConnection();
+                DataSource.InitCommands(
+                    ExportParams.ExportCurData ? ExportParams.ExportCurDataQuery : "",
+                    ExportParams.ExportArcData ? ExportParams.ExportArcDataQuery : "",
+                    ExportParams.ExportEvents ? ExportParams.ExportEventQuery : "");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                log.WriteAction(string.Format(Localization.UseRussian ?
+                    "Ошибка при инициализации источника данных {0}: {1}" :
+                    "Error initializing data source {0}: {1}", DataSource.Name, ex.Message));
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Сбросить статистику
+        /// </summary>
+        private void ResetStats()
+        {
+            fatalError = false;
+            exportError = false;
+            expCurSrezCnt = 0;
+            expArcSrezCnt = 0;
+            expEvCnt = 0;
+            skipCurSrezCnt = 0;
+            skipArcSrezCnt = 0;
+            skipEvCnt = 0;
+        }
 
         /// <summary>
         /// Цикл работы менеждера (метод вызывается в отдельном потоке)
@@ -203,11 +232,15 @@ namespace Scada.Server.Modules.DBExport
                     {
                         // извлечение среза из очереди
                         lock (curSrezQueue)
-                            sres = curSrezQueue.Count > 0 ? curSrezQueue.Dequeue() : null;
+                        {
+                            if (curSrezQueue.Count > 0)
+                                sres = curSrezQueue.Dequeue();
+                            else
+                                break;
+                        }
 
                         // экспорт
-                        if (sres != null)
-                            ExportSrez(DataSource.ExportCurDataCmd, sres);
+                        ExportSrez(DataSource.ExportCurDataCmd, sres);
                     }
 
                     expCurSrezCnt++;
@@ -246,11 +279,15 @@ namespace Scada.Server.Modules.DBExport
                     {
                         // извлечение среза из очереди
                         lock (arcSrezQueue)
-                            sres = arcSrezQueue.Count > 0 ? arcSrezQueue.Dequeue() : null;
+                        {
+                            if (arcSrezQueue.Count > 0)
+                                sres = arcSrezQueue.Dequeue();
+                            else
+                                break;
+                        }
 
                         // экспорт
-                        if (sres != null)
-                            ExportSrez(DataSource.ExportArcDataCmd, sres);
+                        ExportSrez(DataSource.ExportArcDataCmd, sres);
                     }
 
                     expArcSrezCnt++;
@@ -289,11 +326,15 @@ namespace Scada.Server.Modules.DBExport
                     {
                         // извлечение события из очереди
                         lock (evQueue)
-                            ev = evQueue.Count > 0 ? evQueue.Dequeue() : null;
+                        {
+                            if (evQueue.Count > 0)
+                                ev = evQueue.Dequeue();
+                            else
+                                break;
+                        }
 
                         // экспорт
-                        if (ev != null)
-                            ExportEvent(DataSource.ExportEventCmd, ev);
+                        ExportEvent(DataSource.ExportEventCmd, ev);
                     }
 
                     expEvCnt++;
@@ -365,9 +406,17 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         public void Start()
         {
-            terminated = false;
-            thread = new Thread(new ThreadStart(Execute));
-            thread.Start();
+            if (InitDataSource())
+            {
+                ResetStats();
+                terminated = false;
+                thread = new Thread(new ThreadStart(Execute));
+                thread.Start();
+            }
+            else
+            {
+                fatalError = true;
+            }
         }
 
         /// <summary>
