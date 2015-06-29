@@ -182,6 +182,22 @@ namespace Scada
                 return false;
             }
         }
+
+        /// <summary>
+        /// Преобразовать дату и время в вещественное число побайтно
+        /// </summary>
+        public static double DateTimeToDouble(DateTime dateTime)
+        {
+            return BitConverter.ToDouble(BitConverter.GetBytes(dateTime.ToBinary()), 0);
+        }
+
+        /// <summary>
+        /// Преобразовать вещественное число в дату и время побайтно
+        /// </summary>
+        public static DateTime DoubleToDateTime(double value)
+        {
+            return DateTime.FromBinary(BitConverter.ToInt64(BitConverter.GetBytes(value), 0));
+        }
         
         /// <summary>
         /// Вычислить хеш-функцию MD5
