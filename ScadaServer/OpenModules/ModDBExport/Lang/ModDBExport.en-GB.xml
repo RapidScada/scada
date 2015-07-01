@@ -4,6 +4,7 @@
     <Phrase key="this">Export to DB</Phrase>
     <Phrase key="ddbAddDataSource.ToolTip">Add data source</Phrase>
     <Phrase key="btnDelDataSource.ToolTip">Delete data source</Phrase>
+    <Phrase key="btnManualExport.ToolTip">Manual export</Phrase>
     <Phrase key="lblInstruction">Add data sources</Phrase>
     <Phrase key="pageConnection">Connection</Phrase>
     <Phrase key="lblServer">Server</Phrase>
