@@ -111,6 +111,7 @@
   <ItemGroup>
     <Content Include="Lang\ModDBExport.en-GB.xml" />
     <Content Include="Res\delete.png" />
+    <Content Include="Res\export.png" />
     <Content Include="Res\mssql.png" />
     <Content Include="Res\mysql.png" />
     <Content Include="Res\oledb.png" />

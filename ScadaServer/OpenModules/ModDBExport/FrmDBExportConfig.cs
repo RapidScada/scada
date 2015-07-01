@@ -158,7 +158,7 @@ namespace Scada.Server.Modules.DBExport
             if (treeView.Nodes.Count > 0)
                 treeView.SelectedNode = treeView.Nodes[0];
 
-            SetExportParamsVisible();
+            SetControlsEnabled();
         }
 
         /// <summary>
@@ -239,19 +239,21 @@ namespace Scada.Server.Modules.DBExport
         }
 
         /// <summary>
-        /// Установить видимость параметров экспорта
+        /// Установить доступность и видимость кнопок и параметров экспорта
         /// </summary>
-        private void SetExportParamsVisible()
+        private void SetControlsEnabled()
         {
             if (selExpDest == null) // конфигурация пуста
             {
                 btnDelDataSource.Enabled = false;
+                btnManualExport.Enabled = false;
                 lblInstruction.Visible = true;
                 tabControl.Visible = false;
             }
             else
             {
                 btnDelDataSource.Enabled = true;
+                btnManualExport.Enabled = true;
                 lblInstruction.Visible = false;
                 tabControl.Visible = true;
             }
@@ -377,7 +379,7 @@ namespace Scada.Server.Modules.DBExport
                 treeView.SelectedNode = treeNode;
 
                 SetConnectionString();
-                SetExportParamsVisible();
+                SetControlsEnabled();
                 Modified = true;
             }
         }
@@ -401,9 +403,14 @@ namespace Scada.Server.Modules.DBExport
                     selExpDestNode = null;
                 }
 
-                SetExportParamsVisible();
+                SetControlsEnabled();
                 Modified = true;
             }
+        }
+
+        private void btnManualExport_Click(object sender, EventArgs e)
+        {
+
         }
 
 

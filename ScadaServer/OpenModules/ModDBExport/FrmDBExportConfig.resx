@@ -125,7 +125,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAADc
-        CwAAAk1TRnQBSQFMAgEBBQEAAUgBAAFIAQABEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        CwAAAk1TRnQBSQFMAgEBBQEAAVABAAFQAQABEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
         AwABQAMAASADAAEBAQABCAYAAQgYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
         AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
         AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA
@@ -195,6 +195,31 @@
         1JfNc2+WfkBmMhj+Ar4W9nayuroPAAAAAElFTkSuQmCC
 </value>
   </data>
+  <data name="btnDelDataSource.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAH2SURBVDhPrZM9aBRBFMdHo5K9JPsxm7skkOSS8xI00cO7
+        ndk9FbwYIYWJhRwpbFJcodiItb2VlaSwEUsbwZBGBAP2gkRjDsGAIIJgsxHvTOHsvufM3qS4nCEB/cEW
+        8/7/fTvvY8l/Abl1LvacNfDdWSTkqA4fDlwkXeA5t+DmPIZLVwRwel3FtNwGVsgxZFZOeu7oUCsIjNZi
+        Tl9AbQ7Dmh/J8729SbCS7VY3DJdmRczsxzrcAkr9Q+DTcpKkyhBuXMSYO6tQGOhJ9PKwEVfGV8NqXkjP
+        A5xK9yYv7gWnyAn59bvhXFaoRNL8FAK7IJMt66TL6DmWtv8d2cQjENDTUYmuJyUtjP5uXi00ZJOfq5to
+        28Gg586E1QkB186iKNHPUDaplg4GA2ss4nRjm1PYKdrYKJooPOeTlvdH7QAU7azwrPr29GD0bbpvDbjL
+        VHO/nzERuH1blajtnSBPD0ZBZr15eQzr+dTWq4GuGTUJ9cSMPnqXNcRGzmDa3o6ac1zOPGuc72m+HTF+
+        vhk1qlrSO0DNr5OprXqu++WKQ0Y6Ggq+Pb8TZPB9zsAP46mV3R3YpVVeOv96+PivzQnDb1t5NX854/tf
+        TvXi5knjI/D+yTaDRm3nj4L5BJjLO3S5jaWYOQ9loy7BBbdvv2Yl/4M3lNLHf4WQP0WI0fTyr07eAAAA
+        AElFTkSuQmCC
+</value>
+  </data>
+  <data name="btnManualExport.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADDSURBVDhPY6ApcCu+ZAxlkg7U/eZIlc158d+j+EIEVIh4
+        ANM8b9/f/4Zhi/4bxqz3hUoRBsia8+f++O+Ud+S/VsAC4gxB1ty67t//yJ5P/z3KLv63z9r/X8NvLmFD
+        QJqLZz79D6JrV/z/Hzf5z3//+nv/NUNW/1f1nftfxXPaf6hS/ABkAMgFMAPU/RcRpxEGQAZM3v73f+68
+        v2ADVL1nkW4AKBwqlg6kAcsO/6bcAFAUgrCy+yTSDQBpQsZQqUEHGBgAfMqv+q0Q2acAAAAASUVORK5C
+        YII=
+</value>
+  </data>
   <data name="miAddSqlDataSource.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -259,21 +284,6 @@
         f13y+//lCcwLqAZ0ZOjjN2DdxBCgAT7/v0EN+Aw04D2SAW2pOvgNWNUf/P//dd//v15NABvwBRh9n/Yg
         DGhJ1sJvwKx61wsXNwT+f3G1BWzA/yfF/z/vU/l/bz7z/33dIv8b47VvQpViBzumuGovaHVfN6s9/M20
         5tj/vWVe/3tyTf73Zqp96EhV29yVqmgOVTpoAAMDAFYcMzMhQqTcAAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="btnDelDataSource.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAH2SURBVDhPrZM9aBRBFMdHo5K9JPsxm7skkLjJmRwa4+Hd
-        ztyeCl6MkMLEQo4UNimuUGzE2t7KSlLYiKWNYEgjggF7QaIxh2BAEEGw2sM7Uzi77zmzNykuZ0hAf7DF
-        vP9/3877WPJfQG6dj31nHUruHBJyVIcPBy6RHvCd23BrAcPlqwI4vaFiWu4AK+QYMisrPXd1qB0ERmsx
-        py+hNo9hLYjk+f7eJFjxetUNw+U5ETP7iQ63geLgCJRoOUlSZQg3L2HMnTXID/UlennUiCsTa2F1SkjP
-        Q5xO9ycv7gWnyQn59XvhvCdUIml+BoGdl8lWdNIV9B1L2/+ObOIRCOiZqEg3kpIWvd+ta/mmbPILdRNt
-        Oxj03dmwmhNw/RyKIv0CZZNq6WAwsMYjTjcbnMJOwcZmwUThO5+1vD9qB6Bge8K36o2Z4ej72YF14C5T
-        zf0xYyJw+44qUdu7QZ4ejoLMRuvKONYnU9uvh3pm1STUEzP6+L1niM2swbS9EzXnuJx53rzQ13o3Zvx8
-        e9KoaknvADW/5VLb9Wzvq1WHjHU1FEr2wk6QwQ9ZAz9OpFZ3d2CXdnnpyTejx39tTRmljpVX85czfvD1
-        dD9unTI+AR/MdRg0ajsbefMpMJd36XIbizFzHslGXYaL7sB+zUr+B38kpY//CiF/AGl50gJL9Y8cAAAA
-        AElFTkSuQmCC
 </value>
   </data>
 </root>

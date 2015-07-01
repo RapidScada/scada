@@ -48,8 +48,11 @@
             this.txtServer = new System.Windows.Forms.TextBox();
             this.lblServer = new System.Windows.Forms.Label();
             this.pageExportCurDataQuery = new System.Windows.Forms.TabPage();
+            this.ctrlExportCurDataQuery = new Scada.Server.Modules.DBExport.CtrlExportQuery();
             this.pageExportArcDataQuery = new System.Windows.Forms.TabPage();
+            this.ctrlExportArcDataQuery = new Scada.Server.Modules.DBExport.CtrlExportQuery();
             this.pageExportEventQuery = new System.Windows.Forms.TabPage();
+            this.ctrlExportEventQuery = new Scada.Server.Modules.DBExport.CtrlExportQuery();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.ddbAddDataSource = new System.Windows.Forms.ToolStripDropDownButton();
             this.miAddSqlDataSource = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,9 +62,8 @@
             this.miAddOleDbDataSource = new System.Windows.Forms.ToolStripMenuItem();
             this.btnDelDataSource = new System.Windows.Forms.ToolStripButton();
             this.lblInstruction = new System.Windows.Forms.Label();
-            this.ctrlExportCurDataQuery = new Scada.Server.Modules.DBExport.CtrlExportQuery();
-            this.ctrlExportArcDataQuery = new Scada.Server.Modules.DBExport.CtrlExportQuery();
-            this.ctrlExportEventQuery = new Scada.Server.Modules.DBExport.CtrlExportQuery();
+            this.sep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnManualExport = new System.Windows.Forms.ToolStripButton();
             this.tabControl.SuspendLayout();
             this.pageConnection.SuspendLayout();
             this.pageExportCurDataQuery.SuspendLayout();
@@ -253,6 +255,16 @@
             this.pageExportCurDataQuery.Text = "Текущие данные";
             this.pageExportCurDataQuery.UseVisualStyleBackColor = true;
             // 
+            // ctrlExportCurDataQuery
+            // 
+            this.ctrlExportCurDataQuery.Export = false;
+            this.ctrlExportCurDataQuery.Location = new System.Drawing.Point(6, 6);
+            this.ctrlExportCurDataQuery.Name = "ctrlExportCurDataQuery";
+            this.ctrlExportCurDataQuery.Query = "";
+            this.ctrlExportCurDataQuery.Size = new System.Drawing.Size(465, 355);
+            this.ctrlExportCurDataQuery.TabIndex = 0;
+            this.ctrlExportCurDataQuery.PropChanged += new System.EventHandler(this.ctrlExportCurDataQuery_PropChanged);
+            // 
             // pageExportArcDataQuery
             // 
             this.pageExportArcDataQuery.Controls.Add(this.ctrlExportArcDataQuery);
@@ -263,6 +275,16 @@
             this.pageExportArcDataQuery.TabIndex = 1;
             this.pageExportArcDataQuery.Text = "Архивные данные";
             this.pageExportArcDataQuery.UseVisualStyleBackColor = true;
+            // 
+            // ctrlExportArcDataQuery
+            // 
+            this.ctrlExportArcDataQuery.Export = false;
+            this.ctrlExportArcDataQuery.Location = new System.Drawing.Point(6, 6);
+            this.ctrlExportArcDataQuery.Name = "ctrlExportArcDataQuery";
+            this.ctrlExportArcDataQuery.Query = "";
+            this.ctrlExportArcDataQuery.Size = new System.Drawing.Size(465, 355);
+            this.ctrlExportArcDataQuery.TabIndex = 1;
+            this.ctrlExportArcDataQuery.PropChanged += new System.EventHandler(this.ctrlExportArcDataQuery_PropChanged);
             // 
             // pageExportEventQuery
             // 
@@ -275,11 +297,23 @@
             this.pageExportEventQuery.Text = "События";
             this.pageExportEventQuery.UseVisualStyleBackColor = true;
             // 
+            // ctrlExportEventQuery
+            // 
+            this.ctrlExportEventQuery.Export = false;
+            this.ctrlExportEventQuery.Location = new System.Drawing.Point(6, 6);
+            this.ctrlExportEventQuery.Name = "ctrlExportEventQuery";
+            this.ctrlExportEventQuery.Query = "";
+            this.ctrlExportEventQuery.Size = new System.Drawing.Size(465, 355);
+            this.ctrlExportEventQuery.TabIndex = 2;
+            this.ctrlExportEventQuery.PropChanged += new System.EventHandler(this.ctrlExportEventQuery_PropChanged);
+            // 
             // toolStrip
             // 
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ddbAddDataSource,
-            this.btnDelDataSource});
+            this.btnDelDataSource,
+            this.sep1,
+            this.btnManualExport});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Size = new System.Drawing.Size(684, 25);
@@ -362,35 +396,20 @@
             this.lblInstruction.Text = "Добавьте источники данных";
             this.lblInstruction.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // ctrlExportCurDataQuery
+            // sep1
             // 
-            this.ctrlExportCurDataQuery.Export = false;
-            this.ctrlExportCurDataQuery.Location = new System.Drawing.Point(6, 6);
-            this.ctrlExportCurDataQuery.Name = "ctrlExportCurDataQuery";
-            this.ctrlExportCurDataQuery.Query = "";
-            this.ctrlExportCurDataQuery.Size = new System.Drawing.Size(465, 355);
-            this.ctrlExportCurDataQuery.TabIndex = 0;
-            this.ctrlExportCurDataQuery.PropChanged += new System.EventHandler(this.ctrlExportCurDataQuery_PropChanged);
+            this.sep1.Name = "sep1";
+            this.sep1.Size = new System.Drawing.Size(6, 25);
             // 
-            // ctrlExportArcDataQuery
+            // btnManualExport
             // 
-            this.ctrlExportArcDataQuery.Export = false;
-            this.ctrlExportArcDataQuery.Location = new System.Drawing.Point(6, 6);
-            this.ctrlExportArcDataQuery.Name = "ctrlExportArcDataQuery";
-            this.ctrlExportArcDataQuery.Query = "";
-            this.ctrlExportArcDataQuery.Size = new System.Drawing.Size(465, 355);
-            this.ctrlExportArcDataQuery.TabIndex = 1;
-            this.ctrlExportArcDataQuery.PropChanged += new System.EventHandler(this.ctrlExportArcDataQuery_PropChanged);
-            // 
-            // ctrlExportEventQuery
-            // 
-            this.ctrlExportEventQuery.Export = false;
-            this.ctrlExportEventQuery.Location = new System.Drawing.Point(6, 6);
-            this.ctrlExportEventQuery.Name = "ctrlExportEventQuery";
-            this.ctrlExportEventQuery.Query = "";
-            this.ctrlExportEventQuery.Size = new System.Drawing.Size(465, 355);
-            this.ctrlExportEventQuery.TabIndex = 2;
-            this.ctrlExportEventQuery.PropChanged += new System.EventHandler(this.ctrlExportEventQuery_PropChanged);
+            this.btnManualExport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnManualExport.Image = ((System.Drawing.Image)(resources.GetObject("btnManualExport.Image")));
+            this.btnManualExport.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnManualExport.Name = "btnManualExport";
+            this.btnManualExport.Size = new System.Drawing.Size(23, 22);
+            this.btnManualExport.ToolTipText = "Экспорт в ручном режиме";
+            this.btnManualExport.Click += new System.EventHandler(this.btnManualExport_Click);
             // 
             // FrmDBExportConfig
             // 
@@ -461,5 +480,7 @@
         private System.Windows.Forms.Label lblConnectionString;
         private System.Windows.Forms.TextBox txtConnectionString;
         private System.Windows.Forms.ImageList ilTree;
+        private System.Windows.Forms.ToolStripSeparator sep1;
+        private System.Windows.Forms.ToolStripButton btnManualExport;
     }
 }
