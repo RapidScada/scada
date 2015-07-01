@@ -44,6 +44,7 @@ namespace Scada.Server.Modules.DBExport
     {
         private const int MaxQueueSize = 100; // максимальный размер очередей экспортируемых данных
         private const int BundleSize = 10;    // количество объектов очереди, экспортируемых за один проход цикла
+        private const int ErrorDelay = 1000;  // задержка в случае ошибки экспорта, мс
 
         private Log log; // журнал работы модуля
         private Queue<SrezTableLight.Srez> curSrezQueue; // очередь экспортируемых текущих срезов
@@ -51,6 +52,7 @@ namespace Scada.Server.Modules.DBExport
         private Queue<EventTableLight.Event> evQueue;    // очередь экспортируемых событий
         private Thread thread;                           // поток работы экспортёра
         private volatile bool terminated;                // необходимо завершить работу потока
+        private volatile bool running;                   // поток работает
 
         // Состояние и статистика
         private bool fatalError;    // фатальная ошибка экспортёра
@@ -61,6 +63,7 @@ namespace Scada.Server.Modules.DBExport
         private int skipCurSrezCnt; // количество пропущенных текущих срезов
         private int skipArcSrezCnt; // количество пропущенных архивных срезов
         private int skipEvCnt;      // количество пропущенных событий
+
 
         /// <summary>
         /// Конструктор, ограничивающий создание объекта без параметров
@@ -83,6 +86,7 @@ namespace Scada.Server.Modules.DBExport
             evQueue = new Queue<EventTableLight.Event>(MaxQueueSize);
             thread = null;
             terminated = false;
+            running = false;
 
             ResetStats();
 
@@ -101,11 +105,16 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         public Config.ExportParams ExportParams { get; private set; }
 
-
         /// <summary>
-        /// Получить признак, что работа экспортёра завершена
+        /// Получить признак, что экспортёр работает
         /// </summary>
-        public bool Terminated { get; private set; }
+        public bool Running
+        {
+            get
+            {
+                return running;
+            }
+        }
 
 
         /// <summary>
@@ -151,36 +160,37 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         private void Execute()
         {
-            while (!terminated)
+            try
             {
-                try
+                while (!terminated)
                 {
-                    // экспорт данных
-                    if (Connect())
+                    try
                     {
-                        ExportCurData();
-                        ExportArcData();
-                        ExportEvents();
+                        // экспорт данных
+                        if (Connect())
+                        {
+                            ExportCurData();
+                            ExportArcData();
+                            ExportEvents();
+                        }
                     }
-                }
-                catch (ThreadAbortException)
-                {
-                    log.WriteAction(Localization.UseRussian ? 
-                        "Экспорт прерван. Не все данные экспортированы" : 
-                        "Export is aborted. Not all data is exported");
-                }
-                catch (Exception ex)
-                {
-                    log.WriteAction(string.Format(Localization.UseRussian ?
-                        "Ошибка при экспорте в БД {0}: {1}" :
-                        "Error export to DB {0}: {1}", DataSource.Name, ex.Message));
-                }
-                finally
-                {
-                    Disconnect();
-                }
+                    catch (ThreadAbortException)
+                    {
+                        log.WriteAction(Localization.UseRussian ?
+                            "Экспорт прерван. Не все данные экспортированы" :
+                            "Export is aborted. Not all data is exported");
+                    }
+                    finally
+                    {
+                        Disconnect();
+                    }
 
-                Thread.Sleep(ScadaUtils.ThreadDelay);
+                    Thread.Sleep(ScadaUtils.ThreadDelay);
+                }
+            }
+            finally
+            {
+                running = false;
             }
         }
 
@@ -198,6 +208,8 @@ namespace Scada.Server.Modules.DBExport
             {
                 log.WriteAction(string.Format(Localization.UseRussian ? "Ошибка при соединении с БД {0}: {1}" :
                     "Error connecting to DB {0}: {1}", DataSource.Name, ex.Message));
+                exportError = true;
+                Thread.Sleep(ErrorDelay);
                 return false;
             }
         }
@@ -241,10 +253,10 @@ namespace Scada.Server.Modules.DBExport
 
                         // экспорт
                         ExportSrez(DataSource.ExportCurDataCmd, sres);
-                    }
 
-                    expCurSrezCnt++;
-                    exportError = false;
+                        expCurSrezCnt++;
+                        exportError = false;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -253,14 +265,11 @@ namespace Scada.Server.Modules.DBExport
                         lock (curSrezQueue)
                             curSrezQueue.Enqueue(sres);
 
-                    exportError = true;
                     log.WriteAction(string.Format(Localization.UseRussian ?
                         "Ошибка при экспорте текущих данных в БД {0}: {1}" :
                         "Error export current data to DB {0}: {1}", DataSource.Name, ex.Message));
-                }
-                finally
-                {
-                    Disconnect();
+                    exportError = true;
+                    Thread.Sleep(ErrorDelay);
                 }
             }
         }
@@ -288,10 +297,10 @@ namespace Scada.Server.Modules.DBExport
 
                         // экспорт
                         ExportSrez(DataSource.ExportArcDataCmd, sres);
-                    }
 
-                    expArcSrezCnt++;
-                    exportError = false;
+                        expArcSrezCnt++;
+                        exportError = false;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -300,14 +309,11 @@ namespace Scada.Server.Modules.DBExport
                         lock (arcSrezQueue)
                             arcSrezQueue.Enqueue(sres);
 
-                    exportError = true;
                     log.WriteAction(string.Format(Localization.UseRussian ?
                         "Ошибка при экспорте архивных данных в БД {0}: {1}" :
                         "Error export archive data to DB {0}: {1}", DataSource.Name, ex.Message));
-                }
-                finally
-                {
-                    Disconnect();
+                    exportError = true;
+                    Thread.Sleep(ErrorDelay);
                 }
             }
         }
@@ -335,10 +341,10 @@ namespace Scada.Server.Modules.DBExport
 
                         // экспорт
                         ExportEvent(DataSource.ExportEventCmd, ev);
-                    }
 
-                    expEvCnt++;
-                    exportError = false;
+                        expEvCnt++;
+                        exportError = false;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -347,14 +353,11 @@ namespace Scada.Server.Modules.DBExport
                         lock (evQueue)
                             evQueue.Enqueue(ev);
 
-                    exportError = true;
                     log.WriteAction(string.Format(Localization.UseRussian ?
                         "Ошибка при экспорте событий в БД {0}: {1}" :
                         "Error export events to DB {0}: {1}", DataSource.Name, ex.Message));
-                }
-                finally
-                {
-                    Disconnect();
+                    exportError = true;
+                    Thread.Sleep(ErrorDelay);
                 }
             }
         }
@@ -410,6 +413,7 @@ namespace Scada.Server.Modules.DBExport
             {
                 ResetStats();
                 terminated = false;
+                running = true;
                 thread = new Thread(new ThreadStart(Execute));
                 thread.Start();
             }
@@ -534,12 +538,12 @@ namespace Scada.Server.Modules.DBExport
                     stateStr = "норма";
 
                 sbInfo
-                    .Append("; Состояние: ").Append(stateStr)
-                    .Append("; В очереди тек/арх/соб: ")
+                    .Append("; состояние: ").Append(stateStr)
+                    .Append("; в очереди тек/арх/соб: ")
                     .Append(curSrezQueueCnt).Append("/").Append(arcSrezQueueCnt).Append("/").Append(evQueueCnt)
-                    .Append("; Экспортировано тек/арх/соб: ")
+                    .Append("; экспортировано тек/арх/соб: ")
                     .Append(expCurSrezCnt).Append("/").Append(expArcSrezCnt).Append("/").Append(expEvCnt)
-                    .Append("; Пропущено тек/арх/соб: ")
+                    .Append("; пропущено тек/арх/соб: ")
                     .Append(skipCurSrezCnt).Append("/").Append(skipArcSrezCnt).Append("/").Append(skipEvCnt);
             }
             else
@@ -552,12 +556,12 @@ namespace Scada.Server.Modules.DBExport
                     stateStr = "normal";
 
                 sbInfo
-                    .Append("; State: ").Append(stateStr)
-                    .Append("; In queue cur/arc/ev: ")
+                    .Append("; state: ").Append(stateStr)
+                    .Append("; in queue cur/arc/ev: ")
                     .Append(curSrezQueueCnt).Append("/").Append(arcSrezQueueCnt).Append("/").Append(evQueueCnt)
-                    .Append("; Exported cur/arc/ev: ")
+                    .Append("; exported cur/arc/ev: ")
                     .Append(expCurSrezCnt).Append("/").Append(expArcSrezCnt).Append("/").Append(expEvCnt)
-                    .Append("; Skipped cur/arc/ev: ")
+                    .Append("; skipped cur/arc/ev: ")
                     .Append(skipCurSrezCnt).Append("/").Append(skipArcSrezCnt).Append("/").Append(skipEvCnt);
             }
 
