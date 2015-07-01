@@ -233,7 +233,7 @@ namespace Scada.Server.Modules
                 running = false;
                 foreach (Exporter exporter in exporters)
                 {
-                    if (!exporter.Terminated)
+                    if (exporter.Running)
                     {
                         running = true;
                         break;
@@ -249,7 +249,7 @@ namespace Scada.Server.Modules
             if (running)
             {
                 foreach (Exporter exporter in exporters)
-                    if (!exporter.Terminated)
+                    if (exporter.Running)
                         exporter.Abort();
             }
 
@@ -261,6 +261,7 @@ namespace Scada.Server.Modules
             }
 
             // вывод информации
+            workState = Localization.UseRussian ? "остановлен" : "stopped";
             WriteInfo();
             log.WriteAction(string.Format(ModPhrases.StopModule, Name));
             log.WriteBreak();

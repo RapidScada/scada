@@ -703,7 +703,6 @@ namespace Scada.Server.Svc
                     }
                 }
 
-                Thread.Sleep(5000);
                 foreach (CtrlCnl ctrlCnl in ctrlCnls.Values)
                 {
                     ctrlCnl.CalcCmdVal = null;
