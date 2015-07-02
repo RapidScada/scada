@@ -83,6 +83,12 @@
     <Compile Include="FrmDBExportConfig.Designer.cs">
       <DependentUpon>FrmDBExportConfig.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmManualExport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmManualExport.Designer.cs">
+      <DependentUpon>FrmManualExport.cs</DependentUpon>
+    </Compile>
     <Compile Include="ModDBExportLogic.cs" />
     <Compile Include="ModDBExportView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -101,6 +107,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmDBExportConfig.resx">
       <DependentUpon>FrmDBExportConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmManualExport.resx">
+      <DependentUpon>FrmManualExport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

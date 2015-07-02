@@ -39,7 +39,7 @@ namespace Scada.Server.Modules.DBExport
     /// Module configuration form
     /// <para>Форма конфигурации КП</para>
     /// </summary>
-    public partial class FrmDBExportConfig : Form
+    internal partial class FrmDBExportConfig : Form
     {
         private string configDir;  // директория конфигурации
         private string langDir;    // директория языковых файлов
@@ -410,7 +410,11 @@ namespace Scada.Server.Modules.DBExport
 
         private void btnManualExport_Click(object sender, EventArgs e)
         {
-
+            int curDataCtrlCnlNum = 0;
+            int arcDataCtrlCnlNum = 0;
+            int eventsCtrlCnlNum = 0;
+            FrmManualExport.ShowDialog(config.ExportDestinations, null,
+                ref curDataCtrlCnlNum, ref arcDataCtrlCnlNum, ref eventsCtrlCnlNum);
         }
 
 
