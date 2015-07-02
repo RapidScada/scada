@@ -38,7 +38,7 @@ namespace Scada.Server.Modules.DBExport
     /// Query configuration control
     /// <para>Элемент управления для конфигурации запроса</para>
     /// </summary>
-    public partial class CtrlExportQuery : UserControl
+    internal partial class CtrlExportQuery : UserControl
     {
         /// <summary>
         /// Конструктор
