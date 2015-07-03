@@ -65,5 +65,9 @@
     <Phrase key="StoppedSvcState">stopped</Phrase>
     <Phrase key="StopPendingSvcState">stop pending</Phrase>
     <Phrase key="NotInstalledSvcState">not installed</Phrase>
+    <Phrase key="DataSentSuccessfully">Data sent successfully.</Phrase>
+    <Phrase key="EventSentSuccessfully">Event sent successfully.</Phrase>
+    <Phrase key="EventCheckSentSuccessfully">Event check command sent successfully.</Phrase>
+    <Phrase key="CmdSentSuccessfully">Command sent successfully.</Phrase>
   </Dictionary>
 </ScadaDataDictionaries>
