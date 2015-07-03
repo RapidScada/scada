@@ -49,6 +49,8 @@ namespace Scada.Server.Modules
         public static string StopModule { get; private set; }
         public static string NormalModExecImpossible { get; private set; }
         public static string WriteInfoError { get; private set; }
+        public static string IllegalCommand { get; private set; }
+        public static string IncorrectCmdData { get; private set; }
 
         private static void SetToDefault()
         {
@@ -65,6 +67,8 @@ namespace Scada.Server.Modules
                 StopModule = "Работа модуля {0} завершена";
                 NormalModExecImpossible = "Нормальная работа модуля невозможна";
                 WriteInfoError = "Ошибка при записи в файл информации о работе модуля";
+                IllegalCommand = "Недопустимая команда";
+                IncorrectCmdData = "Некорректные данные команды";
             }
             else
             {
@@ -72,6 +76,8 @@ namespace Scada.Server.Modules
                 StopModule = "Module {0} is stopped";
                 NormalModExecImpossible = "Normal module execution is impossible";
                 WriteInfoError = "Error writing module information to the file";
+                IllegalCommand = "Illegal command";
+                IncorrectCmdData = "Incorrect command data";
             }
         }
 

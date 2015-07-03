@@ -127,7 +127,7 @@
             this.btnExportCurData.TabIndex = 2;
             this.btnExportCurData.Text = "Экспорт";
             this.btnExportCurData.UseVisualStyleBackColor = true;
-            this.btnExportCurData.Click += new System.EventHandler(this.btnExportCurData_Click);
+            this.btnExportCurData.Click += new System.EventHandler(this.btnExport_Click);
             // 
             // gbArcData
             // 
@@ -156,8 +156,8 @@
             // 
             // dtpArcDataTime
             // 
-            this.dtpArcDataTime.CustomFormat = "HH:mm:ss";
-            this.dtpArcDataTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpArcDataTime.CustomFormat = "";
+            this.dtpArcDataTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
             this.dtpArcDataTime.Location = new System.Drawing.Point(195, 32);
             this.dtpArcDataTime.Name = "dtpArcDataTime";
             this.dtpArcDataTime.ShowUpDown = true;
@@ -166,8 +166,8 @@
             // 
             // dtpArcDataDate
             // 
-            this.dtpArcDataDate.CustomFormat = "dd.MM.yyyy";
-            this.dtpArcDataDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpArcDataDate.CustomFormat = "";
+            this.dtpArcDataDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpArcDataDate.Location = new System.Drawing.Point(89, 32);
             this.dtpArcDataDate.Name = "dtpArcDataDate";
             this.dtpArcDataDate.Size = new System.Drawing.Size(100, 20);
@@ -212,7 +212,7 @@
             this.btnExportArcData.TabIndex = 5;
             this.btnExportArcData.Text = "Экспорт";
             this.btnExportArcData.UseVisualStyleBackColor = true;
-            this.btnExportArcData.Click += new System.EventHandler(this.btnExportArcData_Click);
+            this.btnExportArcData.Click += new System.EventHandler(this.btnExport_Click);
             // 
             // gbEvents
             // 
@@ -240,8 +240,8 @@
             // 
             // dtpEventsDate
             // 
-            this.dtpEventsDate.CustomFormat = "dd.MM.yyyy";
-            this.dtpEventsDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpEventsDate.CustomFormat = "";
+            this.dtpEventsDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpEventsDate.Location = new System.Drawing.Point(89, 32);
             this.dtpEventsDate.Name = "dtpEventsDate";
             this.dtpEventsDate.Size = new System.Drawing.Size(100, 20);
@@ -286,7 +286,7 @@
             this.btnExportEvents.TabIndex = 4;
             this.btnExportEvents.Text = "Экспорт";
             this.btnExportEvents.UseVisualStyleBackColor = true;
-            this.btnExportEvents.Click += new System.EventHandler(this.btnExportEvents_Click);
+            this.btnExportEvents.Click += new System.EventHandler(this.btnExport_Click);
             // 
             // btnCancel
             // 
@@ -297,17 +297,16 @@
             this.btnCancel.TabIndex = 6;
             this.btnCancel.Text = "Отмена";
             this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnOK
             // 
+            this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnOK.Location = new System.Drawing.Point(230, 271);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 5;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
-            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // FrmManualExport
             // 
@@ -331,6 +330,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Экспорт в ручном режиме";
+            this.Load += new System.EventHandler(this.FrmManualExport_Load);
             this.gbCurData.ResumeLayout(false);
             this.gbCurData.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numCurDataCtrlCnlNum)).EndInit();

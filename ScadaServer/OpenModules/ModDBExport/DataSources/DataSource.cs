@@ -245,6 +245,15 @@ namespace Scada.Server.Modules.DBExport
             return dataSourceCopy;
         }
 
+
+        /// <summary>
+        /// Получить строковое представление объекта
+        /// </summary>
+        public override string ToString()
+        {
+            return Name;
+        }
+
         /// <summary>
         /// Сравнить текущий объект с другим объектом такого же типа
         /// </summary>

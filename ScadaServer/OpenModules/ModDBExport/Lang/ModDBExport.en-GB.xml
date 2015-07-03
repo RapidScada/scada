@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ModDBExportDictionaries>
-  <Dictionary key="Scada.Server.Modules.FrmDBExportConfig">
+  <Dictionary key="Scada.Server.Modules.DBExport.FrmDBExportConfig">
     <Phrase key="this">Export to DB</Phrase>
     <Phrase key="ddbAddDataSource.ToolTip">Add data source</Phrase>
     <Phrase key="btnDelDataSource.ToolTip">Delete data source</Phrase>
@@ -19,5 +19,22 @@
     <Phrase key="btnSave">Save</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
     <Phrase key="btnClose">Close</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Server.Modules.DBExport.FrmManualExport">
+    <Phrase key="this">Manual Export</Phrase>
+    <Phrase key="lblDataSource">Data source</Phrase>
+    <Phrase key="gbCurData">Current data</Phrase>
+    <Phrase key="lblCurDataCtrlCnlNum">Out channel</Phrase>
+    <Phrase key="btnExportCurData">Export</Phrase>
+    <Phrase key="gbArcData">Archive data</Phrase>
+    <Phrase key="lblArcDataCtrlCnlNum">Out channel</Phrase>
+    <Phrase key="lblArcDataDateTime">Date and time</Phrase>
+    <Phrase key="btnExportArcData">Export</Phrase>
+    <Phrase key="gbEvents">Events</Phrase>
+    <Phrase key="lblEventsCtrlCnlNum">Out channel</Phrase>
+    <Phrase key="lblEventsDate">Date</Phrase>
+    <Phrase key="btnExportEvents">Export</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
   </Dictionary>
 </ModDBExportDictionaries>
