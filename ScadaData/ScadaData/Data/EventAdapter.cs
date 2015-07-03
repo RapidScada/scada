@@ -614,11 +614,13 @@ namespace Scada.Data
 
 
         /// <summary>
-        /// Построить имя файла таблицы событий на основе даты
+        /// Построить имя таблицы событий на основе даты
         /// </summary>
-        public static string BuildTableName(DateTime date)
+        public static string BuildEvTableName(DateTime date)
         {
-            return "e" + date.ToString("yyMMdd") + ".dat";
+            return (new StringBuilder())
+                .Append("e").Append(date.ToString("yyMMdd")).Append(".dat")
+                .ToString();
         }
     }
 }

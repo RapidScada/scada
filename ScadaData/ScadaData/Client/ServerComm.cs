@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2014
+ * Modified : 2015
  */
 
 #undef DETAILED_LOG // выводить в журнал подробную информацию об обмене данными со SCADA-Сервером
@@ -1134,7 +1134,7 @@ namespace Scada.Client
                         byte tableType;        // тип таблицы: текущая, часовая или минутная
                         byte year, month, day; // дата запрашиваемых данных
 
-                        if (tableName == "current.dat")
+                        if (tableName == SrezAdapter.CurTableName)
                         {
                             tableType = (byte)0x01;
                             year = month = day = 0;

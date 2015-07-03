@@ -40,6 +40,7 @@
 using System;
 using System.IO;
 using System.Data;
+using System.Text;
 
 namespace Scada.Data
 {
@@ -50,7 +51,7 @@ namespace Scada.Data
     public class SrezAdapter
     {
         /// <summary>
-        /// Имя файла текущего срезы
+        /// Имя таблицы текущего среза
         /// </summary>
         public const string CurTableName = "current.dat";
         /// <summary>
@@ -627,19 +628,23 @@ namespace Scada.Data
 
 
         /// <summary>
-        /// Построить имя файла таблицы минутных срезов на основе даты
+        /// Построить имя таблицы минутных срезов на основе даты
         /// </summary>
         public static string BuildMinTableName(DateTime date)
         {
-            return "m" + date.ToString("yyMMdd") + ".dat";
+            return (new StringBuilder())
+                .Append("m").Append(date.ToString("yyMMdd")).Append(".dat")
+                .ToString();
         }
 
         /// <summary>
-        /// Построить имя файла таблицы часовых срезов на основе даты
+        /// Построить имя таблицы часовых срезов на основе даты
         /// </summary>
         public static string BuildHourTableName(DateTime date)
         {
-            return "h" + date.ToString("yyMMdd") + ".dat";
+            return (new StringBuilder())
+                .Append("h").Append(date.ToString("yyMMdd")).Append(".dat")
+                .ToString();
         }
     }
 }
