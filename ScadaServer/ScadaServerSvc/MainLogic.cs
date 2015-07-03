@@ -752,8 +752,10 @@ namespace Scada.Server.Svc
                 curSrezCopyAdapter = new SrezAdapter();
                 eventAdapter = new EventAdapter();
                 eventCopyAdapter = new EventAdapter();
-                curSrezAdapter.FileName = Settings.ArcDir + "Cur" + Path.DirectorySeparatorChar + "current.dat";
-                curSrezCopyAdapter.FileName = Settings.ArcCopyDir + "Cur" + Path.DirectorySeparatorChar + "current.dat";
+                curSrezAdapter.FileName = Settings.ArcDir + "Cur" + Path.DirectorySeparatorChar + 
+                    SrezAdapter.CurTableName;
+                curSrezCopyAdapter.FileName = Settings.ArcCopyDir + "Cur" + Path.DirectorySeparatorChar + 
+                    SrezAdapter.CurTableName;
                 eventAdapter.Directory = Settings.ArcDir + "Events" + Path.DirectorySeparatorChar;
                 eventCopyAdapter.Directory = Settings.ArcCopyDir + "Events" + Path.DirectorySeparatorChar;
 
@@ -1003,7 +1005,7 @@ namespace Scada.Server.Svc
 
                     if (srezType == SrezTypes.Min)
                     {
-                        path = "Min" + Path.DirectorySeparatorChar + "m" + date.ToString("yyMMdd") + ".dat";
+                        path = "Min" + Path.DirectorySeparatorChar + SrezAdapter.BuildMinTableName(date);
                         if (Localization.UseRussian)
                         {
                             srezTableCache.SrezTable.Descr = "минутных срезов";
@@ -1017,7 +1019,7 @@ namespace Scada.Server.Svc
                     }
                     else
                     {
-                        path = "Hour" + Path.DirectorySeparatorChar + "h" + date.ToString("yyMMdd") + ".dat";
+                        path = "Hour" + Path.DirectorySeparatorChar + SrezAdapter.BuildHourTableName(date);
                         if (Localization.UseRussian)
                         {
                             srezTableCache.SrezTable.Descr = "часовых срезов";
@@ -2286,7 +2288,7 @@ namespace Scada.Server.Svc
             if (serverIsReady)
             {
                 // запись квитирования события
-                string tableName = "e" + date.ToString("yyMMdd") + ".dat";
+                string tableName = EventAdapter.BuildTableName(date);
                 bool writeOk1 = Settings.WriteEv ? 
                     WriteEventCheck(tableName, eventAdapter, evNum, userID) : true;
                 bool writeOk2 = Settings.WriteEvCopy ? 
