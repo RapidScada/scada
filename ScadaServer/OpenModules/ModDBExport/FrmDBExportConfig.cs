@@ -23,14 +23,10 @@
  * Modified : 2015
  */
 
+using Scada.Client;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Scada.Server.Modules.DBExport
@@ -41,14 +37,15 @@ namespace Scada.Server.Modules.DBExport
     /// </summary>
     internal partial class FrmDBExportConfig : Form
     {
-        private string configDir;  // директория конфигурации
-        private string langDir;    // директория языковых файлов
-        private string logDir;     // директория журналов
+        private string configDir;      // директория конфигурации
+        private string langDir;        // директория языковых файлов
+        private string logDir;         // директория журналов
+        private ServerComm serverComm; // объект для обмена данными со SCADA-Сервером
 
-        private Config config;     // конфигурация модуля
-        private Config configCopy; // копия конфигурации модуля для реализации отмены изменений
-        private bool modified;     // признак изменения конфигурации
-        private bool changing;     // происходит изменение значений элементов управления
+        private Config config;         // конфигурация модуля
+        private Config configCopy;     // копия конфигурации модуля для реализации отмены изменений
+        private bool modified;         // признак изменения конфигурации
+        private bool changing;         // происходит изменение значений элементов управления
         private Config.ExportDestination selExpDest; // выбранное назначение экспорта
         private TreeNode selExpDestNode;             // узел дерева выбранного назначения экспорта
 
@@ -90,12 +87,13 @@ namespace Scada.Server.Modules.DBExport
         /// <summary>
         /// Отобразить форму модально
         /// </summary>
-        public static void ShowDialog(string configDir, string langDir, string logDir)
+        public static void ShowDialog(string configDir, string langDir, string logDir, ServerComm serverComm)
         {
             FrmDBExportConfig frmDBExportConfig = new FrmDBExportConfig();
             frmDBExportConfig.configDir = configDir;
             frmDBExportConfig.langDir = langDir;
             frmDBExportConfig.logDir = logDir;
+            frmDBExportConfig.serverComm = serverComm;
             frmDBExportConfig.ShowDialog();
         }
 
@@ -292,7 +290,7 @@ namespace Scada.Server.Modules.DBExport
             if (!Localization.UseRussian)
             {
                 if (Localization.LoadDictionaries(langDir, "ModDBExport", out errMsg))
-                    Localization.TranslateForm(this, "Scada.Server.Modules.FrmDBExportConfig");
+                    Localization.TranslateForm(this, "Scada.Server.Modules.DBExport.FrmDBExportConfig");
                 else
                     ScadaUtils.ShowError(errMsg);
             }
@@ -410,11 +408,23 @@ namespace Scada.Server.Modules.DBExport
 
         private void btnManualExport_Click(object sender, EventArgs e)
         {
-            int curDataCtrlCnlNum = 0;
-            int arcDataCtrlCnlNum = 0;
-            int eventsCtrlCnlNum = 0;
-            FrmManualExport.ShowDialog(config.ExportDestinations, null,
-                ref curDataCtrlCnlNum, ref arcDataCtrlCnlNum, ref eventsCtrlCnlNum);
+            // отображение формы экспорта в ручном режиме
+            int curDataCtrlCnlNum = config.CurDataCtrlCnlNum;
+            int arcDataCtrlCnlNum = config.ArcDataCtrlCnlNum;
+            int eventsCtrlCnlNum = config.EventsCtrlCnlNum;
+            
+            if (FrmManualExport.ShowDialog(serverComm, config.ExportDestinations, selExpDest, 
+                ref curDataCtrlCnlNum, ref arcDataCtrlCnlNum, ref eventsCtrlCnlNum) &&
+                (config.CurDataCtrlCnlNum != curDataCtrlCnlNum || 
+                config.ArcDataCtrlCnlNum != arcDataCtrlCnlNum ||
+                config.EventsCtrlCnlNum != eventsCtrlCnlNum))
+            {
+                // установка изменившихся номеров каналов управления
+                config.CurDataCtrlCnlNum = curDataCtrlCnlNum;
+                config.ArcDataCtrlCnlNum = arcDataCtrlCnlNum;
+                config.EventsCtrlCnlNum = eventsCtrlCnlNum;
+                Modified = true;
+            }
         }
 
 

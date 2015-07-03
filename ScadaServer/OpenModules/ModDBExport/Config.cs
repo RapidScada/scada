@@ -183,6 +183,21 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         public List<ExportDestination> ExportDestinations { get; private set; }
 
+        /// <summary>
+        /// Получить или установить номер канала управления для экспорта текущих данных в ручном режиме
+        /// </summary>
+        public int CurDataCtrlCnlNum { get; set; }
+
+        /// <summary>
+        /// Получить или установить номер канала управления для экспорта архивных данных в ручном режиме
+        /// </summary>
+        public int ArcDataCtrlCnlNum { get; set; }
+
+        /// <summary>
+        /// Получить или установить номер канала управления для экспорта событий в ручном режиме
+        /// </summary>
+        public int EventsCtrlCnlNum { get; set; }
+
 
         /// <summary>
         /// Установить значения параметров конфигурации по умолчанию
@@ -193,6 +208,10 @@ namespace Scada.Server.Modules.DBExport
                 ExportDestinations = new List<ExportDestination>();
             else
                 ExportDestinations.Clear();
+
+            CurDataCtrlCnlNum = 1;
+            ArcDataCtrlCnlNum = 2;
+            EventsCtrlCnlNum = 3;
         }
 
         /// <summary>
@@ -206,8 +225,9 @@ namespace Scada.Server.Modules.DBExport
             {
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.Load(FileName);
-                XmlNode expDestsNode = xmlDoc.DocumentElement.SelectSingleNode("ExportDestinations");
 
+                // загрузка назначений экспорта
+                XmlNode expDestsNode = xmlDoc.DocumentElement.SelectSingleNode("ExportDestinations");
                 if (expDestsNode != null)
                 {
                     XmlNodeList expDestNodeList = expDestsNode.SelectNodes("ExportDestination");
@@ -290,6 +310,15 @@ namespace Scada.Server.Modules.DBExport
                     ExportDestinations.Sort();
                 }
 
+                // загрузка номеров каналов управления для экспорта в ручном режиме
+                XmlNode manExpNode = xmlDoc.DocumentElement.SelectSingleNode("ManualExport");
+                if (manExpNode != null)
+                {
+                    CurDataCtrlCnlNum = manExpNode.GetChildAsInt("CurDataCtrlCnlNum");
+                    ArcDataCtrlCnlNum = manExpNode.GetChildAsInt("ArcDataCtrlCnlNum");
+                    EventsCtrlCnlNum = manExpNode.GetChildAsInt("EventsCtrlCnlNum");
+                }
+
                 errMsg = "";
                 return true;
             }
@@ -356,6 +385,13 @@ namespace Scada.Server.Modules.DBExport
                     expDestElem.AppendChild(exportParamsElem);
                 }
 
+                // сохранение номеров каналов управления для экспорта в ручном режиме
+                XmlElement manExpElem = xmlDoc.CreateElement("ManualExport");
+                rootElem.AppendChild(manExpElem);
+                manExpElem.AppendElem("CurDataCtrlCnlNum", CurDataCtrlCnlNum);
+                manExpElem.AppendElem("ArcDataCtrlCnlNum", ArcDataCtrlCnlNum);
+                manExpElem.AppendElem("EventsCtrlCnlNum", EventsCtrlCnlNum);
+
                 xmlDoc.Save(FileName);
                 errMsg = "";
                 return true;
@@ -378,6 +414,10 @@ namespace Scada.Server.Modules.DBExport
 
             foreach (ExportDestination expDest in ExportDestinations)
                 configCopy.ExportDestinations.Add(expDest.Clone());
+
+            configCopy.CurDataCtrlCnlNum = CurDataCtrlCnlNum;
+            configCopy.ArcDataCtrlCnlNum = ArcDataCtrlCnlNum;
+            configCopy.EventsCtrlCnlNum = EventsCtrlCnlNum;
 
             return configCopy;
         }

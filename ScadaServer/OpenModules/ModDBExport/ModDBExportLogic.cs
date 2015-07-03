@@ -115,6 +115,141 @@ namespace Scada.Server.Modules
         }
 
         /// <summary>
+        /// Получить параметры команды
+        /// </summary>
+        private void GetCmdParams(Command cmd, out string dataSourceName, out DateTime dateTime)
+        {
+            string cmdDataStr = cmd.GetCmdDataStr();
+            string[] parts = cmdDataStr.Split('\n');
+
+            dataSourceName = parts[0];
+            try { dateTime = ScadaUtils.XmlParseDateTime(parts[1]); }
+            catch { dateTime = DateTime.MinValue; }
+        }
+
+        /// <summary>
+        /// Найти экспортёр по наименованию источника данных
+        /// </summary>
+        private Exporter FindExporter(string dataSourceName)
+        {
+            foreach (Exporter exporter in exporters)
+                if (exporter.DataSource.Name == dataSourceName)
+                    return exporter;
+            return null;
+        }
+
+        /// <summary>
+        /// Экспортировать текущие данные, загрузив их из файла
+        /// </summary>
+        private void ExportCurDataFromFile(Exporter exporter)
+        {
+            // загрузка текущего среза из файла
+            SrezTableLight srezTable = new SrezTableLight();
+            SrezAdapter srezAdapter = new SrezAdapter();
+            srezAdapter.FileName = ServerUtils.BuildCurFileName(Settings.ArcDir);
+
+            try
+            {
+                srezAdapter.Fill(srezTable);
+            }
+            catch (Exception ex)
+            {
+                log.WriteAction(string.Format(Localization.UseRussian ? 
+                    "Ошибка при загрузке текущего среза из файла {0}: {1}" :
+                    "Error loading current data from file {0}: {1}", srezAdapter.FileName, ex.Message));
+            }
+
+            // добавление среза в очередь экспорта
+            if (srezTable.SrezList.Count > 0)
+            {
+                SrezTableLight.Srez sourceSrez = srezTable.SrezList.Values[0];
+                SrezTableLight.Srez srez = CreateSrez(DateTime.Now, sourceSrez.CnlNums, sourceSrez);
+                exporter.EnqueueCurData(srez);
+                log.WriteAction(Localization.UseRussian ? "Текущие данные добавлены в очередь экспорта" :
+                    "Current data added to export queue");
+            }
+            else
+            {
+                log.WriteAction(Localization.UseRussian ? "Отсутствуют текущие данные для экспорта" :
+                    "No current data to export");
+            }
+        }
+
+        /// <summary>
+        /// Экспортировать архивные данные, загрузив их из файла
+        /// </summary>
+        private void ExportArcDataFromFile(Exporter exporter, DateTime dateTime)
+        {
+            // загрузка таблицы минутных срезов из файла
+            SrezTableLight srezTable = new SrezTableLight();
+            SrezAdapter srezAdapter = new SrezAdapter();
+            srezAdapter.FileName = ServerUtils.BuildMinFileName(Settings.ArcDir, dateTime);
+
+            try
+            {
+                srezAdapter.Fill(srezTable);
+            }
+            catch (Exception ex)
+            {
+                log.WriteAction(string.Format(Localization.UseRussian ?
+                    "Ошибка при загрузке таблицы минутных срезов из файла {0}: {1}" :
+                    "Error loading minute data table from file {0}: {1}", srezAdapter.FileName, ex.Message));
+            }
+
+            // поиск среза на заданное время
+            SrezTableLight.Srez srez = srezTable.GetSrez(dateTime);
+
+            // добавление среза в очередь экспорта
+            if (srez == null)
+            {
+                log.WriteAction(Localization.UseRussian ? "Отсутствуют архивные данные для экспорта" :
+                    "No archive data to export");
+            }
+            else
+            {
+                exporter.EnqueueArcData(srez);
+                log.WriteAction(Localization.UseRussian ? "Архивные данные добавлены в очередь экспорта" :
+                    "Archive data added to export queue");
+            }
+        }
+
+        /// <summary>
+        /// Экспортировать события, загрузив их из файла
+        /// </summary>
+        private void ExportEventsFromFile(Exporter exporter, DateTime date)
+        {
+            // загрузка таблицы событий из файла
+            EventTableLight eventTable = new EventTableLight();
+            EventAdapter eventAdapter = new EventAdapter();
+            eventAdapter.FileName = ServerUtils.BuildEvFileName(Settings.ArcDir, date);
+
+            try
+            {
+                eventAdapter.Fill(eventTable);
+            }
+            catch (Exception ex)
+            {
+                log.WriteAction(string.Format(Localization.UseRussian ?
+                    "Ошибка при загрузке таблицы событий из файла {0}: {1}" :
+                    "Error loading event table from file {0}: {1}", eventAdapter.FileName, ex.Message));
+            }
+
+            // добавление событий в очередь экспорта
+            if (eventTable.AllEvents.Count > 0)
+            {
+                foreach (EventTableLight.Event ev in eventTable.AllEvents)
+                    exporter.EnqueueEvent(ev);
+                log.WriteAction(Localization.UseRussian ? "События добавлены в очередь экспорта" :
+                    "Events added to export queue");
+            }
+            else
+            {
+                log.WriteAction(Localization.UseRussian ? "Отсутствуют события для экспорта" :
+                    "No events to export");
+            }
+        }
+
+        /// <summary>
         /// Записать в файл информацию о работе модуля
         /// </summary>
         private void WriteInfo()
@@ -278,7 +413,7 @@ namespace Scada.Server.Modules
                 // создание экпортируемого среза
                 SrezTableLight.Srez srez = CreateSrez(DateTime.Now, cnlNums, curSrez);
 
-                // добавление среза в очереди экспорта
+                // добавление среза в очередь экспорта
                 foreach (Exporter exporter in exporters)
                     exporter.EnqueueCurData(srez);
             }
@@ -295,7 +430,7 @@ namespace Scada.Server.Modules
                 // создание экпортируемого среза
                 SrezTableLight.Srez srez = CreateSrez(arcSrez.DateTime, cnlNums, arcSrez);
 
-                // добавление среза в очереди экспорта
+                // добавление среза в очередь экспорта
                 foreach (Exporter exporter in exporters)
                     exporter.EnqueueArcData(srez);
             }
@@ -309,9 +444,109 @@ namespace Scada.Server.Modules
             // экспорт события в БД
             if (normalWork)
             {
-                // добавление события в очереди экспорта
+                // добавление события в очередь экспорта
                 foreach (Exporter exporter in exporters)
                     exporter.EnqueueEvent(ev);
+            }
+        }
+
+        /// <summary>
+        /// Выполнить действия после приёма команды ТУ
+        /// </summary>
+        public override void OnCommandReceived(int ctrlCnlNum, Command cmd, int userID, ref bool passToClients)
+        {
+            // экспорт в ручном режиме
+            if (normalWork)
+            {
+                bool exportCurData = ctrlCnlNum == config.CurDataCtrlCnlNum;
+                bool exportArcData = ctrlCnlNum == config.ArcDataCtrlCnlNum;
+                bool exportEvents = ctrlCnlNum == config.EventsCtrlCnlNum;
+                bool procCmd = true;
+
+                if (exportCurData)
+                    log.WriteAction(Localization.UseRussian ? 
+                        "Получена команда экспорта текущих данных" :
+                        "Export current data command received");
+                else if (exportArcData)
+                    log.WriteAction(Localization.UseRussian ? 
+                        "Получена команда экспорта архивных данных" :
+                        "Export archive data command received");
+                else if (exportEvents)
+                    log.WriteAction(Localization.UseRussian ? 
+                        "Получена команда экспорта событий" :
+                        "Export events command received");
+                else
+                    procCmd = false;
+
+                if (procCmd)
+                {
+                    passToClients = false;
+
+                    if (cmd.CmdTypeID == BaseValues.CmdTypes.Binary)
+                    {
+                        string dataSourceName;
+                        DateTime dateTime;
+                        GetCmdParams(cmd, out dataSourceName, out dateTime);
+
+                        if (dataSourceName == "")
+                        {
+                            log.WriteLine(string.Format(Localization.UseRussian ?
+                                "Источник данных не задан" : "Data source is not specified"));
+                        }
+                        else
+                        {
+                            Exporter exporter = FindExporter(dataSourceName);
+
+                            if (exporter == null)
+                            {
+                                log.WriteLine(string.Format(Localization.UseRussian ?
+                                    "Неизвестный источник данных {0}" : "Unknown data source {0}", dataSourceName));
+                            }
+                            else
+                            {
+                                log.WriteLine(string.Format(Localization.UseRussian ?
+                                    "Источник данных: {0}" : "Data source: {0}", dataSourceName));
+
+                                if (exportCurData)
+                                {
+                                    ExportCurDataFromFile(exporter);
+                                }
+                                else if (exportArcData)
+                                {
+                                    if (dateTime == DateTime.MinValue)
+                                    {
+                                        log.WriteLine(string.Format(Localization.UseRussian ?
+                                            "Некорректная дата и время" : "Incorrect date and time"));
+                                    }
+                                    else
+                                    {
+                                        log.WriteLine(string.Format(Localization.UseRussian ?
+                                            "Дата и время: {0:G}" : "Date and time: {0:G}", dateTime));
+                                        ExportArcDataFromFile(exporter, dateTime);
+                                    }
+                                }
+                                else // exportEvents
+                                {
+                                    if (dateTime == DateTime.MinValue)
+                                    {
+                                        log.WriteLine(string.Format(Localization.UseRussian ?
+                                            "Некорректная дата" : "Incorrect date"));
+                                    }
+                                    else
+                                    {
+                                        log.WriteLine(string.Format(Localization.UseRussian ?
+                                            "Дата: {0:d}" : "Date: {0:d}", dateTime));
+                                        ExportEventsFromFile(exporter, dateTime);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        log.WriteAction(ModPhrases.IllegalCommand);
+                    }
+                }
             }
         }
     }
