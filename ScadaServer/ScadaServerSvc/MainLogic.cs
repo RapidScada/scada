@@ -752,10 +752,8 @@ namespace Scada.Server.Svc
                 curSrezCopyAdapter = new SrezAdapter();
                 eventAdapter = new EventAdapter();
                 eventCopyAdapter = new EventAdapter();
-                curSrezAdapter.FileName = Settings.ArcDir + "Cur" + Path.DirectorySeparatorChar + 
-                    SrezAdapter.CurTableName;
-                curSrezCopyAdapter.FileName = Settings.ArcCopyDir + "Cur" + Path.DirectorySeparatorChar + 
-                    SrezAdapter.CurTableName;
+                curSrezAdapter.FileName = ServerUtils.BuildCurFileName(Settings.ArcDir);
+                curSrezCopyAdapter.FileName = ServerUtils.BuildCurFileName(Settings.ArcCopyDir);
                 eventAdapter.Directory = Settings.ArcDir + "Events" + Path.DirectorySeparatorChar;
                 eventCopyAdapter.Directory = Settings.ArcCopyDir + "Events" + Path.DirectorySeparatorChar;
 
@@ -1001,11 +999,9 @@ namespace Scada.Server.Svc
                     // создание кэша таблицы срезов
                     srezTableCache = new SrezTableCache(date);
                     srezTableCacheList.Add(date, srezTableCache);
-                    string path;
 
                     if (srezType == SrezTypes.Min)
                     {
-                        path = "Min" + Path.DirectorySeparatorChar + SrezAdapter.BuildMinTableName(date);
                         if (Localization.UseRussian)
                         {
                             srezTableCache.SrezTable.Descr = "минутных срезов";
@@ -1016,10 +1012,14 @@ namespace Scada.Server.Svc
                             srezTableCache.SrezTable.Descr = "minute data";
                             srezTableCache.SrezTableCopy.Descr = "minute data copy";
                         }
+
+                        srezTableCache.SrezAdapter.FileName =
+                            ServerUtils.BuildMinFileName(Settings.ArcDir, date);
+                        srezTableCache.SrezCopyAdapter.FileName =
+                            ServerUtils.BuildMinFileName(Settings.ArcCopyDir, date);
                     }
                     else
                     {
-                        path = "Hour" + Path.DirectorySeparatorChar + SrezAdapter.BuildHourTableName(date);
                         if (Localization.UseRussian)
                         {
                             srezTableCache.SrezTable.Descr = "часовых срезов";
@@ -1032,10 +1032,12 @@ namespace Scada.Server.Svc
                                 srezTableCache.SrezTableCopy.Descr = "hourly data copy";
                             }
                         }
-                    }
 
-                    srezTableCache.SrezAdapter.FileName = Settings.ArcDir + path;
-                    srezTableCache.SrezCopyAdapter.FileName = Settings.ArcCopyDir + path;
+                        srezTableCache.SrezAdapter.FileName =
+                            ServerUtils.BuildHourFileName(Settings.ArcDir, date);
+                        srezTableCache.SrezCopyAdapter.FileName =
+                            ServerUtils.BuildHourFileName(Settings.ArcCopyDir, date);
+                    }
                 }
             }
 
@@ -2288,7 +2290,7 @@ namespace Scada.Server.Svc
             if (serverIsReady)
             {
                 // запись квитирования события
-                string tableName = EventAdapter.BuildTableName(date);
+                string tableName = EventAdapter.BuildEvTableName(date);
                 bool writeOk1 = Settings.WriteEv ? 
                     WriteEventCheck(tableName, eventAdapter, evNum, userID) : true;
                 bool writeOk2 = Settings.WriteEvCopy ? 
