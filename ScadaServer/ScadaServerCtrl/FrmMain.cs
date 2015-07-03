@@ -1244,7 +1244,7 @@ namespace Scada.Server.Ctrl
                 cbSrezCnlNum.Items.Remove(cnlNumStr);
                 cbSrezCnlNum.Items.Insert(0, cnlNumStr);
                 cbSrezCnlNum.Text = cnlNumStr;
-                ScadaUtils.ShowInfo(AppPhrases.SendDataCompleted);
+                ScadaUtils.ShowInfo(CommonPhrases.DataSentSuccessfully);
             }
             else
             {
@@ -1293,7 +1293,7 @@ namespace Scada.Server.Ctrl
             
             bool result;
             if (ServerComm.SendEvent(ev, out result))
-                ScadaUtils.ShowInfo(AppPhrases.SendEventCompleted);
+                ScadaUtils.ShowInfo(CommonPhrases.EventSentSuccessfully);
             else
                 ScadaUtils.ShowError(ServerComm.ErrMsg);
         }
@@ -1307,7 +1307,7 @@ namespace Scada.Server.Ctrl
             int userID = decimal.ToInt32(numEvUserID2.Value);
 
             if (ServerComm.CheckEvent(userID, evDate, evNum, out result))
-                ScadaUtils.ShowInfo(AppPhrases.CheckEventCompleted);
+                ScadaUtils.ShowInfo(CommonPhrases.EventCheckSentSuccessfully);
             else
                 ScadaUtils.ShowError(ServerComm.ErrMsg);
         }
@@ -1378,7 +1378,7 @@ namespace Scada.Server.Ctrl
             }
 
             if (sendOk)
-                ScadaUtils.ShowInfo(AppPhrases.SendCmdCompleted);
+                ScadaUtils.ShowInfo(CommonPhrases.CmdSentSuccessfully);
             else
                 ScadaUtils.ShowError(ServerComm.ErrMsg);
         }

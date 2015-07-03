@@ -215,15 +215,11 @@
     <Phrase key="ModuleAlreadyAdded">The module is already added.</Phrase>
     <Phrase key="IncorrectCnlNum">The channel number is incorrect.</Phrase>
     <Phrase key="IncorrectCnlVal">The channel value is incorrect.</Phrase>
-    <Phrase key="SendDataCompleted">Sending data completed successfully.</Phrase>
     <Phrase key="IncorrectOldCnlVal">The old channel value is incorrect.</Phrase>
     <Phrase key="IncorrectNewCnlVal">The new channel value is incorrect.</Phrase>
-    <Phrase key="SendEventCompleted">Sending event completed successfully.</Phrase>
-    <Phrase key="CheckEventCompleted">Sending event check command completed successfully.</Phrase>
     <Phrase key="IncorrectCmdVal">The command value is incorrect.</Phrase>
     <Phrase key="IncorrectHexCmdData">The hexadecimal command data are incorrect.</Phrase>
     <Phrase key="CmdDataRequired">Command data are required.</Phrase>
-    <Phrase key="SendCmdCompleted">Sending command completed successfully.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Server.Ctrl.FrmSrezTableEdit">
     <Phrase key="btnMoveFirst1.ToolTip">Move first</Phrase>

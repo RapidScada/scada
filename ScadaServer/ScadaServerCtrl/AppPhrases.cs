@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2014
- * Modified : 2014
+ * Modified : 2015
  */
 
 namespace Scada.Server.Ctrl
@@ -79,15 +79,11 @@ namespace Scada.Server.Ctrl
         public static string ModuleAlreadyAdded { get; private set; }
         public static string IncorrectCnlNum { get; private set; }
         public static string IncorrectCnlVal { get; private set; }
-        public static string SendDataCompleted { get; private set; }
         public static string IncorrectOldCnlVal { get; private set; }
         public static string IncorrectNewCnlVal { get; private set; }
-        public static string SendEventCompleted { get; private set; }
-        public static string CheckEventCompleted { get; private set; }
         public static string IncorrectCmdVal { get; private set; }
         public static string IncorrectHexCmdData { get; private set; }
         public static string CmdDataRequired { get; private set; }
-        public static string SendCmdCompleted { get; private set; }
 
         // Словарь Scada.Server.Ctrl.FrmSrezTableEdit
         public static string EditSrezTableTitle { get; private set; }
@@ -137,15 +133,11 @@ namespace Scada.Server.Ctrl
             ModuleAlreadyAdded = "Модуль уже добавлен.";
             IncorrectCnlNum = "Некорректный номер канала.";
             IncorrectCnlVal = "Некорректное значение канала.";
-            SendDataCompleted = "Данные отправлены успешно.";
             IncorrectOldCnlVal = "Некорректное старое значение канала.";
             IncorrectNewCnlVal = "Некорректное новое значение канала.";
-            SendEventCompleted = "Событие отправлено успешно.";
-            CheckEventCompleted = "Команда квитирования события отправлена успешно.";
             IncorrectCmdVal = "Некорректное значение команды.";
             IncorrectHexCmdData = "Некорректные 16-ричные данные команды.";
             CmdDataRequired = "Необходимо ввести данные команды.";
-            SendCmdCompleted = "Команда отправлена успешно.";
 
             EditSrezTableTitle = "Редактирование таблицы срезов";
             ViewSrezTableTitle = "Просмотр таблицы срезов";
@@ -203,15 +195,11 @@ namespace Scada.Server.Ctrl
                 ModuleAlreadyAdded = dict.GetPhrase("ModuleAlreadyAdded", ModuleAlreadyAdded);
                 IncorrectCnlNum = dict.GetPhrase("IncorrectCnlNum", IncorrectCnlNum);
                 IncorrectCnlVal = dict.GetPhrase("IncorrectCnlVal", IncorrectCnlVal);
-                SendDataCompleted = dict.GetPhrase("SendDataCompleted", SendDataCompleted);
                 IncorrectOldCnlVal = dict.GetPhrase("IncorrectOldCnlVal", IncorrectOldCnlVal);
                 IncorrectNewCnlVal = dict.GetPhrase("IncorrectNewCnlVal", IncorrectNewCnlVal);
-                SendEventCompleted = dict.GetPhrase("SendEventCompleted", SendEventCompleted);
-                CheckEventCompleted = dict.GetPhrase("CheckEventCompleted", CheckEventCompleted);
                 IncorrectCmdVal = dict.GetPhrase("IncorrectCmdVal", IncorrectCmdVal);
                 IncorrectHexCmdData = dict.GetPhrase("IncorrectHexCmdData", IncorrectHexCmdData);
                 CmdDataRequired = dict.GetPhrase("CmdDataRequired", CmdDataRequired);
-                SendCmdCompleted = dict.GetPhrase("SendCmdCompleted", SendCmdCompleted);
             }
 
             if (Localization.Dictionaries.TryGetValue("Scada.Server.Ctrl.FrmSrezTableEdit", out dict))
