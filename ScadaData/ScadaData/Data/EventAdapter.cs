@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2007
- * Modified : 2013
+ * Modified : 2015
  * 
  * --------------------------------
  * Table file structure (version 3)
@@ -610,6 +610,15 @@ namespace Scada.Data
                         stream.Close();
                 }
             }
+        }
+
+
+        /// <summary>
+        /// Построить имя файла таблицы событий на основе даты
+        /// </summary>
+        public static string BuildTableName(DateTime date)
+        {
+            return "e" + date.ToString("yyMMdd") + ".dat";
         }
     }
 }
