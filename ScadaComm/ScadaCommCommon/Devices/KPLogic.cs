@@ -55,16 +55,15 @@ namespace Scada.Comm.Devices
         /// </summary>
         protected const int LastCmdListSize = 10;
 
-        private string caption;       // обозначение КП
-        private string sessText;      // текст для вывода в журнал в начале сеанса опроса
-        private string sendCmdText;   // текст для вывода в журнал при отправке команды ТУ
-        private string[][] tagTable;  // таблица текущих значений тегов КП
-        private int[] tagTableColLen; // ширина столбцов таблицы значений тегов
+        private Connection conn;                  // соединение с физическим КП
+        private Log.WriteLineDelegate writeToLog; // метод записи в журнал линии связи
+        private volatile bool terminated;         // признак завершения работы линии связи
+        private string caption;                   // обозначение КП
+        private string sessText;                  // текст для вывода в журнал в начале сеанса опроса
+        private string sendCmdText;               // текст для вывода в журнал при отправке команды ТУ
+        private string[][] tagTable;              // таблица текущих значений тегов КП
+        private int[] tagTableColLen;             // ширина столбцов таблицы значений тегов
 
-        /// <summary>
-        /// Соединение с физическим КП
-        /// </summary>
-        protected Connection conn;
         /// <summary>
         /// Текущие данные тегов КП
         /// </summary>
@@ -93,23 +92,14 @@ namespace Scada.Comm.Devices
         /// Список последних команд КП
         /// </summary>
         protected List<Command> lastCmdList;
-
         /// <summary>
         /// Признак, что последний сеанс связи завершён успешно
         /// </summary>
         protected bool lastCommSucc;
         /// <summary>
-        /// Признак завершения работы линии связи
-        /// </summary>
-        protected volatile bool terminated;
-        /// <summary>
         /// Статистика работы КП
         /// </summary>
         protected KPStats kpStats;
-        /// <summary>
-        /// Метод записи в журнал линии связи
-        /// </summary>
-        protected Log.WriteLineDelegate writeToLog;
 
 
         /// <summary>
@@ -126,6 +116,9 @@ namespace Scada.Comm.Devices
         public KPLogic(int number)
         {
             // private fields
+            conn = null;
+            writeToLog = text => { }; // заглушка
+            terminated = false;
             caption = "";
             sessText = "";
             sendCmdText = "";
@@ -133,7 +126,6 @@ namespace Scada.Comm.Devices
             tagTableColLen = null;
 
             // protected fields
-            conn = null;
             curData = new SrezTableLight.CnlData[0];
             curDataModified = new bool[0];
             arcSrezList = new List<TagSrez>();
@@ -141,11 +133,8 @@ namespace Scada.Comm.Devices
             lastArcSrezList = new List<TagSrez>();
             lastEventList = new List<KPEvent>();
             lastCmdList = new List<Command>();
-
             lastCommSucc = false;
-            terminated = false;
             kpStats.Reset();
-            writeToLog = text => { }; // заглушка
 
             // public properties
             Bind = false;
@@ -246,7 +235,7 @@ namespace Scada.Comm.Devices
             set
             {
                 conn = value;
-                OnConnectionSet();
+                ExecOnConnectionSet();
             }
         }
 
@@ -256,23 +245,6 @@ namespace Scada.Comm.Devices
         [Obsolete("Use Connection property")]
         public SerialPort SerialPort { get; set; }
 
-
-        /// <summary>
-        /// Получить или установить признак завершения работы линии связи
-        /// </summary>
-        /// <remarks>Если значение равно true, то необходимо прервать сеанс опроса или отправку команды КП. 
-        /// Установка значения в false во время сеанса опроса приостанавливает завершение работы линии связи</remarks>
-        public bool Terminated
-        {
-            get
-            {
-                return terminated;
-            }
-            set
-            {
-                terminated = value;
-            }
-        }
 
         /// <summary>
         /// Получить возможность отправки команд ТУ
@@ -379,6 +351,40 @@ namespace Scada.Comm.Devices
         /// </summary>
         public ICommLineService CommLineSvc { get; set; }
 
+        /// <summary>
+        /// Получить или установить признак завершения работы линии связи
+        /// </summary>
+        /// <remarks>Если значение равно true, то необходимо прервать сеанс опроса или отправку команды КП. 
+        /// Установка значения в false во время сеанса опроса приостанавливает завершение работы линии связи</remarks>
+        public bool Terminated
+        {
+            get
+            {
+                return terminated;
+            }
+            set
+            {
+                terminated = value;
+            }
+        }
+
+
+        /// <summary>
+        /// Выполнить метод OnConnectionSet с обработкой исключений
+        /// </summary>
+        private void ExecOnConnectionSet()
+        {
+            try
+            {
+                OnConnectionSet();
+            }
+            catch (Exception ex)
+            {
+                WriteToLog(string.Format(Localization.UseRussian ?
+                    "Ошибка при выполнении действий после установки соединения: " :
+                    "Error executing actions after connection: ") + ex.Message);
+            }
+        }
 
         /// <summary>
         /// Добавить в конструктор строки описание КП
