@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Client\BaseView.cs" />
     <Compile Include="Client\CnlProps.cs" />
+    <Compile Include="Data\Command.cs" />
     <Compile Include="Client\CommSettings.cs" />
     <Compile Include="Client\CtrlCnlProps.cs" />
     <Compile Include="Client\ServerComm.cs" />

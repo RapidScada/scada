@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaCommCtrl", "ScadaCommC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaCommMono", "ScadaCommMono\ScadaCommMono.csproj", "{AE39349B-3AC0-4896-8A48-9AD0C032AA80}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaCommCommon", "ScadaCommCommon\ScadaCommCommon.csproj", "{7BAEAE0E-4694-41D7-BC29-F205AEF69741}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{AE39349B-3AC0-4896-8A48-9AD0C032AA80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE39349B-3AC0-4896-8A48-9AD0C032AA80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE39349B-3AC0-4896-8A48-9AD0C032AA80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BAEAE0E-4694-41D7-BC29-F205AEF69741}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BAEAE0E-4694-41D7-BC29-F205AEF69741}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BAEAE0E-4694-41D7-BC29-F205AEF69741}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BAEAE0E-4694-41D7-BC29-F205AEF69741}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
