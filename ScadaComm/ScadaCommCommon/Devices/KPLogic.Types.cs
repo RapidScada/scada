@@ -253,6 +253,21 @@ namespace Scada.Comm.Devices
                 }
                 return indexes;
             }
+            /// <summary>
+            /// Установить данные тега среза
+            /// </summary>
+            protected void SetTagData(int tagIndex, double newVal, int newStat)
+            {
+                SetTagData(tagIndex, new SrezTableLight.CnlData(newVal, newStat));
+            }
+            /// <summary>
+            /// Установить данные тега среза
+            /// </summary>
+            protected void SetTagData(int tagIndex, SrezTableLight.CnlData newData)
+            {
+                if (0 <= tagIndex && tagIndex < TagData.Length)
+                    TagData[tagIndex] = newData;
+            }
         }
 
         /// <summary>

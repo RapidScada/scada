@@ -199,7 +199,7 @@ namespace Scada.Comm.Layers
                                         if (kpList.Count > 0)
                                         {
                                             KPLogic targetKP = null;
-                                            if (!kpList[0].ProcUnreadIncomingReq(tcpConn, ref targetKP))
+                                            if (!ExecProcUnreadIncomingReq(kpList[0], tcpConn, ref targetKP))
                                                 tcpConn.ClearNetStream(inBuf);
                                             BindConnByDeviceLibrary(tcpConn, targetKP);
                                         }
@@ -211,7 +211,7 @@ namespace Scada.Comm.Layers
                                     if (slaveBehavior)
                                     {
                                         KPLogic targetKP = tcpConn.RelatedKP;
-                                        if (!targetKP.ProcUnreadIncomingReq(tcpConn, ref targetKP))
+                                        if (!ExecProcUnreadIncomingReq(targetKP, tcpConn, ref targetKP))
                                             tcpConn.ClearNetStream(inBuf);
                                     }
                                 }

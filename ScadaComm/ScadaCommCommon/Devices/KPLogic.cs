@@ -870,15 +870,7 @@ namespace Scada.Comm.Devices
         /// </summary>
         protected void SetCurData(int tagIndex, double newVal, int newStat)
         {
-            lock (curData)
-            {
-                if (0 <= tagIndex && tagIndex < curData.Length)
-                {
-                    curDataModified[tagIndex] |= curData[tagIndex].Val != newVal || curData[tagIndex].Stat != newStat;
-                    curData[tagIndex].Val = newVal;
-                    curData[tagIndex].Stat = newStat;
-                }
-            }
+            SetCurData(tagIndex, new SrezTableLight.CnlData(newVal, newStat));
         }
 
         /// <summary>
@@ -886,7 +878,15 @@ namespace Scada.Comm.Devices
         /// </summary>
         protected void SetCurData(int tagIndex, SrezTableLight.CnlData newData)
         {
-            SetCurData(tagIndex, newData.Val, newData.Stat);
+            lock (curData)
+            {
+                if (0 <= tagIndex && tagIndex < curData.Length)
+                {
+                    SrezTableLight.CnlData curTagData = curData[tagIndex];
+                    curDataModified[tagIndex] |= curTagData.Val != newData.Val || curTagData.Stat != newData.Stat;
+                    curData[tagIndex] = newData;
+                }
+            }
         }
 
         /// <summary>

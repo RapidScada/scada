@@ -229,6 +229,44 @@ namespace Scada.Comm.Layers
             }
         }
 
+        /// <summary>
+        /// Выполнить метод ProcIncomingReq для заданного КП с обработкой исключений
+        /// </summary>
+        protected bool ExecProcIncomingReq(KPLogic kpLogic, byte[] buffer, int offset, int count, ref KPLogic targetKP)
+        {
+            try
+            {
+                return kpLogic.ProcIncomingReq(buffer, offset, count, ref targetKP);
+            }
+            catch (Exception ex)
+            {
+                WriteToLog((Localization.UseRussian ? 
+                    "Ошибка при обработке считанного входящего запроса: " :
+                    "Error processing just read incoming request: ") + ex.Message);
+                targetKP = null;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Выполнить метод ProcUnreadIncomingReq для заданного КП с обработкой исключений
+        /// </summary>
+        protected bool ExecProcUnreadIncomingReq(KPLogic kpLogic, Connection conn, ref KPLogic targetKP)
+        {
+            try
+            {
+                return kpLogic.ProcUnreadIncomingReq(conn, ref targetKP);
+            }
+            catch (Exception ex)
+            {
+                WriteToLog((Localization.UseRussian ?
+                    "Ошибка при обработке не считанного входящего запроса: " :
+                    "Error processing unread incoming request: ") + ex.Message);
+                targetKP = null;
+                return false;
+            }
+        }
+
 
         /// <summary>
         /// Инициализировать слой связи

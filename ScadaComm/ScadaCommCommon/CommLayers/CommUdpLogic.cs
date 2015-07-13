@@ -149,7 +149,7 @@ namespace Scada.Comm.Layers
                     if (kpCallNumDict.TryGetValue(udpConn.RemoteAddress, out kpLogic))
                     {
                         // обработка входящего запроса для определённого КП
-                        kpLogic.ProcIncomingReq(buf, 0, buf.Length, ref kpLogic);
+                        ExecProcIncomingReq(kpLogic, buf, 0, buf.Length, ref kpLogic);
                     }
                     else
                     {
@@ -163,7 +163,7 @@ namespace Scada.Comm.Layers
                 {
                     // обработка входящего запроса для произвольного КП
                     KPLogic targetKP = null;
-                    kpList[0].ProcIncomingReq(buf, 0, buf.Length, ref targetKP);
+                    ExecProcIncomingReq(kpList[0], buf, 0, buf.Length, ref targetKP);
                 }
             }
 
