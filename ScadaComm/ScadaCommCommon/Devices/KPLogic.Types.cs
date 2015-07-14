@@ -38,6 +38,11 @@ namespace Scada.Comm.Devices
         public struct KPReqParams
         {
             /// <summary>
+            /// Параметры опроса КП по умолчанию
+            /// </summary>
+            public static readonly KPReqParams Default = new KPReqParams();
+
+            /// <summary>
             /// Получить или установить таймаут запросов, мс
             /// </summary>
             public int Timeout { get; set; }

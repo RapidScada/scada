@@ -123,7 +123,7 @@ namespace Scada.Comm.Layers
         /// Считать данные
         /// </summary>
         public override int Read(byte[] buffer, int offset, int count, int timeout, 
-            CommUtils.ProtocolLogFormat logFormat, out string logText)
+            CommUtils.ProtocolLogFormats logFormat, out string logText)
         {
             try
             {
@@ -163,7 +163,7 @@ namespace Scada.Comm.Layers
         /// Считать данные с условием остановки чтения
         /// </summary>
         public override int Read(byte[] buffer, int offset, int maxCount, int timeout, BinStopCondition stopCond,
-            out bool stopReceived, CommUtils.ProtocolLogFormat logFormat, out string logText)
+            out bool stopReceived, CommUtils.ProtocolLogFormats logFormat, out string logText)
         {
             try
             {
@@ -232,7 +232,7 @@ namespace Scada.Comm.Layers
         /// Записать данные
         /// </summary>
         public override void Write(byte[] buffer, int offset, int count,
-            CommUtils.ProtocolLogFormat logFormat, out string logText)
+            CommUtils.ProtocolLogFormats logFormat, out string logText)
         {
             try
             {
@@ -253,7 +253,7 @@ namespace Scada.Comm.Layers
             try
             {
                 byte[] buffer = Encoding.Default.GetBytes(text + NewLine);
-                Write(buffer, 0, buffer.Length, CommUtils.ProtocolLogFormat.String, out logText);
+                Write(buffer, 0, buffer.Length, CommUtils.ProtocolLogFormats.String, out logText);
             }
             catch (Exception ex)
             {
@@ -301,7 +301,7 @@ namespace Scada.Comm.Layers
         /// <summary>
         /// Считать данные, доступные на текущий момент
         /// </summary>
-        public int ReadAvailable(byte[] buffer, int offset, CommUtils.ProtocolLogFormat logFormat, out string logText)
+        public int ReadAvailable(byte[] buffer, int offset, CommUtils.ProtocolLogFormats logFormat, out string logText)
         {
             try
             {

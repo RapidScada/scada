@@ -24,7 +24,7 @@ namespace Scada.Comm.Layers
         /// <summary>
         /// Режимы выбора КП для обработки входящих запросов
         /// </summary>
-        public enum DeviceSelectionMode
+        public enum DeviceSelectionModes
         {
             /// <summary>
             /// По IP-адресу
@@ -49,8 +49,8 @@ namespace Scada.Comm.Layers
                 // установка значений по умолчанию
                 LocalUdpPort = 0;
                 RemoteUdpPort = 0;
-                Behavior = CommLayerLogic.OperatingBehavior.Master;
-                DevSelMode = CommUdpLogic.DeviceSelectionMode.ByIPAddress;
+                Behavior = CommLayerLogic.OperatingBehaviors.Master;
+                DevSelMode = CommUdpLogic.DeviceSelectionModes.ByIPAddress;
             }
 
             /// <summary>
@@ -64,11 +64,11 @@ namespace Scada.Comm.Layers
             /// <summary>
             /// Режим работы слоя связи
             /// </summary>
-            public OperatingBehavior Behavior;
+            public OperatingBehaviors Behavior;
             /// <summary>
             /// Режим выбора КП
             /// </summary>
-            public DeviceSelectionMode DevSelMode;
+            public DeviceSelectionModes DevSelMode;
         }
 
 
@@ -107,7 +107,7 @@ namespace Scada.Comm.Layers
         /// <summary>
         /// Получить режим работы
         /// </summary>
-        public override OperatingBehavior Behavior
+        public override OperatingBehaviors Behavior
         {
             get
             {
@@ -143,7 +143,7 @@ namespace Scada.Comm.Layers
             }
             else if (kpList.Count > 0)
             {
-                if (settings.DevSelMode == DeviceSelectionMode.ByIPAddress)
+                if (settings.DevSelMode == DeviceSelectionModes.ByIPAddress)
                 {
                     KPLogic kpLogic;
                     if (kpCallNumDict.TryGetValue(udpConn.RemoteAddress, out kpLogic))
@@ -159,7 +159,7 @@ namespace Scada.Comm.Layers
                             CommUtils.GetNowDT(), udpConn.RemoteAddress));
                     }
                 }
-                else if (settings.DevSelMode == DeviceSelectionMode.ByDeviceLibrary)
+                else if (settings.DevSelMode == DeviceSelectionModes.ByDeviceLibrary)
                 {
                     // обработка входящего запроса для произвольного КП
                     KPLogic targetKP = null;
@@ -182,9 +182,9 @@ namespace Scada.Comm.Layers
             // получение настроек слоя связи
             settings.LocalUdpPort = GetIntLayerParam(layerParams, "LocalUdpPort", true, settings.LocalUdpPort);
             settings.RemoteUdpPort = GetIntLayerParam(layerParams, "RemoteUdpPort", false, settings.RemoteUdpPort);
-            settings.Behavior = GetEnumLayerParam<OperatingBehavior>(layerParams, "Behavior", 
+            settings.Behavior = GetEnumLayerParam<OperatingBehaviors>(layerParams, "Behavior", 
                 false, settings.Behavior);
-            settings.DevSelMode = GetEnumLayerParam<DeviceSelectionMode>(layerParams, "DevSelMode", 
+            settings.DevSelMode = GetEnumLayerParam<DeviceSelectionModes>(layerParams, "DevSelMode", 
                 false, settings.DevSelMode);
 
             // создание клиента и соединения
@@ -197,7 +197,7 @@ namespace Scada.Comm.Layers
 
             // проверка библиотек КП в режиме ведомого
             string warnMsg;
-            if (settings.Behavior == OperatingBehavior.Slave && !AreDllsEqual(out warnMsg))
+            if (settings.Behavior == OperatingBehaviors.Slave && !AreDllsEqual(out warnMsg))
                 WriteToLog(warnMsg);
         }
 
@@ -206,7 +206,7 @@ namespace Scada.Comm.Layers
         /// </summary>
         public override void Start()
         {
-            if (settings.Behavior == OperatingBehavior.Slave)
+            if (settings.Behavior == OperatingBehaviors.Slave)
             {
                 WriteToLog(string.Format(Localization.UseRussian ?
                     "{0} Запуск приёма данных по UDP на порту {1}" :

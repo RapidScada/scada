@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : KP
+ * Module   : ScadaCommCommon
  * Summary  : The base class for device library user interface
  * 
  * Author   : Mikhail Shiryaev
@@ -24,9 +24,7 @@
  */
 
 using Scada.Data;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Scada.Comm.Devices
 {
@@ -37,227 +35,76 @@ namespace Scada.Comm.Devices
     public abstract class KPView
     {
         /// <summary>
-        /// Типы входных каналов
+        /// Прототип входного канала
         /// </summary>
-        public enum CnlType
-        {
-            /// <summary>
-            /// Телесигнал
-            /// </summary>
-            TS = 1,
-            /// <summary>
-            /// Телеизмерение
-            /// </summary>
-            TI = 2,
-            /// <summary>
-            /// Дорасчётный ТИ
-            /// </summary>
-            TIDR = 3,
-            /// <summary>
-            /// Минутный ТИ
-            /// </summary>
-            TIDRM = 4,
-            /// <summary>
-            /// Часовой ТИ
-            /// </summary>
-            TIDRH = 5,
-            /// <summary>
-            /// Количество переключений
-            /// </summary>
-            SWCNT = 6,
-            /// <summary>
-            /// Дорасчетный ТС
-            /// </summary>
-            TSDR = 7,
-            /// <summary>
-            /// Минутный ТС
-            /// </summary>
-            TSDRM = 8,
-            /// <summary>
-            /// Часовой ТС
-            /// </summary>
-            TSDRH = 9
-        }
-
-        /// <summary>
-        /// Свойства входного канала, необходимого для работы КП
-        /// </summary>
-        public class InCnlProps
+        public class InCnlPrototype : InCnlProps
         {
             /// <summary>
             /// Конструктор
             /// </summary>
-            public InCnlProps()
-                : this("", CnlType.TS)
+            public InCnlPrototype()
+                : base()
             {
             }
             /// <summary>
             /// Конструктор
             /// </summary>
-            /// <param name="name">Наименование входного канала</param>
-            /// <param name="cnlType">Тип входного канала</param>
-            public InCnlProps(string name, CnlType cnlType)
+            public InCnlPrototype(string cnlName, int cnlTypeID)
+                : base(0, cnlName, cnlTypeID)
             {
-                Name = name;
-                CnlType = cnlType;
-                Signal = 0;
-                FormulaUsed = false;
-                Formula = "";
-                Averaging = false;
-                ParamName = "";
-                ShowNumber = true;
-                DecDigits = 3;
-                UnitName = "";
                 CtrlCnlProps = null;
-                EvEnabled = false;
-                EvSound = false;
-                EvOnChange = false;
-                EvOnUndef = false;
-                LimLowCrash = double.NaN;
-                LimLow = double.NaN;
-                LimHigh = double.NaN;
-                LimHighCrash = double.NaN;
             }
 
             /// <summary>
-            /// Получить или установить наименование входного канала
+            /// Получить или установить ссылку на прототип канала управления, связанного со входным каналом
             /// </summary>
-            public string Name { get; set; }
-            /// <summary>
-            /// Получить или установить тип входного канала
-            /// </summary>
-            public CnlType CnlType { get; set; }
-            /// <summary>
-            /// Получить или установить сигнал (номер параметра КП)
-            /// </summary>
-            public int Signal { get; set; }
-            /// <summary>
-            /// Получить или установить признак использования формулы
-            /// </summary>
-            public bool FormulaUsed { get; set; }
-            /// <summary>
-            /// Получить или установить формулу
-            /// </summary>
-            public string Formula { get; set; }
-            /// <summary>
-            /// Получить или установить признак усреднения
-            /// </summary>
-            public bool Averaging { get; set; }
-            /// <summary>
-            /// Получить или установить наименование параметра
-            /// </summary>
-            public string ParamName { get; set; }
-            /// <summary>
-            /// Получить или установить признак числового формата вывода значения канала
-            /// </summary>
-            public bool ShowNumber { get; set; }
-            /// <summary>
-            /// Получить или установить количество знаков дробной части формата вывода значения канала
-            /// </summary>
-            public int DecDigits { get; set; }
-            /// <summary>
-            /// Получить или установить наименование размерности
-            /// </summary>
-            public string UnitName { get; set; }
-            /// <summary>
-            /// Получить или установить свойства канала управления, привязанного к входному каналу
-            /// </summary>
-            public CtrlCnlProps CtrlCnlProps { get; set; }
-            /// <summary>
-            /// Получить или установить признак записи событий
-            /// </summary>
-            public bool EvEnabled { get; set; }
-            /// <summary>
-            /// Получить или установить признак звука события
-            /// </summary>
-            public bool EvSound { get; set; }
-            /// <summary>
-            /// Получить или установить признак события по изменению
-            /// </summary>
-            public bool EvOnChange { get; set; }
-            /// <summary>
-            /// Получить или установить признак события по неопределённому состоянию
-            /// </summary>
-            public bool EvOnUndef { get; set; }
-            /// <summary>
-            /// Получить или установить нижнюю аварийную границу
-            /// </summary>
-            public double LimLowCrash { get; set; }
-            /// <summary>
-            /// Получить или установить нижнюю границу
-            /// </summary>
-            public double LimLow { get; set; }
-            /// <summary>
-            /// Получить или установить верхнюю границу
-            /// </summary>
-            public double LimHigh { get; set; }
-            /// <summary>
-            /// Получить или установить верхнюю аварийную границу
-            /// </summary>
-            public double LimHighCrash { get; set; }
+            public CtrlCnlPrototype CtrlCnlProps { get; set; }
         }
 
         /// <summary>
-        /// Свойства канала управления, необходимого для работы КП
+        /// Прототип канала управления
         /// </summary>
-        public class CtrlCnlProps
+        public class CtrlCnlPrototype : CtrlCnlProps
         {
             /// <summary>
             /// Конструктор
             /// </summary>
-            public CtrlCnlProps()
-                : this("", BaseValues.CmdTypes.Standard)
+            public CtrlCnlPrototype()
+                : base()
             {
             }
             /// <summary>
             /// Конструктор
             /// </summary>
-            public CtrlCnlProps(string name, int cmdTypeID)
+            public CtrlCnlPrototype(string ctrlCnlName, int cmdTypeID)
+                : base(0, ctrlCnlName, cmdTypeID)
             {
-                Name = name;
-                CmdTypeID = cmdTypeID;
-                CmdNum = 0;
-                CmdValName = "";
-                FormulaUsed = false;
-                Formula = "";
-                EvEnabled = false;
+            }
+        }
+
+        /// <summary>
+        /// Прототипы каналов КП
+        /// </summary>
+        public class KPCnlPrototypes
+        {
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public KPCnlPrototypes()
+            {
+                InCnls = new List<InCnlPrototype>();
+                CtrCnls = new List<CtrlCnlPrototype>();
             }
 
             /// <summary>
-            /// Получить или установить наименование канала управления
+            /// Получить прототипы входных каналов
             /// </summary>
-            public string Name { get; set; }
+            public List<InCnlPrototype> InCnls { get; protected set; }
             /// <summary>
-            /// Получить или установить идентификатои типа команды
+            /// Получить прототипы каналов управления
             /// </summary>
-            public int CmdTypeID { get; set; }
-            /// <summary>
-            /// Получить или установить номер команды
-            /// </summary>
-            public int CmdNum { get; set; }
-            /// <summary>
-            /// Получить или установить наименование значений команды
-            /// </summary>
-            public string CmdValName { get; set; }
-            /// <summary>
-            /// Получить или установить признак использования формулы
-            /// </summary>
-            public bool FormulaUsed { get; set; }
-            /// <summary>
-            /// Получить или установить формулу
-            /// </summary>
-            public string Formula { get; set; }
-            /// <summary>
-            /// Получить или установить признак записи событий
-            /// </summary>
-            public bool EvEnabled { get; set; }
+            public List<CtrlCnlPrototype> CtrCnls { get; protected set; }
         }
-
-
-        /// <summary>
-        /// Количество каналов управления КП по умолчанию
-        /// </summary>
-        protected int defaultCtrlCnlCount;
 
 
         /// <summary>
@@ -274,16 +121,13 @@ namespace Scada.Comm.Devices
         /// <param name="number">Номер настраемого КП</param>
         public KPView(int number)
         {
-            defaultCtrlCnlCount = -1;
-
             Number = number;
             ConfigDir = "";
             LangDir = "";
             LogDir = "";
             CmdDir = "";
+            CmdLine = "";
             CanShowProps = false;
-            DefaultCnls = null;
-            //DefaultReqParams = KPLogic.KPReqParams.EmptyReqParams;
         }
 
 
@@ -291,6 +135,29 @@ namespace Scada.Comm.Devices
         /// Описание библиотеки КП
         /// </summary>
         public abstract string KPDescr { get; }
+
+        /// <summary>
+        /// Получить прототипы каналов КП по умолчанию
+        /// </summary>
+        public virtual KPCnlPrototypes DefaultCnls
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Получить параметры опроса КП по умолчанию
+        /// </summary>
+        public virtual KPLogic.KPReqParams DefaultReqParams
+        {
+            get
+            {
+                return KPLogic.KPReqParams.Default;
+            }
+        }
+
 
         /// <summary>
         /// Получить номер КП
@@ -318,52 +185,14 @@ namespace Scada.Comm.Devices
         public string CmdDir { get; set; }
 
         /// <summary>
+        /// Получить или установить командную строку
+        /// </summary>
+        public string CmdLine { get; set; }
+
+        /// <summary>
         /// Получить возможность отображения свойств КП
         /// </summary>
         public bool CanShowProps { get; protected set; }
-
-
-        /// <summary>
-        /// Получить список входных каналов КП по умолчанию, 
-        /// а также привязанных к ним каналов управления (зависит только от библиотеки КП, не зависит от его номера)
-        /// </summary>
-        public List<InCnlProps> DefaultCnls { get; protected set; }
-
-        /// <summary>
-        /// Получить параметры опроса КП по умолчанию
-        /// </summary>
-        /// <remarks>Метод вызывается для объекта с номером КП равным 0</remarks>
-        public KPLogic.KPReqParams DefaultReqParams { get; protected set; }
-
-        /// <summary>
-        /// Получить количество каналов управления КП по умолчанию
-        /// </summary>
-        public int DefaultCtrlCnlCount
-        {
-            get
-            {
-                if (defaultCtrlCnlCount < 0)
-                {
-                    defaultCtrlCnlCount = 0;
-                    if (DefaultCnls != null)
-                    {
-                        foreach (InCnlProps inCnlProps in DefaultCnls)
-                            if (inCnlProps.CtrlCnlProps != null)
-                                defaultCtrlCnlCount++;
-                    }
-                }
-                return defaultCtrlCnlCount;
-            }
-        }
-
-        /// <summary>
-        /// Получить прототипы каналов КП по умолчанию
-        /// </summary>
-        /// <remarks>Метод вызывается для объекта с номером КП равным 0</remarks>
-        public object GetDefaultChannels(string configFileName)
-        {
-            return null;
-        }
 
 
         /// <summary>

@@ -24,7 +24,7 @@ namespace Scada.Comm.Layers
         /// <summary>
         /// Режимы выбора КП для обработки входящих запросов
         /// </summary>
-        public enum DeviceSelectionMode
+        public enum DeviceSelectionModes
         {
             /// <summary>
             /// По IP-адресу
@@ -53,8 +53,8 @@ namespace Scada.Comm.Layers
                 // установка значений по умолчанию
                 TcpPort = 0;
                 InactiveTime = 60;
-                Behavior = CommLayerLogic.OperatingBehavior.Master;
-                DevSelMode = CommTcpServerLogic.DeviceSelectionMode.ByIPAddress;
+                Behavior = CommLayerLogic.OperatingBehaviors.Master;
+                DevSelMode = CommTcpServerLogic.DeviceSelectionModes.ByIPAddress;
             }
 
             /// <summary>
@@ -68,11 +68,11 @@ namespace Scada.Comm.Layers
             /// <summary>
             /// Режим работы слоя связи
             /// </summary>
-            public OperatingBehavior Behavior;
+            public OperatingBehaviors Behavior;
             /// <summary>
             /// Режим выбора КП
             /// </summary>
-            public DeviceSelectionMode DevSelMode;
+            public DeviceSelectionModes DevSelMode;
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace Scada.Comm.Layers
         /// <summary>
         /// Получить режим работы
         /// </summary>
-        public override OperatingBehavior Behavior
+        public override OperatingBehaviors Behavior
         {
             get
             {
@@ -137,11 +137,11 @@ namespace Scada.Comm.Layers
         {
             // сохранение в локальных переменных постоянно используемых значений
             int inactiveTime = settings.InactiveTime;
-            bool slaveBehavior = settings.Behavior == OperatingBehavior.Slave;
-            bool devSelByIPAddress = settings.DevSelMode == DeviceSelectionMode.ByIPAddress;
-            bool devSelByFirstPackage = settings.DevSelMode == DeviceSelectionMode.ByFirstPackage;
-            bool devSelByDeviceLibrary = settings.DevSelMode == DeviceSelectionMode.ByDeviceLibrary;
-            int threadDelay = settings.Behavior == OperatingBehavior.Master ? MasterThreadDelay : SlaveThreadDelay;
+            bool slaveBehavior = settings.Behavior == OperatingBehaviors.Slave;
+            bool devSelByIPAddress = settings.DevSelMode == DeviceSelectionModes.ByIPAddress;
+            bool devSelByFirstPackage = settings.DevSelMode == DeviceSelectionModes.ByFirstPackage;
+            bool devSelByDeviceLibrary = settings.DevSelMode == DeviceSelectionModes.ByDeviceLibrary;
+            int threadDelay = settings.Behavior == OperatingBehaviors.Master ? MasterThreadDelay : SlaveThreadDelay;
 
             while (!terminated)
             {
@@ -370,7 +370,7 @@ namespace Scada.Comm.Layers
                 CommUtils.GetNowDT(), tcpConn.RemoteAddress));
 
             string logText;
-            int readCnt = tcpConn.ReadAvailable(inBuf, 0, CommUtils.ProtocolLogFormat.String, out logText);
+            int readCnt = tcpConn.ReadAvailable(inBuf, 0, CommUtils.ProtocolLogFormats.String, out logText);
             WriteToLog(logText);
 
             return readCnt > 0 ? Encoding.Default.GetString(inBuf, 0, readCnt) : "";
@@ -388,9 +388,9 @@ namespace Scada.Comm.Layers
             // получение настроек слоя связи
             settings.TcpPort = GetIntLayerParam(layerParams, "TcpPort", true, settings.TcpPort);
             settings.InactiveTime = GetIntLayerParam(layerParams, "InactiveTime", true, settings.InactiveTime);
-            settings.Behavior = GetEnumLayerParam<OperatingBehavior>(layerParams, "Behavior", 
+            settings.Behavior = GetEnumLayerParam<OperatingBehaviors>(layerParams, "Behavior", 
                 false, settings.Behavior);
-            settings.DevSelMode = GetEnumLayerParam<DeviceSelectionMode>(layerParams, "DevSelMode", 
+            settings.DevSelMode = GetEnumLayerParam<DeviceSelectionModes>(layerParams, "DevSelMode", 
                 false, settings.DevSelMode);
 
             // создание прослушивателя соединений
@@ -398,7 +398,7 @@ namespace Scada.Comm.Layers
 
             // проверка библиотек КП в режиме ведомого
             string warnMsg;
-            if (settings.Behavior == OperatingBehavior.Slave && !AreDllsEqual(out warnMsg))
+            if (settings.Behavior == OperatingBehaviors.Slave && !AreDllsEqual(out warnMsg))
                 WriteToLog(warnMsg);
         }
 

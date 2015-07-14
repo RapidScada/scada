@@ -23,7 +23,7 @@ namespace Scada.Comm.Layers
         /// <summary>
         /// Режимы работы слоя связи
         /// </summary>
-        public enum OperatingBehavior
+        public enum OperatingBehaviors
         {
             /// <summary>
             /// Ведущий - циклический опрос
@@ -58,7 +58,7 @@ namespace Scada.Comm.Layers
         /// <summary>
         /// Метод записи в журнал линии связи
         /// </summary>
-        protected Log.WriteLineDelegate writeToLog;
+        private Log.WriteLineDelegate writeToLog;
         /// <summary>
         /// Список КП на линии связи
         /// </summary>
@@ -105,7 +105,7 @@ namespace Scada.Comm.Layers
         /// <summary>
         /// Получить режим работы
         /// </summary>
-        public abstract OperatingBehavior Behavior { get; }
+        public abstract OperatingBehaviors Behavior { get; }
 
         /// <summary>
         /// Получить или установить метод записи в журнал линии связи

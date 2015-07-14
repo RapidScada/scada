@@ -90,7 +90,7 @@ namespace Scada.Comm
         /// <param name="logFormat">Формат вывода данных в журнал</param>
         /// <param name="logText">Строка для вывода в журнал</param>
         public static void WriteToSerialPort(SerialPort serialPort, byte[] buffer, int index, int count,
-            CommUtils.ProtocolLogFormat logFormat, out string logText)
+            CommUtils.ProtocolLogFormats logFormat, out string logText)
         {
             try
             {
@@ -104,7 +104,7 @@ namespace Scada.Comm
                     serialPort.DiscardOutBuffer();
                     serialPort.Write(buffer, index, count);
                     logText = CommPhrases.SendNotation + " (" + count + "): " + 
-                        (logFormat == CommUtils.ProtocolLogFormat.Hex ? 
+                        (logFormat == CommUtils.ProtocolLogFormats.Hex ? 
                             CommUtils.BytesToHex(buffer, index, count) : 
                             CommUtils.BytesToString(buffer, index, count));
                 }
@@ -126,7 +126,7 @@ namespace Scada.Comm
         /// <param name="logText">Строка для вывода в журнал</param>
         public static void WriteToSerialPort(SerialPort serialPort, byte[] buffer, int index, int count, out string logText)
         {
-            WriteToSerialPort(serialPort, buffer, index, count, CommUtils.ProtocolLogFormat.Hex, out logText);
+            WriteToSerialPort(serialPort, buffer, index, count, CommUtils.ProtocolLogFormats.Hex, out logText);
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace Scada.Comm
         /// <param name="logText">Строка для вывода в журнал</param>
         /// <returns>Количество считанных байт</returns>
         public static int ReadFromSerialPort(SerialPort serialPort, byte[] buffer, int index, int count,
-            int timeout, bool wait, CommUtils.ProtocolLogFormat logFormat, out string logText)
+            int timeout, bool wait, CommUtils.ProtocolLogFormats logFormat, out string logText)
         {
             int readCnt = 0;
 
@@ -201,7 +201,7 @@ namespace Scada.Comm
                 }
 
                 logText = CommPhrases.ReceiveNotation + " (" + readCnt + "/" + count + "): " + 
-                    (logFormat == CommUtils.ProtocolLogFormat.Hex ?
+                    (logFormat == CommUtils.ProtocolLogFormats.Hex ?
                         CommUtils.BytesToHex(buffer, index, readCnt) :
                         CommUtils.BytesToString(buffer, index, readCnt));
 
@@ -231,7 +231,7 @@ namespace Scada.Comm
             int timeout, bool wait, out string logText)
         {
             return ReadFromSerialPort(serialPort, buffer, index, count,
-                timeout, wait, CommUtils.ProtocolLogFormat.Hex, out logText);
+                timeout, wait, CommUtils.ProtocolLogFormats.Hex, out logText);
         }
 
         /// <summary>
@@ -248,7 +248,7 @@ namespace Scada.Comm
         /// <param name="logText">Строка для вывода в журнал</param>
         /// <returns>Количество считанных байт</returns>
         public static int ReadFromSerialPort(SerialPort serialPort, byte[] buffer, int index, int maxCount,
-            byte stopCode, int timeout, bool wait, CommUtils.ProtocolLogFormat logFormat, out string logText)
+            byte stopCode, int timeout, bool wait, CommUtils.ProtocolLogFormats logFormat, out string logText)
         {
             int readCnt = 0;
 
@@ -287,7 +287,7 @@ namespace Scada.Comm
                 }
 
                 logText = CommPhrases.ReceiveNotation + " (" + readCnt + "): " + 
-                    (logFormat == CommUtils.ProtocolLogFormat.Hex ?
+                    (logFormat == CommUtils.ProtocolLogFormats.Hex ?
                         CommUtils.BytesToHex(buffer, index, readCnt) :
                         CommUtils.BytesToString(buffer, index, readCnt));
 
@@ -318,7 +318,7 @@ namespace Scada.Comm
             byte stopCode, int timeout, bool wait, out string logText)
         {
             return ReadFromSerialPort(serialPort, buffer, index, maxCount,
-                stopCode, timeout, wait, CommUtils.ProtocolLogFormat.Hex, out logText);
+                stopCode, timeout, wait, CommUtils.ProtocolLogFormats.Hex, out logText);
         }
 
         /// <summary>

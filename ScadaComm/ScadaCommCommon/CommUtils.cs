@@ -41,7 +41,7 @@ namespace Scada.Comm
         /// <summary>
         /// Форматы вывода протокола обмена данными в журнал
         /// </summary>
-        public enum ProtocolLogFormat
+        public enum ProtocolLogFormats
         {
             /// <summary>
             /// 16-ричный формат

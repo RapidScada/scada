@@ -86,7 +86,7 @@ namespace Scada.Comm.Layers
         public Connection()
         {
             writeToLog = text => { }; // заглушка
-            DefaultLogFormat = CommUtils.ProtocolLogFormat.Hex;
+            DefaultLogFormat = CommUtils.ProtocolLogFormats.Hex;
             NewLine = "\n";
             LocalAddress = "";
             RemoteAddress = "";
@@ -96,7 +96,7 @@ namespace Scada.Comm.Layers
         /// <summary>
         /// Формат вывода протокола обмена данными в журнал по умлочанию
         /// </summary>
-        public CommUtils.ProtocolLogFormat DefaultLogFormat { get; set; }
+        public CommUtils.ProtocolLogFormats DefaultLogFormat { get; set; }
 
         /// <summary>
         /// Получить или установить метод записи в журнал линии связи
@@ -135,10 +135,10 @@ namespace Scada.Comm.Layers
         /// Сформировать текст считывания данных для вывода в журнал
         /// </summary>
         public static string BuildReadLogText(byte[] buffer, int offset, int count, int readCnt,
-            CommUtils.ProtocolLogFormat logFormat)
+            CommUtils.ProtocolLogFormats logFormat)
         {
             return CommPhrases.ReceiveNotation + " (" + readCnt + "/" + count + "): " +
-                (logFormat == CommUtils.ProtocolLogFormat.Hex ?
+                (logFormat == CommUtils.ProtocolLogFormats.Hex ?
                     CommUtils.BytesToHex(buffer, offset, readCnt) :
                     CommUtils.BytesToString(buffer, offset, readCnt));
         }
@@ -147,10 +147,10 @@ namespace Scada.Comm.Layers
         /// Сформировать текст считывания данных для вывода в журнал
         /// </summary>
         public static string BuildReadLogText(byte[] buffer, int offset, int readCnt,
-            CommUtils.ProtocolLogFormat logFormat)
+            CommUtils.ProtocolLogFormats logFormat)
         {
             return CommPhrases.ReceiveNotation + " (" + readCnt + "): " +
-                (logFormat == CommUtils.ProtocolLogFormat.Hex ?
+                (logFormat == CommUtils.ProtocolLogFormats.Hex ?
                     CommUtils.BytesToHex(buffer, offset, readCnt) :
                     CommUtils.BytesToString(buffer, offset, readCnt));
         }
@@ -159,10 +159,10 @@ namespace Scada.Comm.Layers
         /// Сформировать текст записи данных для вывода в журнал
         /// </summary>
         public static string BuildWriteLogText(byte[] buffer, int offset, int count, 
-            CommUtils.ProtocolLogFormat logFormat)
+            CommUtils.ProtocolLogFormats logFormat)
         {
             return CommPhrases.SendNotation + " (" + count + "): " +
-                (logFormat == CommUtils.ProtocolLogFormat.Hex ?
+                (logFormat == CommUtils.ProtocolLogFormats.Hex ?
                     CommUtils.BytesToHex(buffer, offset, count) :
                     CommUtils.BytesToString(buffer, offset, count));
         }
@@ -173,7 +173,7 @@ namespace Scada.Comm.Layers
         /// </summary>
         /// <returns>Количество считанных байт</returns>
         public abstract int Read(byte[] buffer, int offset, int count, int timeout,
-            CommUtils.ProtocolLogFormat logFormat, out string logText);
+            CommUtils.ProtocolLogFormats logFormat, out string logText);
 
         /// <summary>
         /// Считать данные и вывести информацию в журнал
@@ -190,7 +190,7 @@ namespace Scada.Comm.Layers
         /// Считать данные с условиями остановки чтения
         /// </summary>
         public abstract int Read(byte[] buffer, int offset, int maxCount, int timeout, BinStopCondition stopCond,
-            out bool stopReceived, CommUtils.ProtocolLogFormat logFormat, out string logText);
+            out bool stopReceived, CommUtils.ProtocolLogFormats logFormat, out string logText);
 
         /// <summary>
         /// Считать данные с условиями остановки чтения и вывести информацию в журнал
@@ -228,7 +228,7 @@ namespace Scada.Comm.Layers
         /// Записать данные
         /// </summary>
         public abstract void Write(byte[] buffer, int offset, int count,
-            CommUtils.ProtocolLogFormat logFormat, out string logText);
+            CommUtils.ProtocolLogFormats logFormat, out string logText);
 
         /// <summary>
         /// Записать данные и вывести информацию в журнал
