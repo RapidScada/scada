@@ -150,11 +150,11 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Получить параметры опроса КП по умолчанию
         /// </summary>
-        public virtual KPLogic.KPReqParams DefaultReqParams
+        public virtual KPReqParams DefaultReqParams
         {
             get
             {
-                return KPLogic.KPReqParams.Default;
+                return KPReqParams.Default;
             }
         }
 

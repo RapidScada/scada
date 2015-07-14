@@ -33,62 +33,6 @@ namespace Scada.Comm.Devices
     partial class KPLogic
     {
         /// <summary>
-        /// Параметры опроса КП
-        /// </summary>
-        public struct KPReqParams
-        {
-            /// <summary>
-            /// Параметры опроса КП по умолчанию
-            /// </summary>
-            public static readonly KPReqParams Default = new KPReqParams();
-
-            /// <summary>
-            /// Получить или установить таймаут запросов, мс
-            /// </summary>
-            public int Timeout { get; set; }
-            /// <summary>
-            /// Получить или установить задержку после запросов, мс
-            /// </summary>
-            public int Delay { get; set; }
-            /// <summary>
-            /// Получить или установить время опроса
-            /// </summary>
-            public DateTime Time { get; set; }
-            /// <summary>
-            /// Получить или установить период опроса
-            /// </summary>
-            public TimeSpan Period { get; set; }
-            /// <summary>
-            /// Получить или установить командную строку
-            /// </summary>
-            public string CmdLine { get; set; }
-            /// <summary>
-            /// Получить или установить количество попыток перезапроса при ошибке
-            /// </summary>
-            public int TriesCnt { get; set; }
-
-            /// <summary>
-            /// Установить значения по умолчанию
-            /// </summary>
-            public void SetToDefault()
-            {
-                Timeout = 1000;
-                Delay = 200;
-                Time = DateTime.MinValue;
-                Period = TimeSpan.Zero;
-                CmdLine = "";
-                TriesCnt = 3;
-            }
-            /// <summary>
-            /// Получить аргументы командной строки
-            /// </summary>
-            public string[] GetCmdLineArgs()
-            {
-                return CmdLine.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            }
-        }
-
-        /// <summary>
         /// Статистика работы КП
         /// </summary>
         public struct KPStats

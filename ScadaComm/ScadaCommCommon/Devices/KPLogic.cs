@@ -144,6 +144,7 @@ namespace Scada.Comm.Devices
             Address = 0;
             CallNum = "";
             ReqParams.SetToDefault();
+            ReqTriesCnt = 1;
             CustomParams = null;
             CommonProps = null;
             SerialPort = null;
@@ -211,6 +212,11 @@ namespace Scada.Comm.Devices
         /// Получить или установить параметры опроса КП
         /// </summary>
         public KPReqParams ReqParams { get; set; }
+
+        /// <summary>
+        /// Получить или установить количество попыток перезапроса КП при ошибке
+        /// </summary>
+        public int ReqTriesCnt { get; set; }
 
         /// <summary>
         /// Получить или установить ссылку на пользовательские параметры линии связи
@@ -932,7 +938,7 @@ namespace Scada.Comm.Devices
         /// </summary>
         protected bool RequestNeeded(ref int tryNum)
         {
-            return !lastCommSucc && tryNum < ReqParams.TriesCnt && !Terminated;
+            return !lastCommSucc && tryNum < ReqTriesCnt && !Terminated;
         }
 
         /// <summary>
