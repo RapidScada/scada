@@ -50,6 +50,7 @@
     <Compile Include="CommLayers\CommUdpLogic.cs" />
     <Compile Include="CommLayers\CommUdpView.cs" />
     <Compile Include="CommLayers\Connection.cs" />
+    <Compile Include="CommLayers\SerialConnection.cs" />
     <Compile Include="CommLayers\TcpConnection.cs" />
     <Compile Include="CommLayers\UdpConnection.cs" />
     <Compile Include="CommPhrases.cs" />
