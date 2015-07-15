@@ -46,10 +46,6 @@ namespace Scada.Comm.Layers
         /// </summary>
         protected const int OneByteReadTimeout = 10;
         /// <summary>
-        /// Задержка потока для накопления данных во внутреннем буфере соединения, мс
-        /// </summary>
-        private const int DataAccumThreadDelay = 10;
-        /// <summary>
         /// Обозначение активности для строкового представления соединения
         /// </summary>
         protected static readonly string ActivityStr = 

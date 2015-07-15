@@ -93,6 +93,11 @@ namespace Scada.Comm.Layers
         }
 
         /// <summary>
+        /// Задержка потока для накопления данных во внутреннем буфере соединения, мс
+        /// </summary>
+        protected const int DataAccumThreadDelay = 10;
+
+        /// <summary>
         /// Метод записи в журнал линии связи
         /// </summary>
         protected Log.WriteLineDelegate writeToLog;

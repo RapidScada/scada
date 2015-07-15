@@ -23,6 +23,7 @@
  * Modified : 2015
  */
 
+using Scada.Comm.Layers;
 using System;
 using System.Collections.Generic;
 using System.IO.Ports;
@@ -40,6 +41,27 @@ namespace Scada.Comm
     public static class SerialPortUtils
     {
         /// <summary>
+        /// Вспомогательный класс соединения через последовательный порт, позволяющий изменять порт
+        /// </summary>
+        private class AuxSerialConnection : SerialConnection
+        {
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public AuxSerialConnection()
+            {
+                SerialPort = null;
+            }
+            /// <summary>
+            /// Установить последовательный порт соединения
+            /// </summary>
+            public void SetSerialPort(SerialPort serialPort)
+            {
+                SerialPort = serialPort;
+            }
+        }
+
+        /// <summary>
         /// Сообщение о невозможности отправки данных
         /// </summary>
         public static readonly string WriteDataImpossible;
@@ -55,6 +77,11 @@ namespace Scada.Comm
         /// Сообщение о невозможности приёма строк
         /// </summary>
         public static readonly string ReadLinesImpossible;
+
+        /// <summary>
+        /// Соединение через последовательный порт
+        /// </summary>
+        private static AuxSerialConnection serialConn;
 
 
         /// <summary>
@@ -77,6 +104,9 @@ namespace Scada.Comm
                 ReadDataImpossible = "Receiving data is impossible because the port is not initialized";
                 ReadLinesImpossible = "Receiving string is impossible because the port is not initialized";
             }
+
+            // создание объекта соединения
+            serialConn = new AuxSerialConnection();
         }
 
 
@@ -100,19 +130,13 @@ namespace Scada.Comm
                 }
                 else
                 {
-                    serialPort.DiscardInBuffer();
-                    serialPort.DiscardOutBuffer();
-                    serialPort.Write(buffer, index, count);
-                    logText = CommPhrases.SendNotation + " (" + count + "): " + 
-                        (logFormat == CommUtils.ProtocolLogFormats.Hex ? 
-                            CommUtils.BytesToHex(buffer, index, count) : 
-                            CommUtils.BytesToString(buffer, index, count));
+                    serialConn.SetSerialPort(serialPort);
+                    serialConn.Write(buffer, index, count, logFormat, out logText);
                 }
             }
             catch (Exception ex)
             {
-                logText = (Localization.UseRussian ?
-                    "Ошибка при отправке данных: " : "Error sending data: ") + ex.Message;
+                logText = ex.Message;
             }
         }
 
@@ -145,16 +169,13 @@ namespace Scada.Comm
                 }
                 else
                 {
-                    serialPort.DiscardInBuffer();
-                    serialPort.DiscardOutBuffer();
-                    serialPort.WriteLine(text);
-                    logText = CommPhrases.SendNotation + ": " + text;
+                    serialConn.SetSerialPort(serialPort);
+                    serialConn.WriteLine(text, out logText);
                 }
             }
             catch (Exception ex)
             {
-                logText = (Localization.UseRussian ?
-                    "Ошибка при отправке строки: " : "Error sending string: ") + ex.Message;
+                logText = ex.Message;
             }
         }
 
@@ -172,48 +193,26 @@ namespace Scada.Comm
         /// <param name="logText">Строка для вывода в журнал</param>
         /// <returns>Количество считанных байт</returns>
         public static int ReadFromSerialPort(SerialPort serialPort, byte[] buffer, int index, int count,
-            int timeout, bool wait, CommUtils.ProtocolLogFormats logFormat, out string logText)
+            int timeout, bool wait /*игнорируется*/, CommUtils.ProtocolLogFormats logFormat, out string logText)
         {
-            int readCnt = 0;
-
-            if (serialPort == null)
+            try
             {
-                logText = ReadDataImpossible;
-            }
-            else
-            {
-                // данный способ чтения данных необходим для избежания исключения 
-                // System.ObjectDisposedException при прерывании потока линии связи
-                DateTime nowDT = DateTime.Now;
-                DateTime startDT = nowDT;
-                DateTime stopDT = startDT.AddMilliseconds(timeout);
-                serialPort.ReadTimeout = 0;
-
-                while (readCnt < count && startDT <= nowDT && nowDT <= stopDT)
+                if (serialPort == null)
                 {
-                    try { readCnt += serialPort.Read(buffer, index + readCnt, count - readCnt); }
-                    catch { /*The operation has timed out*/ }
-
-                    if (readCnt < count)
-                        Thread.Sleep(100); // накопление входных данных в буфере порта
-
-                    nowDT = DateTime.Now;
+                    logText = ReadDataImpossible;
+                    return 0;
                 }
-
-                logText = CommPhrases.ReceiveNotation + " (" + readCnt + "/" + count + "): " + 
-                    (logFormat == CommUtils.ProtocolLogFormats.Hex ?
-                        CommUtils.BytesToHex(buffer, index, readCnt) :
-                        CommUtils.BytesToString(buffer, index, readCnt));
-
-                if (wait && startDT <= nowDT)
+                else
                 {
-                    int delay = (int)(stopDT - nowDT).TotalMilliseconds;
-                    if (delay > 0)
-                        Thread.Sleep(delay);
+                    serialConn.SetSerialPort(serialPort);
+                    return serialConn.Read(buffer, index, count, timeout, logFormat, out logText);
                 }
             }
-
-            return readCnt;
+            catch (Exception ex)
+            {
+                logText = ex.Message;
+                return 0;
+            }
         }
 
         /// <summary>
@@ -228,7 +227,7 @@ namespace Scada.Comm
         /// <param name="logText">Строка для вывода в журнал</param>
         /// <returns>Количество считанных байт</returns>
         public static int ReadFromSerialPort(SerialPort serialPort, byte[] buffer, int index, int count,
-            int timeout, bool wait, out string logText)
+            int timeout, bool wait /*игнорируется*/, out string logText)
         {
             return ReadFromSerialPort(serialPort, buffer, index, count,
                 timeout, wait, CommUtils.ProtocolLogFormats.Hex, out logText);
@@ -248,58 +247,29 @@ namespace Scada.Comm
         /// <param name="logText">Строка для вывода в журнал</param>
         /// <returns>Количество считанных байт</returns>
         public static int ReadFromSerialPort(SerialPort serialPort, byte[] buffer, int index, int maxCount,
-            byte stopCode, int timeout, bool wait, CommUtils.ProtocolLogFormats logFormat, out string logText)
+            byte stopCode, int timeout, bool wait /*игнорируется*/, CommUtils.ProtocolLogFormats logFormat, 
+            out string logText)
         {
-            int readCnt = 0;
-
-            if (serialPort == null)
+            try
             {
-                logText = ReadDataImpossible;
-            }
-            else
-            {
-                DateTime nowDT = DateTime.Now;
-                DateTime startDT = nowDT;
-                DateTime stopDT = startDT.AddMilliseconds(timeout);
-
-                bool stop = false;
-                int curInd = index;
-                serialPort.ReadTimeout = 0;
-
-                while (readCnt <= maxCount && !stop && startDT <= nowDT && nowDT <= stopDT)
+                if (serialPort == null)
                 {
-                    bool readOk;
-                    try { readOk = serialPort.Read(buffer, curInd, 1) > 0; }
-                    catch { readOk = false; }
-
-                    if (readOk)
-                    {
-                        stop = buffer[curInd] == stopCode;
-                        curInd++;
-                        readCnt++;
-                    }
-                    else
-                    {
-                        Thread.Sleep(100); // накопление входных данных в буфере порта
-                    }
-
-                    nowDT = DateTime.Now;
+                    logText = ReadDataImpossible;
+                    return 0;
                 }
-
-                logText = CommPhrases.ReceiveNotation + " (" + readCnt + "): " + 
-                    (logFormat == CommUtils.ProtocolLogFormats.Hex ?
-                        CommUtils.BytesToHex(buffer, index, readCnt) :
-                        CommUtils.BytesToString(buffer, index, readCnt));
-
-                if (wait && startDT <= nowDT)
+                else
                 {
-                    int delay = (int)(stopDT - nowDT).TotalMilliseconds;
-                    if (delay > 0)
-                        Thread.Sleep(delay);
+                    serialConn.SetSerialPort(serialPort);
+                    bool stopReceived;
+                    return serialConn.Read(buffer, index, maxCount, timeout, new Connection.BinStopCondition(stopCode),
+                        out stopReceived, logFormat, out logText);
                 }
             }
-
-            return readCnt;
+            catch (Exception ex)
+            {
+                logText = ex.Message;
+                return 0;
+            }
         }
 
         /// <summary>
@@ -315,7 +285,7 @@ namespace Scada.Comm
         /// <param name="logText">Строка для вывода в журнал</param>
         /// <returns>Количество считанных байт</returns>
         public static int ReadFromSerialPort(SerialPort serialPort, byte[] buffer, int index, int maxCount,
-            byte stopCode, int timeout, bool wait, out string logText)
+            byte stopCode, int timeout, bool wait /*игнорируется*/, out string logText)
         {
             return ReadFromSerialPort(serialPort, buffer, index, maxCount,
                 stopCode, timeout, wait, CommUtils.ProtocolLogFormats.Hex, out logText);
@@ -331,8 +301,8 @@ namespace Scada.Comm
         /// <param name="endFound">Призкак получения завершающей строки</param>
         /// <param name="logText">Строка для вывода в журнал</param>
         /// <returns>Считанные из последовательного порта строки</returns>
-        public static List<string> ReadLinesFromSerialPort(SerialPort serialPort, int timeout, bool wait,
-            string endLine, out bool endFound, out string logText)
+        public static List<string> ReadLinesFromSerialPort(SerialPort serialPort, int timeout, 
+            bool wait /*игнорируется*/, string endLine, out bool endFound, out string logText)
         {
             return ReadLinesFromSerialPort(serialPort, timeout, wait,
                 string.IsNullOrEmpty(endLine) ? null : new string[] { endLine }, out endFound, out logText);
@@ -348,60 +318,30 @@ namespace Scada.Comm
         /// <param name="endFound">Призкак получения завершающей строки</param>
         /// <param name="logText">Строка для вывода в журнал</param>
         /// <returns>Считанные из последовательного порта строки</returns>
-        public static List<string> ReadLinesFromSerialPort(SerialPort serialPort, int timeout, bool wait,
-            string[] endLines, out bool endFound, out string logText)
+        public static List<string> ReadLinesFromSerialPort(SerialPort serialPort, int timeout, 
+            bool wait /*игнорируется*/, string[] endLines, out bool endFound, out string logText)
         {
-            List<string> inDataList = new List<string>(); // входные данные
-            StringBuilder inDataSB = new StringBuilder(); // строковое представление входных данных
-            int endLinesLen = endLines == null ? 0 : endLines.Length;
-            endFound = false;
-
-            if (serialPort == null)
+            try
             {
-                logText = ReadLinesImpossible;
-            }
-            else
-            {
-                DateTime nowDT = DateTime.Now;
-                DateTime startDT = nowDT;
-                DateTime stopDT = startDT.AddMilliseconds(timeout);
-                serialPort.ReadTimeout = 0;
-
-                while (!endFound && startDT <= nowDT && nowDT <= stopDT)
+                if (serialPort == null)
                 {
-                    string line;
-                    try { line = serialPort.ReadLine().Trim(); }
-                    catch { line = ""; /*The operation has timed out*/ }
-
-                    if (line != "")
-                    {
-                        inDataList.Add(line);
-                        inDataSB.AppendLine(line);
-
-                        for (int i = 0; i < endLinesLen && !endFound; i++)
-                            endFound = line.EndsWith(endLines[i], StringComparison.OrdinalIgnoreCase);
-                    }
-
-                    if (!endFound)
-                        Thread.Sleep(100); // накопление входных данных в буфере serialPort
-
-                    nowDT = DateTime.Now;
+                    logText = ReadLinesImpossible;
+                    endFound = false;
+                    return new List<string>();
                 }
-
-                logText = CommPhrases.ReceiveNotation + ": " +
-                    (inDataList.Count > 0 ?
-                        inDataSB.ToString() :
-                        (Localization.UseRussian ? "нет данных" : "no data"));
-
-                if (wait && startDT <= nowDT)
+                else
                 {
-                    int delay = (int)(stopDT - nowDT).TotalMilliseconds;
-                    if (delay > 0)
-                        Thread.Sleep(delay);
+                    serialConn.SetSerialPort(serialPort);
+                    return serialConn.ReadLines(timeout, new Connection.TextStopCondition(endLines),
+                        out endFound, out logText);
                 }
             }
-
-            return inDataList;
+            catch (Exception ex)
+            {
+                logText = ex.Message;
+                endFound = false;
+                return new List<string>();
+            }
         }
     }
 }

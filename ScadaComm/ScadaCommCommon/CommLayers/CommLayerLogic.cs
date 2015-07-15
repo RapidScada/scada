@@ -160,6 +160,53 @@ namespace Scada.Comm.Layers
         }
 
         /// <summary>
+        /// Получить строковый параметр слоя связи
+        /// </summary>
+        protected string GetStringLayerParam(Dictionary<string, string> layerParams,
+            string name, bool required, string defaultValue)
+        {
+            string val;
+            if (layerParams.TryGetValue(name, out val))
+                return val;
+            else if (required)
+                throw new ArgumentException(string.Format(LayerParamRequired, name));
+            else
+                return defaultValue;
+        }
+
+        /// <summary>
+        /// Получить логический параметр слоя связи
+        /// </summary>
+        protected bool GetBoolLayerParam(Dictionary<string, string> layerParams,
+            string name, bool required, bool defaultValue)
+        {
+            string valStr;
+            bool val;
+
+            if (layerParams.TryGetValue(name, out valStr))
+            {
+                if (bool.TryParse(valStr, out val))
+                {
+                    return val;
+                }
+                else
+                {
+                    throw new ArgumentException(string.Format(Localization.UseRussian ?
+                        "Пользовательский параметр линии связи {0} должен быть false или true." :
+                        "Custom communication line parameter {0} must be false or true.", valStr));
+                }
+            }
+            else if (required)
+            {
+                throw new ArgumentException(string.Format(LayerParamRequired, name));
+            }
+            else
+            {
+                return defaultValue;
+            }
+        }
+
+        /// <summary>
         /// Получить целочисленный параметр слоя связи
         /// </summary>
         protected int GetIntLayerParam(Dictionary<string, string> layerParams, 
@@ -298,7 +345,7 @@ namespace Scada.Comm.Layers
             if (kpList == null)
                 throw new ArgumentNullException("kpList");
 
-            // копирование ссылок на КП, поддерживающих новый функционал
+            // копирование ссылок на КП линии связи
             foreach (KPLogic kpLogic in kpList)
             {
                 this.kpList.Add(kpLogic);

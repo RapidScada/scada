@@ -25,16 +25,214 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO.Ports;
 using System.Text;
+using System.Threading;
 
-namespace Scada.Comm.CommLayers
+namespace Scada.Comm.Layers
 {
     /// <summary>
     /// Connection with a device via serial port
     /// <para>Соединение с КП через последовательный порт</para>
     /// </summary>
-    public class SerialConnection
+    public class SerialConnection : Connection
     {
+        /// <summary>
+        /// Конструктор, ограничивающий создание объекта без параметров
+        /// </summary>
+        protected SerialConnection()
+        {
+        }
+        
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        public SerialConnection(SerialPort serialPort)
+        {
+            if (serialPort == null)
+                throw new ArgumentNullException("serialPort");
+            
+            SerialPort = serialPort;
+        }
+
+
+        /// <summary>
+        /// Получить последовательный порт
+        /// </summary>
+        public SerialPort SerialPort { get; protected set; }
+
+
+        /// <summary>
+        /// Считать данные
+        /// </summary>
+        public override int Read(byte[] buffer, int offset, int count, int timeout, 
+            CommUtils.ProtocolLogFormats logFormat, out string logText)
+        {
+            try
+            {
+                // данный способ чтения данных необходим для избежания исключения 
+                // System.ObjectDisposedException при прерывании потока линии связи
+                int readCnt = 0;
+                DateTime nowDT = DateTime.Now;
+                DateTime startDT = nowDT;
+                DateTime stopDT = startDT.AddMilliseconds(timeout);
+                SerialPort.ReadTimeout = 0;
+
+                while (readCnt < count && startDT <= nowDT && nowDT <= stopDT)
+                {
+                    try { readCnt += SerialPort.Read(buffer, offset + readCnt, count - readCnt); }
+                    catch { /*The operation has timed out*/ }
+
+                    // накопление входных данных в буфере порта
+                    if (readCnt < count)
+                        Thread.Sleep(DataAccumThreadDelay);
+
+                    nowDT = DateTime.Now;
+                }
+
+                logText = BuildReadLogText(buffer, offset, count, readCnt, logFormat);
+                return readCnt;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(CommPhrases.ReadDataError + ": " + ex.Message, ex);
+            }
+        }
+
+        /// <summary>
+        /// Считать данные с условиями остановки чтения
+        /// </summary>
+        public override int Read(byte[] buffer, int offset, int maxCount, int timeout, Connection.BinStopCondition stopCond, 
+            out bool stopReceived, CommUtils.ProtocolLogFormats logFormat, out string logText)
+        {
+            try
+            {
+                int readCnt = 0;
+                DateTime nowDT = DateTime.Now;
+                DateTime startDT = nowDT;
+                DateTime stopDT = startDT.AddMilliseconds(timeout);
+
+                stopReceived = false;
+                byte stopCode = stopCond.StopCode;
+                int curInd = offset;
+                SerialPort.ReadTimeout = 0;
+
+                while (readCnt <= maxCount && !stopReceived && startDT <= nowDT && nowDT <= stopDT)
+                {
+                    bool readOk;
+                    try { readOk = SerialPort.Read(buffer, curInd, 1) > 0; }
+                    catch { readOk = false; }
+
+                    if (readOk)
+                    {
+                        stopReceived = buffer[curInd] == stopCode;
+                        curInd++;
+                        readCnt++;
+                    }
+                    else
+                    {
+                        // накопление входных данных в буфере порта
+                        Thread.Sleep(DataAccumThreadDelay);
+                    }
+
+                    nowDT = DateTime.Now;
+                }
+
+                logText = BuildReadLogText(buffer, offset, readCnt, logFormat);
+                return readCnt;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(CommPhrases.ReadDataWithStopCondError + ": " + ex.Message, ex);
+            }
+        }
+
+        /// <summary>
+        /// Считать строки
+        /// </summary>
+        public override List<string> ReadLines(int timeout, Connection.TextStopCondition stopCond, 
+            out bool stopReceived, out string logText)
+        {
+            try
+            {
+                List<string> lines = new List<string>(); // считанные строки
+                string[] stopEndings = stopCond.StopEndings;
+                int endingsLen = stopEndings == null ? 0 : stopEndings.Length;
+                stopReceived = false;
+
+                DateTime nowDT = DateTime.Now;
+                DateTime startDT = nowDT;
+                DateTime stopDT = startDT.AddMilliseconds(timeout);
+                SerialPort.ReadTimeout = 0;
+
+                while (!stopReceived && startDT <= nowDT && nowDT <= stopDT)
+                {
+                    string line;
+                    try { line = SerialPort.ReadLine().Trim(); }
+                    catch { line = ""; /*The operation has timed out*/ }
+
+                    if (line != "")
+                    {
+                        lines.Add(line);
+                        for (int i = 0; i < endingsLen && !stopReceived; i++)
+                            stopReceived = line.EndsWith(stopEndings[i], StringComparison.OrdinalIgnoreCase);
+                    }
+
+                    // накопление входных данных в буфере порта
+                    if (!stopReceived)
+                        Thread.Sleep(DataAccumThreadDelay);
+
+                    nowDT = DateTime.Now;
+                }
+
+                logText = CommPhrases.ReceiveNotation + ": " +
+                    (lines.Count > 0 ? string.Join(Environment.NewLine, lines) :
+                        (Localization.UseRussian ? "нет данных" : "no data"));
+
+
+                return lines;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(CommPhrases.ReadLinesError + ": " + ex.Message, ex);
+            }
+        }
+
+        /// <summary>
+        /// Записать данные
+        /// </summary>
+        public override void Write(byte[] buffer, int offset, int count, 
+            CommUtils.ProtocolLogFormats logFormat, out string logText)
+        {
+            try
+            {
+                SerialPort.DiscardInBuffer();
+                SerialPort.DiscardOutBuffer();
+                SerialPort.Write(buffer, offset, count);
+                logText = BuildWriteLogText(buffer, offset, count, logFormat);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(CommPhrases.WriteDataError + ": " + ex.Message, ex);
+            }
+        }
+
+        /// <summary>
+        /// Записать строку
+        /// </summary>
+        public override void WriteLine(string text, out string logText)
+        {
+            try
+            {
+                SerialPort.DiscardInBuffer();
+                SerialPort.DiscardOutBuffer();
+                SerialPort.WriteLine(text);
+                logText = CommPhrases.SendNotation + ": " + text;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(CommPhrases.WriteLineError + ": " + ex.Message, ex);
+            }
+        }
     }
 }

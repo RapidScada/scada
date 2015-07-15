@@ -72,21 +72,21 @@ namespace Scada.Comm.Layers
             }
 
             /// <summary>
-            /// Локальный UDP-порт
+            /// Получить или установить локальный UDP-порт
             /// </summary>
-            public int LocalUdpPort;
+            public int LocalUdpPort { get; set; }
             /// <summary>
-            /// Удалённый UDP-порт
+            /// Получить или установить удалённый UDP-порт
             /// </summary>
-            public int RemoteUdpPort;
+            public int RemoteUdpPort { get; set; }
             /// <summary>
-            /// Режим работы слоя связи
+            /// Получить или установить режим работы слоя связи
             /// </summary>
-            public OperatingBehaviors Behavior;
+            public OperatingBehaviors Behavior { get; set; }
             /// <summary>
-            /// Режим выбора КП
+            /// Получить или установить режим выбора КП
             /// </summary>
-            public DeviceSelectionModes DevSelMode;
+            public DeviceSelectionModes DevSelMode { get; set; }
         }
 
 
@@ -118,7 +118,7 @@ namespace Scada.Comm.Layers
         {
             get
             {
-                return "CommUdpServer";
+                return "CommUdp";
             }
         }
 
@@ -238,9 +238,11 @@ namespace Scada.Comm.Layers
         /// </summary>
         public override void Stop()
         {
+            // очистка ссылки на соединение для всех КП на линии связи
             foreach (KPLogic kpLogic in kpList)
                 kpLogic.Connection = null;
-        
+
+            // закрытие соединения
             udpConn.Close();
             udpConn = null;
         }

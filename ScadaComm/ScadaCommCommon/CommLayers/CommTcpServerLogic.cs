@@ -76,40 +76,52 @@ namespace Scada.Comm.Layers
             }
 
             /// <summary>
-            /// Используемый TCP-порт
+            /// Получить или установить используемый TCP-порт
             /// </summary>
-            public int TcpPort;
+            public int TcpPort { get; set; }
             /// <summary>
-            /// Время неактивности TCP-соединения до его отключения, с
+            /// Получить или установить время неактивности TCP-соединения до его отключения, с
             /// </summary>
-            public int InactiveTime;
+            public int InactiveTime { get; set; }
             /// <summary>
-            /// Режим работы слоя связи
+            /// Получить или установить режим работы слоя связи
             /// </summary>
-            public OperatingBehaviors Behavior;
+            public OperatingBehaviors Behavior { get; set; }
             /// <summary>
-            /// Режим выбора КП
+            /// Получить или установить режим выбора КП
             /// </summary>
-            public DeviceSelectionModes DevSelMode;
+            public DeviceSelectionModes DevSelMode { get; set; }
         }
 
         /// <summary>
         /// Таймаут отправки данных по TCP, мс
         /// </summary>
-        private const int TcpSendTimeout = 1000;
+        protected const int TcpSendTimeout = 1000;
         /// <summary>
         /// Таймаут приёма данных по TCP, мс
         /// </summary>
-        private const int TcpReceiveTimeout = 5000;
+        protected const int TcpReceiveTimeout = 5000;
         /// <summary>
         /// Длина буфера принимаемых данных
         /// </summary>
-        private const int InBufLenght = 1000;
+        protected const int InBufLenght = 1000;
 
-        private Settings settings;                  // настройки слоя связи
-        private TcpListener tcpListener;            // прослушиватель TCP-соединений
-        private List<TcpConnection> connList;       // список соединений
-        private byte[] inBuf;                       // буфер принимаемых данных
+        /// <summary>
+        /// Настройки слоя связи
+        /// </summary>
+        protected Settings settings;
+        /// <summary>
+        /// Прослушиватель TCP-соединений
+        /// </summary>
+        protected TcpListener tcpListener;
+        /// <summary>
+        /// Список соединений
+        /// </summary>
+        protected List<TcpConnection> connList;
+        /// <summary>
+        /// Буфер принимаемых данных
+        /// </summary>
+        protected byte[] inBuf;
 
 
         /// <summary>
@@ -151,7 +163,7 @@ namespace Scada.Comm.Layers
         /// <summary>
         /// Цикл взаимодействия с TCP-клиентами (метод вызывается в отдельном потоке)
         /// </summary>
-        private void Execute()
+        protected void Execute()
         {
             // сохранение в локальных переменных постоянно используемых значений
             int inactiveTime = settings.InactiveTime;
@@ -272,7 +284,7 @@ namespace Scada.Comm.Layers
         /// <summary>
         /// Настроить TCP-клиент
         /// </summary>
-        private void TuneTcpClient(TcpClient tcpClient)
+        protected void TuneTcpClient(TcpClient tcpClient)
         {
             tcpClient.NoDelay = true;
             tcpClient.SendTimeout = TcpSendTimeout;
@@ -282,7 +294,7 @@ namespace Scada.Comm.Layers
         /// <summary>
         /// Установить соединение для КП
         /// </summary>
-        private void SetConnection(KPLogic kpLogic, TcpConnection tcpConn)
+        protected void SetConnection(KPLogic kpLogic, TcpConnection tcpConn)
         {
             TcpConnection existingTcpConn = kpLogic.Connection as TcpConnection;
             if (existingTcpConn != null)
@@ -298,7 +310,7 @@ namespace Scada.Comm.Layers
         /// <summary>
         /// Прекратить использование соединения
         /// </summary>
-        private void ReleaseConnection(TcpConnection tcpConn)
+        protected void ReleaseConnection(TcpConnection tcpConn)
         {
             if (tcpConn.RelatedKP != null)
                 tcpConn.RelatedKP.Connection = null;
@@ -308,7 +320,7 @@ namespace Scada.Comm.Layers
         /// <summary>
         /// Привязать соединение к КП по IP-адресу 
         /// </summary>
-        private bool BindConnByIP(TcpConnection tcpConn)
+        protected bool BindConnByIP(TcpConnection tcpConn)
         {
             KPLogic kpLogic;
             if (kpCallNumDict.TryGetValue(tcpConn.RemoteAddress, out kpLogic))
@@ -333,7 +345,7 @@ namespace Scada.Comm.Layers
         /// <summary>
         /// Привязать соединение к КП по позывному
         /// </summary>
-        private bool BindConnByFirstPackage(TcpConnection tcpConn, string firstPackage)
+        protected bool BindConnByFirstPackage(TcpConnection tcpConn, string firstPackage)
         {
             KPLogic kpLogic;
             if (kpCallNumDict.TryGetValue(firstPackage, out kpLogic))
@@ -358,7 +370,7 @@ namespace Scada.Comm.Layers
         /// <summary>
         /// Привязать соединение к КП, используя библиотеку КП
         /// </summary>
-        private void BindConnByDeviceLibrary(TcpConnection tcpConn, KPLogic kpLogic)
+        protected void BindConnByDeviceLibrary(TcpConnection tcpConn, KPLogic kpLogic)
         {
             if (kpLogic != null)
             {
@@ -380,7 +392,7 @@ namespace Scada.Comm.Layers
         /// <summary>
         /// Принять первый пакет данных, содержащий позывной
         /// </summary>
-        private string ReceiveFirstPackage(TcpConnection tcpConn)
+        protected string ReceiveFirstPackage(TcpConnection tcpConn)
         {
             WriteToLog(string.Format(Localization.UseRussian ? 
                 "{0} Приём первого пакета данных от клиента {1}" : 
@@ -447,7 +459,7 @@ namespace Scada.Comm.Layers
         {
             try
             {
-                // остановка потока работы слоя связи
+                // остановка потока взаимодействия с клиентами
                 StopThread();
             }
             finally
