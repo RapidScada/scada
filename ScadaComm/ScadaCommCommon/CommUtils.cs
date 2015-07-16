@@ -142,6 +142,25 @@ namespace Scada.Comm
                 sbResult.Insert(0, "0");
             return sbResult.ToString();
         }
+        
+        /// <summary>
+        /// Извлечь IP-адрес и порт из позывного КП
+        /// </summary>
+        public static void ExtractAddrAndPort(string callNum, int defaultPort, out string ipAddr, out int port)
+        {
+            int ind = callNum.IndexOf(':');
+            if (ind >= 0)
+            {
+                ipAddr = callNum.Substring(0, ind);
+                if (!int.TryParse(callNum.Substring(ind + 1), out port))
+                    port = defaultPort;
+            }
+            else
+            {
+                ipAddr = callNum;
+                port = defaultPort;
+            }
+        }
 
         /// <summary>
         /// Получить текущую дату и время для вывода в журнал линии связи
