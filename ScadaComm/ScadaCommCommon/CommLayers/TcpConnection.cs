@@ -46,6 +46,10 @@ namespace Scada.Comm.Layers
         /// </summary>
         protected const int OneByteReadTimeout = 10;
         /// <summary>
+        /// Периодичность попыток установки TCP-соединения, с
+        /// </summary>
+        protected const int ConnectPeriod = 5;
+        /// <summary>
         /// Обозначение активности для строкового представления соединения
         /// </summary>
         protected static readonly string ActivityStr = 
@@ -55,6 +59,10 @@ namespace Scada.Comm.Layers
         /// Клиент TCP-соединения
         /// </summary>
         protected TcpClient tcpClient;
+        /// <summary>
+        /// Дата и время установки соединения
+        /// </summary>
+        protected DateTime connectDT;
 
 
         /// <summary>
@@ -72,6 +80,7 @@ namespace Scada.Comm.Layers
             if (tcpClient == null)
                 throw new ArgumentNullException("tcpClient");
 
+            connectDT = DateTime.MinValue;
             TcpClient = tcpClient; // в том числе NetStream
             ActivityDT = DateTime.Now;
             JustConnected = true;
@@ -79,6 +88,17 @@ namespace Scada.Comm.Layers
             RelatedKP = null;
         }
 
+
+        /// <summary>
+        /// Получить признак, что соединение установлено
+        /// </summary>
+        public override bool Connected
+        {
+            get
+            {
+                return TcpClient.Connected;
+            }
+        }
 
         /// <summary>
         /// Получить клиента TCP-соединения
@@ -93,8 +113,7 @@ namespace Scada.Comm.Layers
             {
                 tcpClient = value;
                 NetStream = tcpClient.GetStream();
-                LocalAddress = ((IPEndPoint)tcpClient.Client.LocalEndPoint).Address.ToString();
-                RemoteAddress = ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address.ToString();
+                TakeAddresses();
             }
         }
 
@@ -114,7 +133,7 @@ namespace Scada.Comm.Layers
         public bool JustConnected { get; set; }
 
         /// <summary>
-        /// Получить или установить признак, что соединение оборвано
+        /// Получить или установить признак, что соединение обрвано и его необходимо закрыть
         /// </summary>
         public bool Broken { get; set; }
 
@@ -130,6 +149,18 @@ namespace Scada.Comm.Layers
         protected void UpdateActivityDT()
         {
             ActivityDT = DateTime.Now;
+        }
+
+        /// <summary>
+        /// Определить локальный и удалённый адрес соединения
+        /// </summary>
+        protected void TakeAddresses()
+        {
+            try { LocalAddress = ((IPEndPoint)TcpClient.Client.LocalEndPoint).Address.ToString(); }
+            catch { LocalAddress = ""; }
+
+            try { RemoteAddress = ((IPEndPoint)TcpClient.Client.RemoteEndPoint).Address.ToString(); }
+            catch { RemoteAddress = ""; }
         }
 
 
@@ -294,10 +325,35 @@ namespace Scada.Comm.Layers
 
 
         /// <summary>
-        /// Открыть соединение
+        /// Установить TCP-соединение
         /// </summary>
-        public void Open()
+        public void Open(IPAddress addr, int port)
         {
+            DateTime nowDT = DateTime.Now;
+
+            if ((nowDT - connectDT).TotalSeconds >= ConnectPeriod || nowDT < connectDT /*время переведено назад*/)
+            {
+                connectDT = nowDT;
+
+                try
+                {
+                    tcpClient.Connect(addr, port);
+                    TakeAddresses();
+                }
+                catch (Exception ex)
+                {
+                    WriteToLog((Localization.UseRussian ? 
+                        "Ошибка при установке TCP-соединения: " :
+                        "Error establishing TCP connection: ") + ex.Message);
+                }
+            }
+            else
+            {
+                throw new InvalidOperationException(string.Format(Localization.UseRussian ?
+                    "Попытка установки TCP-соединения может быть не ранее, чем через {0} с после предыдущей." :
+                    "Attempt to establish TCP connection can not be earlier than {0} seconds after the previous.",
+                    ConnectPeriod));
+            }
         }
 
         /// <summary>

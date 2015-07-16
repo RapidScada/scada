@@ -28,6 +28,7 @@ using Scada.Data;
 using System;
 using System.Globalization;
 using System.IO;
+using System.Net;
 using System.Text;
 
 namespace Scada.Comm
@@ -146,19 +147,32 @@ namespace Scada.Comm
         /// <summary>
         /// Извлечь IP-адрес и порт из позывного КП
         /// </summary>
-        public static void ExtractAddrAndPort(string callNum, int defaultPort, out string ipAddr, out int port)
+        public static void ExtractAddrAndPort(string callNum, int defaultPort, out IPAddress addr, out int port)
         {
+            string addrStr;
+            string portStr;
             int ind = callNum.IndexOf(':');
+
             if (ind >= 0)
             {
-                ipAddr = callNum.Substring(0, ind);
-                if (!int.TryParse(callNum.Substring(ind + 1), out port))
-                    port = defaultPort;
+                addrStr = callNum.Substring(0, ind);
+                portStr = callNum.Substring(ind + 1);
             }
             else
             {
-                ipAddr = callNum;
-                port = defaultPort;
+                addrStr = callNum;
+                portStr = "";
+            }
+
+            try
+            { 
+                addr = IPAddress.Parse(addrStr);
+                port = portStr == "" ? defaultPort : int.Parse(portStr);
+            }
+            catch (FormatException) 
+            { 
+                throw new FormatException(Localization.UseRussian ? 
+                    "IP address or port is incorrect." : "Некорректный IP-адрес или порт."); 
             }
         }
 

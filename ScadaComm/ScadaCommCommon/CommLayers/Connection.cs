@@ -117,6 +117,17 @@ namespace Scada.Comm.Layers
 
 
         /// <summary>
+        /// Получить признак, что соединение установлено
+        /// </summary>
+        public virtual bool Connected
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
         /// Формат вывода протокола обмена данными в журнал по умлочанию
         /// </summary>
         public CommUtils.ProtocolLogFormats DefaultLogFormat { get; set; }

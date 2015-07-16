@@ -100,10 +100,6 @@ namespace Scada.Comm.Layers
         /// Соединение через последовательный порт
         /// </summary>
         protected SerialConnection serialConn;
-        /// <summary>
-        /// Последовательный порт
-        /// </summary>
-        protected SerialPort serialPort;
 
 
         /// <summary>
@@ -114,7 +110,6 @@ namespace Scada.Comm.Layers
         {
             settings = new Settings();
             serialConn = null;
-            serialPort = null;
         }
 
 
@@ -146,11 +141,9 @@ namespace Scada.Comm.Layers
         /// </summary>
         protected void serialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            if (kpList.Count > 0)
-            {
-                KPLogic targetKP = null;
-                ExecProcUnreadIncomingReq(kpList[0], serialConn, ref targetKP);
-            }
+            KPLogic targetKP = null;
+            if (!ExecProcUnreadIncomingReq(kpList[0], serialConn, ref targetKP))
+                serialConn.DiscardInBuffer();
         }
 
 
@@ -174,7 +167,7 @@ namespace Scada.Comm.Layers
                 false, settings.Behavior);
 
             // создание клиента и соединения
-            serialPort = new SerialPort(settings.PortName, settings.BaudRate, settings.Parity, 
+            SerialPort serialPort = new SerialPort(settings.PortName, settings.BaudRate, settings.Parity, 
                 settings.DataBits, settings.StopBits) { DtrEnable = settings.DtrEnable, RtsEnable = settings.RtsEnable };
             serialConn = new SerialConnection(serialPort);
 
@@ -194,11 +187,11 @@ namespace Scada.Comm.Layers
         public override void Start()
         {
             // попытка открыть последовательный порт
-            serialPort.Open();
+            serialConn.Open();
 
             // привязка события приёма данных в режиме ведомого
-            if (settings.Behavior == OperatingBehaviors.Slave)
-                serialPort.DataReceived += serialPort_DataReceived;
+            if (settings.Behavior == OperatingBehaviors.Slave && kpList.Count > 0)
+                serialConn.SerialPort.DataReceived += serialPort_DataReceived;
         }
 
         /// <summary>
@@ -207,16 +200,15 @@ namespace Scada.Comm.Layers
         public override void Stop()
         {
             // отключение события приёма данных в режиме ведомого
-            if (settings.Behavior == OperatingBehaviors.Slave)
-                serialPort.DataReceived -= serialPort_DataReceived;
+            serialConn.SerialPort.DataReceived -= serialPort_DataReceived;
 
             // очистка ссылки на соединение для всех КП на линии связи
             foreach (KPLogic kpLogic in kpList)
                 kpLogic.Connection = null;
 
             // закрытие последовательного порта
-            try { serialPort.Close(); }
-            finally { serialPort = null; serialConn = null; }
+            serialConn.Close();
+            serialConn = null;
         }
 
         /// <summary>
@@ -224,36 +216,24 @@ namespace Scada.Comm.Layers
         /// </summary>
         public override string GetInfo()
         {
-            StringBuilder sbInfo = new StringBuilder();
+            StringBuilder sbInfo = new StringBuilder(base.GetInfo());
 
             if (Localization.UseRussian)
             {
-                string title = "Слой связи";
-                sbInfo.AppendLine(title)
-                    .AppendLine(new string('-', title.Length))
-                    .AppendLine("Наименование: " + InternalName)
-                    .Append("Последовательный порт: ");
-                
+                sbInfo.Append("Последовательный порт: ");                
                 if (serialConn == null)
                     sbInfo.Append("не определён");
                 else
-                    sbInfo
-                        .Append(serialConn.SerialPort.PortName)
+                    sbInfo.Append(serialConn.SerialPort.PortName)
                         .Append(serialConn.SerialPort.IsOpen ? " (открыт)" : " (закрыт)");
             }
             else
             {
-                string title = "Connection Layer";
-                sbInfo.AppendLine(title)
-                    .AppendLine(new string('-', title.Length))
-                    .AppendLine("Name: " + InternalName)
-                    .Append("Serial port: ");
-
+                sbInfo.Append("Serial port: ");
                 if (serialConn == null)
                     sbInfo.Append("undefined");
                 else
-                    sbInfo
-                        .Append(serialConn.SerialPort.PortName)
+                    sbInfo.Append(serialConn.SerialPort.PortName)
                         .Append(serialConn.SerialPort.IsOpen ? " (open)" : " (closed)");
             }
 

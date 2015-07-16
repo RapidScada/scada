@@ -37,7 +37,7 @@ namespace Scada.Comm.Layers
     /// TCP server communication layer logic
     /// <para>Логика работы слоя связи TCP-сервер</para>
     /// </summary>
-    public class CommTcpServerLogic : CommLayerLogic
+    public class CommTcpServerLogic : CommTcpLayerLogic
     {
         /// <summary>
         /// Режимы выбора КП для обработки входящих запросов
@@ -93,18 +93,6 @@ namespace Scada.Comm.Layers
             public DeviceSelectionModes DevSelMode { get; set; }
         }
 
-        /// <summary>
-        /// Таймаут отправки данных по TCP, мс
-        /// </summary>
-        protected const int TcpSendTimeout = 1000;
-        /// <summary>
-        /// Таймаут приёма данных по TCP, мс
-        /// </summary>
-        protected const int TcpReceiveTimeout = 5000;
-        /// <summary>
-        /// Длина буфера принимаемых данных
-        /// </summary>
-        protected const int InBufLenght = 1000;
 
         /// <summary>
         /// Настройки слоя связи
@@ -118,10 +106,6 @@ namespace Scada.Comm.Layers
         /// Список соединений
         /// </summary>
         protected List<TcpConnection> connList;
-        /// <summary>
-        /// Буфер принимаемых данных
-        /// </summary>
-        protected byte[] inBuf;
 
 
         /// <summary>
@@ -133,7 +117,6 @@ namespace Scada.Comm.Layers
             settings = new Settings();
             tcpListener = null;
             connList = new List<TcpConnection>();
-            inBuf = new byte[InBufLenght];
         }
 
 
@@ -184,9 +167,7 @@ namespace Scada.Comm.Layers
                         // открытие запрашиваемых соединений
                         while (tcpListener.Pending() && !terminated)
                         {
-                            TcpClient tcpClient = tcpListener.AcceptTcpClient();
-                            TuneTcpClient(tcpClient);
-
+                            TcpClient tcpClient = TuneTcpClient(tcpListener.AcceptTcpClient());
                             tcpConn = new TcpConnection(tcpClient);
                             tcpConn.WriteToLog = WriteToLog;
                             WriteToLog(string.Format(Localization.UseRussian ? 
@@ -279,16 +260,6 @@ namespace Scada.Comm.Layers
 
                 Thread.Sleep(threadDelay);
             }
-        }
-
-        /// <summary>
-        /// Настроить TCP-клиент
-        /// </summary>
-        protected void TuneTcpClient(TcpClient tcpClient)
-        {
-            tcpClient.NoDelay = true;
-            tcpClient.SendTimeout = TcpSendTimeout;
-            tcpClient.ReceiveTimeout = TcpReceiveTimeout;
         }
 
         /// <summary>
@@ -495,24 +466,8 @@ namespace Scada.Comm.Layers
         {
             lock (connList)
             {
-                StringBuilder sbInfo = new StringBuilder();
-
-                if (Localization.UseRussian)
-                {
-                    string title = "Слой связи";
-                    sbInfo.AppendLine(title)
-                        .AppendLine(new string('-', title.Length))
-                        .AppendLine("Наименование: " + InternalName)
-                        .Append("Подключенные клиенты");
-                }
-                else
-                {
-                    string title = "Connection Layer";
-                    sbInfo.AppendLine(title)
-                        .AppendLine(new string('-', title.Length))
-                        .AppendLine("Name: " + InternalName)
-                        .Append("Connected clients");
-                }
+                StringBuilder sbInfo = new StringBuilder(base.GetInfo());
+                sbInfo.Append(Localization.UseRussian ? "Подключенные клиенты" : "Connected clients");
 
                 int cnt = connList.Count;
                 if (cnt > 0)

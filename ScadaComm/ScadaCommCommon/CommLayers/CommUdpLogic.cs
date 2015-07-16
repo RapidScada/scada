@@ -255,34 +255,5 @@ namespace Scada.Comm.Layers
             if (udpConn != null)
                 udpConn.RemoteAddress = kpLogic.CallNum;
         }
-
-        /// <summary>
-        /// Получить информацию о работе слоя связи
-        /// </summary>
-        public override string GetInfo()
-        {
-            StringBuilder sbInfo = new StringBuilder();
-
-            if (Localization.UseRussian)
-            {
-                string title = "Слой связи";
-                sbInfo.AppendLine(title)
-                    .AppendLine(new string('-', title.Length))
-                    .AppendLine("Наименование: " + InternalName)
-                    .Append("Локальный порт: ")
-                    .Append(udpConn == null ? "не определён" : udpConn.LocalPort.ToString());
-            }
-            else
-            {
-                string title = "Connection Layer";
-                sbInfo.AppendLine(title)
-                    .AppendLine(new string('-', title.Length))
-                    .AppendLine("Name: " + InternalName)
-                    .Append("Local port: ")
-                    .Append(udpConn == null ? "undefined" : udpConn.LocalPort.ToString());
-            }
-
-            return sbInfo.ToString();
-        }
     }
 }

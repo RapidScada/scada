@@ -150,6 +150,7 @@ namespace Scada.Comm.Devices
             SerialPort = null;
 
             CanSendCmd = false;
+            ConnRequired = false;
             KPTags = new KPTag[0];
             TagGroups = new TagGroup[0];
             WorkState = WorkStates.Undefined;
@@ -256,6 +257,11 @@ namespace Scada.Comm.Devices
         /// Получить возможность отправки команд ТУ
         /// </summary>
         public bool CanSendCmd { get; protected set; }
+        
+        /// <summary>
+        /// Получить требование наличия соединения для выполнения сеанса опроса КП и отправки команды ТУ
+        /// </summary>
+        public bool ConnRequired { get; protected set; }
 
         /// <summary>
         /// Получить все теги КП без разбивки на группы
@@ -1169,6 +1175,25 @@ namespace Scada.Comm.Devices
         public virtual string ConvertTagDataToStr(int signal, SrezTableLight.CnlData tagData)
         {
             return tagData.Stat > 0 ? tagData.Val.ToString("N3", Localization.Culture) : "---";
+        }
+
+        /// <summary>
+        /// Установить текущие данные как недостоверные
+        /// </summary>
+        /// <remarks>Метод вызывается при обрыве соединения, если ConnRequired равно true</remarks>
+        public virtual void InvalidateCurData()
+        {
+            lock (curData)
+            {
+                SrezTableLight.CnlData newData = SrezTableLight.CnlData.Empty;
+                int tagCnt = curData.Length;
+                for (int tagInd = 0; tagInd < tagCnt; tagInd++)
+                {
+                    SrezTableLight.CnlData curTagData = curData[tagInd];
+                    curDataModified[tagInd] |= curTagData.Val != newData.Val || curTagData.Stat != newData.Stat;
+                    curData[tagInd] = newData;
+                }
+            }
         }
 
         /// <summary>

@@ -57,6 +57,17 @@ namespace Scada.Comm.Layers
 
 
         /// <summary>
+        /// Получить признак, что соединение установлено
+        /// </summary>
+        public override bool Connected
+        {
+            get
+            {
+                return SerialPort.IsOpen;
+            }
+        }
+
+        /// <summary>
         /// Получить последовательный порт
         /// </summary>
         public SerialPort SerialPort { get; protected set; }
@@ -232,6 +243,39 @@ namespace Scada.Comm.Layers
             catch (Exception ex)
             {
                 throw new InvalidOperationException(CommPhrases.WriteLineError + ": " + ex.Message, ex);
+            }
+        }
+
+
+        /// <summary>
+        /// Открыть соединение
+        /// </summary>
+        public void Open()
+        {
+            SerialPort.Open();
+        }
+
+        /// <summary>
+        /// Закрыть соединение
+        /// </summary>
+        public void Close()
+        {
+            try { SerialPort.Close(); }
+            catch { }
+        }
+
+        /// <summary>
+        /// Очистить буфер входных данных порта
+        /// </summary>
+        public void DiscardInBuffer()
+        {
+            try
+            {
+                SerialPort.DiscardInBuffer();
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(CommPhrases.ClearDataStreamError + ": " + ex.Message, ex);
             }
         }
     }

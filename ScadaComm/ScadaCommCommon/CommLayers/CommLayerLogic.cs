@@ -390,7 +390,27 @@ namespace Scada.Comm.Layers
         /// <summary>
         /// Получить информацию о работе слоя связи
         /// </summary>
-        public abstract string GetInfo();
+        public virtual string GetInfo()
+        {
+            StringBuilder sbInfo = new StringBuilder();
+
+            if (Localization.UseRussian)
+            {
+                string title = "Слой связи";
+                sbInfo.AppendLine(title)
+                    .AppendLine(new string('-', title.Length))
+                    .AppendLine("Наименование: " + InternalName);
+            }
+            else
+            {
+                string title = "Connection Layer";
+                sbInfo.AppendLine(title)
+                    .AppendLine(new string('-', title.Length))
+                    .AppendLine("Name: " + InternalName);
+            }
+
+            return sbInfo.ToString();
+        }
 
         /// <summary>
         /// Найти КП на линии связи
