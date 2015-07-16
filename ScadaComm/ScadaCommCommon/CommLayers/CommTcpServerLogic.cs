@@ -76,7 +76,7 @@ namespace Scada.Comm.Layers
             }
 
             /// <summary>
-            /// Получить или установить используемый TCP-порт
+            /// Получить или установить TCP-порт для входящих соединений
             /// </summary>
             public int TcpPort { get; set; }
             /// <summary>

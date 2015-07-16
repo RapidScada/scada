@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaCommCommon
- * Summary  : UDP communication layer user interface
+ * Summary  : TCP client communication layer user interface
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
@@ -28,10 +28,10 @@ using System.Collections.Generic;
 namespace Scada.Comm.Layers
 {
     /// <summary>
-    /// UDP communication layer user interface
-    /// <para>Пользовательский интерфейс слоя связи UDP</para>
+    /// TCP client communication layer user interface
+    /// <para>Пользовательский интерфейс слоя связи TCP-клиент</para>
     /// </summary>
-    public class CommUdpView : CommLayerView
+    public class CommTcpClientView : CommLayerView
     {
         /// <summary>
         /// Получить наименование слоя связи
@@ -40,7 +40,7 @@ namespace Scada.Comm.Layers
         {
             get
             {
-                return "UDP";
+                return Localization.UseRussian ? "TCP-клиент" : "TCP client";
             }
         }
 
@@ -52,21 +52,19 @@ namespace Scada.Comm.Layers
             get
             {
                 return Localization.UseRussian ?
-                    "Слой связи UDP.\n\n" +
+                    "Слой связи TCP-клиент.\n\n" +
                     "Параметры слоя связи:\n" +
-                    "LocalUdpPort - локальный UDP-порт для входящих соединений,\n" +
-                    "RemoteUdpPort - удалённый UDP-порт единый для всех устройств в режиме Master,\n" +
-                    "RemoteIpAddress - удалённый IP-адрес по умолчанию,\n" + // !!! надо реализовать
+                    "IpAddress - удалённый IP-адрес в режиме Shared,\n" +
+                    "TcpPort - удалённый TCP-порт по умолчанию,\n" +
                     "Behavior - режим работы слоя связи (Master, Slave),\n" +
-                    "DevSelMode - режим выбора КП в режиме работы Slave (ByIPAddress, ByDeviceLibrary)." :
+                    "ConnMode - режим соединения (Individual, Shared)." :
 
-                    "UDP communication layer.\n\n" +
+                    "TCP client communication layer.\n\n" +
                     "Communication layer parameters:\n" +
-                    "LocalUdpPort - local UDP port for incoming connections." +
-                    "RemoteUdpPort - remote UDP port common for all the devices in Master mode,\n" +
-                    "RemoteIpAddress - remote IP address by default,\n" +
+                    "IpAddress - remote IP address in Shared connection mode,\n" +
+                    "TcpPort - remote TCP port by default," +
                     "Behavior - work mode of connection layer (Master, Slave),\n" +
-                    "DevSelMode - device selection mode in Slave work mode (ByIPAddress, ByDeviceLibrary).";
+                    "ConnMode - connection mode (Individual, Shared).";
             }
         }
 
@@ -75,10 +73,10 @@ namespace Scada.Comm.Layers
         /// </summary>
         public override string GetPropsInfo(Dictionary<string, string> layerParams)
         {
-            CommUdpLogic.Settings defSett = new CommUdpLogic.Settings();
+            CommTcpClientLogic.Settings defSett = new CommTcpClientLogic.Settings();
             return BuildPropsInfo(layerParams,
-                new string[] { "LocalUdpPort", "RemoteUdpPort", "Behavior", "DevSelMode" },
-                new object[] { defSett.LocalUdpPort, defSett.RemoteUdpPort, defSett.Behavior, defSett.DevSelMode });
+                new string[] { "IpAddress", "TcpPort", "Behavior", "ConnMode" },
+                new object[] { defSett.IpAddress, defSett.TcpPort, defSett.Behavior, defSett.ConnMode });
         }
     }
 }

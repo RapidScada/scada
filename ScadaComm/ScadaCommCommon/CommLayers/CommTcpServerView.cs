@@ -40,7 +40,7 @@ namespace Scada.Comm.Layers
         {
             get
             {
-                return Localization.UseRussian ? "TCP сервер" : "TCP server";
+                return Localization.UseRussian ? "TCP-сервер" : "TCP server";
             }
         }
 
@@ -52,7 +52,7 @@ namespace Scada.Comm.Layers
             get
             {
                 return Localization.UseRussian ?
-                    "Слой связи TCP сервер.\n\n" +
+                    "Слой связи TCP-сервер.\n\n" +
                     "Параметры слоя связи:\n" +
                     "TcpPort - TCP-порт для входящих соединений,\n" +
                     "InactiveTime - время неактивности соединения до отключения, с,\n" +
@@ -61,7 +61,7 @@ namespace Scada.Comm.Layers
 
                     "TCP server communication layer.\n\n" +
                     "Communication layer parameters:\n" +
-                    "TcpPort - TCP port for incoming connections." +
+                    "TcpPort - TCP port for incoming connections," +
                     "InactiveTime - duration of inactivity before disconnect, sec,\n" +
                     "Behavior - work mode of connection layer (Master, Slave),\n" +
                     "DevSelMode - device selection mode (ByIPAddress, ByFirstPackage, ByDeviceLibrary).";

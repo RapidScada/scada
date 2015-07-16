@@ -47,6 +47,8 @@
     <Compile Include="CommLayers\CommLayerView.cs" />
     <Compile Include="CommLayers\CommSerialLogic.cs" />
     <Compile Include="CommLayers\CommSerialView.cs" />
+    <Compile Include="CommLayers\CommTcpClientLogic.cs" />
+    <Compile Include="CommLayers\CommTcpClientView.cs" />
     <Compile Include="CommLayers\CommTcpServerLogic.cs" />
     <Compile Include="CommLayers\CommTcpServerView.cs" />
     <Compile Include="CommLayers\CommUdpLogic.cs" />
