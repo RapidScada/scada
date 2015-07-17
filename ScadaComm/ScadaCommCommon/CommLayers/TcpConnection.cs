@@ -189,6 +189,28 @@ namespace Scada.Comm.Layers
             catch { RemoteAddress = ""; }
         }
 
+        /// <summary>
+        /// Проверить, что содержимое конструктора строк заканчивается на заданное значение
+        /// </summary>
+        protected bool StringBuilderEndsWith(StringBuilder sb, string value, bool ignoreCase = false)
+        {
+            int sbInd = sb.Length - 1;
+            int valLen = value.Length;
+            int valInd = valLen - 1;
+
+            for (int i = 0; i < valLen; i++)
+            {
+                if (sbInd <= 0)
+                    return false;
+                if (sb[sbInd] != value[valInd])
+                    return false;
+                sbInd--;
+                valInd--;
+            }
+
+            return true;
+        }
+
 
         /// <summary>
         /// Считать данные
@@ -204,7 +226,7 @@ namespace Scada.Comm.Layers
                 DateTime stopDT = startDT.AddMilliseconds(timeout);
                 NetStream.ReadTimeout = timeout; // таймаут не выдерживается, если считаны все доступные данные
 
-                do
+                while (readCnt < count && startDT <= nowDT && nowDT <= stopDT)
                 {
                     // считывание данных
                     try { readCnt += NetStream.Read(buffer, readCnt + offset, count - readCnt); }
@@ -215,7 +237,7 @@ namespace Scada.Comm.Layers
                         Thread.Sleep(DataAccumThreadDelay);
 
                     nowDT = DateTime.Now;
-                } while (readCnt < count && startDT <= nowDT && nowDT <= stopDT);
+                }
 
                 logText = BuildReadLogText(buffer, offset, count, readCnt, logFormat);
 
@@ -248,7 +270,7 @@ namespace Scada.Comm.Layers
                 int curOffset = offset;
                 byte stopCode = stopCond.StopCode;
 
-                while (readCnt <= maxCount && !stopReceived && startDT <= nowDT && nowDT <= stopDT)
+                while (readCnt < maxCount && !stopReceived && startDT <= nowDT && nowDT <= stopDT)
                 {
                     // считывание одного байта данных
                     bool readOk;
@@ -303,7 +325,6 @@ namespace Scada.Comm.Layers
 
                 StringBuilder sbLine = new StringBuilder(maxLineSize);
                 byte[] buffer = new byte[1];
-                int newLineLen = NewLine.Length;
 
                 while (!stopReceived && startDT <= nowDT && nowDT <= stopDT)
                 {
@@ -322,12 +343,12 @@ namespace Scada.Comm.Layers
                         Thread.Sleep(DataAccumThreadDelay);
                     }
 
-                    int lineEndInd = sbLine.Length - newLineLen;
-                    bool newLineFound = lineEndInd >= 0 && sbLine.ToString(lineEndInd, newLineLen) == NewLine;
-
+                    bool newLineFound = StringBuilderEndsWith(sbLine, NewLine);
                     if (newLineFound || sbLine.Length == maxLineSize)
                     {
-                        string line = newLineFound ? sbLine.ToString(0, lineEndInd) : sbLine.ToString();
+                        string line = newLineFound ?
+                            sbLine.ToString(0, sbLine.Length - NewLine.Length) : 
+                            sbLine.ToString();
                         lines.Add(line);
                         sbLine.Clear();
                         for (int i = 0; i < endingsLen && !stopReceived; i++)

@@ -25,8 +25,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 
 namespace Scada.Comm.Layers
 {
@@ -56,7 +58,6 @@ namespace Scada.Comm.Layers
             UdpClient = udpClient;
             LocalPort = localPort;
             RemotePort = remotePort;
-            RemotePort = 0;
         }
 
 
@@ -77,6 +78,15 @@ namespace Scada.Comm.Layers
 
 
         /// <summary>
+        /// Создать объект IPEndPoint, описывающий удалённый хост
+        /// </summary>
+        public IPEndPoint CreateIPEndPoint()
+        {
+            return new IPEndPoint(IPAddress.Parse(RemoteAddress), RemotePort);
+        }
+
+
+        /// <summary>
         /// Считать данные
         /// </summary>
         public override int Read(byte[] buffer, int offset, int count, int timeout, 
@@ -84,7 +94,36 @@ namespace Scada.Comm.Layers
         {
             try
             {
-                throw new NotImplementedException();
+                int readCnt = 0;
+                DateTime nowDT = DateTime.Now;
+                DateTime startDT = nowDT;
+                DateTime stopDT = startDT.AddMilliseconds(timeout);
+                IPEndPoint endPoint = CreateIPEndPoint();
+
+                while (readCnt < count && startDT <= nowDT && nowDT <= stopDT)
+                {
+                    // считывание данных
+                    byte[] datagram = UdpClient.Receive(ref endPoint);
+
+                    // копирование полученных данных в заданный буфер
+                    if (datagram.Length > 0)
+                    {
+                        int requiredCnt = count - readCnt;
+                        int copyCnt = Math.Min(datagram.Length, requiredCnt);
+                        Array.Copy(datagram, 0, buffer, readCnt, copyCnt);
+                        readCnt += copyCnt;
+                    }
+
+                    // накопление данных во внутреннем буфере соединения
+                    if (readCnt < count)
+                        Thread.Sleep(DataAccumThreadDelay);
+
+                    nowDT = DateTime.Now;
+                }
+
+                logText = BuildReadLogText(buffer, offset, count, readCnt, logFormat);
+
+                return readCnt;
             }
             catch (Exception ex)
             {
@@ -100,7 +139,52 @@ namespace Scada.Comm.Layers
         {
             try
             {
-                throw new NotImplementedException();
+                int readCnt = 0;
+                DateTime nowDT = DateTime.Now;
+                DateTime startDT = nowDT;
+                DateTime stopDT = startDT.AddMilliseconds(timeout);
+                IPEndPoint endPoint = CreateIPEndPoint();
+
+                stopReceived = false;
+                int curOffset = offset;
+                byte stopCode = stopCond.StopCode;
+
+                while (readCnt < maxCount && !stopReceived && startDT <= nowDT && nowDT <= stopDT)
+                {
+                    // считывание данных
+                    byte[] datagram = UdpClient.Receive(ref endPoint);
+
+                    if (datagram.Length > 0)
+                    {
+                        // поиск кода остановки в считанных данных
+                        int datagramLen = datagram.Length;
+                        int stopCodeInd = -1;
+                        for (int i = 0; i < datagramLen && !stopReceived; i++)
+                        {
+                            if (datagram[i] == stopCode)
+                            {
+                                stopCodeInd = i;
+                                stopReceived = true;
+                            }
+                        }
+
+                        // копирование полученных данных в заданный буфер
+                        int requiredCnt = stopReceived ? stopCodeInd - readCnt + 1 : maxCount - readCnt;
+                        int copyCnt = Math.Min(datagram.Length, requiredCnt);
+                        Array.Copy(datagram, 0, buffer, readCnt, copyCnt);
+                        readCnt += copyCnt;
+                    }
+
+                    // накопление данных во внутреннем буфере соединения
+                    if (readCnt < maxCount && !stopReceived)
+                        Thread.Sleep(DataAccumThreadDelay);
+
+                    nowDT = DateTime.Now;
+                }
+
+                logText = BuildReadLogText(buffer, offset, readCnt, logFormat);
+
+                return readCnt;
             }
             catch (Exception ex)
             {
@@ -116,7 +200,43 @@ namespace Scada.Comm.Layers
         {
             try
             {
-                throw new NotImplementedException();
+                List<string> lines = new List<string>();
+                string[] stopEndings = stopCond.StopEndings;
+                int endingsLen = stopEndings == null ? 0 : stopEndings.Length;
+                stopReceived = false;
+
+                DateTime nowDT = DateTime.Now;
+                DateTime startDT = nowDT;
+                DateTime stopDT = startDT.AddMilliseconds(timeout);
+                IPEndPoint endPoint = CreateIPEndPoint();
+
+                while (!stopReceived && startDT <= nowDT && nowDT <= stopDT)
+                {
+                    // считывание данных
+                    byte[] datagram = UdpClient.Receive(ref endPoint);
+
+                    if (datagram.Length > 0)
+                    {
+                        // получение строки из считанных данных
+                        string line = Encoding.Default.GetString(datagram);
+                        int newLineInd = line.IndexOf(NewLine);
+                        if (newLineInd >= 0)
+                            line = line.Substring(0, newLineInd);
+
+                        lines.Add(line);
+                        for (int i = 0; i < endingsLen && !stopReceived; i++)
+                            stopReceived = line.EndsWith(stopEndings[i], StringComparison.OrdinalIgnoreCase);
+                    }
+
+                    // накопление данных во внутреннем буфере соединения
+                    if (!stopReceived)
+                        Thread.Sleep(DataAccumThreadDelay);
+
+                    nowDT = DateTime.Now;
+                }
+
+                logText = BuildReadLinesLogText(lines);
+                return lines;
             }
             catch (Exception ex)
             {
