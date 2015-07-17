@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using Utils;
@@ -187,6 +188,16 @@ namespace Scada.Comm.Layers
                 (logFormat == CommUtils.ProtocolLogFormats.Hex ?
                     CommUtils.BytesToHex(buffer, offset, readCnt) :
                     CommUtils.BytesToString(buffer, offset, readCnt));
+        }
+
+        /// <summary>
+        /// Сформировать текст считывания данных для вывода в журнал
+        /// </summary>
+        public static string BuildReadLinesLogText(List<string> lines)
+        {
+            return CommPhrases.ReceiveNotation + ": " +
+                (lines.Count > 0 ? string.Join(Environment.NewLine, lines) :
+                    (Localization.UseRussian ? "нет данных" : "no data"));
         }
 
         /// <summary>

@@ -46,6 +46,10 @@ namespace Scada.Comm.Layers
         /// </summary>
         protected const int OneByteReadTimeout = 10;
         /// <summary>
+        /// Максимальный размер считываемых строк по умолчанию
+        /// </summary>
+        protected const int DeaultfMaxLineSize = 1000;
+        /// <summary>
         /// Периодичность попыток установки TCP-соединения, с
         /// </summary>
         protected const int ConnectPeriod = 5;
@@ -59,6 +63,10 @@ namespace Scada.Comm.Layers
         /// Клиент TCP-соединения
         /// </summary>
         protected TcpClient tcpClient;
+        /// <summary>
+        /// Максимальный размер считываемых строк
+        /// </summary>
+        protected int maxLineSize;
         /// <summary>
         /// Дата и время установки соединения
         /// </summary>
@@ -80,6 +88,7 @@ namespace Scada.Comm.Layers
             if (tcpClient == null)
                 throw new ArgumentNullException("tcpClient");
 
+            maxLineSize = DeaultfMaxLineSize;
             connectDT = DateTime.MinValue;
             TcpClient = tcpClient; // в том числе NetStream
             ActivityDT = DateTime.Now;
@@ -121,6 +130,23 @@ namespace Scada.Comm.Layers
         /// Получить поток данных TCP-соединения
         /// </summary>
         public NetworkStream NetStream { get; protected set; }
+
+        /// <summary>
+        /// Получить или установить максимальный размер считываемых строк
+        /// </summary>
+        public int MaxLineSize
+        {
+            get
+            {
+                return maxLineSize;
+            }
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentException("Maximum line size must be positive.", "value");
+                maxLineSize = value;
+            }
+        }
 
         /// <summary>
         /// Получить или установить дату и время последней активности
@@ -227,7 +253,7 @@ namespace Scada.Comm.Layers
                     // считывание одного байта данных
                     bool readOk;
                     try { readOk = NetStream.Read(buffer, curOffset, 1) > 0; }
-                    catch { readOk = false; }
+                    catch (IOException) { readOk = false; }
 
                     if (readOk)
                     {
@@ -265,7 +291,58 @@ namespace Scada.Comm.Layers
         {
             try
             {
-                throw new NotImplementedException();
+                List<string> lines = new List<string>();
+                string[] stopEndings = stopCond.StopEndings;
+                int endingsLen = stopEndings == null ? 0 : stopEndings.Length;
+                stopReceived = false;
+
+                DateTime nowDT = DateTime.Now;
+                DateTime startDT = nowDT;
+                DateTime stopDT = startDT.AddMilliseconds(timeout);
+                NetStream.ReadTimeout = OneByteReadTimeout;
+
+                StringBuilder sbLine = new StringBuilder(maxLineSize);
+                byte[] buffer = new byte[1];
+                int newLineLen = NewLine.Length;
+
+                while (!stopReceived && startDT <= nowDT && nowDT <= stopDT)
+                {
+                    // считывание одного байта данных
+                    bool readOk;
+                    try { readOk = NetStream.Read(buffer, 0, 1) > 0; }
+                    catch (IOException) { readOk = false; }
+
+                    if (readOk)
+                    {
+                        sbLine.Append(Encoding.Default.GetChars(buffer));
+                    }
+                    else
+                    {
+                        // накопление данных во внутреннем буфере соединения
+                        Thread.Sleep(DataAccumThreadDelay);
+                    }
+
+                    int lineEndInd = sbLine.Length - newLineLen;
+                    bool newLineFound = lineEndInd >= 0 && sbLine.ToString(lineEndInd, newLineLen) == NewLine;
+
+                    if (newLineFound || sbLine.Length == maxLineSize)
+                    {
+                        string line = newLineFound ? sbLine.ToString(0, lineEndInd) : sbLine.ToString();
+                        lines.Add(line);
+                        sbLine.Clear();
+                        for (int i = 0; i < endingsLen && !stopReceived; i++)
+                            stopReceived = line.EndsWith(stopEndings[i], StringComparison.OrdinalIgnoreCase);
+                    }
+
+                    nowDT = DateTime.Now;
+                }
+
+                logText = BuildReadLinesLogText(lines);
+
+                if (lines.Count > 0)
+                    UpdateActivityDT();
+
+                return lines;
             }
             catch (Exception ex)
             {

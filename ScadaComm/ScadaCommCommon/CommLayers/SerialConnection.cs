@@ -53,6 +53,7 @@ namespace Scada.Comm.Layers
                 throw new ArgumentNullException("serialPort");
             
             SerialPort = serialPort;
+            SerialPort.NewLine = NewLine;
         }
 
 
@@ -92,7 +93,7 @@ namespace Scada.Comm.Layers
                 while (readCnt < count && startDT <= nowDT && nowDT <= stopDT)
                 {
                     try { readCnt += SerialPort.Read(buffer, offset + readCnt, count - readCnt); }
-                    catch { /*The operation has timed out*/ }
+                    catch (TimeoutException) { }
 
                     // накопление входных данных в буфере порта
                     if (readCnt < count)
@@ -132,7 +133,7 @@ namespace Scada.Comm.Layers
                 {
                     bool readOk;
                     try { readOk = SerialPort.Read(buffer, curInd, 1) > 0; }
-                    catch { readOk = false; }
+                    catch (TimeoutException) { readOk = false; }
 
                     if (readOk)
                     {
@@ -166,7 +167,7 @@ namespace Scada.Comm.Layers
         {
             try
             {
-                List<string> lines = new List<string>(); // считанные строки
+                List<string> lines = new List<string>();
                 string[] stopEndings = stopCond.StopEndings;
                 int endingsLen = stopEndings == null ? 0 : stopEndings.Length;
                 stopReceived = false;
@@ -180,7 +181,7 @@ namespace Scada.Comm.Layers
                 {
                     string line;
                     try { line = SerialPort.ReadLine().Trim(); }
-                    catch { line = ""; /*The operation has timed out*/ }
+                    catch (TimeoutException) { line = ""; }
 
                     if (line != "")
                     {
@@ -196,11 +197,7 @@ namespace Scada.Comm.Layers
                     nowDT = DateTime.Now;
                 }
 
-                logText = CommPhrases.ReceiveNotation + ": " +
-                    (lines.Count > 0 ? string.Join(Environment.NewLine, lines) :
-                        (Localization.UseRussian ? "нет данных" : "no data"));
-
-
+                logText = BuildReadLinesLogText(lines);
                 return lines;
             }
             catch (Exception ex)
