@@ -57,14 +57,17 @@ namespace Scada.Comm.Layers
                     "TcpPort - TCP-порт для входящих соединений,\n" +
                     "InactiveTime - время неактивности соединения до отключения, с,\n" +
                     "Behavior - режим работы слоя связи (Master, Slave),\n" +
-                    "DevSelMode - режим выбора КП (ByIPAddress, ByFirstPackage, ByDeviceLibrary)." :
+                    "ConnMode - режим соединения (Individual, Shared)," +
+                    "DevSelMode - режим выбора КП в режиме соединения Individual " + 
+                    "(ByIPAddress, ByFirstPackage, ByDeviceLibrary)." :
 
                     "TCP server communication layer.\n\n" +
                     "Communication layer parameters:\n" +
                     "TcpPort - TCP port for incoming connections," +
                     "InactiveTime - duration of inactivity before disconnect, sec,\n" +
                     "Behavior - work mode of connection layer (Master, Slave),\n" +
-                    "DevSelMode - device selection mode (ByIPAddress, ByFirstPackage, ByDeviceLibrary).";
+                    "DevSelMode - device selection mode in Individual connection mode " + 
+                    "(ByIPAddress, ByFirstPackage, ByDeviceLibrary).";
             }
         }
 

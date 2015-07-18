@@ -24,6 +24,7 @@
  */
 
 using Scada.Data;
+using System;
 using System.Collections.Generic;
 
 namespace Scada.Comm.Devices
@@ -106,9 +107,47 @@ namespace Scada.Comm.Devices
             public List<CtrlCnlPrototype> CtrCnls { get; protected set; }
         }
 
+        /// <summary>
+        /// Свойства линии связи
+        /// </summary>
+        public class CommLineProperties
+        {
+            /// <summary>
+            /// Конструктор, ограничивающий создание объекта без параметров
+            /// </summary>
+            protected CommLineProperties()
+            {
+            }
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public CommLineProperties(int number, SortedList<string, Settings.CustomParam> customParams)
+            {
+                if (customParams == null)
+                    throw new ArgumentNullException("customParams");
+
+                Number = number;
+                CustomParams = customParams;
+                Modified = false;
+            }
+
+            /// <summary>
+            /// Получить или установить номер линии связи
+            /// </summary>
+            public int Number { get; set; }
+            /// <summary>
+            /// Получить ссылку на пользовательские параметры линии связи
+            /// </summary>
+            public SortedList<string, Settings.CustomParam> CustomParams { get; protected set; }
+            /// <summary>
+            /// Получить или установить признак изменения пользовательских параметров
+            /// </summary>
+            public bool Modified { get; set; }
+        }
+
 
         /// <summary>
-        /// Конструктор для общей настройки библиотеки КП
+        /// Конструктор для настройки библиотеки КП
         /// </summary>
         public KPView() 
             : this(0)
@@ -118,21 +157,21 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Конструктор для настройки конкретного КП
         /// </summary>
-        /// <param name="number">Номер настраемого КП</param>
         public KPView(int number)
         {
+            CanShowProps = false;
             Number = number;
+            CmdLine = "";
+            CommLineProps = null;
             ConfigDir = "";
             LangDir = "";
             LogDir = "";
             CmdDir = "";
-            CmdLine = "";
-            CanShowProps = false;
         }
 
 
         /// <summary>
-        /// Описание библиотеки КП
+        /// Получить описание библиотеки КП
         /// </summary>
         public abstract string KPDescr { get; }
 
@@ -158,11 +197,26 @@ namespace Scada.Comm.Devices
             }
         }
 
+        /// <summary>
+        /// Получить возможность отображения свойств КП
+        /// </summary>
+        public bool CanShowProps { get; protected set; }
+
 
         /// <summary>
         /// Получить номер КП
         /// </summary>
         public int Number { get; private set; }
+
+        /// <summary>
+        /// Получить или установить командную строку
+        /// </summary>
+        public string CmdLine { get; set; }
+
+        /// <summary>
+        /// Получить или установить свойства линии связи
+        /// </summary>
+        public CommLineProperties CommLineProps { get; set; }
 
         /// <summary>
         /// Получить или установить директорию конфигурации программы
@@ -183,16 +237,6 @@ namespace Scada.Comm.Devices
         /// Получить или установить директорию команд
         /// </summary>
         public string CmdDir { get; set; }
-
-        /// <summary>
-        /// Получить или установить командную строку
-        /// </summary>
-        public string CmdLine { get; set; }
-
-        /// <summary>
-        /// Получить возможность отображения свойств КП
-        /// </summary>
-        public bool CanShowProps { get; protected set; }
 
 
         /// <summary>

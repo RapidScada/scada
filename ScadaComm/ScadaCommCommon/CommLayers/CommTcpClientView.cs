@@ -54,7 +54,7 @@ namespace Scada.Comm.Layers
                 return Localization.UseRussian ?
                     "Слой связи TCP-клиент.\n\n" +
                     "Параметры слоя связи:\n" +
-                    "IpAddress - удалённый IP-адрес в режиме Shared,\n" +
+                    "IpAddress - удалённый IP-адрес в режиме соединения Shared,\n" +
                     "TcpPort - удалённый TCP-порт по умолчанию,\n" +
                     "Behavior - режим работы слоя связи (Master, Slave),\n" +
                     "ConnMode - режим соединения (Individual, Shared)." :

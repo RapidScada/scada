@@ -37,7 +37,7 @@ namespace Scada.Comm
     /// SCADA-Communicator settings
     /// <para>Настройки SCADA-Коммуникатора</para>
     /// </summary>
-    internal class Settings
+    public class Settings
     {
         /// <summary>
         /// Общие параметры
@@ -146,7 +146,7 @@ namespace Scada.Comm
                 MaxCommErrCnt = 1;
                 CmdEnabled = false;
 
-                UserParams = new List<UserParam>();
+                UserParams = new List<CustomParam>();
                 ReqSequence = new List<KP>();
             }
 
@@ -230,7 +230,7 @@ namespace Scada.Comm
             /// <summary>
             /// Получить пользовательские параметры линии связи
             /// </summary>
-            public List<UserParam> UserParams { get; private set; }
+            public List<CustomParam> UserParams { get; private set; }
             /// <summary>
             /// Получить последовательность опроса КП
             /// </summary>
@@ -262,8 +262,8 @@ namespace Scada.Comm
                 commLine.MaxCommErrCnt = MaxCommErrCnt;
                 commLine.CmdEnabled = CmdEnabled;
 
-                commLine.UserParams = new List<UserParam>();
-                foreach (UserParam userParam in UserParams)
+                commLine.UserParams = new List<CustomParam>();
+                foreach (CustomParam userParam in UserParams)
                     commLine.UserParams.Add(userParam.Clone());
 
                 commLine.ReqSequence = new List<KP>();
@@ -285,12 +285,12 @@ namespace Scada.Comm
         /// <summary>
         /// Пользовательский параметр линии связи
         /// </summary>
-        public class UserParam
+        public class CustomParam
         {
             /// <summary>
             /// Конструктор
             /// </summary>
-            public UserParam()
+            public CustomParam()
             {
                 Name = "";
                 Value = "";
@@ -313,9 +313,9 @@ namespace Scada.Comm
             /// <summary>
             /// Создать полную копию пользовательского параметра
             /// </summary>
-            public UserParam Clone()
+            public CustomParam Clone()
             {
-                UserParam userParam = new UserParam();
+                CustomParam userParam = new CustomParam();
                 userParam.Name = Name;
                 userParam.Value = Value;
                 userParam.Descr = Descr;
@@ -592,7 +592,7 @@ namespace Scada.Comm
                                 string name = elemParam.GetAttribute("name");
                                 if (name != "")
                                 {
-                                    UserParam userParam = new UserParam();
+                                    CustomParam userParam = new CustomParam();
                                     userParam.Name = name;
                                     userParam.Value = elemParam.GetAttribute("value");
                                     userParam.Descr = elemParam.GetAttribute("descr");
@@ -781,7 +781,7 @@ namespace Scada.Comm
                     // пользовательские параметры
                     paramsElem = xmlDoc.CreateElement("UserParams");
                     lineElem.AppendChild(paramsElem);
-                    foreach (UserParam param in commLine.UserParams)
+                    foreach (CustomParam param in commLine.UserParams)
                         paramsElem.AppendParamElem(param.Name, param.Value, param.Descr);
 
                     // последовательность опроса

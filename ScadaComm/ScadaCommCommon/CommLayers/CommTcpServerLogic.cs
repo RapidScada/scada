@@ -72,6 +72,7 @@ namespace Scada.Comm.Layers
                 TcpPort = 0;
                 InactiveTime = 60;
                 Behavior = CommLayerLogic.OperatingBehaviors.Master;
+                ConnMode = ConnectionModes.Individual;
                 DevSelMode = CommTcpServerLogic.DeviceSelectionModes.ByIPAddress;
             }
 
@@ -87,6 +88,10 @@ namespace Scada.Comm.Layers
             /// Получить или установить режим работы слоя связи
             /// </summary>
             public OperatingBehaviors Behavior { get; set; }
+            /// <summary>
+            /// Получить или установить режим соединения
+            /// </summary>
+            public ConnectionModes ConnMode { get; set; }
             /// <summary>
             /// Получить или установить режим выбора КП
             /// </summary>
@@ -388,9 +393,11 @@ namespace Scada.Comm.Layers
 
             // получение настроек слоя связи
             settings.TcpPort = GetIntLayerParam(layerParams, "TcpPort", true, settings.TcpPort);
-            settings.InactiveTime = GetIntLayerParam(layerParams, "InactiveTime", true, settings.InactiveTime);
+            settings.InactiveTime = GetIntLayerParam(layerParams, "InactiveTime", false, settings.InactiveTime);
             settings.Behavior = GetEnumLayerParam<OperatingBehaviors>(layerParams, "Behavior", 
                 false, settings.Behavior);
+            settings.ConnMode = GetEnumLayerParam<ConnectionModes>(layerParams, "ConnMode", 
+                false, settings.ConnMode);
             settings.DevSelMode = GetEnumLayerParam<DeviceSelectionModes>(layerParams, "DevSelMode", 
                 false, settings.DevSelMode);
 
