@@ -643,7 +643,7 @@ namespace ScadaTableEditor
         private void miHelpAbout_Click(object sender, EventArgs e)
         {
             // отображение формы о программе
-            (new FrmAbout()).ShowDialog();
+            FrmAbout.ShowAbout(exeDir);
         }
 
 
