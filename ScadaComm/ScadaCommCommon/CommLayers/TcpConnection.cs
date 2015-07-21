@@ -71,6 +71,10 @@ namespace Scada.Comm.Layers
         /// Дата и время установки соединения
         /// </summary>
         protected DateTime connectDT;
+        /// <summary>
+        /// Список КП, относящихся к данному соединению
+        /// </summary>
+        protected List<KPLogic> relatedKPList;
 
 
         /// <summary>
@@ -90,11 +94,12 @@ namespace Scada.Comm.Layers
 
             maxLineSize = DeaultfMaxLineSize;
             connectDT = DateTime.MinValue;
+            relatedKPList = null;
+
             TcpClient = tcpClient; // в том числе NetStream
             ActivityDT = DateTime.Now;
             JustConnected = true;
             Broken = false;
-            RelatedKP = null;
         }
 
 
@@ -164,9 +169,19 @@ namespace Scada.Comm.Layers
         public bool Broken { get; set; }
 
         /// <summary>
-        /// Получить или установить КП, относящийся к данному соединению
+        /// Получить признак, что существует хотя бы один КП, относящийся к данному соединению
         /// </summary>
-        public KPLogic RelatedKP { get; set; }
+        public bool RelatedKPExists
+        {
+            get
+            {
+                if (relatedKPList == null)
+                    return false;
+                else 
+                    lock (relatedKPList)
+                        return relatedKPList.Count > 0;
+            }
+        }
 
 
         /// <summary>
@@ -414,8 +429,31 @@ namespace Scada.Comm.Layers
             if (!string.IsNullOrEmpty(RemoteAddress))
                 sb.Append(RemoteAddress).Append("; ");
 
-            if (RelatedKP != null)
-                sb.Append(RelatedKP.Caption).Append("; ");
+            if (relatedKPList != null)
+            {
+                lock (relatedKPList)
+                {
+                    int kpCnt = relatedKPList.Count;
+                    if (kpCnt > 0)
+                    {
+                        if (kpCnt == 1)
+                        {
+                            sb.Append(relatedKPList[0].Caption);
+                        }
+                        else
+                        {
+                            sb.Append(Localization.UseRussian ? "КП " : "Device ");
+                            for (int i = 0, lastInd = kpCnt - 1; i < kpCnt; i++)
+                            {
+                                sb.Append(relatedKPList[i].Number);
+                                if (i < lastInd)
+                                    sb.Append(",");
+                            }
+                        }
+                        sb.Append("; ");
+                    }
+                }
+            }
 
             sb.Append(ActivityStr).Append(ActivityDT.ToString("T", Localization.Culture));
             return sb.ToString();
@@ -459,6 +497,13 @@ namespace Scada.Comm.Layers
         /// </summary>
         public void Close()
         {
+            if (relatedKPList != null)
+            {
+                lock (relatedKPList)
+                    foreach (KPLogic kpLogic in relatedKPList)
+                        kpLogic.Connection = null;
+            }
+
             try { NetStream.Close(); }
             catch { }
 
@@ -502,6 +547,45 @@ namespace Scada.Comm.Layers
             {
                 throw new InvalidOperationException(CommPhrases.ClearDataStreamError + ": " + ex.Message, ex);
             }
+        }
+
+        /// <summary>
+        /// Добавить КП, относящийся к данному соединению, в список
+        /// </summary>
+        public void AddRelatedKP(KPLogic kpLogic)
+        {
+            if (kpLogic == null)
+                throw new ArgumentNullException("kpLogic");
+
+            if (relatedKPList == null)
+                relatedKPList = new List<KPLogic>();
+
+            lock (relatedKPList)
+                relatedKPList.Add(kpLogic);
+        }
+
+        /// <summary>
+        /// Очистить список КП, относящихся к данному соединению
+        /// </summary>
+        public void ClearRelatedKPs()
+        {
+            if (relatedKPList != null)
+            {
+                lock (relatedKPList)
+                    relatedKPList.Clear();
+            }
+        }
+
+        /// <summary>
+        /// Получить первый в списке КП, относящийся к данному соединению
+        /// </summary>
+        public KPLogic GetFirstRelatedKP()
+        {
+            if (relatedKPList == null)
+                return null;
+            else
+                lock (relatedKPList)
+                    return relatedKPList.Count > 0 ? relatedKPList[0] : null;                        
         }
     }
 }

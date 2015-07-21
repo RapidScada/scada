@@ -98,6 +98,12 @@ namespace Scada.Comm.Layers
             public DeviceSelectionModes DevSelMode { get; set; }
         }
 
+        // переменные для постоянно используемых значений
+        private KPLogic firstKP;
+        private bool slaveBehavior;
+        private bool sharedConnMode;
+        private bool devSelByFirstPackage;
+        private bool devSelByDeviceLibrary;
 
         /// <summary>
         /// Настройки слоя связи
@@ -111,6 +117,10 @@ namespace Scada.Comm.Layers
         /// Список соединений
         /// </summary>
         protected List<TcpConnection> connList;
+        /// <summary>
+        /// Общее соединение для всех КП линии связи
+        /// </summary>
+        protected TcpConnection sharedTcpConn;
 
 
         /// <summary>
@@ -119,9 +129,16 @@ namespace Scada.Comm.Layers
         public CommTcpServerLogic()
             : base()
         {
+            firstKP = null;
+            slaveBehavior = false;
+            sharedConnMode = false;
+            devSelByFirstPackage = false;
+            devSelByDeviceLibrary = false;
+
             settings = new Settings();
             tcpListener = null;
             connList = new List<TcpConnection>();
+            sharedTcpConn = null;
         }
 
 
@@ -155,12 +172,17 @@ namespace Scada.Comm.Layers
         {
             // сохранение в локальных переменных постоянно используемых значений
             int inactiveTime = settings.InactiveTime;
-            bool slaveBehavior = settings.Behavior == OperatingBehaviors.Slave;
             bool devSelByIPAddress = settings.DevSelMode == DeviceSelectionModes.ByIPAddress;
-            bool devSelByFirstPackage = settings.DevSelMode == DeviceSelectionModes.ByFirstPackage;
-            bool devSelByDeviceLibrary = settings.DevSelMode == DeviceSelectionModes.ByDeviceLibrary;
-            int threadDelay = settings.Behavior == OperatingBehaviors.Master ? MasterThreadDelay : SlaveThreadDelay;
+            int threadDelay = slaveBehavior ? SlaveThreadDelay : MasterThreadDelay;
 
+            // выбор метода обработки доступных данных
+            Action<TcpConnection> procAvailableData;
+            if (sharedConnMode)
+                procAvailableData = ProcAvailableDataShared;
+            else
+                procAvailableData = ProcAvailableDataIndiv;
+
+            // цикл взаимодействия с TCP-клиентами
             while (!terminated)
             {
                 TcpConnection tcpConn = null;
@@ -180,10 +202,12 @@ namespace Scada.Comm.Layers
                                 CommUtils.GetNowDT(), tcpConn.RemoteAddress));
                             connList.Add(tcpConn);
 
-                            // привязка соединения к КП по IP-адресу 
-                            if (devSelByIPAddress)
-                                if (!BindConnByIP(tcpConn))
-                                    tcpConn.Broken = true;
+                            // установка соединения всем КП
+                            if (sharedConnMode)
+                                SetConnectionToAllKPs(tcpConn);
+                            // привязка соединения к КП по IP-адресу
+                            else if (devSelByIPAddress && !BindConnByIP(tcpConn))
+                                tcpConn.Broken = true;
                         }
 
                         // работа с открытыми соединениями
@@ -196,44 +220,7 @@ namespace Scada.Comm.Layers
 
                             // приём и обработка данных от TCP-клиента
                             if (tcpConn.TcpClient.Available > 0)
-                            {
-                                if (tcpConn.RelatedKP == null)
-                                {
-                                    // привязка соединения к КП по первому пакету данных
-                                    if (devSelByFirstPackage)
-                                    {
-                                        if (tcpConn.JustConnected)
-                                        {
-                                            string firstPackage = ReceiveFirstPackage(tcpConn);
-                                            if (!BindConnByFirstPackage(tcpConn, firstPackage))
-                                                tcpConn.Broken = true;
-                                        }
-                                    }
-                                    else if (devSelByDeviceLibrary)
-                                    {
-                                        // привязка соединения к КП, используя произвольную библиотеку КП
-                                        if (kpList.Count > 0)
-                                        {
-                                            KPLogic targetKP = null;
-                                            if (!ExecProcUnreadIncomingReq(kpList[0], tcpConn, ref targetKP))
-                                                tcpConn.ClearNetStream(inBuf);
-                                            BindConnByDeviceLibrary(tcpConn, targetKP);
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    // обработка входящего запроса в режиме ведомого для определённого КП
-                                    if (slaveBehavior)
-                                    {
-                                        KPLogic targetKP = tcpConn.RelatedKP;
-                                        if (!ExecProcUnreadIncomingReq(targetKP, tcpConn, ref targetKP))
-                                            tcpConn.ClearNetStream(inBuf);
-                                    }
-                                }
-
-                                tcpConn.JustConnected = false;
-                            }
+                                procAvailableData(tcpConn);
 
                             // закрытие соединения, если оно неактивно
                             if ((nowDT - tcpConn.ActivityDT).TotalSeconds > inactiveTime || tcpConn.Broken)
@@ -241,7 +228,7 @@ namespace Scada.Comm.Layers
                                 WriteToLog(string.Format(Localization.UseRussian ? 
                                     "{0} Отключение клиента {1}" : "{0} Disconnect the client {1}",
                                     nowDT.ToString(CommUtils.CommLineDTFormat), tcpConn.RemoteAddress));
-                                ReleaseConnection(tcpConn);
+                                tcpConn.Close();
                                 connList.RemoveAt(connInd);
                             }
                             else
@@ -268,6 +255,63 @@ namespace Scada.Comm.Layers
         }
 
         /// <summary>
+        /// Обработать доступные данные в режиме соединения Individual
+        /// </summary>
+        protected void ProcAvailableDataIndiv(TcpConnection tcpConn)
+        {
+            if (tcpConn.RelatedKPExists)
+            {
+                // обработка входящего запроса в режиме ведомого для первого КП из группы с одинаковым позывным
+                if (slaveBehavior)
+                {
+                    KPLogic targetKP = tcpConn.GetFirstRelatedKP();
+                    if (!ExecProcUnreadIncomingReq(targetKP, tcpConn, ref targetKP))
+                        tcpConn.ClearNetStream(inBuf);
+                }
+            }
+            else
+            {
+                // привязка соединения к КП по первому пакету данных
+                if (devSelByFirstPackage)
+                {
+                    if (tcpConn.JustConnected)
+                    {
+                        string firstPackage = ReceiveFirstPackage(tcpConn);
+                        if (!BindConnByFirstPackage(tcpConn, firstPackage))
+                            tcpConn.Broken = true;
+                    }
+                }
+                else if (devSelByDeviceLibrary)
+                {
+                    // привязка соединения к КП, используя произвольную библиотеку КП
+                    if (firstKP != null)
+                    {
+                        KPLogic targetKP = null;
+                        if (!ExecProcUnreadIncomingReq(firstKP, tcpConn, ref targetKP))
+                            tcpConn.ClearNetStream(inBuf);
+                        BindConnByDeviceLibrary(tcpConn, targetKP);
+                    }
+                }
+            }
+
+            tcpConn.JustConnected = false;
+        }
+
+        /// <summary>
+        /// Обработать доступные данные в режиме соединения Shared
+        /// </summary>
+        protected void ProcAvailableDataShared(TcpConnection tcpConn)
+        {
+            // обработка входящего запроса в режиме ведомого для произвольного КП
+            if (tcpConn == sharedTcpConn && slaveBehavior && firstKP != null)
+            {
+                KPLogic targetKP = null;
+                if (!ExecProcUnreadIncomingReq(firstKP, tcpConn, ref targetKP))
+                    tcpConn.ClearNetStream(inBuf);
+            }
+        }
+
+        /// <summary>
         /// Установить соединение для КП
         /// </summary>
         protected void SetConnection(KPLogic kpLogic, TcpConnection tcpConn)
@@ -276,21 +320,24 @@ namespace Scada.Comm.Layers
             if (existingTcpConn != null)
             {
                 existingTcpConn.Broken = true;
-                existingTcpConn.RelatedKP = null;
+                existingTcpConn.ClearRelatedKPs();
             }
 
             kpLogic.Connection = tcpConn;
-            tcpConn.RelatedKP = kpLogic;
+            tcpConn.AddRelatedKP(kpLogic);
         }
 
         /// <summary>
-        /// Прекратить использование соединения
+        /// Установить соединение всем КП на линии связи
         /// </summary>
-        protected void ReleaseConnection(TcpConnection tcpConn)
+        protected void SetConnectionToAllKPs(TcpConnection tcpConn)
         {
-            if (tcpConn.RelatedKP != null)
-                tcpConn.RelatedKP.Connection = null;
-            tcpConn.Close();
+            if (sharedTcpConn != null)
+                sharedTcpConn.Broken = true;
+
+            sharedTcpConn = tcpConn;
+            foreach (KPLogic kpLogic in kpList)
+                kpLogic.Connection = sharedTcpConn;
         }
 
         /// <summary>
@@ -401,12 +448,19 @@ namespace Scada.Comm.Layers
             settings.DevSelMode = GetEnumLayerParam<DeviceSelectionModes>(layerParams, "DevSelMode", 
                 false, settings.DevSelMode);
 
+            // сохранение постоянно используемых значений
+            firstKP = kpList.Count > 0 ? kpList[0] : null;
+            slaveBehavior = settings.Behavior == OperatingBehaviors.Slave;
+            sharedConnMode = settings.ConnMode == ConnectionModes.Shared;
+            devSelByFirstPackage = settings.DevSelMode == DeviceSelectionModes.ByFirstPackage;
+            devSelByDeviceLibrary = settings.DevSelMode == DeviceSelectionModes.ByDeviceLibrary;
+
             // создание прослушивателя соединений
             tcpListener = new TcpListener(IPAddress.Any, settings.TcpPort);
 
             // проверка библиотек КП в режиме ведомого
             string warnMsg;
-            if (settings.Behavior == OperatingBehaviors.Slave && !AreDllsEqual(out warnMsg))
+            if (slaveBehavior && !AreDllsEqual(out warnMsg))
                 WriteToLog(warnMsg);
         }
 
@@ -459,8 +513,9 @@ namespace Scada.Comm.Layers
                     lock (connList)
                     {
                         foreach (TcpConnection tcpConn in connList)
-                            ReleaseConnection(tcpConn);
+                            tcpConn.Close();
                         connList.Clear();
+                        sharedTcpConn = null;
                     }
                 }
             }

@@ -229,7 +229,7 @@ namespace Scada.Comm.Layers
                     int timeout = kpLogic.ReqParams.Timeout;
                     TcpClient tcpClient = TuneTcpClient(new TcpClient(), timeout, timeout);
                     TcpConnection tcpConn = new TcpConnection(tcpClient);
-                    tcpConn.RelatedKP = kpLogic;
+                    tcpConn.AddRelatedKP(kpLogic);
                     kpLogic.Connection = tcpConn;
                 }
             }

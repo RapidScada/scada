@@ -348,6 +348,9 @@ namespace Scada.Comm.Layers
             // копирование ссылок на КП линии связи
             foreach (KPLogic kpLogic in kpList)
             {
+                if (kpLogic == null)
+                    throw new ArgumentException("All the devices must not be null.");
+
                 this.kpList.Add(kpLogic);
 
                 int addr = kpLogic.Address;
