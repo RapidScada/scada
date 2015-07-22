@@ -99,7 +99,6 @@ namespace Scada.Comm.Layers
         }
 
         // переменные для постоянно используемых значений
-        private KPLogic firstKP;
         private bool slaveBehavior;
         private bool sharedConnMode;
         private bool devSelByFirstPackage;
@@ -129,7 +128,6 @@ namespace Scada.Comm.Layers
         public CommTcpServerLogic()
             : base()
         {
-            firstKP = null;
             slaveBehavior = false;
             sharedConnMode = false;
             devSelByFirstPackage = false;
@@ -284,7 +282,7 @@ namespace Scada.Comm.Layers
                 else if (devSelByDeviceLibrary)
                 {
                     // привязка соединения к КП, используя произвольную библиотеку КП
-                    if (firstKP != null)
+                    if (kpListNotEmpty)
                     {
                         KPLogic targetKP = null;
                         if (!ExecProcUnreadIncomingReq(firstKP, tcpConn, ref targetKP))
@@ -345,14 +343,19 @@ namespace Scada.Comm.Layers
         /// </summary>
         protected bool BindConnByIP(TcpConnection tcpConn)
         {
-            KPLogic kpLogic;
-            if (kpCallNumDict.TryGetValue(tcpConn.RemoteAddress, out kpLogic))
+            List<KPLogic> kpByCallNumList; // список КП с одинаковым позывным
+            string nowDTStr = CommUtils.GetNowDT();
+
+            if (kpCallNumDict.TryGetValue(tcpConn.RemoteAddress, out kpByCallNumList))
             {
-                WriteToLog(string.Format(Localization.UseRussian ?
-                    "{0} Клиент {1} привязан к {2} по IP-адресу" :
-                    "{0} The client {1} is bound to the {2} by IP address", 
-                    CommUtils.GetNowDT(), tcpConn.RemoteAddress, kpLogic.Caption));
-                SetConnection(kpLogic, tcpConn);
+                foreach (KPLogic kpLogic in kpByCallNumList)
+                {
+                    WriteToLog(string.Format(Localization.UseRussian ?
+                        "{0} Клиент {1} привязан к {2} по IP-адресу" :
+                        "{0} The client {1} is bound to the {2} by IP address",
+                        nowDTStr, tcpConn.RemoteAddress, kpLogic.Caption));
+                    SetConnection(kpLogic, tcpConn);
+                }
                 return true;
             }
             else
@@ -360,7 +363,7 @@ namespace Scada.Comm.Layers
                 WriteToLog(string.Format(Localization.UseRussian ?
                     "{0} Не удалось привязать клиента {1} к КП по IP-адресу" :
                     "{0} Unable to bind the client {1} to a device by IP address",
-                    CommUtils.GetNowDT(), tcpConn.RemoteAddress));
+                    nowDTStr, tcpConn.RemoteAddress));
                 return false;
             }
         }
@@ -370,14 +373,19 @@ namespace Scada.Comm.Layers
         /// </summary>
         protected bool BindConnByFirstPackage(TcpConnection tcpConn, string firstPackage)
         {
-            KPLogic kpLogic;
-            if (kpCallNumDict.TryGetValue(firstPackage, out kpLogic))
+            List<KPLogic> kpByCallNumList; // список КП с одинаковым позывным
+            string nowDTStr = CommUtils.GetNowDT();
+
+            if (kpCallNumDict.TryGetValue(firstPackage, out kpByCallNumList))
             {
-                WriteToLog(string.Format(Localization.UseRussian ?
-                    "{0} Клиент {1} привязан к {2} по первому пакету данных" :
-                    "{0} The client {1} is bound to the {2} by first data package", 
-                    CommUtils.GetNowDT(), tcpConn.RemoteAddress, kpLogic.Caption));
-                SetConnection(kpLogic, tcpConn);
+                foreach (KPLogic kpLogic in kpByCallNumList)
+                {
+                    WriteToLog(string.Format(Localization.UseRussian ?
+                        "{0} Клиент {1} привязан к {2} по первому пакету данных" :
+                        "{0} The client {1} is bound to the {2} by first data package",
+                        nowDTStr, tcpConn.RemoteAddress, kpLogic.Caption));
+                    SetConnection(kpLogic, tcpConn);
+                }
                 return true;
             }
             else
@@ -385,7 +393,7 @@ namespace Scada.Comm.Layers
                 WriteToLog(string.Format(Localization.UseRussian ?
                     "{0} Не удалось привязать клиента {1} к КП по первому пакету данных" :
                     "{0} Unable to bind the client {1} to a device by first data package",
-                    CommUtils.GetNowDT(), tcpConn.RemoteAddress));
+                    nowDTStr, tcpConn.RemoteAddress));
                 return false;
             }
         }
@@ -449,7 +457,6 @@ namespace Scada.Comm.Layers
                 false, settings.DevSelMode);
 
             // сохранение постоянно используемых значений
-            firstKP = kpList.Count > 0 ? kpList[0] : null;
             slaveBehavior = settings.Behavior == OperatingBehaviors.Slave;
             sharedConnMode = settings.ConnMode == ConnectionModes.Shared;
             devSelByFirstPackage = settings.DevSelMode == DeviceSelectionModes.ByFirstPackage;
@@ -517,6 +524,9 @@ namespace Scada.Comm.Layers
                         connList.Clear();
                         sharedTcpConn = null;
                     }
+
+                    // вызов метода базового класса
+                    base.Stop();
                 }
             }
         }

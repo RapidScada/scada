@@ -23,6 +23,7 @@
  * Modified : 2015
  */
 
+using Scada.Comm.Devices;
 using System;
 using System.Collections.Generic;
 using System.Net;

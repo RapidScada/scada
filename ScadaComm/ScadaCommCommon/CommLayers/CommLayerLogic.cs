@@ -82,13 +82,13 @@ namespace Scada.Comm.Layers
         /// </summary>
         protected List<KPLogic> kpList;
         /// <summary>
-        /// Словарь КП по адресам
+        /// Признак, что список КП не пустой
         /// </summary>
-        protected Dictionary<int, KPLogic> kpAddrDict;
+        protected bool kpListNotEmpty;
         /// <summary>
-        /// Словарь КП по позывным
+        /// Первый (нулевой) КП в списке
         /// </summary>
-        protected Dictionary<string, KPLogic> kpCallNumDict;
+        protected KPLogic firstKP;
         /// <summary>
         /// Поток работы слоя связи
         /// </summary>
@@ -107,8 +107,8 @@ namespace Scada.Comm.Layers
         {
             writeToLog = text => { }; // заглушка
             kpList = new List<KPLogic>();
-            kpAddrDict = new Dictionary<int, KPLogic>();
-            kpCallNumDict = new Dictionary<string, KPLogic>();
+            kpListNotEmpty = false;
+            firstKP = null;
             thread = null;
             terminated = false;
         }
@@ -352,17 +352,11 @@ namespace Scada.Comm.Layers
                     throw new ArgumentException("All the devices must not be null.");
 
                 this.kpList.Add(kpLogic);
-
-                int addr = kpLogic.Address;
-                if (addr > 0 && !kpAddrDict.ContainsKey(addr))
-                    kpAddrDict.Add(addr, kpLogic);
-
-                string callNum = kpLogic.CallNum;
-                if (!string.IsNullOrEmpty(callNum) && !kpCallNumDict.ContainsKey(callNum))
-                    kpCallNumDict.Add(callNum, kpLogic);
-
                 //kpLogic.FindKPLogic = FindKPLogic; !!!
             }
+
+            kpListNotEmpty = kpList.Count > 0;
+            firstKP = kpListNotEmpty ? kpList[0] : null;
         }
 
         /// <summary>
@@ -421,7 +415,8 @@ namespace Scada.Comm.Layers
         /// <remarks>Временно, необходимо перенести в класс линии связи</remarks>
         public KPLogic FindKPLogic(int address, string callNum)
         {
-            bool addrEmpty = address <= 0;
+            return null;
+            /*bool addrEmpty = address <= 0;
             bool callNumEmpty = string.IsNullOrEmpty(callNum);
 
             if (addrEmpty && callNumEmpty)
@@ -453,7 +448,7 @@ namespace Scada.Comm.Layers
                     }
                 }
                 return foundKPLogic;
-            }
+            }*/
         }
     }
 }

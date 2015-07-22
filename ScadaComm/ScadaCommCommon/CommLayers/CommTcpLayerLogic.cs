@@ -23,6 +23,8 @@
  * Modified : 2015
  */
 
+using Scada.Comm.Devices;
+using System.Collections.Generic;
 using System.Net.Sockets;
 
 namespace Scada.Comm.Layers
@@ -65,6 +67,10 @@ namespace Scada.Comm.Layers
         /// Буфер принимаемых данных
         /// </summary>
         protected byte[] inBuf;
+        /// <summary>
+        /// Словарь КП по позывным
+        /// </summary>
+        protected Dictionary<string, List<KPLogic>> kpCallNumDict;
 
 
         /// <summary>
@@ -74,6 +80,7 @@ namespace Scada.Comm.Layers
             : base()
         {
             inBuf = new byte[InBufLenght];
+            kpCallNumDict = new Dictionary<string, List<KPLogic>>();
         }
 
         
@@ -87,6 +94,41 @@ namespace Scada.Comm.Layers
             tcpClient.SendTimeout = sendTimeout;
             tcpClient.ReceiveTimeout = receiveTimeout;
             return tcpClient;
+        }
+        
+        /// <summary>
+        /// Инициализировать слой связи
+        /// </summary>
+        public override void Init(Dictionary<string, string> layerParams, List<KPLogic> kpList)
+        {
+            // вызов метода базового класса
+            base.Init(layerParams, kpList);
+
+            // добавление КП в словарь по позывным
+            foreach (KPLogic kpLogic in kpList)
+            {
+                string callNum = kpLogic.CallNum;
+                if (!string.IsNullOrEmpty(callNum) && !kpCallNumDict.ContainsKey(callNum))
+                {
+                    List<KPLogic> kpByCallNumList;
+                    if (!kpCallNumDict.TryGetValue(callNum, out kpByCallNumList))
+                    {
+                        kpByCallNumList = new List<KPLogic>();
+                        kpCallNumDict.Add(callNum, kpByCallNumList);
+                    }
+
+                    kpByCallNumList.Add(kpLogic);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Остановить работу слоя связи
+        /// </summary>
+        public override void Stop()
+        {
+            // очистка словаря КП по позывным
+            kpCallNumDict.Clear();
         }
     }
 }

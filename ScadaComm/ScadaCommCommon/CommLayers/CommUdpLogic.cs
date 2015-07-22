@@ -28,8 +28,6 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading;
 
 namespace Scada.Comm.Layers
 {
@@ -89,7 +87,6 @@ namespace Scada.Comm.Layers
             public DeviceSelectionModes DevSelMode { get; set; }
         }
 
-
         /// <summary>
         /// Настройки слоя связи
         /// </summary>
@@ -98,6 +95,10 @@ namespace Scada.Comm.Layers
         /// UPD-соединение
         /// </summary>
         protected UdpConnection udpConn;
+        /// <summary>
+        /// Словарь КП по позывным
+        /// </summary>
+        protected Dictionary<string, KPLogic> kpCallNumDict;
 
 
         /// <summary>
@@ -108,6 +109,7 @@ namespace Scada.Comm.Layers
         {
             settings = new Settings();
             udpConn = null;
+            kpCallNumDict = new Dictionary<string, KPLogic>();
         }
 
 
@@ -159,7 +161,7 @@ namespace Scada.Comm.Layers
             {
                 WriteToLog(Localization.UseRussian ? "Данные пусты" : "Data is empty");
             }
-            else if (kpList.Count > 0)
+            else if (kpListNotEmpty)
             {
                 if (settings.DevSelMode == DeviceSelectionModes.ByIPAddress)
                 {
@@ -177,11 +179,11 @@ namespace Scada.Comm.Layers
                             CommUtils.GetNowDT(), udpConn.RemoteAddress));
                     }
                 }
-                else if (settings.DevSelMode == DeviceSelectionModes.ByDeviceLibrary)
+                else // settings.DevSelMode == DeviceSelectionModes.ByDeviceLibrary
                 {
                     // обработка входящего запроса для произвольного КП
                     KPLogic targetKP = null;
-                    ExecProcIncomingReq(kpList[0], buf, 0, buf.Length, ref targetKP);
+                    ExecProcIncomingReq(firstKP, buf, 0, buf.Length, ref targetKP);
                 }
             }
 
@@ -209,9 +211,16 @@ namespace Scada.Comm.Layers
             UdpClient udpClient = new UdpClient(settings.LocalUdpPort);
             udpConn = new UdpConnection(udpClient, settings.LocalUdpPort, settings.RemoteUdpPort);
 
-            // установка соединения всем КП на линии связи
             foreach (KPLogic kpLogic in kpList)
+            {
+                // добавление КП в словарь по позывным
+                string callNum = kpLogic.CallNum;
+                if (!string.IsNullOrEmpty(callNum) && !kpCallNumDict.ContainsKey(callNum))
+                    kpCallNumDict.Add(callNum, kpLogic);
+
+                // установка соединения всем КП на линии связи
                 kpLogic.Connection = udpConn;
+            }
 
             // проверка библиотек КП в режиме ведомого
             string warnMsg;
@@ -241,6 +250,9 @@ namespace Scada.Comm.Layers
             // очистка ссылки на соединение для всех КП на линии связи
             foreach (KPLogic kpLogic in kpList)
                 kpLogic.Connection = null;
+
+            // очистка словаря КП по позывным
+            kpCallNumDict.Clear();
 
             // закрытие соединения
             udpConn.Close();
