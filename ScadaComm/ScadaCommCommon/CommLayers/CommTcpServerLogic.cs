@@ -115,7 +115,7 @@ namespace Scada.Comm.Layers
         /// <summary>
         /// Список соединений
         /// </summary>
-        protected List<TcpConnection> connList;
+        protected List<TcpConnection> tcpConnList;
         /// <summary>
         /// Общее соединение для всех КП линии связи
         /// </summary>
@@ -135,7 +135,7 @@ namespace Scada.Comm.Layers
 
             settings = new Settings();
             tcpListener = null;
-            connList = new List<TcpConnection>();
+            tcpConnList = new List<TcpConnection>();
             sharedTcpConn = null;
         }
 
@@ -187,7 +187,7 @@ namespace Scada.Comm.Layers
 
                 try
                 {
-                    lock (connList)
+                    lock (tcpConnList)
                     {
                         // открытие запрашиваемых соединений
                         while (tcpListener.Pending() && !terminated)
@@ -198,7 +198,7 @@ namespace Scada.Comm.Layers
                             WriteToLog(string.Format(Localization.UseRussian ? 
                                 "{0} Соединение с клиентом {1}" : "{0} Connect to the client {1}",
                                 CommUtils.GetNowDT(), tcpConn.RemoteAddress));
-                            connList.Add(tcpConn);
+                            tcpConnList.Add(tcpConn);
 
                             // установка соединения всем КП
                             if (sharedConnMode)
@@ -212,9 +212,9 @@ namespace Scada.Comm.Layers
                         DateTime nowDT = DateTime.Now;
                         int connInd = 0;
 
-                        while (connInd < connList.Count && !terminated)
+                        while (connInd < tcpConnList.Count && !terminated)
                         {
-                            tcpConn = connList[connInd];
+                            tcpConn = tcpConnList[connInd];
 
                             // приём и обработка данных от TCP-клиента
                             if (tcpConn.TcpClient.Available > 0)
@@ -227,7 +227,7 @@ namespace Scada.Comm.Layers
                                     "{0} Отключение клиента {1}" : "{0} Disconnect the client {1}",
                                     nowDT.ToString(CommUtils.CommLineDTFormat), tcpConn.RemoteAddress));
                                 tcpConn.Close();
-                                connList.RemoveAt(connInd);
+                                tcpConnList.RemoveAt(connInd);
                             }
                             else
                             {
@@ -343,7 +343,7 @@ namespace Scada.Comm.Layers
         /// </summary>
         protected bool BindConnByIP(TcpConnection tcpConn)
         {
-            List<KPLogic> kpByCallNumList; // список КП с одинаковым позывным
+            List<KPLogic> kpByCallNumList; // список КП с общим позывным
             string nowDTStr = CommUtils.GetNowDT();
 
             if (kpCallNumDict.TryGetValue(tcpConn.RemoteAddress, out kpByCallNumList))
@@ -517,11 +517,11 @@ namespace Scada.Comm.Layers
                 finally
                 {
                     // отключение всех клиентов
-                    lock (connList)
+                    lock (tcpConnList)
                     {
-                        foreach (TcpConnection tcpConn in connList)
+                        foreach (TcpConnection tcpConn in tcpConnList)
                             tcpConn.Close();
-                        connList.Clear();
+                        tcpConnList.Clear();
                         sharedTcpConn = null;
                     }
 
@@ -536,18 +536,18 @@ namespace Scada.Comm.Layers
         /// </summary>
         public override string GetInfo()
         {
-            lock (connList)
+            lock (tcpConnList)
             {
                 StringBuilder sbInfo = new StringBuilder(base.GetInfo());
                 sbInfo.Append(Localization.UseRussian ? "Подключенные клиенты" : "Connected clients");
 
-                int cnt = connList.Count;
+                int cnt = tcpConnList.Count;
                 if (cnt > 0)
                 {
                     sbInfo.Append(" (").Append(cnt).AppendLine("):");
                     for (int i = 0; i < cnt; i++)
                         sbInfo.Append((i + 1).ToString()).Append(". ")
-                            .AppendLine(connList[i].ToString());
+                            .AppendLine(tcpConnList[i].ToString());
                 }
                 else
                 {

@@ -493,7 +493,7 @@ namespace Scada.Comm.Layers
         }
 
         /// <summary>
-        /// Закрыть соединение
+        /// Закрыть соединение, обнулить ссылки на соединение для КП
         /// </summary>
         public void Close()
         {

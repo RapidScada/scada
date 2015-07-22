@@ -179,7 +179,7 @@ namespace Scada.Comm.Layers
                             CommUtils.GetNowDT(), udpConn.RemoteAddress));
                     }
                 }
-                else // settings.DevSelMode == DeviceSelectionModes.ByDeviceLibrary
+                else // DeviceSelectionModes.ByDeviceLibrary
                 {
                     // обработка входящего запроса для произвольного КП
                     KPLogic targetKP = null;

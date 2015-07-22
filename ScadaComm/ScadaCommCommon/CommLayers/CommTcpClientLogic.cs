@@ -80,6 +80,10 @@ namespace Scada.Comm.Layers
         /// </summary>
         protected Settings settings;
         /// <summary>
+        /// Список соединений
+        /// </summary>
+        protected List<TcpConnection> tcpConnList;
+        /// <summary>
         /// Общее соединение для всех КП линии связи
         /// </summary>
         protected TcpConnection sharedTcpConn;
@@ -92,6 +96,7 @@ namespace Scada.Comm.Layers
             : base()
         {
             settings = new Settings();
+            tcpConnList = null;
             sharedTcpConn = null;
         }
 
@@ -171,7 +176,7 @@ namespace Scada.Comm.Layers
                     if (sharedTcpConn.TcpClient.Available > 0)
                     {
                         KPLogic targetKP = null;
-                        if (!ExecProcUnreadIncomingReq(kpList[0], sharedTcpConn, ref targetKP))
+                        if (!ExecProcUnreadIncomingReq(firstKP, sharedTcpConn, ref targetKP))
                             sharedTcpConn.ClearNetStream(inBuf);
                     }
 
@@ -222,14 +227,19 @@ namespace Scada.Comm.Layers
             }
             else
             {
-                // индивидуальное соединение для каждого КП
-                foreach (KPLogic kpLogic in kpList)
+                // индивидуальное соединение для каждого КП или группы КП с общим позывным
+                tcpConnList = new List<TcpConnection>();
+                foreach (List<KPLogic> kpByCallNumList in kpCallNumDict.Values)
                 {
-                    int timeout = kpLogic.ReqParams.Timeout;
-                    TcpClient tcpClient = TuneTcpClient(new TcpClient(), timeout, timeout);
-                    TcpConnection tcpConn = new TcpConnection(tcpClient);
-                    tcpConn.AddRelatedKP(kpLogic);
-                    kpLogic.Connection = tcpConn;
+                    foreach (KPLogic kpLogic in kpByCallNumList)
+                    {
+                        int timeout = kpLogic.ReqParams.Timeout;
+                        TcpClient tcpClient = TuneTcpClient(new TcpClient(), timeout, timeout);
+                        TcpConnection tcpConn = new TcpConnection(tcpClient);
+                        tcpConnList.Add(tcpConn);
+                        tcpConn.AddRelatedKP(kpLogic);
+                        kpLogic.Connection = tcpConn;
+                    }
                 }
             }
 
@@ -245,12 +255,12 @@ namespace Scada.Comm.Layers
         public override void Start()
         {
             // запуск потока приёма данных в режиме ведомого
-            if (settings.Behavior == OperatingBehaviors.Slave && kpList.Count > 0)
+            if (settings.Behavior == OperatingBehaviors.Slave && kpListNotEmpty)
             {
-                if (settings.ConnMode == ConnectionModes.Individual)
-                    StartThread(new ThreadStart(ListenIndividualConn));
-                else
+                if (settings.ConnMode == ConnectionModes.Shared)
                     StartThread(new ThreadStart(ListenSharedConn));
+                else
+                    StartThread(new ThreadStart(ListenIndividualConn));
             }
         }
 
@@ -276,14 +286,13 @@ namespace Scada.Comm.Layers
                 }
                 else
                 {
-                    // закрытие соединений для всех КП на линии связи
-                    foreach (KPLogic kpLogic in kpList)
-                    {
-                        TcpConnection tcpConn = kpLogic.Connection as TcpConnection;
-                        if (tcpConn != null)
-                            tcpConn.Close();
-                        kpLogic.Connection = null;
-                    }
+                    // закрытие всех соединений, обнуление ссылок на соединение для КП
+                    foreach (TcpConnection tcpConn in tcpConnList)
+                        tcpConn.Close();
+                    tcpConnList = null;
+
+                    // вызов метода базового класса
+                    base.Stop();
                 }
             }
         }
