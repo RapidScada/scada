@@ -24,7 +24,8 @@
  */
 
 using Scada.Client;
-using Scada.Comm.KP;
+using Scada.Comm.Devices;
+using Scada.Data;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -44,7 +45,7 @@ namespace Scada.Comm.Svc
     /// Program execution management
     /// <para>Управление работой программы</para>
     /// </summary>
-    sealed class Manager
+    internal sealed class Manager
     {
         /// <summary>
         /// Общие параметры конфигурации
@@ -102,9 +103,9 @@ namespace Scada.Comm.Svc
 
 
         /// <summary>
-        /// Версия программы
+        /// Версия приложения
         /// </summary>
-        private const string Version = "4.4";
+        private const string AppVersion = "4.5.0.0";
         /// <summary>
         /// Имя файла конфигурации
         /// </summary>
@@ -140,19 +141,6 @@ namespace Scada.Comm.Svc
 
 
         /// <summary>
-        /// Статический конструктор
-        /// </summary>
-        static Manager()
-        {
-            ExeDir = ScadaUtils.NormalDir(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-            ConfigDir = "";
-            LangDir = "";
-            LogDir = "";
-            KpDir = "";
-            CmdDir = "";
-        }
-
-        /// <summary>
         /// Конструктор
         /// </summary>
         public Manager()
@@ -174,6 +162,7 @@ namespace Scada.Comm.Svc
             lineCmdLock = new object();
             infoLock = new object();
 
+            AppDirs = new AppDirs();
             ServerComm = null;
             Log = new Log(Log.Formats.Full);
             Log.Encoding = Encoding.UTF8;
@@ -181,35 +170,9 @@ namespace Scada.Comm.Svc
 
 
         /// <summary>
-        /// Получить директорию исполняемого файла приложения
+        /// Получить директории приложения
         /// </summary>
-        public static string ExeDir { get; private set; }
-
-        /// <summary>
-        /// Получить директорию конфигурации программы
-        /// </summary>
-        public static string ConfigDir { get; private set; }
-
-        /// <summary>
-        /// Получить директорию языковых файлов приложения
-        /// </summary>
-        public static string LangDir { get; private set; }
-
-        /// <summary>
-        /// Получить директорию Log-файлов программы
-        /// </summary>
-        public static string LogDir { get; private set; }
-
-        /// <summary>
-        /// Получить директорию подключаемых библиотек КП
-        /// </summary>
-        public static string KpDir { get; private set; }
-
-        /// <summary>
-        /// Получить директорию команд
-        /// </summary>
-        public static string CmdDir { get; private set; }
-
+        public AppDirs AppDirs { get; private set; }
 
         /// <summary>
         /// Получить объект для обмена данными со SCADA-Сервером
@@ -454,7 +417,7 @@ namespace Scada.Comm.Svc
                                 else
                                 {
                                     // загрузка типа из библиотеки
-                                    string path = KpDir + dllName + ".dll";
+                                    string path = AppDirs.KPDir + dllName + ".dll";
                                     Log.WriteAction((Localization.UseRussian ? "Загрузка библиотеки КП: " :
                                         "Load device library: ") + path, Log.ActTypes.Action);
 
@@ -630,7 +593,7 @@ namespace Scada.Comm.Svc
                     writer.WriteLine("------------------");
                     writer.WriteLine("Запуск       : " + startDT.ToLocalizedString());
                     writer.WriteLine("Время работы : " + workStr);
-                    writer.WriteLine("Версия       : " + Version);
+                    writer.WriteLine("Версия       : " + AppVersion);
                     string serverInfo = commonParams.ServerUse ?
                         (ServerComm == null ? "не инициализирован" : ServerComm.CommStateDescr) : "не используется";
                     writer.WriteLine("SCADA-Сервер : " + serverInfo);
@@ -644,7 +607,7 @@ namespace Scada.Comm.Svc
                     writer.WriteLine("------------------");
                     writer.WriteLine("Started        : " + startDT.ToLocalizedString());
                     writer.WriteLine("Execution time : " + workStr);
-                    writer.WriteLine("Version        : " + Version);
+                    writer.WriteLine("Version        : " + AppVersion);
                     string serverInfo = commonParams.ServerUse ?
                         (ServerComm == null ? "not initialized" : ServerComm.CommStateDescr) : "not used";
                     writer.WriteLine("SCADA-Server   : " + serverInfo);
@@ -756,7 +719,7 @@ namespace Scada.Comm.Svc
                             commLine.StartThread();
                         }
 
-                        if (ServerComm != null || CmdDir != "")
+                        if (ServerComm != null || AppDirs.CmdDir != "")
                         {
                             Log.WriteAction(Localization.UseRussian ? "Запуск приёма команд" : 
                                 "Start receiving commands", Log.ActTypes.Action);
@@ -797,18 +760,14 @@ namespace Scada.Comm.Svc
         /// </summary>
         private void InitAppDirs(out bool dirsExist, out bool logDirExists)
         {
-            ConfigDir = ExeDir + "Config" + Path.DirectorySeparatorChar;
-            LangDir = ExeDir + "Lang" + Path.DirectorySeparatorChar;
-            LogDir = ExeDir + "Log" + Path.DirectorySeparatorChar;
-            KpDir = ExeDir + "KP" + Path.DirectorySeparatorChar;
-            CmdDir = ExeDir + "Cmd" + Path.DirectorySeparatorChar;
+            AppDirs.Init(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
 
-            Log.FileName = LogDir + LogFileName;
-            infoFileName = LogDir + InfoFileName;
-            logDirExists = Directory.Exists(LogDir);
+            Log.FileName = AppDirs.LogDir + LogFileName;
+            infoFileName = AppDirs.LogDir + InfoFileName;
+            logDirExists = Directory.Exists(AppDirs.LogDir);
 
-            if (Directory.Exists(ConfigDir) && Directory.Exists(LangDir) && logDirExists &&
-                Directory.Exists(KpDir) && Directory.Exists(CmdDir))
+            if (Directory.Exists(AppDirs.ConfigDir) && Directory.Exists(AppDirs.LangDir) && logDirExists &&
+                Directory.Exists(AppDirs.KPDir) && Directory.Exists(AppDirs.CmdDir))
             {
                 infoTimer.Change(0, 1000); // запуск таймера для обновления файла информации о работе программы
                 dirsExist = true;
@@ -826,7 +785,7 @@ namespace Scada.Comm.Svc
         {
             try
             {
-                string fileName = ConfigDir + ConfigFileName;
+                string fileName = AppDirs.ConfigDir + ConfigFileName;
                 Log.WriteAction((Localization.UseRussian ? "Чтение конфигурации из файла " : 
                     "Read configuration from file ") + fileName, Log.ActTypes.Action);
 
@@ -865,9 +824,9 @@ namespace Scada.Comm.Svc
         {
             try
             {
-                // прерывание потока приёма команд
-                if (commandReader != null && commandReader.Thread != null)
-                    commandReader.Thread.Abort();
+                // остановка потока приёма команд
+                if (commandReader != null)
+                    commandReader.StopThread();
 
                 if (commLines.Count > 0)
                 {
@@ -951,7 +910,7 @@ namespace Scada.Comm.Svc
                         try
                         {
                             XmlDocument xmlDoc = new XmlDocument();
-                            xmlDoc.Load(ConfigDir + ConfigFileName);
+                            xmlDoc.Load(AppDirs.ConfigDir + ConfigFileName);
 
                             XmlNode commLinesNode = xmlDoc.DocumentElement.SelectSingleNode("CommLines");
                             if (commLinesNode != null)
@@ -1133,7 +1092,7 @@ namespace Scada.Comm.Svc
         /// <summary>
         /// Передать команду КП
         /// </summary>
-        public void PassCmd(KPLogic.Command cmd)
+        public void PassCmd(Command cmd)
         {
             if (cmd != null && linesStarted)
             {
@@ -1177,7 +1136,7 @@ namespace Scada.Comm.Svc
                 if (!Localization.UseRussian)
                 {
                     string errMsg;
-                    if (Localization.LoadDictionaries(Manager.LangDir, "ScadaData", out errMsg))
+                    if (Localization.LoadDictionaries(AppDirs.LangDir, "ScadaData", out errMsg))
                         CommonPhrases.Init();
                     else
                         Log.WriteAction(errMsg, Log.ActTypes.Error);
@@ -1197,7 +1156,8 @@ namespace Scada.Comm.Svc
                     "Нормальная работа программы невозможна." :
                     "Required directories are not exist:{0}{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}" +
                     "Normal program execution is impossible.",
-                    Environment.NewLine, Manager.ConfigDir, Manager.LangDir, Manager.LogDir, Manager.KpDir, Manager.CmdDir);
+                    Environment.NewLine, AppDirs.ConfigDir, AppDirs.LangDir, AppDirs.LogDir, 
+                    AppDirs.KPDir, AppDirs.CmdDir);
 
                 try
                 {

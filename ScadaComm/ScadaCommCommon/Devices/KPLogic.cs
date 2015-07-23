@@ -56,6 +56,7 @@ namespace Scada.Comm.Devices
         protected const int LastCmdListSize = 10;
 
         private Connection conn;                  // соединение с физическим КП
+        private AppDirs appDirs;                  // директории приложения
         private Log.WriteLineDelegate writeToLog; // метод записи в журнал линии связи
         private volatile bool terminated;         // признак завершения работы линии связи
         private string caption;                   // обозначение КП
@@ -117,6 +118,7 @@ namespace Scada.Comm.Devices
         {
             // private fields
             conn = null;
+            appDirs = new AppDirs();
             writeToLog = text => { }; // заглушка
             terminated = false;
             caption = "";
@@ -157,10 +159,6 @@ namespace Scada.Comm.Devices
             LastSessDT = DateTime.MinValue;
             LastCmdDT = DateTime.MinValue;
 
-            ConfigDir = "";
-            LangDir = "";
-            LogDir = "";
-            CmdDir = "";
             CommLineSvc = null;
         }
 
@@ -322,24 +320,21 @@ namespace Scada.Comm.Devices
 
 
         /// <summary>
-        /// Получить или установить директорию конфигурации программы
+        /// Получить или установить директории приложения
         /// </summary>
-        public string ConfigDir { get; set; }
-
-        /// <summary>
-        /// Получить или установить директорию языковых файлов
-        /// </summary>
-        public string LangDir { get; set; }
-
-        /// <summary>
-        /// Получить или установить директорию файлов журналов программы
-        /// </summary>
-        public string LogDir { get; set; }
-
-        /// <summary>
-        /// Получить или установить директорию команд
-        /// </summary>
-        public string CmdDir { get; set; }
+        public AppDirs AppDirs
+        {
+            get
+            {
+                return appDirs;
+            }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+                appDirs = value;
+            }
+        }
         
         /// <summary>
         /// Получить или установить метод записи в журнал линии связи

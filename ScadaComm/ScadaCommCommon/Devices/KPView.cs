@@ -146,6 +146,10 @@ namespace Scada.Comm.Devices
         }
 
 
+        private string cmdLine;  // командная строка
+        private AppDirs appDirs; // директории приложения
+
+
         /// <summary>
         /// Конструктор для настройки библиотеки КП
         /// </summary>
@@ -159,14 +163,12 @@ namespace Scada.Comm.Devices
         /// </summary>
         public KPView(int number)
         {
+            cmdLine = "";
+            appDirs = new AppDirs();
+
             CanShowProps = false;
             Number = number;
-            CmdLine = "";
             CommLineProps = null;
-            ConfigDir = "";
-            LangDir = "";
-            LogDir = "";
-            CmdDir = "";
         }
 
 
@@ -211,7 +213,17 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Получить или установить командную строку
         /// </summary>
-        public string CmdLine { get; set; }
+        public string CmdLine
+        {
+            get
+            {
+                return cmdLine;
+            }
+            set
+            {
+                cmdLine = value ?? "";
+            }
+        }
 
         /// <summary>
         /// Получить или установить свойства линии связи
@@ -219,24 +231,21 @@ namespace Scada.Comm.Devices
         public CommLineProperties CommLineProps { get; set; }
 
         /// <summary>
-        /// Получить или установить директорию конфигурации программы
+        /// Получить или установить директории приложения
         /// </summary>
-        public string ConfigDir { get; set; }
-
-        /// <summary>
-        /// Получить или установить директорию языковых файлов
-        /// </summary>
-        public string LangDir { get; set; }
-
-        /// <summary>
-        /// Получить или установить директорию файлов журналов программы
-        /// </summary>
-        public string LogDir { get; set; }
-
-        /// <summary>
-        /// Получить или установить директорию команд
-        /// </summary>
-        public string CmdDir { get; set; }
+        public AppDirs AppDirs
+        {
+            get
+            {
+                return appDirs;
+            }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+                appDirs = value;
+            }
+        }
 
 
         /// <summary>

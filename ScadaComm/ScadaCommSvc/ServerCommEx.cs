@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,14 +20,13 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2014
+ * Modified : 2015
  */
 
-using System;
-using System.Collections.Generic;
 using Scada.Client;
-using Scada.Comm.KP;
+using Scada.Comm.Devices;
 using Scada.Data;
+using System.Collections.Generic;
 using Utils;
 
 namespace Scada.Comm.Svc
@@ -48,7 +47,7 @@ namespace Scada.Comm.Svc
         /// <summary>
         /// Конструктор с установкой общих параметров конфигурации и log-файла
         /// </summary>
-        public ServerCommEx(Manager.CommonParams commonParams, Log log)
+        public ServerCommEx(Settings.CommonParams commonParams, Log log)
             : base()
         {
             this.commSettings = new CommSettings(commonParams.ServerHost, commonParams.ServerPort, 
@@ -60,20 +59,20 @@ namespace Scada.Comm.Svc
         /// <summary>
         /// Преобразовать среза параметров в срез входных каналов
         /// </summary>
-        private SrezTableLight.Srez ConvertSrez(KPLogic.ParamSrez paramSrez)
+        private SrezTableLight.Srez ConvertSrez(KPLogic.TagSrez tagSrez)
         {
-            List<int> bindedIndexes;
+            List<int> boundIndexes;
             int cnlCnt;
 
-            if (paramSrez == null)
+            if (tagSrez == null)
             {
-                bindedIndexes = null;
+                boundIndexes = null;
                 cnlCnt = 0;
             }
             else
             {
-                bindedIndexes = paramSrez.GetBindedParamIndexes();
-                cnlCnt = bindedIndexes.Count;
+                boundIndexes = tagSrez.GetBoundTagIndexes();
+                cnlCnt = boundIndexes.Count;
             }
 
             if (cnlCnt == 0)
@@ -82,15 +81,13 @@ namespace Scada.Comm.Svc
             }
             else
             {
-                SrezTableLight.Srez srez = new SrezTableLight.Srez(paramSrez.DateTime, cnlCnt);
+                SrezTableLight.Srez srez = new SrezTableLight.Srez(tagSrez.DateTime, cnlCnt);
 
                 for (int i = 0; i < cnlCnt; i++)
                 {
-                    int paramInd = bindedIndexes[i];
-                    srez.CnlNums[i] = paramSrez.KPParams[paramInd].CnlNum;
-                    KPLogic.ParamData paramData = paramSrez.Data[paramInd];
-                    SrezTableLight.CnlData cnlData = new SrezTableLight.CnlData(paramData.Val, paramData.Stat);
-                    srez.CnlData[i] = cnlData;
+                    int tagInd = boundIndexes[i];
+                    srez.CnlNums[i] = tagSrez.KPTags[tagInd].CnlNum;
+                    srez.CnlData[i] = tagSrez.TagData[tagInd];
                 }
 
                 return srez;
@@ -101,7 +98,7 @@ namespace Scada.Comm.Svc
         /// <summary>
         /// Отправить текущий срез SCADA-Серверу
         /// </summary>
-        public bool SendSrez(KPLogic.ParamSrez curSrez)
+        public bool SendSrez(KPLogic.TagSrez curSrez)
         {
             bool result;
             SrezTableLight.Srez srez = ConvertSrez(curSrez);
@@ -111,7 +108,7 @@ namespace Scada.Comm.Svc
         /// <summary>
         /// Отправить архивный срез SCADA-Серверу
         /// </summary>
-        public bool SendArchive(KPLogic.ParamSrez arcSrez)
+        public bool SendArchive(KPLogic.TagSrez arcSrez)
         {
             bool result;
             SrezTableLight.Srez srez = ConvertSrez(arcSrez);
@@ -121,29 +118,29 @@ namespace Scada.Comm.Svc
         /// <summary>
         /// Отправить событие SCADA-Серверу
         /// </summary>
-        public bool SendEvent(KPLogic.Event aEvent)
+        public bool SendEvent(KPLogic.KPEvent kpEvent)
         {
-            if (aEvent == null || aEvent.KPParam == null || aEvent.KPParam.CnlNum <= 0)
+            if (kpEvent == null || kpEvent.KPTag == null || kpEvent.KPTag.CnlNum <= 0)
             {
                 return true;
             }
             else
             {
                 EventTableLight.Event ev = new EventTableLight.Event();
-                ev.Number = aEvent.KPNum;
-                ev.DateTime = aEvent.DateTime;
-                ev.ObjNum = aEvent.KPParam.ObjNum;
-                ev.KPNum = aEvent.KPNum;
-                ev.ParamID = aEvent.KPParam.ParamID;
-                ev.CnlNum = aEvent.KPParam.CnlNum;
-                ev.OldCnlVal = aEvent.OldData.Val;
-                ev.OldCnlStat = aEvent.OldData.Stat;
-                ev.NewCnlVal = aEvent.NewData.Val;
-                ev.NewCnlStat = aEvent.NewData.Stat;
-                ev.Checked = aEvent.Checked;
-                ev.UserID = aEvent.UserID;
-                ev.Descr = aEvent.Descr;
-                ev.Data = aEvent.Data;
+                ev.Number = kpEvent.KPNum;
+                ev.DateTime = kpEvent.DateTime;
+                ev.ObjNum = kpEvent.KPTag.ObjNum;
+                ev.KPNum = kpEvent.KPNum;
+                ev.ParamID = kpEvent.KPTag.ParamID;
+                ev.CnlNum = kpEvent.KPTag.CnlNum;
+                ev.OldCnlVal = kpEvent.OldData.Val;
+                ev.OldCnlStat = kpEvent.OldData.Stat;
+                ev.NewCnlVal = kpEvent.NewData.Val;
+                ev.NewCnlStat = kpEvent.NewData.Stat;
+                ev.Checked = kpEvent.Checked;
+                ev.UserID = kpEvent.UserID;
+                ev.Descr = kpEvent.Descr;
+                ev.Data = kpEvent.Data;
 
                 bool result;
                 return SendEvent(ev, out result) && result;
@@ -153,7 +150,7 @@ namespace Scada.Comm.Svc
         /// <summary>
         /// Принять команду от SCADA-Сервера
         /// </summary>
-        public bool ReceiveCommand(out KPLogic.Command cmd)
+        public bool ReceiveCommand(out Command cmd)
         {
             int kpNum;
             int cmdNum;
@@ -162,15 +159,14 @@ namespace Scada.Comm.Svc
 
             if (ReceiveCommand(out kpNum, out cmdNum, out cmdVal, out cmdData))
             {
-                cmd = new KPLogic.Command();
-                cmd.CmdType = cmdData == null ? 
-                    (double.IsNaN(cmdVal) ? KPLogic.CmdType.Request : KPLogic.CmdType.Standard) :
-                    KPLogic.CmdType.Binary;
+                int cmdType = cmdData == null ? double.IsNaN(cmdVal) ? 
+                    BaseValues.CmdTypes.Request : BaseValues.CmdTypes.Standard : BaseValues.CmdTypes.Binary;
+                cmd = new Command(cmdType);
                 cmd.KPNum = kpNum;
                 cmd.CmdNum = cmdNum;
-                if (cmd.CmdType == KPLogic.CmdType.Standard)
+                if (cmdType == BaseValues.CmdTypes.Standard)
                     cmd.CmdVal = cmdVal;
-                else if (cmd.CmdType == KPLogic.CmdType.Binary)
+                else if (cmdType == BaseValues.CmdTypes.Binary)
                     cmd.CmdData = cmdData;
                 return true;
             }

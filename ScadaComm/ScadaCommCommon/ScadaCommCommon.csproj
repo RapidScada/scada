@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppDirs.cs" />
     <Compile Include="CommLayers\CommLayerLogic.cs" />
     <Compile Include="CommLayers\CommLayerView.cs" />
     <Compile Include="CommLayers\CommSerialLogic.cs" />

@@ -111,6 +111,14 @@ namespace Scada.Data
         }
 
         /// <summary>
+        /// Получить кодовое обозначение типа команды по идентификатору
+        /// </summary>
+        public string GetCmdTypeCode()
+        {
+            return BaseValues.CmdTypes.GetCmdTypeCode(CmdTypeID);
+        }
+
+        /// <summary>
         /// Получить описание команды
         /// </summary>
         public string GetCmdDescr()

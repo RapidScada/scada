@@ -29,8 +29,9 @@ using System.IO;
 using System.IO.Ports;
 using System.Text;
 using System.Threading;
-using Scada.Comm.KP;
 using Utils;
+using Scada.Data;
+using Scada.Comm.Devices;
 
 namespace Scada.Comm.Svc
 {
@@ -96,7 +97,7 @@ namespace Scada.Comm.Svc
 
         private SortedList<string, object> commonProps; // общие свойства линии связи, доступные относящимся к ней КП
         private List<int> kpNumList;             // упорядоченный по возрастанию список номеров КП на линии связи
-        private List<KPLogic.Command> cmdList;   // список команд
+        private List<Command> cmdList;           // список команд
         private KPLogic curKP;                   // опрашиваемое в данный момент КП
 
         private Log log;                         // журнал линии связи
@@ -139,7 +140,7 @@ namespace Scada.Comm.Svc
 
             log = new Log(Log.Formats.Simple);
             log.Encoding = Encoding.UTF8;
-            string fileName = Manager.LogDir + "line" + KPUtils.AddZeros(number, 3);
+            string fileName = AppDirs.LogDir + "line" + KPUtils.AddZeros(number, 3);
             log.FileName = fileName + ".log";
             infoFileName = fileName + ".txt";
             curAction = NoAction;
@@ -159,6 +160,8 @@ namespace Scada.Comm.Svc
             KPList = new List<KPLogic>();
             RunState = RunStates.Idle;
             Thread = null;
+
+            AppDirs = null;
 
             // вывод в журнал
             WriteInfo();
@@ -262,6 +265,11 @@ namespace Scada.Comm.Svc
                 configError = value;
             }
         }
+
+        /// <summary>
+        /// Получить или установить директории приложения
+        /// </summary>
+        public AppDirs AppDirs { get; set; }
 
         /// <summary>
         /// Получить или установить ссылку на объект обмена данными со SCADA-Сервером
@@ -591,7 +599,7 @@ namespace Scada.Comm.Svc
                 else kpInfoFileName = "kp" + kpNum + ".txt";
 
                 // запись информации
-                writer = new StreamWriter(Manager.LogDir + kpInfoFileName, false, Encoding.UTF8);
+                writer = new StreamWriter(AppDirs.LogDir + kpInfoFileName, false, Encoding.UTF8);
                 writer.Write(kpLogic.GetInfo());
             }
             catch (Exception ex)
@@ -699,7 +707,7 @@ namespace Scada.Comm.Svc
         /// <summary>
         /// Вызвать метод передачи команды КП
         /// </summary>
-        private void ExecPassCmd(KPLogic.Command cmd)
+        private void ExecPassCmd(Command cmd)
         {
             if (PassCmd != null)
                 PassCmd(cmd);
@@ -1233,10 +1241,10 @@ namespace Scada.Comm.Svc
             kpLogic.CommLineParams = new KPLogic.LineParams(reqTriesCnt, maxCommErrCnt);
             kpLogic.UserParams = UserParams;
             kpLogic.CommonProps = commonProps;
-            kpLogic.ConfigDir = Manager.ConfigDir;
-            kpLogic.LangDir = Manager.LangDir;
-            kpLogic.LogDir = Manager.LogDir;
-            kpLogic.CmdDir = Manager.CmdDir;
+            kpLogic.ConfigDir = AppDirs.ConfigDir;
+            kpLogic.LangDir = AppDirs.LangDir;
+            kpLogic.LogDir = AppDirs.LogDir;
+            kpLogic.CmdDir = AppDirs.CmdDir;
             kpLogic.FlushArc = FlushArc;
             kpLogic.WriteToLog = log.WriteLine;
             kpLogic.PassCmd = ExecPassCmd;
@@ -1266,7 +1274,7 @@ namespace Scada.Comm.Svc
         /// <summary>
         /// Добавить команду в очередь команд линии связи, если команды ТУ разрешены
         /// </summary>
-        public void AddCmd(KPLogic.Command cmd)
+        public void AddCmd(Command cmd)
         {
             Monitor.Enter(cmdLock);
             try

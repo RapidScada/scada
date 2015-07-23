@@ -205,6 +205,20 @@ namespace Scada.Data
                         return cmdTypeID.ToString();
                 }
             }
+            /// <summary>
+            /// Распознать кодовое обозначение типа команды
+            /// </summary>
+            public static int ParseCmdTypeCode(string cmdTypeCode)
+            {
+                if (cmdTypeCode.Equals("Standard", StringComparison.OrdinalIgnoreCase))
+                    return Standard;
+                else if (cmdTypeCode.Equals("Binary", StringComparison.OrdinalIgnoreCase))
+                    return Binary;
+                else if (cmdTypeCode.Equals("Request", StringComparison.OrdinalIgnoreCase))
+                    return Request;
+                else
+                    return -1;
+            }
         }
 
         /// <summary>
