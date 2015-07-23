@@ -143,7 +143,7 @@ namespace Scada.Client
                 foreach (XmlElement xmlElement in xmlNodeList)
                 {
                     string name = xmlElement.GetAttribute("name").Trim();
-                    string nameL = name.ToLower();
+                    string nameL = name.ToLowerInvariant();
                     string val = xmlElement.GetAttribute("value");
 
                     try

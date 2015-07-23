@@ -1018,7 +1018,7 @@ namespace Scada.Comm.KP
                             XmlElement elemElem = xmlDoc.CreateElement("Elem");
                             elemElem.SetAttribute("name", elem.Name);
                             if (writeElemType)
-                                elemElem.SetAttribute("type", elem.ElemType.ToString().ToLower());
+                                elemElem.SetAttribute("type", elem.ElemType.ToString().ToLowerInvariant());
                             elemGroupElem.AppendChild(elemElem);
                         }
                     }
@@ -1034,7 +1034,7 @@ namespace Scada.Comm.KP
 
                         cmdElem.SetAttribute("name", cmd.Name);
                         cmdElem.SetAttribute("tableType", cmd.TableType.ToString());
-                        cmdElem.SetAttribute("multiple", cmd.Multiple.ToString().ToLower());
+                        cmdElem.SetAttribute("multiple", cmd.Multiple.ToString().ToLowerInvariant());
                         cmdElem.SetAttribute("address", cmd.Address.ToString());
                         cmdElem.SetAttribute("elemCnt", cmd.ElemCnt.ToString());
                         cmdElem.SetAttribute("cmdNum", cmd.CmdNum.ToString());

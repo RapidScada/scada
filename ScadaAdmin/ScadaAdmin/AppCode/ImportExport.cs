@@ -295,7 +295,7 @@ namespace ScadaAdmin
                     // получение словаря всех файлов архива с именами в нижнем регистре
                     Dictionary<string, ZipEntry> zipEntries = new Dictionary<string, ZipEntry>(zipFile.Count);
                     foreach (ZipEntry zipEntry in zipFile)
-                        zipEntries.Add(zipEntry.FileName.ToLower(), zipEntry);
+                        zipEntries.Add(zipEntry.FileName.ToLowerInvariant(), zipEntry);
 
                     // импорт таблиц из тех, которые содержатся в архиве
                     int totalUpdRowCnt = 0;

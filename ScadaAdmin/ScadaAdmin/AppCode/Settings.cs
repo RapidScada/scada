@@ -197,7 +197,7 @@ namespace ScadaAdmin
                 foreach (XmlElement xmlElement in xmlNodeList)
                 {
                     string name = xmlElement.GetAttribute("name");
-                    string nameL = name.ToLower();
+                    string nameL = name.ToLowerInvariant();
                     string val = xmlElement.GetAttribute("value");
 
                     try
@@ -293,7 +293,7 @@ namespace ScadaAdmin
                     foreach (XmlElement xmlElement in xmlNodeList)
                     {
                         string name = xmlElement.GetAttribute("name");
-                        string nameL = name.ToLower();
+                        string nameL = name.ToLowerInvariant();
                         string val = xmlElement.GetAttribute("value");
 
                         try
@@ -307,7 +307,7 @@ namespace ScadaAdmin
                             else if (nameL == "height")
                                 FormSt.Height = int.Parse(val);
                             else if (nameL == "maximized")
-                                FormSt.Maximized = bool.Parse(val.ToLower());
+                                FormSt.Maximized = bool.Parse(val);
                             else if (nameL == "explorerwidth")
                                 FormSt.ExplorerWidth = int.Parse(val);
                         }

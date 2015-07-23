@@ -199,7 +199,7 @@ namespace ScadaAdmin
 
                     foreach (FileInfo fileInfo in fileInfoAr)
                     {
-                        if (fileInfo.Name.ToLower() != "kp.dll")
+                        if (fileInfo.Name.Equals("kp.dll", StringComparison.OrdinalIgnoreCase))
                         {
                             KPView kpView;
 
