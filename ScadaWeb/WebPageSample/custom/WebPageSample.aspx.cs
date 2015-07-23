@@ -184,7 +184,7 @@ namespace WebPageSample
                         {
                             // parse channel numbers from CSS class using the format "data cnl_N" or "data ctrl_N"
                             // извлечение номеров каналов из класса CSS имеющего формат "data cnl_N" или "data ctrl_N"
-                            string cssClass = ((WebControl)control).CssClass.ToLower();
+                            string cssClass = ((WebControl)control).CssClass.ToLowerInvariant();
 
                             if (cssClass.StartsWith("data "))
                             {

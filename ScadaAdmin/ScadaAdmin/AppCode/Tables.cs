@@ -165,10 +165,9 @@ namespace ScadaAdmin
                 dataTable.ExtendedProperties["Columns"] as DataGridViewColumn[];
             if (cols != null)
             {
-                string colNameL = colName.ToLowerInvariant();
                 foreach (DataGridViewColumn col in cols)
                 {
-                    if (colNameL == col.Name.ToLowerInvariant())
+                    if (col.Name.Equals(colName, StringComparison.OrdinalIgnoreCase))
                         return col.HeaderText;
                 }
             }
