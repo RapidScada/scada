@@ -492,7 +492,7 @@ namespace Scada.Scheme
             else
             {
                 Color color;
-                return KnownColors.TryGetValue(colorName.ToLower(), out color) ? color : defaultColor;
+                return KnownColors.TryGetValue(colorName.ToLowerInvariant(), out color) ? color : defaultColor;
             }
         }
 

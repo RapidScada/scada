@@ -604,7 +604,7 @@ namespace Scada.Server.Svc
                         user.Name = (string)dataRow["Name"];
                         user.Password = (string)dataRow["Password"];
                         user.RoleID = (int)dataRow["RoleID"];
-                        users[user.Name.Trim().ToLower()] = user;
+                        users[user.Name.Trim().ToLowerInvariant()] = user;
                     }
                 }
 
@@ -2010,7 +2010,7 @@ namespace Scada.Server.Svc
             lock (users)
             {
                 User user;
-                return users.TryGetValue(userName.Trim().ToLower(), out user) ? user.Clone() : null;
+                return users.TryGetValue(userName.Trim().ToLowerInvariant(), out user) ? user.Clone() : null;
             }
         }
 

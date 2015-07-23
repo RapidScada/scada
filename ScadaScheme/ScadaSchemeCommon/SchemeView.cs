@@ -377,7 +377,7 @@ namespace Scada.Scheme
             {
                 foreach (XmlNode elemNode in elemsNode.ChildNodes)
                 {
-                    string tagName = elemNode.Name.ToLower();
+                    string tagName = elemNode.Name.ToLowerInvariant();
                     Element element = null;
                     int inCnlNum = 0;
                     int ctrlCnlNum = 0;

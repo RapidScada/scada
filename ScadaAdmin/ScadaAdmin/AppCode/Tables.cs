@@ -71,7 +71,7 @@ namespace ScadaAdmin
             {
                 get
                 {
-                    return Name.ToLower() + ".dat";
+                    return Name.ToLowerInvariant() + ".dat";
                 }
             }
             /// <summary>
@@ -165,10 +165,10 @@ namespace ScadaAdmin
                 dataTable.ExtendedProperties["Columns"] as DataGridViewColumn[];
             if (cols != null)
             {
-                string colNameL = colName.ToLower();
+                string colNameL = colName.ToLowerInvariant();
                 foreach (DataGridViewColumn col in cols)
                 {
-                    if (colNameL == col.Name.ToLower())
+                    if (colNameL == col.Name.ToLowerInvariant())
                         return col.HeaderText;
                 }
             }

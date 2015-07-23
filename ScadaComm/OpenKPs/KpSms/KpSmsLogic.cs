@@ -823,7 +823,7 @@ namespace Scada.Comm.KP
         public override void OnCommLineStart()
         {
             // определение, является ли КП основным на линии связи
-            primary = KPReqParams.CmdLine.Trim().ToLower() == "primary";
+            primary = KPReqParams.CmdLine.Trim().ToLowerInvariant() == "primary";
             
             // установка символа конца строки для работы с последовательным портом
             if (SerialPort != null)
