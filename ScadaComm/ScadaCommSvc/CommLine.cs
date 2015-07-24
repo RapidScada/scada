@@ -88,7 +88,7 @@ namespace Scada.Comm.Svc
         private bool configError;                // ошибка при конфигурировании линии связи
         private ServerCommEx serverComm;         // ссылка на объект обмена данными со SCADA-Сервером
         private SerialPort serialPort;           // последоватеьный порт
-        private KPLogic.PassCmdDelegate passCmd; // метод передачи команды КП
+        //private KPLogic.PassCmdDelegate passCmd; // метод передачи команды КП
         private int reqTriesCnt;                 // количество попыток перезапроса КП при ошибке
         private int cicleDelay;                  // пауза после цикла опроса, мс
         private int maxCommErrCnt;               // количество неудачных сеансов связи до объявления КП неработающим
@@ -127,7 +127,7 @@ namespace Scada.Comm.Svc
             configError = false;
             serverComm = null;
             serialPort = null;
-            passCmd = null;
+            //passCmd = null;
             reqTriesCnt = 1;
             cicleDelay = 0;
             maxCommErrCnt = 1;
@@ -308,7 +308,7 @@ namespace Scada.Comm.Svc
         /// <summary>
         /// Получить или установить метод передачи команды КП
         /// </summary>
-        public KPLogic.PassCmdDelegate PassCmd
+        /*public KPLogic.PassCmdDelegate PassCmd
         {
             get
             {
@@ -320,7 +320,7 @@ namespace Scada.Comm.Svc
                     throw new Exception(SetPropErr);
                 passCmd = value;
             }
-        }
+        }*/
 
         /// <summary>
         /// Получить или установить количество попыток перезапроса КП при ошибке
@@ -709,8 +709,8 @@ namespace Scada.Comm.Svc
         /// </summary>
         private void ExecPassCmd(Command cmd)
         {
-            if (PassCmd != null)
-                PassCmd(cmd);
+            /*if (PassCmd != null)
+                PassCmd(cmd);*/
         }
 
         /// <summary>
