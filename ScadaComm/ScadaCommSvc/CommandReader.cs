@@ -58,7 +58,7 @@ namespace Scada.Comm.Svc
             this.mngr = mngr;
             serverComm = mngr.ServerComm;
             cmdDir = mngr.AppDirs.CmdDir;
-            log = mngr.Log;
+            log = mngr.AppLog;
             thread = null;
         }
 

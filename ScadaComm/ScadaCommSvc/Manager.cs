@@ -48,61 +48,6 @@ namespace Scada.Comm.Svc
     internal sealed class Manager
     {
         /// <summary>
-        /// Общие параметры конфигурации
-        /// </summary>
-        public struct CommonParams
-        {
-            /// <summary>
-            /// Получить или установить признак использования SCADA-Сервера
-            /// </summary>
-            public bool ServerUse { get; set; }
-            /// <summary>
-            /// Получить или установить имя компьютера или IP-адрес SCADA-Сервера
-            /// </summary>
-            public string ServerHost { get; set; }
-            /// <summary>
-            /// Получить или установить номер TCP-порта SCADA-Сервера
-            /// </summary>
-            public int ServerPort { get; set; }
-            /// <summary>
-            /// Получить или установить имя пользователя для подключения к SCADA-Серверу
-            /// </summary>
-            public string ServerUser { get; set; }
-            /// <summary>
-            /// Получить или установить пароль пользователя для подключения к SCADA-Серверу
-            /// </summary>
-            public string ServerPwd { get; set; }
-            /// <summary>
-            /// Получить или установить таймаут ожидания ответа SCADA-Сервера, мс
-            /// </summary>
-            public int ServerTimeout { get; set; }
-            /// <summary>
-            /// Получить или установить ожидание остановки циклов опроса линий связи, мс
-            /// </summary>
-            public int WaitForStop { get; set; }
-            /// <summary>
-            /// Получить или установить период передачи на сервер всех параметров КП для обновления, с
-            /// </summary>
-            public int RefrParams { get; set; }
-
-            /// <summary>
-            /// Установить значения общих параметров по умолчанию
-            /// </summary>
-            public void SetToDefault()
-            {
-                ServerUse = false;
-                ServerHost = "localhost";
-                ServerPort = 10000;
-                ServerUser = "ScadaComm";
-                ServerPwd = "12345";
-                ServerTimeout = 10000;
-                WaitForStop = 1000;
-                RefrParams = 60;
-            }
-        }
-
-
-        /// <summary>
         /// Версия приложения
         /// </summary>
         private const string AppVersion = "4.5.0.0";
@@ -119,25 +64,23 @@ namespace Scada.Comm.Svc
         /// </summary>
         private const string InfoFileName = "ScadaCommSvc.txt";
         /// <summary>
-        /// Интервал повторных попыток запуска потоков линий связи и потока обмена данными, мс
+        /// Период повторных попыток запуска потоков линий связи и потока обмена данными, мс
         /// </summary>
-        private const int StartAttemptSpan = 10000;
+        private const int StartAttemptPeriod = 10000;
 
+        private Dictionary<string, Type> kpTypes; // типы КП, полученные из подключаемых библиотек
+        private List<CommLine> commLines;         // список активных линий связи
+        private CommandReader commandReader;      // сервис приёма команд
+        private Thread infoThread;                // поток для записи информации о работе приложения
+        private string infoFileName;              // полное имя файла информации
+        private Timer startTimer;                 // таймер для повторения попыток запуска
+        private DateTime startDT;                 // дата и время запуска работы
+        private bool linesStarted;                // потоки линий связи запущены
+        private int maxLineCapLen;                // максимальная длина обозначения линии связи
 
-        private CommonParams commonParams;   // общие параметры конфигурации
-        private List<CommLine> commLines;    // список активных линий связи
-        private SortedList<string, Type> kpTypes; // типы КП, полученные из подключаемых библиотек
-        private CommandReader commandReader; // приём команд
-        private string infoFileName;         // полное имя файла информации
-        private Timer infoTimer;             // таймер для обновления файла информации о работе программы
-        private Timer startTimer;            // таймер для запуска потоков линий связи и потока обмена данными
-        private DateTime startDT;            // дата и время запуска программы
-        private bool linesStarted;           // потоки линий связи запущены
-        private int maxLineCapLen;           // максимальная длина обозначения линии связи
-
-        private object lineLock;             // объект для синхронизации работы со списком линий связи
-        private object lineCmdLock;          // объект для синхронизации выполнения команд над линиями связи
-        private object infoLock;             // объект для синхронизации записи в файл информации о работе программы
+        private object lineLock;    // объект для синхронизации работы со списком линий связи
+        private object lineCmdLock; // объект для синхронизации выполнения команд над линиями связи
+        private object infoLock;    // объект для синхронизации записи в файл информации о работе приложения
 
 
         /// <summary>
@@ -145,16 +88,13 @@ namespace Scada.Comm.Svc
         /// </summary>
         public Manager()
         {
-            AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
-
-            commonParams.SetToDefault();
+            kpTypes = new Dictionary<string, Type>();
             commLines = new List<CommLine>();
-            kpTypes = new SortedList<string, Type>();
             commandReader = null;
+            infoThread = null;
             infoFileName = "";
-            infoTimer = new Timer(InfoTimerCallback, null, Timeout.Infinite, Timeout.Infinite);
             startTimer = null;
-            startDT = DateTime.Now;
+            startDT = DateTime.MinValue;
             linesStarted = false;
             maxLineCapLen = -1;
 
@@ -163,9 +103,11 @@ namespace Scada.Comm.Svc
             infoLock = new object();
 
             AppDirs = new AppDirs();
+            Settings = new Settings();
             ServerComm = null;
-            Log = new Log(Log.Formats.Full);
-            Log.Encoding = Encoding.UTF8;
+            AppLog = new Log(Log.Formats.Full) { Encoding = Encoding.UTF8 };
+
+            AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
         }
 
 
@@ -175,6 +117,11 @@ namespace Scada.Comm.Svc
         public AppDirs AppDirs { get; private set; }
 
         /// <summary>
+        /// Получить настройки приложения
+        /// </summary>
+        public Settings Settings { get; private set; }
+
+        /// <summary>
         /// Получить объект для обмена данными со SCADA-Сервером
         /// </summary>
         public ServerCommEx ServerComm { get; private set; }
@@ -182,7 +129,7 @@ namespace Scada.Comm.Svc
         /// <summary>
         /// Получить основной журнал приложения
         /// </summary>
-        public Log Log { get; private set; }
+        public Log AppLog { get; private set; }
 
 
         /// <summary>
@@ -191,64 +138,29 @@ namespace Scada.Comm.Svc
         private void OnUnhandledException(object sender, UnhandledExceptionEventArgs args)
         {
             Exception ex = args.ExceptionObject as Exception;
-            Log.WriteAction(string.Format(Localization.UseRussian ? "Необработанное исключение{0}" :
+            AppLog.WriteAction(string.Format(Localization.UseRussian ? "Необработанное исключение{0}" :
                 "Unhandled exception{0}", ex == null ? "" : ": " + ex.ToString()), Log.ActTypes.Exception);
-            Log.WriteBreak();
+            AppLog.WriteBreak();
         }
 
         /// <summary>
-        /// Распознать общие параметры из файла конфигурации
+        /// Принять таблицу входных каналов и таблицу КП от SCADA-Сервера
         /// </summary>
-        private bool ParseCommonParams(XmlDocument xmlDoc)
+        private bool ReceiveBaseTables(out DataTable tblInCnl, out DataTable tblKP)
         {
-            XmlNode xmlNode = xmlDoc.DocumentElement.SelectSingleNode("CommonParams");
+            tblInCnl = new DataTable();
+            tblKP = new DataTable();
 
-            if (xmlNode == null)
+            if (ServerComm.ReceiveBaseTable("incnl.dat", tblInCnl) &&
+                ServerComm.ReceiveBaseTable("kp.dat", tblKP))
             {
-                Log.WriteAction(Localization.UseRussian ? "В файле конфигурации не найдены общие параметры" : 
-                    "Common parameters not found in the configuration file", Log.ActTypes.Error);
-                return false;
+                return true;
             }
             else
             {
-                // установка общих параметров по умолчанию
-                commonParams.SetToDefault();
-
-                // загрузка общих параметров из файла конфигурации
-                XmlNodeList xmlNodeList = xmlNode.SelectNodes("Param");
-
-                foreach (XmlElement xmlElement in xmlNodeList)
-                {
-                    try
-                    {
-                        string name = xmlElement.GetAttribute("name");
-                        string val = xmlElement.GetAttribute("value");
-
-                        if (name == "ServerUse")
-                            commonParams.ServerUse = bool.Parse(val.ToLower());
-                        else if (name == "ServerHost")
-                            commonParams.ServerHost = val;
-                        else if (name == "ServerPort")
-                            commonParams.ServerPort = int.Parse(val);
-                        else if (name == "ServerUser")
-                            commonParams.ServerUser = val;
-                        else if (name == "ServerPwd")
-                            commonParams.ServerPwd = val;
-                        else if (name == "ServerTimeout")
-                            commonParams.ServerTimeout = int.Parse(val);
-                        else if (name == "WaitForStop")
-                            commonParams.WaitForStop = int.Parse(val);
-                        else if (name == "RefrParams")
-                            commonParams.RefrParams = int.Parse(val);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.WriteAction((Localization.UseRussian ? "Ошибка при распознавании общих параметров: " : 
-                            "Error parsing common parameters: ") + ex.Message, Log.ActTypes.Exception);
-                    }
-                }
-
-                return true;
+                tblInCnl = null;
+                tblKP = null;
+                return false;
             }
         }
 
@@ -261,7 +173,7 @@ namespace Scada.Comm.Svc
 
             if (commLinesNode == null)
             {
-                Log.WriteAction(Localization.UseRussian ? "В файле конфигурации не найдены линии связи" :
+                AppLog.WriteAction(Localization.UseRussian ? "В файле конфигурации не найдены линии связи" :
                     "Communication lines not found in the configuration file", Log.ActTypes.Error);
                 return false;
             }
@@ -275,7 +187,7 @@ namespace Scada.Comm.Svc
                     int lineNum = int.Parse(commLineElem.GetAttribute("number"));
                     if (lineNums.ContainsKey(lineNum))
                     {
-                        Log.WriteAction(string.Format(Localization.UseRussian ? 
+                        AppLog.WriteAction(string.Format(Localization.UseRussian ? 
                             "Линия связи {0} дублируется в файле конфигурации" : 
                             "Communication line {0} is duplicated in the configuration file", lineNum), 
                             Log.ActTypes.Error);
@@ -338,7 +250,7 @@ namespace Scada.Comm.Svc
                         catch (Exception ex)
                         {
                             commLine.ConfigError = true;
-                            Log.WriteAction(string.Format(Localization.UseRussian ? 
+                            AppLog.WriteAction(string.Format(Localization.UseRussian ? 
                                 "Ошибка при распознавании параметров COM-порта линии связи {0}: {1}" : 
                                 "Error parsing serial port parameters of communication line {0}: {1}", 
                                 lineNum, ex.Message), Log.ActTypes.Exception);
@@ -370,7 +282,7 @@ namespace Scada.Comm.Svc
                         catch (Exception ex)
                         {
                             commLine.ConfigError = true;
-                            Log.WriteAction(string.Format(Localization.UseRussian ?
+                            AppLog.WriteAction(string.Format(Localization.UseRussian ?
                                 "Ошибка при распознавании параметров линии связи {0}: {1}" :
                                 "Error parsing communication line {0} parameters: {1}", 
                                 lineNum, ex.Message), Log.ActTypes.Exception);
@@ -418,7 +330,7 @@ namespace Scada.Comm.Svc
                                 {
                                     // загрузка типа из библиотеки
                                     string path = AppDirs.KPDir + dllName + ".dll";
-                                    Log.WriteAction((Localization.UseRussian ? "Загрузка библиотеки КП: " :
+                                    AppLog.WriteAction((Localization.UseRussian ? "Загрузка библиотеки КП: " :
                                         "Load device library: ") + path, Log.ActTypes.Action);
 
                                     Assembly asm = Assembly.LoadFile(path);
@@ -463,7 +375,7 @@ namespace Scada.Comm.Svc
                             }
                             catch (Exception ex)
                             {
-                                Log.WriteAction(string.Format(Localization.UseRussian ?
+                                AppLog.WriteAction(string.Format(Localization.UseRussian ?
                                     "Ошибка при распознавании конфигурации КП {0}: {1}" :
                                     "Error parsing device {0} configuration: {1}",
                                     kpNumber, ex.Message), Log.ActTypes.Exception);
@@ -476,33 +388,12 @@ namespace Scada.Comm.Svc
             }
             catch (Exception ex)
             {
-                Log.WriteAction(string.Format(Localization.UseRussian ?
+                AppLog.WriteAction(string.Format(Localization.UseRussian ?
                     "Ошибка при распознавании конфигурации линии связи {0}: {1}" :
                     "Error parsing communication line {0} configuration: {1}",
                     lineNum, ex.Message), Log.ActTypes.Exception);
                 lineActive = false;
                 return null;
-            }
-        }
-
-        /// <summary>
-        /// Принять таблицу входных каналов и таблицу КП от SCADA-Сервера
-        /// </summary>
-        private bool ReceiveBaseTables(out DataTable tblInCnl, out DataTable tblKP)
-        {
-            tblInCnl = new DataTable();
-            tblKP = new DataTable();
-
-            if (ServerComm.ReceiveBaseTable("incnl.dat", tblInCnl) &&
-                ServerComm.ReceiveBaseTable("kp.dat", tblKP))
-            {
-                return true;
-            }
-            else
-            {
-                tblInCnl = null;
-                tblKP = null;
-                return false;
             }
         }
 
@@ -545,7 +436,7 @@ namespace Scada.Comm.Svc
             catch (Exception ex)
             {
                 commLine.ConfigError = true;
-                Log.WriteAction(string.Format(Localization.UseRussian ? "Ошибка при настройке линии связи {0}: {1}" :
+                AppLog.WriteAction(string.Format(Localization.UseRussian ? "Ошибка при настройке линии связи {0}: {1}" :
                     "Error tuning communication line {0}: {1}", commLine.Number, ex.Message, Log.ActTypes.Exception));
             }
         }
@@ -572,7 +463,7 @@ namespace Scada.Comm.Svc
         }
         
         /// <summary>
-        /// Записать в файл информацию о работе программы
+        /// Записать в файл информацию о работе приложения
         /// </summary>
         private void WriteInfo()
         {
@@ -650,7 +541,7 @@ namespace Scada.Comm.Svc
             }
             catch (Exception ex)
             {
-                Log.WriteAction((Localization.UseRussian ?
+                AppLog.WriteAction((Localization.UseRussian ?
                     "Ошибка при записи в файл информации о работе приложения: " :
                     "Error writing application information to the file: ") + ex.Message, Log.ActTypes.Exception);
             }
@@ -691,7 +582,7 @@ namespace Scada.Comm.Svc
 
                 if (serverUse)
                 {
-                    ServerComm = new ServerCommEx(commonParams, Log);
+                    ServerComm = new ServerCommEx(Settings.Params, AppLog);
                     serverOk = ReceiveBaseTables(out tblInCnl, out tblKP);
                 }
                 else
@@ -711,7 +602,7 @@ namespace Scada.Comm.Svc
                         }
 
                         // запуск потоков линий связи и приёма команд
-                        Log.WriteAction(Localization.UseRussian ? "Запуск линий связи" : 
+                        AppLog.WriteAction(Localization.UseRussian ? "Запуск линий связи" : 
                             "Start communication lines", Log.ActTypes.Action);
                         foreach (CommLine commLine in commLines)
                         {
@@ -721,7 +612,7 @@ namespace Scada.Comm.Svc
 
                         if (ServerComm != null || AppDirs.CmdDir != "")
                         {
-                            Log.WriteAction(Localization.UseRussian ? "Запуск приёма команд" : 
+                            AppLog.WriteAction(Localization.UseRussian ? "Запуск приёма команд" : 
                                 "Start receiving commands", Log.ActTypes.Action);
                             commandReader = new CommandReader(this);
                             commandReader.StartThread();
@@ -733,7 +624,7 @@ namespace Scada.Comm.Svc
                 }
                 else
                 {
-                    Log.WriteAction(Localization.UseRussian ? 
+                    AppLog.WriteAction(Localization.UseRussian ? 
                         "Запуск линий связи невозможен из-за проблем взаимодействия со SCADA-Сервером" :
                         "Unable to start communication lines due to SCADA-Server communication error",
                         Log.ActTypes.Error);
@@ -744,12 +635,12 @@ namespace Scada.Comm.Svc
                         ServerComm.Close();
                         ServerComm = null;
                     }
-                    startTimer.Change(StartAttemptSpan, Timeout.Infinite);
+                    startTimer.Change(StartAttemptPeriod, Timeout.Infinite);
                 }
             }
             catch (Exception ex)
             {
-                Log.WriteAction((Localization.UseRussian ? "Ошибка при запуске: " : 
+                AppLog.WriteAction((Localization.UseRussian ? "Ошибка при запуске: " : 
                     "Start error: ") + ex.Message, Log.ActTypes.Exception);
             }
         }
@@ -762,7 +653,7 @@ namespace Scada.Comm.Svc
         {
             AppDirs.Init(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
 
-            Log.FileName = AppDirs.LogDir + LogFileName;
+            AppLog.FileName = AppDirs.LogDir + LogFileName;
             infoFileName = AppDirs.LogDir + InfoFileName;
             logDirExists = Directory.Exists(AppDirs.LogDir);
 
@@ -779,6 +670,14 @@ namespace Scada.Comm.Svc
         }
 
         /// <summary>
+        /// Инициализировать линии связи
+        /// </summary>
+        private void InitCommLines(DataTable tblInCnl, DataTable tblKP)
+        {
+
+        }
+
+        /// <summary>
         /// Распознать файл конфигурации, создать объекты линий связи и КП
         /// </summary>
         private bool ParseConfig()
@@ -786,7 +685,7 @@ namespace Scada.Comm.Svc
             try
             {
                 string fileName = AppDirs.ConfigDir + ConfigFileName;
-                Log.WriteAction((Localization.UseRussian ? "Чтение конфигурации из файла " : 
+                AppLog.WriteAction((Localization.UseRussian ? "Чтение конфигурации из файла " : 
                     "Read configuration from file ") + fileName, Log.ActTypes.Action);
 
                 XmlDocument xmlDoc = new XmlDocument(); // обрабатываемый XML-документ
@@ -802,7 +701,7 @@ namespace Scada.Comm.Svc
             }
             catch (Exception ex)
             {
-                Log.WriteAction((Localization.UseRussian ? "Ошибка при чтении конфигурации из файла: " : 
+                AppLog.WriteAction((Localization.UseRussian ? "Ошибка при чтении конфигурации из файла: " : 
                     "Error reading configuration from file: ") + ex.Message, Log.ActTypes.Exception);
                 return false;
             }
@@ -810,11 +709,105 @@ namespace Scada.Comm.Svc
         }
 
         /// <summary>
+        /// Начать попытки запуска работы
+        /// </summary>
+        private void BeginStart()
+        {
+
+        }
+
+        /// <summary>
         /// Запустить потоки линий связи и поток обмена данными со SCADA-Сервером
         /// </summary>
-        private void StartThreads()
+        private bool StartThreads()
         {
-            startTimer = new Timer(StartTimerCallback, null, 0, Timeout.Infinite);
+            // остановка потоков
+            StopThreads();
+
+            try
+            {
+                // запуск работы
+                startDT = DateTime.Now;
+                string errMsg;
+
+                if (Settings.Load(AppDirs.ConfigDir + Settings.DefFileName, out errMsg))
+                {
+                    // приём необходимых таблиц базы конфигурации от SCADA-Сервера
+                    bool fatalError = false;
+                    DataTable tblInCnl;
+                    DataTable tblKP;
+
+                    if (Settings.Params.ServerUse)
+                    {
+                        ServerComm = new ServerCommEx(Settings.Params, AppLog);
+                        if (!ReceiveBaseTables(out tblInCnl, out tblKP))
+                        {
+                            fatalError = true;
+                            AppLog.WriteAction(Localization.UseRussian ?
+                                "Запуск работы невозможен из-за проблем взаимодействия со SCADA-Сервером" :
+                                "Unable to start operation due to SCADA-Server communication error",
+                                Log.ActTypes.Error);
+                            ServerComm.Close();
+                            ServerComm = null;
+                        }
+                    }
+                    else
+                    {
+                        tblInCnl = null;
+                        tblKP = null;
+                    }
+
+                    if (!fatalError)
+                    {
+                        // инициализация линий связи
+                        InitCommLines(tblInCnl, tblKP);
+
+                        if (commLines.Count > 0)
+                        {
+                            // запуск потоков линий связи
+                            AppLog.WriteAction(Localization.UseRussian ? 
+                                "Запуск линий связи" : 
+                                "Start communication lines", Log.ActTypes.Action);
+                            foreach (CommLine commLine in commLines)
+                            {
+                                commLine.ServerComm = ServerComm;
+                                commLine.StartThread();
+                            }
+                            linesStarted = true;
+
+                            // запуск приёма команд
+                            AppLog.WriteAction(Localization.UseRussian ? 
+                                "Запуск приёма команд" :
+                                "Start receiving commands", Log.ActTypes.Action);
+                            commandReader = new CommandReader(this);
+                            commandReader.StartThread();
+                        }
+                        else
+                        {
+                            AppLog.WriteAction(Localization.UseRussian ?
+                                "Отсутствуют активные линии связи" :
+                                "No active communication lines", Log.ActTypes.Error);
+                        }
+                    }
+                }
+                else
+                {
+                    AppLog.WriteAction(errMsg, Log.ActTypes.Error);
+                }
+
+                return linesStarted;
+            }
+            catch (Exception ex)
+            {
+                AppLog.WriteAction((Localization.UseRussian ? "Ошибка при запуске работы: " :
+                    "Error starting operation: ") + ex.Message, Log.ActTypes.Exception);
+                return false;
+            }
+            finally
+            {
+                if (infoThread == null)
+                    WriteInfo();
+            }
         }
 
         /// <summary>
@@ -830,7 +823,7 @@ namespace Scada.Comm.Svc
 
                 if (commLines.Count > 0)
                 {
-                    Log.WriteAction(Localization.UseRussian ? "Остановка линий связи" :
+                    AppLog.WriteAction(Localization.UseRussian ? "Остановка линий связи" :
                         "Stop communication lines", Log.ActTypes.Action);
                     linesStarted = false; // далее lock (lineLock) не требуется
 
@@ -885,7 +878,7 @@ namespace Scada.Comm.Svc
             }
             catch (Exception ex)
             {
-                Log.WriteAction((Localization.UseRussian ? "Ошибка при остановке линий связи: " :
+                AppLog.WriteAction((Localization.UseRussian ? "Ошибка при остановке линий связи: " :
                     "Error stop communication lines: ") + ex.Message, Log.ActTypes.Exception);
             }
         }
@@ -935,7 +928,7 @@ namespace Scada.Comm.Svc
                                     if (!lineActive)
                                     {
                                         commLine = null;
-                                        Log.WriteAction(string.Format(Localization.UseRussian ? 
+                                        AppLog.WriteAction(string.Format(Localization.UseRussian ? 
                                             "Невозможно запустить линию связи {0}, т.к. она неактивна" : 
                                             "Unable to start communication line {0} because it is not active", 
                                             lineNumStr), Log.ActTypes.Error);
@@ -943,7 +936,7 @@ namespace Scada.Comm.Svc
                                 }
                                 else
                                 {
-                                    Log.WriteAction(string.Format(Localization.UseRussian ?
+                                    AppLog.WriteAction(string.Format(Localization.UseRussian ?
                                         "Невозможно запустить линию связи {0}, т.к. она не найдена в файле конфигурации" :
                                         "Unable to start communication line {0} because it is not found in the configuration file",
                                         lineNumStr), Log.ActTypes.Error);
@@ -952,7 +945,7 @@ namespace Scada.Comm.Svc
                         }
                         catch (Exception ex)
                         {
-                            Log.WriteAction((Localization.UseRussian ? 
+                            AppLog.WriteAction((Localization.UseRussian ? 
                                 "Ошибка при чтении конфигурации линии связи из файла: " : 
                                 "Error reading communication line configuration from file: ") + 
                                 ex.Message, Log.ActTypes.Exception);
@@ -971,7 +964,7 @@ namespace Scada.Comm.Svc
                             else
                             {
                                 commLine = null;
-                                Log.WriteAction(string.Format(Localization.UseRussian ?
+                                AppLog.WriteAction(string.Format(Localization.UseRussian ?
                                     "Невозможно запустить линию связи {0} из-за проблем взаимодействия со SCADA-Сервером" :
                                     "Unable to start communication line {0} due to SCADA-Server communication error",
                                     lineNum), Log.ActTypes.Error);
@@ -983,7 +976,7 @@ namespace Scada.Comm.Svc
                         {
                             try
                             {
-                                Log.WriteAction((Localization.UseRussian ? "Запуск линии связи " : 
+                                AppLog.WriteAction((Localization.UseRussian ? "Запуск линии связи " : 
                                     "Start communication line ") + lineNum, Log.ActTypes.Action);
                                 commLine.ServerComm = ServerComm;
                                 commLine.StartThread();
@@ -997,14 +990,14 @@ namespace Scada.Comm.Svc
                             }
                             catch (Exception ex)
                             {
-                                Log.WriteAction((Localization.UseRussian ? "Ошибка при запуске линии связи: " :
+                                AppLog.WriteAction((Localization.UseRussian ? "Ошибка при запуске линии связи: " :
                                     "Error start communication line: ") + ex.Message, Log.ActTypes.Exception);
                             }
                         }
                     }
                     else
                     {
-                        Log.WriteAction(string.Format(Localization.UseRussian ?
+                        AppLog.WriteAction(string.Format(Localization.UseRussian ?
                             "Невозможно запустить линию связи {0}, т.к. она активна" :
                             "Unable to start communication line {0} because it is active", 
                             lineNum), Log.ActTypes.Error);
@@ -1028,7 +1021,7 @@ namespace Scada.Comm.Svc
 
                     if (commLine == null)
                     {
-                        Log.WriteAction(string.Format(Localization.UseRussian ?
+                        AppLog.WriteAction(string.Format(Localization.UseRussian ?
                             "Невозможно остановить линию связи {0}, т.к. она не найдена среди активных линий связи" :
                             "Unable to stop communication line {0} because it is not found among the active lines",
                             lineNum), Log.ActTypes.Error);
@@ -1037,7 +1030,7 @@ namespace Scada.Comm.Svc
                     {
                         try
                         {
-                            Log.WriteAction((Localization.UseRussian ? "Остановка линии связи " :
+                            AppLog.WriteAction((Localization.UseRussian ? "Остановка линии связи " :
                                 "Stop communication line ") + lineNum, Log.ActTypes.Action);
 
                             // выполнение команды завершения работы линии связи
@@ -1071,7 +1064,7 @@ namespace Scada.Comm.Svc
                         }
                         catch (Exception ex)
                         {
-                            Log.WriteAction((Localization.UseRussian ? "Ошибка при остановке линии связи: " :
+                            AppLog.WriteAction((Localization.UseRussian ? "Ошибка при остановке линии связи: " :
                                 "Error stop communication line: ") + ex.Message, Log.ActTypes.Exception);
                         }
                     }
@@ -1106,7 +1099,7 @@ namespace Scada.Comm.Svc
                 }
                 catch (Exception ex)
                 {
-                    Log.WriteAction((Localization.UseRussian ? "Ошибка при передаче команды менеджеру: " : 
+                    AppLog.WriteAction((Localization.UseRussian ? "Ошибка при передаче команды менеджеру: " : 
                         "Error passing command to the manager: ") + ex.Message, Log.ActTypes.Exception);
                 }
             }
@@ -1125,8 +1118,8 @@ namespace Scada.Comm.Svc
 
             if (logDirExists)
             {
-                Log.WriteBreak();
-                Log.WriteAction(Localization.UseRussian ? "Служба ScadaCommService запущена" :
+                AppLog.WriteBreak();
+                AppLog.WriteAction(Localization.UseRussian ? "Служба ScadaCommService запущена" :
                     "ScadaCommService is started", Log.ActTypes.Action);
             }
 
@@ -1139,14 +1132,14 @@ namespace Scada.Comm.Svc
                     if (Localization.LoadDictionaries(AppDirs.LangDir, "ScadaData", out errMsg))
                         CommonPhrases.Init();
                     else
-                        Log.WriteAction(errMsg, Log.ActTypes.Error);
+                        AppLog.WriteAction(errMsg, Log.ActTypes.Error);
                 }
 
                 // считывание конфигурации и запуск потоков
                 if (ParseConfig())
-                    StartThreads();
+                    BeginStart();
                 else
-                    Log.WriteAction(Localization.UseRussian ? "Нормальная работа программы невозможна." :
+                    AppLog.WriteAction(Localization.UseRussian ? "Нормальная работа программы невозможна." :
                         "Normal program execution is impossible.", Log.ActTypes.Error);
             }
             else
@@ -1168,7 +1161,7 @@ namespace Scada.Comm.Svc
                 catch { }
 
                 if (logDirExists)
-                    Log.WriteAction(errMsg, Log.ActTypes.Error);
+                    AppLog.WriteAction(errMsg, Log.ActTypes.Error);
             }
         }
 
@@ -1178,9 +1171,9 @@ namespace Scada.Comm.Svc
         public void StopService()
         {
             StopThreads();
-            Log.WriteAction(Localization.UseRussian ? "Служба ScadaCommService остановлена" :
+            AppLog.WriteAction(Localization.UseRussian ? "Служба ScadaCommService остановлена" :
                 "ScadaCommService is stopped", Log.ActTypes.Action);
-            Log.WriteBreak();
+            AppLog.WriteBreak();
         }
 
         /// <summary>
@@ -1189,9 +1182,9 @@ namespace Scada.Comm.Svc
         public void ShutdownService()
         {
             StopThreads();
-            Log.WriteAction(Localization.UseRussian ? "Служба ScadaCommService отключена" :
+            AppLog.WriteAction(Localization.UseRussian ? "Служба ScadaCommService отключена" :
                 "ScadaCommService is shutdown", Log.ActTypes.Action);
-            Log.WriteBreak();
+            AppLog.WriteBreak();
         }
     }
 }
