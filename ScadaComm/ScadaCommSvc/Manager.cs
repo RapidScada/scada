@@ -722,7 +722,7 @@ namespace Scada.Comm.Svc
                             foreach (CommLine commLine in commLines)
                             {
                                 commLine.ServerComm = ServerComm;
-                                commLine.StartThread();
+                                commLine.Start();
                             }
                             linesStarted = true;
                         }
@@ -803,7 +803,7 @@ namespace Scada.Comm.Svc
                         running = false;
                         foreach (CommLine commLine in commLines)
                         {
-                            if (commLine.RunState != CommLine.RunStates.Terminated)
+                            if (!commLine.Terminated)
                             {
                                 running = true;
                                 Thread.Sleep(ScadaUtils.ThreadDelay);
@@ -818,8 +818,7 @@ namespace Scada.Comm.Svc
                     if (running)
                     {
                         foreach (CommLine commLine in commLines)
-                            if (commLine.AbortAllowed)
-                                commLine.Thread.Abort();
+                            commLine.Abort();
                     }
                 }
 
@@ -920,7 +919,7 @@ namespace Scada.Comm.Svc
                                     "Запуск линии связи " : 
                                     "Start communication line ") + lineNum, Log.ActTypes.Action);
                                 commLine.ServerComm = ServerComm;
-                                commLine.StartThread();
+                                commLine.Start();
 
                                 // добавление линии связи в список
                                 lock (lineLock)
@@ -983,20 +982,18 @@ namespace Scada.Comm.Svc
                             DateTime nowDT = DateTime.Now;
                             DateTime t0 = nowDT;
                             DateTime t1 = nowDT.AddMilliseconds(Settings.Params.WaitForStop);
-                            bool running; // линия связи продолжает работу
 
                             do
                             {
-                                running = commLine.RunState != CommLine.RunStates.Terminated;
-                                if (running)
-                                    Thread.Sleep(200);
+                                if (!commLine.Terminated)
+                                    Thread.Sleep(ScadaUtils.ThreadDelay);
                                 nowDT = DateTime.Now;
                             }
-                            while (t0 <= nowDT && nowDT <= t1 && running);
+                            while (t0 <= nowDT && nowDT <= t1 && !commLine.Terminated);
 
                             // прерывание работы линии связи
-                            if (running && commLine.AbortAllowed)
-                                commLine.Thread.Abort();
+                            if (!commLine.Terminated)
+                                commLine.Abort();
 
                             // удаление линии связи из списка
                             lock (lineLock)

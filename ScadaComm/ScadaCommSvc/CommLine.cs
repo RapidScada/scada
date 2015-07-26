@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
@@ -39,12 +39,12 @@ namespace Scada.Comm.Svc
     /// Communication line
     /// <para>Линия связи</para>
     /// </summary>
-    sealed class CommLine
+    internal sealed class CommLine
     {
         /// <summary>
         /// Состояния работы линии связи
         /// </summary>
-        public enum RunStates
+        private enum RunStates
         {
             /// <summary>
             /// Бездействие
@@ -74,12 +74,6 @@ namespace Scada.Comm.Svc
         /// </summary>
         private const int PortWaitDelay = 10000;
         /// <summary>
-        /// Сообщение об ошибке при установке значения свойства
-        /// </summary>
-        private static readonly string SetPropErr = Localization.UseRussian ?
-            "Невозможно установить значение свойства, если линия связи не бездействует." :
-            "Unable to set property value if the communication line is not idle.";
-        /// <summary>
         /// Обозначение отсутствия действия
         /// </summary>
         private static readonly string NoAction = Localization.UseRussian ? "нет" : "no";
@@ -96,10 +90,12 @@ namespace Scada.Comm.Svc
         private int refrParams;                  // период передачи на сервер всех параметров КП для обновления, с
 
         private SortedList<string, object> commonProps; // общие свойства линии связи, доступные относящимся к ней КП
-        private List<int> kpNumList;             // упорядоченный по возрастанию список номеров КП на линии связи
+        private HashSet<int> kpNumSet;           // множество номеров КП на линии связи
         private List<Command> cmdList;           // список команд
         private KPLogic curKP;                   // опрашиваемое в данный момент КП
 
+        private Thread thread;                   // поток работы линии связи
+        private RunStates runState;              // состояние работы линии связи
         private Log log;                         // журнал линии связи
         private string infoFileName;             // имя файла информации о работе линии связи
         private string curAction;                // описание текущего действия
@@ -111,7 +107,7 @@ namespace Scada.Comm.Svc
         
 
         /// <summary>
-        /// Конструктор
+        /// Конструктор, ограничивающий создание объекта без параметров
         /// </summary>
         private CommLine()
         {
@@ -120,7 +116,7 @@ namespace Scada.Comm.Svc
         /// <summary>
         /// Конструктор
         /// </summary>
-        public CommLine(int number, string name, bool bind)
+        public CommLine(bool bind, int number, string name)
         {
             // поля
             numAndName = number + (string.IsNullOrEmpty(name) ? "" : " \"" + name + "\"");
@@ -134,13 +130,14 @@ namespace Scada.Comm.Svc
             cmdEnabled = false;
 
             commonProps = new SortedList<string, object>();
-            kpNumList = new List<int>();
-            cmdList = new List<KPLogic.Command>();
+            kpNumSet = new HashSet<int>();
+            cmdList = new List<Command>();
             curKP = null;
 
-            log = new Log(Log.Formats.Simple);
-            log.Encoding = Encoding.UTF8;
-            string fileName = AppDirs.LogDir + "line" + KPUtils.AddZeros(number, 3);
+            thread = null;
+            runState = RunStates.Idle;
+            log = new Log(Log.Formats.Simple) { Encoding = Encoding.UTF8 };
+            string fileName = AppDirs.LogDir + "line" + CommUtils.AddZeros(number, 3);
             log.FileName = fileName + ".log";
             infoFileName = fileName + ".txt";
             curAction = NoAction;
@@ -156,10 +153,8 @@ namespace Scada.Comm.Svc
             Bind = bind;
             Caption = (Localization.UseRussian ? "Линия " : "Line ") + numAndName;
 
-            UserParams = new SortedList<string, string>();
+            CustomParams = new SortedList<string, string>();
             KPList = new List<KPLogic>();
-            RunState = RunStates.Idle;
-            Thread = null;
 
             AppDirs = null;
 
@@ -170,6 +165,11 @@ namespace Scada.Comm.Svc
                 "Initialize communication line ") + numAndName);
         }
 
+
+        /// <summary>
+        /// Получить признак привязки к SCADA-Серверу
+        /// </summary>
+        public bool Bind { get; private set; }
 
         /// <summary>
         /// Получить номер КП
@@ -187,30 +187,14 @@ namespace Scada.Comm.Svc
         public string Caption { get; private set; }
 
         /// <summary>
-        /// Привязка к серверу
-        /// </summary>
-        public bool Bind { get; private set; }
-
-
-        /// <summary>
         /// Получить пользовательские параметры линии связи
         /// </summary>
-        public SortedList<string, string> UserParams { get; private set; }
+        public SortedList<string, string> CustomParams { get; private set; }
 
         /// <summary>
         /// Получить список опрашиваемых КП
         /// </summary>
         public List<KPLogic> KPList { get; private set; }
-
-        /// <summary>
-        /// Получить поток работы линии связи
-        /// </summary>
-        public Thread Thread { get; private set; }
-
-        /// <summary>
-        /// Получить состояние работы линии связи
-        /// </summary>
-        public RunStates RunState { get; private set; }
 
         /// <summary>
         /// Получить строковое представление состояния работы линии связи
@@ -219,7 +203,7 @@ namespace Scada.Comm.Svc
         {
             get
             {
-                switch (RunState)
+                switch (runState)
                 {
                     case RunStates.Idle:
                         return Localization.UseRussian ? "бездействие" : "idle";
@@ -238,13 +222,13 @@ namespace Scada.Comm.Svc
         }
 
         /// <summary>
-        /// Получить признак, возможно ли прервать работу линии связи
+        /// Получить признак, что работа линии связи полностью завершена
         /// </summary>
-        public bool AbortAllowed
+        public bool Terminated
         {
             get
             {
-                return Thread != null && Thread.ThreadState != ThreadState.Stopped;
+                return runState == RunStates.Terminated;
             }
         }
 
@@ -260,8 +244,7 @@ namespace Scada.Comm.Svc
             }
             set
             {
-                if (RunState != RunStates.Idle)
-                    throw new Exception(SetPropErr);
+                CheckIdleState();
                 configError = value;
             }
         }
@@ -282,8 +265,7 @@ namespace Scada.Comm.Svc
             }
             set
             {
-                if (RunState != RunStates.Idle)
-                    throw new Exception(SetPropErr);
+                CheckIdleState();
                 serverComm = value;
             }
         }
@@ -299,8 +281,7 @@ namespace Scada.Comm.Svc
             }
             set
             {
-                if (RunState != RunStates.Idle)
-                    throw new Exception(SetPropErr);
+                CheckIdleState();
                 serialPort = value;
             }
         }
@@ -316,8 +297,7 @@ namespace Scada.Comm.Svc
             }
             set
             {
-                if (RunState != RunStates.Idle)
-                    throw new Exception(SetPropErr);
+                CheckIdleState();
                 passCmd = value;
             }
         }*/
@@ -333,8 +313,7 @@ namespace Scada.Comm.Svc
             }
             set
             {
-                if (RunState != RunStates.Idle)
-                    throw new Exception(SetPropErr);
+                CheckIdleState();
                 reqTriesCnt = value;
             }
         }
@@ -350,8 +329,7 @@ namespace Scada.Comm.Svc
             }
             set
             {
-                if (RunState != RunStates.Idle)
-                    throw new Exception(SetPropErr);
+                CheckIdleState();
                 cicleDelay = value;
             }
         }
@@ -367,8 +345,7 @@ namespace Scada.Comm.Svc
             }
             set
             {
-                if (RunState != RunStates.Idle)
-                    throw new Exception(SetPropErr);
+                CheckIdleState();
                 maxCommErrCnt = value;
             }
         }
@@ -384,8 +361,7 @@ namespace Scada.Comm.Svc
             }
             set
             {
-                if (RunState != RunStates.Idle)
-                    throw new Exception(SetPropErr);
+                CheckIdleState();
                 cmdEnabled = value;
             }
         }
@@ -401,12 +377,22 @@ namespace Scada.Comm.Svc
             }
             set
             {
-                if (RunState != RunStates.Idle)
-                    throw new Exception(SetPropErr);
+                CheckIdleState();
                 refrParams = value;
             }
         }
 
+
+        /// <summary>
+        /// Проверить, что линия связи бездействует
+        /// </summary>
+        private void CheckIdleState()
+        {
+            if (runState != RunStates.Idle)
+                throw new InvalidOperationException(Localization.UseRussian ?
+                    "Невозможно выполнить операцию, если линия связи не бездействует." :
+                    "Unable to perform the operation if the communication line is not idle.");
+        }
 
         /// <summary>
         /// Освобождение ресурсов линии связи
@@ -510,11 +496,11 @@ namespace Scada.Comm.Svc
         /// </summary>
         private bool WriteUserParams(StreamWriter writer)
         {
-            int cnt = UserParams.Count;
+            int cnt = CustomParams.Count;
             if (cnt > 0)
             {
                 for (int i = 0; i < cnt; i++)
-                    writer.WriteLine((i + 1).ToString() + ". " + UserParams.Keys[i] + " = " + UserParams.Values[i]);
+                    writer.WriteLine((i + 1).ToString() + ". " + CustomParams.Keys[i] + " = " + CustomParams.Values[i]);
                 return true;
             }
             else
@@ -546,7 +532,7 @@ namespace Scada.Comm.Svc
         }
 
         /// <summary>
-        /// Записать полактивые КП линии связи
+        /// Записать активые КП линии связи
         /// </summary>
         private bool WriteActiveKP(StreamWriter writer)
         {
@@ -630,7 +616,7 @@ namespace Scada.Comm.Svc
             bool arcOk = false; // передача архивных срезов успешна
             bool evOk = false;  // передача событий успешна
 
-            try
+            /*try
             {
                 if (serverComm == null)
                 {
@@ -699,7 +685,7 @@ namespace Scada.Comm.Svc
             finally
             {
                 Monitor.Exit(flushLock);
-            }
+            }*/
 
             return arcOk && evOk;
         }
@@ -718,7 +704,7 @@ namespace Scada.Comm.Svc
         /// </summary>
         private void SendDataToServer(bool sendAllCurData)
         {
-            if (serverComm != null)
+            /*if (serverComm != null)
             {
                 curAction = DateTime.Now.ToString("T", Localization.Culture) + (Localization.UseRussian ? 
                     " Передача данных SCADA-серверу" : " Sending data to SCADA-Server");
@@ -813,7 +799,7 @@ namespace Scada.Comm.Svc
                         }
                     }
                 }
-            }
+            }*/
         }
 
         /// <summary>
@@ -858,23 +844,23 @@ namespace Scada.Comm.Svc
                         WriteInfo();
 
                         // копирование команд в буферы, чтобы минимизировать время блокировки списка команд
-                        List<KPLogic.Command> cmdBufList = null; // буфер стандартных и бинарных команд
-                        KPLogic.Command reqCmd = null;           // буфер команды внеочередного опроса КП
+                        List<Command> cmdBufList = null; // буфер стандартных и бинарных команд
+                        Command reqCmd = null;           // буфер команды внеочередного опроса КП
 
                         Monitor.Enter(cmdLock);
                         try
                         {
                             if (cmdList.Count > 0)
                             {
-                                cmdBufList = new List<KPLogic.Command>();
+                                cmdBufList = new List<Command>();
                                 int cmdInd = 0;
 
                                 while (cmdInd < cmdList.Count)
                                 {
-                                    KPLogic.Command cmd = cmdList[cmdInd];
+                                    Command cmd = cmdList[cmdInd];
                                     bool delCmd = false;
 
-                                    if (cmd.CmdType == KPLogic.CmdType.Request)
+                                    if (cmd.CmdTypeID == BaseValues.CmdTypes.Request)
                                     {
                                         if (reqCmd == null)
                                         {
@@ -903,7 +889,7 @@ namespace Scada.Comm.Svc
                         // выполнение команд ТУ
                         if (cmdBufList != null)
                         {
-                            foreach (KPLogic.Command cmd in cmdBufList)
+                            foreach (Command cmd in cmdBufList)
                             {
                                 KPLogic kpLogic = FindKP(cmd.KPNum);
 
@@ -964,13 +950,13 @@ namespace Scada.Comm.Svc
                         if (extraKP == null)
                         {
                             kpLogic = KPList[kpInd];
-                            double reqPeriod = kpLogic.KPReqParams.Period.TotalDays; // период опроса КП, дн.
+                            double reqPeriod = kpLogic.ReqParams.Period.TotalDays; // период опроса КП, дн.
 
-                            if (kpLogic.KPReqParams.Time > DateTime.MinValue || reqPeriod > 0)
+                            if (kpLogic.ReqParams.Time > DateTime.MinValue || reqPeriod > 0)
                             {
-                                TimeSpan nowTime = DateTime.Now.TimeOfDay;             // текущее время
-                                TimeSpan reqTime = kpLogic.KPReqParams.Time.TimeOfDay; // время опроса КП
-                                TimeSpan lastSessTime = kpLogic.LastSessDT.TimeOfDay;  // время последнего сеанса связи с КП
+                                TimeSpan nowTime = DateTime.Now.TimeOfDay;            // текущее время
+                                TimeSpan reqTime = kpLogic.ReqParams.Time.TimeOfDay;  // время опроса КП
+                                TimeSpan lastSessTime = kpLogic.LastSessDT.TimeOfDay; // время последнего сеанса связи с КП
 
                                 if (reqPeriod > 0)
                                 {
@@ -993,7 +979,7 @@ namespace Scada.Comm.Svc
 
                         // установка опрашиваемого в данный момент КП
                         curKP = kpLogic;
-                        curKP.Terminated = RunState == RunStates.Terminating;
+                        curKP.Terminated = runState == RunStates.Terminating;
 
                         // выполнение сеанса опроса КП
                         if (sessionNeeded)
@@ -1003,7 +989,7 @@ namespace Scada.Comm.Svc
                             WriteInfo();
 
                             curKP.Session();
-                            curKP.CopyArcToBuf();
+                            //curKP.CopyArcToBuf();
                             WriteKPInfo(curKP);
                             commCnt++;
                         }
@@ -1012,12 +998,12 @@ namespace Scada.Comm.Svc
                         if (sessionNeeded || sendAllCurData)
                         {
                             SendDataToServer(sendAllCurData);
-                            curKP.SrezList.Clear();
-                            curKP.EventList.Clear();
+                            //curKP.SrezList.Clear();
+                            //curKP.EventList.Clear();
                         }
 
                         // определение необходимости завершить цикл работы
-                        terminateCycle = RunState == RunStates.Terminating && curKP.Terminated;
+                        terminateCycle = runState == RunStates.Terminating && curKP.Terminated;
 
                         // обнуление опрашиваемого в данный момент КП
                         curKP = null;
@@ -1042,7 +1028,7 @@ namespace Scada.Comm.Svc
                 }
 
                 // задержка после цикла опроса линии связи
-                if (RunState != RunStates.Terminating)
+                if (runState != RunStates.Terminating)
                 {
                     if (commCnt == 0 && cicleDelay == 0)
                         Thread.Sleep(200);
@@ -1061,7 +1047,7 @@ namespace Scada.Comm.Svc
             {
                 log.WriteAction((Localization.UseRussian ? "Запуск линии связи " : 
                     "Start communication line " ) + numAndName);
-                RunState = RunStates.Running;
+                runState = RunStates.Running;
                 WriteInfo();
 
                 if (configError)
@@ -1155,7 +1141,7 @@ namespace Scada.Comm.Svc
                     "Abort communication line ") + numAndName);
                 log.WriteBreak();
 
-                RunState = RunStates.Aborted;
+                runState = RunStates.Aborted;
                 curAction = NoAction;
                 WriteInfo();
             }
@@ -1166,7 +1152,7 @@ namespace Scada.Comm.Svc
             }
             finally
             {
-                if (RunState != RunStates.Aborted)
+                if (runState != RunStates.Aborted)
                 {
                     foreach (KPLogic kpLogic in KPList)
                     {
@@ -1190,12 +1176,12 @@ namespace Scada.Comm.Svc
                         "Stop communication line ") + numAndName);
                     log.WriteBreak();
 
-                    RunState = RunStates.Terminated;
+                    runState = RunStates.Terminated;
                     curAction = NoAction;
                     WriteInfo();
                 }
 
-                Thread = null;
+                thread = null;
             }
 
             // Do not put clean-up code here, because the exception 
@@ -1204,14 +1190,14 @@ namespace Scada.Comm.Svc
 
 
         /// <summary>
-        /// Запустить поток работы линии связи
+        /// Запустить работу линии связи
         /// </summary>
-        public void StartThread()
+        public void Start()
         {
-            if (Thread == null)
+            if (thread == null)
             {
-                Thread = new Thread(new ThreadStart(Execute));
-                Thread.Start();
+                thread = new Thread(new ThreadStart(Execute));
+                thread.Start();
             }
         }
 
@@ -1220,10 +1206,22 @@ namespace Scada.Comm.Svc
         /// </summary>
         public void Terminate()
         {
-            RunState = Thread == null ? RunStates.Terminated : RunStates.Terminating;
+            runState = thread == null ? RunStates.Terminated : RunStates.Terminating;
             foreach (KPLogic kpLogic in KPList)
                 kpLogic.Terminated = true;
             WriteInfo();
+        }
+
+        /// <summary>
+        /// Прервать работу линии связи
+        /// </summary>
+        public void Abort()
+        {
+            if (thread != null && thread.ThreadState != ThreadState.Stopped)
+            {
+                thread.Abort();
+                thread = null;
+            }
         }
         
         /// <summary>
@@ -1231,13 +1229,10 @@ namespace Scada.Comm.Svc
         /// </summary>
         public void AddKP(KPLogic kpLogic)
         {
-            if (RunState != RunStates.Idle)
-                throw new Exception(Localization.UseRussian ?
-                    "Невозможно выполнить метод, если линия связи не бездействует." :
-                    "Unable to execute method if the communication line is not idle.");
+            CheckIdleState();
 
             // настройка свойств КП
-            kpLogic.SerialPort = serialPort;
+            /*kpLogic.SerialPort = serialPort;
             kpLogic.CommLineParams = new KPLogic.LineParams(reqTriesCnt, maxCommErrCnt);
             kpLogic.UserParams = UserParams;
             kpLogic.CommonProps = commonProps;
@@ -1247,7 +1242,7 @@ namespace Scada.Comm.Svc
             kpLogic.CmdDir = AppDirs.CmdDir;
             kpLogic.FlushArc = FlushArc;
             kpLogic.WriteToLog = log.WriteLine;
-            kpLogic.PassCmd = ExecPassCmd;
+            kpLogic.PassCmd = ExecPassCmd;*/
 
             // вызов метода обработки добавления КП
             try
@@ -1262,13 +1257,9 @@ namespace Scada.Comm.Svc
                     kpLogic.Caption, ex.Message));
             }
 
-            // добавление КП в список
+            // добавление КП в список опрашиваемых КП
             KPList.Add(kpLogic);
-
-            // добавление номера КП в список
-            int ind = kpNumList.BinarySearch(kpLogic.Number);
-            if (ind < 0)
-                kpNumList.Insert(~ind, kpLogic.Number);
+            kpNumSet.Add(kpLogic.Number);
         }
 
         /// <summary>
@@ -1276,14 +1267,14 @@ namespace Scada.Comm.Svc
         /// </summary>
         public void AddCmd(Command cmd)
         {
-            Monitor.Enter(cmdLock);
             try
             {
                 if (cmdEnabled)
                 {
-                    cmdList.Add(cmd);
+                    lock (cmdLock)
+                        cmdList.Add(cmd);
                 }
-                else if (kpNumList.BinarySearch(cmd.KPNum) >= 0)
+                else if (kpNumSet.Contains(cmd.KPNum))
                 {
                     log.WriteLine();
                     log.WriteAction(Localization.UseRussian ? 
@@ -1293,12 +1284,9 @@ namespace Scada.Comm.Svc
             }
             catch (Exception ex)
             {
-                log.WriteAction((Localization.UseRussian ? "Ошибка при добавлении команды в очередь: " : 
+                log.WriteAction((Localization.UseRussian ? 
+                    "Ошибка при добавлении команды в очередь: " : 
                     "Error adding command to the queue: ") + ex.Message);
-            }
-            finally
-            {
-                Monitor.Exit(cmdLock);
             }
         }
     }

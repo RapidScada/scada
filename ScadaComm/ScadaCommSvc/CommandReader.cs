@@ -329,7 +329,10 @@ namespace Scada.Comm.Svc
         public void StopThread()
         {
             if (thread != null)
+            {
                 thread.Abort();
+                thread = null;
+            }
         }
     }
 }
