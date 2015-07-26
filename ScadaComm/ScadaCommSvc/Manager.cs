@@ -1035,7 +1035,7 @@ namespace Scada.Comm.Svc
                     {
                         // передача команды линиям связи
                         foreach (CommLine commLine in commLines)
-                            commLine.AddCmd(cmd);
+                            commLine.EnqueueCmd(cmd);
                     }
                 }
                 catch (Exception ex)

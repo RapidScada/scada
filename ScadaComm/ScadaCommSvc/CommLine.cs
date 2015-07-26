@@ -1265,7 +1265,7 @@ namespace Scada.Comm.Svc
         /// <summary>
         /// Добавить команду в очередь команд линии связи, если команды ТУ разрешены
         /// </summary>
-        public void AddCmd(Command cmd)
+        public void EnqueueCmd(Command cmd)
         {
             try
             {
