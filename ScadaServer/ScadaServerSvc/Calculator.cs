@@ -214,16 +214,19 @@ namespace Scada.Server.Svc
 
                 if (compilerResults.Errors.HasErrors)
                 {
-                    appLog.WriteAction(Localization.UseRussian ? "Ошибка при компилировании исходного кода формул: " :
+                    appLog.WriteAction(Localization.UseRussian ? 
+                        "Ошибка при компилировании исходного кода формул: " :
                         "Error compiling the source code of the formulas: ", Log.ActTypes.Error);
 
                     foreach (CompilerError error in compilerResults.Errors)
                         appLog.WriteLine(string.Format(Localization.UseRussian ? 
-                            "Строка {0}, колонка {1}: error {2}: {3}" : "Line {0}, column {1}: error {2}: {3}", 
+                            "Строка {0}, колонка {1}: error {2}: {3}" : 
+                            "Line {0}, column {1}: error {2}: {3}", 
                             error.Line, error.Column, error.ErrorNumber, error.ErrorText));
 
                     appLog.WriteLine(string.Format(Localization.UseRussian ? 
-                        "Для ознакомления с исходным кодом см. файл {0}" : "See the file {0} with the source code", 
+                        "Для ознакомления с исходным кодом см. файл {0}" : 
+                        "See the file {0} with the source code", 
                         sourceFileName));
                     return false;
                 }
@@ -231,16 +234,18 @@ namespace Scada.Server.Svc
                 {
                     Type calcEngineType = compilerResults.CompiledAssembly.GetType("Scada.Server.Svc.CalcEngine", true);
                     calcEngine = Activator.CreateInstance(calcEngineType, 
-                        new Func<int, SrezTableLight.CnlData>(mainLogic.GetCnlData));
+                        new Func<int, SrezTableLight.CnlData>(mainLogic.GetProcSrezCnlData));
 
-                    appLog.WriteAction(Localization.UseRussian ? "Исходный код формул калькулятора откомпилирован" :
+                    appLog.WriteAction(Localization.UseRussian ? 
+                        "Исходный код формул калькулятора откомпилирован" :
                         "The formulas source code has been compiled", Log.ActTypes.Action);
                     return true;
                 }
             }
             catch (Exception ex)
             {
-                appLog.WriteAction((Localization.UseRussian ? "Ошибка при компилировании исходного кода формул: " :
+                appLog.WriteAction((Localization.UseRussian ? 
+                    "Ошибка при компилировании исходного кода формул: " :
                     "Error compiling the source code of the formulas: ") + ex.Message, Log.ActTypes.Exception);
                 return false;
             }

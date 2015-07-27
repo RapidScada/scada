@@ -44,9 +44,9 @@ namespace Scada.Server.Svc
         /// </summary>
         public Manager()
         {
-            AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
             mainLogic = new MainLogic();
             appLog = mainLogic.AppLog;
+            AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
         }
 
 
@@ -75,8 +75,9 @@ namespace Scada.Server.Svc
             if (logDirExists)
             {
                 appLog.WriteBreak();
-                appLog.WriteAction(Localization.UseRussian ? "Служба ScadaServerService запущена" :
-                    "ScadaServerService is started", Log.ActTypes.Action);
+                appLog.WriteAction(string.Format(Localization.UseRussian ? 
+                    "Служба ScadaServerService {0} запущена" :
+                    "ScadaServerService {0} is started", MainLogic.AppVersion), Log.ActTypes.Action);
             }
 
             if (dirsExist)
@@ -93,7 +94,8 @@ namespace Scada.Server.Svc
 
                 // запуск работы SCADA-Сервера
                 if (!mainLogic.Start())
-                    appLog.WriteAction(Localization.UseRussian ? "Нормальная работа программы невозможна." :
+                    appLog.WriteAction(Localization.UseRussian ? 
+                        "Нормальная работа программы невозможна." :
                         "Normal program execution is impossible.", Log.ActTypes.Error);
             }
             else
@@ -124,7 +126,8 @@ namespace Scada.Server.Svc
         public void StopService()
         {
             mainLogic.Stop();
-            appLog.WriteAction(Localization.UseRussian ? "Служба ScadaServerService остановлена" :
+            appLog.WriteAction(Localization.UseRussian ? 
+                "Служба ScadaServerService остановлена" :
                 "ScadaServerService is stopped", Log.ActTypes.Action);
             appLog.WriteBreak();
         }
@@ -135,7 +138,8 @@ namespace Scada.Server.Svc
         public void ShutdownService()
         {
             mainLogic.Stop();
-            appLog.WriteAction(Localization.UseRussian ? "Служба ScadaServerService отключена" :
+            appLog.WriteAction(Localization.UseRussian ? 
+                "Служба ScadaServerService отключена" :
                 "ScadaServerService is shutdown", Log.ActTypes.Action);
             appLog.WriteBreak();
         }

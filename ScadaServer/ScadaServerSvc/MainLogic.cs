@@ -92,7 +92,7 @@ namespace Scada.Server.Svc
         /// <summary>
         /// Строковая запись версии приложения
         /// </summary>
-        public const string AppVersion = "4.5.0.0";
+        public const string AppVersion = "4.5.0.1";
         /// <summary>
         /// Имя файла журнала приложения
         /// </summary>
@@ -178,7 +178,7 @@ namespace Scada.Server.Svc
         private List<string> formulas;             // формулы
         private SrezTable.Srez curSrez;            // текущий срез, предназначенный для формирования данных сервера
         private bool curSrezMod;                   // признак изменения текущего среза (для записи по изменению)
-        private SrezTableLight.Srez procSrez;      // срез, обрабатываемый в настоящий момент
+        private SrezTableLight.Srez procSrez;      // обрабатываемый срез для вычисления по формулам
         private SrezTable.SrezDescr srezDescr;     // описание создаваемых срезов
         private AvgData[] minAvgData;              // минутные данные для усреднения
         private AvgData[] hrAvgData;               // часовые данные для усреднения
@@ -1310,27 +1310,37 @@ namespace Scada.Server.Svc
                     arcSrez = srez;
 
                 // изменение архивного среза
-                procSrez = srez;
-                int cntCnt = receivedSrez.CnlNums.Length;
-
-                for (int i = 0; i < cntCnt; i++)
+                lock (calculator)
                 {
-                    int cnlNum = receivedSrez.CnlNums[i];
-                    int cnlInd = srez.GetCnlIndex(cnlNum);
-                    InCnl inCnl;
-
-                    if (inCnls.TryGetValue(cnlNum, out inCnl) && cnlInd >= 0 &&
-                        (inCnl.CnlTypeID == BaseValues.CnlTypes.TS || inCnl.CnlTypeID == BaseValues.CnlTypes.TI))
+                    try
                     {
-                        // вычисление новых данных входного канала
-                        SrezTableLight.CnlData oldCnlData = srez.CnlData[cnlInd];
-                        SrezTableLight.CnlData newCnlData = receivedSrez.CnlData[i];
-                        if (newCnlData.Stat == BaseValues.ParamStat.Defined)
-                            newCnlData.Stat = BaseValues.ParamStat.Archival;
-                        CalcCnlData(inCnl, oldCnlData, ref newCnlData);
+                        procSrez = srez;
+                        int cntCnt = receivedSrez.CnlNums.Length;
 
-                        // запись новых данных в архивный срез
-                        srez.CnlData[cnlInd] = newCnlData;
+                        for (int i = 0; i < cntCnt; i++)
+                        {
+                            int cnlNum = receivedSrez.CnlNums[i];
+                            int cnlInd = srez.GetCnlIndex(cnlNum);
+                            InCnl inCnl;
+
+                            if (inCnls.TryGetValue(cnlNum, out inCnl) && cnlInd >= 0 &&
+                                (inCnl.CnlTypeID == BaseValues.CnlTypes.TS || inCnl.CnlTypeID == BaseValues.CnlTypes.TI))
+                            {
+                                // вычисление новых данных входного канала
+                                SrezTableLight.CnlData oldCnlData = srez.CnlData[cnlInd];
+                                SrezTableLight.CnlData newCnlData = receivedSrez.CnlData[i];
+                                if (newCnlData.Stat == BaseValues.ParamStat.Defined)
+                                    newCnlData.Stat = BaseValues.ParamStat.Archival;
+                                CalcCnlData(inCnl, oldCnlData, ref newCnlData);
+
+                                // запись новых данных в архивный срез
+                                srez.CnlData[cnlInd] = newCnlData;
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        procSrez = null;
                     }
                 }
 
@@ -1352,14 +1362,10 @@ namespace Scada.Server.Svc
                 string fileNameStr = string.IsNullOrEmpty(fileName) ? "" :
                     Environment.NewLine + (Localization.UseRussian ? "Имя файла: " : "Filename: ") + fileName;
                 AppLog.WriteAction(string.Format(Localization.UseRussian ?
-                    "Ошибка при записи принятого срезы в таблицу архивных срезов: {0}{1}" :
+                    "Ошибка при записи принятого среза в таблицу архивных срезов: {0}{1}" :
                     "Error writing received snapshot in the archive data table: {0}{1}",
                     ex.Message, fileNameStr), Log.ActTypes.Exception);
                 return false;
-            }
-            finally
-            {
-                procSrez = null;
             }
         }
 
@@ -1473,10 +1479,7 @@ namespace Scada.Server.Svc
                 {
                     // вычисление новых данных
                     if (inCnl.CalcCnlData != null)
-                    {
-                        lock (calculator)
-                            inCnl.CalcCnlData(ref newCnlData);
-                    }
+                        inCnl.CalcCnlData(ref newCnlData);
 
                     // увеличение счётчика количества переключений
                     if (inCnl.CnlTypeID == BaseValues.CnlTypes.SWCNT && 
@@ -1568,39 +1571,43 @@ namespace Scada.Server.Svc
         /// </summary>
         private void CalcDRCnls(List<InCnl> inCnls, SrezTableLight.Srez srez, bool genEvents)
         {
-            try
+            lock (calculator)
             {
-                procSrez = srez;
-
-                foreach (InCnl inCnl in inCnls)
+                try
                 {
-                    int cnlInd = srez.GetCnlIndex(inCnl.CnlNum);
+                    procSrez = srez;
 
-                    if (cnlInd >= 0)
+                    foreach (InCnl inCnl in inCnls)
                     {
-                        // вычисление новых данных входного канала
-                        SrezTableLight.CnlData oldCnlData = srez.CnlData[cnlInd];
-                        SrezTableLight.CnlData newCnlData =
-                            new SrezTableLight.CnlData(oldCnlData.Val, BaseValues.ParamStat.Defined);
-                        CalcCnlData(inCnl, oldCnlData, ref newCnlData);
+                        int cnlInd = srez.GetCnlIndex(inCnl.CnlNum);
 
-                        // запись новых данных в срез
-                        srez.CnlData[cnlInd] = newCnlData;
+                        if (cnlInd >= 0)
+                        {
+                            // вычисление новых данных входного канала
+                            SrezTableLight.CnlData oldCnlData = srez.CnlData[cnlInd];
+                            SrezTableLight.CnlData newCnlData =
+                                new SrezTableLight.CnlData(oldCnlData.Val, BaseValues.ParamStat.Defined);
+                            CalcCnlData(inCnl, oldCnlData, ref newCnlData);
 
-                        // генерация события
-                        if (genEvents)
-                            GenEvent(inCnl, oldCnlData, newCnlData);
+                            // запись новых данных в срез
+                            srez.CnlData[cnlInd] = newCnlData;
+
+                            // генерация события
+                            if (genEvents)
+                                GenEvent(inCnl, oldCnlData, newCnlData);
+                        }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                AppLog.WriteAction((Localization.UseRussian ? "Ошибка при вычислении дорасчётных каналов: " :
-                    "Error calculating channels: ") + ex.Message, Log.ActTypes.Exception);
-            }
-            finally
-            {
-                procSrez = null;
+                catch (Exception ex)
+                {
+                    AppLog.WriteAction((Localization.UseRussian ?
+                        "Ошибка при вычислении дорасчётных каналов: " :
+                        "Error calculating channels: ") + ex.Message, Log.ActTypes.Exception);
+                }
+                finally
+                {
+                    procSrez = null;
+                }
             }
         }
 
@@ -1937,8 +1944,8 @@ namespace Scada.Server.Svc
             catch (Exception ex)
             {
                 AppLog.WriteAction((Localization.UseRussian ? 
-                    "Ошибка при запуске работы сервера: " : "Error starting server: ") +
-                    ex.Message, Log.ActTypes.Exception);
+                    "Ошибка при запуске работы сервера: " : 
+                    "Error starting server: ") + ex.Message, Log.ActTypes.Exception);
                 return false;
             }
             finally
@@ -1969,14 +1976,16 @@ namespace Scada.Server.Svc
 
                     if (thread.Join(WaitForStop))
                     {
-                        AppLog.WriteAction(Localization.UseRussian ? "Работа сервера остановлена" :
+                        AppLog.WriteAction(Localization.UseRussian ? 
+                            "Работа сервера остановлена" :
                             "Server is stopped", Log.ActTypes.Action);
                     }
                     else
                     {
                         thread.Abort();
-                        AppLog.WriteAction(Localization.UseRussian ? "Работа сервера прервана" : "Server is aborted", 
-                            Log.ActTypes.Action);
+                        AppLog.WriteAction(Localization.UseRussian ? 
+                            "Работа сервера прервана" : 
+                            "Server is aborted", Log.ActTypes.Action);
                     }
 
                     thread = null;
@@ -1987,8 +1996,8 @@ namespace Scada.Server.Svc
                 workState = WorkStateNames.Error;
                 WriteInfo();
                 AppLog.WriteAction((Localization.UseRussian ? 
-                    "Ошибка при остановке работы сервера: " : "Error stop server: ") + 
-                    ex.Message, Log.ActTypes.Exception);
+                    "Ошибка при остановке работы сервера: " : 
+                    "Error stop server: ") + ex.Message, Log.ActTypes.Exception);
             }
         }
 
@@ -2078,8 +2087,8 @@ namespace Scada.Server.Svc
             catch (Exception ex)
             {
                 AppLog.WriteAction((Localization.UseRussian ? 
-                    "Ошибка при получении таблицы срезов: " : "Error getting snapshot table: ") + 
-                    ex.Message, Log.ActTypes.Exception);
+                    "Ошибка при получении таблицы срезов: " : 
+                    "Error getting snapshot table: ") + ex.Message, Log.ActTypes.Exception);
                 return null;
             }
         }
@@ -2089,11 +2098,11 @@ namespace Scada.Server.Svc
         /// </summary>
         public bool ProcCurData(SrezTableLight.Srez receivedSrez)
         {
-            try
+            lock (curSrez) lock (calculator)
             {
-                if (serverIsReady)
+                try
                 {
-                    lock (curSrez)
+                    if (serverIsReady)
                     {
                         procSrez = curSrez;
                         int cnlCnt = receivedSrez == null ? 0 : receivedSrez.CnlNums.Length;
@@ -2106,7 +2115,7 @@ namespace Scada.Server.Svc
 
                             if (inCnls.TryGetValue(cnlNum, out inCnl) && cnlInd >= 0) // входной канал существует
                             {
-                                if (inCnl.CnlTypeID == BaseValues.CnlTypes.TS || 
+                                if (inCnl.CnlTypeID == BaseValues.CnlTypes.TS ||
                                     inCnl.CnlTypeID == BaseValues.CnlTypes.TI)
                                 {
                                     // вычисление новых данных входного канала
@@ -2134,7 +2143,7 @@ namespace Scada.Server.Svc
                                     // обновление информации об активности канала
                                     activeDTs[cnlInd] = DateTime.Now;
                                 }
-                                else if (inCnl.CnlTypeID != BaseValues.CnlTypes.TSDR && 
+                                else if (inCnl.CnlTypeID != BaseValues.CnlTypes.TSDR &&
                                     inCnl.CnlTypeID != BaseValues.CnlTypes.TIDR)
                                 {
                                     // запись новых данных минутных и часовых каналов, а также
@@ -2147,26 +2156,26 @@ namespace Scada.Server.Svc
                         // выполнение действий модулей
                         if (cnlCnt > 0)
                             RaiseOnCurDataProcessed(receivedSrez.CnlNums, curSrez);
-                    }
 
-                    return true;
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
+                    AppLog.WriteAction((Localization.UseRussian ?
+                        "Ошибка при обработке новых текущих данных: " :
+                        "Error processing the new current data: ") + ex.Message, Log.ActTypes.Exception);
                     return false;
                 }
-            }
-            catch (Exception ex)
-            {
-                AppLog.WriteAction((Localization.UseRussian ?
-                    "Ошибка при обработке новых текущих данных: " : "Error processing the new current data: ") + 
-                    ex.Message, Log.ActTypes.Exception);
-                return false;
-            }
-            finally
-            {
-                procSrez = null;
-                curSrezMod = true;
+                finally
+                {
+                    procSrez = null;
+                    curSrezMod = true;
+                }
             }
         }
 
@@ -2242,16 +2251,16 @@ namespace Scada.Server.Svc
             catch (Exception ex)
             {
                 AppLog.WriteAction((Localization.UseRussian ?
-                    "Ошибка при обработке новых архивных данных: " : "Error processing the new archive data: ") +
-                    ex.Message, Log.ActTypes.Exception);
+                    "Ошибка при обработке новых архивных данных: " : 
+                    "Error processing the new archive data: ") + ex.Message, Log.ActTypes.Exception);
                 return false;
             }
         }
 
         /// <summary>
-        /// Получить данные входного канала среза, обрабатываемого в настоящий момент
+        /// Получить данные входного канала обрабатываемого среза для вычисления по формулам
         /// </summary>
-        public SrezTableLight.CnlData GetCnlData(int cnlNum)
+        public SrezTableLight.CnlData GetProcSrezCnlData(int cnlNum)
         {
             SrezTableLight.CnlData cnlData = SrezTableLight.CnlData.Empty;
 
@@ -2263,8 +2272,8 @@ namespace Scada.Server.Svc
             catch (Exception ex)
             {
                 AppLog.WriteAction((Localization.UseRussian ?
-                    "Ошибка при получении данных входного канала среза, обрабатываемого в настоящий момент: " :
-                    "Error getting the input channel data of the snapshot being processed at the moment: ") + 
+                    "Ошибка при получении данных входного канала обрабатываемого среза: " :
+                    "Error getting the input channel data of the processed snapshot: ") + 
                     ex.Message, Log.ActTypes.Exception);
             }
 
@@ -2322,53 +2331,55 @@ namespace Scada.Server.Svc
                 if (ctrlCnl.CalcCmdVal != null)
                 {
                     // вычисление значения стандартной команды
-                    try
+                    lock (curSrez) lock (calculator)
                     {
-                        procSrez = curSrez; // необходимо для работы формул Val(n) и Stat(n)
-                        double cmdVal = cmd.CmdVal;
-                        lock (curSrez) 
-                            lock (calculator)
-                                ctrlCnl.CalcCmdVal(ref cmdVal);
-                        cmd.CmdVal = cmdVal;
-                        passToClients = !double.IsNaN(cmdVal);
-                    }
-                    catch (Exception ex)
-                    {
-                        AppLog.WriteAction(string.Format(Localization.UseRussian ? 
-                            "Ошибка при вычислении значения стандартной команды для канала управления {0}: {1}" : 
-                            "Error calculating standard command value for the output channel {0}: {1}", 
-                            ctrlCnlNum, ex.Message), Log.ActTypes.Error);
-                        cmd.CmdVal = double.NaN;
-                    }
-                    finally
-                    {
-                        procSrez = null;
+                        try
+                        {
+                            procSrez = curSrez; // необходимо для работы формул Val(n) и Stat(n)
+                            double cmdVal = cmd.CmdVal;
+                            ctrlCnl.CalcCmdVal(ref cmdVal);
+                            cmd.CmdVal = cmdVal;
+                            passToClients = !double.IsNaN(cmdVal);
+                        }
+                        catch (Exception ex)
+                        {
+                            AppLog.WriteAction(string.Format(Localization.UseRussian ?
+                                "Ошибка при вычислении значения стандартной команды для канала управления {0}: {1}" :
+                                "Error calculating standard command value for the output channel {0}: {1}",
+                                ctrlCnlNum, ex.Message), Log.ActTypes.Error);
+                            cmd.CmdVal = double.NaN;
+                        }
+                        finally
+                        {
+                            procSrez = null;
+                        }
                     }
                 }
                 else if (ctrlCnl.CalcCmdData != null)
                 {
                     // вычисление данных бинарной команды
-                    try
+                    lock (curSrez) lock (calculator)
                     {
-                        procSrez = curSrez;
-                        byte[] cmdData = cmd.CmdData;
-                        lock (curSrez)
-                            lock (calculator)
-                                ctrlCnl.CalcCmdData(ref cmdData);
-                        cmd.CmdData = cmdData;
-                        passToClients = cmdData != null;
-                    }
-                    catch (Exception ex)
-                    {
-                        AppLog.WriteAction(string.Format(Localization.UseRussian ?
-                            "Ошибка при вычислении данных бинарной команды для канала управления {0}: {1}" :
-                            "Error calculating binary command data for the output channel {0}: {1}",
-                            ctrlCnlNum, ex.Message), Log.ActTypes.Error);
-                        cmd.CmdVal = double.NaN;
-                    }
-                    finally
-                    {
-                        procSrez = null;
+                        try
+                        {
+                            procSrez = curSrez;
+                            byte[] cmdData = cmd.CmdData;
+                            ctrlCnl.CalcCmdData(ref cmdData);
+                            cmd.CmdData = cmdData;
+                            passToClients = cmdData != null;
+                        }
+                        catch (Exception ex)
+                        {
+                            AppLog.WriteAction(string.Format(Localization.UseRussian ?
+                                "Ошибка при вычислении данных бинарной команды для канала управления {0}: {1}" :
+                                "Error calculating binary command data for the output channel {0}: {1}",
+                                ctrlCnlNum, ex.Message), Log.ActTypes.Error);
+                            cmd.CmdVal = double.NaN;
+                        }
+                        finally
+                        {
+                            procSrez = null;
+                        }
                     }
                 }
                 else
