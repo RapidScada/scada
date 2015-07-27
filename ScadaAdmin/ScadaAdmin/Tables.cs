@@ -73,7 +73,7 @@ namespace ScadaAdmin
             {
                 get
                 {
-                    return Name.ToLower() + ".dat";
+                    return Name.ToLowerInvariant() + ".dat";
                 }
             }
 
