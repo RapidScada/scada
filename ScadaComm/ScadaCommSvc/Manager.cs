@@ -400,7 +400,7 @@ namespace Scada.Comm.Svc
             }
             catch (Exception ex)
             {
-                commLine.ConfigError = true;
+                //commLine.ConfigError = true;
                 AppLog.WriteAction(string.Format(Localization.UseRussian ? 
                     "Ошибка при настройке линии связи {0}: {1}" :
                     "Error tuning communication line {0}: {1}", 
@@ -557,7 +557,7 @@ namespace Scada.Comm.Svc
 
                         // вывод состояний работы активных линий связи
                         for (int i = 0; i < lineCnt; i++)
-                            sbInfo.Append(lineCaptions[i]).AppendLine(commLines[i].RunStateStr);
+                            sbInfo.Append(lineCaptions[i]).AppendLine(commLines[i].WorkStateStr);
                     }
                     else
                     {

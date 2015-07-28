@@ -147,9 +147,10 @@ namespace Scada.Comm.Devices
             CallNum = "";
             ReqParams.SetToDefault();
             ReqTriesCnt = 1;
+            SerialPort = null;
             CustomParams = null;
             CommonProps = null;
-            SerialPort = null;
+            CommLineSvc = null;
 
             CanSendCmd = false;
             ConnRequired = false;
@@ -158,8 +159,6 @@ namespace Scada.Comm.Devices
             WorkState = WorkStates.Undefined;
             LastSessDT = DateTime.MinValue;
             LastCmdDT = DateTime.MinValue;
-
-            CommLineSvc = null;
         }
 
 
@@ -218,17 +217,6 @@ namespace Scada.Comm.Devices
         public int ReqTriesCnt { get; set; }
 
         /// <summary>
-        /// Получить или установить ссылку на пользовательские параметры линии связи
-        /// </summary>
-        public SortedList<string, string> CustomParams { get; set; }
-
-        /// <summary>
-        /// Получить или установить ссылку на общие свойства линии связи
-        /// </summary>
-        /// <remarks>Объект не является потокобезопасным</remarks>
-        public SortedList<string, object> CommonProps { get; set; }
-
-        /// <summary>
         /// Получить или установить соединение с физическим КП
         /// </summary>
         public Connection Connection
@@ -249,6 +237,73 @@ namespace Scada.Comm.Devices
         /// </summary>
         [Obsolete("Use Connection property")]
         public SerialPort SerialPort { get; set; }
+
+        /// <summary>
+        /// Получить или установить ссылку на пользовательские параметры линии связи
+        /// </summary>
+        public SortedList<string, string> CustomParams { get; set; }
+
+        /// <summary>
+        /// Получить или установить ссылку на общие свойства линии связи
+        /// </summary>
+        /// <remarks>Объект не является потокобезопасным</remarks>
+        public SortedList<string, object> CommonProps { get; set; }
+
+        /// <summary>
+        /// Получить или установить директории приложения
+        /// </summary>
+        public AppDirs AppDirs
+        {
+            get
+            {
+                return appDirs;
+            }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+                appDirs = value;
+            }
+        }
+
+        /// <summary>
+        /// Получить или установить метод записи в журнал линии связи
+        /// </summary>
+        public Log.WriteLineDelegate WriteToLog
+        {
+            get
+            {
+                return writeToLog;
+            }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+                writeToLog = value;
+            }
+        }
+
+        /// <summary>
+        /// Получить или установить сервис линии связи
+        /// </summary>
+        public ICommLineService CommLineSvc { get; set; }
+
+        /// <summary>
+        /// Получить или установить признак завершения работы линии связи
+        /// </summary>
+        /// <remarks>Если значение равно true, то необходимо прервать сеанс опроса или отправку команды КП. 
+        /// Установка значения в false во время сеанса опроса приостанавливает завершение работы линии связи</remarks>
+        public bool Terminated
+        {
+            get
+            {
+                return terminated;
+            }
+            set
+            {
+                terminated = value;
+            }
+        }
 
 
         /// <summary>
@@ -315,63 +370,6 @@ namespace Scada.Comm.Devices
             get
             {
                 return kpStats;
-            }
-        }
-
-
-        /// <summary>
-        /// Получить или установить директории приложения
-        /// </summary>
-        public AppDirs AppDirs
-        {
-            get
-            {
-                return appDirs;
-            }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-                appDirs = value;
-            }
-        }
-        
-        /// <summary>
-        /// Получить или установить метод записи в журнал линии связи
-        /// </summary>
-        public Log.WriteLineDelegate WriteToLog
-        {
-            get
-            {
-                return writeToLog;
-            }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-                writeToLog = value;
-            }
-        }
-
-        /// <summary>
-        /// Получить или установить сервис линии связи
-        /// </summary>
-        public ICommLineService CommLineSvc { get; set; }
-
-        /// <summary>
-        /// Получить или установить признак завершения работы линии связи
-        /// </summary>
-        /// <remarks>Если значение равно true, то необходимо прервать сеанс опроса или отправку команды КП. 
-        /// Установка значения в false во время сеанса опроса приостанавливает завершение работы линии связи</remarks>
-        public bool Terminated
-        {
-            get
-            {
-                return terminated;
-            }
-            set
-            {
-                terminated = value;
             }
         }
 
