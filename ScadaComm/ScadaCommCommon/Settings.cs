@@ -80,9 +80,9 @@ namespace Scada.Comm
             /// </summary>
             public int WaitForStop { get; set; }
             /// <summary>
-            /// Получить или установить период передачи на сервер всех параметров КП для обновления, с
+            /// Получить или установить период передачи на сервер всех данных КП, с
             /// </summary>
-            public int RefrParams { get; set; }
+            public int SendAllDataPer { get; set; }
 
             /// <summary>
             /// Установить значения общих параметров по умолчанию
@@ -96,7 +96,7 @@ namespace Scada.Comm
                 ServerPwd = "12345";
                 ServerTimeout = 10000;
                 WaitForStop = 1000;
-                RefrParams = 60;
+                SendAllDataPer = 60;
             }
             /// <summary>
             /// Создать полную копию общих параметров
@@ -111,7 +111,7 @@ namespace Scada.Comm
                 commonParams.ServerPwd = ServerPwd;
                 commonParams.ServerTimeout = ServerTimeout;
                 commonParams.WaitForStop = WaitForStop;
-                commonParams.RefrParams = RefrParams;
+                commonParams.SendAllDataPer = SendAllDataPer;
                 return commonParams;
             }
         }
@@ -142,8 +142,8 @@ namespace Scada.Comm
 
                 ReqTriesCnt = 3;
                 CycleDelay = 0;
-                MaxCommErrCnt = 1;
                 CmdEnabled = false;
+                DetailedLog = true;
 
                 CustomParams = new List<CustomParam>();
                 ReqSequence = new List<KP>();
@@ -218,13 +218,13 @@ namespace Scada.Comm
             /// </summary>
             public int CycleDelay { get; set; }
             /// <summary>
-            /// Получить или установить количество неудачных сеансов связи до объявления КП неработающим
-            /// </summary>
-            public int MaxCommErrCnt { get; set; }
-            /// <summary>
             /// Получить или установить признак разрешения команд ТУ
             /// </summary>
             public bool CmdEnabled { get; set; }
+            /// <summary>
+            /// Получить или установить признак записи в журнал линии связи подробной информации
+            /// </summary>
+            public bool DetailedLog { get; set; }
 
             /// <summary>
             /// Получить пользовательские параметры линии связи
@@ -258,8 +258,8 @@ namespace Scada.Comm
 
                 commLine.ReqTriesCnt = ReqTriesCnt;
                 commLine.CycleDelay = CycleDelay;
-                commLine.MaxCommErrCnt = MaxCommErrCnt;
                 commLine.CmdEnabled = CmdEnabled;
+                commLine.DetailedLog = DetailedLog;
 
                 commLine.CustomParams = new List<CustomParam>();
                 foreach (CustomParam userParam in CustomParams)
@@ -314,11 +314,12 @@ namespace Scada.Comm
             /// </summary>
             public CustomParam Clone()
             {
-                CustomParam userParam = new CustomParam();
-                userParam.Name = Name;
-                userParam.Value = Value;
-                userParam.Descr = Descr;
-                return userParam;
+                return new CustomParam()
+                {
+                    Name = this.Name,
+                    Value = this.Value,
+                    Descr = this.Descr
+                };
             }
         }
 
@@ -411,22 +412,21 @@ namespace Scada.Comm
             /// </summary>
             public KP Clone()
             {
-                KP kp = new KP();
-
-                kp.Active = Active;
-                kp.Bind = Bind;
-                kp.Number = Number;
-                kp.Name = Name;
-                kp.Dll = Dll;
-                kp.Address = Address;
-                kp.CallNum = CallNum;
-                kp.Timeout = Timeout;
-                kp.Delay = Delay;
-                kp.Time = Time;
-                kp.Period = Period;
-                kp.CmdLine = CmdLine;
-
-                return kp;
+                return new KP()
+                {
+                    Active = this.Active,
+                    Bind = this.Bind,
+                    Number = this.Number,
+                    Name = this.Name,
+                    Dll = this.Dll,
+                    Address = this.Address,
+                    CallNum = this.CallNum,
+                    Timeout = this.Timeout,
+                    Delay = this.Delay,
+                    Time = this.Time,
+                    Period = this.Period,
+                    CmdLine = this.CmdLine
+                };
             }
             /// <summary>
             /// Получить обозначение линии связи
@@ -497,8 +497,8 @@ namespace Scada.Comm
                             Params.ServerTimeout = int.Parse(val);
                         else if (nameL == "waitforstop")
                             Params.WaitForStop = int.Parse(val);
-                        else if (nameL == "refrparams")
-                            Params.RefrParams = int.Parse(val);
+                        else if (nameL == "updatealldataper")
+                            Params.SendAllDataPer = int.Parse(val);
                     }
                     catch
                     {
@@ -585,10 +585,10 @@ namespace Scada.Comm
                             commLine.ReqTriesCnt = int.Parse(val);
                         else if (nameL == "cycledelay")
                             commLine.CycleDelay = int.Parse(val);
-                        else if (nameL == "maxcommerrcnt")
-                            commLine.MaxCommErrCnt = int.Parse(val);
                         else if (nameL == "cmdenabled")
                             commLine.CmdEnabled = bool.Parse(val);
+                        else if (nameL == "detailedlog")
+                            commLine.DetailedLog = bool.Parse(val);
                     }
                     catch
                     {
@@ -780,7 +780,7 @@ namespace Scada.Comm
                     "Таймаут ожидания ответа SCADA-Сервера, мс", "SCADA-Server response timeout, ms");
                 paramsElem.AppendParamElem("WaitForStop", Params.WaitForStop,
                     "Ожидание остановки линий связи, мс", "Waiting for the communication lines temrination, ms");
-                paramsElem.AppendParamElem("RefrParams", Params.RefrParams,
+                paramsElem.AppendParamElem("UpdateAllDataPer", Params.SendAllDataPer,
                     "Период передачи всех данных КП, с", "Sending all device data period, sec");
 
                 // Линии связи
@@ -828,11 +828,10 @@ namespace Scada.Comm
                         "Количество попыток перезапроса КП при ошибке", "Device request retries count on error");
                     paramsElem.AppendParamElem("CycleDelay", commLine.CycleDelay,
                         "Задержка после цикла опроса, мс", "Delay after request cycle, ms");
-                    paramsElem.AppendParamElem("MaxCommErrCnt", commLine.MaxCommErrCnt,
-                        "Количество неудачных сеансов связи до объявления КП неработающим",
-                        "Failed session count for setting device error state");
                     paramsElem.AppendParamElem("CmdEnabled", commLine.CmdEnabled,
                         "Команды ТУ разрешены", "Commands enabled");
+                    paramsElem.AppendParamElem("DetailedLog", commLine.DetailedLog,
+                        "Записывать в журнал подробную информацию", "Write detailed information to the log");
 
                     // пользовательские параметры
                     paramsElem = xmlDoc.CreateElement("UserParams"); // CustomParams

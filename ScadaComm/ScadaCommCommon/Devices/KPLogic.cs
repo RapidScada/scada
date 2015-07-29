@@ -826,6 +826,7 @@ namespace Scada.Comm.Devices
             KPTags = new KPTag[tagCnt];
             curData = new SrezTableLight.CnlData[tagCnt];
             curDataModified = new bool[tagCnt];
+            tagTable = null;
 
             int groupCnt = TagGroups.Length;
             int tagIndex = 0;
@@ -864,6 +865,7 @@ namespace Scada.Comm.Devices
             KPTags = new KPTag[tagCnt];
             curData = new SrezTableLight.CnlData[tagCnt];
             curDataModified = new bool[tagCnt];
+            tagTable = null;
 
             int tagIndex = 0;
             foreach (KPTag kpTag in srcKPTags)

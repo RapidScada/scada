@@ -24,16 +24,12 @@
  */
 
 using Scada.Client;
-using Scada.Comm;
-using Scada.Comm.Devices;
 using Scada.Data;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
-using System.IO.Ports;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -170,266 +166,6 @@ namespace Scada.Comm.Svc
         }
 
         /// <summary>
-        /// Распознать настройку линии связи и создать соответствующую линию связи
-        /// </summary>
-        private CommLine ParseCommLine(int lineNum, XmlElement commLineElem, out bool lineActive)
-        {
-            lineActive = false;
-            return null;
-
-            /*try
-            {
-                lineActive = bool.Parse(commLineElem.GetAttribute("active"));
-                if (!lineActive)
-                    return null;
-
-                string lineName = commLineElem.GetAttribute("name");
-                bool lineBind = bool.Parse(commLineElem.GetAttribute("bind"));
-                CommLine commLine = new CommLine(lineNum, lineName, lineBind);
-                commLine.PassCmd = PassCmd;
-
-                // получение настроек соединения линии связи
-                XmlElement connElem = commLineElem.SelectSingleNode("Connection") as XmlElement;
-                if (connElem != null)
-                {
-                    XmlElement connTypeElem = connElem.SelectSingleNode("ConnType") as XmlElement;
-                    XmlElement commSettElem = connElem.SelectSingleNode("ComPortSettings") as XmlElement;
-                    if (connTypeElem != null && connTypeElem.GetAttribute("value").ToLower() == "comport" &&
-                        commSettElem != null)
-                    {
-                        try
-                        {
-                            string portName = commSettElem.GetAttribute("portName");
-                            string baudRate = commSettElem.GetAttribute("baudRate");
-                            string dataBits = commSettElem.GetAttribute("dataBits");
-                            string parity = commSettElem.GetAttribute("parity");
-                            string stopBits = commSettElem.GetAttribute("stopBits");
-                            bool dtrEnable = commSettElem.GetAttribute("dtrEnable").ToLower() == "true";
-                            bool rtsEnable = commSettElem.GetAttribute("rtsEnable").ToLower() == "true";
-
-                            commLine.SerialPort = new SerialPort(portName, int.Parse(baudRate),
-                                (Parity)Enum.Parse(typeof(Parity), parity, true), int.Parse(dataBits),
-                                (StopBits)Enum.Parse(typeof(StopBits), stopBits, true));
-                            commLine.SerialPort.DtrEnable = dtrEnable;
-                            commLine.SerialPort.RtsEnable = rtsEnable;
-                        }
-                        catch (Exception ex)
-                        {
-                            commLine.ConfigError = true;
-                            AppLog.WriteAction(string.Format(Localization.UseRussian ? 
-                                "Ошибка при распознавании параметров COM-порта линии связи {0}: {1}" : 
-                                "Error parsing serial port parameters of communication line {0}: {1}", 
-                                lineNum, ex.Message), Log.ActTypes.Exception);
-                        }
-                    }
-                }
-
-                // получение параметров линии связи
-                XmlElement lineParamsElem = commLineElem.SelectSingleNode("LineParams") as XmlElement;
-                if (lineParamsElem != null)
-                {
-                    XmlNodeList paramNodes = lineParamsElem.SelectNodes("Param");
-                    foreach (XmlElement paramElem in paramNodes)
-                    {
-                        try
-                        {
-                            string name = paramElem.GetAttribute("name");
-                            string val = paramElem.GetAttribute("value");
-
-                            if (name == "ReqTriesCnt")
-                                commLine.ReqTriesCnt = int.Parse(val);
-                            else if (name == "CycleDelay")
-                                commLine.CicleDelay = int.Parse(val);
-                            else if (name == "MaxCommErrCnt")
-                                commLine.MaxCommErrCnt = int.Parse(val);
-                            else if (name == "CmdEnabled")
-                                commLine.CmdEnabled = bool.Parse(val.ToLower());
-                        }
-                        catch (Exception ex)
-                        {
-                            commLine.ConfigError = true;
-                            AppLog.WriteAction(string.Format(Localization.UseRussian ?
-                                "Ошибка при распознавании параметров линии связи {0}: {1}" :
-                                "Error parsing communication line {0} parameters: {1}", 
-                                lineNum, ex.Message), Log.ActTypes.Exception);
-                        }
-                    }
-                    commLine.RefrParams = commonParams.RefrParams;
-                }
-
-                // получение пользовательских параметров линии связи
-                XmlElement userParamsElem = commLineElem.SelectSingleNode("UserParams") as XmlElement;
-                if (userParamsElem != null)
-                {
-                    XmlNodeList paramNodes = userParamsElem.SelectNodes("Param");
-                    foreach (XmlElement paramElem in paramNodes)
-                    {
-                        string name = paramElem.GetAttribute("name");
-                        string val = paramElem.GetAttribute("value");
-                        if (name != "" && !commLine.UserParams.ContainsKey(name))
-                            commLine.UserParams.Add(name, val);
-                    }
-                }
-
-                // получение последовательности опроса линии связи
-                XmlElement reqSeqElem = commLineElem.SelectSingleNode("ReqSequence") as XmlElement;
-                if (reqSeqElem != null)
-                {
-                    XmlNodeList kpNodes = reqSeqElem.SelectNodes("KP");
-                    foreach (XmlElement kpElem in kpNodes)
-                    {
-                        string kpActive = kpElem.GetAttribute("active").ToLower();
-                        if (kpActive == "true")
-                        {
-                            string kpNumber = kpElem.GetAttribute("number");
-                            try
-                            {
-                                // получение типа КП
-                                string dllName = kpElem.GetAttribute("dll");
-                                string typeFullName = "Scada.Comm.KP." + dllName + "Logic";
-                                Type kpType;
-                                if (kpTypes.ContainsKey(dllName))
-                                {
-                                    kpType = kpTypes[dllName];
-                                }
-                                else
-                                {
-                                    // загрузка типа из библиотеки
-                                    string path = AppDirs.KPDir + dllName + ".dll";
-                                    AppLog.WriteAction((Localization.UseRussian ? "Загрузка библиотеки КП: " :
-                                        "Load device library: ") + path, Log.ActTypes.Action);
-
-                                    Assembly asm = Assembly.LoadFile(path);
-                                    kpType = asm.GetType(typeFullName);
-                                    kpTypes.Add(dllName, kpType);
-                                }
-
-                                // получение параметров КП
-                                bool kpBind = bool.Parse(kpElem.GetAttribute("bind"));
-
-                                KPLogic.ReqParams reqParams = new KPLogic.ReqParams();
-                                reqParams.Timeout = int.Parse(kpElem.GetAttribute("timeout"));
-                                reqParams.Delay = int.Parse(kpElem.GetAttribute("delay"));
-                                string time = kpElem.GetAttribute("time");
-                                reqParams.Time = time == "" ? DateTime.MinValue :
-                                    DateTime.Parse(time, CultureInfo.CurrentCulture);
-                                string period = kpElem.GetAttribute("period");
-                                reqParams.Period = period == "" ? new TimeSpan(0) : TimeSpan.Parse(period);
-                                string group = kpElem.GetAttribute("group");
-                                reqParams.CmdLine = kpElem.GetAttribute("cmdLine");
-
-                                // создание экземпляра класса КП
-                                KPLogic kpLogic;
-                                try
-                                {
-                                    kpLogic = (KPLogic)Activator.CreateInstance(kpType, int.Parse(kpNumber));
-                                }
-                                catch (Exception ex)
-                                {
-                                    kpLogic = null;
-                                    throw new Exception((Localization.UseRussian ? 
-                                        "Ошибка при создании экземпляра класса КП: " : 
-                                        "Error creating device class instance: ") + ex.Message);
-                                }
-                                kpLogic.Bind = kpBind;
-                                kpLogic.Name = kpElem.GetAttribute("name");
-                                string address = kpElem.GetAttribute("address");
-                                kpLogic.Address = address == "" ? 0 : int.Parse(address);
-                                kpLogic.CallNum = kpElem.GetAttribute("callNum");
-                                kpLogic.KPReqParams = reqParams;
-                                commLine.AddKP(kpLogic);
-                            }
-                            catch (Exception ex)
-                            {
-                                AppLog.WriteAction(string.Format(Localization.UseRussian ?
-                                    "Ошибка при распознавании конфигурации КП {0}: {1}" :
-                                    "Error parsing device {0} configuration: {1}",
-                                    kpNumber, ex.Message), Log.ActTypes.Exception);
-                            }
-                        }
-                    }
-                }
-
-                return commLine;
-            }
-            catch (Exception ex)
-            {
-                AppLog.WriteAction(string.Format(Localization.UseRussian ?
-                    "Ошибка при распознавании конфигурации линии связи {0}: {1}" :
-                    "Error parsing communication line {0} configuration: {1}",
-                    lineNum, ex.Message), Log.ActTypes.Exception);
-                lineActive = false;
-                return null;
-            }*/
-        }
-
-        /// <summary>
-        /// Настроить линию связи в соответствии с таблицами базы конфигурации
-        /// </summary>
-        private void TuneCommLine(CommLine commLine, DataTable tblInCnl, DataTable tblKP)
-        {
-            try
-            {
-                if (commLine.Bind)
-                {
-                    foreach (KPLogic kpLogic in commLine.KPList)
-                    {
-                        if (kpLogic.Bind)
-                        {
-                            // привязка тегов КП к входным каналам
-                            tblInCnl.DefaultView.RowFilter = "KPNum = " + kpLogic.Number;
-                            for (int i = 0; i < tblInCnl.DefaultView.Count; i++)
-                            {
-                                DataRowView rowView = tblInCnl.DefaultView[i];
-                                kpLogic.BindTag((int)rowView["Signal"], (int)rowView["CnlNum"], 
-                                    (int)rowView["ObjNum"], (int)rowView["ParamID"]);
-                            }
-
-                            // перезапись имени, адреса и позывного КП
-                            tblKP.DefaultView.RowFilter = "KPNum = " + kpLogic.Number;
-                            if (tblKP.DefaultView.Count > 0)
-                            {
-                                DataRowView rowKP = tblKP.DefaultView[0];
-                                kpLogic.Name = (string)rowKP["Name"];
-                                kpLogic.Address = (int)rowKP["Address"];
-                                kpLogic.CallNum = (string)rowKP["CallNum"];
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                //commLine.ConfigError = true;
-                AppLog.WriteAction(string.Format(Localization.UseRussian ? 
-                    "Ошибка при настройке линии связи {0}: {1}" :
-                    "Error tuning communication line {0}: {1}", 
-                    commLine.Number, ex.Message, Log.ActTypes.Exception));
-            }
-        }
-
-        /// <summary>
-        /// Найти линию связи по номеру и определить её индекс
-        /// </summary>
-        private CommLine FindCommLine(int lineNum, out int lineInd)
-        {
-            int lineCnt = commLines.Count;
-            lineInd = -1;
-
-            for (int i = 0; i < lineCnt; i++)
-            {
-                CommLine commLine = commLines[i];
-                if (commLine.Number == lineNum)
-                {
-                    lineInd = i;
-                    return commLine;
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
         /// Инициализировать директории приложения
         /// </summary>
         private void InitAppDirs(out bool dirsExist, out bool logDirExists)
@@ -453,25 +189,38 @@ namespace Scada.Comm.Svc
             if (Settings.Load(AppDirs.ConfigDir + Settings.DefFileName, out errMsg))
             {
                 // создание линий связи и КП на основе загруженной конфигурации
-                HashSet<int> lineNums = new HashSet<int>();
-                foreach (Settings.CommLine commLineSett in Settings.CommLines)
+                try
                 {
-                    if (lineNums.Contains(commLineSett.Number))
+                    HashSet<int> lineNums = new HashSet<int>();
+                    foreach (Settings.CommLine commLineSett in Settings.CommLines)
                     {
-                        AppLog.WriteAction(string.Format(Localization.UseRussian ?
-                            "Линия связи {0} дублируется в файле конфигурации" :
-                            "Communication line {0} is duplicated in the configuration file", commLineSett.Number),
-                            Log.ActTypes.Error);
+                        if (lineNums.Contains(commLineSett.Number))
+                        {
+                            AppLog.WriteAction(string.Format(Localization.UseRussian ?
+                                "Линия связи {0} дублируется в файле конфигурации" :
+                                "Communication line {0} is duplicated in the configuration file", commLineSett.Number),
+                                Log.ActTypes.Error);
+                        }
+                        else if (commLineSett.Active)
+                        {
+                            CommLine commLine = CreateCommLine(commLineSett);
+                            if (commLine != null)
+                            {
+                                commLines.Add(commLine);
+                                lineNums.Add(commLineSett.Number);
+                            }
+                        }
                     }
-                    else if (commLineSett.Active)
-                    {
-                        CommLine commLine = CreateCommLine(commLineSett);
-                        commLines.Add(commLine);
-                        lineNums.Add(commLineSett.Number);
-                    }
-                }
 
-                return true;
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    AppLog.WriteAction(Localization.UseRussian ?
+                        "Ошибка при создании линий связи: " :
+                        "Error creating communication lines: " + ex.Message, Log.ActTypes.Exception);
+                    return false;
+                }
             }
             else
             {
@@ -485,7 +234,39 @@ namespace Scada.Comm.Svc
         /// </summary>
         private CommLine CreateCommLine(Settings.CommLine commLineSett)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return CommLine.Create(commLineSett, Settings.Params, AppDirs, PassCmd, kpTypes, AppLog);
+            }
+            catch (Exception ex)
+            {
+                AppLog.WriteAction(string.Format(Localization.UseRussian ? 
+                    "Ошибка при создании линии связи {0}: {1}" :
+                    "Error creating communication line {0}: {1}", commLineSett.Number, ex.Message),
+                    Log.ActTypes.Exception);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Найти линию связи по номеру и определить её индекс
+        /// </summary>
+        private CommLine FindCommLine(int lineNum, out int lineInd)
+        {
+            int lineCnt = commLines.Count;
+            lineInd = -1;
+
+            for (int i = 0; i < lineCnt; i++)
+            {
+                CommLine commLine = commLines[i];
+                if (commLine.Number == lineNum)
+                {
+                    lineInd = i;
+                    return commLine;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -707,7 +488,7 @@ namespace Scada.Comm.Svc
                     if (Settings.Params.ServerUse)
                     {
                         foreach (CommLine commLine in commLines)
-                            TuneCommLine(commLine, tblInCnl, tblKP);
+                            commLine.Tune(tblInCnl, tblKP);
                     }
 
                     if (commLines.Count > 0)
@@ -753,7 +534,8 @@ namespace Scada.Comm.Svc
             }
             catch (Exception ex)
             {
-                AppLog.WriteAction((Localization.UseRussian ? "Ошибка при запуске работы: " :
+                AppLog.WriteAction((Localization.UseRussian ? 
+                    "Ошибка при запуске работы: " :
                     "Error starting operation: ") + ex.Message, Log.ActTypes.Exception);
                 return false;
             }
@@ -898,7 +680,7 @@ namespace Scada.Comm.Svc
 
                             if (ReceiveBaseTables(out tblInCnl, out tblKP))
                             {
-                                TuneCommLine(commLine, tblInCnl, tblKP);
+                                commLine.Tune(tblInCnl, tblKP);
                             }
                             else
                             {
