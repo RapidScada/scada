@@ -34,13 +34,10 @@ namespace Scada.Comm.Devices
     public interface ICommLineService
     {
         /// <summary>
-        /// Найти КП на линии связи по номеру
-        /// </summary>
-        KPLogic FindKPLogic(int number);
-
-        /// <summary>
         /// Найти КП на линии связи по адресу и позывному
         /// </summary>
+        /// <remarks>Если address меньше 0, то он не учитывается при поиске.
+        /// Если позывной равен null, то он не учитывается при поиске.</remarks>
         KPLogic FindKPLogic(int address, string callNum);
 
         /// <summary>

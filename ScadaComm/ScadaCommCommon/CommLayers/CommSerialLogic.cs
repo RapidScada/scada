@@ -211,7 +211,6 @@ namespace Scada.Comm.Layers
 
             // закрытие последовательного порта
             serialConn.Close();
-            serialConn = null;
         }
 
         /// <summary>

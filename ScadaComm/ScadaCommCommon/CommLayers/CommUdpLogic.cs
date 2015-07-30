@@ -256,7 +256,6 @@ namespace Scada.Comm.Layers
 
             // закрытие соединения
             udpConn.Close();
-            udpConn = null;
         }
 
         /// <summary>
