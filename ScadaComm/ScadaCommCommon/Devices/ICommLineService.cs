@@ -34,9 +34,14 @@ namespace Scada.Comm.Devices
     public interface ICommLineService
     {
         /// <summary>
-        /// Найти КП на линии связи
+        /// Найти КП на линии связи по номеру
         /// </summary>
-        KPLogic FindKPLogic(int number, string callNum);
+        KPLogic FindKPLogic(int number);
+
+        /// <summary>
+        /// Найти КП на линии связи по адресу и позывному
+        /// </summary>
+        KPLogic FindKPLogic(int address, string callNum);
 
         /// <summary>
         /// Форсированно передать текущие данные SCADA-Серверу
