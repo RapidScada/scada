@@ -822,11 +822,7 @@ namespace Scada.Comm.Svc
 
                         // передача данных текущего КП на сервер
                         if (sessionNeeded || sendAllCurData)
-                        {
                             SendDataToServer(sendAllCurData);
-                            //curKP.SrezList.Clear();
-                            //curKP.EventList.Clear();
-                        }
 
                         // определение необходимости завершить цикл работы
                         terminateCycle = workState == WorkStates.Terminating && curKP.Terminated;
