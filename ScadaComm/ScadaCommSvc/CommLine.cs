@@ -217,23 +217,6 @@ namespace Scada.Comm.Svc
         }
 
         /// <summary>
-        /// Получить или установить последоватеьный порт
-        /// </summary>
-        [Obsolete("Use Connection property")]
-        public SerialPort SerialPort
-        {
-            get
-            {
-                return serialPort;
-            }
-            set
-            {
-                CheckIdleState();
-                serialPort = value;
-            }
-        }
-
-        /// <summary>
         /// Получить или установить количество попыток перезапроса КП при ошибке
         /// </summary>
         public int ReqTriesCnt
@@ -1324,8 +1307,6 @@ namespace Scada.Comm.Svc
 
             // настройка свойств КП, относящихся к линии связи
             kpLogic.ReqTriesCnt = ReqTriesCnt;
-            //kpLogic.Connection = null;
-            //kpLogic.SerialPort = null;
             kpLogic.CustomParams = CustomParams;
             kpLogic.CommonProps = commonProps;
             kpLogic.AppDirs = appDirs;
@@ -1446,6 +1427,34 @@ namespace Scada.Comm.Svc
         }
 
         /// <summary>
+        /// Создать канал связи
+        /// </summary>
+        private static CommLayerLogic CreateCommChannel(string commCnlType)
+        {
+            try
+            {
+                if (commCnlType.Equals("Serial", StringComparison.OrdinalIgnoreCase))
+                    return new CommSerialLogic();
+                else if (commCnlType.Equals("TcpClient", StringComparison.OrdinalIgnoreCase))
+                    return new CommTcpClientLogic();
+                else if (commCnlType.Equals("TcpServer", StringComparison.OrdinalIgnoreCase))
+                    return new CommTcpServerLogic();
+                else if (commCnlType.Equals("Udp", StringComparison.OrdinalIgnoreCase))
+                    return new CommUdpLogic();
+                else
+                    throw new Exception(Localization.UseRussian ? 
+                        "Неизвестный канал связи." : 
+                        "Unknown communication channel.");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception((Localization.UseRussian ?
+                    "Ошибка при создании канала связи: " :
+                    "Error creating communication channel: ") + ex.Message);
+            }
+        }
+
+        /// <summary>
         /// Создать линию связи и КП на основе настроек
         /// </summary>
         public static CommLine Create(Settings.CommLine commLineSett, Settings.CommonParams commonParams,
@@ -1496,7 +1505,23 @@ namespace Scada.Comm.Svc
             commLine.PassCmd = passCmd;
 
             // создание канала связи
-            commLine.CommLayerLogic = null;
+            string commCnlType;
+            if (commLine.CustomParams.TryGetValue("CommChannel", out commCnlType) && 
+                !string.IsNullOrEmpty(commCnlType))
+            {
+                commLine.CommLayerLogic = CreateCommChannel(commCnlType);
+
+                try
+                {
+                    commLine.CommLayerLogic.Init(commLine.CustomParams, commLine.KPList);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception((Localization.UseRussian ?
+                        "Ошибка при инициализации канала связи: " :
+                        "Error initializing communication channel: ") + ex.Message);
+                }
+            }
 
             return commLine;
         }

@@ -162,7 +162,7 @@ namespace Scada.Comm.Layers
         /// <summary>
         /// Получить строковый параметр слоя связи
         /// </summary>
-        protected string GetStringLayerParam(Dictionary<string, string> layerParams,
+        protected string GetStringLayerParam(SortedList<string, string> layerParams,
             string name, bool required, string defaultValue)
         {
             string val;
@@ -177,7 +177,7 @@ namespace Scada.Comm.Layers
         /// <summary>
         /// Получить логический параметр слоя связи
         /// </summary>
-        protected bool GetBoolLayerParam(Dictionary<string, string> layerParams,
+        protected bool GetBoolLayerParam(SortedList<string, string> layerParams,
             string name, bool required, bool defaultValue)
         {
             string valStr;
@@ -209,7 +209,7 @@ namespace Scada.Comm.Layers
         /// <summary>
         /// Получить целочисленный параметр слоя связи
         /// </summary>
-        protected int GetIntLayerParam(Dictionary<string, string> layerParams, 
+        protected int GetIntLayerParam(SortedList<string, string> layerParams, 
             string name, bool required, int defaultValue)
         {
             string valStr;
@@ -241,7 +241,7 @@ namespace Scada.Comm.Layers
         /// <summary>
         /// Получить параметр слоя связи перечислимого типа
         /// </summary>
-        protected T GetEnumLayerParam<T>(Dictionary<string, string> layerParams,
+        protected T GetEnumLayerParam<T>(SortedList<string, string> layerParams,
             string name, bool required, T defaultValue) where T : struct 
         {
             string valStr;
@@ -337,7 +337,7 @@ namespace Scada.Comm.Layers
         /// Инициализировать слой связи
         /// </summary>
         /// <remarks>В случае исключения дальнейшая работа линии связи невозможна</remarks>
-        public virtual void Init(Dictionary<string, string> layerParams, List<KPLogic> kpList)
+        public virtual void Init(SortedList<string, string> layerParams, List<KPLogic> kpList)
         {
             // проверка аргументов метода
             if (layerParams == null)

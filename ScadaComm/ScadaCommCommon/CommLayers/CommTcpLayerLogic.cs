@@ -99,7 +99,7 @@ namespace Scada.Comm.Layers
         /// <summary>
         /// Инициализировать слой связи
         /// </summary>
-        public override void Init(Dictionary<string, string> layerParams, List<KPLogic> kpList)
+        public override void Init(SortedList<string, string> layerParams, List<KPLogic> kpList)
         {
             // вызов метода базового класса
             base.Init(layerParams, kpList);

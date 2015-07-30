@@ -150,7 +150,7 @@ namespace Scada.Comm.Layers
         /// <summary>
         /// Инициализировать слой связи
         /// </summary>
-        public override void Init(Dictionary<string, string> layerParams, List<KPLogic> kpList)
+        public override void Init(SortedList<string, string> layerParams, List<KPLogic> kpList)
         {
             // вызов метода базового класса
             base.Init(layerParams, kpList);
@@ -173,7 +173,10 @@ namespace Scada.Comm.Layers
 
             // установка соединения всем КП на линии связи
             foreach (KPLogic kpLogic in kpList)
+            {
                 kpLogic.Connection = serialConn;
+                kpLogic.SerialPort = serialPort;
+            }
 
             // проверка библиотек КП в режиме ведомого
             string warnMsg;
