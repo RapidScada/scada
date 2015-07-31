@@ -45,6 +45,38 @@ namespace Scada.Comm.Svc
     internal sealed class CommLine : ICommLineService
     {
         /// <summary>
+        /// Полный адрес КП
+        /// </summary>
+        private class KPFullAddr : IComparer<KPFullAddr>
+        {
+            /// <summary>
+            /// Числовой адрес
+            /// </summary>
+            public int Address;
+            /// <summary>
+            /// Позывной
+            /// </summary>
+            public string CallNum;
+
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public KPFullAddr(int address, string callNum)
+            {
+                Address = address;
+                CallNum = callNum;
+            }
+            /// <summary>
+            /// Performs a comparison of two objects of the same type
+            /// </summary>
+            public int Compare(KPFullAddr x, KPFullAddr y)
+            {
+                int comp = x.Address.CompareTo(y.Address);
+                return comp == 0 ? string.Compare(x.CallNum, y.CallNum, StringComparison.OrdinalIgnoreCase) : comp;
+            }
+        }
+
+        /// <summary>
         /// Состояния работы линии связи
         /// </summary>
         private enum WorkStates
@@ -86,34 +118,37 @@ namespace Scada.Comm.Svc
         /// </summary>
         private static readonly string NoAction = Localization.UseRussian ? "нет" : "no";
 
-        private string numAndName;               // номер и нименование линии связи
-        private CommLayerLogic commCnl;          // канал связи с физическими КП
-        private int reqTriesCnt;                 // количество попыток перезапроса КП при ошибке
-        private int cycleDelay;                  // пауза после цикла опроса, мс
-        private bool cmdEnabled;                 // разрешены ли команды ТУ
-        private bool detailedLog;                // признак записи в журнал линии связи подробной информации
-        private int sendAllDataPer;              // период передачи на сервер всех данных КП, с
-        private AppDirs appDirs;                 // директории приложения
-        private ServerCommEx serverComm;         // ссылка на объект обмена данными со SCADA-Сервером
-        private PassCmdDelegate passCmd;         // метод передачи команды КП всем линиям связи
+        private string numAndName;       // номер и нименование линии связи
+        private CommLayerLogic commCnl;  // канал связи с физическими КП
+        private int reqTriesCnt;         // количество попыток перезапроса КП при ошибке
+        private int cycleDelay;          // пауза после цикла опроса, мс
+        private bool cmdEnabled;         // разрешены ли команды ТУ
+        private bool detailedLog;        // признак записи в журнал линии связи подробной информации
+        private int sendAllDataPer;      // период передачи на сервер всех данных КП, с
+        private AppDirs appDirs;         // директории приложения
+        private ServerCommEx serverComm; // ссылка на объект обмена данными со SCADA-Сервером
+        private PassCmdDelegate passCmd; // метод передачи команды КП всем линиям связи
 
-        private Thread thread;                   // поток работы линии связи
-        private SortedList<string, object> commonProps; // общие свойства линии связи, доступные её КП
-        private HashSet<int> kpNumSet;           // множество номеров КП на линии связи
-        private List<Command> cmdList;           // список команд для выполнения
-        private WorkStates workState;            // состояние работы линии связи
-        private Log log;                         // журнал линии связи
-        private string logPrefix;                // префикс имён файлов журналов, относящихся к линии связи
-        private string infoFileName;             // имя файла информации о работе линии связи
-        private string curAction;                // описание текущего действия
-        private KPLogic curKP;                   // опрашиваемый в данный момент КП
-        private string captionUnd;               // подчёркивание обозначения линии связи
-        private string allCustomParams;          // все имена и значения пользовательских параметров
-        private string[] kpCaptions;             // обозначения КП
+        private Thread thread;                                  // поток работы линии связи
+        private SortedList<string, object> commonProps;         // общие свойства линии связи, доступные её КП
+        private Dictionary<int, KPLogic> kpNumDict;             // словарь КП по номерам
+        private Dictionary<int, KPLogic> kpAddrDict;            // словарь КП по адресам
+        private Dictionary<string, KPLogic> kpCallNumDict;      // словарь КП по позывным
+        private Dictionary<KPFullAddr, KPLogic> kpFullAddrDict; // словарь КП по полным адресам
+        private List<Command> cmdList;   // список команд для выполнения
+        private WorkStates workState;    // состояние работы линии связи
+        private Log log;                 // журнал линии связи
+        private string logPrefix;        // префикс имён файлов журналов, относящихся к линии связи
+        private string infoFileName;     // имя файла информации о работе линии связи
+        private string curAction;        // описание текущего действия
+        private KPLogic curKP;           // опрашиваемый в данный момент КП
+        private string captionUnd;       // подчёркивание обозначения линии связи
+        private string allCustomParams;  // все имена и значения пользовательских параметров
+        private string[] kpCaptions;     // обозначения КП
 
-        private object cmdLock;                  // объект для синхронизации доступа к списку команд
-        private object infoLock;                 // объект для синхронизации записи в файл информации о работе линии связи
-        private object flushLock;                // объект для синхронизации форсированной передачи архивов
+        private object cmdLock;          // объект для синхронизации доступа к списку команд
+        private object infoLock;         // объект для синхронизации записи в файл информации о работе линии связи
+        private object flushLock;        // объект для синхронизации форсированной передачи архивов
         
 
         /// <summary>
@@ -142,7 +177,10 @@ namespace Scada.Comm.Svc
 
             thread = null;
             commonProps = new SortedList<string, object>();
-            kpNumSet = new HashSet<int>();
+            kpNumDict = new Dictionary<int, KPLogic>();
+            kpAddrDict = new Dictionary<int, KPLogic>();
+            kpCallNumDict = new Dictionary<string, KPLogic>();
+            kpFullAddrDict = new Dictionary<KPFullAddr, KPLogic>();
             cmdList = new List<Command>();
             workState = WorkStates.Idle;
             log = new Log(Log.Formats.Simple) { Encoding = Encoding.UTF8 };
@@ -1159,10 +1197,8 @@ namespace Scada.Comm.Svc
         /// </summary>
         private KPLogic FindKP(int kpNum)
         {
-            foreach (KPLogic kpLogic in KPList)
-                if (kpLogic.Number == kpNum)
-                    return kpLogic;
-            return null;
+            KPLogic kpLogic;
+            return kpNumDict.TryGetValue(kpNum, out kpLogic) ? kpLogic : null;
         }
 
 
@@ -1277,7 +1313,23 @@ namespace Scada.Comm.Svc
 
             // добавление КП в список опрашиваемых КП
             KPList.Add(kpLogic);
-            kpNumSet.Add(kpLogic.Number);
+
+            // добавление КП в словари для быстрого поиска
+            if (!kpNumDict.ContainsKey(kpLogic.Number))
+                kpNumDict.Add(kpLogic.Number, kpLogic);
+
+            int address = kpLogic.Address;
+            string callNum = kpLogic.CallNum;
+
+            if (!kpAddrDict.ContainsKey(address))
+                kpAddrDict.Add(address, kpLogic);
+
+            if (callNum != null && !kpCallNumDict.ContainsKey(callNum))
+                kpCallNumDict.Add(callNum, kpLogic);
+
+            KPFullAddr kpFullAddr = new KPFullAddr(address, callNum);
+            if (!kpFullAddrDict.ContainsKey(kpFullAddr))
+                kpFullAddrDict.Add(kpFullAddr, kpLogic);
         }
 
         /// <summary>
@@ -1292,7 +1344,7 @@ namespace Scada.Comm.Svc
                     lock (cmdLock)
                         cmdList.Add(cmd);
                 }
-                else if (kpNumSet.Contains(cmd.KPNum))
+                else if (kpNumDict.ContainsKey(cmd.KPNum))
                 {
                     log.WriteLine();
                     log.WriteAction(Localization.UseRussian ? 
@@ -1312,9 +1364,31 @@ namespace Scada.Comm.Svc
         /// <summary>
         /// Найти КП на линии связи по адресу и позывному
         /// </summary>
+        /// <remarks>Если address меньше 0, то он не учитывается при поиске.
+        /// Если позывной равен null, то он не учитывается при поиске.</remarks>
         KPLogic ICommLineService.FindKPLogic(int address, string callNum)
         {
-            throw new NotImplementedException();
+            KPLogic kpLogic;
+
+            if (address < 0 && callNum == null)
+            {
+                return null;
+            }
+            else if (address < 0)
+            {
+                lock (kpCallNumDict)
+                    return kpCallNumDict.TryGetValue(callNum, out kpLogic) ? kpLogic : null;
+            }
+            else if (callNum == null)
+            {
+                lock (kpAddrDict)
+                    return kpAddrDict.TryGetValue(address, out kpLogic) ? kpLogic : null;
+            }
+            else
+            {
+                lock (kpFullAddrDict)
+                    return kpFullAddrDict.TryGetValue(new KPFullAddr(address, callNum), out kpLogic) ? kpLogic : null;
+            }
         }
 
         /// <summary>
@@ -1494,6 +1568,25 @@ namespace Scada.Comm.Svc
         }
 
         /// <summary>
+        /// Добавить параметры последовательного порта в пользовательские параметры линии связи 
+        /// для упрощения настройки канала связи CommSerialLogic
+        /// </summary>
+        [Obsolete("Temporary solution")]
+        private static void AddSerialPortParams(CommLine commLine, Settings.CommLine commLineSett)
+        {
+            if (commLineSett.ConnType.Equals("ComPort", StringComparison.OrdinalIgnoreCase))
+            {
+                commLine.CustomParams["PortName"] = commLineSett.PortName;
+                commLine.CustomParams["BaudRate"] = commLineSett.BaudRate.ToString();
+                commLine.CustomParams["Parity"] = commLineSett.Parity.ToString();
+                commLine.CustomParams["DataBits"] = commLineSett.DataBits.ToString();
+                commLine.CustomParams["StopBits"] = commLineSett.StopBits.ToString();
+                commLine.CustomParams["DtrEnable"] = commLineSett.DtrEnable.ToString();
+                commLine.CustomParams["RtsEnable"] = commLineSett.RtsEnable.ToString();
+            }
+        }
+
+        /// <summary>
         /// Создать линию связи и КП на основе настроек
         /// </summary>
         public static CommLine Create(Settings.CommLine commLineSett, Settings.CommonParams commonParams,
@@ -1515,6 +1608,8 @@ namespace Scada.Comm.Svc
                 if (!commLine.CustomParams.ContainsKey(customParam.Name))
                     commLine.CustomParams.Add(customParam.Name, customParam.Value);
             }
+
+            AddSerialPortParams(commLine, commLineSett);
 
             // создание КП на линии связи
             foreach (Settings.KP kpSett in commLineSett.ReqSequence)
