@@ -23,7 +23,7 @@
  * Modified : 2015
  */
 
-using Scada.Comm.Layers;
+using Scada.Comm.Channels;
 using Scada.Data;
 using System;
 using System.Collections.Generic;
@@ -1048,7 +1048,7 @@ namespace Scada.Comm.Devices
         /// </summary>
         /// <remarks>Если targetKP равен null, значит метод должен вернуть КП, которому адресован запрос. 
         /// Возвращает true, если запрос успешно разобран.
-        /// Метод выполняется в потоке слоя связи</remarks>
+        /// Метод выполняется в потоке канала связи</remarks>
         public virtual bool ProcIncomingReq(byte[] buffer, int offset, int count, ref KPLogic targetKP)
         {
             WriteToLog("");
@@ -1062,7 +1062,7 @@ namespace Scada.Comm.Devices
         /// </summary>
         /// <remarks>Если targetKP равен null, значит метод должен вернуть КП, которому адресован запрос. 
         /// Возвращает true, если запрос успешно считан и разобран.
-        /// Метод выполняется в потоке слоя связи</remarks>
+        /// Метод выполняется в потоке канала связи</remarks>
         public virtual bool ProcUnreadIncomingReq(Connection conn, ref KPLogic targetKP)
         {
             WriteToLog("");

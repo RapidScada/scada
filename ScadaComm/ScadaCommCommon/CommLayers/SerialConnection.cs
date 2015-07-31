@@ -29,7 +29,7 @@ using System.IO.Ports;
 using System.Text;
 using System.Threading;
 
-namespace Scada.Comm.Layers
+namespace Scada.Comm.Channels
 {
     /// <summary>
     /// Connection with a device via serial port

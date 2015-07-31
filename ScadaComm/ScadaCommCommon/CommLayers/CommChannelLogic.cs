@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaCommCommon
- * Summary  : The base class for communication layer logic
+ * Summary  : The base class for communication channel logic
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
@@ -30,16 +30,16 @@ using System.Text;
 using System.Threading;
 using Utils;
 
-namespace Scada.Comm.Layers
+namespace Scada.Comm.Channels
 {
     /// <summary>
-    /// The base class for communication layer logic
-    /// <para>Родительский класс логики работы слоя связи</para>
+    /// The base class for communication channel logic
+    /// <para>Родительский класс логики работы канала связи</para>
     /// </summary>
-    public abstract class CommLayerLogic
+    public abstract class CommChannelLogic
     {
         /// <summary>
-        /// Режимы работы слоя связи
+        /// Режимы работы канала связи
         /// </summary>
         public enum OperatingBehaviors
         {
@@ -54,22 +54,22 @@ namespace Scada.Comm.Layers
         }
 
         /// <summary>
-        /// Задержка потока работы слоя связи для экономии ресурсов в режиме ведущего, мс
+        /// Задержка потока работы канала связи для экономии ресурсов в режиме ведущего, мс
         /// </summary>
         protected const int MasterThreadDelay = 100;
         /// <summary>
-        /// Задержка потока работы слоя связи для экономии ресурсов в режиме ведомого, мс
+        /// Задержка потока работы канала связи для экономии ресурсов в режиме ведомого, мс
         /// </summary>
         protected const int SlaveThreadDelay = 10;
         /// <summary>
-        /// Время ожидания остановки потока работы слоя связи, мс
+        /// Время ожидания остановки потока работы канала связи, мс
         /// </summary>
         protected const int WaitForStop = 10000;
 
         /// <summary>
-        /// Сообщение об отсутствии требуемого параметра слоя связи
+        /// Сообщение об отсутствии требуемого параметра канала связи
         /// </summary>
-        protected static readonly string LayerParamRequired = Localization.UseRussian ?
+        protected static readonly string CommCnlParamRequired = Localization.UseRussian ?
             "Требуется пользовательский параметр линии связи {0}." :
             "Custom communication line parameter {0} is required.";
 
@@ -90,12 +90,12 @@ namespace Scada.Comm.Layers
         /// </summary>
         protected KPLogic firstKP;
         /// <summary>
-        /// Поток работы слоя связи
+        /// Поток работы канала связи
         /// </summary>
         /// <remarks>Использование потока опционально</remarks>
         protected Thread thread;
         /// <summary>
-        /// Работа потока слоя связи прервана
+        /// Работа потока канала связи прервана
         /// </summary>
         protected volatile bool terminated;
 
@@ -103,7 +103,7 @@ namespace Scada.Comm.Layers
         /// <summary>
         /// Конструктор
         /// </summary>
-        public CommLayerLogic()
+        public CommChannelLogic()
         {
             writeToLog = text => { }; // заглушка
             kpList = new List<KPLogic>();
@@ -115,9 +115,9 @@ namespace Scada.Comm.Layers
 
 
         /// <summary>
-        /// Получить внутреннее наименование слоя связи
+        /// Получить внутреннее наименование канала связи
         /// </summary>
-        /// <remarks>Используется для вывода в журнал и идентификации слоя связи</remarks>
+        /// <remarks>Используется для вывода в журнал и идентификации канала связи</remarks>
         public abstract string InternalName { get; }
 
         /// <summary>
@@ -160,30 +160,30 @@ namespace Scada.Comm.Layers
         }
 
         /// <summary>
-        /// Получить строковый параметр слоя связи
+        /// Получить строковый параметр канала связи
         /// </summary>
-        protected string GetStringLayerParam(SortedList<string, string> layerParams,
+        protected string GetStringParam(SortedList<string, string> commCnlParams,
             string name, bool required, string defaultValue)
         {
             string val;
-            if (layerParams.TryGetValue(name, out val))
+            if (commCnlParams.TryGetValue(name, out val))
                 return val;
             else if (required)
-                throw new ArgumentException(string.Format(LayerParamRequired, name));
+                throw new ArgumentException(string.Format(CommCnlParamRequired, name));
             else
                 return defaultValue;
         }
 
         /// <summary>
-        /// Получить логический параметр слоя связи
+        /// Получить логический параметр канала связи
         /// </summary>
-        protected bool GetBoolLayerParam(SortedList<string, string> layerParams,
+        protected bool GetBoolParam(SortedList<string, string> commCnlParams,
             string name, bool required, bool defaultValue)
         {
             string valStr;
             bool val;
 
-            if (layerParams.TryGetValue(name, out valStr))
+            if (commCnlParams.TryGetValue(name, out valStr))
             {
                 if (bool.TryParse(valStr, out val))
                 {
@@ -198,7 +198,7 @@ namespace Scada.Comm.Layers
             }
             else if (required)
             {
-                throw new ArgumentException(string.Format(LayerParamRequired, name));
+                throw new ArgumentException(string.Format(CommCnlParamRequired, name));
             }
             else
             {
@@ -207,15 +207,15 @@ namespace Scada.Comm.Layers
         }
 
         /// <summary>
-        /// Получить целочисленный параметр слоя связи
+        /// Получить целочисленный параметр канала связи
         /// </summary>
-        protected int GetIntLayerParam(SortedList<string, string> layerParams, 
+        protected int GetIntParam(SortedList<string, string> commCnlParams, 
             string name, bool required, int defaultValue)
         {
             string valStr;
             int val;
 
-            if (layerParams.TryGetValue(name, out valStr))
+            if (commCnlParams.TryGetValue(name, out valStr))
             {
                 if (int.TryParse(valStr, out val))
                 {
@@ -230,7 +230,7 @@ namespace Scada.Comm.Layers
             }
             else if (required)
             {
-                throw new ArgumentException(string.Format(LayerParamRequired, name));
+                throw new ArgumentException(string.Format(CommCnlParamRequired, name));
             }
             else
             {
@@ -239,15 +239,15 @@ namespace Scada.Comm.Layers
         }
 
         /// <summary>
-        /// Получить параметр слоя связи перечислимого типа
+        /// Получить параметр канала связи перечислимого типа
         /// </summary>
-        protected T GetEnumLayerParam<T>(SortedList<string, string> layerParams,
+        protected T GetEnumParam<T>(SortedList<string, string> commCnlParams,
             string name, bool required, T defaultValue) where T : struct 
         {
             string valStr;
             T val;
 
-            if (layerParams.TryGetValue(name, out valStr))
+            if (commCnlParams.TryGetValue(name, out valStr))
             {
                 if (Enum.TryParse<T>(valStr, true, out val))
                 {
@@ -262,7 +262,7 @@ namespace Scada.Comm.Layers
             }
             else if (required)
             {
-                throw new ArgumentException(string.Format(LayerParamRequired, name));
+                throw new ArgumentException(string.Format(CommCnlParamRequired, name));
             }
             else
             {
@@ -271,7 +271,7 @@ namespace Scada.Comm.Layers
         }
         
         /// <summary>
-        /// Запустить поток работы слоя связи
+        /// Запустить поток работы канала связи
         /// </summary>
         protected void StartThread(ThreadStart start)
         {
@@ -281,7 +281,7 @@ namespace Scada.Comm.Layers
         }
 
         /// <summary>
-        /// Остановить поток работы слоя связи
+        /// Остановить поток работы канала связи
         /// </summary>
         protected void StopThread()
         {
@@ -334,14 +334,14 @@ namespace Scada.Comm.Layers
 
 
         /// <summary>
-        /// Инициализировать слой связи
+        /// Инициализировать канал связи
         /// </summary>
         /// <remarks>В случае исключения дальнейшая работа линии связи невозможна</remarks>
-        public virtual void Init(SortedList<string, string> layerParams, List<KPLogic> kpList)
+        public virtual void Init(SortedList<string, string> commCnlParams, List<KPLogic> kpList)
         {
             // проверка аргументов метода
-            if (layerParams == null)
-                throw new ArgumentNullException("layerParams");
+            if (commCnlParams == null)
+                throw new ArgumentNullException("commCnlParams");
             if (kpList == null)
                 throw new ArgumentNullException("kpList");
 
@@ -352,7 +352,6 @@ namespace Scada.Comm.Layers
                     throw new ArgumentException("All the devices must not be null.");
 
                 this.kpList.Add(kpLogic);
-                //kpLogic.FindKPLogic = FindKPLogic; !!!
             }
 
             kpListNotEmpty = kpList.Count > 0;
@@ -360,13 +359,13 @@ namespace Scada.Comm.Layers
         }
 
         /// <summary>
-        /// Запустить работу слоя связи
+        /// Запустить работу канала связи
         /// </summary>
         /// <remarks>В случае исключения линия связи попытается повторно запустить работу</remarks>
         public abstract void Start();
 
         /// <summary>
-        /// Остановить работу слоя связи
+        /// Остановить работу канала связи
         /// </summary>
         public abstract void Stop();
 
@@ -385,7 +384,7 @@ namespace Scada.Comm.Layers
         }
 
         /// <summary>
-        /// Получить информацию о работе слоя связи
+        /// Получить информацию о работе канала связи
         /// </summary>
         public virtual string GetInfo()
         {
@@ -393,14 +392,14 @@ namespace Scada.Comm.Layers
 
             if (Localization.UseRussian)
             {
-                string title = "Слой связи";
+                string title = "Канал связи";
                 sbInfo.AppendLine(title)
                     .AppendLine(new string('-', title.Length))
                     .AppendLine("Наименование: " + InternalName);
             }
             else
             {
-                string title = "Connection Layer";
+                string title = "Connection Channel";
                 sbInfo.AppendLine(title)
                     .AppendLine(new string('-', title.Length))
                     .AppendLine("Name: " + InternalName);

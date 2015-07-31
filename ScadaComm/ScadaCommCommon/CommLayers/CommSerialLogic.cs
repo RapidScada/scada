@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaCommCommon
- * Summary  : Serial port communication layer logic
+ * Summary  : Serial port communication channel logic
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
@@ -28,16 +28,16 @@ using System.Collections.Generic;
 using System.IO.Ports;
 using System.Text;
 
-namespace Scada.Comm.Layers
+namespace Scada.Comm.Channels
 {
     /// <summary>
-    /// Serial port communication layer logic
-    /// <para>Логика работы слоя связи через последовательный порт</para>
+    /// Serial port communication channel logic
+    /// <para>Логика работы канала связи через последовательный порт</para>
     /// </summary>
-    public class CommSerialLogic : CommLayerLogic
+    public class CommSerialLogic : CommChannelLogic
     {
         /// <summary>
-        /// Настройки слоя связи
+        /// Настройки канала связи
         /// </summary>
         public class Settings
         {
@@ -54,7 +54,7 @@ namespace Scada.Comm.Layers
                 StopBits = StopBits.One;
                 DtrEnable = false;
                 RtsEnable = false;
-                Behavior = CommLayerLogic.OperatingBehaviors.Master;
+                Behavior = CommChannelLogic.OperatingBehaviors.Master;
             }
 
             /// <summary>
@@ -86,14 +86,14 @@ namespace Scada.Comm.Layers
             /// </summary>
             public bool RtsEnable { get; set; }
             /// <summary>
-            /// Получить или установить режим работы слоя связи
+            /// Получить или установить режим работы канала связи
             /// </summary>
             public OperatingBehaviors Behavior { get; set; }
         }
 
 
         /// <summary>
-        /// Настройки слоя связи
+        /// Настройки канала связи
         /// </summary>
         protected Settings settings;
         /// <summary>
@@ -114,7 +114,7 @@ namespace Scada.Comm.Layers
 
 
         /// <summary>
-        /// Получить наименование слоя связи
+        /// Получить наименование канала связи
         /// </summary>
         public override string InternalName
         {
@@ -148,22 +148,22 @@ namespace Scada.Comm.Layers
 
 
         /// <summary>
-        /// Инициализировать слой связи
+        /// Инициализировать канал связи
         /// </summary>
-        public override void Init(SortedList<string, string> layerParams, List<KPLogic> kpList)
+        public override void Init(SortedList<string, string> commCnlParams, List<KPLogic> kpList)
         {
             // вызов метода базового класса
-            base.Init(layerParams, kpList);
+            base.Init(commCnlParams, kpList);
 
-            // получение настроек слоя связи
-            settings.PortName = GetStringLayerParam(layerParams, "PortName", true, settings.PortName);
-            settings.BaudRate = GetIntLayerParam(layerParams, "BaudRate", true, settings.BaudRate);
-            settings.Parity = GetEnumLayerParam<Parity>(layerParams, "Parity", false, settings.Parity);
-            settings.DataBits = GetIntLayerParam(layerParams, "DataBits", false, settings.DataBits);
-            settings.StopBits = GetEnumLayerParam<StopBits>(layerParams, "StopBits", false, settings.StopBits);
-            settings.DtrEnable = GetBoolLayerParam(layerParams, "DtrEnable", false, settings.DtrEnable);
-            settings.RtsEnable = GetBoolLayerParam(layerParams, "RtsEnable", false, settings.RtsEnable);
-            settings.Behavior = GetEnumLayerParam<OperatingBehaviors>(layerParams, "Behavior",
+            // получение настроек канала связи
+            settings.PortName = GetStringParam(commCnlParams, "PortName", true, settings.PortName);
+            settings.BaudRate = GetIntParam(commCnlParams, "BaudRate", true, settings.BaudRate);
+            settings.Parity = GetEnumParam<Parity>(commCnlParams, "Parity", false, settings.Parity);
+            settings.DataBits = GetIntParam(commCnlParams, "DataBits", false, settings.DataBits);
+            settings.StopBits = GetEnumParam<StopBits>(commCnlParams, "StopBits", false, settings.StopBits);
+            settings.DtrEnable = GetBoolParam(commCnlParams, "DtrEnable", false, settings.DtrEnable);
+            settings.RtsEnable = GetBoolParam(commCnlParams, "RtsEnable", false, settings.RtsEnable);
+            settings.Behavior = GetEnumParam<OperatingBehaviors>(commCnlParams, "Behavior",
                 false, settings.Behavior);
 
             // создание клиента и соединения
@@ -185,7 +185,7 @@ namespace Scada.Comm.Layers
         }
 
         /// <summary>
-        /// Запустить работу слоя связи
+        /// Запустить работу канала связи
         /// </summary>
         public override void Start()
         {
@@ -198,7 +198,7 @@ namespace Scada.Comm.Layers
         }
 
         /// <summary>
-        /// Остановить работу слоя связи
+        /// Остановить работу канала связи
         /// </summary>
         public override void Stop()
         {
@@ -214,7 +214,7 @@ namespace Scada.Comm.Layers
         }
 
         /// <summary>
-        /// Получить информацию о работе слоя связи
+        /// Получить информацию о работе канала связи
         /// </summary>
         public override string GetInfo()
         {

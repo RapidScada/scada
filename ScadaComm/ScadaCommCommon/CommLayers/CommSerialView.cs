@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaCommCommon
- * Summary  : Serial port communication layer user interface
+ * Summary  : Serial port communication channel user interface
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
@@ -25,16 +25,16 @@
 
 using System.Collections.Generic;
 
-namespace Scada.Comm.Layers
+namespace Scada.Comm.Channels
 {
     /// <summary>
-    /// Serial port communication layer user interface
-    /// <para>Пользовательский интерфейс слоя связи через последовательный порт</para>
+    /// Serial port communication channel user interface
+    /// <para>Пользовательский интерфейс канала связи через последовательный порт</para>
     /// </summary>
-    public class CommSerialView : CommLayerView
+    public class CommSerialView : CommChannelView
     {
         /// <summary>
-        /// Получить наименование слоя связи
+        /// Получить наименование канала связи
         /// </summary>
         public override string Name
         {
@@ -45,15 +45,15 @@ namespace Scada.Comm.Layers
         }
 
         /// <summary>
-        /// Получить описание слоя связи
+        /// Получить описание канала связи
         /// </summary>
         public override string Descr
         {
             get
             {
                 return Localization.UseRussian ?
-                    "Слой связи через последовательный порт.\n\n" +
-                    "Параметры слоя связи:\n" +
+                    "Канал связи через последовательный порт.\n\n" +
+                    "Параметры канала связи:\n" +
                     "PortName - имя последовательного порта (например, COM1),\n" +
                     "BaudRate - скорость обмена по порту,\n" +
                     "Parity - контроль чётности (None, Odd, Even, Mark, Space),\n" +
@@ -61,10 +61,10 @@ namespace Scada.Comm.Layers
                     "StopBits - стоповые биты (None, One, Two, OnePointFive),\n" +
                     "DtrEnable - использование сигнала DTR (false, true),\n" +
                     "RtsEnable - использование сигнала RTS (false, true),\n" +
-                    "Behavior - режим работы слоя связи (Master, Slave)." :
+                    "Behavior - режим работы канала связи (Master, Slave)." :
 
-                    "Serial port communication layer.\n\n" +
-                    "Communication layer parameters:\n" +
+                    "Serial port communication channel.\n\n" +
+                    "Communication channel parameters:\n" +
                     "PortName - serial port name (for example, COM1),\n" +
                     "BaudRate - serial baud rate,\n" +
                     "Parity - parity-checking protocol (None, Odd, Even, Mark, Space),\n" +
@@ -72,17 +72,17 @@ namespace Scada.Comm.Layers
                     "StopBits -  number of stopbits per byte (None, One, Two, OnePointFive),\n" +
                     "DtrEnable - value that enables the DTR signal (false, true),\n" +
                     "RtsEnable - value that enables the RTS signal (false, true),\n" +
-                    "Behavior - work mode of connection layer (Master, Slave).";
+                    "Behavior - work mode of connection channel (Master, Slave).";
             }
         }
 
         /// <summary>
-        /// Получить информацию о свойствах слоя связи
+        /// Получить информацию о свойствах канала связи
         /// </summary>
-        public override string GetPropsInfo(Dictionary<string, string> layerParams)
+        public override string GetPropsInfo(Dictionary<string, string> commCnlParams)
         {
             CommSerialLogic.Settings defSett = new CommSerialLogic.Settings();
-            return BuildPropsInfo(layerParams,
+            return BuildPropsInfo(commCnlParams,
                 new string[] { "PortName", "BaudRate", "DataBits", "Parity", "StopBits", 
                     "DtrEnable", "RtsEnable", "Behavior" },
                 new object[] { defSett.PortName, defSett.BaudRate, defSett.DataBits, defSett.Parity, defSett.StopBits,

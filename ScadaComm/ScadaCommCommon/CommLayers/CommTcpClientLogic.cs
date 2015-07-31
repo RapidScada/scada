@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaCommCommon
- * Summary  : TCP client communication layer logic
+ * Summary  : TCP client communication channel logic
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
@@ -31,16 +31,16 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
-namespace Scada.Comm.Layers
+namespace Scada.Comm.Channels
 {
     /// <summary>
-    /// TCP client communication layer logic
-    /// <para>Логика работы слоя связи TCP-клиент</para>
+    /// TCP client communication channel logic
+    /// <para>Логика работы канала связи TCP-клиент</para>
     /// </summary>
-    public class CommTcpClientLogic : CommTcpLayerLogic
+    public class CommTcpClientLogic : CommTcpChannelLogic
     {
         /// <summary>
-        /// Настройки слоя связи
+        /// Настройки канала связи
         /// </summary>
         public class Settings
         {
@@ -52,7 +52,7 @@ namespace Scada.Comm.Layers
                 // установка значений по умолчанию
                 IpAddress = "";
                 TcpPort = 0;
-                Behavior = CommLayerLogic.OperatingBehaviors.Master;
+                Behavior = CommChannelLogic.OperatingBehaviors.Master;
                 ConnMode = ConnectionModes.Individual;
             }
 
@@ -65,7 +65,7 @@ namespace Scada.Comm.Layers
             /// </summary>
             public int TcpPort { get; set; }
             /// <summary>
-            /// Получить или установить режим работы слоя связи
+            /// Получить или установить режим работы канала связи
             /// </summary>
             public OperatingBehaviors Behavior { get; set; }
             /// <summary>
@@ -76,7 +76,7 @@ namespace Scada.Comm.Layers
 
         
         /// <summary>
-        /// Настройки слоя связи
+        /// Настройки канала связи
         /// </summary>
         protected Settings settings;
         /// <summary>
@@ -102,7 +102,7 @@ namespace Scada.Comm.Layers
 
 
         /// <summary>
-        /// Получить наименование слоя связи
+        /// Получить наименование канала связи
         /// </summary>
         public override string InternalName
         {
@@ -201,19 +201,19 @@ namespace Scada.Comm.Layers
         
 
         /// <summary>
-        /// Инициализировать слой связи
+        /// Инициализировать канал связи
         /// </summary>
-        public override void Init(SortedList<string, string> layerParams, List<KPLogic> kpList)
+        public override void Init(SortedList<string, string> commCnlParams, List<KPLogic> kpList)
         {
             // вызов метода базового класса
-            base.Init(layerParams, kpList);
+            base.Init(commCnlParams, kpList);
 
-            // получение настроек слоя связи
-            settings.ConnMode = GetEnumLayerParam<ConnectionModes>(layerParams, "ConnMode", true, settings.ConnMode);
+            // получение настроек канала связи
+            settings.ConnMode = GetEnumParam<ConnectionModes>(commCnlParams, "ConnMode", true, settings.ConnMode);
             bool sharedConnMode = settings.ConnMode == ConnectionModes.Shared;
-            settings.IpAddress = GetStringLayerParam(layerParams, "IPAddress", sharedConnMode, settings.IpAddress);
-            settings.TcpPort = GetIntLayerParam(layerParams, "TcpPort", sharedConnMode, settings.TcpPort);
-            settings.Behavior = GetEnumLayerParam<OperatingBehaviors>(layerParams, "Behavior", 
+            settings.IpAddress = GetStringParam(commCnlParams, "IPAddress", sharedConnMode, settings.IpAddress);
+            settings.TcpPort = GetIntParam(commCnlParams, "TcpPort", sharedConnMode, settings.TcpPort);
+            settings.Behavior = GetEnumParam<OperatingBehaviors>(commCnlParams, "Behavior", 
                 false, settings.Behavior);
 
             // создание соединений и установка соединений КП
@@ -250,7 +250,7 @@ namespace Scada.Comm.Layers
         }
 
         /// <summary>
-        /// Запустить работу слоя связи
+        /// Запустить работу канала связи
         /// </summary>
         public override void Start()
         {
@@ -265,7 +265,7 @@ namespace Scada.Comm.Layers
         }
 
         /// <summary>
-        /// Остановить работу слоя связи
+        /// Остановить работу канала связи
         /// </summary>
         public override void Stop()
         {
@@ -335,7 +335,7 @@ namespace Scada.Comm.Layers
         }
 
         /// <summary>
-        /// Получить информацию о работе слоя связи
+        /// Получить информацию о работе канала связи
         /// </summary>
         public override string GetInfo()
         {

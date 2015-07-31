@@ -23,13 +23,10 @@
  * Modified : 2015
  */
 
-using Scada.Comm.Layers;
+using Scada.Comm.Channels;
 using System;
 using System.Collections.Generic;
 using System.IO.Ports;
-using System.Linq;
-using System.Text;
-using System.Threading;
 
 namespace Scada.Comm
 {
@@ -37,7 +34,7 @@ namespace Scada.Comm
     /// Serial port utilities
     /// <para>Вспомогательные методы для работы с последовательным портом</para>
     /// </summary>
-    [Obsolete("Use communication layers")]
+    [Obsolete("Use communication channels")]
     public static class SerialPortUtils
     {
         /// <summary>

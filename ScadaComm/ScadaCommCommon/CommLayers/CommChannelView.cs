@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaCommCommon
- * Summary  : The base class for communication layer user interface
+ * Summary  : The base class for communication channel user interface
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
@@ -28,18 +28,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Scada.Comm.Layers
+namespace Scada.Comm.Channels
 {
     /// <summary>
-    /// The base class for communication layer user interface
-    /// <para>Родительский класс пользовательского интерфейса слоя связи</para>
+    /// The base class for communication channel user interface
+    /// <para>Родительский класс пользовательского интерфейса канала связи</para>
     /// </summary>
-    public abstract class CommLayerView
+    public abstract class CommChannelView
     {
         /// <summary>
         /// Конструктор
         /// </summary>
-        public CommLayerView()
+        public CommChannelView()
         {
             LangDir = "";
             CanShowProps = false;
@@ -47,12 +47,12 @@ namespace Scada.Comm.Layers
 
 
         /// <summary>
-        /// Получить наименование слоя связи
+        /// Получить наименование канала связи
         /// </summary>
         public abstract string Name { get; }
 
         /// <summary>
-        /// Получить описание слоя связи
+        /// Получить описание канала связи
         /// </summary>
         public abstract string Descr { get; }
 
@@ -62,20 +62,20 @@ namespace Scada.Comm.Layers
         public string LangDir { get; set; }
 
         /// <summary>
-        /// Получить возможность отображения свойств слоя связи
+        /// Получить возможность отображения свойств канала связи
         /// </summary>
         public bool CanShowProps { get; protected set; }
 
 
         /// <summary>
-        /// Построить строку информации о свойствах слоя связи
+        /// Построить строку информации о свойствах канала связи
         /// </summary>
-        protected string BuildPropsInfo(Dictionary<string, string> layerParams, 
+        protected string BuildPropsInfo(Dictionary<string, string> commCnlParams, 
             string[] paramNames, object[] defParamVals)
         {
             // проверка параметров метода
-            if (layerParams == null)
-                throw new ArgumentNullException("layerParams");
+            if (commCnlParams == null)
+                throw new ArgumentNullException("commCnlParams");
             if (paramNames == null)
                 throw new ArgumentNullException("paramNames");
             if (defParamVals == null)
@@ -93,7 +93,7 @@ namespace Scada.Comm.Layers
                 string paramName = paramNames[i];
                 string paramVal;
                 sbPropsInfo.Append(paramName).Append(" = ")
-                    .Append(layerParams.TryGetValue(paramName, out paramVal) ? paramVal : defParamVals[i])
+                    .Append(commCnlParams.TryGetValue(paramName, out paramVal) ? paramVal : defParamVals[i])
                     .Append(i < last ? ", " : "");
             }
 
@@ -103,13 +103,13 @@ namespace Scada.Comm.Layers
         /// <summary>
         /// Отобразить свойства модуля
         /// </summary>
-        public virtual void ShowProps(Dictionary<string, string> layerParams)
+        public virtual void ShowProps(Dictionary<string, string> commCnlParams)
         {
         }
         
         /// <summary>
-        /// Получить информацию о свойствах слоя связи
+        /// Получить информацию о свойствах канала связи
         /// </summary>
-        public abstract string GetPropsInfo(Dictionary<string, string> layerParams);
+        public abstract string GetPropsInfo(Dictionary<string, string> commCnlParams);
     }
 }

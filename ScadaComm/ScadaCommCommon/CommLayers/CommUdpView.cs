@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaCommCommon
- * Summary  : UDP communication layer user interface
+ * Summary  : UDP communication channel user interface
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
@@ -25,16 +25,16 @@
 
 using System.Collections.Generic;
 
-namespace Scada.Comm.Layers
+namespace Scada.Comm.Channels
 {
     /// <summary>
-    /// UDP communication layer user interface
-    /// <para>Пользовательский интерфейс слоя связи UDP</para>
+    /// UDP communication channel user interface
+    /// <para>Пользовательский интерфейс канала связи UDP</para>
     /// </summary>
-    public class CommUdpView : CommLayerView
+    public class CommUdpView : CommChannelView
     {
         /// <summary>
-        /// Получить наименование слоя связи
+        /// Получить наименование канала связи
         /// </summary>
         public override string Name
         {
@@ -45,38 +45,38 @@ namespace Scada.Comm.Layers
         }
 
         /// <summary>
-        /// Получить описание слоя связи
+        /// Получить описание канала связи
         /// </summary>
         public override string Descr
         {
             get
             {
                 return Localization.UseRussian ?
-                    "Слой связи UDP.\n\n" +
-                    "Параметры слоя связи:\n" +
+                    "Канал связи UDP.\n\n" +
+                    "Параметры канала связи:\n" +
                     "LocalUdpPort - локальный UDP-порт для входящих соединений,\n" +
                     "RemoteUdpPort - удалённый UDP-порт единый для всех устройств в режиме Master,\n" +
-                    "RemoteIpAddress - удалённый IP-адрес по умолчанию,\n" + // !!! надо реализовать
-                    "Behavior - режим работы слоя связи (Master, Slave),\n" +
+                    "RemoteIpAddress - удалённый IP-адрес по умолчанию,\n" +
+                    "Behavior - режим работы канала связи (Master, Slave),\n" +
                     "DevSelMode - режим выбора КП в режиме работы Slave (ByIPAddress, ByDeviceLibrary)." :
 
-                    "UDP communication layer.\n\n" +
-                    "Communication layer parameters:\n" +
+                    "UDP communication channel.\n\n" +
+                    "Communication channel parameters:\n" +
                     "LocalUdpPort - local UDP port for incoming connections." +
                     "RemoteUdpPort - remote UDP port common for all the devices in Master mode,\n" +
                     "RemoteIpAddress - remote IP address by default,\n" +
-                    "Behavior - work mode of connection layer (Master, Slave),\n" +
+                    "Behavior - work mode of connection channel (Master, Slave),\n" +
                     "DevSelMode - device selection mode in Slave work mode (ByIPAddress, ByDeviceLibrary).";
             }
         }
 
         /// <summary>
-        /// Получить информацию о свойствах слоя связи
+        /// Получить информацию о свойствах канала связи
         /// </summary>
-        public override string GetPropsInfo(Dictionary<string, string> layerParams)
+        public override string GetPropsInfo(Dictionary<string, string> commCnlParams)
         {
             CommUdpLogic.Settings defSett = new CommUdpLogic.Settings();
-            return BuildPropsInfo(layerParams,
+            return BuildPropsInfo(commCnlParams,
                 new string[] { "LocalUdpPort", "RemoteUdpPort", "Behavior", "DevSelMode" },
                 new object[] { defSett.LocalUdpPort, defSett.RemoteUdpPort, defSett.Behavior, defSett.DevSelMode });
         }

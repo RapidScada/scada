@@ -23,18 +23,17 @@
  * Modified : 2015
  */
 
+using Scada.Comm.Channels;
+using Scada.Comm.Devices;
+using Scada.Data;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
-using System.IO.Ports;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using Utils;
-using Scada.Data;
-using Scada.Comm.Devices;
-using Scada.Comm.Layers;
-using System.Data;
-using System.Reflection;
 
 namespace Scada.Comm.Svc
 {
@@ -110,24 +109,28 @@ namespace Scada.Comm.Svc
 
 
         /// <summary>
-        /// Интервал повторных попыток запуска канала связи
+        /// Задержка перед повторными попытками, мс
         /// </summary>
-        private static readonly TimeSpan StartAttemptSpan = TimeSpan.FromSeconds(10);
+        private const int RetryDelay = 10000;
+        /// <summary>
+        /// Количество попыток передачи данных серверу без задержки
+        /// </summary>
+        private const int QuickAttemptCnt = 5;
         /// <summary>
         /// Обозначение отсутствия действия
         /// </summary>
         private static readonly string NoAction = Localization.UseRussian ? "нет" : "no";
 
-        private string numAndName;       // номер и нименование линии связи
-        private CommLayerLogic commCnl;  // канал связи с физическими КП
-        private int reqTriesCnt;         // количество попыток перезапроса КП при ошибке
-        private int cycleDelay;          // пауза после цикла опроса, мс
-        private bool cmdEnabled;         // разрешены ли команды ТУ
-        private bool detailedLog;        // признак записи в журнал линии связи подробной информации
-        private int sendAllDataPer;      // период передачи на сервер всех данных КП, с
-        private AppDirs appDirs;         // директории приложения
-        private ServerCommEx serverComm; // ссылка на объект обмена данными со SCADA-Сервером
-        private PassCmdDelegate passCmd; // метод передачи команды КП всем линиям связи
+        private string numAndName;        // номер и нименование линии связи
+        private CommChannelLogic commCnl; // канал связи с физическими КП
+        private int reqTriesCnt;          // количество попыток перезапроса КП при ошибке
+        private int cycleDelay;           // пауза после цикла опроса, мс
+        private bool cmdEnabled;          // разрешены ли команды ТУ
+        private bool detailedLog;         // признак записи в журнал линии связи подробной информации
+        private int sendAllDataPer;       // период передачи на сервер всех данных КП, с
+        private AppDirs appDirs;          // директории приложения
+        private ServerCommEx serverComm;  // ссылка на объект обмена данными со SCADA-Сервером
+        private PassCmdDelegate passCmd;  // метод передачи команды КП всем линиям связи
 
         private Thread thread;                                  // поток работы линии связи
         private SortedList<string, object> commonProps;         // общие свойства линии связи, доступные её КП
@@ -135,20 +138,21 @@ namespace Scada.Comm.Svc
         private Dictionary<int, KPLogic> kpAddrDict;            // словарь КП по адресам
         private Dictionary<string, KPLogic> kpCallNumDict;      // словарь КП по позывным
         private Dictionary<KPFullAddr, KPLogic> kpFullAddrDict; // словарь КП по полным адресам
-        private List<Command> cmdList;   // список команд для выполнения
-        private WorkStates workState;    // состояние работы линии связи
-        private Log log;                 // журнал линии связи
-        private string logPrefix;        // префикс имён файлов журналов, относящихся к линии связи
-        private string infoFileName;     // имя файла информации о работе линии связи
-        private string curAction;        // описание текущего действия
-        private KPLogic curKP;           // опрашиваемый в данный момент КП
-        private string captionUnd;       // подчёркивание обозначения линии связи
-        private string allCustomParams;  // все имена и значения пользовательских параметров
-        private string[] kpCaptions;     // обозначения КП
+        private List<Command> cmdList;                          // список команд для выполнения
+        private List<KPLogic.TagSrez> unsentSrezList;           // список неотправленных архивных срезов КП
+        private List<KPLogic.KPEvent> unsentEventList;          // список неотправленных событий КП
+        private WorkStates workState;     // состояние работы линии связи
+        private Log log;                  // журнал линии связи
+        private string logPrefix;         // префикс имён файлов журналов, относящихся к линии связи
+        private string infoFileName;      // имя файла информации о работе линии связи
+        private string curAction;         // описание текущего действия
+        private KPLogic curKP;            // опрашиваемый в данный момент КП
+        private string captionUnd;        // подчёркивание обозначения линии связи
+        private string allCustomParams;   // все имена и значения пользовательских параметров
+        private string[] kpCaptions;      // обозначения КП
 
-        private object cmdLock;          // объект для синхронизации доступа к списку команд
-        private object infoLock;         // объект для синхронизации записи в файл информации о работе линии связи
-        private object flushLock;        // объект для синхронизации форсированной передачи архивов
+        private object infoLock;          // объект для синхронизации записи в файл информации о работе линии связи
+        private object serverLock;        // объект для синхронизации связи с сервером в рамках линии связи
         
 
         /// <summary>
@@ -182,6 +186,8 @@ namespace Scada.Comm.Svc
             kpCallNumDict = new Dictionary<string, KPLogic>();
             kpFullAddrDict = new Dictionary<KPFullAddr, KPLogic>();
             cmdList = new List<Command>();
+            unsentSrezList = new List<KPLogic.TagSrez>();
+            unsentEventList = new List<KPLogic.KPEvent>();
             workState = WorkStates.Idle;
             log = new Log(Log.Formats.Simple) { Encoding = Encoding.UTF8 };
             logPrefix = AppDirs.LogDir + "line" + CommUtils.AddZeros(number, 3);
@@ -192,9 +198,8 @@ namespace Scada.Comm.Svc
             allCustomParams = null;
             kpCaptions = null;
 
-            cmdLock = new object();
             infoLock = new object();
-            flushLock = new object();
+            serverLock = new object();
 
             // свойства
             Bind = bind;
@@ -239,7 +244,7 @@ namespace Scada.Comm.Svc
         /// <summary>
         /// Получить или установить канал связи с физическими КП
         /// </summary>
-        public CommLayerLogic CommLayerLogic
+        public CommChannelLogic CommChannelLogic
         {
             get
             {
@@ -444,8 +449,6 @@ namespace Scada.Comm.Svc
         /// </summary>
         private void WriteInfo()
         {
-            Monitor.Enter(infoLock);
-
             try
             {
                 StringBuilder sbInfo = new StringBuilder();
@@ -472,8 +475,11 @@ namespace Scada.Comm.Svc
                 AppendActiveKP(sbInfo);
 
                 // запись в файл
-                using (StreamWriter writer = new StreamWriter(infoFileName, false, Encoding.UTF8))
-                    writer.Write(sbInfo.ToString());
+                lock (infoLock)
+                {
+                    using (StreamWriter writer = new StreamWriter(infoFileName, false, Encoding.UTF8))
+                        writer.Write(sbInfo.ToString());
+                }
             }
             catch (ThreadAbortException)
             {
@@ -483,10 +489,6 @@ namespace Scada.Comm.Svc
                 log.WriteAction((Localization.UseRussian ? 
                     "Ошибка при записи в файл информации о работе линии связи: " :
                     "Error writing communication line information to the file: ") + ex.Message);
-            }
-            finally
-            {
-                Monitor.Exit(infoLock);
             }
         }
 
@@ -680,10 +682,8 @@ namespace Scada.Comm.Svc
                             if (!commCnlStarted)
                             {
                                 // паузу нужно делать вне catch, иначе поток не может прерваться
-                                log.WriteAction(Localization.UseRussian ? 
-                                    "Пауза перед следующей попыткой" :
-                                    "Pause before trying again");
-                                Thread.Sleep(StartAttemptSpan);
+                                log.WriteAction(CommPhrases.RetryDelay);
+                                Thread.Sleep(RetryDelay);
                             }
                         }
                     }
@@ -822,8 +822,9 @@ namespace Scada.Comm.Svc
                     // сеанс опроса КП
                     try
                     {
-                        curAction = DateTime.Now.ToLocalizedString() +
-                            (Localization.UseRussian ? " Выбор КП для связи" : " Choosing device for communication");
+                        curAction = DateTime.Now.ToLocalizedString() + (Localization.UseRussian ? 
+                            " Выбор КП для связи" : 
+                            " Choosing device for communication");
                         WriteInfo();
 
                         // определение необходимости опроса КП
@@ -848,9 +849,9 @@ namespace Scada.Comm.Svc
                         // выполнение сеанса опроса КП
                         if (sessionNeeded)
                         {
-                            curAction = DateTime.Now.ToLocalizedString() +
-                                (Localization.UseRussian ? " Сеанс связи с " : " Communication with ") +
-                                kpLogic.Caption;
+                            curAction = DateTime.Now.ToLocalizedString() + (Localization.UseRussian ? 
+                                " Сеанс связи с " : 
+                                " Communication with ") + kpLogic.Caption;
                             WriteInfo();
 
                             curKP.Session();
@@ -945,15 +946,16 @@ namespace Scada.Comm.Svc
 
             try
             {
-                curAction = DateTime.Now.ToLocalizedString() +
-                    (Localization.UseRussian ? " Обработка команд ТУ" : " Processing commands");
+                curAction = DateTime.Now.ToLocalizedString() + (Localization.UseRussian ? 
+                    " Обработка команд ТУ" : 
+                    " Processing commands");
                 WriteInfo();
 
                 // копирование команд в буферы, чтобы минимизировать время блокировки списка команд
                 List<Command> cmdBufList = null; // буфер стандартных и бинарных команд
                 Command reqCmd = null;           // буфер команды внеочередного опроса КП
 
-                lock (cmdLock)
+                lock (cmdList)
                 {
                     if (cmdList.Count > 0)
                     {
@@ -996,8 +998,8 @@ namespace Scada.Comm.Svc
 
                         if (kpLogic != null)
                         {
-                            curAction = DateTime.Now.ToLocalizedString() +
-                                (Localization.UseRussian ? " Команда " : " Command to ") + kpLogic.Caption;
+                            curAction = DateTime.Now.ToLocalizedString() + (Localization.UseRussian ? 
+                                " Команда " : " Command to ") + kpLogic.Caption;
                             WriteInfo();
 
                             try
@@ -1078,118 +1080,126 @@ namespace Scada.Comm.Svc
         {
             if (serverComm != null)
             {
-                curAction = DateTime.Now.ToLocalizedString() + 
-                    (Localization.UseRussian ? " Передача данных SCADA-серверу" : " Sending data to SCADA-Server");
-                WriteInfo();
-
-                // получение текущих данных КП
-                int tagCnt = curKP.KPTags.Length;
-                SrezTableLight.CnlData[] curData = new SrezTableLight.CnlData[tagCnt];
-                bool[] curDataMod = new bool[tagCnt];
-                curKP.CopyCurData(curData, curDataMod);
-
-                // создание среза передаваемых данных
-                KPLogic.TagSrez curSrez = null;
-                if (sendAllCurData)
+                lock (serverLock)
                 {
-                    if (tagCnt > 0)
-                    {
-                        curSrez = new KPLogic.TagSrez(tagCnt);
-                        for (int i = 0; i < tagCnt; i++)
-                        {
-                            curSrez.KPTags[i] = curKP.KPTags[i];
-                            curSrez.TagData[i] = curData[i];
-                        }
+                    curAction = DateTime.Now.ToLocalizedString() + (Localization.UseRussian ? 
+                        " Передача данных SCADA-серверу" : 
+                        " Sending data to SCADA-Server");
+                    WriteInfo();
+
+                    // передача текущих данных
+                    KPLogic.TagSrez curSrez = GetKPCurData(sendAllCurData);
+                    if (curSrez != null)
                         serverComm.SendSrez(curSrez);
-                    }
-                }
-                else
-                {
-                    int modTagCnt = 0; // количество изменившихся тегов
-                    for (int i = 0; i < tagCnt; i++)
-                        if (curDataMod[i])
-                            modTagCnt++;
 
-                    if (modTagCnt > 0)
+                    // передача архивных срезов до тех пор, пока все срезы не будут переданы
+                    curKP.MoveArcSrez(unsentSrezList);
+
+                    foreach (KPLogic.TagSrez tagSrez in unsentSrezList)
                     {
-                        curSrez = new KPLogic.TagSrez(modTagCnt);
-                        for (int i = 0, j = 0; i < tagCnt; i++)
+                        int attemptNum = 0;
+                        while (!serverComm.SendArchive(tagSrez))
                         {
-                            if (curDataMod[i])
+                            if (++attemptNum < QuickAttemptCnt)
                             {
-                                curSrez.KPTags[j] = curKP.KPTags[i];
-                                curSrez.TagData[j] = curData[i];
-                                j++;
-                            }
-                        }
-                    }
-                }
-
-                // передача текущих данных
-                if (curSrez != null)
-                    serverComm.SendSrez(curSrez);
-
-                // передача архивных срезов
-                List<KPLogic.TagSrez> srezList = new List<KPLogic.TagSrez>();
-                curKP.MoveArcSrez(srezList);
-
-                /*if (curKP.SrezList.Count > 0)
-                {
-                    foreach (KPLogic.ParamSrez arcSrez in curKP.SrezList)
-                    {
-                        int errCnt = 0;
-                        while (!serverComm.SendArchive(arcSrez))
-                        {
-                            // ожидание успешной передачи архивного среза
-                            if (++errCnt == 5)
-                            {
-                                log.WriteAction(Localization.UseRussian ? 
-                                    "Пауза перед следующей попыткой передачи архивного среза SCADA-серверу" :
-                                    "Delay before the next attempt to send data to SCADA-Server");
-                                Thread.Sleep(10000);
-                            }
-                            else
-                            {
-                                if (errCnt == 1)
+                                if (attemptNum == 1)
                                     log.WriteLine();
                                 log.WriteAction(Localization.UseRussian ?
                                     "Неудачная попытка передачи архивного среза SCADA-серверу" :
                                     "Attempt to send archive data to SCADA-Server failed");
-                                Thread.Sleep(1000);
-                            }
-                        }
-                    }
-                }
-
-                // передача событий
-                if (curKP.EventList.Count > 0)
-                {
-                    foreach (KPLogic.Event ev in curKP.EventList)
-                    {
-                        int errCnt = 0;
-                        while (!serverComm.SendEvent(ev))
-                        {
-                            // ожидание успешной передачи события
-                            if (++errCnt == 5)
-                            {
-                                log.WriteAction(Localization.UseRussian ?
-                                    "Пауза перед следующей попыткой передачи события SCADA-серверу" :
-                                    "Delay before the next attempt to send event to SCADA-Server");
-                                Thread.Sleep(10000);
+                                Thread.Sleep(ScadaUtils.ThreadDelay);
                             }
                             else
                             {
-                                if (errCnt == 1)
+                                // задержка перед следующей попыткой
+                                log.WriteAction(CommPhrases.RetryDelay);
+                                Thread.Sleep(RetryDelay);
+                            }
+                        }
+                    }
+
+                    unsentSrezList.Clear();
+
+                    // передача событий до тех пор, пока все события не будут переданы
+                    curKP.MoveEvents(unsentEventList);
+
+                    foreach (KPLogic.KPEvent kpEvent in unsentEventList)
+                    {
+                        int attemptNum = 0;
+                        while (!serverComm.SendEvent(kpEvent))
+                        {
+                            if (++attemptNum < QuickAttemptCnt)
+                            {
+                                if (attemptNum == 1)
                                     log.WriteLine();
                                 log.WriteAction(Localization.UseRussian ?
                                     "Неудачная попытка передачи события SCADA-серверу" :
                                     "Attempt to send event to SCADA-Server failed");
-                                Thread.Sleep(1000);
+                                Thread.Sleep(ScadaUtils.ThreadDelay);
+                            }
+                            else
+                            {
+                                // задержка перед следующей попыткой
+                                log.WriteAction(CommPhrases.RetryDelay);
+                                Thread.Sleep(RetryDelay);
                             }
                         }
                     }
-                }*/
+
+                    unsentEventList.Clear();
+                }
             }
+        }
+
+        /// <summary>
+        /// Получить текущие данные опрашиваемого КП
+        /// </summary>
+        private KPLogic.TagSrez GetKPCurData(bool sendAllCurData)
+        {
+            // получение текущих данных КП
+            int tagCnt = curKP.KPTags.Length;
+            SrezTableLight.CnlData[] curData = new SrezTableLight.CnlData[tagCnt];
+            bool[] curDataMod = new bool[tagCnt];
+            curKP.CopyCurData(curData, curDataMod);
+
+            // создание среза передаваемых данных
+            KPLogic.TagSrez curSrez = null;
+            if (sendAllCurData)
+            {
+                if (tagCnt > 0)
+                {
+                    curSrez = new KPLogic.TagSrez(tagCnt);
+                    for (int i = 0; i < tagCnt; i++)
+                    {
+                        curSrez.KPTags[i] = curKP.KPTags[i];
+                        curSrez.TagData[i] = curData[i];
+                    }
+                    serverComm.SendSrez(curSrez);
+                }
+            }
+            else
+            {
+                int modTagCnt = 0; // количество изменившихся тегов
+                for (int i = 0; i < tagCnt; i++)
+                    if (curDataMod[i])
+                        modTagCnt++;
+
+                if (modTagCnt > 0)
+                {
+                    curSrez = new KPLogic.TagSrez(modTagCnt);
+                    for (int i = 0, j = 0; i < tagCnt; i++)
+                    {
+                        if (curDataMod[i])
+                        {
+                            curSrez.KPTags[j] = curKP.KPTags[i];
+                            curSrez.TagData[j] = curData[i];
+                            j++;
+                        }
+                    }
+                }
+            }
+
+            return curSrez;
         }
 
         /// <summary>
@@ -1341,7 +1351,7 @@ namespace Scada.Comm.Svc
             {
                 if (cmdEnabled)
                 {
-                    lock (cmdLock)
+                    lock (cmdList)
                         cmdList.Add(cmd);
                 }
                 else if (kpNumDict.ContainsKey(cmd.KPNum))
@@ -1396,7 +1406,32 @@ namespace Scada.Comm.Svc
         /// </summary>
         bool ICommLineService.FlushCurData(KPLogic kpLogic)
         {
-            throw new NotImplementedException();
+            if (kpLogic == null)
+                return false;
+
+            if (serverComm == null)
+                return true;
+
+            try
+            {
+                lock (serverLock)
+                {
+                    curAction = DateTime.Now.ToLocalizedString() + (Localization.UseRussian ?
+                        " Форсированная передача текущих данных SCADA-серверу" :
+                        " Flushing current data to SCADA-Server");
+                    WriteInfo();
+
+                    KPLogic.TagSrez curSrez = GetKPCurData(false);
+                    return serverComm.SendSrez(curSrez);
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteAction((Localization.UseRussian ?
+                    "Ошибка при форсированной передаче текущих данных SCADA-серверу: " :
+                    "Error flushing current data to SCADA-Server") + ex.Message);
+                return false;
+            }
         }
 
         /// <summary>
@@ -1407,66 +1442,54 @@ namespace Scada.Comm.Svc
             if (kpLogic == null)
                 return false;
 
-            Monitor.Enter(flushLock);
-            bool arcOk = false; // передача архивных срезов успешна
-            bool evOk = false;  // передача событий успешна
+            if (serverComm == null)
+                return true;
 
-            /*try
+            bool arcOK = true; // передача архивных срезов успешна
+            bool evOK = true;  // передача событий успешна
+
+            try
             {
-                if (serverComm == null)
+                lock (serverLock)
                 {
-                    arcOk = true;
-                    evOk = true;
-                }
-                else
-                {
-                    curAction = DateTime.Now.ToString("T", Localization.Culture) + (Localization.UseRussian ? 
-                        " Форсированная передача архивов SCADA-серверу" : " Flushing archives to SCADA-Server");
+                    curAction = DateTime.Now.ToLocalizedString() + (Localization.UseRussian ?
+                        " Форсированная передача архивов SCADA-серверу" :
+                        " Flushing archives to SCADA-Server");
                     WriteInfo();
 
+                    // передача архивных срезов до передачи всех срезов или возникновения ошибки
+                    curKP.MoveArcSrez(unsentSrezList);
 
-                    // передача архивных срезов (без повторных попыток)
-                    arcOk = true;
-                    while (kpLogic.SrezList.Count > 0)
+                    while (unsentSrezList.Count > 0 && arcOK)
                     {
-                        KPLogic.ParamSrez arcSrez = kpLogic.SrezList[0];
-                        arcOk = serverComm.SendArchive(arcSrez);
-
-                        if (arcOk)
+                        if (serverComm.SendArchive(unsentSrezList[0]))
                         {
-                            kpLogic.CopySrezToBuf(0);
-                            kpLogic.SrezList.RemoveAt(0);
+                            unsentSrezList.RemoveAt(0);
                         }
                         else
                         {
-                            log.WriteAction(Localization.UseRussian ? 
+                            log.WriteAction(Localization.UseRussian ?
                                 "Неудачная попытка форсированной передачи архивного среза SCADA-серверу" :
                                 "Attempt to flush archive data to SCADA-Server failed");
-                            break;
+                            arcOK = false;
                         }
                     }
 
-                    // передача событий (без повторных попыток)
-                    if (arcOk)
-                    {
-                        evOk = true;
-                        while (kpLogic.EventList.Count > 0)
-                        {
-                            KPLogic.Event ev = kpLogic.EventList[0];
-                            evOk = serverComm.SendEvent(ev);
+                    // передача событий до передачи всех событий или возникновения ошибки
+                    curKP.MoveEvents(unsentEventList);
 
-                            if (evOk)
-                            {
-                                kpLogic.CopyEventToBuf(0);
-                                kpLogic.EventList.RemoveAt(0);
-                            }
-                            else
-                            {
-                                log.WriteAction(Localization.UseRussian ?
-                                    "Неудачная попытка форсированной передачи события SCADA-серверу" :
-                                    "Attempt to flush event to SCADA-Server failed");
-                                break;
-                            }
+                    while (unsentEventList.Count > 0 && evOK)
+                    {
+                        if (serverComm.SendEvent(unsentEventList[0]))
+                        {
+                            unsentEventList.RemoveAt(0);
+                        }
+                        else
+                        {
+                            log.WriteAction(Localization.UseRussian ?
+                                "Неудачная попытка форсированной передачи события SCADA-серверу" :
+                                "Attempt to flush event to SCADA-Server failed");
+                            evOK = false;
                         }
                     }
                 }
@@ -1477,12 +1500,8 @@ namespace Scada.Comm.Svc
                     "Ошибка при форсированной передаче архивов SCADA-серверу: " : 
                     "Error flushing archives to SCADA-Server") + ex.Message);
             }
-            finally
-            {
-                Monitor.Exit(flushLock);
-            }*/
 
-            return arcOk && evOk;
+            return arcOK && evOK;
         }
 
         /// <summary>
@@ -1542,7 +1561,7 @@ namespace Scada.Comm.Svc
         /// <summary>
         /// Создать канал связи
         /// </summary>
-        private static CommLayerLogic CreateCommChannel(string commCnlType)
+        private static CommChannelLogic CreateCommChannel(string commCnlType)
         {
             try
             {
@@ -1643,11 +1662,11 @@ namespace Scada.Comm.Svc
             if (commLine.CustomParams.TryGetValue("CommChannel", out commCnlType) && 
                 !string.IsNullOrEmpty(commCnlType))
             {
-                commLine.CommLayerLogic = CreateCommChannel(commCnlType);
+                commLine.CommChannelLogic = CreateCommChannel(commCnlType);
 
                 try
                 {
-                    commLine.CommLayerLogic.Init(commLine.CustomParams, commLine.KPList);
+                    commLine.CommChannelLogic.Init(commLine.CustomParams, commLine.KPList);
                 }
                 catch (Exception ex)
                 {

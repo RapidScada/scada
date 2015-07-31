@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaCommCommon
- * Summary  : TCP client communication layer user interface
+ * Summary  : TCP client communication channel user interface
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
@@ -25,16 +25,16 @@
 
 using System.Collections.Generic;
 
-namespace Scada.Comm.Layers
+namespace Scada.Comm.Channels
 {
     /// <summary>
-    /// TCP client communication layer user interface
-    /// <para>Пользовательский интерфейс слоя связи TCP-клиент</para>
+    /// TCP client communication channel user interface
+    /// <para>Пользовательский интерфейс канала связи TCP-клиент</para>
     /// </summary>
-    public class CommTcpClientView : CommLayerView
+    public class CommTcpClientView : CommChannelView
     {
         /// <summary>
-        /// Получить наименование слоя связи
+        /// Получить наименование канала связи
         /// </summary>
         public override string Name
         {
@@ -45,36 +45,36 @@ namespace Scada.Comm.Layers
         }
 
         /// <summary>
-        /// Получить описание слоя связи
+        /// Получить описание канала связи
         /// </summary>
         public override string Descr
         {
             get
             {
                 return Localization.UseRussian ?
-                    "Слой связи TCP-клиент.\n\n" +
-                    "Параметры слоя связи:\n" +
+                    "Канал связи TCP-клиент.\n\n" +
+                    "Параметры канала связи:\n" +
                     "IpAddress - удалённый IP-адрес в режиме соединения Shared,\n" +
                     "TcpPort - удалённый TCP-порт по умолчанию,\n" +
-                    "Behavior - режим работы слоя связи (Master, Slave),\n" +
+                    "Behavior - режим работы канала связи (Master, Slave),\n" +
                     "ConnMode - режим соединения (Individual, Shared)." :
 
-                    "TCP client communication layer.\n\n" +
-                    "Communication layer parameters:\n" +
+                    "TCP client communication channel.\n\n" +
+                    "Communication channel parameters:\n" +
                     "IpAddress - remote IP address in Shared connection mode,\n" +
                     "TcpPort - remote TCP port by default," +
-                    "Behavior - work mode of connection layer (Master, Slave),\n" +
+                    "Behavior - work mode of connection channel (Master, Slave),\n" +
                     "ConnMode - connection mode (Individual, Shared).";
             }
         }
 
         /// <summary>
-        /// Получить информацию о свойствах слоя связи
+        /// Получить информацию о свойствах канала связи
         /// </summary>
-        public override string GetPropsInfo(Dictionary<string, string> layerParams)
+        public override string GetPropsInfo(Dictionary<string, string> commCnlParams)
         {
             CommTcpClientLogic.Settings defSett = new CommTcpClientLogic.Settings();
-            return BuildPropsInfo(layerParams,
+            return BuildPropsInfo(commCnlParams,
                 new string[] { "IpAddress", "TcpPort", "Behavior", "ConnMode" },
                 new object[] { defSett.IpAddress, defSett.TcpPort, defSett.Behavior, defSett.ConnMode });
         }

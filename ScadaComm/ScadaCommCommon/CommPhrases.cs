@@ -46,18 +46,19 @@ namespace Scada.Comm
         public static string IncorrectLineSettings { get; private set; }
 
         // Фразы, устанавливаемые в зависимости от локализации, не загружая из словаря
-        public static string SendNotation;
-        public static string ReceiveNotation;
-        public static string ReadDataError;
-        public static string ReadDataWithStopCondError;
-        public static string ReadLinesError;
-        public static string ReadAvailableError;
-        public static string WriteDataError;
-        public static string WriteLineError;
-        public static string ClearDataStreamError;
+        public static string SendNotation { get; private set; }
+        public static string ReceiveNotation { get; private set; }
+        public static string ReadDataError { get; private set; }
+        public static string ReadDataWithStopCondError { get; private set; }
+        public static string ReadLinesError { get; private set; }
+        public static string ReadAvailableError { get; private set; }
+        public static string WriteDataError { get; private set; }
+        public static string WriteLineError { get; private set; }
+        public static string ClearDataStreamError { get; private set; }
         public static string IllegalCommand { get; private set; }
         public static string IncorrectCmdData { get; private set; }
         public static string NoCmdData { get; private set; }
+        public static string RetryDelay { get; private set; }
 
 
         private static void SetToDefault()
@@ -84,6 +85,7 @@ namespace Scada.Comm
                 IllegalCommand = "Недопустимая команда";
                 IncorrectCmdData = "Некорректные данные команды";
                 NoCmdData = "Отсутствуют данные команды";
+                RetryDelay = "Задержка перед повторной попыткой";
             }
             else
             {
@@ -99,6 +101,7 @@ namespace Scada.Comm
                 IllegalCommand = "Illegal command";
                 IncorrectCmdData = "Incorrect command data";
                 NoCmdData = "No command data";
+                RetryDelay = "Delay before trying again";
             }
         }
 

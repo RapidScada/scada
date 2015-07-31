@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaCommCommon
- * Summary  : UDP communication layer logic
+ * Summary  : UDP communication channel logic
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
@@ -29,13 +29,13 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 
-namespace Scada.Comm.Layers
+namespace Scada.Comm.Channels
 {
     /// <summary>
-    /// UDP communication layer logic
-    /// <para>Логика работы слоя связи UDP</para>
+    /// UDP communication channel logic
+    /// <para>Логика работы канала связи UDP</para>
     /// </summary>
-    public class CommUdpLogic : CommLayerLogic
+    public class CommUdpLogic : CommChannelLogic
     {
         /// <summary>
         /// Режимы выбора КП для обработки входящих запросов
@@ -53,7 +53,7 @@ namespace Scada.Comm.Layers
         }
 
         /// <summary>
-        /// Настройки слоя связи
+        /// Настройки канала связи
         /// </summary>
         public class Settings
         {
@@ -65,7 +65,8 @@ namespace Scada.Comm.Layers
                 // установка значений по умолчанию
                 LocalUdpPort = 0;
                 RemoteUdpPort = 0;
-                Behavior = CommLayerLogic.OperatingBehaviors.Master;
+                RemoteIpAddress = "";
+                Behavior = CommChannelLogic.OperatingBehaviors.Master;
                 DevSelMode = CommUdpLogic.DeviceSelectionModes.ByIPAddress;
             }
 
@@ -78,7 +79,11 @@ namespace Scada.Comm.Layers
             /// </summary>
             public int RemoteUdpPort { get; set; }
             /// <summary>
-            /// Получить или установить режим работы слоя связи
+            /// Получить или установить удалённый IP-адрес по умолчанию
+            /// </summary>
+            public string RemoteIpAddress { get; set; }
+            /// <summary>
+            /// Получить или установить режим работы канала связи
             /// </summary>
             public OperatingBehaviors Behavior { get; set; }
             /// <summary>
@@ -88,7 +93,7 @@ namespace Scada.Comm.Layers
         }
 
         /// <summary>
-        /// Настройки слоя связи
+        /// Настройки канала связи
         /// </summary>
         protected Settings settings;
         /// <summary>
@@ -114,7 +119,7 @@ namespace Scada.Comm.Layers
 
 
         /// <summary>
-        /// Получить наименование слоя связи
+        /// Получить наименование канала связи
         /// </summary>
         public override string InternalName
         {
@@ -192,19 +197,21 @@ namespace Scada.Comm.Layers
 
 
         /// <summary>
-        /// Инициализировать слой связи
+        /// Инициализировать канал связи
         /// </summary>
-        public override void Init(SortedList<string, string> layerParams, List<KPLogic> kpList)
+        public override void Init(SortedList<string, string> commCnlParams, List<KPLogic> kpList)
         {
             // вызов метода базового класса
-            base.Init(layerParams, kpList);
+            base.Init(commCnlParams, kpList);
 
-            // получение настроек слоя связи
-            settings.LocalUdpPort = GetIntLayerParam(layerParams, "LocalUdpPort", true, settings.LocalUdpPort);
-            settings.RemoteUdpPort = GetIntLayerParam(layerParams, "RemoteUdpPort", false, settings.RemoteUdpPort);
-            settings.Behavior = GetEnumLayerParam<OperatingBehaviors>(layerParams, "Behavior", 
+            // получение настроек канала связи
+            settings.LocalUdpPort = GetIntParam(commCnlParams, "LocalUdpPort", true, settings.LocalUdpPort);
+            settings.RemoteUdpPort = GetIntParam(commCnlParams, "RemoteUdpPort", false, settings.RemoteUdpPort);
+            settings.RemoteIpAddress = GetStringParam(commCnlParams, "RemoteIpAddress", 
+                false, settings.RemoteIpAddress);
+            settings.Behavior = GetEnumParam<OperatingBehaviors>(commCnlParams, "Behavior", 
                 false, settings.Behavior);
-            settings.DevSelMode = GetEnumLayerParam<DeviceSelectionModes>(layerParams, "DevSelMode", 
+            settings.DevSelMode = GetEnumParam<DeviceSelectionModes>(commCnlParams, "DevSelMode", 
                 false, settings.DevSelMode);
 
             // создание клиента и соединения
@@ -229,7 +236,7 @@ namespace Scada.Comm.Layers
         }
 
         /// <summary>
-        /// Запустить работу слоя связи
+        /// Запустить работу канала связи
         /// </summary>
         public override void Start()
         {
@@ -243,7 +250,7 @@ namespace Scada.Comm.Layers
         }
 
         /// <summary>
-        /// Остановить работу слоя связи
+        /// Остановить работу канала связи
         /// </summary>
         public override void Stop()
         {
@@ -264,7 +271,8 @@ namespace Scada.Comm.Layers
         public override void BeforeSession(KPLogic kpLogic)
         {
             if (udpConn != null)
-                udpConn.RemoteAddress = kpLogic.CallNum;
+                udpConn.RemoteAddress = string.IsNullOrEmpty(kpLogic.CallNum) ? 
+                    settings.RemoteIpAddress : kpLogic.CallNum;
         }
     }
 }

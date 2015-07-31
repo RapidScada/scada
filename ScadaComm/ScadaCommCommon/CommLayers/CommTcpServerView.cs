@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaCommCommon
- * Summary  : TCP server communication layer user interface
+ * Summary  : TCP server communication channel user interface
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
@@ -25,16 +25,16 @@
 
 using System.Collections.Generic;
 
-namespace Scada.Comm.Layers
+namespace Scada.Comm.Channels
 {
     /// <summary>
-    /// TCP server communication layer user interface
-    /// <para>Пользовательский интерфейс слоя связи TCP-сервер</para>
+    /// TCP server communication channel user interface
+    /// <para>Пользовательский интерфейс канала связи TCP-сервер</para>
     /// </summary>
-    public class CommTcpServerView : CommLayerView
+    public class CommTcpServerView : CommChannelView
     {
         /// <summary>
-        /// Получить наименование слоя связи
+        /// Получить наименование канала связи
         /// </summary>
         public override string Name
         {
@@ -45,39 +45,39 @@ namespace Scada.Comm.Layers
         }
 
         /// <summary>
-        /// Получить описание слоя связи
+        /// Получить описание канала связи
         /// </summary>
         public override string Descr
         {
             get
             {
                 return Localization.UseRussian ?
-                    "Слой связи TCP-сервер.\n\n" +
-                    "Параметры слоя связи:\n" +
+                    "Канал связи TCP-сервер.\n\n" +
+                    "Параметры канала связи:\n" +
                     "TcpPort - TCP-порт для входящих соединений,\n" +
                     "InactiveTime - время неактивности соединения до отключения, с,\n" +
-                    "Behavior - режим работы слоя связи (Master, Slave),\n" +
+                    "Behavior - режим работы канала связи (Master, Slave),\n" +
                     "ConnMode - режим соединения (Individual, Shared)," +
                     "DevSelMode - режим выбора КП в режиме соединения Individual " + 
                     "(ByIPAddress, ByFirstPackage, ByDeviceLibrary)." :
 
-                    "TCP server communication layer.\n\n" +
-                    "Communication layer parameters:\n" +
+                    "TCP server communication channel.\n\n" +
+                    "Communication channel parameters:\n" +
                     "TcpPort - TCP port for incoming connections," +
                     "InactiveTime - duration of inactivity before disconnect, sec,\n" +
-                    "Behavior - work mode of connection layer (Master, Slave),\n" +
+                    "Behavior - work mode of connection channel (Master, Slave),\n" +
                     "DevSelMode - device selection mode in Individual connection mode " + 
                     "(ByIPAddress, ByFirstPackage, ByDeviceLibrary).";
             }
         }
 
         /// <summary>
-        /// Получить информацию о свойствах слоя связи
+        /// Получить информацию о свойствах канала связи
         /// </summary>
-        public override string GetPropsInfo(Dictionary<string, string> layerParams)
+        public override string GetPropsInfo(Dictionary<string, string> commCnlParams)
         {
             CommTcpServerLogic.Settings defSett = new CommTcpServerLogic.Settings();
-            return BuildPropsInfo(layerParams, 
+            return BuildPropsInfo(commCnlParams, 
                 new string[] { "TcpPort", "InactiveTime", "Behavior", "DevSelMode" },
                 new object[] { defSett.TcpPort, defSett.InactiveTime, defSett.Behavior, defSett.DevSelMode });
         }

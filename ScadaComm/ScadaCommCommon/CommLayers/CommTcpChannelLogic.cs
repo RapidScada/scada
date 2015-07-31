@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaCommCommon
- * Summary  : The base class for TCP communication layer logic
+ * Summary  : The base class for TCP communication channel logic
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
@@ -27,13 +27,13 @@ using Scada.Comm.Devices;
 using System.Collections.Generic;
 using System.Net.Sockets;
 
-namespace Scada.Comm.Layers
+namespace Scada.Comm.Channels
 {
     /// <summary>
-    /// The base class for TCP communication layer logic
-    /// <para>Родительский класс логики работы слоя связи TCP</para>
+    /// The base class for TCP communication channel logic
+    /// <para>Родительский класс логики работы канала связи TCP</para>
     /// </summary>
-    public abstract class CommTcpLayerLogic : CommLayerLogic
+    public abstract class CommTcpChannelLogic : CommChannelLogic
     {
         /// <summary>
         /// Режимы соединения
@@ -76,7 +76,7 @@ namespace Scada.Comm.Layers
         /// <summary>
         /// Конструктор
         /// </summary>
-        public CommTcpLayerLogic()
+        public CommTcpChannelLogic()
             : base()
         {
             inBuf = new byte[InBufLenght];
@@ -97,12 +97,12 @@ namespace Scada.Comm.Layers
         }
         
         /// <summary>
-        /// Инициализировать слой связи
+        /// Инициализировать канал связи
         /// </summary>
-        public override void Init(SortedList<string, string> layerParams, List<KPLogic> kpList)
+        public override void Init(SortedList<string, string> commCnlParams, List<KPLogic> kpList)
         {
             // вызов метода базового класса
-            base.Init(layerParams, kpList);
+            base.Init(commCnlParams, kpList);
 
             // добавление КП в словарь по позывным
             foreach (KPLogic kpLogic in kpList)
@@ -123,7 +123,7 @@ namespace Scada.Comm.Layers
         }
 
         /// <summary>
-        /// Остановить работу слоя связи
+        /// Остановить работу канала связи
         /// </summary>
         public override void Stop()
         {

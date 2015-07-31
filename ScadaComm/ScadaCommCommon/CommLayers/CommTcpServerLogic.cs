@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaCommCommon
- * Summary  : TCP server communication layer logic
+ * Summary  : TCP server communication channel logic
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
@@ -31,13 +31,13 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
-namespace Scada.Comm.Layers
+namespace Scada.Comm.Channels
 {
     /// <summary>
-    /// TCP server communication layer logic
-    /// <para>Логика работы слоя связи TCP-сервер</para>
+    /// TCP server communication channel logic
+    /// <para>Логика работы канала связи TCP-сервер</para>
     /// </summary>
-    public class CommTcpServerLogic : CommTcpLayerLogic
+    public class CommTcpServerLogic : CommTcpChannelLogic
     {
         /// <summary>
         /// Режимы выбора КП для обработки входящих запросов
@@ -59,7 +59,7 @@ namespace Scada.Comm.Layers
         }
 
         /// <summary>
-        /// Настройки слоя связи
+        /// Настройки канала связи
         /// </summary>
         public class Settings
         {
@@ -71,7 +71,7 @@ namespace Scada.Comm.Layers
                 // установка значений по умолчанию
                 TcpPort = 0;
                 InactiveTime = 60;
-                Behavior = CommLayerLogic.OperatingBehaviors.Master;
+                Behavior = CommChannelLogic.OperatingBehaviors.Master;
                 ConnMode = ConnectionModes.Individual;
                 DevSelMode = CommTcpServerLogic.DeviceSelectionModes.ByIPAddress;
             }
@@ -85,7 +85,7 @@ namespace Scada.Comm.Layers
             /// </summary>
             public int InactiveTime { get; set; }
             /// <summary>
-            /// Получить или установить режим работы слоя связи
+            /// Получить или установить режим работы канала связи
             /// </summary>
             public OperatingBehaviors Behavior { get; set; }
             /// <summary>
@@ -105,7 +105,7 @@ namespace Scada.Comm.Layers
         private bool devSelByDeviceLibrary;
 
         /// <summary>
-        /// Настройки слоя связи
+        /// Настройки канала связи
         /// </summary>
         protected Settings settings;
         /// <summary>
@@ -141,7 +141,7 @@ namespace Scada.Comm.Layers
 
 
         /// <summary>
-        /// Получить наименование слоя связи
+        /// Получить наименование канала связи
         /// </summary>
         public override string InternalName
         {
@@ -439,21 +439,21 @@ namespace Scada.Comm.Layers
 
 
         /// <summary>
-        /// Инициализировать слой связи
+        /// Инициализировать канал связи
         /// </summary>
-        public override void Init(SortedList<string, string> layerParams, List<KPLogic> kpList)
+        public override void Init(SortedList<string, string> commCnlParams, List<KPLogic> kpList)
         {
             // вызов метода базового класса
-            base.Init(layerParams, kpList);
+            base.Init(commCnlParams, kpList);
 
-            // получение настроек слоя связи
-            settings.TcpPort = GetIntLayerParam(layerParams, "TcpPort", true, settings.TcpPort);
-            settings.InactiveTime = GetIntLayerParam(layerParams, "InactiveTime", false, settings.InactiveTime);
-            settings.Behavior = GetEnumLayerParam<OperatingBehaviors>(layerParams, "Behavior", 
+            // получение настроек канала связи
+            settings.TcpPort = GetIntParam(commCnlParams, "TcpPort", true, settings.TcpPort);
+            settings.InactiveTime = GetIntParam(commCnlParams, "InactiveTime", false, settings.InactiveTime);
+            settings.Behavior = GetEnumParam<OperatingBehaviors>(commCnlParams, "Behavior", 
                 false, settings.Behavior);
-            settings.ConnMode = GetEnumLayerParam<ConnectionModes>(layerParams, "ConnMode", 
+            settings.ConnMode = GetEnumParam<ConnectionModes>(commCnlParams, "ConnMode", 
                 false, settings.ConnMode);
-            settings.DevSelMode = GetEnumLayerParam<DeviceSelectionModes>(layerParams, "DevSelMode", 
+            settings.DevSelMode = GetEnumParam<DeviceSelectionModes>(commCnlParams, "DevSelMode", 
                 false, settings.DevSelMode);
 
             // сохранение постоянно используемых значений
@@ -472,7 +472,7 @@ namespace Scada.Comm.Layers
         }
 
         /// <summary>
-        /// Запустить работу слоя связи
+        /// Запустить работу канала связи
         /// </summary>
         public override void Start()
         {
@@ -492,7 +492,7 @@ namespace Scada.Comm.Layers
         }
 
         /// <summary>
-        /// Остановить работу слоя связи
+        /// Остановить работу канала связи
         /// </summary>
         public override void Stop()
         {
@@ -532,7 +532,7 @@ namespace Scada.Comm.Layers
         }
 
         /// <summary>
-        /// Получить информацию о работе слоя связи
+        /// Получить информацию о работе канала связи
         /// </summary>
         public override string GetInfo()
         {
