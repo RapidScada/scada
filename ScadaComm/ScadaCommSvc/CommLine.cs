@@ -146,7 +146,6 @@ namespace Scada.Comm.Svc
         private string logPrefix;         // префикс имён файлов журналов, относящихся к линии связи
         private string infoFileName;      // имя файла информации о работе линии связи
         private string curAction;         // описание текущего действия
-        private KPLogic curKP;            // опрашиваемый в данный момент КП
         private string captionUnd;        // подчёркивание обозначения линии связи
         private string allCustomParams;   // все имена и значения пользовательских параметров
         private string[] kpCaptions;      // обозначения КП
@@ -194,7 +193,6 @@ namespace Scada.Comm.Svc
             log.FileName = logPrefix + ".log";
             infoFileName = logPrefix + ".txt";
             curAction = NoAction;
-            curKP = null;
             allCustomParams = null;
             kpCaptions = null;
 
@@ -694,7 +692,6 @@ namespace Scada.Comm.Svc
                         try
                         {
                             kpLogic.OnCommLineStart();
-                            WriteKPInfo(kpLogic);
                         }
                         catch (Exception ex)
                         {
@@ -703,6 +700,7 @@ namespace Scada.Comm.Svc
                                 "Error executing actions of {0} on communication line start: {1}", 
                                 kpLogic.Caption, ex.Message));
                         }
+                        WriteKPInfo(kpLogic);
                     }
 
                     if (!detailedLog)
@@ -819,15 +817,15 @@ namespace Scada.Comm.Svc
                     KPLogic extraKP; // КП для внеочередного опроса
                     ProcCommands(ref commCnt, out extraKP);
 
-                    // сеанс опроса КП
+                    // взаимодействие с КП
                     try
                     {
+                        // определение необходимости опроса КП
                         curAction = DateTime.Now.ToLocalizedString() + (Localization.UseRussian ? 
                             " Выбор КП для связи" : 
                             " Choosing device for communication");
                         WriteInfo();
 
-                        // определение необходимости опроса КП
                         bool sessionNeeded; // необходимо выполнить сеанс опроса КП
                         KPLogic kpLogic;    // КП, который необходимо опросить
 
@@ -842,9 +840,8 @@ namespace Scada.Comm.Svc
                             kpLogic = extraKP;
                         }
 
-                        // установка опрашиваемого в данный момент КП
-                        curKP = kpLogic;
-                        curKP.Terminated = workState == WorkStates.Terminating;
+                        // установка признака завершения работы для опрашиваемого КП
+                        kpLogic.Terminated = workState == WorkStates.Terminating;
 
                         // выполнение сеанса опроса КП
                         if (sessionNeeded)
@@ -854,20 +851,28 @@ namespace Scada.Comm.Svc
                                 " Communication with ") + kpLogic.Caption;
                             WriteInfo();
 
-                            curKP.Session();
-                            WriteKPInfo(curKP);
-                            commCnt++;
+                            CommCnlBeforeSession(kpLogic);
+                            if (kpLogic.ConnRequired && (kpLogic.Connection == null || !kpLogic.Connection.Connected))
+                            {
+                                log.WriteAction(Localization.UseRussian ?
+                                    "Невозможно выполнить сеанс опроса КП, т.к. соединение не установлено: " :
+                                    "Unable to communicate with the device because connection is not established");
+                            }
+                            else
+                            {
+                                KPSession(kpLogic);
+                                WriteKPInfo(kpLogic);
+                                commCnt++;
+                            }
+                            CommCnlAfterSession(kpLogic);
                         }
 
-                        // передача данных текущего КП на сервер
+                        // передача данных КП на сервер
                         if (sessionNeeded || sendAllCurData)
-                            SendDataToServer(sendAllCurData);
+                            SendDataToServer(kpLogic, sendAllCurData);
 
                         // определение необходимости завершить цикл работы
-                        terminateCycle = workState == WorkStates.Terminating && curKP.Terminated;
-
-                        // обнуление опрашиваемого в данный момент КП
-                        curKP = null;
+                        terminateCycle = workState == WorkStates.Terminating && kpLogic.Terminated;
                     }
                     catch (ThreadAbortException)
                     {
@@ -875,12 +880,11 @@ namespace Scada.Comm.Svc
                     }
                     catch (Exception ex)
                     {
-                        curKP = null;
                         curAction = NoAction;
                         WriteInfo();
                         log.WriteAction((Localization.UseRussian ?
-                            "Ошибка сеанса опроса КП: " :
-                            "Error communicating with the device: ") + ex.Message);
+                            "Ошибка при взаимодействии с КП: " :
+                            "Error interacting with devices: ") + ex.Message);
                     }
 
                     if (extraKP == null)
@@ -938,6 +942,76 @@ namespace Scada.Comm.Svc
         }
 
         /// <summary>
+        /// Выполнить действия канала связи перед сеансом опроса КП
+        /// </summary>
+        private void CommCnlBeforeSession(KPLogic kpLogic)
+        {
+            try
+            {
+                if (commCnl != null)
+                    commCnl.BeforeSession(kpLogic);
+            }
+            catch (Exception ex)
+            {
+                log.WriteAction((Localization.UseRussian ?
+                    "Ошибка при выполнении действий канала связи перед сеансом опроса КП: " :
+                    "Error executing actions of communication channel before session with a device: ") + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Выполнить действия канала связи после сеанса опроса КП
+        /// </summary>
+        private void CommCnlAfterSession(KPLogic kpLogic)
+        {
+            try
+            {
+                if (commCnl != null)
+                    commCnl.AfterSession(kpLogic);
+            }
+            catch (Exception ex)
+            {
+                log.WriteAction((Localization.UseRussian ?
+                    "Ошибка при выполнении действий канала связи после сеанса опроса КП: " :
+                    "Error executing actions of communication channel after session with a device: ") + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Выполнить сеанс опроса КП
+        /// </summary>
+        private void KPSession(KPLogic kpLogic)
+        {
+            try
+            {
+                kpLogic.Session();
+            }
+            catch (Exception ex)
+            {
+                log.WriteAction((Localization.UseRussian ?
+                    "Ошибка при выполнении сеанса опроса КП: " :
+                    "Error communicating with the device: ") + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Отправить команду ТУ
+        /// </summary>
+        private void KPSendCmd(KPLogic kpLogic, Command cmd)
+        {
+            try
+            {
+                kpLogic.SendCmd(cmd);
+            }
+            catch (Exception ex)
+            {
+                log.WriteAction((Localization.UseRussian ?
+                    "Ошибка при отправке команды ТУ: " :
+                    "Error sending command: ") + ex.Message);
+            }
+        }
+
+        /// <summary>
         /// Обработать команды ТУ в цикле линии связи
         /// </summary>
         private void ProcCommands(ref int commCnt, out KPLogic extraKP)
@@ -989,7 +1063,7 @@ namespace Scada.Comm.Svc
                     }
                 }
 
-                // выполнение команд ТУ
+                // отправка команд ТУ
                 if (cmdBufList != null)
                 {
                     foreach (Command cmd in cmdBufList)
@@ -1002,24 +1076,20 @@ namespace Scada.Comm.Svc
                                 " Команда " : " Command to ") + kpLogic.Caption;
                             WriteInfo();
 
-                            try
+                            CommCnlBeforeSession(kpLogic);
+                            if (kpLogic.ConnRequired && (kpLogic.Connection == null || !kpLogic.Connection.Connected))
                             {
-                                kpLogic.SendCmd(cmd);
+                                log.WriteAction(Localization.UseRussian ?
+                                    "Невозможно отправить команду ТУ, т.к. соединение не установлено: " :
+                                    "Unable to send command because connection is not established");
+                            }
+                            else
+                            {
+                                KPSendCmd(kpLogic, cmd);
                                 WriteKPInfo(kpLogic);
                                 commCnt++;
                             }
-                            catch (ThreadAbortException)
-                            {
-                                // обработка данного исключения реализована в методе Execute
-                            }
-                            catch (Exception ex)
-                            {
-                                curAction = NoAction;
-                                WriteInfo();
-                                log.WriteAction((Localization.UseRussian ?
-                                    "Ошибка при отправке команды ТУ: " :
-                                    "Error sending command: ") + ex.Message);
-                            }
+                            CommCnlAfterSession(kpLogic);
                         }
                     }
                 }
@@ -1074,9 +1144,9 @@ namespace Scada.Comm.Svc
         }
 
         /// <summary>
-        /// Передать данные опрашиваемого КП SCADA-Серверу
+        /// Передать данные КП SCADA-Серверу
         /// </summary>
-        private void SendDataToServer(bool sendAllCurData)
+        private void SendDataToServer(KPLogic kpLogic, bool sendAllCurData)
         {
             if (serverComm != null)
             {
@@ -1088,12 +1158,12 @@ namespace Scada.Comm.Svc
                     WriteInfo();
 
                     // передача текущих данных
-                    KPLogic.TagSrez curSrez = GetKPCurData(sendAllCurData);
+                    KPLogic.TagSrez curSrez = GetKPCurData(kpLogic, sendAllCurData);
                     if (curSrez != null)
                         serverComm.SendSrez(curSrez);
 
                     // передача архивных срезов до тех пор, пока все срезы не будут переданы
-                    curKP.MoveArcSrez(unsentSrezList);
+                    kpLogic.MoveArcSrez(unsentSrezList);
 
                     foreach (KPLogic.TagSrez tagSrez in unsentSrezList)
                     {
@@ -1121,7 +1191,7 @@ namespace Scada.Comm.Svc
                     unsentSrezList.Clear();
 
                     // передача событий до тех пор, пока все события не будут переданы
-                    curKP.MoveEvents(unsentEventList);
+                    kpLogic.MoveEvents(unsentEventList);
 
                     foreach (KPLogic.KPEvent kpEvent in unsentEventList)
                     {
@@ -1152,26 +1222,26 @@ namespace Scada.Comm.Svc
         }
 
         /// <summary>
-        /// Получить текущие данные опрашиваемого КП
+        /// Получить текущие данные КП
         /// </summary>
-        private KPLogic.TagSrez GetKPCurData(bool sendAllCurData)
+        private KPLogic.TagSrez GetKPCurData(KPLogic kpLogic, bool allCurData)
         {
             // получение текущих данных КП
-            int tagCnt = curKP.KPTags.Length;
+            int tagCnt = kpLogic.KPTags.Length;
             SrezTableLight.CnlData[] curData = new SrezTableLight.CnlData[tagCnt];
             bool[] curDataMod = new bool[tagCnt];
-            curKP.CopyCurData(curData, curDataMod);
+            kpLogic.CopyCurData(curData, curDataMod);
 
             // создание среза передаваемых данных
             KPLogic.TagSrez curSrez = null;
-            if (sendAllCurData)
+            if (allCurData)
             {
                 if (tagCnt > 0)
                 {
                     curSrez = new KPLogic.TagSrez(tagCnt);
                     for (int i = 0; i < tagCnt; i++)
                     {
-                        curSrez.KPTags[i] = curKP.KPTags[i];
+                        curSrez.KPTags[i] = kpLogic.KPTags[i];
                         curSrez.TagData[i] = curData[i];
                     }
                     serverComm.SendSrez(curSrez);
@@ -1191,7 +1261,7 @@ namespace Scada.Comm.Svc
                     {
                         if (curDataMod[i])
                         {
-                            curSrez.KPTags[j] = curKP.KPTags[i];
+                            curSrez.KPTags[j] = kpLogic.KPTags[i];
                             curSrez.TagData[j] = curData[i];
                             j++;
                         }
@@ -1421,7 +1491,7 @@ namespace Scada.Comm.Svc
                         " Flushing current data to SCADA-Server");
                     WriteInfo();
 
-                    KPLogic.TagSrez curSrez = GetKPCurData(false);
+                    KPLogic.TagSrez curSrez = GetKPCurData(kpLogic, false);
                     return serverComm.SendSrez(curSrez);
                 }
             }
@@ -1458,7 +1528,7 @@ namespace Scada.Comm.Svc
                     WriteInfo();
 
                     // передача архивных срезов до передачи всех срезов или возникновения ошибки
-                    curKP.MoveArcSrez(unsentSrezList);
+                    kpLogic.MoveArcSrez(unsentSrezList);
 
                     while (unsentSrezList.Count > 0 && arcOK)
                     {
@@ -1476,7 +1546,7 @@ namespace Scada.Comm.Svc
                     }
 
                     // передача событий до передачи всех событий или возникновения ошибки
-                    curKP.MoveEvents(unsentEventList);
+                    kpLogic.MoveEvents(unsentEventList);
 
                     while (unsentEventList.Count > 0 && evOK)
                     {
