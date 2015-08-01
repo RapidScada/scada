@@ -41,6 +41,11 @@ namespace Scada.Comm.Devices
         /// </summary>
         public static readonly KPReqParams Default = new KPReqParams();
 
+        /// <summary>
+        /// Нулевые параметры опроса КП
+        /// </summary>
+        public static readonly KPReqParams Zero = new KPReqParams() { Timeout = 0, Delay = 0 };
+
 
         /// <summary>
         /// Получить или установить таймаут запросов, мс

@@ -44,21 +44,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppDirs.cs" />
-    <Compile Include="CommLayers\CommChannelLogic.cs" />
-    <Compile Include="CommLayers\CommChannelView.cs" />
-    <Compile Include="CommLayers\CommSerialLogic.cs" />
-    <Compile Include="CommLayers\CommSerialView.cs" />
-    <Compile Include="CommLayers\CommTcpClientLogic.cs" />
-    <Compile Include="CommLayers\CommTcpClientView.cs" />
-    <Compile Include="CommLayers\CommTcpChannelLogic.cs" />
-    <Compile Include="CommLayers\CommTcpServerLogic.cs" />
-    <Compile Include="CommLayers\CommTcpServerView.cs" />
-    <Compile Include="CommLayers\CommUdpLogic.cs" />
-    <Compile Include="CommLayers\CommUdpView.cs" />
-    <Compile Include="CommLayers\Connection.cs" />
-    <Compile Include="CommLayers\SerialConnection.cs" />
-    <Compile Include="CommLayers\TcpConnection.cs" />
-    <Compile Include="CommLayers\UdpConnection.cs" />
+    <Compile Include="CommChannels\CommChannelLogic.cs" />
+    <Compile Include="CommChannels\CommChannelView.cs" />
+    <Compile Include="CommChannels\CommSerialLogic.cs" />
+    <Compile Include="CommChannels\CommSerialView.cs" />
+    <Compile Include="CommChannels\CommTcpClientLogic.cs" />
+    <Compile Include="CommChannels\CommTcpClientView.cs" />
+    <Compile Include="CommChannels\CommTcpChannelLogic.cs" />
+    <Compile Include="CommChannels\CommTcpServerLogic.cs" />
+    <Compile Include="CommChannels\CommTcpServerView.cs" />
+    <Compile Include="CommChannels\CommUdpLogic.cs" />
+    <Compile Include="CommChannels\CommUdpView.cs" />
+    <Compile Include="CommChannels\Connection.cs" />
+    <Compile Include="CommChannels\SerialConnection.cs" />
+    <Compile Include="CommChannels\TcpConnection.cs" />
+    <Compile Include="CommChannels\UdpConnection.cs" />
     <Compile Include="CommPhrases.cs" />
     <Compile Include="CommUtils.cs" />
     <Compile Include="Devices\ICommLineService.cs" />

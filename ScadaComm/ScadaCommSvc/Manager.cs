@@ -78,7 +78,7 @@ namespace Scada.Comm.Svc
         private DateTime startDT;                 // дата и время запуска работы
         private bool linesStarted;                // потоки линий связи запущены
         private string[] lineCaptions;            // обозначения линий связи
-        private object lineCmdLock; // объект для синхронизации выполнения команд над линиями связи
+        private object lineCmdLock;               // объект для синхронизации выполнения команд над линиями связи
 
 
         /// <summary>
@@ -206,7 +206,17 @@ namespace Scada.Comm.Svc
                         }
                     }
 
-                    return true;
+                    if (commLines.Count > 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        AppLog.WriteAction(Localization.UseRussian ?
+                            "Отсутствуют активные линии связи" :
+                            "No active communication lines", Log.ActTypes.Error);
+                        return false;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -414,11 +424,9 @@ namespace Scada.Comm.Svc
         /// </summary>
         private void TryToStartThreads()
         {
-            DateTime nowDT = DateTime.Now;
             while (!StartThreads())
             {
-                DateTime retryDT = startDT.AddMilliseconds(StartRetryDelay);
-                Thread.Sleep(retryDT - DateTime.Now);
+                Thread.Sleep(StartRetryDelay);
             }
         }
 
@@ -478,36 +486,27 @@ namespace Scada.Comm.Svc
                             commLine.Tune(tblInCnl, tblKP);
                     }
 
-                    if (commLines.Count > 0)
-                    {
-                        // запуск потоков линий связи
-                        AppLog.WriteAction(Localization.UseRussian ? 
-                            "Запуск линий связи" : 
-                            "Start communication lines", Log.ActTypes.Action);
+                    // запуск потоков линий связи
+                    AppLog.WriteAction(Localization.UseRussian ? 
+                        "Запуск линий связи" : 
+                        "Start communication lines", Log.ActTypes.Action);
 
-                        lock (commLines)
+                    lock (commLines)
+                    {
+                        foreach (CommLine commLine in commLines)
                         {
-                            foreach (CommLine commLine in commLines)
-                            {
-                                commLine.ServerComm = ServerComm;
-                                commLine.Start();
-                            }
-                            linesStarted = true;
+                            commLine.ServerComm = ServerComm;
+                            commLine.Start();
                         }
+                        linesStarted = true;
+                    }
 
-                        // запуск приёма команд
-                        AppLog.WriteAction(Localization.UseRussian ? 
-                            "Запуск приёма команд" :
-                            "Start receiving commands", Log.ActTypes.Action);
-                        commandReader = new CommandReader(this);
-                        commandReader.StartThread();
-                    }
-                    else
-                    {
-                        AppLog.WriteAction(Localization.UseRussian ?
-                            "Отсутствуют активные линии связи" :
-                            "No active communication lines", Log.ActTypes.Error);
-                    }
+                    // запуск приёма команд
+                    AppLog.WriteAction(Localization.UseRussian ? 
+                        "Запуск приёма команд" :
+                        "Start receiving commands", Log.ActTypes.Action);
+                    commandReader = new CommandReader(this);
+                    commandReader.StartThread();
                 }
 
                 // запуск потока записи информации о работе приложения

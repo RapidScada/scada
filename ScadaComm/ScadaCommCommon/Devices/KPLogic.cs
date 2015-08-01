@@ -698,12 +698,13 @@ namespace Scada.Comm.Devices
                 }
 
                 int rowNum = 1;
-                foreach (KPEvent ev in lastEventList)
+                foreach (KPEvent kpEvent in lastEventList)
                 {
                     numArr[rowNum] = rowNum.ToString();
-                    timeArr[rowNum] = ev.DateTime.ToLocalizedString();
-                    sigArr[rowNum] = ev.KPTag == null || ev.KPTag.Signal <= 0 ? "" : ev.KPTag.Signal.ToString();
-                    descrArr[rowNum] = ev.Descr.Replace("\n", "\\").Replace("\r", "");
+                    timeArr[rowNum] = kpEvent.DateTime.ToLocalizedString();
+                    sigArr[rowNum] = kpEvent.KPTag == null || kpEvent.KPTag.Signal <= 0 ? 
+                        "" : kpEvent.KPTag.Signal.ToString();
+                    descrArr[rowNum] = kpEvent.Descr.Replace("\n", "\\").Replace("\r", "");
                     rowNum++;
                 }
 
@@ -921,14 +922,14 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Потокобезопасно добавить событие в список событий КП
         /// </summary>
-        protected void AddEvent(KPEvent ev)
+        protected void AddEvent(KPEvent kpEvent)
         {
             lock (eventList)
             {
                 // добавление события в список не переданных событий
-                eventList.Add(ev);
+                eventList.Add(kpEvent);
                 // добавление события в список последних событий
-                lastEventList.Add(ev);
+                lastEventList.Add(kpEvent);
                 while (lastEventList.Count > 0)
                     lastEventList.RemoveAt(0);
             }
