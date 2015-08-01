@@ -370,13 +370,15 @@ namespace Scada.Comm.Svc
         {
             // определение максимальной длины обозначения
             int maxCapLen = 0;
-            int ordLen = commLines.Count.ToString().Length + 2 /*точка и пробел*/;
             foreach (CommLine commLine in commLines)
             {
-                int lineCapLen = ordLen + commLine.Caption.Length;
+                int lineCapLen = commLine.Caption.Length;
                 if (maxCapLen < lineCapLen)
                     maxCapLen = lineCapLen;
             }
+
+            int ordLen = commLines.Count.ToString().Length;
+            maxCapLen += ordLen + 2 /*точка и пробел*/;
 
             // заполение массива обозначений
             lineCaptions = new string[commLines.Count];
@@ -550,9 +552,10 @@ namespace Scada.Comm.Svc
                 if (commandReader != null)
                     commandReader.StopThread();
 
-                if (commLines.Count > 0)
+                if (linesStarted)
                 {
-                    AppLog.WriteAction(Localization.UseRussian ? "Остановка линий связи" :
+                    AppLog.WriteAction(Localization.UseRussian ? 
+                        "Остановка линий связи" :
                         "Stop communication lines", Log.ActTypes.Action);
                     linesStarted = false; // далее lock (commLines) не требуется
 

@@ -113,6 +113,10 @@ namespace Scada.Comm.Svc
         /// </summary>
         private const int RetryDelay = 10000;
         /// <summary>
+        /// Минимальная задержка после цикла опроса, мс
+        /// </summary>
+        private const int MinCycleDelay = 10;
+        /// <summary>
         /// Количество попыток передачи данных серверу без задержки
         /// </summary>
         private const int QuickAttemptCnt = 5;
@@ -146,7 +150,7 @@ namespace Scada.Comm.Svc
         private string logPrefix;         // префикс имён файлов журналов, относящихся к линии связи
         private string infoFileName;      // имя файла информации о работе линии связи
         private string curAction;         // описание текущего действия
-        private string captionUnd;        // подчёркивание обозначения линии связи
+        private string captionUnderline;  // подчёркивание обозначения линии связи
         private string allCustomParams;   // все имена и значения пользовательских параметров
         private string[] kpCaptions;      // обозначения КП
 
@@ -189,9 +193,8 @@ namespace Scada.Comm.Svc
             unsentEventList = new List<KPLogic.KPEvent>();
             workState = WorkStates.Idle;
             log = new Log(Log.Formats.Simple) { Encoding = Encoding.UTF8 };
-            logPrefix = AppDirs.LogDir + "line" + CommUtils.AddZeros(number, 3);
-            log.FileName = logPrefix + ".log";
-            infoFileName = logPrefix + ".txt";
+            logPrefix = "";
+            infoFileName = "";
             curAction = NoAction;
             allCustomParams = null;
             kpCaptions = null;
@@ -208,7 +211,7 @@ namespace Scada.Comm.Svc
             KPList = new List<KPLogic>();
             
             // ещё одно поле
-            captionUnd = new string('-', Caption.Length);
+            captionUnderline = new string('-', Caption.Length);
 
             // вывод в журнал
             WriteInfo();
@@ -250,7 +253,7 @@ namespace Scada.Comm.Svc
             }
             set
             {
-                CheckIdleState();
+                CheckChangesAllowed();
                 commCnl = value;
             }
         }
@@ -266,7 +269,7 @@ namespace Scada.Comm.Svc
             }
             set
             {
-                CheckIdleState();
+                CheckChangesAllowed();
                 reqTriesCnt = value;
             }
         }
@@ -282,7 +285,7 @@ namespace Scada.Comm.Svc
             }
             set
             {
-                CheckIdleState();
+                CheckChangesAllowed();
                 cycleDelay = value;
             }
         }
@@ -298,7 +301,7 @@ namespace Scada.Comm.Svc
             }
             set
             {
-                CheckIdleState();
+                CheckChangesAllowed();
                 cmdEnabled = value;
             }
         }
@@ -314,7 +317,7 @@ namespace Scada.Comm.Svc
             }
             set
             {
-                CheckIdleState();
+                CheckChangesAllowed();
                 detailedLog = value;
             }
         }
@@ -330,7 +333,7 @@ namespace Scada.Comm.Svc
             }
             set
             {
-                CheckIdleState();
+                CheckChangesAllowed();
                 sendAllDataPer = value;
             }
         }
@@ -358,7 +361,11 @@ namespace Scada.Comm.Svc
             {
                 if (value == null)
                     throw new ArgumentNullException("value");
+
                 appDirs = value;
+                logPrefix = appDirs.LogDir + "line" + CommUtils.AddZeros(Number, 3);
+                log.FileName = logPrefix + ".log";
+                infoFileName = logPrefix + ".txt";
             }
         }
 
@@ -373,7 +380,7 @@ namespace Scada.Comm.Svc
             }
             set
             {
-                CheckIdleState();
+                CheckChangesAllowed();
                 serverComm = Bind ? value : null;
             }
         }
@@ -389,7 +396,7 @@ namespace Scada.Comm.Svc
             }
             set
             {
-                CheckIdleState();
+                CheckChangesAllowed();
                 passCmd = value;
             }
         }
@@ -432,14 +439,14 @@ namespace Scada.Comm.Svc
 
 
         /// <summary>
-        /// Проверить, что линия связи бездействует
+        /// Проверить, что изменения конфигурации линии связи разрешены
         /// </summary>
-        private void CheckIdleState()
+        private void CheckChangesAllowed()
         {
-            if (workState != WorkStates.Idle)
+            if (workState == WorkStates.Running || workState == WorkStates.Terminating)
                 throw new InvalidOperationException(Localization.UseRussian ?
-                    "Невозможно выполнить операцию, если линия связи не бездействует." :
-                    "Unable to perform the operation if the communication line is not idle.");
+                    "Невозможно изменить конфигурацию линии связи, если линия работает." :
+                    "Unable to change the communication line configuration if the line is operating.");
         }
 
         /// <summary>
@@ -452,7 +459,7 @@ namespace Scada.Comm.Svc
                 StringBuilder sbInfo = new StringBuilder();
                 sbInfo
                     .AppendLine(Caption)
-                    .AppendLine(captionUnd);
+                    .AppendLine(captionUnderline);
 
                 if (Localization.UseRussian)
                 {
@@ -587,6 +594,7 @@ namespace Scada.Comm.Svc
                     }
 
                     // формирование обозначений активных КП
+                    kpCaptions = new string[kpCnt];
                     for (int i = 0; i < kpCnt; i++)
                     {
                         string s = (i + 1).ToString().PadLeft(ordLen) + ". " + KPList[i].Caption;
@@ -695,6 +703,7 @@ namespace Scada.Comm.Svc
                         }
                         catch (Exception ex)
                         {
+                            kpLogic.WorkState = KPLogic.WorkStates.Error;
                             log.WriteAction(string.Format(Localization.UseRussian ? 
                                 "Ошибка при выполнении действий {0} при запуске линии связи: {1}" : 
                                 "Error executing actions of {0} on communication line start: {1}", 
@@ -724,14 +733,17 @@ namespace Scada.Comm.Svc
                     try
                     {
                         kpLogic.OnCommLineAbort();
+                        kpLogic.WorkState = KPLogic.WorkStates.Undefined;
                     }
                     catch (Exception ex)
                     {
+                        kpLogic.WorkState = KPLogic.WorkStates.Error;
                         log.WriteAction(string.Format(Localization.UseRussian ?
                             "Ошибка при выполнении действий {0} при прерывании работы линии связи: {1}" :
                             "Error executing actions of {0} on communication line abort: {1}",
                             kpLogic.Caption, ex.Message));
                     }
+                    WriteKPInfo(kpLogic);
                 }
 
                 StopCommChannel();
@@ -761,14 +773,17 @@ namespace Scada.Comm.Svc
                         try
                         {
                             kpLogic.OnCommLineTerminate();
+                            kpLogic.WorkState = KPLogic.WorkStates.Undefined;
                         }
                         catch (Exception ex)
                         {
+                            kpLogic.WorkState = KPLogic.WorkStates.Error;
                             log.WriteAction(string.Format(Localization.UseRussian ?
                                 "Ошибка при выполнении действий {0} при завершении работы линии связи: {1}" :
                                 "Error executing actions of {0} on communication line terminating: {1}",
                                 kpLogic.Caption, ex.Message));
                         }
+                        WriteKPInfo(kpLogic);
                     }
 
                     StopCommChannel();
@@ -796,20 +811,20 @@ namespace Scada.Comm.Svc
         /// </summary>
         private void WorkCycle()
         {
-            bool terminateCycle = false;        // завершить цикл работы
-            DateTime sendDataDT = DateTime.Now; // время последней передачи на сервер данных КП
-            int kpCnt = KPList.Count;           // количество КП
+            bool terminateCycle = false;           // завершить цикл работы
+            DateTime sendAllDataDT = DateTime.Now; // время передачи на сервер всех текущих данных КП
+            int kpCnt = KPList.Count;              // количество КП
 
             while (!terminateCycle)
             {
-                int commCnt = 0; // количество выполненных сеансов связи (команд ТУ и опросов КП)
+                int commCnt = 0; // количество выполненных сеансов связи (команд ТУ и опросов КП) за итерацию
                 int kpInd = 0;   // индекс опрашиваемого КП
 
                 // определение необходимости передать на сервер все текущие данные КП
                 DateTime nowDT = DateTime.Now;
-                bool sendAllCurData = sendAllDataPer > 0 && (nowDT - sendDataDT).TotalSeconds >= sendAllDataPer;
-                if (sendAllCurData)
-                    sendDataDT = nowDT;
+                bool sendAllData = sendAllDataPer > 0 && (nowDT - sendAllDataDT).TotalSeconds >= sendAllDataPer;
+                if (sendAllData)
+                    sendAllDataDT = nowDT;
 
                 while (kpInd < kpCnt && !terminateCycle)
                 {
@@ -854,6 +869,7 @@ namespace Scada.Comm.Svc
                             CommCnlBeforeSession(kpLogic);
                             if (kpLogic.ConnRequired && (kpLogic.Connection == null || !kpLogic.Connection.Connected))
                             {
+                                KPInvalidateCurData(kpLogic);
                                 log.WriteAction(Localization.UseRussian ?
                                     "Невозможно выполнить сеанс опроса КП, т.к. соединение не установлено: " :
                                     "Unable to communicate with the device because connection is not established");
@@ -868,8 +884,8 @@ namespace Scada.Comm.Svc
                         }
 
                         // передача данных КП на сервер
-                        if (sessionNeeded || sendAllCurData)
-                            SendDataToServer(kpLogic, sendAllCurData);
+                        if (sessionNeeded || sendAllData)
+                            SendDataToServer(kpLogic, sendAllData);
 
                         // определение необходимости завершить цикл работы
                         terminateCycle = workState == WorkStates.Terminating && kpLogic.Terminated;
@@ -896,8 +912,8 @@ namespace Scada.Comm.Svc
                 // задержка после цикла опроса линии связи
                 if (workState != WorkStates.Terminating)
                 {
-                    if (commCnt == 0 && cycleDelay == 0)
-                        Thread.Sleep(200);
+                    if (commCnt == 0)
+                        Thread.Sleep(ScadaUtils.ThreadDelay);
                     else
                         Thread.Sleep(cycleDelay);
                 }
@@ -988,9 +1004,28 @@ namespace Scada.Comm.Svc
             }
             catch (Exception ex)
             {
+                kpLogic.WorkState = KPLogic.WorkStates.Error;
                 log.WriteAction((Localization.UseRussian ?
                     "Ошибка при выполнении сеанса опроса КП: " :
                     "Error communicating with the device: ") + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Установить текущие данные КП как недостоверные
+        /// </summary>
+        private void KPInvalidateCurData(KPLogic kpLogic)
+        {
+            try
+            {
+                kpLogic.InvalidateCurData();
+            }
+            catch (Exception ex)
+            {
+                kpLogic.WorkState = KPLogic.WorkStates.Error;
+                log.WriteAction((Localization.UseRussian ?
+                    "Ошибка при установке текущих данных КП как недостоверных: " :
+                    "Error invalidating the device data: ") + ex.Message);
             }
         }
 
@@ -1005,6 +1040,7 @@ namespace Scada.Comm.Svc
             }
             catch (Exception ex)
             {
+                kpLogic.WorkState = KPLogic.WorkStates.Error;
                 log.WriteAction((Localization.UseRussian ?
                     "Ошибка при отправке команды ТУ: " :
                     "Error sending command: ") + ex.Message);
@@ -1146,7 +1182,7 @@ namespace Scada.Comm.Svc
         /// <summary>
         /// Передать данные КП SCADA-Серверу
         /// </summary>
-        private void SendDataToServer(KPLogic kpLogic, bool sendAllCurData)
+        private void SendDataToServer(KPLogic kpLogic, bool sendAllData)
         {
             if (serverComm != null)
             {
@@ -1158,7 +1194,7 @@ namespace Scada.Comm.Svc
                     WriteInfo();
 
                     // передача текущих данных
-                    KPLogic.TagSrez curSrez = GetKPCurData(kpLogic, sendAllCurData);
+                    KPLogic.TagSrez curSrez = GetKPCurData(kpLogic, sendAllData);
                     if (curSrez != null)
                         serverComm.SendSrez(curSrez);
 
@@ -1224,7 +1260,7 @@ namespace Scada.Comm.Svc
         /// <summary>
         /// Получить текущие данные КП
         /// </summary>
-        private KPLogic.TagSrez GetKPCurData(KPLogic kpLogic, bool allCurData)
+        private KPLogic.TagSrez GetKPCurData(KPLogic kpLogic, bool allData)
         {
             // получение текущих данных КП
             int tagCnt = kpLogic.KPTags.Length;
@@ -1234,7 +1270,7 @@ namespace Scada.Comm.Svc
 
             // создание среза передаваемых данных
             KPLogic.TagSrez curSrez = null;
-            if (allCurData)
+            if (allData)
             {
                 if (tagCnt > 0)
                 {
@@ -1366,7 +1402,7 @@ namespace Scada.Comm.Svc
         /// </summary>
         public void AddKP(KPLogic kpLogic)
         {
-            CheckIdleState();
+            CheckChangesAllowed();
             kpCaptions = null;
 
             // настройка свойств КП, относящихся к линии связи
@@ -1385,6 +1421,7 @@ namespace Scada.Comm.Svc
             }
             catch (Exception ex)
             {
+                kpLogic.WorkState = KPLogic.WorkStates.Error;
                 log.WriteAction(string.Format(Localization.UseRussian ?
                     "Ошибка при выполнении действий {0} при добавлении КП на линию связи: {1}" :
                     "Error executing actions of {0} on adding device to communication line: {1}",
@@ -1684,10 +1721,17 @@ namespace Scada.Comm.Svc
             if (!commLineSett.Active)
                 return null;
 
-            // создание и установка свойств линии связи
+            // создание линии связи
             CommLine commLine = new CommLine(commLineSett.Bind, commLineSett.Number, commLineSett.Name);
+
+            // установка свойств для связи с окружением
+            commLine.AppDirs = appDirs;
+            commLine.ServerComm = null;
+            commLine.PassCmd = passCmd;
+
+            // установка параметров работы линии связи
             commLine.ReqTriesCnt = commLineSett.ReqTriesCnt;
-            commLine.CycleDelay = commLineSett.CycleDelay;
+            commLine.CycleDelay = Math.Max(commLineSett.CycleDelay, MinCycleDelay);
             commLine.CmdEnabled = commLineSett.CmdEnabled;
             commLine.DetailedLog = commLineSett.DetailedLog;
             commLine.SendAllDataPer = commonParams.SendAllDataPer;
@@ -1721,11 +1765,6 @@ namespace Scada.Comm.Svc
                     commLine.AddKP(kpLogic);
                 }
             }
-
-            // установка свойств для связи с окружением
-            commLine.AppDirs = appDirs;
-            commLine.ServerComm = null;
-            commLine.PassCmd = passCmd;
 
             // создание канала связи
             string commCnlType;

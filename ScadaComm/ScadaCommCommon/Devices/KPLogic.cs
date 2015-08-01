@@ -327,9 +327,11 @@ namespace Scada.Comm.Devices
         public TagGroup[] TagGroups { get; protected set; }
 
         /// <summary>
-        /// Получить состояние работы КП
+        /// Получить или установить состояние работы КП
         /// </summary>
-        public WorkStates WorkState { get; protected set; }
+        /// <remarks>Установка состояния работы извне объекта требуется 
+        /// при возникновении исключений в переопределяемых методах</remarks>
+        public WorkStates WorkState { get; set; }
 
         /// <summary>
         /// Получить строковое представление состояния работы КП
@@ -806,6 +808,14 @@ namespace Scada.Comm.Devices
 
 
         /// <summary>
+        /// Преобразовать данные тега КП в строку
+        /// </summary>
+        protected virtual string ConvertTagDataToStr(int signal, SrezTableLight.CnlData tagData)
+        {
+            return tagData.Stat > 0 ? tagData.Val.ToString("N3", Localization.Culture) : "---";
+        }
+
+        /// <summary>
         /// Инициализировать группы тегов, теги КП, их текущие данные и признаки изменения
         /// </summary>
         /// <remarks>В результате работы метода элементы списков TagGroups и KPTags не могут быть null</remarks>
@@ -1163,14 +1173,6 @@ namespace Scada.Comm.Devices
                     boundKPTag.ParamID = paramID;
                 }
             }
-        }
-
-        /// <summary>
-        /// Преобразовать данные тега КП в строку
-        /// </summary>
-        public virtual string ConvertTagDataToStr(int signal, SrezTableLight.CnlData tagData)
-        {
-            return tagData.Stat > 0 ? tagData.Val.ToString("N3", Localization.Culture) : "---";
         }
 
         /// <summary>

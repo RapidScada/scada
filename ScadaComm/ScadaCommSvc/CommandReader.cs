@@ -285,7 +285,8 @@ namespace Scada.Comm.Svc
                                     }
                                     else
                                     {
-                                        log.WriteAction(Localization.UseRussian ? "Некорректные данные команды" :
+                                        log.WriteAction(Localization.UseRussian ? 
+                                            "Некорректные данные команды" :
                                             "Incorrect command data", Log.ActTypes.Error);
                                     }
                                 }
@@ -302,12 +303,14 @@ namespace Scada.Comm.Svc
                 }
                 catch (ThreadAbortException)
                 {
-                    log.WriteAction(Localization.UseRussian ? "Прерывание приёма команд" : 
+                    log.WriteAction(Localization.UseRussian ? 
+                        "Прерывание приёма команд" : 
                         "Receiving commands aborted", Log.ActTypes.Action);
                 }
                 catch (Exception ex)
                 {
-                    log.WriteAction((Localization.UseRussian ? "Ошибка при приёме команд: " : 
+                    log.WriteAction((Localization.UseRussian ? 
+                        "Ошибка при приёме команд: " : 
                         "Error receiving commands: ") + ex.Message, Log.ActTypes.Exception);
                 }
             }
