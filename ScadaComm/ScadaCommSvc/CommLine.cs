@@ -871,7 +871,7 @@ namespace Scada.Comm.Svc
                             {
                                 KPInvalidateCurData(kpLogic);
                                 log.WriteAction(Localization.UseRussian ?
-                                    "Невозможно выполнить сеанс опроса КП, т.к. соединение не установлено: " :
+                                    "Невозможно выполнить сеанс опроса КП, т.к. соединение не установлено" :
                                     "Unable to communicate with the device because connection is not established");
                             }
                             else
@@ -1702,6 +1702,7 @@ namespace Scada.Comm.Svc
         {
             if (commLineSett.ConnType.Equals("ComPort", StringComparison.OrdinalIgnoreCase))
             {
+                commLine.CustomParams["CommChannel"] = "Serial";
                 commLine.CustomParams["PortName"] = commLineSett.PortName;
                 commLine.CustomParams["BaudRate"] = commLineSett.BaudRate.ToString();
                 commLine.CustomParams["Parity"] = commLineSett.Parity.ToString();

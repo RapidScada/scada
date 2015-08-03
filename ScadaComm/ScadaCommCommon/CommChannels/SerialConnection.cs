@@ -250,6 +250,9 @@ namespace Scada.Comm.Channels
         public void Open()
         {
             SerialPort.Open();
+            WriteToLog(string.Format(Localization.UseRussian ? 
+                "Последовательный порт {0} открыт" : 
+                "Serial port {0} is open", SerialPort.PortName));
         }
 
         /// <summary>
@@ -259,6 +262,9 @@ namespace Scada.Comm.Channels
         {
             try { SerialPort.Close(); }
             catch { }
+            WriteToLog(string.Format(Localization.UseRussian ?
+                "Последовательный порт {0} закрыт" :
+                "Serial port {0} is closed", SerialPort.PortName));
         }
 
         /// <summary>

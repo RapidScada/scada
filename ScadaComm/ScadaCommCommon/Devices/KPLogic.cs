@@ -781,6 +781,7 @@ namespace Scada.Comm.Devices
             for (int colInd = 0; colInd < colCnt; colInd++)
             {
                 int colWidth = GetMaxLength(columns[colInd]);
+                colWidthArr[colInd] = colWidth;
                 sbBreak
                     .Append(new string('-', colWidth))
                     .Append(colInd < lastColInd ? "-+-" : "-+");
@@ -940,7 +941,7 @@ namespace Scada.Comm.Devices
                 eventList.Add(kpEvent);
                 // добавление события в список последних событий
                 lastEventList.Add(kpEvent);
-                while (lastEventList.Count > 0)
+                while (lastEventList.Count > LastSrezListSize)
                     lastEventList.RemoveAt(0);
             }
         }
