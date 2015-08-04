@@ -99,20 +99,20 @@ namespace Scada.Comm.Devices
 
             // generate archive data
             // генерация архивного среза
-            TagSrez srez = new TagSrez(1);
+            /*TagSrez srez = new TagSrez(1);
             srez.DateTime = DateTime.Now;
             srez.KPTags[0] = KPTags[0];
             srez.TagData[0] = curData[0];
             srez.Descr = "Test archive data " + random.Next(100);
             AddArcSrez(srez);
-            CommLineSvc.FlushArcData(this);
+            CommLineSvc.FlushArcData(this);*/
 
             // generate event
             // генерация события
-            KPEvent kpEvent = new KPEvent(DateTime.Now, Number, KPTags[0]);
+            /*KPEvent kpEvent = new KPEvent(DateTime.Now, Number, KPTags[0]);
             kpEvent.Descr = "Test event " + random.Next(100);
             AddEvent(kpEvent);
-            CommLineSvc.FlushArcData(this);
+            CommLineSvc.FlushArcData(this);*/
 
             // calculate stats
             // расчёт статистики

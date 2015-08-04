@@ -510,8 +510,10 @@ namespace Scada.Comm.Channels
                     {
                         tcpListener.Stop();
                         tcpListener = null;
-                        WriteToLog(Localization.UseRussian ? "Прослушиватель соединений остановлен" :
-                            "Connection listener is stopped");
+                        WriteToLog("");
+                        WriteToLog(string.Format(Localization.UseRussian ? 
+                            "{0} Прослушиватель соединений остановлен" :
+                            "{0} Connection listener is stopped", CommUtils.GetNowDT()));
                     }
                 }
                 finally

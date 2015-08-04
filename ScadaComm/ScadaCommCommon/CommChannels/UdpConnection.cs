@@ -52,11 +52,13 @@ namespace Scada.Comm.Channels
         /// Конструктор
         /// </summary>
         public UdpConnection(UdpClient udpClient, int localPort, int remotePort)
+            : base()
         {
             if (udpClient == null)
                 throw new ArgumentNullException("udpClient");
 
             UdpClient = udpClient;
+            UdpClient.Client.SendTimeout = WriteTimeout;
             LocalPort = localPort;
             RemotePort = remotePort;
         }
@@ -81,9 +83,27 @@ namespace Scada.Comm.Channels
         /// <summary>
         /// Создать объект IPEndPoint, описывающий удалённый хост
         /// </summary>
-        public IPEndPoint CreateIPEndPoint()
+        protected IPEndPoint CreateIPEndPoint()
         {
             return new IPEndPoint(IPAddress.Parse(RemoteAddress), RemotePort);
+        }
+
+        /// <summary>
+        /// Принять датаграмму по UPD
+        /// </summary>
+        protected byte[] ReceiveDatagram(ref IPEndPoint endPoint)
+        {
+            try
+            {
+                return UdpClient.Receive(ref endPoint);
+            }
+            catch (SocketException ex)
+            {
+                if (ex.ErrorCode == (int)SocketError.TimedOut)
+                    return null;
+                else
+                    throw;
+            }
         }
 
 
@@ -100,14 +120,15 @@ namespace Scada.Comm.Channels
                 DateTime startDT = nowDT;
                 DateTime stopDT = startDT.AddMilliseconds(timeout);
                 IPEndPoint endPoint = CreateIPEndPoint();
+                UdpClient.Client.ReceiveTimeout = timeout;
 
                 while (readCnt < count && startDT <= nowDT && nowDT <= stopDT)
                 {
                     // считывание данных
-                    byte[] datagram = UdpClient.Receive(ref endPoint);
+                    byte[] datagram = ReceiveDatagram(ref endPoint);
 
                     // копирование полученных данных в заданный буфер
-                    if (datagram.Length > 0)
+                    if (datagram != null && datagram.Length > 0)
                     {
                         int requiredCnt = count - readCnt;
                         int copyCnt = Math.Min(datagram.Length, requiredCnt);
@@ -149,13 +170,14 @@ namespace Scada.Comm.Channels
                 stopReceived = false;
                 int curOffset = offset;
                 byte stopCode = stopCond.StopCode;
+                UdpClient.Client.ReceiveTimeout = timeout;
 
                 while (readCnt < maxCount && !stopReceived && startDT <= nowDT && nowDT <= stopDT)
                 {
                     // считывание данных
-                    byte[] datagram = UdpClient.Receive(ref endPoint);
+                    byte[] datagram = ReceiveDatagram(ref endPoint);
 
-                    if (datagram.Length > 0)
+                    if (datagram != null && datagram.Length > 0)
                     {
                         // поиск кода остановки в считанных данных
                         int datagramLen = datagram.Length;
@@ -210,13 +232,14 @@ namespace Scada.Comm.Channels
                 DateTime startDT = nowDT;
                 DateTime stopDT = startDT.AddMilliseconds(timeout);
                 IPEndPoint endPoint = CreateIPEndPoint();
+                UdpClient.Client.ReceiveTimeout = timeout;
 
                 while (!stopReceived && startDT <= nowDT && nowDT <= stopDT)
                 {
                     // считывание данных
-                    byte[] datagram = UdpClient.Receive(ref endPoint);
+                    byte[] datagram = ReceiveDatagram(ref endPoint);
 
-                    if (datagram.Length > 0)
+                    if (datagram != null && datagram.Length > 0)
                     {
                         // получение строки из считанных данных
                         string line = Encoding.Default.GetString(datagram);

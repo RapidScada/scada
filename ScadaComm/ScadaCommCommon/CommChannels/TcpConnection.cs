@@ -88,6 +88,7 @@ namespace Scada.Comm.Channels
         /// Конструктор
         /// </summary>
         public TcpConnection(TcpClient tcpClient)
+            : base()
         {
             if (tcpClient == null)
                 throw new ArgumentNullException("tcpClient");
@@ -127,6 +128,7 @@ namespace Scada.Comm.Channels
             {
                 tcpClient = value;
                 NetStream = tcpClient.GetStream();
+                NetStream.WriteTimeout = WriteTimeout;
                 TakeAddresses();
             }
         }

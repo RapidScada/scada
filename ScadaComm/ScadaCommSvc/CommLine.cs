@@ -212,13 +212,6 @@ namespace Scada.Comm.Svc
             
             // ещё одно поле
             captionUnderline = new string('-', Caption.Length);
-
-            // вывод в журнал
-            WriteInfo();
-            log.WriteBreak();
-            log.WriteAction((Localization.UseRussian ? 
-                "Инициализация линии связи " : 
-                "Initialize communication line ") + numAndName);
         }
 
 
@@ -658,14 +651,16 @@ namespace Scada.Comm.Svc
         {
             try
             {
-                log.WriteAction((Localization.UseRussian ? 
-                    "Запуск линии связи " : 
-                    "Start communication line " ) + numAndName);
                 workState = WorkStates.Running;
                 allCustomParams = null;
                 kpCaptions = null;
 
-                // вывод информации в файлы
+                // вывод в журнал и в файлы информации о работе
+                log.WriteBreak();
+                log.WriteAction((Localization.UseRussian ? 
+                    "Запуск линии связи " : 
+                    "Start communication line " ) + numAndName);
+
                 WriteInfo();
                 foreach (KPLogic kpLogic in KPList)
                     WriteKPInfo(kpLogic);
@@ -1625,7 +1620,7 @@ namespace Scada.Comm.Svc
         /// Создать КП
         /// </summary>
         private static KPLogic CreateKPLogic(int kpNum, string dllName, 
-            AppDirs appDirs, Dictionary<string, Type> kpTypes, Log log)
+            AppDirs appDirs, Dictionary<string, Type> kpTypes, Log appLog)
         {
             // получение типа КП
             Type kpType = null;
@@ -1635,7 +1630,7 @@ namespace Scada.Comm.Svc
                 {
                     // загрузка типа из библиотеки
                     string path = appDirs.KPDir + dllName + ".dll";
-                    log.WriteAction((Localization.UseRussian ?
+                    appLog.WriteAction((Localization.UseRussian ?
                         "Загрузка библиотеки КП: " :
                         "Load device library: ") + path, Log.ActTypes.Action);
 
@@ -1717,7 +1712,7 @@ namespace Scada.Comm.Svc
         /// Создать линию связи и КП на основе настроек
         /// </summary>
         public static CommLine Create(Settings.CommLine commLineSett, Settings.CommonParams commonParams,
-            AppDirs appDirs, PassCmdDelegate passCmd, Dictionary<string, Type> kpTypes, Log log)
+            AppDirs appDirs, PassCmdDelegate passCmd, Dictionary<string, Type> kpTypes, Log appLog)
         {
             if (!commLineSett.Active)
                 return null;
@@ -1750,7 +1745,7 @@ namespace Scada.Comm.Svc
             {
                 if (kpSett.Active)
                 {
-                    KPLogic kpLogic = CreateKPLogic(kpSett.Number, kpSett.Dll, appDirs, kpTypes, log);
+                    KPLogic kpLogic = CreateKPLogic(kpSett.Number, kpSett.Dll, appDirs, kpTypes, appLog);
                     kpLogic.Bind = kpSett.Bind;
                     kpLogic.Name = kpSett.Name;
                     kpLogic.Address = kpSett.Address;
@@ -1773,6 +1768,7 @@ namespace Scada.Comm.Svc
                 !string.IsNullOrEmpty(commCnlType))
             {
                 commLine.CommChannelLogic = CreateCommChannel(commCnlType);
+                commLine.CommChannelLogic.WriteToLog = commLine.log.WriteLine;
 
                 try
                 {

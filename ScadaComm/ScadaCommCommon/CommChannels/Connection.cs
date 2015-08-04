@@ -94,11 +94,19 @@ namespace Scada.Comm.Channels
         /// Задержка потока для накопления данных во внутреннем буфере соединения, мс
         /// </summary>
         protected const int DataAccumThreadDelay = 10;
+        /// <summary>
+        /// Таймаут записи данных, мс
+        /// </summary>
+        protected const int WriteTimeout = 5000;
 
         /// <summary>
         /// Метод записи в журнал линии связи
         /// </summary>
         protected Log.WriteLineDelegate writeToLog;
+        /// <summary>
+        /// Окончание строки для методов считывания и записи строк
+        /// </summary>
+        protected string newLine;
 
 
         /// <summary>
@@ -107,8 +115,8 @@ namespace Scada.Comm.Channels
         public Connection()
         {
             writeToLog = text => { }; // заглушка
+            newLine = "\r"; // 0x0D
             DefaultLogFormat = CommUtils.ProtocolLogFormats.Hex;
-            NewLine = "\n";
             LocalAddress = "";
             RemoteAddress = "";
         }
@@ -122,6 +130,26 @@ namespace Scada.Comm.Channels
             get
             {
                 return true;
+            }
+        }
+
+        /// <summary>
+        /// Получить или установить окончание строки для методов считывания и записи строк
+        /// </summary>
+        public virtual string NewLine
+        {
+            get
+            {
+                return newLine;
+            }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+                if (value == "")
+                    throw new ArgumentException("New line must not be empty.", "value");
+
+                newLine = value;
             }
         }
 
@@ -158,11 +186,6 @@ namespace Scada.Comm.Channels
         /// Получить или установить удалённый адрес соединения
         /// </summary>
         public string RemoteAddress { get; set; }
-
-        /// <summary>
-        /// Получить или установить окончание строки для методов считывания и записи строк
-        /// </summary>
-        public string NewLine { get; set; }
 
 
         /// <summary>

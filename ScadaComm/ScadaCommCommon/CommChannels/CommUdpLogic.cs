@@ -263,6 +263,10 @@ namespace Scada.Comm.Channels
 
             // закрытие соединения
             udpConn.Close();
+            WriteToLog("");
+            WriteToLog(string.Format(Localization.UseRussian ?
+                "{0} Завершение приёма данных по UDP" :
+                "{0} Stop receiving data via UDP", CommUtils.GetNowDT()));
         }
 
         /// <summary>

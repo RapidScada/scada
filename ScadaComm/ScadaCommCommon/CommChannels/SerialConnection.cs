@@ -48,11 +48,13 @@ namespace Scada.Comm.Channels
         /// Конструктор
         /// </summary>
         public SerialConnection(SerialPort serialPort)
+            : base()
         {
             if (serialPort == null)
                 throw new ArgumentNullException("serialPort");
             
             SerialPort = serialPort;
+            SerialPort.WriteTimeout = WriteTimeout;
             SerialPort.NewLine = NewLine;
         }
 
@@ -65,6 +67,22 @@ namespace Scada.Comm.Channels
             get
             {
                 return SerialPort.IsOpen;
+            }
+        }
+
+        /// <summary>
+        /// Получить или установить окончание строки для методов считывания и записи строк
+        /// </summary>
+        public override string NewLine
+        {
+            get
+            {
+                return base.NewLine;
+            }
+            set
+            {
+                base.NewLine = value;
+                SerialPort.NewLine = value;
             }
         }
 
