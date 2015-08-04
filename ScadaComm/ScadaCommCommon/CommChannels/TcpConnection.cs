@@ -478,9 +478,9 @@ namespace Scada.Comm.Channels
                 }
                 catch (Exception ex)
                 {
-                    WriteToLog((Localization.UseRussian ? 
+                    throw new Exception(Localization.UseRussian ? 
                         "Ошибка при установке TCP-соединения: " :
-                        "Error establishing TCP connection: ") + ex.Message);
+                        "Error establishing TCP connection: ", ex);
                 }
             }
             else

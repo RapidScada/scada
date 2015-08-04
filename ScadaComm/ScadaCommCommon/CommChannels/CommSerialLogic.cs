@@ -191,6 +191,9 @@ namespace Scada.Comm.Channels
         {
             // попытка открыть последовательный порт
             serialConn.Open();
+            WriteToLog(string.Format(Localization.UseRussian ?
+                "Последовательный порт {0} открыт" :
+                "Serial port {0} is open", serialConn.SerialPort.PortName));
 
             // привязка события приёма данных в режиме ведомого
             if (settings.Behavior == OperatingBehaviors.Slave && kpList.Count > 0)
@@ -211,6 +214,9 @@ namespace Scada.Comm.Channels
 
             // закрытие последовательного порта
             serialConn.Close();
+            WriteToLog(string.Format(Localization.UseRussian ?
+                "Последовательный порт {0} закрыт" :
+                "Serial port {0} is closed", serialConn.SerialPort.PortName));
         }
 
         /// <summary>

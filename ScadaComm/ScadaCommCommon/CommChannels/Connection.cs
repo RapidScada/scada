@@ -133,6 +133,8 @@ namespace Scada.Comm.Channels
         /// <summary>
         /// Получить или установить метод записи в журнал линии связи
         /// </summary>
+        /// <remarks>Свойство устанавливается из класса, унаследованного от KPLogic, 
+        /// для последующего вызова методов чтения и записи данных</remarks>
         public Log.WriteLineDelegate WriteToLog
         {
             get
