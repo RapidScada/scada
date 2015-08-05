@@ -42,6 +42,12 @@ namespace Scada.Comm.Channels
     public class UdpConnection : Connection
     {
         /// <summary>
+        /// Таймаут приёма датаграммы, мс
+        /// </summary>
+        protected const int DatagramReceiveTimeout = 10;
+
+        
+        /// <summary>
         /// Конструктор, ограничивающий создание объекта без параметров
         /// </summary>
         protected UdpConnection()
@@ -93,17 +99,8 @@ namespace Scada.Comm.Channels
         /// </summary>
         protected byte[] ReceiveDatagram(ref IPEndPoint endPoint)
         {
-            try
-            {
-                return UdpClient.Receive(ref endPoint);
-            }
-            catch (SocketException ex)
-            {
-                if (ex.ErrorCode == (int)SocketError.TimedOut)
-                    return null;
-                else
-                    throw;
-            }
+            try { return UdpClient.Receive(ref endPoint); }
+            catch (SocketException) { return null; }
         }
 
 
@@ -120,7 +117,7 @@ namespace Scada.Comm.Channels
                 DateTime startDT = nowDT;
                 DateTime stopDT = startDT.AddMilliseconds(timeout);
                 IPEndPoint endPoint = CreateIPEndPoint();
-                UdpClient.Client.ReceiveTimeout = timeout;
+                UdpClient.Client.ReceiveTimeout = DatagramReceiveTimeout;
 
                 while (readCnt < count && startDT <= nowDT && nowDT <= stopDT)
                 {
@@ -144,8 +141,12 @@ namespace Scada.Comm.Channels
                 }
 
                 logText = BuildReadLogText(buffer, offset, count, readCnt, logFormat);
-
                 return readCnt;
+            }
+            catch (SocketException ex)
+            {
+                logText = CommPhrases.ReadDataError + ": " + ex.Message;
+                return 0;
             }
             catch (Exception ex)
             {
@@ -170,7 +171,7 @@ namespace Scada.Comm.Channels
                 stopReceived = false;
                 int curOffset = offset;
                 byte stopCode = stopCond.StopCode;
-                UdpClient.Client.ReceiveTimeout = timeout;
+                UdpClient.Client.ReceiveTimeout = DatagramReceiveTimeout;
 
                 while (readCnt < maxCount && !stopReceived && startDT <= nowDT && nowDT <= stopDT)
                 {
@@ -206,7 +207,6 @@ namespace Scada.Comm.Channels
                 }
 
                 logText = BuildReadLogText(buffer, offset, readCnt, logFormat);
-
                 return readCnt;
             }
             catch (Exception ex)
@@ -224,15 +224,15 @@ namespace Scada.Comm.Channels
             try
             {
                 List<string> lines = new List<string>();
+                stopReceived = false;
                 string[] stopEndings = stopCond.StopEndings;
                 int endingsLen = stopEndings == null ? 0 : stopEndings.Length;
-                stopReceived = false;
 
                 DateTime nowDT = DateTime.Now;
                 DateTime startDT = nowDT;
                 DateTime stopDT = startDT.AddMilliseconds(timeout);
                 IPEndPoint endPoint = CreateIPEndPoint();
-                UdpClient.Client.ReceiveTimeout = timeout;
+                UdpClient.Client.ReceiveTimeout = DatagramReceiveTimeout;
 
                 while (!stopReceived && startDT <= nowDT && nowDT <= stopDT)
                 {
@@ -292,8 +292,15 @@ namespace Scada.Comm.Channels
                     datagram = buffer;
                 }
 
-                int sentCnt = UdpClient.Send(datagram, count, RemoteAddress, RemotePort);
-                logText = BuildWriteLogText(datagram, 0, count, logFormat);
+                try
+                {
+                    int sentCnt = UdpClient.Send(datagram, count, RemoteAddress, RemotePort);
+                    logText = BuildWriteLogText(datagram, 0, count, logFormat);
+                }
+                catch (SocketException ex)
+                {
+                    logText = CommPhrases.WriteDataError + ": " + ex.Message;
+                }
             }
             catch (Exception ex)
             {

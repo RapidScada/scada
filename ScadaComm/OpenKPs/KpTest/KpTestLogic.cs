@@ -42,7 +42,7 @@ namespace Scada.Comm.Devices
     public sealed class KpTestLogic : KPLogic
     {
         private static readonly Connection.TextStopCondition ReadStopCondition = 
-            new Connection.TextStopCondition("\n");
+            new Connection.TextStopCondition("OK");
 
         private Random random;
 
@@ -82,11 +82,14 @@ namespace Scada.Comm.Devices
             Connection.WriteLine("test " + Address, out logText);
             WriteToLog(logText);
 
-            // read from the serial port
-            // чтение из последовательного порта
+            // read from the serial port and timekeeping
+            // чтение из последовательного порта и замер времени
             bool stopReceived;
+            DateTime startReadDT = DateTime.Now;
             Connection.ReadLines(ReqParams.Timeout, ReadStopCondition, out stopReceived, out logText);
+            TimeSpan readDuration = DateTime.Now - startReadDT;
             WriteToLog(logText);
+            WriteToLog("Read duration: " + readDuration.ToString(@"ss\.fff"));
 
             // finish request
             // завершение запроса

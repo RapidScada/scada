@@ -234,8 +234,16 @@ namespace Scada.Comm.Channels
             {
                 SerialPort.DiscardInBuffer();
                 SerialPort.DiscardOutBuffer();
-                SerialPort.Write(buffer, offset, count);
-                logText = BuildWriteLogText(buffer, offset, count, logFormat);
+
+                try
+                {
+                    SerialPort.Write(buffer, offset, count);
+                    logText = BuildWriteLogText(buffer, offset, count, logFormat);
+                }
+                catch (TimeoutException ex)
+                {
+                    logText = CommPhrases.WriteDataError + ": " + ex.Message;
+                }
             }
             catch (Exception ex)
             {
@@ -252,8 +260,16 @@ namespace Scada.Comm.Channels
             {
                 SerialPort.DiscardInBuffer();
                 SerialPort.DiscardOutBuffer();
-                SerialPort.WriteLine(text);
-                logText = CommPhrases.SendNotation + ": " + text;
+
+                try
+                {
+                    SerialPort.WriteLine(text);
+                    logText = CommPhrases.SendNotation + ": " + text;
+                }
+                catch (TimeoutException ex)
+                {
+                    logText = CommPhrases.WriteDataError + ": " + ex.Message;
+                }
             }
             catch (Exception ex)
             {

@@ -35,7 +35,9 @@ namespace Scada.Comm.Devices
         {
             get
             {
-                return Localization.UseRussian ? "Библиотека КП для тестирования." : "Device library for testing.";
+                return Localization.UseRussian ? 
+                    "Библиотека КП для тестирования." : 
+                    "Device library for testing.";
             }
         }
     }

@@ -399,6 +399,10 @@ namespace Scada.Comm.Channels
                 NetStream.Write(buffer, offset, count);
                 logText = BuildWriteLogText(buffer, offset, count, logFormat);
             }
+            catch (IOException ex)
+            {
+                logText = CommPhrases.WriteDataError + ": " + ex.Message;
+            }
             catch (Exception ex)
             {
                 throw new InvalidOperationException(CommPhrases.WriteDataError + ": " + ex.Message, ex);
