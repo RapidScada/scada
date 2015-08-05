@@ -211,7 +211,7 @@ namespace Scada.Comm.Channels
             // получение настроек канала связи
             settings.ConnMode = GetEnumParam<ConnectionModes>(commCnlParams, "ConnMode", true, settings.ConnMode);
             bool sharedConnMode = settings.ConnMode == ConnectionModes.Shared;
-            settings.IpAddress = GetStringParam(commCnlParams, "IPAddress", sharedConnMode, settings.IpAddress);
+            settings.IpAddress = GetStringParam(commCnlParams, "IpAddress", sharedConnMode, settings.IpAddress);
             settings.TcpPort = GetIntParam(commCnlParams, "TcpPort", sharedConnMode, settings.TcpPort);
             settings.Behavior = GetEnumParam<OperatingBehaviors>(commCnlParams, "Behavior", 
                 false, settings.Behavior);
@@ -220,8 +220,7 @@ namespace Scada.Comm.Channels
             if (sharedConnMode)
             {
                 // общее соединение для всех КП
-                TcpClient tcpClient = TuneTcpClient(new TcpClient());
-                sharedTcpConn = new TcpConnection(tcpClient);
+                sharedTcpConn = new TcpConnection(new TcpClient());
                 foreach (KPLogic kpLogic in kpList)
                     kpLogic.Connection = sharedTcpConn;
             }
@@ -234,8 +233,7 @@ namespace Scada.Comm.Channels
                     foreach (KPLogic kpLogic in kpByCallNumList)
                     {
                         int timeout = kpLogic.ReqParams.Timeout;
-                        TcpClient tcpClient = TuneTcpClient(new TcpClient(), timeout, timeout);
-                        TcpConnection tcpConn = new TcpConnection(tcpClient);
+                        TcpConnection tcpConn = new TcpConnection(new TcpClient());
                         tcpConnList.Add(tcpConn);
                         tcpConn.AddRelatedKP(kpLogic);
                         kpLogic.Connection = tcpConn;
@@ -323,8 +321,10 @@ namespace Scada.Comm.Channels
                     }
 
                     // установка соединения
-                    WriteToLog((Localization.UseRussian ? "Установка TCP-соединения с " :
-                        "Establish a TCP connection with ") + addr + ":" + port);
+                    WriteToLog("");
+                    WriteToLog(string.Format(Localization.UseRussian ? 
+                        "{0} Установка TCP-соединения с {1}:{2}" :
+                        "{0} Establish a TCP connection with {1}:{2}", CommUtils.GetNowDT(), addr, port));
                     tcpConn.Open(addr, port);
                 }
                 catch (Exception ex)

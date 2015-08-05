@@ -76,11 +76,14 @@ namespace Scada.Comm.Devices
         {
             base.Session();
 
-            // write to the serial port
-            // запись в последовательный порт
+            // write to the serial port and timekeeping
+            // запись в последовательный порт и замер времени
             string logText;
+            DateTime startWriteDT = DateTime.Now;
             Connection.WriteLine("test " + Address, out logText);
+            TimeSpan writeDuration = DateTime.Now - startWriteDT;
             WriteToLog(logText);
+            WriteToLog("Write duration: " + writeDuration.ToString(@"s\.fff"));
 
             // read from the serial port and timekeeping
             // чтение из последовательного порта и замер времени
@@ -89,7 +92,7 @@ namespace Scada.Comm.Devices
             Connection.ReadLines(ReqParams.Timeout, ReadStopCondition, out stopReceived, out logText);
             TimeSpan readDuration = DateTime.Now - startReadDT;
             WriteToLog(logText);
-            WriteToLog("Read duration: " + readDuration.ToString(@"ss\.fff"));
+            WriteToLog("Read duration: " + readDuration.ToString(@"s\.fff"));
 
             // finish request
             // завершение запроса

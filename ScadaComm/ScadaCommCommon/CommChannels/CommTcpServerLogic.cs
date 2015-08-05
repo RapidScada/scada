@@ -192,7 +192,7 @@ namespace Scada.Comm.Channels
                         // открытие запрашиваемых соединений
                         while (tcpListener.Pending() && !terminated)
                         {
-                            TcpClient tcpClient = TuneTcpClient(tcpListener.AcceptTcpClient());
+                            TcpClient tcpClient = tcpListener.AcceptTcpClient();
                             tcpConn = new TcpConnection(tcpClient);
                             tcpConn.WriteToLog = WriteToLog;
                             WriteToLog(string.Format(Localization.UseRussian ? 

@@ -48,7 +48,7 @@ namespace Scada.Comm.Channels
         /// <summary>
         /// Максимальный размер считываемых строк по умолчанию
         /// </summary>
-        protected const int DeaultfMaxLineSize = 1000;
+        protected const int DeaultMaxLineSize = 1000;
         /// <summary>
         /// Периодичность попыток установки TCP-соединения, с
         /// </summary>
@@ -59,10 +59,6 @@ namespace Scada.Comm.Channels
         protected static readonly string ActivityStr = 
             Localization.UseRussian ? "активность: " : "activity: ";
 
-        /// <summary>
-        /// Клиент TCP-соединения
-        /// </summary>
-        protected TcpClient tcpClient;
         /// <summary>
         /// Максимальный размер считываемых строк
         /// </summary>
@@ -93,11 +89,13 @@ namespace Scada.Comm.Channels
             if (tcpClient == null)
                 throw new ArgumentNullException("tcpClient");
 
-            maxLineSize = DeaultfMaxLineSize;
+            maxLineSize = DeaultMaxLineSize;
             connectDT = DateTime.MinValue;
             relatedKPList = null;
 
-            TcpClient = tcpClient; // в том числе NetStream
+            TcpClient = tcpClient;
+            TakeNetStream();
+            TakeAddresses();
             ActivityDT = DateTime.Now;
             JustConnected = true;
             Broken = false;
@@ -118,20 +116,7 @@ namespace Scada.Comm.Channels
         /// <summary>
         /// Получить клиента TCP-соединения
         /// </summary>
-        public TcpClient TcpClient
-        {
-            get
-            {
-                return tcpClient;
-            }
-            protected set
-            {
-                tcpClient = value;
-                NetStream = tcpClient.GetStream();
-                NetStream.WriteTimeout = WriteTimeout;
-                TakeAddresses();
-            }
-        }
+        public TcpClient TcpClient { get; protected set; }
 
         /// <summary>
         /// Получить поток данных TCP-соединения
@@ -192,6 +177,23 @@ namespace Scada.Comm.Channels
         protected void UpdateActivityDT()
         {
             ActivityDT = DateTime.Now;
+        }
+
+        /// <summary>
+        /// Определить поток данных TCP-соединения
+        /// </summary>
+        protected void TakeNetStream()
+        {
+            if (TcpClient.Connected)
+            {
+                NetStream = TcpClient.GetStream();
+                NetStream.WriteTimeout = DefaultWriteTimeout;
+                NetStream.ReadTimeout = DefaultReadTimeout;
+            }
+            else
+            {
+                NetStream = null;
+            }
         }
 
         /// <summary>
@@ -479,14 +481,15 @@ namespace Scada.Comm.Channels
 
                 try
                 {
-                    tcpClient.Connect(addr, port);
+                    TcpClient.Connect(addr, port);
+                    TakeNetStream();
                     TakeAddresses();
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception(Localization.UseRussian ? 
+                    throw new Exception((Localization.UseRussian ? 
                         "Ошибка при установке TCP-соединения: " :
-                        "Error establishing TCP connection: ", ex);
+                        "Error establishing TCP connection: ") + ex.Message, ex);
                 }
             }
             else
@@ -524,7 +527,7 @@ namespace Scada.Comm.Channels
         {
             try
             {
-                int count = tcpClient.Available;
+                int count = TcpClient.Available;
                 int readCnt = NetStream.Read(buffer, offset, count);
                 logText = BuildReadLogText(buffer, offset, count, readCnt, logFormat);
 

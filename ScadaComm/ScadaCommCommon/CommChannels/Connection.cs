@@ -95,9 +95,13 @@ namespace Scada.Comm.Channels
         /// </summary>
         protected const int DataAccumThreadDelay = 10;
         /// <summary>
-        /// Таймаут записи данных, мс
+        /// Таймаут чтения данных по умолчанию, мс
         /// </summary>
-        protected const int WriteTimeout = 5000;
+        protected const int DefaultReadTimeout = 5000;
+        /// <summary>
+        /// Таймаут записи данных по умолчанию, мс
+        /// </summary>
+        protected const int DefaultWriteTimeout = 5000;
 
         /// <summary>
         /// Метод записи в журнал линии связи

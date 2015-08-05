@@ -147,7 +147,6 @@ namespace Scada.Comm.Svc
         private List<KPLogic.KPEvent> unsentEventList;          // список неотправленных событий КП
         private WorkStates workState;     // состояние работы линии связи
         private Log log;                  // журнал линии связи
-        private string logPrefix;         // префикс имён файлов журналов, относящихся к линии связи
         private string infoFileName;      // имя файла информации о работе линии связи
         private string curAction;         // описание текущего действия
         private string captionUnderline;  // подчёркивание обозначения линии связи
@@ -193,7 +192,6 @@ namespace Scada.Comm.Svc
             unsentEventList = new List<KPLogic.KPEvent>();
             workState = WorkStates.Idle;
             log = new Log(Log.Formats.Simple) { Encoding = Encoding.UTF8 };
-            logPrefix = "";
             infoFileName = "";
             curAction = NoAction;
             allCustomParams = null;
@@ -356,9 +354,9 @@ namespace Scada.Comm.Svc
                     throw new ArgumentNullException("value");
 
                 appDirs = value;
-                logPrefix = appDirs.LogDir + "line" + CommUtils.AddZeros(Number, 3);
-                log.FileName = logPrefix + ".log";
-                infoFileName = logPrefix + ".txt";
+                string fileName = appDirs.LogDir + "line" + CommUtils.AddZeros(Number, 3);
+                log.FileName = fileName + ".log";
+                infoFileName = fileName + ".txt";
             }
         }
 
@@ -623,14 +621,14 @@ namespace Scada.Comm.Svc
                 string kpInfoFileName;
                 int kpNum = kpLogic.Number;
                 if (kpNum < 10) 
-                    kpInfoFileName = "_kp00" + kpNum + ".txt";
+                    kpInfoFileName = "kp00" + kpNum + ".txt";
                 else if (kpNum < 100) 
-                    kpInfoFileName = "_kp0" + kpNum + ".txt";
+                    kpInfoFileName = "kp0" + kpNum + ".txt";
                 else 
-                    kpInfoFileName = "_kp" + kpNum + ".txt";
+                    kpInfoFileName = "kp" + kpNum + ".txt";
 
                 // запись информации
-                using (StreamWriter writer = new StreamWriter(logPrefix + kpInfoFileName, false, Encoding.UTF8))
+                using (StreamWriter writer = new StreamWriter(appDirs.LogDir + kpInfoFileName, false, Encoding.UTF8))
                     writer.Write(kpLogic.GetInfo());
             }
             catch (ThreadAbortException)
@@ -865,6 +863,7 @@ namespace Scada.Comm.Svc
                             if (kpLogic.ConnRequired && (kpLogic.Connection == null || !kpLogic.Connection.Connected))
                             {
                                 KPInvalidateCurData(kpLogic);
+                                log.WriteLine();
                                 log.WriteAction(Localization.UseRussian ?
                                     "Невозможно выполнить сеанс опроса КП, т.к. соединение не установлено" :
                                     "Unable to communicate with the device because connection is not established");

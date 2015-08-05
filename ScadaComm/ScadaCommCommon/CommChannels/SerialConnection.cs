@@ -54,7 +54,7 @@ namespace Scada.Comm.Channels
                 throw new ArgumentNullException("serialPort");
             
             SerialPort = serialPort;
-            SerialPort.WriteTimeout = WriteTimeout;
+            SerialPort.WriteTimeout = DefaultWriteTimeout;
             SerialPort.NewLine = NewLine;
         }
 

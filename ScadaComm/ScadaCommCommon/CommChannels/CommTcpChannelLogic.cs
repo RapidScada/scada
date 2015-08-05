@@ -51,14 +51,6 @@ namespace Scada.Comm.Channels
         }
 
         /// <summary>
-        /// Таймаут отправки данных по TCP, мс
-        /// </summary>
-        protected const int TcpSendTimeout = 1000;
-        /// <summary>
-        /// Таймаут приёма данных по TCP, мс
-        /// </summary>
-        protected const int TcpReceiveTimeout = 5000;
-        /// <summary>
         /// Длина буфера принимаемых данных
         /// </summary>
         protected const int InBufLenght = 1000;
@@ -83,18 +75,6 @@ namespace Scada.Comm.Channels
             kpCallNumDict = new Dictionary<string, List<KPLogic>>();
         }
 
-        
-        /// <summary>
-        /// Настроить TCP-клиент
-        /// </summary>
-        protected TcpClient TuneTcpClient(TcpClient tcpClient, 
-            int sendTimeout = TcpSendTimeout, int receiveTimeout = TcpReceiveTimeout)
-        {
-            tcpClient.NoDelay = true;
-            tcpClient.SendTimeout = sendTimeout;
-            tcpClient.ReceiveTimeout = receiveTimeout;
-            return tcpClient;
-        }
         
         /// <summary>
         /// Инициализировать канал связи

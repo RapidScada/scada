@@ -64,7 +64,7 @@ namespace Scada.Comm.Channels
                 throw new ArgumentNullException("udpClient");
 
             UdpClient = udpClient;
-            UdpClient.Client.SendTimeout = WriteTimeout;
+            UdpClient.Client.SendTimeout = DefaultWriteTimeout;
             LocalPort = localPort;
             RemotePort = remotePort;
         }
