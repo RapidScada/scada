@@ -117,6 +117,10 @@ namespace Scada.Comm.Svc
         /// </summary>
         private const int MinCycleDelay = 10;
         /// <summary>
+        /// Задержка после пустого цикла опроса, мс
+        /// </summary>
+        private const int EmptyCycleDelay = 200;
+        /// <summary>
         /// Количество попыток передачи данных серверу без задержки
         /// </summary>
         private const int QuickAttemptCnt = 5;
@@ -466,6 +470,8 @@ namespace Scada.Comm.Svc
                 }
 
                 sbInfo.AppendLine();
+                if (commCnl != null)
+                    sbInfo.Append(commCnl.GetInfo()).AppendLine();
                 AppendCustomParams(sbInfo);
                 AppendCommonProps(sbInfo);
                 AppendActiveKP(sbInfo);
@@ -907,7 +913,7 @@ namespace Scada.Comm.Svc
                 if (workState != WorkStates.Terminating)
                 {
                     if (commCnt == 0)
-                        Thread.Sleep(ScadaUtils.ThreadDelay);
+                        Thread.Sleep(EmptyCycleDelay);
                     else
                         Thread.Sleep(cycleDelay);
                 }
