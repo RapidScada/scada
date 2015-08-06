@@ -497,7 +497,7 @@ namespace Scada.Comm
                             Params.ServerTimeout = int.Parse(val);
                         else if (nameL == "waitforstop")
                             Params.WaitForStop = int.Parse(val);
-                        else if (nameL == "updatealldataper")
+                        else if (nameL == "sendalldataper")
                             Params.SendAllDataPer = int.Parse(val);
                     }
                     catch
@@ -635,6 +635,8 @@ namespace Scada.Comm
                         kp.Number = kpElem.GetAttrAsInt("number");
                         kp.Name = kpElem.GetAttribute("name");
                         kp.Dll = kpElem.GetAttribute("dll");
+                        if (!kp.Dll.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
+                            kp.Dll += ".dll";
                         kp.CallNum = kpElem.GetAttribute("callNum");
                         kp.CmdLine = kpElem.GetAttribute("cmdLine");
                         commLine.ReqSequence.Add(kp);
@@ -780,7 +782,7 @@ namespace Scada.Comm
                     "Таймаут ожидания ответа SCADA-Сервера, мс", "SCADA-Server response timeout, ms");
                 paramsElem.AppendParamElem("WaitForStop", Params.WaitForStop,
                     "Ожидание остановки линий связи, мс", "Waiting for the communication lines temrination, ms");
-                paramsElem.AppendParamElem("UpdateAllDataPer", Params.SendAllDataPer,
+                paramsElem.AppendParamElem("SendAllDataPer", Params.SendAllDataPer,
                     "Период передачи всех данных КП, с", "Sending all device data period, sec");
 
                 // Линии связи

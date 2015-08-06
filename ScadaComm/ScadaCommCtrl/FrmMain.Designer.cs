@@ -74,7 +74,7 @@
             this.pageCommonParams = new System.Windows.Forms.TabPage();
             this.gbPerformance = new System.Windows.Forms.GroupBox();
             this.lblRefrParams = new System.Windows.Forms.Label();
-            this.numRefrParams = new System.Windows.Forms.NumericUpDown();
+            this.numSendAllDataPer = new System.Windows.Forms.NumericUpDown();
             this.numWaitForStop = new System.Windows.Forms.NumericUpDown();
             this.lblWaitForStop = new System.Windows.Forms.Label();
             this.gbServer = new System.Windows.Forms.GroupBox();
@@ -235,7 +235,7 @@
             this.tabControl.SuspendLayout();
             this.pageCommonParams.SuspendLayout();
             this.gbPerformance.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numRefrParams)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numSendAllDataPer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numWaitForStop)).BeginInit();
             this.gbServer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numServerTimeout)).BeginInit();
@@ -661,7 +661,7 @@
             // gbPerformance
             // 
             this.gbPerformance.Controls.Add(this.lblRefrParams);
-            this.gbPerformance.Controls.Add(this.numRefrParams);
+            this.gbPerformance.Controls.Add(this.numSendAllDataPer);
             this.gbPerformance.Controls.Add(this.numWaitForStop);
             this.gbPerformance.Controls.Add(this.lblWaitForStop);
             this.gbPerformance.Location = new System.Drawing.Point(6, 140);
@@ -681,23 +681,23 @@
             this.lblRefrParams.TabIndex = 3;
             this.lblRefrParams.Text = "Период передачи на сервер всех данных КП, с";
             // 
-            // numRefrParams
+            // numSendAllDataPer
             // 
-            this.numRefrParams.Location = new System.Drawing.Point(13, 45);
-            this.numRefrParams.Maximum = new decimal(new int[] {
+            this.numSendAllDataPer.Location = new System.Drawing.Point(13, 45);
+            this.numSendAllDataPer.Maximum = new decimal(new int[] {
             3600,
             0,
             0,
             0});
-            this.numRefrParams.Name = "numRefrParams";
-            this.numRefrParams.Size = new System.Drawing.Size(60, 20);
-            this.numRefrParams.TabIndex = 2;
-            this.numRefrParams.Value = new decimal(new int[] {
+            this.numSendAllDataPer.Name = "numSendAllDataPer";
+            this.numSendAllDataPer.Size = new System.Drawing.Size(60, 20);
+            this.numSendAllDataPer.TabIndex = 2;
+            this.numSendAllDataPer.Value = new decimal(new int[] {
             60,
             0,
             0,
             0});
-            this.numRefrParams.ValueChanged += new System.EventHandler(this.numRefrParams_ValueChanged);
+            this.numSendAllDataPer.ValueChanged += new System.EventHandler(this.numSendAllDataPer_ValueChanged);
             // 
             // numWaitForStop
             // 
@@ -1087,6 +1087,7 @@
             // 
             // numMaxCommErrCnt
             // 
+            this.numMaxCommErrCnt.Enabled = false;
             this.numMaxCommErrCnt.Location = new System.Drawing.Point(13, 71);
             this.numMaxCommErrCnt.Minimum = new decimal(new int[] {
             1,
@@ -1101,7 +1102,6 @@
             0,
             0,
             0});
-            this.numMaxCommErrCnt.ValueChanged += new System.EventHandler(this.numMaxCommErrCnt_ValueChanged);
             // 
             // lblCycleDelay
             // 
@@ -2499,7 +2499,7 @@
             this.pageCommonParams.ResumeLayout(false);
             this.gbPerformance.ResumeLayout(false);
             this.gbPerformance.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numRefrParams)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numSendAllDataPer)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numWaitForStop)).EndInit();
             this.gbServer.ResumeLayout(false);
             this.gbServer.PerformLayout();
@@ -2711,7 +2711,7 @@
         private System.Windows.Forms.CheckBox chkLineLogPause;
         private System.Windows.Forms.GroupBox gbPerformance;
         private System.Windows.Forms.Label lblRefrParams;
-        private System.Windows.Forms.NumericUpDown numRefrParams;
+        private System.Windows.Forms.NumericUpDown numSendAllDataPer;
         private System.Windows.Forms.NumericUpDown numWaitForStop;
         private System.Windows.Forms.Label lblWaitForStop;
         private System.Windows.Forms.TabPage pageKpCmd;

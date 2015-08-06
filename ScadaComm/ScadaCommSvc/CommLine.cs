@@ -1627,69 +1627,20 @@ namespace Scada.Comm.Svc
         private static KPLogic CreateKPLogic(int kpNum, string dllName, 
             AppDirs appDirs, Dictionary<string, Type> kpTypes, Log appLog)
         {
-            // получение типа КП
-            Type kpType = null;
-            try
+            Type kpType;
+            if (kpTypes.TryGetValue(dllName, out kpType))
             {
-                if (!kpTypes.TryGetValue(dllName, out kpType))
-                {
-                    // загрузка типа из библиотеки
-                    string path = appDirs.KPDir + dllName + ".dll";
-                    appLog.WriteAction((Localization.UseRussian ?
-                        "Загрузка библиотеки КП: " :
-                        "Load device library: ") + path, Log.ActTypes.Action);
+                return KPFactory.GetKPLogic(kpType, kpNum);
+            }
+            else
+            {
+                appLog.WriteAction((Localization.UseRussian ?
+                    "Загрузка библиотеки КП: " :
+                    "Load device library: ") + dllName, Log.ActTypes.Action);
 
-                    Assembly asm = Assembly.LoadFile(path);
-                    string typeFullName = "Scada.Comm.Devices." + dllName + "Logic";
-                    kpType = asm.GetType(typeFullName, true);
-                    kpTypes.Add(dllName, kpType);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception((Localization.UseRussian ?
-                    "Ошибка при получении типа КП: " :
-                    "Error getting device type: ") + ex.Message);
-            }
-
-            // создание экземпляра класса КП
-            try
-            {
-                return (KPLogic)Activator.CreateInstance(kpType, kpNum);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception((Localization.UseRussian ?
-                    "Ошибка при создании экземпляра класса КП: " :
-                    "Error creating device class instance: ") + ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// Создать канал связи
-        /// </summary>
-        private static CommChannelLogic CreateCommChannel(string commCnlType)
-        {
-            try
-            {
-                if (commCnlType.Equals("Serial", StringComparison.OrdinalIgnoreCase))
-                    return new CommSerialLogic();
-                else if (commCnlType.Equals("TcpClient", StringComparison.OrdinalIgnoreCase))
-                    return new CommTcpClientLogic();
-                else if (commCnlType.Equals("TcpServer", StringComparison.OrdinalIgnoreCase))
-                    return new CommTcpServerLogic();
-                else if (commCnlType.Equals("Udp", StringComparison.OrdinalIgnoreCase))
-                    return new CommUdpLogic();
-                else
-                    throw new Exception(Localization.UseRussian ? 
-                        "Неизвестный канал связи." : 
-                        "Unknown communication channel.");
-            }
-            catch (Exception ex)
-            {
-                throw new Exception((Localization.UseRussian ?
-                    "Ошибка при создании канала связи: " :
-                    "Error creating communication channel: ") + ex.Message);
+                KPLogic kpLogic = KPFactory.GetKPLogic(appDirs.KPDir, dllName, kpNum);
+                kpTypes.Add(dllName, kpLogic.GetType());
+                return kpLogic;
             }
         }
 
@@ -1772,7 +1723,7 @@ namespace Scada.Comm.Svc
             if (commLine.CustomParams.TryGetValue("CommChannel", out commCnlType) && 
                 !string.IsNullOrEmpty(commCnlType))
             {
-                commLine.CommChannelLogic = CreateCommChannel(commCnlType);
+                commLine.CommChannelLogic = CommChannelFactory.GetCommChannel(commCnlType);
                 commLine.CommChannelLogic.WriteToLog = commLine.log.WriteLine;
 
                 try

@@ -56,7 +56,6 @@ namespace Scada.Comm.Ctrl
         public static string ReceiveBaseTableError { get; private set; }
         public static string UpdateSettingsCompleted { get; private set; }
         public static string UpdateSettingsError { get; private set; }
-        public static string GetKpTypeError { get; private set; }
         public static string GetKpTypeInfoError { get; private set; }
         public static string SecondInstanceClosed { get; private set; }
         public static string CheckSecondInstanceError { get; private set; }
@@ -74,18 +73,6 @@ namespace Scada.Comm.Ctrl
         public static string IncorrectCmdVal { get; private set; }
         public static string IncorrectHexCmdData { get; private set; }
         public static string CmdDataRequired { get; private set; }
-
-        // Словарь Scada.Comm.Ctrl.Settings
-        public static string LineCaption { get; private set; }
-        public static string KPCaption { get; private set; }
-        public static string NoCommonParams { get; private set; }
-        public static string LoadCommonParamsError { get; private set; }
-        public static string NoCommLines { get; private set; }
-        public static string IncorrectPortSettings { get; private set; }
-        public static string IncorrectCommSettings { get; private set; }
-        public static string IncorrectKPSettings { get; private set; }
-        public static string IncorrectLineSettings { get; private set; }
-        public static string LoadCommLinesError { get; private set; }
 
         private static void SetToDefault()
         {
@@ -107,7 +94,6 @@ namespace Scada.Comm.Ctrl
             ReceiveBaseTableError = "Ошибка при приёме таблиц базы конфигурации";
             UpdateSettingsCompleted = "Обновление настроек по базе конфигурации выполнено успешно.";
             UpdateSettingsError = "Ошибка при обновлении настроек по базе конфигурации";
-            GetKpTypeError = "Ошибка при получении типа КП из библиотеки {0}";
             GetKpTypeInfoError = "Ошибка при получении информации о типах КП";
             SecondInstanceClosed = "Программа для управления SCADA-Коммуникатором уже запущена.\r\nВторая копия будет закрыта.";
             CheckSecondInstanceError = "Ошибка при проверке запуска второй копии программы";
@@ -125,17 +111,6 @@ namespace Scada.Comm.Ctrl
             IncorrectCmdVal = "Некорректное значение команды.";
             IncorrectHexCmdData = "Некорректные 16-ричные данные команды.";
             CmdDataRequired = "Необходимо ввести данные команды.";
-
-            LineCaption = "Линия";
-            KPCaption = "КП";
-            NoCommonParams = "Общие параметры не найдены.";
-            LoadCommonParamsError = "Ошибка при загрузке общих параметров";
-            NoCommLines = "Линии связи не найдены.";
-            IncorrectPortSettings = "Некорректные параметры COM-порта";
-            IncorrectCommSettings = "Некорректные параметры связи";
-            IncorrectKPSettings = "Некорректные параметры КП {0}";
-            IncorrectLineSettings = "Некорректная конфигурация линии связи {0}";
-            LoadCommLinesError = "Ошибка при загрузке линий связи";
         }
 
         public static void Init()
@@ -164,7 +139,6 @@ namespace Scada.Comm.Ctrl
                 ReceiveBaseTableError = dict.GetPhrase("ReceiveBaseTableError", ReceiveBaseTableError);
                 UpdateSettingsCompleted = dict.GetPhrase("UpdateSettingsCompleted", UpdateSettingsCompleted);
                 UpdateSettingsError = dict.GetPhrase("UpdateSettingsError", UpdateSettingsError);
-                GetKpTypeError = dict.GetPhrase("GetKpTypeError", GetKpTypeError);
                 GetKpTypeInfoError = dict.GetPhrase("GetKpTypeInfoError", GetKpTypeInfoError);
                 SecondInstanceClosed = dict.GetPhrase("SecondInstanceClosed", SecondInstanceClosed);
                 CheckSecondInstanceError = dict.GetPhrase("CheckSecondInstanceError", CheckSecondInstanceError);
@@ -182,20 +156,6 @@ namespace Scada.Comm.Ctrl
                 IncorrectCmdVal = dict.GetPhrase("IncorrectCmdVal", IncorrectCmdVal);
                 IncorrectHexCmdData = dict.GetPhrase("IncorrectHexCmdData", IncorrectHexCmdData);
                 CmdDataRequired = dict.GetPhrase("CmdDataRequired", CmdDataRequired);
-            }
-
-            if (Localization.Dictionaries.TryGetValue("Scada.Comm.Ctrl.Settings", out dict))
-            {
-                LineCaption = dict.GetPhrase("LineCaption", LineCaption);
-                KPCaption = dict.GetPhrase("KPCaption", KPCaption);
-                NoCommonParams = dict.GetPhrase("NoCommonParams", NoCommonParams);
-                LoadCommonParamsError = dict.GetPhrase("LoadCommonParamsError", LoadCommonParamsError);
-                NoCommLines = dict.GetPhrase("NoCommLines", NoCommLines);
-                IncorrectPortSettings = dict.GetPhrase("IncorrectPortSettings", IncorrectPortSettings);
-                IncorrectCommSettings = dict.GetPhrase("IncorrectCommSettings", IncorrectCommSettings);
-                IncorrectKPSettings = dict.GetPhrase("IncorrectKPSettings", IncorrectKPSettings);
-                IncorrectLineSettings = dict.GetPhrase("IncorrectLineSettings", IncorrectLineSettings);
-                LoadCommLinesError = dict.GetPhrase("LoadCommLinesError", LoadCommLinesError);
             }
         }
     }

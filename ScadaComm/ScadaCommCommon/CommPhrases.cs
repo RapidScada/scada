@@ -45,6 +45,10 @@ namespace Scada.Comm
         public static string IncorrectKPSettings { get; private set; }
         public static string IncorrectLineSettings { get; private set; }
 
+        // Словарь Scada.Comm.Devices.KPFactory
+        public static string GetViewTypeError { get; private set; }
+        public static string CreateViewError { get; private set; }
+
         // Фразы, устанавливаемые в зависимости от локализации, не загружая из словаря
         public static string SendNotation { get; private set; }
         public static string ReceiveNotation { get; private set; }
@@ -63,6 +67,8 @@ namespace Scada.Comm
 
         private static void SetToDefault()
         {
+            GetViewTypeError = "Ошибка при получении типа интерфейса КП из библиотеки {0}";
+            CreateViewError = "Ошибка при создании экземпляра класса интерфейса КП {0}";
             LineCaption = "Линия";
             KPCaption = "КП";
             IncorrectKPSettings = "Некорректные параметры КП {0}";
@@ -114,6 +120,12 @@ namespace Scada.Comm
                 KPCaption = dict.GetPhrase("KPCaption", KPCaption);
                 IncorrectKPSettings = dict.GetPhrase("IncorrectKPSettings", IncorrectKPSettings);
                 IncorrectLineSettings = dict.GetPhrase("IncorrectLineSettings", IncorrectLineSettings);
+            }
+
+            if (Localization.Dictionaries.TryGetValue("Scada.Comm.Devices.KPFactory", out dict))
+            {
+                GetViewTypeError = dict.GetPhrase("GetViewTypeError", GetViewTypeError);
+                CreateViewError = dict.GetPhrase("CreateViewError", CreateViewError);
             }
         }
     }

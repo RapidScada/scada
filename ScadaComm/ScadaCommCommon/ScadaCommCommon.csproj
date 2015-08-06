@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppDirs.cs" />
+    <Compile Include="CommChannels\CommChannelFactory.cs" />
     <Compile Include="CommChannels\CommChannelLogic.cs" />
     <Compile Include="CommChannels\CommChannelView.cs" />
     <Compile Include="CommChannels\CommSerialLogic.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="CommPhrases.cs" />
     <Compile Include="CommUtils.cs" />
     <Compile Include="Devices\ICommLineService.cs" />
+    <Compile Include="Devices\KPFactory.cs" />
     <Compile Include="Devices\KPLogic.cs" />
     <Compile Include="Devices\KPReqParams.cs" />
     <Compile Include="Devices\KPView.cs" />

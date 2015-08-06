@@ -81,18 +81,13 @@ namespace Scada.Comm.Ctrl
             /// </summary>
             public KpDllInfo()
             {
-                ShtName = "";
                 FileName = "";
                 KpType = null;
                 KpView = null;
             }
 
             /// <summary>
-            /// Получить или установить короткое имя файла
-            /// </summary>
-            public string ShtName { get; set; }
-            /// <summary>
-            /// Получить или установить полное имя файла
+            /// Получить или установить имя файла без директории
             /// </summary>
             public string FileName { get; set; }
             /// <summary>
@@ -127,46 +122,46 @@ namespace Scada.Comm.Ctrl
         /// </summary>
         private static readonly string ZeroTime = new DateTime(0).ToString("T", Localization.Culture);
 
-        private string exeDir;                // директория исполняемого файла приложения
-        private AppDirs appDirs;              // директории приложения
-        private Log errLog;                   // журнал ошибок приложения
-        private Mutex mutex;                  // объект для проверки запуска второй копии программы
-        private Icon icoStart;                // пиктограмма работающей службы
-        private Icon icoStop;                 // пиктограмма остановленной службы
-        private ServiceController svcContr;   // контроллер службы
+        private string exeDir;              // директория исполняемого файла приложения
+        private AppDirs appDirs;            // директории приложения
+        private Log errLog;                 // журнал ошибок приложения
+        private Mutex mutex;                // объект для проверки запуска второй копии программы
+        private Icon icoStart;              // пиктограмма работающей службы
+        private Icon icoStop;               // пиктограмма остановленной службы
+        private ServiceController svcContr; // контроллер службы
         private ServiceControllerStatus prevSvcStatus; // предыдущее состояние службы
 
-        private TreeNode nodeCommonParams;    // узел общих параметров
-        private TreeNode nodeKpDlls;          // узел библиотек КП
-        private TreeNode nodeLines;           // узел линий связи
-        private TreeNode nodeStats;           // узел статистики
+        private TreeNode nodeCommonParams;  // узел общих параметров
+        private TreeNode nodeKpDlls;        // узел библиотек КП
+        private TreeNode nodeLines;         // узел линий связи
+        private TreeNode nodeStats;         // узел статистики
 
-        private Settings origSettings;        // первоначальные настройки
-        private Settings modSettings;         // изменённые настройки
-        private TreeNode lastNode;            // последний выбранный узел дерева, с которым связаны отображаемые страницы
-        private Settings.CommLine lastLine;   // последняя выбранная линия связи
-        private Settings.UserParam lastParam; // последний выбранный пользовательский параметр линии связи
-        private ListViewItem lastParamItem;   // элемент списка последнего выбранного пользовательского параметра
-        private Settings.KP lastKP;           // последний выбранный КП
-        private ListViewItem lastKpItem;      // элемент списка последнего выбранного КП
-        private Settings.KP copiedKP;         // скопированный КП
-        private bool changing;                // происходит программное изменение элементов управления
+        private Settings origSettings;      // первоначальные настройки
+        private Settings modSettings;       // изменённые настройки
+        private TreeNode lastNode;          // последний выбранный узел дерева, с которым связаны отображаемые страницы
+        private Settings.CommLine lastLine; // последняя выбранная линия связи
+        private Settings.CustomParam lastParam; // последний выбранный пользовательский параметр линии связи
+        private ListViewItem lastParamItem; // элемент списка последнего выбранного пользовательского параметра
+        private Settings.KP lastKP;         // последний выбранный КП
+        private ListViewItem lastKpItem;    // элемент списка последнего выбранного КП
+        private Settings.KP copiedKP;       // скопированный КП
+        private bool changing;              // происходит программное изменение элементов управления
 
-        private ServerComm serverComm;        // объект для обмена данными со SCADA-Сервером
-        private bool baseTablesReceived;      // таблицы базы конфигурации получены
-        private DataTable tblCommLine;        // таблица линий связи из базы конфигурации
-        private DataTable tblKP;              // таблица КП из базы конфигурации
-        private DataTable tblKPType;          // таблица типов КП из базы конфигурации
+        private ServerComm serverComm;      // объект для обмена данными со SCADA-Сервером
+        private bool baseTablesReceived;    // таблицы базы конфигурации получены
+        private DataTable tblCommLine;      // таблица линий связи из базы конфигурации
+        private DataTable tblKP;            // таблица КП из базы конфигурации
+        private DataTable tblKPType;        // таблица типов КП из базы конфигурации
         private SortedList<string, KpDllInfo> kpDllInfoList; // информация о библиотеках КП, упорядоченная по имени DLL
 
-        private ListBox lbLog1;               // список строк 1-го журнала
-        private ListBox lbLog2;               // список строк 2-го журнала
-        private string logFileName1;          // имя файла 1-го журнала
-        private string logFileName2;          // имя файла 2-го журнала
-        private DateTime logFileAge1;         // время изменения файла 1-го журнала
-        private DateTime logFileAge2;         // время изменения файла 2-го журнала
-        private bool fullLoad1;               // загружать 1-й журнал полностью
-        private bool fullLoad2;               // загружать 2-й журнал полностью
+        private ListBox lbLog1;             // список строк 1-го журнала
+        private ListBox lbLog2;             // список строк 2-го журнала
+        private string logFileName1;        // имя файла 1-го журнала
+        private string logFileName2;        // имя файла 2-го журнала
+        private DateTime logFileAge1;       // время изменения файла 1-го журнала
+        private DateTime logFileAge2;       // время изменения файла 2-го журнала
+        private bool fullLoad1;             // загружать 1-й журнал полностью
+        private bool fullLoad2;             // загружать 2-й журнал полностью
 
 
         /// <summary>
@@ -514,7 +509,7 @@ namespace Scada.Comm.Ctrl
             txtServerUser.Text = modSettings.Params.ServerUser;
             txtServerPwd.Text = modSettings.Params.ServerPwd;
             numWaitForStop.SetNumericValue(modSettings.Params.WaitForStop);
-            numRefrParams.SetNumericValue(modSettings.Params.RefrParams);
+            numSendAllDataPer.SetNumericValue(modSettings.Params.SendAllDataPer);
 
             changing = false;
         }
@@ -582,7 +577,6 @@ namespace Scada.Comm.Ctrl
 
                 numReqTriesCnt.SetNumericValue(lastLine.ReqTriesCnt);
                 numCycleDelay.SetNumericValue(lastLine.CycleDelay);
-                numMaxCommErrCnt.SetNumericValue(lastLine.MaxCommErrCnt);
                 chkCmdEnabled.Checked = lastLine.CmdEnabled;
 
                 cbPortName.Enabled = comPort;
@@ -611,13 +605,13 @@ namespace Scada.Comm.Ctrl
                 btnDelParam.Enabled = false;
 
                 lvUserParams.Items.Clear();
-                for (int i = 0; i < lastLine.UserParams.Count; i++)
+                for (int i = 0; i < lastLine.CustomParams.Count; i++)
                 {
-                    Settings.UserParam userParam = lastLine.UserParams[i];
+                    Settings.CustomParam customParam = lastLine.CustomParams[i];
 
                     ListViewItem item = new ListViewItem(new string[] { (i + 1).ToString(), 
-                        userParam.Name, userParam.Value, userParam.Descr });
-                    item.Tag = userParam;
+                        customParam.Name, customParam.Value, customParam.Descr });
+                    item.Tag = customParam;
                     lvUserParams.Items.Add(item);
                 }
 
@@ -808,25 +802,23 @@ namespace Scada.Comm.Ctrl
 
                 foreach (FileInfo fileInfo in fileInfoAr)
                 {
-                    if (fileInfo.Name.ToLower() != "kp.dll")
+                    if (!fileInfo.Name.Equals("kp.dll", StringComparison.OrdinalIgnoreCase))
                     {
-                        KpDllInfo kpDllInfo = new KpDllInfo();
-                        kpDllInfo.ShtName = Path.GetFileNameWithoutExtension(fileInfo.Name);
-                        kpDllInfo.FileName = fileInfo.Name;
-
-                        string typeFullName = "Scada.Comm.Devices." + kpDllInfo.ShtName + "View";
                         try
                         {
-                            Assembly asm = Assembly.LoadFile(fileInfo.FullName);
-                            kpDllInfo.KpType = asm.GetType(typeFullName, true);
-                            kpDllInfo.KpView = Activator.CreateInstance(kpDllInfo.KpType) as KPView;
-                            kpDllInfo.KpView.AppDirs = appDirs;
-                            kpDllInfoList.Add(kpDllInfo.ShtName, kpDllInfo);
+                            KPView kpView = KPFactory.GetKPView(appDirs.KPDir, fileInfo.Name);
+                            kpView.AppDirs = appDirs;
+                            KpDllInfo kpDllInfo = new KpDllInfo()
+                            {
+                                FileName = fileInfo.Name,
+                                KpType = kpView.GetType(),
+                                KpView = kpView
+                            };
+                            kpDllInfoList.Add(kpDllInfo.FileName, kpDllInfo);
                         }
                         catch (Exception ex)
                         {
-                            errLog.WriteAction(string.Format(AppPhrases.GetKpTypeError, fileInfo.FullName) + 
-                                ":\r\n" + ex.Message);
+                            errLog.WriteAction(ex.Message);
                         }
                     }
                 }
@@ -837,7 +829,7 @@ namespace Scada.Comm.Ctrl
                     foreach (KpDllInfo kpDllInfo in kpDllInfoList.Values)
                     {
                         lbKpDll.Items.Add(kpDllInfo.FileName);
-                        cbKpDll.Items.Add(kpDllInfo.ShtName);
+                        cbKpDll.Items.Add(kpDllInfo.FileName);
                     }
                     lbKpDll.SelectedIndex = 0;
                 }
@@ -872,6 +864,7 @@ namespace Scada.Comm.Ctrl
                 {
                     Localization.TranslateForm(this, "Scada.Comm.Ctrl.FrmMain", toolTip, cmsNotify, cmsLine, cmsKP);
                     AppPhrases.Init();
+                    CommPhrases.InitFromDictionaries();
                     TranslateTree();
                     notifyIcon.Text = AppPhrases.MainFormTitle;
                 }
@@ -1119,12 +1112,7 @@ namespace Scada.Comm.Ctrl
         private void btnAbout_Click(object sender, EventArgs e)
         {
             // отображение формы о программе
-            string errMsg;
-            if (!FrmAbout.ShowAbout(exeDir, out errMsg))
-            {
-                errLog.WriteAction(errMsg);
-                ScadaUtils.ShowError(errMsg);
-            }
+            FrmAbout.ShowAbout(exeDir, errLog);
         }
 
 
@@ -1461,7 +1449,7 @@ namespace Scada.Comm.Ctrl
 
                     try
                     {
-                        kpView = Activator.CreateInstance(kpDllInfo.KpType, lastKP.Number) as KPView;
+                        kpView = KPFactory.GetKPView(kpDllInfo.KpType, lastKP.Number);
                         enabled = kpView.CanShowProps;
                     }
                     catch { }
@@ -1644,11 +1632,11 @@ namespace Scada.Comm.Ctrl
             }
         }
 
-        private void numRefrParams_ValueChanged(object sender, EventArgs e)
+        private void numSendAllDataPer_ValueChanged(object sender, EventArgs e)
         {
             if (!changing)
             {
-                modSettings.Params.RefrParams = decimal.ToInt32(numRefrParams.Value);
+                modSettings.Params.SendAllDataPer = decimal.ToInt32(numSendAllDataPer.Value);
                 SetModified();
             }
         }
@@ -1850,15 +1838,6 @@ namespace Scada.Comm.Ctrl
             }
         }
 
-        private void numMaxCommErrCnt_ValueChanged(object sender, EventArgs e)
-        {
-            if (!changing && lastLine != null)
-            {
-                lastLine.MaxCommErrCnt = decimal.ToInt32(numMaxCommErrCnt.Value);
-                SetModified();
-            }
-        }
-
         private void chkCmdEnabled_CheckedChanged(object sender, EventArgs e)
         {
             if (!changing && lastLine != null)
@@ -1882,7 +1861,7 @@ namespace Scada.Comm.Ctrl
             if (lvUserParams.SelectedItems.Count > 0)
             {
                 lastParamItem = lvUserParams.SelectedItems[0];
-                lastParam = lastParamItem.Tag as Settings.UserParam;
+                lastParam = lastParamItem.Tag as Settings.CustomParam;
 
                 if (lastParam == null)
                 {
@@ -1952,19 +1931,19 @@ namespace Scada.Comm.Ctrl
         {
             if (lastLine != null)
             {
-                Settings.UserParam newParam = new Settings.UserParam();
-                int newIndex = lastLine.UserParams.IndexOf(lastParam);
+                Settings.CustomParam newParam = new Settings.CustomParam();
+                int newIndex = lastLine.CustomParams.IndexOf(lastParam);
                 if (newIndex < 0)
-                    newIndex = lastLine.UserParams.Count;
+                    newIndex = lastLine.CustomParams.Count;
                 else
                     newIndex++;
 
                 ListViewItem newItem = new ListViewItem(new string[] { (newIndex + 1).ToString(), "", "", "" });
                 newItem.Tag = newParam;
 
-                if (newIndex < lastLine.UserParams.Count)
+                if (newIndex < lastLine.CustomParams.Count)
                 {
-                    lastLine.UserParams.Insert(newIndex, newParam);
+                    lastLine.CustomParams.Insert(newIndex, newParam);
                     lvUserParams.Items.Insert(newIndex, newItem);
 
                     for (int i = newIndex + 1; i < lvUserParams.Items.Count; i++)
@@ -1972,7 +1951,7 @@ namespace Scada.Comm.Ctrl
                 }
                 else
                 {
-                    lastLine.UserParams.Add(newParam);
+                    lastLine.CustomParams.Add(newParam);
                     lvUserParams.Items.Add(newItem);
                 }
 
@@ -1987,16 +1966,16 @@ namespace Scada.Comm.Ctrl
             if (lastLine != null && lastParam != null && lastParamItem != null)
             {
                 int selIndex = lastParamItem.Index;
-                if (0 < selIndex && selIndex < lastLine.UserParams.Count && selIndex < lvUserParams.Items.Count)
+                if (0 < selIndex && selIndex < lastLine.CustomParams.Count && selIndex < lvUserParams.Items.Count)
                 {
-                    lastLine.UserParams.RemoveAt(selIndex);
+                    lastLine.CustomParams.RemoveAt(selIndex);
 
                     lvUserParams.SelectedIndexChanged -= lvUserParams_SelectedIndexChanged;
                     lvUserParams.Items.RemoveAt(selIndex);
                     lvUserParams.SelectedIndexChanged += lvUserParams_SelectedIndexChanged;
                     
                     selIndex--;
-                    lastLine.UserParams.Insert(selIndex, lastParam);
+                    lastLine.CustomParams.Insert(selIndex, lastParam);
                     lvUserParams.Items.Insert(selIndex, lastParamItem);
 
                     for (int i = selIndex; i < lvUserParams.Items.Count; i++)
@@ -2014,17 +1993,17 @@ namespace Scada.Comm.Ctrl
             if (lastLine != null && lastParam != null && lastParamItem != null)
             {
                 int selIndex = lastParamItem.Index;
-                if (0 <= selIndex && selIndex < lastLine.UserParams.Count - 1 && 
+                if (0 <= selIndex && selIndex < lastLine.CustomParams.Count - 1 && 
                     selIndex < lvUserParams.Items.Count - 1)
                 {
-                    lastLine.UserParams.RemoveAt(selIndex);
+                    lastLine.CustomParams.RemoveAt(selIndex);
 
                     lvUserParams.SelectedIndexChanged -= lvUserParams_SelectedIndexChanged;
                     lvUserParams.Items.RemoveAt(selIndex);
                     lvUserParams.SelectedIndexChanged += lvUserParams_SelectedIndexChanged;
 
                     selIndex++;
-                    lastLine.UserParams.Insert(selIndex, lastParam);
+                    lastLine.CustomParams.Insert(selIndex, lastParam);
                     lvUserParams.Items.Insert(selIndex, lastParamItem);
 
                     for (int i = 0; i <= selIndex; i++)
@@ -2042,9 +2021,9 @@ namespace Scada.Comm.Ctrl
             if (lastLine != null && lastParam != null && lastParamItem != null)
             {
                 int selIndex = lastParamItem.Index;
-                if (0 <= selIndex && selIndex < lastLine.UserParams.Count && selIndex < lvUserParams.Items.Count)
+                if (0 <= selIndex && selIndex < lastLine.CustomParams.Count && selIndex < lvUserParams.Items.Count)
                 {
-                    lastLine.UserParams.RemoveAt(selIndex);
+                    lastLine.CustomParams.RemoveAt(selIndex);
                     lvUserParams.Items.RemoveAt(selIndex);
 
                     for (int i = selIndex; i < lvUserParams.Items.Count; i++)
@@ -2557,7 +2536,7 @@ namespace Scada.Comm.Ctrl
                     try
                     {
                         KpDllInfo kpDllInfo = kpDllInfoList.Values[index];
-                        KPView kpView = Activator.CreateInstance(kpDllInfo.KpType, lastKP.Number) as KPView;
+                        KPView kpView = KPFactory.GetKPView(kpDllInfo.KpType, lastKP.Number);
 
                         if (kpView.CanShowProps)
                         {
