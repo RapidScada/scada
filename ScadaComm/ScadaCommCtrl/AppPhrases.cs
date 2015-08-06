@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2014
- * Modified : 2014
+ * Modified : 2015
  */
 
 namespace Scada.Comm.Ctrl
@@ -67,7 +67,6 @@ namespace Scada.Comm.Ctrl
         public static string ServiceRestartFailed { get; private set; }
         public static string ImportLinesAndKpError { get; private set; }
         public static string ImportKpError { get; private set; }
-        public static string ResetReqParamsUnsupported { get; private set; }
         public static string ResetReqParamsError { get; private set; }
         public static string ShowKpPropsUnsupported { get; private set; }
         public static string ShowKpPropsError { get; private set; }
@@ -119,7 +118,6 @@ namespace Scada.Comm.Ctrl
             ServiceRestartFailed = "Не удалось перезапусить службу SCADA-Коммуникатора";
             ImportLinesAndKpError = "Ошибка при импорте линий связи и КП";
             ImportKpError = "Ошибка при импорте КП";
-            ResetReqParamsUnsupported = "{0} не поддерживает установку параметров опроса КП по умолчанию.";
             ResetReqParamsError = "Ошибка при установке параметров опроса КП по умолчанию";
             ShowKpPropsUnsupported = "{0} не поддерживает отображение свойств КП.";
             ShowKpPropsError = "Ошибка при отображении свойств КП";
@@ -177,7 +175,6 @@ namespace Scada.Comm.Ctrl
                 ServiceRestartFailed = dict.GetPhrase("ServiceRestartFailed", ServiceRestartFailed);
                 ImportLinesAndKpError = dict.GetPhrase("ImportLinesAndKpError", ImportLinesAndKpError);
                 ImportKpError = dict.GetPhrase("ImportKpError", ImportKpError);
-                ResetReqParamsUnsupported = dict.GetPhrase("ResetReqParamsUnsupported", ResetReqParamsUnsupported);
                 ResetReqParamsError = dict.GetPhrase("ResetReqParamsError", ResetReqParamsError);
                 ShowKpPropsUnsupported = dict.GetPhrase("ShowKpPropsUnsupported", ShowKpPropsUnsupported);
                 ShowKpPropsError = dict.GetPhrase("ShowKpPropsError", ShowKpPropsError);

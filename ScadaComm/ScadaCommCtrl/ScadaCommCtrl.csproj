@@ -60,6 +60,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Log\bin\Release\Log.dll</HintPath>
     </Reference>
+    <Reference Include="ScadaCommCommon">
+      <HintPath>..\ScadaCommCommon\bin\Release\ScadaCommCommon.dll</HintPath>
+    </Reference>
     <Reference Include="ScadaData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
@@ -148,12 +151,6 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\KP\KP.csproj">
-      <Project>{A33B8EC4-8F3E-453B-AA6B-5352CA1FE036}</Project>
-      <Name>KP</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,8 +35,9 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using Scada.Client;
-using Scada.Comm.KP;
 using Utils;
+using Scada.Comm.Devices;
+using Scada.Data;
 
 namespace Scada.Comm.Ctrl
 {
@@ -127,11 +128,7 @@ namespace Scada.Comm.Ctrl
         private static readonly string ZeroTime = new DateTime(0).ToString("T", Localization.Culture);
 
         private string exeDir;                // директория исполняемого файла приложения
-        private string configDir;             // директория конфигурации приложения
-        private string langDir;               // директория языковых файлов приложения
-        private string logDir;                // директория журналов приложения
-        private string kpDir;                 // директория библиотек КП
-        private string cmdDir;                // директория команд
+        private AppDirs appDirs;              // директории приложения
         private Log errLog;                   // журнал ошибок приложения
         private Mutex mutex;                  // объект для проверки запуска второй копии программы
         private Icon icoStart;                // пиктограмма работающей службы
@@ -205,11 +202,7 @@ namespace Scada.Comm.Ctrl
 
             // инициализация полей
             exeDir = "";
-            configDir = "";
-            langDir = "";
-            logDir = "";
-            kpDir = "";
-            cmdDir = "";
+            appDirs = new AppDirs();
             errLog = new Log(Log.Formats.Simple);
             errLog.Encoding = Encoding.UTF8;
             mutex = null;
@@ -789,15 +782,12 @@ namespace Scada.Comm.Ctrl
                 int index = kpDllInfoList.IndexOfKey(kp.Dll);
                 if (index >= 0)
                 {
-                    KPLogic.ReqParams reqParams = kpDllInfoList.Values[index].KpView.DefaultReqParams;
-                    if (!reqParams.IsEmpty)
-                    {
-                        kp.Timeout = reqParams.Timeout;
-                        kp.Delay = reqParams.Delay;
-                        kp.Time = reqParams.Time;
-                        kp.Period = reqParams.Period;
-                        kp.CmdLine = reqParams.CmdLine;
-                    }
+                    KPReqParams reqParams = kpDllInfoList.Values[index].KpView.DefaultReqParams;
+                    kp.Timeout = reqParams.Timeout;
+                    kp.Delay = reqParams.Delay;
+                    kp.Time = reqParams.Time;
+                    kp.Period = reqParams.Period;
+                    kp.CmdLine = reqParams.CmdLine;
                 }
             }
         }
@@ -813,7 +803,7 @@ namespace Scada.Comm.Ctrl
 
             try
             {
-                DirectoryInfo dirInfo = new DirectoryInfo(kpDir);
+                DirectoryInfo dirInfo = new DirectoryInfo(appDirs.KPDir);
                 FileInfo[] fileInfoAr = dirInfo.GetFiles("kp*.dll", SearchOption.TopDirectoryOnly);
 
                 foreach (FileInfo fileInfo in fileInfoAr)
@@ -824,17 +814,13 @@ namespace Scada.Comm.Ctrl
                         kpDllInfo.ShtName = Path.GetFileNameWithoutExtension(fileInfo.Name);
                         kpDllInfo.FileName = fileInfo.Name;
 
-                        string typeFullName = "Scada.Comm.KP." + kpDllInfo.ShtName + "View";
+                        string typeFullName = "Scada.Comm.Devices." + kpDllInfo.ShtName + "View";
                         try
                         {
                             Assembly asm = Assembly.LoadFile(fileInfo.FullName);
-                            kpDllInfo.KpType = asm.GetType(typeFullName);
+                            kpDllInfo.KpType = asm.GetType(typeFullName, true);
                             kpDllInfo.KpView = Activator.CreateInstance(kpDllInfo.KpType) as KPView;
-                            kpDllInfo.KpView.ConfigDir = configDir;
-                            kpDllInfo.KpView.LangDir = langDir;
-                            kpDllInfo.KpView.LogDir = logDir;
-                            kpDllInfo.KpView.CmdDir = cmdDir;
-
+                            kpDllInfo.KpView.AppDirs = appDirs;
                             kpDllInfoList.Add(kpDllInfo.ShtName, kpDllInfo);
                         }
                         catch (Exception ex)
@@ -867,26 +853,22 @@ namespace Scada.Comm.Ctrl
         {
             // инициализация директорий приложения
             exeDir = ScadaUtils.NormalDir(Path.GetDirectoryName(Application.ExecutablePath));
-            configDir = exeDir + "Config\\";
-            langDir = exeDir + "Lang\\";
-            logDir = exeDir + "Log\\";
-            kpDir = exeDir + "KP\\";
-            cmdDir = exeDir + "Cmd\\";
+            appDirs.Init(exeDir);
 
             // установка имени файла журнала ошибок
-            errLog.FileName = logDir + ErrFileName;
+            errLog.FileName = appDirs.LogDir + ErrFileName;
 
             // локализация приложения
             StringBuilder sbError = new StringBuilder();
             string errMsg;
             if (!Localization.UseRussian)
             {
-                if (Localization.LoadDictionaries(langDir, "ScadaData", out errMsg))
+                if (Localization.LoadDictionaries(appDirs.LangDir, "ScadaData", out errMsg))
                     CommonPhrases.Init();
                 else
                     sbError.AppendLine(errMsg);
 
-                if (Localization.LoadDictionaries(langDir, "ScadaComm", out errMsg))
+                if (Localization.LoadDictionaries(appDirs.LangDir, "ScadaComm", out errMsg))
                 {
                     Localization.TranslateForm(this, "Scada.Comm.Ctrl.FrmMain", toolTip, cmsNotify, cmsLine, cmsKP);
                     AppPhrases.Init();
@@ -935,7 +917,7 @@ namespace Scada.Comm.Ctrl
             }
 
             // загрузка конфигурации
-            if (!origSettings.Load(configDir + Settings.DefFileName, out errMsg))
+            if (!origSettings.Load(appDirs.ConfigDir + Settings.DefFileName, out errMsg))
                 sbError.AppendLine(errMsg);
             modSettings = origSettings.Clone();
 
@@ -1054,7 +1036,7 @@ namespace Scada.Comm.Ctrl
             }
 
             string errMsg;
-            if (modSettings.Save(configDir + Settings.DefFileName, out errMsg))
+            if (modSettings.Save(appDirs.ConfigDir + Settings.DefFileName, out errMsg))
             {
                 // запрет кнопок применения и отмены настроек
                 btnSettingsApply.Enabled = false;
@@ -1450,7 +1432,7 @@ namespace Scada.Comm.Ctrl
                 string[] cmdParams = new string[] { "LineNum=" + lastLine.Number };
                 string msg;
 
-                if (KPUtils.SaveCmd(cmdDir, "ScadaCommCtrl", cmdType, cmdParams, out msg))
+                if (CommUtils.SaveCmd(appDirs.CmdDir, "ScadaCommCtrl", cmdType, cmdParams, out msg))
                 {
                     ScadaUtils.ShowInfo(msg);
                 }
@@ -1499,10 +1481,7 @@ namespace Scada.Comm.Ctrl
 
                 if (kpView != null)
                 {
-                    kpView.ConfigDir = configDir;
-                    kpView.LangDir = langDir;
-                    kpView.LogDir = logDir;
-                    kpView.CmdDir = cmdDir;
+                    kpView.AppDirs = appDirs;
                     kpView.ShowProps();
                 }
             }
@@ -1541,7 +1520,7 @@ namespace Scada.Comm.Ctrl
                     else prefix = "line";
 
                     lbLog1 = lbLineState;
-                    logFileName1 = logDir + prefix + lastLine.Number + ".txt";
+                    logFileName1 = appDirs.LogDir + prefix + lastLine.Number + ".txt";
                     fullLoad1 = true;
                 }
                 else if (tabPage == pageLineLog && lastLine != null)
@@ -1553,7 +1532,7 @@ namespace Scada.Comm.Ctrl
 
                     lbLog1 = lbLineLog;
                     lbLog1.SelectedIndex = -1; // для последующей прокрутки в конец списка
-                    logFileName1 = logDir + prefix + lastLine.Number + ".log";
+                    logFileName1 = appDirs.LogDir + prefix + lastLine.Number + ".log";
                 }
                 else if (tabPage == pageKpData && lastKP != null)
                 {
@@ -1563,7 +1542,7 @@ namespace Scada.Comm.Ctrl
                     else prefix = "kp";
 
                     lbLog1 = lbKpData;
-                    logFileName1 = logDir + prefix + lastKP.Number + ".txt";
+                    logFileName1 = appDirs.LogDir + prefix + lastKP.Number + ".txt";
                     fullLoad1 = true;
                 }
                 else if (tabPage == pageStats)
@@ -1571,8 +1550,8 @@ namespace Scada.Comm.Ctrl
                     lbLog1 = lbAppState;
                     lbLog2 = lbAppLog;
                     lbLog2.SelectedIndex = -1; // для последующей прокрутки в конец списка
-                    logFileName1 = logDir + StateFileName;
-                    logFileName2 = logDir + LogFileName;
+                    logFileName1 = appDirs.LogDir + StateFileName;
+                    logFileName2 = appDirs.LogDir + LogFileName;
                     fullLoad1 = true;
                 }
             }
@@ -2533,17 +2512,9 @@ namespace Scada.Comm.Ctrl
                     try
                     {
                         KpDllInfo kpDllInfo = kpDllInfoList.Values[index];
-                        KPView kpView = kpDllInfo.KpView;
-
-                        if (kpView == null || kpView.DefaultReqParams.IsEmpty)
+                        if (kpDllInfo.KpView != null)
                         {
-                            ScadaUtils.ShowError(string.Format(
-                                AppPhrases.ResetReqParamsUnsupported, kpDllInfo.FileName));
-                        }
-                        else
-                        {
-                            KPLogic.ReqParams reqParams = kpView.DefaultReqParams;
-
+                            KPReqParams reqParams = kpDllInfo.KpView.DefaultReqParams;
                             numKpTimeout.SetNumericValue(reqParams.Timeout);
                             numKpDelay.SetNumericValue(reqParams.Delay);
                             DateTime date = timeKpTime.Value.Date;
@@ -2590,10 +2561,7 @@ namespace Scada.Comm.Ctrl
 
                         if (kpView.CanShowProps)
                         {
-                            kpView.ConfigDir = configDir;
-                            kpView.LangDir = langDir;
-                            kpView.LogDir = logDir;
-                            kpView.CmdDir = cmdDir;
+                            kpView.AppDirs = appDirs;
                             kpView.ShowProps();
                         }
                         else
@@ -2651,13 +2619,13 @@ namespace Scada.Comm.Ctrl
             if (lastKP != null)
             {
                 bool cmdOK = false;
-                KPLogic.Command cmd = new KPLogic.Command();
+                Command cmd = new Command();
                 cmd.KPNum = lastKP.Number;
 
                 if (rbCmdStand.Checked)
                 {
                     txtCmdVal.Focus();
-                    cmd.CmdType = KPLogic.CmdType.Standard;
+                    cmd.CmdTypeID = BaseValues.CmdTypes.Standard;
                     cmd.CmdNum = decimal.ToInt32(numCmdNum.Value);
 
                     double cmdVal = ScadaUtils.StrToDouble(txtCmdVal.Text);
@@ -2673,7 +2641,7 @@ namespace Scada.Comm.Ctrl
                 }
                 else if (rbCmdBin.Checked)
                 {
-                    cmd.CmdType = KPLogic.CmdType.Binary;
+                    cmd.CmdTypeID = BaseValues.CmdTypes.Binary;
                     cmd.CmdNum = decimal.ToInt32(numCmdNum.Value);
 
                     byte[] cmdData;
@@ -2703,7 +2671,7 @@ namespace Scada.Comm.Ctrl
                 }
                 else
                 {
-                    cmd.CmdType = KPLogic.CmdType.Request;
+                    cmd.CmdTypeID = BaseValues.CmdTypes.Request;
                     cmdOK = true;
                 }
 
@@ -2711,7 +2679,7 @@ namespace Scada.Comm.Ctrl
                 if (cmdOK)
                 {
                     string msg;
-                    if (KPUtils.SaveCmd(cmdDir, "ScadaCommCtrl", cmd, out msg))
+                    if (CommUtils.SaveCmd(appDirs.CmdDir, "ScadaCommCtrl", cmd, out msg))
                     {
                         ScadaUtils.ShowInfo(msg);
                     }
