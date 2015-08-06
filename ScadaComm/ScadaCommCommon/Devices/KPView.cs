@@ -94,7 +94,7 @@ namespace Scada.Comm.Devices
             public KPCnlPrototypes()
             {
                 InCnls = new List<InCnlPrototype>();
-                CtrCnls = new List<CtrlCnlPrototype>();
+                CtrlCnls = new List<CtrlCnlPrototype>();
             }
 
             /// <summary>
@@ -104,7 +104,7 @@ namespace Scada.Comm.Devices
             /// <summary>
             /// Получить прототипы каналов управления
             /// </summary>
-            public List<CtrlCnlPrototype> CtrCnls { get; protected set; }
+            public List<CtrlCnlPrototype> CtrlCnls { get; protected set; }
         }
 
         /// <summary>
