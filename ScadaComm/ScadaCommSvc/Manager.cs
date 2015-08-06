@@ -318,10 +318,10 @@ namespace Scada.Comm.Svc
                     sbInfo
                         .AppendLine("SCADA-Communicator")
                         .AppendLine("------------------")
-                        .Append("Started       : ").AppendLine(startDT.ToLocalizedString())
+                        .Append("Started        : ").AppendLine(startDT.ToLocalizedString())
                         .Append("Execution time : ").AppendLine(workStr)
-                        .Append("Version       : ").AppendLine(AppVersion)
-                        .Append("SCADA-Server : ").AppendLine(Settings.Params.ServerUse ?
+                        .Append("Version        : ").AppendLine(AppVersion)
+                        .Append("SCADA-Server   : ").AppendLine(Settings.Params.ServerUse ?
                             (ServerComm == null ? "not initialized" : ServerComm.CommStateDescr) :
                             "not used")
                         .AppendLine()

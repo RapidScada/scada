@@ -102,7 +102,7 @@ namespace Scada.Comm.Ctrl
                     lblVersionEn.Text = "Version " + Version;
                 }
 
-                // изменение родительских элементов управления для работы прозрачности
+                // изменение родительских элементов для работы прозрачности
                 lblWebsite.Parent = activePictureBox;
                 lblVersionRu.Parent = pbAboutRu;
                 lblVersionEn.Parent = pbAboutEn;
