@@ -31,6 +31,16 @@ namespace Scada.Comm.Devices
     /// </summary>
     public sealed class KpTestView : KPView
     {
+        public KpTestView()
+            : this(0)
+        {
+        }
+
+        public KpTestView(int number)
+            : base(number)
+        {
+        }
+
         public override string KPDescr
         {
             get
