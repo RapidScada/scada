@@ -315,9 +315,9 @@ namespace Scada.Comm.Channels
         /// <summary>
         /// Считать данные с условиями остановки чтения и вывести информацию в журнал
         /// </summary>
-        public virtual int Read(byte[] buffer, int offset, int maxCount, int timeout, BinStopCondition stopCond)
+        public virtual int Read(byte[] buffer, int offset, int maxCount, int timeout, BinStopCondition stopCond,
+            out bool stopReceived)
         {
-            bool stopReceived;
             string logText;
             int readCnt = Read(buffer, offset, maxCount, timeout, stopCond,
                 out stopReceived, DefaultLogFormat, out logText);
@@ -334,9 +334,9 @@ namespace Scada.Comm.Channels
         /// <summary>
         /// Считать строки и вывести информацию в журнал
         /// </summary>
-        public virtual List<string> ReadLines(int timeout, TextStopCondition stopCond)
+        public virtual List<string> ReadLines(int timeout, TextStopCondition stopCond,
+            out bool stopReceived)
         {
-            bool stopReceived;
             string logText;
             List<string> lines = ReadLines(timeout, stopCond, out stopReceived, out logText);
             WriteToLog(logText);

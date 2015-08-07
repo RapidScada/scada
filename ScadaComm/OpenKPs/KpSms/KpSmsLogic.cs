@@ -544,8 +544,8 @@ namespace Scada.Comm.Devices
         /// </summary>
         private void PrimarySession()
         {
+            Connection.WriteToLog = WriteToLog;
             int tryNum;
-            string logText;
 
             // отключение эхо
             if (WorkState != WorkStates.Normal)
@@ -555,11 +555,8 @@ namespace Scada.Comm.Devices
                 while (RequestNeeded(ref tryNum))
                 {
                     WriteToLog(Localization.UseRussian ? "Отключение эхо" : "Set echo off");
-                    Connection.WriteLine("ATE0", out logText);
-                    WriteToLog(logText);
-
-                    Connection.ReadLines(ReqParams.Timeout, OkStopCond, out lastCommSucc, out logText);
-                    WriteToLog(logText);
+                    Connection.WriteLine("ATE0");
+                    Connection.ReadLines(ReqParams.Timeout, OkStopCond, out lastCommSucc);
 
                     FinishRequest();
                     tryNum++;
@@ -574,12 +571,8 @@ namespace Scada.Comm.Devices
                 while (RequestNeeded(ref tryNum))
                 {
                     WriteToLog(Localization.UseRussian ? "Сброс вызова" : "Drop call");
-                    Connection.WriteLine("ATH" /*"AT+CHUP"*/, out logText);
-                    WriteToLog(logText);
-
-                    List<string> inData = Connection.ReadLines(ReqParams.Timeout, OkStopCond, 
-                        out lastCommSucc, out logText);
-                    WriteToLog(logText);
+                    Connection.WriteLine("ATH" /*"AT+CHUP"*/);
+                    Connection.ReadLines(ReqParams.Timeout, OkStopCond, out lastCommSucc);
 
                     FinishRequest();
                     tryNum++;
@@ -607,7 +600,8 @@ namespace Scada.Comm.Devices
                     }
                     catch
                     {
-                        WriteToLog((Localization.UseRussian ? "Ошибка при обработке сообщения " : 
+                        WriteToLog((Localization.UseRussian ? 
+                            "Ошибка при обработке сообщения " : 
                             "Error processing message ") + msg.Index);
                     }
 
@@ -617,11 +611,8 @@ namespace Scada.Comm.Devices
                     while (tryNum < ReqTriesCnt && !deleteComplete && !Terminated)
                     {
                         WriteToLog((Localization.UseRussian ? "Удаление сообщения " : "Delete message ") + msg.Index);
-                        Connection.WriteLine("AT+CMGD=" + msg.Index, out logText);
-                        WriteToLog(logText);
-
-                        Connection.ReadLines(ReqParams.Timeout, OkStopCond, out deleteComplete, out logText);
-                        WriteToLog(logText);
+                        Connection.WriteLine("AT+CMGD=" + msg.Index);
+                        Connection.ReadLines(ReqParams.Timeout, OkStopCond, out deleteComplete);
 
                         FinishRequest();
                         tryNum++;
@@ -635,7 +626,8 @@ namespace Scada.Comm.Devices
 
             IncEventCount(eventCnt);
             if (lastCommSucc)
-                WriteToLog((Localization.UseRussian ? "Количество полученных сообщений: " : 
+                WriteToLog((Localization.UseRussian ? 
+                    "Количество полученных сообщений: " : 
                     "Received message count: ") + eventCnt);
 
             // запрос списка сообщений
@@ -647,12 +639,8 @@ namespace Scada.Comm.Devices
                 while (RequestNeeded(ref tryNum))
                 {
                     WriteToLog(Localization.UseRussian ? "Запрос списка сообщений" : "Request message list");
-                    Connection.WriteLine("AT+CMGL=4", out logText);
-                    WriteToLog(logText);
-
-                    List<string> inData = Connection.ReadLines(ReqParams.Timeout, OkStopCond, 
-                        out lastCommSucc, out logText);
-                    WriteToLog(logText);
+                    Connection.WriteLine("AT+CMGL=4");
+                    List<string> inData = Connection.ReadLines(ReqParams.Timeout, OkStopCond, out lastCommSucc);
 
                     // расшифровка сообщений
                     if (lastCommSucc)
@@ -769,10 +757,10 @@ namespace Scada.Comm.Devices
 
             if (cmd.CmdTypeID == BaseValues.CmdTypes.Binary && (cmd.CmdNum == 1 || cmd.CmdNum == 2))
             {
-                string logText; // текст для вывода в log-файл линии связи
                 string cmdData = new string(Encoding.Default.GetChars(cmd.CmdData));
                 if (cmdData.Length > 0)
                 {
+                    Connection.WriteToLog = WriteToLog;
                     if (cmd.CmdNum == 1)
                     {
                         // отправка сообщения
@@ -793,39 +781,28 @@ namespace Scada.Comm.Devices
                         {
                             int pduLen;
                             string pdu = MakePDU(phone, text, out pduLen);
-
-                            Connection.WriteLine("AT+CMGS=" + pduLen, out logText);
-                            WriteToLog(logText);
+                            Connection.WriteLine("AT+CMGS=" + pduLen);
                             Thread.Sleep(100);
 
                             try
                             {
                                 Connection.NewLine = "\x1A";
-                                Connection.WriteLine(pdu, out logText);
-                                WriteToLog(logText);
+                                Connection.WriteLine(pdu);
                             }
                             finally
                             {
                                 Connection.NewLine = "\x0D";
                             }
 
-                            List<string> inData = Connection.ReadLines(ReqParams.Timeout, OkStopCond, 
-                                out lastCommSucc, out logText);
-                            WriteToLog(logText);
-
+                            Connection.ReadLines(ReqParams.Timeout, OkStopCond, out lastCommSucc);
                             Thread.Sleep(ReqParams.Delay);
                         }
                     }
                     else
                     {
                         // произвольная AT-команда
-                        Connection.WriteLine(cmdData, out logText);
-                        WriteToLog(logText);
-
-                        List<string> inData = Connection.ReadLines(ReqParams.Timeout, OkErrStopCond, 
-                            out lastCommSucc, out logText);
-                        WriteToLog(logText);
-
+                        Connection.WriteLine(cmdData);
+                        Connection.ReadLines(ReqParams.Timeout, OkErrStopCond, out lastCommSucc);
                         Thread.Sleep(ReqParams.Delay);
                     }
                 }

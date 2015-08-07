@@ -200,6 +200,20 @@ namespace Scada.Comm
                     return false;
                 }
 
+                // формирование содержимого файла команды
+                StringBuilder sbCmd = new StringBuilder();
+                sbCmd
+                    .AppendLine("[Command]")
+                    .AppendLine("Target=ScadaCommSvc")
+                    .Append("Sender=").AppendLine(sender)
+                    .Append("User=").AppendLine(Environment.UserName)
+                    .Append("DateTime=").AppendLine(DateTime.Now.ToString(DateTimeFormatInfo.InvariantInfo))
+                    .Append("LifeTime=").AppendLine(CmdLifeTime.ToString())
+                    .Append("CmdType=").AppendLine(cmdType);
+                foreach (string param in cmdParams)
+                    sbCmd.AppendLine(param);
+                sbCmd.AppendLine("End=");
+
                 // формирование имени файла команды
                 string fileName = ""; // имя файла команды
 
@@ -228,41 +242,25 @@ namespace Scada.Comm
                 }
 
                 // запись команды
-                FileStream fileStream = null;
-                StreamWriter streamWriter = null;
-
-                try
+                using (FileStream fileStream = 
+                    new FileStream(fileName, FileMode.CreateNew, FileAccess.Write, FileShare.ReadWrite))
                 {
-                    fileStream = new FileStream(fileName, FileMode.CreateNew, FileAccess.Write, FileShare.ReadWrite);
-                    streamWriter = new StreamWriter(fileStream, Encoding.Default);
-
-                    streamWriter.WriteLine("[Command]");
-                    streamWriter.WriteLine("Target=ScadaCommSvc");
-                    streamWriter.WriteLine("Sender=" + sender);
-                    streamWriter.WriteLine("User=" + Environment.UserName);
-                    streamWriter.WriteLine("DateTime=" + DateTime.Now.ToString(DateTimeFormatInfo.InvariantInfo));
-                    streamWriter.WriteLine("LifeTime=" + CmdLifeTime);
-                    streamWriter.WriteLine("CmdType=" + cmdType);
-                    foreach (string param in cmdParams)
-                        streamWriter.WriteLine(param);
-                    streamWriter.WriteLine("End=");
-                }
-                finally
-                {
-                    if (streamWriter != null)
-                        streamWriter.Close();
-                    if (fileStream != null)
-                        fileStream.Close();
+                    using (StreamWriter streamWriter = new StreamWriter(fileStream, Encoding.Default))
+                    {
+                        streamWriter.Write(sbCmd.ToString());
+                    }
                 }
 
                 msg = Localization.UseRussian ?
-                    "Команда отправлена успешно." : "The command has been sent successfully";
+                    "Команда отправлена успешно." : 
+                    "The command has been sent successfully";
                 return true;
             }
             catch (Exception ex)
             {
                 msg = (Localization.UseRussian ?
-                    "Ошибка при записи команды: " : "Error saving command: ") + ex.Message;
+                    "Ошибка при записи команды: " : 
+                    "Error saving command: ") + ex.Message;
                 return false;
             }
         }
