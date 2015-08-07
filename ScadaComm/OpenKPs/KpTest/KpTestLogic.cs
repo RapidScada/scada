@@ -50,7 +50,6 @@ namespace Scada.Comm.Devices
             : base(number)
         {
             random = new Random();
-            ConnRequired = true;
 
             List<TagGroup> tagGroups = new List<TagGroup>();
             TagGroup tagGroup = new TagGroup("Group 1");

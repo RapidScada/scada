@@ -153,7 +153,7 @@ namespace Scada.Comm.Devices
             CommLineSvc = null;
 
             CanSendCmd = false;
-            ConnRequired = false;
+            ConnRequired = true;
             KPTags = new KPTag[0];
             TagGroups = new TagGroup[0];
             WorkState = WorkStates.Undefined;

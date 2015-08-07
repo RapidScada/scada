@@ -32,6 +32,7 @@ using System.Globalization;
 using System.Threading;
 using System.Text;
 using Scada.Data;
+using Scada.Comm.Channels;
 
 namespace Scada.Comm.Devices
 {
@@ -79,7 +80,12 @@ namespace Scada.Comm.Devices
             }
         }
 
-        private const int MaxEventCount = 999999; // максимальное значение счётчика событий КП
+        // Максимальное значение счётчика событий КП
+        private const int MaxEventCount = 999999;
+        // Условие остановки считывания данных при получении OK
+        private readonly Connection.TextStopCondition OkStopCond = new Connection.TextStopCondition("OK");
+        // Условие остановки считывания данных при получении OK или ERROR
+        private readonly Connection.TextStopCondition OkErrStopCond = new Connection.TextStopCondition("OK", "ERROR");
 
         private bool primary;          // основной КП на линии связи, обмен данными с GSM-терминалом
         List<Message> messageList;     // список сообщений, полученных GSM-терминалом
@@ -538,26 +544,25 @@ namespace Scada.Comm.Devices
         /// </summary>
         private void PrimarySession()
         {
-            string logText; // текст для вывода в log-файл линии связи
-            int i;
+            int tryNum;
+            string logText;
 
             // отключение эхо
             if (WorkState != WorkStates.Normal)
             {
                 lastCommSucc = false;
-                i = 0;
-                while (RequestNeeded(ref i))
+                tryNum = 0;
+                while (RequestNeeded(ref tryNum))
                 {
                     WriteToLog(Localization.UseRussian ? "Отключение эхо" : "Set echo off");
-                    SerialPortUtils.WriteLineToSerialPort(SerialPort, "ATE0", out logText);
+                    Connection.WriteLine("ATE0", out logText);
                     WriteToLog(logText);
 
-                    SerialPortUtils.ReadLinesFromSerialPort(SerialPort, ReqParams.Timeout, 
-                        false, "OK", out lastCommSucc, out logText);
+                    Connection.ReadLines(ReqParams.Timeout, OkStopCond, out lastCommSucc, out logText);
                     WriteToLog(logText);
 
                     FinishRequest();
-                    i++;
+                    tryNum++;
                 }
             }
 
@@ -565,19 +570,19 @@ namespace Scada.Comm.Devices
             if (lastCommSucc)
             {
                 lastCommSucc = false;
-                i = 0;
-                while (RequestNeeded(ref i))
+                tryNum = 0;
+                while (RequestNeeded(ref tryNum))
                 {
                     WriteToLog(Localization.UseRussian ? "Сброс вызова" : "Drop call");
-                    SerialPortUtils.WriteLineToSerialPort(SerialPort, "ATH" /*"AT+CHUP"*/, out logText);
+                    Connection.WriteLine("ATH" /*"AT+CHUP"*/, out logText);
                     WriteToLog(logText);
 
-                    List<string> inData = SerialPortUtils.ReadLinesFromSerialPort(SerialPort, ReqParams.Timeout, 
-                        false, "OK", out lastCommSucc, out logText);
+                    List<string> inData = Connection.ReadLines(ReqParams.Timeout, OkStopCond, 
+                        out lastCommSucc, out logText);
                     WriteToLog(logText);
 
                     FinishRequest();
-                    i++;
+                    tryNum++;
                 }
             }
 
@@ -608,19 +613,18 @@ namespace Scada.Comm.Devices
 
                     // удаление сообщений из памяти GSM-терминала
                     bool deleteComplete = false;
-                    i = 0;
-                    while (i < ReqTriesCnt && !deleteComplete && !Terminated)
+                    tryNum = 0;
+                    while (tryNum < ReqTriesCnt && !deleteComplete && !Terminated)
                     {
                         WriteToLog((Localization.UseRussian ? "Удаление сообщения " : "Delete message ") + msg.Index);
-                        SerialPortUtils.WriteLineToSerialPort(SerialPort, "AT+CMGD=" + msg.Index, out logText);
+                        Connection.WriteLine("AT+CMGD=" + msg.Index, out logText);
                         WriteToLog(logText);
 
-                        SerialPortUtils.ReadLinesFromSerialPort(SerialPort, ReqParams.Timeout,
-                            false, "OK", out deleteComplete, out logText);
+                        Connection.ReadLines(ReqParams.Timeout, OkStopCond, out deleteComplete, out logText);
                         WriteToLog(logText);
 
                         FinishRequest();
-                        i++;
+                        tryNum++;
                     }
                     lastCommSucc = lastCommSucc && deleteComplete;
                 }
@@ -638,16 +642,16 @@ namespace Scada.Comm.Devices
             if (lastCommSucc)
             {
                 lastCommSucc = false;
-                i = 0;
+                tryNum = 0;
 
-                while (RequestNeeded(ref i))
+                while (RequestNeeded(ref tryNum))
                 {
                     WriteToLog(Localization.UseRussian ? "Запрос списка сообщений" : "Request message list");
-                    SerialPortUtils.WriteLineToSerialPort(SerialPort, "AT+CMGL=4", out logText);
+                    Connection.WriteLine("AT+CMGL=4", out logText);
                     WriteToLog(logText);
 
-                    List<string> inData = SerialPortUtils.ReadLinesFromSerialPort(SerialPort, ReqParams.Timeout, 
-                        false, "OK", out lastCommSucc, out logText);
+                    List<string> inData = Connection.ReadLines(ReqParams.Timeout, OkStopCond, 
+                        out lastCommSucc, out logText);
                     WriteToLog(logText);
 
                     // расшифровка сообщений
@@ -662,7 +666,7 @@ namespace Scada.Comm.Devices
                     }
 
                     FinishRequest();
-                    i++;
+                    tryNum++;
                 }
 
                 // запись сообщений в общие свойства линии связи
@@ -709,13 +713,15 @@ namespace Scada.Comm.Devices
                     int index;
                     try { index = (int)msgObjArr[0]; }
                     catch { index = 0; }
-                    WriteToLog((Localization.UseRussian ? "Ошибка при обработке сообщения" : 
+                    WriteToLog((Localization.UseRussian ? 
+                        "Ошибка при обработке сообщения" : 
                         "Error processing message") + (index > 0 ? " " + index : ""));
                 }
             }
 
             IncEventCount(eventCnt);
-            WriteToLog((Localization.UseRussian ? "Количество полученных сообщений: " :
+            WriteToLog((Localization.UseRussian ? 
+                "Количество полученных сообщений: " :
                 "Received message count: ") + eventCnt);
         }
 
@@ -788,23 +794,23 @@ namespace Scada.Comm.Devices
                             int pduLen;
                             string pdu = MakePDU(phone, text, out pduLen);
 
-                            SerialPortUtils.WriteLineToSerialPort(SerialPort, "AT+CMGS=" + pduLen, out logText);
+                            Connection.WriteLine("AT+CMGS=" + pduLen, out logText);
                             WriteToLog(logText);
                             Thread.Sleep(100);
 
                             try
                             {
-                                if (SerialPort != null) SerialPort.NewLine = "\x1A";
-                                SerialPortUtils.WriteLineToSerialPort(SerialPort, pdu, out logText);
+                                Connection.NewLine = "\x1A";
+                                Connection.WriteLine(pdu, out logText);
                                 WriteToLog(logText);
                             }
                             finally
                             {
-                                if (SerialPort != null) SerialPort.NewLine = "\x0D";
+                                Connection.NewLine = "\x0D";
                             }
 
-                            List<string> inData = SerialPortUtils.ReadLinesFromSerialPort(SerialPort, ReqParams.Timeout,
-                                false, "OK", out lastCommSucc, out logText);
+                            List<string> inData = Connection.ReadLines(ReqParams.Timeout, OkStopCond, 
+                                out lastCommSucc, out logText);
                             WriteToLog(logText);
 
                             Thread.Sleep(ReqParams.Delay);
@@ -813,11 +819,11 @@ namespace Scada.Comm.Devices
                     else
                     {
                         // произвольная AT-команда
-                        SerialPortUtils.WriteLineToSerialPort(SerialPort, cmdData, out logText);
+                        Connection.WriteLine(cmdData, out logText);
                         WriteToLog(logText);
 
-                        List<string> inData = SerialPortUtils.ReadLinesFromSerialPort(SerialPort, ReqParams.Timeout,
-                            false, new string[] { "OK", "ERROR" }, out lastCommSucc, out logText);
+                        List<string> inData = Connection.ReadLines(ReqParams.Timeout, OkErrStopCond, 
+                            out lastCommSucc, out logText);
                         WriteToLog(logText);
 
                         Thread.Sleep(ReqParams.Delay);
@@ -843,10 +849,16 @@ namespace Scada.Comm.Devices
         {
             // определение, является ли КП основным на линии связи
             primary = ReqParams.CmdLine.Trim().Equals("primary", StringComparison.OrdinalIgnoreCase);
-            
-            // установка символа конца строки для работы с последовательным портом
-            if (SerialPort != null)
-                SerialPort.NewLine = "\x0D";
+        }
+
+        /// <summary>
+        /// Выполнить действия после установки соединения
+        /// </summary>
+        public override void OnConnectionSet()
+        {
+            // установка символа окончания строки
+            if (Connection != null)
+                Connection.NewLine = "\x0D";
         }
     }
 }

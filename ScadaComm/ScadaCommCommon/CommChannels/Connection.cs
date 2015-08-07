@@ -60,7 +60,7 @@ namespace Scada.Comm.Channels
         }
 
         /// <summary>
-        /// Условие остановки считывания данных в формате
+        /// Условие остановки считывания данных в текстовом формате
         /// </summary>
         public class TextStopCondition
         {
@@ -73,7 +73,7 @@ namespace Scada.Comm.Channels
             /// <summary>
             /// Конструктор
             /// </summary>
-            public TextStopCondition(string[] stopEndings)
+            public TextStopCondition(params string[] stopEndings)
             {
                 StopEndings = stopEndings;
             }
