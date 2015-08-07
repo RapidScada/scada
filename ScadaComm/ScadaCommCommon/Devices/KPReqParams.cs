@@ -39,12 +39,12 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Параметры опроса КП по умолчанию
         /// </summary>
-        public static readonly KPReqParams Default = new KPReqParams();
+        public static readonly KPReqParams Default = new KPReqParams(1000, 200);
 
         /// <summary>
         /// Нулевые параметры опроса КП
         /// </summary>
-        public static readonly KPReqParams Zero = new KPReqParams() { Timeout = 0, Delay = 0 };
+        public static readonly KPReqParams Zero = new KPReqParams(0, 0);
 
 
         /// <summary>
@@ -74,12 +74,13 @@ namespace Scada.Comm.Devices
 
 
         /// <summary>
-        /// Установить значения по умолчанию
+        /// Конструктор
         /// </summary>
-        public void SetToDefault()
+        public KPReqParams(int timeout, int delay)
+            : this()
         {
-            Timeout = 1000;
-            Delay = 200;
+            Timeout = timeout;
+            Delay = delay;
             Time = DateTime.MinValue;
             Period = TimeSpan.Zero;
             CmdLine = "";

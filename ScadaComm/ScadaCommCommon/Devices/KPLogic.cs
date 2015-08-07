@@ -145,7 +145,7 @@ namespace Scada.Comm.Devices
             Dll = Assembly.GetCallingAssembly().GetName().Name;
             Address = 0;
             CallNum = "";
-            ReqParams.SetToDefault();
+            ReqParams = KPReqParams.Default;
             ReqTriesCnt = 1;
             SerialPort = null;
             CustomParams = null;

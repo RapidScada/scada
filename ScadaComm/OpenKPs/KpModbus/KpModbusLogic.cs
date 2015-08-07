@@ -280,9 +280,9 @@ namespace Scada.Comm.Devices
 
             if (fileName == "")
             {
-                WriteToLog((Localization.UseRussian ? 
-                    "Не задан шаблон устройства для " : 
-                    "Template is undefined for the ") + Caption);
+                WriteToLog(string.Format(Localization.UseRussian ? 
+                    "{0} Ошибка: Не задан шаблон устройства для {1}" : 
+                    "{0} Error: Template is undefined for the {1}", CommUtils.GetNowDT(), Caption));
             }
             else
             {
@@ -300,9 +300,9 @@ namespace Scada.Comm.Devices
                 }
                 else
                 {
-                    WriteToLog((Localization.UseRussian ? 
-                        "Загрузка шаблона устройства из файла " :
-                        "Load device template from file ") + fileName);
+                    WriteToLog(string.Format(Localization.UseRussian ? 
+                        "{0} Загрузка шаблона устройства из файла {1}" :
+                        "{0} Load device template from file {1}", CommUtils.GetNowDT(), fileName));
                     Modbus.DeviceModel template = new Modbus.DeviceModel();
                     string errMsg;
 

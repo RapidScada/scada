@@ -231,19 +231,19 @@ namespace Scada.Comm.Channels
             {
                 sbInfo.Append("Последовательный порт: ");                
                 if (serialConn == null)
-                    sbInfo.Append("не определён");
+                    sbInfo.AppendLine("не определён");
                 else
                     sbInfo.Append(serialConn.SerialPort.PortName)
-                        .Append(serialConn.SerialPort.IsOpen ? " (открыт)" : " (закрыт)");
+                        .AppendLine(serialConn.SerialPort.IsOpen ? " (открыт)" : " (закрыт)");
             }
             else
             {
                 sbInfo.Append("Serial port: ");
                 if (serialConn == null)
-                    sbInfo.Append("undefined");
+                    sbInfo.AppendLine("undefined");
                 else
                     sbInfo.Append(serialConn.SerialPort.PortName)
-                        .Append(serialConn.SerialPort.IsOpen ? " (open)" : " (closed)");
+                        .AppendLine(serialConn.SerialPort.IsOpen ? " (open)" : " (closed)");
             }
 
             return sbInfo.ToString();

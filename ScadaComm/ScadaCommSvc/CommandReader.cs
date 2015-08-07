@@ -81,8 +81,7 @@ namespace Scada.Comm.Svc
             {
                 // считывание команды из файла
                 string target = "";
-                DateTime date = DateTime.MinValue;
-                DateTime time = DateTime.MinValue;
+                DateTime dateTime = DateTime.MinValue;
                 int lifeTime = 0;
                 bool endFound = false;
 
@@ -105,16 +104,9 @@ namespace Scada.Comm.Svc
                         {
                             target = lineL.Remove(0, 7);
                         }
-                        else if (lineL.StartsWith("date="))
+                        else if (lineL.StartsWith("datetime="))
                         {
-                            string[] vals = lineL.Remove(0, 5).Split('.');
-                            date = new DateTime(int.Parse(vals[2]), int.Parse(vals[1]), int.Parse(vals[0]));
-                        }
-                        else if (lineL.StartsWith("time="))
-                        {
-                            string[] vals = lineL.Remove(0, 5).Split(':');
-                            time = new DateTime(DateTime.MinValue.Year, DateTime.MinValue.Month, 
-                                DateTime.MinValue.Day, int.Parse(vals[0]), int.Parse(vals[1]), int.Parse(vals[2]));
+                            dateTime = DateTime.Parse(lineL.Remove(0, 9), DateTimeFormatInfo.InvariantInfo);
                         }
                         else if (lineL.StartsWith("lifetime="))
                         {
@@ -170,15 +162,13 @@ namespace Scada.Comm.Svc
                 if (cmdParams != null && target == "scadacommsvc" && endFound)
                 {
                     // проверка актуальности команды
-                    DateTime cmdDT = new DateTime(date.Year, date.Month, date.Day,
-                        time.Hour, time.Minute, time.Second);
                     DateTime nowDT = DateTime.Now;
                     string cmdInfo = (Localization.UseRussian ? " Тип: " : " Type: ") + cmdType;
                     cmdInfo += kpCmd == null ? "" : (Localization.UseRussian ? 
                         ", КП: " + kpCmd.KPNum + ", номер: " + kpCmd.CmdNum :
                         ", device: " + kpCmd.KPNum + ", number: " + kpCmd.CmdNum);
 
-                    if (nowDT.AddSeconds(-lifeTime) <= cmdDT && cmdDT <= nowDT.AddSeconds(lifeTime))
+                    if (nowDT.AddSeconds(-lifeTime) <= dateTime && dateTime <= nowDT.AddSeconds(lifeTime))
                     {
                         log.WriteAction((Localization.UseRussian ? 
                             "Получена команда из файла." : 

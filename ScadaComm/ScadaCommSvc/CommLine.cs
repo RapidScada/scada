@@ -649,6 +649,18 @@ namespace Scada.Comm.Svc
         }
 
         /// <summary>
+        /// Вывести начальную информацию о линии связи
+        /// </summary>
+        private void WriteInitialInfo()
+        {
+            WriteInfo();
+            log.WriteBreak();
+            log.WriteAction((Localization.UseRussian ?
+                "Инициализация линии связи " :
+                "Initialize communication line ") + numAndName);
+        }
+
+        /// <summary>
         /// Запуск, работа и остановка линии связи, метод вызывается в отдельном потоке
         /// </summary>
         private void Execute()
@@ -660,10 +672,9 @@ namespace Scada.Comm.Svc
                 kpCaptions = null;
 
                 // вывод в журнал и в файлы информации о работе
-                log.WriteBreak();
                 log.WriteAction((Localization.UseRussian ? 
                     "Запуск линии связи " : 
-                    "Start communication line " ) + numAndName);
+                    "Start communication line ") + numAndName);
 
                 WriteInfo();
                 foreach (KPLogic kpLogic in KPList)
@@ -1680,6 +1691,9 @@ namespace Scada.Comm.Svc
             commLine.AppDirs = appDirs;
             commLine.ServerComm = null;
             commLine.PassCmd = passCmd;
+
+            // вывод начальной информации о линии связи
+            commLine.WriteInitialInfo();
 
             // установка параметров работы линии связи
             commLine.ReqTriesCnt = commLineSett.ReqTriesCnt;

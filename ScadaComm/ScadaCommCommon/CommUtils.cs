@@ -276,7 +276,7 @@ namespace Scada.Comm
                 "KPNum=" + cmd.KPNum,
                 "CmdNum=" + cmd.CmdNum,
                 "CmdVal=" + cmd.CmdVal.ToString(),
-                "CmdData=" + cmd.CmdData == null ? "" : ScadaUtils.BytesToHex(cmd.CmdData)
+                "CmdData=" + (cmd.CmdData == null ? "" : ScadaUtils.BytesToHex(cmd.CmdData))
             };
 
             return SaveCmd(cmdDir, sender, BaseValues.CmdTypes.GetCmdTypeCode(cmd.CmdTypeID), cmdParams, out msg);
