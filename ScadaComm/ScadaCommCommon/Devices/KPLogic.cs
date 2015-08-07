@@ -1193,6 +1193,8 @@ namespace Scada.Comm.Devices
                     curData[tagInd] = newData;
                 }
             }
+
+            WorkState = WorkStates.Error;
         }
 
         /// <summary>

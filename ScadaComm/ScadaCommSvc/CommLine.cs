@@ -877,9 +877,9 @@ namespace Scada.Comm.Svc
                             else
                             {
                                 KPSession(kpLogic);
-                                WriteKPInfo(kpLogic);
                                 commCnt++;
                             }
+                            WriteKPInfo(kpLogic);
                             CommCnlAfterSession(kpLogic);
                         }
 
