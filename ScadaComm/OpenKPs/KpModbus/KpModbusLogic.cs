@@ -53,14 +53,6 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Делегат выполнения сеанса опроса
-        /// </summary>
-        private delegate void SessionDelegate();
-        /// <summary>
-        /// Делегат отправки команды
-        /// </summary>
-        private delegate void SendCmdDelegate(Modbus.Cmd cmd);
-        /// <summary>
         /// Делегат выполнения запроса
         /// </summary>
         private delegate bool RequestDelegate(Modbus.DataUnit dataUnit);
@@ -73,8 +65,6 @@ namespace Scada.Comm.Devices
         private Modbus.DeviceModel deviceModel; // модель устройства, используемая данным КП
         private Modbus.TransModes transMode;    // режим передачи данных
         private Modbus modbus;                  // объект, реализующий протокол Modbus
-        private SessionDelegate session;        // метод выполнения сеанса опроса
-        private SendCmdDelegate sendCmd;        // метод отправки команды
         private RequestDelegate request;        // метод выполнения запроса
         private byte devAddr;                   // адрес устройства
         private int elemGroupCnt;               // количество групп элементов
@@ -137,135 +127,6 @@ namespace Scada.Comm.Devices
             }
         }
 
-
-        /// <summary>
-        /// Выполнить сеанс опроса в режиме RTU или ASCII
-        /// </summary>
-        private void SerialSession()
-        {
-            int elemGroupInd = 0;
-
-            while (elemGroupInd < elemGroupCnt && lastCommSucc)
-            {
-                Modbus.ElemGroup elemGroup = deviceModel.ElemGroups[elemGroupInd];
-                lastCommSucc = false;
-                int tryNum = 0;
-
-                while (RequestNeeded(ref tryNum))
-                {
-                    // выполнение запроса
-                    if (request(elemGroup))
-                    {
-                        lastCommSucc = true;
-                        SetTagsData(elemGroup); // установка значений тегов КП
-                    }
-
-                    // завершение запроса
-                    FinishRequest();
-                    tryNum++;
-                }
-
-                if (lastCommSucc)
-                {
-                    // переход к следующей группе элементов
-                    elemGroupInd++;
-                }
-                else if (tryNum > 0)
-                {
-                    // установка неопределённого статуса тегов КП текущей и следующих групп, если запрос неудачный
-                    while (elemGroupInd < elemGroupCnt)
-                    {
-                        InvalTagsData(elemGroup);
-                        elemGroupInd++;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Выполнить сеанс опроса в режиме TCP
-        /// </summary>
-        private void TcpSession()
-        {
-            int elemGroupInd = 0; 
-
-            while (elemGroupInd < elemGroupCnt && lastCommSucc)
-            {
-                Modbus.ElemGroup elemGroup = deviceModel.ElemGroups[elemGroupInd];
-                lastCommSucc = false;
-                int tryNum = 0;
-
-                while (RequestNeeded(ref tryNum))
-                {
-                    // выполнение запроса
-                    if (request(elemGroup))
-                    {
-                        lastCommSucc = true;
-                        SetTagsData(elemGroup); // установка значений тегов КП
-                    }
-
-                    // завершение запроса
-                    FinishRequest();
-                    tryNum++;
-                }
-
-                if (lastCommSucc)
-                {
-                    // переход к следующей группе элементов
-                    elemGroupInd++;
-                }
-                else if (tryNum > 0)
-                {
-                    // установка неопределённого статуса тегов КП текущей и следующих групп, если запрос неудачный
-                    while (elemGroupInd < elemGroupCnt)
-                    {
-                        InvalTagsData(elemGroup);
-                        elemGroupInd++;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Отправить команду в режиме RTU или ASCII
-        /// </summary>
-        private void SerialSendCmd(Modbus.Cmd cmd)
-        {
-            lastCommSucc = false;
-            int tryNum = 0;
-
-            while (RequestNeeded(ref tryNum))
-            {
-                // выполнение запроса
-                if (request(cmd))
-                    lastCommSucc = true;
-
-                // завершение запроса
-                FinishRequest();
-                tryNum++;
-            }
-        }
-
-        /// <summary>
-        /// Отправить команду в режиме TCP
-        /// </summary>
-        private void TcpSendCmd(Modbus.Cmd cmd)
-        {
-            lastCommSucc = false;
-            int tryNum = 0;
-
-            while (RequestNeeded(ref tryNum))
-            {
-                // выполнение запроса
-                if (request(cmd))
-                    lastCommSucc = true;
-
-                // завершение запроса
-                FinishRequest();
-                tryNum++;
-            }
-        }
-
         /// <summary>
         /// Преобразовать данные тега КП в строку
         /// </summary>
@@ -297,12 +158,49 @@ namespace Scada.Comm.Devices
             {
                 if (deviceModel.ElemGroups.Count > 0)
                 {
-                    session(); // выполнение запроса
+                    // выполнение запросов по группам элементов
+                    int elemGroupInd = 0;
+                    while (elemGroupInd < elemGroupCnt && lastCommSucc)
+                    {
+                        Modbus.ElemGroup elemGroup = deviceModel.ElemGroups[elemGroupInd];
+                        lastCommSucc = false;
+                        int tryNum = 0;
+
+                        while (RequestNeeded(ref tryNum))
+                        {
+                            // выполнение запроса
+                            if (request(elemGroup))
+                            {
+                                lastCommSucc = true;
+                                SetTagsData(elemGroup); // установка значений тегов КП
+                            }
+
+                            // завершение запроса
+                            FinishRequest();
+                            tryNum++;
+                        }
+
+                        if (lastCommSucc)
+                        {
+                            // переход к следующей группе элементов
+                            elemGroupInd++;
+                        }
+                        else if (tryNum > 0)
+                        {
+                            // установка неопределённого статуса тегов КП текущей и следующих групп, если запрос неудачный
+                            while (elemGroupInd < elemGroupCnt)
+                            {
+                                InvalTagsData(elemGroup);
+                                elemGroupInd++;
+                            }
+                        }
+                    }
                 }
                 else
                 {
                     WriteToLog(Localization.UseRussian ?
-                        "Отсутствуют элементы для запроса" : "No elements for request");
+                        "Отсутствуют элементы для запроса" : 
+                        "No elements for request");
                     Thread.Sleep(ReqParams.Delay);
                 }
             }
@@ -327,6 +225,7 @@ namespace Scada.Comm.Devices
                     cmd.CmdTypeID == BaseValues.CmdTypes.Binary) ||
                     !modbusCmd.Multiple && cmd.CmdTypeID == BaseValues.CmdTypes.Standard))
                 {
+                    // формирование команды Modbus
                     if (modbusCmd.Multiple)
                     {
                         modbusCmd.Data = cmd.CmdTypeID == BaseValues.CmdTypes.Standard ? 
@@ -341,7 +240,21 @@ namespace Scada.Comm.Devices
 
                     modbusCmd.InitReqPDU();
                     modbusCmd.InitReqADU(devAddr, transMode);
-                    sendCmd(modbusCmd);
+
+                    // отправка команды устройству
+                    lastCommSucc = false;
+                    int tryNum = 0;
+
+                    while (RequestNeeded(ref tryNum))
+                    {
+                        // выполнение запроса
+                        if (request(modbusCmd))
+                            lastCommSucc = true;
+
+                        // завершение запроса
+                        FinishRequest();
+                        tryNum++;
+                    }
                 }
                 else
                 {
@@ -367,7 +280,8 @@ namespace Scada.Comm.Devices
 
             if (fileName == "")
             {
-                WriteToLog((Localization.UseRussian ? "Не задан шаблон устройства для " : 
+                WriteToLog((Localization.UseRussian ? 
+                    "Не задан шаблон устройства для " : 
                     "Template is undefined for the ") + Caption);
             }
             else
@@ -386,7 +300,8 @@ namespace Scada.Comm.Devices
                 }
                 else
                 {
-                    WriteToLog((Localization.UseRussian ? "Загрузка шаблона устройства из файла " :
+                    WriteToLog((Localization.UseRussian ? 
+                        "Загрузка шаблона устройства из файла " :
                         "Load device template from file ") + fileName);
                     Modbus.DeviceModel template = new Modbus.DeviceModel();
                     string errMsg;
@@ -444,18 +359,12 @@ namespace Scada.Comm.Devices
             switch (transMode)
             {
                 case Modbus.TransModes.RTU:
-                    session += SerialSession;
-                    sendCmd += SerialSendCmd;
                     request += modbus.RtuRequest;
                     break;
                 case Modbus.TransModes.ASCII:
-                    session += SerialSession;
-                    sendCmd += SerialSendCmd;
                     request += modbus.AsciiRequest;
                     break;
                 default: // Modbus.TransModes.TCP
-                    session += TcpSession;
-                    sendCmd += TcpSendCmd;
                     request += modbus.TcpRequest;
                     break;
             }
