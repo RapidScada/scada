@@ -1,4 +1,4 @@
-﻿namespace Scada.Comm.KP
+﻿namespace Scada.Comm.Devices.KpModbus
 {
     partial class FrmDevTemplate
     {

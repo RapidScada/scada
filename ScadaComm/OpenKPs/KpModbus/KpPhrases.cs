@@ -23,7 +23,7 @@
  * Modified : 2014
  */
 
-namespace Scada.Comm.KP
+namespace Scada.Comm.Devices.KpModbus
 {
     /// <summary>
     /// The phrases used in the library

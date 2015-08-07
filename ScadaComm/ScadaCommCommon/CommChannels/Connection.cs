@@ -53,6 +53,7 @@ namespace Scada.Comm.Channels
             {
                 StopCode = stopCode;
             }
+
             /// <summary>
             /// Получить код, приём которого останавливает считывание данных
             /// </summary>
@@ -76,18 +77,62 @@ namespace Scada.Comm.Channels
             public TextStopCondition(params string[] stopEndings)
             {
                 StopEndings = stopEndings;
+                MaxLineCount = int.MaxValue;
             }
             /// <summary>
             /// Конструктор
             /// </summary>
-            public TextStopCondition(string stopEnding)
+            public TextStopCondition(int maxLineCount)
+            {
+                StopEndings = null;
+                MaxLineCount = maxLineCount;
+            }
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public TextStopCondition(string[] stopEndings, int maxLineCount = int.MaxValue)
+            {
+                StopEndings = stopEndings;
+                MaxLineCount = maxLineCount;
+            }
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public TextStopCondition(string stopEnding, int maxLineCount = int.MaxValue)
             {
                 StopEndings = new string[] { stopEnding };
+                MaxLineCount = maxLineCount;
             }
+
             /// <summary>
             /// Получить окончания строк, приём которых останавливает считывание данных
             /// </summary>
             public string[] StopEndings { get; protected set; }
+            /// <summary>
+            /// Получить максимальное количество считываемых строк
+            /// </summary>
+            public int MaxLineCount { get; protected set; }
+
+            /// <summary>
+            /// Проверить выполнение условия остановки
+            /// </summary>
+            public bool CheckCondition(List<string> lines, string lastLine)
+            {
+                bool stopReceived = false;
+
+                if (lines.Count >= MaxLineCount)
+                {
+                    stopReceived = true;
+                }
+                else if (StopEndings != null)
+                {
+                    int endingsLen = StopEndings.Length;
+                    for (int i = 0; i < endingsLen && !stopReceived; i++)
+                        stopReceived = lastLine.EndsWith(StopEndings[i], StringComparison.OrdinalIgnoreCase);
+                }
+
+                return stopReceived;
+            }
         }
 
         /// <summary>
@@ -102,6 +147,10 @@ namespace Scada.Comm.Channels
         /// Таймаут записи данных по умолчанию, мс
         /// </summary>
         protected const int DefaultWriteTimeout = 5000;
+        /// <summary>
+        /// Условие остановки считывания одной строки
+        /// </summary>
+        protected static readonly TextStopCondition OneLineStopCondition = new TextStopCondition(1);
 
         /// <summary>
         /// Метод записи в журнал линии связи
@@ -292,6 +341,28 @@ namespace Scada.Comm.Channels
             List<string> lines = ReadLines(timeout, stopCond, out stopReceived, out logText);
             WriteToLog(logText);
             return lines;
+        }
+
+        /// <summary>
+        /// Считать одну строку
+        /// </summary>
+        public virtual string ReadLine(int timeout, out string logText)
+        {
+            bool stopReceived;
+            List<string> lines = ReadLines(timeout, OneLineStopCondition, out stopReceived, out logText);
+            WriteToLog(logText);
+            return lines.Count > 0 ? lines[0] : null;
+        }
+
+        /// <summary>
+        /// Считать одну строку и вывести информацию в журнал
+        /// </summary>
+        public virtual string ReadLine(int timeout)
+        {
+            string logText;
+            string line = ReadLine(timeout, out logText);
+            WriteToLog(logText);
+            return line;
         }
 
 

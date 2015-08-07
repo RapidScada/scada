@@ -27,7 +27,7 @@ using System;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Scada.Comm.KP
+namespace Scada.Comm.Devices.KpModbus
 {
     /// <summary>
     /// Editing device template form
@@ -199,7 +199,7 @@ namespace Scada.Comm.KP
             grNode.Tag = elemGroup;
 
             ushort elemAddr = elemGroup.Address;
-            int elemSig = elemGroup.StartParamInd + 1;
+            int elemSig = elemGroup.StartKPTagInd + 1;
 
             foreach (Modbus.Elem elem in elemGroup.Elems)
             {
@@ -266,7 +266,7 @@ namespace Scada.Comm.KP
             {
                 Modbus.ElemGroup elemGroup = (Modbus.ElemGroup)grNode.Tag;
                 ushort elemAddr = elemGroup.Address;
-                int elemSig = elemGroup.StartParamInd + 1;
+                int elemSig = elemGroup.StartKPTagInd + 1;
 
                 foreach (TreeNode elemNode in grNode.Nodes)
                 {
@@ -290,10 +290,10 @@ namespace Scada.Comm.KP
             if (!(startGrNode.Tag is Modbus.ElemGroup))
                 return;
 
-            // определение начального индекса параметров КП
+            // определение начального индекса тегов КП
             TreeNode prevGrNode = startGrNode.PrevNode;
             Modbus.ElemGroup prevElemGroup = prevGrNode == null ? null : prevGrNode.Tag as Modbus.ElemGroup;
-            int paramInd = prevElemGroup == null ? 0 : prevElemGroup.StartParamInd + prevElemGroup.Elems.Count;
+            int tagInd = prevElemGroup == null ? 0 : prevElemGroup.StartKPTagInd + prevElemGroup.Elems.Count;
 
             // обновление групп и их элементов
             int grNodeCnt = grsNode.Nodes.Count;
@@ -302,9 +302,9 @@ namespace Scada.Comm.KP
             {
                 TreeNode grNode = grsNode.Nodes[i];
                 Modbus.ElemGroup elemGroup = grNode.Tag as Modbus.ElemGroup;
-                int elemSig = paramInd + 1;
-                elemGroup.StartParamInd = paramInd;
-                paramInd += elemGroup.Elems.Count;
+                int elemSig = tagInd + 1;
+                elemGroup.StartKPTagInd = tagInd;
+                tagInd += elemGroup.Elems.Count;
 
                 foreach (TreeNode elemNode in grNode.Nodes)
                 {

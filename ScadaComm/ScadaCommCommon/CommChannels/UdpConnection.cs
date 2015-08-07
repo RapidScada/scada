@@ -225,8 +225,6 @@ namespace Scada.Comm.Channels
             {
                 List<string> lines = new List<string>();
                 stopReceived = false;
-                string[] stopEndings = stopCond.StopEndings;
-                int endingsLen = stopEndings == null ? 0 : stopEndings.Length;
 
                 DateTime nowDT = DateTime.Now;
                 DateTime startDT = nowDT;
@@ -248,8 +246,7 @@ namespace Scada.Comm.Channels
                             line = line.Substring(0, newLineInd);
 
                         lines.Add(line);
-                        for (int i = 0; i < endingsLen && !stopReceived; i++)
-                            stopReceived = line.EndsWith(stopEndings[i], StringComparison.OrdinalIgnoreCase);
+                        stopReceived = stopCond.CheckCondition(lines, line);
                     }
 
                     // накопление данных во внутреннем буфере соединения

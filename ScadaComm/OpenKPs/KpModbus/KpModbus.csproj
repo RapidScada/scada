@@ -32,8 +32,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="KP">
-      <HintPath>..\..\KP\bin\Release\KP.dll</HintPath>
+    <Reference Include="Log, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Log\bin\Release\Log.dll</HintPath>
+    </Reference>
+    <Reference Include="ScadaCommCommon">
+      <HintPath>..\..\ScadaCommCommon\bin\Release\ScadaCommCommon.dll</HintPath>
     </Reference>
     <Reference Include="ScadaData">
       <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
