@@ -223,7 +223,7 @@ namespace Scada.Comm.Svc
         public bool Bind { get; private set; }
 
         /// <summary>
-        /// Получить номер КП
+        /// Получить номер линии связи
         /// </summary>
         public int Number { get; private set; }
 

@@ -34,6 +34,11 @@ namespace Scada.Comm.Devices
     public interface ICommLineService
     {
         /// <summary>
+        /// Получить номер линии связи
+        /// </summary>
+        int Number { get; }
+
+        /// <summary>
         /// Найти КП на линии связи по адресу и позывному
         /// </summary>
         /// <remarks>Если address меньше 0, то он не учитывается при поиске.
