@@ -56,7 +56,7 @@ namespace Scada.Server.Modules
         /// </summary>
         public override void ShowProps()
         {
-            FrmDBExportConfig.ShowDialog(ConfigDir, LangDir, LogDir, ServerComm);
+            FrmDBExportConfig.ShowDialog(AppDirs, ServerComm);
         }
     }
 }

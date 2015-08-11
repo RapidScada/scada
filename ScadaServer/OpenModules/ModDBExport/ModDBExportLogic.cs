@@ -312,15 +312,15 @@ namespace Scada.Server.Modules
             // вывод в журнал
             log = new Log(Log.Formats.Simple);
             log.Encoding = Encoding.UTF8;
-            log.FileName = LogDir + LogFileName;
+            log.FileName = AppDirs.LogDir + LogFileName;
             log.WriteBreak();
             log.WriteAction(string.Format(ModPhrases.StartModule, Name));
 
             // определение полного имени файла информации
-            infoFileName = LogDir + InfoFileName;
+            infoFileName = AppDirs.LogDir + InfoFileName;
 
             // загрука конфигурации
-            config = new Config(ConfigDir);
+            config = new Config(AppDirs.ConfigDir);
             string errMsg;
 
             if (config.Load(out errMsg))

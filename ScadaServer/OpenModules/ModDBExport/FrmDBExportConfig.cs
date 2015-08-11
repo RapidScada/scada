@@ -37,9 +37,7 @@ namespace Scada.Server.Modules.DBExport
     /// </summary>
     internal partial class FrmDBExportConfig : Form
     {
-        private string configDir;      // директория конфигурации
-        private string langDir;        // директория языковых файлов
-        private string logDir;         // директория журналов
+        private AppDirs appDirs;       // директории приложения
         private ServerComm serverComm; // объект для обмена данными со SCADA-Сервером
 
         private Config config;         // конфигурация модуля
@@ -87,12 +85,10 @@ namespace Scada.Server.Modules.DBExport
         /// <summary>
         /// Отобразить форму модально
         /// </summary>
-        public static void ShowDialog(string configDir, string langDir, string logDir, ServerComm serverComm)
+        public static void ShowDialog(AppDirs appDirs, ServerComm serverComm)
         {
             FrmDBExportConfig frmDBExportConfig = new FrmDBExportConfig();
-            frmDBExportConfig.configDir = configDir;
-            frmDBExportConfig.langDir = langDir;
-            frmDBExportConfig.logDir = logDir;
+            frmDBExportConfig.appDirs = appDirs;
             frmDBExportConfig.serverComm = serverComm;
             frmDBExportConfig.ShowDialog();
         }
@@ -289,7 +285,7 @@ namespace Scada.Server.Modules.DBExport
             string errMsg;
             if (!Localization.UseRussian)
             {
-                if (Localization.LoadDictionaries(langDir, "ModDBExport", out errMsg))
+                if (Localization.LoadDictionaries(appDirs.LangDir, "ModDBExport", out errMsg))
                     Localization.TranslateForm(this, "Scada.Server.Modules.DBExport.FrmDBExportConfig");
                 else
                     ScadaUtils.ShowError(errMsg);
@@ -299,7 +295,7 @@ namespace Scada.Server.Modules.DBExport
             lblInstruction.Top = treeView.Top;
 
             // загрузка конфигурации
-            config = new Config(configDir);
+            config = new Config(appDirs.ConfigDir);
             if (File.Exists(config.FileName) && !config.Load(out errMsg))
                 ScadaUtils.ShowError(errMsg);
 
