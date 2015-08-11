@@ -21,6 +21,10 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>4.0</OldToolsVersion>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -60,6 +64,7 @@
     <Content Include="config\WebSettings.xml" />
     <Content Include="scheme\ScadaScheme.aspx" />
     <Content Include="scheme\ScadaSchemeSvc.svc" />
+    <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="script\scada.js" />
     <Content Include="script\silverlight.js" />
     <Content Include="Web.config">
