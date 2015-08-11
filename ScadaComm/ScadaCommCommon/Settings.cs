@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2008
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
@@ -28,16 +28,15 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.IO.Ports;
-using System.Text;
 using System.Xml;
 
-namespace Scada.Comm.Ctrl
+namespace Scada.Comm
 {
     /// <summary>
     /// SCADA-Communicator settings
     /// <para>Настройки SCADA-Коммуникатора</para>
     /// </summary>
-    internal class Settings
+    public class Settings
     {
         /// <summary>
         /// Общие параметры
@@ -81,9 +80,9 @@ namespace Scada.Comm.Ctrl
             /// </summary>
             public int WaitForStop { get; set; }
             /// <summary>
-            /// Получить или установить период передачи на сервер всех параметров КП для обновления, с
+            /// Получить или установить период передачи на сервер всех данных КП, с
             /// </summary>
-            public int RefrParams { get; set; }
+            public int SendAllDataPer { get; set; }
 
             /// <summary>
             /// Установить значения общих параметров по умолчанию
@@ -97,7 +96,7 @@ namespace Scada.Comm.Ctrl
                 ServerPwd = "12345";
                 ServerTimeout = 10000;
                 WaitForStop = 1000;
-                RefrParams = 60;
+                SendAllDataPer = 60;
             }
             /// <summary>
             /// Создать полную копию общих параметров
@@ -112,7 +111,7 @@ namespace Scada.Comm.Ctrl
                 commonParams.ServerPwd = ServerPwd;
                 commonParams.ServerTimeout = ServerTimeout;
                 commonParams.WaitForStop = WaitForStop;
-                commonParams.RefrParams = RefrParams;
+                commonParams.SendAllDataPer = SendAllDataPer;
                 return commonParams;
             }
         }
@@ -143,10 +142,10 @@ namespace Scada.Comm.Ctrl
 
                 ReqTriesCnt = 3;
                 CycleDelay = 0;
-                MaxCommErrCnt = 1;
                 CmdEnabled = false;
+                DetailedLog = true;
 
-                UserParams = new List<UserParam>();
+                CustomParams = new List<CustomParam>();
                 ReqSequence = new List<KP>();
             }
 
@@ -219,18 +218,18 @@ namespace Scada.Comm.Ctrl
             /// </summary>
             public int CycleDelay { get; set; }
             /// <summary>
-            /// Получить или установить количество неудачных сеансов связи до объявления КП неработающим
-            /// </summary>
-            public int MaxCommErrCnt { get; set; }
-            /// <summary>
             /// Получить или установить признак разрешения команд ТУ
             /// </summary>
             public bool CmdEnabled { get; set; }
+            /// <summary>
+            /// Получить или установить признак записи в журнал линии связи подробной информации
+            /// </summary>
+            public bool DetailedLog { get; set; }
 
             /// <summary>
             /// Получить пользовательские параметры линии связи
             /// </summary>
-            public List<UserParam> UserParams { get; private set; }
+            public List<CustomParam> CustomParams { get; private set; }
             /// <summary>
             /// Получить последовательность опроса КП
             /// </summary>
@@ -259,12 +258,12 @@ namespace Scada.Comm.Ctrl
 
                 commLine.ReqTriesCnt = ReqTriesCnt;
                 commLine.CycleDelay = CycleDelay;
-                commLine.MaxCommErrCnt = MaxCommErrCnt;
                 commLine.CmdEnabled = CmdEnabled;
+                commLine.DetailedLog = DetailedLog;
 
-                commLine.UserParams = new List<UserParam>();
-                foreach (UserParam userParam in UserParams)
-                    commLine.UserParams.Add(userParam.Clone());
+                commLine.CustomParams = new List<CustomParam>();
+                foreach (CustomParam userParam in CustomParams)
+                    commLine.CustomParams.Add(userParam.Clone());
 
                 commLine.ReqSequence = new List<KP>();
                 foreach (KP kp in ReqSequence)
@@ -278,19 +277,19 @@ namespace Scada.Comm.Ctrl
             public static string GetCaption(int number, object name)
             {
                 string nameStr = name == null || name == DBNull.Value ? "" : name.ToString();
-                return AppPhrases.LineCaption + " " + number + (nameStr == "" ? "" : " \"" + nameStr + "\"");
+                return CommPhrases.LineCaption + " " + number + (nameStr == "" ? "" : " \"" + nameStr + "\"");
             }
         }
 
         /// <summary>
         /// Пользовательский параметр линии связи
         /// </summary>
-        public class UserParam
+        public class CustomParam
         {
             /// <summary>
             /// Конструктор
             /// </summary>
-            public UserParam()
+            public CustomParam()
             {
                 Name = "";
                 Value = "";
@@ -313,13 +312,14 @@ namespace Scada.Comm.Ctrl
             /// <summary>
             /// Создать полную копию пользовательского параметра
             /// </summary>
-            public UserParam Clone()
+            public CustomParam Clone()
             {
-                UserParam userParam = new UserParam();
-                userParam.Name = Name;
-                userParam.Value = Value;
-                userParam.Descr = Descr;
-                return userParam;
+                return new CustomParam()
+                {
+                    Name = this.Name,
+                    Value = this.Value,
+                    Descr = this.Descr
+                };
             }
         }
 
@@ -412,22 +412,21 @@ namespace Scada.Comm.Ctrl
             /// </summary>
             public KP Clone()
             {
-                KP kp = new KP();
-
-                kp.Active = Active;
-                kp.Bind = Bind;
-                kp.Number = Number;
-                kp.Name = Name;
-                kp.Dll = Dll;
-                kp.Address = Address;
-                kp.CallNum = CallNum;
-                kp.Timeout = Timeout;
-                kp.Delay = Delay;
-                kp.Time = Time;
-                kp.Period = Period;
-                kp.CmdLine = CmdLine;
-
-                return kp;
+                return new KP()
+                {
+                    Active = this.Active,
+                    Bind = this.Bind,
+                    Number = this.Number,
+                    Name = this.Name,
+                    Dll = this.Dll,
+                    Address = this.Address,
+                    CallNum = this.CallNum,
+                    Timeout = this.Timeout,
+                    Delay = this.Delay,
+                    Time = this.Time,
+                    Period = this.Period,
+                    CmdLine = this.CmdLine
+                };
             }
             /// <summary>
             /// Получить обозначение линии связи
@@ -435,7 +434,7 @@ namespace Scada.Comm.Ctrl
             public static string GetCaption(int number, object name)
             {
                 string nameStr = name == null || name == DBNull.Value ? "" : name.ToString();
-                return AppPhrases.KPCaption + " " + number + (nameStr == "" ? "" : " \"" + nameStr + "\"");
+                return CommPhrases.KPCaption + " " + number + (nameStr == "" ? "" : " \"" + nameStr + "\"");
             }
         }
 
@@ -470,217 +469,202 @@ namespace Scada.Comm.Ctrl
         /// <summary>
         /// Загрузить общие параметры
         /// </summary>
-        private void LoadCommonParams(XmlDocument xmlDoc, StringBuilder errorBuilder)
+        private void LoadCommonParams(XmlDocument xmlDoc)
         {
-            try
+            XmlNode commonParamsNode = xmlDoc.DocumentElement.SelectSingleNode("CommonParams");
+            if (commonParamsNode != null)
             {
-                XmlNode xmlNode = xmlDoc.DocumentElement.SelectSingleNode("CommonParams");
-                if (xmlNode == null)
+                XmlNodeList paramNodes = commonParamsNode.SelectNodes("Param");
+                foreach (XmlElement paramElem in paramNodes)
                 {
-                    throw new Exception(AppPhrases.NoCommonParams);
-                }
-                else
-                {
-                    XmlNodeList xmlNodeList = xmlNode.SelectNodes("Param");
-                    foreach (XmlElement xmlElement in xmlNodeList)
-                    {
-                        string name = xmlElement.GetAttribute("name");
-                        string nameL = name.ToLower();
-                        string val = xmlElement.GetAttribute("value");
+                    string name = paramElem.GetAttribute("name");
+                    string nameL = name.ToLowerInvariant();
+                    string val = paramElem.GetAttribute("value");
 
-                        try
-                        {
-                            if (nameL == "serveruse")
-                                Params.ServerUse = bool.Parse(val.ToLower());
-                            else if (nameL == "serverhost")
-                                Params.ServerHost = val;
-                            else if (nameL == "serverport")
-                                Params.ServerPort = int.Parse(val);
-                            else if (nameL == "serveruser")
-                                Params.ServerUser = val;
-                            else if (nameL == "serverpwd")
-                                Params.ServerPwd = val;
-                            else if (nameL == "servertimeout")
-                                Params.ServerTimeout = int.Parse(val);
-                            else if (nameL == "waitforstop")
-                                Params.WaitForStop = int.Parse(val);
-                            else if (nameL == "refrparams")
-                                Params.RefrParams = int.Parse(val);
-                        }
-                        catch
-                        {
-                            throw new Exception(string.Format(CommonPhrases.IncorrectXmlParamVal, name));
-                        }
+                    try
+                    {
+                        if (nameL == "serveruse")
+                            Params.ServerUse = bool.Parse(val);
+                        else if (nameL == "serverhost")
+                            Params.ServerHost = val;
+                        else if (nameL == "serverport")
+                            Params.ServerPort = int.Parse(val);
+                        else if (nameL == "serveruser")
+                            Params.ServerUser = val;
+                        else if (nameL == "serverpwd")
+                            Params.ServerPwd = val;
+                        else if (nameL == "servertimeout")
+                            Params.ServerTimeout = int.Parse(val);
+                        else if (nameL == "waitforstop")
+                            Params.WaitForStop = int.Parse(val);
+                        else if (nameL == "sendalldataper")
+                            Params.SendAllDataPer = int.Parse(val);
+                    }
+                    catch
+                    {
+                        throw new Exception(string.Format(CommonPhrases.IncorrectXmlParamVal, name));
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                errorBuilder.AppendLine(AppPhrases.LoadCommonParamsError + ":\r\n" + ex.Message);
             }
         }
 
         /// <summary>
         /// Загрузить линии связи
         /// </summary>
-        private void LoadCommLines(XmlDocument xmlDoc, StringBuilder errorBuilder)
+        private void LoadCommLines(XmlDocument xmlDoc)
         {
-            try
+            XmlNode commLinesNode = xmlDoc.DocumentElement.SelectSingleNode("CommLines");
+            if (commLinesNode != null)
             {
-                XmlNode xmlNode = xmlDoc.DocumentElement.SelectSingleNode("CommLines");
-                if (xmlNode == null)
+                XmlNodeList commLineNodes = commLinesNode.SelectNodes("CommLine");
+                foreach (XmlElement commLineElem in commLineNodes)
                 {
-                    throw new Exception(AppPhrases.NoCommLines);
-                }
-                else
-                {
-                    XmlNodeList listCommLine = xmlNode.SelectNodes("CommLine");
-                    foreach (XmlElement elemCommLine in listCommLine)
+                    string lineNumStr = commLineElem.GetAttribute("number");
+                    try
                     {
-                        string lineNumStr = elemCommLine.GetAttribute("number");
-                        try
-                        {
-                            CommLine commLine = new CommLine();
-                            commLine.Active = elemCommLine.GetAttrAsBool("active");
-                            commLine.Bind = elemCommLine.GetAttrAsBool("bind");
-                            commLine.Name = elemCommLine.GetAttribute("name");
-                            commLine.Number = elemCommLine.GetAttrAsInt("number");
-                            CommLines.Add(commLine);
-
-                            // загрузка настроек соединения линии связи
-                            XmlElement elemConn = elemCommLine.SelectSingleNode("Connection") as XmlElement;
-                            if (elemConn != null)
-                            {
-                                XmlElement elemConnType = elemConn.SelectSingleNode("ConnType") as XmlElement;
-                                if (elemConnType != null)
-                                    commLine.ConnType = elemConnType.GetAttribute("value");
-
-                                XmlElement elemCommSett = elemConn.SelectSingleNode("ComPortSettings") as XmlElement;
-                                if (elemCommSett != null)
-                                {
-                                    try
-                                    {
-                                        commLine.PortName = elemCommSett.GetAttribute("portName");
-                                        commLine.BaudRate = elemCommSett.GetAttrAsInt("baudRate");
-                                        commLine.DataBits = elemCommSett.GetAttrAsInt("dataBits");
-                                        commLine.Parity = (Parity)Enum.Parse(typeof(Parity),
-                                            elemCommSett.GetAttribute("parity"), true);
-                                        commLine.StopBits = (StopBits)Enum.Parse(typeof(StopBits),
-                                            elemCommSett.GetAttribute("stopBits"), true);
-                                        commLine.DtrEnable = elemCommSett.GetAttrAsBool("dtrEnable");
-                                        commLine.RtsEnable = elemCommSett.GetAttrAsBool("rtsEnable");
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        throw new Exception(AppPhrases.IncorrectPortSettings + ":\r\n" + ex.Message);
-                                    }
-                                }
-                            }
-
-                            // загрузка параметров линии связи
-                            XmlElement elemLineParams = elemCommLine.SelectSingleNode("LineParams") as XmlElement;
-                            if (elemLineParams != null)
-                            {
-                                XmlNodeList listParam = elemLineParams.SelectNodes("Param");
-                                foreach (XmlElement elemParam in listParam)
-                                {
-                                    string name = elemParam.GetAttribute("name");
-                                    string nameL = name.ToLower();
-                                    string val = elemParam.GetAttribute("value");
-                                    
-                                    try
-                                    {
-                                        if (nameL == "reqtriescnt")
-                                            commLine.ReqTriesCnt = int.Parse(val);
-                                        else if (nameL == "cycledelay")
-                                            commLine.CycleDelay = int.Parse(val);
-                                        else if (nameL == "maxcommerrcnt")
-                                            commLine.MaxCommErrCnt = int.Parse(val);
-                                        else if (nameL == "cmdenabled")
-                                            commLine.CmdEnabled = bool.Parse(val);
-                                    }
-                                    catch
-                                    {
-                                        throw new Exception(AppPhrases.IncorrectCommSettings + ":\r\n" + 
-                                            string.Format(CommonPhrases.IncorrectXmlParamVal, name));
-                                    }
-                                }
-                            }
-
-                            // загрузка пользовательских параметров линии связи
-                            XmlElement elemUserParams = elemCommLine.SelectSingleNode("UserParams") as XmlElement;
-                            if (elemUserParams != null)
-                            {
-                                XmlNodeList listParam = elemUserParams.SelectNodes("Param");
-                                foreach (XmlElement elemParam in listParam)
-                                {
-                                    string name = elemParam.GetAttribute("name");
-                                    if (name != "")
-                                    {
-                                        UserParam userParam = new UserParam();
-                                        userParam.Name = name;
-                                        userParam.Value = elemParam.GetAttribute("value");
-                                        userParam.Descr = elemParam.GetAttribute("descr");
-                                        commLine.UserParams.Add(userParam);
-                                    }
-                                }
-                            }
-
-                            // загрузка последовательности опроса линии связи
-                            XmlElement elemReqSeq = elemCommLine.SelectSingleNode("ReqSequence") as XmlElement;
-                            if (elemReqSeq != null)
-                            {
-                                XmlNodeList listKP = elemReqSeq.SelectNodes("KP");
-                                foreach (XmlElement elemKP in listKP)
-                                {
-                                    string kpNumStr = elemKP.GetAttribute("number");
-                                    try
-                                    {
-                                        KP kp = new KP();
-                                        kp.Active = elemKP.GetAttrAsBool("active");
-                                        kp.Bind = elemKP.GetAttrAsBool("bind");
-                                        kp.Number = elemKP.GetAttrAsInt("number");
-                                        kp.Name = elemKP.GetAttribute("name");
-                                        kp.Dll = elemKP.GetAttribute("dll");
-                                        kp.CallNum = elemKP.GetAttribute("callNum");
-                                        kp.CmdLine = elemKP.GetAttribute("cmdLine");
-                                        commLine.ReqSequence.Add(kp);
-
-                                        string address = elemKP.GetAttribute("address");
-                                        if (address != "")
-                                            kp.Address = elemKP.GetAttrAsInt("address");
-
-                                        kp.Timeout = elemKP.GetAttrAsInt("timeout");
-                                        kp.Delay = elemKP.GetAttrAsInt("delay");
-
-                                        string time = elemKP.GetAttribute("time");
-                                        if (time != "")
-                                            kp.Time = elemKP.GetAttrAsDateTime("time");
-
-                                        string period = elemKP.GetAttribute("period");
-                                        if (period != "")
-                                            kp.Period = elemKP.GetAttrAsTimeSpan("period");
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        throw new Exception(string.Format(AppPhrases.IncorrectKPSettings, kpNumStr) +
-                                            ":\r\n" + ex.Message);
-                                    }
-                                }
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            throw new Exception(string.Format(AppPhrases.IncorrectLineSettings, lineNumStr) +
-                                ":\r\n" + ex.Message);
-                        }
+                        CommLine commLine = LoadCommLine(commLineElem);
+                        CommLines.Add(commLine);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception(string.Format(CommPhrases.IncorrectLineSettings, lineNumStr) +
+                            ":" + Environment.NewLine + ex.Message);
                     }
                 }
             }
-            catch (Exception ex)
+        }
+
+        /// <summary>
+        /// Загрузить одну линию связи
+        /// </summary>
+        private CommLine LoadCommLine(XmlElement commLineElem)
+        {
+            CommLine commLine = new CommLine();
+            commLine.Active = commLineElem.GetAttrAsBool("active");
+            commLine.Bind = commLineElem.GetAttrAsBool("bind");
+            commLine.Name = commLineElem.GetAttribute("name");
+            commLine.Number = commLineElem.GetAttrAsInt("number");
+
+            // загрузка настроек соединения линии связи
+            XmlElement connElem = commLineElem.SelectSingleNode("Connection") as XmlElement;
+            if (connElem != null)
             {
-                errorBuilder.AppendLine(AppPhrases.LoadCommLinesError + ":\r\n" + ex.Message);
+                XmlElement connTypeElem = connElem.SelectSingleNode("ConnType") as XmlElement;
+                if (connTypeElem != null)
+                    commLine.ConnType = connTypeElem.GetAttribute("value");
+
+                XmlElement commSettElem = connElem.SelectSingleNode("ComPortSettings") as XmlElement;
+                if (commSettElem != null)
+                {
+                    commLine.PortName = commSettElem.GetAttribute("portName");
+                    commLine.BaudRate = commSettElem.GetAttrAsInt("baudRate");
+                    commLine.DataBits = commSettElem.GetAttrAsInt("dataBits");
+                    commLine.Parity = (Parity)Enum.Parse(typeof(Parity),
+                        commSettElem.GetAttribute("parity"), true);
+                    commLine.StopBits = (StopBits)Enum.Parse(typeof(StopBits),
+                        commSettElem.GetAttribute("stopBits"), true);
+                    commLine.DtrEnable = commSettElem.GetAttrAsBool("dtrEnable");
+                    commLine.RtsEnable = commSettElem.GetAttrAsBool("rtsEnable");
+                }
             }
+
+            // загрузка параметров связи
+            XmlElement lineParamsElem = commLineElem.SelectSingleNode("LineParams") as XmlElement;
+            if (lineParamsElem != null)
+            {
+                XmlNodeList paramNodes = lineParamsElem.SelectNodes("Param");
+                foreach (XmlElement paramElem in paramNodes)
+                {
+                    string name = paramElem.GetAttribute("name");
+                    string nameL = name.ToLowerInvariant();
+                    string val = paramElem.GetAttribute("value");
+
+                    try
+                    {
+                        if (nameL == "reqtriescnt")
+                            commLine.ReqTriesCnt = int.Parse(val);
+                        else if (nameL == "cycledelay")
+                            commLine.CycleDelay = int.Parse(val);
+                        else if (nameL == "cmdenabled")
+                            commLine.CmdEnabled = bool.Parse(val);
+                        else if (nameL == "detailedlog")
+                            commLine.DetailedLog = bool.Parse(val);
+                    }
+                    catch
+                    {
+                        throw new Exception(string.Format(CommonPhrases.IncorrectXmlParamVal, name));
+                    }
+                }
+            }
+
+            // загрузка пользовательских параметров линии связи
+            XmlElement customParamsElem = commLineElem.SelectSingleNode("CustomParams") as XmlElement;
+            if (customParamsElem == null)
+                customParamsElem = commLineElem.SelectSingleNode("UserParams") as XmlElement; // обратная совместимость
+
+            if (customParamsElem != null)
+            {
+                XmlNodeList paramNodes = customParamsElem.SelectNodes("Param");
+                foreach (XmlElement paramElem in paramNodes)
+                {
+                    string name = paramElem.GetAttribute("name");
+                    if (name != "")
+                    {
+                        CustomParam customParam = new CustomParam();
+                        customParam.Name = name;
+                        customParam.Value = paramElem.GetAttribute("value");
+                        customParam.Descr = paramElem.GetAttribute("descr");
+                        commLine.CustomParams.Add(customParam);
+                    }
+                }
+            }
+
+            // загрузка последовательности опроса линии связи
+            XmlElement reqSeqElem = commLineElem.SelectSingleNode("ReqSequence") as XmlElement;
+            if (reqSeqElem != null)
+            {
+                XmlNodeList kpNodes = reqSeqElem.SelectNodes("KP");
+                foreach (XmlElement kpElem in kpNodes)
+                {
+                    string kpNumStr = kpElem.GetAttribute("number");
+                    try
+                    {
+                        KP kp = new KP();
+                        kp.Active = kpElem.GetAttrAsBool("active");
+                        kp.Bind = kpElem.GetAttrAsBool("bind");
+                        kp.Number = kpElem.GetAttrAsInt("number");
+                        kp.Name = kpElem.GetAttribute("name");
+                        kp.Dll = kpElem.GetAttribute("dll");
+                        if (!kp.Dll.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
+                            kp.Dll += ".dll";
+                        kp.CallNum = kpElem.GetAttribute("callNum");
+                        kp.CmdLine = kpElem.GetAttribute("cmdLine");
+                        commLine.ReqSequence.Add(kp);
+
+                        string address = kpElem.GetAttribute("address");
+                        if (address != "")
+                            kp.Address = kpElem.GetAttrAsInt("address");
+
+                        kp.Timeout = kpElem.GetAttrAsInt("timeout");
+                        kp.Delay = kpElem.GetAttrAsInt("delay");
+
+                        string time = kpElem.GetAttribute("time");
+                        if (time != "")
+                            kp.Time = kpElem.GetAttrAsDateTime("time");
+
+                        string period = kpElem.GetAttribute("period");
+                        if (period != "")
+                            kp.Period = kpElem.GetAttrAsTimeSpan("period");
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception(string.Format(CommPhrases.IncorrectKPSettings, kpNumStr) +
+                            ":" + Environment.NewLine + ex.Message);
+                    }
+                }
+            }
+
+            return commLine;
         }
 
 
@@ -702,22 +686,64 @@ namespace Scada.Comm.Ctrl
 
                 xmlDoc = new XmlDocument();
                 xmlDoc.Load(fileName);
+
+                // загрузка общих параметров
+                LoadCommonParams(xmlDoc);
+                // загрузка линий связи
+                LoadCommLines(xmlDoc);
+
+                errMsg = "";
+                return true;
             }
             catch (Exception ex)
             {
-                errMsg = CommonPhrases.LoadAppSettingsError + ":\r\n" + ex.Message;
+                errMsg = CommonPhrases.LoadAppSettingsError + ":" + Environment.NewLine + ex.Message;
                 return false;
             }
+        }
 
-            // загрузка общих параметров
-            StringBuilder errorBuilder = new StringBuilder();
-            LoadCommonParams(xmlDoc, errorBuilder);
+        /// <summary>
+        /// Загрузить линию связи из файла настроек
+        /// </summary>
+        public bool LoadCommLine(string fileName, int lineNum, out CommLine commLine, out string errMsg)
+        {
+            commLine = null;
+            errMsg = "";
+            XmlDocument xmlDoc = null;
 
-            // загрузка линий связи
-            LoadCommLines(xmlDoc, errorBuilder);
+            try
+            {
+                if (!File.Exists(fileName))
+                    throw new FileNotFoundException(string.Format(CommonPhrases.NamedFileNotFound, fileName));
 
-            errMsg = errorBuilder.ToString();
-            return errMsg == "";
+                xmlDoc = new XmlDocument();
+                xmlDoc.Load(fileName);
+
+                XmlNode commLinesNode = xmlDoc.DocumentElement.SelectSingleNode("CommLines");
+                if (commLinesNode != null)
+                {
+                    XmlNodeList commLineNodes = commLinesNode.SelectNodes("CommLine");
+                    string lineNumStr = lineNum.ToString();
+
+                    foreach (XmlElement commLineElem in commLineNodes)
+                    {
+                        if (commLineElem.GetAttribute("number").Trim() == lineNumStr)
+                        {
+                            commLine = LoadCommLine(commLineElem);
+                            break;
+                        }
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = string.Format(Localization.UseRussian ? 
+                    "Ошибка при загрузке конфигурации линии связи {0} из файла: {1}" : 
+                    "Error loding communication line {0} configuration from file: {1}", lineNum, ex.Message);
+                return false;
+            }
         }
 
         /// <summary>
@@ -756,7 +782,7 @@ namespace Scada.Comm.Ctrl
                     "Таймаут ожидания ответа SCADA-Сервера, мс", "SCADA-Server response timeout, ms");
                 paramsElem.AppendParamElem("WaitForStop", Params.WaitForStop,
                     "Ожидание остановки линий связи, мс", "Waiting for the communication lines temrination, ms");
-                paramsElem.AppendParamElem("RefrParams", Params.RefrParams,
+                paramsElem.AppendParamElem("SendAllDataPer", Params.SendAllDataPer,
                     "Период передачи всех данных КП, с", "Sending all device data period, sec");
 
                 // Линии связи
@@ -804,16 +830,15 @@ namespace Scada.Comm.Ctrl
                         "Количество попыток перезапроса КП при ошибке", "Device request retries count on error");
                     paramsElem.AppendParamElem("CycleDelay", commLine.CycleDelay,
                         "Задержка после цикла опроса, мс", "Delay after request cycle, ms");
-                    paramsElem.AppendParamElem("MaxCommErrCnt", commLine.MaxCommErrCnt,
-                        "Количество неудачных сеансов связи до объявления КП неработающим",
-                        "Failed session count for setting device error state");
                     paramsElem.AppendParamElem("CmdEnabled", commLine.CmdEnabled,
                         "Команды ТУ разрешены", "Commands enabled");
+                    paramsElem.AppendParamElem("DetailedLog", commLine.DetailedLog,
+                        "Записывать в журнал подробную информацию", "Write detailed information to the log");
 
                     // пользовательские параметры
-                    paramsElem = xmlDoc.CreateElement("UserParams");
+                    paramsElem = xmlDoc.CreateElement("UserParams"); // CustomParams
                     lineElem.AppendChild(paramsElem);
-                    foreach (UserParam param in commLine.UserParams)
+                    foreach (CustomParam param in commLine.CustomParams)
                         paramsElem.AppendParamElem(param.Name, param.Value, param.Descr);
 
                     // последовательность опроса
@@ -849,7 +874,7 @@ namespace Scada.Comm.Ctrl
             }
             catch (Exception ex)
             {
-                errMsg = CommonPhrases.SaveAppSettingsError + ":\r\n" + ex.Message;
+                errMsg = CommonPhrases.SaveAppSettingsError + ":" + Environment.NewLine + ex.Message;
                 return false;
             }
         }

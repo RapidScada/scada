@@ -1,7 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ScadaCommDictionaries>
-  <Dictionary key="Scada.Comm.Ctrl">
-  </Dictionary>
   <Dictionary key="Scada.Comm.Ctrl.FrmImport">
     <Phrase key="this">Import Communication Lines and Devices</Phrase>
     <Phrase key="lblSelectData">Select the imported data</Phrase>
@@ -157,7 +155,6 @@
     <Phrase key="ReceiveBaseTableError">Error receiving the configuration database tables</Phrase>
     <Phrase key="UpdateSettingsCompleted">Updating settings according to the configuration database completed successfully.</Phrase>
     <Phrase key="UpdateSettingsError">Error updating settings according to the configuration database</Phrase>
-    <Phrase key="GetKpTypeError">Error getting device type from the library {0}</Phrase>
     <Phrase key="GetKpTypeInfoError">Error getting device type information</Phrase>
     <Phrase key="SecondInstanceClosed">SCADA-Communicator control application already started.&#13;&#10;The second instance will be closed.</Phrase>
     <Phrase key="CheckSecondInstanceError">Error check the second application instance start</Phrase>
@@ -168,25 +165,22 @@
     <Phrase key="ServiceRestartFailed">SCADA-Communicator service restart failed</Phrase>
     <Phrase key="ImportLinesAndKpError">Error import communication lines and devices</Phrase>
     <Phrase key="ImportKpError">Error import devices</Phrase>
-    <Phrase key="ResetReqParamsUnsupported">{0} does not support setting device request parameters to default.</Phrase>
     <Phrase key="ResetReqParamsError">Error setting device request parameters to default</Phrase>
     <Phrase key="ShowKpPropsUnsupported">{0} does not support show device properties.</Phrase>
-    <Phrase key="ShowKpPropsError">Error show device properties</Phrase>
+    <Phrase key="ShowKpPropsError">Error showing device properties</Phrase>
     <Phrase key="UnknownDLL">Unknown DLL.</Phrase>
     <Phrase key="IncorrectCmdVal">The command value is incorrect.</Phrase>
     <Phrase key="IncorrectHexCmdData">The hexadecimal command data are incorrect.</Phrase>
     <Phrase key="CmdDataRequired">Command data are required.</Phrase>
   </Dictionary>
-  <Dictionary key="Scada.Comm.Ctrl.Settings">
+  <Dictionary key="Scada.Comm.Settings">
     <Phrase key="LineCaption">Line</Phrase>
     <Phrase key="KPCaption">Device</Phrase>
-    <Phrase key="NoCommonParams">Common parameters not found.</Phrase>
-    <Phrase key="LoadCommonParamsError">Error loading common parameters</Phrase>
-    <Phrase key="NoCommLines">Communication lines not found.</Phrase>
-    <Phrase key="IncorrectPortSettings">Incorrect parameters of serial port</Phrase>
-    <Phrase key="IncorrectCommSettings">Incorrect parameters of communication</Phrase>
     <Phrase key="IncorrectKPSettings">Incorrect parameters of the device {0}</Phrase>
     <Phrase key="IncorrectLineSettings">Incorrect parameters of the communication line {0}</Phrase>
-    <Phrase key="LoadCommLinesError">Error loading communication lines</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.KPFactory">
+    <Phrase key="GetViewTypeError">Error getting device interface type from the library {0}</Phrase>
+    <Phrase key="CreateViewError">Error creating device interface instance of the class {0}</Phrase>
   </Dictionary>
 </ScadaCommDictionaries>

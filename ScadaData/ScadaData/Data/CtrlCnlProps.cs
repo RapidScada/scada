@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,41 +20,46 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2008
- * Modified : 2012
+ * Modified : 2015
  */
 
 using System;
 
-namespace Scada.Client
+namespace Scada.Data
 {
     /// <summary>
     /// Output channel properties
     /// <para>Свойства канала управления</para>
     /// </summary>
-    public class CtrlCnlProps
+    public class CtrlCnlProps : IComparable<CtrlCnlProps>
     {
         /// <summary>
         /// Конструктор
         /// </summary>
         public CtrlCnlProps()
+            : this(0, "", BaseValues.CmdTypes.Standard)
         {
-            CtrlCnlNum = -1;
-            CtrlCnlName = "";
-            ObjNum = 0;
-            ObjName = "";
-            KPNum = 0;
-            KPName = "";
-            CmdTypeID = 0;
-            CmdValArr = null;
         }
 
         /// <summary>
         /// Конструктор
         /// </summary>
-        public CtrlCnlProps(int ctrlCnlNum)
+        public CtrlCnlProps(int ctrlCnlNum, string ctrlCnlName, int cmdTypeID)
             : this()
         {
             CtrlCnlNum = ctrlCnlNum;
+            CtrlCnlName = ctrlCnlName;
+            CmdTypeID = cmdTypeID;
+            ObjNum = 0;
+            ObjName = "";
+            KPNum = 0;
+            KPName = "";
+            CmdNum = 0;
+            CmdValName = "";
+            CmdValArr = null;
+            FormulaUsed = false;
+            Formula = "";
+            EvEnabled = false;
         }
 
 
@@ -67,6 +72,11 @@ namespace Scada.Client
         /// Получить или установить наименование канала управления
         /// </summary>
         public string CtrlCnlName { get; set; }
+
+        /// <summary>
+        /// Получить или установить идентификатор типа команды
+        /// </summary>
+        public int CmdTypeID { get; set; }
 
         /// <summary>
         /// Получить или установить номер объекта
@@ -87,15 +97,44 @@ namespace Scada.Client
         /// Получить или установить наименование КП
         /// </summary>
         public string KPName { get; set; }
+        
+        /// <summary>
+        /// Получить или установить номер команды
+        /// </summary>
+        public int CmdNum { get; set; }
 
         /// <summary>
-        /// Получить или установить идентификатор типа команды
+        /// Получить или установить наименование значений команды
         /// </summary>
-        public int CmdTypeID { get; set; }
+        public string CmdValName { get; set; }
 
         /// <summary>
         /// Получить или установить значения команды
         /// </summary>
         public string[] CmdValArr { get; set; }
+
+        /// <summary>
+        /// Получить или установить признак использования формулы
+        /// </summary>
+        public bool FormulaUsed { get; set; }
+
+        /// <summary>
+        /// Получить или установить формулу
+        /// </summary>
+        public string Formula { get; set; }
+
+        /// <summary>
+        /// Получить или установить признак записи событий
+        /// </summary>
+        public bool EvEnabled { get; set; }
+
+
+        /// <summary>
+        /// Сравнить текущий объект с другим объектом того же типа
+        /// </summary>
+        public int CompareTo(CtrlCnlProps other)
+        {
+            return CtrlCnlNum.CompareTo(other.CtrlCnlNum);
+        }
     }
 }

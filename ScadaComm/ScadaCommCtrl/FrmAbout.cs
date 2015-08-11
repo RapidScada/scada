@@ -24,7 +24,9 @@
  */
 
 using System;
+using System.Diagnostics;
 using System.Windows.Forms;
+using Utils;
 
 namespace Scada.Comm.Ctrl
 {
@@ -34,44 +36,94 @@ namespace Scada.Comm.Ctrl
     /// </summary>
     public partial class FrmAbout : Form
     {
-        private static FrmAbout frmAbout = null; // форма о программе
-        private static string link = "";         // гиперссылка
+        private const string Version = "4.5.0.0"; // версия приложения
+        private static FrmAbout frmAbout = null;  // форма о программе
+
+        private string exeDir;  // директория исполняемого файла приложения
+        private Log errLog;     // журнал ошибок приложения
+        private bool inited;    // форма инициализирована
+        private string linkUrl; // гиперссылка
+
 
         /// <summary>
-        /// Конструктор
+        /// Конструктор, ограничивающий создание объекта без параметров
         /// </summary>
-        public FrmAbout()
+        private FrmAbout()
         {
             InitializeComponent();
+
+            inited = false;
+            linkUrl = "";
         }
 
+
         /// <summary>
-        /// Отобразить форму о программе, загрузив заставку и гиперссылку из файлов
+        /// Отобразить форму о программе
         /// </summary>
-        public static bool ShowAbout(string exeDir, out string errMsg)
+        public static void ShowAbout(string exeDir, Log errLog)
         {
+            if (exeDir == null)
+                throw new ArgumentNullException("exeDir");
+            if (errLog == null)
+                throw new ArgumentNullException("errLog");
+
             if (frmAbout == null)
             {
                 frmAbout = new FrmAbout();
-                bool imgLoaded;
+                frmAbout.exeDir = exeDir;
+                frmAbout.errLog = errLog;
+            }
+            frmAbout.ShowDialog();
+        }
 
-                if (ScadaUtils.LoadAboutForm(exeDir, frmAbout, frmAbout.pictureBox, frmAbout.lblLink, 
-                    out imgLoaded, out link, out errMsg))
+
+        private void FrmAbout_Load(object sender, EventArgs e)
+        {
+            // инициализация формы
+            if (!inited)
+            {
+                inited = true;
+
+                // настройка элементов управления в зависимости от локализации
+                PictureBox activePictureBox;
+
+                if (Localization.UseRussian)
                 {
-                    frmAbout.ShowDialog();
-                    return true;
+                    activePictureBox = pbAboutRu;
+                    pbAboutEn.Visible = false;
+                    lblVersionEn.Visible = false;
+                    lblVersionRu.Text = "Версия " + Version;
                 }
                 else
                 {
-                    frmAbout = null;
-                    return false;
+                    activePictureBox = pbAboutEn;
+                    pbAboutRu.Visible = false;
+                    lblVersionRu.Visible = false;
+                    lblVersionEn.Text = "Version " + Version;
                 }
-            }
-            else
-            {
-                frmAbout.ShowDialog();
-                errMsg = "";
-                return true;
+
+                // изменение родительских элементов для работы прозрачности
+                lblWebsite.Parent = activePictureBox;
+                lblVersionRu.Parent = pbAboutRu;
+                lblVersionEn.Parent = pbAboutEn;
+
+                // загрузка изображения и гиперссылки из файлов, если они существуют
+                bool imgLoaded;
+                string errMsg;
+                if (ScadaUtils.LoadAboutForm(exeDir, this, activePictureBox, lblWebsite,
+                    out imgLoaded, out linkUrl, out errMsg))
+                {
+                    if (imgLoaded)
+                    {
+                        lblVersionRu.Visible = false;
+                        lblVersionEn.Visible = false;
+                    }
+                }
+                else
+                {
+                    errLog.WriteAction(errMsg);
+                    ScadaUtils.ShowError(errMsg);
+                }
             }
         }
 
@@ -87,9 +139,9 @@ namespace Scada.Comm.Ctrl
 
         private void lblLink_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(link))
+            if (!string.IsNullOrEmpty(linkUrl))
             {
-                System.Diagnostics.Process.Start(link);
+                Process.Start(linkUrl);
                 Close();
             }
         }

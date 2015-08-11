@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,14 @@
  * 
  * Product  : Rapid SCADA
  * Module   : KpModbus
- * Summary  : Modbus protocol implementation. The class version: 1.3
+ * Summary  : Modbus protocol implementation. The class version: 2.0
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2014
+ * Modified : 2015
  */
 
+using Scada.Comm.Channels;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -30,8 +31,9 @@ using System.IO.Ports;
 using System.Net.Sockets;
 using System.Text;
 using System.Xml;
+using Utils;
 
-namespace Scada.Comm.KP
+namespace Scada.Comm.Devices
 {
     /// <summary>
     /// Modbus protocol implementation
@@ -124,6 +126,7 @@ namespace Scada.Comm.KP
             {
                 if (Localization.UseRussian)
                 {
+                    ConnectionRequired = "Невозможно выполнить запрос, т.к. соединение не установлено";
                     IncorrectPduLength = "Некорректная длина PDU";
                     IncorrectPduFuncCode = "Некорректный код функции PDU";
                     IncorrectPduData = "Некорректные данные PDU";
@@ -138,14 +141,13 @@ namespace Scada.Comm.KP
                     CrcError = "Ошибка CRC!";
                     LrcError = "Ошибка LRC!";
                     CommErrorWithExclamation = "Ошибка связи!";
-                    CommError = "Ошибка связи";
                     IncorrectSymbol = "Некорректный символ!";
                     IncorrectAduLength = "Некорректная длина ADU!";
-                    RequestImpossible = "Выполнение запроса невозможно, т.к. сетевой поток закрыт";
                     IncorrectMbap = "Некорректные данные MBAP Header!";
                 }
                 else
                 {
+                    ConnectionRequired = "Unable to request because connection is not established";
                     IncorrectPduLength = "Incorrect PDU length";
                     IncorrectPduFuncCode = "Incorrect PDU function code";
                     IncorrectPduData = "Incorrect PDU data";
@@ -160,14 +162,13 @@ namespace Scada.Comm.KP
                     CrcError = "CRC error!";
                     LrcError = "LRC error!";
                     CommErrorWithExclamation = "Communication error!";
-                    CommError = "Communication error";
                     IncorrectSymbol = "Incorrect symbol!";
                     IncorrectAduLength = "Incorrect ADU length!";
-                    RequestImpossible = "Request is impossible because network stream is closed";
                     IncorrectMbap = "Incorrect MBAP Header data!";
                 }
             }
 
+            public static string ConnectionRequired { get; set; }
             public static string IncorrectPduLength { get; set; }
             public static string IncorrectPduFuncCode { get; set; }
             public static string IncorrectPduData { get; set; }
@@ -182,10 +183,8 @@ namespace Scada.Comm.KP
             public static string CrcError { get; set; }
             public static string LrcError { get; set; }
             public static string CommErrorWithExclamation { get; set; }
-            public static string CommError { get; set; }
             public static string IncorrectSymbol { get; set; }
             public static string IncorrectAduLength { get; set; }
-            public static string RequestImpossible { get; set; }
             public static string IncorrectMbap { get; set; }
         }
 
@@ -481,7 +480,7 @@ namespace Scada.Comm.KP
                 Elems = new List<Elem>();
                 ElemVals = null;
                 TotalElemLength = -1;
-                StartParamInd = -1;
+                StartKPTagInd = -1;
                 StartSignal = 0;
 
                 // определение кода функции запроса
@@ -547,9 +546,9 @@ namespace Scada.Comm.KP
             }
 
             /// <summary>
-            /// Получить или установить индекс параметра КП, соответствующего начальному элементу
+            /// Получить или установить индекс тега КП, соответствующего начальному элементу
             /// </summary>
-            public int StartParamInd { get; set; }
+            public int StartKPTagInd { get; set; }
 
             /// <summary>
             /// Получить или установить сигнал КП, соответствующий начальному элементу
@@ -919,7 +918,7 @@ namespace Scada.Comm.KP
 
                     if (elemGroupsNode != null)
                     {
-                        int paramInd = 0;
+                        int kpTagInd = 0;
 
                         foreach (XmlElement elemGroupElem in elemGroupsNode.ChildNodes)
                         {
@@ -928,8 +927,8 @@ namespace Scada.Comm.KP
                             ElemGroup elemGroup = new ElemGroup(tableType);
                             elemGroup.Address = ushort.Parse(elemGroupElem.GetAttribute("address"));
                             elemGroup.Name = elemGroupElem.GetAttribute("name");
-                            elemGroup.StartParamInd = paramInd;
-                            elemGroup.StartSignal = paramInd + 1;
+                            elemGroup.StartKPTagInd = kpTagInd;
+                            elemGroup.StartSignal = kpTagInd + 1;
 
                             XmlNodeList elemNodes = elemGroupElem.SelectNodes("Elem");
                             foreach (XmlElement elemElem in elemNodes)
@@ -945,7 +944,7 @@ namespace Scada.Comm.KP
                             if (0 < elemGroup.Elems.Count && elemGroup.Elems.Count <= ElemGroup.GetMaxElemCnt(tableType))
                             {
                                 ElemGroups.Add(elemGroup);
-                                paramInd += elemGroup.Elems.Count;
+                                kpTagInd += elemGroup.Elems.Count;
                             }
                         }
                     }
@@ -1070,7 +1069,7 @@ namespace Scada.Comm.KP
                     {
                         Address = srcGroup.Address,
                         Name = srcGroup.Name,
-                        StartParamInd = srcGroup.StartParamInd,
+                        StartKPTagInd = srcGroup.StartKPTagInd,
                         StartSignal = srcGroup.StartSignal,
                     };
 
@@ -1175,22 +1174,16 @@ namespace Scada.Comm.KP
         public Modbus()
         {
             InBuf = new byte[InBufSize];
-            WriteToLog = null;
-            SerialPort = null;
             Timeout = 0;
-            NetStream = null;
+            Connection = null;
+            WriteToLog = null;
         }
 
 
         /// <summary>
         /// Получить буфер входных данных
         /// </summary>
-        public byte[] InBuf { get; private set; }
-
-        /// <summary>
-        /// Получить или установить ссылку на последовательный порт
-        /// </summary>
-        public SerialPort SerialPort { get; set; }
+        public byte[] InBuf { get; protected set; }
 
         /// <summary>
         /// Получить или установить таймаут запросов через последовательный порт
@@ -1198,61 +1191,39 @@ namespace Scada.Comm.KP
         public int Timeout { get; set; }
 
         /// <summary>
-        /// Получить или установить поток данных TCP-клиента
+        /// Получить или установить соединение с физическим КП
         /// </summary>
-        public NetworkStream NetStream { get; set; }
+        public Connection Connection { get; set; }
 
         /// <summary>
-        /// Получить или установить метод записи в журнал
+        /// Получить или установить метод записи строки в журнал
         /// </summary>
-        public KPLogic.WriteToLogDelegate WriteToLog { get; set; }
+        public Log.WriteLineDelegate WriteToLog { get; set; }
 
-
-        /// <summary>
-        /// Записать данные в поток TCP-клиента
-        /// </summary>
-        private void WriteNetStream(byte[] buffer, int count)
-        {
-            NetStream.Write(buffer, 0, count);
-            string logText = KPUtils.SendNotation + " (" + count + "): " + KPUtils.BytesToHex(buffer, 0, count);
-            ExecWriteToLog(logText);
-        }
-
-        /// <summary>
-        /// Считать данные из потока TCP-клиента
-        /// </summary>
-        private int ReadNetStream(int index, int count)
-        {
-            int readCnt = NetStream.Read(InBuf, index, count);
-            string logText = KPUtils.ReceiveNotation + " (" + readCnt + "/" + count + "): " + 
-                KPUtils.BytesToHex(InBuf, index, readCnt);
-            ExecWriteToLog(logText);
-            return readCnt;
-        }
-
-        /// <summary>
-        /// Очистить поток данных TCP-клиента
-        /// </summary>
-        private void ClearNetStream()
-        {
-            try
-            {
-                if (NetStream.DataAvailable)
-                    NetStream.Read(InBuf, 0, InBufSize);
-            }
-            catch (Exception ex)
-            {
-                ExecWriteToLog(Phrases.ClearNetStreamError + ": " + ex.Message);
-            }
-        }
 
         /// <summary>
         /// Вызвать метод записи в журнал
         /// </summary>
-        private void ExecWriteToLog(string text)
+        protected void ExecWriteToLog(string text)
         {
             if (WriteToLog != null)
                 WriteToLog(text);
+        }
+
+        /// <summary>
+        /// Проверить, что соединение установлено
+        /// </summary>
+        protected bool CheckConnection()
+        {
+            if (Connection == null || !Connection.Connected)
+            {
+                ExecWriteToLog(Phrases.ConnectionRequired);
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
 
@@ -1261,17 +1232,21 @@ namespace Scada.Comm.KP
         /// </summary>
         public bool RtuRequest(DataUnit dataUnit)
         {
+            if (!CheckConnection())
+                return false;
+
             bool result = false;
+            string logText;
 
             // отправка запроса
             ExecWriteToLog(dataUnit.ReqDescr);
-            string logText;
-            KPUtils.WriteToSerialPort(SerialPort, dataUnit.ReqADU, 0, dataUnit.ReqADU.Length, out logText);
+            Connection.Write(dataUnit.ReqADU, 0, dataUnit.ReqADU.Length, 
+                CommUtils.ProtocolLogFormats.Hex, out logText);
             ExecWriteToLog(logText);
 
             // приём ответа
             // считывание начала ответа для определения длины PDU
-            int readCnt = KPUtils.ReadFromSerialPort(SerialPort, InBuf, 0, 5, Timeout, false, out logText);
+            int readCnt = Connection.Read(InBuf, 0, 5, Timeout, CommUtils.ProtocolLogFormats.Hex, out logText);
             ExecWriteToLog(logText);
 
             if (readCnt == 5)
@@ -1285,7 +1260,7 @@ namespace Scada.Comm.KP
                     pduLen = dataUnit.RespPduLen;
                     count = dataUnit.RespAduLen - 5;
 
-                    readCnt = KPUtils.ReadFromSerialPort(SerialPort, InBuf, 5, count, Timeout, false, out logText);
+                    readCnt = Connection.Read(InBuf, 5, count, Timeout, CommUtils.ProtocolLogFormats.Hex, out logText);
                     ExecWriteToLog(logText);
                 }
                 else // устройство вернуло исключение
@@ -1335,21 +1310,21 @@ namespace Scada.Comm.KP
         /// </summary>
         public bool AsciiRequest(DataUnit dataUnit)
         {
+            if (!CheckConnection())
+                return false;
+
             bool result = false;
+            string logText;
 
             // отправка запроса
             ExecWriteToLog(dataUnit.ReqDescr);
-            string logText;
-            KPUtils.WriteLineToSerialPort(SerialPort, dataUnit.ReqStr, out logText);
+            Connection.WriteLine(dataUnit.ReqStr, out logText);
             ExecWriteToLog(logText);
 
             // приём ответа
-            bool endFound;
-            List<string> lines = KPUtils.ReadLinesFromSerialPort(SerialPort, Timeout, false, "", out endFound, out logText);
+            string line = Connection.ReadLine(Timeout, out logText);
             ExecWriteToLog(logText);
-
-            string line = lines.Count == 1 ? lines[0] : "";
-            int lineLen = line.Length;
+            int lineLen = line == null ? 0 : line.Length;
 
             if (lineLen >= 3)
             {
@@ -1415,73 +1390,63 @@ namespace Scada.Comm.KP
         /// </summary>
         public bool TcpRequest(DataUnit dataUnit)
         {
-            if (NetStream == null)
-            {
-                ExecWriteToLog(Phrases.RequestImpossible);
+            if (!CheckConnection())
                 return false;
-            }
 
             bool result = false;
-            bool closeNetStream = false;
+            string logText;
 
-            try
+            // отправка запроса
+            WriteToLog(dataUnit.ReqDescr);
+            Connection.Write(dataUnit.ReqADU, 0, dataUnit.ReqADU.Length,
+                CommUtils.ProtocolLogFormats.Hex, out logText);
+            ExecWriteToLog(logText);
+
+            // приём ответа
+            // считывание MBAP Header
+            int readCnt = Connection.Read(InBuf, 0, 7, Timeout, CommUtils.ProtocolLogFormats.Hex, out logText);
+            ExecWriteToLog(logText);
+
+            if (readCnt == 7)
             {
-                // отправка запроса
-                WriteToLog(dataUnit.ReqDescr);
-                WriteNetStream(dataUnit.ReqADU, dataUnit.ReqADU.Length);
+                int pduLen = InBuf[4] * 256 + InBuf[5] - 1;
 
-                // приём ответа
-                if (ReadNetStream(0, 7) /*считывание MBAP Header*/ == 7)
+                if (InBuf[0] == 0 && InBuf[1] == 0 && InBuf[2] == 0 && InBuf[3] == 0 && pduLen > 0 &&
+                    InBuf[6] == dataUnit.ReqADU[6])
                 {
-                    int pduLen = InBuf[4] * 256 + InBuf[5] - 1;
+                    // считывание PDU
+                    readCnt = Connection.Read(InBuf, 7, pduLen, Timeout, 
+                        CommUtils.ProtocolLogFormats.Hex, out logText);
+                    ExecWriteToLog(logText);
 
-                    if (InBuf[0] == 0 && InBuf[1] == 0 && InBuf[2] == 0 && InBuf[3] == 0 && pduLen > 0 &&
-                        InBuf[6] == dataUnit.ReqADU[6])
+                    if (readCnt == pduLen)
                     {
-                        if (ReadNetStream(7, pduLen) /*считывание PDU*/ == pduLen)
-                        {
-                            // расшифровка ответа
-                            string errMsg;
+                        // расшифровка ответа
+                        string errMsg;
 
-                            if (dataUnit.DecodeRespPDU(InBuf, 7, pduLen, out errMsg))
-                            {
-                                ExecWriteToLog(Phrases.OK);
-                                result = true;
-                            }
-                            else
-                            {
-                                ExecWriteToLog(errMsg + "!");
-                            }
+                        if (dataUnit.DecodeRespPDU(InBuf, 7, pduLen, out errMsg))
+                        {
+                            ExecWriteToLog(Phrases.OK);
+                            result = true;
                         }
                         else
                         {
-                            WriteToLog(Phrases.CommErrorWithExclamation);
+                            ExecWriteToLog(errMsg + "!");
                         }
                     }
                     else
                     {
-                        WriteToLog(Phrases.IncorrectMbap);
+                        WriteToLog(Phrases.CommErrorWithExclamation);
                     }
                 }
                 else
                 {
-                    WriteToLog(Phrases.CommErrorWithExclamation);
+                    WriteToLog(Phrases.IncorrectMbap);
                 }
             }
-            catch (Exception ex)
+            else
             {
-                WriteToLog(Phrases.CommError + ": " + ex.Message);
-                closeNetStream = true;
-            }
-
-            // очистка потока данных в случае ошибки
-            if (!result)
-                ClearNetStream();
-
-            if (closeNetStream)
-            {
-                NetStream.Close();
-                NetStream = null;
+                WriteToLog(Phrases.CommErrorWithExclamation);
             }
 
             return result;

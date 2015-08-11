@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,12 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2014
+ * Modified : 2015
  */
 
-namespace Scada.Comm.KP
+using Scada.Comm.Devices.KpModbus;
+
+namespace Scada.Comm.Devices
 {
     /// <summary>
     /// Device library user interface
@@ -46,12 +48,6 @@ namespace Scada.Comm.KP
             : base(number)
         {
             CanShowProps = number == 0;
-
-            // определение параметров опроса КП по умолчанию
-            KPLogic.ReqParams reqParams = new KPLogic.ReqParams(false);
-            reqParams.Timeout = 1000;
-            reqParams.Delay = 200;
-            DefaultReqParams = reqParams;
         }
 
 
@@ -87,8 +83,8 @@ namespace Scada.Comm.KP
         public override void ShowProps()
         {
             FrmDevTemplate form = new FrmDevTemplate();
-            form.ConfigDir = ConfigDir;
-            form.LangDir = LangDir;
+            form.ConfigDir = AppDirs.ConfigDir;
+            form.LangDir = AppDirs.LangDir;
             form.ShowDialog();
         }
     }

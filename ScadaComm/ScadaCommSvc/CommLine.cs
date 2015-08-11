@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,16 +20,19 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2014
+ * Modified : 2015
  */
 
+using Scada.Comm.Channels;
+using Scada.Comm.Devices;
+using Scada.Data;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
-using System.IO.Ports;
+using System.Reflection;
 using System.Text;
 using System.Threading;
-using Scada.Comm.KP;
 using Utils;
 
 namespace Scada.Comm.Svc
@@ -38,12 +41,44 @@ namespace Scada.Comm.Svc
     /// Communication line
     /// <para>Линия связи</para>
     /// </summary>
-    sealed class CommLine
+    internal sealed class CommLine : ICommLineService
     {
+        /// <summary>
+        /// Полный адрес КП
+        /// </summary>
+        private class KPFullAddr : IComparer<KPFullAddr>
+        {
+            /// <summary>
+            /// Числовой адрес
+            /// </summary>
+            public int Address;
+            /// <summary>
+            /// Позывной
+            /// </summary>
+            public string CallNum;
+
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public KPFullAddr(int address, string callNum)
+            {
+                Address = address;
+                CallNum = callNum;
+            }
+            /// <summary>
+            /// Performs a comparison of two objects of the same type
+            /// </summary>
+            public int Compare(KPFullAddr x, KPFullAddr y)
+            {
+                int comp = x.Address.CompareTo(y.Address);
+                return comp == 0 ? string.Compare(x.CallNum, y.CallNum, StringComparison.OrdinalIgnoreCase) : comp;
+            }
+        }
+
         /// <summary>
         /// Состояния работы линии связи
         /// </summary>
-        public enum RunStates
+        private enum WorkStates
         {
             /// <summary>
             /// Бездействие
@@ -67,50 +102,67 @@ namespace Scada.Comm.Svc
             Aborted
         }
 
+        /// <summary> 
+        /// Делегат передачи команды КП 
+        /// </summary> 
+        public delegate void PassCmdDelegate(Command cmd); 
+
 
         /// <summary>
-        /// Пауза перед следующей попыткой открытия COM-порта, мс
+        /// Задержка перед повторными попытками, мс
         /// </summary>
-        private const int PortWaitDelay = 10000;
+        private const int RetryDelay = 10000;
         /// <summary>
-        /// Сообщение об ошибке при установке значения свойства
+        /// Минимальная задержка после цикла опроса, мс
         /// </summary>
-        private static readonly string SetPropErr = Localization.UseRussian ?
-            "Невозможно установить значение свойства, если линия связи не бездействует." :
-            "Unable to set property value if the communication line is not idle.";
+        private const int MinCycleDelay = 10;
+        /// <summary>
+        /// Задержка после пустого цикла опроса, мс
+        /// </summary>
+        private const int EmptyCycleDelay = 200;
+        /// <summary>
+        /// Количество попыток передачи данных серверу без задержки
+        /// </summary>
+        private const int QuickAttemptCnt = 5;
         /// <summary>
         /// Обозначение отсутствия действия
         /// </summary>
         private static readonly string NoAction = Localization.UseRussian ? "нет" : "no";
 
-        private string numAndName;               // номер и нименование линии связи
-        private bool configError;                // ошибка при конфигурировании линии связи
-        private ServerCommEx serverComm;         // ссылка на объект обмена данными со SCADA-Сервером
-        private SerialPort serialPort;           // последоватеьный порт
-        private KPLogic.PassCmdDelegate passCmd; // метод передачи команды КП
-        private int reqTriesCnt;                 // количество попыток перезапроса КП при ошибке
-        private int cicleDelay;                  // пауза после цикла опроса, мс
-        private int maxCommErrCnt;               // количество неудачных сеансов связи до объявления КП неработающим
-        private bool cmdEnabled;                 // разрешены ли команды ТУ
-        private int refrParams;                  // период передачи на сервер всех параметров КП для обновления, с
+        private string numAndName;        // номер и нименование линии связи
+        private CommChannelLogic commCnl; // канал связи с физическими КП
+        private int reqTriesCnt;          // количество попыток перезапроса КП при ошибке
+        private int cycleDelay;           // пауза после цикла опроса, мс
+        private bool cmdEnabled;          // разрешены ли команды ТУ
+        private bool detailedLog;         // признак записи в журнал линии связи подробной информации
+        private int sendAllDataPer;       // период передачи на сервер всех данных КП, с
+        private AppDirs appDirs;          // директории приложения
+        private ServerCommEx serverComm;  // ссылка на объект обмена данными со SCADA-Сервером
+        private PassCmdDelegate passCmd;  // метод передачи команды КП всем линиям связи
 
-        private SortedList<string, object> commonProps; // общие свойства линии связи, доступные относящимся к ней КП
-        private List<int> kpNumList;             // упорядоченный по возрастанию список номеров КП на линии связи
-        private List<KPLogic.Command> cmdList;   // список команд
-        private KPLogic curKP;                   // опрашиваемое в данный момент КП
+        private Thread thread;                                  // поток работы линии связи
+        private SortedList<string, object> commonProps;         // общие свойства линии связи, доступные её КП
+        private Dictionary<int, KPLogic> kpNumDict;             // словарь КП по номерам
+        private Dictionary<int, KPLogic> kpAddrDict;            // словарь КП по адресам
+        private Dictionary<string, KPLogic> kpCallNumDict;      // словарь КП по позывным
+        private Dictionary<KPFullAddr, KPLogic> kpFullAddrDict; // словарь КП по полным адресам
+        private List<Command> cmdList;                          // список команд для выполнения
+        private List<KPLogic.TagSrez> unsentSrezList;           // список неотправленных архивных срезов КП
+        private List<KPLogic.KPEvent> unsentEventList;          // список неотправленных событий КП
+        private WorkStates workState;     // состояние работы линии связи
+        private Log log;                  // журнал линии связи
+        private string infoFileName;      // имя файла информации о работе линии связи
+        private string curAction;         // описание текущего действия
+        private string captionUnderline;  // подчёркивание обозначения линии связи
+        private string allCustomParams;   // все имена и значения пользовательских параметров
+        private string[] kpCaptions;      // обозначения КП
 
-        private Log log;                         // журнал линии связи
-        private string infoFileName;             // имя файла информации о работе линии связи
-        private string curAction;                // описание текущего действия
-        private int maxKPCapLen;                 // максимальная длина обозначения КП
-
-        private object cmdLock;                  // объект для синхронизации доступа к списку команд
-        private object infoLock;                 // объект для синхронизации записи в файл информации о работе линии связи
-        private object flushLock;                // объект для синхронизации форсированной передачи архивов
+        private object infoLock;          // объект для синхронизации записи в файл информации о работе линии связи
+        private object serverLock;        // объект для синхронизации связи с сервером в рамках линии связи
         
 
         /// <summary>
-        /// Конструктор
+        /// Конструктор, ограничивающий создание объекта без параметров
         /// </summary>
         private CommLine()
         {
@@ -119,57 +171,59 @@ namespace Scada.Comm.Svc
         /// <summary>
         /// Конструктор
         /// </summary>
-        public CommLine(int number, string name, bool bind)
+        public CommLine(bool bind, int number, string name)
         {
             // поля
             numAndName = number + (string.IsNullOrEmpty(name) ? "" : " \"" + name + "\"");
-            configError = false;
-            serverComm = null;
-            serialPort = null;
-            passCmd = null;
+            commCnl = null;
             reqTriesCnt = 1;
-            cicleDelay = 0;
-            maxCommErrCnt = 1;
+            cycleDelay = 0;
             cmdEnabled = false;
+            detailedLog = true;
+            sendAllDataPer = 0;
+            appDirs = new AppDirs();
+            serverComm = null;
+            passCmd = null;
 
+            thread = null;
             commonProps = new SortedList<string, object>();
-            kpNumList = new List<int>();
-            cmdList = new List<KPLogic.Command>();
-            curKP = null;
-
-            log = new Log(Log.Formats.Simple);
-            log.Encoding = Encoding.UTF8;
-            string fileName = Manager.LogDir + "line" + KPUtils.AddZeros(number, 3);
-            log.FileName = fileName + ".log";
-            infoFileName = fileName + ".txt";
+            kpNumDict = new Dictionary<int, KPLogic>();
+            kpAddrDict = new Dictionary<int, KPLogic>();
+            kpCallNumDict = new Dictionary<string, KPLogic>();
+            kpFullAddrDict = new Dictionary<KPFullAddr, KPLogic>();
+            cmdList = new List<Command>();
+            unsentSrezList = new List<KPLogic.TagSrez>();
+            unsentEventList = new List<KPLogic.KPEvent>();
+            workState = WorkStates.Idle;
+            log = new Log(Log.Formats.Simple) { Encoding = Encoding.UTF8 };
+            infoFileName = "";
             curAction = NoAction;
-            maxKPCapLen = -1;
+            allCustomParams = null;
+            kpCaptions = null;
 
-            cmdLock = new object();
             infoLock = new object();
-            flushLock = new object();
+            serverLock = new object();
 
             // свойства
+            Bind = bind;
             Number = number;
             Name = name;
-            Bind = bind;
             Caption = (Localization.UseRussian ? "Линия " : "Line ") + numAndName;
-
-            UserParams = new SortedList<string, string>();
+            CustomParams = new SortedList<string, string>();
             KPList = new List<KPLogic>();
-            RunState = RunStates.Idle;
-            Thread = null;
-
-            // вывод в журнал
-            WriteInfo();
-            log.WriteBreak();
-            log.WriteAction((Localization.UseRussian ? "Инициализация линии связи " : 
-                "Initialize communication line ") + numAndName);
+            
+            // ещё одно поле
+            captionUnderline = new string('-', Caption.Length);
         }
 
 
         /// <summary>
-        /// Получить номер КП
+        /// Получить признак привязки к SCADA-Серверу
+        /// </summary>
+        public bool Bind { get; private set; }
+
+        /// <summary>
+        /// Получить номер линии связи
         /// </summary>
         public int Number { get; private set; }
 
@@ -184,133 +238,18 @@ namespace Scada.Comm.Svc
         public string Caption { get; private set; }
 
         /// <summary>
-        /// Привязка к серверу
+        /// Получить или установить канал связи с физическими КП
         /// </summary>
-        public bool Bind { get; private set; }
-
-
-        /// <summary>
-        /// Получить пользовательские параметры линии связи
-        /// </summary>
-        public SortedList<string, string> UserParams { get; private set; }
-
-        /// <summary>
-        /// Получить список опрашиваемых КП
-        /// </summary>
-        public List<KPLogic> KPList { get; private set; }
-
-        /// <summary>
-        /// Получить поток работы линии связи
-        /// </summary>
-        public Thread Thread { get; private set; }
-
-        /// <summary>
-        /// Получить состояние работы линии связи
-        /// </summary>
-        public RunStates RunState { get; private set; }
-
-        /// <summary>
-        /// Получить строковое представление состояния работы линии связи
-        /// </summary>
-        public string RunStateStr
+        public CommChannelLogic CommChannelLogic
         {
             get
             {
-                switch (RunState)
-                {
-                    case RunStates.Idle:
-                        return Localization.UseRussian ? "бездействие" : "idle";
-                    case RunStates.Running:
-                        return Localization.UseRussian ? "цикл работы" : "running";
-                    case RunStates.Terminating:
-                        return Localization.UseRussian ? "завершение работы" : "terminating";
-                    case RunStates.Terminated:
-                        return Localization.UseRussian ? "работа завершена" : "terminated";
-                    case RunStates.Aborted:
-                        return Localization.UseRussian ? "работа прервана" : "aborted";
-                    default:
-                        return "";
-                }
-            }
-        }
-
-        /// <summary>
-        /// Получить признак, возможно ли прервать работу линии связи
-        /// </summary>
-        public bool AbortAllowed
-        {
-            get
-            {
-                return Thread != null && Thread.ThreadState != ThreadState.Stopped;
-            }
-        }
-
-
-        /// <summary>
-        /// Получить или установить признак ошибки при конфигурировании линии связи
-        /// </summary>
-        public bool ConfigError
-        {
-            get
-            {
-                return configError;
+                return commCnl;
             }
             set
             {
-                if (RunState != RunStates.Idle)
-                    throw new Exception(SetPropErr);
-                configError = value;
-            }
-        }
-
-        /// <summary>
-        /// Получить или установить ссылку на объект обмена данными со SCADA-Сервером
-        /// </summary>
-        public ServerCommEx ServerComm
-        {
-            get
-            {
-                return serverComm;
-            }
-            set
-            {
-                if (RunState != RunStates.Idle)
-                    throw new Exception(SetPropErr);
-                serverComm = value;
-            }
-        }
-
-        /// <summary>
-        /// Получить или установить последоватеьный порт
-        /// </summary>
-        public SerialPort SerialPort
-        {
-            get
-            {
-                return serialPort;
-            }
-            set
-            {
-                if (RunState != RunStates.Idle)
-                    throw new Exception(SetPropErr);
-                serialPort = value;
-            }
-        }
-
-        /// <summary>
-        /// Получить или установить метод передачи команды КП
-        /// </summary>
-        public KPLogic.PassCmdDelegate PassCmd
-        {
-            get
-            {
-                return passCmd;
-            }
-            set
-            {
-                if (RunState != RunStates.Idle)
-                    throw new Exception(SetPropErr);
-                passCmd = value;
+                CheckChangesAllowed();
+                commCnl = value;
             }
         }
 
@@ -325,8 +264,7 @@ namespace Scada.Comm.Svc
             }
             set
             {
-                if (RunState != RunStates.Idle)
-                    throw new Exception(SetPropErr);
+                CheckChangesAllowed();
                 reqTriesCnt = value;
             }
         }
@@ -334,34 +272,16 @@ namespace Scada.Comm.Svc
         /// <summary>
         /// Получить или установить паузу после цикла опроса, мс
         /// </summary>
-        public int CicleDelay
+        public int CycleDelay
         {
             get
             {
-                return cicleDelay;
+                return cycleDelay;
             }
             set
             {
-                if (RunState != RunStates.Idle)
-                    throw new Exception(SetPropErr);
-                cicleDelay = value;
-            }
-        }
-
-        /// <summary>
-        /// Получить или установить количество неудачных сеансов связи до объявления КП неработающим
-        /// </summary>
-        public int MaxCommErrCnt
-        {
-            get
-            {
-                return maxCommErrCnt;
-            }
-            set
-            {
-                if (RunState != RunStates.Idle)
-                    throw new Exception(SetPropErr);
-                maxCommErrCnt = value;
+                CheckChangesAllowed();
+                cycleDelay = value;
             }
         }
 
@@ -376,49 +296,152 @@ namespace Scada.Comm.Svc
             }
             set
             {
-                if (RunState != RunStates.Idle)
-                    throw new Exception(SetPropErr);
+                CheckChangesAllowed();
                 cmdEnabled = value;
             }
         }
 
         /// <summary>
-        /// Получить или установить период передачи на сервер всех параметров КП для обновления, с
+        /// Получить или установить признак записи в журнал линии связи подробной информации
         /// </summary>
-        public int RefrParams
+        public bool DetailedLog
         {
             get
             {
-                return refrParams;
+                return detailedLog;
             }
             set
             {
-                if (RunState != RunStates.Idle)
-                    throw new Exception(SetPropErr);
-                refrParams = value;
+                CheckChangesAllowed();
+                detailedLog = value;
+            }
+        }
+
+        /// <summary>
+        /// Получить или установить период передачи на сервер всех данных КП, с
+        /// </summary>
+        public int SendAllDataPer
+        {
+            get
+            {
+                return sendAllDataPer;
+            }
+            set
+            {
+                CheckChangesAllowed();
+                sendAllDataPer = value;
+            }
+        }
+
+        /// <summary>
+        /// Получить пользовательские параметры линии связи
+        /// </summary>
+        public SortedList<string, string> CustomParams { get; private set; }
+
+        /// <summary>
+        /// Получить список опрашиваемых КП
+        /// </summary>
+        public List<KPLogic> KPList { get; private set; }
+
+        /// <summary>
+        /// Получить или установить директории приложения
+        /// </summary>
+        public AppDirs AppDirs
+        {
+            get
+            {
+                return appDirs;
+            }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+
+                appDirs = value;
+                string fileName = appDirs.LogDir + "line" + CommUtils.AddZeros(Number, 3);
+                log.FileName = fileName + ".log";
+                infoFileName = fileName + ".txt";
+            }
+        }
+
+        /// <summary>
+        /// Получить или установить ссылку на объект обмена данными со SCADA-Сервером
+        /// </summary>
+        public ServerCommEx ServerComm
+        {
+            get
+            {
+                return serverComm;
+            }
+            set
+            {
+                CheckChangesAllowed();
+                serverComm = Bind ? value : null;
+            }
+        }
+
+        /// <summary>
+        /// Получить или установить метод передачи команды КП всем линиям связи
+        /// </summary>
+        public PassCmdDelegate PassCmd
+        {
+            get
+            {
+                return passCmd;
+            }
+            set
+            {
+                CheckChangesAllowed();
+                passCmd = value;
+            }
+        }
+
+        /// <summary>
+        /// Получить строковое представление состояния работы линии связи
+        /// </summary>
+        public string WorkStateStr
+        {
+            get
+            {
+                switch (workState)
+                {
+                    case WorkStates.Idle:
+                        return Localization.UseRussian ? "бездействие" : "idle";
+                    case WorkStates.Running:
+                        return Localization.UseRussian ? "цикл работы" : "running";
+                    case WorkStates.Terminating:
+                        return Localization.UseRussian ? "завершение работы" : "terminating";
+                    case WorkStates.Terminated:
+                        return Localization.UseRussian ? "работа завершена" : "terminated";
+                    case WorkStates.Aborted:
+                        return Localization.UseRussian ? "работа прервана" : "aborted";
+                    default:
+                        return "";
+                }
+            }
+        }
+
+        /// <summary>
+        /// Получить признак, что работа линии связи полностью завершена
+        /// </summary>
+        public bool Terminated
+        {
+            get
+            {
+                return workState == WorkStates.Terminated;
             }
         }
 
 
         /// <summary>
-        /// Освобождение ресурсов линии связи
+        /// Проверить, что изменения конфигурации линии связи разрешены
         /// </summary>
-        private void Clean()
+        private void CheckChangesAllowed()
         {
-            try
-            {
-                if (serialPort != null)
-                {
-                    serialPort.Close();
-                    serialPort = null;
-                }
-            }
-            catch (Exception ex)
-            {
-                log.WriteAction(string.Format(Localization.UseRussian ? 
-                    "Ошибка при освобождении ресурсов линии связи {0}: {1}" : 
-                    "Error releasing communication line {0} resources: {1}", numAndName, ex.Message));
-            }
+            if (workState == WorkStates.Running || workState == WorkStates.Terminating)
+                throw new InvalidOperationException(Localization.UseRussian ?
+                    "Невозможно изменить конфигурацию линии связи, если линия работает." :
+                    "Unable to change the communication line configuration if the line is operating.");
         }
 
         /// <summary>
@@ -426,61 +449,42 @@ namespace Scada.Comm.Svc
         /// </summary>
         private void WriteInfo()
         {
-            Monitor.Enter(infoLock);
-            StreamWriter writer = null;
-
             try
             {
-                writer = new StreamWriter(infoFileName, false, Encoding.UTF8);
-                writer.WriteLine(Caption);
-                writer.WriteLine(new string('-', Caption.Length));
+                StringBuilder sbInfo = new StringBuilder();
+                sbInfo
+                    .AppendLine(Caption)
+                    .AppendLine(captionUnderline);
 
                 if (Localization.UseRussian)
                 {
-                    writer.WriteLine("Состояние : " + RunStateStr);
-                    writer.WriteLine("Действие  : " + curAction);
-                    writer.WriteLine();
-
-                    writer.WriteLine("Пользовательские параметры");
-                    writer.WriteLine("--------------------------");
-                    if (!WriteUserParams(writer))
-                        writer.WriteLine("Нет");
-                    writer.WriteLine();
-
-                    writer.WriteLine("Общие свойства");
-                    writer.WriteLine("--------------");
-                    if (!WriteCommonProps(writer))
-                        writer.WriteLine("Нет");
-                    writer.WriteLine();
-
-                    writer.WriteLine("Активные КП");
-                    writer.WriteLine("-----------");
-                    if (!WriteActiveKP(writer))
-                        writer.WriteLine("Нет");
+                    sbInfo
+                        .Append("Состояние : ").AppendLine(WorkStateStr)
+                        .Append("Действие  : ").AppendLine(curAction);
                 }
                 else
                 {
-                    writer.WriteLine("State  : " + RunStateStr);
-                    writer.WriteLine("Action : " + curAction);
-                    writer.WriteLine();
-
-                    writer.WriteLine("Custom Parameters");
-                    writer.WriteLine("-----------------");
-                    if (!WriteUserParams(writer))
-                        writer.WriteLine("No");
-                    writer.WriteLine();
-
-                    writer.WriteLine("Common Properties");
-                    writer.WriteLine("-----------------");
-                    if (!WriteCommonProps(writer))
-                        writer.WriteLine("No");
-                    writer.WriteLine();
-
-                    writer.WriteLine("Active Devices");
-                    writer.WriteLine("--------------");
-                    if (!WriteActiveKP(writer))
-                        writer.WriteLine("No");
+                    sbInfo
+                        .Append("State  : ").AppendLine(WorkStateStr)
+                        .Append("Action : ").AppendLine(curAction);
                 }
+
+                sbInfo.AppendLine();
+                if (commCnl != null)
+                    sbInfo.Append(commCnl.GetInfo()).AppendLine();
+                AppendCustomParams(sbInfo);
+                AppendCommonProps(sbInfo);
+                AppendActiveKP(sbInfo);
+
+                // запись в файл
+                lock (infoLock)
+                {
+                    using (StreamWriter writer = new StreamWriter(infoFileName, false, Encoding.UTF8))
+                        writer.Write(sbInfo.ToString());
+                }
+            }
+            catch (ThreadAbortException)
+            {
             }
             catch (Exception ex)
             {
@@ -488,89 +492,127 @@ namespace Scada.Comm.Svc
                     "Ошибка при записи в файл информации о работе линии связи: " :
                     "Error writing communication line information to the file: ") + ex.Message);
             }
-            finally
-            {
-                if (writer != null)
-                    try { writer.Close(); }
-                    catch { }
-                Monitor.Exit(infoLock);
-            }
         }
 
         /// <summary>
-        /// Записать общие свойства линии связи
+        /// Добавить в конструктор строки пользовательские параметры линии связи
         /// </summary>
-        private bool WriteUserParams(StreamWriter writer)
+        private void AppendCustomParams(StringBuilder sb)
         {
-            int cnt = UserParams.Count;
-            if (cnt > 0)
+            if (Localization.UseRussian)
             {
-                for (int i = 0; i < cnt; i++)
-                    writer.WriteLine((i + 1).ToString() + ". " + UserParams.Keys[i] + " = " + UserParams.Values[i]);
-                return true;
+                sb.AppendLine("Пользовательские параметры");
+                sb.AppendLine("--------------------------");
             }
             else
             {
-                return false;
+                sb.AppendLine("Custom Parameters");
+                sb.AppendLine("-----------------");
             }
-        }
 
-        /// <summary>
-        /// Записать пользовательские параметры линии связи
-        /// </summary>
-        private bool WriteCommonProps(StreamWriter writer)
-        {
-            int cnt = commonProps.Count;
-            if (cnt > 0)
+            if (allCustomParams == null)
             {
-                for (int i = 0; i < cnt; i++)
+                // формирование строки всех пользовательских параметров
+                StringBuilder sbCustomParams = new StringBuilder();
+                if (CustomParams.Count > 0)
                 {
-                    object val = commonProps.Values[i];
-                    string valStr = val == null ? "null" : val.ToString();
-                    writer.WriteLine((i + 1).ToString() + ". " + commonProps.Keys[i] + " = " + valStr);
+                    foreach (KeyValuePair<string, string> pair in CustomParams)
+                        sbCustomParams.Append(pair.Key).Append(" = ").AppendLine(pair.Value);
+                    allCustomParams = sbCustomParams.ToString();
                 }
-                return true;
+                else
+                {
+                    allCustomParams = (Localization.UseRussian ? "Нет" : "No") + Environment.NewLine;
+                }
             }
-            else
-            {
-                return false;
-            }
+
+            sb.AppendLine(allCustomParams);
         }
 
         /// <summary>
-        /// Записать полактивые КП линии связи
+        /// Добавить в конструктор строки общие свойства линии связи
         /// </summary>
-        private bool WriteActiveKP(StreamWriter writer)
+        private void AppendCommonProps(StringBuilder sb)
         {
-            int cnt = KPList.Count;
-            if (cnt > 0)
+            if (Localization.UseRussian)
             {
-                // вычисление максимальной длины обозначения КП
-                int ordLen = KPList.Count.ToString().Length;
-                if (maxKPCapLen < 0)
+                sb.AppendLine("Общие свойства");
+                sb.AppendLine("--------------");
+            }
+            else
+            {
+                sb.AppendLine("Common Properties");
+                sb.AppendLine("-----------------");
+            }
+
+            if (commonProps.Count > 0)
+            {
+                foreach (KeyValuePair<string, object> pair in commonProps)
+                    sb.Append(pair.Key).Append(" = ").AppendLine(pair.Value == null ? "null" : pair.Value.ToString());
+            }
+            else
+            {
+                sb.AppendLine(Localization.UseRussian ? "Нет" : "No");
+            }
+
+            sb.AppendLine();
+        }
+
+        /// <summary>
+        /// Добавить в конструктор строки активые КП линии связи
+        /// </summary>
+        private void AppendActiveKP(StringBuilder sb)
+        {
+            if (Localization.UseRussian)
+            {
+                sb.AppendLine("Активные КП");
+                sb.AppendLine("-----------");
+            }
+            else
+            {
+                sb.AppendLine("Active Devices");
+                sb.AppendLine("--------------");
+            }
+
+            int kpCnt = KPList.Count;
+
+            if (kpCaptions == null)
+            {
+                if (kpCnt > 0)
                 {
-                    for (int i = 0; i < cnt; i++)
+                    // вычисление максимальной длины обозначения КП
+                    int maxKPCapLen = 0;
+                    int ordLen = kpCnt.ToString().Length;
+                    foreach (KPLogic kpLogic in KPList)
                     {
-                        KPLogic kpLogic = KPList[i];
                         int kpCapLen = ordLen + 2 + kpLogic.Caption.Length;
                         if (maxKPCapLen < kpCapLen)
                             maxKPCapLen = kpCapLen;
                     }
-                }
 
-                // вывод состояний работы активных КП
-                for (int i = 0; i < cnt; i++)
+                    // формирование обозначений активных КП
+                    kpCaptions = new string[kpCnt];
+                    for (int i = 0; i < kpCnt; i++)
+                    {
+                        string s = (i + 1).ToString().PadLeft(ordLen) + ". " + KPList[i].Caption;
+                        kpCaptions[i] = s.PadRight(maxKPCapLen) + " : ";
+                    }
+                }
+                else
                 {
-                    KPLogic kpLogic = KPList[i];
-                    string kpCaption = (i + 1).ToString().PadLeft(ordLen) + ". " + kpLogic.Caption;
-                    writer.WriteLine(kpCaption.PadRight(maxKPCapLen) + " : " + kpLogic.WorkStateStr);
+                    kpCaptions = new string[0];
                 }
+            }
 
-                return true;
+            if (kpCnt > 0)
+            {
+                // вывод состояний работы активных КП
+                for (int i = 0; i < kpCnt; i++)
+                    sb.Append(kpCaptions[i]).AppendLine(KPList[i].WorkStateStr);
             }
             else
             {
-                return false;
+                sb.AppendLine(Localization.UseRussian ? "Нет" : "No");
             }
         }
 
@@ -579,20 +621,24 @@ namespace Scada.Comm.Svc
         /// </summary>
         private void WriteKPInfo(KPLogic kpLogic)
         {
-            StreamWriter writer = null;
-
             try
             {
                 // определение имени файла
                 string kpInfoFileName;
                 int kpNum = kpLogic.Number;
-                if (kpNum < 10) kpInfoFileName = "kp00" + kpNum + ".txt";
-                else if (kpNum < 100) kpInfoFileName = "kp0" + kpNum + ".txt";
-                else kpInfoFileName = "kp" + kpNum + ".txt";
+                if (kpNum < 10) 
+                    kpInfoFileName = "kp00" + kpNum + ".txt";
+                else if (kpNum < 100) 
+                    kpInfoFileName = "kp0" + kpNum + ".txt";
+                else 
+                    kpInfoFileName = "kp" + kpNum + ".txt";
 
                 // запись информации
-                writer = new StreamWriter(Manager.LogDir + kpInfoFileName, false, Encoding.UTF8);
-                writer.Write(kpLogic.GetInfo());
+                using (StreamWriter writer = new StreamWriter(appDirs.LogDir + kpInfoFileName, false, Encoding.UTF8))
+                    writer.Write(kpLogic.GetInfo());
+            }
+            catch (ThreadAbortException)
+            {
             }
             catch (Exception ex)
             {
@@ -600,448 +646,18 @@ namespace Scada.Comm.Svc
                     "Ошибка при записи в файл информации о работе КП: " :
                     "Error writing device information to the file: ") + ex.Message);
             }
-            finally
-            {
-                if (writer != null)
-                {
-                    try { writer.Close(); }
-                    catch { }
-                }
-            }
         }
 
         /// <summary>
-        /// Форсировано передать архивы срезов и событий SCADA-серверу
+        /// Вывести начальную информацию о линии связи
         /// </summary>
-        private bool FlushArc(KPLogic kpLogic)
+        private void WriteInitialInfo()
         {
-            if (kpLogic == null)
-                return false;
-
-            Monitor.Enter(flushLock);
-            bool arcOk = false; // передача архивных срезов успешна
-            bool evOk = false;  // передача событий успешна
-
-            try
-            {
-                if (serverComm == null)
-                {
-                    arcOk = true;
-                    evOk = true;
-                }
-                else
-                {
-                    curAction = DateTime.Now.ToString("T", Localization.Culture) + (Localization.UseRussian ? 
-                        " Форсированная передача архивов SCADA-серверу" : " Flushing archives to SCADA-Server");
-                    WriteInfo();
-
-
-                    // передача архивных срезов (без повторных попыток)
-                    arcOk = true;
-                    while (kpLogic.SrezList.Count > 0)
-                    {
-                        KPLogic.ParamSrez arcSrez = kpLogic.SrezList[0];
-                        arcOk = serverComm.SendArchive(arcSrez);
-
-                        if (arcOk)
-                        {
-                            kpLogic.CopySrezToBuf(0);
-                            kpLogic.SrezList.RemoveAt(0);
-                        }
-                        else
-                        {
-                            log.WriteAction(Localization.UseRussian ? 
-                                "Неудачная попытка форсированной передачи архивного среза SCADA-серверу" :
-                                "Attempt to flush archive data to SCADA-Server failed");
-                            break;
-                        }
-                    }
-
-                    // передача событий (без повторных попыток)
-                    if (arcOk)
-                    {
-                        evOk = true;
-                        while (kpLogic.EventList.Count > 0)
-                        {
-                            KPLogic.Event ev = kpLogic.EventList[0];
-                            evOk = serverComm.SendEvent(ev);
-
-                            if (evOk)
-                            {
-                                kpLogic.CopyEventToBuf(0);
-                                kpLogic.EventList.RemoveAt(0);
-                            }
-                            else
-                            {
-                                log.WriteAction(Localization.UseRussian ?
-                                    "Неудачная попытка форсированной передачи события SCADA-серверу" :
-                                    "Attempt to flush event to SCADA-Server failed");
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                log.WriteAction((Localization.UseRussian ?
-                    "Ошибка при форсированной передаче архивов SCADA-серверу: " : 
-                    "Error flushing archives to SCADA-Server") + ex.Message);
-            }
-            finally
-            {
-                Monitor.Exit(flushLock);
-            }
-
-            return arcOk && evOk;
-        }
-
-        /// <summary>
-        /// Вызвать метод передачи команды КП
-        /// </summary>
-        private void ExecPassCmd(KPLogic.Command cmd)
-        {
-            if (PassCmd != null)
-                PassCmd(cmd);
-        }
-
-        /// <summary>
-        /// Передать данные опрашиваемого КП SCADA-Серверу
-        /// </summary>
-        private void SendDataToServer(bool sendAllCurData)
-        {
-            if (serverComm != null)
-            {
-                curAction = DateTime.Now.ToString("T", Localization.Culture) + (Localization.UseRussian ? 
-                    " Передача данных SCADA-серверу" : " Sending data to SCADA-Server");
-                WriteInfo();
-
-                // передача текущего среза
-                if (sendAllCurData)
-                {
-                    int cnt = curKP.KPParams == null ? 0 : curKP.KPParams.Length;
-                    if (cnt > 0)
-                    {
-                        KPLogic.ParamSrez curSrez = new KPLogic.ParamSrez(cnt);
-                        for (int i = 0; i < cnt; i++)
-                        {
-                            curSrez.KPParams[i] = curKP.KPParams[i];
-                            curSrez.Data[i] = curKP.CurData[i];
-                        }
-                        serverComm.SendSrez(curSrez);
-                    }
-                }
-                else
-                {
-                    List<int> modifiedIndexes = curKP.GetModifiedParamIndexes();
-                    int cnt = modifiedIndexes.Count;
-                    if (cnt > 0)
-                    {
-                        KPLogic.ParamSrez curSrez = new KPLogic.ParamSrez(cnt);
-                        for (int i = 0; i < cnt; i++)
-                        {
-                            int index = modifiedIndexes[i];
-                            curSrez.KPParams[i] = curKP.KPParams[index];
-                            curSrez.Data[i] = curKP.CurData[index];
-                        }
-                        serverComm.SendSrez(curSrez);
-                    }
-                }
-
-                // передача архивных срезов
-                if (curKP.SrezList.Count > 0)
-                {
-                    foreach (KPLogic.ParamSrez arcSrez in curKP.SrezList)
-                    {
-                        int errCnt = 0;
-                        while (!serverComm.SendArchive(arcSrez))
-                        {
-                            // ожидание успешной передачи архивного среза
-                            if (++errCnt == 5)
-                            {
-                                log.WriteAction(Localization.UseRussian ? 
-                                    "Пауза перед следующей попыткой передачи архивного среза SCADA-серверу" :
-                                    "Delay before the next attempt to send data to SCADA-Server");
-                                Thread.Sleep(10000);
-                            }
-                            else
-                            {
-                                if (errCnt == 1)
-                                    log.WriteLine();
-                                log.WriteAction(Localization.UseRussian ?
-                                    "Неудачная попытка передачи архивного среза SCADA-серверу" :
-                                    "Attempt to send archive data to SCADA-Server failed");
-                                Thread.Sleep(1000);
-                            }
-                        }
-                    }
-                }
-
-                // передача событий
-                if (curKP.EventList.Count > 0)
-                {
-                    foreach (KPLogic.Event ev in curKP.EventList)
-                    {
-                        int errCnt = 0;
-                        while (!serverComm.SendEvent(ev))
-                        {
-                            // ожидание успешной передачи события
-                            if (++errCnt == 5)
-                            {
-                                log.WriteAction(Localization.UseRussian ?
-                                    "Пауза перед следующей попыткой передачи события SCADA-серверу" :
-                                    "Delay before the next attempt to send event to SCADA-Server");
-                                Thread.Sleep(10000);
-                            }
-                            else
-                            {
-                                if (errCnt == 1)
-                                    log.WriteLine();
-                                log.WriteAction(Localization.UseRussian ?
-                                    "Неудачная попытка передачи события SCADA-серверу" :
-                                    "Attempt to send event to SCADA-Server failed");
-                                Thread.Sleep(1000);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Найти КП по номеру
-        /// </summary>
-        private KPLogic FindKP(int kpNum)
-        {
-            foreach (KPLogic kpLogic in KPList)
-                if (kpLogic.Number == kpNum)
-                    return kpLogic;
-            return null;
-        }
-
-
-        /// <summary>
-        /// Цикл работы линии связи
-        /// </summary>
-        private void WorkCycle()
-        {
-            bool terminateCycle = false;        // завершить цикл работы
-            DateTime lastRefrDT = DateTime.Now; // время последней передачи на сервер всех параметров КП для обновления
-
-            while (!terminateCycle)
-            {
-                int commCnt = 0; // количество выполненных сеансов связи (команд ТУ и опросов КП)
-                int kpInd = 0;   // индекс опрашиваемого КП
-                KPLogic extraKP = null; // КП для внеочередного опроса
-
-                // определение необходимости передать на сервер все текущие данные параметров КП
-                DateTime nowDT = DateTime.Now;
-                bool sendAllCurData = refrParams > 0 && (nowDT - lastRefrDT).TotalSeconds >= refrParams;
-                if (sendAllCurData)
-                    lastRefrDT = nowDT;
-
-                while (kpInd < KPList.Count && !terminateCycle)
-                {
-                    // обработка команд ТУ
-                    try
-                    {
-                        curAction = DateTime.Now.ToString("T", Localization.Culture) + (Localization.UseRussian ? 
-                            " Обработка команд ТУ" : " Processing commands");
-                        WriteInfo();
-
-                        // копирование команд в буферы, чтобы минимизировать время блокировки списка команд
-                        List<KPLogic.Command> cmdBufList = null; // буфер стандартных и бинарных команд
-                        KPLogic.Command reqCmd = null;           // буфер команды внеочередного опроса КП
-
-                        Monitor.Enter(cmdLock);
-                        try
-                        {
-                            if (cmdList.Count > 0)
-                            {
-                                cmdBufList = new List<KPLogic.Command>();
-                                int cmdInd = 0;
-
-                                while (cmdInd < cmdList.Count)
-                                {
-                                    KPLogic.Command cmd = cmdList[cmdInd];
-                                    bool delCmd = false;
-
-                                    if (cmd.CmdType == KPLogic.CmdType.Request)
-                                    {
-                                        if (reqCmd == null)
-                                        {
-                                            reqCmd = cmd;
-                                            delCmd = true;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        cmdBufList.Add(cmd);
-                                        delCmd = true;
-                                    }
-
-                                    if (delCmd)
-                                        cmdList.RemoveAt(cmdInd);
-                                    else
-                                        cmdInd++;
-                                }
-                            }
-                        }
-                        finally
-                        {
-                            Monitor.Exit(cmdLock);
-                        }
-
-                        // выполнение команд ТУ
-                        if (cmdBufList != null)
-                        {
-                            foreach (KPLogic.Command cmd in cmdBufList)
-                            {
-                                KPLogic kpLogic = FindKP(cmd.KPNum);
-
-                                if (kpLogic != null)
-                                {
-                                    curAction = DateTime.Now.ToString("T", Localization.Culture) + 
-                                        (Localization.UseRussian ? " Команда " : " Command to ") + kpLogic.Caption;
-                                    WriteInfo();
-
-                                    try
-                                    {
-                                        kpLogic.SendCmd(cmd);
-                                        WriteKPInfo(kpLogic);
-                                        commCnt++;
-                                    }
-                                    catch (ThreadAbortException)
-                                    {
-                                        // обработка данного исключения реализована в методе Execute
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        curAction = NoAction;
-                                        WriteInfo();
-                                        log.WriteAction((Localization.UseRussian ? "Ошибка при отправке команды ТУ: " :
-                                            "Error sending command: ") + ex.Message);
-                                    }
-                                }
-                            }
-                        }
-
-                        // обработка команды внеочередного опроса
-                        if (reqCmd != null)
-                            extraKP = FindKP(reqCmd.KPNum);
-                    }
-                    catch (ThreadAbortException)
-                    {
-                        // обработка данного исключения реализована в методе Execute
-                    }
-                    catch (Exception ex)
-                    {
-                        curAction = NoAction;
-                        WriteInfo();
-                        log.WriteAction((Localization.UseRussian ? "Ошибка при обработке команд ТУ: " : 
-                            "Error processing commands: ") + ex.Message);
-                    }
-
-                    // сеанс опроса КП
-                    try
-                    {
-                        curAction = DateTime.Now.ToString("T", Localization.Culture) + (Localization.UseRussian ? 
-                            " Выбор КП для связи" : " Choosing device for communication");
-                        WriteInfo();
-
-                        // определение необходимости опроса КП
-                        bool sessionNeeded = true; // необходимо выполнить сеанс опроса КП
-                        KPLogic kpLogic;           // КП, который необходимо опросить
-
-                        if (extraKP == null)
-                        {
-                            kpLogic = KPList[kpInd];
-                            double reqPeriod = kpLogic.KPReqParams.Period.TotalDays; // период опроса КП, дн.
-
-                            if (kpLogic.KPReqParams.Time > DateTime.MinValue || reqPeriod > 0)
-                            {
-                                TimeSpan nowTime = DateTime.Now.TimeOfDay;             // текущее время
-                                TimeSpan reqTime = kpLogic.KPReqParams.Time.TimeOfDay; // время опроса КП
-                                TimeSpan lastSessTime = kpLogic.LastSessDT.TimeOfDay;  // время последнего сеанса связи с КП
-
-                                if (reqPeriod > 0)
-                                {
-                                    double t = (nowTime - reqTime).TotalDays / reqPeriod;
-                                    sessionNeeded = t >= 0 &&
-                                        ((int)t * reqPeriod + reqTime.TotalDays > lastSessTime.TotalDays ||
-                                        lastSessTime > nowTime /*новый день*/);
-                                }
-                                else
-                                {
-                                    sessionNeeded = reqTime.TotalDays <= 0 ||
-                                        reqTime <= nowTime && reqTime > lastSessTime;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            kpLogic = extraKP;
-                        }
-
-                        // установка опрашиваемого в данный момент КП
-                        curKP = kpLogic;
-                        curKP.Terminated = RunState == RunStates.Terminating;
-
-                        // выполнение сеанса опроса КП
-                        if (sessionNeeded)
-                        {
-                            curAction = DateTime.Now.ToString("T", Localization.Culture) + (Localization.UseRussian ? 
-                                " Сеанс связи с " : " Communication with ") + kpLogic.Caption;
-                            WriteInfo();
-
-                            curKP.Session();
-                            curKP.CopyArcToBuf();
-                            WriteKPInfo(curKP);
-                            commCnt++;
-                        }
-
-                        // передача данных текущего КП на сервер
-                        if (sessionNeeded || sendAllCurData)
-                        {
-                            SendDataToServer(sendAllCurData);
-                            curKP.SrezList.Clear();
-                            curKP.EventList.Clear();
-                        }
-
-                        // определение необходимости завершить цикл работы
-                        terminateCycle = RunState == RunStates.Terminating && curKP.Terminated;
-
-                        // обнуление опрашиваемого в данный момент КП
-                        curKP = null;
-                    }
-                    catch (ThreadAbortException)
-                    {
-                        // обработка данного исключения реализована в методе Execute
-                    }
-                    catch (Exception ex)
-                    {
-                        curKP = null;
-                        curAction = NoAction;
-                        WriteInfo();
-                        log.WriteAction((Localization.UseRussian ? "Ошибка сеанса связи с КП: " : 
-                            "Error communicating with the device: ") + ex.Message);
-                    }
-
-                    if (extraKP == null)
-                        kpInd++;
-                    else
-                        extraKP = null;
-                }
-
-                // задержка после цикла опроса линии связи
-                if (RunState != RunStates.Terminating)
-                {
-                    if (commCnt == 0 && cicleDelay == 0)
-                        Thread.Sleep(200);
-                    else
-                        Thread.Sleep(cicleDelay);
-                }
-            }
+            WriteInfo();
+            log.WriteBreak();
+            log.WriteAction((Localization.UseRussian ?
+                "Инициализация линии связи " :
+                "Initialize communication line ") + numAndName);
         }
 
         /// <summary>
@@ -1051,52 +667,41 @@ namespace Scada.Comm.Svc
         {
             try
             {
-                log.WriteAction((Localization.UseRussian ? "Запуск линии связи " : 
-                    "Start communication line " ) + numAndName);
-                RunState = RunStates.Running;
-                WriteInfo();
+                workState = WorkStates.Running;
+                allCustomParams = null;
+                kpCaptions = null;
 
-                if (configError)
+                // вывод в журнал и в файлы информации о работе
+                log.WriteAction((Localization.UseRussian ? 
+                    "Запуск линии связи " : 
+                    "Start communication line ") + numAndName);
+
+                WriteInfo();
+                foreach (KPLogic kpLogic in KPList)
+                    WriteKPInfo(kpLogic);
+
+                if (KPList.Count <= 0)
                 {
                     log.WriteAction(Localization.UseRussian ? 
-                        "Работа линии связи невозможна из-за ошибки конфигурации" :
-                        "Communication line execution is impossible due to configuration error");
-                }
-                else if (KPList.Count == 0)
-                {
-                    log.WriteAction(Localization.UseRussian ? "Работа линии связи невозможна из-за отсутствия КП" :
+                        "Работа линии связи невозможна из-за отсутствия КП" :
                         "Communication line execution is impossible due to device missing");
                 }
                 else
                 {
-                    // открытие порта
-                    if (serialPort != null)
+                    // запуск канала связи
+                    if (commCnl != null)
                     {
-                        bool portOk;
-                        do
+                        bool commCnlStarted = false;
+                        while (!commCnlStarted)
                         {
-                            try
-                            {
-                                serialPort.Open();
-                                portOk = true;
-                            }
-                            catch (Exception ex)
-                            {
-                                portOk = false;
-                                log.WriteAction((Localization.UseRussian ? "Ошибка при открытии COM-порта: " :
-                                    "Error opening serial port: ") + ex.Message);
-                            }
-
-                            if (!portOk)
+                            commCnlStarted = StartCommChannel();
+                            if (!commCnlStarted)
                             {
                                 // паузу нужно делать вне catch, иначе поток не может прерваться
-                                log.WriteAction(Localization.UseRussian ? 
-                                    "Пауза перед следующей попыткой открытия COM-порта" :
-                                    "Delay before the next attempt to open serial port");
-                                Thread.Sleep(PortWaitDelay);
+                                log.WriteAction(CommPhrases.RetryDelay);
+                                Thread.Sleep(RetryDelay);
                             }
                         }
-                        while (!portOk);
                     }
 
                     // подготовка КП к работе
@@ -1105,15 +710,23 @@ namespace Scada.Comm.Svc
                         try
                         {
                             kpLogic.OnCommLineStart();
-                            WriteKPInfo(kpLogic);
                         }
                         catch (Exception ex)
                         {
+                            kpLogic.WorkState = KPLogic.WorkStates.Error;
                             log.WriteAction(string.Format(Localization.UseRussian ? 
                                 "Ошибка при выполнении действий {0} при запуске линии связи: {1}" : 
                                 "Error executing actions of {0} on communication line start: {1}", 
                                 kpLogic.Caption, ex.Message));
                         }
+                        WriteKPInfo(kpLogic);
+                    }
+
+                    if (!detailedLog)
+                    {
+                        log.WriteAction(Localization.UseRussian ?
+                            "Вывод информации КП в журнал отключен" :
+                            "Device output to the log is disabled");
                     }
 
                     // цикл работы линии связи
@@ -1130,80 +743,645 @@ namespace Scada.Comm.Svc
                     try
                     {
                         kpLogic.OnCommLineAbort();
+                        kpLogic.WorkState = KPLogic.WorkStates.Undefined;
                     }
                     catch (Exception ex)
                     {
+                        kpLogic.WorkState = KPLogic.WorkStates.Error;
                         log.WriteAction(string.Format(Localization.UseRussian ?
                             "Ошибка при выполнении действий {0} при прерывании работы линии связи: {1}" :
                             "Error executing actions of {0} on communication line abort: {1}",
                             kpLogic.Caption, ex.Message));
                     }
+                    WriteKPInfo(kpLogic);
                 }
 
-                Clean();
+                StopCommChannel();
 
                 log.WriteLine();
-                log.WriteAction((Localization.UseRussian ? "Прерывание работы линии связи " : 
+                log.WriteAction((Localization.UseRussian ? 
+                    "Прерывание работы линии связи " : 
                     "Abort communication line ") + numAndName);
                 log.WriteBreak();
 
-                RunState = RunStates.Aborted;
+                workState = WorkStates.Aborted;
                 curAction = NoAction;
                 WriteInfo();
             }
             catch (Exception ex)
             {
-                log.WriteAction(string.Format(Localization.UseRussian ? "Ошибка при работе линии связи {0}: {1}" : 
+                log.WriteAction(string.Format(Localization.UseRussian ? 
+                    "Ошибка при работе линии связи {0}: {1}" : 
                     "Error communication line {0} execution: {1}", numAndName, ex.Message));
             }
             finally
             {
-                if (RunState != RunStates.Aborted)
+                if (workState != WorkStates.Aborted)
                 {
                     foreach (KPLogic kpLogic in KPList)
                     {
                         try
                         {
                             kpLogic.OnCommLineTerminate();
+                            kpLogic.WorkState = KPLogic.WorkStates.Undefined;
                         }
                         catch (Exception ex)
                         {
+                            kpLogic.WorkState = KPLogic.WorkStates.Error;
                             log.WriteAction(string.Format(Localization.UseRussian ?
                                 "Ошибка при выполнении действий {0} при завершении работы линии связи: {1}" :
                                 "Error executing actions of {0} on communication line terminating: {1}",
                                 kpLogic.Caption, ex.Message));
                         }
+                        WriteKPInfo(kpLogic);
                     }
 
-                    Clean();
+                    StopCommChannel();
 
                     log.WriteLine();
-                    log.WriteAction((Localization.UseRussian ? "Завершение работы линии связи " : 
+                    log.WriteAction((Localization.UseRussian ? 
+                        "Завершение работы линии связи " : 
                         "Stop communication line ") + numAndName);
                     log.WriteBreak();
 
-                    RunState = RunStates.Terminated;
+                    workState = WorkStates.Terminated;
                     curAction = NoAction;
                     WriteInfo();
                 }
 
-                Thread = null;
+                thread = null;
             }
 
             // Do not put clean-up code here, because the exception 
             // is rethrown at the end of the Finally clause.
         }
 
+        /// <summary>
+        /// Цикл работы линии связи
+        /// </summary>
+        private void WorkCycle()
+        {
+            bool terminateCycle = false;           // завершить цикл работы
+            DateTime sendAllDataDT = DateTime.Now; // время передачи на сервер всех текущих данных КП
+            int kpCnt = KPList.Count;              // количество КП
+
+            while (!terminateCycle)
+            {
+                int commCnt = 0; // количество выполненных сеансов связи (команд ТУ и опросов КП) за итерацию
+                int kpInd = 0;   // индекс опрашиваемого КП
+
+                // определение необходимости передать на сервер все текущие данные КП
+                DateTime nowDT = DateTime.Now;
+                bool sendAllData = sendAllDataPer > 0 && (nowDT - sendAllDataDT).TotalSeconds >= sendAllDataPer;
+                if (sendAllData)
+                    sendAllDataDT = nowDT;
+
+                while (kpInd < kpCnt && !terminateCycle)
+                {
+                    // обработка команд ТУ
+                    KPLogic extraKP; // КП для внеочередного опроса
+                    ProcCommands(ref commCnt, out extraKP);
+
+                    // взаимодействие с КП
+                    try
+                    {
+                        // определение необходимости опроса КП
+                        curAction = DateTime.Now.ToLocalizedString() + (Localization.UseRussian ? 
+                            " Выбор КП для связи" : 
+                            " Choosing device for communication");
+                        WriteInfo();
+
+                        bool sessionNeeded; // необходимо выполнить сеанс опроса КП
+                        KPLogic kpLogic;    // КП, который необходимо опросить
+
+                        if (extraKP == null)
+                        {
+                            kpLogic = KPList[kpInd];
+                            sessionNeeded = CheckSessionNeeded(kpLogic);
+                        }
+                        else
+                        {
+                            sessionNeeded = true;
+                            kpLogic = extraKP;
+                        }
+
+                        // установка признака завершения работы для опрашиваемого КП
+                        kpLogic.Terminated = workState == WorkStates.Terminating;
+
+                        // выполнение сеанса опроса КП
+                        if (sessionNeeded)
+                        {
+                            curAction = DateTime.Now.ToLocalizedString() + (Localization.UseRussian ? 
+                                " Сеанс связи с " : 
+                                " Communication with ") + kpLogic.Caption;
+                            WriteInfo();
+
+                            CommCnlBeforeSession(kpLogic);
+                            if (kpLogic.ConnRequired && (kpLogic.Connection == null || !kpLogic.Connection.Connected))
+                            {
+                                KPInvalidateCurData(kpLogic);
+                                log.WriteLine();
+                                log.WriteAction(Localization.UseRussian ?
+                                    "Невозможно выполнить сеанс опроса КП, т.к. соединение не установлено" :
+                                    "Unable to communicate with the device because connection is not established");
+                            }
+                            else
+                            {
+                                KPSession(kpLogic);
+                                commCnt++;
+                            }
+                            WriteKPInfo(kpLogic);
+                            CommCnlAfterSession(kpLogic);
+                        }
+
+                        // передача данных КП на сервер
+                        if (sessionNeeded || sendAllData)
+                            SendDataToServer(kpLogic, sendAllData);
+
+                        // определение необходимости завершить цикл работы
+                        terminateCycle = workState == WorkStates.Terminating && kpLogic.Terminated;
+                    }
+                    catch (ThreadAbortException)
+                    {
+                        // обработка данного исключения реализована в методе Execute
+                    }
+                    catch (Exception ex)
+                    {
+                        curAction = NoAction;
+                        WriteInfo();
+                        log.WriteAction((Localization.UseRussian ?
+                            "Ошибка при взаимодействии с КП: " :
+                            "Error interacting with devices: ") + ex.Message);
+                    }
+
+                    if (extraKP == null)
+                        kpInd++;
+                    else
+                        extraKP = null;
+                }
+
+                // задержка после цикла опроса линии связи
+                if (workState != WorkStates.Terminating)
+                {
+                    if (commCnt == 0)
+                        Thread.Sleep(EmptyCycleDelay);
+                    else
+                        Thread.Sleep(cycleDelay);
+                }
+            }
+        }
 
         /// <summary>
-        /// Запустить поток работы линии связи
+        /// Запустить канал связи
         /// </summary>
-        public void StartThread()
+        private bool StartCommChannel()
         {
-            if (Thread == null)
+            try
             {
-                Thread = new Thread(new ThreadStart(Execute));
-                Thread.Start();
+                commCnl.Start();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                log.WriteAction((Localization.UseRussian ?
+                    "Ошибка при запуске канала связи: " :
+                    "Error starting communication channel: ") + ex.Message);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Остановить канал связи
+        /// </summary>
+        private void StopCommChannel()
+        {
+            try
+            {
+                if (commCnl != null)
+                    commCnl.Stop();
+            }
+            catch (Exception ex)
+            {
+                log.WriteAction((Localization.UseRussian ?
+                    "Ошибка при остановке канала связи: " :
+                    "Error stopping communication channel: ") + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Выполнить действия канала связи перед сеансом опроса КП
+        /// </summary>
+        private void CommCnlBeforeSession(KPLogic kpLogic)
+        {
+            try
+            {
+                if (commCnl != null)
+                    commCnl.BeforeSession(kpLogic);
+            }
+            catch (Exception ex)
+            {
+                log.WriteAction((Localization.UseRussian ?
+                    "Ошибка при выполнении действий канала связи перед сеансом опроса КП: " :
+                    "Error executing actions of communication channel before session with a device: ") + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Выполнить действия канала связи после сеанса опроса КП
+        /// </summary>
+        private void CommCnlAfterSession(KPLogic kpLogic)
+        {
+            try
+            {
+                if (commCnl != null)
+                    commCnl.AfterSession(kpLogic);
+            }
+            catch (Exception ex)
+            {
+                log.WriteAction((Localization.UseRussian ?
+                    "Ошибка при выполнении действий канала связи после сеанса опроса КП: " :
+                    "Error executing actions of communication channel after session with a device: ") + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Выполнить сеанс опроса КП
+        /// </summary>
+        private void KPSession(KPLogic kpLogic)
+        {
+            try
+            {
+                kpLogic.Session();
+            }
+            catch (Exception ex)
+            {
+                kpLogic.WorkState = KPLogic.WorkStates.Error;
+                log.WriteAction((Localization.UseRussian ?
+                    "Ошибка при выполнении сеанса опроса КП: " :
+                    "Error communicating with the device: ") + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Установить текущие данные КП как недостоверные
+        /// </summary>
+        private void KPInvalidateCurData(KPLogic kpLogic)
+        {
+            try
+            {
+                kpLogic.InvalidateCurData();
+            }
+            catch (Exception ex)
+            {
+                kpLogic.WorkState = KPLogic.WorkStates.Error;
+                log.WriteAction((Localization.UseRussian ?
+                    "Ошибка при установке текущих данных КП как недостоверных: " :
+                    "Error invalidating the device data: ") + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Отправить команду ТУ
+        /// </summary>
+        private void KPSendCmd(KPLogic kpLogic, Command cmd)
+        {
+            try
+            {
+                kpLogic.SendCmd(cmd);
+            }
+            catch (Exception ex)
+            {
+                kpLogic.WorkState = KPLogic.WorkStates.Error;
+                log.WriteAction((Localization.UseRussian ?
+                    "Ошибка при отправке команды ТУ: " :
+                    "Error sending command: ") + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Обработать команды ТУ в цикле линии связи
+        /// </summary>
+        private void ProcCommands(ref int commCnt, out KPLogic extraKP)
+        {
+            extraKP = null;
+
+            try
+            {
+                curAction = DateTime.Now.ToLocalizedString() + (Localization.UseRussian ? 
+                    " Обработка команд ТУ" : 
+                    " Processing commands");
+                WriteInfo();
+
+                // копирование команд в буферы, чтобы минимизировать время блокировки списка команд
+                List<Command> cmdBufList = null; // буфер стандартных и бинарных команд
+                Command reqCmd = null;           // буфер команды внеочередного опроса КП
+
+                lock (cmdList)
+                {
+                    if (cmdList.Count > 0)
+                    {
+                        cmdBufList = new List<Command>();
+                        int cmdInd = 0;
+
+                        while (cmdInd < cmdList.Count)
+                        {
+                            Command cmd = cmdList[cmdInd];
+                            bool delCmd = false;
+
+                            if (cmd.CmdTypeID == BaseValues.CmdTypes.Request)
+                            {
+                                if (reqCmd == null)
+                                {
+                                    reqCmd = cmd;
+                                    delCmd = true;
+                                }
+                            }
+                            else
+                            {
+                                cmdBufList.Add(cmd);
+                                delCmd = true;
+                            }
+
+                            if (delCmd)
+                                cmdList.RemoveAt(cmdInd);
+                            else
+                                cmdInd++;
+                        }
+                    }
+                }
+
+                // отправка команд ТУ
+                if (cmdBufList != null)
+                {
+                    foreach (Command cmd in cmdBufList)
+                    {
+                        KPLogic kpLogic = FindKP(cmd.KPNum);
+
+                        if (kpLogic != null)
+                        {
+                            curAction = DateTime.Now.ToLocalizedString() + (Localization.UseRussian ? 
+                                " Команда " : " Command to ") + kpLogic.Caption;
+                            WriteInfo();
+
+                            CommCnlBeforeSession(kpLogic);
+                            if (kpLogic.ConnRequired && (kpLogic.Connection == null || !kpLogic.Connection.Connected))
+                            {
+                                log.WriteAction(Localization.UseRussian ?
+                                    "Невозможно отправить команду ТУ, т.к. соединение не установлено: " :
+                                    "Unable to send command because connection is not established");
+                            }
+                            else
+                            {
+                                KPSendCmd(kpLogic, cmd);
+                                WriteKPInfo(kpLogic);
+                                commCnt++;
+                            }
+                            CommCnlAfterSession(kpLogic);
+                        }
+                    }
+                }
+
+                // обработка команды внеочередного опроса
+                if (reqCmd != null)
+                    extraKP = FindKP(reqCmd.KPNum);
+            }
+            catch (ThreadAbortException)
+            {
+                // обработка данного исключения реализована в методе Execute
+            }
+            catch (Exception ex)
+            {
+                curAction = NoAction;
+                WriteInfo();
+                log.WriteAction((Localization.UseRussian ?
+                    "Ошибка при обработке команд ТУ: " :
+                    "Error processing commands: ") + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Проверить, что необходимо выполнить сеанс опроса КП в соответствии с его параметрами опроса
+        /// </summary>
+        private bool CheckSessionNeeded(KPLogic kpLogic)
+        {
+            double reqPeriod = kpLogic.ReqParams.Period.TotalDays; // период опроса КП, дн.
+            if (kpLogic.ReqParams.Time > DateTime.MinValue || reqPeriod > 0)
+            {
+                TimeSpan nowTime = DateTime.Now.TimeOfDay;            // текущее время
+                TimeSpan reqTime = kpLogic.ReqParams.Time.TimeOfDay;  // время опроса КП
+                TimeSpan lastSessTime = kpLogic.LastSessDT.TimeOfDay; // время последнего сеанса связи с КП
+
+                if (reqPeriod > 0)
+                {
+                    double t = (nowTime - reqTime).TotalDays / reqPeriod;
+                    return t >= 0 &&
+                        ((int)t * reqPeriod + reqTime.TotalDays > lastSessTime.TotalDays ||
+                        lastSessTime > nowTime /*новый день*/);
+                }
+                else
+                {
+                    return reqTime.TotalDays <= 0 ||
+                        reqTime <= nowTime && reqTime > lastSessTime;
+                }
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Передать данные КП SCADA-Серверу
+        /// </summary>
+        private void SendDataToServer(KPLogic kpLogic, bool sendAllData)
+        {
+            if (serverComm != null)
+            {
+                lock (serverLock)
+                {
+                    curAction = DateTime.Now.ToLocalizedString() + (Localization.UseRussian ? 
+                        " Передача данных SCADA-серверу" : 
+                        " Sending data to SCADA-Server");
+                    WriteInfo();
+
+                    // передача текущих данных
+                    KPLogic.TagSrez curSrez = GetKPCurData(kpLogic, sendAllData);
+                    if (curSrez != null)
+                        serverComm.SendSrez(curSrez);
+
+                    // передача архивных срезов до тех пор, пока все срезы не будут переданы
+                    kpLogic.MoveArcSrez(unsentSrezList);
+
+                    foreach (KPLogic.TagSrez tagSrez in unsentSrezList)
+                    {
+                        int attemptNum = 0;
+                        while (!serverComm.SendArchive(tagSrez))
+                        {
+                            if (++attemptNum < QuickAttemptCnt)
+                            {
+                                if (attemptNum == 1)
+                                    log.WriteLine();
+                                log.WriteAction(Localization.UseRussian ?
+                                    "Неудачная попытка передачи архивного среза SCADA-серверу" :
+                                    "Attempt to send archive data to SCADA-Server failed");
+                                Thread.Sleep(ScadaUtils.ThreadDelay);
+                            }
+                            else
+                            {
+                                // задержка перед следующей попыткой
+                                log.WriteAction(CommPhrases.RetryDelay);
+                                Thread.Sleep(RetryDelay);
+                            }
+                        }
+                    }
+
+                    unsentSrezList.Clear();
+
+                    // передача событий до тех пор, пока все события не будут переданы
+                    kpLogic.MoveEvents(unsentEventList);
+
+                    foreach (KPLogic.KPEvent kpEvent in unsentEventList)
+                    {
+                        int attemptNum = 0;
+                        while (!serverComm.SendEvent(kpEvent))
+                        {
+                            if (++attemptNum < QuickAttemptCnt)
+                            {
+                                if (attemptNum == 1)
+                                    log.WriteLine();
+                                log.WriteAction(Localization.UseRussian ?
+                                    "Неудачная попытка передачи события SCADA-серверу" :
+                                    "Attempt to send event to SCADA-Server failed");
+                                Thread.Sleep(ScadaUtils.ThreadDelay);
+                            }
+                            else
+                            {
+                                // задержка перед следующей попыткой
+                                log.WriteAction(CommPhrases.RetryDelay);
+                                Thread.Sleep(RetryDelay);
+                            }
+                        }
+                    }
+
+                    unsentEventList.Clear();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Получить текущие данные КП
+        /// </summary>
+        private KPLogic.TagSrez GetKPCurData(KPLogic kpLogic, bool allData)
+        {
+            // получение текущих данных КП
+            int tagCnt = kpLogic.KPTags.Length;
+            SrezTableLight.CnlData[] curData = new SrezTableLight.CnlData[tagCnt];
+            bool[] curDataMod = new bool[tagCnt];
+            kpLogic.CopyCurData(curData, curDataMod);
+
+            // создание среза передаваемых данных
+            KPLogic.TagSrez curSrez = null;
+            if (allData)
+            {
+                if (tagCnt > 0)
+                {
+                    curSrez = new KPLogic.TagSrez(tagCnt);
+                    for (int i = 0; i < tagCnt; i++)
+                    {
+                        curSrez.KPTags[i] = kpLogic.KPTags[i];
+                        curSrez.TagData[i] = curData[i];
+                    }
+                    serverComm.SendSrez(curSrez);
+                }
+            }
+            else
+            {
+                int modTagCnt = 0; // количество изменившихся тегов
+                for (int i = 0; i < tagCnt; i++)
+                    if (curDataMod[i])
+                        modTagCnt++;
+
+                if (modTagCnt > 0)
+                {
+                    curSrez = new KPLogic.TagSrez(modTagCnt);
+                    for (int i = 0, j = 0; i < tagCnt; i++)
+                    {
+                        if (curDataMod[i])
+                        {
+                            curSrez.KPTags[j] = kpLogic.KPTags[i];
+                            curSrez.TagData[j] = curData[i];
+                            j++;
+                        }
+                    }
+                }
+            }
+
+            return curSrez;
+        }
+
+        /// <summary>
+        /// Найти КП по номеру
+        /// </summary>
+        private KPLogic FindKP(int kpNum)
+        {
+            KPLogic kpLogic;
+            return kpNumDict.TryGetValue(kpNum, out kpLogic) ? kpLogic : null;
+        }
+
+
+        /// <summary>
+        /// Настроить линию связи в соответствии с таблицами базы конфигурации
+        /// </summary>
+        public void Tune(DataTable tblInCnl, DataTable tblKP)
+        {
+            try
+            {
+                if (Bind)
+                {
+                    foreach (KPLogic kpLogic in KPList)
+                    {
+                        if (kpLogic.Bind)
+                        {
+                            // привязка тегов КП к входным каналам
+                            tblInCnl.DefaultView.RowFilter = "KPNum = " + kpLogic.Number;
+                            for (int i = 0; i < tblInCnl.DefaultView.Count; i++)
+                            {
+                                DataRowView rowView = tblInCnl.DefaultView[i];
+                                kpLogic.BindTag((int)rowView["Signal"], (int)rowView["CnlNum"],
+                                    (int)rowView["ObjNum"], (int)rowView["ParamID"]);
+                            }
+
+                            // перезапись имени, адреса и позывного КП
+                            tblKP.DefaultView.RowFilter = "KPNum = " + kpLogic.Number;
+                            if (tblKP.DefaultView.Count > 0)
+                            {
+                                DataRowView rowKP = tblKP.DefaultView[0];
+                                kpLogic.Name = (string)rowKP["Name"];
+                                kpLogic.Address = (int)rowKP["Address"];
+                                kpLogic.CallNum = (string)rowKP["CallNum"];
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteAction(string.Format(Localization.UseRussian ?
+                    "Ошибка при настройке линии связи {0}: {1}" :
+                    "Error tuning communication line {0}: {1}", Number, ex.Message), 
+                    Log.ActTypes.Exception);
+            }
+        }
+
+        /// <summary>
+        /// Запустить работу линии связи
+        /// </summary>
+        public void Start()
+        {
+            if (thread == null)
+            {
+                thread = new Thread(new ThreadStart(Execute));
+                thread.Start();
             }
         }
 
@@ -1212,10 +1390,22 @@ namespace Scada.Comm.Svc
         /// </summary>
         public void Terminate()
         {
-            RunState = Thread == null ? RunStates.Terminated : RunStates.Terminating;
+            workState = thread == null ? WorkStates.Terminated : WorkStates.Terminating;
             foreach (KPLogic kpLogic in KPList)
                 kpLogic.Terminated = true;
             WriteInfo();
+        }
+
+        /// <summary>
+        /// Прервать работу линии связи
+        /// </summary>
+        public void Abort()
+        {
+            if (thread != null && thread.ThreadState != ThreadState.Stopped)
+            {
+                thread.Abort();
+                thread = null;
+            }
         }
         
         /// <summary>
@@ -1223,23 +1413,17 @@ namespace Scada.Comm.Svc
         /// </summary>
         public void AddKP(KPLogic kpLogic)
         {
-            if (RunState != RunStates.Idle)
-                throw new Exception(Localization.UseRussian ?
-                    "Невозможно выполнить метод, если линия связи не бездействует." :
-                    "Unable to execute method if the communication line is not idle.");
+            CheckChangesAllowed();
+            kpCaptions = null;
 
-            // настройка свойств КП
-            kpLogic.SerialPort = serialPort;
-            kpLogic.CommLineParams = new KPLogic.LineParams(reqTriesCnt, maxCommErrCnt);
-            kpLogic.UserParams = UserParams;
+            // настройка свойств КП, относящихся к линии связи
+            kpLogic.ReqTriesCnt = ReqTriesCnt;
+            kpLogic.CustomParams = CustomParams;
             kpLogic.CommonProps = commonProps;
-            kpLogic.ConfigDir = Manager.ConfigDir;
-            kpLogic.LangDir = Manager.LangDir;
-            kpLogic.LogDir = Manager.LogDir;
-            kpLogic.CmdDir = Manager.CmdDir;
-            kpLogic.FlushArc = FlushArc;
-            kpLogic.WriteToLog = log.WriteLine;
-            kpLogic.PassCmd = ExecPassCmd;
+            kpLogic.AppDirs = appDirs;
+            if (detailedLog)
+                kpLogic.WriteToLog = log.WriteLine;
+            kpLogic.CommLineSvc = this;
 
             // вызов метода обработки добавления КП
             try
@@ -1248,34 +1432,47 @@ namespace Scada.Comm.Svc
             }
             catch (Exception ex)
             {
+                kpLogic.WorkState = KPLogic.WorkStates.Error;
                 log.WriteAction(string.Format(Localization.UseRussian ?
                     "Ошибка при выполнении действий {0} при добавлении КП на линию связи: {1}" :
                     "Error executing actions of {0} on adding device to communication line: {1}",
                     kpLogic.Caption, ex.Message));
             }
 
-            // добавление КП в список
+            // добавление КП в список опрашиваемых КП
             KPList.Add(kpLogic);
 
-            // добавление номера КП в список
-            int ind = kpNumList.BinarySearch(kpLogic.Number);
-            if (ind < 0)
-                kpNumList.Insert(~ind, kpLogic.Number);
+            // добавление КП в словари для быстрого поиска
+            if (!kpNumDict.ContainsKey(kpLogic.Number))
+                kpNumDict.Add(kpLogic.Number, kpLogic);
+
+            int address = kpLogic.Address;
+            string callNum = kpLogic.CallNum;
+
+            if (!kpAddrDict.ContainsKey(address))
+                kpAddrDict.Add(address, kpLogic);
+
+            if (callNum != null && !kpCallNumDict.ContainsKey(callNum))
+                kpCallNumDict.Add(callNum, kpLogic);
+
+            KPFullAddr kpFullAddr = new KPFullAddr(address, callNum);
+            if (!kpFullAddrDict.ContainsKey(kpFullAddr))
+                kpFullAddrDict.Add(kpFullAddr, kpLogic);
         }
 
         /// <summary>
         /// Добавить команду в очередь команд линии связи, если команды ТУ разрешены
         /// </summary>
-        public void AddCmd(KPLogic.Command cmd)
+        public void EnqueueCmd(Command cmd)
         {
-            Monitor.Enter(cmdLock);
             try
             {
                 if (cmdEnabled)
                 {
-                    cmdList.Add(cmd);
+                    lock (cmdList)
+                        cmdList.Add(cmd);
                 }
-                else if (kpNumList.BinarySearch(cmd.KPNum) >= 0)
+                else if (kpNumDict.ContainsKey(cmd.KPNum))
                 {
                     log.WriteLine();
                     log.WriteAction(Localization.UseRussian ? 
@@ -1285,13 +1482,277 @@ namespace Scada.Comm.Svc
             }
             catch (Exception ex)
             {
-                log.WriteAction((Localization.UseRussian ? "Ошибка при добавлении команды в очередь: " : 
+                log.WriteAction((Localization.UseRussian ? 
+                    "Ошибка при добавлении команды в очередь: " : 
                     "Error adding command to the queue: ") + ex.Message);
             }
-            finally
+        }
+
+
+        /// <summary>
+        /// Найти КП на линии связи по адресу и позывному
+        /// </summary>
+        /// <remarks>Если address меньше 0, то он не учитывается при поиске.
+        /// Если позывной равен null, то он не учитывается при поиске.</remarks>
+        KPLogic ICommLineService.FindKPLogic(int address, string callNum)
+        {
+            KPLogic kpLogic;
+
+            if (address < 0 && callNum == null)
             {
-                Monitor.Exit(cmdLock);
+                return null;
             }
+            else if (address < 0)
+            {
+                lock (kpCallNumDict)
+                    return kpCallNumDict.TryGetValue(callNum, out kpLogic) ? kpLogic : null;
+            }
+            else if (callNum == null)
+            {
+                lock (kpAddrDict)
+                    return kpAddrDict.TryGetValue(address, out kpLogic) ? kpLogic : null;
+            }
+            else
+            {
+                lock (kpFullAddrDict)
+                    return kpFullAddrDict.TryGetValue(new KPFullAddr(address, callNum), out kpLogic) ? kpLogic : null;
+            }
+        }
+
+        /// <summary>
+        /// Форсированно передать текущие данные SCADA-Серверу
+        /// </summary>
+        bool ICommLineService.FlushCurData(KPLogic kpLogic)
+        {
+            if (kpLogic == null)
+                return false;
+
+            if (serverComm == null)
+                return true;
+
+            try
+            {
+                lock (serverLock)
+                {
+                    curAction = DateTime.Now.ToLocalizedString() + (Localization.UseRussian ?
+                        " Форсированная передача текущих данных SCADA-серверу" :
+                        " Flushing current data to SCADA-Server");
+                    WriteInfo();
+
+                    KPLogic.TagSrez curSrez = GetKPCurData(kpLogic, false);
+                    return serverComm.SendSrez(curSrez);
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteAction((Localization.UseRussian ?
+                    "Ошибка при форсированной передаче текущих данных SCADA-серверу: " :
+                    "Error flushing current data to SCADA-Server") + ex.Message);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Форсированно передать архивные данные и события SCADA-Серверу
+        /// </summary>
+        bool ICommLineService.FlushArcData(KPLogic kpLogic)
+        {
+            if (kpLogic == null)
+                return false;
+
+            if (serverComm == null)
+                return true;
+
+            bool arcOK = true; // передача архивных срезов успешна
+            bool evOK = true;  // передача событий успешна
+
+            try
+            {
+                lock (serverLock)
+                {
+                    curAction = DateTime.Now.ToLocalizedString() + (Localization.UseRussian ?
+                        " Форсированная передача архивов SCADA-серверу" :
+                        " Flushing archives to SCADA-Server");
+                    WriteInfo();
+
+                    // передача архивных срезов до передачи всех срезов или возникновения ошибки
+                    kpLogic.MoveArcSrez(unsentSrezList);
+
+                    while (unsentSrezList.Count > 0 && arcOK)
+                    {
+                        if (serverComm.SendArchive(unsentSrezList[0]))
+                        {
+                            unsentSrezList.RemoveAt(0);
+                        }
+                        else
+                        {
+                            log.WriteAction(Localization.UseRussian ?
+                                "Неудачная попытка форсированной передачи архивного среза SCADA-серверу" :
+                                "Attempt to flush archive data to SCADA-Server failed");
+                            arcOK = false;
+                        }
+                    }
+
+                    // передача событий до передачи всех событий или возникновения ошибки
+                    kpLogic.MoveEvents(unsentEventList);
+
+                    while (unsentEventList.Count > 0 && evOK)
+                    {
+                        if (serverComm.SendEvent(unsentEventList[0]))
+                        {
+                            unsentEventList.RemoveAt(0);
+                        }
+                        else
+                        {
+                            log.WriteAction(Localization.UseRussian ?
+                                "Неудачная попытка форсированной передачи события SCADA-серверу" :
+                                "Attempt to flush event to SCADA-Server failed");
+                            evOK = false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteAction((Localization.UseRussian ?
+                    "Ошибка при форсированной передаче архивов SCADA-серверу: " : 
+                    "Error flushing archives to SCADA-Server") + ex.Message);
+            }
+
+            return arcOK && evOK;
+        }
+
+        /// <summary>
+        /// Передать команду ТУ, адресованную КП на данной линии связи
+        /// </summary>
+        void ICommLineService.PassCmd(Command cmd)
+        {
+            if (PassCmd != null)
+                PassCmd(cmd);
+        }
+
+
+        /// <summary>
+        /// Создать КП
+        /// </summary>
+        private static KPLogic CreateKPLogic(int kpNum, string dllName, 
+            AppDirs appDirs, Dictionary<string, Type> kpTypes, Log appLog)
+        {
+            Type kpType;
+            if (kpTypes.TryGetValue(dllName, out kpType))
+            {
+                return KPFactory.GetKPLogic(kpType, kpNum);
+            }
+            else
+            {
+                appLog.WriteAction((Localization.UseRussian ?
+                    "Загрузка библиотеки КП: " :
+                    "Load device library: ") + dllName, Log.ActTypes.Action);
+
+                KPLogic kpLogic = KPFactory.GetKPLogic(appDirs.KPDir, dllName, kpNum);
+                kpTypes.Add(dllName, kpLogic.GetType());
+                return kpLogic;
+            }
+        }
+
+        /// <summary>
+        /// Добавить параметры последовательного порта в пользовательские параметры линии связи 
+        /// для упрощения настройки канала связи CommSerialLogic
+        /// </summary>
+        [Obsolete("Temporary solution")]
+        private static void AddSerialPortParams(CommLine commLine, Settings.CommLine commLineSett)
+        {
+            if (commLineSett.ConnType.Equals("ComPort", StringComparison.OrdinalIgnoreCase))
+            {
+                commLine.CustomParams["CommChannel"] = "Serial";
+                commLine.CustomParams["PortName"] = commLineSett.PortName;
+                commLine.CustomParams["BaudRate"] = commLineSett.BaudRate.ToString();
+                commLine.CustomParams["Parity"] = commLineSett.Parity.ToString();
+                commLine.CustomParams["DataBits"] = commLineSett.DataBits.ToString();
+                commLine.CustomParams["StopBits"] = commLineSett.StopBits.ToString();
+                commLine.CustomParams["DtrEnable"] = commLineSett.DtrEnable.ToString();
+                commLine.CustomParams["RtsEnable"] = commLineSett.RtsEnable.ToString();
+            }
+        }
+
+        /// <summary>
+        /// Создать линию связи и КП на основе настроек
+        /// </summary>
+        public static CommLine Create(Settings.CommLine commLineSett, Settings.CommonParams commonParams,
+            AppDirs appDirs, PassCmdDelegate passCmd, Dictionary<string, Type> kpTypes, Log appLog)
+        {
+            if (!commLineSett.Active)
+                return null;
+
+            // создание линии связи
+            CommLine commLine = new CommLine(commLineSett.Bind, commLineSett.Number, commLineSett.Name);
+
+            // установка свойств для связи с окружением
+            commLine.AppDirs = appDirs;
+            commLine.ServerComm = null;
+            commLine.PassCmd = passCmd;
+
+            // вывод начальной информации о линии связи
+            commLine.WriteInitialInfo();
+
+            // установка параметров работы линии связи
+            commLine.ReqTriesCnt = commLineSett.ReqTriesCnt;
+            commLine.CycleDelay = Math.Max(commLineSett.CycleDelay, MinCycleDelay);
+            commLine.CmdEnabled = commLineSett.CmdEnabled;
+            commLine.DetailedLog = commLineSett.DetailedLog;
+            commLine.SendAllDataPer = commonParams.SendAllDataPer;
+
+            foreach (Settings.CustomParam customParam in commLineSett.CustomParams)
+            {
+                if (!commLine.CustomParams.ContainsKey(customParam.Name))
+                    commLine.CustomParams.Add(customParam.Name, customParam.Value);
+            }
+
+            AddSerialPortParams(commLine, commLineSett);
+
+            // создание КП на линии связи
+            foreach (Settings.KP kpSett in commLineSett.ReqSequence)
+            {
+                if (kpSett.Active)
+                {
+                    KPLogic kpLogic = CreateKPLogic(kpSett.Number, kpSett.Dll, appDirs, kpTypes, appLog);
+                    kpLogic.Bind = kpSett.Bind;
+                    kpLogic.Name = kpSett.Name;
+                    kpLogic.Address = kpSett.Address;
+                    kpLogic.CallNum = kpSett.CallNum;
+                    kpLogic.ReqParams = new KPReqParams()
+                    {
+                        Timeout = kpSett.Timeout,
+                        Delay = kpSett.Delay,
+                        Time = kpSett.Time,
+                        Period = kpSett.Period,
+                        CmdLine = kpSett.CmdLine
+                    };
+                    commLine.AddKP(kpLogic);
+                }
+            }
+
+            // создание канала связи
+            string commCnlType;
+            if (commLine.CustomParams.TryGetValue("CommChannel", out commCnlType) && 
+                !string.IsNullOrEmpty(commCnlType))
+            {
+                commLine.CommChannelLogic = CommChannelFactory.GetCommChannel(commCnlType);
+                commLine.CommChannelLogic.WriteToLog = commLine.log.WriteLine;
+
+                try
+                {
+                    commLine.CommChannelLogic.Init(commLine.CustomParams, commLine.KPList);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception((Localization.UseRussian ?
+                        "Ошибка при инициализации канала связи: " :
+                        "Error initializing communication channel: ") + ex.Message);
+                }
+            }
+
+            return commLine;
         }
     }
 }

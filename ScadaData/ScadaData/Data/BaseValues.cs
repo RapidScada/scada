@@ -187,6 +187,38 @@ namespace Scada.Data
             /// Внеочередной опрос КП
             /// </summary>
             public const int Request = 2;
+
+            /// <summary>
+            /// Получить кодовое обозначение типа команды по идентификатору
+            /// </summary>
+            public static string GetCmdTypeCode(int cmdTypeID)
+            {
+                switch (cmdTypeID)
+                {
+                    case Standard:
+                        return "Standard";
+                    case Binary:
+                        return "Binary";
+                    case Request:
+                        return "Request";
+                    default:
+                        return cmdTypeID.ToString();
+                }
+            }
+            /// <summary>
+            /// Распознать кодовое обозначение типа команды
+            /// </summary>
+            public static int ParseCmdTypeCode(string cmdTypeCode)
+            {
+                if (cmdTypeCode.Equals("Standard", StringComparison.OrdinalIgnoreCase))
+                    return Standard;
+                else if (cmdTypeCode.Equals("Binary", StringComparison.OrdinalIgnoreCase))
+                    return Binary;
+                else if (cmdTypeCode.Equals("Request", StringComparison.OrdinalIgnoreCase))
+                    return Request;
+                else
+                    return -1;
+            }
         }
 
         /// <summary>

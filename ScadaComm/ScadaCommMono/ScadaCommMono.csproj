@@ -60,13 +60,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\KP\KP.csproj">
-      <Project>{a33b8ec4-8f3e-453b-aa6b-5352ca1fe036}</Project>
-      <Name>KP</Name>
-    </ProjectReference>
+    <None Include="Script\scadacomm" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Script\scadacomm" />
+    <ProjectReference Include="..\ScadaCommCommon\ScadaCommCommon.csproj">
+      <Project>{7baeae0e-4694-41d7-bc29-f205aef69741}</Project>
+      <Name>ScadaCommCommon</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
