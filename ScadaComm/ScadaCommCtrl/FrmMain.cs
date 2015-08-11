@@ -122,7 +122,6 @@ namespace Scada.Comm.Ctrl
         /// </summary>
         private static readonly string ZeroTime = new DateTime(0).ToString("T", Localization.Culture);
 
-        private string exeDir;              // директория исполняемого файла приложения
         private AppDirs appDirs;            // директории приложения
         private Log errLog;                 // журнал ошибок приложения
         private Mutex mutex;                // объект для проверки запуска второй копии программы
@@ -196,7 +195,6 @@ namespace Scada.Comm.Ctrl
             colKpCmdLine.Name = "colKpCmdLine";
 
             // инициализация полей
-            exeDir = "";
             appDirs = new AppDirs();
             errLog = new Log(Log.Formats.Simple);
             errLog.Encoding = Encoding.UTF8;
@@ -844,8 +842,7 @@ namespace Scada.Comm.Ctrl
         private void FrmMain_Load(object sender, EventArgs e)
         {
             // инициализация директорий приложения
-            exeDir = ScadaUtils.NormalDir(Path.GetDirectoryName(Application.ExecutablePath));
-            appDirs.Init(exeDir);
+            appDirs.Init(Path.GetDirectoryName(Application.ExecutablePath));
 
             // установка имени файла журнала ошибок
             errLog.FileName = appDirs.LogDir + ErrFileName;
@@ -1112,7 +1109,7 @@ namespace Scada.Comm.Ctrl
         private void btnAbout_Click(object sender, EventArgs e)
         {
             // отображение формы о программе
-            FrmAbout.ShowAbout(exeDir, errLog);
+            FrmAbout.ShowAbout(appDirs.ExeDir, errLog);
         }
 
 
