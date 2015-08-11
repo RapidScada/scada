@@ -20,8 +20,6 @@
     <Phrase key="SaveAppSettingsError">Error saving application settings</Phrase>
     <Phrase key="LoadCommSettingsError">Error loading server connection settings</Phrase>
     <Phrase key="SaveCommSettingsError">Error saving server connection settings</Phrase>
-    <Phrase key="LoadModSettingsError">Error loading module settings</Phrase>
-    <Phrase key="SaveModSettingsError">Error saving module settings</Phrase>
     <Phrase key="LoadKpSettingsError">Error loading device settings</Phrase>
     <Phrase key="SaveKpSettingsError">Error saving device settings</Phrase>
     <Phrase key="GridDataError">Data error</Phrase>
@@ -67,5 +65,9 @@
     <Phrase key="StoppedSvcState">stopped</Phrase>
     <Phrase key="StopPendingSvcState">stop pending</Phrase>
     <Phrase key="NotInstalledSvcState">not installed</Phrase>
+    <Phrase key="DataSentSuccessfully">Data sent successfully.</Phrase>
+    <Phrase key="EventSentSuccessfully">Event sent successfully.</Phrase>
+    <Phrase key="EventCheckSentSuccessfully">Event check command sent successfully.</Phrase>
+    <Phrase key="CmdSentSuccessfully">Command sent successfully.</Phrase>
   </Dictionary>
 </ScadaDataDictionaries>

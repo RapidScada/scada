@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,15 +20,16 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2011
- * Modified : 2014
+ * Modified : 2015
  */
 
+using Scada.Client;
+using Scada.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
-using Scada.Client;
 
 namespace Scada.Web
 {
@@ -81,7 +82,7 @@ namespace Scada.Web
             /// <summary>
             /// Получить или установить свойства канала элемента
             /// </summary>
-            public CnlProps CnlProps { get; set; }
+            public InCnlProps CnlProps { get; set; }
         }
 
 
@@ -298,7 +299,7 @@ namespace Scada.Web
         /// <summary>
         /// Привязать свойства входных каналов к элементам представления
         /// </summary>
-        public override void BindCnlProps(CnlProps[] cnlPropsArr)
+        public override void BindCnlProps(InCnlProps[] cnlPropsArr)
         {
             base.BindCnlProps(cnlPropsArr);
 
@@ -309,7 +310,7 @@ namespace Scada.Web
                     int ind = Array.BinarySearch(cnlPropsArr, item.CnlNum);
                     if (ind >= 0)
                     {
-                        CnlProps cnlProps = cnlPropsArr[ind];
+                        InCnlProps cnlProps = cnlPropsArr[ind];
                         item.CnlProps = cnlProps;
                         if (cnlProps.CtrlCnlNum > 0)
                         {

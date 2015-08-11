@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,17 +20,17 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2005
- * Modified : 2014
+ * Modified : 2015
  */
 
+using Scada.Client;
+using Scada.Data;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Threading;
-using Scada.Client;
-using Scada.Data;
 using Utils;
 
 namespace Scada.Web
@@ -176,9 +176,9 @@ namespace Scada.Web
         public const int EventCacheSize = 5;
 
 
-        ServerComm serverComm;           // объект для обмена данными со SCADA-Сервером
-        private string settFileName;     // полное имя файла настроек соединения со SCADA-Сервером
-        private DateTime settModTime;    // время последнего изменения файла настроек
+        ServerComm serverComm;            // объект для обмена данными со SCADA-Сервером
+        private string settFileName;      // полное имя файла настроек соединения со SCADA-Сервером
+        private DateTime settModTime;     // время последнего изменения файла настроек
 
         private SrezTableLight tblCur;             // таблица текущего среза
         private SrezTableLight[] hourTableCache;   // массив таблиц часовых срезов для кэширования
@@ -190,31 +190,31 @@ namespace Scada.Web
         private string defDecSep;                  // разделитель дробной части по умолчанию
         private string defGrSep;                   // разделитель групп цифр по умолчанию
 
-        private DateTime baseModTime;    // время последнего изменения успешно считанной базы конфигурации
-        private DateTime baseFillTime;   // время последего успешного заполнения таблиц базы конфигурации
-		private DataTable tblInCnl;      // таблица входных каналов
-        private DataTable tblCtrlCnl;    // таблица каналов управления
-        private DataTable tblObj;        // таблица объектов
-        private DataTable tblKP;         // таблица КП
-        private DataTable tblRole;       // таблица ролей
-        private DataTable tblUser;       // таблица пользователей
-        private DataTable tblInterface;  // таблица объектов интерфейса
-        private DataTable tblRight;      // таблица прав на объекты интерфейса
-        private DataTable tblEvType;     // таблица типов событий
-        private DataTable tblParam;      // таблица параметров
-		private DataTable tblUnit;       // таблица размерностей
-        private DataTable tblCmdVal;     // таблица значений команд
-        private DataTable tblFormat;     // таблица форматов чисел
-        private DataTable[] baseTblArr;  // массив ссылок на таблицы базы конфигурации
+        private DateTime baseModTime;     // время последнего изменения успешно считанной базы конфигурации
+        private DateTime baseFillTime;    // время последего успешного заполнения таблиц базы конфигурации
+		private DataTable tblInCnl;       // таблица входных каналов
+        private DataTable tblCtrlCnl;     // таблица каналов управления
+        private DataTable tblObj;         // таблица объектов
+        private DataTable tblKP;          // таблица КП
+        private DataTable tblRole;        // таблица ролей
+        private DataTable tblUser;        // таблица пользователей
+        private DataTable tblInterface;   // таблица объектов интерфейса
+        private DataTable tblRight;       // таблица прав на объекты интерфейса
+        private DataTable tblEvType;      // таблица типов событий
+        private DataTable tblParam;       // таблица параметров
+		private DataTable tblUnit;        // таблица размерностей
+        private DataTable tblCmdVal;      // таблица значений команд
+        private DataTable tblFormat;      // таблица форматов чисел
+        private DataTable[] baseTblArr;   // массив ссылок на таблицы базы конфигурации
 
-		private CnlProps[] cnlPropsArr;  // массив свойств входных каналов
-        private int maxCnlCnt;           // максимальное количество входных каналов
+		private InCnlProps[] cnlPropsArr; // массив свойств входных каналов
+        private int maxCnlCnt;            // максимальное количество входных каналов
 
-        private Object refrLock;         // объект для синхронизации обновления данных
-        private Object baseLock;         // объект для синхронизации обращения к таблицам базы конфигурации
-        private Object cnlPropLock;      // объект для синхронизации получения свойств входного канала
-        private Object cnlDataLock;      // объект для синхронизации получения данных входного канала
-        private Object eventLock;        // объект для синхронизации получения событий
+        private Object refrLock;          // объект для синхронизации обновления данных
+        private Object baseLock;          // объект для синхронизации обращения к таблицам базы конфигурации
+        private Object cnlPropLock;       // объект для синхронизации получения свойств входного канала
+        private Object cnlDataLock;       // объект для синхронизации получения данных входного канала
+        private Object eventLock;         // объект для синхронизации получения событий
         
 
         /// <summary>
@@ -312,7 +312,7 @@ namespace Scada.Web
 		/// <summary>
 		/// Массив свойств входных каналов
 		/// </summary>
-		public CnlProps[] CnlPropsArr
+        public InCnlProps[] CnlPropsArr
 		{
 			get
 			{
@@ -360,15 +360,15 @@ namespace Scada.Web
                 {
                     if (0 < maxCnlCnt && maxCnlCnt < inCnlCnt)
                         inCnlCnt = maxCnlCnt;
-                    CnlProps[] newCnlPropsArr = new CnlProps[inCnlCnt];
+                    InCnlProps[] newCnlPropsArr = new InCnlProps[inCnlCnt];
 
                     for (int i = 0; i < inCnlCnt; i++)
                     {
                         DataRowView rowView = tblInCnl.DefaultView[i];
                         int cnlNum = (int)rowView["CnlNum"];
-                        CnlProps cnlProps = GetCnlProps(cnlNum);
-                        if (cnlProps == null) 
-                            cnlProps = new CnlProps(cnlNum);
+                        InCnlProps cnlProps = GetCnlProps(cnlNum);
+                        if (cnlProps == null)
+                            cnlProps = new InCnlProps(cnlNum, "", 0);
 
                         // определение свойств, не использующих внешних ключей
                         cnlProps.CnlName = (string)rowView["Name"];
@@ -493,7 +493,7 @@ namespace Scada.Web
             eventView.Text = ev.Descr;
 
             // получение свойств канала события
-            CnlProps cnlProps = GetCnlProps(ev.CnlNum);
+            InCnlProps cnlProps = GetCnlProps(ev.CnlNum);
 
             // определение наименования объекта
             if (cnlProps == null || cnlProps.ObjNum != ev.ObjNum)
@@ -861,10 +861,10 @@ namespace Scada.Web
 		/// <summary>
 		/// Получить свойства входного канала по его номеру
 		/// </summary>
-		public CnlProps GetCnlProps(int cnlNum)
+        public InCnlProps GetCnlProps(int cnlNum)
 		{
             Monitor.Enter(cnlPropLock);
-            CnlProps cnlProps = null;
+            InCnlProps cnlProps = null;
 
             try
             {                
@@ -903,9 +903,7 @@ namespace Scada.Web
                 if (tblCtrlCnl.DefaultView.Count > 0)
                 {
                     DataRowView rowView = tblCtrlCnl.DefaultView[0];
-                    ctrlCnlProps = new CtrlCnlProps(ctrlCnlNum);
-                    ctrlCnlProps.CtrlCnlName = (string)rowView["Name"];
-                    ctrlCnlProps.CmdTypeID = (int)rowView["CmdTypeID"];
+                    ctrlCnlProps = new CtrlCnlProps(ctrlCnlNum, (string)rowView["Name"], (int)rowView["CmdTypeID"]);
 
                     // определение номера и наименования объекта
                     ctrlCnlProps.ObjNum = (int)rowView["ObjNum"];
@@ -1277,7 +1275,7 @@ namespace Scada.Web
         /// Форматировать значение входного канала
         /// </summary>
         /// <remarks>Для текущего значения dataDT равно DateTime.MinValue</remarks>
-        public string FormatCnlVal(double val, int stat, CnlProps cnlProps, bool showUnit, bool getColor, 
+        public string FormatCnlVal(double val, int stat, InCnlProps cnlProps, bool showUnit, bool getColor, 
             DateTime dataDT, DateTime nowDT, out bool isNumber, out string color,
             string decSep = null, string grSep = null)
         {
