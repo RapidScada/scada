@@ -132,7 +132,7 @@ namespace Scada.Server.Svc
                 UserName = "";
                 UserRoleID = BaseValues.Roles.Disabled;
                 ActivityDT = DateTime.Now;
-                CmdList = new List<ModLogic.Command>();
+                CmdList = new List<Command>();
                 Dir = Dirs.Cur;
                 FileName = "";
                 FileStream = null;
@@ -189,7 +189,7 @@ namespace Scada.Server.Svc
             /// <summary>
             /// Получить список команд ТУ
             /// </summary>
-            public List<ModLogic.Command> CmdList { get; private set; }
+            public List<Command> CmdList { get; private set; }
             /// <summary>
             /// Получить или установить директорию запрашиваемого файла
             /// </summary>
@@ -293,7 +293,7 @@ namespace Scada.Server.Svc
         private List<ClientInfo> clients; // информация о подключенных клиентах
         private byte[] inBuf;             // буфер принимаемых данных
         private byte[] outBuf;            // буфер передаваемых данных
-        private List<ModLogic.Command> cmdBuf; // буфер команд ТУ для передачи подключенным клиентам
+        private List<Command> cmdBuf;     // буфер команд ТУ для передачи подключенным клиентам
 
 
         /// <summary>
@@ -330,7 +330,7 @@ namespace Scada.Server.Svc
             clients = new List<ClientInfo>();
             inBuf = new byte[InBufLenght];
             outBuf = new byte[OutBufLenght];
-            cmdBuf = new List<ModLogic.Command>();
+            cmdBuf = new List<Command>();
         }
 
 
@@ -789,7 +789,7 @@ namespace Scada.Server.Svc
                         if (ctrlCnl != null)
                         {
                             // создание команды ТУ
-                            ModLogic.Command ctrlCmd = new ModLogic.Command(cmdTypeID);
+                            Command ctrlCmd = new Command(cmdTypeID);
                             ctrlCmd.CmdData = new byte[BitConverter.ToUInt16(inBuf, 8)];
                             Array.Copy(inBuf, 10, ctrlCmd.CmdData, 0, ctrlCmd.CmdData.Length);
 
@@ -832,7 +832,7 @@ namespace Scada.Server.Svc
                 case 0x07: // запрос команды ТУ
                     if (client.UserRoleID == BaseValues.Roles.App && client.CmdList.Count > 0)
                     {
-                        ModLogic.Command ctrlCmd = client.CmdList[0];
+                        Command ctrlCmd = client.CmdList[0];
                         int cmdDataLen = ctrlCmd.CmdData == null ? 0 : ctrlCmd.CmdData.Length;
                         respDataLen = 7 + cmdDataLen;
                         outBuf[3] = (byte)(cmdDataLen % 256);
@@ -1378,12 +1378,15 @@ namespace Scada.Server.Svc
         /// <summary>
         /// Передать команду ТУ подключенным клиентам
         /// </summary>
-        public void PassCommand(ModLogic.Command cmd)
+        public void PassCommand(Command cmd)
         {
             lock (cmdBuf)
             {
                 if (cmd != null)
+                {
+                    cmd.PrepareCmdData();
                     cmdBuf.Add(cmd);
+                }
             }
         }
     }

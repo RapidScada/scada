@@ -92,7 +92,7 @@ namespace Scada.Server.Svc
         /// <summary>
         /// Строковая запись версии приложения
         /// </summary>
-        public const string AppVersion = "4.5.0.1";
+        public const string AppVersion = "4.5.0.2";
         /// <summary>
         /// Имя файла журнала приложения
         /// </summary>
@@ -1867,7 +1867,7 @@ namespace Scada.Server.Svc
         /// <summary>
         /// Вызвать событие OnCommandReceived для модулей
         /// </summary>
-        private void RaiseOnCommandReceived(int ctrlCnlNum, ModLogic.Command cmd, int userID, ref bool passToClients)
+        private void RaiseOnCommandReceived(int ctrlCnlNum, Command cmd, int userID, ref bool passToClients)
         {
             lock (modules)
             {
@@ -2319,7 +2319,7 @@ namespace Scada.Server.Svc
         /// <summary>
         /// Обработать команду ТУ
         /// </summary>
-        public void ProcCommand(CtrlCnl ctrlCnl, ModLogic.Command cmd, int userID, out bool passToClients)
+        public void ProcCommand(CtrlCnl ctrlCnl, Command cmd, int userID, out bool passToClients)
         {
             passToClients = false;
 

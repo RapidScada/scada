@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,11 +23,8 @@
  * Modified : 2015
  */
 
-using System;
-using System.IO;
-using System.Reflection;
-using System.Text;
 using Scada.Data;
+using System;
 using Utils;
 
 namespace Scada.Server.Modules
@@ -38,95 +35,6 @@ namespace Scada.Server.Modules
     /// </summary>
     public abstract class ModLogic
     {
-        /// <summary>
-        /// Команда ТУ
-        /// </summary>
-        [Serializable]
-        public class Command
-        {
-            private int kpNum;
-            private double cmdVal;
-
-            /// <summary>
-            /// Конструктор
-            /// </summary>
-            public Command()
-                : this(BaseValues.CmdTypes.Standard)
-            {
-            }
-            /// <summary>
-            /// Конструктор
-            /// </summary>
-            public Command(int cmdTypeID)
-            {
-                CreateDT = DateTime.Now;
-                CmdTypeID = cmdTypeID;
-                KPNum = 0;
-                CmdNum = 0;
-                CmdVal = 0.0;
-                CmdData = null;
-            }
-
-            /// <summary>
-            /// Получить дату и время создания команды
-            /// </summary>
-            public DateTime CreateDT { get; protected set; }
-            /// <summary>
-            /// Получить или установить идентификатор типа команды
-            /// </summary>
-            public int CmdTypeID { get; set; }
-            /// <summary>
-            /// Получить или установить номер КП
-            /// </summary>
-            public int KPNum
-            {
-                get
-                {
-                    return kpNum;
-                }
-                set
-                {
-                    kpNum = value;
-                    if (CmdTypeID == BaseValues.CmdTypes.Request)
-                        CmdData = BitConverter.GetBytes((UInt16)kpNum);
-                }
-            }
-            /// <summary>
-            /// Получить или установить номер команды
-            /// </summary>
-            public int CmdNum { get; set; }
-            /// <summary>
-            /// Получить или установить значение команды
-            /// </summary>
-            public double CmdVal
-            {
-                get
-                {
-                    return cmdVal;
-                }
-                set
-                {
-                    cmdVal = value;
-                    if (CmdTypeID == BaseValues.CmdTypes.Standard)
-                        CmdData = BitConverter.GetBytes(cmdVal);
-                }
-            }
-            /// <summary>
-            /// Получить или установить данные команды
-            /// </summary>
-            public byte[] CmdData { get; set; }
-
-            /// <summary>
-            /// Получить данные команды, преобразованные в строку
-            /// </summary>
-            public string GetCmdDataStr()
-            {
-                try { return Encoding.Default.GetString(CmdData); }
-                catch { return ""; }
-            }
-        }
-
-        
         /// <summary>
         /// Время ожидания остановки работы модуля, мс
         /// </summary>
