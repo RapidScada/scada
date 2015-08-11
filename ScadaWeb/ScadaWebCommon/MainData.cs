@@ -870,7 +870,7 @@ namespace Scada.Web
             {                
                 if (cnlPropsArr != null)
                 {
-                    int ind = Array.BinarySearch(cnlPropsArr, (object)cnlNum);
+                    int ind = Array.BinarySearch(cnlPropsArr, (object)cnlNum, InCnlProps.IntComp);
                     if (ind >= 0)
                         cnlProps = cnlPropsArr[ind];
                 }

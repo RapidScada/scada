@@ -24,9 +24,7 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Collections;
 
 namespace Scada.Data
 {
@@ -36,6 +34,28 @@ namespace Scada.Data
     /// </summary>
     public class InCnlProps : IComparable<InCnlProps>
     {
+        /// <summary>
+        /// Класс, позволяющий сравнивать свойства входного канала с целым числом
+        /// </summary>
+        public class IntComparer: IComparer
+        {
+            /// <summary>
+            /// Сравнить два объекта
+            /// </summary>
+            public int Compare(object x, object y)
+            {
+                int cnlNum1 = ((InCnlProps)x).CnlNum;
+                int cnlNum2 = (int)y;
+                return cnlNum1.CompareTo(cnlNum2);
+            }
+        }
+
+        /// <summary>
+        /// Объект для сравнения свойств входного канала с целым числом
+        /// </summary>
+        public static readonly IntComparer IntComp = new IntComparer();
+
+
         /// <summary>
         /// Конструктор
         /// </summary>

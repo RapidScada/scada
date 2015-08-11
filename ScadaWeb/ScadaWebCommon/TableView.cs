@@ -307,7 +307,7 @@ namespace Scada.Web
             {
                 foreach (Item item in Items)
                 {
-                    int ind = Array.BinarySearch(cnlPropsArr, item.CnlNum);
+                    int ind = Array.BinarySearch(cnlPropsArr, item.CnlNum, InCnlProps.IntComp);
                     if (ind >= 0)
                     {
                         InCnlProps cnlProps = cnlPropsArr[ind];
