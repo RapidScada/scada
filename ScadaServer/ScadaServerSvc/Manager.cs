@@ -86,7 +86,7 @@ namespace Scada.Server.Svc
                 if (!Localization.UseRussian)
                 {
                     string errMsg;
-                    if (Localization.LoadDictionaries(mainLogic.LangDir, "ScadaData", out errMsg))
+                    if (Localization.LoadDictionaries(mainLogic.AppDirs.LangDir, "ScadaData", out errMsg))
                         CommonPhrases.Init();
                     else
                         appLog.WriteAction(errMsg, Log.ActTypes.Error);
@@ -105,7 +105,8 @@ namespace Scada.Server.Svc
                     "Нормальная работа программы невозможна." :
                     "Required directories are not exist:{0}{1}{0}{2}{0}{3}{0}{4}{0}" +
                     "Normal program execution is impossible.",
-                    Environment.NewLine, mainLogic.ConfigDir, mainLogic.LangDir, mainLogic.LogDir, mainLogic.ModDir);
+                    Environment.NewLine, mainLogic.AppDirs.ConfigDir, mainLogic.AppDirs.LangDir, 
+                    mainLogic.AppDirs.LogDir, mainLogic.AppDirs.ModDir);
 
                 try
                 {

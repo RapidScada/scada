@@ -199,7 +199,7 @@ namespace Scada.Server.Svc
                 }
 
                 // сохранение исходного кода класса CalcEngine в файле для анализа
-                string sourceFileName = mainLogic.LogDir + "CalcEngine.cs";
+                string sourceFileName = mainLogic.AppDirs.LogDir + "CalcEngine.cs";
                 File.WriteAllText(sourceFileName, source, Encoding.UTF8);
 
                 // компилирование исходного кода класса CalcEngine
@@ -208,7 +208,7 @@ namespace Scada.Server.Svc
                 compParams.GenerateInMemory = true;
                 compParams.IncludeDebugInformation = false;
                 compParams.ReferencedAssemblies.Add("System.dll");
-                compParams.ReferencedAssemblies.Add(mainLogic.ExeDir + "ScadaData.dll");
+                compParams.ReferencedAssemblies.Add(mainLogic.AppDirs.ExeDir + "ScadaData.dll");
                 CodeDomProvider compiler = CSharpCodeProvider.CreateProvider("CSharp");
                 CompilerResults compilerResults = compiler.CompileAssemblyFromSource(compParams, source);
 

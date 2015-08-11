@@ -40,6 +40,8 @@ namespace Scada.Server.Modules
         /// </summary>
         protected const int WaitForStop = 7000;
 
+        private AppDirs appDirs; // директории приложения
+
 
         /// <summary>
         /// Делегат записи в журнал приложения
@@ -57,9 +59,7 @@ namespace Scada.Server.Modules
         /// </summary>
         public ModLogic()
         {
-            ConfigDir = "";
-            LangDir = "";
-            LogDir = "";
+            appDirs = new AppDirs();
             Settings = null;
             WriteToLog = null;
             PassCommand = null;
@@ -72,19 +72,21 @@ namespace Scada.Server.Modules
         public abstract string Name { get; }
 
         /// <summary>
-        /// Получить или установить директорию конфигурации
+        /// Получить или установить директории приложения
         /// </summary>
-        public string ConfigDir { get; set; }
-
-        /// <summary>
-        /// Получить или установить директорию языковых файлов
-        /// </summary>
-        public string LangDir { get; set; }
-
-        /// <summary>
-        /// Получить или установить директорию журналов
-        /// </summary>
-        public string LogDir { get; set; }
+        public AppDirs AppDirs
+        {
+            get
+            {
+                return appDirs;
+            }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+                appDirs = value;
+            }
+        }
 
         /// <summary>
         /// Получить или установить настройки SCADA-Сервера

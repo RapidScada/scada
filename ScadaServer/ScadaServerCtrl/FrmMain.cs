@@ -95,11 +95,7 @@ namespace Scada.Server.Ctrl
         /// </summary>
         private static readonly int[] WriteMinPerItemVals = { 30, 60, 120, 180, 240, 300, 600 };
 
-        private string exeDir;                // директория исполняемого файла приложения
-        private string configDir;             // директория конфигурации приложения
-        private string langDir;               // директория языковых файлов приложения
-        private string logDir;                // директория журналов приложения
-        private string modDir;                // директория подключаемых модулей
+        private AppDirs appDirs;              // директории приложения
         private Log errLog;                   // журнал ошибок приложения
         private Mutex mutex;                  // объект для проверки запуска второй копии программы
         private ServiceController svcContr;   // контроллер службы
@@ -147,11 +143,7 @@ namespace Scada.Server.Ctrl
                 Localization.Culture.DateTimeFormat.LongTimePattern;
 
             // инициализация полей
-            exeDir = "";
-            configDir = "";
-            langDir = "";
-            logDir = "";
-            modDir = "";
+            appDirs = new AppDirs();
             errLog = new Log(Log.Formats.Simple);
             errLog.Encoding = Encoding.UTF8;
             mutex = null;
@@ -496,7 +488,7 @@ namespace Scada.Server.Ctrl
             ControlsToSettings(newSettings);
             string errMsg;
 
-            if (newSettings.Save(configDir + Settings.DefFileName, out errMsg))
+            if (newSettings.Save(appDirs.ConfigDir + Settings.DefFileName, out errMsg))
             {
                 settings = newSettings;
                 btnSettingsApply.Enabled = false;
@@ -593,13 +585,11 @@ namespace Scada.Server.Ctrl
             {
                 try
                 {
-                    Assembly asm = Assembly.LoadFile(modDir + fileName);
+                    Assembly asm = Assembly.LoadFile(appDirs.ModDir + fileName);
                     Type type = asm.GetType("Scada.Server.Modules." +
                         Path.GetFileNameWithoutExtension(fileName) + "View", true);
                     modView = Activator.CreateInstance(type) as ModView;
-                    modView.ConfigDir = configDir;
-                    modView.LangDir = langDir;
-                    modView.LogDir = logDir;
+                    modView.AppDirs = appDirs;
                     modView.ServerComm = ServerComm;
                     modViewDict.Add(fileName, modView);
 
@@ -618,28 +608,24 @@ namespace Scada.Server.Ctrl
         private void FrmMain_Load(object sender, EventArgs e)
         {
             // инициализация директорий приложения
-            exeDir = ScadaUtils.NormalDir(Path.GetDirectoryName(Application.ExecutablePath));
-            configDir = exeDir + "Config\\";
-            langDir = exeDir + "Lang\\";
-            logDir = exeDir + "Log\\";
-            modDir = exeDir + "Mod\\";
+            appDirs.Init(Path.GetDirectoryName(Application.ExecutablePath));
 
             // установка имён файлов журналов
-            errLog.FileName = logDir + ErrFileName;
-            stateFileName = logDir + StateFileName;
-            logFileName = logDir + LogFileName;
+            errLog.FileName = appDirs.LogDir + ErrFileName;
+            stateFileName = appDirs.LogDir + StateFileName;
+            logFileName = appDirs.LogDir + LogFileName;
 
             // локализация приложения
             StringBuilder sbError = new StringBuilder();
             string errMsg;
             if (!Localization.UseRussian)
             {
-                if (Localization.LoadDictionaries(langDir, "ScadaData", out errMsg))
+                if (Localization.LoadDictionaries(appDirs.LangDir, "ScadaData", out errMsg))
                     CommonPhrases.Init();
                 else
                     sbError.AppendLine(errMsg);
 
-                if (Localization.LoadDictionaries(langDir, "ScadaServer", out errMsg))
+                if (Localization.LoadDictionaries(appDirs.LangDir, "ScadaServer", out errMsg))
                 {
                     ModPhrases.InitFromDictionaries();
                     Localization.TranslateForm(this, "Scada.Server.Ctrl.FrmMain", toolTip, cmsNotify);
@@ -698,12 +684,12 @@ namespace Scada.Server.Ctrl
             }
 
             // загрузка и отображение настроек приложения
-            if (!settings.Load(configDir + Settings.DefFileName, out errMsg))
+            if (!settings.Load(appDirs.ConfigDir + Settings.DefFileName, out errMsg))
                 sbError.AppendLine(errMsg);
             SettingsToControls();
 
             // загрузка настроек соединения
-            string fileName = configDir + CommSettings.DefFileName;
+            string fileName = appDirs.ConfigDir + CommSettings.DefFileName;
             if (File.Exists(fileName) && !commSettings.LoadFromFile(fileName, out errMsg))
                 sbError.AppendLine(errMsg);
 
@@ -817,7 +803,7 @@ namespace Scada.Server.Ctrl
         private void btnAbout_Click(object sender, EventArgs e)
         {
             // отображение формы о программе
-            FrmAbout.ShowAbout(exeDir, errLog);
+            FrmAbout.ShowAbout(appDirs.ExeDir, errLog);
         }
 
 
@@ -1024,7 +1010,7 @@ namespace Scada.Server.Ctrl
         private void btnAddMod_Click(object sender, EventArgs e)
         {
             // выбор и добавление модуля
-            dlgMod.InitialDirectory = modDir;
+            dlgMod.InitialDirectory = appDirs.ModDir;
             dlgMod.FileName = "";
 
             if (dlgMod.ShowDialog() == DialogResult.OK)
@@ -1161,7 +1147,7 @@ namespace Scada.Server.Ctrl
                 string errMsg;
 
                 // сохранение настроек соединения
-                if (!commSettings.SaveToFile(configDir + CommSettings.DefFileName, out errMsg))
+                if (!commSettings.SaveToFile(appDirs.ConfigDir + CommSettings.DefFileName, out errMsg))
                 {
                     errLog.WriteAction(errMsg);
                     ScadaUtils.ShowError(errMsg);

@@ -197,11 +197,7 @@ namespace Scada.Server.Svc
         /// </summary>
         public MainLogic()
         {
-            ExeDir = ScadaUtils.NormalDir(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-            ConfigDir = "";
-            LangDir = "";
-            LogDir = "";
-            ModDir = "";
+            AppDirs = new AppDirs();
             AppLog = new Log(Log.Formats.Full);
             AppLog.Encoding = Encoding.UTF8;
             Settings = new Settings();
@@ -242,29 +238,9 @@ namespace Scada.Server.Svc
 
 
         /// <summary>
-        /// Получить директорию исполняемого файла приложения
+        /// Получить директории приложения
         /// </summary>
-        public string ExeDir { get; private set; }
-
-        /// <summary>
-        /// Получить директорию конфигурации приложения
-        /// </summary>
-        public string ConfigDir { get; private set; }
-
-        /// <summary>
-        /// Получить директорию языковых файлов приложения
-        /// </summary>
-        public string LangDir { get; private set; }
-
-        /// <summary>
-        /// Получить директорию журналов приложения
-        /// </summary>
-        public string LogDir { get; private set; }
-
-        /// <summary>
-        /// Получить директорию подключаемых модулей
-        /// </summary>
-        public string ModDir { get; private set; }
+        public AppDirs AppDirs { get; private set; }
 
         /// <summary>
         /// Получить журнал приложения
@@ -300,7 +276,7 @@ namespace Scada.Server.Svc
 
                 foreach (string fileName in Settings.ModuleFileNames)
                 {
-                    string fullFileName = ModDir + fileName;
+                    string fullFileName = AppDirs.ModDir + fileName;
 
                     try
                     {
@@ -312,9 +288,7 @@ namespace Scada.Server.Svc
                         Type type = asm.GetType("Scada.Server.Modules." + 
                             Path.GetFileNameWithoutExtension(fileName) + "Logic", true);
                         ModLogic modLogic = Activator.CreateInstance(type) as ModLogic;
-                        modLogic.ConfigDir = ConfigDir;
-                        modLogic.LangDir = LangDir;
-                        modLogic.LogDir = LogDir;
+                        modLogic.AppDirs = AppDirs;
                         modLogic.Settings = Settings;
                         modLogic.WriteToLog = AppLog.WriteAction;
                         modLogic.PassCommand = comm.PassCommand;
@@ -1894,16 +1868,13 @@ namespace Scada.Server.Svc
         /// </summary>
         public void InitAppDirs(out bool dirsExist, out bool logDirExists)
         {
-            ConfigDir = ExeDir + "Config" + Path.DirectorySeparatorChar;
-            LangDir = ExeDir + "Lang" + Path.DirectorySeparatorChar;
-            LogDir = ExeDir + "Log" + Path.DirectorySeparatorChar;
-            ModDir = ExeDir + "Mod" + Path.DirectorySeparatorChar;
+            AppDirs.Init(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
 
-            AppLog.FileName = LogDir + LogFileName;
-            infoFileName = LogDir + InfoFileName;
-            logDirExists = Directory.Exists(LogDir);
-            dirsExist = Directory.Exists(ConfigDir) && Directory.Exists(LangDir) && 
-                logDirExists && Directory.Exists(ModDir);
+            AppLog.FileName = AppDirs.LogDir + LogFileName;
+            infoFileName = AppDirs.LogDir + InfoFileName;
+            logDirExists = Directory.Exists(AppDirs.LogDir);
+            dirsExist = Directory.Exists(AppDirs.ConfigDir) && Directory.Exists(AppDirs.LangDir) &&
+                logDirExists && Directory.Exists(AppDirs.ModDir);
         }
 
         /// <summary>
@@ -1920,7 +1891,7 @@ namespace Scada.Server.Svc
                 startDT = DateTime.Now;
                 string errMsg;
 
-                if (Settings.Load(ConfigDir + Settings.DefFileName, out errMsg))
+                if (Settings.Load(AppDirs.ConfigDir + Settings.DefFileName, out errMsg))
                 {
                     LoadModules();
 
