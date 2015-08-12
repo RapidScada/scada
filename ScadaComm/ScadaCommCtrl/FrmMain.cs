@@ -482,6 +482,46 @@ namespace Scada.Comm.Ctrl
             gbKpCmd.Height = btnSendCmd.Bottom + gbKpCmd.Padding.Bottom + 2;
         }
 
+        /// <summary>
+        /// Отобразить свойства выбранного КП
+        /// </summary>
+        private void ShowLastKPProps(bool showUnsupMsg)
+        {
+            if (lastKP != null)
+            {
+                int index = kpDllInfoList.IndexOfKey(lastKP.Dll);
+
+                if (index >= 0)
+                {
+                    try
+                    {
+                        KpDllInfo kpDllInfo = kpDllInfoList.Values[index];
+                        KPView kpView = KPFactory.GetKPView(kpDllInfo.KpType, lastKP.Number);
+
+                        if (kpView.CanShowProps)
+                        {
+                            kpView.AppDirs = appDirs;
+                            kpView.ShowProps();
+                        }
+                        else if (showUnsupMsg)
+                        {                            
+                            ScadaUtils.ShowError(string.Format(AppPhrases.ShowKpPropsUnsupported, kpDllInfo.FileName));
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        string errMsg = AppPhrases.ShowKpPropsError + ":\r\n" + ex.Message;
+                        errLog.WriteAction(errMsg);
+                        ScadaUtils.ShowError(errMsg);
+                    }
+                }
+                else
+                {
+                    ScadaUtils.ShowError(AppPhrases.UnknownDLL);
+                }
+            }
+        }
+
 
         /// <summary>
         /// Считать настройки изменёнными
@@ -1223,6 +1263,17 @@ namespace Scada.Comm.Ctrl
                 treeView.SelectedNode = e.Node;
         }
 
+        private void treeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            // вызов свойств КП по двойному щечку левой кнопкой мыши
+            if (e.Button == MouseButtons.Left && e.Node != null)
+            {
+                NodeTag nodeTag = e.Node.Tag as NodeTag;
+                if (nodeTag != null && nodeTag.Obj is Settings.KP)
+                    ShowLastKPProps(false);
+            }
+        }
+
 
         private void cmsLine_Opened(object sender, EventArgs e)
         {
@@ -1454,7 +1505,7 @@ namespace Scada.Comm.Ctrl
             }
 
             miKpProps.Enabled = enabled;
-            miKpProps.Tag = kpView;
+            miKpProps.Tag = enabled ? kpView : null;
         }
 
         private void miKpProps_Click(object sender, EventArgs e)
@@ -2522,42 +2573,8 @@ namespace Scada.Comm.Ctrl
         private void btnKpProps_Click(object sender, EventArgs e)
         {
             // отображение свойств выбранного КП
-            if (lastKP != null)
-            {
-                int index = kpDllInfoList.IndexOfKey(lastKP.Dll);
-
-                if (index >= 0)
-                {
-                    numKpNumber.Focus();
-
-                    try
-                    {
-                        KpDllInfo kpDllInfo = kpDllInfoList.Values[index];
-                        KPView kpView = KPFactory.GetKPView(kpDllInfo.KpType, lastKP.Number);
-
-                        if (kpView.CanShowProps)
-                        {
-                            kpView.AppDirs = appDirs;
-                            kpView.ShowProps();
-                        }
-                        else
-                        {
-                            ScadaUtils.ShowError(string.Format(AppPhrases.ShowKpPropsUnsupported, kpDllInfo.FileName));
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        string errMsg = AppPhrases.ShowKpPropsError + ":\r\n" + ex.Message;
-                        errLog.WriteAction(errMsg);
-                        ScadaUtils.ShowError(errMsg);
-                    }
-                }
-                else
-                {
-                    cbKpDll.Focus();
-                    ScadaUtils.ShowError(AppPhrases.UnknownDLL);
-                }
-            }
+            txtCmdLine.Focus();
+            ShowLastKPProps(true);
         }
         #endregion
 

@@ -478,6 +478,7 @@
             this.treeView.TabIndex = 0;
             this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
             this.treeView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView_NodeMouseClick);
+            this.treeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView_NodeMouseDoubleClick);
             // 
             // ilTree
             // 
@@ -2448,14 +2449,15 @@
             this.cmsKP.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miKpProps});
             this.cmsKP.Name = "cmsKP";
-            this.cmsKP.Size = new System.Drawing.Size(126, 26);
+            this.cmsKP.Size = new System.Drawing.Size(128, 26);
             this.cmsKP.Opened += new System.EventHandler(this.cmsKP_Opened);
             // 
             // miKpProps
             // 
+            this.miKpProps.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.miKpProps.Image = ((System.Drawing.Image)(resources.GetObject("miKpProps.Image")));
             this.miKpProps.Name = "miKpProps";
-            this.miKpProps.Size = new System.Drawing.Size(125, 22);
+            this.miKpProps.Size = new System.Drawing.Size(127, 22);
             this.miKpProps.Text = "Свойства";
             this.miKpProps.Click += new System.EventHandler(this.miKpProps_Click);
             // 
