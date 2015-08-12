@@ -132,9 +132,9 @@ namespace Scada.Comm.Devices
             }
 
             /// <summary>
-            /// Получить или установить номер линии связи
+            /// Получить номер линии связи
             /// </summary>
-            public int Number { get; set; }
+            public int Number { get; protected set; }
             /// <summary>
             /// Получить ссылку на пользовательские параметры линии связи
             /// </summary>
