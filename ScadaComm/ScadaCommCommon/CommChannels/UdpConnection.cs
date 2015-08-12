@@ -46,13 +46,13 @@ namespace Scada.Comm.Channels
         protected const int DatagramReceiveTimeout = 10;
 
         /// <summary>
-        /// Неполностью считанная датаграмма
+        /// Буфер неполностью считанной датаграммы
         /// </summary>
-        protected byte[] unreadDatagram;
+        protected byte[] datagramBuf;
         /// <summary>
-        /// Позиция чтения из неполностью считанной датаграммы
+        /// Позиция чтения из буфера датаграммы
         /// </summary>
-        protected int udReadPos;
+        protected int bufReadPos;
 
         
         /// <summary>
@@ -71,8 +71,8 @@ namespace Scada.Comm.Channels
             if (udpClient == null)
                 throw new ArgumentNullException("udpClient");
 
-            unreadDatagram = null;
-            udReadPos = 0;
+            datagramBuf = null;
+            bufReadPos = 0;
 
             UdpClient = udpClient;
             UdpClient.Client.SendTimeout = DefaultWriteTimeout;
@@ -110,7 +110,7 @@ namespace Scada.Comm.Channels
         /// </summary>
         protected byte[] ReceiveDatagram(ref IPEndPoint endPoint, out int readPos, out bool isNew)
         {
-            if (unreadDatagram == null)
+            if (datagramBuf == null)
             {
                 // приём новой датаграммы
                 readPos = 0;
@@ -121,12 +121,12 @@ namespace Scada.Comm.Channels
             else
             {
                 // возврат неполностью считанной датаграммы
-                byte[] datagram = unreadDatagram;
-                readPos = udReadPos;
+                byte[] datagram = datagramBuf;
+                readPos = bufReadPos;
                 isNew = false;
 
-                unreadDatagram = null;
-                udReadPos = 0;
+                datagramBuf = null;
+                bufReadPos = 0;
 
                 return datagram;
             }
@@ -139,8 +139,8 @@ namespace Scada.Comm.Channels
         {
             if (datagram != null && readPos < datagram.Length)
             {
-                unreadDatagram = datagram;
-                udReadPos = readPos;
+                datagramBuf = datagram;
+                bufReadPos = readPos;
             }
         }
 
@@ -391,6 +391,15 @@ namespace Scada.Comm.Channels
         {
             try { UdpClient.Close(); }
             catch { }
+        }
+
+        /// <summary>
+        /// Очистить буфер неполностью считанной датаграммы
+        /// </summary>
+        public void ClearDatagramBuffer()
+        {
+            datagramBuf = null;
+            bufReadPos = 0;
         }
     }
 }

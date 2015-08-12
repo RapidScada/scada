@@ -278,5 +278,19 @@ namespace Scada.Comm.Channels
                 udpConn.RemoteAddress = string.IsNullOrEmpty(kpLogic.CallNum) ? 
                     settings.RemoteIpAddress : kpLogic.CallNum;
         }
+
+        /// <summary>
+        /// Выполнить действия после сеанса опроса КП или отправки команды
+        /// </summary>
+        public override void AfterSession(KPLogic kpLogic)
+        {
+            // очистка буфера неполностью считанной датаграммы, если сеанс опроса КП завершён с ошибкой
+            if (kpLogic.WorkState == KPLogic.WorkStates.Error && Behavior == OperatingBehaviors.Master)
+            {
+                UdpConnection udpConn = kpLogic.Connection as UdpConnection;
+                if (udpConn != null && udpConn.Connected)
+                    udpConn.ClearDatagramBuffer();
+            }
+        }
     }
 }
