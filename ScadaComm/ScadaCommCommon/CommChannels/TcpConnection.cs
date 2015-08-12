@@ -27,7 +27,6 @@ using Scada.Comm.Devices;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Ports;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -206,28 +205,6 @@ namespace Scada.Comm.Channels
 
             try { RemoteAddress = ((IPEndPoint)TcpClient.Client.RemoteEndPoint).Address.ToString(); }
             catch { RemoteAddress = ""; }
-        }
-
-        /// <summary>
-        /// Проверить, что содержимое конструктора строк заканчивается на заданное значение
-        /// </summary>
-        protected bool StringBuilderEndsWith(StringBuilder sb, string value, bool ignoreCase = false)
-        {
-            int sbInd = sb.Length - 1;
-            int valLen = value.Length;
-            int valInd = valLen - 1;
-
-            for (int i = 0; i < valLen; i++)
-            {
-                if (sbInd <= 0)
-                    return false;
-                if (sb[sbInd] != value[valInd])
-                    return false;
-                sbInd--;
-                valInd--;
-            }
-
-            return true;
         }
 
 

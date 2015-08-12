@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 using Utils;
 
 namespace Scada.Comm.Channels
@@ -239,6 +240,29 @@ namespace Scada.Comm.Channels
         /// Получить или установить удалённый адрес соединения
         /// </summary>
         public string RemoteAddress { get; set; }
+
+
+        /// <summary>
+        /// Проверить, что содержимое конструктора строк заканчивается на заданное значение
+        /// </summary>
+        protected static bool StringBuilderEndsWith(StringBuilder sb, string value, bool ignoreCase = false)
+        {
+            int sbInd = sb.Length - 1;
+            int valLen = value.Length;
+            int valInd = valLen - 1;
+
+            for (int i = 0; i < valLen; i++)
+            {
+                if (sbInd <= 0)
+                    return false;
+                if (sb[sbInd] != value[valInd])
+                    return false;
+                sbInd--;
+                valInd--;
+            }
+
+            return true;
+        }
 
 
         /// <summary>

@@ -23,7 +23,6 @@
  * Modified : 2015
  */
 
-using Scada.Comm.Devices;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -46,6 +45,15 @@ namespace Scada.Comm.Channels
         /// </summary>
         protected const int DatagramReceiveTimeout = 10;
 
+        /// <summary>
+        /// Неполностью считанная датаграмма
+        /// </summary>
+        protected byte[] unreadDatagram;
+        /// <summary>
+        /// Позиция чтения из неполностью считанной датаграммы
+        /// </summary>
+        protected int udReadPos;
+
         
         /// <summary>
         /// Конструктор, ограничивающий создание объекта без параметров
@@ -62,6 +70,9 @@ namespace Scada.Comm.Channels
         {
             if (udpClient == null)
                 throw new ArgumentNullException("udpClient");
+
+            unreadDatagram = null;
+            udReadPos = 0;
 
             UdpClient = udpClient;
             UdpClient.Client.SendTimeout = DefaultWriteTimeout;
@@ -97,10 +108,40 @@ namespace Scada.Comm.Channels
         /// <summary>
         /// Принять датаграмму по UPD
         /// </summary>
-        protected byte[] ReceiveDatagram(ref IPEndPoint endPoint)
+        protected byte[] ReceiveDatagram(ref IPEndPoint endPoint, out int readPos, out bool isNew)
         {
-            try { return UdpClient.Receive(ref endPoint); }
-            catch (SocketException) { return null; }
+            if (unreadDatagram == null)
+            {
+                // приём новой датаграммы
+                readPos = 0;
+                isNew = true;
+                try { return UdpClient.Receive(ref endPoint); }
+                catch (SocketException) { return null; }
+            }
+            else
+            {
+                // возврат неполностью считанной датаграммы
+                byte[] datagram = unreadDatagram;
+                readPos = udReadPos;
+                isNew = false;
+
+                unreadDatagram = null;
+                udReadPos = 0;
+
+                return datagram;
+            }
+        }
+
+        /// <summary>
+        /// Сохранить неполностью считанную датаграмму
+        /// </summary>
+        protected void StoreDatagram(byte[] datagram, int readPos)
+        {
+            if (datagram != null && readPos < datagram.Length)
+            {
+                unreadDatagram = datagram;
+                udReadPos = readPos;
+            }
         }
 
 
@@ -122,21 +163,25 @@ namespace Scada.Comm.Channels
                 while (readCnt < count && startDT <= nowDT && nowDT <= stopDT)
                 {
                     // считывание данных
-                    byte[] datagram = ReceiveDatagram(ref endPoint);
+                    int readPos;
+                    bool isNew;
+                    byte[] datagram = ReceiveDatagram(ref endPoint, out readPos, out isNew);
 
                     // копирование полученных данных в заданный буфер
                     if (datagram != null && datagram.Length > 0)
                     {
                         int requiredCnt = count - readCnt;
-                        int copyCnt = Math.Min(datagram.Length, requiredCnt);
-                        Array.Copy(datagram, 0, buffer, readCnt, copyCnt);
+                        int copyCnt = Math.Min(datagram.Length - readPos, requiredCnt);
+                        Array.Copy(datagram, readPos, buffer, readCnt, copyCnt);
                         readCnt += copyCnt;
+                        readPos += copyCnt;
                     }
 
                     // накопление данных во внутреннем буфере соединения
-                    if (readCnt < count)
+                    if (readCnt < count && isNew)
                         Thread.Sleep(DataAccumThreadDelay);
 
+                    StoreDatagram(datagram, readPos);
                     nowDT = DateTime.Now;
                 }
 
@@ -169,21 +214,22 @@ namespace Scada.Comm.Channels
                 IPEndPoint endPoint = CreateIPEndPoint();
 
                 stopReceived = false;
-                int curOffset = offset;
                 byte stopCode = stopCond.StopCode;
                 UdpClient.Client.ReceiveTimeout = DatagramReceiveTimeout;
 
                 while (readCnt < maxCount && !stopReceived && startDT <= nowDT && nowDT <= stopDT)
                 {
                     // считывание данных
-                    byte[] datagram = ReceiveDatagram(ref endPoint);
+                    int readPos;
+                    bool isNew;
+                    byte[] datagram = ReceiveDatagram(ref endPoint, out readPos, out isNew);
 
                     if (datagram != null && datagram.Length > 0)
                     {
                         // поиск кода остановки в считанных данных
                         int datagramLen = datagram.Length;
                         int stopCodeInd = -1;
-                        for (int i = 0; i < datagramLen && !stopReceived; i++)
+                        for (int i = readPos; i < datagramLen && !stopReceived; i++)
                         {
                             if (datagram[i] == stopCode)
                             {
@@ -194,15 +240,17 @@ namespace Scada.Comm.Channels
 
                         // копирование полученных данных в заданный буфер
                         int requiredCnt = stopReceived ? stopCodeInd - readCnt + 1 : maxCount - readCnt;
-                        int copyCnt = Math.Min(datagram.Length, requiredCnt);
-                        Array.Copy(datagram, 0, buffer, readCnt, copyCnt);
+                        int copyCnt = Math.Min(datagram.Length - readPos, requiredCnt);
+                        Array.Copy(datagram, readPos, buffer, readCnt, copyCnt);
                         readCnt += copyCnt;
+                        readPos += copyCnt;
                     }
 
                     // накопление данных во внутреннем буфере соединения
-                    if (readCnt < maxCount && !stopReceived)
+                    if (readCnt < maxCount && !stopReceived && isNew)
                         Thread.Sleep(DataAccumThreadDelay);
 
+                    StoreDatagram(datagram, readPos);
                     nowDT = DateTime.Now;
                 }
 
@@ -235,24 +283,38 @@ namespace Scada.Comm.Channels
                 while (!stopReceived && startDT <= nowDT && nowDT <= stopDT)
                 {
                     // считывание данных
-                    byte[] datagram = ReceiveDatagram(ref endPoint);
+                    int readPos;
+                    bool isNew;
+                    byte[] datagram = ReceiveDatagram(ref endPoint, out readPos, out isNew);
 
                     if (datagram != null && datagram.Length > 0)
                     {
-                        // получение строки из считанных данных
-                        string line = Encoding.Default.GetString(datagram);
-                        int newLineInd = line.IndexOf(NewLine);
-                        if (newLineInd >= 0)
-                            line = line.Substring(0, newLineInd);
+                        // получение строк из считанных данных
+                        int datagramLen = datagram.Length;
+                        StringBuilder sbLine = new StringBuilder(datagramLen);
 
-                        lines.Add(line);
-                        stopReceived = stopCond.CheckCondition(lines, line);
+                        while (readPos < datagramLen && !stopReceived)
+                        {
+                            sbLine.Append(Encoding.Default.GetChars(datagram, readPos, 1));
+                            readPos++;
+                            bool newLineFound = StringBuilderEndsWith(sbLine, NewLine);
+                            if (newLineFound || readPos == datagramLen)
+                            {
+                                string line = newLineFound ?
+                                    sbLine.ToString(0, sbLine.Length - NewLine.Length) :
+                                    sbLine.ToString();
+                                lines.Add(line);
+                                sbLine.Clear();
+                                stopReceived = stopCond.CheckCondition(lines, line);
+                            }
+                        }
                     }
 
                     // накопление данных во внутреннем буфере соединения
-                    if (!stopReceived)
+                    if (!stopReceived && isNew)
                         Thread.Sleep(DataAccumThreadDelay);
 
+                    StoreDatagram(datagram, readPos);
                     nowDT = DateTime.Now;
                 }
 
