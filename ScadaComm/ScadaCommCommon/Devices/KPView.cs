@@ -121,7 +121,7 @@ namespace Scada.Comm.Devices
             /// <summary>
             /// Конструктор
             /// </summary>
-            public CommLineProperties(int number, SortedList<string, Settings.CustomParam> customParams)
+            public CommLineProperties(int number, SortedList<string, string> customParams)
             {
                 if (customParams == null)
                     throw new ArgumentNullException("customParams");
@@ -138,7 +138,7 @@ namespace Scada.Comm.Devices
             /// <summary>
             /// Получить ссылку на пользовательские параметры линии связи
             /// </summary>
-            public SortedList<string, Settings.CustomParam> CustomParams { get; protected set; }
+            public SortedList<string, string> CustomParams { get; protected set; }
             /// <summary>
             /// Получить или установить признак изменения пользовательских параметров
             /// </summary>

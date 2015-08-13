@@ -145,7 +145,7 @@ namespace Scada.Comm
                 CmdEnabled = false;
                 DetailedLog = true;
 
-                CustomParams = new List<CustomParam>();
+                CustomParams = new SortedList<string, string>();
                 ReqSequence = new List<KP>();
             }
 
@@ -229,7 +229,7 @@ namespace Scada.Comm
             /// <summary>
             /// Получить пользовательские параметры линии связи
             /// </summary>
-            public List<CustomParam> CustomParams { get; private set; }
+            public SortedList<string, string> CustomParams { get; private set; }
             /// <summary>
             /// Получить последовательность опроса КП
             /// </summary>
@@ -261,9 +261,9 @@ namespace Scada.Comm
                 commLine.CmdEnabled = CmdEnabled;
                 commLine.DetailedLog = DetailedLog;
 
-                commLine.CustomParams = new List<CustomParam>();
-                foreach (CustomParam userParam in CustomParams)
-                    commLine.CustomParams.Add(userParam.Clone());
+                commLine.CustomParams = new SortedList<string, string>();
+                foreach (KeyValuePair<string, string> customParam in CustomParams)
+                    commLine.CustomParams.Add(customParam.Key, customParam.Value);
 
                 commLine.ReqSequence = new List<KP>();
                 foreach (KP kp in ReqSequence)
@@ -278,48 +278,6 @@ namespace Scada.Comm
             {
                 string nameStr = name == null || name == DBNull.Value ? "" : name.ToString();
                 return CommPhrases.LineCaption + " " + number + (nameStr == "" ? "" : " \"" + nameStr + "\"");
-            }
-        }
-
-        /// <summary>
-        /// Пользовательский параметр линии связи
-        /// </summary>
-        public class CustomParam
-        {
-            /// <summary>
-            /// Конструктор
-            /// </summary>
-            public CustomParam()
-            {
-                Name = "";
-                Value = "";
-                Descr = "";
-            }
-
-            /// <summary>
-            /// Получить или установить наименование
-            /// </summary>
-            public string Name { get; set; }
-            /// <summary>
-            /// Получить или установить значение
-            /// </summary>
-            public string Value { get; set; }
-            /// <summary>
-            /// Получить или установить описание
-            /// </summary>
-            public string Descr { get; set; }
-
-            /// <summary>
-            /// Создать полную копию пользовательского параметра
-            /// </summary>
-            public CustomParam Clone()
-            {
-                return new CustomParam()
-                {
-                    Name = this.Name,
-                    Value = this.Value,
-                    Descr = this.Descr
-                };
             }
         }
 
@@ -608,14 +566,8 @@ namespace Scada.Comm
                 foreach (XmlElement paramElem in paramNodes)
                 {
                     string name = paramElem.GetAttribute("name");
-                    if (name != "")
-                    {
-                        CustomParam customParam = new CustomParam();
-                        customParam.Name = name;
-                        customParam.Value = paramElem.GetAttribute("value");
-                        customParam.Descr = paramElem.GetAttribute("descr");
-                        commLine.CustomParams.Add(customParam);
-                    }
+                    if (name != "" && !commLine.CustomParams.ContainsKey(name))
+                        commLine.CustomParams.Add(name, paramElem.GetAttribute("value"));
                 }
             }
 
@@ -838,8 +790,8 @@ namespace Scada.Comm
                     // пользовательские параметры
                     paramsElem = xmlDoc.CreateElement("UserParams"); // CustomParams
                     lineElem.AppendChild(paramsElem);
-                    foreach (CustomParam param in commLine.CustomParams)
-                        paramsElem.AppendParamElem(param.Name, param.Value, param.Descr);
+                    foreach (KeyValuePair<string, string> customParam in commLine.CustomParams)
+                        paramsElem.AppendParamElem(customParam.Key, customParam.Value);
 
                     // последовательность опроса
                     XmlElement reqSeqElem = xmlDoc.CreateElement("ReqSequence");

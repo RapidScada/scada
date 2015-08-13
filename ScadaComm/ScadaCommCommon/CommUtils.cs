@@ -26,6 +26,7 @@
 using Scada.Comm.Devices;
 using Scada.Data;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Net;
@@ -182,6 +183,112 @@ namespace Scada.Comm
         public static string GetNowDT()
         {
             return DateTime.Now.ToString(CommLineDTFormat);
+        }
+
+
+        /// <summary>
+        /// Получить строковое значение параметра
+        /// </summary>
+        public static string GetStringParam(this SortedList<string, string> paramList,
+            string name, bool required, string defaultValue)
+        {
+            string val;
+            if (paramList.TryGetValue(name, out val))
+                return val;
+            else if (required)
+                throw new ArgumentException(string.Format(CommPhrases.ParamRequired, name));
+            else
+                return defaultValue;
+        }
+
+        /// <summary>
+        /// Получить логическое значение параметра
+        /// </summary>
+        public static bool GetBoolParam(this SortedList<string, string> paramList,
+            string name, bool required, bool defaultValue)
+        {
+            string valStr;
+            bool val;
+
+            if (paramList.TryGetValue(name, out valStr))
+            {
+                if (bool.TryParse(valStr, out val))
+                {
+                    return val;
+                }
+                else
+                {
+                    throw new FormatException(string.Format(CommPhrases.IncorrectParamVal, name));
+                }
+            }
+            else if (required)
+            {
+                throw new ArgumentException(string.Format(CommPhrases.ParamRequired, name));
+            }
+            else
+            {
+                return defaultValue;
+            }
+        }
+
+        /// <summary>
+        /// Получить целочисленное значение параметра
+        /// </summary>
+        public static int GetIntParam(this SortedList<string, string> paramList,
+            string name, bool required, int defaultValue)
+        {
+            string valStr;
+            int val;
+
+            if (paramList.TryGetValue(name, out valStr))
+            {
+                if (int.TryParse(valStr, out val))
+                {
+                    return val;
+                }
+                else
+                {
+                    throw new FormatException(string.Format(CommPhrases.IncorrectParamVal, name));
+                }
+            }
+            else if (required)
+            {
+                throw new ArgumentException(string.Format(CommPhrases.ParamRequired, name));
+            }
+            else
+            {
+                return defaultValue;
+            }
+        }
+
+        /// <summary>
+        /// Получить значение параметра перечислимого типа
+        /// </summary>
+        public static T GetEnumParam<T>(this SortedList<string, string> paramList,
+            string name, bool required, T defaultValue) where T : struct
+        {
+            string valStr;
+            T val;
+
+            if (paramList.TryGetValue(name, out valStr))
+            {
+                if (Enum.TryParse<T>(valStr, true, out val))
+                {
+                    return val;
+                }
+                else
+                {
+                    throw new FormatException(string.Format(CommPhrases.IncorrectParamVal, name));
+                }
+            }
+            else if (required)
+            {
+                throw new ArgumentException(string.Format(CommPhrases.ParamRequired, name));
+            }
+            else
+            {
+                return defaultValue;
+            }
         }
 
 

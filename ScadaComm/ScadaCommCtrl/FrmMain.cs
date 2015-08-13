@@ -100,6 +100,30 @@ namespace Scada.Comm.Ctrl
             public KPView KpView { get; set; }
         }
 
+        /// <summary>
+        /// Пользовательский параметр линии связи
+        /// </summary>
+        private class CustomParam
+        {
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public CustomParam(string name, string value)
+            {
+                Name = name;
+                Value = value;
+            }
+
+            /// <summary>
+            /// Получить наименование
+            /// </summary>
+            public string Name { get; private set; }
+            /// <summary>
+            /// Получить или установить значение
+            /// </summary>
+            public string Value { get; set; }
+        }
+
 
         /// <summary>
         /// Имя файла состояния
@@ -139,7 +163,7 @@ namespace Scada.Comm.Ctrl
         private Settings modSettings;       // изменённые настройки
         private TreeNode lastNode;          // последний выбранный узел дерева, с которым связаны отображаемые страницы
         private Settings.CommLine lastLine; // последняя выбранная линия связи
-        private Settings.CustomParam lastParam; // последний выбранный пользовательский параметр линии связи
+        private CustomParam lastParam;      // последний выбранный пользовательский параметр линии связи
         private ListViewItem lastParamItem; // элемент списка последнего выбранного пользовательского параметра
         private Settings.KP lastKP;         // последний выбранный КП
         private ListViewItem lastKpItem;    // элемент списка последнего выбранного КП
@@ -175,10 +199,8 @@ namespace Scada.Comm.Ctrl
             timeKpTime.CustomFormat = Localization.Culture.DateTimeFormat.LongTimePattern;
 
             // установка имён столбцов списков для перевода формы
-            colParamOrder.Name = "colParamOrder";
             colParamName.Name = "colParamName";
             colParamValue.Name = "colParamValue";
-            colParamDescr.Name = "colParamDescr";
 
             colKpOrder.Name = "colKpOrder";
             colKpActive.Name = "colKpActive";
@@ -399,7 +421,7 @@ namespace Scada.Comm.Ctrl
             TreeNode node = new TreeNode(commLine.Caption);
             node.ImageKey = node.SelectedImageKey = "commline.png";
             node.ContextMenuStrip = cmsLine;
-            node.Tag = new NodeTag(commLine, pageLineParams, pageUserParams, pageReqSequence);
+            node.Tag = new NodeTag(commLine, pageLineParams, pageCustomParams, pageReqSequence);
             return node;
         }
 
@@ -638,25 +660,18 @@ namespace Scada.Comm.Ctrl
             {
                 changing = true;
 
-                btnMoveUpParam.Enabled = false;
-                btnMoveDownParam.Enabled = false;
                 btnDelParam.Enabled = false;
+                lvCustomParams.Items.Clear();
 
-                lvUserParams.Items.Clear();
-                for (int i = 0; i < lastLine.CustomParams.Count; i++)
+                foreach (KeyValuePair<string, string> customParam in lastLine.CustomParams)
                 {
-                    Settings.CustomParam customParam = lastLine.CustomParams[i];
-
-                    ListViewItem item = new ListViewItem(new string[] { (i + 1).ToString(), 
-                        customParam.Name, customParam.Value, customParam.Descr });
-                    item.Tag = customParam;
-                    lvUserParams.Items.Add(item);
+                    ListViewItem item = new ListViewItem(new string[] { customParam.Key, customParam.Value });
+                    item.Tag = new CustomParam(customParam.Key, customParam.Value);
+                    lvCustomParams.Items.Add(item);
                 }
 
-                txtParamOrder.Text = "";
                 txtParamName.Text = "";
                 txtParamValue.Text = "";
-                txtParamDescr.Text = "";
                 gbSelectedParam.Enabled = false;
 
                 changing = false;
@@ -1238,7 +1253,7 @@ namespace Scada.Comm.Ctrl
                         CommonParamsToPage();
                     else if (tabPage == pageLineParams)
                         LineParamsToPage();
-                    else if (tabPage == pageUserParams)
+                    else if (tabPage == pageCustomParams)
                         UserParamsToPage();
                     else if (tabPage == pageReqSequence)
                         ReqSequenceToPage();
@@ -1902,14 +1917,14 @@ namespace Scada.Comm.Ctrl
         #endregion
 
         #region Обработка событий на странице пользовательских параметров линии связи
-        private void lvUserParams_SelectedIndexChanged(object sender, EventArgs e)
+        private void lvCustomParams_SelectedIndexChanged(object sender, EventArgs e)
         {
             changing = true;
 
-            if (lvUserParams.SelectedItems.Count > 0)
+            if (lvCustomParams.SelectedItems.Count > 0)
             {
-                lastParamItem = lvUserParams.SelectedItems[0];
-                lastParam = lastParamItem.Tag as Settings.CustomParam;
+                lastParamItem = lvCustomParams.SelectedItems[0];
+                lastParam = lastParamItem.Tag as CustomParam;
 
                 if (lastParam == null)
                 {
@@ -1917,10 +1932,8 @@ namespace Scada.Comm.Ctrl
                 }
                 else
                 {
-                    txtParamOrder.Text = (lastParamItem.Index + 1).ToString();
                     txtParamName.Text = lastParam.Name;
                     txtParamValue.Text = lastParam.Value;
-                    txtParamDescr.Text = lastParam.Descr;
                     gbSelectedParam.Enabled = true;
                 }
             }
@@ -1929,18 +1942,13 @@ namespace Scada.Comm.Ctrl
                 lastParam = null;
                 lastParamItem = null;
 
-                txtParamOrder.Text = "";
                 txtParamName.Text = "";
                 txtParamValue.Text = "";
-                txtParamDescr.Text = "";
                 gbSelectedParam.Enabled = false;
             }
 
-            // установка доступности кнопок для действий с пользовательским параметром
-            bool itemSelected = lastParamItem != null;
-            btnMoveUpParam.Enabled = itemSelected && lastParamItem.Index > 0;
-            btnMoveDownParam.Enabled = itemSelected && lastParamItem.Index < lvUserParams.Items.Count - 1;
-            btnDelParam.Enabled = itemSelected;
+            // установка доступности кнопки удаления пользовательского параметра
+            btnDelParam.Enabled = lastParamItem != null;
 
             changing = false;
         }
@@ -1949,28 +1957,44 @@ namespace Scada.Comm.Ctrl
         {
             if (!changing && lastParam != null && lastParamItem != null)
             {
-                lastParam.Name = txtParamName.Text;
-                lastParamItem.SubItems[1].Text = txtParamName.Text;
+                lastParamItem.SubItems[0].Text = txtParamName.Text;
                 SetModified();
             }
+        }
+
+        private void txtParamName_Leave(object sender, EventArgs e)
+        {
+            if (lastLine != null && lastParam != null && lastParamItem != null && lastParam.Name != txtParamName.Text)
+            {
+                Control activeControl = ActiveControl;
+                CustomParam newParam = new CustomParam(txtParamName.Text, lastParam.Value);
+                ListViewItem newItem = new ListViewItem(
+                    new string[] { newParam.Name, newParam.Value }) { Tag = newParam };
+
+                lastLine.CustomParams.Remove(lastParam.Name);
+                lvCustomParams.Items.RemoveAt(lastParamItem.Index);
+
+                lastLine.CustomParams[newParam.Name] = newParam.Value;
+                int newInd = lastLine.CustomParams.IndexOfKey(newParam.Name);
+                lvCustomParams.Items.Insert(newInd, newItem);
+                newItem.Selected = true;
+                activeControl.Focus();
+            }
+        }
+
+        private void txtParamName_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                txtParamName_Leave(null, null);
         }
 
         private void txtParamValue_TextChanged(object sender, EventArgs e)
         {
-            if (!changing && lastParam != null && lastParamItem != null)
+            if (!changing && lastLine != null && lastParam != null && lastParamItem != null)
             {
                 lastParam.Value = txtParamValue.Text;
-                lastParamItem.SubItems[2].Text = txtParamValue.Text;
-                SetModified();
-            }
-        }
-
-        private void txtParamDescr_TextChanged(object sender, EventArgs e)
-        {
-            if (!changing && lastParam != null && lastParamItem != null)
-            {
-                lastParam.Descr = txtParamDescr.Text;
-                lastParamItem.SubItems[3].Text = txtParamDescr.Text;
+                lastLine.CustomParams[lastParam.Name] = lastParam.Value;
+                lastParamItem.SubItems[1].Text = lastParam.Value;
                 SetModified();
             }
         }
@@ -1979,29 +2003,9 @@ namespace Scada.Comm.Ctrl
         {
             if (lastLine != null)
             {
-                Settings.CustomParam newParam = new Settings.CustomParam();
-                int newIndex = lastLine.CustomParams.IndexOf(lastParam);
-                if (newIndex < 0)
-                    newIndex = lastLine.CustomParams.Count;
-                else
-                    newIndex++;
-
-                ListViewItem newItem = new ListViewItem(new string[] { (newIndex + 1).ToString(), "", "", "" });
-                newItem.Tag = newParam;
-
-                if (newIndex < lastLine.CustomParams.Count)
-                {
-                    lastLine.CustomParams.Insert(newIndex, newParam);
-                    lvUserParams.Items.Insert(newIndex, newItem);
-
-                    for (int i = newIndex + 1; i < lvUserParams.Items.Count; i++)
-                        lvUserParams.Items[i].Text = (i + 1).ToString();
-                }
-                else
-                {
-                    lastLine.CustomParams.Add(newParam);
-                    lvUserParams.Items.Add(newItem);
-                }
+                CustomParam newParam = new CustomParam("", "");
+                ListViewItem newItem = new ListViewItem(new string[] { "", "" }) { Tag = newParam };
+                lvCustomParams.Items.Add(newItem);
 
                 newItem.Selected = true;
                 txtParamName.Focus();
@@ -2009,85 +2013,24 @@ namespace Scada.Comm.Ctrl
             }
         }
 
-        private void btnMoveUpParam_Click(object sender, EventArgs e)
-        {
-            if (lastLine != null && lastParam != null && lastParamItem != null)
-            {
-                int selIndex = lastParamItem.Index;
-                if (0 < selIndex && selIndex < lastLine.CustomParams.Count && selIndex < lvUserParams.Items.Count)
-                {
-                    lastLine.CustomParams.RemoveAt(selIndex);
-
-                    lvUserParams.SelectedIndexChanged -= lvUserParams_SelectedIndexChanged;
-                    lvUserParams.Items.RemoveAt(selIndex);
-                    lvUserParams.SelectedIndexChanged += lvUserParams_SelectedIndexChanged;
-                    
-                    selIndex--;
-                    lastLine.CustomParams.Insert(selIndex, lastParam);
-                    lvUserParams.Items.Insert(selIndex, lastParamItem);
-
-                    for (int i = selIndex; i < lvUserParams.Items.Count; i++)
-                        lvUserParams.Items[i].Text = (i + 1).ToString();
-
-                    lastParamItem.Selected = true;
-                    SetModified();
-                }
-            }
-            lvUserParams.Focus();
-        }
-
-        private void btnMoveDownParam_Click(object sender, EventArgs e)
-        {
-            if (lastLine != null && lastParam != null && lastParamItem != null)
-            {
-                int selIndex = lastParamItem.Index;
-                if (0 <= selIndex && selIndex < lastLine.CustomParams.Count - 1 && 
-                    selIndex < lvUserParams.Items.Count - 1)
-                {
-                    lastLine.CustomParams.RemoveAt(selIndex);
-
-                    lvUserParams.SelectedIndexChanged -= lvUserParams_SelectedIndexChanged;
-                    lvUserParams.Items.RemoveAt(selIndex);
-                    lvUserParams.SelectedIndexChanged += lvUserParams_SelectedIndexChanged;
-
-                    selIndex++;
-                    lastLine.CustomParams.Insert(selIndex, lastParam);
-                    lvUserParams.Items.Insert(selIndex, lastParamItem);
-
-                    for (int i = 0; i <= selIndex; i++)
-                        lvUserParams.Items[i].Text = (i + 1).ToString();
-
-                    lastParamItem.Selected = true;
-                    SetModified();
-                }
-            }
-            lvUserParams.Focus();
-        }
-
         private void btnDelParam_Click(object sender, EventArgs e)
         {
             if (lastLine != null && lastParam != null && lastParamItem != null)
             {
+                lastLine.CustomParams.Remove(lastParam.Name);
                 int selIndex = lastParamItem.Index;
-                if (0 <= selIndex && selIndex < lastLine.CustomParams.Count && selIndex < lvUserParams.Items.Count)
+                lvCustomParams.Items.RemoveAt(selIndex);
+
+                if (lvCustomParams.Items.Count > 0)
                 {
-                    lastLine.CustomParams.RemoveAt(selIndex);
-                    lvUserParams.Items.RemoveAt(selIndex);
-
-                    for (int i = selIndex; i < lvUserParams.Items.Count; i++)
-                        lvUserParams.Items[i].Text = (i + 1).ToString();
-
-                    if (lvUserParams.Items.Count > 0)
-                    {
-                        if (selIndex >= lvUserParams.Items.Count)
-                            selIndex = lvUserParams.Items.Count - 1;
-                        lvUserParams.Items[selIndex].Selected = true;
-                    }
-
-                    SetModified();
+                    if (selIndex >= lvCustomParams.Items.Count)
+                        selIndex = lvCustomParams.Items.Count - 1;
+                    lvCustomParams.Items[selIndex].Selected = true;
                 }
+
+                SetModified();
             }
-            lvUserParams.Focus();
+            lvCustomParams.Focus();
         }
         #endregion
 

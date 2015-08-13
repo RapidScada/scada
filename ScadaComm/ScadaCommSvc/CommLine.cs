@@ -1702,11 +1702,8 @@ namespace Scada.Comm.Svc
             commLine.DetailedLog = commLineSett.DetailedLog;
             commLine.SendAllDataPer = commonParams.SendAllDataPer;
 
-            foreach (Settings.CustomParam customParam in commLineSett.CustomParams)
-            {
-                if (!commLine.CustomParams.ContainsKey(customParam.Name))
-                    commLine.CustomParams.Add(customParam.Name, customParam.Value);
-            }
+            foreach (KeyValuePair<string, string> customParam in commLineSett.CustomParams)
+                commLine.CustomParams.Add(customParam.Key, customParam.Value);
 
             AddSerialPortParams(commLine, commLineSett);
 

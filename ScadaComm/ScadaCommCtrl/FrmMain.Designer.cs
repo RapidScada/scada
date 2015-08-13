@@ -126,24 +126,16 @@
             this.cbBaudRate = new System.Windows.Forms.ComboBox();
             this.lblBaudRate = new System.Windows.Forms.Label();
             this.cbPortName = new System.Windows.Forms.ComboBox();
-            this.pageUserParams = new System.Windows.Forms.TabPage();
+            this.pageCustomParams = new System.Windows.Forms.TabPage();
             this.btnDelParam = new System.Windows.Forms.Button();
-            this.btnMoveDownParam = new System.Windows.Forms.Button();
-            this.btnMoveUpParam = new System.Windows.Forms.Button();
             this.gbSelectedParam = new System.Windows.Forms.GroupBox();
-            this.lblParamOrder = new System.Windows.Forms.Label();
-            this.txtParamOrder = new System.Windows.Forms.TextBox();
-            this.lblParamDescr = new System.Windows.Forms.Label();
             this.lblParamValue = new System.Windows.Forms.Label();
-            this.txtParamDescr = new System.Windows.Forms.TextBox();
             this.txtParamValue = new System.Windows.Forms.TextBox();
             this.txtParamName = new System.Windows.Forms.TextBox();
             this.lblParamName = new System.Windows.Forms.Label();
-            this.lvUserParams = new System.Windows.Forms.ListView();
-            this.colParamOrder = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.lvCustomParams = new System.Windows.Forms.ListView();
             this.colParamName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colParamValue = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colParamDescr = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnAddParam = new System.Windows.Forms.Button();
             this.pageReqSequence = new System.Windows.Forms.TabPage();
             this.btnCutKP = new System.Windows.Forms.Button();
@@ -249,7 +241,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numCycleDelay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numReqTriesCnt)).BeginInit();
             this.gbConnection.SuspendLayout();
-            this.pageUserParams.SuspendLayout();
+            this.pageCustomParams.SuspendLayout();
             this.gbSelectedParam.SuspendLayout();
             this.pageReqSequence.SuspendLayout();
             this.gbSelectedKP.SuspendLayout();
@@ -631,7 +623,7 @@
             this.tabControl.Controls.Add(this.pageCommonParams);
             this.tabControl.Controls.Add(this.pageKpDlls);
             this.tabControl.Controls.Add(this.pageLineParams);
-            this.tabControl.Controls.Add(this.pageUserParams);
+            this.tabControl.Controls.Add(this.pageCustomParams);
             this.tabControl.Controls.Add(this.pageReqSequence);
             this.tabControl.Controls.Add(this.pageLineState);
             this.tabControl.Controls.Add(this.pageLineLog);
@@ -1361,67 +1353,37 @@
             this.cbPortName.Text = "COM1";
             this.cbPortName.TextChanged += new System.EventHandler(this.cbPortName_TextChanged);
             // 
-            // pageUserParams
+            // pageCustomParams
             // 
-            this.pageUserParams.BackColor = System.Drawing.Color.Transparent;
-            this.pageUserParams.Controls.Add(this.btnDelParam);
-            this.pageUserParams.Controls.Add(this.btnMoveDownParam);
-            this.pageUserParams.Controls.Add(this.btnMoveUpParam);
-            this.pageUserParams.Controls.Add(this.gbSelectedParam);
-            this.pageUserParams.Controls.Add(this.lvUserParams);
-            this.pageUserParams.Controls.Add(this.btnAddParam);
-            this.pageUserParams.Location = new System.Drawing.Point(4, 22);
-            this.pageUserParams.Name = "pageUserParams";
-            this.pageUserParams.Padding = new System.Windows.Forms.Padding(3);
-            this.pageUserParams.Size = new System.Drawing.Size(406, 439);
-            this.pageUserParams.TabIndex = 3;
-            this.pageUserParams.Text = "Пользовательские параметры";
-            this.pageUserParams.UseVisualStyleBackColor = true;
+            this.pageCustomParams.BackColor = System.Drawing.Color.Transparent;
+            this.pageCustomParams.Controls.Add(this.btnDelParam);
+            this.pageCustomParams.Controls.Add(this.gbSelectedParam);
+            this.pageCustomParams.Controls.Add(this.lvCustomParams);
+            this.pageCustomParams.Controls.Add(this.btnAddParam);
+            this.pageCustomParams.Location = new System.Drawing.Point(4, 22);
+            this.pageCustomParams.Name = "pageCustomParams";
+            this.pageCustomParams.Padding = new System.Windows.Forms.Padding(3);
+            this.pageCustomParams.Size = new System.Drawing.Size(406, 439);
+            this.pageCustomParams.TabIndex = 3;
+            this.pageCustomParams.Text = "Пользовательские параметры";
+            this.pageCustomParams.UseVisualStyleBackColor = true;
             // 
             // btnDelParam
             // 
             this.btnDelParam.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnDelParam.Image = ((System.Drawing.Image)(resources.GetObject("btnDelParam.Image")));
-            this.btnDelParam.Location = new System.Drawing.Point(93, 6);
+            this.btnDelParam.Location = new System.Drawing.Point(35, 6);
             this.btnDelParam.Name = "btnDelParam";
             this.btnDelParam.Size = new System.Drawing.Size(23, 22);
-            this.btnDelParam.TabIndex = 3;
+            this.btnDelParam.TabIndex = 1;
             this.toolTip.SetToolTip(this.btnDelParam, "Удалить выбранный параметр");
             this.btnDelParam.UseVisualStyleBackColor = true;
             this.btnDelParam.Click += new System.EventHandler(this.btnDelParam_Click);
             // 
-            // btnMoveDownParam
-            // 
-            this.btnMoveDownParam.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnMoveDownParam.Image = ((System.Drawing.Image)(resources.GetObject("btnMoveDownParam.Image")));
-            this.btnMoveDownParam.Location = new System.Drawing.Point(64, 6);
-            this.btnMoveDownParam.Name = "btnMoveDownParam";
-            this.btnMoveDownParam.Size = new System.Drawing.Size(23, 22);
-            this.btnMoveDownParam.TabIndex = 2;
-            this.toolTip.SetToolTip(this.btnMoveDownParam, "Переместить выбранный параметр вниз");
-            this.btnMoveDownParam.UseVisualStyleBackColor = true;
-            this.btnMoveDownParam.Click += new System.EventHandler(this.btnMoveDownParam_Click);
-            // 
-            // btnMoveUpParam
-            // 
-            this.btnMoveUpParam.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnMoveUpParam.Image = ((System.Drawing.Image)(resources.GetObject("btnMoveUpParam.Image")));
-            this.btnMoveUpParam.Location = new System.Drawing.Point(35, 6);
-            this.btnMoveUpParam.Name = "btnMoveUpParam";
-            this.btnMoveUpParam.Size = new System.Drawing.Size(23, 22);
-            this.btnMoveUpParam.TabIndex = 1;
-            this.toolTip.SetToolTip(this.btnMoveUpParam, "Переместить выбранный параметр вверх");
-            this.btnMoveUpParam.UseVisualStyleBackColor = true;
-            this.btnMoveUpParam.Click += new System.EventHandler(this.btnMoveUpParam_Click);
-            // 
             // gbSelectedParam
             // 
             this.gbSelectedParam.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.gbSelectedParam.Controls.Add(this.lblParamOrder);
-            this.gbSelectedParam.Controls.Add(this.txtParamOrder);
-            this.gbSelectedParam.Controls.Add(this.lblParamDescr);
             this.gbSelectedParam.Controls.Add(this.lblParamValue);
-            this.gbSelectedParam.Controls.Add(this.txtParamDescr);
             this.gbSelectedParam.Controls.Add(this.txtParamValue);
             this.gbSelectedParam.Controls.Add(this.txtParamName);
             this.gbSelectedParam.Controls.Add(this.lblParamName);
@@ -1429,120 +1391,76 @@
             this.gbSelectedParam.Name = "gbSelectedParam";
             this.gbSelectedParam.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
             this.gbSelectedParam.Size = new System.Drawing.Size(392, 65);
-            this.gbSelectedParam.TabIndex = 5;
+            this.gbSelectedParam.TabIndex = 3;
             this.gbSelectedParam.TabStop = false;
             this.gbSelectedParam.Text = "Выбранный параметр";
-            // 
-            // lblParamOrder
-            // 
-            this.lblParamOrder.AutoSize = true;
-            this.lblParamOrder.Location = new System.Drawing.Point(10, 16);
-            this.lblParamOrder.Name = "lblParamOrder";
-            this.lblParamOrder.Size = new System.Drawing.Size(18, 13);
-            this.lblParamOrder.TabIndex = 0;
-            this.lblParamOrder.Text = "№";
-            // 
-            // txtParamOrder
-            // 
-            this.txtParamOrder.Location = new System.Drawing.Point(13, 32);
-            this.txtParamOrder.Name = "txtParamOrder";
-            this.txtParamOrder.ReadOnly = true;
-            this.txtParamOrder.Size = new System.Drawing.Size(25, 20);
-            this.txtParamOrder.TabIndex = 1;
-            // 
-            // lblParamDescr
-            // 
-            this.lblParamDescr.AutoSize = true;
-            this.lblParamDescr.Location = new System.Drawing.Point(233, 16);
-            this.lblParamDescr.Name = "lblParamDescr";
-            this.lblParamDescr.Size = new System.Drawing.Size(57, 13);
-            this.lblParamDescr.TabIndex = 6;
-            this.lblParamDescr.Text = "Описание";
             // 
             // lblParamValue
             // 
             this.lblParamValue.AutoSize = true;
-            this.lblParamValue.Location = new System.Drawing.Point(137, 16);
+            this.lblParamValue.Location = new System.Drawing.Point(146, 16);
             this.lblParamValue.Name = "lblParamValue";
             this.lblParamValue.Size = new System.Drawing.Size(55, 13);
-            this.lblParamValue.TabIndex = 4;
+            this.lblParamValue.TabIndex = 2;
             this.lblParamValue.Text = "Значение";
-            // 
-            // txtParamDescr
-            // 
-            this.txtParamDescr.Location = new System.Drawing.Point(236, 32);
-            this.txtParamDescr.Name = "txtParamDescr";
-            this.txtParamDescr.Size = new System.Drawing.Size(143, 20);
-            this.txtParamDescr.TabIndex = 7;
-            this.txtParamDescr.TextChanged += new System.EventHandler(this.txtParamDescr_TextChanged);
             // 
             // txtParamValue
             // 
-            this.txtParamValue.Location = new System.Drawing.Point(140, 32);
+            this.txtParamValue.Location = new System.Drawing.Point(149, 32);
             this.txtParamValue.Name = "txtParamValue";
-            this.txtParamValue.Size = new System.Drawing.Size(90, 20);
-            this.txtParamValue.TabIndex = 5;
+            this.txtParamValue.Size = new System.Drawing.Size(230, 20);
+            this.txtParamValue.TabIndex = 3;
             this.txtParamValue.TextChanged += new System.EventHandler(this.txtParamValue_TextChanged);
             // 
             // txtParamName
             // 
-            this.txtParamName.Location = new System.Drawing.Point(44, 32);
+            this.txtParamName.Location = new System.Drawing.Point(13, 32);
             this.txtParamName.Name = "txtParamName";
-            this.txtParamName.Size = new System.Drawing.Size(90, 20);
-            this.txtParamName.TabIndex = 3;
+            this.txtParamName.Size = new System.Drawing.Size(130, 20);
+            this.txtParamName.TabIndex = 1;
             this.txtParamName.TextChanged += new System.EventHandler(this.txtParamName_TextChanged);
+            this.txtParamName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtParamName_KeyDown);
+            this.txtParamName.Leave += new System.EventHandler(this.txtParamName_Leave);
             // 
             // lblParamName
             // 
             this.lblParamName.AutoSize = true;
-            this.lblParamName.Location = new System.Drawing.Point(41, 16);
+            this.lblParamName.Location = new System.Drawing.Point(10, 16);
             this.lblParamName.Name = "lblParamName";
             this.lblParamName.Size = new System.Drawing.Size(83, 13);
-            this.lblParamName.TabIndex = 2;
+            this.lblParamName.TabIndex = 0;
             this.lblParamName.Text = "Наименование";
             // 
-            // lvUserParams
+            // lvCustomParams
             // 
-            this.lvUserParams.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.lvCustomParams.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lvUserParams.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.colParamOrder,
+            this.lvCustomParams.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.colParamName,
-            this.colParamValue,
-            this.colParamDescr});
-            this.lvUserParams.FullRowSelect = true;
-            this.lvUserParams.GridLines = true;
-            this.lvUserParams.HideSelection = false;
-            this.lvUserParams.Location = new System.Drawing.Point(6, 34);
-            this.lvUserParams.MultiSelect = false;
-            this.lvUserParams.Name = "lvUserParams";
-            this.lvUserParams.ShowItemToolTips = true;
-            this.lvUserParams.Size = new System.Drawing.Size(392, 324);
-            this.lvUserParams.TabIndex = 4;
-            this.lvUserParams.UseCompatibleStateImageBehavior = false;
-            this.lvUserParams.View = System.Windows.Forms.View.Details;
-            this.lvUserParams.SelectedIndexChanged += new System.EventHandler(this.lvUserParams_SelectedIndexChanged);
-            // 
-            // colParamOrder
-            // 
-            this.colParamOrder.Text = "№";
-            this.colParamOrder.Width = 40;
+            this.colParamValue});
+            this.lvCustomParams.FullRowSelect = true;
+            this.lvCustomParams.GridLines = true;
+            this.lvCustomParams.HideSelection = false;
+            this.lvCustomParams.Location = new System.Drawing.Point(6, 34);
+            this.lvCustomParams.MultiSelect = false;
+            this.lvCustomParams.Name = "lvCustomParams";
+            this.lvCustomParams.ShowItemToolTips = true;
+            this.lvCustomParams.Size = new System.Drawing.Size(392, 324);
+            this.lvCustomParams.TabIndex = 2;
+            this.lvCustomParams.UseCompatibleStateImageBehavior = false;
+            this.lvCustomParams.View = System.Windows.Forms.View.Details;
+            this.lvCustomParams.SelectedIndexChanged += new System.EventHandler(this.lvCustomParams_SelectedIndexChanged);
             // 
             // colParamName
             // 
             this.colParamName.Text = "Наименование";
-            this.colParamName.Width = 100;
+            this.colParamName.Width = 150;
             // 
             // colParamValue
             // 
             this.colParamValue.Text = "Значение";
-            this.colParamValue.Width = 100;
-            // 
-            // colParamDescr
-            // 
-            this.colParamDescr.Text = "Описание";
-            this.colParamDescr.Width = 130;
+            this.colParamValue.Width = 221;
             // 
             // btnAddParam
             // 
@@ -2520,7 +2438,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numReqTriesCnt)).EndInit();
             this.gbConnection.ResumeLayout(false);
             this.gbConnection.PerformLayout();
-            this.pageUserParams.ResumeLayout(false);
+            this.pageCustomParams.ResumeLayout(false);
             this.gbSelectedParam.ResumeLayout(false);
             this.gbSelectedParam.PerformLayout();
             this.pageReqSequence.ResumeLayout(false);
@@ -2624,22 +2542,17 @@
         private System.Windows.Forms.Label lnlLineName;
         private System.Windows.Forms.Label lblLineNumber;
         private System.Windows.Forms.CheckBox chkLineActive;
-        private System.Windows.Forms.TabPage pageUserParams;
+        private System.Windows.Forms.TabPage pageCustomParams;
         private System.Windows.Forms.Button btnAddParam;
-        private System.Windows.Forms.ListView lvUserParams;
+        private System.Windows.Forms.ListView lvCustomParams;
         private System.Windows.Forms.ColumnHeader colParamName;
         private System.Windows.Forms.ColumnHeader colParamValue;
-        private System.Windows.Forms.ColumnHeader colParamDescr;
         private System.Windows.Forms.GroupBox gbSelectedParam;
         private System.Windows.Forms.TextBox txtParamName;
         private System.Windows.Forms.Label lblParamName;
-        private System.Windows.Forms.Label lblParamDescr;
         private System.Windows.Forms.Label lblParamValue;
-        private System.Windows.Forms.TextBox txtParamDescr;
         private System.Windows.Forms.TextBox txtParamValue;
         private System.Windows.Forms.Button btnDelParam;
-        private System.Windows.Forms.Button btnMoveDownParam;
-        private System.Windows.Forms.Button btnMoveUpParam;
         private System.Windows.Forms.ListBox lbKpDll;
         private System.Windows.Forms.Label lblKpDllDescr;
         private System.Windows.Forms.TextBox txtKpDllDescr;
@@ -2695,8 +2608,6 @@
         private System.Windows.Forms.Label lblAppState;
         private System.Windows.Forms.Label lblAppLog;
         private System.Windows.Forms.Button btnKpProps;
-        private System.Windows.Forms.TextBox txtParamOrder;
-        private System.Windows.Forms.Label lblParamOrder;
         private System.Windows.Forms.ContextMenuStrip cmsLine;
         private System.Windows.Forms.ToolStripMenuItem miAddLine;
         private System.Windows.Forms.ToolStripMenuItem miMoveUpLine;
@@ -2732,7 +2643,6 @@
         private System.Windows.Forms.Panel pnlMain;
         private System.Windows.Forms.ImageList ilTree;
         private System.Windows.Forms.Button btnCutKP;
-        private System.Windows.Forms.ColumnHeader colParamOrder;
         private System.Windows.Forms.GroupBox gbKpCmd;
         private System.Windows.Forms.Button btnSendCmd;
         private System.Windows.Forms.Panel pnlCmdData;

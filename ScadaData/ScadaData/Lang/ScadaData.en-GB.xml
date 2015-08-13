@@ -37,7 +37,7 @@
     <Phrase key="NoRights">Insufficient rights.</Phrase>
     <Phrase key="IncorrectXmlNodeVal">Incorrect value of XML node &quot;{0}&quot;.</Phrase>
     <Phrase key="IncorrectXmlAttrVal">Incorrect value of XML attribute &quot;{0}&quot;.</Phrase>
-    <Phrase key="IncorrectXmlParamVal">Incorrect value of parameter &quot;{0}&quot;.</Phrase>
+    <Phrase key="IncorrectXmlParamVal">Incorrect value of the parameter &quot;{0}&quot;.</Phrase>
     <Phrase key="XmlNodeNotFound">XML node &quot;{0}&quot; not found within the node &quot;{1}&quot;.</Phrase>
     <Phrase key="CmdTypeTable">Command types</Phrase>
     <Phrase key="CmdValTable">Command values</Phrase>

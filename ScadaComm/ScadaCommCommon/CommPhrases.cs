@@ -39,6 +39,10 @@ namespace Scada.Comm
             InitOnLocalization();
         }
 
+        // Словарь Scada.Comm.CommUtils
+        public static string ParamRequired { get; private set; }
+        public static string IncorrectParamVal { get; private set; }
+
         // Словарь Scada.Comm.Settings
         public static string LineCaption { get; private set; }
         public static string KPCaption { get; private set; }
@@ -67,12 +71,16 @@ namespace Scada.Comm
 
         private static void SetToDefault()
         {
-            GetViewTypeError = "Ошибка при получении типа интерфейса КП из библиотеки {0}";
-            CreateViewError = "Ошибка при создании экземпляра класса интерфейса КП {0}";
+            ParamRequired = "Требуется параметр \"{0}\".";
+            IncorrectParamVal = "Некорректное значение параметра \"{0}\".";
+
             LineCaption = "Линия";
             KPCaption = "КП";
             IncorrectKPSettings = "Некорректные параметры КП {0}";
             IncorrectLineSettings = "Некорректная конфигурация линии связи {0}";
+
+            GetViewTypeError = "Ошибка при получении типа интерфейса КП из библиотеки {0}";
+            CreateViewError = "Ошибка при создании экземпляра класса интерфейса КП {0}";
         }
 
         private static void InitOnLocalization()
@@ -114,6 +122,12 @@ namespace Scada.Comm
         public static void InitFromDictionaries()
         {
             Localization.Dict dict;
+            if (Localization.Dictionaries.TryGetValue("Scada.Comm.CommUtils", out dict))
+            {
+                ParamRequired = dict.GetPhrase("ParamRequired", ParamRequired);
+                IncorrectParamVal = dict.GetPhrase("IncorrectParamVal", IncorrectParamVal);
+            }
+
             if (Localization.Dictionaries.TryGetValue("Scada.Comm.Settings", out dict))
             {
                 LineCaption = dict.GetPhrase("LineCaption", LineCaption);

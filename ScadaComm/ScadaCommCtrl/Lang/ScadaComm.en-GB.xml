@@ -58,15 +58,13 @@
     <Phrase key="lblCycleDelay">Delay after request cycle, ms</Phrase>
     <Phrase key="lblMaxCommErrCnt">Maximum failed session count</Phrase>
     <Phrase key="lblCmdEnabled">Commands enabled</Phrase>
-    <Phrase key="pageUserParams">Custom Parameters</Phrase>
+    <Phrase key="pageCustomParams">Custom Parameters</Phrase>
     <Phrase key="btnAddParam.ToolTip">Add parameter</Phrase>
     <Phrase key="btnMoveUpParam.ToolTip">Move selected parameter up</Phrase>
     <Phrase key="btnMoveDownParam.ToolTip">Move selected parameter down</Phrase>
     <Phrase key="btnDelParam.ToolTip">Delete selected parameter</Phrase>
-    <Phrase key="colParamOrder">Num.</Phrase>
     <Phrase key="colParamName">Name</Phrase>
     <Phrase key="colParamValue">Value</Phrase>
-    <Phrase key="colParamDescr">Description</Phrase>
     <Phrase key="gbSelectedParam">Selected parameter</Phrase>
     <Phrase key="lblParamOrder">Num.</Phrase>
     <Phrase key="lblParamName">Name</Phrase>
@@ -172,6 +170,10 @@
     <Phrase key="IncorrectCmdVal">The command value is incorrect.</Phrase>
     <Phrase key="IncorrectHexCmdData">The hexadecimal command data are incorrect.</Phrase>
     <Phrase key="CmdDataRequired">Command data are required.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.CommUtils">
+    <Phrase key="ParamRequired">Parameter &quot;{0}&quot; is required.</Phrase>
+    <Phrase key="IncorrectParamVal">Incorrect value of the parameter &quot;{0}&quot;.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Settings">
     <Phrase key="LineCaption">Line</Phrase>
