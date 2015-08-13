@@ -23,21 +23,20 @@
  * Modified : 2015
  */
 
+using Scada.Client;
+using Scada.Comm.Devices;
+using Scada.Data;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.IO;
 using System.IO.Ports;
-using System.Reflection;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using Scada.Client;
 using Utils;
-using Scada.Comm.Devices;
-using Scada.Data;
 
 namespace Scada.Comm.Ctrl
 {
@@ -1967,16 +1966,26 @@ namespace Scada.Comm.Ctrl
             if (lastLine != null && lastParam != null && lastParamItem != null && lastParam.Name != txtParamName.Text)
             {
                 Control activeControl = ActiveControl;
-                CustomParam newParam = new CustomParam(txtParamName.Text, lastParam.Value);
-                ListViewItem newItem = new ListViewItem(
-                    new string[] { newParam.Name, newParam.Value }) { Tag = newParam };
 
+                // создание нового пользовательского параметра
+                string newName = txtParamName.Text;
+                CustomParam newParam = new CustomParam(newName, lastParam.Value);
+
+                // удаление пользовательского параметра со старым наименованием
                 lastLine.CustomParams.Remove(lastParam.Name);
                 lvCustomParams.Items.RemoveAt(lastParamItem.Index);
 
-                lastLine.CustomParams[newParam.Name] = newParam.Value;
-                int newInd = lastLine.CustomParams.IndexOfKey(newParam.Name);
+                // удаление элемента списка, если новое наименование дублируется
+                int newInd = lastLine.CustomParams.IndexOfKey(newName);
+                if (newInd >= 0)
+                    lvCustomParams.Items.RemoveAt(newInd);
+
+                // добавление нового пользовательского параметра
+                lastLine.CustomParams[newName] = newParam.Value;
+                newInd = lastLine.CustomParams.IndexOfKey(newName);
+                ListViewItem newItem = new ListViewItem(new string[] { newName, newParam.Value }) { Tag = newParam };
                 lvCustomParams.Items.Insert(newInd, newItem);
+
                 newItem.Selected = true;
                 activeControl.Focus();
             }
@@ -1984,6 +1993,7 @@ namespace Scada.Comm.Ctrl
 
         private void txtParamName_KeyDown(object sender, KeyEventArgs e)
         {
+            // применить изменение наименования пользовательского параметра
             if (e.KeyCode == Keys.Enter)
                 txtParamName_Leave(null, null);
         }
