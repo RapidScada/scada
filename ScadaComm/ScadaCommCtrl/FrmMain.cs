@@ -504,11 +504,51 @@ namespace Scada.Comm.Ctrl
         }
 
         /// <summary>
+        /// Отобразить свойства КП
+        /// </summary>
+        private bool ShowKPProps(KPView kpView)
+        {
+            if (kpView.CanShowProps)
+            {
+                // вызов формы отображения свойств КП
+                kpView.CmdLine = lastKP.CmdLine;
+                kpView.CommLineProps = new KPView.CommLineProperties(lastLine.Number, lastLine.CustomParams);
+                kpView.AppDirs = appDirs;
+                kpView.ShowProps();
+
+                // обработка изменений конфигурации, сделанных на форме свойств КП
+                if (lastKP.CmdLine != kpView.CmdLine)
+                {
+                    if (tabControl.SelectedTab == pageReqSequence)
+                    {
+                        txtCmdLine.Text = kpView.CmdLine;
+                    }
+                    else
+                    {
+                        lastKP.CmdLine = kpView.CmdLine;
+                        SetModified();
+                    }
+                }
+
+                // обновление пользовательских параметров линии связи на форме не требуется, 
+                // т.к. соответствующая страница не может быть выбрана в данный момент
+                if (kpView.CommLineProps.Modified)
+                    SetModified();
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Отобразить свойства выбранного КП
         /// </summary>
         private void ShowLastKPProps(bool showUnsupMsg)
         {
-            if (lastKP != null)
+            if (lastLine != null && lastKP != null)
             {
                 int index = kpDllInfoList.IndexOfKey(lastKP.Dll);
 
@@ -519,15 +559,8 @@ namespace Scada.Comm.Ctrl
                         KpDllInfo kpDllInfo = kpDllInfoList.Values[index];
                         KPView kpView = KPFactory.GetKPView(kpDllInfo.KpType, lastKP.Number);
 
-                        if (kpView.CanShowProps)
-                        {
-                            kpView.AppDirs = appDirs;
-                            kpView.ShowProps();
-                        }
-                        else if (showUnsupMsg)
-                        {                            
+                        if (!ShowKPProps(kpView) && showUnsupMsg)
                             ScadaUtils.ShowError(string.Format(AppPhrases.ShowKpPropsUnsupported, kpDllInfo.FileName));
-                        }
                     }
                     catch (Exception ex)
                     {
@@ -1233,14 +1266,17 @@ namespace Scada.Comm.Ctrl
         private void treeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
             TreeNode node = e.Node;
-            NodeTag nodeTag = node.Tag as NodeTag;
+            NodeTag nodeTag = node == null ? null : node.Tag as NodeTag;
 
-            if (node != null && node != lastNode && nodeTag != null)
+            if (nodeTag != null && node != lastNode)
             {
                 Text = AppPhrases.MainFormTitle + " - " + node.Text;
                 lastNode = node;
                 lastLine = nodeTag.Obj as Settings.CommLine;
                 lastKP = nodeTag.Obj as Settings.KP;
+
+                if (lastKP != null)
+                    lastLine = ((NodeTag)node.Parent.Tag).Obj as Settings.CommLine;
 
                 // отображение ассоциированных с узлом дерева страниц
                 tabControl.TabPages.Clear();
@@ -1528,16 +1564,12 @@ namespace Scada.Comm.Ctrl
             try
             {
                 KPView kpView = miKpProps.Tag as KPView;
-
-                if (kpView != null)
-                {
-                    kpView.AppDirs = appDirs;
-                    kpView.ShowProps();
-                }
+                if (kpView != null && lastLine != null && lastKP != null)
+                    ShowKPProps(kpView);
             }
             catch (Exception ex)
             {
-                string errMsg = AppPhrases.ImportKpError + ":\r\n" + ex.Message;
+                string errMsg = AppPhrases.ShowKpPropsError + ":\r\n" + ex.Message;
                 errLog.WriteAction(errMsg);
                 ScadaUtils.ShowError(errMsg);
             }
