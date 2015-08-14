@@ -1656,26 +1656,6 @@ namespace Scada.Comm.Svc
         }
 
         /// <summary>
-        /// Добавить параметры последовательного порта в пользовательские параметры линии связи 
-        /// для упрощения настройки канала связи CommSerialLogic
-        /// </summary>
-        [Obsolete("Temporary solution")]
-        private static void AddSerialPortParams(CommLine commLine, Settings.CommLine commLineSett)
-        {
-            if (commLineSett.ConnType.Equals("ComPort", StringComparison.OrdinalIgnoreCase))
-            {
-                commLine.CustomParams["CommChannel"] = "Serial";
-                commLine.CustomParams["PortName"] = commLineSett.PortName;
-                commLine.CustomParams["BaudRate"] = commLineSett.BaudRate.ToString();
-                commLine.CustomParams["Parity"] = commLineSett.Parity.ToString();
-                commLine.CustomParams["DataBits"] = commLineSett.DataBits.ToString();
-                commLine.CustomParams["StopBits"] = commLineSett.StopBits.ToString();
-                commLine.CustomParams["DtrEnable"] = commLineSett.DtrEnable.ToString();
-                commLine.CustomParams["RtsEnable"] = commLineSett.RtsEnable.ToString();
-            }
-        }
-
-        /// <summary>
         /// Создать линию связи и КП на основе настроек
         /// </summary>
         public static CommLine Create(Settings.CommLine commLineSett, Settings.CommonParams commonParams,
@@ -1704,8 +1684,6 @@ namespace Scada.Comm.Svc
 
             foreach (KeyValuePair<string, string> customParam in commLineSett.CustomParams)
                 commLine.CustomParams.Add(customParam.Key, customParam.Value);
-
-            AddSerialPortParams(commLine, commLineSett);
 
             // создание КП на линии связи
             foreach (Settings.KP kpSett in commLineSett.ReqSequence)

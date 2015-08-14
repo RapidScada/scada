@@ -71,7 +71,7 @@ namespace Scada.Comm.Channels
         /// <summary>
         /// Получить информацию о свойствах канала связи
         /// </summary>
-        public override string GetPropsInfo(Dictionary<string, string> commCnlParams)
+        public override string GetPropsInfo(SortedList<string, string> commCnlParams)
         {
             CommTcpClientLogic.Settings defSett = new CommTcpClientLogic.Settings();
             return BuildPropsInfo(commCnlParams,

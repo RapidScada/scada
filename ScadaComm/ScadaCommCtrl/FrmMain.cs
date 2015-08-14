@@ -620,7 +620,7 @@ namespace Scada.Comm.Ctrl
                 numLineNumber.SetNumericValue(lastLine.Number);
                 txtLineName.Text = lastLine.Name;
 
-                bool comPort = lastLine.ConnType.ToLower() == "comport";
+                /*bool comPort = lastLine.ConnType.ToLower() == "comport";
                 cbConnType.SelectedIndex = comPort ? 1 : 0;
                 cbPortName.Text = lastLine.PortName;
 
@@ -665,19 +665,20 @@ namespace Scada.Comm.Ctrl
                     cbStopBits.SelectedIndex = 2; // 2
 
                 chkDtrEnable.Checked = lastLine.DtrEnable;
-                chkRtsEnable.Checked = lastLine.RtsEnable;
+                chkRtsEnable.Checked = lastLine.RtsEnable;*/
 
                 numReqTriesCnt.SetNumericValue(lastLine.ReqTriesCnt);
                 numCycleDelay.SetNumericValue(lastLine.CycleDelay);
                 chkCmdEnabled.Checked = lastLine.CmdEnabled;
+                chkDetailedLog.Checked = lastLine.DetailedLog;
 
-                cbPortName.Enabled = comPort;
+                /*cbPortName.Enabled = comPort;
                 cbBaudRate.Enabled = comPort;
                 cbDataBits.Enabled = comPort;
                 cbParity.Enabled = comPort;
                 cbStopBits.Enabled = comPort;
                 chkDtrEnable.Enabled = comPort;
-                chkRtsEnable.Enabled = comPort;
+                chkRtsEnable.Enabled = comPort;*/
 
                 changing = false;
             }
@@ -1820,7 +1821,7 @@ namespace Scada.Comm.Ctrl
         {
             if (!changing && lastLine != null)
             {
-                bool comPort = cbConnType.SelectedIndex > 0;
+                /*bool comPort = cbConnType.SelectedIndex > 0;
                 lastLine.ConnType = comPort ? "ComPort" : "None";
 
                 cbPortName.Enabled = comPort;
@@ -1829,87 +1830,8 @@ namespace Scada.Comm.Ctrl
                 cbParity.Enabled = comPort;
                 cbStopBits.Enabled = comPort;
                 chkDtrEnable.Enabled = comPort;
-                chkRtsEnable.Enabled = comPort;
+                chkRtsEnable.Enabled = comPort;*/
 
-                SetModified();
-            }
-        }
-
-        private void cbPortName_TextChanged(object sender, EventArgs e)
-        {
-            if (!changing && lastLine != null)
-            {
-                lastLine.PortName = cbPortName.Text;
-                SetModified();
-            }
-        }
-
-        private void cbBaudRate_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!changing && lastLine != null)
-            {
-                lastLine.BaudRate = int.Parse(cbBaudRate.Text);
-                SetModified();
-            }
-        }
-
-        private void cbDataBits_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!changing && lastLine != null)
-            {
-                lastLine.DataBits = int.Parse(cbDataBits.Text);
-                SetModified();
-            }
-        }
-
-        private void cbParity_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!changing && lastLine != null)
-            {
-                if (cbParity.SelectedIndex == 0)
-                    lastLine.Parity = Parity.Even;
-                else if (cbParity.SelectedIndex == 1)
-                    lastLine.Parity = Parity.Odd;
-                else if (cbParity.SelectedIndex == 3)
-                    lastLine.Parity = Parity.Mark;
-                else if (cbParity.SelectedIndex == 4)
-                    lastLine.Parity = Parity.Space;
-                else
-                    lastLine.Parity = Parity.None;
-
-                SetModified();
-            }
-        }
-
-        private void cbStopBits_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!changing && lastLine != null)
-            {
-                if (cbStopBits.SelectedIndex == 0)
-                    lastLine.StopBits = StopBits.One;
-                else if (cbStopBits.SelectedIndex == 1)
-                    lastLine.StopBits = StopBits.OnePointFive;
-                else
-                    lastLine.StopBits = StopBits.Two;
-
-                SetModified();
-            }
-        }
-
-        private void chkDtrEnable_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!changing && lastLine != null)
-            {
-                lastLine.DtrEnable = chkDtrEnable.Checked;
-                SetModified();
-            }
-        }
-
-        private void chkRtsEnable_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!changing && lastLine != null)
-            {
-                lastLine.RtsEnable = chkRtsEnable.Checked;
                 SetModified();
             }
         }
@@ -1944,6 +1866,20 @@ namespace Scada.Comm.Ctrl
         private void lblCmdEnabled_Click(object sender, EventArgs e)
         {
             chkCmdEnabled.Checked = !chkCmdEnabled.Checked;
+        }
+
+        private void chkDetailedLog_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!changing && lastLine != null)
+            {
+                lastLine.DetailedLog = chkDetailedLog.Checked;
+                SetModified();
+            }
+        }
+
+        private void lblDetailedLog_Click(object sender, EventArgs e)
+        {
+            chkDetailedLog.Checked = !chkDetailedLog.Checked;
         }
         #endregion
 

@@ -27,7 +27,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.IO.Ports;
 using System.Xml;
 
 namespace Scada.Comm
@@ -131,14 +130,8 @@ namespace Scada.Comm
                 Number = 0;
                 Name = "";
 
-                ConnType = "None";
-                PortName = "COM1";
-                BaudRate = 9600;
-                DataBits = 8;
-                Parity = Parity.None;
-                StopBits = StopBits.One;
-                DtrEnable = false;
-                RtsEnable = false;
+                CommCnlType = "";
+                CommCnlParams = new SortedList<string, string>();
 
                 ReqTriesCnt = 3;
                 CycleDelay = 0;
@@ -177,37 +170,13 @@ namespace Scada.Comm
             }
 
             /// <summary>
-            /// Получить или установить тип подключения
+            /// Получить или установить тип канала связи
             /// </summary>
-            public string ConnType { get; set; }
+            public string CommCnlType { get; set; }
             /// <summary>
-            /// Получить или установить имя последовательного порта
+            /// Получить параметры канала связи
             /// </summary>
-            public string PortName { get; set; }
-            /// <summary>
-            /// Получить или установить скорость обмена
-            /// </summary>
-            public int BaudRate { get; set; }
-            /// <summary>
-            /// Получить или установить биты данных
-            /// </summary>
-            public int DataBits { get; set; }
-            /// <summary>
-            /// Получить или установить контроль чётности
-            /// </summary>
-            public Parity Parity { get; set; }
-            /// <summary>
-            /// Получить или установить стоповые биты
-            /// </summary>
-            public StopBits StopBits { get; set; }
-            /// <summary>
-            /// Получить или установить использование сигнала Data Terminal Ready (DTR) 
-            /// </summary>
-            public bool DtrEnable { get; set; }
-            /// <summary>
-            /// Получить или установить использование сигнала Request to Send (RTS)
-            /// </summary>
-            public bool RtsEnable { get; set; }
+            public SortedList<string, string> CommCnlParams { get; private set; }
 
             /// <summary>
             /// Получить или установить количество попыток перезапроса КП при ошибке
@@ -247,14 +216,10 @@ namespace Scada.Comm
                 commLine.Number = Number;
                 commLine.Name = Name;
 
-                commLine.ConnType = ConnType;
-                commLine.PortName = PortName;
-                commLine.BaudRate = BaudRate;
-                commLine.DataBits = DataBits;
-                commLine.Parity = Parity;
-                commLine.StopBits = StopBits;
-                commLine.DtrEnable = DtrEnable;
-                commLine.RtsEnable = RtsEnable;
+                commLine.CommCnlType = CommCnlType;
+                commLine.CommCnlParams = new SortedList<string, string>();
+                foreach (KeyValuePair<string, string> commCnlParam in CommCnlParams)
+                    commLine.CommCnlParams.Add(commCnlParam.Key, commCnlParam.Value);
 
                 commLine.ReqTriesCnt = ReqTriesCnt;
                 commLine.CycleDelay = CycleDelay;
@@ -503,26 +468,40 @@ namespace Scada.Comm
             commLine.Name = commLineElem.GetAttribute("name");
             commLine.Number = commLineElem.GetAttrAsInt("number");
 
-            // загрузка настроек соединения линии связи
-            XmlElement connElem = commLineElem.SelectSingleNode("Connection") as XmlElement;
-            if (connElem != null)
+            // загрузка канала связи 
+            XmlElement commChannelElem = commLineElem.SelectSingleNode("CommChannel") as XmlElement;
+            if (commChannelElem == null)
             {
-                XmlElement connTypeElem = connElem.SelectSingleNode("ConnType") as XmlElement;
-                if (connTypeElem != null)
-                    commLine.ConnType = connTypeElem.GetAttribute("value");
-
-                XmlElement commSettElem = connElem.SelectSingleNode("ComPortSettings") as XmlElement;
-                if (commSettElem != null)
+                // поддержка обратной совместимости
+                XmlElement connElem = commLineElem.SelectSingleNode("Connection") as XmlElement;
+                if (connElem != null)
                 {
-                    commLine.PortName = commSettElem.GetAttribute("portName");
-                    commLine.BaudRate = commSettElem.GetAttrAsInt("baudRate");
-                    commLine.DataBits = commSettElem.GetAttrAsInt("dataBits");
-                    commLine.Parity = (Parity)Enum.Parse(typeof(Parity),
-                        commSettElem.GetAttribute("parity"), true);
-                    commLine.StopBits = (StopBits)Enum.Parse(typeof(StopBits),
-                        commSettElem.GetAttribute("stopBits"), true);
-                    commLine.DtrEnable = commSettElem.GetAttrAsBool("dtrEnable");
-                    commLine.RtsEnable = commSettElem.GetAttrAsBool("rtsEnable");
+                    XmlElement connTypeElem = connElem.SelectSingleNode("ConnType") as XmlElement;
+                    XmlElement commSettElem = connElem.SelectSingleNode("ComPortSettings") as XmlElement;
+
+                    if (connTypeElem != null && commSettElem != null &&
+                        connTypeElem.GetAttribute("value").Equals("ComPort", StringComparison.OrdinalIgnoreCase))
+                    {
+                        commLine.CommCnlType = "Serial";
+                        commLine.CommCnlParams.Add("PortName", commSettElem.GetAttribute("portName"));
+                        commLine.CommCnlParams.Add("BaudRate", commSettElem.GetAttribute("baudRate"));
+                        commLine.CommCnlParams.Add("Parity", commSettElem.GetAttribute("parity"));
+                        commLine.CommCnlParams.Add("DataBits", commSettElem.GetAttribute("dataBits"));
+                        commLine.CommCnlParams.Add("StopBits", commSettElem.GetAttribute("stopBits"));
+                        commLine.CommCnlParams.Add("DtrEnable", commSettElem.GetAttribute("dtrEnable"));
+                        commLine.CommCnlParams.Add("RtsEnable", commSettElem.GetAttribute("rtsEnable"));
+                    }
+                }
+            }
+            else
+            {
+                commLine.CommCnlType = commChannelElem.GetAttribute("type");
+                XmlNodeList paramNodes = commChannelElem.SelectNodes("Param");
+                foreach (XmlElement paramElem in paramNodes)
+                {
+                    string name = paramElem.GetAttribute("name");
+                    if (name != "" && !commLine.CommCnlParams.ContainsKey(name))
+                        commLine.CommCnlParams.Add(name, paramElem.GetAttribute("value"));
                 }
             }
 
@@ -748,7 +727,6 @@ namespace Scada.Comm
                     linesElem.AppendChild(xmlDoc.CreateComment(
                         (Localization.UseRussian ? "Линия " : "Line ") + commLine.Number));
 
-                    // соединение
                     XmlElement lineElem = xmlDoc.CreateElement("CommLine");
                     lineElem.SetAttribute("active", commLine.Active);
                     lineElem.SetAttribute("bind", commLine.Bind);
@@ -756,26 +734,15 @@ namespace Scada.Comm
                     lineElem.SetAttribute("name", commLine.Name);
                     linesElem.AppendChild(lineElem);
 
-                    XmlElement connElem = xmlDoc.CreateElement("Connection");
-                    lineElem.AppendChild(connElem);
+                    // канал связи
+                    XmlElement commChannelElem = xmlDoc.CreateElement("CommChannel");
+                    lineElem.AppendChild(commChannelElem);
+                    commChannelElem.SetAttribute("type", commLine.CommCnlType);
 
-                    XmlElement connTypeElem = xmlDoc.CreateElement("ConnType");
-                    connTypeElem.SetAttribute("value", commLine.ConnType);
-                    connTypeElem.SetAttribute("descr", Localization.UseRussian ? 
-                        "Тип подключения: ComPort или None" : "Connection type: ComPort or None");
-                    connElem.AppendChild(connTypeElem);
+                    foreach (KeyValuePair<string, string> commCnlParam in commLine.CommCnlParams)
+                        commChannelElem.AppendParamElem(commCnlParam.Key, commCnlParam.Value);
 
-                    XmlElement portElem = xmlDoc.CreateElement("ComPortSettings");
-                    portElem.SetAttribute("portName", commLine.PortName);
-                    portElem.SetAttribute("baudRate", commLine.BaudRate);
-                    portElem.SetAttribute("dataBits", commLine.DataBits);
-                    portElem.SetAttribute("parity", commLine.Parity);
-                    portElem.SetAttribute("stopBits", commLine.StopBits);
-                    portElem.SetAttribute("dtrEnable", commLine.DtrEnable);
-                    portElem.SetAttribute("rtsEnable", commLine.RtsEnable);
-                    connElem.AppendChild(portElem);
-
-                    // параметры
+                    // параметры связи
                     paramsElem = xmlDoc.CreateElement("LineParams");
                     lineElem.AppendChild(paramsElem);
                     paramsElem.AppendParamElem("ReqTriesCnt", commLine.ReqTriesCnt,
@@ -788,7 +755,7 @@ namespace Scada.Comm
                         "Записывать в журнал подробную информацию", "Write detailed information to the log");
 
                     // пользовательские параметры
-                    paramsElem = xmlDoc.CreateElement("UserParams"); // CustomParams
+                    paramsElem = xmlDoc.CreateElement("CustomParams");
                     lineElem.AppendChild(paramsElem);
                     foreach (KeyValuePair<string, string> customParam in commLine.CustomParams)
                         paramsElem.AppendParamElem(customParam.Key, customParam.Value);

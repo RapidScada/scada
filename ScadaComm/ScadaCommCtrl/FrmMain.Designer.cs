@@ -30,10 +30,10 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Общие параметры");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Библиотеки КП");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Линии связи");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Статистика");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Общие параметры");
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Библиотеки КП");
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Линии связи");
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Статистика");
             this.cmsLine = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miAddLine = new System.Windows.Forms.ToolStripMenuItem();
             this.miMoveUpLine = new System.Windows.Forms.ToolStripMenuItem();
@@ -103,29 +103,17 @@
             this.lblLineNumber = new System.Windows.Forms.Label();
             this.chkLineActive = new System.Windows.Forms.CheckBox();
             this.gbLineParams = new System.Windows.Forms.GroupBox();
+            this.lblDetailedLog = new System.Windows.Forms.Label();
+            this.chkDetailedLog = new System.Windows.Forms.CheckBox();
             this.lblCmdEnabled = new System.Windows.Forms.Label();
             this.chkCmdEnabled = new System.Windows.Forms.CheckBox();
-            this.lblMaxCommErrCnt = new System.Windows.Forms.Label();
-            this.numMaxCommErrCnt = new System.Windows.Forms.NumericUpDown();
             this.lblCycleDelay = new System.Windows.Forms.Label();
             this.numCycleDelay = new System.Windows.Forms.NumericUpDown();
             this.numReqTriesCnt = new System.Windows.Forms.NumericUpDown();
             this.lblReqTriesCnt = new System.Windows.Forms.Label();
-            this.gbConnection = new System.Windows.Forms.GroupBox();
-            this.cbConnType = new System.Windows.Forms.ComboBox();
+            this.gbCommChannel = new System.Windows.Forms.GroupBox();
+            this.cbCommCnlType = new System.Windows.Forms.ComboBox();
             this.lblConnType = new System.Windows.Forms.Label();
-            this.lblPortName = new System.Windows.Forms.Label();
-            this.chkRtsEnable = new System.Windows.Forms.CheckBox();
-            this.chkDtrEnable = new System.Windows.Forms.CheckBox();
-            this.cbStopBits = new System.Windows.Forms.ComboBox();
-            this.lblStopBits = new System.Windows.Forms.Label();
-            this.cbParity = new System.Windows.Forms.ComboBox();
-            this.lblParity = new System.Windows.Forms.Label();
-            this.cbDataBits = new System.Windows.Forms.ComboBox();
-            this.lblDataBits = new System.Windows.Forms.Label();
-            this.cbBaudRate = new System.Windows.Forms.ComboBox();
-            this.lblBaudRate = new System.Windows.Forms.Label();
-            this.cbPortName = new System.Windows.Forms.ComboBox();
             this.pageCustomParams = new System.Windows.Forms.TabPage();
             this.btnDelParam = new System.Windows.Forms.Button();
             this.gbSelectedParam = new System.Windows.Forms.GroupBox();
@@ -220,6 +208,9 @@
             this.cmsKP = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miKpProps = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlMain = new System.Windows.Forms.Panel();
+            this.btnCommCnlProps = new System.Windows.Forms.Button();
+            this.txtCommCnlPropsInfo = new System.Windows.Forms.TextBox();
+            this.lblCommCnlPropsInfo = new System.Windows.Forms.Label();
             this.cmsLine.SuspendLayout();
             this.cmsNotify.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -237,10 +228,9 @@
             this.gbCommLine.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numLineNumber)).BeginInit();
             this.gbLineParams.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numMaxCommErrCnt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCycleDelay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numReqTriesCnt)).BeginInit();
-            this.gbConnection.SuspendLayout();
+            this.gbCommChannel.SuspendLayout();
             this.pageCustomParams.SuspendLayout();
             this.gbSelectedParam.SuspendLayout();
             this.pageReqSequence.SuspendLayout();
@@ -442,28 +432,28 @@
             this.treeView.Location = new System.Drawing.Point(0, 0);
             this.treeView.Margin = new System.Windows.Forms.Padding(0);
             this.treeView.Name = "treeView";
-            treeNode1.ImageKey = "params.png";
-            treeNode1.Name = "nodeCommonParams";
-            treeNode1.SelectedImageKey = "params.png";
-            treeNode1.Text = "Общие параметры";
-            treeNode2.ImageKey = "kpdll.png";
-            treeNode2.Name = "nodeKpDlls";
-            treeNode2.SelectedImageKey = "kpdll.png";
-            treeNode2.Text = "Библиотеки КП";
-            treeNode3.ContextMenuStrip = this.cmsLine;
-            treeNode3.ImageKey = "commlines.png";
-            treeNode3.Name = "nodeLines";
-            treeNode3.SelectedImageKey = "commlines.png";
-            treeNode3.Text = "Линии связи";
-            treeNode4.ImageKey = "stats.png";
-            treeNode4.Name = "nodeStats";
-            treeNode4.SelectedImageKey = "stats.png";
-            treeNode4.Text = "Статистика";
+            treeNode5.ImageKey = "params.png";
+            treeNode5.Name = "nodeCommonParams";
+            treeNode5.SelectedImageKey = "params.png";
+            treeNode5.Text = "Общие параметры";
+            treeNode6.ImageKey = "kpdll.png";
+            treeNode6.Name = "nodeKpDlls";
+            treeNode6.SelectedImageKey = "kpdll.png";
+            treeNode6.Text = "Библиотеки КП";
+            treeNode7.ContextMenuStrip = this.cmsLine;
+            treeNode7.ImageKey = "commlines.png";
+            treeNode7.Name = "nodeLines";
+            treeNode7.SelectedImageKey = "commlines.png";
+            treeNode7.Text = "Линии связи";
+            treeNode8.ImageKey = "stats.png";
+            treeNode8.Name = "nodeStats";
+            treeNode8.SelectedImageKey = "stats.png";
+            treeNode8.Text = "Статистика";
             this.treeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2,
-            treeNode3,
-            treeNode4});
+            treeNode5,
+            treeNode6,
+            treeNode7,
+            treeNode8});
             this.treeView.SelectedImageKey = "params.png";
             this.treeView.ShowRootLines = false;
             this.treeView.Size = new System.Drawing.Size(240, 464);
@@ -945,7 +935,7 @@
             this.pageLineParams.BackColor = System.Drawing.Color.Transparent;
             this.pageLineParams.Controls.Add(this.gbCommLine);
             this.pageLineParams.Controls.Add(this.gbLineParams);
-            this.pageLineParams.Controls.Add(this.gbConnection);
+            this.pageLineParams.Controls.Add(this.gbCommChannel);
             this.pageLineParams.Location = new System.Drawing.Point(4, 22);
             this.pageLineParams.Name = "pageLineParams";
             this.pageLineParams.Padding = new System.Windows.Forms.Padding(3);
@@ -1033,15 +1023,15 @@
             // 
             // gbLineParams
             // 
+            this.gbLineParams.Controls.Add(this.lblDetailedLog);
+            this.gbLineParams.Controls.Add(this.chkDetailedLog);
             this.gbLineParams.Controls.Add(this.lblCmdEnabled);
             this.gbLineParams.Controls.Add(this.chkCmdEnabled);
-            this.gbLineParams.Controls.Add(this.lblMaxCommErrCnt);
-            this.gbLineParams.Controls.Add(this.numMaxCommErrCnt);
             this.gbLineParams.Controls.Add(this.lblCycleDelay);
             this.gbLineParams.Controls.Add(this.numCycleDelay);
             this.gbLineParams.Controls.Add(this.numReqTriesCnt);
             this.gbLineParams.Controls.Add(this.lblReqTriesCnt);
-            this.gbLineParams.Location = new System.Drawing.Point(6, 189);
+            this.gbLineParams.Location = new System.Drawing.Point(6, 301);
             this.gbLineParams.Name = "gbLineParams";
             this.gbLineParams.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
             this.gbLineParams.Size = new System.Drawing.Size(392, 128);
@@ -1049,52 +1039,45 @@
             this.gbLineParams.TabStop = false;
             this.gbLineParams.Text = "Параметры связи";
             // 
+            // lblDetailedLog
+            // 
+            this.lblDetailedLog.AutoSize = true;
+            this.lblDetailedLog.Location = new System.Drawing.Point(79, 101);
+            this.lblDetailedLog.Name = "lblDetailedLog";
+            this.lblDetailedLog.Size = new System.Drawing.Size(105, 13);
+            this.lblDetailedLog.TabIndex = 7;
+            this.lblDetailedLog.Text = "Подробный журнал";
+            this.lblDetailedLog.Click += new System.EventHandler(this.lblDetailedLog_Click);
+            // 
+            // chkDetailedLog
+            // 
+            this.chkDetailedLog.AutoSize = true;
+            this.chkDetailedLog.Location = new System.Drawing.Point(36, 101);
+            this.chkDetailedLog.Name = "chkDetailedLog";
+            this.chkDetailedLog.Size = new System.Drawing.Size(15, 14);
+            this.chkDetailedLog.TabIndex = 6;
+            this.chkDetailedLog.UseVisualStyleBackColor = true;
+            this.chkDetailedLog.CheckedChanged += new System.EventHandler(this.chkDetailedLog_CheckedChanged);
+            // 
             // lblCmdEnabled
             // 
             this.lblCmdEnabled.AutoSize = true;
-            this.lblCmdEnabled.Location = new System.Drawing.Point(79, 101);
+            this.lblCmdEnabled.Location = new System.Drawing.Point(79, 75);
             this.lblCmdEnabled.Name = "lblCmdEnabled";
             this.lblCmdEnabled.Size = new System.Drawing.Size(133, 13);
-            this.lblCmdEnabled.TabIndex = 7;
+            this.lblCmdEnabled.TabIndex = 5;
             this.lblCmdEnabled.Text = "Команды ТУ разрешены";
             this.lblCmdEnabled.Click += new System.EventHandler(this.lblCmdEnabled_Click);
             // 
             // chkCmdEnabled
             // 
             this.chkCmdEnabled.AutoSize = true;
-            this.chkCmdEnabled.Location = new System.Drawing.Point(36, 101);
+            this.chkCmdEnabled.Location = new System.Drawing.Point(36, 75);
             this.chkCmdEnabled.Name = "chkCmdEnabled";
             this.chkCmdEnabled.Size = new System.Drawing.Size(15, 14);
-            this.chkCmdEnabled.TabIndex = 6;
+            this.chkCmdEnabled.TabIndex = 4;
             this.chkCmdEnabled.UseVisualStyleBackColor = true;
             this.chkCmdEnabled.CheckedChanged += new System.EventHandler(this.chkCmdEnabled_CheckedChanged);
-            // 
-            // lblMaxCommErrCnt
-            // 
-            this.lblMaxCommErrCnt.AutoSize = true;
-            this.lblMaxCommErrCnt.Location = new System.Drawing.Point(79, 75);
-            this.lblMaxCommErrCnt.Name = "lblMaxCommErrCnt";
-            this.lblMaxCommErrCnt.Size = new System.Drawing.Size(279, 13);
-            this.lblMaxCommErrCnt.TabIndex = 5;
-            this.lblMaxCommErrCnt.Text = "Максимальное количество неудачных сеансов связи";
-            // 
-            // numMaxCommErrCnt
-            // 
-            this.numMaxCommErrCnt.Enabled = false;
-            this.numMaxCommErrCnt.Location = new System.Drawing.Point(13, 71);
-            this.numMaxCommErrCnt.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numMaxCommErrCnt.Name = "numMaxCommErrCnt";
-            this.numMaxCommErrCnt.Size = new System.Drawing.Size(60, 20);
-            this.numMaxCommErrCnt.TabIndex = 4;
-            this.numMaxCommErrCnt.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             // 
             // lblCycleDelay
             // 
@@ -1150,42 +1133,33 @@
             this.lblReqTriesCnt.TabIndex = 1;
             this.lblReqTriesCnt.Text = "Количество попыток перезапроса КП при ошибке";
             // 
-            // gbConnection
+            // gbCommChannel
             // 
-            this.gbConnection.Controls.Add(this.cbConnType);
-            this.gbConnection.Controls.Add(this.lblConnType);
-            this.gbConnection.Controls.Add(this.lblPortName);
-            this.gbConnection.Controls.Add(this.chkRtsEnable);
-            this.gbConnection.Controls.Add(this.chkDtrEnable);
-            this.gbConnection.Controls.Add(this.cbStopBits);
-            this.gbConnection.Controls.Add(this.lblStopBits);
-            this.gbConnection.Controls.Add(this.cbParity);
-            this.gbConnection.Controls.Add(this.lblParity);
-            this.gbConnection.Controls.Add(this.cbDataBits);
-            this.gbConnection.Controls.Add(this.lblDataBits);
-            this.gbConnection.Controls.Add(this.cbBaudRate);
-            this.gbConnection.Controls.Add(this.lblBaudRate);
-            this.gbConnection.Controls.Add(this.cbPortName);
-            this.gbConnection.Location = new System.Drawing.Point(6, 77);
-            this.gbConnection.Name = "gbConnection";
-            this.gbConnection.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbConnection.Size = new System.Drawing.Size(392, 106);
-            this.gbConnection.TabIndex = 1;
-            this.gbConnection.TabStop = false;
-            this.gbConnection.Text = "Подключение";
+            this.gbCommChannel.Controls.Add(this.txtCommCnlPropsInfo);
+            this.gbCommChannel.Controls.Add(this.lblCommCnlPropsInfo);
+            this.gbCommChannel.Controls.Add(this.btnCommCnlProps);
+            this.gbCommChannel.Controls.Add(this.cbCommCnlType);
+            this.gbCommChannel.Controls.Add(this.lblConnType);
+            this.gbCommChannel.Location = new System.Drawing.Point(6, 77);
+            this.gbCommChannel.Name = "gbCommChannel";
+            this.gbCommChannel.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
+            this.gbCommChannel.Size = new System.Drawing.Size(392, 218);
+            this.gbCommChannel.TabIndex = 1;
+            this.gbCommChannel.TabStop = false;
+            this.gbCommChannel.Text = "Канал связи";
             // 
-            // cbConnType
+            // cbCommCnlType
             // 
-            this.cbConnType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbConnType.FormattingEnabled = true;
-            this.cbConnType.Items.AddRange(new object[] {
+            this.cbCommCnlType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbCommCnlType.FormattingEnabled = true;
+            this.cbCommCnlType.Items.AddRange(new object[] {
             "Не задан",
             "COM-порт"});
-            this.cbConnType.Location = new System.Drawing.Point(13, 32);
-            this.cbConnType.Name = "cbConnType";
-            this.cbConnType.Size = new System.Drawing.Size(80, 21);
-            this.cbConnType.TabIndex = 1;
-            this.cbConnType.SelectedIndexChanged += new System.EventHandler(this.cbConnType_SelectedIndexChanged);
+            this.cbCommCnlType.Location = new System.Drawing.Point(13, 32);
+            this.cbCommCnlType.Name = "cbCommCnlType";
+            this.cbCommCnlType.Size = new System.Drawing.Size(270, 21);
+            this.cbCommCnlType.TabIndex = 1;
+            this.cbCommCnlType.SelectedIndexChanged += new System.EventHandler(this.cbConnType_SelectedIndexChanged);
             // 
             // lblConnType
             // 
@@ -1195,163 +1169,6 @@
             this.lblConnType.Size = new System.Drawing.Size(26, 13);
             this.lblConnType.TabIndex = 0;
             this.lblConnType.Text = "Тип";
-            // 
-            // lblPortName
-            // 
-            this.lblPortName.AutoSize = true;
-            this.lblPortName.Location = new System.Drawing.Point(98, 16);
-            this.lblPortName.Name = "lblPortName";
-            this.lblPortName.Size = new System.Drawing.Size(32, 13);
-            this.lblPortName.TabIndex = 2;
-            this.lblPortName.Text = "Порт";
-            // 
-            // chkRtsEnable
-            // 
-            this.chkRtsEnable.AutoSize = true;
-            this.chkRtsEnable.Location = new System.Drawing.Point(287, 79);
-            this.chkRtsEnable.Name = "chkRtsEnable";
-            this.chkRtsEnable.Size = new System.Drawing.Size(48, 17);
-            this.chkRtsEnable.TabIndex = 13;
-            this.chkRtsEnable.Text = "RTS";
-            this.chkRtsEnable.UseVisualStyleBackColor = true;
-            this.chkRtsEnable.CheckedChanged += new System.EventHandler(this.chkRtsEnable_CheckedChanged);
-            // 
-            // chkDtrEnable
-            // 
-            this.chkDtrEnable.AutoSize = true;
-            this.chkDtrEnable.Location = new System.Drawing.Point(287, 59);
-            this.chkDtrEnable.Name = "chkDtrEnable";
-            this.chkDtrEnable.Size = new System.Drawing.Size(49, 17);
-            this.chkDtrEnable.TabIndex = 12;
-            this.chkDtrEnable.Text = "DTR";
-            this.chkDtrEnable.UseVisualStyleBackColor = true;
-            this.chkDtrEnable.CheckedChanged += new System.EventHandler(this.chkDtrEnable_CheckedChanged);
-            // 
-            // cbStopBits
-            // 
-            this.cbStopBits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbStopBits.FormattingEnabled = true;
-            this.cbStopBits.Items.AddRange(new object[] {
-            "1",
-            "1,5",
-            "2"});
-            this.cbStopBits.Location = new System.Drawing.Point(185, 72);
-            this.cbStopBits.Name = "cbStopBits";
-            this.cbStopBits.Size = new System.Drawing.Size(80, 21);
-            this.cbStopBits.TabIndex = 11;
-            this.cbStopBits.SelectedIndexChanged += new System.EventHandler(this.cbStopBits_SelectedIndexChanged);
-            // 
-            // lblStopBits
-            // 
-            this.lblStopBits.AutoSize = true;
-            this.lblStopBits.Location = new System.Drawing.Point(184, 56);
-            this.lblStopBits.Name = "lblStopBits";
-            this.lblStopBits.Size = new System.Drawing.Size(62, 13);
-            this.lblStopBits.TabIndex = 10;
-            this.lblStopBits.Text = "Стоп. биты";
-            // 
-            // cbParity
-            // 
-            this.cbParity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbParity.FormattingEnabled = true;
-            this.cbParity.Items.AddRange(new object[] {
-            "Чёт",
-            "Нечёт",
-            "Нет",
-            "Маркер (1)",
-            "Пробел (0)"});
-            this.cbParity.Location = new System.Drawing.Point(99, 72);
-            this.cbParity.Name = "cbParity";
-            this.cbParity.Size = new System.Drawing.Size(80, 21);
-            this.cbParity.TabIndex = 9;
-            this.cbParity.SelectedIndexChanged += new System.EventHandler(this.cbParity_SelectedIndexChanged);
-            // 
-            // lblParity
-            // 
-            this.lblParity.AutoSize = true;
-            this.lblParity.Location = new System.Drawing.Point(96, 56);
-            this.lblParity.Name = "lblParity";
-            this.lblParity.Size = new System.Drawing.Size(55, 13);
-            this.lblParity.TabIndex = 8;
-            this.lblParity.Text = "Чётность";
-            // 
-            // cbDataBits
-            // 
-            this.cbDataBits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbDataBits.FormattingEnabled = true;
-            this.cbDataBits.Items.AddRange(new object[] {
-            "5",
-            "6",
-            "7",
-            "8"});
-            this.cbDataBits.Location = new System.Drawing.Point(271, 32);
-            this.cbDataBits.Name = "cbDataBits";
-            this.cbDataBits.Size = new System.Drawing.Size(80, 21);
-            this.cbDataBits.TabIndex = 7;
-            this.cbDataBits.SelectedIndexChanged += new System.EventHandler(this.cbDataBits_SelectedIndexChanged);
-            // 
-            // lblDataBits
-            // 
-            this.lblDataBits.AutoSize = true;
-            this.lblDataBits.Location = new System.Drawing.Point(268, 16);
-            this.lblDataBits.Name = "lblDataBits";
-            this.lblDataBits.Size = new System.Drawing.Size(73, 13);
-            this.lblDataBits.TabIndex = 6;
-            this.lblDataBits.Text = "Биты данных";
-            // 
-            // cbBaudRate
-            // 
-            this.cbBaudRate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbBaudRate.FormattingEnabled = true;
-            this.cbBaudRate.Items.AddRange(new object[] {
-            "110",
-            "300",
-            "1200",
-            "2400",
-            "4800",
-            "9600",
-            "19200",
-            "38400",
-            "57600",
-            "115200",
-            "230400",
-            "460800",
-            "921600"});
-            this.cbBaudRate.Location = new System.Drawing.Point(185, 32);
-            this.cbBaudRate.Name = "cbBaudRate";
-            this.cbBaudRate.Size = new System.Drawing.Size(80, 21);
-            this.cbBaudRate.TabIndex = 5;
-            this.cbBaudRate.SelectedIndexChanged += new System.EventHandler(this.cbBaudRate_SelectedIndexChanged);
-            // 
-            // lblBaudRate
-            // 
-            this.lblBaudRate.AutoSize = true;
-            this.lblBaudRate.Location = new System.Drawing.Point(182, 16);
-            this.lblBaudRate.Name = "lblBaudRate";
-            this.lblBaudRate.Size = new System.Drawing.Size(55, 13);
-            this.lblBaudRate.TabIndex = 4;
-            this.lblBaudRate.Text = "Скорость";
-            // 
-            // cbPortName
-            // 
-            this.cbPortName.FormattingEnabled = true;
-            this.cbPortName.Items.AddRange(new object[] {
-            "COM1",
-            "COM2",
-            "COM3",
-            "COM4",
-            "COM5",
-            "COM6",
-            "COM7",
-            "COM8",
-            "COM9",
-            "COM10"});
-            this.cbPortName.Location = new System.Drawing.Point(99, 32);
-            this.cbPortName.Name = "cbPortName";
-            this.cbPortName.Size = new System.Drawing.Size(80, 21);
-            this.cbPortName.TabIndex = 3;
-            this.cbPortName.Text = "COM1";
-            this.cbPortName.TextChanged += new System.EventHandler(this.cbPortName_TextChanged);
             // 
             // pageCustomParams
             // 
@@ -2389,6 +2206,35 @@
             this.pnlMain.Size = new System.Drawing.Size(654, 465);
             this.pnlMain.TabIndex = 1;
             // 
+            // btnCommCnlProps
+            // 
+            this.btnCommCnlProps.Enabled = false;
+            this.btnCommCnlProps.Location = new System.Drawing.Point(289, 31);
+            this.btnCommCnlProps.Name = "btnCommCnlProps";
+            this.btnCommCnlProps.Size = new System.Drawing.Size(90, 23);
+            this.btnCommCnlProps.TabIndex = 2;
+            this.btnCommCnlProps.Text = "Свойства";
+            this.btnCommCnlProps.UseVisualStyleBackColor = true;
+            // 
+            // txtCommCnlPropsInfo
+            // 
+            this.txtCommCnlPropsInfo.Location = new System.Drawing.Point(13, 72);
+            this.txtCommCnlPropsInfo.Multiline = true;
+            this.txtCommCnlPropsInfo.Name = "txtCommCnlPropsInfo";
+            this.txtCommCnlPropsInfo.ReadOnly = true;
+            this.txtCommCnlPropsInfo.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtCommCnlPropsInfo.Size = new System.Drawing.Size(366, 133);
+            this.txtCommCnlPropsInfo.TabIndex = 4;
+            // 
+            // lblCommCnlPropsInfo
+            // 
+            this.lblCommCnlPropsInfo.AutoSize = true;
+            this.lblCommCnlPropsInfo.Location = new System.Drawing.Point(10, 56);
+            this.lblCommCnlPropsInfo.Name = "lblCommCnlPropsInfo";
+            this.lblCommCnlPropsInfo.Size = new System.Drawing.Size(55, 13);
+            this.lblCommCnlPropsInfo.TabIndex = 3;
+            this.lblCommCnlPropsInfo.Text = "Свойства";
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2433,11 +2279,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.numLineNumber)).EndInit();
             this.gbLineParams.ResumeLayout(false);
             this.gbLineParams.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numMaxCommErrCnt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCycleDelay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numReqTriesCnt)).EndInit();
-            this.gbConnection.ResumeLayout(false);
-            this.gbConnection.PerformLayout();
+            this.gbCommChannel.ResumeLayout(false);
+            this.gbCommChannel.PerformLayout();
             this.pageCustomParams.ResumeLayout(false);
             this.gbSelectedParam.ResumeLayout(false);
             this.gbSelectedParam.PerformLayout();
@@ -2511,29 +2356,15 @@
         private System.Windows.Forms.Label lblServerUser;
         private System.Windows.Forms.TextBox txtServerPwd;
         private System.Windows.Forms.Label lblServerPwd;
-        private System.Windows.Forms.GroupBox gbConnection;
+        private System.Windows.Forms.GroupBox gbCommChannel;
         private System.Windows.Forms.GroupBox gbLineParams;
         private System.Windows.Forms.Label lblReqTriesCnt;
         private System.Windows.Forms.NumericUpDown numReqTriesCnt;
         private System.Windows.Forms.Label lblCycleDelay;
         private System.Windows.Forms.NumericUpDown numCycleDelay;
-        private System.Windows.Forms.Label lblMaxCommErrCnt;
-        private System.Windows.Forms.NumericUpDown numMaxCommErrCnt;
         private System.Windows.Forms.CheckBox chkCmdEnabled;
         private System.Windows.Forms.Label lblCmdEnabled;
-        private System.Windows.Forms.ComboBox cbPortName;
-        private System.Windows.Forms.ComboBox cbBaudRate;
-        private System.Windows.Forms.Label lblBaudRate;
-        private System.Windows.Forms.Label lblDataBits;
-        private System.Windows.Forms.ComboBox cbDataBits;
-        private System.Windows.Forms.ComboBox cbParity;
-        private System.Windows.Forms.Label lblParity;
-        private System.Windows.Forms.ComboBox cbStopBits;
-        private System.Windows.Forms.Label lblStopBits;
-        private System.Windows.Forms.CheckBox chkRtsEnable;
-        private System.Windows.Forms.CheckBox chkDtrEnable;
-        private System.Windows.Forms.Label lblPortName;
-        private System.Windows.Forms.ComboBox cbConnType;
+        private System.Windows.Forms.ComboBox cbCommCnlType;
         private System.Windows.Forms.Label lblConnType;
         private System.Windows.Forms.GroupBox gbCommLine;
         private System.Windows.Forms.CheckBox chkLineBind;
@@ -2659,6 +2490,11 @@
         private System.Windows.Forms.RadioButton rbCmdStand;
         private System.Windows.Forms.NumericUpDown numCmdNum;
         private System.Windows.Forms.Label lblCmdNum;
+        private System.Windows.Forms.Label lblDetailedLog;
+        private System.Windows.Forms.CheckBox chkDetailedLog;
+        private System.Windows.Forms.Button btnCommCnlProps;
+        private System.Windows.Forms.TextBox txtCommCnlPropsInfo;
+        private System.Windows.Forms.Label lblCommCnlPropsInfo;
     }
 }
 

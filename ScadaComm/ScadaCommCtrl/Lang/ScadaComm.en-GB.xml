@@ -39,7 +39,7 @@
     <Phrase key="chkLineBind">Bound to server</Phrase>
     <Phrase key="lblLineNumber">Number</Phrase>
     <Phrase key="lnlLineName">Name</Phrase>
-    <Phrase key="gbConnection">Connection</Phrase>
+    <!--<Phrase key="gbConnection">Connection</Phrase>
     <Phrase key="lblConnType">Type</Phrase>
     <Phrase key="cbConnType.Items[0]">Undefined</Phrase>
     <Phrase key="cbConnType.Items[1]">Serial port</Phrase>
@@ -52,12 +52,12 @@
     <Phrase key="cbParity.Items[2]">None</Phrase>
     <Phrase key="cbParity.Items[3]">Mark</Phrase>
     <Phrase key="cbParity.Items[4]">Space</Phrase>
-    <Phrase key="lblStopBits">Stop bits</Phrase>
+    <Phrase key="lblStopBits">Stop bits</Phrase>-->
     <Phrase key="gbLineParams">Communication parameters</Phrase>
     <Phrase key="lblReqTriesCnt">Device request retries count on error</Phrase>
     <Phrase key="lblCycleDelay">Delay after request cycle, ms</Phrase>
-    <Phrase key="lblMaxCommErrCnt">Maximum failed session count</Phrase>
     <Phrase key="lblCmdEnabled">Commands enabled</Phrase>
+    <Phrase key="lblDetailedLog">Detailed log</Phrase>
     <Phrase key="pageCustomParams">Custom Parameters</Phrase>
     <Phrase key="btnAddParam.ToolTip">Add parameter</Phrase>
     <Phrase key="btnMoveUpParam.ToolTip">Move selected parameter up</Phrase>

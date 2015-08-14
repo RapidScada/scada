@@ -120,7 +120,7 @@ namespace Scada.Comm.Channels
         {
             get
             {
-                return "CommSerialPort";
+                return "CommSerial";
             }
         }
 

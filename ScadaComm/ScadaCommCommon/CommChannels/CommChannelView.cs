@@ -70,7 +70,7 @@ namespace Scada.Comm.Channels
         /// <summary>
         /// Построить строку информации о свойствах канала связи
         /// </summary>
-        protected string BuildPropsInfo(Dictionary<string, string> commCnlParams, 
+        protected string BuildPropsInfo(SortedList<string, string> commCnlParams, 
             string[] paramNames, object[] defParamVals)
         {
             // проверка параметров метода
@@ -103,13 +103,13 @@ namespace Scada.Comm.Channels
         /// <summary>
         /// Отобразить свойства модуля
         /// </summary>
-        public virtual void ShowProps(Dictionary<string, string> commCnlParams)
+        public virtual void ShowProps(SortedList<string, string> commCnlParams)
         {
         }
         
         /// <summary>
         /// Получить информацию о свойствах канала связи
         /// </summary>
-        public abstract string GetPropsInfo(Dictionary<string, string> commCnlParams);
+        public abstract string GetPropsInfo(SortedList<string, string> commCnlParams);
     }
 }
