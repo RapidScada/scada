@@ -40,13 +40,13 @@ namespace Scada.Comm.Channels
         {
             try
             {
-                if (commCnlType.Equals("Serial", StringComparison.OrdinalIgnoreCase))
+                if (commCnlType.Equals(CommSerialLogic.CommCnlType, StringComparison.OrdinalIgnoreCase))
                     return new CommSerialLogic();
-                else if (commCnlType.Equals("TcpClient", StringComparison.OrdinalIgnoreCase))
+                else if (commCnlType.Equals(CommTcpClientLogic.CommCnlType, StringComparison.OrdinalIgnoreCase))
                     return new CommTcpClientLogic();
-                else if (commCnlType.Equals("TcpServer", StringComparison.OrdinalIgnoreCase))
+                else if (commCnlType.Equals(CommTcpServerLogic.CommCnlType, StringComparison.OrdinalIgnoreCase))
                     return new CommTcpServerLogic();
-                else if (commCnlType.Equals("Udp", StringComparison.OrdinalIgnoreCase))
+                else if (commCnlType.Equals(CommUdpLogic.CommCnlType, StringComparison.OrdinalIgnoreCase))
                     return new CommUdpLogic();
                 else
                     throw new Exception(Localization.UseRussian ?

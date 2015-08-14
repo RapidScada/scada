@@ -74,6 +74,10 @@ namespace Scada.Comm.Channels
             public ConnectionModes ConnMode { get; set; }
         }
 
+        /// <summary>
+        /// Наименование типа канала связи
+        /// </summary>
+        public const string CommCnlType = "TcpClient";
         
         /// <summary>
         /// Настройки канала связи
@@ -102,13 +106,13 @@ namespace Scada.Comm.Channels
 
 
         /// <summary>
-        /// Получить наименование канала связи
+        /// Получить наименование типа канала связи
         /// </summary>
-        public override string InternalName
+        public override string TypeName
         {
             get
             {
-                return "CommTcpClient";
+                return CommCnlType;
             }
         }
 

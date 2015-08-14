@@ -34,6 +34,17 @@ namespace Scada.Comm.Channels
     public class CommUdpView : CommChannelView
     {
         /// <summary>
+        /// Получить наименование типа канала связи
+        /// </summary>
+        public override string TypeName
+        {
+            get
+            {
+                return CommUdpLogic.CommCnlType;
+            }
+        }
+
+        /// <summary>
         /// Получить наименование канала связи
         /// </summary>
         public override string Name
@@ -69,6 +80,7 @@ namespace Scada.Comm.Channels
                     "DevSelMode - device selection mode in Slave work mode (ByIPAddress, ByDeviceLibrary).";
             }
         }
+
 
         /// <summary>
         /// Получить информацию о свойствах канала связи

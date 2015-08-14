@@ -47,6 +47,11 @@ namespace Scada.Comm.Channels
 
 
         /// <summary>
+        /// Получить наименование типа канала связи
+        /// </summary>
+        public abstract string TypeName { get; }
+
+        /// <summary>
         /// Получить наименование канала связи
         /// </summary>
         public abstract string Name { get; }
@@ -94,7 +99,7 @@ namespace Scada.Comm.Channels
                 string paramVal;
                 sbPropsInfo.Append(paramName).Append(" = ")
                     .Append(commCnlParams.TryGetValue(paramName, out paramVal) ? paramVal : defParamVals[i])
-                    .Append(i < last ? ", " : "");
+                    .Append(i < last ? Environment.NewLine : "");
             }
 
             return sbPropsInfo.ToString();
@@ -111,5 +116,13 @@ namespace Scada.Comm.Channels
         /// Получить информацию о свойствах канала связи
         /// </summary>
         public abstract string GetPropsInfo(SortedList<string, string> commCnlParams);
+
+        /// <summary>
+        /// Возвращает строковое представление текущего объекта
+        /// </summary>
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

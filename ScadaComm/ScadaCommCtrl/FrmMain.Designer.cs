@@ -112,6 +112,9 @@
             this.numReqTriesCnt = new System.Windows.Forms.NumericUpDown();
             this.lblReqTriesCnt = new System.Windows.Forms.Label();
             this.gbCommChannel = new System.Windows.Forms.GroupBox();
+            this.txtCommCnlParams = new System.Windows.Forms.TextBox();
+            this.lblCommCnlParams = new System.Windows.Forms.Label();
+            this.btnCommCnlProps = new System.Windows.Forms.Button();
             this.cbCommCnlType = new System.Windows.Forms.ComboBox();
             this.lblConnType = new System.Windows.Forms.Label();
             this.pageCustomParams = new System.Windows.Forms.TabPage();
@@ -208,9 +211,6 @@
             this.cmsKP = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miKpProps = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlMain = new System.Windows.Forms.Panel();
-            this.btnCommCnlProps = new System.Windows.Forms.Button();
-            this.txtCommCnlPropsInfo = new System.Windows.Forms.TextBox();
-            this.lblCommCnlPropsInfo = new System.Windows.Forms.Label();
             this.cmsLine.SuspendLayout();
             this.cmsNotify.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -1135,8 +1135,8 @@
             // 
             // gbCommChannel
             // 
-            this.gbCommChannel.Controls.Add(this.txtCommCnlPropsInfo);
-            this.gbCommChannel.Controls.Add(this.lblCommCnlPropsInfo);
+            this.gbCommChannel.Controls.Add(this.txtCommCnlParams);
+            this.gbCommChannel.Controls.Add(this.lblCommCnlParams);
             this.gbCommChannel.Controls.Add(this.btnCommCnlProps);
             this.gbCommChannel.Controls.Add(this.cbCommCnlType);
             this.gbCommChannel.Controls.Add(this.lblConnType);
@@ -1148,18 +1148,45 @@
             this.gbCommChannel.TabStop = false;
             this.gbCommChannel.Text = "Канал связи";
             // 
+            // txtCommCnlParams
+            // 
+            this.txtCommCnlParams.Location = new System.Drawing.Point(13, 72);
+            this.txtCommCnlParams.Multiline = true;
+            this.txtCommCnlParams.Name = "txtCommCnlParams";
+            this.txtCommCnlParams.ReadOnly = true;
+            this.txtCommCnlParams.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtCommCnlParams.Size = new System.Drawing.Size(366, 133);
+            this.txtCommCnlParams.TabIndex = 4;
+            // 
+            // lblCommCnlParams
+            // 
+            this.lblCommCnlParams.AutoSize = true;
+            this.lblCommCnlParams.Location = new System.Drawing.Point(10, 56);
+            this.lblCommCnlParams.Name = "lblCommCnlParams";
+            this.lblCommCnlParams.Size = new System.Drawing.Size(66, 13);
+            this.lblCommCnlParams.TabIndex = 3;
+            this.lblCommCnlParams.Text = "Параметры";
+            // 
+            // btnCommCnlProps
+            // 
+            this.btnCommCnlProps.Location = new System.Drawing.Point(289, 31);
+            this.btnCommCnlProps.Name = "btnCommCnlProps";
+            this.btnCommCnlProps.Size = new System.Drawing.Size(90, 23);
+            this.btnCommCnlProps.TabIndex = 2;
+            this.btnCommCnlProps.Text = "Свойства";
+            this.btnCommCnlProps.UseVisualStyleBackColor = true;
+            // 
             // cbCommCnlType
             // 
             this.cbCommCnlType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbCommCnlType.FormattingEnabled = true;
             this.cbCommCnlType.Items.AddRange(new object[] {
-            "Не задан",
-            "COM-порт"});
+            "Не задан"});
             this.cbCommCnlType.Location = new System.Drawing.Point(13, 32);
             this.cbCommCnlType.Name = "cbCommCnlType";
             this.cbCommCnlType.Size = new System.Drawing.Size(270, 21);
             this.cbCommCnlType.TabIndex = 1;
-            this.cbCommCnlType.SelectedIndexChanged += new System.EventHandler(this.cbConnType_SelectedIndexChanged);
+            this.cbCommCnlType.SelectedIndexChanged += new System.EventHandler(this.cbCommCnlType_SelectedIndexChanged);
             // 
             // lblConnType
             // 
@@ -2206,35 +2233,6 @@
             this.pnlMain.Size = new System.Drawing.Size(654, 465);
             this.pnlMain.TabIndex = 1;
             // 
-            // btnCommCnlProps
-            // 
-            this.btnCommCnlProps.Enabled = false;
-            this.btnCommCnlProps.Location = new System.Drawing.Point(289, 31);
-            this.btnCommCnlProps.Name = "btnCommCnlProps";
-            this.btnCommCnlProps.Size = new System.Drawing.Size(90, 23);
-            this.btnCommCnlProps.TabIndex = 2;
-            this.btnCommCnlProps.Text = "Свойства";
-            this.btnCommCnlProps.UseVisualStyleBackColor = true;
-            // 
-            // txtCommCnlPropsInfo
-            // 
-            this.txtCommCnlPropsInfo.Location = new System.Drawing.Point(13, 72);
-            this.txtCommCnlPropsInfo.Multiline = true;
-            this.txtCommCnlPropsInfo.Name = "txtCommCnlPropsInfo";
-            this.txtCommCnlPropsInfo.ReadOnly = true;
-            this.txtCommCnlPropsInfo.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtCommCnlPropsInfo.Size = new System.Drawing.Size(366, 133);
-            this.txtCommCnlPropsInfo.TabIndex = 4;
-            // 
-            // lblCommCnlPropsInfo
-            // 
-            this.lblCommCnlPropsInfo.AutoSize = true;
-            this.lblCommCnlPropsInfo.Location = new System.Drawing.Point(10, 56);
-            this.lblCommCnlPropsInfo.Name = "lblCommCnlPropsInfo";
-            this.lblCommCnlPropsInfo.Size = new System.Drawing.Size(55, 13);
-            this.lblCommCnlPropsInfo.TabIndex = 3;
-            this.lblCommCnlPropsInfo.Text = "Свойства";
-            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2493,8 +2491,8 @@
         private System.Windows.Forms.Label lblDetailedLog;
         private System.Windows.Forms.CheckBox chkDetailedLog;
         private System.Windows.Forms.Button btnCommCnlProps;
-        private System.Windows.Forms.TextBox txtCommCnlPropsInfo;
-        private System.Windows.Forms.Label lblCommCnlPropsInfo;
+        private System.Windows.Forms.TextBox txtCommCnlParams;
+        private System.Windows.Forms.Label lblCommCnlParams;
     }
 }
 

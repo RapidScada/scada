@@ -34,6 +34,17 @@ namespace Scada.Comm.Channels
     public class CommTcpServerView : CommChannelView
     {
         /// <summary>
+        /// Получить наименование типа канала связи
+        /// </summary>
+        public override string TypeName
+        {
+            get
+            {
+                return CommTcpServerLogic.CommCnlType;
+            }
+        }
+
+        /// <summary>
         /// Получить наименование канала связи
         /// </summary>
         public override string Name
@@ -70,6 +81,7 @@ namespace Scada.Comm.Channels
                     "(ByIPAddress, ByFirstPackage, ByDeviceLibrary).";
             }
         }
+
 
         /// <summary>
         /// Получить информацию о свойствах канала связи

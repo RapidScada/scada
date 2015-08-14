@@ -34,6 +34,26 @@ namespace Scada.Comm.Channels
     public class CommSerialView : CommChannelView
     {
         /// <summary>
+        /// Конструктор
+        /// </summary>
+        public CommSerialView()
+        {
+            CanShowProps = true;
+        }
+
+
+        /// <summary>
+        /// Получить наименование типа канала связи
+        /// </summary>
+        public override string TypeName
+        {
+            get
+            {
+                return CommSerialLogic.CommCnlType;
+            }
+        }
+
+        /// <summary>
         /// Получить наименование канала связи
         /// </summary>
         public override string Name
@@ -75,6 +95,7 @@ namespace Scada.Comm.Channels
                     "Behavior - work mode of connection channel (Master, Slave).";
             }
         }
+
 
         /// <summary>
         /// Получить информацию о свойствах канала связи

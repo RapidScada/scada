@@ -34,6 +34,17 @@ namespace Scada.Comm.Channels
     public class CommTcpClientView : CommChannelView
     {
         /// <summary>
+        /// Получить наименование типа канала связи
+        /// </summary>
+        public override string TypeName
+        {
+            get
+            {
+                return CommTcpClientLogic.CommCnlType;
+            }
+        }
+
+        /// <summary>
         /// Получить наименование канала связи
         /// </summary>
         public override string Name
@@ -67,6 +78,7 @@ namespace Scada.Comm.Channels
                     "ConnMode - connection mode (Individual, Shared).";
             }
         }
+
 
         /// <summary>
         /// Получить информацию о свойствах канала связи

@@ -91,6 +91,10 @@ namespace Scada.Comm.Channels
             public OperatingBehaviors Behavior { get; set; }
         }
 
+        /// <summary>
+        /// Наименование типа канала связи
+        /// </summary>
+        public const string CommCnlType = "Serial";
 
         /// <summary>
         /// Настройки канала связи
@@ -114,13 +118,13 @@ namespace Scada.Comm.Channels
 
 
         /// <summary>
-        /// Получить наименование канала связи
+        /// Получить наименование типа канала связи
         /// </summary>
-        public override string InternalName
+        public override string TypeName
         {
             get
             {
-                return "CommSerial";
+                return CommCnlType;
             }
         }
 

@@ -24,6 +24,7 @@
  */
 
 using Scada.Client;
+using Scada.Comm.Channels;
 using Scada.Comm.Devices;
 using Scada.Data;
 using System;
@@ -469,6 +470,22 @@ namespace Scada.Comm.Ctrl
         {
             NodeTag selNodeTag = node == null ? null : node.Tag as NodeTag;
             return selNodeTag == null ? null : selNodeTag.Obj as Settings.CommLine;
+        }
+
+        /// <summary>
+        /// Заполнить список типов каналов связи
+        /// </summary>
+        private void FillCommCnlTypes()
+        {
+            cbCommCnlType.Items.AddRange(new CommChannelView[]
+            {
+                new CommSerialView(),
+                new CommTcpClientView(),
+                new CommTcpServerView(),
+                new CommUdpView()
+            });
+
+            cbCommCnlType.SelectedIndex = 0;
         }
 
         /// <summary>
@@ -1005,6 +1022,7 @@ namespace Scada.Comm.Ctrl
             pnlCmdData.Top = pnlCmdVal.Top;
             TuneKpCmd();
             MakeTree();
+            FillCommCnlTypes();
 
             // получение информации о типах КП
             GetKpDllInfo();
@@ -1817,20 +1835,23 @@ namespace Scada.Comm.Ctrl
             }
         }
 
-        private void cbConnType_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbCommCnlType_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!changing && lastLine != null)
             {
-                /*bool comPort = cbConnType.SelectedIndex > 0;
-                lastLine.ConnType = comPort ? "ComPort" : "None";
-
-                cbPortName.Enabled = comPort;
-                cbBaudRate.Enabled = comPort;
-                cbDataBits.Enabled = comPort;
-                cbParity.Enabled = comPort;
-                cbStopBits.Enabled = comPort;
-                chkDtrEnable.Enabled = comPort;
-                chkRtsEnable.Enabled = comPort;*/
+                CommChannelView commCnlView = cbCommCnlType.SelectedItem as CommChannelView;
+                if (commCnlView == null)
+                {
+                    lastLine.CommCnlType = "";
+                    btnCommCnlProps.Enabled = false;
+                    txtCommCnlParams.Text = "";
+                }
+                else
+                {
+                    lastLine.CommCnlType = commCnlView.TypeName;
+                    btnCommCnlProps.Enabled = commCnlView.CanShowProps;
+                    txtCommCnlParams.Text = commCnlView.GetPropsInfo(lastLine.CommCnlParams);
+                }
 
                 SetModified();
             }

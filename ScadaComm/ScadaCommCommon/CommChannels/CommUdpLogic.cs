@@ -93,6 +93,11 @@ namespace Scada.Comm.Channels
         }
 
         /// <summary>
+        /// Наименование типа канала связи
+        /// </summary>
+        public const string CommCnlType = "Udp";
+
+        /// <summary>
         /// Настройки канала связи
         /// </summary>
         protected Settings settings;
@@ -119,13 +124,13 @@ namespace Scada.Comm.Channels
 
 
         /// <summary>
-        /// Получить наименование канала связи
+        /// Получить наименование типа канала связи
         /// </summary>
-        public override string InternalName
+        public override string TypeName
         {
             get
             {
-                return "CommUdp";
+                return CommCnlType;
             }
         }
 

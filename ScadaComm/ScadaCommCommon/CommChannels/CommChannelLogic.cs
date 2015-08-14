@@ -115,10 +115,10 @@ namespace Scada.Comm.Channels
 
 
         /// <summary>
-        /// Получить внутреннее наименование канала связи
+        /// Получить наименование типа канала связи
         /// </summary>
         /// <remarks>Используется для вывода в журнал и идентификации канала связи</remarks>
-        public abstract string InternalName { get; }
+        public abstract string TypeName { get; }
 
         /// <summary>
         /// Получить режим работы
@@ -395,14 +395,14 @@ namespace Scada.Comm.Channels
                 string title = "Канал связи";
                 sbInfo.AppendLine(title)
                     .AppendLine(new string('-', title.Length))
-                    .AppendLine("Наименование: " + InternalName);
+                    .AppendLine("Тип: " + TypeName);
             }
             else
             {
                 string title = "Connection Channel";
                 sbInfo.AppendLine(title)
                     .AppendLine(new string('-', title.Length))
-                    .AppendLine("Name: " + InternalName);
+                    .AppendLine("Type: " + TypeName);
             }
 
             return sbInfo.ToString();

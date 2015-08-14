@@ -98,6 +98,11 @@ namespace Scada.Comm.Channels
             public DeviceSelectionModes DevSelMode { get; set; }
         }
 
+        /// <summary>
+        /// Наименование типа канала связи
+        /// </summary>
+        public const string CommCnlType = "TcpServer";
+
         // переменные для постоянно используемых значений
         private bool slaveBehavior;
         private bool sharedConnMode;
@@ -141,13 +146,13 @@ namespace Scada.Comm.Channels
 
 
         /// <summary>
-        /// Получить наименование канала связи
+        /// Получить наименование типа канала связи
         /// </summary>
-        public override string InternalName
+        public override string TypeName
         {
             get
             {
-                return "CommTcpServer";
+                return CommCnlType;
             }
         }
 
