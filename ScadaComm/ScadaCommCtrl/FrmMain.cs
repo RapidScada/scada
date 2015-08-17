@@ -175,7 +175,8 @@ namespace Scada.Comm.Ctrl
         private DataTable tblCommLine;      // таблица линий связи из базы конфигурации
         private DataTable tblKP;            // таблица КП из базы конфигурации
         private DataTable tblKPType;        // таблица типов КП из базы конфигурации
-        private SortedList<string, KpDllInfo> kpDllInfoList; // информация о библиотеках КП, упорядоченная по имени DLL
+        private SortedList<string, KpDllInfo> kpDllInfoList; // информация о библиотеках КП, доступная по имени DLL
+        private Dictionary<string, SortedList<string, string>> commCnlParamsBuf; // буфер параметров слоёв связи
 
         private ListBox lbLog1;             // список строк 1-го журнала
         private ListBox lbLog2;             // список строк 2-го журнала
@@ -248,6 +249,7 @@ namespace Scada.Comm.Ctrl
             tblKP = new DataTable();
             tblKPType = new DataTable();
             kpDllInfoList = new SortedList<string, KpDllInfo>();
+            commCnlParamsBuf = new Dictionary<string, SortedList<string, string>>();
 
             lbLog1 = null;
             lbLog2 = null;
@@ -567,15 +569,12 @@ namespace Scada.Comm.Ctrl
         {
             if (lastLine != null && lastKP != null)
             {
-                int index = kpDllInfoList.IndexOfKey(lastKP.Dll);
-
-                if (index >= 0)
+                KpDllInfo kpDllInfo;
+                if (kpDllInfoList.TryGetValue(lastKP.Dll, out kpDllInfo))
                 {
                     try
                     {
-                        KpDllInfo kpDllInfo = kpDllInfoList.Values[index];
                         KPView kpView = KPFactory.GetKPView(kpDllInfo.KpType, lastKP.Number);
-
                         if (!ShowKPProps(kpView) && showUnsupMsg)
                             ScadaUtils.ShowError(string.Format(AppPhrases.ShowKpPropsUnsupported, kpDllInfo.FileName));
                     }
@@ -637,67 +636,48 @@ namespace Scada.Comm.Ctrl
                 numLineNumber.SetNumericValue(lastLine.Number);
                 txtLineName.Text = lastLine.Name;
 
-                /*bool comPort = lastLine.ConnType.ToLower() == "comport";
-                cbConnType.SelectedIndex = comPort ? 1 : 0;
-                cbPortName.Text = lastLine.PortName;
+                int commCnlTypeInd = 0; // 0 - не задан
+                CommChannelView commCnlView = null;
 
-                string baudRateStr = lastLine.BaudRate.ToString();
-                cbBaudRate.SelectedIndex = 0;
-                for (int i = 0; i < cbBaudRate.Items.Count; i++)
+                for (int i = 0; i < cbCommCnlType.Items.Count && commCnlTypeInd <= 0; i++)
                 {
-                    if (cbBaudRate.Items[i].ToString() == baudRateStr)
+                    CommChannelView curCommCnlView = cbCommCnlType.Items[i] as CommChannelView;
+                    if (curCommCnlView != null && curCommCnlView.TypeName == lastLine.CommCnlType)
                     {
-                        cbBaudRate.SelectedIndex = i;
-                        break;
+                        commCnlTypeInd = i;
+                        commCnlView = curCommCnlView;
                     }
                 }
 
-                string dataBitsStr = lastLine.DataBits.ToString();
-                cbDataBits.SelectedIndex = cbDataBits.Items.Count - 1; // 8 бит
-                for (int i = 0; i < cbDataBits.Items.Count; i++)
-                {
-                    if (cbDataBits.Items[i].ToString() == dataBitsStr)
-                    {
-                        cbDataBits.SelectedIndex = i;
-                        break;
-                    }
-                }
-
-                if (lastLine.Parity == Parity.Even)
-                    cbParity.SelectedIndex = 0; // чёт.
-                else if (lastLine.Parity == Parity.Odd)
-                    cbParity.SelectedIndex = 1; // нечёт.
-                else if (lastLine.Parity == Parity.Mark)
-                    cbParity.SelectedIndex = 3; // маркер
-                else if (lastLine.Parity == Parity.Space)
-                    cbParity.SelectedIndex = 4; // пробел
-                else
-                    cbParity.SelectedIndex = 2; // нет
-
-                if (lastLine.StopBits == StopBits.One)
-                    cbStopBits.SelectedIndex = 0; // 1
-                else if (lastLine.StopBits == StopBits.OnePointFive)
-                    cbStopBits.SelectedIndex = 1; // 1,5
-                else if (lastLine.StopBits == StopBits.Two)
-                    cbStopBits.SelectedIndex = 2; // 2
-
-                chkDtrEnable.Checked = lastLine.DtrEnable;
-                chkRtsEnable.Checked = lastLine.RtsEnable;*/
+                cbCommCnlType.SelectedIndex = commCnlTypeInd;
+                CommChannelToPage(commCnlView);
+                commCnlParamsBuf.Clear();
 
                 numReqTriesCnt.SetNumericValue(lastLine.ReqTriesCnt);
                 numCycleDelay.SetNumericValue(lastLine.CycleDelay);
                 chkCmdEnabled.Checked = lastLine.CmdEnabled;
                 chkDetailedLog.Checked = lastLine.DetailedLog;
 
-                /*cbPortName.Enabled = comPort;
-                cbBaudRate.Enabled = comPort;
-                cbDataBits.Enabled = comPort;
-                cbParity.Enabled = comPort;
-                cbStopBits.Enabled = comPort;
-                chkDtrEnable.Enabled = comPort;
-                chkRtsEnable.Enabled = comPort;*/
-
                 changing = false;
+            }
+        }
+
+        /// <summary>
+        /// Отобразить свойства канала связи на странице линии связи
+        /// </summary>
+        private void CommChannelToPage(CommChannelView commCnlView)
+        {
+            if (commCnlView == null)
+            {
+                lastLine.CommCnlType = "";
+                btnCommCnlProps.Enabled = false;
+                txtCommCnlParams.Text = "";
+            }
+            else
+            {
+                lastLine.CommCnlType = commCnlView.TypeName;
+                btnCommCnlProps.Enabled = commCnlView.CanShowProps;
+                txtCommCnlParams.Text = commCnlView.GetPropsInfo(lastLine.CommCnlParams);
             }
         }
 
@@ -876,10 +856,10 @@ namespace Scada.Comm.Ctrl
             // установка параметров опроса КП по умолчанию
             if (setReqParams)
             {
-                int index = kpDllInfoList.IndexOfKey(kp.Dll);
-                if (index >= 0)
+                KpDllInfo kpDllInfo;
+                if (kpDllInfoList.TryGetValue(kp.Dll, out kpDllInfo))
                 {
-                    KPReqParams reqParams = kpDllInfoList.Values[index].KpView.DefaultReqParams;
+                    KPReqParams reqParams = kpDllInfo.KpView.DefaultReqParams;
                     kp.Timeout = reqParams.Timeout;
                     kp.Delay = reqParams.Delay;
                     kp.Time = reqParams.Time;
@@ -1839,21 +1819,45 @@ namespace Scada.Comm.Ctrl
         {
             if (!changing && lastLine != null)
             {
-                CommChannelView commCnlView = cbCommCnlType.SelectedItem as CommChannelView;
-                if (commCnlView == null)
+                // копирование предыдущих параметров канала связи в буфер
+                if (lastLine.CommCnlType != "")
                 {
-                    lastLine.CommCnlType = "";
-                    btnCommCnlProps.Enabled = false;
-                    txtCommCnlParams.Text = "";
-                }
-                else
-                {
-                    lastLine.CommCnlType = commCnlView.TypeName;
-                    btnCommCnlProps.Enabled = commCnlView.CanShowProps;
-                    txtCommCnlParams.Text = commCnlView.GetPropsInfo(lastLine.CommCnlParams);
+                    SortedList<string, string> oldCommCnlParams = 
+                        new SortedList<string, string>(lastLine.CommCnlParams);
+                    commCnlParamsBuf[lastLine.CommCnlType] = oldCommCnlParams;
                 }
 
+                // загрузка параметров выбранного канала связи из буфера
+                lastLine.CommCnlParams.Clear();
+                CommChannelView commChannelView = cbCommCnlType.SelectedItem as CommChannelView;
+                SortedList<string, string> storedCommCnlParams;
+                if (commChannelView != null && 
+                    commCnlParamsBuf.TryGetValue(commChannelView.TypeName, out storedCommCnlParams))
+                {
+                    foreach (KeyValuePair<string, string> commCnlParam in storedCommCnlParams)
+                        lastLine.CommCnlParams.Add(commCnlParam.Key, commCnlParam.Value);
+                }
+
+                // отображение параметров выбранного канала связи
+                CommChannelToPage(commChannelView);
                 SetModified();
+            }
+        }
+
+        private void btnCommCnlProps_Click(object sender, EventArgs e)
+        {
+            // отображение свойств канала связи
+            CommChannelView commCnlView = cbCommCnlType.SelectedItem as CommChannelView;
+            if (lastLine != null && commCnlView != null && commCnlView.CanShowProps)
+            {
+                bool modified;
+                commCnlView.ShowProps(lastLine.CommCnlParams, out modified);
+                
+                if (modified)
+                {
+                    txtCommCnlParams.Text = commCnlView.GetPropsInfo(lastLine.CommCnlParams);
+                    SetModified();
+                }
             }
         }
 

@@ -23,6 +23,7 @@
  * Modified : 2015
  */
 
+using Scada.Comm.Channels;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -482,7 +483,7 @@ namespace Scada.Comm
                     if (connTypeElem != null && commSettElem != null &&
                         connTypeElem.GetAttribute("value").Equals("ComPort", StringComparison.OrdinalIgnoreCase))
                     {
-                        commLine.CommCnlType = "Serial";
+                        commLine.CommCnlType = CommSerialLogic.CommCnlType;
                         commLine.CommCnlParams.Add("PortName", commSettElem.GetAttribute("portName"));
                         commLine.CommCnlParams.Add("BaudRate", commSettElem.GetAttribute("baudRate"));
                         commLine.CommCnlParams.Add("Parity", commSettElem.GetAttribute("parity"));

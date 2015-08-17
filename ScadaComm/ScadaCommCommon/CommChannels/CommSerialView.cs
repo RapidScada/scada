@@ -76,8 +76,8 @@ namespace Scada.Comm.Channels
                     "Параметры канала связи:\n" +
                     "PortName - имя последовательного порта (например, COM1),\n" +
                     "BaudRate - скорость обмена по порту,\n" +
-                    "Parity - контроль чётности (None, Odd, Even, Mark, Space),\n" +
                     "DataBits - биты данных (5, 6, 7, 8),\n" +
+                    "Parity - контроль чётности (None, Odd, Even, Mark, Space),\n" +
                     "StopBits - стоповые биты (None, One, Two, OnePointFive),\n" +
                     "DtrEnable - использование сигнала DTR (false, true),\n" +
                     "RtsEnable - использование сигнала RTS (false, true),\n" +
@@ -87,8 +87,8 @@ namespace Scada.Comm.Channels
                     "Communication channel parameters:\n" +
                     "PortName - serial port name (for example, COM1),\n" +
                     "BaudRate - serial baud rate,\n" +
-                    "Parity - parity-checking protocol (None, Odd, Even, Mark, Space),\n" +
                     "DataBits - length of data bits per byte (5, 6, 7, 8),\n" +
+                    "Parity - parity-checking protocol (None, Odd, Even, Mark, Space),\n" +
                     "StopBits -  number of stopbits per byte (None, One, Two, OnePointFive),\n" +
                     "DtrEnable - value that enables the DTR signal (false, true),\n" +
                     "RtsEnable - value that enables the RTS signal (false, true),\n" +
@@ -96,6 +96,14 @@ namespace Scada.Comm.Channels
             }
         }
 
+
+        /// <summary>
+        /// Отобразить свойства модуля
+        /// </summary>
+        public override void ShowProps(SortedList<string, string> commCnlParams, out bool modified)
+        {
+            FrmCommSerialProps.ShowDialog(commCnlParams, out modified);
+        }
 
         /// <summary>
         /// Получить информацию о свойствах канала связи

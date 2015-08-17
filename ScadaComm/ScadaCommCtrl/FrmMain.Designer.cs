@@ -30,10 +30,10 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
-            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Общие параметры");
-            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Библиотеки КП");
-            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Линии связи");
-            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Статистика");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Общие параметры");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Библиотеки КП");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Линии связи");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Статистика");
             this.cmsLine = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miAddLine = new System.Windows.Forms.ToolStripMenuItem();
             this.miMoveUpLine = new System.Windows.Forms.ToolStripMenuItem();
@@ -432,28 +432,28 @@
             this.treeView.Location = new System.Drawing.Point(0, 0);
             this.treeView.Margin = new System.Windows.Forms.Padding(0);
             this.treeView.Name = "treeView";
-            treeNode5.ImageKey = "params.png";
-            treeNode5.Name = "nodeCommonParams";
-            treeNode5.SelectedImageKey = "params.png";
-            treeNode5.Text = "Общие параметры";
-            treeNode6.ImageKey = "kpdll.png";
-            treeNode6.Name = "nodeKpDlls";
-            treeNode6.SelectedImageKey = "kpdll.png";
-            treeNode6.Text = "Библиотеки КП";
-            treeNode7.ContextMenuStrip = this.cmsLine;
-            treeNode7.ImageKey = "commlines.png";
-            treeNode7.Name = "nodeLines";
-            treeNode7.SelectedImageKey = "commlines.png";
-            treeNode7.Text = "Линии связи";
-            treeNode8.ImageKey = "stats.png";
-            treeNode8.Name = "nodeStats";
-            treeNode8.SelectedImageKey = "stats.png";
-            treeNode8.Text = "Статистика";
+            treeNode1.ImageKey = "params.png";
+            treeNode1.Name = "nodeCommonParams";
+            treeNode1.SelectedImageKey = "params.png";
+            treeNode1.Text = "Общие параметры";
+            treeNode2.ImageKey = "kpdll.png";
+            treeNode2.Name = "nodeKpDlls";
+            treeNode2.SelectedImageKey = "kpdll.png";
+            treeNode2.Text = "Библиотеки КП";
+            treeNode3.ContextMenuStrip = this.cmsLine;
+            treeNode3.ImageKey = "commlines.png";
+            treeNode3.Name = "nodeLines";
+            treeNode3.SelectedImageKey = "commlines.png";
+            treeNode3.Text = "Линии связи";
+            treeNode4.ImageKey = "stats.png";
+            treeNode4.Name = "nodeStats";
+            treeNode4.SelectedImageKey = "stats.png";
+            treeNode4.Text = "Статистика";
             this.treeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode5,
-            treeNode6,
-            treeNode7,
-            treeNode8});
+            treeNode1,
+            treeNode2,
+            treeNode3,
+            treeNode4});
             this.treeView.SelectedImageKey = "params.png";
             this.treeView.ShowRootLines = false;
             this.treeView.Size = new System.Drawing.Size(240, 464);
@@ -650,7 +650,7 @@
             this.gbPerformance.Location = new System.Drawing.Point(6, 140);
             this.gbPerformance.Name = "gbPerformance";
             this.gbPerformance.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbPerformance.Size = new System.Drawing.Size(392, 81);
+            this.gbPerformance.Size = new System.Drawing.Size(392, 78);
             this.gbPerformance.TabIndex = 1;
             this.gbPerformance.TabStop = false;
             this.gbPerformance.Text = "Выполнение";
@@ -658,15 +658,15 @@
             // lblRefrParams
             // 
             this.lblRefrParams.AutoSize = true;
-            this.lblRefrParams.Location = new System.Drawing.Point(79, 49);
+            this.lblRefrParams.Location = new System.Drawing.Point(13, 49);
             this.lblRefrParams.Name = "lblRefrParams";
             this.lblRefrParams.Size = new System.Drawing.Size(245, 13);
-            this.lblRefrParams.TabIndex = 3;
+            this.lblRefrParams.TabIndex = 2;
             this.lblRefrParams.Text = "Период передачи на сервер всех данных КП, с";
             // 
             // numSendAllDataPer
             // 
-            this.numSendAllDataPer.Location = new System.Drawing.Point(13, 45);
+            this.numSendAllDataPer.Location = new System.Drawing.Point(319, 45);
             this.numSendAllDataPer.Maximum = new decimal(new int[] {
             3600,
             0,
@@ -674,7 +674,7 @@
             0});
             this.numSendAllDataPer.Name = "numSendAllDataPer";
             this.numSendAllDataPer.Size = new System.Drawing.Size(60, 20);
-            this.numSendAllDataPer.TabIndex = 2;
+            this.numSendAllDataPer.TabIndex = 3;
             this.numSendAllDataPer.Value = new decimal(new int[] {
             60,
             0,
@@ -689,7 +689,7 @@
             0,
             0,
             0});
-            this.numWaitForStop.Location = new System.Drawing.Point(13, 19);
+            this.numWaitForStop.Location = new System.Drawing.Point(319, 19);
             this.numWaitForStop.Maximum = new decimal(new int[] {
             600000,
             0,
@@ -697,7 +697,7 @@
             0});
             this.numWaitForStop.Name = "numWaitForStop";
             this.numWaitForStop.Size = new System.Drawing.Size(60, 20);
-            this.numWaitForStop.TabIndex = 0;
+            this.numWaitForStop.TabIndex = 1;
             this.numWaitForStop.Value = new decimal(new int[] {
             1000,
             0,
@@ -708,10 +708,10 @@
             // lblWaitForStop
             // 
             this.lblWaitForStop.AutoSize = true;
-            this.lblWaitForStop.Location = new System.Drawing.Point(79, 23);
+            this.lblWaitForStop.Location = new System.Drawing.Point(13, 23);
             this.lblWaitForStop.Name = "lblWaitForStop";
             this.lblWaitForStop.Size = new System.Drawing.Size(201, 13);
-            this.lblWaitForStop.TabIndex = 1;
+            this.lblWaitForStop.TabIndex = 0;
             this.lblWaitForStop.Text = "Ожидание остановки линий связи, мс";
             // 
             // gbServer
@@ -738,7 +738,7 @@
             // lblServerPwd
             // 
             this.lblServerPwd.AutoSize = true;
-            this.lblServerPwd.Location = new System.Drawing.Point(116, 79);
+            this.lblServerPwd.Location = new System.Drawing.Point(170, 78);
             this.lblServerPwd.Name = "lblServerPwd";
             this.lblServerPwd.Size = new System.Drawing.Size(45, 13);
             this.lblServerPwd.TabIndex = 9;
@@ -746,7 +746,7 @@
             // 
             // txtServerPwd
             // 
-            this.txtServerPwd.Location = new System.Drawing.Point(119, 95);
+            this.txtServerPwd.Location = new System.Drawing.Point(173, 95);
             this.txtServerPwd.Name = "txtServerPwd";
             this.txtServerPwd.Size = new System.Drawing.Size(100, 20);
             this.txtServerPwd.TabIndex = 10;
@@ -758,7 +758,7 @@
             // 
             this.txtServerUser.Location = new System.Drawing.Point(13, 95);
             this.txtServerUser.Name = "txtServerUser";
-            this.txtServerUser.Size = new System.Drawing.Size(100, 20);
+            this.txtServerUser.Size = new System.Drawing.Size(154, 20);
             this.txtServerUser.TabIndex = 8;
             this.txtServerUser.Text = "ScadaComm";
             this.txtServerUser.TextChanged += new System.EventHandler(this.txtServerUser_TextChanged);
@@ -775,7 +775,7 @@
             // lblServerTimeout
             // 
             this.lblServerTimeout.AutoSize = true;
-            this.lblServerTimeout.Location = new System.Drawing.Point(222, 39);
+            this.lblServerTimeout.Location = new System.Drawing.Point(276, 39);
             this.lblServerTimeout.Name = "lblServerTimeout";
             this.lblServerTimeout.Size = new System.Drawing.Size(50, 13);
             this.lblServerTimeout.TabIndex = 5;
@@ -783,7 +783,7 @@
             // 
             // numServerTimeout
             // 
-            this.numServerTimeout.Location = new System.Drawing.Point(225, 55);
+            this.numServerTimeout.Location = new System.Drawing.Point(279, 55);
             this.numServerTimeout.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -807,7 +807,7 @@
             // lblServerPort
             // 
             this.lblServerPort.AutoSize = true;
-            this.lblServerPort.Location = new System.Drawing.Point(116, 39);
+            this.lblServerPort.Location = new System.Drawing.Point(170, 39);
             this.lblServerPort.Name = "lblServerPort";
             this.lblServerPort.Size = new System.Drawing.Size(32, 13);
             this.lblServerPort.TabIndex = 3;
@@ -815,7 +815,7 @@
             // 
             // numServerPort
             // 
-            this.numServerPort.Location = new System.Drawing.Point(119, 55);
+            this.numServerPort.Location = new System.Drawing.Point(173, 55);
             this.numServerPort.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -862,7 +862,7 @@
             // 
             this.txtServerHost.Location = new System.Drawing.Point(13, 55);
             this.txtServerHost.Name = "txtServerHost";
-            this.txtServerHost.Size = new System.Drawing.Size(100, 20);
+            this.txtServerHost.Size = new System.Drawing.Size(154, 20);
             this.txtServerHost.TabIndex = 2;
             this.txtServerHost.Text = "localhost";
             this.txtServerHost.TextChanged += new System.EventHandler(this.txtServerHost_TextChanged);
@@ -1042,50 +1042,50 @@
             // lblDetailedLog
             // 
             this.lblDetailedLog.AutoSize = true;
-            this.lblDetailedLog.Location = new System.Drawing.Point(79, 101);
+            this.lblDetailedLog.Location = new System.Drawing.Point(13, 101);
             this.lblDetailedLog.Name = "lblDetailedLog";
             this.lblDetailedLog.Size = new System.Drawing.Size(105, 13);
-            this.lblDetailedLog.TabIndex = 7;
+            this.lblDetailedLog.TabIndex = 6;
             this.lblDetailedLog.Text = "Подробный журнал";
             this.lblDetailedLog.Click += new System.EventHandler(this.lblDetailedLog_Click);
             // 
             // chkDetailedLog
             // 
             this.chkDetailedLog.AutoSize = true;
-            this.chkDetailedLog.Location = new System.Drawing.Point(36, 101);
+            this.chkDetailedLog.Location = new System.Drawing.Point(342, 101);
             this.chkDetailedLog.Name = "chkDetailedLog";
             this.chkDetailedLog.Size = new System.Drawing.Size(15, 14);
-            this.chkDetailedLog.TabIndex = 6;
+            this.chkDetailedLog.TabIndex = 7;
             this.chkDetailedLog.UseVisualStyleBackColor = true;
             this.chkDetailedLog.CheckedChanged += new System.EventHandler(this.chkDetailedLog_CheckedChanged);
             // 
             // lblCmdEnabled
             // 
             this.lblCmdEnabled.AutoSize = true;
-            this.lblCmdEnabled.Location = new System.Drawing.Point(79, 75);
+            this.lblCmdEnabled.Location = new System.Drawing.Point(13, 75);
             this.lblCmdEnabled.Name = "lblCmdEnabled";
             this.lblCmdEnabled.Size = new System.Drawing.Size(133, 13);
-            this.lblCmdEnabled.TabIndex = 5;
+            this.lblCmdEnabled.TabIndex = 4;
             this.lblCmdEnabled.Text = "Команды ТУ разрешены";
             this.lblCmdEnabled.Click += new System.EventHandler(this.lblCmdEnabled_Click);
             // 
             // chkCmdEnabled
             // 
             this.chkCmdEnabled.AutoSize = true;
-            this.chkCmdEnabled.Location = new System.Drawing.Point(36, 75);
+            this.chkCmdEnabled.Location = new System.Drawing.Point(342, 75);
             this.chkCmdEnabled.Name = "chkCmdEnabled";
             this.chkCmdEnabled.Size = new System.Drawing.Size(15, 14);
-            this.chkCmdEnabled.TabIndex = 4;
+            this.chkCmdEnabled.TabIndex = 5;
             this.chkCmdEnabled.UseVisualStyleBackColor = true;
             this.chkCmdEnabled.CheckedChanged += new System.EventHandler(this.chkCmdEnabled_CheckedChanged);
             // 
             // lblCycleDelay
             // 
             this.lblCycleDelay.AutoSize = true;
-            this.lblCycleDelay.Location = new System.Drawing.Point(79, 49);
+            this.lblCycleDelay.Location = new System.Drawing.Point(13, 49);
             this.lblCycleDelay.Name = "lblCycleDelay";
             this.lblCycleDelay.Size = new System.Drawing.Size(183, 13);
-            this.lblCycleDelay.TabIndex = 3;
+            this.lblCycleDelay.TabIndex = 2;
             this.lblCycleDelay.Text = "Задержка после цикла опроса, мс";
             // 
             // numCycleDelay
@@ -1095,7 +1095,7 @@
             0,
             0,
             0});
-            this.numCycleDelay.Location = new System.Drawing.Point(13, 45);
+            this.numCycleDelay.Location = new System.Drawing.Point(319, 45);
             this.numCycleDelay.Maximum = new decimal(new int[] {
             600000,
             0,
@@ -1103,12 +1103,12 @@
             0});
             this.numCycleDelay.Name = "numCycleDelay";
             this.numCycleDelay.Size = new System.Drawing.Size(60, 20);
-            this.numCycleDelay.TabIndex = 2;
+            this.numCycleDelay.TabIndex = 3;
             this.numCycleDelay.ValueChanged += new System.EventHandler(this.numCycleDelay_ValueChanged);
             // 
             // numReqTriesCnt
             // 
-            this.numReqTriesCnt.Location = new System.Drawing.Point(13, 19);
+            this.numReqTriesCnt.Location = new System.Drawing.Point(319, 19);
             this.numReqTriesCnt.Minimum = new decimal(new int[] {
             1,
             0,
@@ -1116,7 +1116,7 @@
             0});
             this.numReqTriesCnt.Name = "numReqTriesCnt";
             this.numReqTriesCnt.Size = new System.Drawing.Size(60, 20);
-            this.numReqTriesCnt.TabIndex = 0;
+            this.numReqTriesCnt.TabIndex = 1;
             this.numReqTriesCnt.Value = new decimal(new int[] {
             3,
             0,
@@ -1127,10 +1127,10 @@
             // lblReqTriesCnt
             // 
             this.lblReqTriesCnt.AutoSize = true;
-            this.lblReqTriesCnt.Location = new System.Drawing.Point(79, 23);
+            this.lblReqTriesCnt.Location = new System.Drawing.Point(13, 23);
             this.lblReqTriesCnt.Name = "lblReqTriesCnt";
             this.lblReqTriesCnt.Size = new System.Drawing.Size(261, 13);
-            this.lblReqTriesCnt.TabIndex = 1;
+            this.lblReqTriesCnt.TabIndex = 0;
             this.lblReqTriesCnt.Text = "Количество попыток перезапроса КП при ошибке";
             // 
             // gbCommChannel
@@ -1175,6 +1175,7 @@
             this.btnCommCnlProps.TabIndex = 2;
             this.btnCommCnlProps.Text = "Свойства";
             this.btnCommCnlProps.UseVisualStyleBackColor = true;
+            this.btnCommCnlProps.Click += new System.EventHandler(this.btnCommCnlProps_Click);
             // 
             // cbCommCnlType
             // 

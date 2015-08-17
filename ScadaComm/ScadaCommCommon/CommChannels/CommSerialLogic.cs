@@ -89,6 +89,21 @@ namespace Scada.Comm.Channels
             /// Получить или установить режим работы канала связи
             /// </summary>
             public OperatingBehaviors Behavior { get; set; }
+
+            /// <summary>
+            /// Инициализировать настройки на основе параметров канала связи
+            /// </summary>
+            public void Init(SortedList<string, string> commCnlParams, bool requireParams = true)
+            {
+                PortName = commCnlParams.GetStringParam("PortName", requireParams, PortName);
+                BaudRate = commCnlParams.GetIntParam("BaudRate", requireParams, BaudRate);
+                Parity = commCnlParams.GetEnumParam<Parity>("Parity", false, Parity);
+                DataBits = commCnlParams.GetIntParam("DataBits", false, DataBits);
+                StopBits = commCnlParams.GetEnumParam<StopBits>("StopBits", false, StopBits);
+                DtrEnable = commCnlParams.GetBoolParam("DtrEnable", false, DtrEnable);
+                RtsEnable = commCnlParams.GetBoolParam("RtsEnable", false, RtsEnable);
+                Behavior = commCnlParams.GetEnumParam<OperatingBehaviors>("Behavior", false, Behavior);
+            }
         }
 
         /// <summary>
@@ -159,16 +174,8 @@ namespace Scada.Comm.Channels
             // вызов метода базового класса
             base.Init(commCnlParams, kpList);
 
-            // получение настроек канала связи
-            settings.PortName = GetStringParam(commCnlParams, "PortName", true, settings.PortName);
-            settings.BaudRate = GetIntParam(commCnlParams, "BaudRate", true, settings.BaudRate);
-            settings.Parity = GetEnumParam<Parity>(commCnlParams, "Parity", false, settings.Parity);
-            settings.DataBits = GetIntParam(commCnlParams, "DataBits", false, settings.DataBits);
-            settings.StopBits = GetEnumParam<StopBits>(commCnlParams, "StopBits", false, settings.StopBits);
-            settings.DtrEnable = GetBoolParam(commCnlParams, "DtrEnable", false, settings.DtrEnable);
-            settings.RtsEnable = GetBoolParam(commCnlParams, "RtsEnable", false, settings.RtsEnable);
-            settings.Behavior = GetEnumParam<OperatingBehaviors>(commCnlParams, "Behavior",
-                false, settings.Behavior);
+            // инициализация настроек канала связи
+            settings.Init(commCnlParams);
 
             // создание клиента и соединения
             SerialPort serialPort = new SerialPort(settings.PortName, settings.BaudRate, settings.Parity, 

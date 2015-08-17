@@ -108,8 +108,9 @@ namespace Scada.Comm.Channels
         /// <summary>
         /// Отобразить свойства модуля
         /// </summary>
-        public virtual void ShowProps(SortedList<string, string> commCnlParams)
+        public virtual void ShowProps(SortedList<string, string> commCnlParams, out bool modified)
         {
+            modified = false;
         }
         
         /// <summary>
