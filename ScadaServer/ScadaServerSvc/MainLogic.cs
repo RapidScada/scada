@@ -339,7 +339,7 @@ namespace Scada.Server.Svc
 
             if (errors.Count > 0)
             {
-                AppLog.WriteAction(string.Join("\n", errors), Log.ActTypes.Error);
+                AppLog.WriteAction(string.Join(Environment.NewLine, errors), Log.ActTypes.Error);
                 return false;
             }
             else
@@ -389,7 +389,7 @@ namespace Scada.Server.Svc
 
             if (requiredFiles.Count > 0)
             {
-                AppLog.WriteAction(string.Join("\n", requiredFiles), Log.ActTypes.Error);
+                AppLog.WriteAction(string.Join(Environment.NewLine, requiredFiles), Log.ActTypes.Error);
                 return false;
             }
             else

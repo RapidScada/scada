@@ -349,7 +349,7 @@ namespace Scada.Server
             }
             catch (Exception ex)
             {
-                errMsg = CommonPhrases.LoadAppSettingsError + ":\r\n" + ex.Message;
+                errMsg = CommonPhrases.LoadAppSettingsError + ":" + Environment.NewLine + ex.Message;
                 return false;
             }
         }
@@ -453,7 +453,7 @@ namespace Scada.Server
             }
             catch (Exception ex)
             {
-                errMsg = CommonPhrases.SaveAppSettingsError + ":\r\n" + ex.Message;
+                errMsg = CommonPhrases.SaveAppSettingsError + ":" + Environment.NewLine + ex.Message;
                 return false;
             }
         }
