@@ -166,6 +166,7 @@
     <Phrase key="ResetReqParamsError">Error setting device request parameters to default</Phrase>
     <Phrase key="ShowKpPropsUnsupported">{0} does not support show device properties.</Phrase>
     <Phrase key="ShowKpPropsError">Error showing device properties</Phrase>
+    <Phrase key="ShowCommCnlPropsError">Error showing communication channel properties</Phrase>
     <Phrase key="UnknownDLL">Unknown DLL.</Phrase>
     <Phrase key="IncorrectCmdVal">The command value is incorrect.</Phrase>
     <Phrase key="IncorrectHexCmdData">The hexadecimal command data are incorrect.</Phrase>

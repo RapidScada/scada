@@ -69,6 +69,7 @@ namespace Scada.Comm.Ctrl
         public static string ResetReqParamsError { get; private set; }
         public static string ShowKpPropsUnsupported { get; private set; }
         public static string ShowKpPropsError { get; private set; }
+        public static string ShowCommCnlPropsError { get; private set; }
         public static string UnknownDLL { get; private set; }
         public static string IncorrectCmdVal { get; private set; }
         public static string IncorrectHexCmdData { get; private set; }
@@ -107,6 +108,7 @@ namespace Scada.Comm.Ctrl
             ResetReqParamsError = "Ошибка при установке параметров опроса КП по умолчанию";
             ShowKpPropsUnsupported = "{0} не поддерживает отображение свойств КП.";
             ShowKpPropsError = "Ошибка при отображении свойств КП";
+            ShowCommCnlPropsError = "Ошибка при отображении свойств канала связи";
             UnknownDLL = "Неизвестная DLL.";
             IncorrectCmdVal = "Некорректное значение команды.";
             IncorrectHexCmdData = "Некорректные 16-ричные данные команды.";
@@ -152,6 +154,7 @@ namespace Scada.Comm.Ctrl
                 ResetReqParamsError = dict.GetPhrase("ResetReqParamsError", ResetReqParamsError);
                 ShowKpPropsUnsupported = dict.GetPhrase("ShowKpPropsUnsupported", ShowKpPropsUnsupported);
                 ShowKpPropsError = dict.GetPhrase("ShowKpPropsError", ShowKpPropsError);
+                ShowCommCnlPropsError = dict.GetPhrase("ShowCommCnlPropsError", ShowCommCnlPropsError);
                 UnknownDLL = dict.GetPhrase("UnknownDLL", UnknownDLL);
                 IncorrectCmdVal = dict.GetPhrase("IncorrectCmdVal", IncorrectCmdVal);
                 IncorrectHexCmdData = dict.GetPhrase("IncorrectHexCmdData", IncorrectHexCmdData);

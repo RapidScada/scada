@@ -592,6 +592,24 @@ namespace Scada.Comm.Ctrl
             }
         }
 
+        /// <summary>
+        /// Отобразить свойства типа КП
+        /// </summary>
+        private void ShowKPTypeProps(KPView kpView)
+        {
+            try
+            {
+                if (kpView != null && kpView.CanShowProps)
+                    kpView.ShowProps();
+            }
+            catch (Exception ex)
+            {
+                string errMsg = AppPhrases.ShowKpPropsError + ":\r\n" + ex.Message;
+                errLog.WriteAction(errMsg);
+                ScadaUtils.ShowError(errMsg);
+            }
+        }
+
 
         /// <summary>
         /// Считать настройки изменёнными
@@ -667,7 +685,7 @@ namespace Scada.Comm.Ctrl
         /// </summary>
         private void CommChannelToPage(CommChannelView commCnlView)
         {
-            if (commCnlView == null)
+            if (lastLine == null || commCnlView == null)
             {
                 lastLine.CommCnlType = "";
                 btnCommCnlProps.Enabled = false;
@@ -677,7 +695,8 @@ namespace Scada.Comm.Ctrl
             {
                 lastLine.CommCnlType = commCnlView.TypeName;
                 btnCommCnlProps.Enabled = commCnlView.CanShowProps;
-                txtCommCnlParams.Text = commCnlView.GetPropsInfo(lastLine.CommCnlParams);
+                try { txtCommCnlParams.Text = commCnlView.GetPropsInfo(lastLine.CommCnlParams); }
+                catch (Exception ex) { txtCommCnlParams.Text = ex.Message; }
             }
         }
 
@@ -1745,7 +1764,8 @@ namespace Scada.Comm.Ctrl
                 KPView kpView = kpDllInfoList.Values[index].KpView;
                 if (kpView != null)
                 {
-                    txtKpDllDescr.Lines = kpView.KPDescr.Split(new string[] { "\n" }, StringSplitOptions.None);
+                    try { txtKpDllDescr.Lines = kpView.KPDescr.Split(new string[] { "\n" }, StringSplitOptions.None); }
+                    catch (Exception ex) { txtKpDllDescr.Text = ex.Message; }
                     btnKpDllProps.Enabled = kpView.CanShowProps;
                     return;
                 }
@@ -1758,13 +1778,8 @@ namespace Scada.Comm.Ctrl
         private void btnKpTypeProps_Click(object sender, EventArgs e)
         {
             int index = lbKpDll.SelectedIndex;
-
             if (0 <= index && index < kpDllInfoList.Count)
-            {
-                KPView kpView = kpDllInfoList.Values[index].KpView;
-                if (kpView != null && kpView.CanShowProps)
-                    kpView.ShowProps();
-            }
+                ShowKPTypeProps(kpDllInfoList.Values[index].KpView);
         }
         #endregion
 
@@ -1850,13 +1865,23 @@ namespace Scada.Comm.Ctrl
             CommChannelView commCnlView = cbCommCnlType.SelectedItem as CommChannelView;
             if (lastLine != null && commCnlView != null && commCnlView.CanShowProps)
             {
-                bool modified;
-                commCnlView.ShowProps(lastLine.CommCnlParams, out modified);
-                
-                if (modified)
+                try
                 {
-                    txtCommCnlParams.Text = commCnlView.GetPropsInfo(lastLine.CommCnlParams);
-                    SetModified();
+                    bool modified;
+                    commCnlView.ShowProps(lastLine.CommCnlParams, out modified);
+
+                    if (modified)
+                    {
+                        try { txtCommCnlParams.Text = commCnlView.GetPropsInfo(lastLine.CommCnlParams); }
+                        catch (Exception ex) { txtCommCnlParams.Text = ex.Message; }
+                        SetModified();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    string errMsg = AppPhrases.ShowCommCnlPropsError + ":\r\n" + ex.Message;
+                    errLog.WriteAction(errMsg);
+                    ScadaUtils.ShowError(errMsg);
                 }
             }
         }
