@@ -43,6 +43,7 @@ namespace Scada
         public static string ErrorCaption { get; private set; }
         public static string WarningCaption { get; private set; }
         public static string ErrorWithColon { get; private set; }
+        public static string UnhandledException { get; private set; }
         public static string SaveSettingsConfirm { get; private set; }
         public static string SaveModSettingsConfirm { get; private set; }
         public static string SaveKpSettingsConfirm { get; private set; }
@@ -76,6 +77,7 @@ namespace Scada
         public static string IncorrectXmlAttrVal { get; private set; }
         public static string IncorrectXmlParamVal { get; private set; }
         public static string XmlNodeNotFound { get; private set; }
+
         public static string CmdTypeTable { get; private set; }
         public static string CmdValTable { get; private set; }
         public static string CnlTypeTable { get; private set; }
@@ -94,6 +96,7 @@ namespace Scada
         public static string RoleTable { get; private set; }
         public static string UnitTable { get; private set; }
         public static string UserTable { get; private set; }
+
         public static string ContinuePendingSvcState { get; private set; }
         public static string PausedSvcState { get; private set; }
         public static string PausePendingSvcState { get; private set; }
@@ -114,6 +117,7 @@ namespace Scada
             ErrorCaption = "Ошибка";
             WarningCaption = "Предупреждение";
             ErrorWithColon = "Ошибка:";
+            UnhandledException = "Необработанное исключение";
             SaveSettingsConfirm = "Настройки были изменены. Сохранить изменения?";
             SaveModSettingsConfirm = "Настройки модуля были изменены. Сохранить изменения?";
             SaveKpSettingsConfirm = "Настройки КП были изменены. Сохранить изменения?";
@@ -147,6 +151,7 @@ namespace Scada
             IncorrectXmlAttrVal = "Некорректное значение XML-атрибута \"{0}\".";
             IncorrectXmlParamVal = "Некорректное значение параметра \"{0}\".";
             XmlNodeNotFound = "XML-узел \"{0}\" не найден внутри узла \"{1}\".";
+
             CmdTypeTable = "Типы команд";
             CmdValTable = "Значения команд";
             CnlTypeTable = "Типы каналов";
@@ -165,6 +170,7 @@ namespace Scada
             RoleTable = "Роли";
             UnitTable = "Размерности";
             UserTable = "Пользователи";
+
             ContinuePendingSvcState = "ожидание продолжения";
             PausedSvcState = "пауза";
             PausePendingSvcState = "ожидание паузы";
@@ -189,6 +195,7 @@ namespace Scada
                 ErrorCaption = dict.GetPhrase("ErrorCaption", ErrorCaption);
                 WarningCaption = dict.GetPhrase("WarningCaption", WarningCaption);
                 ErrorWithColon = dict.GetPhrase("ErrorWithColon", ErrorWithColon);
+                UnhandledException = dict.GetPhrase("UnhandledException", UnhandledException);
                 SaveSettingsConfirm = dict.GetPhrase("SaveSettingsConfirm", SaveSettingsConfirm);
                 SaveModSettingsConfirm = dict.GetPhrase("SaveModSettingsConfirm", SaveModSettingsConfirm);
                 SaveKpSettingsConfirm = dict.GetPhrase("SaveKpSettingsConfirm", SaveKpSettingsConfirm);
@@ -221,6 +228,7 @@ namespace Scada
                 IncorrectXmlAttrVal = dict.GetPhrase("IncorrectXmlAttrVal", IncorrectXmlAttrVal);
                 IncorrectXmlParamVal = dict.GetPhrase("IncorrectXmlParamVal", IncorrectXmlParamVal);
                 XmlNodeNotFound = dict.GetPhrase("XmlNodeNotFound", XmlNodeNotFound);
+
                 CmdTypeTable = dict.GetPhrase("CmdTypeTable", CmdTypeTable);
                 CmdValTable = dict.GetPhrase("CmdValTable", CmdValTable);
                 CnlTypeTable = dict.GetPhrase("CnlTypeTable", CnlTypeTable);
@@ -239,6 +247,7 @@ namespace Scada
                 RoleTable = dict.GetPhrase("RoleTable", RoleTable);
                 UnitTable = dict.GetPhrase("UnitTable", UnitTable);
                 UserTable = dict.GetPhrase("UserTable", UserTable);
+
                 ContinuePendingSvcState = dict.GetPhrase("ContinuePendingSvcState", ContinuePendingSvcState);
                 PausedSvcState = dict.GetPhrase("PausedSvcState", PausedSvcState);
                 PausePendingSvcState = dict.GetPhrase("PausePendingSvcState", PausePendingSvcState);

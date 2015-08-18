@@ -259,6 +259,8 @@ namespace Scada.Comm.Ctrl
             logFileAge2 = DateTime.MinValue;
             fullLoad1 = false;
             fullLoad2 = false;
+
+            Application.ThreadException += Application_ThreadException;
         }
 
 
@@ -942,6 +944,13 @@ namespace Scada.Comm.Ctrl
             }
         }
 
+
+        private void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
+        {
+            string errMsg = CommonPhrases.UnhandledException + ":\r\n" + e.Exception.Message;
+            errLog.WriteAction(errMsg, Log.ActTypes.Exception);
+            ScadaUtils.ShowError(errMsg);
+        }
 
         private void FrmMain_Load(object sender, EventArgs e)
         {

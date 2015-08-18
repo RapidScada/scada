@@ -133,7 +133,8 @@ namespace Scada.Comm.Svc
         private void OnUnhandledException(object sender, UnhandledExceptionEventArgs args)
         {
             Exception ex = args.ExceptionObject as Exception;
-            AppLog.WriteAction(string.Format(Localization.UseRussian ? "Необработанное исключение{0}" :
+            AppLog.WriteAction(string.Format(Localization.UseRussian ? 
+                "Необработанное исключение{0}" :
                 "Unhandled exception{0}", ex == null ? "" : ": " + ex.ToString()), Log.ActTypes.Exception);
             AppLog.WriteBreak();
         }

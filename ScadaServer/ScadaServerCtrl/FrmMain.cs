@@ -180,6 +180,8 @@ namespace Scada.Server.Ctrl
             changing = false;
             modViewDict = new Dictionary<string, ModView>();
             lastModView = null;
+
+            Application.ThreadException += Application_ThreadException;
         }
 
 
@@ -604,6 +606,13 @@ namespace Scada.Server.Ctrl
             }
         }
 
+
+        private void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
+        {
+            string errMsg = CommonPhrases.UnhandledException + ":\r\n" + e.Exception.Message;
+            errLog.WriteAction(errMsg, Log.ActTypes.Exception);
+            ScadaUtils.ShowError(errMsg);
+        }
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
