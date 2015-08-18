@@ -120,8 +120,7 @@ namespace Scada.Web
             }
 
             // добавление скрипта перемещения выпадающего списка дней после списка месяцев, если необходимо
-            string pattern = Localization.Culture.DateTimeFormat.ShortDatePattern.ToLower();
-            if (pattern.IndexOf('m') < pattern.IndexOf('d'))
+            if (Localization.DayAfterMonth)
                 ClientScript.RegisterStartupScript(this.GetType(), "Startup", "PlaceDayAfterMonth();", true);
 
             // привязка событий

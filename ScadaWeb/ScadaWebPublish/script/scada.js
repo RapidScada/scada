@@ -65,13 +65,8 @@ function DaysInMonth(year, month) {
 
 // Открыть форму графика входного канала
 function ShowDiag(viewSet, view, year, month, day, cnlNum, path) {
-    window.open((path ? path : "") + "Diag.aspx?viewSet=" + viewSet + "&view=" + view + 
+    window.open((path ? path : "") + "diag/Diag.aspx?viewSet=" + viewSet + "&view=" + view + 
         "&year=" + year + "&month=" + month + "&day=" + day + "&cnlNum=" + cnlNum);
-}
-
-// Открыть форму выбора входных каналов для построения графиков
-function SelectDiagCnls(viewSet, view, cnlNum) {
-    OpenWin("DiagCnls.aspx?viewSet=" + viewSet + "&view=" + view + "&cnlNum=" + cnlNum, "DiagCnlsWin", 600, 500);
 }
 
 // Открыть форму отправки команды телеуправления

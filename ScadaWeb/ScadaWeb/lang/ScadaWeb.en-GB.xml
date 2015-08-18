@@ -11,6 +11,40 @@
     <Phrase key="ErrorFormat">Error: {0}</Phrase>
     <Phrase key="ServerUnavailable">server is unavailable</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.Diag">
+    <Phrase key="DiagCnlNotFound">Input channel {0} not found in the configuration database.</Phrase>
+    <Phrase key="DiagCnlsUndefined">Diagram channels are undefined.</Phrase>
+    <Phrase key="CnlCntExceeded">It is possible to select not more than {0} channels.</Phrase>
+    <Phrase key="CnlNotSelected">Channels are not selected.</Phrase>
+    <Phrase key="DayCntExceeded">Period has to be not more than {0} days.</Phrase>
+    <Phrase key="DiagPageClosed">Diagram page has been closed.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Diag.WFrmDiag">
+    <Phrase key="this">SCADA - Diagram</Phrase>
+    <Phrase key="lblReqDTCaption">Generated</Phrase>
+    <Phrase key="lblNotSupported">You need to upgrade browser to display diagram.</Phrase>
+    <Phrase key="divResetZoom.ToolTip">Reset zoom</Phrase>
+    <Phrase key="btnSelectDiagCnls">Select channels</Phrase>
+    <Phrase key="btnShowData">Show data</Phrase>
+    <Phrase key="btnHideData">Hide data</Phrase>
+    <Phrase key="btnRefreshDiag">Refresh</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Diag.WFrmDiagCnls">
+    <Phrase key="this">Select channels</Phrase>
+    <Phrase key="btnSelect">Select</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
+    <Phrase key="DiagSelColumn">Select</Phrase>
+    <Phrase key="DiagCnlColumn">In channel</Phrase>
+    <Phrase key="DiagObjColumn">Object</Phrase>
+    <Phrase key="DiagKPColumn">Device</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Diag.WFrmDiagPeriod">
+    <Phrase key="this">Select period</Phrase>
+    <Phrase key="lblDate1">From</Phrase>
+    <Phrase key="lblDate2">To</Phrase>
+    <Phrase key="btnSelect">Select</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.MainData">
     <Phrase key="EventChecked">Yes</Phrase>
     <Phrase key="EventUnchecked">No</Phrase>
@@ -65,30 +99,6 @@
     <Phrase key="IncorrectCmdVal">incorrect command value</Phrase>
     <Phrase key="IncorrectCmdData">incorrect hexadecimal command data</Phrase>
     <Phrase key="EmptyCmdData">command data is empty</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Web.WFrmDiag">
-    <Phrase key="this">SCADA - Diagram</Phrase>
-    <Phrase key="lblReqDTCaption">Generated</Phrase>
-    <Phrase key="lblNotSupported">You need to upgrade browser to display diagram.</Phrase>
-    <Phrase key="divResetZoom.ToolTip">Reset zoom</Phrase>
-    <Phrase key="btnSelectDiagCnls">Select channels</Phrase>
-    <Phrase key="btnShowData">Show data</Phrase>
-    <Phrase key="btnHideData">Hide data</Phrase>
-    <Phrase key="btnRefreshDiag">Refresh</Phrase>
-    <Phrase key="DiagCnlsUndefined">Diagram channels are undefined.</Phrase>
-    <Phrase key="DiagCnlNotFound">Input channel {0} not found in the configuration database.</Phrase>
-    <Phrase key="CnlCntExceeded">It is possible to select not more than {0} channels.</Phrase>
-    <Phrase key="CnlNotSelected">Channels are not selected.</Phrase>
-    <Phrase key="DiagPageClosed">Diagram page has been closed.</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Web.WFrmDiagCnls">
-    <Phrase key="this">Select channels</Phrase>
-    <Phrase key="btnSelect">Select</Phrase>
-    <Phrase key="btnClose">Close</Phrase>
-    <Phrase key="DiagSelColumn">Select</Phrase>
-    <Phrase key="DiagCnlColumn">In channel</Phrase>
-    <Phrase key="DiagObjColumn">Object</Phrase>
-    <Phrase key="DiagKPColumn">Device</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WFrmError">
     <Phrase key="this">SCADA - Application Error</Phrase>
