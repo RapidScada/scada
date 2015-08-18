@@ -92,7 +92,7 @@ namespace Scada.Comm.Channels
                     "StopBits -  number of stopbits per byte (None, One, Two, OnePointFive),\n" +
                     "DtrEnable - value that enables the DTR signal (false, true),\n" +
                     "RtsEnable - value that enables the RTS signal (false, true),\n" +
-                    "Behavior - work mode of connection channel (Master, Slave).";
+                    "Behavior - work mode of communication channel (Master, Slave).";
             }
         }
 

@@ -76,7 +76,7 @@ namespace Scada.Comm.Channels
                     "Communication channel parameters:\n" +
                     "TcpPort - TCP port for incoming connections," +
                     "InactiveTime - duration of inactivity before disconnect, sec,\n" +
-                    "Behavior - work mode of connection channel (Master, Slave),\n" +
+                    "Behavior - work mode of communication channel (Master, Slave),\n" +
                     "DevSelMode - device selection mode in Individual connection mode " + 
                     "(ByIPAddress, ByFirstPackage, ByDeviceLibrary).";
             }

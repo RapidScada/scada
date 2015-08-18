@@ -25,11 +25,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+using System.IO.Ports;
 using System.Windows.Forms;
 
 namespace Scada.Comm.Channels
@@ -42,6 +38,7 @@ namespace Scada.Comm.Channels
     {
         private SortedList<string, string> commCnlParams; // параметры канала связи
         private bool modified;                            // признак изменения параметров
+        CommSerialLogic.Settings settings;                // настройки канала связи
 
 
         /// <summary>
@@ -52,15 +49,6 @@ namespace Scada.Comm.Channels
             InitializeComponent();
         }
 
-        /// <summary>
-        /// Выбрать элемент выпадающего списка, используя карту соответствия значений и индексов элементов списка
-        /// </summary>
-        private static void SelectComboBoxItem(ComboBox comboBox, object value, Dictionary<string, int> valueToItemIndex)
-        {
-            string valStr = value.ToString();
-            if (valueToItemIndex.ContainsKey(valStr))
-                comboBox.SelectedIndex = valueToItemIndex[valStr];
-        }
 
         /// <summary>
         /// Отобразить форму модально
@@ -81,25 +69,49 @@ namespace Scada.Comm.Channels
         private void FrmCommSerialProps_Load(object sender, EventArgs e)
         {
             // инициализация настроек канала связи
-            CommSerialLogic.Settings settings = new CommSerialLogic.Settings();
+            settings = new CommSerialLogic.Settings();
             settings.Init(commCnlParams, false);
 
             // установка элементов управления в соответствии с параметрами канала связи
             cbPortName.Text = settings.PortName;
             cbBaudRate.Text = settings.BaudRate.ToString();
             cbDataBits.Text = settings.DataBits.ToString();
-            SelectComboBoxItem(cbParity, settings.Parity, new Dictionary<string, int>() 
+            cbParity.SelectItem(settings.Parity, new Dictionary<string, int>() 
                 { { "Even", 0 }, { "Odd", 1 }, { "None", 2 }, { "Mark", 3 }, { "Space", 4 } });
-            SelectComboBoxItem(cbStopBits, settings.StopBits, new Dictionary<string, int>() 
+            cbStopBits.SelectItem(settings.StopBits, new Dictionary<string, int>() 
                 { { "One", 0 }, { "OnePointFive", 1 }, { "Two", 2 } });
             chkDtrEnable.Checked = settings.DtrEnable;
             chkRtsEnable.Checked = settings.RtsEnable;
             cbBehavior.Text = settings.Behavior.ToString();
+
+            modified = false;
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
+            // изменение настроек в соответствии с элементами управления
+            if (modified)
+            {
+                settings.PortName = cbPortName.Text;
+                settings.BaudRate = int.Parse(cbBaudRate.Text);
+                settings.DataBits = int.Parse(cbDataBits.Text);
+                settings.Parity = (Parity)cbParity.GetSelectedItem(new Dictionary<int, object>() 
+                    { { 0, Parity.Even }, { 1, Parity.Odd }, { 2, Parity.None }, { 3, Parity.Mark }, { 4, Parity.Space } });
+                settings.StopBits = (StopBits)cbStopBits.GetSelectedItem(new Dictionary<int, object>() 
+                    { { 0, StopBits.One }, { 1, StopBits.OnePointFive }, { 2, StopBits.Two } });
+                settings.DtrEnable = chkDtrEnable.Checked;
+                settings.RtsEnable = chkRtsEnable.Checked;
+                settings.Behavior = cbBehavior.ParseText<CommChannelLogic.OperatingBehaviors>();
+
+                settings.SetCommCnlParams(commCnlParams);
+            }
+
             DialogResult = DialogResult.OK;
+        }
+
+        private void control_Changed(object sender, EventArgs e)
+        {
+            modified = true;
         }
     }
 }

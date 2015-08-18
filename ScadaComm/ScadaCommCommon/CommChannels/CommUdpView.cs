@@ -66,7 +66,7 @@ namespace Scada.Comm.Channels
                     "Канал связи UDP.\n\n" +
                     "Параметры канала связи:\n" +
                     "LocalUdpPort - локальный UDP-порт для входящих соединений,\n" +
-                    "RemoteUdpPort - удалённый UDP-порт единый для всех устройств в режиме Master,\n" +
+                    "RemoteUdpPort - удалённый UDP-порт одинаковый для всех устройств,\n" +
                     "RemoteIpAddress - удалённый IP-адрес по умолчанию,\n" +
                     "Behavior - режим работы канала связи (Master, Slave),\n" +
                     "DevSelMode - режим выбора КП в режиме работы Slave (ByIPAddress, ByDeviceLibrary)." :
@@ -74,9 +74,9 @@ namespace Scada.Comm.Channels
                     "UDP communication channel.\n\n" +
                     "Communication channel parameters:\n" +
                     "LocalUdpPort - local UDP port for incoming connections." +
-                    "RemoteUdpPort - remote UDP port common for all the devices in Master mode,\n" +
+                    "RemoteUdpPort - remote UDP port the same for all the devices,\n" +
                     "RemoteIpAddress - remote IP address by default,\n" +
-                    "Behavior - work mode of connection channel (Master, Slave),\n" +
+                    "Behavior - work mode of communication channel (Master, Slave),\n" +
                     "DevSelMode - device selection mode in Slave work mode (ByIPAddress, ByDeviceLibrary).";
             }
         }

@@ -65,17 +65,41 @@
     <Compile Include="CommChannels\FrmCommSerialProps.Designer.cs">
       <DependentUpon>FrmCommSerialProps.cs</DependentUpon>
     </Compile>
+    <Compile Include="CommChannels\FrmCommUdpProps.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CommChannels\FrmCommUdpProps.Designer.cs">
+      <DependentUpon>FrmCommUdpProps.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CommChannels\FrmCommTcpServerProps.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CommChannels\FrmCommTcpServerProps.Designer.cs">
+      <DependentUpon>FrmCommTcpServerProps.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CommChannels\FrmCommTcpClientProps.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CommChannels\FrmCommTcpClientProps.Designer.cs">
+      <DependentUpon>FrmCommTcpClientProps.cs</DependentUpon>
+    </Compile>
     <Compile Include="CommChannels\SerialConnection.cs" />
     <Compile Include="CommChannels\TcpConnection.cs" />
     <Compile Include="CommChannels\UdpConnection.cs" />
     <Compile Include="CommPhrases.cs" />
     <Compile Include="CommUtils.cs" />
+    <Compile Include="CommUtils.UI.cs" />
     <Compile Include="Devices\ICommLineService.cs" />
     <Compile Include="Devices\KPFactory.cs" />
     <Compile Include="Devices\KPLogic.cs" />
     <Compile Include="Devices\KPReqParams.cs" />
     <Compile Include="Devices\KPView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="SerialPortUtils.cs" />
     <Compile Include="Settings.cs" />
   </ItemGroup>
@@ -86,6 +110,25 @@
     <EmbeddedResource Include="CommChannels\FrmCommSerialProps.resx">
       <DependentUpon>FrmCommSerialProps.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="CommChannels\FrmCommUdpProps.resx">
+      <DependentUpon>FrmCommUdpProps.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CommChannels\FrmCommTcpServerProps.resx">
+      <DependentUpon>FrmCommTcpServerProps.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CommChannels\FrmCommTcpClientProps.resx">
+      <DependentUpon>FrmCommTcpClientProps.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\tooltip.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\info_tooltip.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

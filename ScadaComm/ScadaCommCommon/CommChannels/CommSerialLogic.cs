@@ -104,6 +104,21 @@ namespace Scada.Comm.Channels
                 RtsEnable = commCnlParams.GetBoolParam("RtsEnable", false, RtsEnable);
                 Behavior = commCnlParams.GetEnumParam<OperatingBehaviors>("Behavior", false, Behavior);
             }
+
+            /// <summary>
+            /// Установить параметры канала связи в соответствии с настройками
+            /// </summary>
+            public void SetCommCnlParams(SortedList<string, string> commCnlParams)
+            {
+                commCnlParams["PortName"] = PortName;
+                commCnlParams["BaudRate"] = BaudRate.ToString();
+                commCnlParams["Parity"] = Parity.ToString();
+                commCnlParams["DataBits"] = DataBits.ToString();
+                commCnlParams["StopBits"] = StopBits.ToString();
+                commCnlParams["DtrEnable"] = DtrEnable.ToString();
+                commCnlParams["RtsEnable"] = RtsEnable.ToString();
+                commCnlParams["Behavior"] = Behavior.ToString();
+            }
         }
 
         /// <summary>

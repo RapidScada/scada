@@ -43,11 +43,11 @@
             this.cbBaudRate = new System.Windows.Forms.ComboBox();
             this.lblBaudRate = new System.Windows.Forms.Label();
             this.cbPortName = new System.Windows.Forms.ComboBox();
-            this.gbOperating = new System.Windows.Forms.GroupBox();
+            this.gbOperation = new System.Windows.Forms.GroupBox();
             this.cbBehavior = new System.Windows.Forms.ComboBox();
             this.lblBehavior = new System.Windows.Forms.Label();
             this.gbPort.SuspendLayout();
-            this.gbOperating.SuspendLayout();
+            this.gbOperation.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnCancel
@@ -113,6 +113,7 @@
             this.chkRtsEnable.TabIndex = 11;
             this.chkRtsEnable.Text = "RTS";
             this.chkRtsEnable.UseVisualStyleBackColor = true;
+            this.chkRtsEnable.CheckedChanged += new System.EventHandler(this.control_Changed);
             // 
             // chkDtrEnable
             // 
@@ -124,6 +125,7 @@
             this.chkDtrEnable.TabIndex = 10;
             this.chkDtrEnable.Text = "DTR";
             this.chkDtrEnable.UseVisualStyleBackColor = true;
+            this.chkDtrEnable.CheckedChanged += new System.EventHandler(this.control_Changed);
             // 
             // cbStopBits
             // 
@@ -137,6 +139,7 @@
             this.cbStopBits.Name = "cbStopBits";
             this.cbStopBits.Size = new System.Drawing.Size(150, 21);
             this.cbStopBits.TabIndex = 9;
+            this.cbStopBits.SelectedIndexChanged += new System.EventHandler(this.control_Changed);
             // 
             // lblStopBits
             // 
@@ -163,6 +166,7 @@
             this.cbParity.Name = "cbParity";
             this.cbParity.Size = new System.Drawing.Size(150, 21);
             this.cbParity.TabIndex = 7;
+            this.cbParity.SelectedIndexChanged += new System.EventHandler(this.control_Changed);
             // 
             // lblParity
             // 
@@ -188,6 +192,7 @@
             this.cbDataBits.Name = "cbDataBits";
             this.cbDataBits.Size = new System.Drawing.Size(150, 21);
             this.cbDataBits.TabIndex = 5;
+            this.cbDataBits.SelectedIndexChanged += new System.EventHandler(this.control_Changed);
             // 
             // lblDataBits
             // 
@@ -222,6 +227,7 @@
             this.cbBaudRate.Name = "cbBaudRate";
             this.cbBaudRate.Size = new System.Drawing.Size(150, 21);
             this.cbBaudRate.TabIndex = 3;
+            this.cbBaudRate.SelectedIndexChanged += new System.EventHandler(this.control_Changed);
             // 
             // lblBaudRate
             // 
@@ -253,18 +259,20 @@
             this.cbPortName.Size = new System.Drawing.Size(150, 21);
             this.cbPortName.TabIndex = 1;
             this.cbPortName.Text = "COM1";
+            this.cbPortName.SelectedIndexChanged += new System.EventHandler(this.control_Changed);
+            this.cbPortName.TextChanged += new System.EventHandler(this.control_Changed);
             // 
-            // gbOperating
+            // gbOperation
             // 
-            this.gbOperating.Controls.Add(this.cbBehavior);
-            this.gbOperating.Controls.Add(this.lblBehavior);
-            this.gbOperating.Location = new System.Drawing.Point(12, 225);
-            this.gbOperating.Name = "gbOperating";
-            this.gbOperating.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbOperating.Size = new System.Drawing.Size(264, 53);
-            this.gbOperating.TabIndex = 1;
-            this.gbOperating.TabStop = false;
-            this.gbOperating.Text = "Работа";
+            this.gbOperation.Controls.Add(this.cbBehavior);
+            this.gbOperation.Controls.Add(this.lblBehavior);
+            this.gbOperation.Location = new System.Drawing.Point(12, 225);
+            this.gbOperation.Name = "gbOperation";
+            this.gbOperation.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
+            this.gbOperation.Size = new System.Drawing.Size(264, 53);
+            this.gbOperation.TabIndex = 1;
+            this.gbOperation.TabStop = false;
+            this.gbOperation.Text = "Работа";
             // 
             // cbBehavior
             // 
@@ -277,6 +285,7 @@
             this.cbBehavior.Name = "cbBehavior";
             this.cbBehavior.Size = new System.Drawing.Size(150, 21);
             this.cbBehavior.TabIndex = 1;
+            this.cbBehavior.SelectedIndexChanged += new System.EventHandler(this.control_Changed);
             // 
             // lblBehavior
             // 
@@ -296,7 +305,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(288, 319);
-            this.Controls.Add(this.gbOperating);
+            this.Controls.Add(this.gbOperation);
             this.Controls.Add(this.gbPort);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.btnCancel);
@@ -310,8 +319,8 @@
             this.Load += new System.EventHandler(this.FrmCommSerialProps_Load);
             this.gbPort.ResumeLayout(false);
             this.gbPort.PerformLayout();
-            this.gbOperating.ResumeLayout(false);
-            this.gbOperating.PerformLayout();
+            this.gbOperation.ResumeLayout(false);
+            this.gbOperation.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -333,7 +342,7 @@
         private System.Windows.Forms.ComboBox cbBaudRate;
         private System.Windows.Forms.Label lblBaudRate;
         private System.Windows.Forms.ComboBox cbPortName;
-        private System.Windows.Forms.GroupBox gbOperating;
+        private System.Windows.Forms.GroupBox gbOperation;
         private System.Windows.Forms.Label lblBehavior;
         private System.Windows.Forms.ComboBox cbBehavior;
 

@@ -34,6 +34,15 @@ namespace Scada.Comm.Channels
     public class CommTcpClientView : CommChannelView
     {
         /// <summary>
+        /// Конструктор
+        /// </summary>
+        public CommTcpClientView()
+        {
+            CanShowProps = true;
+        }
+
+
+        /// <summary>
         /// Получить наименование типа канала связи
         /// </summary>
         public override string TypeName
@@ -74,11 +83,21 @@ namespace Scada.Comm.Channels
                     "Communication channel parameters:\n" +
                     "IpAddress - remote IP address in Shared connection mode,\n" +
                     "TcpPort - remote TCP port by default," +
-                    "Behavior - work mode of connection channel (Master, Slave),\n" +
+                    "Behavior - work mode of communication channel (Master, Slave),\n" +
                     "ConnMode - connection mode (Individual, Shared).";
             }
         }
 
+
+        /// <summary>
+        /// Отобразить свойства модуля
+        /// </summary>
+        public override void ShowProps(SortedList<string, string> commCnlParams, out bool modified)
+        {
+            //FrmCommSerialProps.ShowDialog(commCnlParams, out modified);
+            (new FrmCommTcpClientProps()).ShowDialog();
+            modified = false;
+        }
 
         /// <summary>
         /// Получить информацию о свойствах канала связи

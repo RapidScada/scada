@@ -38,7 +38,7 @@ namespace Scada.Comm
     /// The class contains utility methods for SCADA-Communicator and its libraries
     /// <para>Класс, содержащий вспомогательные методы для SCADA-Коммуникатора и его библиотек</para>
     /// </summary>
-    public static class CommUtils
+    public static partial class CommUtils
     {
         /// <summary>
         /// Форматы вывода протокола обмена данными в журнал
