@@ -49,6 +49,9 @@ namespace Scada.Comm
         public static string IncorrectKPSettings { get; private set; }
         public static string IncorrectLineSettings { get; private set; }
 
+        // Словарь Scada.Comm.Channels.FrmCommTcpClientProps
+        public static string IpAddressRequired { get; private set; }
+
         // Словарь Scada.Comm.Devices.KPFactory
         public static string GetViewTypeError { get; private set; }
         public static string CreateViewError { get; private set; }
@@ -78,6 +81,8 @@ namespace Scada.Comm
             KPCaption = "КП";
             IncorrectKPSettings = "Некорректные параметры КП {0}";
             IncorrectLineSettings = "Некорректная конфигурация линии связи {0}";
+
+            IpAddressRequired = "Требуется IP-адрес.";
 
             GetViewTypeError = "Ошибка при получении типа интерфейса КП из библиотеки {0}";
             CreateViewError = "Ошибка при создании экземпляра класса интерфейса КП {0}";
@@ -135,6 +140,9 @@ namespace Scada.Comm
                 IncorrectKPSettings = dict.GetPhrase("IncorrectKPSettings", IncorrectKPSettings);
                 IncorrectLineSettings = dict.GetPhrase("IncorrectLineSettings", IncorrectLineSettings);
             }
+
+            if (Localization.Dictionaries.TryGetValue("Scada.Comm.Channels.FrmCommTcpClientProps", out dict))
+                IpAddressRequired = dict.GetPhrase("IpAddressRequired", IpAddressRequired);
 
             if (Localization.Dictionaries.TryGetValue("Scada.Comm.Devices.KPFactory", out dict))
             {

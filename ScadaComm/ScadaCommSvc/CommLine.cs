@@ -1708,16 +1708,14 @@ namespace Scada.Comm.Svc
             }
 
             // создание канала связи
-            string commCnlType;
-            if (commLine.CustomParams.TryGetValue("CommChannel", out commCnlType) && 
-                !string.IsNullOrEmpty(commCnlType))
+            if (!string.IsNullOrEmpty(commLineSett.CommCnlType))
             {
-                commLine.CommChannelLogic = CommChannelFactory.GetCommChannel(commCnlType);
+                commLine.CommChannelLogic = CommChannelFactory.GetCommChannel(commLineSett.CommCnlType);
                 commLine.CommChannelLogic.WriteToLog = commLine.log.WriteLine;
 
                 try
                 {
-                    commLine.CommChannelLogic.Init(commLine.CustomParams, commLine.KPList);
+                    commLine.CommChannelLogic.Init(commLineSett.CommCnlParams, commLine.KPList);
                 }
                 catch (Exception ex)
                 {

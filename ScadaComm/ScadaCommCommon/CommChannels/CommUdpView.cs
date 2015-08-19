@@ -34,6 +34,15 @@ namespace Scada.Comm.Channels
     public class CommUdpView : CommChannelView
     {
         /// <summary>
+        /// Конструктор
+        /// </summary>
+        public CommUdpView()
+        {
+            CanShowProps = true;
+        }
+
+        
+        /// <summary>
         /// Получить наименование типа канала связи
         /// </summary>
         public override string TypeName
@@ -81,6 +90,14 @@ namespace Scada.Comm.Channels
             }
         }
 
+
+        /// <summary>
+        /// Отобразить свойства модуля
+        /// </summary>
+        public override void ShowProps(SortedList<string, string> commCnlParams, out bool modified)
+        {
+            FrmCommUdpProps.ShowDialog(commCnlParams, out modified);
+        }
 
         /// <summary>
         /// Получить информацию о свойствах канала связи

@@ -63,8 +63,8 @@ namespace Scada.Comm.Channels
             public Settings()
             {
                 // установка значений по умолчанию
-                LocalUdpPort = 0;
-                RemoteUdpPort = 0;
+                LocalUdpPort = 1;
+                RemoteUdpPort = 1;
                 RemoteIpAddress = "";
                 Behavior = CommChannelLogic.OperatingBehaviors.Master;
                 DevSelMode = CommUdpLogic.DeviceSelectionModes.ByIPAddress;
@@ -90,6 +90,30 @@ namespace Scada.Comm.Channels
             /// Получить или установить режим выбора КП
             /// </summary>
             public DeviceSelectionModes DevSelMode { get; set; }
+
+            /// <summary>
+            /// Инициализировать настройки на основе параметров канала связи
+            /// </summary>
+            public void Init(SortedList<string, string> commCnlParams, bool requireParams = true)
+            {
+                LocalUdpPort = commCnlParams.GetIntParam("LocalUdpPort", requireParams, LocalUdpPort);
+                RemoteUdpPort = commCnlParams.GetIntParam("RemoteUdpPort", false, RemoteUdpPort);
+                RemoteIpAddress = commCnlParams.GetStringParam("RemoteIpAddress", false, RemoteIpAddress);
+                Behavior = commCnlParams.GetEnumParam<OperatingBehaviors>("Behavior", false, Behavior);
+                DevSelMode = commCnlParams.GetEnumParam<DeviceSelectionModes>("DevSelMode", false, DevSelMode);
+            }
+
+            /// <summary>
+            /// Установить параметры канала связи в соответствии с настройками
+            /// </summary>
+            public void SetCommCnlParams(SortedList<string, string> commCnlParams)
+            {
+                commCnlParams["LocalUdpPort"] = LocalUdpPort.ToString();
+                commCnlParams["RemoteUdpPort"] = RemoteUdpPort.ToString();
+                commCnlParams["RemoteIpAddress"] = RemoteIpAddress;
+                commCnlParams["Behavior"] = Behavior.ToString();
+                commCnlParams["DevSelMode"] = DevSelMode.ToString();
+            }
         }
 
         /// <summary>
@@ -209,15 +233,8 @@ namespace Scada.Comm.Channels
             // вызов метода базового класса
             base.Init(commCnlParams, kpList);
 
-            // получение настроек канала связи
-            settings.LocalUdpPort = GetIntParam(commCnlParams, "LocalUdpPort", true, settings.LocalUdpPort);
-            settings.RemoteUdpPort = GetIntParam(commCnlParams, "RemoteUdpPort", false, settings.RemoteUdpPort);
-            settings.RemoteIpAddress = GetStringParam(commCnlParams, "RemoteIpAddress", 
-                false, settings.RemoteIpAddress);
-            settings.Behavior = GetEnumParam<OperatingBehaviors>(commCnlParams, "Behavior", 
-                false, settings.Behavior);
-            settings.DevSelMode = GetEnumParam<DeviceSelectionModes>(commCnlParams, "DevSelMode", 
-                false, settings.DevSelMode);
+            // инициализация настроек канала связи
+            settings.Init(commCnlParams);
 
             // создание клиента и соединения
             UdpClient udpClient = new UdpClient(settings.LocalUdpPort);

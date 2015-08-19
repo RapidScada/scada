@@ -51,7 +51,7 @@ namespace Scada.Comm.Channels
             {
                 // установка значений по умолчанию
                 IpAddress = "";
-                TcpPort = 0;
+                TcpPort = 502; // порт, используемый Modbus TCP по умолчанию
                 Behavior = CommChannelLogic.OperatingBehaviors.Master;
                 ConnMode = ConnectionModes.Individual;
             }
@@ -72,6 +72,29 @@ namespace Scada.Comm.Channels
             /// Получить или установить режим соединения
             /// </summary>
             public ConnectionModes ConnMode { get; set; }
+
+            /// <summary>
+            /// Инициализировать настройки на основе параметров канала связи
+            /// </summary>
+            public void Init(SortedList<string, string> commCnlParams, bool requireParams = true)
+            {
+                ConnMode = commCnlParams.GetEnumParam<ConnectionModes>("ConnMode", requireParams, ConnMode);
+                bool sharedConnMode = ConnMode == ConnectionModes.Shared;
+                IpAddress = commCnlParams.GetStringParam("IpAddress", requireParams && sharedConnMode, IpAddress);
+                TcpPort = commCnlParams.GetIntParam("TcpPort", requireParams && sharedConnMode, TcpPort);
+                Behavior = commCnlParams.GetEnumParam<OperatingBehaviors>("Behavior", false, Behavior);
+            }
+
+            /// <summary>
+            /// Установить параметры канала связи в соответствии с настройками
+            /// </summary>
+            public void SetCommCnlParams(SortedList<string, string> commCnlParams)
+            {
+                commCnlParams["IpAddress"] = ConnMode == ConnectionModes.Shared ? IpAddress : "";
+                commCnlParams["TcpPort"] = TcpPort.ToString();
+                commCnlParams["Behavior"] = Behavior.ToString();
+                commCnlParams["ConnMode"] = ConnMode.ToString();
+            }
         }
 
         /// <summary>
@@ -212,16 +235,11 @@ namespace Scada.Comm.Channels
             // вызов метода базового класса
             base.Init(commCnlParams, kpList);
 
-            // получение настроек канала связи
-            settings.ConnMode = GetEnumParam<ConnectionModes>(commCnlParams, "ConnMode", true, settings.ConnMode);
-            bool sharedConnMode = settings.ConnMode == ConnectionModes.Shared;
-            settings.IpAddress = GetStringParam(commCnlParams, "IpAddress", sharedConnMode, settings.IpAddress);
-            settings.TcpPort = GetIntParam(commCnlParams, "TcpPort", sharedConnMode, settings.TcpPort);
-            settings.Behavior = GetEnumParam<OperatingBehaviors>(commCnlParams, "Behavior", 
-                false, settings.Behavior);
+            // инициализация настроек канала связи
+            settings.Init(commCnlParams);
 
             // создание соединений и установка соединений КП
-            if (sharedConnMode)
+            if (settings.ConnMode == ConnectionModes.Shared)
             {
                 // общее соединение для всех КП
                 sharedTcpConn = new TcpConnection(new TcpClient());

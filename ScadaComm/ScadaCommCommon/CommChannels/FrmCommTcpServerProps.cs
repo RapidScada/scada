@@ -25,11 +25,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Scada.Comm.Channels
@@ -76,13 +71,49 @@ namespace Scada.Comm.Channels
 
             // установка элементов управления в соответствии с параметрами канала связи
             cbBehavior.Text = settings.Behavior.ToString();
+            cbConnMode.SelectItem(settings.ConnMode, new Dictionary<string, int>() 
+                { { "Individual", 0 }, { "Shared", 1 } });
+            cbDevSelMode.SelectItem(settings.DevSelMode, new Dictionary<string, int>() 
+                { { "ByIPAddress", 0 }, { "ByFirstPackage", 1 }, { "ByDeviceLibrary", 2 } });
+            numTcpPort.SetNumericValue(settings.TcpPort);
+            numInactiveTime.SetNumericValue(settings.InactiveTime);
 
             modified = false;
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
+            // изменение настроек в соответствии с элементами управления
+            if (modified)
+            {
+                settings.Behavior = cbBehavior.ParseText<CommChannelLogic.OperatingBehaviors>();
+                settings.ConnMode = (CommTcpChannelLogic.ConnectionModes)cbConnMode.GetSelectedItem(
+                    new Dictionary<int, object>() { 
+                        { 0, CommTcpChannelLogic.ConnectionModes.Individual }, 
+                        { 1, CommTcpChannelLogic.ConnectionModes.Shared } });
+                settings.DevSelMode = (CommTcpServerLogic.DeviceSelectionModes)cbDevSelMode.GetSelectedItem(
+                    new Dictionary<int, object>() { 
+                        { 0, CommTcpServerLogic.DeviceSelectionModes.ByIPAddress }, 
+                        { 1, CommTcpServerLogic.DeviceSelectionModes.ByFirstPackage }, 
+                        { 2, CommTcpServerLogic.DeviceSelectionModes.ByDeviceLibrary } });
+                settings.TcpPort = Convert.ToInt32(numTcpPort.Value);
+                settings.InactiveTime = Convert.ToInt32(numInactiveTime.Value);
 
+                settings.SetCommCnlParams(commCnlParams);
+            }
+
+            DialogResult = DialogResult.OK;
+        }
+
+        private void control_Changed(object sender, EventArgs e)
+        {
+            modified = true;
+        }
+
+        private void cbConnMode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            cbDevSelMode.Enabled = cbConnMode.SelectedIndex == 0; // Individual
+            modified = true;
         }
     }
 }

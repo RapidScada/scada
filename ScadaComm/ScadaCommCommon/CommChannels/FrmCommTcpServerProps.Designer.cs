@@ -112,6 +112,7 @@
             this.cbDevSelMode.Name = "cbDevSelMode";
             this.cbDevSelMode.Size = new System.Drawing.Size(150, 21);
             this.cbDevSelMode.TabIndex = 6;
+            this.cbDevSelMode.SelectedIndexChanged += new System.EventHandler(this.control_Changed);
             // 
             // lblDevSelMode
             // 
@@ -146,6 +147,7 @@
             this.cbConnMode.Name = "cbConnMode";
             this.cbConnMode.Size = new System.Drawing.Size(150, 21);
             this.cbConnMode.TabIndex = 3;
+            this.cbConnMode.SelectedIndexChanged += new System.EventHandler(this.cbConnMode_SelectedIndexChanged);
             // 
             // lblConnMode
             // 
@@ -169,6 +171,7 @@
             this.cbBehavior.Name = "cbBehavior";
             this.cbBehavior.Size = new System.Drawing.Size(150, 21);
             this.cbBehavior.TabIndex = 1;
+            this.cbBehavior.SelectedIndexChanged += new System.EventHandler(this.control_Changed);
             // 
             // lblBehavior
             // 
@@ -258,13 +261,30 @@
             0,
             0,
             0});
+            this.numTcpPort.ValueChanged += new System.EventHandler(this.control_Changed);
             // 
             // numInactiveTime
             // 
             this.numInactiveTime.Location = new System.Drawing.Point(145, 45);
+            this.numInactiveTime.Maximum = new decimal(new int[] {
+            3600,
+            0,
+            0,
+            0});
+            this.numInactiveTime.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.numInactiveTime.Name = "numInactiveTime";
             this.numInactiveTime.Size = new System.Drawing.Size(150, 20);
             this.numInactiveTime.TabIndex = 3;
+            this.numInactiveTime.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numInactiveTime.ValueChanged += new System.EventHandler(this.control_Changed);
             // 
             // lblTcpPort
             // 

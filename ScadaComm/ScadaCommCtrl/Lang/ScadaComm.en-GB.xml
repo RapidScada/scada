@@ -182,6 +182,9 @@
     <Phrase key="IncorrectKPSettings">Incorrect parameters of the device {0}</Phrase>
     <Phrase key="IncorrectLineSettings">Incorrect parameters of the communication line {0}</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Comm.Channels.FrmCommTcpClientProps">
+    <Phrase key="IpAddressRequired">IP address is required.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Comm.Devices.KPFactory">
     <Phrase key="GetViewTypeError">Error getting device interface type from the library {0}</Phrase>
     <Phrase key="CreateViewError">Error creating device interface instance of the class {0}</Phrase>

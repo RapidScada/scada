@@ -25,11 +25,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Scada.Comm.Channels
@@ -40,9 +35,82 @@ namespace Scada.Comm.Channels
     /// </summary>
     internal partial class FrmCommTcpClientProps : Form
     {
-        public FrmCommTcpClientProps()
+        private SortedList<string, string> commCnlParams; // параметры канала связи
+        private bool modified;                            // признак изменения параметров
+        private CommTcpClientLogic.Settings settings;     // настройки канала связи
+
+        /// <summary>
+        /// Конструктор, ограничивающий создание формы без параметров
+        /// </summary>
+        private FrmCommTcpClientProps()
         {
             InitializeComponent();
+        }
+
+        /// <summary>
+        /// Отобразить форму модально
+        /// </summary>
+        public static void ShowDialog(SortedList<string, string> commCnlParams, out bool modified)
+        {
+            if (commCnlParams == null)
+                throw new ArgumentNullException("commCnlParams");
+
+            FrmCommTcpClientProps form = new FrmCommTcpClientProps();
+            form.commCnlParams = commCnlParams;
+            form.modified = false;
+            form.ShowDialog();
+            modified = form.modified;
+        }
+
+
+        private void FrmCommTcpClientProps_Load(object sender, EventArgs e)
+        {
+            // инициализация настроек канала связи
+            settings = new CommTcpClientLogic.Settings();
+            settings.Init(commCnlParams, false);
+
+            // установка элементов управления в соответствии с параметрами канала связи
+            cbBehavior.Text = settings.Behavior.ToString();
+            cbConnMode.SelectItem(settings.ConnMode, new Dictionary<string, int>() { { "Individual", 0 }, { "Shared", 1 } });
+            txtIpAddress.Text = settings.IpAddress;
+            numTcpPort.SetNumericValue(settings.TcpPort);
+
+            modified = false;
+        }
+
+        private void btnOK_Click(object sender, EventArgs e)
+        {
+            // изменение настроек в соответствии с элементами управления
+            if (modified)
+            {
+                settings.Behavior = cbBehavior.ParseText<CommChannelLogic.OperatingBehaviors>();
+                settings.ConnMode = (CommTcpChannelLogic.ConnectionModes)cbConnMode.GetSelectedItem(
+                    new Dictionary<int, object>() { 
+                        { 0, CommTcpChannelLogic.ConnectionModes.Individual }, 
+                        { 1, CommTcpChannelLogic.ConnectionModes.Shared } });
+                settings.IpAddress = txtIpAddress.Text;
+                settings.TcpPort = Convert.ToInt32(numTcpPort.Value);
+
+                settings.SetCommCnlParams(commCnlParams);
+            }
+
+            // проверка настроек
+            if (settings.ConnMode == CommTcpChannelLogic.ConnectionModes.Shared &&
+                string.IsNullOrWhiteSpace(settings.IpAddress))
+                ScadaUtils.ShowError(CommPhrases.IpAddressRequired);
+            else
+                DialogResult = DialogResult.OK;
+        }
+
+        private void control_Changed(object sender, EventArgs e)
+        {
+            modified = true;
+        }
+
+        private void cbConnMode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            txtIpAddress.Enabled = cbConnMode.SelectedIndex == 1; // Shared
+            modified = true;
         }
     }
 }

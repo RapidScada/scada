@@ -30,37 +30,37 @@
         {
             this.components = new System.ComponentModel.Container();
             this.gbMode = new System.Windows.Forms.GroupBox();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.pbBehaviorHint = new System.Windows.Forms.PictureBox();
+            this.pbConnModeHint = new System.Windows.Forms.PictureBox();
+            this.cbConnMode = new System.Windows.Forms.ComboBox();
+            this.lblConnMode = new System.Windows.Forms.Label();
             this.cbBehavior = new System.Windows.Forms.ComboBox();
             this.lblBehavior = new System.Windows.Forms.Label();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.gbConnection = new System.Windows.Forms.GroupBox();
-            this.pictureBox4 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.pbIpAddressHint = new System.Windows.Forms.PictureBox();
+            this.pbTcpPortHint = new System.Windows.Forms.PictureBox();
+            this.numTcpPort = new System.Windows.Forms.NumericUpDown();
+            this.txtIpAddress = new System.Windows.Forms.TextBox();
+            this.lblTcpPort = new System.Windows.Forms.Label();
+            this.lblIpAddress = new System.Windows.Forms.Label();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.gbMode.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbBehaviorHint)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbConnModeHint)).BeginInit();
             this.gbConnection.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbIpAddressHint)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbTcpPortHint)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numTcpPort)).BeginInit();
             this.SuspendLayout();
             // 
             // gbMode
             // 
-            this.gbMode.Controls.Add(this.pictureBox3);
-            this.gbMode.Controls.Add(this.pictureBox1);
-            this.gbMode.Controls.Add(this.comboBox1);
-            this.gbMode.Controls.Add(this.label1);
+            this.gbMode.Controls.Add(this.pbBehaviorHint);
+            this.gbMode.Controls.Add(this.pbConnModeHint);
+            this.gbMode.Controls.Add(this.cbConnMode);
+            this.gbMode.Controls.Add(this.lblConnMode);
             this.gbMode.Controls.Add(this.cbBehavior);
             this.gbMode.Controls.Add(this.lblBehavior);
             this.gbMode.Location = new System.Drawing.Point(12, 12);
@@ -69,52 +69,53 @@
             this.gbMode.Size = new System.Drawing.Size(330, 80);
             this.gbMode.TabIndex = 0;
             this.gbMode.TabStop = false;
-            this.gbMode.Text = "Режим";
+            this.gbMode.Text = "Режим работы";
             // 
-            // pictureBox3
+            // pbBehaviorHint
             // 
-            this.pictureBox3.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
-            this.pictureBox3.Location = new System.Drawing.Point(301, 21);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(16, 16);
-            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox3.TabIndex = 5;
-            this.pictureBox3.TabStop = false;
-            this.toolTip.SetToolTip(this.pictureBox3, "Подсказка...\r\nСтрока 2");
+            this.pbBehaviorHint.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
+            this.pbBehaviorHint.Location = new System.Drawing.Point(301, 21);
+            this.pbBehaviorHint.Name = "pbBehaviorHint";
+            this.pbBehaviorHint.Size = new System.Drawing.Size(16, 16);
+            this.pbBehaviorHint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pbBehaviorHint.TabIndex = 5;
+            this.pbBehaviorHint.TabStop = false;
+            this.toolTip.SetToolTip(this.pbBehaviorHint, "Подсказка...\r\nСтрока 2");
             // 
-            // pictureBox1
+            // pbConnModeHint
             // 
-            this.pictureBox1.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
-            this.pictureBox1.Location = new System.Drawing.Point(301, 48);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(16, 16);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox1.TabIndex = 4;
-            this.pictureBox1.TabStop = false;
-            this.toolTip.SetToolTip(this.pictureBox1, "Подсказка...\r\nСтрока 2");
+            this.pbConnModeHint.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
+            this.pbConnModeHint.Location = new System.Drawing.Point(301, 48);
+            this.pbConnModeHint.Name = "pbConnModeHint";
+            this.pbConnModeHint.Size = new System.Drawing.Size(16, 16);
+            this.pbConnModeHint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pbConnModeHint.TabIndex = 4;
+            this.pbConnModeHint.TabStop = false;
+            this.toolTip.SetToolTip(this.pbConnModeHint, "Подсказка...\r\nСтрока 2");
             // 
-            // comboBox1
+            // cbConnMode
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "Individual",
-            "Shared"});
-            this.comboBox1.Location = new System.Drawing.Point(145, 46);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(150, 21);
-            this.comboBox1.TabIndex = 3;
+            this.cbConnMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbConnMode.FormattingEnabled = true;
+            this.cbConnMode.Items.AddRange(new object[] {
+            "Индивидуальное",
+            "Общее"});
+            this.cbConnMode.Location = new System.Drawing.Point(145, 46);
+            this.cbConnMode.Name = "cbConnMode";
+            this.cbConnMode.Size = new System.Drawing.Size(150, 21);
+            this.cbConnMode.TabIndex = 3;
+            this.cbConnMode.SelectedIndexChanged += new System.EventHandler(this.cbConnMode_SelectedIndexChanged);
             // 
-            // label1
+            // lblConnMode
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(34, 50);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(105, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Режим соединения";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lblConnMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblConnMode.AutoSize = true;
+            this.lblConnMode.Location = new System.Drawing.Point(71, 50);
+            this.lblConnMode.Name = "lblConnMode";
+            this.lblConnMode.Size = new System.Drawing.Size(68, 13);
+            this.lblConnMode.TabIndex = 2;
+            this.lblConnMode.Text = "Соединение";
+            this.lblConnMode.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // cbBehavior
             // 
@@ -127,16 +128,17 @@
             this.cbBehavior.Name = "cbBehavior";
             this.cbBehavior.Size = new System.Drawing.Size(150, 21);
             this.cbBehavior.TabIndex = 1;
+            this.cbBehavior.SelectedIndexChanged += new System.EventHandler(this.control_Changed);
             // 
             // lblBehavior
             // 
             this.lblBehavior.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblBehavior.AutoSize = true;
-            this.lblBehavior.Location = new System.Drawing.Point(57, 23);
+            this.lblBehavior.Location = new System.Drawing.Point(76, 23);
             this.lblBehavior.Name = "lblBehavior";
-            this.lblBehavior.Size = new System.Drawing.Size(82, 13);
+            this.lblBehavior.Size = new System.Drawing.Size(63, 13);
             this.lblBehavior.TabIndex = 0;
-            this.lblBehavior.Text = "Режим работы";
+            this.lblBehavior.Text = "Поведение";
             this.lblBehavior.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // btnOK
@@ -147,6 +149,7 @@
             this.btnOK.TabIndex = 2;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // btnCancel
             // 
@@ -160,12 +163,12 @@
             // 
             // gbConnection
             // 
-            this.gbConnection.Controls.Add(this.pictureBox4);
-            this.gbConnection.Controls.Add(this.pictureBox2);
-            this.gbConnection.Controls.Add(this.numericUpDown1);
-            this.gbConnection.Controls.Add(this.textBox1);
-            this.gbConnection.Controls.Add(this.label2);
-            this.gbConnection.Controls.Add(this.label3);
+            this.gbConnection.Controls.Add(this.pbIpAddressHint);
+            this.gbConnection.Controls.Add(this.pbTcpPortHint);
+            this.gbConnection.Controls.Add(this.numTcpPort);
+            this.gbConnection.Controls.Add(this.txtIpAddress);
+            this.gbConnection.Controls.Add(this.lblTcpPort);
+            this.gbConnection.Controls.Add(this.lblIpAddress);
             this.gbConnection.Location = new System.Drawing.Point(12, 104);
             this.gbConnection.Name = "gbConnection";
             this.gbConnection.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
@@ -174,61 +177,78 @@
             this.gbConnection.TabStop = false;
             this.gbConnection.Text = "Соединение";
             // 
-            // pictureBox4
+            // pbIpAddressHint
             // 
-            this.pictureBox4.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
-            this.pictureBox4.Location = new System.Drawing.Point(301, 21);
-            this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(16, 16);
-            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox4.TabIndex = 6;
-            this.pictureBox4.TabStop = false;
+            this.pbIpAddressHint.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
+            this.pbIpAddressHint.Location = new System.Drawing.Point(301, 21);
+            this.pbIpAddressHint.Name = "pbIpAddressHint";
+            this.pbIpAddressHint.Size = new System.Drawing.Size(16, 16);
+            this.pbIpAddressHint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pbIpAddressHint.TabIndex = 6;
+            this.pbIpAddressHint.TabStop = false;
             // 
-            // pictureBox2
+            // pbTcpPortHint
             // 
-            this.pictureBox2.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
-            this.pictureBox2.Location = new System.Drawing.Point(301, 47);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(16, 16);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox2.TabIndex = 5;
-            this.pictureBox2.TabStop = false;
+            this.pbTcpPortHint.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
+            this.pbTcpPortHint.Location = new System.Drawing.Point(301, 47);
+            this.pbTcpPortHint.Name = "pbTcpPortHint";
+            this.pbTcpPortHint.Size = new System.Drawing.Size(16, 16);
+            this.pbTcpPortHint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pbTcpPortHint.TabIndex = 5;
+            this.pbTcpPortHint.TabStop = false;
             // 
-            // numericUpDown1
+            // numTcpPort
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(145, 45);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(150, 20);
-            this.numericUpDown1.TabIndex = 3;
+            this.numTcpPort.Location = new System.Drawing.Point(145, 45);
+            this.numTcpPort.Maximum = new decimal(new int[] {
+            65535,
+            0,
+            0,
+            0});
+            this.numTcpPort.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numTcpPort.Name = "numTcpPort";
+            this.numTcpPort.Size = new System.Drawing.Size(150, 20);
+            this.numTcpPort.TabIndex = 3;
+            this.numTcpPort.Value = new decimal(new int[] {
+            502,
+            0,
+            0,
+            0});
+            this.numTcpPort.ValueChanged += new System.EventHandler(this.control_Changed);
             // 
-            // textBox1
+            // txtIpAddress
             // 
-            this.textBox1.Location = new System.Drawing.Point(145, 19);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(150, 20);
-            this.textBox1.TabIndex = 1;
+            this.txtIpAddress.Location = new System.Drawing.Point(145, 19);
+            this.txtIpAddress.Name = "txtIpAddress";
+            this.txtIpAddress.Size = new System.Drawing.Size(150, 20);
+            this.txtIpAddress.TabIndex = 1;
+            this.txtIpAddress.TextChanged += new System.EventHandler(this.control_Changed);
             // 
-            // label2
+            // lblTcpPort
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(24, 49);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(115, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Удалённый TCP-порт";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lblTcpPort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTcpPort.AutoSize = true;
+            this.lblTcpPort.Location = new System.Drawing.Point(24, 49);
+            this.lblTcpPort.Name = "lblTcpPort";
+            this.lblTcpPort.Size = new System.Drawing.Size(115, 13);
+            this.lblTcpPort.TabIndex = 2;
+            this.lblTcpPort.Text = "Удалённый TCP-порт";
+            this.lblTcpPort.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // label3
+            // lblIpAddress
             // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(28, 23);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(111, 13);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "Удалённый IP-адрес";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lblIpAddress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblIpAddress.AutoSize = true;
+            this.lblIpAddress.Location = new System.Drawing.Point(28, 23);
+            this.lblIpAddress.Name = "lblIpAddress";
+            this.lblIpAddress.Size = new System.Drawing.Size(111, 13);
+            this.lblIpAddress.TabIndex = 0;
+            this.lblIpAddress.Text = "Удалённый IP-адрес";
+            this.lblIpAddress.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // FrmCommTcpClientProps
             // 
@@ -246,15 +266,16 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Свойства: TCP-клиент";
+            this.Load += new System.EventHandler(this.FrmCommTcpClientProps_Load);
             this.gbMode.ResumeLayout(false);
             this.gbMode.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbBehaviorHint)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbConnModeHint)).EndInit();
             this.gbConnection.ResumeLayout(false);
             this.gbConnection.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbIpAddressHint)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbTcpPortHint)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numTcpPort)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -266,17 +287,17 @@
         private System.Windows.Forms.Label lblBehavior;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox cbConnMode;
+        private System.Windows.Forms.Label lblConnMode;
         private System.Windows.Forms.GroupBox gbConnection;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label lblTcpPort;
+        private System.Windows.Forms.Label lblIpAddress;
+        private System.Windows.Forms.TextBox txtIpAddress;
+        private System.Windows.Forms.NumericUpDown numTcpPort;
+        private System.Windows.Forms.PictureBox pbConnModeHint;
         private System.Windows.Forms.ToolTip toolTip;
-        private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.PictureBox pictureBox3;
-        private System.Windows.Forms.PictureBox pictureBox4;
+        private System.Windows.Forms.PictureBox pbTcpPortHint;
+        private System.Windows.Forms.PictureBox pbBehaviorHint;
+        private System.Windows.Forms.PictureBox pbIpAddressHint;
     }
 }

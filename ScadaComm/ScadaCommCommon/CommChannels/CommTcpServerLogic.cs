@@ -117,6 +117,7 @@ namespace Scada.Comm.Channels
                 commCnlParams["TcpPort"] = TcpPort.ToString();
                 commCnlParams["InactiveTime"] = InactiveTime.ToString();
                 commCnlParams["Behavior"] = Behavior.ToString();
+                commCnlParams["ConnMode"] = ConnMode.ToString();
                 commCnlParams["DevSelMode"] = DevSelMode.ToString();
             }
         }

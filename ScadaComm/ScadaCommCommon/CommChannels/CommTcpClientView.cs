@@ -94,9 +94,7 @@ namespace Scada.Comm.Channels
         /// </summary>
         public override void ShowProps(SortedList<string, string> commCnlParams, out bool modified)
         {
-            //FrmCommSerialProps.ShowDialog(commCnlParams, out modified);
-            (new FrmCommTcpClientProps()).ShowDialog();
-            modified = false;
+            FrmCommTcpClientProps.ShowDialog(commCnlParams, out modified);
         }
 
         /// <summary>
