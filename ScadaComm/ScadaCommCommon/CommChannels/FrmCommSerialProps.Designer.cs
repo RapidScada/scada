@@ -43,17 +43,17 @@
             this.cbBaudRate = new System.Windows.Forms.ComboBox();
             this.lblBaudRate = new System.Windows.Forms.Label();
             this.cbPortName = new System.Windows.Forms.ComboBox();
-            this.gbOperation = new System.Windows.Forms.GroupBox();
+            this.gbMode = new System.Windows.Forms.GroupBox();
             this.cbBehavior = new System.Windows.Forms.ComboBox();
             this.lblBehavior = new System.Windows.Forms.Label();
             this.gbPort.SuspendLayout();
-            this.gbOperation.SuspendLayout();
+            this.gbMode.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(201, 284);
+            this.btnCancel.Location = new System.Drawing.Point(197, 284);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 3;
@@ -62,7 +62,7 @@
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(120, 284);
+            this.btnOK.Location = new System.Drawing.Point(116, 284);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 2;
@@ -87,7 +87,7 @@
             this.gbPort.Location = new System.Drawing.Point(12, 12);
             this.gbPort.Name = "gbPort";
             this.gbPort.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbPort.Size = new System.Drawing.Size(264, 207);
+            this.gbPort.Size = new System.Drawing.Size(260, 207);
             this.gbPort.TabIndex = 0;
             this.gbPort.TabStop = false;
             this.gbPort.Text = "Порт";
@@ -96,7 +96,7 @@
             // 
             this.lblPortName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblPortName.AutoSize = true;
-            this.lblPortName.Location = new System.Drawing.Point(34, 23);
+            this.lblPortName.Location = new System.Drawing.Point(26, 23);
             this.lblPortName.Name = "lblPortName";
             this.lblPortName.Size = new System.Drawing.Size(61, 13);
             this.lblPortName.TabIndex = 0;
@@ -106,7 +106,7 @@
             // chkRtsEnable
             // 
             this.chkRtsEnable.AutoSize = true;
-            this.chkRtsEnable.Location = new System.Drawing.Point(67, 177);
+            this.chkRtsEnable.Location = new System.Drawing.Point(63, 177);
             this.chkRtsEnable.Name = "chkRtsEnable";
             this.chkRtsEnable.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.chkRtsEnable.Size = new System.Drawing.Size(48, 17);
@@ -118,7 +118,7 @@
             // chkDtrEnable
             // 
             this.chkDtrEnable.AutoSize = true;
-            this.chkDtrEnable.Location = new System.Drawing.Point(66, 154);
+            this.chkDtrEnable.Location = new System.Drawing.Point(62, 154);
             this.chkDtrEnable.Name = "chkDtrEnable";
             this.chkDtrEnable.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.chkDtrEnable.Size = new System.Drawing.Size(49, 17);
@@ -135,7 +135,7 @@
             "1",
             "1,5",
             "2"});
-            this.cbStopBits.Location = new System.Drawing.Point(101, 127);
+            this.cbStopBits.Location = new System.Drawing.Point(97, 127);
             this.cbStopBits.Name = "cbStopBits";
             this.cbStopBits.Size = new System.Drawing.Size(150, 21);
             this.cbStopBits.TabIndex = 9;
@@ -145,7 +145,7 @@
             // 
             this.lblStopBits.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblStopBits.AutoSize = true;
-            this.lblStopBits.Location = new System.Drawing.Point(33, 130);
+            this.lblStopBits.Location = new System.Drawing.Point(25, 130);
             this.lblStopBits.Name = "lblStopBits";
             this.lblStopBits.Size = new System.Drawing.Size(62, 13);
             this.lblStopBits.TabIndex = 8;
@@ -162,7 +162,7 @@
             "Нет",
             "Маркер (1)",
             "Пробел (0)"});
-            this.cbParity.Location = new System.Drawing.Point(101, 100);
+            this.cbParity.Location = new System.Drawing.Point(97, 100);
             this.cbParity.Name = "cbParity";
             this.cbParity.Size = new System.Drawing.Size(150, 21);
             this.cbParity.TabIndex = 7;
@@ -172,7 +172,7 @@
             // 
             this.lblParity.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblParity.AutoSize = true;
-            this.lblParity.Location = new System.Drawing.Point(40, 104);
+            this.lblParity.Location = new System.Drawing.Point(32, 104);
             this.lblParity.Name = "lblParity";
             this.lblParity.Size = new System.Drawing.Size(55, 13);
             this.lblParity.TabIndex = 6;
@@ -188,7 +188,7 @@
             "6",
             "7",
             "8"});
-            this.cbDataBits.Location = new System.Drawing.Point(101, 73);
+            this.cbDataBits.Location = new System.Drawing.Point(97, 73);
             this.cbDataBits.Name = "cbDataBits";
             this.cbDataBits.Size = new System.Drawing.Size(150, 21);
             this.cbDataBits.TabIndex = 5;
@@ -198,7 +198,7 @@
             // 
             this.lblDataBits.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblDataBits.AutoSize = true;
-            this.lblDataBits.Location = new System.Drawing.Point(22, 77);
+            this.lblDataBits.Location = new System.Drawing.Point(14, 77);
             this.lblDataBits.Name = "lblDataBits";
             this.lblDataBits.Size = new System.Drawing.Size(73, 13);
             this.lblDataBits.TabIndex = 4;
@@ -223,7 +223,7 @@
             "230400",
             "460800",
             "921600"});
-            this.cbBaudRate.Location = new System.Drawing.Point(101, 46);
+            this.cbBaudRate.Location = new System.Drawing.Point(97, 46);
             this.cbBaudRate.Name = "cbBaudRate";
             this.cbBaudRate.Size = new System.Drawing.Size(150, 21);
             this.cbBaudRate.TabIndex = 3;
@@ -233,7 +233,7 @@
             // 
             this.lblBaudRate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblBaudRate.AutoSize = true;
-            this.lblBaudRate.Location = new System.Drawing.Point(40, 50);
+            this.lblBaudRate.Location = new System.Drawing.Point(32, 50);
             this.lblBaudRate.Name = "lblBaudRate";
             this.lblBaudRate.Size = new System.Drawing.Size(55, 13);
             this.lblBaudRate.TabIndex = 2;
@@ -254,7 +254,7 @@
             "COM8",
             "COM9",
             "COM10"});
-            this.cbPortName.Location = new System.Drawing.Point(101, 19);
+            this.cbPortName.Location = new System.Drawing.Point(97, 19);
             this.cbPortName.Name = "cbPortName";
             this.cbPortName.Size = new System.Drawing.Size(150, 21);
             this.cbPortName.TabIndex = 1;
@@ -262,17 +262,17 @@
             this.cbPortName.SelectedIndexChanged += new System.EventHandler(this.control_Changed);
             this.cbPortName.TextChanged += new System.EventHandler(this.control_Changed);
             // 
-            // gbOperation
+            // gbMode
             // 
-            this.gbOperation.Controls.Add(this.cbBehavior);
-            this.gbOperation.Controls.Add(this.lblBehavior);
-            this.gbOperation.Location = new System.Drawing.Point(12, 225);
-            this.gbOperation.Name = "gbOperation";
-            this.gbOperation.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbOperation.Size = new System.Drawing.Size(264, 53);
-            this.gbOperation.TabIndex = 1;
-            this.gbOperation.TabStop = false;
-            this.gbOperation.Text = "Работа";
+            this.gbMode.Controls.Add(this.cbBehavior);
+            this.gbMode.Controls.Add(this.lblBehavior);
+            this.gbMode.Location = new System.Drawing.Point(12, 225);
+            this.gbMode.Name = "gbMode";
+            this.gbMode.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
+            this.gbMode.Size = new System.Drawing.Size(260, 53);
+            this.gbMode.TabIndex = 1;
+            this.gbMode.TabStop = false;
+            this.gbMode.Text = "Режим работы";
             // 
             // cbBehavior
             // 
@@ -281,7 +281,7 @@
             this.cbBehavior.Items.AddRange(new object[] {
             "Master",
             "Slave"});
-            this.cbBehavior.Location = new System.Drawing.Point(101, 19);
+            this.cbBehavior.Location = new System.Drawing.Point(97, 19);
             this.cbBehavior.Name = "cbBehavior";
             this.cbBehavior.Size = new System.Drawing.Size(150, 21);
             this.cbBehavior.TabIndex = 1;
@@ -291,11 +291,11 @@
             // 
             this.lblBehavior.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblBehavior.AutoSize = true;
-            this.lblBehavior.Location = new System.Drawing.Point(13, 23);
+            this.lblBehavior.Location = new System.Drawing.Point(28, 23);
             this.lblBehavior.Name = "lblBehavior";
-            this.lblBehavior.Size = new System.Drawing.Size(82, 13);
+            this.lblBehavior.Size = new System.Drawing.Size(63, 13);
             this.lblBehavior.TabIndex = 0;
-            this.lblBehavior.Text = "Режим работы";
+            this.lblBehavior.Text = "Поведение";
             this.lblBehavior.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // FrmCommSerialProps
@@ -304,8 +304,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(288, 319);
-            this.Controls.Add(this.gbOperation);
+            this.ClientSize = new System.Drawing.Size(284, 319);
+            this.Controls.Add(this.gbMode);
             this.Controls.Add(this.gbPort);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.btnCancel);
@@ -319,8 +319,8 @@
             this.Load += new System.EventHandler(this.FrmCommSerialProps_Load);
             this.gbPort.ResumeLayout(false);
             this.gbPort.PerformLayout();
-            this.gbOperation.ResumeLayout(false);
-            this.gbOperation.PerformLayout();
+            this.gbMode.ResumeLayout(false);
+            this.gbMode.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -342,7 +342,7 @@
         private System.Windows.Forms.ComboBox cbBaudRate;
         private System.Windows.Forms.Label lblBaudRate;
         private System.Windows.Forms.ComboBox cbPortName;
-        private System.Windows.Forms.GroupBox gbOperation;
+        private System.Windows.Forms.GroupBox gbMode;
         private System.Windows.Forms.Label lblBehavior;
         private System.Windows.Forms.ComboBox cbBehavior;
 

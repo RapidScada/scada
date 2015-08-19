@@ -76,14 +76,14 @@ namespace Scada.Comm.Channels
                     "Параметры канала связи:\n" +
                     "IpAddress - удалённый IP-адрес в режиме соединения Shared,\n" +
                     "TcpPort - удалённый TCP-порт по умолчанию,\n" +
-                    "Behavior - режим работы канала связи (Master, Slave),\n" +
+                    "Behavior - поведение (Master, Slave),\n" +
                     "ConnMode - режим соединения (Individual, Shared)." :
 
                     "TCP client communication channel.\n\n" +
                     "Communication channel parameters:\n" +
                     "IpAddress - remote IP address in Shared connection mode,\n" +
                     "TcpPort - remote TCP port by default," +
-                    "Behavior - work mode of communication channel (Master, Slave),\n" +
+                    "Behavior - operating behavior (Master, Slave),\n" +
                     "ConnMode - connection mode (Individual, Shared).";
             }
         }

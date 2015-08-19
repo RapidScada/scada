@@ -38,7 +38,7 @@ namespace Scada.Comm.Channels
     {
         private SortedList<string, string> commCnlParams; // параметры канала связи
         private bool modified;                            // признак изменения параметров
-        CommSerialLogic.Settings settings;                // настройки канала связи
+        private CommSerialLogic.Settings settings;        // настройки канала связи
 
 
         /// <summary>

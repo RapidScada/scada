@@ -81,7 +81,7 @@ namespace Scada.Comm.Channels
                     "StopBits - стоповые биты (None, One, Two, OnePointFive),\n" +
                     "DtrEnable - использование сигнала DTR (false, true),\n" +
                     "RtsEnable - использование сигнала RTS (false, true),\n" +
-                    "Behavior - режим работы канала связи (Master, Slave)." :
+                    "Behavior - поведение (Master, Slave)." :
 
                     "Serial port communication channel.\n\n" +
                     "Communication channel parameters:\n" +
@@ -92,7 +92,7 @@ namespace Scada.Comm.Channels
                     "StopBits -  number of stopbits per byte (None, One, Two, OnePointFive),\n" +
                     "DtrEnable - value that enables the DTR signal (false, true),\n" +
                     "RtsEnable - value that enables the RTS signal (false, true),\n" +
-                    "Behavior - work mode of communication channel (Master, Slave).";
+                    "Behavior - operating behavior (Master, Slave).";
             }
         }
 

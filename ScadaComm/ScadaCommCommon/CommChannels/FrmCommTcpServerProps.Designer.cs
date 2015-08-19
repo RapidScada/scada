@@ -30,119 +30,133 @@
         {
             this.components = new System.ComponentModel.Container();
             this.gbMode = new System.Windows.Forms.GroupBox();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.pbBehaviorHint = new System.Windows.Forms.PictureBox();
+            this.pbDevSelModeHint = new System.Windows.Forms.PictureBox();
+            this.cbDevSelMode = new System.Windows.Forms.ComboBox();
+            this.lblDevSelMode = new System.Windows.Forms.Label();
+            this.pbConnModeHint = new System.Windows.Forms.PictureBox();
+            this.cbConnMode = new System.Windows.Forms.ComboBox();
+            this.lblConnMode = new System.Windows.Forms.Label();
             this.cbBehavior = new System.Windows.Forms.ComboBox();
             this.lblBehavior = new System.Windows.Forms.Label();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.gbConnection = new System.Windows.Forms.GroupBox();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.pbInactiveTimeHint = new System.Windows.Forms.PictureBox();
+            this.pbTcpPortHint = new System.Windows.Forms.PictureBox();
+            this.numTcpPort = new System.Windows.Forms.NumericUpDown();
+            this.numInactiveTime = new System.Windows.Forms.NumericUpDown();
+            this.lblTcpPort = new System.Windows.Forms.Label();
+            this.lblInactiveTime = new System.Windows.Forms.Label();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.gbMode.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbBehaviorHint)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbDevSelModeHint)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbConnModeHint)).BeginInit();
             this.gbConnection.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbInactiveTimeHint)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbTcpPortHint)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numTcpPort)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numInactiveTime)).BeginInit();
             this.SuspendLayout();
             // 
             // gbMode
             // 
-            this.gbMode.Controls.Add(this.pictureBox2);
-            this.gbMode.Controls.Add(this.pictureBox3);
-            this.gbMode.Controls.Add(this.comboBox2);
-            this.gbMode.Controls.Add(this.label4);
-            this.gbMode.Controls.Add(this.pictureBox1);
-            this.gbMode.Controls.Add(this.comboBox1);
-            this.gbMode.Controls.Add(this.label1);
+            this.gbMode.Controls.Add(this.pbBehaviorHint);
+            this.gbMode.Controls.Add(this.pbDevSelModeHint);
+            this.gbMode.Controls.Add(this.cbDevSelMode);
+            this.gbMode.Controls.Add(this.lblDevSelMode);
+            this.gbMode.Controls.Add(this.pbConnModeHint);
+            this.gbMode.Controls.Add(this.cbConnMode);
+            this.gbMode.Controls.Add(this.lblConnMode);
             this.gbMode.Controls.Add(this.cbBehavior);
             this.gbMode.Controls.Add(this.lblBehavior);
             this.gbMode.Location = new System.Drawing.Point(12, 12);
             this.gbMode.Name = "gbMode";
             this.gbMode.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbMode.Size = new System.Drawing.Size(343, 107);
+            this.gbMode.Size = new System.Drawing.Size(330, 107);
             this.gbMode.TabIndex = 0;
             this.gbMode.TabStop = false;
-            this.gbMode.Text = "Режим";
+            this.gbMode.Text = "Режим работы";
             // 
-            // pictureBox3
+            // pbBehaviorHint
             // 
-            this.pictureBox3.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
-            this.pictureBox3.Location = new System.Drawing.Point(314, 75);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(16, 16);
-            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox3.TabIndex = 7;
-            this.pictureBox3.TabStop = false;
-            this.toolTip.SetToolTip(this.pictureBox3, "Подсказка...\r\nСтрока 2");
+            this.pbBehaviorHint.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
+            this.pbBehaviorHint.Location = new System.Drawing.Point(301, 21);
+            this.pbBehaviorHint.Name = "pbBehaviorHint";
+            this.pbBehaviorHint.Size = new System.Drawing.Size(16, 16);
+            this.pbBehaviorHint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pbBehaviorHint.TabIndex = 8;
+            this.pbBehaviorHint.TabStop = false;
             // 
-            // comboBox2
+            // pbDevSelModeHint
             // 
-            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Items.AddRange(new object[] {
-            "ByIPAddress",
-            "ByFirstPackage",
-            "ByDeviceLibrary"});
-            this.comboBox2.Location = new System.Drawing.Point(158, 73);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(150, 21);
-            this.comboBox2.TabIndex = 6;
+            this.pbDevSelModeHint.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
+            this.pbDevSelModeHint.Location = new System.Drawing.Point(301, 75);
+            this.pbDevSelModeHint.Name = "pbDevSelModeHint";
+            this.pbDevSelModeHint.Size = new System.Drawing.Size(16, 16);
+            this.pbDevSelModeHint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pbDevSelModeHint.TabIndex = 7;
+            this.pbDevSelModeHint.TabStop = false;
+            this.toolTip.SetToolTip(this.pbDevSelModeHint, "Подсказка...\r\nСтрока 2");
             // 
-            // label4
+            // cbDevSelMode
             // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(47, 77);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(101, 13);
-            this.label4.TabIndex = 5;
-            this.label4.Text = "Режим выбора КП";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.cbDevSelMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbDevSelMode.FormattingEnabled = true;
+            this.cbDevSelMode.Items.AddRange(new object[] {
+            "По IP-адресу",
+            "По первому пакету",
+            "Определяется DLL"});
+            this.cbDevSelMode.Location = new System.Drawing.Point(145, 73);
+            this.cbDevSelMode.Name = "cbDevSelMode";
+            this.cbDevSelMode.Size = new System.Drawing.Size(150, 21);
+            this.cbDevSelMode.TabIndex = 6;
             // 
-            // pictureBox1
+            // lblDevSelMode
             // 
-            this.pictureBox1.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
-            this.pictureBox1.Location = new System.Drawing.Point(314, 48);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(16, 16);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox1.TabIndex = 4;
-            this.pictureBox1.TabStop = false;
-            this.toolTip.SetToolTip(this.pictureBox1, "Подсказка...\r\nСтрока 2");
+            this.lblDevSelMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblDevSelMode.AutoSize = true;
+            this.lblDevSelMode.Location = new System.Drawing.Point(81, 77);
+            this.lblDevSelMode.Name = "lblDevSelMode";
+            this.lblDevSelMode.Size = new System.Drawing.Size(58, 13);
+            this.lblDevSelMode.TabIndex = 5;
+            this.lblDevSelMode.Text = "Выбор КП";
+            this.lblDevSelMode.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // comboBox1
+            // pbConnModeHint
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "Individual",
-            "Shared"});
-            this.comboBox1.Location = new System.Drawing.Point(158, 46);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(150, 21);
-            this.comboBox1.TabIndex = 3;
+            this.pbConnModeHint.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
+            this.pbConnModeHint.Location = new System.Drawing.Point(301, 48);
+            this.pbConnModeHint.Name = "pbConnModeHint";
+            this.pbConnModeHint.Size = new System.Drawing.Size(16, 16);
+            this.pbConnModeHint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pbConnModeHint.TabIndex = 4;
+            this.pbConnModeHint.TabStop = false;
+            this.toolTip.SetToolTip(this.pbConnModeHint, "Подсказка...\r\nСтрока 2");
             // 
-            // label1
+            // cbConnMode
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(47, 50);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(105, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Режим соединения";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.cbConnMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbConnMode.FormattingEnabled = true;
+            this.cbConnMode.Items.AddRange(new object[] {
+            "Индивидуальное",
+            "Общее"});
+            this.cbConnMode.Location = new System.Drawing.Point(145, 46);
+            this.cbConnMode.Name = "cbConnMode";
+            this.cbConnMode.Size = new System.Drawing.Size(150, 21);
+            this.cbConnMode.TabIndex = 3;
+            // 
+            // lblConnMode
+            // 
+            this.lblConnMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblConnMode.AutoSize = true;
+            this.lblConnMode.Location = new System.Drawing.Point(71, 50);
+            this.lblConnMode.Name = "lblConnMode";
+            this.lblConnMode.Size = new System.Drawing.Size(68, 13);
+            this.lblConnMode.TabIndex = 2;
+            this.lblConnMode.Text = "Соединение";
+            this.lblConnMode.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // cbBehavior
             // 
@@ -151,7 +165,7 @@
             this.cbBehavior.Items.AddRange(new object[] {
             "Master",
             "Slave"});
-            this.cbBehavior.Location = new System.Drawing.Point(158, 19);
+            this.cbBehavior.Location = new System.Drawing.Point(145, 19);
             this.cbBehavior.Name = "cbBehavior";
             this.cbBehavior.Size = new System.Drawing.Size(150, 21);
             this.cbBehavior.TabIndex = 1;
@@ -160,26 +174,27 @@
             // 
             this.lblBehavior.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblBehavior.AutoSize = true;
-            this.lblBehavior.Location = new System.Drawing.Point(70, 23);
+            this.lblBehavior.Location = new System.Drawing.Point(76, 23);
             this.lblBehavior.Name = "lblBehavior";
-            this.lblBehavior.Size = new System.Drawing.Size(82, 13);
+            this.lblBehavior.Size = new System.Drawing.Size(63, 13);
             this.lblBehavior.TabIndex = 0;
-            this.lblBehavior.Text = "Режим работы";
+            this.lblBehavior.Text = "Поведение";
             this.lblBehavior.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(199, 209);
+            this.btnOK.Location = new System.Drawing.Point(186, 209);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 2;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(280, 209);
+            this.btnCancel.Location = new System.Drawing.Point(267, 209);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 3;
@@ -188,70 +203,96 @@
             // 
             // gbConnection
             // 
-            this.gbConnection.Controls.Add(this.numericUpDown2);
-            this.gbConnection.Controls.Add(this.numericUpDown1);
-            this.gbConnection.Controls.Add(this.label2);
-            this.gbConnection.Controls.Add(this.label3);
+            this.gbConnection.Controls.Add(this.pbInactiveTimeHint);
+            this.gbConnection.Controls.Add(this.pbTcpPortHint);
+            this.gbConnection.Controls.Add(this.numTcpPort);
+            this.gbConnection.Controls.Add(this.numInactiveTime);
+            this.gbConnection.Controls.Add(this.lblTcpPort);
+            this.gbConnection.Controls.Add(this.lblInactiveTime);
             this.gbConnection.Location = new System.Drawing.Point(12, 125);
             this.gbConnection.Name = "gbConnection";
             this.gbConnection.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbConnection.Size = new System.Drawing.Size(343, 78);
+            this.gbConnection.Size = new System.Drawing.Size(330, 78);
             this.gbConnection.TabIndex = 1;
             this.gbConnection.TabStop = false;
             this.gbConnection.Text = "Соединение";
             // 
-            // numericUpDown2
+            // pbInactiveTimeHint
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(209, 19);
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(99, 20);
-            this.numericUpDown2.TabIndex = 6;
+            this.pbInactiveTimeHint.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
+            this.pbInactiveTimeHint.Location = new System.Drawing.Point(301, 47);
+            this.pbInactiveTimeHint.Name = "pbInactiveTimeHint";
+            this.pbInactiveTimeHint.Size = new System.Drawing.Size(16, 16);
+            this.pbInactiveTimeHint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pbInactiveTimeHint.TabIndex = 9;
+            this.pbInactiveTimeHint.TabStop = false;
             // 
-            // numericUpDown1
+            // pbTcpPortHint
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(209, 45);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(99, 20);
-            this.numericUpDown1.TabIndex = 3;
+            this.pbTcpPortHint.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
+            this.pbTcpPortHint.Location = new System.Drawing.Point(301, 21);
+            this.pbTcpPortHint.Name = "pbTcpPortHint";
+            this.pbTcpPortHint.Size = new System.Drawing.Size(16, 16);
+            this.pbTcpPortHint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pbTcpPortHint.TabIndex = 8;
+            this.pbTcpPortHint.TabStop = false;
             // 
-            // label2
+            // numTcpPort
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 23);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(190, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "TCP-порт для входящих соединений";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.numTcpPort.Location = new System.Drawing.Point(145, 19);
+            this.numTcpPort.Maximum = new decimal(new int[] {
+            65535,
+            0,
+            0,
+            0});
+            this.numTcpPort.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numTcpPort.Name = "numTcpPort";
+            this.numTcpPort.Size = new System.Drawing.Size(150, 20);
+            this.numTcpPort.TabIndex = 1;
+            this.numTcpPort.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
-            // label3
+            // numInactiveTime
             // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(34, 49);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(169, 13);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "Неактивность до отключения, с";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.numInactiveTime.Location = new System.Drawing.Point(145, 45);
+            this.numInactiveTime.Name = "numInactiveTime";
+            this.numInactiveTime.Size = new System.Drawing.Size(150, 20);
+            this.numInactiveTime.TabIndex = 3;
             // 
-            // pictureBox2
+            // lblTcpPort
             // 
-            this.pictureBox2.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
-            this.pictureBox2.Location = new System.Drawing.Point(314, 21);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(16, 16);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox2.TabIndex = 8;
-            this.pictureBox2.TabStop = false;
-            this.toolTip.SetToolTip(this.pictureBox2, "Подсказка...\r\nСтрока 2");
+            this.lblTcpPort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTcpPort.AutoSize = true;
+            this.lblTcpPort.Location = new System.Drawing.Point(24, 23);
+            this.lblTcpPort.Name = "lblTcpPort";
+            this.lblTcpPort.Size = new System.Drawing.Size(115, 13);
+            this.lblTcpPort.TabIndex = 0;
+            this.lblTcpPort.Text = "Локальный TCP-порт";
+            this.lblTcpPort.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // lblInactiveTime
+            // 
+            this.lblInactiveTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblInactiveTime.AutoSize = true;
+            this.lblInactiveTime.Location = new System.Drawing.Point(48, 49);
+            this.lblInactiveTime.Name = "lblInactiveTime";
+            this.lblInactiveTime.Size = new System.Drawing.Size(91, 13);
+            this.lblInactiveTime.TabIndex = 2;
+            this.lblInactiveTime.Text = "Неактивность, с";
+            this.lblInactiveTime.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // FrmCommTcpServerProps
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(367, 244);
+            this.ClientSize = new System.Drawing.Size(354, 244);
             this.Controls.Add(this.gbConnection);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.btnCancel);
@@ -263,15 +304,18 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Свойства: TCP-сервер";
+            this.Load += new System.EventHandler(this.FrmCommTcpServerProps_Load);
             this.gbMode.ResumeLayout(false);
             this.gbMode.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbBehaviorHint)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbDevSelModeHint)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbConnModeHint)).EndInit();
             this.gbConnection.ResumeLayout(false);
             this.gbConnection.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbInactiveTimeHint)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbTcpPortHint)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numTcpPort)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numInactiveTime)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -283,18 +327,20 @@
         private System.Windows.Forms.Label lblBehavior;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox cbConnMode;
+        private System.Windows.Forms.Label lblConnMode;
         private System.Windows.Forms.GroupBox gbConnection;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label lblTcpPort;
+        private System.Windows.Forms.Label lblInactiveTime;
+        private System.Windows.Forms.NumericUpDown numInactiveTime;
+        private System.Windows.Forms.PictureBox pbConnModeHint;
         private System.Windows.Forms.ToolTip toolTip;
-        private System.Windows.Forms.PictureBox pictureBox3;
-        private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
-        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.PictureBox pbDevSelModeHint;
+        private System.Windows.Forms.ComboBox cbDevSelMode;
+        private System.Windows.Forms.Label lblDevSelMode;
+        private System.Windows.Forms.NumericUpDown numTcpPort;
+        private System.Windows.Forms.PictureBox pbBehaviorHint;
+        private System.Windows.Forms.PictureBox pbInactiveTimeHint;
+        private System.Windows.Forms.PictureBox pbTcpPortHint;
     }
 }

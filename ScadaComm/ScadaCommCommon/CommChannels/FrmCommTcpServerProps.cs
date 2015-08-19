@@ -40,9 +40,49 @@ namespace Scada.Comm.Channels
     /// </summary>
     internal partial class FrmCommTcpServerProps : Form
     {
-        public FrmCommTcpServerProps()
+        private SortedList<string, string> commCnlParams; // параметры канала связи
+        private bool modified;                            // признак изменения параметров
+        private CommTcpServerLogic.Settings settings;     // настройки канала связи
+
+        /// <summary>
+        /// Конструктор, ограничивающий создание формы без параметров
+        /// </summary>
+        private FrmCommTcpServerProps()
         {
             InitializeComponent();
+        }
+
+        /// <summary>
+        /// Отобразить форму модально
+        /// </summary>
+        public static void ShowDialog(SortedList<string, string> commCnlParams, out bool modified)
+        {
+            if (commCnlParams == null)
+                throw new ArgumentNullException("commCnlParams");
+
+            FrmCommTcpServerProps form = new FrmCommTcpServerProps();
+            form.commCnlParams = commCnlParams;
+            form.modified = false;
+            form.ShowDialog();
+            modified = form.modified;
+        }
+
+
+        private void FrmCommTcpServerProps_Load(object sender, EventArgs e)
+        {
+            // инициализация настроек канала связи
+            settings = new CommTcpServerLogic.Settings();
+            settings.Init(commCnlParams, false);
+
+            // установка элементов управления в соответствии с параметрами канала связи
+            cbBehavior.Text = settings.Behavior.ToString();
+
+            modified = false;
+        }
+
+        private void btnOK_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

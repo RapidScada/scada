@@ -69,7 +69,7 @@ namespace Scada.Comm.Channels
             public Settings()
             {
                 // установка значений по умолчанию
-                TcpPort = 0;
+                TcpPort = 1;
                 InactiveTime = 60;
                 Behavior = CommChannelLogic.OperatingBehaviors.Master;
                 ConnMode = ConnectionModes.Individual;
@@ -96,6 +96,29 @@ namespace Scada.Comm.Channels
             /// Получить или установить режим выбора КП
             /// </summary>
             public DeviceSelectionModes DevSelMode { get; set; }
+
+            /// <summary>
+            /// Инициализировать настройки на основе параметров канала связи
+            /// </summary>
+            public void Init(SortedList<string, string> commCnlParams, bool requireParams = true)
+            {
+                TcpPort = commCnlParams.GetIntParam("TcpPort", requireParams, TcpPort);
+                InactiveTime = commCnlParams.GetIntParam("InactiveTime", false, InactiveTime);
+                Behavior = commCnlParams.GetEnumParam<OperatingBehaviors>("Behavior", false, Behavior);
+                ConnMode = commCnlParams.GetEnumParam<ConnectionModes>("ConnMode", false, ConnMode);
+                DevSelMode = commCnlParams.GetEnumParam<DeviceSelectionModes>("DevSelMode", false, DevSelMode);
+            }
+
+            /// <summary>
+            /// Установить параметры канала связи в соответствии с настройками
+            /// </summary>
+            public void SetCommCnlParams(SortedList<string, string> commCnlParams)
+            {
+                commCnlParams["TcpPort"] = TcpPort.ToString();
+                commCnlParams["InactiveTime"] = InactiveTime.ToString();
+                commCnlParams["Behavior"] = Behavior.ToString();
+                commCnlParams["DevSelMode"] = DevSelMode.ToString();
+            }
         }
 
         /// <summary>
@@ -451,15 +474,8 @@ namespace Scada.Comm.Channels
             // вызов метода базового класса
             base.Init(commCnlParams, kpList);
 
-            // получение настроек канала связи
-            settings.TcpPort = GetIntParam(commCnlParams, "TcpPort", true, settings.TcpPort);
-            settings.InactiveTime = GetIntParam(commCnlParams, "InactiveTime", false, settings.InactiveTime);
-            settings.Behavior = GetEnumParam<OperatingBehaviors>(commCnlParams, "Behavior", 
-                false, settings.Behavior);
-            settings.ConnMode = GetEnumParam<ConnectionModes>(commCnlParams, "ConnMode", 
-                false, settings.ConnMode);
-            settings.DevSelMode = GetEnumParam<DeviceSelectionModes>(commCnlParams, "DevSelMode", 
-                false, settings.DevSelMode);
+            // инициализация настроек канала связи
+            settings.Init(commCnlParams);
 
             // сохранение постоянно используемых значений
             slaveBehavior = settings.Behavior == OperatingBehaviors.Slave;

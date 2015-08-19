@@ -34,6 +34,15 @@ namespace Scada.Comm.Channels
     public class CommTcpServerView : CommChannelView
     {
         /// <summary>
+        /// Конструктор
+        /// </summary>
+        public CommTcpServerView()
+        {
+            CanShowProps = true;
+        }
+
+
+        /// <summary>
         /// Получить наименование типа канала связи
         /// </summary>
         public override string TypeName
@@ -65,18 +74,18 @@ namespace Scada.Comm.Channels
                 return Localization.UseRussian ?
                     "Канал связи TCP-сервер.\n\n" +
                     "Параметры канала связи:\n" +
-                    "TcpPort - TCP-порт для входящих соединений,\n" +
+                    "TcpPort - локальный TCP-порт для входящих соединений,\n" +
                     "InactiveTime - время неактивности соединения до отключения, с,\n" +
-                    "Behavior - режим работы канала связи (Master, Slave),\n" +
+                    "Behavior - поведение (Master, Slave),\n" +
                     "ConnMode - режим соединения (Individual, Shared)," +
                     "DevSelMode - режим выбора КП в режиме соединения Individual " + 
                     "(ByIPAddress, ByFirstPackage, ByDeviceLibrary)." :
 
                     "TCP server communication channel.\n\n" +
                     "Communication channel parameters:\n" +
-                    "TcpPort - TCP port for incoming connections," +
+                    "TcpPort - local TCP port for incoming connections," +
                     "InactiveTime - duration of inactivity before disconnect, sec,\n" +
-                    "Behavior - work mode of communication channel (Master, Slave),\n" +
+                    "Behavior - operating behavior (Master, Slave),\n" +
                     "DevSelMode - device selection mode in Individual connection mode " + 
                     "(ByIPAddress, ByFirstPackage, ByDeviceLibrary).";
             }
@@ -84,14 +93,23 @@ namespace Scada.Comm.Channels
 
 
         /// <summary>
+        /// Отобразить свойства модуля
+        /// </summary>
+        public override void ShowProps(SortedList<string, string> commCnlParams, out bool modified)
+        {
+            FrmCommTcpServerProps.ShowDialog(commCnlParams, out modified);
+        }
+
+        /// <summary>
         /// Получить информацию о свойствах канала связи
         /// </summary>
         public override string GetPropsInfo(SortedList<string, string> commCnlParams)
         {
             CommTcpServerLogic.Settings defSett = new CommTcpServerLogic.Settings();
-            return BuildPropsInfo(commCnlParams, 
-                new string[] { "TcpPort", "InactiveTime", "Behavior", "DevSelMode" },
-                new object[] { defSett.TcpPort, defSett.InactiveTime, defSett.Behavior, defSett.DevSelMode });
+            return BuildPropsInfo(commCnlParams,
+                new string[] { "TcpPort", "InactiveTime", "Behavior", "ConnMode", "DevSelMode" },
+                new object[] { defSett.TcpPort, defSett.InactiveTime, defSett.Behavior, 
+                    defSett.ConnMode, defSett.DevSelMode });
         }
     }
 }

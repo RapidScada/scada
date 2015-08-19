@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.gbMode = new System.Windows.Forms.GroupBox();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -38,21 +39,20 @@
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.gbConnection = new System.Windows.Forms.GroupBox();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.gbMode.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.gbConnection.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.SuspendLayout();
             // 
             // gbMode
@@ -66,15 +66,26 @@
             this.gbMode.Location = new System.Drawing.Point(12, 12);
             this.gbMode.Name = "gbMode";
             this.gbMode.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbMode.Size = new System.Drawing.Size(343, 80);
+            this.gbMode.Size = new System.Drawing.Size(330, 80);
             this.gbMode.TabIndex = 0;
             this.gbMode.TabStop = false;
             this.gbMode.Text = "Режим";
             // 
+            // pictureBox3
+            // 
+            this.pictureBox3.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
+            this.pictureBox3.Location = new System.Drawing.Point(301, 21);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(16, 16);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox3.TabIndex = 5;
+            this.pictureBox3.TabStop = false;
+            this.toolTip.SetToolTip(this.pictureBox3, "Подсказка...\r\nСтрока 2");
+            // 
             // pictureBox1
             // 
             this.pictureBox1.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
-            this.pictureBox1.Location = new System.Drawing.Point(314, 48);
+            this.pictureBox1.Location = new System.Drawing.Point(301, 48);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(16, 16);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -89,7 +100,7 @@
             this.comboBox1.Items.AddRange(new object[] {
             "Individual",
             "Shared"});
-            this.comboBox1.Location = new System.Drawing.Point(158, 46);
+            this.comboBox1.Location = new System.Drawing.Point(145, 46);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(150, 21);
             this.comboBox1.TabIndex = 3;
@@ -98,7 +109,7 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(47, 50);
+            this.label1.Location = new System.Drawing.Point(34, 50);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(105, 13);
             this.label1.TabIndex = 2;
@@ -112,7 +123,7 @@
             this.cbBehavior.Items.AddRange(new object[] {
             "Master",
             "Slave"});
-            this.cbBehavior.Location = new System.Drawing.Point(158, 19);
+            this.cbBehavior.Location = new System.Drawing.Point(145, 19);
             this.cbBehavior.Name = "cbBehavior";
             this.cbBehavior.Size = new System.Drawing.Size(150, 21);
             this.cbBehavior.TabIndex = 1;
@@ -121,7 +132,7 @@
             // 
             this.lblBehavior.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblBehavior.AutoSize = true;
-            this.lblBehavior.Location = new System.Drawing.Point(70, 23);
+            this.lblBehavior.Location = new System.Drawing.Point(57, 23);
             this.lblBehavior.Name = "lblBehavior";
             this.lblBehavior.Size = new System.Drawing.Size(82, 13);
             this.lblBehavior.TabIndex = 0;
@@ -130,7 +141,7 @@
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(199, 188);
+            this.btnOK.Location = new System.Drawing.Point(186, 188);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 2;
@@ -140,7 +151,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(280, 188);
+            this.btnCancel.Location = new System.Drawing.Point(267, 188);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 3;
@@ -158,15 +169,25 @@
             this.gbConnection.Location = new System.Drawing.Point(12, 104);
             this.gbConnection.Name = "gbConnection";
             this.gbConnection.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbConnection.Size = new System.Drawing.Size(343, 78);
+            this.gbConnection.Size = new System.Drawing.Size(330, 78);
             this.gbConnection.TabIndex = 1;
             this.gbConnection.TabStop = false;
             this.gbConnection.Text = "Соединение";
             // 
+            // pictureBox4
+            // 
+            this.pictureBox4.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
+            this.pictureBox4.Location = new System.Drawing.Point(301, 21);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(16, 16);
+            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox4.TabIndex = 6;
+            this.pictureBox4.TabStop = false;
+            // 
             // pictureBox2
             // 
             this.pictureBox2.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
-            this.pictureBox2.Location = new System.Drawing.Point(314, 47);
+            this.pictureBox2.Location = new System.Drawing.Point(301, 47);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(16, 16);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -175,14 +196,14 @@
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(158, 43);
+            this.numericUpDown1.Location = new System.Drawing.Point(145, 45);
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(150, 20);
             this.numericUpDown1.TabIndex = 3;
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(158, 19);
+            this.textBox1.Location = new System.Drawing.Point(145, 19);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(150, 20);
             this.textBox1.TabIndex = 1;
@@ -191,7 +212,7 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(37, 47);
+            this.label2.Location = new System.Drawing.Point(24, 49);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(115, 13);
             this.label2.TabIndex = 2;
@@ -202,39 +223,18 @@
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(41, 23);
+            this.label3.Location = new System.Drawing.Point(28, 23);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(111, 13);
             this.label3.TabIndex = 0;
             this.label3.Text = "Удалённый IP-адрес";
             this.label3.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // pictureBox3
-            // 
-            this.pictureBox3.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
-            this.pictureBox3.Location = new System.Drawing.Point(314, 21);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(16, 16);
-            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox3.TabIndex = 5;
-            this.pictureBox3.TabStop = false;
-            this.toolTip.SetToolTip(this.pictureBox3, "Подсказка...\r\nСтрока 2");
-            // 
-            // pictureBox4
-            // 
-            this.pictureBox4.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
-            this.pictureBox4.Location = new System.Drawing.Point(314, 21);
-            this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(16, 16);
-            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox4.TabIndex = 6;
-            this.pictureBox4.TabStop = false;
-            // 
             // FrmCommTcpClientProps
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(367, 223);
+            this.ClientSize = new System.Drawing.Size(354, 223);
             this.Controls.Add(this.gbConnection);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.btnCancel);
@@ -248,13 +248,13 @@
             this.Text = "Свойства: TCP-клиент";
             this.gbMode.ResumeLayout(false);
             this.gbMode.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.gbConnection.ResumeLayout(false);
             this.gbConnection.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             this.ResumeLayout(false);
 
         }
