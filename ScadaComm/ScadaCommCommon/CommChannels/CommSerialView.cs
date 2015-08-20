@@ -98,6 +98,15 @@ namespace Scada.Comm.Channels
 
 
         /// <summary>
+        /// Установить параметры канала связи по умолчанию
+        /// </summary>
+        public override void SetCommCnlParamsToDefault(SortedList<string, string> commCnlParams)
+        {
+            CommSerialLogic.Settings settings = new CommSerialLogic.Settings();
+            settings.SetCommCnlParams(commCnlParams);
+        }
+
+        /// <summary>
         /// Отобразить свойства модуля
         /// </summary>
         public override void ShowProps(SortedList<string, string> commCnlParams, out bool modified)

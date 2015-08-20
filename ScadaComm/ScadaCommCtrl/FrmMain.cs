@@ -1851,15 +1851,21 @@ namespace Scada.Comm.Ctrl
                     commCnlParamsBuf[lastLine.CommCnlType] = oldCommCnlParams;
                 }
 
-                // загрузка параметров выбранного канала связи из буфера
+                // загрузка параметров выбранного канала связи из буфера или установка по умолчанию
                 lastLine.CommCnlParams.Clear();
                 CommChannelView commChannelView = cbCommCnlType.SelectedItem as CommChannelView;
                 SortedList<string, string> storedCommCnlParams;
-                if (commChannelView != null && 
-                    commCnlParamsBuf.TryGetValue(commChannelView.TypeName, out storedCommCnlParams))
+                if (commChannelView != null)
                 {
-                    foreach (KeyValuePair<string, string> commCnlParam in storedCommCnlParams)
-                        lastLine.CommCnlParams.Add(commCnlParam.Key, commCnlParam.Value);
+                    if (commCnlParamsBuf.TryGetValue(commChannelView.TypeName, out storedCommCnlParams))
+                    {
+                        foreach (KeyValuePair<string, string> commCnlParam in storedCommCnlParams)
+                            lastLine.CommCnlParams.Add(commCnlParam.Key, commCnlParam.Value);
+                    }
+                    else
+                    {
+                        commChannelView.SetCommCnlParamsToDefault(lastLine.CommCnlParams);
+                    }
                 }
 
                 // отображение параметров выбранного канала связи

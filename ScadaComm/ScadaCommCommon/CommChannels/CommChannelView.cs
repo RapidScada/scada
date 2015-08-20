@@ -105,6 +105,15 @@ namespace Scada.Comm.Channels
             return sbPropsInfo.ToString();
         }
 
+
+        /// <summary>
+        /// Установить параметры канала связи по умолчанию
+        /// </summary>
+        public virtual void SetCommCnlParamsToDefault(SortedList<string, string> commCnlParams)
+        {
+
+        }
+
         /// <summary>
         /// Отобразить свойства модуля
         /// </summary>
