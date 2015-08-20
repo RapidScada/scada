@@ -45,7 +45,6 @@ namespace Scada.Data
         /// Конструктор
         /// </summary>
         public CtrlCnlProps(int ctrlCnlNum, string ctrlCnlName, int cmdTypeID)
-            : this()
         {
             CtrlCnlNum = ctrlCnlNum;
             CtrlCnlName = ctrlCnlName;
