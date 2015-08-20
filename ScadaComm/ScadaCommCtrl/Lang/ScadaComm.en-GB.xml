@@ -236,7 +236,7 @@
     <Phrase key="lblDevSelMode">Device selection</Phrase>
     <Phrase key="cbDevSelMode.Items[0]">By IP Address</Phrase>
     <Phrase key="cbDevSelMode.Items[1]">DLL Determined</Phrase>
-    <Phrase key="pbDevSelModeHint.ToolTip">The method of binding a new incoming connection to a device in Slave mode:&#13;&#10;By IP Address - remote IP address equals a device call number.&#13;&#10;DLL Determined - algorithm is implemented in the device library.</Phrase>
+    <Phrase key="pbDevSelModeHint.ToolTip">The method of binding received data to a device in Slave mode:&#13;&#10;By IP Address - remote IP address equals a device call number.&#13;&#10;DLL Determined - algorithm is implemented in the device library.</Phrase>
     <Phrase key="lblLocalUdpPort">Local UDP port</Phrase>
     <Phrase key="pbLocalUdpPortHint.ToolTip">Local UDP port for incoming connections.&#13;&#10;Incoming connections must be allowed by a firewall.</Phrase>
     <Phrase key="lblRemoteUdpPort">Remote UDP port</Phrase>

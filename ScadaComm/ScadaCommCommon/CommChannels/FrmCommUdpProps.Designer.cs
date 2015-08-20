@@ -97,9 +97,9 @@
             this.pbDevSelModeHint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pbDevSelModeHint.TabIndex = 4;
             this.pbDevSelModeHint.TabStop = false;
-            this.toolTip.SetToolTip(this.pbDevSelModeHint, "Способ привязки нового входящего соединения к КП в режиме Slave:\r\nПо IP-адресу - " +
-        "удалённый IP-адрес устройства совпадает с позывным КП.\r\nОпределяется DLL - алгор" +
-        "итм реализован в библиотеке КП.");
+            this.toolTip.SetToolTip(this.pbDevSelModeHint, "Способ привязки полученных данных к КП в режиме Slave:\r\nПо IP-адресу - удалённый " +
+        "IP-адрес устройства совпадает с позывным КП.\r\nОпределяется DLL - алгоритм реализ" +
+        "ован в библиотеке КП.");
             // 
             // cbDevSelMode
             // 
