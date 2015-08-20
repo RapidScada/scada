@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmCommTcpClientProps));
             this.gbMode = new System.Windows.Forms.GroupBox();
             this.pbBehaviorHint = new System.Windows.Forms.PictureBox();
             this.pbConnModeHint = new System.Windows.Forms.PictureBox();
@@ -80,7 +81,8 @@
             this.pbBehaviorHint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pbBehaviorHint.TabIndex = 5;
             this.pbBehaviorHint.TabStop = false;
-            this.toolTip.SetToolTip(this.pbBehaviorHint, "Подсказка...\r\nСтрока 2");
+            this.toolTip.SetToolTip(this.pbBehaviorHint, "Master - SCADA-Коммуникатор отправляет запрос устройству и получает ответ.\r\nSlave" +
+        " - SCADA-Коммуникатор пассивно ожидает данные от устройства.");
             // 
             // pbConnModeHint
             // 
@@ -91,7 +93,7 @@
             this.pbConnModeHint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pbConnModeHint.TabIndex = 4;
             this.pbConnModeHint.TabStop = false;
-            this.toolTip.SetToolTip(this.pbConnModeHint, "Подсказка...\r\nСтрока 2");
+            this.toolTip.SetToolTip(this.pbConnModeHint, resources.GetString("pbConnModeHint.ToolTip"));
             // 
             // cbConnMode
             // 
@@ -109,10 +111,9 @@
             // lblConnMode
             // 
             this.lblConnMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblConnMode.AutoSize = true;
-            this.lblConnMode.Location = new System.Drawing.Point(71, 50);
+            this.lblConnMode.Location = new System.Drawing.Point(13, 50);
             this.lblConnMode.Name = "lblConnMode";
-            this.lblConnMode.Size = new System.Drawing.Size(68, 13);
+            this.lblConnMode.Size = new System.Drawing.Size(126, 13);
             this.lblConnMode.TabIndex = 2;
             this.lblConnMode.Text = "Соединение";
             this.lblConnMode.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -133,10 +134,9 @@
             // lblBehavior
             // 
             this.lblBehavior.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblBehavior.AutoSize = true;
-            this.lblBehavior.Location = new System.Drawing.Point(76, 23);
+            this.lblBehavior.Location = new System.Drawing.Point(13, 23);
             this.lblBehavior.Name = "lblBehavior";
-            this.lblBehavior.Size = new System.Drawing.Size(63, 13);
+            this.lblBehavior.Size = new System.Drawing.Size(126, 13);
             this.lblBehavior.TabIndex = 0;
             this.lblBehavior.Text = "Поведение";
             this.lblBehavior.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -186,6 +186,7 @@
             this.pbIpAddressHint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pbIpAddressHint.TabIndex = 6;
             this.pbIpAddressHint.TabStop = false;
+            this.toolTip.SetToolTip(this.pbIpAddressHint, "Удалённый IP-адрес при использовании общего соединения.");
             // 
             // pbTcpPortHint
             // 
@@ -196,6 +197,7 @@
             this.pbTcpPortHint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pbTcpPortHint.TabIndex = 5;
             this.pbTcpPortHint.TabStop = false;
+            this.toolTip.SetToolTip(this.pbTcpPortHint, resources.GetString("pbTcpPortHint.ToolTip"));
             // 
             // numTcpPort
             // 
@@ -231,10 +233,9 @@
             // lblTcpPort
             // 
             this.lblTcpPort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblTcpPort.AutoSize = true;
-            this.lblTcpPort.Location = new System.Drawing.Point(24, 49);
+            this.lblTcpPort.Location = new System.Drawing.Point(13, 49);
             this.lblTcpPort.Name = "lblTcpPort";
-            this.lblTcpPort.Size = new System.Drawing.Size(115, 13);
+            this.lblTcpPort.Size = new System.Drawing.Size(126, 13);
             this.lblTcpPort.TabIndex = 2;
             this.lblTcpPort.Text = "Удалённый TCP-порт";
             this.lblTcpPort.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -242,13 +243,18 @@
             // lblIpAddress
             // 
             this.lblIpAddress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblIpAddress.AutoSize = true;
-            this.lblIpAddress.Location = new System.Drawing.Point(28, 23);
+            this.lblIpAddress.Location = new System.Drawing.Point(13, 23);
             this.lblIpAddress.Name = "lblIpAddress";
-            this.lblIpAddress.Size = new System.Drawing.Size(111, 13);
+            this.lblIpAddress.Size = new System.Drawing.Size(126, 13);
             this.lblIpAddress.TabIndex = 0;
             this.lblIpAddress.Text = "Удалённый IP-адрес";
             this.lblIpAddress.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // toolTip
+            // 
+            this.toolTip.AutoPopDelay = 30000;
+            this.toolTip.InitialDelay = 500;
+            this.toolTip.ReshowDelay = 100;
             // 
             // FrmCommTcpClientProps
             // 

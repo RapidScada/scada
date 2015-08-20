@@ -39,11 +39,11 @@
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.gbConnection = new System.Windows.Forms.GroupBox();
-            this.pbRemoteIpAddress = new System.Windows.Forms.PictureBox();
-            this.pbLocalUdpPort = new System.Windows.Forms.PictureBox();
+            this.pbRemoteIpAddressHint = new System.Windows.Forms.PictureBox();
+            this.pbLocalUdpPortHint = new System.Windows.Forms.PictureBox();
             this.lblRemoteIpAddress = new System.Windows.Forms.Label();
             this.numLocalUdpPort = new System.Windows.Forms.NumericUpDown();
-            this.pbRemoteUdpPort = new System.Windows.Forms.PictureBox();
+            this.pbRemoteUdpPortHint = new System.Windows.Forms.PictureBox();
             this.numRemoteUdpPort = new System.Windows.Forms.NumericUpDown();
             this.txtRemoteIpAddress = new System.Windows.Forms.TextBox();
             this.lblRemoteUdpPort = new System.Windows.Forms.Label();
@@ -53,10 +53,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbBehaviorHint)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbDevSelModeHint)).BeginInit();
             this.gbConnection.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbRemoteIpAddress)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbLocalUdpPort)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbRemoteIpAddressHint)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLocalUdpPortHint)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numLocalUdpPort)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbRemoteUdpPort)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbRemoteUdpPortHint)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numRemoteUdpPort)).BeginInit();
             this.SuspendLayout();
             // 
@@ -85,7 +85,8 @@
             this.pbBehaviorHint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pbBehaviorHint.TabIndex = 5;
             this.pbBehaviorHint.TabStop = false;
-            this.toolTip.SetToolTip(this.pbBehaviorHint, "Подсказка...\r\nСтрока 2");
+            this.toolTip.SetToolTip(this.pbBehaviorHint, "Master - SCADA-Коммуникатор отправляет запрос устройству и получает ответ.\r\nSlave" +
+        " - SCADA-Коммуникатор пассивно ожидает данные от устройства.");
             // 
             // pbDevSelModeHint
             // 
@@ -96,7 +97,9 @@
             this.pbDevSelModeHint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pbDevSelModeHint.TabIndex = 4;
             this.pbDevSelModeHint.TabStop = false;
-            this.toolTip.SetToolTip(this.pbDevSelModeHint, "Подсказка...\r\nСтрока 2");
+            this.toolTip.SetToolTip(this.pbDevSelModeHint, "Способ привязки нового входящего соединения к КП в режиме Slave:\r\nПо IP-адресу - " +
+        "удалённый IP-адрес устройства совпадает с позывным КП.\r\nОпределяется DLL - алгор" +
+        "итм реализован в библиотеке КП.");
             // 
             // cbDevSelMode
             // 
@@ -114,10 +117,9 @@
             // lblDevSelMode
             // 
             this.lblDevSelMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblDevSelMode.AutoSize = true;
-            this.lblDevSelMode.Location = new System.Drawing.Point(81, 50);
+            this.lblDevSelMode.Location = new System.Drawing.Point(13, 50);
             this.lblDevSelMode.Name = "lblDevSelMode";
-            this.lblDevSelMode.Size = new System.Drawing.Size(58, 13);
+            this.lblDevSelMode.Size = new System.Drawing.Size(126, 13);
             this.lblDevSelMode.TabIndex = 2;
             this.lblDevSelMode.Text = "Выбор КП";
             this.lblDevSelMode.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -138,10 +140,9 @@
             // lblBehavior
             // 
             this.lblBehavior.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblBehavior.AutoSize = true;
-            this.lblBehavior.Location = new System.Drawing.Point(76, 23);
+            this.lblBehavior.Location = new System.Drawing.Point(13, 23);
             this.lblBehavior.Name = "lblBehavior";
-            this.lblBehavior.Size = new System.Drawing.Size(63, 13);
+            this.lblBehavior.Size = new System.Drawing.Size(126, 13);
             this.lblBehavior.TabIndex = 0;
             this.lblBehavior.Text = "Поведение";
             this.lblBehavior.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -168,11 +169,11 @@
             // 
             // gbConnection
             // 
-            this.gbConnection.Controls.Add(this.pbRemoteIpAddress);
-            this.gbConnection.Controls.Add(this.pbLocalUdpPort);
+            this.gbConnection.Controls.Add(this.pbRemoteIpAddressHint);
+            this.gbConnection.Controls.Add(this.pbLocalUdpPortHint);
             this.gbConnection.Controls.Add(this.lblRemoteIpAddress);
             this.gbConnection.Controls.Add(this.numLocalUdpPort);
-            this.gbConnection.Controls.Add(this.pbRemoteUdpPort);
+            this.gbConnection.Controls.Add(this.pbRemoteUdpPortHint);
             this.gbConnection.Controls.Add(this.numRemoteUdpPort);
             this.gbConnection.Controls.Add(this.txtRemoteIpAddress);
             this.gbConnection.Controls.Add(this.lblRemoteUdpPort);
@@ -185,33 +186,36 @@
             this.gbConnection.TabStop = false;
             this.gbConnection.Text = "Соединение";
             // 
-            // pbRemoteIpAddress
+            // pbRemoteIpAddressHint
             // 
-            this.pbRemoteIpAddress.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
-            this.pbRemoteIpAddress.Location = new System.Drawing.Point(301, 73);
-            this.pbRemoteIpAddress.Name = "pbRemoteIpAddress";
-            this.pbRemoteIpAddress.Size = new System.Drawing.Size(16, 16);
-            this.pbRemoteIpAddress.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pbRemoteIpAddress.TabIndex = 9;
-            this.pbRemoteIpAddress.TabStop = false;
+            this.pbRemoteIpAddressHint.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
+            this.pbRemoteIpAddressHint.Location = new System.Drawing.Point(301, 73);
+            this.pbRemoteIpAddressHint.Name = "pbRemoteIpAddressHint";
+            this.pbRemoteIpAddressHint.Size = new System.Drawing.Size(16, 16);
+            this.pbRemoteIpAddressHint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pbRemoteIpAddressHint.TabIndex = 9;
+            this.pbRemoteIpAddressHint.TabStop = false;
+            this.toolTip.SetToolTip(this.pbRemoteIpAddressHint, "Удалённый IP-адрес по умолчанию.\r\nМожет использоваться, например, если устройства" +
+        " подключены через шлюз Ethernet - Serial.");
             // 
-            // pbLocalUdpPort
+            // pbLocalUdpPortHint
             // 
-            this.pbLocalUdpPort.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
-            this.pbLocalUdpPort.Location = new System.Drawing.Point(301, 21);
-            this.pbLocalUdpPort.Name = "pbLocalUdpPort";
-            this.pbLocalUdpPort.Size = new System.Drawing.Size(16, 16);
-            this.pbLocalUdpPort.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pbLocalUdpPort.TabIndex = 8;
-            this.pbLocalUdpPort.TabStop = false;
+            this.pbLocalUdpPortHint.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
+            this.pbLocalUdpPortHint.Location = new System.Drawing.Point(301, 21);
+            this.pbLocalUdpPortHint.Name = "pbLocalUdpPortHint";
+            this.pbLocalUdpPortHint.Size = new System.Drawing.Size(16, 16);
+            this.pbLocalUdpPortHint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pbLocalUdpPortHint.TabIndex = 8;
+            this.pbLocalUdpPortHint.TabStop = false;
+            this.toolTip.SetToolTip(this.pbLocalUdpPortHint, "Локальный UDP-порт для входящих соединений.\r\nВходящие соединения должны быть разр" +
+        "ешены брандмауэром.");
             // 
             // lblRemoteIpAddress
             // 
             this.lblRemoteIpAddress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblRemoteIpAddress.AutoSize = true;
-            this.lblRemoteIpAddress.Location = new System.Drawing.Point(28, 75);
+            this.lblRemoteIpAddress.Location = new System.Drawing.Point(13, 75);
             this.lblRemoteIpAddress.Name = "lblRemoteIpAddress";
-            this.lblRemoteIpAddress.Size = new System.Drawing.Size(111, 13);
+            this.lblRemoteIpAddress.Size = new System.Drawing.Size(126, 13);
             this.lblRemoteIpAddress.TabIndex = 4;
             this.lblRemoteIpAddress.Text = "Удалённый IP-адрес";
             this.lblRemoteIpAddress.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -239,15 +243,16 @@
             0});
             this.numLocalUdpPort.ValueChanged += new System.EventHandler(this.control_Changed);
             // 
-            // pbRemoteUdpPort
+            // pbRemoteUdpPortHint
             // 
-            this.pbRemoteUdpPort.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
-            this.pbRemoteUdpPort.Location = new System.Drawing.Point(301, 47);
-            this.pbRemoteUdpPort.Name = "pbRemoteUdpPort";
-            this.pbRemoteUdpPort.Size = new System.Drawing.Size(16, 16);
-            this.pbRemoteUdpPort.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pbRemoteUdpPort.TabIndex = 5;
-            this.pbRemoteUdpPort.TabStop = false;
+            this.pbRemoteUdpPortHint.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
+            this.pbRemoteUdpPortHint.Location = new System.Drawing.Point(301, 47);
+            this.pbRemoteUdpPortHint.Name = "pbRemoteUdpPortHint";
+            this.pbRemoteUdpPortHint.Size = new System.Drawing.Size(16, 16);
+            this.pbRemoteUdpPortHint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pbRemoteUdpPortHint.TabIndex = 5;
+            this.pbRemoteUdpPortHint.TabStop = false;
+            this.toolTip.SetToolTip(this.pbRemoteUdpPortHint, "Удалённый UDP-порт одинаковый для всех устройств на линии связи.");
             // 
             // numRemoteUdpPort
             // 
@@ -283,10 +288,9 @@
             // lblRemoteUdpPort
             // 
             this.lblRemoteUdpPort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblRemoteUdpPort.AutoSize = true;
-            this.lblRemoteUdpPort.Location = new System.Drawing.Point(22, 49);
+            this.lblRemoteUdpPort.Location = new System.Drawing.Point(13, 49);
             this.lblRemoteUdpPort.Name = "lblRemoteUdpPort";
-            this.lblRemoteUdpPort.Size = new System.Drawing.Size(117, 13);
+            this.lblRemoteUdpPort.Size = new System.Drawing.Size(126, 13);
             this.lblRemoteUdpPort.TabIndex = 2;
             this.lblRemoteUdpPort.Text = "Удалённый UDP-порт";
             this.lblRemoteUdpPort.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -294,13 +298,18 @@
             // lblLocalUdpPort
             // 
             this.lblLocalUdpPort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblLocalUdpPort.AutoSize = true;
-            this.lblLocalUdpPort.Location = new System.Drawing.Point(22, 23);
+            this.lblLocalUdpPort.Location = new System.Drawing.Point(13, 23);
             this.lblLocalUdpPort.Name = "lblLocalUdpPort";
-            this.lblLocalUdpPort.Size = new System.Drawing.Size(117, 13);
+            this.lblLocalUdpPort.Size = new System.Drawing.Size(126, 13);
             this.lblLocalUdpPort.TabIndex = 0;
             this.lblLocalUdpPort.Text = "Локальный UDP-порт";
             this.lblLocalUdpPort.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // toolTip
+            // 
+            this.toolTip.AutoPopDelay = 30000;
+            this.toolTip.InitialDelay = 500;
+            this.toolTip.ReshowDelay = 100;
             // 
             // FrmCommUdpProps
             // 
@@ -325,10 +334,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbDevSelModeHint)).EndInit();
             this.gbConnection.ResumeLayout(false);
             this.gbConnection.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbRemoteIpAddress)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbLocalUdpPort)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbRemoteIpAddressHint)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLocalUdpPortHint)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numLocalUdpPort)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbRemoteUdpPort)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbRemoteUdpPortHint)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numRemoteUdpPort)).EndInit();
             this.ResumeLayout(false);
 
@@ -350,11 +359,11 @@
         private System.Windows.Forms.NumericUpDown numRemoteUdpPort;
         private System.Windows.Forms.PictureBox pbDevSelModeHint;
         private System.Windows.Forms.ToolTip toolTip;
-        private System.Windows.Forms.PictureBox pbRemoteUdpPort;
+        private System.Windows.Forms.PictureBox pbRemoteUdpPortHint;
         private System.Windows.Forms.Label lblRemoteIpAddress;
         private System.Windows.Forms.NumericUpDown numLocalUdpPort;
-        private System.Windows.Forms.PictureBox pbLocalUdpPort;
-        private System.Windows.Forms.PictureBox pbRemoteIpAddress;
+        private System.Windows.Forms.PictureBox pbLocalUdpPortHint;
+        private System.Windows.Forms.PictureBox pbRemoteIpAddressHint;
         private System.Windows.Forms.PictureBox pbBehaviorHint;
     }
 }

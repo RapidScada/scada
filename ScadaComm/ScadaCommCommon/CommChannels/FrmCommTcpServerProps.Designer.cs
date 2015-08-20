@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmCommTcpServerProps));
             this.gbMode = new System.Windows.Forms.GroupBox();
             this.pbBehaviorHint = new System.Windows.Forms.PictureBox();
             this.pbDevSelModeHint = new System.Windows.Forms.PictureBox();
@@ -88,6 +89,9 @@
             this.pbBehaviorHint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pbBehaviorHint.TabIndex = 8;
             this.pbBehaviorHint.TabStop = false;
+            this.toolTip.SetToolTip(this.pbBehaviorHint, "Master - после установки соединения SCADA-Коммуникатор отправляет запрос устройст" +
+        "ву и получает ответ.\r\nSlave - SCADA-Коммуникатор пассивно ожидает данные от устр" +
+        "ойства.");
             // 
             // pbDevSelModeHint
             // 
@@ -98,7 +102,7 @@
             this.pbDevSelModeHint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pbDevSelModeHint.TabIndex = 7;
             this.pbDevSelModeHint.TabStop = false;
-            this.toolTip.SetToolTip(this.pbDevSelModeHint, "Подсказка...\r\nСтрока 2");
+            this.toolTip.SetToolTip(this.pbDevSelModeHint, resources.GetString("pbDevSelModeHint.ToolTip"));
             // 
             // cbDevSelMode
             // 
@@ -117,10 +121,9 @@
             // lblDevSelMode
             // 
             this.lblDevSelMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblDevSelMode.AutoSize = true;
-            this.lblDevSelMode.Location = new System.Drawing.Point(81, 77);
+            this.lblDevSelMode.Location = new System.Drawing.Point(13, 77);
             this.lblDevSelMode.Name = "lblDevSelMode";
-            this.lblDevSelMode.Size = new System.Drawing.Size(58, 13);
+            this.lblDevSelMode.Size = new System.Drawing.Size(126, 13);
             this.lblDevSelMode.TabIndex = 5;
             this.lblDevSelMode.Text = "Выбор КП";
             this.lblDevSelMode.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -134,7 +137,7 @@
             this.pbConnModeHint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pbConnModeHint.TabIndex = 4;
             this.pbConnModeHint.TabStop = false;
-            this.toolTip.SetToolTip(this.pbConnModeHint, "Подсказка...\r\nСтрока 2");
+            this.toolTip.SetToolTip(this.pbConnModeHint, resources.GetString("pbConnModeHint.ToolTip"));
             // 
             // cbConnMode
             // 
@@ -152,10 +155,9 @@
             // lblConnMode
             // 
             this.lblConnMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblConnMode.AutoSize = true;
-            this.lblConnMode.Location = new System.Drawing.Point(71, 50);
+            this.lblConnMode.Location = new System.Drawing.Point(13, 50);
             this.lblConnMode.Name = "lblConnMode";
-            this.lblConnMode.Size = new System.Drawing.Size(68, 13);
+            this.lblConnMode.Size = new System.Drawing.Size(126, 13);
             this.lblConnMode.TabIndex = 2;
             this.lblConnMode.Text = "Соединение";
             this.lblConnMode.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -176,10 +178,9 @@
             // lblBehavior
             // 
             this.lblBehavior.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblBehavior.AutoSize = true;
-            this.lblBehavior.Location = new System.Drawing.Point(76, 23);
+            this.lblBehavior.Location = new System.Drawing.Point(13, 23);
             this.lblBehavior.Name = "lblBehavior";
-            this.lblBehavior.Size = new System.Drawing.Size(63, 13);
+            this.lblBehavior.Size = new System.Drawing.Size(126, 13);
             this.lblBehavior.TabIndex = 0;
             this.lblBehavior.Text = "Поведение";
             this.lblBehavior.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -229,6 +230,7 @@
             this.pbInactiveTimeHint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pbInactiveTimeHint.TabIndex = 9;
             this.pbInactiveTimeHint.TabStop = false;
+            this.toolTip.SetToolTip(this.pbInactiveTimeHint, "Время неактивности соединения до отключения.");
             // 
             // pbTcpPortHint
             // 
@@ -239,6 +241,8 @@
             this.pbTcpPortHint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pbTcpPortHint.TabIndex = 8;
             this.pbTcpPortHint.TabStop = false;
+            this.toolTip.SetToolTip(this.pbTcpPortHint, "Локальный TCP-порт для входящих соединений.\r\nВходящие соединения должны быть разр" +
+        "ешены брандмауэром.");
             // 
             // numTcpPort
             // 
@@ -289,10 +293,9 @@
             // lblTcpPort
             // 
             this.lblTcpPort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblTcpPort.AutoSize = true;
-            this.lblTcpPort.Location = new System.Drawing.Point(24, 23);
+            this.lblTcpPort.Location = new System.Drawing.Point(13, 23);
             this.lblTcpPort.Name = "lblTcpPort";
-            this.lblTcpPort.Size = new System.Drawing.Size(115, 13);
+            this.lblTcpPort.Size = new System.Drawing.Size(126, 13);
             this.lblTcpPort.TabIndex = 0;
             this.lblTcpPort.Text = "Локальный TCP-порт";
             this.lblTcpPort.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -300,13 +303,18 @@
             // lblInactiveTime
             // 
             this.lblInactiveTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblInactiveTime.AutoSize = true;
-            this.lblInactiveTime.Location = new System.Drawing.Point(48, 49);
+            this.lblInactiveTime.Location = new System.Drawing.Point(13, 49);
             this.lblInactiveTime.Name = "lblInactiveTime";
-            this.lblInactiveTime.Size = new System.Drawing.Size(91, 13);
+            this.lblInactiveTime.Size = new System.Drawing.Size(126, 13);
             this.lblInactiveTime.TabIndex = 2;
             this.lblInactiveTime.Text = "Неактивность, с";
             this.lblInactiveTime.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // toolTip
+            // 
+            this.toolTip.AutoPopDelay = 30000;
+            this.toolTip.InitialDelay = 500;
+            this.toolTip.ReshowDelay = 100;
             // 
             // FrmCommTcpServerProps
             // 

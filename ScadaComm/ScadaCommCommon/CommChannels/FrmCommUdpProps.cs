@@ -70,6 +70,9 @@ namespace Scada.Comm.Channels
 
         private void FrmCommUdpProps_Load(object sender, EventArgs e)
         {
+            // перевод формы
+            Localization.TranslateForm(this, "Scada.Comm.Channels.FrmCommUdpProps", toolTip);
+
             // инициализация настроек канала связи
             settings = new CommUdpLogic.Settings();
             settings.Init(commCnlParams, false);

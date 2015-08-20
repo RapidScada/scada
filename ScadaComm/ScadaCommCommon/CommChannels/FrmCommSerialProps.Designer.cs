@@ -95,10 +95,9 @@
             // lblPortName
             // 
             this.lblPortName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblPortName.AutoSize = true;
-            this.lblPortName.Location = new System.Drawing.Point(26, 23);
+            this.lblPortName.Location = new System.Drawing.Point(13, 23);
             this.lblPortName.Name = "lblPortName";
-            this.lblPortName.Size = new System.Drawing.Size(61, 13);
+            this.lblPortName.Size = new System.Drawing.Size(78, 13);
             this.lblPortName.TabIndex = 0;
             this.lblPortName.Text = "Имя порта";
             this.lblPortName.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -144,10 +143,9 @@
             // lblStopBits
             // 
             this.lblStopBits.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblStopBits.AutoSize = true;
-            this.lblStopBits.Location = new System.Drawing.Point(25, 130);
+            this.lblStopBits.Location = new System.Drawing.Point(13, 130);
             this.lblStopBits.Name = "lblStopBits";
-            this.lblStopBits.Size = new System.Drawing.Size(62, 13);
+            this.lblStopBits.Size = new System.Drawing.Size(78, 13);
             this.lblStopBits.TabIndex = 8;
             this.lblStopBits.Text = "Стоп. биты";
             this.lblStopBits.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -171,10 +169,9 @@
             // lblParity
             // 
             this.lblParity.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblParity.AutoSize = true;
-            this.lblParity.Location = new System.Drawing.Point(32, 104);
+            this.lblParity.Location = new System.Drawing.Point(13, 104);
             this.lblParity.Name = "lblParity";
-            this.lblParity.Size = new System.Drawing.Size(55, 13);
+            this.lblParity.Size = new System.Drawing.Size(78, 13);
             this.lblParity.TabIndex = 6;
             this.lblParity.Text = "Чётность";
             this.lblParity.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -197,10 +194,9 @@
             // lblDataBits
             // 
             this.lblDataBits.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblDataBits.AutoSize = true;
-            this.lblDataBits.Location = new System.Drawing.Point(14, 77);
+            this.lblDataBits.Location = new System.Drawing.Point(13, 77);
             this.lblDataBits.Name = "lblDataBits";
-            this.lblDataBits.Size = new System.Drawing.Size(73, 13);
+            this.lblDataBits.Size = new System.Drawing.Size(78, 13);
             this.lblDataBits.TabIndex = 4;
             this.lblDataBits.Text = "Биты данных";
             this.lblDataBits.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -232,10 +228,9 @@
             // lblBaudRate
             // 
             this.lblBaudRate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblBaudRate.AutoSize = true;
-            this.lblBaudRate.Location = new System.Drawing.Point(32, 50);
+            this.lblBaudRate.Location = new System.Drawing.Point(13, 50);
             this.lblBaudRate.Name = "lblBaudRate";
-            this.lblBaudRate.Size = new System.Drawing.Size(55, 13);
+            this.lblBaudRate.Size = new System.Drawing.Size(78, 13);
             this.lblBaudRate.TabIndex = 2;
             this.lblBaudRate.Text = "Скорость";
             this.lblBaudRate.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -290,10 +285,9 @@
             // lblBehavior
             // 
             this.lblBehavior.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblBehavior.AutoSize = true;
-            this.lblBehavior.Location = new System.Drawing.Point(28, 23);
+            this.lblBehavior.Location = new System.Drawing.Point(13, 23);
             this.lblBehavior.Name = "lblBehavior";
-            this.lblBehavior.Size = new System.Drawing.Size(63, 13);
+            this.lblBehavior.Size = new System.Drawing.Size(78, 13);
             this.lblBehavior.TabIndex = 0;
             this.lblBehavior.Text = "Поведение";
             this.lblBehavior.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -320,7 +314,6 @@
             this.gbPort.ResumeLayout(false);
             this.gbPort.PerformLayout();
             this.gbMode.ResumeLayout(false);
-            this.gbMode.PerformLayout();
             this.ResumeLayout(false);
 
         }

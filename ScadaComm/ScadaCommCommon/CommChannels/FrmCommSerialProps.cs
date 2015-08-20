@@ -68,6 +68,9 @@ namespace Scada.Comm.Channels
 
         private void FrmCommSerialProps_Load(object sender, EventArgs e)
         {
+            // перевод формы
+            Localization.TranslateForm(this, "Scada.Comm.Channels.FrmCommSerialProps");
+
             // инициализация настроек канала связи
             settings = new CommSerialLogic.Settings();
             settings.Init(commCnlParams, false);

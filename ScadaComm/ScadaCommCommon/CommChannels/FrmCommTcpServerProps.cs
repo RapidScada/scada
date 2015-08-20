@@ -65,6 +65,9 @@ namespace Scada.Comm.Channels
 
         private void FrmCommTcpServerProps_Load(object sender, EventArgs e)
         {
+            // перевод формы
+            Localization.TranslateForm(this, "Scada.Comm.Channels.FrmCommTcpServerProps", toolTip);
+
             // инициализация настроек канала связи
             settings = new CommTcpServerLogic.Settings();
             settings.Init(commCnlParams, false);

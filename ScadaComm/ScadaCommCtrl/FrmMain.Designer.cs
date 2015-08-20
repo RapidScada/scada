@@ -116,7 +116,7 @@
             this.lblCommCnlParams = new System.Windows.Forms.Label();
             this.btnCommCnlProps = new System.Windows.Forms.Button();
             this.cbCommCnlType = new System.Windows.Forms.ComboBox();
-            this.lblConnType = new System.Windows.Forms.Label();
+            this.lblCommCnlType = new System.Windows.Forms.Label();
             this.pageCustomParams = new System.Windows.Forms.TabPage();
             this.btnDelParam = new System.Windows.Forms.Button();
             this.gbSelectedParam = new System.Windows.Forms.GroupBox();
@@ -1139,7 +1139,7 @@
             this.gbCommChannel.Controls.Add(this.lblCommCnlParams);
             this.gbCommChannel.Controls.Add(this.btnCommCnlProps);
             this.gbCommChannel.Controls.Add(this.cbCommCnlType);
-            this.gbCommChannel.Controls.Add(this.lblConnType);
+            this.gbCommChannel.Controls.Add(this.lblCommCnlType);
             this.gbCommChannel.Location = new System.Drawing.Point(6, 77);
             this.gbCommChannel.Name = "gbCommChannel";
             this.gbCommChannel.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
@@ -1189,14 +1189,14 @@
             this.cbCommCnlType.TabIndex = 1;
             this.cbCommCnlType.SelectedIndexChanged += new System.EventHandler(this.cbCommCnlType_SelectedIndexChanged);
             // 
-            // lblConnType
+            // lblCommCnlType
             // 
-            this.lblConnType.AutoSize = true;
-            this.lblConnType.Location = new System.Drawing.Point(10, 16);
-            this.lblConnType.Name = "lblConnType";
-            this.lblConnType.Size = new System.Drawing.Size(26, 13);
-            this.lblConnType.TabIndex = 0;
-            this.lblConnType.Text = "Тип";
+            this.lblCommCnlType.AutoSize = true;
+            this.lblCommCnlType.Location = new System.Drawing.Point(10, 16);
+            this.lblCommCnlType.Name = "lblCommCnlType";
+            this.lblCommCnlType.Size = new System.Drawing.Size(26, 13);
+            this.lblCommCnlType.TabIndex = 0;
+            this.lblCommCnlType.Text = "Тип";
             // 
             // pageCustomParams
             // 
@@ -2364,7 +2364,7 @@
         private System.Windows.Forms.CheckBox chkCmdEnabled;
         private System.Windows.Forms.Label lblCmdEnabled;
         private System.Windows.Forms.ComboBox cbCommCnlType;
-        private System.Windows.Forms.Label lblConnType;
+        private System.Windows.Forms.Label lblCommCnlType;
         private System.Windows.Forms.GroupBox gbCommLine;
         private System.Windows.Forms.CheckBox chkLineBind;
         private System.Windows.Forms.NumericUpDown numLineNumber;
