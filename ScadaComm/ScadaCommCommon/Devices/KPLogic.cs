@@ -1177,6 +1177,14 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
+        /// Проверить поддержку режима работы канала связи
+        /// </summary>
+        public virtual bool CheckBehaviorSupport(CommChannelLogic.OperatingBehaviors behavior)
+        {
+            return behavior == CommChannelLogic.OperatingBehaviors.Master;
+        }
+
+        /// <summary>
         /// Установить текущие данные как недостоверные
         /// </summary>
         /// <remarks>Метод вызывается при обрыве соединения, если ConnRequired равно true</remarks>

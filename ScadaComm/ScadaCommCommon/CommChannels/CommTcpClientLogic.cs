@@ -263,10 +263,8 @@ namespace Scada.Comm.Channels
                 }
             }
 
-            // проверка библиотек КП в режиме ведомого
-            string warnMsg;
-            if (settings.Behavior == OperatingBehaviors.Slave && !AreDllsEqual(out warnMsg))
-                WriteToLog(warnMsg);
+            // проверка поддержки режима работы канала связи подключенными КП
+            CheckBehaviorSupport();
         }
 
         /// <summary>

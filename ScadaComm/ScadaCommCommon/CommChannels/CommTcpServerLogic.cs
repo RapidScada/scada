@@ -487,10 +487,8 @@ namespace Scada.Comm.Channels
             // создание прослушивателя соединений
             tcpListener = new TcpListener(IPAddress.Any, settings.TcpPort);
 
-            // проверка библиотек КП в режиме ведомого
-            string warnMsg;
-            if (slaveBehavior && !AreDllsEqual(out warnMsg))
-                WriteToLog(warnMsg);
+            // проверка поддержки режима работы канала связи подключенными КП
+            CheckBehaviorSupport();
         }
 
         /// <summary>

@@ -146,7 +146,7 @@ namespace Scada.Comm.Channels
         /// <summary>
         /// Проверить, что все КП на линии связи имеют одинаковые библиотеки
         /// </summary>
-        protected bool AreDllsEqual(out string warnMsg)
+        private bool AreDllsEqual(out string warnMsg)
         {
             HashSet<string> dllSet = new HashSet<string>();
             foreach (KPLogic kpLogic in kpList)
@@ -160,114 +160,24 @@ namespace Scada.Comm.Channels
         }
 
         /// <summary>
-        /// Получить строковый параметр канала связи
+        /// Проверить поддержку режима работы канала связи подключенными КП
         /// </summary>
-        protected string GetStringParam(SortedList<string, string> commCnlParams,
-            string name, bool required, string defaultValue)
+        protected void CheckBehaviorSupport()
         {
-            string val;
-            if (commCnlParams.TryGetValue(name, out val))
-                return val;
-            else if (required)
-                throw new ArgumentException(string.Format(CommCnlParamRequired, name));
-            else
-                return defaultValue;
-        }
+            // проверка поддержки режима работы
+            foreach (KPLogic kpLogic in kpList)
+            {
+                if (!kpLogic.CheckBehaviorSupport(Behavior))
+                    throw new Exception(string.Format(Localization.UseRussian ? 
+                        "Поведение {0} канала связи не поддерживается {1}." : 
+                        "{0} behavior of the communication channel is not supprted by {1}", 
+                        Behavior, kpLogic.Caption));
+            }
 
-        /// <summary>
-        /// Получить логический параметр канала связи
-        /// </summary>
-        protected bool GetBoolParam(SortedList<string, string> commCnlParams,
-            string name, bool required, bool defaultValue)
-        {
-            string valStr;
-            bool val;
-
-            if (commCnlParams.TryGetValue(name, out valStr))
-            {
-                if (bool.TryParse(valStr, out val))
-                {
-                    return val;
-                }
-                else
-                {
-                    throw new ArgumentException(string.Format(Localization.UseRussian ?
-                        "Пользовательский параметр линии связи {0} должен быть false или true." :
-                        "Custom communication line parameter {0} must be false or true.", valStr));
-                }
-            }
-            else if (required)
-            {
-                throw new ArgumentException(string.Format(CommCnlParamRequired, name));
-            }
-            else
-            {
-                return defaultValue;
-            }
-        }
-
-        /// <summary>
-        /// Получить целочисленный параметр канала связи
-        /// </summary>
-        protected int GetIntParam(SortedList<string, string> commCnlParams, 
-            string name, bool required, int defaultValue)
-        {
-            string valStr;
-            int val;
-
-            if (commCnlParams.TryGetValue(name, out valStr))
-            {
-                if (int.TryParse(valStr, out val))
-                {
-                    return val;
-                }
-                else
-                {
-                    throw new ArgumentException(string.Format(Localization.UseRussian ?
-                        "Пользовательский параметр линии связи {0} должен быть целым числом." :
-                        "Custom communication line parameter {0} must be an integer.", valStr));
-                }
-            }
-            else if (required)
-            {
-                throw new ArgumentException(string.Format(CommCnlParamRequired, name));
-            }
-            else
-            {
-                return defaultValue;
-            }
-        }
-
-        /// <summary>
-        /// Получить параметр канала связи перечислимого типа
-        /// </summary>
-        protected T GetEnumParam<T>(SortedList<string, string> commCnlParams,
-            string name, bool required, T defaultValue) where T : struct 
-        {
-            string valStr;
-            T val;
-
-            if (commCnlParams.TryGetValue(name, out valStr))
-            {
-                if (Enum.TryParse<T>(valStr, true, out val))
-                {
-                    return val;
-                }
-                else
-                {
-                    throw new ArgumentException(string.Format(Localization.UseRussian ?
-                        "Невозможно преобразовать пользовательский параметр линии связи {0}." :
-                        "Unable to convert custom communication line parameter {0}.", valStr));
-                }
-            }
-            else if (required)
-            {
-                throw new ArgumentException(string.Format(CommCnlParamRequired, name));
-            }
-            else
-            {
-                return defaultValue;
-            }
+            // проверка однотипности библиотек КП в режиме ведомого
+            string warnMsg;
+            if (Behavior == OperatingBehaviors.Slave && !AreDllsEqual(out warnMsg))
+                WriteToLog(warnMsg);
         }
         
         /// <summary>
