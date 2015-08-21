@@ -8,7 +8,7 @@
     <ProjectGuid>{7CBF4A4B-E1A2-428E-8F68-EDD2FCE3088B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KpModbus</RootNamespace>
+    <RootNamespace>Scada.Comm.Devices</RootNamespace>
     <AssemblyName>KpModbus</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -49,6 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FrmDevProps.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmDevProps.Designer.cs">
+      <DependentUpon>FrmDevProps.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmDevTemplate.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,6 +73,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="FrmDevProps.resx">
+      <DependentUpon>FrmDevProps.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmDevTemplate.resx">
       <DependentUpon>FrmDevTemplate.cs</DependentUpon>
     </EmbeddedResource>
