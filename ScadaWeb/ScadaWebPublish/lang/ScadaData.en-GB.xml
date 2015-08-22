@@ -6,6 +6,7 @@
     <Phrase key="ErrorCaption">Error</Phrase>
     <Phrase key="WarningCaption">Warning</Phrase>
     <Phrase key="ErrorWithColon">Error:</Phrase>
+    <Phrase key="UnhandledException">Unhandled exception</Phrase>
     <Phrase key="SaveSettingsConfirm">Settings have been modified. Save the changes?</Phrase>
     <Phrase key="SaveModSettingsConfirm">Module settings have been modified. Save the changes?</Phrase>
     <Phrase key="SaveKpSettingsConfirm">Device settings have been modified. Save the changes?</Phrase>
