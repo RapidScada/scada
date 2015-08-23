@@ -474,7 +474,7 @@ namespace Scada.Web
                             baseModTime = DateTime.MinValue;
                             baseFillTime = DateTime.MinValue;
                         }
-                        serverComm = new ServerComm(commSettings);
+                        serverComm = new ServerComm(commSettings, AppData.Log);
                     }
                 }
             }
