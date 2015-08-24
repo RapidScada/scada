@@ -90,6 +90,11 @@ namespace Scada.Comm.Channels
             modified = false;
         }
 
+        private void control_Changed(object sender, EventArgs e)
+        {
+            modified = true;
+        }
+
         private void btnOK_Click(object sender, EventArgs e)
         {
             // изменение настроек в соответствии с элементами управления
@@ -112,9 +117,10 @@ namespace Scada.Comm.Channels
             DialogResult = DialogResult.OK;
         }
 
-        private void control_Changed(object sender, EventArgs e)
+        private void btnCancel_Click(object sender, EventArgs e)
         {
-            modified = true;
+            modified = false;
+            DialogResult = DialogResult.Cancel;
         }
     }
 }

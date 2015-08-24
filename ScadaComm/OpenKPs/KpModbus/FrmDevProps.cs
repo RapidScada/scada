@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -44,12 +45,25 @@ namespace Scada.Comm.Devices.KpModbus
         private KPView.KPProperties kpProps; // свойства КП, сохраняемые SCADA-Коммуникатором
         private AppDirs appDirs;             // директории приложения
 
+
         /// <summary>
         /// Конструктор, ограничивающий создание формы без параметров
         /// </summary>
         private FrmDevProps()
         {
             InitializeComponent();
+        }
+
+
+        /// <summary>
+        /// Редактировать шаблон устройства
+        /// </summary>
+        private void EditDevTemplate(string fileName)
+        {
+            FrmDevTemplate.ShowDialog(appDirs, ref fileName);
+
+            if (!string.IsNullOrEmpty(fileName))
+                txtDevTemplate.Text = Path.GetFileName(fileName);
         }
 
         /// <summary>
@@ -79,6 +93,9 @@ namespace Scada.Comm.Devices.KpModbus
                 { { "RTU", 0 }, { "ASCII", 1 }, { "TCP", 2 } }, 0);
             txtDevTemplate.Text = kpProps.CmdLine;
             kpProps.Modified = false;
+
+            // настройка элементов управления
+            openFileDialog.InitialDirectory = appDirs.ConfigDir;
         }
 
         private void control_Changed(object sender, EventArgs e)
@@ -88,17 +105,19 @@ namespace Scada.Comm.Devices.KpModbus
 
         private void btnCreateDevTemplate_Click(object sender, EventArgs e)
         {
-
+            EditDevTemplate("");
         }
 
         private void btnBrowseDevTemplate_Click(object sender, EventArgs e)
         {
-
+            openFileDialog.FileName = "";
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+                txtDevTemplate.Text = Path.GetFileName(openFileDialog.FileName);
         }
 
         private void btnEditDevTemplate_Click(object sender, EventArgs e)
         {
-
+            EditDevTemplate(appDirs.ConfigDir + txtDevTemplate.Text);
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -112,6 +131,12 @@ namespace Scada.Comm.Devices.KpModbus
             }
 
             DialogResult = DialogResult.OK;
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            kpProps.Modified = false;
+            DialogResult = DialogResult.Cancel;
         }
     }
 }

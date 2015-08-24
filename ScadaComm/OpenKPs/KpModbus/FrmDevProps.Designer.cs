@@ -39,6 +39,7 @@
             this.lblTransMode = new System.Windows.Forms.Label();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.gbDevice.SuspendLayout();
             this.gbCommLine.SuspendLayout();
             this.SuspendLayout();
@@ -152,13 +153,20 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Location = new System.Drawing.Point(225, 184);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 3;
             this.btnCancel.Text = "Отмена";
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // openFileDialog
+            // 
+            this.openFileDialog.DefaultExt = "*.xml";
+            this.openFileDialog.Filter = "Файлы шаблонов (*.xml)|*.xml|Все файлы (*.*)|*.*";
+            this.openFileDialog.FilterIndex = 0;
+            this.openFileDialog.Title = "Открыть файл";
             // 
             // FrmDevProps
             // 
@@ -175,6 +183,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FrmDevProps";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Свойства КП {0}";
             this.Load += new System.EventHandler(this.FrmDevProps_Load);
@@ -199,5 +208,6 @@
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.ComboBox cbTransMode;
         private System.Windows.Forms.Label lblTransMode;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
     }
 }
