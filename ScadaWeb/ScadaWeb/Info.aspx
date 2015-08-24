@@ -10,7 +10,7 @@
         </tr>
         <tr>
             <td><asp:Label id="lblVersionCation" runat="server" Text="Версия:"></asp:Label></td>
-            <td>4.4</td>
+            <td>4.5.0.0</td>
         </tr>
         <tr>
             <td><asp:Label id="lblServerCaption" runat="server" Text="Сервер:"></asp:Label></td>
