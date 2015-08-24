@@ -25,12 +25,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Scada.Comm.Devices.KpModbus
@@ -60,7 +55,7 @@ namespace Scada.Comm.Devices.KpModbus
         /// </summary>
         private void EditDevTemplate(string fileName)
         {
-            FrmDevTemplate.ShowDialog(appDirs, ref fileName);
+            FrmDevTemplate.ShowDialog(appDirs, true, ref fileName);
 
             if (!string.IsNullOrEmpty(fileName))
                 txtDevTemplate.Text = Path.GetFileName(fileName);
@@ -103,26 +98,36 @@ namespace Scada.Comm.Devices.KpModbus
             kpProps.Modified = true;
         }
 
-        private void btnCreateDevTemplate_Click(object sender, EventArgs e)
-        {
-            EditDevTemplate("");
-        }
-
         private void btnBrowseDevTemplate_Click(object sender, EventArgs e)
         {
             openFileDialog.FileName = "";
             if (openFileDialog.ShowDialog() == DialogResult.OK)
                 txtDevTemplate.Text = Path.GetFileName(openFileDialog.FileName);
+            txtDevTemplate.Select();
+        }
+
+        private void btnCreateDevTemplate_Click(object sender, EventArgs e)
+        {
+            EditDevTemplate("");
+            txtDevTemplate.Select();
         }
 
         private void btnEditDevTemplate_Click(object sender, EventArgs e)
         {
             EditDevTemplate(appDirs.ConfigDir + txtDevTemplate.Text);
+            txtDevTemplate.Select();
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            // изменение совйст КП в соответствии с элементами управления
+            // проверка существования файла шаблона устройства
+            if (!File.Exists(appDirs.ConfigDir + txtDevTemplate))
+            {
+                ScadaUtils.ShowError(KpPhrases.TemplNotExists);
+                return;
+            }
+
+            // изменение свойств КП в соответствии с элементами управления
             if (kpProps.Modified)
             {
                 kpProps.CustomParams["TransMode"] = (string)cbTransMode.GetSelectedItem(

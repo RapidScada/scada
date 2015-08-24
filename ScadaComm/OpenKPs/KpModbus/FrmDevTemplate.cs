@@ -24,6 +24,7 @@
  */
 
 using System;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -81,11 +82,18 @@ namespace Scada.Comm.Devices.KpModbus
             }
         }
 
+        /// <summary>
+        /// Имя файла нового шаблона устройства
+        /// </summary>
+        private const string NewFileName = "KpModbus_NewTemplate.xml";
+
         private AppDirs appDirs;                // директории приложения
+        private string initialFileName;         // имя файла шаблона для открытия при запуске формы
+        private string fileName;                // имя файла шаблона устройства
+        private bool saveOnly;                  // разрешена только команда сохранения при работе с файлами
+
         private Modbus.DeviceModel devTemplate; // редактируемый шаблон устройства
         private bool modified;                  // признак изменения шаблона устройства
-        private string fileName;                // имя файла шаблона устройства
-        private string initialFileName;         // имя файла шаблона для открытия при запуске формы
         private Modbus.ElemGroup selElemGroup;  // выбранная группа элементов
         private ElemInfo selElemInfo;           // информация о выбранном элементе
         private Modbus.Cmd selCmd;              // выбранная команда
@@ -103,10 +111,12 @@ namespace Scada.Comm.Devices.KpModbus
             InitializeComponent();
 
             appDirs = null;
+            initialFileName = "";
+            fileName = "";
+            saveOnly = false;
+
             devTemplate = null;
             modified = false;
-            fileName = "";
-            initialFileName = "";
             selElemGroup = null;
             selElemInfo = null;
             selCmd = null;
@@ -129,10 +139,20 @@ namespace Scada.Comm.Devices.KpModbus
             set
             {
                 modified = value;
+                SetFormTitle();
                 btnSave.Enabled = modified;
             }
         }
 
+
+        /// <summary>
+        /// Установить заголовок формы
+        /// </summary>
+        private void SetFormTitle()
+        {
+            Text = KpPhrases.TemplFormTitle + " - " + (fileName == "" ? NewFileName : Path.GetFileName(fileName)) +
+                (Modified ? "*" : "");
+        }
 
         /// <summary>
         /// Загрузить шаблон устройства из файла
@@ -146,6 +166,7 @@ namespace Scada.Comm.Devices.KpModbus
             {
                 devTemplate = templ;
                 fileName = fname;
+                SetFormTitle();
                 FillTree();
             }
             else
@@ -506,8 +527,8 @@ namespace Scada.Comm.Devices.KpModbus
                 string errMsg;
                 if (devTemplate.SaveTemplate(newFileName, out errMsg))
                 {
-                    Modified = false;
                     fileName = newFileName;
+                    Modified = false;
                     return true;
                 }
                 else
@@ -551,13 +572,13 @@ namespace Scada.Comm.Devices.KpModbus
         public static void ShowDialog(AppDirs appDirs)
         {
             string fileName = "";
-            ShowDialog(appDirs, ref fileName);
+            ShowDialog(appDirs, false, ref fileName);
         }
 
         /// <summary>
         /// Отобразить форму модально, открыв заданный файл
         /// </summary>
-        public static void ShowDialog(AppDirs appDirs, ref string fileName)
+        public static void ShowDialog(AppDirs appDirs, bool saveOnly, ref string fileName)
         {
             if (appDirs == null)
                 throw new ArgumentNullException("appDirs");
@@ -565,6 +586,7 @@ namespace Scada.Comm.Devices.KpModbus
             FrmDevTemplate frmDevTemplate = new FrmDevTemplate();
             frmDevTemplate.appDirs = appDirs;
             frmDevTemplate.initialFileName = fileName;
+            frmDevTemplate.saveOnly = saveOnly;
             frmDevTemplate.ShowDialog();
             fileName = frmDevTemplate.fileName;
         }
@@ -593,13 +615,21 @@ namespace Scada.Comm.Devices.KpModbus
             saveFileDialog.InitialDirectory = appDirs.ConfigDir;
             gbElem.Top = gbCmd.Top = gbElemGroup.Top;
 
+            if (saveOnly)
+            {
+                btnNew.Visible = false;
+                btnOpen.Visible = false;
+            }
+
             if (string.IsNullOrEmpty(initialFileName))
             {
+                saveFileDialog.FileName = NewFileName;
                 devTemplate = new Modbus.DeviceModel();
                 FillTree();
             }
             else
             {
+                saveFileDialog.FileName = initialFileName;
                 LoadTemplate(initialFileName);
             }
         }
@@ -615,9 +645,10 @@ namespace Scada.Comm.Devices.KpModbus
             // создание шаблона устройства
             if (CheckChanges())
             {
-                saveFileDialog.FileName = "";
+                saveFileDialog.FileName = NewFileName;
                 devTemplate = new Modbus.DeviceModel();
                 fileName = "";
+                SetFormTitle();
                 FillTree();
             }
         }

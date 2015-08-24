@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Группы элементов");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Команды");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Группы элементов");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Команды");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDevTemplate));
             this.treeView = new System.Windows.Forms.TreeView();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
@@ -103,17 +103,17 @@
             this.treeView.ImageList = this.imageList;
             this.treeView.Location = new System.Drawing.Point(13, 19);
             this.treeView.Name = "treeView";
-            treeNode1.ImageKey = "group.png";
-            treeNode1.Name = "grsNode";
-            treeNode1.SelectedImageKey = "group.png";
-            treeNode1.Text = "Группы элементов";
-            treeNode2.ImageIndex = 2;
-            treeNode2.Name = "cmdsNode";
-            treeNode2.SelectedImageKey = "cmds.png";
-            treeNode2.Text = "Команды";
+            treeNode3.ImageKey = "group.png";
+            treeNode3.Name = "grsNode";
+            treeNode3.SelectedImageKey = "group.png";
+            treeNode3.Text = "Группы элементов";
+            treeNode4.ImageIndex = 2;
+            treeNode4.Name = "cmdsNode";
+            treeNode4.SelectedImageKey = "cmds.png";
+            treeNode4.Text = "Команды";
             this.treeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
+            treeNode3,
+            treeNode4});
             this.treeView.SelectedImageIndex = 0;
             this.treeView.ShowRootLines = false;
             this.treeView.Size = new System.Drawing.Size(254, 372);

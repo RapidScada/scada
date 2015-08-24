@@ -88,14 +88,17 @@
     <Content Include="Lang\KpModbus.en-GB.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Res\blank.png" />
+    <Content Include="Res\blank_shift.png" />
     <Content Include="Res\cmd.png" />
     <Content Include="Res\cmds.png" />
     <Content Include="Res\delete.png" />
     <Content Include="Res\down.png" />
+    <Content Include="Res\edit.png" />
     <Content Include="Res\elem.png" />
     <Content Include="Res\group.png" />
-    <Content Include="Res\new.png" />
     <Content Include="Res\open.png" />
+    <Content Include="Res\open_shift.png" />
     <Content Include="Res\save.png" />
     <Content Include="Res\save_as.png" />
     <Content Include="Res\up.png" />

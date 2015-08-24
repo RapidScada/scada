@@ -26,12 +26,11 @@
  * Interacting with controllers via Modbus protocol.
  */
 
+using Scada.Comm.Devices.KpModbus;
+using Scada.Data;
 using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Sockets;
 using System.Threading;
-using Scada.Data;
 
 namespace Scada.Comm.Devices
 {

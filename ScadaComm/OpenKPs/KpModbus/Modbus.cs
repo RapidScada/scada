@@ -33,7 +33,7 @@ using System.Text;
 using System.Xml;
 using Utils;
 
-namespace Scada.Comm.Devices
+namespace Scada.Comm.Devices.KpModbus
 {
     /// <summary>
     /// Modbus protocol implementation
