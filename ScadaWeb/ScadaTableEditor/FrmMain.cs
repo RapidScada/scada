@@ -96,10 +96,10 @@ namespace ScadaTableEditor
             if (CanCloseTableView())
             {
                 fileName = "";
-                modified = false;
                 tableView = new TableView();
                 items = tableView.Items;
                 bsItems.DataSource = items;
+                modified = false;
 
                 SetFormTitle();
                 ShowTableViewTitle();
@@ -172,6 +172,7 @@ namespace ScadaTableEditor
                 if (tableView.SaveToFile(fileName, out errMsg))
                 {
                     SetModified(false);
+                    SetFormTitle();
                     result = true;
                 }
                 else
