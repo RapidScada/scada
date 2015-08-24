@@ -376,13 +376,14 @@ namespace Scada.Comm.Ctrl
         {
             treeView.BeginUpdate();
             nodeLines.Nodes.Clear();
-            int comLineCnt = origSettings.CommLines.Count;
+            int lineCnt = modSettings.CommLines.Count;
 
-            for (int i = 0; i < comLineCnt; i++)
+            for (int i = 0; i < lineCnt; i++)
             {
-                TreeNode nodeLine = NewLineNode(modSettings.CommLines[i]);
+                Settings.CommLine commLine = modSettings.CommLines[i];
+                TreeNode nodeLine = NewLineNode(commLine);
                 nodeLines.Nodes.Add(nodeLine);
-                FillLineNode(nodeLine, origSettings.CommLines[i]);
+                FillLineNode(nodeLine, commLine);
             }
 
             treeView.EndUpdate();
@@ -532,29 +533,23 @@ namespace Scada.Comm.Ctrl
             if (kpView.CanShowProps)
             {
                 // вызов формы отображения свойств КП
-                kpView.CmdLine = lastKP.CmdLine;
-                kpView.CommLineProps = new KPView.CommLineProperties(lastLine.Number, lastLine.CustomParams);
+                kpView.KPProps = new KPView.KPProperties(lastLine.CustomParams, lastKP.CmdLine);
                 kpView.AppDirs = appDirs;
                 kpView.ShowProps();
 
-                // обработка изменений конфигурации, сделанных на форме свойств КП
-                if (lastKP.CmdLine != kpView.CmdLine)
+                if (kpView.KPProps.Modified)
                 {
-                    if (tabControl.SelectedTab == pageReqSequence)
-                    {
-                        txtCmdLine.Text = kpView.CmdLine;
-                    }
-                    else
-                    {
-                        lastKP.CmdLine = kpView.CmdLine;
-                        SetModified();
-                    }
-                }
+                    // обновление пользовательских параметров линии связи на форме
+                    CustomParamsToPage();
 
-                // обновление пользовательских параметров линии связи на форме не требуется, 
-                // т.к. соответствующая страница не может быть выбрана в данный момент
-                if (kpView.CommLineProps.Modified)
+                    // обновление командной строки на форме, если необходимо
+                    if (tabControl.SelectedTab == pageReqSequence)
+                        txtCmdLine.Text = kpView.KPProps.CmdLine;
+                    else
+                        lastKP.CmdLine = kpView.KPProps.CmdLine;
+
                     SetModified();
+                }
 
                 return true;
             }
@@ -705,7 +700,7 @@ namespace Scada.Comm.Ctrl
         /// <summary>
         /// Отобразить изменённые пользовательские параметры линии связи на странице
         /// </summary>
-        private void UserParamsToPage()
+        private void CustomParamsToPage()
         {
             if (lastLine != null)
             {
@@ -1316,7 +1311,7 @@ namespace Scada.Comm.Ctrl
                     else if (tabPage == pageLineParams)
                         LineParamsToPage();
                     else if (tabPage == pageCustomParams)
-                        UserParamsToPage();
+                        CustomParamsToPage();
                     else if (tabPage == pageReqSequence)
                         ReqSequenceToPage();
                     else if (tabPage == pageLineLog)

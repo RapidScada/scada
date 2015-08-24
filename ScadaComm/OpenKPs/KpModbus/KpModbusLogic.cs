@@ -352,8 +352,7 @@ namespace Scada.Comm.Devices
         public override void OnCommLineStart()
         {
             // получение режима передачи данных
-            try { transMode = (Modbus.TransModes)Enum.Parse(typeof(Modbus.TransModes), CustomParams["TransMode"], true); }
-            catch { transMode = Modbus.TransModes.RTU; }
+            transMode = CustomParams.GetEnumParam<Modbus.TransModes>("TransMode", false, Modbus.TransModes.RTU);
 
             // настройка библиотеки в зависимости от режима передачи данных
             switch (transMode)

@@ -40,9 +40,78 @@ namespace Scada.Comm.Devices.KpModbus
     /// </summary>
     public partial class FrmDevProps : Form
     {
-        public FrmDevProps()
+        private int kpNum;                   // номер КП
+        private KPView.KPProperties kpProps; // свойства КП, сохраняемые SCADA-Коммуникатором
+        private AppDirs appDirs;             // директории приложения
+
+        /// <summary>
+        /// Конструктор, ограничивающий создание формы без параметров
+        /// </summary>
+        private FrmDevProps()
         {
             InitializeComponent();
+        }
+
+        /// <summary>
+        /// Отобразить форму модально
+        /// </summary>
+        public static void ShowDialog(int kpNum, KPView.KPProperties kpProps, AppDirs appDirs)
+        {
+            if (appDirs == null)
+                throw new ArgumentNullException("appDirs");
+
+            FrmDevProps frmDevProps = new FrmDevProps();
+            frmDevProps.kpNum = kpNum;
+            frmDevProps.kpProps = kpProps;
+            frmDevProps.appDirs = appDirs;
+            frmDevProps.ShowDialog();
+        }
+
+
+        private void FrmDevProps_Load(object sender, EventArgs e)
+        {
+            // вывод заголовка
+            Text = string.Format(Text, kpNum);
+
+            // установка элементов управления в соответствии со свойствами КП
+            string transMode = kpProps.CustomParams.GetStringParam("TransMode", false, "RTU");
+            cbTransMode.SelectItem(transMode, new Dictionary<string, int>() 
+                { { "RTU", 0 }, { "ASCII", 1 }, { "TCP", 2 } }, 0);
+            txtDevTemplate.Text = kpProps.CmdLine;
+            kpProps.Modified = false;
+        }
+
+        private void control_Changed(object sender, EventArgs e)
+        {
+            kpProps.Modified = true;
+        }
+
+        private void btnCreateDevTemplate_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnBrowseDevTemplate_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnEditDevTemplate_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnOK_Click(object sender, EventArgs e)
+        {
+            // изменение совйст КП в соответствии с элементами управления
+            if (kpProps.Modified)
+            {
+                kpProps.CustomParams["TransMode"] = (string)cbTransMode.GetSelectedItem(
+                    new Dictionary<int, object>() { { 0, "RTU" }, { 1, "ASCII" }, { 2, "TCP" } });
+                kpProps.CmdLine = txtDevTemplate.Text;
+            }
+
+            DialogResult = DialogResult.OK;
         }
     }
 }

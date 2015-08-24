@@ -108,37 +108,39 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Свойства линии связи
+        /// Свойства КП, сохраняемые SCADA-Коммуникатором
         /// </summary>
-        public class CommLineProperties
+        public class KPProperties
         {
             /// <summary>
             /// Конструктор, ограничивающий создание объекта без параметров
             /// </summary>
-            protected CommLineProperties()
+            protected KPProperties()
             {
             }
             /// <summary>
             /// Конструктор
             /// </summary>
-            public CommLineProperties(int number, SortedList<string, string> customParams)
+            public KPProperties(SortedList<string, string> customParams, string cmdLine)
             {
                 if (customParams == null)
                     throw new ArgumentNullException("customParams");
+                if (cmdLine == null)
+                    throw new ArgumentNullException("cmdLine");
 
-                Number = number;
                 CustomParams = customParams;
+                CmdLine = cmdLine;
                 Modified = false;
             }
 
             /// <summary>
-            /// Получить номер линии связи
-            /// </summary>
-            public int Number { get; protected set; }
-            /// <summary>
             /// Получить ссылку на пользовательские параметры линии связи
             /// </summary>
             public SortedList<string, string> CustomParams { get; protected set; }
+            /// <summary>
+            /// Получить или установить командную строку
+            /// </summary>
+            public string CmdLine { get; set; }
             /// <summary>
             /// Получить или установить признак изменения пользовательских параметров
             /// </summary>
@@ -146,7 +148,6 @@ namespace Scada.Comm.Devices
         }
 
 
-        private string cmdLine;  // командная строка
         private AppDirs appDirs; // директории приложения
 
 
@@ -163,12 +164,11 @@ namespace Scada.Comm.Devices
         /// </summary>
         public KPView(int number)
         {
-            cmdLine = "";
             appDirs = new AppDirs();
 
             CanShowProps = false;
             Number = number;
-            CommLineProps = null;
+            KPProps = null;
         }
 
 
@@ -211,24 +211,9 @@ namespace Scada.Comm.Devices
         public int Number { get; private set; }
 
         /// <summary>
-        /// Получить или установить командную строку
+        /// Получить или установить свойства КП, сохраняемые SCADA-Коммуникатором
         /// </summary>
-        public string CmdLine
-        {
-            get
-            {
-                return cmdLine;
-            }
-            set
-            {
-                cmdLine = value ?? "";
-            }
-        }
-
-        /// <summary>
-        /// Получить или установить свойства линии связи
-        /// </summary>
-        public CommLineProperties CommLineProps { get; set; }
+        public KPProperties KPProps { get; set; }
 
         /// <summary>
         /// Получить или установить директории приложения

@@ -36,11 +36,14 @@ namespace Scada.Comm
         /// <summary>
         /// Выбрать элемент выпадающего списка, используя карту соответствия значений и индексов элементов списка
         /// </summary>
-        public static void SelectItem(this ComboBox comboBox, object value, Dictionary<string, int> valueToItemIndex)
+        public static void SelectItem(this ComboBox comboBox, object value, 
+            Dictionary<string, int> valueToItemIndex, int defaultIndex = -1)
         {
             string valStr = value.ToString();
             if (valueToItemIndex.ContainsKey(valStr))
                 comboBox.SelectedIndex = valueToItemIndex[valStr];
+            else if (defaultIndex >= 0)
+                comboBox.SelectedIndex = defaultIndex;
         }
 
         /// <summary>

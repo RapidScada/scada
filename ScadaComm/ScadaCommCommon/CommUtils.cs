@@ -216,9 +216,13 @@ namespace Scada.Comm
                 {
                     return val;
                 }
-                else
+                else if (required)
                 {
                     throw new FormatException(string.Format(CommPhrases.IncorrectParamVal, name));
+                }
+                else
+                {
+                    return defaultValue;
                 }
             }
             else if (required)
@@ -246,9 +250,13 @@ namespace Scada.Comm
                 {
                     return val;
                 }
-                else
+                else if (required)
                 {
                     throw new FormatException(string.Format(CommPhrases.IncorrectParamVal, name));
+                }
+                else
+                {
+                    return defaultValue;
                 }
             }
             else if (required)
@@ -276,9 +284,13 @@ namespace Scada.Comm
                 {
                     return val;
                 }
-                else
+                else if (required)
                 {
                     throw new FormatException(string.Format(CommPhrases.IncorrectParamVal, name));
+                }
+                else
+                {
+                    return defaultValue;
                 }
             }
             else if (required)

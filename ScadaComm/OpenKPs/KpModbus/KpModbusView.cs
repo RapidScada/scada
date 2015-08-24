@@ -47,7 +47,7 @@ namespace Scada.Comm.Devices
         public KpModbusView(int number)
             : base(number)
         {
-            CanShowProps = number == 0;
+            CanShowProps = true;
         }
 
 
@@ -82,10 +82,19 @@ namespace Scada.Comm.Devices
         /// </summary>
         public override void ShowProps()
         {
-            FrmDevTemplate form = new FrmDevTemplate();
-            form.ConfigDir = AppDirs.ConfigDir;
-            form.LangDir = AppDirs.LangDir;
-            form.ShowDialog();
+            if (Number > 0)
+            {
+                // отображение свойств КП
+                FrmDevProps.ShowDialog(Number, KPProps, AppDirs);
+            }
+            else
+            {
+                // отображение редактора шаблонов устройств
+                FrmDevTemplate form = new FrmDevTemplate();
+                form.ConfigDir = AppDirs.ConfigDir;
+                form.LangDir = AppDirs.LangDir;
+                form.ShowDialog();
+            }
         }
     }
 }
