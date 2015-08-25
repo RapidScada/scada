@@ -36,7 +36,7 @@ namespace Scada.Server.Ctrl
     /// </summary>
     public partial class FrmAbout : Form
     {
-        private const string Version = "4.5.0.2"; // версия приложения
+        private const string Version = "4.5.0.3"; // версия приложения
         private static FrmAbout frmAbout = null;  // форма о программе
 
         private string exeDir;  // директория исполняемого файла приложения

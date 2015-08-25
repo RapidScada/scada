@@ -92,7 +92,7 @@ namespace Scada.Server.Svc
         /// <summary>
         /// Строковая запись версии приложения
         /// </summary>
-        public const string AppVersion = "4.5.0.2";
+        public const string AppVersion = "4.5.0.3";
         /// <summary>
         /// Имя файла журнала приложения
         /// </summary>
@@ -431,6 +431,7 @@ namespace Scada.Server.Svc
                     {
                         if ((bool)dataRow["Active"])
                         {
+                            // заполняются только свойства, используемые приложением
                             InCnl inCnl = new InCnl();
                             inCnl.CnlNum = (int)dataRow["CnlNum"];
                             inCnl.CnlTypeID = (int)dataRow["CnlTypeID"];
@@ -529,6 +530,7 @@ namespace Scada.Server.Svc
                     {
                         if ((bool)dataRow["Active"])
                         {
+                            // заполняются только свойства, используемые приложением
                             CtrlCnl ctrlCnl = new CtrlCnl();
                             ctrlCnl.CtrlCnlNum = (int)dataRow["CtrlCnlNum"];
                             ctrlCnl.CmdTypeID = (int)dataRow["CmdTypeID"];

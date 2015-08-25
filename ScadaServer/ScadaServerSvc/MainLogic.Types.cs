@@ -53,70 +53,8 @@ namespace Scada.Server.Svc
         /// <summary>
         /// Входной канал
         /// </summary>
-        /// <remarks>Класс содержит только те свойства, которые используются приложением</remarks>
-        private class InCnl
+        private class InCnl : InCnlProps
         {
-            /// <summary>
-            /// Получить или установить номер входного канала
-            /// </summary>
-            public int CnlNum { get; set; }
-            /// <summary>
-            /// Получить или установить идентификатор типа канала
-            /// </summary>
-            public int CnlTypeID { get; set; }
-            /// <summary>
-            /// Получить или установить номер объекта
-            /// </summary>
-            public int ObjNum { get; set; }
-            /// <summary>
-            /// Получить или установить номер КП
-            /// </summary>
-            public int KPNum { get; set; }
-            /// <summary>
-            /// Получить или установить признак использования формулы
-            /// </summary>
-            public bool FormulaUsed { get; set; }
-            /// <summary>
-            /// Получить или установить формулу
-            /// </summary>
-            public string Formula { get; set; }
-            /// <summary>
-            /// Получить или установить признак усреднения
-            /// </summary>
-            public bool Averaging { get; set; }
-            /// <summary>
-            /// Получить или установить идентификатор параметра
-            /// </summary>
-            public int ParamID { get; set; }
-            /// <summary>
-            /// Получить или установить признак записи событий
-            /// </summary>
-            public bool EvEnabled { get; set; }
-            /// <summary>
-            /// Получить или установить признак записи событий по изменению
-            /// </summary>
-            public bool EvOnChange { get; set; }
-            /// <summary>
-            /// Получить или установить признак записи событий по неопределённому состоянию
-            /// </summary>
-            public bool EvOnUndef { get; set; }
-            /// <summary>
-            /// Получить или установить нижнюю аварийную границу
-            /// </summary>
-            public double LimLowCrash { get; set; }
-            /// <summary>
-            /// Получить или установить нижнюю границу
-            /// </summary>
-            public double LimLow { get; set; }
-            /// <summary>
-            /// Получить или установить верхнюю границу
-            /// </summary>
-            public double LimHigh { get; set; }
-            /// <summary>
-            /// Получить или установить верхнюю аварийную границу
-            /// </summary>
-            public double LimHighCrash { get; set; }
-
             /// <summary>
             /// Метод вычисления данных входного канала
             /// </summary>
@@ -126,42 +64,8 @@ namespace Scada.Server.Svc
         /// <summary>
         /// Канал управления
         /// </summary>
-        /// <remarks>Класс содержит только те свойства, которые используются приложением</remarks>
-        internal class CtrlCnl
+        internal class CtrlCnl : CtrlCnlProps
         {
-            /// <summary>
-            /// Получить или установить номер канала управления
-            /// </summary>
-            public int CtrlCnlNum { get; set; }
-            /// <summary>
-            /// Получить или установить идентификатор типа команды
-            /// </summary>
-            public int CmdTypeID { get; set; }
-            /// <summary>
-            /// Получить или установить номер объекта
-            /// </summary>
-            public int ObjNum { get; set; }
-            /// <summary>
-            /// Получить или установить номер КП
-            /// </summary>
-            public int KPNum { get; set; }
-            /// <summary>
-            /// Получить или установить номер команды
-            /// </summary>
-            public int CmdNum { get; set; }
-            /// <summary>
-            /// Получить или установить признак использования формулы
-            /// </summary>
-            public bool FormulaUsed { get; set; }
-            /// <summary>
-            /// Получить или установить формулу
-            /// </summary>
-            public string Formula { get; set; }
-            /// <summary>
-            /// Получить или установить признак записи событий
-            /// </summary>
-            public bool EvEnabled { get; set; }
-
             /// <summary>
             /// Метод вычисления значения стандартной команды
             /// </summary>
@@ -170,9 +74,11 @@ namespace Scada.Server.Svc
             /// Метод вычисления данных бинарной команды
             /// </summary>
             public Calculator.CalcCmdDataDelegate CalcCmdData;
+
             /// <summary>
             /// Клонировать канал управления
             /// </summary>
+            /// <remarks>Клонируются только свойства, используемые приложением</remarks>
             public CtrlCnl Clone()
             {
                 return new CtrlCnl() 
