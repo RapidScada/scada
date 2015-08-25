@@ -82,6 +82,16 @@ namespace Scada.Comm.Devices
         /// </summary>
         public override void ShowProps()
         {
+            // загрузка словарей
+            string errMsg;
+            if (!Localization.UseRussian)
+            {
+                if (Localization.LoadDictionaries(AppDirs.LangDir, "KpModbus", out errMsg))
+                    KpPhrases.Init();
+                else
+                    ScadaUtils.ShowError(errMsg);
+            }
+
             if (Number > 0)
                 // отображение свойств КП
                 FrmDevProps.ShowDialog(Number, KPProps, AppDirs);

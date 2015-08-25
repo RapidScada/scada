@@ -423,14 +423,16 @@ namespace Scada.Comm.Devices.KpModbus
 
                 if (elemType == Modbus.ElemTypes.Bool)
                 {
-                    rbUShort.Enabled = rbShort.Enabled = rbUInt.Enabled = rbInt.Enabled = rbFloat.Enabled = false;
+                    rbUShort.Enabled = rbShort.Enabled = rbUInt.Enabled = rbInt.Enabled = 
+                        rbULong.Enabled = rbLong.Enabled = rbFloat.Enabled = rbDouble.Enabled = false;
                     rbBool.Enabled = true;
                     txtByteOrder.Text = "";
                     txtByteOrder.Enabled = false;
                 }
                 else
                 {
-                    rbUShort.Enabled = rbShort.Enabled = rbUInt.Enabled = rbInt.Enabled = rbFloat.Enabled = true;
+                    rbUShort.Enabled = rbShort.Enabled = rbUInt.Enabled = rbInt.Enabled =
+                        rbULong.Enabled = rbLong.Enabled = rbFloat.Enabled = rbDouble.Enabled = true;
                     rbBool.Enabled = false;
                     txtByteOrder.Text = elemInfo.Elem.ByteOrderStr;
                     txtByteOrder.Enabled = true;
@@ -616,21 +618,9 @@ namespace Scada.Comm.Devices.KpModbus
 
         private void FrmDevTemplate_Load(object sender, EventArgs e)
         {
-            // локализация модуля
-            string errMsg;
-            if (!Localization.UseRussian)
-            {
-                if (Localization.LoadDictionaries(appDirs.LangDir, "KpModbus", out errMsg))
-                {
-                    Localization.TranslateForm(this, "Scada.Comm.KP.FrmDevTemplate");
-                    KpPhrases.Init();
-                    TranslateTree();
-                }
-                else
-                {
-                    ScadaUtils.ShowError(errMsg);
-                }
-            }
+            // перевод формы
+            Localization.TranslateForm(this, "Scada.Comm.Devices.KpModbus.FrmDevTemplate");
+            TranslateTree();
 
             // настройка элементов управления
             openFileDialog.InitialDirectory = appDirs.ConfigDir;
