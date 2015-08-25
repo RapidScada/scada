@@ -104,7 +104,7 @@ namespace Scada.Comm.Devices
         {
             int len = elemGroup.ElemVals.Length;
             for (int i = 0, j = elemGroup.StartKPTagInd + i; i < len; i++, j++)
-                SetCurData(j, elemGroup.GetElemVal(i), BaseValues.ParamStat.Defined);
+                SetCurData(j, elemGroup.GetElemVal(i), BaseValues.CnlStatuses.Defined);
         }
 
         /// <summary>
@@ -116,13 +116,13 @@ namespace Scada.Comm.Devices
             {
                 int len = KPTags == null ? 0 : KPTags.Length;
                 for (int i = 0; i < len; i++)
-                    SetCurData(i, curData[i].Val, BaseValues.ParamStat.Undefined);
+                    SetCurData(i, curData[i].Val, BaseValues.CnlStatuses.Undefined);
             }
             else
             {
                 int len = elemGroup.ElemVals.Length;
                 for (int i = 0, j = elemGroup.StartKPTagInd + i; i < len; i++, j++)
-                    SetCurData(j, curData[j].Val, BaseValues.ParamStat.Undefined);
+                    SetCurData(j, curData[j].Val, BaseValues.CnlStatuses.Undefined);
             }
         }
 

@@ -1226,7 +1226,7 @@ namespace Scada.Server.Svc
                     if (ad.Cnt > 0)
                     {
                         newSrez.CnlData[cnlInd] = 
-                            new SrezTableLight.CnlData(ad.Sum / ad.Cnt, BaseValues.ParamStat.Defined);
+                            new SrezTableLight.CnlData(ad.Sum / ad.Cnt, BaseValues.CnlStatuses.Defined);
                         avgData[cnlInd] = new AvgData() { Sum = 0.0, Cnt = 0 }; // сброс
                         changed = true;
                     }
@@ -1305,8 +1305,8 @@ namespace Scada.Server.Svc
                                 // вычисление новых данных входного канала
                                 SrezTableLight.CnlData oldCnlData = srez.CnlData[cnlInd];
                                 SrezTableLight.CnlData newCnlData = receivedSrez.CnlData[i];
-                                if (newCnlData.Stat == BaseValues.ParamStat.Defined)
-                                    newCnlData.Stat = BaseValues.ParamStat.Archival;
+                                if (newCnlData.Stat == BaseValues.CnlStatuses.Defined)
+                                    newCnlData.Stat = BaseValues.CnlStatuses.Archival;
                                 CalcCnlData(inCnl, oldCnlData, ref newCnlData);
 
                                 // запись новых данных в архивный срез
@@ -1459,7 +1459,7 @@ namespace Scada.Server.Svc
 
                     // увеличение счётчика количества переключений
                     if (inCnl.CnlTypeID == BaseValues.CnlTypes.SWCNT && 
-                        newCnlData.Stat > BaseValues.ParamStat.Undefined)
+                        newCnlData.Stat > BaseValues.CnlStatuses.Undefined)
                     {
                         bool even = (int)oldCnlData.Val % 2 == 0; // старое значение чётное
                         newCnlData.Val = newCnlData.Val < 0 && even || newCnlData.Val >= 0 && !even ? 
@@ -1467,31 +1467,31 @@ namespace Scada.Server.Svc
                     }
 
                     // корректировка нового статуса, если задана проверка границ значения
-                    if (newCnlData.Stat == BaseValues.ParamStat.Defined &&
+                    if (newCnlData.Stat == BaseValues.CnlStatuses.Defined &&
                         (inCnl.LimLow < inCnl.LimHigh || inCnl.LimLowCrash < inCnl.LimHighCrash))
                     {
-                        newCnlData.Stat = BaseValues.ParamStat.Normal;
+                        newCnlData.Stat = BaseValues.CnlStatuses.Normal;
 
                         if (inCnl.LimLow < inCnl.LimHigh)
                         {
                             if (newCnlData.Val < inCnl.LimLow)
-                                newCnlData.Stat = BaseValues.ParamStat.Low;
+                                newCnlData.Stat = BaseValues.CnlStatuses.Low;
                             else if (newCnlData.Val > inCnl.LimHigh)
-                                newCnlData.Stat = BaseValues.ParamStat.High;
+                                newCnlData.Stat = BaseValues.CnlStatuses.High;
                         }
 
                         if (inCnl.LimLowCrash < inCnl.LimHighCrash)
                         {
                             if (newCnlData.Val < inCnl.LimLowCrash)
-                                newCnlData.Stat = BaseValues.ParamStat.LowCrash;
+                                newCnlData.Stat = BaseValues.CnlStatuses.LowCrash;
                             else if (newCnlData.Val > inCnl.LimHighCrash)
-                                newCnlData.Stat = BaseValues.ParamStat.HighCrash;
+                                newCnlData.Stat = BaseValues.CnlStatuses.HighCrash;
                         }
                     }
                 }
                 catch
                 {
-                    newCnlData.Stat = BaseValues.ParamStat.FormulaError;
+                    newCnlData.Stat = BaseValues.CnlStatuses.FormulaError;
                 }
             }
         }
@@ -1509,19 +1509,19 @@ namespace Scada.Server.Svc
                 int newStat = newCnlData.Stat;
 
                 bool dataHasChanged = 
-                    oldStat > BaseValues.ParamStat.Undefined && newStat > BaseValues.ParamStat.Undefined &&
+                    oldStat > BaseValues.CnlStatuses.Undefined && newStat > BaseValues.CnlStatuses.Undefined &&
                     (oldVal != newVal || oldStat != newStat);
 
                 if (// события по изменению
                     inCnl.EvOnChange && dataHasChanged || 
                     // события по неопределённому состоянию и выходу из него
                     inCnl.EvOnUndef && 
-                    (oldStat > BaseValues.ParamStat.Undefined && newStat == BaseValues.ParamStat.Undefined || 
-                    oldStat == BaseValues.ParamStat.Undefined && newStat > BaseValues.ParamStat.Undefined) ||
+                    (oldStat > BaseValues.CnlStatuses.Undefined && newStat == BaseValues.CnlStatuses.Undefined || 
+                    oldStat == BaseValues.CnlStatuses.Undefined && newStat > BaseValues.CnlStatuses.Undefined) ||
                     // события нормализации, занижения и завышения
-                    (newStat == BaseValues.ParamStat.Normal || newStat == BaseValues.ParamStat.LowCrash || 
-                    newStat == BaseValues.ParamStat.Low || newStat == BaseValues.ParamStat.High || 
-                    newStat == BaseValues.ParamStat.HighCrash) && oldStat != newStat)
+                    (newStat == BaseValues.CnlStatuses.Normal || newStat == BaseValues.CnlStatuses.LowCrash || 
+                    newStat == BaseValues.CnlStatuses.Low || newStat == BaseValues.CnlStatuses.High || 
+                    newStat == BaseValues.CnlStatuses.HighCrash) && oldStat != newStat)
                 {
                     // создание события
                     EventTableLight.Event ev = new EventTableLight.Event();
@@ -1533,8 +1533,8 @@ namespace Scada.Server.Svc
                     ev.OldCnlVal = oldCnlData.Val;
                     ev.OldCnlStat = oldStat;
                     ev.NewCnlVal = newCnlData.Val;
-                    ev.NewCnlStat = dataHasChanged && oldStat == BaseValues.ParamStat.Defined && 
-                        newStat == BaseValues.ParamStat.Defined ? BaseValues.ParamStat.Changed : newStat;
+                    ev.NewCnlStat = dataHasChanged && oldStat == BaseValues.CnlStatuses.Defined && 
+                        newStat == BaseValues.CnlStatuses.Defined ? BaseValues.CnlStatuses.Changed : newStat;
 
                     // запись события и выполнение действий модулей
                     WriteEvent(ev);
@@ -1562,7 +1562,7 @@ namespace Scada.Server.Svc
                             // вычисление новых данных входного канала
                             SrezTableLight.CnlData oldCnlData = srez.CnlData[cnlInd];
                             SrezTableLight.CnlData newCnlData =
-                                new SrezTableLight.CnlData(oldCnlData.Val, BaseValues.ParamStat.Defined);
+                                new SrezTableLight.CnlData(oldCnlData.Val, BaseValues.CnlStatuses.Defined);
                             CalcCnlData(inCnl, oldCnlData, ref newCnlData);
 
                             // запись новых данных в срез
@@ -1604,13 +1604,13 @@ namespace Scada.Server.Svc
                     int cnlTypeID = inCnl.CnlTypeID;
 
                     if ((cnlTypeID == BaseValues.CnlTypes.TS || cnlTypeID == BaseValues.CnlTypes.TI) &&
-                        curSrez.CnlData[i].Stat > BaseValues.ParamStat.Undefined && 
+                        curSrez.CnlData[i].Stat > BaseValues.CnlStatuses.Undefined && 
                         nowDT - activeDTs[i] > inactUnrelSpan)
                     {
                         // установка недостоверного статуса
                         SrezTableLight.CnlData oldCnlData = curSrez.CnlData[i];
                         SrezTableLight.CnlData newCnlData = 
-                            new SrezTableLight.CnlData(oldCnlData.Val, BaseValues.ParamStat.Unreliable);
+                            new SrezTableLight.CnlData(oldCnlData.Val, BaseValues.CnlStatuses.Unreliable);
                         curSrez.CnlData[i] = newCnlData;
                         curSrezMod = true;
 
@@ -2097,9 +2097,9 @@ namespace Scada.Server.Svc
                                     CalcCnlData(inCnl, oldCnlData, ref newCnlData);
 
                                     // расчёт данных для усреднения
-                                    if (inCnl.Averaging && newCnlData.Stat > BaseValues.ParamStat.Undefined &&
-                                        newCnlData.Stat != BaseValues.ParamStat.FormulaError &&
-                                        newCnlData.Stat != BaseValues.ParamStat.Unreliable)
+                                    if (inCnl.Averaging && newCnlData.Stat > BaseValues.CnlStatuses.Undefined &&
+                                        newCnlData.Stat != BaseValues.CnlStatuses.FormulaError &&
+                                        newCnlData.Stat != BaseValues.CnlStatuses.Unreliable)
                                     {
                                         minAvgData[cnlInd].Sum += newCnlData.Val;
                                         minAvgData[cnlInd].Cnt++;

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
@@ -222,9 +222,9 @@ namespace Scada.Data
         }
 
         /// <summary>
-        /// Статусы параметров (типы событий)
+        /// Статусы входных каналов (типы событий)
         /// </summary>
-        public static class ParamStat
+        public static class CnlStatuses
         {
             /// <summary>
             /// Не определён
