@@ -411,6 +411,7 @@ namespace Scada.Comm.Devices.KpModbus
                 txtElemAddress.Text = "";
                 txtElemSignal.Text = "";
                 rbBool.Checked = true;
+                txtByteOrder.Text = "";
                 gbElem.Enabled = false;
             }
             else
@@ -419,9 +420,21 @@ namespace Scada.Comm.Devices.KpModbus
                 txtElemAddress.Text = elemInfo.AddressRange;
                 txtElemSignal.Text = elemInfo.Signal.ToString();
                 Modbus.ElemTypes elemType = elemInfo.Elem.ElemType;
-                rbUShort.Enabled = rbShort.Enabled = rbUInt.Enabled = rbInt.Enabled = rbFloat.Enabled = 
-                    elemType != Modbus.ElemTypes.Bool;
-                rbBool.Enabled = elemType == Modbus.ElemTypes.Bool;
+
+                if (elemType == Modbus.ElemTypes.Bool)
+                {
+                    rbUShort.Enabled = rbShort.Enabled = rbUInt.Enabled = rbInt.Enabled = rbFloat.Enabled = false;
+                    rbBool.Enabled = true;
+                    txtByteOrder.Text = "";
+                    txtByteOrder.Enabled = false;
+                }
+                else
+                {
+                    rbUShort.Enabled = rbShort.Enabled = rbUInt.Enabled = rbInt.Enabled = rbFloat.Enabled = true;
+                    rbBool.Enabled = false;
+                    txtByteOrder.Text = elemInfo.Elem.ByteOrderStr;
+                    txtByteOrder.Enabled = true;
+                }
 
                 switch (elemType)
                 {
@@ -437,8 +450,17 @@ namespace Scada.Comm.Devices.KpModbus
                     case Modbus.ElemTypes.Int:
                         rbInt.Checked = true;
                         break;
+                    case Modbus.ElemTypes.ULong:
+                        rbULong.Checked = true;
+                        break;
+                    case Modbus.ElemTypes.Long:
+                        rbLong.Checked = true;
+                        break;
                     case Modbus.ElemTypes.Float:
                         rbFloat.Checked = true;
+                        break;
+                    case Modbus.ElemTypes.Double:
+                        rbDouble.Checked = true;
                         break;
                     default:
                         rbBool.Checked = true;
@@ -1048,22 +1070,40 @@ namespace Scada.Comm.Devices.KpModbus
             // изменение типа элемента
             if (procChangedEv && selElemInfo != null)
             {
+                Modbus.Elem elem = selElemInfo.Elem;
+
                 if (rbUShort.Checked)
-                    selElemInfo.Elem.ElemType = Modbus.ElemTypes.UShort;
+                    elem.ElemType = Modbus.ElemTypes.UShort;
                 else if (rbShort.Checked)
-                    selElemInfo.Elem.ElemType = Modbus.ElemTypes.Short;
+                    elem.ElemType = Modbus.ElemTypes.Short;
                 else if (rbUInt.Checked)
-                    selElemInfo.Elem.ElemType = Modbus.ElemTypes.UInt;
+                    elem.ElemType = Modbus.ElemTypes.UInt;
                 else if (rbInt.Checked)
-                    selElemInfo.Elem.ElemType = Modbus.ElemTypes.Int;
+                    elem.ElemType = Modbus.ElemTypes.Int;
+                else if (rbULong.Checked)
+                    elem.ElemType = Modbus.ElemTypes.ULong;
+                else if (rbLong.Checked)
+                    elem.ElemType = Modbus.ElemTypes.Long;
                 else if (rbFloat.Checked)
-                    selElemInfo.Elem.ElemType = Modbus.ElemTypes.Float;
+                    elem.ElemType = Modbus.ElemTypes.Float;
+                else if (rbDouble.Checked)
+                    elem.ElemType = Modbus.ElemTypes.Double;
                 else
-                    selElemInfo.Elem.ElemType = Modbus.ElemTypes.Bool;
+                    elem.ElemType = Modbus.ElemTypes.Bool;
 
                 txtElemAddress.Text = selElemInfo.AddressRange;
                 selNode.Text = selElemInfo.Caption;
                 UpdateElemNodes(selNode.Parent);
+                Modified = true;
+            }
+        }
+
+        private void txtByteOrder_TextChanged(object sender, EventArgs e)
+        {
+            // изменение порядка байт элемента
+            if (procChangedEv && selElemInfo != null)
+            {
+                selElemInfo.Elem.ByteOrderStr = txtByteOrder.Text;
                 Modified = true;
             }
         }

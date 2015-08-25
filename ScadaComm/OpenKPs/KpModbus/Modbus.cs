@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : KpModbus
- * Summary  : Modbus protocol implementation. The class version: 2.0
+ * Summary  : Modbus protocol implementation. The class version: 2.1
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
@@ -109,9 +109,21 @@ namespace Scada.Comm.Devices.KpModbus
             /// </summary>
             Int,
             /// <summary>
+            /// 8-байтное целое без знака
+            /// </summary>
+            ULong,
+            /// <summary>
+            /// 8-байтное целое со знаком
+            /// </summary>
+            Long,
+            /// <summary>
             /// 4-байтное вещественное с плавающей запятой
             /// </summary>
-            Float
+            Float,
+            /// <summary>
+            /// 8-байтное вещественное с плавающей запятой
+            /// </summary>
+            Double
         }
 
         /// <summary>
@@ -419,6 +431,8 @@ namespace Scada.Comm.Devices.KpModbus
             {
                 Name = "";
                 ElemType = ElemTypes.Bool;
+                ByteOrder = null;
+                ByteOrderStr = "";
             }
 
 
@@ -443,14 +457,59 @@ namespace Scada.Comm.Devices.KpModbus
                 }
             }
 
+            /// <summary>
+            /// Получить или установить массив, определяющий порядок байт
+            /// </summary>
+            public int[] ByteOrder { get; set; }
+
+            /// <summary>
+            /// Получить или установить строковую запись порядка байт
+            /// </summary>
+            public string ByteOrderStr { get; set; }
+
+
+            /// <summary>
+            /// Инициализировать массив, определяющий порядок байт, на основе строково записи вида '01234567'
+            /// </summary>
+            public void InitByteOrder(string orderStr)
+            {
+                if (string.IsNullOrEmpty(orderStr))
+                {
+                    ByteOrder = null;
+                    ByteOrderStr = "";
+                }
+                else
+                {
+                    ByteOrderStr = orderStr;
+                    int len = orderStr.Length;
+                    ByteOrder = new int[len];
+                    
+                    for (int i = 0; i < len; i++)
+                    {
+                        int n;
+                        ByteOrder[i] = int.TryParse(orderStr[i].ToString(), out n) ? n : 0;
+                    }
+                }
+            }
 
             /// <summary>
             /// Получить длину элемента (количество адресов) в зависимости от типа элемента
             /// </summary>
             public static int GetElemLength(ElemTypes elemType)
             {
-                return elemType == ElemTypes.UInt || elemType == ElemTypes.Int || elemType == ElemTypes.Float ?
-                    2 : 1;
+                switch (elemType)
+                {
+                    case ElemTypes.ULong:
+                    case ElemTypes.Long:
+                    case ElemTypes.Double:
+                        return 4;
+                    case ElemTypes.UInt:
+                    case ElemTypes.Int:
+                    case ElemTypes.Float:
+                        return 2;
+                    default:
+                        return 1;
+                }
             }
         }
 
@@ -513,7 +572,7 @@ namespace Scada.Comm.Devices.KpModbus
             /// <summary>
             /// Получить значения элементов в группе
             /// </summary>
-            public uint[] ElemVals { get; private set; }
+            public byte[][] ElemVals { get; private set; }
 
             /// <summary>
             /// Получить суммарную длину элементов (количество адресов) в группе
@@ -590,8 +649,16 @@ namespace Scada.Comm.Devices.KpModbus
                 }
 
                 // инициализация массива значений элементов
-                ElemVals = new uint[Elems.Count];
-                Array.Clear(ElemVals, 0, Elems.Count);
+                int elemCnt = Elems.Count;
+                ElemVals = new byte[elemCnt][];
+
+                for (int i = 0; i < elemCnt; i++)
+                {
+                    Elem elem = Elems[i];
+                    byte[] elemVal = new byte[elem.ElemType == ElemTypes.Bool ? 1 : elem.Length * 2];
+                    Array.Clear(elemVal, 0, elemVal.Length);
+                    ElemVals[i] = elemVal;
+                }
             }
 
             /// <summary>
@@ -611,7 +678,7 @@ namespace Scada.Comm.Devices.KpModbus
                             int bitNum = 0;
                             for (int elemInd = 0; elemInd < len; elemInd++)
                             {
-                                ElemVals[elemInd] = ((buffer[byteNum] >> bitNum) & 0x01) > 0 ? (uint)1 : (uint)0;
+                                ElemVals[elemInd][0] = ((buffer[byteNum] >> bitNum) & 0x01) > 0 ? (byte)1 : (byte)0;
 
                                 if (++bitNum == 8)
                                 {
@@ -624,17 +691,11 @@ namespace Scada.Comm.Devices.KpModbus
                         {
                             for (int elemInd = 0; elemInd < len; elemInd++)
                             {
-                                if (Elems[elemInd].Length == 1)
-                                {
-                                    ElemVals[elemInd] = (uint)(buffer[byteNum] * 256 + buffer[byteNum + 1]);
-                                    byteNum += 2;
-                                }
-                                else
-                                {
-                                    ElemVals[elemInd] = (uint)((buffer[byteNum] << 24) + (buffer[byteNum + 1] << 16) + 
-                                        (buffer[byteNum + 2] << 8) + buffer[byteNum + 3]);
-                                    byteNum += 4;
-                                }                                
+                                byte[] elemVal = ElemVals[elemInd];
+                                int elemLen = Elems[elemInd].Length;
+                                int elemValLen = elemLen * 2;
+                                Array.Copy(buffer, byteNum, elemVal, 0, elemValLen);
+                                byteNum += elemValLen;
                             }
                         }
 
@@ -657,25 +718,52 @@ namespace Scada.Comm.Devices.KpModbus
             /// </summary>
             public double GetElemVal(int elemInd)
             {
-                ElemTypes elemType = Elems[elemInd].ElemType;
-                uint elemVal = ElemVals[elemInd];
+                Elem elem = Elems[elemInd];
+                byte[] elemVal = ElemVals[elemInd];
+                byte[] buf;
 
-                if (elemType == ElemTypes.UShort || elemType == ElemTypes.UInt)
+                // перестановка байт, если для элемента задан порядок байт
+                int[] byteOrder = elem.ByteOrder;
+                if (byteOrder == null)
                 {
-                    return elemVal;
+                    buf = elemVal;
                 }
                 else
                 {
-                    byte[] buf = BitConverter.GetBytes(ElemVals[elemInd]);
+                    int byteOrderLen = byteOrder.Length;
+                    int elemValLen = elemVal.Length;
+                    buf = new byte[elemValLen];
 
-                    if (elemType == ElemTypes.Short)
+                    for (int i = 0; i < elemValLen; i++)
+                    {
+                        int ind = i < byteOrderLen ? byteOrder[i] : -1;
+                        buf[i] = 0 <= ind && ind < elemValLen ? elemVal[ind] : (byte)0;
+                    }
+                }
+
+                // расчёт значения
+                switch (elem.ElemType)
+                {
+                    case ElemTypes.Bool:
+                        return buf[0] > 0 ? 1.0 : 0.0;
+                    case ElemTypes.UShort:
+                        return BitConverter.ToUInt16(buf, 0);
+                    case ElemTypes.Short:
                         return BitConverter.ToInt16(buf, 0);
-                    else if (elemType == ElemTypes.Int)
+                    case ElemTypes.UInt:
+                        return BitConverter.ToUInt32(buf, 0);
+                    case ElemTypes.Int:
                         return BitConverter.ToInt32(buf, 0);
-                    else if (elemType == ElemTypes.Float)
+                    case ElemTypes.ULong:
+                        return BitConverter.ToUInt64(buf, 0);
+                    case ElemTypes.Long:
+                        return BitConverter.ToInt64(buf, 0);
+                    case ElemTypes.Float:
                         return BitConverter.ToSingle(buf, 0);
-                    else // ElemTypes.Bool
-                        return elemVal > 0 ? 1.0 : 0.0;
+                    case ElemTypes.Double:
+                        return BitConverter.ToDouble(buf, 0);
+                    default:
+                        return 0.0;
                 }
             }
 
@@ -938,6 +1026,7 @@ namespace Scada.Comm.Devices.KpModbus
                                 string elemTypeStr = elemElem.GetAttribute("type");
                                 elem.ElemType = elemTypeStr == "" ? elemGroup.DefElemType : 
                                     (ElemTypes)(Enum.Parse(typeof(ElemTypes), elemTypeStr, true));
+                                elem.InitByteOrder(elemElem.GetAttribute("byteOrder"));
                                 elemGroup.Elems.Add(elem);
                             }
 
@@ -977,7 +1066,7 @@ namespace Scada.Comm.Devices.KpModbus
                 }
                 catch (Exception ex)
                 {
-                    errMsg = Phrases.LoadTemplateError + ":\r\n" + ex.Message;
+                    errMsg = Phrases.LoadTemplateError + ":" + Environment.NewLine + ex.Message;
                     return false;
                 }
             }
@@ -1017,7 +1106,10 @@ namespace Scada.Comm.Devices.KpModbus
                             XmlElement elemElem = xmlDoc.CreateElement("Elem");
                             elemElem.SetAttribute("name", elem.Name);
                             if (writeElemType)
+                            {
                                 elemElem.SetAttribute("type", elem.ElemType.ToString().ToLowerInvariant());
+                                elemElem.SetAttribute("byteOrder", elem.ByteOrderStr);
+                            }
                             elemGroupElem.AppendChild(elemElem);
                         }
                     }
@@ -1045,7 +1137,7 @@ namespace Scada.Comm.Devices.KpModbus
                 }
                 catch (Exception ex)
                 {
-                    errMsg = Phrases.SaveTemplateError + ":\r\n" + ex.Message;
+                    errMsg = Phrases.SaveTemplateError + ":" + Environment.NewLine + ex.Message;
                     return false;
                 }
             }
