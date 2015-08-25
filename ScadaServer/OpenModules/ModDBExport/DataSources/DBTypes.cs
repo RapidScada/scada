@@ -29,7 +29,7 @@ namespace Scada.Server.Modules.DBExport
     /// Database types
     /// <para>Типы БД</para>
     /// </summary>
-    internal enum DBType
+    internal enum DBTypes
     {
         Undefined,
         MSSQL,

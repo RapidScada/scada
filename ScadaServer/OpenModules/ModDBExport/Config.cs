@@ -240,26 +240,26 @@ namespace Scada.Server.Modules.DBExport
                         if (dataSourceNode != null)
                         {
                             // получение типа источника данных
-                            DBType dbType;
-                            if (!Enum.TryParse<DBType>(dataSourceNode.GetChildAsString("DBType"), out dbType))
-                                dbType = DBType.Undefined;
+                            DBTypes dbType;
+                            if (!Enum.TryParse<DBTypes>(dataSourceNode.GetChildAsString("DBType"), out dbType))
+                                dbType = DBTypes.Undefined;
 
                             // создание источника данных
                             switch (dbType)
                             {
-                                case DBType.MSSQL:
+                                case DBTypes.MSSQL:
                                     dataSource = new SqlDataSource();
                                     break;
-                                case DBType.Oracle:
+                                case DBTypes.Oracle:
                                     dataSource = new OraDataSource();
                                     break;
-                                case DBType.PostgreSQL:
+                                case DBTypes.PostgreSQL:
                                     dataSource = new PgSqlDataSource();
                                     break;
-                                case DBType.MySQL:
+                                case DBTypes.MySQL:
                                     dataSource = new MySqlDataSource();
                                     break;
-                                case DBType.OLEDB:
+                                case DBTypes.OLEDB:
                                     dataSource = new OleDbDataSource();
                                     break;
                                 default:

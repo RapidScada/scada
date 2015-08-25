@@ -70,7 +70,7 @@
       <DependentUpon>CtrlExportQuery.cs</DependentUpon>
     </Compile>
     <Compile Include="DataSources\DataSource.cs" />
-    <Compile Include="DataSources\DBType.cs" />
+    <Compile Include="DataSources\DBTypes.cs" />
     <Compile Include="DataSources\PgSqlDataSource.cs" />
     <Compile Include="DataSources\MySqlDataSource.cs" />
     <Compile Include="DataSources\OraDataSource.cs" />

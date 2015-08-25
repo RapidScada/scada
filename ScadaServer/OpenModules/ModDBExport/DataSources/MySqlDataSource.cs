@@ -47,7 +47,7 @@ namespace Scada.Server.Modules.DBExport
         public MySqlDataSource()
             : base()
         {
-            DBType = DBType.MySQL;
+            DBType = DBTypes.MySQL;
         }
 
 

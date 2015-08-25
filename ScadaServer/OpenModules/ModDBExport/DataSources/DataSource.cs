@@ -42,7 +42,7 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         public DataSource()
         {
-            DBType = DBType.Undefined;
+            DBType = DBTypes.Undefined;
             Server = "";
             Database = "";
             User = "";
@@ -59,7 +59,7 @@ namespace Scada.Server.Modules.DBExport
         /// <summary>
         /// Получить или установить тип БД
         /// </summary>
-        public DBType DBType { get; set; }
+        public DBTypes DBType { get; set; }
 
         /// <summary>
         /// Получить или установить сервер БД

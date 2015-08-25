@@ -41,7 +41,7 @@ namespace Scada.Server.Modules.DBExport
         public OleDbDataSource()
             : base()
         {
-            DBType = DBType.OLEDB;
+            DBType = DBTypes.OLEDB;
         }
 
 

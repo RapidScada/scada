@@ -105,19 +105,19 @@ namespace Scada.Server.Modules.DBExport
             string imageKey;
             switch (expDest.DataSource.DBType)
             {
-                case DBType.MSSQL:
+                case DBTypes.MSSQL:
                     imageKey = "mssql.png";
                     break;
-                case DBType.Oracle:
+                case DBTypes.Oracle:
                     imageKey = "oracle.png";
                     break;
-                case DBType.PostgreSQL:
+                case DBTypes.PostgreSQL:
                     imageKey = "postgresql.png";
                     break;
-                case DBType.MySQL:
+                case DBTypes.MySQL:
                     imageKey = "mysql.png";
                     break;
-                case DBType.OLEDB:
+                case DBTypes.OLEDB:
                     imageKey = "oledb.png";
                     break;
                 default:

@@ -41,7 +41,7 @@ namespace Scada.Server.Modules.DBExport
         public SqlDataSource()
             : base()
         {
-            DBType = DBType.MSSQL;
+            DBType = DBTypes.MSSQL;
         }
 
 
