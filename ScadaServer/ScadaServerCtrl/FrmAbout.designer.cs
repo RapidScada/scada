@@ -70,6 +70,7 @@
             this.lblVersionRu.TabIndex = 3;
             this.lblVersionRu.Text = "Версия 4.5.0.0";
             this.lblVersionRu.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lblVersionRu.Click += new System.EventHandler(this.FrmAbout_Click);
             // 
             // lblVersionEn
             // 
@@ -82,6 +83,7 @@
             this.lblVersionEn.Size = new System.Drawing.Size(80, 12);
             this.lblVersionEn.TabIndex = 4;
             this.lblVersionEn.Text = "Version 4.5.0.0";
+            this.lblVersionEn.Click += new System.EventHandler(this.FrmAbout_Click);
             // 
             // pbAboutEn
             // 

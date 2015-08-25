@@ -45,7 +45,7 @@ namespace ScadaAdmin
         /// <summary>
         /// Действия, связанные с узлами дерева
         /// </summary>
-        private enum NodeAction {None, Obj, CommLine, KP, InCnl, InCnlObj, InCnlKP, 
+        private enum NodeActions {None, Obj, CommLine, KP, InCnl, InCnlObj, InCnlKP, 
             CtrlCnl, CtrlCnlObj, CtrlCnlKP, Role, User, Interface, Right, CnlType, 
             CmdType, EvType, KPType, Param, Unit, CmdVal, Format, Formula}
 
@@ -57,7 +57,7 @@ namespace ScadaAdmin
             /// <summary>
             /// Получить или установить действие, связанное с узлом дерева
             /// </summary>
-            public NodeAction NodeAction { get; set; }
+            public NodeActions NodeAction { get; set; }
             /// <summary>
             /// Получить или установить параметры действия
             /// </summary>
@@ -73,7 +73,7 @@ namespace ScadaAdmin
             /// </summary>
             public NodeInfo()
             {
-                NodeAction = NodeAction.None;
+                NodeAction = NodeActions.None;
                 Params = null;
                 Form = null;
             }
@@ -81,7 +81,7 @@ namespace ScadaAdmin
             /// <summary>
             /// Конструктор
             /// </summary>
-            public NodeInfo(NodeAction nodeAction)
+            public NodeInfo(NodeActions nodeAction)
             {
                 NodeAction = nodeAction;
                 Params = null;
@@ -139,39 +139,39 @@ namespace ScadaAdmin
             allNodes.Add(nodSystem);
 
             TreeNode nodTable = nodSystem.Nodes.Add("Obj", CommonPhrases.ObjTable, "table.gif", "table.gif");
-            nodTable.Tag = new NodeInfo(NodeAction.Obj);
+            nodTable.Tag = new NodeInfo(NodeActions.Obj);
             allNodes.Add(nodTable);
 
             nodTable = nodSystem.Nodes.Add("CommLine", CommonPhrases.CommLineTable, "table.gif", "table.gif");
-            nodTable.Tag = new NodeInfo(NodeAction.CommLine);
+            nodTable.Tag = new NodeInfo(NodeActions.CommLine);
             allNodes.Add(nodTable);
 
             nodTable = nodSystem.Nodes.Add("KP", CommonPhrases.KPTable, "table.gif", "table.gif");
-            nodTable.Tag = new NodeInfo(NodeAction.KP);
+            nodTable.Tag = new NodeInfo(NodeActions.KP);
             allNodes.Add(nodTable);
 
             nodInCnl = nodSystem.Nodes.Add("InCnl", CommonPhrases.InCnlTable, "table.gif", "table.gif");
-            nodInCnl.Tag = new NodeInfo(NodeAction.InCnl);
+            nodInCnl.Tag = new NodeInfo(NodeActions.InCnl);
             allNodes.Add(nodTable);
 
             nodCtrlCnl = nodSystem.Nodes.Add("CtrlCnl", CommonPhrases.CtrlCnlTable, "table.gif", "table.gif");
-            nodCtrlCnl.Tag = new NodeInfo(NodeAction.CtrlCnl);
+            nodCtrlCnl.Tag = new NodeInfo(NodeActions.CtrlCnl);
             allNodes.Add(nodTable);
 
             nodTable = nodSystem.Nodes.Add("Role", CommonPhrases.RoleTable, "table.gif", "table.gif");
-            nodTable.Tag = new NodeInfo(NodeAction.Role);
+            nodTable.Tag = new NodeInfo(NodeActions.Role);
             allNodes.Add(nodTable);
 
             nodTable = nodSystem.Nodes.Add("User", CommonPhrases.UserTable, "table.gif", "table.gif");
-            nodTable.Tag = new NodeInfo(NodeAction.User);
+            nodTable.Tag = new NodeInfo(NodeActions.User);
             allNodes.Add(nodTable);
 
             nodTable = nodSystem.Nodes.Add("Interface", CommonPhrases.InterfaceTable, "table.gif", "table.gif");
-            nodTable.Tag = new NodeInfo(NodeAction.Interface);
+            nodTable.Tag = new NodeInfo(NodeActions.Interface);
             allNodes.Add(nodTable);
 
             nodTable = nodSystem.Nodes.Add("Right", CommonPhrases.RightTable, "table.gif", "table.gif");
-            nodTable.Tag = new NodeInfo(NodeAction.Right);
+            nodTable.Tag = new NodeInfo(NodeActions.Right);
             allNodes.Add(nodTable);
 
             // таблицы справочников
@@ -179,39 +179,39 @@ namespace ScadaAdmin
             allNodes.Add(nodDict);
 
             nodTable = nodDict.Nodes.Add("CnlType", CommonPhrases.CnlTypeTable, "table.gif", "table.gif");
-            nodTable.Tag = new NodeInfo(NodeAction.CnlType);
+            nodTable.Tag = new NodeInfo(NodeActions.CnlType);
             allNodes.Add(nodTable);
 
             nodTable = nodDict.Nodes.Add("CmdType", CommonPhrases.CmdTypeTable, "table.gif", "table.gif");
-            nodTable.Tag = new NodeInfo(NodeAction.CmdType);
+            nodTable.Tag = new NodeInfo(NodeActions.CmdType);
             allNodes.Add(nodTable);
 
             nodTable = nodDict.Nodes.Add("EvType", CommonPhrases.EvTypeTable, "table.gif", "table.gif");
-            nodTable.Tag = new NodeInfo(NodeAction.EvType);
+            nodTable.Tag = new NodeInfo(NodeActions.EvType);
             allNodes.Add(nodTable);
 
             nodTable = nodDict.Nodes.Add("KPType", CommonPhrases.KPTypeTable, "table.gif", "table.gif");
-            nodTable.Tag = new NodeInfo(NodeAction.KPType);
+            nodTable.Tag = new NodeInfo(NodeActions.KPType);
             allNodes.Add(nodTable);
 
             nodTable = nodDict.Nodes.Add("Param", CommonPhrases.ParamTable, "table.gif", "table.gif");
-            nodTable.Tag = new NodeInfo(NodeAction.Param);
+            nodTable.Tag = new NodeInfo(NodeActions.Param);
             allNodes.Add(nodTable);
 
             nodTable = nodDict.Nodes.Add("Unit", CommonPhrases.UnitTable, "table.gif", "table.gif");
-            nodTable.Tag = new NodeInfo(NodeAction.Unit);
+            nodTable.Tag = new NodeInfo(NodeActions.Unit);
             allNodes.Add(nodTable);
 
             nodTable = nodDict.Nodes.Add("CmdVal", CommonPhrases.CmdValTable, "table.gif", "table.gif");
-            nodTable.Tag = new NodeInfo(NodeAction.CmdVal);
+            nodTable.Tag = new NodeInfo(NodeActions.CmdVal);
             allNodes.Add(nodTable);
 
             nodTable = nodDict.Nodes.Add("Format", CommonPhrases.FormatTable, "table.gif", "table.gif");
-            nodTable.Tag = new NodeInfo(NodeAction.Format);
+            nodTable.Tag = new NodeInfo(NodeActions.Format);
             allNodes.Add(nodTable);
 
             nodTable = nodDict.Nodes.Add("Formula", CommonPhrases.FormulaTable, "table.gif", "table.gif");
-            nodTable.Tag = new NodeInfo(NodeAction.Formula);
+            nodTable.Tag = new NodeInfo(NodeActions.Formula);
             allNodes.Add(nodTable);
         }
 
@@ -249,81 +249,81 @@ namespace ScadaAdmin
 
                         switch (nodeInfo.NodeAction)
                         {
-                            case NodeAction.Obj:
+                            case NodeActions.Obj:
                                 frmTable = NewTableForm(nodeText, Tables.GetObjTable());
                                 break;
-                            case NodeAction.CommLine:
+                            case NodeActions.CommLine:
                                 frmTable = NewTableForm(nodeText, Tables.GetCommLineTable());
                                 break;
-                            case NodeAction.KP:
+                            case NodeActions.KP:
                                 frmTable = NewTableForm(nodeText, Tables.GetKPTable());
                                 break;
-                            case NodeAction.InCnl:
+                            case NodeActions.InCnl:
                                 frmTable = NewTableForm(nodeText, Tables.GetInCnlTable());
                                 frmTable.GridContextMenu = contextInCnls;
                                 break;
-                            case NodeAction.InCnlObj:
+                            case NodeActions.InCnlObj:
                                 frmTable = NewTableForm(CommonPhrases.InCnlTable + " - " + nodeText, 
                                     Tables.GetInCnlTableByObjNum(param));
                                 frmTable.GridContextMenu = contextInCnls;
                                 imageKey = "object.gif";
                                 break;
-                            case NodeAction.InCnlKP:
+                            case NodeActions.InCnlKP:
                                 frmTable = NewTableForm(CommonPhrases.InCnlTable + " - " + nodeText, 
                                     Tables.GetInCnlTableByKPNum(param));
                                 frmTable.GridContextMenu = contextInCnls;
                                 imageKey = "kp.gif";
                                 break;
-                            case NodeAction.CtrlCnl:
+                            case NodeActions.CtrlCnl:
                                 frmTable = NewTableForm(nodeText, Tables.GetCtrlCnlTable());
                                 break;
-                            case NodeAction.CtrlCnlObj:
+                            case NodeActions.CtrlCnlObj:
                                 frmTable = NewTableForm(CommonPhrases.CtrlCnlTable + " - " + nodeText, 
                                     Tables.GetCtrlCnlTableByObjNum(param));
                                 imageKey = "object.gif";
                                 break;
-                            case NodeAction.CtrlCnlKP:
+                            case NodeActions.CtrlCnlKP:
                                 frmTable = NewTableForm(CommonPhrases.CtrlCnlTable + " - " + nodeText, 
                                     Tables.GetCtrlCnlTableByKPNum(param));
                                 imageKey = "kp.gif";
                                 break;
-                            case NodeAction.Role:
+                            case NodeActions.Role:
                                 frmTable = NewTableForm(nodeText, Tables.GetRoleTable());
                                 break;
-                            case NodeAction.User:
+                            case NodeActions.User:
                                 frmTable = NewTableForm(nodeText, Tables.GetUserTable());
                                 break;
-                            case NodeAction.Interface:
+                            case NodeActions.Interface:
                                 frmTable = NewTableForm(nodeText, Tables.GetInterfaceTable());
                                 break;
-                            case NodeAction.Right:
+                            case NodeActions.Right:
                                 frmTable = NewTableForm(nodeText, Tables.GetRightTable());
                                 break;
-                            case NodeAction.CnlType:
+                            case NodeActions.CnlType:
                                 frmTable = NewTableForm(nodeText, Tables.GetCnlTypeTable());
                                 break;
-                            case NodeAction.CmdType:
+                            case NodeActions.CmdType:
                                 frmTable = NewTableForm(nodeText, Tables.GetCmdTypeTable());
                                 break;
-                            case NodeAction.EvType:
+                            case NodeActions.EvType:
                                 frmTable = NewTableForm(nodeText, Tables.GetEvTypeTable());
                                 break;
-                            case NodeAction.KPType:
+                            case NodeActions.KPType:
                                 frmTable = NewTableForm(nodeText, Tables.GetKPTypeTable());
                                 break;
-                            case NodeAction.Param:
+                            case NodeActions.Param:
                                 frmTable = NewTableForm(nodeText, Tables.GetParamTable());
                                 break;
-                            case NodeAction.Unit:
+                            case NodeActions.Unit:
                                 frmTable = NewTableForm(nodeText, Tables.GetUnitTable());
                                 break;
-                            case NodeAction.CmdVal:
+                            case NodeActions.CmdVal:
                                 frmTable = NewTableForm(nodeText, Tables.GetCmdValTable());
                                 break;
-                            case NodeAction.Format:
+                            case NodeActions.Format:
                                 frmTable = NewTableForm(nodeText, Tables.GetFormatTable());
                                 break;
-                            case NodeAction.Formula:
+                            case NodeActions.Formula:
                                 frmTable = NewTableForm(nodeText, Tables.GetFormulaTable());
                                 break;
                         }
@@ -474,12 +474,12 @@ namespace ScadaAdmin
                     {
                         int objID = (int)row["ObjNum"];
                         node = nodInCnl.Nodes.Add("InCnlObj" + objID, (string)row["Name"], "object.gif", "object.gif");
-                        info = new NodeInfo(NodeAction.InCnlObj);
+                        info = new NodeInfo(NodeActions.InCnlObj);
                         info.Params = new object[] { objID };
                         node.Tag = info;
 
                         clone = node.Clone() as TreeNode;
-                        info = new NodeInfo(NodeAction.CtrlCnlObj);
+                        info = new NodeInfo(NodeActions.CtrlCnlObj);
                         info.Params = new object[] { objID };
                         clone.Tag = info;
                         nodCtrlCnl.Nodes.Add(clone);
@@ -487,12 +487,12 @@ namespace ScadaAdmin
 
                     // создание узла с неопределённым объектом
                     node = nodInCnl.Nodes.Add("InCnlObjNull", AppPhrases.UndefObj, "object.gif", "object.gif");
-                    info = new NodeInfo(NodeAction.InCnlObj);
+                    info = new NodeInfo(NodeActions.InCnlObj);
                     info.Params = new object[] { null };
                     node.Tag = info;
 
                     clone = node.Clone() as TreeNode;
-                    info = new NodeInfo(NodeAction.CtrlCnlObj);
+                    info = new NodeInfo(NodeActions.CtrlCnlObj);
                     info.Params = new object[] { null };
                     clone.Tag = info;
                     nodCtrlCnl.Nodes.Add(clone);
@@ -504,12 +504,12 @@ namespace ScadaAdmin
                     {
                         int kpID = (int)row["KPNum"];
                         node = nodInCnl.Nodes.Add("InCnlKP" + kpID, (string)row["Name"], "kp.gif", "kp.gif");
-                        info = new NodeInfo(NodeAction.InCnlKP);
+                        info = new NodeInfo(NodeActions.InCnlKP);
                         info.Params = new object[] { kpID };
                         node.Tag = info;
 
                         clone = node.Clone() as TreeNode;
-                        info = new NodeInfo(NodeAction.CtrlCnlKP);
+                        info = new NodeInfo(NodeActions.CtrlCnlKP);
                         info.Params = new object[] { kpID };
                         clone.Tag = info;
                         nodCtrlCnl.Nodes.Add(clone);
@@ -517,12 +517,12 @@ namespace ScadaAdmin
 
                     // создание узла с неопределённым КП
                     node = nodInCnl.Nodes.Add("InCnlKPNull", AppPhrases.UndefKP, "kp.gif", "kp.gif");
-                    info = new NodeInfo(NodeAction.InCnlKP);
+                    info = new NodeInfo(NodeActions.InCnlKP);
                     info.Params = new object[] { null };
                     node.Tag = info;
 
                     clone = node.Clone() as TreeNode;
-                    info = new NodeInfo(NodeAction.CtrlCnlKP);
+                    info = new NodeInfo(NodeActions.CtrlCnlKP);
                     info.Params = new object[] { null };
                     clone.Tag = info;
                     nodCtrlCnl.Nodes.Add(clone);
