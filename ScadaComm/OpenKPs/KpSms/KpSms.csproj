@@ -8,7 +8,7 @@
     <ProjectGuid>{54BEF6C5-B63D-41E3-A123-03F1802A44F7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KpSms</RootNamespace>
+    <RootNamespace>Scada.Comm.Devices</RootNamespace>
     <AssemblyName>KpSms</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Phonebook.cs" />
     <Compile Include="KpSmsView.cs" />
     <Compile Include="KpSmsLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
