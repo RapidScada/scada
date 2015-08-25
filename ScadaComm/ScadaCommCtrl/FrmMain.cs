@@ -138,10 +138,6 @@ namespace Scada.Comm.Ctrl
         /// </summary>
         private const string ErrFileName = "ScadaCommCtrl.err";
         /// <summary>
-        /// Пароль для отправки команды ТУ
-        /// </summary>
-        private const string CmdPwd = "12345";
-        /// <summary>
         /// Нулевое время, отформатированное в соответствии с культурой приложения
         /// </summary>
         private static readonly string ZeroTime = new DateTime(0).ToString("T", Localization.Culture);
@@ -2562,7 +2558,7 @@ namespace Scada.Comm.Ctrl
         #region Обработка событий на странице команд
         private void txtCmdPwd_TextChanged(object sender, EventArgs e)
         {
-            gbKpCmd.Visible = txtCmdPwd.Text == CmdPwd;
+            gbKpCmd.Visible = txtCmdPwd.Text == origSettings.Params.ServerPwd;
 
             if (gbKpCmd.Visible)
             {
