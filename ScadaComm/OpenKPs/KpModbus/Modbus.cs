@@ -694,7 +694,9 @@ namespace Scada.Comm.Devices.KpModbus
                                 byte[] elemVal = ElemVals[elemInd];
                                 int elemLen = Elems[elemInd].Length;
                                 int elemValLen = elemLen * 2;
-                                Array.Copy(buffer, byteNum, elemVal, 0, elemValLen);
+                                // копирование считанных байт в обратном порядке
+                                for (int i = elemValLen - 1, j = byteNum; i >= 0; i--, j++)
+                                    elemVal[i] = buffer[j];
                                 byteNum += elemValLen;
                             }
                         }
