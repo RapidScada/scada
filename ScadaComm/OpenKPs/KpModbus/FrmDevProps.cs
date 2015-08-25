@@ -66,6 +66,8 @@ namespace Scada.Comm.Devices.KpModbus
         /// </summary>
         public static void ShowDialog(int kpNum, KPView.KPProperties kpProps, AppDirs appDirs)
         {
+            if (kpProps == null)
+                throw new ArgumentNullException("kpProps");
             if (appDirs == null)
                 throw new ArgumentNullException("appDirs");
 
@@ -124,7 +126,7 @@ namespace Scada.Comm.Devices.KpModbus
         private void btnOK_Click(object sender, EventArgs e)
         {
             // проверка существования файла шаблона устройства
-            if (!File.Exists(appDirs.ConfigDir + txtDevTemplate))
+            if (!File.Exists(appDirs.ConfigDir + txtDevTemplate.Text))
             {
                 ScadaUtils.ShowError(KpPhrases.TemplNotExists);
                 return;
