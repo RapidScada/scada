@@ -53,12 +53,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FrmPhoneNumber.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPhoneNumber.Designer.cs">
+      <DependentUpon>FrmPhoneNumber.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmPhoneGroup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPhoneGroup.Designer.cs">
+      <DependentUpon>FrmPhoneGroup.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmPhonebook.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmPhonebook.Designer.cs">
       <DependentUpon>FrmPhonebook.cs</DependentUpon>
     </Compile>
+    <Compile Include="KpPhrases.cs" />
     <Compile Include="Phonebook.cs" />
     <Compile Include="KpSmsView.cs" />
     <Compile Include="KpSmsLogic.cs" />
@@ -70,6 +83,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="FrmPhoneNumber.resx">
+      <DependentUpon>FrmPhoneNumber.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmPhoneGroup.resx">
+      <DependentUpon>FrmPhoneGroup.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmPhonebook.resx">
       <DependentUpon>FrmPhonebook.cs</DependentUpon>
     </EmbeddedResource>
@@ -80,6 +99,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="Res\book.png" />
     <Content Include="Res\delete.png" />
     <Content Include="Res\edit.png" />
     <Content Include="Res\folder_closed.png" />

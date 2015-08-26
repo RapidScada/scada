@@ -138,7 +138,7 @@ namespace Scada.Comm.Devices
         public override void ShowProps()
         {
             // отображение телефонного справочника
-            (new FrmPhonebook()).ShowDialog();
+            FrmPhonebook.ShowDialog(AppDirs);
         }
     }
 }

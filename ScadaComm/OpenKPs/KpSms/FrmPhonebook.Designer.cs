@@ -29,24 +29,18 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("+79103459603 (Test)");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("+79102100102 (Boss)");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Группа 1", new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Справочник", new System.Windows.Forms.TreeNode[] {
-            treeNode3});
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmPhonebook));
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Справочник");
             this.pnlBottom = new System.Windows.Forms.Panel();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
+            this.btnCreateGroup = new System.Windows.Forms.ToolStripButton();
+            this.btnCreateNumber = new System.Windows.Forms.ToolStripButton();
+            this.btnEdit = new System.Windows.Forms.ToolStripButton();
+            this.btnDelete = new System.Windows.Forms.ToolStripButton();
             this.tvPhonebook = new System.Windows.Forms.TreeView();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
             this.pnlBottom.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.SuspendLayout();
@@ -58,13 +52,14 @@
             this.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlBottom.Location = new System.Drawing.Point(0, 421);
             this.pnlBottom.Name = "pnlBottom";
-            this.pnlBottom.Size = new System.Drawing.Size(484, 41);
+            this.pnlBottom.Size = new System.Drawing.Size(334, 41);
             this.pnlBottom.TabIndex = 1;
             // 
             // btnClose
             // 
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClose.Location = new System.Drawing.Point(397, 6);
+            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnClose.Location = new System.Drawing.Point(247, 6);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
             this.btnClose.TabIndex = 1;
@@ -74,52 +69,84 @@
             // btnSave
             // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSave.Location = new System.Drawing.Point(316, 6);
+            this.btnSave.Location = new System.Drawing.Point(166, 6);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 0;
             this.btnSave.Text = "Сохранить";
             this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // toolStrip
             // 
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton1,
-            this.toolStripButton4,
-            this.toolStripButton3,
-            this.toolStripButton2});
+            this.btnCreateGroup,
+            this.btnCreateNumber,
+            this.btnEdit,
+            this.btnDelete});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(484, 25);
+            this.toolStrip.Size = new System.Drawing.Size(334, 25);
             this.toolStrip.TabIndex = 2;
             this.toolStrip.Text = "toolStrip1";
+            // 
+            // btnCreateGroup
+            // 
+            this.btnCreateGroup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnCreateGroup.Image = ((System.Drawing.Image)(resources.GetObject("btnCreateGroup.Image")));
+            this.btnCreateGroup.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnCreateGroup.Name = "btnCreateGroup";
+            this.btnCreateGroup.Size = new System.Drawing.Size(23, 22);
+            this.btnCreateGroup.ToolTipText = "Создать группу";
+            this.btnCreateGroup.Click += new System.EventHandler(this.btnCreateGroup_Click);
+            // 
+            // btnCreateNumber
+            // 
+            this.btnCreateNumber.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnCreateNumber.Image = ((System.Drawing.Image)(resources.GetObject("btnCreateNumber.Image")));
+            this.btnCreateNumber.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnCreateNumber.Name = "btnCreateNumber";
+            this.btnCreateNumber.Size = new System.Drawing.Size(23, 22);
+            this.btnCreateNumber.ToolTipText = "Создать номер";
+            this.btnCreateNumber.Click += new System.EventHandler(this.btnCreateNumber_Click);
+            // 
+            // btnEdit
+            // 
+            this.btnEdit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnEdit.Image = ((System.Drawing.Image)(resources.GetObject("btnEdit.Image")));
+            this.btnEdit.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnEdit.Name = "btnEdit";
+            this.btnEdit.Size = new System.Drawing.Size(23, 22);
+            this.btnEdit.ToolTipText = "Редактировать";
+            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnDelete.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.Image")));
+            this.btnDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(23, 22);
+            this.btnDelete.ToolTipText = "Удалить";
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // tvPhonebook
             // 
             this.tvPhonebook.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tvPhonebook.HideSelection = false;
             this.tvPhonebook.ImageIndex = 0;
             this.tvPhonebook.ImageList = this.imageList;
             this.tvPhonebook.Location = new System.Drawing.Point(0, 25);
             this.tvPhonebook.Name = "tvPhonebook";
-            treeNode1.ImageKey = "phone.png";
-            treeNode1.Name = "Node2";
-            treeNode1.SelectedImageKey = "phone.png";
-            treeNode1.Text = "+79103459603 (Test)";
-            treeNode2.ImageKey = "phone.png";
-            treeNode2.Name = "Node3";
-            treeNode2.SelectedImageKey = "phone.png";
-            treeNode2.Text = "+79102100102 (Boss)";
-            treeNode3.ImageKey = "folder_open.png";
-            treeNode3.Name = "Node1";
-            treeNode3.SelectedImageKey = "folder_open.png";
-            treeNode3.Text = "Группа 1";
-            treeNode4.Name = "Node0";
-            treeNode4.Text = "Справочник";
+            treeNode1.ImageKey = "book.png";
+            treeNode1.Name = "nodePhonebook";
+            treeNode1.SelectedImageKey = "book.png";
+            treeNode1.Text = "Справочник";
             this.tvPhonebook.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode4});
+            treeNode1});
             this.tvPhonebook.SelectedImageIndex = 0;
             this.tvPhonebook.ShowRootLines = false;
-            this.tvPhonebook.Size = new System.Drawing.Size(484, 396);
+            this.tvPhonebook.Size = new System.Drawing.Size(334, 396);
             this.tvPhonebook.TabIndex = 3;
             // 
             // imageList
@@ -128,59 +155,28 @@
             this.imageList.TransparentColor = System.Drawing.Color.Transparent;
             this.imageList.Images.SetKeyName(0, "folder_closed.png");
             this.imageList.Images.SetKeyName(1, "folder_open.png");
-            this.imageList.Images.SetKeyName(2, "phone.png");
-            // 
-            // toolStripButton1
-            // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton1.Text = "toolStripButton1";
-            // 
-            // toolStripButton2
-            // 
-            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
-            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton2.Text = "toolStripButton2";
-            // 
-            // toolStripButton3
-            // 
-            this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
-            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton3.Name = "toolStripButton3";
-            this.toolStripButton3.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton3.Text = "toolStripButton3";
-            // 
-            // toolStripButton4
-            // 
-            this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton4.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton4.Image")));
-            this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton4.Name = "toolStripButton4";
-            this.toolStripButton4.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton4.Text = "toolStripButton4";
+            this.imageList.Images.SetKeyName(2, "book.png");
+            this.imageList.Images.SetKeyName(3, "phone.png");
             // 
             // FrmPhonebook
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(484, 462);
+            this.CancelButton = this.btnClose;
+            this.ClientSize = new System.Drawing.Size(334, 462);
             this.Controls.Add(this.tvPhonebook);
             this.Controls.Add(this.toolStrip);
             this.Controls.Add(this.pnlBottom);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(250, 300);
             this.Name = "FrmPhonebook";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "SMS";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmPhonebook_FormClosing);
+            this.Load += new System.EventHandler(this.FrmPhonebook_Load);
             this.pnlBottom.ResumeLayout(false);
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
@@ -197,9 +193,9 @@
         private System.Windows.Forms.ToolStrip toolStrip;
         private System.Windows.Forms.TreeView tvPhonebook;
         private System.Windows.Forms.ImageList imageList;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
-        private System.Windows.Forms.ToolStripButton toolStripButton2;
-        private System.Windows.Forms.ToolStripButton toolStripButton3;
-        private System.Windows.Forms.ToolStripButton toolStripButton4;
+        private System.Windows.Forms.ToolStripButton btnCreateGroup;
+        private System.Windows.Forms.ToolStripButton btnDelete;
+        private System.Windows.Forms.ToolStripButton btnEdit;
+        private System.Windows.Forms.ToolStripButton btnCreateNumber;
     }
 }
