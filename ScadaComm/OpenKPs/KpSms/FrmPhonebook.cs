@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : KpSms
- * Summary  : Device library and device instance properties form
+ * Summary  : Phonebook form
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
@@ -35,12 +35,12 @@ using System.Windows.Forms;
 namespace Scada.Comm.Devices.KpSms
 {
     /// <summary>
-    /// Device library and device instance properties form
-    /// <para>Форма настройки свойств библиотеки КП и экземпляра КП</para>
+    /// Phonebook form
+    /// <para>Форма телефонного справочника</para>
     /// </summary>
-    public partial class FrmProps : Form
+    public partial class FrmPhonebook : Form
     {
-        public FrmProps()
+        public FrmPhonebook()
         {
             InitializeComponent();
         }

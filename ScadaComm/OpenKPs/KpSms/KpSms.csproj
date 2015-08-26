@@ -53,16 +53,38 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FrmProps.cs">
+    <Compile Include="FrmPhonebook.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FrmProps.Designer.cs">
-      <DependentUpon>FrmProps.cs</DependentUpon>
+    <Compile Include="FrmPhonebook.Designer.cs">
+      <DependentUpon>FrmPhonebook.cs</DependentUpon>
     </Compile>
     <Compile Include="Phonebook.cs" />
     <Compile Include="KpSmsView.cs" />
     <Compile Include="KpSmsLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FrmPhonebook.resx">
+      <DependentUpon>FrmPhonebook.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Res\delete.png" />
+    <Content Include="Res\edit.png" />
+    <Content Include="Res\folder_closed.png" />
+    <Content Include="Res\folder_open.png" />
+    <Content Include="Res\phone.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

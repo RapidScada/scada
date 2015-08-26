@@ -23,6 +23,7 @@
  * Modified : 2014
  */
 
+using Scada.Comm.Devices.KpSms;
 using Scada.Data;
 using System;
 using System.Collections.Generic;
@@ -50,6 +51,7 @@ namespace Scada.Comm.Devices
         public KpSmsView(int number)
             : base(number)
         {
+            CanShowProps = true;
         }
 
 
@@ -128,6 +130,15 @@ namespace Scada.Comm.Devices
             {
                 return new KPReqParams() { Timeout = 5000, Delay = 500 };
             }
+        }
+
+        /// <summary>
+        /// Отобразить свойства КП
+        /// </summary>
+        public override void ShowProps()
+        {
+            // отображение телефонного справочника
+            (new FrmPhonebook()).ShowDialog();
         }
     }
 }
