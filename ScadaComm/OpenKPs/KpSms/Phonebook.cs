@@ -35,5 +35,106 @@ namespace Scada.Comm.Devices.KpSms
     /// </summary>
     internal class Phonebook
     {
+        /// <summary>
+        /// Телефонный номер
+        /// </summary>
+        public class PhoneNumber
+        {
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public PhoneNumber()
+                : this("", "")
+            {
+            }
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public PhoneNumber(string number, string name)
+            {
+                Number = number ?? "";
+                Name = name ?? "";
+            }
+
+            /// <summary>
+            /// Получить или установить номер
+            /// </summary>
+            public string Number { get; set; }
+            /// <summary>
+            /// Получить или установить имя владельца
+            /// </summary>
+            public string Name { get; set; }
+        }
+
+        /// <summary>
+        /// Группа телефонных номеров
+        /// </summary>
+        public class PhoneGroup
+        {
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public PhoneGroup()
+                : this("")
+            {
+            }
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public PhoneGroup(string name)
+            {
+                Name = name ?? "";
+                PhoneNumbers = new SortedList<string, PhoneNumber>();
+            }
+
+            /// <summary>
+            /// Получить или установить наименование группы
+            /// </summary>
+            public string Name { get; set; }
+            /// <summary>
+            /// Получить телефонные номера, упорядоченные по имени владельца
+            /// </summary>
+            public SortedList<string, PhoneNumber> PhoneNumbers { get; private set; }
+        }
+
+
+        /// <summary>
+        /// Имя файла телефонного справочника по умолчанию
+        /// </summary>
+        public const string DefFileName = "KpSmsPhonebook.xml";
+
+
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        public Phonebook()
+        {
+            PhoneGroups = new SortedList<string, PhoneGroup>();
+        }
+
+
+        /// <summary>
+        /// Получить группы телефонных номеров, упорядоченные по наименованию
+        /// </summary>
+        public SortedList<string, PhoneGroup> PhoneGroups { get; private set; }
+
+
+        /// <summary>
+        /// Загрузить телефонный справочник из файла
+        /// </summary>
+        public bool Load(string fileName, out string errMsg)
+        {
+            errMsg = "";
+            return true;
+        }
+
+        /// <summary>
+        /// Сохранить телефонный справочник в файле
+        /// </summary>
+        public bool Save(string fileName, out string errMsg)
+        {
+            errMsg = "";
+            return true;
+        }
     }
 }

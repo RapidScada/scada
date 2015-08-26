@@ -52,6 +52,7 @@ namespace Scada.Comm.Devices
         {
         }
 
+
         /// <summary>
         /// Описание библиотеки КП
         /// </summary>
