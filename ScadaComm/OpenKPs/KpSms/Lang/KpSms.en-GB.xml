@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<KpSmsDictionaries>
+  <Dictionary key="Scada.Comm.Devices.KpSms.FrmPhonebook">
+    <Phrase key="this">SMS</Phrase>
+    <Phrase key="btnCreateGroup.ToolTip">Create group</Phrase>
+    <Phrase key="btnCreateNumber.ToolTip">Create number</Phrase>
+    <Phrase key="btnEdit.ToolTip">Edit</Phrase>
+    <Phrase key="btnDelete.ToolTip">Delete</Phrase>
+    <Phrase key="btnCutNumber.ToolTip">Cut number</Phrase>
+    <Phrase key="btnCopyNumber.ToolTip">Copy number</Phrase>
+    <Phrase key="btnPasteNumber.ToolTip">Paste number</Phrase>
+    <Phrase key="btnSave">Save</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
+    <Phrase key="PhonebookNode">Phonebook</Phrase>
+    <Phrase key="PhoneGroupExists">The group already exists.</Phrase>
+    <Phrase key="UpdatePhoneNumberConfirm">The number already exists in the group. Update?</Phrase>
+    <Phrase key="SavePhonebookConfirm">The phonebook have been modified. Save the changes?</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.KpSms.FrmPhoneGroup">
+    <Phrase key="this">Group of Phone Numbers</Phrase>
+    <Phrase key="lblName">Name</Phrase>
+    <Phrase key="btnCreate">Create</Phrase>
+    <Phrase key="btnChange">Change</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.KpSms.FrmPhoneNumber">
+    <Phrase key="this">Phone Number</Phrase>
+    <Phrase key="lblNumber">Number</Phrase>
+    <Phrase key="lblName">Owner name</Phrase>
+    <Phrase key="btnCreate">Create</Phrase>
+    <Phrase key="btnChange">Change</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+  </Dictionary>
+</KpSmsDictionaries>

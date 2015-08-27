@@ -92,6 +92,7 @@ namespace Scada.Comm.Devices.KpSms
             if (oldNumber == null)
             {
                 btnCreate.Visible = true;
+                btnCreate.Enabled = false;
                 AcceptButton = btnCreate;
             }
             else

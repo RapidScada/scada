@@ -40,6 +40,7 @@ namespace Scada.Server.Modules
         }
 
         // Словарь Scada.Server.Modules
+        public static string SaveModSettingsConfirm { get; private set; }
         public static string LoadModSettingsError { get; private set; }
         public static string SaveModSettingsError { get; private set; }
         public static string ConfigureModule { get; private set; }
@@ -54,6 +55,7 @@ namespace Scada.Server.Modules
 
         private static void SetToDefault()
         {
+            SaveModSettingsConfirm = "Настройки модуля были изменены. Сохранить изменения?";
             LoadModSettingsError = "Ошибка при загрузке настроек модуля";
             SaveModSettingsError = "Ошибка при сохранении настроек модуля";
             ConfigureModule = "Сконфигурируйте модуль и перезапустите службу SCADA-Сервера";
@@ -86,6 +88,7 @@ namespace Scada.Server.Modules
             Localization.Dict dict;
             if (Localization.Dictionaries.TryGetValue("Scada.Server.Modules", out dict))
             {
+                SaveModSettingsConfirm = dict.GetPhrase("SaveModSettingsConfirm", SaveModSettingsConfirm);
                 LoadModSettingsError = dict.GetPhrase("LoadModSettingsError", LoadModSettingsError);
                 SaveModSettingsError = dict.GetPhrase("SaveModSettingsError", SaveModSettingsError);
                 ConfigureModule = dict.GetPhrase("ConfigureModule", ConfigureModule);

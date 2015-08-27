@@ -37,17 +37,28 @@ namespace Scada.Comm.Devices.KpSms
         }
 
         public static string PhonebookNode { get; private set; }
+        public static string PhoneGroupExists { get; private set; }
+        public static string UpdatePhoneNumberConfirm { get; private set; }
+        public static string SavePhonebookConfirm { get; private set; }
 
         private static void SetToDefault()
         {
             PhonebookNode = "Справочник";
+            PhoneGroupExists = "Группа уже существует.";
+            UpdatePhoneNumberConfirm = "Номер уже существует в группе. Обновить?";
+            SavePhonebookConfirm = "Справочник был изменён. Сохранить изменения?";
         }
 
         public static void Init()
         {
             Localization.Dict dict;
             if (Localization.Dictionaries.TryGetValue("Scada.Comm.Devices.KpSms.FrmPhonebook", out dict))
+            {
                 PhonebookNode = dict.GetPhrase("PhonebookNode", PhonebookNode);
+                PhoneGroupExists = dict.GetPhrase("PhoneGroupExists", PhoneGroupExists);
+                UpdatePhoneNumberConfirm = dict.GetPhrase("UpdatePhoneNumberConfirm", UpdatePhoneNumberConfirm);
+                SavePhonebookConfirm = dict.GetPhrase("SavePhonebookConfirm", SavePhonebookConfirm);
+            }
         }
     }
 }

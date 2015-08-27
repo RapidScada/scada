@@ -35,9 +35,11 @@ namespace Scada.Comm.Devices.KpSms
     /// </summary>
     public partial class FrmPhonebook : Form
     {
-        private AppDirs appDirs;        // директории приложения
-        private Phonebook phonebook;    // телефонный справочник        
-        private TreeNode nodePhonebook; // узел справочника
+        private AppDirs appDirs;                    // директории приложения
+        private Phonebook phonebook;                // телефонный справочник
+        private bool modified;                      // признак изменения справочника
+        private Phonebook.PhoneNumber copiedNumber; // скопированный телефонный номер
+        private TreeNode nodePhonebook;             // узел справочника
 
 
         /// <summary>
@@ -49,8 +51,26 @@ namespace Scada.Comm.Devices.KpSms
 
             appDirs = null;
             phonebook = new Phonebook();
-
+            modified = false;
+            copiedNumber = null;
             nodePhonebook = tvPhonebook.Nodes["nodePhonebook"];
+        }
+
+
+        /// <summary>
+        /// Получить или установить признак изменения справочника
+        /// </summary>
+        private bool Modified
+        {
+            get
+            {
+                return modified;
+            }
+            set
+            {
+                modified = value;
+                btnSave.Enabled = modified;
+            }
         }
 
 
@@ -64,8 +84,8 @@ namespace Scada.Comm.Devices.KpSms
                 tvPhonebook.BeginUpdate();
                 nodePhonebook.Nodes.Clear();
 
-                foreach (Phonebook.PhoneGroup phoneGroup in phonebook.PhoneGroups.Values)
-                    nodePhonebook.Nodes.Add(CreatePhoneGroupNode(phoneGroup));
+                foreach (Phonebook.PhoneGroup group in phonebook.PhoneGroups.Values)
+                    nodePhonebook.Nodes.Add(CreateGroupNode(group));
 
                 nodePhonebook.Expand();
             }
@@ -78,18 +98,18 @@ namespace Scada.Comm.Devices.KpSms
         /// <summary>
         /// Создать узел дерева для группы телефонных номеров
         /// </summary>
-        private TreeNode CreatePhoneGroupNode(Phonebook.PhoneGroup phoneGroup)
+        private TreeNode CreateGroupNode(Phonebook.PhoneGroup group)
         {
-            string imageKey = phoneGroup.PhoneNumbers.Count > 0 ? "folder_open.png" : "folder_closed.png";
-            TreeNode nodeGroup = new TreeNode(phoneGroup.Name)
+            string imageKey = group.PhoneNumbers.Count > 0 ? "folder_open.png" : "folder_closed.png";
+            TreeNode nodeGroup = new TreeNode(group.Name)
             {                
                 ImageKey = imageKey,
                 SelectedImageKey = imageKey,
-                Tag = phoneGroup
+                Tag = group
             };
 
-            foreach (Phonebook.PhoneNumber phoneNumber in phoneGroup.PhoneNumbers)
-                nodeGroup.Nodes.Add(CreatePhoneNumberNode(phoneNumber));
+            foreach (Phonebook.PhoneNumber number in group.PhoneNumbers)
+                nodeGroup.Nodes.Add(CreateNumberNode(number));
 
             nodeGroup.Expand();
             return nodeGroup;
@@ -98,27 +118,27 @@ namespace Scada.Comm.Devices.KpSms
         /// <summary>
         /// Создать узел дерева для группы телефонных номеров
         /// </summary>
-        private TreeNode CreatePhoneNumberNode(Phonebook.PhoneNumber phoneNumber)
+        private TreeNode CreateNumberNode(Phonebook.PhoneNumber number)
         {
             return new TreeNode()
             {
-                Text = phoneNumber.Name == "" ? 
-                    phoneNumber.Number : 
-                    phoneNumber.Number + " (" + phoneNumber.Name + ")",
+                Text = number.Name == "" ? 
+                    number.Number : 
+                    number.Number + " (" + number.Name + ")",
                 ImageKey = "phone.png",
                 SelectedImageKey = "phone.png",
-                Tag = phoneNumber
+                Tag = number
             };
         }
 
         /// <summary>
         /// Вставить группу телефонных номеров в справочник и в дерево
         /// </summary>
-        private void InsertPhoneGroup(Phonebook.PhoneGroup phoneGroup)
+        private void InsertGroup(Phonebook.PhoneGroup group)
         {
-            phonebook.PhoneGroups.Add(phoneGroup.Name, phoneGroup);
-            int ind = phonebook.PhoneGroups.IndexOfKey(phoneGroup.Name);
-            TreeNode node = CreatePhoneGroupNode(phoneGroup);
+            phonebook.PhoneGroups.Add(group.Name, group);
+            int ind = phonebook.PhoneGroups.IndexOfKey(group.Name);
+            TreeNode node = CreateGroupNode(group);
             nodePhonebook.Nodes.Insert(ind, node);
             tvPhonebook.SelectedNode = node;
         }
@@ -126,9 +146,9 @@ namespace Scada.Comm.Devices.KpSms
         /// <summary>
         /// Удалить группу телефонных номеров из справочника и из дерева
         /// </summary>
-        private void RemovePhoneGroup(Phonebook.PhoneGroup phoneGroup)
+        private void RemoveGroup(Phonebook.PhoneGroup group)
         {
-            int ind = phonebook.PhoneGroups.IndexOfKey(phoneGroup.Name);
+            int ind = phonebook.PhoneGroups.IndexOfKey(group.Name);
             phonebook.PhoneGroups.RemoveAt(ind);
             nodePhonebook.Nodes.RemoveAt(ind);
         }
@@ -136,32 +156,55 @@ namespace Scada.Comm.Devices.KpSms
         /// <summary>
         /// Вставить телефонный номер в справочник и в дерево, проверив уникальность номера
         /// </summary>
-        private void InsertPhoneNumber(Phonebook.PhoneGroup phoneGroup, TreeNode phoneGroupNode, 
-            Phonebook.PhoneNumber phoneNumber)
+        private void InsertNumber(Phonebook.PhoneGroup group, TreeNode groupNode, Phonebook.PhoneNumber number)
         {
-            /*int ind = phoneGroup.FindPhoneNumber(phoneNumber.Number);
-            if (ind < 0)
+            int ind = group.FindPhoneNumberInsertIndex(number);
+            group.PhoneNumbers.Insert(ind, number);
+            TreeNode node = CreateNumberNode(number);
+            groupNode.Nodes.Insert(ind, node);
+            tvPhonebook.SelectedNode = node;
+        }
+
+        /// <summary>
+        /// Вставить телефонный номер в справочник и в дерево или обновить существующий номер
+        /// </summary>
+        private void InsertOrUpdateNumber(Phonebook.PhoneGroup group, TreeNode groupNode, Phonebook.PhoneNumber number)
+        {
+            if (number != null)
             {
-                ind = ~ind;
-                phoneGroup.PhoneNumbers.Insert(ind, phoneNumber);
-                TreeNode node = CreatePhoneNumberNode(phoneNumber);
-                phoneGroupNode.Nodes.Insert(ind, node);
-                tvPhonebook.SelectedNode = node;
-            }*/
+                int ind = group.FindPhoneNumberIndex(number.Number);
+                if (ind < 0)
+                {
+                    InsertNumber(group, groupNode, number);
+                    Modified = true;
+                }
+                else if (MessageBox.Show(KpPhrases.UpdatePhoneNumberConfirm, CommonPhrases.QuestionCaption,
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    RemoveNumber(group, groupNode, ind);
+                    InsertNumber(group, groupNode, number);
+                    Modified = true;
+                }
+            }
         }
 
         /// <summary>
         /// Удалить телефонный номер из справочника и из дерева
         /// </summary>
-        private void RemovePhoneNumber(Phonebook.PhoneGroup phoneGroup, TreeNode phoneGroupNode, 
-            Phonebook.PhoneNumber phoneNumber)
+        private void RemoveNumber(Phonebook.PhoneGroup group, TreeNode groupNode, int numberInd)
         {
-            /*int ind = phoneGroup.PhoneNumbers.BinarySearch(phoneNumber.Number);
+            group.PhoneNumbers.RemoveAt(numberInd);
+            groupNode.Nodes.RemoveAt(numberInd);
+        }
+
+        /// <summary>
+        /// Удалить телефонный номер из справочника и из дерева
+        /// </summary>
+        private void RemoveNumber(Phonebook.PhoneGroup group, TreeNode groupNode, Phonebook.PhoneNumber number)
+        {
+            int ind = group.FindPhoneNumberIndex(number.Number);
             if (ind >= 0)
-            {
-                phoneGroup.PhoneNumbers.RemoveAt(ind);
-                phoneGroupNode.Nodes.RemoveAt(ind);
-            }*/
+                RemoveNumber(group, groupNode, ind);
         }
 
         /// <summary>
@@ -175,7 +218,7 @@ namespace Scada.Comm.Devices.KpSms
         /// <summary>
         /// Получить группу телефонных номеров, соответствующую выбранному в дереве узлу
         /// </summary>
-        private Phonebook.PhoneGroup GetCurrentPhoneGroup(out TreeNode phoneGroupNode)
+        private void GetCurrentGroup(out Phonebook.PhoneGroup group, out TreeNode groupNode)
         {
             TreeNode node = tvPhonebook.SelectedNode;
             while (node != null && !(node.Tag is Phonebook.PhoneGroup))
@@ -183,19 +226,30 @@ namespace Scada.Comm.Devices.KpSms
 
             if (node != null && node.Tag is Phonebook.PhoneGroup)
             {
-                phoneGroupNode = node;
-                return (Phonebook.PhoneGroup)phoneGroupNode.Tag;
+                groupNode = node;
+                group = (Phonebook.PhoneGroup)groupNode.Tag;
             }
             else if (nodePhonebook.Nodes.Count > 0)
             {
-                phoneGroupNode = nodePhonebook.Nodes[0];
-                return (Phonebook.PhoneGroup)phoneGroupNode.Tag;
+                groupNode = nodePhonebook.Nodes[0];
+                group = (Phonebook.PhoneGroup)groupNode.Tag;
             }
             else
             {
-                phoneGroupNode = null;
-                return null;
+                groupNode = null;
+                group = null;
             }
+        }
+
+        /// <summary>
+        /// Установить доступность кнопок
+        /// </summary>
+        private void SetButtonsEnabled()
+        {
+            object selObj = GetSelectedObject();
+            btnEdit.Enabled = btnDelete.Enabled = selObj != null;
+            btnCutNumber.Enabled = btnCopyNumber.Enabled = selObj is Phonebook.PhoneNumber;
+            btnPasteNumber.Enabled = copiedNumber != null;
         }
 
         
@@ -219,9 +273,9 @@ namespace Scada.Comm.Devices.KpSms
             string errMsg;
             if (!Localization.UseRussian)
             {
-                if (Localization.LoadDictionaries(appDirs.LangDir, "KpOpc", out errMsg))
+                if (Localization.LoadDictionaries(appDirs.LangDir, "KpSms", out errMsg))
                 {
-                    Localization.TranslateForm(this, "Scada.Comm.Devices.KpSms.FrmConfig");
+                    Localization.TranslateForm(this, "Scada.Comm.Devices.KpSms.FrmPhonebook");
                     KpPhrases.Init();
                     nodePhonebook.Text = KpPhrases.PhonebookNode;
                 }
@@ -235,14 +289,39 @@ namespace Scada.Comm.Devices.KpSms
             string fileName = appDirs.ConfigDir + Phonebook.DefFileName;
             if (File.Exists(fileName) && !phonebook.Load(fileName, out errMsg))
                 ScadaUtils.ShowError(errMsg);
+            Modified = false;
 
             // вывод телефонного справочника
             BuildTree();
+
+            // установка доступности кнопок
+            SetButtonsEnabled();
         }
 
         private void FrmPhonebook_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (Modified)
+            {
+                DialogResult result = MessageBox.Show(KpPhrases.SavePhonebookConfirm,
+                    CommonPhrases.QuestionCaption, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 
+                switch (result)
+                {
+                    case DialogResult.Yes:
+                        string errMsg;
+                        if (!phonebook.Save(appDirs.ConfigDir + Phonebook.DefFileName, out errMsg))
+                        {
+                            ScadaUtils.ShowError(errMsg);
+                            e.Cancel = true;
+                        }
+                        break;
+                    case DialogResult.No:
+                        break;
+                    default:
+                        e.Cancel = true;
+                        break;
+                }
+            }
         }
 
 
@@ -253,32 +332,28 @@ namespace Scada.Comm.Devices.KpSms
             if (newGroup != null)
             {
                 if (phonebook.PhoneGroups.ContainsKey(newGroup.Name))
-                    ScadaUtils.ShowWarning("exists!!!");
+                {
+                    ScadaUtils.ShowWarning(KpPhrases.PhoneGroupExists);
+                }
                 else
-                    InsertPhoneGroup(newGroup);
+                {
+                    InsertGroup(newGroup);
+                    Modified = true;
+                }
             }
         }
 
         private void btnCreateNumber_Click(object sender, EventArgs e)
         {
             // создание телефонного номера
-            TreeNode phoneGroupNode;
-            Phonebook.PhoneGroup phoneGroup = GetCurrentPhoneGroup(out phoneGroupNode);
+            Phonebook.PhoneGroup group;
+            TreeNode groupNode;
+            GetCurrentGroup(out group, out groupNode);
 
-            if (phoneGroup != null)
+            if (group != null)
             {
                 Phonebook.PhoneNumber newNumber = FrmPhoneNumber.CreatePhoneNumber();
-                if (newNumber != null)
-                {
-                    /*Phonebook.PhoneNumber oldNumber;
-                    if (phoneGroup.PhoneNumbers.TryGetValue(newNumber.Name, out oldNumber))
-                    {
-                        ScadaUtils.ShowWarning("exists!!!");
-                        RemovePhoneNumber(phoneGroup, phoneGroupNode, oldNumber);
-                    }
-
-                    InsertPhoneNumber(phoneGroup, phoneGroupNode, newNumber);*/
-                }
+                InsertOrUpdateNumber(group, groupNode, newNumber);
             }
         }
 
@@ -286,32 +361,34 @@ namespace Scada.Comm.Devices.KpSms
         {
             // редактирование выбранного объекта
             object selObj = GetSelectedObject();
-            Phonebook.PhoneGroup phoneGroup = selObj as Phonebook.PhoneGroup;
-            Phonebook.PhoneNumber phoneNumber = selObj as Phonebook.PhoneNumber;
+            Phonebook.PhoneGroup group = selObj as Phonebook.PhoneGroup;
+            Phonebook.PhoneNumber number = selObj as Phonebook.PhoneNumber;
 
-            if (phoneGroup != null)
+            if (group != null)
             {
                 // редактирование группы телефонных номеров
-                Phonebook.PhoneGroup newGroup = FrmPhoneGroup.EditPhoneGroup(phoneGroup);
-                if (newGroup != null && !phoneGroup.Equals(newGroup))
+                Phonebook.PhoneGroup newGroup = FrmPhoneGroup.EditPhoneGroup(group);
+                if (newGroup != null && !group.Equals(newGroup))
                 {
-                    RemovePhoneGroup(phoneGroup);
-                    InsertPhoneGroup(newGroup);
+                    RemoveGroup(group);
+                    InsertGroup(newGroup);
+                    Modified = true;
                 }
             }
-            else if (phoneNumber != null)
+            else if (number != null)
             {
                 // редактирование телефонного номера
-                TreeNode phoneGroupNode;
-                phoneGroup = GetCurrentPhoneGroup(out phoneGroupNode);
+                TreeNode groupNode;
+                GetCurrentGroup(out group, out groupNode);
 
-                if (phoneGroup != null)
+                if (group != null)
                 {
-                    Phonebook.PhoneNumber newNumber = FrmPhoneNumber.EditPhoneNumber(phoneNumber);
-                    if (newNumber != null && !phoneNumber.Equals(newNumber))
+                    Phonebook.PhoneNumber newNumber = FrmPhoneNumber.EditPhoneNumber(number);
+                    if (newNumber != null && !number.Equals(newNumber))
                     {
-                        RemovePhoneNumber(phoneGroup, phoneGroupNode, phoneNumber);
-                        InsertPhoneNumber(phoneGroup, phoneGroupNode, newNumber);
+                        RemoveNumber(group, groupNode, number);
+                        InsertNumber(group, groupNode, newNumber);
+                        Modified = true;
                     }
                 }
             }
@@ -321,29 +398,75 @@ namespace Scada.Comm.Devices.KpSms
         {
             // удаление выбранного объекта
             object selObj = GetSelectedObject();
-            Phonebook.PhoneGroup phoneGroup = selObj as Phonebook.PhoneGroup;
-            Phonebook.PhoneNumber phoneNumber = selObj as Phonebook.PhoneNumber;
+            Phonebook.PhoneGroup group = selObj as Phonebook.PhoneGroup;
+            Phonebook.PhoneNumber number = selObj as Phonebook.PhoneNumber;
 
-            if (phoneGroup != null)
+            if (group != null)
             {
                 // удаление группы телефонных номеров
-                RemovePhoneGroup(phoneGroup);
+                RemoveGroup(group);
+                Modified = true;
             }
-            else if (phoneNumber != null)
+            else if (number != null)
             {
                 // удаление телефонного номера
                 TreeNode phoneGroupNode;
-                phoneGroup = GetCurrentPhoneGroup(out phoneGroupNode);
-                if (phoneGroup != null)
-                    RemovePhoneNumber(phoneGroup, phoneGroupNode, phoneNumber);
+                GetCurrentGroup(out group, out phoneGroupNode);
+                if (group != null)
+                {
+                    RemoveNumber(group, phoneGroupNode, number);
+                    Modified = true;
+                }
             }
+        }
+
+        private void btnCutNumber_Click(object sender, EventArgs e)
+        {
+            // вырезать телефонный номер
+            Phonebook.PhoneNumber number = GetSelectedObject() as Phonebook.PhoneNumber;
+            if (number != null)
+            {
+                copiedNumber = number;
+                btnDelete_Click(null, null);
+            }
+        }
+
+        private void btnCopyNumber_Click(object sender, EventArgs e)
+        {
+            // копирование телефонного номера
+            Phonebook.PhoneNumber number = GetSelectedObject() as Phonebook.PhoneNumber;
+            if (number != null)
+            {
+                copiedNumber = number;
+                btnPasteNumber.Enabled = true;
+            }
+        }
+
+        private void btnPasteNumber_Click(object sender, EventArgs e)
+        {
+            // вставка телефонного номера
+            Phonebook.PhoneGroup group;
+            TreeNode groupNode;
+            GetCurrentGroup(out group, out groupNode);
+
+            if (group != null)
+                InsertOrUpdateNumber(group, groupNode, copiedNumber);
+        }
+
+
+        private void tvPhonebook_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            // установка доступности кнопок
+            SetButtonsEnabled();
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
             // сохранение телефонного справочника
             string errMsg;
-            if (!phonebook.Save(appDirs.ConfigDir + Phonebook.DefFileName, out errMsg))
+            if (phonebook.Save(appDirs.ConfigDir + Phonebook.DefFileName, out errMsg))
+                Modified = false;
+            else
                 ScadaUtils.ShowError(errMsg);
         }
     }

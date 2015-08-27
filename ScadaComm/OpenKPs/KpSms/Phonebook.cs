@@ -39,8 +39,13 @@ namespace Scada.Comm.Devices.KpSms
         /// <summary>
         /// Телефонный номер
         /// </summary>
-        public class PhoneNumber : IComparable<PhoneNumber>
+        public class PhoneNumber
         {
+            /// <summary>
+            /// Объект для сравнения телефонных номеров по имени владельца
+            /// </summary>
+            public static readonly PhoneNumberByNameComparer ByNameComparer = new PhoneNumberByNameComparer();
+
             /// <summary>
             /// Конструктор
             /// </summary>
@@ -67,13 +72,6 @@ namespace Scada.Comm.Devices.KpSms
             public string Name { get; set; }
 
             /// <summary>
-            /// Сравнить телефонный номер с другим по имени владельца
-            /// </summary>
-            public int CompareTo(PhoneNumber other)
-            {
-                return Name.CompareTo(other);
-            }
-            /// <summary>
             /// Определить, равен ли телефонный номер заданному номеру
             /// </summary>
             public bool Equals(PhoneNumber other)
@@ -81,6 +79,23 @@ namespace Scada.Comm.Devices.KpSms
                 return other != null &&
                     string.Equals(Number, other.Number, StringComparison.OrdinalIgnoreCase) &&
                     string.Equals(Name, other.Name, StringComparison.OrdinalIgnoreCase);
+            }
+        }
+
+        /// <summary>
+        /// Класс для сравнения телефонных номеров по имени владельца
+        /// </summary>
+        public class PhoneNumberByNameComparer : IComparer<PhoneNumber>
+        {
+            /// <summary>
+            /// Сравнить два объекта
+            /// </summary>
+            public int Compare(PhoneNumber x, PhoneNumber y)
+            {
+                int comp = string.Compare(x.Name, y.Name, StringComparison.OrdinalIgnoreCase);
+                return comp == 0 ?
+                    string.Compare(x.Number, y.Number, StringComparison.OrdinalIgnoreCase) :
+                    comp;
             }
         }
 
@@ -112,12 +127,13 @@ namespace Scada.Comm.Devices.KpSms
             /// <summary>
             /// Получить телефонные номера, упорядоченные по имени владельца
             /// </summary>
+            /// <remarks>Имя владельца может быть не уникально в группе</remarks>
             public List<PhoneNumber> PhoneNumbers { get; private set; }
 
             /// <summary>
             /// Найти индекс телефонного номера в списке
             /// </summary>
-            public int FindPhoneNumber(string number)
+            public int FindPhoneNumberIndex(string number)
             {
                 int cnt = PhoneNumbers.Count;
                 for (int i = 0; i < cnt; i++)
@@ -126,6 +142,14 @@ namespace Scada.Comm.Devices.KpSms
                         return i;
                 }
                 return -1;
+            }
+            /// <summary>
+            /// Найти индекс для вставки телефонного номера
+            /// </summary>
+            public int FindPhoneNumberInsertIndex(PhoneNumber phoneNumber)
+            {
+                int ind = PhoneNumbers.BinarySearch(phoneNumber, PhoneNumber.ByNameComparer);
+                return ind >= 0 ? ind : ~ind;
             }
             /// <summary>
             /// Определить, равна ли группа телефонных номеров заданной группе
@@ -181,14 +205,20 @@ namespace Scada.Comm.Devices.KpSms
                         PhoneGroups.Add(phoneGroup.Name, phoneGroup);
 
                     XmlNodeList phoneNumberNodes = phoneGroupElem.SelectNodes("PhoneNumber");
+                    HashSet<string> phoneNumberSet = new HashSet<string>(); // контроль уникальности номеров в группе
+
                     foreach (XmlElement phoneNumberElem in phoneNumberNodes)
                     {
                         PhoneNumber phoneNumber = new PhoneNumber(phoneNumberElem.GetAttribute("number"), 
                             phoneNumberElem.GetAttribute("name"));
-                        phoneGroup.PhoneNumbers.Add(phoneNumber);
+                        if (!phoneNumberSet.Contains(phoneNumber.Number))
+                        {
+                            phoneGroup.PhoneNumbers.Add(phoneNumber);
+                            phoneNumberSet.Add(phoneNumber.Number);
+                        }
                     }
 
-                    phoneGroup.PhoneNumbers.Sort();
+                    phoneGroup.PhoneNumbers.Sort(PhoneNumber.ByNameComparer);
                 }
 
                 errMsg = "";

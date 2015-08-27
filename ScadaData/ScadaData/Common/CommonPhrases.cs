@@ -45,8 +45,6 @@ namespace Scada
         public static string ErrorWithColon { get; private set; }
         public static string UnhandledException { get; private set; }
         public static string SaveSettingsConfirm { get; private set; }
-        public static string SaveModSettingsConfirm { get; private set; }
-        public static string SaveKpSettingsConfirm { get; private set; }
         public static string FileNotFound { get; private set; }
         public static string DirNotExists { get; private set; }
         public static string NamedFileNotFound { get; private set; }
@@ -58,8 +56,6 @@ namespace Scada
         public static string SaveAppSettingsError { get; private set; }
         public static string LoadCommSettingsError { get; private set; }
         public static string SaveCommSettingsError { get; private set; }
-        public static string LoadKpSettingsError { get; private set; }
-        public static string SaveKpSettingsError { get; private set; }
         public static string GridDataError { get; private set; }
         public static string IntegerRequired { get; private set; }
         public static string IntegerRangingRequired { get; private set; }
@@ -119,8 +115,6 @@ namespace Scada
             ErrorWithColon = "Ошибка:";
             UnhandledException = "Необработанное исключение";
             SaveSettingsConfirm = "Настройки были изменены. Сохранить изменения?";
-            SaveModSettingsConfirm = "Настройки модуля были изменены. Сохранить изменения?";
-            SaveKpSettingsConfirm = "Настройки КП были изменены. Сохранить изменения?";
             FileNotFound = "Не найден файл.";
             DirNotExists = "Директория не существует.";
             NamedFileNotFound = "Файл {0} не найден.";
@@ -132,8 +126,6 @@ namespace Scada
             SaveAppSettingsError = "Ошибка при сохранении настроек приложения";
             LoadCommSettingsError = "Ошибка при загрузке настроек соединения с сервером";
             SaveCommSettingsError = "Ошибка при сохранении настроек соединения с сервером";
-            LoadKpSettingsError = "Ошибка при загрузке настроек КП";
-            SaveKpSettingsError = "Ошибка при сохранении настроек КП";
             GridDataError = "Ошибка при работе с данными";
             IntegerRequired = "Требуется целое число.";
             IntegerRangingRequired = "Требуется целое число в диапазоне от {0} до {1}.";
@@ -197,8 +189,6 @@ namespace Scada
                 ErrorWithColon = dict.GetPhrase("ErrorWithColon", ErrorWithColon);
                 UnhandledException = dict.GetPhrase("UnhandledException", UnhandledException);
                 SaveSettingsConfirm = dict.GetPhrase("SaveSettingsConfirm", SaveSettingsConfirm);
-                SaveModSettingsConfirm = dict.GetPhrase("SaveModSettingsConfirm", SaveModSettingsConfirm);
-                SaveKpSettingsConfirm = dict.GetPhrase("SaveKpSettingsConfirm", SaveKpSettingsConfirm);
                 FileNotFound = dict.GetPhrase("FileNotFound", FileNotFound);
                 DirNotExists = dict.GetPhrase("DirNotExists", DirNotExists);
                 NamedFileNotFound = dict.GetPhrase("NamedFileNotFound", NamedFileNotFound);
@@ -210,8 +200,6 @@ namespace Scada
                 SaveAppSettingsError = dict.GetPhrase("SaveAppSettingsError", SaveAppSettingsError);
                 LoadCommSettingsError = dict.GetPhrase("LoadCommSettingsError", LoadCommSettingsError);
                 SaveCommSettingsError = dict.GetPhrase("SaveCommSettingsError", SaveCommSettingsError);
-                LoadKpSettingsError = dict.GetPhrase("LoadKpSettingsError", LoadKpSettingsError);
-                SaveKpSettingsError = dict.GetPhrase("SaveKpSettingsError", SaveKpSettingsError);
                 GridDataError = dict.GetPhrase("GridDataError", GridDataError);
                 IntegerRequired = dict.GetPhrase("IntegerRequired", IntegerRequired);
                 IntegerRangingRequired = dict.GetPhrase("IntegerRangingRequired", IntegerRangingRequired);

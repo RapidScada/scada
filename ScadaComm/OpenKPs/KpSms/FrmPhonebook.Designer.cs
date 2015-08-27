@@ -39,6 +39,10 @@
             this.btnCreateNumber = new System.Windows.Forms.ToolStripButton();
             this.btnEdit = new System.Windows.Forms.ToolStripButton();
             this.btnDelete = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnCutNumber = new System.Windows.Forms.ToolStripButton();
+            this.btnCopyNumber = new System.Windows.Forms.ToolStripButton();
+            this.btnPasteNumber = new System.Windows.Forms.ToolStripButton();
             this.tvPhonebook = new System.Windows.Forms.TreeView();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.pnlBottom.SuspendLayout();
@@ -83,7 +87,11 @@
             this.btnCreateGroup,
             this.btnCreateNumber,
             this.btnEdit,
-            this.btnDelete});
+            this.btnDelete,
+            this.toolStripSeparator1,
+            this.btnCutNumber,
+            this.btnCopyNumber,
+            this.btnPasteNumber});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Size = new System.Drawing.Size(334, 25);
@@ -130,6 +138,41 @@
             this.btnDelete.ToolTipText = "Удалить";
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // btnCutNumber
+            // 
+            this.btnCutNumber.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnCutNumber.Image = ((System.Drawing.Image)(resources.GetObject("btnCutNumber.Image")));
+            this.btnCutNumber.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnCutNumber.Name = "btnCutNumber";
+            this.btnCutNumber.Size = new System.Drawing.Size(23, 22);
+            this.btnCutNumber.ToolTipText = "Вырезать номер";
+            this.btnCutNumber.Click += new System.EventHandler(this.btnCutNumber_Click);
+            // 
+            // btnCopyNumber
+            // 
+            this.btnCopyNumber.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnCopyNumber.Image = ((System.Drawing.Image)(resources.GetObject("btnCopyNumber.Image")));
+            this.btnCopyNumber.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnCopyNumber.Name = "btnCopyNumber";
+            this.btnCopyNumber.Size = new System.Drawing.Size(23, 22);
+            this.btnCopyNumber.ToolTipText = "Копировать номер";
+            this.btnCopyNumber.Click += new System.EventHandler(this.btnCopyNumber_Click);
+            // 
+            // btnPasteNumber
+            // 
+            this.btnPasteNumber.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnPasteNumber.Image = ((System.Drawing.Image)(resources.GetObject("btnPasteNumber.Image")));
+            this.btnPasteNumber.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnPasteNumber.Name = "btnPasteNumber";
+            this.btnPasteNumber.Size = new System.Drawing.Size(23, 22);
+            this.btnPasteNumber.ToolTipText = "Вставить номер";
+            this.btnPasteNumber.Click += new System.EventHandler(this.btnPasteNumber_Click);
+            // 
             // tvPhonebook
             // 
             this.tvPhonebook.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -148,6 +191,7 @@
             this.tvPhonebook.ShowRootLines = false;
             this.tvPhonebook.Size = new System.Drawing.Size(334, 396);
             this.tvPhonebook.TabIndex = 3;
+            this.tvPhonebook.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvPhonebook_AfterSelect);
             // 
             // imageList
             // 
@@ -197,5 +241,9 @@
         private System.Windows.Forms.ToolStripButton btnDelete;
         private System.Windows.Forms.ToolStripButton btnEdit;
         private System.Windows.Forms.ToolStripButton btnCreateNumber;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripButton btnCutNumber;
+        private System.Windows.Forms.ToolStripButton btnCopyNumber;
+        private System.Windows.Forms.ToolStripButton btnPasteNumber;
     }
 }

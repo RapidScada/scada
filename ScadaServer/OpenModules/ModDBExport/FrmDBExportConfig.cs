@@ -313,7 +313,7 @@ namespace Scada.Server.Modules.DBExport
         {
             if (Modified)
             {
-                DialogResult result = MessageBox.Show(CommonPhrases.SaveModSettingsConfirm,
+                DialogResult result = MessageBox.Show(ModPhrases.SaveModSettingsConfirm,
                     CommonPhrases.QuestionCaption, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 
                 switch (result)

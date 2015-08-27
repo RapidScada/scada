@@ -99,11 +99,15 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="Lang\KpSms.en-GB.xml" />
     <Content Include="Res\book.png" />
+    <Content Include="Res\copy.gif" />
+    <Content Include="Res\cut.gif" />
     <Content Include="Res\delete.png" />
     <Content Include="Res\edit.png" />
     <Content Include="Res\folder_closed.png" />
     <Content Include="Res\folder_open.png" />
+    <Content Include="Res\paste.gif" />
     <Content Include="Res\phone.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -247,6 +247,7 @@
     <Phrase key="SaveSrezTableConfirm">Snapshot table have been modified.&#13;&#10;Save the changes?</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Server.Modules">
+    <Phrase key="SaveModSettingsConfirm">Module settings have been modified. Save the changes?</Phrase>
     <Phrase key="LoadModSettingsError">Error loading module settings</Phrase>
     <Phrase key="SaveModSettingsError">Error saving module settings</Phrase>
     <Phrase key="ConfigureModule">Configure the module and restart SCADA-Server service</Phrase>
