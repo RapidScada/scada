@@ -119,10 +119,7 @@ namespace Scada.Comm.Devices.KpSms
         {
             // создание группы телефонных номеров и копирование в неё телефонов
             newGroup = new Phonebook.PhoneGroup(txtName.Text.Trim());
-
-            foreach (Phonebook.PhoneNumber phoneNumber in oldGroup.PhoneNumbers.Values)
-                newGroup.PhoneNumbers.Add(phoneNumber.Name, phoneNumber);
-
+            newGroup.PhoneNumbers.AddRange(oldGroup.PhoneNumbers);
             DialogResult = DialogResult.OK;
         }
     }

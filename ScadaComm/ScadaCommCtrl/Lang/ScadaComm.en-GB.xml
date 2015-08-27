@@ -244,6 +244,12 @@
     <Phrase key="lblRemoteIpAddress">Remote IP address</Phrase>
     <Phrase key="pbRemoteIpAddressHint.ToolTip">The default remote IP address.&#13;&#10;It can be used, for example, if the devices are connected via an Ethernet - Serial gateway.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Comm.Devices">
+    <Phrase key="LoadKpDllSettingsError">Error loading device library settings</Phrase>
+    <Phrase key="SaveKpDllSettingsError">Error saving device library settings</Phrase>
+    <Phrase key="LoadKPSettingsError">Error loading device settings</Phrase>
+    <Phrase key="SaveKPSettingsError">Error saving device settings</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Comm.Devices.KPFactory">
     <Phrase key="GetViewTypeError">Error getting device interface type from the library {0}</Phrase>
     <Phrase key="CreateViewError">Error creating device interface instance of the class {0}</Phrase>

@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml;
 
 namespace Scada.Comm.Devices.KpSms
 {
@@ -38,7 +39,7 @@ namespace Scada.Comm.Devices.KpSms
         /// <summary>
         /// Телефонный номер
         /// </summary>
-        public class PhoneNumber
+        public class PhoneNumber : IComparable<PhoneNumber>
         {
             /// <summary>
             /// Конструктор
@@ -64,6 +65,23 @@ namespace Scada.Comm.Devices.KpSms
             /// Получить или установить имя владельца
             /// </summary>
             public string Name { get; set; }
+
+            /// <summary>
+            /// Сравнить телефонный номер с другим по имени владельца
+            /// </summary>
+            public int CompareTo(PhoneNumber other)
+            {
+                return Name.CompareTo(other);
+            }
+            /// <summary>
+            /// Определить, равен ли телефонный номер заданному номеру
+            /// </summary>
+            public bool Equals(PhoneNumber other)
+            {
+                return other != null &&
+                    string.Equals(Number, other.Number, StringComparison.OrdinalIgnoreCase) &&
+                    string.Equals(Name, other.Name, StringComparison.OrdinalIgnoreCase);
+            }
         }
 
         /// <summary>
@@ -84,7 +102,7 @@ namespace Scada.Comm.Devices.KpSms
             public PhoneGroup(string name)
             {
                 Name = name ?? "";
-                PhoneNumbers = new SortedList<string, PhoneNumber>();
+                PhoneNumbers = new List<PhoneNumber>();
             }
 
             /// <summary>
@@ -94,7 +112,28 @@ namespace Scada.Comm.Devices.KpSms
             /// <summary>
             /// Получить телефонные номера, упорядоченные по имени владельца
             /// </summary>
-            public SortedList<string, PhoneNumber> PhoneNumbers { get; private set; }
+            public List<PhoneNumber> PhoneNumbers { get; private set; }
+
+            /// <summary>
+            /// Найти индекс телефонного номера в списке
+            /// </summary>
+            public int FindPhoneNumber(string number)
+            {
+                int cnt = PhoneNumbers.Count;
+                for (int i = 0; i < cnt; i++)
+                {
+                    if (PhoneNumbers[i].Number.Equals(number, StringComparison.OrdinalIgnoreCase))
+                        return i;
+                }
+                return -1;
+            }
+            /// <summary>
+            /// Определить, равна ли группа телефонных номеров заданной группе
+            /// </summary>
+            public bool Equals(PhoneGroup other)
+            {
+                return other != null && string.Equals(Name, other.Name, StringComparison.OrdinalIgnoreCase);
+            }
         }
 
 
@@ -124,8 +163,42 @@ namespace Scada.Comm.Devices.KpSms
         /// </summary>
         public bool Load(string fileName, out string errMsg)
         {
-            errMsg = "";
-            return true;
+            try
+            {
+                // очистка справочника
+                PhoneGroups.Clear();
+
+                // загрузка справочника
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.Load(fileName);
+
+                XmlNodeList phoneGroupNodes = xmlDoc.DocumentElement.SelectNodes("PhoneGroup");
+
+                foreach (XmlElement phoneGroupElem in phoneGroupNodes)
+                {
+                    PhoneGroup phoneGroup = new PhoneGroup(phoneGroupElem.GetAttribute("name"));
+                    if (!PhoneGroups.ContainsKey(phoneGroup.Name))
+                        PhoneGroups.Add(phoneGroup.Name, phoneGroup);
+
+                    XmlNodeList phoneNumberNodes = phoneGroupElem.SelectNodes("PhoneNumber");
+                    foreach (XmlElement phoneNumberElem in phoneNumberNodes)
+                    {
+                        PhoneNumber phoneNumber = new PhoneNumber(phoneNumberElem.GetAttribute("number"), 
+                            phoneNumberElem.GetAttribute("name"));
+                        phoneGroup.PhoneNumbers.Add(phoneNumber);
+                    }
+
+                    phoneGroup.PhoneNumbers.Sort();
+                }
+
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = CommPhrases.LoadKpDllSettingsError + ":" + Environment.NewLine + ex.Message;
+                return false;
+            }
         }
 
         /// <summary>
@@ -133,8 +206,40 @@ namespace Scada.Comm.Devices.KpSms
         /// </summary>
         public bool Save(string fileName, out string errMsg)
         {
-            errMsg = "";
-            return true;
+            try
+            {
+                XmlDocument xmlDoc = new XmlDocument();
+
+                XmlDeclaration xmlDecl = xmlDoc.CreateXmlDeclaration("1.0", "utf-8", null);
+                xmlDoc.AppendChild(xmlDecl);
+
+                XmlElement rootElem = xmlDoc.CreateElement("Phonebook");
+                xmlDoc.AppendChild(rootElem);
+
+                foreach (PhoneGroup phoneGroup in PhoneGroups.Values)
+                {
+                    XmlElement phoneGroupElem = xmlDoc.CreateElement("PhoneGroup");
+                    phoneGroupElem.SetAttribute("name", phoneGroup.Name);
+                    rootElem.AppendChild(phoneGroupElem);
+
+                    foreach (PhoneNumber phoneNumber in phoneGroup.PhoneNumbers)
+                    {
+                        XmlElement phoneNumberElem = xmlDoc.CreateElement("PhoneNumber");
+                        phoneNumberElem.SetAttribute("number", phoneNumber.Number);
+                        phoneNumberElem.SetAttribute("name", phoneNumber.Name);
+                        phoneGroupElem.AppendChild(phoneNumberElem);
+                    }
+                }
+
+                xmlDoc.Save(fileName);
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = CommPhrases.SaveKpDllSettingsError + ":" + Environment.NewLine + ex.Message;
+                return false;
+            }
         }
     }
 }

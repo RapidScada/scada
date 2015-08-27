@@ -52,6 +52,12 @@ namespace Scada.Comm
         // Словарь Scada.Comm.Channels.FrmCommTcpClientProps
         public static string IpAddressRequired { get; private set; }
 
+        // Словарь Scada.Comm.Devices
+        public static string LoadKpDllSettingsError { get; private set; }
+        public static string SaveKpDllSettingsError { get; private set; }
+        public static string LoadKPSettingsError { get; private set; }
+        public static string SaveKPSettingsError { get; private set; }
+
         // Словарь Scada.Comm.Devices.KPFactory
         public static string GetViewTypeError { get; private set; }
         public static string CreateViewError { get; private set; }
@@ -83,6 +89,11 @@ namespace Scada.Comm
             IncorrectLineSettings = "Некорректная конфигурация линии связи {0}";
 
             IpAddressRequired = "Требуется IP-адрес.";
+
+            LoadKpDllSettingsError = "Ошибка при загрузке настроек библиотеки КП";
+            SaveKpDllSettingsError = "Ошибка при сохранении настроек библиотеки КП";
+            LoadKPSettingsError = "Ошибка при загрузке настроек КП";
+            SaveKPSettingsError = "Ошибка при сохранении настроек КП";
 
             GetViewTypeError = "Ошибка при получении типа интерфейса КП из библиотеки {0}";
             CreateViewError = "Ошибка при создании экземпляра класса интерфейса КП {0}";
@@ -143,6 +154,14 @@ namespace Scada.Comm
 
             if (Localization.Dictionaries.TryGetValue("Scada.Comm.Channels.FrmCommTcpClientProps", out dict))
                 IpAddressRequired = dict.GetPhrase("IpAddressRequired", IpAddressRequired);
+
+            if (Localization.Dictionaries.TryGetValue("Scada.Comm.Devices", out dict))
+            {
+                LoadKpDllSettingsError = dict.GetPhrase("LoadKpDllSettingsError", LoadKpDllSettingsError);
+                SaveKpDllSettingsError = dict.GetPhrase("SaveKpDllSettingsError", SaveKpDllSettingsError);
+                LoadKPSettingsError = dict.GetPhrase("LoadKPSettingsError", LoadKPSettingsError);
+                SaveKPSettingsError = dict.GetPhrase("SaveKPSettingsError", SaveKPSettingsError);
+            }
 
             if (Localization.Dictionaries.TryGetValue("Scada.Comm.Devices.KPFactory", out dict))
             {
