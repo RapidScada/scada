@@ -460,6 +460,22 @@ namespace Scada.Comm.Devices.KpSms
             SetButtonsEnabled();
         }
 
+        private void tvPhonebook_BeforeExpand(object sender, TreeViewCancelEventArgs e)
+        {
+            // установить иконку, если группа была развёрнута
+            TreeNode node = e.Node;
+            if (node.Tag is Phonebook.PhoneGroup)
+                node.ImageKey = node.SelectedImageKey = "folder_open.png";
+        }
+
+        private void tvPhonebook_BeforeCollapse(object sender, TreeViewCancelEventArgs e)
+        {
+            // установить иконку, если группа была свёрнута
+            TreeNode node = e.Node;
+            if (node.Tag is Phonebook.PhoneGroup)
+                node.ImageKey = node.SelectedImageKey = "folder_closed.png";
+        }
+
         private void btnSave_Click(object sender, EventArgs e)
         {
             // сохранение телефонного справочника

@@ -191,6 +191,8 @@
             this.tvPhonebook.ShowRootLines = false;
             this.tvPhonebook.Size = new System.Drawing.Size(334, 396);
             this.tvPhonebook.TabIndex = 3;
+            this.tvPhonebook.BeforeCollapse += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvPhonebook_BeforeCollapse);
+            this.tvPhonebook.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvPhonebook_BeforeExpand);
             this.tvPhonebook.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvPhonebook_AfterSelect);
             // 
             // imageList
