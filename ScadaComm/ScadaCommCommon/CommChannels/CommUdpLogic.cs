@@ -188,7 +188,9 @@ namespace Scada.Comm.Channels
             byte[] buf = udpConn.UdpClient.EndReceive(ar, ref remoteEP);
             udpConn.RemoteAddress = remoteEP.Address.ToString();
             udpConn.RemotePort = remoteEP.Port;
-            WriteToLog(string.Format(Localization.UseRussian ? "{0} Получены данные от {1}:{2}" :
+            WriteToLog("");
+            WriteToLog(string.Format(Localization.UseRussian ? 
+                "{0} Получены данные от {1}:{2}" :
                 "{0} Data received from {1}:{2}", CommUtils.GetNowDT(), udpConn.RemoteAddress, udpConn.RemotePort));
 
             if (buf == null)
@@ -294,7 +296,7 @@ namespace Scada.Comm.Channels
         /// </summary>
         public override void BeforeSession(KPLogic kpLogic)
         {
-            if (udpConn != null)
+            if (udpConn != null && Behavior == OperatingBehaviors.Master)
                 udpConn.RemoteAddress = string.IsNullOrEmpty(kpLogic.CallNum) ? 
                     settings.RemoteIpAddress : kpLogic.CallNum;
         }
