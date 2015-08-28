@@ -125,9 +125,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\tooltip.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\info_tooltip.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
