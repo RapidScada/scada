@@ -145,9 +145,9 @@ namespace Scada.Data
                 if (KPNum > 0)
                     sb.Append(", номер КП = ").Append(KPNum);
                 if (CmdTypeID == BaseValues.CmdTypes.Standard)
-                    sb.Append("значение = ").AppendFormat(Localization.Culture, "N3", CmdVal);
+                    sb.Append(", значение = ").AppendFormat(Localization.Culture, "N3", CmdVal);
                 if (CmdTypeID == BaseValues.CmdTypes.Binary && CmdData != null)
-                    sb.Append("данные = ").Append(ScadaUtils.BytesToHex(CmdData, 0, 
+                    sb.Append(", данные = ").Append(ScadaUtils.BytesToHex(CmdData, 0, 
                         Math.Min(VisCmdDataLen, CmdData.Length)));
             }
             else
@@ -161,9 +161,9 @@ namespace Scada.Data
                 if (KPNum > 0)
                     sb.Append(", device num. = ").Append(KPNum);
                 if (CmdTypeID == BaseValues.CmdTypes.Standard)
-                    sb.Append("value = ").AppendFormat(Localization.Culture, "N3", CmdVal);
+                    sb.Append(", value = ").AppendFormat(Localization.Culture, "N3", CmdVal);
                 if (CmdTypeID == BaseValues.CmdTypes.Binary && CmdData != null)
-                    sb.Append("data = ").Append(ScadaUtils.BytesToHex(CmdData, 0,
+                    sb.Append(", data = ").Append(ScadaUtils.BytesToHex(CmdData, 0,
                         Math.Min(VisCmdDataLen, CmdData.Length)));
             }
 
