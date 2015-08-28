@@ -162,6 +162,7 @@ namespace Scada.Comm.Devices.KpSms
             group.PhoneNumbers.Insert(ind, number);
             TreeNode node = CreateNumberNode(number);
             groupNode.Nodes.Insert(ind, node);
+            groupNode.ImageKey = groupNode.SelectedImageKey = "folder_open.png";
             tvPhonebook.SelectedNode = node;
         }
 
@@ -195,6 +196,8 @@ namespace Scada.Comm.Devices.KpSms
         {
             group.PhoneNumbers.RemoveAt(numberInd);
             groupNode.Nodes.RemoveAt(numberInd);
+            if (groupNode.Nodes.Count == 0)
+                groupNode.ImageKey = groupNode.SelectedImageKey = "folder_closed.png";
         }
 
         /// <summary>
