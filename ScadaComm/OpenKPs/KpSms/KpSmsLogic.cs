@@ -33,6 +33,8 @@ using System.Threading;
 using System.Text;
 using Scada.Data;
 using Scada.Comm.Channels;
+using Scada.Comm.Devices.KpSms;
+using System.IO;
 
 namespace Scada.Comm.Devices
 {
@@ -88,6 +90,7 @@ namespace Scada.Comm.Devices
         private readonly Connection.TextStopCondition OkErrStopCond = new Connection.TextStopCondition("OK", "ERROR");
 
         private bool primary;          // основной КП на линии связи, обмен данными с GSM-терминалом
+        private Phonebook phonebook;   // телефонный справочник
         List<Message> messageList;     // список сообщений, полученных GSM-терминалом
 
 
@@ -98,6 +101,7 @@ namespace Scada.Comm.Devices
             : base(number)
         {
             primary = false;
+            phonebook = null;
             messageList = new List<Message>();            
             CanSendCmd = true;
 
@@ -113,6 +117,243 @@ namespace Scada.Comm.Devices
                 kpTags.Add(new KPTag(2, "Event count"));
             }
             InitKPTags(kpTags);
+        }
+
+
+        /// <summary>
+        /// Декодировать телефонный номер
+        /// </summary>
+        private static string DecodePhone(string phoneNumber)
+        {
+            StringBuilder result = new StringBuilder();
+            if (phoneNumber.StartsWith("91"))
+                result.Append("+");
+
+            for (int i = 2; i < phoneNumber.Length; i += 2)
+            {
+                if (i + 1 < phoneNumber.Length)
+                {
+                    char c = phoneNumber[i + 1];
+                    if ('0' <= c && c <= '9') 
+                        result.Append(c);
+
+                    c = phoneNumber[i];
+                    if ('0' <= c && c <= '9') 
+                        result.Append(c);
+                }
+            }
+
+            return result.ToString();
+        }
+
+        /// <summary>
+        /// Закодировать телефонный номер
+        /// </summary>
+        private static string EncodePhone(string phoneNumber)
+        {
+            StringBuilder result = new StringBuilder();
+            int phoneLen = phoneNumber.Length;
+
+            if (phoneLen > 0)
+            {
+                if (phoneNumber[0] == '+')
+                {
+                    phoneNumber = phoneNumber.Substring(1);
+                    result.Append("91");
+                    phoneLen--;
+                }
+                else
+                    result.Append("81");
+
+                int i = 1;
+                while (i < phoneLen)
+                {
+                    result.Append(phoneNumber[i]);
+                    result.Append(phoneNumber[i - 1]);
+                    i += 2;
+                }
+                if (i == phoneLen)
+                {
+                    result.Append('F');
+                    result.Append(phoneNumber[i - 1]);
+                }
+            }
+
+            return phoneLen.ToString("X2") + result.ToString();
+        }
+
+        /// <summary>
+        /// Преобразовать символьную запись 16-ричного числа в байт
+        /// </summary>
+        private static byte HexToByte(string s)
+        {
+            try { return (byte)int.Parse(s, NumberStyles.HexNumber);}
+            catch { return 0; }
+        }
+
+        /// <summary>
+        /// Декодировать текст в 7-битной кодировке
+        /// </summary>
+        private static string Decode7bitText(string text)
+        {
+            byte[] MaskL = new byte[] {0xFE, 0xFC, 0xF8, 0xF0, 0xE0, 0xC0, 0x80};
+            byte[] MaskR = new byte[] {0x01, 0x03, 0x07, 0x0F, 0x1F, 0x3F, 0x7F};
+
+            // замена пар символов на их 16-ричные значения и запись в буфер
+            byte[] buf = new byte[text.Length / 2];
+            int bufPos = 0;
+            for (int i = 0; i < text.Length - 1; i += 2)
+                buf[bufPos++] = HexToByte(text.Substring(i, 2));
+
+            // расшифровка
+            byte[] result = new byte[text.Length];
+            int resPos = 0;
+            byte part = 0;
+            byte bit = 7;
+
+            for (int i = 0; i < bufPos; i++)
+            {
+                byte b = buf[i];
+                byte sym = (byte)((part >> (bit + 1)) | ((b & MaskR[bit - 1]) << (7 - bit)));
+                part = (byte)(b & MaskL[bit - 1]);
+                result[resPos++] = sym;
+
+                if (--bit == 0)
+                {
+                    sym = (byte)((b & 0xFE) >> 1);
+                    part = 0;
+
+                    result[resPos++] = sym;
+                    bit = 7;
+                }
+            }
+
+            return resPos > 0 ? new string(Encoding.Default.GetChars(result, 0, resPos)) : "";
+        }
+
+        /// <summary>
+        /// Закодировать текст в 7-битную кодировку
+        /// </summary>
+        private static List<byte> Encode7bitText(string text)
+        {
+            List<byte> result = new List<byte>();
+            byte[] bytes = Encoding.Default.GetBytes(text);
+
+            byte bit = 7; // от 7 до 1
+            int i = 0;
+            int len = bytes.Length;
+            while (i < len)
+            {
+                byte sym = (byte)(bytes[i] & 0x7F);
+                byte nextSym = i < len - 1 ? (byte)(bytes[i + 1] & 0x7F) : (byte)0;
+                byte code = (byte)((sym >> (7 - bit)) | (nextSym << bit));
+
+                if (bit == 1)
+                {
+                    i++;
+                    bit = 7;
+                }
+                else
+                    bit--;
+
+                result.Add(code);
+                i++;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Декодировать текст в 8-битной кодировке
+        /// </summary>
+        private static string Decode8bitText(string text)
+        {
+            byte[] buf = new byte[text.Length / 2];
+            int bufPos = 0;
+
+            for (int i = 0; i < text.Length - 1; i += 2)
+                buf[bufPos++] = HexToByte(text.Substring(i, 2));
+
+            return bufPos > 0 ? new string(Encoding.Default.GetChars(buf, 0, bufPos)) : "";
+        }
+
+        /// <summary>
+        /// Декодировать текст в кодировке Unicode
+        /// </summary>
+        private static string DecodeUnicodeText(string text)
+        {
+            StringBuilder result = new StringBuilder();
+
+            for (int i = 0; i < text.Length - 3; i += 4)
+                try
+                {
+                    int val = int.Parse(text.Substring(i, 4), NumberStyles.HexNumber);
+                    result.Append(char.ConvertFromUtf32(val));
+                }
+                catch { }
+
+            return result.ToString();
+        }
+
+        /// <summary>
+        /// Закодировать текст в кодировку Unicode
+        /// </summary>
+        private static List<byte> EncodeUnicodeText(string text)
+        {
+            List<byte> result = new List<byte>();
+
+            for (int i = 0; i < text.Length; i++)
+            {
+                int val = char.ConvertToUtf32(text, i);
+                result.Add((byte)(val >> 8 & 0xFF));
+                result.Add((byte)(val & 0xFF));
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Создать Protocol Data Unit для передачи сообщения
+        /// </summary>
+        private static string MakePDU(string phoneNumber, string msgText, out int pduLen)
+        {
+            // выбор кодировки
+            bool sevenBit = true;
+            for (int i = 0; i < msgText.Length && sevenBit; i++)
+            {
+                char c = msgText[i];
+                if ((c < ' ' || c > 'z') && c != '\n')
+                    sevenBit = false;
+            }
+
+            // установка длины текста, допустимой для передачи
+            if (sevenBit)
+            {
+                if (msgText.Length > 140)
+                    msgText = msgText.Substring(0, 140);
+            }
+            else
+            {
+                if (msgText.Length > 70)
+                    msgText = msgText.Substring(0, 70);
+            }
+
+            // формирование PDU
+            StringBuilder pdu = new StringBuilder();
+            pdu.Append("00");                     // Service Center Adress (SCA)
+            pdu.Append("01");                     // PDU-type
+            pdu.Append("00");                     // Message Reference (MR)
+            pdu.Append(EncodePhone(phoneNumber)); // Destination Adress (DA)
+            pdu.Append("00");                     // Protocol Identifier (PID)
+            pdu.Append(sevenBit ? "00" : "08");   // Data Coding Scheme (DCS)
+
+            List<byte> ud = sevenBit ? Encode7bitText(msgText) : EncodeUnicodeText(msgText);
+            pdu.Append(ud.Count.ToString("X2"));  // User Data Length (UDL)
+            foreach (byte b in ud)
+                pdu.Append(b.ToString("X2"));     // User Data (UD)
+
+            pduLen = (pdu.Length - 2) / 2;
+            return pdu.ToString();
         }
 
 
@@ -230,242 +471,6 @@ namespace Scada.Comm.Devices
 
             errMsg = errMsgSB.ToString();
             return errMsg == "";
-        }
-
-        /// <summary>
-        /// Декодировать телефонный номер
-        /// </summary>
-        private string DecodePhone(string phone)
-        {
-            StringBuilder result = new StringBuilder();
-            if (phone.StartsWith("91"))
-                result.Append("+");
-
-            for (int i = 2; i < phone.Length; i += 2)
-            {
-                if (i + 1 < phone.Length)
-                {
-                    char c = phone[i + 1];
-                    if ('0' <= c && c <= '9') 
-                        result.Append(c);
-
-                    c = phone[i];
-                    if ('0' <= c && c <= '9') 
-                        result.Append(c);
-                }
-            }
-
-            return result.ToString();
-        }
-
-        /// <summary>
-        /// Закодировать телефонный номер
-        /// </summary>
-        private string EncodePhone(string phone)
-        {
-            StringBuilder result = new StringBuilder();
-            int phoneLen = phone.Length;
-
-            if (phoneLen > 0)
-            {
-                if (phone[0] == '+')
-                {
-                    phone = phone.Substring(1);
-                    result.Append("91");
-                    phoneLen--;
-                }
-                else
-                    result.Append("81");
-
-                int i = 1;
-                while (i < phoneLen)
-                {
-                    result.Append(phone[i]);
-                    result.Append(phone[i - 1]);
-                    i += 2;
-                }
-                if (i == phoneLen)
-                {
-                    result.Append('F');
-                    result.Append(phone[i - 1]);
-                }
-            }
-
-            return phoneLen.ToString("X2") + result.ToString();
-        }
-
-        /// <summary>
-        /// Преобразовать символьную запись 16-ричного числа в байт
-        /// </summary>
-        private byte HexToByte(string s)
-        {
-            try { return (byte)int.Parse(s, NumberStyles.HexNumber);}
-            catch { return 0; }
-        }
-
-        /// <summary>
-        /// Декодировать текст в 7-битной кодировке
-        /// </summary>
-        private string Decode7bitText(string text)
-        {
-            byte[] MaskL = new byte[] {0xFE, 0xFC, 0xF8, 0xF0, 0xE0, 0xC0, 0x80};
-            byte[] MaskR = new byte[] {0x01, 0x03, 0x07, 0x0F, 0x1F, 0x3F, 0x7F};
-
-            // замена пар символов на их 16-ричные значения и запись в буфер
-            byte[] buf = new byte[text.Length / 2];
-            int bufPos = 0;
-            for (int i = 0; i < text.Length - 1; i += 2)
-                buf[bufPos++] = HexToByte(text.Substring(i, 2));
-
-            // расшифровка
-            byte[] result = new byte[text.Length];
-            int resPos = 0;
-            byte part = 0;
-            byte bit = 7;
-
-            for (int i = 0; i < bufPos; i++)
-            {
-                byte b = buf[i];
-                byte sym = (byte)((part >> (bit + 1)) | ((b & MaskR[bit - 1]) << (7 - bit)));
-                part = (byte)(b & MaskL[bit - 1]);
-                result[resPos++] = sym;
-
-                if (--bit == 0)
-                {
-                    sym = (byte)((b & 0xFE) >> 1);
-                    part = 0;
-
-                    result[resPos++] = sym;
-                    bit = 7;
-                }
-            }
-
-            return resPos > 0 ? new string(Encoding.Default.GetChars(result, 0, resPos)) : "";
-        }
-
-        /// <summary>
-        /// Закодировать текст в 7-битную кодировку
-        /// </summary>
-        private List<byte> Encode7bitText(string text)
-        {
-            List<byte> result = new List<byte>();
-            byte[] bytes = Encoding.Default.GetBytes(text);
-
-            byte bit = 7; // от 7 до 1
-            int i = 0;
-            int len = bytes.Length;
-            while (i < len)
-            {
-                byte sym = (byte)(bytes[i] & 0x7F);
-                byte nextSym = i < len - 1 ? (byte)(bytes[i + 1] & 0x7F) : (byte)0;
-                byte code = (byte)((sym >> (7 - bit)) | (nextSym << bit));
-
-                if (bit == 1)
-                {
-                    i++;
-                    bit = 7;
-                }
-                else
-                    bit--;
-
-                result.Add(code);
-                i++;
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Декодировать текст в 8-битной кодировке
-        /// </summary>
-        private string Decode8bitText(string text)
-        {
-            byte[] buf = new byte[text.Length / 2];
-            int bufPos = 0;
-
-            for (int i = 0; i < text.Length - 1; i += 2)
-                buf[bufPos++] = HexToByte(text.Substring(i, 2));
-
-            return bufPos > 0 ? new string(Encoding.Default.GetChars(buf, 0, bufPos)) : "";
-        }
-
-        /// <summary>
-        /// Декодировать текст в кодировке Unicode
-        /// </summary>
-        private string DecodeUnicodeText(string text)
-        {
-            StringBuilder result = new StringBuilder();
-
-            for (int i = 0; i < text.Length - 3; i += 4)
-                try
-                {
-                    int val = int.Parse(text.Substring(i, 4), NumberStyles.HexNumber);
-                    result.Append(char.ConvertFromUtf32(val));
-                }
-                catch { }
-
-            return result.ToString();
-        }
-
-        /// <summary>
-        /// Закодировать текст в кодировку Unicode
-        /// </summary>
-        private List<byte> EncodeUnicodeText(string text)
-        {
-            List<byte> result = new List<byte>();
-
-            for (int i = 0; i < text.Length; i++)
-            {
-                int val = char.ConvertToUtf32(text, i);
-                result.Add((byte)(val >> 8 & 0xFF));
-                result.Add((byte)(val & 0xFF));
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Создать Protocol Data Unit для передачи сообщения
-        /// </summary>
-        private string MakePDU(string phone, string text, out int pduLen)
-        {
-            // выбор кодировки
-            bool sevenBit = true;
-            for (int i = 0; i < text.Length && sevenBit; i++)
-            {
-                char c = text[i];
-                if ((c < ' ' || c > 'z') && c != '\n')
-                    sevenBit = false;
-            }
-
-            // установка длины текста, допустимой для передачи
-            if (sevenBit)
-            {
-                if (text.Length > 140)
-                    text = text.Substring(0, 140);
-            }
-            else
-            {
-                if (text.Length > 70)
-                    text = text.Substring(0, 70);
-            }
-
-            // формирование PDU
-            StringBuilder pdu = new StringBuilder();
-            pdu.Append("00");                     // Service Center Adress (SCA)
-            pdu.Append("01");                     // PDU-type
-            pdu.Append("00");                     // Message Reference (MR)
-            pdu.Append(EncodePhone(phone));       // Destination Adress (DA)
-            pdu.Append("00");                     // Protocol Identifier (PID)
-            pdu.Append(sevenBit ? "00" : "08");   // Data Coding Scheme (DCS)
-
-            List<byte> ud = sevenBit ? Encode7bitText(text) : EncodeUnicodeText(text);
-            pdu.Append(ud.Count.ToString("X2"));  // User Data Length (UDL)
-            foreach (byte b in ud)
-                pdu.Append(b.ToString("X2"));     // User Data (UD)
-
-            pduLen = (pdu.Length - 2) / 2;
-            return pdu.ToString();
         }
 
         /// <summary>
@@ -714,6 +719,44 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
+        /// Отправить SMS по заданным номерам
+        /// </summary>
+        private bool SendMessages(string msgText, params string[] phoneNumbers)
+        {
+            bool responseOK = true;
+
+            foreach (string phoneNumber in phoneNumbers)
+            {
+                WriteToLog(string.Format(Localization.UseRussian ?
+                    "Отправка SMS на номер {0}" :
+                    "Send message to {0}", phoneNumber));
+
+                int pduLen;
+                string pdu = MakePDU(phoneNumber, msgText, out pduLen);
+                Connection.WriteLine("AT+CMGS=" + pduLen);
+                Thread.Sleep(100);
+
+                try
+                {
+                    Connection.NewLine = "\x1A";
+                    Connection.WriteLine(pdu);
+                }
+                finally
+                {
+                    Connection.NewLine = "\x0D";
+                }
+
+                bool stopReceived;
+                Connection.ReadLines(ReqParams.Timeout, OkStopCond, out stopReceived);
+                if (!stopReceived)
+                    responseOK = false;
+                Thread.Sleep(ReqParams.Delay);
+            }
+
+            return responseOK;
+        }
+
+        /// <summary>
         /// Преобразовать данные тега КП в строку
         /// </summary>
         protected override string ConvertTagDataToStr(int signal, SrezTableLight.CnlData tagData)
@@ -763,39 +806,38 @@ namespace Scada.Comm.Devices
                     Connection.WriteToLog = WriteToLog;
                     if (cmd.CmdNum == 1)
                     {
-                        // отправка сообщения
-                        // данные команды: <телефон>;<текст> 
-                        // телефонный номер указывается только для основного КП на линии связи
+                        // извлечение адресата и текста сообщения из данных команды
+                        // для основного КП: <телефон или группа>;<текст сообщения> 
+                        // для остальных КП: <текст сообщения> 
                         int scPos = cmdData.IndexOf(';');
-                        string phone = primary ? (scPos > 0 ? cmdData.Substring(0, scPos).Trim() : "") : CallNum;
-                        string text = scPos < 0 ? cmdData : scPos + 1 < cmdData.Length ?
+                        string phoneOrGroup = primary ? 
+                            (scPos > 0 ? cmdData.Substring(0, scPos).Trim() : "") : CallNum.Trim();
+                        string msgText = scPos < 0 ? cmdData : scPos + 1 < cmdData.Length ?
                             cmdData.Substring(scPos + 1).Trim() : "";
 
-                        if (phone == "" || text == "")
+                        if (phoneOrGroup == "" || msgText == "")
                         {
                             WriteToLog(Localization.UseRussian ?
-                                "Отсутствует телефонный номер или текст сообщения" :
-                                "No telephone number or message text");
+                                "Телефонный номер, группа или текст сообщения отсутствует" :
+                                "Phone number, group or message text is missing");
                         }
                         else
                         {
-                            int pduLen;
-                            string pdu = MakePDU(phone, text, out pduLen);
-                            Connection.WriteLine("AT+CMGS=" + pduLen);
-                            Thread.Sleep(100);
-
-                            try
+                            // отправка сообщений
+                            Phonebook.PhoneGroup phoneGroup;
+                            if (phonebook != null && phonebook.PhoneGroups.TryGetValue(phoneOrGroup, out phoneGroup))
                             {
-                                Connection.NewLine = "\x1A";
-                                Connection.WriteLine(pdu);
+                                if (phoneGroup.PhoneNumbers.Count > 0)
+                                    lastCommSucc = SendMessages(msgText, phoneGroup.GetPhoneNumbers());
+                                else
+                                    WriteToLog(string.Format(Localization.UseRussian ? 
+                                        "Группа \"{0}\" пуста" : 
+                                        "The group \"{0}\" is empty", phoneOrGroup));
                             }
-                            finally
+                            else
                             {
-                                Connection.NewLine = "\x0D";
+                                lastCommSucc = SendMessages(msgText, phoneOrGroup);
                             }
-
-                            Connection.ReadLines(ReqParams.Timeout, OkStopCond, out lastCommSucc);
-                            Thread.Sleep(ReqParams.Delay);
                         }
                     }
                     else
@@ -825,7 +867,38 @@ namespace Scada.Comm.Devices
         public override void OnCommLineStart()
         {
             // определение, является ли КП основным на линии связи
-            primary = ReqParams.CmdLine.Trim().Equals("primary", StringComparison.OrdinalIgnoreCase);
+            // основным автоматически считается первый КП на линии связи
+            object primaryObj;
+            if (CommonProps.TryGetValue("KpSmsPrimary", out primaryObj))
+            {
+                primary = false;
+                phonebook = null;
+            }
+            else
+            {
+                primary = true;
+                CommonProps.Add("KpSmsPrimary", Caption);
+
+                // загрузка телефонного справочника
+                string fileName = AppDirs.ConfigDir + Phonebook.DefFileName;
+                if (File.Exists(fileName))
+                {
+                    WriteToLog(Localization.UseRussian ?
+                        "Загрузка телефонного справочника" :
+                        "Loading phone book");
+                    phonebook = new Phonebook();
+                    string errMsg;
+                    if (!phonebook.Load(fileName, out errMsg))
+                        ScadaUtils.ShowError(errMsg);
+                }
+                else
+                {
+                    phonebook = null;
+                    WriteToLog(Localization.UseRussian ?
+                        "Телефонный справочник отсутствует" :
+                        "Phone book is missing");
+                }
+            }
         }
 
         /// <summary>

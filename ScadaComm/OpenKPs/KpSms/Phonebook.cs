@@ -152,6 +152,17 @@ namespace Scada.Comm.Devices.KpSms
                 return ind >= 0 ? ind : ~ind;
             }
             /// <summary>
+            /// Получить массив телефонных номеров группы
+            /// </summary>
+            public string[] GetPhoneNumbers()
+            {
+                int cnt = PhoneNumbers.Count;
+                string[] phoneNumbers = new string[cnt];
+                for (int i = 0; i < cnt; i++)
+                    phoneNumbers[i] = PhoneNumbers[i].Number;
+                return phoneNumbers;
+            }
+            /// <summary>
             /// Определить, равна ли группа телефонных номеров заданной группе
             /// </summary>
             public bool Equals(PhoneGroup other)

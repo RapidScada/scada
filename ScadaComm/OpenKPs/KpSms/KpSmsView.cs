@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2009
- * Modified : 2014
+ * Modified : 2015
  */
 
 using Scada.Comm.Devices.KpSms;
@@ -64,15 +64,11 @@ namespace Scada.Comm.Devices
             {
                 return Localization.UseRussian ? 
                     "Отправка и приём SMS с использованием AT-команд.\n\n" +
-                    "Параметр командной строки:\n" +
-                    "primary - основной КП на линии связи, обмен данными с GSM-терминалом.\n\n" +
                     "Команды ТУ:\n" +
                     "1 (бинарная) - отправка SMS;\n" +
                     "2 (бинарная) - произвольная AT-команда." :
 
                     "Sending and receiving SMS messages using AT commands.\n\n" +
-                    "Command line parameter:\n" +
-                    "primary - main device of the communication line that communicates with GSM terminal.\n\n" +
                     "Commands:\n" +
                     "1 (binary) - send SMS message;\n" +
                     "2 (binary) - custom AT command.";
