@@ -82,26 +82,31 @@ namespace Scada.Comm.Devices
                     "Error creating device logic instance of the class {0}: {1}", kpLogicType.Name, ex.Message), ex);
             }
         }
+
+        /// <summary>
+        /// Получить тип интерфейса КП из библиотеки
+        /// </summary>
+        public static Type GetKPViewType(string kpDir, string dllName)
+        {
+            try
+            {
+                Assembly asm = Assembly.LoadFile(kpDir + dllName);
+                string typeFullName = "Scada.Comm.Devices." + Path.GetFileNameWithoutExtension(dllName) + "View";
+                return asm.GetType(typeFullName, true);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(string.Format(CommPhrases.GetViewTypeError, dllName) +
+                    ":\r\n" + ex.Message, ex);
+            }
+        }
         
         /// <summary>
         /// Получить экземпляр класса интерфейса КП, загрузив его тип из библиотеки
         /// </summary>
         public static KPView GetKPView(string kpDir, string dllName, int kpNum = 0)
         {
-            Type kpViewType;
-
-            try
-            {
-                Assembly asm = Assembly.LoadFile(kpDir + dllName);
-                string typeFullName = "Scada.Comm.Devices." + Path.GetFileNameWithoutExtension(dllName) + "View";
-                kpViewType = asm.GetType(typeFullName, true);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(string.Format(CommPhrases.GetViewTypeError, dllName) + 
-                    ":\r\n" + ex.Message, ex);
-            }
-
+            Type kpViewType = GetKPViewType(kpDir, dllName);
             return GetKPView(kpViewType, kpNum);
         }
 

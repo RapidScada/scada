@@ -32,62 +32,62 @@
             this.btnDeselectAll = new System.Windows.Forms.Button();
             this.lblKPSel = new System.Windows.Forms.Label();
             this.gbCnlsNumOptions = new System.Windows.Forms.GroupBox();
+            this.lblCtrlCnls = new System.Windows.Forms.Label();
+            this.lblInCnls = new System.Windows.Forms.Label();
+            this.numCtrlCnlsSpace = new System.Windows.Forms.NumericUpDown();
             this.numInCnlsSpace = new System.Windows.Forms.NumericUpDown();
             this.lblInCnlsSpace = new System.Windows.Forms.Label();
             this.lblInCnlsStart = new System.Windows.Forms.Label();
+            this.numCtrlCnlsShift = new System.Windows.Forms.NumericUpDown();
             this.numInCnlsShift = new System.Windows.Forms.NumericUpDown();
+            this.numCtrlCnlsMultiple = new System.Windows.Forms.NumericUpDown();
             this.numInCnlsMultiple = new System.Windows.Forms.NumericUpDown();
+            this.numCtrlCnlsStart = new System.Windows.Forms.NumericUpDown();
             this.numInCnlsStart = new System.Windows.Forms.NumericUpDown();
             this.lblInCnlsShift = new System.Windows.Forms.Label();
             this.lblInCnlsMult = new System.Windows.Forms.Label();
             this.btnCalc = new System.Windows.Forms.Button();
             this.btnCreate = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
-            this.numCtrlCnlsSpace = new System.Windows.Forms.NumericUpDown();
-            this.numCtrlCnlsShift = new System.Windows.Forms.NumericUpDown();
-            this.numCtrlCnlsMultiple = new System.Windows.Forms.NumericUpDown();
-            this.numCtrlCnlsStart = new System.Windows.Forms.NumericUpDown();
             this.gvKPSel = new System.Windows.Forms.DataGridView();
+            this.chkInsertKPName = new System.Windows.Forms.CheckBox();
+            this.gbAdditionalOptions = new System.Windows.Forms.GroupBox();
             this.colSelected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.colKPName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colObjNum = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.colDllFileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDllState = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colInCnls = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colCtrlCnls = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.chkInsertKPName = new System.Windows.Forms.CheckBox();
-            this.lblInCnls = new System.Windows.Forms.Label();
-            this.lblCtrlCnls = new System.Windows.Forms.Label();
-            this.gbAdditionalOptions = new System.Windows.Forms.GroupBox();
+            this.cbCommLineFilter = new System.Windows.Forms.ComboBox();
             this.gbCnlsNumOptions.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numInCnlsSpace)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numInCnlsShift)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numInCnlsMultiple)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numInCnlsStart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCtrlCnlsSpace)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numInCnlsSpace)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCtrlCnlsShift)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numInCnlsShift)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCtrlCnlsMultiple)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numInCnlsMultiple)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCtrlCnlsStart)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numInCnlsStart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvKPSel)).BeginInit();
             this.gbAdditionalOptions.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnSelectAll
             // 
-            this.btnSelectAll.Location = new System.Drawing.Point(441, 12);
+            this.btnSelectAll.Location = new System.Drawing.Point(416, 24);
             this.btnSelectAll.Name = "btnSelectAll";
             this.btnSelectAll.Size = new System.Drawing.Size(90, 23);
-            this.btnSelectAll.TabIndex = 1;
+            this.btnSelectAll.TabIndex = 2;
             this.btnSelectAll.Text = "Выбрать все";
             this.btnSelectAll.UseVisualStyleBackColor = true;
             this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
             // 
             // btnDeselectAll
             // 
-            this.btnDeselectAll.Location = new System.Drawing.Point(537, 12);
+            this.btnDeselectAll.Location = new System.Drawing.Point(512, 24);
             this.btnDeselectAll.Name = "btnDeselectAll";
             this.btnDeselectAll.Size = new System.Drawing.Size(90, 23);
-            this.btnDeselectAll.TabIndex = 2;
+            this.btnDeselectAll.TabIndex = 3;
             this.btnDeselectAll.Text = "Отменить все";
             this.btnDeselectAll.UseVisualStyleBackColor = true;
             this.btnDeselectAll.Click += new System.EventHandler(this.btnDeselectAll_Click);
@@ -95,11 +95,11 @@
             // lblKPSel
             // 
             this.lblKPSel.AutoSize = true;
-            this.lblKPSel.Location = new System.Drawing.Point(12, 17);
+            this.lblKPSel.Location = new System.Drawing.Point(9, 9);
             this.lblKPSel.Name = "lblKPSel";
-            this.lblKPSel.Size = new System.Drawing.Size(195, 13);
+            this.lblKPSel.Size = new System.Drawing.Size(192, 13);
             this.lblKPSel.TabIndex = 0;
-            this.lblKPSel.Text = "Выберите КП для создания каналов:";
+            this.lblKPSel.Text = "Выберите КП для создания каналов";
             // 
             // gbCnlsNumOptions
             // 
@@ -121,9 +121,45 @@
             this.gbCnlsNumOptions.Name = "gbCnlsNumOptions";
             this.gbCnlsNumOptions.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
             this.gbCnlsNumOptions.Size = new System.Drawing.Size(352, 143);
-            this.gbCnlsNumOptions.TabIndex = 4;
+            this.gbCnlsNumOptions.TabIndex = 5;
             this.gbCnlsNumOptions.TabStop = false;
             this.gbCnlsNumOptions.Text = "Нумерация каналов";
+            // 
+            // lblCtrlCnls
+            // 
+            this.lblCtrlCnls.AutoSize = true;
+            this.lblCtrlCnls.Location = new System.Drawing.Point(286, 16);
+            this.lblCtrlCnls.Name = "lblCtrlCnls";
+            this.lblCtrlCnls.Size = new System.Drawing.Size(52, 13);
+            this.lblCtrlCnls.TabIndex = 1;
+            this.lblCtrlCnls.Text = "Кан. упр.";
+            // 
+            // lblInCnls
+            // 
+            this.lblInCnls.AutoSize = true;
+            this.lblInCnls.Location = new System.Drawing.Point(230, 16);
+            this.lblInCnls.Name = "lblInCnls";
+            this.lblInCnls.Size = new System.Drawing.Size(46, 13);
+            this.lblInCnls.TabIndex = 0;
+            this.lblInCnls.Text = "Вх. кан.";
+            // 
+            // numCtrlCnlsSpace
+            // 
+            this.numCtrlCnlsSpace.Location = new System.Drawing.Point(289, 110);
+            this.numCtrlCnlsSpace.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numCtrlCnlsSpace.Name = "numCtrlCnlsSpace";
+            this.numCtrlCnlsSpace.Size = new System.Drawing.Size(50, 20);
+            this.numCtrlCnlsSpace.TabIndex = 13;
+            this.numCtrlCnlsSpace.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numCtrlCnlsSpace.ValueChanged += new System.EventHandler(this.numCnls_ValueChanged);
             // 
             // numInCnlsSpace
             // 
@@ -161,6 +197,24 @@
             this.lblInCnlsStart.TabIndex = 2;
             this.lblInCnlsStart.Text = "Нумеровать, начиная с ";
             // 
+            // numCtrlCnlsShift
+            // 
+            this.numCtrlCnlsShift.Location = new System.Drawing.Point(290, 84);
+            this.numCtrlCnlsShift.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numCtrlCnlsShift.Name = "numCtrlCnlsShift";
+            this.numCtrlCnlsShift.Size = new System.Drawing.Size(50, 20);
+            this.numCtrlCnlsShift.TabIndex = 10;
+            this.numCtrlCnlsShift.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numCtrlCnlsShift.ValueChanged += new System.EventHandler(this.numCnls_ValueChanged);
+            // 
             // numInCnlsShift
             // 
             this.numInCnlsShift.Location = new System.Drawing.Point(233, 84);
@@ -178,6 +232,29 @@
             0,
             0});
             this.numInCnlsShift.ValueChanged += new System.EventHandler(this.numCnls_ValueChanged);
+            // 
+            // numCtrlCnlsMultiple
+            // 
+            this.numCtrlCnlsMultiple.Location = new System.Drawing.Point(290, 58);
+            this.numCtrlCnlsMultiple.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numCtrlCnlsMultiple.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numCtrlCnlsMultiple.Name = "numCtrlCnlsMultiple";
+            this.numCtrlCnlsMultiple.Size = new System.Drawing.Size(50, 20);
+            this.numCtrlCnlsMultiple.TabIndex = 7;
+            this.numCtrlCnlsMultiple.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numCtrlCnlsMultiple.ValueChanged += new System.EventHandler(this.numCnls_ValueChanged);
             // 
             // numInCnlsMultiple
             // 
@@ -201,6 +278,29 @@
             0,
             0});
             this.numInCnlsMultiple.ValueChanged += new System.EventHandler(this.numCnls_ValueChanged);
+            // 
+            // numCtrlCnlsStart
+            // 
+            this.numCtrlCnlsStart.Location = new System.Drawing.Point(289, 32);
+            this.numCtrlCnlsStart.Maximum = new decimal(new int[] {
+            65535,
+            0,
+            0,
+            0});
+            this.numCtrlCnlsStart.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numCtrlCnlsStart.Name = "numCtrlCnlsStart";
+            this.numCtrlCnlsStart.Size = new System.Drawing.Size(50, 20);
+            this.numCtrlCnlsStart.TabIndex = 4;
+            this.numCtrlCnlsStart.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numCtrlCnlsStart.ValueChanged += new System.EventHandler(this.numCnls_ValueChanged);
             // 
             // numInCnlsStart
             // 
@@ -248,17 +348,17 @@
             this.btnCalc.Location = new System.Drawing.Point(12, 487);
             this.btnCalc.Name = "btnCalc";
             this.btnCalc.Size = new System.Drawing.Size(160, 23);
-            this.btnCalc.TabIndex = 6;
+            this.btnCalc.TabIndex = 7;
             this.btnCalc.Text = "Расчитать номера каналов";
             this.btnCalc.UseVisualStyleBackColor = true;
             this.btnCalc.Click += new System.EventHandler(this.btnCalc_Click);
             // 
             // btnCreate
             // 
-            this.btnCreate.Location = new System.Drawing.Point(476, 487);
+            this.btnCreate.Location = new System.Drawing.Point(446, 487);
             this.btnCreate.Name = "btnCreate";
             this.btnCreate.Size = new System.Drawing.Size(75, 23);
-            this.btnCreate.TabIndex = 7;
+            this.btnCreate.TabIndex = 8;
             this.btnCreate.Text = "Создать";
             this.btnCreate.UseVisualStyleBackColor = true;
             this.btnCreate.Click += new System.EventHandler(this.btnCreate_Click);
@@ -266,94 +366,12 @@
             // btnClose
             // 
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(557, 487);
+            this.btnClose.Location = new System.Drawing.Point(527, 487);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
-            this.btnClose.TabIndex = 8;
+            this.btnClose.TabIndex = 9;
             this.btnClose.Text = "Закрыть";
             this.btnClose.UseVisualStyleBackColor = true;
-            // 
-            // numCtrlCnlsSpace
-            // 
-            this.numCtrlCnlsSpace.Location = new System.Drawing.Point(289, 110);
-            this.numCtrlCnlsSpace.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numCtrlCnlsSpace.Name = "numCtrlCnlsSpace";
-            this.numCtrlCnlsSpace.Size = new System.Drawing.Size(50, 20);
-            this.numCtrlCnlsSpace.TabIndex = 13;
-            this.numCtrlCnlsSpace.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numCtrlCnlsSpace.ValueChanged += new System.EventHandler(this.numCnls_ValueChanged);
-            // 
-            // numCtrlCnlsShift
-            // 
-            this.numCtrlCnlsShift.Location = new System.Drawing.Point(290, 84);
-            this.numCtrlCnlsShift.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numCtrlCnlsShift.Name = "numCtrlCnlsShift";
-            this.numCtrlCnlsShift.Size = new System.Drawing.Size(50, 20);
-            this.numCtrlCnlsShift.TabIndex = 10;
-            this.numCtrlCnlsShift.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numCtrlCnlsShift.ValueChanged += new System.EventHandler(this.numCnls_ValueChanged);
-            // 
-            // numCtrlCnlsMultiple
-            // 
-            this.numCtrlCnlsMultiple.Location = new System.Drawing.Point(290, 58);
-            this.numCtrlCnlsMultiple.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numCtrlCnlsMultiple.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numCtrlCnlsMultiple.Name = "numCtrlCnlsMultiple";
-            this.numCtrlCnlsMultiple.Size = new System.Drawing.Size(50, 20);
-            this.numCtrlCnlsMultiple.TabIndex = 7;
-            this.numCtrlCnlsMultiple.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numCtrlCnlsMultiple.ValueChanged += new System.EventHandler(this.numCnls_ValueChanged);
-            // 
-            // numCtrlCnlsStart
-            // 
-            this.numCtrlCnlsStart.Location = new System.Drawing.Point(289, 32);
-            this.numCtrlCnlsStart.Maximum = new decimal(new int[] {
-            65535,
-            0,
-            0,
-            0});
-            this.numCtrlCnlsStart.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numCtrlCnlsStart.Name = "numCtrlCnlsStart";
-            this.numCtrlCnlsStart.Size = new System.Drawing.Size(50, 20);
-            this.numCtrlCnlsStart.TabIndex = 4;
-            this.numCtrlCnlsStart.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numCtrlCnlsStart.ValueChanged += new System.EventHandler(this.numCnls_ValueChanged);
             // 
             // gvKPSel
             // 
@@ -366,17 +384,39 @@
             this.colKPName,
             this.colObjNum,
             this.colDllFileName,
-            this.colDllState,
             this.colInCnls,
             this.colCtrlCnls});
-            this.gvKPSel.Location = new System.Drawing.Point(12, 41);
+            this.gvKPSel.Location = new System.Drawing.Point(12, 52);
             this.gvKPSel.MultiSelect = false;
             this.gvKPSel.Name = "gvKPSel";
             this.gvKPSel.RowHeadersVisible = false;
-            this.gvKPSel.Size = new System.Drawing.Size(620, 291);
-            this.gvKPSel.TabIndex = 3;
+            this.gvKPSel.Size = new System.Drawing.Size(590, 280);
+            this.gvKPSel.TabIndex = 4;
             this.gvKPSel.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.gvKPSel_CellBeginEdit);
             this.gvKPSel.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.gvKPSel_CellFormatting);
+            // 
+            // chkInsertKPName
+            // 
+            this.chkInsertKPName.AutoSize = true;
+            this.chkInsertKPName.Checked = true;
+            this.chkInsertKPName.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkInsertKPName.Location = new System.Drawing.Point(13, 32);
+            this.chkInsertKPName.Name = "chkInsertKPName";
+            this.chkInsertKPName.Size = new System.Drawing.Size(185, 17);
+            this.chkInsertKPName.TabIndex = 0;
+            this.chkInsertKPName.Text = "Вставить имя КП в имя канала";
+            this.chkInsertKPName.UseVisualStyleBackColor = true;
+            // 
+            // gbAdditionalOptions
+            // 
+            this.gbAdditionalOptions.Controls.Add(this.chkInsertKPName);
+            this.gbAdditionalOptions.Location = new System.Drawing.Point(370, 338);
+            this.gbAdditionalOptions.Name = "gbAdditionalOptions";
+            this.gbAdditionalOptions.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
+            this.gbAdditionalOptions.Size = new System.Drawing.Size(232, 143);
+            this.gbAdditionalOptions.TabIndex = 6;
+            this.gbAdditionalOptions.TabStop = false;
+            this.gbAdditionalOptions.Text = "Дополнительные параметры";
             // 
             // colSelected
             // 
@@ -392,7 +432,7 @@
             this.colKPName.Name = "colKPName";
             this.colKPName.ReadOnly = true;
             this.colKPName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colKPName.Width = 110;
+            this.colKPName.Width = 125;
             // 
             // colObjNum
             // 
@@ -400,25 +440,16 @@
             this.colObjNum.DisplayStyleForCurrentCellOnly = true;
             this.colObjNum.HeaderText = "Объект";
             this.colObjNum.Name = "colObjNum";
-            this.colObjNum.Width = 115;
+            this.colObjNum.Width = 125;
             // 
             // colDllFileName
             // 
-            this.colDllFileName.DataPropertyName = "DllFileName";
-            this.colDllFileName.HeaderText = "Имя файла DLL";
+            this.colDllFileName.DataPropertyName = "DllWithState";
+            this.colDllFileName.HeaderText = "DLL";
             this.colDllFileName.Name = "colDllFileName";
             this.colDllFileName.ReadOnly = true;
             this.colDllFileName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colDllFileName.Width = 95;
-            // 
-            // colDllState
-            // 
-            this.colDllState.DataPropertyName = "DllState";
-            this.colDllState.HeaderText = "Состояние DLL";
-            this.colDllState.Name = "colDllState";
-            this.colDllState.ReadOnly = true;
-            this.colDllState.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colDllState.Width = 95;
+            this.colDllFileName.Width = 125;
             // 
             // colInCnls
             // 
@@ -427,7 +458,7 @@
             this.colInCnls.Name = "colInCnls";
             this.colInCnls.ReadOnly = true;
             this.colInCnls.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colInCnls.Width = 80;
+            this.colInCnls.Width = 85;
             // 
             // colCtrlCnls
             // 
@@ -436,48 +467,18 @@
             this.colCtrlCnls.Name = "colCtrlCnls";
             this.colCtrlCnls.ReadOnly = true;
             this.colCtrlCnls.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colCtrlCnls.Width = 80;
+            this.colCtrlCnls.Width = 85;
             // 
-            // chkInsertKPName
+            // cbCommLineFilter
             // 
-            this.chkInsertKPName.AutoSize = true;
-            this.chkInsertKPName.Checked = true;
-            this.chkInsertKPName.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkInsertKPName.Location = new System.Drawing.Point(13, 32);
-            this.chkInsertKPName.Name = "chkInsertKPName";
-            this.chkInsertKPName.Size = new System.Drawing.Size(185, 17);
-            this.chkInsertKPName.TabIndex = 0;
-            this.chkInsertKPName.Text = "Вставить имя КП в имя канала";
-            this.chkInsertKPName.UseVisualStyleBackColor = true;
-            // 
-            // lblInCnls
-            // 
-            this.lblInCnls.AutoSize = true;
-            this.lblInCnls.Location = new System.Drawing.Point(230, 16);
-            this.lblInCnls.Name = "lblInCnls";
-            this.lblInCnls.Size = new System.Drawing.Size(46, 13);
-            this.lblInCnls.TabIndex = 0;
-            this.lblInCnls.Text = "Вх. кан.";
-            // 
-            // lblCtrlCnls
-            // 
-            this.lblCtrlCnls.AutoSize = true;
-            this.lblCtrlCnls.Location = new System.Drawing.Point(286, 16);
-            this.lblCtrlCnls.Name = "lblCtrlCnls";
-            this.lblCtrlCnls.Size = new System.Drawing.Size(52, 13);
-            this.lblCtrlCnls.TabIndex = 1;
-            this.lblCtrlCnls.Text = "Кан. упр.";
-            // 
-            // gbAdditionalOptions
-            // 
-            this.gbAdditionalOptions.Controls.Add(this.chkInsertKPName);
-            this.gbAdditionalOptions.Location = new System.Drawing.Point(370, 338);
-            this.gbAdditionalOptions.Name = "gbAdditionalOptions";
-            this.gbAdditionalOptions.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbAdditionalOptions.Size = new System.Drawing.Size(262, 143);
-            this.gbAdditionalOptions.TabIndex = 5;
-            this.gbAdditionalOptions.TabStop = false;
-            this.gbAdditionalOptions.Text = "Дополнительные параметры";
+            this.cbCommLineFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbCommLineFilter.FormattingEnabled = true;
+            this.cbCommLineFilter.Items.AddRange(new object[] {
+            "<Фильтр КП по линии связи>"});
+            this.cbCommLineFilter.Location = new System.Drawing.Point(12, 25);
+            this.cbCommLineFilter.Name = "cbCommLineFilter";
+            this.cbCommLineFilter.Size = new System.Drawing.Size(398, 21);
+            this.cbCommLineFilter.TabIndex = 1;
             // 
             // FrmCreateCnls
             // 
@@ -485,7 +486,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(644, 522);
+            this.ClientSize = new System.Drawing.Size(614, 522);
+            this.Controls.Add(this.cbCommLineFilter);
             this.Controls.Add(this.gbAdditionalOptions);
             this.Controls.Add(this.btnCalc);
             this.Controls.Add(this.btnCreate);
@@ -506,14 +508,14 @@
             this.Shown += new System.EventHandler(this.FrmCreateCnls_Shown);
             this.gbCnlsNumOptions.ResumeLayout(false);
             this.gbCnlsNumOptions.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numInCnlsSpace)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numInCnlsShift)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numInCnlsMultiple)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numInCnlsStart)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCtrlCnlsSpace)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numInCnlsSpace)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCtrlCnlsShift)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numInCnlsShift)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCtrlCnlsMultiple)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numInCnlsMultiple)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCtrlCnlsStart)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numInCnlsStart)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvKPSel)).EndInit();
             this.gbAdditionalOptions.ResumeLayout(false);
             this.gbAdditionalOptions.PerformLayout();
@@ -544,16 +546,16 @@
         private System.Windows.Forms.NumericUpDown numCtrlCnlsMultiple;
         private System.Windows.Forms.NumericUpDown numCtrlCnlsStart;
         private System.Windows.Forms.DataGridView gvKPSel;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn colSelected;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colKPName;
-        private System.Windows.Forms.DataGridViewComboBoxColumn colObjNum;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colDllFileName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colDllState;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colInCnls;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colCtrlCnls;
         private System.Windows.Forms.CheckBox chkInsertKPName;
         private System.Windows.Forms.Label lblInCnls;
         private System.Windows.Forms.Label lblCtrlCnls;
         private System.Windows.Forms.GroupBox gbAdditionalOptions;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn colSelected;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colKPName;
+        private System.Windows.Forms.DataGridViewComboBoxColumn colObjNum;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDllFileName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colInCnls;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colCtrlCnls;
+        private System.Windows.Forms.ComboBox cbCommLineFilter;
     }
 }

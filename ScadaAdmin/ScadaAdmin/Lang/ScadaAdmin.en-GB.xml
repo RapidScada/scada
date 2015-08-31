@@ -83,7 +83,8 @@
   </Dictionary>
   <Dictionary key="ScadaAdmin.FrmCreateCnls">
     <Phrase key="this">Create Channels</Phrase>
-    <Phrase key="lblKPSel">Select devices for creating channels:</Phrase>
+    <Phrase key="lblKPSel">Select devices for creating channels</Phrase>
+    <Phrase key="cbCommLineFilter.Items[0]">&lt;Filter devices by a communication line&gt;</Phrase>
     <Phrase key="btnSelectAll">Select all</Phrase>
     <Phrase key="btnDeselectAll">Deselect all</Phrase>
     <Phrase key="colKPName">Device</Phrase>
@@ -98,7 +99,7 @@
     <Phrase key="lblInCnlsStart">Start number</Phrase>
     <Phrase key="lblInCnlsMult">First device channel multiplicity</Phrase>
     <Phrase key="lblInCnlsShift">First device channel shift</Phrase>
-    <Phrase key="lblInCnlsSpace">Empty numbers betweet devices</Phrase>
+    <Phrase key="lblInCnlsSpace">Empty numbers between devices</Phrase>
     <Phrase key="gbAdditionalOptions">Additional options</Phrase>
     <Phrase key="chkInsertKPName">Insert device name into channel name</Phrase>
     <Phrase key="btnCalc">Calculate channel numbers</Phrase>

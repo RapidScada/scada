@@ -34,8 +34,8 @@ using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 using Scada;
-using Scada.Comm.KP;
 using Utils;
+using Scada.Comm.Devices;
 
 namespace ScadaAdmin
 {
@@ -45,6 +45,11 @@ namespace ScadaAdmin
     /// </summary>
     public partial class FrmCreateCnls : Form
     {
+        /// <summary>
+        /// Состояния библиотеки КП
+        /// </summary>
+        private enum DllStates { NotFound, Loaded, Error }
+
         /// <summary>
         /// Параметры выбираемого КП, для которого создаются каналы
         /// </summary>
@@ -64,7 +69,7 @@ namespace ScadaAdmin
                 KPName = "";
                 ObjNum = DBNull.Value;
                 DllFileName = "";
-                DllState = "";
+                DllState = DllStates.NotFound;
 
                 InCnlsError = false;
                 InCnls = "";
@@ -113,7 +118,31 @@ namespace ScadaAdmin
             /// <summary>
             /// Получить или установить состояние DLL
             /// </summary>
-            public string DllState { get; set; }
+            public DllStates DllState { get; set; }
+            /// <summary>
+            /// Получить имя файла и состояние загрузки DLL
+            /// </summary>
+            public string DllWithState
+            {
+                get
+                {
+                    string state;
+                    switch (DllState)
+                    {
+                        case DllStates.NotFound:
+                            state = AppPhrases.DllNotFound;
+                            break;
+                        case DllStates.Loaded:
+                            state = AppPhrases.DllLoaded;
+                            break;
+                        default: // DllStates.Error
+                            state = AppPhrases.DllError;
+                            break;
+                    }
+
+                    return DllFileName + " (" + state + ")";
+                }
+            }
 
             /// <summary>
             /// Получить или установить признак ошибки при расчёте номеров входных каналов
@@ -151,13 +180,13 @@ namespace ScadaAdmin
         }
 
 
-        private static string lastKPDir = "";                        // последняя использованная директория библиотек КП
-        private static SortedList<string, KPView> kpViewList = null; // список объектов пользовательского интерфейса КП, 
-                                                                     // упорядоченный по имении DLL
+        private static string lastKPDir = "";                       // последняя использованная директория библиотек КП
+        private static Dictionary<string, Type> kpViewTypes = null; // словарь типов интерфейса КП
+
         private List<KPParams> kpParamsList; // список параметров выбираемых КП
         private List<int> inCnlNums;         // список номеров входных каналов
         private List<int> ctrlCnlNums;       // список номеров каналов управления
-        StreamWriter writer;                 // объект для записи в журнал создания каналов
+        private StreamWriter writer;         // объект для записи в журнал создания каналов
 
 
         /// <summary>
@@ -187,35 +216,25 @@ namespace ScadaAdmin
         /// </summary>
         private void LoadKPDlls()
         {
-            if (kpViewList == null || lastKPDir != KPDir)
+            if (kpViewTypes == null || lastKPDir != KPDir)
             {
                 lastKPDir = KPDir;
-                kpViewList = new SortedList<string, KPView>();
+                kpViewTypes = new Dictionary<string, Type>();
 
                 try
                 {
                     DirectoryInfo dirInfo = new DirectoryInfo(KPDir);
-                    FileInfo[] fileInfoAr = dirInfo.GetFiles("*.dll", SearchOption.TopDirectoryOnly);
+                    FileInfo[] fileInfoAr = dirInfo.GetFiles("kp*.dll", SearchOption.TopDirectoryOnly);
 
                     foreach (FileInfo fileInfo in fileInfoAr)
                     {
-                        if (fileInfo.Name.Equals("kp.dll", StringComparison.OrdinalIgnoreCase))
+                        if (!fileInfo.Name.Equals("kp.dll", StringComparison.OrdinalIgnoreCase))
                         {
-                            KPView kpView;
+                            Type kpViewType;
+                            try { kpViewType = KPFactory.GetKPViewType(KPDir, fileInfo.Name); }
+                            catch { kpViewType = null; }
 
-                            try
-                            {
-                                Assembly asm = Assembly.LoadFile(fileInfo.FullName);
-                                string shtName = Path.GetFileNameWithoutExtension(fileInfo.Name);
-                                Type kpType = asm.GetType("Scada.Comm.KP." + shtName + "View");
-                                kpView = Activator.CreateInstance(kpType) as KPView;
-                            }
-                            catch
-                            {
-                                kpView = null;
-                            }
-
-                            kpViewList.Add(fileInfo.Name, kpView);
+                            kpViewTypes.Add(fileInfo.Name, kpViewType);
                         }
                     }
                 }
@@ -250,28 +269,29 @@ namespace ScadaAdmin
 
                     tblKPType.DefaultView.RowFilter = "KPTypeID = " + rowKP["KPTypeID"];
                     object dllFileName = tblKPType.DefaultView[0]["DllFileName"];
-                    kpParams.DllFileName = dllFileName == null || dllFileName == DBNull.Value ? "" : (string)dllFileName;
+                    kpParams.DllFileName = dllFileName == null || dllFileName == DBNull.Value ? 
+                        "" : (string)dllFileName;
 
                     if (kpParams.DllFileName != "")
                     {
-                        if (kpViewList.ContainsKey(kpParams.DllFileName))
+                        Type kpViewType;
+                        if (kpViewTypes.TryGetValue(kpParams.DllFileName, out kpViewType))
                         {
-                            kpParams.KPView = kpViewList[kpParams.DllFileName];
-                            if (kpParams.KPView == null)
+                            if (kpViewType == null)
                             {
                                 kpParams.Color = Color.Red;
-                                kpParams.DllState = AppPhrases.DllError;
+                                kpParams.DllState = DllStates.Error;
                             }
                             else
                             {
                                 kpParams.Enabled = true;
                                 kpParams.Color = Color.Black;
-                                kpParams.DllState = AppPhrases.DllLoaded;
+                                kpParams.DllState = DllStates.Loaded;
                             }
                         }
                         else
                         {
-                            kpParams.DllState = AppPhrases.DllNotFound;
+                            kpParams.DllState = DllStates.NotFound;
                         }
                     }
 
@@ -364,10 +384,22 @@ namespace ScadaAdmin
                 {
                     if (kpParams.Selected)
                     {
+                        // создание экземпляра класса интерфейса КП
+                        try
+                        {
+                            kpParams.KPView = KPFactory.GetKPView(null, kpParams.KPNum);
+                        }
+                        catch
+                        {
+                            kpParams.InCnlsError = true;
+                            kpParams.CtrlCnlsError = true;
+                        }
+
+                        // получение прототипов каналов КП по умолчанию
+                        KPView.KPCnlPrototypes defaultCnls = kpParams.KPView.DefaultCnls;
+
                         // определение номеров входных каналов с учётом занятых существующими каналами номеров
-                        List<KPView.InCnlProps> defaultCnls = kpParams.KPView.DefaultCnls;
-                        int inCnlCnt = defaultCnls == null ? 0 : defaultCnls.Count;
-                        if (inCnlCnt > 0)
+                        if (defaultCnls.InCnls.Count > 0)
                         {
                             hasChannels = true;
 
@@ -375,7 +407,7 @@ namespace ScadaAdmin
                             int lastInCnlNum;  // номер последнего входного канала КП
                             int newInCnlInd;   // новый индекс списка номеров входных каналов
                             CalcFirstAndLastNums(curInCnlNum, curInCnlInd, inCnlNums, inCnlNumsCnt,
-                                inCnlCnt, inCnlsSpace, inCnlsMultiple, 
+                                defaultCnls.InCnls.Count, inCnlsSpace, inCnlsMultiple, 
                                 out firstInCnlNum, out lastInCnlNum, out newInCnlInd);
 
                             if (lastInCnlNum > ushort.MaxValue)
@@ -398,14 +430,13 @@ namespace ScadaAdmin
                             }
 
                             // определение номеров каналов управления с учётом занятых существующими каналами номеров
-                            int ctrlCnlCnt = kpParams.KPView.DefaultCtrlCnlCount;
-                            if (ctrlCnlCnt > 0)
+                            if (defaultCnls.CtrlCnls.Count > 0)
                             {
                                 int firstCtrlCnlNum; // номер первого канала управления КП
                                 int lastCtrlCnlNum;  // номер последнего канала управления КП
                                 int newCtrlCnlInd;   // новый индекс списка номеров каналов управления
                                 CalcFirstAndLastNums(curCtrlCnlNum, curCtrlCnlInd, ctrlCnlNums, ctrlCnlNumsCnt,
-                                    ctrlCnlCnt, ctrlCnlsSpace, ctrlCnlsMultiple,
+                                    defaultCnls.CtrlCnls.Count, ctrlCnlsSpace, ctrlCnlsMultiple,
                                     out firstCtrlCnlNum, out lastCtrlCnlNum, out newCtrlCnlInd);
 
                                 if (lastCtrlCnlNum > ushort.MaxValue)
@@ -559,7 +590,7 @@ namespace ScadaAdmin
             bool logCreated = false;
             string logFileName = AppData.ExeDir + "ScadaAdminCreateCnls.txt";
 
-            try
+            /*try
             {
                 // создание журанала создания каналов
                 writer = new StreamWriter(logFileName, false, Encoding.UTF8);
@@ -773,7 +804,7 @@ namespace ScadaAdmin
             }
 
             if (logCreated)
-                Process.Start(logFileName);
+                Process.Start(logFileName);*/
         }
 
         /// <summary>
