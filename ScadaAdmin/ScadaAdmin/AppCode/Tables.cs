@@ -23,13 +23,13 @@
  * Modified : 2015
  */
 
+using Scada;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlServerCe;
 using System.Text;
 using System.Windows.Forms;
-using Scada;
 using Utils;
 
 namespace ScadaAdmin
@@ -38,7 +38,7 @@ namespace ScadaAdmin
     /// Access configuration tables
     /// <para>Доступ к данным таблиц конфигурации</para>
     /// </summary>
-    public static class Tables
+    internal static class Tables
     {
         /// <summary>
         /// Информация о таблице

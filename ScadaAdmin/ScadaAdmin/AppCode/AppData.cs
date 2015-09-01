@@ -37,7 +37,7 @@ namespace ScadaAdmin
     /// The common application data
     /// <para>Общие данные приложения</para>
     /// </summary>
-    public static class AppData
+    internal static class AppData
     {
         /// <summary>
         /// Имя файла журнала ошибок приложения

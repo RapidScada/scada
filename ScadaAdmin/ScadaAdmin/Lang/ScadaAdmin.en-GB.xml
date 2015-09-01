@@ -109,8 +109,8 @@
     <Phrase key="DevCalcError">Error</Phrase>
     <Phrase key="DevHasNoCnls">No</Phrase>
     <Phrase key="CreatedCnlsMissing">Created channels are missing.</Phrase>
-    <Phrase key="CalcCnlNumsErrors">Error calculating channels numbers.&#13;&#10;The errors are shown in the devices grid.</Phrase>
-    <Phrase key="CalcCnlNumsError">Error calculating channels numbers</Phrase>
+    <Phrase key="CalcCnlNumsErrors">Error calculating channel numbers.&#13;&#10;The errors are shown in the devices grid.</Phrase>
+    <Phrase key="CalcCnlNumsError">Error calculating channel numbers</Phrase>
     <Phrase key="ErrorsCount">Count of errors: {0}.</Phrase>
     <Phrase key="CnlError">Channel {0}: {1}</Phrase>
     <Phrase key="CreateCnlsTitle">Create channels</Phrase>

@@ -41,7 +41,7 @@ namespace ScadaAdmin
     /// Import and export the configuration database
     /// <para>Импорт и экспорт базы конфигурации</para>
     /// </summary>
-    public static class ImportExport
+    internal static class ImportExport
     {
         /// <summary>
         /// Вывести в журнал заголовок с подчёркиванием

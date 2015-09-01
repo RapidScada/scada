@@ -32,7 +32,7 @@ namespace ScadaAdmin
     /// The utility methods for the application
     /// <para>Вспомогательные методы приложения</para>
     /// </summary>
-    public static class AppUtils
+    internal static class AppUtils
     {
         /// <summary>
         /// Обработать ошибку, записав информацию в журнал и отобразив сообщение

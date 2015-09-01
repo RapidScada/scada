@@ -94,6 +94,7 @@
   <ItemGroup>
     <Compile Include="AppCode\AppData.cs" />
     <Compile Include="AppCode\AppPhrases.cs" />
+    <Compile Include="AppCode\CreateCnls.cs" />
     <Compile Include="AppCode\ImportExport.cs" />
     <Compile Include="FrmLanguage.cs">
       <SubType>Form</SubType>
