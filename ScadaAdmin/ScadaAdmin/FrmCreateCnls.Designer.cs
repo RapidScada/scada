@@ -50,15 +50,15 @@
             this.btnCreate = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.gvKPSel = new System.Windows.Forms.DataGridView();
-            this.chkInsertKPName = new System.Windows.Forms.CheckBox();
-            this.gbAdditionalOptions = new System.Windows.Forms.GroupBox();
             this.colSelected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.colKPName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colObjNum = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.colDllFileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colInCnls = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colCtrlCnls = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cbCommLineFilter = new System.Windows.Forms.ComboBox();
+            this.chkInsertKPName = new System.Windows.Forms.CheckBox();
+            this.gbAdditionalOptions = new System.Windows.Forms.GroupBox();
+            this.cbKPFilter = new System.Windows.Forms.ComboBox();
             this.gbCnlsNumOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numCtrlCnlsSpace)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numInCnlsSpace)).BeginInit();
@@ -395,29 +395,6 @@
             this.gvKPSel.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.gvKPSel_CellBeginEdit);
             this.gvKPSel.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.gvKPSel_CellFormatting);
             // 
-            // chkInsertKPName
-            // 
-            this.chkInsertKPName.AutoSize = true;
-            this.chkInsertKPName.Checked = true;
-            this.chkInsertKPName.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkInsertKPName.Location = new System.Drawing.Point(13, 32);
-            this.chkInsertKPName.Name = "chkInsertKPName";
-            this.chkInsertKPName.Size = new System.Drawing.Size(185, 17);
-            this.chkInsertKPName.TabIndex = 0;
-            this.chkInsertKPName.Text = "Вставить имя КП в имя канала";
-            this.chkInsertKPName.UseVisualStyleBackColor = true;
-            // 
-            // gbAdditionalOptions
-            // 
-            this.gbAdditionalOptions.Controls.Add(this.chkInsertKPName);
-            this.gbAdditionalOptions.Location = new System.Drawing.Point(370, 338);
-            this.gbAdditionalOptions.Name = "gbAdditionalOptions";
-            this.gbAdditionalOptions.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbAdditionalOptions.Size = new System.Drawing.Size(232, 143);
-            this.gbAdditionalOptions.TabIndex = 6;
-            this.gbAdditionalOptions.TabStop = false;
-            this.gbAdditionalOptions.Text = "Дополнительные параметры";
-            // 
             // colSelected
             // 
             this.colSelected.DataPropertyName = "Selected";
@@ -469,16 +446,41 @@
             this.colCtrlCnls.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.colCtrlCnls.Width = 85;
             // 
-            // cbCommLineFilter
+            // chkInsertKPName
             // 
-            this.cbCommLineFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbCommLineFilter.FormattingEnabled = true;
-            this.cbCommLineFilter.Items.AddRange(new object[] {
+            this.chkInsertKPName.AutoSize = true;
+            this.chkInsertKPName.Checked = true;
+            this.chkInsertKPName.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkInsertKPName.Location = new System.Drawing.Point(13, 32);
+            this.chkInsertKPName.Name = "chkInsertKPName";
+            this.chkInsertKPName.Size = new System.Drawing.Size(185, 17);
+            this.chkInsertKPName.TabIndex = 0;
+            this.chkInsertKPName.Text = "Вставить имя КП в имя канала";
+            this.chkInsertKPName.UseVisualStyleBackColor = true;
+            // 
+            // gbAdditionalOptions
+            // 
+            this.gbAdditionalOptions.Controls.Add(this.chkInsertKPName);
+            this.gbAdditionalOptions.Location = new System.Drawing.Point(370, 338);
+            this.gbAdditionalOptions.Name = "gbAdditionalOptions";
+            this.gbAdditionalOptions.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
+            this.gbAdditionalOptions.Size = new System.Drawing.Size(232, 143);
+            this.gbAdditionalOptions.TabIndex = 6;
+            this.gbAdditionalOptions.TabStop = false;
+            this.gbAdditionalOptions.Text = "Дополнительные параметры";
+            // 
+            // cbKPFilter
+            // 
+            this.cbKPFilter.DisplayMember = "Name";
+            this.cbKPFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbKPFilter.FormattingEnabled = true;
+            this.cbKPFilter.Items.AddRange(new object[] {
             "<Фильтр КП по линии связи>"});
-            this.cbCommLineFilter.Location = new System.Drawing.Point(12, 25);
-            this.cbCommLineFilter.Name = "cbCommLineFilter";
-            this.cbCommLineFilter.Size = new System.Drawing.Size(398, 21);
-            this.cbCommLineFilter.TabIndex = 1;
+            this.cbKPFilter.Location = new System.Drawing.Point(12, 25);
+            this.cbKPFilter.Name = "cbKPFilter";
+            this.cbKPFilter.Size = new System.Drawing.Size(398, 21);
+            this.cbKPFilter.TabIndex = 1;
+            this.cbKPFilter.ValueMember = "CommLineNum";
             // 
             // FrmCreateCnls
             // 
@@ -487,7 +489,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(614, 522);
-            this.Controls.Add(this.cbCommLineFilter);
+            this.Controls.Add(this.cbKPFilter);
             this.Controls.Add(this.gbAdditionalOptions);
             this.Controls.Add(this.btnCalc);
             this.Controls.Add(this.btnCreate);
@@ -556,6 +558,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colDllFileName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colInCnls;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCtrlCnls;
-        private System.Windows.Forms.ComboBox cbCommLineFilter;
+        private System.Windows.Forms.ComboBox cbKPFilter;
     }
 }

@@ -63,9 +63,9 @@ namespace ScadaAdmin
             /// </summary>
             public string BackupDir { get; set; }
             /// <summary>
-            /// Получить или установить директорию библиотек КП
+            /// Получить или установить директорию SCADA-Коммуникатора
             /// </summary>
-            public string KPDir { get; set; }
+            public string CommDir { get; set; }
             /// <summary>
             /// Получить или установить признак автоматического резервирования базы конфигурации при передаче серверу
             /// </summary>
@@ -79,7 +79,7 @@ namespace ScadaAdmin
                 BaseSDFFile = @"C:\SCADA\BaseSDF\ScadaBase.sdf";
                 BaseDATDir = @"C:\SCADA\BaseDAT\";
                 BackupDir = @"C:\SCADA\ScadaAdmin\Backup\";
-                KPDir = @"C:\SCADA\ScadaComm\KP\";
+                CommDir = @"C:\SCADA\ScadaComm\";
                 AutoBackupBase = true;
             }
         }
@@ -208,8 +208,8 @@ namespace ScadaAdmin
                             AppSett.BaseDATDir = ScadaUtils.NormalDir(val);
                         else if (nameL == "backupdir")
                             AppSett.BackupDir = ScadaUtils.NormalDir(val);
-                        else if (nameL == "kpdir")
-                            AppSett.KPDir = ScadaUtils.NormalDir(val);
+                        else if (nameL == "commdir")
+                            AppSett.CommDir = ScadaUtils.NormalDir(val);
                         else if (nameL == "backuponpassbase")
                             AppSett.AutoBackupBase = bool.Parse(val);
                     }
@@ -252,8 +252,8 @@ namespace ScadaAdmin
                     "Директория базы конфигурации в формате DAT", "Configuration database in DAT format directory");
                 rootElem.AppendParamElem("BackupDir", AppSett.BackupDir,
                     "Директория резервного копирования базы конфигурации", "Configuration database backup directory");
-                rootElem.AppendParamElem("KPDir", AppSett.KPDir,
-                    "Директория библиотек КП", "Device libraries directory");
+                rootElem.AppendParamElem("CommDir", AppSett.CommDir,
+                    "Директория SCADA-Коммуникатора", "SCADA-Communicator directory");
                 rootElem.AppendParamElem("AutoBackupBase", AppSett.AutoBackupBase,
                     "Автоматически резервировать базу конфигурации", "Automatically backup the configuration database");
 

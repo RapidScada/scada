@@ -23,11 +23,14 @@
  * Modified : 2015
  */
 
+using Scada;
 using Scada.Comm.Devices;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlServerCe;
 using System.Drawing;
+using System.IO;
 using System.Text;
 
 namespace ScadaAdmin
@@ -51,26 +54,27 @@ namespace ScadaAdmin
             /// <summary>
             /// Конструктор
             /// </summary>
-            public KPInfo()
+            private KPInfo()
             {
                 Enabled = false;
                 Color = Color.Gray;
-                KPView = null;
+                DefaultCnls = null;
 
                 Selected = false;
                 KPNum = 0;
                 KPName = "";
+                CommLineNum = 0;
                 ObjNum = DBNull.Value;
                 DllFileName = "";
                 DllState = DllStates.NotFound;
 
                 InCnlNumsErr = false;
-                FirstInCnlNum = 0;
-                LastInCnlNum = 0;
+                FirstInCnlNum = -1;
+                LastInCnlNum = -1;
 
                 CtrlCnlNumsErr = false;
-                FirstCtrlCnlNum = 0;
-                LastCtrlCnlNum = 0;
+                FirstCtrlCnlNum = -1;
+                LastCtrlCnlNum = -1;
             }
 
             /// <summary>
@@ -82,9 +86,9 @@ namespace ScadaAdmin
             /// </summary>
             public Color Color { get; set; }
             /// <summary>
-            /// Получить или установить пользовательский интерфейс КП
+            /// Получить или установить прототипы каналов КП по умолчанию
             /// </summary>
-            public KPView KPView { get; set; }
+            public KPView.KPCnlPrototypes DefaultCnls { get; set; }
 
             /// <summary>
             /// Получить или установить признак, что КП выбран
@@ -98,6 +102,10 @@ namespace ScadaAdmin
             /// Получить или установить наименование КП
             /// </summary>
             public string KPName { get; set; }
+            /// <summary>
+            /// Получить или установить номер линии связи
+            /// </summary>
+            public int CommLineNum { get; set; }
             /// <summary>
             /// Получить или установить номер объекта
             /// </summary>
@@ -156,6 +164,7 @@ namespace ScadaAdmin
                 {
                     return 
                         InCnlNumsErr ? AppPhrases.DevCalcError :
+                        FirstInCnlNum < 0 ? "" :
                         FirstInCnlNum == 0 ? AppPhrases.DevHasNoCnls :
                         FirstInCnlNum == LastInCnlNum ? FirstInCnlNum.ToString() :
                         FirstInCnlNum.ToString() + " - " + LastInCnlNum;
@@ -183,12 +192,31 @@ namespace ScadaAdmin
                 {
                     return 
                         CtrlCnlNumsErr ? AppPhrases.DevCalcError :
+                        FirstCtrlCnlNum < 0 ? "" :
                         FirstCtrlCnlNum == 0 ? AppPhrases.DevHasNoCnls :
                         FirstCtrlCnlNum == LastCtrlCnlNum ? FirstCtrlCnlNum.ToString() :
                         FirstCtrlCnlNum.ToString() + " - " + LastCtrlCnlNum;
                 }
             }
 
+            /// <summary>
+            /// Создать объект информации о КП
+            /// </summary>
+            public static KPInfo Create(DataRow rowKP, DataTable tblKPType)
+            {
+                CreateCnls.KPInfo kpInfo = new CreateCnls.KPInfo();
+                kpInfo.KPNum = (int)rowKP["KPNum"];
+                kpInfo.KPName = (string)rowKP["Name"];
+                object commLineNum = rowKP["CommLineNum"];
+                kpInfo.CommLineNum = commLineNum == DBNull.Value ? 0 : (int)commLineNum;
+
+                tblKPType.DefaultView.RowFilter = "KPTypeID = " + rowKP["KPTypeID"];
+                object dllFileName = tblKPType.DefaultView[0]["DllFileName"];
+                kpInfo.DllFileName = dllFileName == null || dllFileName == DBNull.Value ?
+                    "" : (string)dllFileName;
+
+                return kpInfo;
+            }
             /// <summary>
             /// Установить номера входных каналов
             /// </summary>
@@ -266,10 +294,9 @@ namespace ScadaAdmin
         /// Определение идентификаторов в справочнике
         /// </summary>
         private static bool FindDictIDs(SortedList<string, int> dictList, DataTable dataTable, string idName, 
-            string errDescr)
+            StreamWriter writer, string errDescr)
         {
-            bool error = false;
-            /*dataTable.DefaultView.Sort = "Name";
+            dataTable.DefaultView.Sort = "Name";
 
             for (int i = 0; i < dictList.Count; i++)
             {
@@ -277,26 +304,120 @@ namespace ScadaAdmin
                 int ind = dataTable.DefaultView.Find(key);
                 if (ind < 0)
                 {
-                    error = true;
                     writer.WriteLine(string.Format(errDescr, key));
+                    return false;
                 }
                 else
                 {
                     dictList[key] = (int)dataTable.DefaultView[ind][idName];
                 }
-            }*/
+            }
 
-            return error;
+            return true;
+        }
+
+        /// <summary>
+        /// Создать строку входного канала
+        /// </summary>
+        private static DataRow CreateInCnlRow(DataTable tblInCnl, DataTable tblFormat, 
+            SortedList<string, int> paramList, SortedList<string, int> unitList, 
+            KPView.InCnlPrototype inCnl, object objNum, int kpNum, string kpNameToInsert, StreamWriter writer)
+        {
+            DataRow newInCnlRow = tblInCnl.NewRow();
+            newInCnlRow["CnlNum"] = inCnl.CnlNum;
+            newInCnlRow["Active"] = true;
+            newInCnlRow["Name"] = kpNameToInsert + inCnl.CnlName;
+            newInCnlRow["CnlTypeID"] = inCnl.CnlTypeID;
+            newInCnlRow["ObjNum"] = objNum;
+            newInCnlRow["KPNum"] = kpNum;
+            newInCnlRow["Signal"] = inCnl.Signal;
+            newInCnlRow["FormulaUsed"] = inCnl.FormulaUsed;
+            newInCnlRow["Formula"] = inCnl.Formula;
+            newInCnlRow["Averaging"] = inCnl.Averaging;
+            newInCnlRow["ParamID"] = string.IsNullOrEmpty(inCnl.ParamName) ?
+                DBNull.Value : (object)paramList[inCnl.ParamName];
+
+            newInCnlRow["FormatID"] = DBNull.Value;
+            if (inCnl.ShowNumber)
+            {
+                int ind = tblFormat.DefaultView.Find(new object[] { true, inCnl.DecDigits });
+                if (ind >= 0)
+                {
+                    newInCnlRow["FormatID"] = tblFormat.DefaultView[ind]["FormatID"];
+                }
+                else
+                {
+                    writer.WriteLine(string.Format(
+                        AppPhrases.NumFormatNotFound, inCnl.CnlNum, inCnl.DecDigits));
+                }
+            }
+            else
+            {
+                int ind = tblFormat.DefaultView.Find(new object[] { false, DBNull.Value });
+                if (ind >= 0)
+                {
+                    newInCnlRow["FormatID"] = tblFormat.DefaultView[ind]["FormatID"];
+                }
+                else
+                {
+                    writer.WriteLine(string.Format(AppPhrases.TextFormatNotFound, inCnl.CnlNum));
+                }
+            }
+
+            newInCnlRow["UnitID"] = string.IsNullOrEmpty(inCnl.UnitName) ?
+                DBNull.Value : (object)unitList[inCnl.UnitName];
+            newInCnlRow["CtrlCnlNum"] =
+                inCnl.CtrlCnlProps != null && inCnl.CtrlCnlProps.CtrlCnlNum > 0 ?
+                    (object)inCnl.CtrlCnlProps.CtrlCnlNum : DBNull.Value;
+            newInCnlRow["EvEnabled"] = inCnl.EvEnabled;
+            newInCnlRow["EvSound"] = inCnl.EvSound;
+            newInCnlRow["EvOnChange"] = inCnl.EvOnChange;
+            newInCnlRow["EvOnUndef"] = inCnl.EvOnUndef;
+            newInCnlRow["LimLowCrash"] = double.IsNaN(inCnl.LimLowCrash) ?
+                DBNull.Value : (object)inCnl.LimLowCrash;
+            newInCnlRow["LimLow"] = double.IsNaN(inCnl.LimLow) ?
+                DBNull.Value : (object)inCnl.LimLow;
+            newInCnlRow["LimHigh"] = double.IsNaN(inCnl.LimHigh) ?
+                DBNull.Value : (object)inCnl.LimHigh;
+            newInCnlRow["LimHighCrash"] = double.IsNaN(inCnl.LimHighCrash) ?
+                DBNull.Value : (object)inCnl.LimHighCrash;
+            newInCnlRow["ModifiedDT"] = DateTime.Now;
+
+            return newInCnlRow;
+        }
+
+        /// <summary>
+        /// Создать строку канала управления
+        /// </summary>
+        private static DataRow CreateCtrlCnlRow(DataTable tblCtrlCnl, SortedList<string, int> cmdValList,
+            KPView.CtrlCnlPrototype ctrlCnl, object objNum, int kpNum, string kpNameToInsert)
+        {
+            DataRow newCtrlCnlRow = tblCtrlCnl.NewRow();
+            newCtrlCnlRow["CtrlCnlNum"] = ctrlCnl.CtrlCnlNum;
+            newCtrlCnlRow["Active"] = true;
+            newCtrlCnlRow["Name"] = kpNameToInsert + ctrlCnl.CtrlCnlName;
+            newCtrlCnlRow["CmdTypeID"] = ctrlCnl.CmdTypeID;
+            newCtrlCnlRow["ObjNum"] = objNum;
+            newCtrlCnlRow["KPNum"] = kpNum;
+            newCtrlCnlRow["CmdNum"] = ctrlCnl.CmdNum;
+            newCtrlCnlRow["CmdValID"] = string.IsNullOrEmpty(ctrlCnl.CmdValName) ?
+                DBNull.Value : (object)cmdValList[ctrlCnl.CmdValName];
+            newCtrlCnlRow["FormulaUsed"] = ctrlCnl.FormulaUsed;
+            newCtrlCnlRow["Formula"] = ctrlCnl.Formula;
+            newCtrlCnlRow["EvEnabled"] = ctrlCnl.EvEnabled;
+            newCtrlCnlRow["ModifiedDT"] = DateTime.Now;
+
+            return newCtrlCnlRow;
         }
 
         /// <summary>
         /// Сохранить каналы в БД
         /// </summary>
-        private static bool UpdateCnls(DataTable dataTable, string descr, out int updRowCnt)
+        private static bool UpdateCnls(DataTable dataTable, string descr, StreamWriter writer, out int updRowCnt)
         {
             updRowCnt = 0;
             int errRowCnt = 0;
-            /*DataRow[] rowsInError = null;
+            DataRow[] rowsInError = null;
 
             SqlCeDataAdapter sqlAdapter = dataTable.ExtendedProperties["DataAdapter"] as SqlCeDataAdapter;
             updRowCnt = sqlAdapter.Update(dataTable);
@@ -317,7 +438,7 @@ namespace ScadaAdmin
                     string.Format(AppPhrases.ErrorsCount, errRowCnt));
                 foreach (DataRow row in rowsInError)
                     writer.WriteLine(string.Format(AppPhrases.CnlError,  row[0], row.RowError));
-            }*/
+            }
 
             return errRowCnt == 0;
         }
@@ -326,9 +447,9 @@ namespace ScadaAdmin
         /// <summary>
         /// Расчитать номера каналов и записать их в список информации о КП
         /// </summary>
-        public static bool CalcCnlNums(Dictionary<string, Type> kpViewTypes, List<KPInfo> kpInfoList,
-            List<int> inCnlNums, CnlNumParams inCnlNumParams, List<int> ctrlCnlNums, CnlNumParams ctrlCnlNumParams, 
-            out string errMsg)
+        public static bool CalcCnlNums(Dictionary<string, Type> kpViewTypes, List<KPInfo> kpInfoList, 
+            Scada.Comm.AppDirs commDirs, List<int> inCnlNums, CnlNumParams inCnlNumParams, 
+            List<int> ctrlCnlNums, CnlNumParams ctrlCnlNumParams, out string errMsg)
         {
             if (kpViewTypes == null)
                 throw new ArgumentNullException("kpViewTypes");
@@ -349,6 +470,22 @@ namespace ScadaAdmin
 
             try
             {
+                // загрузка настроек SCADA-Коммуникатора
+                Scada.Comm.Settings commSett = new Scada.Comm.Settings();
+                if (!commSett.Load(commDirs.ConfigDir + Scada.Comm.Settings.DefFileName, out errMsg))
+                    throw new Exception(errMsg);
+
+                // заполнение справочника свойств КП
+                Dictionary<int, KPView.KPProperties> kpPropsDict = new Dictionary<int, KPView.KPProperties>();
+                foreach (Scada.Comm.Settings.CommLine commLine in commSett.CommLines)
+                {
+                    foreach (Scada.Comm.Settings.KP kp in commLine.ReqSequence)
+                    {
+                        if (!kpPropsDict.ContainsKey(kp.Number))
+                            kpPropsDict.Add(kp.Number, new KPView.KPProperties(commLine.CustomParams, kp.CmdLine));
+                    }
+                }
+
                 // определение стартового номера входного канала
                 int inCnlsStart = inCnlNumParams.Start;
                 int inCnlsMultiple = inCnlNumParams.Multiple;
@@ -385,21 +522,36 @@ namespace ScadaAdmin
                             continue;
 
                         // создание экземпляра класса интерфейса КП
+                        KPView kpView = null;
                         try
                         {
-                            kpInfo.KPView = KPFactory.GetKPView(kpViewType, kpInfo.KPNum);
+                            kpView = KPFactory.GetKPView(kpViewType, kpInfo.KPNum);
+                            KPView.KPProperties kpProps;
+                            if (kpPropsDict.TryGetValue(kpInfo.KPNum, out kpProps))
+                                kpView.KPProps = kpProps;
+                            kpView.AppDirs = commDirs;
                         }
                         catch
                         {
                             kpInfo.SetInCnlNums(true);
                             kpInfo.SetCtrlCnlNums(true);
+                            continue;
                         }
 
                         // получение прототипов каналов КП по умолчанию
-                        KPView.KPCnlPrototypes defaultCnls = kpInfo.KPView.DefaultCnls;
+                        try
+                        {
+                            kpInfo.DefaultCnls = kpView.DefaultCnls;
+                        }
+                        catch
+                        {
+                            kpInfo.SetInCnlNums(true);
+                            kpInfo.SetCtrlCnlNums(true);
+                            continue;
+                        }
 
                         // определение номеров входных каналов с учётом занятых существующими каналами номеров
-                        if (defaultCnls.InCnls.Count > 0)
+                        if (kpInfo.DefaultCnls != null && kpInfo.DefaultCnls.InCnls.Count > 0)
                         {
                             hasChannels = true;
 
@@ -407,7 +559,7 @@ namespace ScadaAdmin
                             int lastInCnlNum;  // номер последнего входного канала КП
                             int newInCnlInd;   // новый индекс списка номеров входных каналов
                             CalcFirstAndLastNums(curInCnlNum, curInCnlInd, inCnlNums, inCnlNumsCnt,
-                                defaultCnls.InCnls.Count, inCnlsSpace, inCnlsMultiple,
+                                kpInfo.DefaultCnls.InCnls.Count, inCnlsSpace, inCnlsMultiple,
                                 out firstInCnlNum, out lastInCnlNum, out newInCnlInd);
 
                             if (lastInCnlNum > ushort.MaxValue)
@@ -432,13 +584,15 @@ namespace ScadaAdmin
                         }
 
                         // определение номеров каналов управления с учётом занятых существующими каналами номеров
-                        if (defaultCnls.CtrlCnls.Count > 0)
+                        if (kpInfo.DefaultCnls != null && kpInfo.DefaultCnls.CtrlCnls.Count > 0)
                         {
+                            hasChannels = true;
+
                             int firstCtrlCnlNum; // номер первого канала управления КП
                             int lastCtrlCnlNum;  // номер последнего канала управления КП
                             int newCtrlCnlInd;   // новый индекс списка номеров каналов управления
                             CalcFirstAndLastNums(curCtrlCnlNum, curCtrlCnlInd, ctrlCnlNums, ctrlCnlNumsCnt,
-                                defaultCnls.CtrlCnls.Count, ctrlCnlsSpace, ctrlCnlsMultiple,
+                                kpInfo.DefaultCnls.CtrlCnls.Count, ctrlCnlsSpace, ctrlCnlsMultiple,
                                 out firstCtrlCnlNum, out lastCtrlCnlNum, out newCtrlCnlInd);
 
                             if (lastCtrlCnlNum > ushort.MaxValue)
@@ -465,8 +619,8 @@ namespace ScadaAdmin
                     else
                     {
                         // номера каналов не назначаются, т.к. КП не выбран
-                        kpInfo.SetInCnlNums(false);
-                        kpInfo.SetCtrlCnlNums(false);
+                        kpInfo.SetInCnlNums(false, -1, -1);
+                        kpInfo.SetCtrlCnlNums(false, -1, -1);
                     }
                 }
 
@@ -478,23 +632,23 @@ namespace ScadaAdmin
             catch (Exception ex)
             {
                 hasErrors = true;
-                AppUtils.ProcError(AppPhrases.CalcCnlNumsError + ":\r\n" + ex.Message);
+                errMsg = AppPhrases.CalcCnlNumsError + ":\r\n" + ex.Message;
             }
 
             return hasChannels && !hasErrors;
         }
 
         /// <summary>
-        /// Создать каналы, используя ранее рассчитанные номера
+        /// Создать каналы в базе конфигурации, используя ранее рассчитанные номера и прототипы каналов
         /// </summary>
         public static bool CreateChannels(List<KPInfo> kpInfoList, bool insertKPName, 
             string logFileName, out bool logCreated, out string msg)
         {
-            //writer = null;
             logCreated = false;
             msg = "";
+            StreamWriter writer = null;
 
-            /*try
+            try
             {
                 // создание журанала создания каналов
                 writer = new StreamWriter(logFileName, false, Encoding.UTF8);
@@ -505,57 +659,49 @@ namespace ScadaAdmin
                 writer.WriteLine(new string('-', title.Length));
                 writer.WriteLine();
 
-                // определение используемых выбранными КП объектов пользовательского интерфейса КП
-                List<KPView> usedKPViewList = new List<KPView>();
-                foreach (KPParams kpParams in kpParamsList)
-                {
-                    if (kpParams.Selected)
-                    {
-                        KPView kpView = kpParams.KPView;
-                        if (kpView != null && !usedKPViewList.Contains(kpView))
-                            usedKPViewList.Add(kpView);
-                    }
-                }
-
-                // формирование справочников используемых наименований
+                // формирование списков идентификаторов используемых значений из справочников базы конфигурации
                 SortedList<string, int> paramList = new SortedList<string, int>();
                 SortedList<string, int> unitList = new SortedList<string, int>();
-                SortedList<string, int> cmdValList = new SortedList<string, int>();
+                SortedList<string, int> cmdValList = new SortedList<string, int>();                
 
-                foreach (KPView kpView in usedKPViewList)
+                foreach (KPInfo kpInfo in kpInfoList)
                 {
-                    if (kpView.DefaultCnls != null)
+                    if (kpInfo.DefaultCnls != null)
                     {
-                        foreach (KPView.InCnlProps inCnlProps in kpView.DefaultCnls)
+                        foreach (KPView.InCnlPrototype inCnl in kpInfo.DefaultCnls.InCnls)
                         {
-                            string s = inCnlProps.ParamName;
-                            if (s != "" && !paramList.ContainsKey(s))
+                            string s = inCnl.ParamName;
+                            if (!string.IsNullOrEmpty(s) && !paramList.ContainsKey(s))
                                 paramList.Add(s, -1);
 
-                            s = inCnlProps.UnitName;
-                            if (s != "" && !unitList.ContainsKey(s))
+                            s = inCnl.UnitName;
+                            if (!string.IsNullOrEmpty(s) && !unitList.ContainsKey(s))
                                 unitList.Add(s, -1);
+                        }
 
-                            if (inCnlProps.CtrlCnlProps != null)
-                            {
-                                s = inCnlProps.CtrlCnlProps.CmdValName;
-                                if (s != "" && !cmdValList.ContainsKey(s))
-                                    cmdValList.Add(s, -1);
-                            }
+                        foreach (KPView.CtrlCnlPrototype ctrlCnl in kpInfo.DefaultCnls.CtrlCnls)
+                        {
+                            string s = ctrlCnl.CmdValName;
+                            if (!string.IsNullOrEmpty(s) && !cmdValList.ContainsKey(s))
+                                cmdValList.Add(s, -1);
                         }
                     }
                 }
 
-                // определение идентификаторов в справочниках
+                // определение идентификаторов по справочникам базы конфигурации
                 writer.WriteLine(AppPhrases.CheckDicts);
-                bool paramError = FindDictIDs(paramList, Tables.GetParamTable(), "ParamID", AppPhrases.ParamNotFound);
-                bool unitError = FindDictIDs(unitList, Tables.GetUnitTable(), "UnitID", AppPhrases.UnitNotFound);
-                bool cmdValError = FindDictIDs(cmdValList, Tables.GetCmdValTable(), "CmdValID", 
+                bool paramError = !FindDictIDs(paramList, Tables.GetParamTable(), "ParamID", writer, 
+                    AppPhrases.ParamNotFound);
+                bool unitError = !FindDictIDs(unitList, Tables.GetUnitTable(), "UnitID", writer, 
+                    AppPhrases.UnitNotFound);
+                bool cmdValError = !FindDictIDs(cmdValList, Tables.GetCmdValTable(), "CmdValID", writer, 
                     AppPhrases.CmdValsNotFound);
 
                 if (paramError || unitError || cmdValError)
                 {
-                    writer.WriteLine(AppPhrases.CreateCnlsImpossible);
+                    msg = AppPhrases.CreateCnlsImpossible;
+                    writer.WriteLine(msg);
+                    return false;
                 }
                 else
                 {
@@ -572,105 +718,32 @@ namespace ScadaAdmin
                     tblFormat.DefaultView.Sort = "ShowNumber, DecDigits";
 
                     // создание каналов для КП
-                    foreach (KPParams kpParams in kpParamsList)
+                    foreach (KPInfo kpInfo in kpInfoList)
                     {
-                        if (kpParams.Selected)
+                        if (kpInfo.Selected)
                         {
-                            int inCnlNum = kpParams.FirstInCnlNum;
-                            int ctrlCnlNum = kpParams.FirstCtrlCnlNum;
-                            string kpNameToInsert = insertKPName ? kpParams.KPName + " - " : "";
+                            int inCnlNum = kpInfo.FirstInCnlNum;
+                            int ctrlCnlNum = kpInfo.FirstCtrlCnlNum;
+                            object objNum = kpInfo.ObjNum;
+                            int kpNum = kpInfo.KPNum;
+                            string kpNameToInsert = insertKPName ? kpInfo.KPName + " - " : "";
 
-                            foreach (KPView.InCnlProps inCnlProps in kpParams.KPView.DefaultCnls)
+                            // создание каналов управления
+                            foreach (KPView.CtrlCnlPrototype ctrlCnl in kpInfo.DefaultCnls.CtrlCnls)
                             {
-                                KPView.CtrlCnlProps ctrlCnlProps = inCnlProps.CtrlCnlProps;
-                                object lastCtrlCnlNum;
-                                if (ctrlCnlProps == null)
-                                {
-                                    lastCtrlCnlNum = DBNull.Value;
-                                }
-                                else
-                                {
-                                    // создание канала управления
-                                    DataRow newCtrlCnlRow = tblCtrlCnl.NewRow();
-                                    newCtrlCnlRow["CtrlCnlNum"] = ctrlCnlNum;
-                                    newCtrlCnlRow["Active"] = true;
-                                    newCtrlCnlRow["Name"] = kpNameToInsert + ctrlCnlProps.Name;
-                                    newCtrlCnlRow["CmdTypeID"] = (int)ctrlCnlProps.CmdType;
-                                    newCtrlCnlRow["ObjNum"] = kpParams.ObjNum;
-                                    newCtrlCnlRow["KPNum"] = kpParams.KPNum;
-                                    newCtrlCnlRow["CmdNum"] = ctrlCnlProps.CmdNum;
-                                    newCtrlCnlRow["CmdValID"] = ctrlCnlProps.CmdValName == "" ?
-                                        DBNull.Value : (object)cmdValList[ctrlCnlProps.CmdValName];
-                                    newCtrlCnlRow["FormulaUsed"] = ctrlCnlProps.FormulaUsed;
-                                    newCtrlCnlRow["Formula"] = ctrlCnlProps.Formula;
-                                    newCtrlCnlRow["EvEnabled"] = ctrlCnlProps.EvEnabled;
-                                    newCtrlCnlRow["ModifiedDT"] = DateTime.Now;
+                                ctrlCnl.CtrlCnlNum = ctrlCnlNum;
+                                DataRow newCtrlCnlRow = CreateCtrlCnlRow(tblCtrlCnl, cmdValList, 
+                                    ctrlCnl, objNum, kpNum, kpNameToInsert);
+                                tblCtrlCnl.Rows.Add(newCtrlCnlRow);
+                                ctrlCnlNum++;
+                            }
 
-                                    tblCtrlCnl.Rows.Add(newCtrlCnlRow);
-                                    lastCtrlCnlNum = ctrlCnlNum;
-                                    ctrlCnlNum++;
-                                }
-
-                                // создание входного канала
-                                DataRow newInCnlRow = tblInCnl.NewRow();
-                                newInCnlRow["CnlNum"] = inCnlNum;
-                                newInCnlRow["Active"] = true;
-                                newInCnlRow["CnlNum"] = inCnlNum;
-                                newInCnlRow["Name"] = kpNameToInsert + inCnlProps.Name;
-                                newInCnlRow["CnlTypeID"] = (int)inCnlProps.CnlType;
-                                newInCnlRow["ModifiedDT"] = DateTime.Now;
-                                newInCnlRow["ObjNum"] = kpParams.ObjNum;
-                                newInCnlRow["KPNum"] = kpParams.KPNum;
-                                newInCnlRow["Signal"] = inCnlProps.Signal;
-                                newInCnlRow["FormulaUsed"] = inCnlProps.FormulaUsed;
-                                newInCnlRow["Formula"] = inCnlProps.Formula;
-                                newInCnlRow["Averaging"] = inCnlProps.Averaging;
-                                newInCnlRow["ParamID"] = inCnlProps.ParamName == "" ?
-                                    DBNull.Value : (object)paramList[inCnlProps.ParamName];
-
-                                newInCnlRow["FormatID"] = DBNull.Value;
-                                if (inCnlProps.ShowNumber)
-                                {
-                                    int ind = tblFormat.DefaultView.Find(new object[] { true, inCnlProps.DecDigits });
-                                    if (ind >= 0)
-                                    {
-                                        newInCnlRow["FormatID"] = tblFormat.DefaultView[ind]["FormatID"];
-                                    }
-                                    else
-                                    {
-                                        writer.WriteLine(string.Format(
-                                            AppPhrases.NumFormatNotFound, inCnlNum, inCnlProps.DecDigits));
-                                    }
-                                }
-                                else
-                                {
-                                    int ind = tblFormat.DefaultView.Find(new object[] { false, DBNull.Value });
-                                    if (ind >= 0)
-                                    {
-                                        newInCnlRow["FormatID"] = tblFormat.DefaultView[ind]["FormatID"];
-                                    }
-                                    else
-                                    {
-                                        writer.WriteLine(string.Format(AppPhrases.TextFormatNotFound, inCnlNum));
-                                    }
-                                }
-
-                                newInCnlRow["UnitID"] = inCnlProps.UnitName == "" ?
-                                    DBNull.Value : (object)unitList[inCnlProps.UnitName];
-                                newInCnlRow["CtrlCnlNum"] = lastCtrlCnlNum;
-                                newInCnlRow["EvEnabled"] = inCnlProps.EvEnabled;
-                                newInCnlRow["EvSound"] = inCnlProps.EvSound;
-                                newInCnlRow["EvOnChange"] = inCnlProps.EvOnChange;
-                                newInCnlRow["EvOnUndef"] = inCnlProps.EvOnUndef;
-                                newInCnlRow["LimLowCrash"] = double.IsNaN(inCnlProps.LimLowCrash) ?
-                                    DBNull.Value : (object)inCnlProps.LimLowCrash;
-                                newInCnlRow["LimLow"] = double.IsNaN(inCnlProps.LimLow) ?
-                                    DBNull.Value : (object)inCnlProps.LimLow;
-                                newInCnlRow["LimHigh"] = double.IsNaN(inCnlProps.LimHigh) ?
-                                    DBNull.Value : (object)inCnlProps.LimHigh;
-                                newInCnlRow["LimHighCrash"] = double.IsNaN(inCnlProps.LimHighCrash) ?
-                                    DBNull.Value : (object)inCnlProps.LimHighCrash;
-
+                            // создание входных каналов
+                            foreach (KPView.InCnlPrototype inCnl in kpInfo.DefaultCnls.InCnls)
+                            {
+                                inCnl.CnlNum = inCnlNum;
+                                DataRow newInCnlRow = CreateInCnlRow(tblInCnl, tblFormat, paramList, unitList,
+                                    inCnl, objNum, kpNum, kpNameToInsert, writer);
                                 tblInCnl.Rows.Add(newInCnlRow);
                                 inCnlNum++;
                             }
@@ -679,35 +752,30 @@ namespace ScadaAdmin
 
                     // сохранение каналов в БД
                     int updRowCnt1, updRowCnt2;
-                    bool updateOK = UpdateCnls(tblCtrlCnl, AppPhrases.AddedCtrlCnlsCount, out updRowCnt1);
-                    updateOK = UpdateCnls(tblInCnl, AppPhrases.AddedInCnlsCount, out updRowCnt2) && updateOK;
-                    string msg = updateOK ? AppPhrases.CreateCnlsComplSucc : AppPhrases.CreateCnlsComplWithErr;
+                    bool updateOK = UpdateCnls(tblCtrlCnl, AppPhrases.AddedCtrlCnlsCount, writer, out updRowCnt1);
+                    updateOK = UpdateCnls(tblInCnl, AppPhrases.AddedInCnlsCount, writer, out updRowCnt2) && updateOK;
+                    msg = updateOK ? AppPhrases.CreateCnlsComplSucc : AppPhrases.CreateCnlsComplWithErr;
                     writer.WriteLine();
                     writer.WriteLine(msg);
 
                     if (updRowCnt1 + updRowCnt2 > 0)
                         msg += AppPhrases.RefreshRequired;
 
-                    if (updateOK)
-                        ScadaUtils.ShowInfo(msg);
-                    else
-                        AppUtils.ProcError(msg);
+                    return updateOK;
                 }
             }
             catch (Exception ex)
             {
-                string errMsg = AppPhrases.CreateCnlsError + ":\r\n" + ex.Message;
-                try { writer.WriteLine(errMsg); }
+                msg = AppPhrases.CreateCnlsError + ":\r\n" + ex.Message;
+                try { writer.WriteLine(msg); }
                 catch { }
-                AppUtils.ProcError(errMsg);
+                return false;
             }
             finally
             {
                 try { writer.Close(); }
                 catch { }
-            }*/
-
-            return false;
+            }
         }
     }
 }

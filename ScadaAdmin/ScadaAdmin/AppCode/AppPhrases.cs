@@ -125,6 +125,7 @@ namespace ScadaAdmin
         public static string DllError { get; private set; }
         public static string DllLoaded { get; private set; }
         public static string DllNotFound { get; private set; }
+        public static string FillKPFilterError { get; private set; }
         public static string FillKPGridError { get; private set; }
 
         // Словарь ScadaAdmin.FrmImport
@@ -179,10 +180,10 @@ namespace ScadaAdmin
         public static string ChooseBaseSDFFile { get; private set; }
         public static string BaseSDFFileFilter { get; private set; }
         public static string ChooseBackupDir { get; private set; }
-        public static string ChooseKPDir { get; private set; }
+        public static string ChooseCommDir { get; private set; }
         public static string BaseSDFFileNotExists { get; private set; }
         public static string BackupDirNotExists { get; private set; }
-        public static string KPDirNotExists { get; private set; }
+        public static string CommDirNotExists { get; private set; }
 
         // Словарь ScadaAdmin.FrmTable
         public static string RefreshDataError { get; private set; }
@@ -274,7 +275,7 @@ namespace ScadaAdmin
             CnlError = "Канал {0}: {1}";
             CreateCnlsTitle = "Создание каналов";
             CheckDicts = "Проверка справочников.";
-            ParamNotFound = "Не найден величина \"{0}\".";
+            ParamNotFound = "Не найдена величина \"{0}\".";
             UnitNotFound = "Не найдена размерность \"{0}\".";
             CmdValsNotFound = "Не найдены значения команды \"{0}\".";
             CreateCnlsImpossible = "Создание каналов невозможно.";
@@ -290,6 +291,7 @@ namespace ScadaAdmin
             DllError = "Ошибка";
             DllLoaded = "Загружена";
             DllNotFound = "Не найдена";
+            FillKPFilterError = "Ошибка при заполнении фильтра КП";
             FillKPGridError = "Ошибка при заполнении таблицы выбора КП";
 
             ArchiveItem = "Архив";
@@ -338,10 +340,10 @@ namespace ScadaAdmin
             ChooseBaseSDFFile = "Выберите файл базы конфигурации в формате SDF";
             BaseSDFFileFilter = "Базы конфигурации|*.sdf|Все файлы|*.*";
             ChooseBackupDir = "Выберите директорию резервного копирования базы конфигурации";
-            ChooseKPDir = "Выберите директорию библиотек КП";
+            ChooseCommDir = "Выберите директорию SCADA-Коммуникатора";
             BaseSDFFileNotExists = "Файл базы конфигурации в формате SDF не существует.";
             BackupDirNotExists = "Директория резервного копирования базы конфигурации не существует.";
-            KPDirNotExists = "Директория библиотек КП не существует.";
+            CommDirNotExists = "Директория SCADA-Коммуникатора не существует.";
 
             RefreshDataError = "Ошибка при обновлении данных таблицы";
             DeleteRowConfirm = "Вы уверены, что хотите удалить строку?";
@@ -461,6 +463,7 @@ namespace ScadaAdmin
                 DllError = dict.GetPhrase("DllError", DllError);
                 DllLoaded = dict.GetPhrase("DllLoaded", DllLoaded);
                 DllNotFound = dict.GetPhrase("DllNotFound", DllNotFound);
+                FillKPFilterError = dict.GetPhrase("FillKPFilterError", FillKPFilterError);
                 FillKPGridError = dict.GetPhrase("FillKPGridError", FillKPGridError);
             }
 
@@ -523,10 +526,10 @@ namespace ScadaAdmin
                 ChooseBaseSDFFile = dict.GetPhrase("ChooseBaseSDFFile", ChooseBaseSDFFile);
                 BaseSDFFileFilter = dict.GetPhrase("BaseSDFFileFilter", BaseSDFFileFilter);
                 ChooseBackupDir = dict.GetPhrase("ChooseBackupDir", ChooseBackupDir);
-                ChooseKPDir = dict.GetPhrase("ChooseKPDir", ChooseKPDir);
+                ChooseCommDir = dict.GetPhrase("ChooseCommDir", ChooseCommDir);
                 BaseSDFFileNotExists = dict.GetPhrase("BaseSDFFileNotExists", BaseSDFFileNotExists);
                 BackupDirNotExists = dict.GetPhrase("BackupDirNotExists", BackupDirNotExists);
-                KPDirNotExists = dict.GetPhrase("KPDirNotExists", KPDirNotExists);
+                CommDirNotExists = dict.GetPhrase("CommDirNotExists", CommDirNotExists);
             }
 
             if (Localization.Dictionaries.TryGetValue("ScadaAdmin.FrmTable", out dict))

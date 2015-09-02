@@ -971,7 +971,7 @@ namespace ScadaAdmin
         private void miServiceCreateCnls_Click(object sender, EventArgs e)
         {
             // создание каналов
-            FrmCreateCnls.ShowDialog(settings.AppSett.KPDir);
+            FrmCreateCnls.ShowDialog(settings.AppSett.CommDir);
         }
 
         private void miServiceCloneCnls_Click(object sender, EventArgs e)

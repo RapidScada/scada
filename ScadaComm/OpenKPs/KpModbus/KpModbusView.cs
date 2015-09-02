@@ -89,14 +89,15 @@ namespace Scada.Comm.Devices
             get
             {
                 // получение имени файла шаблона устройства
-                string fileName = KPProps == null ? "" : KPProps.CmdLine.Trim();
+                string templateName = KPProps == null ? "" : KPProps.CmdLine.Trim();
+                string fileName = AppDirs.ConfigDir + templateName;
                 if (!File.Exists(fileName))
                     return null;
 
                 // загрузка шаблона устройства
                 Modbus.DeviceModel template = new Modbus.DeviceModel();
                 string errMsg;
-                if (!template.LoadTemplate(AppDirs.ConfigDir + fileName, out errMsg))
+                if (!template.LoadTemplate(fileName, out errMsg))
                     throw new Exception(errMsg);
 
                 // создание прототипов каналов КП

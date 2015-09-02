@@ -23,19 +23,17 @@
  * Modified : 2015
  */
 
+using Scada;
+using Scada.Comm.Devices;
 using System;
+using System.Linq;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
-using System.Data.SqlServerCe;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Reflection;
-using System.Text;
 using System.Windows.Forms;
-using Scada;
-using Utils;
-using Scada.Comm.Devices;
 
 namespace ScadaAdmin
 {
@@ -116,6 +114,29 @@ namespace ScadaAdmin
         }
 
         /// <summary>
+        /// Заполнить фильтр КП по линии связи
+        /// </summary>
+        private void FillKPFilter()
+        {
+            try
+            {
+                DataTable tblCommLine = Tables.GetCommLineTable();
+
+                DataRow noFilterRow = tblCommLine.NewRow();
+                noFilterRow["CommLineNum"] = 0;
+                noFilterRow["Name"] = cbKPFilter.Items[0];
+                tblCommLine.Rows.InsertAt(noFilterRow, 0);
+
+                cbKPFilter.DataSource = tblCommLine;
+                cbKPFilter.SelectedIndexChanged += cbKPFilter_SelectedIndexChanged;
+            }
+            catch (Exception ex)
+            {
+                AppUtils.ProcError(AppPhrases.FillKPFilterError + ":\r\n" + ex.Message);
+            }
+        }
+
+        /// <summary>
         /// Заполнить таблицу КП
         /// </summary>
         private void FillKPGrid()
@@ -133,14 +154,7 @@ namespace ScadaAdmin
                 DataTable tblKPType = Tables.GetKPTypeTable();
                 foreach (DataRow rowKP in tblKP.Rows)
                 {
-                    CreateCnls.KPInfo kpInfo = new CreateCnls.KPInfo();
-                    kpInfo.KPNum = (int)rowKP["KPNum"];
-                    kpInfo.KPName = (string)rowKP["Name"];
-
-                    tblKPType.DefaultView.RowFilter = "KPTypeID = " + rowKP["KPTypeID"];
-                    object dllFileName = tblKPType.DefaultView[0]["DllFileName"];
-                    kpInfo.DllFileName = dllFileName == null || dllFileName == DBNull.Value ? 
-                        "" : (string)dllFileName;
+                    CreateCnls.KPInfo kpInfo = CreateCnls.KPInfo.Create(rowKP, tblKPType);
 
                     if (kpInfo.DllFileName != "")
                     {
@@ -167,6 +181,7 @@ namespace ScadaAdmin
 
                     kpInfoList.Add(kpInfo);
                 }
+
                 gvKPSel.DataSource = kpInfoList;
             }
             catch (Exception ex)
@@ -205,14 +220,14 @@ namespace ScadaAdmin
             
             // рассчёт номеров каналов
             string errMsg;
-            bool calcOk = CreateCnls.CalcCnlNums(kpViewTypes, kpInfoList, 
+            bool calcOk = CreateCnls.CalcCnlNums(kpViewTypes, kpInfoList, commDirs,
                 inCnlNums, inCnlNumParams, ctrlCnlNums, ctrlCnlNumParams, out errMsg);
 
             // вывод на форму
             SwitchCalcCreateEnabled(!calcOk);
             gvKPSel.Invalidate();
             if (showError && errMsg != "")
-                ScadaUtils.ShowError(errMsg);
+                AppUtils.ProcError(errMsg);
         }
 
         /// <summary>
@@ -222,6 +237,14 @@ namespace ScadaAdmin
         {
             btnCalc.Enabled = calcEnabled;
             btnCreate.Enabled = !calcEnabled;
+        }
+
+        /// <summary>
+        /// Разрешить расчёт номеров каналов и запретить создание каналов
+        /// </summary>
+        private void EnableCalc()
+        {
+            SwitchCalcCreateEnabled(true);
         }
 
 
@@ -236,11 +259,32 @@ namespace ScadaAdmin
             // загрузка библиотек КП
             LoadKPDlls();
 
+            // заполнение фильтра КП по линии связи
+            FillKPFilter();
+
             // заполнение таблицы КП
             FillKPGrid();
 
-            // расчёт и отображение номеров каналов
-            CalcAndShowCnlNums(false);
+            // установка доступности кнопок расчёта и создания каналов
+            EnableCalc();
+        }
+
+        private void cbKPFilter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // фильтрация таблицы КП по линии связи
+            if (cbKPFilter.SelectedIndex > 0)
+            {
+                int commLineNum = (int)cbKPFilter.SelectedValue;
+                gvKPSel.DataSource = kpInfoList.Where(x => x.CommLineNum == commLineNum)
+                    .ToList<CreateCnls.KPInfo>();
+            }
+            else
+            {
+                gvKPSel.DataSource = kpInfoList;
+            }
+
+            // отмена выбора всех КП
+            btnDeselectAll_Click(null, null);
         }
 
         private void gvKPSel_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -266,8 +310,7 @@ namespace ScadaAdmin
                 if (kpInfoList[rowInd].Enabled)
                 {
                     if (e.ColumnIndex == colSelected.Index)
-                        // разрешение расчёта каналов и запрет создания каналов
-                        SwitchCalcCreateEnabled(true);
+                        EnableCalc();
                 }
                 else
                 {
@@ -279,30 +322,29 @@ namespace ScadaAdmin
 
         private void numCnls_ValueChanged(object sender, EventArgs e)
         {
-            // разрешение расчёта каналов и запрет создания каналов
-            SwitchCalcCreateEnabled(true);
+            EnableCalc();
         }
 
         private void btnSelectAll_Click(object sender, EventArgs e)
         {
-            // выбор всех КП
-            foreach (CreateCnls.KPInfo kpInfo in kpInfoList)
-                kpInfo.Selected = kpInfo.Enabled;
-            gvKPSel.Invalidate();
-
-            // разрешение расчёта каналов и запрет создания каналов
-            SwitchCalcCreateEnabled(true);
+            // выбор всех КП, которые отображаются в таблице
+            List<CreateCnls.KPInfo> shownList = gvKPSel.DataSource as List<CreateCnls.KPInfo>;
+            if (shownList != null)
+            {
+                foreach (CreateCnls.KPInfo kpInfo in shownList)
+                    kpInfo.Selected = kpInfo.Enabled;
+                gvKPSel.Invalidate();
+                EnableCalc();
+            }
         }
 
         private void btnDeselectAll_Click(object sender, EventArgs e)
         {
-            // отмена выбора всех КП
+            // отмена выбора всех КП, включая те, которые не отображаются в таблице
             foreach (CreateCnls.KPInfo kpInfo in kpInfoList)
                 kpInfo.Selected = false;
             gvKPSel.Invalidate();
-
-            // разрешение расчёта каналов и запрет создания каналов
-            SwitchCalcCreateEnabled(true);
+            EnableCalc();
         }
 
         private void btnCalc_Click(object sender, EventArgs e)

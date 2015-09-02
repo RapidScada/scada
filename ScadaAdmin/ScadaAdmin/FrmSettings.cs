@@ -54,7 +54,7 @@ namespace ScadaAdmin
             txtBaseSDFFile.Text = appSettings.BaseSDFFile;
             txtBaseDATDir.Text = appSettings.BaseDATDir;
             txtBackupDir.Text = appSettings.BackupDir;
-            txtKPDir.Text = appSettings.KPDir;
+            txtCommDir.Text = appSettings.CommDir;
             chkAutoBackupBase.Checked = appSettings.AutoBackupBase;
         }
 
@@ -66,7 +66,7 @@ namespace ScadaAdmin
             appSettings.BaseSDFFile = txtBaseSDFFile.Text;
             appSettings.BaseDATDir = txtBaseDATDir.Text;
             appSettings.BackupDir = txtBackupDir.Text;
-            appSettings.KPDir = txtKPDir.Text;
+            appSettings.CommDir = txtCommDir.Text;
             appSettings.AutoBackupBase = chkAutoBackupBase.Checked;
         }
 
@@ -117,14 +117,14 @@ namespace ScadaAdmin
             txtBackupDir.DeselectAll();
         }
 
-        private void btnKPDir_Click(object sender, EventArgs e)
+        private void btnCommDir_Click(object sender, EventArgs e)
         {
-            folderBrowserDialog.SelectedPath = txtKPDir.Text.Trim();
-            folderBrowserDialog.Description = AppPhrases.ChooseKPDir;
+            folderBrowserDialog.SelectedPath = txtCommDir.Text.Trim();
+            folderBrowserDialog.Description = AppPhrases.ChooseCommDir;
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
-                txtKPDir.Text = folderBrowserDialog.SelectedPath;
-            txtKPDir.Focus();
-            txtKPDir.DeselectAll();
+                txtCommDir.Text = folderBrowserDialog.SelectedPath;
+            txtCommDir.Focus();
+            txtCommDir.DeselectAll();
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -148,8 +148,8 @@ namespace ScadaAdmin
                 sbErr.AppendLine(AppPhrases.BackupDirNotExists);
                 fatalError = true;
             }
-            if (!Directory.Exists(txtKPDir.Text))
-                sbErr.AppendLine(AppPhrases.KPDirNotExists);
+            if (!Directory.Exists(txtCommDir.Text))
+                sbErr.AppendLine(AppPhrases.CommDirNotExists);
 
             if (sbErr.Length > 0)
             {
