@@ -86,13 +86,6 @@ namespace Scada.Comm.Devices
                 List<InCnlPrototype> inCnls = prototypes.InCnls;
                 List<CtrlCnlPrototype> ctrlCnls = prototypes.CtrlCnls;
 
-                // создание прототипов каналов управления
-                ctrlCnls.Add(new CtrlCnlPrototype(Localization.UseRussian ? "Отправка SMS" : "Send SMS message", 
-                    BaseValues.CmdTypes.Binary) { CmdNum = 1 });
-
-                ctrlCnls.Add(new CtrlCnlPrototype(Localization.UseRussian ? "AT-команда" : "AT command", 
-                    BaseValues.CmdTypes.Binary) { CmdNum = 2 });
-
                 // создание прототипов входных каналов
                 inCnls.Add(new InCnlPrototype(Localization.UseRussian ? "Связь" : "Connection", BaseValues.CnlTypes.TS)
                 {
@@ -110,8 +103,15 @@ namespace Scada.Comm.Devices
                     Signal = 2,
                     ParamName = Localization.UseRussian ? "Событие" : "Event",
                     DecDigits = 0,
-                    UnitName = Localization.UseRussian ? "Шт." : "Count"
+                    UnitName = Localization.UseRussian ? "Шт." : "pcs."
                 });
+
+                // создание прототипов каналов управления
+                ctrlCnls.Add(new CtrlCnlPrototype(Localization.UseRussian ? "Отправка SMS" : "Send SMS message",
+                    BaseValues.CmdTypes.Binary) { CmdNum = 1 });
+
+                ctrlCnls.Add(new CtrlCnlPrototype(Localization.UseRussian ? "AT-команда" : "AT command",
+                    BaseValues.CmdTypes.Binary) { CmdNum = 2 });
 
                 return prototypes;
             }
