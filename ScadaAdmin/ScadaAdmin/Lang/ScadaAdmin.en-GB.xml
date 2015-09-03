@@ -160,7 +160,7 @@
     <Phrase key="chkImportLog">Write to import log</Phrase>
     <Phrase key="btnImport">Import</Phrase>
     <Phrase key="btnClose">Close</Phrase>
-    <Phrase key="ArchiveItem">Archive</Phrase>
+    <Phrase key="ArchiveItem">Tables from archive</Phrase>
   </Dictionary>
   <Dictionary key="ScadaAdmin.FrmInCnlProps">
     <Phrase key="this">Input Channel Properties</Phrase>

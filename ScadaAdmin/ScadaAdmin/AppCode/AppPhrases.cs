@@ -294,7 +294,7 @@ namespace ScadaAdmin
             FillKPFilterError = "Ошибка при заполнении фильтра КП";
             FillKPGridError = "Ошибка при заполнении таблицы выбора КП";
 
-            ArchiveItem = "Архив";
+            ArchiveItem = "Таблицы из архива";
 
             ShowInCnlPropsError = "Ошибка при отображении свойств входного канала";
             IncorrectInCnlNum = "Некорректное значение номера входного канала:";
