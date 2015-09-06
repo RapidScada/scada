@@ -1719,9 +1719,11 @@ namespace Scada.Comm.Svc
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception((Localization.UseRussian ?
+                    string errMsg = (Localization.UseRussian ?
                         "Ошибка при инициализации канала связи: " :
-                        "Error initializing communication channel: ") + ex.Message);
+                        "Error initializing communication channel: ") + ex.Message;
+                    commLine.log.WriteAction(errMsg);
+                    throw new Exception(errMsg);
                 }
             }
 
