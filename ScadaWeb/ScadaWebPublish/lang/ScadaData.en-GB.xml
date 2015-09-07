@@ -8,8 +8,6 @@
     <Phrase key="ErrorWithColon">Error:</Phrase>
     <Phrase key="UnhandledException">Unhandled exception</Phrase>
     <Phrase key="SaveSettingsConfirm">Settings have been modified. Save the changes?</Phrase>
-    <Phrase key="SaveModSettingsConfirm">Module settings have been modified. Save the changes?</Phrase>
-    <Phrase key="SaveKpSettingsConfirm">Device settings have been modified. Save the changes?</Phrase>
     <Phrase key="FileNotFound">File not found.</Phrase>
     <Phrase key="DirNotExists">Directory does not exist.</Phrase>
     <Phrase key="NamedFileNotFound">File {0} not found.</Phrase>
@@ -21,8 +19,6 @@
     <Phrase key="SaveAppSettingsError">Error saving application settings</Phrase>
     <Phrase key="LoadCommSettingsError">Error loading server connection settings</Phrase>
     <Phrase key="SaveCommSettingsError">Error saving server connection settings</Phrase>
-    <Phrase key="LoadKpSettingsError">Error loading device settings</Phrase>
-    <Phrase key="SaveKpSettingsError">Error saving device settings</Phrase>
     <Phrase key="GridDataError">Data error</Phrase>
     <Phrase key="IntegerRequired">An integer is required.</Phrase>
     <Phrase key="IntegerRangingRequired">An integer from {0} to {1} is required.</Phrase>

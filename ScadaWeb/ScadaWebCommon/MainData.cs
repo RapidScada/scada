@@ -527,8 +527,9 @@ namespace Scada.Web
 
                 // проверка нового статуса канала
                 int newCnlStat = ev.NewCnlStat;
-                bool newValIsUndef = newCnlStat <= BaseValues.ParamStat.Undefined ||
-                    newCnlStat == BaseValues.ParamStat.FormulaError || newCnlStat == BaseValues.ParamStat.Unreliable;
+                bool newValIsUndef = newCnlStat <= BaseValues.CnlStatuses.Undefined ||
+                    newCnlStat == BaseValues.CnlStatuses.FormulaError || 
+                    newCnlStat == BaseValues.CnlStatuses.Unreliable;
 
                 // определение цвета
                 if (!cnlProps.ShowNumber && cnlProps.UnitArr != null && cnlProps.UnitArr.Length == 2)
@@ -1291,8 +1292,8 @@ namespace Scada.Web
                 // определение цвета
                 if (cnlProps != null && getColor)
                 {
-                    if (!cnlProps.ShowNumber && unitArrLen == 2 && stat > 0 && 
-                        stat != BaseValues.ParamStat.FormulaError && stat != BaseValues.ParamStat.Unreliable)
+                    if (!cnlProps.ShowNumber && unitArrLen == 2 && stat > 0 &&
+                        stat != BaseValues.CnlStatuses.FormulaError && stat != BaseValues.CnlStatuses.Unreliable)
                     {
                         color = val > 0 ? "green" : "red";
                     }
