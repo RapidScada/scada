@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2008
- * Modified : 2014
+ * Modified : 2015
  */
 
 using Scada.Client;
@@ -128,7 +128,7 @@ namespace Scada.Web
             // проверка загрузки представления и прав на отправку команды
             if (view == null)
                 throw new Exception(WebPhrases.UnableLoadView);
-            else if (!right.CtrlRight || !AppData.WebSettings.CmdEnabled || !view.CtrlCnlList.Contains(ctrlCnlNum))
+            else if (!right.CtrlRight || !AppData.WebSettings.CmdEnabled || !view.ContainsCtrlCnl(ctrlCnlNum))
                 throw new Exception(CommonPhrases.NoRights);
 
             // очистка сообщения об ошибке

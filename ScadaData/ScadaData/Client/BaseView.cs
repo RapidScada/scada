@@ -115,6 +115,22 @@ namespace Scada.Client
         public virtual void BindCnlProps(InCnlProps[] cnlPropsArr)
         {
         }
+
+        /// <summary>
+        /// Определить, что входной канал используется в представлении
+        /// </summary>
+        public virtual bool ContainsCnl(int cnlNum)
+        {
+            return CnlList.BinarySearch(cnlNum) >= 0;
+        }
+
+        /// <summary>
+        /// Определить, что канал управления используется в представлении
+        /// </summary>
+        public virtual bool ContainsCtrlCnl(int ctrlCnlNum)
+        {
+            return CtrlCnlList.BinarySearch(ctrlCnlNum) >= 0;
+        }
         
         /// <summary>
         /// Очистить представление
