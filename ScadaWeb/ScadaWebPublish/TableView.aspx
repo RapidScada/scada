@@ -7,7 +7,7 @@
     <title>Табличное представление</title>
 	<link href="css/scada.css" rel="stylesheet" type="text/css" />
 	<link href="css/tableView.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="script/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript" src="script/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" src="script/scada.js"></script>
     <script type="text/javascript" src="script/tableView.js"></script>
 </head>

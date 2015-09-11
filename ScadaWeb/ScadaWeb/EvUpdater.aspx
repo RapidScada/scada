@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Events Table Updater</title>
-    <script type="text/javascript" src="script/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript" src="script/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" src="script/evUpdater.js"></script>
 </head>
 <body style="margin: 0px; background-color: #ccffff">

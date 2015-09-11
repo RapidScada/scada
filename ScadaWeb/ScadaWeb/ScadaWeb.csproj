@@ -130,6 +130,7 @@
     <Content Include="Login.aspx" />
     <Content Include="LoginChecker.aspx" />
     <Content Include="Main.aspx" />
+    <Content Include="script\jquery-1.11.3.min.js" />
     <Content Include="TableView.aspx" />
     <Content Include="RepHrEvTableOut.aspx" />
     <Content Include="Report.aspx" />
@@ -137,7 +138,6 @@
     <Content Include="script\events.js" />
     <Content Include="script\evTable.js" />
     <Content Include="script\evUpdater.js" />
-    <Content Include="script\jquery-1.10.1.min.js" />
     <Content Include="script\main.js" />
     <Content Include="script\tableView.js" />
     <Content Include="script\scada.js" />
