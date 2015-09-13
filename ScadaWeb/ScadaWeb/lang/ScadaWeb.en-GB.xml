@@ -28,6 +28,7 @@
     <Phrase key="divResetZoom.ToolTip">Reset zoom</Phrase>
     <Phrase key="btnSelectDiagCnls">Select channels</Phrase>
     <Phrase key="btnShowData">Show data</Phrase>
+    <Phrase key="btnChangePeriod">Change period</Phrase>
     <Phrase key="btnHideData">Hide data</Phrase>
     <Phrase key="btnRefreshDiag">Refresh</Phrase>
   </Dictionary>
