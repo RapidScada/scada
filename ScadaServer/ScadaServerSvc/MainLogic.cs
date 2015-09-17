@@ -92,7 +92,7 @@ namespace Scada.Server.Svc
         /// <summary>
         /// Строковая запись версии приложения
         /// </summary>
-        public const string AppVersion = "4.5.0.3";
+        public const string AppVersion = "4.5.0.4";
         /// <summary>
         /// Имя файла журнала приложения
         /// </summary>
@@ -2370,15 +2370,7 @@ namespace Scada.Server.Svc
                     ev.DateTime = DateTime.Now;
                     ev.ObjNum = ctrlCnl.ObjNum;
                     ev.KPNum = ctrlCnl.KPNum;
-                    
-                    string cmdDataStr;
-                    if (cmd.CmdData == null)
-                        cmdDataStr = "null";
-                    else if (cmd.CmdData.Length == 0)
-                        cmdDataStr = "empty";
-                    else cmdDataStr = ScadaUtils.BytesToHex(cmd.CmdData);
-
-                    ev.Descr = string.Format(EventOnCmdFormat, ctrlCnlNum, userID, cmd.CmdVal, cmdDataStr);
+                    ev.Descr = cmd.GetCmdDescr(ctrlCnlNum, userID);
 
                     // запись события и выполнение действий модулей
                     WriteEvent(ev);
