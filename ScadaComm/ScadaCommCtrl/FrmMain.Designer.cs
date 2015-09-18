@@ -74,7 +74,7 @@
             this.pageCommonParams = new System.Windows.Forms.TabPage();
             this.gbPerformance = new System.Windows.Forms.GroupBox();
             this.lblRefrParams = new System.Windows.Forms.Label();
-            this.numRefrParams = new System.Windows.Forms.NumericUpDown();
+            this.numSendAllDataPer = new System.Windows.Forms.NumericUpDown();
             this.numWaitForStop = new System.Windows.Forms.NumericUpDown();
             this.lblWaitForStop = new System.Windows.Forms.Label();
             this.gbServer = new System.Windows.Forms.GroupBox();
@@ -103,47 +103,30 @@
             this.lblLineNumber = new System.Windows.Forms.Label();
             this.chkLineActive = new System.Windows.Forms.CheckBox();
             this.gbLineParams = new System.Windows.Forms.GroupBox();
+            this.lblDetailedLog = new System.Windows.Forms.Label();
+            this.chkDetailedLog = new System.Windows.Forms.CheckBox();
             this.lblCmdEnabled = new System.Windows.Forms.Label();
             this.chkCmdEnabled = new System.Windows.Forms.CheckBox();
-            this.lblMaxCommErrCnt = new System.Windows.Forms.Label();
-            this.numMaxCommErrCnt = new System.Windows.Forms.NumericUpDown();
             this.lblCycleDelay = new System.Windows.Forms.Label();
             this.numCycleDelay = new System.Windows.Forms.NumericUpDown();
             this.numReqTriesCnt = new System.Windows.Forms.NumericUpDown();
             this.lblReqTriesCnt = new System.Windows.Forms.Label();
-            this.gbConnection = new System.Windows.Forms.GroupBox();
-            this.cbConnType = new System.Windows.Forms.ComboBox();
-            this.lblConnType = new System.Windows.Forms.Label();
-            this.lblPortName = new System.Windows.Forms.Label();
-            this.chkRtsEnable = new System.Windows.Forms.CheckBox();
-            this.chkDtrEnable = new System.Windows.Forms.CheckBox();
-            this.cbStopBits = new System.Windows.Forms.ComboBox();
-            this.lblStopBits = new System.Windows.Forms.Label();
-            this.cbParity = new System.Windows.Forms.ComboBox();
-            this.lblParity = new System.Windows.Forms.Label();
-            this.cbDataBits = new System.Windows.Forms.ComboBox();
-            this.lblDataBits = new System.Windows.Forms.Label();
-            this.cbBaudRate = new System.Windows.Forms.ComboBox();
-            this.lblBaudRate = new System.Windows.Forms.Label();
-            this.cbPortName = new System.Windows.Forms.ComboBox();
-            this.pageUserParams = new System.Windows.Forms.TabPage();
+            this.gbCommChannel = new System.Windows.Forms.GroupBox();
+            this.txtCommCnlParams = new System.Windows.Forms.TextBox();
+            this.lblCommCnlParams = new System.Windows.Forms.Label();
+            this.btnCommCnlProps = new System.Windows.Forms.Button();
+            this.cbCommCnlType = new System.Windows.Forms.ComboBox();
+            this.lblCommCnlType = new System.Windows.Forms.Label();
+            this.pageCustomParams = new System.Windows.Forms.TabPage();
             this.btnDelParam = new System.Windows.Forms.Button();
-            this.btnMoveDownParam = new System.Windows.Forms.Button();
-            this.btnMoveUpParam = new System.Windows.Forms.Button();
             this.gbSelectedParam = new System.Windows.Forms.GroupBox();
-            this.lblParamOrder = new System.Windows.Forms.Label();
-            this.txtParamOrder = new System.Windows.Forms.TextBox();
-            this.lblParamDescr = new System.Windows.Forms.Label();
             this.lblParamValue = new System.Windows.Forms.Label();
-            this.txtParamDescr = new System.Windows.Forms.TextBox();
             this.txtParamValue = new System.Windows.Forms.TextBox();
             this.txtParamName = new System.Windows.Forms.TextBox();
             this.lblParamName = new System.Windows.Forms.Label();
-            this.lvUserParams = new System.Windows.Forms.ListView();
-            this.colParamOrder = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.lvCustomParams = new System.Windows.Forms.ListView();
             this.colParamName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colParamValue = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colParamDescr = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnAddParam = new System.Windows.Forms.Button();
             this.pageReqSequence = new System.Windows.Forms.TabPage();
             this.btnCutKP = new System.Windows.Forms.Button();
@@ -235,7 +218,7 @@
             this.tabControl.SuspendLayout();
             this.pageCommonParams.SuspendLayout();
             this.gbPerformance.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numRefrParams)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numSendAllDataPer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numWaitForStop)).BeginInit();
             this.gbServer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numServerTimeout)).BeginInit();
@@ -245,11 +228,10 @@
             this.gbCommLine.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numLineNumber)).BeginInit();
             this.gbLineParams.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numMaxCommErrCnt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCycleDelay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numReqTriesCnt)).BeginInit();
-            this.gbConnection.SuspendLayout();
-            this.pageUserParams.SuspendLayout();
+            this.gbCommChannel.SuspendLayout();
+            this.pageCustomParams.SuspendLayout();
             this.gbSelectedParam.SuspendLayout();
             this.pageReqSequence.SuspendLayout();
             this.gbSelectedKP.SuspendLayout();
@@ -478,6 +460,7 @@
             this.treeView.TabIndex = 0;
             this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
             this.treeView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView_NodeMouseClick);
+            this.treeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView_NodeMouseDoubleClick);
             // 
             // ilTree
             // 
@@ -630,7 +613,7 @@
             this.tabControl.Controls.Add(this.pageCommonParams);
             this.tabControl.Controls.Add(this.pageKpDlls);
             this.tabControl.Controls.Add(this.pageLineParams);
-            this.tabControl.Controls.Add(this.pageUserParams);
+            this.tabControl.Controls.Add(this.pageCustomParams);
             this.tabControl.Controls.Add(this.pageReqSequence);
             this.tabControl.Controls.Add(this.pageLineState);
             this.tabControl.Controls.Add(this.pageLineLog);
@@ -661,13 +644,13 @@
             // gbPerformance
             // 
             this.gbPerformance.Controls.Add(this.lblRefrParams);
-            this.gbPerformance.Controls.Add(this.numRefrParams);
+            this.gbPerformance.Controls.Add(this.numSendAllDataPer);
             this.gbPerformance.Controls.Add(this.numWaitForStop);
             this.gbPerformance.Controls.Add(this.lblWaitForStop);
             this.gbPerformance.Location = new System.Drawing.Point(6, 140);
             this.gbPerformance.Name = "gbPerformance";
             this.gbPerformance.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbPerformance.Size = new System.Drawing.Size(392, 81);
+            this.gbPerformance.Size = new System.Drawing.Size(392, 78);
             this.gbPerformance.TabIndex = 1;
             this.gbPerformance.TabStop = false;
             this.gbPerformance.Text = "Выполнение";
@@ -675,29 +658,29 @@
             // lblRefrParams
             // 
             this.lblRefrParams.AutoSize = true;
-            this.lblRefrParams.Location = new System.Drawing.Point(79, 49);
+            this.lblRefrParams.Location = new System.Drawing.Point(13, 49);
             this.lblRefrParams.Name = "lblRefrParams";
             this.lblRefrParams.Size = new System.Drawing.Size(245, 13);
-            this.lblRefrParams.TabIndex = 3;
+            this.lblRefrParams.TabIndex = 2;
             this.lblRefrParams.Text = "Период передачи на сервер всех данных КП, с";
             // 
-            // numRefrParams
+            // numSendAllDataPer
             // 
-            this.numRefrParams.Location = new System.Drawing.Point(13, 45);
-            this.numRefrParams.Maximum = new decimal(new int[] {
+            this.numSendAllDataPer.Location = new System.Drawing.Point(319, 45);
+            this.numSendAllDataPer.Maximum = new decimal(new int[] {
             3600,
             0,
             0,
             0});
-            this.numRefrParams.Name = "numRefrParams";
-            this.numRefrParams.Size = new System.Drawing.Size(60, 20);
-            this.numRefrParams.TabIndex = 2;
-            this.numRefrParams.Value = new decimal(new int[] {
+            this.numSendAllDataPer.Name = "numSendAllDataPer";
+            this.numSendAllDataPer.Size = new System.Drawing.Size(60, 20);
+            this.numSendAllDataPer.TabIndex = 3;
+            this.numSendAllDataPer.Value = new decimal(new int[] {
             60,
             0,
             0,
             0});
-            this.numRefrParams.ValueChanged += new System.EventHandler(this.numRefrParams_ValueChanged);
+            this.numSendAllDataPer.ValueChanged += new System.EventHandler(this.numSendAllDataPer_ValueChanged);
             // 
             // numWaitForStop
             // 
@@ -706,7 +689,7 @@
             0,
             0,
             0});
-            this.numWaitForStop.Location = new System.Drawing.Point(13, 19);
+            this.numWaitForStop.Location = new System.Drawing.Point(319, 19);
             this.numWaitForStop.Maximum = new decimal(new int[] {
             600000,
             0,
@@ -714,7 +697,7 @@
             0});
             this.numWaitForStop.Name = "numWaitForStop";
             this.numWaitForStop.Size = new System.Drawing.Size(60, 20);
-            this.numWaitForStop.TabIndex = 0;
+            this.numWaitForStop.TabIndex = 1;
             this.numWaitForStop.Value = new decimal(new int[] {
             1000,
             0,
@@ -725,10 +708,10 @@
             // lblWaitForStop
             // 
             this.lblWaitForStop.AutoSize = true;
-            this.lblWaitForStop.Location = new System.Drawing.Point(79, 23);
+            this.lblWaitForStop.Location = new System.Drawing.Point(13, 23);
             this.lblWaitForStop.Name = "lblWaitForStop";
             this.lblWaitForStop.Size = new System.Drawing.Size(201, 13);
-            this.lblWaitForStop.TabIndex = 1;
+            this.lblWaitForStop.TabIndex = 0;
             this.lblWaitForStop.Text = "Ожидание остановки линий связи, мс";
             // 
             // gbServer
@@ -755,7 +738,7 @@
             // lblServerPwd
             // 
             this.lblServerPwd.AutoSize = true;
-            this.lblServerPwd.Location = new System.Drawing.Point(116, 79);
+            this.lblServerPwd.Location = new System.Drawing.Point(170, 78);
             this.lblServerPwd.Name = "lblServerPwd";
             this.lblServerPwd.Size = new System.Drawing.Size(45, 13);
             this.lblServerPwd.TabIndex = 9;
@@ -763,7 +746,7 @@
             // 
             // txtServerPwd
             // 
-            this.txtServerPwd.Location = new System.Drawing.Point(119, 95);
+            this.txtServerPwd.Location = new System.Drawing.Point(173, 95);
             this.txtServerPwd.Name = "txtServerPwd";
             this.txtServerPwd.Size = new System.Drawing.Size(100, 20);
             this.txtServerPwd.TabIndex = 10;
@@ -775,7 +758,7 @@
             // 
             this.txtServerUser.Location = new System.Drawing.Point(13, 95);
             this.txtServerUser.Name = "txtServerUser";
-            this.txtServerUser.Size = new System.Drawing.Size(100, 20);
+            this.txtServerUser.Size = new System.Drawing.Size(154, 20);
             this.txtServerUser.TabIndex = 8;
             this.txtServerUser.Text = "ScadaComm";
             this.txtServerUser.TextChanged += new System.EventHandler(this.txtServerUser_TextChanged);
@@ -792,7 +775,7 @@
             // lblServerTimeout
             // 
             this.lblServerTimeout.AutoSize = true;
-            this.lblServerTimeout.Location = new System.Drawing.Point(222, 39);
+            this.lblServerTimeout.Location = new System.Drawing.Point(276, 39);
             this.lblServerTimeout.Name = "lblServerTimeout";
             this.lblServerTimeout.Size = new System.Drawing.Size(50, 13);
             this.lblServerTimeout.TabIndex = 5;
@@ -800,7 +783,7 @@
             // 
             // numServerTimeout
             // 
-            this.numServerTimeout.Location = new System.Drawing.Point(225, 55);
+            this.numServerTimeout.Location = new System.Drawing.Point(279, 55);
             this.numServerTimeout.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -824,7 +807,7 @@
             // lblServerPort
             // 
             this.lblServerPort.AutoSize = true;
-            this.lblServerPort.Location = new System.Drawing.Point(116, 39);
+            this.lblServerPort.Location = new System.Drawing.Point(170, 39);
             this.lblServerPort.Name = "lblServerPort";
             this.lblServerPort.Size = new System.Drawing.Size(32, 13);
             this.lblServerPort.TabIndex = 3;
@@ -832,7 +815,7 @@
             // 
             // numServerPort
             // 
-            this.numServerPort.Location = new System.Drawing.Point(119, 55);
+            this.numServerPort.Location = new System.Drawing.Point(173, 55);
             this.numServerPort.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -879,7 +862,7 @@
             // 
             this.txtServerHost.Location = new System.Drawing.Point(13, 55);
             this.txtServerHost.Name = "txtServerHost";
-            this.txtServerHost.Size = new System.Drawing.Size(100, 20);
+            this.txtServerHost.Size = new System.Drawing.Size(154, 20);
             this.txtServerHost.TabIndex = 2;
             this.txtServerHost.Text = "localhost";
             this.txtServerHost.TextChanged += new System.EventHandler(this.txtServerHost_TextChanged);
@@ -952,7 +935,7 @@
             this.pageLineParams.BackColor = System.Drawing.Color.Transparent;
             this.pageLineParams.Controls.Add(this.gbCommLine);
             this.pageLineParams.Controls.Add(this.gbLineParams);
-            this.pageLineParams.Controls.Add(this.gbConnection);
+            this.pageLineParams.Controls.Add(this.gbCommChannel);
             this.pageLineParams.Location = new System.Drawing.Point(4, 22);
             this.pageLineParams.Name = "pageLineParams";
             this.pageLineParams.Padding = new System.Windows.Forms.Padding(3);
@@ -1040,15 +1023,15 @@
             // 
             // gbLineParams
             // 
+            this.gbLineParams.Controls.Add(this.lblDetailedLog);
+            this.gbLineParams.Controls.Add(this.chkDetailedLog);
             this.gbLineParams.Controls.Add(this.lblCmdEnabled);
             this.gbLineParams.Controls.Add(this.chkCmdEnabled);
-            this.gbLineParams.Controls.Add(this.lblMaxCommErrCnt);
-            this.gbLineParams.Controls.Add(this.numMaxCommErrCnt);
             this.gbLineParams.Controls.Add(this.lblCycleDelay);
             this.gbLineParams.Controls.Add(this.numCycleDelay);
             this.gbLineParams.Controls.Add(this.numReqTriesCnt);
             this.gbLineParams.Controls.Add(this.lblReqTriesCnt);
-            this.gbLineParams.Location = new System.Drawing.Point(6, 189);
+            this.gbLineParams.Location = new System.Drawing.Point(6, 301);
             this.gbLineParams.Name = "gbLineParams";
             this.gbLineParams.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
             this.gbLineParams.Size = new System.Drawing.Size(392, 128);
@@ -1056,60 +1039,53 @@
             this.gbLineParams.TabStop = false;
             this.gbLineParams.Text = "Параметры связи";
             // 
+            // lblDetailedLog
+            // 
+            this.lblDetailedLog.AutoSize = true;
+            this.lblDetailedLog.Location = new System.Drawing.Point(13, 101);
+            this.lblDetailedLog.Name = "lblDetailedLog";
+            this.lblDetailedLog.Size = new System.Drawing.Size(105, 13);
+            this.lblDetailedLog.TabIndex = 6;
+            this.lblDetailedLog.Text = "Подробный журнал";
+            this.lblDetailedLog.Click += new System.EventHandler(this.lblDetailedLog_Click);
+            // 
+            // chkDetailedLog
+            // 
+            this.chkDetailedLog.AutoSize = true;
+            this.chkDetailedLog.Location = new System.Drawing.Point(342, 101);
+            this.chkDetailedLog.Name = "chkDetailedLog";
+            this.chkDetailedLog.Size = new System.Drawing.Size(15, 14);
+            this.chkDetailedLog.TabIndex = 7;
+            this.chkDetailedLog.UseVisualStyleBackColor = true;
+            this.chkDetailedLog.CheckedChanged += new System.EventHandler(this.chkDetailedLog_CheckedChanged);
+            // 
             // lblCmdEnabled
             // 
             this.lblCmdEnabled.AutoSize = true;
-            this.lblCmdEnabled.Location = new System.Drawing.Point(79, 101);
+            this.lblCmdEnabled.Location = new System.Drawing.Point(13, 75);
             this.lblCmdEnabled.Name = "lblCmdEnabled";
             this.lblCmdEnabled.Size = new System.Drawing.Size(133, 13);
-            this.lblCmdEnabled.TabIndex = 7;
+            this.lblCmdEnabled.TabIndex = 4;
             this.lblCmdEnabled.Text = "Команды ТУ разрешены";
             this.lblCmdEnabled.Click += new System.EventHandler(this.lblCmdEnabled_Click);
             // 
             // chkCmdEnabled
             // 
             this.chkCmdEnabled.AutoSize = true;
-            this.chkCmdEnabled.Location = new System.Drawing.Point(36, 101);
+            this.chkCmdEnabled.Location = new System.Drawing.Point(342, 75);
             this.chkCmdEnabled.Name = "chkCmdEnabled";
             this.chkCmdEnabled.Size = new System.Drawing.Size(15, 14);
-            this.chkCmdEnabled.TabIndex = 6;
+            this.chkCmdEnabled.TabIndex = 5;
             this.chkCmdEnabled.UseVisualStyleBackColor = true;
             this.chkCmdEnabled.CheckedChanged += new System.EventHandler(this.chkCmdEnabled_CheckedChanged);
-            // 
-            // lblMaxCommErrCnt
-            // 
-            this.lblMaxCommErrCnt.AutoSize = true;
-            this.lblMaxCommErrCnt.Location = new System.Drawing.Point(79, 75);
-            this.lblMaxCommErrCnt.Name = "lblMaxCommErrCnt";
-            this.lblMaxCommErrCnt.Size = new System.Drawing.Size(279, 13);
-            this.lblMaxCommErrCnt.TabIndex = 5;
-            this.lblMaxCommErrCnt.Text = "Максимальное количество неудачных сеансов связи";
-            // 
-            // numMaxCommErrCnt
-            // 
-            this.numMaxCommErrCnt.Location = new System.Drawing.Point(13, 71);
-            this.numMaxCommErrCnt.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numMaxCommErrCnt.Name = "numMaxCommErrCnt";
-            this.numMaxCommErrCnt.Size = new System.Drawing.Size(60, 20);
-            this.numMaxCommErrCnt.TabIndex = 4;
-            this.numMaxCommErrCnt.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numMaxCommErrCnt.ValueChanged += new System.EventHandler(this.numMaxCommErrCnt_ValueChanged);
             // 
             // lblCycleDelay
             // 
             this.lblCycleDelay.AutoSize = true;
-            this.lblCycleDelay.Location = new System.Drawing.Point(79, 49);
+            this.lblCycleDelay.Location = new System.Drawing.Point(13, 49);
             this.lblCycleDelay.Name = "lblCycleDelay";
             this.lblCycleDelay.Size = new System.Drawing.Size(183, 13);
-            this.lblCycleDelay.TabIndex = 3;
+            this.lblCycleDelay.TabIndex = 2;
             this.lblCycleDelay.Text = "Задержка после цикла опроса, мс";
             // 
             // numCycleDelay
@@ -1119,7 +1095,7 @@
             0,
             0,
             0});
-            this.numCycleDelay.Location = new System.Drawing.Point(13, 45);
+            this.numCycleDelay.Location = new System.Drawing.Point(319, 45);
             this.numCycleDelay.Maximum = new decimal(new int[] {
             600000,
             0,
@@ -1127,12 +1103,12 @@
             0});
             this.numCycleDelay.Name = "numCycleDelay";
             this.numCycleDelay.Size = new System.Drawing.Size(60, 20);
-            this.numCycleDelay.TabIndex = 2;
+            this.numCycleDelay.TabIndex = 3;
             this.numCycleDelay.ValueChanged += new System.EventHandler(this.numCycleDelay_ValueChanged);
             // 
             // numReqTriesCnt
             // 
-            this.numReqTriesCnt.Location = new System.Drawing.Point(13, 19);
+            this.numReqTriesCnt.Location = new System.Drawing.Point(319, 19);
             this.numReqTriesCnt.Minimum = new decimal(new int[] {
             1,
             0,
@@ -1140,7 +1116,7 @@
             0});
             this.numReqTriesCnt.Name = "numReqTriesCnt";
             this.numReqTriesCnt.Size = new System.Drawing.Size(60, 20);
-            this.numReqTriesCnt.TabIndex = 0;
+            this.numReqTriesCnt.TabIndex = 1;
             this.numReqTriesCnt.Value = new decimal(new int[] {
             3,
             0,
@@ -1151,276 +1127,108 @@
             // lblReqTriesCnt
             // 
             this.lblReqTriesCnt.AutoSize = true;
-            this.lblReqTriesCnt.Location = new System.Drawing.Point(79, 23);
+            this.lblReqTriesCnt.Location = new System.Drawing.Point(13, 23);
             this.lblReqTriesCnt.Name = "lblReqTriesCnt";
             this.lblReqTriesCnt.Size = new System.Drawing.Size(261, 13);
-            this.lblReqTriesCnt.TabIndex = 1;
+            this.lblReqTriesCnt.TabIndex = 0;
             this.lblReqTriesCnt.Text = "Количество попыток перезапроса КП при ошибке";
             // 
-            // gbConnection
+            // gbCommChannel
             // 
-            this.gbConnection.Controls.Add(this.cbConnType);
-            this.gbConnection.Controls.Add(this.lblConnType);
-            this.gbConnection.Controls.Add(this.lblPortName);
-            this.gbConnection.Controls.Add(this.chkRtsEnable);
-            this.gbConnection.Controls.Add(this.chkDtrEnable);
-            this.gbConnection.Controls.Add(this.cbStopBits);
-            this.gbConnection.Controls.Add(this.lblStopBits);
-            this.gbConnection.Controls.Add(this.cbParity);
-            this.gbConnection.Controls.Add(this.lblParity);
-            this.gbConnection.Controls.Add(this.cbDataBits);
-            this.gbConnection.Controls.Add(this.lblDataBits);
-            this.gbConnection.Controls.Add(this.cbBaudRate);
-            this.gbConnection.Controls.Add(this.lblBaudRate);
-            this.gbConnection.Controls.Add(this.cbPortName);
-            this.gbConnection.Location = new System.Drawing.Point(6, 77);
-            this.gbConnection.Name = "gbConnection";
-            this.gbConnection.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbConnection.Size = new System.Drawing.Size(392, 106);
-            this.gbConnection.TabIndex = 1;
-            this.gbConnection.TabStop = false;
-            this.gbConnection.Text = "Подключение";
+            this.gbCommChannel.Controls.Add(this.txtCommCnlParams);
+            this.gbCommChannel.Controls.Add(this.lblCommCnlParams);
+            this.gbCommChannel.Controls.Add(this.btnCommCnlProps);
+            this.gbCommChannel.Controls.Add(this.cbCommCnlType);
+            this.gbCommChannel.Controls.Add(this.lblCommCnlType);
+            this.gbCommChannel.Location = new System.Drawing.Point(6, 77);
+            this.gbCommChannel.Name = "gbCommChannel";
+            this.gbCommChannel.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
+            this.gbCommChannel.Size = new System.Drawing.Size(392, 218);
+            this.gbCommChannel.TabIndex = 1;
+            this.gbCommChannel.TabStop = false;
+            this.gbCommChannel.Text = "Канал связи";
             // 
-            // cbConnType
+            // txtCommCnlParams
             // 
-            this.cbConnType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbConnType.FormattingEnabled = true;
-            this.cbConnType.Items.AddRange(new object[] {
-            "Не задан",
-            "COM-порт"});
-            this.cbConnType.Location = new System.Drawing.Point(13, 32);
-            this.cbConnType.Name = "cbConnType";
-            this.cbConnType.Size = new System.Drawing.Size(80, 21);
-            this.cbConnType.TabIndex = 1;
-            this.cbConnType.SelectedIndexChanged += new System.EventHandler(this.cbConnType_SelectedIndexChanged);
+            this.txtCommCnlParams.Location = new System.Drawing.Point(13, 72);
+            this.txtCommCnlParams.Multiline = true;
+            this.txtCommCnlParams.Name = "txtCommCnlParams";
+            this.txtCommCnlParams.ReadOnly = true;
+            this.txtCommCnlParams.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtCommCnlParams.Size = new System.Drawing.Size(366, 133);
+            this.txtCommCnlParams.TabIndex = 4;
             // 
-            // lblConnType
+            // lblCommCnlParams
             // 
-            this.lblConnType.AutoSize = true;
-            this.lblConnType.Location = new System.Drawing.Point(10, 16);
-            this.lblConnType.Name = "lblConnType";
-            this.lblConnType.Size = new System.Drawing.Size(26, 13);
-            this.lblConnType.TabIndex = 0;
-            this.lblConnType.Text = "Тип";
+            this.lblCommCnlParams.AutoSize = true;
+            this.lblCommCnlParams.Location = new System.Drawing.Point(10, 56);
+            this.lblCommCnlParams.Name = "lblCommCnlParams";
+            this.lblCommCnlParams.Size = new System.Drawing.Size(66, 13);
+            this.lblCommCnlParams.TabIndex = 3;
+            this.lblCommCnlParams.Text = "Параметры";
             // 
-            // lblPortName
+            // btnCommCnlProps
             // 
-            this.lblPortName.AutoSize = true;
-            this.lblPortName.Location = new System.Drawing.Point(98, 16);
-            this.lblPortName.Name = "lblPortName";
-            this.lblPortName.Size = new System.Drawing.Size(32, 13);
-            this.lblPortName.TabIndex = 2;
-            this.lblPortName.Text = "Порт";
+            this.btnCommCnlProps.Location = new System.Drawing.Point(289, 31);
+            this.btnCommCnlProps.Name = "btnCommCnlProps";
+            this.btnCommCnlProps.Size = new System.Drawing.Size(90, 23);
+            this.btnCommCnlProps.TabIndex = 2;
+            this.btnCommCnlProps.Text = "Свойства";
+            this.btnCommCnlProps.UseVisualStyleBackColor = true;
+            this.btnCommCnlProps.Click += new System.EventHandler(this.btnCommCnlProps_Click);
             // 
-            // chkRtsEnable
+            // cbCommCnlType
             // 
-            this.chkRtsEnable.AutoSize = true;
-            this.chkRtsEnable.Location = new System.Drawing.Point(287, 79);
-            this.chkRtsEnable.Name = "chkRtsEnable";
-            this.chkRtsEnable.Size = new System.Drawing.Size(48, 17);
-            this.chkRtsEnable.TabIndex = 13;
-            this.chkRtsEnable.Text = "RTS";
-            this.chkRtsEnable.UseVisualStyleBackColor = true;
-            this.chkRtsEnable.CheckedChanged += new System.EventHandler(this.chkRtsEnable_CheckedChanged);
+            this.cbCommCnlType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbCommCnlType.FormattingEnabled = true;
+            this.cbCommCnlType.Items.AddRange(new object[] {
+            "Не задан"});
+            this.cbCommCnlType.Location = new System.Drawing.Point(13, 32);
+            this.cbCommCnlType.Name = "cbCommCnlType";
+            this.cbCommCnlType.Size = new System.Drawing.Size(270, 21);
+            this.cbCommCnlType.TabIndex = 1;
+            this.cbCommCnlType.SelectedIndexChanged += new System.EventHandler(this.cbCommCnlType_SelectedIndexChanged);
             // 
-            // chkDtrEnable
+            // lblCommCnlType
             // 
-            this.chkDtrEnable.AutoSize = true;
-            this.chkDtrEnable.Location = new System.Drawing.Point(287, 59);
-            this.chkDtrEnable.Name = "chkDtrEnable";
-            this.chkDtrEnable.Size = new System.Drawing.Size(49, 17);
-            this.chkDtrEnable.TabIndex = 12;
-            this.chkDtrEnable.Text = "DTR";
-            this.chkDtrEnable.UseVisualStyleBackColor = true;
-            this.chkDtrEnable.CheckedChanged += new System.EventHandler(this.chkDtrEnable_CheckedChanged);
+            this.lblCommCnlType.AutoSize = true;
+            this.lblCommCnlType.Location = new System.Drawing.Point(10, 16);
+            this.lblCommCnlType.Name = "lblCommCnlType";
+            this.lblCommCnlType.Size = new System.Drawing.Size(26, 13);
+            this.lblCommCnlType.TabIndex = 0;
+            this.lblCommCnlType.Text = "Тип";
             // 
-            // cbStopBits
+            // pageCustomParams
             // 
-            this.cbStopBits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbStopBits.FormattingEnabled = true;
-            this.cbStopBits.Items.AddRange(new object[] {
-            "1",
-            "1,5",
-            "2"});
-            this.cbStopBits.Location = new System.Drawing.Point(185, 72);
-            this.cbStopBits.Name = "cbStopBits";
-            this.cbStopBits.Size = new System.Drawing.Size(80, 21);
-            this.cbStopBits.TabIndex = 11;
-            this.cbStopBits.SelectedIndexChanged += new System.EventHandler(this.cbStopBits_SelectedIndexChanged);
-            // 
-            // lblStopBits
-            // 
-            this.lblStopBits.AutoSize = true;
-            this.lblStopBits.Location = new System.Drawing.Point(184, 56);
-            this.lblStopBits.Name = "lblStopBits";
-            this.lblStopBits.Size = new System.Drawing.Size(62, 13);
-            this.lblStopBits.TabIndex = 10;
-            this.lblStopBits.Text = "Стоп. биты";
-            // 
-            // cbParity
-            // 
-            this.cbParity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbParity.FormattingEnabled = true;
-            this.cbParity.Items.AddRange(new object[] {
-            "Чёт",
-            "Нечёт",
-            "Нет",
-            "Маркер (1)",
-            "Пробел (0)"});
-            this.cbParity.Location = new System.Drawing.Point(99, 72);
-            this.cbParity.Name = "cbParity";
-            this.cbParity.Size = new System.Drawing.Size(80, 21);
-            this.cbParity.TabIndex = 9;
-            this.cbParity.SelectedIndexChanged += new System.EventHandler(this.cbParity_SelectedIndexChanged);
-            // 
-            // lblParity
-            // 
-            this.lblParity.AutoSize = true;
-            this.lblParity.Location = new System.Drawing.Point(96, 56);
-            this.lblParity.Name = "lblParity";
-            this.lblParity.Size = new System.Drawing.Size(55, 13);
-            this.lblParity.TabIndex = 8;
-            this.lblParity.Text = "Чётность";
-            // 
-            // cbDataBits
-            // 
-            this.cbDataBits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbDataBits.FormattingEnabled = true;
-            this.cbDataBits.Items.AddRange(new object[] {
-            "5",
-            "6",
-            "7",
-            "8"});
-            this.cbDataBits.Location = new System.Drawing.Point(271, 32);
-            this.cbDataBits.Name = "cbDataBits";
-            this.cbDataBits.Size = new System.Drawing.Size(80, 21);
-            this.cbDataBits.TabIndex = 7;
-            this.cbDataBits.SelectedIndexChanged += new System.EventHandler(this.cbDataBits_SelectedIndexChanged);
-            // 
-            // lblDataBits
-            // 
-            this.lblDataBits.AutoSize = true;
-            this.lblDataBits.Location = new System.Drawing.Point(268, 16);
-            this.lblDataBits.Name = "lblDataBits";
-            this.lblDataBits.Size = new System.Drawing.Size(73, 13);
-            this.lblDataBits.TabIndex = 6;
-            this.lblDataBits.Text = "Биты данных";
-            // 
-            // cbBaudRate
-            // 
-            this.cbBaudRate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbBaudRate.FormattingEnabled = true;
-            this.cbBaudRate.Items.AddRange(new object[] {
-            "110",
-            "300",
-            "1200",
-            "2400",
-            "4800",
-            "9600",
-            "19200",
-            "38400",
-            "57600",
-            "115200",
-            "230400",
-            "460800",
-            "921600"});
-            this.cbBaudRate.Location = new System.Drawing.Point(185, 32);
-            this.cbBaudRate.Name = "cbBaudRate";
-            this.cbBaudRate.Size = new System.Drawing.Size(80, 21);
-            this.cbBaudRate.TabIndex = 5;
-            this.cbBaudRate.SelectedIndexChanged += new System.EventHandler(this.cbBaudRate_SelectedIndexChanged);
-            // 
-            // lblBaudRate
-            // 
-            this.lblBaudRate.AutoSize = true;
-            this.lblBaudRate.Location = new System.Drawing.Point(182, 16);
-            this.lblBaudRate.Name = "lblBaudRate";
-            this.lblBaudRate.Size = new System.Drawing.Size(55, 13);
-            this.lblBaudRate.TabIndex = 4;
-            this.lblBaudRate.Text = "Скорость";
-            // 
-            // cbPortName
-            // 
-            this.cbPortName.FormattingEnabled = true;
-            this.cbPortName.Items.AddRange(new object[] {
-            "COM1",
-            "COM2",
-            "COM3",
-            "COM4",
-            "COM5",
-            "COM6",
-            "COM7",
-            "COM8",
-            "COM9",
-            "COM10"});
-            this.cbPortName.Location = new System.Drawing.Point(99, 32);
-            this.cbPortName.Name = "cbPortName";
-            this.cbPortName.Size = new System.Drawing.Size(80, 21);
-            this.cbPortName.TabIndex = 3;
-            this.cbPortName.Text = "COM1";
-            this.cbPortName.TextChanged += new System.EventHandler(this.cbPortName_TextChanged);
-            // 
-            // pageUserParams
-            // 
-            this.pageUserParams.BackColor = System.Drawing.Color.Transparent;
-            this.pageUserParams.Controls.Add(this.btnDelParam);
-            this.pageUserParams.Controls.Add(this.btnMoveDownParam);
-            this.pageUserParams.Controls.Add(this.btnMoveUpParam);
-            this.pageUserParams.Controls.Add(this.gbSelectedParam);
-            this.pageUserParams.Controls.Add(this.lvUserParams);
-            this.pageUserParams.Controls.Add(this.btnAddParam);
-            this.pageUserParams.Location = new System.Drawing.Point(4, 22);
-            this.pageUserParams.Name = "pageUserParams";
-            this.pageUserParams.Padding = new System.Windows.Forms.Padding(3);
-            this.pageUserParams.Size = new System.Drawing.Size(406, 439);
-            this.pageUserParams.TabIndex = 3;
-            this.pageUserParams.Text = "Пользовательские параметры";
-            this.pageUserParams.UseVisualStyleBackColor = true;
+            this.pageCustomParams.BackColor = System.Drawing.Color.Transparent;
+            this.pageCustomParams.Controls.Add(this.btnDelParam);
+            this.pageCustomParams.Controls.Add(this.gbSelectedParam);
+            this.pageCustomParams.Controls.Add(this.lvCustomParams);
+            this.pageCustomParams.Controls.Add(this.btnAddParam);
+            this.pageCustomParams.Location = new System.Drawing.Point(4, 22);
+            this.pageCustomParams.Name = "pageCustomParams";
+            this.pageCustomParams.Padding = new System.Windows.Forms.Padding(3);
+            this.pageCustomParams.Size = new System.Drawing.Size(406, 439);
+            this.pageCustomParams.TabIndex = 3;
+            this.pageCustomParams.Text = "Пользовательские параметры";
+            this.pageCustomParams.UseVisualStyleBackColor = true;
             // 
             // btnDelParam
             // 
             this.btnDelParam.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnDelParam.Image = ((System.Drawing.Image)(resources.GetObject("btnDelParam.Image")));
-            this.btnDelParam.Location = new System.Drawing.Point(93, 6);
+            this.btnDelParam.Location = new System.Drawing.Point(35, 6);
             this.btnDelParam.Name = "btnDelParam";
             this.btnDelParam.Size = new System.Drawing.Size(23, 22);
-            this.btnDelParam.TabIndex = 3;
+            this.btnDelParam.TabIndex = 1;
             this.toolTip.SetToolTip(this.btnDelParam, "Удалить выбранный параметр");
             this.btnDelParam.UseVisualStyleBackColor = true;
             this.btnDelParam.Click += new System.EventHandler(this.btnDelParam_Click);
             // 
-            // btnMoveDownParam
-            // 
-            this.btnMoveDownParam.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnMoveDownParam.Image = ((System.Drawing.Image)(resources.GetObject("btnMoveDownParam.Image")));
-            this.btnMoveDownParam.Location = new System.Drawing.Point(64, 6);
-            this.btnMoveDownParam.Name = "btnMoveDownParam";
-            this.btnMoveDownParam.Size = new System.Drawing.Size(23, 22);
-            this.btnMoveDownParam.TabIndex = 2;
-            this.toolTip.SetToolTip(this.btnMoveDownParam, "Переместить выбранный параметр вниз");
-            this.btnMoveDownParam.UseVisualStyleBackColor = true;
-            this.btnMoveDownParam.Click += new System.EventHandler(this.btnMoveDownParam_Click);
-            // 
-            // btnMoveUpParam
-            // 
-            this.btnMoveUpParam.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnMoveUpParam.Image = ((System.Drawing.Image)(resources.GetObject("btnMoveUpParam.Image")));
-            this.btnMoveUpParam.Location = new System.Drawing.Point(35, 6);
-            this.btnMoveUpParam.Name = "btnMoveUpParam";
-            this.btnMoveUpParam.Size = new System.Drawing.Size(23, 22);
-            this.btnMoveUpParam.TabIndex = 1;
-            this.toolTip.SetToolTip(this.btnMoveUpParam, "Переместить выбранный параметр вверх");
-            this.btnMoveUpParam.UseVisualStyleBackColor = true;
-            this.btnMoveUpParam.Click += new System.EventHandler(this.btnMoveUpParam_Click);
-            // 
             // gbSelectedParam
             // 
             this.gbSelectedParam.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.gbSelectedParam.Controls.Add(this.lblParamOrder);
-            this.gbSelectedParam.Controls.Add(this.txtParamOrder);
-            this.gbSelectedParam.Controls.Add(this.lblParamDescr);
             this.gbSelectedParam.Controls.Add(this.lblParamValue);
-            this.gbSelectedParam.Controls.Add(this.txtParamDescr);
             this.gbSelectedParam.Controls.Add(this.txtParamValue);
             this.gbSelectedParam.Controls.Add(this.txtParamName);
             this.gbSelectedParam.Controls.Add(this.lblParamName);
@@ -1428,120 +1236,76 @@
             this.gbSelectedParam.Name = "gbSelectedParam";
             this.gbSelectedParam.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
             this.gbSelectedParam.Size = new System.Drawing.Size(392, 65);
-            this.gbSelectedParam.TabIndex = 5;
+            this.gbSelectedParam.TabIndex = 3;
             this.gbSelectedParam.TabStop = false;
             this.gbSelectedParam.Text = "Выбранный параметр";
-            // 
-            // lblParamOrder
-            // 
-            this.lblParamOrder.AutoSize = true;
-            this.lblParamOrder.Location = new System.Drawing.Point(10, 16);
-            this.lblParamOrder.Name = "lblParamOrder";
-            this.lblParamOrder.Size = new System.Drawing.Size(18, 13);
-            this.lblParamOrder.TabIndex = 0;
-            this.lblParamOrder.Text = "№";
-            // 
-            // txtParamOrder
-            // 
-            this.txtParamOrder.Location = new System.Drawing.Point(13, 32);
-            this.txtParamOrder.Name = "txtParamOrder";
-            this.txtParamOrder.ReadOnly = true;
-            this.txtParamOrder.Size = new System.Drawing.Size(25, 20);
-            this.txtParamOrder.TabIndex = 1;
-            // 
-            // lblParamDescr
-            // 
-            this.lblParamDescr.AutoSize = true;
-            this.lblParamDescr.Location = new System.Drawing.Point(233, 16);
-            this.lblParamDescr.Name = "lblParamDescr";
-            this.lblParamDescr.Size = new System.Drawing.Size(57, 13);
-            this.lblParamDescr.TabIndex = 6;
-            this.lblParamDescr.Text = "Описание";
             // 
             // lblParamValue
             // 
             this.lblParamValue.AutoSize = true;
-            this.lblParamValue.Location = new System.Drawing.Point(137, 16);
+            this.lblParamValue.Location = new System.Drawing.Point(146, 16);
             this.lblParamValue.Name = "lblParamValue";
             this.lblParamValue.Size = new System.Drawing.Size(55, 13);
-            this.lblParamValue.TabIndex = 4;
+            this.lblParamValue.TabIndex = 2;
             this.lblParamValue.Text = "Значение";
-            // 
-            // txtParamDescr
-            // 
-            this.txtParamDescr.Location = new System.Drawing.Point(236, 32);
-            this.txtParamDescr.Name = "txtParamDescr";
-            this.txtParamDescr.Size = new System.Drawing.Size(143, 20);
-            this.txtParamDescr.TabIndex = 7;
-            this.txtParamDescr.TextChanged += new System.EventHandler(this.txtParamDescr_TextChanged);
             // 
             // txtParamValue
             // 
-            this.txtParamValue.Location = new System.Drawing.Point(140, 32);
+            this.txtParamValue.Location = new System.Drawing.Point(149, 32);
             this.txtParamValue.Name = "txtParamValue";
-            this.txtParamValue.Size = new System.Drawing.Size(90, 20);
-            this.txtParamValue.TabIndex = 5;
+            this.txtParamValue.Size = new System.Drawing.Size(230, 20);
+            this.txtParamValue.TabIndex = 3;
             this.txtParamValue.TextChanged += new System.EventHandler(this.txtParamValue_TextChanged);
             // 
             // txtParamName
             // 
-            this.txtParamName.Location = new System.Drawing.Point(44, 32);
+            this.txtParamName.Location = new System.Drawing.Point(13, 32);
             this.txtParamName.Name = "txtParamName";
-            this.txtParamName.Size = new System.Drawing.Size(90, 20);
-            this.txtParamName.TabIndex = 3;
+            this.txtParamName.Size = new System.Drawing.Size(130, 20);
+            this.txtParamName.TabIndex = 1;
             this.txtParamName.TextChanged += new System.EventHandler(this.txtParamName_TextChanged);
+            this.txtParamName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtParamName_KeyDown);
+            this.txtParamName.Leave += new System.EventHandler(this.txtParamName_Leave);
             // 
             // lblParamName
             // 
             this.lblParamName.AutoSize = true;
-            this.lblParamName.Location = new System.Drawing.Point(41, 16);
+            this.lblParamName.Location = new System.Drawing.Point(10, 16);
             this.lblParamName.Name = "lblParamName";
             this.lblParamName.Size = new System.Drawing.Size(83, 13);
-            this.lblParamName.TabIndex = 2;
+            this.lblParamName.TabIndex = 0;
             this.lblParamName.Text = "Наименование";
             // 
-            // lvUserParams
+            // lvCustomParams
             // 
-            this.lvUserParams.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.lvCustomParams.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lvUserParams.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.colParamOrder,
+            this.lvCustomParams.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.colParamName,
-            this.colParamValue,
-            this.colParamDescr});
-            this.lvUserParams.FullRowSelect = true;
-            this.lvUserParams.GridLines = true;
-            this.lvUserParams.HideSelection = false;
-            this.lvUserParams.Location = new System.Drawing.Point(6, 34);
-            this.lvUserParams.MultiSelect = false;
-            this.lvUserParams.Name = "lvUserParams";
-            this.lvUserParams.ShowItemToolTips = true;
-            this.lvUserParams.Size = new System.Drawing.Size(392, 324);
-            this.lvUserParams.TabIndex = 4;
-            this.lvUserParams.UseCompatibleStateImageBehavior = false;
-            this.lvUserParams.View = System.Windows.Forms.View.Details;
-            this.lvUserParams.SelectedIndexChanged += new System.EventHandler(this.lvUserParams_SelectedIndexChanged);
-            // 
-            // colParamOrder
-            // 
-            this.colParamOrder.Text = "№";
-            this.colParamOrder.Width = 40;
+            this.colParamValue});
+            this.lvCustomParams.FullRowSelect = true;
+            this.lvCustomParams.GridLines = true;
+            this.lvCustomParams.HideSelection = false;
+            this.lvCustomParams.Location = new System.Drawing.Point(6, 34);
+            this.lvCustomParams.MultiSelect = false;
+            this.lvCustomParams.Name = "lvCustomParams";
+            this.lvCustomParams.ShowItemToolTips = true;
+            this.lvCustomParams.Size = new System.Drawing.Size(392, 324);
+            this.lvCustomParams.TabIndex = 2;
+            this.lvCustomParams.UseCompatibleStateImageBehavior = false;
+            this.lvCustomParams.View = System.Windows.Forms.View.Details;
+            this.lvCustomParams.SelectedIndexChanged += new System.EventHandler(this.lvCustomParams_SelectedIndexChanged);
             // 
             // colParamName
             // 
             this.colParamName.Text = "Наименование";
-            this.colParamName.Width = 100;
+            this.colParamName.Width = 150;
             // 
             // colParamValue
             // 
             this.colParamValue.Text = "Значение";
-            this.colParamValue.Width = 100;
-            // 
-            // colParamDescr
-            // 
-            this.colParamDescr.Text = "Описание";
-            this.colParamDescr.Width = 130;
+            this.colParamValue.Width = 221;
             // 
             // btnAddParam
             // 
@@ -2448,14 +2212,15 @@
             this.cmsKP.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miKpProps});
             this.cmsKP.Name = "cmsKP";
-            this.cmsKP.Size = new System.Drawing.Size(126, 26);
+            this.cmsKP.Size = new System.Drawing.Size(128, 26);
             this.cmsKP.Opened += new System.EventHandler(this.cmsKP_Opened);
             // 
             // miKpProps
             // 
+            this.miKpProps.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.miKpProps.Image = ((System.Drawing.Image)(resources.GetObject("miKpProps.Image")));
             this.miKpProps.Name = "miKpProps";
-            this.miKpProps.Size = new System.Drawing.Size(125, 22);
+            this.miKpProps.Size = new System.Drawing.Size(127, 22);
             this.miKpProps.Text = "Свойства";
             this.miKpProps.Click += new System.EventHandler(this.miKpProps_Click);
             // 
@@ -2499,7 +2264,7 @@
             this.pageCommonParams.ResumeLayout(false);
             this.gbPerformance.ResumeLayout(false);
             this.gbPerformance.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numRefrParams)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numSendAllDataPer)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numWaitForStop)).EndInit();
             this.gbServer.ResumeLayout(false);
             this.gbServer.PerformLayout();
@@ -2513,12 +2278,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.numLineNumber)).EndInit();
             this.gbLineParams.ResumeLayout(false);
             this.gbLineParams.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numMaxCommErrCnt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCycleDelay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numReqTriesCnt)).EndInit();
-            this.gbConnection.ResumeLayout(false);
-            this.gbConnection.PerformLayout();
-            this.pageUserParams.ResumeLayout(false);
+            this.gbCommChannel.ResumeLayout(false);
+            this.gbCommChannel.PerformLayout();
+            this.pageCustomParams.ResumeLayout(false);
             this.gbSelectedParam.ResumeLayout(false);
             this.gbSelectedParam.PerformLayout();
             this.pageReqSequence.ResumeLayout(false);
@@ -2591,30 +2355,16 @@
         private System.Windows.Forms.Label lblServerUser;
         private System.Windows.Forms.TextBox txtServerPwd;
         private System.Windows.Forms.Label lblServerPwd;
-        private System.Windows.Forms.GroupBox gbConnection;
+        private System.Windows.Forms.GroupBox gbCommChannel;
         private System.Windows.Forms.GroupBox gbLineParams;
         private System.Windows.Forms.Label lblReqTriesCnt;
         private System.Windows.Forms.NumericUpDown numReqTriesCnt;
         private System.Windows.Forms.Label lblCycleDelay;
         private System.Windows.Forms.NumericUpDown numCycleDelay;
-        private System.Windows.Forms.Label lblMaxCommErrCnt;
-        private System.Windows.Forms.NumericUpDown numMaxCommErrCnt;
         private System.Windows.Forms.CheckBox chkCmdEnabled;
         private System.Windows.Forms.Label lblCmdEnabled;
-        private System.Windows.Forms.ComboBox cbPortName;
-        private System.Windows.Forms.ComboBox cbBaudRate;
-        private System.Windows.Forms.Label lblBaudRate;
-        private System.Windows.Forms.Label lblDataBits;
-        private System.Windows.Forms.ComboBox cbDataBits;
-        private System.Windows.Forms.ComboBox cbParity;
-        private System.Windows.Forms.Label lblParity;
-        private System.Windows.Forms.ComboBox cbStopBits;
-        private System.Windows.Forms.Label lblStopBits;
-        private System.Windows.Forms.CheckBox chkRtsEnable;
-        private System.Windows.Forms.CheckBox chkDtrEnable;
-        private System.Windows.Forms.Label lblPortName;
-        private System.Windows.Forms.ComboBox cbConnType;
-        private System.Windows.Forms.Label lblConnType;
+        private System.Windows.Forms.ComboBox cbCommCnlType;
+        private System.Windows.Forms.Label lblCommCnlType;
         private System.Windows.Forms.GroupBox gbCommLine;
         private System.Windows.Forms.CheckBox chkLineBind;
         private System.Windows.Forms.NumericUpDown numLineNumber;
@@ -2622,22 +2372,17 @@
         private System.Windows.Forms.Label lnlLineName;
         private System.Windows.Forms.Label lblLineNumber;
         private System.Windows.Forms.CheckBox chkLineActive;
-        private System.Windows.Forms.TabPage pageUserParams;
+        private System.Windows.Forms.TabPage pageCustomParams;
         private System.Windows.Forms.Button btnAddParam;
-        private System.Windows.Forms.ListView lvUserParams;
+        private System.Windows.Forms.ListView lvCustomParams;
         private System.Windows.Forms.ColumnHeader colParamName;
         private System.Windows.Forms.ColumnHeader colParamValue;
-        private System.Windows.Forms.ColumnHeader colParamDescr;
         private System.Windows.Forms.GroupBox gbSelectedParam;
         private System.Windows.Forms.TextBox txtParamName;
         private System.Windows.Forms.Label lblParamName;
-        private System.Windows.Forms.Label lblParamDescr;
         private System.Windows.Forms.Label lblParamValue;
-        private System.Windows.Forms.TextBox txtParamDescr;
         private System.Windows.Forms.TextBox txtParamValue;
         private System.Windows.Forms.Button btnDelParam;
-        private System.Windows.Forms.Button btnMoveDownParam;
-        private System.Windows.Forms.Button btnMoveUpParam;
         private System.Windows.Forms.ListBox lbKpDll;
         private System.Windows.Forms.Label lblKpDllDescr;
         private System.Windows.Forms.TextBox txtKpDllDescr;
@@ -2693,8 +2438,6 @@
         private System.Windows.Forms.Label lblAppState;
         private System.Windows.Forms.Label lblAppLog;
         private System.Windows.Forms.Button btnKpProps;
-        private System.Windows.Forms.TextBox txtParamOrder;
-        private System.Windows.Forms.Label lblParamOrder;
         private System.Windows.Forms.ContextMenuStrip cmsLine;
         private System.Windows.Forms.ToolStripMenuItem miAddLine;
         private System.Windows.Forms.ToolStripMenuItem miMoveUpLine;
@@ -2711,7 +2454,7 @@
         private System.Windows.Forms.CheckBox chkLineLogPause;
         private System.Windows.Forms.GroupBox gbPerformance;
         private System.Windows.Forms.Label lblRefrParams;
-        private System.Windows.Forms.NumericUpDown numRefrParams;
+        private System.Windows.Forms.NumericUpDown numSendAllDataPer;
         private System.Windows.Forms.NumericUpDown numWaitForStop;
         private System.Windows.Forms.Label lblWaitForStop;
         private System.Windows.Forms.TabPage pageKpCmd;
@@ -2730,7 +2473,6 @@
         private System.Windows.Forms.Panel pnlMain;
         private System.Windows.Forms.ImageList ilTree;
         private System.Windows.Forms.Button btnCutKP;
-        private System.Windows.Forms.ColumnHeader colParamOrder;
         private System.Windows.Forms.GroupBox gbKpCmd;
         private System.Windows.Forms.Button btnSendCmd;
         private System.Windows.Forms.Panel pnlCmdData;
@@ -2747,6 +2489,11 @@
         private System.Windows.Forms.RadioButton rbCmdStand;
         private System.Windows.Forms.NumericUpDown numCmdNum;
         private System.Windows.Forms.Label lblCmdNum;
+        private System.Windows.Forms.Label lblDetailedLog;
+        private System.Windows.Forms.CheckBox chkDetailedLog;
+        private System.Windows.Forms.Button btnCommCnlProps;
+        private System.Windows.Forms.TextBox txtCommCnlParams;
+        private System.Windows.Forms.Label lblCommCnlParams;
     }
 }
 

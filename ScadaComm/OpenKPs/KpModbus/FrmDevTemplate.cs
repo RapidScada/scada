@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,14 +20,15 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Scada.Comm.KP
+namespace Scada.Comm.Devices.KpModbus
 {
     /// <summary>
     /// Editing device template form
@@ -81,9 +82,18 @@ namespace Scada.Comm.KP
             }
         }
 
+        /// <summary>
+        /// Имя файла нового шаблона устройства
+        /// </summary>
+        private const string NewFileName = "KpModbus_NewTemplate.xml";
+
+        private AppDirs appDirs;                // директории приложения
+        private string initialFileName;         // имя файла шаблона для открытия при запуске формы
+        private string fileName;                // имя файла шаблона устройства
+        private bool saveOnly;                  // разрешена только команда сохранения при работе с файлами
+
         private Modbus.DeviceModel devTemplate; // редактируемый шаблон устройства
         private bool modified;                  // признак изменения шаблона устройства
-        private string fileName;                // имя файла шаблона устройства
         private Modbus.ElemGroup selElemGroup;  // выбранная группа элементов
         private ElemInfo selElemInfo;           // информация о выбранном элементе
         private Modbus.Cmd selCmd;              // выбранная команда
@@ -94,15 +104,19 @@ namespace Scada.Comm.KP
 
 
         /// <summary>
-        /// Конструктор
+        /// Конструктор, ограничивающий создание формы без параметров
         /// </summary>
-        public FrmDevTemplate()
+        private FrmDevTemplate()
         {
             InitializeComponent();
 
-            devTemplate = new Modbus.DeviceModel();
-            modified = false;
+            appDirs = null;
+            initialFileName = "";
             fileName = "";
+            saveOnly = false;
+
+            devTemplate = null;
+            modified = false;
             selElemGroup = null;
             selElemInfo = null;
             selCmd = null;
@@ -110,9 +124,6 @@ namespace Scada.Comm.KP
             grsNode = treeView.Nodes["grsNode"];
             cmdsNode = treeView.Nodes["cmdsNode"];
             procChangedEv = false;
-
-            ConfigDir = "";
-            LangDir = "";
         }
 
 
@@ -128,20 +139,41 @@ namespace Scada.Comm.KP
             set
             {
                 modified = value;
+                SetFormTitle();
                 btnSave.Enabled = modified;
             }
         }
 
-        /// <summary>
-        /// Получить или установить директорию конфигурации
-        /// </summary>
-        public string ConfigDir { get; set; }
 
         /// <summary>
-        /// Получить или установить директорию языковых файлов
+        /// Установить заголовок формы
         /// </summary>
-        public string LangDir { get; set; }
+        private void SetFormTitle()
+        {
+            Text = KpPhrases.TemplFormTitle + " - " + (fileName == "" ? NewFileName : Path.GetFileName(fileName)) +
+                (Modified ? "*" : "");
+        }
 
+        /// <summary>
+        /// Загрузить шаблон устройства из файла
+        /// </summary>
+        private void LoadTemplate(string fname)
+        {
+            Modbus.DeviceModel templ = new Modbus.DeviceModel();
+            string errMsg;
+
+            if (templ.LoadTemplate(fname, out errMsg))
+            {
+                devTemplate = templ;
+                fileName = fname;
+                SetFormTitle();
+                FillTree();
+            }
+            else
+            {
+                ScadaUtils.ShowError(errMsg);
+            }
+        }
 
         /// <summary>
         /// Перевести текст основных узлов дерева
@@ -159,8 +191,9 @@ namespace Scada.Comm.KP
         {
             // обнуление выбранных объектов и снятие признака изменения
             selElemGroup = null;
-            selCmd = null;
             selElemInfo = null;
+            selCmd = null;
+            selNode = null;
             ShowElemGroupProps(null);
             Modified = false;
 
@@ -199,7 +232,7 @@ namespace Scada.Comm.KP
             grNode.Tag = elemGroup;
 
             ushort elemAddr = elemGroup.Address;
-            int elemSig = elemGroup.StartParamInd + 1;
+            int elemSig = elemGroup.StartKPTagInd + 1;
 
             foreach (Modbus.Elem elem in elemGroup.Elems)
             {
@@ -266,7 +299,7 @@ namespace Scada.Comm.KP
             {
                 Modbus.ElemGroup elemGroup = (Modbus.ElemGroup)grNode.Tag;
                 ushort elemAddr = elemGroup.Address;
-                int elemSig = elemGroup.StartParamInd + 1;
+                int elemSig = elemGroup.StartKPTagInd + 1;
 
                 foreach (TreeNode elemNode in grNode.Nodes)
                 {
@@ -290,10 +323,10 @@ namespace Scada.Comm.KP
             if (!(startGrNode.Tag is Modbus.ElemGroup))
                 return;
 
-            // определение начального индекса параметров КП
+            // определение начального индекса тегов КП
             TreeNode prevGrNode = startGrNode.PrevNode;
             Modbus.ElemGroup prevElemGroup = prevGrNode == null ? null : prevGrNode.Tag as Modbus.ElemGroup;
-            int paramInd = prevElemGroup == null ? 0 : prevElemGroup.StartParamInd + prevElemGroup.Elems.Count;
+            int tagInd = prevElemGroup == null ? 0 : prevElemGroup.StartKPTagInd + prevElemGroup.Elems.Count;
 
             // обновление групп и их элементов
             int grNodeCnt = grsNode.Nodes.Count;
@@ -302,9 +335,9 @@ namespace Scada.Comm.KP
             {
                 TreeNode grNode = grsNode.Nodes[i];
                 Modbus.ElemGroup elemGroup = grNode.Tag as Modbus.ElemGroup;
-                int elemSig = paramInd + 1;
-                elemGroup.StartParamInd = paramInd;
-                paramInd += elemGroup.Elems.Count;
+                int elemSig = tagInd + 1;
+                elemGroup.StartKPTagInd = tagInd;
+                tagInd += elemGroup.Elems.Count;
 
                 foreach (TreeNode elemNode in grNode.Nodes)
                 {
@@ -378,6 +411,7 @@ namespace Scada.Comm.KP
                 txtElemAddress.Text = "";
                 txtElemSignal.Text = "";
                 rbBool.Checked = true;
+                txtByteOrder.Text = "";
                 gbElem.Enabled = false;
             }
             else
@@ -386,9 +420,23 @@ namespace Scada.Comm.KP
                 txtElemAddress.Text = elemInfo.AddressRange;
                 txtElemSignal.Text = elemInfo.Signal.ToString();
                 Modbus.ElemTypes elemType = elemInfo.Elem.ElemType;
-                rbUShort.Enabled = rbShort.Enabled = rbUInt.Enabled = rbInt.Enabled = rbFloat.Enabled = 
-                    elemType != Modbus.ElemTypes.Bool;
-                rbBool.Enabled = elemType == Modbus.ElemTypes.Bool;
+
+                if (elemType == Modbus.ElemTypes.Bool)
+                {
+                    rbUShort.Enabled = rbShort.Enabled = rbUInt.Enabled = rbInt.Enabled = 
+                        rbULong.Enabled = rbLong.Enabled = rbFloat.Enabled = rbDouble.Enabled = false;
+                    rbBool.Enabled = true;
+                    txtByteOrder.Text = "";
+                    txtByteOrder.Enabled = false;
+                }
+                else
+                {
+                    rbUShort.Enabled = rbShort.Enabled = rbUInt.Enabled = rbInt.Enabled =
+                        rbULong.Enabled = rbLong.Enabled = rbFloat.Enabled = rbDouble.Enabled = true;
+                    rbBool.Enabled = false;
+                    txtByteOrder.Text = elemInfo.Elem.ByteOrderStr;
+                    txtByteOrder.Enabled = true;
+                }
 
                 switch (elemType)
                 {
@@ -404,8 +452,17 @@ namespace Scada.Comm.KP
                     case Modbus.ElemTypes.Int:
                         rbInt.Checked = true;
                         break;
+                    case Modbus.ElemTypes.ULong:
+                        rbULong.Checked = true;
+                        break;
+                    case Modbus.ElemTypes.Long:
+                        rbLong.Checked = true;
+                        break;
                     case Modbus.ElemTypes.Float:
                         rbFloat.Checked = true;
+                        break;
+                    case Modbus.ElemTypes.Double:
+                        rbDouble.Checked = true;
                         break;
                     default:
                         rbBool.Checked = true;
@@ -494,8 +551,8 @@ namespace Scada.Comm.KP
                 string errMsg;
                 if (devTemplate.SaveTemplate(newFileName, out errMsg))
                 {
-                    Modified = false;
                     fileName = newFileName;
+                    Modified = false;
                     return true;
                 }
                 else
@@ -533,29 +590,60 @@ namespace Scada.Comm.KP
         }
 
 
+        /// <summary>
+        /// Отобразить форму модально
+        /// </summary>
+        public static void ShowDialog(AppDirs appDirs)
+        {
+            string fileName = "";
+            ShowDialog(appDirs, false, ref fileName);
+        }
+
+        /// <summary>
+        /// Отобразить форму модально, открыв заданный файл
+        /// </summary>
+        public static void ShowDialog(AppDirs appDirs, bool saveOnly, ref string fileName)
+        {
+            if (appDirs == null)
+                throw new ArgumentNullException("appDirs");
+
+            FrmDevTemplate frmDevTemplate = new FrmDevTemplate();
+            frmDevTemplate.appDirs = appDirs;
+            frmDevTemplate.initialFileName = fileName;
+            frmDevTemplate.saveOnly = saveOnly;
+            frmDevTemplate.ShowDialog();
+            fileName = frmDevTemplate.fileName;
+        }
+
+
         private void FrmDevTemplate_Load(object sender, EventArgs e)
         {
-            // локализация модуля
-            string errMsg;
-            if (!Localization.UseRussian)
-            {
-                if (Localization.LoadDictionaries(LangDir, "KpModbus", out errMsg))
-                {
-                    Localization.TranslateForm(this, "Scada.Comm.KP.FrmDevTemplate");
-                    KpPhrases.Init();
-                    TranslateTree();
-                }
-                else
-                {
-                    ScadaUtils.ShowError(errMsg);
-                }
-            }
+            // перевод формы
+            Localization.TranslateForm(this, "Scada.Comm.Devices.KpModbus.FrmDevTemplate");
+            TranslateTree();
 
             // настройка элементов управления
-            openFileDialog.InitialDirectory = ConfigDir;
-            saveFileDialog.InitialDirectory = ConfigDir;
+            openFileDialog.InitialDirectory = appDirs.ConfigDir;
+            saveFileDialog.InitialDirectory = appDirs.ConfigDir;
             gbElem.Top = gbCmd.Top = gbElemGroup.Top;
-            FillTree();
+
+            if (saveOnly)
+            {
+                btnNew.Visible = false;
+                btnOpen.Visible = false;
+            }
+
+            if (string.IsNullOrEmpty(initialFileName))
+            {
+                saveFileDialog.FileName = NewFileName;
+                devTemplate = new Modbus.DeviceModel();
+                FillTree();
+            }
+            else
+            {
+                saveFileDialog.FileName = initialFileName;
+                LoadTemplate(initialFileName);
+            }
         }
 
         private void FrmDevTemplate_FormClosing(object sender, FormClosingEventArgs e)
@@ -569,9 +657,10 @@ namespace Scada.Comm.KP
             // создание шаблона устройства
             if (CheckChanges())
             {
-                saveFileDialog.FileName = "";
+                saveFileDialog.FileName = NewFileName;
                 devTemplate = new Modbus.DeviceModel();
                 fileName = "";
+                SetFormTitle();
                 FillTree();
             }
         }
@@ -586,19 +675,7 @@ namespace Scada.Comm.KP
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     saveFileDialog.FileName = openFileDialog.FileName;
-                    Modbus.DeviceModel templ = new Modbus.DeviceModel();
-                    string errMsg;
-
-                    if (templ.LoadTemplate(openFileDialog.FileName, out errMsg))
-                    {
-                        devTemplate = templ;
-                        fileName = openFileDialog.FileName;
-                        FillTree();
-                    }
-                    else
-                    {
-                        ScadaUtils.ShowError(errMsg);
-                    }
+                    LoadTemplate(openFileDialog.FileName);
                 }
             }
         }
@@ -983,22 +1060,40 @@ namespace Scada.Comm.KP
             // изменение типа элемента
             if (procChangedEv && selElemInfo != null)
             {
+                Modbus.Elem elem = selElemInfo.Elem;
+
                 if (rbUShort.Checked)
-                    selElemInfo.Elem.ElemType = Modbus.ElemTypes.UShort;
+                    elem.ElemType = Modbus.ElemTypes.UShort;
                 else if (rbShort.Checked)
-                    selElemInfo.Elem.ElemType = Modbus.ElemTypes.Short;
+                    elem.ElemType = Modbus.ElemTypes.Short;
                 else if (rbUInt.Checked)
-                    selElemInfo.Elem.ElemType = Modbus.ElemTypes.UInt;
+                    elem.ElemType = Modbus.ElemTypes.UInt;
                 else if (rbInt.Checked)
-                    selElemInfo.Elem.ElemType = Modbus.ElemTypes.Int;
+                    elem.ElemType = Modbus.ElemTypes.Int;
+                else if (rbULong.Checked)
+                    elem.ElemType = Modbus.ElemTypes.ULong;
+                else if (rbLong.Checked)
+                    elem.ElemType = Modbus.ElemTypes.Long;
                 else if (rbFloat.Checked)
-                    selElemInfo.Elem.ElemType = Modbus.ElemTypes.Float;
+                    elem.ElemType = Modbus.ElemTypes.Float;
+                else if (rbDouble.Checked)
+                    elem.ElemType = Modbus.ElemTypes.Double;
                 else
-                    selElemInfo.Elem.ElemType = Modbus.ElemTypes.Bool;
+                    elem.ElemType = Modbus.ElemTypes.Bool;
 
                 txtElemAddress.Text = selElemInfo.AddressRange;
                 selNode.Text = selElemInfo.Caption;
                 UpdateElemNodes(selNode.Parent);
+                Modified = true;
+            }
+        }
+
+        private void txtByteOrder_TextChanged(object sender, EventArgs e)
+        {
+            // изменение порядка байт элемента
+            if (procChangedEv && selElemInfo != null)
+            {
+                selElemInfo.Elem.ByteOrderStr = txtByteOrder.Text;
                 Modified = true;
             }
         }

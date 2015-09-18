@@ -20,20 +20,19 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2014
+ * Modified : 2015
  * 
  * Description
  * Interacting with controllers via Modbus protocol.
  */
 
+using Scada.Comm.Devices.KpModbus;
+using Scada.Data;
 using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Sockets;
 using System.Threading;
-using Scada.Data;
 
-namespace Scada.Comm.KP
+namespace Scada.Comm.Devices
 {
     /// <summary>
     /// Device communication logic
@@ -53,14 +52,6 @@ namespace Scada.Comm.KP
         }
 
         /// <summary>
-        /// Делегат выполнения сеанса опроса
-        /// </summary>
-        private delegate void SessionDelegate();
-        /// <summary>
-        /// Делегат отправки команды
-        /// </summary>
-        private delegate void SendCmdDelegate(Modbus.Cmd cmd);
-        /// <summary>
         /// Делегат выполнения запроса
         /// </summary>
         private delegate bool RequestDelegate(Modbus.DataUnit dataUnit);
@@ -73,17 +64,10 @@ namespace Scada.Comm.KP
         private Modbus.DeviceModel deviceModel; // модель устройства, используемая данным КП
         private Modbus.TransModes transMode;    // режим передачи данных
         private Modbus modbus;                  // объект, реализующий протокол Modbus
-        private SessionDelegate session;        // метод выполнения сеанса опроса
-        private SendCmdDelegate sendCmd;        // метод отправки команды
         private RequestDelegate request;        // метод выполнения запроса
         private byte devAddr;                   // адрес устройства
-        private int tryNum;                     // номер попытки запроса
         private int elemGroupCnt;               // количество групп элементов
         private HashSet<int> floatSignals;      // множество сигналов, форматируемых как вещественное число
-
-        private TcpClient tcpClient;            // TCP-клиент
-        private NetworkStream netStream;        // поток данных TCP-клиента
-        private DateTime connectDT;             // время установки TCP-соединения
 
 
         /// <summary>
@@ -93,9 +77,6 @@ namespace Scada.Comm.KP
             : base(number)
         {
             modbus = new Modbus();
-            tcpClient = null;
-            netStream = null;
-            connectDT = DateTime.MinValue;
         }
 
 
@@ -117,289 +98,44 @@ namespace Scada.Comm.KP
         }
 
         /// <summary>
-        /// Установить TCP-соединение, если оно отсутствует
+        /// Установить значения тегов КП в соответствии со значениями элементов группы
         /// </summary>
-        private bool TcpConnect()
-        {
-            if (tcpClient == null)
-            {
-                // создание TCP-клиента
-                tcpClient = new TcpClient();
-                tcpClient.NoDelay = true;
-                tcpClient.SendTimeout = KPReqParams.Timeout;
-                tcpClient.ReceiveTimeout = KPReqParams.Timeout;
-            }
-
-            if (tcpClient.Connected)
-            {
-                return true;
-            }
-            else
-            {
-                if ((LastSessDT - connectDT).TotalSeconds >= TcpConnectPer || 
-                    LastSessDT < connectDT /*время переведено назад*/)
-                {
-                    WriteToLog((Localization.UseRussian ? "Установка TCP-соединения с " : 
-                        "Establish a TCP connection with ") + CallNum);
-                    connectDT = LastSessDT;
-
-                    try
-                    {
-                        // определение IP-адреса и номера порта
-                        IPAddress addr;
-                        int port;
-                        string[] parts = CallNum.Split(new char[] { ':', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-                        if (parts.Length >= 1)
-                            addr = IPAddress.Parse(parts[0]);
-                        else
-                            throw new Exception(Localization.UseRussian ? 
-                                "Не определён IP-адрес" : "IP address is undefined");
-
-                        if (!(parts.Length >= 2 && int.TryParse(parts[1], out port)))
-                            port = Modbus.DefTcpPort;
-
-                        // соединение
-                        tcpClient.Connect(addr, port);
-                        netStream = tcpClient.GetStream();
-                        modbus.NetStream = netStream;
-                        return true;
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteToLog((Localization.UseRussian ? "Ошибка при установке TCP-соединения: " :
-                            "Error establishing TCP connection: ") + ex.Message);
-                        return false;
-                    }
-                }
-                else
-                {
-                    WriteToLog(string.Format(Localization.UseRussian ? 
-                        "Попытка установки TCP-соединения может быть не ранее, чем через {0} с после предыдущей" :
-                        "Attempt to establish TCP connection can not be earlier than {0} seconds after the previous", 
-                        TcpConnectPer));
-                    return false;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Разорвать TCP-соединение
-        /// </summary>
-        private void TcpDisconnect()
-        {
-            WriteToLog(Localization.UseRussian ? "Разрыв TCP-соединения" : "TCP disconnect");
-
-            if (netStream != null)
-            {
-                netStream.Close();
-                netStream = null;
-                modbus.NetStream = null;
-            }
-
-            if (tcpClient != null)
-            {
-                tcpClient.Close();
-                tcpClient = null;
-            }
-        }
-
-        /// <summary>
-        /// Получить необходимость выполнения запроса
-        /// </summary>
-        private bool RequestNeeded()
-        {
-            return !lastCommSucc && tryNum < CommLineParams.TriesCnt && !Terminated;
-        }
-
-        /// <summary>
-        /// Установить значения параметров КП в соответствии со значениями элементов группы
-        /// </summary>
-        private void SetParamsData(Modbus.ElemGroup elemGroup)
+        private void SetTagsData(Modbus.ElemGroup elemGroup)
         {
             int len = elemGroup.ElemVals.Length;
-            for (int i = 0, j = elemGroup.StartParamInd + i; i < len; i++, j++)
-                SetParamData(j, elemGroup.GetElemVal(i), BaseValues.ParamStat.Defined);
+            for (int i = 0, j = elemGroup.StartKPTagInd + i; i < len; i++, j++)
+                SetCurData(j, elemGroup.GetElemVal(i), BaseValues.CnlStatuses.Defined);
         }
 
         /// <summary>
-        /// Установка неопределённого статуса параметров КП, соотвующих элементам группы
+        /// Установка неопределённого статуса тегов КП, соотвующих элементам группы
         /// </summary>
-        private void InvalParamsData(Modbus.ElemGroup elemGroup)
+        private void InvalTagsData(Modbus.ElemGroup elemGroup)
         {
             if (elemGroup == null)
             {
-                int len = KPParams == null ? 0 : KPParams.Length;
+                int len = KPTags == null ? 0 : KPTags.Length;
                 for (int i = 0; i < len; i++)
-                    SetParamData(i, CurData[i].Val, BaseValues.ParamStat.Undefined);
+                    SetCurData(i, curData[i].Val, BaseValues.CnlStatuses.Undefined);
             }
             else
             {
                 int len = elemGroup.ElemVals.Length;
-                for (int i = 0, j = elemGroup.StartParamInd + i; i < len; i++, j++)
-                    SetParamData(j, CurData[j].Val, BaseValues.ParamStat.Undefined);
-            }
-        }
-
-
-        /// <summary>
-        /// Выполнить сеанс опроса в режиме RTU или ASCII
-        /// </summary>
-        private void SerialSession()
-        {
-            int elemGroupInd = 0;
-
-            while (elemGroupInd < elemGroupCnt && lastCommSucc)
-            {
-                Modbus.ElemGroup elemGroup = deviceModel.ElemGroups[elemGroupInd];
-                lastCommSucc = false;
-                tryNum = 0;
-
-                while (RequestNeeded())
-                {
-                    // выполнение запроса
-                    if (request(elemGroup))
-                    {
-                        lastCommSucc = true;
-                        SetParamsData(elemGroup); // установка значений параметров
-                    }
-
-                    // завершение запроса
-                    FinishRequest();
-                    tryNum++;
-                }
-
-                if (lastCommSucc)
-                {
-                    // переход к следующей группе элементов
-                    elemGroupInd++;
-                }
-                else if (tryNum > 0)
-                {
-                    // установка неопределённого статуса параметров КП текущей и следующих групп, если запрос неудачный
-                    while (elemGroupInd < elemGroupCnt)
-                    {
-                        InvalParamsData(elemGroup);
-                        elemGroupInd++;
-                    }
-                }
+                for (int i = 0, j = elemGroup.StartKPTagInd + i; i < len; i++, j++)
+                    SetCurData(j, curData[j].Val, BaseValues.CnlStatuses.Undefined);
             }
         }
 
         /// <summary>
-        /// Выполнить сеанс опроса в режиме TCP
+        /// Преобразовать данные тега КП в строку
         /// </summary>
-        private void TcpSession()
+        protected override string ConvertTagDataToStr(int signal, SrezTableLight.CnlData tagData)
         {
-            if (TcpConnect())
-            {
-                int elemGroupInd = 0; 
-
-                while (elemGroupInd < elemGroupCnt && lastCommSucc)
-                {
-                    Modbus.ElemGroup elemGroup = deviceModel.ElemGroups[elemGroupInd];
-                    lastCommSucc = false;
-                    tryNum = 0;
-
-                    while (RequestNeeded() && netStream != null)
-                    {
-                        // выполнение запроса
-                        if (request(elemGroup))
-                        {
-                            lastCommSucc = true;
-                            SetParamsData(elemGroup); // установка значений параметров
-                        }
-
-                        // разрыв соединения в случае ошибки работы TCP-сокета
-                        if (modbus.NetStream == null)
-                        {
-                            netStream = null;
-                            TcpDisconnect();
-                        }
-
-                        // завершение запроса
-                        FinishRequest();
-                        tryNum++;
-                    }
-
-                    if (lastCommSucc)
-                    {
-                        // переход к следующей группе элементов
-                        elemGroupInd++;
-                    }
-                    else if (tryNum > 0)
-                    {
-                        // установка неопределённого статуса параметров КП текущей и следующих групп, если запрос неудачный
-                        while (elemGroupInd < elemGroupCnt)
-                        {
-                            InvalParamsData(elemGroup);
-                            elemGroupInd++;
-                        }
-                    }
-                }
-            }
+            if (tagData.Stat > 0 && !floatSignals.Contains(signal))
+                return curData[signal - 1].Val.ToString("F0");
             else
-            {
-                InvalParamsData(null); // установка неопределённого статуса всех параметров КП
-                Thread.Sleep(KPReqParams.Delay);
-                lastCommSucc = false;
-            }
+                return base.ConvertTagDataToStr(signal, tagData);
         }
-
-        /// <summary>
-        /// Отправить команду в режиме RTU или ASCII
-        /// </summary>
-        private void SerialSendCmd(Modbus.Cmd cmd)
-        {
-            lastCommSucc = false;
-            tryNum = 0;
-
-            while (RequestNeeded())
-            {
-                // выполнение запроса
-                if (request(cmd))
-                    lastCommSucc = true;
-
-                // завершение запроса
-                FinishRequest();
-                tryNum++;
-            }
-        }
-
-        /// <summary>
-        /// Отправить команду в режиме TCP
-        /// </summary>
-        private void TcpSendCmd(Modbus.Cmd cmd)
-        {
-            if (TcpConnect())
-            {
-                lastCommSucc = false;
-                tryNum = 0;
-
-                while (RequestNeeded() && netStream != null)
-                {
-                    // выполнение запроса
-                    if (request(cmd))
-                        lastCommSucc = true;
-
-                    // разрыв соединения в случае ошибки работы TCP-сокета
-                    if (modbus.NetStream == null)
-                    {
-                        netStream = null;
-                        TcpDisconnect();
-                    }
-
-                    // завершение запроса
-                    FinishRequest();
-                    tryNum++;
-                }
-            }
-            else
-            {
-                Thread.Sleep(KPReqParams.Delay);
-                lastCommSucc = false;
-            }
-        }        
 
 
         /// <summary>
@@ -414,20 +150,57 @@ namespace Scada.Comm.KP
                 WriteToLog(Localization.UseRussian ? 
                     "Нормальное взаимодействие с КП невозможно, т.к. шаблон устройства не загружен" :
                     "Normal device communication is impossible because device template has not been loaded");
-                Thread.Sleep(KPReqParams.Delay);
+                Thread.Sleep(ReqParams.Delay);
                 lastCommSucc = false;
             }
             else
             {
                 if (deviceModel.ElemGroups.Count > 0)
                 {
-                    session(); // выполнение запроса
+                    // выполнение запросов по группам элементов
+                    int elemGroupInd = 0;
+                    while (elemGroupInd < elemGroupCnt && lastCommSucc)
+                    {
+                        Modbus.ElemGroup elemGroup = deviceModel.ElemGroups[elemGroupInd];
+                        lastCommSucc = false;
+                        int tryNum = 0;
+
+                        while (RequestNeeded(ref tryNum))
+                        {
+                            // выполнение запроса
+                            if (request(elemGroup))
+                            {
+                                lastCommSucc = true;
+                                SetTagsData(elemGroup); // установка значений тегов КП
+                            }
+
+                            // завершение запроса
+                            FinishRequest();
+                            tryNum++;
+                        }
+
+                        if (lastCommSucc)
+                        {
+                            // переход к следующей группе элементов
+                            elemGroupInd++;
+                        }
+                        else if (tryNum > 0)
+                        {
+                            // установка неопределённого статуса тегов КП текущей и следующих групп, если запрос неудачный
+                            while (elemGroupInd < elemGroupCnt)
+                            {
+                                InvalTagsData(elemGroup);
+                                elemGroupInd++;
+                            }
+                        }
+                    }
                 }
                 else
                 {
                     WriteToLog(Localization.UseRussian ?
-                        "Отсутствуют элементы для запроса" : "No elements for request");
-                    Thread.Sleep(KPReqParams.Delay);
+                        "Отсутствуют элементы для запроса" : 
+                        "No elements for request");
+                    Thread.Sleep(ReqParams.Delay);
                 }
             }
 
@@ -447,12 +220,14 @@ namespace Scada.Comm.KP
                 Modbus.Cmd modbusCmd = deviceModel.FindCmd(cmd.CmdNum);
 
                 if (modbusCmd != null &&
-                    (modbusCmd.Multiple && (cmd.CmdType == CmdType.Standard || cmd.CmdType == CmdType.Binary) ||
-                    !modbusCmd.Multiple && cmd.CmdType == CmdType.Standard))
+                    (modbusCmd.Multiple && (cmd.CmdTypeID == BaseValues.CmdTypes.Standard || 
+                    cmd.CmdTypeID == BaseValues.CmdTypes.Binary) ||
+                    !modbusCmd.Multiple && cmd.CmdTypeID == BaseValues.CmdTypes.Standard))
                 {
+                    // формирование команды Modbus
                     if (modbusCmd.Multiple)
                     {
-                        modbusCmd.Data = cmd.CmdType == CmdType.Standard ? 
+                        modbusCmd.Data = cmd.CmdTypeID == BaseValues.CmdTypes.Standard ? 
                             BitConverter.GetBytes(cmd.CmdVal) : cmd.CmdData;
                     }
                     else
@@ -464,12 +239,26 @@ namespace Scada.Comm.KP
 
                     modbusCmd.InitReqPDU();
                     modbusCmd.InitReqADU(devAddr, transMode);
-                    sendCmd(modbusCmd);
+
+                    // отправка команды устройству
+                    lastCommSucc = false;
+                    int tryNum = 0;
+
+                    while (RequestNeeded(ref tryNum))
+                    {
+                        // выполнение запроса
+                        if (request(modbusCmd))
+                            lastCommSucc = true;
+
+                        // завершение запроса
+                        FinishRequest();
+                        tryNum++;
+                    }
                 }
                 else
                 {
                     lastCommSucc = false;
-                    WriteToLog(Localization.UseRussian ? "Недопустимая команда" : "Illegal command");
+                    WriteToLog(CommPhrases.IllegalCommand);
                 }
             }
 
@@ -486,12 +275,13 @@ namespace Scada.Comm.KP
             deviceModel = null;
             elemGroupCnt = 0;
             floatSignals = new HashSet<int>();
-            string fileName = KPReqParams.CmdLine.Trim();
+            string fileName = ReqParams.CmdLine.Trim();
 
             if (fileName == "")
             {
-                WriteToLog((Localization.UseRussian ? "Не задан шаблон устройства для " : 
-                    "Template is undefined for the ") + Caption);
+                WriteToLog(string.Format(Localization.UseRussian ? 
+                    "{0} Ошибка: Не задан шаблон устройства для {1}" : 
+                    "{0} Error: Template is undefined for the {1}", CommUtils.GetNowDT(), Caption));
             }
             else
             {
@@ -509,12 +299,13 @@ namespace Scada.Comm.KP
                 }
                 else
                 {
-                    WriteToLog((Localization.UseRussian ? "Загрузка шаблона устройства из файла " :
-                        "Load device template from file ") + fileName);
+                    WriteToLog(string.Format(Localization.UseRussian ? 
+                        "{0} Загрузка шаблона устройства из файла {1}" :
+                        "{0} Load device template from file {1}", CommUtils.GetNowDT(), fileName));
                     Modbus.DeviceModel template = new Modbus.DeviceModel();
                     string errMsg;
 
-                    if (template.LoadTemplate(ConfigDir + fileName, out errMsg))
+                    if (template.LoadTemplate(AppDirs.ConfigDir + fileName, out errMsg))
                     {
                         deviceModel = template;
                         elemGroupCnt = deviceModel.ElemGroups.Count;
@@ -528,37 +319,28 @@ namespace Scada.Comm.KP
                 }
             }
 
-            // инициализация параметров КП на основе модели устройства
+            // инициализация тегов КП на основе модели устройства
             if (elemGroupCnt > 0)
             {
-                ParamGroup[] paramGroups = new ParamGroup[elemGroupCnt];
-                int paramInd = 0;
-                int paramGroupInd = 0;
+                List<TagGroup> tagGroups = new List<TagGroup>();
+                int tagInd = 0;
 
                 foreach (Modbus.ElemGroup elemGroup in deviceModel.ElemGroups)
                 {
-                    int elemCnt = elemGroup.Elems.Count;
-                    ParamGroup paramGroup = new ParamGroup(elemGroup.Name, elemCnt);
-                    paramGroups[paramGroupInd++] = paramGroup;
-                    elemGroup.StartParamInd = paramInd;
+                    TagGroup tagGroup = new TagGroup(elemGroup.Name);
+                    tagGroups.Add(tagGroup);
+                    elemGroup.StartKPTagInd = tagInd;
 
-                    for (int i = 0; i < elemCnt; i++)
+                    foreach (Modbus.Elem elem in elemGroup.Elems)
                     {
-                        int signal = ++paramInd;
-                        Modbus.Elem elem = elemGroup.Elems[i];
-
-                        Param param = new Param(signal, elem.Name);
-                        paramGroup.KPParams[i] = param;
-
+                        int signal = ++tagInd;
+                        tagGroup.KPTags.Add(new KPTag(signal, elem.Name));
                         if (elem.ElemType == Modbus.ElemTypes.Float)
                             floatSignals.Add(signal);
                     }
                 }
 
-                InitArrays(paramInd, elemGroupCnt);
-                for (int i = 0; i < elemGroupCnt; i++)
-                    ParamGroups[i] = paramGroups[i];
-                CopyParamsFromGroups();
+                InitKPTags(tagGroups);
                 CanSendCmd = deviceModel.Cmds.Count > 0;
             }
         }
@@ -569,33 +351,24 @@ namespace Scada.Comm.KP
         public override void OnCommLineStart()
         {
             // получение режима передачи данных
-            try { transMode = (Modbus.TransModes)Enum.Parse(typeof(Modbus.TransModes), UserParams["TransMode"], true); }
-            catch { transMode = Modbus.TransModes.RTU; }
+            transMode = CustomParams.GetEnumParam<Modbus.TransModes>("TransMode", false, Modbus.TransModes.RTU);
 
             // настройка библиотеки в зависимости от режима передачи данных
             switch (transMode)
             {
                 case Modbus.TransModes.RTU:
-                    session += SerialSession;
-                    sendCmd += SerialSendCmd;
                     request += modbus.RtuRequest;
                     break;
                 case Modbus.TransModes.ASCII:
-                    session += SerialSession;
-                    sendCmd += SerialSendCmd;
                     request += modbus.AsciiRequest;
-                    SerialPort.NewLine = Modbus.CRLF;
                     break;
                 default: // Modbus.TransModes.TCP
-                    session += TcpSession;
-                    sendCmd += TcpSendCmd;
                     request += modbus.TcpRequest;
                     break;
             }
 
             // настройка объекта, реализующего протокол Modbus
-            modbus.SerialPort = SerialPort;
-            modbus.Timeout = KPReqParams.Timeout;
+            modbus.Timeout = ReqParams.Timeout;
             modbus.WriteToLog = WriteToLog;
 
             // формирование PDU и ADU
@@ -610,26 +383,15 @@ namespace Scada.Comm.KP
                 }
             }
         }
-        
-        /// <summary>
-        /// Выполнить действия при завершении работы линии связи
-        /// </summary>
-        public override void OnCommLineTerminate()
-        {
-            // разрыв TCP-соединения
-            if (tcpClient != null)
-                TcpDisconnect();
-        }
 
         /// <summary>
-        /// Преобразовать данные параметра КП в строку
+        /// Выполнить действия после установки соединения
         /// </summary>
-        public override string ParamDataToStr(int signal, ParamData paramData)
+        public override void OnConnectionSet()
         {
-            if (paramData.Stat > 0 && !floatSignals.Contains(signal))
-                return CurData[signal - 1].Val.ToString("F0");
-            else
-                return base.ParamDataToStr(signal, paramData);
+            if (transMode == Modbus.TransModes.ASCII)
+                Connection.NewLine = Modbus.CRLF;
+            modbus.Connection = Connection;
         }
     }
 }

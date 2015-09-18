@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,14 +20,16 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2009
- * Modified : 2014
+ * Modified : 2015
  */
 
+using Scada.Comm.Devices.KpSms;
+using Scada.Data;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Scada.Comm.KP
+namespace Scada.Comm.Devices
 {
     /// <summary>
     /// Device library user interface
@@ -49,42 +51,9 @@ namespace Scada.Comm.KP
         public KpSmsView(int number)
             : base(number)
         {
-            // определение каналов КП по умолчанию
-            DefaultCnls = new List<InCnlProps>();
-            InCnlProps inCnlProps = new InCnlProps(Localization.UseRussian ? "Связь" : "Connection", CnlType.TS);
-            inCnlProps.Signal = 1;
-            inCnlProps.ParamName = Localization.UseRussian ? "Связь" : "Connection";
-            inCnlProps.ShowNumber = false;
-            inCnlProps.UnitName = Localization.UseRussian ? "Нет - Есть" : "No - Yes";
-            inCnlProps.EvEnabled = true;
-            inCnlProps.EvOnChange = true;
-            DefaultCnls.Add(inCnlProps);
-
-            inCnlProps = new InCnlProps(Localization.UseRussian ? "Кол-во событий" : "Event count", CnlType.TI);
-            inCnlProps.Signal = 2;
-            inCnlProps.ParamName = Localization.UseRussian ? "Событие" : "Event";
-            inCnlProps.DecDigits = 0;
-            inCnlProps.UnitName = Localization.UseRussian ? "Шт." : "Count";
-            DefaultCnls.Add(inCnlProps);
-
-            string cnlName = Localization.UseRussian ? "Отправка SMS" : "Send SMS message";
-            inCnlProps = new InCnlProps(cnlName, CnlType.TS);
-            inCnlProps.CtrlCnlProps = new CtrlCnlProps(cnlName, KPLogic.CmdType.Binary);
-            inCnlProps.CtrlCnlProps.CmdNum = 1;
-            DefaultCnls.Add(inCnlProps);
-
-            cnlName = Localization.UseRussian ? "AT-команда" : "AT command";
-            inCnlProps = new InCnlProps(cnlName, CnlType.TS);
-            inCnlProps.CtrlCnlProps = new CtrlCnlProps(cnlName, KPLogic.CmdType.Binary);
-            inCnlProps.CtrlCnlProps.CmdNum = 2;
-            DefaultCnls.Add(inCnlProps);
-
-            // определение параметров опроса КП по умолчанию
-            KPLogic.ReqParams reqParams = new KPLogic.ReqParams(false);
-            reqParams.Timeout = 5000;
-            reqParams.Delay = 500;
-            DefaultReqParams = reqParams;
+            CanShowProps = true;
         }
+
 
         /// <summary>
         /// Описание библиотеки КП
@@ -95,19 +64,77 @@ namespace Scada.Comm.KP
             {
                 return Localization.UseRussian ? 
                     "Отправка и приём SMS с использованием AT-команд.\n\n" +
-                    "Параметр командной строки:\n" +
-                    "primary - основной КП на линии связи, обмен данными с GSM-терминалом.\n\n" +
                     "Команды ТУ:\n" +
                     "1 (бинарная) - отправка SMS;\n" +
                     "2 (бинарная) - произвольная AT-команда." :
 
                     "Sending and receiving SMS messages using AT commands.\n\n" +
-                    "Command line parameter:\n" +
-                    "primary - main device of the communication line that communicates with GSM terminal.\n\n" +
                     "Commands:\n" +
                     "1 (binary) - send SMS message;\n" +
                     "2 (binary) - custom AT command.";
             }
+        }
+
+        /// <summary>
+        /// Получить прототипы каналов КП по умолчанию
+        /// </summary>
+        public override KPCnlPrototypes DefaultCnls
+        {
+            get
+            {
+                KPCnlPrototypes prototypes = new KPCnlPrototypes();
+                List<InCnlPrototype> inCnls = prototypes.InCnls;
+                List<CtrlCnlPrototype> ctrlCnls = prototypes.CtrlCnls;
+
+                // создание прототипов входных каналов
+                inCnls.Add(new InCnlPrototype(Localization.UseRussian ? "Связь" : "Connection", BaseValues.CnlTypes.TS)
+                {
+                    Signal = 1,
+                    ParamName = Localization.UseRussian ? "Связь" : "Connection",
+                    ShowNumber = false,
+                    UnitName = Localization.UseRussian ? "Нет - Есть" : "No - Yes",
+                    EvEnabled = true,
+                    EvOnChange = true
+                });
+
+                inCnls.Add(new InCnlPrototype(Localization.UseRussian ? "Кол-во событий" : "Event count",
+                    BaseValues.CnlTypes.TI)
+                {
+                    Signal = 2,
+                    ParamName = Localization.UseRussian ? "Событие" : "Event",
+                    DecDigits = 0,
+                    UnitName = Localization.UseRussian ? "Шт." : "pcs."
+                });
+
+                // создание прототипов каналов управления
+                ctrlCnls.Add(new CtrlCnlPrototype(Localization.UseRussian ? "Отправка SMS" : "Send SMS message",
+                    BaseValues.CmdTypes.Binary) { CmdNum = 1 });
+
+                ctrlCnls.Add(new CtrlCnlPrototype(Localization.UseRussian ? "AT-команда" : "AT command",
+                    BaseValues.CmdTypes.Binary) { CmdNum = 2 });
+
+                return prototypes;
+            }
+        }
+
+        /// <summary>
+        /// Получить параметры опроса КП по умолчанию
+        /// </summary>
+        public override KPReqParams DefaultReqParams
+        {
+            get
+            {
+                return new KPReqParams() { Timeout = 5000, Delay = 500 };
+            }
+        }
+
+        /// <summary>
+        /// Отобразить свойства КП
+        /// </summary>
+        public override void ShowProps()
+        {
+            // отображение телефонного справочника
+            FrmPhonebook.ShowDialog(AppDirs);
         }
     }
 }

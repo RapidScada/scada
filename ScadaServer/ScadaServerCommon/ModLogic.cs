@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,14 +23,11 @@
  * Modified : 2015
  */
 
-using System;
-using System.IO;
-using System.Reflection;
-using System.Text;
 using Scada.Data;
+using System;
 using Utils;
 
-namespace Scada.Server.Module
+namespace Scada.Server.Modules
 {
     /// <summary>
     /// The base class for server module logic
@@ -39,92 +36,12 @@ namespace Scada.Server.Module
     public abstract class ModLogic
     {
         /// <summary>
-        /// Команда ТУ
+        /// Время ожидания остановки работы модуля, мс
         /// </summary>
-        [Serializable]
-        public class Command
-        {
-            private int kpNum;
-            private double cmdVal;
+        protected const int WaitForStop = 7000;
 
-            /// <summary>
-            /// Конструктор
-            /// </summary>
-            public Command()
-                : this(BaseValues.CmdTypes.Standard)
-            {
-            }
-            /// <summary>
-            /// Конструктор
-            /// </summary>
-            public Command(int cmdTypeID)
-            {
-                CreateDT = DateTime.Now;
-                CmdTypeID = cmdTypeID;
-                KPNum = 0;
-                CmdNum = 0;
-                CmdVal = 0.0;
-                CmdData = null;
-            }
+        private AppDirs appDirs; // директории приложения
 
-            /// <summary>
-            /// Получить дату и время создания команды
-            /// </summary>
-            public DateTime CreateDT { get; protected set; }
-            /// <summary>
-            /// Получить или установить идентификатор типа команды
-            /// </summary>
-            public int CmdTypeID { get; set; }
-            /// <summary>
-            /// Получить или установить номер КП
-            /// </summary>
-            public int KPNum
-            {
-                get
-                {
-                    return kpNum;
-                }
-                set
-                {
-                    kpNum = value;
-                    if (CmdTypeID == BaseValues.CmdTypes.Request)
-                        CmdData = BitConverter.GetBytes((UInt16)kpNum);
-                }
-            }
-            /// <summary>
-            /// Получить или установить номер команды
-            /// </summary>
-            public int CmdNum { get; set; }
-            /// <summary>
-            /// Получить или установить значение команды
-            /// </summary>
-            public double CmdVal
-            {
-                get
-                {
-                    return cmdVal;
-                }
-                set
-                {
-                    cmdVal = value;
-                    if (CmdTypeID == BaseValues.CmdTypes.Standard)
-                        CmdData = BitConverter.GetBytes(cmdVal);
-                }
-            }
-            /// <summary>
-            /// Получить или установить данные команды
-            /// </summary>
-            public byte[] CmdData { get; set; }
-
-            /// <summary>
-            /// Получить данные команды, преобразованные в строку
-            /// </summary>
-            public string GetCmdDataStr()
-            {
-                try { return Encoding.Default.GetString(CmdData); }
-                catch { return ""; }
-            }
-        }
 
         /// <summary>
         /// Делегат записи в журнал приложения
@@ -142,9 +59,7 @@ namespace Scada.Server.Module
         /// </summary>
         public ModLogic()
         {
-            ConfigDir = "";
-            LangDir = "";
-            LogDir = "";
+            appDirs = new AppDirs();
             Settings = null;
             WriteToLog = null;
             PassCommand = null;
@@ -157,19 +72,21 @@ namespace Scada.Server.Module
         public abstract string Name { get; }
 
         /// <summary>
-        /// Получить или установить директорию конфигурации
+        /// Получить или установить директории приложения
         /// </summary>
-        public string ConfigDir { get; set; }
-
-        /// <summary>
-        /// Получить или установить директорию языковых файлов
-        /// </summary>
-        public string LangDir { get; set; }
-
-        /// <summary>
-        /// Получить или установить директорию журналов
-        /// </summary>
-        public string LogDir { get; set; }
+        public AppDirs AppDirs
+        {
+            get
+            {
+                return appDirs;
+            }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+                appDirs = value;
+            }
+        }
 
         /// <summary>
         /// Получить или установить настройки SCADA-Сервера
@@ -227,8 +144,11 @@ namespace Scada.Server.Module
         /// <summary>
         /// Выполнить действия после обработки новых архивных данных
         /// </summary>
-        /// <remarks>Номера каналов упорядочены по возрастанию.
-        /// Вычисление дорасчётных каналов архивного среза в момент вызова метода завершено</remarks>
+        /// <remarks>
+        /// Номера каналов упорядочены по возрастанию.
+        /// Вычисление дорасчётных каналов архивного среза в момент вызова метода завершено.
+        /// Параметр arcSrez равен null, если запись архивных срезов отключена
+        /// </remarks>
         public virtual void OnArcDataProcessed(int[] cnlNums, SrezTableLight.Srez arcSrez)
         {
         }
@@ -236,7 +156,7 @@ namespace Scada.Server.Module
         /// <summary>
         /// Выполнить действия при создании события
         /// </summary>
-        /// <remarks>Событие вызывается до записи на диск, поэтому свойства события можно изменить</remarks>
+        /// <remarks>Метод вызывается до записи события на диск, поэтому свойства события можно изменить</remarks>
         public virtual void OnEventCreating(EventTableLight.Event ev)
         {
         }
@@ -244,7 +164,7 @@ namespace Scada.Server.Module
         /// <summary>
         /// Выполнить действия после создания события и записи на диск
         /// </summary>
-        /// <remarks>Событие вызывается после записи на диск</remarks>
+        /// <remarks>Метод вызывается после записи на события диск</remarks>
         public virtual void OnEventCreated(EventTableLight.Event ev)
         {
         }

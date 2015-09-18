@@ -370,7 +370,7 @@ namespace Scada.Scheme
             if (imageInfo != null && imageInfo.Image != null)
             {
                 saveFileDialog.FileName = imageInfo.Name;
-                saveFileDialog.DefaultExt = imageInfo.Format.ToLower();
+                saveFileDialog.DefaultExt = imageInfo.Format.ToLowerInvariant();
 
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {

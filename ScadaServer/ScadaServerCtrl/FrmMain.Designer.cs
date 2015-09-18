@@ -30,22 +30,22 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Общие параметры");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Параметры записи");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("База конфигурации");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Текущий срез");
-            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Минутные срезы");
-            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Часовые срезы");
-            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("События");
-            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Файлы", new System.Windows.Forms.TreeNode[] {
-            treeNode3,
-            treeNode4,
-            treeNode5,
-            treeNode6,
-            treeNode7});
-            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Модули");
-            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Генератор");
-            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Статистика");
+            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Общие параметры");
+            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Параметры записи");
+            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("База конфигурации");
+            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Текущий срез");
+            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("Минутные срезы");
+            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("Часовые срезы");
+            System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("События");
+            System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("Файлы", new System.Windows.Forms.TreeNode[] {
+            treeNode14,
+            treeNode15,
+            treeNode16,
+            treeNode17,
+            treeNode18});
+            System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("Модули");
+            System.Windows.Forms.TreeNode treeNode21 = new System.Windows.Forms.TreeNode("Генератор");
+            System.Windows.Forms.TreeNode treeNode22 = new System.Windows.Forms.TreeNode("Статистика");
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.btnServiceStart = new System.Windows.Forms.ToolStripButton();
             this.btnServiceStop = new System.Windows.Forms.ToolStripButton();
@@ -415,57 +415,57 @@
             this.treeView.Location = new System.Drawing.Point(0, 25);
             this.treeView.Margin = new System.Windows.Forms.Padding(0, 0, 0, 2);
             this.treeView.Name = "treeView";
-            treeNode1.ImageKey = "params.png";
-            treeNode1.Name = "nodeCommonParams";
-            treeNode1.SelectedImageKey = "params.png";
-            treeNode1.Text = "Общие параметры";
-            treeNode2.ImageKey = "save.png";
-            treeNode2.Name = "nodeSaveParams";
-            treeNode2.SelectedImageKey = "save.png";
-            treeNode2.Text = "Параметры записи";
-            treeNode3.ImageKey = "base_table.png";
-            treeNode3.Name = "nodeBase";
-            treeNode3.SelectedImageKey = "base_table.png";
-            treeNode3.Text = "База конфигурации";
-            treeNode4.ImageKey = "srez_table.png";
-            treeNode4.Name = "nodeCurSrez";
-            treeNode4.SelectedImageKey = "srez_table.png";
-            treeNode4.Text = "Текущий срез";
-            treeNode5.ImageKey = "srez_table.png";
-            treeNode5.Name = "nodeMinSrez";
-            treeNode5.SelectedImageKey = "srez_table.png";
-            treeNode5.Text = "Минутные срезы";
-            treeNode6.ImageKey = "srez_table.png";
-            treeNode6.Name = "nodeHrSrez";
-            treeNode6.SelectedImageKey = "srez_table.png";
-            treeNode6.Text = "Часовые срезы";
-            treeNode7.ImageKey = "event.png";
-            treeNode7.Name = "nodeEvents";
-            treeNode7.SelectedImageKey = "event.png";
-            treeNode7.Text = "События";
-            treeNode8.ImageKey = "db.png";
-            treeNode8.Name = "nodeFiles";
-            treeNode8.SelectedImageKey = "db.png";
-            treeNode8.Text = "Файлы";
-            treeNode9.ImageKey = "module.png";
-            treeNode9.Name = "nodeModules";
-            treeNode9.SelectedImageKey = "module.png";
-            treeNode9.Text = "Модули";
-            treeNode10.ImageKey = "hand.png";
-            treeNode10.Name = "nodeGenerator";
-            treeNode10.SelectedImageKey = "hand.png";
-            treeNode10.Text = "Генератор";
-            treeNode11.ImageKey = "stats.png";
-            treeNode11.Name = "nodeStats";
-            treeNode11.SelectedImageKey = "stats.png";
-            treeNode11.Text = "Статистика";
+            treeNode12.ImageKey = "params.png";
+            treeNode12.Name = "nodeCommonParams";
+            treeNode12.SelectedImageKey = "params.png";
+            treeNode12.Text = "Общие параметры";
+            treeNode13.ImageKey = "save.png";
+            treeNode13.Name = "nodeSaveParams";
+            treeNode13.SelectedImageKey = "save.png";
+            treeNode13.Text = "Параметры записи";
+            treeNode14.ImageKey = "base_table.png";
+            treeNode14.Name = "nodeBase";
+            treeNode14.SelectedImageKey = "base_table.png";
+            treeNode14.Text = "База конфигурации";
+            treeNode15.ImageKey = "srez_table.png";
+            treeNode15.Name = "nodeCurSrez";
+            treeNode15.SelectedImageKey = "srez_table.png";
+            treeNode15.Text = "Текущий срез";
+            treeNode16.ImageKey = "srez_table.png";
+            treeNode16.Name = "nodeMinSrez";
+            treeNode16.SelectedImageKey = "srez_table.png";
+            treeNode16.Text = "Минутные срезы";
+            treeNode17.ImageKey = "srez_table.png";
+            treeNode17.Name = "nodeHrSrez";
+            treeNode17.SelectedImageKey = "srez_table.png";
+            treeNode17.Text = "Часовые срезы";
+            treeNode18.ImageKey = "event.png";
+            treeNode18.Name = "nodeEvents";
+            treeNode18.SelectedImageKey = "event.png";
+            treeNode18.Text = "События";
+            treeNode19.ImageKey = "db.png";
+            treeNode19.Name = "nodeFiles";
+            treeNode19.SelectedImageKey = "db.png";
+            treeNode19.Text = "Файлы";
+            treeNode20.ImageKey = "module.png";
+            treeNode20.Name = "nodeModules";
+            treeNode20.SelectedImageKey = "module.png";
+            treeNode20.Text = "Модули";
+            treeNode21.ImageKey = "hand.png";
+            treeNode21.Name = "nodeGenerator";
+            treeNode21.SelectedImageKey = "hand.png";
+            treeNode21.Text = "Генератор";
+            treeNode22.ImageKey = "stats.png";
+            treeNode22.Name = "nodeStats";
+            treeNode22.SelectedImageKey = "stats.png";
+            treeNode22.Text = "Статистика";
             this.treeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2,
-            treeNode8,
-            treeNode9,
-            treeNode10,
-            treeNode11});
+            treeNode12,
+            treeNode13,
+            treeNode19,
+            treeNode20,
+            treeNode21,
+            treeNode22});
             this.treeView.SelectedImageKey = "empty.png";
             this.treeView.ShowRootLines = false;
             this.treeView.Size = new System.Drawing.Size(160, 403);
@@ -1533,9 +1533,9 @@
             // 
             // dtpSrezTime
             // 
-            this.dtpSrezTime.CustomFormat = "HH:mm:ss";
+            this.dtpSrezTime.CustomFormat = "";
             this.dtpSrezTime.Enabled = false;
-            this.dtpSrezTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpSrezTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
             this.dtpSrezTime.Location = new System.Drawing.Point(229, 42);
             this.dtpSrezTime.Name = "dtpSrezTime";
             this.dtpSrezTime.ShowUpDown = true;
@@ -1544,9 +1544,9 @@
             // 
             // dtpSrezDate
             // 
-            this.dtpSrezDate.CustomFormat = "dd.MM.yyyy";
+            this.dtpSrezDate.CustomFormat = "";
             this.dtpSrezDate.Enabled = false;
-            this.dtpSrezDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpSrezDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpSrezDate.Location = new System.Drawing.Point(123, 42);
             this.dtpSrezDate.Name = "dtpSrezDate";
             this.dtpSrezDate.Size = new System.Drawing.Size(100, 20);
@@ -1691,8 +1691,8 @@
             // 
             // dtpEvDate2
             // 
-            this.dtpEvDate2.CustomFormat = "dd.MM.yyyy";
-            this.dtpEvDate2.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpEvDate2.CustomFormat = "";
+            this.dtpEvDate2.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpEvDate2.Location = new System.Drawing.Point(13, 32);
             this.dtpEvDate2.Name = "dtpEvDate2";
             this.dtpEvDate2.Size = new System.Drawing.Size(100, 20);
@@ -2024,8 +2024,8 @@
             // 
             // dtpEvTime
             // 
-            this.dtpEvTime.CustomFormat = "HH:mm:ss";
-            this.dtpEvTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpEvTime.CustomFormat = "";
+            this.dtpEvTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
             this.dtpEvTime.Location = new System.Drawing.Point(119, 32);
             this.dtpEvTime.Name = "dtpEvTime";
             this.dtpEvTime.ShowUpDown = true;
@@ -2034,8 +2034,8 @@
             // 
             // dtpEvDate1
             // 
-            this.dtpEvDate1.CustomFormat = "dd.MM.yyyy";
-            this.dtpEvDate1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpEvDate1.CustomFormat = "";
+            this.dtpEvDate1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpEvDate1.Location = new System.Drawing.Point(13, 32);
             this.dtpEvDate1.Name = "dtpEvDate1";
             this.dtpEvDate1.Size = new System.Drawing.Size(100, 20);

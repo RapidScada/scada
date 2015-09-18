@@ -7,7 +7,7 @@
     <title>Cобытия</title>
 	<link href="css/scada.css" rel="stylesheet" type="text/css" />
 	<link href="css/events.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="script/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript" src="script/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" src="script/events.js"></script>
 </head>
 <body>

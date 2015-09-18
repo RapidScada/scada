@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,16 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2014
+ * Modified : 2015
  */
 
-namespace Scada.Comm.KP
+using Scada.Comm.Devices.KpModbus;
+using Scada.Data;
+using System;
+using System.Collections.Generic;
+using System.IO;
+
+namespace Scada.Comm.Devices
 {
     /// <summary>
     /// Device library user interface
@@ -45,13 +51,7 @@ namespace Scada.Comm.KP
         public KpModbusView(int number)
             : base(number)
         {
-            CanShowProps = number == 0;
-
-            // определение параметров опроса КП по умолчанию
-            KPLogic.ReqParams reqParams = new KPLogic.ReqParams(false);
-            reqParams.Timeout = 1000;
-            reqParams.Delay = 200;
-            DefaultReqParams = reqParams;
+            CanShowProps = true;
         }
 
 
@@ -82,14 +82,82 @@ namespace Scada.Comm.KP
         }
 
         /// <summary>
+        /// Получить прототипы каналов КП по умолчанию
+        /// </summary>
+        public override KPCnlPrototypes DefaultCnls
+        {
+            get
+            {
+                // получение имени файла шаблона устройства
+                string templateName = KPProps == null ? "" : KPProps.CmdLine.Trim();
+                string fileName = AppDirs.ConfigDir + templateName;
+                if (!File.Exists(fileName))
+                    return null;
+
+                // загрузка шаблона устройства
+                Modbus.DeviceModel template = new Modbus.DeviceModel();
+                string errMsg;
+                if (!template.LoadTemplate(fileName, out errMsg))
+                    throw new Exception(errMsg);
+
+                // создание прототипов каналов КП
+                KPCnlPrototypes prototypes = new KPCnlPrototypes();
+                List<InCnlPrototype> inCnls = prototypes.InCnls;
+                List<CtrlCnlPrototype> ctrlCnls = prototypes.CtrlCnls;
+
+                // создание прототипов входных каналов
+                int signal = 1;
+                foreach (Modbus.ElemGroup elemGroup in template.ElemGroups)
+                {
+                    bool isTS = elemGroup.TableType == Modbus.TableTypes.DiscreteInputs || 
+                        elemGroup.TableType == Modbus.TableTypes.Coils;
+
+                    foreach (Modbus.Elem elem in elemGroup.Elems)
+                    {
+                        inCnls.Add(new InCnlPrototype(elem.Name, isTS ? BaseValues.CnlTypes.TS : BaseValues.CnlTypes.TI)
+                        {
+                            Signal = signal++,
+                            ShowNumber = !isTS,
+                            EvEnabled = isTS,
+                            EvOnChange = isTS
+                        });
+                    }
+                }
+
+                // создание прототипов каналов управления
+                foreach (Modbus.Cmd cmd in template.Cmds)
+                {
+                    ctrlCnls.Add(new CtrlCnlPrototype(cmd.Name,
+                        cmd.Multiple ? BaseValues.CmdTypes.Binary : BaseValues.CmdTypes.Standard) 
+                            { CmdNum = cmd.CmdNum });
+                }
+
+                return prototypes;
+            }
+        }
+
+
+        /// <summary>
         /// Отобразить свойства КП
         /// </summary>
         public override void ShowProps()
         {
-            FrmDevTemplate form = new FrmDevTemplate();
-            form.ConfigDir = ConfigDir;
-            form.LangDir = LangDir;
-            form.ShowDialog();
+            // загрузка словарей
+            string errMsg;
+            if (!Localization.UseRussian)
+            {
+                if (Localization.LoadDictionaries(AppDirs.LangDir, "KpModbus", out errMsg))
+                    KpPhrases.Init();
+                else
+                    ScadaUtils.ShowError(errMsg);
+            }
+
+            if (Number > 0)
+                // отображение свойств КП
+                FrmDevProps.ShowDialog(Number, KPProps, AppDirs);
+            else
+                // отображение редактора шаблонов устройств
+                FrmDevTemplate.ShowDialog(AppDirs);
         }
     }
 }

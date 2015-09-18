@@ -76,6 +76,7 @@
     </Compile>
     <Compile Include="MainLogic.cs" />
     <Compile Include="MainLogic.Types.cs" />
+    <Compile Include="Manager.cs" />
     <Compile Include="SvcMain.cs">
       <SubType>Component</SubType>
     </Compile>

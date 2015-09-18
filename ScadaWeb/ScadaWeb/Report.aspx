@@ -1,10 +1,10 @@
-<%@ Page Language="C#" MasterPageFile="~/MasterMain.master" AutoEventWireup="true" Inherits="Scada.Web.WFrmReport" Title="SCADA - Îò÷¸òû" Codebehind="Report.aspx.cs" %>
+ï»¿<%@ Page Language="C#" MasterPageFile="~/MasterMain.master" AutoEventWireup="true" Inherits="Scada.Web.WFrmReport" Title="SCADA - ÐžÑ‚Ñ‡Ñ‘Ñ‚Ñ‹" Codebehind="Report.aspx.cs" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="contHead" Runat="Server">
     <link href="css/report.css" rel="stylesheet" type="text/css" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="contMain" Runat="Server" EnableViewState="False">
-    <h2><asp:Label ID="lblReportList" runat="server" Text="Äîñòóïíûå îò÷¸òû:"></asp:Label><asp:Label ID="lblNoReports" 
-        runat="server" Text="Äîñòóïíûå îò÷¸òû îòñóòñòâóþò" Visible="False"></asp:Label></h2>
+    <h2><asp:Label ID="lblReportList" runat="server" Text="Ð”Ð¾ÑÑ‚ÑƒÐ¿Ð½Ñ‹Ðµ Ð¾Ñ‚Ñ‡Ñ‘Ñ‚Ñ‹:"></asp:Label><asp:Label ID="lblNoReports" 
+        runat="server" Text="Ð”Ð¾ÑÑ‚ÑƒÐ¿Ð½Ñ‹Ðµ Ð¾Ñ‚Ñ‡Ñ‘Ñ‚Ñ‹ Ð¾Ñ‚ÑÑƒÑ‚ÑÑ‚Ð²ÑƒÑŽÑ‚" Visible="False"></asp:Label></h2>
     <asp:Table ID="tblReport" ClientIDMode="Static" runat="server">
     </asp:Table>
 </asp:Content>

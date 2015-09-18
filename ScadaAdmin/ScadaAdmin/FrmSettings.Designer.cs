@@ -35,16 +35,17 @@
             this.txtBaseDATDir = new System.Windows.Forms.TextBox();
             this.lblBackupDir = new System.Windows.Forms.Label();
             this.txtBackupDir = new System.Windows.Forms.TextBox();
-            this.lblKPDir = new System.Windows.Forms.Label();
-            this.txtKPDir = new System.Windows.Forms.TextBox();
+            this.lblCommDir = new System.Windows.Forms.Label();
+            this.txtCommDir = new System.Windows.Forms.TextBox();
             this.btnBaseSDFFile = new System.Windows.Forms.Button();
             this.btnBaseDATDir = new System.Windows.Forms.Button();
             this.btnBackupDir = new System.Windows.Forms.Button();
-            this.btnKPDir = new System.Windows.Forms.Button();
+            this.btnCommDir = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.chkAutoBackupBase = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // lblBaseSDFFile
@@ -95,21 +96,21 @@
             this.txtBackupDir.Size = new System.Drawing.Size(344, 20);
             this.txtBackupDir.TabIndex = 7;
             // 
-            // lblKPDir
+            // lblCommDir
             // 
-            this.lblKPDir.AutoSize = true;
-            this.lblKPDir.Location = new System.Drawing.Point(9, 126);
-            this.lblKPDir.Name = "lblKPDir";
-            this.lblKPDir.Size = new System.Drawing.Size(143, 13);
-            this.lblKPDir.TabIndex = 9;
-            this.lblKPDir.Text = "Директория библиотек КП";
+            this.lblCommDir.AutoSize = true;
+            this.lblCommDir.Location = new System.Drawing.Point(9, 126);
+            this.lblCommDir.Name = "lblCommDir";
+            this.lblCommDir.Size = new System.Drawing.Size(192, 13);
+            this.lblCommDir.TabIndex = 9;
+            this.lblCommDir.Text = "Директория SCADA-Коммуникатора";
             // 
-            // txtKPDir
+            // txtCommDir
             // 
-            this.txtKPDir.Location = new System.Drawing.Point(12, 142);
-            this.txtKPDir.Name = "txtKPDir";
-            this.txtKPDir.Size = new System.Drawing.Size(344, 20);
-            this.txtKPDir.TabIndex = 10;
+            this.txtCommDir.Location = new System.Drawing.Point(12, 142);
+            this.txtCommDir.Name = "txtCommDir";
+            this.txtCommDir.Size = new System.Drawing.Size(344, 20);
+            this.txtCommDir.TabIndex = 10;
             // 
             // btnBaseSDFFile
             // 
@@ -144,33 +145,33 @@
             this.btnBackupDir.UseVisualStyleBackColor = true;
             this.btnBackupDir.Click += new System.EventHandler(this.btnBackupDir_Click);
             // 
-            // btnKPDir
+            // btnCommDir
             // 
-            this.btnKPDir.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnKPDir.Image = ((System.Drawing.Image)(resources.GetObject("btnKPDir.Image")));
-            this.btnKPDir.Location = new System.Drawing.Point(362, 142);
-            this.btnKPDir.Name = "btnKPDir";
-            this.btnKPDir.Size = new System.Drawing.Size(20, 20);
-            this.btnKPDir.TabIndex = 11;
-            this.btnKPDir.UseVisualStyleBackColor = true;
-            this.btnKPDir.Click += new System.EventHandler(this.btnKPDir_Click);
+            this.btnCommDir.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnCommDir.Image = ((System.Drawing.Image)(resources.GetObject("btnCommDir.Image")));
+            this.btnCommDir.Location = new System.Drawing.Point(362, 142);
+            this.btnCommDir.Name = "btnCommDir";
+            this.btnCommDir.Size = new System.Drawing.Size(20, 20);
+            this.btnCommDir.TabIndex = 11;
+            this.btnCommDir.UseVisualStyleBackColor = true;
+            this.btnCommDir.Click += new System.EventHandler(this.btnCommDir_Click);
             // 
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(307, 168);
+            this.btnCancel.Location = new System.Drawing.Point(307, 191);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 13;
+            this.btnCancel.TabIndex = 14;
             this.btnCancel.Text = "Отмена";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(226, 168);
+            this.btnOK.Location = new System.Drawing.Point(226, 191);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 12;
+            this.btnOK.TabIndex = 13;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
@@ -182,21 +183,32 @@
             this.openFileDialog.Filter = "Базы конфигурации|*.sdf|Все файлы|*.*";
             this.openFileDialog.Title = "Выберите файл базы конфигурации SCADA-Администратора в формате SDF";
             // 
+            // chkAutoBackupBase
+            // 
+            this.chkAutoBackupBase.AutoSize = true;
+            this.chkAutoBackupBase.Location = new System.Drawing.Point(12, 168);
+            this.chkAutoBackupBase.Name = "chkAutoBackupBase";
+            this.chkAutoBackupBase.Size = new System.Drawing.Size(285, 17);
+            this.chkAutoBackupBase.TabIndex = 12;
+            this.chkAutoBackupBase.Text = "Автоматически резервировать базу конфигурации";
+            this.chkAutoBackupBase.UseVisualStyleBackColor = true;
+            // 
             // FrmSettings
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(394, 203);
+            this.ClientSize = new System.Drawing.Size(394, 226);
+            this.Controls.Add(this.chkAutoBackupBase);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnKPDir);
+            this.Controls.Add(this.btnCommDir);
             this.Controls.Add(this.btnBackupDir);
             this.Controls.Add(this.btnBaseDATDir);
             this.Controls.Add(this.btnBaseSDFFile);
-            this.Controls.Add(this.txtKPDir);
-            this.Controls.Add(this.lblKPDir);
+            this.Controls.Add(this.txtCommDir);
+            this.Controls.Add(this.lblCommDir);
             this.Controls.Add(this.txtBackupDir);
             this.Controls.Add(this.lblBackupDir);
             this.Controls.Add(this.txtBaseDATDir);
@@ -225,15 +237,16 @@
         private System.Windows.Forms.TextBox txtBaseDATDir;
         private System.Windows.Forms.Label lblBackupDir;
         private System.Windows.Forms.TextBox txtBackupDir;
-        private System.Windows.Forms.Label lblKPDir;
-        private System.Windows.Forms.TextBox txtKPDir;
+        private System.Windows.Forms.Label lblCommDir;
+        private System.Windows.Forms.TextBox txtCommDir;
         private System.Windows.Forms.Button btnBaseSDFFile;
         private System.Windows.Forms.Button btnBaseDATDir;
         private System.Windows.Forms.Button btnBackupDir;
-        private System.Windows.Forms.Button btnKPDir;
+        private System.Windows.Forms.Button btnCommDir;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.CheckBox chkAutoBackupBase;
     }
 }

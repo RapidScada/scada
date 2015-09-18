@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@
  * Summary  : The common phrases used in the system
  * 
  * Author   : Mikhail Shiryaev
- * Created  : 2014
- * Modified : 2014
+ * Created  : 2015
+ * Modified : 2015
  */
 
 #pragma warning disable 1591 // отключение warning CS1591: Missing XML comment for publicly visible type or member
@@ -43,9 +43,8 @@ namespace Scada
         public static string ErrorCaption { get; private set; }
         public static string WarningCaption { get; private set; }
         public static string ErrorWithColon { get; private set; }
+        public static string UnhandledException { get; private set; }
         public static string SaveSettingsConfirm { get; private set; }
-        public static string SaveModSettingsConfirm { get; private set; }
-        public static string SaveKpSettingsConfirm { get; private set; }
         public static string FileNotFound { get; private set; }
         public static string DirNotExists { get; private set; }
         public static string NamedFileNotFound { get; private set; }
@@ -57,10 +56,6 @@ namespace Scada
         public static string SaveAppSettingsError { get; private set; }
         public static string LoadCommSettingsError { get; private set; }
         public static string SaveCommSettingsError { get; private set; }
-        public static string LoadModSettingsError { get; private set; }
-        public static string SaveModSettingsError { get; private set; }
-        public static string LoadKpSettingsError { get; private set; }
-        public static string SaveKpSettingsError { get; private set; }
         public static string GridDataError { get; private set; }
         public static string IntegerRequired { get; private set; }
         public static string IntegerRangingRequired { get; private set; }
@@ -78,6 +73,7 @@ namespace Scada
         public static string IncorrectXmlAttrVal { get; private set; }
         public static string IncorrectXmlParamVal { get; private set; }
         public static string XmlNodeNotFound { get; private set; }
+
         public static string CmdTypeTable { get; private set; }
         public static string CmdValTable { get; private set; }
         public static string CnlTypeTable { get; private set; }
@@ -96,6 +92,7 @@ namespace Scada
         public static string RoleTable { get; private set; }
         public static string UnitTable { get; private set; }
         public static string UserTable { get; private set; }
+
         public static string ContinuePendingSvcState { get; private set; }
         public static string PausedSvcState { get; private set; }
         public static string PausePendingSvcState { get; private set; }
@@ -104,6 +101,10 @@ namespace Scada
         public static string StoppedSvcState { get; private set; }
         public static string StopPendingSvcState { get; private set; }
         public static string NotInstalledSvcState { get; private set; }
+        public static string DataSentSuccessfully { get; private set; }
+        public static string EventSentSuccessfully { get; private set; }
+        public static string EventCheckSentSuccessfully { get; private set; }
+        public static string CmdSentSuccessfully { get; private set; }
 
         private static void SetToDefault()
         {
@@ -112,9 +113,8 @@ namespace Scada
             ErrorCaption = "Ошибка";
             WarningCaption = "Предупреждение";
             ErrorWithColon = "Ошибка:";
+            UnhandledException = "Необработанное исключение";
             SaveSettingsConfirm = "Настройки были изменены. Сохранить изменения?";
-            SaveModSettingsConfirm = "Настройки модуля были изменены. Сохранить изменения?";
-            SaveKpSettingsConfirm = "Настройки КП были изменены. Сохранить изменения?";
             FileNotFound = "Не найден файл.";
             DirNotExists = "Директория не существует.";
             NamedFileNotFound = "Файл {0} не найден.";
@@ -126,10 +126,6 @@ namespace Scada
             SaveAppSettingsError = "Ошибка при сохранении настроек приложения";
             LoadCommSettingsError = "Ошибка при загрузке настроек соединения с сервером";
             SaveCommSettingsError = "Ошибка при сохранении настроек соединения с сервером";
-            LoadModSettingsError = "Ошибка при загрузке настроек модуля";
-            SaveModSettingsError = "Ошибка при сохранении настроек модуля";
-            LoadKpSettingsError = "Ошибка при загрузке настроек КП";
-            SaveKpSettingsError = "Ошибка при сохранении настроек КП";
             GridDataError = "Ошибка при работе с данными";
             IntegerRequired = "Требуется целое число.";
             IntegerRangingRequired = "Требуется целое число в диапазоне от {0} до {1}.";
@@ -147,6 +143,7 @@ namespace Scada
             IncorrectXmlAttrVal = "Некорректное значение XML-атрибута \"{0}\".";
             IncorrectXmlParamVal = "Некорректное значение параметра \"{0}\".";
             XmlNodeNotFound = "XML-узел \"{0}\" не найден внутри узла \"{1}\".";
+
             CmdTypeTable = "Типы команд";
             CmdValTable = "Значения команд";
             CnlTypeTable = "Типы каналов";
@@ -165,6 +162,7 @@ namespace Scada
             RoleTable = "Роли";
             UnitTable = "Размерности";
             UserTable = "Пользователи";
+
             ContinuePendingSvcState = "ожидание продолжения";
             PausedSvcState = "пауза";
             PausePendingSvcState = "ожидание паузы";
@@ -173,6 +171,10 @@ namespace Scada
             StoppedSvcState = "остановлена";
             StopPendingSvcState = "ожидание остановки";
             NotInstalledSvcState = "не установлена";
+            DataSentSuccessfully = "Данные отправлены успешно.";
+            EventSentSuccessfully = "Событие отправлено успешно.";
+            EventCheckSentSuccessfully = "Команда квитирования события отправлена успешно.";
+            CmdSentSuccessfully = "Команда отправлена успешно.";
         }
 
         public static void Init()
@@ -185,9 +187,8 @@ namespace Scada
                 ErrorCaption = dict.GetPhrase("ErrorCaption", ErrorCaption);
                 WarningCaption = dict.GetPhrase("WarningCaption", WarningCaption);
                 ErrorWithColon = dict.GetPhrase("ErrorWithColon", ErrorWithColon);
+                UnhandledException = dict.GetPhrase("UnhandledException", UnhandledException);
                 SaveSettingsConfirm = dict.GetPhrase("SaveSettingsConfirm", SaveSettingsConfirm);
-                SaveModSettingsConfirm = dict.GetPhrase("SaveModSettingsConfirm", SaveModSettingsConfirm);
-                SaveKpSettingsConfirm = dict.GetPhrase("SaveKpSettingsConfirm", SaveKpSettingsConfirm);
                 FileNotFound = dict.GetPhrase("FileNotFound", FileNotFound);
                 DirNotExists = dict.GetPhrase("DirNotExists", DirNotExists);
                 NamedFileNotFound = dict.GetPhrase("NamedFileNotFound", NamedFileNotFound);
@@ -199,10 +200,6 @@ namespace Scada
                 SaveAppSettingsError = dict.GetPhrase("SaveAppSettingsError", SaveAppSettingsError);
                 LoadCommSettingsError = dict.GetPhrase("LoadCommSettingsError", LoadCommSettingsError);
                 SaveCommSettingsError = dict.GetPhrase("SaveCommSettingsError", SaveCommSettingsError);
-                LoadModSettingsError = dict.GetPhrase("LoadModSettingsError", LoadModSettingsError);
-                SaveModSettingsError = dict.GetPhrase("SaveModSettingsError", SaveModSettingsError);
-                LoadKpSettingsError = dict.GetPhrase("LoadKpSettingsError", LoadKpSettingsError);
-                SaveKpSettingsError = dict.GetPhrase("SaveKpSettingsError", SaveKpSettingsError);
                 GridDataError = dict.GetPhrase("GridDataError", GridDataError);
                 IntegerRequired = dict.GetPhrase("IntegerRequired", IntegerRequired);
                 IntegerRangingRequired = dict.GetPhrase("IntegerRangingRequired", IntegerRangingRequired);
@@ -219,6 +216,7 @@ namespace Scada
                 IncorrectXmlAttrVal = dict.GetPhrase("IncorrectXmlAttrVal", IncorrectXmlAttrVal);
                 IncorrectXmlParamVal = dict.GetPhrase("IncorrectXmlParamVal", IncorrectXmlParamVal);
                 XmlNodeNotFound = dict.GetPhrase("XmlNodeNotFound", XmlNodeNotFound);
+
                 CmdTypeTable = dict.GetPhrase("CmdTypeTable", CmdTypeTable);
                 CmdValTable = dict.GetPhrase("CmdValTable", CmdValTable);
                 CnlTypeTable = dict.GetPhrase("CnlTypeTable", CnlTypeTable);
@@ -237,6 +235,7 @@ namespace Scada
                 RoleTable = dict.GetPhrase("RoleTable", RoleTable);
                 UnitTable = dict.GetPhrase("UnitTable", UnitTable);
                 UserTable = dict.GetPhrase("UserTable", UserTable);
+
                 ContinuePendingSvcState = dict.GetPhrase("ContinuePendingSvcState", ContinuePendingSvcState);
                 PausedSvcState = dict.GetPhrase("PausedSvcState", PausedSvcState);
                 PausePendingSvcState = dict.GetPhrase("PausePendingSvcState", PausePendingSvcState);
@@ -245,6 +244,10 @@ namespace Scada
                 StoppedSvcState = dict.GetPhrase("StoppedSvcState", StoppedSvcState);
                 StopPendingSvcState = dict.GetPhrase("StopPendingSvcState", StopPendingSvcState);
                 NotInstalledSvcState = dict.GetPhrase("NotInstalledSvcState", NotInstalledSvcState);
+                DataSentSuccessfully = dict.GetPhrase("DataSentSuccessfully", DataSentSuccessfully);
+                EventSentSuccessfully = dict.GetPhrase("EventSentSuccessfully", EventSentSuccessfully);
+                EventCheckSentSuccessfully = dict.GetPhrase("EventCheckSentSuccessfully", EventCheckSentSuccessfully);
+                CmdSentSuccessfully = dict.GetPhrase("CmdSentSuccessfully", CmdSentSuccessfully);
             }
         }
     }

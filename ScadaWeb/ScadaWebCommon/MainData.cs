@@ -1,5 +1,5 @@
-/*
- * Copyright 2014 Mikhail Shiryaev
+п»ї/*
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,34 +20,34 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2005
- * Modified : 2014
+ * Modified : 2015
  */
 
+using Scada.Client;
+using Scada.Data;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Threading;
-using Scada.Client;
-using Scada.Data;
 using Utils;
 
 namespace Scada.Web
 {
 	/// <summary>
     /// Retrieve data from the configuration database, snapshot tables and events
-    /// <para>Получение данных из базы конфигурации, таблиц срезов и событий</para>
+    /// <para>РџРѕР»СѓС‡РµРЅРёРµ РґР°РЅРЅС‹С… РёР· Р±Р°Р·С‹ РєРѕРЅС„РёРіСѓСЂР°С†РёРё, С‚Р°Р±Р»РёС† СЃСЂРµР·РѕРІ Рё СЃРѕР±С‹С‚РёР№</para>
 	/// </summary>
 	public class MainData
 	{
         /// <summary>
-        /// Событие в удобной для отображения форме
+        /// РЎРѕР±С‹С‚РёРµ РІ СѓРґРѕР±РЅРѕР№ РґР»СЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ С„РѕСЂРјРµ
         /// </summary>
         public class EventView
         {
             /// <summary>
-            /// Конструктор
+            /// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
             /// </summary>
             public EventView()
             {
@@ -65,63 +65,63 @@ namespace Scada.Web
             }
 
             /// <summary>
-            /// Получить или установить порядковый номер события в файле
+            /// РџРѕР»СѓС‡РёС‚СЊ РёР»Рё СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РїРѕСЂСЏРґРєРѕРІС‹Р№ РЅРѕРјРµСЂ СЃРѕР±С‹С‚РёСЏ РІ С„Р°Р№Р»Рµ
             /// </summary>
             public string Num { get; set; }
             /// <summary>
-            /// Получить или установить дату события
+            /// РџРѕР»СѓС‡РёС‚СЊ РёР»Рё СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РґР°С‚Сѓ СЃРѕР±С‹С‚РёСЏ
             /// </summary>
             public string Date { get; set; }
             /// <summary>
-            /// Получить или установить время события
+            /// РџРѕР»СѓС‡РёС‚СЊ РёР»Рё СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РІСЂРµРјСЏ СЃРѕР±С‹С‚РёСЏ
             /// </summary>
             public string Time { get; set; }
             /// <summary>
-            /// Получить или установить объект
+            /// РџРѕР»СѓС‡РёС‚СЊ РёР»Рё СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РѕР±СЉРµРєС‚
             /// </summary>
             public string Obj { get; set; }
             /// <summary>
-            /// Получить или установить объект
+            /// РџРѕР»СѓС‡РёС‚СЊ РёР»Рё СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РѕР±СЉРµРєС‚
             /// </summary>
             public string KP { get; set; }
             /// <summary>
-            /// Получить или установить канал
+            /// РџРѕР»СѓС‡РёС‚СЊ РёР»Рё СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РєР°РЅР°Р»
             /// </summary>
             public string Cnl { get; set; }
             /// <summary>
-            /// Получить или установить текст события
+            /// РџРѕР»СѓС‡РёС‚СЊ РёР»Рё СѓСЃС‚Р°РЅРѕРІРёС‚СЊ С‚РµРєСЃС‚ СЃРѕР±С‹С‚РёСЏ
             /// </summary>
             public string Text { get; set; }
             /// <summary>
-            /// Получить или установить признак квитирования
+            /// РџРѕР»СѓС‡РёС‚СЊ РёР»Рё СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РїСЂРёР·РЅР°Рє РєРІРёС‚РёСЂРѕРІР°РЅРёСЏ
             /// </summary>
             public bool Check { get; set; }
             /// <summary>
-            /// Получить или установить имя пользователя, квитировавшего событие
+            /// РџРѕР»СѓС‡РёС‚СЊ РёР»Рё СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РёРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ, РєРІРёС‚РёСЂРѕРІР°РІС€РµРіРѕ СЃРѕР±С‹С‚РёРµ
             /// </summary>
             public string User { get; set; }
             /// <summary>
-            /// Получить или установить цвет
+            /// РџРѕР»СѓС‡РёС‚СЊ РёР»Рё СѓСЃС‚Р°РЅРѕРІРёС‚СЊ С†РІРµС‚
             /// </summary>
             public string Color { get; set; }
             /// <summary>
-            /// Получить или установить признак звука события
+            /// РџРѕР»СѓС‡РёС‚СЊ РёР»Рё СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РїСЂРёР·РЅР°Рє Р·РІСѓРєР° СЃРѕР±С‹С‚РёСЏ
             /// </summary>
             public bool Sound { get; set; }
         }
 
         /// <summary>
-        /// Права на доступ к объектам интерфейса
+        /// РџСЂР°РІР° РЅР° РґРѕСЃС‚СѓРї Рє РѕР±СЉРµРєС‚Р°Рј РёРЅС‚РµСЂС„РµР№СЃР°
         /// </summary>
         public struct Right
         {
             /// <summary>
-            /// Отсутствие прав
+            /// РћС‚СЃСѓС‚СЃС‚РІРёРµ РїСЂР°РІ
             /// </summary>
             public static readonly Right NoRights = new Right(false, false);
 
             /// <summary>
-            /// Конструктор
+            /// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
             /// </summary>
             public Right(bool viewRight, bool ctrlRight)
                 : this()
@@ -131,94 +131,94 @@ namespace Scada.Web
             }
 
             /// <summary>
-            /// Получить или установить право на просмотр
+            /// РџРѕР»СѓС‡РёС‚СЊ РёР»Рё СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РїСЂР°РІРѕ РЅР° РїСЂРѕСЃРјРѕС‚СЂ
             /// </summary>
             public bool ViewRight { get; set; }
             /// <summary>
-            /// Получить или установить право на управление
+            /// РџРѕР»СѓС‡РёС‚СЊ РёР»Рё СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РїСЂР°РІРѕ РЅР° СѓРїСЂР°РІР»РµРЅРёРµ
             /// </summary>
             public bool CtrlRight { get; set; }
         }
 
 
 		/// <summary>
-        /// Время актуальности данных базы конфигурации, с
+        /// Р’СЂРµРјСЏ Р°РєС‚СѓР°Р»СЊРЅРѕСЃС‚Рё РґР°РЅРЅС‹С… Р±Р°Р·С‹ РєРѕРЅС„РёРіСѓСЂР°С†РёРё, СЃ
 		/// </summary>
 		public const int BaseValidTime = 1;
 		/// <summary>
-		/// Время актуальности данных текущего среза, с
+		/// Р’СЂРµРјСЏ Р°РєС‚СѓР°Р»СЊРЅРѕСЃС‚Рё РґР°РЅРЅС‹С… С‚РµРєСѓС‰РµРіРѕ СЃСЂРµР·Р°, СЃ
 		/// </summary>
 		public const int CurSrezValidTime = 1;
 		/// <summary>
-		/// Время отображения данных текущего среза, мин
+		/// Р’СЂРµРјСЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РґР°РЅРЅС‹С… С‚РµРєСѓС‰РµРіРѕ СЃСЂРµР·Р°, РјРёРЅ
 		/// </summary>
 		public const int CurSrezShowTime = 15;
 		/// <summary>
-		/// Время актуальности данных часовых срезов, с
+		/// Р’СЂРµРјСЏ Р°РєС‚СѓР°Р»СЊРЅРѕСЃС‚Рё РґР°РЅРЅС‹С… С‡Р°СЃРѕРІС‹С… СЃСЂРµР·РѕРІ, СЃ
 		/// </summary>
 		public const int HourSrezValidTime = 5;
 		/// <summary>
-		/// Время актуальности данных минутных срезов, с
+		/// Р’СЂРµРјСЏ Р°РєС‚СѓР°Р»СЊРЅРѕСЃС‚Рё РґР°РЅРЅС‹С… РјРёРЅСѓС‚РЅС‹С… СЃСЂРµР·РѕРІ, СЃ
 		/// </summary>
 		public const int MinSrezValidTime = 5;
         /// <summary>
-        /// Время актуальности данных событий, с
+        /// Р’СЂРµРјСЏ Р°РєС‚СѓР°Р»СЊРЅРѕСЃС‚Рё РґР°РЅРЅС‹С… СЃРѕР±С‹С‚РёР№, СЃ
         /// </summary>
         public const int EventValidTime = 1;
 
         /// <summary>
-        /// Размер списка таблиц часовых срезов для кэширования
+        /// Р Р°Р·РјРµСЂ СЃРїРёСЃРєР° С‚Р°Р±Р»РёС† С‡Р°СЃРѕРІС‹С… СЃСЂРµР·РѕРІ РґР»СЏ РєСЌС€РёСЂРѕРІР°РЅРёСЏ
         /// </summary>
         public const int HourCacheSize = 5;
         /// <summary>
-        /// Размер списка таблиц событий для кэширования
+        /// Р Р°Р·РјРµСЂ СЃРїРёСЃРєР° С‚Р°Р±Р»РёС† СЃРѕР±С‹С‚РёР№ РґР»СЏ РєСЌС€РёСЂРѕРІР°РЅРёСЏ
         /// </summary>
         public const int EventCacheSize = 5;
 
 
-        ServerComm serverComm;           // объект для обмена данными со SCADA-Сервером
-        private string settFileName;     // полное имя файла настроек соединения со SCADA-Сервером
-        private DateTime settModTime;    // время последнего изменения файла настроек
+        ServerComm serverComm;            // РѕР±СЉРµРєС‚ РґР»СЏ РѕР±РјРµРЅР° РґР°РЅРЅС‹РјРё СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј
+        private string settFileName;      // РїРѕР»РЅРѕРµ РёРјСЏ С„Р°Р№Р»Р° РЅР°СЃС‚СЂРѕРµРє СЃРѕРµРґРёРЅРµРЅРёСЏ СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј
+        private DateTime settModTime;     // РІСЂРµРјСЏ РїРѕСЃР»РµРґРЅРµРіРѕ РёР·РјРµРЅРµРЅРёСЏ С„Р°Р№Р»Р° РЅР°СЃС‚СЂРѕРµРє
 
-        private SrezTableLight tblCur;             // таблица текущего среза
-        private SrezTableLight[] hourTableCache;   // массив таблиц часовых срезов для кэширования
-        private EventTableLight[] eventTableCache; // массив таблиц событий для кэширования
-        private int hourTableIndex;                // кольцевой индекс для добавления таблиц часовых срезов в кэш
-        private int eventTableIndex;               // кольцевой индекс для добавления таблиц событий в кэш
-        private Trend trend;                       // последний полученный минутный тренд
-        private NumberFormatInfo nfi;              // формат вещественных чисел
-        private string defDecSep;                  // разделитель дробной части по умолчанию
-        private string defGrSep;                   // разделитель групп цифр по умолчанию
+        private SrezTableLight tblCur;             // С‚Р°Р±Р»РёС†Р° С‚РµРєСѓС‰РµРіРѕ СЃСЂРµР·Р°
+        private SrezTableLight[] hourTableCache;   // РјР°СЃСЃРёРІ С‚Р°Р±Р»РёС† С‡Р°СЃРѕРІС‹С… СЃСЂРµР·РѕРІ РґР»СЏ РєСЌС€РёСЂРѕРІР°РЅРёСЏ
+        private EventTableLight[] eventTableCache; // РјР°СЃСЃРёРІ С‚Р°Р±Р»РёС† СЃРѕР±С‹С‚РёР№ РґР»СЏ РєСЌС€РёСЂРѕРІР°РЅРёСЏ
+        private int hourTableIndex;                // РєРѕР»СЊС†РµРІРѕР№ РёРЅРґРµРєСЃ РґР»СЏ РґРѕР±Р°РІР»РµРЅРёСЏ С‚Р°Р±Р»РёС† С‡Р°СЃРѕРІС‹С… СЃСЂРµР·РѕРІ РІ РєСЌС€
+        private int eventTableIndex;               // РєРѕР»СЊС†РµРІРѕР№ РёРЅРґРµРєСЃ РґР»СЏ РґРѕР±Р°РІР»РµРЅРёСЏ С‚Р°Р±Р»РёС† СЃРѕР±С‹С‚РёР№ РІ РєСЌС€
+        private Trend trend;                       // РїРѕСЃР»РµРґРЅРёР№ РїРѕР»СѓС‡РµРЅРЅС‹Р№ РјРёРЅСѓС‚РЅС‹Р№ С‚СЂРµРЅРґ
+        private NumberFormatInfo nfi;              // С„РѕСЂРјР°С‚ РІРµС‰РµСЃС‚РІРµРЅРЅС‹С… С‡РёСЃРµР»
+        private string defDecSep;                  // СЂР°Р·РґРµР»РёС‚РµР»СЊ РґСЂРѕР±РЅРѕР№ С‡Р°СЃС‚Рё РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
+        private string defGrSep;                   // СЂР°Р·РґРµР»РёС‚РµР»СЊ РіСЂСѓРїРї С†РёС„СЂ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
 
-        private DateTime baseModTime;    // время последнего изменения успешно считанной базы конфигурации
-        private DateTime baseFillTime;   // время последего успешного заполнения таблиц базы конфигурации
-		private DataTable tblInCnl;      // таблица входных каналов
-        private DataTable tblCtrlCnl;    // таблица каналов управления
-        private DataTable tblObj;        // таблица объектов
-        private DataTable tblKP;         // таблица КП
-        private DataTable tblRole;       // таблица ролей
-        private DataTable tblUser;       // таблица пользователей
-        private DataTable tblInterface;  // таблица объектов интерфейса
-        private DataTable tblRight;      // таблица прав на объекты интерфейса
-        private DataTable tblEvType;     // таблица типов событий
-        private DataTable tblParam;      // таблица параметров
-		private DataTable tblUnit;       // таблица размерностей
-        private DataTable tblCmdVal;     // таблица значений команд
-        private DataTable tblFormat;     // таблица форматов чисел
-        private DataTable[] baseTblArr;  // массив ссылок на таблицы базы конфигурации
+        private DateTime baseModTime;     // РІСЂРµРјСЏ РїРѕСЃР»РµРґРЅРµРіРѕ РёР·РјРµРЅРµРЅРёСЏ СѓСЃРїРµС€РЅРѕ СЃС‡РёС‚Р°РЅРЅРѕР№ Р±Р°Р·С‹ РєРѕРЅС„РёРіСѓСЂР°С†РёРё
+        private DateTime baseFillTime;    // РІСЂРµРјСЏ РїРѕСЃР»РµРґРµРіРѕ СѓСЃРїРµС€РЅРѕРіРѕ Р·Р°РїРѕР»РЅРµРЅРёСЏ С‚Р°Р±Р»РёС† Р±Р°Р·С‹ РєРѕРЅС„РёРіСѓСЂР°С†РёРё
+		private DataTable tblInCnl;       // С‚Р°Р±Р»РёС†Р° РІС…РѕРґРЅС‹С… РєР°РЅР°Р»РѕРІ
+        private DataTable tblCtrlCnl;     // С‚Р°Р±Р»РёС†Р° РєР°РЅР°Р»РѕРІ СѓРїСЂР°РІР»РµРЅРёСЏ
+        private DataTable tblObj;         // С‚Р°Р±Р»РёС†Р° РѕР±СЉРµРєС‚РѕРІ
+        private DataTable tblKP;          // С‚Р°Р±Р»РёС†Р° РљРџ
+        private DataTable tblRole;        // С‚Р°Р±Р»РёС†Р° СЂРѕР»РµР№
+        private DataTable tblUser;        // С‚Р°Р±Р»РёС†Р° РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№
+        private DataTable tblInterface;   // С‚Р°Р±Р»РёС†Р° РѕР±СЉРµРєС‚РѕРІ РёРЅС‚РµСЂС„РµР№СЃР°
+        private DataTable tblRight;       // С‚Р°Р±Р»РёС†Р° РїСЂР°РІ РЅР° РѕР±СЉРµРєС‚С‹ РёРЅС‚РµСЂС„РµР№СЃР°
+        private DataTable tblEvType;      // С‚Р°Р±Р»РёС†Р° С‚РёРїРѕРІ СЃРѕР±С‹С‚РёР№
+        private DataTable tblParam;       // С‚Р°Р±Р»РёС†Р° РїР°СЂР°РјРµС‚СЂРѕРІ
+		private DataTable tblUnit;        // С‚Р°Р±Р»РёС†Р° СЂР°Р·РјРµСЂРЅРѕСЃС‚РµР№
+        private DataTable tblCmdVal;      // С‚Р°Р±Р»РёС†Р° Р·РЅР°С‡РµРЅРёР№ РєРѕРјР°РЅРґ
+        private DataTable tblFormat;      // С‚Р°Р±Р»РёС†Р° С„РѕСЂРјР°С‚РѕРІ С‡РёСЃРµР»
+        private DataTable[] baseTblArr;   // РјР°СЃСЃРёРІ СЃСЃС‹Р»РѕРє РЅР° С‚Р°Р±Р»РёС†С‹ Р±Р°Р·С‹ РєРѕРЅС„РёРіСѓСЂР°С†РёРё
 
-		private CnlProps[] cnlPropsArr;  // массив свойств входных каналов
-        private int maxCnlCnt;           // максимальное количество входных каналов
+		private InCnlProps[] cnlPropsArr; // РјР°СЃСЃРёРІ СЃРІРѕР№СЃС‚РІ РІС…РѕРґРЅС‹С… РєР°РЅР°Р»РѕРІ
+        private int maxCnlCnt;            // РјР°РєСЃРёРјР°Р»СЊРЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ РІС…РѕРґРЅС‹С… РєР°РЅР°Р»РѕРІ
 
-        private Object refrLock;         // объект для синхронизации обновления данных
-        private Object baseLock;         // объект для синхронизации обращения к таблицам базы конфигурации
-        private Object cnlPropLock;      // объект для синхронизации получения свойств входного канала
-        private Object cnlDataLock;      // объект для синхронизации получения данных входного канала
-        private Object eventLock;        // объект для синхронизации получения событий
+        private Object refrLock;          // РѕР±СЉРµРєС‚ РґР»СЏ СЃРёРЅС…СЂРѕРЅРёР·Р°С†РёРё РѕР±РЅРѕРІР»РµРЅРёСЏ РґР°РЅРЅС‹С…
+        private Object baseLock;          // РѕР±СЉРµРєС‚ РґР»СЏ СЃРёРЅС…СЂРѕРЅРёР·Р°С†РёРё РѕР±СЂР°С‰РµРЅРёСЏ Рє С‚Р°Р±Р»РёС†Р°Рј Р±Р°Р·С‹ РєРѕРЅС„РёРіСѓСЂР°С†РёРё
+        private Object cnlPropLock;       // РѕР±СЉРµРєС‚ РґР»СЏ СЃРёРЅС…СЂРѕРЅРёР·Р°С†РёРё РїРѕР»СѓС‡РµРЅРёСЏ СЃРІРѕР№СЃС‚РІ РІС…РѕРґРЅРѕРіРѕ РєР°РЅР°Р»Р°
+        private Object cnlDataLock;       // РѕР±СЉРµРєС‚ РґР»СЏ СЃРёРЅС…СЂРѕРЅРёР·Р°С†РёРё РїРѕР»СѓС‡РµРЅРёСЏ РґР°РЅРЅС‹С… РІС…РѕРґРЅРѕРіРѕ РєР°РЅР°Р»Р°
+        private Object eventLock;         // РѕР±СЉРµРєС‚ РґР»СЏ СЃРёРЅС…СЂРѕРЅРёР·Р°С†РёРё РїРѕР»СѓС‡РµРЅРёСЏ СЃРѕР±С‹С‚РёР№
         
 
         /// <summary>
-        /// Конструктор
+        /// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
         /// </summary>
 		public MainData()
 		{
@@ -283,7 +283,7 @@ namespace Scada.Web
 
 
         /// <summary>
-        /// Получить объект для обмена данными со SCADA-Сервером
+        /// РџРѕР»СѓС‡РёС‚СЊ РѕР±СЉРµРєС‚ РґР»СЏ РѕР±РјРµРЅР° РґР°РЅРЅС‹РјРё СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј
         /// </summary>
         public ServerComm ServerComm
         {
@@ -295,7 +295,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Имя файла настроек соединения со SCADA-Сервером
+        /// РРјСЏ С„Р°Р№Р»Р° РЅР°СЃС‚СЂРѕРµРє СЃРѕРµРґРёРЅРµРЅРёСЏ СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј
         /// </summary>
         public string SettingsFileName
         {
@@ -310,9 +310,9 @@ namespace Scada.Web
         }
 
 		/// <summary>
-		/// Массив свойств входных каналов
+		/// РњР°СЃСЃРёРІ СЃРІРѕР№СЃС‚РІ РІС…РѕРґРЅС‹С… РєР°РЅР°Р»РѕРІ
 		/// </summary>
-		public CnlProps[] CnlPropsArr
+        public InCnlProps[] CnlPropsArr
 		{
 			get
 			{
@@ -322,7 +322,7 @@ namespace Scada.Web
 
 
         /// <summary>
-		/// Дата и время последней записи в файл, при отсутствии файла - минимальная дата
+		/// Р”Р°С‚Р° Рё РІСЂРµРјСЏ РїРѕСЃР»РµРґРЅРµР№ Р·Р°РїРёСЃРё РІ С„Р°Р№Р», РїСЂРё РѕС‚СЃСѓС‚СЃС‚РІРёРё С„Р°Р№Р»Р° - РјРёРЅРёРјР°Р»СЊРЅР°СЏ РґР°С‚Р°
 		/// </summary>
 		private DateTime GetLastWriteTime(string path)
 		{
@@ -340,17 +340,17 @@ namespace Scada.Web
 		}
 
 		/// <summary>
-		/// Заполнить свойства входных каналов
+		/// Р—Р°РїРѕР»РЅРёС‚СЊ СЃРІРѕР№СЃС‚РІР° РІС…РѕРґРЅС‹С… РєР°РЅР°Р»РѕРІ
 		/// </summary>
 		private void FillCnlProps()
 		{
             Monitor.Enter(baseLock);
-            AppData.Log.WriteAction(Localization.UseRussian ? "Заполнение свойств входных каналов" : 
+            AppData.Log.WriteAction(Localization.UseRussian ? "Р—Р°РїРѕР»РЅРµРЅРёРµ СЃРІРѕР№СЃС‚РІ РІС…РѕРґРЅС‹С… РєР°РЅР°Р»РѕРІ" : 
                 "Fill input channels properties", Log.ActTypes.Action);
 
             try
             {
-                int inCnlCnt = tblInCnl.Rows.Count; // количество входных каналов
+                int inCnlCnt = tblInCnl.Rows.Count; // РєРѕР»РёС‡РµСЃС‚РІРѕ РІС…РѕРґРЅС‹С… РєР°РЅР°Р»РѕРІ
 
                 if (inCnlCnt == 0)
                 {
@@ -360,32 +360,32 @@ namespace Scada.Web
                 {
                     if (0 < maxCnlCnt && maxCnlCnt < inCnlCnt)
                         inCnlCnt = maxCnlCnt;
-                    CnlProps[] newCnlPropsArr = new CnlProps[inCnlCnt];
+                    InCnlProps[] newCnlPropsArr = new InCnlProps[inCnlCnt];
 
                     for (int i = 0; i < inCnlCnt; i++)
                     {
                         DataRowView rowView = tblInCnl.DefaultView[i];
                         int cnlNum = (int)rowView["CnlNum"];
-                        CnlProps cnlProps = GetCnlProps(cnlNum);
-                        if (cnlProps == null) 
-                            cnlProps = new CnlProps(cnlNum);
+                        InCnlProps cnlProps = GetCnlProps(cnlNum);
+                        if (cnlProps == null)
+                            cnlProps = new InCnlProps(cnlNum, "", 0);
 
-                        // определение свойств, не использующих внешних ключей
+                        // РѕРїСЂРµРґРµР»РµРЅРёРµ СЃРІРѕР№СЃС‚РІ, РЅРµ РёСЃРїРѕР»СЊР·СѓСЋС‰РёС… РІРЅРµС€РЅРёС… РєР»СЋС‡РµР№
                         cnlProps.CnlName = (string)rowView["Name"];
                         cnlProps.CtrlCnlNum = (int)rowView["CtrlCnlNum"];
                         cnlProps.EvSound = (bool)rowView["EvSound"];
 
-                        // определение номера и наименования объекта
+                        // РѕРїСЂРµРґРµР»РµРЅРёРµ РЅРѕРјРµСЂР° Рё РЅР°РёРјРµРЅРѕРІР°РЅРёСЏ РѕР±СЉРµРєС‚Р°
                         cnlProps.ObjNum = (int)rowView["ObjNum"];
                         tblObj.DefaultView.RowFilter = "ObjNum = " + cnlProps.ObjNum;
                         cnlProps.ObjName = tblObj.DefaultView.Count > 0 ? (string)tblObj.DefaultView[0]["Name"] : "";
 
-                        // определение номера и наименования КП
+                        // РѕРїСЂРµРґРµР»РµРЅРёРµ РЅРѕРјРµСЂР° Рё РЅР°РёРјРµРЅРѕРІР°РЅРёСЏ РљРџ
                         cnlProps.KPNum = (int)rowView["KPNum"];
                         tblKP.DefaultView.RowFilter = "KPNum = " + cnlProps.KPNum;
                         cnlProps.KPName = tblKP.DefaultView.Count > 0 ? (string)tblKP.DefaultView[0]["Name"] : "";
 
-                        // определение наименования параметра и имени файла значка
+                        // РѕРїСЂРµРґРµР»РµРЅРёРµ РЅР°РёРјРµРЅРѕРІР°РЅРёСЏ РїР°СЂР°РјРµС‚СЂР° Рё РёРјРµРЅРё С„Р°Р№Р»Р° Р·РЅР°С‡РєР°
                         tblParam.DefaultView.RowFilter = "ParamID = " + rowView["ParamID"];
                         if (tblParam.DefaultView.Count > 0)
                         {
@@ -400,7 +400,7 @@ namespace Scada.Web
                             cnlProps.IconFileName = "";
                         }
 
-                        // определение формата вывода
+                        // РѕРїСЂРµРґРµР»РµРЅРёРµ С„РѕСЂРјР°С‚Р° РІС‹РІРѕРґР°
                         tblFormat.DefaultView.RowFilter = "FormatID = " + rowView["FormatID"];
                         if (tblFormat.DefaultView.Count > 0)
                         {
@@ -409,7 +409,7 @@ namespace Scada.Web
                             cnlProps.DecDigits = (int)formatRowView["DecDigits"];
                         }
 
-                        // определение размерностей
+                        // РѕРїСЂРµРґРµР»РµРЅРёРµ СЂР°Р·РјРµСЂРЅРѕСЃС‚РµР№
                         tblUnit.DefaultView.RowFilter = "UnitID = " + rowView["UnitID"];
                         if (tblUnit.DefaultView.Count > 0)
                         {
@@ -433,7 +433,7 @@ namespace Scada.Web
             }
             catch (Exception ex)
             {
-                AppData.Log.WriteAction((Localization.UseRussian ? "Ошибка при заполнении свойств входных каналов: " :
+                AppData.Log.WriteAction((Localization.UseRussian ? "РћС€РёР±РєР° РїСЂРё Р·Р°РїРѕР»РЅРµРЅРёРё СЃРІРѕР№СЃС‚РІ РІС…РѕРґРЅС‹С… РєР°РЅР°Р»РѕРІ: " :
                     "Error filling input channels properties: ") + ex.Message, Log.ActTypes.Exception);
             }
             finally
@@ -443,8 +443,8 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Обновить (пересоздать) объект для обмена данными со SCADA-Сервером
-        /// при изменении файла настроек соединения со SCADA-Сервером
+        /// РћР±РЅРѕРІРёС‚СЊ (РїРµСЂРµСЃРѕР·РґР°С‚СЊ) РѕР±СЉРµРєС‚ РґР»СЏ РѕР±РјРµРЅР° РґР°РЅРЅС‹РјРё СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј
+        /// РїСЂРё РёР·РјРµРЅРµРЅРёРё С„Р°Р№Р»Р° РЅР°СЃС‚СЂРѕРµРє СЃРѕРµРґРёРЅРµРЅРёСЏ СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј
         /// </summary>
         private void RefrServerComm()
         {
@@ -474,14 +474,14 @@ namespace Scada.Web
                             baseModTime = DateTime.MinValue;
                             baseFillTime = DateTime.MinValue;
                         }
-                        serverComm = new ServerComm(commSettings);
+                        serverComm = new ServerComm(commSettings, AppData.Log);
                     }
                 }
             }
         }
 
         /// <summary>
-        /// Преобразовать событие в удобную для отображения форму
+        /// РџСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ СЃРѕР±С‹С‚РёРµ РІ СѓРґРѕР±РЅСѓСЋ РґР»СЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ С„РѕСЂРјСѓ
         /// </summary>
         private EventView ConvEvent(EventTableLight.Event ev)
         {
@@ -492,10 +492,10 @@ namespace Scada.Web
             eventView.Time = ev.DateTime.ToString("T", Localization.Culture);
             eventView.Text = ev.Descr;
 
-            // получение свойств канала события
-            CnlProps cnlProps = GetCnlProps(ev.CnlNum);
+            // РїРѕР»СѓС‡РµРЅРёРµ СЃРІРѕР№СЃС‚РІ РєР°РЅР°Р»Р° СЃРѕР±С‹С‚РёСЏ
+            InCnlProps cnlProps = GetCnlProps(ev.CnlNum);
 
-            // определение наименования объекта
+            // РѕРїСЂРµРґРµР»РµРЅРёРµ РЅР°РёРјРµРЅРѕРІР°РЅРёСЏ РѕР±СЉРµРєС‚Р°
             if (cnlProps == null || cnlProps.ObjNum != ev.ObjNum)
             {
                 tblObj.DefaultView.RowFilter = "ObjNum = " + ev.ObjNum;
@@ -507,7 +507,7 @@ namespace Scada.Web
                 eventView.Obj = cnlProps.ObjName;
             }
 
-            // определение наименования КП
+            // РѕРїСЂРµРґРµР»РµРЅРёРµ РЅР°РёРјРµРЅРѕРІР°РЅРёСЏ РљРџ
             if (cnlProps == null || cnlProps.KPNum != ev.KPNum)
             {
                 tblKP.DefaultView.RowFilter = "KPNum = " + ev.KPNum;
@@ -521,16 +521,17 @@ namespace Scada.Web
 
             if (cnlProps != null)
             {
-                // определение наименования канала и признака звука
+                // РѕРїСЂРµРґРµР»РµРЅРёРµ РЅР°РёРјРµРЅРѕРІР°РЅРёСЏ РєР°РЅР°Р»Р° Рё РїСЂРёР·РЅР°РєР° Р·РІСѓРєР°
                 eventView.Cnl = cnlProps.CnlName;
                 eventView.Sound = cnlProps.EvSound;
 
-                // проверка нового статуса канала
+                // РїСЂРѕРІРµСЂРєР° РЅРѕРІРѕРіРѕ СЃС‚Р°С‚СѓСЃР° РєР°РЅР°Р»Р°
                 int newCnlStat = ev.NewCnlStat;
-                bool newValIsUndef = newCnlStat <= BaseValues.ParamStat.Undefined ||
-                    newCnlStat == BaseValues.ParamStat.FormulaError || newCnlStat == BaseValues.ParamStat.Unreliable;
+                bool newValIsUndef = newCnlStat <= BaseValues.CnlStatuses.Undefined ||
+                    newCnlStat == BaseValues.CnlStatuses.FormulaError || 
+                    newCnlStat == BaseValues.CnlStatuses.Unreliable;
 
-                // определение цвета
+                // РѕРїСЂРµРґРµР»РµРЅРёРµ С†РІРµС‚Р°
                 if (!cnlProps.ShowNumber && cnlProps.UnitArr != null && cnlProps.UnitArr.Length == 2)
                 {
                     if (!newValIsUndef)
@@ -543,10 +544,10 @@ namespace Scada.Web
                         eventView.Color = color;
                 }
 
-                // определение текста события, если не задано его описание
+                // РѕРїСЂРµРґРµР»РµРЅРёРµ С‚РµРєСЃС‚Р° СЃРѕР±С‹С‚РёСЏ, РµСЃР»Рё РЅРµ Р·Р°РґР°РЅРѕ РµРіРѕ РѕРїРёСЃР°РЅРёРµ
                 if (eventView.Text == "")
                 {
-                    // получение типа события
+                    // РїРѕР»СѓС‡РµРЅРёРµ С‚РёРїР° СЃРѕР±С‹С‚РёСЏ
                     tblEvType.DefaultView.RowFilter = "CnlStatus = " + newCnlStat;
                     string evTypeName = tblEvType.DefaultView.Count > 0 ? 
                         (string)tblEvType.DefaultView[0]["Name"] : "";
@@ -557,15 +558,15 @@ namespace Scada.Web
                     }
                     else if (cnlProps.ShowNumber)
                     {
-                        // добавление типа события
+                        // РґРѕР±Р°РІР»РµРЅРёРµ С‚РёРїР° СЃРѕР±С‹С‚РёСЏ
                         if (evTypeName != "")
                             eventView.Text = evTypeName + ": ";
-                        // добавление значения канала
+                        // РґРѕР±Р°РІР»РµРЅРёРµ Р·РЅР°С‡РµРЅРёСЏ РєР°РЅР°Р»Р°
                         nfi.NumberDecimalDigits = cnlProps.DecDigits;
                         nfi.NumberDecimalSeparator = defDecSep;
                         nfi.NumberGroupSeparator = defGrSep;
                         eventView.Text += ev.NewCnlVal.ToString("N", nfi);
-                        // добавление размерности
+                        // РґРѕР±Р°РІР»РµРЅРёРµ СЂР°Р·РјРµСЂРЅРѕСЃС‚Рё
                         if (cnlProps.UnitArr != null)
                             eventView.Text += " " + cnlProps.UnitArr[0];
                     }
@@ -581,7 +582,7 @@ namespace Scada.Web
                 }
             }
 
-            // определение свойств квитирования
+            // РѕРїСЂРµРґРµР»РµРЅРёРµ СЃРІРѕР№СЃС‚РІ РєРІРёС‚РёСЂРѕРІР°РЅРёСЏ
             eventView.Check = ev.Checked;
 
             if (ev.Checked)
@@ -598,11 +599,11 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Получить цвет, соответствующий статусу
+        /// РџРѕР»СѓС‡РёС‚СЊ С†РІРµС‚, СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёР№ СЃС‚Р°С‚СѓСЃСѓ
         /// </summary>
         private bool GetColorByStat(int stat, out string color)
         {
-            if (tblEvType.Columns.Count > 0) // таблица загружена
+            if (tblEvType.Columns.Count > 0) // С‚Р°Р±Р»РёС†Р° Р·Р°РіСЂСѓР¶РµРЅР°
             {
                 tblEvType.DefaultView.RowFilter = "CnlStatus = " + stat;
                 if (tblEvType.DefaultView.Count > 0)
@@ -622,7 +623,7 @@ namespace Scada.Web
 		
 
 		/// <summary>
-        /// Обновить таблицы базы конфигурации, если они изменились
+        /// РћР±РЅРѕРІРёС‚СЊ С‚Р°Р±Р»РёС†С‹ Р±Р°Р·С‹ РєРѕРЅС„РёРіСѓСЂР°С†РёРё, РµСЃР»Рё РѕРЅРё РёР·РјРµРЅРёР»РёСЃСЊ
 		/// </summary>
 		public void RefreshBase()
 		{
@@ -631,26 +632,27 @@ namespace Scada.Web
 
             try
             {
-                // обновление объекта для обмена данными со SCADA-Сервером
+                // РѕР±РЅРѕРІР»РµРЅРёРµ РѕР±СЉРµРєС‚Р° РґР»СЏ РѕР±РјРµРЅР° РґР°РЅРЅС‹РјРё СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј
                 RefrServerComm();
 
-                // обновление базы конфигурации
-                DateTime inCnlsModTime = serverComm.ReceiveFileAge(ServerComm.Dirs.BaseDAT, tblInCnl.TableName + ".dat");
+                // РѕР±РЅРѕРІР»РµРЅРёРµ Р±Р°Р·С‹ РєРѕРЅС„РёРіСѓСЂР°С†РёРё
+                DateTime inCnlsModTime = serverComm.ReceiveFileAge(ServerComm.Dirs.BaseDAT, 
+                    tblInCnl.TableName.ToLower() + ".dat");
 
-                if ((nowDT - baseFillTime).TotalSeconds > BaseValidTime /*данные устарели*/ &&
-                    inCnlsModTime != baseModTime /*файл таблицы входных каналов изменён*/ &&
+                if ((nowDT - baseFillTime).TotalSeconds > BaseValidTime /*РґР°РЅРЅС‹Рµ СѓСЃС‚Р°СЂРµР»Рё*/ &&
+                    inCnlsModTime != baseModTime /*С„Р°Р№Р» С‚Р°Р±Р»РёС†С‹ РІС…РѕРґРЅС‹С… РєР°РЅР°Р»РѕРІ РёР·РјРµРЅС‘РЅ*/ &&
                     inCnlsModTime > DateTime.MinValue)
                 {
-                    AppData.Log.WriteAction(Localization.UseRussian ? "Обновление таблиц базы конфигурации" :
+                    AppData.Log.WriteAction(Localization.UseRussian ? "РћР±РЅРѕРІР»РµРЅРёРµ С‚Р°Р±Р»РёС† Р±Р°Р·С‹ РєРѕРЅС„РёРіСѓСЂР°С†РёРё" :
                         "Refresh tables of the configuration database", Log.ActTypes.Action);
                     baseModTime = inCnlsModTime;
                     baseFillTime = nowDT;
 
-                    // проверка блокировки таблиц SCADA-Сервером
+                    // РїСЂРѕРІРµСЂРєР° Р±Р»РѕРєРёСЂРѕРІРєРё С‚Р°Р±Р»РёС† SCADA-РЎРµСЂРІРµСЂРѕРј
                     try
                     {
                         DateTime t0 = nowDT;
-                        TimeSpan waitSpan = new TimeSpan(0, 0, 5); // 5 секунд
+                        TimeSpan waitSpan = new TimeSpan(0, 0, 5); // 5 СЃРµРєСѓРЅРґ
                         while (serverComm.ReceiveFileAge(ServerComm.Dirs.BaseDAT, "baselock") > DateTime.MinValue &&
                             DateTime.Now - t0 < waitSpan)
                             Thread.Sleep(500);
@@ -659,14 +661,14 @@ namespace Scada.Web
                     {
                     }
 
-                    // заполнение таблиц
+                    // Р·Р°РїРѕР»РЅРµРЅРёРµ С‚Р°Р±Р»РёС†
                     Monitor.Enter(baseLock);
                     try
                     {
                         for (int i = 0; i < baseTblArr.Length; i++)
                         {
                             DataTable dataTable = baseTblArr[i];
-                            if (!serverComm.ReceiveBaseTable(dataTable.TableName + ".dat", dataTable))
+                            if (!serverComm.ReceiveBaseTable(dataTable.TableName.ToLower() + ".dat", dataTable))
                                 baseModTime = DateTime.MinValue;
                         }
                     }
@@ -675,7 +677,7 @@ namespace Scada.Web
                         Monitor.Exit(baseLock);
                     }
 
-                    // заполнение свойств входных каналов
+                    // Р·Р°РїРѕР»РЅРµРЅРёРµ СЃРІРѕР№СЃС‚РІ РІС…РѕРґРЅС‹С… РєР°РЅР°Р»РѕРІ
                     FillCnlProps();
                 }
             }
@@ -684,7 +686,7 @@ namespace Scada.Web
                 baseModTime = DateTime.MinValue;
                 baseFillTime = DateTime.MinValue;
 
-                AppData.Log.WriteAction((Localization.UseRussian ? "Ошибка при обновлении таблиц базы конфигурации: " :
+                AppData.Log.WriteAction((Localization.UseRussian ? "РћС€РёР±РєР° РїСЂРё РѕР±РЅРѕРІР»РµРЅРёРё С‚Р°Р±Р»РёС† Р±Р°Р·С‹ РєРѕРЅС„РёРіСѓСЂР°С†РёРё: " :
                     "Error refreshing tables of the configuration database: ") + ex.Message, Log.ActTypes.Exception);
             }
             finally
@@ -694,7 +696,7 @@ namespace Scada.Web
 		}
         
         /// <summary>
-        /// Обновить таблицы базы конфигурации и текущего среза, если они изменились
+        /// РћР±РЅРѕРІРёС‚СЊ С‚Р°Р±Р»РёС†С‹ Р±Р°Р·С‹ РєРѕРЅС„РёРіСѓСЂР°С†РёРё Рё С‚РµРєСѓС‰РµРіРѕ СЃСЂРµР·Р°, РµСЃР»Рё РѕРЅРё РёР·РјРµРЅРёР»РёСЃСЊ
         /// </summary>
         public void RefreshData()
         {
@@ -703,10 +705,10 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Обновить таблицы базы конфигурации, текущего и часовых срезов, если они изменились
+        /// РћР±РЅРѕРІРёС‚СЊ С‚Р°Р±Р»РёС†С‹ Р±Р°Р·С‹ РєРѕРЅС„РёРіСѓСЂР°С†РёРё, С‚РµРєСѓС‰РµРіРѕ Рё С‡Р°СЃРѕРІС‹С… СЃСЂРµР·РѕРІ, РµСЃР»Рё РѕРЅРё РёР·РјРµРЅРёР»РёСЃСЊ
         /// </summary>
-        /// <param name="reqDate">Дата запрашиваемых часовых данных</param>
-        /// <param name="hourTable">Таблица часовых срезов</param>
+        /// <param name="reqDate">Р”Р°С‚Р° Р·Р°РїСЂР°С€РёРІР°РµРјС‹С… С‡Р°СЃРѕРІС‹С… РґР°РЅРЅС‹С…</param>
+        /// <param name="hourTable">РўР°Р±Р»РёС†Р° С‡Р°СЃРѕРІС‹С… СЃСЂРµР·РѕРІ</param>
 		public void RefreshData(DateTime reqDate, out SrezTableLight hourTable)
 		{
 			RefreshBase();
@@ -714,25 +716,25 @@ namespace Scada.Web
 
             try
             {
-                // обновление текущего среза
+                // РѕР±РЅРѕРІР»РµРЅРёРµ С‚РµРєСѓС‰РµРіРѕ СЃСЂРµР·Р°
                 DateTime now = DateTime.Now;
 
-                if ((now - tblCur.LastFillTime).TotalSeconds > CurSrezValidTime) // данные устарели
+                if ((now - tblCur.LastFillTime).TotalSeconds > CurSrezValidTime) // РґР°РЅРЅС‹Рµ СѓСЃС‚Р°СЂРµР»Рё
                 {
                     DateTime curModTime = serverComm.ReceiveFileAge(ServerComm.Dirs.Cur, "current.dat");
-                    if (curModTime != tblCur.FileModTime) // файл среза изменён
+                    if (curModTime != tblCur.FileModTime) // С„Р°Р№Р» СЃСЂРµР·Р° РёР·РјРµРЅС‘РЅ
                         tblCur.FileModTime = serverComm.ReceiveSrezTable("current.dat", tblCur) ?
                             curModTime : DateTime.MinValue;
                 }
 
-                // обновление таблицы часовых срезов
+                // РѕР±РЅРѕРІР»РµРЅРёРµ С‚Р°Р±Р»РёС†С‹ С‡Р°СЃРѕРІС‹С… СЃСЂРµР·РѕРІ
                 hourTable = null;
 
                 if (reqDate > DateTime.MinValue)
                 {
                     string hourTableName = "h" + reqDate.ToString("yyMMdd") + ".dat";
 
-                    // поиск индекса таблицы часовых срезов в кэше
+                    // РїРѕРёСЃРє РёРЅРґРµРєСЃР° С‚Р°Р±Р»РёС†С‹ С‡Р°СЃРѕРІС‹С… СЃСЂРµР·РѕРІ РІ РєСЌС€Рµ
                     int tableIndex = -1;
                     for (int i = 0; i < HourCacheSize; i++)
                     {
@@ -744,7 +746,7 @@ namespace Scada.Web
                         }
                     }
 
-                    if (tableIndex < 0 || (now - hourTable.LastFillTime).TotalSeconds > HourSrezValidTime /*данные устарели*/)
+                    if (tableIndex < 0 || (now - hourTable.LastFillTime).TotalSeconds > HourSrezValidTime /*РґР°РЅРЅС‹Рµ СѓСЃС‚Р°СЂРµР»Рё*/)
                     {
                         DateTime fileModTime = serverComm.ReceiveFileAge(ServerComm.Dirs.Hour, hourTableName);
 
@@ -752,19 +754,19 @@ namespace Scada.Web
                         {
                             hourTable = null;
 
-                            // определение места в кэше для новой таблицы часовых срезов
+                            // РѕРїСЂРµРґРµР»РµРЅРёРµ РјРµСЃС‚Р° РІ РєСЌС€Рµ РґР»СЏ РЅРѕРІРѕР№ С‚Р°Р±Р»РёС†С‹ С‡Р°СЃРѕРІС‹С… СЃСЂРµР·РѕРІ
                             tableIndex = hourTableIndex;
                             if (++hourTableIndex == HourCacheSize)
                                 hourTableIndex = 0;
                         }
 
-                        if (hourTable == null || fileModTime != hourTable.FileModTime /*файл срезов изменён*/)
+                        if (hourTable == null || fileModTime != hourTable.FileModTime /*С„Р°Р№Р» СЃСЂРµР·РѕРІ РёР·РјРµРЅС‘РЅ*/)
                         {
-                            // создание новой таблицы часовых срезов
+                            // СЃРѕР·РґР°РЅРёРµ РЅРѕРІРѕР№ С‚Р°Р±Р»РёС†С‹ С‡Р°СЃРѕРІС‹С… СЃСЂРµР·РѕРІ
                             hourTable = new SrezTableLight();
                             hourTableCache[tableIndex] = hourTable;
 
-                            // загрузка таблицы часовых срезов
+                            // Р·Р°РіСЂСѓР·РєР° С‚Р°Р±Р»РёС†С‹ С‡Р°СЃРѕРІС‹С… СЃСЂРµР·РѕРІ
                             if (serverComm.ReceiveSrezTable(hourTableName, hourTable))
                                 hourTable.FileModTime = fileModTime;
                         }
@@ -778,10 +780,10 @@ namespace Scada.Web
 		}
 
         /// <summary>
-        /// Обновить таблицы базы конфигурации и событий, если они изменились
+        /// РћР±РЅРѕРІРёС‚СЊ С‚Р°Р±Р»РёС†С‹ Р±Р°Р·С‹ РєРѕРЅС„РёРіСѓСЂР°С†РёРё Рё СЃРѕР±С‹С‚РёР№, РµСЃР»Рё РѕРЅРё РёР·РјРµРЅРёР»РёСЃСЊ
         /// </summary>
-        /// <param name="reqDate">Дата запрашиваемых событий</param>
-        /// <param name="eventTable">Таблица событий</param>
+        /// <param name="reqDate">Р”Р°С‚Р° Р·Р°РїСЂР°С€РёРІР°РµРјС‹С… СЃРѕР±С‹С‚РёР№</param>
+        /// <param name="eventTable">РўР°Р±Р»РёС†Р° СЃРѕР±С‹С‚РёР№</param>
         public void RefreshEvents(DateTime reqDate, out EventTableLight eventTable)
         {
             RefreshBase();
@@ -789,11 +791,11 @@ namespace Scada.Web
 
             try
             {
-                // обновление таблицы событий
+                // РѕР±РЅРѕРІР»РµРЅРёРµ С‚Р°Р±Р»РёС†С‹ СЃРѕР±С‹С‚РёР№
                 string eventTableName = "e" + reqDate.ToString("yyMMdd") + ".dat";
                 eventTable = null;
 
-                // поиск индекса таблицы событий в кэше
+                // РїРѕРёСЃРє РёРЅРґРµРєСЃР° С‚Р°Р±Р»РёС†С‹ СЃРѕР±С‹С‚РёР№ РІ РєСЌС€Рµ
                 int tableIndex = -1;
                 for (int i = 0; i < EventCacheSize; i++)
                 {
@@ -805,7 +807,7 @@ namespace Scada.Web
                     }
                 }
 
-                if (tableIndex < 0 || (DateTime.Now - eventTable.LastFillTime).TotalSeconds > EventValidTime /*данные устарели*/)
+                if (tableIndex < 0 || (DateTime.Now - eventTable.LastFillTime).TotalSeconds > EventValidTime /*РґР°РЅРЅС‹Рµ СѓСЃС‚Р°СЂРµР»Рё*/)
                 {
                     DateTime fileModTime = serverComm.ReceiveFileAge(ServerComm.Dirs.Events, eventTableName);
 
@@ -813,19 +815,19 @@ namespace Scada.Web
                     {
                         eventTable = null;
 
-                        // определение места в кэше для новой таблицы событий
+                        // РѕРїСЂРµРґРµР»РµРЅРёРµ РјРµСЃС‚Р° РІ РєСЌС€Рµ РґР»СЏ РЅРѕРІРѕР№ С‚Р°Р±Р»РёС†С‹ СЃРѕР±С‹С‚РёР№
                         tableIndex = eventTableIndex;
                         if (++eventTableIndex == EventCacheSize)
                             eventTableIndex = 0;
                     }
 
-                    if (eventTable == null || fileModTime != eventTable.FileModTime /*файл событий изменён*/)
+                    if (eventTable == null || fileModTime != eventTable.FileModTime /*С„Р°Р№Р» СЃРѕР±С‹С‚РёР№ РёР·РјРµРЅС‘РЅ*/)
                     {
-                        // создание новой таблицы событий
+                        // СЃРѕР·РґР°РЅРёРµ РЅРѕРІРѕР№ С‚Р°Р±Р»РёС†С‹ СЃРѕР±С‹С‚РёР№
                         eventTable = new EventTableLight();
                         eventTableCache[tableIndex] = eventTable;
 
-                        // загрузка таблицы часовых срезов
+                        // Р·Р°РіСЂСѓР·РєР° С‚Р°Р±Р»РёС†С‹ С‡Р°СЃРѕРІС‹С… СЃСЂРµР·РѕРІ
                         if (serverComm.ReceiveEventTable(eventTableName, eventTable))
                             eventTable.FileModTime = fileModTime;
                     }
@@ -838,9 +840,9 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Ограничить количество используемых входных каналов
+        /// РћРіСЂР°РЅРёС‡РёС‚СЊ РєРѕР»РёС‡РµСЃС‚РІРѕ РёСЃРїРѕР»СЊР·СѓРµРјС‹С… РІС…РѕРґРЅС‹С… РєР°РЅР°Р»РѕРІ
         /// </summary>
-        /// <param name="maxCnlCnt">Максимальное количество входных каналов или 0, если количество неограничено</param>
+        /// <param name="maxCnlCnt">РњР°РєСЃРёРјР°Р»СЊРЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ РІС…РѕРґРЅС‹С… РєР°РЅР°Р»РѕРІ РёР»Рё 0, РµСЃР»Рё РєРѕР»РёС‡РµСЃС‚РІРѕ РЅРµРѕРіСЂР°РЅРёС‡РµРЅРѕ</param>
         public void RestrictCnlCnt(int maxCnlCnt)
         {
             Monitor.Enter(cnlPropLock);
@@ -858,18 +860,18 @@ namespace Scada.Web
 
 
 		/// <summary>
-		/// Получить свойства входного канала по его номеру
+		/// РџРѕР»СѓС‡РёС‚СЊ СЃРІРѕР№СЃС‚РІР° РІС…РѕРґРЅРѕРіРѕ РєР°РЅР°Р»Р° РїРѕ РµРіРѕ РЅРѕРјРµСЂСѓ
 		/// </summary>
-		public CnlProps GetCnlProps(int cnlNum)
+        public InCnlProps GetCnlProps(int cnlNum)
 		{
             Monitor.Enter(cnlPropLock);
-            CnlProps cnlProps = null;
+            InCnlProps cnlProps = null;
 
             try
             {                
                 if (cnlPropsArr != null)
                 {
-                    int ind = Array.BinarySearch(cnlPropsArr, (object)cnlNum);
+                    int ind = Array.BinarySearch(cnlPropsArr, (object)cnlNum, InCnlProps.IntComp);
                     if (ind >= 0)
                         cnlProps = cnlPropsArr[ind];
                 }
@@ -877,7 +879,7 @@ namespace Scada.Web
             catch (Exception ex)
             {
                 AppData.Log.WriteAction(string.Format(Localization.UseRussian ? 
-                    "Ошибка при получении свойств входного канала {0}: {1}" : 
+                    "РћС€РёР±РєР° РїСЂРё РїРѕР»СѓС‡РµРЅРёРё СЃРІРѕР№СЃС‚РІ РІС…РѕРґРЅРѕРіРѕ РєР°РЅР°Р»Р° {0}: {1}" : 
                     "Error getting input channel {0} properties: {1}", cnlNum, ex.Message), Log.ActTypes.Exception);
             }
             finally
@@ -889,7 +891,7 @@ namespace Scada.Web
 		}
 
         /// <summary>
-        /// Получить свойства канала управления по его номеру
+        /// РџРѕР»СѓС‡РёС‚СЊ СЃРІРѕР№СЃС‚РІР° РєР°РЅР°Р»Р° СѓРїСЂР°РІР»РµРЅРёСЏ РїРѕ РµРіРѕ РЅРѕРјРµСЂСѓ
         /// </summary>
         public CtrlCnlProps GetCtrlCnlProps(int ctrlCnlNum)
         {
@@ -902,26 +904,24 @@ namespace Scada.Web
                 if (tblCtrlCnl.DefaultView.Count > 0)
                 {
                     DataRowView rowView = tblCtrlCnl.DefaultView[0];
-                    ctrlCnlProps = new CtrlCnlProps(ctrlCnlNum);
-                    ctrlCnlProps.CtrlCnlName = (string)rowView["Name"];
-                    ctrlCnlProps.CmdTypeID = (int)rowView["CmdTypeID"];
+                    ctrlCnlProps = new CtrlCnlProps(ctrlCnlNum, (string)rowView["Name"], (int)rowView["CmdTypeID"]);
 
-                    // определение номера и наименования объекта
+                    // РѕРїСЂРµРґРµР»РµРЅРёРµ РЅРѕРјРµСЂР° Рё РЅР°РёРјРµРЅРѕРІР°РЅРёСЏ РѕР±СЉРµРєС‚Р°
                     ctrlCnlProps.ObjNum = (int)rowView["ObjNum"];
                     tblObj.DefaultView.RowFilter = "ObjNum = " + ctrlCnlProps.ObjNum;
                     ctrlCnlProps.ObjName = tblObj.DefaultView.Count > 0 ? (string)tblObj.DefaultView[0]["Name"] : "";
 
-                    // определение номера и наименования КП
+                    // РѕРїСЂРµРґРµР»РµРЅРёРµ РЅРѕРјРµСЂР° Рё РЅР°РёРјРµРЅРѕРІР°РЅРёСЏ РљРџ
                     ctrlCnlProps.KPNum = (int)rowView["KPNum"];
                     tblKP.DefaultView.RowFilter = "KPNum = " + ctrlCnlProps.KPNum;
                     ctrlCnlProps.KPName = tblKP.DefaultView.Count > 0 ? (string)tblKP.DefaultView[0]["Name"] : "";
 
-                    // определение значений команды
+                    // РѕРїСЂРµРґРµР»РµРЅРёРµ Р·РЅР°С‡РµРЅРёР№ РєРѕРјР°РЅРґС‹
                     tblCmdVal.DefaultView.RowFilter = "CmdValID = " + rowView["CmdValID"];
                     if (tblCmdVal.DefaultView.Count > 0)
                     {
                         string val = (string)tblCmdVal.DefaultView[0]["Val"];
-                        ctrlCnlProps.CmdValArr = val.Split(';'); // включая пустые элементы
+                        ctrlCnlProps.CmdValArr = val.Split(';'); // РІРєР»СЋС‡Р°СЏ РїСѓСЃС‚С‹Рµ СЌР»РµРјРµРЅС‚С‹
                         for (int i = 0; i < ctrlCnlProps.CmdValArr.Length; i++)
                             ctrlCnlProps.CmdValArr[i] = ctrlCnlProps.CmdValArr[i].Trim();
                         if (ctrlCnlProps.CmdValArr.Length == 1 && ctrlCnlProps.CmdValArr[0] == "")
@@ -936,7 +936,7 @@ namespace Scada.Web
             catch (Exception ex)
             {
                 AppData.Log.WriteAction(string.Format(Localization.UseRussian ?
-                    "Ошибка при получении свойств канала управления {0}: {1}" :
+                    "РћС€РёР±РєР° РїСЂРё РїРѕР»СѓС‡РµРЅРёРё СЃРІРѕР№СЃС‚РІ РєР°РЅР°Р»Р° СѓРїСЂР°РІР»РµРЅРёСЏ {0}: {1}" :
                     "Error getting output channel {0} properties: {1}", ctrlCnlNum, ex.Message), 
                     Log.ActTypes.Exception);
             }
@@ -950,7 +950,7 @@ namespace Scada.Web
 
 
 		/// <summary>
-		/// Получить данные канала текущего среза
+		/// РџРѕР»СѓС‡РёС‚СЊ РґР°РЅРЅС‹Рµ РєР°РЅР°Р»Р° С‚РµРєСѓС‰РµРіРѕ СЃСЂРµР·Р°
 		/// </summary>
 		public void GetCurData(int cnlNum, out double val, out int stat)
 		{
@@ -975,7 +975,7 @@ namespace Scada.Web
             catch (Exception ex)
             {
                 AppData.Log.WriteAction(string.Format(Localization.UseRussian ?
-                    "Ошибка при получении данных канала {0} текущего среза: {1}" :
+                    "РћС€РёР±РєР° РїСЂРё РїРѕР»СѓС‡РµРЅРёРё РґР°РЅРЅС‹С… РєР°РЅР°Р»Р° {0} С‚РµРєСѓС‰РµРіРѕ СЃСЂРµР·Р°: {1}" :
                     "Error getting channel {0} current data: {1}", cnlNum, ex.Message), Log.ActTypes.Exception);
             }
             finally
@@ -985,7 +985,7 @@ namespace Scada.Web
         }
 
 		/// <summary>
-		/// Получить данные канала часового среза из указанной таблицы срезов
+		/// РџРѕР»СѓС‡РёС‚СЊ РґР°РЅРЅС‹Рµ РєР°РЅР°Р»Р° С‡Р°СЃРѕРІРѕРіРѕ СЃСЂРµР·Р° РёР· СѓРєР°Р·Р°РЅРЅРѕР№ С‚Р°Р±Р»РёС†С‹ СЃСЂРµР·РѕРІ
 		/// </summary>
         public void GetHourData(SrezTableLight hourTable, int cnlNum, DateTime dateTime, 
             out double val, out int stat)
@@ -1011,7 +1011,7 @@ namespace Scada.Web
             catch (Exception ex)
             {
                 AppData.Log.WriteAction(string.Format(Localization.UseRussian ?
-                    "Ошибка при получении данных канала {0} часового среза: {1}" :
+                    "РћС€РёР±РєР° РїСЂРё РїРѕР»СѓС‡РµРЅРёРё РґР°РЅРЅС‹С… РєР°РЅР°Р»Р° {0} С‡Р°СЃРѕРІРѕРіРѕ СЃСЂРµР·Р°: {1}" :
                     "Error getting channel {0} hour data: {1}", cnlNum, ex.Message), Log.ActTypes.Exception);
             }
             finally
@@ -1021,9 +1021,9 @@ namespace Scada.Web
         }
         
         /// <summary>
-        /// Получить события, соответствующие фильтру, из таблицы событий
+        /// РџРѕР»СѓС‡РёС‚СЊ СЃРѕР±С‹С‚РёСЏ, СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёРµ С„РёР»СЊС‚СЂСѓ, РёР· С‚Р°Р±Р»РёС†С‹ СЃРѕР±С‹С‚РёР№
         /// </summary>
-        /// <remarks>Если cnlsFilter равен null, то фильтрация не производится</remarks>
+        /// <remarks>Р•СЃР»Рё cnlsFilter СЂР°РІРµРЅ null, С‚Рѕ С„РёР»СЊС‚СЂР°С†РёСЏ РЅРµ РїСЂРѕРёР·РІРѕРґРёС‚СЃСЏ</remarks>
         public List<EventTableLight.Event> GetEvents(EventTableLight eventTable, List<int> cnlsFilter)
         {
             Monitor.Enter(eventLock);
@@ -1047,7 +1047,7 @@ namespace Scada.Web
             }
             catch (Exception ex)
             {
-                AppData.Log.WriteAction((Localization.UseRussian ? "Ошибка при получении событий: " : 
+                AppData.Log.WriteAction((Localization.UseRussian ? "РћС€РёР±РєР° РїСЂРё РїРѕР»СѓС‡РµРЅРёРё СЃРѕР±С‹С‚РёР№: " : 
                     "Error getting events: ") + ex.Message, Log.ActTypes.Exception);
             }
             finally
@@ -1059,9 +1059,9 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Получить события, соответствующие фильтру, из таблицы событий, начиная с заданного номера события
+        /// РџРѕР»СѓС‡РёС‚СЊ СЃРѕР±С‹С‚РёСЏ, СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёРµ С„РёР»СЊС‚СЂСѓ, РёР· С‚Р°Р±Р»РёС†С‹ СЃРѕР±С‹С‚РёР№, РЅР°С‡РёРЅР°СЏ СЃ Р·Р°РґР°РЅРЅРѕРіРѕ РЅРѕРјРµСЂР° СЃРѕР±С‹С‚РёСЏ
         /// </summary>
-        /// <remarks>Если cnlsFilter равен null, то фильтрация не производится</remarks>
+        /// <remarks>Р•СЃР»Рё cnlsFilter СЂР°РІРµРЅ null, С‚Рѕ С„РёР»СЊС‚СЂР°С†РёСЏ РЅРµ РїСЂРѕРёР·РІРѕРґРёС‚СЃСЏ</remarks>
         public List<EventTableLight.Event> GetEvents(EventTableLight eventTable, List<int> cnlsFilter, 
             int startEvNum)
         {
@@ -1081,7 +1081,7 @@ namespace Scada.Web
             catch (Exception ex)
             {
                 AppData.Log.WriteAction((Localization.UseRussian ? 
-                    "Ошибка при получении событий, начиная с заданного номера: " :
+                    "РћС€РёР±РєР° РїСЂРё РїРѕР»СѓС‡РµРЅРёРё СЃРѕР±С‹С‚РёР№, РЅР°С‡РёРЅР°СЏ СЃ Р·Р°РґР°РЅРЅРѕРіРѕ РЅРѕРјРµСЂР°: " :
                     "Error getting events starting from the specified number: ") + ex.Message, Log.ActTypes.Exception);
             }
             finally
@@ -1093,9 +1093,9 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Получить заданное количество последних событий, соответствующих фильтру
+        /// РџРѕР»СѓС‡РёС‚СЊ Р·Р°РґР°РЅРЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ РїРѕСЃР»РµРґРЅРёС… СЃРѕР±С‹С‚РёР№, СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёС… С„РёР»СЊС‚СЂСѓ
         /// </summary>
-        /// <remarks>Если cnlsFilter равен null, то фильтрация не производится</remarks>
+        /// <remarks>Р•СЃР»Рё cnlsFilter СЂР°РІРµРЅ null, С‚Рѕ С„РёР»СЊС‚СЂР°С†РёСЏ РЅРµ РїСЂРѕРёР·РІРѕРґРёС‚СЃСЏ</remarks>
         public List<EventTableLight.Event> GetLastEvents(EventTableLight eventTable, List<int> cnlsFilter, 
             int count)
         {
@@ -1114,7 +1114,7 @@ namespace Scada.Web
             }
             catch (Exception ex)
             {
-                AppData.Log.WriteAction((Localization.UseRussian ? "Ошибка при получении последних событий: " :
+                AppData.Log.WriteAction((Localization.UseRussian ? "РћС€РёР±РєР° РїСЂРё РїРѕР»СѓС‡РµРЅРёРё РїРѕСЃР»РµРґРЅРёС… СЃРѕР±С‹С‚РёР№: " :
                     "Error getting last events: ") + ex.Message, Log.ActTypes.Exception);
             }
             finally
@@ -1126,7 +1126,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Получить событие из таблицы событий по номеру
+        /// РџРѕР»СѓС‡РёС‚СЊ СЃРѕР±С‹С‚РёРµ РёР· С‚Р°Р±Р»РёС†С‹ СЃРѕР±С‹С‚РёР№ РїРѕ РЅРѕРјРµСЂСѓ
         /// </summary>
         public EventTableLight.Event GetEventByNum(EventTableLight eventTable, int evNum)
         {
@@ -1141,7 +1141,7 @@ namespace Scada.Web
             }
             catch (Exception ex)
             {
-                AppData.Log.WriteAction((Localization.UseRussian ? "Ошибка при получении события по номеру: " :
+                AppData.Log.WriteAction((Localization.UseRussian ? "РћС€РёР±РєР° РїСЂРё РїРѕР»СѓС‡РµРЅРёРё СЃРѕР±С‹С‚РёСЏ РїРѕ РЅРѕРјРµСЂСѓ: " :
                     "Error getting event by number: ") + ex.Message, Log.ActTypes.Exception);
             }
             finally
@@ -1153,7 +1153,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Преобразовать событие в удобную для отображения форму
+        /// РџСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ СЃРѕР±С‹С‚РёРµ РІ СѓРґРѕР±РЅСѓСЋ РґР»СЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ С„РѕСЂРјСѓ
         /// </summary>
         public EventView ConvertEvent(EventTableLight.Event ev)
         {
@@ -1168,7 +1168,7 @@ namespace Scada.Web
             catch (Exception ex)
             {
                 AppData.Log.WriteAction((Localization.UseRussian ? 
-                    "Ошибка при преобразовании события в удобную для отображения форму: " :
+                    "РћС€РёР±РєР° РїСЂРё РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРё СЃРѕР±С‹С‚РёСЏ РІ СѓРґРѕР±РЅСѓСЋ РґР»СЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ С„РѕСЂРјСѓ: " :
                     "Error converting event to a suitable view") + ex.Message, Log.ActTypes.Exception);
             }
             finally 
@@ -1180,7 +1180,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Преобразовать список событий в удобную для отображения форму
+        /// РџСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ СЃРїРёСЃРѕРє СЃРѕР±С‹С‚РёР№ РІ СѓРґРѕР±РЅСѓСЋ РґР»СЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ С„РѕСЂРјСѓ
         /// </summary>
         public List<EventView> ConvertEvents(List<EventTableLight.Event> eventList)
         {
@@ -1196,7 +1196,7 @@ namespace Scada.Web
             catch (Exception ex)
             {
                 AppData.Log.WriteAction((Localization.UseRussian ?
-                    "Ошибка при преобразовании списка событий в удобную для отображения форму: " :
+                    "РћС€РёР±РєР° РїСЂРё РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРё СЃРїРёСЃРєР° СЃРѕР±С‹С‚РёР№ РІ СѓРґРѕР±РЅСѓСЋ РґР»СЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ С„РѕСЂРјСѓ: " :
                     "Error converting events list to a suitable view") + ex.Message, Log.ActTypes.Exception);
             }
             finally
@@ -1208,7 +1208,7 @@ namespace Scada.Web
         }
 
 		/// <summary>
-		/// Получить данные канала минутного среза за сутки
+		/// РџРѕР»СѓС‡РёС‚СЊ РґР°РЅРЅС‹Рµ РєР°РЅР°Р»Р° РјРёРЅСѓС‚РЅРѕРіРѕ СЃСЂРµР·Р° Р·Р° СЃСѓС‚РєРё
 		/// </summary>
 		public Trend GetMinData(int cnlNum, DateTime date)
 		{
@@ -1225,8 +1225,8 @@ namespace Scada.Web
                 else
                 {
                     DateTime minModTime = serverComm.ReceiveFileAge(ServerComm.Dirs.Min, minTableName);
-                    if ((DateTime.Now - minModTime).TotalSeconds > MinSrezValidTime /*данные устарели*/ &&
-                        minModTime != trend.FileModTime /*файл срезов изменён*/)
+                    if ((DateTime.Now - minModTime).TotalSeconds > MinSrezValidTime /*РґР°РЅРЅС‹Рµ СѓСЃС‚Р°СЂРµР»Рё*/ &&
+                        minModTime != trend.FileModTime /*С„Р°Р№Р» СЃСЂРµР·РѕРІ РёР·РјРµРЅС‘РЅ*/)
                     {
                         trend = new Trend(cnlNum);
                         trend.FileModTime = serverComm.ReceiveTrend(minTableName, date, trend) ?
@@ -1243,7 +1243,7 @@ namespace Scada.Web
 
 
 		/// <summary>
-		/// Получить отформатированное текущее значение канала
+		/// РџРѕР»СѓС‡РёС‚СЊ РѕС‚С„РѕСЂРјР°С‚РёСЂРѕРІР°РЅРЅРѕРµ С‚РµРєСѓС‰РµРµ Р·РЅР°С‡РµРЅРёРµ РєР°РЅР°Р»Р°
 		/// </summary>
 		public string GetCnlVal(int cnlNum, bool showUnit, out string color)
 		{
@@ -1251,13 +1251,13 @@ namespace Scada.Web
 		}
 
 		/// <summary>
-        /// Получить отформатированное значение канала из текущего или часового среза за указанное время
+        /// РџРѕР»СѓС‡РёС‚СЊ РѕС‚С„РѕСЂРјР°С‚РёСЂРѕРІР°РЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РєР°РЅР°Р»Р° РёР· С‚РµРєСѓС‰РµРіРѕ РёР»Рё С‡Р°СЃРѕРІРѕРіРѕ СЃСЂРµР·Р° Р·Р° СѓРєР°Р·Р°РЅРЅРѕРµ РІСЂРµРјСЏ
 		/// </summary>
-        /// <remarks>Для текущего значения hourTable равно null или dataDT равно DateTime.MinValue</remarks>
+        /// <remarks>Р”Р»СЏ С‚РµРєСѓС‰РµРіРѕ Р·РЅР°С‡РµРЅРёСЏ hourTable СЂР°РІРЅРѕ null РёР»Рё dataDT СЂР°РІРЅРѕ DateTime.MinValue</remarks>
         public string GetCnlVal(SrezTableLight hourTable, int cnlNum, DateTime dateTime, bool showUnit, 
             out string color)
 		{
-            // получение значения и статуса канала
+            // РїРѕР»СѓС‡РµРЅРёРµ Р·РЅР°С‡РµРЅРёСЏ Рё СЃС‚Р°С‚СѓСЃР° РєР°РЅР°Р»Р°
             double val;
             int stat;
 
@@ -1266,17 +1266,17 @@ namespace Scada.Web
             else
                 GetHourData(hourTable, cnlNum, dateTime, out val, out stat);
 
-            // форматирование значения канала
+            // С„РѕСЂРјР°С‚РёСЂРѕРІР°РЅРёРµ Р·РЅР°С‡РµРЅРёСЏ РєР°РЅР°Р»Р°
             bool isNumber;
             return FormatCnlVal(val, stat, GetCnlProps(cnlNum), showUnit, true, dateTime, DateTime.Now, 
                 out isNumber, out color);
 		}
 
         /// <summary>
-        /// Форматировать значение входного канала
+        /// Р¤РѕСЂРјР°С‚РёСЂРѕРІР°С‚СЊ Р·РЅР°С‡РµРЅРёРµ РІС…РѕРґРЅРѕРіРѕ РєР°РЅР°Р»Р°
         /// </summary>
-        /// <remarks>Для текущего значения dataDT равно DateTime.MinValue</remarks>
-        public string FormatCnlVal(double val, int stat, CnlProps cnlProps, bool showUnit, bool getColor, 
+        /// <remarks>Р”Р»СЏ С‚РµРєСѓС‰РµРіРѕ Р·РЅР°С‡РµРЅРёСЏ dataDT СЂР°РІРЅРѕ DateTime.MinValue</remarks>
+        public string FormatCnlVal(double val, int stat, InCnlProps cnlProps, bool showUnit, bool getColor, 
             DateTime dataDT, DateTime nowDT, out bool isNumber, out string color,
             string decSep = null, string grSep = null)
         {
@@ -1286,14 +1286,14 @@ namespace Scada.Web
 
             try
             {
-                // определение длины массива размерностей канала
+                // РѕРїСЂРµРґРµР»РµРЅРёРµ РґР»РёРЅС‹ РјР°СЃСЃРёРІР° СЂР°Р·РјРµСЂРЅРѕСЃС‚РµР№ РєР°РЅР°Р»Р°
                 int unitArrLen = cnlProps == null || cnlProps.UnitArr == null ? 0 : cnlProps.UnitArr.Length;
 
-                // определение цвета
+                // РѕРїСЂРµРґРµР»РµРЅРёРµ С†РІРµС‚Р°
                 if (cnlProps != null && getColor)
                 {
-                    if (!cnlProps.ShowNumber && unitArrLen == 2 && stat > 0 && 
-                        stat != BaseValues.ParamStat.FormulaError && stat != BaseValues.ParamStat.Unreliable)
+                    if (!cnlProps.ShowNumber && unitArrLen == 2 && stat > 0 &&
+                        stat != BaseValues.CnlStatuses.FormulaError && stat != BaseValues.CnlStatuses.Unreliable)
                     {
                         color = val > 0 ? "green" : "red";
                     }
@@ -1313,7 +1313,7 @@ namespace Scada.Web
                     }
                 }
 
-                // определение результата метода
+                // РѕРїСЂРµРґРµР»РµРЅРёРµ СЂРµР·СѓР»СЊС‚Р°С‚Р° РјРµС‚РѕРґР°
                 if (cnlProps == null || cnlProps.ShowNumber)
                 {
                     string unit = showUnit && unitArrLen > 0 ? " " + cnlProps.UnitArr[0] : "";
@@ -1334,10 +1334,10 @@ namespace Scada.Web
                     result = cnlProps.UnitArr[unitInd];
                 }
 
-                // изменение результата метода, если значение канала не определено			
+                // РёР·РјРµРЅРµРЅРёРµ СЂРµР·СѓР»СЊС‚Р°С‚Р° РјРµС‚РѕРґР°, РµСЃР»Рё Р·РЅР°С‡РµРЅРёРµ РєР°РЅР°Р»Р° РЅРµ РѕРїСЂРµРґРµР»РµРЅРѕ			
                 if (dataDT == DateTime.MinValue)
                 {
-                    if ((nowDT - tblCur.FileModTime).TotalMinutes > CurSrezShowTime) // текущий срез устарел
+                    if ((nowDT - tblCur.FileModTime).TotalMinutes > CurSrezShowTime) // С‚РµРєСѓС‰РёР№ СЃСЂРµР· СѓСЃС‚Р°СЂРµР»
                     {
                         result = "";
                         isNumber = false;
@@ -1373,7 +1373,7 @@ namespace Scada.Web
             {
                 string cnlNumStr = cnlProps == null ? "" : " " + cnlProps.CnlNum;
                 AppData.Log.WriteAction(string.Format(Localization.UseRussian ? 
-                    "Ошибка при форматировании значения входного канала{0}: {1}" : 
+                    "РћС€РёР±РєР° РїСЂРё С„РѕСЂРјР°С‚РёСЂРѕРІР°РЅРёРё Р·РЅР°С‡РµРЅРёСЏ РІС…РѕРґРЅРѕРіРѕ РєР°РЅР°Р»Р°{0}: {1}" : 
                     "Error formatting input channel{0} value: {1}", cnlNumStr, ex.Message), Log.ActTypes.Exception);
             }
 
@@ -1382,11 +1382,11 @@ namespace Scada.Web
 
 
 		/// <summary>
-        /// Проверить правильность имени и пароля пользователя, получить его роль
+        /// РџСЂРѕРІРµСЂРёС‚СЊ РїСЂР°РІРёР»СЊРЅРѕСЃС‚СЊ РёРјРµРЅРё Рё РїР°СЂРѕР»СЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ, РїРѕР»СѓС‡РёС‚СЊ РµРіРѕ СЂРѕР»СЊ
 		/// </summary>
         public bool CheckUser(string login, string password, bool checkPassword, out int roleID, out string errMsg)
 		{
-            // обновление объекта для обмена данными со SCADA-Сервером при необходимости
+            // РѕР±РЅРѕРІР»РµРЅРёРµ РѕР±СЉРµРєС‚Р° РґР»СЏ РѕР±РјРµРЅР° РґР°РЅРЅС‹РјРё СЃРѕ SCADA-РЎРµСЂРІРµСЂРѕРј РїСЂРё РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚Рё
             RefrServerComm();
 
             if (serverComm == null)
@@ -1405,7 +1405,7 @@ namespace Scada.Web
                 }
                 else
                 {
-                    // проверка пользователя
+                    // РїСЂРѕРІРµСЂРєР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
                     if (serverComm.CheckUser(login, checkPassword ? password : null, out roleID))
                     {
                         if (roleID == (int)ServerComm.Roles.Disabled)
@@ -1429,11 +1429,11 @@ namespace Scada.Web
 		}
 
         /// <summary>
-        /// Получить идентификатор пользователя по имени
+        /// РџРѕР»СѓС‡РёС‚СЊ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РїРѕ РёРјРµРЅРё
         /// </summary>
         public int GetUserID(string login)
         {
-            // обновление таблиц базы конфигурации при необходимости
+            // РѕР±РЅРѕРІР»РµРЅРёРµ С‚Р°Р±Р»РёС† Р±Р°Р·С‹ РєРѕРЅС„РёРіСѓСЂР°С†РёРё РїСЂРё РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚Рё
             RefreshBase();
 
             Monitor.Enter(baseLock);
@@ -1448,7 +1448,7 @@ namespace Scada.Web
             catch (Exception ex)
             {
                 AppData.Log.WriteAction((Localization.UseRussian ? 
-                    "Ошибка при получении идентификатора пользователя по имени: " : 
+                    "РћС€РёР±РєР° РїСЂРё РїРѕР»СѓС‡РµРЅРёРё РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РїРѕ РёРјРµРЅРё: " : 
                     "Error getting user ID by name: ") + ex.Message, Log.ActTypes.Exception);
             }
             finally
@@ -1460,11 +1460,11 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Получить список прав на объекты интерфейса для заданного идентификатора роли
+        /// РџРѕР»СѓС‡РёС‚СЊ СЃРїРёСЃРѕРє РїСЂР°РІ РЅР° РѕР±СЉРµРєС‚С‹ РёРЅС‚РµСЂС„РµР№СЃР° РґР»СЏ Р·Р°РґР°РЅРЅРѕРіРѕ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂР° СЂРѕР»Рё
         /// </summary>
         public SortedList<string, Right> GetRightList(int roleID)
         {
-            // обновление таблиц базы конфигурации при необходимости
+            // РѕР±РЅРѕРІР»РµРЅРёРµ С‚Р°Р±Р»РёС† Р±Р°Р·С‹ РєРѕРЅС„РёРіСѓСЂР°С†РёРё РїСЂРё РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚Рё
             RefreshBase();
 
             Monitor.Enter(baseLock);
@@ -1495,7 +1495,7 @@ namespace Scada.Web
             catch (Exception ex)
             {
                 AppData.Log.WriteAction((Localization.UseRussian ? 
-                    "Ошибка при получении списка прав на объекты интерфейса: " : 
+                    "РћС€РёР±РєР° РїСЂРё РїРѕР»СѓС‡РµРЅРёРё СЃРїРёСЃРєР° РїСЂР°РІ РЅР° РѕР±СЉРµРєС‚С‹ РёРЅС‚РµСЂС„РµР№СЃР°: " : 
                     "Error getting interface objects rights list: ") + ex.Message, Log.ActTypes.Exception);
             }
             finally
@@ -1507,7 +1507,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Получить наименование роли по идентификатору
+        /// РџРѕР»СѓС‡РёС‚СЊ РЅР°РёРјРµРЅРѕРІР°РЅРёРµ СЂРѕР»Рё РїРѕ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂСѓ
         /// </summary>
         public string GetRoleName(int roleID)
         {
@@ -1515,10 +1515,10 @@ namespace Scada.Web
 
             if ((int)ServerComm.Roles.Custom <= roleID && roleID < (int)ServerComm.Roles.Err)
             {
-                // обновление таблиц базы конфигурации при необходимости
+                // РѕР±РЅРѕРІР»РµРЅРёРµ С‚Р°Р±Р»РёС† Р±Р°Р·С‹ РєРѕРЅС„РёРіСѓСЂР°С†РёРё РїСЂРё РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚Рё
                 RefreshBase();
 
-                // получение наименования пользовательской роли из базы конфигурации
+                // РїРѕР»СѓС‡РµРЅРёРµ РЅР°РёРјРµРЅРѕРІР°РЅРёСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРѕР№ СЂРѕР»Рё РёР· Р±Р°Р·С‹ РєРѕРЅС„РёРіСѓСЂР°С†РёРё
                 Monitor.Enter(baseLock);
                 try
                 {
@@ -1529,7 +1529,7 @@ namespace Scada.Web
                 catch (Exception ex)
                 {
                     AppData.Log.WriteAction((Localization.UseRussian ? 
-                        "Ошибка при получении наименования роли по идентификатору: " :
+                        "РћС€РёР±РєР° РїСЂРё РїРѕР»СѓС‡РµРЅРёРё РЅР°РёРјРµРЅРѕРІР°РЅРёСЏ СЂРѕР»Рё РїРѕ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂСѓ: " :
                         "Error getting role name by ID: ") +  ex.Message, Log.ActTypes.Exception);
                 }
                 finally

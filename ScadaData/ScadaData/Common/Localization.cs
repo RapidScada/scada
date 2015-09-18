@@ -156,6 +156,18 @@ namespace Scada
         /// </summary>
         public static Dictionary<string, Dict> Dictionaries { get; private set; }
 
+        /// <summary>
+        /// Получить признак, что запись дня должна располагаться после записи месяца
+        /// </summary>
+        public static bool DayAfterMonth
+        {
+            get
+            {
+                string pattern = Localization.Culture.DateTimeFormat.ShortDatePattern.ToLower();
+                return pattern.IndexOf('m') < pattern.IndexOf('d');
+            }
+        }
+
 
         /// <summary>
         /// Получить информацию об элементах управления из словаря

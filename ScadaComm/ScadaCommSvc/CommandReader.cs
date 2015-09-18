@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2008
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
@@ -29,8 +29,8 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Threading;
-using Scada.Comm.KP;
 using Utils;
+using Scada.Data;
 
 namespace Scada.Comm.Svc
 {
@@ -38,7 +38,7 @@ namespace Scada.Comm.Svc
     /// Receive commands via TCP and files
     /// <para>Приём команд по протоколу TCP и через файлы</para>
     /// </summary>
-    sealed class CommandReader
+    internal sealed class CommandReader
     {
         private Manager mngr;            // менеджер, управляющий работой программы
         private ServerCommEx serverComm; // ссылка на объект обмена данными со SCADA-Сервером
@@ -52,31 +52,22 @@ namespace Scada.Comm.Svc
         /// </summary>
         public CommandReader(Manager mngr)
         {
+            if (mngr == null)
+                throw new ArgumentNullException("mngr");
+
             this.mngr = mngr;
             serverComm = mngr.ServerComm;
-            cmdDir = Manager.CmdDir;
-            log = mngr.Log;
+            cmdDir = mngr.AppDirs.CmdDir;
+            log = mngr.AppLog;
             thread = null;
-        }
-
-
-        /// <summary>
-        /// Получить поток приёма команд
-        /// </summary>
-        public Thread Thread
-        {
-            get
-            {
-                return thread;
-            }
         }
 
 
         /// <summary>
         /// Загрузить из файла команду и проверить её корретность
         /// </summary>
-        private bool LoadCmd(string fileName, out string cmdType, 
-            out Dictionary<string, string> cmdParams, out KPLogic.Command kpCmd)
+        private bool LoadCmdFromFile(string fileName, out string cmdType, 
+            out Dictionary<string, string> cmdParams, out Command kpCmd)
         {
             bool result = false;
             cmdType = "";
@@ -88,9 +79,9 @@ namespace Scada.Comm.Svc
 
             try
             {
+                // считывание команды из файла
                 string target = "";
-                DateTime date = DateTime.MinValue;
-                DateTime time = DateTime.MinValue;
+                DateTime dateTime = DateTime.MinValue;
                 int lifeTime = 0;
                 bool endFound = false;
 
@@ -100,7 +91,7 @@ namespace Scada.Comm.Svc
                 while (!streamReader.EndOfStream)
                 {
                     string line = streamReader.ReadLine().Trim();
-                    string lineL = line.ToLower();
+                    string lineL = line.ToLowerInvariant();
 
                     if (cmdParams == null)
                     {
@@ -113,16 +104,9 @@ namespace Scada.Comm.Svc
                         {
                             target = lineL.Remove(0, 7);
                         }
-                        else if (lineL.StartsWith("date="))
+                        else if (lineL.StartsWith("datetime="))
                         {
-                            string[] vals = lineL.Remove(0, 5).Split('.');
-                            date = new DateTime(int.Parse(vals[2]), int.Parse(vals[1]), int.Parse(vals[0]));
-                        }
-                        else if (lineL.StartsWith("time="))
-                        {
-                            string[] vals = lineL.Remove(0, 5).Split(':');
-                            time = new DateTime(DateTime.MinValue.Year, DateTime.MinValue.Month, 
-                                DateTime.MinValue.Day, int.Parse(vals[0]), int.Parse(vals[1]), int.Parse(vals[2]));
+                            dateTime = DateTime.Parse(lineL.Remove(0, 9), DateTimeFormatInfo.InvariantInfo);
                         }
                         else if (lineL.StartsWith("lifetime="))
                         {
@@ -131,14 +115,9 @@ namespace Scada.Comm.Svc
                         else if (lineL.StartsWith("cmdtype="))
                         {
                             cmdType = line.Remove(0, 8);
-
-                            try
-                            {
-                                KPLogic.CmdType kpCmdType = (KPLogic.CmdType)Enum.Parse(
-                                    typeof(KPLogic.CmdType), cmdType, true);
-                                kpCmd = new KPLogic.Command(kpCmdType);
-                            }
-                            catch { }
+                            int cmdTypeID = BaseValues.CmdTypes.ParseCmdTypeCode(cmdType);
+                            if (cmdTypeID >= 0)
+                                kpCmd = new Command(cmdTypeID);
                         }
                         else if (lineL.StartsWith("end="))
                         {
@@ -158,37 +137,21 @@ namespace Scada.Comm.Svc
                                 }
                                 else if (lineL.StartsWith("cmdnum="))
                                 {
-                                    if (kpCmd.CmdType != KPLogic.CmdType.Request)
+                                    if (kpCmd.CmdTypeID != BaseValues.CmdTypes.Request)
                                         kpCmd.CmdNum = int.Parse(lineL.Remove(0, 7));
                                 }
                                 else if (lineL.StartsWith("cmdval="))
                                 {
-                                    if (kpCmd.CmdType == KPLogic.CmdType.Standard)
-                                    {
-                                        lineL = lineL.Remove(0, 7);
-                                        string s1 = lineL.Replace('.', ',');
-                                        string s2 = lineL.Replace(',', '.');
-                                        double val;
-                                        if (double.TryParse(s1, out val))
-                                            kpCmd.CmdVal = val;
-                                        else if (double.TryParse(s2, out val))
-                                            kpCmd.CmdVal = val;
-                                    }
+                                    if (kpCmd.CmdTypeID == BaseValues.CmdTypes.Standard)
+                                        kpCmd.CmdVal = ScadaUtils.ParseDouble(lineL.Remove(0, 7));
                                 }
                                 else if (lineL.StartsWith("cmddata="))
                                 {
-                                    if (kpCmd.CmdType == KPLogic.CmdType.Binary)
+                                    if (kpCmd.CmdTypeID == BaseValues.CmdTypes.Binary)
                                     {
-                                        int len = lineL.Length;
-                                        byte[] cmdData = new byte[(len - 8) / 2];
-
-                                        for (int i = 9, j = 0; i < len; i += 2, j++)
-                                        {
-                                            string byteStr = lineL[i - 1].ToString() + lineL[i].ToString();
-                                            cmdData[j] = byte.Parse(byteStr, NumberStyles.HexNumber);
-                                        }
-
-                                        kpCmd.CmdData = cmdData;
+                                        byte[] cmdData;
+                                        if (ScadaUtils.HexToBytes(lineL.Remove(0, 8), out cmdData))
+                                            kpCmd.CmdData = cmdData;
                                     }
                                 }
                             }
@@ -198,35 +161,28 @@ namespace Scada.Comm.Svc
 
                 if (cmdParams != null && target == "scadacommsvc" && endFound)
                 {
-                    // удаление успешно обработанного файла команды
-                    streamReader.Close();
-                    streamReader = null;
-                    fileStream.Close();
-                    fileStream = null;
-                    File.Delete(fileName);
-
-                    // проверка команды
-                    DateTime cmdDT = new DateTime(date.Year, date.Month, date.Day,
-                        time.Hour, time.Minute, time.Second);
+                    // проверка актуальности команды
                     DateTime nowDT = DateTime.Now;
                     string cmdInfo = (Localization.UseRussian ? " Тип: " : " Type: ") + cmdType;
                     cmdInfo += kpCmd == null ? "" : (Localization.UseRussian ? 
                         ", КП: " + kpCmd.KPNum + ", номер: " + kpCmd.CmdNum :
                         ", device: " + kpCmd.KPNum + ", number: " + kpCmd.CmdNum);
 
-                    if (nowDT.AddSeconds(-lifeTime) <= cmdDT && cmdDT <= nowDT.AddSeconds(lifeTime))
+                    if (nowDT.AddSeconds(-lifeTime) <= dateTime && dateTime <= nowDT.AddSeconds(lifeTime))
                     {
-                        log.WriteAction((Localization.UseRussian ? "Получена команда из файла." : 
+                        log.WriteAction((Localization.UseRussian ? 
+                            "Получена команда из файла." : 
                             "The command is received from file.") + cmdInfo, Log.ActTypes.Action);
                         result = true;
                     }
                     else
                     {
-                        log.WriteAction((Localization.UseRussian ? "Получена неактуальная команда из файла." :
+                        log.WriteAction((Localization.UseRussian ? 
+                            "Получена неактуальная команда из файла." :
                             "The outdated command is received from file.") + cmdInfo, Log.ActTypes.Action);
                     }
 
-                    cmdType = cmdType.ToLower();
+                    cmdType = cmdType.ToLowerInvariant();
                 }
             }
             catch (ThreadAbortException)
@@ -234,7 +190,8 @@ namespace Scada.Comm.Svc
             }
             catch (Exception ex)
             {
-                log.WriteAction(string.Format(Localization.UseRussian ? "Ошибка при приёме команды из файла {0}: {1}" :
+                log.WriteAction(string.Format(Localization.UseRussian ? 
+                    "Ошибка при приёме команды из файла {0}: {1}" :
                     "Error receiving command from file {0}: {1}", Path.GetFileName(fileName), ex.Message), 
                     Log.ActTypes.Exception);
             }
@@ -246,7 +203,20 @@ namespace Scada.Comm.Svc
                     fileStream.Close();
             }
 
-            return result;
+            if (result)
+            {
+                // удаление успешно обработанного файла команды
+                try { File.Delete(fileName); }
+                catch { }
+                return true;
+            }
+            else
+            {
+                // переименование файла команды, который не был обработан
+                try { File.Move(fileName, fileName + ".err"); }
+                catch { }
+                return false;
+            }
         }
 
         /// <summary>
@@ -261,19 +231,19 @@ namespace Scada.Comm.Svc
                     // приём команд от SCADA-Сервера
                     if (serverComm != null)
                     {
-                        KPLogic.Command cmd;
+                        Command cmd;
                         while (serverComm.ReceiveCommand(out cmd))
                         {
                             log.WriteAction(string.Format(Localization.UseRussian ? 
                                 "Получена команда от SCADA-Сервера. Тип: {0}, КП: {1}, номер: {2}" : 
                                 "The command is received from SCADA-Server. Type: {0}, device: {1}, number: {2}", 
-                                cmd.CmdType, cmd.KPNum, cmd.CmdNum), Log.ActTypes.Action);
+                                cmd.GetCmdTypeCode(), cmd.KPNum, cmd.CmdNum), Log.ActTypes.Action);
                             mngr.PassCmd(cmd);
                         }
                     }
 
                     // приём команд из файлов
-                    if (cmdDir != "" && Directory.Exists(cmdDir))
+                    if (Directory.Exists(cmdDir))
                     {
                         DirectoryInfo dirInfo = new DirectoryInfo(cmdDir);
                         FileInfo[] fileInfoAr = dirInfo.GetFiles("cmd*.dat", SearchOption.TopDirectoryOnly);
@@ -282,15 +252,18 @@ namespace Scada.Comm.Svc
                         {
                             string cmdType;
                             Dictionary<string, string> cmdParams;
-                            KPLogic.Command kpCmd;
+                            Command kpCmd;
 
-                            if (LoadCmd(fileInfo.FullName, out cmdType, out cmdParams, out kpCmd))
+                            if (LoadCmdFromFile(fileInfo.FullName, out cmdType, out cmdParams, out kpCmd))
                             {
                                 if (kpCmd == null)
                                 {
+                                    // команда не относится к КП
+                                    string lineNumStr;
                                     int lineNum;
                                     if ((cmdType == "startline" || cmdType == "stopline" || cmdType == "restartline") &&
-                                        cmdParams.ContainsKey("linenum") && int.TryParse(cmdParams["linenum"], out lineNum))
+                                        cmdParams.TryGetValue("linenum", out lineNumStr) && 
+                                        int.TryParse(lineNumStr, out lineNum))
                                     {
                                         // запуск или остановка линии связи
                                         if (cmdType == "startline")
@@ -302,7 +275,8 @@ namespace Scada.Comm.Svc
                                     }
                                     else
                                     {
-                                        log.WriteAction(Localization.UseRussian ? "Некорректные данные команды" :
+                                        log.WriteAction(Localization.UseRussian ? 
+                                            "Некорректные данные команды" :
                                             "Incorrect command data", Log.ActTypes.Error);
                                     }
                                 }
@@ -315,16 +289,18 @@ namespace Scada.Comm.Svc
                         }
                     }
 
-                    Thread.Sleep(200);
+                    Thread.Sleep(ScadaUtils.ThreadDelay);
                 }
                 catch (ThreadAbortException)
                 {
-                    log.WriteAction(Localization.UseRussian ? "Прерывание приёма команд" : 
+                    log.WriteAction(Localization.UseRussian ? 
+                        "Прерывание приёма команд" : 
                         "Receiving commands aborted", Log.ActTypes.Action);
                 }
                 catch (Exception ex)
                 {
-                    log.WriteAction((Localization.UseRussian ? "Ошибка при приёме команд: " : 
+                    log.WriteAction((Localization.UseRussian ? 
+                        "Ошибка при приёме команд: " : 
                         "Error receiving commands: ") + ex.Message, Log.ActTypes.Exception);
                 }
             }
@@ -338,6 +314,18 @@ namespace Scada.Comm.Svc
         {
             thread = new Thread(new ThreadStart(Execute));
             thread.Start();
+        }
+
+        /// <summary>
+        /// Остановить поток приёма команд
+        /// </summary>
+        public void StopThread()
+        {
+            if (thread != null)
+            {
+                thread.Abort();
+                thread = null;
+            }
         }
     }
 }

@@ -47,6 +47,7 @@ namespace Scada.Scheme.Editor
         private Mutex mutex;                      // объект для проверки запуска второй копии программы
         private string schemeUrl;                 // ссылка на веб-страницу, обеспечивающущю отображение схем
         private EditorData editorData;            // данные редактора схем
+        private string exeDir;                    // директория исполняемого файла приложения
         private Log log;                          // журнал приложения
         private SchemeView.Element elemClipboard; // буфер обмена элементов схемы
         private ServiceHost schemeSvcHost;        // хост WCF-службы для взаимодействия частей приложения
@@ -248,7 +249,7 @@ namespace Scada.Scheme.Editor
         private void FrmMain_Load(object sender, EventArgs e)
         {
             // определение директории исполняемого файла приложения
-            string exeDir = ScadaUtils.NormalDir(Path.GetDirectoryName(Application.ExecutablePath));
+            exeDir = ScadaUtils.NormalDir(Path.GetDirectoryName(Application.ExecutablePath));
 
             // локализация приложения
             if (!Localization.UseRussian)
@@ -491,7 +492,7 @@ namespace Scada.Scheme.Editor
         private void miHelpAbout_Click(object sender, EventArgs e)
         {
             // отображение формы о программе
-            (new FrmAbout()).ShowDialog();
+            FrmAbout.ShowAbout(exeDir, log);
         }
 
 

@@ -145,9 +145,8 @@ namespace Utils.Report
             /// <returns>Лист Excel или null, если он не найден</returns>
             public Worksheet FindWorksheet(string worksheetName)
             {
-                string name = worksheetName.ToLower();
                 foreach (Worksheet worksheet in worksheets)
-                    if (worksheet.Name.ToLower() == name)
+                    if (worksheet.Name.Equals(worksheetName, StringComparison.OrdinalIgnoreCase))
                         return worksheet;
 
                 return null;

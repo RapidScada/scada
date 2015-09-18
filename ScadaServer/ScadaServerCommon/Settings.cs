@@ -242,7 +242,7 @@ namespace Scada.Server
                     foreach (XmlElement paramElem in paramNodeList)
                     {
                         string name = paramElem.GetAttribute("name").Trim();
-                        string nameL = name.ToLower();
+                        string nameL = name.ToLowerInvariant();
                         string val = paramElem.GetAttribute("value");
 
                         try
@@ -270,7 +270,7 @@ namespace Scada.Server
                     XmlNodeList paramNodeList = paramsNode.SelectNodes("Param");
                     foreach (XmlElement paramElem in paramNodeList)
                     {
-                        string nameL = paramElem.GetAttribute("name").Trim().ToLower();
+                        string nameL = paramElem.GetAttribute("name").Trim().ToLowerInvariant();
                         string val = ScadaUtils.NormalDir(paramElem.GetAttribute("value"));
 
                         if (nameL == "basedatdir")
@@ -292,7 +292,7 @@ namespace Scada.Server
                     foreach (XmlElement paramElem in paramNodeList)
                     {
                         string name = paramElem.GetAttribute("name").Trim();
-                        string nameL = name.ToLower();
+                        string nameL = name.ToLowerInvariant();
                         string val = paramElem.GetAttribute("value");
 
                         try
@@ -349,7 +349,7 @@ namespace Scada.Server
             }
             catch (Exception ex)
             {
-                errMsg = CommonPhrases.LoadAppSettingsError + ":\r\n" + ex.Message;
+                errMsg = CommonPhrases.LoadAppSettingsError + ":" + Environment.NewLine + ex.Message;
                 return false;
             }
         }
@@ -453,7 +453,7 @@ namespace Scada.Server
             }
             catch (Exception ex)
             {
-                errMsg = CommonPhrases.SaveAppSettingsError + ":\r\n" + ex.Message;
+                errMsg = CommonPhrases.SaveAppSettingsError + ":" + Environment.NewLine + ex.Message;
                 return false;
             }
         }

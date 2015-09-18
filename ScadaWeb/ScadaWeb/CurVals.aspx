@@ -6,7 +6,7 @@
 <head runat="server">
     <title>Текущие значения</title>
 	<link href="css/curVals.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="script/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript" src="script/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" src="script/curVals.js"></script>
 </head>
 <body>

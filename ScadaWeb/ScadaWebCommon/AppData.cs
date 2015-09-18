@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2005
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
@@ -192,14 +192,14 @@ namespace Scada.Web
                 else
                 {
                     AppDir = ScadaUtils.NormalDir(HttpContext.Current.Request.PhysicalApplicationPath);
-                    BinDir = AppDir + "bin\\";
+                    BinDir = AppDir + "bin" + Path.DirectorySeparatorChar;
                 }
 
-                ConfigDir = AppDir + "config\\";
-                LangDir = AppDir + "lang\\";
-                LogDir = AppDir + "log\\";
-                ReportDir = AppDir + "report\\";
-                TemplateDir = AppDir + "templates\\";
+                ConfigDir = AppDir + "config" + Path.DirectorySeparatorChar;
+                LangDir = AppDir + "lang" + Path.DirectorySeparatorChar;
+                LogDir = AppDir + "log" + Path.DirectorySeparatorChar;
+                ReportDir = AppDir + "report" + Path.DirectorySeparatorChar;
+                TemplateDir = AppDir + "templates" + Path.DirectorySeparatorChar;
 
                 // настройка объекта для работы с данными системы
                 MainData.SettingsFileName = ConfigDir + CommSettings.DefFileName;

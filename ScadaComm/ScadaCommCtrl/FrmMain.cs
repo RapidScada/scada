@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,19 +23,20 @@
  * Modified : 2015
  */
 
+using Scada.Client;
+using Scada.Comm.Channels;
+using Scada.Comm.Devices;
+using Scada.Data;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.IO;
 using System.IO.Ports;
-using System.Reflection;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using Scada.Client;
-using Scada.Comm.KP;
 using Utils;
 
 namespace Scada.Comm.Ctrl
@@ -80,18 +81,13 @@ namespace Scada.Comm.Ctrl
             /// </summary>
             public KpDllInfo()
             {
-                ShtName = "";
                 FileName = "";
                 KpType = null;
                 KpView = null;
             }
 
             /// <summary>
-            /// Получить или установить короткое имя файла
-            /// </summary>
-            public string ShtName { get; set; }
-            /// <summary>
-            /// Получить или установить полное имя файла
+            /// Получить или установить имя файла без директории
             /// </summary>
             public string FileName { get; set; }
             /// <summary>
@@ -102,6 +98,30 @@ namespace Scada.Comm.Ctrl
             /// Получить или установить объект для работы с пользовательским интерфейсом КП
             /// </summary>
             public KPView KpView { get; set; }
+        }
+
+        /// <summary>
+        /// Пользовательский параметр линии связи
+        /// </summary>
+        private class CustomParam
+        {
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public CustomParam(string name, string value)
+            {
+                Name = name;
+                Value = value;
+            }
+
+            /// <summary>
+            /// Получить наименование
+            /// </summary>
+            public string Name { get; private set; }
+            /// <summary>
+            /// Получить или установить значение
+            /// </summary>
+            public string Value { get; set; }
         }
 
 
@@ -118,58 +138,50 @@ namespace Scada.Comm.Ctrl
         /// </summary>
         private const string ErrFileName = "ScadaCommCtrl.err";
         /// <summary>
-        /// Пароль для отправки команды ТУ
-        /// </summary>
-        private const string CmdPwd = "12345";
-        /// <summary>
         /// Нулевое время, отформатированное в соответствии с культурой приложения
         /// </summary>
         private static readonly string ZeroTime = new DateTime(0).ToString("T", Localization.Culture);
 
-        private string exeDir;                // директория исполняемого файла приложения
-        private string configDir;             // директория конфигурации приложения
-        private string langDir;               // директория языковых файлов приложения
-        private string logDir;                // директория журналов приложения
-        private string kpDir;                 // директория библиотек КП
-        private string cmdDir;                // директория команд
-        private Log errLog;                   // журнал ошибок приложения
-        private Mutex mutex;                  // объект для проверки запуска второй копии программы
-        private Icon icoStart;                // пиктограмма работающей службы
-        private Icon icoStop;                 // пиктограмма остановленной службы
-        private ServiceController svcContr;   // контроллер службы
+        private AppDirs appDirs;            // директории приложения
+        private Log errLog;                 // журнал ошибок приложения
+        private Mutex mutex;                // объект для проверки запуска второй копии программы
+        private Icon icoStart;              // пиктограмма работающей службы
+        private Icon icoStop;               // пиктограмма остановленной службы
+        private ServiceController svcContr; // контроллер службы
         private ServiceControllerStatus prevSvcStatus; // предыдущее состояние службы
 
-        private TreeNode nodeCommonParams;    // узел общих параметров
-        private TreeNode nodeKpDlls;          // узел библиотек КП
-        private TreeNode nodeLines;           // узел линий связи
-        private TreeNode nodeStats;           // узел статистики
+        private TreeNode nodeCommonParams;  // узел общих параметров
+        private TreeNode nodeKpDlls;        // узел библиотек КП
+        private TreeNode nodeLines;         // узел линий связи
+        private TreeNode nodeStats;         // узел статистики
 
-        private Settings origSettings;        // первоначальные настройки
-        private Settings modSettings;         // изменённые настройки
-        private TreeNode lastNode;            // последний выбранный узел дерева, с которым связаны отображаемые страницы
-        private Settings.CommLine lastLine;   // последняя выбранная линия связи
-        private Settings.UserParam lastParam; // последний выбранный пользовательский параметр линии связи
-        private ListViewItem lastParamItem;   // элемент списка последнего выбранного пользовательского параметра
-        private Settings.KP lastKP;           // последний выбранный КП
-        private ListViewItem lastKpItem;      // элемент списка последнего выбранного КП
-        private Settings.KP copiedKP;         // скопированный КП
-        private bool changing;                // происходит программное изменение элементов управления
+        private Settings origSettings;      // первоначальные настройки
+        private Settings modSettings;       // изменённые настройки
+        private TreeNode lastNode;          // последний выбранный узел дерева, с которым связаны отображаемые страницы
+        private Settings.CommLine lastLine; // последняя выбранная линия связи
+        private CustomParam lastParam;      // последний выбранный пользовательский параметр линии связи
+        private ListViewItem lastParamItem; // элемент списка последнего выбранного пользовательского параметра
+        private Settings.KP lastKP;         // последний выбранный КП
+        private ListViewItem lastKpItem;    // элемент списка последнего выбранного КП
+        private Settings.KP copiedKP;       // скопированный КП
+        private bool changing;              // происходит программное изменение элементов управления
 
-        private ServerComm serverComm;        // объект для обмена данными со SCADA-Сервером
-        private bool baseTablesReceived;      // таблицы базы конфигурации получены
-        private DataTable tblCommLine;        // таблица линий связи из базы конфигурации
-        private DataTable tblKP;              // таблица КП из базы конфигурации
-        private DataTable tblKPType;          // таблица типов КП из базы конфигурации
-        private SortedList<string, KpDllInfo> kpDllInfoList; // информация о библиотеках КП, упорядоченная по имени DLL
+        private ServerComm serverComm;      // объект для обмена данными со SCADA-Сервером
+        private bool baseTablesReceived;    // таблицы базы конфигурации получены
+        private DataTable tblCommLine;      // таблица линий связи из базы конфигурации
+        private DataTable tblKP;            // таблица КП из базы конфигурации
+        private DataTable tblKPType;        // таблица типов КП из базы конфигурации
+        private SortedList<string, KpDllInfo> kpDllInfoList; // информация о библиотеках КП, доступная по имени DLL
+        private Dictionary<string, SortedList<string, string>> commCnlParamsBuf; // буфер параметров слоёв связи
 
-        private ListBox lbLog1;               // список строк 1-го журнала
-        private ListBox lbLog2;               // список строк 2-го журнала
-        private string logFileName1;          // имя файла 1-го журнала
-        private string logFileName2;          // имя файла 2-го журнала
-        private DateTime logFileAge1;         // время изменения файла 1-го журнала
-        private DateTime logFileAge2;         // время изменения файла 2-го журнала
-        private bool fullLoad1;               // загружать 1-й журнал полностью
-        private bool fullLoad2;               // загружать 2-й журнал полностью
+        private ListBox lbLog1;             // список строк 1-го журнала
+        private ListBox lbLog2;             // список строк 2-го журнала
+        private string logFileName1;        // имя файла 1-го журнала
+        private string logFileName2;        // имя файла 2-го журнала
+        private DateTime logFileAge1;       // время изменения файла 1-го журнала
+        private DateTime logFileAge2;       // время изменения файла 2-го журнала
+        private bool fullLoad1;             // загружать 1-й журнал полностью
+        private bool fullLoad2;             // загружать 2-й журнал полностью
 
 
         /// <summary>
@@ -184,10 +196,8 @@ namespace Scada.Comm.Ctrl
             timeKpTime.CustomFormat = Localization.Culture.DateTimeFormat.LongTimePattern;
 
             // установка имён столбцов списков для перевода формы
-            colParamOrder.Name = "colParamOrder";
             colParamName.Name = "colParamName";
             colParamValue.Name = "colParamValue";
-            colParamDescr.Name = "colParamDescr";
 
             colKpOrder.Name = "colKpOrder";
             colKpActive.Name = "colKpActive";
@@ -204,12 +214,7 @@ namespace Scada.Comm.Ctrl
             colKpCmdLine.Name = "colKpCmdLine";
 
             // инициализация полей
-            exeDir = "";
-            configDir = "";
-            langDir = "";
-            logDir = "";
-            kpDir = "";
-            cmdDir = "";
+            appDirs = new AppDirs();
             errLog = new Log(Log.Formats.Simple);
             errLog.Encoding = Encoding.UTF8;
             mutex = null;
@@ -240,6 +245,7 @@ namespace Scada.Comm.Ctrl
             tblKP = new DataTable();
             tblKPType = new DataTable();
             kpDllInfoList = new SortedList<string, KpDllInfo>();
+            commCnlParamsBuf = new Dictionary<string, SortedList<string, string>>();
 
             lbLog1 = null;
             lbLog2 = null;
@@ -249,6 +255,8 @@ namespace Scada.Comm.Ctrl
             logFileAge2 = DateTime.MinValue;
             fullLoad1 = false;
             fullLoad2 = false;
+
+            Application.ThreadException += Application_ThreadException;
         }
 
 
@@ -364,13 +372,14 @@ namespace Scada.Comm.Ctrl
         {
             treeView.BeginUpdate();
             nodeLines.Nodes.Clear();
-            int comLineCnt = origSettings.CommLines.Count;
+            int lineCnt = modSettings.CommLines.Count;
 
-            for (int i = 0; i < comLineCnt; i++)
+            for (int i = 0; i < lineCnt; i++)
             {
-                TreeNode nodeLine = NewLineNode(modSettings.CommLines[i]);
+                Settings.CommLine commLine = modSettings.CommLines[i];
+                TreeNode nodeLine = NewLineNode(commLine);
                 nodeLines.Nodes.Add(nodeLine);
-                FillLineNode(nodeLine, origSettings.CommLines[i]);
+                FillLineNode(nodeLine, commLine);
             }
 
             treeView.EndUpdate();
@@ -394,7 +403,7 @@ namespace Scada.Comm.Ctrl
 
                 if (updateChildNodes)
                 {
-                    Settings.CommLine commLine = origSettings.CommLines[i];
+                    Settings.CommLine commLine = modSettings.CommLines[i];
                     if (!commLine.Active)
                         nodeLine.Collapse();
                     nodeLine.Nodes.Clear();
@@ -413,7 +422,7 @@ namespace Scada.Comm.Ctrl
             TreeNode node = new TreeNode(commLine.Caption);
             node.ImageKey = node.SelectedImageKey = "commline.png";
             node.ContextMenuStrip = cmsLine;
-            node.Tag = new NodeTag(commLine, pageLineParams, pageUserParams, pageReqSequence);
+            node.Tag = new NodeTag(commLine, pageLineParams, pageCustomParams, pageReqSequence);
             return node;
         }
 
@@ -465,6 +474,22 @@ namespace Scada.Comm.Ctrl
         }
 
         /// <summary>
+        /// Заполнить список типов каналов связи
+        /// </summary>
+        private void FillCommCnlTypes()
+        {
+            cbCommCnlType.Items.AddRange(new CommChannelView[]
+            {
+                new CommSerialView(),
+                new CommTcpClientView(),
+                new CommTcpServerView(),
+                new CommUdpView()
+            });
+
+            cbCommCnlType.SelectedIndex = 0;
+        }
+
+        /// <summary>
         /// Настроить элементы управления отправки команды ТУ
         /// </summary>
         private void TuneKpCmd()
@@ -496,6 +521,88 @@ namespace Scada.Comm.Ctrl
             gbKpCmd.Height = btnSendCmd.Bottom + gbKpCmd.Padding.Bottom + 2;
         }
 
+        /// <summary>
+        /// Отобразить свойства КП
+        /// </summary>
+        private bool ShowKPProps(KPView kpView)
+        {
+            if (kpView.CanShowProps)
+            {
+                // вызов формы отображения свойств КП
+                kpView.KPProps = new KPView.KPProperties(lastLine.CustomParams, lastKP.CmdLine);
+                kpView.AppDirs = appDirs;
+                kpView.ShowProps();
+
+                if (kpView.KPProps.Modified)
+                {
+                    // обновление пользовательских параметров линии связи на форме
+                    CustomParamsToPage();
+
+                    // обновление командной строки на форме, если необходимо
+                    if (tabControl.SelectedTab == pageReqSequence)
+                        txtCmdLine.Text = kpView.KPProps.CmdLine;
+                    else
+                        lastKP.CmdLine = kpView.KPProps.CmdLine;
+
+                    SetModified();
+                }
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Отобразить свойства выбранного КП
+        /// </summary>
+        private void ShowLastKPProps(bool showUnsupMsg)
+        {
+            if (lastLine != null && lastKP != null)
+            {
+                KpDllInfo kpDllInfo;
+                if (kpDllInfoList.TryGetValue(lastKP.Dll, out kpDllInfo))
+                {
+                    try
+                    {
+                        KPView kpView = KPFactory.GetKPView(kpDllInfo.KpType, lastKP.Number);
+                        if (!ShowKPProps(kpView) && showUnsupMsg)
+                            ScadaUtils.ShowError(string.Format(AppPhrases.ShowKpPropsUnsupported, kpDllInfo.FileName));
+                    }
+                    catch (Exception ex)
+                    {
+                        string errMsg = AppPhrases.ShowKpPropsError + ":\r\n" + ex.Message;
+                        errLog.WriteAction(errMsg);
+                        ScadaUtils.ShowError(errMsg);
+                    }
+                }
+                else
+                {
+                    ScadaUtils.ShowError(AppPhrases.UnknownDLL);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Отобразить свойства типа КП
+        /// </summary>
+        private void ShowKPTypeProps(KPView kpView)
+        {
+            try
+            {
+                if (kpView != null && kpView.CanShowProps)
+                    kpView.ShowProps();
+            }
+            catch (Exception ex)
+            {
+                string errMsg = AppPhrases.ShowKpPropsError + ":\r\n" + ex.Message;
+                errLog.WriteAction(errMsg);
+                ScadaUtils.ShowError(errMsg);
+            }
+        }
+
 
         /// <summary>
         /// Считать настройки изменёнными
@@ -521,7 +628,7 @@ namespace Scada.Comm.Ctrl
             txtServerUser.Text = modSettings.Params.ServerUser;
             txtServerPwd.Text = modSettings.Params.ServerPwd;
             numWaitForStop.SetNumericValue(modSettings.Params.WaitForStop);
-            numRefrParams.SetNumericValue(modSettings.Params.RefrParams);
+            numSendAllDataPer.SetNumericValue(modSettings.Params.SendAllDataPer);
 
             changing = false;
         }
@@ -540,98 +647,73 @@ namespace Scada.Comm.Ctrl
                 numLineNumber.SetNumericValue(lastLine.Number);
                 txtLineName.Text = lastLine.Name;
 
-                bool comPort = lastLine.ConnType.ToLower() == "comport";
-                cbConnType.SelectedIndex = comPort ? 1 : 0;
-                cbPortName.Text = lastLine.PortName;
+                int commCnlTypeInd = 0; // 0 - не задан
+                CommChannelView commCnlView = null;
 
-                string baudRateStr = lastLine.BaudRate.ToString();
-                cbBaudRate.SelectedIndex = 0;
-                for (int i = 0; i < cbBaudRate.Items.Count; i++)
+                for (int i = 0; i < cbCommCnlType.Items.Count && commCnlTypeInd <= 0; i++)
                 {
-                    if (cbBaudRate.Items[i].ToString() == baudRateStr)
+                    CommChannelView curCommCnlView = cbCommCnlType.Items[i] as CommChannelView;
+                    if (curCommCnlView != null && curCommCnlView.TypeName == lastLine.CommCnlType)
                     {
-                        cbBaudRate.SelectedIndex = i;
-                        break;
+                        commCnlTypeInd = i;
+                        commCnlView = curCommCnlView;
                     }
                 }
 
-                string dataBitsStr = lastLine.DataBits.ToString();
-                cbDataBits.SelectedIndex = cbDataBits.Items.Count - 1; // 8 бит
-                for (int i = 0; i < cbDataBits.Items.Count; i++)
-                {
-                    if (cbDataBits.Items[i].ToString() == dataBitsStr)
-                    {
-                        cbDataBits.SelectedIndex = i;
-                        break;
-                    }
-                }
-
-                if (lastLine.Parity == Parity.Even)
-                    cbParity.SelectedIndex = 0; // чёт.
-                else if (lastLine.Parity == Parity.Odd)
-                    cbParity.SelectedIndex = 1; // нечёт.
-                else if (lastLine.Parity == Parity.Mark)
-                    cbParity.SelectedIndex = 3; // маркер
-                else if (lastLine.Parity == Parity.Space)
-                    cbParity.SelectedIndex = 4; // пробел
-                else
-                    cbParity.SelectedIndex = 2; // нет
-
-                if (lastLine.StopBits == StopBits.One)
-                    cbStopBits.SelectedIndex = 0; // 1
-                else if (lastLine.StopBits == StopBits.OnePointFive)
-                    cbStopBits.SelectedIndex = 1; // 1,5
-                else if (lastLine.StopBits == StopBits.Two)
-                    cbStopBits.SelectedIndex = 2; // 2
-
-                chkDtrEnable.Checked = lastLine.DtrEnable;
-                chkRtsEnable.Checked = lastLine.RtsEnable;
+                cbCommCnlType.SelectedIndex = commCnlTypeInd;
+                CommChannelToPage(commCnlView);
+                commCnlParamsBuf.Clear();
 
                 numReqTriesCnt.SetNumericValue(lastLine.ReqTriesCnt);
                 numCycleDelay.SetNumericValue(lastLine.CycleDelay);
-                numMaxCommErrCnt.SetNumericValue(lastLine.MaxCommErrCnt);
                 chkCmdEnabled.Checked = lastLine.CmdEnabled;
-
-                cbPortName.Enabled = comPort;
-                cbBaudRate.Enabled = comPort;
-                cbDataBits.Enabled = comPort;
-                cbParity.Enabled = comPort;
-                cbStopBits.Enabled = comPort;
-                chkDtrEnable.Enabled = comPort;
-                chkRtsEnable.Enabled = comPort;
+                chkDetailedLog.Checked = lastLine.DetailedLog;
 
                 changing = false;
             }
         }
 
         /// <summary>
+        /// Отобразить свойства канала связи на странице линии связи
+        /// </summary>
+        private void CommChannelToPage(CommChannelView commCnlView)
+        {
+            if (lastLine == null || commCnlView == null)
+            {
+                lastLine.CommCnlType = "";
+                btnCommCnlProps.Enabled = false;
+                txtCommCnlParams.Text = "";
+            }
+            else
+            {
+                lastLine.CommCnlType = commCnlView.TypeName;
+                btnCommCnlProps.Enabled = commCnlView.CanShowProps;
+                try { txtCommCnlParams.Text = commCnlView.GetPropsInfo(lastLine.CommCnlParams); }
+                catch (Exception ex) { txtCommCnlParams.Text = ex.Message; }
+            }
+        }
+
+        /// <summary>
         /// Отобразить изменённые пользовательские параметры линии связи на странице
         /// </summary>
-        private void UserParamsToPage()
+        private void CustomParamsToPage()
         {
             if (lastLine != null)
             {
                 changing = true;
 
-                btnMoveUpParam.Enabled = false;
-                btnMoveDownParam.Enabled = false;
                 btnDelParam.Enabled = false;
+                lvCustomParams.Items.Clear();
 
-                lvUserParams.Items.Clear();
-                for (int i = 0; i < lastLine.UserParams.Count; i++)
+                foreach (KeyValuePair<string, string> customParam in lastLine.CustomParams)
                 {
-                    Settings.UserParam userParam = lastLine.UserParams[i];
-
-                    ListViewItem item = new ListViewItem(new string[] { (i + 1).ToString(), 
-                        userParam.Name, userParam.Value, userParam.Descr });
-                    item.Tag = userParam;
-                    lvUserParams.Items.Add(item);
+                    ListViewItem item = new ListViewItem(new string[] { customParam.Key, customParam.Value });
+                    item.Tag = new CustomParam(customParam.Key, customParam.Value);
+                    lvCustomParams.Items.Add(item);
                 }
 
-                txtParamOrder.Text = "";
                 txtParamName.Text = "";
                 txtParamValue.Text = "";
-                txtParamDescr.Text = "";
                 gbSelectedParam.Enabled = false;
 
                 changing = false;
@@ -780,24 +862,20 @@ namespace Scada.Comm.Ctrl
             kp.CallNum = Convert.ToString(kpRowView["CallNum"]);
 
             int rowInd = tblKPType.DefaultView.Find(kpRowView["KPTypeID"]);
-            kp.Dll = rowInd < 0 ? "" : Path.GetFileNameWithoutExtension(
-                Convert.ToString(tblKPType.DefaultView[rowInd]["DllFileName"]));
+            kp.Dll = rowInd < 0 ? "" : Convert.ToString(tblKPType.DefaultView[rowInd]["DllFileName"]);
 
             // установка параметров опроса КП по умолчанию
             if (setReqParams)
             {
-                int index = kpDllInfoList.IndexOfKey(kp.Dll);
-                if (index >= 0)
+                KpDllInfo kpDllInfo;
+                if (kpDllInfoList.TryGetValue(kp.Dll, out kpDllInfo))
                 {
-                    KPLogic.ReqParams reqParams = kpDllInfoList.Values[index].KpView.DefaultReqParams;
-                    if (!reqParams.IsEmpty)
-                    {
-                        kp.Timeout = reqParams.Timeout;
-                        kp.Delay = reqParams.Delay;
-                        kp.Time = reqParams.Time;
-                        kp.Period = reqParams.Period;
-                        kp.CmdLine = reqParams.CmdLine;
-                    }
+                    KPReqParams reqParams = kpDllInfo.KpView.DefaultReqParams;
+                    kp.Timeout = reqParams.Timeout;
+                    kp.Delay = reqParams.Delay;
+                    kp.Time = reqParams.Time;
+                    kp.Period = reqParams.Period;
+                    kp.CmdLine = reqParams.CmdLine;
                 }
             }
         }
@@ -813,33 +891,28 @@ namespace Scada.Comm.Ctrl
 
             try
             {
-                DirectoryInfo dirInfo = new DirectoryInfo(kpDir);
+                DirectoryInfo dirInfo = new DirectoryInfo(appDirs.KPDir);
                 FileInfo[] fileInfoAr = dirInfo.GetFiles("kp*.dll", SearchOption.TopDirectoryOnly);
 
                 foreach (FileInfo fileInfo in fileInfoAr)
                 {
-                    if (fileInfo.Name.ToLower() != "kp.dll")
+                    if (!fileInfo.Name.Equals("kp.dll", StringComparison.OrdinalIgnoreCase))
                     {
-                        KpDllInfo kpDllInfo = new KpDllInfo();
-                        kpDllInfo.ShtName = Path.GetFileNameWithoutExtension(fileInfo.Name);
-                        kpDllInfo.FileName = fileInfo.Name;
-
-                        string typeFullName = "Scada.Comm.KP." + kpDllInfo.ShtName + "View";
                         try
                         {
-                            Assembly asm = Assembly.LoadFile(fileInfo.FullName);
-                            kpDllInfo.KpType = asm.GetType(typeFullName);
-                            kpDllInfo.KpView = Activator.CreateInstance(kpDllInfo.KpType) as KPView;
-                            kpDllInfo.KpView.ConfigDir = configDir;
-                            kpDllInfo.KpView.LangDir = langDir;
-                            kpDllInfo.KpView.CmdDir = cmdDir;
-
-                            kpDllInfoList.Add(kpDllInfo.ShtName, kpDllInfo);
+                            KPView kpView = KPFactory.GetKPView(appDirs.KPDir, fileInfo.Name);
+                            kpView.AppDirs = appDirs;
+                            KpDllInfo kpDllInfo = new KpDllInfo()
+                            {
+                                FileName = fileInfo.Name,
+                                KpType = kpView.GetType(),
+                                KpView = kpView
+                            };
+                            kpDllInfoList.Add(kpDllInfo.FileName, kpDllInfo);
                         }
                         catch (Exception ex)
                         {
-                            errLog.WriteAction(string.Format(AppPhrases.GetKpTypeError, fileInfo.FullName) + 
-                                ":\r\n" + ex.Message);
+                            errLog.WriteAction(ex.Message);
                         }
                     }
                 }
@@ -850,7 +923,7 @@ namespace Scada.Comm.Ctrl
                     foreach (KpDllInfo kpDllInfo in kpDllInfoList.Values)
                     {
                         lbKpDll.Items.Add(kpDllInfo.FileName);
-                        cbKpDll.Items.Add(kpDllInfo.ShtName);
+                        cbKpDll.Items.Add(kpDllInfo.FileName);
                     }
                     lbKpDll.SelectedIndex = 0;
                 }
@@ -862,33 +935,36 @@ namespace Scada.Comm.Ctrl
         }
 
 
+        private void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
+        {
+            string errMsg = CommonPhrases.UnhandledException + ":\r\n" + e.Exception.Message;
+            errLog.WriteAction(errMsg, Log.ActTypes.Exception);
+            ScadaUtils.ShowError(errMsg);
+        }
+
         private void FrmMain_Load(object sender, EventArgs e)
         {
             // инициализация директорий приложения
-            exeDir = ScadaUtils.NormalDir(Path.GetDirectoryName(Application.ExecutablePath));
-            configDir = exeDir + "Config\\";
-            langDir = exeDir + "Lang\\";
-            logDir = exeDir + "Log\\";
-            kpDir = exeDir + "KP\\";
-            cmdDir = exeDir + "Cmd\\";
+            appDirs.Init(Path.GetDirectoryName(Application.ExecutablePath));
 
             // установка имени файла журнала ошибок
-            errLog.FileName = logDir + ErrFileName;
+            errLog.FileName = appDirs.LogDir + ErrFileName;
 
             // локализация приложения
             StringBuilder sbError = new StringBuilder();
             string errMsg;
             if (!Localization.UseRussian)
             {
-                if (Localization.LoadDictionaries(langDir, "ScadaData", out errMsg))
+                if (Localization.LoadDictionaries(appDirs.LangDir, "ScadaData", out errMsg))
                     CommonPhrases.Init();
                 else
                     sbError.AppendLine(errMsg);
 
-                if (Localization.LoadDictionaries(langDir, "ScadaComm", out errMsg))
+                if (Localization.LoadDictionaries(appDirs.LangDir, "ScadaComm", out errMsg))
                 {
                     Localization.TranslateForm(this, "Scada.Comm.Ctrl.FrmMain", toolTip, cmsNotify, cmsLine, cmsKP);
                     AppPhrases.Init();
+                    CommPhrases.InitFromDictionaries();
                     TranslateTree();
                     notifyIcon.Text = AppPhrases.MainFormTitle;
                 }
@@ -934,7 +1010,7 @@ namespace Scada.Comm.Ctrl
             }
 
             // загрузка конфигурации
-            if (!origSettings.Load(configDir + Settings.DefFileName, out errMsg))
+            if (!origSettings.Load(appDirs.ConfigDir + Settings.DefFileName, out errMsg))
                 sbError.AppendLine(errMsg);
             modSettings = origSettings.Clone();
 
@@ -944,6 +1020,7 @@ namespace Scada.Comm.Ctrl
             pnlCmdData.Top = pnlCmdVal.Top;
             TuneKpCmd();
             MakeTree();
+            FillCommCnlTypes();
 
             // получение информации о типах КП
             GetKpDllInfo();
@@ -1053,7 +1130,7 @@ namespace Scada.Comm.Ctrl
             }
 
             string errMsg;
-            if (modSettings.Save(configDir + Settings.DefFileName, out errMsg))
+            if (modSettings.Save(appDirs.ConfigDir + Settings.DefFileName, out errMsg))
             {
                 // запрет кнопок применения и отмены настроек
                 btnSettingsApply.Enabled = false;
@@ -1136,12 +1213,7 @@ namespace Scada.Comm.Ctrl
         private void btnAbout_Click(object sender, EventArgs e)
         {
             // отображение формы о программе
-            string errMsg;
-            if (!FrmAbout.ShowAbout(exeDir, out errMsg))
-            {
-                errLog.WriteAction(errMsg);
-                ScadaUtils.ShowError(errMsg);
-            }
+            FrmAbout.ShowAbout(appDirs.ExeDir, errLog);
         }
 
 
@@ -1211,14 +1283,17 @@ namespace Scada.Comm.Ctrl
         private void treeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
             TreeNode node = e.Node;
-            NodeTag nodeTag = node.Tag as NodeTag;
+            NodeTag nodeTag = node == null ? null : node.Tag as NodeTag;
 
-            if (node != null && node != lastNode && nodeTag != null)
+            if (nodeTag != null && node != lastNode)
             {
                 Text = AppPhrases.MainFormTitle + " - " + node.Text;
                 lastNode = node;
                 lastLine = nodeTag.Obj as Settings.CommLine;
                 lastKP = nodeTag.Obj as Settings.KP;
+
+                if (lastKP != null)
+                    lastLine = ((NodeTag)node.Parent.Tag).Obj as Settings.CommLine;
 
                 // отображение ассоциированных с узлом дерева страниц
                 tabControl.TabPages.Clear();
@@ -1230,8 +1305,8 @@ namespace Scada.Comm.Ctrl
                         CommonParamsToPage();
                     else if (tabPage == pageLineParams)
                         LineParamsToPage();
-                    else if (tabPage == pageUserParams)
-                        UserParamsToPage();
+                    else if (tabPage == pageCustomParams)
+                        CustomParamsToPage();
                     else if (tabPage == pageReqSequence)
                         ReqSequenceToPage();
                     else if (tabPage == pageLineLog)
@@ -1253,6 +1328,17 @@ namespace Scada.Comm.Ctrl
             // выбор узла дерева по щелчку правой кнопкой мыши
             if (e.Button == MouseButtons.Right && e.Node != null)
                 treeView.SelectedNode = e.Node;
+        }
+
+        private void treeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            // вызов свойств КП по двойному щечку левой кнопкой мыши
+            if (e.Button == MouseButtons.Left && e.Node != null)
+            {
+                NodeTag nodeTag = e.Node.Tag as NodeTag;
+                if (nodeTag != null && nodeTag.Obj is Settings.KP)
+                    ShowLastKPProps(false);
+            }
         }
 
 
@@ -1449,7 +1535,7 @@ namespace Scada.Comm.Ctrl
                 string[] cmdParams = new string[] { "LineNum=" + lastLine.Number };
                 string msg;
 
-                if (KPUtils.SaveCmd(cmdDir, "ScadaCommCtrl", cmdType, cmdParams, out msg))
+                if (CommUtils.SaveCmd(appDirs.CmdDir, "ScadaCommCtrl", cmdType, cmdParams, out msg))
                 {
                     ScadaUtils.ShowInfo(msg);
                 }
@@ -1478,7 +1564,7 @@ namespace Scada.Comm.Ctrl
 
                     try
                     {
-                        kpView = Activator.CreateInstance(kpDllInfo.KpType, lastKP.Number) as KPView;
+                        kpView = KPFactory.GetKPView(kpDllInfo.KpType, lastKP.Number);
                         enabled = kpView.CanShowProps;
                     }
                     catch { }
@@ -1486,7 +1572,7 @@ namespace Scada.Comm.Ctrl
             }
 
             miKpProps.Enabled = enabled;
-            miKpProps.Tag = kpView;
+            miKpProps.Tag = enabled ? kpView : null;
         }
 
         private void miKpProps_Click(object sender, EventArgs e)
@@ -1495,18 +1581,12 @@ namespace Scada.Comm.Ctrl
             try
             {
                 KPView kpView = miKpProps.Tag as KPView;
-
-                if (kpView != null)
-                {
-                    kpView.ConfigDir = configDir;
-                    kpView.LangDir = langDir;
-                    kpView.CmdDir = cmdDir;
-                    kpView.ShowProps();
-                }
+                if (kpView != null && lastLine != null && lastKP != null)
+                    ShowKPProps(kpView);
             }
             catch (Exception ex)
             {
-                string errMsg = AppPhrases.ImportKpError + ":\r\n" + ex.Message;
+                string errMsg = AppPhrases.ShowKpPropsError + ":\r\n" + ex.Message;
                 errLog.WriteAction(errMsg);
                 ScadaUtils.ShowError(errMsg);
             }
@@ -1539,7 +1619,7 @@ namespace Scada.Comm.Ctrl
                     else prefix = "line";
 
                     lbLog1 = lbLineState;
-                    logFileName1 = logDir + prefix + lastLine.Number + ".txt";
+                    logFileName1 = appDirs.LogDir + prefix + lastLine.Number + ".txt";
                     fullLoad1 = true;
                 }
                 else if (tabPage == pageLineLog && lastLine != null)
@@ -1551,7 +1631,7 @@ namespace Scada.Comm.Ctrl
 
                     lbLog1 = lbLineLog;
                     lbLog1.SelectedIndex = -1; // для последующей прокрутки в конец списка
-                    logFileName1 = logDir + prefix + lastLine.Number + ".log";
+                    logFileName1 = appDirs.LogDir + prefix + lastLine.Number + ".log";
                 }
                 else if (tabPage == pageKpData && lastKP != null)
                 {
@@ -1561,7 +1641,7 @@ namespace Scada.Comm.Ctrl
                     else prefix = "kp";
 
                     lbLog1 = lbKpData;
-                    logFileName1 = logDir + prefix + lastKP.Number + ".txt";
+                    logFileName1 = appDirs.LogDir + prefix + lastKP.Number + ".txt";
                     fullLoad1 = true;
                 }
                 else if (tabPage == pageStats)
@@ -1569,8 +1649,8 @@ namespace Scada.Comm.Ctrl
                     lbLog1 = lbAppState;
                     lbLog2 = lbAppLog;
                     lbLog2.SelectedIndex = -1; // для последующей прокрутки в конец списка
-                    logFileName1 = logDir + StateFileName;
-                    logFileName2 = logDir + LogFileName;
+                    logFileName1 = appDirs.LogDir + StateFileName;
+                    logFileName2 = appDirs.LogDir + LogFileName;
                     fullLoad1 = true;
                 }
             }
@@ -1663,11 +1743,11 @@ namespace Scada.Comm.Ctrl
             }
         }
 
-        private void numRefrParams_ValueChanged(object sender, EventArgs e)
+        private void numSendAllDataPer_ValueChanged(object sender, EventArgs e)
         {
             if (!changing)
             {
-                modSettings.Params.RefrParams = decimal.ToInt32(numRefrParams.Value);
+                modSettings.Params.SendAllDataPer = decimal.ToInt32(numSendAllDataPer.Value);
                 SetModified();
             }
         }
@@ -1683,7 +1763,8 @@ namespace Scada.Comm.Ctrl
                 KPView kpView = kpDllInfoList.Values[index].KpView;
                 if (kpView != null)
                 {
-                    txtKpDllDescr.Lines = kpView.KPDescr.Split(new string[] { "\n" }, StringSplitOptions.None);
+                    try { txtKpDllDescr.Lines = kpView.KPDescr.Split(new string[] { "\n" }, StringSplitOptions.None); }
+                    catch (Exception ex) { txtKpDllDescr.Text = ex.Message; }
                     btnKpDllProps.Enabled = kpView.CanShowProps;
                     return;
                 }
@@ -1696,13 +1777,8 @@ namespace Scada.Comm.Ctrl
         private void btnKpTypeProps_Click(object sender, EventArgs e)
         {
             int index = lbKpDll.SelectedIndex;
-
             if (0 <= index && index < kpDllInfoList.Count)
-            {
-                KPView kpView = kpDllInfoList.Values[index].KpView;
-                if (kpView != null && kpView.CanShowProps)
-                    kpView.ShowProps();
-            }
+                ShowKPTypeProps(kpDllInfoList.Values[index].KpView);
         }
         #endregion
 
@@ -1753,101 +1829,65 @@ namespace Scada.Comm.Ctrl
             }
         }
 
-        private void cbConnType_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbCommCnlType_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!changing && lastLine != null)
             {
-                bool comPort = cbConnType.SelectedIndex > 0;
-                lastLine.ConnType = comPort ? "ComPort" : "None";
+                // копирование предыдущих параметров канала связи в буфер
+                if (lastLine.CommCnlType != "")
+                {
+                    SortedList<string, string> oldCommCnlParams = 
+                        new SortedList<string, string>(lastLine.CommCnlParams);
+                    commCnlParamsBuf[lastLine.CommCnlType] = oldCommCnlParams;
+                }
 
-                cbPortName.Enabled = comPort;
-                cbBaudRate.Enabled = comPort;
-                cbDataBits.Enabled = comPort;
-                cbParity.Enabled = comPort;
-                cbStopBits.Enabled = comPort;
-                chkDtrEnable.Enabled = comPort;
-                chkRtsEnable.Enabled = comPort;
+                // загрузка параметров выбранного канала связи из буфера или установка по умолчанию
+                lastLine.CommCnlParams.Clear();
+                CommChannelView commChannelView = cbCommCnlType.SelectedItem as CommChannelView;
+                SortedList<string, string> storedCommCnlParams;
+                if (commChannelView != null)
+                {
+                    if (commCnlParamsBuf.TryGetValue(commChannelView.TypeName, out storedCommCnlParams))
+                    {
+                        foreach (KeyValuePair<string, string> commCnlParam in storedCommCnlParams)
+                            lastLine.CommCnlParams.Add(commCnlParam.Key, commCnlParam.Value);
+                    }
+                    else
+                    {
+                        commChannelView.SetCommCnlParamsToDefault(lastLine.CommCnlParams);
+                    }
+                }
 
+                // отображение параметров выбранного канала связи
+                CommChannelToPage(commChannelView);
                 SetModified();
             }
         }
 
-        private void cbPortName_TextChanged(object sender, EventArgs e)
+        private void btnCommCnlProps_Click(object sender, EventArgs e)
         {
-            if (!changing && lastLine != null)
+            // отображение свойств канала связи
+            CommChannelView commCnlView = cbCommCnlType.SelectedItem as CommChannelView;
+            if (lastLine != null && commCnlView != null && commCnlView.CanShowProps)
             {
-                lastLine.PortName = cbPortName.Text;
-                SetModified();
-            }
-        }
+                try
+                {
+                    bool modified;
+                    commCnlView.ShowProps(lastLine.CommCnlParams, out modified);
 
-        private void cbBaudRate_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!changing && lastLine != null)
-            {
-                lastLine.BaudRate = int.Parse(cbBaudRate.Text);
-                SetModified();
-            }
-        }
-
-        private void cbDataBits_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!changing && lastLine != null)
-            {
-                lastLine.DataBits = int.Parse(cbDataBits.Text);
-                SetModified();
-            }
-        }
-
-        private void cbParity_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!changing && lastLine != null)
-            {
-                if (cbParity.SelectedIndex == 0)
-                    lastLine.Parity = Parity.Even;
-                else if (cbParity.SelectedIndex == 1)
-                    lastLine.Parity = Parity.Odd;
-                else if (cbParity.SelectedIndex == 3)
-                    lastLine.Parity = Parity.Mark;
-                else if (cbParity.SelectedIndex == 4)
-                    lastLine.Parity = Parity.Space;
-                else
-                    lastLine.Parity = Parity.None;
-
-                SetModified();
-            }
-        }
-
-        private void cbStopBits_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!changing && lastLine != null)
-            {
-                if (cbStopBits.SelectedIndex == 0)
-                    lastLine.StopBits = StopBits.One;
-                else if (cbStopBits.SelectedIndex == 1)
-                    lastLine.StopBits = StopBits.OnePointFive;
-                else
-                    lastLine.StopBits = StopBits.Two;
-
-                SetModified();
-            }
-        }
-
-        private void chkDtrEnable_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!changing && lastLine != null)
-            {
-                lastLine.DtrEnable = chkDtrEnable.Checked;
-                SetModified();
-            }
-        }
-
-        private void chkRtsEnable_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!changing && lastLine != null)
-            {
-                lastLine.RtsEnable = chkRtsEnable.Checked;
-                SetModified();
+                    if (modified)
+                    {
+                        try { txtCommCnlParams.Text = commCnlView.GetPropsInfo(lastLine.CommCnlParams); }
+                        catch (Exception ex) { txtCommCnlParams.Text = ex.Message; }
+                        SetModified();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    string errMsg = AppPhrases.ShowCommCnlPropsError + ":\r\n" + ex.Message;
+                    errLog.WriteAction(errMsg);
+                    ScadaUtils.ShowError(errMsg);
+                }
             }
         }
 
@@ -1869,15 +1909,6 @@ namespace Scada.Comm.Ctrl
             }
         }
 
-        private void numMaxCommErrCnt_ValueChanged(object sender, EventArgs e)
-        {
-            if (!changing && lastLine != null)
-            {
-                lastLine.MaxCommErrCnt = decimal.ToInt32(numMaxCommErrCnt.Value);
-                SetModified();
-            }
-        }
-
         private void chkCmdEnabled_CheckedChanged(object sender, EventArgs e)
         {
             if (!changing && lastLine != null)
@@ -1891,17 +1922,31 @@ namespace Scada.Comm.Ctrl
         {
             chkCmdEnabled.Checked = !chkCmdEnabled.Checked;
         }
+
+        private void chkDetailedLog_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!changing && lastLine != null)
+            {
+                lastLine.DetailedLog = chkDetailedLog.Checked;
+                SetModified();
+            }
+        }
+
+        private void lblDetailedLog_Click(object sender, EventArgs e)
+        {
+            chkDetailedLog.Checked = !chkDetailedLog.Checked;
+        }
         #endregion
 
         #region Обработка событий на странице пользовательских параметров линии связи
-        private void lvUserParams_SelectedIndexChanged(object sender, EventArgs e)
+        private void lvCustomParams_SelectedIndexChanged(object sender, EventArgs e)
         {
             changing = true;
 
-            if (lvUserParams.SelectedItems.Count > 0)
+            if (lvCustomParams.SelectedItems.Count > 0)
             {
-                lastParamItem = lvUserParams.SelectedItems[0];
-                lastParam = lastParamItem.Tag as Settings.UserParam;
+                lastParamItem = lvCustomParams.SelectedItems[0];
+                lastParam = lastParamItem.Tag as CustomParam;
 
                 if (lastParam == null)
                 {
@@ -1909,10 +1954,8 @@ namespace Scada.Comm.Ctrl
                 }
                 else
                 {
-                    txtParamOrder.Text = (lastParamItem.Index + 1).ToString();
                     txtParamName.Text = lastParam.Name;
                     txtParamValue.Text = lastParam.Value;
-                    txtParamDescr.Text = lastParam.Descr;
                     gbSelectedParam.Enabled = true;
                 }
             }
@@ -1921,18 +1964,13 @@ namespace Scada.Comm.Ctrl
                 lastParam = null;
                 lastParamItem = null;
 
-                txtParamOrder.Text = "";
                 txtParamName.Text = "";
                 txtParamValue.Text = "";
-                txtParamDescr.Text = "";
                 gbSelectedParam.Enabled = false;
             }
 
-            // установка доступности кнопок для действий с пользовательским параметром
-            bool itemSelected = lastParamItem != null;
-            btnMoveUpParam.Enabled = itemSelected && lastParamItem.Index > 0;
-            btnMoveDownParam.Enabled = itemSelected && lastParamItem.Index < lvUserParams.Items.Count - 1;
-            btnDelParam.Enabled = itemSelected;
+            // установка доступности кнопки удаления пользовательского параметра
+            btnDelParam.Enabled = lastParamItem != null;
 
             changing = false;
         }
@@ -1941,28 +1979,55 @@ namespace Scada.Comm.Ctrl
         {
             if (!changing && lastParam != null && lastParamItem != null)
             {
-                lastParam.Name = txtParamName.Text;
-                lastParamItem.SubItems[1].Text = txtParamName.Text;
+                lastParamItem.SubItems[0].Text = txtParamName.Text;
                 SetModified();
             }
+        }
+
+        private void txtParamName_Leave(object sender, EventArgs e)
+        {
+            if (lastLine != null && lastParam != null && lastParamItem != null && lastParam.Name != txtParamName.Text)
+            {
+                Control activeControl = ActiveControl;
+
+                // создание нового пользовательского параметра
+                string newName = txtParamName.Text;
+                CustomParam newParam = new CustomParam(newName, lastParam.Value);
+
+                // удаление пользовательского параметра со старым наименованием
+                lastLine.CustomParams.Remove(lastParam.Name);
+                lvCustomParams.Items.RemoveAt(lastParamItem.Index);
+
+                // удаление элемента списка, если новое наименование дублируется
+                int newInd = lastLine.CustomParams.IndexOfKey(newName);
+                if (newInd >= 0)
+                    lvCustomParams.Items.RemoveAt(newInd);
+
+                // добавление нового пользовательского параметра
+                lastLine.CustomParams[newName] = newParam.Value;
+                newInd = lastLine.CustomParams.IndexOfKey(newName);
+                ListViewItem newItem = new ListViewItem(new string[] { newName, newParam.Value }) { Tag = newParam };
+                lvCustomParams.Items.Insert(newInd, newItem);
+
+                newItem.Selected = true;
+                activeControl.Focus();
+            }
+        }
+
+        private void txtParamName_KeyDown(object sender, KeyEventArgs e)
+        {
+            // применить изменение наименования пользовательского параметра
+            if (e.KeyCode == Keys.Enter)
+                txtParamName_Leave(null, null);
         }
 
         private void txtParamValue_TextChanged(object sender, EventArgs e)
         {
-            if (!changing && lastParam != null && lastParamItem != null)
+            if (!changing && lastLine != null && lastParam != null && lastParamItem != null)
             {
                 lastParam.Value = txtParamValue.Text;
-                lastParamItem.SubItems[2].Text = txtParamValue.Text;
-                SetModified();
-            }
-        }
-
-        private void txtParamDescr_TextChanged(object sender, EventArgs e)
-        {
-            if (!changing && lastParam != null && lastParamItem != null)
-            {
-                lastParam.Descr = txtParamDescr.Text;
-                lastParamItem.SubItems[3].Text = txtParamDescr.Text;
+                lastLine.CustomParams[lastParam.Name] = lastParam.Value;
+                lastParamItem.SubItems[1].Text = lastParam.Value;
                 SetModified();
             }
         }
@@ -1971,29 +2036,9 @@ namespace Scada.Comm.Ctrl
         {
             if (lastLine != null)
             {
-                Settings.UserParam newParam = new Settings.UserParam();
-                int newIndex = lastLine.UserParams.IndexOf(lastParam);
-                if (newIndex < 0)
-                    newIndex = lastLine.UserParams.Count;
-                else
-                    newIndex++;
-
-                ListViewItem newItem = new ListViewItem(new string[] { (newIndex + 1).ToString(), "", "", "" });
-                newItem.Tag = newParam;
-
-                if (newIndex < lastLine.UserParams.Count)
-                {
-                    lastLine.UserParams.Insert(newIndex, newParam);
-                    lvUserParams.Items.Insert(newIndex, newItem);
-
-                    for (int i = newIndex + 1; i < lvUserParams.Items.Count; i++)
-                        lvUserParams.Items[i].Text = (i + 1).ToString();
-                }
-                else
-                {
-                    lastLine.UserParams.Add(newParam);
-                    lvUserParams.Items.Add(newItem);
-                }
+                CustomParam newParam = new CustomParam("", "");
+                ListViewItem newItem = new ListViewItem(new string[] { "", "" }) { Tag = newParam };
+                lvCustomParams.Items.Add(newItem);
 
                 newItem.Selected = true;
                 txtParamName.Focus();
@@ -2001,85 +2046,24 @@ namespace Scada.Comm.Ctrl
             }
         }
 
-        private void btnMoveUpParam_Click(object sender, EventArgs e)
-        {
-            if (lastLine != null && lastParam != null && lastParamItem != null)
-            {
-                int selIndex = lastParamItem.Index;
-                if (0 < selIndex && selIndex < lastLine.UserParams.Count && selIndex < lvUserParams.Items.Count)
-                {
-                    lastLine.UserParams.RemoveAt(selIndex);
-
-                    lvUserParams.SelectedIndexChanged -= lvUserParams_SelectedIndexChanged;
-                    lvUserParams.Items.RemoveAt(selIndex);
-                    lvUserParams.SelectedIndexChanged += lvUserParams_SelectedIndexChanged;
-                    
-                    selIndex--;
-                    lastLine.UserParams.Insert(selIndex, lastParam);
-                    lvUserParams.Items.Insert(selIndex, lastParamItem);
-
-                    for (int i = selIndex; i < lvUserParams.Items.Count; i++)
-                        lvUserParams.Items[i].Text = (i + 1).ToString();
-
-                    lastParamItem.Selected = true;
-                    SetModified();
-                }
-            }
-            lvUserParams.Focus();
-        }
-
-        private void btnMoveDownParam_Click(object sender, EventArgs e)
-        {
-            if (lastLine != null && lastParam != null && lastParamItem != null)
-            {
-                int selIndex = lastParamItem.Index;
-                if (0 <= selIndex && selIndex < lastLine.UserParams.Count - 1 && 
-                    selIndex < lvUserParams.Items.Count - 1)
-                {
-                    lastLine.UserParams.RemoveAt(selIndex);
-
-                    lvUserParams.SelectedIndexChanged -= lvUserParams_SelectedIndexChanged;
-                    lvUserParams.Items.RemoveAt(selIndex);
-                    lvUserParams.SelectedIndexChanged += lvUserParams_SelectedIndexChanged;
-
-                    selIndex++;
-                    lastLine.UserParams.Insert(selIndex, lastParam);
-                    lvUserParams.Items.Insert(selIndex, lastParamItem);
-
-                    for (int i = 0; i <= selIndex; i++)
-                        lvUserParams.Items[i].Text = (i + 1).ToString();
-
-                    lastParamItem.Selected = true;
-                    SetModified();
-                }
-            }
-            lvUserParams.Focus();
-        }
-
         private void btnDelParam_Click(object sender, EventArgs e)
         {
             if (lastLine != null && lastParam != null && lastParamItem != null)
             {
+                lastLine.CustomParams.Remove(lastParam.Name);
                 int selIndex = lastParamItem.Index;
-                if (0 <= selIndex && selIndex < lastLine.UserParams.Count && selIndex < lvUserParams.Items.Count)
+                lvCustomParams.Items.RemoveAt(selIndex);
+
+                if (lvCustomParams.Items.Count > 0)
                 {
-                    lastLine.UserParams.RemoveAt(selIndex);
-                    lvUserParams.Items.RemoveAt(selIndex);
-
-                    for (int i = selIndex; i < lvUserParams.Items.Count; i++)
-                        lvUserParams.Items[i].Text = (i + 1).ToString();
-
-                    if (lvUserParams.Items.Count > 0)
-                    {
-                        if (selIndex >= lvUserParams.Items.Count)
-                            selIndex = lvUserParams.Items.Count - 1;
-                        lvUserParams.Items[selIndex].Selected = true;
-                    }
-
-                    SetModified();
+                    if (selIndex >= lvCustomParams.Items.Count)
+                        selIndex = lvCustomParams.Items.Count - 1;
+                    lvCustomParams.Items[selIndex].Selected = true;
                 }
+
+                SetModified();
             }
-            lvUserParams.Focus();
+            lvCustomParams.Focus();
         }
         #endregion
 
@@ -2531,17 +2515,9 @@ namespace Scada.Comm.Ctrl
                     try
                     {
                         KpDllInfo kpDllInfo = kpDllInfoList.Values[index];
-                        KPView kpView = kpDllInfo.KpView;
-
-                        if (kpView == null || kpView.DefaultReqParams.IsEmpty)
+                        if (kpDllInfo.KpView != null)
                         {
-                            ScadaUtils.ShowError(string.Format(
-                                AppPhrases.ResetReqParamsUnsupported, kpDllInfo.FileName));
-                        }
-                        else
-                        {
-                            KPLogic.ReqParams reqParams = kpView.DefaultReqParams;
-
+                            KPReqParams reqParams = kpDllInfo.KpView.DefaultReqParams;
                             numKpTimeout.SetNumericValue(reqParams.Timeout);
                             numKpDelay.SetNumericValue(reqParams.Delay);
                             DateTime date = timeKpTime.Value.Date;
@@ -2573,51 +2549,15 @@ namespace Scada.Comm.Ctrl
         private void btnKpProps_Click(object sender, EventArgs e)
         {
             // отображение свойств выбранного КП
-            if (lastKP != null)
-            {
-                int index = kpDllInfoList.IndexOfKey(lastKP.Dll);
-
-                if (index >= 0)
-                {
-                    numKpNumber.Focus();
-
-                    try
-                    {
-                        KpDllInfo kpDllInfo = kpDllInfoList.Values[index];
-                        KPView kpView = Activator.CreateInstance(kpDllInfo.KpType, lastKP.Number) as KPView;
-
-                        if (kpView.CanShowProps)
-                        {
-                            kpView.ConfigDir = configDir;
-                            kpView.LangDir = langDir;
-                            kpView.CmdDir = cmdDir;
-                            kpView.ShowProps();
-                        }
-                        else
-                        {
-                            ScadaUtils.ShowError(string.Format(AppPhrases.ShowKpPropsUnsupported, kpDllInfo.FileName));
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        string errMsg = AppPhrases.ShowKpPropsError + ":\r\n" + ex.Message;
-                        errLog.WriteAction(errMsg);
-                        ScadaUtils.ShowError(errMsg);
-                    }
-                }
-                else
-                {
-                    cbKpDll.Focus();
-                    ScadaUtils.ShowError(AppPhrases.UnknownDLL);
-                }
-            }
+            txtCmdLine.Focus();
+            ShowLastKPProps(true);
         }
         #endregion
 
         #region Обработка событий на странице команд
         private void txtCmdPwd_TextChanged(object sender, EventArgs e)
         {
-            gbKpCmd.Visible = txtCmdPwd.Text == CmdPwd;
+            gbKpCmd.Visible = txtCmdPwd.Text == origSettings.Params.ServerPwd;
 
             if (gbKpCmd.Visible)
             {
@@ -2648,13 +2588,13 @@ namespace Scada.Comm.Ctrl
             if (lastKP != null)
             {
                 bool cmdOK = false;
-                KPLogic.Command cmd = new KPLogic.Command();
+                Command cmd = new Command();
                 cmd.KPNum = lastKP.Number;
 
                 if (rbCmdStand.Checked)
                 {
                     txtCmdVal.Focus();
-                    cmd.CmdType = KPLogic.CmdType.Standard;
+                    cmd.CmdTypeID = BaseValues.CmdTypes.Standard;
                     cmd.CmdNum = decimal.ToInt32(numCmdNum.Value);
 
                     double cmdVal = ScadaUtils.StrToDouble(txtCmdVal.Text);
@@ -2670,7 +2610,7 @@ namespace Scada.Comm.Ctrl
                 }
                 else if (rbCmdBin.Checked)
                 {
-                    cmd.CmdType = KPLogic.CmdType.Binary;
+                    cmd.CmdTypeID = BaseValues.CmdTypes.Binary;
                     cmd.CmdNum = decimal.ToInt32(numCmdNum.Value);
 
                     byte[] cmdData;
@@ -2700,7 +2640,7 @@ namespace Scada.Comm.Ctrl
                 }
                 else
                 {
-                    cmd.CmdType = KPLogic.CmdType.Request;
+                    cmd.CmdTypeID = BaseValues.CmdTypes.Request;
                     cmdOK = true;
                 }
 
@@ -2708,7 +2648,7 @@ namespace Scada.Comm.Ctrl
                 if (cmdOK)
                 {
                     string msg;
-                    if (KPUtils.SaveCmd(cmdDir, "ScadaCommCtrl", cmd, out msg))
+                    if (CommUtils.SaveCmd(appDirs.CmdDir, "ScadaCommCtrl", cmd, out msg))
                     {
                         ScadaUtils.ShowInfo(msg);
                     }

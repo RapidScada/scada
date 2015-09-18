@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <KpModbusDictionaries>
-  <Dictionary key="Scada.Comm.KP.FrmDevTemplate">
+  <Dictionary key="Scada.Comm.Devices.KpModbus.FrmDevTemplate">
     <Phrase key="this">MODBUS. Device Template Editor</Phrase>
     <Phrase key="btnNew.ToolTip">Create new template</Phrase>
     <Phrase key="btnOpen.ToolTip">Open template</Phrase>
@@ -31,8 +31,13 @@
     <Phrase key="rbShort">short (2 bytes)</Phrase>
     <Phrase key="rbUInt">uint (4 bytes)</Phrase>
     <Phrase key="rbInt">int (4 bytes)</Phrase>
+    <Phrase key="rbULong">ulong (8 bytes)</Phrase>
+    <Phrase key="rbLong">long (8 bytes)</Phrase>
     <Phrase key="rbFloat">float (4 bytes)</Phrase>
+    <Phrase key="rbDouble">double (8 bytes)</Phrase>
     <Phrase key="rbBool">bool (1 bit)</Phrase>
+    <Phrase key="lblByteOrder">Byte order</Phrase>
+    <Phrase key="lblByteOrderExample">For example, 01234567</Phrase>
     <Phrase key="gbCmd">Command parameters</Phrase>
     <Phrase key="lblCmdName">Name</Phrase>
     <Phrase key="lblCmdTableType">Data table</Phrase>
@@ -50,5 +55,18 @@
     <Phrase key="SaveTemplateConfirm">Template has been modified. Save the changes?</Phrase>
     <Phrase key="ElemCntExceeded">Data table allows not more than {0} elements.</Phrase>
     <Phrase key="ElemRemoveWarning">Data table allows not more than {0} elements.&#13;&#10;Extra items will be removed. Continue?</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.KpModbus.FrmDevProps">
+    <Phrase key="this">Device {0} Properties</Phrase>
+    <Phrase key="gbCommLine">Communication line</Phrase>
+    <Phrase key="lblTransMode">Protocol</Phrase>
+    <Phrase key="gbDevice">Device</Phrase>
+    <Phrase key="lblDevTemplate">Device template</Phrase>
+    <Phrase key="btnBrowseDevTemplate.ToolTip">Browse for template</Phrase>
+    <Phrase key="btnCreateDevTemplate.ToolTip">Create new template</Phrase>
+    <Phrase key="btnEditDevTemplate.ToolTip">Edit template</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+    <Phrase key="TemplNotExists">The device template file does not exist.</Phrase>
   </Dictionary>
 </KpModbusDictionaries>

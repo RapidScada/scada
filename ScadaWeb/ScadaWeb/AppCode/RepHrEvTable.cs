@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,14 +20,14 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2014
+ * Modified : 2015
  */
 
+using Scada.Client;
+using Scada.Data;
 using System;
 using System.Collections.Generic;
 using System.Xml;
-using Scada.Client;
-using Scada.Data;
 using Utils.Report;
 
 namespace Scada.Web
@@ -313,7 +313,7 @@ namespace Scada.Web
                         string color;
 
                         AppData.MainData.GetHourData(hourTable, cnlNum, dateTime, out val, out stat);
-                        CnlProps cnlProps = AppData.MainData.GetCnlProps(cnlNum);
+                        InCnlProps cnlProps = AppData.MainData.GetCnlProps(cnlNum);
                         dataNode.InnerText = AppData.MainData.FormatCnlVal(val, stat, cnlProps, false, false,
                             dateTime, genDT, out isNumber, out color, ".", "");
 

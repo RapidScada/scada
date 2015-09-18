@@ -60,6 +60,7 @@ namespace ScadaAdmin
 
         private void txtSource_TextChanged(object sender, EventArgs e)
         {
+            lblTextLength.Text = txtSource.Text.Length + " / " + txtSource.MaxLength;
             btnOk.Enabled = txtSource.Text != "";
         }
 

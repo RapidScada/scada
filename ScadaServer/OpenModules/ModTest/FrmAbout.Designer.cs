@@ -1,4 +1,4 @@
-﻿namespace Scada.Server.Module
+﻿namespace Scada.Server.Modules
 {
     partial class FrmAbout
     {

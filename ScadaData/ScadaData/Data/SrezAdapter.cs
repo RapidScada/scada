@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2005
- * Modified : 2013
+ * Modified : 2015
  * 
  * --------------------------------
  * Table file structure (version 2)
@@ -40,6 +40,7 @@
 using System;
 using System.IO;
 using System.Data;
+using System.Text;
 
 namespace Scada.Data
 {
@@ -49,6 +50,10 @@ namespace Scada.Data
     /// </summary>
     public class SrezAdapter
     {
+        /// <summary>
+        /// Имя таблицы текущего среза
+        /// </summary>
+        public const string CurTableName = "current.dat";
         /// <summary>
         /// Буфер пустого списка номеров каналов в формате сохранения
         /// </summary>
@@ -619,6 +624,27 @@ namespace Scada.Data
                         stream.Close();
                 }
             }
+        }
+
+
+        /// <summary>
+        /// Построить имя таблицы минутных срезов на основе даты
+        /// </summary>
+        public static string BuildMinTableName(DateTime date)
+        {
+            return (new StringBuilder())
+                .Append("m").Append(date.ToString("yyMMdd")).Append(".dat")
+                .ToString();
+        }
+
+        /// <summary>
+        /// Построить имя таблицы часовых срезов на основе даты
+        /// </summary>
+        public static string BuildHourTableName(DateTime date)
+        {
+            return (new StringBuilder())
+                .Append("h").Append(date.ToString("yyMMdd")).Append(".dat")
+                .ToString();
         }
     }
 }

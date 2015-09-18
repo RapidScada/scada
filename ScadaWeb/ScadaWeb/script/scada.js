@@ -1,4 +1,31 @@
-﻿// Открыть дочернее окно
+﻿// Окно календаря для выбора даты
+var calendarWin = null;
+
+// Получить значение параметра запроса
+function GetParamVal(paramName, url) {
+    if (paramName) {
+        var queryString = url ? url : unescape(window.location);
+        var begInd = queryString.indexOf("?");
+        if (begInd > 0)
+            queryString = "&" + queryString.substring(begInd + 1);
+
+        paramName = "&" + paramName + "=";
+        begInd = queryString.indexOf(paramName);
+
+        if (begInd >= 0) {
+            begInd += paramName.length;
+            var endInd = queryString.indexOf("&", begInd);
+            if (endInd < 0)
+                endInd = queryString.length;
+
+            return queryString.substring(begInd, endInd);
+        }
+    }
+
+    return "";
+}
+
+// Открыть дочернее окно
 function OpenWin(url, winName, width, height) {
     var features = "";
 
@@ -14,9 +41,6 @@ function OpenWin(url, winName, width, height) {
 
     return window.open(url, winName, features + "toolbar=no,status=no,scrollbars=yes,resizable=yes");
 }
-
-// Окно календаря для выбора даты
-var calendarWin = null;
 
 // Открыть календарь для выбора даты в заданное текстовое поле
 function ShowCalendar(txtID, date, path) {
@@ -63,15 +87,16 @@ function DaysInMonth(year, month) {
     return new Date(year, month, 0).getDate();
 }
 
-// Открыть форму графика входного канала
-function ShowDiag(viewSet, view, year, month, day, cnlNum, path) {
-    window.open((path ? path : "") + "Diag.aspx?viewSet=" + viewSet + "&view=" + view + 
-        "&year=" + year + "&month=" + month + "&day=" + day + "&cnlNum=" + cnlNum);
+// Получить адрес страницы графика, начиная с файла веб страницы
+function GetDiagUrl(viewSet, view, year, month, day, period, cnlNum) {
+    return "Diag.aspx?viewSet=" + viewSet + "&view=" + view +
+        "&year=" + year + "&month=" + month + "&day=" + day +
+        (period > 1 ? "&period=" + period : "") + "&cnlNum=" + cnlNum;
 }
 
-// Открыть форму выбора входных каналов для построения графиков
-function SelectDiagCnls(viewSet, view, cnlNum) {
-    OpenWin("DiagCnls.aspx?viewSet=" + viewSet + "&view=" + view + "&cnlNum=" + cnlNum, "DiagCnlsWin", 600, 500);
+// Открыть форму графика входного канала
+function ShowDiag(viewSet, view, year, month, day, cnlNum, path) {
+    window.open((path ? path : "") + "diag/" + GetDiagUrl(viewSet, view, year, month, day, 1, cnlNum));
 }
 
 // Открыть форму отправки команды телеуправления

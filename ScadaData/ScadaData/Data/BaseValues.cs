@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
@@ -187,12 +187,44 @@ namespace Scada.Data
             /// Внеочередной опрос КП
             /// </summary>
             public const int Request = 2;
+
+            /// <summary>
+            /// Получить кодовое обозначение типа команды по идентификатору
+            /// </summary>
+            public static string GetCmdTypeCode(int cmdTypeID)
+            {
+                switch (cmdTypeID)
+                {
+                    case Standard:
+                        return "Standard";
+                    case Binary:
+                        return "Binary";
+                    case Request:
+                        return "Request";
+                    default:
+                        return cmdTypeID.ToString();
+                }
+            }
+            /// <summary>
+            /// Распознать кодовое обозначение типа команды
+            /// </summary>
+            public static int ParseCmdTypeCode(string cmdTypeCode)
+            {
+                if (cmdTypeCode.Equals("Standard", StringComparison.OrdinalIgnoreCase))
+                    return Standard;
+                else if (cmdTypeCode.Equals("Binary", StringComparison.OrdinalIgnoreCase))
+                    return Binary;
+                else if (cmdTypeCode.Equals("Request", StringComparison.OrdinalIgnoreCase))
+                    return Request;
+                else
+                    return -1;
+            }
         }
 
         /// <summary>
-        /// Статусы параметров (типы событий)
+        /// Статусы входных каналов (типы событий)
         /// </summary>
-        public static class ParamStat
+        public static class CnlStatuses
         {
             /// <summary>
             /// Не определён

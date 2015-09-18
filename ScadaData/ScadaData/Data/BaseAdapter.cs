@@ -526,8 +526,9 @@ namespace Scada.Data
                     // запись строк
                     buf = new byte[recSize];
                     buf[0] = buf[1] = 0; // резерв
-                    foreach (DataRow row in dataTable.Rows)
+                    foreach (DataRowView rowView in dataTable.DefaultView)
                     {
+                        DataRow row = rowView.Row;
                         int bufInd = 2;
 
                         foreach (FieldDef fieldDef in fieldDefs)

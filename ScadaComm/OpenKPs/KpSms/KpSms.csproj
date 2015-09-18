@@ -8,7 +8,7 @@
     <ProjectGuid>{54BEF6C5-B63D-41E3-A123-03F1802A44F7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KpSms</RootNamespace>
+    <RootNamespace>Scada.Comm.Devices</RootNamespace>
     <AssemblyName>KpSms</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -36,21 +36,79 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="KP, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Log, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\KP\bin\Release\KP.dll</HintPath>
+      <HintPath>..\..\..\Log\bin\Release\Log.dll</HintPath>
+    </Reference>
+    <Reference Include="ScadaCommCommon">
+      <HintPath>..\..\ScadaCommCommon\bin\Release\ScadaCommCommon.dll</HintPath>
     </Reference>
     <Reference Include="ScadaData">
       <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FrmPhoneNumber.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPhoneNumber.Designer.cs">
+      <DependentUpon>FrmPhoneNumber.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmPhoneGroup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPhoneGroup.Designer.cs">
+      <DependentUpon>FrmPhoneGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmPhonebook.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPhonebook.Designer.cs">
+      <DependentUpon>FrmPhonebook.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KpPhrases.cs" />
+    <Compile Include="Phonebook.cs" />
     <Compile Include="KpSmsView.cs" />
     <Compile Include="KpSmsLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FrmPhoneNumber.resx">
+      <DependentUpon>FrmPhoneNumber.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmPhoneGroup.resx">
+      <DependentUpon>FrmPhoneGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmPhonebook.resx">
+      <DependentUpon>FrmPhonebook.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Lang\KpSms.en-GB.xml" />
+    <Content Include="Res\book.png" />
+    <Content Include="Res\copy.gif" />
+    <Content Include="Res\cut.gif" />
+    <Content Include="Res\delete.png" />
+    <Content Include="Res\edit.png" />
+    <Content Include="Res\folder_closed.png" />
+    <Content Include="Res\folder_open.png" />
+    <Content Include="Res\paste.gif" />
+    <Content Include="Res\phone.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

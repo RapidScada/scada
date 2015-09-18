@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,13 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2013
+ * Modified : 2015
  */
 
-using Scada;
 using Scada.Client;
+using System;
 
-namespace Scada.Server.Module
+namespace Scada.Server.Modules
 {
     /// <summary>
     /// The base class for server module user interface
@@ -34,14 +34,15 @@ namespace Scada.Server.Module
     /// </summary>
     public abstract class ModView
     {
+        private AppDirs appDirs; // директории приложения
+
+
         /// <summary>
         /// Конструктор
         /// </summary>
         public ModView()
         {
-            ConfigDir = "";
-            LangDir = "";
-            LogDir = "";
+            appDirs = new AppDirs();
             ServerComm = null;
             CanShowProps = false;
         }
@@ -53,19 +54,21 @@ namespace Scada.Server.Module
         public abstract string Descr { get; }
 
         /// <summary>
-        /// Получить или установить директорию конфигурации
+        /// Получить или установить директории приложения
         /// </summary>
-        public string ConfigDir { get; set; }
-
-        /// <summary>
-        /// Получить или установить директорию языковых файлов
-        /// </summary>
-        public string LangDir { get; set; }
-
-        /// <summary>
-        /// Получить или установить директорию журналов
-        /// </summary>
-        public string LogDir { get; set; }
+        public AppDirs AppDirs
+        {
+            get
+            {
+                return appDirs;
+            }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+                appDirs = value;
+            }
+        }
 
         /// <summary>
         /// Получить или установить объект для обмена данными со SCADA-Сервером

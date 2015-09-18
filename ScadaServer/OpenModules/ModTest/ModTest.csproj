@@ -8,7 +8,7 @@
     <ProjectGuid>{1D0EF7CF-B70B-4544-A11B-EAE4F6DCFF7F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Scada.Server.Module</RootNamespace>
+    <RootNamespace>Scada.Server.Modules</RootNamespace>
     <AssemblyName>ModTest</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

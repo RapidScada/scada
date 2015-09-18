@@ -24,17 +24,14 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading;
 using System.Web;
-using System.Windows.Forms;
-using WinForms = System.Windows.Forms;
 
 namespace Scada
 {
@@ -45,16 +42,14 @@ namespace Scada
     public static partial class ScadaUtils
     {
         /// <summary>
-        /// Размер отображаемых данных журналов, 10 КБ
+        /// Задержка потока для экономии ресурсов, мс
         /// </summary>
-        private const long LogViewSize = 10240;
-        /// <summary>
-        /// Порог количества строк в таблице для выбора режима автоподбора ширины столбцов
-        /// </summary>
-        private const int GridAutoResizeBoundary = 100;
+        public const int ThreadDelay = 100;
+
         /// <summary>
         /// Длительность хранения данных в cookies
         /// </summary>
+        [Obsolete("Use Scada.Web.ScadaWebUtils")]
         public static readonly TimeSpan CookieExpiration = TimeSpan.FromDays(30);
 
         private static NumberFormatInfo nfi; // формат вещественных чисел
@@ -75,8 +70,18 @@ namespace Scada
         public static string NormalDir(string dir)
         {
             dir = dir == null ? "" : dir.Trim();
-            if (dir.Length > 0 && dir[dir.Length - 1] != '\\') dir += @"\";
+            if (dir.Length > 0 && !dir.EndsWith(Path.DirectorySeparatorChar.ToString())) 
+                dir += Path.DirectorySeparatorChar;
             return dir;
+        }
+
+        /// <summary>
+        /// Скорректировать разделитель директории
+        /// </summary>
+        public static string CorrectDirectorySeparator(string path)
+        {
+            // Path.AltDirectorySeparatorChar == '/' для Mono на Linux, что некорректно 
+            return path.Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar);
         }
 
         /// <summary>
@@ -136,9 +141,17 @@ namespace Scada
         /// </summary>
         public static string BytesToHex(byte[] bytes)
         {
-            int len = bytes == null ? 0 : bytes.Length;
+            return BytesToHex(bytes, 0, bytes == null ? 0 : bytes.Length);
+        }
+
+        /// <summary>
+        /// Преобразовать заданный диапазон массива байт в строку на основе 16-ричного представления
+        /// </summary>
+        public static string BytesToHex(byte[] bytes, int index, int count)
+        {
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < len; i++)
+            int last = index + count;
+            for (int i = index; i < last; i++)
                 sb.Append(bytes[i].ToString("X2"));
             return sb.ToString();
         }
@@ -169,6 +182,22 @@ namespace Scada
                 return false;
             }
         }
+
+        /// <summary>
+        /// Преобразовать дату и время в вещественное число побайтно
+        /// </summary>
+        public static double DateTimeToDouble(DateTime dateTime)
+        {
+            return BitConverter.ToDouble(BitConverter.GetBytes(dateTime.ToBinary()), 0);
+        }
+
+        /// <summary>
+        /// Преобразовать вещественное число в дату и время побайтно
+        /// </summary>
+        public static DateTime DoubleToDateTime(double value)
+        {
+            return DateTime.FromBinary(BitConverter.ToInt64(BitConverter.GetBytes(value), 0));
+        }
         
         /// <summary>
         /// Вычислить хеш-функцию MD5
@@ -197,300 +226,27 @@ namespace Scada
         }
 
         /// <summary>
+        /// Скорректировать имя типа для работы DeepClone
+        /// </summary>
+        public static void CorrectTypeName(ref string typeName)
+        {
+            if (typeName.Contains("System.Collections.Generic.List"))
+            {
+                // удаление информации о сборке
+                int ind1 = typeName.IndexOf(",");
+                int ind2 = typeName.IndexOf("]");
+                if (ind1 < ind2)
+                    typeName = typeName.Remove(ind1, ind2 - ind1);
+            }
+        }
+
+        /// <summary>
         /// Получить время последней записи в файл
         /// </summary>
         public static DateTime GetLastWriteTime(string fileName)
         {
             try { return File.GetLastWriteTime(fileName); }
             catch { return DateTime.MinValue; }
-        }
-
-
-
-        /// <summary>
-        /// Показать информационное сообщение
-        /// </summary>
-        public static void ShowInfo(string message)
-        {
-            MessageBox.Show(message, CommonPhrases.InfoCaption, MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        /// <summary>
-        /// Показать сообщение об ошибке
-        /// </summary>
-        public static void ShowError(string message)
-        {
-            MessageBox.Show(message, CommonPhrases.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
-        /// <summary>
-        /// Показать предупреждение
-        /// </summary>
-        public static void ShowWarning(string message)
-        {
-            MessageBox.Show(message, CommonPhrases.WarningCaption, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        }
-
-        /// <summary>
-        /// Установить значение элемента управления типа NumericUpDown в пределах допустимого диапазона
-        /// </summary>
-        public static void SetNumericValue(this NumericUpDown num, decimal val)
-        {
-            if (val < num.Minimum)
-                num.Value = num.Minimum;
-            else if (val > num.Maximum)
-                num.Value = num.Maximum;
-            else
-                num.Value = val;
-        }
-
-        /// <summary>
-        /// Автоподбор ширины столбцов таблицы с выбором режима в зависимости от количества строк
-        /// </summary>
-        public static void AutoResizeColumns(this DataGridView dataGridView)
-        {
-            if (dataGridView.RowCount <= GridAutoResizeBoundary)
-                dataGridView.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
-            else
-                dataGridView.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.DisplayedCells);
-        }
-
-        /// <summary>
-        /// Загрузить из файлов изображение и гиперссылку для формы о программе
-        /// </summary>
-        public static bool LoadAboutForm(string imgFileName, string linkFileName,
-            Form frmAbout, PictureBox pictureBox, WinForms.Label lblLink, 
-            out string link, out string errMsg)
-        {
-            errMsg = "";
-            link = "";
-
-            // загрузка заставки из файла, если он существует
-            try
-            {
-                if (File.Exists(imgFileName))
-                {
-                    System.Drawing.Image image = System.Drawing.Image.FromFile(imgFileName);
-                    pictureBox.Image = image;
-
-                    // проверка, корректировка и установка размеров формы и изображения
-                    int width;
-                    if (image.Width < 100) width = 100;
-                    else if (image.Width > 800) width = 800;
-                    else width = image.Width;
-
-                    int height;
-                    if (image.Height < 100) height = 100;
-                    else if (image.Height > 600) height = 600;
-                    else height = image.Height;
-
-                    frmAbout.Width = pictureBox.Width = width;
-                    frmAbout.Height = pictureBox.Height = height;
-                }
-            }
-            catch (OutOfMemoryException)
-            {
-                errMsg = string.Format(CommonPhrases.LoadImageError, CommonPhrases.IncorrectFileFormat);
-            }
-            catch (Exception ex)
-            {
-                errMsg = string.Format(CommonPhrases.LoadImageError, ex.Message);
-            }
-
-            if (errMsg == "")
-            {
-                // загрузка гиперссылки из файла, если он существует
-                StreamReader reader = null;
-                try
-                {
-                    if (File.Exists(linkFileName))
-                    {
-                        reader = new StreamReader(linkFileName, Encoding.Default);
-                        link = reader.ReadLine();
-
-                        if (!string.IsNullOrEmpty(link))
-                        {
-                            link = link.Trim();
-                            string pos = reader.ReadLine();
-
-                            if (!string.IsNullOrEmpty(pos))
-                            {
-                                string[] parts = pos.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                                int x, y, w, h;
-
-                                if (parts.Length >= 4 && int.TryParse(parts[0], out x) && int.TryParse(parts[1], out y) &&
-                                    int.TryParse(parts[2], out w) && int.TryParse(parts[3], out h))
-                                {
-                                    // проверка положения и размеров
-                                    if (x < 0) x = 0;
-                                    else if (x >= frmAbout.Width) x = frmAbout.Width - 1;
-                                    if (y < 0) y = 0;
-                                    else if (y >= frmAbout.Height) y = frmAbout.Height - 1;
-
-                                    if (x + w >= frmAbout.Width) w = frmAbout.Width - x;
-                                    if (w <= 0) w = 1;
-                                    if (y + h >= frmAbout.Height) h = frmAbout.Height - y;
-                                    if (h <= 0) h = 1;
-
-                                    lblLink.Left = x;
-                                    lblLink.Top = y;
-                                    lblLink.Width = w;
-                                    lblLink.Height = h;
-                                    lblLink.Visible = true;
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        lblLink.Visible = false;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    link = "";
-                    lblLink.Visible = false;
-                    errMsg = string.Format(CommonPhrases.LoadHyperlinkError, ex.Message);
-                }
-                finally
-                {
-                    if (reader != null)
-                        reader.Close();
-                }
-            }
-            else
-            {
-                lblLink.Visible = false;
-            }
-
-            return errMsg == "";
-        }
-        
-        /// <summary>
-        /// Загрузить строки из файла
-        /// </summary>
-        /// <remarks>Если fullLoad равен false, то объём загружаемых данных не более LogViewSize</remarks>
-        private static List<string> LoadStrings(string fileName, bool fullLoad)
-        {
-            using (FileStream fileStream = 
-                new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-            {
-                List<string> stringList = new List<string>();
-                long fileSize = fileStream.Length;
-                long dataSize = fullLoad ? fileSize : LogViewSize;
-                long filePos = fileSize - dataSize;
-                if (filePos < 0)
-                    filePos = 0;
-
-                if (fileStream.Seek(filePos, SeekOrigin.Begin) == filePos)
-                {
-                    using (StreamReader reader = new StreamReader(fileStream, Encoding.UTF8))
-                    {
-                        bool addLine = fileSize <= dataSize;
-                        while (!reader.EndOfStream)
-                        {
-                            string line = reader.ReadLine();
-                            if (addLine)
-                                stringList.Add(line);
-                            else
-                                addLine = true;
-                        }
-                    }
-                }
-
-                return stringList;
-            }
-        }
-
-        /// <summary>
-        /// Обновить список строк, загрузив данные из файла
-        /// </summary>
-        public static void RefreshListBox(this WinForms.ListBox listBox, string fileName, bool fullLoad, 
-            ref DateTime fileAge)
-        {
-            Monitor.Enter(listBox);
-
-            try
-            {
-                if (File.Exists(fileName))
-                {
-                    DateTime newFileAge = GetLastWriteTime(fileName);
-
-                    if (fileAge != newFileAge)
-                    {
-                        // загрузка строк из файла
-                        List<string> stringList = LoadStrings(fileName, fullLoad);
-                        int newLineCnt = stringList.Count;
-
-                        // проверка для исключения отображения данных, считыванных в момент записи файла
-                        if (newLineCnt > 0 || (DateTime.Now - newFileAge).TotalMilliseconds > 50)
-                        {
-                            fileAge = newFileAge;
-
-                            // вывод данных в список
-                            int oldLineCnt = listBox.Items.Count;
-                            int selectedIndex = listBox.SelectedIndex;
-                            int topIndex = listBox.TopIndex;
-
-                            listBox.BeginUpdate();
-
-                            for (int i = 0; i < newLineCnt; i++)
-                            {
-                                if (i < oldLineCnt)
-                                    listBox.Items[i] = stringList[i];
-                                else
-                                    listBox.Items.Add(stringList[i]);
-                            }
-
-                            for (int i = newLineCnt; i < oldLineCnt; i++)
-                                listBox.Items.RemoveAt(newLineCnt);
-
-                            // установка позиции прокрутки списка
-                            if (listBox.SelectionMode == WinForms.SelectionMode.One && newLineCnt > 0)
-                            {
-                                if (selectedIndex < 0 && !fullLoad)
-                                    listBox.SelectedIndex = newLineCnt - 1; // прокрутка в конец списка
-                                else
-                                    listBox.TopIndex = topIndex;
-                            }
-
-                            listBox.EndUpdate();
-                        }
-                    }
-                }
-                else
-                {
-                    if (listBox.Items.Count == 1)
-                    {
-                        listBox.Items[0] = CommonPhrases.NoData;
-                    }
-                    else
-                    {
-                        listBox.Items.Clear();
-                        listBox.Items.Add(CommonPhrases.NoData);
-                    }
-                    fileAge = DateTime.MinValue;
-                }
-            }
-            catch (Exception ex)
-            {
-                if (listBox.Items.Count == 2)
-                {
-                    listBox.Items[0] = CommonPhrases.ErrorWithColon;
-                    listBox.Items[1] = ex.Message;
-                }
-                else
-                {
-                    listBox.Items.Clear();
-                    listBox.Items.Add(CommonPhrases.ErrorWithColon);
-                    listBox.Items.Add(ex.Message);
-                }
-                fileAge = DateTime.MinValue;
-            }
-            finally
-            {
-                Monitor.Exit(listBox);
-            }
         }
 
 

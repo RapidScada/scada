@@ -646,6 +646,7 @@
             // 
             this.treeView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeView.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.treeView.HideSelection = false;
             this.treeView.ImageKey = "table.gif";
             this.treeView.ImageList = this.ilTree;
             this.treeView.Location = new System.Drawing.Point(0, 0);

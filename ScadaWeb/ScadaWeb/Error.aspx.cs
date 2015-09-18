@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,11 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2007
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
+using System.Text;
 using Utils;
 
 namespace Scada.Web
@@ -72,9 +73,15 @@ namespace Scada.Web
                     lblMessage.Text = ScadaUtils.HtmlEncodeWithBreak(errMsg); // вывод на форму
                 }
 
-                // вывод сообщения в журнал приложения
-                string logMsg = errMsg + (Localization.UseRussian ? "\nСтраница: " : "\nPage: ") + 
-                    Request.Url.AbsoluteUri;
+                // вывод сообщения с дополнительной информацией в журнал приложения
+                StringBuilder sbLogMsg = new StringBuilder(errMsg);
+                if (ex != null)
+                    sbLogMsg.AppendLine().Append(ex.StackTrace);
+                
+                sbLogMsg
+                    .AppendLine()
+                    .Append(Localization.UseRussian ? "Страница: " : "Page: ")
+                    .Append(Request.Url.AbsoluteUri);
 
                 if (Context.Session == null)
                 {
@@ -84,10 +91,13 @@ namespace Scada.Web
                 {
                     UserData userData = UserData.GetUserData();
                     if (userData != null)
-                        logMsg += (Localization.UseRussian ? "\nПользователь: " : "\nUser: ") + userData.UserLogin;
+                        sbLogMsg
+                            .AppendLine()
+                            .Append(Localization.UseRussian ? "Пользователь: " : "User: ")
+                            .Append(userData.UserLogin);
                 }
 
-                AppData.Log.WriteAction(logMsg, Log.ActTypes.Exception);
+                AppData.Log.WriteAction(sbLogMsg.ToString(), Log.ActTypes.Exception);
             }
             finally
             {

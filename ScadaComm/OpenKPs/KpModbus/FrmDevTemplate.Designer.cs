@@ -1,4 +1,4 @@
-﻿namespace Scada.Comm.KP
+﻿namespace Scada.Comm.Devices.KpModbus
 {
     partial class FrmDevTemplate
     {
@@ -57,6 +57,11 @@
             this.lblGrTableType = new System.Windows.Forms.Label();
             this.cbGrTableType = new System.Windows.Forms.ComboBox();
             this.gbElem = new System.Windows.Forms.GroupBox();
+            this.txtByteOrder = new System.Windows.Forms.TextBox();
+            this.lblByteOrder = new System.Windows.Forms.Label();
+            this.rbDouble = new System.Windows.Forms.RadioButton();
+            this.rbLong = new System.Windows.Forms.RadioButton();
+            this.rbULong = new System.Windows.Forms.RadioButton();
             this.rbBool = new System.Windows.Forms.RadioButton();
             this.rbFloat = new System.Windows.Forms.RadioButton();
             this.rbInt = new System.Windows.Forms.RadioButton();
@@ -84,6 +89,7 @@
             this.cbCmdTableType = new System.Windows.Forms.ComboBox();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.lblByteOrderExample = new System.Windows.Forms.Label();
             this.toolStrip.SuspendLayout();
             this.gbDevTemplate.SuspendLayout();
             this.gbElemGroup.SuspendLayout();
@@ -390,6 +396,12 @@
             // 
             // gbElem
             // 
+            this.gbElem.Controls.Add(this.lblByteOrderExample);
+            this.gbElem.Controls.Add(this.txtByteOrder);
+            this.gbElem.Controls.Add(this.lblByteOrder);
+            this.gbElem.Controls.Add(this.rbDouble);
+            this.gbElem.Controls.Add(this.rbLong);
+            this.gbElem.Controls.Add(this.rbULong);
             this.gbElem.Controls.Add(this.rbBool);
             this.gbElem.Controls.Add(this.rbFloat);
             this.gbElem.Controls.Add(this.rbInt);
@@ -406,18 +418,71 @@
             this.gbElem.Location = new System.Drawing.Point(298, 91);
             this.gbElem.Name = "gbElem";
             this.gbElem.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbElem.Size = new System.Drawing.Size(280, 186);
+            this.gbElem.Size = new System.Drawing.Size(280, 271);
             this.gbElem.TabIndex = 3;
             this.gbElem.TabStop = false;
             this.gbElem.Text = "Параметры элемента";
             // 
+            // txtByteOrder
+            // 
+            this.txtByteOrder.Location = new System.Drawing.Point(13, 238);
+            this.txtByteOrder.Name = "txtByteOrder";
+            this.txtByteOrder.Size = new System.Drawing.Size(124, 20);
+            this.txtByteOrder.TabIndex = 17;
+            this.txtByteOrder.TextChanged += new System.EventHandler(this.txtByteOrder_TextChanged);
+            // 
+            // lblByteOrder
+            // 
+            this.lblByteOrder.AutoSize = true;
+            this.lblByteOrder.Location = new System.Drawing.Point(10, 222);
+            this.lblByteOrder.Name = "lblByteOrder";
+            this.lblByteOrder.Size = new System.Drawing.Size(77, 13);
+            this.lblByteOrder.TabIndex = 16;
+            this.lblByteOrder.Text = "Порядок байт";
+            // 
+            // rbDouble
+            // 
+            this.rbDouble.AutoSize = true;
+            this.rbDouble.Location = new System.Drawing.Point(143, 179);
+            this.rbDouble.Name = "rbDouble";
+            this.rbDouble.Size = new System.Drawing.Size(98, 17);
+            this.rbDouble.TabIndex = 14;
+            this.rbDouble.TabStop = true;
+            this.rbDouble.Text = "double (8 байт)";
+            this.rbDouble.UseVisualStyleBackColor = true;
+            this.rbDouble.CheckedChanged += new System.EventHandler(this.rbType_CheckedChanged);
+            // 
+            // rbLong
+            // 
+            this.rbLong.AutoSize = true;
+            this.rbLong.Location = new System.Drawing.Point(143, 156);
+            this.rbLong.Name = "rbLong";
+            this.rbLong.Size = new System.Drawing.Size(86, 17);
+            this.rbLong.TabIndex = 12;
+            this.rbLong.TabStop = true;
+            this.rbLong.Text = "long (8 байт)";
+            this.rbLong.UseVisualStyleBackColor = true;
+            this.rbLong.CheckedChanged += new System.EventHandler(this.rbType_CheckedChanged);
+            // 
+            // rbULong
+            // 
+            this.rbULong.AutoSize = true;
+            this.rbULong.Location = new System.Drawing.Point(13, 156);
+            this.rbULong.Name = "rbULong";
+            this.rbULong.Size = new System.Drawing.Size(92, 17);
+            this.rbULong.TabIndex = 11;
+            this.rbULong.TabStop = true;
+            this.rbULong.Text = "ulong (8 байт)";
+            this.rbULong.UseVisualStyleBackColor = true;
+            this.rbULong.CheckedChanged += new System.EventHandler(this.rbType_CheckedChanged);
+            // 
             // rbBool
             // 
             this.rbBool.AutoSize = true;
-            this.rbBool.Location = new System.Drawing.Point(143, 156);
+            this.rbBool.Location = new System.Drawing.Point(13, 202);
             this.rbBool.Name = "rbBool";
             this.rbBool.Size = new System.Drawing.Size(80, 17);
-            this.rbBool.TabIndex = 12;
+            this.rbBool.TabIndex = 15;
             this.rbBool.TabStop = true;
             this.rbBool.Text = "bool (1 бит)";
             this.rbBool.UseVisualStyleBackColor = true;
@@ -426,10 +491,10 @@
             // rbFloat
             // 
             this.rbFloat.AutoSize = true;
-            this.rbFloat.Location = new System.Drawing.Point(13, 156);
+            this.rbFloat.Location = new System.Drawing.Point(13, 179);
             this.rbFloat.Name = "rbFloat";
             this.rbFloat.Size = new System.Drawing.Size(92, 17);
-            this.rbFloat.TabIndex = 11;
+            this.rbFloat.TabIndex = 13;
             this.rbFloat.TabStop = true;
             this.rbFloat.Text = "float (4 байта)";
             this.rbFloat.UseVisualStyleBackColor = true;
@@ -724,14 +789,24 @@
             this.saveFileDialog.FilterIndex = 0;
             this.saveFileDialog.Title = "Сохранить файл";
             // 
+            // lblByteOrderExample
+            // 
+            this.lblByteOrderExample.AutoSize = true;
+            this.lblByteOrderExample.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.lblByteOrderExample.Location = new System.Drawing.Point(143, 242);
+            this.lblByteOrderExample.Name = "lblByteOrderExample";
+            this.lblByteOrderExample.Size = new System.Drawing.Size(113, 13);
+            this.lblByteOrderExample.TabIndex = 18;
+            this.lblByteOrderExample.Text = "Например, 01234567";
+            // 
             // FrmDevTemplate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(590, 444);
-            this.Controls.Add(this.gbCmd);
-            this.Controls.Add(this.gbElem);
             this.Controls.Add(this.gbElemGroup);
+            this.Controls.Add(this.gbElem);
+            this.Controls.Add(this.gbCmd);
             this.Controls.Add(this.gbDevTemplate);
             this.Controls.Add(this.toolStrip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -816,5 +891,11 @@
         private System.Windows.Forms.Label lblCmdElemCnt;
         private System.Windows.Forms.NumericUpDown numCmdElemCnt;
         private System.Windows.Forms.CheckBox chkCmdMultiple;
+        private System.Windows.Forms.RadioButton rbDouble;
+        private System.Windows.Forms.RadioButton rbLong;
+        private System.Windows.Forms.RadioButton rbULong;
+        private System.Windows.Forms.Label lblByteOrder;
+        private System.Windows.Forms.TextBox txtByteOrder;
+        private System.Windows.Forms.Label lblByteOrderExample;
     }
 }

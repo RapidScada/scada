@@ -417,7 +417,7 @@ namespace Scada.Scheme
                     listBox.KeyDown += listBox_KeyDown;
 
                     // выбор элемента в выпадающем списке
-                    string selColor = value is string ? ((string)value).Trim().ToLower() : "";
+                    string selColor = value is string ? ((string)value).Trim().ToLowerInvariant() : "";
 
                     if (selColor != "")
                     {
@@ -427,7 +427,7 @@ namespace Scada.Scheme
                             object item = listBox.Items[i];
                             if (item is string)
                             {
-                                if (selColor == ((string)item).ToLower())
+                                if (selColor == ((string)item).ToLowerInvariant())
                                 {
                                     listBox.SelectedIndex = i;
                                     break;
@@ -435,7 +435,7 @@ namespace Scada.Scheme
                             }
                             else if (item is Color)
                             {
-                                if (selColor == ((Color)item).Name.ToLower())
+                                if (selColor == ((Color)item).Name.ToLowerInvariant())
                                 {
                                     listBox.SelectedIndex = i;
                                     break;

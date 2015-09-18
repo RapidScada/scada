@@ -37,6 +37,16 @@
             this.btnExport = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.gbIDs = new System.Windows.Forms.GroupBox();
+            this.chkFinalID = new System.Windows.Forms.CheckBox();
+            this.chkStartID = new System.Windows.Forms.CheckBox();
+            this.numFinalID = new System.Windows.Forms.NumericUpDown();
+            this.numStartID = new System.Windows.Forms.NumericUpDown();
+            this.lblFinalID = new System.Windows.Forms.Label();
+            this.lblStartID = new System.Windows.Forms.Label();
+            this.gbIDs.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numFinalID)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numStartID)).BeginInit();
             this.SuspendLayout();
             // 
             // lblTable
@@ -54,7 +64,7 @@
             this.cbTable.FormattingEnabled = true;
             this.cbTable.Location = new System.Drawing.Point(12, 25);
             this.cbTable.Name = "cbTable";
-            this.cbTable.Size = new System.Drawing.Size(294, 21);
+            this.cbTable.Size = new System.Drawing.Size(296, 21);
             this.cbTable.TabIndex = 1;
             this.cbTable.SelectedIndexChanged += new System.EventHandler(this.cbTable_SelectedIndexChanged);
             // 
@@ -71,14 +81,14 @@
             // 
             this.txtFileName.Location = new System.Drawing.Point(12, 65);
             this.txtFileName.Name = "txtFileName";
-            this.txtFileName.Size = new System.Drawing.Size(294, 20);
+            this.txtFileName.Size = new System.Drawing.Size(270, 20);
             this.txtFileName.TabIndex = 3;
             // 
             // btnBrowse
             // 
             this.btnBrowse.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnBrowse.Image = ((System.Drawing.Image)(resources.GetObject("btnBrowse.Image")));
-            this.btnBrowse.Location = new System.Drawing.Point(312, 65);
+            this.btnBrowse.Location = new System.Drawing.Point(288, 65);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(20, 20);
             this.btnBrowse.TabIndex = 4;
@@ -87,10 +97,10 @@
             // 
             // btnExport
             // 
-            this.btnExport.Location = new System.Drawing.Point(176, 91);
+            this.btnExport.Location = new System.Drawing.Point(152, 162);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(75, 23);
-            this.btnExport.TabIndex = 5;
+            this.btnExport.TabIndex = 6;
             this.btnExport.Text = "Экспорт";
             this.btnExport.UseVisualStyleBackColor = true;
             this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
@@ -98,10 +108,10 @@
             // btnClose
             // 
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(257, 91);
+            this.btnClose.Location = new System.Drawing.Point(233, 162);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
-            this.btnClose.TabIndex = 6;
+            this.btnClose.TabIndex = 7;
             this.btnClose.Text = "Закрыть";
             this.btnClose.UseVisualStyleBackColor = true;
             // 
@@ -112,13 +122,94 @@
             this.openFileDialog.Filter = "Таблицы базы конфигурации|*.dat|Все файлы|*.*";
             this.openFileDialog.Title = "Выберите файл таблицы базы конфигурации";
             // 
+            // gbIDs
+            // 
+            this.gbIDs.Controls.Add(this.chkFinalID);
+            this.gbIDs.Controls.Add(this.chkStartID);
+            this.gbIDs.Controls.Add(this.numFinalID);
+            this.gbIDs.Controls.Add(this.numStartID);
+            this.gbIDs.Controls.Add(this.lblFinalID);
+            this.gbIDs.Controls.Add(this.lblStartID);
+            this.gbIDs.Location = new System.Drawing.Point(12, 91);
+            this.gbIDs.Name = "gbIDs";
+            this.gbIDs.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
+            this.gbIDs.Size = new System.Drawing.Size(296, 65);
+            this.gbIDs.TabIndex = 5;
+            this.gbIDs.TabStop = false;
+            this.gbIDs.Text = "Идентификаторы";
+            // 
+            // chkFinalID
+            // 
+            this.chkFinalID.AutoSize = true;
+            this.chkFinalID.Location = new System.Drawing.Point(151, 35);
+            this.chkFinalID.Name = "chkFinalID";
+            this.chkFinalID.Size = new System.Drawing.Size(15, 14);
+            this.chkFinalID.TabIndex = 4;
+            this.chkFinalID.UseVisualStyleBackColor = true;
+            this.chkFinalID.CheckedChanged += new System.EventHandler(this.chkFinalID_CheckedChanged);
+            // 
+            // chkStartID
+            // 
+            this.chkStartID.AutoSize = true;
+            this.chkStartID.Location = new System.Drawing.Point(13, 35);
+            this.chkStartID.Name = "chkStartID";
+            this.chkStartID.Size = new System.Drawing.Size(15, 14);
+            this.chkStartID.TabIndex = 1;
+            this.chkStartID.UseVisualStyleBackColor = true;
+            this.chkStartID.CheckedChanged += new System.EventHandler(this.chkStartID_CheckedChanged);
+            // 
+            // numFinalID
+            // 
+            this.numFinalID.Enabled = false;
+            this.numFinalID.Location = new System.Drawing.Point(172, 32);
+            this.numFinalID.Maximum = new decimal(new int[] {
+            65535,
+            0,
+            0,
+            0});
+            this.numFinalID.Name = "numFinalID";
+            this.numFinalID.Size = new System.Drawing.Size(111, 20);
+            this.numFinalID.TabIndex = 5;
+            // 
+            // numStartID
+            // 
+            this.numStartID.Enabled = false;
+            this.numStartID.Location = new System.Drawing.Point(34, 32);
+            this.numStartID.Maximum = new decimal(new int[] {
+            65535,
+            0,
+            0,
+            0});
+            this.numStartID.Name = "numStartID";
+            this.numStartID.Size = new System.Drawing.Size(111, 20);
+            this.numStartID.TabIndex = 2;
+            // 
+            // lblFinalID
+            // 
+            this.lblFinalID.AutoSize = true;
+            this.lblFinalID.Location = new System.Drawing.Point(169, 16);
+            this.lblFinalID.Name = "lblFinalID";
+            this.lblFinalID.Size = new System.Drawing.Size(57, 13);
+            this.lblFinalID.TabIndex = 3;
+            this.lblFinalID.Text = "Конечный";
+            // 
+            // lblStartID
+            // 
+            this.lblStartID.AutoSize = true;
+            this.lblStartID.Location = new System.Drawing.Point(31, 16);
+            this.lblStartID.Name = "lblStartID";
+            this.lblStartID.Size = new System.Drawing.Size(64, 13);
+            this.lblStartID.TabIndex = 0;
+            this.lblStartID.Text = "Начальный";
+            // 
             // FrmExport
             // 
             this.AcceptButton = this.btnExport;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(344, 126);
+            this.ClientSize = new System.Drawing.Size(320, 197);
+            this.Controls.Add(this.gbIDs);
             this.Controls.Add(this.btnExport);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnBrowse);
@@ -134,6 +225,10 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Экспорт в файл";
             this.Load += new System.EventHandler(this.FrmExport_Load);
+            this.gbIDs.ResumeLayout(false);
+            this.gbIDs.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numFinalID)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numStartID)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -149,5 +244,12 @@
         private System.Windows.Forms.Button btnExport;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.GroupBox gbIDs;
+        private System.Windows.Forms.CheckBox chkFinalID;
+        private System.Windows.Forms.CheckBox chkStartID;
+        private System.Windows.Forms.NumericUpDown numFinalID;
+        private System.Windows.Forms.NumericUpDown numStartID;
+        private System.Windows.Forms.Label lblFinalID;
+        private System.Windows.Forms.Label lblStartID;
     }
 }

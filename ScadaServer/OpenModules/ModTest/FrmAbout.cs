@@ -26,7 +26,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace Scada.Server.Module
+namespace Scada.Server.Modules
 {
     /// <summary>
     /// About form
