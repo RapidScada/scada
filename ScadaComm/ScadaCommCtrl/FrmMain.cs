@@ -403,7 +403,7 @@ namespace Scada.Comm.Ctrl
 
                 if (updateChildNodes)
                 {
-                    Settings.CommLine commLine = origSettings.CommLines[i];
+                    Settings.CommLine commLine = modSettings.CommLines[i];
                     if (!commLine.Active)
                         nodeLine.Collapse();
                     nodeLine.Nodes.Clear();
@@ -862,8 +862,7 @@ namespace Scada.Comm.Ctrl
             kp.CallNum = Convert.ToString(kpRowView["CallNum"]);
 
             int rowInd = tblKPType.DefaultView.Find(kpRowView["KPTypeID"]);
-            kp.Dll = rowInd < 0 ? "" : Path.GetFileNameWithoutExtension(
-                Convert.ToString(tblKPType.DefaultView[rowInd]["DllFileName"]));
+            kp.Dll = rowInd < 0 ? "" : Convert.ToString(tblKPType.DefaultView[rowInd]["DllFileName"]);
 
             // установка параметров опроса КП по умолчанию
             if (setReqParams)
