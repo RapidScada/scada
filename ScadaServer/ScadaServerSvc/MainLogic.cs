@@ -92,7 +92,7 @@ namespace Scada.Server.Svc
         /// <summary>
         /// Строковая запись версии приложения
         /// </summary>
-        public const string AppVersion = "4.5.0.4";
+        public const string AppVersion = "4.5.0.5";
         /// <summary>
         /// Имя файла журнала приложения
         /// </summary>

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
@@ -235,11 +235,10 @@ namespace Scada.Server.Ctrl
         {
             // перевод формы
             Localization.TranslateForm(this, "Scada.Server.Ctrl.FrmSrezTableEdit");
-            if (!Localization.UseRussian)
-            {
+            if (lblCount1.Text.Contains("{0}"))
                 bindingNavigator1.CountItemFormat = lblCount1.Text;
+            if (lblCount2.Text.Contains("{0}"))
                 bindingNavigator2.CountItemFormat = lblCount2.Text;
-            }
 
             // настройка элементов управления
             Text = (editMode ? AppPhrases.EditSrezTableTitle : AppPhrases.ViewSrezTableTitle) + 

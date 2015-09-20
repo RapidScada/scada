@@ -534,6 +534,15 @@ namespace Scada
                 (string.IsNullOrEmpty(Culture.Name) ? "" : "." + Culture.Name) + ".xml";
         }
 
+        /// <summary>
+        /// Определить, что загрузка словаря необходима: 
+        /// не используется русская локализация или существует файл словаря
+        /// </summary>
+        public static bool LoadingRequired(string directory, string fileNamePrefix)
+        {
+            return !Localization.UseRussian || File.Exists(GetDictionaryFileName(directory, fileNamePrefix));
+        }
+
 
         /// <summary>
         /// Перевести форму, используя заданный словарь
