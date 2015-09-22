@@ -953,13 +953,17 @@ namespace Scada.Comm.Ctrl
             // локализация приложения
             StringBuilder sbError = new StringBuilder();
             string errMsg;
-            if (!Localization.UseRussian)
+            
+            if (Localization.LoadingRequired(appDirs.LangDir, "ScadaData"))
             {
                 if (Localization.LoadDictionaries(appDirs.LangDir, "ScadaData", out errMsg))
                     CommonPhrases.Init();
                 else
                     sbError.AppendLine(errMsg);
+            }
 
+            if (Localization.LoadingRequired(appDirs.LangDir, "ScadaComm"))
+            {
                 if (Localization.LoadDictionaries(appDirs.LangDir, "ScadaComm", out errMsg))
                 {
                     Localization.TranslateForm(this, "Scada.Comm.Ctrl.FrmMain", toolTip, cmsNotify, cmsLine, cmsKP);

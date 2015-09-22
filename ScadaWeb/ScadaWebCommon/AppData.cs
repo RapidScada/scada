@@ -140,22 +140,25 @@ namespace Scada.Web
         /// </summary>
         private static void RefreshDictionaries()
         {
-            if (!Localization.UseRussian)
+            DateTime fileWriteTime1 = GetFileWriteTime(Localization.GetDictionaryFileName(LangDir, "ScadaData"));
+            DateTime fileWriteTime2 = GetFileWriteTime(Localization.GetDictionaryFileName(LangDir, "ScadaWeb"));
+            string writeTimeStr = fileWriteTime1.ToString() + fileWriteTime2.ToString();
+
+            if (dictWriteTimeStr != writeTimeStr)
             {
-                DateTime fileWriteTime1 = GetFileWriteTime(Localization.GetDictionaryFileName(LangDir, "ScadaData"));
-                DateTime fileWriteTime2 = GetFileWriteTime(Localization.GetDictionaryFileName(LangDir, "ScadaWeb"));
-                string writeTimeStr = fileWriteTime1.ToString() + fileWriteTime2.ToString();
+                dictWriteTimeStr = writeTimeStr;
+                string errMsg;
 
-                if (dictWriteTimeStr != writeTimeStr)
+                if (Localization.LoadingRequired(LangDir, "ScadaData"))
                 {
-                    dictWriteTimeStr = writeTimeStr;
-                    string errMsg;
-
                     if (Localization.LoadDictionaries(LangDir, "ScadaData", out errMsg))
                         CommonPhrases.Init();
                     else
                         Log.WriteAction(errMsg, Log.ActTypes.Error);
+                }
 
+                if (Localization.LoadingRequired(LangDir, "ScadaWeb"))
+                {
                     if (Localization.LoadDictionaries(LangDir, "ScadaWeb", out errMsg))
                         WebPhrases.Init();
                     else

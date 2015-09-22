@@ -36,7 +36,7 @@ namespace ScadaAdmin
     /// </summary>
     public partial class FrmAbout : Form
     {
-        private const string Version = "4.5.0.0"; // версия приложения
+        private const string Version = "4.5.0.1"; // версия приложения
         private static FrmAbout frmAbout = null;  // экземпляр формы о программе
         
         private bool inited;    // форма инициализирована

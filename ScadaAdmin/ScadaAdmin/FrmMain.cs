@@ -586,16 +586,19 @@ namespace ScadaAdmin
         private void FrmMain_Load(object sender, EventArgs e)
         {
             // локализация приложения
-            if (!Localization.UseRussian)
-            {
-                string langDir = AppData.ExeDir + "Lang\\";
-                string errMsg;
+            string langDir = AppData.ExeDir + "Lang\\";
+            string errMsg;
 
+            if (Localization.LoadingRequired(langDir, "ScadaData"))
+            {
                 if (Localization.LoadDictionaries(langDir, "ScadaData", out errMsg))
                     CommonPhrases.Init();
                 else
                     ScadaUtils.ShowError(errMsg);
+            }
 
+            if (Localization.LoadingRequired(langDir, "ScadaAdmin"))
+            {
                 if (Localization.LoadDictionaries(langDir, "ScadaAdmin", out errMsg))
                 {
                     Localization.TranslateForm(this, "ScadaAdmin.FrmMain", null, contextExpolorer, contextInCnls);
