@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
@@ -551,16 +551,19 @@ namespace ScadaTableEditor
             exeDir = ScadaUtils.NormalDir(Path.GetDirectoryName(Application.ExecutablePath));
 
             // локализация приложения
-            if (!Localization.UseRussian)
-            {
-                string langDir = exeDir + "Lang\\";
-                string errMsg;
+            string langDir = exeDir + "Lang\\";
+            string errMsg;
 
+            if (Localization.LoadingRequired(langDir, "ScadaData"))
+            {
                 if (Localization.LoadDictionaries(langDir, "ScadaData", out errMsg))
                     CommonPhrases.Init();
                 else
                     ScadaUtils.ShowError(errMsg);
+            }
 
+            if (Localization.LoadingRequired(langDir, "ScadaTableEditor"))
+            {
                 if (Localization.LoadDictionaries(langDir, "ScadaTableEditor", out errMsg))
                 {
                     Localization.TranslateForm(this, "ScadaTableEditor.FrmMain", toolTip);

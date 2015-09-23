@@ -812,6 +812,7 @@ namespace Scada.Server.Svc
                             // передача команды ТУ подключенным клиентам
                             if (passToClients)
                             {
+                                ctrlCmd.PrepareCmdData();
                                 foreach (ClientInfo cl in clients)
                                     if (cl.UserRoleID == BaseValues.Roles.App)
                                         cl.CmdList.Add(ctrlCmd);

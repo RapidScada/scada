@@ -376,16 +376,19 @@ namespace ScadaWebConfig
             exeDir = ScadaUtils.NormalDir(Path.GetDirectoryName(Application.ExecutablePath));
 
             // локализация приложения
-            if (!Localization.UseRussian)
-            {
-                string langDir = exeDir + "Lang\\";
-                string errMsg;
+            string langDir = exeDir + "Lang\\";
+            string errMsg;
 
+            if (Localization.LoadingRequired(langDir, "ScadaData"))
+            {
                 if (Localization.LoadDictionaries(langDir, "ScadaData", out errMsg))
                     CommonPhrases.Init();
                 else
                     ScadaUtils.ShowError(errMsg);
+            }
 
+            if (Localization.LoadingRequired(langDir, "ScadaWebConfig"))
+            {
                 if (Localization.LoadDictionaries(langDir, "ScadaWebConfig", out errMsg))
                 {
                     Localization.TranslateForm(this, "ScadaWebConfig.FrmMain");
