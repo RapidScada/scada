@@ -1,5 +1,5 @@
-/*
- * Copyright 2014 Mikhail Shiryaev
+п»ї/*
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2007
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
@@ -35,17 +35,17 @@ namespace Scada.Web
 {
     /// <summary>
     /// Application user data
-    /// <para>Данные пользователя приложения</para>
+    /// <para>Р”Р°РЅРЅС‹Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РїСЂРёР»РѕР¶РµРЅРёСЏ</para>
     /// </summary>
     public class UserData
     {
         /// <summary>
-        /// Права на набор представлений и входящие в него представления
+        /// РџСЂР°РІР° РЅР° РЅР°Р±РѕСЂ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёР№ Рё РІС…РѕРґСЏС‰РёРµ РІ РЅРµРіРѕ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ
         /// </summary>
         private class ViewSetRight
         {
             /// <summary>
-            /// Конструктор
+            /// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
             /// </summary>
             public ViewSetRight(ViewSettings.ViewSet viewSet)
             {
@@ -55,26 +55,26 @@ namespace Scada.Web
             }
 
             /// <summary>
-            /// Получить набор представлений
+            /// РџРѕР»СѓС‡РёС‚СЊ РЅР°Р±РѕСЂ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёР№
             /// </summary>
             public ViewSettings.ViewSet ViewSet { get; private set; }
             /// <summary>
-            /// Получить или установить права на набор представлений
+            /// РџРѕР»СѓС‡РёС‚СЊ РёР»Рё СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РїСЂР°РІР° РЅР° РЅР°Р±РѕСЂ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёР№
             /// </summary>
             public MainData.Right Right { get; set; }
             /// <summary>
-            /// Получить или установить массив прав на представления из набора
+            /// РџРѕР»СѓС‡РёС‚СЊ РёР»Рё СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РјР°СЃСЃРёРІ РїСЂР°РІ РЅР° РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ РёР· РЅР°Р±РѕСЂР°
             /// </summary>
             public MainData.Right[] ViewRightArr { get; set; }
         }
 
 
-        private SortedList<string, MainData.Right> rightList; // список прав пользователя на объекты интерфейса
-        private List<ViewSetRight> viewSetRightList; // список прав на наборы представлений и представления
+        private SortedList<string, MainData.Right> rightList; // СЃРїРёСЃРѕРє РїСЂР°РІ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РЅР° РѕР±СЉРµРєС‚С‹ РёРЅС‚РµСЂС„РµР№СЃР°
+        private List<ViewSetRight> viewSetRightList; // СЃРїРёСЃРѕРє РїСЂР°РІ РЅР° РЅР°Р±РѕСЂС‹ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёР№ Рё РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ
 
 
         /// <summary>
-        /// Конструктор
+        /// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
         /// </summary>
         private UserData()
         {
@@ -84,48 +84,48 @@ namespace Scada.Web
 
 
         /// <summary>
-        /// Получить имя пользователя
+        /// РџРѕР»СѓС‡РёС‚СЊ РёРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
         /// </summary>
         public string UserLogin { get; private set; }
 
         /// <summary>
-        /// Получить идентификатор пользователя в базе конфигурации
+        /// РџРѕР»СѓС‡РёС‚СЊ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РІ Р±Р°Р·Рµ РєРѕРЅС„РёРіСѓСЂР°С†РёРё
         /// </summary>
         public int UserID { get; private set; }
 
         /// <summary>
-        /// Получить роль пользователя
+        /// РџРѕР»СѓС‡РёС‚СЊ СЂРѕР»СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
         /// </summary>
         public ServerComm.Roles Role { get; private set; }
 
         /// <summary>
-        /// Получить идентификатор роли пользователя
+        /// РџРѕР»СѓС‡РёС‚СЊ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СЂРѕР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
         /// </summary>
         public int RoleID { get; private set; }
 
         /// <summary>
-        /// Получить наименование роли пользователя
+        /// РџРѕР»СѓС‡РёС‚СЊ РЅР°РёРјРµРЅРѕРІР°РЅРёРµ СЂРѕР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
         /// </summary>
         public string RoleName { get; private set; }
 
         /// <summary>
-        /// Получить признак, выполнен ли вход пользователя в систему
+        /// РџРѕР»СѓС‡РёС‚СЊ РїСЂРёР·РЅР°Рє, РІС‹РїРѕР»РЅРµРЅ Р»Рё РІС…РѕРґ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РІ СЃРёСЃС‚РµРјСѓ
         /// </summary>
         public bool LoggedOn { get; private set; }
 
         /// <summary>
-        /// Получить дату и время входа пользователя в систему
+        /// РџРѕР»СѓС‡РёС‚СЊ РґР°С‚Сѓ Рё РІСЂРµРјСЏ РІС…РѕРґР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РІ СЃРёСЃС‚РµРјСѓ
         /// </summary>
         public DateTime LogOnDT { get; private set; }
         
         /// <summary>
-        /// Получить настройки представлений
+        /// РџРѕР»СѓС‡РёС‚СЊ РЅР°СЃС‚СЂРѕР№РєРё РїСЂРµРґСЃС‚Р°РІР»РµРЅРёР№
         /// </summary>
         public ViewSettings ViewSettings { get; private set; }
 
 
         /// <summary>
-        /// Инициализировать список прав на наборы представлений и входящие в них представления
+        /// РРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°С‚СЊ СЃРїРёСЃРѕРє РїСЂР°РІ РЅР° РЅР°Р±РѕСЂС‹ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёР№ Рё РІС…РѕРґСЏС‰РёРµ РІ РЅРёС… РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ
         /// </summary>
         private void InitViewSetRightList(List<ViewSettings.ViewSet> viewSetList)
         {
@@ -143,7 +143,7 @@ namespace Scada.Web
         }
         
         /// <summary>
-        /// Инициализировать права на представления из набора
+        /// РРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°С‚СЊ РїСЂР°РІР° РЅР° РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ РёР· РЅР°Р±РѕСЂР°
         /// </summary>
         private void InitViewRightArr(ViewSetRight viewSetRight)
         {
@@ -169,9 +169,9 @@ namespace Scada.Web
         
 
         /// <summary>
-        /// Выполнить вход пользователя в систему
+        /// Р’С‹РїРѕР»РЅРёС‚СЊ РІС…РѕРґ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РІ СЃРёСЃС‚РµРјСѓ
         /// </summary>
-        /// <remarks>Если пароль равен null, то он не проверяется</remarks>
+        /// <remarks>Р•СЃР»Рё РїР°СЂРѕР»СЊ СЂР°РІРµРЅ null, С‚Рѕ РѕРЅ РЅРµ РїСЂРѕРІРµСЂСЏРµС‚СЃСЏ</remarks>
         public bool Login(string login, string password, out string errMsg)
         {
             login = login == null ? "" : login.Trim();
@@ -191,8 +191,8 @@ namespace Scada.Web
                 InitViewSetRightList(ViewSettings.ViewSetList);
 
                 AppData.Log.WriteAction((password == null ? 
-                    (Localization.UseRussian ? "Вход в систему без пароля: " : "Login without a password: ") : 
-                    (Localization.UseRussian ? "Вход в систему: " : "Login: ")) +
+                    (Localization.UseRussian ? "Р’С…РѕРґ РІ СЃРёСЃС‚РµРјСѓ Р±РµР· РїР°СЂРѕР»СЏ: " : "Login without a password: ") : 
+                    (Localization.UseRussian ? "Р’С…РѕРґ РІ СЃРёСЃС‚РµРјСѓ: " : "Login: ")) +
                     login + " (" + RoleName + ")", Log.ActTypes.Action);
                 return true;
             }
@@ -201,14 +201,14 @@ namespace Scada.Web
                 Logout();
 
                 string err = login == "" ? errMsg : login + " - " + errMsg;
-                AppData.Log.WriteAction((Localization.UseRussian ? "Неудачная попытка входа в систему: " : 
+                AppData.Log.WriteAction((Localization.UseRussian ? "РќРµСѓРґР°С‡РЅР°СЏ РїРѕРїС‹С‚РєР° РІС…РѕРґР° РІ СЃРёСЃС‚РµРјСѓ: " : 
                     "Unsuccessful login attempt: ") + err, Log.ActTypes.Error);
                 return false;
             }
         }
 
         /// <summary>
-        /// Выполнить вход пользователя в систему без проверки пароля
+        /// Р’С‹РїРѕР»РЅРёС‚СЊ РІС…РѕРґ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РІ СЃРёСЃС‚РµРјСѓ Р±РµР· РїСЂРѕРІРµСЂРєРё РїР°СЂРѕР»СЏ
         /// </summary>
         public bool Login(string login)
         {
@@ -217,7 +217,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Завершить работу пользователя с определёнными ранее именем
+        /// Р—Р°РІРµСЂС€РёС‚СЊ СЂР°Р±РѕС‚Сѓ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ СЃ РѕРїСЂРµРґРµР»С‘РЅРЅС‹РјРё СЂР°РЅРµРµ РёРјРµРЅРµРј
         /// </summary>
         public void Logout()
         {
@@ -235,7 +235,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Получить права пользователя на объект интерфейса
+        /// РџРѕР»СѓС‡РёС‚СЊ РїСЂР°РІР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РЅР° РѕР±СЉРµРєС‚ РёРЅС‚РµСЂС„РµР№СЃР°
         /// </summary>
         public MainData.Right GetRight(string itfObjName)
         {
@@ -257,7 +257,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Получить права пользователя на набор представлений
+        /// РџРѕР»СѓС‡РёС‚СЊ РїСЂР°РІР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РЅР° РЅР°Р±РѕСЂ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёР№
         /// </summary>
         public MainData.Right GetViewSetRight(int viewSetIndex)
         {
@@ -266,7 +266,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Получить права пользователя на представление
+        /// РџРѕР»СѓС‡РёС‚СЊ РїСЂР°РІР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РЅР° РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ
         /// </summary>
         public MainData.Right GetViewRight(int viewSetIndex, int viewIndex)
         {
@@ -289,7 +289,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Получить представление заданного типа и права на него
+        /// РџРѕР»СѓС‡РёС‚СЊ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ Р·Р°РґР°РЅРЅРѕРіРѕ С‚РёРїР° Рё РїСЂР°РІР° РЅР° РЅРµРіРѕ
         /// </summary>
         public bool GetView(Type viewType, int viewSetIndex, int viewIndex, 
             out BaseView view, out MainData.Right right)
@@ -316,8 +316,13 @@ namespace Scada.Web
                         ViewSettings.ViewInfo viewInfo = viewSet[viewIndex];
                         right = viewRightArr[viewIndex];
 
+                        // РїРѕРїС‹С‚РєР° РїРѕР»СѓС‡РёС‚СЊ СЃС‚Р°РЅРґР°СЂС‚РЅС‹Р№ С‚РёРї РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ, РµСЃР»Рё С‚РёРї РЅРµ Р·Р°РґР°РЅ
+                        if (viewType == null)
+                            viewType = viewInfo.GetViewType();
+
                         if (viewType == null)
                         {
+                            // РІРѕР·РІСЂР°С‚ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ РёР· РєСЌС€Р°, РµСЃР»Рё С‚РёРї РЅРµ Р·Р°РґР°РЅ
                             view = viewInfo.ViewCash;
                             return view != null;
                         }
@@ -325,11 +330,14 @@ namespace Scada.Web
                         {
                             if (viewInfo.ViewCash != null && viewInfo.ViewCash.GetType() == viewType)
                             {
+                                // РІРѕР·РІСЂР°С‚ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ РёР· РєСЌС€Р°, 
+                                // РµСЃР»Рё РІ РєСЌС€Рµ Р·Р°РіСЂСѓР¶РµРЅРѕ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ Рё РµРіРѕ С‚РёРї СЃРѕРІРїР°РґР°РµС‚ СЃ Р·Р°РґР°РЅРЅС‹Рј
                                 view = viewInfo.ViewCash;
                                 result = true;
                             }
                             else
                             {
+                                // СЃРѕР·РґР°РЅРёРµ Рё Р·Р°РіСЂСѓР·РєР° РЅРѕРІРѕРіРѕ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ
                                 view = (BaseView)Activator.CreateInstance(viewType);
 
                                 if (!view.StoredOnServer)
@@ -350,7 +358,7 @@ namespace Scada.Web
             }
             catch (Exception ex)
             {
-                AppData.Log.WriteAction((Localization.UseRussian ? "Ошибка при получении представления: " : 
+                AppData.Log.WriteAction((Localization.UseRussian ? "РћС€РёР±РєР° РїСЂРё РїРѕР»СѓС‡РµРЅРёРё РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ: " : 
                     "Error getting view: ") + ex.Message, Log.ActTypes.Exception);
             }
 
@@ -359,9 +367,9 @@ namespace Scada.Web
 
 
         /// <summary>
-        /// Получить данные пользователя приложения
+        /// РџРѕР»СѓС‡РёС‚СЊ РґР°РЅРЅС‹Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РїСЂРёР»РѕР¶РµРЅРёСЏ
         /// </summary>
-        /// <remarks>Для веб-приложения данные пользователя сохраняются в сессии</remarks>
+        /// <remarks>Р”Р»СЏ РІРµР±-РїСЂРёР»РѕР¶РµРЅРёСЏ РґР°РЅРЅС‹Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ СЃРѕС…СЂР°РЅСЏСЋС‚СЃСЏ РІ СЃРµСЃСЃРёРё</remarks>
         public static UserData GetUserData()
         {
             HttpSessionState session = HttpContext.Current == null ? null : HttpContext.Current.Session;
@@ -375,7 +383,7 @@ namespace Scada.Web
                 if (session != null)
                     session.Add("UserData", userData);
 
-                // загрузка настроек представлений
+                // Р·Р°РіСЂСѓР·РєР° РЅР°СЃС‚СЂРѕРµРє РїСЂРµРґСЃС‚Р°РІР»РµРЅРёР№
                 string errMsg;
                 if (!userData.ViewSettings.LoadFromFile(AppData.ConfigDir + ViewSettings.DefFileName, out errMsg))
                     AppData.Log.WriteAction(errMsg, Log.ActTypes.Exception);
