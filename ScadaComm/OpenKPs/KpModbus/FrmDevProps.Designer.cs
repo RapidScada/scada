@@ -31,6 +31,9 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDevProps));
             this.gbDevice = new System.Windows.Forms.GroupBox();
+            this.btnBrowseDevTemplate = new System.Windows.Forms.Button();
+            this.btnCreateDevTemplate = new System.Windows.Forms.Button();
+            this.btnEditDevTemplate = new System.Windows.Forms.Button();
             this.txtDevTemplate = new System.Windows.Forms.TextBox();
             this.lblDevTemplate = new System.Windows.Forms.Label();
             this.gbCommLine = new System.Windows.Forms.GroupBox();
@@ -39,9 +42,6 @@
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.btnEditDevTemplate = new System.Windows.Forms.Button();
-            this.btnCreateDevTemplate = new System.Windows.Forms.Button();
-            this.btnBrowseDevTemplate = new System.Windows.Forms.Button();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.gbDevice.SuspendLayout();
             this.gbCommLine.SuspendLayout();
@@ -62,13 +62,49 @@
             this.gbDevice.TabStop = false;
             this.gbDevice.Text = "КП";
             // 
+            // btnBrowseDevTemplate
+            // 
+            this.btnBrowseDevTemplate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnBrowseDevTemplate.Image = ((System.Drawing.Image)(resources.GetObject("btnBrowseDevTemplate.Image")));
+            this.btnBrowseDevTemplate.Location = new System.Drawing.Point(174, 32);
+            this.btnBrowseDevTemplate.Name = "btnBrowseDevTemplate";
+            this.btnBrowseDevTemplate.Size = new System.Drawing.Size(20, 20);
+            this.btnBrowseDevTemplate.TabIndex = 2;
+            this.toolTip.SetToolTip(this.btnBrowseDevTemplate, "Выбрать шаблон");
+            this.btnBrowseDevTemplate.UseVisualStyleBackColor = true;
+            this.btnBrowseDevTemplate.Click += new System.EventHandler(this.btnBrowseDevTemplate_Click);
+            // 
+            // btnCreateDevTemplate
+            // 
+            this.btnCreateDevTemplate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnCreateDevTemplate.Image = ((System.Drawing.Image)(resources.GetObject("btnCreateDevTemplate.Image")));
+            this.btnCreateDevTemplate.Location = new System.Drawing.Point(200, 32);
+            this.btnCreateDevTemplate.Name = "btnCreateDevTemplate";
+            this.btnCreateDevTemplate.Size = new System.Drawing.Size(20, 20);
+            this.btnCreateDevTemplate.TabIndex = 3;
+            this.toolTip.SetToolTip(this.btnCreateDevTemplate, "Создать новый шаблон");
+            this.btnCreateDevTemplate.UseVisualStyleBackColor = true;
+            this.btnCreateDevTemplate.Click += new System.EventHandler(this.btnCreateDevTemplate_Click);
+            // 
+            // btnEditDevTemplate
+            // 
+            this.btnEditDevTemplate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnEditDevTemplate.Image = ((System.Drawing.Image)(resources.GetObject("btnEditDevTemplate.Image")));
+            this.btnEditDevTemplate.Location = new System.Drawing.Point(226, 32);
+            this.btnEditDevTemplate.Name = "btnEditDevTemplate";
+            this.btnEditDevTemplate.Size = new System.Drawing.Size(20, 20);
+            this.btnEditDevTemplate.TabIndex = 4;
+            this.toolTip.SetToolTip(this.btnEditDevTemplate, "Редактировать шаблон");
+            this.btnEditDevTemplate.UseVisualStyleBackColor = true;
+            this.btnEditDevTemplate.Click += new System.EventHandler(this.btnEditDevTemplate_Click);
+            // 
             // txtDevTemplate
             // 
             this.txtDevTemplate.Location = new System.Drawing.Point(13, 32);
             this.txtDevTemplate.Name = "txtDevTemplate";
             this.txtDevTemplate.Size = new System.Drawing.Size(155, 20);
             this.txtDevTemplate.TabIndex = 1;
-            this.txtDevTemplate.TextChanged += new System.EventHandler(this.control_Changed);
+            this.txtDevTemplate.TextChanged += new System.EventHandler(this.txtDevTemplate_TextChanged);
             // 
             // lblDevTemplate
             // 
@@ -141,42 +177,6 @@
             this.openFileDialog.Filter = "Файлы шаблонов (*.xml)|*.xml|Все файлы (*.*)|*.*";
             this.openFileDialog.FilterIndex = 0;
             this.openFileDialog.Title = "Открыть файл";
-            // 
-            // btnEditDevTemplate
-            // 
-            this.btnEditDevTemplate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnEditDevTemplate.Image = ((System.Drawing.Image)(resources.GetObject("btnEditDevTemplate.Image")));
-            this.btnEditDevTemplate.Location = new System.Drawing.Point(226, 32);
-            this.btnEditDevTemplate.Name = "btnEditDevTemplate";
-            this.btnEditDevTemplate.Size = new System.Drawing.Size(20, 20);
-            this.btnEditDevTemplate.TabIndex = 4;
-            this.toolTip.SetToolTip(this.btnEditDevTemplate, "Редактировать шаблон");
-            this.btnEditDevTemplate.UseVisualStyleBackColor = true;
-            this.btnEditDevTemplate.Click += new System.EventHandler(this.btnEditDevTemplate_Click);
-            // 
-            // btnCreateDevTemplate
-            // 
-            this.btnCreateDevTemplate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnCreateDevTemplate.Image = ((System.Drawing.Image)(resources.GetObject("btnCreateDevTemplate.Image")));
-            this.btnCreateDevTemplate.Location = new System.Drawing.Point(200, 32);
-            this.btnCreateDevTemplate.Name = "btnCreateDevTemplate";
-            this.btnCreateDevTemplate.Size = new System.Drawing.Size(20, 20);
-            this.btnCreateDevTemplate.TabIndex = 3;
-            this.toolTip.SetToolTip(this.btnCreateDevTemplate, "Создать новый шаблон");
-            this.btnCreateDevTemplate.UseVisualStyleBackColor = true;
-            this.btnCreateDevTemplate.Click += new System.EventHandler(this.btnCreateDevTemplate_Click);
-            // 
-            // btnBrowseDevTemplate
-            // 
-            this.btnBrowseDevTemplate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnBrowseDevTemplate.Image = ((System.Drawing.Image)(resources.GetObject("btnBrowseDevTemplate.Image")));
-            this.btnBrowseDevTemplate.Location = new System.Drawing.Point(174, 32);
-            this.btnBrowseDevTemplate.Name = "btnBrowseDevTemplate";
-            this.btnBrowseDevTemplate.Size = new System.Drawing.Size(20, 20);
-            this.btnBrowseDevTemplate.TabIndex = 2;
-            this.toolTip.SetToolTip(this.btnBrowseDevTemplate, "Выбрать шаблон");
-            this.btnBrowseDevTemplate.UseVisualStyleBackColor = true;
-            this.btnBrowseDevTemplate.Click += new System.EventHandler(this.btnBrowseDevTemplate_Click);
             // 
             // FrmDevProps
             // 
