@@ -345,6 +345,10 @@ namespace Scada.Comm.Channels
                     WriteToLog(string.Format(Localization.UseRussian ? 
                         "{0} Установка TCP-соединения с {1}:{2}" :
                         "{0} Establish a TCP connection with {1}:{2}", CommUtils.GetNowDT(), addr, port));
+
+                    if (tcpConn.NetStream != null) // соединение уже было открыто, но разорвано
+                        tcpConn.Renew();
+
                     tcpConn.Open(addr, port);
                 }
                 catch (Exception ex)
