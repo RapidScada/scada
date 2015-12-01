@@ -374,7 +374,6 @@ namespace Scada.Comm.Channels
         {
             bool stopReceived;
             List<string> lines = ReadLines(timeout, OneLineStopCondition, out stopReceived, out logText);
-            WriteToLog(logText);
             return lines.Count > 0 ? lines[0] : null;
         }
 
