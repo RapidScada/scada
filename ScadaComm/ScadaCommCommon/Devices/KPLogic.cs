@@ -915,6 +915,24 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
+        /// Потокобезопасно установить текущие данные как недостоверные
+        /// </summary>
+        protected void InvalidateCurData(int tagIndex, int tagCount)
+        {
+            lock (curData)
+            {
+                SrezTableLight.CnlData newData = SrezTableLight.CnlData.Empty;
+                for (int i = 0; i < tagCount; i++)
+                {
+                    SrezTableLight.CnlData curTagData = curData[tagIndex];
+                    curDataModified[tagIndex] |= curTagData.Val != newData.Val || curTagData.Stat != newData.Stat;
+                    curData[tagIndex] = newData;
+                    tagIndex++;
+                }
+            }
+        }
+
+        /// <summary>
         /// Потокобезопасно добавить архивный срез в список срезов КП
         /// </summary>
         protected void AddArcSrez(TagSrez tagSrez)
