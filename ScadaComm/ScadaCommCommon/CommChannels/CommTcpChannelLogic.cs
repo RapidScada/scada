@@ -103,6 +103,15 @@ namespace Scada.Comm.Channels
         }
 
         /// <summary>
+        /// Остановить работу канала связи
+        /// </summary>
+        public override void Stop()
+        {
+            // очистка словаря КП по позывным
+            kpCallNumDict.Clear();
+        }
+
+        /// <summary>
         /// Выполнить действия после сеанса опроса КП или отправки команды
         /// </summary>
         public override void AfterSession(KPLogic kpLogic)
@@ -114,15 +123,6 @@ namespace Scada.Comm.Channels
                 if (tcpConn != null && tcpConn.Connected)
                     tcpConn.ClearNetStream(inBuf);
             }
-        }
-
-        /// <summary>
-        /// Остановить работу канала связи
-        /// </summary>
-        public override void Stop()
-        {
-            // очистка словаря КП по позывным
-            kpCallNumDict.Clear();
         }
     }
 }

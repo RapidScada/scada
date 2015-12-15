@@ -31,6 +31,8 @@
     <Phrase key="btnChangePeriod">Change period</Phrase>
     <Phrase key="btnHideData">Hide data</Phrase>
     <Phrase key="btnRefreshDiag">Refresh</Phrase>
+    <Phrase key="btnExportPdf">PDF</Phrase>
+    <Phrase key="btnExportPng">PNG</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Diag.WFrmDiagCnls">
     <Phrase key="this">Select channels</Phrase>

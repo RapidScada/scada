@@ -65,6 +65,7 @@
     <Content Include="scheme\ScadaScheme.aspx" />
     <Content Include="scheme\ScadaSchemeSvc.svc" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
+    <Content Include="scheme\web.config" />
     <None Include="script\scada.js" />
     <Content Include="script\silverlight.js" />
     <Content Include="Web.config">

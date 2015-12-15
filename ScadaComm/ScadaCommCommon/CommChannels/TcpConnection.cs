@@ -92,12 +92,7 @@ namespace Scada.Comm.Channels
             connectDT = DateTime.MinValue;
             relatedKPList = null;
 
-            TcpClient = tcpClient;
-            TakeNetStream();
-            TakeAddresses();
-            ActivityDT = DateTime.Now;
-            JustConnected = true;
-            Broken = false;
+            InternalInit(tcpClient);
         }
 
 
@@ -169,6 +164,31 @@ namespace Scada.Comm.Channels
             }
         }
 
+
+        /// <summary>
+        /// Инициализировать соединение
+        /// </summary>
+        protected void InternalInit(TcpClient tcpClient)
+        {
+            TcpClient = tcpClient;
+            TakeNetStream();
+            TakeAddresses();
+            ActivityDT = DateTime.Now;
+            JustConnected = true;
+            Broken = false;
+        }
+
+        /// <summary>
+        /// Закрыть соединение
+        /// </summary>
+        protected void InternalClose()
+        {
+            try { NetStream.Close(); }
+            catch { }
+
+            try { TcpClient.Close(); }
+            catch { }
+        }
 
         /// <summary>
         /// Обновить дату и время последней активности
@@ -487,11 +507,16 @@ namespace Scada.Comm.Channels
                         kpLogic.Connection = null;
             }
 
-            try { NetStream.Close(); }
-            catch { }
+            InternalClose();
+        }
 
-            try { TcpClient.Close(); }
-            catch { }
+        /// <summary>
+        /// Восстановить TCP-соединение
+        /// </summary>
+        public void Renew()
+        {
+            InternalClose();
+            InternalInit(new TcpClient());
         }
 
         /// <summary>

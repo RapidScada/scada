@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2011
- * Modified : 2012
+ * Modified : 2015
  */
 
 using System;
@@ -78,6 +78,16 @@ namespace Scada.Web
             /// </summary>
             public string Type { get; set; }
             /// <summary>
+            /// Проверить, что тип представления известен
+            /// </summary>
+            public bool TypeIsKnown
+            {
+                get
+                {
+                    return Type == "TableView" || Type == "SchemeView";
+                }
+            }
+            /// <summary>
             /// Получить или установить имя файла
             /// </summary>
             public string FileName { get; set; }
@@ -86,6 +96,19 @@ namespace Scada.Web
             /// </summary>
             public BaseView ViewCash { get; set; }
 
+            /// <summary>
+            /// Получить тип представления, соответствующий строковой записи типа
+            /// </summary>
+            /// <remarks>Метод работает только для стандартных типов представлений</remarks>
+            public System.Type GetViewType()
+            {
+                if (Type == "TableView")
+                    return typeof(TableView);
+                else if (Type == "SchemeView")
+                    return System.Type.GetType("Scada.Scheme.SchemeView, ScadaSchemeCommon", false);
+                else
+                    return null;
+            }
             /// <summary>
             /// Создать копию информации о представлении
             /// </summary>

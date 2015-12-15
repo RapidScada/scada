@@ -77,6 +77,12 @@ namespace Scada.Comm
         public static string IncorrectCmdData { get; private set; }
         public static string NoCmdData { get; private set; }
         public static string RetryDelay { get; private set; }
+        public static string ResponseOK { get; private set; }
+        public static string ResponseError { get; private set; }
+        public static string ResponseCsError { get; private set; }
+        public static string ResponseCrcError { get; private set; }
+        public static string IncorrectResponseLength { get; private set; }
+        public static string IncorrectResponseFormat { get; private set; }
 
 
         private static void SetToDefault()
@@ -118,6 +124,12 @@ namespace Scada.Comm
                 IncorrectCmdData = "Некорректные данные команды";
                 NoCmdData = "Отсутствуют данные команды";
                 RetryDelay = "Задержка перед повторной попыткой";
+                ResponseOK = "OK!";
+                ResponseError = "Ошибка связи!";
+                ResponseCsError = "Ошибка КС!";
+                ResponseCrcError = "Ошибка CRC!";
+                IncorrectResponseLength = "Некорректная длина ответа!";
+                IncorrectResponseFormat = "Некорректный формат ответа!";
             }
             else
             {
@@ -134,6 +146,12 @@ namespace Scada.Comm
                 IncorrectCmdData = "Incorrect command data";
                 NoCmdData = "No command data";
                 RetryDelay = "Delay before trying again";
+                ResponseOK = "OK!";
+                ResponseError = "Communication error!";
+                ResponseCsError = "CS error!";
+                ResponseCrcError = "CRC error!";
+                IncorrectResponseLength = "Incorrect response length!";
+                IncorrectResponseFormat = "Incorrect response format!";
             }
         }
 

@@ -103,6 +103,12 @@ namespace Scada.Comm.Devices.KpModbus
             kpProps.Modified = true;
         }
 
+        private void txtDevTemplate_TextChanged(object sender, EventArgs e)
+        {
+            kpProps.Modified = true;
+            btnEditDevTemplate.Enabled = txtDevTemplate.Text.Trim() != "";
+        }
+
         private void btnBrowseDevTemplate_Click(object sender, EventArgs e)
         {
             openFileDialog.FileName = "";

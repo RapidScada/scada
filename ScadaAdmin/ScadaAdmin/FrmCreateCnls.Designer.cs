@@ -347,9 +347,9 @@
             // 
             this.btnCalc.Location = new System.Drawing.Point(12, 487);
             this.btnCalc.Name = "btnCalc";
-            this.btnCalc.Size = new System.Drawing.Size(160, 23);
+            this.btnCalc.Size = new System.Drawing.Size(170, 23);
             this.btnCalc.TabIndex = 7;
-            this.btnCalc.Text = "Расчитать номера каналов";
+            this.btnCalc.Text = "Рассчитать номера каналов";
             this.btnCalc.UseVisualStyleBackColor = true;
             this.btnCalc.Click += new System.EventHandler(this.btnCalc_Click);
             // 

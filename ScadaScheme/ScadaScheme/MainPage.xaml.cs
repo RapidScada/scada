@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2013
+ * Modified : 2015
  */
 
 using System;
@@ -1843,6 +1843,9 @@ namespace Scada.Scheme
                 {
                     binding.MaxReceivedMessageSize = DefMaxMsgSize;
                 }
+
+                if (SchemeSvcURI.StartsWith("https", StringComparison.OrdinalIgnoreCase))
+                    binding.Security.Mode = BasicHttpSecurityMode.Transport;
 
                 EndpointAddress endpointAddr = new EndpointAddress(SchemeSvcURI);
                 schemeSvcClient = new ScadaSchemeSvcClient(binding, endpointAddr);
