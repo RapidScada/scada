@@ -15,5 +15,35 @@ namespace Scada.Comm.Devices.KpSnmp
         {
             InitializeComponent();
         }
+
+        private void btnCreateNumber_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnCutNumber_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnCopyNumber_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnPasteNumber_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

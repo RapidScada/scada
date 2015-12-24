@@ -62,6 +62,20 @@
     <Compile Include="KpSnmpView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FrmConfig.resx">
+      <DependentUpon>FrmConfig.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Res\delete.png" />
+    <Content Include="Res\edit.png" />
+    <Content Include="Res\folder_closed.png" />
+    <Content Include="Res\folder_open.png" />
+    <Content Include="Res\move_down.png" />
+    <Content Include="Res\move_up.png" />
+    <Content Include="Res\var.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
