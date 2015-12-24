@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KpSms", "KpSms\KpSms.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KpTest", "KpTest\KpTest.csproj", "{D0AD784B-587D-4CD1-AF7F-7473A4FF7060}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KpSnmp", "KpSnmp\KpSnmp.csproj", "{650B47BB-B3C7-4DD6-87F4-2BB65E084508}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{D0AD784B-587D-4CD1-AF7F-7473A4FF7060}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0AD784B-587D-4CD1-AF7F-7473A4FF7060}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0AD784B-587D-4CD1-AF7F-7473A4FF7060}.Release|Any CPU.Build.0 = Release|Any CPU
+		{650B47BB-B3C7-4DD6-87F4-2BB65E084508}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{650B47BB-B3C7-4DD6-87F4-2BB65E084508}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{650B47BB-B3C7-4DD6-87F4-2BB65E084508}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{650B47BB-B3C7-4DD6-87F4-2BB65E084508}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
