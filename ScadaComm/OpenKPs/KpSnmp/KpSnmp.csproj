@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config.cs" />
     <Compile Include="KpSnmpLogic.cs" />
     <Compile Include="FrmConfig.cs">
       <SubType>Form</SubType>
