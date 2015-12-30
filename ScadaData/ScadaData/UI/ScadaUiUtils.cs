@@ -95,9 +95,10 @@ namespace Scada.UI
         }
 
         /// <summary>
-        /// Выбрать элемент выпадающего списка, используя карту соответствия значений и индексов элементов списка
+        /// Установить выбранный элемент выпадающего списка, 
+        /// используя карту соответствия значений и индексов элементов списка
         /// </summary>
-        public static void SelectItem(this ComboBox comboBox, object value,
+        public static void SetSelectedItem(this ComboBox comboBox, object value,
             Dictionary<string, int> valueToItemIndex, int defaultIndex = -1)
         {
             string valStr = value.ToString();
@@ -108,12 +109,13 @@ namespace Scada.UI
         }
 
         /// <summary>
-        /// Получить выбранный элемент выпадающего списка, используя карту соответствия индексов элементов списка и значений
+        /// Получить выбранный элемент выпадающего списка, 
+        /// используя карту соответствия индексов элементов списка и значений
         /// </summary>
-        public static object GetSelectedItem(this ComboBox comboBox, Dictionary<int, object> indexToValue)
+        public static object GetSelectedItem(this ComboBox comboBox, Dictionary<int, object> itemIndexToValue)
         {
             object val;
-            if (indexToValue.TryGetValue(comboBox.SelectedIndex, out val))
+            if (itemIndexToValue.TryGetValue(comboBox.SelectedIndex, out val))
                 return val;
             else
                 throw new InvalidOperationException("Unable to find combo box selected index in the dictionary.");
