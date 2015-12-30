@@ -57,6 +57,43 @@ namespace Scada.UI
 
 
         /// <summary>
+        /// Загрузить строки из файла
+        /// </summary>
+        /// <remarks>Если fullLoad равен false, то объём загружаемых данных не более LogViewSize</remarks>
+        private static List<string> LoadStrings(string fileName, bool fullLoad)
+        {
+            using (FileStream fileStream =
+                new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                List<string> stringList = new List<string>();
+                long fileSize = fileStream.Length;
+                long dataSize = fullLoad ? fileSize : LogViewSize;
+                long filePos = fileSize - dataSize;
+                if (filePos < 0)
+                    filePos = 0;
+
+                if (fileStream.Seek(filePos, SeekOrigin.Begin) == filePos)
+                {
+                    using (StreamReader reader = new StreamReader(fileStream, Encoding.UTF8))
+                    {
+                        bool addLine = fileSize <= dataSize;
+                        while (!reader.EndOfStream)
+                        {
+                            string line = reader.ReadLine();
+                            if (addLine)
+                                stringList.Add(line);
+                            else
+                                addLine = true;
+                        }
+                    }
+                }
+
+                return stringList;
+            }
+        }
+
+
+        /// <summary>
         /// Показать информационное сообщение
         /// </summary>
         public static void ShowInfo(string message)
@@ -142,6 +179,97 @@ namespace Scada.UI
                 dataGridView.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
             else
                 dataGridView.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.DisplayedCells);
+        }
+
+        /// <summary>
+        /// Загрузить новые данные в элемент списка из файла
+        /// </summary>
+        public static void ReloadItems(this ListBox listBox, string fileName, bool fullLoad,
+            ref DateTime fileAge)
+        {
+            Monitor.Enter(listBox);
+
+            try
+            {
+                if (File.Exists(fileName))
+                {
+                    DateTime newFileAge = ScadaUtils.GetLastWriteTime(fileName);
+
+                    if (fileAge != newFileAge)
+                    {
+                        // загрузка строк из файла
+                        List<string> stringList = LoadStrings(fileName, fullLoad);
+                        int newLineCnt = stringList.Count;
+
+                        // проверка для исключения отображения данных, считыванных в момент записи файла
+                        if (newLineCnt > 0 || (DateTime.Now - newFileAge).TotalMilliseconds > 50)
+                        {
+                            fileAge = newFileAge;
+
+                            // вывод данных в список
+                            int oldLineCnt = listBox.Items.Count;
+                            int selectedIndex = listBox.SelectedIndex;
+                            int topIndex = listBox.TopIndex;
+
+                            listBox.BeginUpdate();
+
+                            for (int i = 0; i < newLineCnt; i++)
+                            {
+                                if (i < oldLineCnt)
+                                    listBox.Items[i] = stringList[i];
+                                else
+                                    listBox.Items.Add(stringList[i]);
+                            }
+
+                            for (int i = newLineCnt; i < oldLineCnt; i++)
+                                listBox.Items.RemoveAt(newLineCnt);
+
+                            // установка позиции прокрутки списка
+                            if (listBox.SelectionMode == SelectionMode.One && newLineCnt > 0)
+                            {
+                                if (selectedIndex < 0 && !fullLoad)
+                                    listBox.SelectedIndex = newLineCnt - 1; // прокрутка в конец списка
+                                else
+                                    listBox.TopIndex = topIndex;
+                            }
+
+                            listBox.EndUpdate();
+                        }
+                    }
+                }
+                else
+                {
+                    if (listBox.Items.Count == 1)
+                    {
+                        listBox.Items[0] = CommonPhrases.NoData;
+                    }
+                    else
+                    {
+                        listBox.Items.Clear();
+                        listBox.Items.Add(CommonPhrases.NoData);
+                    }
+                    fileAge = DateTime.MinValue;
+                }
+            }
+            catch (Exception ex)
+            {
+                if (listBox.Items.Count == 2)
+                {
+                    listBox.Items[0] = CommonPhrases.ErrorWithColon;
+                    listBox.Items[1] = ex.Message;
+                }
+                else
+                {
+                    listBox.Items.Clear();
+                    listBox.Items.Add(CommonPhrases.ErrorWithColon);
+                    listBox.Items.Add(ex.Message);
+                }
+                fileAge = DateTime.MinValue;
+            }
+            finally
+            {
+                Monitor.Exit(listBox);
+            }
         }
 
         /// <summary>
@@ -270,133 +398,6 @@ namespace Scada.UI
             }
 
             return errMsg == "";
-        }
-
-        /// <summary>
-        /// Загрузить строки из файла
-        /// </summary>
-        /// <remarks>Если fullLoad равен false, то объём загружаемых данных не более LogViewSize</remarks>
-        private static List<string> LoadStrings(string fileName, bool fullLoad)
-        {
-            using (FileStream fileStream =
-                new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-            {
-                List<string> stringList = new List<string>();
-                long fileSize = fileStream.Length;
-                long dataSize = fullLoad ? fileSize : LogViewSize;
-                long filePos = fileSize - dataSize;
-                if (filePos < 0)
-                    filePos = 0;
-
-                if (fileStream.Seek(filePos, SeekOrigin.Begin) == filePos)
-                {
-                    using (StreamReader reader = new StreamReader(fileStream, Encoding.UTF8))
-                    {
-                        bool addLine = fileSize <= dataSize;
-                        while (!reader.EndOfStream)
-                        {
-                            string line = reader.ReadLine();
-                            if (addLine)
-                                stringList.Add(line);
-                            else
-                                addLine = true;
-                        }
-                    }
-                }
-
-                return stringList;
-            }
-        }
-
-        /// <summary>
-        /// Обновить список строк, загрузив данные из файла
-        /// </summary>
-        public static void RefreshListBox(this ListBox listBox, string fileName, bool fullLoad,
-            ref DateTime fileAge)
-        {
-            Monitor.Enter(listBox);
-
-            try
-            {
-                if (File.Exists(fileName))
-                {
-                    DateTime newFileAge = ScadaUtils.GetLastWriteTime(fileName);
-
-                    if (fileAge != newFileAge)
-                    {
-                        // загрузка строк из файла
-                        List<string> stringList = LoadStrings(fileName, fullLoad);
-                        int newLineCnt = stringList.Count;
-
-                        // проверка для исключения отображения данных, считыванных в момент записи файла
-                        if (newLineCnt > 0 || (DateTime.Now - newFileAge).TotalMilliseconds > 50)
-                        {
-                            fileAge = newFileAge;
-
-                            // вывод данных в список
-                            int oldLineCnt = listBox.Items.Count;
-                            int selectedIndex = listBox.SelectedIndex;
-                            int topIndex = listBox.TopIndex;
-
-                            listBox.BeginUpdate();
-
-                            for (int i = 0; i < newLineCnt; i++)
-                            {
-                                if (i < oldLineCnt)
-                                    listBox.Items[i] = stringList[i];
-                                else
-                                    listBox.Items.Add(stringList[i]);
-                            }
-
-                            for (int i = newLineCnt; i < oldLineCnt; i++)
-                                listBox.Items.RemoveAt(newLineCnt);
-
-                            // установка позиции прокрутки списка
-                            if (listBox.SelectionMode == SelectionMode.One && newLineCnt > 0)
-                            {
-                                if (selectedIndex < 0 && !fullLoad)
-                                    listBox.SelectedIndex = newLineCnt - 1; // прокрутка в конец списка
-                                else
-                                    listBox.TopIndex = topIndex;
-                            }
-
-                            listBox.EndUpdate();
-                        }
-                    }
-                }
-                else
-                {
-                    if (listBox.Items.Count == 1)
-                    {
-                        listBox.Items[0] = CommonPhrases.NoData;
-                    }
-                    else
-                    {
-                        listBox.Items.Clear();
-                        listBox.Items.Add(CommonPhrases.NoData);
-                    }
-                    fileAge = DateTime.MinValue;
-                }
-            }
-            catch (Exception ex)
-            {
-                if (listBox.Items.Count == 2)
-                {
-                    listBox.Items[0] = CommonPhrases.ErrorWithColon;
-                    listBox.Items[1] = ex.Message;
-                }
-                else
-                {
-                    listBox.Items.Clear();
-                    listBox.Items.Add(CommonPhrases.ErrorWithColon);
-                    listBox.Items.Add(ex.Message);
-                }
-                fileAge = DateTime.MinValue;
-            }
-            finally
-            {
-                Monitor.Exit(listBox);
-            }
         }
     }
 }
