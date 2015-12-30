@@ -46,46 +46,46 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppDirs.cs" />
-    <Compile Include="CommChannels\CommChannelFactory.cs" />
-    <Compile Include="CommChannels\CommChannelLogic.cs" />
-    <Compile Include="CommChannels\CommChannelView.cs" />
-    <Compile Include="CommChannels\CommSerialLogic.cs" />
-    <Compile Include="CommChannels\CommSerialView.cs" />
-    <Compile Include="CommChannels\CommTcpClientLogic.cs" />
-    <Compile Include="CommChannels\CommTcpClientView.cs" />
-    <Compile Include="CommChannels\CommTcpChannelLogic.cs" />
-    <Compile Include="CommChannels\CommTcpServerLogic.cs" />
-    <Compile Include="CommChannels\CommTcpServerView.cs" />
-    <Compile Include="CommChannels\CommUdpLogic.cs" />
-    <Compile Include="CommChannels\CommUdpView.cs" />
-    <Compile Include="CommChannels\Connection.cs" />
-    <Compile Include="CommChannels\FrmCommSerialProps.cs">
+    <Compile Include="Channels\CommChannelFactory.cs" />
+    <Compile Include="Channels\CommChannelLogic.cs" />
+    <Compile Include="Channels\CommChannelView.cs" />
+    <Compile Include="Channels\CommSerialLogic.cs" />
+    <Compile Include="Channels\CommSerialView.cs" />
+    <Compile Include="Channels\CommTcpClientLogic.cs" />
+    <Compile Include="Channels\CommTcpClientView.cs" />
+    <Compile Include="Channels\CommTcpChannelLogic.cs" />
+    <Compile Include="Channels\CommTcpServerLogic.cs" />
+    <Compile Include="Channels\CommTcpServerView.cs" />
+    <Compile Include="Channels\CommUdpLogic.cs" />
+    <Compile Include="Channels\CommUdpView.cs" />
+    <Compile Include="Channels\Connection.cs" />
+    <Compile Include="Channels\FrmCommSerialProps.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CommChannels\FrmCommSerialProps.Designer.cs">
+    <Compile Include="Channels\FrmCommSerialProps.Designer.cs">
       <DependentUpon>FrmCommSerialProps.cs</DependentUpon>
     </Compile>
-    <Compile Include="CommChannels\FrmCommUdpProps.cs">
+    <Compile Include="Channels\FrmCommUdpProps.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CommChannels\FrmCommUdpProps.Designer.cs">
+    <Compile Include="Channels\FrmCommUdpProps.Designer.cs">
       <DependentUpon>FrmCommUdpProps.cs</DependentUpon>
     </Compile>
-    <Compile Include="CommChannels\FrmCommTcpServerProps.cs">
+    <Compile Include="Channels\FrmCommTcpServerProps.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CommChannels\FrmCommTcpServerProps.Designer.cs">
+    <Compile Include="Channels\FrmCommTcpServerProps.Designer.cs">
       <DependentUpon>FrmCommTcpServerProps.cs</DependentUpon>
     </Compile>
-    <Compile Include="CommChannels\FrmCommTcpClientProps.cs">
+    <Compile Include="Channels\FrmCommTcpClientProps.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CommChannels\FrmCommTcpClientProps.Designer.cs">
+    <Compile Include="Channels\FrmCommTcpClientProps.Designer.cs">
       <DependentUpon>FrmCommTcpClientProps.cs</DependentUpon>
     </Compile>
-    <Compile Include="CommChannels\SerialConnection.cs" />
-    <Compile Include="CommChannels\TcpConnection.cs" />
-    <Compile Include="CommChannels\UdpConnection.cs" />
+    <Compile Include="Channels\SerialConnection.cs" />
+    <Compile Include="Channels\TcpConnection.cs" />
+    <Compile Include="Channels\UdpConnection.cs" />
     <Compile Include="CommPhrases.cs" />
     <Compile Include="CommUtils.cs" />
     <Compile Include="CommUtils.UI.cs" />
@@ -107,16 +107,16 @@
     <Compile Include="Devices\KPLogic.Types.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="CommChannels\FrmCommSerialProps.resx">
+    <EmbeddedResource Include="Channels\FrmCommSerialProps.resx">
       <DependentUpon>FrmCommSerialProps.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CommChannels\FrmCommUdpProps.resx">
+    <EmbeddedResource Include="Channels\FrmCommUdpProps.resx">
       <DependentUpon>FrmCommUdpProps.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CommChannels\FrmCommTcpServerProps.resx">
+    <EmbeddedResource Include="Channels\FrmCommTcpServerProps.resx">
       <DependentUpon>FrmCommTcpServerProps.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CommChannels\FrmCommTcpClientProps.resx">
+    <EmbeddedResource Include="Channels\FrmCommTcpClientProps.resx">
       <DependentUpon>FrmCommTcpClientProps.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
