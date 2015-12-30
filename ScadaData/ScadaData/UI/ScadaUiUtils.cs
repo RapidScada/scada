@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaData
- * Summary  : The class contains utility methods for the whole system. UI utilities
+ * Summary  : The class contains user interface utility methods for the whole system
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
@@ -26,14 +26,17 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace Scada
+namespace Scada.UI
 {
-    partial class ScadaUtils
+    /// <summary>
+    /// The class contains user interface utility methods for the whole system
+    /// <para>Класс, содержащий вспомогательные методы работы с пользовательским интерфейсом для всей системы</para>
+    /// </summary>
+    public static class ScadaUiUtils
     {
         /// <summary>
         /// Размер отображаемых данных журналов, 10 КБ
@@ -77,10 +80,11 @@ namespace Scada
             MessageBox.Show(message, CommonPhrases.WarningCaption, MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
+
         /// <summary>
-        /// Установить значение элемента управления типа NumericUpDown в пределах допустимого диапазона
+        /// Установить значение элемента управления типа NumericUpDown в пределах его допустимого диапазона
         /// </summary>
-        public static void SetNumericValue(this NumericUpDown num, decimal val)
+        public static void SetValue(this NumericUpDown num, decimal val)
         {
             if (val < num.Minimum)
                 num.Value = num.Minimum;
@@ -88,6 +92,43 @@ namespace Scada
                 num.Value = num.Maximum;
             else
                 num.Value = val;
+        }
+
+        /// <summary>
+        /// Выбрать элемент выпадающего списка, используя карту соответствия значений и индексов элементов списка
+        /// </summary>
+        public static void SelectItem(this ComboBox comboBox, object value,
+            Dictionary<string, int> valueToItemIndex, int defaultIndex = -1)
+        {
+            string valStr = value.ToString();
+            if (valueToItemIndex.ContainsKey(valStr))
+                comboBox.SelectedIndex = valueToItemIndex[valStr];
+            else if (defaultIndex >= 0)
+                comboBox.SelectedIndex = defaultIndex;
+        }
+
+        /// <summary>
+        /// Получить выбранный элемент выпадающего списка, используя карту соответствия индексов элементов списка и значений
+        /// </summary>
+        public static object GetSelectedItem(this ComboBox comboBox, Dictionary<int, object> indexToValue)
+        {
+            object val;
+            if (indexToValue.TryGetValue(comboBox.SelectedIndex, out val))
+                return val;
+            else
+                throw new InvalidOperationException("Unable to find combo box selected index in the dictionary.");
+        }
+
+        /// <summary>
+        /// Распознать текст элемента управления и пробразовать его в значение перечислимого типа
+        /// </summary>
+        public static T ParseText<T>(this Control control) where T : struct
+        {
+            T val;
+            if (Enum.TryParse<T>(control.Text, true, out val))
+                return val;
+            else
+                throw new FormatException("Unable to parse text of the control.");
         }
 
         /// <summary>
@@ -277,7 +318,7 @@ namespace Scada
             {
                 if (File.Exists(fileName))
                 {
-                    DateTime newFileAge = GetLastWriteTime(fileName);
+                    DateTime newFileAge = ScadaUtils.GetLastWriteTime(fileName);
 
                     if (fileAge != newFileAge)
                     {

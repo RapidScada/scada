@@ -8,7 +8,7 @@
     <ProjectGuid>{C5DC293F-13CA-435F-A7DB-4BA91639C292}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Scada.Data</RootNamespace>
+    <RootNamespace>Scada</RootNamespace>
     <AssemblyName>ScadaData</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -55,24 +55,26 @@
     <Compile Include="Client\CommSettings.cs" />
     <Compile Include="Data\CtrlCnlProps.cs" />
     <Compile Include="Client\ServerComm.cs" />
-    <Compile Include="Common\FileListener.cs" />
+    <Compile Include="FileListener.cs" />
     <Compile Include="Data\Arithmetic.cs" />
     <Compile Include="Data\BaseAdapter.cs" />
     <Compile Include="Data\BaseValues.cs" />
-    <Compile Include="Common\CommonPhrases.cs" />
+    <Compile Include="CommonPhrases.cs" />
     <Compile Include="Data\EventAdapter.cs" />
     <Compile Include="Data\EventTableLight.cs" />
-    <Compile Include="Common\Localization.cs" />
+    <Compile Include="Localization.cs" />
     <Compile Include="Data\InCnlProps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Common\ScadaUtils.cs" />
+    <Compile Include="ScadaUtils.cs" />
     <Compile Include="Data\SrezAdapter.cs" />
     <Compile Include="Data\SrezTable.cs" />
     <Compile Include="Data\SrezTableLight.cs" />
     <Compile Include="Data\Trend.cs" />
+    <Compile Include="UI\ScadaUiUtils.cs" />
+    <Compile Include="UI\Translator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\ScadaUtils.Xml.cs" />
+    <Compile Include="ScadaUtils.Xml.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Lang\ScadaData.en-GB.xml">
@@ -80,7 +82,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\ScadaUtils.UI.cs" />
+    <Compile Include="ScadaUtils.UI.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

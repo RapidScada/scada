@@ -547,6 +547,7 @@ namespace Scada
         /// <summary>
         /// Перевести форму, используя заданный словарь
         /// </summary>
+        [Obsolete("Use Translator class")]
         public static void TranslateForm(WinForms.Form form, string dictName, 
             WinForms.ToolTip toolTip = null, params WinForms.ContextMenuStrip[] contextMenus)
         {
@@ -572,6 +573,7 @@ namespace Scada
         /// <summary>
         /// Перевести веб-страницу, используя заданный словарь
         /// </summary>
+        [Obsolete("Use Translator class")]
         public static void TranslatePage(Page page, string dictName)
         {
 

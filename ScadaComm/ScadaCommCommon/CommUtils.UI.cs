@@ -36,6 +36,7 @@ namespace Scada.Comm
         /// <summary>
         /// Выбрать элемент выпадающего списка, используя карту соответствия значений и индексов элементов списка
         /// </summary>
+        [Obsolete("Use ScadaUiUtils class")]
         public static void SelectItem(this ComboBox comboBox, object value, 
             Dictionary<string, int> valueToItemIndex, int defaultIndex = -1)
         {
@@ -49,6 +50,7 @@ namespace Scada.Comm
         /// <summary>
         /// Получить выбранный элемент выпадающего списка, используя карту соответствия индексов элементов списка и значений
         /// </summary>
+        [Obsolete("Use ScadaUiUtils class")]
         public static object GetSelectedItem(this ComboBox comboBox, Dictionary<int, object> indexToValue)
         {
             object val;
@@ -61,6 +63,7 @@ namespace Scada.Comm
         /// <summary>
         /// Распознать текст в поле выпадающего списка
         /// </summary>
+        [Obsolete("Use ScadaUiUtils class")]
         public static T ParseText<T>(this ComboBox comboBox) where T : struct
         {
             T val;
