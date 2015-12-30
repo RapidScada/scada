@@ -23,9 +23,9 @@
  * Modified : 2015
  */
 
+using Scada.UI;
 using System;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace Scada.Comm.Devices.KpModbus
@@ -171,7 +171,7 @@ namespace Scada.Comm.Devices.KpModbus
             }
             else
             {
-                ScadaUtils.ShowError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
             }
         }
 
@@ -557,7 +557,7 @@ namespace Scada.Comm.Devices.KpModbus
                 }
                 else
                 {
-                    ScadaUtils.ShowError(errMsg);
+                    ScadaUiUtils.ShowError(errMsg);
                     return false;
                 }
             }
@@ -619,7 +619,7 @@ namespace Scada.Comm.Devices.KpModbus
         private void FrmDevTemplate_Load(object sender, EventArgs e)
         {
             // перевод формы
-            Localization.TranslateForm(this, "Scada.Comm.Devices.KpModbus.FrmDevTemplate");
+            Translator.TranslateForm(this, "Scada.Comm.Devices.KpModbus.FrmDevTemplate");
             TranslateTree();
 
             // настройка элементов управления

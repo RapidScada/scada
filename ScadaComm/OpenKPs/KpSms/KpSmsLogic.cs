@@ -26,15 +26,16 @@
  * Sending and receiving SMS messages using AT commands.
  */
 
+using Scada.Comm.Channels;
+using Scada.Comm.Devices.KpSms;
+using Scada.Data;
+using Scada.UI;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Threading;
-using System.Text;
-using Scada.Data;
-using Scada.Comm.Channels;
-using Scada.Comm.Devices.KpSms;
 using System.IO;
+using System.Text;
+using System.Threading;
 
 namespace Scada.Comm.Devices
 {
@@ -889,7 +890,7 @@ namespace Scada.Comm.Devices
                     phonebook = new Phonebook();
                     string errMsg;
                     if (!phonebook.Load(fileName, out errMsg))
-                        ScadaUtils.ShowError(errMsg);
+                        ScadaUiUtils.ShowError(errMsg);
                 }
                 else
                 {

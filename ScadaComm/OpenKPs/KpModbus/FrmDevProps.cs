@@ -23,6 +23,7 @@
  * Modified : 2015
  */
 
+using Scada.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -82,7 +83,7 @@ namespace Scada.Comm.Devices.KpModbus
         private void FrmDevProps_Load(object sender, EventArgs e)
         {
             // перевод формы
-            Localization.TranslateForm(this, "Scada.Comm.Devices.KpModbus.FrmDevProps", toolTip);
+            Translator.TranslateForm(this, "Scada.Comm.Devices.KpModbus.FrmDevProps", toolTip);
 
             // вывод заголовка
             Text = string.Format(Text, kpNum);
@@ -134,7 +135,7 @@ namespace Scada.Comm.Devices.KpModbus
             // проверка существования файла шаблона устройства
             if (!File.Exists(appDirs.ConfigDir + txtDevTemplate.Text))
             {
-                ScadaUtils.ShowError(KpPhrases.TemplNotExists);
+                ScadaUiUtils.ShowError(KpPhrases.TemplNotExists);
                 return;
             }
 

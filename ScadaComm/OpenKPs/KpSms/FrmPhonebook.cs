@@ -23,6 +23,7 @@
  * Modified : 2015
  */
 
+using Scada.UI;
 using System;
 using System.IO;
 using System.Windows.Forms;
@@ -278,20 +279,20 @@ namespace Scada.Comm.Devices.KpSms
             {
                 if (Localization.LoadDictionaries(appDirs.LangDir, "KpSms", out errMsg))
                 {
-                    Localization.TranslateForm(this, "Scada.Comm.Devices.KpSms.FrmPhonebook");
+                    Translator.TranslateForm(this, "Scada.Comm.Devices.KpSms.FrmPhonebook");
                     KpPhrases.Init();
                     nodePhonebook.Text = KpPhrases.PhonebookNode;
                 }
                 else
                 {
-                    ScadaUtils.ShowError(errMsg);
+                    ScadaUiUtils.ShowError(errMsg);
                 }
             }
 
             // загрузка телефонного справочника
             string fileName = appDirs.ConfigDir + Phonebook.DefFileName;
             if (File.Exists(fileName) && !phonebook.Load(fileName, out errMsg))
-                ScadaUtils.ShowError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
             Modified = false;
 
             // вывод телефонного справочника
@@ -314,7 +315,7 @@ namespace Scada.Comm.Devices.KpSms
                         string errMsg;
                         if (!phonebook.Save(appDirs.ConfigDir + Phonebook.DefFileName, out errMsg))
                         {
-                            ScadaUtils.ShowError(errMsg);
+                            ScadaUiUtils.ShowError(errMsg);
                             e.Cancel = true;
                         }
                         break;
@@ -336,7 +337,7 @@ namespace Scada.Comm.Devices.KpSms
             {
                 if (phonebook.PhoneGroups.ContainsKey(newGroup.Name))
                 {
-                    ScadaUtils.ShowWarning(KpPhrases.PhoneGroupExists);
+                    ScadaUiUtils.ShowWarning(KpPhrases.PhoneGroupExists);
                 }
                 else
                 {
@@ -486,7 +487,7 @@ namespace Scada.Comm.Devices.KpSms
             if (phonebook.Save(appDirs.ConfigDir + Phonebook.DefFileName, out errMsg))
                 Modified = false;
             else
-                ScadaUtils.ShowError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
         }
     }
 }

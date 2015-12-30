@@ -23,13 +23,8 @@
  * Modified : 2015
  */
 
+using Scada.UI;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Scada.Comm.Devices.KpSms
@@ -86,7 +81,7 @@ namespace Scada.Comm.Devices.KpSms
         private void FrmPhoneGroup_Load(object sender, EventArgs e)
         {
             // перевод формы
-            Localization.TranslateForm(this, "Scada.Comm.Devices.KpSms.FrmPhoneGroup");
+            Translator.TranslateForm(this, "Scada.Comm.Devices.KpSms.FrmPhoneGroup");
 
             // настройка элементов управления
             if (oldGroup == null)
