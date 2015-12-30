@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Xml;
 
 namespace Scada.Comm.Devices.KpSnmp
 {
@@ -137,6 +137,50 @@ namespace Scada.Comm.Devices.KpSnmp
 
             try
             {
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.Load(fileName);
+
+                // загрузка параметров
+                XmlNode paramsNode = xmlDoc.DocumentElement.SelectSingleNode("Params");
+
+                if (paramsNode != null)
+                {
+                    foreach (XmlElement paramElem in paramsNode.ChildNodes)
+                    {
+                        string name = paramElem.GetAttribute("name").ToLowerInvariant();
+                        string val = paramElem.GetAttribute("value");
+
+                        if (name == "readcommunity")
+                            ReadCommunity = val;
+                        else if (name == "writecommunity")
+                            WriteCommunity = val;
+                    }
+                }
+
+                // загрузка групп переменных
+                XmlNode groupsNode = xmlDoc.DocumentElement.SelectSingleNode("Groups");
+
+                if (groupsNode != null)
+                {
+                    foreach (XmlElement groupElem in groupsNode.ChildNodes)
+                    {
+                        Group group = new Group();
+                        group.Name = groupElem.GetAttribute("name");
+
+                        // загрузка переменных
+                        XmlNodeList variableNodes = groupElem.SelectNodes("Variable");
+                        foreach (XmlElement variableElem in variableNodes)
+                        {
+                            Variable variable = new Variable();
+                            variable.Name = variableElem.GetAttribute("name");
+                            variable.OID = variableElem.GetAttribute("oid");
+                            group.Variables.Add(variable);
+                        }
+
+                        Groups.Add(group);
+                    }
+                }
+                
                 errMsg = "";
                 return true;
             }
@@ -146,7 +190,6 @@ namespace Scada.Comm.Devices.KpSnmp
                 return false;
             }
         }
-
         
         /// <summary>
         /// Сохранить конфигурацию в файле
@@ -155,6 +198,41 @@ namespace Scada.Comm.Devices.KpSnmp
         {
             try
             {
+                XmlDocument xmlDoc = new XmlDocument();
+
+                XmlDeclaration xmlDecl = xmlDoc.CreateXmlDeclaration("1.0", "utf-8", null);
+                xmlDoc.AppendChild(xmlDecl);
+
+                XmlElement rootElem = xmlDoc.CreateElement("KpSnmpConfig");
+                xmlDoc.AppendChild(rootElem);
+
+                // сохранение параметров
+                XmlElement paramsElem = xmlDoc.CreateElement("Params");
+                rootElem.AppendChild(paramsElem);
+                paramsElem.AppendParamElem("ReadCommunity", ReadCommunity);
+                paramsElem.AppendParamElem("WriteCommunity", WriteCommunity);
+
+                // сохранение групп переменных
+                XmlElement groupsElem = xmlDoc.CreateElement("Groups");
+                rootElem.AppendChild(groupsElem);
+
+                foreach (Group group in Groups)
+                {
+                    XmlElement groupElem = xmlDoc.CreateElement("Group");
+                    groupElem.SetAttribute("name", group.Name);
+                    groupsElem.AppendChild(groupElem);
+
+                    // сохранение переменных
+                    foreach (Variable variable in group.Variables)
+                    {
+                        XmlElement variableElem = xmlDoc.CreateElement("Variable");
+                        variableElem.SetAttribute("name", variable.Name);
+                        variableElem.SetAttribute("oid", variable.OID);
+                        groupElem.AppendChild(variableElem);
+                    }
+                }
+
+                xmlDoc.Save(fileName);
                 errMsg = "";
                 return true;
             }
