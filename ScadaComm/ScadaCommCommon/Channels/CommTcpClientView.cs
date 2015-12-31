@@ -23,6 +23,7 @@
  * Modified : 2015
  */
 
+using Scada.Comm.Channels.UI;
 using System.Collections.Generic;
 
 namespace Scada.Comm.Channels

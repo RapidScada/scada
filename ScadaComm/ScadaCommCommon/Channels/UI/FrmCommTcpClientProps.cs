@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaCommCommon
- * Summary  : UDP communication channel properties
+ * Summary  : TCP client communication channel properties
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
@@ -28,22 +28,22 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace Scada.Comm.Channels
+namespace Scada.Comm.Channels.UI
 {
     /// <summary>
-    /// UDP communication channel properties
-    /// <para>Свойства канала связи UDP</para>
+    /// TCP client communication channel properties
+    /// <para>Свойства канала связи TCP-клиент</para>
     /// </summary>
-    internal partial class FrmCommUdpProps : Form
+    internal partial class FrmCommTcpClientProps : Form
     {
         private SortedList<string, string> commCnlParams; // параметры канала связи
         private bool modified;                            // признак изменения параметров
-        private CommUdpLogic.Settings settings;           // настройки канала связи
+        private CommTcpClientLogic.Settings settings;     // настройки канала связи
 
         /// <summary>
         /// Конструктор, ограничивающий создание формы без параметров
         /// </summary>
-        private FrmCommUdpProps()
+        private FrmCommTcpClientProps()
         {
             InitializeComponent();
         }
@@ -56,7 +56,7 @@ namespace Scada.Comm.Channels
             if (commCnlParams == null)
                 throw new ArgumentNullException("commCnlParams");
 
-            FrmCommUdpProps form = new FrmCommUdpProps();
+            FrmCommTcpClientProps form = new FrmCommTcpClientProps();
             form.commCnlParams = commCnlParams;
             form.modified = false;
             form.ShowDialog();
@@ -64,22 +64,21 @@ namespace Scada.Comm.Channels
         }
 
 
-        private void FrmCommUdpProps_Load(object sender, EventArgs e)
+        private void FrmCommTcpClientProps_Load(object sender, EventArgs e)
         {
             // перевод формы
-            Translator.TranslateForm(this, "Scada.Comm.Channels.FrmCommUdpProps", toolTip);
+            Translator.TranslateForm(this, "Scada.Comm.Channels.FrmCommTcpClientProps", toolTip);
 
             // инициализация настроек канала связи
-            settings = new CommUdpLogic.Settings();
+            settings = new CommTcpClientLogic.Settings();
             settings.Init(commCnlParams, false);
 
             // установка элементов управления в соответствии с параметрами канала связи
             cbBehavior.Text = settings.Behavior.ToString();
-            cbDevSelMode.SetSelectedItem(settings.DevSelMode, 
-                new Dictionary<string, int>() { { "ByIPAddress", 0 }, { "ByDeviceLibrary", 1 } });
-            numLocalUdpPort.SetValue(settings.LocalUdpPort);
-            numRemoteUdpPort.SetValue(settings.RemoteUdpPort);
-            txtRemoteIpAddress.Text = settings.RemoteIpAddress;
+            cbConnMode.SetSelectedItem(settings.ConnMode, 
+                new Dictionary<string, int>() { { "Individual", 0 }, { "Shared", 1 } });
+            txtIpAddress.Text = settings.IpAddress;
+            numTcpPort.SetValue(settings.TcpPort);
 
             modified = false;
         }
@@ -89,9 +88,9 @@ namespace Scada.Comm.Channels
             modified = true;
         }
 
-        private void cbBehavior_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbConnMode_SelectedIndexChanged(object sender, EventArgs e)
         {
-            cbDevSelMode.Enabled = cbBehavior.SelectedIndex == 1; // Slave
+            txtIpAddress.Enabled = cbConnMode.SelectedIndex == 1; // Shared
             modified = true;
         }
 
@@ -101,18 +100,22 @@ namespace Scada.Comm.Channels
             if (modified)
             {
                 settings.Behavior = cbBehavior.ParseText<CommChannelLogic.OperatingBehaviors>();
-                settings.DevSelMode = (CommUdpLogic.DeviceSelectionModes)cbDevSelMode.GetSelectedItem(
+                settings.ConnMode = (CommTcpChannelLogic.ConnectionModes)cbConnMode.GetSelectedItem(
                     new Dictionary<int, object>() { 
-                        { 0, CommUdpLogic.DeviceSelectionModes.ByIPAddress }, 
-                        { 1, CommUdpLogic.DeviceSelectionModes.ByDeviceLibrary } });
-                settings.LocalUdpPort = Convert.ToInt32(numLocalUdpPort.Value);
-                settings.RemoteUdpPort = Convert.ToInt32(numRemoteUdpPort.Value);
-                settings.RemoteIpAddress = txtRemoteIpAddress.Text;
+                        { 0, CommTcpChannelLogic.ConnectionModes.Individual }, 
+                        { 1, CommTcpChannelLogic.ConnectionModes.Shared } });
+                settings.IpAddress = txtIpAddress.Text;
+                settings.TcpPort = Convert.ToInt32(numTcpPort.Value);
 
                 settings.SetCommCnlParams(commCnlParams);
             }
 
-            DialogResult = DialogResult.OK;
+            // проверка настроек
+            if (settings.ConnMode == CommTcpChannelLogic.ConnectionModes.Shared &&
+                string.IsNullOrWhiteSpace(settings.IpAddress))
+                ScadaUiUtils.ShowError(CommPhrases.IpAddressRequired);
+            else
+                DialogResult = DialogResult.OK;
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

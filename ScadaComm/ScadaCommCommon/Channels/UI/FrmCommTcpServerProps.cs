@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaCommCommon
- * Summary  : Serial port communication channel properties
+ * Summary  : TCP server communication channel properties
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
@@ -26,30 +26,27 @@
 using Scada.UI;
 using System;
 using System.Collections.Generic;
-using System.IO.Ports;
 using System.Windows.Forms;
 
-namespace Scada.Comm.Channels
+namespace Scada.Comm.Channels.UI
 {
     /// <summary>
-    /// Serial port communication channel properties
-    /// <para>Свойства канала связи через последовательный порт</para>
+    /// TCP server communication channel properties
+    /// <para>Свойства канала связи TCP-сервер</para>
     /// </summary>
-    internal partial class FrmCommSerialProps : Form
+    internal partial class FrmCommTcpServerProps : Form
     {
         private SortedList<string, string> commCnlParams; // параметры канала связи
         private bool modified;                            // признак изменения параметров
-        private CommSerialLogic.Settings settings;        // настройки канала связи
-
+        private CommTcpServerLogic.Settings settings;     // настройки канала связи
 
         /// <summary>
         /// Конструктор, ограничивающий создание формы без параметров
         /// </summary>
-        private FrmCommSerialProps()
+        private FrmCommTcpServerProps()
         {
             InitializeComponent();
         }
-
 
         /// <summary>
         /// Отобразить форму модально
@@ -59,7 +56,7 @@ namespace Scada.Comm.Channels
             if (commCnlParams == null)
                 throw new ArgumentNullException("commCnlParams");
 
-            FrmCommSerialProps form = new FrmCommSerialProps();
+            FrmCommTcpServerProps form = new FrmCommTcpServerProps();
             form.commCnlParams = commCnlParams;
             form.modified = false;
             form.ShowDialog();
@@ -67,26 +64,23 @@ namespace Scada.Comm.Channels
         }
 
 
-        private void FrmCommSerialProps_Load(object sender, EventArgs e)
+        private void FrmCommTcpServerProps_Load(object sender, EventArgs e)
         {
             // перевод формы
-            Translator.TranslateForm(this, "Scada.Comm.Channels.FrmCommSerialProps");
+            Translator.TranslateForm(this, "Scada.Comm.Channels.FrmCommTcpServerProps", toolTip);
 
             // инициализация настроек канала связи
-            settings = new CommSerialLogic.Settings();
+            settings = new CommTcpServerLogic.Settings();
             settings.Init(commCnlParams, false);
 
             // установка элементов управления в соответствии с параметрами канала связи
-            cbPortName.Text = settings.PortName;
-            cbBaudRate.Text = settings.BaudRate.ToString();
-            cbDataBits.Text = settings.DataBits.ToString();
-            cbParity.SetSelectedItem(settings.Parity, new Dictionary<string, int>() 
-                { { "Even", 0 }, { "Odd", 1 }, { "None", 2 }, { "Mark", 3 }, { "Space", 4 } });
-            cbStopBits.SetSelectedItem(settings.StopBits, new Dictionary<string, int>() 
-                { { "One", 0 }, { "OnePointFive", 1 }, { "Two", 2 } });
-            chkDtrEnable.Checked = settings.DtrEnable;
-            chkRtsEnable.Checked = settings.RtsEnable;
             cbBehavior.Text = settings.Behavior.ToString();
+            cbConnMode.SetSelectedItem(settings.ConnMode, new Dictionary<string, int>() 
+                { { "Individual", 0 }, { "Shared", 1 } });
+            cbDevSelMode.SetSelectedItem(settings.DevSelMode, new Dictionary<string, int>() 
+                { { "ByIPAddress", 0 }, { "ByFirstPackage", 1 }, { "ByDeviceLibrary", 2 } });
+            numTcpPort.SetValue(settings.TcpPort);
+            numInactiveTime.SetValue(settings.InactiveTime);
 
             modified = false;
         }
@@ -96,21 +90,29 @@ namespace Scada.Comm.Channels
             modified = true;
         }
 
+        private void cbConnMode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            cbDevSelMode.Enabled = cbConnMode.SelectedIndex == 0; // Individual
+            modified = true;
+        }
+
         private void btnOK_Click(object sender, EventArgs e)
         {
             // изменение настроек в соответствии с элементами управления
             if (modified)
             {
-                settings.PortName = cbPortName.Text;
-                settings.BaudRate = int.Parse(cbBaudRate.Text);
-                settings.DataBits = int.Parse(cbDataBits.Text);
-                settings.Parity = (Parity)cbParity.GetSelectedItem(new Dictionary<int, object>() 
-                    { { 0, Parity.Even }, { 1, Parity.Odd }, { 2, Parity.None }, { 3, Parity.Mark }, { 4, Parity.Space } });
-                settings.StopBits = (StopBits)cbStopBits.GetSelectedItem(new Dictionary<int, object>() 
-                    { { 0, StopBits.One }, { 1, StopBits.OnePointFive }, { 2, StopBits.Two } });
-                settings.DtrEnable = chkDtrEnable.Checked;
-                settings.RtsEnable = chkRtsEnable.Checked;
                 settings.Behavior = cbBehavior.ParseText<CommChannelLogic.OperatingBehaviors>();
+                settings.ConnMode = (CommTcpChannelLogic.ConnectionModes)cbConnMode.GetSelectedItem(
+                    new Dictionary<int, object>() { 
+                        { 0, CommTcpChannelLogic.ConnectionModes.Individual }, 
+                        { 1, CommTcpChannelLogic.ConnectionModes.Shared } });
+                settings.DevSelMode = (CommTcpServerLogic.DeviceSelectionModes)cbDevSelMode.GetSelectedItem(
+                    new Dictionary<int, object>() { 
+                        { 0, CommTcpServerLogic.DeviceSelectionModes.ByIPAddress }, 
+                        { 1, CommTcpServerLogic.DeviceSelectionModes.ByFirstPackage }, 
+                        { 2, CommTcpServerLogic.DeviceSelectionModes.ByDeviceLibrary } });
+                settings.TcpPort = Convert.ToInt32(numTcpPort.Value);
+                settings.InactiveTime = Convert.ToInt32(numInactiveTime.Value);
 
                 settings.SetCommCnlParams(commCnlParams);
             }

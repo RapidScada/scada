@@ -59,28 +59,28 @@
     <Compile Include="Channels\CommUdpLogic.cs" />
     <Compile Include="Channels\CommUdpView.cs" />
     <Compile Include="Channels\Connection.cs" />
-    <Compile Include="Channels\FrmCommSerialProps.cs">
+    <Compile Include="Channels\UI\FrmCommSerialProps.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Channels\FrmCommSerialProps.Designer.cs">
+    <Compile Include="Channels\UI\FrmCommSerialProps.Designer.cs">
       <DependentUpon>FrmCommSerialProps.cs</DependentUpon>
     </Compile>
-    <Compile Include="Channels\FrmCommUdpProps.cs">
+    <Compile Include="Channels\UI\FrmCommUdpProps.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Channels\FrmCommUdpProps.Designer.cs">
+    <Compile Include="Channels\UI\FrmCommUdpProps.Designer.cs">
       <DependentUpon>FrmCommUdpProps.cs</DependentUpon>
     </Compile>
-    <Compile Include="Channels\FrmCommTcpServerProps.cs">
+    <Compile Include="Channels\UI\FrmCommTcpServerProps.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Channels\FrmCommTcpServerProps.Designer.cs">
+    <Compile Include="Channels\UI\FrmCommTcpServerProps.Designer.cs">
       <DependentUpon>FrmCommTcpServerProps.cs</DependentUpon>
     </Compile>
-    <Compile Include="Channels\FrmCommTcpClientProps.cs">
+    <Compile Include="Channels\UI\FrmCommTcpClientProps.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Channels\FrmCommTcpClientProps.Designer.cs">
+    <Compile Include="Channels\UI\FrmCommTcpClientProps.Designer.cs">
       <DependentUpon>FrmCommTcpClientProps.cs</DependentUpon>
     </Compile>
     <Compile Include="Channels\SerialConnection.cs" />
@@ -106,16 +106,16 @@
     <Compile Include="Devices\KPLogic.Types.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Channels\FrmCommSerialProps.resx">
+    <EmbeddedResource Include="Channels\UI\FrmCommSerialProps.resx">
       <DependentUpon>FrmCommSerialProps.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Channels\FrmCommUdpProps.resx">
+    <EmbeddedResource Include="Channels\UI\FrmCommUdpProps.resx">
       <DependentUpon>FrmCommUdpProps.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Channels\FrmCommTcpServerProps.resx">
+    <EmbeddedResource Include="Channels\UI\FrmCommTcpServerProps.resx">
       <DependentUpon>FrmCommTcpServerProps.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Channels\FrmCommTcpClientProps.resx">
+    <EmbeddedResource Include="Channels\UI\FrmCommTcpClientProps.resx">
       <DependentUpon>FrmCommTcpClientProps.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

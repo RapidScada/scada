@@ -1,4 +1,4 @@
-﻿namespace Scada.Comm.Channels
+﻿namespace Scada.Comm.Channels.UI
 {
     partial class FrmCommTcpClientProps
     {
