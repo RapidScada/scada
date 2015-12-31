@@ -23,6 +23,7 @@
  * Modified : 2015
  */
 
+using Scada.UI;
 using System;
 using System.Diagnostics;
 using System.Windows.Forms;
@@ -36,7 +37,7 @@ namespace Scada.Comm.Ctrl
     /// </summary>
     public partial class FrmAbout : Form
     {
-        private const string Version = "4.5.0.4"; // версия приложения
+        private const string Version = "4.5.0.5"; // версия приложения
         private static FrmAbout frmAbout = null;  // форма о программе
 
         private string exeDir;  // директория исполняемого файла приложения
@@ -110,7 +111,7 @@ namespace Scada.Comm.Ctrl
                 // загрузка изображения и гиперссылки из файлов, если они существуют
                 bool imgLoaded;
                 string errMsg;
-                if (ScadaUtils.LoadAboutForm(exeDir, this, activePictureBox, lblWebsite,
+                if (ScadaUiUtils.LoadAboutForm(exeDir, this, activePictureBox, lblWebsite,
                     out imgLoaded, out linkUrl, out errMsg))
                 {
                     if (imgLoaded)
@@ -122,7 +123,7 @@ namespace Scada.Comm.Ctrl
                 else
                 {
                     errLog.WriteAction(errMsg);
-                    ScadaUtils.ShowError(errMsg);
+                    ScadaUiUtils.ShowError(errMsg);
                 }
             }
         }

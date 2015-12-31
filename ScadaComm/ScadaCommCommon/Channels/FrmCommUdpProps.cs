@@ -23,13 +23,9 @@
  * Modified : 2015
  */
 
+using Scada.UI;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Scada.Comm.Channels
@@ -71,7 +67,7 @@ namespace Scada.Comm.Channels
         private void FrmCommUdpProps_Load(object sender, EventArgs e)
         {
             // перевод формы
-            Localization.TranslateForm(this, "Scada.Comm.Channels.FrmCommUdpProps", toolTip);
+            Translator.TranslateForm(this, "Scada.Comm.Channels.FrmCommUdpProps", toolTip);
 
             // инициализация настроек канала связи
             settings = new CommUdpLogic.Settings();
@@ -79,10 +75,10 @@ namespace Scada.Comm.Channels
 
             // установка элементов управления в соответствии с параметрами канала связи
             cbBehavior.Text = settings.Behavior.ToString();
-            cbDevSelMode.SelectItem(settings.DevSelMode, new Dictionary<string, int>() 
-                { { "ByIPAddress", 0 }, { "ByDeviceLibrary", 1 } });
-            numLocalUdpPort.SetNumericValue(settings.LocalUdpPort);
-            numRemoteUdpPort.SetNumericValue(settings.RemoteUdpPort);
+            cbDevSelMode.SetSelectedItem(settings.DevSelMode, 
+                new Dictionary<string, int>() { { "ByIPAddress", 0 }, { "ByDeviceLibrary", 1 } });
+            numLocalUdpPort.SetValue(settings.LocalUdpPort);
+            numRemoteUdpPort.SetValue(settings.RemoteUdpPort);
             txtRemoteIpAddress.Text = settings.RemoteIpAddress;
 
             modified = false;

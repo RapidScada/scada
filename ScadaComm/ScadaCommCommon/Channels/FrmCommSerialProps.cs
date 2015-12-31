@@ -23,6 +23,7 @@
  * Modified : 2015
  */
 
+using Scada.UI;
 using System;
 using System.Collections.Generic;
 using System.IO.Ports;
@@ -69,7 +70,7 @@ namespace Scada.Comm.Channels
         private void FrmCommSerialProps_Load(object sender, EventArgs e)
         {
             // перевод формы
-            Localization.TranslateForm(this, "Scada.Comm.Channels.FrmCommSerialProps");
+            Translator.TranslateForm(this, "Scada.Comm.Channels.FrmCommSerialProps");
 
             // инициализация настроек канала связи
             settings = new CommSerialLogic.Settings();
@@ -79,9 +80,9 @@ namespace Scada.Comm.Channels
             cbPortName.Text = settings.PortName;
             cbBaudRate.Text = settings.BaudRate.ToString();
             cbDataBits.Text = settings.DataBits.ToString();
-            cbParity.SelectItem(settings.Parity, new Dictionary<string, int>() 
+            cbParity.SetSelectedItem(settings.Parity, new Dictionary<string, int>() 
                 { { "Even", 0 }, { "Odd", 1 }, { "None", 2 }, { "Mark", 3 }, { "Space", 4 } });
-            cbStopBits.SelectItem(settings.StopBits, new Dictionary<string, int>() 
+            cbStopBits.SetSelectedItem(settings.StopBits, new Dictionary<string, int>() 
                 { { "One", 0 }, { "OnePointFive", 1 }, { "Two", 2 } });
             chkDtrEnable.Checked = settings.DtrEnable;
             chkRtsEnable.Checked = settings.RtsEnable;

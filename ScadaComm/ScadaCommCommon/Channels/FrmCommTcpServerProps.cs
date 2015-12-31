@@ -23,6 +23,7 @@
  * Modified : 2015
  */
 
+using Scada.UI;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -66,7 +67,7 @@ namespace Scada.Comm.Channels
         private void FrmCommTcpServerProps_Load(object sender, EventArgs e)
         {
             // перевод формы
-            Localization.TranslateForm(this, "Scada.Comm.Channels.FrmCommTcpServerProps", toolTip);
+            Translator.TranslateForm(this, "Scada.Comm.Channels.FrmCommTcpServerProps", toolTip);
 
             // инициализация настроек канала связи
             settings = new CommTcpServerLogic.Settings();
@@ -74,12 +75,12 @@ namespace Scada.Comm.Channels
 
             // установка элементов управления в соответствии с параметрами канала связи
             cbBehavior.Text = settings.Behavior.ToString();
-            cbConnMode.SelectItem(settings.ConnMode, new Dictionary<string, int>() 
+            cbConnMode.SetSelectedItem(settings.ConnMode, new Dictionary<string, int>() 
                 { { "Individual", 0 }, { "Shared", 1 } });
-            cbDevSelMode.SelectItem(settings.DevSelMode, new Dictionary<string, int>() 
+            cbDevSelMode.SetSelectedItem(settings.DevSelMode, new Dictionary<string, int>() 
                 { { "ByIPAddress", 0 }, { "ByFirstPackage", 1 }, { "ByDeviceLibrary", 2 } });
-            numTcpPort.SetNumericValue(settings.TcpPort);
-            numInactiveTime.SetNumericValue(settings.InactiveTime);
+            numTcpPort.SetValue(settings.TcpPort);
+            numInactiveTime.SetValue(settings.InactiveTime);
 
             modified = false;
         }

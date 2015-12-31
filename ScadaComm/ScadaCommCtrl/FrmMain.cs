@@ -27,12 +27,12 @@ using Scada.Client;
 using Scada.Comm.Channels;
 using Scada.Comm.Devices;
 using Scada.Data;
+using Scada.UI;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.IO;
-using System.IO.Ports;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
@@ -569,18 +569,18 @@ namespace Scada.Comm.Ctrl
                     {
                         KPView kpView = KPFactory.GetKPView(kpDllInfo.KpType, lastKP.Number);
                         if (!ShowKPProps(kpView) && showUnsupMsg)
-                            ScadaUtils.ShowError(string.Format(AppPhrases.ShowKpPropsUnsupported, kpDllInfo.FileName));
+                            ScadaUiUtils.ShowError(string.Format(AppPhrases.ShowKpPropsUnsupported, kpDllInfo.FileName));
                     }
                     catch (Exception ex)
                     {
                         string errMsg = AppPhrases.ShowKpPropsError + ":\r\n" + ex.Message;
                         errLog.WriteAction(errMsg);
-                        ScadaUtils.ShowError(errMsg);
+                        ScadaUiUtils.ShowError(errMsg);
                     }
                 }
                 else
                 {
-                    ScadaUtils.ShowError(AppPhrases.UnknownDLL);
+                    ScadaUiUtils.ShowError(AppPhrases.UnknownDLL);
                 }
             }
         }
@@ -599,7 +599,7 @@ namespace Scada.Comm.Ctrl
             {
                 string errMsg = AppPhrases.ShowKpPropsError + ":\r\n" + ex.Message;
                 errLog.WriteAction(errMsg);
-                ScadaUtils.ShowError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
             }
         }
 
@@ -623,12 +623,12 @@ namespace Scada.Comm.Ctrl
 
             chkServerUse.Checked = modSettings.Params.ServerUse;
             txtServerHost.Text = modSettings.Params.ServerHost;
-            numServerPort.SetNumericValue(modSettings.Params.ServerPort);
-            numServerTimeout.SetNumericValue(modSettings.Params.ServerTimeout);
+            numServerPort.SetValue(modSettings.Params.ServerPort);
+            numServerTimeout.SetValue(modSettings.Params.ServerTimeout);
             txtServerUser.Text = modSettings.Params.ServerUser;
             txtServerPwd.Text = modSettings.Params.ServerPwd;
-            numWaitForStop.SetNumericValue(modSettings.Params.WaitForStop);
-            numSendAllDataPer.SetNumericValue(modSettings.Params.SendAllDataPer);
+            numWaitForStop.SetValue(modSettings.Params.WaitForStop);
+            numSendAllDataPer.SetValue(modSettings.Params.SendAllDataPer);
 
             changing = false;
         }
@@ -644,7 +644,7 @@ namespace Scada.Comm.Ctrl
 
                 chkLineActive.Checked = lastLine.Active;
                 chkLineBind.Checked = lastLine.Bind;
-                numLineNumber.SetNumericValue(lastLine.Number);
+                numLineNumber.SetValue(lastLine.Number);
                 txtLineName.Text = lastLine.Name;
 
                 int commCnlTypeInd = 0; // 0 - не задан
@@ -664,8 +664,8 @@ namespace Scada.Comm.Ctrl
                 CommChannelToPage(commCnlView);
                 commCnlParamsBuf.Clear();
 
-                numReqTriesCnt.SetNumericValue(lastLine.ReqTriesCnt);
-                numCycleDelay.SetNumericValue(lastLine.CycleDelay);
+                numReqTriesCnt.SetValue(lastLine.ReqTriesCnt);
+                numCycleDelay.SetValue(lastLine.CycleDelay);
                 chkCmdEnabled.Checked = lastLine.CmdEnabled;
                 chkDetailedLog.Checked = lastLine.DetailedLog;
 
@@ -939,7 +939,7 @@ namespace Scada.Comm.Ctrl
         {
             string errMsg = CommonPhrases.UnhandledException + ":\r\n" + e.Exception.Message;
             errLog.WriteAction(errMsg, Log.ActTypes.Exception);
-            ScadaUtils.ShowError(errMsg);
+            ScadaUiUtils.ShowError(errMsg);
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
@@ -966,7 +966,7 @@ namespace Scada.Comm.Ctrl
             {
                 if (Localization.LoadDictionaries(appDirs.LangDir, "ScadaComm", out errMsg))
                 {
-                    Localization.TranslateForm(this, "Scada.Comm.Ctrl.FrmMain", toolTip, cmsNotify, cmsLine, cmsKP);
+                    Translator.TranslateForm(this, "Scada.Comm.Ctrl.FrmMain", toolTip, cmsNotify, cmsLine, cmsKP);
                     AppPhrases.Init();
                     CommPhrases.InitFromDictionaries();
                     TranslateTree();
@@ -986,7 +986,7 @@ namespace Scada.Comm.Ctrl
 
                 if (!createdNew)
                 {
-                    ScadaUtils.ShowInfo(AppPhrases.SecondInstanceClosed);
+                    ScadaUiUtils.ShowInfo(AppPhrases.SecondInstanceClosed);
                     Close();
                     return;
                 }
@@ -1038,7 +1038,7 @@ namespace Scada.Comm.Ctrl
                 ShowForm();
                 errMsg = sbError.ToString().TrimEnd();
                 errLog.WriteAction(errMsg);
-                ScadaUtils.ShowError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
             }
             else
             {
@@ -1084,7 +1084,7 @@ namespace Scada.Comm.Ctrl
                 ShowForm();
                 string errMsg = AppPhrases.ServiceStartFailed + ":\r\n" + ex.Message;
                 errLog.WriteAction(errMsg);
-                ScadaUtils.ShowError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
             }
         }
 
@@ -1100,7 +1100,7 @@ namespace Scada.Comm.Ctrl
                 ShowForm();
                 string errMsg = AppPhrases.ServiceStopFailed + ":\r\n" + ex.Message;
                 errLog.WriteAction(errMsg);
-                ScadaUtils.ShowError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
             }
         }
 
@@ -1119,7 +1119,7 @@ namespace Scada.Comm.Ctrl
                 ShowForm();
                 string errMsg = AppPhrases.ServiceRestartFailed + ":\r\n" + ex.Message; 
                 errLog.WriteAction(errMsg);
-                ScadaUtils.ShowError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
             }
         }
 
@@ -1154,12 +1154,12 @@ namespace Scada.Comm.Ctrl
                 // обновление узла линий связи
                 UpdateLinesNode(false, true);
 
-                ScadaUtils.ShowInfo(AppPhrases.RestartNeeded);
+                ScadaUiUtils.ShowInfo(AppPhrases.RestartNeeded);
             }
             else
             {
                 errLog.WriteAction(errMsg);
-                ScadaUtils.ShowError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
             }
         }
 
@@ -1199,18 +1199,18 @@ namespace Scada.Comm.Ctrl
 
                 if (updateOK)
                 {
-                    ScadaUtils.ShowInfo(msg);
+                    ScadaUiUtils.ShowInfo(msg);
                 }
                 else
                 {
                     errLog.WriteAction(msg);
-                    ScadaUtils.ShowError(msg);
+                    ScadaUiUtils.ShowError(msg);
                 }
             }
             else
             {
                 errLog.WriteAction(msg);
-                ScadaUtils.ShowError(msg);
+                ScadaUiUtils.ShowError(msg);
             }
         }
 
@@ -1260,9 +1260,9 @@ namespace Scada.Comm.Ctrl
             if (WindowState == FormWindowState.Normal)
             {
                 if (lbLog1 != null && !(lbLog1 == lbLineLog && chkLineLogPause.Checked))
-                    lbLog1.RefreshListBox(logFileName1, fullLoad1, ref logFileAge1);
+                    lbLog1.ReloadItems(logFileName1, fullLoad1, ref logFileAge1);
                 if (lbLog2 != null)
-                    lbLog2.RefreshListBox(logFileName2, fullLoad2, ref logFileAge2);
+                    lbLog2.ReloadItems(logFileName2, fullLoad2, ref logFileAge2);
             }
         }
 
@@ -1460,7 +1460,7 @@ namespace Scada.Comm.Ctrl
             if (!baseTablesReceived && !ReceiveBaseTables(out errMsg))
             {
                 errLog.WriteAction(errMsg);
-                ScadaUtils.ShowError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
             }
 
             if (baseTablesReceived)
@@ -1519,7 +1519,7 @@ namespace Scada.Comm.Ctrl
                     {
                         errMsg = AppPhrases.ImportLinesAndKpError + ":\r\n" + ex.Message;
                         errLog.WriteAction(errMsg);
-                        ScadaUtils.ShowError(errMsg);
+                        ScadaUiUtils.ShowError(errMsg);
                     }
                     finally
                     {
@@ -1541,12 +1541,12 @@ namespace Scada.Comm.Ctrl
 
                 if (CommUtils.SaveCmd(appDirs.CmdDir, "ScadaCommCtrl", cmdType, cmdParams, out msg))
                 {
-                    ScadaUtils.ShowInfo(msg);
+                    ScadaUiUtils.ShowInfo(msg);
                 }
                 else
                 {
                     errLog.WriteAction(msg);
-                    ScadaUtils.ShowError(msg);
+                    ScadaUiUtils.ShowError(msg);
                 }
             }
         }
@@ -1592,7 +1592,7 @@ namespace Scada.Comm.Ctrl
             {
                 string errMsg = AppPhrases.ShowKpPropsError + ":\r\n" + ex.Message;
                 errLog.WriteAction(errMsg);
-                ScadaUtils.ShowError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
             }
         }
 
@@ -1890,7 +1890,7 @@ namespace Scada.Comm.Ctrl
                 {
                     string errMsg = AppPhrases.ShowCommCnlPropsError + ":\r\n" + ex.Message;
                     errLog.WriteAction(errMsg);
-                    ScadaUtils.ShowError(errMsg);
+                    ScadaUiUtils.ShowError(errMsg);
                 }
             }
         }
@@ -2089,13 +2089,13 @@ namespace Scada.Comm.Ctrl
                 {
                     chkKpActive.Checked = lastKP.Active;
                     chkKpBind.Checked = lastKP.Bind;
-                    numKpNumber.SetNumericValue(lastKP.Number);
+                    numKpNumber.SetValue(lastKP.Number);
                     txtKpName.Text = lastKP.Name;
                     cbKpDll.Text = lastKP.Dll;
-                    numKpAddress.SetNumericValue(lastKP.Address);
+                    numKpAddress.SetValue(lastKP.Address);
                     txtCallNum.Text = lastKP.CallNum;
-                    numKpTimeout.SetNumericValue(lastKP.Timeout);
-                    numKpDelay.SetNumericValue(lastKP.Delay);
+                    numKpTimeout.SetValue(lastKP.Timeout);
+                    numKpDelay.SetValue(lastKP.Delay);
                     timeKpTime.Value = new DateTime(timeKpTime.MinDate.Year, timeKpTime.MinDate.Month, 
                         timeKpTime.MinDate.Day, lastKP.Time.Hour, lastKP.Time.Minute, lastKP.Time.Second);
                     timeKpPeriod.Value = new DateTime(timeKpPeriod.MinDate.Year, timeKpPeriod.MinDate.Month,
@@ -2376,7 +2376,7 @@ namespace Scada.Comm.Ctrl
                 if (!baseTablesReceived && !ReceiveBaseTables(out errMsg))
                 {
                     errLog.WriteAction(errMsg);
-                    ScadaUtils.ShowError(errMsg);
+                    ScadaUiUtils.ShowError(errMsg);
                 }
 
                 if (baseTablesReceived)
@@ -2435,7 +2435,7 @@ namespace Scada.Comm.Ctrl
                         {
                             errMsg = AppPhrases.ImportKpError + ":\r\n" + ex.Message;
                             errLog.WriteAction(errMsg);
-                            ScadaUtils.ShowError(errMsg);
+                            ScadaUiUtils.ShowError(errMsg);
                         }
                         finally
                         {
@@ -2522,8 +2522,8 @@ namespace Scada.Comm.Ctrl
                         if (kpDllInfo.KpView != null)
                         {
                             KPReqParams reqParams = kpDllInfo.KpView.DefaultReqParams;
-                            numKpTimeout.SetNumericValue(reqParams.Timeout);
-                            numKpDelay.SetNumericValue(reqParams.Delay);
+                            numKpTimeout.SetValue(reqParams.Timeout);
+                            numKpDelay.SetValue(reqParams.Delay);
                             DateTime date = timeKpTime.Value.Date;
                             DateTime time = reqParams.Time;
                             timeKpTime.Value = new DateTime(date.Year, date.Month, date.Day, 
@@ -2539,13 +2539,13 @@ namespace Scada.Comm.Ctrl
                     {
                         string errMsg = AppPhrases.ResetReqParamsError + ":\r\n" + ex.Message;
                         errLog.WriteAction(errMsg);
-                        ScadaUtils.ShowError(errMsg);
+                        ScadaUiUtils.ShowError(errMsg);
                     }
                 }
                 else
                 {
                     cbKpDll.Focus();
-                    ScadaUtils.ShowError(AppPhrases.UnknownDLL);
+                    ScadaUiUtils.ShowError(AppPhrases.UnknownDLL);
                 }
             }
         }
@@ -2604,7 +2604,7 @@ namespace Scada.Comm.Ctrl
                     double cmdVal = ScadaUtils.StrToDouble(txtCmdVal.Text);
                     if (double.IsNaN(cmdVal))
                     {
-                        ScadaUtils.ShowError(AppPhrases.IncorrectCmdVal);
+                        ScadaUiUtils.ShowError(AppPhrases.IncorrectCmdVal);
                     }
                     else
                     {
@@ -2629,7 +2629,7 @@ namespace Scada.Comm.Ctrl
                         }
                         else
                         {
-                            ScadaUtils.ShowError(AppPhrases.IncorrectHexCmdData);
+                            ScadaUiUtils.ShowError(AppPhrases.IncorrectHexCmdData);
                         }
                     }
                     else if (cmdDataStr.Length > 0)
@@ -2639,7 +2639,7 @@ namespace Scada.Comm.Ctrl
                     }
                     else
                     {
-                        ScadaUtils.ShowError(AppPhrases.CmdDataRequired);
+                        ScadaUiUtils.ShowError(AppPhrases.CmdDataRequired);
                     }
                 }
                 else
@@ -2654,12 +2654,12 @@ namespace Scada.Comm.Ctrl
                     string msg;
                     if (CommUtils.SaveCmd(appDirs.CmdDir, "ScadaCommCtrl", cmd, out msg))
                     {
-                        ScadaUtils.ShowInfo(msg);
+                        ScadaUiUtils.ShowInfo(msg);
                     }
                     else
                     {
                         errLog.WriteAction(msg);
-                        ScadaUtils.ShowError(msg);
+                        ScadaUiUtils.ShowError(msg);
                     }
                 }
             }

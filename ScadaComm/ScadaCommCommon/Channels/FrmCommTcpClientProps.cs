@@ -23,6 +23,7 @@
  * Modified : 2015
  */
 
+using Scada.UI;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -66,7 +67,7 @@ namespace Scada.Comm.Channels
         private void FrmCommTcpClientProps_Load(object sender, EventArgs e)
         {
             // перевод формы
-            Localization.TranslateForm(this, "Scada.Comm.Channels.FrmCommTcpClientProps", toolTip);
+            Translator.TranslateForm(this, "Scada.Comm.Channels.FrmCommTcpClientProps", toolTip);
 
             // инициализация настроек канала связи
             settings = new CommTcpClientLogic.Settings();
@@ -74,9 +75,10 @@ namespace Scada.Comm.Channels
 
             // установка элементов управления в соответствии с параметрами канала связи
             cbBehavior.Text = settings.Behavior.ToString();
-            cbConnMode.SelectItem(settings.ConnMode, new Dictionary<string, int>() { { "Individual", 0 }, { "Shared", 1 } });
+            cbConnMode.SetSelectedItem(settings.ConnMode, 
+                new Dictionary<string, int>() { { "Individual", 0 }, { "Shared", 1 } });
             txtIpAddress.Text = settings.IpAddress;
-            numTcpPort.SetNumericValue(settings.TcpPort);
+            numTcpPort.SetValue(settings.TcpPort);
 
             modified = false;
         }
@@ -111,7 +113,7 @@ namespace Scada.Comm.Channels
             // проверка настроек
             if (settings.ConnMode == CommTcpChannelLogic.ConnectionModes.Shared &&
                 string.IsNullOrWhiteSpace(settings.IpAddress))
-                ScadaUtils.ShowError(CommPhrases.IpAddressRequired);
+                ScadaUiUtils.ShowError(CommPhrases.IpAddressRequired);
             else
                 DialogResult = DialogResult.OK;
         }

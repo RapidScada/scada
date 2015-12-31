@@ -23,6 +23,7 @@
  * Modified : 2014
  */
 
+using Scada.UI;
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -74,7 +75,7 @@ namespace Scada.Comm.Ctrl
             {
                 if (tblCommLine.DefaultView.Count == 0)
                 {
-                    ScadaUtils.ShowInfo(AppPhrases.NoImportData);
+                    ScadaUiUtils.ShowInfo(AppPhrases.NoImportData);
                     return DialogResult.Cancel;
                 }
                 else
@@ -132,7 +133,7 @@ namespace Scada.Comm.Ctrl
             {
                 string errMsg = AppPhrases.PrepareImportFormError1 + ":\r\n" + ex.Message;
                 errLog.WriteAction(errMsg);
-                ScadaUtils.ShowError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
 
                 return DialogResult.Abort;
             }
@@ -152,7 +153,7 @@ namespace Scada.Comm.Ctrl
 
                 if (tblKP.DefaultView.Count == 0)
                 {
-                    ScadaUtils.ShowInfo(AppPhrases.NoImportData);
+                    ScadaUiUtils.ShowInfo(AppPhrases.NoImportData);
                     return DialogResult.Cancel;
                 }
                 else
@@ -188,7 +189,7 @@ namespace Scada.Comm.Ctrl
             {
                 string errMsg = AppPhrases.PrepareImportFormError2 + ":\r\n" + ex.Message;
                 errLog.WriteAction(errMsg);
-                ScadaUtils.ShowError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
 
                 return DialogResult.Abort;
             }
@@ -203,7 +204,7 @@ namespace Scada.Comm.Ctrl
         private void FrmImport_Load(object sender, EventArgs e)
         {
             // перевод формы
-            Localization.TranslateForm(this, "Scada.Comm.Ctrl.FrmImport");
+            Translator.TranslateForm(this, "Scada.Comm.Ctrl.FrmImport");
             if (commLineNum > 0)
                 Text = string.Format(AppPhrases.ImportAlternateTitle, commLineNum);
         }
