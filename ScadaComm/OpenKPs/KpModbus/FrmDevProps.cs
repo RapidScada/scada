@@ -90,7 +90,7 @@ namespace Scada.Comm.Devices.KpModbus
 
             // установка элементов управления в соответствии со свойствами КП
             string transMode = kpProps.CustomParams.GetStringParam("TransMode", false, "RTU");
-            cbTransMode.SelectItem(transMode, new Dictionary<string, int>() 
+            cbTransMode.SetSelectedItem(transMode, new Dictionary<string, int>() 
                 { { "RTU", 0 }, { "ASCII", 1 }, { "TCP", 2 } }, 0);
             txtDevTemplate.Text = kpProps.CmdLine;
             kpProps.Modified = false;
