@@ -72,6 +72,7 @@
     <Compile Include="Data\Trend.cs" />
     <Compile Include="UI\ScadaUiUtils.cs" />
     <Compile Include="UI\Translator.cs" />
+    <Compile Include="UI\TreeViewUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ScadaUtils.Xml.cs" />

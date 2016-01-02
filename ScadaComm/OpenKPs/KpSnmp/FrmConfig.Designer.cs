@@ -30,19 +30,19 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmConfig));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("КП");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("КП");
             this.pnlBottom = new System.Windows.Forms.Panel();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
-            this.btnAddGroup = new System.Windows.Forms.ToolStripButton();
+            this.btnAddVarGroup = new System.Windows.Forms.ToolStripButton();
             this.btnAddVariable = new System.Windows.Forms.ToolStripButton();
             this.btnEdit = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.btnMoveUp = new System.Windows.Forms.ToolStripButton();
             this.btnMoveDown = new System.Windows.Forms.ToolStripButton();
             this.btnDelete = new System.Windows.Forms.ToolStripButton();
-            this.tvDevice = new System.Windows.Forms.TreeView();
+            this.treeView = new System.Windows.Forms.TreeView();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.pnlBottom.SuspendLayout();
             this.toolStrip.SuspendLayout();
@@ -82,7 +82,7 @@
             // toolStrip
             // 
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.btnAddGroup,
+            this.btnAddVarGroup,
             this.btnAddVariable,
             this.btnEdit,
             this.toolStripSeparator1,
@@ -95,14 +95,15 @@
             this.toolStrip.TabIndex = 5;
             this.toolStrip.Text = "toolStrip1";
             // 
-            // btnAddGroup
+            // btnAddVarGroup
             // 
-            this.btnAddGroup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnAddGroup.Image = ((System.Drawing.Image)(resources.GetObject("btnAddGroup.Image")));
-            this.btnAddGroup.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnAddGroup.Name = "btnAddGroup";
-            this.btnAddGroup.Size = new System.Drawing.Size(23, 22);
-            this.btnAddGroup.ToolTipText = "Добавить группу";
+            this.btnAddVarGroup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnAddVarGroup.Image = ((System.Drawing.Image)(resources.GetObject("btnAddVarGroup.Image")));
+            this.btnAddVarGroup.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnAddVarGroup.Name = "btnAddVarGroup";
+            this.btnAddVarGroup.Size = new System.Drawing.Size(23, 22);
+            this.btnAddVarGroup.ToolTipText = "Добавить группу переменных";
+            this.btnAddVarGroup.Click += new System.EventHandler(this.btnAddVarGroup_Click);
             // 
             // btnAddVariable
             // 
@@ -112,6 +113,7 @@
             this.btnAddVariable.Name = "btnAddVariable";
             this.btnAddVariable.Size = new System.Drawing.Size(23, 22);
             this.btnAddVariable.ToolTipText = "Добавить переменную";
+            this.btnAddVariable.Click += new System.EventHandler(this.btnAddVariable_Click);
             // 
             // btnEdit
             // 
@@ -121,6 +123,7 @@
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(23, 22);
             this.btnEdit.ToolTipText = "Редактировать";
+            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
             // 
             // toolStripSeparator1
             // 
@@ -135,6 +138,7 @@
             this.btnMoveUp.Name = "btnMoveUp";
             this.btnMoveUp.Size = new System.Drawing.Size(23, 22);
             this.btnMoveUp.ToolTipText = "Переместить вверх";
+            this.btnMoveUp.Click += new System.EventHandler(this.btnMoveUp_Click);
             // 
             // btnMoveDown
             // 
@@ -144,6 +148,7 @@
             this.btnMoveDown.Name = "btnMoveDown";
             this.btnMoveDown.Size = new System.Drawing.Size(23, 22);
             this.btnMoveDown.ToolTipText = "Переместить вниз";
+            this.btnMoveDown.Click += new System.EventHandler(this.btnMoveDown_Click);
             // 
             // btnDelete
             // 
@@ -153,25 +158,26 @@
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(23, 22);
             this.btnDelete.ToolTipText = "Удалить";
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
-            // tvDevice
+            // treeView
             // 
-            this.tvDevice.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tvDevice.HideSelection = false;
-            this.tvDevice.ImageIndex = 0;
-            this.tvDevice.ImageList = this.imageList;
-            this.tvDevice.Location = new System.Drawing.Point(0, 25);
-            this.tvDevice.Name = "tvDevice";
-            treeNode1.ImageKey = "device.png";
-            treeNode1.Name = "nodeDevice";
-            treeNode1.SelectedImageKey = "device.png";
-            treeNode1.Text = "КП";
-            this.tvDevice.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1});
-            this.tvDevice.SelectedImageIndex = 0;
-            this.tvDevice.ShowRootLines = false;
-            this.tvDevice.Size = new System.Drawing.Size(334, 396);
-            this.tvDevice.TabIndex = 6;
+            this.treeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeView.HideSelection = false;
+            this.treeView.ImageIndex = 0;
+            this.treeView.ImageList = this.imageList;
+            this.treeView.Location = new System.Drawing.Point(0, 25);
+            this.treeView.Name = "treeView";
+            treeNode2.ImageKey = "device.png";
+            treeNode2.Name = "nodeDevice";
+            treeNode2.SelectedImageKey = "device.png";
+            treeNode2.Text = "КП";
+            this.treeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode2});
+            this.treeView.SelectedImageIndex = 0;
+            this.treeView.ShowRootLines = false;
+            this.treeView.Size = new System.Drawing.Size(334, 396);
+            this.treeView.TabIndex = 6;
             // 
             // imageList
             // 
@@ -187,15 +193,17 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(334, 462);
-            this.Controls.Add(this.tvDevice);
+            this.Controls.Add(this.treeView);
             this.Controls.Add(this.toolStrip);
             this.Controls.Add(this.pnlBottom);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FrmConfig";
             this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "SNMP";
+            this.Text = "SNMP - Конфигурация КП {0}";
+            this.Load += new System.EventHandler(this.FrmConfig_Load);
             this.pnlBottom.ResumeLayout(false);
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
@@ -210,11 +218,11 @@
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.ToolStrip toolStrip;
-        private System.Windows.Forms.ToolStripButton btnAddGroup;
+        private System.Windows.Forms.ToolStripButton btnAddVarGroup;
         private System.Windows.Forms.ToolStripButton btnEdit;
         private System.Windows.Forms.ToolStripButton btnDelete;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.TreeView tvDevice;
+        private System.Windows.Forms.TreeView treeView;
         private System.Windows.Forms.ImageList imageList;
         private System.Windows.Forms.ToolStripButton btnAddVariable;
         private System.Windows.Forms.ToolStripButton btnMoveUp;

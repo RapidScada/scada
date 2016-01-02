@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2016
  */
 
 using System;
@@ -38,12 +38,12 @@ namespace Scada.Comm.Devices.KpSnmp
         /// <summary>
         /// Группа переменных
         /// </summary>
-        public class Group
+        public class VarGroup
         {
             /// <summary>
             /// Конструктор
             /// </summary>
-            public Group()
+            public VarGroup()
             {
                 Name = "";
                 Variables = new List<Variable>();
@@ -57,6 +57,13 @@ namespace Scada.Comm.Devices.KpSnmp
             /// Получить переменные
             /// </summary>
             public List<Variable> Variables { get; private set; }
+            /// <summary>
+            /// Получить строковое представление объекта
+            /// </summary>
+            public override string ToString()
+            {
+                return Name;
+            }
         }
 
         /// <summary>
@@ -81,6 +88,13 @@ namespace Scada.Comm.Devices.KpSnmp
             /// Получить или установить идентификатор переменной
             /// </summary>
             public string OID { get; set; }
+            /// <summary>
+            /// Получить строковое представление объекта
+            /// </summary>
+            public override string ToString()
+            {
+                return Name;
+            }
         }
 
         /// <summary>
@@ -115,7 +129,7 @@ namespace Scada.Comm.Devices.KpSnmp
         /// <summary>
         /// Получить граппы переменных
         /// </summary>
-        public List<Group> Groups { get; private set; }
+        public List<VarGroup> VarGroups { get; private set; }
 
 
         /// <summary>
@@ -125,7 +139,7 @@ namespace Scada.Comm.Devices.KpSnmp
         {
             ReadCommunity = DefReadCommunity;
             WriteCommunity = DefWriteCommunity;
-            Groups = new List<Group>();
+            VarGroups = new List<VarGroup>();
         }
         
         /// <summary>
@@ -145,7 +159,8 @@ namespace Scada.Comm.Devices.KpSnmp
 
                 if (paramsNode != null)
                 {
-                    foreach (XmlElement paramElem in paramsNode.ChildNodes)
+                    XmlNodeList paramNodes = paramsNode.SelectNodes("Param");
+                    foreach (XmlElement paramElem in paramNodes)
                     {
                         string name = paramElem.GetAttribute("name").ToLowerInvariant();
                         string val = paramElem.GetAttribute("value");
@@ -158,26 +173,27 @@ namespace Scada.Comm.Devices.KpSnmp
                 }
 
                 // загрузка групп переменных
-                XmlNode groupsNode = xmlDoc.DocumentElement.SelectSingleNode("Groups");
+                XmlNode varGroupsNode = xmlDoc.DocumentElement.SelectSingleNode("VarGroups");
 
-                if (groupsNode != null)
+                if (varGroupsNode != null)
                 {
-                    foreach (XmlElement groupElem in groupsNode.ChildNodes)
+                    XmlNodeList varGroupNodes = varGroupsNode.SelectNodes("VarGroup");
+                    foreach (XmlElement varGroupElem in varGroupNodes)
                     {
-                        Group group = new Group();
-                        group.Name = groupElem.GetAttribute("name");
+                        VarGroup varGroup = new VarGroup();
+                        varGroup.Name = varGroupElem.GetAttribute("name");
 
                         // загрузка переменных
-                        XmlNodeList variableNodes = groupElem.SelectNodes("Variable");
+                        XmlNodeList variableNodes = varGroupElem.SelectNodes("Variable");
                         foreach (XmlElement variableElem in variableNodes)
                         {
                             Variable variable = new Variable();
                             variable.Name = variableElem.GetAttribute("name");
                             variable.OID = variableElem.GetAttribute("oid");
-                            group.Variables.Add(variable);
+                            varGroup.Variables.Add(variable);
                         }
 
-                        Groups.Add(group);
+                        VarGroups.Add(varGroup);
                     }
                 }
                 
@@ -213,22 +229,22 @@ namespace Scada.Comm.Devices.KpSnmp
                 paramsElem.AppendParamElem("WriteCommunity", WriteCommunity);
 
                 // сохранение групп переменных
-                XmlElement groupsElem = xmlDoc.CreateElement("Groups");
-                rootElem.AppendChild(groupsElem);
+                XmlElement varGroupsElem = xmlDoc.CreateElement("VarGroups");
+                rootElem.AppendChild(varGroupsElem);
 
-                foreach (Group group in Groups)
+                foreach (VarGroup varGroup in VarGroups)
                 {
-                    XmlElement groupElem = xmlDoc.CreateElement("Group");
-                    groupElem.SetAttribute("name", group.Name);
-                    groupsElem.AppendChild(groupElem);
+                    XmlElement varGroupElem = xmlDoc.CreateElement("VarGroup");
+                    varGroupElem.SetAttribute("name", varGroup.Name);
+                    varGroupsElem.AppendChild(varGroupElem);
 
                     // сохранение переменных
-                    foreach (Variable variable in group.Variables)
+                    foreach (Variable variable in varGroup.Variables)
                     {
                         XmlElement variableElem = xmlDoc.CreateElement("Variable");
                         variableElem.SetAttribute("name", variable.Name);
                         variableElem.SetAttribute("oid", variable.OID);
-                        groupElem.AppendChild(variableElem);
+                        varGroupElem.AppendChild(variableElem);
                     }
                 }
 

@@ -53,6 +53,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config.cs" />
+    <Compile Include="FrmVarGroup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmVarGroup.designer.cs">
+      <DependentUpon>FrmVarGroup.cs</DependentUpon>
+    </Compile>
     <Compile Include="KpSnmpLogic.cs" />
     <Compile Include="FrmConfig.cs">
       <SubType>Form</SubType>
@@ -67,6 +73,9 @@
     <EmbeddedResource Include="FrmConfig.resx">
       <DependentUpon>FrmConfig.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmVarGroup.resx">
+      <DependentUpon>FrmVarGroup.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Res\delete.png" />
@@ -76,6 +85,9 @@
     <Content Include="Res\move_down.png" />
     <Content Include="Res\move_up.png" />
     <Content Include="Res\var.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Lang\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

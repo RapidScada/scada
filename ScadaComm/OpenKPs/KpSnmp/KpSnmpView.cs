@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,10 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2016
  */
 
+using Scada.Comm.Devices.KpSnmp;
 namespace Scada.Comm.Devices
 {
     /// <summary>
@@ -45,7 +46,7 @@ namespace Scada.Comm.Devices
         public KpSnmpView(int number)
             : base(number)
         {
-            CanShowProps = true;
+            CanShowProps = number > 0;
         }
 
 
@@ -67,6 +68,15 @@ namespace Scada.Comm.Devices
                     "A separate command for setting each variable (standard or binary). " +
                     "Command number is equal to a signal number of a device tag.";
             }
+        }
+
+        
+        /// <summary>
+        /// Отобразить свойства КП
+        /// </summary>
+        public override void ShowProps()
+        {
+            FrmConfig.ShowDialog(AppDirs, Number);
         }
     }
 }
