@@ -172,29 +172,36 @@ namespace Scada.Comm.Devices.KpSnmp
 
         private void btnAddVarGroup_Click(object sender, EventArgs e)
         {
+            // добавление группы переменных
             Config.VarGroup newVarGroup = FrmVarGroup.CreateVarGroup();
             if (newVarGroup != null)
             {
-                /*if (phonebook.PhoneGroups.ContainsKey(newGroup.Name))
-                {
-                    ScadaUiUtils.ShowWarning(KpPhrases.PhoneGroupExists);
-                }
-                else
-                {
-                    InsertGroup(newGroup);
-                    Modified = true;
-                }*/
+                TreeNode groupNode = CreateGroupNode(newVarGroup);
+                treeView.Insert(rootNode, groupNode, config.VarGroups);
+                Modified = true;
             }
         }
 
         private void btnAddVariable_Click(object sender, EventArgs e)
         {
-
+            //Config.Variable newVariable = 
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
+            // редактирование выбранного объекта
+            object selObj = treeView.GetSelectedObject();
+            Config.VarGroup varGroup = selObj as Config.VarGroup;
 
+            if (varGroup != null)
+            {
+                // редактирование группы переменных
+                if (FrmVarGroup.EditVarGroup(varGroup))
+                {
+                    treeView.UpdateSelectedNodeText();
+                    Modified = true;
+                }
+            }
         }
 
         private void btnMoveUp_Click(object sender, EventArgs e)
@@ -209,7 +216,16 @@ namespace Scada.Comm.Devices.KpSnmp
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
+            // удаление выбранного объекта
+            object selObj = treeView.GetSelectedObject();
+            Config.VarGroup varGroup = selObj as Config.VarGroup;
 
+            if (varGroup != null)
+            {
+                // удаление группы переменных
+                treeView.RemoveSelectedNode(config.VarGroups);
+                Modified = true;
+            }
         }
     }
 }
