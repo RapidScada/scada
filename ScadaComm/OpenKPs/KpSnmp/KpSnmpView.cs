@@ -24,6 +24,7 @@
  */
 
 using Scada.Comm.Devices.KpSnmp;
+
 namespace Scada.Comm.Devices
 {
     /// <summary>
