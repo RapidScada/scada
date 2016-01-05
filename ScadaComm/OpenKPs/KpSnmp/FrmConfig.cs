@@ -61,6 +61,7 @@ namespace Scada.Comm.Devices.KpSnmp
             config = new Config();
             modified = false;
             rootNode = treeView.Nodes["nodeDevice"];
+            rootNode.Tag = config;
         }
 
 
@@ -124,6 +125,38 @@ namespace Scada.Comm.Devices.KpSnmp
             return TreeViewUtils.CreateNode(variable, "variable.png");
         }
 
+        /// <summary>
+        /// Вычислить сигнал выбранной переменной
+        /// </summary>
+        private int CalcSignal()
+        {
+            TreeNode selectedNode = treeView.SelectedNode;
+            if (selectedNode != null && selectedNode.Tag is Config.Variable)
+            {
+                int signal = 1;
+                TreeNode selGroupNode = selectedNode.Parent;
+
+                foreach (TreeNode groupNode in rootNode.Nodes)
+                {
+                    if (groupNode == selGroupNode)
+                    {
+                        signal += selectedNode.Index;
+                        break;
+                    }
+                    else
+                    {
+                        signal += groupNode.Nodes.Count;
+                    }
+                }
+
+                return signal;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
 
         /// <summary>
         /// Отобразить форму модально
@@ -165,6 +198,7 @@ namespace Scada.Comm.Devices.KpSnmp
             string fileName = Config.GetFileName(appDirs.ConfigDir, kpNum);
             if (File.Exists(fileName) && !config.Load(fileName, out errMsg))
                 ScadaUiUtils.ShowError(errMsg);
+            Modified = false;
 
             // вывод дерева конфигурации
             BuildTree();
@@ -177,55 +211,90 @@ namespace Scada.Comm.Devices.KpSnmp
             if (newVarGroup != null)
             {
                 TreeNode groupNode = CreateGroupNode(newVarGroup);
-                treeView.Insert(rootNode, groupNode, config.VarGroups);
+                treeView.Insert(rootNode, groupNode);
                 Modified = true;
             }
         }
 
         private void btnAddVariable_Click(object sender, EventArgs e)
         {
-            //Config.Variable newVariable = 
+            // добавление переменной
+            TreeNode closestGroupNode = treeView.FindClosest(typeof(Config.VarGroup));
+            if (closestGroupNode != null)
+            {
+                Config.Variable newVariable = FrmVariable.CreateVariable();
+                if (newVariable != null)
+                {
+                    TreeNode variableNode = CreateVariableNode(newVariable);
+                    treeView.Insert(closestGroupNode, variableNode);
+                    Modified = true;
+                }
+            }
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
             // редактирование выбранного объекта
             object selObj = treeView.GetSelectedObject();
-            Config.VarGroup varGroup = selObj as Config.VarGroup;
+            bool edited = false;
 
-            if (varGroup != null)
+            if (selObj is Config.VarGroup)
+                edited = FrmVarGroup.EditVarGroup((Config.VarGroup)selObj);
+            else if (selObj is Config.Variable)
+                edited = FrmVariable.EditVariable((Config.Variable)selObj, CalcSignal());
+
+            if (edited)
             {
-                // редактирование группы переменных
-                if (FrmVarGroup.EditVarGroup(varGroup))
-                {
-                    treeView.UpdateSelectedNodeText();
-                    Modified = true;
-                }
+                treeView.UpdateSelectedNodeText();
+                Modified = true;
             }
         }
 
         private void btnMoveUp_Click(object sender, EventArgs e)
         {
+            // перемещение выбранного объекта вверх
+            object selObj = treeView.GetSelectedObject();
 
+            if (selObj is Config.VarGroup || selObj is Config.Variable)
+            {
+                treeView.MoveUpSelectedNode(TreeViewUtils.MoveBehavior.ThroughSimilarParents);
+                Modified = true;
+            }
         }
 
         private void btnMoveDown_Click(object sender, EventArgs e)
         {
+            // перемещение выбранного объекта вниз
+            object selObj = treeView.GetSelectedObject();
 
+            if (selObj is Config.VarGroup || selObj is Config.Variable)
+            {
+                treeView.MoveDownSelectedNode(TreeViewUtils.MoveBehavior.ThroughSimilarParents);
+                Modified = true;
+            }
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
             // удаление выбранного объекта
             object selObj = treeView.GetSelectedObject();
-            Config.VarGroup varGroup = selObj as Config.VarGroup;
 
-            if (varGroup != null)
+            if (selObj is Config.VarGroup)
             {
-                // удаление группы переменных
-                treeView.RemoveSelectedNode(config.VarGroups);
+                treeView.RemoveSelectedNode();
                 Modified = true;
             }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            // сохранение конфигурации КП
+            string fileName = Config.GetFileName(appDirs.ConfigDir, kpNum);
+            string errMsg;
+            if (config.Save(fileName, out errMsg))
+                Modified = false;
+            else
+                ScadaUiUtils.ShowError(errMsg);
         }
     }
 }

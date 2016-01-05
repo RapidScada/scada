@@ -72,8 +72,7 @@ namespace Scada.Comm.Devices.KpSnmp
             string oldName = varGroup.Name;
             FrmVarGroup frmVarGroup = new FrmVarGroup();
             frmVarGroup.varGroup = varGroup;
-            return frmVarGroup.ShowDialog() == DialogResult.OK && 
-                !string.Equals(oldName, varGroup.Name, StringComparison.Ordinal);
+            return frmVarGroup.ShowDialog() == DialogResult.OK && !varGroup.Equals(oldName);
         }
 
 

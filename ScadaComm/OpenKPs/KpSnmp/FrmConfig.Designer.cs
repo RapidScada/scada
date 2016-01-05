@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmConfig));
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("КП");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("КП");
             this.pnlBottom = new System.Windows.Forms.Panel();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
@@ -78,6 +78,7 @@
             this.btnSave.TabIndex = 0;
             this.btnSave.Text = "Сохранить";
             this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // toolStrip
             // 
@@ -168,12 +169,12 @@
             this.treeView.ImageList = this.imageList;
             this.treeView.Location = new System.Drawing.Point(0, 25);
             this.treeView.Name = "treeView";
-            treeNode2.ImageKey = "device.png";
-            treeNode2.Name = "nodeDevice";
-            treeNode2.SelectedImageKey = "device.png";
-            treeNode2.Text = "КП";
+            treeNode1.ImageKey = "device.png";
+            treeNode1.Name = "nodeDevice";
+            treeNode1.SelectedImageKey = "device.png";
+            treeNode1.Text = "КП";
             this.treeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode2});
+            treeNode1});
             this.treeView.SelectedImageIndex = 0;
             this.treeView.ShowRootLines = false;
             this.treeView.Size = new System.Drawing.Size(334, 396);
@@ -198,6 +199,7 @@
             this.Controls.Add(this.pnlBottom);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(250, 300);
             this.Name = "FrmConfig";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;

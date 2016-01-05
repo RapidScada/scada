@@ -53,6 +53,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config.cs" />
+    <Compile Include="FrmVariable.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmVariable.designer.cs">
+      <DependentUpon>FrmVariable.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmVarGroup.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -72,6 +78,9 @@
   <ItemGroup>
     <EmbeddedResource Include="FrmConfig.resx">
       <DependentUpon>FrmConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmVariable.resx">
+      <DependentUpon>FrmVariable.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmVarGroup.resx">
       <DependentUpon>FrmVarGroup.cs</DependentUpon>

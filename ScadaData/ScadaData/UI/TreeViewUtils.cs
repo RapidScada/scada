@@ -34,9 +34,38 @@ namespace Scada.UI
     /// <summary>
     /// Utility methods for TreeView control
     /// <para>Вспомогательные методы для работы с элементом управления TreeView</para>
+    /// <remarks>
+    /// Objects of tree node tags must implement ITreeNode interface
+    /// <para>Объекты тегов узлов дерева должны поддерживать интерфейс ITreeNode</para>
+    /// </remarks>
     /// </summary>
     public static class TreeViewUtils
     {
+        /// <summary>
+        /// Поведение при перемещении узлов дерева
+        /// </summary>
+        public enum MoveBehavior
+        {
+            /// <summary>
+            /// В пределах своего родителя
+            /// </summary>
+            WithinParent,
+            /// <summary>
+            /// Через однотипных родителей
+            /// </summary>
+            ThroughSimilarParents
+        }
+
+
+        /// <summary>
+        /// Получить коллекцию дочерних узлов заданного родительского узла или самого дерева
+        /// </summary>
+        private static TreeNodeCollection GetChildNodes(this TreeView treeView, TreeNode parentNode)
+        {
+            return parentNode == null ? treeView.Nodes : parentNode.Nodes;
+        }
+
+
         /// <summary>
         /// Создать узел дерева
         /// </summary>
@@ -83,22 +112,9 @@ namespace Scada.UI
         }
 
         /// <summary>
-        /// Найти индекс для вставки в список дочерних узлов заданного родительского узла
-        /// </summary>
-        public static int FindInsertIndex(this TreeView treeView, TreeNode parentNode)
-        {
-            TreeNode node = treeView.SelectedNode;
-            while (node != null && node.Parent != parentNode)
-                node = node.Parent;
-
-            TreeNodeCollection nodes = parentNode == null ? treeView.Nodes : parentNode.Nodes;
-            return node == null ? nodes.Count : node.Index + 1;
-        }
-
-        /// <summary>
         /// Найти родительский узел и индекс для вставки нового узла дерева
         /// </summary>
-        public static bool FindInsertLocation(this TreeView treeView, Type tagType, 
+        public static bool FindInsertLocation(this TreeView treeView, Type tagType,
             out TreeNode parentNode, out int index)
         {
             TreeNode node = treeView.FindClosest(tagType);
@@ -117,110 +133,194 @@ namespace Scada.UI
             }
         }
 
+        /// <summary>
+        /// Найти индекс для вставки в список дочерних узлов заданного родительского узла
+        /// </summary>
+        public static int FindInsertIndex(this TreeView treeView, TreeNode parentNode)
+        {
+            TreeNode node = treeView.SelectedNode;
+            while (node != null && node.Parent != parentNode)
+                node = node.Parent;
+
+            TreeNodeCollection nodes = treeView.GetChildNodes(parentNode); 
+            return node == null ? nodes.Count : node.Index + 1;
+        }
+
 
         /// <summary>
-        /// Вставить узел в дерево и объект из тега вставляемого узла в соответствующий список
+        /// Вставить узел в список дочерних узлов заданного родительского узла или самого дерева 
+        /// после выбранного узла дерева
+        /// <remarks>Метод рекомендуется использовать, если parentNode может быть равен null. 
+        /// В этом случае parentObj нужно передавать явно</remarks>
         /// </summary>
-        public static void Insert(this TreeView treeView, TreeNode parentNode, TreeNode nodeToInsert, 
-            IList associatedList, int index)
+        public static void Insert(this TreeView treeView, TreeNode parentNode, ITreeNode parentObj, 
+            TreeNode nodeToInsert)
         {
+            if (parentObj == null)
+                throw new ArgumentNullException("parentObj");
             if (nodeToInsert == null)
                 throw new ArgumentNullException("nodeToInsert");
-            if (associatedList == null)
-                throw new ArgumentNullException("associatedList");
 
-            TreeNodeCollection nodes = parentNode == null ? treeView.Nodes : parentNode.Nodes;
-            nodes.Insert(index, nodeToInsert);
-            associatedList.Insert(index, nodeToInsert.Tag);
-            treeView.SelectedNode = nodeToInsert;
-        }
-
-        /// <summary>
-        /// Вставить узел в дерево и объект из тега вставляемого узла в соответствующий список
-        /// </summary>
-        public static void Insert(this TreeView treeView, TreeNode parentNode, TreeNode nodeToInsert, 
-            IList associatedList)
-        {
-            int index = treeView.FindInsertIndex(parentNode);
-            treeView.Insert(parentNode, nodeToInsert, associatedList, index);
-        }
-
-        /// <summary>
-        /// Переместить узел дерева и элемент соответствующего списка вверх
-        /// </summary>
-        public static void MoveUp(this TreeView treeView, TreeNode parentNode, IList associatedList, int index)
-        {
-            try
+            if (parentObj.Children != null && nodeToInsert.Tag is ITreeNode)
             {
-                treeView.BeginUpdate();
+                int index = treeView.FindInsertIndex(parentNode);
+                TreeNodeCollection nodes = treeView.GetChildNodes(parentNode);
+                IList list = parentObj.Children;
+                ITreeNode obj = (ITreeNode)nodeToInsert.Tag;
+                obj.Parent = parentObj;
 
-                TreeNodeCollection nodes = parentNode == null ? treeView.Nodes : parentNode.Nodes;
-                TreeNode node = nodes[index];
-                int newIndex = index - 1;
+                nodes.Insert(index, nodeToInsert);
+                list.Insert(index, obj);
+                treeView.SelectedNode = nodeToInsert;
+            }
+        }
 
-                if (newIndex >= 0)
+        /// <summary>
+        /// Вставить узел в список дочерних узлов заданного родительского узла после выбранного узла дерева
+        /// </summary>
+        /// <remarks>Аргумент parentNode не может быть равен null</remarks>
+        public static void Insert(this TreeView treeView, TreeNode parentNode, TreeNode nodeToInsert)
+        {
+            if (parentNode == null)
+                throw new ArgumentNullException("parentNode");
+
+            if (parentNode.Tag is ITreeNode)
+                treeView.Insert(parentNode, (ITreeNode)parentNode.Tag, nodeToInsert);
+        }
+
+        /// <summary>
+        /// Переместить выбранный узел дерева и элемент соответствующего списка вверх по дереву
+        /// </summary>
+        public static void MoveUpSelectedNode(this TreeView treeView, MoveBehavior moveBehavior)
+        {
+            TreeNode selectedNode = treeView.SelectedNode;
+            ITreeNode selectedObj = selectedNode == null ? null : selectedNode.Tag as ITreeNode;
+
+            if (selectedObj != null)
+            {
+                try
                 {
-                    nodes.RemoveAt(index);
-                    nodes.Insert(newIndex, node);
-                    associatedList.RemoveAt(index);
-                    associatedList.Insert(newIndex, node.Tag);
-                    treeView.SelectedNode = node;
+                    treeView.BeginUpdate();
+
+                    TreeNodeCollection nodes = treeView.GetChildNodes(selectedNode.Parent);
+                    IList list = selectedObj.Parent.Children;
+
+                    int index = selectedNode.Index;
+                    int newIndex = index - 1;
+
+                    if (newIndex >= 0)
+                    {
+                        nodes.RemoveAt(index);
+                        nodes.Insert(newIndex, selectedNode);
+
+                        list.RemoveAt(index);
+                        list.Insert(newIndex, selectedObj);
+
+                        treeView.SelectedNode = selectedNode;
+                    }
+                    else if (moveBehavior == MoveBehavior.ThroughSimilarParents)
+                    {
+                        TreeNode parentNode = selectedNode.Parent;
+                        TreeNode prevParentNode = parentNode == null ? null : parentNode.PrevNode;
+
+                        if (parentNode != null && prevParentNode != null && 
+                            parentNode.Tag is ITreeNode && prevParentNode.Tag is ITreeNode &&
+                            parentNode.Tag.GetType() == prevParentNode.Tag.GetType())
+                        {
+                            // изменение родителя перемещаемого узла
+                            nodes.RemoveAt(index);
+                            prevParentNode.Nodes.Add(selectedNode);
+
+                            ITreeNode prevParentObj = (ITreeNode)prevParentNode.Tag;
+                            list.RemoveAt(index);
+                            prevParentObj.Children.Add(selectedObj);
+                            selectedObj.Parent = prevParentObj;
+
+                            treeView.SelectedNode = selectedNode;
+                        }
+                    }
+                }
+                finally
+                {
+                    treeView.EndUpdate();
                 }
             }
-            finally
-            {
-                treeView.EndUpdate();
-            }
         }
 
         /// <summary>
-        /// Переместить узел дерева и элемент соответствующего списка вниз
+        /// Переместить выбранный узел дерева и элемент соответствующего списка вниз по дереву
         /// </summary>
-        public static void MoveDown(this TreeView treeView, TreeNode parentNode, IList associatedList, int index)
+        public static void MoveDownSelectedNode(this TreeView treeView, MoveBehavior moveBehavior)
         {
-            try
+            TreeNode selectedNode = treeView.SelectedNode;
+            ITreeNode selectedObj = selectedNode == null ? null : selectedNode.Tag as ITreeNode;
+
+            if (selectedObj != null)
             {
-                treeView.BeginUpdate();
-
-                TreeNodeCollection nodes = parentNode == null ? treeView.Nodes : parentNode.Nodes;
-                TreeNode node = nodes[index];
-                int newIndex = index + 1;
-
-                if (newIndex < nodes.Count)
+                try
                 {
-                    nodes.RemoveAt(index);
-                    nodes.Insert(newIndex, node);
-                    associatedList.RemoveAt(index);
-                    associatedList.Insert(newIndex, node.Tag);
-                    treeView.SelectedNode = node;
+                    treeView.BeginUpdate();
+
+                    TreeNodeCollection nodes = treeView.GetChildNodes(selectedNode.Parent);
+                    IList list = selectedObj.Parent.Children;
+
+                    int index = selectedNode.Index;
+                    int newIndex = index + 1;
+
+                    if (newIndex < nodes.Count)
+                    {
+                        nodes.RemoveAt(index);
+                        nodes.Insert(newIndex, selectedNode);
+
+                        list.RemoveAt(index);
+                        list.Insert(newIndex, selectedObj);
+
+                        treeView.SelectedNode = selectedNode;
+                    }
+                    else if (moveBehavior == MoveBehavior.ThroughSimilarParents)
+                    {
+                        TreeNode parentNode = selectedNode.Parent;
+                        TreeNode nextParentNode = parentNode == null ? null : parentNode.NextNode;
+
+                        if (parentNode != null && nextParentNode != null &&
+                            parentNode.Tag is ITreeNode && nextParentNode.Tag is ITreeNode &&
+                            parentNode.Tag.GetType() == nextParentNode.Tag.GetType())
+                        {
+                            // изменение родителя перемещаемого узла
+                            nodes.RemoveAt(index);
+                            nextParentNode.Nodes.Insert(0, selectedNode);
+
+                            ITreeNode nextParentObj = (ITreeNode)nextParentNode.Tag;
+                            list.RemoveAt(index);
+                            nextParentObj.Children.Insert(0, selectedObj);
+                            selectedObj.Parent = nextParentObj;
+
+                            treeView.SelectedNode = selectedNode;
+                        }
+                    }
+                }
+                finally
+                {
+                    treeView.EndUpdate();
                 }
             }
-            finally
+        }
+
+        /// <summary>
+        /// Удалить выбранный узел дерева и элемент из соответствующего списка
+        /// </summary>
+        public static void RemoveSelectedNode(this TreeView treeView)
+        {
+            TreeNode selectedNode = treeView.SelectedNode;
+            if (selectedNode != null && selectedNode.Tag is ITreeNode)
             {
-                treeView.EndUpdate();
+                TreeNodeCollection nodes = treeView.GetChildNodes(selectedNode.Parent);
+                IList list = ((ITreeNode)selectedNode.Tag).Parent.Children;
+                
+                int selectedIndex = selectedNode.Index;
+                nodes.RemoveAt(selectedIndex);
+                list.RemoveAt(selectedIndex);
             }
-        }
-
-        /// <summary>
-        /// Удалить узел из дерева и объект из соответствующего списка по индексу
-        /// </summary>
-        public static void Remove(this TreeView treeView, TreeNode parentNode, IList associatedList, int index)
-        {
-            if (associatedList == null)
-                throw new ArgumentNullException("associatedList");
-
-            TreeNodeCollection nodes = parentNode == null ? treeView.Nodes : parentNode.Nodes;
-            nodes.RemoveAt(index);
-            associatedList.RemoveAt(index);
-        }
-        
-        /// <summary>
-        /// Удалить выбранный узел из дерева и объект из соответствующего списка
-        /// </summary>
-        public static void RemoveSelectedNode(this TreeView treeView, IList associatedList)
-        {
-            if (treeView.SelectedNode != null)
-                treeView.Remove(treeView.SelectedNode.Parent, associatedList, treeView.SelectedNode.Index);
         }
 
 

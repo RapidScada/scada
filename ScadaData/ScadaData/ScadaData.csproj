@@ -70,6 +70,7 @@
     <Compile Include="Data\SrezTable.cs" />
     <Compile Include="Data\SrezTableLight.cs" />
     <Compile Include="Data\Trend.cs" />
+    <Compile Include="ITreeNode.cs" />
     <Compile Include="UI\ScadaUiUtils.cs" />
     <Compile Include="UI\Translator.cs" />
     <Compile Include="UI\TreeViewUtils.cs" />

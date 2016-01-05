@@ -24,6 +24,7 @@
  */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
 
@@ -33,12 +34,12 @@ namespace Scada.Comm.Devices.KpSnmp
     /// Device communication configuration
     /// <para>Конфигурация связи с КП</para>
     /// </summary>
-    internal class Config
+    internal class Config : ITreeNode
     {
         /// <summary>
         /// Группа переменных
         /// </summary>
-        public class VarGroup
+        public class VarGroup : ITreeNode
         {
             /// <summary>
             /// Конструктор
@@ -47,6 +48,7 @@ namespace Scada.Comm.Devices.KpSnmp
             {
                 Name = "";
                 Variables = new List<Variable>();
+                Parent = null;
             }
 
             /// <summary>
@@ -57,6 +59,28 @@ namespace Scada.Comm.Devices.KpSnmp
             /// Получить переменные
             /// </summary>
             public List<Variable> Variables { get; private set; }
+            /// <summary>
+            /// Получить или установить родительский узел
+            /// </summary>
+            public ITreeNode Parent { get; set; }
+            /// <summary>
+            /// Получить список дочерних узлов
+            /// </summary>
+            public IList Children
+            {
+                get
+                {
+                    return Variables;
+                }
+            }
+
+            /// <summary>
+            /// Определить, что параметры текущего объекта равны заданным
+            /// </summary>
+            public bool Equals(string name)
+            {
+                return string.Equals(Name, name, StringComparison.Ordinal);
+            }
             /// <summary>
             /// Получить строковое представление объекта
             /// </summary>
@@ -69,7 +93,7 @@ namespace Scada.Comm.Devices.KpSnmp
         /// <summary>
         /// Переменная
         /// </summary>
-        public class Variable
+        public class Variable : ITreeNode
         {
             /// <summary>
             /// Конструктор
@@ -78,6 +102,7 @@ namespace Scada.Comm.Devices.KpSnmp
             {
                 Name = "";
                 OID = "";
+                Parent = null;
             }
 
             /// <summary>
@@ -89,11 +114,35 @@ namespace Scada.Comm.Devices.KpSnmp
             /// </summary>
             public string OID { get; set; }
             /// <summary>
+            /// Получить или установить родительский узел
+            /// </summary>
+            public ITreeNode Parent { get; set; }
+            /// <summary>
+            /// Получить список дочерних узлов - он всегда равен null
+            /// </summary>
+            public IList Children
+            {
+                get
+                {
+                    return null;
+                }
+            }
+
+            /// <summary>
+            /// Определить, что параметры текущего объекта равны заданным
+            /// </summary>
+            public bool Equals(string name, string oid)
+            {
+                return
+                    string.Equals(Name, name, StringComparison.Ordinal) &&
+                    string.Equals(OID, oid, StringComparison.Ordinal);
+            }
+            /// <summary>
             /// Получить строковое представление объекта
             /// </summary>
             public override string ToString()
             {
-                return Name;
+                return string.Format("{0} ({1})", Name, OID);
             }
         }
 
@@ -130,6 +179,34 @@ namespace Scada.Comm.Devices.KpSnmp
         /// Получить граппы переменных
         /// </summary>
         public List<VarGroup> VarGroups { get; private set; }
+
+
+        /// <summary>
+        /// Получить или установить родительский узел - он всегда равен null
+        /// </summary>
+        ITreeNode ITreeNode.Parent
+        {
+            get
+            {
+                return null;
+            }
+            set
+            {
+                // некорректный вызов
+                throw new InvalidOperationException();
+            }
+        }
+
+        /// <summary>
+        /// Получить список дочерних узлов
+        /// </summary>
+        IList ITreeNode.Children
+        {
+            get
+            {
+                return VarGroups;
+            }
+        }
 
 
         /// <summary>
@@ -182,6 +259,7 @@ namespace Scada.Comm.Devices.KpSnmp
                     {
                         VarGroup varGroup = new VarGroup();
                         varGroup.Name = varGroupElem.GetAttribute("name");
+                        varGroup.Parent = this;
 
                         // загрузка переменных
                         XmlNodeList variableNodes = varGroupElem.SelectNodes("Variable");
@@ -190,6 +268,7 @@ namespace Scada.Comm.Devices.KpSnmp
                             Variable variable = new Variable();
                             variable.Name = variableElem.GetAttribute("name");
                             variable.OID = variableElem.GetAttribute("oid");
+                            variable.Parent = varGroup;
                             varGroup.Variables.Add(variable);
                         }
 
