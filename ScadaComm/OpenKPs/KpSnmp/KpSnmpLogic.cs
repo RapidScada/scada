@@ -66,8 +66,8 @@ namespace Scada.Comm.Devices
                 Variables = new Variable[varCnt];
                 StartSignal = startSignal;
                 ReqDescr = string.Format(Localization.UseRussian ?
-                    "Запрос переменных группы \"{0}\"" :
-                    "Request variables of the group \"{0}\"", Name);
+                    "Получение значений переменных группы \"{0}\"" :
+                    "Get variables of the group \"{0}\"", Name);
             }
 
             /// <summary>
@@ -116,6 +116,7 @@ namespace Scada.Comm.Devices
         public KpSnmpLogic(int number)
             : base(number)
         {
+            CanSendCmd = true;
             ConnRequired = false;
 
             config = new Config();
@@ -244,10 +245,10 @@ namespace Scada.Comm.Devices
                             return new SrezTable.CnlData(((Integer32)data).ToInt32(), 1);
                         case SnmpType.Counter32:
                             return new SrezTable.CnlData(((Counter32)data).ToUInt32(), 1);
-                        case SnmpType.TimeTicks:
-                            return new SrezTable.CnlData(((TimeTicks)data).ToUInt32(), 1);
                         case SnmpType.Counter64:
                             return new SrezTable.CnlData(((Counter64)data).ToUInt64(), 1);
+                        case SnmpType.TimeTicks:
+                            return new SrezTable.CnlData(((TimeTicks)data).ToUInt32(), 1);
                         case SnmpType.OctetString:
                             string s = data.ToString().Trim();
                             double val;
@@ -275,6 +276,75 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
+        /// Закодировать данные переменной SNMP, используя данные команды КП
+        /// </summary>
+        private ISnmpData EncodeVarData(string cmdDataStr)
+        {
+            cmdDataStr = cmdDataStr.TrimStart();
+            if (cmdDataStr.Length == 1 || cmdDataStr.Length >= 3 && cmdDataStr[1] == ' ')
+            {
+                char typeCode = cmdDataStr[0];
+                string valStr = cmdDataStr.Length >= 3 ? cmdDataStr.Substring(2) : "";
+
+                try
+                {
+                    switch (typeCode)
+                    {
+                        case 'i':
+                            return new Integer32(int.Parse(valStr));
+                        case 'u':
+                            return new Gauge32(uint.Parse(valStr));
+                        case 't':
+                            return new TimeTicks(uint.Parse(valStr));
+                        case 'a':
+                            return new IP(valStr);
+                        case 'o':
+                            return new ObjectIdentifier(valStr);
+                        case 's':
+                            return new OctetString(valStr);
+                        case 'x':
+                            return new OctetString(ByteTool.Convert(valStr));
+                        case 'd':
+                            return new OctetString(ByteTool.ConvertDecimal(valStr));
+                        case 'n':
+                            return new Null();
+                        default:
+                            return null;
+                    }
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Найти переменную по сигналу
+        /// </summary>
+        private bool FindVariableBySignal(int signal, out string name, out ObjectIdentifier oid)
+        {
+            foreach (VarGroup varGroup in varGroups)
+            {
+                if (varGroup.StartSignal <= signal && signal < varGroup.StartSignal + varGroup.Variables.Length)
+                {
+                    int index = signal - varGroup.StartSignal;
+                    name = varGroup.VarNames[index];
+                    oid = varGroup.Variables[index].Id;
+                    return true;
+                }
+            }
+
+            name = "";
+            oid = null;
+            return false;
+        }
+
+        /// <summary>
         /// Выполнить запрос переменных группы
         /// </summary>
         private void Request(VarGroup varGroup)
@@ -294,10 +364,11 @@ namespace Scada.Comm.Devices
                     {
                         if (varCnt > 0)
                         {
+                            // получение значений переменных
                             IList<Variable> receivedVars = Messenger.Get(
                                 SnmpVersion, endPoint, readCommunity, varGroup.Variables, ReqParams.Timeout);
 
-                            if (receivedVars.Count != varCnt)
+                            if (receivedVars == null || receivedVars.Count != varCnt)
                                 throw new Exception(KpPhrases.VariablesMismatch);
 
                             for (int i = 0, tagInd = varGroup.StartSignal - 1; i < varCnt; i++, tagInd++)
@@ -338,6 +409,44 @@ namespace Scada.Comm.Devices
                 InvalidateCurData(varGroup.StartSignal - 1, varCnt);
         }
 
+        /// <summary>
+        /// Отправить команду установки переменной
+        /// </summary>
+        private void Command(string varName, Variable variable)
+        {
+            lastCommSucc = false;
+            int tryNum = 0;
+
+            while (RequestNeeded(ref tryNum))
+            {
+                WriteToLog(string.Format(Localization.UseRussian ?
+                    "Установка значения переменной \"{0}\"" : 
+                    "Set variable \"{0}\"", varName));
+
+                try
+                {
+                    IList<Variable> sentVars = Messenger.Set(SnmpVersion, endPoint, writeCommunity,
+                        new List<Variable>() { variable }, ReqParams.Timeout);
+
+                    if (sentVars == null || sentVars.Count != 1 || sentVars[0].Id != variable.Id)
+                        throw new Exception(KpPhrases.VariablesMismatch);
+                        
+                    WriteToLog(varName + " = " + ConvertVarDataToString(sentVars[0].Data));
+                    lastCommSucc = true;
+                }
+                catch (Exception ex)
+                {
+                    WriteToLog((Localization.UseRussian ?
+                        "Ошибка при установке переменной: " :
+                        "Error setting variable: ") + ex.Message);
+                }
+
+                // завершение запроса
+                FinishRequest();
+                tryNum++;
+            }
+        }
+
 
         /// <summary>
         /// Выполнить сеанс опроса КП
@@ -348,9 +457,7 @@ namespace Scada.Comm.Devices
 
             if (fatalError)
             {
-                WriteToLog(Localization.UseRussian ?
-                    "Взаимодействие с КП невозможно" :
-                    "Communication with the device is impossible");
+                WriteToLog(KpPhrases.CommunicationImpossible);
                 Thread.Sleep(ReqParams.Delay);
                 lastCommSucc = false;
             }
@@ -375,6 +482,38 @@ namespace Scada.Comm.Devices
         /// </summary>
         public override void SendCmd(Command cmd)
         {
+            base.SendCmd(cmd);
+
+            if (fatalError)
+            {
+                WriteToLog(KpPhrases.CommunicationImpossible);
+                Thread.Sleep(ReqParams.Delay);
+                lastCommSucc = false;
+            }
+            else
+            {
+                string varName;
+                ObjectIdentifier varOid;
+
+                if ((cmd.CmdTypeID == BaseValues.CmdTypes.Standard || cmd.CmdTypeID == BaseValues.CmdTypes.Binary) &&
+                    FindVariableBySignal(cmd.CmdNum, out varName, out varOid))
+                {
+                    ISnmpData data = cmd.CmdTypeID == BaseValues.CmdTypes.Standard ? 
+                        new Integer32((int)cmd.CmdVal) :
+                        EncodeVarData(cmd.GetCmdDataStr());
+
+                    if (data == null)
+                        WriteToLog(CommPhrases.IncorrectCmdData);
+                    else
+                        Command(varName, new Variable(varOid, data));
+                }
+                else
+                {
+                    WriteToLog(CommPhrases.IllegalCommand);
+                }
+            }
+
+            CalcCmdStats();
         }
         
         /// <summary>

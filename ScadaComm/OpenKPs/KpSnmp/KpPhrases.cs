@@ -41,6 +41,7 @@ namespace Scada.Comm.Devices.KpSnmp
         public static string Aaa { get; private set; }
 
         // Фразы, устанавливаемые в зависимости от локализации, не загружая из словаря
+        public static string CommunicationImpossible { get; private set; }
         public static string NoVariables { get; private set; }
         public static string VariablesMismatch { get; private set; }
 
@@ -54,11 +55,13 @@ namespace Scada.Comm.Devices.KpSnmp
         {
             if (Localization.UseRussian)
             {
+                CommunicationImpossible = "Взаимодействие с КП невозможно";
                 NoVariables = "Отсутствуют переменные для запроса";
                 VariablesMismatch = "Несоответствие запрошенных и принятых переменных";
             }
             else
             {
+                CommunicationImpossible = "Communication with the device is impossible";
                 NoVariables = "No variables for request";
                 VariablesMismatch = "Mismatch of the requested and received variables";
             }

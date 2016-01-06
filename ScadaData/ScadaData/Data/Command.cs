@@ -95,7 +95,7 @@ namespace Scada.Data
         /// </summary>
         public string GetCmdDataStr()
         {
-            try { return Encoding.Default.GetString(CmdData); }
+            try { return CmdData == null ? "" : Encoding.Default.GetString(CmdData); }
             catch { return ""; }
         }
 
