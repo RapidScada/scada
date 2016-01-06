@@ -23,6 +23,7 @@
  * Modified : 2016
  */
 
+using Lextm.SharpSnmpLib;
 using Scada.UI;
 using System;
 using System.Windows.Forms;
@@ -44,8 +45,24 @@ namespace Scada.Comm.Devices.KpSnmp
         private FrmVariable()
         {
             InitializeComponent();
-
             variable = null;
+        }
+
+
+        /// <summary>
+        /// Проверить корректность OID
+        /// </summary>
+        private bool CheckOID(string oidStr)
+        {
+            try
+            {
+                ObjectIdentifier oid = new ObjectIdentifier(oidStr);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
 
@@ -111,16 +128,34 @@ namespace Scada.Comm.Devices.KpSnmp
         private void btnAdd_Click(object sender, EventArgs e)
         {
             // создание переменной
-            variable = new Config.Variable() { Name = txtName.Text.Trim(), OID = txtOID.Text.Trim() };
-            DialogResult = DialogResult.OK;
+            string oidStr = txtOID.Text.Trim();
+
+            if (CheckOID(oidStr))
+            {
+                variable = new Config.Variable() { Name = txtName.Text.Trim(), OID = oidStr };
+                DialogResult = DialogResult.OK;
+            }
+            else
+            {
+                ScadaUiUtils.ShowError(KpPhrases.IncorrectOID);
+            }
         }
 
         private void btnChange_Click(object sender, EventArgs e)
         {
             // изменение переменной
-            variable.Name = txtName.Text.Trim();
-            variable.OID = txtOID.Text.Trim();
-            DialogResult = DialogResult.OK;
+            string oidStr = txtOID.Text.Trim();
+
+            if (CheckOID(oidStr))
+            {
+                variable.Name = txtName.Text.Trim();
+                variable.OID = txtOID.Text.Trim();
+                DialogResult = DialogResult.OK;
+            }
+            else
+            {
+                ScadaUiUtils.ShowError(KpPhrases.IncorrectOID);
+            }
         }
     }
 }

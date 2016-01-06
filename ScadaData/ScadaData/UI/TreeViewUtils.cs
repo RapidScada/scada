@@ -323,6 +323,72 @@ namespace Scada.UI
             }
         }
 
+        /// <summary>
+        /// Проверить, что перемещение выбранного узла дерева вверх возможно
+        /// </summary>
+        public static bool MoveUpSelectedNodeIsEnabled(this TreeView treeView, MoveBehavior moveBehavior)
+        {
+            TreeNode selectedNode = treeView.SelectedNode;
+
+            if (selectedNode == null)
+            {
+                return false;
+            }
+            else if (selectedNode.PrevNode == null)
+            {
+                if (moveBehavior == MoveBehavior.ThroughSimilarParents)
+                {
+                        TreeNode parentNode = selectedNode.Parent;
+                        TreeNode prevParentNode = parentNode == null ? null : parentNode.PrevNode;
+
+                        return parentNode != null && prevParentNode != null &&
+                            parentNode.Tag is ITreeNode && prevParentNode.Tag is ITreeNode &&
+                            parentNode.Tag.GetType() == prevParentNode.Tag.GetType();
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Проверить, что перемещение выбранного узла дерева вниз возможно
+        /// </summary>
+        public static bool MoveDownSelectedNodeIsEnabled(this TreeView treeView, MoveBehavior moveBehavior)
+        {
+            TreeNode selectedNode = treeView.SelectedNode;
+
+            if (selectedNode == null)
+            {
+                return false;
+            }
+            else if (selectedNode.NextNode == null)
+            {
+                if (moveBehavior == MoveBehavior.ThroughSimilarParents)
+                {
+                    TreeNode parentNode = selectedNode.Parent;
+                    TreeNode nextParentNode = parentNode == null ? null : parentNode.NextNode;
+
+                    return parentNode != null && nextParentNode != null &&
+                        parentNode.Tag is ITreeNode && nextParentNode.Tag is ITreeNode &&
+                        parentNode.Tag.GetType() == nextParentNode.Tag.GetType();
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return true;
+            }
+        }
+
 
         /// <summary>
         /// Получить выбранный в дереве объект справочника
@@ -340,6 +406,14 @@ namespace Scada.UI
             TreeNode selectedNode = treeView.SelectedNode;
             if (selectedNode != null && selectedNode.Tag != null)
                 selectedNode.Text = selectedNode.Tag.ToString();
+        }
+
+        /// <summary>
+        /// Установить основное изображение узла и изображение в выбранном состоянии
+        /// </summary>
+        public static void SetImageKey(this TreeNode treeNode, string imageKey)
+        {
+            treeNode.ImageKey = treeNode.SelectedImageKey = imageKey;
         }
     }
 }

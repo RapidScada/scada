@@ -36,11 +36,12 @@ namespace Scada.Comm.Devices.KpSnmp
     /// </summary>
     public partial class FrmConfig : Form
     {
-        private AppDirs appDirs;   // директории приложения
-        private int kpNum;         // номер настраиваемого КП
-        private Config config;     // конфигурация КП
-        private bool modified;     // признак изменения конфигурации
-        private TreeNode rootNode; // корневой узел дерева
+        private AppDirs appDirs;       // директории приложения
+        private int kpNum;             // номер настраиваемого КП
+        private Config config;         // конфигурация КП
+        private string configFileName; // имя файла конфигурации КП
+        private bool modified;         // признак изменения конфигурации
+        private TreeNode rootNode;     // корневой узел дерева
 
         
         /// <summary>
@@ -53,6 +54,7 @@ namespace Scada.Comm.Devices.KpSnmp
             appDirs = null;
             kpNum = 0;
             config = new Config();
+            configFileName = "";
             modified = false;
             rootNode = treeView.Nodes["nodeDevice"];
             rootNode.Tag = config;
@@ -75,6 +77,18 @@ namespace Scada.Comm.Devices.KpSnmp
             }
         }
 
+        /// <summary>
+        /// Определить, что выбрана группа или переменная
+        /// </summary>
+        private bool GroupOrVariableIsSelected
+        {
+            get
+            {
+                object selObj = treeView.GetSelectedObject();
+                return selObj is Config.VarGroup || selObj is Config.Variable;
+            }
+        }
+
 
         /// <summary>
         /// Построить дерево конфигурации
@@ -90,6 +104,9 @@ namespace Scada.Comm.Devices.KpSnmp
                     rootNode.Nodes.Add(CreateGroupNode(group));
 
                 rootNode.Expand();
+
+                if (rootNode.Nodes.Count > 0)
+                    treeView.SelectedNode = rootNode.Nodes[0];
             }
             finally
             {
@@ -151,6 +168,17 @@ namespace Scada.Comm.Devices.KpSnmp
             }
         }
 
+        /// <summary>
+        /// Установить доступность кнопок
+        /// </summary>
+        private void SetButtonsEnabled()
+        {
+            btnAddVariable.Enabled = btnEdit.Enabled = btnDelete.Enabled = 
+                GroupOrVariableIsSelected;
+            btnMoveUp.Enabled = treeView.MoveUpSelectedNodeIsEnabled(TreeViewUtils.MoveBehavior.ThroughSimilarParents);
+            btnMoveDown.Enabled = treeView.MoveDownSelectedNodeIsEnabled(TreeViewUtils.MoveBehavior.ThroughSimilarParents);
+        }
+
 
         /// <summary>
         /// Отобразить форму модально
@@ -176,8 +204,8 @@ namespace Scada.Comm.Devices.KpSnmp
                 if (Localization.LoadDictionaries(appDirs.LangDir, "KpSnmp", out errMsg))
                 {
                     Translator.TranslateForm(this, "Scada.Comm.Devices.KpSnmp.FrmConfig");
-                    //KpPhrases.Init();
-                    //TranslateKpTree();
+                    KpPhrases.InitFromDictionaries();
+                    rootNode.Text = KpPhrases.DeviceNode;
                 }
                 else
                 {
@@ -189,14 +217,44 @@ namespace Scada.Comm.Devices.KpSnmp
             Text = string.Format(Text, kpNum);
 
             // загрузка конфигурации КП
-            string fileName = Config.GetFileName(appDirs.ConfigDir, kpNum);
-            if (File.Exists(fileName) && !config.Load(fileName, out errMsg))
+            configFileName = Config.GetFileName(appDirs.ConfigDir, kpNum);
+            if (File.Exists(configFileName) && !config.Load(configFileName, out errMsg))
                 ScadaUiUtils.ShowError(errMsg);
             Modified = false;
 
             // вывод дерева конфигурации
             BuildTree();
+
+            // установка доступности кнопок
+            SetButtonsEnabled();
         }
+
+        private void FrmConfig_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (Modified)
+            {
+                DialogResult result = MessageBox.Show(CommPhrases.SaveKpSettingsConfirm,
+                    CommonPhrases.QuestionCaption, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+
+                switch (result)
+                {
+                    case DialogResult.Yes:
+                        string errMsg;
+                        if (!config.Save(configFileName, out errMsg))
+                        {
+                            ScadaUiUtils.ShowError(errMsg);
+                            e.Cancel = true;
+                        }
+                        break;
+                    case DialogResult.No:
+                        break;
+                    default:
+                        e.Cancel = true;
+                        break;
+                }
+            }
+        }
+
 
         private void btnAddVarGroup_Click(object sender, EventArgs e)
         {
@@ -247,9 +305,7 @@ namespace Scada.Comm.Devices.KpSnmp
         private void btnMoveUp_Click(object sender, EventArgs e)
         {
             // перемещение выбранного объекта вверх
-            object selObj = treeView.GetSelectedObject();
-
-            if (selObj is Config.VarGroup || selObj is Config.Variable)
+            if (GroupOrVariableIsSelected)
             {
                 treeView.MoveUpSelectedNode(TreeViewUtils.MoveBehavior.ThroughSimilarParents);
                 Modified = true;
@@ -259,9 +315,7 @@ namespace Scada.Comm.Devices.KpSnmp
         private void btnMoveDown_Click(object sender, EventArgs e)
         {
             // перемещение выбранного объекта вниз
-            object selObj = treeView.GetSelectedObject();
-
-            if (selObj is Config.VarGroup || selObj is Config.Variable)
+            if (GroupOrVariableIsSelected)
             {
                 treeView.MoveDownSelectedNode(TreeViewUtils.MoveBehavior.ThroughSimilarParents);
                 Modified = true;
@@ -271,21 +325,46 @@ namespace Scada.Comm.Devices.KpSnmp
         private void btnDelete_Click(object sender, EventArgs e)
         {
             // удаление выбранного объекта
-            object selObj = treeView.GetSelectedObject();
-
-            if (selObj is Config.VarGroup)
+            if (GroupOrVariableIsSelected)
             {
                 treeView.RemoveSelectedNode();
                 Modified = true;
             }
         }
 
+        private void btnSettings_Click(object sender, EventArgs e)
+        {
+            // отображение формы дополнительных настроек
+            if (FrmSettings.Show(config))
+                Modified = true;
+        }
+
+
+        private void treeView_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            // установка доступности кнопок
+            SetButtonsEnabled();
+        }
+
+        private void treeView_BeforeExpand(object sender, TreeViewCancelEventArgs e)
+        {
+            // установка изображения развёрнутой группы
+            if (e.Node.Tag is Config.VarGroup)
+                e.Node.SetImageKey("folder_open.png");
+        }
+
+        private void treeView_BeforeCollapse(object sender, TreeViewCancelEventArgs e)
+        {
+            // установка изображения свёрнутой группы
+            if (e.Node.Tag is Config.VarGroup)
+                e.Node.SetImageKey("folder_closed.png");
+        }
+
         private void btnSave_Click(object sender, EventArgs e)
         {
             // сохранение конфигурации КП
-            string fileName = Config.GetFileName(appDirs.ConfigDir, kpNum);
             string errMsg;
-            if (config.Save(fileName, out errMsg))
+            if (config.Save(configFileName, out errMsg))
                 Modified = false;
             else
                 ScadaUiUtils.ShowError(errMsg);

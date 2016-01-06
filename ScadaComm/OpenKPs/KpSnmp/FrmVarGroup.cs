@@ -44,7 +44,6 @@ namespace Scada.Comm.Devices.KpSnmp
         private FrmVarGroup()
         {
             InitializeComponent();
-
             varGroup = null;
         }
 

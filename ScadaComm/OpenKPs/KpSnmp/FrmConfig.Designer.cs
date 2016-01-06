@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmConfig));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("КП");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("КП");
             this.pnlBottom = new System.Windows.Forms.Panel();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
@@ -44,6 +44,8 @@
             this.btnDelete = new System.Windows.Forms.ToolStripButton();
             this.treeView = new System.Windows.Forms.TreeView();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnSettings = new System.Windows.Forms.ToolStripButton();
             this.pnlBottom.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.SuspendLayout();
@@ -56,7 +58,7 @@
             this.pnlBottom.Location = new System.Drawing.Point(0, 421);
             this.pnlBottom.Name = "pnlBottom";
             this.pnlBottom.Size = new System.Drawing.Size(334, 41);
-            this.pnlBottom.TabIndex = 4;
+            this.pnlBottom.TabIndex = 2;
             // 
             // btnClose
             // 
@@ -89,11 +91,13 @@
             this.toolStripSeparator1,
             this.btnMoveUp,
             this.btnMoveDown,
-            this.btnDelete});
+            this.btnDelete,
+            this.toolStripSeparator2,
+            this.btnSettings});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Size = new System.Drawing.Size(334, 25);
-            this.toolStrip.TabIndex = 5;
+            this.toolStrip.TabIndex = 0;
             this.toolStrip.Text = "toolStrip1";
             // 
             // btnAddVarGroup
@@ -169,16 +173,19 @@
             this.treeView.ImageList = this.imageList;
             this.treeView.Location = new System.Drawing.Point(0, 25);
             this.treeView.Name = "treeView";
-            treeNode1.ImageKey = "device.png";
-            treeNode1.Name = "nodeDevice";
-            treeNode1.SelectedImageKey = "device.png";
-            treeNode1.Text = "КП";
+            treeNode2.ImageKey = "device.png";
+            treeNode2.Name = "nodeDevice";
+            treeNode2.SelectedImageKey = "device.png";
+            treeNode2.Text = "КП";
             this.treeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1});
+            treeNode2});
             this.treeView.SelectedImageIndex = 0;
             this.treeView.ShowRootLines = false;
             this.treeView.Size = new System.Drawing.Size(334, 396);
-            this.treeView.TabIndex = 6;
+            this.treeView.TabIndex = 1;
+            this.treeView.BeforeCollapse += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeView_BeforeCollapse);
+            this.treeView.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeView_BeforeExpand);
+            this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
             // 
             // imageList
             // 
@@ -188,6 +195,21 @@
             this.imageList.Images.SetKeyName(1, "folder_open.png");
             this.imageList.Images.SetKeyName(2, "device.png");
             this.imageList.Images.SetKeyName(3, "variable.png");
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // btnSettings
+            // 
+            this.btnSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnSettings.Image = ((System.Drawing.Image)(resources.GetObject("btnSettings.Image")));
+            this.btnSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.Size = new System.Drawing.Size(23, 22);
+            this.btnSettings.ToolTipText = "Настройки";
+            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
             // 
             // FrmConfig
             // 
@@ -206,6 +228,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "SNMP - Конфигурация КП {0}";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmConfig_FormClosing);
             this.Load += new System.EventHandler(this.FrmConfig_Load);
             this.pnlBottom.ResumeLayout(false);
             this.toolStrip.ResumeLayout(false);
@@ -230,5 +253,7 @@
         private System.Windows.Forms.ToolStripButton btnAddVariable;
         private System.Windows.Forms.ToolStripButton btnMoveUp;
         private System.Windows.Forms.ToolStripButton btnMoveDown;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripButton btnSettings;
     }
 }

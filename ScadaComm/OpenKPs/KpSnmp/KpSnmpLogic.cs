@@ -483,12 +483,12 @@ namespace Scada.Comm.Devices
         public override void SendCmd(Command cmd)
         {
             base.SendCmd(cmd);
+            lastCommSucc = false;
 
             if (fatalError)
             {
                 WriteToLog(KpPhrases.CommunicationImpossible);
                 Thread.Sleep(ReqParams.Delay);
-                lastCommSucc = false;
             }
             else
             {

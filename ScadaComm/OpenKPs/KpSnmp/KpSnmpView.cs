@@ -24,6 +24,10 @@
  */
 
 using Scada.Comm.Devices.KpSnmp;
+using Scada.Data;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Scada.Comm.Devices
 {
@@ -60,14 +64,75 @@ namespace Scada.Comm.Devices
             {
                 return Localization.UseRussian ?
                     "Взаимодействие с контроллерами по протоколу SNMP v2c.\n\n" +
+                    "Необходимо выбрать тип канала связи \"Не задан\". " +
+                    "IP-адрес и порт (опционально) указываются в поле Позывной.\n\n" +
                     "Команды ТУ:\n" +
-                    "Отдельная команда для установки каждой переменной (стандартная или бинарная). " + 
-                    "Номер команды равен номеру сигнала КП." :
+                    "Отдельная команда для установки каждой переменной. " +
+                    "Номер команды равен номеру сигнала КП.\n" +
+                    "Стандартная команда позволяет установить целое значение переменной.\n" +
+                    "Бинарная команда имеет формат TYPE VALUE, где TYPE принимает значения:\n" +
+                    "i - целое со знаком,\n" +
+                    "u - мера (целое без знака),\n" +
+                    "t - таймер (целое без знака),\n" +
+                    "a - IP-адрес,\n" +
+                    "o - идентификатор объекта (OID),\n" +
+                    "s - строка,\n" +
+                    "x - байты в 16-ричной форме через пробел,\n" +
+                    "d - байты в десятичной форме через пробел,\n" +
+                    "n - пустое значение (null)." :
 
                     "Interacting with controllers via SNMP v2c protocol.\n\n" +
+                    "Must be selected \"Undefined\" type of communication channel. " +
+                    "IP address and port (optional) are defined in Call number field.\n\n" +
                     "Commands:\n" +
-                    "A separate command for setting each variable (standard or binary). " +
-                    "Command number is equal to a signal number of a device tag.";
+                    "A separate command for setting each variable. " +
+                    "Command number is equal to a signal number of a device tag.\n" +
+                    "Standard command allows to set integer variable.\n" +
+                    "Binary command has the format TYPE VALUE, where TYPE is:\n" +
+                    "i - signed integer,\n" +
+                    "u - gauge (unsigned integer),\n" +
+                    "t - time ticks (unsigned integer),\n" +
+                    "a - IP address,\n" +
+                    "o - object identifier (OID),\n" +
+                    "s - string,\n" +
+                    "x - bytes in the hexadecimal form separated by spaces,\n" +
+                    "d - bytes in the decimal form separated by spaces,\n" +
+                    "n - null value.";
+            }
+        }
+
+        /// <summary>
+        /// Получить прототипы каналов КП по умолчанию
+        /// </summary>
+        public override KPCnlPrototypes DefaultCnls
+        {
+            get
+            {
+                // получение имени файла шаблона устройства
+                string configFileName = Config.GetFileName(AppDirs.ConfigDir, Number);
+                if (!File.Exists(configFileName))
+                    return null;
+
+                // загрузка конфигурации КП
+                Config config = new Config();
+                string errMsg;
+                if (!config.Load(configFileName, out errMsg))
+                    throw new Exception(errMsg);
+
+                // создание прототипов входных каналов
+                KPCnlPrototypes prototypes = new KPCnlPrototypes();
+                List<InCnlPrototype> inCnls = prototypes.InCnls;
+                int signal = 1;
+
+                foreach (Config.VarGroup varGroup in config.VarGroups)
+                {
+                    foreach (Config.Variable variable in varGroup.Variables)
+                    {
+                        inCnls.Add(new InCnlPrototype(variable.Name, BaseValues.CnlTypes.TI) { Signal = signal++ });
+                    }
+                }
+
+                return prototypes;
             }
         }
 

@@ -53,6 +53,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config.cs" />
+    <Compile Include="FrmSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSettings.designer.cs">
+      <DependentUpon>FrmSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmVariable.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -75,10 +81,18 @@
     </Compile>
     <Compile Include="KpSnmpView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="FrmConfig.resx">
       <DependentUpon>FrmConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSettings.resx">
+      <DependentUpon>FrmSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmVariable.resx">
       <DependentUpon>FrmVariable.cs</DependentUpon>
@@ -86,8 +100,13 @@
     <EmbeddedResource Include="FrmVarGroup.resx">
       <DependentUpon>FrmVarGroup.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Lang\KpSnmp.en-GB.xml" />
     <Content Include="Res\delete.png" />
     <Content Include="Res\edit.png" />
     <Content Include="Res\folder_closed.png" />
@@ -96,9 +115,7 @@
     <Content Include="Res\move_up.png" />
     <Content Include="Res\var.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Lang\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

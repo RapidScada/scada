@@ -38,7 +38,10 @@ namespace Scada.Comm.Devices.KpSnmp
         }
 
         // Словарь Scada.Comm.Devices.KpSnmp.FrmConfig
-        public static string Aaa { get; private set; }
+        public static string DeviceNode { get; private set; }
+
+        // Словарь Scada.Comm.Devices.KpSnmp.FrmVariable
+        public static string IncorrectOID { get; private set; }
 
         // Фразы, устанавливаемые в зависимости от локализации, не загружая из словаря
         public static string CommunicationImpossible { get; private set; }
@@ -48,7 +51,8 @@ namespace Scada.Comm.Devices.KpSnmp
 
         private static void SetToDefault()
         {
-            Aaa = "Ааа";
+            DeviceNode = "КП";
+            IncorrectOID = "Некорректный OID";
         }
 
         private static void InitOnLocalization()
@@ -71,9 +75,10 @@ namespace Scada.Comm.Devices.KpSnmp
         {
             Localization.Dict dict;
             if (Localization.Dictionaries.TryGetValue("Scada.Comm.Devices.KpSnmp.FrmConfig", out dict))
-            {
-                Aaa = dict.GetPhrase("Aaa", Aaa);
-            }
+                DeviceNode = dict.GetPhrase("DeviceNode", DeviceNode);
+
+            if (Localization.Dictionaries.TryGetValue("Scada.Comm.Devices.KpSnmp.FrmVariable", out dict))
+                IncorrectOID = dict.GetPhrase("IncorrectOID", IncorrectOID);
         }
     }
 }
