@@ -65,6 +65,7 @@
     <Compile Include="FrmVarGroup.designer.cs">
       <DependentUpon>FrmVarGroup.cs</DependentUpon>
     </Compile>
+    <Compile Include="KpPhrases.cs" />
     <Compile Include="KpSnmpLogic.cs" />
     <Compile Include="FrmConfig.cs">
       <SubType>Form</SubType>
