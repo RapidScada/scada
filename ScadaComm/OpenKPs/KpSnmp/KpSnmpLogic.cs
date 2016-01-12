@@ -393,9 +393,10 @@ namespace Scada.Comm.Devices
                     }
                     catch (Exception ex)
                     {
+                        // ex.ToString() содержит более подробную информацию о причине ошибки по сравнению с ex.Message
                         WriteToLog((Localization.UseRussian ?
                             "Ошибка при получении переменных: " :
-                            "Error getting variables: ") + ex.Message);
+                            "Error getting variables: ") + ex.ToString());
                     }
 
                     // завершение запроса
