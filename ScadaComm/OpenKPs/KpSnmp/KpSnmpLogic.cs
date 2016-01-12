@@ -403,11 +403,16 @@ namespace Scada.Comm.Devices
                     FinishRequest();
                     tryNum++;
                 }
-            }
 
-            // установка недостоверности данных в случае ошибки
-            if (!lastCommSucc)
+                // установка недостоверности данных в случае ошибки опроса заданной группы
+                if (!lastCommSucc && tryNum > 0)
+                    InvalidateCurData(varGroup.StartSignal - 1, varCnt);
+            }
+            else
+            {
+                // установка недостоверности данных в случае ошибки опроса предыдущей группы
                 InvalidateCurData(varGroup.StartSignal - 1, varCnt);
+            }
         }
 
         /// <summary>
