@@ -189,6 +189,7 @@ namespace Scada.Comm.Devices
                             // установка неопределённого статуса тегов КП текущей и следующих групп, если запрос неудачный
                             while (elemGroupInd < elemGroupCnt)
                             {
+                                elemGroup = deviceModel.ElemGroups[elemGroupInd];
                                 InvalTagsData(elemGroup);
                                 elemGroupInd++;
                             }
