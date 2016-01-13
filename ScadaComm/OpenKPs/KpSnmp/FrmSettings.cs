@@ -60,12 +60,15 @@ namespace Scada.Comm.Devices.KpSnmp
 
             string oldReadCommunity = config.ReadCommunity;
             string oldWriteCommunity = config.WriteCommunity;
+            int oldSnmpVersion = config.SnmpVersion;
 
             FrmSettings frmSettings = new FrmSettings();
             frmSettings.config = config;
 
             return frmSettings.ShowDialog() == DialogResult.OK &&
-                !(oldReadCommunity == config.ReadCommunity && oldWriteCommunity == config.WriteCommunity);
+                !(oldReadCommunity == config.ReadCommunity && 
+                oldWriteCommunity == config.WriteCommunity && 
+                oldSnmpVersion == config.SnmpVersion);
         }
 
 
@@ -77,12 +80,14 @@ namespace Scada.Comm.Devices.KpSnmp
             // настройка элементов управления
             txtReadCommunity.Text = config.ReadCommunity;
             txtWriteCommunity.Text = config.WriteCommunity;
+            cbSnmpVersion.SelectedIndex = config.SnmpVersion == 1 ? 0 : 1;
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
             config.ReadCommunity = txtReadCommunity.Text;
             config.WriteCommunity = txtWriteCommunity.Text;
+            config.SnmpVersion = cbSnmpVersion.SelectedIndex == 0 ? 1 : 2;
             DialogResult = DialogResult.OK;
         }
     }

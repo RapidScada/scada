@@ -17,6 +17,7 @@
     <Phrase key="this">Settings</Phrase>
     <Phrase key="lblReadCommunity">Read community</Phrase>
     <Phrase key="lblWriteCommunity">Write community</Phrase>
+    <Phrase key="lblSnmpVersion">SNMP version</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
   </Dictionary>

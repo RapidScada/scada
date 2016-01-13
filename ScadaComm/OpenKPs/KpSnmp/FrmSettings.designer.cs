@@ -34,6 +34,8 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.txtWriteCommunity = new System.Windows.Forms.TextBox();
             this.lblWriteCommunity = new System.Windows.Forms.Label();
+            this.lblSnmpVersion = new System.Windows.Forms.Label();
+            this.cbSnmpVersion = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // lblReadCommunity
@@ -55,10 +57,10 @@
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(56, 90);
+            this.btnOK.Location = new System.Drawing.Point(56, 130);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 4;
+            this.btnOK.TabIndex = 6;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
@@ -66,10 +68,10 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(137, 90);
+            this.btnCancel.Location = new System.Drawing.Point(137, 130);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 5;
+            this.btnCancel.TabIndex = 7;
             this.btnCancel.Text = "Отмена";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
@@ -90,13 +92,36 @@
             this.lblWriteCommunity.TabIndex = 2;
             this.lblWriteCommunity.Text = "Пароль на запись";
             // 
+            // lblSnmpVersion
+            // 
+            this.lblSnmpVersion.AutoSize = true;
+            this.lblSnmpVersion.Location = new System.Drawing.Point(9, 87);
+            this.lblSnmpVersion.Name = "lblSnmpVersion";
+            this.lblSnmpVersion.Size = new System.Drawing.Size(78, 13);
+            this.lblSnmpVersion.TabIndex = 4;
+            this.lblSnmpVersion.Text = "Версия SNMP";
+            // 
+            // cbSnmpVersion
+            // 
+            this.cbSnmpVersion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSnmpVersion.FormattingEnabled = true;
+            this.cbSnmpVersion.Items.AddRange(new object[] {
+            "v1",
+            "v2c"});
+            this.cbSnmpVersion.Location = new System.Drawing.Point(12, 103);
+            this.cbSnmpVersion.Name = "cbSnmpVersion";
+            this.cbSnmpVersion.Size = new System.Drawing.Size(200, 21);
+            this.cbSnmpVersion.TabIndex = 5;
+            // 
             // FrmSettings
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(224, 125);
+            this.ClientSize = new System.Drawing.Size(224, 165);
+            this.Controls.Add(this.cbSnmpVersion);
+            this.Controls.Add(this.lblSnmpVersion);
             this.Controls.Add(this.txtWriteCommunity);
             this.Controls.Add(this.lblWriteCommunity);
             this.Controls.Add(this.btnCancel);
@@ -124,5 +149,7 @@
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.TextBox txtWriteCommunity;
         private System.Windows.Forms.Label lblWriteCommunity;
+        private System.Windows.Forms.Label lblSnmpVersion;
+        private System.Windows.Forms.ComboBox cbSnmpVersion;
     }
 }

@@ -154,6 +154,10 @@ namespace Scada.Comm.Devices.KpSnmp
         /// Пароль на запись данных по умоланию
         /// </summary>
         public const string DefWriteCommunity = "private";
+        /// <summary>
+        /// Версия SNMP по умоланию
+        /// </summary>
+        public const int DefSnmpVersion = 2;
 
 
         /// <summary>
@@ -174,6 +178,11 @@ namespace Scada.Comm.Devices.KpSnmp
         /// Получить или установить пароль на запись данных
         /// </summary>
         public string WriteCommunity { get; set; }
+
+        /// <summary>
+        /// Получить или установить версию SNMP
+        /// </summary>
+        public int SnmpVersion { get; set; }
 
         /// <summary>
         /// Получить граппы переменных
@@ -216,6 +225,7 @@ namespace Scada.Comm.Devices.KpSnmp
         {
             ReadCommunity = DefReadCommunity;
             WriteCommunity = DefWriteCommunity;
+            SnmpVersion = DefSnmpVersion;
             VarGroups = new List<VarGroup>();
         }
         
@@ -239,13 +249,23 @@ namespace Scada.Comm.Devices.KpSnmp
                     XmlNodeList paramNodes = paramsNode.SelectNodes("Param");
                     foreach (XmlElement paramElem in paramNodes)
                     {
-                        string name = paramElem.GetAttribute("name").ToLowerInvariant();
+                        string name = paramElem.GetAttribute("name");
+                        string nameL = name.ToLowerInvariant();
                         string val = paramElem.GetAttribute("value");
 
-                        if (name == "readcommunity")
-                            ReadCommunity = val;
-                        else if (name == "writecommunity")
-                            WriteCommunity = val;
+                        try
+                        {
+                            if (nameL == "readcommunity")
+                                ReadCommunity = val;
+                            else if (nameL == "writecommunity")
+                                WriteCommunity = val;
+                            else if (nameL == "snmpversion")
+                                SnmpVersion = int.Parse(val);
+                        }
+                        catch
+                        {
+                            throw new Exception(string.Format(CommonPhrases.IncorrectXmlParamVal, name));
+                        }
                     }
                 }
 
@@ -306,6 +326,7 @@ namespace Scada.Comm.Devices.KpSnmp
                 rootElem.AppendChild(paramsElem);
                 paramsElem.AppendParamElem("ReadCommunity", ReadCommunity);
                 paramsElem.AppendParamElem("WriteCommunity", WriteCommunity);
+                paramsElem.AppendParamElem("SnmpVersion", SnmpVersion);
 
                 // сохранение групп переменных
                 XmlElement varGroupsElem = xmlDoc.CreateElement("VarGroups");

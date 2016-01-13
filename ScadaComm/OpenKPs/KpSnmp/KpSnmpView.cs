@@ -63,7 +63,7 @@ namespace Scada.Comm.Devices
             get
             {
                 return Localization.UseRussian ?
-                    "Взаимодействие с контроллерами по протоколу SNMP v2c.\n\n" +
+                    "Взаимодействие с контроллерами по протоколу SNMP.\n\n" +
                     "Необходимо выбрать тип канала связи \"Не задан\". " +
                     "IP-адрес и порт (опционально) указываются в поле Позывной.\n\n" +
                     "Команды ТУ:\n" +
@@ -81,7 +81,7 @@ namespace Scada.Comm.Devices
                     "d - байты в десятичной форме через пробел,\n" +
                     "n - пустое значение (null)." :
 
-                    "Interacting with controllers via SNMP v2c protocol.\n\n" +
+                    "Interacting with controllers via SNMP protocol.\n\n" +
                     "Must be selected \"Undefined\" type of communication channel. " +
                     "IP address and port (optional) are defined in Call number field.\n\n" +
                     "Commands:\n" +

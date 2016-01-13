@@ -23,7 +23,7 @@
  * Modified : 2016
  * 
  * Description
- * Interacting with controllers via SNMP v2c protocol.
+ * Interacting with controllers via SNMP protocol.
  */
 
 using Lextm.SharpSnmpLib;
@@ -97,10 +97,6 @@ namespace Scada.Comm.Devices
         /// Номер порта  по умолчанию
         /// </summary>
         private const int DefaultPort = 161;
-        /// <summary>
-        /// Используемая версия SNMP
-        /// </summary>
-        private const VersionCode SnmpVersion = VersionCode.V2;
 
         private Config config;              // конфигурация КП
         private bool fatalError;            // фатальная ошибка при инициализации КП
@@ -108,6 +104,7 @@ namespace Scada.Comm.Devices
         private IPEndPoint endPoint;        // адрес и порт для соединения с устройством
         private OctetString readCommunity;  // пароль на чтение данных
         private OctetString writeCommunity; // пароль на запись данных
+        private VersionCode snmpVersion;    // версия SNMP
 
 
         /// <summary>
@@ -125,6 +122,7 @@ namespace Scada.Comm.Devices
             endPoint = null;
             readCommunity = null;
             writeCommunity = null;
+            snmpVersion = VersionCode.V2;
         }
 
 
@@ -195,6 +193,22 @@ namespace Scada.Comm.Devices
                     "Ошибка при извлечении паролей: " :
                     "Error retrieving communities: ") + ex.Message);
             }
+        }
+
+        /// <summary>
+        /// Извлечь версию SNMP из конфигурации
+        /// </summary>
+        private void RetrieveSnmpVersion()
+        {
+            int ver = config.SnmpVersion;
+            if (ver == 1)
+                snmpVersion = VersionCode.V1;
+            else if (ver == 2)
+                snmpVersion = VersionCode.V2;
+            else
+                throw new Exception(string.Format(Localization.UseRussian ?
+                    "SNMP v{0} не поддерживается." :
+                    "SNMP v{0} is not supported.", ver));
         }
 
         /// <summary>
@@ -366,7 +380,7 @@ namespace Scada.Comm.Devices
                         {
                             // получение значений переменных
                             IList<Variable> receivedVars = Messenger.Get(
-                                SnmpVersion, endPoint, readCommunity, varGroup.Variables, ReqParams.Timeout);
+                                snmpVersion, endPoint, readCommunity, varGroup.Variables, ReqParams.Timeout);
 
                             if (receivedVars == null || receivedVars.Count != varCnt)
                                 throw new Exception(KpPhrases.VariablesMismatch);
@@ -431,7 +445,7 @@ namespace Scada.Comm.Devices
 
                 try
                 {
-                    IList<Variable> sentVars = Messenger.Set(SnmpVersion, endPoint, writeCommunity,
+                    IList<Variable> sentVars = Messenger.Set(snmpVersion, endPoint, writeCommunity,
                         new List<Variable>() { variable }, ReqParams.Timeout);
 
                     if (sentVars == null || sentVars.Count != 1 || sentVars[0].Id != variable.Id)
@@ -538,6 +552,7 @@ namespace Scada.Comm.Devices
                 {
                     InitKPTags();
                     RetrieveCommunities();
+                    RetrieveSnmpVersion();
                     RetrieveEndPoint();
                 }
                 catch
