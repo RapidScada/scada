@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,13 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2015
+ * Modified : 2016
  */
 
+using Scada;
+using Scada.Data;
+using Scada.UI;
+using Scada.Web;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -30,9 +34,6 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml;
-using Scada;
-using Scada.Data;
-using Scada.Web;
 
 namespace ScadaTableEditor
 {
@@ -141,7 +142,7 @@ namespace ScadaTableEditor
                 }
                 else
                 {
-                    ScadaUtils.ShowError(errMsg);
+                    ScadaUiUtils.ShowError(errMsg);
                 }
             }
         }
@@ -177,7 +178,7 @@ namespace ScadaTableEditor
                 }
                 else
                 {
-                    ScadaUtils.ShowError(errMsg);
+                    ScadaUiUtils.ShowError(errMsg);
                 }
             }
 
@@ -339,7 +340,7 @@ namespace ScadaTableEditor
                         }
                         else
                         {
-                            ScadaUtils.ShowError(string.Format(CommonPhrases.IntegerRangingRequired, 0, ushort.MaxValue));
+                            ScadaUiUtils.ShowError(string.Format(CommonPhrases.IntegerRangingRequired, 0, ushort.MaxValue));
                             return false;
                         }
                     }
@@ -376,7 +377,7 @@ namespace ScadaTableEditor
             }
             catch (Exception ex)
             {
-                ScadaUtils.ShowError(CommonPhrases.LoadAppSettingsError + ":\n" + ex.Message);
+                ScadaUiUtils.ShowError(CommonPhrases.LoadAppSettingsError + ":\n" + ex.Message);
             }
         }
 
@@ -397,7 +398,7 @@ namespace ScadaTableEditor
             }
             catch (Exception ex)
             {
-                ScadaUtils.ShowError(CommonPhrases.SaveAppSettingsError + ":\n" + ex.Message);
+                ScadaUiUtils.ShowError(CommonPhrases.SaveAppSettingsError + ":\n" + ex.Message);
             }
         }
 
@@ -443,7 +444,7 @@ namespace ScadaTableEditor
             }
             catch (Exception ex)
             {
-                ScadaUtils.ShowError(AppPhrases.LoadBaseError + ":\n" + ex.Message);
+                ScadaUiUtils.ShowError(AppPhrases.LoadBaseError + ":\n" + ex.Message);
                 baseLoaded = false;
             }
         }
@@ -559,14 +560,14 @@ namespace ScadaTableEditor
                 if (Localization.LoadDictionaries(langDir, "ScadaData", out errMsg))
                     CommonPhrases.Init();
                 else
-                    ScadaUtils.ShowError(errMsg);
+                    ScadaUiUtils.ShowError(errMsg);
             }
 
             if (Localization.LoadingRequired(langDir, "ScadaTableEditor"))
             {
                 if (Localization.LoadDictionaries(langDir, "ScadaTableEditor", out errMsg))
                 {
-                    Localization.TranslateForm(this, "ScadaTableEditor.FrmMain", toolTip);
+                    Translator.TranslateForm(this, "ScadaTableEditor.FrmMain", toolTip);
                     WebPhrases.Init();
                     AppPhrases.Init();
                     openFileDialog.Filter = AppPhrases.OpenFileFilter;
@@ -574,7 +575,7 @@ namespace ScadaTableEditor
                 }
                 else
                 {
-                    ScadaUtils.ShowError(errMsg);
+                    ScadaUiUtils.ShowError(errMsg);
                 }
             }
 
@@ -865,7 +866,7 @@ namespace ScadaTableEditor
 
         private void dgvItems_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
-            ScadaUtils.ShowError(CommonPhrases.GridDataError + ":\n" + e.Exception.Message);
+            ScadaUiUtils.ShowError(CommonPhrases.GridDataError + ":\n" + e.Exception.Message);
             e.ThrowException = false;
         }
     }

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,17 +20,17 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2010
- * Modified : 2015
+ * Modified : 2016
  */
 
+using Scada;
+using Scada.Client;
+using Scada.UI;
+using Scada.Web;
 using System;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
-using Microsoft.Win32;
-using Scada;
-using Scada.Client;
-using Scada.Web;
 using System.Xml;
 
 namespace ScadaWebConfig
@@ -239,7 +239,7 @@ namespace ScadaWebConfig
             SettingsToControls();
 
             if (sbErr.Length > 0)
-                ScadaUtils.ShowError(sbErr.ToString().TrimEnd());
+                ScadaUiUtils.ShowError(sbErr.ToString().TrimEnd());
 
             loadedCommSettings = commSettings.Clone();
             loadedWebSettings = webSettings.Clone();
@@ -269,7 +269,7 @@ namespace ScadaWebConfig
 
             if (sbErr.Length > 0)
             {
-                ScadaUtils.ShowError(sbErr.ToString().TrimEnd());
+                ScadaUiUtils.ShowError(sbErr.ToString().TrimEnd());
             }
             else
             {
@@ -308,7 +308,7 @@ namespace ScadaWebConfig
             }
             catch (Exception ex)
             {
-                ScadaUtils.ShowError(AppPhrases.LoadConfigDirError + ":\n" + ex.Message);
+                ScadaUiUtils.ShowError(AppPhrases.LoadConfigDirError + ":\n" + ex.Message);
             }
 
             // вывод директории конфигурации
@@ -335,7 +335,7 @@ namespace ScadaWebConfig
             }
             catch (Exception ex)
             {
-                ScadaUtils.ShowError(AppPhrases.SaveConfigDirError + ":\n" + ex.Message);
+                ScadaUiUtils.ShowError(AppPhrases.SaveConfigDirError + ":\n" + ex.Message);
             }
         }
 
@@ -384,14 +384,14 @@ namespace ScadaWebConfig
                 if (Localization.LoadDictionaries(langDir, "ScadaData", out errMsg))
                     CommonPhrases.Init();
                 else
-                    ScadaUtils.ShowError(errMsg);
+                    ScadaUiUtils.ShowError(errMsg);
             }
 
             if (Localization.LoadingRequired(langDir, "ScadaWebConfig"))
             {
                 if (Localization.LoadDictionaries(langDir, "ScadaWebConfig", out errMsg))
                 {
-                    Localization.TranslateForm(this, "ScadaWebConfig.FrmMain");
+                    Translator.TranslateForm(this, "ScadaWebConfig.FrmMain");
                     WebPhrases.Init();
                     AppPhrases.Init();
                     folderBrowserDialog.Description = AppPhrases.ChooseConfigDir;
@@ -400,7 +400,7 @@ namespace ScadaWebConfig
                 }
                 else
                 {
-                    ScadaUtils.ShowError(errMsg);
+                    ScadaUiUtils.ShowError(errMsg);
                 }
             }
         }
@@ -488,7 +488,7 @@ namespace ScadaWebConfig
 
             if (viewSet == null)
             {
-                ScadaUtils.ShowError(AppPhrases.ChooseSetToAddView);
+                ScadaUiUtils.ShowError(AppPhrases.ChooseSetToAddView);
             }
             else
             {
@@ -515,7 +515,7 @@ namespace ScadaWebConfig
             // удаление набора или представления
             if (selViewSet == null && selViewInfo == null)
             {
-                ScadaUtils.ShowError(AppPhrases.ChooseViewToDelete);
+                ScadaUiUtils.ShowError(AppPhrases.ChooseViewToDelete);
             }
             else
             {
@@ -583,7 +583,7 @@ namespace ScadaWebConfig
             // перемещение набора или представления вверх
             if (selViewSet == null && selViewInfo == null)
             {
-                ScadaUtils.ShowError(AppPhrases.ChooseViewToMove);
+                ScadaUiUtils.ShowError(AppPhrases.ChooseViewToMove);
             }
             else
             {
@@ -633,7 +633,7 @@ namespace ScadaWebConfig
             // перемещение набора или представления вниз
             if (selViewSet == null && selViewInfo == null)
             {
-                ScadaUtils.ShowError(AppPhrases.ChooseViewToMove);
+                ScadaUiUtils.ShowError(AppPhrases.ChooseViewToMove);
             }
             else
             {
@@ -725,7 +725,7 @@ namespace ScadaWebConfig
                     }
                     catch (Exception ex)
                     {
-                        ScadaUtils.ShowError(AppPhrases.ParseViewTitleError + ":\n" + ex.Message);
+                        ScadaUiUtils.ShowError(AppPhrases.ParseViewTitleError + ":\n" + ex.Message);
                     }
                 }
                 else if (ext == ".aspx" || ext == ".htm" || ext == ".html")

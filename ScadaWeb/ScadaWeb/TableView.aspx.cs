@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,15 +20,16 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2015
+ * Modified : 2016
  */
 
+using Scada.Client;
+using Scada.Data;
+using Scada.UI;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Web.UI.WebControls;
-using Scada.Client;
-using Scada.Data;
 
 namespace Scada.Web
 {
@@ -79,7 +80,7 @@ namespace Scada.Web
                 throw new Exception(WebPhrases.NotLoggedOn);
 
             // перевод веб-страницы
-            Localization.TranslatePage(this, "Scada.Web.WFrmTableView");
+            Translator.TranslatePage(this, "Scada.Web.WFrmTableView");
 
             // определение индексов выбранного представления
             int viewSetIndex, viewIndex;

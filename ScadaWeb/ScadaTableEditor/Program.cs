@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,13 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2013
+ * Modified : 2016
  */
 
+using Scada.UI;
 using System;
 using System.Threading;
 using System.Windows.Forms;
-using Scada;
 
 namespace ScadaTableEditor
 {
@@ -46,7 +46,7 @@ namespace ScadaTableEditor
 
         public static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
-            ScadaUtils.ShowError(e.Exception.Message);
+            ScadaUiUtils.ShowError(e.Exception.Message);
         }
     }
 }

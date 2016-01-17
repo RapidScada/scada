@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,11 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2015
+ * Modified : 2016
  */
 
 using Scada;
+using Scada.UI;
 using System;
 using System.Diagnostics;
 using System.Windows.Forms;
@@ -101,7 +102,7 @@ namespace ScadaTableEditor
                 // загрузка изображения и гиперссылки из файлов, если они существуют
                 bool imgLoaded;
                 string errMsg;
-                if (ScadaUtils.LoadAboutForm(exeDir, this, activePictureBox, lblWebsite,
+                if (ScadaUiUtils.LoadAboutForm(exeDir, this, activePictureBox, lblWebsite,
                     out imgLoaded, out linkUrl, out errMsg))
                 {
                     if (imgLoaded)
@@ -112,7 +113,7 @@ namespace ScadaTableEditor
                 }
                 else
                 {
-                    ScadaUtils.ShowError(errMsg);
+                    ScadaUiUtils.ShowError(errMsg);
                 }
             }
         }
