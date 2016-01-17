@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,10 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2015
+ * Modified : 2016
  */
 
+using Scada.UI;
 using System;
 using System.ComponentModel;
 using System.IO;
@@ -87,7 +88,7 @@ namespace Scada.Scheme.Editor
             catch (Exception ex)
             {
                 log.WriteAction("Ошибка при запуске WCF-служб: " + ex.Message, Log.ActTypes.Exception);
-                ScadaUtils.ShowError(
+                ScadaUiUtils.ShowError(
                     "Ошибка при запуске служб обмена данными.\nНормальная работа программы невозможна.");
                 return false;
             }
@@ -122,7 +123,7 @@ namespace Scada.Scheme.Editor
                 else
                 {
                     log.WriteAction(errMsg, Log.ActTypes.Exception);
-                    ScadaUtils.ShowError(errMsg);
+                    ScadaUiUtils.ShowError(errMsg);
                 }
                 SetFormTitle();
             }
@@ -260,20 +261,20 @@ namespace Scada.Scheme.Editor
                 if (Localization.LoadDictionaries(langDir, "ScadaData", out errMsg))
                     CommonPhrases.Init();
                 else
-                    ScadaUtils.ShowError(errMsg);
+                    ScadaUiUtils.ShowError(errMsg);
             }
 
             if (Localization.LoadingRequired(langDir, "ScadaSchemeEditor"))
             {
                 if (Localization.LoadDictionaries(langDir, "ScadaSchemeEditor", out errMsg))
                 {
-                    Localization.TranslateForm(this, "Scada.Scheme.Editor.FrmMain");
+                    Translator.TranslateForm(this, "Scada.Scheme.Editor.FrmMain");
                     SchemePhrases.InitStatic();
                     openFileDialog.Filter = saveFileDialog.Filter = SchemePhrases.FileFilter;
                 }
                 else
                 {
-                    ScadaUtils.ShowError(errMsg);
+                    ScadaUiUtils.ShowError(errMsg);
                 }
             }
 
@@ -297,7 +298,7 @@ namespace Scada.Scheme.Editor
 
                 if (!createdNew)
                 {
-                    ScadaUtils.ShowInfo("SCADA-Редактор схем уже запущен.\nВторая копия будет закрыта.");
+                    ScadaUiUtils.ShowInfo("SCADA-Редактор схем уже запущен.\nВторая копия будет закрыта.");
                     Close();
                     return;
                 }

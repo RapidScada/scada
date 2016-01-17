@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2014
+ * Modified : 2016
  */
 
 using System;
@@ -30,7 +30,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
-using Scada.Client;
+using Scada.UI;
 
 namespace Scada.Scheme
 {
@@ -211,7 +211,7 @@ namespace Scada.Scheme
         private void FrmImageDialog_Load(object sender, EventArgs e)
         {
             // перевод формы
-            Localization.TranslateForm(this, "Scada.Scheme.FrmImageDialog");
+            Translator.TranslateForm(this, "Scada.Scheme.FrmImageDialog");
 
             // установка видимости кнопок выбора изображения
             if (!CanSelectImage)
@@ -265,7 +265,7 @@ namespace Scada.Scheme
                 }
                 catch (Exception ex)
                 {
-                    ScadaUtils.ShowError(SchemePhrases.LoadImageError + ":\n" + ex.Message);
+                    ScadaUiUtils.ShowError(SchemePhrases.LoadImageError + ":\n" + ex.Message);
                 }
 
                 if (imageInfo.Source != null)
@@ -357,7 +357,7 @@ namespace Scada.Scheme
                 }
                 catch (Exception ex)
                 {
-                    ScadaUtils.ShowError(SchemePhrases.LoadImageError + ":\n" + ex.Message);
+                    ScadaUiUtils.ShowError(SchemePhrases.LoadImageError + ":\n" + ex.Message);
                 }
             }
         }
@@ -384,7 +384,7 @@ namespace Scada.Scheme
                     }
                     catch (Exception ex)
                     {
-                        ScadaUtils.ShowError(SchemePhrases.SaveImageError + ":\n" + ex.Message);
+                        ScadaUiUtils.ShowError(SchemePhrases.SaveImageError + ":\n" + ex.Message);
                     }
                 }
             }
