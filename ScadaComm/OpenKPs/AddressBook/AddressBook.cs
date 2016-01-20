@@ -91,6 +91,14 @@ namespace Scada.Comm.Devices.AddressBook
             /// Получить контакты, упорядоченные по имени
             /// </summary>
             public List<Contact> Contacts { get; private set; }
+
+            /// <summary>
+            /// Получить строковое представление объекта
+            /// </summary>
+            public override string ToString()
+            {
+                return Name;
+            }
         }
 
         /// <summary>
@@ -111,6 +119,8 @@ namespace Scada.Comm.Devices.AddressBook
             public Contact(string name)
             {
                 Name = name ?? "";
+                PhoneNumbers = new List<PhoneNumber>();
+                Emails = new List<Email>();
             }
 
             /// <summary>
@@ -120,11 +130,121 @@ namespace Scada.Comm.Devices.AddressBook
             /// <summary>
             /// Получить упорядоченные телефонные номера
             /// </summary>
-            public List<string> PhoneNumbers { get; private set; }
+            public List<PhoneNumber> PhoneNumbers { get; private set; }
             /// <summary>
             /// Получить упорядоченные адреса электронной почты
             /// </summary>
-            public List<string> Emails { get; private set; }
+            public List<Email> Emails { get; private set; }
+
+            /// <summary>
+            /// Получить строковое представление объекта
+            /// </summary>
+            public override string ToString()
+            {
+                return Name;
+            }
+        }
+
+        /// <summary>
+        /// Поле контакта
+        /// </summary>
+        public abstract class ContactField : IComparable<ContactField>
+        {
+            /// <summary>
+            /// Получить порядок сортировки типа поля
+            /// </summary>
+            public abstract int Order { get; }
+            /// <summary>
+            /// Получить или установить значение поля
+            /// </summary>
+            public string Value {  get; set; }
+
+            /// <summary>
+            /// Получить строковое представление объекта
+            /// </summary>
+            public override string ToString()
+            {
+                return Value;
+            }
+            /// <summary>
+            /// Сравнить данный объект с заданным
+            /// </summary>
+            public int CompareTo(ContactField other)
+            {
+                if (other == null)
+                {
+                    return 1;
+                }
+                else
+                {
+                    int comp = Order.CompareTo(other.Order);
+                    return comp == 0 ? Value.CompareTo(other.Value) : comp;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Телефонный номер
+        /// </summary>
+        public class PhoneNumber : ContactField
+        {
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public PhoneNumber() : this("")
+            {
+
+            }
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public PhoneNumber(string value)
+            {
+                Value = value;
+            }
+
+            /// <summary>
+            /// Получить порядок сортировки типа поля
+            /// </summary>
+            public override int Order
+            {
+                get
+                {
+                    return 0;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Адрес электронной почты
+        /// </summary>
+        public class Email : ContactField
+        {
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public Email() : this("")
+            {
+
+            }
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public Email(string value)
+            {
+                Value = value;
+            }
+
+            /// <summary>
+            /// Получить порядок сортировки типа поля
+            /// </summary>
+            public override int Order
+            {
+                get
+                {
+                    return 1;
+                }
+            }
         }
 
 
@@ -178,14 +298,14 @@ namespace Scada.Comm.Devices.AddressBook
                     {
                         Contact contact = new Contact(contactElem.GetAttribute("name"));
 
-                        XmlNodeList phoneNumberNodes = contactGroupElem.SelectNodes("PhoneNumber");
+                        XmlNodeList phoneNumberNodes = contactElem.SelectNodes("PhoneNumber");
                         foreach (XmlElement phoneNumberElem in phoneNumberNodes)
-                            contact.PhoneNumbers.Add(phoneNumberElem.InnerText);
+                            contact.PhoneNumbers.Add(new PhoneNumber(phoneNumberElem.InnerText));
                         contact.PhoneNumbers.Sort();
 
-                        XmlNodeList emailNodes = contactGroupElem.SelectNodes("Email");
+                        XmlNodeList emailNodes = contactElem.SelectNodes("Email");
                         foreach (XmlElement emailElem in emailNodes)
-                            contact.Emails.Add(emailElem.InnerText);
+                            contact.Emails.Add(new Email(emailElem.InnerText));
                         contact.Emails.Sort();
 
                         contactGroup.Contacts.Add(contact);
@@ -233,10 +353,10 @@ namespace Scada.Comm.Devices.AddressBook
                         XmlElement contactElem = xmlDoc.CreateElement("Contact");
                         contactElem.SetAttribute("name", contact.Name);
 
-                        foreach (string phoneNumber in contact.PhoneNumbers)
+                        foreach (PhoneNumber phoneNumber in contact.PhoneNumbers)
                             contactElem.AppendElem("PhoneNumber", phoneNumber);
 
-                        foreach (string email in contact.Emails)
+                        foreach (Email email in contact.Emails)
                             contactElem.AppendElem("Email", email);
 
                         contactGroupElem.AppendChild(contactElem);

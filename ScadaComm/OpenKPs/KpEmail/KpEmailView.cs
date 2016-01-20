@@ -23,6 +23,8 @@
  * Modified : 2016
  */
 
+using Scada.Comm.Devices.AddressBook;
+
 namespace Scada.Comm.Devices
 {
     /// <summary>
@@ -47,6 +49,7 @@ namespace Scada.Comm.Devices
         {
             CanShowProps = true;
         }
+
 
         /// <summary>
         /// Описание библиотеки КП
@@ -74,13 +77,14 @@ namespace Scada.Comm.Devices
             }
         }
 
+
         /// <summary>
         /// Отобразить свойства КП
         /// </summary>
         public override void ShowProps()
         {
             // отображение адресной книги
-            //FrmPhonebook.ShowDialog(AppDirs);
+            FrmAddressBook.ShowDialog(AppDirs);
         }
     }
 }
