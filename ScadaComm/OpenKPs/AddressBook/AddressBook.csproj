@@ -31,7 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ScadaCommCommon">
+    <Reference Include="ScadaCommCommon, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ScadaCommCommon\bin\Release\ScadaCommCommon.dll</HintPath>
     </Reference>
     <Reference Include="ScadaData">
@@ -51,6 +52,7 @@
     <Compile Include="FrmAddressBook.designer.cs">
       <DependentUpon>FrmAddressBook.cs</DependentUpon>
     </Compile>
+    <Compile Include="LibPhrases.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

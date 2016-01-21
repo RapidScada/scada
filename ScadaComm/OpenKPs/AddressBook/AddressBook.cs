@@ -24,6 +24,7 @@
  */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
 
@@ -33,7 +34,7 @@ namespace Scada.Comm.Devices.AddressBook
     /// Address book
     /// <para>Адресная книга</para>
     /// </summary>
-    public class AddressBook
+    public class AddressBook : ITreeNode
     {
         /// <summary>
         /// Интерфейс, задающий свойство имени
@@ -65,7 +66,7 @@ namespace Scada.Comm.Devices.AddressBook
         /// <summary>
         /// Группа контактов
         /// </summary>
-        public class ContactGroup : INamedItem
+        public class ContactGroup : ITreeNode, INamedItem
         {
             /// <summary>
             /// Конструктор
@@ -81,6 +82,7 @@ namespace Scada.Comm.Devices.AddressBook
             {
                 Name = name ?? "";
                 Contacts = new List<Contact>();
+                Parent = null;
             }
 
             /// <summary>
@@ -91,6 +93,20 @@ namespace Scada.Comm.Devices.AddressBook
             /// Получить контакты, упорядоченные по имени
             /// </summary>
             public List<Contact> Contacts { get; private set; }
+            /// <summary>
+            /// Получить или установить родительский узел
+            /// </summary>
+            public ITreeNode Parent { get; set; }
+            /// <summary>
+            /// Получить список дочерних узлов
+            /// </summary>
+            public IList Children
+            {
+                get
+                {
+                    return Contacts;
+                }
+            }
 
             /// <summary>
             /// Получить строковое представление объекта
@@ -104,7 +120,7 @@ namespace Scada.Comm.Devices.AddressBook
         /// <summary>
         /// Контакт
         /// </summary>
-        public class Contact : INamedItem
+        public class Contact : ITreeNode, INamedItem
         {
             /// <summary>
             /// Конструктор
@@ -121,6 +137,7 @@ namespace Scada.Comm.Devices.AddressBook
                 Name = name ?? "";
                 PhoneNumbers = new List<PhoneNumber>();
                 Emails = new List<Email>();
+                Parent = null;
             }
 
             /// <summary>
@@ -135,6 +152,20 @@ namespace Scada.Comm.Devices.AddressBook
             /// Получить упорядоченные адреса электронной почты
             /// </summary>
             public List<Email> Emails { get; private set; }
+            /// <summary>
+            /// Получить или установить родительский узел
+            /// </summary>
+            public ITreeNode Parent { get; set; }
+            /// <summary>
+            /// Получить список дочерних узлов
+            /// </summary>
+            public IList Children
+            {
+                get
+                {
+                    return PhoneNumbers;
+                }
+            }
 
             /// <summary>
             /// Получить строковое представление объекта
@@ -148,7 +179,7 @@ namespace Scada.Comm.Devices.AddressBook
         /// <summary>
         /// Поле контакта
         /// </summary>
-        public abstract class ContactField : IComparable<ContactField>
+        public abstract class ContactField : ITreeNode, IComparable<ContactField>
         {
             /// <summary>
             /// Получить порядок сортировки типа поля
@@ -158,6 +189,20 @@ namespace Scada.Comm.Devices.AddressBook
             /// Получить или установить значение поля
             /// </summary>
             public string Value {  get; set; }
+            /// <summary>
+            /// Получить или установить родительский узел
+            /// </summary>
+            public ITreeNode Parent { get; set; }
+            /// <summary>
+            /// Получить список дочерних узлов - он всегда равен null
+            /// </summary>
+            public IList Children
+            {
+                get
+                {
+                    return null;
+                }
+            }
 
             /// <summary>
             /// Получить строковое представление объекта
@@ -201,6 +246,7 @@ namespace Scada.Comm.Devices.AddressBook
             public PhoneNumber(string value)
             {
                 Value = value;
+                Parent = null;
             }
 
             /// <summary>
@@ -233,6 +279,7 @@ namespace Scada.Comm.Devices.AddressBook
             public Email(string value)
             {
                 Value = value;
+                Parent = null;
             }
 
             /// <summary>
@@ -271,6 +318,33 @@ namespace Scada.Comm.Devices.AddressBook
         /// Получить группы контактов, упорядоченные по наименованию
         /// </summary>
         public List<ContactGroup> ContactGroups { get; private set; }
+        
+        /// <summary>
+        /// Получить или установить родительский узел - он всегда равен null
+        /// </summary>
+        ITreeNode ITreeNode.Parent
+        {
+            get
+            {
+                return null;
+            }
+            set
+            {
+                // некорректный вызов
+                throw new InvalidOperationException();
+            }
+        }
+
+        /// <summary>
+        /// Получить список дочерних узлов
+        /// </summary>
+        IList ITreeNode.Children
+        {
+            get
+            {
+                return ContactGroups;
+            }
+        }
 
 
         /// <summary>
@@ -322,7 +396,7 @@ namespace Scada.Comm.Devices.AddressBook
             }
             catch (Exception ex)
             {
-                errMsg = CommPhrases.LoadKpDllSettingsError + ":" + Environment.NewLine + ex.Message;
+                errMsg = LibPhrases.LoadAddressBookError + ":" + Environment.NewLine + ex.Message;
                 return false;
             }
         }
@@ -369,7 +443,7 @@ namespace Scada.Comm.Devices.AddressBook
             }
             catch (Exception ex)
             {
-                errMsg = CommPhrases.SaveKpDllSettingsError + ":" + Environment.NewLine + ex.Message;
+                errMsg = LibPhrases.SaveAddressBookError + ":" + Environment.NewLine + ex.Message;
                 return false;
             }
         }

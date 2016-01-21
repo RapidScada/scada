@@ -133,7 +133,7 @@
             this.btnAddEmail.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnAddEmail.Name = "btnAddEmail";
             this.btnAddEmail.Size = new System.Drawing.Size(23, 22);
-            this.btnAddEmail.ToolTipText = "Добавить e-mail";
+            this.btnAddEmail.ToolTipText = "Добавить адрес электронной почты";
             this.btnAddEmail.Click += new System.EventHandler(this.btnAddEmail_Click);
             // 
             // toolStripSeparator1

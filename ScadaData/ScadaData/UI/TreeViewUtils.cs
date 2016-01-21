@@ -148,10 +148,47 @@ namespace Scada.UI
 
 
         /// <summary>
+        /// Добавить узел в конец списка дочерних узлов заданного родительского узла или самого дерева 
+        /// <remarks>Метод рекомендуется использовать, если parentNode может быть равен null</remarks>
+        /// </summary>
+        public static void Add(this TreeView treeView, TreeNode parentNode, ITreeNode parentObj,
+            TreeNode nodeToAdd)
+        {
+            if (parentObj == null)
+                throw new ArgumentNullException("parentObj");
+            if (nodeToAdd == null)
+                throw new ArgumentNullException("nodeToInsert");
+
+            if (parentObj.Children != null && nodeToAdd.Tag is ITreeNode)
+            {
+                TreeNodeCollection nodes = treeView.GetChildNodes(parentNode);
+                IList list = parentObj.Children;
+                ITreeNode obj = (ITreeNode)nodeToAdd.Tag;
+                obj.Parent = parentObj;
+
+                nodes.Add(nodeToAdd);
+                list.Add(obj);
+                treeView.SelectedNode = nodeToAdd;
+            }
+        }
+
+        /// <summary>
+        /// Добавить узел в конец списка дочерних узлов заданного родительского узла
+        /// </summary>
+        /// <remarks>Аргумент parentNode не может быть равен null</remarks>
+        public static void Add(this TreeView treeView, TreeNode parentNode, TreeNode nodeToAdd)
+        {
+            if (parentNode == null)
+                throw new ArgumentNullException("parentNode");
+
+            if (parentNode.Tag is ITreeNode)
+                treeView.Add(parentNode, (ITreeNode)parentNode.Tag, nodeToAdd);
+        }
+
+        /// <summary>
         /// Вставить узел в список дочерних узлов заданного родительского узла или самого дерева 
         /// после выбранного узла дерева
-        /// <remarks>Метод рекомендуется использовать, если parentNode может быть равен null. 
-        /// В этом случае parentObj нужно передавать явно</remarks>
+        /// <remarks>Метод рекомендуется использовать, если parentNode может быть равен null</remarks>
         /// </summary>
         public static void Insert(this TreeView treeView, TreeNode parentNode, ITreeNode parentObj, 
             TreeNode nodeToInsert)
@@ -321,6 +358,14 @@ namespace Scada.UI
                 nodes.RemoveAt(selectedIndex);
                 list.RemoveAt(selectedIndex);
             }
+        }
+
+        /// <summary>
+        /// Поставить выбранный элемент по порядку среди дочерних узлов его родителя
+        /// </summary>
+        public static void ArrangeSelectedNode(this TreeView treeView, IComparer comparer)
+        {
+
         }
 
         /// <summary>

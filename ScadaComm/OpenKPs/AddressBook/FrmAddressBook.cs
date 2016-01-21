@@ -53,6 +53,7 @@ namespace Scada.Comm.Devices.AddressBook
             addressBook = new AddressBook();
             modified = false;
             rootNode = treeView.Nodes["rootNode"];
+            rootNode.Tag = addressBook;
         }
 
 
@@ -144,6 +145,15 @@ namespace Scada.Comm.Devices.AddressBook
         }
 
         /// <summary>
+        /// Выбрать узел дерева и перевести в режим редактирования
+        /// </summary>
+        private void SelectAndEdit(TreeNode treeNode)
+        {
+            treeView.SelectedNode = treeNode;
+            treeNode.BeginEdit();
+        }
+
+        /// <summary>
         /// Установить доступность кнопок
         /// </summary>
         private void SetButtonsEnabled()
@@ -204,7 +214,7 @@ namespace Scada.Comm.Devices.AddressBook
         {
             if (Modified)
             {
-                DialogResult result = MessageBox.Show("???", // !!! KpPhrases.SavePhonebookConfirm,
+                DialogResult result = MessageBox.Show(LibPhrases.SavePhonebookConfirm,
                     CommonPhrases.QuestionCaption, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 
                 switch (result)
@@ -229,24 +239,28 @@ namespace Scada.Comm.Devices.AddressBook
 
         private void btnAddContactGroup_Click(object sender, EventArgs e)
         {
-            // создание группы телефонных номеров
-            /*Phonebook.PhoneGroup newGroup = FrmPhoneGroup.CreatePhoneGroup();
-            if (newGroup != null)
-            {
-                if (addressBook.PhoneGroups.ContainsKey(newGroup.Name))
-                {
-                    ScadaUiUtils.ShowWarning(KpPhrases.PhoneGroupExists);
-                }
-                else
-                {
-                    InsertGroup(newGroup);
-                    Modified = true;
-                }
-            }*/
+            // добавление группы контактов
+            AddressBook.ContactGroup contactGroup = new AddressBook.ContactGroup(LibPhrases.NewContactGroup);
+            TreeNode contactGroupNode = CreateContactGroupNode(contactGroup);
+
+            treeView.Add(rootNode, contactGroupNode);
+            contactGroupNode.BeginEdit();
+            Modified = true;
         }
 
         private void btnAddContact_Click(object sender, EventArgs e)
         {
+            // добавление контакта
+            TreeNode contactGroupNode = treeView.FindClosest(typeof(AddressBook.ContactGroup));
+            if (contactGroupNode != null)
+            {
+                AddressBook.Contact contact = new AddressBook.Contact(LibPhrases.NewContact);
+                TreeNode contactNode = CreateContactNode(contact);
+
+                treeView.Add(contactGroupNode, contactNode);
+                contactNode.BeginEdit();
+                Modified = true;
+            }
 
         }
 
@@ -271,50 +285,12 @@ namespace Scada.Comm.Devices.AddressBook
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            TreeNode selectedNode = treeView.SelectedNode;
-            if (selectedNode.IsEditing)
-            {
-                selectedNode.EndEdit(false);
-            }
+            // переключение режима редактирования узла дерева
+            TreeNode selNode = treeView.SelectedNode;
+            if (selNode.IsEditing)
+                selNode.EndEdit(false);
             else
-            {
-                selectedNode.BeginEdit();
-            }
-
-            /*
-            // редактирование выбранного объекта
-            object selObj = GetSelectedObject();
-            Phonebook.PhoneGroup group = selObj as Phonebook.PhoneGroup;
-            Phonebook.PhoneNumber number = selObj as Phonebook.PhoneNumber;
-
-            if (group != null)
-            {
-                // редактирование группы телефонных номеров
-                Phonebook.PhoneGroup newGroup = FrmPhoneGroup.EditPhoneGroup(group);
-                if (newGroup != null && !group.Equals(newGroup))
-                {
-                    RemoveGroup(group);
-                    InsertGroup(newGroup);
-                    Modified = true;
-                }
-            }
-            else if (number != null)
-            {
-                // редактирование телефонного номера
-                TreeNode groupNode;
-                GetCurrentGroup(out group, out groupNode);
-
-                if (group != null)
-                {
-                    Phonebook.PhoneNumber newNumber = FrmPhoneNumber.EditPhoneNumber(number);
-                    if (newNumber != null && !number.Equals(newNumber))
-                    {
-                        RemoveNumber(group, groupNode, number);
-                        InsertNumber(group, groupNode, newNumber);
-                        Modified = true;
-                    }
-                }
-            }*/
+                selNode.BeginEdit();
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -373,7 +349,32 @@ namespace Scada.Comm.Devices.AddressBook
 
         private void treeView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
+            // получение изменений после завершения редактирования узла
+            if (!e.CancelEdit)
+            {
+                object selObj = treeView.GetSelectedObject();
 
+                if (selObj != null)
+                {
+                    string oldVal = selObj.ToString();
+                    string newVal = e.Label;
+
+                    if (!oldVal.Equals(newVal, StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (selObj is AddressBook.ContactGroup)
+                            ((AddressBook.ContactGroup)selObj).Name = newVal;
+                        else if (selObj is AddressBook.Contact)
+                            ((AddressBook.Contact)selObj).Name = newVal;
+                        else if (selObj is AddressBook.PhoneNumber)
+                            ((AddressBook.PhoneNumber)selObj).Value = newVal;
+                        else if (selObj is AddressBook.Email)
+                            ((AddressBook.Email)selObj).Value = newVal;
+
+                        treeView.ArrangeSelectedNode(null);
+                        Modified = true;
+                    }
+                }
+            }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
