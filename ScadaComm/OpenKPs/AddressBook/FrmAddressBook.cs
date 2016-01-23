@@ -25,7 +25,10 @@
 
 using Scada.UI;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
+using System.Net.Mail;
 using System.Windows.Forms;
 
 namespace Scada.Comm.Devices.AddressBook
@@ -119,11 +122,13 @@ namespace Scada.Comm.Devices.AddressBook
         {
             TreeNode contactNode = TreeViewUtils.CreateNode(contact, "contact.png", true);
 
-            foreach (AddressBook.PhoneNumber phoneNumber in contact.PhoneNumbers)
-                contactNode.Nodes.Add(CreatePhoneNumberNode(phoneNumber));
-
-            foreach (AddressBook.Email email in contact.Emails)
-                contactNode.Nodes.Add(CreateEmailNode(email));
+            foreach (AddressBook.ContactRecord contactRecord in contact.ContactRecords)
+            {
+                if (contactRecord is AddressBook.PhoneNumber)
+                    contactNode.Nodes.Add(CreatePhoneNumberNode(contactRecord));
+                else if (contactRecord is AddressBook.Email)
+                    contactNode.Nodes.Add(CreateEmailNode(contactRecord));
+            }
 
             return contactNode;
         }
@@ -131,7 +136,7 @@ namespace Scada.Comm.Devices.AddressBook
         /// <summary>
         /// Создать узел дерева для телефонного номера
         /// </summary>
-        private TreeNode CreatePhoneNumberNode(AddressBook.PhoneNumber phoneNumber)
+        private TreeNode CreatePhoneNumberNode(AddressBook.ContactRecord phoneNumber)
         {
             return TreeViewUtils.CreateNode(phoneNumber, "phone.png");
         }
@@ -139,18 +144,40 @@ namespace Scada.Comm.Devices.AddressBook
         /// <summary>
         /// Создать узел дерева для адреса электронной почты
         /// </summary>
-        private TreeNode CreateEmailNode(AddressBook.Email email)
+        private TreeNode CreateEmailNode(AddressBook.ContactRecord email)
         {
             return TreeViewUtils.CreateNode(email, "email.png");
         }
 
         /// <summary>
-        /// Выбрать узел дерева и перевести в режим редактирования
+        /// Найти индекс вставки элемента для сохранения упорядоченности списка
         /// </summary>
-        private void SelectAndEdit(TreeNode treeNode)
+        private int FindInsertIndex<T>(List<T> list, int currentIndex, out bool duplicated)
         {
-            treeView.SelectedNode = treeNode;
-            treeNode.BeginEdit();
+            if (list.Count < 2)
+            {
+                duplicated = false;
+                return currentIndex;
+            }
+            else
+            {
+                T item = list[currentIndex];
+
+                list.RemoveAt(currentIndex);
+                int newIndex = list.BinarySearch(item);
+                list.Insert(currentIndex, item);
+
+                if (newIndex >= 0)
+                {
+                    duplicated = true;
+                    return newIndex;
+                }
+                else
+                {
+                    duplicated = false;
+                    return ~newIndex;
+                }
+            }
         }
 
         /// <summary>
@@ -158,13 +185,30 @@ namespace Scada.Comm.Devices.AddressBook
         /// </summary>
         private void SetButtonsEnabled()
         {
-            /*object selObj = GetSelectedObject();
-            btnEdit.Enabled = btnDelete.Enabled = selObj != null;
-            btnCutNumber.Enabled = btnCopyNumber.Enabled = selObj is Phonebook.PhoneNumber;
-            btnPasteNumber.Enabled = copiedNumber != null;*/
+            object selObj = treeView.GetSelectedObject();
+            btnAddContact.Enabled = btnEdit.Enabled = btnDelete.Enabled = 
+                selObj is AddressBook.AddressBookItem;
+            btnAddPhoneNumber.Enabled = btnAddEmail.Enabled = 
+                selObj is AddressBook.Contact || selObj is AddressBook.ContactRecord;
         }
 
-        
+        /// <summary>
+        /// Проверить корректность формата адреса электронной почты
+        /// </summary>
+        private bool CheckEmail(string email)
+        {
+            try
+            {
+                MailAddress m = new MailAddress(email);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+
         /// <summary>
         /// Отобразить форму модально
         /// </summary>
@@ -188,8 +232,8 @@ namespace Scada.Comm.Devices.AddressBook
                 if (Localization.LoadDictionaries(appDirs.LangDir, "AddressBook", out errMsg))
                 {
                     Translator.TranslateForm(this, "Scada.Comm.Devices.AddressBook.FrmAddressBook");
-                    //KpPhrases.Init();
-                    //rootNode.Text = KpPhrases.PhonebookNode;
+                    LibPhrases.Init();
+                    rootNode.Text = LibPhrases.AddressBookNode;
                 }
                 else
                 {
@@ -261,26 +305,36 @@ namespace Scada.Comm.Devices.AddressBook
                 contactNode.BeginEdit();
                 Modified = true;
             }
-
         }
 
         private void btnAddPhoneNumber_Click(object sender, EventArgs e)
         {
-            // создание телефонного номера
-            /*Phonebook.PhoneGroup group;
-            TreeNode groupNode;
-            GetCurrentGroup(out group, out groupNode);
-
-            if (group != null)
+            // добавление телефонного номера
+            TreeNode contactNode = treeView.FindClosest(typeof(AddressBook.Contact));
+            if (contactNode != null)
             {
-                Phonebook.PhoneNumber newNumber = FrmPhoneNumber.CreatePhoneNumber();
-                InsertOrUpdateNumber(group, groupNode, newNumber);
-            }*/
+                AddressBook.PhoneNumber phoneNumber = new AddressBook.PhoneNumber(LibPhrases.NewPhoneNumber);
+                TreeNode phoneNumberNode = CreatePhoneNumberNode(phoneNumber);
+
+                treeView.Add(contactNode, phoneNumberNode);
+                phoneNumberNode.BeginEdit();
+                Modified = true;
+            }
         }
 
         private void btnAddEmail_Click(object sender, EventArgs e)
         {
+            // добавление адреса электронной почты
+            TreeNode contactNode = treeView.FindClosest(typeof(AddressBook.Contact));
+            if (contactNode != null)
+            {
+                AddressBook.Email email = new AddressBook.Email(LibPhrases.NewEmail);
+                TreeNode emailNode = CreateEmailNode(email);
 
+                treeView.Add(contactNode, emailNode);
+                emailNode.BeginEdit();
+                Modified = true;
+            }
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
@@ -294,29 +348,13 @@ namespace Scada.Comm.Devices.AddressBook
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
-        {/*
+        {
             // удаление выбранного объекта
-            object selObj = GetSelectedObject();
-            Phonebook.PhoneGroup group = selObj as Phonebook.PhoneGroup;
-            Phonebook.PhoneNumber number = selObj as Phonebook.PhoneNumber;
-
-            if (group != null)
+            if (treeView.GetSelectedObject() is AddressBook.AddressBookItem)
             {
-                // удаление группы телефонных номеров
-                RemoveGroup(group);
+                treeView.RemoveSelectedNode();
                 Modified = true;
             }
-            else if (number != null)
-            {
-                // удаление телефонного номера
-                TreeNode phoneGroupNode;
-                GetCurrentGroup(out group, out phoneGroupNode);
-                if (group != null)
-                {
-                    RemoveNumber(group, phoneGroupNode, number);
-                    Modified = true;
-                }
-            }*/
         }
 
 
@@ -350,27 +388,80 @@ namespace Scada.Comm.Devices.AddressBook
         private void treeView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
             // получение изменений после завершения редактирования узла
-            if (!e.CancelEdit)
+            if (e.Label != null /*редактирование отменено*/)
             {
-                object selObj = treeView.GetSelectedObject();
+                AddressBook.AddressBookItem bookItem = e.Node.Tag as AddressBook.AddressBookItem;
 
-                if (selObj != null)
+                if (bookItem != null)
                 {
-                    string oldVal = selObj.ToString();
+                    string oldVal = bookItem.Value;
                     string newVal = e.Label;
 
-                    if (!oldVal.Equals(newVal, StringComparison.OrdinalIgnoreCase))
+                    if (newVal == "")
                     {
-                        if (selObj is AddressBook.ContactGroup)
-                            ((AddressBook.ContactGroup)selObj).Name = newVal;
-                        else if (selObj is AddressBook.Contact)
-                            ((AddressBook.Contact)selObj).Name = newVal;
-                        else if (selObj is AddressBook.PhoneNumber)
-                            ((AddressBook.PhoneNumber)selObj).Value = newVal;
-                        else if (selObj is AddressBook.Email)
-                            ((AddressBook.Email)selObj).Value = newVal;
+                        e.CancelEdit = true;
+                        ScadaUiUtils.ShowError(LibPhrases.EmptyValueNotAllowed);
+                        e.Node.BeginEdit();
+                    }
+                    else if (!oldVal.Equals(newVal, StringComparison.Ordinal))
+                    {
+                        // установка нового значения
+                        bookItem.Value = newVal;
 
-                        treeView.ArrangeSelectedNode(null);
+                        // определение нового индекса узла, чтобы сохранить упорядоченность, и проверка значения
+                        IList list = bookItem.Parent.Children;
+                        int curInd = e.Node.Index;
+                        int newInd = curInd;
+                        bool duplicated;
+                        string errMsg = "";
+
+                        if (bookItem is AddressBook.ContactGroup)
+                        {
+                            newInd = FindInsertIndex<AddressBook.ContactGroup>(
+                                (List<AddressBook.ContactGroup>)list, curInd, out duplicated);
+                            if (duplicated)
+                                errMsg = LibPhrases.ContactGroupExists;
+                        }
+                        else if (bookItem is AddressBook.Contact)
+                        {
+                            newInd = FindInsertIndex<AddressBook.Contact>(
+                                (List<AddressBook.Contact>)list, curInd, out duplicated);
+                            if (duplicated)
+                                errMsg = LibPhrases.ContactExists;
+                        }
+                        else if (bookItem is AddressBook.ContactRecord)
+                        {
+                            newInd = FindInsertIndex<AddressBook.ContactRecord>(
+                                (List<AddressBook.ContactRecord>)list, curInd, out duplicated);
+
+                            if (bookItem is AddressBook.PhoneNumber)
+                            {
+                                if (duplicated)
+                                    errMsg = LibPhrases.PhoneNumberExists;
+                            }
+                            else
+                            {
+                                if (duplicated)
+                                    errMsg = LibPhrases.EmailExists;
+                                if (!CheckEmail(newVal))
+                                    errMsg = LibPhrases.IncorrectEmail;
+                            }
+                        }
+
+                        if (errMsg != "")
+                        {
+                            // возврат старого значения
+                            bookItem.Value = newVal;
+                            e.CancelEdit = true;
+                            ScadaUiUtils.ShowError(errMsg);
+                            e.Node.BeginEdit();
+                        }
+                        else if (newInd != curInd)
+                        {
+                            // перемещение узла, чтобы сохранить упорядоченность
+                            BeginInvoke(new Action(() => { treeView.MoveSelectedNode(newInd); }));
+                        }
+
                         Modified = true;
                     }
                 }

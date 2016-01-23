@@ -69,10 +69,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Lang\" />
-  </ItemGroup>
-  <ItemGroup>
+    <Content Include="Lang\AddressBook.en-GB.xml" />
     <Content Include="Res\book.png" />
     <Content Include="Res\contact.png" />
     <Content Include="Res\delete.png" />

@@ -112,7 +112,7 @@ namespace Scada.UI
         }
 
         /// <summary>
-        /// Найти родительский узел и индекс для вставки нового узла дерева
+        /// Найти родительский узел и индекс для вставки нового узла дерева с учётом выбранного узла
         /// </summary>
         public static bool FindInsertLocation(this TreeView treeView, Type tagType,
             out TreeNode parentNode, out int index)
@@ -134,7 +134,7 @@ namespace Scada.UI
         }
 
         /// <summary>
-        /// Найти индекс для вставки в список дочерних узлов заданного родительского узла
+        /// Найти индекс для вставки в список дочерних узлов заданного родительского узла с учётом выбранного узла
         /// </summary>
         public static int FindInsertIndex(this TreeView treeView, TreeNode parentNode)
         {
@@ -344,6 +344,43 @@ namespace Scada.UI
         }
 
         /// <summary>
+        /// Переместить выбранный узел дерева и элемент соответствующего списка в заданную позицию
+        /// </summary>
+        public static void MoveSelectedNode(this TreeView treeView, int newIndex)
+        {
+            TreeNode selectedNode = treeView.SelectedNode;
+            ITreeNode selectedObj = selectedNode == null ? null : selectedNode.Tag as ITreeNode;
+
+            if (selectedObj != null)
+            {
+                try
+                {
+                    treeView.BeginUpdate();
+
+                    TreeNodeCollection nodes = treeView.GetChildNodes(selectedNode.Parent);
+                    IList list = selectedObj.Parent.Children;
+
+                    if (0 <= newIndex && newIndex < nodes.Count)
+                    {
+                        int index = selectedNode.Index;
+
+                        nodes.RemoveAt(index);
+                        nodes.Insert(newIndex, selectedNode);
+
+                        list.RemoveAt(index);
+                        list.Insert(newIndex, selectedObj);
+
+                        treeView.SelectedNode = selectedNode;
+                    }
+                }
+                finally
+                {
+                    treeView.EndUpdate();
+                }
+            }
+        }
+
+        /// <summary>
         /// Удалить выбранный узел дерева и элемент из соответствующего списка
         /// </summary>
         public static void RemoveSelectedNode(this TreeView treeView)
@@ -358,14 +395,6 @@ namespace Scada.UI
                 nodes.RemoveAt(selectedIndex);
                 list.RemoveAt(selectedIndex);
             }
-        }
-
-        /// <summary>
-        /// Поставить выбранный элемент по порядку среди дочерних узлов его родителя
-        /// </summary>
-        public static void ArrangeSelectedNode(this TreeView treeView, IComparer comparer)
-        {
-
         }
 
         /// <summary>

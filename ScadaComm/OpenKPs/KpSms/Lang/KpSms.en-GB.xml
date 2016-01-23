@@ -14,7 +14,7 @@
     <Phrase key="PhonebookNode">Phonebook</Phrase>
     <Phrase key="PhoneGroupExists">The group already exists.</Phrase>
     <Phrase key="UpdatePhoneNumberConfirm">The number already exists in the group. Update?</Phrase>
-    <Phrase key="SavePhonebookConfirm">The phonebook have been modified. Save the changes?</Phrase>
+    <Phrase key="SavePhonebookConfirm">The phonebook has been modified. Save the changes?</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Devices.KpSms.FrmPhoneGroup">
     <Phrase key="this">Group of Phone Numbers</Phrase>

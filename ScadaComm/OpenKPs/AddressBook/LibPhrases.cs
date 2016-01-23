@@ -50,6 +50,8 @@ namespace Scada.Comm.Devices.AddressBook
         public static string ContactExists { get; private set; }
         public static string PhoneNumberExists { get; private set; }
         public static string EmailExists { get; private set; }
+        public static string IncorrectEmail { get; private set; }
+        public static string EmptyValueNotAllowed { get; private set; }
         public static string SavePhonebookConfirm { get; private set; }
 
         private static void SetToDefault()
@@ -62,10 +64,12 @@ namespace Scada.Comm.Devices.AddressBook
             NewContact = "Новый контакт";
             NewPhoneNumber = "Новый тел. номер";
             NewEmail = "Новый эл. адрес";
-            ContactGroupExists = "Данная группа контактов уже существует.";
-            ContactExists = "Данный контакт уже существует в группе.";
+            ContactGroupExists = "Группа контактов уже существует.";
+            ContactExists = "Контакт уже существует в группе.";
             PhoneNumberExists = "Контакт уже содержит данный телефонный номер.";
             EmailExists = "Контакт уже содержит данный адрес электронной почты.";
+            IncorrectEmail = "Некорректный адрес электронной почты.";
+            EmptyValueNotAllowed = "Значение не может быть пустым.";
             SavePhonebookConfirm = "Адресная книга была изменена. Сохранить изменения?";
         }
 
@@ -89,6 +93,8 @@ namespace Scada.Comm.Devices.AddressBook
                 ContactExists = dict.GetPhrase("ContactExists", ContactExists);
                 PhoneNumberExists = dict.GetPhrase("PhoneNumberExists", PhoneNumberExists);
                 EmailExists = dict.GetPhrase("EmailExists", EmailExists);
+                IncorrectEmail = dict.GetPhrase("IncorrectEmail", IncorrectEmail);
+                EmptyValueNotAllowed = dict.GetPhrase("EmptyValueNotAllowed", EmptyValueNotAllowed);
                 SavePhonebookConfirm = dict.GetPhrase("SavePhonebookConfirm", SavePhonebookConfirm);
             }
         }
