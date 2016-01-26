@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config.cs" />
+    <Compile Include="KpEmailLogic.cs" />
     <Compile Include="KpEmailView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

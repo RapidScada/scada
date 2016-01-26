@@ -301,7 +301,7 @@ namespace Scada.Comm.Devices.KpSnmp
             }
             catch (Exception ex)
             {
-                errMsg = CommPhrases.LoadKpSettingsError + ":\r\n" + ex.Message;
+                errMsg = CommPhrases.LoadKpSettingsError + ":" + Environment.NewLine + ex.Message;
                 return false;
             }
         }
@@ -354,7 +354,7 @@ namespace Scada.Comm.Devices.KpSnmp
             }
             catch (Exception ex)
             {
-                errMsg = CommPhrases.SaveKpSettingsError + ":\r\n" + ex.Message;
+                errMsg = CommPhrases.SaveKpSettingsError + ":" + Environment.NewLine + ex.Message;
                 return false;
             }
         }

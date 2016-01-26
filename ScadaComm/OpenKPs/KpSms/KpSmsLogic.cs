@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2009
- * Modified : 2015
+ * Modified : 2016
  * 
  * Description
  * Sending and receiving SMS messages using AT commands.
@@ -890,7 +890,7 @@ namespace Scada.Comm.Devices
                     phonebook = new Phonebook();
                     string errMsg;
                     if (!phonebook.Load(fileName, out errMsg))
-                        ScadaUiUtils.ShowError(errMsg);
+                        WriteToLog(errMsg);
                 }
                 else
                 {

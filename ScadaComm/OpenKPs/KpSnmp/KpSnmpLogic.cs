@@ -508,7 +508,6 @@ namespace Scada.Comm.Devices
             if (fatalError)
             {
                 WriteToLog(KpPhrases.CommunicationImpossible);
-                Thread.Sleep(ReqParams.Delay);
             }
             else
             {
@@ -554,6 +553,7 @@ namespace Scada.Comm.Devices
                     RetrieveCommunities();
                     RetrieveSnmpVersion();
                     RetrieveEndPoint();
+                    fatalError = false;
                 }
                 catch
                 {

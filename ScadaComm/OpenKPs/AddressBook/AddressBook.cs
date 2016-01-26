@@ -497,5 +497,13 @@ namespace Scada.Comm.Devices.AddressBook
                 return false;
             }
         }
+
+        /// <summary>
+        /// Получить строковое представление объекта
+        /// </summary>
+        public override string ToString()
+        {
+            return "Address book";
+        }
     }
 }
