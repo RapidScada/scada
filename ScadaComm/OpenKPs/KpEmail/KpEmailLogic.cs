@@ -60,6 +60,7 @@ namespace Scada.Comm.Devices
         {
             CanSendCmd = true;
             ConnRequired = false;
+            WorkState = WorkStates.Normal;
 
             addressBook = null;
             config = new Config();
@@ -67,6 +68,11 @@ namespace Scada.Comm.Devices
             fatalError = false;
             state = "";
             writeState = false;
+
+            InitKPTags(new List<KPTag>()
+            {
+                new KPTag(1, Localization.UseRussian ? "Отправлено писем" : "Sent emails")
+            });
         }
 
 
@@ -142,55 +148,144 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Преобразовать команду в список почтовых сообщений
         /// </summary>
-        private bool ParseCmd(Command cmd, out List<MailMessage> messages)
+        private bool ParseCmd(Command cmd, out MailMessage message)
         {
-            messages = null;
-            return false;
+            string cmdDataStr = cmd.GetCmdDataStr();
+            int ind1 = cmdDataStr.IndexOf(';');
+            int ind2 = ind1 >= 0 ? cmdDataStr.IndexOf(';', ind1 + 1) : -1;
+
+            if (ind1 >= 0 && ind2 >= 0)
+            {
+                string recipient = cmdDataStr.Substring(0, ind1);
+                string subject = cmdDataStr.Substring(ind1 + 1, ind2 - ind1 - 1);
+                string text = cmdDataStr.Substring(ind2 + 1);
+
+                List<string> addresses = new List<string>();
+                if (addressBook == null)
+                {
+                    // добавление адреса получателя из данных команды
+                    addresses.Add(recipient);
+                }
+                else
+                {
+                    // поиск адресов получателей в адресной книге
+                    AB.AddressBook.ContactGroup contactGroup = addressBook.FindContactGroup(recipient);
+                    if (contactGroup == null)
+                    {
+                        AB.AddressBook.Contact contact = addressBook.FindContact(recipient);
+                        if (contact == null)
+                        {
+                            // добавление адреса получателя из данных команды
+                            addresses.Add(recipient);
+                        }
+                        else
+                        {
+                            // добавление адресов получателей из контакта
+                            foreach (AB.AddressBook.Email email in contact.Emails)
+                                addresses.Add(email.Value);
+                        }
+                    }
+                    else
+                    {
+                        // добавление адресов получателей из группы контактов
+                        foreach (AB.AddressBook.Contact contact in contactGroup.Contacts)
+                            foreach (AB.AddressBook.Email email in contact.Emails)
+                                addresses.Add(email.Value);
+                    }
+                }
+
+                // создание сообщения
+                message = CreateMessage(addresses, subject, text);
+                return message != null;
+            }
+            else
+            {
+                message = null;
+                return false;
+            }
         }
 
         /// <summary>
-        /// Отправить почтовые сообщения
+        /// Создать почтовое сообщение
         /// </summary>
-        private bool SendMessages(List<MailMessage> messages)
+        private MailMessage CreateMessage(List<string> addresses, string subject, string text)
+        {
+            MailMessage message = new MailMessage();
+
+            try
+            {
+                message.From = new MailAddress(config.User, config.UserDisplayName);
+            }
+            catch
+            {
+                WriteToLog(string.Format(Localization.UseRussian ?
+                    "Некорректный адрес отправителя {0}" :
+                    "Incorrect sender address {0}", config.User));
+                return null;
+            }
+
+            foreach (string address in addresses)
+            {
+                try
+                {
+                    message.To.Add(new MailAddress(address));
+                }
+                catch
+                {
+                    WriteToLog(string.Format(Localization.UseRussian ?
+                        "Некорректный адрес получателя {0}" :
+                        "Incorrect recipient address {0}", address));
+                }
+            }
+
+            if (message.To.Count > 0)
+            {
+                message.Subject = subject;
+                message.Body = text;
+                return message;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Отправить почтовое сообщение
+        /// </summary>
+        private bool SendMessage(MailMessage message)
         {
             try
             {
-                foreach (MailMessage message in messages)
-                    smtpClient.Send(message);
+                smtpClient.Send(message);
+                SetCurData(0, curData[0].Val + 1, 1);
+
+                WriteToLog(string.Format(Localization.UseRussian ?
+                    "Письмо отправлено на {0}" :
+                    "Email has been sent to {0}", message.To.ToString()));
                 return true;
             }
             catch (Exception ex)
             {
                 WriteToLog((Localization.UseRussian ?
-                    "Ошибка при отправке писем: " :
-                    "Error sending emails: ") + ex.Message);
+                    "Ошибка при отправке письма: " :
+                    "Error sending email: ") + ex.Message);
                 return false;
             }
         }
 
         /// <summary>
-        /// Отправить письмо
+        /// Преобразовать данные тега КП в строку
         /// </summary>
-        private bool SendMail(string address, string subject, string text)
+        protected override string ConvertTagDataToStr(int signal, SrezTableLight.CnlData tagData)
         {
-            try
+            if (tagData.Stat > 0)
             {
-                MailMessage message = new MailMessage();
-                message.From = new MailAddress(config.User, "СП-мания"); // !!!
-                message.To.Add(address);
-                message.Subject = subject;
-                message.Body = text;
+                if (signal == 1)
+                    return tagData.Val.ToString("N0");
+            }
 
-                smtpClient.Send(message);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                WriteToLog((Localization.UseRussian ? 
-                    "Ошибка при отправке письма: " :
-                    "Error sending mail: ") + ex.Message);
-                return false;
-            }
+            return base.ConvertTagDataToStr(signal, tagData);
         }
 
 
@@ -225,10 +320,10 @@ namespace Scada.Comm.Devices
             {
                 if (cmd.CmdNum == 1 && cmd.CmdTypeID == BaseValues.CmdTypes.Binary)
                 {
-                    List<MailMessage> messages;
-                    if (ParseCmd(cmd, out messages))
+                    MailMessage message;
+                    if (ParseCmd(cmd, out message))
                     {
-                        if (SendMessages(messages))
+                        if (SendMessage(message))
                             lastCommSucc = true;
                     }
                     else
@@ -256,6 +351,7 @@ namespace Scada.Comm.Devices
             LoadAddressBook();
             LoadConfig();
             InitSnmpClient();
+            SetCurData(0, 0, 1);
         }
     }
 }

@@ -349,25 +349,41 @@ namespace Scada.Comm.Devices.AddressBook
         /// </summary>
         public const string DefFileName = "AddressBook.xml";
 
+        private List<Contact> allContacts; // все контакты, упорядоченные по возрастанию
+
 
         /// <summary>
         /// Конструктор
         /// </summary>
         public AddressBook()
         {
+            allContacts = null;
             ContactGroups = new List<ContactGroup>();
         }
 
 
         /// <summary>
-        /// Получить группы контактов, упорядоченные по наименованию
+        /// Получить группы контактов, упорядоченные по имени
         /// </summary>
         public List<ContactGroup> ContactGroups { get; private set; }
-        
+
         /// <summary>
-        /// Получить или установить родительский узел - он всегда равен null
+        /// Получить все контакты, упорядоченные по имени
         /// </summary>
-        ITreeNode ITreeNode.Parent
+        public List<Contact> AllContacts
+        {
+            get
+            {
+                if (allContacts == null)
+                    FillAllContacts();
+                return allContacts;
+            }
+        }
+
+    /// <summary>
+    /// Получить или установить родительский узел - он всегда равен null
+    /// </summary>
+    ITreeNode ITreeNode.Parent
         {
             get
             {
@@ -496,6 +512,42 @@ namespace Scada.Comm.Devices.AddressBook
                 errMsg = LibPhrases.SaveAddressBookError + ":" + Environment.NewLine + ex.Message;
                 return false;
             }
+        }
+
+
+        /// <summary>
+        /// Найти группу контактов
+        /// </summary>
+        public ContactGroup FindContactGroup(string name)
+        {
+            int i = ContactGroups.BinarySearch(new ContactGroup(name));
+            return i >= 0 ? ContactGroups[i] : null;
+        }
+
+        /// <summary>
+        /// Найти контакт
+        /// </summary>
+        public Contact FindContact(string name)
+        {
+            int i = AllContacts.BinarySearch(new Contact(name));
+            return i >= 0 ? AllContacts[i] : null;
+        }
+
+        /// <summary>
+        /// Заполнить список всех контактов
+        /// </summary>
+        public void FillAllContacts()
+        {
+            if (allContacts == null)
+                allContacts = new List<Contact>();
+            else
+                allContacts.Clear();
+
+            foreach (ContactGroup contactGroup in ContactGroups)
+                foreach (Contact contact in contactGroup.Contacts)
+                    allContacts.Add(contact);
+
+            allContacts.Sort();
         }
 
         /// <summary>

@@ -62,6 +62,11 @@ namespace Scada.Comm.Devices.KpEmail
         public string User { get; set; }
 
         /// <summary>
+        /// Получить или установить отображаемое имя пользователя
+        /// </summary>
+        public string UserDisplayName { get; set; }
+
+        /// <summary>
         /// Получить или установить пароль
         /// </summary>
         public string Password { get; set; }
@@ -80,6 +85,7 @@ namespace Scada.Comm.Devices.KpEmail
             Host = "";
             Port = 25;
             User = "";
+            UserDisplayName = "Rapid SCADA";
             Password = "";
             EnableSsl = true;
         }
@@ -101,6 +107,7 @@ namespace Scada.Comm.Devices.KpEmail
                 Host = rootElem.GetChildAsString("Host");
                 Port = rootElem.GetChildAsInt("Port");
                 User = rootElem.GetChildAsString("User");
+                UserDisplayName = rootElem.GetChildAsString("UserDisplayName");
                 Password = rootElem.GetChildAsString("Password");
                 EnableSsl = rootElem.GetChildAsBool("EnableSsl");
 
