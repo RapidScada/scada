@@ -181,16 +181,14 @@ namespace Scada.Comm.Devices
                         else
                         {
                             // добавление адресов получателей из контакта
-                            foreach (AB.AddressBook.Email email in contact.Emails)
-                                addresses.Add(email.Value);
+                            addresses.AddRange(contact.Emails);
                         }
                     }
                     else
                     {
                         // добавление адресов получателей из группы контактов
                         foreach (AB.AddressBook.Contact contact in contactGroup.Contacts)
-                            foreach (AB.AddressBook.Email email in contact.Emails)
-                                addresses.Add(email.Value);
+                            addresses.AddRange(contact.Emails);
                     }
                 }
 

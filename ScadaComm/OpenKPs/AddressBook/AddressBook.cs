@@ -150,8 +150,8 @@ namespace Scada.Comm.Devices.AddressBook
         /// </summary>
         public class Contact : AddressBookItem, ITreeNode
         {
-            private List<PhoneNumber> phoneNumbers; // телефонные номера
-            private List<Email> emails;             // адреса эл. почты
+            private List<string> phoneNumbers; // телефонные номера
+            private List<string> emails;       // адреса эл. почты
 
             /// <summary>
             /// Конструктор
@@ -195,7 +195,7 @@ namespace Scada.Comm.Devices.AddressBook
             /// <summary>
             /// Получить телефонные номера
             /// </summary>
-            public List<PhoneNumber> PhoneNumbers
+            public List<string> PhoneNumbers
             {
                 get
                 {
@@ -207,7 +207,7 @@ namespace Scada.Comm.Devices.AddressBook
             /// <summary>
             /// Получить адреса электронной почты
             /// </summary>
-            public List<Email> Emails
+            public List<string> Emails
             {
                 get
                 {
@@ -233,14 +233,14 @@ namespace Scada.Comm.Devices.AddressBook
             public void FillPhoneNumbers()
             {
                 if (phoneNumbers == null)
-                    phoneNumbers = new List<PhoneNumber>();
+                    phoneNumbers = new List<string>();
                 else
                     phoneNumbers.Clear();
 
                 foreach (ContactRecord rec in ContactRecords)
                 {
                     if (rec is PhoneNumber)
-                        phoneNumbers.Add((PhoneNumber)rec);
+                        phoneNumbers.Add(rec.Value);
                 }
             }
             /// <summary>
@@ -249,14 +249,14 @@ namespace Scada.Comm.Devices.AddressBook
             public void FillEmails()
             {
                 if (emails == null)
-                    emails = new List<Email>();
+                    emails = new List<string>();
                 else
                     emails.Clear();
 
                 foreach (ContactRecord rec in ContactRecords)
                 {
                     if (rec is Email)
-                        emails.Add((Email)rec);
+                        emails.Add(rec.Value);
                 }
             }
         }
@@ -380,10 +380,10 @@ namespace Scada.Comm.Devices.AddressBook
             }
         }
 
-    /// <summary>
-    /// Получить или установить родительский узел - он всегда равен null
-    /// </summary>
-    ITreeNode ITreeNode.Parent
+        /// <summary>
+        /// Получить или установить родительский узел - он всегда равен null
+        /// </summary>
+        ITreeNode ITreeNode.Parent
         {
             get
             {

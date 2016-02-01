@@ -48,31 +48,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FrmPhoneNumber.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmPhoneNumber.Designer.cs">
-      <DependentUpon>FrmPhoneNumber.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FrmPhoneGroup.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmPhoneGroup.Designer.cs">
-      <DependentUpon>FrmPhoneGroup.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FrmPhonebook.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmPhonebook.Designer.cs">
-      <DependentUpon>FrmPhonebook.cs</DependentUpon>
-    </Compile>
-    <Compile Include="KpPhrases.cs" />
-    <Compile Include="Phonebook.cs" />
     <Compile Include="KpSmsView.cs" />
     <Compile Include="KpSmsLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -83,34 +61,16 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="FrmPhoneNumber.resx">
-      <DependentUpon>FrmPhoneNumber.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FrmPhoneGroup.resx">
-      <DependentUpon>FrmPhoneGroup.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FrmPhonebook.resx">
-      <DependentUpon>FrmPhonebook.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Content Include="Lang\KpSms.en-GB.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Res\book.png" />
-    <Content Include="Res\copy.gif" />
-    <Content Include="Res\cut.gif" />
-    <Content Include="Res\delete.png" />
-    <Content Include="Res\edit.png" />
-    <Content Include="Res\folder_closed.png" />
-    <Content Include="Res\folder_open.png" />
-    <Content Include="Res\paste.gif" />
-    <Content Include="Res\phone.png" />
+    <ProjectReference Include="..\AddressBook\AddressBook.csproj">
+      <Project>{cb3bc544-51cb-4a40-8cf0-4b769c01f996}</Project>
+      <Name>AddressBook</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
