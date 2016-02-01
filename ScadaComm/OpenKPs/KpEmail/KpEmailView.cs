@@ -24,6 +24,7 @@
  */
 
 using Scada.Comm.Devices.AddressBook;
+using Scada.Comm.Devices.KpEmail;
 
 namespace Scada.Comm.Devices
 {
@@ -83,8 +84,12 @@ namespace Scada.Comm.Devices
         /// </summary>
         public override void ShowProps()
         {
-            // отображение адресной книги
-            FrmAddressBook.ShowDialog(AppDirs);
+            if (Number > 0)
+                // отображение формы настройки свойств КП
+                FrmConfig.ShowDialog(AppDirs, Number);
+            else
+                // отображение адресной книги
+                FrmAddressBook.ShowDialog(AppDirs);
         }
     }
 }

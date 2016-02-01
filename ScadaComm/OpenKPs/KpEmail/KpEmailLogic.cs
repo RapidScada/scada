@@ -267,9 +267,9 @@ namespace Scada.Comm.Devices
             }
             catch (Exception ex)
             {
-                WriteToLog((Localization.UseRussian ?
-                    "Ошибка при отправке письма: " :
-                    "Error sending email: ") + ex.Message);
+                WriteToLog(string.Format(Localization.UseRussian ?
+                    "Ошибка при отправке письма на {0}: {1}" :
+                    "Error sending email to {0}: {1}", message.To.ToString(), ex.Message));
                 return false;
             }
         }

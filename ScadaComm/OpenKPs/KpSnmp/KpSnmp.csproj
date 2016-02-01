@@ -106,7 +106,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Lang\KpSnmp.en-GB.xml" />
+    <Content Include="Lang\KpSnmp.en-GB.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Res\delete.png" />
     <Content Include="Res\edit.png" />
     <Content Include="Res\folder_closed.png" />

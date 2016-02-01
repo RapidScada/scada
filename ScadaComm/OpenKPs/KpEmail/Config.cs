@@ -82,9 +82,11 @@ namespace Scada.Comm.Devices.KpEmail
         /// </summary>
         private void SetToDefault()
         {
-            Host = "";
-            Port = 25;
-            User = "";
+            // Gmail: smtp.gmail.com, 587
+            // Yandex: smtp.yandex.ru, 25
+            Host = "smtp.gmail.com";
+            Port = 587;
+            User = "example@gmail.com";
             UserDisplayName = "Rapid SCADA";
             Password = "";
             EnableSsl = true;
@@ -139,6 +141,7 @@ namespace Scada.Comm.Devices.KpEmail
                 rootElem.AppendElem("Host", Host);
                 rootElem.AppendElem("Port", Port);
                 rootElem.AppendElem("User", User);
+                rootElem.AppendElem("UserDisplayName", UserDisplayName);
                 rootElem.AppendElem("Password", Password);
                 rootElem.AppendElem("EnableSsl", EnableSsl);
 
