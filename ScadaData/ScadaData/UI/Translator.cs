@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2016
  */
 
 using System;
@@ -273,6 +273,12 @@ namespace Scada.UI
                         if (controlInfo.Text != null)
                             label.Text = controlInfo.Text;
                     }
+                    else if (control is TextBox)
+                    {
+                        TextBox textBox = (TextBox)control;
+                        if (controlInfo.Text != null)
+                            textBox.Text = controlInfo.Text;
+                    }
                     else if (control is CheckBox)
                     {
                         CheckBox checkBox = (CheckBox)control;
@@ -296,6 +302,12 @@ namespace Scada.UI
                         Panel panel = (Panel)control;
                         if (controlInfo.ToolTip != null)
                             panel.ToolTip = controlInfo.ToolTip;
+                    }
+                    else if (control is HiddenField)
+                    {
+                        HiddenField hiddenField = (HiddenField)control;
+                        if (controlInfo.Text != null)
+                            hiddenField.Value = controlInfo.Text;
                     }
                 }
 
