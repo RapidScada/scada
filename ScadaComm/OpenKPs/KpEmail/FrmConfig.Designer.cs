@@ -140,9 +140,9 @@
             this.lblHost.AutoSize = true;
             this.lblHost.Location = new System.Drawing.Point(9, 9);
             this.lblHost.Name = "lblHost";
-            this.lblHost.Size = new System.Drawing.Size(68, 13);
+            this.lblHost.Size = new System.Drawing.Size(76, 13);
             this.lblHost.TabIndex = 0;
-            this.lblHost.Text = "POP сервер";
+            this.lblHost.Text = "SMTP сервер";
             // 
             // txtPassword
             // 
@@ -173,6 +173,7 @@
             // 
             // btnCancel
             // 
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Location = new System.Drawing.Point(266, 139);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);

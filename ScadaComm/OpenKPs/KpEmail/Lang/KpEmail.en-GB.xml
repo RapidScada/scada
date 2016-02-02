@@ -2,7 +2,7 @@
 <KpEmailDictionaries>
   <Dictionary key="Scada.Comm.Devices.KpEmail.FrmConfig">
     <Phrase key="this">Email - Device {0} Configuration</Phrase>
-    <Phrase key="lblHost">POP server</Phrase>
+    <Phrase key="lblHost">SMTP server</Phrase>
     <Phrase key="lblPort">Port</Phrase>
     <Phrase key="lblUser">User</Phrase>
     <Phrase key="lblPassword">Password</Phrase>
