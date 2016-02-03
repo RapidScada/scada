@@ -129,13 +129,17 @@ namespace Scada.Data
         /// </summary>
         protected const int FieldDefSize = 110;
         /// <summary>
-        /// Максимальная длина имени поля
+        /// Максимально допустимая длина (количество символов) имени поля
         /// </summary>
         protected const int MaxFieldNameLen = 100;
         /// <summary>
+        /// Максимально допустимая длина данных для сохранения имени поля
+        /// </summary>
+        protected const int MaxFieldNameDataSize = MaxFieldNameLen + 2 /*запись длины*/;
+        /// <summary>
         /// Максимально допустимая длина данных для сохранения строкового значения поля
         /// </summary>
-        protected const int MaxStringDataSize = ushort.MaxValue - 2;
+        protected const int MaxStringDataSize = ushort.MaxValue - 2 /*запись длины*/;
         /// <summary>
         /// Максимально допустимая длина (количество символов) строкового значения поля
         /// </summary>
@@ -287,7 +291,8 @@ namespace Scada.Data
         /// <summary>
         /// Преобразовать и записать в массив байт строку в заданной кодировке
         /// </summary>
-        protected static void ConvertStr(string s, int maxLen, byte[] buffer, int index, Encoding encoding)
+        protected static void ConvertStr(string s, int maxLen, int maxDataSize, 
+            byte[] buffer, int index, Encoding encoding)
         {
             byte[] strData;
             int strDataSize;
@@ -309,7 +314,8 @@ namespace Scada.Data
             Array.Copy(BitConverter.GetBytes((ushort)strDataSize), 0, buffer, index, 2);
             if (strData != null)
                 Array.Copy(strData, 0, buffer, index + 2, strDataSize);
-            Array.Clear(buffer, index + 2 + strDataSize, maxLen - strDataSize);
+            int totalStrDataSize = strDataSize + 2; // размер данных строки с учётом записи длины
+            Array.Clear(buffer, index + totalStrDataSize, maxDataSize - totalStrDataSize);
         }
 
 
@@ -523,7 +529,7 @@ namespace Scada.Data
                         {
                             fieldDef.DataType = DataTypes.String;
                             int maxLen = Math.Min(col.MaxLength, MaxStringLen);
-                            fieldDef.DataSize = Encoding.UTF8.GetMaxByteCount(maxLen);
+                            fieldDef.DataSize = 2 /*запись длины*/ + Encoding.UTF8.GetMaxByteCount(maxLen);
                             fieldDef.MaxStrLen = maxLen;
                         }
 
@@ -539,7 +545,8 @@ namespace Scada.Data
                         Array.Copy(BitConverter.GetBytes((ushort)fieldDef.DataSize), 0, fieldDefBuf, 1, 2);
                         Array.Copy(BitConverter.GetBytes((ushort)fieldDef.MaxStrLen), 0, fieldDefBuf, 3, 2);
                         fieldDefBuf[5] = fieldDef.AllowNull ? (byte)1 : (byte)0;
-                        ConvertStr(fieldDef.Name, MaxFieldNameLen, fieldDefBuf, 6, Encoding.ASCII);
+                        ConvertStr(fieldDef.Name, MaxFieldNameLen, MaxFieldNameDataSize, 
+                            fieldDefBuf, 6, Encoding.ASCII);
 
                         writer.Write(fieldDefBuf);
                     }
@@ -580,7 +587,8 @@ namespace Scada.Data
                                     break;
                                 default:
                                     string strVal = isNull ? "" : val.ToString();
-                                    ConvertStr(strVal, fieldDef.MaxStrLen, rowBuf, bufInd, Encoding.UTF8);
+                                    ConvertStr(strVal, fieldDef.MaxStrLen, fieldDef.DataSize, 
+                                        rowBuf, bufInd, Encoding.UTF8);
                                     break;
                             }
 
