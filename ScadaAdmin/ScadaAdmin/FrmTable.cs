@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,16 +20,17 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2010
- * Modified : 2015
+ * Modified : 2016
  */
 
+using Scada;
+using Scada.UI;
 using System;
 using System.Data;
 using System.Data.SqlServerCe;
 using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
-using Scada;
 using WinControl;
 
 namespace ScadaAdmin
@@ -147,7 +148,7 @@ namespace ScadaAdmin
                 {
                     dataGridView.Rows[rowInd].ErrorText = errMsg;
                     if (errMsg != "" && showError)
-                        ScadaUtils.ShowError(errMsg);
+                        ScadaUiUtils.ShowError(errMsg);
                 }
             }
             else
@@ -361,7 +362,7 @@ namespace ScadaAdmin
         private void FrmTable_Load(object sender, EventArgs e)
         {
             // перевод формы
-            Localization.TranslateForm(this, "ScadaAdmin.FrmTable");
+            Translator.TranslateForm(this, "ScadaAdmin.FrmTable");
             if (bindingNavigatorCountItem.Text.Contains("{0}"))
                 bindingNavigator.CountItemFormat = bindingNavigatorCountItem.Text;
         }
@@ -394,7 +395,7 @@ namespace ScadaAdmin
 
                 bindingSource.DataSource = Table;
                 dataGridView.Columns.AddRange(Table.ExtendedProperties["Columns"] as DataGridViewColumn[]);
-                ScadaUtils.AutoResizeColumns(dataGridView);
+                ScadaUiUtils.AutoResizeColumns(dataGridView);
 
                 SetModified(false);
             }
@@ -701,7 +702,7 @@ namespace ScadaAdmin
 
         private void bindingNavigatorAutoResizeItem_Click(object sender, EventArgs e)
         {
-            ScadaUtils.AutoResizeColumns(dataGridView);
+            ScadaUiUtils.AutoResizeColumns(dataGridView);
         }
     }
 }

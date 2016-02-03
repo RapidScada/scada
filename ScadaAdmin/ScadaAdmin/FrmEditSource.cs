@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,13 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2014
+ * Modified : 2016
  */
 
 using System;
 using System.Windows.Forms;
 using Scada;
+using Scada.UI;
 
 namespace ScadaAdmin
 {
@@ -53,7 +54,7 @@ namespace ScadaAdmin
         private void FrmEditSource_Load(object sender, EventArgs e)
         {
             // перевод формы
-            Localization.TranslateForm(this, "ScadaAdmin.FrmEditSource");
+            Translator.TranslateForm(this, "ScadaAdmin.FrmEditSource");
             // вывод исходного кода
             txtSource.Text = Source; 
         }

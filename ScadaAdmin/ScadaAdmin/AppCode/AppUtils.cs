@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,11 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2010
- * Modified : 2014
+ * Modified : 2016
  */
 
 using Scada;
+using Scada.UI;
 using Utils;
 
 namespace ScadaAdmin
@@ -40,7 +41,7 @@ namespace ScadaAdmin
         public static void ProcError(string message)
         {
             AppData.ErrLog.WriteAction(message, Log.ActTypes.Exception);
-            ScadaUtils.ShowError(message);
+            ScadaUiUtils.ShowError(message);
         }
 
 

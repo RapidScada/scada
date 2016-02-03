@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,14 +20,15 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2010
- * Modified : 2014
+ * Modified : 2016
  */
 
+using Scada;
+using Scada.UI;
 using System;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
-using Scada;
 
 namespace ScadaAdmin
 {
@@ -148,7 +149,7 @@ namespace ScadaAdmin
         private void FrmInCnlProps_Load(object sender, EventArgs e)
         {
             // перевод формы
-            Localization.TranslateForm(this, "ScadaAdmin.FrmInCnlProps");
+            Translator.TranslateForm(this, "ScadaAdmin.FrmInCnlProps");
         }
 
         private void txtCtrlCnlNum_TextChanged(object sender, EventArgs e)
@@ -234,7 +235,7 @@ namespace ScadaAdmin
             }
             else
             {
-                ScadaUtils.ShowError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
             }
         }
     }

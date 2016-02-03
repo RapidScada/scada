@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,11 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2010
- * Modified : 2015
+ * Modified : 2016
  */
 
 using Scada;
+using Scada.UI;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -594,14 +595,14 @@ namespace ScadaAdmin
                 if (Localization.LoadDictionaries(langDir, "ScadaData", out errMsg))
                     CommonPhrases.Init();
                 else
-                    ScadaUtils.ShowError(errMsg);
+                    ScadaUiUtils.ShowError(errMsg);
             }
 
             if (Localization.LoadingRequired(langDir, "ScadaAdmin"))
             {
                 if (Localization.LoadDictionaries(langDir, "ScadaAdmin", out errMsg))
                 {
-                    Localization.TranslateForm(this, "ScadaAdmin.FrmMain", null, contextExpolorer, contextInCnls);
+                    Translator.TranslateForm(this, "ScadaAdmin.FrmMain", null, contextExpolorer, contextInCnls);
                     AppPhrases.Init();
                     winControl.MessageText = AppPhrases.SelectTable;
                     winControl.SaveReqCaption = AppPhrases.SaveReqCaption;
@@ -612,7 +613,7 @@ namespace ScadaAdmin
                 }
                 else
                 {
-                    ScadaUtils.ShowError(errMsg);
+                    ScadaUiUtils.ShowError(errMsg);
                 }
             }
 
@@ -649,7 +650,7 @@ namespace ScadaAdmin
             if (success)
                 Connect(true);
             else
-                ScadaUtils.ShowError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
         }
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -684,7 +685,7 @@ namespace ScadaAdmin
 
                 string errMsg;
                 if (!settings.SaveFormState(out errMsg))
-                    ScadaUtils.ShowError(errMsg);
+                    ScadaUiUtils.ShowError(errMsg);
             }
         }
 
@@ -809,7 +810,7 @@ namespace ScadaAdmin
 
                 // конвертирование базы конфигурации в формат DAT
                 if (ImportExport.PassBase(Tables.TableInfoList, settings.AppSett.BaseDATDir, out msg))
-                    ScadaUtils.ShowInfo(msg);
+                    ScadaUiUtils.ShowInfo(msg);
                 else
                     AppUtils.ProcError(msg);
             }
@@ -820,7 +821,7 @@ namespace ScadaAdmin
             // резервное копирование файла базы конфигурации
             string msg;
             if (ImportExport.BackupSDF(settings.AppSett.BaseSDFFile, settings.AppSett.BackupDir, out msg))
-                ScadaUtils.ShowInfo(msg);
+                ScadaUiUtils.ShowInfo(msg);
             else
                 AppUtils.ProcError(msg);
         }
@@ -831,9 +832,9 @@ namespace ScadaAdmin
             try
             {
                 if (AppData.Compact())
-                    ScadaUtils.ShowInfo(AppPhrases.CompactCompleted);
+                    ScadaUiUtils.ShowInfo(AppPhrases.CompactCompleted);
                 else
-                    ScadaUtils.ShowError(AppPhrases.ConnectionUndefined);
+                    ScadaUiUtils.ShowError(AppPhrases.ConnectionUndefined);
             }
             catch (Exception ex)
             {
@@ -911,7 +912,7 @@ namespace ScadaAdmin
                 // запись культуры для выбранного языка в реестр
                 string errMsg;
                 if (Localization.WriteCulture(FrmLanguage.CultureName, out errMsg))
-                    ScadaUtils.ShowInfo(AppPhrases.LanguageChanged);
+                    ScadaUiUtils.ShowInfo(AppPhrases.LanguageChanged);
                 else
                     AppUtils.ProcError(errMsg);
             }

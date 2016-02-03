@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,14 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2010
- * Modified : 2015
+ * Modified : 2016
  */
 
-using System;
-using System.Windows.Forms;
 using Scada;
+using Scada.UI;
+using System;
 using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace ScadaAdmin
 {
@@ -36,7 +37,7 @@ namespace ScadaAdmin
     /// </summary>
     public partial class FrmAbout : Form
     {
-        private const string Version = "4.5.0.1"; // версия приложения
+        private const string Version = "4.5.0.2"; // версия приложения
         private static FrmAbout frmAbout = null;  // экземпляр формы о программе
         
         private bool inited;    // форма инициализирована
@@ -94,7 +95,7 @@ namespace ScadaAdmin
                 // загрузка изображения и гиперссылки из файлов, если они существуют
                 bool imgLoaded;
                 string errMsg;
-                if (ScadaUtils.LoadAboutForm(AppData.ExeDir, this, activePictureBox, lblWebsite, 
+                if (ScadaUiUtils.LoadAboutForm(AppData.ExeDir, this, activePictureBox, lblWebsite, 
                     out imgLoaded, out linkUrl, out errMsg))
                 {
                     if (imgLoaded)
