@@ -78,6 +78,16 @@ namespace Scada.Comm.Devices
             }
         }
 
+        /// <summary>
+        /// Получить параметры опроса КП по умолчанию
+        /// </summary>
+        public override KPReqParams DefaultReqParams
+        {
+            get
+            {
+                return new KPReqParams() { Timeout = 10000, Delay = 200 };
+            }
+        }
 
         /// <summary>
         /// Отобразить свойства КП
