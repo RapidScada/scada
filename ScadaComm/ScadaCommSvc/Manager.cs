@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,9 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2015
+ * Modified : 2016
  */
 
-using Scada.Client;
 using Scada.Data;
 using System;
 using System.Collections.Generic;
@@ -33,7 +32,6 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Threading;
-using System.Xml;
 using Utils;
 
 namespace Scada.Comm.Svc
@@ -47,7 +45,7 @@ namespace Scada.Comm.Svc
         /// <summary>
         /// Версия приложения
         /// </summary>
-        private const string AppVersion = "4.5.0.4";
+        private const string AppVersion = "4.5.0.5";
         /// <summary>
         /// Имя файла конфигурации
         /// </summary>
