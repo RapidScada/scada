@@ -23,6 +23,7 @@
  * Modified : 2015
  */
 
+using Scada.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -82,14 +83,14 @@ namespace Scada.Comm.Devices.KpModbus
         private void FrmDevProps_Load(object sender, EventArgs e)
         {
             // перевод формы
-            Localization.TranslateForm(this, "Scada.Comm.Devices.KpModbus.FrmDevProps", toolTip);
+            Translator.TranslateForm(this, "Scada.Comm.Devices.KpModbus.FrmDevProps", toolTip);
 
             // вывод заголовка
             Text = string.Format(Text, kpNum);
 
             // установка элементов управления в соответствии со свойствами КП
             string transMode = kpProps.CustomParams.GetStringParam("TransMode", false, "RTU");
-            cbTransMode.SelectItem(transMode, new Dictionary<string, int>() 
+            cbTransMode.SetSelectedItem(transMode, new Dictionary<string, int>() 
                 { { "RTU", 0 }, { "ASCII", 1 }, { "TCP", 2 } }, 0);
             txtDevTemplate.Text = kpProps.CmdLine;
             kpProps.Modified = false;
@@ -134,7 +135,7 @@ namespace Scada.Comm.Devices.KpModbus
             // проверка существования файла шаблона устройства
             if (!File.Exists(appDirs.ConfigDir + txtDevTemplate.Text))
             {
-                ScadaUtils.ShowError(KpPhrases.TemplNotExists);
+                ScadaUiUtils.ShowError(KpPhrases.TemplNotExists);
                 return;
             }
 

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,13 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2014
+ * Modified : 2016
  */
 
+using Scada.Client;
+using Scada.UI;
 using System;
 using System.Windows.Forms;
-using Scada.Client;
 
 namespace Scada.Server.Ctrl
 {
@@ -58,8 +59,8 @@ namespace Scada.Server.Ctrl
             FrmCommSettings frmCommSettings = new FrmCommSettings();
             frmCommSettings.commSettings = commSettings;
             frmCommSettings.txtServerHost.Text = commSettings.ServerHost;
-            frmCommSettings.numServerPort.SetNumericValue(commSettings.ServerPort);
-            frmCommSettings.numServerTimeout.SetNumericValue(commSettings.ServerTimeout);
+            frmCommSettings.numServerPort.SetValue(commSettings.ServerPort);
+            frmCommSettings.numServerTimeout.SetValue(commSettings.ServerTimeout);
             frmCommSettings.txtServerUser.Text = commSettings.ServerUser;
             frmCommSettings.txtServerPwd.Text = commSettings.ServerPwd;
             return frmCommSettings.ShowDialog();
@@ -69,7 +70,7 @@ namespace Scada.Server.Ctrl
         private void FrmCommSettings_Load(object sender, EventArgs e)
         {
             // перевод формы
-            Localization.TranslateForm(this, "Scada.Server.Ctrl.FrmCommSettings");
+            Translator.TranslateForm(this, "Scada.Server.Ctrl.FrmCommSettings");
         }
 
         private void btnOk_Click(object sender, EventArgs e)

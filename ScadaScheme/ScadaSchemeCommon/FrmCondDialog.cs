@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,10 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2014
+ * Modified : 2016
  */
 
+using Scada.UI;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -75,7 +76,7 @@ namespace Scada.Scheme
         private void FrmCondDialog_Load(object sender, EventArgs e)
         {
             // перевод формы
-            Localization.TranslateForm(this, "Scada.Scheme.FrmCondDialog");
+            Translator.TranslateForm(this, "Scada.Scheme.FrmCondDialog");
 
             // вывод выбранных условий
             if (SelectedConds != null)

@@ -25,6 +25,7 @@
 
 using Scada.Comm.Devices.KpModbus;
 using Scada.Data;
+using Scada.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -149,7 +150,7 @@ namespace Scada.Comm.Devices
                 if (Localization.LoadDictionaries(AppDirs.LangDir, "KpModbus", out errMsg))
                     KpPhrases.Init();
                 else
-                    ScadaUtils.ShowError(errMsg);
+                    ScadaUiUtils.ShowError(errMsg);
             }
 
             if (Number > 0)

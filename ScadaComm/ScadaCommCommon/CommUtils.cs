@@ -173,7 +173,8 @@ namespace Scada.Comm
             catch (FormatException) 
             { 
                 throw new FormatException(Localization.UseRussian ? 
-                    "IP address or port is incorrect." : "Некорректный IP-адрес или порт."); 
+                    "Некорректный IP-адрес или порт." : 
+                    "IP address or port is incorrect."); 
             }
         }
 

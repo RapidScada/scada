@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,12 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2015
+ * Modified : 2016
  */
 
+using Scada.UI;
 using System;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace Scada.Comm.Devices.KpModbus
@@ -50,7 +50,7 @@ namespace Scada.Comm.Devices.KpModbus
             /// </summary>
             public Modbus.ElemGroup ElemGroup { get; set; }
             /// <summary>
-            /// Получить или установить адрес
+            /// Получить или установить адрес, начинающийся от 0
             /// </summary>
             public ushort Address { get; set; }
             /// <summary>
@@ -64,8 +64,8 @@ namespace Scada.Comm.Devices.KpModbus
             {
                 get
                 {
-                    int addr = Address + 1;
-                    return addr + (Elem == null || Elem.Length <= 1 ? "" : " - " + (addr + 1));
+                    return (Address + 1).ToString() + 
+                        (Elem == null || Elem.Length <= 1 ? "" : " - " + (Address + Elem.Length));
                 }
             }
             /// <summary>
@@ -171,7 +171,7 @@ namespace Scada.Comm.Devices.KpModbus
             }
             else
             {
-                ScadaUtils.ShowError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
             }
         }
 
@@ -557,7 +557,7 @@ namespace Scada.Comm.Devices.KpModbus
                 }
                 else
                 {
-                    ScadaUtils.ShowError(errMsg);
+                    ScadaUiUtils.ShowError(errMsg);
                     return false;
                 }
             }
@@ -619,7 +619,7 @@ namespace Scada.Comm.Devices.KpModbus
         private void FrmDevTemplate_Load(object sender, EventArgs e)
         {
             // перевод формы
-            Localization.TranslateForm(this, "Scada.Comm.Devices.KpModbus.FrmDevTemplate");
+            Translator.TranslateForm(this, "Scada.Comm.Devices.KpModbus.FrmDevTemplate");
             TranslateTree();
 
             // настройка элементов управления

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,21 +20,21 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2009
- * Modified : 2015
+ * Modified : 2016
  * 
  * Description
  * Sending and receiving SMS messages using AT commands.
  */
 
+using Scada.Comm.Channels;
+using Scada.Data;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Threading;
-using System.Text;
-using Scada.Data;
-using Scada.Comm.Channels;
-using Scada.Comm.Devices.KpSms;
 using System.IO;
+using System.Text;
+using System.Threading;
+using AB = Scada.Comm.Devices.AddressBook;
 
 namespace Scada.Comm.Devices
 {
@@ -89,9 +89,9 @@ namespace Scada.Comm.Devices
         // Условие остановки считывания данных при получении OK или ERROR
         private readonly Connection.TextStopCondition OkErrStopCond = new Connection.TextStopCondition("OK", "ERROR");
 
-        private bool primary;          // основной КП на линии связи, обмен данными с GSM-терминалом
-        private Phonebook phonebook;   // телефонный справочник
-        List<Message> messageList;     // список сообщений, полученных GSM-терминалом
+        private bool primary;               // основной КП на линии связи, обмен данными с GSM-терминалом
+        private AB.AddressBook addressBook; // адресная книга
+        List<Message> messageList;          // список сообщений, полученных GSM-терминалом
 
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace Scada.Comm.Devices
             : base(number)
         {
             primary = false;
-            phonebook = null;
+            addressBook = null;
             messageList = new List<Message>();            
             CanSendCmd = true;
 
@@ -719,9 +719,50 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
+        /// Получить список телефонных номеров получателя, используя адресную книгу
+        /// </summary>
+        private List<string> GetPhoneNumbers(string recipient)
+        {
+            List<string> phoneNumbers = new List<string>();
+
+            if (addressBook == null)
+            {
+                // добавление номера получателя напрямую
+                phoneNumbers.Add(recipient);
+            }
+            else
+            {
+                // поиск телефонных номеров получателей в адресной книге
+                AB.AddressBook.ContactGroup contactGroup = addressBook.FindContactGroup(recipient);
+                if (contactGroup == null)
+                {
+                    AB.AddressBook.Contact contact = addressBook.FindContact(recipient);
+                    if (contact == null)
+                    {
+                        // добавление номера получателя напрямую
+                        phoneNumbers.Add(recipient);
+                    }
+                    else
+                    {
+                        // добавление номеров получателей из контакта
+                        phoneNumbers.AddRange(contact.PhoneNumbers);
+                    }
+                }
+                else
+                {
+                    // добавление номеров получателей из группы контактов
+                    foreach (AB.AddressBook.Contact contact in contactGroup.Contacts)
+                        phoneNumbers.AddRange(contact.PhoneNumbers);
+                }
+            }
+
+            return phoneNumbers;
+        }
+
+        /// <summary>
         /// Отправить SMS по заданным номерам
         /// </summary>
-        private bool SendMessages(string msgText, params string[] phoneNumbers)
+        private bool SendMessages(string msgText, List<string> phoneNumbers)
         {
             bool responseOK = true;
 
@@ -800,50 +841,54 @@ namespace Scada.Comm.Devices
 
             if (cmd.CmdTypeID == BaseValues.CmdTypes.Binary && (cmd.CmdNum == 1 || cmd.CmdNum == 2))
             {
-                string cmdData = new string(Encoding.Default.GetChars(cmd.CmdData));
-                if (cmdData.Length > 0)
+                string cmdDataStr = cmd.GetCmdDataStr();
+                if (cmdDataStr != "")
                 {
                     Connection.WriteToLog = WriteToLog;
                     if (cmd.CmdNum == 1)
                     {
-                        // извлечение адресата и текста сообщения из данных команды
-                        // для основного КП: <телефон или группа>;<текст сообщения> 
+                        // извлечение получателя и текста сообщения из данных команды
+                        // для основного КП: <группа, контакт или телефон>;<текст сообщения> 
                         // для остальных КП: <текст сообщения> 
-                        int scPos = cmdData.IndexOf(';');
-                        string phoneOrGroup = primary ? 
-                            (scPos > 0 ? cmdData.Substring(0, scPos).Trim() : "") : CallNum.Trim();
-                        string msgText = scPos < 0 ? cmdData : scPos + 1 < cmdData.Length ?
-                            cmdData.Substring(scPos + 1).Trim() : "";
+                        string recipient;
+                        string msgText;
 
-                        if (phoneOrGroup == "" || msgText == "")
+                        if (primary)
                         {
-                            WriteToLog(Localization.UseRussian ?
-                                "Телефонный номер, группа или текст сообщения отсутствует" :
-                                "Phone number, group or message text is missing");
+                            int scPos = cmdDataStr.IndexOf(';');
+                            recipient = scPos >= 0 ? cmdDataStr.Substring(0, scPos).Trim() : "";
+                            msgText = scPos >= 0 ? cmdDataStr.Substring(scPos + 1) : cmdDataStr;
                         }
                         else
                         {
+                            recipient = CallNum.Trim();
+                            msgText = cmdDataStr;
+                        }
+
+                        if (recipient == "" || msgText == "")
+                        {
+                            WriteToLog(Localization.UseRussian ?
+                                "Получатель или текст сообщения отсутствует" :
+                                "Recipient or message text is missing");
+                        }
+                        else
+                        {
+                            // формирование списка телефонных номеров для отправки сообщений
+                            List<string> phoneNumbers = GetPhoneNumbers(recipient);
+
                             // отправка сообщений
-                            Phonebook.PhoneGroup phoneGroup;
-                            if (phonebook != null && phonebook.PhoneGroups.TryGetValue(phoneOrGroup, out phoneGroup))
-                            {
-                                if (phoneGroup.PhoneNumbers.Count > 0)
-                                    lastCommSucc = SendMessages(msgText, phoneGroup.GetPhoneNumbers());
-                                else
-                                    WriteToLog(string.Format(Localization.UseRussian ? 
-                                        "Группа \"{0}\" пуста" : 
-                                        "The group \"{0}\" is empty", phoneOrGroup));
-                            }
+                            if (phoneNumbers.Count > 0)
+                                lastCommSucc = SendMessages(msgText, phoneNumbers);
                             else
-                            {
-                                lastCommSucc = SendMessages(msgText, phoneOrGroup);
-                            }
+                                WriteToLog(string.Format(Localization.UseRussian ?
+                                    "\"{0}\" не содержит телефонных номеров" :
+                                    "\"{0}\" does not contain phone numbers", recipient));
                         }
                     }
                     else
                     {
                         // произвольная AT-команда
-                        Connection.WriteLine(cmdData);
+                        Connection.WriteLine(cmdDataStr);
                         Connection.ReadLines(ReqParams.Timeout, OkErrStopCond, out lastCommSucc);
                         Thread.Sleep(ReqParams.Delay);
                     }
@@ -872,31 +917,31 @@ namespace Scada.Comm.Devices
             if (CommonProps.TryGetValue("KpSmsPrimary", out primaryObj))
             {
                 primary = false;
-                phonebook = null;
+                addressBook = null;
             }
             else
             {
                 primary = true;
                 CommonProps.Add("KpSmsPrimary", Caption);
 
-                // загрузка телефонного справочника
-                string fileName = AppDirs.ConfigDir + Phonebook.DefFileName;
+                // загрузка адресной книги
+                string fileName = AppDirs.ConfigDir + AB.AddressBook.DefFileName;
                 if (File.Exists(fileName))
                 {
                     WriteToLog(Localization.UseRussian ?
-                        "Загрузка телефонного справочника" :
-                        "Loading phone book");
-                    phonebook = new Phonebook();
+                        "Загрузка адресной книги" :
+                        "Loading address book");
+                    addressBook = new AB.AddressBook();
                     string errMsg;
-                    if (!phonebook.Load(fileName, out errMsg))
-                        ScadaUtils.ShowError(errMsg);
+                    if (!addressBook.Load(fileName, out errMsg))
+                        WriteToLog(errMsg);
                 }
                 else
                 {
-                    phonebook = null;
+                    addressBook = null;
                     WriteToLog(Localization.UseRussian ?
-                        "Телефонный справочник отсутствует" :
-                        "Phone book is missing");
+                        "Адресная книга отсутствует" :
+                        "Address book is missing");
                 }
             }
         }

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,14 +20,15 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2015
+ * Modified : 2016
  */
 
+using Scada.Data;
+using Scada.UI;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
-using Scada.Data;
 using Utils;
 
 namespace Scada.Server.Ctrl
@@ -95,7 +96,7 @@ namespace Scada.Server.Ctrl
                 string errMsg = AppPhrases.IncorrectFilter + ":\r\n" + ex.Message;
                 if (errLog != null)
                     errLog.WriteAction(errMsg, Log.ActTypes.Exception);
-                ScadaUtils.ShowError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
                 return false;
             }
         }
@@ -133,7 +134,7 @@ namespace Scada.Server.Ctrl
         private void FrmBaseTableView_Load(object sender, EventArgs e)
         {
             // перевод формы
-            Localization.TranslateForm(this, "Scada.Server.Ctrl.FrmBaseTableView");
+            Translator.TranslateForm(this, "Scada.Server.Ctrl.FrmBaseTableView");
             if (lblCount.Text.Contains("{0}"))
                 bindingNavigator.CountItemFormat = lblCount.Text;
 
@@ -143,7 +144,7 @@ namespace Scada.Server.Ctrl
             Text += " - " + baseAdapter.TableName + tableTitle;
             dataGridView.AutoGenerateColumns = true;
             bindingSource.DataSource = dataTable;
-            ScadaUtils.AutoResizeColumns(dataGridView);
+            ScadaUiUtils.AutoResizeColumns(dataGridView);
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
@@ -157,7 +158,7 @@ namespace Scada.Server.Ctrl
                 try { dataTable.DefaultView.RowFilter = txtFilter.Text; }
                 catch { txtFilter.Text = ""; }
                 bindingSource.DataSource = dataTable;
-                ScadaUtils.AutoResizeColumns(dataGridView);
+                ScadaUiUtils.AutoResizeColumns(dataGridView);
             }
         }
 
@@ -172,7 +173,7 @@ namespace Scada.Server.Ctrl
                 }
                 catch
                 {
-                    ScadaUtils.ShowError(AppPhrases.IncorrectFilter);
+                    ScadaUiUtils.ShowError(AppPhrases.IncorrectFilter);
                 }
             }
         }

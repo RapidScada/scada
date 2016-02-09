@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,15 +20,14 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2010
- * Modified : 2015
+ * Modified : 2016
  */
 
+using Scada;
+using Scada.UI;
 using System;
-using System.Data;
 using System.IO;
 using System.Windows.Forms;
-using Scada;
-using Scada.Data;
 
 namespace ScadaAdmin
 {
@@ -63,7 +62,7 @@ namespace ScadaAdmin
         private void FrmExport_Load(object sender, EventArgs e)
         {
             // перевод формы
-            Localization.TranslateForm(this, "ScadaAdmin.FrmExport");
+            Translator.TranslateForm(this, "ScadaAdmin.FrmExport");
             openFileDialog.Title = AppPhrases.ChooseBaseTableFile;
             openFileDialog.Filter = AppPhrases.BaseTableFileFilter;
 
@@ -126,7 +125,7 @@ namespace ScadaAdmin
                 int maxID = gbIDs.Enabled && chkFinalID.Checked ? Convert.ToInt32(numFinalID.Value) : int.MaxValue;
                 string msg;
                 if (ImportExport.ExportTable(tableInfo, txtFileName.Text, minID, maxID, out msg))
-                    ScadaUtils.ShowInfo(msg);
+                    ScadaUiUtils.ShowInfo(msg);
                 else
                     AppUtils.ProcError(msg);
             }

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2014
+ * Modified : 2015
  */
 
 using System;
@@ -426,7 +426,7 @@ namespace Scada.Scheme
                         if (dynamicPicture != null)
                         {
                             dynamicPicture.ToolTip = ReadStringProp(elemNode, "ToolTip");
-                            dynamicPicture.ImageOnHover = ReadImageNameProp(schemeNode, "ImageNameOnHover");
+                            dynamicPicture.ImageOnHover = ReadImageNameProp(elemNode, "ImageOnHoverName");
                             dynamicPicture.BorderColorOnHover = ReadStringProp(elemNode, "BorderColorOnHover");
                             inCnlNum = ReadIntProp(elemNode, "InCnlNum");
                             ctrlCnlNum = ReadIntProp(elemNode, "CtrlCnlNum");

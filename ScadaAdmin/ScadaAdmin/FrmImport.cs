@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,19 +20,15 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2010
- * Modified : 2015
+ * Modified : 2016
  */
 
+using Scada;
+using Scada.UI;
 using System;
-using System.Data;
-using System.Data.SqlServerCe;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
 using System.Windows.Forms;
-using Scada;
-using Scada.Data;
-using Utils;
 
 namespace ScadaAdmin
 {
@@ -73,7 +69,7 @@ namespace ScadaAdmin
         private void FrmImport_Load(object sender, EventArgs e)
         {
             // перевод формы
-            Localization.TranslateForm(this, "ScadaAdmin.FrmImport");
+            Translator.TranslateForm(this, "ScadaAdmin.FrmImport");
 
             // заполнение выпадающего списка таблиц
             int selInd = 0;
@@ -178,7 +174,7 @@ namespace ScadaAdmin
 
                 // отображение сообщения о результате импорта
                 if (importOK)
-                    ScadaUtils.ShowInfo(msg);
+                    ScadaUiUtils.ShowInfo(msg);
                 else
                     AppUtils.ProcError(msg);
 

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<AddressBookDictionaries>
+  <Dictionary key="Scada.Comm.Devices.AddressBook">
+    <Phrase key="LoadAddressBookError">Error loading address book</Phrase>
+    <Phrase key="SaveAddressBookError">Error saving address book</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.AddressBook.FrmAddressBook">
+    <Phrase key="this">Address Book</Phrase>
+    <Phrase key="btnAddContactGroup.ToolTip">Add contact group</Phrase>
+    <Phrase key="btnAddContact.ToolTip">Add contact</Phrase>
+    <Phrase key="btnAddPhoneNumber.ToolTip">Add phone number</Phrase>
+    <Phrase key="btnAddEmail.ToolTip">Add email</Phrase>
+    <Phrase key="btnEdit.ToolTip">Edit</Phrase>
+    <Phrase key="btnDelete.ToolTip">Delete</Phrase>
+    <Phrase key="btnSave">Save</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
+    <Phrase key="AddressBookNode">Address book</Phrase>
+    <Phrase key="NewContactGroup">New group</Phrase>
+    <Phrase key="NewContact">New contact</Phrase>
+    <Phrase key="NewPhoneNumber">New phone number</Phrase>
+    <Phrase key="NewEmail">New email</Phrase>
+    <Phrase key="ContactGroupExists">The contact group already exists.</Phrase>
+    <Phrase key="ContactExists">The contact already exists in the group.</Phrase>
+    <Phrase key="PhoneNumberExists">The contact already contains the specified phone number.</Phrase>
+    <Phrase key="EmailExists">The contact already contains the specified email.</Phrase>
+    <Phrase key="IncorrectEmail">Email is incorrect.</Phrase>
+    <Phrase key="EmptyValueNotAllowed">Empty value is not allowed.</Phrase>
+    <Phrase key="SavePhonebookConfirm">The address book has been modified. Save the changes?</Phrase>
+  </Dictionary>
+</AddressBookDictionaries>

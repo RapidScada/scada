@@ -22,8 +22,8 @@
   <Dictionary key="Scada.Web.Diag.WFrmDiag">
     <Phrase key="this">SCADA - Diagram</Phrase>
     <Phrase key="lblReqDTCaption">Generated</Phrase>
-    <Phrase key="divLoadDataMsg">Data loading</Phrase>
-    <Phrase key="divLoadDataErrMsg">Data loading error</Phrase>
+    <Phrase key="lblLoadDataMsg">Data loading</Phrase>
+    <Phrase key="lblLoadDataErrMsg">Data loading error</Phrase>
     <Phrase key="lblNotSupported">You need to upgrade browser to display diagram.</Phrase>
     <Phrase key="divResetZoom.ToolTip">Reset zoom</Phrase>
     <Phrase key="btnSelectDiagCnls">Select channels</Phrase>

@@ -87,6 +87,7 @@
   <ItemGroup>
     <Content Include="Lang\KpModbus.en-GB.xml">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Res\blank.png" />
     <Content Include="Res\blank_shift.png" />

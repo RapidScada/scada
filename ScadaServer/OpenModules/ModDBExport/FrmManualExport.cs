@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,11 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2016
  */
 
 using Scada.Client;
+using Scada.UI;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -100,7 +101,7 @@ namespace Scada.Server.Modules.DBExport
             }
             set
             {
-                numCurDataCtrlCnlNum.SetNumericValue(value);
+                numCurDataCtrlCnlNum.SetValue(value);
             }
         }
 
@@ -115,7 +116,7 @@ namespace Scada.Server.Modules.DBExport
             }
             set
             {
-                numArcDataCtrlCnlNum.SetNumericValue(value);
+                numArcDataCtrlCnlNum.SetValue(value);
             }
         }
 
@@ -130,7 +131,7 @@ namespace Scada.Server.Modules.DBExport
             }
             set
             {
-                numEventsCtrlCnlNum.SetNumericValue(value);
+                numEventsCtrlCnlNum.SetValue(value);
             }
         }
 
@@ -139,7 +140,7 @@ namespace Scada.Server.Modules.DBExport
         {
             // перевод формы
             if (!Localization.UseRussian)
-                Localization.TranslateForm(this, "Scada.Server.Modules.DBExport.FrmManualExport");
+                Translator.TranslateForm(this, "Scada.Server.Modules.DBExport.FrmManualExport");
 
             // настройка элементов управления
             if (cbDataSource.SelectedIndex < 0 && cbDataSource.Items.Count > 0)
@@ -176,9 +177,9 @@ namespace Scada.Server.Modules.DBExport
             byte[] cmdData = Encoding.Default.GetBytes(cmdDataStr);
 
             if (ServerComm.SendBinaryCommand(0, ctrlCnlNum, cmdData, out result))
-                ScadaUtils.ShowInfo(CommonPhrases.CmdSentSuccessfully);
+                ScadaUiUtils.ShowInfo(CommonPhrases.CmdSentSuccessfully);
             else
-                ScadaUtils.ShowError(ServerComm.ErrMsg);
+                ScadaUiUtils.ShowError(ServerComm.ErrMsg);
         }
     }
 }

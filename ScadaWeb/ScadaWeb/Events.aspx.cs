@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,12 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2014
+ * Modified : 2016
  */
 
-using System;
 using Scada.Client;
+using Scada.UI;
+using System;
 
 namespace Scada.Web
 {
@@ -40,7 +41,7 @@ namespace Scada.Web
             ScadaUtils.DisablePageCache(Response);
 
             // перевод веб-страницы
-            Localization.TranslatePage(this, "Scada.Web.WFrmEvents");
+            Translator.TranslatePage(this, "Scada.Web.WFrmEvents");
 
             // получение данных пользователя
             UserData userData = UserData.GetUserData();

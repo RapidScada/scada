@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,11 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2016
  */
 
 using Scada.Client;
+using Scada.UI;
 using System;
 using System.Drawing;
 using System.IO;
@@ -268,7 +269,7 @@ namespace Scada.Server.Modules.DBExport
                 }
                 else
                 {
-                    ScadaUtils.ShowError(errMsg);
+                    ScadaUiUtils.ShowError(errMsg);
                     return false;
                 }
             }
@@ -286,9 +287,9 @@ namespace Scada.Server.Modules.DBExport
             if (!Localization.UseRussian)
             {
                 if (Localization.LoadDictionaries(appDirs.LangDir, "ModDBExport", out errMsg))
-                    Localization.TranslateForm(this, "Scada.Server.Modules.DBExport.FrmDBExportConfig");
+                    Translator.TranslateForm(this, "Scada.Server.Modules.DBExport.FrmDBExportConfig");
                 else
-                    ScadaUtils.ShowError(errMsg);
+                    ScadaUiUtils.ShowError(errMsg);
             }
 
             // настройка элементов управления
@@ -297,7 +298,7 @@ namespace Scada.Server.Modules.DBExport
             // загрузка конфигурации
             config = new Config(appDirs.ConfigDir);
             if (File.Exists(config.FileName) && !config.Load(out errMsg))
-                ScadaUtils.ShowError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
 
             // создание копии конфигурации
             configCopy = config.Clone();

@@ -10,7 +10,7 @@
         function DoSelect(txtID, txtVal)
         {            
             var openerWin = window.opener;
-            if (openerWin != null && openerWin.closed) {
+            if (openerWin != null && !openerWin.closed) {
                 var txt = openerWin.document.getElementById(txtID);
                 if (txt != null) 
                     txt.value = txtVal;

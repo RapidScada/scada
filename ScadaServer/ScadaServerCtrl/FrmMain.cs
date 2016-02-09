@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,13 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2015
+ * Modified : 2016
  */
 
+using Scada.Client;
+using Scada.Data;
+using Scada.Server.Modules;
+using Scada.UI;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -33,9 +37,6 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using Scada.Client;
-using Scada.Data;
-using Scada.Server.Modules;
 using Utils;
 
 namespace Scada.Server.Ctrl
@@ -375,7 +376,7 @@ namespace Scada.Server.Ctrl
             changing = true;
 
             // общие параметры
-            numTcpPort.SetNumericValue(settings.TcpPort);
+            numTcpPort.SetValue(settings.TcpPort);
             chkUseAD.Checked = settings.UseAD;
             txtLdapPath.Text = settings.LdapPath;
 
@@ -395,16 +396,16 @@ namespace Scada.Server.Ctrl
 
             ind = Array.IndexOf<int>(WriteMinPerItemVals, settings.WriteMinPer);
             cbWriteMinPer.SelectedIndex = ind >= 0 ? ind : 0;
-            numStoreMinPer.SetNumericValue(settings.StoreMinPer);
+            numStoreMinPer.SetValue(settings.StoreMinPer);
             chkWriteMin.Checked = settings.WriteMin;
             chkWriteMinCopy.Checked = settings.WriteMinCopy;
 
             cbWriteHrPer.SelectedIndex = settings.WriteHrPer == 1800 /*30 минут*/ ? 0 : 1;
-            numStoreHrPer.SetNumericValue(settings.StoreHrPer);
+            numStoreHrPer.SetValue(settings.StoreHrPer);
             chkWriteHr.Checked = settings.WriteHr;
             chkWriteHrCopy.Checked = settings.WriteHrCopy;
 
-            numStoreEvPer.SetNumericValue(settings.StoreEvPer);
+            numStoreEvPer.SetValue(settings.StoreEvPer);
             chkWriteEv.Checked = settings.WriteEv;
             chkWriteEvCopy.Checked = settings.WriteEvCopy;
 
@@ -495,13 +496,13 @@ namespace Scada.Server.Ctrl
                 settings = newSettings;
                 btnSettingsApply.Enabled = false;
                 btnSettingsCancel.Enabled = false;
-                ScadaUtils.ShowInfo(AppPhrases.RestartNeeded);
+                ScadaUiUtils.ShowInfo(AppPhrases.RestartNeeded);
                 return true;
             }
             else
             {
                 errLog.WriteAction(errMsg);
-                ScadaUtils.ShowError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
                 return false;
             }
         }
@@ -554,7 +555,7 @@ namespace Scada.Server.Ctrl
                 {
                     string errMsg = AppPhrases.GetFileListError + ":\r\n" + ex.Message;
                     errLog.WriteAction(errMsg);
-                    ScadaUtils.ShowError(errMsg);
+                    ScadaUiUtils.ShowError(errMsg);
                 }
             }
 
@@ -611,7 +612,7 @@ namespace Scada.Server.Ctrl
         {
             string errMsg = CommonPhrases.UnhandledException + ":\r\n" + e.Exception.Message;
             errLog.WriteAction(errMsg, Log.ActTypes.Exception);
-            ScadaUtils.ShowError(errMsg);
+            ScadaUiUtils.ShowError(errMsg);
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
@@ -641,7 +642,7 @@ namespace Scada.Server.Ctrl
                 if (Localization.LoadDictionaries(appDirs.LangDir, "ScadaServer", out errMsg))
                 {
                     ModPhrases.InitFromDictionaries();
-                    Localization.TranslateForm(this, "Scada.Server.Ctrl.FrmMain", toolTip, cmsNotify);
+                    Translator.TranslateForm(this, "Scada.Server.Ctrl.FrmMain", toolTip, cmsNotify);
                     AppPhrases.Init();
                     TranslateTree();
                     notifyIcon.Text = AppPhrases.MainFormTitle;
@@ -660,7 +661,7 @@ namespace Scada.Server.Ctrl
 
                 if (!createdNew)
                 {
-                    ScadaUtils.ShowInfo(AppPhrases.SecondInstanceClosed);
+                    ScadaUiUtils.ShowInfo(AppPhrases.SecondInstanceClosed);
                     Close();
                     return;
                 }
@@ -715,7 +716,7 @@ namespace Scada.Server.Ctrl
                 ShowForm();
                 errMsg = sbError.ToString().TrimEnd();
                 errLog.WriteAction(errMsg);
-                ScadaUtils.ShowError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
             }
             else
             {
@@ -761,7 +762,7 @@ namespace Scada.Server.Ctrl
                 ShowForm();
                 string errMsg = AppPhrases.ServiceStartFailed + ":\r\n" + ex.Message;
                 errLog.WriteAction(errMsg);
-                ScadaUtils.ShowError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
             }
         }
 
@@ -777,7 +778,7 @@ namespace Scada.Server.Ctrl
                 ShowForm();
                 string errMsg = AppPhrases.ServiceStopFailed + ":\r\n" + ex.Message;
                 errLog.WriteAction(errMsg);
-                ScadaUtils.ShowError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
             }
         }
 
@@ -795,7 +796,7 @@ namespace Scada.Server.Ctrl
                 ShowForm();
                 string errMsg = AppPhrases.ServiceRestartFailed + ":\r\n" + ex.Message;
                 errLog.WriteAction(errMsg);
-                ScadaUtils.ShowError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
             }
         }
 
@@ -860,8 +861,8 @@ namespace Scada.Server.Ctrl
             // обновление журналов
             if (WindowState == FormWindowState.Normal && lastNode == nodeStats)
             {
-                lbAppState.RefreshListBox(stateFileName, true, ref stateFileAge);
-                lbAppLog.RefreshListBox(logFileName, false, ref logFileAge);
+                lbAppState.ReloadItems(stateFileName, true, ref stateFileAge);
+                lbAppLog.ReloadItems(logFileName, false, ref logFileAge);
             }
         }
 
@@ -1034,7 +1035,7 @@ namespace Scada.Server.Ctrl
                 if (ind >= 0)
                 {
                     lbModDll.SelectedIndex = ind;
-                    ScadaUtils.ShowInfo(AppPhrases.ModuleAlreadyAdded);
+                    ScadaUiUtils.ShowInfo(AppPhrases.ModuleAlreadyAdded);
                 }
                 else
                 {
@@ -1163,7 +1164,7 @@ namespace Scada.Server.Ctrl
                 if (!commSettings.SaveToFile(appDirs.ConfigDir + CommSettings.DefFileName, out errMsg))
                 {
                     errLog.WriteAction(errMsg);
-                    ScadaUtils.ShowError(errMsg);
+                    ScadaUiUtils.ShowError(errMsg);
                 }
             }
         }
@@ -1216,14 +1217,14 @@ namespace Scada.Server.Ctrl
             int cnlNum;
             if (!int.TryParse(cbSrezCnlNum.Text, out cnlNum))
             {
-                ScadaUtils.ShowError(AppPhrases.IncorrectCnlNum);
+                ScadaUiUtils.ShowError(AppPhrases.IncorrectCnlNum);
                 return;
             }
 
             double cnlVal = ScadaUtils.StrToDouble(txtSrezCnlVal.Text);
             if (double.IsNaN(cnlVal))
             {
-                ScadaUtils.ShowError(AppPhrases.IncorrectCnlVal);
+                ScadaUiUtils.ShowError(AppPhrases.IncorrectCnlVal);
                 return;
             }
 
@@ -1243,11 +1244,11 @@ namespace Scada.Server.Ctrl
                 cbSrezCnlNum.Items.Remove(cnlNumStr);
                 cbSrezCnlNum.Items.Insert(0, cnlNumStr);
                 cbSrezCnlNum.Text = cnlNumStr;
-                ScadaUtils.ShowInfo(CommonPhrases.DataSentSuccessfully);
+                ScadaUiUtils.ShowInfo(CommonPhrases.DataSentSuccessfully);
             }
             else
             {
-                ScadaUtils.ShowError(ServerComm.ErrMsg);
+                ScadaUiUtils.ShowError(ServerComm.ErrMsg);
             }
         }
 
@@ -1264,14 +1265,14 @@ namespace Scada.Server.Ctrl
             double oldCnlVal = ScadaUtils.StrToDouble(txtEvOldCnlVal.Text);
             if (double.IsNaN(oldCnlVal))
             {
-                ScadaUtils.ShowError(AppPhrases.IncorrectOldCnlVal);
+                ScadaUiUtils.ShowError(AppPhrases.IncorrectOldCnlVal);
                 return;
             }
 
             double newCnlVal = ScadaUtils.StrToDouble(txtEvNewCnlVal.Text);
             if (double.IsNaN(newCnlVal))
             {
-                ScadaUtils.ShowError(AppPhrases.IncorrectNewCnlVal);
+                ScadaUiUtils.ShowError(AppPhrases.IncorrectNewCnlVal);
                 return;
             }
 
@@ -1292,9 +1293,9 @@ namespace Scada.Server.Ctrl
             
             bool result;
             if (ServerComm.SendEvent(ev, out result))
-                ScadaUtils.ShowInfo(CommonPhrases.EventSentSuccessfully);
+                ScadaUiUtils.ShowInfo(CommonPhrases.EventSentSuccessfully);
             else
-                ScadaUtils.ShowError(ServerComm.ErrMsg);
+                ScadaUiUtils.ShowError(ServerComm.ErrMsg);
         }
 
         private void btnCheckEvent_Click(object sender, EventArgs e)
@@ -1306,9 +1307,9 @@ namespace Scada.Server.Ctrl
             int userID = decimal.ToInt32(numEvUserID2.Value);
 
             if (ServerComm.CheckEvent(userID, evDate, evNum, out result))
-                ScadaUtils.ShowInfo(CommonPhrases.EventCheckSentSuccessfully);
+                ScadaUiUtils.ShowInfo(CommonPhrases.EventCheckSentSuccessfully);
             else
-                ScadaUtils.ShowError(ServerComm.ErrMsg);
+                ScadaUiUtils.ShowError(ServerComm.ErrMsg);
         }
 
         private void rbCmdType_CheckedChanged(object sender, EventArgs e)
@@ -1338,7 +1339,7 @@ namespace Scada.Server.Ctrl
                 double cmdVal = ScadaUtils.StrToDouble(txtCmdVal.Text);
                 if (double.IsNaN(cmdVal))
                 {
-                    ScadaUtils.ShowError(AppPhrases.IncorrectCmdVal);
+                    ScadaUiUtils.ShowError(AppPhrases.IncorrectCmdVal);
                     return;
                 }
 
@@ -1353,7 +1354,7 @@ namespace Scada.Server.Ctrl
                 {
                     if (!ScadaUtils.HexToBytes(cmdDataStr.Trim(), out cmdData))
                     {
-                        ScadaUtils.ShowError(AppPhrases.IncorrectHexCmdData);
+                        ScadaUiUtils.ShowError(AppPhrases.IncorrectHexCmdData);
                         return;
                     }
                 }
@@ -1364,7 +1365,7 @@ namespace Scada.Server.Ctrl
                 else
                 {
                     cmdData = null;
-                    ScadaUtils.ShowError(AppPhrases.CmdDataRequired);
+                    ScadaUiUtils.ShowError(AppPhrases.CmdDataRequired);
                     return;
                 }
 
@@ -1377,9 +1378,9 @@ namespace Scada.Server.Ctrl
             }
 
             if (sendOk)
-                ScadaUtils.ShowInfo(CommonPhrases.CmdSentSuccessfully);
+                ScadaUiUtils.ShowInfo(CommonPhrases.CmdSentSuccessfully);
             else
-                ScadaUtils.ShowError(ServerComm.ErrMsg);
+                ScadaUiUtils.ShowError(ServerComm.ErrMsg);
         }
 
         private void lbLog_KeyDown(object sender, KeyEventArgs e)

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,14 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2015
+ * Modified : 2016
  */
 
+using Scada.Data;
+using Scada.UI;
 using System;
 using System.Data;
 using System.Windows.Forms;
-using Scada.Data;
 using Utils;
 
 namespace Scada.Server.Ctrl
@@ -78,7 +79,7 @@ namespace Scada.Server.Ctrl
                     int intVal;
                     if (!int.TryParse(valStr, out intVal))
                     {
-                        ScadaUtils.ShowError(CommonPhrases.IntegerRequired);
+                        ScadaUiUtils.ShowError(CommonPhrases.IntegerRequired);
                         return false;
                     }
                 }
@@ -87,7 +88,7 @@ namespace Scada.Server.Ctrl
                     double doubleVal;
                     if (!double.TryParse(valStr, out doubleVal))
                     {
-                        ScadaUtils.ShowError(CommonPhrases.RealRequired);
+                        ScadaUiUtils.ShowError(CommonPhrases.RealRequired);
                         return false;
                     }
                 }
@@ -111,7 +112,7 @@ namespace Scada.Server.Ctrl
                 string errMsg = AppPhrases.SaveSrezTableError + ":\r\n" + ex.Message;
                 if (errLog != null)
                     errLog.WriteAction(errMsg, Log.ActTypes.Exception);
-                ScadaUtils.ShowError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
                 return false;
             }
         }
@@ -193,7 +194,7 @@ namespace Scada.Server.Ctrl
                 string errMsg = AppPhrases.LoadSrezTableError + ":\r\n" + ex.Message;
                 if (errLog != null)
                     errLog.WriteAction(errMsg, Log.ActTypes.Exception);
-                ScadaUtils.ShowError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
                 return false;
             }
             finally
@@ -234,7 +235,7 @@ namespace Scada.Server.Ctrl
         private void FrmSrezTableEdit_Load(object sender, EventArgs e)
         {
             // перевод формы
-            Localization.TranslateForm(this, "Scada.Server.Ctrl.FrmSrezTableEdit");
+            Translator.TranslateForm(this, "Scada.Server.Ctrl.FrmSrezTableEdit");
             if (lblCount1.Text.Contains("{0}"))
                 bindingNavigator1.CountItemFormat = lblCount1.Text;
             if (lblCount2.Text.Contains("{0}"))
@@ -296,7 +297,7 @@ namespace Scada.Server.Ctrl
                 }
                 catch
                 {
-                    ScadaUtils.ShowError(AppPhrases.IncorrectFilter);
+                    ScadaUiUtils.ShowError(AppPhrases.IncorrectFilter);
                 }
             }
         }

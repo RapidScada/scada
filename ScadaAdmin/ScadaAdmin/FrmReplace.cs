@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2010
- * Modified : 2014
+ * Modified : 2016
  */
 
 using System;
@@ -29,6 +29,7 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using Scada;
+using Scada.UI;
 
 namespace ScadaAdmin
 {
@@ -328,7 +329,7 @@ namespace ScadaAdmin
             if (cnt == rowCnt && !found)
             {
                 if (showMsg)
-                    ScadaUtils.ShowInfo(completeMsg);
+                    ScadaUiUtils.ShowInfo(completeMsg);
                 completeMsg = AppPhrases.ValueNotFound;
             }
 
@@ -387,7 +388,7 @@ namespace ScadaAdmin
         private void FrmReplace_Load(object sender, EventArgs e)
         {
             // перевод формы
-            Localization.TranslateForm(this, "ScadaAdmin.FrmReplace");
+            Translator.TranslateForm(this, "ScadaAdmin.FrmReplace");
 
             if (frmTable != null)
             {
@@ -576,9 +577,9 @@ namespace ScadaAdmin
                 while (found);
 
                 if (cnt > 0)
-                    ScadaUtils.ShowInfo(string.Format(AppPhrases.ReplaceCount, cnt));
+                    ScadaUiUtils.ShowInfo(string.Format(AppPhrases.ReplaceCount, cnt));
                 else if (updated)
-                    ScadaUtils.ShowInfo(completeMsg);
+                    ScadaUiUtils.ShowInfo(completeMsg);
             }
         }
 

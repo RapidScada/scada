@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,15 +20,16 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2010
- * Modified : 2014
+ * Modified : 2016
  */
 
+using Scada;
+using Scada.UI;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlServerCe;
 using System.Windows.Forms;
-using Scada;
 using Utils;
 
 namespace ScadaAdmin
@@ -48,7 +49,7 @@ namespace ScadaAdmin
         private void FrmCloneCnls_Load(object sender, EventArgs e)
         {
             // перевод формы
-            Localization.TranslateForm(this, "ScadaAdmin.FrmCloneCnls");
+            Translator.TranslateForm(this, "ScadaAdmin.FrmCloneCnls");
         }
 
         private void FrmCloneCnls_Shown(object sender, EventArgs e)
@@ -137,7 +138,7 @@ namespace ScadaAdmin
                     string infoMsg = 
                         (cloneInCnls ? AppPhrases.CloneInCnlsCompleted : AppPhrases.CloneCtrlCnlsCompleted) + "\r\n" + 
                         string.Format(AppPhrases.AddedCnlsCount, updRows);
-                    ScadaUtils.ShowInfo(updRows > 0 ? infoMsg + AppPhrases.RefreshRequired : infoMsg);
+                    ScadaUiUtils.ShowInfo(updRows > 0 ? infoMsg + AppPhrases.RefreshRequired : infoMsg);
                 }
                 catch (Exception ex)
                 {
@@ -157,7 +158,7 @@ namespace ScadaAdmin
                         "\r\n" + Tables.TranlateErrorMessage(ex.Message, table);
 
                     AppData.ErrLog.WriteAction(errMsg, Log.ActTypes.Exception);
-                    ScadaUtils.ShowError(updRows > 0 ? errMsg + AppPhrases.RefreshRequired : errMsg);
+                    ScadaUiUtils.ShowError(updRows > 0 ? errMsg + AppPhrases.RefreshRequired : errMsg);
                 }
             }
             catch (Exception ex)
