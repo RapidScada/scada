@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaWebDictionaries>
+  <Dictionary key="Scada.Web.Plugins">
+    <Phrase key="ViewsMenuItem">Представления</Phrase>
+    <Phrase key="ReportsMenuItem">Отчёты</Phrase>
+    <Phrase key="AdminMenuItem">Администрирование</Phrase>
+    <Phrase key="ConfigMenuItem">Конфигурация</Phrase>
+    <Phrase key="AboutMenuItemText">О программе</Phrase>
+  </Dictionary>
+</ScadaWebDictionaries>

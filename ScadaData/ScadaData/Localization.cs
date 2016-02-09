@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2014
- * Modified : 2015
+ * Modified : 2016
  */
 
 using System;
@@ -78,6 +78,15 @@ namespace Scada
             public string GetPhrase(string key, string defaultVal)
             {
                 return Phrases.ContainsKey(key) ? Phrases[key] : defaultVal;
+            }
+            /// <summary>
+            /// Получить пустую фразу для заданного ключа
+            /// </summary>
+            public static string GetEmptyPhrase(string key)
+            {
+                return string.Format(UseRussian ?
+                    "Фраза с ключом {0} не загружена." :
+                    "The phrase with the key {0} is not loaded.", key);
             }
         }
 
@@ -526,7 +535,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Получить имя файла словаря
+        /// Получить имя файла словаря в зависимости от используемой культуры
         /// </summary>
         public static string GetDictionaryFileName(string directory, string fileNamePrefix)
         {
@@ -541,55 +550,6 @@ namespace Scada
         public static bool LoadingRequired(string directory, string fileNamePrefix)
         {
             return !Localization.UseRussian || File.Exists(GetDictionaryFileName(directory, fileNamePrefix));
-        }
-
-
-        /// <summary>
-        /// Перевести форму, используя заданный словарь
-        /// </summary>
-        [Obsolete("Use Translator class")]
-        public static void TranslateForm(WinForms.Form form, string dictName, 
-            WinForms.ToolTip toolTip = null, params WinForms.ContextMenuStrip[] contextMenus)
-        {
-            Dict dict;
-            if (form != null && Dictionaries.TryGetValue(dictName, out dict))
-            {
-                Dictionary<string, ControlInfo> controlInfoDict = GetControlInfoDict(dict);
-
-                // перевод заголовка формы
-                ControlInfo controlInfo;
-                if (controlInfoDict.TryGetValue("this", out controlInfo) && controlInfo.Text != null)
-                    form.Text = controlInfo.Text;
-
-                // перевод элементов управления
-                TranslateWinControls(form.Controls, toolTip, controlInfoDict);
-
-                // перевод контекстных меню
-                if (contextMenus != null)
-                    TranslateWinControls(contextMenus, null, controlInfoDict);
-            }
-        }
-
-        /// <summary>
-        /// Перевести веб-страницу, используя заданный словарь
-        /// </summary>
-        [Obsolete("Use Translator class")]
-        public static void TranslatePage(Page page, string dictName)
-        {
-
-            Dict dict;
-            if (page != null && Dictionaries.TryGetValue(dictName, out dict))
-            {
-                Dictionary<string, ControlInfo> controlInfoDict = GetControlInfoDict(dict);
-
-                // перевод заголовка страницы
-                ControlInfo controlInfo;
-                if (controlInfoDict.TryGetValue("this", out controlInfo) && controlInfo.Text != null)
-                    page.Title = controlInfo.Text;
-
-                // перевод элементов управления
-                TranslateWebControls(page.Controls, controlInfoDict);
-            }
         }
 
         /// <summary>
