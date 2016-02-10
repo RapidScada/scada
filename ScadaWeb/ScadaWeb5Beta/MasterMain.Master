@@ -1,0 +1,23 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MasterMain.master.cs" Inherits="Scada.Web.MasterMain" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <link href="~/css/masterMain.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="<%= ResolveClientUrl("~/js/jquery-2.2.0.min.js") %>"></script>
+    <link href="~/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <asp:ContentPlaceHolder ID="cphMainHead" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form runat="server">
+    <div>
+        <asp:ContentPlaceHolder ID="cptMainContent" runat="server">
+        
+        </asp:ContentPlaceHolder>
+    </div>
+    </form>
+</body>
+</html>

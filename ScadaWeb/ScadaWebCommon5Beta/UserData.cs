@@ -54,7 +54,7 @@ namespace Scada.Web
         /// <summary>
         /// Получить имя пользователя
         /// </summary>
-        public string UserLogin { get; private set; }
+        public string UserName { get; private set; }
 
         /// <summary>
         /// Получить идентификатор пользователя в базе конфигурации
@@ -92,7 +92,7 @@ namespace Scada.Web
         /// </summary>
         private void Clear()
         {
-            UserLogin = "";
+            UserName = "";
             UserID = 0;
             RoleName = "";
             LoggedOn = false;
