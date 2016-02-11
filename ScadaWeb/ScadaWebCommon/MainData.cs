@@ -1511,9 +1511,9 @@ namespace Scada.Web
         /// </summary>
         public string GetRoleName(int roleID)
         {
-            string roleName = ServerComm.GetRoleName(roleID);
+            string roleName = BaseValues.Roles.GetRoleName(roleID);
 
-            if ((int)ServerComm.Roles.Custom <= roleID && roleID < (int)ServerComm.Roles.Err)
+            if (BaseValues.Roles.Custom <= roleID && roleID < BaseValues.Roles.Err)
             {
                 // обновление таблиц базы конфигурации при необходимости
                 RefreshBase();

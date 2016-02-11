@@ -122,7 +122,7 @@ namespace Scada.Data
         /// <summary>
         /// Фильтры таблицы событий
         /// </summary>
-        [FlagsAttribute]
+        [Flags]
         public enum EventFilters
         {
             /// <summary>

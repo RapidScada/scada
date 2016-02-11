@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2015
+ * Modified : 2016
  */
 
 #undef DETAILED_LOG // выводить в журнал подробную информацию об обмене данными со SCADA-Сервером
@@ -1908,6 +1908,7 @@ namespace Scada.Client
         /// <summary>
         /// Получить роль пользователя по её идентификатору
         /// </summary>
+        [Obsolete("Get rid of using ServerComm.Roles. Use BaseValues.Roles instead")]
         public static Roles GetRole(int roleID)
         {
             if ((int)Roles.Admin <= roleID && roleID <= (int)Roles.App)
@@ -1918,38 +1919,6 @@ namespace Scada.Client
                 return Roles.Err;
             else
                 return Roles.Disabled;
-        }
-        
-        /// <summary>
-        /// Получить наименование роли по её идентификатору
-        /// </summary>
-        public static string GetRoleName(int roleID)
-        {
-            return GetRoleName(GetRole(roleID));
-        }
-
-        /// <summary>
-        /// Получить наименование роли
-        /// </summary>
-        public static string GetRoleName(Roles role)
-        {
-            switch (role)
-            {
-                case Roles.Admin:
-                    return Localization.UseRussian ? "Администратор" : "Administrator";
-                case Roles.Dispatcher:
-                    return Localization.UseRussian ? "Диспетчер" : "Dispatcher";
-                case Roles.Guest:
-                    return Localization.UseRussian ? "Гость" : "Guest";
-                case Roles.App:
-                    return Localization.UseRussian ? "Приложение" : "Application";
-                case Roles.Custom:
-                    return Localization.UseRussian ? "Пользовательская роль" : "Custom role";
-                case Roles.Err:
-                    return Localization.UseRussian ? "Ошибка" : "Error";
-                default: // Roles.Disabled
-                    return Localization.UseRussian ? "Отключен" : "Disabled";
-            }
         }
     }
 }
