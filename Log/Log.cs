@@ -240,16 +240,16 @@ namespace Utils
         /// <summary>
         /// Записать исключение в журнал
         /// </summary>
-        public void WriteException(Exception ex, string errDescr = "", params object[] args)
+        public void WriteException(Exception ex, string errMsg = "", params object[] args)
         {
-            if (string.IsNullOrEmpty(errDescr))
+            if (string.IsNullOrEmpty(errMsg))
             {
                 WriteAction(ex.ToString(), ActTypes.Exception);
             }
             else
             {
                 WriteAction(new StringBuilder()
-                    .Append(args == null || args.Length == 0 ? errDescr : string.Format(errDescr, args))
+                    .Append(args == null || args.Length == 0 ? errMsg : string.Format(errMsg, args))
                     .Append(":").Append(Environment.NewLine)
                     .Append(ex.ToString()).ToString(), 
                     ActTypes.Exception);
