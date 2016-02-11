@@ -43,21 +43,21 @@ namespace Utils
         public enum ActTypes
         {
             /// <summary>
-            /// Исключение
+            /// Информация
             /// </summary>
-            Exception,
-            /// <summary>
-            /// Ошибка
-            /// </summary>
-            Error,
+            Information,
             /// <summary>
             /// Действие
             /// </summary>
             Action,
             /// <summary>
-            /// Информация
+            /// Ошибка
             /// </summary>
-            Information
+            Error,
+            /// <summary>
+            /// Исключение
+            /// </summary>
+            Exception,
         }
 
         /// <summary>
@@ -85,10 +85,10 @@ namespace Utils
         /// </summary>
         public const int DefCapacity = 1048576;
 
-        private Formats format;      // формат
-        private StreamWriter writer; // объект для записи в файл
-        private FileInfo fileInfo;   // информация о файле
-        private Object writeLock;    // объект для синхронизации обращения к журналу из разных потоков
+        private readonly Formats format;   // формат
+        private readonly object writeLock; // объект для синхронизации обращения к журналу из разных потоков
+        private StreamWriter writer;       // объект для записи в файл
+        private FileInfo fileInfo;         // информация о файле
 
 
         /// <summary>
@@ -97,9 +97,9 @@ namespace Utils
         protected Log()
         {
             format = Formats.Simple;
+            writeLock = new object();
             writer = null;
             fileInfo = null;
-            writeLock = new object();
 
             FileName = "";
             Encoding = Encoding.Default;
@@ -209,14 +209,6 @@ namespace Utils
 
 
         /// <summary>
-        /// Записать действие типа информация в журнал
-        /// </summary>
-        public void WriteAction(string text)
-        {
-            WriteAction(text, ActTypes.Information);
-        }
-
-        /// <summary>
         /// Записать действие определённого типа в журнал
         /// </summary>
         public void WriteAction(string text, ActTypes actType)
@@ -235,6 +227,30 @@ namespace Utils
                     .Append(ActTypeToStr(actType)).Append("> ")
                     .Append(text).ToString());
             }
+        }
+
+        /// <summary>
+        /// Записать информационное действие в журнал
+        /// </summary>
+        public void WriteInfo(string text)
+        {
+            WriteAction(text, ActTypes.Information);
+        }
+
+        /// <summary>
+        /// Записать обычное действие в журнал
+        /// </summary>
+        public void WriteAction(string text)
+        {
+            WriteAction(text, ActTypes.Action);
+        }
+
+        /// <summary>
+        /// Записать ошибку в журнал
+        /// </summary>
+        public void WriteError(string text)
+        {
+            WriteAction(text, ActTypes.Error);
         }
 
         /// <summary>
@@ -259,7 +275,7 @@ namespace Utils
         /// <summary>
         /// Записать строку в журнал
         /// </summary>
-        public void WriteLine(string text)
+        public void WriteLine(string text = "")
         {
             try
             {
@@ -285,14 +301,6 @@ namespace Utils
                 Close();
                 Monitor.Exit(writeLock);
             }
-        }
-
-        /// <summary>
-        /// Записать пустую строку в журнал
-        /// </summary>
-        public void WriteLine()
-        {
-            WriteLine("");
         }
 
         /// <summary>

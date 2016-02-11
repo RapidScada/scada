@@ -51,7 +51,9 @@
     <Compile Include="Shell\MenuItem.cs" />
     <Compile Include="Shell\StandardMenuItems.cs" />
     <Compile Include="UserData.cs" />
+    <Compile Include="UserRights.cs" />
     <Compile Include="WebPhrases.cs" />
+    <Compile Include="WebSettings.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

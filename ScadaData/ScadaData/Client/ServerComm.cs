@@ -213,7 +213,7 @@ namespace Scada.Client
 
 
         /// <summary>
-        /// Конструктор
+        /// Конструктор, ограничивающий создание объекта без параметров
         /// </summary>
         protected ServerComm()
         {
@@ -231,6 +231,7 @@ namespace Scada.Client
         /// Конструктор с установкой настроек соединения со SCADA-Сервером
         /// </summary>
         /// <remarks>Используется журнал работы Scada.Client.AppData.Log</remarks>
+        [Obsolete("ILog interface and LogStub class should be developed")]
         public ServerComm(CommSettings commSettings)
             : this()
         {
@@ -253,6 +254,7 @@ namespace Scada.Client
         /// <summary>
         /// Конструктор с установкой настроек соединения со SCADA-Сервером и метода записи в журнал работы
         /// </summary>
+        [Obsolete("ILog interface should be developed")]
         public ServerComm(CommSettings commSettings, WriteToLogDelegate writeToLog)
             : this()
         {

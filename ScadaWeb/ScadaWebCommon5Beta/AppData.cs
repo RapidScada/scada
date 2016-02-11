@@ -23,6 +23,8 @@
  * Modified : 2016
  */
 
+using Scada.Client;
+using System;
 using System.Text;
 using System.Web;
 using Utils;
@@ -30,8 +32,8 @@ using Utils;
 namespace Scada.Web
 {
     /// <summary>
-    /// Common data of the application
-    /// <para>Общие данные приложения</para>
+    /// Common data of the web application
+    /// <para>Общие данные веб-приложения</para>
     /// </summary>
     public static class AppData
 	{
@@ -40,8 +42,11 @@ namespace Scada.Web
         /// </summary>
         public const string LogFileName = "ScadaWeb.log";
 
-        private static readonly object appDataLock;  // объект для синхронизации доступа к данным приложения
-        
+        private static readonly object appDataLock; // объект для синхронизации доступа к данным приложения
+
+        private static DateTime scadaDataDictAge;   // время изменения файла словаря ScadaData
+        private static DateTime scadaWebDictAge;    // время изменения файла словаря ScadaWeb
+
 
         /// <summary>
         /// Статический конструктор
@@ -50,9 +55,16 @@ namespace Scada.Web
 		{
             appDataLock = new object();
 
+            scadaDataDictAge = DateTime.MinValue;
+            scadaWebDictAge = DateTime.MinValue;
+
             Inited = false;
             AppDirs = new AppDirs();
             Log = new Log(Log.Formats.Full);
+            WebSettings = new WebSettings();
+            ServerComm = new ServerComm(WebSettings.CommSettings, Log);
+            ClientCache clientCache = new ClientCache(ServerComm, Log);
+            DataAccess = new DataAccess(clientCache, Log);
         }
 
 
@@ -71,11 +83,59 @@ namespace Scada.Web
         /// </summary>
         public static Log Log { get; private set; }
 
+        /// <summary>
+        /// Получить настройки веб-приложения
+        /// </summary>
+        public static WebSettings WebSettings { get; private set; }
 
         /// <summary>
-        /// Инициализировать общие данные приложения
+        /// Получить объект для обмена данными с сервером
         /// </summary>
-        public static void InitAppData()
+        public static ServerComm ServerComm { get; private set; }
+
+        /// <summary>
+        /// Получить объект для подотобезопасного доступа к данным кеша клиентов
+        /// </summary>
+        public static DataAccess DataAccess { get; private set; }
+
+
+        /// <summary>
+        /// Обновить словари веб-приложения
+        /// </summary>
+        private static void RefreshDictionaries()
+        {
+            // обновление словаря ScadaData
+            bool reloaded;
+            string msg;
+            bool refreshOK = Localization.RefreshDictionary(AppDirs.LangDir, "ScadaData", 
+                ref scadaDataDictAge, out reloaded, out msg);
+            Log.WriteAction(msg, refreshOK ? Log.ActTypes.Action : Log.ActTypes.Error);
+
+            if (reloaded)
+                CommonPhrases.Init();
+
+            // обновление словаря ScadaWeb
+            refreshOK = Localization.RefreshDictionary(AppDirs.LangDir, "ScadaWeb", 
+                ref scadaWebDictAge, out reloaded, out msg);
+            Log.WriteAction(msg, refreshOK ? Log.ActTypes.Action : Log.ActTypes.Error);
+
+            if (reloaded)
+                WebPhrases.Init();
+        }
+        
+        /// <summary>
+        /// Обновить настройки веб-приложения
+        /// </summary>
+        private static void RefreshWebSettings(out bool reloaded, out bool commSettingsChanged)
+        {
+            reloaded = false;
+            commSettingsChanged = false;
+        }
+
+        /// <summary>
+        /// Инициализировать общие данные веб-приложения
+        /// </summary>
+        public static void Init()
         {
             ScadaWebUtils.CheckSessionExists();
 
@@ -93,9 +153,12 @@ namespace Scada.Web
                     Log.Encoding = Encoding.UTF8;
                     Log.WriteBreak();
                     Log.WriteAction(Localization.UseRussian ? 
-                        "Инициализация общих данных приложения" :
-                        "Initialize common application data", Log.ActTypes.Action);
+                        "Инициализация общих данных веб-приложения" :
+                        "Initialize common web application data");
                 }
+
+                // обновление словарей веб-приложения
+                RefreshDictionaries();
             }
         }
     }

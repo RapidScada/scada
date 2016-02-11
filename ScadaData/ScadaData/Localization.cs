@@ -510,26 +510,26 @@ namespace Scada
         /// Обновить словарь, если он изменился
         /// </summary>
         public static bool RefreshDictionary(string directory, string fileNamePrefix, ref DateTime fileAge, 
-            out bool updated, out string errMsg)
+            out bool reloaded, out string errMsg)
         {
             string fileName = Localization.GetDictionaryFileName(directory, fileNamePrefix);
             DateTime newFileAge = ScadaUtils.GetLastWriteTime(fileName);
 
             if (fileAge == newFileAge)
             {
-                updated = false;
+                reloaded = false;
                 errMsg = "";
                 return true;
             }
             else if (Localization.LoadDictionaries(fileName, out errMsg))
             {
                 fileAge = newFileAge;
-                updated = true;
+                reloaded = true;
                 return true;
             }
             else
             {
-                updated = false;
+                reloaded = false;
                 return false;
             }
         }

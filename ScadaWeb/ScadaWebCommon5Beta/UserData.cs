@@ -85,7 +85,13 @@ namespace Scada.Web
         /// Получить IP-адрес пользователя
         /// </summary>
         public string IpAddress { get; private set; }
-        
+
+
+        /// <summary>
+        /// Получить права пользователя
+        /// </summary>
+        public UserRights UserRights { get; private set; }
+
 
         /// <summary>
         /// Очистить данные пользователя
@@ -98,6 +104,8 @@ namespace Scada.Web
             LoggedOn = false;
             LogonDT = DateTime.MinValue;
             IpAddress = "";
+
+            UserRights = null;
         }
 
 

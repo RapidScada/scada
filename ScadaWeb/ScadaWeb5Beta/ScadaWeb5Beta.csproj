@@ -66,6 +66,7 @@
     <Content Include="css\masterMain.min.css">
       <DependentUpon>masterMain.css</DependentUpon>
     </Content>
+    <Content Include="Global.asax" />
     <Content Include="images\favicon.ico" />
     <Content Include="js\jquery-2.2.0.min.js" />
     <Content Include="js\views.js" />
@@ -76,6 +77,9 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -120,6 +124,12 @@
     <Folder Include="log\" />
     <Folder Include="plugins\" />
     <Folder Include="src\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ScadaWebCommon5Beta\ScadaWebCommon5Beta.csproj">
+      <Project>{baf45c4f-1be3-4810-9ea6-3b53894e32bf}</Project>
+      <Name>ScadaWebCommon5Beta</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

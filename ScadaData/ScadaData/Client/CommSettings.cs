@@ -174,10 +174,11 @@ namespace Scada.Client
                 return false;
             }
         }
-        
+
         /// <summary>
         /// Загрузить настройки соединения со SCADA-Сервером из файла
         /// </summary>
+        [Obsolete]
         public void LoadFromFile(string fileName, Log log)
         {
             if (log == null)
