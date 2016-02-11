@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2005
- * Modified : 2015
+ * Modified : 2016
  */
 
 using System;
@@ -221,12 +221,39 @@ namespace Utils
         /// </summary>
         public void WriteAction(string text, ActTypes actType)
         {
-            string nowStr = DateTime.Now.ToString(DateTimeFormat);
+            StringBuilder sb = new StringBuilder(DateTime.Now.ToString(DateTimeFormat));
+
             if (format == Formats.Simple)
-                WriteLine(nowStr + " " + text);
+            {
+                WriteLine(sb.Append(" ").Append(text).ToString());
+            }
             else
-                WriteLine(new StringBuilder(nowStr).Append(" <").Append(CompName).Append("><").Append(UserName).
-                    Append("><").Append(ActTypeToStr(actType)).Append("> ").Append(text).ToString());
+            {
+                WriteLine(sb.Append(" <")
+                    .Append(CompName).Append("><")
+                    .Append(UserName).Append("><")
+                    .Append(ActTypeToStr(actType)).Append("> ")
+                    .Append(text).ToString());
+            }
+        }
+
+        /// <summary>
+        /// Записать исключение в журнал
+        /// </summary>
+        public void WriteException(Exception ex, string errDescr = "", params object[] args)
+        {
+            if (string.IsNullOrEmpty(errDescr))
+            {
+                WriteAction(ex.ToString(), ActTypes.Exception);
+            }
+            else
+            {
+                WriteAction(new StringBuilder()
+                    .Append(args == null || args.Length == 0 ? errDescr : string.Format(errDescr, args))
+                    .Append(":").Append(Environment.NewLine)
+                    .Append(ex.ToString()).ToString(), 
+                    ActTypes.Exception);
+            }
         }
 
         /// <summary>
