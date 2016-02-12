@@ -38,7 +38,7 @@ namespace Scada.Client
     /// </summary>
     /// <remarks>All the returned data are not thread safe
     /// <para>Все возвращаемые данные не являются потокобезопасными</para></remarks>
-    public class ClientCache
+    public class DataCache
     {
         /// <summary>
         /// Объект для обмена данными со SCADA-Сервером
@@ -53,14 +53,14 @@ namespace Scada.Client
         /// <summary>
         /// Конструктор, ограничивающий создание объекта без параметров
         /// </summary>
-        protected ClientCache()
+        protected DataCache()
         {
         }
 
         /// <summary>
         /// Конструктор
         /// </summary>
-        public ClientCache(ServerComm serverComm, Log log)
+        public DataCache(ServerComm serverComm, Log log)
         {
             if (serverComm == null)
                 throw new ArgumentNullException("serverComm");

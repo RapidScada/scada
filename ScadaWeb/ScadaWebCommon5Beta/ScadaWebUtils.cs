@@ -35,19 +35,29 @@ namespace Scada.Web
     public static class ScadaWebUtils
     {
         /// <summary>
-        /// Проверить, что существуют объекты HTTP-контекста, сессии и запроса.
-        /// Если объекты не существуют, то вызывается исключение
+        /// Проверить HTTP-контекст и его основные свойства на null
         /// </summary>
-        public static void CheckSessionExists()
+        public static void CheckHttpContext(bool checkCookies = false)
         {
-            if (HttpContext.Current == null)
-                throw new InvalidOperationException("HTTP context does not exist.");
+            const string msg = "HTTP context or its properties are undefined.";
+            HttpContext context = HttpContext.Current;
 
-            if (HttpContext.Current.Session == null)
-                throw new InvalidOperationException("HTTP session object does not exist.");
+            if (context == null)
+                throw new ArgumentNullException("context", msg);
+            if (context.Session == null)
+                throw new ArgumentNullException("context.Session", msg);
+            if (context.Request == null)
+                throw new ArgumentNullException("context.Request", msg);
+            if (context.Response == null)
+                throw new ArgumentNullException("context.Response", msg);
 
-            if (HttpContext.Current.Request == null)
-                throw new InvalidOperationException("HTTP request object does not exist.");
+            if (checkCookies)
+            {
+                if (context.Request.Cookies == null)
+                    throw new ArgumentNullException("context.Request.Cookies", msg);
+                if (context.Response.Cookies == null)
+                    throw new ArgumentNullException("context.Response.Cookies", msg);
+            }
         }
 
         /// <summary>

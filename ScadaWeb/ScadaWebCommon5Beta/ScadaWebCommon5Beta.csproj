@@ -52,6 +52,7 @@
     <Compile Include="Shell\StandardMenuItems.cs" />
     <Compile Include="UserData.cs" />
     <Compile Include="UserRights.cs" />
+    <Compile Include="ViewCache.cs" />
     <Compile Include="WebPhrases.cs" />
     <Compile Include="WebSettings.cs" />
   </ItemGroup>

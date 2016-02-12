@@ -929,7 +929,7 @@ namespace Scada.Client
         /// Запросить правильность имени и пароля пользователя от SCADA-Сервера, получить его роль.
         /// Возвращает успешность выполнения запроса
         /// </summary>
-        public bool CheckUser(string login, string password, out int roleID)
+        public bool CheckUser(string username, string password, out int roleID)
         {
             Monitor.Enter(tcpLock);
             bool result = false;
@@ -944,7 +944,7 @@ namespace Scada.Client
                     tcpClient.ReceiveTimeout = commSettings.ServerTimeout;
 
                     // запрос правильности имени и пароля пользователя, его роли
-                    byte userLen = login == null ? (byte)0 : (byte)login.Length;
+                    byte userLen = username == null ? (byte)0 : (byte)username.Length;
                     byte pwdLen = password == null ? (byte)0 : (byte)password.Length;
                     byte[] buf = new byte[5 + userLen + pwdLen];
 
@@ -953,7 +953,7 @@ namespace Scada.Client
                     buf[2] = 0x01;
                     buf[3] = userLen;
                     if (userLen > 0)
-                        Array.Copy(Encoding.Default.GetBytes(login), 0, buf, 4, userLen);
+                        Array.Copy(Encoding.Default.GetBytes(username), 0, buf, 4, userLen);
                     buf[4 + userLen] = pwdLen;
                     if (pwdLen > 0)
                         Array.Copy(Encoding.Default.GetBytes(password), 0, buf, 5 + userLen, pwdLen);

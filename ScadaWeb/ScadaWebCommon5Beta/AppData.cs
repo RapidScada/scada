@@ -24,6 +24,7 @@
  */
 
 using Scada.Client;
+using Scada.Data;
 using System;
 using System.Text;
 using System.Web;
@@ -63,8 +64,9 @@ namespace Scada.Web
             Log = new Log(Log.Formats.Full);
             WebSettings = new WebSettings();
             ServerComm = new ServerComm(WebSettings.CommSettings, Log);
-            ClientCache clientCache = new ClientCache(ServerComm, Log);
-            DataAccess = new DataAccess(clientCache, Log);
+            DataCache dataCache = new DataCache(ServerComm, Log);
+            DataAccess = new DataAccess(dataCache, Log);
+            ViewCache = new ViewCache(ServerComm, Log);
         }
 
 
@@ -94,9 +96,14 @@ namespace Scada.Web
         public static ServerComm ServerComm { get; private set; }
 
         /// <summary>
-        /// Получить объект для подотобезопасного доступа к данным кеша клиентов
+        /// Получить объект для потокобезопасного доступа к данным кеша клиентов
         /// </summary>
         public static DataAccess DataAccess { get; private set; }
+
+        /// <summary>
+        /// Получить кэш представлений
+        /// </summary>
+        public static ViewCache ViewCache { get; private set; }
 
 
         /// <summary>
@@ -132,13 +139,21 @@ namespace Scada.Web
             commSettingsChanged = false;
         }
 
+
         /// <summary>
         /// Инициализировать общие данные веб-приложения
         /// </summary>
         public static void Init()
         {
-            ScadaWebUtils.CheckSessionExists();
-
+            ScadaWebUtils.CheckHttpContext();
+            Init(HttpContext.Current.Request.PhysicalApplicationPath);
+        }
+        
+        /// <summary>
+        /// Инициализировать общие данные веб-приложения
+        /// </summary>
+        public static void Init(string webAppDir)
+        {
             lock (appDataLock)
             {
                 if (!Inited)
@@ -146,19 +161,79 @@ namespace Scada.Web
                     Inited = true;
 
                     // инициализация директорий приложения
-                    AppDirs.Init(HttpContext.Current.Request.PhysicalApplicationPath);
+                    AppDirs.Init(webAppDir);
 
                     // настройка журнала приложения
                     Log.FileName = AppDirs.LogDir + LogFileName;
                     Log.Encoding = Encoding.UTF8;
                     Log.WriteBreak();
-                    Log.WriteAction(Localization.UseRussian ? 
+                    Log.WriteAction(Localization.UseRussian ?
                         "Инициализация общих данных веб-приложения" :
                         "Initialize common web application data");
                 }
 
-                // обновление словарей веб-приложения
-                RefreshDictionaries();
+                // обновление данных веб-приложения
+                Refresh();
+            }
+        }
+
+        /// <summary>
+        /// Обновить данные веб-приложения
+        /// </summary>
+        public static void Refresh()
+        {
+            lock (appDataLock)
+            {
+                if (Inited)
+                {
+                    // обновление словарей
+                    RefreshDictionaries();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Проверить правильность имени и пароля пользователя
+        /// </summary>
+        public static bool CheckUser(string username, string password, bool checkPassword, 
+            out int roleID, out string errMsg)
+        {
+            if (checkPassword && string.IsNullOrEmpty(password))
+            {
+                roleID = BaseValues.Roles.Err;
+                errMsg = WebPhrases.WrongPassword;
+                return false;
+            }
+            else
+            {
+                if (ServerComm.CheckUser(username, checkPassword ? password : null, out roleID))
+                {
+                    if (roleID == BaseValues.Roles.Disabled)
+                    {
+                        errMsg = WebPhrases.NoRightsL;
+                        return false;
+                    }
+                    else if (roleID == BaseValues.Roles.App)
+                    {
+                        errMsg = WebPhrases.IllegalRole;
+                        return false;
+                    }
+                    else if (roleID == BaseValues.Roles.Err)
+                    {
+                        errMsg = WebPhrases.WrongPassword;
+                        return false;
+                    }
+                    else
+                    {
+                        errMsg = "";
+                        return true;
+                    }
+                }
+                else
+                {
+                    errMsg = WebPhrases.ServerUnavailable;
+                    return false;
+                }
             }
         }
     }

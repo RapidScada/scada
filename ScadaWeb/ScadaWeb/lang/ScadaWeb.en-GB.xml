@@ -56,7 +56,7 @@
     <Phrase key="CommSettingsNotLoaded">server communication settings is not loaded</Phrase>
     <Phrase key="WrongPassword">user name or password is incorrect</Phrase>
     <Phrase key="NoRightsL">insufficient rights</Phrase>
-    <Phrase key="IllegalRole">недопустимая роль пользователя</Phrase>
+    <Phrase key="IllegalRole">illegal user role</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.RepHrEvTable">
     <Phrase key="NoReportData">No data for report generating.</Phrase>

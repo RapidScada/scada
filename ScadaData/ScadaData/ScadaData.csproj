@@ -52,7 +52,7 @@
   <ItemGroup>
     <Compile Include="Client\BaseTables.cs" />
     <Compile Include="Client\BaseView.cs" />
-    <Compile Include="Client\ClientCache.cs" />
+    <Compile Include="Client\DataCache.cs" />
     <Compile Include="Client\DataAccess.cs" />
     <Compile Include="Client\DataFormatter.cs" />
     <Compile Include="Data\Command.cs" />

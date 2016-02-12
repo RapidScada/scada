@@ -113,19 +113,62 @@ namespace Scada.Web
         /// Выполнить вход пользователя в систему
         /// </summary>
         /// <remarks>Если пароль равен null, то он не проверяется</remarks>
-        public bool Login(string login, string password, out string errMsg)
+        public bool Login(string username, string password, out string errMsg)
         {
-            errMsg = "Not implemented";
-            return false;
+            username = username == null ? "" : username.Trim();
+            int roleID;
+
+            if (AppData.CheckUser(username, password, password != null, out roleID, out errMsg))
+            {
+                // заполнение свойств пользователя
+                UserName = username;
+                UserID = AppData.DataAccess.GetUserID(username);
+                RoleID = roleID;
+                RoleName = AppData.DataAccess.GetRoleName(RoleID);
+                LoggedOn = true;
+                LogonDT = DateTime.Now;
+
+                UserRights = new UserRights();
+                //UserRights.InitUserRights(roleID, ViewSettings);
+
+                //ViewCache = new Web.ViewCache();
+                //ViewCache.InitViewCache(ViewSettings);
+
+                if (password == null)
+                {
+                    AppData.Log.WriteAction(string.Format(Localization.UseRussian ?
+                        "Вход в систему без пароля: {0} ({1}). IP-адрес: {2}" :
+                        "Login without a password: {0} ({1}). IP address: {2}", 
+                        username, RoleName, IpAddress));
+                }
+                else
+                {
+                    AppData.Log.WriteAction(string.Format(Localization.UseRussian ?
+                        "Вход в систему: {0} ({1}). IP-адрес: {2}" :
+                        "Login: {0} ({1}). IP address: {2}", 
+                        username, RoleName, IpAddress));
+                }
+
+                return true;
+            }
+            else
+            {
+                Logout();
+                AppData.Log.WriteError(string.Format(Localization.UseRussian ?
+                    "Неудачная попытка входа в систему: {0}{1}. IP-адрес: {2}" :
+                    "Unsuccessful login attempt: {0}{1}. IP address: {2}",
+                    username == "" ? "" : username + " - ", errMsg, IpAddress));
+                return false;
+            }
         }
 
         /// <summary>
         /// Выполнить вход пользователя в систему без проверки пароля
         /// </summary>
-        public bool Login(string login)
+        public bool Login(string username)
         {
             string errMsg;
-            return Login(login, null, out errMsg);
+            return Login(username, null, out errMsg);
         }
 
         /// <summary>
@@ -143,12 +186,15 @@ namespace Scada.Web
         /// <remarks>Для веб-приложения данные пользователя сохраняются в сессии</remarks>
         public static UserData GetUserData()
         {
-            ScadaWebUtils.CheckSessionExists();
+            ScadaWebUtils.CheckHttpContext();
             HttpSessionState session = HttpContext.Current.Session;
             UserData userData = session["UserData"] as UserData;
 
             if (userData == null)
             {
+                // обновление данных веб-приложения
+                AppData.Refresh();
+
                 // создание данных пользователя
                 userData = new UserData();
                 session.Add("UserData", userData);

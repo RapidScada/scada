@@ -25,6 +25,7 @@
 
 using Scada.Data;
 using System;
+using System.Data;
 using Utils;
 
 namespace Scada.Client
@@ -40,11 +41,16 @@ namespace Scada.Client
         /// <summary>
         /// Кеш данных
         /// </summary>
-        protected readonly ClientCache clientCache;
+        protected readonly DataCache dataCache;
         /// <summary>
         /// Журнал
         /// </summary>
         protected readonly Log log;
+
+        /// <summary>
+        /// Объект для синхронизации доступа к таблицам базы конфигурации
+        /// </summary>
+        protected readonly object baseLock;
         /// <summary>
         /// Объект для синхронизации достапа к свойствам входных каналов
         /// </summary>
@@ -65,20 +71,50 @@ namespace Scada.Client
         /// <summary>
         /// Конструктор
         /// </summary>
-        public DataAccess(ClientCache clientCache, Log log)
+        public DataAccess(DataCache dataCache, Log log)
         {
-            if (clientCache == null)
+            if (dataCache == null)
                 throw new ArgumentNullException("clientCache");
             if (log == null)
                 throw new ArgumentNullException("log");
 
-            this.clientCache = clientCache;
+            this.dataCache = dataCache;
             this.log = log;
+
+            baseLock = new object();
             cnlPropsLock = new object();
             ctrlCnlPropsLock = new object();
         }
-        
-        
+
+
+        /// <summary>
+        /// Получить наименование роли по идентификатору из базы конфигурации
+        /// </summary>
+        protected string GetRoleNameFromBase(int roleID, string defaultRoleName)
+        {
+            lock (baseLock)
+            {
+                dataCache.RefreshBaseTables();
+
+                try
+                {
+                    DataTable tblRole = dataCache.BaseTables.RightTable;
+                    tblRole.DefaultView.RowFilter = "RoleID = " + roleID;
+                    return tblRole.DefaultView.Count > 0 ?
+                        (string)tblRole.DefaultView[0]["Name"] :
+                        defaultRoleName;
+                }
+                catch (Exception ex)
+                {
+                    log.WriteException(ex, Localization.UseRussian ?
+                        "Ошибка при получении наименования роли по идентификатору" :
+                        "Error getting role name by ID");
+                    return defaultRoleName;
+                }
+            }
+        }
+
+
         /// <summary>
         /// Получить свойства входного канала по его номеру
         /// </summary>
@@ -90,7 +126,7 @@ namespace Scada.Client
                 {
                     // сохранение ссылки на свойства каналов,
                     // т.к. свойство CnlProps может быть изменено из другого потока
-                    InCnlProps[] cnlProps = clientCache.CnlProps;
+                    InCnlProps[] cnlProps = dataCache.CnlProps;
 
                     // поиск свойств заданного канала
                     int ind = Array.BinarySearch(cnlProps, cnlNum, InCnlProps.IntComp);
@@ -117,7 +153,7 @@ namespace Scada.Client
                 {
                     // сохранение ссылки на свойства каналов,
                     // т.к. свойство CtrlCnlProps может быть изменено из другого потока
-                    CtrlCnlProps[] ctrlCnlProps = clientCache.CtrlCnlProps;
+                    CtrlCnlProps[] ctrlCnlProps = dataCache.CtrlCnlProps;
 
                     // поиск свойств заданного канала
                     int ind = Array.BinarySearch(ctrlCnlProps, ctrlCnlNum, CtrlCnlProps.IntComp);
@@ -131,6 +167,45 @@ namespace Scada.Client
                     return null;
                 }
             }
+        }
+
+        /// <summary>
+        /// Получить идентификатор пользователя по имени
+        /// </summary>
+        public int GetUserID(string username)
+        {
+            lock (baseLock)
+            {
+                const int EmptyUserID = 0;
+                dataCache.RefreshBaseTables();
+
+                try
+                {
+                    DataTable tblUser = dataCache.BaseTables.UserTable;
+                    tblUser.DefaultView.RowFilter = "Name = '" + username + "'";
+                    return tblUser.DefaultView.Count > 0 ? 
+                        (int)tblUser.DefaultView[0]["UserID"] : 
+                        EmptyUserID;
+                }
+                catch (Exception ex)
+                {
+                    log.WriteException(ex, Localization.UseRussian ?
+                        "Ошибка при получении идентификатора пользователя по имени" :
+                        "Error getting user ID by name");
+                    return EmptyUserID;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Получить наименование роли по идентификатору
+        /// </summary>
+        public string GetRoleName(int roleID)
+        {
+            string roleName = BaseValues.Roles.GetRoleName(roleID); // стандартное имя роли
+            return BaseValues.Roles.Custom <= roleID && roleID < BaseValues.Roles.Err ?
+                GetRoleNameFromBase(roleID, roleName) :
+                roleName;
         }
     }
 }
