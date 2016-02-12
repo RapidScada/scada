@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaWebCommon5Beta", "ScadaWebCommon5Beta\ScadaWebCommon5Beta.csproj", "{BAF45C4F-1BE3-4810-9EA6-3B53894E32BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaWeb5Beta", "ScadaWeb5Beta\ScadaWeb5Beta.csproj", "{868DE826-356E-47A4-9DE7-EA7168FCA90A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaWebShell5Beta", "ScadaWebShell5Beta\ScadaWebShell5Beta.csproj", "{868DE826-356E-47A4-9DE7-EA7168FCA90A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
