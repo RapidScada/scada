@@ -15,44 +15,55 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : ScadaWebCommon
- * Summary  : Standard menu items
+ * Module   : ScadaData
+ * Summary  : View properties
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
  * Modified : 2016
  */
 
-using System;
-
-namespace Scada.Web.Shell
+namespace Scada.Data
 {
     /// <summary>
-    /// Standard menu items
-    /// <para>Стандартные элементы меню</para>
+    /// View properties
+    /// <para>Свойства представления</para>
     /// </summary>
-    [Flags]
-    public enum StandardMenuItems
+    public class ViewProps
     {
         /// <summary>
-        /// Элементы отсутствуют
+        /// Конструктор
         /// </summary>
-        None = 0,
+        public ViewProps()
+            : this(0)
+        {
+
+        }
+
         /// <summary>
-        /// Представления
+        /// Конструктор
         /// </summary>
-        Views = 1,
+        public ViewProps(int viewID)
+        {
+            ViewID = viewID;
+            FileName = "";
+            ViewTypeCode = "";
+        }
+
+
         /// <summary>
-        /// Отчёты
+        /// Получить или установить идентификатор представления
         /// </summary>
-        Reports = 2,
+        public int ViewID { get; set; }
+
         /// <summary>
-        /// Администрирование
+        /// Получить или установить имя файла представления
         /// </summary>
-        Admin = 4,
+        public string FileName { get; set; }
+
         /// <summary>
-        ///  Конфигурация
+        /// Получить или установить код типа представления
         /// </summary>
-        Config = 8
+        public string ViewTypeCode { get; set; }
     }
 }

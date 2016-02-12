@@ -26,6 +26,7 @@
 using Scada.Data;
 using System;
 using System.Data;
+using System.IO;
 using Utils;
 
 namespace Scada.Client
@@ -170,6 +171,43 @@ namespace Scada.Client
         }
 
         /// <summary>
+        /// Получить свойства представления по идентификатору
+        /// </summary>
+        /// <remarks>Используется таблица объектов интерфейса</remarks>
+        public ViewProps GetViewProps(int viewID)
+        {
+            lock (baseLock)
+            {
+                dataCache.RefreshBaseTables();
+
+                try
+                {
+                    DataTable tblInterface = dataCache.BaseTables.InterfaceTable;
+                    tblInterface.DefaultView.RowFilter = "ItfID = " + viewID;
+
+                    if (tblInterface.DefaultView.Count > 0)
+                    {
+                        ViewProps viewProps = new ViewProps(viewID);
+                        viewProps.FileName = (string)tblInterface.DefaultView[0]["Name"];
+                        viewProps.ViewTypeCode = Path.GetExtension(viewProps.FileName);
+                        return viewProps;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log.WriteException(ex, Localization.UseRussian ?
+                        "Ошибка при получении свойств представления по идентификатору" :
+                        "Error getting view properties by ID");
+                    return null;
+                }
+            }
+        }
+
+        /// <summary>
         /// Получить идентификатор пользователя по имени
         /// </summary>
         public int GetUserID(string username)
@@ -183,8 +221,8 @@ namespace Scada.Client
                 {
                     DataTable tblUser = dataCache.BaseTables.UserTable;
                     tblUser.DefaultView.RowFilter = "Name = '" + username + "'";
-                    return tblUser.DefaultView.Count > 0 ? 
-                        (int)tblUser.DefaultView[0]["UserID"] : 
+                    return tblUser.DefaultView.Count > 0 ?
+                        (int)tblUser.DefaultView[0]["UserID"] :
                         EmptyUserID;
                 }
                 catch (Exception ex)

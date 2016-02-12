@@ -86,11 +86,23 @@ namespace Scada.Web
         /// </summary>
         public string IpAddress { get; private set; }
 
-
         /// <summary>
         /// Получить права пользователя
         /// </summary>
         public UserRights UserRights { get; private set; }
+
+
+        /// <summary>
+        /// Получить ссылку на настройки веб-приложения
+        /// </summary>
+        /// <remarks>Ссылка и объект не изменяются после входа пользователя в систему</remarks>
+        public WebSettings WebSettings { get; private set; }
+
+        /// <summary>
+        /// Получить ссылку на список плагинов
+        /// </summary>
+        /// <remarks>Ссылка и объект не изменяются после входа пользователя в систему</remarks>
+        public List<PluginSpec> PluginSpecs { get; private set; }
 
 
         /// <summary>
@@ -104,8 +116,19 @@ namespace Scada.Web
             LoggedOn = false;
             LogonDT = DateTime.MinValue;
             IpAddress = "";
-
             UserRights = null;
+
+            WebSettings = null;
+            PluginSpecs = null;
+        }
+
+        /// <summary>
+        /// Обновить ссылки на объекты общих данных приложения
+        /// </summary>
+        private void UpdateAppDataRefs()
+        {
+            WebSettings = AppData.WebSettings;
+            PluginSpecs = AppData.PluginSpecs;
         }
 
 
@@ -128,11 +151,9 @@ namespace Scada.Web
                 LoggedOn = true;
                 LogonDT = DateTime.Now;
 
+                UpdateAppDataRefs();
                 UserRights = new UserRights();
-                //UserRights.InitUserRights(roleID, ViewSettings);
-
-                //ViewCache = new Web.ViewCache();
-                //ViewCache.InitViewCache(ViewSettings);
+                UserRights.Init(roleID);
 
                 if (password == null)
                 {
@@ -172,11 +193,12 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Завершить работу пользователя с определёнными ранее именем
+        /// Выполнить выход пользователя из системы
         /// </summary>
         public void Logout()
         {
             Clear();
+            UpdateAppDataRefs();
         }
 
 
@@ -201,6 +223,9 @@ namespace Scada.Web
 
                 // получение IP-адреса
                 userData.IpAddress = HttpContext.Current.Request.UserHostAddress;
+
+                // обновление ссылок на объекты общих данных приложения
+                userData.UpdateAppDataRefs();
             }
 
             return userData;

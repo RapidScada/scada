@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : ScadaWebCommon
+ * Module   : ScadaData
  * Summary  : Cache of views
  * 
  * Author   : Mikhail Shiryaev
@@ -23,11 +23,10 @@
  * Modified : 2016
  */
 
-using Scada.Client;
 using System;
 using Utils;
 
-namespace Scada.Web
+namespace Scada.Client
 {
     /// <summary>
     /// Cache of views
@@ -64,6 +63,24 @@ namespace Scada.Web
 
             this.serverComm = serverComm;
             this.log = log;
+        }
+
+
+        /// <summary>
+        /// Получить представление из кэша или от сервера
+        /// </summary>
+        public T GetView<T>(int viewID, string fileName) where T : BaseView
+        {
+            T view = null;
+            return view;
+        }
+
+        /// <summary>
+        /// Получить представление только из кэша
+        /// </summary>
+        public BaseView GetViewFromCache(int viewID)
+        {
+            return null;
         }
     }
 }

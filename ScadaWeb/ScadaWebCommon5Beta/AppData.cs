@@ -25,7 +25,9 @@
 
 using Scada.Client;
 using Scada.Data;
+using Scada.Web.Plugins;
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Web;
 using Utils;
@@ -45,8 +47,14 @@ namespace Scada.Web
 
         private static readonly object appDataLock; // объект для синхронизации доступа к данным приложения
 
+        private static bool inited;                 // признак инициализации общих данных веб-приложения
+        private static CommSettings commSettings;   // настройки соединения с сервером
+        private static ServerComm serverComm;       // объект для обмена данными с сервером
+
         private static DateTime scadaDataDictAge;   // время изменения файла словаря ScadaData
         private static DateTime scadaWebDictAge;    // время изменения файла словаря ScadaWeb
+        private static DateTime commSettingsAge;    // время изменения файла настроек соединения с сервером
+        private static DateTime webSettingsAge;     // время изменения файла настроек веб-приложения
 
 
         /// <summary>
@@ -56,24 +64,36 @@ namespace Scada.Web
 		{
             appDataLock = new object();
 
+            inited = false;
+            commSettings = new CommSettings();
+            serverComm = null; // создаётся в CreateDataObjects()
+
             scadaDataDictAge = DateTime.MinValue;
             scadaWebDictAge = DateTime.MinValue;
+            commSettingsAge = DateTime.MinValue;
+            webSettingsAge = DateTime.MinValue;
 
-            Inited = false;
+            WebSettings = new WebSettings();
+            PluginSpecs = new List<PluginSpec>();
             AppDirs = new AppDirs();
             Log = new Log(Log.Formats.Full);
-            WebSettings = new WebSettings();
-            ServerComm = new ServerComm(WebSettings.CommSettings, Log);
-            DataCache dataCache = new DataCache(ServerComm, Log);
-            DataAccess = new DataAccess(dataCache, Log);
-            ViewCache = new ViewCache(ServerComm, Log);
+
+            CreateDataObjects();
         }
 
 
         /// <summary>
-        /// Получить признак инициализации общих данных приложения
+        /// Получить настройки веб-приложения
         /// </summary>
-        public static bool Inited { get; private set; }
+        /// <remarks>Объект создаётся заново при изменении файла настроек веб-приложения</remarks>
+        internal static WebSettings WebSettings { get; private set; }
+
+        /// <summary>
+        /// Получить список плагинов
+        /// </summary>
+        /// <remarks>Объект создаётся заново при изменении файла настроек веб-приложения</remarks>
+        internal static List<PluginSpec> PluginSpecs { get; private set; }
+
 
         /// <summary>
         /// Получить директории приложения
@@ -86,23 +106,15 @@ namespace Scada.Web
         public static Log Log { get; private set; }
 
         /// <summary>
-        /// Получить настройки веб-приложения
-        /// </summary>
-        public static WebSettings WebSettings { get; private set; }
-
-        /// <summary>
-        /// Получить объект для обмена данными с сервером
-        /// </summary>
-        public static ServerComm ServerComm { get; private set; }
-
-        /// <summary>
         /// Получить объект для потокобезопасного доступа к данным кеша клиентов
         /// </summary>
+        /// <remarks>Объект создаётся заново при изменении файла настройки соединения с сервером</remarks>
         public static DataAccess DataAccess { get; private set; }
 
         /// <summary>
         /// Получить кэш представлений
         /// </summary>
+        /// <remarks>Объект создаётся заново при изменении файла настройки соединения с сервером</remarks>
         public static ViewCache ViewCache { get; private set; }
 
 
@@ -129,26 +141,49 @@ namespace Scada.Web
             if (reloaded)
                 WebPhrases.Init();
         }
-        
+
+        /// <summary>
+        /// Обновить настройки соединения с сервером
+        /// </summary>
+        private static bool RefreshCommSettings()
+        {
+            return false;
+        }
+
         /// <summary>
         /// Обновить настройки веб-приложения
         /// </summary>
-        private static void RefreshWebSettings(out bool reloaded, out bool commSettingsChanged)
+        private static bool RefreshWebSettings()
         {
-            reloaded = false;
-            commSettingsChanged = false;
+            return false;
         }
-
 
         /// <summary>
-        /// Инициализировать общие данные веб-приложения
+        /// Создать объекты доступа к данным
         /// </summary>
-        public static void Init()
+        private static void CreateDataObjects()
         {
-            ScadaWebUtils.CheckHttpContext();
-            Init(HttpContext.Current.Request.PhysicalApplicationPath);
+            serverComm = new ServerComm(commSettings, Log);
+            DataCache dataCache = new DataCache(serverComm, Log);
+            DataAccess = new DataAccess(dataCache, Log);
+            ViewCache = new ViewCache(serverComm, Log);
         }
-        
+
+        /// <summary>
+        /// Загрузить информацию о плагинах
+        /// </summary>
+        private static void LoadPlugins()
+        {
+        }
+
+        /// <summary>
+        /// Инициализировать плагины
+        /// </summary>
+        private static void InitPlugins()
+        {
+        }
+
+
         /// <summary>
         /// Инициализировать общие данные веб-приложения
         /// </summary>
@@ -156,9 +191,9 @@ namespace Scada.Web
         {
             lock (appDataLock)
             {
-                if (!Inited)
+                if (!inited)
                 {
-                    Inited = true;
+                    inited = true;
 
                     // инициализация директорий приложения
                     AppDirs.Init(webAppDir);
@@ -178,16 +213,24 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Обновить данные веб-приложения
+        /// Обновить общие данные веб-приложения
         /// </summary>
         public static void Refresh()
         {
             lock (appDataLock)
             {
-                if (Inited)
+                if (inited)
                 {
-                    // обновление словарей
                     RefreshDictionaries();
+
+                    if (RefreshCommSettings())
+                        CreateDataObjects();
+
+                    if (RefreshWebSettings())
+                    {
+                        LoadPlugins();
+                        InitPlugins();
+                    }
                 }
             }
         }
@@ -206,7 +249,7 @@ namespace Scada.Web
             }
             else
             {
-                if (ServerComm.CheckUser(username, checkPassword ? password : null, out roleID))
+                if (serverComm.CheckUser(username, checkPassword ? password : null, out roleID))
                 {
                     if (roleID == BaseValues.Roles.Disabled)
                     {

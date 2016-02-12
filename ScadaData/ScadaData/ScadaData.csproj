@@ -50,7 +50,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Client\BaseTables.cs" />
+    <Compile Include="Client\ViewCache.cs" />
+    <Compile Include="Data\BaseTables.cs" />
     <Compile Include="Client\BaseView.cs" />
     <Compile Include="Client\DataCache.cs" />
     <Compile Include="Client\DataAccess.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="Client\CommSettings.cs" />
     <Compile Include="Data\CtrlCnlProps.cs" />
     <Compile Include="Client\ServerComm.cs" />
+    <Compile Include="Data\ViewProps.cs" />
     <Compile Include="FileListener.cs" />
     <Compile Include="Data\Arithmetic.cs" />
     <Compile Include="Data\BaseAdapter.cs" />

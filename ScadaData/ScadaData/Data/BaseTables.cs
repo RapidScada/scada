@@ -25,7 +25,7 @@
 
 using System.Data;
 
-namespace Scada.Client
+namespace Scada.Data
 {
     /// <summary>
     /// The tables of the configuration database
@@ -150,6 +150,5 @@ namespace Scada.Client
         /// Получить массив ссылок на все таблицы базы конфигурации
         /// </summary>
         public DataTable[] AllTables { get; protected set; }
-
     }
 }

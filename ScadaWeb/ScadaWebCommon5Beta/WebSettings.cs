@@ -23,8 +23,6 @@
  * Modified : 2016
  */
 
-using Scada.Client;
-
 namespace Scada.Web
 {
     /// <summary>
@@ -38,13 +36,6 @@ namespace Scada.Web
         /// </summary>
         public WebSettings()
         {
-            CommSettings = new CommSettings();
         }
-
-
-        /// <summary>
-        /// Настройки соединения с сервером
-        /// </summary>
-        public CommSettings CommSettings { get; protected set; }
     }
 }

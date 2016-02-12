@@ -23,6 +23,9 @@
  * Modified : 2015
  */
 
+using Scada.Client;
+using Utils;
+
 namespace Scada.Web
 {
     /// <summary>
@@ -31,5 +34,19 @@ namespace Scada.Web
     /// </summary>
     public class UserRights
     {
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        public UserRights()
+        {
+        }
+
+        /// <summary>
+        /// Инициализировать права пользователя
+        /// </summary>
+        public void Init(int roleID)
+        {
+
+        }
     }
 }
