@@ -34,10 +34,10 @@ namespace Scada.Client
     /// SCADA-Server connection settings
     /// <para>Настройки соединения со SCADA-Сервером</para>
 	/// </summary>
-	public class CommSettings
+	public class CommSettings : ISettings
 	{
         /// <summary>
-        /// Имя файла настроек соединения со SCADA-Сервером по умолчанию
+        /// Имя файла настроек по умолчанию
         /// </summary>
         public const string DefFileName = "CommSettings.xml";
 
@@ -104,7 +104,23 @@ namespace Scada.Client
 
 
         /// <summary>
-        /// Определить, являются ли заданные параметры связи идентичными текущим параметрам
+        /// Создать новый объект настроек
+        /// </summary>
+        public ISettings Create()
+        {
+            return new CommSettings();
+        }
+
+        /// <summary>
+        /// Определить, равны ли заданные настройки текущим настройкам
+        /// </summary>
+        public bool Equals(ISettings settings)
+        {
+            return Equals(settings as CommSettings);
+        }
+
+        /// <summary>
+        /// Определить, равны ли заданные настройки текущим настройкам
         /// </summary>
         public bool Equals(CommSettings commSettings)
         {

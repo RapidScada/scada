@@ -42,7 +42,6 @@ namespace Scada.Web.Plugins
         /// </summary>
         public PluginSpec()
         {
-
         }
 
 
@@ -60,6 +59,17 @@ namespace Scada.Web.Plugins
         /// Получить версию плагина
         /// </summary>
         public abstract string Version { get; }
+
+        /// <summary>
+        /// Получить спецификации поддерживаемых представлений
+        /// </summary>
+        public virtual List<ViewSpec> SupportedViewSpecs
+        {
+            get
+            {
+                return null;
+            }
+        }
 
         /// <summary>
         /// Получить уникальный ключ для записи данных в сессию

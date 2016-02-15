@@ -16,51 +16,32 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaWebCommon
- * Summary  : Web application settings
+ * Summary  : View settings
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2011
  * Modified : 2016
  */
 
-using System.Collections.Generic;
-
 namespace Scada.Web
 {
     /// <summary>
-    /// Web application settings
-    /// <para>Настройки веб-приложения</para>
+    /// View settings
+    /// <para>Настройки представлений</para>
     /// </summary>
-    public class WebSettings : ISettings
+    public class ViewSettings : ISettings
     {
         /// <summary>
         /// Имя файла настроек по умолчанию
         /// </summary>
-        public const string DefFileName = "WebSettings.xml";
+        public const string DefFileName = "ViewSettings.xml";
 
         
         /// <summary>
         /// Конструктор
         /// </summary>
-        public WebSettings()
+        public ViewSettings()
         {
-            PluginFileNames = new List<string>();
-            SetToDefault();
-        }
-
-
-        /// <summary>
-        /// Получить список имён файлов библиотек подключенных плагинов
-        /// </summary>
-        public List<string> PluginFileNames { get; protected set; }
-
-
-        /// <summary>
-        /// Установить значения настроек по умолчанию
-        /// </summary>
-        protected void SetToDefault()
-        {
-            PluginFileNames.Clear();
         }
 
 
@@ -69,7 +50,7 @@ namespace Scada.Web
         /// </summary>
         public ISettings Create()
         {
-            return new WebSettings();
+            return new ViewSettings();
         }
 
         /// <summary>
@@ -85,11 +66,8 @@ namespace Scada.Web
         /// </summary>
         public bool LoadFromFile(string fileName, out string errMsg)
         {
-            SetToDefault();
-            PluginFileNames.Add("PlgTableView.dll");
-            PluginFileNames.Add("PlgSchemeView.dll");
-            errMsg = "";
-            return true;
+            errMsg = "ViewSettings not implemented";
+            return false;
         }
 
         /// <summary>
@@ -97,7 +75,7 @@ namespace Scada.Web
         /// </summary>
         public bool SaveToFile(string fileName, out string errMsg)
         {
-            errMsg = "WebSettings not implemented";
+            errMsg = "ViewSettings not implemented";
             return false;
         }
     }

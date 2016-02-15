@@ -275,5 +275,10 @@ namespace Scada.Data
             /// </summary>
             public const int Alarm = 114;
         }
+
+        /// <summary>
+        /// Идентификатор пустых или неопределённых данных
+        /// </summary>
+        public const int EmptyDataID = 0;
     }
 }

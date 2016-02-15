@@ -46,6 +46,7 @@
     <Compile Include="AppData.cs" />
     <Compile Include="AppDirs.cs" />
     <Compile Include="Plugins\PluginSpec.cs" />
+    <Compile Include="Plugins\ViewSpec.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScadaWebUtils.cs" />
     <Compile Include="Shell\MenuItem.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="UserData.cs" />
     <Compile Include="UserRights.cs" />
     <Compile Include="WebPhrases.cs" />
+    <Compile Include="ViewSettings.cs" />
     <Compile Include="WebSettings.cs" />
   </ItemGroup>
   <ItemGroup />

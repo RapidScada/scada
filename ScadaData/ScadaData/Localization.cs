@@ -172,7 +172,7 @@ namespace Scada
         {
             get
             {
-                string pattern = Localization.Culture.DateTimeFormat.ShortDatePattern.ToLower();
+                string pattern = Localization.Culture.DateTimeFormat.ShortDatePattern.ToLowerInvariant();
                 return pattern.IndexOf('m') < pattern.IndexOf('d');
             }
         }
@@ -512,7 +512,7 @@ namespace Scada
         public static bool RefreshDictionary(string directory, string fileNamePrefix, ref DateTime fileAge, 
             out bool reloaded, out string errMsg)
         {
-            string fileName = Localization.GetDictionaryFileName(directory, fileNamePrefix);
+            string fileName = GetDictionaryFileName(directory, fileNamePrefix);
             DateTime newFileAge = ScadaUtils.GetLastWriteTime(fileName);
 
             if (fileAge == newFileAge)
@@ -521,7 +521,7 @@ namespace Scada
                 errMsg = "";
                 return true;
             }
-            else if (Localization.LoadDictionaries(fileName, out errMsg))
+            else if (LoadDictionaries(fileName, out errMsg))
             {
                 fileAge = newFileAge;
                 reloaded = true;

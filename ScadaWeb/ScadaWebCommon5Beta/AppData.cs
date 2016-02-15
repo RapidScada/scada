@@ -51,10 +51,11 @@ namespace Scada.Web
         private static CommSettings commSettings;   // настройки соединения с сервером
         private static ServerComm serverComm;       // объект для обмена данными с сервером
 
-        private static DateTime scadaDataDictAge;   // время изменения файла словаря ScadaData
-        private static DateTime scadaWebDictAge;    // время изменения файла словаря ScadaWeb
-        private static DateTime commSettingsAge;    // время изменения файла настроек соединения с сервером
-        private static DateTime webSettingsAge;     // время изменения файла настроек веб-приложения
+        private static DateTime scadaDataDictAge;           // время изменения файла словаря ScadaData
+        private static DateTime scadaWebDictAge;            // время изменения файла словаря ScadaWeb
+        private static SettingsUpdater commSettingsUpdater; // объект для обновления настроек соединения с сервером
+        private static SettingsUpdater webSettingsUpdater;  // объект для обновления настроек веб-приложения
+        private static SettingsUpdater viewSettingsUpdater; // объект для обновления настроек представлений
 
 
         /// <summary>
@@ -66,18 +67,18 @@ namespace Scada.Web
 
             inited = false;
             commSettings = new CommSettings();
-            serverComm = null; // создаётся в CreateDataObjects()
 
             scadaDataDictAge = DateTime.MinValue;
             scadaWebDictAge = DateTime.MinValue;
-            commSettingsAge = DateTime.MinValue;
-            webSettingsAge = DateTime.MinValue;
 
             WebSettings = new WebSettings();
+            ViewSettings = new ViewSettings();
             PluginSpecs = new List<PluginSpec>();
+            ViewSpecs = new Dictionary<string, ViewSpec>();
             AppDirs = new AppDirs();
             Log = new Log(Log.Formats.Full);
 
+            InitSettingsUpdaters();
             CreateDataObjects();
         }
 
@@ -89,10 +90,23 @@ namespace Scada.Web
         internal static WebSettings WebSettings { get; private set; }
 
         /// <summary>
+        /// Получить настройки представлений
+        /// </summary>
+        /// <remarks>Объект создаётся заново при изменении файла настроек представлений</remarks>
+        internal static ViewSettings ViewSettings { get; private set; }
+
+        /// <summary>
         /// Получить список плагинов
         /// </summary>
         /// <remarks>Объект создаётся заново при изменении файла настроек веб-приложения</remarks>
         internal static List<PluginSpec> PluginSpecs { get; private set; }
+
+        /// <summary>
+        /// Получить словарь спецификаций представлений, ключ - код типа представления
+        /// </summary>
+        /// <remarks>Словарь заполняется на основе списка плагинов и 
+        /// создаётся заново при изменении файла настроек веб-приложения</remarks>
+        internal static Dictionary<string, ViewSpec> ViewSpecs { get; private set; }
 
 
         /// <summary>
@@ -119,43 +133,16 @@ namespace Scada.Web
 
 
         /// <summary>
-        /// Обновить словари веб-приложения
+        /// Инициализировать объекты для обновления настроек
         /// </summary>
-        private static void RefreshDictionaries()
+        private static void InitSettingsUpdaters()
         {
-            // обновление словаря ScadaData
-            bool reloaded;
-            string msg;
-            bool refreshOK = Localization.RefreshDictionary(AppDirs.LangDir, "ScadaData", 
-                ref scadaDataDictAge, out reloaded, out msg);
-            Log.WriteAction(msg, refreshOK ? Log.ActTypes.Action : Log.ActTypes.Error);
-
-            if (reloaded)
-                CommonPhrases.Init();
-
-            // обновление словаря ScadaWeb
-            refreshOK = Localization.RefreshDictionary(AppDirs.LangDir, "ScadaWeb", 
-                ref scadaWebDictAge, out reloaded, out msg);
-            Log.WriteAction(msg, refreshOK ? Log.ActTypes.Action : Log.ActTypes.Error);
-
-            if (reloaded)
-                WebPhrases.Init();
-        }
-
-        /// <summary>
-        /// Обновить настройки соединения с сервером
-        /// </summary>
-        private static bool RefreshCommSettings()
-        {
-            return false;
-        }
-
-        /// <summary>
-        /// Обновить настройки веб-приложения
-        /// </summary>
-        private static bool RefreshWebSettings()
-        {
-            return false;
+            commSettingsUpdater = new SettingsUpdater(commSettings, 
+                AppDirs.ConfigDir + CommSettings.DefFileName, true);
+            webSettingsUpdater = new SettingsUpdater(WebSettings, 
+                AppDirs.ConfigDir + WebSettings.DefFileName, true);
+            viewSettingsUpdater = new SettingsUpdater(ViewSettings,
+                AppDirs.ConfigDir + ViewSettings.DefFileName, true);
         }
 
         /// <summary>
@@ -170,10 +157,107 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Загрузить информацию о плагинах
+        /// Обновить словари веб-приложения
+        /// </summary>
+        private static void RefreshDictionaries()
+        {
+            // обновление словаря ScadaData
+            bool reloaded;
+            string errMsg;
+            if (!Localization.RefreshDictionary(AppDirs.LangDir, "ScadaData", 
+                ref scadaDataDictAge, out reloaded, out errMsg))
+                Log.WriteError(errMsg);
+
+            if (reloaded)
+                CommonPhrases.Init();
+
+            // обновление словаря ScadaWeb
+            if (!Localization.RefreshDictionary(AppDirs.LangDir, "ScadaWeb", 
+                ref scadaWebDictAge, out reloaded, out errMsg))
+                Log.WriteError(errMsg);
+
+            if (reloaded)
+                WebPhrases.Init();
+        }
+
+        /// <summary>
+        /// Обновить настройки соединения с сервером
+        /// </summary>
+        private static bool RefreshCommSettings()
+        {
+            bool changed;
+            string errMsg;
+
+            if (commSettingsUpdater.Update(out changed, out errMsg))
+            {
+                if (changed)
+                    commSettings = (CommSettings)commSettingsUpdater.Settings;
+            }
+            else
+            {
+                Log.WriteError(errMsg);
+            }
+
+            return changed;
+        }
+
+        /// <summary>
+        /// Обновить настройки веб-приложения
+        /// </summary>
+        private static bool RefreshWebSettings()
+        {
+            bool changed;
+            string errMsg;
+
+            if (webSettingsUpdater.Update(out changed, out errMsg))
+            {
+                if (changed)
+                    WebSettings = (WebSettings)webSettingsUpdater.Settings;
+            }
+            else
+            {
+                Log.WriteError(errMsg);
+            }
+
+            return changed;
+        }
+
+        /// <summary>
+        /// Обновить настройки представлений
+        /// </summary>
+        private static void RefreshViewSettings()
+        {
+            bool changed;
+            string errMsg;
+
+            if (viewSettingsUpdater.Update(out changed, out errMsg))
+            {
+                if (changed)
+                    ViewSettings = (ViewSettings)viewSettingsUpdater.Settings;
+            }
+            else
+            {
+                Log.WriteError(errMsg);
+            }
+        }
+
+        /// <summary>
+        /// Загрузить спецификации плагинов
         /// </summary>
         private static void LoadPlugins()
         {
+            PluginSpecs = new List<PluginSpec>();
+
+            foreach (string fileName in WebSettings.PluginFileNames)
+            {
+                string errMsg;
+                PluginSpec pluginSpec = PluginSpec.CreateFromDll(AppDirs.BinDir + fileName, out errMsg);
+
+                if (pluginSpec == null)
+                    Log.WriteError(errMsg);
+                else
+                    PluginSpecs.Add(pluginSpec);
+            }
         }
 
         /// <summary>
@@ -181,6 +265,54 @@ namespace Scada.Web
         /// </summary>
         private static void InitPlugins()
         {
+            foreach (PluginSpec pluginSpec in PluginSpecs)
+            {
+                try
+                {
+                    pluginSpec.Init();
+                }
+                catch (Exception ex)
+                {
+                    Log.WriteException(ex, Localization.UseRussian ?
+                        "Ошибка при инициализации плагина \"{0}\"" :
+                        "Error initializing plugin \"{0}\"", pluginSpec.Name);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Создать и заполнить словарь спецификаций представлений
+        /// </summary>
+        private static void FillViewSpecs()
+        {
+            ViewSpecs = new Dictionary<string, ViewSpec>();
+
+            foreach (PluginSpec pluginSpec in PluginSpecs)
+            {
+                try
+                {
+                    foreach (ViewSpec viewSpec in pluginSpec.SupportedViewSpecs)
+                    {
+                        if (ViewSpecs.ContainsKey(viewSpec.ViewTypeCode))
+                        {
+                            Log.WriteError(string.Format(Localization.UseRussian ?
+                                "Спецификация представлений \"{0}\" плагина \"{1}\" игнорируется, потому что дублируется" :
+                                "View specification \"{0}\" of the plugin \"{1}\" is ignored because it is duplicated",
+                                viewSpec.ViewTypeCode, pluginSpec.Name));
+                        }
+                        else
+                        {
+                            ViewSpecs.Add(viewSpec.ViewTypeCode, viewSpec);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.WriteException(ex, Localization.UseRussian ?
+                        "Ошибка при получении спецификаций представлений, поддерживаемых плагином \"{0}\"" :
+                        "Error getting view specifications supported by plugin \"{0}\"", pluginSpec.Name);
+                }
+            }
         }
 
 
@@ -205,6 +337,9 @@ namespace Scada.Web
                     Log.WriteAction(Localization.UseRussian ?
                         "Инициализация общих данных веб-приложения" :
                         "Initialize common web application data");
+
+                    // инициализация объектов для обновления настроек
+                    InitSettingsUpdaters();
                 }
 
                 // обновление данных веб-приложения
@@ -230,7 +365,10 @@ namespace Scada.Web
                     {
                         LoadPlugins();
                         InitPlugins();
+                        FillViewSpecs();
                     }
+
+                    RefreshViewSettings();
                 }
             }
         }

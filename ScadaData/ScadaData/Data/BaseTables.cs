@@ -23,6 +23,7 @@
  * Modified : 2016
  */
 
+using System;
 using System.Data;
 
 namespace Scada.Data
@@ -150,5 +151,17 @@ namespace Scada.Data
         /// Получить массив ссылок на все таблицы базы конфигурации
         /// </summary>
         public DataTable[] AllTables { get; protected set; }
+
+
+        /// <summary>
+        /// Получить имя файла таблицы без директории
+        /// </summary>
+        public static string GetFileName(DataTable dataTable)
+        {
+            if (dataTable == null)
+                throw new ArgumentNullException("dataTable");
+
+            return dataTable.TableName.ToLowerInvariant() + ".dat";
+        }
     }
 }

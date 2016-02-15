@@ -26,8 +26,10 @@
 using Scada.Data;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Utils;
 
 namespace Scada.Client
@@ -41,6 +43,16 @@ namespace Scada.Client
     public class DataCache
     {
         /// <summary>
+        /// Время актуальности данных в кэше, с
+        /// </summary>
+        protected const int DataValidTime = 1;
+        /// <summary>
+        /// Время ожидания снятия блокировки базы конфигурации, с
+        /// </summary>
+        protected const int WaitBaseLock = 5;
+
+
+        /// <summary>
         /// Объект для обмена данными со SCADA-Сервером
         /// </summary>
         protected readonly ServerComm serverComm;
@@ -48,6 +60,15 @@ namespace Scada.Client
         /// Журнал
         /// </summary>
         protected readonly Log log;
+
+        /// <summary>
+        /// Время последего успешного заполнения таблиц базы конфигурации
+        /// </summary>
+        protected DateTime baseFillDT;
+        /// <summary>
+        /// Время последнего изменения успешно считанной базы конфигурации
+        /// </summary>
+        protected DateTime baseAge;
 
 
         /// <summary>
@@ -69,6 +90,9 @@ namespace Scada.Client
 
             this.serverComm = serverComm;
             this.log = log;
+
+            baseFillDT = DateTime.MinValue;
+            baseAge = DateTime.MinValue;
 
             BaseTables = new BaseTables();
             CnlProps = new InCnlProps[0];
@@ -97,10 +121,80 @@ namespace Scada.Client
 
 
         /// <summary>
+        /// Заполнить свойства входных каналов
+        /// </summary>
+        protected void FillCnlProps()
+        {
+        }
+
+        /// <summary>
+        /// Заполнить свойства каналов управления
+        /// </summary>
+        protected void FillCtrlCnlProps()
+        {
+        }
+
+
+        /// <summary>
         /// Обновить таблицы базы конфигурации и свойства каналов
         /// </summary>
         public void RefreshBaseTables()
         {
+            lock (this)
+            {
+                try
+                {
+                    DateTime utcNowDT = DateTime.UtcNow;
+
+                    if ((utcNowDT - baseFillDT).TotalSeconds > DataValidTime) // данные устарели
+                    {
+                        DateTime newBaseAge = serverComm.ReceiveFileAge(ServerComm.Dirs.BaseDAT,
+                            BaseTables.GetFileName(BaseTables.InCnlTable));
+
+                        if (newBaseAge > DateTime.MinValue /*метка времени получена*/ && 
+                            baseAge != newBaseAge /*база конфигурации изменена*/)
+                        {
+                            baseFillDT = utcNowDT;
+                            baseAge = newBaseAge;
+
+                            log.WriteAction(Localization.UseRussian ? 
+                                "Обновление таблиц базы конфигурации" :
+                                "Refresh the tables of the configuration database");
+
+                            // ожидание снятия возможной блокировки базы конфигурации
+                            DateTime t0 = utcNowDT;
+                            while (serverComm.ReceiveFileAge(ServerComm.Dirs.BaseDAT, "baselock") > DateTime.MinValue &&
+                                (DateTime.UtcNow - t0).TotalSeconds <= WaitBaseLock)
+                            {
+                                Thread.Sleep(ScadaUtils.ThreadDelay);
+                            }
+
+                            // получение данных таблиц
+                            foreach (DataTable dataTable in BaseTables.AllTables)
+                            {
+                                if (!serverComm.ReceiveBaseTable(BaseTables.GetFileName(dataTable), dataTable))
+                                {
+                                    baseFillDT = DateTime.MinValue;
+                                    baseAge = DateTime.MinValue;
+                                }
+                            }
+
+                            // заполнение свойств каналов
+                            FillCnlProps();
+                            FillCtrlCnlProps();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    baseFillDT = DateTime.MinValue;
+                    baseAge = DateTime.MinValue;
+
+                    log.WriteException(ex, Localization.UseRussian ?
+                        "Ошибка при обновлении таблиц базы конфигурации" :
+                        "Error refreshing the tables of the configuration database");
+                }
+            }
         }
 
 

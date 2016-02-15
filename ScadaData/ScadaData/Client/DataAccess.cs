@@ -95,10 +95,10 @@ namespace Scada.Client
         {
             lock (baseLock)
             {
-                dataCache.RefreshBaseTables();
-
                 try
                 {
+                    dataCache.RefreshBaseTables();
+
                     DataTable tblRole = dataCache.BaseTables.RightTable;
                     tblRole.DefaultView.RowFilter = "RoleID = " + roleID;
                     return tblRole.DefaultView.Count > 0 ?
@@ -214,23 +214,22 @@ namespace Scada.Client
         {
             lock (baseLock)
             {
-                const int EmptyUserID = 0;
-                dataCache.RefreshBaseTables();
-
                 try
                 {
+                    dataCache.RefreshBaseTables();
+
                     DataTable tblUser = dataCache.BaseTables.UserTable;
                     tblUser.DefaultView.RowFilter = "Name = '" + username + "'";
                     return tblUser.DefaultView.Count > 0 ?
                         (int)tblUser.DefaultView[0]["UserID"] :
-                        EmptyUserID;
+                        BaseValues.EmptyDataID;
                 }
                 catch (Exception ex)
                 {
                     log.WriteException(ex, Localization.UseRussian ?
                         "Ошибка при получении идентификатора пользователя по имени" :
                         "Error getting user ID by name");
-                    return EmptyUserID;
+                    return BaseValues.EmptyDataID;
                 }
             }
         }

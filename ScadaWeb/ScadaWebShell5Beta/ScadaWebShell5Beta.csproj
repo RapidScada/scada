@@ -63,6 +63,10 @@
     <None Include="css\masterMain.css">
       <DependentUpon>masterMain.less</DependentUpon>
     </None>
+    <Content Include="..\..\ScadaData\ScadaData\Lang\ScadaData.en-GB.xml">
+      <Link>lang\ScadaData.en-GB.xml</Link>
+    </Content>
+    <Content Include="config\CommSettings.xml" />
     <Content Include="css\masterMain.min.css">
       <DependentUpon>masterMain.css</DependentUpon>
     </Content>
@@ -120,7 +124,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="config\" />
     <Folder Include="log\" />
     <Folder Include="plugins\" />
   </ItemGroup>

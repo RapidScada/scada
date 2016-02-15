@@ -68,6 +68,7 @@
     <Compile Include="CommonPhrases.cs" />
     <Compile Include="Data\EventAdapter.cs" />
     <Compile Include="Data\EventTableLight.cs" />
+    <Compile Include="ISettings.cs" />
     <Compile Include="Localization.cs" />
     <Compile Include="Data\InCnlProps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Data\SrezTableLight.cs" />
     <Compile Include="Data\Trend.cs" />
     <Compile Include="ITreeNode.cs" />
+    <Compile Include="SettingsUpdater.cs" />
     <Compile Include="UI\ScadaUiUtils.cs" />
     <Compile Include="UI\Translator.cs" />
     <Compile Include="UI\TreeViewUtils.cs" />

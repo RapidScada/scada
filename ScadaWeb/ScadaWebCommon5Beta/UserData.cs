@@ -95,14 +95,22 @@ namespace Scada.Web
         /// <summary>
         /// Получить ссылку на настройки веб-приложения
         /// </summary>
-        /// <remarks>Ссылка и объект не изменяются после входа пользователя в систему</remarks>
         public WebSettings WebSettings { get; private set; }
+
+        /// <summary>
+        /// Получить ссылку на настройки представлений
+        /// </summary>
+        public ViewSettings ViewSettings { get; private set; }
 
         /// <summary>
         /// Получить ссылку на список плагинов
         /// </summary>
-        /// <remarks>Ссылка и объект не изменяются после входа пользователя в систему</remarks>
         public List<PluginSpec> PluginSpecs { get; private set; }
+
+        /// <summary>
+        /// Получить ссылку на словарь спецификаций представлений, ключ - код типа представления
+        /// </summary>
+        public Dictionary<string, ViewSpec> ViewSpecs { get; private set; }
 
 
         /// <summary>
@@ -119,7 +127,9 @@ namespace Scada.Web
             UserRights = null;
 
             WebSettings = null;
+            ViewSettings = null;
             PluginSpecs = null;
+            ViewSpecs = null;
         }
 
         /// <summary>
@@ -128,7 +138,9 @@ namespace Scada.Web
         private void UpdateAppDataRefs()
         {
             WebSettings = AppData.WebSettings;
+            ViewSettings = AppData.ViewSettings;
             PluginSpecs = AppData.PluginSpecs;
+            ViewSpecs = AppData.ViewSpecs;
         }
 
 
