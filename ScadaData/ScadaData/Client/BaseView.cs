@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2011
- * Modified : 2015
+ * Modified : 2016
  */
 
 using Scada.Data;
@@ -122,6 +122,18 @@ namespace Scada.Client
         public virtual bool ContainsCnl(int cnlNum)
         {
             return CnlList.BinarySearch(cnlNum) >= 0;
+        }
+
+        /// <summary>
+        /// Определить, что все заданные входные каналы используются в представлении
+        /// </summary>
+        public virtual bool ContainsAllCnls(IEnumerable<int> cnlNums)
+        {
+            foreach (int cnlNum in cnlNums)
+                if (!ContainsCnl(cnlNum))
+                    return false;
+
+            return true;
         }
 
         /// <summary>
