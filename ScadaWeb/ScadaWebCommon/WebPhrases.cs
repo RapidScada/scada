@@ -41,6 +41,7 @@ namespace Scada.Web
         // Словарь Scada.Report
         public static string GenReport { get; private set; }
         public static string GenReportError { get; private set; }
+        public static string IncorrectRepTemplate { get; private set; }
 
         // Словарь Scada.Web
         public static string NotLoggedOn { get; private set; }
@@ -131,6 +132,7 @@ namespace Scada.Web
         {
             GenReport = "Генерация отчёта \"{0}\" пользователем {1}";
             GenReportError = "Ошибка при генерации отчёта \"{0}\": {1}";
+            IncorrectRepTemplate = "Некорректный шаблон отчёта";
 
             NotLoggedOn = "Пользователь не вошёл в систему.";
             UnableLoadView = "Не удалось загрузить представление.";
@@ -212,6 +214,7 @@ namespace Scada.Web
             {
                 GenReport = dict.GetPhrase("GenReport", GenReport);
                 GenReportError = dict.GetPhrase("GenReportError", GenReportError);
+                IncorrectRepTemplate = dict.GetPhrase("IncorrectRepTemplate", IncorrectRepTemplate);               
             }
 
             if (Localization.Dictionaries.TryGetValue("Scada.Web", out dict))

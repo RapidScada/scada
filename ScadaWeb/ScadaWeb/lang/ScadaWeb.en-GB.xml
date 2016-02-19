@@ -3,6 +3,7 @@
   <Dictionary key="Scada.Report">
     <Phrase key="GenReport">Generate report  &quot;{0}&quot; by user {1}</Phrase>
     <Phrase key="GenReportError">Error generating report &quot;{0}&quot;: {1}</Phrase>
+    <Phrase key="IncorrectRepTemplate">Incorrect report template</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web">
     <Phrase key="NotLoggedOn">User not logged on.</Phrase>
