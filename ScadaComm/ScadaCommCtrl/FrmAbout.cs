@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2008
- * Modified : 2015
+ * Modified : 2016
  */
 
 using Scada.UI;
@@ -74,11 +74,16 @@ namespace Scada.Comm.Ctrl
                 frmAbout.exeDir = exeDir;
                 frmAbout.errLog = errLog;
             }
+
+            frmAbout.Init();
             frmAbout.ShowDialog();
         }
 
 
-        private void FrmAbout_Load(object sender, EventArgs e)
+        /// <summary>
+        /// Инициализировать форму
+        /// </summary>
+        private void Init()
         {
             // инициализация формы
             if (!inited)
@@ -127,6 +132,7 @@ namespace Scada.Comm.Ctrl
                 }
             }
         }
+
 
         private void FrmAbout_Click(object sender, EventArgs e)
         {

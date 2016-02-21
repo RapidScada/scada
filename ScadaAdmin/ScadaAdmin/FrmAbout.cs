@@ -63,11 +63,15 @@ namespace ScadaAdmin
         {
             if (frmAbout == null)
                 frmAbout = new FrmAbout();
+            frmAbout.Init();
             frmAbout.ShowDialog();
         }
 
 
-        private void FrmAbout_Load(object sender, EventArgs e)
+        /// <summary>
+        /// Инициализировать форму
+        /// </summary>
+        private void Init()
         {
             // инициализация формы
             if (!inited)
@@ -95,7 +99,7 @@ namespace ScadaAdmin
                 // загрузка изображения и гиперссылки из файлов, если они существуют
                 bool imgLoaded;
                 string errMsg;
-                if (ScadaUiUtils.LoadAboutForm(AppData.ExeDir, this, activePictureBox, lblWebsite, 
+                if (ScadaUiUtils.LoadAboutForm(AppData.ExeDir, this, activePictureBox, lblWebsite,
                     out imgLoaded, out linkUrl, out errMsg))
                 {
                     if (imgLoaded)
@@ -110,6 +114,7 @@ namespace ScadaAdmin
                 }
             }
         }
+
 
         private void FrmAbout_Click(object sender, EventArgs e)
         {

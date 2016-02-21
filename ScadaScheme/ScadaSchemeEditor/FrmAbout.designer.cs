@@ -108,7 +108,6 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "О программе";
-            this.Load += new System.EventHandler(this.FrmAbout_Load);
             this.Click += new System.EventHandler(this.FrmAbout_Click);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FrmAbout_KeyPress);
             ((System.ComponentModel.ISupportInitialize)(this.pbAboutRu)).EndInit();
