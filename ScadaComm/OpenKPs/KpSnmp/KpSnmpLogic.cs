@@ -97,10 +97,15 @@ namespace Scada.Comm.Devices
         /// Номер порта  по умолчанию
         /// </summary>
         private const int DefaultPort = 161;
+        /// <summary>
+        /// Макс. длина строкового значения тега
+        /// </summary>
+        private const int MaxTagStrLen = 50;
 
         private Config config;              // конфигурация КП
         private bool fatalError;            // фатальная ошибка при инициализации КП
         private VarGroup[] varGroups;       // группы запрашиваемых переменных
+        private string[] strVals;           // строковые значения тегов для отображения
         private IPEndPoint endPoint;        // адрес и порт для соединения с устройством
         private OctetString readCommunity;  // пароль на чтение данных
         private OctetString writeCommunity; // пароль на запись данных
@@ -119,6 +124,7 @@ namespace Scada.Comm.Devices
             config = new Config();
             fatalError = false;
             varGroups = null;
+            strVals = null;
             endPoint = null;
             readCommunity = null;
             writeCommunity = null;
@@ -137,9 +143,9 @@ namespace Scada.Comm.Devices
             }
             catch (Exception ex)
             {
-                throw new Exception(string.Format(Localization.UseRussian ? 
+                throw new Exception(string.Format(Localization.UseRussian ?
                     "Ошибка при создании переменной \"{0}\" с идентификатором {1}: {2}" :
-                    "Error creating variable \"{0}\" with identifier {1}: {2}", 
+                    "Error creating variable \"{0}\" with identifier {1}: {2}",
                     configVar.Name, configVar.OID, ex.Message));
             }
         }
@@ -175,6 +181,9 @@ namespace Scada.Comm.Devices
             }
 
             InitKPTags(tagGroups);
+
+            strVals = new string[KPTags.Length];
+            Array.Clear(strVals, 0, strVals.Length);
         }
 
         /// <summary>
@@ -225,66 +234,91 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Преобразовать данные переменной SNMP в строку для вывода в журнал
         /// </summary>
-        private string ConvertVarDataToString(ISnmpData data)
+        private string ConvertVarDataToString(ISnmpData snmpData, int maxLen = -1, bool addType = true)
         {
-            if (data == null)
+            if (snmpData == null)
             {
                 return "null";
             }
             else
             {
-                return new StringBuilder(data.ToString())
-                    .Append(" (")
-                    .Append(data.TypeCode.ToString())
-                    .Append(")").ToString();
+                string s = snmpData.ToString();
+                StringBuilder sb = new StringBuilder();
+
+                if (maxLen <= 0 || s.Length <= maxLen)
+                    sb.Append(s);
+                else
+                    sb.Append(s.Substring(0, maxLen)).Append("...");
+
+                if (addType)
+                    sb.Append(" (").Append(snmpData.TypeCode.ToString()).Append(")");
+
+                return sb.ToString();
             }
         }
 
         /// <summary>
         /// Расшифровать данные переменной SNMP
         /// </summary>
-        private SrezTable.CnlData DecodeVarData(ISnmpData data)
+        private bool DecodeVarData(ISnmpData snmpData, out SrezTableLight.CnlData tagData)
         {
-            if (data == null)
+            tagData = SrezTableLight.CnlData.Empty;
+
+            if (snmpData == null)
             {
-                return SrezTable.CnlData.Empty;
+                return false;
             }
             else
             {
                 try
                 {
-                    switch (data.TypeCode)
+                    switch (snmpData.TypeCode)
                     {
                         case SnmpType.Integer32:
-                            return new SrezTable.CnlData(((Integer32)data).ToInt32(), 1);
+                            tagData = new SrezTableLight.CnlData(((Integer32)snmpData).ToInt32(), 1);
+                            return true;
                         case SnmpType.Counter32:
-                            return new SrezTable.CnlData(((Counter32)data).ToUInt32(), 1);
+                            tagData = new SrezTableLight.CnlData(((Counter32)snmpData).ToUInt32(), 1);
+                            return true;
                         case SnmpType.Counter64:
-                            return new SrezTable.CnlData(((Counter64)data).ToUInt64(), 1);
+                            tagData = new SrezTableLight.CnlData(((Counter64)snmpData).ToUInt64(), 1);
+                            return true;
                         case SnmpType.TimeTicks:
-                            return new SrezTable.CnlData(((TimeTicks)data).ToUInt32(), 1);
+                            tagData = new SrezTableLight.CnlData(((TimeTicks)snmpData).ToUInt32(), 1);
+                            return true;
                         case SnmpType.OctetString:
-                            string s = data.ToString().Trim();
+                            string s = snmpData.ToString().Trim();
                             double val;
                             if (s.Equals("true", StringComparison.OrdinalIgnoreCase))
-                                return new SrezTable.CnlData(1.0, 1);
+                            {
+                                tagData = new SrezTableLight.CnlData(1.0, 1);
+                                return true;
+                            }
                             else if (s.Equals("false", StringComparison.OrdinalIgnoreCase))
-                                return new SrezTable.CnlData(0.0, 1);
+                            {
+                                tagData = new SrezTableLight.CnlData(0.0, 1);
+                                return true;
+                            }
                             else if (double.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out val))
-                                return new SrezTable.CnlData(val, 1);
+                            {
+                                tagData = new SrezTableLight.CnlData(val, 1);
+                                return true;
+                            }
                             else
-                                return SrezTable.CnlData.Empty;
+                            {
+                                return false;
+                            }
                         default:
-                            return SrezTable.CnlData.Empty;
+                            return false;
                     }
                 }
                 catch (Exception ex)
                 {
-                    WriteToLog(string.Format(Localization.UseRussian ? 
+                    WriteToLog(string.Format(Localization.UseRussian ?
                         "Ошибка при расшифровке данных \"{0}\" типа {1}: {2}" :
-                        "Error decoding data \"{0}\" of type {1}: {2}", 
-                        data.ToString(), data.TypeCode.ToString(), ex.Message));
-                    return SrezTable.CnlData.Empty;
+                        "Error decoding data \"{0}\" of type {1}: {2}",
+                        snmpData.ToString(), snmpData.TypeCode.ToString(), ex.Message));
+                    return false;
                 }
             }
         }
@@ -392,10 +426,15 @@ namespace Scada.Comm.Devices
                                 if (receivedVar.Id != varGroup.Variables[i].Id)
                                     throw new Exception(KpPhrases.VariablesMismatch);
 
-                                WriteToLog(varGroup.VarNames[i] + " = " + ConvertVarDataToString(receivedVar.Data));
+                                ISnmpData snmpData = receivedVar.Data;
+                                WriteToLog(varGroup.VarNames[i] + " = " + ConvertVarDataToString(snmpData));
 
                                 // расшифровка данных переменной и установка данных тега КП
-                                SetCurData(tagInd, DecodeVarData(receivedVar.Data));
+                                SrezTableLight.CnlData tagData;
+                                bool decodeOK = DecodeVarData(snmpData, out tagData);
+                                SetCurData(tagInd, tagData);
+                                strVals[tagInd] = decodeOK || snmpData == null ?
+                                    null : ConvertVarDataToString(snmpData, MaxTagStrLen, false);
                             }
                         }
                         else
@@ -440,7 +479,7 @@ namespace Scada.Comm.Devices
             while (RequestNeeded(ref tryNum))
             {
                 WriteToLog(string.Format(Localization.UseRussian ?
-                    "Установка значения переменной \"{0}\"" : 
+                    "Установка значения переменной \"{0}\"" :
                     "Set variable \"{0}\"", varName));
 
                 try
@@ -450,7 +489,7 @@ namespace Scada.Comm.Devices
 
                     if (sentVars == null || sentVars.Count != 1 || sentVars[0].Id != variable.Id)
                         throw new Exception(KpPhrases.VariablesMismatch);
-                        
+
                     WriteToLog(varName + " = " + ConvertVarDataToString(sentVars[0].Data));
                     lastCommSucc = true;
                 }
@@ -465,6 +504,14 @@ namespace Scada.Comm.Devices
                 FinishRequest();
                 tryNum++;
             }
+        }
+
+        /// <summary>
+        /// Преобразовать данные тега КП в строку
+        /// </summary>
+        protected override string ConvertTagDataToStr(int signal, SrezTableLight.CnlData tagData)
+        {
+            return strVals[signal - 1] ?? base.ConvertTagDataToStr(signal, tagData);
         }
 
 
@@ -496,7 +543,7 @@ namespace Scada.Comm.Devices
             // расчёт статистики
             CalcSessStats();
         }
-        
+
         /// <summary>
         /// Отправить команду ТУ
         /// </summary>
@@ -517,7 +564,7 @@ namespace Scada.Comm.Devices
                 if ((cmd.CmdTypeID == BaseValues.CmdTypes.Standard || cmd.CmdTypeID == BaseValues.CmdTypes.Binary) &&
                     FindVariableBySignal(cmd.CmdNum, out varName, out varOid))
                 {
-                    ISnmpData data = cmd.CmdTypeID == BaseValues.CmdTypes.Standard ? 
+                    ISnmpData data = cmd.CmdTypeID == BaseValues.CmdTypes.Standard ?
                         new Integer32((int)cmd.CmdVal) :
                         EncodeVarData(cmd.GetCmdDataStr());
 
@@ -534,7 +581,7 @@ namespace Scada.Comm.Devices
 
             CalcCmdStats();
         }
-        
+
         /// <summary>
         /// Выполнить действия после добавления КП на линию связи
         /// </summary>
@@ -543,16 +590,13 @@ namespace Scada.Comm.Devices
             // загрузка конфигурации КП
             string errMsg;
             bool configLoaded = config.Load(Config.GetFileName(AppDirs.ConfigDir, Number), out errMsg);
-            
+
             if (configLoaded)
             {
-                // инициализация данных КП
                 try
                 {
+                    // инициализация тегов КП
                     InitKPTags();
-                    RetrieveCommunities();
-                    RetrieveSnmpVersion();
-                    RetrieveEndPoint();
                     fatalError = false;
                 }
                 catch
@@ -567,5 +611,27 @@ namespace Scada.Comm.Devices
                 throw new Exception(errMsg);
             }
         }
-   }
+
+        /// <summary>
+        /// Выполнить действия при запуске линии связи
+        /// </summary>
+        public override void OnCommLineStart()
+        {
+            if (!fatalError)
+            {
+                try
+                {
+                    // инициализация данных КП
+                    RetrieveCommunities();
+                    RetrieveSnmpVersion();
+                    RetrieveEndPoint();
+                }
+                catch
+                {
+                    fatalError = true;
+                    throw;
+                }
+            }
+        }
+    }
 }
