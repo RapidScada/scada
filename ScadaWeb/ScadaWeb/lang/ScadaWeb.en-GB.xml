@@ -31,9 +31,8 @@
     <Phrase key="btnShowData">Show data</Phrase>
     <Phrase key="btnChangePeriod">Change period</Phrase>
     <Phrase key="btnHideData">Hide data</Phrase>
+    <Phrase key="btnExport">Export</Phrase>
     <Phrase key="btnRefreshDiag">Refresh</Phrase>
-    <Phrase key="btnExportPdf">PDF</Phrase>
-    <Phrase key="btnExportPng">PNG</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Diag.WFrmDiagCnls">
     <Phrase key="this">Select channels</Phrase>
@@ -49,6 +48,15 @@
     <Phrase key="lblDate1">From</Phrase>
     <Phrase key="lblDate2">To</Phrase>
     <Phrase key="btnSelect">Select</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Diag.WFrmDiagExport">
+    <Phrase key="this">Export</Phrase>
+    <Phrase key="lblExportFormat">Choose export format:</Phrase>
+    <Phrase key="rbExportPdf">Export chart to PDF</Phrase>
+    <Phrase key="rbExportPng">Export chart to PNG</Phrase>
+    <Phrase key="rbExportExcel">Export data to Excel</Phrase>
+    <Phrase key="btnExport">Export</Phrase>
     <Phrase key="btnClose">Close</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.MainData">
