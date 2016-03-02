@@ -5,8 +5,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
-    <link href="~/css/masterMain.min.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="<%= ResolveClientUrl("~/js/jquery-2.2.0.min.js") %>"></script>
+    <link href="~/css/master-main.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="<%= ResolveClientUrl("~/js/jquery.min.js") %>"></script>
     <link href="~/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <asp:ContentPlaceHolder ID="cphMainHead" runat="server">
     </asp:ContentPlaceHolder>
