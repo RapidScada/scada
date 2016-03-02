@@ -242,13 +242,25 @@ namespace Scada.Comm.Devices
             }
             else
             {
-                string s = snmpData.ToString();
                 StringBuilder sb = new StringBuilder();
 
-                if (maxLen <= 0 || s.Length <= maxLen)
-                    sb.Append(s);
+                if (snmpData is OctetString)
+                {
+                    byte[] raw = ((OctetString)snmpData).GetRaw();
+
+                    if (maxLen <= 0 || raw.Length <= maxLen)
+                    {
+                        sb.Append(CommUtils.BytesToString(raw));
+                    }
+                    else
+                    {
+                        sb.Append(CommUtils.BytesToString(raw, 0, maxLen)).Append("..."); ;
+                    }
+                }
                 else
-                    sb.Append(s.Substring(0, maxLen)).Append("...");
+                {
+                    sb.Append(snmpData.ToString());
+                }
 
                 if (addType)
                     sb.Append(" (").Append(snmpData.TypeCode.ToString()).Append(")");
