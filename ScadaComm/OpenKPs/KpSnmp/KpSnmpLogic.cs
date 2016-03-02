@@ -249,13 +249,9 @@ namespace Scada.Comm.Devices
                     byte[] raw = ((OctetString)snmpData).GetRaw();
 
                     if (maxLen <= 0 || raw.Length <= maxLen)
-                    {
                         sb.Append(CommUtils.BytesToString(raw));
-                    }
                     else
-                    {
                         sb.Append(CommUtils.BytesToString(raw, 0, maxLen)).Append("..."); ;
-                    }
                 }
                 else
                 {
