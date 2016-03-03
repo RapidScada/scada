@@ -1,7 +1,20 @@
 ﻿body {
-    margin: 0;
+  margin: 0;
+  padding: 0;
+  background-color: white;
 }
-
-.test {
-    color: red;
+/* Temporary  toolbar */
+#divToolbar {
+  margin: 10px;
+  padding: 10px;
+}
+#divToolbar input {
+  margin-right: 10px;
+  padding: 5px 20px;
+}
+/* Scheme */
+#divScheme {
+  margin: 10px;
+  border: 1px solid gray;
+  height: 500px;
 }
