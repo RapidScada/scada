@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlgScheme", "PlgScheme\PlgScheme.csproj", "{36CBF606-7F85-4E46-BC7A-C86CACF675B2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlgSchemeCommon", "PlgSchemeCommon\PlgSchemeCommon.csproj", "{0B84EF70-86AB-4D66-BD22-3B7701C08D5A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{36CBF606-7F85-4E46-BC7A-C86CACF675B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36CBF606-7F85-4E46-BC7A-C86CACF675B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36CBF606-7F85-4E46-BC7A-C86CACF675B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B84EF70-86AB-4D66-BD22-3B7701C08D5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B84EF70-86AB-4D66-BD22-3B7701C08D5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B84EF70-86AB-4D66-BD22-3B7701C08D5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B84EF70-86AB-4D66-BD22-3B7701C08D5A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
