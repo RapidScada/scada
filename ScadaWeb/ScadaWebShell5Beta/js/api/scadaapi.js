@@ -12,17 +12,20 @@ var scada = scada || {};
 
 // Объект API
 scada.api = {
-    // Получить текущее значение входного канала
+    // Получить текущее значение входного канала.
+    // callback - функция вида function (success, cnlVal)
     getCnlVal: function (cnlNum, callback) {
         callback(0.0);
     },
 
     // Получить текущий статус входного канала
+    // callback - функция вида function (success, cnlStat)
     getCnlStat: function (cnlNum, callback) {
         callback(0);
     },
 
     // Получить текущие данные входного канала 
+    // callback - функция вида function (success, cnlDataView)
     getCnlData: function (cnlNum, callback) {
         callback(new scada.CnlDataView());
     }

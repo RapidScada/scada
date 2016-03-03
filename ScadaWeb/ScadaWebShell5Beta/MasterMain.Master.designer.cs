@@ -22,12 +22,12 @@ namespace Scada.Web {
         protected global::System.Web.UI.WebControls.ContentPlaceHolder cphMainHead;
         
         /// <summary>
-        /// cptMainContent control.
+        /// cphMainContent control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder cptMainContent;
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder cphMainContent;
     }
 }

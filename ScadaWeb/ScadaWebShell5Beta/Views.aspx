@@ -2,7 +2,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="cphMainHead" runat="server">
     <script type="text/javascript" src="../js/views.js"></script>
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="cptMainContent" runat="server">
+<asp:Content ID="Content2" ContentPlaceHolderID="cphMainContent" runat="server">
     <div id="divExplorer">
 
     </div>
