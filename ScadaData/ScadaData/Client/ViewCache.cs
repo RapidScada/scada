@@ -23,6 +23,7 @@
  * Modified : 2016
  */
 
+using Scada.Data;
 using System;
 using Utils;
 
@@ -39,6 +40,10 @@ namespace Scada.Client
         /// </summary>
         protected readonly ServerComm serverComm;
         /// <summary>
+        /// Объект для потокобезопасного доступа к данным кеша клиентов
+        /// </summary>
+        protected readonly DataAccess dataAccess;
+        /// <summary>
         /// Журнал
         /// </summary>
         protected readonly Log log;
@@ -54,14 +59,17 @@ namespace Scada.Client
         /// <summary>
         /// Конструктор
         /// </summary>
-        public ViewCache(ServerComm serverComm, Log log)
+        public ViewCache(ServerComm serverComm, DataAccess dataAccess, Log log)
         {
             if (serverComm == null)
                 throw new ArgumentNullException("serverComm");
+            if (dataAccess == null)
+                throw new ArgumentNullException("dataAccess");
             if (log == null)
                 throw new ArgumentNullException("log");
 
             this.serverComm = serverComm;
+            this.dataAccess = dataAccess;
             this.log = log;
         }
 
@@ -69,14 +77,68 @@ namespace Scada.Client
         /// <summary>
         /// Получить представление из кэша или от сервера
         /// </summary>
-        public T GetView<T>(int viewID, string fileName) where T : BaseView
+        public T GetView<T>(int viewID, bool throwOnError = false) where T : BaseView
         {
-            T view = null;
-            return view;
+            // TODO: нужно записать загруженное представление в кэш
+            try
+            {
+                T view;
+                BaseView baseView = GetViewFromCache(viewID);
+
+                if (baseView == null)
+                {
+                    ViewProps viewProps = dataAccess.GetViewProps(viewID);
+
+                    if (viewProps == null)
+                    {
+                        view = null;
+                        if (throwOnError)
+                            throw new Exception(Localization.UseRussian ? 
+                                "View properties are missing" : 
+                                "Отсутствуют свойства представления");
+                    }
+                    else 
+                    {
+                        // создание и загрузка нового представления
+                        view = (T)Activator.CreateInstance(typeof(T));
+                        if (!serverComm.ReceiveView(viewProps.FileName, view))
+                        {
+                            view = null;
+                            if (throwOnError)
+                                throw new Exception(Localization.UseRussian ? 
+                                    "View is not received from the server" : 
+                                    "Представление не принято от сервера");
+                        }
+                    }
+                }
+                else
+                {
+                    view = baseView as T;
+                    if (view == null && throwOnError)
+                        throw new Exception(Localization.UseRussian ?
+                            "Incorrect view type" :
+                            "Некорректный тип представления");
+                }
+
+
+                return view;
+            }
+            catch (Exception ex)
+            {
+                string errMsg = string.Format(Localization.UseRussian ?
+                    "Ошибка при получении представления с id={0} из кэша или от сервера" :
+                    "Error getting view with id={0} from cache or from server", viewID);
+                log.WriteException(ex, errMsg);
+
+                if (throwOnError)
+                    throw new Exception(errMsg);
+                else
+                    return null;
+            }
         }
 
         /// <summary>
-        /// Получить представление только из кэша
+        /// Получить уже загруженное представление только из кэша
         /// </summary>
         public BaseView GetViewFromCache(int viewID)
         {

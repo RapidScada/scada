@@ -152,7 +152,7 @@ namespace Scada.Web
             serverComm = new ServerComm(commSettings, Log);
             DataCache dataCache = new DataCache(serverComm, Log);
             DataAccess = new DataAccess(dataCache, Log);
-            ViewCache = new ViewCache(serverComm, Log);
+            ViewCache = new ViewCache(serverComm, DataAccess, Log);
         }
 
         /// <summary>
