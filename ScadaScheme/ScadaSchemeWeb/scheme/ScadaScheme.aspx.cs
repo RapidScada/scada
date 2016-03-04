@@ -20,8 +20,10 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2014
+ * Modified : 2016
  */
+
+//#define DEBUG_MODE
 
 using System;
 using Scada.Web;
@@ -36,20 +38,24 @@ namespace Scada.Scheme.Web.scheme
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            // проверка входа в систему
+            // получение данных пользователя
             UserData userData = UserData.GetUserData();
+
+#if DEBUG_MODE
+            // вход в систему для отладки приложения
+            if (!userData.LoggedOn)
+            {
+                string errMsg;
+                userData.Login("admin", "12345", out errMsg);
+            }
+#endif
+
+            // проверка входа в систему
             if (!userData.LoggedOn)
                 throw new Exception(CommonPhrases.NoRights);
 
             // инициализировать данные приложения SCADA-Схема
             SchemeApp.InitSchemeApp(SchemeApp.WorkModes.Monitor);
-
-            // вход в систему для отладки приложения
-            /*if (!userData.LoggedOn)
-            {
-                string errMsg;
-                userData.Login("admin", "12345", out errMsg);
-            }*/
         }
     }
 }
