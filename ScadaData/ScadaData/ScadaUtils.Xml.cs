@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2014
- * Modified : 2014
+ * Modified : 2016
  */
 
 using System;
@@ -142,11 +142,7 @@ namespace Scada
         public static string GetChildAsString(this XmlNode parentXmlNode, string childNodeName)
         {
             XmlNode node = parentXmlNode.SelectSingleNode(childNodeName);
-            if (node == null)
-                throw new InvalidOperationException(
-                    string.Format(CommonPhrases.XmlNodeNotFound, childNodeName, parentXmlNode.Name));
-            else
-                return node.InnerText;
+            return node == null ? "" : node.InnerText;
         }
 
         /// <summary>
@@ -156,7 +152,8 @@ namespace Scada
         {
             try
             {
-                return bool.Parse(parentXmlNode.GetChildAsString(childNodeName));
+                XmlNode node = parentXmlNode.SelectSingleNode(childNodeName);
+                return node == null ? false : bool.Parse(node.InnerText);
             }
             catch (FormatException)
             {
@@ -171,7 +168,8 @@ namespace Scada
         {
             try
             {
-                return int.Parse(parentXmlNode.GetChildAsString(childNodeName));
+                XmlNode node = parentXmlNode.SelectSingleNode(childNodeName);
+                return node == null ? 0 : int.Parse(node.InnerText);
             }
             catch (FormatException)
             {
@@ -186,7 +184,8 @@ namespace Scada
         {
             try
             {
-                return XmlParseDouble(parentXmlNode.GetChildAsString(childNodeName));
+                XmlNode node = parentXmlNode.SelectSingleNode(childNodeName);
+                return node == null ? 0.0 : XmlParseDouble(node.InnerText);
             }
             catch (FormatException)
             {
@@ -201,7 +200,8 @@ namespace Scada
         {
             try
             {
-                return XmlParseDateTime(parentXmlNode.GetChildAsString(childNodeName));
+                XmlNode node = parentXmlNode.SelectSingleNode(childNodeName);
+                return node == null ? DateTime.MinValue : XmlParseDateTime(node.InnerText);
             }
             catch (FormatException)
             {
@@ -216,7 +216,8 @@ namespace Scada
         {
             try
             {
-                return XmlParseTimeSpan(parentXmlNode.GetChildAsString(childNodeName));
+                XmlNode node = parentXmlNode.SelectSingleNode(childNodeName);
+                return node == null ? TimeSpan.Zero : XmlParseTimeSpan(node.InnerText);
             }
             catch (FormatException)
             {
@@ -240,7 +241,8 @@ namespace Scada
         {
             try
             {
-                return bool.Parse(xmlElem.GetAttribute(attrName));
+                return xmlElem.HasAttribute(attrName) ? 
+                    bool.Parse(xmlElem.GetAttribute(attrName)) : false;
             }
             catch (FormatException)
             {
@@ -255,7 +257,8 @@ namespace Scada
         {
             try
             {
-                return int.Parse(xmlElem.GetAttribute(attrName));
+                return xmlElem.HasAttribute(attrName) ? 
+                    int.Parse(xmlElem.GetAttribute(attrName)) : 0;
             }
             catch (FormatException)
             {
@@ -270,7 +273,8 @@ namespace Scada
         {
             try
             {
-                return XmlParseDouble(xmlElem.GetAttribute(attrName));
+                return xmlElem.HasAttribute(attrName) ? 
+                    XmlParseDouble(xmlElem.GetAttribute(attrName)) : 0.0;
             }
             catch (FormatException)
             {
@@ -285,7 +289,8 @@ namespace Scada
         {
             try
             {
-                return XmlParseDateTime(xmlElem.GetAttribute(attrName));
+                return xmlElem.HasAttribute(attrName) ? 
+                    XmlParseDateTime(xmlElem.GetAttribute(attrName)) : DateTime.MinValue;
             }
             catch (FormatException)
             {
@@ -300,7 +305,8 @@ namespace Scada
         {
             try
             {
-                return XmlParseTimeSpan(xmlElem.GetAttribute(attrName));
+                return xmlElem.HasAttribute(attrName) ? 
+                    XmlParseTimeSpan(xmlElem.GetAttribute(attrName)) : TimeSpan.Zero;
             }
             catch (FormatException)
             {
