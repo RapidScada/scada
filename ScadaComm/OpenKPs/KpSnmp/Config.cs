@@ -114,6 +114,10 @@ namespace Scada.Comm.Devices.KpSnmp
             /// </summary>
             public string OID { get; set; }
             /// <summary>
+            /// Получить или установить признак, что переменная имеет тип BITS
+            /// </summary>
+            public bool IsBits { get; set; }
+            /// <summary>
             /// Получить или установить родительский узел
             /// </summary>
             public ITreeNode Parent { get; set; }
@@ -131,11 +135,12 @@ namespace Scada.Comm.Devices.KpSnmp
             /// <summary>
             /// Определить, что параметры текущего объекта равны заданным
             /// </summary>
-            public bool Equals(string name, string oid)
+            public bool Equals(string name, string oid, bool isBits)
             {
                 return
                     string.Equals(Name, name, StringComparison.Ordinal) &&
-                    string.Equals(OID, oid, StringComparison.Ordinal);
+                    string.Equals(OID, oid, StringComparison.Ordinal) &&
+                    IsBits == isBits;
             }
             /// <summary>
             /// Получить строковое представление объекта
@@ -288,6 +293,7 @@ namespace Scada.Comm.Devices.KpSnmp
                             Variable variable = new Variable();
                             variable.Name = variableElem.GetAttribute("name");
                             variable.OID = variableElem.GetAttribute("oid");
+                            variable.IsBits = variableElem.GetAttrAsBool("isBits");
                             variable.Parent = varGroup;
                             varGroup.Variables.Add(variable);
                         }
@@ -344,6 +350,7 @@ namespace Scada.Comm.Devices.KpSnmp
                         XmlElement variableElem = xmlDoc.CreateElement("Variable");
                         variableElem.SetAttribute("name", variable.Name);
                         variableElem.SetAttribute("oid", variable.OID);
+                        variableElem.SetAttribute("isBits", variable.IsBits);
                         varGroupElem.AppendChild(variableElem);
                     }
                 }

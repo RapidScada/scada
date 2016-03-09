@@ -62,7 +62,6 @@ namespace Scada.Comm.Devices
             public VarGroup(string name, int varCnt, int startSignal)
             {
                 Name = name;
-                VarNames = new string[varCnt];
                 Variables = new Variable[varCnt];
                 StartSignal = startSignal;
                 ReqDescr = string.Format(Localization.UseRussian ?
@@ -74,10 +73,6 @@ namespace Scada.Comm.Devices
             /// Получить имя группы
             /// </summary>
             public string Name { get; private set; }
-            /// <summary>
-            /// Получить имена переменных
-            /// </summary>
-            public string[] VarNames { get; private set; }
             /// <summary>
             /// Получить переменные
             /// </summary>
@@ -106,6 +101,7 @@ namespace Scada.Comm.Devices
         private bool fatalError;            // фатальная ошибка при инициализации КП
         private VarGroup[] varGroups;       // группы запрашиваемых переменных
         private string[] strVals;           // строковые значения тегов для отображения
+        private bool[] isBitsArr;           // признаки, что теги имеют тип BITS
         private IPEndPoint endPoint;        // адрес и порт для соединения с устройством
         private OctetString readCommunity;  // пароль на чтение данных
         private OctetString writeCommunity; // пароль на запись данных
@@ -125,6 +121,7 @@ namespace Scada.Comm.Devices
             fatalError = false;
             varGroups = null;
             strVals = null;
+            isBitsArr = null;
             endPoint = null;
             readCommunity = null;
             writeCommunity = null;
@@ -157,6 +154,7 @@ namespace Scada.Comm.Devices
         {
             int groupCnt = config.VarGroups.Count;
             List<TagGroup> tagGroups = new List<TagGroup>(groupCnt);
+            List<bool> isBitsList = new List<bool>();
             varGroups = new VarGroup[groupCnt];
             int signal = 1;
 
@@ -172,8 +170,8 @@ namespace Scada.Comm.Devices
                     Config.Variable configVar = configVarGroup.Variables[j];
                     KPTag kpTag = new KPTag(signal++, configVar.Name);
                     tagGroup.KPTags.Add(kpTag);
-                    varGroup.VarNames[j] = configVar.Name;
                     varGroup.Variables[j] = CreateVariable(configVar);
+                    isBitsList.Add(configVar.IsBits);
                 }
 
                 tagGroups.Add(tagGroup);
@@ -184,6 +182,7 @@ namespace Scada.Comm.Devices
 
             strVals = new string[KPTags.Length];
             Array.Clear(strVals, 0, strVals.Length);
+            isBitsArr = isBitsList.ToArray();
         }
 
         /// <summary>
@@ -234,7 +233,7 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Преобразовать данные переменной SNMP в строку для вывода в журнал
         /// </summary>
-        private string ConvertVarDataToString(ISnmpData snmpData, int maxLen = -1, bool addType = true)
+        private string ConvertVarDataToString(ISnmpData snmpData, bool isBits, int maxLen = -1, bool addType = true)
         {
             if (snmpData == null)
             {
@@ -246,12 +245,18 @@ namespace Scada.Comm.Devices
 
                 if (snmpData is OctetString)
                 {
-                    byte[] raw = ((OctetString)snmpData).GetRaw();
-
-                    if (maxLen <= 0 || raw.Length <= maxLen)
-                        sb.Append(CommUtils.BytesToString(raw));
+                    if (isBits)
+                    {
+                        sb.Append(((OctetString)snmpData).ToHexString());
+                    }
                     else
-                        sb.Append(CommUtils.BytesToString(raw, 0, maxLen)).Append("..."); ;
+                    {
+                        string s = snmpData.ToString();
+                        if (maxLen > 0 && s.Length > maxLen)
+                            sb.Append(s.Substring(0, maxLen)).Append("...");
+                        else
+                            sb.Append(s);
+                    }
                 }
                 else
                 {
@@ -268,13 +273,32 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Расшифровать данные переменной SNMP
         /// </summary>
-        private bool DecodeVarData(ISnmpData snmpData, out SrezTableLight.CnlData tagData)
+        private bool DecodeVarData(ISnmpData snmpData, bool isBits, out SrezTableLight.CnlData tagData)
         {
             tagData = SrezTableLight.CnlData.Empty;
 
             if (snmpData == null)
             {
                 return false;
+            }
+            else if (isBits)
+            {
+                if (snmpData.TypeCode == SnmpType.OctetString)
+                {
+                    // получение значения типа BITS: последний полученный байт строки - младший байт значения тега
+                    byte[] snmpRaw = ((OctetString)snmpData).GetRaw();
+                    byte[] tagRaw = new byte[8];
+
+                    for (int i = 0, j = snmpRaw.Length - 1; i < 8; i++, j--)
+                        tagRaw[i] = j >= 0 ? snmpRaw[j] : (byte)0;
+
+                    tagData = new SrezTableLight.CnlData(BitConverter.ToUInt64(tagRaw, 0), 1);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
@@ -290,6 +314,9 @@ namespace Scada.Comm.Devices
                             return true;
                         case SnmpType.Counter64:
                             tagData = new SrezTableLight.CnlData(((Counter64)snmpData).ToUInt64(), 1);
+                            return true;
+                        case SnmpType.Gauge32:
+                            tagData = new SrezTableLight.CnlData(((Gauge32)snmpData).ToUInt32(), 1);
                             return true;
                         case SnmpType.TimeTicks:
                             tagData = new SrezTableLight.CnlData(((TimeTicks)snmpData).ToUInt32(), 1);
@@ -382,20 +409,18 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Найти переменную по сигналу
         /// </summary>
-        private bool FindVariableBySignal(int signal, out string name, out ObjectIdentifier oid)
+        private bool FindVariableBySignal(int signal, out ObjectIdentifier oid)
         {
             foreach (VarGroup varGroup in varGroups)
             {
                 if (varGroup.StartSignal <= signal && signal < varGroup.StartSignal + varGroup.Variables.Length)
                 {
                     int index = signal - varGroup.StartSignal;
-                    name = varGroup.VarNames[index];
                     oid = varGroup.Variables[index].Id;
                     return true;
                 }
             }
 
-            name = "";
             oid = null;
             return false;
         }
@@ -435,14 +460,15 @@ namespace Scada.Comm.Devices
                                     throw new Exception(KpPhrases.VariablesMismatch);
 
                                 ISnmpData snmpData = receivedVar.Data;
-                                WriteToLog(varGroup.VarNames[i] + " = " + ConvertVarDataToString(snmpData));
+                                bool isBits = isBitsArr[tagInd];
+                                WriteToLog(KPTags[tagInd].Name + " = " + ConvertVarDataToString(snmpData, isBits));
 
                                 // расшифровка данных переменной и установка данных тега КП
                                 SrezTableLight.CnlData tagData;
-                                bool decodeOK = DecodeVarData(snmpData, out tagData);
+                                bool decodeOK = DecodeVarData(snmpData, isBits, out tagData);
                                 SetCurData(tagInd, tagData);
                                 strVals[tagInd] = decodeOK || snmpData == null ?
-                                    null : ConvertVarDataToString(snmpData, MaxTagStrLen, false);
+                                    null : ConvertVarDataToString(snmpData, isBits, MaxTagStrLen, false);
                             }
                         }
                         else
@@ -479,7 +505,7 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Отправить команду установки переменной
         /// </summary>
-        private void Command(string varName, Variable variable)
+        private void Command(string varName, bool isBits, Variable variable)
         {
             lastCommSucc = false;
             int tryNum = 0;
@@ -498,7 +524,7 @@ namespace Scada.Comm.Devices
                     if (sentVars == null || sentVars.Count != 1 || sentVars[0].Id != variable.Id)
                         throw new Exception(KpPhrases.VariablesMismatch);
 
-                    WriteToLog(varName + " = " + ConvertVarDataToString(sentVars[0].Data));
+                    WriteToLog(varName + " = " + ConvertVarDataToString(sentVars[0].Data, isBits));
                     lastCommSucc = true;
                 }
                 catch (Exception ex)
@@ -519,7 +545,18 @@ namespace Scada.Comm.Devices
         /// </summary>
         protected override string ConvertTagDataToStr(int signal, SrezTableLight.CnlData tagData)
         {
-            return strVals[signal - 1] ?? base.ConvertTagDataToStr(signal, tagData);
+            if (strVals[signal - 1] != null)
+            {
+                return strVals[signal - 1];
+            }
+            else if (tagData.Stat > 0 && isBitsArr[signal - 1])
+            {
+                return "0x" + ((long)tagData.Val).ToString("X");
+            }
+            else
+            {
+                return base.ConvertTagDataToStr(signal, tagData);
+            }
         }
 
 
@@ -566,20 +603,25 @@ namespace Scada.Comm.Devices
             }
             else
             {
-                string varName;
+                int signal = cmd.CmdNum;
                 ObjectIdentifier varOid;
 
                 if ((cmd.CmdTypeID == BaseValues.CmdTypes.Standard || cmd.CmdTypeID == BaseValues.CmdTypes.Binary) &&
-                    FindVariableBySignal(cmd.CmdNum, out varName, out varOid))
+                    FindVariableBySignal(signal, out varOid))
                 {
                     ISnmpData data = cmd.CmdTypeID == BaseValues.CmdTypes.Standard ?
                         new Integer32((int)cmd.CmdVal) :
                         EncodeVarData(cmd.GetCmdDataStr());
 
                     if (data == null)
+                    {
                         WriteToLog(CommPhrases.IncorrectCmdData);
+                    }
                     else
-                        Command(varName, new Variable(varOid, data));
+                    {
+                        int tagInd = signal - 1;
+                        Command(KPTags[tagInd].Name, isBitsArr[tagInd], new Variable(varOid, data));
+                    }
                 }
                 else
                 {

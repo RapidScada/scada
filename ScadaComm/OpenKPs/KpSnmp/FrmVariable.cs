@@ -88,12 +88,13 @@ namespace Scada.Comm.Devices.KpSnmp
 
             string oldName = variable.Name;
             string oldOID = variable.OID;
+            bool oldIsBits = variable.IsBits;
 
             FrmVariable frmVariable = new FrmVariable();
             frmVariable.variable = variable;
             frmVariable.txtSignal.Text = signal.ToString();
 
-            return frmVariable.ShowDialog() == DialogResult.OK && !variable.Equals(oldName, oldOID);
+            return frmVariable.ShowDialog() == DialogResult.OK && !variable.Equals(oldName, oldOID, oldIsBits);
         }
 
 
@@ -113,6 +114,7 @@ namespace Scada.Comm.Devices.KpSnmp
             {
                 txtName.Text = variable.Name;
                 txtOID.Text = variable.OID;
+                chkBits.Checked = variable.IsBits;
                 btnChange.Left = btnAdd.Left;
                 btnChange.Visible = true;
                 AcceptButton = btnChange;
@@ -132,7 +134,7 @@ namespace Scada.Comm.Devices.KpSnmp
 
             if (CheckOID(oidStr))
             {
-                variable = new Config.Variable() { Name = txtName.Text.Trim(), OID = oidStr };
+                variable = new Config.Variable() { Name = txtName.Text.Trim(), OID = oidStr, IsBits = chkBits.Checked };
                 DialogResult = DialogResult.OK;
             }
             else
@@ -150,6 +152,7 @@ namespace Scada.Comm.Devices.KpSnmp
             {
                 variable.Name = txtName.Text.Trim();
                 variable.OID = txtOID.Text.Trim();
+                variable.IsBits = chkBits.Checked;
                 DialogResult = DialogResult.OK;
             }
             else
