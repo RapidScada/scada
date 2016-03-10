@@ -3,6 +3,13 @@ var scada = scada || {};
 // Scheme namespace
 scada.scheme = scada.scheme || {};
 
+/********** Constants **********/
+
+scada.scheme.const = {
+    // Count of elements received by a one request
+    LOAD_ELEM_CNT: 100
+};
+
 /********** Base Element **********/
 
 // Parent base type of scheme elements
@@ -28,6 +35,8 @@ scada.scheme.BaseElement.prototype.propsExist = function (propNames) {
 scada.scheme.Scheme = function () {
     scada.scheme.BaseElement.call(this);
 
+    // Stamp of the view unique within application scope
+    this.viewStamp = 0;
     // Elements of the scheme
     this.elements = [];
     // Binary objects of the scheme
@@ -36,6 +45,47 @@ scada.scheme.Scheme = function () {
 
 scada.scheme.Scheme.prototype = Object.create(scada.scheme.BaseElement.prototype);
 scada.scheme.Scheme.constructor = scada.scheme.BaseElement;
+
+// Clear scheme
+scada.scheme.Scheme.prototype.clear = function () {
+    this.viewStamp = 0;
+    this.elements = [];
+    this.blobs = [];
+};
+
+// Load scheme.
+// callback is function (success, complete)
+scada.scheme.Scheme.prototype.load = function (viewID, callback) {
+    var request = $.ajax({
+        url: "SchemeSvc.svc/GetElements" +
+            "?viewID=" + viewID +
+            "&viewStamp=0" +
+            "&startIndex=0" +
+            "&count=" + scada.scheme.const.LOAD_ELEM_CNT,
+        method: "GET",
+        dataType: "json"
+    });
+
+    requst.done(function (data, textStatus, jqXHR) {
+        if (data.d == "") {
+            console.log("Empty data received. Internal service error");
+        } else {
+            console.log("Data received successfully");
+            console.log(data.d);
+            var parsedData = $.parseJSON(data.d);
+        }
+    });
+
+    requst.fail(function (jqXHR, textStatus, errorThrown) {
+        console.log("Error: " + result.status + " " + result.statusText);
+    });
+
+    req.always(function () {
+        // update scheme
+    });
+
+    //callback(true, true);
+};
 
 /********** Scheme Properties **********/
 

@@ -1,5 +1,5 @@
 ﻿/*
- * Rapid SCADA API for access data and send commands
+ * Rapid SCADA client API for access data and sending commands
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016
@@ -9,24 +9,24 @@
 // Rapid SCADA namespace
 var scada = scada || {};
 
-// API object
-scada.api = {
+// Client API object
+scada.clientAPI = {
     // Get current value of the input channel.
     // callback is function (success, cnlVal)
     getCnlVal: function (cnlNum, callback) {
-        callback(0.0);
+        callback(true, 0.0);
     },
 
     // Get current status of the input channel.
     // callback is function (success, cnlStat)
     getCnlStat: function (cnlNum, callback) {
-        callback(0);
+        callback(true, 0);
     },
 
     // Get current data of the input channel. 
     // callback is function (success, cnlDataView)
     getCnlData: function (cnlNum, callback) {
-        callback(new scada.CnlDataView());
+        callback(true, new scada.CnlDataView());
     }
 };
 

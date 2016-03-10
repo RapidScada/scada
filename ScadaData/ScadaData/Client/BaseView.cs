@@ -44,6 +44,7 @@ namespace Scada.Client
             CnlList = new List<int>();
             CtrlCnlList = new List<int>();
             StoredOnServer = true;
+            Stamp = 0;
         }
 
 
@@ -73,6 +74,12 @@ namespace Scada.Client
         /// Получить признак хранения файла представления на сервере (в директории интерфейса)
         /// </summary>
         public bool StoredOnServer { get; protected set; }
+
+        /// <summary>
+        /// Получить или установить уникальную метку объекта в пределах некоторого набора данных
+        /// </summary>
+        /// <remarks>Используется для контроля целостности данных при получении представления из кеша</remarks>
+        public long Stamp { get; set; }
 
 
         /// <summary>

@@ -72,7 +72,7 @@
     </Content>
     <Content Include="Global.asax" />
     <Content Include="images\favicon.ico" />
-    <Content Include="js\api\scadaapi.js" />
+    <Content Include="js\api\clientapi.js" />
     <Content Include="js\jquery.min.js" />
     <Content Include="js\views.js" />
     <Content Include="lang\ScadaWeb.en-GB.xml" />

@@ -44,15 +44,40 @@ namespace Scada.Web.Plugins.Scheme
         /// <summary>
         /// Ответ на запрос элементов схемы
         /// </summary>
-        public class GetElementsResponse
+        private class GetElementsResponse
         {
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public GetElementsResponse(int capacity = -1)
+            {
+                ViewStamp = 0;
+                EndOfScheme = false;
+                Elements = capacity > 0 ? 
+                    new List<SchemeView.Element>(capacity) : 
+                    new List<SchemeView.Element>();
+            }
 
+            /// <summary>
+            /// Получить или установить метку представления, уникальную в пределах приложения
+            /// </summary>
+            public long ViewStamp { get; set; }
+            /// <summary>
+            /// Получить или установить признак, что считаны все элементы схемы
+            /// </summary>
+            public bool EndOfScheme { get; set; }
+            /// <summary>
+            /// Получить элементы схемы
+            /// </summary>
+            public List<SchemeView.Element> Elements { get; private set; }
         }
+
 
         /// <summary>
         /// Обеспечивает сериализацию результатов методов сервиса
         /// </summary>
         protected static readonly JavaScriptSerializer JsSerializer = new JavaScriptSerializer();
+
 
         /// <summary>
         /// Получить элементы схемы
@@ -63,17 +88,18 @@ namespace Scada.Web.Plugins.Scheme
         {
             try
             {
-                // TODO: возвращаемая структура должна ещё содержать viewStamp и признак окончания чтения
+                GetElementsResponse resp = new GetElementsResponse(count);
                 SchemeView schemeView = AppData.ViewCache.GetView<SchemeView>(viewID, true);
-
                 List<SchemeView.Element> srcElems = schemeView.ElementList;
-                List<SchemeView.Element> destElems = new List<SchemeView.Element>(count);
                 int srcCnt = srcElems.Count;
 
-                for (int i = startIndex, j = 0; i < srcCnt && j < count; i++, j++)
-                    destElems.Add(schemeView.ElementList[i]);
+                resp.ViewStamp = schemeView.Stamp;
+                resp.EndOfScheme = startIndex + count >= srcCnt;
 
-                return JsSerializer.Serialize(destElems);
+                for (int i = startIndex, j = 0; i < srcCnt && j < count; i++, j++)
+                    resp.Elements.Add(srcElems[i]);
+
+                return JsSerializer.Serialize(resp);
             }
             catch (Exception ex)
             {

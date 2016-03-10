@@ -49,6 +49,7 @@ namespace Scada.Web
         private static bool inited;                 // признак инициализации общих данных веб-приложения
         private static CommSettings commSettings;   // настройки соединения с сервером
         private static ServerComm serverComm;       // объект для обмена данными с сервером
+        private static long viewStampCntr;          // счётчик для генерации меток представлений
 
         private static DateTime scadaDataDictAge;           // время изменения файла словаря ScadaData
         private static DateTime scadaWebDictAge;            // время изменения файла словаря ScadaWeb
@@ -66,6 +67,7 @@ namespace Scada.Web
 
             inited = false;
             commSettings = new CommSettings();
+            viewStampCntr = 0;
 
             scadaDataDictAge = DateTime.MinValue;
             scadaWebDictAge = DateTime.MinValue;
@@ -415,6 +417,17 @@ namespace Scada.Web
                     return false;
                 }
             }
+        }
+
+        /// <summary>
+        /// Получить метку представления, уникальную в пределах приложения
+        /// </summary>
+        public static long GetViewStamp(this BaseView view)
+        {
+            if (view.Stamp <= 0)
+                view.Stamp = ++viewStampCntr;
+
+            return view.Stamp;
         }
     }
 }
