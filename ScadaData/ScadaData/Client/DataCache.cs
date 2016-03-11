@@ -148,8 +148,13 @@ namespace Scada.Client
                         DateTime newBaseAge = serverComm.ReceiveFileAge(ServerComm.Dirs.BaseDAT,
                             BaseTables.GetFileName(BaseTables.InCnlTable));
 
-                        if (newBaseAge > DateTime.MinValue /*метка времени получена*/ && 
-                            baseAge != newBaseAge /*база конфигурации изменена*/)
+                        if (newBaseAge == DateTime.MinValue)
+                        {
+                            log.WriteError(Localization.UseRussian ?
+                                "Не удалось принять время изменения базы конфигурации" :
+                                "Unable to receive the configuration database modification time");
+                        }
+                        else if (baseAge != newBaseAge /*база конфигурации изменена*/)
                         {
                             baseFillDT = utcNowDT;
                             baseAge = newBaseAge;
@@ -169,8 +174,14 @@ namespace Scada.Client
                             // получение данных таблиц
                             foreach (DataTable dataTable in BaseTables.AllTables)
                             {
-                                if (!serverComm.ReceiveBaseTable(BaseTables.GetFileName(dataTable), dataTable))
+                                string tableName = BaseTables.GetFileName(dataTable);
+
+                                if (!serverComm.ReceiveBaseTable(tableName, dataTable))
                                 {
+                                    log.WriteError(string.Format(Localization.UseRussian ?
+                                        "Не удалось принять таблицу {0}" :
+                                        "Unable to receive the table {0}", tableName));
+
                                     baseFillDT = DateTime.MinValue;
                                     baseAge = DateTime.MinValue;
                                 }

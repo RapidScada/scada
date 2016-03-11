@@ -93,7 +93,7 @@ namespace Scada.Client
                     {
                         view = null;
                         if (throwOnError)
-                            throw new Exception(Localization.UseRussian ? 
+                            throw new ScadaException(Localization.UseRussian ? 
                                 "View properties are missing" : 
                                 "Отсутствуют свойства представления");
                     }
@@ -105,7 +105,7 @@ namespace Scada.Client
                         {
                             view = null;
                             if (throwOnError)
-                                throw new Exception(Localization.UseRussian ? 
+                                throw new ScadaException(Localization.UseRussian ? 
                                     "View is not received from the server" : 
                                     "Представление не принято от сервера");
                         }
@@ -115,7 +115,7 @@ namespace Scada.Client
                 {
                     view = baseView as T;
                     if (view == null && throwOnError)
-                        throw new Exception(Localization.UseRussian ?
+                        throw new ScadaException(Localization.UseRussian ?
                             "Incorrect view type" :
                             "Некорректный тип представления");
                 }
@@ -131,7 +131,7 @@ namespace Scada.Client
                 log.WriteException(ex, errMsg);
 
                 if (throwOnError)
-                    throw new Exception(errMsg);
+                    throw new ScadaException(errMsg);
                 else
                     return null;
             }

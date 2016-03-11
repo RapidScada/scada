@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2005
- * Modified : 2015
+ * Modified : 2016
  * 
  * --------------------------------
  * Table file structure (version 2)
@@ -247,7 +247,7 @@ namespace Scada.Data
             try
             {
                 if (srezTableLight == null && dataTable == null && trend == null)
-                    throw new Exception("Destination object is invalid.");
+                    throw new ScadaException("Destination object is invalid.");
 
                 // подготовка объекта для хранения данных
                 if (srezTableLight != null)
@@ -316,7 +316,7 @@ namespace Scada.Data
                             {
                                 int cnlNum = BitConverter.ToUInt16(buf, i * 2);
                                 if (prevCnlNum >= cnlNum)
-                                    throw new Exception("Table is incorrect.");
+                                    throw new ScadaException("Table is incorrect.");
                                 cnlNums[i] = prevCnlNum = cnlNum;
                             }
                             srezDescr.CalcCS();

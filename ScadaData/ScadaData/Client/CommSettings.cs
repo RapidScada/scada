@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2005
- * Modified : 2015
+ * Modified : 2016
  */
 
 using System;
@@ -177,7 +177,7 @@ namespace Scada.Client
                     }
                     catch
                     {
-                        throw new Exception(string.Format(CommonPhrases.IncorrectXmlParamVal, name));
+                        throw new ScadaException(string.Format(CommonPhrases.IncorrectXmlParamVal, name));
                     }
                 }
 

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2007
- * Modified : 2015
+ * Modified : 2016
  * 
  * --------------------------------
  * Table file structure (version 3)
@@ -310,7 +310,7 @@ namespace Scada.Data
                 else if (dest is DataTable)
                     dataTable = dest as DataTable;
                 else
-                    throw new Exception("Destination object is invalid.");
+                    throw new ScadaException("Destination object is invalid.");
 
                 // определение даты событий в таблице
                 DateTime date = Arithmetic.ExtractDate(tableName);
