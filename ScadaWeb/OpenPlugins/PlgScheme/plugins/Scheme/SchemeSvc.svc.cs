@@ -105,7 +105,7 @@ namespace Scada.Web.Plugins.Scheme
             {
                 AppData.Log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при получении элементов схемы с id={0}" :
-                    "Error getting the elements of the scheme with id={0}");
+                    "Error getting the elements of the scheme with id={0}", viewID);
                 return "";
             }
         }

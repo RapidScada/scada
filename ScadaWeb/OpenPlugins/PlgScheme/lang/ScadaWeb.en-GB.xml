@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaWebDictionaries>
+  <Dictionary key="Scada.Web.AppData">
+    <Phrase key="ServerUnavailable">server is unavailable</Phrase>
+    <Phrase key="WrongPassword">username or password is incorrect</Phrase>
+    <Phrase key="NoRightsL">insufficient rights</Phrase>
+    <Phrase key="IllegalRole">illegal user role</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins">
+    <Phrase key="ViewsMenuItem">Views</Phrase>
+    <Phrase key="ReportsMenuItem">Reports</Phrase>
+    <Phrase key="AdminMenuItem">Administration</Phrase>
+    <Phrase key="ConfigMenuItem">Configuration</Phrase>
+    <Phrase key="AboutMenuItem">About</Phrase>
+  </Dictionary>
+</ScadaWebDictionaries>

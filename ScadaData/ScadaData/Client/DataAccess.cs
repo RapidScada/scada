@@ -100,7 +100,9 @@ namespace Scada.Client
                     dataCache.RefreshBaseTables();
 
                     DataTable tblRole = dataCache.BaseTables.RightTable;
+                    BaseTables.CheckIsNotEmpty(tblRole, true);
                     tblRole.DefaultView.RowFilter = "RoleID = " + roleID;
+
                     return tblRole.DefaultView.Count > 0 ?
                         (string)tblRole.DefaultView[0]["Name"] :
                         defaultRoleName;
@@ -183,6 +185,7 @@ namespace Scada.Client
                 try
                 {
                     DataTable tblInterface = dataCache.BaseTables.InterfaceTable;
+                    BaseTables.CheckIsNotEmpty(tblInterface, true);
                     tblInterface.DefaultView.RowFilter = "ItfID = " + viewID;
 
                     if (tblInterface.DefaultView.Count > 0)
@@ -219,7 +222,9 @@ namespace Scada.Client
                     dataCache.RefreshBaseTables();
 
                     DataTable tblUser = dataCache.BaseTables.UserTable;
+                    BaseTables.CheckIsNotEmpty(tblUser, true);
                     tblUser.DefaultView.RowFilter = "Name = '" + username + "'";
+
                     return tblUser.DefaultView.Count > 0 ?
                         (int)tblUser.DefaultView[0]["UserID"] :
                         BaseValues.EmptyDataID;

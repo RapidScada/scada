@@ -70,7 +70,11 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="config\CommSettings.xml" />
+    <Content Include="js\api\clientapi.js" />
     <Content Include="js\jquery.min.js" />
+    <Content Include="lang\ScadaData.en-GB.xml" />
+    <Content Include="lang\ScadaWeb.en-GB.xml" />
     <Content Include="plugins\Scheme\css\scheme.css">
       <DependentUpon>scheme.less</DependentUpon>
     </Content>

@@ -163,5 +163,29 @@ namespace Scada.Data
 
             return dataTable.TableName.ToLowerInvariant() + ".dat";
         }
+
+        /// <summary>
+        /// Проверить, что таблица не пуста
+        /// </summary>
+        public static bool CheckIsNotEmpty(DataTable dataTable, bool throwOnEmpty = false)
+        {
+            if (dataTable == null)
+                throw new ArgumentNullException("dataTable");
+
+            if (dataTable.Columns.Count > 0)
+            {
+                return true;
+            }
+            else if (throwOnEmpty)
+            {
+                throw new ScadaException(string.Format(Localization.UseRussian ?
+                    "Таблица [{0}] пуста." :
+                    "The table [{0}] is empty.", dataTable.TableName));
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

@@ -150,9 +150,9 @@ namespace Scada.Client
 
                         if (newBaseAge == DateTime.MinValue)
                         {
-                            log.WriteError(Localization.UseRussian ?
-                                "Не удалось принять время изменения базы конфигурации" :
-                                "Unable to receive the configuration database modification time");
+                            throw new ScadaException(Localization.UseRussian ?
+                                "Не удалось принять время изменения базы конфигурации." :
+                                "Unable to receive the configuration database modification time.");
                         }
                         else if (baseAge != newBaseAge /*база конфигурации изменена*/)
                         {
