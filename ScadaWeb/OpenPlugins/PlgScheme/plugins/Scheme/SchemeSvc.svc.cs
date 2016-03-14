@@ -42,14 +42,14 @@ namespace Scada.Web.Plugins.Scheme
     public class SchemeSvc
     {
         /// <summary>
-        /// Ответ на запрос элементов схемы
+        /// Класс объекта для передачи элементов схемы
         /// </summary>
-        private class GetElementsResponse
+        private class ElementsDTO
         {
             /// <summary>
             /// Конструктор
             /// </summary>
-            public GetElementsResponse(int capacity = -1)
+            public ElementsDTO(int capacity = -1)
             {
                 ViewStamp = 0;
                 EndOfScheme = false;
@@ -76,7 +76,7 @@ namespace Scada.Web.Plugins.Scheme
         /// <summary>
         /// Обеспечивает сериализацию результатов методов сервиса
         /// </summary>
-        protected static readonly JavaScriptSerializer JsSerializer = new JavaScriptSerializer();
+        private static readonly JavaScriptSerializer JsSerializer = new JavaScriptSerializer();
 
 
         /// <summary>
@@ -88,18 +88,18 @@ namespace Scada.Web.Plugins.Scheme
         {
             try
             {
-                GetElementsResponse resp = new GetElementsResponse(count);
+                ElementsDTO dto = new ElementsDTO(count);
                 SchemeView schemeView = AppData.ViewCache.GetView<SchemeView>(viewID, true);
                 List<SchemeView.Element> srcElems = schemeView.ElementList;
                 int srcCnt = srcElems.Count;
 
-                resp.ViewStamp = schemeView.Stamp;
-                resp.EndOfScheme = startIndex + count >= srcCnt;
+                dto.ViewStamp = schemeView.Stamp;
+                dto.EndOfScheme = startIndex + count >= srcCnt;
 
                 for (int i = startIndex, j = 0; i < srcCnt && j < count; i++, j++)
-                    resp.Elements.Add(srcElems[i]);
+                    dto.Elements.Add(srcElems[i]);
 
-                return JsSerializer.Serialize(resp);
+                return JsSerializer.Serialize(dto);
             }
             catch (Exception ex)
             {

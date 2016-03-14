@@ -172,7 +172,8 @@ scada.scheme.Scheme.prototype.createDom = function () {
 scada.scheme.Scheme.prototype.update = function (clientAPI) {
     for (var elem of this.elements) {
         try {
-            elem.renderer.update(elem, clientAPI);
+            if (elem.dom)
+                elem.renderer.update(elem, clientAPI);
         }
         catch (ex) {
             console.error("Error updating the element of type '" +

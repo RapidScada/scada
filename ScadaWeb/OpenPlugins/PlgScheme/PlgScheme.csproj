@@ -70,6 +70,7 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ClientApiSvc.svc" />
     <Content Include="config\CommSettings.xml" />
     <Content Include="js\api\clientapi.js" />
     <Content Include="js\jquery.min.js" />
@@ -110,6 +111,7 @@
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
     <Content Include="packages.config" />
+    <Content Include="plugins\Scheme\web.config" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

@@ -60,6 +60,10 @@ namespace Scada.Client
         /// Объект для синхронизации достапа к свойствам каналов управления
         /// </summary>
         protected readonly object ctrlCnlPropsLock;
+        /// <summary>
+        /// Объект для синхронизации достапа к текущим даным
+        /// </summary>
+        protected readonly object curDataLock;
 
 
         /// <summary>
@@ -85,6 +89,7 @@ namespace Scada.Client
             baseLock = new object();
             cnlPropsLock = new object();
             ctrlCnlPropsLock = new object();
+            curDataLock = new object();
         }
 
 
@@ -109,9 +114,9 @@ namespace Scada.Client
                 }
                 catch (Exception ex)
                 {
-                    log.WriteException(ex, Localization.UseRussian ?
-                        "Ошибка при получении наименования роли по идентификатору" :
-                        "Error getting role name by ID");
+                    log.WriteException(ex, string.Format(Localization.UseRussian ?
+                        "Ошибка при получении наименования роли по идентификатору {0}" :
+                        "Error getting role name by ID {0}", roleID));
                     return defaultRoleName;
                 }
             }
@@ -202,9 +207,9 @@ namespace Scada.Client
                 }
                 catch (Exception ex)
                 {
-                    log.WriteException(ex, Localization.UseRussian ?
-                        "Ошибка при получении свойств представления по идентификатору" :
-                        "Error getting view properties by ID");
+                    log.WriteException(ex, string.Format(Localization.UseRussian ?
+                        "Ошибка при получении свойств представления по идентификатору {0}" :
+                        "Error getting view properties by ID {0}", viewID));
                     return null;
                 }
             }
@@ -219,6 +224,7 @@ namespace Scada.Client
             {
                 try
                 {
+                    username = username ?? "";
                     dataCache.RefreshBaseTables();
 
                     DataTable tblUser = dataCache.BaseTables.UserTable;
@@ -231,9 +237,9 @@ namespace Scada.Client
                 }
                 catch (Exception ex)
                 {
-                    log.WriteException(ex, Localization.UseRussian ?
-                        "Ошибка при получении идентификатора пользователя по имени" :
-                        "Error getting user ID by name");
+                    log.WriteException(ex, string.Format(Localization.UseRussian ?
+                        "Ошибка при получении идентификатора пользователя по имени \"{0}\"" :
+                        "Error getting user ID by name \"{0}\"", username));
                     return BaseValues.EmptyDataID;
                 }
             }
@@ -248,6 +254,50 @@ namespace Scada.Client
             return BaseValues.Roles.Custom <= roleID && roleID < BaseValues.Roles.Err ?
                 GetRoleNameFromBase(roleID, roleName) :
                 roleName;
+        }
+        
+        /// <summary>
+        /// Получить цвет по статусу
+        /// </summary>
+        public string GetColorByStat(int stat, string defaultColor)
+        {
+            return defaultColor;
+        }
+
+
+        /// <summary>
+        /// Получить текущие данные входного канала
+        /// </summary>
+        public SrezTableLight.CnlData GetCurCnlData(int cnlNum)
+        {
+            DateTime dateTime;
+            return GetCurCnlData(cnlNum, out dateTime);
+        }
+
+        /// <summary>
+        /// Получить текущие данные входного канала
+        /// </summary>
+        public SrezTableLight.CnlData GetCurCnlData(int cnlNum, out DateTime dateTime)
+        {
+            lock (curDataLock)
+            {
+                try
+                {
+                    dataCache.RefreshCurData();
+                    SrezTableLight.Srez snapshot = dataCache.GetCurSnapshot();
+                    dateTime = snapshot.DateTime;
+                    SrezTableLight.CnlData cnlData;
+                    return snapshot.GetCnlData(cnlNum, out cnlData) ? cnlData : SrezTableLight.CnlData.Empty;
+                }
+                catch (Exception ex)
+                {
+                    log.WriteException(ex, string.Format(Localization.UseRussian ?
+                        "Ошибка при получении текущих данных входного канала {0}" :
+                        "Error getting current data of the input channel {0}", cnlNum));
+                    dateTime = DateTime.MinValue;
+                    return SrezTableLight.CnlData.Empty;
+                }
+            }
         }
     }
 }

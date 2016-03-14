@@ -205,6 +205,13 @@ namespace Scada.Client
             }
         }
 
+        /// <summary>
+        /// Обновить данные текущего среза
+        /// </summary>
+        public void RefreshCurData()
+        {
+        }
+
 
         /// <summary>
         /// Получить текущий срез из кеша или от сервера
