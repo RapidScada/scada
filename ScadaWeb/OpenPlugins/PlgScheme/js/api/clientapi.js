@@ -6,6 +6,12 @@
  * Modified : 2016
  */
 
+/*
+ * Requires:
+ * - jquery
+ * - scadautils.js
+ */
+
 // Rapid SCADA namespace
 var scada = scada || {};
 
@@ -14,45 +20,67 @@ scada.clientAPI = {
     // Web service root path
     rootPath: "",
 
-    // Get current value of the input channel.
-    // callback is function (success, cnlVal)
-    getCnlVal: function (cnlNum, callback) {
-        var operation = "ClientApiSvc.svc/Test";
+    // Get current value and status of the input channel.
+    // callback is function (success, val, stat)
+    getCurCnlData: function (cnlNum, callback) {
+        var operation = "ClientApiSvc.svc/GetCurCnlData";
 
         $.ajax({
-            url: this.rootPath + operation,
+            url: this.rootPath + operation +
+                "?cnlNum=" + cnlNum,
             method: "GET",
             dataType: "json"
         })
         .done(function (data, textStatus, jqXHR) {
-            console.log("Request '" + operation + "' successful");
-            console.log(data.d);
-            callback(true, data.d);
+            if (data.d) {
+                scada.utils.logSuccessfulRequest(operation, data);
+                var parsedData = $.parseJSON(data.d);
+                callback(true, parsedData.Val, parsedData.Stat);
+            } else {
+                scada.utils.logServiceError(operation);
+                callback(false, 0.0, 0);
+            }
         })
         .fail(function (jqXHR, textStatus, errorThrown) {
-            console.error("Request '" + operation + "' failed: " + jqXHR.status + " (" + jqXHR.statusText + ")");
-            callback(false, 0.0);
+            scada.utils.logFailedRequest(operation, jqXHR);
+            callback(false, 0.0, 0);
         });
     },
 
-    // Get current status of the input channel.
-    // callback is function (success, cnlStat)
-    getCnlStat: function (cnlNum, callback) {
-        callback(true, 1);
-    },
+    // Get full current data of the input channel. 
+    // callback is function (success, cnlData)
+    getCurCnlDataFull: function (cnlNum, callback) {
+        var operation = "ClientApiSvc.svc/GetCurCnlDataFull";
 
-    // Get current data of the input channel. 
-    // callback is function (success, cnlDataView)
-    getCnlData: function (cnlNum, callback) {
-        callback(true, new scada.CnlDataView());
+        $.ajax({
+            url: this.rootPath + operation +
+                "?cnlNum=" + cnlNum,
+            method: "GET",
+            dataType: "json"
+        })
+        .done(function (data, textStatus, jqXHR) {
+            if (data.d) {
+                scada.utils.logSuccessfulRequest(operation, data);
+                var parsedData = $.parseJSON(data.d);
+                callback(true, parsedData);
+            } else {
+                scada.utils.logServiceError(operation);
+                callback(false, new scada.CnlData());
+            }
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            scada.utils.logFailedRequest(operation, jqXHR);
+            callback(false, new scada.CnlData());
+        });
     }
 };
 
-// Input channel data type
-scada.CnlDataView = function () {
-    this.val = 0.0;
-    this.stat = 0;
-    this.text = "";
-    this.textWithUnit = "";
-    this.color = "";
+// Input channel data type.
+// Note: Casing is caused by C# naming rules
+scada.CnlData = function () {
+    this.Val = 0.0;
+    this.Stat = 0;
+    this.Text = "";
+    this.TextWithUnit = "";
+    this.Color = "";
 };

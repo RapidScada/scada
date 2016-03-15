@@ -35,7 +35,7 @@ namespace Scada.Web.Plugins.Scheme
 {
     /// <summary>
     /// WCF service for interacting with the scheme JavaScript code
-    /// <para>WCF-служба для взаимодействия с JavaScript-кодом схемы</para>
+    /// <para>WCF-сервис для взаимодействия с JavaScript-кодом схемы</para>
     /// </summary>
     [ServiceContract(Namespace = "")]
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
@@ -104,8 +104,8 @@ namespace Scada.Web.Plugins.Scheme
             catch (Exception ex)
             {
                 AppData.Log.WriteException(ex, Localization.UseRussian ?
-                    "Ошибка при получении элементов схемы с id={0}" :
-                    "Error getting the elements of the scheme with id={0}", viewID);
+                    "Ошибка при получении элементов схемы с ид.={0}" :
+                    "Error getting the elements of the scheme with ID={0}", viewID);
                 return "";
             }
         }

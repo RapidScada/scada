@@ -69,6 +69,7 @@
     <Content Include="images\favicon.ico" />
     <Content Include="js\api\clientapi.js" />
     <Content Include="js\jquery.min.js" />
+    <Content Include="js\scadautils.js" />
     <Content Include="js\views.js" />
     <Content Include="lang\ScadaWeb.en-GB.xml" />
     <Content Include="lang\ScadaWeb.ru-RU.xml" />

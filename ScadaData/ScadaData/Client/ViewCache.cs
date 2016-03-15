@@ -126,8 +126,8 @@ namespace Scada.Client
             catch (Exception ex)
             {
                 string errMsg = string.Format(Localization.UseRussian ?
-                    "Ошибка при получении представления с id={0} из кэша или от сервера" :
-                    "Error getting view with id={0} from cache or from server", viewID);
+                    "Ошибка при получении представления с ид.={0} из кэша или от сервера" :
+                    "Error getting view with ID={0} from the cache or from the server", viewID);
                 log.WriteException(ex, errMsg);
 
                 if (throwOnError)

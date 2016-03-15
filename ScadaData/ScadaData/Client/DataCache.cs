@@ -40,13 +40,17 @@ namespace Scada.Client
     public class DataCache
     {
         /// <summary>
-        /// Время актуальности данных в кэше, с
+        /// Время актуальности архивных данных в кэше
         /// </summary>
-        protected const int DataValidTime = 1;
+        protected static readonly TimeSpan BaseValidSpan = TimeSpan.FromSeconds(1);
         /// <summary>
-        /// Время ожидания снятия блокировки базы конфигурации, с
+        /// Время актуальности архивных данных в кэше
         /// </summary>
-        protected const int WaitBaseLock = 5;
+        protected static readonly TimeSpan DataValidSpan = TimeSpan.FromMilliseconds(500);
+        /// <summary>
+        /// Время ожидания снятия блокировки базы конфигурации
+        /// </summary>
+        protected static readonly TimeSpan WaitBaseLock = TimeSpan.FromSeconds(5);
 
 
         /// <summary>
@@ -59,13 +63,30 @@ namespace Scada.Client
         protected readonly Log log;
 
         /// <summary>
-        /// Время последего успешного заполнения таблиц базы конфигурации
+        /// Объект для синхронизации доступа к таблицам базы конфигурации
         /// </summary>
-        protected DateTime baseFillDT;
+        protected readonly object baseLock;
+        /// <summary>
+        /// Объект для синхронизации достапа к текущим даным
+        /// </summary>
+        protected readonly object curDataLock;
+
+        /// <summary>
+        /// Время последего успешного обновления таблиц базы конфигурации
+        /// </summary>
+        protected DateTime baseRefrDT;
         /// <summary>
         /// Время последнего изменения успешно считанной базы конфигурации
         /// </summary>
         protected DateTime baseAge;
+        /// <summary>
+        /// Таблица текущего среза
+        /// </summary>
+        protected SrezTableLight tblCur;
+        /// <summary>
+        /// Время последего успешного обновления таблицы текущего среза
+        /// </summary>
+        protected DateTime curRefrDT;
 
 
         /// <summary>
@@ -88,8 +109,13 @@ namespace Scada.Client
             this.serverComm = serverComm;
             this.log = log;
 
-            baseFillDT = DateTime.MinValue;
+            baseLock = new object();
+            curDataLock = new object();
+
+            baseRefrDT = DateTime.MinValue;
             baseAge = DateTime.MinValue;
+            tblCur = new SrezTableLight();
+            curRefrDT = DateTime.MinValue;
 
             BaseTables = new BaseTables();
             CnlProps = new InCnlProps[0];
@@ -122,6 +148,93 @@ namespace Scada.Client
         /// </summary>
         protected void FillCnlProps()
         {
+            try
+            {
+                log.WriteAction(Localization.UseRussian ?
+                    "Заполнение свойств входных каналов" :
+                    "Fill input channels properties");
+
+                DataTable tblInCnl = BaseTables.InCnlTable;
+                int inCnlCnt = tblInCnl.Rows.Count; // количество входных каналов
+                InCnlProps[] newCnlProps = new InCnlProps[inCnlCnt];
+
+                for (int i = 0; i < inCnlCnt; i++)
+                {
+                    DataRowView rowView = tblInCnl.DefaultView[i];
+                    InCnlProps cnlProps = new InCnlProps();
+                    cnlProps.CnlNum = (int)rowView["CnlNum"];
+
+                    // определение свойств, не использующих внешних ключей
+                    cnlProps.CnlName = (string)rowView["Name"];
+                    cnlProps.CtrlCnlNum = (int)rowView["CtrlCnlNum"];
+                    cnlProps.EvSound = (bool)rowView["EvSound"];
+
+                    // определение номера и наименования объекта
+                    cnlProps.ObjNum = (int)rowView["ObjNum"];
+                    DataTable tblObj = BaseTables.ObjTable;
+                    tblObj.DefaultView.RowFilter = "ObjNum = " + cnlProps.ObjNum;
+                    cnlProps.ObjName = tblObj.DefaultView.Count > 0 ? (string)tblObj.DefaultView[0]["Name"] : "";
+
+                    // определение номера и наименования КП
+                    cnlProps.KPNum = (int)rowView["KPNum"];
+                    DataTable tblKP = BaseTables.KPTable;
+                    tblKP.DefaultView.RowFilter = "KPNum = " + cnlProps.KPNum;
+                    cnlProps.KPName = tblKP.DefaultView.Count > 0 ? (string)tblKP.DefaultView[0]["Name"] : "";
+
+                    // определение наименования параметра и имени файла значка
+                    DataTable tblParam = BaseTables.ParamTable;
+                    tblParam.DefaultView.RowFilter = "ParamID = " + rowView["ParamID"];
+                    if (tblParam.DefaultView.Count > 0)
+                    {
+                        DataRowView paramRowView = tblParam.DefaultView[0];
+                        cnlProps.ParamName = (string)paramRowView["Name"];
+                        object iconFileName = paramRowView["IconFileName"];
+                        cnlProps.IconFileName = iconFileName == DBNull.Value ? "" : iconFileName.ToString();
+                    }
+                    else
+                    {
+                        cnlProps.ParamName = "";
+                        cnlProps.IconFileName = "";
+                    }
+
+                    // определение формата вывода
+                    DataTable tblFormat = BaseTables.FormatTable;
+                    tblFormat.DefaultView.RowFilter = "FormatID = " + rowView["FormatID"];
+                    if (tblFormat.DefaultView.Count > 0)
+                    {
+                        DataRowView formatRowView = tblFormat.DefaultView[0];
+                        cnlProps.ShowNumber = (bool)formatRowView["ShowNumber"];
+                        cnlProps.DecDigits = (int)formatRowView["DecDigits"];
+                    }
+
+                    // определение размерностей
+                    DataTable tblUnit = BaseTables.UnitTable;
+                    tblUnit.DefaultView.RowFilter = "UnitID = " + rowView["UnitID"];
+                    if (tblUnit.DefaultView.Count > 0)
+                    {
+                        string sign = (string)tblUnit.DefaultView[0]["Sign"];
+                        cnlProps.UnitArr = sign.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                        for (int j = 0; j < cnlProps.UnitArr.Length; j++)
+                            cnlProps.UnitArr[j] = cnlProps.UnitArr[j].Trim();
+                        if (cnlProps.UnitArr.Length == 1 && cnlProps.UnitArr[0] == "")
+                            cnlProps.UnitArr = null;
+                    }
+                    else
+                    {
+                        cnlProps.UnitArr = null;
+                    }
+
+                    newCnlProps[i] = cnlProps;
+                }
+
+                CnlProps = newCnlProps;
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, (Localization.UseRussian ? 
+                    "Ошибка при заполнении свойств входных каналов: " :
+                    "Error filling input channels properties"));
+            }
         }
 
         /// <summary>
@@ -131,20 +244,61 @@ namespace Scada.Client
         {
         }
 
+        /// <summary>
+        /// Обновить текущие данные
+        /// </summary>
+        protected void RefreshCurData()
+        {
+            try
+            {
+                DateTime utcNowDT = DateTime.UtcNow;
+                if (utcNowDT - curRefrDT > DataValidSpan) // данные устарели
+                {
+                    curRefrDT = utcNowDT;
+                    DateTime curAge = serverComm.ReceiveFileAge(ServerComm.Dirs.Cur, "current.dat");
+
+                    if (curAge != tblCur.FileModTime) // файл среза изменён
+                    {
+                        if (serverComm.ReceiveSrezTable("current.dat", tblCur))
+                        {
+                            tblCur.FileModTime = curAge;
+                        }
+                        else
+                        {
+                            curRefrDT = DateTime.MinValue;
+                            tblCur.FileModTime = DateTime.MinValue;
+                        }
+                    }
+
+                    tblCur.LastFillTime = utcNowDT;
+                }
+            }
+            catch (Exception ex)
+            {
+                curRefrDT = DateTime.MinValue;
+                tblCur.FileModTime = DateTime.MinValue;
+
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при обновлении текущих данных" :
+                    "Error refreshing the current data");
+            }
+        }
+
 
         /// <summary>
         /// Обновить таблицы базы конфигурации и свойства каналов
         /// </summary>
         public void RefreshBaseTables()
         {
-            lock (this)
+            lock (baseLock)
             {
                 try
                 {
                     DateTime utcNowDT = DateTime.UtcNow;
 
-                    if ((utcNowDT - baseFillDT).TotalSeconds > DataValidTime) // данные устарели
+                    if (utcNowDT - baseRefrDT > BaseValidSpan) // данные устарели
                     {
+                        baseRefrDT = utcNowDT;
                         DateTime newBaseAge = serverComm.ReceiveFileAge(ServerComm.Dirs.BaseDAT,
                             BaseTables.GetFileName(BaseTables.InCnlTable));
 
@@ -156,9 +310,7 @@ namespace Scada.Client
                         }
                         else if (baseAge != newBaseAge /*база конфигурации изменена*/)
                         {
-                            baseFillDT = utcNowDT;
                             baseAge = newBaseAge;
-
                             log.WriteAction(Localization.UseRussian ? 
                                 "Обновление таблиц базы конфигурации" :
                                 "Refresh the tables of the configuration database");
@@ -166,7 +318,7 @@ namespace Scada.Client
                             // ожидание снятия возможной блокировки базы конфигурации
                             DateTime t0 = utcNowDT;
                             while (serverComm.ReceiveFileAge(ServerComm.Dirs.BaseDAT, "baselock") > DateTime.MinValue &&
-                                (DateTime.UtcNow - t0).TotalSeconds <= WaitBaseLock)
+                                DateTime.UtcNow - t0 <= WaitBaseLock)
                             {
                                 Thread.Sleep(ScadaUtils.ThreadDelay);
                             }
@@ -182,7 +334,7 @@ namespace Scada.Client
                                         "Не удалось принять таблицу {0}" :
                                         "Unable to receive the table {0}", tableName));
 
-                                    baseFillDT = DateTime.MinValue;
+                                    baseRefrDT = DateTime.MinValue;
                                     baseAge = DateTime.MinValue;
                                 }
                             }
@@ -195,7 +347,7 @@ namespace Scada.Client
                 }
                 catch (Exception ex)
                 {
-                    baseFillDT = DateTime.MinValue;
+                    baseRefrDT = DateTime.MinValue;
                     baseAge = DateTime.MinValue;
 
                     log.WriteException(ex, Localization.UseRussian ?
@@ -206,21 +358,28 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Обновить данные текущего среза
-        /// </summary>
-        public void RefreshCurData()
-        {
-        }
-
-
-        /// <summary>
         /// Получить текущий срез из кеша или от сервера
         /// </summary>
-        /// <remarks>Возвращаемый срез после загрузки не изменяется экземпляром данного класса. 
-        /// Метод всегда возвращает объект, не равный null</remarks>
-        public SrezTableLight.Srez GetCurSnapshot()
+        /// <remarks>Возвращаемый срез после загрузки не изменяется экземпляром данного класса</remarks>
+        public SrezTableLight.Srez GetCurSnapshot(out DateTime dataAge)
         {
-            return new SrezTableLight.Srez(DateTime.MinValue, 1);
+            lock (curDataLock)
+            {
+                try
+                {
+                    RefreshCurData();
+                    dataAge = tblCur.FileModTime;
+                    return tblCur.SrezList.Count > 0 ? tblCur.SrezList.Values[0] : null;
+                }
+                catch (Exception ex)
+                {
+                    log.WriteException(ex, Localization.UseRussian ?
+                        "Ошибка при получении текущего среза из кеша или от сервера" :
+                        "Error getting the current snapshot the cache or from the server");
+                    dataAge = DateTime.MinValue;
+                    return null;
+                }
+            }
         }
 
         /// <summary>

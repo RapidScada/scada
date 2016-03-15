@@ -50,7 +50,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
     </Reference>
-    <Reference Include="ScadaSchemeCommon">
+    <Reference Include="ScadaSchemeCommon, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\ScadaScheme\ScadaSchemeCommon\bin\Release\ScadaSchemeCommon.dll</HintPath>
     </Reference>
     <Reference Include="ScadaWebCommon5Beta, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -74,6 +75,7 @@
     <Content Include="config\CommSettings.xml" />
     <Content Include="js\api\clientapi.js" />
     <Content Include="js\jquery.min.js" />
+    <Content Include="js\scadautils.js" />
     <Content Include="lang\ScadaData.en-GB.xml" />
     <Content Include="lang\ScadaWeb.en-GB.xml" />
     <Content Include="plugins\Scheme\css\scheme.css">

@@ -1,4 +1,18 @@
-﻿// Rapid SCADA namespace
+﻿/*
+ * Scheme rendering
+ *
+ * Author   : Mikhail Shiryaev
+ * Created  : 2016
+ * Modified : 2016
+ */
+
+/*
+ * Requires:
+ * - jquery
+ * - clientapi.js
+ */
+
+// Rapid SCADA namespace
 var scada = scada || {};
 // Scheme namespace
 scada.scheme = scada.scheme || {};
@@ -52,8 +66,8 @@ scada.scheme.DynamicTextRenderer.prototype.createDom = function (element) {
 };
 
 scada.scheme.DynamicTextRenderer.prototype.update = function (element, clientAPI) {
-    clientAPI.getCnlVal(element.props.InCnlNum, function (success, cnlVal) {
-        element.dom.text(success ? cnlVal : "---");
+    clientAPI.getCurCnlDataFull(element.props.InCnlNum, function (success, cnlData) {
+        element.dom.text(success ? cnlData.TextWithUnit : "");
     });
 };
 

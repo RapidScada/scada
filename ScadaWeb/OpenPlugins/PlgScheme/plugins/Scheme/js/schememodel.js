@@ -1,16 +1,23 @@
-﻿// Rapid SCADA namespace
+﻿/*
+ * Scheme data model
+ *
+ * Author   : Mikhail Shiryaev
+ * Created  : 2016
+ * Modified : 2016
+ */
+
+/*
+ * Requires:
+ * - jquery
+ * - scadautils.js
+ * - clientapi.js
+ * - schemerender.js
+ */
+
+// Rapid SCADA namespace
 var scada = scada || {};
 // Scheme namespace
 scada.scheme = scada.scheme || {};
-
-/********** Utilities **********/
-
-scada.scheme.utils = {
-    // Returns the current time string
-    getCurTime: function () {
-        return new Date().toLocaleTimeString("en-GB");
-    }
-};
 
 /********** Base Element **********/
 
@@ -48,7 +55,7 @@ scada.scheme.Scheme.constructor = scada.scheme.Scheme;
 
 // Parse received scheme data
 scada.scheme.Scheme.prototype._parseReceivedData = function (json) {
-    var getCurTime = scada.scheme.utils.getCurTime;
+    var getCurTime = scada.utils.getCurTime;
 
     try {
         var parsedData = $.parseJSON(json);
@@ -102,7 +109,7 @@ scada.scheme.Scheme.prototype._appendElements = function (receivedElements) {
             this.elements.push(schemeElem);
         } else {
             console.warn("The element of type '" + schemeElem.Type +
-                "' with id=" + schemeElem.props.ID + " is not supported");
+                "' with ID=" + schemeElem.props.ID + " is not supported");
         }        
     }
 };
@@ -118,7 +125,6 @@ scada.scheme.Scheme.prototype.clear = function () {
 // callback is function (success, complete)
 scada.scheme.Scheme.prototype.load = function (viewID, callback) {
     var operation = "SchemeSvc.svc/GetElements";
-    var getCurTime = scada.scheme.utils.getCurTime;
     var thisScheme = this;
 
     $.ajax({
@@ -131,21 +137,21 @@ scada.scheme.Scheme.prototype.load = function (viewID, callback) {
         dataType: "json"
     })
     .done(function (data, textStatus, jqXHR) {
-        if (data.d == "") {
-            console.log(getCurTime() + " Request '" + operation + "' returns empty data. Internal service error");
-        } else {
-            console.log(getCurTime() + " Request '" + operation + "' successful");
-            console.log(data.d);
+        if (data.d) {
+            scada.utils.logSuccessfulRequest(operation, data);
             var parsedData = thisScheme._parseReceivedData(data.d);
             if (parsedData) {
                 callback(true, parsedData.EndOfScheme);
             } else {
                 callback(false, false);
             }
+        } else {
+            scada.utils.logServiceError(operation);
         }
     })
     .fail(function (jqXHR, textStatus, errorThrown) {
-        console.error(getCurTime() + " Request '" + operation + "' failed: " + jqXHR.status + " (" + jqXHR.statusText + ")");
+        scada.utils.logFailedRequest(operation, jqXHR);
+        callback(false, false);
     })
     .always(function () {
     });
@@ -162,7 +168,7 @@ scada.scheme.Scheme.prototype.createDom = function () {
         }
         catch (ex) {
             console.error("Error creating DOM content for the element of type '" +
-                elem.Type + "' with id=" + elem.props.ID + ":", ex.message);
+                elem.Type + "' with ID=" + elem.props.ID + ":", ex.message);
             elem.dom = null;
         }
     }
@@ -177,7 +183,7 @@ scada.scheme.Scheme.prototype.update = function (clientAPI) {
         }
         catch (ex) {
             console.error("Error updating the element of type '" +
-                elem.Type + "' with id=" + elem.props.ID + ":", ex.message);
+                elem.Type + "' with ID=" + elem.props.ID + ":", ex.message);
             elem.dom = null;
         }
     }

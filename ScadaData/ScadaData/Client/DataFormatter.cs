@@ -79,15 +79,15 @@ namespace Scada.Client
         /// <summary>
         /// Формат вещественных чисел
         /// </summary>
-        protected NumberFormatInfo nfi;
+        protected readonly NumberFormatInfo nfi;
         /// <summary>
         /// Разделитель дробной части по умолчанию
         /// </summary>
-        protected string defDecSep;
+        protected readonly string defDecSep;
         /// <summary>
         /// Разделитель групп цифр по умолчанию
         /// </summary>
-        protected string defGrSep;
+        protected readonly string defGrSep;
 
 
         /// <summary>
@@ -231,35 +231,35 @@ namespace Scada.Client
         /// <summary>
         /// Определить необходимость отображения текущих данных
         /// </summary>
-        public bool CurDataVisible(DateTime dataDT, DateTime nowDT, out string emptyVal)
+        public bool CurDataVisible(DateTime dataAge, DateTime nowDT, out string emptyVal)
         {
             emptyVal = NoVal;
-            return nowDT - dataDT <= CurDataVisibleSpan;
+            return nowDT - dataAge <= CurDataVisibleSpan;
         }
 
         /// <summary>
         /// Определить необходимость отображения часовых данных
         /// </summary>
-        public bool HourDataVisible(DateTime dataDT, DateTime nowDT, int stat, out string emptyVal)
+        public bool HourDataVisible(DateTime dataAge, DateTime nowDT, int stat, out string emptyVal)
         {
-            if (stat > 0 || dataDT.Date < nowDT.Date)
+            if (stat > 0 || dataAge.Date < nowDT.Date)
             {
                 emptyVal = EmptyVal;
                 return true;
             }
-            else if (dataDT.Date > nowDT.Date)
+            else if (dataAge.Date > nowDT.Date)
             {
                 emptyVal = NoVal;
                 return false;
             }
             else // dataDT.Date == nowDT.Date
             {
-                if (dataDT.Hour > nowDT.Hour + 1)
+                if (dataAge.Hour > nowDT.Hour + 1)
                 {
                     emptyVal = NoVal;
                     return false;
                 }
-                else if (dataDT.Hour == nowDT.Hour + 1)
+                else if (dataAge.Hour == nowDT.Hour + 1)
                 {
                     emptyVal = NextHourVal;
                     return false;

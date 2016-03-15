@@ -79,7 +79,7 @@ namespace Scada.Client
         public DataAccess(DataCache dataCache, Log log)
         {
             if (dataCache == null)
-                throw new ArgumentNullException("clientCache");
+                throw new ArgumentNullException("dataCache");
             if (log == null)
                 throw new ArgumentNullException("log");
 
@@ -90,6 +90,18 @@ namespace Scada.Client
             cnlPropsLock = new object();
             ctrlCnlPropsLock = new object();
             curDataLock = new object();
+        }
+
+
+        /// <summary>
+        /// Получить кеш данных
+        /// </summary>
+        public DataCache DataCache
+        {
+            get
+            {
+                return dataCache;
+            }
         }
 
 
@@ -128,9 +140,14 @@ namespace Scada.Client
         /// </summary>
         public InCnlProps GetCnlProps(int cnlNum)
         {
-            lock (cnlPropsLock)
+            try
             {
-                try
+                lock (baseLock)
+                {
+                    dataCache.RefreshBaseTables();
+                }
+
+                lock (cnlPropsLock)
                 {
                     // сохранение ссылки на свойства каналов,
                     // т.к. свойство CnlProps может быть изменено из другого потока
@@ -140,13 +157,13 @@ namespace Scada.Client
                     int ind = Array.BinarySearch(cnlProps, cnlNum, InCnlProps.IntComp);
                     return ind >= 0 ? cnlProps[ind] : null;
                 }
-                catch (Exception ex)
-                {
-                    log.WriteException(ex, Localization.UseRussian ?
-                        "Ошибка при получении свойств входного канала {0}" :
-                        "Error getting input channel {0} properties", cnlNum);
-                    return null;
-                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении свойств входного канала {0}" :
+                    "Error getting input channel {0} properties", cnlNum);
+                return null;
             }
         }
 
@@ -155,9 +172,14 @@ namespace Scada.Client
         /// </summary>
         public CtrlCnlProps GetCtrlCnlProps(int ctrlCnlNum)
         {
-            lock (ctrlCnlPropsLock)
+            try
             {
-                try
+                lock (baseLock)
+                {
+                    dataCache.RefreshBaseTables();
+                }
+
+                lock (ctrlCnlPropsLock)
                 {
                     // сохранение ссылки на свойства каналов,
                     // т.к. свойство CtrlCnlProps может быть изменено из другого потока
@@ -167,13 +189,13 @@ namespace Scada.Client
                     int ind = Array.BinarySearch(ctrlCnlProps, ctrlCnlNum, CtrlCnlProps.IntComp);
                     return ind >= 0 ? ctrlCnlProps[ind] : null;
                 }
-                catch (Exception ex)
-                {
-                    log.WriteException(ex, Localization.UseRussian ?
-                        "Ошибка при получении свойств канала управления {0}" :
-                        "Error getting output channel {0} properties", ctrlCnlNum);
-                    return null;
-                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении свойств канала управления {0}" :
+                    "Error getting output channel {0} properties", ctrlCnlNum);
+                return null;
             }
         }
 
@@ -185,10 +207,10 @@ namespace Scada.Client
         {
             lock (baseLock)
             {
-                dataCache.RefreshBaseTables();
-
                 try
                 {
+                    dataCache.RefreshBaseTables();
+
                     DataTable tblInterface = dataCache.BaseTables.InterfaceTable;
                     BaseTables.CheckIsNotEmpty(tblInterface, true);
                     tblInterface.DefaultView.RowFilter = "ItfID = " + viewID;
@@ -208,8 +230,8 @@ namespace Scada.Client
                 catch (Exception ex)
                 {
                     log.WriteException(ex, string.Format(Localization.UseRussian ?
-                        "Ошибка при получении свойств представления по идентификатору {0}" :
-                        "Error getting view properties by ID {0}", viewID));
+                        "Ошибка при получении свойств представления по ид.={0}" :
+                        "Error getting view properties by ID={0}", viewID));
                     return null;
                 }
             }
@@ -261,7 +283,32 @@ namespace Scada.Client
         /// </summary>
         public string GetColorByStat(int stat, string defaultColor)
         {
-            return defaultColor;
+            lock (baseLock)
+            {
+                try
+                {
+                    dataCache.RefreshBaseTables();
+
+                    DataTable tblEvType = dataCache.BaseTables.EvTypeTable;
+                    BaseTables.CheckIsNotEmpty(tblEvType, true);
+                    tblEvType.DefaultView.RowFilter = "CnlStatus = " + stat;
+
+                    if (tblEvType.DefaultView.Count > 0)
+                    {
+                        object colorObj = tblEvType.DefaultView[0]["Color"];
+                        if (colorObj != DBNull.Value)
+                            return colorObj.ToString();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log.WriteException(ex, string.Format(Localization.UseRussian ?
+                        "Ошибка при получении цвета по статусу {0}" :
+                        "Error getting color by status {0}", stat));
+                }
+
+                return defaultColor;
+            }
         }
 
 
@@ -277,24 +324,24 @@ namespace Scada.Client
         /// <summary>
         /// Получить текущие данные входного канала
         /// </summary>
-        public SrezTableLight.CnlData GetCurCnlData(int cnlNum, out DateTime dateTime)
+        public SrezTableLight.CnlData GetCurCnlData(int cnlNum, out DateTime dataAge)
         {
             lock (curDataLock)
             {
                 try
                 {
-                    dataCache.RefreshCurData();
-                    SrezTableLight.Srez snapshot = dataCache.GetCurSnapshot();
-                    dateTime = snapshot.DateTime;
+                    SrezTableLight.Srez snapshot = dataCache.GetCurSnapshot(out dataAge);
                     SrezTableLight.CnlData cnlData;
-                    return snapshot.GetCnlData(cnlNum, out cnlData) ? cnlData : SrezTableLight.CnlData.Empty;
+                    return snapshot != null && snapshot.GetCnlData(cnlNum, out cnlData) ? 
+                        cnlData : SrezTableLight.CnlData.Empty;
                 }
                 catch (Exception ex)
                 {
                     log.WriteException(ex, string.Format(Localization.UseRussian ?
                         "Ошибка при получении текущих данных входного канала {0}" :
                         "Error getting current data of the input channel {0}", cnlNum));
-                    dateTime = DateTime.MinValue;
+
+                    dataAge = DateTime.MinValue;
                     return SrezTableLight.CnlData.Empty;
                 }
             }
