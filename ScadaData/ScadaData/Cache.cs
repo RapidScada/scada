@@ -39,7 +39,7 @@ namespace Scada
         /// <summary>
         /// Кешированный элемент
         /// </summary>
-        protected class CacheItem
+        public class CacheItem
         {
             /// <summary>
             /// Конструктор, ограничивающий создание объекта без параметров
@@ -50,7 +50,7 @@ namespace Scada
             /// <summary>
             /// Конструктор
             /// </summary>
-            public CacheItem(TValue value, DateTime valueAge, DateTime accessDT)
+            protected internal CacheItem(TValue value, DateTime valueAge, DateTime accessDT)
             {
                 Value = value;
                 ValueAge = valueAge;
@@ -119,89 +119,89 @@ namespace Scada
 
 
         /// <summary>
-        /// Получить значение по ключу, обновив время доступа
+        /// Добавить значение в кеш
         /// </summary>
-        public TValue GetValue(TKey key)
+        public void AddValue(TKey key, TValue value)
         {
-            DateTime valueAge;
-            return GetValue(key, DateTime.Now, out valueAge);
+            AddValue(key, value, DateTime.MinValue, DateTime.Now);
         }
 
         /// <summary>
-        /// Получить значение по ключу, обновив время доступа
+        /// Добавить значение в кеш
         /// </summary>
-        public TValue GetValue(TKey key, DateTime accessDT)
+        public void AddValue(TKey key, TValue value, DateTime valueAge)
         {
-            DateTime valueAge;
-            return GetValue(key, accessDT, out valueAge);
+            AddValue(key, value, valueAge, DateTime.Now);
         }
 
         /// <summary>
-        /// Получить значение по ключу, обновив время доступа
+        /// Добавить значение в кеш
         /// </summary>
-        public TValue GetValue(TKey key, out DateTime valueAge)
+        public void AddValue(TKey key, TValue value, DateTime valueAge, DateTime accessDT)
         {
-            return GetValue(key, DateTime.Now, out valueAge);
+            if (key == null)
+                throw new ArgumentNullException("key");
+
+            lock (this)
+            {
+                CacheItem cacheItem = new CacheItem(value, valueAge, accessDT);
+                items.Add(key, cacheItem);
+            }
+        }
+
+
+        /// <summary>
+        /// Получить элемент по ключу, обновив время доступа
+        /// </summary>
+        public CacheItem GetItem(TKey key)
+        {
+            return GetItem(DateTime.Now);
         }
 
         /// <summary>
-        /// Получить значение по ключу, обновив время доступа
+        /// Получить элемент по ключу, обновив время доступа
         /// </summary>
-        public TValue GetValue(TKey key, DateTime accessDT, out DateTime valueAge)
+        public CacheItem GetItem(TKey key, DateTime accessDT)
         {
+            if (key == null)
+                throw new ArgumentNullException("key");
+
             lock (this)
             {
                 CacheItem item;
                 if (items.TryGetValue(key, out item))
                 {
                     item.AccessDT = accessDT;
-                    valueAge = item.ValueAge;
-                    return item.Value;
+                    return item;
                 }
                 else
                 {
-                    valueAge = DateTime.MinValue;
-                    return default(TValue);
+                    return null;
                 }
             }
         }
 
 
         /// <summary>
-        /// Установить значение в кеше
+        /// Потокобезопасно обновить свойства элемента
         /// </summary>
-        public void SetValue(TKey key, TValue value)
+        public void UpdateItem(CacheItem cacheItem, TValue value)
         {
-            SetValue(key, value, DateTime.MinValue, DateTime.Now);
-        }
-        
-        /// <summary>
-        /// Установить значение в кеше
-        /// </summary>
-        public void SetValue(TKey key, TValue value, DateTime valueAge)
-        {
-            SetValue(key, value, valueAge, DateTime.Now);
+            UpdateItem(cacheItem, value, DateTime.MinValue);
         }
 
         /// <summary>
-        /// Установить значение в кеше
+        /// Потокобезопасно обновить свойства элемента
         /// </summary>
-        public void SetValue(TKey key, TValue value, DateTime valueAge, DateTime accessDT)
+        public void UpdateItem(CacheItem cacheItem, TValue value, DateTime valueAge)
         {
+            if (cacheItem == null)
+                throw new ArgumentNullException("cacheItem");
+
             lock (this)
             {
-                CacheItem cacheItem;
-                if (items.TryGetValue(key, out cacheItem))
-                {
-                    cacheItem.Value = value;
-                    cacheItem.ValueAge = valueAge;
-                    cacheItem.AccessDT = accessDT;
-                }
-                else
-                {
-                    cacheItem = new CacheItem(value, valueAge, accessDT);
-                    items.Add(key, cacheItem);
-                }
+                cacheItem.Value = value;
+                cacheItem.ValueAge = valueAge;
             }
         }
 
