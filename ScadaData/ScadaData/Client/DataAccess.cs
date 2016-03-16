@@ -126,9 +126,9 @@ namespace Scada.Client
                 }
                 catch (Exception ex)
                 {
-                    log.WriteException(ex, string.Format(Localization.UseRussian ?
+                    log.WriteException(ex, Localization.UseRussian ?
                         "Ошибка при получении наименования роли по идентификатору {0}" :
-                        "Error getting role name by ID {0}", roleID));
+                        "Error getting role name by ID {0}", roleID);
                     return defaultRoleName;
                 }
             }
@@ -229,9 +229,9 @@ namespace Scada.Client
                 }
                 catch (Exception ex)
                 {
-                    log.WriteException(ex, string.Format(Localization.UseRussian ?
+                    log.WriteException(ex, Localization.UseRussian ?
                         "Ошибка при получении свойств представления по ид.={0}" :
-                        "Error getting view properties by ID={0}", viewID));
+                        "Error getting view properties by ID={0}", viewID);
                     return null;
                 }
             }
@@ -259,9 +259,9 @@ namespace Scada.Client
                 }
                 catch (Exception ex)
                 {
-                    log.WriteException(ex, string.Format(Localization.UseRussian ?
+                    log.WriteException(ex, Localization.UseRussian ?
                         "Ошибка при получении идентификатора пользователя по имени \"{0}\"" :
-                        "Error getting user ID by name \"{0}\"", username));
+                        "Error getting user ID by name \"{0}\"", username);
                     return BaseValues.EmptyDataID;
                 }
             }
@@ -302,9 +302,9 @@ namespace Scada.Client
                 }
                 catch (Exception ex)
                 {
-                    log.WriteException(ex, string.Format(Localization.UseRussian ?
+                    log.WriteException(ex, Localization.UseRussian ?
                         "Ошибка при получении цвета по статусу {0}" :
-                        "Error getting color by status {0}", stat));
+                        "Error getting color by status {0}", stat);
                 }
 
                 return defaultColor;
@@ -337,9 +337,9 @@ namespace Scada.Client
                 }
                 catch (Exception ex)
                 {
-                    log.WriteException(ex, string.Format(Localization.UseRussian ?
+                    log.WriteException(ex, Localization.UseRussian ?
                         "Ошибка при получении текущих данных входного канала {0}" :
-                        "Error getting current data of the input channel {0}", cnlNum));
+                        "Error getting current data of the input channel {0}", cnlNum);
 
                     dataAge = DateTime.MinValue;
                     return SrezTableLight.CnlData.Empty;

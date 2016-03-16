@@ -36,6 +36,19 @@ namespace Scada.Client
     public class ViewCache
     {
         /// <summary>
+        /// Вместимость кеша
+        /// </summary>
+        protected const int Capacity = 100;
+        /// <summary>
+        /// Период хранения в кеше
+        /// </summary>
+        protected static readonly TimeSpan StorePeriod = TimeSpan.FromMinutes(10);
+        /// <summary>
+        /// Время актуальности представления в кэше
+        /// </summary>
+        protected static readonly TimeSpan ViewValidSpan = TimeSpan.FromSeconds(1);
+
+        /// <summary>
         /// Объект для обмена данными со SCADA-Сервером
         /// </summary>
         protected readonly ServerComm serverComm;
@@ -47,6 +60,11 @@ namespace Scada.Client
         /// Журнал
         /// </summary>
         protected readonly Log log;
+
+        /// <summary>
+        /// Объект кеша представлений
+        /// </summary>
+        protected Cache<int, BaseView> cache;
 
 
         /// <summary>
@@ -71,6 +89,8 @@ namespace Scada.Client
             this.serverComm = serverComm;
             this.dataAccess = dataAccess;
             this.log = log;
+
+            cache = new Cache<int, BaseView>(StorePeriod, Capacity);
         }
 
 
@@ -79,19 +99,37 @@ namespace Scada.Client
         /// </summary>
         public T GetView<T>(int viewID, bool throwOnError = false) where T : BaseView
         {
-            // TODO: нужно записать загруженное представление в кэш
             try
             {
-                T view;
-                BaseView baseView = GetViewFromCache(viewID);
+                T view = null;
 
-                if (baseView == null)
+                // получение представления из кеша
+                DateTime utcNowDT = DateTime.UtcNow;
+                Cache<int, BaseView>.CacheItem cacheItem = cache.GetItem(viewID, utcNowDT);
+                BaseView viewFromCache;
+                DateTime viewAge;    // время изменения файла представления
+                bool viewIsNotValid; // представление могло устареть
+
+                if (cacheItem == null)
+                {
+                    viewFromCache = null;
+                    viewAge = DateTime.MinValue;
+                    viewIsNotValid = true;
+                }
+                else
+                {
+                    viewFromCache = cacheItem.Value;
+                    viewAge = cacheItem.ValueAge;
+                    viewIsNotValid = utcNowDT - cacheItem.ValueRefrDT > ViewValidSpan;
+                }
+
+                // получение представления от сервера
+                if (viewFromCache == null || viewIsNotValid)
                 {
                     ViewProps viewProps = dataAccess.GetViewProps(viewID);
 
                     if (viewProps == null)
                     {
-                        view = null;
                         if (throwOnError)
                             throw new ScadaException(Localization.UseRussian ?
                                 "Отсутствуют свойства представления." : 
@@ -99,27 +137,48 @@ namespace Scada.Client
                     }
                     else 
                     {
-                        // создание и загрузка нового представления
-                        view = (T)Activator.CreateInstance(typeof(T));
-                        if (!serverComm.ReceiveView(viewProps.FileName, view))
+                        DateTime newViewAge = serverComm.ReceiveFileAge(ServerComm.Dirs.Itf, viewProps.FileName);
+
+                        if (newViewAge == DateTime.MinValue)
                         {
-                            view = null;
                             if (throwOnError)
                                 throw new ScadaException(Localization.UseRussian ?
-                                    "Представление не принято от сервера." : 
-                                    "View is not received from the server.");
+                                    "Не удалось принять время изменения файла представления." :
+                                    "Unable to receive view file modification time.");
+                        }
+                        else if (newViewAge != viewAge) // файл представления изменён
+                        {
+                            // создание и загрузка нового представления
+                            view = (T)Activator.CreateInstance(typeof(T));
+                            if (serverComm.ReceiveView(viewProps.FileName, view))
+                            {
+                                if (cacheItem == null)
+                                    // добавление представления в кеш
+                                    cache.AddValue(viewID, view, newViewAge, utcNowDT);
+                                else
+                                    // обновление представления в кеше
+                                    cache.UpdateItem(cacheItem, view, newViewAge, utcNowDT);
+                            }
+                            else
+                            {
+                                if (throwOnError)
+                                    throw new ScadaException(Localization.UseRussian ?
+                                        "Не удалось принять представление." :
+                                        "Unable to receive view.");
+                            }
                         }
                     }
                 }
-                else
+                
+                // использование представление из кеша
+                if (view == null && viewFromCache != null)
                 {
-                    view = baseView as T;
+                    view = viewFromCache as T;
                     if (view == null && throwOnError)
                         throw new ScadaException(Localization.UseRussian ?
-                            "Некорректный тип представления." : 
-                            "Incorrect view type.");
+                            "Несоответствие типа представления." :
+                            "View type mismatch.");
                 }
-
 
                 return view;
             }
@@ -142,7 +201,18 @@ namespace Scada.Client
         /// </summary>
         public BaseView GetViewFromCache(int viewID)
         {
-            return null;
+            try
+            {
+                Cache<int, BaseView>.CacheItem cacheItem = cache.GetItem(viewID, DateTime.UtcNow);
+                return cacheItem == null ? null : cacheItem.Value;
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении представления с ид.={0} из кэша" :
+                    "Error getting view with ID={0} from the cache", viewID);
+                return null;
+            }
         }
     }
 }

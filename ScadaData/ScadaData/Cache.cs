@@ -32,8 +32,8 @@ namespace Scada
     /// Generic cache
     /// <para>Универсальный кеш</para>
     /// </summary>
-    /// <remarks>The class is not thread safe
-    /// <para>Класс не является потокобезопасным</para></remarks>
+    /// <remarks>The class is thread safe
+    /// <para>Класс является потокобезопасным</para></remarks>
     public class Cache<TKey, TValue>
     {
         /// <summary>
@@ -50,11 +50,12 @@ namespace Scada
             /// <summary>
             /// Конструктор
             /// </summary>
-            protected internal CacheItem(TValue value, DateTime valueAge, DateTime accessDT)
+            protected internal CacheItem(TValue value, DateTime valueAge, DateTime nowDT)
             {
                 Value = value;
                 ValueAge = valueAge;
-                AccessDT = accessDT;
+                ValueRefrDT = nowDT;
+                AccessDT = nowDT;
             }
 
             /// <summary>
@@ -65,6 +66,10 @@ namespace Scada
             /// Получить или установить время изменения значения в источнике
             /// </summary>
             public DateTime ValueAge { get; set; }
+            /// <summary>
+            /// Получить или установить время обновления значения в кеше
+            /// </summary>
+            public DateTime ValueRefrDT { get; set; }
             /// <summary>
             /// Получить или установить дату и время последнего доступа к элементу
             /// </summary>
@@ -137,14 +142,14 @@ namespace Scada
         /// <summary>
         /// Добавить значение в кеш
         /// </summary>
-        public void AddValue(TKey key, TValue value, DateTime valueAge, DateTime accessDT)
+        public void AddValue(TKey key, TValue value, DateTime valueAge, DateTime nowDT)
         {
             if (key == null)
                 throw new ArgumentNullException("key");
 
             lock (this)
             {
-                CacheItem cacheItem = new CacheItem(value, valueAge, accessDT);
+                CacheItem cacheItem = new CacheItem(value, valueAge, nowDT);
                 items.Add(key, cacheItem);
             }
         }
@@ -155,13 +160,13 @@ namespace Scada
         /// </summary>
         public CacheItem GetItem(TKey key)
         {
-            return GetItem(DateTime.Now);
+            return GetItem(key, DateTime.Now);
         }
 
         /// <summary>
         /// Получить элемент по ключу, обновив время доступа
         /// </summary>
-        public CacheItem GetItem(TKey key, DateTime accessDT)
+        public CacheItem GetItem(TKey key, DateTime nowDT)
         {
             if (key == null)
                 throw new ArgumentNullException("key");
@@ -171,7 +176,7 @@ namespace Scada
                 CacheItem item;
                 if (items.TryGetValue(key, out item))
                 {
-                    item.AccessDT = accessDT;
+                    item.AccessDT = nowDT;
                     return item;
                 }
                 else
@@ -187,13 +192,21 @@ namespace Scada
         /// </summary>
         public void UpdateItem(CacheItem cacheItem, TValue value)
         {
-            UpdateItem(cacheItem, value, DateTime.MinValue);
+            UpdateItem(cacheItem, value, DateTime.MinValue, DateTime.Now);
+        }
+        
+        /// <summary>
+        /// Потокобезопасно обновить свойства элемента
+        /// </summary>
+        public void UpdateItem(CacheItem cacheItem, TValue value, DateTime valueAge)
+        {
+            UpdateItem(cacheItem, value, valueAge, DateTime.Now);
         }
 
         /// <summary>
         /// Потокобезопасно обновить свойства элемента
         /// </summary>
-        public void UpdateItem(CacheItem cacheItem, TValue value, DateTime valueAge)
+        public void UpdateItem(CacheItem cacheItem, TValue value, DateTime valueAge, DateTime nowDT)
         {
             if (cacheItem == null)
                 throw new ArgumentNullException("cacheItem");
@@ -202,6 +215,7 @@ namespace Scada
             {
                 cacheItem.Value = value;
                 cacheItem.ValueAge = valueAge;
+                cacheItem.ValueRefrDT = nowDT;
             }
         }
 

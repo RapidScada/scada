@@ -255,13 +255,14 @@ namespace Scada.Client
                 if (utcNowDT - curRefrDT > DataValidSpan) // данные устарели
                 {
                     curRefrDT = utcNowDT;
-                    DateTime curAge = serverComm.ReceiveFileAge(ServerComm.Dirs.Cur, "current.dat");
+                    DateTime newCurAge = serverComm.ReceiveFileAge(ServerComm.Dirs.Cur, SrezAdapter.CurTableName);
 
-                    if (curAge != tblCur.FileModTime) // файл среза изменён
+                    if (newCurAge > DateTime.MinValue && tblCur.FileModTime != newCurAge) // файл среза изменён
                     {
-                        if (serverComm.ReceiveSrezTable("current.dat", tblCur))
+                        if (serverComm.ReceiveSrezTable(SrezAdapter.CurTableName, tblCur))
                         {
-                            tblCur.FileModTime = curAge;
+                            tblCur.FileModTime = newCurAge;
+                            tblCur.LastFillTime = utcNowDT;
                         }
                         else
                         {
@@ -269,15 +270,11 @@ namespace Scada.Client
                             tblCur.FileModTime = DateTime.MinValue;
                         }
                     }
-
-                    tblCur.LastFillTime = utcNowDT;
                 }
             }
             catch (Exception ex)
             {
                 curRefrDT = DateTime.MinValue;
-                tblCur.FileModTime = DateTime.MinValue;
-
                 log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при обновлении текущих данных" :
                     "Error refreshing the current data");
@@ -308,7 +305,7 @@ namespace Scada.Client
                                 "Не удалось принять время изменения базы конфигурации." :
                                 "Unable to receive the configuration database modification time.");
                         }
-                        else if (baseAge != newBaseAge /*база конфигурации изменена*/)
+                        else if (baseAge != newBaseAge) // база конфигурации изменена
                         {
                             baseAge = newBaseAge;
                             log.WriteAction(Localization.UseRussian ? 
