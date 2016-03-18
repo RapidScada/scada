@@ -168,7 +168,8 @@ namespace Scada.Web
         /// <summary>
         /// Получить текущие данные входных каналов представления
         /// </summary>
-        /// <remarks>Возвращает CnlDataDTO[], преобразованный в JSON</remarks>
+        /// <remarks>Возвращает CnlDataDTO[], преобразованный в JSON.
+        /// Представление должно быть уже загружено в кеш</remarks>
         [OperationContract]
         [WebGet]
         public string GetCurCnlDataByView(int viewID)
@@ -176,7 +177,6 @@ namespace Scada.Web
             try
             {
                 CnlDataDTO[] cnlDataDTOs;
-                // TODO: реализовать механизм получения типа представления по идентификатору и вызвать GetView<>()
                 BaseView view = AppData.ViewCache.GetViewFromCache(viewID);
 
                 if (view == null)

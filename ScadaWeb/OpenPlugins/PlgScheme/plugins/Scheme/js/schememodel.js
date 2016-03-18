@@ -42,6 +42,8 @@ scada.scheme.Scheme = function () {
     // Count of elements received by a one request
     this.LOAD_ELEM_CNT = 100;
 
+    // Scheme view ID
+    this.viewID = 0;
     // Stamp of the view unique within application scope
     this.viewStamp = 0;
     // Elements of the scheme
@@ -116,6 +118,7 @@ scada.scheme.Scheme.prototype._appendElements = function (receivedElements) {
 
 // Clear scheme
 scada.scheme.Scheme.prototype.clear = function () {
+    this.viewID = 0;
     this.viewStamp = 0;
     this.elements = [];
     this.blobs = [];
@@ -124,14 +127,22 @@ scada.scheme.Scheme.prototype.clear = function () {
 // Load scheme.
 // callback is function (success, complete)
 scada.scheme.Scheme.prototype.load = function (viewID, callback) {
+    if (this.viewID == 0) {
+        this.viewID = viewID;
+    } else if (this.viewID != viewID) {
+        console.warn("Scheme view ID mismatch. The existing ID=" + this.viewID + ". The requsested ID=" + viewID);
+        callback(false, false);
+        return;
+    }
+
     var operation = "SchemeSvc.svc/GetElements";
     var thisScheme = this;
 
     $.ajax({
         url: operation +
             "?viewID=" + viewID +
-            "&viewStamp=0" +
-            "&startIndex=0" +
+            "&viewStamp=" + this.viewStamp +
+            "&startIndex=" + this.elements.length +
             "&count=" + this.LOAD_ELEM_CNT,
         method: "GET",
         dataType: "json"
