@@ -66,7 +66,7 @@ scada.scheme.DynamicTextRenderer.prototype.createDom = function (element) {
 };
 
 scada.scheme.DynamicTextRenderer.prototype.update = function (element, clientAPI) {
-    clientAPI.getCurCnlDataFull(element.props.InCnlNum, function (success, cnlData) {
+    clientAPI.getCurCnlDataExt(element.props.InCnlNum, function (success, cnlData) {
         element.dom.text(success ? cnlData.TextWithUnit : "");
     });
 };

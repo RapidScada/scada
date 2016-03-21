@@ -15,6 +15,25 @@
 // Rapid SCADA namespace
 var scada = scada || {};
 
+// Input channel data type.
+// Note: Casing is caused by C# naming rules
+scada.CnlData = function () {
+    this.Val = 0.0;
+    this.Stat = 0;
+};
+
+// Extended input channel data type
+scada.CnlDataExt = function () {
+    scada.CnlData.call(this);
+
+    this.Text = "";
+    this.TextWithUnit = "";
+    this.Color = "";
+};
+
+scada.CnlDataExt.prototype = Object.create(scada.CnlData.prototype);
+scada.CnlDataExt.constructor = scada.CnlDataExt;
+
 // Client API object
 scada.clientAPI = {
     // Empty input channel data
@@ -76,29 +95,21 @@ scada.clientAPI = {
             callback, []);
     },
 
+    // Get extended current input channel data of the view.
+    // callback is function (success, cnlDataExtArr)
     getCurCnlDataExtByView: function (viewID, callback) {
         this._request(
             "ClientApiSvc.svc/GetCurCnlDataExtByView",
             "?viewID=" + viewID,
             callback, []);
+    },
+
+    // Get the stamp of the view from the cache.
+    // callback is function (success, stamp)
+    getViewStamp: function (viewID, callback) {
+        this._request(
+            "ClientApiSvc.svc/GetViewStamp",
+            "?viewID=" + viewID,
+            callback, 0);
     }
 };
-
-// Input channel data type.
-// Note: Casing is caused by C# naming rules
-scada.CnlData = function () {
-    this.Val = 0.0;
-    this.Stat = 0;
-};
-
-// Extended input channel data type
-scada.CnlDataExt = function () {
-    scada.CnlData.call(this);
-
-    this.Text = "";
-    this.TextWithUnit = "";
-    this.Color = "";
-};
-
-scada.CnlDataExt.prototype = Object.create(scada.CnlData.prototype);
-scada.CnlDataExt.constructor = scada.CnlDataExt;

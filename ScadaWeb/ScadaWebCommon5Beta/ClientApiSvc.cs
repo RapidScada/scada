@@ -273,5 +273,25 @@ namespace Scada.Web
                 return "";
             }
         }
+
+        /// <summary>
+        /// Получить метку представления из кеша
+        /// </summary>
+        /// <remarks>Возвращает long, преобразованный в JSON</remarks>
+        public string GetViewStamp(int viewID)
+        {
+            try
+            {
+                BaseView view = AppData.ViewCache.GetViewFromCache(viewID);
+                return JsSerializer.Serialize(view == null ? 0 : view.Stamp);
+            }
+            catch (Exception ex)
+            {
+                AppData.Log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении метки предсталения с ид.={0} из кеша" :
+                    "Error getting stamp of the view with id={0} from the cache", viewID);
+                return "";
+            }
+        }
     }
 }

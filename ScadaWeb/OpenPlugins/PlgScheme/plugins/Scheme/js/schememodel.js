@@ -41,6 +41,8 @@ scada.scheme.Scheme = function () {
 
     // Count of elements received by a one request
     this.LOAD_ELEM_CNT = 100;
+    // Maximum count of elements
+    this.MAX_ELEM_CNT = 10000;
 
     // Scheme view ID
     this.viewID = 0;
@@ -74,9 +76,15 @@ scada.scheme.Scheme.prototype._parseReceivedData = function (json) {
             throw { message: "Elements are missing." };
         }
 
-        this.viewStamp = parsedData.ViewStamp;
-        this._appendElements(parsedData.Elements);
-        return parsedData;
+        if (this.viewStamp && parsedData.ViewStamp &&
+            this.viewStamp != parsedData.ViewStamp) {
+            console.warn(getCurTime() + " Scheme view stamp mismatch");
+            return null;
+        } else {
+            this.viewStamp = parsedData.ViewStamp;
+            this._appendElements(parsedData.Elements);
+            return parsedData;
+        }
     }
     catch (ex) {
         console.error(getCurTime() + " Error parsing scheme data:", ex.message);
@@ -130,7 +138,8 @@ scada.scheme.Scheme.prototype.load = function (viewID, callback) {
     if (this.viewID == 0) {
         this.viewID = viewID;
     } else if (this.viewID != viewID) {
-        console.warn("Scheme view ID mismatch. The existing ID=" + this.viewID + ". The requsested ID=" + viewID);
+        console.warn(scada.utils.getCurTime() +
+            " Scheme view ID mismatch. The existing ID=" + this.viewID + ". The requsested ID=" + viewID);
         callback(false, false);
         return;
     }

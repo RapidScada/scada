@@ -23,6 +23,8 @@
             <input id="btnCreateDom" type="button" value="Create DOM" />
             <input id="btnUpdate" type="button" value="Update" />
         </div>
+        <div id="divNotification">
+        </div>
         <div id="divScheme">
     
         </div>
