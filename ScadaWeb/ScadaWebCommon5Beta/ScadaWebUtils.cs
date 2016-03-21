@@ -79,5 +79,28 @@ namespace Scada.Web
         {
             return HttpUtility.HtmlEncode(s).Replace("\n", "<br />");
         }
+
+        /// <summary>
+        /// Преобразовать параметр запроса в массив целых чисел
+        /// </summary>
+        public static int[] QueryParamToIntArray(string param)
+        {
+            try
+            {
+                string[] elems = (param ?? "").Split(new char[] { ' ', ',' },
+                    StringSplitOptions.RemoveEmptyEntries);
+                int len = elems.Length;
+                int[] arr = new int[len];
+
+                for (int i = 0; i < len; i++)
+                    arr[i] = int.Parse(elems[i]);
+
+                return arr;
+            }
+            catch (FormatException ex)
+            {
+                throw new FormatException("Query parameter is not array of integers.", ex);
+            }
+        }
     }
 }

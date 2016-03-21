@@ -17,44 +17,19 @@ var scada = scada || {};
 
 // Client API object
 scada.clientAPI = {
+    // Empty input channel data
+    _emptyCnlData: new scada.CnlData(),
+
+    // Empty extended input channel data
+    _emptyCnlDataExt: new scada.CnlDataExt(),
+
     // Web service root path
     rootPath: "",
 
-    // Get current value and status of the input channel.
-    // callback is function (success, val, stat)
-    getCurCnlData: function (cnlNum, callback) {
-        var operation = "ClientApiSvc.svc/GetCurCnlData";
-
+    // Execute an AJAX request
+    _request: function (operation, queryString, callback, errorResult) {
         $.ajax({
-            url: this.rootPath + operation +
-                "?cnlNum=" + cnlNum,
-            method: "GET",
-            dataType: "json"
-        })
-        .done(function (data, textStatus, jqXHR) {
-            if (data.d) {
-                scada.utils.logSuccessfulRequest(operation, data);
-                var parsedData = $.parseJSON(data.d);
-                callback(true, parsedData.Val, parsedData.Stat);
-            } else {
-                scada.utils.logServiceError(operation);
-                callback(false, 0.0, 0);
-            }
-        })
-        .fail(function (jqXHR, textStatus, errorThrown) {
-            scada.utils.logFailedRequest(operation, jqXHR);
-            callback(false, 0.0, 0);
-        });
-    },
-
-    // Get full current data of the input channel. 
-    // callback is function (success, cnlData)
-    getCurCnlDataFull: function (cnlNum, callback) {
-        var operation = "ClientApiSvc.svc/GetCurCnlDataFull";
-
-        $.ajax({
-            url: this.rootPath + operation +
-                "?cnlNum=" + cnlNum,
+            url: this.rootPath + operation + queryString,
             method: "GET",
             dataType: "json"
         })
@@ -65,13 +40,47 @@ scada.clientAPI = {
                 callback(true, parsedData);
             } else {
                 scada.utils.logServiceError(operation);
-                callback(false, new scada.CnlData());
+                callback(false, defaultResult);
             }
         })
         .fail(function (jqXHR, textStatus, errorThrown) {
             scada.utils.logFailedRequest(operation, jqXHR);
-            callback(false, new scada.CnlData());
+            callback(false, errorResult);
         });
+    },
+
+    // Get current value and status of the input channel.
+    // callback is function (success, cnlData)
+    getCurCnlData: function (cnlNum, cnlNum) {
+        this._request(
+            "ClientApiSvc.svc/GetCurCnlData",
+            "?cnlNum=" + cnlNum,
+            callback, this._emptyCnlData);
+    },
+
+    // Get extended current data of the input channel. 
+    // callback is function (success, cnlDataExt)
+    getCurCnlDataExt: function (cnlNum, callback) {
+        this._request(
+            "ClientApiSvc.svc/GetCurCnlDataExt",
+            "?cnlNum=" + cnlNum,
+            callback, this._emptyCnlDataExt);
+    },
+
+    // Get extended current data of the specified input channels.
+    // callback is function (success, cnlDataExtArr)
+    getCurCnlDataExtByCnlNums: function (cnlNums, callback) {
+        this._request(
+            "ClientApiSvc.svc/GetCurCnlDataExtByCnlNums",
+            "?cnlNums=" + cnlNums,
+            callback, []);
+    },
+
+    getCurCnlDataExtByView: function (viewID, callback) {
+        this._request(
+            "ClientApiSvc.svc/GetCurCnlDataExtByView",
+            "?viewID=" + viewID,
+            callback, []);
     }
 };
 
@@ -80,7 +89,16 @@ scada.clientAPI = {
 scada.CnlData = function () {
     this.Val = 0.0;
     this.Stat = 0;
+};
+
+// Extended input channel data type
+scada.CnlDataExt = function () {
+    scada.CnlData.call(this);
+
     this.Text = "";
     this.TextWithUnit = "";
     this.Color = "";
 };
+
+scada.CnlDataExt.prototype = Object.create(scada.CnlData.prototype);
+scada.CnlDataExt.constructor = scada.CnlDataExt;

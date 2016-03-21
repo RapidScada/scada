@@ -43,14 +43,14 @@ namespace Scada.Web
     public class ClientApiSvc
     {
         /// <summary>
-        /// Класс объекта для передачи данных входого канала
+        /// Класс объекта для передачи расширенных данных входого канала
         /// </summary>
-        private class CnlDataDTO
+        private class CnlDataExtDTO
         {
             /// <summary>
             /// Конструктор
             /// </summary>
-            public CnlDataDTO(int cnlNum)
+            public CnlDataExtDTO(int cnlNum)
             {
                 CnlNum = cnlNum;
                 Val = 0.0;
@@ -97,6 +97,55 @@ namespace Scada.Web
 
 
         /// <summary>
+        /// Получить расширенные текущие данные входных каналов
+        /// </summary>
+        private CnlDataExtDTO[] GetCnlDataExtDTOs(IList<int> cnlList)
+        {
+            int cnlCnt = cnlList.Count;
+            CnlDataExtDTO[] cnlDataDTOs = new CnlDataExtDTO[cnlCnt];
+
+            DataAccess dataAccess = AppData.DataAccess;
+            DateTime dataAge;
+            SrezTableLight.Srez snapshot = dataAccess.DataCache.GetCurSnapshot(out dataAge);
+
+            string emptyVal = "";
+            bool dataVisible = snapshot != null &&
+                DataFormatter.CurDataVisible(dataAge, DateTime.Now, out emptyVal);
+
+            for (int i = 0; i < cnlCnt; i++)
+            {
+                int cnlNum = cnlList[i];
+                CnlDataExtDTO cnlDataDTO = new CnlDataExtDTO(cnlNum);
+                cnlDataDTOs[i] = cnlDataDTO;
+
+                SrezTableLight.CnlData cnlData;
+                snapshot.GetCnlData(cnlNum, out cnlData);
+                cnlDataDTO.Val = cnlData.Val;
+                cnlDataDTO.Stat = cnlData.Stat;
+
+                if (dataVisible)
+                {
+                    InCnlProps cnlProps = dataAccess.GetCnlProps(cnlNum);
+                    string text;
+                    string textWithUnit;
+                    DataFormatter.FormatCnlVal(cnlData.Val, cnlData.Stat, cnlProps, out text, out textWithUnit);
+
+                    cnlDataDTO.Text = text;
+                    cnlDataDTO.TextWithUnit = textWithUnit;
+                    cnlDataDTO.Color = DataFormatter.GetCnlValColor(cnlData.Val, cnlData.Stat, cnlProps,
+                        dataAccess.GetColorByStat);
+                }
+                else
+                {
+                    cnlDataDTO.Text = cnlDataDTO.TextWithUnit = emptyVal;
+                }
+            }
+
+            return cnlDataDTOs;
+        }
+
+
+        /// <summary>
         /// Получить текущие данные входного канала
         /// </summary>
         /// <remarks>Возвращает SrezTableLight.CnlData, преобразованный в JSON</remarks>
@@ -119,21 +168,21 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Получить полные текущие данные входного канала
+        /// Получить расширенные текущие данные входного канала
         /// </summary>
-        /// <remarks>Возвращает CnlDataDTO, преобразованный в JSON</remarks>
+        /// <remarks>Возвращает CnlDataExtDTO, преобразованный в JSON</remarks>
         [OperationContract]
         [WebGet]
-        public string GetCurCnlDataFull(int cnlNum)
+        public string GetCurCnlDataExt(int cnlNum)
         {
             try
             {
-                CnlDataDTO cnlDataDTO = new CnlDataDTO(cnlNum);
+                CnlDataExtDTO cnlDataExtDTO = new CnlDataExtDTO(cnlNum);
                 DataAccess dataAccess = AppData.DataAccess;
                 DateTime dataAge;
                 SrezTableLight.CnlData cnlData = dataAccess.GetCurCnlData(cnlNum, out dataAge);
-                cnlDataDTO.Val = cnlData.Val;
-                cnlDataDTO.Stat = cnlData.Stat;
+                cnlDataExtDTO.Val = cnlData.Val;
+                cnlDataExtDTO.Stat = cnlData.Stat;
 
                 string emptyVal;
                 if (DataFormatter.CurDataVisible(dataAge, DateTime.Now, out emptyVal))
@@ -143,40 +192,63 @@ namespace Scada.Web
                     string textWithUnit;
                     DataFormatter.FormatCnlVal(cnlData.Val, cnlData.Stat, cnlProps, out text, out textWithUnit);
 
-                    cnlDataDTO.Text = text;
-                    cnlDataDTO.TextWithUnit = textWithUnit;
-                    cnlDataDTO.Color = DataFormatter.GetCnlValColor(cnlData.Val, cnlData.Stat, cnlProps, 
+                    cnlDataExtDTO.Text = text;
+                    cnlDataExtDTO.TextWithUnit = textWithUnit;
+                    cnlDataExtDTO.Color = DataFormatter.GetCnlValColor(cnlData.Val, cnlData.Stat, cnlProps, 
                         dataAccess.GetColorByStat);
                 }
                 else
                 {
-                    cnlDataDTO.Text = emptyVal;
-                    cnlDataDTO.TextWithUnit = emptyVal;
+                    cnlDataExtDTO.Text = emptyVal;
+                    cnlDataExtDTO.TextWithUnit = emptyVal;
                 }
 
-                return JsSerializer.Serialize(cnlDataDTO);
+                return JsSerializer.Serialize(cnlDataExtDTO);
             }
             catch (Exception ex)
             {
                 AppData.Log.WriteException(ex, Localization.UseRussian ?
-                    "Ошибка при получении полных текущих данных входного канала {0}" :
-                    "Error getting full current data of the input channel {0}", cnlNum);
+                    "Ошибка при получении расширенных текущих данных входного канала {0}" :
+                    "Error getting extended current data of the input channel {0}", cnlNum);
                 return "";
             }
         }
 
         /// <summary>
-        /// Получить текущие данные входных каналов представления
+        /// Получить расширенные текущие данные заданных входных каналов
         /// </summary>
-        /// <remarks>Возвращает CnlDataDTO[], преобразованный в JSON.
-        /// Представление должно быть уже загружено в кеш</remarks>
+        /// <remarks>Возвращает CnlDataExtDTO[], преобразованный в JSON</remarks>
         [OperationContract]
         [WebGet]
-        public string GetCurCnlDataByView(int viewID)
+        public string GetCurCnlDataExtByCnlNums(string cnlNums)
         {
             try
             {
-                CnlDataDTO[] cnlDataDTOs;
+                int[] cnlNumArr = ScadaWebUtils.QueryParamToIntArray(cnlNums);
+                CnlDataExtDTO[] cnlDataDTOs = GetCnlDataExtDTOs(cnlNumArr);
+                return JsSerializer.Serialize(cnlDataDTOs);
+            }
+            catch (Exception ex)
+            {
+                AppData.Log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении расширенных текущих данных заданных входных каналов" :
+                    "Error getting extended current data of the specified input channels");
+                return "";
+            }
+        }
+
+        /// <summary>
+        /// Получить расширенные текущие данные входных каналов представления
+        /// </summary>
+        /// <remarks>Возвращает CnlDataExtDTO[], преобразованный в JSON.
+        /// Представление должно быть уже загружено в кеш (для ускорения работы метода)</remarks>
+        [OperationContract]
+        [WebGet]
+        public string GetCurCnlDataExtByView(int viewID)
+        {
+            try
+            {
+                CnlDataExtDTO[] cnlDataDTOs;
                 BaseView view = AppData.ViewCache.GetViewFromCache(viewID);
 
                 if (view == null)
@@ -184,48 +256,11 @@ namespace Scada.Web
                     AppData.Log.WriteError(string.Format(Localization.UseRussian ?
                         "Не удалось получить представление с ид.={0} из кеша" :
                         "Unable to get view with ID={0} from the cache", viewID));
-                    cnlDataDTOs = new CnlDataDTO[0];
+                    cnlDataDTOs = new CnlDataExtDTO[0];
                 }
                 else
                 {
-                    List<int> cnlList = view.CnlList;
-                    int cnlCnt = cnlList.Count;
-                    cnlDataDTOs = new CnlDataDTO[cnlCnt];
-
-                    DataAccess dataAccess = AppData.DataAccess;
-                    DateTime dataAge;
-                    SrezTableLight.Srez snapshot = dataAccess.DataCache.GetCurSnapshot(out dataAge);
-
-                    string emptyVal = "";
-                    bool dataVisible = snapshot != null && 
-                        DataFormatter.CurDataVisible(dataAge, DateTime.Now, out emptyVal);
-
-                    for (int i = 0; i < cnlCnt; i++)
-                    {
-                        int cnlNum = cnlList[i];
-                        CnlDataDTO cnlDataDTO = new CnlDataDTO(cnlNum);
-                        cnlDataDTOs[i] = cnlDataDTO;
-
-                        if (dataVisible)
-                        {
-                            SrezTableLight.CnlData cnlData;
-                            snapshot.GetCnlData(cnlNum, out cnlData);
-
-                            InCnlProps cnlProps = dataAccess.GetCnlProps(cnlNum);
-                            string text;
-                            string textWithUnit;
-                            DataFormatter.FormatCnlVal(cnlData.Val, cnlData.Stat, cnlProps, out text, out textWithUnit);
-
-                            cnlDataDTO.Text = text;
-                            cnlDataDTO.TextWithUnit = textWithUnit;
-                            cnlDataDTO.Color = DataFormatter.GetCnlValColor(cnlData.Val, cnlData.Stat, cnlProps,
-                                dataAccess.GetColorByStat);
-                        }
-                        else
-                        {
-                            cnlDataDTO.Text = cnlDataDTO.TextWithUnit = emptyVal;
-                        }
-                    }
+                    cnlDataDTOs = GetCnlDataExtDTOs(view.CnlList);
                 }
 
                 return JsSerializer.Serialize(cnlDataDTOs);
@@ -233,8 +268,8 @@ namespace Scada.Web
             catch (Exception ex)
             {
                 AppData.Log.WriteException(ex, Localization.UseRussian ?
-                    "Ошибка при получении текущих данных входных каналов предсталения с ид.={0}" :
-                    "Error getting current input channel data of the view with id={0}", viewID);
+                    "Ошибка при получении расширенных текущих данных входных каналов предсталения с ид.={0}" :
+                    "Error getting extended current input channel data of the view with id={0}", viewID);
                 return "";
             }
         }

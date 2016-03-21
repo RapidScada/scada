@@ -36,9 +36,9 @@ namespace Scada.Client
     public class ViewCache
     {
         /// <summary>
-        /// Вместимость кеша
+        /// Вместимость кеша неограниченная по количеству элементов
         /// </summary>
-        protected const int Capacity = 100;
+        protected const int Capacity = int.MaxValue;
         /// <summary>
         /// Период хранения в кеше
         /// </summary>
