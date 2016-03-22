@@ -13,7 +13,7 @@
   padding: 5px 20px;
 }
 /* Scheme */
-#divScheme {
+#divSchemeParent {
   margin: 10px;
   border: 1px solid gray;
   height: 500px;

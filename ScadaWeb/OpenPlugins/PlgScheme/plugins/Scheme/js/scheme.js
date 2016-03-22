@@ -27,7 +27,7 @@ function continueLoadingScheme(viewID) {
 
 $(document).ready(function () {
     scada.clientAPI.rootPath = "../../";
-    scheme.dom = $("#divScheme");
+    scheme.parentDomElem = $("#divSchemeParent");
 
     $("#btnLoadScheme").click(function (event) {
         event.preventDefault();
