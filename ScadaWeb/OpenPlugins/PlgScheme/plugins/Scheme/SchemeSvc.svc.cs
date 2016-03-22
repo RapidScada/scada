@@ -42,34 +42,104 @@ namespace Scada.Web.Plugins.Scheme
     public class SchemeSvc
     {
         /// <summary>
-        /// Класс объекта для передачи элементов схемы
+        /// Базовый класс объекта для передачи схемы
         /// </summary>
-        private class ElementsDTO
+        private abstract class SchemeDTO
         {
             /// <summary>
             /// Конструктор
             /// </summary>
-            public ElementsDTO(int capacity = -1)
+            public SchemeDTO()
             {
                 ViewStamp = 0;
-                EndOfScheme = false;
-                Elements = capacity > 0 ? 
-                    new List<SchemeView.Element>(capacity) : 
-                    new List<SchemeView.Element>();
             }
 
             /// <summary>
             /// Получить или установить метку представления, уникальную в пределах приложения
             /// </summary>
             public long ViewStamp { get; set; }
+        }
+
+        /// <summary>
+        /// Класс объекта для передачи свойств схемы
+        /// </summary>
+        private class SchemePropsDTO : SchemeDTO
+        {
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public SchemePropsDTO()
+                : base()
+            {
+                SchemeProps = null;
+                ElementCount = 0;
+                ImageCount = 0;
+            }
+
+            /// <summary>
+            /// Получить или установить свойства схемы
+            /// </summary>
+            public SchemeView.Scheme SchemeProps { get; set; }
+            /// <summary>
+            /// Получить или установить количество элементов схемы
+            /// </summary>
+            public int ElementCount { get; set; }
+            /// <summary>
+            /// Получить или установить количество изображений схемы
+            /// </summary>
+            public int ImageCount { get; set; }
+        }
+
+        /// <summary>
+        /// Класс объекта для передачи элементов схемы
+        /// </summary>
+        private class ElementsDTO : SchemeDTO
+        {
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public ElementsDTO(int capacity = -1)
+                : base()
+            {
+                EndOfElements = false;
+                Elements = capacity > 0 ? 
+                    new List<SchemeView.Element>(capacity) : 
+                    new List<SchemeView.Element>();
+            }
+
             /// <summary>
             /// Получить или установить признак, что считаны все элементы схемы
             /// </summary>
-            public bool EndOfScheme { get; set; }
+            public bool EndOfElements { get; set; }
             /// <summary>
             /// Получить элементы схемы
             /// </summary>
             public List<SchemeView.Element> Elements { get; private set; }
+        }
+
+        /// <summary>
+        /// Класс объекта для передачи бинарных объектов схемы
+        /// </summary>
+        private class ImagesDTO : SchemeDTO
+        {
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public ImagesDTO()
+                : base()
+            {
+                EndOfImages = false;
+                Images = new List<SchemeView.Image>();
+            }
+
+            /// <summary>
+            /// Получить или установить признак, что считаны все изображения схемы
+            /// </summary>
+            public bool EndOfImages { get; set; }
+            /// <summary>
+            /// Получить изображения схемы
+            /// </summary>
+            public List<SchemeView.Image> Images { get; private set; }
         }
 
 
@@ -80,6 +150,48 @@ namespace Scada.Web.Plugins.Scheme
 
 
         /// <summary>
+        /// Получить свойства схемы
+        /// </summary>
+        [OperationContract]
+        [WebGet]
+        public string GetSchemeProps(int viewID, long viewStamp)
+        {
+            try
+            {
+                SchemeView schemeView = AppData.ViewCache.GetView<SchemeView>(viewID, true);
+                SchemePropsDTO dto = new SchemePropsDTO();
+                dto.ViewStamp = schemeView.Stamp;
+
+                if (viewStamp == 0 || viewStamp == dto.ViewStamp)
+                {
+                    // копирование свойств схемы без словаря изображений
+                    SchemeView.Scheme srcSchemeProps = schemeView.SchemeParams;
+                    dto.SchemeProps = new SchemeView.Scheme(null, schemeView.CnlsFilter)
+                    {
+                        Size = srcSchemeProps.Size,
+                        BackColor = srcSchemeProps.BackColor,
+                        BackImage = srcSchemeProps.BackImage,
+                        ForeColor = srcSchemeProps.ForeColor,
+                        Font = srcSchemeProps.Font,
+                        Title = srcSchemeProps.Title
+                    };
+
+                    dto.ElementCount = schemeView.ElementList.Count;
+                    dto.ImageCount = schemeView.ImageDict.Count;
+                }
+
+                return JsSerializer.Serialize(dto);
+            }
+            catch (Exception ex)
+            {
+                AppData.Log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении свойств схемы с ид.={0}" :
+                    "Error getting the properties of the scheme with ID={0}", viewID);
+                return "";
+            }
+        }
+
+        /// <summary>
         /// Получить элементы схемы
         /// </summary>
         [OperationContract]
@@ -88,16 +200,19 @@ namespace Scada.Web.Plugins.Scheme
         {
             try
             {
-                ElementsDTO dto = new ElementsDTO(count);
                 SchemeView schemeView = AppData.ViewCache.GetView<SchemeView>(viewID, true);
-                List<SchemeView.Element> srcElems = schemeView.ElementList;
-                int srcCnt = srcElems.Count;
-
+                ElementsDTO dto = new ElementsDTO(count);
                 dto.ViewStamp = schemeView.Stamp;
-                dto.EndOfScheme = startIndex + count >= srcCnt;
 
-                for (int i = startIndex, j = 0; i < srcCnt && j < count; i++, j++)
-                    dto.Elements.Add(srcElems[i]);
+                if (viewStamp == 0 || viewStamp == dto.ViewStamp)
+                {
+                    List<SchemeView.Element> srcElems = schemeView.ElementList;
+                    int srcCnt = srcElems.Count;
+                    dto.EndOfElements = startIndex + count >= srcCnt;
+
+                    for (int i = startIndex, j = 0; i < srcCnt && j < count; i++, j++)
+                        dto.Elements.Add(srcElems[i]);
+                }
 
                 return JsSerializer.Serialize(dto);
             }
@@ -106,6 +221,54 @@ namespace Scada.Web.Plugins.Scheme
                 AppData.Log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при получении элементов схемы с ид.={0}" :
                     "Error getting the elements of the scheme with ID={0}", viewID);
+                return "";
+            }
+        }
+
+        /// <summary>
+        /// Получить изображения схемы
+        /// </summary>
+        [OperationContract]
+        [WebGet]
+        public string GetImages(int viewID, long viewStamp, int startIndex, int totalDataSize)
+        {
+            try
+            {
+                SchemeView schemeView = AppData.ViewCache.GetView<SchemeView>(viewID, true);
+                ImagesDTO dto = new ImagesDTO();
+                dto.ViewStamp = schemeView.Stamp;
+
+                if (viewStamp == 0 || viewStamp == dto.ViewStamp)
+                {
+                    Dictionary<string, SchemeView.Image>.ValueCollection images = schemeView.ImageDict.Values;
+                    int i = 0;
+                    int size = 0;
+
+                    foreach (SchemeView.Image image in images)
+                    {
+                        if (i >= startIndex)
+                        {
+                            dto.Images.Add(image);
+                            if (image.Data != null)
+                                size += image.Data.Length;
+                        }
+
+                        if (size >= totalDataSize)
+                            break;
+
+                        i++;
+                    }
+
+                    dto.EndOfImages = i == images.Count;
+                }
+
+                return JsSerializer.Serialize(dto);
+            }
+            catch (Exception ex)
+            {
+                AppData.Log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении изображений схемы с ид.={0}" :
+                    "Error getting the images of the scheme with ID={0}", viewID);
                 return "";
             }
         }

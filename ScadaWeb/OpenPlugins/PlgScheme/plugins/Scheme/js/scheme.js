@@ -6,21 +6,24 @@ var viewID = viewID || 0;
 
 // Start scheme loading process
 function startLoadingScheme(viewID) {
+    console.info(scada.utils.getCurTime() + " Start loading scheme");
     scheme.clear();
     continueLoadingScheme(viewID);
 }
 
 // Continue scheme loading process
 function continueLoadingScheme(viewID) {
+    var getCurTime = scada.utils.getCurTime;
+
     scheme.load(viewID, function (success, complete) {
         if (success) {
             if (complete) {
-                console.info("Loading complete successfully");
+                console.info(getCurTime() + " Scheme loading completed successfully");
             } else {
                 setTimeout(continueLoadingScheme, 0, viewID);
             }
         } else {
-            console.error("Loading failed. Try again");
+            console.error(getCurTime() + " Scheme loading failed");
         }
     });
 }

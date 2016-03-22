@@ -46,9 +46,10 @@ namespace Scada.Web.Plugins.Scheme
 
             viewID = 3; // ServerRoom.sch
 
-            // загрузка представления в кеш, чтобы проверить, что оно доступно, 
+            // загрузка представления в кеш, чтобы проверить, что оно доступно, присвоить метку
             // и обеспечить возможность получения данных входных каналов через API 
             SchemeView schemeView = AppData.ViewCache.GetView<SchemeView>(viewID, true);
+            schemeView.AssignStamp();
         }
     }
 }

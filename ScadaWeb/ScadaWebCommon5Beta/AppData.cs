@@ -420,9 +420,9 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Получить метку представления, уникальную в пределах приложения
+        /// Присвоить представлению уникальную в пределах приложения метку
         /// </summary>
-        public static long GetViewStamp(this BaseView view)
+        public static long AssignStamp(this BaseView view)
         {
             if (view.Stamp <= 0)
                 view.Stamp = ++viewStampCntr;
