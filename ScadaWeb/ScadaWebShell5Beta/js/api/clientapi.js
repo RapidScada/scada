@@ -55,7 +55,7 @@ scada.clientAPI = {
         })
         .done(function (data, textStatus, jqXHR) {
             if (data.d) {
-                scada.utils.logSuccessfulRequest(operation, data);
+                scada.utils.logSuccessfulRequest(operation/*, data*/);
                 var parsedData = $.parseJSON(data.d);
                 callback(true, parsedData);
             } else {

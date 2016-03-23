@@ -28,6 +28,13 @@ function continueLoadingScheme(viewID) {
     });
 }
 
+// Start cyclic scheme updating process
+function startUpdatingScheme() {
+    scheme.update(scada.clientAPI, function (success) {
+        setTimeout(startUpdatingScheme, 1000);
+    });
+}
+
 $(document).ready(function () {
     scada.clientAPI.rootPath = "../../";
     scheme.parentDomElem = $("#divSchemeParent");
@@ -44,6 +51,6 @@ $(document).ready(function () {
 
     $("#btnUpdate").click(function (event) {
         event.preventDefault();
-        scheme.update(scada.clientAPI);
+        startUpdatingScheme();
     });
 });

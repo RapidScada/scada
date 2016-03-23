@@ -87,9 +87,13 @@ namespace Scada.Web
         }
 
         /// <summary>
+        /// Мексимальное количество символов строке данных в формате JSON, 10 МБ
+        /// </summary>
+        private const int MaxJsonLen = 10485760;
+        /// <summary>
         /// Обеспечивает сериализацию результатов методов сервиса
         /// </summary>
-        private static readonly JavaScriptSerializer JsSerializer = new JavaScriptSerializer();
+        private static readonly JavaScriptSerializer JsSerializer = new JavaScriptSerializer() { MaxJsonLength = MaxJsonLen };
         /// <summary>
         /// Обеспечивает форматирование данных входных каналов и событий
         /// </summary>

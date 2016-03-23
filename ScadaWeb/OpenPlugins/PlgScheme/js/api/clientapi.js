@@ -26,6 +26,7 @@ scada.CnlData = function () {
 scada.CnlDataExt = function () {
     scada.CnlData.call(this);
 
+    this.CnlNum = 0;
     this.Text = "";
     this.TextWithUnit = "";
     this.Color = "";
@@ -37,10 +38,10 @@ scada.CnlDataExt.constructor = scada.CnlDataExt;
 // Client API object
 scada.clientAPI = {
     // Empty input channel data
-    _emptyCnlData: new scada.CnlData(),
+    _emptyCnlData: Object.freeze(new scada.CnlData()),
 
     // Empty extended input channel data
-    _emptyCnlDataExt: new scada.CnlDataExt(),
+    _emptyCnlDataExt: Object.freeze(new scada.CnlDataExt()),
 
     // Web service root path
     rootPath: "",
@@ -54,7 +55,7 @@ scada.clientAPI = {
         })
         .done(function (data, textStatus, jqXHR) {
             if (data.d) {
-                scada.utils.logSuccessfulRequest(operation, data);
+                scada.utils.logSuccessfulRequest(operation/*, data*/);
                 var parsedData = $.parseJSON(data.d);
                 callback(true, parsedData);
             } else {

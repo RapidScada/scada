@@ -16,7 +16,7 @@
 #divSchemeParent {
   margin: 10px;
   border: 1px solid gray;
-  height: 500px;
-  position: relative;
-  /* to position scheme elements */
+  /*width: 400px;*/
+  height: 600px;
+  overflow: auto;
 }

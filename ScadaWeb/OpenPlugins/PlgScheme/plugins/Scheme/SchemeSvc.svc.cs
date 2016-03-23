@@ -118,7 +118,32 @@ namespace Scada.Web.Plugins.Scheme
         }
 
         /// <summary>
-        /// Класс объекта для передачи бинарных объектов схемы
+        /// Класс объекта для передачи изображения
+        /// </summary>
+        private class ImageDTO
+        {
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public ImageDTO(SchemeView.Image image)
+            {
+                Name = image.Name;
+                Data = Convert.ToBase64String(image.Data == null ? new byte[0] : image.Data, 
+                    Base64FormattingOptions.None);
+            }
+
+            /// <summary>
+            /// Получить наименование
+            /// </summary>
+            public string Name { get; private set; }
+            /// <summary>
+            /// Получить данные в формате base 64
+            /// </summary>
+            public string Data { get; private set; }
+        }
+
+        /// <summary>
+        /// Класс объекта для передачи изображений схемы
         /// </summary>
         private class ImagesDTO : SchemeDTO
         {
@@ -129,7 +154,7 @@ namespace Scada.Web.Plugins.Scheme
                 : base()
             {
                 EndOfImages = false;
-                Images = new List<SchemeView.Image>();
+                Images = new List<ImageDTO>();
             }
 
             /// <summary>
@@ -139,14 +164,18 @@ namespace Scada.Web.Plugins.Scheme
             /// <summary>
             /// Получить изображения схемы
             /// </summary>
-            public List<SchemeView.Image> Images { get; private set; }
+            public List<ImageDTO> Images { get; private set; }
         }
 
 
         /// <summary>
+        /// Мексимальное количество символов строке данных в формате JSON, 10 МБ
+        /// </summary>
+        private const int MaxJsonLen = 10485760;
+        /// <summary>
         /// Обеспечивает сериализацию результатов методов сервиса
         /// </summary>
-        private static readonly JavaScriptSerializer JsSerializer = new JavaScriptSerializer();
+        private static readonly JavaScriptSerializer JsSerializer = new JavaScriptSerializer() { MaxJsonLength = MaxJsonLen };
 
 
         /// <summary>
@@ -248,7 +277,7 @@ namespace Scada.Web.Plugins.Scheme
                     {
                         if (i >= startIndex)
                         {
-                            dto.Images.Add(image);
+                            dto.Images.Add(new ImageDTO(image));
                             if (image.Data != null)
                                 size += image.Data.Length;
                         }

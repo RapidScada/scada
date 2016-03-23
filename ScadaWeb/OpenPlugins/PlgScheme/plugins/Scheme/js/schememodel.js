@@ -49,13 +49,14 @@ scada.scheme.LoadStates = {
 // Scheme type
 scada.scheme.Scheme = function () {
     scada.scheme.BaseElement.call(this);
+    this.renderer = new scada.scheme.SchemeRenderer();
 
     // Count of elements received by a one request
     this.LOAD_ELEM_CNT = 100;
     // Maximum count of elements
     this.MAX_ELEM_CNT = 10000;
-    // Total data size of images received by a one request, 10 MB
-    this.LOAD_IMG_SIZE = 10485760;
+    // Total data size of images received by a one request, 1 MB
+    this.LOAD_IMG_SIZE = 1048576;
 
     // Expected element count
     this._expectedElemCnt = 0;
@@ -72,6 +73,8 @@ scada.scheme.Scheme = function () {
     this.elements = [];
     // Scheme images
     this.images = [];
+    // Scheme images
+    this.imageMap = new Map();
     // Parent jQuery object
     this.parentDomElem = null;
 };
@@ -94,7 +97,7 @@ scada.scheme.Scheme.prototype._loadSchemeProps = function (viewID, callback) {
     })
     .done(function (data, textStatus, jqXHR) {
         if (data.d) {
-            scada.utils.logSuccessfulRequest(operation, data);
+            scada.utils.logSuccessfulRequest(operation/*, data*/);
             var parsedProps = thisScheme._parseSchemeProps(data.d);
             if (parsedProps) {
                 thisScheme.loadState = scada.scheme.LoadStates.ELEMS_LOADING;
@@ -104,6 +107,7 @@ scada.scheme.Scheme.prototype._loadSchemeProps = function (viewID, callback) {
             }
         } else {
             scada.utils.logServiceError(operation);
+            callback(false, false);
         }
     })
     .fail(function (jqXHR, textStatus, errorThrown) {
@@ -144,10 +148,16 @@ scada.scheme.Scheme.prototype._parseSchemeProps = function (json) {
         }
 
         if (this._viewStampsMatched(this.viewStamp, parsedProps.ViewStamp)) {
-            this.viewStamp = parsedProps.ViewStamp;
+            this.type = parsedProps.Type;
             this.props = parsedProps.SchemeProps;
+            this.viewStamp = parsedProps.ViewStamp;
             this._expectedElemCnl = parsedProps.ElementCount;
             this._expectedImageCnt = parsedProps.ImageCount;
+
+            if (parsedProps.SchemeProps.Title) {
+                document.title = parsedProps.SchemeProps.Title + " - Rapid SCADA";
+            }
+
             return parsedProps;
         } else {
             return null;
@@ -176,7 +186,7 @@ scada.scheme.Scheme.prototype._loadElements = function (viewID, callback) {
     })
     .done(function (data, textStatus, jqXHR) {
         if (data.d) {
-            scada.utils.logSuccessfulRequest(operation, data);
+            scada.utils.logSuccessfulRequest(operation/*, data*/);
             var parsedElems = thisScheme._parseElements(data.d);
             if (parsedElems) {
                 if (parsedElems.EndOfElements) {
@@ -188,6 +198,7 @@ scada.scheme.Scheme.prototype._loadElements = function (viewID, callback) {
             }
         } else {
             scada.utils.logServiceError(operation);
+            callback(false, false);
         }
     })
     .fail(function (jqXHR, textStatus, errorThrown) {
@@ -241,14 +252,7 @@ scada.scheme.Scheme.prototype._appendElements = function (parsedElems) {
         schemeElem.type = parsedElem.Type;
         schemeElem.id = parsedElem.ID;
         schemeElem.props = parsedElem;
-
-        try {
-            schemeElem.renderer = scada.scheme.rendererFactory.createRenderer(schemeElem.type);
-        }
-        catch (ex) {
-            console.error("Error creating renderer for the element of type '" + schemeElem.Type + "':", ex.message);
-            continue;
-        }
+        schemeElem.renderer = scada.scheme.rendererMap.getRenderer(schemeElem.type);
 
         if (schemeElem.renderer) {
             // add the element to the scheme
@@ -277,7 +281,7 @@ scada.scheme.Scheme.prototype._loadImages = function (viewID, callback) {
     })
     .done(function (data, textStatus, jqXHR) {
         if (data.d) {
-            scada.utils.logSuccessfulRequest(operation, data);
+            scada.utils.logSuccessfulRequest(operation/*, data*/);
             var parsedImages = thisScheme._parseImages(data.d);
             if (parsedImages) {
                 if (parsedImages.EndOfImages) {
@@ -291,6 +295,7 @@ scada.scheme.Scheme.prototype._loadImages = function (viewID, callback) {
             }
         } else {
             scada.utils.logServiceError(operation);
+            callback(false, false);
         }
     })
     .fail(function (jqXHR, textStatus, errorThrown) {
@@ -342,6 +347,7 @@ scada.scheme.Scheme.prototype._appendImages = function (parsedImages) {
 
         // add the image to the scheme
         this.images.push(parsedImage);
+        this.imageMap.set(parsedImage.Name, parsedImage);
     }
 };
 
@@ -375,11 +381,15 @@ scada.scheme.Scheme.prototype._updateElement = function (elem, renderContext) {
 
 // Clear scheme
 scada.scheme.Scheme.prototype.clear = function () {
+    this.props = null;
+    this.dom = null;
+
     this.loadState = scada.scheme.LoadStates.UNDEFINED;
     this.viewID = 0;
     this.viewStamp = 0;
     this.elements = [];
     this.images = [];
+    this.imageMap = new Map();
 };
 
 // Load scheme.
@@ -423,25 +433,43 @@ scada.scheme.Scheme.prototype.load = function (viewID, callback) {
 
 // Create DOM content of the scheme elements
 scada.scheme.Scheme.prototype.createDom = function () {
-    this.dom = this.parentDomElem;
+    var renderContext = new scada.scheme.RenderContext();
+    renderContext.imageMap = this.imageMap;
+
+    try
+    {
+        this.renderer.createDom(this, renderContext);
+
+        if (this.dom) {
+            this.parentDomElem.append(this.dom);
+        } else {
+            return;
+        }
+    }
+    catch (ex) {
+        console.error("Error creating DOM content for the scheme:", ex.message);
+        this.dom = null;
+        return;
+    }
 
     for (var elem of this.elements) {
         try {
-            elem.renderer.createDom(elem);
+            elem.renderer.createDom(elem, renderContext);
             if (this.dom) {
                 this.dom.append(elem.dom);
             }
         }
         catch (ex) {
             console.error("Error creating DOM content for the element of type '" +
-                elem.Type + "' with ID=" + elem.props.ID + ":", ex.message);
+                elem.type + "' with ID=" + elem.id + ":", ex.message);
             elem.dom = null;
         }
     }
 };
 
 // Update the scheme elements
-scada.scheme.Scheme.prototype.update = function (clientAPI) {
+// callback is function (success)
+scada.scheme.Scheme.prototype.update = function (clientAPI, callback) {
     var thisScheme = this;
 
     clientAPI.getCurCnlDataExtByView(this.viewID, function (success, cnlDataExtArr) {
@@ -451,13 +479,16 @@ scada.scheme.Scheme.prototype.update = function (clientAPI) {
             if (curCnlDataMap) {
                 var renderContext = new scada.scheme.RenderContext();
                 renderContext.curCnlDataMap = curCnlDataMap;
+                renderContext.imageMap = thisScheme.imageMap;
 
                 for (var elem of thisScheme.elements) {
                     thisScheme._updateElement(elem, renderContext);
                 }
             }
+
+            callback(true);
         } else {
-            // TODO
+            callback(false);
         }
     });
 };

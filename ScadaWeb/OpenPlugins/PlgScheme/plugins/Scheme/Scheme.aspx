@@ -12,6 +12,7 @@
     <script type="text/javascript">
         var viewID = <%= viewID %>;
     </script>
+    <script type="text/javascript" src="js/schemecommon.js"></script>
     <script type="text/javascript" src="js/schememodel.js"></script>
     <script type="text/javascript" src="js/schemerender.js"></script>
     <script type="text/javascript" src="js/scheme.js"></script>

@@ -257,7 +257,13 @@ namespace Scada.Client
                     curRefrDT = utcNowDT;
                     DateTime newCurAge = serverComm.ReceiveFileAge(ServerComm.Dirs.Cur, SrezAdapter.CurTableName);
 
-                    if (newCurAge > DateTime.MinValue && tblCur.FileModTime != newCurAge) // файл среза изменён
+                    if (newCurAge == DateTime.MinValue)
+                    {
+                        throw new ScadaException(Localization.UseRussian ?
+                            "Не удалось принять время изменения файла текущих данных." :
+                            "Unable to receive the current data file modification time.");
+                    }
+                    if (tblCur.FileModTime != newCurAge) // файл среза изменён
                     {
                         if (serverComm.ReceiveSrezTable(SrezAdapter.CurTableName, tblCur))
                         {
@@ -275,6 +281,8 @@ namespace Scada.Client
             catch (Exception ex)
             {
                 curRefrDT = DateTime.MinValue;
+                tblCur.FileModTime = DateTime.MinValue;
+
                 log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при обновлении текущих данных" :
                     "Error refreshing the current data");
