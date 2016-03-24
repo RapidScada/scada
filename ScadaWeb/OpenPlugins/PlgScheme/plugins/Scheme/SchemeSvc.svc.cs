@@ -26,6 +26,7 @@
 using Scada.Scheme;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
 using System.ServiceModel.Web;
@@ -127,9 +128,10 @@ namespace Scada.Web.Plugins.Scheme
             /// </summary>
             public ImageDTO(SchemeView.Image image)
             {
-                Name = image.Name;
+                Name = image.Name ?? "";
                 Data = Convert.ToBase64String(image.Data == null ? new byte[0] : image.Data, 
                     Base64FormattingOptions.None);
+                SetMediaType();
             }
 
             /// <summary>
@@ -137,9 +139,31 @@ namespace Scada.Web.Plugins.Scheme
             /// </summary>
             public string Name { get; private set; }
             /// <summary>
+            /// Получить медиа-тип
+            /// </summary>
+            public string MediaType { get; private set; }
+            /// <summary>
             /// Получить данные в формате base 64
             /// </summary>
             public string Data { get; private set; }
+
+            /// <summary>
+            /// Установить медиа-тип на основе наименования
+            /// </summary>
+            private void SetMediaType()
+            {
+                string ext = Path.GetExtension(Name).ToLowerInvariant();
+                if (ext == ".png")
+                    MediaType = "image/png";
+                else if (ext == ".jpg")
+                    MediaType = "image/jpeg";
+                else if (ext == ".gif")
+                    MediaType = "image/gif";
+                else if (ext == ".svg")
+                    MediaType = "image/svg+xml";
+                else
+                    MediaType = "";
+            }
         }
 
         /// <summary>

@@ -52,5 +52,6 @@ $(document).ready(function () {
     $("#btnUpdate").click(function (event) {
         event.preventDefault();
         startUpdatingScheme();
+        $(this).prop("disabled", true);
     });
 });

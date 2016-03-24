@@ -22,18 +22,56 @@ scada.scheme = scada.scheme || {};
 
 // Renderer type
 scada.scheme.Renderer = function () {
+    // Color bound to an input channel status
+    this.STATUS_COLOR = "Status";
+    // Default value of the status color
+    this.DEF_STATUS_COLOR = "Silver";
+    // Element border width if border presents
+    this.BORDER_WIDTH = 1;
+};
+
+// Set fore color of the jQuery object
+scada.scheme.Renderer.prototype.setForeColor = function (jqObj, foreColor) {
+    if (foreColor) {
+        jqObj.css("color", foreColor == this.STATUS_COLOR ? this.DEF_STATUS_COLOR : foreColor);
+    }
+};
+
+// Set background color of the jQuery object
+scada.scheme.Renderer.prototype.setBackColor = function (jqObj, backColor) {
+    if (backColor) {
+        jqObj.css("background-color", backColor == this.STATUS_COLOR ? this.DEF_STATUS_COLOR : backColor);
+    }
+};
+
+// Set border color and width of the jQuery object
+scada.scheme.Renderer.prototype.setBorderColor = function (jqObj, borderColor) {
+    if (borderColor) {
+        jqObj.css({
+            "border-width": this.BORDER_WIDTH,
+            "border-style": "solid",
+            "border-color": borderColor == this.STATUS_COLOR ? this.DEF_STATUS_COLOR : borderColor
+        });
+    }
 };
 
 // Set font of the jQuery object
 scada.scheme.Renderer.prototype.setFont = function (jqObj, font) {
-    jqObj.css({
-        "font-family": font.Name,
-        "font-size": font.Size + "px",
-        "font-weight": font.Bold ? "bold" : "normal",
-        "font-style": font.Italic ? "italic" : "normal",
-        "text-decoration": font.Underline ? "underline" : "none"
-    });
+    if (font) {
+        jqObj.css({
+            "font-family": font.Name,
+            "font-size": font.Size + "px",
+            "font-weight": font.Bold ? "bold" : "normal",
+            "font-style": font.Italic ? "italic" : "normal",
+            "text-decoration": font.Underline ? "underline" : "none"
+        });
+    }
 };
+
+// Returns a data URI containing a representation of the image
+scada.scheme.Renderer.prototype.imageToDataURL = function (image) {
+    return "data:" + (image.MediaType ? image.MediaType : "image/png") + ";base64," + image.Data
+}
 
 // Create DOM content of the element according to element properties.
 // If element properties are incorrect, no DOM content is created
@@ -56,23 +94,22 @@ scada.scheme.SchemeRenderer.constructor = scada.scheme.SchemeRenderer;
 scada.scheme.SchemeRenderer.prototype.createDom = function (elem, renderContext) {
     var props = elem.props; // scheme properties
     var divScheme =
-        $("<div id='divScheme'></div>")
+        $("<div id='scheme'></div>")
         .css({
             "position": "relative", // to position scheme elements
-            "background-color": props.BackColor,
-            "color": props.ForeColor,
             "width": props.Size.Width,
-            "height": props.Size.Height,
+            "height": props.Size.Height
         });
 
+    this.setBackColor(divScheme, props.BackColor);
     this.setFont(divScheme, props.Font);
+    this.setForeColor(divScheme, props.ForeColor);
 
-    // set background if present
+    // set background image if presents
     var backImage = renderContext.imageMap.get(elem.props.BackImage.Name);
-
     if (backImage) {
         divScheme.css({
-            "background-image": "url('data:image/png;base64," + backImage.Data + "')",
+            "background-image": "url('" + this.imageToDataURL(backImage) + "')",
             "background-size": props.Size.Width + "px " + props.Size.Height + "px",
             "background-repeat": "no-repeat"
         });
@@ -92,13 +129,32 @@ scada.scheme.StaticTextRenderer.constructor = scada.scheme.StaticTextRenderer;
 
 scada.scheme.StaticTextRenderer.prototype.createDom = function (elem, renderContext) {
     var props = elem.props;
-    elem.dom = $("<div id='divElem" + elem.id + "'></div>")
-        .text(props.Text)
+    var borderWidth = props.BorderColor ? this.BORDER_WIDTH : 0;
+    var spanElem =
+        $("<span id='elem" + elem.id + "'></span>")
         .css({
             "position": "absolute",
-            "left": props.Location.X,
-            "top": props.Location.Y
+            "left": props.Location.X - borderWidth,
+            "top": props.Location.Y - borderWidth
         });
+
+    this.setBackColor(spanElem, props.BackColor);
+    this.setBorderColor(spanElem, props.BorderColor);
+    this.setFont(spanElem, props.Font);
+    this.setForeColor(spanElem, props.ForeColor);
+
+    if (!props.AutoSize) {
+        spanElem
+            .css({
+                "display" : "inline-block",
+                "width": props.Size.Width,
+                "height": props.Size.Height
+            });
+    }
+
+    spanElem.text(props.Text);
+
+    elem.dom = spanElem;
 };
 
 /********** Dynamic Text Renderer **********/
@@ -115,7 +171,18 @@ scada.scheme.DynamicTextRenderer.prototype.createDom = function (elem, renderCon
 };
 
 scada.scheme.DynamicTextRenderer.prototype.update = function (elem, renderContext) {
-    elem.dom.text(renderContext.getCurCnlTextWithUnit(elem.props.InCnlNum));
+    var curCnlDataExt = renderContext.curCnlDataMap.get(elem.props.InCnlNum);
+    var spanElem = elem.dom;
+
+    if (curCnlDataExt) {
+        spanElem.text(curCnlDataExt.TextWithUnit);
+
+        if (elem.props.ForeColor == this.STATUS_COLOR) {
+            spanElem.css("color", curCnlDataExt.Color);
+        }
+    } else {
+        elem.dom.text("");
+    }
 };
 
 /********** Static Picture Renderer **********/
@@ -137,8 +204,7 @@ scada.scheme.StaticPictureRenderer.prototype.createDom = function (elem, renderC
             "left": props.Location.X,
             "top": props.Location.Y,
             "width": props.Size.Width,
-            "height": props.Size.Height,
-            "border": "1px solid gray"
+            "height": props.Size.Height
         });
 
     var imgElem =
@@ -151,8 +217,7 @@ scada.scheme.StaticPictureRenderer.prototype.createDom = function (elem, renderC
 
     var image = renderContext.imageMap.get(elem.props.Image.Name);
     if (image) {
-        imgElem.attr("src", "data:image/png;base64," + image.Data);
-        //imgElem.css("background-image", "url('data:image/png;base64," + image.Data + "')");
+        imgElem.attr("src", this.imageToDataURL(image));
     }
 
     elem.dom = divElem.append(imgElem);
@@ -203,12 +268,6 @@ scada.scheme.RenderContext = function () {
     this.curCnlDataMap = null;
     this.imageMap = null;
 };
-
-// Get current input channel text with unit by channel number
-scada.scheme.RenderContext.prototype.getCurCnlTextWithUnit = function (cnlNum) {
-    var curCnlDataExt = this.curCnlDataMap.get(cnlNum);
-    return curCnlDataExt ? curCnlDataExt.TextWithUnit : "";
-}
 
 /********** Renderer Map **********/
 
