@@ -31,28 +31,30 @@ scada.scheme.Renderer = function () {
 };
 
 // Set fore color of the jQuery object
-scada.scheme.Renderer.prototype.setForeColor = function (jqObj, foreColor) {
+scada.scheme.Renderer.prototype.setForeColor = function (jqObj, foreColor, opt_removeIfEmpty) {
     if (foreColor) {
         jqObj.css("color", foreColor == this.STATUS_COLOR ? this.DEF_STATUS_COLOR : foreColor);
+    } else if (opt_removeIfEmpty) {
+        jqObj.css("color", "");
     }
 };
 
 // Set background color of the jQuery object
-scada.scheme.Renderer.prototype.setBackColor = function (jqObj, backColor) {
+scada.scheme.Renderer.prototype.setBackColor = function (jqObj, backColor, opt_removeIfEmpty) {
     if (backColor) {
         jqObj.css("background-color", backColor == this.STATUS_COLOR ? this.DEF_STATUS_COLOR : backColor);
+    } else if (opt_removeIfEmpty) {
+        jqObj.css("background-color", "");
     }
 };
 
 // Set border color and width of the jQuery object
 scada.scheme.Renderer.prototype.setBorderColor = function (jqObj, borderColor) {
-    if (borderColor) {
-        jqObj.css({
-            "border-width": this.BORDER_WIDTH,
-            "border-style": "solid",
-            "border-color": borderColor == this.STATUS_COLOR ? this.DEF_STATUS_COLOR : borderColor
-        });
-    }
+    jqObj.css({
+        "border-width": this.BORDER_WIDTH,
+        "border-style": "solid",
+        "border-color": borderColor ? borderColor == this.STATUS_COLOR ? this.DEF_STATUS_COLOR : borderColor : "transparent"
+    });
 };
 
 // Set font of the jQuery object
@@ -65,6 +67,45 @@ scada.scheme.Renderer.prototype.setFont = function (jqObj, font) {
             "font-style": font.Italic ? "italic" : "normal",
             "text-decoration": font.Underline ? "underline" : "none"
         });
+    }
+};
+
+// Set text wrapping of the jQuery object
+scada.scheme.Renderer.prototype.setWordWrap = function (jqObj, wordWrap) {
+    jqObj.css("white-space", wordWrap ? "normal" : "nowrap");
+};
+
+// Set horizontal algnment of the jQuery object
+scada.scheme.Renderer.prototype.setHAlign = function (jqObj, hAlign) {
+    var HorizontalAlignments = scada.scheme.HorizontalAlignments;
+
+    switch (hAlign) {
+        case HorizontalAlignments.CENTER:
+            jqObj.css("text-align", "center");
+            break;
+        case HorizontalAlignments.RIGHT:
+            jqObj.css("text-align", "right");
+            break;
+        default:
+            jqObj.css("text-align", "left");
+            break;
+    }
+};
+
+// Set vertical algnment of the jQuery object
+scada.scheme.Renderer.prototype.setVAlign = function (jqObj, vAlign) {
+    var VerticalAlignments = scada.scheme.VerticalAlignments;
+
+    switch (vAlign) {
+        case VerticalAlignments.CENTER:
+            jqObj.css("vertical-align", "middle");
+            break;
+        case VerticalAlignments.BOTTOM:
+            jqObj.css("vertical-align", "bottom");
+            break;
+        default:
+            jqObj.css("vertical-align", "top");
+            break;
     }
 };
 
@@ -129,31 +170,41 @@ scada.scheme.StaticTextRenderer.constructor = scada.scheme.StaticTextRenderer;
 
 scada.scheme.StaticTextRenderer.prototype.createDom = function (elem, renderContext) {
     var props = elem.props;
-    var borderWidth = props.BorderColor ? this.BORDER_WIDTH : 0;
     var spanElem =
         $("<span id='elem" + elem.id + "'></span>")
         .css({
             "position": "absolute",
-            "left": props.Location.X - borderWidth,
-            "top": props.Location.Y - borderWidth
+            "z-index": props.ZIndex,
+            "left": props.Location.X - this.BORDER_WIDTH,
+            "top": props.Location.Y - this.BORDER_WIDTH
         });
 
+    var spanText = $("<span></span>");
+    spanElem.append(spanText);
+    
     this.setBackColor(spanElem, props.BackColor);
     this.setBorderColor(spanElem, props.BorderColor);
     this.setFont(spanElem, props.Font);
     this.setForeColor(spanElem, props.ForeColor);
 
     if (!props.AutoSize) {
-        spanElem
+        spanElem.css("display", "table");
+
+        spanText
             .css({
-                "display" : "inline-block",
+                "display": "table-cell",
+                "overflow": "hidden",
+                "max-width": props.Size.Width,
                 "width": props.Size.Width,
                 "height": props.Size.Height
             });
+
+        this.setHAlign(spanElem, props.HAlign);
+        this.setVAlign(spanText, props.VAlign);
+        this.setWordWrap(spanText, props.WordWrap);
     }
 
-    spanElem.text(props.Text);
-
+    spanText.text(props.Text);
     elem.dom = spanElem;
 };
 
@@ -166,22 +217,76 @@ scada.scheme.DynamicTextRenderer = function () {
 scada.scheme.DynamicTextRenderer.prototype = Object.create(scada.scheme.StaticTextRenderer.prototype);
 scada.scheme.DynamicTextRenderer.constructor = scada.scheme.DynamicTextRenderer;
 
+scada.scheme.DynamicTextRenderer.prototype._setUnderline = function (jqObj, underline) {
+    if (underline) {
+        jqObj.css("text-decoration", "underline");
+    }
+};
+
+scada.scheme.DynamicTextRenderer.prototype._restoreUnderline = function (jqObj, font) {
+    jqObj.css("text-decoration", font && font.Underline ? "underline" : "none");
+};
+
 scada.scheme.DynamicTextRenderer.prototype.createDom = function (elem, renderContext) {
     scada.scheme.StaticTextRenderer.prototype.createDom.call(this, elem, renderContext);
+
+    var Actions = scada.scheme.Actions;
+    var props = elem.props;
+    var spanElem = elem.dom;
+    var spanText = spanElem.children();
+
+    // set tooltip
+    if (props.ToolTip) {
+        spanElem.prop("title", props.ToolTip);
+    }
+
+    // apply properties on hover
+    var thisRenderer = this;
+    spanElem.hover(
+        function () {
+            thisRenderer.setBackColor(spanElem, props.BackColorOnHover);
+            thisRenderer.setBorderColor(spanElem, props.BorderColorOnHover);
+            thisRenderer.setForeColor(spanElem, props.ForeColorOnHover);
+            thisRenderer._setUnderline(spanElem, props.UnderlineOnHover);
+        },
+        function () {
+            thisRenderer.setBackColor(spanElem, props.BackColor, true);
+            thisRenderer.setBorderColor(spanElem, props.BorderColor);
+            thisRenderer.setForeColor(spanElem, props.ForeColor, true);
+            thisRenderer._restoreUnderline(spanElem, props.Font);
+        }
+    );
+
+    // bind action
+    if (props.Action) {
+        spanElem.css("cursor", "pointer");
+
+        spanElem.click(function () {
+            switch (props.Action) {
+                case Actions.DRAW_DIAGRAM:
+                    alert("Draw diagramm of the input channel " + props.InCnlNum); // TODO: use SCADA API
+                    break;
+                case Actions.SEND_COMMAND:
+                    alert("Send command for the output channel " + props.OutCnlNum); // TODO: use SCADA API
+                    break;
+            }
+        });
+    }
 };
 
 scada.scheme.DynamicTextRenderer.prototype.update = function (elem, renderContext) {
     var curCnlDataExt = renderContext.curCnlDataMap.get(elem.props.InCnlNum);
     var spanElem = elem.dom;
+    var spanText = spanElem.children();
 
     if (curCnlDataExt) {
-        spanElem.text(curCnlDataExt.TextWithUnit);
+        spanText.text(curCnlDataExt.TextWithUnit);
 
         if (elem.props.ForeColor == this.STATUS_COLOR) {
             spanElem.css("color", curCnlDataExt.Color);
         }
     } else {
-        elem.dom.text("");
+        spanText.text("");
     }
 };
 
@@ -201,8 +306,9 @@ scada.scheme.StaticPictureRenderer.prototype.createDom = function (elem, renderC
         $("<div id='divElem" + elem.id + "'></div>")
         .css({
             "position": "absolute",
-            "left": props.Location.X,
-            "top": props.Location.Y,
+            "z-index": props.ZIndex,
+            "left": props.Location.X - this.BORDER_WIDTH,
+            "top": props.Location.Y - this.BORDER_WIDTH,
             "width": props.Size.Width,
             "height": props.Size.Height
         });
@@ -220,7 +326,8 @@ scada.scheme.StaticPictureRenderer.prototype.createDom = function (elem, renderC
         imgElem.attr("src", this.imageToDataURL(image));
     }
 
-    elem.dom = divElem.append(imgElem);
+    divElem.append(imgElem);
+    elem.dom = divElem;
 };
 
 /********** Dynamic Picture Renderer **********/

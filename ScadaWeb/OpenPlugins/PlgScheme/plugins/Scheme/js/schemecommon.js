@@ -33,6 +33,27 @@ scada.scheme.LogicalOperators = {
     OR: 2
 };
 
+// Horizontal alignment enumeration
+scada.scheme.HorizontalAlignments = {
+    LEFT: 0,
+    CENTER: 1,
+    RIGHT: 2
+};
+
+// Vertical alignment enumeration
+scada.scheme.VerticalAlignments = {
+    TOP: 0,
+    CENTER: 1,
+    BOTTOM: 2
+};
+
+// Actions of dynamic elements enumeration
+scada.scheme.Actions = {
+    NONE: 0,
+    DRAW_DIAGRAM: 1,
+    SEND_COMMAND: 2
+};
+
 // Scheme utilities
 scada.scheme.utils = {
     // Compare two values using the specified operator
