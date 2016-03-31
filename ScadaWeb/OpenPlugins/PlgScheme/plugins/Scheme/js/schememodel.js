@@ -97,7 +97,7 @@ scada.scheme.Scheme.prototype._loadSchemeProps = function (viewID, callback) {
     })
     .done(function (data, textStatus, jqXHR) {
         if (data.d) {
-            scada.utils.logSuccessfulRequest(operation/*, data*/);
+            scada.utils.logSuccessfulRequest(operation);
             var parsedProps = thisScheme._parseSchemeProps(data.d);
             if (parsedProps) {
                 thisScheme.loadState = scada.scheme.LoadStates.ELEMS_LOADING;
@@ -186,7 +186,7 @@ scada.scheme.Scheme.prototype._loadElements = function (viewID, callback) {
     })
     .done(function (data, textStatus, jqXHR) {
         if (data.d) {
-            scada.utils.logSuccessfulRequest(operation/*, data*/);
+            scada.utils.logSuccessfulRequest(operation);
             var parsedElems = thisScheme._parseElements(data.d);
             if (parsedElems) {
                 if (parsedElems.EndOfElements) {
@@ -281,7 +281,7 @@ scada.scheme.Scheme.prototype._loadImages = function (viewID, callback) {
     })
     .done(function (data, textStatus, jqXHR) {
         if (data.d) {
-            scada.utils.logSuccessfulRequest(operation/*, data*/);
+            scada.utils.logSuccessfulRequest(operation);
             var parsedImages = thisScheme._parseImages(data.d);
             if (parsedImages) {
                 if (parsedImages.EndOfImages) {

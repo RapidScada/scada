@@ -47,6 +47,13 @@ scada.scheme.VerticalAlignments = {
     BOTTOM: 2
 };
 
+// Image stretch enumeration
+scada.scheme.ImageStretches = {
+    NONE: 0,
+    FILL: 1,
+    ZOOM: 2
+};
+
 // Actions of dynamic elements enumeration
 scada.scheme.Actions = {
     NONE: 0,
@@ -54,8 +61,8 @@ scada.scheme.Actions = {
     SEND_COMMAND: 2
 };
 
-// Scheme utilities
-scada.scheme.utils = {
+// Scheme calculations
+scada.scheme.calc = {
     // Compare two values using the specified operator
     compare: function (val1, val2, compareOper) {
         var CompareOperators = scada.scheme.CompareOperators;
@@ -94,6 +101,7 @@ scada.scheme.utils = {
         }
     },
 
+    // Check if the condition is satisfied by the input channel value
     conditionSatisfied: function (cond, cnlVal) {
         var LogicalOperators = scada.scheme.LogicalOperators;
         var comp1 = this.compare(cnlVal, cond.CompareArgument1, cond.CompareOperator1);

@@ -30,6 +30,26 @@ scada.scheme.Renderer = function () {
     this.BORDER_WIDTH = 1;
 };
 
+// Set primary css properties of the jQuery object of the scheme element
+scada.scheme.Renderer.prototype.prepareElem = function (jqObj, elem, opt_setSize) {
+    var props = elem.props;
+    jqObj.css({
+        "position": "absolute",
+        "z-index": props.ZIndex,
+        "left": props.Location.X - this.BORDER_WIDTH,
+        "top": props.Location.Y - this.BORDER_WIDTH,
+        "border-width": this.BORDER_WIDTH,
+        "border-style": "solid"
+    });
+
+    if (opt_setSize) {
+        jqObj.css({
+            "width": props.Size.Width,
+            "height": props.Size.Height
+        });
+    }
+};
+
 // Set fore color of the jQuery object
 scada.scheme.Renderer.prototype.setForeColor = function (jqObj, foreColor, opt_removeIfEmpty) {
     if (foreColor) {
@@ -48,13 +68,13 @@ scada.scheme.Renderer.prototype.setBackColor = function (jqObj, backColor, opt_r
     }
 };
 
-// Set border color and width of the jQuery object
-scada.scheme.Renderer.prototype.setBorderColor = function (jqObj, borderColor) {
-    jqObj.css({
-        "border-width": this.BORDER_WIDTH,
-        "border-style": "solid",
-        "border-color": borderColor ? borderColor == this.STATUS_COLOR ? this.DEF_STATUS_COLOR : borderColor : "transparent"
-    });
+// Set border color of the jQuery object
+scada.scheme.Renderer.prototype.setBorderColor = function (jqObj, borderColor, opt_setIfEmpty) {
+    if (borderColor) {
+        jqObj.css("border-color", borderColor == this.STATUS_COLOR ? this.DEF_STATUS_COLOR : borderColor);
+    } else if (opt_setIfEmpty) {
+        jqObj.css("border-color", "transparent");
+    }
 };
 
 // Set font of the jQuery object
@@ -114,6 +134,11 @@ scada.scheme.Renderer.prototype.imageToDataURL = function (image) {
     return "data:" + (image.MediaType ? image.MediaType : "image/png") + ";base64," + image.Data
 }
 
+// Returns a css property value for the image data URI
+scada.scheme.Renderer.prototype.imageToDataUrlCss = function (image) {
+    return "url('" + this.imageToDataURL(image) + "')";
+}
+
 // Create DOM content of the element according to element properties.
 // If element properties are incorrect, no DOM content is created
 scada.scheme.Renderer.prototype.createDom = function (elem, renderContext) {
@@ -150,7 +175,7 @@ scada.scheme.SchemeRenderer.prototype.createDom = function (elem, renderContext)
     var backImage = renderContext.imageMap.get(elem.props.BackImage.Name);
     if (backImage) {
         divScheme.css({
-            "background-image": "url('" + this.imageToDataURL(backImage) + "')",
+            "background-image": this.imageToDataUrlCss(backImage),
             "background-size": props.Size.Width + "px " + props.Size.Height + "px",
             "background-repeat": "no-repeat"
         });
@@ -170,20 +195,13 @@ scada.scheme.StaticTextRenderer.constructor = scada.scheme.StaticTextRenderer;
 
 scada.scheme.StaticTextRenderer.prototype.createDom = function (elem, renderContext) {
     var props = elem.props;
-    var spanElem =
-        $("<span id='elem" + elem.id + "'></span>")
-        .css({
-            "position": "absolute",
-            "z-index": props.ZIndex,
-            "left": props.Location.X - this.BORDER_WIDTH,
-            "top": props.Location.Y - this.BORDER_WIDTH
-        });
 
+    var spanElem = $("<span id='elem" + elem.id + "'></span>");
     var spanText = $("<span></span>");
-    spanElem.append(spanText);
-    
+
+    this.prepareElem(spanElem, elem);
     this.setBackColor(spanElem, props.BackColor);
-    this.setBorderColor(spanElem, props.BorderColor);
+    this.setBorderColor(spanElem, props.BorderColor, true);
     this.setFont(spanElem, props.Font);
     this.setForeColor(spanElem, props.ForeColor);
 
@@ -205,6 +223,7 @@ scada.scheme.StaticTextRenderer.prototype.createDom = function (elem, renderCont
     }
 
     spanText.text(props.Text);
+    spanElem.append(spanText);
     elem.dom = spanElem;
 };
 
@@ -251,7 +270,7 @@ scada.scheme.DynamicTextRenderer.prototype.createDom = function (elem, renderCon
         },
         function () {
             thisRenderer.setBackColor(spanElem, props.BackColor, true);
-            thisRenderer.setBorderColor(spanElem, props.BorderColor);
+            thisRenderer.setBorderColor(spanElem, props.BorderColor, true);
             thisRenderer.setForeColor(spanElem, props.ForeColor, true);
             thisRenderer._restoreUnderline(spanElem, props.Font);
         }
@@ -299,34 +318,39 @@ scada.scheme.StaticPictureRenderer = function () {
 scada.scheme.StaticPictureRenderer.prototype = Object.create(scada.scheme.Renderer.prototype);
 scada.scheme.StaticPictureRenderer.constructor = scada.scheme.StaticPictureRenderer;
 
+scada.scheme.Renderer.prototype.setBackgroundImage = function (jqObj, image, opt_setIfEmpty) {
+    if (image) {
+        jqObj.css("background-image", this.imageToDataUrlCss(image));
+    } else if (opt_setIfEmpty) {
+        jqObj.css("background-image", "");
+    }
+};
+
 scada.scheme.StaticPictureRenderer.prototype.createDom = function (elem, renderContext) {
+    var ImageStretches = scada.scheme.ImageStretches;
     var props = elem.props;
 
-    var divElem =
-        $("<div id='divElem" + elem.id + "'></div>")
-        .css({
-            "position": "absolute",
-            "z-index": props.ZIndex,
-            "left": props.Location.X - this.BORDER_WIDTH,
-            "top": props.Location.Y - this.BORDER_WIDTH,
-            "width": props.Size.Width,
-            "height": props.Size.Height
-        });
+    var divElem = $("<div id='divElem" + elem.id + "'></div>");
+    this.prepareElem(divElem, elem, true);
+    this.setBorderColor(divElem, props.BorderColor, true);
 
-    var imgElem =
-        $("<img alt='test image' />")
-        .css({
-            "width": props.Size.Width,
-            "height": props.Size.Height,
-            "border": 0
-        });
-
-    var image = renderContext.imageMap.get(elem.props.Image.Name);
-    if (image) {
-        imgElem.attr("src", this.imageToDataURL(image));
+    // set image
+    switch (props.ImageStretch) {
+        case ImageStretches.FILL:
+            divElem.css("background-size", props.Size.Width + "px " + props.Size.Height + "px");
+            break;
+        case ImageStretches.ZOOM:
+            divElem.css({
+                "background-size": "contain",
+                "background-position": "center"
+            });
+            break;
     }
 
-    divElem.append(imgElem);
+    divElem.css("background-repeat", "no-repeat");
+    var image = renderContext.imageMap.get(props.Image.Name);
+    this.setBackgroundImage(divElem, image);
+
     elem.dom = divElem;
 };
 
@@ -341,19 +365,49 @@ scada.scheme.DynamicPictureRenderer.constructor = scada.scheme.DynamicPictureRen
 
 scada.scheme.DynamicPictureRenderer.prototype.createDom = function (elem, renderContext) {
     scada.scheme.StaticPictureRenderer.prototype.createDom.call(this, elem, renderContext);
+
+    var props = elem.props;
+    var divElem = elem.dom;
+
+    // set tooltip
+    if (props.ToolTip) {
+        divElem.prop("title", props.ToolTip);
+    }
+
+    // apply properties on hover
+    var thisRenderer = this;
+    divElem.hover(
+        function () {
+            thisRenderer.setBorderColor(divElem, props.BorderColorOnHover);
+            if (props.InCnlNum <= 0) {
+                var image = renderContext.imageMap.get(props.ImageOnHover.Name);
+                thisRenderer.setBackgroundImage(divElem, image);
+            }
+        },
+        function () {
+            thisRenderer.setBorderColor(divElem, props.BorderColor, true);
+            if (props.InCnlNum <= 0) {
+                var image = renderContext.imageMap.get(props.Image.Name);
+                thisRenderer.setBackgroundImage(divElem, image, true);
+            }
+        }
+    );
 };
 
 scada.scheme.DynamicPictureRenderer.prototype.update = function (elem, renderContext) {
-    var cnlDataExt = renderContext.curCnlDataMap.get(elem.props.InCnlNum);
+    var props = elem.props;
+    var divElem = elem.dom;
+    var cnlDataExt = renderContext.curCnlDataMap.get(props.InCnlNum);
+
     if (cnlDataExt) {
         // choose the image depending on the conditions
-        var imageName = elem.props.Image.Name;
+        var imageName = props.Image.Name;
 
-        if (cnlDataExt.Stat && elem.props.Conditions) {
+        if (cnlDataExt.Stat && props.Conditions) {
             var cnlVal = cnlDataExt.Val;
 
-            for (var cond of elem.props.Conditions) {
-                if (scada.scheme.utils.conditionSatisfied(cond, cnlVal)) {
+            for (var cond of props.Conditions) {
+                if (scada.scheme.calc.conditionSatisfied(cond, cnlVal)) {
                     imageName = cond.Image.Name;
                     break;
                 }
@@ -362,9 +416,7 @@ scada.scheme.DynamicPictureRenderer.prototype.update = function (elem, renderCon
 
         // set the image
         var image = renderContext.imageMap.get(imageName);
-        if (image) {
-            elem.dom.find("img").attr("src", "data:image/png;base64," + image.Data);
-        }
+        this.setBackgroundImage(divElem, image, true);
     }
 };
 
