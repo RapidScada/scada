@@ -4,13 +4,20 @@
  * Author   : Mikhail Shiryaev
  * Created  : 2016
  * Modified : 2016
- */
-
-/*
+ *
  * Requires:
  * - jquery
  * - clientapi.js
  * - schemecommon.js
+ *
+ * Inheritance hierarchy:
+ * Renderer
+ *   SchemeRenderer
+ *   ElementRenderer
+ *     StaticTextRenderer
+ *       DynamicTextRenderer
+ *     StaticPictureRenderer
+ *       DynamicPictureRenderer
  */
 
 // Rapid SCADA namespace
@@ -20,7 +27,7 @@ scada.scheme = scada.scheme || {};
 
 /********** Renderer **********/
 
-// Renderer type
+// Abstract parent type of renderers
 scada.scheme.Renderer = function () {
     // Color bound to an input channel status
     this.STATUS_COLOR = "Status";
@@ -28,26 +35,6 @@ scada.scheme.Renderer = function () {
     this.DEF_STATUS_COLOR = "Silver";
     // Element border width if border presents
     this.BORDER_WIDTH = 1;
-};
-
-// Set primary css properties of the jQuery object of the scheme element
-scada.scheme.Renderer.prototype.prepareElem = function (jqObj, elem, opt_setSize) {
-    var props = elem.props;
-    jqObj.css({
-        "position": "absolute",
-        "z-index": props.ZIndex,
-        "left": props.Location.X - this.BORDER_WIDTH,
-        "top": props.Location.Y - this.BORDER_WIDTH,
-        "border-width": this.BORDER_WIDTH,
-        "border-style": "solid"
-    });
-
-    if (opt_setSize) {
-        jqObj.css({
-            "width": props.Size.Width,
-            "height": props.Size.Height
-        });
-    }
 };
 
 // Set fore color of the jQuery object
@@ -90,45 +77,6 @@ scada.scheme.Renderer.prototype.setFont = function (jqObj, font) {
     }
 };
 
-// Set text wrapping of the jQuery object
-scada.scheme.Renderer.prototype.setWordWrap = function (jqObj, wordWrap) {
-    jqObj.css("white-space", wordWrap ? "normal" : "nowrap");
-};
-
-// Set horizontal algnment of the jQuery object
-scada.scheme.Renderer.prototype.setHAlign = function (jqObj, hAlign) {
-    var HorizontalAlignments = scada.scheme.HorizontalAlignments;
-
-    switch (hAlign) {
-        case HorizontalAlignments.CENTER:
-            jqObj.css("text-align", "center");
-            break;
-        case HorizontalAlignments.RIGHT:
-            jqObj.css("text-align", "right");
-            break;
-        default:
-            jqObj.css("text-align", "left");
-            break;
-    }
-};
-
-// Set vertical algnment of the jQuery object
-scada.scheme.Renderer.prototype.setVAlign = function (jqObj, vAlign) {
-    var VerticalAlignments = scada.scheme.VerticalAlignments;
-
-    switch (vAlign) {
-        case VerticalAlignments.CENTER:
-            jqObj.css("vertical-align", "middle");
-            break;
-        case VerticalAlignments.BOTTOM:
-            jqObj.css("vertical-align", "bottom");
-            break;
-        default:
-            jqObj.css("vertical-align", "top");
-            break;
-    }
-};
-
 // Returns a data URI containing a representation of the image
 scada.scheme.Renderer.prototype.imageToDataURL = function (image) {
     return "data:" + (image.MediaType ? image.MediaType : "image/png") + ";base64," + image.Data
@@ -150,6 +98,7 @@ scada.scheme.Renderer.prototype.update = function (elem, renderContext) {
 
 /********** Scheme Renderer **********/
 
+// Scheme renderer type extends scada.scheme.Renderer
 scada.scheme.SchemeRenderer = function () {
     scada.scheme.Renderer.call(this);
 };
@@ -184,13 +133,83 @@ scada.scheme.SchemeRenderer.prototype.createDom = function (elem, renderContext)
     elem.dom = divScheme;
 };
 
-/********** Static Text Renderer **********/
+/********** Element Renderer **********/
 
-scada.scheme.StaticTextRenderer = function () {
+// Abstract element renderer type extends scada.scheme.Renderer
+scada.scheme.ElementRenderer = function () {
     scada.scheme.Renderer.call(this);
 };
 
-scada.scheme.StaticTextRenderer.prototype = Object.create(scada.scheme.Renderer.prototype);
+scada.scheme.ElementRenderer.prototype = Object.create(scada.scheme.Renderer.prototype);
+scada.scheme.ElementRenderer.constructor = scada.scheme.ElementRenderer;
+
+// Set primary css properties of the jQuery object of the scheme element
+scada.scheme.ElementRenderer.prototype.prepareElem = function (jqObj, elem, opt_setSize) {
+    var props = elem.props;
+    jqObj.css({
+        "position": "absolute",
+        "z-index": props.ZIndex,
+        "left": props.Location.X - this.BORDER_WIDTH,
+        "top": props.Location.Y - this.BORDER_WIDTH,
+        "border-width": this.BORDER_WIDTH,
+        "border-style": "solid"
+    });
+
+    if (opt_setSize) {
+        jqObj.css({
+            "width": props.Size.Width,
+            "height": props.Size.Height
+        });
+    }
+};
+
+// Set text wrapping of the jQuery object
+scada.scheme.ElementRenderer.prototype.setWordWrap = function (jqObj, wordWrap) {
+    jqObj.css("white-space", wordWrap ? "normal" : "nowrap");
+};
+
+// Set horizontal algnment of the jQuery object
+scada.scheme.ElementRenderer.prototype.setHAlign = function (jqObj, hAlign) {
+    var HorizontalAlignments = scada.scheme.HorizontalAlignments;
+
+    switch (hAlign) {
+        case HorizontalAlignments.CENTER:
+            jqObj.css("text-align", "center");
+            break;
+        case HorizontalAlignments.RIGHT:
+            jqObj.css("text-align", "right");
+            break;
+        default:
+            jqObj.css("text-align", "left");
+            break;
+    }
+};
+
+// Set vertical algnment of the jQuery object
+scada.scheme.ElementRenderer.prototype.setVAlign = function (jqObj, vAlign) {
+    var VerticalAlignments = scada.scheme.VerticalAlignments;
+
+    switch (vAlign) {
+        case VerticalAlignments.CENTER:
+            jqObj.css("vertical-align", "middle");
+            break;
+        case VerticalAlignments.BOTTOM:
+            jqObj.css("vertical-align", "bottom");
+            break;
+        default:
+            jqObj.css("vertical-align", "top");
+            break;
+    }
+};
+
+/********** Static Text Renderer **********/
+
+// Static text renderer type extends scada.scheme.ElementRenderer
+scada.scheme.StaticTextRenderer = function () {
+    scada.scheme.ElementRenderer.call(this);
+};
+
+scada.scheme.StaticTextRenderer.prototype = Object.create(scada.scheme.ElementRenderer.prototype);
 scada.scheme.StaticTextRenderer.constructor = scada.scheme.StaticTextRenderer;
 
 scada.scheme.StaticTextRenderer.prototype.createDom = function (elem, renderContext) {
@@ -229,6 +248,7 @@ scada.scheme.StaticTextRenderer.prototype.createDom = function (elem, renderCont
 
 /********** Dynamic Text Renderer **********/
 
+// Dynamic text renderer type extends scada.scheme.StaticTextRenderer
 scada.scheme.DynamicTextRenderer = function () {
     scada.scheme.StaticTextRenderer.call(this);
 };
@@ -311,11 +331,12 @@ scada.scheme.DynamicTextRenderer.prototype.update = function (elem, renderContex
 
 /********** Static Picture Renderer **********/
 
+// Static picture renderer type extends scada.scheme.ElementRenderer
 scada.scheme.StaticPictureRenderer = function () {
-    scada.scheme.Renderer.call(this);
+    scada.scheme.ElementRenderer.call(this);
 };
 
-scada.scheme.StaticPictureRenderer.prototype = Object.create(scada.scheme.Renderer.prototype);
+scada.scheme.StaticPictureRenderer.prototype = Object.create(scada.scheme.ElementRenderer.prototype);
 scada.scheme.StaticPictureRenderer.constructor = scada.scheme.StaticPictureRenderer;
 
 scada.scheme.Renderer.prototype.setBackgroundImage = function (jqObj, image, opt_setIfEmpty) {
@@ -356,6 +377,7 @@ scada.scheme.StaticPictureRenderer.prototype.createDom = function (elem, renderC
 
 /********** Dynamic Picture Renderer **********/
 
+// Dynamic picture renderer type extends scada.scheme.StaticPictureRenderer
 scada.scheme.DynamicPictureRenderer = function () {
     scada.scheme.StaticPictureRenderer.call(this);
 };

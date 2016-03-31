@@ -4,14 +4,17 @@
  * Author   : Mikhail Shiryaev
  * Created  : 2016
  * Modified : 2016
- */
-
-/*
+ *
  * Requires:
  * - jquery
  * - scadautils.js
  * - clientapi.js
  * - schemerender.js
+ *
+ * Inheritance hierarchy:
+ * BaseElement
+ *   Scheme
+ *   Element
  */
 
 // Rapid SCADA namespace
@@ -21,7 +24,7 @@ scada.scheme = scada.scheme || {};
 
 /********** Base Element **********/
 
-// Parent base type of scheme elements
+// Abstract parent type of scheme elements
 scada.scheme.BaseElement = function (type) {
     // Name of the element type
     this.type = type;
