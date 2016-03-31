@@ -59,6 +59,13 @@ scada.scheme.Actions = {
     SEND_COMMAND: 2
 };
 
+// Show value kinds enumeration
+scada.scheme.ShowValueKinds = {
+    NOT_SHOW: 0,
+    SHOW_WITH_UNIT: 1,
+    SHOW_WITHOUT_UNIT: 2
+};
+
 // Scheme calculations
 scada.scheme.calc = {
     // Compare two values using the specified operator

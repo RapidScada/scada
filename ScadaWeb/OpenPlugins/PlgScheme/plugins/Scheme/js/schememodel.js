@@ -76,8 +76,10 @@ scada.scheme.Scheme = function () {
     this.elements = [];
     // Scheme images
     this.images = [];
-    // Scheme images
+    // Scheme images indexed by name
     this.imageMap = new Map();
+    // Render context
+    this.renderContext = new scada.scheme.RenderContext();
     // Parent jQuery object
     this.parentDomElem = null;
 };
@@ -436,12 +438,11 @@ scada.scheme.Scheme.prototype.load = function (viewID, callback) {
 
 // Create DOM content of the scheme elements
 scada.scheme.Scheme.prototype.createDom = function () {
-    var renderContext = new scada.scheme.RenderContext();
-    renderContext.imageMap = this.imageMap;
+    this.renderContext.imageMap = this.imageMap;
 
     try
     {
-        this.renderer.createDom(this, renderContext);
+        this.renderer.createDom(this, this.renderContext);
 
         if (this.dom) {
             this.parentDomElem.append(this.dom);
@@ -457,7 +458,7 @@ scada.scheme.Scheme.prototype.createDom = function () {
 
     for (var elem of this.elements) {
         try {
-            elem.renderer.createDom(elem, renderContext);
+            elem.renderer.createDom(elem, this.renderContext);
             if (this.dom) {
                 this.dom.append(elem.dom);
             }
@@ -480,12 +481,11 @@ scada.scheme.Scheme.prototype.update = function (clientAPI, callback) {
             var curCnlDataMap = thisScheme._createCurCnlDataMap(cnlDataExtArr);
 
             if (curCnlDataMap) {
-                var renderContext = new scada.scheme.RenderContext();
-                renderContext.curCnlDataMap = curCnlDataMap;
-                renderContext.imageMap = thisScheme.imageMap;
+                thisScheme.renderContext.curCnlDataMap = curCnlDataMap;
+                thisScheme.renderContext.imageMap = thisScheme.imageMap;
 
                 for (var elem of thisScheme.elements) {
-                    thisScheme._updateElement(elem, renderContext);
+                    thisScheme._updateElement(elem, thisScheme.renderContext);
                 }
             }
 
