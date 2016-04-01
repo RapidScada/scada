@@ -70,19 +70,23 @@ namespace Scada.Comm.Svc
         {
             if (Localization.UseRussian)
             {
-                return new StringBuilder()
-                    .Append("тип=").Append(cmd.GetCmdTypeCode())
-                    .Append(", КП=").Append(cmd.KPNum)
-                    .Append(", номер=").Append(cmd.CmdNum)
-                    .ToString();
+                return cmd == null ? 
+                    "команда управления приложением" :
+                    new StringBuilder()
+                        .Append("тип=").Append(cmd.GetCmdTypeCode())
+                        .Append(", КП=").Append(cmd.KPNum)
+                        .Append(", номер=").Append(cmd.CmdNum)
+                        .ToString();
             }
             else
             {
-                return new StringBuilder()
-                    .Append("type=").Append(cmd.GetCmdTypeCode())
-                    .Append(", device=").Append(cmd.KPNum)
-                    .Append(", number=").Append(cmd.CmdNum)
-                    .ToString();
+                return cmd == null ? 
+                    "application control command" :
+                    new StringBuilder()
+                        .Append("type=").Append(cmd.GetCmdTypeCode())
+                        .Append(", device=").Append(cmd.KPNum)
+                        .Append(", number=").Append(cmd.CmdNum)
+                        .ToString();
             }
         }
 
