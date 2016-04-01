@@ -78,10 +78,10 @@
     <Content Include="js\scadautils.js" />
     <Content Include="lang\ScadaData.en-GB.xml" />
     <Content Include="lang\ScadaWeb.en-GB.xml" />
-    <Content Include="plugins\Scheme\css\globalvar.css">
+    <Content Include="css\globalvar.css">
       <DependentUpon>globalvar.less</DependentUpon>
     </Content>
-    <Content Include="plugins\Scheme\css\globalvar.min.css">
+    <Content Include="css\globalvar.min.css">
       <DependentUpon>globalvar.css</DependentUpon>
     </Content>
     <Content Include="plugins\Scheme\css\scheme.css">
@@ -124,7 +124,7 @@
     </None>
     <Content Include="packages.config" />
     <Content Include="plugins\Scheme\web.config" />
-    <Content Include="plugins\Scheme\css\globalvar.less" />
+    <Content Include="css\globalvar.less" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
