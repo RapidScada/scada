@@ -10,7 +10,10 @@
     <script type="text/javascript" src="../../js/scadautils.js"></script>
     <script type="text/javascript" src="../../js/api/clientapi.js"></script>
     <script type="text/javascript">
+        var DEBUG_MODE = <%= debugMode ? "true" : "false" %>;
         var viewID = <%= viewID %>;
+        var refrRate = <%= refrRate %>;
+        var phrases = <%= phrases %>;
     </script>
     <script type="text/javascript" src="js/schemecommon.js"></script>
     <script type="text/javascript" src="js/schememodel.js"></script>
@@ -19,15 +22,15 @@
 </head>
 <body>
     <form id="frmScheme" runat="server">
-        <div id="divToolbar">
-            <input id="btnLoadScheme" type="button" value="Load scheme" />
-            <input id="btnCreateDom" type="button" value="Create DOM" />
-            <input id="btnUpdate" type="button" value="Update" />
+        <div id="divDebugTools"><input 
+            id="btnLoadScheme" type="button" value="Load scheme" /><input 
+            id="btnCreateDom" type="button" value="Create DOM" /><input 
+            id="btnStartUpd" type="button" value="Start updating" /><input 
+            id="btnAddNotif" type="button" value="Add notification" />
         </div>
-        <div id="divNotification">
+        <div id="divNotif">
         </div>
-        <div id="divSchemeParent">
-    
+        <div id="divSchParent">
         </div>
     </form>
 </body>

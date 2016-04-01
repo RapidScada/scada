@@ -78,16 +78,25 @@
     <Content Include="js\scadautils.js" />
     <Content Include="lang\ScadaData.en-GB.xml" />
     <Content Include="lang\ScadaWeb.en-GB.xml" />
+    <Content Include="plugins\Scheme\css\globalvar.css">
+      <DependentUpon>globalvar.less</DependentUpon>
+    </Content>
+    <Content Include="plugins\Scheme\css\globalvar.min.css">
+      <DependentUpon>globalvar.css</DependentUpon>
+    </Content>
     <Content Include="plugins\Scheme\css\scheme.css">
       <DependentUpon>scheme.less</DependentUpon>
     </Content>
     <Content Include="plugins\Scheme\css\scheme.min.css">
       <DependentUpon>scheme.css</DependentUpon>
     </Content>
+    <Content Include="plugins\Scheme\images\loading.gif" />
     <Content Include="plugins\Scheme\js\scheme.js" />
     <Content Include="plugins\Scheme\js\schemecommon.js" />
     <Content Include="plugins\Scheme\js\schememodel.js" />
     <Content Include="plugins\Scheme\js\schemerender.js" />
+    <Content Include="plugins\Scheme\lang\PlgScheme.en-GB.xml" />
+    <Content Include="plugins\Scheme\lang\PlgScheme.ru-RU.xml" />
     <Content Include="plugins\Scheme\Scheme.aspx" />
     <Content Include="plugins\Scheme\SchemeSvc.svc" />
     <Content Include="Web.config">
@@ -115,6 +124,7 @@
     </None>
     <Content Include="packages.config" />
     <Content Include="plugins\Scheme\web.config" />
+    <Content Include="plugins\Scheme\css\globalvar.less" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -125,7 +135,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="log\" />
-    <Folder Include="plugins\Scheme\lang\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

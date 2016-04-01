@@ -2,5 +2,9 @@
   {
     "outputFile": "css/mastermain.css",
     "inputFile": "css/mastermain.less"
+  },
+  {
+    "outputFile": "css/globalvar.css",
+    "inputFile": "css/globalvar.less"
   }
 ]

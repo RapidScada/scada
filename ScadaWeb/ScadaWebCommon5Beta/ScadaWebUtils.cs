@@ -24,6 +24,8 @@
  */
 
 using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Web;
 
 namespace Scada.Web
@@ -101,6 +103,26 @@ namespace Scada.Web
             {
                 throw new FormatException("Query parameter is not array of integers.", ex);
             }
+        }
+
+        /// <summary>
+        /// Преобразовать словарь в объект JavaScript
+        /// </summary>
+        public static string DictionaryToJs(Localization.Dict dict)
+        {
+            StringBuilder sbJs = new StringBuilder();
+            sbJs.AppendLine("{");
+
+            if (dict != null)
+            {
+                foreach (KeyValuePair<string, string> pair in dict.Phrases)
+                {
+                    sbJs.Append(pair.Key).Append(": \"").Append(pair.Value).AppendLine("\",");
+                }
+            }
+
+            sbJs.AppendLine("}");
+            return sbJs.ToString();
         }
     }
 }

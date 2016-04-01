@@ -387,7 +387,11 @@ scada.scheme.Scheme.prototype._updateElement = function (elem, renderContext) {
 // Clear scheme
 scada.scheme.Scheme.prototype.clear = function () {
     this.props = null;
-    this.dom = null;
+
+    if (this.dom) {
+        this.dom.remove();
+        this.dom = null;
+    }
 
     this.loadState = scada.scheme.LoadStates.UNDEFINED;
     this.viewID = 0;
@@ -395,6 +399,7 @@ scada.scheme.Scheme.prototype.clear = function () {
     this.elements = [];
     this.images = [];
     this.imageMap = new Map();
+    this.renderContext = new scada.scheme.RenderContext();
 };
 
 // Load scheme.

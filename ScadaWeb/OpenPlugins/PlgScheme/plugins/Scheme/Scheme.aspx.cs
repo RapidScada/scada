@@ -27,6 +27,7 @@
 
 using Scada.Scheme;
 using System;
+using System.Web;
 
 namespace Scada.Web.Plugins.Scheme
 {
@@ -36,15 +37,46 @@ namespace Scada.Web.Plugins.Scheme
     /// </summary>
     public partial class WFrmScheme : System.Web.UI.Page
     {
-        protected int viewID;
+        /// <summary>
+        /// Имя словаря с фразами для JavaScript
+        /// </summary>
+        private const string DictName = "Scada.Web.Plugins.Scheme.WFrmScheme.Js";
+
+        // Переменные для вывода на веб-страницу
+        protected bool debugMode; // режим отладки
+        protected int viewID;     // ид. представления
+        protected int refrRate;   // частота обновления данных
+        protected string phrases; // локализованные фразы
+
+        /// <summary>
+        /// Зарузить словари, используемые плагином
+        /// </summary>
+        [Obsolete("Move to plugin specification")]
+        private static void LoadDictionaries()
+        {
+            string langDir = HttpContext.Current.Server.MapPath("~/plugins/Scheme/lang/");
+            string errMsg;
+            if (!Localization.LoadDictionaries(langDir, "PlgScheme", out errMsg))
+                AppData.Log.WriteError(errMsg);
+        }
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
 #if DEBUG_MODE
             AppData.Init(Server.MapPath("~"));
+            debugMode = true;
+#else
+            debugMode = false;
 #endif
 
-            viewID = 3; // ServerRoom.sch
+            int.TryParse(Request["viewID"], out viewID);
+            refrRate = 1000; // TODO: получить из параметров веб-приложения
+
+            LoadDictionaries();
+            Localization.Dict dict;
+            Localization.Dictionaries.TryGetValue(DictName, out dict);
+            phrases = ScadaWebUtils.DictionaryToJs(dict);
 
             // загрузка представления в кеш, чтобы проверить, что оно доступно, присвоить метку
             // и обеспечить возможность получения данных входных каналов через API 

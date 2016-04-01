@@ -180,6 +180,11 @@ scada.scheme.Renderer.prototype.setDynamicBorderColor = function (jqObj, borderC
     this.setBorderColor(jqObj, this._getDynamicColor(borderColor, cnlNum, renderContext), opt_removeIfEmpty);
 };
 
+// Choose a color according to hover state
+scada.scheme.Renderer.prototype.chooseColor = function (isHovered, color, colorOnHover) {
+    return isHovered && colorOnHover ? colorOnHover : color;
+};
+
 // Set text wrapping of the jQuery object
 scada.scheme.ElementRenderer.prototype.setWordWrap = function (jqObj, wordWrap) {
     jqObj.css("white-space", wordWrap ? "normal" : "nowrap");
@@ -385,15 +390,10 @@ scada.scheme.DynamicTextRenderer.prototype.update = function (elem, renderContex
         }
 
         // choose and set colors of the element
-        var backColor = props.BackColor;
-        var borderColor = props.BorderColor;
-        var foreColor = props.ForeColor;
-
-        if (spanElem.is(":hover")) {
-            backColor = props.BackColorOnHover;
-            borderColor = props.BorderColorOnHover;
-            foreColor = props.ForeColorOnHover;
-        }
+        var isHovered = spanElem.is(":hover");
+        var backColor = this.chooseColor(isHovered, props.BackColor, props.BackColorOnHover);
+        var borderColor = this.chooseColor(isHovered, props.BorderColor, props.BorderColorOnHover);
+        var foreColor = this.chooseColor(isHovered, props.ForeColor, props.ForeColorOnHover);
 
         if (backColor == this.STATUS_COLOR) {
             spanElem.css("background-color", curCnlDataExt.Color);
@@ -525,11 +525,7 @@ scada.scheme.DynamicPictureRenderer.prototype.update = function (elem, renderCon
         this.setBackgroundImage(divElem, image, true);
 
         // set border color
-        var borderColor = props.BorderColor;
-
-        if (divElem.is(":hover")) {
-            borderColor = props.BorderColorOnHover;
-        }
+        var borderColor = this.chooseColor(divElem.is(":hover"), props.BorderColor, props.BorderColorOnHover);
 
         if (borderColor == this.STATUS_COLOR) {
             divElem.css("border-color", curCnlDataExt.Color);

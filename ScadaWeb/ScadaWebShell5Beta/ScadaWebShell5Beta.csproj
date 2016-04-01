@@ -59,6 +59,12 @@
       <Link>lang\ScadaData.en-GB.xml</Link>
     </Content>
     <Content Include="config\CommSettings.xml" />
+    <Content Include="css\globalvar.css">
+      <DependentUpon>globalvar.less</DependentUpon>
+    </Content>
+    <Content Include="css\globalvar.min.css">
+      <DependentUpon>globalvar.css</DependentUpon>
+    </Content>
     <Content Include="css\mastermain.css">
       <DependentUpon>mastermain.less</DependentUpon>
     </Content>
@@ -107,6 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="MasterMain.Master" />
+    <Content Include="css\globalvar.less" />
     <None Include="css\mastermain.less" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
