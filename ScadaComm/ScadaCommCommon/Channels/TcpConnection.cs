@@ -63,9 +63,9 @@ namespace Scada.Comm.Channels
         /// </summary>
         protected int maxLineSize;
         /// <summary>
-        /// Дата и время установки соединения
+        /// Дата и время неудачной попытки соединения
         /// </summary>
-        protected DateTime connectDT;
+        protected DateTime connFailDT;
         /// <summary>
         /// Список КП, относящихся к данному соединению
         /// </summary>
@@ -89,7 +89,7 @@ namespace Scada.Comm.Channels
                 throw new ArgumentNullException("tcpClient");
 
             maxLineSize = DeaultMaxLineSize;
-            connectDT = DateTime.MinValue;
+            connFailDT = DateTime.MinValue;
             relatedKPList = null;
 
             InternalInit(tcpClient);
@@ -457,18 +457,18 @@ namespace Scada.Comm.Channels
         {
             DateTime nowDT = DateTime.Now;
 
-            if ((nowDT - connectDT).TotalSeconds >= ConnectPeriod || nowDT < connectDT /*время переведено назад*/)
+            if ((nowDT - connFailDT).TotalSeconds >= ConnectPeriod || nowDT < connFailDT /*время переведено назад*/)
             {
-                connectDT = nowDT;
-
                 try
                 {
                     TcpClient.Connect(addr, port);
                     TakeNetStream();
                     TakeAddresses();
+                    connFailDT = DateTime.MinValue;
                 }
                 catch (Exception ex)
                 {
+                    connFailDT = nowDT;
                     throw new Exception((Localization.UseRussian ? 
                         "Ошибка при установке TCP-соединения: " :
                         "Error establishing TCP connection: ") + ex.Message, ex);
