@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2016
  */
 
 using Scada.Comm.Devices;
@@ -238,19 +238,12 @@ namespace Scada.Comm.Channels
             // инициализация настроек канала связи
             settings.Init(commCnlParams);
 
-            // создание клиента и соединения
-            UdpClient udpClient = new UdpClient(settings.LocalUdpPort);
-            udpConn = new UdpConnection(udpClient, settings.LocalUdpPort, settings.RemoteUdpPort);
-
+            // добавление КП в словарь по позывным
             foreach (KPLogic kpLogic in kpList)
             {
-                // добавление КП в словарь по позывным
                 string callNum = kpLogic.CallNum;
                 if (!string.IsNullOrEmpty(callNum) && !kpCallNumDict.ContainsKey(callNum))
                     kpCallNumDict.Add(callNum, kpLogic);
-
-                // установка соединения всем КП на линии связи
-                kpLogic.Connection = udpConn;
             }
 
             // проверка поддержки режима работы канала связи подключенными КП
@@ -262,6 +255,19 @@ namespace Scada.Comm.Channels
         /// </summary>
         public override void Start()
         {
+            // создание UDP-клиента и соединения
+            UdpClient udpClient = new UdpClient(settings.LocalUdpPort);
+            WriteToLog(string.Format(Localization.UseRussian ?
+                "{0} Локальный UDP-порт {1} открыт" :
+                "{0} Local UDP port {1} is open", CommUtils.GetNowDT(), settings.LocalUdpPort));
+
+            udpConn = new UdpConnection(udpClient, settings.LocalUdpPort, settings.RemoteUdpPort);
+
+            // установка соединения всем КП на линии связи
+            foreach (KPLogic kpLogic in kpList)
+                kpLogic.Connection = udpConn;
+
+            // запуск приёма данных в режиме ведомого
             if (settings.Behavior == OperatingBehaviors.Slave)
             {
                 WriteToLog(string.Format(Localization.UseRussian ?
