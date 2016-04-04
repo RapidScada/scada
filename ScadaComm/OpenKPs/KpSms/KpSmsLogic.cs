@@ -329,9 +329,9 @@ namespace Scada.Comm.Devices
             }
 
             // установка длины текста, допустимой для передачи
-            const int Max7BitMsgLen = 160;
+            const int Max7bitMsgLen = 160;
             const int MaxUnicodeMsgLen = 70;
-            int maxMsgLen = sevenBit ? Max7BitMsgLen : MaxUnicodeMsgLen;
+            int maxMsgLen = sevenBit ? Max7bitMsgLen : MaxUnicodeMsgLen;
 
             if (msgText.Length > maxMsgLen)
                 msgText = msgText.Substring(0, maxMsgLen);
