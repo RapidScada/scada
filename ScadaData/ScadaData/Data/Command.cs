@@ -149,8 +149,9 @@ namespace Scada.Data
                 if (CmdTypeID == BaseValues.CmdTypes.Standard)
                     sb.Append(", значение=").AppendFormat(CmdVal.ToString("N3", Localization.Culture));
                 if (CmdTypeID == BaseValues.CmdTypes.Binary && CmdData != null)
-                    sb.Append(", данные=").Append(ScadaUtils.BytesToHex(CmdData, 0, 
-                        Math.Min(VisCmdDataLen, CmdData.Length)));
+                    sb.Append(", данные=")
+                        .Append(ScadaUtils.BytesToHex(CmdData, 0, Math.Min(VisCmdDataLen, CmdData.Length)))
+                        .Append(VisCmdDataLen < CmdData.Length ? "..." : "");
             }
             else
             {
@@ -167,8 +168,9 @@ namespace Scada.Data
                 if (CmdTypeID == BaseValues.CmdTypes.Standard)
                     sb.Append(", value=").AppendFormat(CmdVal.ToString("N3", Localization.Culture));
                 if (CmdTypeID == BaseValues.CmdTypes.Binary && CmdData != null)
-                    sb.Append(", data=").Append(ScadaUtils.BytesToHex(CmdData, 0,
-                        Math.Min(VisCmdDataLen, CmdData.Length)));
+                    sb.Append(", data=")
+                        .Append(ScadaUtils.BytesToHex(CmdData, 0, Math.Min(VisCmdDataLen, CmdData.Length)))
+                        .Append(VisCmdDataLen < CmdData.Length ? "..." : "");
             }
 
             return sb.ToString();
