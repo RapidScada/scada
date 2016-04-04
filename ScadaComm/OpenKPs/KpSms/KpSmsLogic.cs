@@ -84,6 +84,8 @@ namespace Scada.Comm.Devices
 
         // Максимальное значение счётчика событий КП
         private const int MaxEventCount = 999999;
+        // Окончание строки при обмене данными с модемом
+        private const string NewLine = "\x0D\x0A"; // 0D0A
         // Условие остановки считывания данных при получении OK
         private readonly Connection.TextStopCondition OkStopCond = new Connection.TextStopCondition("OK");
         // Условие остановки считывания данных при получении OK или ERROR
@@ -327,30 +329,26 @@ namespace Scada.Comm.Devices
             }
 
             // установка длины текста, допустимой для передачи
-            if (sevenBit)
-            {
-                if (msgText.Length > 140)
-                    msgText = msgText.Substring(0, 140);
-            }
-            else
-            {
-                if (msgText.Length > 70)
-                    msgText = msgText.Substring(0, 70);
-            }
+            const int Max7BitMsgLen = 160;
+            const int MaxUnicodeMsgLen = 70;
+            int maxMsgLen = sevenBit ? Max7BitMsgLen : MaxUnicodeMsgLen;
+
+            if (msgText.Length > maxMsgLen)
+                msgText = msgText.Substring(0, maxMsgLen);
 
             // формирование PDU
             StringBuilder pdu = new StringBuilder();
-            pdu.Append("00");                     // Service Center Adress (SCA)
-            pdu.Append("01");                     // PDU-type
-            pdu.Append("00");                     // Message Reference (MR)
-            pdu.Append(EncodePhone(phoneNumber)); // Destination Adress (DA)
-            pdu.Append("00");                     // Protocol Identifier (PID)
-            pdu.Append(sevenBit ? "00" : "08");   // Data Coding Scheme (DCS)
+            pdu.Append("00");                          // Service Center Adress (SCA)
+            pdu.Append("01");                          // PDU-type
+            pdu.Append("00");                          // Message Reference (MR)
+            pdu.Append(EncodePhone(phoneNumber));      // Destination Adress (DA)
+            pdu.Append("00");                          // Protocol Identifier (PID)
+            pdu.Append(sevenBit ? "00" : "08");        // Data Coding Scheme (DCS)
 
             List<byte> ud = sevenBit ? Encode7bitText(msgText) : EncodeUnicodeText(msgText);
-            pdu.Append(ud.Count.ToString("X2"));  // User Data Length (UDL)
+            pdu.Append(msgText.Length.ToString("X2")); // User Data Length (UDL)
             foreach (byte b in ud)
-                pdu.Append(b.ToString("X2"));     // User Data (UD)
+                pdu.Append(b.ToString("X2"));          // User Data (UD)
 
             pduLen = (pdu.Length - 2) / 2;
             return pdu.ToString();
@@ -550,6 +548,7 @@ namespace Scada.Comm.Devices
         private void PrimarySession()
         {
             Connection.WriteToLog = WriteToLog;
+            Connection.NewLine = NewLine;
             int tryNum;
 
             // отключение эхо
@@ -765,6 +764,8 @@ namespace Scada.Comm.Devices
         private bool SendMessages(string msgText, List<string> phoneNumbers)
         {
             bool responseOK = true;
+            Connection.WriteToLog = WriteToLog;
+            Connection.NewLine = NewLine;
 
             foreach (string phoneNumber in phoneNumbers)
             {
@@ -784,7 +785,7 @@ namespace Scada.Comm.Devices
                 }
                 finally
                 {
-                    Connection.NewLine = "\x0D";
+                    Connection.NewLine = NewLine;
                 }
 
                 bool stopReceived;
