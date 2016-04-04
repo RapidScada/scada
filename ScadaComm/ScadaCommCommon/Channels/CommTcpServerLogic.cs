@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2016
  */
 
 using Scada.Comm.Devices;
@@ -550,6 +550,20 @@ namespace Scada.Comm.Channels
                     // вызов метода базового класса
                     base.Stop();
                 }
+            }
+        }
+
+        /// <summary>
+        /// Выполнить действия после сеанса опроса КП или отправки команды
+        /// </summary>
+        public override void AfterSession(KPLogic kpLogic)
+        {
+            // очистка потока данных, если сеанс опроса КП завершён с ошибкой
+            if (kpLogic.WorkState == KPLogic.WorkStates.Error && Behavior == OperatingBehaviors.Master)
+            {
+                TcpConnection tcpConn = kpLogic.Connection as TcpConnection;
+                if (tcpConn != null && tcpConn.Connected)
+                    tcpConn.ClearNetStream(inBuf);
             }
         }
 
