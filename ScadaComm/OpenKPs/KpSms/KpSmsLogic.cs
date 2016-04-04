@@ -369,7 +369,7 @@ namespace Scada.Comm.Devices
             int lineCnt = inData.Count;
             while (i <= lineCnt)
             {
-                string line = inData[i - 1];
+                string line = inData[i - 1].Trim();
                 if (line.StartsWith("+CMGL: ") && line.Length > 7)
                 {
                     // получение индекса, статуса и длины сообщения
@@ -393,7 +393,7 @@ namespace Scada.Comm.Devices
                     {
                         if (i <= lineCnt)
                         {
-                            line = inData[i - 1]; // PDU
+                            line = inData[i - 1].Trim(); // PDU
                             try
                             {
                                 int scaLen = int.Parse(line.Substring(0, 2));         // длина номера центра сообщений
