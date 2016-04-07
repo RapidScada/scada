@@ -1,4 +1,14 @@
-﻿.my-class {
-  color: #4D926F;
-  background-color: #F1F1F1;
+﻿/*Verdana, Geneva, Tahoma, sans-serif;*/
+body {
+  margin: 0;
+  padding: 0;
+  background-color: white;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 12px;
+}
+#divTitle {
+  padding: 3px 10px;
+  background-color: #23282d;
+  font-size: 16px;
+  color: #eee;
 }
