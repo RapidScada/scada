@@ -1,6 +1,11 @@
 ﻿@import "globalvar.less";
 @import "shellvar.less";
 
+@fore-color: #eee;
+@glyphicon-fore-color: #9ca1a6;
+@button-back-color-hover: #32373c;
+@button-fore-color-hover: #00b9eb;
+
 body {
     margin: 0;
     padding: 0;
@@ -10,8 +15,57 @@ body {
 }
 
 #divTitle {
-    padding: 3px 10px;
+    margin: 0;
+    padding: 0px 10px;
+    height: 30px;
     background-color: @main-menu-back-color;
-    font-size: 16px;
-    color: #eee;
+    color: @fore-color;
+    line-height: 30px;
+    white-space: nowrap;
+}
+
+.title-btn {
+    display: inline-block;
+    height: 30px;
+    margin: 0 0 0 5px;
+    padding: 0 10px;
+    cursor: pointer;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.title-btn:hover {
+    background-color: @button-back-color-hover;
+    color: @button-fore-color-hover;
+    text-decoration: none;
+}
+
+.txt-btn {
+    color: @fore-color;
+}
+
+.img-btn {
+    color: @glyphicon-fore-color;
+}
+
+.img-btn .glyphicon {
+    position: relative;
+    top: 2px;
+}
+
+#spanShowMenu {
+    margin: 0 5px 0 -5px;
+    font-size: 15px;
+    /*display: none;*/
+}
+
+#spanAppName {
+    display: inline-block;
+    line-height: 29px; /*do not set to 30px*/
+    font-size: 17px;
+}
+
+#divUserMenu {
+    float: right;
+    height: 30px;
 }

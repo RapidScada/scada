@@ -118,19 +118,12 @@
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
-    <Compile Include="MasterBase.Master.cs">
-      <DependentUpon>MasterBase.Master</DependentUpon>
+    <Compile Include="MasterMain.Master.cs">
+      <DependentUpon>MasterMain.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="MasterBase.Master.designer.cs">
-      <DependentUpon>MasterBase.Master</DependentUpon>
-    </Compile>
-    <Compile Include="MasterMain.master.cs">
-      <DependentUpon>MasterMain.master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="MasterMain.master.designer.cs">
-      <DependentUpon>MasterMain.master</DependentUpon>
+    <Compile Include="MasterMain.Master.designer.cs">
+      <DependentUpon>MasterMain.Master</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views.aspx.cs">
@@ -142,7 +135,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="MasterBase.Master" />
+    <Content Include="MasterMain.Master" />
     <Content Include="css\globalvar.less" />
     <None Include="css\mastermain.less" />
     <None Include="compilerconfig.json" />
@@ -164,7 +157,6 @@
     <Content Include="lib\font-awesome\fonts\fontawesome-webfont.woff" />
     <Content Include="lib\font-awesome\fonts\fontawesome-webfont.woff2" />
     <Content Include="lib\font-awesome\fonts\FontAwesome.otf" />
-    <Content Include="MasterMain.master" />
     <Content Include="css\shellvar.less" />
     <Content Include="lib\open-sans\fonts\open-sans-v13-latin-ext_cyrillic_latin_cyrillic-ext_greek-ext_vietnamese_greek-300.eot" />
     <Content Include="lib\open-sans\fonts\open-sans-v13-latin-ext_cyrillic_latin_cyrillic-ext_greek-ext_vietnamese_greek-300.ttf" />
