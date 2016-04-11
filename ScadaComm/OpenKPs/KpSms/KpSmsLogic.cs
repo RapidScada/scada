@@ -343,12 +343,29 @@ namespace Scada.Comm.Devices
             pdu.Append("00");                          // Message Reference (MR)
             pdu.Append(EncodePhone(phoneNumber));      // Destination Adress (DA)
             pdu.Append("00");                          // Protocol Identifier (PID)
-            pdu.Append(sevenBit ? "00" : "08");        // Data Coding Scheme (DCS)
 
-            List<byte> ud = sevenBit ? Encode7bitText(msgText) : EncodeUnicodeText(msgText);
-            pdu.Append(msgText.Length.ToString("X2")); // User Data Length (UDL)
+            byte dcs;                                  // Data Coding Scheme (DCS)
+            List<byte> ud;                             // User Data (UD)
+            byte udl;                                  // User Data Length (UDL)
+
+            if (sevenBit)
+            {
+                dcs = 0x00;
+                ud = Encode7bitText(msgText);
+                udl = (byte)msgText.Length;
+            }
+            else
+            {
+                dcs = 0x08;
+                ud = EncodeUnicodeText(msgText);
+                udl = (byte)ud.Count;
+            }
+
+            pdu.Append(dcs.ToString("X2"));
+            pdu.Append(udl.ToString("X2"));
+
             foreach (byte b in ud)
-                pdu.Append(b.ToString("X2"));          // User Data (UD)
+                pdu.Append(b.ToString("X2"));
 
             pduLen = (pdu.Length - 2) / 2;
             return pdu.ToString();
