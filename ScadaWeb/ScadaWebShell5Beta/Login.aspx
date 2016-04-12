@@ -17,17 +17,27 @@
 <body>
     <form id="LoginForm" runat="server">
         <div id="divLoginContent">
+            <div id="divTitle">
+                Rapid SCADA
+            </div>
             <div id="divLogin">
                 <div>
-                    <asp:Label ID="lblUsername" runat="server" Text="Username"></asp:Label></div>
+                    <asp:Label ID="lblUsername" runat="server" Text="Username" AssociatedControlID="txtUsername"></asp:Label></div>
                 <div>
-                    <asp:TextBox ID="txtUsername" runat="server"></asp:TextBox></div>
+                    <asp:TextBox ID="txtUsername" runat="server" CssClass="form-control"></asp:TextBox></div>
                 <div>
-                    <asp:Label ID="lblPassword" runat="server" Text="Password"></asp:Label></div>
+                    <asp:Label ID="lblPassword" runat="server" Text="Password" AssociatedControlID="txtPassword"></asp:Label></div>
                 <div>
-                    <asp:TextBox ID="txtPassword" runat="server" TextMode="Password"></asp:TextBox></div>
+                    <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" CssClass="form-control"></asp:TextBox></div>
                 <div>
-                    <asp:Button ID="btnLogin" runat="server" Text="Login" OnClick="btnLogin_Click" /></div>
+                    <div id="divRememberMe" class="checkbox pull-left">
+                        <label>
+                          <asp:CheckBox ID="chkRememberMe" runat="server" />Remember me
+                        </label>
+                    </div>
+                    <div id="divLoginBtn" class="pull-right">
+                        <asp:Button ID="btnLogin" runat="server" Text="Login" CssClass="btn btn-primary" OnClick="btnLogin_Click" /></div>
+                </div>
             </div>
         </div>
     </form>
