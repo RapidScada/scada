@@ -65,6 +65,12 @@
     <Content Include="css\globalvar.min.css">
       <DependentUpon>globalvar.css</DependentUpon>
     </Content>
+    <Content Include="css\login.css">
+      <DependentUpon>login.less</DependentUpon>
+    </Content>
+    <Content Include="css\login.min.css">
+      <DependentUpon>login.css</DependentUpon>
+    </Content>
     <Content Include="css\mastermain.css">
       <DependentUpon>mastermain.less</DependentUpon>
     </Content>
@@ -74,6 +80,7 @@
     <Content Include="Global.asax" />
     <Content Include="images\favicon.ico" />
     <Content Include="js\api\clientapi.js" />
+    <Content Include="js\mastermain.js" />
     <Content Include="lib\bootstrap\css\bootstrap-theme.css" />
     <Content Include="lib\bootstrap\css\bootstrap-theme.min.css" />
     <Content Include="lib\bootstrap\css\bootstrap.css" />
@@ -137,6 +144,7 @@
   <ItemGroup>
     <Content Include="MasterMain.Master" />
     <Content Include="css\globalvar.less" />
+    <Content Include="css\login.less" />
     <None Include="css\mastermain.less" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">

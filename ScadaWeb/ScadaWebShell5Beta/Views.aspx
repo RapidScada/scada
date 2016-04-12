@@ -3,13 +3,6 @@
     <script type="text/javascript" src="js/views.js"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="cphMainContent" runat="server">
-    <div id="divExplorer">
-
-    </div>
-    <div id="divView">
-
-    </div>
-    <div id="divEvents">
-
-    </div>
+    <div id="divH">H</div>
+    <div id="divTest">Test Content</div>
 </asp:Content>

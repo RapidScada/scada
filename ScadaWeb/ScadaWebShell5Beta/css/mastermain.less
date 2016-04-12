@@ -1,32 +1,39 @@
 ﻿@import "globalvar.less";
 @import "shellvar.less";
 
-@fore-color: #eee;
-@glyphicon-fore-color: #9ca1a6;
-@button-back-color-hover: #32373c;
-@button-fore-color-hover: #00b9eb;
+@header-heigth: 30px;
+@left-tabs-heigth: 30px;
+@collapse-pane-heigth: 40px;
+@left-pane-width: 230px;
 
 body {
     margin: 0;
-    padding: 0;
-    background-color: white;
+    padding: @header-heigth 0 0 @left-pane-width;
+    background-color: @content-back-color;
     font-family: @default-font-family;
     font-size: @default-font-size;
 }
 
-#divTitle {
+/* Header */
+
+#divMainHeader {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    min-width: 300px;
+    height: @header-heigth;
     margin: 0;
-    padding: 0px 10px;
-    height: 30px;
-    background-color: @main-menu-back-color;
-    color: @fore-color;
-    line-height: 30px;
+    padding: 0 10px;
+    background-color: @menu-back-color;
+    color: @menu-fore-color;
+    line-height: @header-heigth;
     white-space: nowrap;
 }
 
-.title-btn {
+.hdr-btn {
     display: inline-block;
-    height: 30px;
+    height: @header-heigth;
     margin: 0 0 0 5px;
     padding: 0 10px;
     cursor: pointer;
@@ -34,18 +41,18 @@ body {
     text-decoration: none;
 }
 
-.title-btn:hover {
-    background-color: @button-back-color-hover;
-    color: @button-fore-color-hover;
+.hdr-btn:hover {
+    background-color: @menu-item-back-color-hover;
+    color: @menu-item-fore-color-hover;
     text-decoration: none;
 }
 
 .txt-btn {
-    color: @fore-color;
+    color: @menu-fore-color;
 }
 
 .img-btn {
-    color: @glyphicon-fore-color;
+    color: @menu-dark-fore-color;
 }
 
 .img-btn .glyphicon {
@@ -53,19 +60,114 @@ body {
     top: 2px;
 }
 
-#spanShowMenu {
-    margin: 0 5px 0 -5px;
+#spanMainShowMenu {
+    margin: 0 5px 0 -10px;
     font-size: 15px;
+    display: none;
     /*display: none;*/
 }
 
-#spanAppName {
+#spanMainAppName {
     display: inline-block;
-    line-height: 29px; /*do not set to 30px*/
+    line-height: @header-heigth - 1px;
     font-size: 17px;
 }
 
-#divUserMenu {
+#divMainUserMenu {
     float: right;
-    height: 30px;
+    height: @header-heigth;
+}
+
+/* Left Pane */
+
+#divMainLeftPane {
+    position: fixed;
+    left: 0;
+    top: @header-heigth;
+    width: @left-pane-width;
+    min-height: 300px;
+    background-color: @menu-back-color;
+    color: @menu-fore-color;
+    font-size: 14px;
+    overflow: hidden;
+}
+
+#divMainTabs {
+    position: absolute;
+    left: @left-tabs-heigth;
+    top: 0;
+    height: @left-tabs-heigth;
+    min-width: 200px;
+    background-color: @menu-item-back-color-hover;
+    overflow: hidden;
+    transform: rotate(90deg);
+    transform-origin: left top 0;
+}
+
+#divMainTabs .tab {
+    margin: 0 0 0 5px;
+    padding: 0 10px;
+    color: @menu-dark-fore-color;
+    display: inline-block;
+    line-height: @left-tabs-heigth;
+    white-space: nowrap;
+}
+
+#divMainTabs .tab.selected {
+    color: @menu-fore-color;
+}
+
+#divMainTabs .tab:hover {
+    color: @menu-item-fore-color-hover;
+    cursor: pointer;
+}
+
+#divMainMenu {
+    height: calc(~"100% - "@collapse-pane-heigth);
+    padding: 5px 0 0 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#divMainMenu .menu-item,
+#divMainMenu .menu-subitem {
+    margin-left: @left-tabs-heigth;
+    padding: 5px 10px;
+    text-decoration: none;
+}
+
+#divMainMenu .menu-subitem {
+    padding-left: 20px;
+    color: @menu-dark-fore-color;
+    font-size: 13px;
+}
+
+#divMainMenu .menu-item:hover,
+#divMainMenu .menu-subitem:hover {
+    background-color: @menu-dark-back-color;
+    color: @menu-item-fore-color-hover;
+    text-decoration: none;
+}
+
+#divMainCollapsePane {
+    position: absolute;
+    bottom: 0;
+    width: @left-pane-width - @left-tabs-heigth;
+    height: @collapse-pane-heigth;
+    margin: 0 0 0 @left-tabs-heigth;
+    padding: 5px 10px;
+    color: @menu-dark-fore-color;
+    font-size: 13px;
+}
+
+#divMainCollapsePane i {
+    margin-right: 10px;
+    font-size: 19px;
+    position: relative;
+    top: 2px;
+}
+
+#divMainCollapsePane:hover {
+    color: @menu-item-fore-color-hover;
+    cursor: pointer;
 }

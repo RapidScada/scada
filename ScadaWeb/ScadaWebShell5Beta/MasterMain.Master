@@ -16,21 +16,46 @@
     <link href="~/css/mastermain.min.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="<%= ResolveClientUrl("~/lib/jquery/jquery.min.js") %>"></script>
     <script type="text/javascript" src="<%= ResolveClientUrl("~/lib/bootstrap/js/bootstrap.min.js") %>"></script>
+    <script type="text/javascript" src="<%= ResolveClientUrl("~/js/mastermain.js") %>"></script>
     <asp:ContentPlaceHolder ID="cphMainHead" runat="server">
     </asp:ContentPlaceHolder>
 </head>
 <body>
     <form runat="server">
     <div>
-        <div id="divTitle">
+        <div id="divMainHeader">
             <span 
-                id="spanShowMenu" class="title-btn img-btn"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></span><span 
-                id="spanAppName">Rapid SCADA</span>
-            <div id="divUserMenu">
+                id="spanMainShowMenu" class="hdr-btn img-btn"><span 
+                class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></span><span 
+                id="spanMainAppName">Rapid SCADA</span>
+            <div id="divMainUserMenu">
                 <asp:HyperLink 
-                    ID="hlUser" runat="server" CssClass="title-btn txt-btn" NavigateUrl="#">Admin</asp:HyperLink><asp:HyperLink 
-                    ID="hlLogout" runat="server" CssClass="title-btn txt-btn" NavigateUrl="#">Logout</asp:HyperLink><span 
-                    id="spanFullScreen" class="title-btn img-btn" title="Full screen"><span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span></span>
+                    ID="hlMainUser" runat="server" CssClass="hdr-btn txt-btn" NavigateUrl="#">Admin</asp:HyperLink><asp:HyperLink 
+                    ID="hlMainLogout" runat="server" CssClass="hdr-btn txt-btn" NavigateUrl="#">Logout</asp:HyperLink><span 
+                    id="spanMainFullScreen" class="hdr-btn img-btn" title="Full screen"><span 
+                    class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span></span>
+            </div>
+        </div>
+        <div id="divMainLeftPane">
+            <div id="divMainTabs">
+                <div class="tab selected">Main Menu</div>
+                <div class="tab">Views</div>
+            </div>
+            <div id="divMainMenu">
+                <div class="menu-item">Menu Item 1</div>
+                <div class="menu-item">Menu Item 2</div>
+                <div class="menu-subitem">Subitem</div>
+                <div class="menu-item">Menu Item 3</div>
+                <div class="menu-item">Menu Item 4</div>
+                <div class="menu-item">Menu Item 5</div>
+                <div class="menu-item">Menu Item 6</div>
+                <div class="menu-item">Menu Item 7</div>
+                <div class="menu-item">Menu Item 8</div>
+                <div class="menu-item">Menu Item 9</div>
+                <div class="menu-item">Menu Item 10</div>
+            </div>
+            <div id="divMainCollapsePane">
+                <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>Collapse menu
             </div>
         </div>
         <asp:ContentPlaceHolder ID="cphMainContent" runat="server">

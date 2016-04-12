@@ -22,22 +22,22 @@ namespace Scada.Web {
         protected global::System.Web.UI.WebControls.ContentPlaceHolder cphMainHead;
         
         /// <summary>
-        /// hlUser control.
+        /// hlMainUser control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink hlUser;
+        protected global::System.Web.UI.WebControls.HyperLink hlMainUser;
         
         /// <summary>
-        /// hlLogout control.
+        /// hlMainLogout control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink hlLogout;
+        protected global::System.Web.UI.WebControls.HyperLink hlMainLogout;
         
         /// <summary>
         /// cphMainContent control.

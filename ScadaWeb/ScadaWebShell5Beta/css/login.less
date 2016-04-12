@@ -1,0 +1,39 @@
+﻿@import "globalvar.less";
+@import "shellvar.less";
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: @content-back-color;
+    font-family: @default-font-family;
+    font-size: @default-font-size;
+}
+
+#divLoginContent {
+    margin: 50px 0 0 0;
+    text-align: center;
+}
+
+#divLogin {
+    padding: 25px 25px 45px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    color: #777;
+    display: inline-block;
+    text-align: left;
+}
+
+#divLogin span {
+    font-size: 14px;
+}
+
+#divLogin input[type=text],
+#divLogin input[type=password] {
+    width: 250px;
+    margin: 0 0 10px 0;
+}
+
+#divLogin input[type=submit] {
+    font-size: 14px;
+}

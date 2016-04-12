@@ -1,0 +1,32 @@
+﻿/*Verdana, Geneva, Tahoma, sans-serif;*/
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f1f1f1;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 12px;
+}
+#divLoginContent {
+  margin: 50px 0 0 0;
+  text-align: center;
+}
+#divLogin {
+  padding: 25px 25px 45px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  color: #777;
+  display: inline-block;
+  text-align: left;
+}
+#divLogin span {
+  font-size: 14px;
+}
+#divLogin input[type=text],
+#divLogin input[type=password] {
+  width: 250px;
+  margin: 0 0 10px 0;
+}
+#divLogin input[type=submit] {
+  font-size: 14px;
+}
