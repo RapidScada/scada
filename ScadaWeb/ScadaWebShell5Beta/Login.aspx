@@ -17,6 +17,8 @@
 <body>
     <form id="LoginForm" runat="server">
         <div id="divLoginContent">
+            <div id="divLogo">
+                <asp:HyperLink ID="hlRapidScada" runat="server" NavigateUrl="http://rapidscada.org" Target="_blank"><img src="images/gear.png" alt="Rapid SCADA" /></asp:HyperLink></div>
             <div id="divTitle">
                 Rapid SCADA
             </div>
