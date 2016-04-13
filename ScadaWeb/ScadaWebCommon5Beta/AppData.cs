@@ -392,7 +392,7 @@ namespace Scada.Web
                 {
                     if (roleID == BaseValues.Roles.Disabled)
                     {
-                        errMsg = WebPhrases.NoRightsL;
+                        errMsg = WebPhrases.NoRights;
                         return false;
                     }
                     else if (roleID == BaseValues.Roles.App)

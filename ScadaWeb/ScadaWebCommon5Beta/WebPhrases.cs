@@ -41,7 +41,7 @@ namespace Scada.Web
         // Словарь Scada.Web.AppData
         public static string ServerUnavailable { get; private set; }
         public static string WrongPassword { get; private set; }
-        public static string NoRightsL { get; private set; }
+        public static string NoRights { get; private set; }
         public static string IllegalRole { get; private set; }
 
         // Словарь Scada.Web.Plugins
@@ -55,7 +55,7 @@ namespace Scada.Web
         {
             ServerUnavailable = Localization.Dict.GetEmptyPhrase("ServerUnavailable");
             WrongPassword = Localization.Dict.GetEmptyPhrase("WrongPassword");
-            NoRightsL = Localization.Dict.GetEmptyPhrase("NoRightsL");
+            NoRights = Localization.Dict.GetEmptyPhrase("NoRights");
             IllegalRole = Localization.Dict.GetEmptyPhrase("IllegalRole");
 
             ViewsMenuItem = Localization.Dict.GetEmptyPhrase("ViewsMenuItem");
@@ -72,7 +72,7 @@ namespace Scada.Web
             {
                 ServerUnavailable = dict.GetPhrase("ServerUnavailable", ServerUnavailable);
                 WrongPassword = dict.GetPhrase("WrongPassword", WrongPassword);
-                NoRightsL = dict.GetPhrase("NoRightsL", NoRightsL);
+                NoRights = dict.GetPhrase("NoRightsL", NoRights);
                 IllegalRole = dict.GetPhrase("IllegalRole", IllegalRole);
             }
 

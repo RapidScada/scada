@@ -39,20 +39,16 @@ namespace Scada.Web.Shell
         /// </summary>
         None = 0,
         /// <summary>
-        /// Представления
-        /// </summary>
-        Views = 1,
-        /// <summary>
         /// Отчёты
         /// </summary>
-        Reports = 2,
+        Reports = 1,
         /// <summary>
         /// Администрирование
         /// </summary>
-        Admin = 4,
+        Admin = 2,
         /// <summary>
         ///  Конфигурация
         /// </summary>
-        Config = 8
+        Config = 4
     }
 }

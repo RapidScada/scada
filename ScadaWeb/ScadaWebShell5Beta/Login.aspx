@@ -13,15 +13,19 @@
     <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="~/lib/open-sans/css/open-sans.css" rel="stylesheet" type="text/css" />
     <link href="~/css/login.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/login.js"></script>
 </head>
 <body>
     <form id="LoginForm" runat="server">
-        <div id="divLoginContent">
+        <div id="divLoginContainer">
             <div id="divLogo">
                 <asp:HyperLink ID="hlRapidScada" runat="server" NavigateUrl="http://rapidscada.org" Target="_blank"><img src="images/gear.png" alt="Rapid SCADA" /></asp:HyperLink></div>
             <div id="divTitle">
                 Rapid SCADA
             </div>
+            <div id="divAlertContainer"></div>
             <div id="divLogin">
                 <div>
                     <asp:Label ID="lblUsername" runat="server" Text="Username" AssociatedControlID="txtUsername"></asp:Label></div>
@@ -32,11 +36,11 @@
                 <div>
                     <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" CssClass="form-control"></asp:TextBox></div>
                 <div>
-                    <div id="divRememberMe" class="checkbox pull-left">
+                    <asp:Panel ID="pnlRememberMe" runat="server" CssClass="checkbox pull-left">
                         <label>
                           <asp:CheckBox ID="chkRememberMe" runat="server" />Remember me
                         </label>
-                    </div>
+                    </asp:Panel>
                     <div id="divLoginBtn" class="pull-right">
                         <asp:Button ID="btnLogin" runat="server" Text="Login" CssClass="btn btn-primary" OnClick="btnLogin_Click" /></div>
                 </div>

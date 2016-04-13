@@ -6,13 +6,22 @@ body {
   font-family: 'Open Sans', sans-serif;
   font-size: 12px;
 }
-#divLoginContent {
+#divLoginContainer {
   margin: 40px 0 0 0;
   text-align: center;
 }
 #divTitle {
   margin: 20px 0;
   font-size: 30px;
+}
+#divAlertContainer {
+  font-size: 13px;
+}
+div .alert {
+  margin: 0 0 10px 0;
+  padding-left: 25px;
+  display: inline-block;
+  text-align: left;
 }
 #divLogin {
   padding: 25px 25px 35px;

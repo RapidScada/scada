@@ -50,6 +50,36 @@ namespace Scada.Web
 
 
         /// <summary>
+        /// Получить или установить частоту обновления данных, с
+        /// </summary>
+        public int DataRefrRate { get; set; }
+
+        /// <summary>
+        /// Получить или установить количество отображаемых событий
+        /// </summary>
+        public int DispEventCnt { get; set; }
+
+        /// <summary>
+        /// Получить или установить разрешение запоминать пользователя, вошедшего в систему
+        /// </summary>
+        public bool RemEnabled { get; set; }
+
+        /// <summary>
+        /// Получить или установить разрешение команд управления
+        /// </summary>
+        public bool CmdEnabled { get; set; }
+
+        /// <summary>
+        /// Получить или установить необходимость ввода пароля при отправке команды
+        /// </summary>
+        public bool CmdPassword { get; set; }
+
+        /// <summary>
+        /// Получить или установить стартовую страницу после входа в систему
+        /// </summary>
+        public string StartPage { get; set; }
+
+        /// <summary>
         /// Получить список имён файлов библиотек подключенных плагинов
         /// </summary>
         public List<string> PluginFileNames { get; protected set; }
@@ -60,6 +90,12 @@ namespace Scada.Web
         /// </summary>
         protected void SetToDefault()
         {
+            DataRefrRate = 1;
+            DispEventCnt = 100;
+            RemEnabled = true; // TODO: сделать false после реализации загрузки настроек
+            CmdEnabled = true;
+            CmdPassword = true; // TODO: перенести в базу конфигурации для каждого канала управления
+            StartPage = "";
             PluginFileNames.Clear();
         }
 

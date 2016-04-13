@@ -37,26 +37,20 @@ namespace Scada.Web.Shell
         /// Конструктор, ограничивающий создание объекта без параметров
         /// </summary>
         protected MenuItem()
-            : this("", "", "")
+            : this("", "")
         {
         }
 
         /// <summary>
         /// Конструктор
         /// </summary>
-        public MenuItem(string icon, string text, string url)
+        public MenuItem(string text, string url)
         {
-            Icon = icon;
             Text = text;
             Url = url;
             Subitems = new List<MenuItem>();
         }
 
-
-        /// <summary>
-        /// Получить иконку
-        /// </summary>
-        public string Icon { get; protected set; }
 
         /// <summary>
         /// Получить текст
@@ -81,16 +75,14 @@ namespace Scada.Web.Shell
         {
             switch (standardMenuItem)
             {
-                case StandardMenuItems.Views:
-                    return new MenuItem("", WebPhrases.ViewsMenuItem, "~/Views.aspx");
                 case StandardMenuItems.Reports:
-                    return new MenuItem("", WebPhrases.ReportsMenuItem, "~/Reports.aspx");
+                    return new MenuItem(WebPhrases.ReportsMenuItem, "~/Reports.aspx");
                 case StandardMenuItems.Admin:
-                    return new MenuItem("", WebPhrases.AdminMenuItem, "~/Admin.aspx");
+                    return new MenuItem(WebPhrases.AdminMenuItem, "~/Admin.aspx");
                 case StandardMenuItems.Config:
-                    return new MenuItem("", WebPhrases.ConfigMenuItem, "~/Config.aspx");
+                    return new MenuItem(WebPhrases.ConfigMenuItem, "~/Config.aspx");
                 default: // StandardMenuItem.About
-                    return new MenuItem("", WebPhrases.AboutMenuItem, "~/About.aspx");
+                    return new MenuItem(WebPhrases.AboutMenuItem, "~/About.aspx");
             }
         }
     }

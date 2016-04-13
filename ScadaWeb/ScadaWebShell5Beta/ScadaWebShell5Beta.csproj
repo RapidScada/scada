@@ -42,6 +42,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Log, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Log\bin\Release\Log.dll</HintPath>
+    </Reference>
+    <Reference Include="ScadaData, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System" />
@@ -81,6 +89,7 @@
     <Content Include="images\favicon.ico" />
     <Content Include="images\gear.png" />
     <Content Include="js\api\clientapi.js" />
+    <Content Include="js\login.js" />
     <Content Include="js\mastermain.js" />
     <Content Include="lib\bootstrap\css\bootstrap-theme.css" />
     <Content Include="lib\bootstrap\css\bootstrap-theme.min.css" />
@@ -96,7 +105,7 @@
     <Content Include="lib\jquery\jquery.js" />
     <Content Include="lib\jquery\jquery.min.js" />
     <Content Include="js\scadautils.js" />
-    <Content Include="js\views.js" />
+    <Content Include="js\view.js" />
     <Content Include="lang\ScadaWeb.en-GB.xml" />
     <Content Include="lang\ScadaWeb.ru-RU.xml" />
     <Content Include="lib\open-sans\css\open-sans.css" />
@@ -112,7 +121,7 @@
     <Content Include="lib\open-sans\fonts\open-sans-v13-latin-ext_cyrillic_latin_cyrillic-ext_greek-ext_vietnamese_greek-regular.svg" />
     <Content Include="Login.aspx" />
     <Content Include="ClientApiSvc.svc" />
-    <Content Include="Views.aspx" />
+    <Content Include="View.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -134,12 +143,12 @@
       <DependentUpon>MasterMain.Master</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views.aspx.cs">
-      <DependentUpon>Views.aspx</DependentUpon>
+    <Compile Include="View.aspx.cs">
+      <DependentUpon>View.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views.aspx.designer.cs">
-      <DependentUpon>Views.aspx</DependentUpon>
+    <Compile Include="View.aspx.designer.cs">
+      <DependentUpon>View.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -218,6 +227,7 @@
   <ItemGroup>
     <Folder Include="log\" />
     <Folder Include="plugins\" />
+    <Folder Include="storage\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ScadaWebCommon5Beta\ScadaWebCommon5Beta.csproj">

@@ -11,7 +11,7 @@ namespace Scada.Web
 {
 
 
-    public partial class WFrmViews
+    public partial class WFrmView
     {
     }
 }

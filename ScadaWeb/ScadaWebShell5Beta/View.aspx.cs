@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace Scada.Web
 {
-    public partial class WFrmViews : System.Web.UI.Page
+    public partial class WFrmView : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {

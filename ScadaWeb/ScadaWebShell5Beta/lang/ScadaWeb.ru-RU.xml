@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ScadaWebDictionaries>
   <Dictionary key="Scada.Web.AppData">
-    <Phrase key="ServerUnavailable">нет связи с сервером</Phrase>
-    <Phrase key="WrongPassword">неверное имя пользователя или пароль</Phrase>
-    <Phrase key="NoRightsL">недостаточно прав</Phrase>
-    <Phrase key="IllegalRole">недопустимая роль пользователя</Phrase>
+    <Phrase key="ServerUnavailable">Сервер недоступен.</Phrase>
+    <Phrase key="WrongPassword">Неверное имя пользователя или пароль.</Phrase>
+    <Phrase key="NoRights">Недостаточно прав.</Phrase>
+    <Phrase key="IllegalRole">Недопустимая роль пользователя.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins">
     <Phrase key="ViewsMenuItem">Представления</Phrase>
