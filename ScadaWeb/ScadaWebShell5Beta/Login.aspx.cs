@@ -25,6 +25,7 @@
 
 using Scada.UI;
 using System;
+using System.IO;
 
 namespace Scada.Web
 {
@@ -35,12 +36,37 @@ namespace Scada.Web
     public partial class WFrmLogin : System.Web.UI.Page
     {
         /// <summary>
+        /// Стартовая страница по умолчанию
+        /// </summary>
+        private const string DefaultStartPage = "~/View.aspx";
+        
+
+        /// <summary>
         /// Добавить на страницу скрипт вывода сообщения об ошибке
         /// </summary>
         private void AddShowAlertScript(string message)
         {
             ClientScript.RegisterStartupScript(GetType(), "Startup", "showAlert('" + message + "');", true);
         }
+
+        /// <summary>
+        /// Получить адрес стартовой страницы на основе адреса из настроек
+        /// </summary>
+        private string GetStartPageUrl(string startPage)
+        {
+            startPage = startPage == null ? "" : startPage.Trim();
+
+            if (startPage == "")
+            {
+                return DefaultStartPage;
+            }
+            else
+            {
+                string path = Server.MapPath(startPage);
+                return File.Exists(path) ? startPage : DefaultStartPage;
+            }
+        }
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -68,10 +94,19 @@ namespace Scada.Web
         {
             UserData userData = UserData.GetUserData();
             string errMsg;
+
             if (userData.Login(txtUsername.Text, txtPassword.Text, out errMsg))
-                Response.Redirect("~/View.aspx");
+            {
+                string returnUrl = Request.QueryString["return"];
+                if (string.IsNullOrEmpty(returnUrl))
+                    Response.Redirect(GetStartPageUrl(userData.WebSettings.StartPage));
+                else
+                    Response.Redirect(returnUrl);
+            }
             else
+            {
                 AddShowAlertScript(errMsg);
+            }
         }
     }
 }

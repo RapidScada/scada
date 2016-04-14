@@ -78,6 +78,7 @@ namespace Scada.Web
             ViewSpecs = new Dictionary<string, ViewSpec>();
             AppDirs = new AppDirs();
             Log = new Log(Log.Formats.Full);
+            Storage = null;
 
             InitSettingsUpdaters();
             CreateDataObjects();
@@ -119,6 +120,11 @@ namespace Scada.Web
         /// Получить журнал приложения
         /// </summary>
         public static Log Log { get; private set; }
+
+        /// <summary>
+        /// Получить объект для работы с хранилищем приложения
+        /// </summary>
+        public static Storage Storage { get; private set; }
 
         /// <summary>
         /// Получить объект для потокобезопасного доступа к данным кеша клиентов
@@ -338,6 +344,9 @@ namespace Scada.Web
                     Log.WriteAction(Localization.UseRussian ?
                         "Инициализация общих данных веб-приложения" :
                         "Initialize common web application data");
+
+                    // создание объекта для работы с хранилищем приложения
+                    Storage = new Storage(AppDirs.StorageDir);
 
                     // инициализация объектов для обновления настроек
                     InitSettingsUpdaters();
