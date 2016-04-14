@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ScadaWebDictionaries>
+  <Dictionary key="Scada.Web">
+    <Phrase key="NotLoggedOn">Пользователь не вошёл в систему.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.AppData">
     <Phrase key="ServerUnavailable">Сервер недоступен.</Phrase>
     <Phrase key="WrongPassword">Неверное имя пользователя или пароль.</Phrase>

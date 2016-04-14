@@ -198,9 +198,8 @@ namespace Scada.Web
         /// <summary>
         /// Выполнить вход пользователя в систему без проверки пароля
         /// </summary>
-        public bool Login(string username)
+        public bool Login(string username, out string errMsg)
         {
-            string errMsg;
             return Login(username, null, out errMsg);
         }
 
@@ -213,6 +212,44 @@ namespace Scada.Web
             UpdateAppDataRefs();
         }
 
+        /// <summary>
+        /// Проверить, что пользователь вошёл систему. 
+        /// Если вход не выполнен, то перейти на страницу входа или вызвать исключение
+        /// </summary>
+        public void CheckLoggedOn(bool tryToLogin)
+        {
+            if (!LoggedOn)
+            {
+                if (tryToLogin)
+                {
+                    HttpContext httpContext = HttpContext.Current;
+                    ScadaWebUtils.CheckHttpContext(httpContext);
+
+                    // попытка входа с использованием cookies
+                    string username;
+                    string alert = "";
+
+                    if (WebSettings.RemEnabled &&
+                        AppData.RememberMe.ValidateUser(httpContext, out username, out alert))
+                    {
+                        Login(username, out alert);
+                    }
+
+                    // переход на страницу входа
+                    if (!LoggedOn)
+                    {
+                        httpContext.Response.Redirect("~/Login.aspx" +
+                            "?return=" + HttpUtility.UrlEncode(httpContext.Request.Url.ToString()) +
+                            (alert == "" ? "" : "&alert=" + HttpUtility.UrlEncode(alert)));
+                    }
+                }
+                else
+                {
+                    throw new ScadaException(WebPhrases.NotLoggedOn);
+                }
+            }
+        }
+
 
         /// <summary>
         /// Получить данные пользователя приложения
@@ -220,8 +257,9 @@ namespace Scada.Web
         /// <remarks>Для веб-приложения данные пользователя сохраняются в сессии</remarks>
         public static UserData GetUserData()
         {
-            ScadaWebUtils.CheckHttpContext();
-            HttpSessionState session = HttpContext.Current.Session;
+            HttpContext httpContext = HttpContext.Current;
+            ScadaWebUtils.CheckHttpContext(httpContext);
+            HttpSessionState session = httpContext.Session;
             UserData userData = session["UserData"] as UserData;
 
             if (userData == null)
@@ -234,13 +272,28 @@ namespace Scada.Web
                 session.Add("UserData", userData);
 
                 // получение IP-адреса
-                userData.IpAddress = HttpContext.Current.Request.UserHostAddress;
+                userData.IpAddress = httpContext.Request.UserHostAddress;
 
                 // обновление ссылок на объекты общих данных приложения
                 userData.UpdateAppDataRefs();
             }
 
             return userData;
+        }
+
+        /// <summary>
+        /// Проверить допустимость имени пользователя
+        /// </summary>
+        public static void ValidateUserName(string username)
+        {
+            if (username == null)
+                throw new ArgumentNullException("username", "Username must not be null.");
+
+            if (username == "")
+                throw new ArgumentException("Username must not be null or empty.", "username");
+
+            if (username.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
+                throw new ArgumentException("Username contains invalid character.", "username"); ;
         }
     }
 }

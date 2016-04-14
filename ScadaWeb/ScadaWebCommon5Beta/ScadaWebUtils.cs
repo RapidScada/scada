@@ -39,26 +39,25 @@ namespace Scada.Web
         /// <summary>
         /// Проверить HTTP-контекст и его основные свойства на null
         /// </summary>
-        public static void CheckHttpContext(bool checkCookies = false)
+        public static void CheckHttpContext(HttpContext httpContext, bool checkCookies = false)
         {
             const string msg = "HTTP context or its properties are undefined.";
-            HttpContext context = HttpContext.Current;
 
-            if (context == null)
-                throw new ArgumentNullException("context", msg);
-            if (context.Session == null)
-                throw new ArgumentNullException("context.Session", msg);
-            if (context.Request == null)
-                throw new ArgumentNullException("context.Request", msg);
-            if (context.Response == null)
-                throw new ArgumentNullException("context.Response", msg);
+            if (httpContext == null)
+                throw new ArgumentNullException("httpContext", msg);
+            if (httpContext.Session == null)
+                throw new ArgumentNullException("httpContext.Session", msg);
+            if (httpContext.Request == null)
+                throw new ArgumentNullException("httpContext.Request", msg);
+            if (httpContext.Response == null)
+                throw new ArgumentNullException("httpContext.Response", msg);
 
             if (checkCookies)
             {
-                if (context.Request.Cookies == null)
-                    throw new ArgumentNullException("context.Request.Cookies", msg);
-                if (context.Response.Cookies == null)
-                    throw new ArgumentNullException("context.Response.Cookies", msg);
+                if (httpContext.Request.Cookies == null)
+                    throw new ArgumentNullException("httpContext.Request.Cookies", msg);
+                if (httpContext.Response.Cookies == null)
+                    throw new ArgumentNullException("httpContext.Response.Cookies", msg);
             }
         }
 

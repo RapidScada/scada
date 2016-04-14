@@ -24,6 +24,7 @@
  */
 
 using Scada.UI;
+using Scada.Web.Shell;
 using System;
 using System.IO;
 
@@ -39,7 +40,9 @@ namespace Scada.Web
         /// Стартовая страница по умолчанию
         /// </summary>
         private const string DefaultStartPage = "~/View.aspx";
-        
+
+        private UserData userData; // данные пользователя приложения
+
 
         /// <summary>
         /// Добавить на страницу скрипт вывода сообщения об ошибке
@@ -67,9 +70,23 @@ namespace Scada.Web
             }
         }
 
+        /// <summary>
+        /// Выбор стартовой страницы и переход на неё
+        /// </summary>
+        private void GoToStartPage()
+        {
+            string returnUrl = Request.QueryString["return"];
+            if (string.IsNullOrEmpty(returnUrl))
+                Response.Redirect(GetStartPageUrl(userData.WebSettings.StartPage));
+            else
+                Response.Redirect(returnUrl);
+        }
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            userData = UserData.GetUserData();
+
             if (IsPostBack)
             {
                 Title = (string)ViewState["Title"];
@@ -80,28 +97,44 @@ namespace Scada.Web
                 Translator.TranslatePage(this, "Scada.Web.WFrmLogin");
                 ViewState["Title"] = Title;
 
-                UserData userData = UserData.GetUserData();
-                pnlRememberMe.Visible = userData.WebSettings.RemEnabled;
+                // вывод сообщения, заданного в параметрах запроса
+                string alert = Request.QueryString["alert"];
+                bool alertIsEmpty = string.IsNullOrEmpty(alert);
+                if (!alertIsEmpty)
+                    AddShowAlertScript(alert);
 
-                if (userData.LoggedOn)
+                // обработка сохранённого входа в систему
+                if (alertIsEmpty && !userData.LoggedOn && userData.WebSettings.RemEnabled)
                 {
-                    txtUsername.Text = userData.UserName;
+                    string username;
+                    if (AppData.RememberMe.ValidateUser(Context, out username, out alert))
+                        GoToStartPage();
+                    else if (alert != "")
+                        AddShowAlertScript(alert);
                 }
+
+                // настройка элементов управления
+                pnlRememberMe.Visible = userData.WebSettings.RemEnabled;
+                txtUsername.Text = userData.LoggedOn ?
+                    userData.UserName :
+                    AppData.RememberMe.RestoreUsername(Context); // из cookie
             }
         }
 
         protected void btnLogin_Click(object sender, EventArgs e)
         {
-            UserData userData = UserData.GetUserData();
             string errMsg;
 
             if (userData.Login(txtUsername.Text, txtPassword.Text, out errMsg))
             {
-                string returnUrl = Request.QueryString["return"];
-                if (string.IsNullOrEmpty(returnUrl))
-                    Response.Redirect(GetStartPageUrl(userData.WebSettings.StartPage));
+                // сохранение информации о входе пользователя
+                if (chkRememberMe.Checked)
+                    AppData.RememberMe.RememberUser(userData.UserName, Context);
                 else
-                    Response.Redirect(returnUrl);
+                    AppData.RememberMe.RememberUsername(userData.UserName, Context);
+
+                // переход на стартовую страницу
+                GoToStartPage();
             }
             else
             {

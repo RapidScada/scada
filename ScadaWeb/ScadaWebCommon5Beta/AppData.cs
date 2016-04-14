@@ -26,6 +26,7 @@
 using Scada.Client;
 using Scada.Data;
 using Scada.Web.Plugins;
+using Scada.Web.Shell;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -78,7 +79,8 @@ namespace Scada.Web
             ViewSpecs = new Dictionary<string, ViewSpec>();
             AppDirs = new AppDirs();
             Log = new Log(Log.Formats.Full);
-            Storage = null;
+            Storage = new Storage(AppDirs.StorageDir);
+            RememberMe = new RememberMe();
 
             InitSettingsUpdaters();
             CreateDataObjects();
@@ -125,6 +127,11 @@ namespace Scada.Web
         /// Получить объект для работы с хранилищем приложения
         /// </summary>
         public static Storage Storage { get; private set; }
+
+        /// <summary>
+        /// Получить объект для сохранения входа пользователя в систему
+        /// </summary>
+        public static RememberMe RememberMe { get; private set; }
 
         /// <summary>
         /// Получить объект для потокобезопасного доступа к данным кеша клиентов
@@ -345,8 +352,8 @@ namespace Scada.Web
                         "Инициализация общих данных веб-приложения" :
                         "Initialize common web application data");
 
-                    // создание объекта для работы с хранилищем приложения
-                    Storage = new Storage(AppDirs.StorageDir);
+                    // настройка объекта для работы с хранилищем приложения
+                    Storage.StorageDir = AppDirs.StorageDir;
 
                     // инициализация объектов для обновления настроек
                     InitSettingsUpdaters();

@@ -44,9 +44,6 @@ namespace Scada.Web
         public const string AppSubdir = "App";
 
 
-        private string storageDir; // директория хранилища приложения
-
-
         /// <summary>
         /// Конструктор, ограничивающий создание объекта без параметров
         /// </summary>
@@ -59,8 +56,14 @@ namespace Scada.Web
         /// </summary>
         public Storage(string storageDir)
         {
-            this.storageDir = storageDir;
+            StorageDir = storageDir;
         }
+
+
+        /// <summary>
+        /// Получить или установить директорию хранилища приложения
+        /// </summary>
+        public string StorageDir { get; set; }
 
 
         /// <summary>
@@ -74,9 +77,10 @@ namespace Scada.Web
         /// <summary>
         /// Получить директорию хранилища заданного пользователя
         /// </summary>
-        public string GetUserDir(string userName)
+        public string GetUserDir(string username)
         {
-            return storageDir + userName + Path.DirectorySeparatorChar;
+            UserData.ValidateUserName(username);
+            return StorageDir + username + Path.DirectorySeparatorChar;
         }
 
         /// <summary>
@@ -90,9 +94,9 @@ namespace Scada.Web
         /// <summary>
         /// Получить директорию хранилища приложения для заданного пользователя
         /// </summary>
-        public string GetUserAppDir(string userName)
+        public string GetUserAppDir(string username)
         {
-            return GetUserPluginDir(userName, AppSubdir);
+            return GetUserPluginDir(username, AppSubdir);
         }
 
         /// <summary>
@@ -106,9 +110,9 @@ namespace Scada.Web
         /// <summary>
         /// Получить директорию хранилища плагина для заданного пользователя
         /// </summary>
-        public string GetUserPluginDir(string userName, string pluginSubdir)
+        public string GetUserPluginDir(string username, string pluginSubdir)
         {
-            return GetUserDir(userName) + pluginSubdir + Path.DirectorySeparatorChar;
+            return GetUserDir(username) + pluginSubdir + Path.DirectorySeparatorChar;
         }
 
 
