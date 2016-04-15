@@ -43,6 +43,12 @@ namespace Scada.Web
     public sealed class UserData
     {
         /// <summary>
+        /// Общие данные веб-приложения
+        /// </summary>
+        private static readonly AppData AppData = AppData.GetAppData();
+
+        
+        /// <summary>
         /// Конструктор, ограничивающий создание объекта без параметров
         /// </summary>
         private UserData()

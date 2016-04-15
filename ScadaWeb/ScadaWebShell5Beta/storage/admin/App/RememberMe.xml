@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RememberMe>
+  <Username>admin</Username>
+  <Credentials>
+    <BrowserID>3657e72d-771d-4e8f-a25c-d4f1620c5a9c</BrowserID>
+    <OneTimePassword>fd7d5c54-0b63-4f9e-9f8b-d9ed71209f3b</OneTimePassword>
+    <CreateDT>04/15/2016 13:03:05</CreateDT>
+  </Credentials>
+  <Credentials>
+    <BrowserID>648929fe-37d7-4887-a788-6898096c8934</BrowserID>
+    <OneTimePassword>92fab736-7e52-48c9-8926-99686a3ca1d5</OneTimePassword>
+    <CreateDT>04/15/2016 13:13:42</CreateDT>
+  </Credentials>
+</RememberMe>

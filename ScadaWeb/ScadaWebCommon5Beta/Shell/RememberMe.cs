@@ -24,8 +24,11 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Web;
+using System.Xml;
+using Utils;
 
 namespace Scada.Web.Shell
 {
@@ -43,10 +46,25 @@ namespace Scada.Web.Shell
             /// <summary>
             /// Конструктор
             /// </summary>
-            public Credentials(string browserID, string oneTimePassword)
+            public Credentials()
+                : this(GenerateID(), GenerateID(), DateTime.Now)
+            {
+            }
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public Credentials(string browserID)
+                : this(browserID, GenerateID(), DateTime.Now)
+            {
+            }
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public Credentials(string browserID, string oneTimePassword, DateTime createDT)
             {
                 BrowserID = browserID ?? "";
                 OneTimePassword = oneTimePassword ?? "";
+                CreateDT = createDT;
             }
 
             /// <summary>
@@ -57,29 +75,195 @@ namespace Scada.Web.Shell
             /// Одноразовый пароль
             /// </summary>
             public string OneTimePassword { get; private set; }
+            /// <summary>
+            /// Получить дату и время создания учётных данных
+            /// </summary>
+            public DateTime CreateDT { get; private set; }
+
+            /// <summary>
+            /// Генерировать идентификатор случайным образом
+            /// </summary>
+            public static string GenerateID()
+            {
+                return Guid.NewGuid().ToString();
+            }
         }
 
         /// <summary>
         /// Длительность хранения информации о входе пользователя в систему
         /// </summary>
-        private static readonly TimeSpan ExpireSpan = TimeSpan.FromDays(7);
+        protected static readonly TimeSpan ExpireSpan = TimeSpan.FromDays(7);
 
+        /// <summary>
+        /// Объект для работы с хранилищем приложения
+        /// </summary>
+        protected readonly Storage storage;
+        /// <summary>
+        /// Журнал
+        /// </summary>
+        protected readonly Log log;
+
+
+        /// <summary>
+        /// Конструктор, ограничивающий создание объекта без параметров
+        /// </summary>
+        protected RememberMe()
+        {
+        }
 
         /// <summary>
         /// Конструктор
         /// </summary>
-        public RememberMe()
+        public RememberMe(Storage storage, Log log)
         {
+            if (storage == null)
+                throw new ArgumentNullException("storage");
+            if (log == null)
+                throw new ArgumentNullException("log");
+
+            this.storage = storage;
+            this.log = log;
         }
 
 
         /// <summary>
+        /// Получить имя файла учётных данных пользователя
+        /// </summary>
+        private string GetCredentialsFileName(string username, bool forceDir = false)
+        {
+            string userAppDir = storage.GetUserAppDir(username);
+            Storage.ForceDir(userAppDir);
+            return userAppDir + "RememberMe.xml";
+        }
+
+        /// <summary>
+        /// Загрузить учётные данные пользователя из файла
+        /// </summary>
+        private List<Credentials> LoadCredentials(string username)
+        {
+            List<Credentials> credList = new List<Credentials>();
+            string fileName = GetCredentialsFileName(username);
+
+            if (File.Exists(fileName))
+            {
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.Load(fileName);
+                XmlElement rootElem = xmlDoc.DocumentElement;
+
+                XmlNode usernameNode = rootElem.SelectSingleNode("Username");
+                string loadedUsername = usernameNode == null ? "" : usernameNode.InnerText;
+
+                if (string.Equals(username, loadedUsername, StringComparison.OrdinalIgnoreCase))
+                {
+                    XmlNodeList credNodes = rootElem.SelectNodes("Credentials");
+                    if (credNodes != null)
+                    {
+                        foreach (XmlElement credElem in credNodes)
+                        {
+                            credList.Add(new Credentials(
+                                credElem.GetChildAsString("BrowserID"),
+                                credElem.GetChildAsString("OneTimePassword"),
+                                credElem.GetChildAsDateTime("CreateDT")));
+                        }
+                    }
+                }
+            }
+
+            return credList;
+        }
+
+        /// <summary>
+        /// Сохранить учётные данные пользователя в файле
+        /// </summary>
+        private void SaveCredentials(string username, List<Credentials> credList)
+        {
+            XmlDocument xmlDoc = new XmlDocument();
+            XmlDeclaration xmlDecl = xmlDoc.CreateXmlDeclaration("1.0", "utf-8", null);
+            xmlDoc.AppendChild(xmlDecl);
+
+            XmlElement rootElem = xmlDoc.CreateElement("RememberMe");
+            xmlDoc.AppendChild(rootElem);
+            rootElem.AppendElem("Username", username);
+
+            foreach (Credentials cred in credList)
+            {
+                XmlElement credElem = rootElem.AppendElem("Credentials");
+                credElem.AppendElem("BrowserID", cred.BrowserID);
+                credElem.AppendElem("OneTimePassword", cred.OneTimePassword);
+                credElem.AppendElem("CreateDT", cred.CreateDT);
+            }
+
+            xmlDoc.Save(GetCredentialsFileName(username, true));
+        }
+
+        /// <summary>
         /// Проверить, что пользователю разрешён вход в систему
         /// </summary>
-        private bool ValidateUser(string username, Credentials credentials, out Credentials newCredentials)
+        private bool ValidateUser(string username, Credentials cred, out Credentials newCred, out string alert)
         {
-            newCredentials = null;
-            return false;
+            bool validated = false;
+            newCred = null;
+            alert = "";
+
+            // загрузка учётных данных
+            List<Credentials> credList = LoadCredentials(username);
+            bool credListModified = false;
+            bool credFound = false;
+            DateTime nowDT = DateTime.Now;
+            string browserID = cred.BrowserID;
+            int i = 0;
+
+            while (i < credList.Count)
+            {
+                Credentials loadedCred = credList[i];
+
+                if (nowDT - loadedCred.CreateDT > ExpireSpan)
+                {
+                    // удаление устаревших учётных данных
+                    credList.RemoveAt(i);
+                    credListModified = true;
+                    i--;
+                }
+                else if (!credFound && string.Equals(loadedCred.BrowserID, browserID, StringComparison.Ordinal))
+                {
+                    credFound = true;
+
+                    if (string.Equals(loadedCred.OneTimePassword, cred.OneTimePassword, StringComparison.Ordinal))
+                    {
+                        // установка признака, что проверка пройдена успешно
+                        validated = true;
+                    }
+                    else
+                    {
+                        alert = WebPhrases.SecurityViolation;
+                        log.WriteError(string.Format(Localization.UseRussian ?
+                            "Попытка использования устаревшего одноразового пароля! Возможна утечка данных пользователя {0}" :
+                            "Attempting to use the obsolete one-time password! Possible data leak of the user {0}",
+                            username));
+                    }
+
+                    // удаление использованных учётных данных
+                    credList.RemoveAt(i);
+                    credListModified = true;
+                    i--;
+                }
+
+                i++;
+            }
+
+            // создание новых учётных данных в случае успешной проверки
+            if (validated)
+            {
+                newCred = new Credentials(browserID);
+                credList.Add(newCred);
+                credListModified = true;
+            }
+
+            // сохранение изменившихся учётных данных
+            if (credListModified)
+                SaveCredentials(username, credList);
+
+            return validated;
         }
 
         /// <summary>
@@ -87,30 +271,25 @@ namespace Scada.Web.Shell
         /// </summary>
         private Credentials CreateCredentials(string username)
         {
-            return null;
-        }
-
-        /// <summary>
-        /// Очистить учётные данные пользователя на стороне сервера
-        /// </summary>
-        private void ClearCredentials(string username)
-        {
+            // загрузка учётных данных
+            List<Credentials> credList = LoadCredentials(username);
+            // создание и добавление новых учётных данных
+            Credentials cred = new Credentials();
+            credList.Add(cred);
+            // сохранение учётных данных
+            SaveCredentials(username, credList);
+            return cred;
         }
 
         /// <summary>
         /// Создать cookie для записи информации о входе в систему
         /// </summary>
-        private HttpCookie CreateCookie(string username, Credentials credentials)
+        private HttpCookie CreateCookie(string username, Credentials cred)
         {
             HttpCookie cookie = new HttpCookie("User");
             cookie.Values.Set("Username", username);
-
-            if (credentials != null)
-            {
-                cookie.Values.Set("BrowserID", credentials.BrowserID);
-                cookie.Values.Set("OneTimePassword", credentials.OneTimePassword);
-            }
-
+            cookie.Values.Set("BrowserID", cred == null ? "" : cred.BrowserID);
+            cookie.Values.Set("OneTimePassword", cred == null ? "" : cred.OneTimePassword);
             cookie.Expires = DateTime.Now.Add(ExpireSpan);
             return cookie;
         }
@@ -121,33 +300,44 @@ namespace Scada.Web.Shell
         /// </summary>
         public bool ValidateUser(HttpContext httpContext, out string username, out string alert)
         {
+            username = "";
             alert = "";
-            ScadaWebUtils.CheckHttpContext(httpContext, true);
-            HttpCookie reqCookie = httpContext.Request.Cookies["User"];
 
-            if (reqCookie != null && reqCookie.HasKeys)
+            try
             {
-                username = reqCookie.Values["Username"] ?? "";
-                Credentials credentials = new Credentials(
-                    reqCookie.Values["BrowserID"], reqCookie.Values["OneTimePassword"]);
-                Credentials newCredentials;
+                ScadaWebUtils.CheckHttpContext(httpContext, true);
+                HttpCookie reqCookie = httpContext.Request.Cookies["User"];
 
-                if (ValidateUser(username, credentials, out newCredentials))
+                if (reqCookie != null && reqCookie.HasKeys)
                 {
-                    HttpCookie respCookie = CreateCookie(username, newCredentials);
-                    httpContext.Response.Cookies.Set(respCookie);
-                    return true;
+                    username = reqCookie.Values["Username"] ?? "";
+                    Credentials cred = new Credentials(
+                        reqCookie.Values["BrowserID"], reqCookie.Values["OneTimePassword"], DateTime.MinValue);
+                    Credentials newCred;
+
+                    if (username != "" && ValidateUser(username, cred, out newCred, out alert))
+                    {
+                        HttpCookie respCookie = CreateCookie(username, newCred);
+                        httpContext.Response.Cookies.Set(respCookie);
+                        return true;
+                    }
+                    else
+                    {
+                        HttpCookie respCookie = CreateCookie(username, null);
+                        httpContext.Response.Cookies.Set(respCookie);
+                        return false;
+                    }
                 }
                 else
                 {
-                    HttpCookie respCookie = CreateCookie(username, null);
-                    httpContext.Response.Cookies.Set(respCookie);
                     return false;
                 }
             }
-            else
+            catch (Exception ex)
             {
-                username = "";
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при проверке входа пользователя {0}" :
+                    "Error validating login of the user {0}", username);
                 return false;
             }
         }
@@ -157,9 +347,19 @@ namespace Scada.Web.Shell
         /// </summary>
         public string RestoreUsername(HttpContext httpContext)
         {
-            ScadaWebUtils.CheckHttpContext(httpContext, true);
-            HttpCookie cookie = httpContext.Request.Cookies["User"];
-            return cookie != null && cookie.HasKeys ? (cookie.Values["Username"] ?? "") : "";
+            try
+            {
+                ScadaWebUtils.CheckHttpContext(httpContext, true);
+                HttpCookie cookie = httpContext.Request.Cookies["User"];
+                return cookie != null && cookie.HasKeys ? (cookie.Values["Username"] ?? "") : "";
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при извлечении имени пользователя из cookies" :
+                    "Error restoring username from the cookies");
+                return "";
+            }
         }
 
         /// <summary>
@@ -167,9 +367,18 @@ namespace Scada.Web.Shell
         /// </summary>
         public void RememberUsername(string username, HttpContext httpContext)
         {
-            ScadaWebUtils.CheckHttpContext(httpContext, true);
-            HttpCookie cookie = CreateCookie(username, null);
-            httpContext.Response.Cookies.Set(cookie);
+            try
+            {
+                ScadaWebUtils.CheckHttpContext(httpContext, true);
+                HttpCookie cookie = CreateCookie(username, null);
+                httpContext.Response.Cookies.Set(cookie);
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при сохранении имени пользователя в cookies" :
+                    "Error saving username to the cookies");
+            }
         }
 
         /// <summary>
@@ -177,10 +386,65 @@ namespace Scada.Web.Shell
         /// </summary>
         public void RememberUser(string username, HttpContext httpContext)
         {
-            ScadaWebUtils.CheckHttpContext(httpContext, true);
-            Credentials credentials = CreateCredentials(username);
-            HttpCookie cookie = CreateCookie(username, credentials);
-            httpContext.Response.Cookies.Set(cookie);
+            try
+            {
+                ScadaWebUtils.CheckHttpContext(httpContext, true);
+                Credentials cred = CreateCredentials(username);
+                HttpCookie cookie = CreateCookie(username, cred);
+                httpContext.Response.Cookies.Set(cookie);
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при сохранении информации о входе пользователя {0}" :
+                    "Error saving login information of the user {0}", username);
+            }
+        }
+
+        /// <summary>
+        /// Удалить информацию о входе в систему из cookies
+        /// </summary>
+        public void ForgetUser(HttpContext httpContext)
+        {
+            try
+            {
+                ScadaWebUtils.CheckHttpContext(httpContext, true);
+                HttpCookie reqCookie = httpContext.Request.Cookies["User"];
+
+                if (reqCookie != null && reqCookie.HasKeys)
+                {
+                    string username = reqCookie.Values["Username"] ?? "";
+                    HttpCookie respCookie = CreateCookie(username, null);
+                    httpContext.Response.Cookies.Set(respCookie);
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при удалении информации о входе пользователя из cookies" :
+                    "Error deleting login information from the cookies");
+            }
+        }
+
+        /// <summary>
+        /// Полностью удалить информацию о входах пользователя на стороне сервера и из cookies
+        /// </summary>
+        public void CompletelyForgetUser(string username, HttpContext httpContext)
+        {
+            try
+            {
+                ScadaWebUtils.CheckHttpContext(httpContext, true);
+                HttpCookie respCookie = CreateCookie("", null);
+                httpContext.Response.Cookies.Set(respCookie);
+
+                File.Delete(GetCredentialsFileName(username));
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при полном удалении информации о входах пользователя {0}" :
+                    "Error completely deleting login information of the user {0}", username);
+            }
         }
     }
 }

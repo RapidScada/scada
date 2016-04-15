@@ -38,7 +38,7 @@
                 <div>
                     <asp:Panel ID="pnlRememberMe" runat="server" CssClass="checkbox pull-left">
                         <label>
-                          <asp:CheckBox ID="chkRememberMe" runat="server" />Remember me
+                          <asp:CheckBox ID="chkRememberMe" runat="server" /><asp:Label ID="lblRememberMe" runat="server" Text="Remember me"></asp:Label>
                         </label>
                     </asp:Panel>
                     <div id="divLoginBtn" class="pull-right">

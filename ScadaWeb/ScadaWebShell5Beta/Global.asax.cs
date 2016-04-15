@@ -36,7 +36,7 @@ namespace Scada.Web
         protected void Application_Start(object sender, EventArgs e)
         {
             // инициализация общих данных веб-приложения
-            AppData.Init(Server.MapPath("~"));
+            AppData.GetAppData().Init(Server.MapPath("~"));
         }
 
         protected void Session_Start(object sender, EventArgs e)

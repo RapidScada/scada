@@ -38,31 +38,40 @@ namespace Scada.Web
     /// Common data of the web application
     /// <para>Общие данные веб-приложения</para>
     /// </summary>
-    public static class AppData
+    public sealed class AppData
 	{
         /// <summary>
         /// Имя файла журнала приложения без директории
         /// </summary>
         public const string LogFileName = "ScadaWeb.log";
 
-        private static readonly object appDataLock; // объект для синхронизации доступа к данным приложения
+        private static readonly AppData appDataInstance; // экземпляр объекта AppData
+        private readonly object appDataLock;             // объект для синхронизации доступа к данным приложения
 
-        private static bool inited;                 // признак инициализации общих данных веб-приложения
-        private static CommSettings commSettings;   // настройки соединения с сервером
-        private static ServerComm serverComm;       // объект для обмена данными с сервером
-        private static long viewStampCntr;          // счётчик для генерации меток представлений
+        private bool inited;                         // признак инициализации данных приложения
+        private CommSettings commSettings;           // настройки соединения с сервером
+        private ServerComm serverComm;               // объект для обмена данными с сервером
+        private long viewStampCntr;                  // счётчик для генерации меток представлений
 
-        private static DateTime scadaDataDictAge;           // время изменения файла словаря ScadaData
-        private static DateTime scadaWebDictAge;            // время изменения файла словаря ScadaWeb
-        private static SettingsUpdater commSettingsUpdater; // объект для обновления настроек соединения с сервером
-        private static SettingsUpdater webSettingsUpdater;  // объект для обновления настроек веб-приложения
-        private static SettingsUpdater viewSettingsUpdater; // объект для обновления настроек представлений
+        private DateTime scadaDataDictAge;           // время изменения файла словаря ScadaData
+        private DateTime scadaWebDictAge;            // время изменения файла словаря ScadaWeb
+        private SettingsUpdater commSettingsUpdater; // объект для обновления настроек соединения с сервером
+        private SettingsUpdater webSettingsUpdater;  // объект для обновления настроек веб-приложения
+        private SettingsUpdater viewSettingsUpdater; // объект для обновления настроек представлений
 
 
         /// <summary>
         /// Статический конструктор
         /// </summary>
         static AppData()
+        {
+            appDataInstance = new AppData();
+        }
+
+        /// <summary>
+        /// Конструктор, ограничивающий создание объекта из других классов
+        /// </summary>
+        private AppData()
 		{
             appDataLock = new object();
 
@@ -80,7 +89,7 @@ namespace Scada.Web
             AppDirs = new AppDirs();
             Log = new Log(Log.Formats.Full);
             Storage = new Storage(AppDirs.StorageDir);
-            RememberMe = new RememberMe();
+            RememberMe = new RememberMe(Storage, Log);
 
             InitSettingsUpdaters();
             CreateDataObjects();
@@ -91,65 +100,65 @@ namespace Scada.Web
         /// Получить настройки веб-приложения
         /// </summary>
         /// <remarks>Объект создаётся заново при изменении файла настроек веб-приложения</remarks>
-        internal static WebSettings WebSettings { get; private set; }
+        internal WebSettings WebSettings { get; private set; }
 
         /// <summary>
         /// Получить настройки представлений
         /// </summary>
         /// <remarks>Объект создаётся заново при изменении файла настроек представлений</remarks>
-        internal static ViewSettings ViewSettings { get; private set; }
+        internal ViewSettings ViewSettings { get; private set; }
 
         /// <summary>
         /// Получить список плагинов
         /// </summary>
         /// <remarks>Объект создаётся заново при изменении файла настроек веб-приложения</remarks>
-        internal static List<PluginSpec> PluginSpecs { get; private set; }
+        internal List<PluginSpec> PluginSpecs { get; private set; }
 
         /// <summary>
         /// Получить словарь спецификаций представлений, ключ - код типа представления
         /// </summary>
         /// <remarks>Словарь заполняется на основе списка плагинов и 
         /// создаётся заново при изменении файла настроек веб-приложения</remarks>
-        internal static Dictionary<string, ViewSpec> ViewSpecs { get; private set; }
+        internal Dictionary<string, ViewSpec> ViewSpecs { get; private set; }
 
 
         /// <summary>
         /// Получить директории приложения
         /// </summary>
-        public static AppDirs AppDirs { get; private set; }
+        public AppDirs AppDirs { get; private set; }
         
         /// <summary>
         /// Получить журнал приложения
         /// </summary>
-        public static Log Log { get; private set; }
+        public Log Log { get; private set; }
 
         /// <summary>
         /// Получить объект для работы с хранилищем приложения
         /// </summary>
-        public static Storage Storage { get; private set; }
+        public Storage Storage { get; private set; }
 
         /// <summary>
-        /// Получить объект для сохранения входа пользователя в систему
+        /// Получить объект для сохранения входа пользователей в систему
         /// </summary>
-        public static RememberMe RememberMe { get; private set; }
+        public RememberMe RememberMe { get; private set; }
 
         /// <summary>
         /// Получить объект для потокобезопасного доступа к данным кеша клиентов
         /// </summary>
         /// <remarks>Объект создаётся заново при изменении файла настройки соединения с сервером</remarks>
-        public static DataAccess DataAccess { get; private set; }
+        public DataAccess DataAccess { get; private set; }
 
         /// <summary>
         /// Получить кэш представлений
         /// </summary>
         /// <remarks>Объект создаётся заново при изменении файла настройки соединения с сервером</remarks>
-        public static ViewCache ViewCache { get; private set; }
+        public ViewCache ViewCache { get; private set; }
 
 
         /// <summary>
         /// Инициализировать объекты для обновления настроек
         /// </summary>
-        private static void InitSettingsUpdaters()
+        private void InitSettingsUpdaters()
         {
             commSettingsUpdater = new SettingsUpdater(commSettings, 
                 AppDirs.ConfigDir + CommSettings.DefFileName, true);
@@ -162,7 +171,7 @@ namespace Scada.Web
         /// <summary>
         /// Создать объекты доступа к данным
         /// </summary>
-        private static void CreateDataObjects()
+        private void CreateDataObjects()
         {
             serverComm = new ServerComm(commSettings, Log);
             DataCache dataCache = new DataCache(serverComm, Log);
@@ -173,7 +182,7 @@ namespace Scada.Web
         /// <summary>
         /// Обновить словари веб-приложения
         /// </summary>
-        private static void RefreshDictionaries()
+        private void RefreshDictionaries()
         {
             // обновление словаря ScadaData
             bool reloaded;
@@ -197,7 +206,7 @@ namespace Scada.Web
         /// <summary>
         /// Обновить настройки соединения с сервером
         /// </summary>
-        private static bool RefreshCommSettings()
+        private bool RefreshCommSettings()
         {
             bool changed;
             string errMsg;
@@ -218,7 +227,7 @@ namespace Scada.Web
         /// <summary>
         /// Обновить настройки веб-приложения
         /// </summary>
-        private static bool RefreshWebSettings()
+        private bool RefreshWebSettings()
         {
             bool changed;
             string errMsg;
@@ -239,7 +248,7 @@ namespace Scada.Web
         /// <summary>
         /// Обновить настройки представлений
         /// </summary>
-        private static void RefreshViewSettings()
+        private void RefreshViewSettings()
         {
             bool changed;
             string errMsg;
@@ -258,7 +267,7 @@ namespace Scada.Web
         /// <summary>
         /// Загрузить спецификации плагинов
         /// </summary>
-        private static void LoadPlugins()
+        private void LoadPlugins()
         {
             PluginSpecs = new List<PluginSpec>();
 
@@ -277,7 +286,7 @@ namespace Scada.Web
         /// <summary>
         /// Инициализировать плагины
         /// </summary>
-        private static void InitPlugins()
+        private void InitPlugins()
         {
             foreach (PluginSpec pluginSpec in PluginSpecs)
             {
@@ -297,7 +306,7 @@ namespace Scada.Web
         /// <summary>
         /// Создать и заполнить словарь спецификаций представлений
         /// </summary>
-        private static void FillViewSpecs()
+        private void FillViewSpecs()
         {
             ViewSpecs = new Dictionary<string, ViewSpec>();
 
@@ -333,7 +342,7 @@ namespace Scada.Web
         /// <summary>
         /// Инициализировать общие данные веб-приложения
         /// </summary>
-        public static void Init(string webAppDir)
+        public void Init(string webAppDir)
         {
             lock (appDataLock)
             {
@@ -367,7 +376,7 @@ namespace Scada.Web
         /// <summary>
         /// Обновить общие данные веб-приложения
         /// </summary>
-        public static void Refresh()
+        public void Refresh()
         {
             lock (appDataLock)
             {
@@ -393,7 +402,7 @@ namespace Scada.Web
         /// <summary>
         /// Проверить правильность имени и пароля пользователя
         /// </summary>
-        public static bool CheckUser(string username, string password, bool checkPassword, 
+        public bool CheckUser(string username, string password, bool checkPassword, 
             out int roleID, out string errMsg)
         {
             if (checkPassword && string.IsNullOrEmpty(password))
@@ -438,12 +447,21 @@ namespace Scada.Web
         /// <summary>
         /// Присвоить представлению уникальную в пределах приложения метку
         /// </summary>
-        public static long AssignStamp(this BaseView view)
+        public long AssignStamp(BaseView view)
         {
             if (view.Stamp <= 0)
                 view.Stamp = ++viewStampCntr;
 
             return view.Stamp;
+        }
+
+
+        /// <summary>
+        /// Получить общие данные веб-приложения
+        /// </summary>
+        public static AppData GetAppData()
+        {
+            return appDataInstance;
         }
     }
 }

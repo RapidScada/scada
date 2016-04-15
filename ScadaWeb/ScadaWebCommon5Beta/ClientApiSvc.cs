@@ -87,7 +87,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Мексимальное количество символов строке данных в формате JSON, 10 МБ
+        /// Максимальное количество символов в строке данных формата JSON, 10 МБ
         /// </summary>
         private const int MaxJsonLen = 10485760;
         /// <summary>
@@ -98,6 +98,10 @@ namespace Scada.Web
         /// Обеспечивает форматирование данных входных каналов и событий
         /// </summary>
         private static readonly DataFormatter DataFormatter = new DataFormatter();
+        /// <summary>
+        /// Общие данные веб-приложения
+        /// </summary>
+        private static readonly AppData AppData = AppData.GetAppData();
 
 
         /// <summary>

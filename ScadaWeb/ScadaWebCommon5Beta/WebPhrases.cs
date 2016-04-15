@@ -54,6 +54,9 @@ namespace Scada.Web
         public static string ConfigMenuItem { get; private set; }
         public static string AboutMenuItem { get; private set; }
 
+        // Словарь Scada.Web.Shell.RememberMe
+        public static string SecurityViolation { get; private set; }
+
         private static void SetToDefault()
         {
             NotLoggedOn = Localization.Dict.GetEmptyPhrase("NotLoggedOn");
@@ -68,6 +71,8 @@ namespace Scada.Web
             AdminMenuItem = Localization.Dict.GetEmptyPhrase("AdminMenuItem");
             ConfigMenuItem = Localization.Dict.GetEmptyPhrase("ConfigMenuItem");
             AboutMenuItem = Localization.Dict.GetEmptyPhrase("AboutMenuItem");
+
+            SecurityViolation = Localization.Dict.GetEmptyPhrase("SecurityViolation");
         }
 
         public static void Init()
@@ -93,6 +98,11 @@ namespace Scada.Web
                 AdminMenuItem = dict.GetPhrase("AdminMenuItem", AdminMenuItem);
                 ConfigMenuItem = dict.GetPhrase("ConfigMenuItem", ConfigMenuItem);
                 AboutMenuItem = dict.GetPhrase("AboutMenuItem", AboutMenuItem);
+            }
+
+            if (Localization.Dictionaries.TryGetValue("Scada.Web.Shell.RememberMe", out dict))
+            {
+                SecurityViolation = dict.GetPhrase("SecurityViolation", SecurityViolation);
             }
         }
     }

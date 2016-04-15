@@ -103,7 +103,7 @@ namespace Scada
         /// <summary>
         /// Создать и добавить XML-элемент
         /// </summary>
-        public static XmlElement AppendElem(this XmlElement parentXmlElem, string elemName, object innerText)
+        public static XmlElement AppendElem(this XmlElement parentXmlElem, string elemName, object innerText = null)
         {
             XmlElement xmlElem = parentXmlElem.OwnerDocument.CreateElement(elemName);
             string val = XmlValToStr(innerText);

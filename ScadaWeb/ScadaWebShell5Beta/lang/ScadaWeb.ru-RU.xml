@@ -16,4 +16,14 @@
     <Phrase key="ConfigMenuItem">Конфигурация</Phrase>
     <Phrase key="AboutMenuItemText">О программе</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.Shell.RememberMe">
+    <Phrase key="SecurityViolation">Обнаружено нарушение безопасности. Незамедлительно обратитесь к системному администратору.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmLogin">
+    <Phrase key="this">Вход в систему - Rapid SCADA</Phrase>
+    <Phrase key="lblUsername">Имя пользователя</Phrase>
+    <Phrase key="lblPassword">Пароль</Phrase>
+    <Phrase key="lblRememberMe">Запомнить меня</Phrase>
+    <Phrase key="btnLogin">Войти</Phrase>
+  </Dictionary>
 </ScadaWebDictionaries>

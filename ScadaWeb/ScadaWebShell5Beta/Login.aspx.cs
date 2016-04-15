@@ -41,6 +41,7 @@ namespace Scada.Web
         /// </summary>
         private const string DefaultStartPage = "~/View.aspx";
 
+        private AppData appData;   // общие данные веб-приложения
         private UserData userData; // данные пользователя приложения
 
 
@@ -85,6 +86,7 @@ namespace Scada.Web
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            appData = AppData.GetAppData();
             userData = UserData.GetUserData();
 
             if (IsPostBack)
@@ -107,7 +109,8 @@ namespace Scada.Web
                 if (alertIsEmpty && !userData.LoggedOn && userData.WebSettings.RemEnabled)
                 {
                     string username;
-                    if (AppData.RememberMe.ValidateUser(Context, out username, out alert))
+                    if (appData.RememberMe.ValidateUser(Context, out username, out alert) && 
+                        userData.Login(username, out alert))
                         GoToStartPage();
                     else if (alert != "")
                         AddShowAlertScript(alert);
@@ -117,7 +120,7 @@ namespace Scada.Web
                 pnlRememberMe.Visible = userData.WebSettings.RemEnabled;
                 txtUsername.Text = userData.LoggedOn ?
                     userData.UserName :
-                    AppData.RememberMe.RestoreUsername(Context); // из cookie
+                    appData.RememberMe.RestoreUsername(Context); // из cookie
             }
         }
 
@@ -129,9 +132,9 @@ namespace Scada.Web
             {
                 // сохранение информации о входе пользователя
                 if (chkRememberMe.Checked)
-                    AppData.RememberMe.RememberUser(userData.UserName, Context);
+                    appData.RememberMe.RememberUser(userData.UserName, Context);
                 else
-                    AppData.RememberMe.RememberUsername(userData.UserName, Context);
+                    appData.RememberMe.RememberUsername(userData.UserName, Context);
 
                 // переход на стартовую страницу
                 GoToStartPage();

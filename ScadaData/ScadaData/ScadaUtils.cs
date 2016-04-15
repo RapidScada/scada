@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2007
- * Modified : 2015
+ * Modified : 2016
  */
 
 using System;
@@ -197,13 +197,21 @@ namespace Scada
         {
             return DateTime.FromBinary(BitConverter.ToInt64(BitConverter.GetBytes(value), 0));
         }
-        
+
         /// <summary>
-        /// Вычислить хеш-функцию MD5
+        /// Вычислить хеш-функцию MD5 по массиву байт
+        /// </summary>
+        public static string ComputeHash(byte[] bytes)
+        {
+            return BytesToHex(MD5.Create().ComputeHash(bytes));
+        }
+
+        /// <summary>
+        /// Вычислить хеш-функцию MD5 по строке
         /// </summary>
         public static string ComputeHash(string s)
         {
-            return BytesToHex(MD5.Create().ComputeHash(Encoding.Default.GetBytes(s)));
+            return ComputeHash(Encoding.Default.GetBytes(s));
         }
         
         /// <summary>
