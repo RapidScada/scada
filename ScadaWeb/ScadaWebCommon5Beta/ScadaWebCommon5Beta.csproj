@@ -58,6 +58,7 @@
     <Compile Include="Shell\MenuItem.cs" />
     <Compile Include="Shell\StandardMenuItems.cs" />
     <Compile Include="UserData.cs" />
+    <Compile Include="UserMonitor.cs" />
     <Compile Include="UserRights.cs" />
     <Compile Include="WebPhrases.cs" />
     <Compile Include="ViewSettings.cs" />

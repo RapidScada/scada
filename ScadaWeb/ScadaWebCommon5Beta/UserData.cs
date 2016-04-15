@@ -28,8 +28,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Web;
 using System.Web.SessionState;
-using Scada.Client;
-using Utils;
 using Scada.Web.Plugins;
 
 namespace Scada.Web
@@ -93,6 +91,11 @@ namespace Scada.Web
         public string IpAddress { get; private set; }
 
         /// <summary>
+        /// Получить идентификатор сессии
+        /// </summary>
+        public string SessionID { get; private set; }
+
+        /// <summary>
         /// Получить права пользователя
         /// </summary>
         public UserRights UserRights { get; private set; }
@@ -130,6 +133,7 @@ namespace Scada.Web
             LoggedOn = false;
             LogonDT = DateTime.MinValue;
             IpAddress = "";
+            SessionID = "";
             UserRights = null;
 
             WebSettings = null;
@@ -277,8 +281,9 @@ namespace Scada.Web
                 userData = new UserData();
                 session.Add("UserData", userData);
 
-                // получение IP-адреса
+                // получение IP-адреса и идентификатора сессии
                 userData.IpAddress = httpContext.Request.UserHostAddress;
+                userData.SessionID = session.SessionID;
 
                 // обновление ссылок на объекты общих данных приложения
                 userData.UpdateAppDataRefs();

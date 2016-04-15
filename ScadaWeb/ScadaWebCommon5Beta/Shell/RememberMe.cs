@@ -24,6 +24,7 @@
  */
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Web;
@@ -102,6 +103,10 @@ namespace Scada.Web.Shell
         /// Журнал
         /// </summary>
         protected readonly Log log;
+        /// <summary>
+        /// Объект для синхронизации достапа к файлам
+        /// </summary>
+        protected readonly object fileLock;
 
 
         /// <summary>
@@ -123,6 +128,7 @@ namespace Scada.Web.Shell
 
             this.storage = storage;
             this.log = log;
+            fileLock = new object();
         }
 
 
@@ -201,69 +207,74 @@ namespace Scada.Web.Shell
         /// </summary>
         private bool ValidateUser(string username, Credentials cred, out Credentials newCred, out string alert)
         {
-            bool validated = false;
-            newCred = null;
-            alert = "";
-
-            // загрузка учётных данных
-            List<Credentials> credList = LoadCredentials(username);
-            bool credListModified = false;
-            bool credFound = false;
-            DateTime nowDT = DateTime.Now;
-            string browserID = cred.BrowserID;
-            int i = 0;
-
-            while (i < credList.Count)
+            lock (fileLock)
             {
-                Credentials loadedCred = credList[i];
+                bool validated = false;
+                newCred = null;
+                alert = "";
 
-                if (nowDT - loadedCred.CreateDT > ExpireSpan)
+                // загрузка учётных данных
+                List<Credentials> credList = LoadCredentials(username);
+                bool credListModified = false;
+                bool credFound = false;
+                DateTime nowDT = DateTime.Now;
+                string browserID = cred.BrowserID;
+                int i = 0;
+
+                while (i < credList.Count)
                 {
-                    // удаление устаревших учётных данных
-                    credList.RemoveAt(i);
-                    credListModified = true;
-                    i--;
+                    Credentials loadedCred = credList[i];
+
+                    if (nowDT - loadedCred.CreateDT > ExpireSpan)
+                    {
+                        // удаление устаревших учётных данных
+                        credList.RemoveAt(i);
+                        credListModified = true;
+                        i--;
+                    }
+                    else if (!credFound && string.Equals(loadedCred.BrowserID, browserID, StringComparison.Ordinal))
+                    {
+                        credFound = true;
+
+                        if (string.Equals(loadedCred.OneTimePassword, cred.OneTimePassword, StringComparison.Ordinal))
+                        {
+                            // установка признака, что проверка пройдена успешно
+                            validated = true;
+                        }
+                        else
+                        {
+                            alert = WebPhrases.SecurityViolation;
+                            log.WriteError(string.Format(Localization.UseRussian ?
+                                "Попытка использования устаревшего одноразового пароля! " + 
+                                "Возможна утечка данных пользователя {0}" :
+                                "Attempting to use the obsolete one-time password! " + 
+                                "Possible data leak of the user {0}",
+                                username));
+                        }
+
+                        // удаление использованных учётных данных
+                        credList.RemoveAt(i);
+                        credListModified = true;
+                        i--;
+                    }
+
+                    i++;
                 }
-                else if (!credFound && string.Equals(loadedCred.BrowserID, browserID, StringComparison.Ordinal))
+
+                // создание новых учётных данных в случае успешной проверки
+                if (validated)
                 {
-                    credFound = true;
-
-                    if (string.Equals(loadedCred.OneTimePassword, cred.OneTimePassword, StringComparison.Ordinal))
-                    {
-                        // установка признака, что проверка пройдена успешно
-                        validated = true;
-                    }
-                    else
-                    {
-                        alert = WebPhrases.SecurityViolation;
-                        log.WriteError(string.Format(Localization.UseRussian ?
-                            "Попытка использования устаревшего одноразового пароля! Возможна утечка данных пользователя {0}" :
-                            "Attempting to use the obsolete one-time password! Possible data leak of the user {0}",
-                            username));
-                    }
-
-                    // удаление использованных учётных данных
-                    credList.RemoveAt(i);
+                    newCred = new Credentials(browserID);
+                    credList.Add(newCred);
                     credListModified = true;
-                    i--;
                 }
 
-                i++;
+                // сохранение изменившихся учётных данных
+                if (credListModified)
+                    SaveCredentials(username, credList);
+
+                return validated;
             }
-
-            // создание новых учётных данных в случае успешной проверки
-            if (validated)
-            {
-                newCred = new Credentials(browserID);
-                credList.Add(newCred);
-                credListModified = true;
-            }
-
-            // сохранение изменившихся учётных данных
-            if (credListModified)
-                SaveCredentials(username, credList);
-
-            return validated;
         }
 
         /// <summary>
@@ -271,14 +282,17 @@ namespace Scada.Web.Shell
         /// </summary>
         private Credentials CreateCredentials(string username)
         {
-            // загрузка учётных данных
-            List<Credentials> credList = LoadCredentials(username);
-            // создание и добавление новых учётных данных
-            Credentials cred = new Credentials();
-            credList.Add(cred);
-            // сохранение учётных данных
-            SaveCredentials(username, credList);
-            return cred;
+            lock (fileLock)
+            {
+                // загрузка учётных данных
+                List<Credentials> credList = LoadCredentials(username);
+                // создание и добавление новых учётных данных
+                Credentials cred = new Credentials();
+                credList.Add(cred);
+                // сохранение учётных данных
+                SaveCredentials(username, credList);
+                return cred;
+            }
         }
 
         /// <summary>
@@ -437,7 +451,10 @@ namespace Scada.Web.Shell
                 HttpCookie respCookie = CreateCookie("", null);
                 httpContext.Response.Cookies.Set(respCookie);
 
-                File.Delete(GetCredentialsFileName(username));
+                lock (fileLock)
+                {
+                    File.Delete(GetCredentialsFileName(username));
+                }
             }
             catch (Exception ex)
             {
