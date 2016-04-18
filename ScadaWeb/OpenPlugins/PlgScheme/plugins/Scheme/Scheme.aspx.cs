@@ -23,7 +23,7 @@
  * Modified : 2016
  */
 
-#define DEBUG_MODE
+//#define DEBUG_MODE
 
 using Scada.Scheme;
 using System;
@@ -48,30 +48,35 @@ namespace Scada.Web.Plugins.Scheme
         protected int refrRate;   // частота обновления данных
         protected string phrases; // локализованные фразы
 
+        private AppData appData;  // общие данные веб-приложения
+
         /// <summary>
         /// Зарузить словари, используемые плагином
         /// </summary>
         [Obsolete("Move to plugin specification")]
-        private static void LoadDictionaries()
+        private void LoadDictionaries()
         {
             string langDir = HttpContext.Current.Server.MapPath("~/plugins/Scheme/lang/");
             string errMsg;
             if (!Localization.LoadDictionaries(langDir, "PlgScheme", out errMsg))
-                AppData.Log.WriteError(errMsg);
+                appData.Log.WriteError(errMsg);
         }
 
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            appData = AppData.GetAppData();
+            UserData userData = UserData.GetUserData();
+
 #if DEBUG_MODE
-            AppData.Init(Server.MapPath("~"));
+            appData.Init(Server.MapPath("~"));
             debugMode = true;
 #else
             debugMode = false;
 #endif
 
             int.TryParse(Request["viewID"], out viewID);
-            refrRate = 1000; // TODO: получить из параметров веб-приложения
+            refrRate = userData.WebSettings.DataRefrRate;
 
             LoadDictionaries();
             Localization.Dict dict;
@@ -80,8 +85,8 @@ namespace Scada.Web.Plugins.Scheme
 
             // загрузка представления в кеш, чтобы проверить, что оно доступно, присвоить метку
             // и обеспечить возможность получения данных входных каналов через API 
-            SchemeView schemeView = AppData.ViewCache.GetView<SchemeView>(viewID, true);
-            schemeView.AssignStamp();
+            SchemeView schemeView = appData.ViewCache.GetView<SchemeView>(viewID, true);
+            appData.AssignStamp(schemeView);
         }
     }
 }

@@ -30,7 +30,7 @@
                 <div>
                     <asp:Label ID="lblUsername" runat="server" Text="Username" AssociatedControlID="txtUsername"></asp:Label></div>
                 <div>
-                    <asp:TextBox ID="txtUsername" runat="server" CssClass="form-control"></asp:TextBox></div>
+                    <asp:TextBox ID="txtUsername" runat="server" CssClass="form-control" autofocus="autofocus"></asp:TextBox></div>
                 <div>
                     <asp:Label ID="lblPassword" runat="server" Text="Password" AssociatedControlID="txtPassword"></asp:Label></div>
                 <div>

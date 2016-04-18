@@ -54,6 +54,10 @@ namespace Scada.Web
         public static string ConfigMenuItem { get; private set; }
         public static string AboutMenuItem { get; private set; }
 
+        // Словарь Scada.Web.WebSettings
+        public static string LoadWebSettingsError { get; private set; }
+        public static string SaveWebSettingsError { get; private set; }
+
         // Словарь Scada.Web.Shell.RememberMe
         public static string SecurityViolation { get; private set; }
 
@@ -71,6 +75,9 @@ namespace Scada.Web
             AdminMenuItem = Localization.Dict.GetEmptyPhrase("AdminMenuItem");
             ConfigMenuItem = Localization.Dict.GetEmptyPhrase("ConfigMenuItem");
             AboutMenuItem = Localization.Dict.GetEmptyPhrase("AboutMenuItem");
+
+            LoadWebSettingsError = Localization.Dict.GetEmptyPhrase("LoadWebSettingsError");
+            SaveWebSettingsError = Localization.Dict.GetEmptyPhrase("SaveWebSettingsError");
 
             SecurityViolation = Localization.Dict.GetEmptyPhrase("SecurityViolation");
         }

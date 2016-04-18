@@ -51,8 +51,23 @@ namespace Scada.Web
         /// </summary>
         private UserData()
         {
-            Clear();
+            IpAddress = "";
+            SessionID = "";
+
+            ClearUser();
+            ClearAppDataRefs();
         }
+
+
+        /// <summary>
+        /// Получить IP-адрес пользователя
+        /// </summary>
+        public string IpAddress { get; private set; }
+
+        /// <summary>
+        /// Получить идентификатор сессии
+        /// </summary>
+        public string SessionID { get; private set; }
 
 
         /// <summary>
@@ -86,16 +101,6 @@ namespace Scada.Web
         public DateTime LogonDT { get; private set; }
 
         /// <summary>
-        /// Получить IP-адрес пользователя
-        /// </summary>
-        public string IpAddress { get; private set; }
-
-        /// <summary>
-        /// Получить идентификатор сессии
-        /// </summary>
-        public string SessionID { get; private set; }
-
-        /// <summary>
         /// Получить права пользователя
         /// </summary>
         public UserRights UserRights { get; private set; }
@@ -125,17 +130,21 @@ namespace Scada.Web
         /// <summary>
         /// Очистить данные пользователя
         /// </summary>
-        private void Clear()
+        private void ClearUser()
         {
             UserName = "";
             UserID = 0;
             RoleName = "";
             LoggedOn = false;
             LogonDT = DateTime.MinValue;
-            IpAddress = "";
-            SessionID = "";
             UserRights = null;
+        }
 
+        /// <summary>
+        /// Очистить ссылки на объекты общих данных приложения
+        /// </summary>
+        private void ClearAppDataRefs()
+        {
             WebSettings = null;
             ViewSettings = null;
             PluginSpecs = null;
@@ -218,7 +227,14 @@ namespace Scada.Web
         /// </summary>
         public void Logout()
         {
-            Clear();
+            if (LoggedOn)
+            {
+                AppData.Log.WriteAction(string.Format(Localization.UseRussian ?
+                    "Выход из системы: {0}. IP-адрес: {1}" :
+                    "Logout: {0}. IP address: {1}", UserName, IpAddress));
+            }
+
+            ClearUser();
             UpdateAppDataRefs();
         }
 

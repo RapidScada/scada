@@ -6,7 +6,7 @@
 <head runat="server">
     <title>Scheme - Rapid SCADA</title>
     <link href="~/plugins/Scheme/css/scheme.min.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../lib/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="../../js/scadautils.js"></script>
     <script type="text/javascript" src="../../js/api/clientapi.js"></script>
     <script type="text/javascript">

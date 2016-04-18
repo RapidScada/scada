@@ -105,6 +105,15 @@ namespace Scada.Web
 
 
         /// <summary>
+        /// Проверить, что пользователь вошёл систему
+        /// </summary>
+        private void CheckLoggedOn()
+        {
+            if (!AppData.UserMonitor.UserIsLoggedOn(WebOperationContext.Current))
+                throw new ScadaException(WebPhrases.NotLoggedOn);
+        }
+
+        /// <summary>
         /// Получить расширенные текущие данные входных каналов
         /// </summary>
         private CnlDataExtDTO[] GetCnlDataExtDTOs(IList<int> cnlList)
@@ -163,6 +172,7 @@ namespace Scada.Web
         {
             try
             {
+                CheckLoggedOn();
                 SrezTableLight.CnlData cnlData = AppData.DataAccess.GetCurCnlData(cnlNum);
                 return JsSerializer.Serialize(cnlData);
             }
@@ -185,6 +195,7 @@ namespace Scada.Web
         {
             try
             {
+                CheckLoggedOn();
                 CnlDataExtDTO cnlDataExtDTO = new CnlDataExtDTO(cnlNum);
                 DataAccess dataAccess = AppData.DataAccess;
                 DateTime dataAge;
@@ -232,6 +243,7 @@ namespace Scada.Web
         {
             try
             {
+                CheckLoggedOn();
                 int[] cnlNumArr = ScadaWebUtils.QueryParamToIntArray(cnlNums);
                 CnlDataExtDTO[] cnlDataDTOs = GetCnlDataExtDTOs(cnlNumArr);
                 return JsSerializer.Serialize(cnlDataDTOs);
@@ -256,6 +268,7 @@ namespace Scada.Web
         {
             try
             {
+                CheckLoggedOn();
                 CnlDataExtDTO[] cnlDataDTOs;
                 BaseView view = AppData.ViewCache.GetViewFromCache(viewID);
 
@@ -290,6 +303,7 @@ namespace Scada.Web
         {
             try
             {
+                CheckLoggedOn();
                 BaseView view = AppData.ViewCache.GetViewFromCache(viewID);
                 return JsSerializer.Serialize(view == null ? 0 : view.Stamp);
             }

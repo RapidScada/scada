@@ -23,7 +23,10 @@
  * Modified : 2016
  */
 
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Xml;
 
 namespace Scada.Web
 {
@@ -37,6 +40,10 @@ namespace Scada.Web
         /// Имя файла настроек по умолчанию
         /// </summary>
         public const string DefFileName = "WebSettings.xml";
+        /// <summary>
+        /// Мин. частота обновления данных, мс
+        /// </summary>
+        public const int MinDataRefrRate = 500;
 
         
         /// <summary>
@@ -50,7 +57,7 @@ namespace Scada.Web
 
 
         /// <summary>
-        /// Получить или установить частоту обновления данных, с
+        /// Получить или установить частоту обновления данных, мс
         /// </summary>
         public int DataRefrRate { get; set; }
 
@@ -58,11 +65,6 @@ namespace Scada.Web
         /// Получить или установить количество отображаемых событий
         /// </summary>
         public int DispEventCnt { get; set; }
-
-        /// <summary>
-        /// Получить или установить разрешение запоминать пользователя, вошедшего в систему
-        /// </summary>
-        public bool RemEnabled { get; set; }
 
         /// <summary>
         /// Получить или установить разрешение команд управления
@@ -75,12 +77,17 @@ namespace Scada.Web
         public bool CmdPassword { get; set; }
 
         /// <summary>
+        /// Получить или установить разрешение запоминать пользователя, вошедшего в систему
+        /// </summary>
+        public bool RemEnabled { get; set; }
+
+        /// <summary>
         /// Получить или установить стартовую страницу после входа в систему
         /// </summary>
         public string StartPage { get; set; }
 
         /// <summary>
-        /// Получить список имён файлов библиотек подключенных плагинов
+        /// Получить имена файлов библиотек подключенных плагинов
         /// </summary>
         public List<string> PluginFileNames { get; protected set; }
 
@@ -90,11 +97,11 @@ namespace Scada.Web
         /// </summary>
         protected void SetToDefault()
         {
-            DataRefrRate = 1;
+            DataRefrRate = 1000;
             DispEventCnt = 100;
-            RemEnabled = true; // TODO: сделать false после реализации загрузки настроек
             CmdEnabled = true;
             CmdPassword = true; // TODO: перенести в базу конфигурации для каждого канала управления
+            RemEnabled = false;
             StartPage = "";
             PluginFileNames.Clear();
         }
@@ -121,11 +128,69 @@ namespace Scada.Web
         /// </summary>
         public bool LoadFromFile(string fileName, out string errMsg)
         {
+            // установка значений по умолчанию
             SetToDefault();
-            PluginFileNames.Add("PlgTableView.dll");
-            PluginFileNames.Add("PlgSchemeView.dll");
-            errMsg = "";
-            return true;
+
+            // загрузка настроек
+            try
+            {
+                if (!File.Exists(fileName))
+                    throw new FileNotFoundException(string.Format(CommonPhrases.NamedFileNotFound, fileName));
+
+                XmlDocument xmlDoc = new XmlDocument(); // обрабатываемый XML-документ
+                xmlDoc.Load(fileName);
+                XmlElement rootElem = xmlDoc.DocumentElement;
+
+                // загрузка общих параметров
+                XmlNode paramsNode = rootElem.SelectSingleNode("CommonParams");
+                if (paramsNode != null)
+                {
+                    XmlNodeList paramNodeList = paramsNode.SelectNodes("Param");
+                    foreach (XmlElement paramElem in paramNodeList)
+                    {
+                        string name = paramElem.GetAttribute("name").Trim();
+                        string nameL = name.ToLowerInvariant();
+                        string val = paramElem.GetAttribute("value");
+
+                        try
+                        {
+                            if (nameL == "datarefrrate")
+                                DataRefrRate = Math.Max(MinDataRefrRate, int.Parse(val));
+                            else if (nameL == "dispeventcnt")
+                                DispEventCnt = int.Parse(val);
+                            else if (nameL == "cmdenabled")
+                                CmdEnabled = bool.Parse(val);
+                            else if (nameL == "cmdpassword")
+                                CmdPassword = bool.Parse(val);
+                            else if (nameL == "remenabled")
+                                RemEnabled = bool.Parse(val);
+                            else if (nameL == "startpage")
+                                StartPage = val;
+                        }
+                        catch
+                        {
+                            throw new Exception(string.Format(CommonPhrases.IncorrectXmlParamVal, name));
+                        }
+                    }
+                }
+
+                // загрузка имён файлов модулей
+                XmlNode pluginsNode = rootElem.SelectSingleNode("Plugins");
+                if (pluginsNode != null)
+                {
+                    XmlNodeList moduleNodeList = pluginsNode.SelectNodes("Plugin");
+                    foreach (XmlElement moduleElem in moduleNodeList)
+                        PluginFileNames.Add(moduleElem.GetAttribute("fileName"));
+                }
+
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = WebPhrases.LoadWebSettingsError + ": " + ex.Message;
+                return false;
+            }
         }
 
         /// <summary>
@@ -133,8 +198,15 @@ namespace Scada.Web
         /// </summary>
         public bool SaveToFile(string fileName, out string errMsg)
         {
-            errMsg = "WebSettings not implemented";
-            return false;
+            try
+            {
+                throw new NotImplementedException("Method not implemented.");
+            }
+            catch (Exception ex)
+            {
+                errMsg = WebPhrases.SaveWebSettingsError + ": " + ex.Message;
+                return false;
+            }
         }
     }
 }

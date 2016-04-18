@@ -41,7 +41,8 @@ namespace Scada.Web
 
         protected void Session_Start(object sender, EventArgs e)
         {
-
+            // добавление информации о пользователе
+            AppData.GetAppData().UserMonitor.AddUser(UserData.GetUserData());
         }
 
         protected void Application_BeginRequest(object sender, EventArgs e)
@@ -61,7 +62,8 @@ namespace Scada.Web
 
         protected void Session_End(object sender, EventArgs e)
         {
-
+            // удаление информации о пользователе
+            AppData.GetAppData().UserMonitor.RemoveUser(Session.SessionID);
         }
 
         protected void Application_End(object sender, EventArgs e)

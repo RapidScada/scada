@@ -66,8 +66,10 @@ namespace Scada.Web
             }
             else
             {
-                string path = Server.MapPath(startPage);
-                return File.Exists(path) ? startPage : DefaultStartPage;
+                int ind = startPage.IndexOf('?');
+                string virtPath = ind >= 0 ? startPage.Substring(0, ind) : startPage;
+                string physPath = Server.MapPath(virtPath);
+                return File.Exists(physPath) ? startPage : DefaultStartPage;
             }
         }
 

@@ -60,7 +60,7 @@ scada.clientAPI = {
                 callback(true, parsedData);
             } else {
                 scada.utils.logServiceError(operation);
-                callback(false, defaultResult);
+                callback(false, errorResult);
             }
         })
         .fail(function (jqXHR, textStatus, errorThrown) {

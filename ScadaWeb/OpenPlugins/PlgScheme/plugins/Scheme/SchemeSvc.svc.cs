@@ -200,6 +200,10 @@ namespace Scada.Web.Plugins.Scheme
         /// Обеспечивает сериализацию результатов методов сервиса
         /// </summary>
         private static readonly JavaScriptSerializer JsSerializer = new JavaScriptSerializer() { MaxJsonLength = MaxJsonLen };
+        /// <summary>
+        /// Общие данные веб-приложения
+        /// </summary>
+        private static readonly AppData AppData = AppData.GetAppData();
 
 
         /// <summary>

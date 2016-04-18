@@ -494,14 +494,17 @@ namespace Scada
                 }
                 catch (Exception ex)
                 {
-                    errMsg = (UseRussian ? "Ошибка при загрузке словарей: " : 
+                    errMsg = (UseRussian ? 
+                        "Ошибка при загрузке словарей: " : 
                         "Error loading dictionaries: ") + ex.Message;
                     return false;
                 }
             }
             else
             {
-                errMsg = (UseRussian ? "Не найден файл словарей " : "File with dictionaries not found ") + fileName;
+                errMsg = (UseRussian ? 
+                    "Не найден файл словарей: " : 
+                    "Dictionary file not found: ") + fileName;
                 return false;
             }
         }
@@ -549,7 +552,7 @@ namespace Scada
         /// </summary>
         public static bool LoadingRequired(string directory, string fileNamePrefix)
         {
-            return !Localization.UseRussian || File.Exists(GetDictionaryFileName(directory, fileNamePrefix));
+            return !UseRussian || File.Exists(GetDictionaryFileName(directory, fileNamePrefix));
         }
 
         /// <summary>
@@ -557,7 +560,7 @@ namespace Scada
         /// </summary>
         public static string ToLocalizedString(this DateTime dateTime)
         {
-            return dateTime.ToString("d", Localization.Culture) + " " + dateTime.ToString("T", Localization.Culture);
+            return dateTime.ToString("d", Culture) + " " + dateTime.ToString("T", Culture);
         }
     }
 }
