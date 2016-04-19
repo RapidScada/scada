@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : ScadaData
+ * Module   : ScadaWebCommon
  * Summary  : Updates settings on file change
  * 
  * Author   : Mikhail Shiryaev
@@ -24,8 +24,9 @@
  */
 
 using System;
+using Utils;
 
-namespace Scada
+namespace Scada.Web
 {
     /// <summary>
     /// Updates settings on file change
@@ -33,6 +34,20 @@ namespace Scada
     /// </summary>
     public class SettingsUpdater
     {
+        /// <summary>
+        /// Имя файла настроек
+        /// </summary>
+        protected readonly string fileName;
+        /// <summary>
+        /// Признак, что настройки необходимо создавать заново, если они изменились
+        /// </summary>
+        protected readonly bool recreate;
+        /// <summary>
+        /// Журнал
+        /// </summary>
+        protected readonly Log log;
+
+
         /// <summary>
         /// Конструктор, ограничивающий создание объекта без параметров
         /// </summary>
@@ -43,16 +58,18 @@ namespace Scada
         /// <summary>
         /// Конструктор
         /// </summary>
-        public SettingsUpdater(ISettings settings, string fileName, bool recreate)
+        public SettingsUpdater(ISettings settings, string fileName, bool recreate, Log log = null)
         {
             if (settings == null)
                 throw new ArgumentNullException("settings");
             if (fileName == null)
                 throw new ArgumentNullException("fileName");
 
+            this.fileName = fileName;
+            this.recreate = recreate;
+            this.log = log;
+
             Settings = settings;
-            FileName = fileName;
-            Recreate = recreate;
             FileAge = DateTime.MinValue;
         }
 
@@ -61,16 +78,6 @@ namespace Scada
         /// Получить обновляемые настройки
         /// </summary>
         public ISettings Settings { get; protected set; }
-
-        /// <summary>
-        /// Получить имя файла настроек
-        /// </summary>
-        public string FileName { get; protected set; }
-
-        /// <summary>
-        /// Получить признак, что настройки необходимо создавать заново, если они изменились
-        /// </summary>
-        public bool Recreate { get; protected set; }
 
         /// <summary>
         /// Получить время изменения файла настроек при обновлении
@@ -83,7 +90,7 @@ namespace Scada
         /// </summary>
         public bool Update(out bool changed, out string errMsg)
         {
-            DateTime newFileAge = ScadaUtils.GetLastWriteTime(FileName);
+            DateTime newFileAge = ScadaUtils.GetLastWriteTime(fileName);
 
             if (FileAge == newFileAge)
             {
@@ -93,13 +100,13 @@ namespace Scada
             }
             else
             {
-                ISettings settings = Recreate ? Settings.Create() : Settings;
+                ISettings settings = recreate ? Settings.Create() : Settings;
 
-                if (settings.LoadFromFile(FileName, out errMsg))
+                if (settings.LoadFromFile(fileName, out errMsg))
                 {
                     FileAge = newFileAge;
 
-                    if (Recreate)
+                    if (recreate)
                     {
                         changed = !Settings.Equals(settings);
                         Settings = settings;
@@ -113,6 +120,9 @@ namespace Scada
                 }
                 else
                 {
+                    if (log != null)
+                        log.WriteError(errMsg);
+
                     changed = false;
                     return false;
                 }
@@ -122,9 +132,28 @@ namespace Scada
         /// <summary>
         /// Обновить настройки из файла, если файл изменился
         /// </summary>
+        public bool Update(out bool changed)
+        {
+            string errMsg;
+            return Update(out changed, out errMsg);
+        }
+
+        /// <summary>
+        /// Обновить настройки из файла, если файл изменился
+        /// </summary>
         public bool Update(out string errMsg)
         {
             bool changed;
+            return Update(out changed, out errMsg);
+        }
+
+        /// <summary>
+        /// Обновить настройки из файла, если файл изменился
+        /// </summary>
+        public bool Update()
+        {
+            bool changed;
+            string errMsg;
             return Update(out changed, out errMsg);
         }
     }

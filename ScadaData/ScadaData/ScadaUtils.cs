@@ -48,7 +48,7 @@ namespace Scada
         /// <summary>
         /// Длительность хранения данных в cookies
         /// </summary>
-        [Obsolete("Use Scada.Web.ScadaWebUtils")]
+        [Obsolete("Use Scada.Web.WebUtils")]
         public static readonly TimeSpan CookieExpiration = TimeSpan.FromDays(30);
 
         private static NumberFormatInfo nfi; // формат вещественных чисел
@@ -260,7 +260,7 @@ namespace Scada
         /// <summary>
         /// Отключить кэширование страницы
         /// </summary>
-        [Obsolete("Use Scada.Web.ScadaWebUtils")]
+        [Obsolete("Use Scada.Web.WebUtils")]
         public static void DisablePageCache(HttpResponse response)
         {
             if (response != null)
@@ -273,7 +273,7 @@ namespace Scada
         /// <summary>
         /// Преобразовать строку для вывода на веб-страницу, заменив "\n" на тег "br"
         /// </summary>
-        [Obsolete("Use Scada.Web.ScadaWebUtils")]
+        [Obsolete("Use Scada.Web.WebUtils")]
         public static string HtmlEncodeWithBreak(string s)
         {
             return HttpUtility.HtmlEncode(s).Replace("\n", "<br />");

@@ -73,6 +73,15 @@ namespace Scada
             public Dictionary<string, string> Phrases { get; private set; }
 
             /// <summary>
+            /// Получить имя файла словаря для заданной культуры
+            /// </summary>
+            public static string GetFileName(string directory, string fileNamePrefix, CultureInfo cultureInfo)
+            {
+                return directory + fileNamePrefix +
+                    (cultureInfo == null || string.IsNullOrEmpty(cultureInfo.Name) ? "" : "." + cultureInfo.Name) + 
+                    ".xml";
+            }
+            /// <summary>
             /// Получить фразу из словаря по ключу или значение по умолчанию при её отсутствии
             /// </summary>
             public string GetPhrase(string key, string defaultVal)
@@ -87,55 +96,6 @@ namespace Scada
                 return string.Format(UseRussian ?
                     "Фраза с ключом {0} не загружена." :
                     "The phrase with the key {0} is not loaded.", key);
-            }
-        }
-
-        /// <summary>
-        /// Информация об элементе управления
-        /// </summary>
-        private class ControlInfo
-        {
-            /// <summary>
-            /// Конструктор
-            /// </summary>
-            public ControlInfo()
-            {
-                Text = null;
-                ToolTip = null;
-                Items = null;
-            }
-
-            /// <summary>
-            /// Получить или установить текст
-            /// </summary>
-            public string Text { get; set; }
-            /// <summary>
-            /// Получить или установить всплывающую подсказку
-            /// </summary>
-            public string ToolTip { get; set; }
-            /// <summary>
-            /// Получить или установить список элементов
-            /// </summary>
-            public List<string> Items { get; set; }
-
-            /// <summary>
-            /// Установить значение элемента списка, инициализировав список при необходимости
-            /// </summary>
-            public void SetItem(int index, string val)
-            {
-                if (Items == null)
-                    Items = new List<string>();
-
-                if (index < Items.Count)
-                {
-                    Items[index] = val;
-                }
-                else
-                {
-                    while (Items.Count < index)
-                        Items.Add(null);
-                    Items.Add(val);
-                }
             }
         }
 
@@ -177,222 +137,6 @@ namespace Scada
             }
         }
 
-
-        /// <summary>
-        /// Получить информацию об элементах управления из словаря
-        /// </summary>
-        private static Dictionary<string, ControlInfo> GetControlInfoDict(Dict dict)
-        {
-            Dictionary<string, ControlInfo> controlInfoDict = new Dictionary<string, ControlInfo>();
-
-            foreach (string phraseKey in dict.Phrases.Keys)
-            {
-                string phraseVal = dict.Phrases[phraseKey];
-                int dotPos = phraseKey.IndexOf('.');
-
-                if (dotPos < 0)
-                {
-                    // если точки в ключе фразы нет, то присваивается свойство текст
-                    if (controlInfoDict.ContainsKey(phraseKey))
-                        controlInfoDict[phraseKey].Text = phraseVal;
-                    else
-                        controlInfoDict[phraseKey] = new ControlInfo() { Text = phraseVal };
-                }
-                else if (0 < dotPos && dotPos < phraseKey.Length - 1)
-                {
-                    // если точка в середине ключа фразы, то слева от точки - имя элемента, справа - свойство
-                    string ctrlName = phraseKey.Substring(0, dotPos);
-                    string ctrlProp = phraseKey.Substring(dotPos + 1);
-                    bool propAssigned = true;
-
-                    ControlInfo controlInfo;
-                    if (!controlInfoDict.TryGetValue(ctrlName, out controlInfo))
-                        controlInfo = new ControlInfo();
-
-                    if (ctrlProp == "Text")
-                    {
-                        controlInfo.Text = phraseVal;
-                    }
-                    else if (ctrlProp == "ToolTip")
-                    {
-                        controlInfo.ToolTip = phraseVal;
-                    }
-                    else if (ctrlProp.StartsWith("Items["))
-                    {
-                        int pos = ctrlProp.IndexOf(']');
-                        int ind;
-                        if (pos >= 0 && int.TryParse(ctrlProp.Substring(6, pos - 6), out ind))
-                            controlInfo.SetItem(ind, phraseVal);
-                    }
-                    else
-                    {
-                        propAssigned = false;
-                    }
-
-                    if (propAssigned)
-                        controlInfoDict[ctrlName] = controlInfo;
-                }
-            }
-
-            return controlInfoDict;
-        }
-
-        /// <summary>
-        /// Рекурсивно перевести элементы управления Windows-формы
-        /// </summary>
-        private static void TranslateWinControls(IList controls, WinForms.ToolTip toolTip, 
-            Dictionary<string, ControlInfo> controlInfoDict)
-        {
-            if (controls == null)
-                return;
-
-            foreach (object elem in controls)
-            {
-                ControlInfo controlInfo;
-
-                if (elem is WinForms.Control)
-                {
-                    // обработка обычного элемента управления
-                    WinForms.Control control = (WinForms.Control)elem;
-                    if (!string.IsNullOrEmpty(control.Name) /*например, поле ввода и кнопки NumericUpDown*/ && 
-                        controlInfoDict.TryGetValue(control.Name, out controlInfo))
-                    {
-                        if (controlInfo.Text != null)
-                            control.Text = controlInfo.Text;
-
-                        if (controlInfo.ToolTip != null && toolTip != null)
-                            toolTip.SetToolTip(control, controlInfo.ToolTip);
-
-                        if (controlInfo.Items != null && elem is WinForms.ComboBox)
-                        {
-                            WinForms.ComboBox comboBox = (WinForms.ComboBox)elem;
-                            int cnt = Math.Min(comboBox.Items.Count, controlInfo.Items.Count);
-                            for (int i = 0; i < cnt; i++)
-                            {
-                                string itemText = controlInfo.Items[i];
-                                if (itemText != null)
-                                    comboBox.Items[i] = itemText;
-                            }
-                        }
-                    }
-
-                    if (elem is WinForms.MenuStrip)
-                    {
-                        // запуск обработки элементов меню
-                        WinForms.MenuStrip menuStrip = (WinForms.MenuStrip)elem;
-                        TranslateWinControls(menuStrip.Items, toolTip, controlInfoDict);
-                    }
-                    else if (elem is WinForms.ToolStrip)
-                    {
-                        // запуск обработки элементов панели инструментов
-                        WinForms.ToolStrip toolStrip = (WinForms.ToolStrip)elem;
-                        TranslateWinControls(toolStrip.Items, toolTip, controlInfoDict);
-                    }
-                    else if (elem is WinForms.DataGridView)
-                    {
-                        // запуск обработки столбцов таблицы
-                        WinForms.DataGridView dataGridView = (WinForms.DataGridView)elem;
-                        TranslateWinControls(dataGridView.Columns, toolTip, controlInfoDict);
-                    }
-                    else if (elem is WinForms.ListView)
-                    {
-                        // запуск обработки столбцов списка
-                        WinForms.ListView listView = (WinForms.ListView)elem;
-                        TranslateWinControls(listView.Columns, toolTip, controlInfoDict);
-                    }
-
-                    // запуск обработки дочерних элементов
-                    if (control.HasChildren)
-                        TranslateWinControls(control.Controls, toolTip, controlInfoDict);
-                }
-                else if (elem is WinForms.ToolStripItem)
-                {
-                    // обработка элемента меню или элемента панели инструментов
-                    WinForms.ToolStripItem item = (WinForms.ToolStripItem)elem;
-                    if (controlInfoDict.TryGetValue(item.Name, out controlInfo))
-                    {
-                        if (controlInfo.Text != null)
-                            item.Text = controlInfo.Text;
-                        if (controlInfo.ToolTip != null)
-                            item.ToolTipText = controlInfo.ToolTip;
-                    }
-
-                    if (elem is WinForms.ToolStripMenuItem)
-                    {
-                        // запуск обработки элементов подменю
-                        WinForms.ToolStripMenuItem menuItem = (WinForms.ToolStripMenuItem)elem;
-                        if (menuItem.HasDropDownItems)
-                            TranslateWinControls(menuItem.DropDownItems, toolTip, controlInfoDict);
-                    }
-                }
-                else if (elem is WinForms.DataGridViewColumn)
-                {
-                    // обработка столбца таблицы
-                    WinForms.DataGridViewColumn column = (WinForms.DataGridViewColumn)elem;
-                    if (controlInfoDict.TryGetValue(column.Name, out controlInfo) && controlInfo.Text != null)
-                        column.HeaderText = controlInfo.Text;
-                }
-                else if (elem is WinForms.ColumnHeader)
-                {
-                    // обработка столбца списка
-                    WinForms.ColumnHeader columnHeader = (WinForms.ColumnHeader)elem;
-                    if (controlInfoDict.TryGetValue(columnHeader.Name, out controlInfo) && controlInfo.Text != null)
-                        columnHeader.Text = controlInfo.Text;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Рекурсивно перевести элементы управления веб-формы
-        /// </summary>
-        private static void TranslateWebControls(ControlCollection controls, 
-            Dictionary<string, ControlInfo> controlInfoDict)
-        {
-            if (controls == null)
-                return;
-
-            foreach (Control control in controls)
-            {
-                ControlInfo controlInfo;
-
-                if (!string.IsNullOrEmpty(control.ID) && controlInfoDict.TryGetValue(control.ID, out controlInfo))
-                {
-                    if (control is Label)
-                    {
-                        Label label = (Label)control;
-                        if (controlInfo.Text != null)
-                            label.Text = controlInfo.Text;
-                    }
-                    else if (control is CheckBox)
-                    {
-                        CheckBox checkBox = (CheckBox)control;
-                        if (controlInfo.Text != null)
-                            checkBox.Text = controlInfo.Text;
-                    }
-                    else if (control is Button)
-                    {
-                        Button button = (Button)control;
-                        if (controlInfo.Text != null)
-                            button.Text = controlInfo.Text;
-                    }
-                    else if (control is Image)
-                    {
-                        Image image = (Image)control;
-                        if (controlInfo.ToolTip != null)
-                            image.ToolTip = controlInfo.ToolTip;
-                    }
-                    else if (control is Panel)
-                    {
-                        Panel panel = (Panel)control;
-                        if (controlInfo.ToolTip != null)
-                            panel.ToolTip = controlInfo.ToolTip;
-                    }
-                }
-
-                // запуск обработки дочерних элементов
-                TranslateWebControls(control.Controls, controlInfoDict);
-            }
-        }
 
         /// <summary>
         /// Считать информацию о культуре из реестра
@@ -444,6 +188,14 @@ namespace Scada
                     "Error writing culture info to the registry: ") + ex.Message;
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Получить имя файла словаря в зависимости от используемой культуры
+        /// </summary>
+        public static string GetDictionaryFileName(string directory, string fileNamePrefix)
+        {
+            return Dict.GetFileName(directory, fileNamePrefix, Culture);
         }
 
         /// <summary>
@@ -510,46 +262,10 @@ namespace Scada
         }
 
         /// <summary>
-        /// Обновить словарь, если он изменился
-        /// </summary>
-        public static bool RefreshDictionary(string directory, string fileNamePrefix, ref DateTime fileAge, 
-            out bool reloaded, out string errMsg)
-        {
-            string fileName = GetDictionaryFileName(directory, fileNamePrefix);
-            DateTime newFileAge = ScadaUtils.GetLastWriteTime(fileName);
-
-            if (fileAge == newFileAge)
-            {
-                reloaded = false;
-                errMsg = "";
-                return true;
-            }
-            else if (LoadDictionaries(fileName, out errMsg))
-            {
-                fileAge = newFileAge;
-                reloaded = true;
-                return true;
-            }
-            else
-            {
-                reloaded = false;
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Получить имя файла словаря в зависимости от используемой культуры
-        /// </summary>
-        public static string GetDictionaryFileName(string directory, string fileNamePrefix)
-        {
-            return directory + fileNamePrefix +
-                (string.IsNullOrEmpty(Culture.Name) ? "" : "." + Culture.Name) + ".xml";
-        }
-
-        /// <summary>
         /// Определить, что загрузка словаря необходима: 
         /// не используется русская локализация или существует файл словаря
         /// </summary>
+        [Obsolete("Load dictionary anyway.")]
         public static bool LoadingRequired(string directory, string fileNamePrefix)
         {
             return !UseRussian || File.Exists(GetDictionaryFileName(directory, fileNamePrefix));

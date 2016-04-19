@@ -56,7 +56,7 @@ namespace Scada.Web.Plugins.Scheme
         [Obsolete("Move to plugin specification")]
         private void LoadDictionaries()
         {
-            string langDir = HttpContext.Current.Server.MapPath("~/plugins/Scheme/lang/");
+            string langDir = Server.MapPath("~/plugins/Scheme/lang/");
             string errMsg;
             if (!Localization.LoadDictionaries(langDir, "PlgScheme", out errMsg))
                 appData.Log.WriteError(errMsg);

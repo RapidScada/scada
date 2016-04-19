@@ -53,8 +53,8 @@ namespace Scada.Web
         private ServerComm serverComm;               // объект для обмена данными с сервером
         private long viewStampCntr;                  // счётчик для генерации меток представлений
 
-        private DateTime scadaDataDictAge;           // время изменения файла словаря ScadaData
-        private DateTime scadaWebDictAge;            // время изменения файла словаря ScadaWeb
+        private DictUpdater scadaDataDictUpdater;    // объект для обновления словаря ScadaData
+        private DictUpdater scadaWebDictUpdater;     // объект для обновления словаря ScadaWeb
         private SettingsUpdater commSettingsUpdater; // объект для обновления настроек соединения с сервером
         private SettingsUpdater webSettingsUpdater;  // объект для обновления настроек веб-приложения
         private SettingsUpdater viewSettingsUpdater; // объект для обновления настроек представлений
@@ -79,9 +79,6 @@ namespace Scada.Web
             commSettings = new CommSettings();
             viewStampCntr = 0;
 
-            scadaDataDictAge = DateTime.MinValue;
-            scadaWebDictAge = DateTime.MinValue;
-
             WebSettings = new WebSettings();
             ViewSettings = new ViewSettings();
             PluginSpecs = new List<PluginSpec>();
@@ -92,7 +89,7 @@ namespace Scada.Web
             RememberMe = new RememberMe(Storage, Log);
             UserMonitor = new UserMonitor(Log);
 
-            InitSettingsUpdaters();
+            InitUpdaters();
             CreateDataObjects();
         }
 
@@ -162,16 +159,19 @@ namespace Scada.Web
 
 
         /// <summary>
-        /// Инициализировать объекты для обновления настроек
+        /// Инициализировать объекты для обновления словарей и настроек
         /// </summary>
-        private void InitSettingsUpdaters()
+        private void InitUpdaters()
         {
+            scadaDataDictUpdater = new DictUpdater(AppDirs.LangDir, "ScadaData", CommonPhrases.Init, Log);
+            scadaWebDictUpdater = new DictUpdater(AppDirs.LangDir, "ScadaWeb", WebPhrases.Init, Log);
+
             commSettingsUpdater = new SettingsUpdater(commSettings, 
-                AppDirs.ConfigDir + CommSettings.DefFileName, true);
+                AppDirs.ConfigDir + CommSettings.DefFileName, true, Log);
             webSettingsUpdater = new SettingsUpdater(WebSettings, 
-                AppDirs.ConfigDir + WebSettings.DefFileName, true);
+                AppDirs.ConfigDir + WebSettings.DefFileName, true, Log);
             viewSettingsUpdater = new SettingsUpdater(ViewSettings,
-                AppDirs.ConfigDir + ViewSettings.DefFileName, true);
+                AppDirs.ConfigDir + ViewSettings.DefFileName, true, Log);
         }
 
         /// <summary>
@@ -190,23 +190,8 @@ namespace Scada.Web
         /// </summary>
         private void RefreshDictionaries()
         {
-            // обновление словаря ScadaData
-            bool reloaded;
-            string errMsg;
-            if (!Localization.RefreshDictionary(AppDirs.LangDir, "ScadaData", 
-                ref scadaDataDictAge, out reloaded, out errMsg))
-                Log.WriteError(errMsg);
-
-            if (reloaded)
-                CommonPhrases.Init();
-
-            // обновление словаря ScadaWeb
-            if (!Localization.RefreshDictionary(AppDirs.LangDir, "ScadaWeb", 
-                ref scadaWebDictAge, out reloaded, out errMsg))
-                Log.WriteError(errMsg);
-
-            if (reloaded)
-                WebPhrases.Init();
+            scadaDataDictUpdater.Update();
+            scadaWebDictUpdater.Update();
         }
 
         /// <summary>
@@ -215,18 +200,8 @@ namespace Scada.Web
         private bool RefreshCommSettings()
         {
             bool changed;
-            string errMsg;
-
-            if (commSettingsUpdater.Update(out changed, out errMsg))
-            {
-                if (changed)
-                    commSettings = (CommSettings)commSettingsUpdater.Settings;
-            }
-            else
-            {
-                Log.WriteError(errMsg);
-            }
-
+            if (commSettingsUpdater.Update(out changed) && changed)
+                commSettings = (CommSettings)commSettingsUpdater.Settings;
             return changed;
         }
 
@@ -236,18 +211,8 @@ namespace Scada.Web
         private bool RefreshWebSettings()
         {
             bool changed;
-            string errMsg;
-
-            if (webSettingsUpdater.Update(out changed, out errMsg))
-            {
-                if (changed)
-                    WebSettings = (WebSettings)webSettingsUpdater.Settings;
-            }
-            else
-            {
-                Log.WriteError(errMsg);
-            }
-
+            if (webSettingsUpdater.Update(out changed) && changed)
+                WebSettings = (WebSettings)webSettingsUpdater.Settings;
             return changed;
         }
 
@@ -257,17 +222,8 @@ namespace Scada.Web
         private void RefreshViewSettings()
         {
             bool changed;
-            string errMsg;
-
-            if (viewSettingsUpdater.Update(out changed, out errMsg))
-            {
-                if (changed)
-                    ViewSettings = (ViewSettings)viewSettingsUpdater.Settings;
-            }
-            else
-            {
-                Log.WriteError(errMsg);
-            }
+            if (viewSettingsUpdater.Update(out changed) && changed)
+                ViewSettings = (ViewSettings)viewSettingsUpdater.Settings;
         }
 
         /// <summary>
@@ -371,7 +327,7 @@ namespace Scada.Web
                     Storage.StorageDir = AppDirs.StorageDir;
 
                     // инициализация объектов для обновления настроек
-                    InitSettingsUpdaters();
+                    InitUpdaters();
                 }
 
                 // обновление данных веб-приложения
