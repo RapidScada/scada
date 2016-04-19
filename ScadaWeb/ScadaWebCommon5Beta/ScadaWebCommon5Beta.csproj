@@ -52,10 +52,12 @@
     <Compile Include="ClientApiSvc.cs" />
     <Compile Include="DictUpdater.cs" />
     <Compile Include="Plugins\PluginSpec.cs" />
+    <Compile Include="Plugins\RepSpec.cs" />
     <Compile Include="Plugins\ViewSpec.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SettingsUpdater.cs" />
     <Compile Include="Shell\RememberMe.cs" />
+    <Compile Include="Shell\SortOrders.cs" />
     <Compile Include="WebUtils.cs" />
     <Compile Include="Shell\MenuItem.cs" />
     <Compile Include="Shell\StandardMenuItems.cs" />

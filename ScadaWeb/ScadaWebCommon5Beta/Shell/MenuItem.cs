@@ -35,21 +35,6 @@ namespace Scada.Web.Shell
     public class MenuItem : IComparable<MenuItem>
     {
         /// <summary>
-        /// Предзаданные порядки сортировки элементов меню
-        /// </summary>
-        public static class SortOrders
-        {
-            /// <summary>
-            /// Первый
-            /// </summary>
-            public const int First = 0;
-            /// <summary>
-            /// Последний
-            /// </summary>
-            public const int Last = 1000;
-        }
-
-        /// <summary>
         /// Конструктор, ограничивающий создание объекта без параметров
         /// </summary>
         protected MenuItem()

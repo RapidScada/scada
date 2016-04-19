@@ -46,6 +46,18 @@ namespace Scada.Web.Plugins
 
 
         /// <summary>
+        /// Получить уникальный ключ для записи данных в сессию
+        /// </summary>
+        protected string SessionKey
+        {
+            get
+            {
+                return GetType().Name;
+            }
+        }
+
+
+        /// <summary>
         /// Получить наименование плагина
         /// </summary>
         public abstract string Name { get; }
@@ -61,9 +73,9 @@ namespace Scada.Web.Plugins
         public abstract string Version { get; }
 
         /// <summary>
-        /// Получить спецификации поддерживаемых представлений
+        /// Получить спецификации представлений, которые реализуются плагином
         /// </summary>
-        public virtual List<ViewSpec> SupportedViewSpecs
+        public virtual List<ViewSpec> ViewSpecs
         {
             get
             {
@@ -72,13 +84,13 @@ namespace Scada.Web.Plugins
         }
 
         /// <summary>
-        /// Получить уникальный ключ для записи данных в сессию
+        /// Получить спецификации отчётов, которые реализуются плагином
         /// </summary>
-        public string SessionKey
+        public virtual List<RepSpec> RepSpecs
         {
             get
             {
-                return GetType().Name;
+                return null;
             }
         }
 
@@ -106,15 +118,15 @@ namespace Scada.Web.Plugins
         }
 
         /// <summary>
-        /// Получить список элементов меню для пользователя
+        /// Получить список элементов меню, доступных пользователю
         /// </summary>
         /// <remarks>Поддерживается не более 2 уровней вложенности меню</remarks>
         public virtual List<MenuItem> GetMenuItems(UserData userData)
         {
             return null;
         }
-        
-        
+
+
         /// <summary>
         /// Создать плагин, загрузив его из библиотеки
         /// </summary>
