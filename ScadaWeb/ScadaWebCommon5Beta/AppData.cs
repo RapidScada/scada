@@ -276,7 +276,7 @@ namespace Scada.Web
             {
                 try
                 {
-                    foreach (ViewSpec viewSpec in pluginSpec.SupportedViewSpecs)
+                    foreach (ViewSpec viewSpec in pluginSpec.ViewSpecs)
                     {
                         if (ViewSpecs.ContainsKey(viewSpec.ViewTypeCode))
                         {

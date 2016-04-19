@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlgScheme", "PlgScheme\PlgS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlgSchemeCommon", "PlgSchemeCommon\PlgSchemeCommon.csproj", "{0B84EF70-86AB-4D66-BD22-3B7701C08D5A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlgConfig", "PlgConfig\PlgConfig.csproj", "{BA16503A-0E79-42C1-94C7-F690A0DA145E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{0B84EF70-86AB-4D66-BD22-3B7701C08D5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B84EF70-86AB-4D66-BD22-3B7701C08D5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B84EF70-86AB-4D66-BD22-3B7701C08D5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA16503A-0E79-42C1-94C7-F690A0DA145E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA16503A-0E79-42C1-94C7-F690A0DA145E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA16503A-0E79-42C1-94C7-F690A0DA145E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA16503A-0E79-42C1-94C7-F690A0DA145E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

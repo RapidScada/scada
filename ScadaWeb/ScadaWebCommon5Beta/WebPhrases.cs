@@ -47,16 +47,14 @@ namespace Scada.Web
         public static string NoRights { get; private set; }
         public static string IllegalRole { get; private set; }
 
-        // Словарь Scada.Web.Plugins
-        public static string ViewsMenuItem { get; private set; }
-        public static string ReportsMenuItem { get; private set; }
-        public static string AdminMenuItem { get; private set; }
-        public static string ConfigMenuItem { get; private set; }
-        public static string AboutMenuItem { get; private set; }
-
         // Словарь Scada.Web.WebSettings
         public static string LoadWebSettingsError { get; private set; }
         public static string SaveWebSettingsError { get; private set; }
+
+        // Словарь Scada.Web.Shell.MenuItem
+        public static string ReportsMenuItem { get; private set; }
+        public static string ConfigMenuItem { get; private set; }
+        public static string AboutMenuItem { get; private set; }
 
         // Словарь Scada.Web.Shell.RememberMe
         public static string SecurityViolation { get; private set; }
@@ -70,14 +68,12 @@ namespace Scada.Web
             NoRights = Localization.Dict.GetEmptyPhrase("NoRights");
             IllegalRole = Localization.Dict.GetEmptyPhrase("IllegalRole");
 
-            ViewsMenuItem = Localization.Dict.GetEmptyPhrase("ViewsMenuItem");
-            ReportsMenuItem = Localization.Dict.GetEmptyPhrase("ReportsMenuItem");
-            AdminMenuItem = Localization.Dict.GetEmptyPhrase("AdminMenuItem");
-            ConfigMenuItem = Localization.Dict.GetEmptyPhrase("ConfigMenuItem");
-            AboutMenuItem = Localization.Dict.GetEmptyPhrase("AboutMenuItem");
-
             LoadWebSettingsError = Localization.Dict.GetEmptyPhrase("LoadWebSettingsError");
             SaveWebSettingsError = Localization.Dict.GetEmptyPhrase("SaveWebSettingsError");
+
+            ReportsMenuItem = Localization.Dict.GetEmptyPhrase("ReportsMenuItem");
+            ConfigMenuItem = Localization.Dict.GetEmptyPhrase("ConfigMenuItem");
+            AboutMenuItem = Localization.Dict.GetEmptyPhrase("AboutMenuItem");
 
             SecurityViolation = Localization.Dict.GetEmptyPhrase("SecurityViolation");
         }
@@ -98,11 +94,15 @@ namespace Scada.Web
                 IllegalRole = dict.GetPhrase("IllegalRole", IllegalRole);
             }
 
-            if (Localization.Dictionaries.TryGetValue("Scada.Web.Plugins", out dict))
+            if (Localization.Dictionaries.TryGetValue("Scada.Web.WebSettings", out dict))
             {
-                ViewsMenuItem = dict.GetPhrase("ViewsMenuItem", ViewsMenuItem);
+                LoadWebSettingsError = dict.GetPhrase("LoadWebSettingsError", LoadWebSettingsError);
+                SaveWebSettingsError = dict.GetPhrase("SaveWebSettingsError", SaveWebSettingsError);
+            }
+
+            if (Localization.Dictionaries.TryGetValue("Scada.Web.Shell.MenuItem", out dict))
+            {
                 ReportsMenuItem = dict.GetPhrase("ReportsMenuItem", ReportsMenuItem);
-                AdminMenuItem = dict.GetPhrase("AdminMenuItem", AdminMenuItem);
                 ConfigMenuItem = dict.GetPhrase("ConfigMenuItem", ConfigMenuItem);
                 AboutMenuItem = dict.GetPhrase("AboutMenuItem", AboutMenuItem);
             }

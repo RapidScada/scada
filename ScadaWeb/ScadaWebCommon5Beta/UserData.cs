@@ -1,4 +1,4 @@
-/*
+п»ї/*
  * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,20 +34,20 @@ namespace Scada.Web
 {
     /// <summary>
     /// Application user data
-    /// <para>Данные пользователя приложения</para>
+    /// <para>Р”Р°РЅРЅС‹Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РїСЂРёР»РѕР¶РµРЅРёСЏ</para>
     /// </summary>
     /// <remarks>Inheritance is impossible because class is shared by different modules
-    /// <para>Наследование невозможно, т.к. класс совместно используется различными модулями</para></remarks>
+    /// <para>РќР°СЃР»РµРґРѕРІР°РЅРёРµ РЅРµРІРѕР·РјРѕР¶РЅРѕ, С‚.Рє. РєР»Р°СЃСЃ СЃРѕРІРјРµСЃС‚РЅРѕ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ СЂР°Р·Р»РёС‡РЅС‹РјРё РјРѕРґСѓР»СЏРјРё</para></remarks>
     public sealed class UserData
     {
         /// <summary>
-        /// Общие данные веб-приложения
+        /// РћР±С‰РёРµ РґР°РЅРЅС‹Рµ РІРµР±-РїСЂРёР»РѕР¶РµРЅРёСЏ
         /// </summary>
         private static readonly AppData AppData = AppData.GetAppData();
 
         
         /// <summary>
-        /// Конструктор, ограничивающий создание объекта без параметров
+        /// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ, РѕРіСЂР°РЅРёС‡РёРІР°СЋС‰РёР№ СЃРѕР·РґР°РЅРёРµ РѕР±СЉРµРєС‚Р° Р±РµР· РїР°СЂР°РјРµС‚СЂРѕРІ
         /// </summary>
         private UserData()
         {
@@ -60,75 +60,75 @@ namespace Scada.Web
 
 
         /// <summary>
-        /// Получить IP-адрес пользователя
+        /// РџРѕР»СѓС‡РёС‚СЊ IP-Р°РґСЂРµСЃ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
         /// </summary>
         public string IpAddress { get; private set; }
 
         /// <summary>
-        /// Получить идентификатор сессии
+        /// РџРѕР»СѓС‡РёС‚СЊ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СЃРµСЃСЃРёРё
         /// </summary>
         public string SessionID { get; private set; }
 
 
         /// <summary>
-        /// Получить имя пользователя
+        /// РџРѕР»СѓС‡РёС‚СЊ РёРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
         /// </summary>
         public string UserName { get; private set; }
 
         /// <summary>
-        /// Получить идентификатор пользователя в базе конфигурации
+        /// РџРѕР»СѓС‡РёС‚СЊ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РІ Р±Р°Р·Рµ РєРѕРЅС„РёРіСѓСЂР°С†РёРё
         /// </summary>
         public int UserID { get; private set; }
 
         /// <summary>
-        /// Получить идентификатор роли пользователя
+        /// РџРѕР»СѓС‡РёС‚СЊ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СЂРѕР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
         /// </summary>
         public int RoleID { get; private set; }
 
         /// <summary>
-        /// Получить наименование роли пользователя
+        /// РџРѕР»СѓС‡РёС‚СЊ РЅР°РёРјРµРЅРѕРІР°РЅРёРµ СЂРѕР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
         /// </summary>
         public string RoleName { get; private set; }
 
         /// <summary>
-        /// Получить признак, выполнен ли вход пользователя в систему
+        /// РџРѕР»СѓС‡РёС‚СЊ РїСЂРёР·РЅР°Рє, РІС‹РїРѕР»РЅРµРЅ Р»Рё РІС…РѕРґ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РІ СЃРёСЃС‚РµРјСѓ
         /// </summary>
         public bool LoggedOn { get; private set; }
 
         /// <summary>
-        /// Получить дату и время входа пользователя в систему
+        /// РџРѕР»СѓС‡РёС‚СЊ РґР°С‚Сѓ Рё РІСЂРµРјСЏ РІС…РѕРґР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РІ СЃРёСЃС‚РµРјСѓ
         /// </summary>
         public DateTime LogonDT { get; private set; }
 
         /// <summary>
-        /// Получить права пользователя
+        /// РџРѕР»СѓС‡РёС‚СЊ РїСЂР°РІР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
         /// </summary>
         public UserRights UserRights { get; private set; }
 
 
         /// <summary>
-        /// Получить ссылку на настройки веб-приложения
+        /// РџРѕР»СѓС‡РёС‚СЊ СЃСЃС‹Р»РєСѓ РЅР° РЅР°СЃС‚СЂРѕР№РєРё РІРµР±-РїСЂРёР»РѕР¶РµРЅРёСЏ
         /// </summary>
         public WebSettings WebSettings { get; private set; }
 
         /// <summary>
-        /// Получить ссылку на настройки представлений
+        /// РџРѕР»СѓС‡РёС‚СЊ СЃСЃС‹Р»РєСѓ РЅР° РЅР°СЃС‚СЂРѕР№РєРё РїСЂРµРґСЃС‚Р°РІР»РµРЅРёР№
         /// </summary>
         public ViewSettings ViewSettings { get; private set; }
 
         /// <summary>
-        /// Получить ссылку на список плагинов
+        /// РџРѕР»СѓС‡РёС‚СЊ СЃСЃС‹Р»РєСѓ РЅР° СЃРїРёСЃРѕРє РїР»Р°РіРёРЅРѕРІ
         /// </summary>
         public List<PluginSpec> PluginSpecs { get; private set; }
 
         /// <summary>
-        /// Получить ссылку на словарь спецификаций представлений, ключ - код типа представления
+        /// РџРѕР»СѓС‡РёС‚СЊ СЃСЃС‹Р»РєСѓ РЅР° СЃР»РѕРІР°СЂСЊ СЃРїРµС†РёС„РёРєР°С†РёР№ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёР№, РєР»СЋС‡ - РєРѕРґ С‚РёРїР° РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ
         /// </summary>
         public Dictionary<string, ViewSpec> ViewSpecs { get; private set; }
 
 
         /// <summary>
-        /// Очистить данные пользователя
+        /// РћС‡РёСЃС‚РёС‚СЊ РґР°РЅРЅС‹Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
         /// </summary>
         private void ClearUser()
         {
@@ -141,7 +141,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Очистить ссылки на объекты общих данных приложения
+        /// РћС‡РёСЃС‚РёС‚СЊ СЃСЃС‹Р»РєРё РЅР° РѕР±СЉРµРєС‚С‹ РѕР±С‰РёС… РґР°РЅРЅС‹С… РїСЂРёР»РѕР¶РµРЅРёСЏ
         /// </summary>
         private void ClearAppDataRefs()
         {
@@ -152,7 +152,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Обновить ссылки на объекты общих данных приложения
+        /// РћР±РЅРѕРІРёС‚СЊ СЃСЃС‹Р»РєРё РЅР° РѕР±СЉРµРєС‚С‹ РѕР±С‰РёС… РґР°РЅРЅС‹С… РїСЂРёР»РѕР¶РµРЅРёСЏ
         /// </summary>
         private void UpdateAppDataRefs()
         {
@@ -164,9 +164,9 @@ namespace Scada.Web
 
 
         /// <summary>
-        /// Выполнить вход пользователя в систему
+        /// Р’С‹РїРѕР»РЅРёС‚СЊ РІС…РѕРґ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РІ СЃРёСЃС‚РµРјСѓ
         /// </summary>
-        /// <remarks>Если пароль равен null, то он не проверяется</remarks>
+        /// <remarks>Р•СЃР»Рё РїР°СЂРѕР»СЊ СЂР°РІРµРЅ null, С‚Рѕ РѕРЅ РЅРµ РїСЂРѕРІРµСЂСЏРµС‚СЃСЏ</remarks>
         public bool Login(string username, string password, out string errMsg)
         {
             username = username == null ? "" : username.Trim();
@@ -174,7 +174,7 @@ namespace Scada.Web
 
             if (AppData.CheckUser(username, password, password != null, out roleID, out errMsg))
             {
-                // заполнение свойств пользователя
+                // Р·Р°РїРѕР»РЅРµРЅРёРµ СЃРІРѕР№СЃС‚РІ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
                 UserName = username;
                 UserID = AppData.DataAccess.GetUserID(username);
                 RoleID = roleID;
@@ -189,14 +189,14 @@ namespace Scada.Web
                 if (password == null)
                 {
                     AppData.Log.WriteAction(string.Format(Localization.UseRussian ?
-                        "Вход в систему без пароля: {0} ({1}). IP-адрес: {2}" :
+                        "Р’С…РѕРґ РІ СЃРёСЃС‚РµРјСѓ Р±РµР· РїР°СЂРѕР»СЏ: {0} ({1}). IP-Р°РґСЂРµСЃ: {2}" :
                         "Login without a password: {0} ({1}). IP address: {2}", 
                         username, RoleName, IpAddress));
                 }
                 else
                 {
                     AppData.Log.WriteAction(string.Format(Localization.UseRussian ?
-                        "Вход в систему: {0} ({1}). IP-адрес: {2}" :
+                        "Р’С…РѕРґ РІ СЃРёСЃС‚РµРјСѓ: {0} ({1}). IP-Р°РґСЂРµСЃ: {2}" :
                         "Login: {0} ({1}). IP address: {2}", 
                         username, RoleName, IpAddress));
                 }
@@ -207,7 +207,7 @@ namespace Scada.Web
             {
                 Logout();
                 AppData.Log.WriteError(string.Format(Localization.UseRussian ?
-                    "Неудачная попытка входа в систему: {0}{1}. IP-адрес: {2}" :
+                    "РќРµСѓРґР°С‡РЅР°СЏ РїРѕРїС‹С‚РєР° РІС…РѕРґР° РІ СЃРёСЃС‚РµРјСѓ: {0}{1}. IP-Р°РґСЂРµСЃ: {2}" :
                     "Unsuccessful login attempt: {0}{1}. IP address: {2}",
                     username == "" ? "" : username + " - ", errMsg, IpAddress));
                 return false;
@@ -215,7 +215,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Выполнить вход пользователя в систему без проверки пароля
+        /// Р’С‹РїРѕР»РЅРёС‚СЊ РІС…РѕРґ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РІ СЃРёСЃС‚РµРјСѓ Р±РµР· РїСЂРѕРІРµСЂРєРё РїР°СЂРѕР»СЏ
         /// </summary>
         public bool Login(string username, out string errMsg)
         {
@@ -223,14 +223,14 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Выполнить выход пользователя из системы
+        /// Р’С‹РїРѕР»РЅРёС‚СЊ РІС‹С…РѕРґ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РёР· СЃРёСЃС‚РµРјС‹
         /// </summary>
         public void Logout()
         {
             if (LoggedOn)
             {
                 AppData.Log.WriteAction(string.Format(Localization.UseRussian ?
-                    "Выход из системы: {0}. IP-адрес: {1}" :
+                    "Р’С‹С…РѕРґ РёР· СЃРёСЃС‚РµРјС‹: {0}. IP-Р°РґСЂРµСЃ: {1}" :
                     "Logout: {0}. IP address: {1}", UserName, IpAddress));
             }
 
@@ -239,8 +239,8 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Проверить, что пользователь вошёл систему. 
-        /// Если вход не выполнен, то перейти на страницу входа или вызвать исключение
+        /// РџСЂРѕРІРµСЂРёС‚СЊ, С‡С‚Рѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РІРѕС€С‘Р» СЃРёСЃС‚РµРјСѓ. 
+        /// Р•СЃР»Рё РІС…РѕРґ РЅРµ РІС‹РїРѕР»РЅРµРЅ, С‚Рѕ РїРµСЂРµР№С‚Рё РЅР° СЃС‚СЂР°РЅРёС†Сѓ РІС…РѕРґР° РёР»Рё РІС‹Р·РІР°С‚СЊ РёСЃРєР»СЋС‡РµРЅРёРµ
         /// </summary>
         public void CheckLoggedOn(bool tryToLogin)
         {
@@ -251,7 +251,7 @@ namespace Scada.Web
                     HttpContext httpContext = HttpContext.Current;
                     WebUtils.CheckHttpContext(httpContext);
 
-                    // попытка входа с использованием cookies
+                    // РїРѕРїС‹С‚РєР° РІС…РѕРґР° СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј cookies
                     string username;
                     string alert = "";
 
@@ -261,7 +261,7 @@ namespace Scada.Web
                         Login(username, out alert);
                     }
 
-                    // переход на страницу входа
+                    // РїРµСЂРµС…РѕРґ РЅР° СЃС‚СЂР°РЅРёС†Сѓ РІС…РѕРґР°
                     if (!LoggedOn)
                     {
                         httpContext.Response.Redirect("~/Login.aspx" +
@@ -278,9 +278,9 @@ namespace Scada.Web
 
 
         /// <summary>
-        /// Получить данные пользователя приложения
+        /// РџРѕР»СѓС‡РёС‚СЊ РґР°РЅРЅС‹Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РїСЂРёР»РѕР¶РµРЅРёСЏ
         /// </summary>
-        /// <remarks>Для веб-приложения данные пользователя сохраняются в сессии</remarks>
+        /// <remarks>Р”Р»СЏ РІРµР±-РїСЂРёР»РѕР¶РµРЅРёСЏ РґР°РЅРЅС‹Рµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ СЃРѕС…СЂР°РЅСЏСЋС‚СЃСЏ РІ СЃРµСЃСЃРёРё</remarks>
         public static UserData GetUserData()
         {
             HttpContext httpContext = HttpContext.Current;
@@ -290,18 +290,18 @@ namespace Scada.Web
 
             if (userData == null)
             {
-                // обновление данных веб-приложения
+                // РѕР±РЅРѕРІР»РµРЅРёРµ РґР°РЅРЅС‹С… РІРµР±-РїСЂРёР»РѕР¶РµРЅРёСЏ
                 AppData.Refresh();
 
-                // создание данных пользователя
+                // СЃРѕР·РґР°РЅРёРµ РґР°РЅРЅС‹С… РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
                 userData = new UserData();
                 session.Add("UserData", userData);
 
-                // получение IP-адреса и идентификатора сессии
+                // РїРѕР»СѓС‡РµРЅРёРµ IP-Р°РґСЂРµСЃР° Рё РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂР° СЃРµСЃСЃРёРё
                 userData.IpAddress = httpContext.Request.UserHostAddress;
                 userData.SessionID = session.SessionID;
 
-                // обновление ссылок на объекты общих данных приложения
+                // РѕР±РЅРѕРІР»РµРЅРёРµ СЃСЃС‹Р»РѕРє РЅР° РѕР±СЉРµРєС‚С‹ РѕР±С‰РёС… РґР°РЅРЅС‹С… РїСЂРёР»РѕР¶РµРЅРёСЏ
                 userData.UpdateAppDataRefs();
             }
 
@@ -309,7 +309,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Проверить допустимость имени пользователя
+        /// РџСЂРѕРІРµСЂРёС‚СЊ РґРѕРїСѓСЃС‚РёРјРѕСЃС‚СЊ РёРјРµРЅРё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
         /// </summary>
         public static void ValidateUserName(string username)
         {

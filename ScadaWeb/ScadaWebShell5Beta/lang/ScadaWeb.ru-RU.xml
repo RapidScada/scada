@@ -9,13 +9,6 @@
     <Phrase key="NoRights">Недостаточно прав.</Phrase>
     <Phrase key="IllegalRole">Недопустимая роль пользователя.</Phrase>
   </Dictionary>
-  <Dictionary key="Scada.Web.Plugins">
-    <Phrase key="ViewsMenuItem">Представления</Phrase>
-    <Phrase key="ReportsMenuItem">Отчёты</Phrase>
-    <Phrase key="AdminMenuItem">Администрирование</Phrase>
-    <Phrase key="ConfigMenuItem">Конфигурация</Phrase>
-    <Phrase key="AboutMenuItemText">О программе</Phrase>
-  </Dictionary>
   <Dictionary key="Scada.Web.WebSettings">
     <Phrase key="LoadWebSettingsError">Ошибка при загрузке настроек веб-приложения</Phrase>
     <Phrase key="SaveWebSettingsError">Ошибка при сохранении настроек веб-приложения</Phrase>
@@ -26,6 +19,11 @@
     <Phrase key="lblPassword">Пароль</Phrase>
     <Phrase key="lblRememberMe">Запомнить меня</Phrase>
     <Phrase key="btnLogin">Войти</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Shell.MenuItem">
+    <Phrase key="ReportsMenuItem">Отчёты</Phrase>
+    <Phrase key="ConfigMenuItem">Конфигурация</Phrase>
+    <Phrase key="AboutMenuItemText">О программе</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Shell.RememberMe">
     <Phrase key="SecurityViolation">Обнаружено нарушение безопасности. Незамедлительно обратитесь к системному администратору.</Phrase>

@@ -9,13 +9,6 @@
     <Phrase key="NoRights">Insufficient rights.</Phrase>
     <Phrase key="IllegalRole">Illegal user role.</Phrase>
   </Dictionary>
-  <Dictionary key="Scada.Web.Plugins">
-    <Phrase key="ViewsMenuItem">Views</Phrase>
-    <Phrase key="ReportsMenuItem">Reports</Phrase>
-    <Phrase key="AdminMenuItem">Administration</Phrase>
-    <Phrase key="ConfigMenuItem">Configuration</Phrase>
-    <Phrase key="AboutMenuItem">About</Phrase>
-  </Dictionary>
   <Dictionary key="Scada.Web.WebSettings">
     <Phrase key="LoadWebSettingsError">Error loading web application settings</Phrase>
     <Phrase key="SaveWebSettingsError">Error saving web application settings</Phrase>
@@ -26,6 +19,11 @@
     <Phrase key="lblPassword">Password</Phrase>
     <Phrase key="lblRememberMe">Remember me</Phrase>
     <Phrase key="btnLogin">Login</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Shell.MenuItem">
+    <Phrase key="ReportsMenuItem">Reports</Phrase>
+    <Phrase key="ConfigMenuItem">Configuration</Phrase>
+    <Phrase key="AboutMenuItem">About</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Shell.RememberMe">
     <Phrase key="SecurityViolation">Security violation is detected. Immediately contact your system administrator.</Phrase>
