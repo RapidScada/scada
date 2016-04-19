@@ -81,7 +81,7 @@ namespace Scada.Web.Plugins.Scheme
             LoadDictionaries();
             Localization.Dict dict;
             Localization.Dictionaries.TryGetValue(DictName, out dict);
-            phrases = ScadaWebUtils.DictionaryToJs(dict);
+            phrases = WebUtils.DictionaryToJs(dict);
 
             // загрузка представления в кеш, чтобы проверить, что оно доступно, присвоить метку
             // и обеспечить возможность получения данных входных каналов через API 

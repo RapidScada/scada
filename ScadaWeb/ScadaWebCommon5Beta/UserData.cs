@@ -249,7 +249,7 @@ namespace Scada.Web
                 if (tryToLogin)
                 {
                     HttpContext httpContext = HttpContext.Current;
-                    ScadaWebUtils.CheckHttpContext(httpContext);
+                    WebUtils.CheckHttpContext(httpContext);
 
                     // попытка входа с использованием cookies
                     string username;
@@ -284,7 +284,7 @@ namespace Scada.Web
         public static UserData GetUserData()
         {
             HttpContext httpContext = HttpContext.Current;
-            ScadaWebUtils.CheckHttpContext(httpContext);
+            WebUtils.CheckHttpContext(httpContext);
             HttpSessionState session = httpContext.Session;
             UserData userData = session["UserData"] as UserData;
 

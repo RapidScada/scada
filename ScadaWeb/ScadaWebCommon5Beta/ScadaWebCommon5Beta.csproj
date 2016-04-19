@@ -54,7 +54,7 @@
     <Compile Include="Plugins\ViewSpec.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shell\RememberMe.cs" />
-    <Compile Include="ScadaWebUtils.cs" />
+    <Compile Include="WebUtils.cs" />
     <Compile Include="Shell\MenuItem.cs" />
     <Compile Include="Shell\StandardMenuItems.cs" />
     <Compile Include="UserData.cs" />

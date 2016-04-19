@@ -244,7 +244,7 @@ namespace Scada.Web
             try
             {
                 CheckLoggedOn();
-                int[] cnlNumArr = ScadaWebUtils.QueryParamToIntArray(cnlNums);
+                int[] cnlNumArr = WebUtils.QueryParamToIntArray(cnlNums);
                 CnlDataExtDTO[] cnlDataDTOs = GetCnlDataExtDTOs(cnlNumArr);
                 return JsSerializer.Serialize(cnlDataDTOs);
             }

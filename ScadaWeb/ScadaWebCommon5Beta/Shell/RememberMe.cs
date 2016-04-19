@@ -319,7 +319,7 @@ namespace Scada.Web.Shell
 
             try
             {
-                ScadaWebUtils.CheckHttpContext(httpContext, true);
+                WebUtils.CheckHttpContext(httpContext, true);
                 HttpCookie reqCookie = httpContext.Request.Cookies["User"];
 
                 if (reqCookie != null && reqCookie.HasKeys)
@@ -363,7 +363,7 @@ namespace Scada.Web.Shell
         {
             try
             {
-                ScadaWebUtils.CheckHttpContext(httpContext, true);
+                WebUtils.CheckHttpContext(httpContext, true);
                 HttpCookie cookie = httpContext.Request.Cookies["User"];
                 return cookie != null && cookie.HasKeys ? (cookie.Values["Username"] ?? "") : "";
             }
@@ -383,7 +383,7 @@ namespace Scada.Web.Shell
         {
             try
             {
-                ScadaWebUtils.CheckHttpContext(httpContext, true);
+                WebUtils.CheckHttpContext(httpContext, true);
                 HttpCookie cookie = CreateCookie(username, null);
                 httpContext.Response.Cookies.Set(cookie);
             }
@@ -402,7 +402,7 @@ namespace Scada.Web.Shell
         {
             try
             {
-                ScadaWebUtils.CheckHttpContext(httpContext, true);
+                WebUtils.CheckHttpContext(httpContext, true);
                 Credentials cred = CreateCredentials(username);
                 HttpCookie cookie = CreateCookie(username, cred);
                 httpContext.Response.Cookies.Set(cookie);
@@ -422,7 +422,7 @@ namespace Scada.Web.Shell
         {
             try
             {
-                ScadaWebUtils.CheckHttpContext(httpContext, true);
+                WebUtils.CheckHttpContext(httpContext, true);
                 HttpCookie reqCookie = httpContext.Request.Cookies["User"];
 
                 if (reqCookie != null && reqCookie.HasKeys)
@@ -447,7 +447,7 @@ namespace Scada.Web.Shell
         {
             try
             {
-                ScadaWebUtils.CheckHttpContext(httpContext, true);
+                WebUtils.CheckHttpContext(httpContext, true);
                 HttpCookie respCookie = CreateCookie("", null);
                 httpContext.Response.Cookies.Set(respCookie);
 

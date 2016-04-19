@@ -113,14 +113,6 @@ namespace Scada.Web.Plugins
         {
             return null;
         }
-
-        /// <summary>
-        /// Получить требуемые стандартные элементы меню для пользователя
-        /// </summary>
-        public virtual StandardMenuItems GetStandardMenuItems(UserData userData)
-        {
-            return StandardMenuItems.None;
-        }
         
         
         /// <summary>

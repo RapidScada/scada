@@ -152,7 +152,7 @@ namespace Scada.Data
 
 
         /// <summary>
-        /// Сравнить текущий объект с другим объектом того же типа
+        /// Сравнить текущий объект с другим объектом такого же типа
         /// </summary>
         public int CompareTo(CtrlCnlProps other)
         {

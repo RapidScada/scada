@@ -163,9 +163,7 @@ namespace Scada.Web
                         if (userDataDict.TryGetValue(sessionID, out userData))
                         {
                             if (userData.LoggedOn)
-                                log.WriteAction(string.Format(Localization.UseRussian ?
-                                    "Удаление сессии пользователя {0}" :
-                                    "Remove the session of the user {0}", userData.UserName));
+                                userData.Logout();
                             userDataDict.Remove(sessionID);
                         }
                     }

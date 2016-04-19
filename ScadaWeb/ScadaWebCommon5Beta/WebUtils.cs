@@ -34,7 +34,7 @@ namespace Scada.Web
     /// The class contains utility methods for web applications
     /// <para>Класс, содержащий вспомогательные методы для веб-приложений</para>
     /// </summary>
-    public static class ScadaWebUtils
+    public static class WebUtils
     {
         /// <summary>
         /// Проверить HTTP-контекст и его основные свойства на null

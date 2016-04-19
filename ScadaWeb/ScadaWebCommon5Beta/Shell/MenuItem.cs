@@ -23,7 +23,8 @@
  * Modified : 2016
  */
 
- using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 
 namespace Scada.Web.Shell
 {
@@ -31,8 +32,23 @@ namespace Scada.Web.Shell
     /// Menu item
     /// <para>Элемент меню</para>
     /// </summary>
-    public class MenuItem
+    public class MenuItem : IComparable<MenuItem>
     {
+        /// <summary>
+        /// Предзаданные порядки сортировки элементов меню
+        /// </summary>
+        public static class SortOrders
+        {
+            /// <summary>
+            /// Первый
+            /// </summary>
+            public const int First = 0;
+            /// <summary>
+            /// Последний
+            /// </summary>
+            public const int Last = 1000;
+        }
+
         /// <summary>
         /// Конструктор, ограничивающий создание объекта без параметров
         /// </summary>
@@ -44,10 +60,11 @@ namespace Scada.Web.Shell
         /// <summary>
         /// Конструктор
         /// </summary>
-        public MenuItem(string text, string url)
+        public MenuItem(string text, string url, int sortOrder = SortOrders.First)
         {
             Text = text;
             Url = url;
+            SortOrder = sortOrder;
             Subitems = new List<MenuItem>();
         }
 
@@ -63,10 +80,41 @@ namespace Scada.Web.Shell
         public string Url { get; protected set; }
 
         /// <summary>
+        /// Получить порядок сортировки
+        /// </summary>
+        public int SortOrder { get; protected set; }
+
+        /// <summary>
         /// Получить подпункты меню
         /// </summary>
         public List<MenuItem> Subitems { get; protected set; }
 
+
+        /// <summary>
+        /// Сравнить текущий объект с другим объектом такого же типа
+        /// </summary>
+        public int CompareTo(MenuItem other)
+        {
+            if (other == null)
+            {
+                return 1;
+            }
+            else
+            {
+                int comp1 = SortOrder.CompareTo(other.SortOrder);
+                if (comp1 == 0)
+                {
+                    int comp2 = string.Compare(Text, other.Text, StringComparison.OrdinalIgnoreCase);
+                    return comp2 == 0 ?
+                        string.Compare(Url, other.Url, StringComparison.OrdinalIgnoreCase) :
+                        comp2;
+                }
+                else
+                {
+                    return comp1;
+                }
+            }
+        }
 
         /// <summary>
         /// Создать элемент меню на основе стандартного элемента меню
@@ -76,13 +124,11 @@ namespace Scada.Web.Shell
             switch (standardMenuItem)
             {
                 case StandardMenuItems.Reports:
-                    return new MenuItem(WebPhrases.ReportsMenuItem, "~/Reports.aspx");
-                case StandardMenuItems.Admin:
-                    return new MenuItem(WebPhrases.AdminMenuItem, "~/Admin.aspx");
+                    return new MenuItem(WebPhrases.ReportsMenuItem, "~/Reports.aspx", 100);
                 case StandardMenuItems.Config:
-                    return new MenuItem(WebPhrases.ConfigMenuItem, "~/Config.aspx");
+                    return new MenuItem(WebPhrases.ConfigMenuItem, "", 200);
                 default: // StandardMenuItem.About
-                    return new MenuItem(WebPhrases.AboutMenuItem, "~/About.aspx");
+                    return new MenuItem(WebPhrases.AboutMenuItem, "~/About.aspx", SortOrders.Last);
             }
         }
     }
