@@ -1,21 +1,23 @@
 ﻿@import "../../../css/globalvar.less";
 
 @scheme-back-color: white;
+@scheme-font-family: Verdana, Geneva, Tahoma, sans-serif;
+
 
 body {
     margin: 0;
     padding: 0;
     background-color: @scheme-back-color;
-    font-family: @default-font-family;
+    font-family: @scheme-font-family;
     font-size: @default-font-size;
     overflow: hidden;
 }
 
 .loading {
     background-image: url('../images/loading.gif');
-    background-repeat: no-repeat;
-    background-position: center;
     background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 
@@ -28,8 +30,8 @@ body {
     width: 100%;
     padding: 10px;
     background-color: @content-back-color;
-    white-space: nowrap;
     display: none;
+    white-space: nowrap;
 }
 
 #divDebugTools input {
@@ -44,11 +46,12 @@ body {
     top: 50px;
     left: 0;
     max-height: 100px;
-    overflow: auto;
     padding: 10px;
     border-bottom: 1px solid @panel-border-color;
-    white-space: nowrap;
     display: none;
+    font-family: @default-font-family;
+    overflow: auto;
+    white-space: nowrap;
 }
 
 #divNotif .message
@@ -64,7 +67,7 @@ body {
 /* Scheme */
 
 #divSchParent {
-    overflow: auto;
     min-width: 300px;
     min-height: 200px;
+    overflow: auto;
 }
