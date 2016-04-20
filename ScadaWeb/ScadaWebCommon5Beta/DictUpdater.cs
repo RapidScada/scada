@@ -39,6 +39,10 @@ namespace Scada.Web
         /// </summary>
         protected readonly string fileName;
         /// <summary>
+        /// Имя файла словаря по умолчанию
+        /// </summary>
+        protected readonly string defaultFileName;
+        /// <summary>
         /// Ссылка на метод инициализации, которые берутся из загруженного словаря
         /// </summary>
         protected Action initPhrasesAction;
@@ -46,6 +50,10 @@ namespace Scada.Web
         /// Журнал
         /// </summary>
         protected readonly Log log;
+        /// <summary>
+        /// Первое обновление настроек
+        /// </summary>
+        protected bool initialUpdate;
 
 
         /// <summary>
@@ -66,8 +74,10 @@ namespace Scada.Web
                 throw new ArgumentNullException("fileNamePrefix");
 
             fileName = Localization.GetDictionaryFileName(directory, fileNamePrefix);
+            defaultFileName = Localization.Dict.GetFileName(directory, fileNamePrefix, Localization.DefaultCultureName);
             this.initPhrasesAction = initPhrasesAction;
             this.log = log;
+            initialUpdate = true;
 
             FileAge = DateTime.MinValue;
         }
@@ -86,7 +96,7 @@ namespace Scada.Web
         {
             DateTime newFileAge = ScadaUtils.GetLastWriteTime(fileName);
 
-            if (FileAge == newFileAge)
+            if (newFileAge > DateTime.MinValue && FileAge == newFileAge)
             {
                 changed = false;
                 errMsg = "";
@@ -97,14 +107,25 @@ namespace Scada.Web
                 if (initPhrasesAction != null)
                     initPhrasesAction();
 
+                initialUpdate = false;
                 FileAge = newFileAge;
                 changed = true;
                 return true;
             }
             else
             {
+                // вывод ошибки в журнал
                 if (log != null)
                     log.WriteError(errMsg);
+
+                // загрузка словаря по умолчанию
+                if (initialUpdate)
+                {
+                    initialUpdate = false;
+                    string errMsg2;
+                    if (Localization.LoadDictionaries(defaultFileName, out errMsg2) && initPhrasesAction != null)
+                        initPhrasesAction();
+                }
 
                 changed = false;
                 return false;

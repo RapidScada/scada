@@ -263,7 +263,7 @@ namespace Scada.Client
                             "Не удалось принять время изменения файла текущих данных." :
                             "Unable to receive the current data file modification time.");
                     }
-                    if (tblCur.FileModTime != newCurAge) // файл среза изменён
+                    else if (tblCur.FileModTime != newCurAge) // файл среза изменён
                     {
                         if (serverComm.ReceiveSrezTable(SrezAdapter.CurTableName, tblCur))
                         {

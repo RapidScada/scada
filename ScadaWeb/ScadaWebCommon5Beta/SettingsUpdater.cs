@@ -92,7 +92,7 @@ namespace Scada.Web
         {
             DateTime newFileAge = ScadaUtils.GetLastWriteTime(fileName);
 
-            if (FileAge == newFileAge)
+            if (newFileAge > DateTime.MinValue && FileAge == newFileAge)
             {
                 changed = false;
                 errMsg = "";

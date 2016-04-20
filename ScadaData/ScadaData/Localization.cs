@@ -23,16 +23,12 @@
  * Modified : 2016
  */
 
+using Microsoft.Win32;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.Xml;
-using Microsoft.Win32;
-using WinForms = System.Windows.Forms;
 
 namespace Scada
 {
@@ -75,10 +71,10 @@ namespace Scada
             /// <summary>
             /// Получить имя файла словаря для заданной культуры
             /// </summary>
-            public static string GetFileName(string directory, string fileNamePrefix, CultureInfo cultureInfo)
+            public static string GetFileName(string directory, string fileNamePrefix, string cultureName)
             {
                 return directory + fileNamePrefix +
-                    (cultureInfo == null || string.IsNullOrEmpty(cultureInfo.Name) ? "" : "." + cultureInfo.Name) + 
+                    (string.IsNullOrEmpty(cultureName) ? "" : "." + cultureName) + 
                     ".xml";
             }
             /// <summary>
@@ -105,10 +101,21 @@ namespace Scada
         /// </summary>
         static Localization()
         {
+            InitDefaultCulture();
             ReadCulture();
             Dictionaries = new Dictionary<string, Dict>();
         }
 
+
+        /// <summary>
+        /// Получить наименование культуры по умолчанию
+        /// </summary>
+        public static string DefaultCultureName { get; private set; }
+
+        /// <summary>
+        /// Получить информацию о культуре по умолчанию
+        /// </summary>
+        public static CultureInfo DefaultCulture { get; private set; }
 
         /// <summary>
         /// Получить информацию о культуре всех приложений SCADA
@@ -139,20 +146,40 @@ namespace Scada
 
 
         /// <summary>
+        /// Инициализировать наименование и культуру по умолчанию
+        /// </summary>
+        private static void InitDefaultCulture()
+        {
+            try
+            {
+                DefaultCultureName = CultureIsRussian(CultureInfo.CurrentCulture) ? "ru-RU" : "en-GB";
+                DefaultCulture = CultureInfo.GetCultureInfo(DefaultCultureName);
+            }
+            catch
+            {
+                DefaultCultureName = "";
+                DefaultCulture = CultureInfo.CurrentCulture;
+            }
+        }
+
+        /// <summary>
         /// Считать информацию о культуре из реестра
         /// </summary>
         private static void ReadCulture()
         {
             try
             {
-                using (RegistryKey key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64).
-                    OpenSubKey("Software\\SCADA", false))
-                    Culture = CultureInfo.GetCultureInfo(key.GetValue("Culture").ToString());
+                using (RegistryKey key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64)
+                    .OpenSubKey("Software\\SCADA", false))
+                {
+                    string cultureName = key.GetValue("Culture").ToString();
+                    Culture = string.IsNullOrEmpty(cultureName) ? 
+                        DefaultCulture : CultureInfo.GetCultureInfo(cultureName);
+                }
             }
             catch
             {
-                Culture = CultureIsRussian(CultureInfo.CurrentCulture) ? 
-                    CultureInfo.GetCultureInfo("ru-RU") : CultureInfo.GetCultureInfo("en-GB");
+                Culture = DefaultCulture;
             }
             finally
             {
@@ -161,7 +188,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Проверить, что имя культуры соответствует русской культуре
+        /// Проверить, что наименование культуры соответствует русской культуре
         /// </summary>
         private static bool CultureIsRussian(CultureInfo cultureInfo)
         {
@@ -191,18 +218,16 @@ namespace Scada
         }
 
         /// <summary>
-        /// Получить имя файла словаря в зависимости от используемой культуры
+        /// Получить имя файла словаря в зависимости от культуры SCADA
         /// </summary>
         public static string GetDictionaryFileName(string directory, string fileNamePrefix)
         {
-            return Dict.GetFileName(directory, fileNamePrefix, Culture);
+            return Dict.GetFileName(directory, fileNamePrefix, Culture.Name);
         }
 
         /// <summary>
-        /// Загрузить словари для считанной культуры
+        /// Загрузить словари для культуры SCADA
         /// </summary>
-        /// <remarks>Если ключ загружаемого словаря совпадает с ключом уже загруженного, то словари сливаются.
-        /// Если совпадают ключи фраз, то новое значение фразы записывается поверх старого</remarks>
         public static bool LoadDictionaries(string directory, string fileNamePrefix, out string errMsg)
         {
             string fileName = GetDictionaryFileName(directory, fileNamePrefix);
@@ -210,8 +235,34 @@ namespace Scada
         }
 
         /// <summary>
-        /// Загрузить словари для считанной культуры
+        /// Загрузить словари для культуры SCADA с возможностью загрузки словарей по умолчанию в случае ошибки
         /// </summary>
+        public static bool LoadDictionaries(string directory, string fileNamePrefix, bool defaultOnError, out string errMsg)
+        {
+            string fileName = GetDictionaryFileName(directory, fileNamePrefix);
+
+            if (LoadDictionaries(fileName, out errMsg))
+            {
+                return true;
+            }
+            else if (defaultOnError)
+            {
+                fileName = Dict.GetFileName(directory, fileNamePrefix, DefaultCultureName);
+                string errMsg2;
+                LoadDictionaries(fileName, out errMsg2);
+                return false;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Загрузить словари для культуры SCADA
+        /// </summary>
+        /// <remarks>Если ключ загружаемого словаря совпадает с ключом уже загруженного, то словари сливаются.
+        /// Если совпадают ключи фраз, то новое значение фразы записывается поверх старого</remarks>
         public static bool LoadDictionaries(string fileName, out string errMsg)
         {
             if (File.Exists(fileName))
@@ -272,7 +323,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Преобразовать дату и время в строку с использованием информации о культуре
+        /// Преобразовать дату и время в строку в соответствии с культурой SCADA
         /// </summary>
         public static string ToLocalizedString(this DateTime dateTime)
         {

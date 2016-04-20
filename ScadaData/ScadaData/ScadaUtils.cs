@@ -252,8 +252,14 @@ namespace Scada
         /// </summary>
         public static DateTime GetLastWriteTime(string fileName)
         {
-            try { return File.GetLastWriteTime(fileName); }
-            catch { return DateTime.MinValue; }
+            try
+            {
+                return File.Exists(fileName) ? File.GetLastWriteTime(fileName) : DateTime.MinValue;
+            }
+            catch
+            {
+                return DateTime.MinValue;
+            }
         }
 
 
