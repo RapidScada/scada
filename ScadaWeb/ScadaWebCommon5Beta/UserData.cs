@@ -169,6 +169,22 @@ namespace Scada.Web
             ViewSpecs = AppData.ViewSpecs;
         }
 
+        /// <summary>
+        /// Вызвать метод OnUserLogin для плагинов
+        /// </summary>
+        private void RaiseOnUserLogin()
+        {
+
+        }
+
+        /// <summary>
+        /// Вызвать метод OnUserLogout для плагинов
+        /// </summary>
+        private void RaiseOnUserLogout()
+        {
+
+        }
+
 
         /// <summary>
         /// Выполнить вход пользователя в систему
@@ -245,7 +261,7 @@ namespace Scada.Web
 
             ClearUser();
             UpdateAppDataRefs();
-        }
+        }        
 
         /// <summary>
         /// Проверить, что пользователь вошёл систему. 
