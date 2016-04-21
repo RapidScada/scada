@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using Utils;
 
 namespace Scada.Web.Plugins
 {
@@ -38,6 +39,7 @@ namespace Scada.Web.Plugins
     public abstract class PluginSpec
     {
         private AppDirs appDirs; // директории веб-приложения
+        private Log log;         // журнал
 
 
         /// <summary>
@@ -46,6 +48,7 @@ namespace Scada.Web.Plugins
         public PluginSpec()
         {
             appDirs = new AppDirs();
+            log = null;
         }
 
 
@@ -112,6 +115,23 @@ namespace Scada.Web.Plugins
                 if (value == null)
                     throw new ArgumentNullException("value");
                 appDirs = value;
+            }
+        }
+
+        /// <summary>
+        /// Получить или установить журнал
+        /// </summary>
+        public Log Log
+        {
+            get
+            {
+                return log;
+            }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+                log = value;
             }
         }
 

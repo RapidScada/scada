@@ -73,33 +73,36 @@ namespace Scada.Web.Shell
         /// </summary>
         protected static void MergeMenuItems(List<MenuItem> existingItems, List<MenuItem> addedItems)
         {
-            addedItems.Sort();
-
-            foreach (MenuItem addedItem in addedItems)
+            if (addedItems != null)
             {
-                int ind = existingItems.BinarySearch(addedItem);
+                addedItems.Sort();
 
-                if (ind >= 0)
+                foreach (MenuItem addedItem in addedItems)
                 {
-                    MenuItem existingItem = existingItems[ind];
+                    int ind = existingItems.BinarySearch(addedItem);
 
-                    if (existingItem.Subitems.Count > 0 && addedItem.Subitems.Count > 0)
+                    if (ind >= 0)
                     {
-                        // рекурсивное добавление подпунктов меню
-                        MergeMenuItems(existingItem.Subitems, addedItem.Subitems);
+                        MenuItem existingItem = existingItems[ind];
+
+                        if (existingItem.Subitems.Count > 0 && addedItem.Subitems.Count > 0)
+                        {
+                            // рекурсивное добавление подпунктов меню
+                            MergeMenuItems(existingItem.Subitems, addedItem.Subitems);
+                        }
+                        else
+                        {
+                            // упрощённое добавление подпунктов меню
+                            addedItem.Subitems.Sort();
+                            existingItem.Subitems.AddRange(addedItem.Subitems);
+                        }
                     }
                     else
                     {
-                        // упрощённое добавление подпунктов меню
+                        // вставка элемента вместе с его дочерними элементами
                         addedItem.Subitems.Sort();
-                        existingItem.Subitems.AddRange(addedItem.Subitems);
+                        existingItems.Insert(~ind, addedItem);
                     }
-                }
-                else
-                {
-                    // вставка элемента вместе с его дочерними элементами
-                    addedItem.Subitems.Sort();
-                    existingItems.Insert(~ind, addedItem);
                 }
             }
         }

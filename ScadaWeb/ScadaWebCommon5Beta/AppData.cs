@@ -29,6 +29,7 @@ using Scada.Web.Plugins;
 using Scada.Web.Shell;
 using System;
 using System.Collections.Generic;
+using System.ServiceModel.Web;
 using System.Text;
 using Utils;
 
@@ -254,8 +255,9 @@ namespace Scada.Web
             {
                 try
                 {
-                    pluginSpec.Init();
                     pluginSpec.AppDirs = AppDirs;
+                    pluginSpec.Log = Log;
+                    pluginSpec.Init();
                 }
                 catch (Exception ex)
                 {
@@ -405,6 +407,15 @@ namespace Scada.Web
                     return false;
                 }
             }
+        }
+
+        /// <summary>
+        /// Проверить, что пользователь вошёл систему
+        /// </summary>
+        public void CheckLoggedOn()
+        {
+            if (!UserMonitor.UserIsLoggedOn(WebOperationContext.Current))
+                throw new ScadaException(WebPhrases.NotLoggedOn);
         }
 
         /// <summary>

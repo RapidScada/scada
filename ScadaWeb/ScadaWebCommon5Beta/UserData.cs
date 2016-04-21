@@ -174,7 +174,22 @@ namespace Scada.Web
         /// </summary>
         private void RaiseOnUserLogin()
         {
-
+            if (PluginSpecs != null)
+            {
+                foreach (PluginSpec pluginSpec in PluginSpecs)
+                {
+                    try
+                    {
+                        pluginSpec.OnUserLogin(this);
+                    }
+                    catch (Exception ex)
+                    {
+                        AppData.Log.WriteException(ex, Localization.UseRussian ?
+                            "Ошибка при выполнении действий при входе пользователя в плагине \"{0}\"" :
+                            "Error executing actions on user login in the plugin \"{0}\"", pluginSpec.Name);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -182,7 +197,22 @@ namespace Scada.Web
         /// </summary>
         private void RaiseOnUserLogout()
         {
-
+            if (PluginSpecs != null)
+            {
+                foreach (PluginSpec pluginSpec in PluginSpecs)
+                {
+                    try
+                    {
+                        pluginSpec.OnUserLogout(this);
+                    }
+                    catch (Exception ex)
+                    {
+                        AppData.Log.WriteException(ex, Localization.UseRussian ?
+                            "Ошибка при выполнении действий при выходе пользователя в плагине \"{0}\"" :
+                            "Error executing actions on user logout in the plugin \"{0}\"", pluginSpec.Name);
+                    }
+                }
+            }
         }
 
 
@@ -205,12 +235,6 @@ namespace Scada.Web
                 LoggedOn = true;
                 LogonDT = DateTime.Now;
 
-                UpdateAppDataRefs();
-                UserRights = new UserRights();
-                UserRights.Init(roleID);
-                UserMenu = new UserMenu(AppData.Log);
-                UserMenu.Init(this, PluginSpecs);
-
                 if (password == null)
                 {
                     AppData.Log.WriteAction(string.Format(Localization.UseRussian ?
@@ -226,6 +250,12 @@ namespace Scada.Web
                         username, RoleName, IpAddress));
                 }
 
+                UpdateAppDataRefs();
+                UserRights = new UserRights();
+                UserRights.Init(roleID);
+                RaiseOnUserLogin();
+                UserMenu = new UserMenu(AppData.Log);
+                UserMenu.Init(this, PluginSpecs);
                 return true;
             }
             else
@@ -254,6 +284,7 @@ namespace Scada.Web
         {
             if (LoggedOn)
             {
+                RaiseOnUserLogout();
                 AppData.Log.WriteAction(string.Format(Localization.UseRussian ?
                     "Выход из системы: {0}. IP-адрес: {1}" :
                     "Logout: {0}. IP address: {1}", UserName, IpAddress));

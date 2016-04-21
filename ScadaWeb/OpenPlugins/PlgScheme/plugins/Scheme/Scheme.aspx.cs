@@ -38,7 +38,7 @@ namespace Scada.Web.Plugins.Scheme
     public partial class WFrmScheme : System.Web.UI.Page
     {
         /// <summary>
-        /// Имя словаря с фразами для JavaScript
+        /// Имя словаря с фразами для формирования JavaScript
         /// </summary>
         private const string DictName = "Scada.Web.Plugins.Scheme.WFrmScheme.Js";
 
@@ -49,18 +49,6 @@ namespace Scada.Web.Plugins.Scheme
         protected string phrases; // локализованные фразы
 
         private AppData appData;  // общие данные веб-приложения
-
-        /// <summary>
-        /// Зарузить словари, используемые плагином
-        /// </summary>
-        [Obsolete("Move to plugin specification")]
-        private void LoadDictionaries()
-        {
-            string langDir = Server.MapPath("~/plugins/Scheme/lang/");
-            string errMsg;
-            if (!Localization.LoadDictionaries(langDir, "PlgScheme", out errMsg))
-                appData.Log.WriteError(errMsg);
-        }
 
 
         protected void Page_Load(object sender, EventArgs e)
@@ -78,7 +66,6 @@ namespace Scada.Web.Plugins.Scheme
             int.TryParse(Request["viewID"], out viewID);
             refrRate = userData.WebSettings.DataRefrRate;
 
-            LoadDictionaries();
             Localization.Dict dict;
             Localization.Dictionaries.TryGetValue(DictName, out dict);
             phrases = WebUtils.DictionaryToJs(dict);

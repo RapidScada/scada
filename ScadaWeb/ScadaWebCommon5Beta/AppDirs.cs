@@ -74,6 +74,11 @@ namespace Scada.Web
         public string LogDir { get; protected set; }
 
         /// <summary>
+        /// Получить директорию плагинов
+        /// </summary>
+        public string PluginsDir { get; protected set; }
+
+        /// <summary>
         /// Получить директорию хранилища приложения
         /// </summary>
         public string StorageDir { get; protected set; }
@@ -89,6 +94,7 @@ namespace Scada.Web
             ConfigDir = WebAppDir + "config" + Path.DirectorySeparatorChar;
             LangDir = WebAppDir + "lang" + Path.DirectorySeparatorChar;
             LogDir = WebAppDir + "log" + Path.DirectorySeparatorChar;
+            PluginsDir = WebAppDir + "plugins" + Path.DirectorySeparatorChar;
             StorageDir = WebAppDir + "storage" + Path.DirectorySeparatorChar;
         }
     }

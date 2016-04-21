@@ -215,6 +215,7 @@ namespace Scada.Web.Plugins.Scheme
         {
             try
             {
+                AppData.CheckLoggedOn();
                 SchemeView schemeView = AppData.ViewCache.GetView<SchemeView>(viewID, true);
                 SchemePropsDTO dto = new SchemePropsDTO();
                 dto.ViewStamp = schemeView.Stamp;
@@ -257,6 +258,7 @@ namespace Scada.Web.Plugins.Scheme
         {
             try
             {
+                AppData.CheckLoggedOn();
                 SchemeView schemeView = AppData.ViewCache.GetView<SchemeView>(viewID, true);
                 ElementsDTO dto = new ElementsDTO(count);
                 dto.ViewStamp = schemeView.Stamp;
@@ -291,6 +293,7 @@ namespace Scada.Web.Plugins.Scheme
         {
             try
             {
+                AppData.CheckLoggedOn();
                 SchemeView schemeView = AppData.ViewCache.GetView<SchemeView>(viewID, true);
                 ImagesDTO dto = new ImagesDTO();
                 dto.ViewStamp = schemeView.Stamp;

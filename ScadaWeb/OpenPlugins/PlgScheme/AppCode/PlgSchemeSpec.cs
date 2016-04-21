@@ -24,6 +24,7 @@
  */
 
 using System.Collections.Generic;
+using System.IO;
 
 namespace Scada.Web.Plugins
 {
@@ -31,8 +32,21 @@ namespace Scada.Web.Plugins
     /// Scheme plugin specification
     /// <para>Спецификация плагина схем</para>
     /// </summary>
-    public class PlgConfigSpec : PluginSpec
+    public class PlgSchemeSpec : PluginSpec
     {
+        private DictUpdater dictUpdater; // объект для обновления словаря плагина
+
+
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        public PlgSchemeSpec()
+            : base()
+        {
+            dictUpdater = null;
+        }
+
+
         /// <summary>
         /// Получить наименование плагина
         /// </summary>
@@ -79,6 +93,25 @@ namespace Scada.Web.Plugins
             {
                 return new List<ViewSpec>() { new SchemeSpec() };
             }
+        }
+
+
+        /// <summary>
+        /// Инициализировать плагин
+        /// </summary>
+        public override void Init()
+        {
+            dictUpdater = new DictUpdater(
+                string.Format("{0}Scheme{1}lang{1}", AppDirs.PluginsDir, Path.DirectorySeparatorChar), 
+                "PlgScheme", null, Log);
+        }
+
+        /// <summary>
+        /// Выполнить действия после успешного входа пользователя в систему
+        /// </summary>
+        public override void OnUserLogin(UserData userData)
+        {
+            dictUpdater.Update();
         }
     }
 }
