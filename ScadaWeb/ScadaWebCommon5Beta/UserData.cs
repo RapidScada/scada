@@ -29,6 +29,7 @@ using System.IO;
 using System.Web;
 using System.Web.SessionState;
 using Scada.Web.Plugins;
+using Scada.Web.Shell;
 
 namespace Scada.Web
 {
@@ -105,6 +106,11 @@ namespace Scada.Web
         /// </summary>
         public UserRights UserRights { get; private set; }
 
+        /// <summary>
+        /// Получить меню пользователя
+        /// </summary>
+        public UserMenu UserMenu { get; private set; }
+
 
         /// <summary>
         /// Получить ссылку на настройки веб-приложения
@@ -138,6 +144,7 @@ namespace Scada.Web
             LoggedOn = false;
             LogonDT = DateTime.MinValue;
             UserRights = null;
+            UserMenu = null;
         }
 
         /// <summary>
@@ -185,6 +192,8 @@ namespace Scada.Web
                 UpdateAppDataRefs();
                 UserRights = new UserRights();
                 UserRights.Init(roleID);
+                UserMenu = new UserMenu(AppData.Log);
+                UserMenu.Init(this, PluginSpecs);
 
                 if (password == null)
                 {

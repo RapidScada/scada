@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,11 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2016
  */
 
 using Scada.Client;
+using Scada.Data;
 using Utils;
 
 namespace Scada.Web
@@ -39,14 +40,25 @@ namespace Scada.Web
         /// </summary>
         public UserRights()
         {
+            ConfigRight = false;
         }
+
 
         /// <summary>
         /// Инициализировать права пользователя
         /// </summary>
         public void Init(int roleID)
         {
-
+            if (roleID == BaseValues.Roles.Admin)
+            {
+                ConfigRight = true;
+            }
         }
+
+
+        /// <summary>
+        /// Получить право конфигурирования системы
+        /// </summary>
+        public bool ConfigRight { get; protected set; }
     }
 }

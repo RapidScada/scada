@@ -58,6 +58,7 @@
     <Compile Include="SettingsUpdater.cs" />
     <Compile Include="Shell\RememberMe.cs" />
     <Compile Include="Shell\SortOrders.cs" />
+    <Compile Include="Shell\UserMenu.cs" />
     <Compile Include="WebUtils.cs" />
     <Compile Include="Shell\MenuItem.cs" />
     <Compile Include="Shell\StandardMenuItems.cs" />

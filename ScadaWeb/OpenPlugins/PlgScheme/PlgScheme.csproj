@@ -98,6 +98,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppCode\PlgSchemeSpec.cs" />
+    <Compile Include="AppCode\SchemeSpec.cs" />
     <Compile Include="plugins\Scheme\Scheme.aspx.cs">
       <DependentUpon>Scheme.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

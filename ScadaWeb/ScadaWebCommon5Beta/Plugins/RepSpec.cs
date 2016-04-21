@@ -32,14 +32,6 @@ namespace Scada.Web.Plugins
     public abstract class RepSpec
     {
         /// <summary>
-        /// Конструктор
-        /// </summary>
-        public RepSpec()
-        {
-        }
-
-
-        /// <summary>
         /// Получить код типа отчёта
         /// </summary>
         /// <remarks>Используется для предоставления прав пользователям</remarks>

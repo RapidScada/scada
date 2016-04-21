@@ -15,22 +15,21 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : PlgConfig
- * Summary  : Configuration plugin specification
+ * Module   : PlgScheme
+ * Summary  : Scheme plugin specification
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
  * Modified : 2016
  */
 
-using Scada.Web.Shell;
 using System.Collections.Generic;
 
 namespace Scada.Web.Plugins
 {
     /// <summary>
-    /// Configuration plugin specification
-    /// <para>Спецификация плагина конфигурации</para>
+    /// Scheme plugin specification
+    /// <para>Спецификация плагина схем</para>
     /// </summary>
     public class PlgConfigSpec : PluginSpec
     {
@@ -42,8 +41,8 @@ namespace Scada.Web.Plugins
             get
             {
                 return Localization.UseRussian ?
-                    "Конфигуратор" :
-                    "Configurator";
+                    "Схемы" :
+                    "Schemes";
             }
         }
 
@@ -55,8 +54,8 @@ namespace Scada.Web.Plugins
             get
             {
                 return Localization.UseRussian ?
-                    "Плагин позволяет конфигурировать Rapid SCADA через веб-интерфейс." :
-                    "The plugin allows to configure Rapid SCADA using web interface.";
+                    "Плагин обеспечивает отображение мнемосхем." :
+                    "The plugin provides displaying schemes.";
             }
         }
 
@@ -71,23 +70,14 @@ namespace Scada.Web.Plugins
             }
         }
 
-
         /// <summary>
-        /// Получить элементы меню, доступные пользователю
+        /// Получить спецификации представлений, которые реализуются плагином
         /// </summary>
-        public override List<MenuItem> GetMenuItems(UserData userData)
+        public override List<ViewSpec> ViewSpecs
         {
-            if (userData.UserRights.ConfigRight)
+            get
             {
-                List<MenuItem> menuItems = new List<MenuItem>();
-                MenuItem configMenuItem = MenuItem.FromStandardMenuItem(StandardMenuItems.Config);
-                configMenuItem.Subitems.Add(new MenuItem("Web application", "~/plugins/Config/WebConfig.aspx", 100));
-                menuItems.Add(configMenuItem);
-                return menuItems;
-            }
-            else
-            {
-                return null;
+                return new List<ViewSpec>() { new SchemeSpec() };
             }
         }
     }

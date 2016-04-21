@@ -15,8 +15,8 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : ScadaWebCommon
- * Summary  : The base class for view specification
+ * Module   : PlgScheme
+ * Summary  : Scheme view specification
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
@@ -26,25 +26,40 @@
 namespace Scada.Web.Plugins
 {
     /// <summary>
-    /// The base class for view specification
-    /// <para>Родительский класс спецификации представления</para>
+    /// Scheme view specification
+    /// <para>Спецификация представления схем</para>
     /// </summary>
-    public abstract class ViewSpec
+    public class SchemeSpec : ViewSpec
     {
         /// <summary>
         /// Получить код типа представления
         /// </summary>
-        public abstract string ViewTypeCode { get; }
+        public override string IconUrl
+        {
+            get
+            {
+                return "";
+            }
+        }
 
         /// <summary>
         /// Получить ссылку на иконку типа представлений
         /// </summary>
-        public abstract string IconUrl { get; }
+        public override string ViewTypeCode
+        {
+            get
+            {
+                return "SchemeView";
+            }
+        }
 
 
         /// <summary>
         /// Получить ссылку на представление с заданным идентификатором
         /// </summary>
-        public abstract string GetViewUrl(int viewID);
+        public override string GetViewUrl(int viewID)
+        {
+            return "~/plugins/Scheme/Scheme.aspx?viewID=" + viewID;
+        }
     }
 }

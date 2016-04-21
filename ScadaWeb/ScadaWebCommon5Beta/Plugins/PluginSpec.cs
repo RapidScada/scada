@@ -37,11 +37,15 @@ namespace Scada.Web.Plugins
     /// </summary>
     public abstract class PluginSpec
     {
+        private AppDirs appDirs; // директории веб-приложения
+
+
         /// <summary>
         /// Конструктор
         /// </summary>
         public PluginSpec()
         {
+            appDirs = new AppDirs();
         }
 
 
@@ -94,6 +98,23 @@ namespace Scada.Web.Plugins
             }
         }
 
+        /// <summary>
+        /// Получить или установить директории веб-приложения
+        /// </summary>
+        public AppDirs AppDirs
+        {
+            get
+            {
+                return appDirs;
+            }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+                appDirs = value;
+            }
+        }
+
 
         /// <summary>
         /// Инициализировать плагин
@@ -118,7 +139,7 @@ namespace Scada.Web.Plugins
         }
 
         /// <summary>
-        /// Получить список элементов меню, доступных пользователю
+        /// Получить элементы меню, доступные пользователю
         /// </summary>
         /// <remarks>Поддерживается не более 2 уровней вложенности меню</remarks>
         public virtual List<MenuItem> GetMenuItems(UserData userData)

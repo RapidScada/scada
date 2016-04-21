@@ -255,6 +255,7 @@ namespace Scada.Web
                 try
                 {
                     pluginSpec.Init();
+                    pluginSpec.AppDirs = AppDirs;
                 }
                 catch (Exception ex)
                 {
