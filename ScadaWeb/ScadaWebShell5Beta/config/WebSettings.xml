@@ -9,6 +9,7 @@
     <Param name="StartPage" value="" descr="Start page after login" />
   </CommonParams>
   <Plugins>
+    <Plugin fileName="PlgConfig.dll" />
     <Plugin fileName="PlgScheme.dll" />
   </Plugins>
 </WebSettings>

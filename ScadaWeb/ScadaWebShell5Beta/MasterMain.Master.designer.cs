@@ -31,13 +31,13 @@ namespace Scada.Web {
         protected global::System.Web.UI.WebControls.HyperLink hlMainUser;
         
         /// <summary>
-        /// hlMainLogout control.
+        /// lbtnMainLogout control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink hlMainLogout;
+        protected global::System.Web.UI.WebControls.LinkButton lbtnMainLogout;
         
         /// <summary>
         /// cphMainContent control.

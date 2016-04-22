@@ -6,6 +6,13 @@ body {
   font-family: 'Open Sans', sans-serif;
   font-size: 12px;
 }
+a,
+a:visited,
+a:hover,
+a:active {
+  color: inherit;
+  text-decoration: none;
+}
 /* Header */
 #divMainHeader {
   position: fixed;
@@ -98,6 +105,7 @@ body {
   color: #00b9eb;
   cursor: pointer;
 }
+/* Main Menu */
 #divMainMenu {
   height: calc(100% -  40px);
   padding: 5px 0 0 0;
@@ -121,6 +129,17 @@ body {
   color: #00b9eb;
   text-decoration: none;
 }
+#divMainMenu .menu-item.selected,
+#divMainMenu .menu-subitem.selected {
+  background-color: #0073aa;
+  color: white;
+}
+#divMainMenu .menu-item a,
+#divMainMenu .menu-subitem a {
+  display: inline-block;
+  width: 100%;
+}
+/* Collapse Pane */
 #divMainCollapsePane {
   position: absolute;
   bottom: 0;

@@ -47,9 +47,10 @@ namespace Scada.Web.Shell
         /// </summary>
         public MenuItem(string text, string url, int sortOrder = SortOrders.First)
         {
-            Text = text;
-            Url = url;
+            Text = text ?? "";
+            Url = url ?? "";
             SortOrder = sortOrder;
+            Level = -1;
             Subitems = new List<MenuItem>();
         }
 
@@ -68,6 +69,11 @@ namespace Scada.Web.Shell
         /// Получить порядок сортировки
         /// </summary>
         public int SortOrder { get; protected set; }
+
+        /// <summary>
+        /// Получить или установить уровень вложенности
+        /// </summary>
+        public int Level { get; set; }
 
         /// <summary>
         /// Получить подпункты меню

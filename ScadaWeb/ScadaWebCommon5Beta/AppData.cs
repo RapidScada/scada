@@ -279,26 +279,29 @@ namespace Scada.Web
             {
                 try
                 {
-                    foreach (ViewSpec viewSpec in pluginSpec.ViewSpecs)
+                    if (pluginSpec.ViewSpecs != null)
                     {
-                        if (ViewSpecs.ContainsKey(viewSpec.ViewTypeCode))
+                        foreach (ViewSpec viewSpec in pluginSpec.ViewSpecs)
                         {
-                            Log.WriteError(string.Format(Localization.UseRussian ?
-                                "Спецификация представлений \"{0}\" плагина \"{1}\" игнорируется, потому что дублируется" :
-                                "View specification \"{0}\" of the plugin \"{1}\" is ignored because it is duplicated",
-                                viewSpec.ViewTypeCode, pluginSpec.Name));
-                        }
-                        else
-                        {
-                            ViewSpecs.Add(viewSpec.ViewTypeCode, viewSpec);
+                            if (ViewSpecs.ContainsKey(viewSpec.ViewTypeCode))
+                            {
+                                Log.WriteError(string.Format(Localization.UseRussian ?
+                                    "Спецификация представлений \"{0}\" плагина \"{1}\" игнорируется, потому что дублируется" :
+                                    "View specification \"{0}\" of the plugin \"{1}\" is ignored because it is duplicated",
+                                    viewSpec.ViewTypeCode, pluginSpec.Name));
+                            }
+                            else
+                            {
+                                ViewSpecs.Add(viewSpec.ViewTypeCode, viewSpec);
+                            }
                         }
                     }
                 }
                 catch (Exception ex)
                 {
                     Log.WriteException(ex, Localization.UseRussian ?
-                        "Ошибка при получении спецификаций представлений, поддерживаемых плагином \"{0}\"" :
-                        "Error getting view specifications supported by plugin \"{0}\"", pluginSpec.Name);
+                        "Ошибка при получении спецификаций представлений, реализуемых плагином \"{0}\"" :
+                        "Error getting view specifications implemented by plugin \"{0}\"", pluginSpec.Name);
                 }
             }
         }

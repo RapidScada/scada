@@ -59,6 +59,7 @@ namespace Scada.Web.Shell
 
             this.log = log;
             MenuItems = new List<MenuItem>();
+            LinearMenuItems = new List<MenuItem>();
         }
 
 
@@ -66,6 +67,11 @@ namespace Scada.Web.Shell
         /// Получить элементы меню, доступные пользователю
         /// </summary>
         public List<MenuItem> MenuItems { get; private set; }
+
+        /// <summary>
+        /// Получить элементы меню в виде линейного списка
+        /// </summary>
+        public List<MenuItem> LinearMenuItems { get; private set; }
 
 
         /// <summary>
@@ -108,6 +114,23 @@ namespace Scada.Web.Shell
         }
 
         /// <summary>
+        /// Рекурсивно заполнить линейный список элементов меню
+        /// </summary>
+        protected static void FillLinearMenuItems(List<MenuItem> linearItems, List<MenuItem> addedItems, int level)
+        {
+            if (addedItems != null)
+            {
+                foreach (MenuItem addedItem in addedItems)
+                {
+                    addedItem.Level = level;
+                    linearItems.Add(addedItem);
+                    FillLinearMenuItems(linearItems, addedItem.Subitems, level + 1);
+                }
+            }
+        }
+
+
+        /// <summary>
         /// Инициализировать меню пользователя
         /// </summary>
         public void Init(UserData userData, List<PluginSpec> pluginSpecs)
@@ -117,6 +140,9 @@ namespace Scada.Web.Shell
                 MenuItems.Clear();
                 foreach (PluginSpec pluginSpec in pluginSpecs)
                     MergeMenuItems(MenuItems, pluginSpec.GetMenuItems(userData));
+
+                LinearMenuItems.Clear();
+                FillLinearMenuItems(LinearMenuItems, MenuItems, 0);
             }
             catch (Exception ex)
             {
