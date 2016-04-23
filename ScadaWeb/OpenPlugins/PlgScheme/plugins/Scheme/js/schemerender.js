@@ -125,7 +125,7 @@ scada.scheme.SchemeRenderer.prototype.createDom = function (elem, renderContext)
     this.setForeColor(divScheme, props.ForeColor);
 
     // set background image if presents
-    var backImage = renderContext.imageMap.get(elem.props.BackImage.Name);
+    var backImage = renderContext.getImage(elem.props.BackImage);
     if (backImage) {
         divScheme.css({
             "background-image": this.imageToDataUrlCss(backImage),
@@ -451,7 +451,7 @@ scada.scheme.StaticPictureRenderer.prototype.createDom = function (elem, renderC
     }
 
     divElem.css("background-repeat", "no-repeat");
-    var image = renderContext.imageMap.get(props.Image.Name);
+    var image = renderContext.getImage(props.Image);
     this.setBackgroundImage(divElem, image);
 
     elem.dom = divElem;
@@ -485,7 +485,7 @@ scada.scheme.DynamicPictureRenderer.prototype.createDom = function (elem, render
             thisRenderer.setDynamicBorderColor(divElem, props.BorderColorOnHover, cnlNum, renderContext);
 
             if (cnlNum <= 0) {
-                var image = renderContext.imageMap.get(props.ImageOnHover.Name);
+                var image = renderContext.getImage(props.ImageOnHover);
                 thisRenderer.setBackgroundImage(divElem, image);
             }
         },
@@ -493,7 +493,7 @@ scada.scheme.DynamicPictureRenderer.prototype.createDom = function (elem, render
             thisRenderer.setDynamicBorderColor(divElem, props.BorderColor, cnlNum, renderContext, true);
 
             if (cnlNum <= 0) {
-                var image = renderContext.imageMap.get(props.Image.Name);
+                var image = renderContext.getImage(props.Image);
                 thisRenderer.setBackgroundImage(divElem, image, true);
             }
         }
@@ -539,6 +539,11 @@ scada.scheme.DynamicPictureRenderer.prototype.update = function (elem, renderCon
 scada.scheme.RenderContext = function () {
     this.curCnlDataMap = null;
     this.imageMap = null;
+};
+
+// Get scheme image object by image property of an element
+scada.scheme.RenderContext.prototype.getImage = function (imageProp) {
+    return imageProp ? this.imageMap.get(imageProp.Name) : null;
 };
 
 /********** Renderer Map **********/
