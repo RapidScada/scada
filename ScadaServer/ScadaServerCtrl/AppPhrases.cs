@@ -116,7 +116,7 @@ namespace Scada.Server.Ctrl
             ModulesNode = "Модули";
             GeneratorNode = "Генератор";
             StatsNode = "Статистика";
-            ServiceState = "Состояние службы SCADA-Сервера: {0}";
+            ServiceState = "Состояние службы {0}: {1}";
             RestartNeeded = "Изменения настроек вступят в силу после перезапуска службы SCADA-Сервера.";
             GetFileListError = "Ошибка при получении списка файлов данных";
             LoadModuleError = "Ошибка при загрузке модуля";

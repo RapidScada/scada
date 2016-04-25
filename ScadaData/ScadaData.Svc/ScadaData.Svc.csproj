@@ -31,6 +31,9 @@
     <DocumentationFile>bin\Release\ScadaData.Svc.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ScadaData">
+      <HintPath>..\ScadaData\bin\Release\ScadaData.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.ServiceProcess" />
@@ -42,12 +45,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ScadaData\ScadaData.csproj">
-      <Project>{c5dc293f-13ca-435f-a7db-4ba91639c292}</Project>
-      <Name>ScadaData</Name>
-    </ProjectReference>
+    <Compile Include="SvcProps.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

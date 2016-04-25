@@ -19,16 +19,13 @@
  * Summary  : The base class for Windows service installer
  * 
  * Author   : Mikhail Shiryaev
- * Created  : 2007
+ * Created  : 2016
  * Modified : 2016
  */
 
 using System;
 using System.Configuration.Install;
-using System.IO;
-using System.Reflection;
 using System.ServiceProcess;
-using System.Xml;
 
 namespace Scada.Svc
 {
@@ -39,66 +36,29 @@ namespace Scada.Svc
     public abstract class BaseSvcInstaller : Installer
     {
         /// <summary>
-        /// Имя файла, содержащего свойства службы
-        /// </summary>
-        private const string SvcPropsFileName = "svc_config.xml";
-
-
-        /// <summary>
-        /// Загрузить свойства службы
-        /// </summary>
-        private bool LoadSeriveProps(out string svcName, out string svcDescr)
-        {
-            try
-            {
-                string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                string fileName = path + Path.DirectorySeparatorChar + SvcPropsFileName;
-
-                if (File.Exists(fileName))
-                {
-                    XmlDocument xmlDoc = new XmlDocument();
-                    xmlDoc.Load(fileName);
-
-                    svcName = xmlDoc.DocumentElement.GetChildAsString("ServiceName");
-                    svcDescr = xmlDoc.DocumentElement.GetChildAsString("Description");
-                    return true;
-                }
-                else
-                {
-                    svcName = "";
-                    svcDescr = "";
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error loading service properties", ex);
-            }
-        }
-
-        /// <summary>
         /// Инициализировать установщик службы
         /// </summary>
         protected void Init(string defSvcName, string defDescr)
         {
-            string svcName;
-            string svcDescr;
+            // загрузка и проверка свойств службы
+            SvcProps svcProps = new SvcProps();
 
-            if (!LoadSeriveProps(out svcName, out svcDescr))
+            if (!svcProps.LoadFromFile())
             {
-                svcName = defSvcName;
-                svcDescr = defDescr;
+                svcProps.ServiceName = defSvcName;
+                svcProps.Description = defDescr;
             }
 
-            if (string.IsNullOrEmpty(svcName))
-                throw new ScadaException("Service name must not be null or empty.");
+            if (string.IsNullOrEmpty(svcProps.ServiceName))
+                throw new Exception(SvcProps.ServiceNameEmptyError);
 
+            // настройка установщика
             ServiceInstaller serviceInstaller = new ServiceInstaller();
             ServiceProcessInstaller serviceProcessInstaller = new ServiceProcessInstaller();
 
-            serviceInstaller.ServiceName = svcName;
-            serviceInstaller.DisplayName = svcName;
-            serviceInstaller.Description = svcDescr ?? "";
+            serviceInstaller.ServiceName = svcProps.ServiceName;
+            serviceInstaller.DisplayName = svcProps.ServiceName;
+            serviceInstaller.Description = svcProps.Description ?? "";
             serviceInstaller.StartType = ServiceStartMode.Automatic;
 
             serviceProcessInstaller.Account = ServiceAccount.LocalSystem;

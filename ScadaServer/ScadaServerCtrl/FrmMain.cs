@@ -26,6 +26,7 @@
 using Scada.Client;
 using Scada.Data;
 using Scada.Server.Modules;
+using Scada.Svc;
 using Scada.UI;
 using System;
 using System.Collections.Generic;
@@ -80,6 +81,10 @@ namespace Scada.Server.Ctrl
         /// </summary>
         private const string ErrFileName = "ScadaServerCtrl.err";
         /// <summary>
+        /// Имя службы по умолчанию
+        /// </summary>
+        private const string DefServiceName = "ScadaServerService";
+        /// <summary>
         /// Интервал ожидания перезапуска службы
         /// </summary>
         private static readonly TimeSpan WaitForRestartSpan = TimeSpan.FromSeconds(30);
@@ -99,6 +104,7 @@ namespace Scada.Server.Ctrl
         private AppDirs appDirs;              // директории приложения
         private Log errLog;                   // журнал ошибок приложения
         private Mutex mutex;                  // объект для проверки запуска второй копии программы
+        private string serviceName;           // имя службы
         private ServiceController svcContr;   // контроллер службы
         private ServiceControllerStatus prevSvcStatus; // предыдущее состояние службы
         private Icon[] notifyIcons;           // значки для представления состояния службы
@@ -148,6 +154,7 @@ namespace Scada.Server.Ctrl
             errLog = new Log(Log.Formats.Simple);
             errLog.Encoding = Encoding.UTF8;
             mutex = null;
+            serviceName = DefServiceName;
             svcContr = null;
             prevSvcStatus = ServiceControllerStatus.Stopped;
 
@@ -234,7 +241,7 @@ namespace Scada.Server.Ctrl
                     break;
             }
 
-            lblServiceState.Text = string.Format(AppPhrases.ServiceState, state);
+            lblServiceState.Text = string.Format(AppPhrases.ServiceState, serviceName, state);
         }
 
         /// <summary>
@@ -290,6 +297,37 @@ namespace Scada.Server.Ctrl
         }
 
         /// <summary>
+        /// Загрузить локализацию приложения
+        /// </summary>
+        private void Localize(StringBuilder sbError)
+        {
+            string errMsg;
+
+            if (Localization.LoadingRequired(appDirs.LangDir, "ScadaData"))
+            {
+                if (Localization.LoadDictionaries(appDirs.LangDir, "ScadaData", out errMsg))
+                    CommonPhrases.Init();
+                else
+                    sbError.AppendLine(errMsg);
+            }
+
+            if (Localization.LoadingRequired(appDirs.LangDir, "ScadaServer"))
+            {
+                if (Localization.LoadDictionaries(appDirs.LangDir, "ScadaServer", out errMsg))
+                {
+                    ModPhrases.InitFromDictionaries();
+                    Translator.TranslateForm(this, "Scada.Server.Ctrl.FrmMain", toolTip, cmsNotify);
+                    AppPhrases.Init();
+                    TranslateTree();
+                }
+                else
+                {
+                    sbError.AppendLine(errMsg);
+                }
+            }
+        }
+
+        /// <summary>
         /// Перевести текст узлов дерева
         /// </summary>
         private void TranslateTree()
@@ -324,6 +362,45 @@ namespace Scada.Server.Ctrl
             nodeStats.Tag = new NodeTag(pageStats);
             nodeFiles.Expand();
             treeView.SelectedNode = nodeCommonParams;
+        }
+
+        /// <summary>
+        /// Загрузить имя службы
+        /// </summary>
+        private void LoadServiceName(StringBuilder sbError)
+        {
+            SvcProps svcProps = new SvcProps();
+            string svcPropsFileName = appDirs.ExeDir + SvcProps.SvcPropsFileName;
+
+            if (File.Exists(svcPropsFileName))
+            {
+                string errMsg;
+                if (svcProps.LoadFromFile(svcPropsFileName, out errMsg))
+                    serviceName = svcProps.ServiceName;
+                else
+                    sbError.AppendLine(errMsg);
+            }
+        }
+
+        /// <summary>
+        /// Проверить, что вторая копия приложения не запущена
+        /// </summary>
+        private void CheckSecondInstance(StringBuilder sbError, out bool closeApp)
+        {
+            closeApp = false;
+
+            try
+            {
+                bool createdNew;
+                mutex = new Mutex(true, "ScadaServerCtrlMutex - " + serviceName, out createdNew);
+
+                if (!createdNew)
+                    closeApp = true;
+            }
+            catch (Exception ex)
+            {
+                sbError.AppendLine(AppPhrases.CheckSecondInstanceError + ":\r\n" + ex.Message);
+            }
         }
 
         /// <summary>
@@ -625,50 +702,25 @@ namespace Scada.Server.Ctrl
             stateFileName = appDirs.LogDir + StateFileName;
             logFileName = appDirs.LogDir + LogFileName;
 
-            // локализация приложения
+            // переменные для записи информации об ошибках
             StringBuilder sbError = new StringBuilder();
             string errMsg;
 
-            if (Localization.LoadingRequired(appDirs.LangDir, "ScadaData"))
-            {
-                if (Localization.LoadDictionaries(appDirs.LangDir, "ScadaData", out errMsg))
-                    CommonPhrases.Init();
-                else
-                    sbError.AppendLine(errMsg);
-            }
+            // локализация приложения
+            Localize(sbError);
 
-            if (Localization.LoadingRequired(appDirs.LangDir, "ScadaServer"))
-            {
-                if (Localization.LoadDictionaries(appDirs.LangDir, "ScadaServer", out errMsg))
-                {
-                    ModPhrases.InitFromDictionaries();
-                    Translator.TranslateForm(this, "Scada.Server.Ctrl.FrmMain", toolTip, cmsNotify);
-                    AppPhrases.Init();
-                    TranslateTree();
-                    notifyIcon.Text = AppPhrases.MainFormTitle;
-                }
-                else
-                {
-                    sbError.AppendLine(errMsg);
-                }
-            }
+            // загрузка имени службы
+            LoadServiceName(sbError);
 
             // проверка запуска второй копии программы
-            try
-            {
-                bool createdNew;
-                mutex = new Mutex(true, "ScadaServerCtrlMutex", out createdNew);
+            bool closeApp;
+            CheckSecondInstance(sbError, out closeApp);
 
-                if (!createdNew)
-                {
-                    ScadaUiUtils.ShowInfo(AppPhrases.SecondInstanceClosed);
-                    Close();
-                    return;
-                }
-            }
-            catch (Exception ex)
+            if (closeApp)
             {
-                sbError.AppendLine(AppPhrases.CheckSecondInstanceError + ":\r\n" + ex.Message);
+                ScadaUiUtils.ShowInfo(AppPhrases.SecondInstanceClosed);
+                Close();
+                return;
             }
 
             // подготовка интерфейса
@@ -681,11 +733,12 @@ namespace Scada.Server.Ctrl
                 dtpEvTime.Value = dtpEvDate2.Value = DateTime.Today;
             pnlCmdData.Top = pnlCmdKP.Top = pnlCmdVal.Top;
             TuneGenCmd();
+            notifyIcon.Text = serviceName == DefServiceName ? AppPhrases.MainFormTitle : serviceName;
 
             // определение состояния службы
             try
             {
-                svcContr = new ServiceController("ScadaServerService");
+                svcContr = new ServiceController(serviceName);
                 prevSvcStatus = svcContr.Status;
                 SetServiceStateText(prevSvcStatus);
                 SetServiceButtonsEnabled(prevSvcStatus);
