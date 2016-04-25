@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2005
- * Modified : 2015
+ * Modified : 2016
  */
 
 using System;
@@ -43,21 +43,21 @@ namespace Utils
         public enum ActTypes
         {
             /// <summary>
-            /// Исключение
+            /// Информация
             /// </summary>
-            Exception,
-            /// <summary>
-            /// Ошибка
-            /// </summary>
-            Error,
+            Information,
             /// <summary>
             /// Действие
             /// </summary>
             Action,
             /// <summary>
-            /// Информация
+            /// Ошибка
             /// </summary>
-            Information
+            Error,
+            /// <summary>
+            /// Исключение
+            /// </summary>
+            Exception,
         }
 
         /// <summary>
@@ -85,10 +85,10 @@ namespace Utils
         /// </summary>
         public const int DefCapacity = 1048576;
 
-        private Formats format;      // формат
-        private StreamWriter writer; // объект для записи в файл
-        private FileInfo fileInfo;   // информация о файле
-        private Object writeLock;    // объект для синхронизации обращения к журналу из разных потоков
+        private readonly Formats format;   // формат
+        private readonly object writeLock; // объект для синхронизации обращения к журналу из разных потоков
+        private StreamWriter writer;       // объект для записи в файл
+        private FileInfo fileInfo;         // информация о файле
 
 
         /// <summary>
@@ -97,9 +97,9 @@ namespace Utils
         protected Log()
         {
             format = Formats.Simple;
+            writeLock = new object();
             writer = null;
             fileInfo = null;
-            writeLock = new object();
 
             FileName = "";
             Encoding = Encoding.Default;
@@ -209,30 +209,73 @@ namespace Utils
 
 
         /// <summary>
-        /// Записать действие типа информация в журнал
+        /// Записать действие определённого типа в журнал
         /// </summary>
-        public void WriteAction(string text)
+        public void WriteAction(string text, ActTypes actType)
+        {
+            StringBuilder sb = new StringBuilder(DateTime.Now.ToString(DateTimeFormat));
+
+            if (format == Formats.Simple)
+            {
+                WriteLine(sb.Append(" ").Append(text).ToString());
+            }
+            else
+            {
+                WriteLine(sb.Append(" <")
+                    .Append(CompName).Append("><")
+                    .Append(UserName).Append("><")
+                    .Append(ActTypeToStr(actType)).Append("> ")
+                    .Append(text).ToString());
+            }
+        }
+
+        /// <summary>
+        /// Записать информационное действие в журнал
+        /// </summary>
+        public void WriteInfo(string text)
         {
             WriteAction(text, ActTypes.Information);
         }
 
         /// <summary>
-        /// Записать действие определённого типа в журнал
+        /// Записать обычное действие в журнал
         /// </summary>
-        public void WriteAction(string text, ActTypes actType)
+        public void WriteAction(string text)
         {
-            string nowStr = DateTime.Now.ToString(DateTimeFormat);
-            if (format == Formats.Simple)
-                WriteLine(nowStr + " " + text);
+            WriteAction(text, ActTypes.Action);
+        }
+
+        /// <summary>
+        /// Записать ошибку в журнал
+        /// </summary>
+        public void WriteError(string text)
+        {
+            WriteAction(text, ActTypes.Error);
+        }
+
+        /// <summary>
+        /// Записать исключение в журнал
+        /// </summary>
+        public void WriteException(Exception ex, string errMsg = "", params object[] args)
+        {
+            if (string.IsNullOrEmpty(errMsg))
+            {
+                WriteAction(ex.ToString(), ActTypes.Exception);
+            }
             else
-                WriteLine(new StringBuilder(nowStr).Append(" <").Append(CompName).Append("><").Append(UserName).
-                    Append("><").Append(ActTypeToStr(actType)).Append("> ").Append(text).ToString());
+            {
+                WriteAction(new StringBuilder()
+                    .Append(args == null || args.Length == 0 ? errMsg : string.Format(errMsg, args))
+                    .Append(":").Append(Environment.NewLine)
+                    .Append(ex.ToString()).ToString(), 
+                    ActTypes.Exception);
+            }
         }
 
         /// <summary>
         /// Записать строку в журнал
         /// </summary>
-        public void WriteLine(string text)
+        public void WriteLine(string text = "")
         {
             try
             {
@@ -258,14 +301,6 @@ namespace Utils
                 Close();
                 Monitor.Exit(writeLock);
             }
-        }
-
-        /// <summary>
-        /// Записать пустую строку в журнал
-        /// </summary>
-        public void WriteLine()
-        {
-            WriteLine("");
         }
 
         /// <summary>

@@ -1172,7 +1172,9 @@ namespace Scada.Comm.Devices.KpModbus
                         elemGroup.Elems.Add(new Elem()
                         {
                             Name = srcElem.Name,
-                            ElemType = srcElem.ElemType
+                            ElemType = srcElem.ElemType,
+                            ByteOrder = srcElem.ByteOrder, // копируется ссылка на массив
+                            ByteOrderStr = srcElem.ByteOrderStr
                         });
                     }
 

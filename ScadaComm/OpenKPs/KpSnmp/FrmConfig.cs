@@ -360,6 +360,20 @@ namespace Scada.Comm.Devices.KpSnmp
                 e.Node.SetImageKey("folder_closed.png");
         }
 
+        private void treeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            // выбор узла дерева по щелчку правой кнопкой мыши (как в SCADA-Коммуникатор)
+            if (e.Button == MouseButtons.Right && e.Node != null)
+                treeView.SelectedNode = e.Node;
+        }
+
+        private void treeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            // вызов формы редактирования, если нет дочерних узлов
+            if (e.Node.Nodes.Count == 0)
+                btnEdit_Click(null, null);
+        }
+
         private void btnSave_Click(object sender, EventArgs e)
         {
             // сохранение конфигурации КП

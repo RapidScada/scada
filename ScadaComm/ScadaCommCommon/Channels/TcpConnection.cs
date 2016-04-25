@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2016
  */
 
 using Scada.Comm.Devices;
@@ -63,9 +63,9 @@ namespace Scada.Comm.Channels
         /// </summary>
         protected int maxLineSize;
         /// <summary>
-        /// Дата и время установки соединения
+        /// Дата и время неудачной попытки соединения
         /// </summary>
-        protected DateTime connectDT;
+        protected DateTime connFailDT;
         /// <summary>
         /// Список КП, относящихся к данному соединению
         /// </summary>
@@ -89,7 +89,7 @@ namespace Scada.Comm.Channels
                 throw new ArgumentNullException("tcpClient");
 
             maxLineSize = DeaultMaxLineSize;
-            connectDT = DateTime.MinValue;
+            connFailDT = DateTime.MinValue;
             relatedKPList = null;
 
             InternalInit(tcpClient);
@@ -176,18 +176,6 @@ namespace Scada.Comm.Channels
             ActivityDT = DateTime.Now;
             JustConnected = true;
             Broken = false;
-        }
-
-        /// <summary>
-        /// Закрыть соединение
-        /// </summary>
-        protected void InternalClose()
-        {
-            try { NetStream.Close(); }
-            catch { }
-
-            try { TcpClient.Close(); }
-            catch { }
         }
 
         /// <summary>
@@ -469,18 +457,18 @@ namespace Scada.Comm.Channels
         {
             DateTime nowDT = DateTime.Now;
 
-            if ((nowDT - connectDT).TotalSeconds >= ConnectPeriod || nowDT < connectDT /*время переведено назад*/)
+            if ((nowDT - connFailDT).TotalSeconds >= ConnectPeriod || nowDT < connFailDT /*время переведено назад*/)
             {
-                connectDT = nowDT;
-
                 try
                 {
                     TcpClient.Connect(addr, port);
                     TakeNetStream();
                     TakeAddresses();
+                    connFailDT = DateTime.MinValue;
                 }
                 catch (Exception ex)
                 {
+                    connFailDT = nowDT;
                     throw new Exception((Localization.UseRussian ? 
                         "Ошибка при установке TCP-соединения: " :
                         "Error establishing TCP connection: ") + ex.Message, ex);
@@ -507,7 +495,19 @@ namespace Scada.Comm.Channels
                         kpLogic.Connection = null;
             }
 
-            InternalClose();
+            Disconnect();
+        }
+
+        /// <summary>
+        /// Разорвать соединение
+        /// </summary>
+        public void Disconnect()
+        {
+            try { NetStream.Close(); }
+            catch { }
+
+            try { TcpClient.Close(); }
+            catch { }
         }
 
         /// <summary>
@@ -515,7 +515,7 @@ namespace Scada.Comm.Channels
         /// </summary>
         public void Renew()
         {
-            InternalClose();
+            Disconnect();
             InternalInit(new TcpClient());
         }
 

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2005
- * Modified : 2009
+ * Modified : 2016
  */
 
 using System;
@@ -315,6 +315,7 @@ namespace Utils.Report
                 id = xmlNode.Attributes["ss:ID"].Value;
             }
 
+
             /// <summary>
             /// Клонировать стиль
             /// </summary>
@@ -412,6 +413,7 @@ namespace Utils.Report
                 name = xmlNode.Attributes["ss:Name"].Value;
                 table = null;
             }
+
 
             /// <summary>
             /// Клонировать лист
@@ -747,6 +749,7 @@ namespace Utils.Report
                 parentTable = null;
             }
 
+
             /// <summary>
             /// Клонировать столбец
             /// </summary>
@@ -973,7 +976,7 @@ namespace Utils.Report
             }
 
             /// <summary>
-            /// Получить ссылку на XML-узел, соответствующий данным ячейки
+            /// Получить или установить ссылку на XML-узел, соответствующий данным ячейки
             /// </summary>
             public XmlNode DataNode
             {
@@ -1055,6 +1058,7 @@ namespace Utils.Report
                 parentRow = null;
             }
 
+
             /// <summary>
             /// Клонировать ячейку
             /// </summary>
@@ -1076,6 +1080,23 @@ namespace Utils.Report
                 }
 
                 return cellClone;
+            }
+
+            /// <summary>
+            /// Установить тип данных (формат) ячейки
+            /// </summary>
+            public void SetDataType(string dataTypeName)
+            {
+                if (dataNode != null)
+                    dataNode.Attributes["ss:Type"].Value = dataTypeName;
+            }
+
+            /// <summary>
+            /// Установить числовой тип данных ячейки
+            /// </summary>
+            public void SetNumberType()
+            {
+                SetDataType("Number");
             }
         }
 

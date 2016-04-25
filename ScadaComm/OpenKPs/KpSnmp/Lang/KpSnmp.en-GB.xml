@@ -32,6 +32,7 @@
     <Phrase key="this">Variable</Phrase>
     <Phrase key="lblName">Owner name</Phrase>
     <Phrase key="lblOID">OID</Phrase>
+    <Phrase key="chkBits">BITS (an extension of OctetString)</Phrase>
     <Phrase key="lblSignal">Signal</Phrase>
     <Phrase key="btnAdd">Add</Phrase>
     <Phrase key="btnChange">Change</Phrase>

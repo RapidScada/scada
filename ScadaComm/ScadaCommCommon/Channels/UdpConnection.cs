@@ -170,9 +170,9 @@ namespace Scada.Comm.Channels
                     // копирование полученных данных в заданный буфер
                     if (datagram != null && datagram.Length > 0)
                     {
-                        int requiredCnt = count - readCnt;
+                        int requiredCnt = count - readCnt; // осталось считать
                         int copyCnt = Math.Min(datagram.Length - readPos, requiredCnt);
-                        Array.Copy(datagram, readPos, buffer, readCnt, copyCnt);
+                        Array.Copy(datagram, readPos, buffer, readCnt + offset, copyCnt);
                         readCnt += copyCnt;
                         readPos += copyCnt;
                     }
@@ -241,7 +241,7 @@ namespace Scada.Comm.Channels
                         // копирование полученных данных в заданный буфер
                         int requiredCnt = stopReceived ? stopCodeInd - readCnt + 1 : maxCount - readCnt;
                         int copyCnt = Math.Min(datagram.Length - readPos, requiredCnt);
-                        Array.Copy(datagram, readPos, buffer, readCnt, copyCnt);
+                        Array.Copy(datagram, readPos, buffer, readCnt + offset, copyCnt);
                         readCnt += copyCnt;
                         readPos += copyCnt;
                     }

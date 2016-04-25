@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,11 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2008
- * Modified : 2015
+ * Modified : 2016
  */
 
 using System;
+using System.Collections;
 
 namespace Scada.Data
 {
@@ -33,6 +34,28 @@ namespace Scada.Data
     /// </summary>
     public class CtrlCnlProps : IComparable<CtrlCnlProps>
     {
+        /// <summary>
+        /// Класс, позволяющий сравнивать свойства канала управления с целым числом
+        /// </summary>
+        public class IntComparer : IComparer
+        {
+            /// <summary>
+            /// Сравнить два объекта
+            /// </summary>
+            public int Compare(object x, object y)
+            {
+                int ctrlCnlNum1 = ((CtrlCnlProps)x).CtrlCnlNum;
+                int ctrlCnlNum2 = (int)y;
+                return ctrlCnlNum1.CompareTo(ctrlCnlNum2);
+            }
+        }
+
+        /// <summary>
+        /// Объект для сравнения свойств канала управления с целым числом
+        /// </summary>
+        public static readonly IntComparer IntComp = new IntComparer();
+
+        
         /// <summary>
         /// Конструктор
         /// </summary>
@@ -129,7 +152,7 @@ namespace Scada.Data
 
 
         /// <summary>
-        /// Сравнить текущий объект с другим объектом того же типа
+        /// Сравнить текущий объект с другим объектом такого же типа
         /// </summary>
         public int CompareTo(CtrlCnlProps other)
         {

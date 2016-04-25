@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2015
+ * Modified : 2016
  */
 
 using System;
@@ -75,46 +75,20 @@ namespace Scada.Data
             /// </summary>
             public static string GetRoleName(int roleID)
             {
-                if (Localization.UseRussian)
-                {
-                    switch (roleID)
-                    {
-                        case Disabled:
-                            return "Отключен";
-                        case Admin:
-                            return "Администратор";
-                        case Dispatcher:
-                            return "Диспетчер";
-                        case Guest:
-                            return "Гость";
-                        case App:
-                            return "Приложение";
-                        case Custom:
-                            return "Настраиваемая роль";
-                        default:
-                            return "Ошибка";
-                    }
-                }
+                if (roleID == Admin)
+                    return Localization.UseRussian ? "Администратор" : "Administrator";
+                else if (roleID == Dispatcher)
+                    return Localization.UseRussian ? "Диспетчер" : "Dispatcher";
+                else if (roleID == Guest)
+                    return Localization.UseRussian ? "Гость" : "Guest";
+                else if (roleID == App)
+                    return Localization.UseRussian ? "Приложение" : "Application";
+                if (Custom <= roleID && roleID < Err)
+                    return Localization.UseRussian ? "Настраиваемая роль" : "Custom role";
+                else if (roleID == Err)
+                    return Localization.UseRussian ? "Ошибка" : "Error";
                 else
-                {
-                    switch (roleID)
-                    {
-                        case Disabled:
-                            return "Disabled";
-                        case Admin:
-                            return "Administrator";
-                        case Dispatcher:
-                            return "Dispatcher";
-                        case Guest:
-                            return "Guest";
-                        case App:
-                            return "Application";
-                        case Custom:
-                            return "Custom role";
-                        default:
-                            return "Error";
-                    }
-                }
+                    return Localization.UseRussian ? "Отключен" : "Disabled";
             }
         }
 
@@ -301,5 +275,10 @@ namespace Scada.Data
             /// </summary>
             public const int Alarm = 114;
         }
+
+        /// <summary>
+        /// Идентификатор пустых или неопределённых данных
+        /// </summary>
+        public const int EmptyDataID = 0;
     }
 }

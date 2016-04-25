@@ -3,6 +3,7 @@
   <Dictionary key="Scada.Report">
     <Phrase key="GenReport">Generate report  &quot;{0}&quot; by user {1}</Phrase>
     <Phrase key="GenReportError">Error generating report &quot;{0}&quot;: {1}</Phrase>
+    <Phrase key="IncorrectRepTemplate">Incorrect report template</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web">
     <Phrase key="NotLoggedOn">User not logged on.</Phrase>
@@ -30,9 +31,8 @@
     <Phrase key="btnShowData">Show data</Phrase>
     <Phrase key="btnChangePeriod">Change period</Phrase>
     <Phrase key="btnHideData">Hide data</Phrase>
+    <Phrase key="btnExport">Export</Phrase>
     <Phrase key="btnRefreshDiag">Refresh</Phrase>
-    <Phrase key="btnExportPdf">PDF</Phrase>
-    <Phrase key="btnExportPng">PNG</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Diag.WFrmDiagCnls">
     <Phrase key="this">Select channels</Phrase>
@@ -50,13 +50,22 @@
     <Phrase key="btnSelect">Select</Phrase>
     <Phrase key="btnClose">Close</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.Diag.WFrmDiagExport">
+    <Phrase key="this">Export</Phrase>
+    <Phrase key="lblExportFormat">Choose export format:</Phrase>
+    <Phrase key="rbExportPdf">Export chart to PDF</Phrase>
+    <Phrase key="rbExportPng">Export chart to PNG</Phrase>
+    <Phrase key="rbExportExcel">Export data to Excel</Phrase>
+    <Phrase key="btnExport">Export</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.MainData">
     <Phrase key="EventChecked">Yes</Phrase>
     <Phrase key="EventUnchecked">No</Phrase>
     <Phrase key="CommSettingsNotLoaded">server communication settings is not loaded</Phrase>
     <Phrase key="WrongPassword">user name or password is incorrect</Phrase>
     <Phrase key="NoRightsL">insufficient rights</Phrase>
-    <Phrase key="IllegalRole">недопустимая роль пользователя</Phrase>
+    <Phrase key="IllegalRole">illegal user role</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.RepHrEvTable">
     <Phrase key="NoReportData">No data for report generating.</Phrase>

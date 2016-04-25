@@ -363,7 +363,7 @@ namespace Scada.Data
                             fieldDef.AllowNull = fieldDefBuf[5] > 0;
                             fieldDef.Name = (string)BytesToObj(fieldDefBuf, 6, DataTypes.String);
                             if (string.IsNullOrEmpty(fieldDef.Name))
-                                throw new Exception("Field name must not be empty.");
+                                throw new ScadaException("Field name must not be empty.");
                             fieldDefs[i] = fieldDef;
 
                             recSize += fieldDef.DataSize;

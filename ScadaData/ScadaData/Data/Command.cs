@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2016
  */
 
 using System;
@@ -138,33 +138,39 @@ namespace Scada.Data
             {
                 sb.Append("Команда ТУ: ");
                 if (ctrlCnlNum > 0)
-                    sb.Append("канал упр. = ").Append(ctrlCnlNum).Append(", ");
+                    sb.Append("канал упр.=").Append(ctrlCnlNum).Append(", ");
                 if (userID > 0)
-                    sb.Append("ид. польз. = ").Append(userID).Append(", ");
-                sb.Append("тип = ").Append(BaseValues.CmdTypes.GetCmdTypeCode(CmdTypeID));
+                    sb.Append("польз.=").Append(userID).Append(", ");
+                sb.Append("тип=").Append(GetCmdTypeCode());
                 if (KPNum > 0)
-                    sb.Append(", номер КП = ").Append(KPNum);
+                    sb.Append(", КП=").Append(KPNum);
+                if (CmdNum > 0)
+                    sb.Append(", номер=").Append(CmdNum);
                 if (CmdTypeID == BaseValues.CmdTypes.Standard)
-                    sb.Append(", значение = ").AppendFormat(CmdVal.ToString("N3", Localization.Culture));
+                    sb.Append(", значение=").AppendFormat(CmdVal.ToString("N3", Localization.Culture));
                 if (CmdTypeID == BaseValues.CmdTypes.Binary && CmdData != null)
-                    sb.Append(", данные = ").Append(ScadaUtils.BytesToHex(CmdData, 0, 
-                        Math.Min(VisCmdDataLen, CmdData.Length)));
+                    sb.Append(", данные=")
+                        .Append(ScadaUtils.BytesToHex(CmdData, 0, Math.Min(VisCmdDataLen, CmdData.Length)))
+                        .Append(VisCmdDataLen < CmdData.Length ? "..." : "");
             }
             else
             {
                 sb.Append("Command: ");
                 if (ctrlCnlNum > 0)
-                    sb.Append("out channel = ").Append(ctrlCnlNum).Append(", ");
+                    sb.Append("out ch.=").Append(ctrlCnlNum).Append(", ");
                 if (userID > 0)
-                    sb.Append("user ID = ").Append(userID).Append(", ");
-                sb.Append("type = ").Append(BaseValues.CmdTypes.GetCmdTypeCode(CmdTypeID));
+                    sb.Append("user=").Append(userID).Append(", ");
+                sb.Append("type=").Append(GetCmdTypeCode());
                 if (KPNum > 0)
-                    sb.Append(", device num. = ").Append(KPNum);
+                    sb.Append(", device=").Append(KPNum);
+                if (CmdNum > 0)
+                    sb.Append(", number=").Append(CmdNum);
                 if (CmdTypeID == BaseValues.CmdTypes.Standard)
-                    sb.Append(", value = ").AppendFormat(CmdVal.ToString("N3", Localization.Culture));
+                    sb.Append(", value=").AppendFormat(CmdVal.ToString("N3", Localization.Culture));
                 if (CmdTypeID == BaseValues.CmdTypes.Binary && CmdData != null)
-                    sb.Append(", data = ").Append(ScadaUtils.BytesToHex(CmdData, 0,
-                        Math.Min(VisCmdDataLen, CmdData.Length)));
+                    sb.Append(", data=")
+                        .Append(ScadaUtils.BytesToHex(CmdData, 0, Math.Min(VisCmdDataLen, CmdData.Length)))
+                        .Append(VisCmdDataLen < CmdData.Length ? "..." : "");
             }
 
             return sb.ToString();

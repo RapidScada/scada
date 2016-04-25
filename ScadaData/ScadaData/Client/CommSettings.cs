@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2005
- * Modified : 2015
+ * Modified : 2016
  */
 
 using System;
@@ -34,10 +34,10 @@ namespace Scada.Client
     /// SCADA-Server connection settings
     /// <para>Настройки соединения со SCADA-Сервером</para>
 	/// </summary>
-	public class CommSettings
+	public class CommSettings : ISettings
 	{
         /// <summary>
-        /// Имя файла настроек соединения со SCADA-Сервером по умолчанию
+        /// Имя файла настроек по умолчанию
         /// </summary>
         public const string DefFileName = "CommSettings.xml";
 
@@ -104,7 +104,23 @@ namespace Scada.Client
 
 
         /// <summary>
-        /// Определить, являются ли заданные параметры связи идентичными текущим параметрам
+        /// Создать новый объект настроек
+        /// </summary>
+        public ISettings Create()
+        {
+            return new CommSettings();
+        }
+
+        /// <summary>
+        /// Определить, равны ли заданные настройки текущим настройкам
+        /// </summary>
+        public bool Equals(ISettings settings)
+        {
+            return Equals(settings as CommSettings);
+        }
+
+        /// <summary>
+        /// Определить, равны ли заданные настройки текущим настройкам
         /// </summary>
         public bool Equals(CommSettings commSettings)
         {
@@ -161,7 +177,7 @@ namespace Scada.Client
                     }
                     catch
                     {
-                        throw new Exception(string.Format(CommonPhrases.IncorrectXmlParamVal, name));
+                        throw new ScadaException(string.Format(CommonPhrases.IncorrectXmlParamVal, name));
                     }
                 }
 
@@ -174,10 +190,11 @@ namespace Scada.Client
                 return false;
             }
         }
-        
+
         /// <summary>
         /// Загрузить настройки соединения со SCADA-Сервером из файла
         /// </summary>
+        [Obsolete]
         public void LoadFromFile(string fileName, Log log)
         {
             if (log == null)

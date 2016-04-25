@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2013
+ * Modified : 2016
  */
 
 using System;
@@ -346,9 +346,9 @@ namespace Scada.Data
             SrezTableLight.Srez srez;
             return SrezList.TryGetValue(dateTime, out srez) ? srez as Srez : null;
         }
-        
+
         /// <summary>
-        /// Начать загрузку данных в ленту
+        /// Начать загрузку данных в таблицу
         /// </summary>
         /// <remarks>Приостанавливается отслеживание добавления записей в таблицу</remarks>
         public void BeginLoadData()
@@ -357,7 +357,7 @@ namespace Scada.Data
         }
 
         /// <summary>
-        /// Завершить загрузку данных в ленту
+        /// Завершить загрузку данных в таблицу
         /// </summary>
         /// <remarks>Возобновляется отслеживание добавления записей в таблицу</remarks>
         public void EndLoadData()

@@ -70,13 +70,17 @@ namespace ScadaTableEditor
                 frmAbout = new FrmAbout();
                 frmAbout.exeDir = exeDir;
             }
+
+            frmAbout.Init();
             frmAbout.ShowDialog();
         }
 
 
-        private void FrmAbout_Load(object sender, EventArgs e)
+        /// <summary>
+        /// Инициализировать форму
+        /// </summary>
+        private void Init()
         {
-            // инициализация формы
             if (!inited)
             {
                 inited = true;
@@ -117,6 +121,7 @@ namespace ScadaTableEditor
                 }
             }
         }
+
 
         private void FrmAbout_Click(object sender, EventArgs e)
         {

@@ -37,6 +37,7 @@
             this.lblOID = new System.Windows.Forms.Label();
             this.txtSignal = new System.Windows.Forms.TextBox();
             this.lblSignal = new System.Windows.Forms.Label();
+            this.chkBits = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // lblName
@@ -52,16 +53,16 @@
             // 
             this.txtName.Location = new System.Drawing.Point(12, 25);
             this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(200, 20);
+            this.txtName.Size = new System.Drawing.Size(210, 20);
             this.txtName.TabIndex = 1;
             this.txtName.TextChanged += new System.EventHandler(this.txtNameOrOID_TextChanged);
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(56, 129);
+            this.btnAdd.Location = new System.Drawing.Point(66, 152);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(75, 23);
-            this.btnAdd.TabIndex = 6;
+            this.btnAdd.TabIndex = 7;
             this.btnAdd.Text = "Добавить";
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Visible = false;
@@ -70,19 +71,19 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(137, 129);
+            this.btnCancel.Location = new System.Drawing.Point(147, 152);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 8;
+            this.btnCancel.TabIndex = 9;
             this.btnCancel.Text = "Отмена";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
             // btnChange
             // 
-            this.btnChange.Location = new System.Drawing.Point(94, 129);
+            this.btnChange.Location = new System.Drawing.Point(104, 152);
             this.btnChange.Name = "btnChange";
             this.btnChange.Size = new System.Drawing.Size(75, 23);
-            this.btnChange.TabIndex = 7;
+            this.btnChange.TabIndex = 8;
             this.btnChange.Text = "Изменить";
             this.btnChange.UseVisualStyleBackColor = true;
             this.btnChange.Visible = false;
@@ -92,7 +93,7 @@
             // 
             this.txtOID.Location = new System.Drawing.Point(12, 64);
             this.txtOID.Name = "txtOID";
-            this.txtOID.Size = new System.Drawing.Size(200, 20);
+            this.txtOID.Size = new System.Drawing.Size(210, 20);
             this.txtOID.TabIndex = 3;
             this.txtOID.TextChanged += new System.EventHandler(this.txtNameOrOID_TextChanged);
             // 
@@ -107,28 +108,39 @@
             // 
             // txtSignal
             // 
-            this.txtSignal.Location = new System.Drawing.Point(12, 103);
+            this.txtSignal.Location = new System.Drawing.Point(12, 126);
             this.txtSignal.Name = "txtSignal";
             this.txtSignal.ReadOnly = true;
-            this.txtSignal.Size = new System.Drawing.Size(200, 20);
-            this.txtSignal.TabIndex = 5;
+            this.txtSignal.Size = new System.Drawing.Size(210, 20);
+            this.txtSignal.TabIndex = 6;
             this.txtSignal.TabStop = false;
             // 
             // lblSignal
             // 
             this.lblSignal.AutoSize = true;
-            this.lblSignal.Location = new System.Drawing.Point(9, 87);
+            this.lblSignal.Location = new System.Drawing.Point(9, 110);
             this.lblSignal.Name = "lblSignal";
             this.lblSignal.Size = new System.Drawing.Size(43, 13);
-            this.lblSignal.TabIndex = 4;
+            this.lblSignal.TabIndex = 5;
             this.lblSignal.Text = "Сигнал";
+            // 
+            // chkBits
+            // 
+            this.chkBits.AutoSize = true;
+            this.chkBits.Location = new System.Drawing.Point(12, 90);
+            this.chkBits.Name = "chkBits";
+            this.chkBits.Size = new System.Drawing.Size(177, 17);
+            this.chkBits.TabIndex = 4;
+            this.chkBits.Text = "BITS (расширение OctetString)";
+            this.chkBits.UseVisualStyleBackColor = true;
             // 
             // FrmVariable
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(224, 164);
+            this.ClientSize = new System.Drawing.Size(234, 187);
+            this.Controls.Add(this.chkBits);
             this.Controls.Add(this.txtSignal);
             this.Controls.Add(this.lblSignal);
             this.Controls.Add(this.txtOID);
@@ -162,5 +174,6 @@
         private System.Windows.Forms.Label lblOID;
         private System.Windows.Forms.TextBox txtSignal;
         private System.Windows.Forms.Label lblSignal;
+        private System.Windows.Forms.CheckBox chkBits;
     }
 }

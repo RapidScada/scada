@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaWebDictionaries>
+  <Dictionary key="Scada.Web">
+    <Phrase key="NotLoggedOn">Пользователь не вошёл в систему.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.AppData">
+    <Phrase key="ServerUnavailable">Сервер недоступен.</Phrase>
+    <Phrase key="WrongPassword">Неверное имя пользователя или пароль.</Phrase>
+    <Phrase key="NoRights">Недостаточно прав.</Phrase>
+    <Phrase key="IllegalRole">Недопустимая роль пользователя.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WebSettings">
+    <Phrase key="LoadWebSettingsError">Ошибка при загрузке настроек веб-приложения</Phrase>
+    <Phrase key="SaveWebSettingsError">Ошибка при сохранении настроек веб-приложения</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmLogin">
+    <Phrase key="this">Вход в систему - Rapid SCADA</Phrase>
+    <Phrase key="lblUsername">Имя пользователя</Phrase>
+    <Phrase key="lblPassword">Пароль</Phrase>
+    <Phrase key="lblRememberMe">Запомнить меня</Phrase>
+    <Phrase key="btnLogin">Войти</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Shell.MenuItem">
+    <Phrase key="ReportsMenuItem">Отчёты</Phrase>
+    <Phrase key="ConfigMenuItem">Конфигурация</Phrase>
+    <Phrase key="AboutMenuItemText">О программе</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Shell.RememberMe">
+    <Phrase key="SecurityViolation">Обнаружено нарушение безопасности. Незамедлительно обратитесь к системному администратору.</Phrase>
+  </Dictionary>
+</ScadaWebDictionaries>

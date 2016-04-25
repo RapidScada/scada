@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2015
+ * Modified : 2016
  */
 
 #undef DETAILED_LOG // выводить в журнал подробную информацию об обмене данными со SCADA-Сервером
@@ -213,7 +213,7 @@ namespace Scada.Client
 
 
         /// <summary>
-        /// Конструктор
+        /// Конструктор, ограничивающий создание объекта без параметров
         /// </summary>
         protected ServerComm()
         {
@@ -231,6 +231,7 @@ namespace Scada.Client
         /// Конструктор с установкой настроек соединения со SCADA-Сервером
         /// </summary>
         /// <remarks>Используется журнал работы Scada.Client.AppData.Log</remarks>
+        [Obsolete("ILog interface and LogStub class should be developed")]
         public ServerComm(CommSettings commSettings)
             : this()
         {
@@ -253,6 +254,7 @@ namespace Scada.Client
         /// <summary>
         /// Конструктор с установкой настроек соединения со SCADA-Сервером и метода записи в журнал работы
         /// </summary>
+        [Obsolete("ILog interface should be developed")]
         public ServerComm(CommSettings commSettings, WriteToLogDelegate writeToLog)
             : this()
         {
@@ -927,7 +929,7 @@ namespace Scada.Client
         /// Запросить правильность имени и пароля пользователя от SCADA-Сервера, получить его роль.
         /// Возвращает успешность выполнения запроса
         /// </summary>
-        public bool CheckUser(string login, string password, out int roleID)
+        public bool CheckUser(string username, string password, out int roleID)
         {
             Monitor.Enter(tcpLock);
             bool result = false;
@@ -942,7 +944,7 @@ namespace Scada.Client
                     tcpClient.ReceiveTimeout = commSettings.ServerTimeout;
 
                     // запрос правильности имени и пароля пользователя, его роли
-                    byte userLen = login == null ? (byte)0 : (byte)login.Length;
+                    byte userLen = username == null ? (byte)0 : (byte)username.Length;
                     byte pwdLen = password == null ? (byte)0 : (byte)password.Length;
                     byte[] buf = new byte[5 + userLen + pwdLen];
 
@@ -951,7 +953,7 @@ namespace Scada.Client
                     buf[2] = 0x01;
                     buf[3] = userLen;
                     if (userLen > 0)
-                        Array.Copy(Encoding.Default.GetBytes(login), 0, buf, 4, userLen);
+                        Array.Copy(Encoding.Default.GetBytes(username), 0, buf, 4, userLen);
                     buf[4 + userLen] = pwdLen;
                     if (pwdLen > 0)
                         Array.Copy(Encoding.Default.GetBytes(password), 0, buf, 5 + userLen, pwdLen);
@@ -1908,6 +1910,7 @@ namespace Scada.Client
         /// <summary>
         /// Получить роль пользователя по её идентификатору
         /// </summary>
+        [Obsolete("Get rid of using ServerComm.Roles. Use BaseValues.Roles instead")]
         public static Roles GetRole(int roleID)
         {
             if ((int)Roles.Admin <= roleID && roleID <= (int)Roles.App)
@@ -1918,38 +1921,6 @@ namespace Scada.Client
                 return Roles.Err;
             else
                 return Roles.Disabled;
-        }
-        
-        /// <summary>
-        /// Получить наименование роли по её идентификатору
-        /// </summary>
-        public static string GetRoleName(int roleID)
-        {
-            return GetRoleName(GetRole(roleID));
-        }
-
-        /// <summary>
-        /// Получить наименование роли
-        /// </summary>
-        public static string GetRoleName(Roles role)
-        {
-            switch (role)
-            {
-                case Roles.Admin:
-                    return Localization.UseRussian ? "Администратор" : "Administrator";
-                case Roles.Dispatcher:
-                    return Localization.UseRussian ? "Диспетчер" : "Dispatcher";
-                case Roles.Guest:
-                    return Localization.UseRussian ? "Гость" : "Guest";
-                case Roles.App:
-                    return Localization.UseRussian ? "Приложение" : "Application";
-                case Roles.Custom:
-                    return Localization.UseRussian ? "Пользовательская роль" : "Custom role";
-                case Roles.Err:
-                    return Localization.UseRussian ? "Ошибка" : "Error";
-                default: // Roles.Disabled
-                    return Localization.UseRussian ? "Отключен" : "Disabled";
-            }
         }
     }
 }

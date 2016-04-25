@@ -1,0 +1,10 @@
+﻿[
+  {
+    "outputFile": "plugins/Scheme/css/scheme.css",
+    "inputFile": "plugins/Scheme/css/scheme.less"
+  },
+  {
+    "outputFile": "css/globalvar.css",
+    "inputFile": "css/globalvar.less"
+  }
+]

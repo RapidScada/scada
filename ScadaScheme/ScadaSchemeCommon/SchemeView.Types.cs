@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2014
+ * Modified : 2016
  */
 
 using System;
@@ -55,7 +55,7 @@ namespace Scada.Scheme
             /// </summary>
             public Scheme(Dictionary<string, Image> imageDict, List<int> cnlFilter)
             {
-                Type = Localization.UseRussian ? "Схема" : "Scheme";
+                Type = "Scheme";
                 ImageDict = imageDict;
                 CnlsFilter = cnlFilter;
                 SetToDefault();
@@ -321,7 +321,7 @@ namespace Scada.Scheme
             public StaticText()
                 : base()
             {
-                Type = Localization.UseRussian ? "Статическая надпись" : "Static text";
+                Type = "Static text";
                 AutoSize = true;
                 BackColor = "";
                 BorderColor = "";
@@ -494,7 +494,7 @@ namespace Scada.Scheme
             public DynamicText()
                 : base()
             {
-                Type = Localization.UseRussian ? "Динамическая надпись" : "Dynamic text";
+                Type = "Dynamic text";
                 Text = DefaultText;
                 ToolTip = "";
                 UnderlineOnHover = false;
@@ -671,7 +671,7 @@ namespace Scada.Scheme
             /// </summary>
             public StaticPicture()
             {
-                Type = Localization.UseRussian ? "Статический рисунок" : "Static picture";
+                Type = "Static picture";
                 BorderColor = "Gray";
                 Image = null;
                 ImageStretch = SchemeView.ImageStretch.None;
@@ -749,7 +749,7 @@ namespace Scada.Scheme
             public DynamicPicture()
                 : base()
             {
-                Type = Localization.UseRussian ? "Динамический рисунок" : "Dynamic picture";
+                Type = "Dynamic picture";
                 ToolTip = "";
                 ImageOnHover = null;
                 BorderColorOnHover = "";

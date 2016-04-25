@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmConfig));
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("КП");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("КП");
             this.pnlBottom = new System.Windows.Forms.Panel();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
@@ -42,10 +42,10 @@
             this.btnMoveUp = new System.Windows.Forms.ToolStripButton();
             this.btnMoveDown = new System.Windows.Forms.ToolStripButton();
             this.btnDelete = new System.Windows.Forms.ToolStripButton();
-            this.treeView = new System.Windows.Forms.TreeView();
-            this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.btnSettings = new System.Windows.Forms.ToolStripButton();
+            this.treeView = new System.Windows.Forms.TreeView();
+            this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.pnlBottom.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.SuspendLayout();
@@ -165,37 +165,6 @@
             this.btnDelete.ToolTipText = "Удалить";
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
-            // treeView
-            // 
-            this.treeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeView.HideSelection = false;
-            this.treeView.ImageIndex = 0;
-            this.treeView.ImageList = this.imageList;
-            this.treeView.Location = new System.Drawing.Point(0, 25);
-            this.treeView.Name = "treeView";
-            treeNode2.ImageKey = "device.png";
-            treeNode2.Name = "nodeDevice";
-            treeNode2.SelectedImageKey = "device.png";
-            treeNode2.Text = "КП";
-            this.treeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode2});
-            this.treeView.SelectedImageIndex = 0;
-            this.treeView.ShowRootLines = false;
-            this.treeView.Size = new System.Drawing.Size(334, 396);
-            this.treeView.TabIndex = 1;
-            this.treeView.BeforeCollapse += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeView_BeforeCollapse);
-            this.treeView.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeView_BeforeExpand);
-            this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
-            // 
-            // imageList
-            // 
-            this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
-            this.imageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList.Images.SetKeyName(0, "folder_closed.png");
-            this.imageList.Images.SetKeyName(1, "folder_open.png");
-            this.imageList.Images.SetKeyName(2, "device.png");
-            this.imageList.Images.SetKeyName(3, "variable.png");
-            // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
@@ -210,6 +179,39 @@
             this.btnSettings.Size = new System.Drawing.Size(23, 22);
             this.btnSettings.ToolTipText = "Настройки";
             this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
+            // 
+            // treeView
+            // 
+            this.treeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeView.HideSelection = false;
+            this.treeView.ImageIndex = 0;
+            this.treeView.ImageList = this.imageList;
+            this.treeView.Location = new System.Drawing.Point(0, 25);
+            this.treeView.Name = "treeView";
+            treeNode1.ImageKey = "device.png";
+            treeNode1.Name = "nodeDevice";
+            treeNode1.SelectedImageKey = "device.png";
+            treeNode1.Text = "КП";
+            this.treeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode1});
+            this.treeView.SelectedImageIndex = 0;
+            this.treeView.ShowRootLines = false;
+            this.treeView.Size = new System.Drawing.Size(334, 396);
+            this.treeView.TabIndex = 1;
+            this.treeView.BeforeCollapse += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeView_BeforeCollapse);
+            this.treeView.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeView_BeforeExpand);
+            this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
+            this.treeView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView_NodeMouseClick);
+            this.treeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView_NodeMouseDoubleClick);
+            // 
+            // imageList
+            // 
+            this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
+            this.imageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList.Images.SetKeyName(0, "folder_closed.png");
+            this.imageList.Images.SetKeyName(1, "folder_open.png");
+            this.imageList.Images.SetKeyName(2, "device.png");
+            this.imageList.Images.SetKeyName(3, "variable.png");
             // 
             // FrmConfig
             // 
