@@ -104,9 +104,9 @@ namespace Scada.Svc
             }
             catch (Exception ex)
             {
-                errMsg = (Localization.UseRussian ? 
-                    "Error loading service properties: " :
-                    "Ошибка при загрузке свойств службы: ") + ex.Message;
+                errMsg = (Localization.UseRussian ?
+                    "Ошибка при загрузке свойств службы: " :
+                    "Error loading service properties: ") + ex.Message;
                 return false;
             }
         }
@@ -122,7 +122,10 @@ namespace Scada.Svc
             if (File.Exists(fileName))
             {
                 string errMsg;
-                return LoadFromFile(fileName, out errMsg);
+                if (LoadFromFile(fileName, out errMsg))
+                    return true;
+                else
+                    throw new ScadaException(errMsg);
             }
             else
             {

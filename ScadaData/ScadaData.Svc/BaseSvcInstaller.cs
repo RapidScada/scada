@@ -50,7 +50,7 @@ namespace Scada.Svc
             }
 
             if (string.IsNullOrEmpty(svcProps.ServiceName))
-                throw new Exception(SvcProps.ServiceNameEmptyError);
+                throw new ScadaException(SvcProps.ServiceNameEmptyError);
 
             // настройка установщика
             ServiceInstaller serviceInstaller = new ServiceInstaller();
