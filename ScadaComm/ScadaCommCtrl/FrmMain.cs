@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,14 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2008
- * Modified : 2015
+ * Modified : 2016
  */
 
 using Scada.Client;
 using Scada.Comm.Channels;
 using Scada.Comm.Devices;
 using Scada.Data;
+using Scada.Svc;
 using Scada.UI;
 using System;
 using System.Collections.Generic;
@@ -138,6 +139,10 @@ namespace Scada.Comm.Ctrl
         /// </summary>
         private const string ErrFileName = "ScadaCommCtrl.err";
         /// <summary>
+        /// Имя службы по умолчанию
+        /// </summary>
+        private const string DefServiceName = "ScadaCommService";
+        /// <summary>
         /// Нулевое время, отформатированное в соответствии с культурой приложения
         /// </summary>
         private static readonly string ZeroTime = new DateTime(0).ToString("T", Localization.Culture);
@@ -147,6 +152,7 @@ namespace Scada.Comm.Ctrl
         private Mutex mutex;                // объект для проверки запуска второй копии программы
         private Icon icoStart;              // пиктограмма работающей службы
         private Icon icoStop;               // пиктограмма остановленной службы
+        private string serviceName;         // имя службы
         private ServiceController svcContr; // контроллер службы
         private ServiceControllerStatus prevSvcStatus; // предыдущее состояние службы
 
@@ -220,6 +226,7 @@ namespace Scada.Comm.Ctrl
             mutex = null;
             icoStart = Icon.FromHandle((ilMain.Images["star_on.ico"] as Bitmap).GetHicon());
             icoStop = Icon.FromHandle((ilMain.Images["star_off.ico"] as Bitmap).GetHicon());
+            serviceName = DefServiceName;
             svcContr = null;
             prevSvcStatus = ServiceControllerStatus.Stopped;
 
@@ -261,6 +268,90 @@ namespace Scada.Comm.Ctrl
 
 
         /// <summary>
+        /// Отобразить форму - развернуть и сделать активной
+        /// </summary>
+        private void ShowForm()
+        {
+            Show();
+            ShowInTaskbar = true;
+            WindowState = FormWindowState.Normal;
+            Activate();
+
+            // развёртывание узла линий связи, т.к. состояние узлов не сохраняется при скрытии формы
+            nodeLines.Expand();
+        }
+        
+        /// <summary>
+        /// Загрузить локализацию приложения
+        /// </summary>
+        private void Localize(StringBuilder sbError)
+        {
+            string errMsg;
+
+            if (Localization.LoadingRequired(appDirs.LangDir, "ScadaData"))
+            {
+                if (Localization.LoadDictionaries(appDirs.LangDir, "ScadaData", out errMsg))
+                    CommonPhrases.Init();
+                else
+                    sbError.AppendLine(errMsg);
+            }
+
+            if (Localization.LoadingRequired(appDirs.LangDir, "ScadaComm"))
+            {
+                if (Localization.LoadDictionaries(appDirs.LangDir, "ScadaComm", out errMsg))
+                {
+                    Translator.TranslateForm(this, "Scada.Comm.Ctrl.FrmMain", toolTip, cmsNotify, cmsLine, cmsKP);
+                    AppPhrases.Init();
+                    CommPhrases.InitFromDictionaries();
+                    TranslateTree();
+                }
+                else
+                {
+                    sbError.AppendLine(errMsg);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Загрузить имя службы
+        /// </summary>
+        private void LoadServiceName(StringBuilder sbError)
+        {
+            SvcProps svcProps = new SvcProps();
+            string svcPropsFileName = appDirs.ExeDir + SvcProps.SvcPropsFileName;
+
+            if (File.Exists(svcPropsFileName))
+            {
+                string errMsg;
+                if (svcProps.LoadFromFile(svcPropsFileName, out errMsg))
+                    serviceName = svcProps.ServiceName;
+                else
+                    sbError.AppendLine(errMsg);
+            }
+        }
+
+        /// <summary>
+        /// Проверить, что вторая копия приложения не запущена
+        /// </summary>
+        private void CheckSecondInstance(StringBuilder sbError, out bool closeApp)
+        {
+            closeApp = false;
+
+            try
+            {
+                bool createdNew;
+                mutex = new Mutex(true, "ScadaCommCtrlMutex - " + serviceName, out createdNew);
+
+                if (!createdNew)
+                    closeApp = true;
+            }
+            catch (Exception ex)
+            {
+                sbError.AppendLine(AppPhrases.CheckSecondInstanceError + ":\r\n" + ex.Message);
+            }
+        }
+
+        /// <summary>
         /// Установить текст строки состояния в зависимости от статуса службы
         /// </summary>
         private void SetServiceStateText(ServiceControllerStatus? status)
@@ -295,7 +386,7 @@ namespace Scada.Comm.Ctrl
                     break;
             }
 
-            lblServiceState.Text = string.Format(AppPhrases.ServiceState, state);
+            lblServiceState.Text = string.Format(AppPhrases.ServiceState, serviceName, state);
         }
 
         /// <summary>
@@ -326,20 +417,6 @@ namespace Scada.Comm.Ctrl
             }
         }
 
-        /// <summary>
-        /// Отобразить форму - развернуть и сделать активной
-        /// </summary>
-        private void ShowForm()
-        {
-            Show();
-            ShowInTaskbar = true;
-            WindowState = FormWindowState.Normal;
-            Activate();
-
-            // развёртывание узла линий связи, т.к. состояние узлов не сохраняется при скрытии формы
-            nodeLines.Expand();
-        }
-        
         /// <summary>
         /// Перевести текст узлов дерева
         /// </summary>
@@ -950,56 +1027,31 @@ namespace Scada.Comm.Ctrl
             // установка имени файла журнала ошибок
             errLog.FileName = appDirs.LogDir + ErrFileName;
 
-            // локализация приложения
+            // переменные для записи информации об ошибках
             StringBuilder sbError = new StringBuilder();
             string errMsg;
-            
-            if (Localization.LoadingRequired(appDirs.LangDir, "ScadaData"))
-            {
-                if (Localization.LoadDictionaries(appDirs.LangDir, "ScadaData", out errMsg))
-                    CommonPhrases.Init();
-                else
-                    sbError.AppendLine(errMsg);
-            }
 
-            if (Localization.LoadingRequired(appDirs.LangDir, "ScadaComm"))
-            {
-                if (Localization.LoadDictionaries(appDirs.LangDir, "ScadaComm", out errMsg))
-                {
-                    Translator.TranslateForm(this, "Scada.Comm.Ctrl.FrmMain", toolTip, cmsNotify, cmsLine, cmsKP);
-                    AppPhrases.Init();
-                    CommPhrases.InitFromDictionaries();
-                    TranslateTree();
-                    notifyIcon.Text = AppPhrases.MainFormTitle;
-                }
-                else
-                {
-                    sbError.AppendLine(errMsg);
-                }
-            }
+            // локализация приложения
+            Localize(sbError);
+
+            // загрузка имени службы
+            LoadServiceName(sbError);
 
             // проверка запуска второй копии программы
-            try
-            {
-                bool createdNew;
-                mutex = new Mutex(true, "ScadaCommCtrlMutex", out createdNew);
+            bool closeApp;
+            CheckSecondInstance(sbError, out closeApp);
 
-                if (!createdNew)
-                {
-                    ScadaUiUtils.ShowInfo(AppPhrases.SecondInstanceClosed);
-                    Close();
-                    return;
-                }
-            }
-            catch (Exception ex)
+            if (closeApp)
             {
-                sbError.AppendLine(AppPhrases.CheckSecondInstanceError + ":\r\n" + ex.Message);
+                ScadaUiUtils.ShowInfo(AppPhrases.SecondInstanceClosed);
+                Close();
+                return;
             }
 
             // определение состояния службы
             try
             {
-                svcContr = new ServiceController("ScadaCommService");
+                svcContr = new ServiceController(serviceName);
                 prevSvcStatus = svcContr.Status;
                 SetServiceStateText(prevSvcStatus);
                 SetServiceButtonsEnabled(prevSvcStatus);
@@ -1025,6 +1077,7 @@ namespace Scada.Comm.Ctrl
             TuneKpCmd();
             MakeTree();
             FillCommCnlTypes();
+            notifyIcon.Text = serviceName == DefServiceName ? AppPhrases.MainFormTitle : serviceName;
 
             // получение информации о типах КП
             GetKpDllInfo();

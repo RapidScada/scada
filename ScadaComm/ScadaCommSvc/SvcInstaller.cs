@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,14 +19,12 @@
  * Summary  : Service installer
  * 
  * Author   : Mikhail Shiryaev
- * Created  : 2006
- * Modified : 2006
+ * Created  : 2016
+ * Modified : 2016
  */
 
-using System;
-using System.Collections.Generic;
+using Scada.Svc;
 using System.ComponentModel;
-using System.Configuration.Install;
 
 namespace Scada.Comm.Svc
 {
@@ -35,11 +33,16 @@ namespace Scada.Comm.Svc
     /// <para>Инсталлятор службы</para>
     /// </summary>
     [RunInstaller(true)]
-    public partial class InstMain : Installer
+    public class SvcInstaller : BaseSvcInstaller
     {
-        public InstMain()
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        public SvcInstaller()
         {
-            InitializeComponent();
+            Init(
+                "ScadaCommService",
+                "SCADA-Communicator interacts with controllers, transmits data to SCADA-Server");
         }
     }
 }
