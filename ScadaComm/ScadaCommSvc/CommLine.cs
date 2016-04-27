@@ -881,9 +881,10 @@ namespace Scada.Comm.Svc
                             {
                                 KPInvalidateCurData(kpLogic);
                                 log.WriteLine();
-                                log.WriteAction(Localization.UseRussian ?
-                                    "Невозможно выполнить сеанс опроса КП, т.к. соединение не установлено" :
-                                    "Unable to communicate with the device because connection is not established");
+                                log.WriteAction(string.Format(Localization.UseRussian ?
+                                    "Невозможно выполнить сеанс связи с {0}, т.к. соединение не установлено" :
+                                    "Unable to communicate with {0} because connection is not established", 
+                                    kpLogic.Caption));
                             }
                             else
                             {

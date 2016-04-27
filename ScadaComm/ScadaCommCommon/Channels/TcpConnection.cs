@@ -145,7 +145,7 @@ namespace Scada.Comm.Channels
         public bool JustConnected { get; set; }
 
         /// <summary>
-        /// Получить или установить признак, что соединение обрвано и его необходимо закрыть
+        /// Получить или установить признак, что соединение обровано и его необходимо закрыть
         /// </summary>
         public bool Broken { get; set; }
 

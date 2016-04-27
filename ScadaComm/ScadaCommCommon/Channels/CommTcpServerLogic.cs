@@ -225,7 +225,8 @@ namespace Scada.Comm.Channels
                             tcpConn = new TcpConnection(tcpClient);
                             tcpConn.WriteToLog = WriteToLog;
                             WriteToLog(string.Format(Localization.UseRussian ? 
-                                "{0} Соединение с клиентом {1}" : "{0} Connect to the client {1}",
+                                "{0} Соединение с клиентом {1}" : 
+                                "{0} Connect to the client {1}", 
                                 CommUtils.GetNowDT(), tcpConn.RemoteAddress));
                             tcpConnList.Add(tcpConn);
 
@@ -253,7 +254,8 @@ namespace Scada.Comm.Channels
                             if ((nowDT - tcpConn.ActivityDT).TotalSeconds > inactiveTime || tcpConn.Broken)
                             {
                                 WriteToLog(string.Format(Localization.UseRussian ? 
-                                    "{0} Отключение клиента {1}" : "{0} Disconnect the client {1}",
+                                    "{0} Отключение клиента {1}" : 
+                                    "{0} Disconnect the client {1}", 
                                     nowDT.ToString(CommUtils.CommLineDTFormat), tcpConn.RemoteAddress));
                                 tcpConn.Close();
                                 tcpConnList.RemoveAt(connInd);
