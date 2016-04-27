@@ -46,7 +46,7 @@
                 <div class="menu-subitem selected">Devices</div>
                 <div class="menu-subitem">Dictionaries</div>
                 <div class="menu-subitem">Interface</div>
-                <div class="menu-item">About</div>
+                <div class="menu-item"><a href="View.aspx?viewID=3">About</a></div>
                 <!--<div class="menu-item">Menu Item 1</div>
                 <div class="menu-item">Menu Item 2</div>
                 <div class="menu-subitem">Subitem</div>

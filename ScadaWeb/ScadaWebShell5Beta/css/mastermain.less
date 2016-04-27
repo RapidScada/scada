@@ -17,7 +17,9 @@ body {
 a,
 a:visited,
 a:hover,
+a:focus,
 a:active {
+    outline: 0;
     color:inherit;
     text-decoration: none;
 }
@@ -149,6 +151,7 @@ a:active {
 #divMainMenu .menu-subitem {
     padding-left: 20px;
     color: @menu-fore-color-dark;
+    display: none;
     font-size: 13px;
 }
 
@@ -169,6 +172,27 @@ a:active {
 #divMainMenu .menu-subitem a {
     display: inline-block;
     width: 100%;
+}
+
+#divMainMenu .menu-item.with-expander a {
+    width: calc(~"100% - 20px");
+}
+
+#divMainMenu .expander {
+    width: 20px;
+    cursor: pointer;
+    float: right;
+    text-align: right;
+}
+
+#divMainMenu .expander::before {
+    content: "\e257";
+    font-family: 'Glyphicons Halflings';
+    font-size: 10px;
+}
+
+#divMainMenu .expander.expanded::before {
+    content: "\e259";
 }
 
 /* Collapse Pane */

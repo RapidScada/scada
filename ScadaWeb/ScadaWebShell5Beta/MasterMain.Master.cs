@@ -46,7 +46,7 @@ namespace Scada.Web
         {
             const string ItemTemplate = "<div class='{0}'>{1}{2}</div>";
             const string LinkTemplate = "<a href='{0}'>{1}</a>";
-            const string Expander = "<div class='expander collapsed'></div>";
+            const string Expander = "<div class='expander'></div>";
 
             StringBuilder sbHtml = new StringBuilder();
             string curUrl = Request.Url.AbsolutePath;
@@ -59,7 +59,8 @@ namespace Scada.Web
                 bool selected = string.Equals(url, curUrl, StringComparison.OrdinalIgnoreCase);
                 bool containsSubitems = topLevel && menuItem.Subitems.Count > 0;
 
-                string cssClass = (topLevel ? "menu-item" : "menu-subitem") + (selected ? " selected" : "");
+                string cssClass = (topLevel ? "menu-item" : "menu-subitem") + 
+                    (containsSubitems ? " with-expander" : "") + (selected ? " selected" : "");
                 string linkOrText = containsSubitems || !string.IsNullOrEmpty(url) ? 
                     string.Format(LinkTemplate, url, text) : text;
                 string expander = containsSubitems ? Expander : "";
