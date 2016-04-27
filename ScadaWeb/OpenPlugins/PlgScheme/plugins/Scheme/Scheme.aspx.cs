@@ -23,11 +23,10 @@
  * Modified : 2016
  */
 
-//#define DEBUG_MODE
+#define DEBUG_MODE
 
 using Scada.Scheme;
 using System;
-using System.Web;
 
 namespace Scada.Web.Plugins.Scheme
 {
@@ -57,8 +56,11 @@ namespace Scada.Web.Plugins.Scheme
             UserData userData = UserData.GetUserData();
 
 #if DEBUG_MODE
-            appData.Init(Server.MapPath("~"));
             debugMode = true;
+            appData.Init(Server.MapPath("~"));
+            appData.UserMonitor.AddUser(userData);
+            string errMsg;
+            userData.Login("admin", out errMsg);
 #else
             debugMode = false;
 #endif
