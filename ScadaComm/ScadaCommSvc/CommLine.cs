@@ -886,9 +886,8 @@ namespace Scada.Comm.Svc
                                     "Unable to communicate with {0} because connection is not established", 
                                     kpLogic.Caption));
                             }
-                            else
+                            else if (KPSession(kpLogic))
                             {
-                                KPSession(kpLogic);
                                 commCnt++;
                             }
                             WriteKPInfo(kpLogic);
@@ -1008,11 +1007,12 @@ namespace Scada.Comm.Svc
         /// <summary>
         /// Выполнить сеанс опроса КП
         /// </summary>
-        private void KPSession(KPLogic kpLogic)
+        private bool KPSession(KPLogic kpLogic)
         {
             try
             {
                 kpLogic.Session();
+                return true;
             }
             catch (Exception ex)
             {
@@ -1020,6 +1020,7 @@ namespace Scada.Comm.Svc
                 log.WriteAction((Localization.UseRussian ?
                     "Ошибка при выполнении сеанса опроса КП: " :
                     "Error communicating with the device: ") + ex.Message);
+                return false;
             }
         }
 
@@ -1044,11 +1045,12 @@ namespace Scada.Comm.Svc
         /// <summary>
         /// Отправить команду ТУ
         /// </summary>
-        private void KPSendCmd(KPLogic kpLogic, Command cmd)
+        private bool KPSendCmd(KPLogic kpLogic, Command cmd)
         {
             try
             {
                 kpLogic.SendCmd(cmd);
+                return true;
             }
             catch (Exception ex)
             {
@@ -1056,6 +1058,7 @@ namespace Scada.Comm.Svc
                 log.WriteAction((Localization.UseRussian ?
                     "Ошибка при отправке команды ТУ: " :
                     "Error sending command: ") + ex.Message);
+                return false;
             }
         }
 
@@ -1127,15 +1130,16 @@ namespace Scada.Comm.Svc
                             CommCnlBeforeSession(kpLogic);
                             if (kpLogic.ConnRequired && (kpLogic.Connection == null || !kpLogic.Connection.Connected))
                             {
-                                log.WriteAction(Localization.UseRussian ?
-                                    "Невозможно отправить команду ТУ, т.к. соединение не установлено: " :
-                                    "Unable to send command because connection is not established");
+                                log.WriteAction(string.Format(Localization.UseRussian ?
+                                    "Невозможно отправить команду ТУ для {0}, т.к. соединение не установлено: " :
+                                    "Unable to send command to {0} because connection is not established",
+                                    kpLogic.Caption));
                             }
                             else
                             {
-                                KPSendCmd(kpLogic, cmd);
+                                if (KPSendCmd(kpLogic, cmd))
+                                    commCnt++;
                                 WriteKPInfo(kpLogic);
-                                commCnt++;
                             }
                             CommCnlAfterSession(kpLogic);
                         }
