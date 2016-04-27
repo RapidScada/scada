@@ -432,7 +432,7 @@ namespace Scada.Comm.Channels
                         }
                         else
                         {
-                            sb.Append(Localization.UseRussian ? "КП " : "Device ");
+                            sb.Append(Localization.UseRussian ? "КП " : "Devices ");
                             for (int i = 0, lastInd = kpCnt - 1; i < kpCnt; i++)
                             {
                                 sb.Append(relatedKPList[i].Number);
