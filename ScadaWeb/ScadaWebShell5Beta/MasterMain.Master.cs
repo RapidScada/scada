@@ -38,6 +38,17 @@ namespace Scada.Web
         private AppData appData;   // общие данные веб-приложения
         private UserData userData; // данные пользователя приложения
 
+        protected bool mainMenuVisible; // отобразить главное меню при загрузке страницы
+
+
+        /// <summary>
+        /// Установить видимость главного меню
+        /// </summary>
+        private void SetMainMenuVisible()
+        {
+            mainMenuVisible = !string.Equals(Request.Url.GetLeftPart(UriPartial.Path),
+                ResolveUrl("~/View.aspx"), StringComparison.OrdinalIgnoreCase);
+        }
 
         /// <summary>
         /// Генерировать HTML-код меню
@@ -76,9 +87,9 @@ namespace Scada.Web
         {
             appData = AppData.GetAppData();
             userData = UserData.GetUserData();
-
-            // проверка входа в систему
             userData.CheckLoggedOn(true);
+
+            SetMainMenuVisible();
         }
 
         protected void lbtnMainLogout_Click(object sender, EventArgs e)

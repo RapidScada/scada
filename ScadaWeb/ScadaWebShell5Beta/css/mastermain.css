@@ -30,7 +30,7 @@ a:active {
   line-height: 30px;
   white-space: nowrap;
 }
-.hdr-btn {
+#divMainHeader .hdr-btn {
   display: inline-block;
   height: 30px;
   margin: 0 0 0 5px;
@@ -39,26 +39,26 @@ a:active {
   font-size: 13px;
   text-decoration: none;
 }
-.hdr-btn:hover {
+#divMainHeader .hdr-btn:hover {
   background-color: #32373c;
   color: #00b9eb;
   text-decoration: none;
 }
-.txt-btn {
+#divMainHeader .txt-btn {
   color: #eee;
 }
-.img-btn {
+#divMainHeader .img-btn {
   color: #9ca1a6;
 }
-.img-btn .glyphicon {
+#divMainHeader .img-btn .glyphicon {
   position: relative;
   top: 2px;
 }
 #spanMainShowMenu {
-  margin: 0 5px 0 -10px;
-  font-size: 15px;
-  display: none;
-  /*display: none;*/
+  margin: 0 5px 0 -10px !important;
+  font-size: 15px !important;
+  display: none !important;
+  /*inline-block*/
 }
 #spanMainAppName {
   display: inline-block;
@@ -80,6 +80,14 @@ a:active {
   color: #eee;
   font-size: 14px;
   overflow: hidden;
+}
+#divMainLeftPane .tool-window {
+  height: calc(100% -  40px);
+  padding: 5px 0 0 0;
+  display: none;
+  /*block*/
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 #divMainTabs {
   position: absolute;
@@ -108,12 +116,6 @@ a:active {
   cursor: pointer;
 }
 /* Main Menu */
-#divMainMenu {
-  height: calc(100% -  40px);
-  padding: 5px 0 0 0;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
 #divMainMenu .menu-item,
 #divMainMenu .menu-subitem {
   margin-left: 30px;
@@ -124,6 +126,7 @@ a:active {
   padding-left: 20px;
   color: #9ca1a6;
   display: none;
+  /*block*/
   font-size: 13px;
 }
 #divMainMenu .menu-item:hover,
@@ -159,6 +162,7 @@ a:active {
 #divMainMenu .expander.expanded::before {
   content: "\e259";
 }
+/* Explorer */
 /* Collapse Pane */
 #divMainCollapsePane {
   position: absolute;

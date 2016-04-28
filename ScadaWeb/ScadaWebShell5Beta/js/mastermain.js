@@ -9,22 +9,48 @@ function updateMainLayout() {
     divMainTabs.outerWidth(paneH);
 }
 
+// Make visible main menu or views explorer
+function showMenuOrExplorer() {
+    if (mainMenuVisible) {
+        $("#divMainMenu").css("display", "block");
+    } else {
+        $("#divMainExplorer").css("display", "block");
+    }
+}
+
 // Expand or collapse the menu item
 function toggleMenuItem(divExpander) {
-    var menuItem = divExpander.parent();
-    var menuSubitems = menuItem.nextUntil(".menu-item", ".menu-subitem");
+    var divMenuItem = divExpander.parent();
+    var divMenuSubitems = divMenuItem.nextUntil(".menu-item", ".menu-subitem");
 
     if (divExpander.hasClass("expanded")) {
         divExpander.removeClass("expanded");
-        menuSubitems.css("display", "none");
+        divMenuSubitems.css("display", "none");
     } else {
         divExpander.addClass("expanded");
-        menuSubitems.css("display", "block");
+        divMenuSubitems.css("display", "block");
+    }
+}
+
+// Expand selected menu item
+function expandSelectedMenuItem() {
+    var divSelMenuItem = $("#divMainMenu .menu-item.selected"); // top level item
+
+    if (divSelMenuItem.length == 0) {
+        var divSelMenuSubitem = $("#divMainMenu .menu-subitem.selected");
+        divSelMenuItem = divSelMenuSubitem.prevAll(".menu-item:first");
+    }
+
+    var divExpander = divSelMenuItem.find(".expander");
+    if (!divExpander.hasClass("expanded")) {
+        toggleMenuItem(divExpander);
     }
 }
 
 $(document).ready(function () {
     updateMainLayout();
+    showMenuOrExplorer();
+    expandSelectedMenuItem();
 
     // update layout on window resize
     $(window).resize(function () {
