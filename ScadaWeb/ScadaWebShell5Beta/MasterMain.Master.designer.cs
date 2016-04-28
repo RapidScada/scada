@@ -40,6 +40,15 @@ namespace Scada.Web {
         protected global::System.Web.UI.WebControls.LinkButton lbtnMainLogout;
         
         /// <summary>
+        /// tvMainExplorer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TreeView tvMainExplorer;
+        
+        /// <summary>
         /// cphMainContent control.
         /// </summary>
         /// <remarks>

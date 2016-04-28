@@ -67,6 +67,7 @@
       <Link>lang\ScadaData.en-GB.xml</Link>
     </Content>
     <Content Include="config\CommSettings.xml" />
+    <Content Include="config\ViewSettings.xml" />
     <Content Include="config\WebSettings.xml" />
     <Content Include="css\globalvar.css">
       <DependentUpon>globalvar.less</DependentUpon>

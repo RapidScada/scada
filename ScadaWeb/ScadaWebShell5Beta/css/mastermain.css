@@ -54,10 +54,10 @@ a:active {
   position: relative;
   top: 2px;
 }
-#spanMainShowMenu {
-  margin: 0 5px 0 -10px !important;
-  font-size: 15px !important;
-  display: none !important;
+#divMainHeader #spanMainShowMenu {
+  margin: 0 5px 0 -10px;
+  font-size: 15px;
+  display: none;
   /*inline-block*/
 }
 #spanMainAppName {
@@ -83,6 +83,7 @@ a:active {
 }
 #divMainLeftPane .tool-window {
   height: calc(100% -  40px);
+  margin: 0 0 0 30px;
   padding: 5px 0 0 0;
   display: none;
   /*block*/
@@ -118,7 +119,6 @@ a:active {
 /* Main Menu */
 #divMainMenu .menu-item,
 #divMainMenu .menu-subitem {
-  margin-left: 30px;
   padding: 5px 10px;
   text-decoration: none;
 }
@@ -163,6 +163,15 @@ a:active {
   content: "\e259";
 }
 /* Explorer */
+#tvMainExplorer {
+  font-size: 13px;
+}
+#tvMainExplorer td {
+  padding: 3px 0;
+}
+#tvMainExplorer td:first-child {
+  padding-left: 10px;
+}
 /* Collapse Pane */
 #divMainCollapsePane {
   position: absolute;

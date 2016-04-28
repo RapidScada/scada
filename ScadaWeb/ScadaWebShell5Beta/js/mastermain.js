@@ -9,26 +9,54 @@ function updateMainLayout() {
     divMainTabs.outerWidth(paneH);
 }
 
-// Make visible main menu or views explorer
-function showMenuOrExplorer() {
+// Choose a tool window and activate it
+function chooseToolWindow() {
     if (mainMenuVisible) {
-        $("#divMainMenu").css("display", "block");
+        activateToolWindow($("#divMainMenuTab"));
     } else {
-        $("#divMainExplorer").css("display", "block");
+        activateToolWindow($("#divMainExplorerTab"));
+    }
+}
+
+// Make visible main menu or views explorer
+function activateToolWindow(divClickedTab) {
+    // highlight clicked tab
+    var tabs = $("#divMainTabs .tab");
+    tabs.removeClass("selected");
+    divClickedTab.addClass("selected");
+
+    // deactivate all the tool windows
+    var toolWindows = $("#divMainLeftPane .tool-window");
+    toolWindows.css("display", "none");
+
+    // activate the appropriate tool window
+    var clickedTabId = divClickedTab.attr('id');
+    var toolWindow;
+
+    if (clickedTabId == "divMainMenuTab") {
+        toolWindow = $("#divMainMenu")
+    } else if (clickedTabId == "divMainExplorerTab") {
+        toolWindow = $("#divMainExplorer")
+    } else {
+        toolWindow = null;
+    }
+
+    if (toolWindow) {
+        toolWindow.css("display", "block");
     }
 }
 
 // Expand or collapse the menu item
 function toggleMenuItem(divExpander) {
-    var divMenuItem = divExpander.parent();
-    var divMenuSubitems = divMenuItem.nextUntil(".menu-item", ".menu-subitem");
+    var menuItem = divExpander.parent();
+    var menuSubitems = menuItem.nextUntil(".menu-item", ".menu-subitem");
 
     if (divExpander.hasClass("expanded")) {
         divExpander.removeClass("expanded");
-        divMenuSubitems.css("display", "none");
+        menuSubitems.css("display", "none");
     } else {
         divExpander.addClass("expanded");
-        divMenuSubitems.css("display", "block");
+        menuSubitems.css("display", "block");
     }
 }
 
@@ -49,12 +77,17 @@ function expandSelectedMenuItem() {
 
 $(document).ready(function () {
     updateMainLayout();
-    showMenuOrExplorer();
+    chooseToolWindow();
     expandSelectedMenuItem();
 
     // update layout on window resize
     $(window).resize(function () {
         updateMainLayout();
+    });
+
+    // activate tool window on tab click
+    $("#divMainTabs .tab").click(function (event) {
+        activateToolWindow($(this));
     });
 
     // toggle main menu items on click

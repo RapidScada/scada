@@ -23,6 +23,8 @@
  * Modified : 2016
  */
 
+using System.Collections.Generic;
+
 namespace Scada.Web
 {
     /// <summary>
@@ -31,6 +33,47 @@ namespace Scada.Web
     /// </summary>
     public class ViewSettings : ISettings
     {
+        /// <summary>
+        /// Элемент настроек, соответствующий представлению
+        /// </summary>
+        public class ViewItem
+        {
+            /// <summary>
+            /// Конструктор, ограничивающий создание объекта без параметров
+            /// </summary>
+            protected ViewItem()
+            {
+            }
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public ViewItem(int viewID, string text, int alarmCnlNum)
+            {
+                ViewID = viewID;
+                Text = text;
+                AlarmCnlNum = alarmCnlNum;
+                Subitems = new List<ViewItem>();
+            }
+
+            /// <summary>
+            /// Получить идентификатор представления
+            /// </summary>
+            public int ViewID { get; protected set; }
+            /// <summary>
+            /// Получить текст
+            /// </summary>
+            public string Text { get; protected set; }
+            /// <summary>
+            /// Получить номер входного канала, информирующего о тревожном состоянии представления
+            /// </summary>
+            public int AlarmCnlNum { get; protected set; }
+            /// <summary>
+            /// Получить дочерние элементы
+            /// </summary>
+            public List<ViewItem> Subitems { get; protected set; }
+        }
+
+
         /// <summary>
         /// Имя файла настроек по умолчанию
         /// </summary>
@@ -42,7 +85,14 @@ namespace Scada.Web
         /// </summary>
         public ViewSettings()
         {
+            ViewItems = new List<ViewItem>();
         }
+
+
+        /// <summary>
+        /// Получить элементы настроек представлений
+        /// </summary>
+        public List<ViewItem> ViewItems { get; protected set; }
 
 
         /// <summary>

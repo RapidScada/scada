@@ -40,8 +40,8 @@
         </div>
         <div id="divMainLeftPane">
             <div id="divMainTabs">
-                <div class="tab selected">Main Menu</div>
-                <div class="tab">Views</div>
+                <div id="divMainMenuTab" class="tab selected">Main Menu</div>
+                <div id="divMainExplorerTab" class="tab">Views</div>
             </div>
             <div id="divMainMenu" class="tool-window">
                 <div class="menu-item">Reports</div>
@@ -62,7 +62,9 @@
                 <div class="menu-item">Menu Item 9</div>
                 <div class="menu-item">Menu Item 10</div>-->
             </div>
-            <div id="divMainExplorer" class="tool-window"></div>
+            <div id="divMainExplorer" class="tool-window">
+                <asp:TreeView ID="tvMainExplorer" runat="server" SkipLinkText="" CollapseImageToolTip="" ExpandImageToolTip="" ImageSet="Arrows" ViewStateMode="Disabled"></asp:TreeView>
+            </div>
             <div id="divMainCollapsePane">
                 <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>Collapse menu
             </div>

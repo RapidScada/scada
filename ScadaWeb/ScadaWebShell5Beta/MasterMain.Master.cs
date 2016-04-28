@@ -26,6 +26,7 @@
 using Scada.Web.Shell;
 using System;
 using System.Text;
+using System.Web.UI.WebControls;
 
 namespace Scada.Web
 {
@@ -62,7 +63,7 @@ namespace Scada.Web
             StringBuilder sbHtml = new StringBuilder();
             string curUrl = Request.Url.AbsolutePath;
 
-            foreach (MenuItem menuItem in userData.UserMenu.LinearMenuItems)
+            foreach (Shell.MenuItem menuItem in userData.UserMenu.LinearMenuItems)
             {
                 string text = Server.HtmlEncode(menuItem.Text);
                 string url = ResolveUrl(menuItem.Url);
@@ -90,6 +91,26 @@ namespace Scada.Web
             userData.CheckLoggedOn(true);
 
             SetMainMenuVisible();
+
+            // тест
+            TreeNode node1 = new TreeNode("Test group");
+            node1.NavigateUrl = "javascript:void(0);";
+            tvMainExplorer.Nodes.Add(node1);
+            TreeNode node2 = new TreeNode("Test view 1", "1");
+            node2.NavigateUrl = "javascript:alert(1);";
+            node1.ChildNodes.Add(node2);
+
+            node2 = new TreeNode("Test view 2", "2");
+            node2.NavigateUrl = "javascript:alert(2);";
+            node1.ChildNodes.Add(node2);
+
+            for (int i = 3; i < 100; i++)
+            {
+                node2 = new TreeNode("Test view 012345 6789 - " + i, i.ToString());
+                node2.ToolTip = node2.Text;
+                node2.NavigateUrl = string.Format("javascript:alert({0});", i);
+                tvMainExplorer.Nodes.Add(node2);
+            }
         }
 
         protected void lbtnMainLogout_Click(object sender, EventArgs e)
