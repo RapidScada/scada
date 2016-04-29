@@ -25,7 +25,8 @@
 
 using Scada.Client;
 using Scada.Data;
-using Utils;
+using System;
+using System.Collections.Generic;
 
 namespace Scada.Web
 {
@@ -35,24 +36,17 @@ namespace Scada.Web
     /// </summary>
     public class UserRights
     {
+        protected bool viewAllViewsRight;    // право просмотра всех представлений
+        protected bool controlAllViewsRight; // право управления для всех представлений
+        protected Dictionary<int, EntityRights> viewRightsDict; // права на предсталения
+
+
         /// <summary>
         /// Конструктор
         /// </summary>
         public UserRights()
         {
-            ConfigRight = false;
-        }
-
-
-        /// <summary>
-        /// Инициализировать права пользователя
-        /// </summary>
-        public void Init(int roleID)
-        {
-            if (roleID == BaseValues.Roles.Admin)
-            {
-                ConfigRight = true;
-            }
+            SetToDefault();
         }
 
 
@@ -60,5 +54,66 @@ namespace Scada.Web
         /// Получить право конфигурирования системы
         /// </summary>
         public bool ConfigRight { get; protected set; }
+
+
+        /// <summary>
+        /// Установить значения прав по умолчанию
+        /// </summary>
+        protected void SetToDefault()
+        {
+            viewAllViewsRight = false;
+            controlAllViewsRight = false;
+            viewRightsDict = null;
+
+            ConfigRight = false;
+        }
+
+        /// <summary>
+        /// Инициализировать права пользователя
+        /// </summary>
+        public void Init(int roleID, DataAccess dataAccess)
+        {
+            if (dataAccess == null)
+                throw new ArgumentNullException("dataAccess");
+
+            SetToDefault();
+
+            if (roleID == BaseValues.Roles.Admin)
+            {
+                viewAllViewsRight = true;
+                controlAllViewsRight = true;
+                ConfigRight = true;
+            }
+            else if (roleID == BaseValues.Roles.Dispatcher)
+            {
+                viewAllViewsRight = true;
+                controlAllViewsRight = true;
+            }
+            else if (roleID == BaseValues.Roles.Guest)
+            {
+                viewAllViewsRight = true;
+            }
+            else if (BaseValues.Roles.Custom <= roleID && roleID < BaseValues.Roles.Err)
+            {
+                viewRightsDict = dataAccess.GetViewRights(roleID);
+            }
+        }
+
+        /// <summary>
+        /// Получить права на предсталение
+        /// </summary>
+        public EntityRights GetViewRights(int viewID)
+        {
+            if (viewAllViewsRight)
+            {
+                return new EntityRights(viewAllViewsRight, controlAllViewsRight);
+            }
+            else
+            {
+                EntityRights rights;
+                return viewRightsDict != null && viewRightsDict.TryGetValue(viewID, out rights) ?
+                    rights : EntityRights.NoRights;
+            }
+        }
     }
 }

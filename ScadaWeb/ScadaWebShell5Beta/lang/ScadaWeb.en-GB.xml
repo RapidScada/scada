@@ -9,6 +9,10 @@
     <Phrase key="NoRights">Insufficient rights.</Phrase>
     <Phrase key="IllegalRole">Illegal user role.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.ViewSettings">
+    <Phrase key="LoadViewSettingsError">Error loading view settings</Phrase>
+    <Phrase key="SaveViewSettingsError">Error saving view settings</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.WebSettings">
     <Phrase key="LoadWebSettingsError">Error loading web application settings</Phrase>
     <Phrase key="SaveWebSettingsError">Error saving web application settings</Phrase>

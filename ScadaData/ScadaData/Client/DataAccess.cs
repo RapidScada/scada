@@ -25,6 +25,7 @@
 
 using Scada.Data;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using Utils;
@@ -234,6 +235,41 @@ namespace Scada.Client
                         "Error getting view properties by ID={0}", viewID);
                     return null;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Получить права на представления по идентификатору роли
+        /// </summary>
+        public Dictionary<int, EntityRights> GetViewRights(int roleID)
+        {
+            lock (baseLock)
+            {
+                Dictionary<int, EntityRights> viewRightsDict = new Dictionary<int, EntityRights>();
+
+                try
+                {
+                    dataCache.RefreshBaseTables();
+
+                    DataTable tblRight = dataCache.BaseTables.RightTable;
+                    BaseTables.CheckIsNotEmpty(tblRight, true);
+                    tblRight.DefaultView.RowFilter = "RoleID = " + roleID;
+
+                    foreach (DataRowView rowView in tblRight.DefaultView)
+                    {
+                        int viewID = (int)rowView["ItfID"];
+                        EntityRights rights = new EntityRights((bool)rowView["ViewRight"], (bool)rowView["CtrlRight"]);
+                        viewRightsDict[viewID] = rights;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log.WriteException(ex, Localization.UseRussian ?
+                        "Ошибка при получении прав на представления для роли с ид.={0}" :
+                        "Error getting view access rights for the role with ID={0}", roleID);
+                }
+
+                return viewRightsDict;
             }
         }
 

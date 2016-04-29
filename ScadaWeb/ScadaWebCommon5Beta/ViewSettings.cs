@@ -23,7 +23,10 @@
  * Modified : 2016
  */
 
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Xml;
 
 namespace Scada.Web
 {
@@ -39,9 +42,10 @@ namespace Scada.Web
         public class ViewItem
         {
             /// <summary>
-            /// Конструктор, ограничивающий создание объекта без параметров
+            /// Конструктор
             /// </summary>
-            protected ViewItem()
+            public ViewItem()
+                : this(0, "", 0)
             {
             }
             /// <summary>
@@ -56,17 +60,17 @@ namespace Scada.Web
             }
 
             /// <summary>
-            /// Получить идентификатор представления
+            /// Получить или установить идентификатор представления
             /// </summary>
-            public int ViewID { get; protected set; }
+            public int ViewID { get; set; }
             /// <summary>
-            /// Получить текст
+            /// Получить или установить текст
             /// </summary>
-            public string Text { get; protected set; }
+            public string Text { get; set; }
             /// <summary>
-            /// Получить номер входного канала, информирующего о тревожном состоянии представления
+            /// Получить или установить номер входного канала, информирующего о тревожном состоянии представления
             /// </summary>
-            public int AlarmCnlNum { get; protected set; }
+            public int AlarmCnlNum { get; set; }
             /// <summary>
             /// Получить дочерние элементы
             /// </summary>
@@ -96,6 +100,23 @@ namespace Scada.Web
 
 
         /// <summary>
+        /// Рекурсивно загрузить элемент настроек представлений
+        /// </summary>
+        private void LoadViewItem(XmlElement viewItemElem, List<ViewItem> viewItems)
+        {
+            ViewItem viewItem = new ViewItem();
+            viewItem.ViewID = viewItemElem.GetAttrAsInt("viewID");
+            viewItem.Text = viewItemElem.GetAttribute("text");
+            viewItem.AlarmCnlNum = viewItemElem.GetAttrAsInt("alarmCnlNum");
+            viewItems.Add(viewItem);
+
+            XmlNodeList viewItemNodes = viewItemElem.SelectNodes("ViewItem");
+            foreach (XmlElement elem in viewItemNodes)
+                LoadViewItem(elem, viewItem.Subitems);
+        }
+
+
+        /// <summary>
         /// Создать новый объект настроек
         /// </summary>
         public ISettings Create()
@@ -116,8 +137,30 @@ namespace Scada.Web
         /// </summary>
         public bool LoadFromFile(string fileName, out string errMsg)
         {
-            errMsg = "ViewSettings not implemented";
-            return false;
+            // установка значений по умолчанию
+            ViewItems.Clear();
+
+            // загрузка настроек
+            try
+            {
+                if (!File.Exists(fileName))
+                    throw new FileNotFoundException(string.Format(CommonPhrases.NamedFileNotFound, fileName));
+
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.Load(fileName);
+
+                XmlNodeList viewItemNodes = xmlDoc.DocumentElement.SelectNodes("ViewItem");
+                foreach (XmlElement viewItemElem in viewItemNodes)
+                    LoadViewItem(viewItemElem, ViewItems);
+
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = WebPhrases.LoadWebSettingsError + ": " + ex.Message;
+                return false;
+            }
         }
 
         /// <summary>
@@ -125,8 +168,15 @@ namespace Scada.Web
         /// </summary>
         public bool SaveToFile(string fileName, out string errMsg)
         {
-            errMsg = "ViewSettings not implemented";
-            return false;
+            try
+            {
+                throw new NotImplementedException("Method not implemented.");
+            }
+            catch (Exception ex)
+            {
+                errMsg = WebPhrases.SaveViewSettingsError + ": " + ex.Message;
+                return false;
+            }
         }
     }
 }

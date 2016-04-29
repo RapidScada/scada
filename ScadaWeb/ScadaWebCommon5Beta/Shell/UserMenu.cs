@@ -133,13 +133,20 @@ namespace Scada.Web.Shell
         /// <summary>
         /// Инициализировать меню пользователя
         /// </summary>
-        public void Init(UserData userData, List<PluginSpec> pluginSpecs)
+        public void Init(UserData userData)
         {
+            if (userData == null)
+                throw new ArgumentNullException("userData");
+
             try
             {
                 MenuItems.Clear();
-                foreach (PluginSpec pluginSpec in pluginSpecs)
-                    MergeMenuItems(MenuItems, pluginSpec.GetMenuItems(userData));
+
+                if (userData.PluginSpecs != null)
+                {
+                    foreach (PluginSpec pluginSpec in userData.PluginSpecs)
+                        MergeMenuItems(MenuItems, pluginSpec.GetMenuItems(userData));
+                }
 
                 LinearMenuItems.Clear();
                 FillLinearMenuItems(LinearMenuItems, MenuItems, 0);

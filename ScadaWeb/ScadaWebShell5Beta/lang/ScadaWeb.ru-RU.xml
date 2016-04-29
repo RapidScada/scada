@@ -9,6 +9,10 @@
     <Phrase key="NoRights">Недостаточно прав.</Phrase>
     <Phrase key="IllegalRole">Недопустимая роль пользователя.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.ViewSettings">
+    <Phrase key="LoadViewSettingsError">Ошибка при загрузке настроек представлений</Phrase>
+    <Phrase key="SaveViewSettingsError">Ошибка при сохранении настроек представлений</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.WebSettings">
     <Phrase key="LoadWebSettingsError">Ошибка при загрузке настроек веб-приложения</Phrase>
     <Phrase key="SaveWebSettingsError">Ошибка при сохранении настроек веб-приложения</Phrase>

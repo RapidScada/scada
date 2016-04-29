@@ -49,7 +49,8 @@ namespace Scada.Web.Plugins
         {
             get
             {
-                return "SchemeView";
+                // TODO: заменить на SchemeView после добавления поля ViewTypeCode в базу конфигурации
+                return "sch";
             }
         }
 

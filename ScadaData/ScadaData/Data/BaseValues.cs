@@ -83,7 +83,7 @@ namespace Scada.Data
                     return Localization.UseRussian ? "Гость" : "Guest";
                 else if (roleID == App)
                     return Localization.UseRussian ? "Приложение" : "Application";
-                if (Custom <= roleID && roleID < Err)
+                else if (Custom <= roleID && roleID < Err)
                     return Localization.UseRussian ? "Настраиваемая роль" : "Custom role";
                 else if (roleID == Err)
                     return Localization.UseRussian ? "Ошибка" : "Error";

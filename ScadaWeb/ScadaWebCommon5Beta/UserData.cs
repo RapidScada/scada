@@ -111,6 +111,11 @@ namespace Scada.Web
         /// </summary>
         public UserMenu UserMenu { get; private set; }
 
+        /// <summary>
+        /// Получить представления пользователя
+        /// </summary>
+        public UserViews UserViews { get; private set; }
+
 
         /// <summary>
         /// Получить ссылку на настройки веб-приложения
@@ -145,6 +150,7 @@ namespace Scada.Web
             LogonDT = DateTime.MinValue;
             UserRights = null;
             UserMenu = null;
+            UserViews = null;
         }
 
         /// <summary>
@@ -252,10 +258,12 @@ namespace Scada.Web
 
                 UpdateAppDataRefs();
                 UserRights = new UserRights();
-                UserRights.Init(roleID);
+                UserRights.Init(roleID, AppData.DataAccess);
                 RaiseOnUserLogin();
                 UserMenu = new UserMenu(AppData.Log);
-                UserMenu.Init(this, PluginSpecs);
+                UserMenu.Init(this);
+                UserViews = new UserViews(AppData.Log);
+                UserViews.Init(this, AppData.DataAccess);
                 return true;
             }
             else
