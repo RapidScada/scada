@@ -43,6 +43,11 @@ namespace Scada.Web.Shell
         /// Получить ссылку
         /// </summary>
         string Url { get; }
+        
+        /// <summary>
+        /// Получить ссылку на иконку
+        /// </summary>
+        string IconUrl { get; }
 
         /// <summary>
         /// Получить или установить уровень вложенности

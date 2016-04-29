@@ -90,7 +90,7 @@ namespace Scada.Web.Shell
         /// <summary>
         /// Рекурсивно создать узлы дерева представлений на основе элементов настроек
         /// </summary>
-        protected void CreateViewNodes(List<ViewNode> destViewNodes, List<ViewSettings.ViewItem> srcViewItems)
+        protected void CreateViewNodes(List<ViewNode> destViewNodes, List<ViewSettings.ViewItem> srcViewItems, int level)
         {
             foreach (ViewSettings.ViewItem viewItem in srcViewItems)
             {
@@ -105,12 +105,13 @@ namespace Scada.Web.Shell
                 if (viewID > 0)
                 {
                     ViewProps viewProps = dataAccess.GetViewProps(viewID);
-                    viewSpecs.TryGetValue(viewProps.ViewTypeCode, out viewSpec);
+                    if (viewProps != null)
+                        viewSpecs.TryGetValue(viewProps.ViewTypeCode, out viewSpec);
                 }
 
                 // создание узла дерева и дочерних узлов
-                ViewNode viewNode = new ViewNode(viewItem, viewSpec);
-                CreateViewNodes(viewNode.ChildNodes, viewItem.Subitems);
+                ViewNode viewNode = new ViewNode(viewItem, viewSpec) { Level = level };
+                CreateViewNodes(viewNode.ChildNodes, viewItem.Subitems, level + 1);
 
                 // добавление узла, если он соответствует представлению или имеет дочерние узлы
                 if (viewID > 0 || viewNode.ChildNodes.Count > 0)
@@ -133,7 +134,7 @@ namespace Scada.Web.Shell
                 this.dataAccess = dataAccess;
 
                 if (userRights != null && viewSpecs != null)
-                    CreateViewNodes(ViewNodes, userData.ViewSettings.ViewItems);
+                    CreateViewNodes(ViewNodes, userData.ViewSettings.ViewItems, 0);
             }
             catch (Exception ex)
             {

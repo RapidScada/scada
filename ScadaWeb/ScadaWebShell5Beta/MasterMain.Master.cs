@@ -26,7 +26,6 @@
 using Scada.Web.Shell;
 using System;
 using System.Text;
-using System.Web.UI.WebControls;
 
 namespace Scada.Web
 {
@@ -36,8 +35,11 @@ namespace Scada.Web
     /// </summary>
     public partial class MasterMain : System.Web.UI.MasterPage
     {
-        private AppData appData;   // общие данные веб-приложения
-        private UserData userData; // данные пользователя приложения
+        private static readonly TreeViewRenderer treeViewRenderer =
+            new TreeViewRenderer(); // формирует дерево представлений
+
+        private AppData appData;    // общие данные веб-приложения
+        private UserData userData;  // данные пользователя приложения
 
         protected bool mainMenuVisible; // отобразить главное меню при загрузке страницы
 
@@ -52,9 +54,9 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Генерировать HTML-код меню
+        /// Генерировать HTML-код главного меню
         /// </summary>
-        protected string GenerateMenuHtml()
+        protected string GenerateMainMenuHtml()
         {
             const string ItemTemplate = "<div class='{0}'>{1}{2}</div>";
             const string LinkTemplate = "<a href='{0}'>{1}</a>";
@@ -63,7 +65,7 @@ namespace Scada.Web
             StringBuilder sbHtml = new StringBuilder();
             string curUrl = Request.Url.AbsolutePath;
 
-            foreach (Shell.MenuItem menuItem in userData.UserMenu.LinearMenuItems)
+            foreach (MenuItem menuItem in userData.UserMenu.LinearMenuItems)
             {
                 string text = Server.HtmlEncode(menuItem.Text);
                 string url = ResolveUrl(menuItem.Url);
@@ -83,6 +85,14 @@ namespace Scada.Web
             return sbHtml.ToString();
         }
 
+        /// <summary>
+        /// Генерировать HTML-код проводника представлений
+        /// </summary>
+        protected string GenerateExplorerHtml()
+        {
+            return treeViewRenderer.GenerateHtml(userData.UserViews.ViewNodes, null);
+        }
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -93,7 +103,7 @@ namespace Scada.Web
             SetMainMenuVisible();
 
             // тест
-            TreeNode node1 = new TreeNode("Test group");
+            /*TreeNode node1 = new TreeNode("Test group");
             node1.NavigateUrl = "javascript:void(0);";
             tvMainExplorer.Nodes.Add(node1);
             TreeNode node2 = new TreeNode("Test view 1", "1");
@@ -110,7 +120,7 @@ namespace Scada.Web
                 node2.ToolTip = node2.Text;
                 node2.NavigateUrl = string.Format("javascript:alert({0});", i);
                 tvMainExplorer.Nodes.Add(node2);
-            }
+            }*/
         }
 
         protected void lbtnMainLogout_Click(object sender, EventArgs e)

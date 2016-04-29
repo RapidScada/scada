@@ -45,7 +45,7 @@
             </div>
             <div id="divMainMenu" class="tool-window">
                 <div class="menu-item">Reports</div>
-                <%= GenerateMenuHtml() %>
+                <%= GenerateMainMenuHtml() %>
                 <div class="menu-subitem selected">Devices</div>
                 <div class="menu-subitem">Dictionaries</div>
                 <div class="menu-subitem">Interface</div>
@@ -63,7 +63,8 @@
                 <div class="menu-item">Menu Item 10</div>-->
             </div>
             <div id="divMainExplorer" class="tool-window">
-                <asp:TreeView ID="tvMainExplorer" runat="server" SkipLinkText="" CollapseImageToolTip="" ExpandImageToolTip="" ImageSet="Arrows" ViewStateMode="Disabled"></asp:TreeView>
+                <%= GenerateExplorerHtml() %>
+                <!--<asp:TreeView ID="tvMainExplorer" runat="server" SkipLinkText="" CollapseImageToolTip="" ExpandImageToolTip="" ImageSet="Arrows" ViewStateMode="Disabled"></asp:TreeView>-->
             </div>
             <div id="divMainCollapsePane">
                 <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>Collapse menu

@@ -52,7 +52,18 @@ namespace Scada.Web.Shell
                 throw new ArgumentNullException("viewItem");
 
             Text = viewItem.Text ?? "";
-            Url = viewSpec == null ? "" : viewSpec.GetViewUrl(viewItem.ViewID);
+
+            if (viewSpec == null)
+            {
+                Url = "";
+                IconUrl = "";
+            }
+            else
+            {
+                Url = viewSpec.GetViewUrl(viewItem.ViewID);
+                IconUrl = viewSpec.IconUrl;
+            }
+
             AlarmCnlNum = viewItem.AlarmCnlNum;
             Level = -1;
             ChildNodes = new List<ViewNode>();
@@ -69,7 +80,12 @@ namespace Scada.Web.Shell
         /// Получить ссылку
         /// </summary>
         public string Url { get; protected set; }
-        
+
+        /// <summary>
+        /// Получить ссылку на иконку
+        /// </summary>
+        public string IconUrl { get; protected set; }
+
         /// <summary>
         /// Получить номер входного канала, информирующего о тревожном состоянии представления
         /// </summary>

@@ -36,9 +36,18 @@ namespace Scada.Web
     /// </summary>
     public class UserRights
     {
-        protected bool viewAllViewsRight;    // право просмотра всех представлений
-        protected bool controlAllViewsRight; // право управления для всех представлений
-        protected Dictionary<int, EntityRights> viewRightsDict; // права на предсталения
+        /// <summary>
+        /// Право просмотра всех представлений
+        /// </summary>
+        protected bool viewAllViewsRight;
+        /// <summary>
+        /// Право управления для всех представлений
+        /// </summary>
+        protected bool controlAllViewsRight;
+        /// <summary>
+        /// Права на предсталения
+        /// </summary>
+        protected Dictionary<int, EntityRights> viewRightsDict;
 
 
         /// <summary>
