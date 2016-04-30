@@ -220,7 +220,8 @@ namespace Scada.Client
                     {
                         ViewProps viewProps = new ViewProps(viewID);
                         viewProps.FileName = (string)tblInterface.DefaultView[0]["Name"];
-                        viewProps.ViewTypeCode = Path.GetExtension(viewProps.FileName);
+                        string ext = Path.GetExtension(viewProps.FileName);
+                        viewProps.ViewTypeCode = ext == null ? "" : ext.TrimStart('.');
                         return viewProps;
                     }
                     else

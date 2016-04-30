@@ -38,7 +38,7 @@ namespace Scada.Web.Plugins
         {
             get
             {
-                return "";
+                return "~/plugins/Scheme/images/schemeicon.png";
             }
         }
 

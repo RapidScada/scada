@@ -79,6 +79,7 @@ $(document).ready(function () {
     updateMainLayout();
     chooseToolWindow();
     expandSelectedMenuItem();
+    scada.treeView.prepare();
 
     // update layout on window resize
     $(window).resize(function () {

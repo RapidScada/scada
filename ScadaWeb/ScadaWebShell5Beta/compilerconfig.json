@@ -10,5 +10,9 @@
   {
     "outputFile": "css/login.css",
     "inputFile": "css/login.less"
+  },
+  {
+    "outputFile": "css/treeview.css",
+    "inputFile": "css/treeview.less"
   }
 ]

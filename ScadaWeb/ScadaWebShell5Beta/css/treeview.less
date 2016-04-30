@@ -1,0 +1,40 @@
+﻿.tree-view .child-nodes {
+    display: none; /*block*/
+}
+
+.tree-view .node div {
+    display: inline-block;
+}
+
+.tree-view .indent {
+    width: 20px;
+}
+
+.tree-view .expander {
+    width: 20px;
+    cursor: pointer;
+}
+
+.tree-view .expander::before {
+    content: "\e258";
+    font-family: 'Glyphicons Halflings';
+}
+
+.tree-view .expander.expanded::before {
+    content: "\e259";
+}
+
+.tree-view .expander.empty {
+    visibility: hidden;
+}
+
+.tree-view .stateIcon,
+.tree-view .icon {
+    width: 0;
+}
+
+.tree-view .icon img {
+    width: 16px;
+    height: 16px;
+    border: none;
+}

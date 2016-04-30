@@ -50,7 +50,7 @@ namespace Scada.Web.Shell
             {
                 foreach (KeyValuePair<string, string> pair in webTreeNode.DataAttrs)
                 {
-                    if (string.IsNullOrWhiteSpace(pair.Key))
+                    if (!string.IsNullOrWhiteSpace(pair.Key))
                         sbHtml.Append(string.Format(DataAttrTemplate, pair.Key, pair.Value));
                 }
             }

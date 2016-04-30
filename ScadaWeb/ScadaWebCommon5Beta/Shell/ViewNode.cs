@@ -37,6 +37,12 @@ namespace Scada.Web.Shell
     public class ViewNode : IWebTreeNode
     {
         /// <summary>
+        /// Шаблон ссылки на страницу отображения представления
+        /// </summary>
+        protected const string ViewUrlTemplate = "~/View.aspx?viewID={0}";
+
+
+        /// <summary>
         /// Конструктор, ограничивающий создание объекта без параметров
         /// </summary>
         protected ViewNode()
@@ -60,7 +66,7 @@ namespace Scada.Web.Shell
             }
             else
             {
-                Url = viewSpec.GetViewUrl(viewItem.ViewID);
+                Url = string.Format(ViewUrlTemplate, viewItem.ViewID);
                 IconUrl = viewSpec.IconUrl;
             }
 

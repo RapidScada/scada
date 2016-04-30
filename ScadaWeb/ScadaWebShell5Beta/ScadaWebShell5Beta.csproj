@@ -87,12 +87,19 @@
     <Content Include="css\mastermain.min.css">
       <DependentUpon>mastermain.css</DependentUpon>
     </Content>
+    <Content Include="css\treeview.css">
+      <DependentUpon>treeview.less</DependentUpon>
+    </Content>
+    <Content Include="css\treeview.min.css">
+      <DependentUpon>treeview.css</DependentUpon>
+    </Content>
     <Content Include="Global.asax" />
     <Content Include="images\favicon.ico" />
     <Content Include="images\gear.png" />
     <Content Include="js\api\clientapi.js" />
     <Content Include="js\login.js" />
     <Content Include="js\mastermain.js" />
+    <Content Include="js\treeview.js" />
     <Content Include="lib\bootstrap\css\bootstrap-theme.css" />
     <Content Include="lib\bootstrap\css\bootstrap-theme.min.css" />
     <Content Include="lib\bootstrap\css\bootstrap.css" />
@@ -218,6 +225,7 @@
     <Content Include="lib\open-sans\fonts\open-sans-v13-latin-ext_cyrillic_latin_cyrillic-ext_greek-ext_vietnamese_greek-regular.ttf" />
     <Content Include="lib\open-sans\fonts\open-sans-v13-latin-ext_cyrillic_latin_cyrillic-ext_greek-ext_vietnamese_greek-regular.woff" />
     <Content Include="lib\open-sans\fonts\open-sans-v13-latin-ext_cyrillic_latin_cyrillic-ext_greek-ext_vietnamese_greek-regular.woff2" />
+    <Content Include="css\treeview.less" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
