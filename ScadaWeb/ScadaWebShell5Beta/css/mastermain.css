@@ -165,13 +165,18 @@ a:active {
 /* Explorer */
 #divMainExplorer {
   font-size: 13px;
+  line-height: 13px;
 }
 #divMainExplorer .tree-view .node {
   padding-left: 10px;
 }
+#divMainExplorer .tree-view .expander::before {
+  font-size: 10px;
+}
 #divMainExplorer .tree-view .icon {
   width: 21px;
-  height: 20px;
+  height: 16px;
+  line-height: 0;
   background-size: 16px 16px;
   background-repeat: no-repeat;
   background-position: left bottom;
@@ -182,6 +187,9 @@ a:active {
 #divMainExplorer .tree-view .icon.empty {
   background-image: url(../images/treeview/table.png);
 }
+/*#divMainExplorer .tree-view .node div {
+    border: 1px solid red;
+}*/
 /* Collapse Pane */
 #divMainCollapsePane {
   position: absolute;
