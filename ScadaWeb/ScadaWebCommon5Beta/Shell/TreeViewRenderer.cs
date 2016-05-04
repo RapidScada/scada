@@ -91,16 +91,16 @@ namespace Scada.Web.Shell
                         bool containsSubitems = webTreeNode.Children.Count > 0;
                         string expanderEmpty = containsSubitems ? "" : " empty";
 
-                        string iconEmpty;
+                        string iconCssClass;
                         string icon;
                         if (string.IsNullOrEmpty(webTreeNode.IconUrl))
                         {
-                            iconEmpty = " empty";
+                            iconCssClass = containsSubitems ? " folder" : " empty";
                             icon = "";
                         }
                         else
                         {
-                            iconEmpty = "";
+                            iconCssClass = "";
                             icon = string.Format(ImageTemplate, webTreeNode.IconUrl);
                         }
 
@@ -109,7 +109,7 @@ namespace Scada.Web.Shell
                             string.Format(LinkTemplate, webTreeNode.Url, text) : text;
 
                         sbHtml.AppendLine(string.Format(NodeTemplate,
-                            selected, dataAttrs, expanderEmpty, iconEmpty, icon, linkOrText));
+                            selected, dataAttrs, expanderEmpty, iconCssClass, icon, linkOrText));
 
                         if (containsSubitems)
                             sbHtml.Append(GenTreeViewHtml(webTreeNode.Children, selObj, false));
