@@ -163,16 +163,9 @@ a:active {
   content: "\e259";
 }
 /* Explorer */
-#tvMainExplorer {
+#divMainExplorer {
   font-size: 13px;
 }
-/*#tvMainExplorer td {
-    padding: 3px 0;
-}
-
-#tvMainExplorer td:first-child {
-    padding-left: 10px;
-}*/
 #divMainExplorer .tree-view .node {
   padding-left: 10px;
 }
@@ -184,10 +177,10 @@ a:active {
   background-position: left bottom;
 }
 #divMainExplorer .tree-view .icon.folder {
-  background-image: url(../images/treeview/folder1.png);
+  background-image: url(../images/treeview/folder.png);
 }
 #divMainExplorer .tree-view .icon.empty {
-  background-image: url(../images/treeview/scheme1.png);
+  background-image: url(../images/treeview/table.png);
 }
 /* Collapse Pane */
 #divMainCollapsePane {
