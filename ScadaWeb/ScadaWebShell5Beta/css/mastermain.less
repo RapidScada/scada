@@ -4,7 +4,7 @@
 @header-heigth: 30px;
 @left-tabs-heigth: 30px;
 @collapse-pane-heigth: 40px;
-@left-pane-width: 230px;
+@left-pane-width: 250px;
 
 body {
     margin: 0;
@@ -140,59 +140,45 @@ a:active {
     cursor: pointer;
 }
 
-/* Main Menu */
+/* Trees */
 
-#divMainMenu .menu-item,
-#divMainMenu .menu-subitem {
-    padding: 5px 10px;
-    text-decoration: none;
-}
-
-#divMainMenu .menu-subitem {
-    padding-left: 20px;
-    color: @menu-fore-color-dark;
-    display: none; /*block*/
-    font-size: 13px;
-}
-
-#divMainMenu .menu-item:hover,
-#divMainMenu .menu-subitem:hover {
+#divMainLeftPane .tree-view .node:hover {
     background-color: @menu-item-hover-back-color-dark;
     color: @menu-item-hover-fore-color;
-    text-decoration: none;
 }
 
-#divMainMenu .menu-item.selected,
-#divMainMenu .menu-subitem.selected {
+#divMainLeftPane .tree-view .node.selected {
     background-color: @menu-item-selected-back-color;
     color: @menu-item-selected-fore-color;
 }
 
-#divMainMenu .menu-item a,
-#divMainMenu .menu-subitem a {
-    display: inline-block;
-    width: 100%;
-}
-
-#divMainMenu .menu-item.with-expander a {
-    width: calc(~"100% - 20px");
-}
-
-#divMainMenu .expander {
-    width: 20px;
-    cursor: pointer;
-    float: right;
-    text-align: right;
-}
-
-#divMainMenu .expander::before {
-    content: "\e257";
-    font-family: 'Glyphicons Halflings';
+#divMainLeftPane .tree-view .expander::before {
     font-size: 10px;
 }
 
-#divMainMenu .expander.expanded::before {
-    content: "\e259";
+/* Main Menu */
+
+#divMainMenu .node[data-level="1"],
+#divMainMenu .node[data-level="2"],
+#divMainMenu .node[data-level="3"],
+#divMainMenu .node[data-level="4"],
+#divMainMenu .node[data-level="5"] {
+    color: @menu-fore-color-dark;
+    font-size: 13px;
+}
+
+#divMainMenu .tree-view .node {
+    padding: 5px 10px 5px 10px;
+}
+
+#divMainMenu .tree-view .expander.left {
+    display: none;
+    width: 0;
+}
+
+#divMainMenu .tree-view .expander.right {
+    display: table-cell;
+    width: 20px;
 }
 
 /* Explorer */
@@ -203,36 +189,17 @@ a:active {
 }
 
 #divMainExplorer .tree-view .node {
-    padding-left: 10px;
-}
-
-#divMainExplorer .tree-view .expander::before {
-    font-size: 10px;
+    padding: 7px 5px 3px 10px;
 }
 
 #divMainExplorer .tree-view .icon {
     width: 21px;
-    height: 16px;
-    line-height: 0;
-    background-size: 16px 16px;
-    background-repeat: no-repeat;
-    background-position: left bottom;
 }
 
-#divMainExplorer .tree-view .icon.folder {
-    background-image: url(../images/treeview/folder.png);
+#divMainExplorer .tree-view img {
+    position: relative;
+    top: -2px;
 }
-
-#divMainExplorer .tree-view .icon.empty {
-    background-image: url(../images/treeview/table.png);
-}
-
-#divMainExplorer .tree-view .text {
-}
-
-/*#divMainExplorer .tree-view .node div {
-    border: 1px solid red;
-}*/
 
 /* Collapse Pane */
 

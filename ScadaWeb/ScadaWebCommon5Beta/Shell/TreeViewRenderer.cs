@@ -37,6 +37,26 @@ namespace Scada.Web.Shell
     public class TreeViewRenderer
     {
         /// <summary>
+        /// Параметры отображения дерева
+        /// </summary>
+        public class Options
+        {
+            /// <summary>
+            /// Получить или установить 
+            /// </summary>
+            public bool ShowIcons { get; set; }
+            /// <summary>
+            /// Получить или установить ссылку на иконку папки
+            /// </summary>
+            public string FolderImageUrl { get; set; }
+            /// <summary>
+            /// Получить или установить ссылку на иконку документа, если иконка узла пустая
+            /// </summary>
+            public string DocumentImageUrl { get; set; }
+        }
+
+
+        /// <summary>
         /// Генерировать HTML-код атрибутов данных
         /// </summary>
         protected string GenDataAttrsHtml(IWebTreeNode webTreeNode)
@@ -61,16 +81,19 @@ namespace Scada.Web.Shell
         /// <summary>
         /// Рекурсивно генерировать HTML-код дерева
         /// </summary>
-        protected string GenTreeViewHtml(IList treeNodes, object selObj, bool topLevel)
+        protected string GenTreeViewHtml(IList treeNodes, object selObj, Options options, bool topLevel)
         {
             const string NodeTemplate = 
-                "<div class='node{0}'{1}>" + 
+                "<div class='node{0}'{1}>" +
+                "<div class='node-items'>" +
                 "<div class='indent'></div>" +
-                "<div class='expander{2}'></div>" +
+                "<div class='expander left{2}'></div>" +
                 "<div class='stateIcon'></div>" +
-                "<div class='icon{3}'>{4}</div>" +
-                "<div class='text'>{5}</div></div>";
-            const string ImageTemplate = "<img src='{0}' alt='' />";
+                "<div class='icon'>{3}</div>" +
+                "<div class='text'>{4}</div>" +
+                "<div class='expander right{2}'></div>" +
+                "</div></div>";
+            const string IconTemplate = "<img src='{0}' alt='' />";
             const string LinkTemplate = "<a href='{0}'>{1}</a>";
 
             StringBuilder sbHtml = new StringBuilder();
@@ -91,28 +114,28 @@ namespace Scada.Web.Shell
                         bool containsSubitems = webTreeNode.Children.Count > 0;
                         string expanderEmpty = containsSubitems ? "" : " empty";
 
-                        string iconCssClass;
                         string icon;
-                        if (string.IsNullOrEmpty(webTreeNode.IconUrl))
+                        if (options.ShowIcons)
                         {
-                            iconCssClass = containsSubitems ? " folder" : " empty";
-                            icon = "";
+                            string iconUrl = string.IsNullOrEmpty(webTreeNode.IconUrl) ? 
+                                (containsSubitems ? options.FolderImageUrl : options.DocumentImageUrl) : 
+                                webTreeNode.IconUrl;
+                            icon = string.Format(IconTemplate, iconUrl);
                         }
                         else
                         {
-                            iconCssClass = "";
-                            icon = string.Format(ImageTemplate, webTreeNode.IconUrl);
+                            icon = "";
                         }
 
                         string text = HttpUtility.HtmlEncode(webTreeNode.Text);
-                        string linkOrText = containsSubitems || !string.IsNullOrEmpty(webTreeNode.Url) ?
-                            string.Format(LinkTemplate, webTreeNode.Url, text) : text;
+                        string textOrLink = string.IsNullOrEmpty(webTreeNode.Url) ?
+                            text : string.Format(LinkTemplate, webTreeNode.Url, text);
 
                         sbHtml.AppendLine(string.Format(NodeTemplate,
-                            selected, dataAttrs, expanderEmpty, iconCssClass, icon, linkOrText));
+                            selected, dataAttrs, expanderEmpty, icon, textOrLink));
 
                         if (containsSubitems)
-                            sbHtml.Append(GenTreeViewHtml(webTreeNode.Children, selObj, false));
+                            sbHtml.Append(GenTreeViewHtml(webTreeNode.Children, selObj, options, false));
                     }
                 }
             }
@@ -125,9 +148,12 @@ namespace Scada.Web.Shell
         /// <summary>
         /// Генерировать HTML-код дерева для узлов, поддерживающих IWebTreeNode
         /// </summary>
-        public string GenerateHtml(IList treeNodes, object selObj)
+        public string GenerateHtml(IList treeNodes, object selObj, Options options)
         {
-            return GenTreeViewHtml(treeNodes, selObj, true);
+            if (options == null)
+                options = new Options();
+
+            return GenTreeViewHtml(treeNodes, selObj, options, true);
         }
     }
 }

@@ -55,14 +55,14 @@ namespace Scada.Web.Shell
         int Level { get; set; }
 
         /// <summary>
-        /// Получить атрибуты данных в виде пар "имя-значение"
-        /// </summary>
-        SortedList<string, string> DataAttrs { get; }
-
-        /// <summary>
         /// Получить дочерние узлы
         /// </summary>
         IList Children { get; }
+
+        /// <summary>
+        /// Получить атрибуты данных в виде пар "имя-значение"
+        /// </summary>
+        SortedList<string, string> DataAttrs { get; }
 
 
         /// <summary>

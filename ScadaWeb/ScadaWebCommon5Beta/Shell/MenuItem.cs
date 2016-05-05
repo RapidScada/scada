@@ -24,7 +24,9 @@
  */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Web;
 
 namespace Scada.Web.Shell
 {
@@ -32,7 +34,7 @@ namespace Scada.Web.Shell
     /// Menu item
     /// <para>Элемент меню</para>
     /// </summary>
-    public class MenuItem : IComparable<MenuItem>
+    public class MenuItem : IWebTreeNode, IComparable<MenuItem>
     {
         /// <summary>
         /// Конструктор, ограничивающий создание объекта без параметров
@@ -48,7 +50,7 @@ namespace Scada.Web.Shell
         public MenuItem(string text, string url, int sortOrder = SortOrders.First)
         {
             Text = text ?? "";
-            Url = url ?? "";
+            Url = string.IsNullOrEmpty(url) ? "" : VirtualPathUtility.ToAbsolute(url);
             SortOrder = sortOrder;
             Level = -1;
             Subitems = new List<MenuItem>();
@@ -79,6 +81,40 @@ namespace Scada.Web.Shell
         /// Получить подпункты меню
         /// </summary>
         public List<MenuItem> Subitems { get; protected set; }
+
+
+        /// <summary>
+        /// Получить ссылку на иконку
+        /// </summary>
+        string IWebTreeNode.IconUrl
+        {
+            get
+            {
+                return "";
+            }
+        }
+
+        /// <summary>
+        /// Получить дочерние узлы
+        /// </summary>
+        IList IWebTreeNode.Children
+        {
+            get
+            {
+                return Subitems;
+            }
+        }
+
+        /// <summary>
+        /// Получить атрибуты данных в виде пар "имя-значение"
+        /// </summary>
+        SortedList<string, string> IWebTreeNode.DataAttrs
+        {
+            get
+            {
+                return null;
+            }
+        }
 
 
         /// <summary>
@@ -121,6 +157,14 @@ namespace Scada.Web.Shell
                 default: // StandardMenuItem.About
                     return new MenuItem(WebPhrases.AboutMenuItem, "~/About.aspx", SortOrders.Last);
             }
+        }
+
+        /// <summary>
+        /// Определить, что узел соответствует выбранному объекту
+        /// </summary>
+        bool IWebTreeNode.IsSelected(object selObj)
+        {
+            return selObj == null ? false : string.Equals(Url, selObj.ToString(), StringComparison.OrdinalIgnoreCase);
         }
     }
 }

@@ -46,27 +46,10 @@
                 <div id="divMainExplorerTab" class="tab">Views</div>
             </div>
             <div id="divMainMenu" class="tool-window">
-                <div class="menu-item">Reports</div>
                 <%= GenerateMainMenuHtml() %>
-                <div class="menu-subitem selected">Devices</div>
-                <div class="menu-subitem">Dictionaries</div>
-                <div class="menu-subitem">Interface</div>
-                <div class="menu-item"><a href="View.aspx?viewID=3">About</a></div>
-                <!--<div class="menu-item">Menu Item 1</div>
-                <div class="menu-item">Menu Item 2</div>
-                <div class="menu-subitem">Subitem</div>
-                <div class="menu-item">Menu Item 3</div>
-                <div class="menu-item">Menu Item 4</div>
-                <div class="menu-item">Menu Item 5</div>
-                <div class="menu-item">Menu Item 6</div>
-                <div class="menu-item">Menu Item 7</div>
-                <div class="menu-item">Menu Item 8</div>
-                <div class="menu-item">Menu Item 9</div>
-                <div class="menu-item">Menu Item 10</div>-->
             </div>
             <div id="divMainExplorer" class="tool-window">
                 <%= GenerateExplorerHtml() %>
-                <!--<asp:TreeView ID="tvMainExplorer" runat="server" SkipLinkText="" CollapseImageToolTip="" ExpandImageToolTip="" ImageSet="Arrows" ViewStateMode="Disabled"></asp:TreeView>-->
             </div>
             <div id="divMainCollapsePane">
                 <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>Collapse menu

@@ -35,8 +35,11 @@ namespace Scada.Web
     /// </summary>
     public partial class MasterMain : System.Web.UI.MasterPage
     {
+        // Дерево представлений
+        private const string FolderImageUrl = "~/images/treeview/folder.png";
+        private const string DocumentImageUrl = "~/images/treeview/document.png";
         private static readonly TreeViewRenderer treeViewRenderer =
-            new TreeViewRenderer(); // формирует дерево представлений
+            new TreeViewRenderer();
 
         private AppData appData;    // общие данные веб-приложения
         private UserData userData;  // данные пользователя приложения
@@ -58,31 +61,8 @@ namespace Scada.Web
         /// </summary>
         protected string GenerateMainMenuHtml()
         {
-            const string ItemTemplate = "<div class='{0}'>{1}{2}</div>";
-            const string LinkTemplate = "<a href='{0}'>{1}</a>";
-            const string Expander = "<div class='expander'></div>";
-
-            StringBuilder sbHtml = new StringBuilder();
-            string curUrl = Request.Url.AbsolutePath;
-
-            foreach (MenuItem menuItem in userData.UserMenu.LinearMenuItems)
-            {
-                string text = Server.HtmlEncode(menuItem.Text);
-                string url = ResolveUrl(menuItem.Url);
-                bool topLevel = menuItem.Level <= 0;
-                bool selected = string.Equals(url, curUrl, StringComparison.OrdinalIgnoreCase);
-                bool containsSubitems = topLevel && menuItem.Subitems.Count > 0;
-
-                string cssClass = (topLevel ? "menu-item" : "menu-subitem") + 
-                    (containsSubitems ? " with-expander" : "") + (selected ? " selected" : "");
-                string linkOrText = containsSubitems || !string.IsNullOrEmpty(url) ? 
-                    string.Format(LinkTemplate, url, text) : text;
-                string expander = containsSubitems ? Expander : "";
-
-                sbHtml.AppendLine(string.Format(ItemTemplate, cssClass, linkOrText, expander));
-            }
-
-            return sbHtml.ToString();
+            TreeViewRenderer.Options options = new TreeViewRenderer.Options() { ShowIcons = false };
+            return treeViewRenderer.GenerateHtml(userData.UserMenu.MenuItems, Request.Url.AbsolutePath, options);
         }
 
         /// <summary>
@@ -90,7 +70,13 @@ namespace Scada.Web
         /// </summary>
         protected string GenerateExplorerHtml()
         {
-            return treeViewRenderer.GenerateHtml(userData.UserViews.ViewNodes, null);
+            TreeViewRenderer.Options options = new TreeViewRenderer.Options()
+            {
+                ShowIcons = true,
+                FolderImageUrl = ResolveUrl(FolderImageUrl),
+                DocumentImageUrl = ResolveUrl(DocumentImageUrl)
+            };
+            return treeViewRenderer.GenerateHtml(userData.UserViews.ViewNodes, null, options);
         }
 
 
@@ -101,26 +87,6 @@ namespace Scada.Web
             userData.CheckLoggedOn(true);
 
             SetMainMenuVisible();
-
-            // тест
-            /*TreeNode node1 = new TreeNode("Test group");
-            node1.NavigateUrl = "javascript:void(0);";
-            tvMainExplorer.Nodes.Add(node1);
-            TreeNode node2 = new TreeNode("Test view 1", "1");
-            node2.NavigateUrl = "javascript:alert(1);";
-            node1.ChildNodes.Add(node2);
-
-            node2 = new TreeNode("Test view 2", "2");
-            node2.NavigateUrl = "javascript:alert(2);";
-            node1.ChildNodes.Add(node2);
-
-            for (int i = 3; i < 100; i++)
-            {
-                node2 = new TreeNode("Test view 012345 6789 - " + i, i.ToString());
-                node2.ToolTip = node2.Text;
-                node2.NavigateUrl = string.Format("javascript:alert({0});", i);
-                tvMainExplorer.Nodes.Add(node2);
-            }*/
         }
 
         protected void lbtnMainLogout_Click(object sender, EventArgs e)

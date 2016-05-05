@@ -1,7 +1,7 @@
 ﻿/*Verdana, Geneva, Tahoma, sans-serif;*/
 body {
   margin: 0;
-  padding: 30px 0 0 230px;
+  padding: 30px 0 0 250px;
   background-color: #f1f1f1;
   font-family: 'Open Sans', sans-serif;
   font-size: 12px;
@@ -74,7 +74,7 @@ a:active {
   position: fixed;
   left: 0;
   top: 30px;
-  width: 230px;
+  width: 250px;
   min-height: 300px;
   background-color: #23282d;
   color: #eee;
@@ -116,51 +116,37 @@ a:active {
   color: #00b9eb;
   cursor: pointer;
 }
-/* Main Menu */
-#divMainMenu .menu-item,
-#divMainMenu .menu-subitem {
-  padding: 5px 10px;
-  text-decoration: none;
-}
-#divMainMenu .menu-subitem {
-  padding-left: 20px;
-  color: #9ca1a6;
-  display: none;
-  /*block*/
-  font-size: 13px;
-}
-#divMainMenu .menu-item:hover,
-#divMainMenu .menu-subitem:hover {
+/* Trees */
+#divMainLeftPane .tree-view .node:hover {
   background-color: #191e23;
   color: #00b9eb;
-  text-decoration: none;
 }
-#divMainMenu .menu-item.selected,
-#divMainMenu .menu-subitem.selected {
+#divMainLeftPane .tree-view .node.selected {
   background-color: #0073aa;
   color: white;
 }
-#divMainMenu .menu-item a,
-#divMainMenu .menu-subitem a {
-  display: inline-block;
-  width: 100%;
-}
-#divMainMenu .menu-item.with-expander a {
-  width: calc(100% - 20px);
-}
-#divMainMenu .expander {
-  width: 20px;
-  cursor: pointer;
-  float: right;
-  text-align: right;
-}
-#divMainMenu .expander::before {
-  content: "\e257";
-  font-family: 'Glyphicons Halflings';
+#divMainLeftPane .tree-view .expander::before {
   font-size: 10px;
 }
-#divMainMenu .expander.expanded::before {
-  content: "\e259";
+/* Main Menu */
+#divMainMenu .node[data-level="1"],
+#divMainMenu .node[data-level="2"],
+#divMainMenu .node[data-level="3"],
+#divMainMenu .node[data-level="4"],
+#divMainMenu .node[data-level="5"] {
+  color: #9ca1a6;
+  font-size: 13px;
+}
+#divMainMenu .tree-view .node {
+  padding: 5px 10px 5px 10px;
+}
+#divMainMenu .tree-view .expander.left {
+  display: none;
+  width: 0;
+}
+#divMainMenu .tree-view .expander.right {
+  display: table-cell;
+  width: 20px;
 }
 /* Explorer */
 #divMainExplorer {
@@ -168,33 +154,20 @@ a:active {
   line-height: 13px;
 }
 #divMainExplorer .tree-view .node {
-  padding-left: 10px;
-}
-#divMainExplorer .tree-view .expander::before {
-  font-size: 10px;
+  padding: 7px 5px 3px 10px;
 }
 #divMainExplorer .tree-view .icon {
   width: 21px;
-  height: 16px;
-  line-height: 0;
-  background-size: 16px 16px;
-  background-repeat: no-repeat;
-  background-position: left bottom;
 }
-#divMainExplorer .tree-view .icon.folder {
-  background-image: url(../images/treeview/folder.png);
+#divMainExplorer .tree-view img {
+  position: relative;
+  top: -2px;
 }
-#divMainExplorer .tree-view .icon.empty {
-  background-image: url(../images/treeview/table.png);
-}
-/*#divMainExplorer .tree-view .node div {
-    border: 1px solid red;
-}*/
 /* Collapse Pane */
 #divMainCollapsePane {
   position: absolute;
   bottom: 0;
-  width: 200px;
+  width: 220px;
   height: 40px;
   margin: 0 0 0 30px;
   padding: 5px 10px;

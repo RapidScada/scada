@@ -1,19 +1,38 @@
-﻿.tree-view .child-nodes {
+﻿.tree-view .node {
+  cursor: pointer;
+  display: table;
+  width: 100%;
+}
+.tree-view .node-items {
+  display: table-row;
+  width: 200px;
+}
+.tree-view .node-items > div {
+  display: table-cell;
+}
+.tree-view .child-nodes {
   display: none;
   /*block*/
-}
-.tree-view .node div {
-  display: inline-block;
 }
 .tree-view .indent {
   width: 20px;
 }
 .tree-view .expander {
   width: 20px;
-  cursor: pointer;
+}
+.tree-view .expander.right {
+  display: none;
+  text-align: right;
+  width: 0;
 }
 .tree-view .expander::before {
+  font-family: 'Glyphicons Halflings';
+}
+.tree-view .expander.left::before {
   content: "\e258";
+}
+.tree-view .expander.right::before {
+  content: "\e257";
   font-family: 'Glyphicons Halflings';
 }
 .tree-view .expander.expanded::before {

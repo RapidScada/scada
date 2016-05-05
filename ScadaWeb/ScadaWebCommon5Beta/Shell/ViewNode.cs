@@ -27,12 +27,13 @@ using Scada.Web.Plugins;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Web;
 
 namespace Scada.Web.Shell
 {
     /// <summary>
     /// View tree node
-    /// <para>Узел дерева предсталений</para>
+    /// <para>Узел дерева представлений</para>
     /// </summary>
     public class ViewNode : IWebTreeNode
     {
@@ -66,8 +67,8 @@ namespace Scada.Web.Shell
             }
             else
             {
-                Url = string.Format(ViewUrlTemplate, viewItem.ViewID);
-                IconUrl = viewSpec.IconUrl;
+                Url = VirtualPathUtility.ToAbsolute(string.Format(ViewUrlTemplate, viewItem.ViewID));
+                IconUrl = VirtualPathUtility.ToAbsolute(viewSpec.IconUrl);
             }
 
             AlarmCnlNum = viewItem.AlarmCnlNum;
@@ -108,12 +109,7 @@ namespace Scada.Web.Shell
         public List<ViewNode> ChildNodes { get; protected set; }
 
         /// <summary>
-        /// Получить атрибуты данных в виде пар "имя-значение" (IWebTreeNode)
-        /// </summary>
-        public SortedList<string, string> DataAttrs { get; protected set; }
-
-        /// <summary>
-        /// Получить дочерние узлы (IWebTreeNode)
+        /// Получить дочерние узлы
         /// </summary>
         public IList Children
         {
@@ -122,6 +118,11 @@ namespace Scada.Web.Shell
                 return ChildNodes;
             }
         }
+
+        /// <summary>
+        /// Получить атрибуты данных в виде пар "имя-значение"
+        /// </summary>
+        public SortedList<string, string> DataAttrs { get; protected set; }
 
 
         /// <summary>

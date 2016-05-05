@@ -59,7 +59,6 @@ namespace Scada.Web.Shell
 
             this.log = log;
             MenuItems = new List<MenuItem>();
-            LinearMenuItems = new List<MenuItem>();
         }
 
 
@@ -68,16 +67,11 @@ namespace Scada.Web.Shell
         /// </summary>
         public List<MenuItem> MenuItems { get; private set; }
 
-        /// <summary>
-        /// Получить элементы меню в виде линейного списка
-        /// </summary>
-        public List<MenuItem> LinearMenuItems { get; private set; }
-
 
         /// <summary>
         /// Рекурсивно слить элементы меню
         /// </summary>
-        protected static void MergeMenuItems(List<MenuItem> existingItems, List<MenuItem> addedItems)
+        protected static void MergeMenuItems(List<MenuItem> existingItems, List<MenuItem> addedItems, int level)
         {
             if (addedItems != null)
             {
@@ -85,6 +79,7 @@ namespace Scada.Web.Shell
 
                 foreach (MenuItem addedItem in addedItems)
                 {
+                    addedItem.Level = level;
                     int ind = existingItems.BinarySearch(addedItem);
 
                     if (ind >= 0)
@@ -94,13 +89,14 @@ namespace Scada.Web.Shell
                         if (existingItem.Subitems.Count > 0 && addedItem.Subitems.Count > 0)
                         {
                             // рекурсивное добавление подпунктов меню
-                            MergeMenuItems(existingItem.Subitems, addedItem.Subitems);
+                            MergeMenuItems(existingItem.Subitems, addedItem.Subitems, level + 1);
                         }
                         else
                         {
                             // упрощённое добавление подпунктов меню
                             addedItem.Subitems.Sort();
                             existingItem.Subitems.AddRange(addedItem.Subitems);
+                            SetMenuItemLevels(addedItem.Subitems, level + 1);
                         }
                     }
                     else
@@ -108,23 +104,23 @@ namespace Scada.Web.Shell
                         // вставка элемента вместе с его дочерними элементами
                         addedItem.Subitems.Sort();
                         existingItems.Insert(~ind, addedItem);
+                        SetMenuItemLevels(addedItem.Subitems, level + 1);
                     }
                 }
             }
         }
 
         /// <summary>
-        /// Рекурсивно заполнить линейный список элементов меню
+        /// Рекурсивно установить уровень вложенности элементов меню
         /// </summary>
-        protected static void FillLinearMenuItems(List<MenuItem> linearItems, List<MenuItem> addedItems, int level)
+        protected static void SetMenuItemLevels(List<MenuItem> items, int level)
         {
-            if (addedItems != null)
+            if (items != null)
             {
-                foreach (MenuItem addedItem in addedItems)
+                foreach (MenuItem item in items)
                 {
-                    addedItem.Level = level;
-                    linearItems.Add(addedItem);
-                    FillLinearMenuItems(linearItems, addedItem.Subitems, level + 1);
+                    item.Level = level;
+                    SetMenuItemLevels(item.Subitems, level + 1);
                 }
             }
         }
@@ -140,16 +136,17 @@ namespace Scada.Web.Shell
 
             try
             {
+                // слияние меню плагинов
                 MenuItems.Clear();
 
                 if (userData.PluginSpecs != null)
                 {
                     foreach (PluginSpec pluginSpec in userData.PluginSpecs)
-                        MergeMenuItems(MenuItems, pluginSpec.GetMenuItems(userData));
+                        MergeMenuItems(MenuItems, pluginSpec.GetMenuItems(userData), 0);
                 }
 
-                LinearMenuItems.Clear();
-                FillLinearMenuItems(LinearMenuItems, MenuItems, 0);
+                // добавление пункта меню о системе
+                MenuItems.Add(MenuItem.FromStandardMenuItem(StandardMenuItems.About));
             }
             catch (Exception ex)
             {
