@@ -17,9 +17,14 @@
     <link href="~/css/mastermain.min.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="<%= ResolveClientUrl("~/lib/jquery/jquery.min.js") %>"></script>
     <script type="text/javascript" src="<%= ResolveClientUrl("~/lib/bootstrap/js/bootstrap.min.js") %>"></script>
+    <script type="text/javascript" src="<%= ResolveClientUrl("~/js/scadautils.js") %>"></script>
     <script type="text/javascript" src="<%= ResolveClientUrl("~/js/treeview.js") %>"></script>
     <script type="text/javascript">
-        var mainMenuVisible = <%= mainMenuVisible ? "true" : "false" %>;
+        var scada = scada || {};
+        scada.masterMain = scada.masterMain || {};
+        scada.masterMain.params = {
+            mainMenuVisible: <%= mainMenuVisible ? "true" : "false" %>
+        };
     </script>
     <script type="text/javascript" src="<%= ResolveClientUrl("~/js/mastermain.js") %>"></script>
     <asp:ContentPlaceHolder ID="cphMainHead" runat="server">
@@ -39,6 +44,9 @@
                     id="spanMainFullScreen" class="hdr-btn img-btn" title="Full screen"><span 
                     class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span></span>
             </div>
+        </div>
+        <div id="divMainNormalView" title="Normal view">
+            <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
         </div>
         <div id="divMainLeftPane">
             <div id="divMainTabs">

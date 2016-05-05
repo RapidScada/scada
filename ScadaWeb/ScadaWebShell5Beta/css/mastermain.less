@@ -42,11 +42,11 @@ a:active {
 }
 
 #divMainHeader .hdr-btn {
-    display: inline-block;
     height: @header-heigth;
     margin: 0 0 0 5px;
     padding: 0 10px;
     cursor: pointer;
+    display: inline-block;
     font-size: 13px;
     text-decoration: none;
 }
@@ -85,6 +85,26 @@ a:active {
 #divMainUserMenu {
     float: right;
     height: @header-heigth;
+}
+
+#divMainNormalView {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: @header-heigth;
+    padding: 0 10px;
+    background-color: white;
+    display: none; /*inline-block*/
+    line-height: @header-heigth;
+    opacity: 0.5;
+    cursor: pointer;
+    color: @menu-fore-color-dark;
+    font-size: 13px;
+}
+
+#divMainNormalView:hover {
+    color: @menu-item-hover-fore-color;
+    opacity: 1;
 }
 
 /* Left Pane */
