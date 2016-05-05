@@ -17,7 +17,7 @@ var scada = scada || {};
 scada.treeView = {
     // Expand or collapse tree node
     _toggleTreeNode: function (divExpander) {
-        var treeNode = divExpander.parent();
+        var treeNode = divExpander.parent().parent();
         var childNodes = treeNode.next(".child-nodes");
 
         if (divExpander.hasClass("expanded")) {
@@ -34,36 +34,40 @@ scada.treeView = {
         var selNodes = allNodes.filter(".selected");
         var parDivs = selNodes.parentsUntil(".tree-view", ".child-nodes");
 
-        parDivs.prev(".node").children(".expander").addClass("expanded");
+        parDivs.prev(".node").find(".expander").addClass("expanded");
         parDivs.css("display", "block");
     },
 
     // Tune tree view elements and bind events
     prepare: function () {
         var treeViews = $(".tree-view");
-        var indentWidth = treeViews.find(".indent:first").width();
+        var oneIndent = treeViews.find(".indent:first").width();
         var allNodes = treeViews.find(".node");
 
         // set width of indents according to their level
         allNodes.each(function () {
             var level = $(this).attr("data-level");
-            $(this).children(".indent").width(indentWidth * level);
+            $(this).find(".indent").width(oneIndent * level);
         });
 
         // expand selected tree node
         this._expandSelectedTreeNode(allNodes);
 
-        // toggle tree node on click
+        // go to link or toggle tree node on click
         var thisTreeView = this;
-        allNodes.children(".expander").click(function () {
-            thisTreeView._toggleTreeNode($(this));
-        });
+        allNodes.click(function () {
+            var link = $(this).find("a");
 
-        allNodes.find("a").click(function (event) {
-            if (!$(this).attr("href")) {
-                event.preventDefault();
-                thisTreeView._toggleTreeNode($(this).parent().siblings(".expander"));
+            if (link.length > 0) {
+                location = link.attr("href");
+            } else {
+                var expander = $(this).find(".expander");
+                if (!expander.hasClass("empty")) {
+                    thisTreeView._toggleTreeNode(expander);
+                }
             }
+
+            $(this).find("a").click();
         });
     }
 };
