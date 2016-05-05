@@ -66,6 +66,7 @@
     <Content Include="..\..\ScadaData\ScadaData\Lang\ScadaData.en-GB.xml">
       <Link>lang\ScadaData.en-GB.xml</Link>
     </Content>
+    <Content Include="About.aspx" />
     <Content Include="config\CommSettings.xml" />
     <Content Include="config\ViewSettings.xml" />
     <Content Include="config\WebSettings.xml" />
@@ -138,6 +139,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="About.aspx.cs">
+      <DependentUpon>About.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="About.aspx.designer.cs">
+      <DependentUpon>About.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

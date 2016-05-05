@@ -69,14 +69,14 @@ scada.masterMain.showLeftPane = function () {
 scada.masterMain.collapseLeftPane = function () {
     $("#spanMainShowMenu").css("display", "inline-block");
     this.hideLeftPane();
-    leftPaneExpanded = false;
+    this.leftPaneExpanded = false;
 };
 
 // Expand main menu and views explorer
 scada.masterMain.expandLeftPane = function () {
     this.showLeftPane();
     $("#spanMainShowMenu").css("display", "none");
-    leftPaneExpanded = true;
+    this.leftPaneExpanded = true;
 };
 
 // Hide page header
@@ -93,7 +93,7 @@ scada.masterMain.showHeader = function () {
 
 // Hide all the menus and switch browser to fullscreen mode
 scada.masterMain.switchToFullscreen = function () {
-    if (leftPaneExpanded) {
+    if (this.leftPaneExpanded) {
         this.hideLeftPane();
     }
     this.hideHeader();
@@ -104,7 +104,7 @@ scada.masterMain.switchToFullscreen = function () {
 // Show all the menus and exit browser fullscreen mode
 scada.masterMain.switchToNormalView = function () {
     $("#divMainNormalView").css("display", "none");
-    if (leftPaneExpanded) {
+    if (this.leftPaneExpanded) {
         this.showLeftPane();
     }
     this.showHeader();

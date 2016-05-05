@@ -52,8 +52,8 @@ namespace Scada.Web
         /// </summary>
         private void SetMainMenuVisible()
         {
-            mainMenuVisible = !string.Equals(Request.Url.GetLeftPart(UriPartial.Path),
-                ResolveUrl("~/View.aspx"), StringComparison.OrdinalIgnoreCase);
+            mainMenuVisible = !string.Equals(Request.Url.AbsolutePath, ResolveUrl("~/View.aspx"), 
+                StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>
