@@ -36,7 +36,7 @@ scada.utils = {
 
     // Check if browser is in fullscreen mode
     // See https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API
-    get isFullScreen() {
+    isFullscreen: function() {
         return document.fullscreenElement || document.mozFullScreenElement ||
             document.webkitFullscreenElement || document.msFullscreenElement;
     },
@@ -69,7 +69,7 @@ scada.utils = {
 
     // Switch browser to full screen mode and back to normal view
     toggleFullscreen: function () {
-        if (this.isFullScreen) {
+        if (this.isFullscreen()) {
             this.exitFullscreen();
         } else {
             this.requestFullscreen();

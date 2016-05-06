@@ -9,6 +9,14 @@
     <Phrase key="NoRights">Insufficient rights.</Phrase>
     <Phrase key="IllegalRole">Illegal user role.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.MasterMain">
+    <Phrase key="lbtnMainLogout">Logout</Phrase>
+    <Phrase key="lblMainFullscreenBtn.ToolTip">Full screen</Phrase>
+    <Phrase key="lblMainNormalViewBtn.ToolTip">Normal view</Phrase>
+    <Phrase key="lblMainMenu">Main Menu</Phrase>
+    <Phrase key="lblMainExplorer">Views</Phrase>
+    <Phrase key="lblMainCollapseMenu">Collapse menu</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.ViewSettings">
     <Phrase key="LoadViewSettingsError">Error loading view settings</Phrase>
     <Phrase key="SaveViewSettingsError">Error saving view settings</Phrase>

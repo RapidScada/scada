@@ -60,6 +60,7 @@
     <Compile Include="Shell\RememberMe.cs" />
     <Compile Include="Shell\SortOrders.cs" />
     <Compile Include="Shell\TreeViewRenderer.cs" />
+    <Compile Include="Shell\UrlTemplates.cs" />
     <Compile Include="Shell\UserMenu.cs" />
     <Compile Include="Shell\UserViews.cs" />
     <Compile Include="Shell\ViewNode.cs" />

@@ -54,7 +54,7 @@ a:active {
   position: relative;
   top: 2px;
 }
-#divMainHeader #spanMainShowMenu {
+#divMainHeader #spanMainShowMenuBtn {
   margin: 0 5px 0 -10px;
   font-size: 15px;
   display: none;
@@ -69,7 +69,7 @@ a:active {
   float: right;
   height: 30px;
 }
-#divMainNormalView {
+#lblMainNormalViewBtn {
   position: fixed;
   top: 0;
   right: 0;
@@ -84,7 +84,7 @@ a:active {
   color: #9ca1a6;
   font-size: 13px;
 }
-#divMainNormalView:hover {
+#lblMainNormalViewBtn:hover {
   color: #00b9eb;
   opacity: 1;
 }

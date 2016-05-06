@@ -23,9 +23,9 @@
  * Modified : 2016
  */
 
+using Scada.UI;
 using Scada.Web.Shell;
 using System;
-using System.Text;
 
 namespace Scada.Web
 {
@@ -41,20 +41,9 @@ namespace Scada.Web
         private static readonly TreeViewRenderer treeViewRenderer =
             new TreeViewRenderer();
 
-        private AppData appData;    // общие данные веб-приложения
-        private UserData userData;  // данные пользователя приложения
+        private AppData appData;   // общие данные веб-приложения
+        private UserData userData; // данные пользователя приложения
 
-        protected bool mainMenuVisible; // отобразить главное меню при загрузке страницы
-
-
-        /// <summary>
-        /// Установить видимость главного меню
-        /// </summary>
-        private void SetMainMenuVisible()
-        {
-            mainMenuVisible = !string.Equals(Request.Url.AbsolutePath, ResolveUrl("~/View.aspx"), 
-                StringComparison.OrdinalIgnoreCase);
-        }
 
         /// <summary>
         /// Генерировать HTML-код главного меню
@@ -86,7 +75,15 @@ namespace Scada.Web
             userData = UserData.GetUserData();
             userData.CheckLoggedOn(true);
 
-            SetMainMenuVisible();
+            if (!IsPostBack)
+            {
+                // перевод веб-страницы
+                Translator.TranslatePage(Page, "Scada.Web.MasterMain");
+
+                // настройка элементов управления
+                hlMainUser.Text = userData.UserName;
+                hlMainUser.NavigateUrl = string.Format(UrlTemplates.User, userData.UserID);
+            }
         }
 
         protected void lbtnMainLogout_Click(object sender, EventArgs e)

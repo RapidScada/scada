@@ -272,24 +272,40 @@ namespace Scada.UI
                         Label label = (Label)control;
                         if (controlInfo.Text != null)
                             label.Text = controlInfo.Text;
+                        if (controlInfo.ToolTip != null)
+                            label.ToolTip = controlInfo.ToolTip;
                     }
                     else if (control is TextBox)
                     {
                         TextBox textBox = (TextBox)control;
                         if (controlInfo.Text != null)
                             textBox.Text = controlInfo.Text;
+                        if (controlInfo.ToolTip != null)
+                            textBox.ToolTip = controlInfo.ToolTip;
                     }
                     else if (control is CheckBox)
                     {
                         CheckBox checkBox = (CheckBox)control;
                         if (controlInfo.Text != null)
                             checkBox.Text = controlInfo.Text;
+                        if (controlInfo.ToolTip != null)
+                            checkBox.ToolTip = controlInfo.ToolTip;
                     }
                     else if (control is Button)
                     {
                         Button button = (Button)control;
                         if (controlInfo.Text != null)
                             button.Text = controlInfo.Text;
+                        if (controlInfo.ToolTip != null)
+                            button.ToolTip = controlInfo.ToolTip;
+                    }
+                    else if (control is LinkButton)
+                    {
+                        LinkButton linkButton = (LinkButton)control;
+                        if (controlInfo.Text != null)
+                            linkButton.Text = controlInfo.Text;
+                        if (controlInfo.ToolTip != null)
+                            linkButton.ToolTip = controlInfo.ToolTip;
                     }
                     else if (control is Image)
                     {
