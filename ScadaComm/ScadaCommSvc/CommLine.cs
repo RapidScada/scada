@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2015
+ * Modified : 2016
  */
 
 using Scada.Comm.Channels;
@@ -982,7 +982,7 @@ namespace Scada.Comm.Svc
             {
                 log.WriteAction((Localization.UseRussian ?
                     "Ошибка при выполнении действий канала связи перед сеансом опроса КП: " :
-                    "Error executing actions of communication channel before session with a device: ") + ex.Message);
+                    "Error executing the communication channel actions before session with a device: ") + ex.Message);
             }
         }
 
@@ -1000,7 +1000,7 @@ namespace Scada.Comm.Svc
             {
                 log.WriteAction((Localization.UseRussian ?
                     "Ошибка при выполнении действий канала связи после сеанса опроса КП: " :
-                    "Error executing actions of communication channel after session with a device: ") + ex.Message);
+                    "Error executing the communication channel actions after session with a device: ") + ex.Message);
             }
         }
 
