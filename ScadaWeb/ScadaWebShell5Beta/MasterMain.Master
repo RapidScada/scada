@@ -58,7 +58,7 @@
                 <i class="fa fa-chevron-circle-left" aria-hidden="true"></i><asp:Label ID="lblMainCollapseMenu" runat="server" Text="Collapse menu"></asp:Label>
             </div>
         </div>
-        <div>
+        <div id="divMainContent">
             <asp:ContentPlaceHolder ID="cphMainContent" runat="server">
             </asp:ContentPlaceHolder>
         </div>

@@ -14,5 +14,9 @@
   {
     "outputFile": "css/treeview.css",
     "inputFile": "css/treeview.less"
+  },
+  {
+    "outputFile": "css/view.css",
+    "inputFile": "css/view.less"
   }
 ]

@@ -14,6 +14,7 @@ scada.masterMain = {
         var paneH = $(window).height() - divMainHeader.outerHeight();
         divMainLeftPane.outerHeight(paneH);
         divMainTabs.outerWidth(paneH);
+        $("#divMainContent").outerHeight(paneH);
     },
 
     // Choose a tool window according to the current URL and activate it

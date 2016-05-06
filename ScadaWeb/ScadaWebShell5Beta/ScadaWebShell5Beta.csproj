@@ -94,6 +94,12 @@
     <Content Include="css\treeview.min.css">
       <DependentUpon>treeview.css</DependentUpon>
     </Content>
+    <Content Include="css\view.css">
+      <DependentUpon>view.less</DependentUpon>
+    </Content>
+    <Content Include="css\view.min.css">
+      <DependentUpon>view.css</DependentUpon>
+    </Content>
     <Content Include="Global.asax" />
     <Content Include="images\favicon.ico" />
     <Content Include="images\gear.png" />
@@ -238,6 +244,7 @@
     <Content Include="lib\open-sans\fonts\open-sans-v13-latin-ext_cyrillic_latin_cyrillic-ext_greek-ext_vietnamese_greek-regular.woff" />
     <Content Include="lib\open-sans\fonts\open-sans-v13-latin-ext_cyrillic_latin_cyrillic-ext_greek-ext_vietnamese_greek-regular.woff2" />
     <Content Include="css\treeview.less" />
+    <Content Include="css\view.less" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

@@ -1,11 +1,21 @@
-﻿$(document).ready(function () {
-    var divTest = $("#divTest");
+﻿var scada = scada || {};
 
-    for (var i = 0; i < 100; i++) {
-        divTest.html(divTest.html() + "<br/>Test " + i);
+scada.view = {
+    // Page title just after loading
+    initialPageTitle: "",
+
+    // Load view
+    load: function (url) {
+        document.title = this.initialPageTitle;
+        $("#frameView").attr("src", url);
+    },
+
+    // Set page title
+    setPageTitle: function (viewTitle) {
+        document.title = viewTitle + " - Rapid SCADA";
     }
+};
 
-    $(window).resize(function () {
-        $("#divH").text($(window).height());
-    });
+$(document).ready(function () {
+    scada.view.initialPageTitle = document.title;
 });
