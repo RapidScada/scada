@@ -38,9 +38,9 @@ namespace Scada.Web.Shell
     public class ViewNode : IWebTreeNode
     {
         /// <summary>
-        /// Шаблон ссылки на страницу отображения представления
+        /// Шаблон ссылки узла для загрузки представления
         /// </summary>
-        protected const string ViewUrlTemplate = "~/View.aspx?viewID={0}";
+        protected const string ViewUrlTemplate = "javascript:scada.masterMain.loadView({0}, \"{1}\");";
 
 
         /// <summary>
@@ -67,7 +67,8 @@ namespace Scada.Web.Shell
             }
             else
             {
-                Url = VirtualPathUtility.ToAbsolute(string.Format(ViewUrlTemplate, viewItem.ViewID));
+                string viewUrl = VirtualPathUtility.ToAbsolute(viewSpec.GetViewUrl(viewItem.ViewID));
+                Url = string.Format(ViewUrlTemplate, viewItem.ViewID, viewUrl);
                 IconUrl = VirtualPathUtility.ToAbsolute(viewSpec.IconUrl);
             }
 

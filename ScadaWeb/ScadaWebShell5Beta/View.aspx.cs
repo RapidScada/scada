@@ -23,6 +23,8 @@
  * Modified : 2016
  */
 
+using Scada.Data;
+using Scada.Web.Plugins;
 using System;
 
 namespace Scada.Web
@@ -33,9 +35,45 @@ namespace Scada.Web
     /// </summary>
     public partial class WFrmView : System.Web.UI.Page
     {
+        /// <summary>
+        /// Добавить на страницу скрипт загрузки представления
+        /// </summary>
+        private void AddLoadViewScript(string viewUrl)
+        {
+            ClientScript.RegisterStartupScript(GetType(), "Startup", 
+                "scada.view.load('" + ResolveUrl(viewUrl) + "');", true);
+        }
+
+
         protected void Page_Load(object sender, EventArgs e)
         {
+            UserData userData = UserData.GetUserData();
+            userData.CheckLoggedOn(true);
 
+            if (!IsPostBack)
+            {
+                // получение ид. представления для загрузки
+                int viewID;
+                int.TryParse(Request.QueryString["viewID"], out viewID);
+
+                // получение информации о представлении и добавление скрипта загрузки представления
+                if (viewID > 0)
+                {
+                    if (!userData.UserRights.GetViewRights(viewID).ViewRight)
+                        throw new ScadaException(WebPhrases.NoRights);
+
+                    AppData appData = AppData.GetAppData();
+                    ViewProps viewProps = appData.DataAccess.GetViewProps(viewID);
+                    ViewSpec viewSpec;
+
+                    if (viewProps != null && userData.ViewSpecs.TryGetValue(viewProps.ViewTypeCode, out viewSpec))
+                        AddLoadViewScript(viewSpec.GetViewUrl(viewID));
+                }
+                else
+                {
+                    // загрузка первого доступного представления
+                }
+            }
         }
     }
 }

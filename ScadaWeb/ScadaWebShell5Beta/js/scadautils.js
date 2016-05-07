@@ -74,5 +74,20 @@ scada.utils = {
         } else {
             this.requestFullscreen();
         }
+    },
+
+    // Click hyperlink programmatically
+    clickLink: function (jqLink) {
+        var href = jqLink.attr("href");
+        if (href) {
+            if (href.startsWith("javascript:")) {
+                // execute script
+                var script = href.substr(11);
+                eval(script);
+            } else {
+                // open web page
+                location = href;
+            }
+        }
     }
 };

@@ -9,6 +9,7 @@
 /*
  * Requires:
  * - jquery
+ * - scadautils.js
  */
 
 // Rapid SCADA namespace
@@ -59,15 +60,13 @@ scada.treeView = {
             var link = $(this).find("a");
 
             if (link.length > 0) {
-                location = link.attr("href");
+                scada.utils.clickLink(link);
             } else {
                 var expander = $(this).find(".expander");
                 if (!expander.hasClass("empty")) {
                     thisTreeView._toggleTreeNode(expander);
                 }
             }
-
-            $(this).find("a").click();
         });
     }
 };

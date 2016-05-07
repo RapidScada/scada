@@ -23,7 +23,7 @@
  * Modified : 2016
  */
 
-#define DEBUG_MODE
+//#define DEBUG_MODE
 
 using Scada.Scheme;
 using System;

@@ -1,5 +1,5 @@
 ﻿var scada = scada || {};
-scada.env = scada.env || {};
+scada.view = scada.view || {}; // defined if the current page is View.aspx
 
 scada.masterMain = {
     // The left pane, which displays tool windows, is expanded
@@ -19,8 +19,7 @@ scada.masterMain = {
 
     // Choose a tool window according to the current URL and activate it
     chooseToolWindow: function () {
-        var rootPath = scada.env.rootPath;
-        var explorerVisible = rootPath && rootPath + "View.aspx" == window.location.pathname;
+        var explorerVisible = scada.env.rootPath + "View.aspx" == window.location.pathname;
 
         if (explorerVisible) {
             this.activateToolWindow($("#divMainExplorerTab"));
@@ -113,6 +112,15 @@ scada.masterMain = {
         }
         this.showHeader();
         scada.utils.exitFullscreen();
+    },
+
+    // Load view without reloading the whole page if possible
+    loadView: function (viewID, viewUrl) {
+        if (scada.view.load) {
+            scada.view.load(viewUrl);
+        } else {
+            location = scada.env.rootPath + "View.aspx?viewID=" + viewID;
+        }
     }
 };
 
