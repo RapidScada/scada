@@ -5,13 +5,17 @@ scada.masterMain = {
     // The left pane, which displays tool windows, is expanded
     leftPaneExpanded: true,
 
+    // Fullsreen mode is active
+    isFullscreen: false,
+
     // Update layout of the master page
     updateLayout: function () {
         var divMainHeader = $("#divMainHeader");
         var divMainLeftPane = $("#divMainLeftPane");
         var divMainTabs = $("#divMainTabs");
 
-        var paneH = $(window).height() - divMainHeader.outerHeight();
+        var headerH = divMainHeader.css("display") == "none" ? 0 : divMainHeader.outerHeight();
+        var paneH = $(window).height() - headerH;
         divMainLeftPane.outerHeight(paneH);
         divMainTabs.outerWidth(paneH);
         $("#divMainContent").outerHeight(paneH);
@@ -96,22 +100,34 @@ scada.masterMain = {
 
     // Hide all the menus and switch browser to fullscreen mode
     switchToFullscreen: function () {
-        if (this.leftPaneExpanded) {
-            this.hideLeftPane();
+        if (!this.isFullscreen) {
+            this.isFullscreen = true;
+
+            if (this.leftPaneExpanded) {
+                this.hideLeftPane();
+            }
+            this.hideHeader();
+            $("#lblMainNormalViewBtn").css("display", "inline-block");
+
+            scada.utils.requestFullscreen();
+            scada.masterMain.updateLayout();
         }
-        this.hideHeader();
-        $("#lblMainNormalViewBtn").css("display", "inline-block");
-        scada.utils.requestFullscreen();
     },
 
     // Show all the menus and exit browser fullscreen mode
     switchToNormalView: function () {
-        $("#lblMainNormalViewBtn").css("display", "none");
-        if (this.leftPaneExpanded) {
-            this.showLeftPane();
+        if (this.isFullscreen) {
+            this.isFullscreen = false;
+
+            $("#lblMainNormalViewBtn").css("display", "none");
+            this.showHeader();
+            if (this.leftPaneExpanded) {
+                this.showLeftPane();
+            }
+
+            scada.utils.exitFullscreen();
+            scada.masterMain.updateLayout();
         }
-        this.showHeader();
-        scada.utils.exitFullscreen();
     },
 
     // Load view without reloading the whole page if possible
@@ -159,7 +175,8 @@ $(document).ready(function () {
         scada.masterMain.switchToNormalView();
     });
 
-    // show menus if user exits fullscreen mode
+    // show menus if user exits fullscreen mode,
+    // in Chrome fires only if the mode is switched programmatically 
     $(document).on("webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange", function () {
         if (!scada.utils.isFullscreen()) {
             scada.masterMain.switchToNormalView();

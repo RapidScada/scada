@@ -22,7 +22,7 @@
     <script type="text/javascript">
         var scada = scada || {};
         scada.env = {
-            rootPath: "<%= VirtualPathUtility.ToAbsolute("~") %>"
+            rootPath: "<%= VirtualPathUtility.AppendTrailingSlash(VirtualPathUtility.ToAbsolute("~")) %>"
         };
     </script>
     <script type="text/javascript" src="<%= ResolveClientUrl("~/js/mastermain.js") %>"></script>
