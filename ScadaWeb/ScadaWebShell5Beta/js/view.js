@@ -7,7 +7,14 @@ scada.view = {
     // Load view
     load: function (url) {
         document.title = this.initialPageTitle;
-        $("#frameView").attr("src", url);
+        var frameView = $("#frameView");
+
+        frameView
+        .load(function () {
+            // set the page title the same as the frame title
+            document.title = frameView[0].contentWindow.document.title;
+        })
+        .attr("src", url);
     },
 
     // Set page title
