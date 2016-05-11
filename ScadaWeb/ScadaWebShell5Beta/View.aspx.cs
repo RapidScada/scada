@@ -60,12 +60,8 @@ namespace Scada.Web
                     userData.UserViews.GetViewUrl(viewID) :
                     userData.UserViews.GetFirstViewUrl();
 
-                if (string.IsNullOrEmpty(viewUrl))
-                    // переход на страницу отсутствующего представления
-                    Response.Redirect(UrlTemplates.NoView);
-                else
-                    // добавление скрипта загрузки представления
-                    AddLoadViewScript(viewUrl);
+                // добавление скрипта загрузки представления
+                AddLoadViewScript(string.IsNullOrEmpty(viewUrl) ? UrlTemplates.NoView : viewUrl);
             }
         }
     }

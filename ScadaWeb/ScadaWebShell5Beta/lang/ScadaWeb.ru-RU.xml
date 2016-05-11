@@ -32,6 +32,10 @@
     <Phrase key="lblRememberMe">Запомнить меня</Phrase>
     <Phrase key="btnLogin">Войти</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.WFrmNoView">
+    <Phrase key="this">Представление не существует - Rapid SCADA</Phrase>
+    <Phrase key="lblViewNotExist">Запрошенное представление не существует или у Вас недостаточно прав для доступа к нему.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.Shell.MenuItem">
     <Phrase key="ReportsMenuItem">Отчёты</Phrase>
     <Phrase key="ConfigMenuItem">Конфигурация</Phrase>

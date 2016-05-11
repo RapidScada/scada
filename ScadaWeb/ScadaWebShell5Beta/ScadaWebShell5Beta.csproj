@@ -88,6 +88,12 @@
     <Content Include="css\mastermain.min.css">
       <DependentUpon>mastermain.css</DependentUpon>
     </Content>
+    <Content Include="css\noview.css">
+      <DependentUpon>noview.less</DependentUpon>
+    </Content>
+    <Content Include="css\noview.min.css">
+      <DependentUpon>noview.css</DependentUpon>
+    </Content>
     <Content Include="css\treeview.css">
       <DependentUpon>treeview.less</DependentUpon>
     </Content>
@@ -141,6 +147,7 @@
     <Content Include="lib\open-sans\fonts\open-sans-v13-latin-ext_cyrillic_latin_cyrillic-ext_greek-ext_vietnamese_greek-regular.svg" />
     <Content Include="Login.aspx" />
     <Content Include="ClientApiSvc.svc" />
+    <Content Include="NoView.aspx" />
     <Content Include="View.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -168,6 +175,13 @@
     </Compile>
     <Compile Include="MasterMain.Master.designer.cs">
       <DependentUpon>MasterMain.Master</DependentUpon>
+    </Compile>
+    <Compile Include="NoView.aspx.cs">
+      <DependentUpon>NoView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="NoView.aspx.designer.cs">
+      <DependentUpon>NoView.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View.aspx.cs">
@@ -245,6 +259,7 @@
     <Content Include="lib\open-sans\fonts\open-sans-v13-latin-ext_cyrillic_latin_cyrillic-ext_greek-ext_vietnamese_greek-regular.woff2" />
     <Content Include="css\treeview.less" />
     <Content Include="css\view.less" />
+    <Content Include="css\noview.less" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

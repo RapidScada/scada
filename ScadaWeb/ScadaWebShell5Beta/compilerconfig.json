@@ -18,5 +18,9 @@
   {
     "outputFile": "css/view.css",
     "inputFile": "css/view.less"
+  },
+  {
+    "outputFile": "css/noview.css",
+    "inputFile": "css/noview.less"
   }
 ]
