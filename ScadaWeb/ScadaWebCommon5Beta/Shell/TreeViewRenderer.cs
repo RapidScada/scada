@@ -108,11 +108,12 @@ namespace Scada.Web.Shell
                     IWebTreeNode webTreeNode = treeNode as IWebTreeNode;
                     if (webTreeNode != null)
                     {
-                        string selected = webTreeNode.IsSelected(selObj) ? " selected" : "";
-                        string dataAttrs = GenDataAttrsHtml(webTreeNode);
-
                         bool containsSubitems = webTreeNode.Children.Count > 0;
-                        string expanderEmpty = containsSubitems ? "" : " empty";
+                        bool urlIsEmpty = string.IsNullOrEmpty(webTreeNode.Url);
+                        string nodeCssClass = (webTreeNode.IsSelected(selObj) ? " selected" : "") + 
+                            (!containsSubitems && urlIsEmpty ? " disabled" : "");
+                        string dataAttrs = GenDataAttrsHtml(webTreeNode);
+                        string expanderCssClass = containsSubitems ? "" : " empty";
 
                         string icon;
                         if (options.ShowIcons)
@@ -128,11 +129,10 @@ namespace Scada.Web.Shell
                         }
 
                         string text = HttpUtility.HtmlEncode(webTreeNode.Text);
-                        string textOrLink = string.IsNullOrEmpty(webTreeNode.Url) ?
-                            text : string.Format(LinkTemplate, webTreeNode.Url, text);
+                        string textOrLink = urlIsEmpty ? text : string.Format(LinkTemplate, webTreeNode.Url, text);
 
                         sbHtml.AppendLine(string.Format(NodeTemplate,
-                            selected, dataAttrs, expanderEmpty, icon, textOrLink));
+                            nodeCssClass, dataAttrs, expanderCssClass, icon, textOrLink));
 
                         if (containsSubitems)
                             sbHtml.Append(GenTreeViewHtml(webTreeNode.Children, selObj, options, false));

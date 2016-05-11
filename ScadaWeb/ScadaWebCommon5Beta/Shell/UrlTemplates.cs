@@ -32,8 +32,23 @@ namespace Scada.Web.Shell
     public static class UrlTemplates
     {
         /// <summary>
+        /// Вход в систему с указанием ссылки для возврата
+        /// </summary>
+        public const string LoginWithReturn = "~/Login.aspx?return={0}";
+
+        /// <summary>
+        /// Вход в систему с указанием ссылки для возврата и выводом сообщения
+        /// </summary>
+        public const string LoginWithAlert = "~/Login.aspx?return={0}&alert={1}";
+        
+        /// <summary>
         /// Информация о пользователе
         /// </summary>
         public const string User = "~/User.aspx?userID={0}";
+
+        /// <summary>
+        /// Отсутствующее представление
+        /// </summary>
+        public const string NoView = "~/NoView.aspx";
     }
 }

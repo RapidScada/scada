@@ -40,7 +40,7 @@ namespace Scada.Web.Shell
         /// <summary>
         /// Шаблон ссылки узла для загрузки представления
         /// </summary>
-        protected const string ViewUrlTemplate = "javascript:scada.masterMain.loadView({0}, \"{1}\");";
+        protected const string ViewNodeUrlTemplate = "javascript:scada.masterMain.loadView({0}, \"{1}\");";
 
 
         /// <summary>
@@ -58,21 +58,23 @@ namespace Scada.Web.Shell
             if (viewItem == null)
                 throw new ArgumentNullException("viewItem");
 
+            ViewID = viewItem.ViewID;
             Text = viewItem.Text ?? "";
+            AlarmCnlNum = viewItem.AlarmCnlNum;
 
             if (viewSpec == null)
             {
                 Url = "";
+                ViewUrl = "";
                 IconUrl = "";
             }
             else
             {
-                string viewUrl = VirtualPathUtility.ToAbsolute(viewSpec.GetViewUrl(viewItem.ViewID));
-                Url = string.Format(ViewUrlTemplate, viewItem.ViewID, viewUrl);
+                ViewUrl = VirtualPathUtility.ToAbsolute(viewSpec.GetViewUrl(ViewID));
+                Url = string.Format(ViewNodeUrlTemplate, ViewID, ViewUrl);
                 IconUrl = VirtualPathUtility.ToAbsolute(viewSpec.IconUrl);
             }
 
-            AlarmCnlNum = viewItem.AlarmCnlNum;
             Level = -1;
             ChildNodes = new List<ViewNode>();
             InitDataAttrs();
@@ -80,24 +82,34 @@ namespace Scada.Web.Shell
 
 
         /// <summary>
+        /// Получить или установить идентификатор представления
+        /// </summary>
+        public int ViewID { get; set; }
+
+        /// <summary>
         /// Получить текст
         /// </summary>
         public string Text { get; protected set; }
 
         /// <summary>
-        /// Получить ссылку
+        /// Получить номер входного канала, информирующего о тревожном состоянии представления
+        /// </summary>
+        public int AlarmCnlNum { get; protected set; }
+
+        /// <summary>
+        /// Получить ссылку узла
         /// </summary>
         public string Url { get; protected set; }
+
+        /// <summary>
+        /// Получить ссылку представления
+        /// </summary>
+        public string ViewUrl { get; protected set; }
 
         /// <summary>
         /// Получить ссылку на иконку
         /// </summary>
         public string IconUrl { get; protected set; }
-
-        /// <summary>
-        /// Получить номер входного канала, информирующего о тревожном состоянии представления
-        /// </summary>
-        public int AlarmCnlNum { get; protected set; }
 
         /// <summary>
         /// Получить или установить уровень вложенности

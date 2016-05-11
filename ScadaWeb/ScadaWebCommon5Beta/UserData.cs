@@ -328,9 +328,10 @@ namespace Scada.Web
                     // переход на страницу входа
                     if (!LoggedOn)
                     {
-                        httpContext.Response.Redirect("~/Login.aspx" +
-                            "?return=" + HttpUtility.UrlEncode(httpContext.Request.Url.ToString()) +
-                            (alert == "" ? "" : "&alert=" + HttpUtility.UrlEncode(alert)));
+                        string returnUrl = HttpUtility.UrlEncode(httpContext.Request.Url.ToString());
+                        httpContext.Response.Redirect(alert == "" ?
+                            string.Format(UrlTemplates.LoginWithReturn, returnUrl) :
+                            string.Format(UrlTemplates.LoginWithAlert, returnUrl, HttpUtility.UrlEncode(alert)));
                     }
                 }
                 else

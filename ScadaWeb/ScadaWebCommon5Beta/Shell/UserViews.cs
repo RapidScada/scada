@@ -42,6 +42,10 @@ namespace Scada.Web.Shell
         /// Журнал
         /// </summary>
         protected readonly Log log;
+        /// <summary>
+        /// Ссылки представлений, ключ - ид. представления
+        /// </summary>
+        protected readonly Dictionary<int, string> viewUrls;
 
         /// <summary>
         /// Права пользователя
@@ -73,6 +77,8 @@ namespace Scada.Web.Shell
                 throw new ArgumentNullException("log");
 
             this.log = log;
+            viewUrls = new Dictionary<int, string>();
+
             userRights = null;
             viewSpecs = null;
             dataAccess = null;
@@ -115,9 +121,35 @@ namespace Scada.Web.Shell
 
                 // добавление узла, если он соответствует представлению или имеет дочерние узлы
                 if (viewID > 0 || viewNode.ChildNodes.Count > 0)
+                {
                     destViewNodes.Add(viewNode);
+                    viewUrls[viewID] = viewNode.ViewUrl;
+                }
             }
         }
+
+        /// <summary>
+        /// Рекурсивно найти узел дерева с непустым представлением
+        /// </summary>
+        protected ViewNode FindNonEmptyViewNode(List<ViewNode> viewNodes)
+        {
+            foreach (ViewNode viewNode in viewNodes)
+            {
+                if (viewNode.ViewID > 0 && !string.IsNullOrEmpty(viewNode.ViewUrl))
+                {
+                    return viewNode;
+                }
+                else
+                {
+                    ViewNode node = FindNonEmptyViewNode(viewNode.ChildNodes);
+                    if (node != null)
+                        return node;
+                }
+            }
+
+            return null;
+        }
+
 
         /// <summary>
         /// Инициализировать представления пользователя
@@ -129,6 +161,7 @@ namespace Scada.Web.Shell
 
             try
             {
+                viewUrls.Clear();
                 userRights = userData.UserRights;
                 viewSpecs = userData.ViewSpecs;
                 this.dataAccess = dataAccess;
@@ -141,6 +174,34 @@ namespace Scada.Web.Shell
                 log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при инициализации представлений пользователя" :
                     "Error initializing user views");
+            }
+        }
+
+        /// <summary>
+        /// Получить ссылку на представление с заданным идентификатором
+        /// </summary>
+        public string GetViewUrl(int viewID)
+        {
+            string viewUrl;
+            return viewUrls.TryGetValue(viewID, out viewUrl) ? viewUrl : "";
+        }
+
+        /// <summary>
+        /// Получить ссылку первого доступного представления
+        /// </summary>
+        public string GetFirstViewUrl()
+        {
+            try
+            {
+                ViewNode viewNode = FindNonEmptyViewNode(ViewNodes);
+                return viewNode == null ? "" : viewNode.ViewUrl;
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении ссылки первого доступного представления" :
+                    "Error getting URL of the first accessible view");
+                return "";
             }
         }
     }

@@ -144,6 +144,10 @@ a:active {
   background-color: #0073aa;
   color: white;
 }
+#divMainLeftPane .tree-view .node.disabled {
+  color: #9ca1a6;
+  cursor: default;
+}
 #divMainLeftPane .tree-view .expander::before {
   font-size: 10px;
 }

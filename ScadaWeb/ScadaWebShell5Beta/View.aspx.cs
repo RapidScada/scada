@@ -23,8 +23,7 @@
  * Modified : 2016
  */
 
-using Scada.Data;
-using Scada.Web.Plugins;
+using Scada.Web.Shell;
 using System;
 
 namespace Scada.Web
@@ -56,23 +55,17 @@ namespace Scada.Web
                 int viewID;
                 int.TryParse(Request.QueryString["viewID"], out viewID);
 
-                // получение информации о представлении и добавление скрипта загрузки представления
-                if (viewID > 0)
-                {
-                    if (!userData.UserRights.GetViewRights(viewID).ViewRight)
-                        throw new ScadaException(WebPhrases.NoRights);
+                // получение ссылки представления
+                string viewUrl = viewID > 0 ? 
+                    userData.UserViews.GetViewUrl(viewID) :
+                    userData.UserViews.GetFirstViewUrl();
 
-                    AppData appData = AppData.GetAppData();
-                    ViewProps viewProps = appData.DataAccess.GetViewProps(viewID);
-                    ViewSpec viewSpec;
-
-                    if (viewProps != null && userData.ViewSpecs.TryGetValue(viewProps.ViewTypeCode, out viewSpec))
-                        AddLoadViewScript(viewSpec.GetViewUrl(viewID));
-                }
+                if (string.IsNullOrEmpty(viewUrl))
+                    // переход на страницу отсутствующего представления
+                    Response.Redirect(UrlTemplates.NoView);
                 else
-                {
-                    // загрузка первого доступного представления
-                }
+                    // добавление скрипта загрузки представления
+                    AddLoadViewScript(viewUrl);
             }
         }
     }
