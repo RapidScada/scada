@@ -45,7 +45,7 @@ namespace Scada.Web.Plugins.Scheme
         /// <summary>
         /// Базовый класс объекта для передачи схемы
         /// </summary>
-        private abstract class SchemeDTO
+        private abstract class SchemeDTO : DataTransferObject
         {
             /// <summary>
             /// Конструктор
@@ -119,14 +119,14 @@ namespace Scada.Web.Plugins.Scheme
         }
 
         /// <summary>
-        /// Класс объекта для передачи изображения
+        /// Передаваемое изображение
         /// </summary>
-        private class ImageDTO
+        private class Image
         {
             /// <summary>
             /// Конструктор
             /// </summary>
-            public ImageDTO(SchemeView.Image image)
+            public Image(SchemeView.Image image)
             {
                 Name = image.Name ?? "";
                 Data = Convert.ToBase64String(image.Data == null ? new byte[0] : image.Data, 
@@ -178,7 +178,7 @@ namespace Scada.Web.Plugins.Scheme
                 : base()
             {
                 EndOfImages = false;
-                Images = new List<ImageDTO>();
+                Images = new List<Image>();
             }
 
             /// <summary>
@@ -188,7 +188,7 @@ namespace Scada.Web.Plugins.Scheme
             /// <summary>
             /// Получить изображения схемы
             /// </summary>
-            public List<ImageDTO> Images { get; private set; }
+            public List<Image> Images { get; private set; }
         }
 
 
@@ -207,8 +207,18 @@ namespace Scada.Web.Plugins.Scheme
 
 
         /// <summary>
+        /// Получить объект для передачи данных, содержащий информацию об ошибке, в формате JSON
+        /// </summary>
+        private string GetErrorDtoJs(Exception ex)
+        {
+            return JsSerializer.Serialize(new DataTransferObject(false, ex.Message));
+        }
+
+
+        /// <summary>
         /// Получить свойства схемы
         /// </summary>
+        /// <remarks>Возвращает SchemePropsDTO в формате в JSON</remarks>
         [OperationContract]
         [WebGet]
         public string GetSchemeProps(int viewID, long viewStamp)
@@ -245,13 +255,14 @@ namespace Scada.Web.Plugins.Scheme
                 AppData.Log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при получении свойств схемы с ид.={0}" :
                     "Error getting the properties of the scheme with ID={0}", viewID);
-                return "";
+                return GetErrorDtoJs(ex);
             }
         }
 
         /// <summary>
         /// Получить элементы схемы
         /// </summary>
+        /// <remarks>Возвращает ElementsDTO в формате в JSON</remarks>
         [OperationContract]
         [WebGet]
         public string GetElements(int viewID, long viewStamp, int startIndex, int count)
@@ -280,13 +291,14 @@ namespace Scada.Web.Plugins.Scheme
                 AppData.Log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при получении элементов схемы с ид.={0}" :
                     "Error getting the elements of the scheme with ID={0}", viewID);
-                return "";
+                return GetErrorDtoJs(ex);
             }
         }
 
         /// <summary>
         /// Получить изображения схемы
         /// </summary>
+        /// <remarks>Возвращает ImagesDTO в формате в JSON</remarks>
         [OperationContract]
         [WebGet]
         public string GetImages(int viewID, long viewStamp, int startIndex, int totalDataSize)
@@ -308,7 +320,7 @@ namespace Scada.Web.Plugins.Scheme
                     {
                         if (i >= startIndex)
                         {
-                            dto.Images.Add(new ImageDTO(image));
+                            dto.Images.Add(new Image(image));
                             if (image.Data != null)
                                 size += image.Data.Length;
                         }
@@ -329,7 +341,7 @@ namespace Scada.Web.Plugins.Scheme
                 AppData.Log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при получении изображений схемы с ид.={0}" :
                     "Error getting the images of the scheme with ID={0}", viewID);
-                return "";
+                return GetErrorDtoJs(ex);
             }
         }
     }

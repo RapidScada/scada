@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="AppData.cs" />
     <Compile Include="AppDirs.cs" />
+    <Compile Include="DataTransferObject.cs" />
     <Compile Include="ClientApiSvc.cs" />
     <Compile Include="DictUpdater.cs" />
     <Compile Include="Plugins\PluginSpec.cs" />

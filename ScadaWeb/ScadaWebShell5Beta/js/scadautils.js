@@ -24,8 +24,14 @@ scada.utils = {
     },
 
     // Write information about the internal service error to console
-    logServiceError: function (operation) {
-        console.error(this.getCurTime() + " Request '" + operation + "' returns empty data. Internal service error");
+    logServiceError: function (operation,  opt_message) {
+        console.error(this.getCurTime() + " Request '" + operation + "' reports internal service error" +
+            (opt_message ? ": " + opt_message : ""));
+    },
+
+    // Write information about the internal service error to console
+    logServiceFormatError: function (operation) {
+        console.error(this.getCurTime() + " Request '" + operation + "' returns data in incorrect format");
     },
 
     // Write information about the failed request to console

@@ -15,11 +15,6 @@ scada.view = {
             document.title = frameView[0].contentWindow.document.title;
         })
         .attr("src", url);
-    },
-
-    // Set page title
-    setPageTitle: function (viewTitle) {
-        document.title = viewTitle + " - Rapid SCADA";
     }
 };
 

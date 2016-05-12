@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaWebCommon
- * Summary  : WCF-service that provides the client API
+ * Summary  : WCF service that provides the client API
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
@@ -35,7 +35,7 @@ using System.Web.Script.Serialization;
 namespace Scada.Web
 {
     /// <summary>
-    /// WCF-service that provides the client API
+    /// WCF service that provides the client API
     /// <para>WCF-сервис, обеспечивающий работу клиентского API</para>
     /// </summary>
     [ServiceContract(Namespace = "")]
@@ -43,14 +43,14 @@ namespace Scada.Web
     public class ClientApiSvc
     {
         /// <summary>
-        /// Класс объекта для передачи расширенных данных входого канала
+        /// Расширенные данные входого канала
         /// </summary>
-        private class CnlDataExtDTO
+        private class CnlDataExt
         {
             /// <summary>
             /// Конструктор
             /// </summary>
-            public CnlDataExtDTO(int cnlNum)
+            public CnlDataExt(int cnlNum)
             {
                 CnlNum = cnlNum;
                 Val = 0.0;
@@ -107,10 +107,10 @@ namespace Scada.Web
         /// <summary>
         /// Получить расширенные текущие данные входных каналов
         /// </summary>
-        private CnlDataExtDTO[] GetCnlDataExtDTOs(IList<int> cnlList)
+        private CnlDataExt[] GetCnlDataExtArr(IList<int> cnlList)
         {
             int cnlCnt = cnlList.Count;
-            CnlDataExtDTO[] cnlDataDTOs = new CnlDataExtDTO[cnlCnt];
+            CnlDataExt[] cnlDataExtArr = new CnlDataExt[cnlCnt];
 
             DataAccess dataAccess = AppData.DataAccess;
             DateTime dataAge;
@@ -123,13 +123,13 @@ namespace Scada.Web
             for (int i = 0; i < cnlCnt; i++)
             {
                 int cnlNum = cnlList[i];
-                CnlDataExtDTO cnlDataDTO = new CnlDataExtDTO(cnlNum);
-                cnlDataDTOs[i] = cnlDataDTO;
+                CnlDataExt cnlDataExt = new CnlDataExt(cnlNum);
+                cnlDataExtArr[i] = cnlDataExt;
 
                 SrezTableLight.CnlData cnlData;
                 snapshot.GetCnlData(cnlNum, out cnlData);
-                cnlDataDTO.Val = cnlData.Val;
-                cnlDataDTO.Stat = cnlData.Stat;
+                cnlDataExt.Val = cnlData.Val;
+                cnlDataExt.Stat = cnlData.Stat;
 
                 if (dataVisible)
                 {
@@ -138,25 +138,33 @@ namespace Scada.Web
                     string textWithUnit;
                     DataFormatter.FormatCnlVal(cnlData.Val, cnlData.Stat, cnlProps, out text, out textWithUnit);
 
-                    cnlDataDTO.Text = text;
-                    cnlDataDTO.TextWithUnit = textWithUnit;
-                    cnlDataDTO.Color = DataFormatter.GetCnlValColor(cnlData.Val, cnlData.Stat, cnlProps,
+                    cnlDataExt.Text = text;
+                    cnlDataExt.TextWithUnit = textWithUnit;
+                    cnlDataExt.Color = DataFormatter.GetCnlValColor(cnlData.Val, cnlData.Stat, cnlProps,
                         dataAccess.GetColorByStat);
                 }
                 else
                 {
-                    cnlDataDTO.Text = cnlDataDTO.TextWithUnit = emptyVal;
+                    cnlDataExt.Text = cnlDataExt.TextWithUnit = emptyVal;
                 }
             }
 
-            return cnlDataDTOs;
+            return cnlDataExtArr;
+        }
+
+        /// <summary>
+        /// Получить объект для передачи данных, содержащий информацию об ошибке, в формате JSON
+        /// </summary>
+        private string GetErrorDtoJs(Exception ex)
+        {
+            return JsSerializer.Serialize(new DataTransferObject(false, ex.Message));
         }
 
 
         /// <summary>
         /// Получить текущие данные входного канала
         /// </summary>
-        /// <remarks>Возвращает SrezTableLight.CnlData, преобразованный в JSON</remarks>
+        /// <remarks>Возвращает SrezTableLight.CnlData, упакованный в DataTransferObject, в формате в JSON</remarks>
         [OperationContract]
         [WebGet]
         public string GetCurCnlData(int cnlNum)
@@ -165,21 +173,21 @@ namespace Scada.Web
             {
                 AppData.CheckLoggedOn();
                 SrezTableLight.CnlData cnlData = AppData.DataAccess.GetCurCnlData(cnlNum);
-                return JsSerializer.Serialize(cnlData);
+                return JsSerializer.Serialize(new DataTransferObject(cnlData));
             }
             catch (Exception ex)
             {
                 AppData.Log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при получении текущих данных входного канала {0}" :
                     "Error getting current data of the input channel {0}", cnlNum);
-                return "";
+                return GetErrorDtoJs(ex);
             }
         }
 
         /// <summary>
         /// Получить расширенные текущие данные входного канала
         /// </summary>
-        /// <remarks>Возвращает CnlDataExtDTO, преобразованный в JSON</remarks>
+        /// <remarks>Возвращает CnlDataExt, упакованный в DataTransferObject, в формате в JSON</remarks>
         [OperationContract]
         [WebGet]
         public string GetCurCnlDataExt(int cnlNum)
@@ -187,12 +195,12 @@ namespace Scada.Web
             try
             {
                 AppData.CheckLoggedOn();
-                CnlDataExtDTO cnlDataExtDTO = new CnlDataExtDTO(cnlNum);
+                CnlDataExt cnlDataExt = new CnlDataExt(cnlNum);
                 DataAccess dataAccess = AppData.DataAccess;
                 DateTime dataAge;
                 SrezTableLight.CnlData cnlData = dataAccess.GetCurCnlData(cnlNum, out dataAge);
-                cnlDataExtDTO.Val = cnlData.Val;
-                cnlDataExtDTO.Stat = cnlData.Stat;
+                cnlDataExt.Val = cnlData.Val;
+                cnlDataExt.Stat = cnlData.Stat;
 
                 string emptyVal;
                 if (DataFormatter.CurDataVisible(dataAge, DateTime.Now, out emptyVal))
@@ -202,32 +210,32 @@ namespace Scada.Web
                     string textWithUnit;
                     DataFormatter.FormatCnlVal(cnlData.Val, cnlData.Stat, cnlProps, out text, out textWithUnit);
 
-                    cnlDataExtDTO.Text = text;
-                    cnlDataExtDTO.TextWithUnit = textWithUnit;
-                    cnlDataExtDTO.Color = DataFormatter.GetCnlValColor(cnlData.Val, cnlData.Stat, cnlProps, 
+                    cnlDataExt.Text = text;
+                    cnlDataExt.TextWithUnit = textWithUnit;
+                    cnlDataExt.Color = DataFormatter.GetCnlValColor(cnlData.Val, cnlData.Stat, cnlProps, 
                         dataAccess.GetColorByStat);
                 }
                 else
                 {
-                    cnlDataExtDTO.Text = emptyVal;
-                    cnlDataExtDTO.TextWithUnit = emptyVal;
+                    cnlDataExt.Text = emptyVal;
+                    cnlDataExt.TextWithUnit = emptyVal;
                 }
 
-                return JsSerializer.Serialize(cnlDataExtDTO);
+                return JsSerializer.Serialize(new DataTransferObject(cnlDataExt));
             }
             catch (Exception ex)
             {
                 AppData.Log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при получении расширенных текущих данных входного канала {0}" :
                     "Error getting extended current data of the input channel {0}", cnlNum);
-                return "";
+                return GetErrorDtoJs(ex);
             }
         }
 
         /// <summary>
         /// Получить расширенные текущие данные заданных входных каналов
         /// </summary>
-        /// <remarks>Возвращает CnlDataExtDTO[], преобразованный в JSON</remarks>
+        /// <remarks>Возвращает CnlDataExt[], упакованный в DataTransferObject, в формате в JSON</remarks>
         [OperationContract]
         [WebGet]
         public string GetCurCnlDataExtByCnlNums(string cnlNums)
@@ -236,22 +244,22 @@ namespace Scada.Web
             {
                 AppData.CheckLoggedOn();
                 int[] cnlNumArr = WebUtils.QueryParamToIntArray(cnlNums);
-                CnlDataExtDTO[] cnlDataDTOs = GetCnlDataExtDTOs(cnlNumArr);
-                return JsSerializer.Serialize(cnlDataDTOs);
+                CnlDataExt[] cnlDataDTOs = GetCnlDataExtArr(cnlNumArr);
+                return JsSerializer.Serialize(new DataTransferObject(cnlDataDTOs));
             }
             catch (Exception ex)
             {
                 AppData.Log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при получении расширенных текущих данных заданных входных каналов" :
                     "Error getting extended current data of the specified input channels");
-                return "";
+                return GetErrorDtoJs(ex);
             }
         }
 
         /// <summary>
         /// Получить расширенные текущие данные входных каналов представления
         /// </summary>
-        /// <remarks>Возвращает CnlDataExtDTO[], преобразованный в JSON.
+        /// <remarks>Возвращает CnlDataExt[], упакованный в DataTransferObject, в формате в JSON.
         /// Представление должно быть уже загружено в кеш (для ускорения работы метода)</remarks>
         [OperationContract]
         [WebGet]
@@ -260,7 +268,7 @@ namespace Scada.Web
             try
             {
                 AppData.CheckLoggedOn();
-                CnlDataExtDTO[] cnlDataDTOs;
+                CnlDataExt[] cnlDataDTOs;
                 BaseView view = AppData.ViewCache.GetViewFromCache(viewID);
 
                 if (view == null)
@@ -268,42 +276,43 @@ namespace Scada.Web
                     AppData.Log.WriteError(string.Format(Localization.UseRussian ?
                         "Не удалось получить представление с ид.={0} из кеша" :
                         "Unable to get view with ID={0} from the cache", viewID));
-                    cnlDataDTOs = new CnlDataExtDTO[0];
+                    cnlDataDTOs = new CnlDataExt[0];
                 }
                 else
                 {
-                    cnlDataDTOs = GetCnlDataExtDTOs(view.CnlList);
+                    cnlDataDTOs = GetCnlDataExtArr(view.CnlList);
                 }
 
-                return JsSerializer.Serialize(cnlDataDTOs);
+                return JsSerializer.Serialize(new DataTransferObject(cnlDataDTOs));
             }
             catch (Exception ex)
             {
                 AppData.Log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при получении расширенных текущих данных входных каналов предсталения с ид.={0}" :
                     "Error getting extended current input channel data of the view with id={0}", viewID);
-                return "";
+                return GetErrorDtoJs(ex);
             }
         }
 
         /// <summary>
         /// Получить метку представления из кеша
         /// </summary>
-        /// <remarks>Возвращает long, преобразованный в JSON</remarks>
+        /// <remarks>Возвращает long, упакованный в DataTransferObject, в формате в JSON</remarks>
         public string GetViewStamp(int viewID)
         {
             try
             {
                 AppData.CheckLoggedOn();
                 BaseView view = AppData.ViewCache.GetViewFromCache(viewID);
-                return JsSerializer.Serialize(view == null ? 0 : view.Stamp);
+                long stamp = view == null ? 0 : view.Stamp;
+                return JsSerializer.Serialize(new DataTransferObject(stamp));
             }
             catch (Exception ex)
             {
                 AppData.Log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при получении метки предсталения с ид.={0} из кеша" :
                     "Error getting stamp of the view with id={0} from the cache", viewID);
-                return "";
+                return GetErrorDtoJs(ex);
             }
         }
     }

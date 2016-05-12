@@ -26,6 +26,7 @@
 //#define DEBUG_MODE
 
 using Scada.Scheme;
+using Scada.Web.Shell;
 using System;
 
 namespace Scada.Web.Plugins.Scheme
@@ -42,19 +43,20 @@ namespace Scada.Web.Plugins.Scheme
         private const string DictName = "Scada.Web.Plugins.Scheme.WFrmScheme.Js";
 
         // Переменные для вывода на веб-страницу
-        protected bool debugMode; // режим отладки
-        protected int viewID;     // ид. представления
-        protected int refrRate;   // частота обновления данных
-        protected string phrases; // локализованные фразы
+        protected bool debugMode;  // режим отладки
+        protected int viewID;      // ид. представления
+        protected int refrRate;    // частота обновления данных
+        protected string phrases;  // локализованные фразы
 
-        private AppData appData;  // общие данные веб-приложения
+        private AppData appData;   // общие данные веб-приложения
+        private UserData userData; // данные пользователя приложения
 
 
-        protected void Page_Load(object sender, EventArgs e)
+        /// <summary>
+        /// Установить или отключить режим отладки
+        /// </summary>
+        private void SetupDebugMode()
         {
-            appData = AppData.GetAppData();
-            UserData userData = UserData.GetUserData();
-
 #if DEBUG_MODE
             debugMode = true;
             appData.Init(Server.MapPath("~"));
@@ -64,8 +66,22 @@ namespace Scada.Web.Plugins.Scheme
 #else
             debugMode = false;
 #endif
+        }
 
-            int.TryParse(Request["viewID"], out viewID);
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            appData = AppData.GetAppData();
+            userData = UserData.GetUserData();
+            SetupDebugMode();
+
+            // получение ид. представления из параметров запроса
+            int.TryParse(Request.QueryString["viewID"], out viewID);
+
+            // проверка прав на просмотр представления
+            if (!(userData.LoggedOn && userData.UserRights.GetViewRights(viewID).ViewRight))
+                Response.Redirect(UrlTemplates.NoView);
+
+            // подготовка данных для веб-страницы
             refrRate = userData.WebSettings.DataRefrRate;
 
             Localization.Dict dict;
