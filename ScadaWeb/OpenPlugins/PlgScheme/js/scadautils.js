@@ -24,13 +24,76 @@ scada.utils = {
     },
 
     // Write information about the internal service error to console
-    logServiceError: function (operation) {
-        console.error(this.getCurTime() + " Request '" + operation + "' returns empty data. Internal service error");
+    logServiceError: function (operation,  opt_message) {
+        console.error(this.getCurTime() + " Request '" + operation + "' reports internal service error" +
+            (opt_message ? ": " + opt_message : ""));
+    },
+
+    // Write information about the internal service error to console
+    logServiceFormatError: function (operation) {
+        console.error(this.getCurTime() + " Request '" + operation + "' returns data in incorrect format");
     },
 
     // Write information about the failed request to console
     logFailedRequest: function (operation, jqXHR) {
         console.error(this.getCurTime() + " Request '" + operation + "' failed: " +
             jqXHR.status + " (" + jqXHR.statusText + ")");
+    },
+
+    // Check if browser is in fullscreen mode
+    // See https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API
+    isFullscreen: function() {
+        return document.fullscreenElement || document.mozFullScreenElement ||
+            document.webkitFullscreenElement || document.msFullscreenElement;
+    },
+
+    // Switch browser to fullscreen mode
+    requestFullscreen: function () {
+        if (document.documentElement.requestFullscreen) {
+            document.documentElement.requestFullscreen();
+        } else if (document.documentElement.msRequestFullscreen) {
+            document.documentElement.msRequestFullscreen();
+        } else if (document.documentElement.mozRequestFullScreen) {
+            document.documentElement.mozRequestFullScreen();
+        } else if (document.documentElement.webkitRequestFullscreen) {
+            document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+        }
+    },
+
+    // Exit browser fullscreen mode
+    exitFullscreen: function () {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        }
+    },
+
+    // Switch browser to full screen mode and back to normal view
+    toggleFullscreen: function () {
+        if (this.isFullscreen()) {
+            this.exitFullscreen();
+        } else {
+            this.requestFullscreen();
+        }
+    },
+
+    // Click hyperlink programmatically
+    clickLink: function (jqLink) {
+        var href = jqLink.attr("href");
+        if (href) {
+            if (href.startsWith("javascript:")) {
+                // execute script
+                var script = href.substr(11);
+                eval(script);
+            } else {
+                // open web page
+                location = href;
+            }
+        }
     }
 };

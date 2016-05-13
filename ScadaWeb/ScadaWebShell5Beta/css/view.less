@@ -1,37 +1,80 @@
 ﻿@import "globalvar.less";
+@import "shellvar.less";
 
 @bottom-tabs-heigth: 30px;
+@bottom-menu-back-color: white;
+@bottom-menu-border-color: #ddd;
 
 #divView {
-    position: relative;
     height: 100%;
 }
 
-#frameView {
+#divView iframe {
     margin: 0;
     padding: 0;
     width: 100%;
-    height: 100%;
     border: none;
     display: block;
     overflow: hidden;
 }
 
+#frameView {
+    height: calc(~"100% - 207px - "@bottom-tabs-heigth);
+}
+
+#divViewSplitter {
+    height: 7px;
+    background-color: #ddd;
+    cursor: ns-resize;
+    /*display: none;*/
+}
+
+#divDataWindow {
+    height: 200px;
+    background-color: white;
+    border-bottom: 1px solid @panel-border-color;
+    /*display: none;*/
+}
+
+#frameDataWindow {
+    height: 100%;
+}
+
 #divBottomTabs {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
     height: @bottom-tabs-heigth;
-    background-color: rgba(255, 255, 255, 0.75);
+    background-color: @bottom-menu-back-color;
+    color: @content-fore-color;
+    font-size: 13px;
+    overflow: hidden;
 }
 
 #divBottomTabs .tab {
     margin: 0 0 0 5px;
     padding: 0 10px;
-    color: black; /*@content-fore-color;*/
-    background-color: white;
     display: inline-block;
     line-height: @bottom-tabs-heigth;
     white-space: nowrap;
+}
+
+#divBottomTabs .tab.selected {
+    font-weight: 600;
+}
+
+#divBottomTabs .tab:first-child {
+    margin-left: 10px;
+}
+
+#divBottomTabs .tab:hover {
+    color: @menu-item-hover-fore-color;
+    cursor: pointer;
+}
+
+#divCollapseDataWindow {
+    color: #8f8f8f;
+}
+
+#divCollapseDataWindow i {
+    font-size: 19px;
+    position: relative;
+    top: 2px;
 }

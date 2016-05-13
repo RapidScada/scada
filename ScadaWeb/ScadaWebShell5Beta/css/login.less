@@ -1,5 +1,8 @@
 ﻿@import "globalvar.less";
 
+@form-border-color: #ddd;
+@label-fore-color: #777;
+@input-fore-color: black;
 @side-padding: 25px;
 
 body {
@@ -34,9 +37,9 @@ div .alert {
 #divLogin {
     padding: @side-padding @side-padding 35px;
     background-color: white;
-    border: 1px solid #ddd;
+    border: 1px solid @form-border-color;
     border-radius: 1px;
-    color: #777;
+    color: @label-fore-color;
     display: inline-block;
     text-align: left;
 }
@@ -51,7 +54,7 @@ div .alert {
 #divLogin input[type=password] {
     width: 265px;
     margin: 0 0 20px 0;
-    color: black;
+    color: @input-fore-color;
 }
 
 #divLogin input[type=submit] {

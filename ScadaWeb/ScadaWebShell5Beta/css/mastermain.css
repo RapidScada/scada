@@ -101,7 +101,7 @@ a:active {
   overflow: hidden;
 }
 #divMainLeftPane .tool-window {
-  height: calc(100% -  40px);
+  height: calc(100% -  30px);
   margin: 0 0 0 30px;
   padding: 5px 0 0 0;
   display: none;
@@ -191,11 +191,12 @@ a:active {
   position: absolute;
   bottom: 0;
   width: 220px;
-  height: 40px;
+  height: 30px;
   margin: 0 0 0 30px;
-  padding: 5px 10px;
+  padding: 0px 10px;
   color: #9ca1a6;
   font-size: 13px;
+  line-height: 30px;
 }
 #divMainCollapsePane i {
   margin-right: 10px;

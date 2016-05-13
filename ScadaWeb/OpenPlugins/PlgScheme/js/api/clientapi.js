@@ -54,13 +54,19 @@ scada.clientAPI = {
             dataType: "json"
         })
         .done(function (data, textStatus, jqXHR) {
-            if (data.d) {
-                scada.utils.logSuccessfulRequest(operation/*, data*/);
+            try {
                 var parsedData = $.parseJSON(data.d);
-                callback(true, parsedData);
-            } else {
-                scada.utils.logServiceError(operation);
-                callback(false, defaultResult);
+                if (parsedData.Success) {
+                    scada.utils.logSuccessfulRequest(operation/*, data*/);
+                    callback(true, parsedData.Data ? parsedData.Data : parsedData);
+                } else {
+                    scada.utils.logServiceError(operation, parsedData.ErrorMessage);
+                    callback(false, errorResult);
+                }
+            } 
+            catch (ex) {
+                scada.utils.logServiceFormatError(operation);
+                callback(false, errorResult);
             }
         })
         .fail(function (jqXHR, textStatus, errorThrown) {

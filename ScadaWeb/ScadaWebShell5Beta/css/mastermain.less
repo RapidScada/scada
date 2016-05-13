@@ -3,7 +3,7 @@
 
 @header-heigth: 30px;
 @left-tabs-heigth: 30px;
-@collapse-pane-heigth: 40px;
+@collapse-pane-heigth: 30px;
 @left-pane-width: 250px;
 
 body {
@@ -20,7 +20,7 @@ a:hover,
 a:focus,
 a:active {
     outline: 0;
-    color:inherit;
+    color: inherit;
     text-decoration: none;
 }
 
@@ -93,7 +93,7 @@ a:active {
     right: 0;
     height: @header-heigth;
     padding: 0 10px;
-    background-color: white;
+    background-color: @menu-back-color-air;
     display: none; /*inline-block*/
     line-height: @header-heigth;
     opacity: 0.5;
@@ -234,9 +234,10 @@ a:active {
     width: @left-pane-width - @left-tabs-heigth;
     height: @collapse-pane-heigth;
     margin: 0 0 0 @left-tabs-heigth;
-    padding: 5px 10px;
+    padding: 0px 10px;
     color: @menu-fore-color-dark;
     font-size: 13px;
+    line-height: @collapse-pane-heigth;
 }
 
 #divMainCollapsePane i {

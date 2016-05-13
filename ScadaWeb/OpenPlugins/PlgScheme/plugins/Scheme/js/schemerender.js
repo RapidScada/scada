@@ -120,6 +120,7 @@ scada.scheme.SchemeRenderer.prototype.createDom = function (elem, renderContext)
             "height": props.Size.Height
         });
 
+    this.setBackColor($("body"), props.BackColor);
     this.setBackColor(divScheme, props.BackColor);
     this.setFont(divScheme, props.Font);
     this.setForeColor(divScheme, props.ForeColor);
@@ -132,6 +133,14 @@ scada.scheme.SchemeRenderer.prototype.createDom = function (elem, renderContext)
             "background-size": props.Size.Width + "px " + props.Size.Height + "px",
             "background-repeat": "no-repeat"
         });
+    }
+
+    // set title
+    if (props.Title) {
+        document.title = props.Title + " - Rapid SCADA";
+        if (window.parent) {
+            window.parent.document.title = document.title;
+        }
     }
 
     elem.dom = divScheme;

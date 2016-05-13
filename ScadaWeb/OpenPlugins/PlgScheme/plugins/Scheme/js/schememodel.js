@@ -162,14 +162,6 @@ scada.scheme.Scheme.prototype._obtainSchemeProps = function (parsedProps) {
             this.viewStamp = parsedProps.ViewStamp;
             this._expectedElemCnl = parsedProps.ElementCount;
             this._expectedImageCnt = parsedProps.ImageCount;
-
-            if (parsedProps.SchemeProps.Title) {
-                document.title = parsedProps.SchemeProps.Title + " - Rapid SCADA";
-                if (window.parent) {
-                    window.parent.document.title = document.title;
-                }
-            }
-
             return true;
         } else {
             return false;
