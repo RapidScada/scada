@@ -58,22 +58,22 @@ namespace Scada.Web {
         protected global::System.Web.UI.WebControls.Label lblMainNormalViewBtn;
         
         /// <summary>
-        /// lblMainMenu control.
+        /// lblMainMenuTab control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMainMenu;
+        protected global::System.Web.UI.WebControls.Label lblMainMenuTab;
         
         /// <summary>
-        /// lblMainExplorer control.
+        /// lblMainExplorerTab control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMainExplorer;
+        protected global::System.Web.UI.WebControls.Label lblMainExplorerTab;
         
         /// <summary>
         /// lblMainCollapseMenu control.

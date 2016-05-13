@@ -13,8 +13,8 @@
     <Phrase key="lbtnMainLogout">Выйти</Phrase>
     <Phrase key="lblMainFullscreenBtn.ToolTip">На весь экран</Phrase>
     <Phrase key="lblMainNormalViewBtn.ToolTip">Нормальный вид</Phrase>
-    <Phrase key="lblMainMenu">Главное меню</Phrase>
-    <Phrase key="lblMainExplorer">Представления</Phrase>
+    <Phrase key="lblMainMenuTab">Главное меню</Phrase>
+    <Phrase key="lblMainExplorerTab">Представления</Phrase>
     <Phrase key="lblMainCollapseMenu">Свернуть меню</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.ViewSettings">

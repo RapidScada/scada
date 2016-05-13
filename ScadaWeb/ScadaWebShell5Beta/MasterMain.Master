@@ -45,8 +45,8 @@
         <asp:Label ID="lblMainNormalViewBtn" runat="server" ToolTip="Normal view"><span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span></asp:Label>
         <div id="divMainLeftPane">
             <div id="divMainTabs">
-                <div id="divMainMenuTab" class="tab selected"><asp:Label ID="lblMainMenu" runat="server" Text="Main Menu"></asp:Label></div>
-                <div id="divMainExplorerTab" class="tab"><asp:Label ID="lblMainExplorer" runat="server" Text="Views"></asp:Label></div>
+                <div id="divMainMenuTab" class="tab selected"><asp:Label ID="lblMainMenuTab" runat="server" Text="Main Menu"></asp:Label></div>
+                <div id="divMainExplorerTab" class="tab"><asp:Label ID="lblMainExplorerTab" runat="server" Text="Views"></asp:Label></div>
             </div>
             <div id="divMainMenu" class="tool-window">
                 <%= GenerateMainMenuHtml() %>

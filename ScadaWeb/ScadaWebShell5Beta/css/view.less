@@ -1,6 +1,13 @@
 ﻿@import "globalvar.less";
 
-iframe {
+@bottom-tabs-heigth: 30px;
+
+#divView {
+    position: relative;
+    height: 100%;
+}
+
+#frameView {
     margin: 0;
     padding: 0;
     width: 100%;
@@ -8,4 +15,23 @@ iframe {
     border: none;
     display: block;
     overflow: hidden;
+}
+
+#divBottomTabs {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: @bottom-tabs-heigth;
+    background-color: rgba(255, 255, 255, 0.75);
+}
+
+#divBottomTabs .tab {
+    margin: 0 0 0 5px;
+    padding: 0 10px;
+    color: black; /*@content-fore-color;*/
+    background-color: white;
+    display: inline-block;
+    line-height: @bottom-tabs-heigth;
+    white-space: nowrap;
 }
