@@ -80,9 +80,15 @@ namespace Scada.Web.Plugins
             if (userData.UserRights.ConfigRight)
             {
                 List<MenuItem> menuItems = new List<MenuItem>();
+
+                MenuItem adminMenuItem = MenuItem.FromStandardMenuItem(StandardMenuItems.Admin);
+                adminMenuItem.Subitems.Add(new MenuItem("Active users", "~/plugins/Config/ActiveUsers.aspx"));
+                menuItems.Add(adminMenuItem);
+
                 MenuItem configMenuItem = MenuItem.FromStandardMenuItem(StandardMenuItems.Config);
-                configMenuItem.Subitems.Add(new MenuItem("Web application", "~/plugins/Config/WebConfig.aspx", 100));
+                configMenuItem.Subitems.Add(new MenuItem("Web application", "~/plugins/Config/WebConfig.aspx"));
                 menuItems.Add(configMenuItem);
+
                 return menuItems;
             }
             else

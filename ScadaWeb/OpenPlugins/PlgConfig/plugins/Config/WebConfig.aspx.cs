@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
-namespace Scada.Web.plugins.Config
+namespace Scada.Web.Plugins.Config
 {
-    public partial class WebConfig : System.Web.UI.Page
+    public partial class WFrmWebConfig : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {

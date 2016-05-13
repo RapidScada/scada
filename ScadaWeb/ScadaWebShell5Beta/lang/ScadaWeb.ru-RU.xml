@@ -38,6 +38,7 @@
   </Dictionary>
   <Dictionary key="Scada.Web.Shell.MenuItem">
     <Phrase key="ReportsMenuItem">Отчёты</Phrase>
+    <Phrase key="AdminMenuItem">Администрирование</Phrase>
     <Phrase key="ConfigMenuItem">Конфигурация</Phrase>
     <Phrase key="AboutMenuItem">О приложении</Phrase>
   </Dictionary>

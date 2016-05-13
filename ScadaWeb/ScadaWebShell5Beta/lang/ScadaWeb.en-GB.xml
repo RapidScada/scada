@@ -38,6 +38,7 @@
   </Dictionary>
   <Dictionary key="Scada.Web.Shell.MenuItem">
     <Phrase key="ReportsMenuItem">Reports</Phrase>
+    <Phrase key="AdminMenuItem">Administration</Phrase>
     <Phrase key="ConfigMenuItem">Configuration</Phrase>
     <Phrase key="AboutMenuItem">About</Phrase>
   </Dictionary>

@@ -57,6 +57,7 @@ namespace Scada.Web
 
         // Словарь Scada.Web.Shell.MenuItem
         public static string ReportsMenuItem { get; private set; }
+        public static string AdminMenuItem { get; private set; }
         public static string ConfigMenuItem { get; private set; }
         public static string AboutMenuItem { get; private set; }
 
@@ -79,6 +80,7 @@ namespace Scada.Web
             SaveWebSettingsError = Localization.Dict.GetEmptyPhrase("SaveWebSettingsError");
 
             ReportsMenuItem = Localization.Dict.GetEmptyPhrase("ReportsMenuItem");
+            AdminMenuItem = Localization.Dict.GetEmptyPhrase("AdminMenuItem");
             ConfigMenuItem = Localization.Dict.GetEmptyPhrase("ConfigMenuItem");
             AboutMenuItem = Localization.Dict.GetEmptyPhrase("AboutMenuItem");
 
@@ -116,6 +118,7 @@ namespace Scada.Web
             if (Localization.Dictionaries.TryGetValue("Scada.Web.Shell.MenuItem", out dict))
             {
                 ReportsMenuItem = dict.GetPhrase("ReportsMenuItem", ReportsMenuItem);
+                AdminMenuItem = dict.GetPhrase("AdminMenuItem", AdminMenuItem);
                 ConfigMenuItem = dict.GetPhrase("ConfigMenuItem", ConfigMenuItem);
                 AboutMenuItem = dict.GetPhrase("AboutMenuItem", AboutMenuItem);
             }

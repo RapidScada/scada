@@ -27,7 +27,6 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.ServiceModel.Web;
-using System.Web.SessionState;
 using Utils;
 
 namespace Scada.Web

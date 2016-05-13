@@ -244,8 +244,8 @@ namespace Scada.Web
             {
                 AppData.CheckLoggedOn();
                 int[] cnlNumArr = WebUtils.QueryParamToIntArray(cnlNums);
-                CnlDataExt[] cnlDataDTOs = GetCnlDataExtArr(cnlNumArr);
-                return JsSerializer.Serialize(new DataTransferObject(cnlDataDTOs));
+                CnlDataExt[] cnlDataExtArr = GetCnlDataExtArr(cnlNumArr);
+                return JsSerializer.Serialize(new DataTransferObject(cnlDataExtArr));
             }
             catch (Exception ex)
             {
@@ -268,22 +268,19 @@ namespace Scada.Web
             try
             {
                 AppData.CheckLoggedOn();
-                CnlDataExt[] cnlDataDTOs;
                 BaseView view = AppData.ViewCache.GetViewFromCache(viewID);
 
                 if (view == null)
                 {
-                    AppData.Log.WriteError(string.Format(Localization.UseRussian ?
-                        "Не удалось получить представление с ид.={0} из кеша" :
-                        "Unable to get view with ID={0} from the cache", viewID));
-                    cnlDataDTOs = new CnlDataExt[0];
+                    throw new ScadaException(Localization.UseRussian ?
+                        "Не удалось получить представление из кеша" :
+                        "Unable to get view from the cache");
                 }
                 else
                 {
-                    cnlDataDTOs = GetCnlDataExtArr(view.CnlList);
+                    CnlDataExt[] cnlDataExtArr = GetCnlDataExtArr(view.CnlList);
+                    return JsSerializer.Serialize(new DataTransferObject(cnlDataExtArr));
                 }
-
-                return JsSerializer.Serialize(new DataTransferObject(cnlDataDTOs));
             }
             catch (Exception ex)
             {

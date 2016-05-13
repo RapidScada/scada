@@ -152,8 +152,10 @@ namespace Scada.Web.Shell
             {
                 case StandardMenuItems.Reports:
                     return new MenuItem(WebPhrases.ReportsMenuItem, "~/Reports.aspx", 100);
+                case StandardMenuItems.Admin:
+                    return new MenuItem(WebPhrases.AdminMenuItem, "", 200);
                 case StandardMenuItems.Config:
-                    return new MenuItem(WebPhrases.ConfigMenuItem, "", 200);
+                    return new MenuItem(WebPhrases.ConfigMenuItem, "", 300);
                 default: // StandardMenuItem.About
                     return new MenuItem(WebPhrases.AboutMenuItem, "~/About.aspx", SortOrders.Last);
             }
