@@ -17,7 +17,7 @@ namespace Scada.Web.Plugins.Table
         {
             get
             {
-                return "CustomData";
+                return "Custom data";
             }
         }
 

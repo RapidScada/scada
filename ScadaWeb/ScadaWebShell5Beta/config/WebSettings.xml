@@ -11,5 +11,6 @@
   <Plugins>
     <Plugin fileName="PlgConfig.dll" />
     <Plugin fileName="PlgScheme.dll" />
+    <Plugin fileName="PlgTable.dll" />
   </Plugins>
 </WebSettings>

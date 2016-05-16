@@ -48,7 +48,6 @@
     <Reference Include="ScadaWebCommon5Beta">
       <HintPath>..\..\ScadaWebCommon5Beta\bin\Release\ScadaWebCommon5Beta.dll</HintPath>
     </Reference>
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core" />
@@ -71,6 +70,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

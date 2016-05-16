@@ -94,16 +94,15 @@ namespace Scada.Web.Shell
                 {
                     foreach (PluginSpec pluginSpec in userData.PluginSpecs)
                     {
-                        Reports.AddRange(pluginSpec.ReportSpecs);
-                        DataWindows.AddRange(pluginSpec.DataWindowSpecs);
+                        if (pluginSpec.ReportSpecs != null)
+                            Reports.AddRange(pluginSpec.ReportSpecs);
+                        if (pluginSpec.DataWindowSpecs != null)
+                            DataWindows.AddRange(pluginSpec.DataWindowSpecs);
                     }
                 }
 
                 Reports.Sort();
                 DataWindows.Sort();
-
-                // добавление окна событий
-                DataWindows.Insert(0, null);
             }
             catch (Exception ex)
             {
