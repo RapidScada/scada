@@ -186,8 +186,8 @@ a:active {
   position: relative;
   top: -2px;
 }
-/* Collapse Pane */
-#divMainCollapsePane {
+/* Collapse Left Pane */
+#divMainCollapseLeftPaneBtn {
   position: absolute;
   bottom: 0;
   width: 220px;
@@ -195,16 +195,16 @@ a:active {
   margin: 0 0 0 30px;
   padding: 0px 10px;
   color: #9ca1a6;
+  cursor: pointer;
   font-size: 13px;
   line-height: 30px;
 }
-#divMainCollapsePane i {
+#divMainCollapseLeftPaneBtn i {
   margin-right: 10px;
   font-size: 19px;
   position: relative;
   top: 2px;
 }
-#divMainCollapsePane:hover {
+#divMainCollapseLeftPaneBtn:hover {
   color: #00b9eb;
-  cursor: pointer;
 }

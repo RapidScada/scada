@@ -2,38 +2,34 @@
 @import "shellvar.less";
 
 @bottom-tabs-heigth: 30px;
-@bottom-menu-back-color: white;
-@bottom-menu-border-color: #ddd;
+@collapse-btn-width: 40px;
+@splitter-color: #ddd;
 
 #divView {
     height: 100%;
-}
-
-#divView iframe {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    border: none;
-    display: block;
     overflow: hidden;
 }
 
-#frameView {
-    height: calc(~"100% - 207px - "@bottom-tabs-heigth);
+#divView iframe {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: none;
+    display: block;
 }
 
 #divViewSplitter {
     height: 7px;
-    background-color: #ddd;
+    background-color: @splitter-color;
     cursor: ns-resize;
-    /*display: none;*/
+    display: none; /*block*/
 }
 
 #divDataWindow {
     height: 200px;
     background-color: white;
     border-bottom: 1px solid @panel-border-color;
-    /*display: none;*/
+    display: none; /*block*/
 }
 
 #frameDataWindow {
@@ -41,40 +37,48 @@
 }
 
 #divBottomTabs {
-    height: @bottom-tabs-heigth;
-    background-color: @bottom-menu-back-color;
-    color: @content-fore-color;
-    font-size: 13px;
-    overflow: hidden;
+    background-color: @menu-back-color-air;
+    color: @menu-fore-color-air;
 }
 
-#divBottomTabs .tab {
-    margin: 0 0 0 5px;
-    padding: 0 10px;
+#divBottomTabsContainer {
+    max-width: calc(~"100% - "@collapse-btn-width);
+    padding: 0 5px;
     display: inline-block;
+}
+
+#divBottomTabsContainer .tab {
+    height: @bottom-tabs-heigth;
+    margin: 0 5px 0 0;
+    padding: 0 10px;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 13px;
     line-height: @bottom-tabs-heigth;
     white-space: nowrap;
 }
 
-#divBottomTabs .tab.selected {
+#divBottomTabsContainer .tab.selected {
     font-weight: 600;
 }
 
-#divBottomTabs .tab:first-child {
-    margin-left: 10px;
-}
-
-#divBottomTabs .tab:hover {
-    color: @menu-item-hover-fore-color;
+#divCollapseDataWindowBtn {
+    width: @collapse-btn-width;
+    height: 100%;
+    color: @menu-fore-color-air-light;
     cursor: pointer;
-}
-
-#divCollapseDataWindow {
-    color: #8f8f8f;
-}
-
-#divCollapseDataWindow i {
+    display: none; /*inline-block*/
     font-size: 19px;
+    text-align: center;
+    vertical-align: top;
+}
+
+#divCollapseDataWindowBtn i {
     position: relative;
     top: 2px;
+}
+
+#divBottomTabsContainer .tab:hover,
+#divCollapseDataWindowBtn:hover {
+    color: @menu-item-hover-fore-color;
 }

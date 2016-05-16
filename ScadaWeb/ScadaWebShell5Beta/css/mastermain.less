@@ -3,8 +3,8 @@
 
 @header-heigth: 30px;
 @left-tabs-heigth: 30px;
-@collapse-pane-heigth: 30px;
 @left-pane-width: 250px;
+@collapse-btn-heigth: 30px;
 
 body {
     margin: 0;
@@ -122,7 +122,7 @@ a:active {
 }
 
 #divMainLeftPane .tool-window {
-    height: calc(~"100% - "@collapse-pane-heigth);
+    height: calc(~"100% - "@collapse-btn-heigth);
     margin: 0 0 0 @left-tabs-heigth;
     padding: 5px 0 0 0;
     display: none; /*block*/
@@ -226,28 +226,28 @@ a:active {
     top: -2px;
 }
 
-/* Collapse Pane */
+/* Collapse Left Pane */
 
-#divMainCollapsePane {
+#divMainCollapseLeftPaneBtn {
     position: absolute;
     bottom: 0;
     width: @left-pane-width - @left-tabs-heigth;
-    height: @collapse-pane-heigth;
+    height: @collapse-btn-heigth;
     margin: 0 0 0 @left-tabs-heigth;
     padding: 0px 10px;
     color: @menu-fore-color-dark;
+    cursor: pointer;
     font-size: 13px;
-    line-height: @collapse-pane-heigth;
+    line-height: @collapse-btn-heigth;
 }
 
-#divMainCollapsePane i {
+#divMainCollapseLeftPaneBtn i {
     margin-right: 10px;
     font-size: 19px;
     position: relative;
     top: 2px;
 }
 
-#divMainCollapsePane:hover {
+#divMainCollapseLeftPaneBtn:hover {
     color: @menu-item-hover-fore-color;
-    cursor: pointer;
 }

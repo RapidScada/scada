@@ -23,8 +23,10 @@
  * Modified : 2016
  */
 
+using Scada.Web.Plugins;
 using Scada.Web.Shell;
 using System;
+using System.Text;
 
 namespace Scada.Web
 {
@@ -34,19 +36,37 @@ namespace Scada.Web
     /// </summary>
     public partial class WFrmView : System.Web.UI.Page
     {
+        private UserData userData; // данные пользователя приложения
+                                   
+        
         /// <summary>
-        /// Добавить на страницу скрипт загрузки представления
-        /// </summary>
+                                   /// Добавить на страницу скрипт загрузки представления
+                                   /// </summary>
         private void AddLoadViewScript(string viewUrl)
         {
             ClientScript.RegisterStartupScript(GetType(), "Startup", 
                 "scada.view.load('" + ResolveUrl(viewUrl) + "');", true);
         }
 
+        /// <summary>
+        /// Генерировать HTML-код нижних закладок
+        /// </summary>
+        protected string GenerateBottomTabsHtml()
+        {
+            const string TabTemplate = "<div class='tab' data-code='{0}' data-url='{1}'>{2}</div>";
+
+            StringBuilder sbHtml = new StringBuilder();
+
+            foreach (ContentSpec dataWnd in userData.UserContent.DataWindows)
+                sbHtml.AppendFormat(TabTemplate, dataWnd.ContentTypeCode, ResolveUrl(dataWnd.Url), dataWnd.Name);
+
+            return sbHtml.ToString();
+        }
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            UserData userData = UserData.GetUserData();
+            userData = UserData.GetUserData();
             userData.CheckLoggedOn(true);
 
             if (!IsPostBack)
