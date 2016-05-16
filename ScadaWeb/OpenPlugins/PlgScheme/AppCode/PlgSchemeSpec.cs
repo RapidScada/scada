@@ -91,7 +91,7 @@ namespace Scada.Web.Plugins
         {
             get
             {
-                return new List<ViewSpec>() { new SchemeSpec() };
+                return new List<ViewSpec>() { new SchemeViewSpec() };
             }
         }
 

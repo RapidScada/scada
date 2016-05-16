@@ -65,7 +65,7 @@ namespace Scada.Web.Shell
         /// <summary>
         /// Получить элементы меню, доступные пользователю
         /// </summary>
-        public List<MenuItem> MenuItems { get; private set; }
+        public List<MenuItem> MenuItems { get; protected set; }
 
 
         /// <summary>

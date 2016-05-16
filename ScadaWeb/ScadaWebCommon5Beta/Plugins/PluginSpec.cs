@@ -93,7 +93,18 @@ namespace Scada.Web.Plugins
         /// <summary>
         /// Получить спецификации отчётов, которые реализуются плагином
         /// </summary>
-        public virtual List<RepSpec> RepSpecs
+        public virtual List<ContentSpec> ReportSpecs
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Получить спецификации окон данных, которые реализуются плагином
+        /// </summary>
+        public virtual List<ContentSpec> DataWindowSpecs
         {
             get
             {

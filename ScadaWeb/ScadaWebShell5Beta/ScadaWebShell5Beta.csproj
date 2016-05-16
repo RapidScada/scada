@@ -111,8 +111,6 @@
     <Content Include="images\gear.png" />
     <Content Include="images\treeview\document.png" />
     <Content Include="images\treeview\folder.png" />
-    <Content Include="images\treeview\scheme.png" />
-    <Content Include="images\treeview\table.png" />
     <Content Include="js\api\clientapi.js" />
     <Content Include="js\login.js" />
     <Content Include="js\mastermain.js" />

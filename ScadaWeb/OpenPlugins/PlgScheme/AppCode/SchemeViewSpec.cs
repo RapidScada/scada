@@ -29,21 +29,10 @@ namespace Scada.Web.Plugins
     /// Scheme view specification
     /// <para>Спецификация представления схем</para>
     /// </summary>
-    public class SchemeSpec : ViewSpec
+    public class SchemeViewSpec : ViewSpec
     {
         /// <summary>
         /// Получить код типа представления
-        /// </summary>
-        public override string IconUrl
-        {
-            get
-            {
-                return "~/plugins/Scheme/images/schemeicon.png";
-            }
-        }
-
-        /// <summary>
-        /// Получить ссылку на иконку типа представлений
         /// </summary>
         public override string ViewTypeCode
         {
@@ -51,6 +40,17 @@ namespace Scada.Web.Plugins
             {
                 // TODO: заменить на SchemeView после добавления поля ViewTypeCode в базу конфигурации
                 return "sch";
+            }
+        }
+
+        /// <summary>
+        /// Получить ссылку на иконку типа представлений
+        /// </summary>
+        public override string IconUrl
+        {
+            get
+            {
+                return "~/plugins/Scheme/images/schemeicon.png";
             }
         }
 

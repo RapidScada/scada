@@ -16,35 +16,46 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaWebCommon
- * Summary  : The base class for report specification
+ * Summary  : The base class for content specification
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
  * Modified : 2016
  */
 
+using System;
+
 namespace Scada.Web.Plugins
 {
     /// <summary>
-    /// The base class for report specification
-    /// <para>Родительский класс спецификации отчёта</para>
+    /// The base class for content specification
+    /// <para>Родительский класс спецификации контента</para>
     /// </summary>
-    public abstract class RepSpec
+    public abstract class ContentSpec : IComparable<ContentSpec>
     {
         /// <summary>
-        /// Получить код типа отчёта
+        /// Получить код типа контента
         /// </summary>
         /// <remarks>Используется для предоставления прав пользователям</remarks>
-        public abstract string RepTypeCode { get; }
+        public abstract string ContentTypeCode { get; }
 
         /// <summary>
-        /// Получить наименование отчёта
+        /// Получить наименование контента
         /// </summary>
         public abstract string Name { get; }
 
         /// <summary>
-        /// Получить ссылку на стартовую страницу отчёта
+        /// Получить ссылку на страницу контента
         /// </summary>
         public abstract string Url { get; }
+
+        
+        /// <summary>
+        /// Сравнить текущий объект с другим объектом такого же типа
+        /// </summary>
+        public int CompareTo(ContentSpec other)
+        {
+            return Name.CompareTo(other.Name);
+        }
     }
 }

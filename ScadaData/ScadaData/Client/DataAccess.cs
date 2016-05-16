@@ -118,7 +118,7 @@ namespace Scada.Client
                     dataCache.RefreshBaseTables();
 
                     DataTable tblRole = dataCache.BaseTables.RightTable;
-                    BaseTables.CheckIsNotEmpty(tblRole, true);
+                    BaseTables.CheckColumnsExist(tblRole, true);
                     tblRole.DefaultView.RowFilter = "RoleID = " + roleID;
 
                     return tblRole.DefaultView.Count > 0 ?
@@ -213,7 +213,7 @@ namespace Scada.Client
                     dataCache.RefreshBaseTables();
 
                     DataTable tblInterface = dataCache.BaseTables.InterfaceTable;
-                    BaseTables.CheckIsNotEmpty(tblInterface, true);
+                    BaseTables.CheckColumnsExist(tblInterface, true);
                     tblInterface.DefaultView.RowFilter = "ItfID = " + viewID;
 
                     if (tblInterface.DefaultView.Count > 0)
@@ -253,7 +253,7 @@ namespace Scada.Client
                     dataCache.RefreshBaseTables();
 
                     DataTable tblRight = dataCache.BaseTables.RightTable;
-                    BaseTables.CheckIsNotEmpty(tblRight, true);
+                    BaseTables.CheckColumnsExist(tblRight, true);
                     tblRight.DefaultView.RowFilter = "RoleID = " + roleID;
 
                     foreach (DataRowView rowView in tblRight.DefaultView)
@@ -275,6 +275,55 @@ namespace Scada.Client
         }
 
         /// <summary>
+        /// Получить права на контент по идентификатору роли
+        /// </summary>
+        public Dictionary<string, EntityRights> GetContentRights(int roleID)
+        {
+            lock (baseLock)
+            {
+                Dictionary<string, EntityRights> contentRightsDict = new Dictionary<string, EntityRights>();
+
+                try
+                {
+                    dataCache.RefreshBaseTables();
+
+                    DataTable tblInterface = dataCache.BaseTables.InterfaceTable;
+                    DataTable tblRight = dataCache.BaseTables.RightTable;
+                    BaseTables.CheckColumnsExist(tblInterface, true);
+                    BaseTables.CheckColumnsExist(tblRight, true);
+
+                    foreach (DataRowView itfRowView in tblInterface.DefaultView)
+                    {
+                        int contentTypeID = (int)itfRowView["ItfID"];
+                        string contentTypeCode = (string)itfRowView["Name"];
+
+                        if (string.IsNullOrEmpty(Path.GetExtension(contentTypeCode)))
+                        {
+                            tblRight.DefaultView.RowFilter = string.Format("ItfID = {0} and RoleID = {1}",
+                                contentTypeID, roleID);
+
+                            if (tblRight.DefaultView.Count > 0)
+                            {
+                                DataRowView rightRowView = tblRight.DefaultView[0];
+                                EntityRights rights = new EntityRights(
+                                    (bool)rightRowView["ViewRight"], (bool)rightRowView["CtrlRight"]);
+                                contentRightsDict[contentTypeCode] = rights;
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log.WriteException(ex, Localization.UseRussian ?
+                        "Ошибка при получении прав на контент для роли с ид.={0}" :
+                        "Error getting content access rights for the role with ID={0}", roleID);
+                }
+
+                return contentRightsDict;
+            }
+        }
+
+        /// <summary>
         /// Получить идентификатор пользователя по имени
         /// </summary>
         public int GetUserID(string username)
@@ -287,7 +336,7 @@ namespace Scada.Client
                     dataCache.RefreshBaseTables();
 
                     DataTable tblUser = dataCache.BaseTables.UserTable;
-                    BaseTables.CheckIsNotEmpty(tblUser, true);
+                    BaseTables.CheckColumnsExist(tblUser, true);
                     tblUser.DefaultView.RowFilter = "Name = '" + username + "'";
 
                     return tblUser.DefaultView.Count > 0 ?
@@ -327,7 +376,7 @@ namespace Scada.Client
                     dataCache.RefreshBaseTables();
 
                     DataTable tblEvType = dataCache.BaseTables.EvTypeTable;
-                    BaseTables.CheckIsNotEmpty(tblEvType, true);
+                    BaseTables.CheckColumnsExist(tblEvType, true);
                     tblEvType.DefaultView.RowFilter = "CnlStatus = " + stat;
 
                     if (tblEvType.DefaultView.Count > 0)

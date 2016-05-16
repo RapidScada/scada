@@ -53,7 +53,7 @@
     <Compile Include="ClientApiSvc.cs" />
     <Compile Include="DictUpdater.cs" />
     <Compile Include="Plugins\PluginSpec.cs" />
-    <Compile Include="Plugins\RepSpec.cs" />
+    <Compile Include="Plugins\ContentSpec.cs" />
     <Compile Include="Plugins\ViewSpec.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SettingsUpdater.cs" />
@@ -62,6 +62,7 @@
     <Compile Include="Shell\SortOrders.cs" />
     <Compile Include="Shell\TreeViewRenderer.cs" />
     <Compile Include="Shell\UrlTemplates.cs" />
+    <Compile Include="Shell\UserContent.cs" />
     <Compile Include="Shell\UserMenu.cs" />
     <Compile Include="Shell\UserViews.cs" />
     <Compile Include="Shell\ViewNode.cs" />

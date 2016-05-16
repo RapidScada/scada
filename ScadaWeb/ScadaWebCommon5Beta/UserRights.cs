@@ -37,17 +37,21 @@ namespace Scada.Web
     public class UserRights
     {
         /// <summary>
-        /// Право просмотра всех представлений
+        /// Права на все представления
         /// </summary>
-        protected bool viewAllViewsRight;
+        protected EntityRights allViewsRights;
         /// <summary>
-        /// Право управления для всех представлений
+        /// Права на весь контент
         /// </summary>
-        protected bool controlAllViewsRight;
+        protected EntityRights allContentRights;
         /// <summary>
         /// Права на предсталения
         /// </summary>
         protected Dictionary<int, EntityRights> viewRightsDict;
+        /// <summary>
+        /// Права на контент
+        /// </summary>
+        protected Dictionary<string, EntityRights> contentRightsDict;
 
 
         /// <summary>
@@ -70,9 +74,10 @@ namespace Scada.Web
         /// </summary>
         protected void SetToDefault()
         {
-            viewAllViewsRight = false;
-            controlAllViewsRight = false;
+            allViewsRights = EntityRights.NoRights;
+            allContentRights = EntityRights.NoRights;
             viewRightsDict = null;
+            contentRightsDict = null;
 
             ConfigRight = false;
         }
@@ -89,22 +94,24 @@ namespace Scada.Web
 
             if (roleID == BaseValues.Roles.Admin)
             {
-                viewAllViewsRight = true;
-                controlAllViewsRight = true;
+                allViewsRights = new EntityRights(true, true);
+                allContentRights = new EntityRights(true, true);
                 ConfigRight = true;
             }
             else if (roleID == BaseValues.Roles.Dispatcher)
             {
-                viewAllViewsRight = true;
-                controlAllViewsRight = true;
+                allViewsRights = new EntityRights(true, true);
+                allContentRights = new EntityRights(true, true);
             }
             else if (roleID == BaseValues.Roles.Guest)
             {
-                viewAllViewsRight = true;
+                allViewsRights = new EntityRights(true, false);
+                allContentRights = new EntityRights(true, false);
             }
             else if (BaseValues.Roles.Custom <= roleID && roleID < BaseValues.Roles.Err)
             {
                 viewRightsDict = dataAccess.GetViewRights(roleID);
+                contentRightsDict = dataAccess.GetContentRights(roleID);
             }
         }
 
@@ -113,14 +120,31 @@ namespace Scada.Web
         /// </summary>
         public EntityRights GetViewRights(int viewID)
         {
-            if (viewAllViewsRight)
+            if (allViewsRights.ViewRight)
             {
-                return new EntityRights(viewAllViewsRight, controlAllViewsRight);
+                return allViewsRights;
             }
             else
             {
                 EntityRights rights;
                 return viewRightsDict != null && viewRightsDict.TryGetValue(viewID, out rights) ?
+                    rights : EntityRights.NoRights;
+            }
+        }
+
+        /// <summary>
+        /// Получить права на контент
+        /// </summary>
+        public EntityRights GetContentRights(string contentTypeCode)
+        {
+            if (allContentRights.ViewRight)
+            {
+                return allContentRights;
+            }
+            else
+            {
+                EntityRights rights;
+                return contentRightsDict != null && contentRightsDict.TryGetValue(contentTypeCode, out rights) ?
                     rights : EntityRights.NoRights;
             }
         }

@@ -165,9 +165,9 @@ namespace Scada.Data
         }
 
         /// <summary>
-        /// Проверить, что таблица не пуста
+        /// Проверить, что колонки таблицы существуют
         /// </summary>
-        public static bool CheckIsNotEmpty(DataTable dataTable, bool throwOnEmpty = false)
+        public static bool CheckColumnsExist(DataTable dataTable, bool throwOnFail = false)
         {
             if (dataTable == null)
                 throw new ArgumentNullException("dataTable");
@@ -176,11 +176,11 @@ namespace Scada.Data
             {
                 return true;
             }
-            else if (throwOnEmpty)
+            else if (throwOnFail)
             {
                 throw new ScadaException(string.Format(Localization.UseRussian ?
-                    "Таблица [{0}] пуста." :
-                    "The table [{0}] is empty.", dataTable.TableName));
+                    "Таблица [{0}] не содержит колонок." :
+                    "The table [{0}] does not contain columns.", dataTable.TableName));
             }
             else
             {
