@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RepChartListDictionaries>
+<PlgSchemeDictionaries>
   <Dictionary key="Scada.Web.Plugins.Scheme.WFrmScheme.Js">
     <Phrase key="LoadSchemeError">Scheme loading failed. Try to reload scheme</Phrase>
     <Phrase key="UpdateError">Error updating scheme data</Phrase>
     <Phrase key="ReloadButton">Reload</Phrase>
   </Dictionary>
-</RepChartListDictionaries>
+</PlgSchemeDictionaries>

@@ -116,6 +116,11 @@ namespace Scada.Web
         /// </summary>
         public UserViews UserViews { get; private set; }
 
+        /// <summary>
+        /// Получить контент пользователя
+        /// </summary>
+        public UserContent UserContent { get; private set; }
+
 
         /// <summary>
         /// Получить ссылку на настройки веб-приложения
@@ -151,6 +156,7 @@ namespace Scada.Web
             UserRights = null;
             UserMenu = null;
             UserViews = null;
+            UserContent = null;
         }
 
         /// <summary>
@@ -264,6 +270,8 @@ namespace Scada.Web
                 UserMenu.Init(this);
                 UserViews = new UserViews(AppData.Log);
                 UserViews.Init(this, AppData.DataAccess);
+                UserContent = new UserContent(AppData.Log);
+                UserContent.Init(this);
                 return true;
             }
             else

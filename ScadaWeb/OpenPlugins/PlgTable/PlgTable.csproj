@@ -58,11 +58,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="plugins\Table\images\tableicon.png" />
+    <Content Include="plugins\Table\lang\PlgTable.ru-RU.xml" />
+    <Content Include="plugins\Table\lang\PlgTable.en-GB.xml" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppCode\Table\CustomDataWndSpec.cs" />
+    <Compile Include="AppCode\Table\EventsWndSpec.cs" />
+    <Compile Include="AppCode\Table\PlgPhrases.cs" />
     <Compile Include="AppCode\PlgTableSpec.cs" />
-    <Compile Include="AppCode\TableViewSpec.cs" />
+    <Compile Include="AppCode\Table\TableViewSpec.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -76,7 +81,6 @@
   <ItemGroup>
     <Folder Include="plugins\Table\css\" />
     <Folder Include="plugins\Table\js\" />
-    <Folder Include="plugins\Table\lang\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

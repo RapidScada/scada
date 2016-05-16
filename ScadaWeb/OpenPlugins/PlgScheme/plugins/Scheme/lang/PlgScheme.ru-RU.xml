@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RepChartListDictionaries>
+<PlgSchemeDictionaries>
   <Dictionary key="Scada.Web.Plugins.Scheme.WFrmScheme.Js">
     <Phrase key="LoadSchemeError">Ошибка при загрузке схемы. Попробуйте перезагрузить схему</Phrase>
     <Phrase key="UpdateError">Ошибка при обновлении данных схемы</Phrase>
     <Phrase key="ReloadButton">Перезагрузить</Phrase>
   </Dictionary>
-</RepChartListDictionaries>
+</PlgSchemeDictionaries>

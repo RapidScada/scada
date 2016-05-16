@@ -23,6 +23,7 @@
  * Modified : 2016
  */
 
+using Scada.Web.Plugins.Scheme;
 using System.Collections.Generic;
 using System.IO;
 

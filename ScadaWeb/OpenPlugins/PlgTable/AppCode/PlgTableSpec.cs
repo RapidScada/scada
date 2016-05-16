@@ -23,6 +23,7 @@
  * Modified : 2016
  */
 
+using Scada.Web.Plugins.Table;
 using System.Collections.Generic;
 using System.IO;
 
@@ -95,6 +96,17 @@ namespace Scada.Web.Plugins
             }
         }
 
+        /// <summary>
+        /// Получить спецификации окон данных, которые реализуются плагином
+        /// </summary>
+        public override List<ContentSpec> DataWindowSpecs
+        {
+            get
+            {
+                return new List<ContentSpec>() { new EventsWndSpec(), new CustomDataWndSpec() };
+            }
+        }
+
 
         /// <summary>
         /// Инициализировать плагин
@@ -103,7 +115,7 @@ namespace Scada.Web.Plugins
         {
             dictUpdater = new DictUpdater(
                 string.Format("{0}Table{1}lang{1}", AppDirs.PluginsDir, Path.DirectorySeparatorChar), 
-                "PlgTable", null, Log);
+                "PlgTable", PlgPhrases.Init, Log);
         }
 
         /// <summary>

@@ -39,6 +39,9 @@ namespace Scada.Web
         {
         }
 
+        /// <summary>
+        /// Конструктор
+        /// </summary>
         public DataTransferObject(object data)
             : this(true, "")
         {

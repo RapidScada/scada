@@ -23,7 +23,7 @@
  * Modified : 2016
  */
 
-namespace Scada.Web.Plugins
+namespace Scada.Web.Plugins.Table
 {
     /// <summary>
     /// Table view specification

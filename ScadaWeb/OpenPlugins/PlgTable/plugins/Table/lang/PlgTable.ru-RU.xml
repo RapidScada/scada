@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PlgTableDictionaries>
+  <Dictionary key="Scada.Web.Plugins.PlgTable">
+    <Phrase key="EventsTitle">События</Phrase>
+  </Dictionary>
+</PlgTableDictionaries>

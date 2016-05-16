@@ -15,52 +15,53 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : PlgScheme
- * Summary  : Scheme view specification
+ * Module   : PlgTable
+ * Summary  : Events data window specification
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
  * Modified : 2016
  */
 
-namespace Scada.Web.Plugins
+namespace Scada.Web.Plugins.Table
 {
     /// <summary>
-    /// Scheme view specification
-    /// <para>Спецификация представления схем</para>
+    /// Events data window specification
+    /// <para>Спецификация окна данных для отображения событий</para>
     /// </summary>
-    public class SchemeViewSpec : ViewSpec
+    public class EventsWndSpec : ContentSpec
     {
         /// <summary>
-        /// Получить код типа представления
+        /// Получить код типа контента
         /// </summary>
-        public override string ViewTypeCode
+        public override string ContentTypeCode
         {
             get
             {
-                // TODO: заменить на SchemeView после добавления поля ViewTypeCode в базу конфигурации
-                return "sch";
+                return "Events";
             }
         }
 
         /// <summary>
-        /// Получить ссылку на иконку типа представлений
+        /// Получить наименование контента
         /// </summary>
-        public override string IconUrl
+        public override string Name
         {
             get
             {
-                return "~/plugins/Scheme/images/schemeicon.png";
+                return PlgPhrases.EventsTitle;
             }
         }
 
-
         /// <summary>
-        /// Получить ссылку на представление с заданным идентификатором
+        /// Получить ссылку на страницу контента
         /// </summary>
-        public override string GetViewUrl(int viewID)
+        public override string Url
         {
-            return "~/plugins/Scheme/Scheme.aspx?viewID=" + viewID;
+            get
+            {
+                return "~/plugins/Table/Events.aspx";
+            }
         }
     }
 }
