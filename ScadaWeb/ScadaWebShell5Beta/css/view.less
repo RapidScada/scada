@@ -12,6 +12,7 @@
 
 #divView {
     min-height: 50px;
+    overflow: hidden; /*for iPad*/
 }
 
 #divViewContent iframe {
@@ -24,8 +25,9 @@
 }
 
 #divViewSplitter {
-    height: 7px;
+    height: 10px;
     background-color: @splitter-color;
+    border-bottom: 3px solid @content-back-color; /*pretend splitter thinner*/
     cursor: ns-resize;
     display: none; /*block*/
 }
@@ -36,6 +38,7 @@
     background-color: white;
     border-bottom: 1px solid @panel-border-color;
     display: none; /*block*/
+    overflow: hidden; /*for iPad*/
 }
 
 #divBottomTabs {
