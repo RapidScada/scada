@@ -36,17 +36,10 @@ namespace Scada.Web
     /// </summary>
     public partial class WFrmView : System.Web.UI.Page
     {
-        private UserData userData; // данные пользователя приложения
-                                   
-        
-        /// <summary>
-                                   /// Добавить на страницу скрипт загрузки представления
-                                   /// </summary>
-        private void AddLoadViewScript(string viewUrl)
-        {
-            ClientScript.RegisterStartupScript(GetType(), "Startup", 
-                "scada.view.load('" + ResolveUrl(viewUrl) + "');", true);
-        }
+        private UserData userData;       // данные пользователя приложения
+        protected int initialViewID;     // ид. первоначального представления
+        protected string initialViewUrl; // ссылка первоначального представления
+
 
         /// <summary>
         /// Генерировать HTML-код нижних закладок
@@ -69,20 +62,17 @@ namespace Scada.Web
             userData = UserData.GetUserData();
             userData.CheckLoggedOn(true);
 
-            if (!IsPostBack)
-            {
-                // получение ид. представления для загрузки
-                int viewID;
-                int.TryParse(Request.QueryString["viewID"], out viewID);
+            // получение ид. представления для загрузки
+            int.TryParse(Request.QueryString["viewID"], out initialViewID);
 
-                // получение ссылки представления
-                string viewUrl = viewID > 0 ? 
-                    userData.UserViews.GetViewUrl(viewID) :
-                    userData.UserViews.GetFirstViewUrl();
+            // получение ссылки представления
+            if (initialViewID > 0)
+                initialViewUrl = userData.UserViews.GetViewUrl(initialViewID);
+            else
+                userData.UserViews.GetFirstView(out initialViewID, out initialViewUrl);
 
-                // добавление скрипта загрузки представления
-                AddLoadViewScript(string.IsNullOrEmpty(viewUrl) ? UrlTemplates.NoView : viewUrl);
-            }
+            if (string.IsNullOrEmpty(initialViewUrl))
+                initialViewUrl = ResolveUrl(UrlTemplates.NoView);
         }
     }
 }
