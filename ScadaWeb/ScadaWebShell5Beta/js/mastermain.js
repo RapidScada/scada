@@ -33,6 +33,11 @@ scada.masterMain = {
         $("body").css("padding-top", "");
     },
 
+    // Save the left pane visibility in the cookies
+    _saveLeftPaneVisible: function () {
+        scada.utils.setCookie("LeftPaneVisible", this.leftPaneExpanded);
+    },
+
     // Update layout of the master page
     updateLayout: function () {
         var divMainHeader = $("#divMainHeader");
@@ -44,7 +49,7 @@ scada.masterMain = {
         divMainLeftPane.outerHeight(paneH);
         divMainTabs.outerWidth(paneH);
         $("#divMainContent").outerHeight(paneH);
-        $(window).trigger("scada:updateLayout");
+        $(window).trigger(scada.events.updateLayout);
     },
 
     // Choose a tool window according to the current URL and activate it
@@ -91,7 +96,8 @@ scada.masterMain = {
         $("#spanMainShowMenuBtn").css("display", "inline-block");
         this._hideLeftPane();
         this.leftPaneExpanded = false;
-        $(window).trigger("scada:updateLayout");
+        this._saveLeftPaneVisible();
+        $(window).trigger(scada.events.updateLayout);
     },
 
     // Expand the left pane and hide the menu button
@@ -99,7 +105,8 @@ scada.masterMain = {
         this._showLeftPane();
         $("#spanMainShowMenuBtn").css("display", "none");
         this.leftPaneExpanded = true;
-        $(window).trigger("scada:updateLayout");
+        this._saveLeftPaneVisible();
+        $(window).trigger(scada.events.updateLayout);
     },
 
     // Hide all the menus and switch browser to fullscreen mode
@@ -134,10 +141,18 @@ scada.masterMain = {
         }
     },
 
+    // Load page visual state from the cookies
+    loadVisualState: function () {
+        var leftPaneVisible = scada.utils.getCookie("LeftPaneVisible");
+        if (leftPaneVisible == "false") {
+            this.collapseLeftPane();
+        }
+    },
+
     // Load view without reloading the whole page if possible
     loadView: function (viewID, viewUrl) {
-        if (scada.view.load) {
-            scada.view.load(viewUrl);
+        if (scada.view.loadView) {
+            scada.view.loadView(viewID, viewUrl);
         } else {
             location = scada.env.rootPath + "View.aspx?viewID=" + viewID;
         }
@@ -145,8 +160,15 @@ scada.masterMain = {
 };
 
 $(document).ready(function () {
+    // unbind events to avoid doubling in case of using ASP.NET AJAX
+    $(window).off();
+    $(document).off();
+    $("body").off();
+
+    // page setup
     scada.masterMain.updateLayout();
     scada.masterMain.chooseToolWindow();
+    scada.masterMain.loadVisualState();
     scada.treeView.prepare();
 
     // update layout on window resize
@@ -155,27 +177,37 @@ $(document).ready(function () {
     });
 
     // activate a tool window if the tab is clicked
-    $("#divMainTabs .tab").click(function () {
+    $("#divMainTabs .tab")
+    .off()
+    .click(function () {
         scada.masterMain.activateToolWindow($(this));
     });
 
     // collapse the left pane on the button click
-    $("#divMainCollapseLeftPaneBtn").click(function () {
+    $("#divMainCollapseLeftPaneBtn")
+    .off()
+    .click(function () {
         scada.masterMain.collapseLeftPane();
     });
 
     // expand the left pane on the button click
-    $("#spanMainShowMenuBtn").click(function () {
+    $("#spanMainShowMenuBtn")
+    .off()
+    .click(function () {
         scada.masterMain.expandLeftPane();
     });
 
     // switch to full screen mode on the button click
-    $("#lblMainFullscreenBtn").click(function () {
+    $("#lblMainFullscreenBtn")
+    .off()
+    .click(function () {
         scada.masterMain.switchToFullscreen();
     });
 
     // switch to normal view mode on the button click
-    $("#lblMainNormalViewBtn").click(function () {
+    $("#lblMainNormalViewBtn")
+    .off()
+    .click(function () {
         scada.masterMain.switchToNormalView();
     });
 

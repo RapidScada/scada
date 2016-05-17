@@ -114,6 +114,8 @@
     <Content Include="js\api\clientapi.js" />
     <Content Include="js\login.js" />
     <Content Include="js\mastermain.js" />
+    <Content Include="js\scadaevents.js" />
+    <Content Include="js\splitter.js" />
     <Content Include="js\treeview.js" />
     <Content Include="lib\bootstrap\css\bootstrap-theme.css" />
     <Content Include="lib\bootstrap\css\bootstrap-theme.min.css" />

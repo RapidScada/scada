@@ -187,21 +187,33 @@ namespace Scada.Web.Shell
         }
 
         /// <summary>
-        /// Получить ссылку первого доступного представления
+        /// Получить первое доступное представление
         /// </summary>
-        public string GetFirstViewUrl()
+        public bool GetFirstView(out int viewID, out string viewUrl)
         {
+            viewID = 0;
+            viewUrl = "";
+
             try
             {
                 ViewNode viewNode = FindNonEmptyViewNode(ViewNodes);
-                return viewNode == null ? "" : viewNode.ViewUrl;
+                if (viewNode == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    viewID = viewNode.ViewID;
+                    viewUrl = viewNode.ViewUrl;
+                    return true;
+                }
             }
             catch (Exception ex)
             {
                 log.WriteException(ex, Localization.UseRussian ?
-                    "Ошибка при получении ссылки первого доступного представления" :
-                    "Error getting URL of the first accessible view");
-                return "";
+                    "Ошибка при получении первого доступного представления" :
+                    "Error getting the first accessible view");
+                return false;
             }
         }
     }

@@ -18,6 +18,7 @@
     <script type="text/javascript" src="<%= ResolveClientUrl("~/lib/jquery/jquery.min.js") %>"></script>
     <script type="text/javascript" src="<%= ResolveClientUrl("~/lib/bootstrap/js/bootstrap.min.js") %>"></script>
     <script type="text/javascript" src="<%= ResolveClientUrl("~/js/scadautils.js") %>"></script>
+    <script type="text/javascript" src="<%= ResolveClientUrl("~/js/scadaevents.js") %>"></script>
     <script type="text/javascript" src="<%= ResolveClientUrl("~/js/treeview.js") %>"></script>
     <script type="text/javascript">
         var scada = scada || {};

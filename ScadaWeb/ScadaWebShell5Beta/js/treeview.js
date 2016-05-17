@@ -15,6 +15,7 @@
 // Rapid SCADA namespace
 var scada = scada || {};
 
+// Tree views processing object
 scada.treeView = {
     // Expand or collapse tree node
     _toggleTreeNode: function (divExpander) {
@@ -56,7 +57,9 @@ scada.treeView = {
 
         // go to link or toggle tree node on click
         var thisTreeView = this;
-        allNodes.click(function () {
+        allNodes
+        .off()
+        .click(function () {
             var link = $(this).find("a");
 
             if (link.length > 0) {
