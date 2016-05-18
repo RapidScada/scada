@@ -112,11 +112,12 @@
     <Content Include="images\treeview\document.png" />
     <Content Include="images\treeview\folder.png" />
     <Content Include="js\api\clientapi.js" />
+    <Content Include="js\api\viewhub.js" />
     <Content Include="js\login.js" />
     <Content Include="js\mastermain.js" />
-    <Content Include="js\scadaevents.js" />
-    <Content Include="js\splitter.js" />
-    <Content Include="js\treeview.js" />
+    <Content Include="js\api\scadaevents.js" />
+    <Content Include="js\controls\splitter.js" />
+    <Content Include="js\controls\treeview.js" />
     <Content Include="lib\bootstrap\css\bootstrap-theme.css" />
     <Content Include="lib\bootstrap\css\bootstrap-theme.min.css" />
     <Content Include="lib\bootstrap\css\bootstrap.css" />
@@ -130,7 +131,7 @@
     <Content Include="lib\font-awesome\fonts\fontawesome-webfont.svg" />
     <Content Include="lib\jquery\jquery.js" />
     <Content Include="lib\jquery\jquery.min.js" />
-    <Content Include="js\scadautils.js" />
+    <Content Include="js\api\scadautils.js" />
     <Content Include="js\view.js" />
     <Content Include="lang\ScadaWeb.en-GB.xml" />
     <Content Include="lang\ScadaWeb.ru-RU.xml" />
