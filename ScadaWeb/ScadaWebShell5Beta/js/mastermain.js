@@ -49,7 +49,7 @@ scada.masterMain = {
         divMainLeftPane.outerHeight(paneH);
         divMainTabs.outerWidth(paneH);
         $("#divMainContent").outerHeight(paneH);
-        $(window).trigger(scada.events.updateLayout);
+        $(window).trigger(scada.eventTypes.updateLayout);
     },
 
     // Choose a tool window according to the current URL and activate it

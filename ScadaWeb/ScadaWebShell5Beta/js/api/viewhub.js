@@ -8,6 +8,9 @@
 /*
  * Requires:
  * - jquery
+ *
+ * Optional:
+ * - dialogs.js
  */
 
 // Rapid SCADA namespace
@@ -23,6 +26,9 @@ scada.ViewHub = function () {
 
     // Data window JavaScript object
     this.dataWindow = null;
+
+    // Reference to a dialogs object
+    this.dialogs = scada.dialogs;
 };
 
 // Navigate to the specified view
@@ -34,21 +40,6 @@ scada.ViewHub.prototype.navigate = function (viewID, viewUrl) {
 scada.ViewHub.prototype.getDataWindowUrl = function (initialUrl) {
 
 };
-
-// Show chart web page
-scada.ViewHub.prototype.showChart = function (viewID, cnlNums) {
-
-};
-
-// Show command dialog
-scada.ViewHub.prototype.showCmdDialog = function (viewID, ctrlCnlNum) {
-
-};
-
-// Show event acknowledgement dialog
-scada.ViewHub.prototype.showEventAckDialog = function (viewID, year, month, day, evNum) {
-
-}
 
 // Add the specified view to the hub
 scada.ViewHub.prototype.addView = function (wnd) {

@@ -9,7 +9,38 @@
 // Rapid SCADA namespace
 var scada = scada || {};
 
+// JavaScript utilities object
 scada.utils = {
+    // Default cookie expiration period in days
+    cookieExpiration: 7,
+
+    // Get cookie
+    getCookie: function (name) {
+        var cookie = " " + document.cookie;
+        var search = " " + name + "=";
+        var offset = cookie.indexOf(search);
+
+        if (offset >= 0) {
+            offset += search.length;
+            var end = cookie.indexOf(";", offset)
+
+            if (end < 0)
+                end = cookie.length;
+
+            return decodeURIComponent(cookie.substring(offset, end));
+        } else {
+            return null;
+        }
+    },
+
+    // Set cookie
+    setCookie: function (name, value, opt_expDays) {
+        var expDays = opt_expDays ? opt_expDays : this.cookieExpiration;
+        var expires = new Date();
+        expires.setDate(expires.getDate() + expDays);
+        document.cookie = name + "=" + encodeURIComponent(value) + "; expires=" + expires.toUTCString();
+    },
+
     // Returns the current time string
     getCurTime: function () {
         return new Date().toLocaleTimeString("en-GB");

@@ -171,7 +171,7 @@ $(document).ready(function () {
     .resize(function () {
         scada.view.updateLayout();
     })
-    .on(scada.events.updateLayout, function () {
+    .on(scada.eventTypes.updateLayout, function () {
         scada.view.updateLayout();
     });
 

@@ -94,10 +94,10 @@
     <Content Include="css\noview.min.css">
       <DependentUpon>noview.css</DependentUpon>
     </Content>
-    <Content Include="css\treeview.css">
+    <Content Include="css\controls\treeview.css">
       <DependentUpon>treeview.less</DependentUpon>
     </Content>
-    <Content Include="css\treeview.min.css">
+    <Content Include="css\controls\treeview.min.css">
       <DependentUpon>treeview.css</DependentUpon>
     </Content>
     <Content Include="css\view.css">
@@ -112,10 +112,11 @@
     <Content Include="images\treeview\document.png" />
     <Content Include="images\treeview\folder.png" />
     <Content Include="js\api\clientapi.js" />
+    <Content Include="js\api\dialogs.js" />
     <Content Include="js\api\viewhub.js" />
     <Content Include="js\login.js" />
     <Content Include="js\mastermain.js" />
-    <Content Include="js\api\scadaevents.js" />
+    <Content Include="js\api\eventypes.js" />
     <Content Include="js\controls\splitter.js" />
     <Content Include="js\controls\treeview.js" />
     <Content Include="lib\bootstrap\css\bootstrap-theme.css" />
@@ -131,7 +132,7 @@
     <Content Include="lib\font-awesome\fonts\fontawesome-webfont.svg" />
     <Content Include="lib\jquery\jquery.js" />
     <Content Include="lib\jquery\jquery.min.js" />
-    <Content Include="js\api\scadautils.js" />
+    <Content Include="js\api\utils.js" />
     <Content Include="js\view.js" />
     <Content Include="lang\ScadaWeb.en-GB.xml" />
     <Content Include="lang\ScadaWeb.ru-RU.xml" />
@@ -258,7 +259,7 @@
     <Content Include="lib\open-sans\fonts\open-sans-v13-latin-ext_cyrillic_latin_cyrillic-ext_greek-ext_vietnamese_greek-regular.ttf" />
     <Content Include="lib\open-sans\fonts\open-sans-v13-latin-ext_cyrillic_latin_cyrillic-ext_greek-ext_vietnamese_greek-regular.woff" />
     <Content Include="lib\open-sans\fonts\open-sans-v13-latin-ext_cyrillic_latin_cyrillic-ext_greek-ext_vietnamese_greek-regular.woff2" />
-    <Content Include="css\treeview.less" />
+    <Content Include="css\controls\treeview.less" />
     <Content Include="css\view.less" />
     <Content Include="css\noview.less" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
