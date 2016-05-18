@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2014
- * Modified : 2015
+ * Modified : 2016
  */
 
 using Scada;
@@ -114,6 +114,8 @@ namespace ScadaAdmin
         public static string CmdValsNotFound { get; private set; }
         public static string CreateCnlsImpossible { get; private set; }
         public static string CreateCnlsStart { get; private set; }
+        public static string InCnlNameTrancated { get; private set; }
+        public static string CtrlCnlNameTrancated { get; private set; }
         public static string NumFormatNotFound { get; private set; }
         public static string TextFormatNotFound { get; private set; }
         public static string AddedInCnlsCount { get; private set; }
@@ -280,6 +282,8 @@ namespace ScadaAdmin
             CmdValsNotFound = "Не найдены значения команды \"{0}\".";
             CreateCnlsImpossible = "Создание каналов невозможно.";
             CreateCnlsStart = "Создание каналов.";
+            InCnlNameTrancated = "Наименование входного канала {0} было обрезано.";
+            CtrlCnlNameTrancated = "Наименование канала управления {0} было обрезано.";
             NumFormatNotFound = "Не найден формат входного канала {0}. Описание формата: числовой, количество знаков дробной части равно {1}.";
             TextFormatNotFound = "Не найден формат входного канала {0}. Описание формата: текстовый.";
             AddedInCnlsCount = "Добавлено входных каналов: {0}.";
@@ -452,6 +456,8 @@ namespace ScadaAdmin
                 CmdValsNotFound = dict.GetPhrase("CmdValsNotFound", CmdValsNotFound);
                 CreateCnlsImpossible = dict.GetPhrase("CreateCnlsImpossible", CreateCnlsImpossible);
                 CreateCnlsStart = dict.GetPhrase("CreateCnlsStart", CreateCnlsStart);
+                InCnlNameTrancated = dict.GetPhrase("InCnlNameTrancated", InCnlNameTrancated);
+                CtrlCnlNameTrancated = dict.GetPhrase("CtrlCnlNameTrancated", CtrlCnlNameTrancated);
                 NumFormatNotFound = dict.GetPhrase("NumFormatNotFound", NumFormatNotFound);
                 TextFormatNotFound = dict.GetPhrase("TextFormatNotFound", TextFormatNotFound);
                 AddedInCnlsCount = dict.GetPhrase("AddedInCnlsCount", AddedInCnlsCount);

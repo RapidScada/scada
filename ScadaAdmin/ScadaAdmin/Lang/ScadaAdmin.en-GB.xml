@@ -120,6 +120,8 @@
     <Phrase key="CmdValsNotFound">Command values &quot;{0}&quot; not found.</Phrase>
     <Phrase key="CreateCnlsImpossible">It is imposible to create channels.</Phrase>
     <Phrase key="CreateCnlsStart">Create channels.</Phrase>
+    <Phrase key="InCnlNameTrancated">Input channel {0} name was trancated.</Phrase>
+    <Phrase key="CtrlCnlNameTrancated">Output channel {0} name was trancated.</Phrase>
     <Phrase key="NumFormatNotFound">Input channel {0} format not found. Format description: numeric, number of decimal digits is {1}.</Phrase>
     <Phrase key="TextFormatNotFound">Input channel {0} format not found. Format description: textual.</Phrase>
     <Phrase key="AddedInCnlsCount">Count of added input channels: {0}.</Phrase>
