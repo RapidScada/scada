@@ -60,12 +60,15 @@ scada.treeView = {
         allNodes
         .off()
         .click(function () {
-            var link = $(this).find("a");
+            var node = $(this);
+            var link = node.find("a");
 
             if (link.length > 0) {
+                allNodes.removeClass("selected");
+                node.addClass("selected");
                 scada.utils.clickLink(link);
             } else {
-                var expander = $(this).find(".expander");
+                var expander = node.find(".expander");
                 if (!expander.hasClass("empty")) {
                     thisTreeView._toggleTreeNode(expander);
                 }
