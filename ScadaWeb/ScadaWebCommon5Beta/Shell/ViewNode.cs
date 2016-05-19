@@ -152,7 +152,8 @@ namespace Scada.Web.Shell
         /// </summary>
         public bool IsSelected(object selObj)
         {
-            return false;
+            int selViewID = selObj is int ? (int)selObj : 0;
+            return selViewID > 0 && selViewID == ViewID;
         }
     }
 }

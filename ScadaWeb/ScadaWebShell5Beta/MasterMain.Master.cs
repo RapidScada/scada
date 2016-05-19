@@ -46,6 +46,12 @@ namespace Scada.Web
 
 
         /// <summary>
+        /// Ид. выбранного представления
+        /// </summary>
+        public int SelectedViewID = 0;
+
+
+        /// <summary>
         /// Генерировать HTML-код главного меню
         /// </summary>
         protected string GenerateMainMenuHtml()
@@ -65,7 +71,7 @@ namespace Scada.Web
                 FolderImageUrl = ResolveUrl(FolderImageUrl),
                 DocumentImageUrl = ResolveUrl(DocumentImageUrl)
             };
-            return treeViewRenderer.GenerateHtml(userData.UserViews.ViewNodes, null, options);
+            return treeViewRenderer.GenerateHtml(userData.UserViews.ViewNodes, SelectedViewID, options);
         }
 
 

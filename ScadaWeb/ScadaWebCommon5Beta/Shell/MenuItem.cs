@@ -166,7 +166,7 @@ namespace Scada.Web.Shell
         /// </summary>
         bool IWebTreeNode.IsSelected(object selObj)
         {
-            return selObj == null ? false : string.Equals(Url, selObj.ToString(), StringComparison.OrdinalIgnoreCase);
+            return selObj != null && string.Equals(Url, selObj.ToString(), StringComparison.OrdinalIgnoreCase);
         }
     }
 }

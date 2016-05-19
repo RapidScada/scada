@@ -63,10 +63,9 @@ namespace Scada.Web
             userData = UserData.GetUserData();
             userData.CheckLoggedOn(true);
 
-            // получение ид. представления для загрузки
+            // получение ид. и ссылки представления для загрузки
             int.TryParse(Request.QueryString["viewID"], out initialViewID);
 
-            // получение ссылки представления
             if (initialViewID > 0)
                 initialViewUrl = userData.UserViews.GetViewUrl(initialViewID);
             else
@@ -74,6 +73,8 @@ namespace Scada.Web
 
             if (string.IsNullOrEmpty(initialViewUrl))
                 initialViewUrl = ResolveUrl(UrlTemplates.NoView);
+
+            ((MasterMain)Master).SelectedViewID = initialViewID;
         }
     }
 }
