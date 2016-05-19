@@ -74,7 +74,9 @@
     <Content Include="ClientApiSvc.svc" />
     <Content Include="config\CommSettings.xml" />
     <Content Include="js\api\clientapi.js" />
+    <Content Include="js\api\eventtypes.js" />
     <Content Include="js\api\utils.js" />
+    <Content Include="js\api\viewhub.js" />
     <Content Include="lang\ScadaData.en-GB.xml" />
     <Content Include="lang\ScadaWeb.en-GB.xml" />
     <Content Include="lib\jquery\jquery.min.js" />

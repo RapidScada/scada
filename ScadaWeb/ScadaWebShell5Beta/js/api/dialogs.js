@@ -3,9 +3,7 @@
  * Author   : Mikhail Shiryaev
  * Created  : 2016
  * Modified : 2016
- */
-
-/*
+ *
  * Requires external objects:
  * - scada.chart
  * - scada.cmd

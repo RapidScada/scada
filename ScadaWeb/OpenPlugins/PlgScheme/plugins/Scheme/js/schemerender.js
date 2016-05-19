@@ -8,6 +8,7 @@
  * Requires:
  * - jquery
  * - clientapi.js
+ * - eventtypes.js
  * - schemecommon.js
  *
  * Inheritance hierarchy:
@@ -138,8 +139,8 @@ scada.scheme.SchemeRenderer.prototype.createDom = function (elem, renderContext)
     // set title
     if (props.Title) {
         document.title = props.Title + " - Rapid SCADA";
-        if (window.parent) {
-            window.parent.document.title = document.title;
+        if (scada.scheme.viewHub) {
+            scada.scheme.viewHub.notify(window, scada.eventTypes.viewTitleChanged, document.title);
         }
     }
 
@@ -266,18 +267,28 @@ scada.scheme.ElementRenderer.prototype.bindAction = function (jqObj, elem) {
     var props = elem.props;
 
     if (props.Action) {
-        jqObj.css("cursor", "pointer");
+        var dialogs = scada.scheme.viewHub ? scada.scheme.viewHub.dialogs : null;
 
-        jqObj.click(function () {
+        jqObj
+        .css("cursor", "pointer")
+        .click(function () {
             switch (props.Action) {
                 case Actions.DRAW_DIAGRAM:
                     if (props.InCnlNum > 0) {
-                        alert("Draw diagramm of the input channel " + props.InCnlNum); // TODO: use SCADA API
+                        if (dialogs) {
+                            dialogs.showChart(scada.scheme.viewHub.currentViewID, props.InCnlNum);
+                        } else {
+                            console.warn("Unable to show chart because viewHub.dialogs is undefined");
+                        }
                     }
                     break;
                 case Actions.SEND_COMMAND:
                     if (props.CtrlCnlNum > 0) {
-                        alert("Send command for the output channel " + props.CtrlCnlNum); // TODO: use SCADA API
+                        if (dialogs) {
+                            dialogs.showCmd(scada.scheme.viewHub.currentViewID, props.CtrlCnlNum);
+                        } else {
+                            console.warn("Unable to show command dialog because viewHub.dialogs is undefined");
+                        }
                     }
                     break;
             }

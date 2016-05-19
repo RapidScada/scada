@@ -6,7 +6,8 @@
  * Modified : 2016
  *
  * Requires:
- * nothing
+ * - jquery
+ * - viewhub.js
  */
 
 // Rapid SCADA namespace
@@ -119,3 +120,6 @@ scada.scheme.calc = {
         }
     }
 }
+
+// The view hub object
+scada.scheme.viewHub = scada.viewHubLocator.getViewHub();

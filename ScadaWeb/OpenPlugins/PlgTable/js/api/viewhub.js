@@ -3,9 +3,7 @@
  * Author   : Mikhail Shiryaev
  * Created  : 2016
  * Modified : 2016
- */
-
-/*
+ *
  * Requires:
  * - jquery
  * - eventtypes.js
@@ -98,7 +96,7 @@ scada.viewHubLocator = {
             if (wnd.viewHub) {
                 return wnd.viewHub;
             }
-            wnd = window.parent;
+            wnd = wnd == window.top ? null : window.parent;
         }
         return null;
     }
