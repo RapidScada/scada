@@ -56,7 +56,7 @@ scada.clientAPI = {
                 var parsedData = $.parseJSON(data.d);
                 if (parsedData.Success) {
                     scada.utils.logSuccessfulRequest(operation/*, data*/);
-                    callback(true, parsedData.Data ? parsedData.Data : parsedData);
+                    callback(true, parsedData.Data == null ? parsedData : parsedData.Data);
                 } else {
                     scada.utils.logServiceError(operation, parsedData.ErrorMessage);
                     callback(false, errorResult);
@@ -73,9 +73,17 @@ scada.clientAPI = {
         });
     },
 
+    // Check that a user is logged on.
+    // callback is function (success, loggedOn)
+    checkLoggedOn: function (callback) {
+        this._request(
+            "ClientApiSvc.svc/CheckLoggedOn", "",
+            callback, false);
+    },
+
     // Get current value and status of the input channel.
     // callback is function (success, cnlData)
-    getCurCnlData: function (cnlNum, cnlNum) {
+    getCurCnlData: function (cnlNum, callback) {
         this._request(
             "ClientApiSvc.svc/GetCurCnlData",
             "?cnlNum=" + cnlNum,

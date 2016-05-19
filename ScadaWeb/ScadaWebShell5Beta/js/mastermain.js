@@ -2,6 +2,9 @@
 scada.view = scada.view || {}; // defined if the current page is View.aspx
 
 scada.masterMain = {
+    // Check user logged on rate, ms
+    _checkLoggedOnRate: 10000,
+
     // The left pane, which displays tool windows, is expanded
     leftPaneExpanded: true,
 
@@ -36,6 +39,20 @@ scada.masterMain = {
     // Save the left pane visibility in the cookies
     _saveLeftPaneVisible: function () {
         scada.utils.setCookie("LeftPaneVisible", this.leftPaneExpanded);
+    },
+
+    // Check that a user is logged on
+    _checkLoggedOn: function () {
+        var thisObj = scada.masterMain;
+        scada.clientAPI.checkLoggedOn(function (success, loggedOn) {
+            if (loggedOn) {
+                // enqueue the next check
+                setTimeout(thisObj._checkLoggedOn, thisObj._checkLoggedOnRate);
+            } else {
+                // redirect to login page
+                location.href = scada.env.rootPath + "Login.aspx";
+            }
+        });
     },
 
     // Update layout of the master page
@@ -156,6 +173,11 @@ scada.masterMain = {
         } else {
             location = scada.env.rootPath + "View.aspx?viewID=" + viewID;
         }
+    },
+
+    // Start cyclic checking user logged on
+    startCheckingLoggedOn: function () {
+        setTimeout(this._checkLoggedOn, this._checkLoggedOnRate);
     }
 };
 
@@ -169,6 +191,7 @@ $(document).ready(function () {
     scada.masterMain.updateLayout();
     scada.masterMain.chooseToolWindow();
     scada.masterMain.loadVisualState();
+    scada.masterMain.startCheckingLoggedOn();
     scada.treeView.prepare();
 
     // update layout on window resize

@@ -415,10 +415,14 @@ namespace Scada.Web
         /// <summary>
         /// Проверить, что пользователь вошёл систему
         /// </summary>
-        public void CheckLoggedOn()
+        public bool CheckLoggedOn(bool throwOnFail = true)
         {
-            if (!UserMonitor.UserIsLoggedOn(WebOperationContext.Current))
+            if (UserMonitor.UserIsLoggedOn(WebOperationContext.Current))
+                return true;
+            else if (throwOnFail)
                 throw new ScadaException(WebPhrases.NotLoggedOn);
+            else
+                return false;
         }
 
         /// <summary>

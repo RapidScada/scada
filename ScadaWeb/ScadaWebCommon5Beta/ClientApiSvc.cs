@@ -162,6 +162,28 @@ namespace Scada.Web
 
 
         /// <summary>
+        /// Проверить, что пользователь вошёл систему
+        /// </summary>
+        /// <remarks>Возвращает bool, упакованный в DataTransferObject, в формате в JSON</remarks>
+        [OperationContract]
+        [WebGet]
+        public string CheckLoggedOn()
+        {
+            try
+            {
+                bool loggedOn = AppData.CheckLoggedOn(false);
+                return JsSerializer.Serialize(new DataTransferObject(loggedOn));
+            }
+            catch (Exception ex)
+            {
+                AppData.Log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при проверке того, что пользователь вошел в систему" :
+                    "Error checking that a user is logged on");
+                return GetErrorDtoJs(ex);
+            }
+        }
+
+        /// <summary>
         /// Получить текущие данные входного канала
         /// </summary>
         /// <remarks>Возвращает SrezTableLight.CnlData, упакованный в DataTransferObject, в формате в JSON</remarks>
