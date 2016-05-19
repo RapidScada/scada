@@ -12,8 +12,8 @@
     "inputFile": "css/login.less"
   },
   {
-    "outputFile": "css/treeview.css",
-    "inputFile": "css/treeview.less"
+    "outputFile": "css/controls/treeview.css",
+    "inputFile": "css/controls/treeview.less"
   },
   {
     "outputFile": "css/view.css",

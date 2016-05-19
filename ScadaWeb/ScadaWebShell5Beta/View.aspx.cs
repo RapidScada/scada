@@ -46,12 +46,13 @@ namespace Scada.Web
         /// </summary>
         protected string GenerateBottomTabsHtml()
         {
-            const string TabTemplate = "<div class='tab' data-code='{0}' data-url='{1}'>{2}</div>";
+            const string TabTemplate = "<div class='tab' data-code='{0}' data-url='{1}' data-depends='{2}'>{3}</div>";
 
             StringBuilder sbHtml = new StringBuilder();
 
-            foreach (ContentSpec dataWnd in userData.UserContent.DataWindows)
-                sbHtml.AppendFormat(TabTemplate, dataWnd.ContentTypeCode, ResolveUrl(dataWnd.Url), dataWnd.Name);
+            foreach (DataWindowSpec dataWnd in userData.UserContent.DataWindows)
+                sbHtml.AppendFormat(TabTemplate, dataWnd.ContentTypeCode, ResolveUrl(dataWnd.Url), 
+                    dataWnd.DependsOnView ? "true" : "false", dataWnd.Name);
 
             return sbHtml.ToString();
         }

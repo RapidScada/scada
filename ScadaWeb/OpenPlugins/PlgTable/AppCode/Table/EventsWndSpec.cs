@@ -29,7 +29,7 @@ namespace Scada.Web.Plugins.Table
     /// Events data window specification
     /// <para>Спецификация окна данных для отображения событий</para>
     /// </summary>
-    public class EventsWndSpec : ContentSpec
+    public class EventsWndSpec : DataWindowSpec
     {
         /// <summary>
         /// Получить код типа контента
@@ -63,6 +63,17 @@ namespace Scada.Web.Plugins.Table
             get
             {
                 return "~/plugins/Table/Events.aspx";
+            }
+        }
+
+        /// <summary>
+        /// Получить признак, что содержимое окна зависит от текущего представления
+        /// </summary>
+        public override bool DependsOnView
+        {
+            get
+            {
+                return true;
             }
         }
     }

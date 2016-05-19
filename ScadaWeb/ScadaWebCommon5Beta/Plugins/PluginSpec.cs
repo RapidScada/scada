@@ -104,7 +104,7 @@ namespace Scada.Web.Plugins
         /// <summary>
         /// Получить спецификации окон данных, которые реализуются плагином
         /// </summary>
-        public virtual List<ContentSpec> DataWindowSpecs
+        public virtual List<DataWindowSpec> DataWindowSpecs
         {
             get
             {

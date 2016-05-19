@@ -116,7 +116,7 @@
     <Content Include="js\api\viewhub.js" />
     <Content Include="js\login.js" />
     <Content Include="js\mastermain.js" />
-    <Content Include="js\api\eventypes.js" />
+    <Content Include="js\api\eventtypes.js" />
     <Content Include="js\controls\splitter.js" />
     <Content Include="js\controls\treeview.js" />
     <Content Include="lib\bootstrap\css\bootstrap-theme.css" />

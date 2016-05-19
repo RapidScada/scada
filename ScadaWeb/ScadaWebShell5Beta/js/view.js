@@ -1,34 +1,52 @@
 ﻿var scada = scada || {};
+var viewHub = new scada.ViewHub(window);
 
 scada.view = {
-    // Initial url of the active data window
-    _activeDataWindowUrl: "",
+    // The active data window object
+    _dataWindow: {
+        // Initial url of the data window
+        url: "",
+        // Append the current view ID to the query string
+        dependsOnView: false,
+
+        // Load the data window considering the current view if required
+        load: function (url, dependsOnView) {
+            this.url = url;
+            this.dependsOnView = dependsOnView;
+            this.reload();
+        },
+        // Reload the data window using the current properties and the current view
+        reload: function () {
+            if (this.url) {
+                var viewID = viewHub.currentViewID;
+                var newUrl = this.dependsOnView && viewID > 0 ?
+                    scada.utils.setQueryStringParam("viewID", viewID, this.url) :
+                    this.url;
+                var frameDataWindow = $("#frameDataWindow");
+                frameDataWindow
+                .load(function () {
+                    viewHub.addDataWindow(frameDataWindow[0].contentWindow);
+                })
+                .attr("src", newUrl);
+            }
+        },
+        // Clear the data window and release resources
+        clear: function () {
+            viewHub.removeDataWindow();
+            this.url = "";
+            this.dependsOnView = false;
+            $("#frameDataWindow").attr("src", "");
+        }
+    },
+
 
     // Page title just after loading
     initialPageTitle: "",
-
-    // Current view ID
-    viewID: 0,
 
 
     // Get outer height of the specified object considering its displaying
     _getOuterHeight: function (jqObj) {
         return jqObj.css("display") == "none" ? 0 : jqObj.outerHeight();
-    },
-
-    // Load data window with view ID query parameter
-    _loadDataWindow(initialUrl) {
-        this._activeDataWindowUrl = initialUrl;
-
-        if (initialUrl) {
-            var url = this.viewID > 0 ? initialUrl.indexOf("?") >= 0 ?
-                initialUrl + "&viewID=" + this.viewID :
-                initialUrl + "?viewID=" + this.viewID :
-                initialUrl;
-            $("#frameDataWindow").attr("src", url);
-        } else {
-            $("#frameDataWindow").attr("src", "");
-        }
     },
 
     // Load the splitter position from cookies
@@ -102,27 +120,25 @@ scada.view = {
 
     // Make the data window, that corresponds a clicked tab, visible
     activateDataWindow: function (divClickedTab) {
-        this._loadDataWindow(divClickedTab.attr("data-url"));
         $("#divBottomTabsContainer .tab").removeClass("selected");
         divClickedTab.addClass("selected");
-
         $("#divViewSplitter").css("display", "block");
         $("#divDataWindow").css("display", "block");
         $("#divCollapseDataWindowBtn").css("display", "inline-block");
 
+        this._dataWindow.load(divClickedTab.attr("data-url"), divClickedTab.attr("data-depends") == "true");
         this._saveActiveDataWindow();
         this.updateLayout();
     },
 
     // Collapse a data window and release resources
     collapseDataWindow: function () {
-        this._loadDataWindow("");
         $("#divBottomTabsContainer .tab").removeClass("selected");
-
         $("#divViewSplitter").css("display", "none");
         $("#divDataWindow").css("display", "none");
         $("#divCollapseDataWindowBtn").css("display", "none");
 
+        this._dataWindow.clear();
         this._saveActiveDataWindow();
         this.updateLayout();
     },
@@ -131,18 +147,23 @@ scada.view = {
     loadView: function (viewID, viewUrl) {
         // load view
         document.title = this.initialPageTitle;
-        this.viewID = viewID;
+        viewHub.currentViewID = viewID;
         var frameView = $("#frameView");
 
         frameView
         .load(function () {
+            var wnd = frameView[0].contentWindow;
+            // add the view to the view hub
+            viewHub.addView(wnd);
             // set the page title the same as the frame title
-            document.title = frameView[0].contentWindow.document.title;
+            document.title = wnd.document.title;
         })
         .attr("src", viewUrl);
 
         // reload a data window with the new view ID
-        this._loadDataWindow(this._activeDataWindowUrl);
+        if (this._dataWindow.dependsOnView) {
+            this._dataWindow.reload();
+        }
     },
 
     // Load page visual state from the cookies

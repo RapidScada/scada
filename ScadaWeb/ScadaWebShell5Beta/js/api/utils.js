@@ -41,6 +41,60 @@ scada.utils = {
         document.cookie = name + "=" + encodeURIComponent(value) + "; expires=" + expires.toUTCString();
     },
 
+    // Get the query string parameter value
+    getQueryStringParam: function (paramName, opt_url) {
+        if (paramName) {
+            var url = opt_url ? opt_url : unescape(window.location);
+            var begInd = queryString.indexOf("?");
+
+            if (begInd > 0) {
+                url = "&" + url.substring(begInd + 1);
+            }
+
+            paramName = "&" + paramName + "=";
+            begInd = url.indexOf(paramName);
+
+            if (begInd >= 0) {
+                begInd += paramName.length;
+                var endInd = url.indexOf("&", begInd);
+                return endInd >= 0 ? url.substring(begInd, endInd) : url.substring(begInd);
+            }
+        }
+
+        return "";
+    },
+
+    // Set or add the query string parameter value.
+    // The method returns a new string
+    setQueryStringParam: function (paramName, paramVal, opt_url) {
+        if (paramName) {
+            var url = opt_url ? opt_url : unescape(window.location);
+            var searchName = "?" + paramName + "=";
+            var nameBegInd = url.indexOf(searchName);
+
+            if (nameBegInd < 0) {
+                searchName = "&" + paramName + "=";
+                nameBegInd = url.indexOf(searchName);
+            }
+
+            if (nameBegInd >= 0) {
+                // replace parameter value
+                var valBegInd = nameBegInd + searchName.length;
+                var valEndInd = url.indexOf("&", valBegInd);
+                var newUrl = url.substring(0, valBegInd) + paramVal;
+                return valEndInd > 0 ?
+                    newUrl + url.substring(valEndInd) :
+                    newUrl;
+            } else {
+                // add parameter
+                var mark = url.indexOf("?") >= 0 ? "&" : "?";
+                return url + mark + paramName + "=" + paramVal;
+            }
+        } else {
+            return "";
+        }
+    },
+
     // Returns the current time string
     getCurTime: function () {
         return new Date().toLocaleTimeString("en-GB");

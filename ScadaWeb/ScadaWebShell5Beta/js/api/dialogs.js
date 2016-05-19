@@ -21,6 +21,8 @@ scada.dialogs = {
     showChart: function (viewID, cnlNums) {
         if (scada.chart && scada.chart.show) {
             scada.chart.show(viewID, cnlNums);
+        } else {
+            console.warn("Unable to show chart because scada.chart is undefined");
         }
     },
 
@@ -28,6 +30,8 @@ scada.dialogs = {
     showCmd: function (viewID, ctrlCnlNum) {
         if (scada.cmd && scada.cmd.show) {
             scada.cmd.show(viewID, ctrlCnlNum);
+        } else {
+            console.warn("Unable to show command dialog because scada.cmd is undefined");
         }
     },
 
@@ -35,6 +39,8 @@ scada.dialogs = {
     showEventAck: function (viewID, year, month, day, evNum) {
         if (scada.eventAck && scada.eventAck.show) {
             scada.eventAck.show(viewID, year, month, day, evNum);
+        } else {
+            console.warn("Unable to show event acknowledgement dialog because scada.eventAck is undefined");
         }
     }
 };

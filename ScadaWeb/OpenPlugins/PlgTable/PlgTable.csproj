@@ -54,11 +54,19 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="js\api\eventtypes.js" />
+    <Content Include="js\api\viewhub.js" />
+    <Content Include="lib\jquery\jquery.min.js" />
+    <Content Include="plugins\Table\Events.aspx" />
     <Content Include="plugins\Table\images\tableicon.png" />
+    <Content Include="plugins\Table\js\events.js" />
+    <Content Include="plugins\Table\js\table.js" />
     <Content Include="plugins\Table\lang\PlgTable.ru-RU.xml" />
     <Content Include="plugins\Table\lang\PlgTable.en-GB.xml" />
+    <Content Include="plugins\Table\Table.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -67,6 +75,20 @@
     <Compile Include="AppCode\Table\PlgPhrases.cs" />
     <Compile Include="AppCode\PlgTableSpec.cs" />
     <Compile Include="AppCode\Table\TableViewSpec.cs" />
+    <Compile Include="plugins\Table\Events.aspx.cs">
+      <DependentUpon>Events.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="plugins\Table\Events.aspx.designer.cs">
+      <DependentUpon>Events.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="plugins\Table\Table.aspx.cs">
+      <DependentUpon>Table.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="plugins\Table\Table.aspx.designer.cs">
+      <DependentUpon>Table.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -80,7 +102,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="plugins\Table\css\" />
-    <Folder Include="plugins\Table\js\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -93,7 +114,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>64113</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
