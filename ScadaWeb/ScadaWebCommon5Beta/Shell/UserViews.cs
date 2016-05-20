@@ -43,7 +43,7 @@ namespace Scada.Web.Shell
         /// </summary>
         protected readonly Log log;
         /// <summary>
-        /// Ссылки представлений, ключ - ид. представления
+        /// Ссылки на представления, ключ - ид. представления
         /// </summary>
         protected readonly Dictionary<int, string> viewUrls;
 

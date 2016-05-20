@@ -38,9 +38,9 @@ namespace Scada.Web.Shell
     public class ViewNode : IWebTreeNode
     {
         /// <summary>
-        /// Шаблон ссылки узла для загрузки представления
+        /// Шаблон скрипта, открывающего представление
         /// </summary>
-        protected const string ViewNodeUrlTemplate = "javascript:scada.masterMain.loadView({0}, \"{1}\");";
+        protected const string ScriptTemplate = "scada.masterMain.loadView({0}, \"{1}\");";
 
 
         /// <summary>
@@ -66,12 +66,14 @@ namespace Scada.Web.Shell
             {
                 Url = "";
                 ViewUrl = "";
+                Script = "";
                 IconUrl = "";
             }
             else
             {
+                Url = VirtualPathUtility.ToAbsolute(string.Format(UrlTemplates.View, ViewID));
                 ViewUrl = VirtualPathUtility.ToAbsolute(viewSpec.GetViewUrl(ViewID));
-                Url = string.Format(ViewNodeUrlTemplate, ViewID, ViewUrl);
+                Script = string.Format(ScriptTemplate, ViewID, ViewUrl);
                 IconUrl = VirtualPathUtility.ToAbsolute(viewSpec.IconUrl);
             }
 
@@ -97,14 +99,19 @@ namespace Scada.Web.Shell
         public int AlarmCnlNum { get; protected set; }
 
         /// <summary>
-        /// Получить ссылку узла
+        /// Получить ссылку на страницу оболочки, содержащую представление
         /// </summary>
         public string Url { get; protected set; }
 
         /// <summary>
-        /// Получить ссылку представления
+        /// Получить ссылку на представление
         /// </summary>
         public string ViewUrl { get; protected set; }
+
+        /// <summary>
+        /// Получить скрипт, открывающий представление
+        /// </summary>
+        public string Script { get; protected set; }
 
         /// <summary>
         /// Получить ссылку на иконку

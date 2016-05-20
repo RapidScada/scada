@@ -47,6 +47,11 @@ namespace Scada.Web.Shell
         public const string User = "~/User.aspx?userID={0}";
 
         /// <summary>
+        /// Представление
+        /// </summary>
+        public const string View = "~/View.aspx?viewID={0}";
+
+        /// <summary>
         /// Отсутствующее представление
         /// </summary>
         public const string NoView = "~/NoView.aspx";

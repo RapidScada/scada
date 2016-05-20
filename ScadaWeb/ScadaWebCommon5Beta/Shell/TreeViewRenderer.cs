@@ -64,6 +64,7 @@ namespace Scada.Web.Shell
             const string DataAttrTemplate = " data-{0}='{1}'";
 
             StringBuilder sbHtml = new StringBuilder();
+            sbHtml.Append(string.Format(DataAttrTemplate, "script", webTreeNode.Script));
             sbHtml.Append(string.Format(DataAttrTemplate, "level", webTreeNode.Level));
 
             if (webTreeNode.DataAttrs != null)
@@ -83,18 +84,17 @@ namespace Scada.Web.Shell
         /// </summary>
         protected string GenTreeViewHtml(IList treeNodes, object selObj, Options options, bool topLevel)
         {
-            const string NodeTemplate = 
-                "<div class='node{0}'{1}>" +
+            const string NodeTemplate =
+                "<a class='node{0}' href='{1}' {2}>" +
                 "<div class='node-items'>" +
                 "<div class='indent'></div>" +
-                "<div class='expander left{2}'></div>" +
+                "<div class='expander left{3}'></div>" +
                 "<div class='stateIcon'></div>" +
-                "<div class='icon'>{3}</div>" +
-                "<div class='text'>{4}</div>" +
-                "<div class='expander right{2}'></div>" +
-                "</div></div>";
+                "<div class='icon'>{4}</div>" +
+                "<div class='text'>{5}</div>" +
+                "<div class='expander right{3}'></div>" +
+                "</div></a>";
             const string IconTemplate = "<img src='{0}' alt='' />";
-            const string LinkTemplate = "<a href='{0}'>{1}</a>";
 
             StringBuilder sbHtml = new StringBuilder();
             sbHtml.AppendLine(topLevel ? 
@@ -128,11 +128,8 @@ namespace Scada.Web.Shell
                             icon = "";
                         }
 
-                        string text = HttpUtility.HtmlEncode(webTreeNode.Text);
-                        string textOrLink = urlIsEmpty ? text : string.Format(LinkTemplate, webTreeNode.Url, text);
-
                         sbHtml.AppendLine(string.Format(NodeTemplate,
-                            nodeCssClass, dataAttrs, expanderCssClass, icon, textOrLink));
+                            nodeCssClass, webTreeNode.Url, dataAttrs, expanderCssClass, icon, HttpUtility.HtmlEncode(webTreeNode.Text)));
 
                         if (containsSubitems)
                             sbHtml.Append(GenTreeViewHtml(webTreeNode.Children, selObj, options, false));

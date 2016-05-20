@@ -3,6 +3,9 @@
   display: table;
   width: 100%;
 }
+.tree-view .node.disabled {
+  cursor: default;
+}
 .tree-view .node-items {
   display: table-row;
   width: 200px;

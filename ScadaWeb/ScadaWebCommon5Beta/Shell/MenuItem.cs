@@ -68,6 +68,17 @@ namespace Scada.Web.Shell
         public string Url { get; protected set; }
 
         /// <summary>
+        /// Получить скрипт
+        /// </summary>
+        public string Script
+        {
+            get
+            {
+                return "";
+            }
+        }
+
+        /// <summary>
         /// Получить порядок сортировки
         /// </summary>
         public int SortOrder { get; protected set; }

@@ -3,11 +3,12 @@ scada.view = scada.view || {}; // defined if the current page is View.aspx
 
 scada.masterMain = {
     // Check user logged on rate, ms
-    _checkLoggedOnRate: 10000,
+    CHECK_LOGGEDON_RATE: 10000,
+    // Delay before redirecting to login page
+    LOGIN_DELAY: 3000,
 
     // The left pane, which displays tool windows, is expanded
     leftPaneExpanded: true,
-
     // Fullsreen mode is active
     isFullscreen: false,
 
@@ -47,10 +48,10 @@ scada.masterMain = {
         scada.clientAPI.checkLoggedOn(function (success, loggedOn) {
             if (loggedOn) {
                 // enqueue the next check
-                setTimeout(thisObj._checkLoggedOn, thisObj._checkLoggedOnRate);
+                setTimeout(thisObj._checkLoggedOn, thisObj.CHECK_LOGGEDON_RATE);
             } else {
                 // redirect to login page
-                location.href = scada.env.rootPath + "Login.aspx";
+                setTimeout(function() { location.href = scada.env.rootPath + "Login.aspx" }, thisObj.LOGIN_DELAY);
             }
         });
     },
@@ -177,7 +178,7 @@ scada.masterMain = {
 
     // Start cyclic checking user logged on
     startCheckingLoggedOn: function () {
-        setTimeout(this._checkLoggedOn, this._checkLoggedOnRate);
+        setTimeout(this._checkLoggedOn, this.CHECK_LOGGEDON_RATE);
     }
 };
 

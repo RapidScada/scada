@@ -59,16 +59,28 @@ scada.treeView = {
         var thisTreeView = this;
         allNodes
         .off()
-        .click(function () {
+        .click(function (event) {
+            if (event.ctrlKey || event.button == 1 /*middle*/) {
+                return; // allow the default link behavior
+            }
+
+            event.preventDefault();
             var node = $(this);
+            var script = node.attr("data-script");
+            var expander = node.find(".expander");
             var link = node.find("a");
 
-            if (link.length > 0) {
+            if ($(event.target).is(".expander")) {
+                thisTreeView._toggleTreeNode(expander);
+            } else if (script) {
+                allNodes.removeClass("selected");
+                node.addClass("selected");
+                eval(script);
+            } else if (link.length > 0) {
                 allNodes.removeClass("selected");
                 node.addClass("selected");
                 scada.utils.clickLink(link);
             } else {
-                var expander = node.find(".expander");
                 if (!expander.hasClass("empty")) {
                     thisTreeView._toggleTreeNode(expander);
                 }
