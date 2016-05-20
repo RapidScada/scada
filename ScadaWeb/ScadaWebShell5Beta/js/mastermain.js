@@ -115,7 +115,7 @@ scada.masterMain = {
         this._hideLeftPane();
         this.leftPaneExpanded = false;
         this._saveLeftPaneVisible();
-        $(window).trigger(scada.events.updateLayout);
+        $(window).trigger(scada.eventTypes.updateLayout);
     },
 
     // Expand the left pane and hide the menu button
@@ -124,7 +124,7 @@ scada.masterMain = {
         $("#spanMainShowMenuBtn").css("display", "none");
         this.leftPaneExpanded = true;
         this._saveLeftPaneVisible();
-        $(window).trigger(scada.events.updateLayout);
+        $(window).trigger(scada.eventTypes.updateLayout);
     },
 
     // Hide all the menus and switch browser to fullscreen mode
