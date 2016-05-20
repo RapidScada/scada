@@ -68,7 +68,7 @@ scada.treeView = {
             var node = $(this);
             var script = node.attr("data-script");
             var expander = node.find(".expander");
-            var link = node.find("a");
+            var href = node.attr("href");
 
             if ($(event.target).is(".expander")) {
                 thisTreeView._toggleTreeNode(expander);
@@ -76,10 +76,10 @@ scada.treeView = {
                 allNodes.removeClass("selected");
                 node.addClass("selected");
                 eval(script);
-            } else if (link.length > 0) {
+            } else if (href.length > 0) {
                 allNodes.removeClass("selected");
                 node.addClass("selected");
-                scada.utils.clickLink(link);
+                scada.utils.clickLink(node);
             } else {
                 if (!expander.hasClass("empty")) {
                     thisTreeView._toggleTreeNode(expander);
