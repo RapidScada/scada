@@ -28,7 +28,6 @@ a:active {
   background-color: #23282d;
   color: #eee;
   line-height: 30px;
-  white-space: nowrap;
 }
 #divMainHeader .hdr-btn {
   height: 30px;
@@ -38,6 +37,7 @@ a:active {
   display: inline-block;
   font-size: 13px;
   text-decoration: none;
+  white-space: nowrap;
 }
 #divMainHeader .hdr-btn:hover {
   background-color: #32373c;
@@ -64,10 +64,12 @@ a:active {
   display: inline-block;
   line-height: 29px;
   font-size: 17px;
+  white-space: nowrap;
 }
 #divMainUserMenu {
   float: right;
   height: 30px;
+  display: inline-block;
 }
 #lblMainNormalViewBtn {
   position: fixed;
