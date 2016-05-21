@@ -67,7 +67,7 @@ scada.masterMain = {
         divMainLeftPane.outerHeight(paneH);
         divMainTabs.outerWidth(paneH);
         $("#divMainContent").outerHeight(paneH);
-        $(window).trigger(scada.eventTypes.updateLayout);
+        $(window).trigger(scada.EventTypes.UPDATE_LAYOUT);
     },
 
     // Choose a tool window according to the current URL and activate it
@@ -115,7 +115,7 @@ scada.masterMain = {
         this._hideLeftPane();
         this.leftPaneExpanded = false;
         this._saveLeftPaneVisible();
-        $(window).trigger(scada.eventTypes.updateLayout);
+        $(window).trigger(scada.EventTypes.UPDATE_LAYOUT);
     },
 
     // Expand the left pane and hide the menu button
@@ -124,7 +124,7 @@ scada.masterMain = {
         $("#spanMainShowMenuBtn").css("display", "none");
         this.leftPaneExpanded = true;
         this._saveLeftPaneVisible();
-        $(window).trigger(scada.eventTypes.updateLayout);
+        $(window).trigger(scada.EventTypes.UPDATE_LAYOUT);
     },
 
     // Hide all the menus and switch browser to fullscreen mode

@@ -140,7 +140,7 @@ scada.scheme.SchemeRenderer.prototype.createDom = function (elem, renderContext)
     if (props.Title) {
         document.title = props.Title + " - Rapid SCADA";
         if (scada.scheme.viewHub) {
-            scada.scheme.viewHub.notify(window, scada.eventTypes.viewTitleChanged, document.title);
+            scada.scheme.viewHub.notify(window, scada.EventTypes.VIEW_TITLE_CHANGED, document.title);
         }
     }
 

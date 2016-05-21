@@ -11,20 +11,20 @@
 // Rapid SCADA namespace
 var scada = scada || {};
 
-// JavaScript event types object
-scada.eventTypes = {
+// JavaScript event types enumeration
+scada.EventTypes = {
     // Page layout should be updated
-    updateLayout: "scada:updateLayout",
+    UPDATE_LAYOUT: "scada:updateLayout",
 
     // View title has been changed.
     // Event parameter: title
-    viewTitleChanged: "scada:viewTitleChanged",
+    VIEW_TITLE_CHANGED: "scada:viewTitleChanged",
 
     // Before navigate to another view
     // Event parameter: view id
-    viewNavigate: "scada:viewNavigate",
+    VIEW_NAVIGATE: "scada:viewNavigate",
 
     // Current view date has been changed
     // Event parameter: date
-    viewDateChanged: "scada:viewDateChanged",
+    VIEW_DATE_CHANGED: "scada:viewDateChanged",
 };

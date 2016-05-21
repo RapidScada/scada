@@ -58,7 +58,7 @@ scada.ViewHub.prototype.notify = function (senderWnd, eventType, opt_extraParams
     var senderIsView = senderWnd == this.viewWindow;
 
     // set main window title
-    if (eventType == scada.eventTypes.viewTitleChanged) {
+    if (eventType == scada.EventTypes.VIEW_TITLE_CHANGED) {
         if (senderIsView && this.mainWindow) {
             this.mainWindow.document.title = opt_extraParams;
         }
@@ -66,7 +66,7 @@ scada.ViewHub.prototype.notify = function (senderWnd, eventType, opt_extraParams
     }
 
     // preprocess navigation
-    if (eventType == scada.eventTypes.viewNavigate) {
+    if (eventType == scada.EventTypes.VIEW_NAVIGATE) {
         if (senderIsView) {
             this.currentViewID = opt_extraParams;
         } else {

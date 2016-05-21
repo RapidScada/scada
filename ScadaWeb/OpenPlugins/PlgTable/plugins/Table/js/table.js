@@ -1,12 +1,12 @@
 ﻿$(document).ready(function () {
-    /*$(window).on(scada.eventTypes.viewNavigate, function (event) {
+    /*$(window).on(scada.EventTypes.VIEW_NAVIGATE, function (event) {
         console.log(event.type);
     });*/
 
     $(window).on(
-        scada.eventTypes.viewTitleChanged + " " +
-        scada.eventTypes.viewNavigate + " " +
-        scada.eventTypes.viewDateChanged, function (event, extraParams) {
+        scada.EventTypes.VIEW_TITLE_CHANGED + " " +
+        scada.EventTypes.VIEW_NAVIGATE + " " +
+        scada.EventTypes.VIEW_DATE_CHANGED, function (event, extraParams) {
         var divLog = $("#divLog");
         divLog.html(divLog.html() + event.type + " - " + extraParams + "<br/>")
     });
@@ -15,15 +15,15 @@
 
     if (viewHub) {
         $("#btn1").click(function () {
-            viewHub.notify(window, scada.eventTypes.viewTitleChanged, "new title " + (new Date()));
+            viewHub.notify(window, scada.EventTypes.VIEW_TITLE_CHANGED, "new title " + (new Date()));
         });
 
         $("#btn2").click(function () {
-            viewHub.notify(window, scada.eventTypes.viewNavigate, 100);
+            viewHub.notify(window, scada.EventTypes.VIEW_NAVIGATE, 100);
         });
 
         $("#btn3").click(function () {
-            viewHub.notify(window, scada.eventTypes.viewDateChanged, new Date());
+            viewHub.notify(window, scada.EventTypes.VIEW_DATE_CHANGED, new Date());
         });
     }
 });

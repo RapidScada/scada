@@ -87,7 +87,7 @@ scada.view = {
 
     // Save active data window URL in the cookies
     _saveActiveDataWindow: function () {
-        scada.utils.setCookie("ActiveDataWindow", this._activeDataWindowUrl);
+        scada.utils.setCookie("ActiveDataWindow", this._dataWindow.url);
     },
 
     // Hide bottom pane if no data windows exist
@@ -192,7 +192,7 @@ $(document).ready(function () {
     .resize(function () {
         scada.view.updateLayout();
     })
-    .on(scada.eventTypes.updateLayout, function () {
+    .on(scada.EventTypes.UPDATE_LAYOUT, function () {
         scada.view.updateLayout();
     });
 
