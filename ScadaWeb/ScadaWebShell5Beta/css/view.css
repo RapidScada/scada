@@ -6,7 +6,6 @@
 #divView {
   min-height: 50px;
   overflow: hidden;
-  /*for iOS*/
 }
 #divViewContent iframe {
   width: 100%;
@@ -33,7 +32,6 @@
   display: none;
   /*block*/
   overflow: hidden;
-  /*for iOS*/
 }
 #divBottomTabs {
   background-color: white;

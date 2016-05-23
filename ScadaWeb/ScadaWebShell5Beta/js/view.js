@@ -90,6 +90,16 @@ scada.view = {
         scada.utils.setCookie("ActiveDataWindow", this._dataWindow.url);
     },
 
+    // Apply additional css styles in case of using iOS
+    styleIOS: function () {
+        if (scada.utils.iOS()) {
+            $("#divView, #divDataWindow").css({
+                "overflow": "scroll",
+                "-webkit-overflow-scrolling": "touch"
+            });
+        }
+    },
+
     // Hide bottom pane if no data windows exist
     hideBottomTabsIfEmpty: function () {
         if ($("#divBottomTabsContainer .tab").length == 0) {
@@ -182,6 +192,7 @@ scada.view = {
 $(document).ready(function () {
     // the order of the calls below is important
     scada.view.initialPageTitle = document.title;
+    scada.view.styleIOS();
     scada.view.hideBottomTabsIfEmpty();
     scada.view.loadView(initialViewID, initialViewUrl); // arguments are defined in View.aspx
     scada.view.loadVisualState();

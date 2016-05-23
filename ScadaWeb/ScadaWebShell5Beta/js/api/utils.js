@@ -182,5 +182,10 @@ scada.utils = {
                 location = href;
             }
         }
+    },
+
+    // Detect if iOS is used
+    iOS: function () {
+        return /iPad|iPhone|iPod/.test(navigator.platform);
     }
 };

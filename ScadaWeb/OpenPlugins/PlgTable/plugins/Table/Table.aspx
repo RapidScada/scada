@@ -18,6 +18,11 @@
             <input id="btn3" type="button" value="DateChanged" />
         </div>
         <div id="divLog"></div>
+        <table><tr>
+            <% for (int i = 0; i < 100; i++) { %>
+            <td>Test</td>
+            <% } %>
+        </tr></table>
     </form>
 </body>
 </html>
