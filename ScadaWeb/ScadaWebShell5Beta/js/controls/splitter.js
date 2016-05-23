@@ -74,7 +74,7 @@ scada.SplitterBulk.prototype._addOverlay = function () {
 
 // Remove overlay div
 scada.SplitterBulk.prototype._removeOverlay = function () {
-    $("div.splitter-overlay").detach();
+    $("div.splitter-overlay").remove();
 };
 
 // Enter resizing mode

@@ -136,7 +136,13 @@ namespace Scada.Web
                 if (userData != null && !string.IsNullOrEmpty(userData.SessionID))
                 {
                     lock (userDataDict)
+                    {
                         userDataDict[userData.SessionID] = userData;
+                        log.WriteAction(string.Format(Localization.UseRussian ?
+                            "Добавлена информация о пользователе. IP-адрес: {0}. Сессия: {1}" :
+                            "User information has been added. IP address: {0}. Session: {1}", 
+                            userData.IpAddress, userData.SessionID));
+                    }
                 }
             }
             catch (Exception ex)
@@ -164,6 +170,10 @@ namespace Scada.Web
                             if (userData.LoggedOn)
                                 userData.Logout();
                             userDataDict.Remove(sessionID);
+                            log.WriteAction(string.Format(Localization.UseRussian ?
+                                "Удалена информация о пользователе. IP-адрес: {0}. Сессия: {1}" :
+                                "User information has been removed. IP address: {0}. Session: {1}",
+                                userData.IpAddress, sessionID));
                         }
                     }
                 }

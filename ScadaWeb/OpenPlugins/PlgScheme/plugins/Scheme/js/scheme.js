@@ -60,7 +60,15 @@ function startUpdatingScheme() {
 
 // Add notification to the notification panel
 function addNotification(messageHtml, error, lifetime) {
+    // remove the same previous message
     var divNotif = $("#divNotif");
+    var divPrevMessage = divNotif.children(".message:last");
+
+    if (divPrevMessage.html() == messageHtml) {
+        divPrevMessage.remove();
+    }
+
+    // add the new message
     var divMessage = $("<div class='message'></div>").html(messageHtml);
 
     if (error) {
@@ -68,7 +76,7 @@ function addNotification(messageHtml, error, lifetime) {
     }
 
     if (lifetime) {
-        $("<input type='hidden' />").val(Date.now() + lifetime).appendTo(divMessage);
+        divMessage.attr("data-expires", Date.now() + lifetime);
     }
 
     divNotif
@@ -87,8 +95,8 @@ function clearOutdatedNotifications() {
         var nowMs = Date.now();
 
         $.each(messages, function () {
-            var expireMs = $(this).find("input:hidden").val();
-            if (expireMs < nowMs) {
+            var expires = $(this).attr("data-expires");
+            if (expires < nowMs) {
                 $(this).remove();
             }
         });
@@ -119,43 +127,37 @@ function reloadScheme() {
 
 // Initialize debug tools
 function initDebugTools() {
-    $("#divDebugTools").css("display", "block");
+    $("#divDebugTools").css("display", "inline-block");
 
-    $("#btnLoadScheme").click(function (event) {
-        event.preventDefault();
+    $("#spanLoadSchemeBtn").click(function () {
         startLoadingScheme(viewID);
     });
 
-    $("#btnCreateDom").click(function (event) {
-        event.preventDefault();
+    $("#spanCreateDomBtn").click(function () {
         scheme.createDom();
     });
 
-    $("#btnStartUpd").click(function (event) {
-        event.preventDefault();
+    $("#spanStartUpdBtn").click(function () {
         startUpdatingScheme();
         $(this).prop("disabled", true);
     });
 
-    $("#btnAddNotif").click(function (event) {
-        event.preventDefault();
+    $("#spanAddNotifBtn").click(function () {
         addNotification(scada.utils.getCurTime() + " Test notification", false, DEF_NOTIF_LIFETIME);
     });
 }
 
 // Update layout of the top level div elements
 function updateLayout() {
-    var divDebugTools = $("#divDebugTools");
     var divNotif = $("#divNotif");
-    var divSchParent = $("#divSchParent");
-
-    var debugToolsHeight = divDebugTools.css("display") == "block" ? divDebugTools.outerHeight() : 0;
     var notifHeight = divNotif.css("display") == "block" ? divNotif.outerHeight() : 0;
+    var divSchParent = $("#divSchParent");
+    var divToolbar = $("#divToolbar");
 
-    $("body").css("padding-top", debugToolsHeight + notifHeight);
-    divNotif.css("top", debugToolsHeight);
+    $("body").css("padding-top", notifHeight);
     divNotif.outerWidth($(window).width());
-    divSchParent.height($(window).height() - debugToolsHeight - notifHeight);
+    divSchParent.height($(window).height() - notifHeight);
+    divToolbar.css("top", notifHeight);
 }
 
 

@@ -463,14 +463,14 @@ scada.scheme.StaticPictureRenderer.prototype.createDom = function (elem, renderC
             divElem.css("background-size", props.Size.Width + "px " + props.Size.Height + "px");
             break;
         case ImageStretches.ZOOM:
-            divElem.css({
-                "background-size": "contain",
-                "background-position": "center"
-            });
+            divElem.css("background-size", "contain");
             break;
     }
 
-    divElem.css("background-repeat", "no-repeat");
+    divElem.css({
+        "background-repeat": "no-repeat",
+        "background-position": "center"
+    });
     var image = renderContext.getImage(props.Image);
     this.setBackgroundImage(divElem, image);
 

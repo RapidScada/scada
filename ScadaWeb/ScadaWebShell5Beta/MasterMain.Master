@@ -42,10 +42,10 @@
                 <asp:HyperLink 
                     ID="hlMainUser" runat="server" CssClass="hdr-btn txt-btn" NavigateUrl="#">Admin</asp:HyperLink><asp:LinkButton 
                     ID="lbtnMainLogout" runat="server" CssClass="hdr-btn txt-btn" OnClick="lbtnMainLogout_Click">Logout</asp:LinkButton><asp:Label 
-                    ID="lblMainFullscreenBtn" runat="server" CssClass="hdr-btn img-btn" ToolTip="Full screen"><span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span></asp:Label>
+                    ID="lblMainFullscreenBtn" runat="server" CssClass="hdr-btn img-btn" ToolTip="Full Screen"><span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span></asp:Label>
             </div>
         </div>
-        <asp:Label ID="lblMainNormalViewBtn" runat="server" ToolTip="Normal view"><span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span></asp:Label>
+        <asp:Label ID="lblMainNormalViewBtn" runat="server" ToolTip="Normal View"><span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span></asp:Label>
         <div id="divMainLeftPane">
             <div id="divMainTabs">
                 <div id="divMainMenuTab" class="tab selected"><asp:Label ID="lblMainMenuTab" runat="server" Text="Main Menu"></asp:Label></div>

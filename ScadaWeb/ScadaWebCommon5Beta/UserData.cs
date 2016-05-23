@@ -236,6 +236,7 @@ namespace Scada.Web
         {
             username = username == null ? "" : username.Trim();
             int roleID;
+            AppData.Refresh();
 
             if (AppData.CheckUser(username, password, password != null, out roleID, out errMsg))
             {

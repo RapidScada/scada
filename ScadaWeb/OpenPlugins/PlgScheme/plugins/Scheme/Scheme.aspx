@@ -5,6 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Scheme - Rapid SCADA</title>
+    <link href="~/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <link href="~/lib/open-sans/css/open-sans.css" rel="stylesheet" type="text/css" />
     <link href="~/plugins/Scheme/css/scheme.min.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../../lib/jquery/jquery.min.js"></script>
@@ -25,15 +26,20 @@
 </head>
 <body>
     <form id="frmScheme" runat="server">
-        <div id="divDebugTools"><input 
-            id="btnLoadScheme" type="button" value="Load scheme" /><input 
-            id="btnCreateDom" type="button" value="Create DOM" /><input 
-            id="btnStartUpd" type="button" value="Start updating" /><input 
-            id="btnAddNotif" type="button" value="Add notification" />
-        </div>
         <div id="divNotif">
         </div>
         <div id="divSchParent">
+        </div>
+        <div id="divToolbar"><asp:Label 
+            ID="lblFitScreenBtn" runat="server" CssClass="tool-btn" ToolTip="Fit to Screen"><i class="fa fa-arrows" aria-hidden="true"></i></asp:Label><asp:Label 
+            ID="lblFitWidthBtn" runat="server" CssClass="tool-btn" ToolTip="Fit to Width"><i class="fa fa-arrows-h" aria-hidden="true"></i></asp:Label><asp:Label 
+            ID="lblZoomInBtn" runat="server" CssClass="tool-btn" ToolTip="Zoom In"><i class="fa fa-search-minus" aria-hidden="true"></i></asp:Label><asp:Label 
+            ID="lblZoomOutBtn" runat="server" CssClass="tool-btn" ToolTip="Zoom Out"><i class="fa fa-search-plus" aria-hidden="true"></i></asp:Label><span id="spanCurScale">100%</span><div id="divDebugTools"><span 
+                id="spanLoadSchemeBtn" class="tool-btn">Load Scheme</span><span 
+                id="spanCreateDomBtn" class="tool-btn">Create DOM</span><span 
+                id="spanStartUpdBtn" class="tool-btn">Start Updating</span><span 
+                id="spanAddNotifBtn" class="tool-btn">Add Notification</span>
+            </div>
         </div>
     </form>
 </body>

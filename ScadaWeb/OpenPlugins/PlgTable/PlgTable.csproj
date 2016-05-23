@@ -60,6 +60,12 @@
     <Content Include="js\api\eventtypes.js" />
     <Content Include="js\api\viewhub.js" />
     <Content Include="lib\jquery\jquery.min.js" />
+    <Content Include="plugins\Table\css\table.css">
+      <DependentUpon>table.less</DependentUpon>
+    </Content>
+    <Content Include="plugins\Table\css\table.min.css">
+      <DependentUpon>table.css</DependentUpon>
+    </Content>
     <Content Include="plugins\Table\Events.aspx" />
     <Content Include="plugins\Table\images\tableicon.png" />
     <Content Include="plugins\Table\js\events.js" />
@@ -92,6 +98,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="css\globalvar.less" />
+    <Content Include="plugins\Table\css\table.less" />
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -100,9 +112,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="plugins\Table\css\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

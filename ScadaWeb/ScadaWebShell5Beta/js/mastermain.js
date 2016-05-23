@@ -189,6 +189,7 @@ $(document).ready(function () {
     $("body").off();
 
     // page setup
+    scada.clientAPI.rootPath = scada.env.rootPath;
     scada.masterMain.updateLayout();
     scada.masterMain.chooseToolWindow();
     scada.masterMain.loadVisualState();
