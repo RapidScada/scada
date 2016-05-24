@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2015
+ * Modified : 2016
  */
 
 using Scada.Data;
@@ -215,14 +215,14 @@ namespace Scada.Comm.Devices
             /// <summary>
             /// Установить данные тега среза
             /// </summary>
-            protected void SetTagData(int tagIndex, double newVal, int newStat)
+            public void SetTagData(int tagIndex, double newVal, int newStat)
             {
                 SetTagData(tagIndex, new SrezTableLight.CnlData(newVal, newStat));
             }
             /// <summary>
             /// Установить данные тега среза
             /// </summary>
-            protected void SetTagData(int tagIndex, SrezTableLight.CnlData newData)
+            public void SetTagData(int tagIndex, SrezTableLight.CnlData newData)
             {
                 if (0 <= tagIndex && tagIndex < TagData.Length)
                     TagData[tagIndex] = newData;

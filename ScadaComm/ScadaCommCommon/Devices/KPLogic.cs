@@ -915,6 +915,23 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
+        /// Потокобезопасно увеличить текущее значение тега КП без изменения статуса
+        /// </summary>
+        protected void IncCurData(int tagIndex, double number)
+        {
+            lock (curData)
+            {
+                if (0 <= tagIndex && tagIndex < curData.Length)
+                {
+                    SrezTableLight.CnlData curTagData = curData[tagIndex];
+                    double newVal = curTagData.Val + number;
+                    curDataModified[tagIndex] |= number != 0;
+                    curData[tagIndex] = new SrezTableLight.CnlData(newVal, curTagData.Stat);
+                }
+            }
+        }
+
+        /// <summary>
         /// Потокобезопасно установить текущие данные как недостоверные
         /// </summary>
         protected void InvalidateCurData(int tagIndex, int tagCount)
