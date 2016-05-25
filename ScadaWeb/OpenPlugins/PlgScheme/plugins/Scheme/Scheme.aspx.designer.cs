@@ -40,15 +40,6 @@ namespace Scada.Web.Plugins.Scheme {
         protected global::System.Web.UI.WebControls.Label lblFitWidthBtn;
         
         /// <summary>
-        /// lblZoomInBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblZoomInBtn;
-        
-        /// <summary>
         /// lblZoomOutBtn control.
         /// </summary>
         /// <remarks>
@@ -56,5 +47,14 @@ namespace Scada.Web.Plugins.Scheme {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblZoomOutBtn;
+        
+        /// <summary>
+        /// lblZoomInBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblZoomInBtn;
     }
 }

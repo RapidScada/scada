@@ -6,6 +6,8 @@ var viewID = viewID || 0;
 var refrRate = refrRate || 1000;
 // Localized phrases
 var phrases = phrases || {};
+// Possible scale values
+var scaleVals = [0.1, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 2, 2.5, 3, 4, 5];
 
 // Default notification message lifetime, ms
 var DEF_NOTIF_LIFETIME = 10000;
@@ -125,6 +127,58 @@ function reloadScheme() {
     location = location;
 }
 
+// Bind handlers of the toolbar buttons
+function initToolbar() {
+    var Scales = scada.scheme.Scales;
+
+    $("#lblFitScreenBtn").click(function () {
+        scheme.setScale(Scales.FIT_SCREEN);
+        displayScale();
+    });
+
+    $("#lblFitWidthBtn").click(function () {
+        scheme.setScale(Scales.FIT_WIDTH);
+        displayScale();
+    });
+
+    $("#lblZoomInBtn").click(function (event) {
+        scheme.setScale(getNextScale());
+        displayScale();
+    });
+
+    $("#lblZoomOutBtn").click(function (event) {
+        scheme.setScale(getPrevScale());
+        displayScale();
+    });
+}
+
+// Get the previous scale value from the possible values array
+function getPrevScale() {
+    var curScale = scheme.scale;
+    for (var i = scaleVals.length - 1; i >= 0; i--) {
+        var prevScale = scaleVals[i];
+        if (curScale > prevScale)
+            return prevScale;
+    }
+    return curScale;
+}
+
+// Get the next scale value from the possible values array
+function getNextScale() {
+    var curScale = scheme.scale;
+    for (var i = 0, len = scaleVals.length; i < len; i++) {
+        var nextScale = scaleVals[i];
+        if (curScale < nextScale)
+            return nextScale;
+    }
+    return curScale;
+}
+
+// Display the scheme scale
+function displayScale() {
+    $("#spanCurScale").text(Math.round(scheme.scale * 100) + "%");
+}
+
 // Initialize debug tools
 function initDebugTools() {
     $("#divDebugTools").css("display", "inline-block");
@@ -164,6 +218,7 @@ function updateLayout() {
 $(document).ready(function () {
     scada.clientAPI.rootPath = "../../";
     scheme.parentDomElem = $("#divSchParent");
+    initToolbar();
 
     if (DEBUG_MODE) {
         initDebugTools();

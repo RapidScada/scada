@@ -118,7 +118,8 @@ scada.scheme.SchemeRenderer.prototype.createDom = function (elem, renderContext)
         .css({
             "position": "relative", // to position scheme elements
             "width": props.Size.Width,
-            "height": props.Size.Height
+            "height": props.Size.Height,
+            "transform-origin": "left top" // for scaling
         });
 
     this.setBackColor($("body"), props.BackColor);
@@ -145,6 +146,35 @@ scada.scheme.SchemeRenderer.prototype.createDom = function (elem, renderContext)
     }
 
     elem.dom = divScheme;
+};
+
+// Calculate numeric scale based on the predefined string value
+scada.scheme.SchemeRenderer.prototype.calcScale = function (elem, scaleStr) {
+    var Scales = scada.scheme.Scales;
+    var areaWidth = elem.parentDomElem.innerWidth();
+    var schemeWidth = elem.props.Size.Width;
+
+    if (scaleStr == Scales.FIT_SCREEN) {
+        var schemeHeight = elem.props.Size.Height;
+        var areaHeight = elem.parentDomElem.innerHeight();
+        return Math.min(areaWidth / schemeWidth, areaHeight / schemeHeight);
+    } else if (scaleStr == Scales.FIT_WIDTH) {
+        return areaWidth / schemeWidth;
+    } else {
+        return 1.0;
+    }
+}
+
+// Set the scheme scale.
+// scaleVal is a floating point number
+scada.scheme.SchemeRenderer.prototype.setScale = function (elem, scaleVal) {
+    // set style of #divScheme
+    var sizeCoef = Math.min(scaleVal, 1);
+    elem.dom.css({
+        "transform": "scale(" + scaleVal + ", " + scaleVal + ")",
+        "width": elem.props.Size.Width * sizeCoef,
+        "height": elem.props.Size.Height * sizeCoef
+    });
 };
 
 /********** Element Renderer **********/

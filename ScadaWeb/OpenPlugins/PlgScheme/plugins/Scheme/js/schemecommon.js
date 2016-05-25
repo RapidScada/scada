@@ -67,6 +67,12 @@ scada.scheme.ShowValueKinds = {
     SHOW_WITHOUT_UNIT: 2
 };
 
+// Predefined scales enumeration
+scada.scheme.Scales = {
+    FIT_SCREEN: "FitScreen",
+    FIT_WIDTH: "FitWidth"
+};
+
 // Scheme calculations
 scada.scheme.calc = {
     // Compare two values using the specified operator
