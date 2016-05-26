@@ -34,6 +34,8 @@ function continueLoadingScheme(viewID) {
 
                 if (!DEBUG_MODE) {
                     scheme.createDom();
+                    loadScale();
+                    displayScale();
                     startUpdatingScheme();
                 }
             } else {
@@ -134,21 +136,25 @@ function initToolbar() {
     $("#lblFitScreenBtn").click(function () {
         scheme.setScale(Scales.FIT_SCREEN);
         displayScale();
+        saveScale(Scales.FIT_SCREEN);
     });
 
     $("#lblFitWidthBtn").click(function () {
         scheme.setScale(Scales.FIT_WIDTH);
         displayScale();
+        saveScale(Scales.FIT_WIDTH);
     });
 
     $("#lblZoomInBtn").click(function (event) {
         scheme.setScale(getNextScale());
         displayScale();
+        saveScale();
     });
 
     $("#lblZoomOutBtn").click(function (event) {
         scheme.setScale(getPrevScale());
         displayScale();
+        saveScale();
     });
 }
 
@@ -177,6 +183,19 @@ function getNextScale() {
 // Display the scheme scale
 function displayScale() {
     $("#spanCurScale").text(Math.round(scheme.scale * 100) + "%");
+}
+
+// Load the scheme scale from the cookies
+function loadScale() {
+    var scale = scada.utils.getCookie("SchemeScale");
+    if (scale) {
+        scheme.setScale(scale);
+    }
+}
+
+// Save the scheme scale in the cookies
+function saveScale(opt_scale) {
+    scada.utils.setCookie("SchemeScale", opt_scale ? opt_scale : scheme.scale);
 }
 
 // Initialize debug tools

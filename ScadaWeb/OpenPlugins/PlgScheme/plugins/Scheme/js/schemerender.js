@@ -113,12 +113,14 @@ scada.scheme.SchemeRenderer.constructor = scada.scheme.SchemeRenderer;
 
 scada.scheme.SchemeRenderer.prototype.createDom = function (elem, renderContext) {
     var props = elem.props; // scheme properties
+    var schemeWidth = props.Size.Width;
+    var schemeHeight = props.Size.Height;
     var divScheme =
         $("<div id='scheme'></div>")
         .css({
             "position": "relative", // to position scheme elements
-            "width": props.Size.Width,
-            "height": props.Size.Height,
+            "width": schemeWidth,
+            "height": schemeHeight,
             "transform-origin": "left top" // for scaling
         });
 
@@ -127,14 +129,17 @@ scada.scheme.SchemeRenderer.prototype.createDom = function (elem, renderContext)
     this.setFont(divScheme, props.Font);
     this.setForeColor(divScheme, props.ForeColor);
 
-    // set background image if presents
+    // set background image if presents,
+    // the additional div is required for correct scaling
     var backImage = renderContext.getImage(elem.props.BackImage);
     if (backImage) {
-        divScheme.css({
+        $("<div id='schemeBack'></div>").css({
+            "width": schemeWidth,
+            "height": schemeHeight,
             "background-image": this.imageToDataUrlCss(backImage),
-            "background-size": props.Size.Width + "px " + props.Size.Height + "px",
+            "background-size": schemeWidth + "px " + schemeHeight + "px",
             "background-repeat": "no-repeat"
-        });
+        }).appendTo(divScheme);
     }
 
     // set title
@@ -153,13 +158,15 @@ scada.scheme.SchemeRenderer.prototype.calcScale = function (elem, scaleStr) {
     var Scales = scada.scheme.Scales;
     var areaWidth = elem.parentDomElem.innerWidth();
     var schemeWidth = elem.props.Size.Width;
+    var horScale = areaWidth / schemeWidth;
 
     if (scaleStr == Scales.FIT_SCREEN) {
         var schemeHeight = elem.props.Size.Height;
         var areaHeight = elem.parentDomElem.innerHeight();
-        return Math.min(areaWidth / schemeWidth, areaHeight / schemeHeight);
+        var vertScale = areaHeight / schemeHeight;
+        return Math.min(horScale, vertScale);
     } else if (scaleStr == Scales.FIT_WIDTH) {
-        return areaWidth / schemeWidth;
+        return horScale;
     } else {
         return 1.0;
     }
