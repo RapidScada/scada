@@ -115,7 +115,7 @@ namespace Scada.Web.Plugins
         {
             dictUpdater = new DictUpdater(
                 string.Format("{0}Table{1}lang{1}", AppDirs.PluginsDir, Path.DirectorySeparatorChar), 
-                "PlgTable", PlgPhrases.Init, Log);
+                    "PlgTable", PlgPhrases.Init, Log);
         }
 
         /// <summary>

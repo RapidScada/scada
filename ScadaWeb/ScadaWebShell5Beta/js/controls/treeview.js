@@ -4,9 +4,7 @@
  * Author   : Mikhail Shiryaev
  * Created  : 2016
  * Modified : 2016
- */
-
-/*
+ *
  * Requires:
  * - jquery
  * - scadautils.js

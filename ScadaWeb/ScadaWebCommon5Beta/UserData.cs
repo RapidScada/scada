@@ -30,6 +30,7 @@ using System.Web;
 using System.Web.SessionState;
 using Scada.Web.Plugins;
 using Scada.Web.Shell;
+using System.Web.Hosting;
 
 namespace Scada.Web
 {
@@ -292,6 +293,17 @@ namespace Scada.Web
         public bool Login(string username, out string errMsg)
         {
             return Login(username, null, out errMsg);
+        }
+
+        /// <summary>
+        /// Выполнить вход пользователя в систему для последующей отладки
+        /// </summary>
+        public void LoginForDebug()
+        {
+            AppData.Init(HostingEnvironment.MapPath("~"));
+            AppData.UserMonitor.AddUser(this);
+            string errMsg;
+            Login("admin", out errMsg);
         }
 
         /// <summary>

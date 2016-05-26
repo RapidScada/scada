@@ -2,5 +2,9 @@
   {
     "outputFile": "plugins/Table/css/table.css",
     "inputFile": "plugins/Table/css/table.less"
+  },
+  {
+    "outputFile": "css/controls/notifier.css",
+    "inputFile": "css/controls/notifier.less"
   }
 ]

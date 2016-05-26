@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : PlgSchemeCommon
+ * Module   : PlgScheme
  * Summary  : WCF service for interacting with the scheme JavaScript code
  * 
  * Author   : Mikhail Shiryaev

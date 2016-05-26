@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PlgTableDictionaries>
-  <Dictionary key="Scada.Web.Plugins.PlgTable">
+  <Dictionary key="Scada.Web.Plugins.Table.EventsWndSpec">
     <Phrase key="EventsTitle">События</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.TableView">
+    <Phrase key="LoadTableViewError">Ошибка при загрузке табличного представления из файла</Phrase>
+    <Phrase key="SaveTableViewError">Ошибка при сохранении табличного представления в файле</Phrase>
   </Dictionary>
 </PlgTableDictionaries>

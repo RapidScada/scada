@@ -35,9 +35,7 @@ body {
   color: red;
 }
 /* Scheme */
-#divSchParent {
-  min-width: 300px;
-  min-height: 200px;
+#divSchWrapper {
   overflow: auto;
 }
 /* Toolbar (above the scheme) */

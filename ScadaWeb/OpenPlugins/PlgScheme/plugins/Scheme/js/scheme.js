@@ -224,19 +224,19 @@ function initDebugTools() {
 function updateLayout() {
     var divNotif = $("#divNotif");
     var notifHeight = divNotif.css("display") == "block" ? divNotif.outerHeight() : 0;
-    var divSchParent = $("#divSchParent");
+    var divSchWrapper = $("#divSchWrapper");
     var divToolbar = $("#divToolbar");
 
     $("body").css("padding-top", notifHeight);
     divNotif.outerWidth($(window).width());
-    divSchParent.height($(window).height() - notifHeight);
+    divSchWrapper.height($(window).height() - notifHeight);
     divToolbar.css("top", notifHeight);
 }
 
 
 $(document).ready(function () {
     scada.clientAPI.rootPath = "../../";
-    scheme.parentDomElem = $("#divSchParent");
+    scheme.parentDomElem = $("#divSchWrapper");
     initToolbar();
 
     if (DEBUG_MODE) {

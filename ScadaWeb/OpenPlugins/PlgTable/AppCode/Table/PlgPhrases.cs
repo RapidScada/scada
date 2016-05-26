@@ -38,7 +38,12 @@ namespace Scada.Web
             SetToDefault();
         }
 
+        // Словарь Scada.Web.Plugins.Table.EventsWndSpec
         public static string EventsTitle { get; private set; }
+
+        // Словарь Scada.Web.Plugins.Table.TableView
+        public static string LoadTableViewError { get; private set; }
+        public static string SaveTableViewError { get; private set; }
 
         private static void SetToDefault()
         {
@@ -48,9 +53,15 @@ namespace Scada.Web
         public static void Init()
         {
             Localization.Dict dict;
-            if (Localization.Dictionaries.TryGetValue("Scada.Web.Plugins.PlgTable", out dict))
+            if (Localization.Dictionaries.TryGetValue("Scada.Web.Plugins.Table.EventsWndSpec", out dict))
             {
                 EventsTitle = dict.GetPhrase("EventsTitle", EventsTitle);
+            }
+
+            if (Localization.Dictionaries.TryGetValue("Scada.Web.Plugins.Table.TableView", out dict))
+            {
+                LoadTableViewError = dict.GetPhrase("LoadTableViewError", LoadTableViewError);
+                SaveTableViewError = dict.GetPhrase("SaveTableViewError", SaveTableViewError);
             }
         }
     }

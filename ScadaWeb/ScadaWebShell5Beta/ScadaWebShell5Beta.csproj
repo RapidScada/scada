@@ -114,6 +114,7 @@
     <Content Include="js\api\clientapi.js" />
     <Content Include="js\api\dialogs.js" />
     <Content Include="js\api\viewhub.js" />
+    <Content Include="js\controls\notifier.js" />
     <Content Include="js\login.js" />
     <Content Include="js\mastermain.js" />
     <Content Include="js\api\eventtypes.js" />
@@ -198,6 +199,7 @@
     <Content Include="MasterMain.Master" />
     <Content Include="css\globalvar.less" />
     <Content Include="css\login.less" />
+    <Content Include="css\controls\notifier.less" />
     <None Include="css\mastermain.less" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">

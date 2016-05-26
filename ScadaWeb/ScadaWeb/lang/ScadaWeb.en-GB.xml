@@ -76,8 +76,8 @@
     <Phrase key="EventsByViewTitle">{0} - Events by &quot;{1}&quot; view. Generated {2}</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.TableView">
-    <Phrase key="LoadParamTableError">Error loading table of parameters from file</Phrase>
-    <Phrase key="SaveParamTableError">Error saving table of parameters to file</Phrase>
+    <Phrase key="LoadTableViewError">Error loading table view from file</Phrase>
+    <Phrase key="SaveTableViewError">Error saving table view to file</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.ViewSettings">
     <Phrase key="LoadViewSettingsError">Error loading view settings from file</Phrase>

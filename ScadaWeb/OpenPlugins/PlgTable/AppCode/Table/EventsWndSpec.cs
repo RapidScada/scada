@@ -49,9 +49,7 @@ namespace Scada.Web.Plugins.Table
         {
             get
             {
-                return "Events";
-                // TODO: вернуть обратно
-                // return PlgPhrases.EventsTitle;
+                return PlgPhrases.EventsTitle;
             }
         }
 

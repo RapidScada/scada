@@ -28,7 +28,7 @@
     <form id="frmScheme" runat="server">
         <div id="divNotif">
         </div>
-        <div id="divSchParent">
+        <div id="divSchWrapper">
         </div>
         <div id="divToolbar"><asp:Label 
             ID="lblFitScreenBtn" runat="server" CssClass="tool-btn" ToolTip="Fit to Screen"><i class="fa fa-arrows" aria-hidden="true"></i></asp:Label><asp:Label 

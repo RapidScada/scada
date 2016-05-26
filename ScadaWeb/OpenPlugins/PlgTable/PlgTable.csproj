@@ -57,8 +57,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="css\controls\notifier.css">
+      <DependentUpon>notifier.less</DependentUpon>
+    </Content>
+    <Content Include="css\controls\notifier.min.css">
+      <DependentUpon>notifier.css</DependentUpon>
+    </Content>
     <Content Include="js\api\eventtypes.js" />
     <Content Include="js\api\viewhub.js" />
+    <Content Include="js\controls\notifier.js" />
     <Content Include="lib\jquery\jquery.min.js" />
     <Content Include="plugins\Table\css\table.css">
       <DependentUpon>table.less</DependentUpon>
@@ -80,6 +87,7 @@
     <Compile Include="AppCode\Table\EventsWndSpec.cs" />
     <Compile Include="AppCode\Table\PlgPhrases.cs" />
     <Compile Include="AppCode\PlgTableSpec.cs" />
+    <Compile Include="AppCode\Table\TableView.cs" />
     <Compile Include="AppCode\Table\TableViewSpec.cs" />
     <Compile Include="plugins\Table\Events.aspx.cs">
       <DependentUpon>Events.aspx</DependentUpon>
@@ -104,6 +112,7 @@
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
+    <Content Include="css\controls\notifier.less" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

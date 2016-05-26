@@ -1,4 +1,7 @@
-﻿$(document).ready(function () {
+﻿// View hub. Must be defined in the parent window
+var viewHub = scada.viewHubLocator.getViewHub();
+
+$(document).ready(function () {
     /*$(window).on(scada.EventTypes.VIEW_NAVIGATE, function (event) {
         console.log(event.type);
     });*/
@@ -10,8 +13,6 @@
         var divLog = $("#divLog");
         divLog.html(divLog.html() + event.type + " - " + extraParams + "<br/>")
     });
-
-    var viewHub = scada.viewHubLocator.getViewHub();
 
     if (viewHub) {
         $("#btn1").click(function () {
