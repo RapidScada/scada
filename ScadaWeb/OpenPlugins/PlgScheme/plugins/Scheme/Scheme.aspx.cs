@@ -26,6 +26,7 @@
 //#define DEBUG_MODE
 
 using Scada.Scheme;
+using Scada.UI;
 using Scada.Web.Shell;
 using System;
 
@@ -73,6 +74,9 @@ namespace Scada.Web.Plugins.Scheme
             appData = AppData.GetAppData();
             userData = UserData.GetUserData();
             SetupDebugMode();
+
+            // перевод веб-страницы
+            Translator.TranslatePage(Page, "Scada.Web.Plugins.Scheme.WFrmScheme");
 
             // получение ид. представления из параметров запроса
             int.TryParse(Request.QueryString["viewID"], out viewID);
