@@ -1,5 +1,7 @@
 ﻿// Scheme object
 var scheme = new scada.scheme.Scheme();
+// Notifier control
+var notifier = null;
 // View ID. Must be defined in Scheme.aspx
 var viewID = viewID || 0;
 // Scheme refresh rate
@@ -44,7 +46,7 @@ function continueLoadingScheme(viewID) {
         } else {
             console.error(getCurTime() + " Scheme loading failed");
             $("body").removeClass("loading");
-            addNotification(phrases.LoadSchemeError +
+            notifier.addNotification(phrases.LoadSchemeError +
                 " <input type='button' value='" + phrases.ReloadButton + "' onclick='reloadScheme()' />",
                 true, INFINITE_NOTIF_LIFETIME);
         }
@@ -55,78 +57,16 @@ function continueLoadingScheme(viewID) {
 function startUpdatingScheme() {
     scheme.update(scada.clientAPI, function (success) {
         if (!success) {
-            addNotification(phrases.UpdateError, true, DEF_NOTIF_LIFETIME);
+            notifier.addNotification(phrases.UpdateError, true, DEF_NOTIF_LIFETIME);
         }
 
         setTimeout(startUpdatingScheme, refrRate);
     });
 }
 
-// Add notification to the notification panel
-function addNotification(messageHtml, error, lifetime) {
-    // remove the same previous message
-    var divNotif = $("#divNotif");
-    var divPrevMessage = divNotif.children(".message:last");
-
-    if (divPrevMessage.html() == messageHtml) {
-        divPrevMessage.remove();
-    }
-
-    // add the new message
-    var divMessage = $("<div class='message'></div>").html(messageHtml);
-
-    if (error) {
-        divMessage.addClass("error");
-    }
-
-    if (lifetime) {
-        divMessage.attr("data-expires", Date.now() + lifetime);
-    }
-
-    divNotif
-        .css("display", "block")
-        .append(divMessage)
-        .scrollTop(divNotif.prop("scrollHeight"));
-
-    updateLayout();
-}
-
-// Clear the notifications which lifetime is expired
-function clearOutdatedNotifications() {
-    var messages = $("#divNotif .message");
-
-    if (messages.length > 0) {
-        var nowMs = Date.now();
-
-        $.each(messages, function () {
-            var expires = $(this).attr("data-expires");
-            if (expires < nowMs) {
-                $(this).remove();
-            }
-        });
-
-        if ($("#divNotif .message").length == 0) {
-            $("#divNotif").css("display", "none");
-        }
-
-        updateLayout();
-    }
-}
-
-// Clear all the notifications
-function clearAllNotifications() {
-    $("#divNotif .message").remove();
-    updateLayout();
-}
-
-// Start outdated notifications clearing process
-function startClearingNotifications() {
-    setInterval(clearOutdatedNotifications, 1000);
-}
-
 // Reload scheme
 function reloadScheme() {
-    location = location;
+    location.reload(true);
 }
 
 // Bind handlers of the toolbar buttons
@@ -216,23 +156,35 @@ function initDebugTools() {
     });
 
     $("#spanAddNotifBtn").click(function () {
-        addNotification(scada.utils.getCurTime() + " Test notification", false, DEF_NOTIF_LIFETIME);
+        notifier.addNotification(scada.utils.getCurTime() + " Test notification", false, DEF_NOTIF_LIFETIME);
     });
+}
+
+// Apply additional css styles in case of using iOS
+function styleIOS() {
+    if (scada.utils.iOS()) {
+        $("#divSchWrapper").css({
+            "overflow": "scroll",
+            "-webkit-overflow-scrolling": "touch"
+        });
+    }
 }
 
 // Update layout of the top level div elements
 function updateLayout() {
     var divNotif = $("#divNotif");
     var notifHeight = divNotif.css("display") == "block" ? divNotif.outerHeight() : 0;
+    var windowWidth = $(window).width();
     var divSchWrapper = $("#divSchWrapper");
     var divToolbar = $("#divToolbar");
 
     $("body").css("padding-top", notifHeight);
-    divNotif.outerWidth($(window).width());
-    divSchWrapper.height($(window).height() - notifHeight);
+    divNotif.outerWidth(windowWidth);
+    divSchWrapper
+        .outerWidth(windowWidth)
+        .outerHeight($(window).height() - notifHeight);
     divToolbar.css("top", notifHeight);
 }
-
 
 $(document).ready(function () {
     scada.clientAPI.rootPath = "../../";
@@ -245,10 +197,12 @@ $(document).ready(function () {
         startLoadingScheme(viewID);
     }
 
+    styleIOS();
+    updateLayout();
+    notifier = new scada.Notifier("#divNotif");
+    notifier.startClearingNotifications();
+
     $(window).resize(function () {
         updateLayout();
     });
-
-    updateLayout();
-    startClearingNotifications();
 });
