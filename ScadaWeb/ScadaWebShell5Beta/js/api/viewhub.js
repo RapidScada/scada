@@ -69,19 +69,25 @@ scada.ViewHub.prototype.notify = function (eventType, senderWnd, opt_extraParams
     // pass the notification to the main window
     if (!handled && this.mainWindow && this.mainWindow != senderWnd) {
         var jq = this.mainWindow.$;
-        jq(this.mainWindow).trigger(eventType, [senderWnd, opt_extraParams]);
+        if (jq) {
+            jq(this.mainWindow).trigger(eventType, [senderWnd, opt_extraParams]);
+        }
     }
 
     // pass the notification to the view window
     if (!handled && this.viewWindow && this.viewWindow != senderWnd) {
         var jq = this.viewWindow.$;
-        jq(this.viewWindow).trigger(eventType, [senderWnd, opt_extraParams]);
+        if (jq) {
+            jq(this.viewWindow).trigger(eventType, [senderWnd, opt_extraParams]);
+        }
     }
 
     // pass the notification to the data window
     if (!handled && this.dataWindow && this.dataWindow != senderWnd) {
         var jq = this.dataWindow.$;
-        jq(this.dataWindow).trigger(eventType, [senderWnd, opt_extraParams]);
+        if (jq) {
+            jq(this.dataWindow).trigger(eventType, [senderWnd, opt_extraParams]);
+        }
     }
 };
 

@@ -176,6 +176,17 @@ scada.view = {
     saveSplitterPosition: function () {
         var dataWindowHeight = $("#divDataWindow").outerHeight();
         scada.utils.setCookie("DataWindowHeight", dataWindowHeight);
+    },
+
+    // Reload view and data windows
+    reloadWindows: function (){
+        if (viewHub.viewWindow) {
+            viewHub.viewWindow.location.reload();
+        }
+
+        if (viewHub.dataWindow) {
+            viewHub.dataWindow.location.reload();
+        }
     }
 };
 
@@ -191,6 +202,11 @@ $(document).ready(function () {
     scada.splitter.prepare(function (splitterBulk) {
         if (splitterBulk.splitter.attr("id") == "divViewSplitter") {
             scada.view.saveSplitterPosition();
+
+            if (scada.utils.iOS()) {
+                // fix frame size
+                scada.view.reloadWindows();
+            }
         }
     });
 
