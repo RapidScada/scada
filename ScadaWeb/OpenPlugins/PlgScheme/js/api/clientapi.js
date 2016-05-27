@@ -49,7 +49,8 @@ scada.clientAPI = {
         $.ajax({
             url: this.rootPath + operation + queryString,
             method: "GET",
-            dataType: "json"
+            dataType: "json",
+            cache: false
         })
         .done(function (data, textStatus, jqXHR) {
             try {

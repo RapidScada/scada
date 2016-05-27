@@ -53,17 +53,9 @@ scada.ViewHub.prototype.removeDataWindow = function () {
 
 // Send notification to a view or data window.
 // The method is called by a child window
-scada.ViewHub.prototype.notify = function (senderWnd, eventType, opt_extraParams) {
+scada.ViewHub.prototype.notify = function (eventType, senderWnd, opt_extraParams) {
     var handled = false;
     var senderIsView = senderWnd == this.viewWindow;
-
-    // set main window title
-    if (eventType == scada.EventTypes.VIEW_TITLE_CHANGED) {
-        if (senderIsView && this.mainWindow) {
-            this.mainWindow.document.title = opt_extraParams;
-        }
-        handled = true;
-    }
 
     // preprocess navigation
     if (eventType == scada.EventTypes.VIEW_NAVIGATE) {
@@ -74,16 +66,22 @@ scada.ViewHub.prototype.notify = function (senderWnd, eventType, opt_extraParams
         }
     }
 
+    // pass the notification to the main window
+    if (!handled && this.mainWindow && this.mainWindow != senderWnd) {
+        var jq = this.mainWindow.$;
+        jq(this.mainWindow).trigger(eventType, [senderWnd, opt_extraParams]);
+    }
+
     // pass the notification to the view window
     if (!handled && this.viewWindow && this.viewWindow != senderWnd) {
         var jq = this.viewWindow.$;
-        jq(this.viewWindow).trigger(eventType, opt_extraParams);
+        jq(this.viewWindow).trigger(eventType, [senderWnd, opt_extraParams]);
     }
 
     // pass the notification to the data window
     if (!handled && this.dataWindow && this.dataWindow != senderWnd) {
         var jq = this.dataWindow.$;
-        jq(this.dataWindow).trigger(eventType, opt_extraParams);
+        jq(this.dataWindow).trigger(eventType, [senderWnd, opt_extraParams]);
     }
 };
 

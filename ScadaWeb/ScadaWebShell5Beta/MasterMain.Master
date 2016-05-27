@@ -45,7 +45,6 @@
                     ID="lblMainFullscreenBtn" runat="server" CssClass="hdr-btn img-btn" ToolTip="Full Screen"><span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span></asp:Label>
             </div>
         </div>
-        <asp:Label ID="lblMainNormalViewBtn" runat="server" ToolTip="Normal View"><span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span></asp:Label>
         <div id="divMainLeftPane">
             <div id="divMainTabs">
                 <div id="divMainMenuTab" class="tab selected"><asp:Label ID="lblMainMenuTab" runat="server" Text="Main Menu"></asp:Label></div>
@@ -65,6 +64,7 @@
             <asp:ContentPlaceHolder ID="cphMainContent" runat="server">
             </asp:ContentPlaceHolder>
         </div>
+        <asp:Label ID="lblMainNormalViewBtn" runat="server" ToolTip="Normal View"><span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span></asp:Label>
     </form>
 </body>
 </html>

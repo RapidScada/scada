@@ -44,11 +44,11 @@ scada.masterMain = {
 
     // Check that a user is logged on
     _checkLoggedOn: function () {
-        var thisObj = scada.masterMain;
+        var thisObj = this;
         scada.clientAPI.checkLoggedOn(function (success, loggedOn) {
             if (loggedOn) {
                 // enqueue the next check
-                setTimeout(thisObj._checkLoggedOn, thisObj.CHECK_LOGGEDON_RATE);
+                setTimeout(function () { thisObj._checkLoggedOn(); }, thisObj.CHECK_LOGGEDON_RATE);
             } else {
                 // redirect to login page
                 setTimeout(function() { location.href = scada.env.rootPath + "Login.aspx" }, thisObj.LOGIN_DELAY);
@@ -172,13 +172,14 @@ scada.masterMain = {
         if (scada.view.loadView) {
             scada.view.loadView(viewID, viewUrl);
         } else {
-            location = scada.env.rootPath + "View.aspx?viewID=" + viewID;
+            location.href = scada.env.rootPath + "View.aspx?viewID=" + viewID;
         }
     },
 
     // Start cyclic checking user logged on
     startCheckingLoggedOn: function () {
-        setTimeout(this._checkLoggedOn, this.CHECK_LOGGEDON_RATE);
+        var thisObj = this;
+        setTimeout(function () { thisObj._checkLoggedOn(); }, this.CHECK_LOGGEDON_RATE);
     }
 };
 

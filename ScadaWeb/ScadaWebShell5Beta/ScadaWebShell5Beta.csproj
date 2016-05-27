@@ -70,6 +70,12 @@
     <Content Include="config\CommSettings.xml" />
     <Content Include="config\ViewSettings.xml" />
     <Content Include="config\WebSettings.xml" />
+    <Content Include="css\controls\notifier.css">
+      <DependentUpon>notifier.less</DependentUpon>
+    </Content>
+    <Content Include="css\controls\notifier.min.css">
+      <DependentUpon>notifier.css</DependentUpon>
+    </Content>
     <Content Include="css\globalvar.css">
       <DependentUpon>globalvar.less</DependentUpon>
     </Content>

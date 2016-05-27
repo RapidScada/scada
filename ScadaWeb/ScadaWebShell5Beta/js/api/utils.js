@@ -179,7 +179,7 @@ scada.utils = {
                 eval(script);
             } else {
                 // open web page
-                location = href;
+                location.href = href;
             }
         }
     },

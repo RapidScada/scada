@@ -90,16 +90,6 @@ scada.view = {
         scada.utils.setCookie("ActiveDataWindow", this._dataWindow.url);
     },
 
-    // Apply additional css styles in case of using iOS
-    styleIOS: function () {
-        if (scada.utils.iOS()) {
-            $("#divView, #divDataWindow").css({
-                "overflow": "scroll",
-                "-webkit-overflow-scrolling": "touch"
-            });
-        }
-    },
-
     // Hide bottom pane if no data windows exist
     hideBottomTabsIfEmpty: function () {
         if ($("#divBottomTabsContainer .tab").length == 0) {
@@ -192,25 +182,27 @@ scada.view = {
 $(document).ready(function () {
     // the order of the calls below is important
     scada.view.initialPageTitle = document.title;
-    scada.view.styleIOS();
     scada.view.hideBottomTabsIfEmpty();
     scada.view.loadView(initialViewID, initialViewUrl); // arguments are defined in View.aspx
     scada.view.loadVisualState();
     scada.view.enqueueUpdateLayout();
 
-    // update layout on window resize and master page layout changes
-    $(window)
-    .resize(function () {
-        scada.view.updateLayout();
-    })
-    .on(scada.EventTypes.UPDATE_LAYOUT, function () {
-        scada.view.updateLayout();
-    });
-
     // operate the splitter
     scada.splitter.prepare(function (splitterBulk) {
         if (splitterBulk.splitter.attr("id") == "divViewSplitter") {
             scada.view.saveSplitterPosition();
+        }
+    });
+
+    // update layout on window resize and master page layout changes
+    $(window).on("resize " + scada.EventTypes.UPDATE_LAYOUT, function () {
+        scada.view.updateLayout();
+    });
+
+    // set window title on view title changed
+    $(window).on(scada.EventTypes.VIEW_TITLE_CHANGED, function (event, sender, extraParams) {
+        if (sender == viewHub.viewWindow) {
+            document.title = extraParams;
         }
     });
 

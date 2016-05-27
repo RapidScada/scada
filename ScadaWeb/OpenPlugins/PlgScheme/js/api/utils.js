@@ -179,8 +179,13 @@ scada.utils = {
                 eval(script);
             } else {
                 // open web page
-                location = href;
+                location.href = href;
             }
         }
+    },
+
+    // Detect if iOS is used
+    iOS: function () {
+        return /iPad|iPhone|iPod/.test(navigator.platform);
     }
 };

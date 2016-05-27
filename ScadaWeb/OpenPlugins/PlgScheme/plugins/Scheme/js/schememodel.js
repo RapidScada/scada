@@ -100,7 +100,8 @@ scada.scheme.Scheme.prototype._loadSchemeProps = function (viewID, callback) {
             "?viewID=" + viewID +
             "&viewStamp=" + this.viewStamp,
         method: "GET",
-        dataType: "json"
+        dataType: "json",
+        cache: false
     })
     .done(function (data, textStatus, jqXHR) {
         try {
@@ -188,7 +189,8 @@ scada.scheme.Scheme.prototype._loadElements = function (viewID, callback) {
             "&startIndex=" + this.elements.length +
             "&count=" + this.LOAD_ELEM_CNT,
         method: "GET",
-        dataType: "json"
+        dataType: "json",
+        cache: false
     })
     .done(function (data, textStatus, jqXHR) {
         try {
@@ -287,7 +289,8 @@ scada.scheme.Scheme.prototype._loadImages = function (viewID, callback) {
             "&startIndex=" + this.images.length +
             "&totalDataSize=" + this.LOAD_IMG_SIZE,
         method: "GET",
-        dataType: "json"
+        dataType: "json",
+        cache: false
     })
     .done(function (data, textStatus, jqXHR) {
         try {

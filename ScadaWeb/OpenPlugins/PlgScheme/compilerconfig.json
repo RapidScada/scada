@@ -6,5 +6,9 @@
   {
     "outputFile": "css/globalvar.css",
     "inputFile": "css/globalvar.less"
+  },
+  {
+    "outputFile": "css/controls/notifier.css",
+    "inputFile": "css/controls/notifier.less"
   }
 ]

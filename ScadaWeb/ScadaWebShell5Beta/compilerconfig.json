@@ -22,5 +22,9 @@
   {
     "outputFile": "css/noview.css",
     "inputFile": "css/noview.less"
+  },
+  {
+    "outputFile": "css/controls/notifier.css",
+    "inputFile": "css/controls/notifier.less"
   }
 ]

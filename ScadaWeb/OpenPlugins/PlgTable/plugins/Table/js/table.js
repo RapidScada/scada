@@ -9,22 +9,22 @@ $(document).ready(function () {
     $(window).on(
         scada.EventTypes.VIEW_TITLE_CHANGED + " " +
         scada.EventTypes.VIEW_NAVIGATE + " " +
-        scada.EventTypes.VIEW_DATE_CHANGED, function (event, extraParams) {
+        scada.EventTypes.VIEW_DATE_CHANGED, function (event, sender, extraParams) {
         var divLog = $("#divLog");
-        divLog.html(divLog.html() + event.type + " - " + extraParams + "<br/>")
+        divLog.html(divLog.html() + event.type + " - " + sender.document.title + " - " + extraParams + "<br/>")
     });
 
     if (viewHub) {
         $("#btn1").click(function () {
-            viewHub.notify(window, scada.EventTypes.VIEW_TITLE_CHANGED, "new title " + (new Date()));
+            viewHub.notify(scada.EventTypes.VIEW_TITLE_CHANGED, window, "new title " + (new Date()));
         });
 
         $("#btn2").click(function () {
-            viewHub.notify(window, scada.EventTypes.VIEW_NAVIGATE, 100);
+            viewHub.notify(scada.EventTypes.VIEW_NAVIGATE, window, 100);
         });
 
         $("#btn3").click(function () {
-            viewHub.notify(window, scada.EventTypes.VIEW_DATE_CHANGED, new Date());
+            viewHub.notify(scada.EventTypes.VIEW_DATE_CHANGED, window, new Date());
         });
     }
 });
