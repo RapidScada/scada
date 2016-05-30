@@ -57,16 +57,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="config\CommSettings.xml" />
     <Content Include="css\controls\notifier.css">
       <DependentUpon>notifier.less</DependentUpon>
     </Content>
     <Content Include="css\controls\notifier.min.css">
       <DependentUpon>notifier.css</DependentUpon>
     </Content>
+    <Content Include="js\api\clientapi.js" />
     <Content Include="js\api\eventtypes.js" />
+    <Content Include="js\api\utils.js" />
     <Content Include="js\api\viewhub.js" />
     <Content Include="js\controls\notifier.js" />
     <Content Include="lib\jquery\jquery.min.js" />
+    <Content Include="plugins\Table\css\events.css">
+      <DependentUpon>events.less</DependentUpon>
+    </Content>
+    <Content Include="plugins\Table\css\events.min.css">
+      <DependentUpon>events.css</DependentUpon>
+    </Content>
+    <Content Include="plugins\Table\css\layout.css">
+      <DependentUpon>layout.less</DependentUpon>
+    </Content>
+    <Content Include="plugins\Table\css\layout.min.css">
+      <DependentUpon>layout.css</DependentUpon>
+    </Content>
     <Content Include="plugins\Table\css\table.css">
       <DependentUpon>table.less</DependentUpon>
     </Content>
@@ -76,6 +91,7 @@
     <Content Include="plugins\Table\Events.aspx" />
     <Content Include="plugins\Table\images\tableicon.png" />
     <Content Include="plugins\Table\js\events.js" />
+    <Content Include="plugins\Table\js\layout.js" />
     <Content Include="plugins\Table\js\table.js" />
     <Content Include="plugins\Table\lang\PlgTable.ru-RU.xml" />
     <Content Include="plugins\Table\lang\PlgTable.en-GB.xml" />
@@ -106,13 +122,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="css\globalvar.less" />
     <Content Include="plugins\Table\css\table.less" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
     <Content Include="css\controls\notifier.less" />
+    <Content Include="css\globalvar.less" />
+    <Content Include="css\shellvar.less" />
+    <Content Include="plugins\Table\css\layout.less" />
+    <Content Include="plugins\Table\css\events.less" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -121,7 +140,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="log\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

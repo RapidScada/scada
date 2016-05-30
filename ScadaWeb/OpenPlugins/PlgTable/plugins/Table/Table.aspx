@@ -7,11 +7,15 @@
     <title>Table - Rapid SCADA</title>
     <link href="~/lib/open-sans/css/open-sans.css" rel="stylesheet" type="text/css" />
     <link href="~/css/controls/notifier.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/Table/css/layout.min.css" rel="stylesheet" type="text/css" />
     <link href="~/plugins/Table/css/table.min.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../../js/api/utils.js"></script>
+    <script type="text/javascript" src="../../js/api/clientapi.js"></script>
     <script type="text/javascript" src="../../js/api/eventtypes.js"></script>
     <script type="text/javascript" src="../../js/api/viewhub.js"></script>
     <script type="text/javascript" src="../../js/controls/notifier.js"></script>
+    <script type="text/javascript" src="js/layout.js"></script>
     <script type="text/javascript">
         var DEBUG_MODE = <%= debugMode ? "true" : "false" %>;
         var viewID = <%= viewID %>;
@@ -24,22 +28,16 @@
     <form id="frmTable" runat="server">
         <div id="divNotif" class="notifier">
         </div>
-        <div id="divToolbar">
+        <div id="divToolbar"><asp:TextBox ID="txtDate" runat="server"></asp:TextBox><asp:DropDownList 
+            ID="ddlTimeFrom" runat="server"></asp:DropDownList><asp:DropDownList 
+            ID="ddlTimeTo" runat="server"></asp:DropDownList><div id="divDebugTools"><span 
+                id="spanTitleChangedBtn" class="tool-btn">TitleChanged</span><span 
+                id="spanNavigateBtn" class="tool-btn">Navigate</span><span 
+                id="spanDateChangedBtn" class="tool-btn">DateChanged</span>
+            </div>
         </div>
         <div id="divTblWrapper">
         </div>
-
-        <div>
-            <input id="btn1" type="button" value="TitleChanged" />
-            <input id="btn2" type="button" value="Navigate" />
-            <input id="btn3" type="button" value="DateChanged" />
-        </div>
-        <div id="divLog"></div>
-        <table><tr>
-            <% for (int i = 0; i < 100; i++) { %>
-            <td>Test</td>
-            <% } %>
-        </tr></table>
     </form>
 </body>
 </html>

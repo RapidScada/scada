@@ -120,7 +120,7 @@ namespace Scada.Web
                 }
             }
 
-            sbJs.AppendLine("}");
+            sbJs.Append("}");
             return sbJs.ToString();
         }
     }

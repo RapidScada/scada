@@ -6,5 +6,13 @@
   {
     "outputFile": "css/controls/notifier.css",
     "inputFile": "css/controls/notifier.less"
+  },
+  {
+    "outputFile": "plugins/Table/css/layout.css",
+    "inputFile": "plugins/Table/css/layout.less"
+  },
+  {
+    "outputFile": "plugins/Table/css/events.css",
+    "inputFile": "plugins/Table/css/events.less"
   }
 ]

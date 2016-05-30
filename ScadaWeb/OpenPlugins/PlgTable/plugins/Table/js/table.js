@@ -1,30 +1,26 @@
-﻿// View hub. Must be defined in the parent window
-var viewHub = scada.viewHubLocator.getViewHub();
+﻿// Notifier control
+var notifier = null;
+// View ID. Must be defined in Table.aspx
+var viewID = viewID || 0;
+// Current data refresh rate
+var refrRate = refrRate || 1000;
+// Localized phrases
+var phrases = phrases || {};
 
 $(document).ready(function () {
-    /*$(window).on(scada.EventTypes.VIEW_NAVIGATE, function (event) {
-        console.log(event.type);
-    });*/
+    scada.clientAPI.rootPath = "../../";
+    styleIOS();
+    updateLayout();
+    notifier = new scada.Notifier("#divNotif");
+    notifier.startClearingNotifications();
 
-    $(window).on(
-        scada.EventTypes.VIEW_TITLE_CHANGED + " " +
-        scada.EventTypes.VIEW_NAVIGATE + " " +
-        scada.EventTypes.VIEW_DATE_CHANGED, function (event, sender, extraParams) {
-        var divLog = $("#divLog");
-        divLog.html(divLog.html() + event.type + " - " + sender.document.title + " - " + extraParams + "<br/>")
-    });
-
-    if (viewHub) {
-        $("#btn1").click(function () {
-            viewHub.notify(scada.EventTypes.VIEW_TITLE_CHANGED, window, "new title " + (new Date()));
-        });
-
-        $("#btn2").click(function () {
-            viewHub.notify(scada.EventTypes.VIEW_NAVIGATE, window, 100);
-        });
-
-        $("#btn3").click(function () {
-            viewHub.notify(scada.EventTypes.VIEW_DATE_CHANGED, window, new Date());
-        });
+    if (DEBUG_MODE) {
+        initDebugTools();
+    } else {
+        // TODO: start updating
     }
+
+    $(window).on("resize " + scada.EventTypes.UPDATE_LAYOUT, function () {
+        updateLayout();
+    });
 });

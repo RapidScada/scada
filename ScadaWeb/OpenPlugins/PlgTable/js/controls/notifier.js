@@ -13,11 +13,19 @@
 // Rapid SCADA namespace
 var scada = scada || {};
 
-
 // Notifier type
-scada.Notifier = function (id) {
+scada.Notifier = function (selector) {
     // jQuery object of the notification area
-    this._notifier = $("#" + id);
+    this._notifier = $(selector);
+
+    // Default notification message lifetime, ms
+    this.DEF_NOTIF_LIFETIME = 10000;
+
+    // Infinite notification message lifetime
+    this.INFINITE_NOTIF_LIFETIME = 0;
+
+    // Clearing outdated notifications rate
+    this.CLEAR_RATE = 1000;
 };
 
 // Add notification to the notification area
@@ -43,7 +51,7 @@ scada.Notifier.prototype.addNotification = function (messageHtml, error, lifetim
     this._notifier
         .css("display", "block")
         .append(divMessage)
-        .scrollTop(divNotif.prop("scrollHeight"));
+        .scrollTop(this._notifier.prop("scrollHeight"));
 
     $(window).trigger(scada.EventTypes.UPDATE_LAYOUT);
 };
@@ -83,3 +91,9 @@ scada.Notifier.prototype.clearAllNotifications = function () {
         $(window).trigger(scada.EventTypes.UPDATE_LAYOUT);
     }
 };
+
+// Start outdated notifications clearing process
+scada.Notifier.prototype.startClearingNotifications = function () {
+    var thisNotifier = this;
+    setInterval(function () { thisNotifier.clearOutdatedNotifications(); }, this.CLEAR_RATE);
+}

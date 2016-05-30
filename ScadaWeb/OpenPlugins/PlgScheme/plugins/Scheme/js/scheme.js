@@ -11,11 +11,6 @@ var phrases = phrases || {};
 // Possible scale values
 var scaleVals = [0.1, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 2, 2.5, 3, 4, 5];
 
-// Default notification message lifetime, ms
-var DEF_NOTIF_LIFETIME = 10000;
-// Infinite notification message lifetime
-var INFINITE_NOTIF_LIFETIME = 0;
-
 // Start scheme loading process
 function startLoadingScheme(viewID) {
     console.info(scada.utils.getCurTime() + " Start loading scheme");
@@ -48,7 +43,7 @@ function continueLoadingScheme(viewID) {
             $("body").removeClass("loading");
             notifier.addNotification(phrases.LoadSchemeError +
                 " <input type='button' value='" + phrases.ReloadButton + "' onclick='reloadScheme()' />",
-                true, INFINITE_NOTIF_LIFETIME);
+                true, notifier.INFINITE_NOTIF_LIFETIME);
         }
     });
 }
@@ -57,7 +52,7 @@ function continueLoadingScheme(viewID) {
 function startUpdatingScheme() {
     scheme.update(scada.clientAPI, function (success) {
         if (!success) {
-            notifier.addNotification(phrases.UpdateError, true, DEF_NOTIF_LIFETIME);
+            notifier.addNotification(phrases.UpdateError, true, notifier.DEF_NOTIF_LIFETIME);
         }
 
         setTimeout(startUpdatingScheme, refrRate);
@@ -138,6 +133,32 @@ function saveScale(opt_scale) {
     scada.utils.setCookie("SchemeScale", opt_scale ? opt_scale : scheme.scale);
 }
 
+// Apply additional css styles in case of using iOS
+function styleIOS() {
+    if (scada.utils.iOS()) {
+        $("#divSchWrapper").css({
+            "overflow": "scroll",
+            "-webkit-overflow-scrolling": "touch"
+        });
+    }
+}
+
+// Update layout of the top level div elements
+function updateLayout() {
+    var divNotif = $("#divNotif");
+    var divSchWrapper = $("#divSchWrapper");
+    var divToolbar = $("#divToolbar");
+    var notifHeight = divNotif.css("display") == "block" ? divNotif.outerHeight() : 0;
+    var windowWidth = $(window).width();
+
+    $("body").css("padding-top", notifHeight);
+    divNotif.outerWidth(windowWidth);
+    divSchWrapper
+        .outerWidth(windowWidth)
+        .outerHeight($(window).height() - notifHeight);
+    divToolbar.css("top", notifHeight);
+}
+
 // Initialize debug tools
 function initDebugTools() {
     $("#divDebugTools").css("display", "inline-block");
@@ -156,40 +177,18 @@ function initDebugTools() {
     });
 
     $("#spanAddNotifBtn").click(function () {
-        notifier.addNotification(scada.utils.getCurTime() + " Test notification", false, DEF_NOTIF_LIFETIME);
+        notifier.addNotification(scada.utils.getCurTime() + " Test notification", false, notifier.DEF_NOTIF_LIFETIME);
     });
-}
-
-// Apply additional css styles in case of using iOS
-function styleIOS() {
-    if (scada.utils.iOS()) {
-        $("#divSchWrapper").css({
-            "overflow": "scroll",
-            "-webkit-overflow-scrolling": "touch"
-        });
-    }
-}
-
-// Update layout of the top level div elements
-function updateLayout() {
-    var divNotif = $("#divNotif");
-    var notifHeight = divNotif.css("display") == "block" ? divNotif.outerHeight() : 0;
-    var windowWidth = $(window).width();
-    var divSchWrapper = $("#divSchWrapper");
-    var divToolbar = $("#divToolbar");
-
-    $("body").css("padding-top", notifHeight);
-    divNotif.outerWidth(windowWidth);
-    divSchWrapper
-        .outerWidth(windowWidth)
-        .outerHeight($(window).height() - notifHeight);
-    divToolbar.css("top", notifHeight);
 }
 
 $(document).ready(function () {
     scada.clientAPI.rootPath = "../../";
     scheme.parentDomElem = $("#divSchWrapper");
     initToolbar();
+    styleIOS();
+    updateLayout();
+    notifier = new scada.Notifier("#divNotif");
+    notifier.startClearingNotifications();
 
     if (DEBUG_MODE) {
         initDebugTools();
@@ -197,12 +196,7 @@ $(document).ready(function () {
         startLoadingScheme(viewID);
     }
 
-    styleIOS();
-    updateLayout();
-    notifier = new scada.Notifier("#divNotif");
-    notifier.startClearingNotifications();
-
-    $(window).resize(function () {
+    $(window).on("resize " + scada.EventTypes.UPDATE_LAYOUT, function () {
         updateLayout();
     });
 });

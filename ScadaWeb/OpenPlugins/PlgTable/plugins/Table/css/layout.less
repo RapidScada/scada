@@ -1,0 +1,51 @@
+﻿@import "../../../css/globalvar.less";
+@import "../../../css/shellvar.less";
+
+@notif-back-color: white;
+@toolbar-fore-color: @menu-fore-color-dark;
+@toolbar-back-color: white;
+@tool-btn-hover-fore-color: @menu-item-hover-fore-color;
+@toolbar-heigth: 30px;
+
+body {
+    margin: 0;
+    padding: @toolbar-heigth 0 0 0;
+    background-color: @content-back-color;
+    font-family: @default-font-family;
+    font-size: @default-font-size;
+    overflow: hidden;
+}
+
+#divToolbar {
+    position: fixed;
+    height: @toolbar-heigth;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background-color: @toolbar-back-color;
+    color: @toolbar-fore-color;
+    font-size: 14px;
+    line-height: @toolbar-heigth;
+    white-space: nowrap;
+}
+
+#divToolbar .tool-btn {
+    height: @toolbar-heigth;
+    margin: 0 5px 0 0;
+    padding: 0 10px;
+    cursor: pointer;
+    display: inline-block;
+    line-height: @toolbar-heigth;
+    vertical-align: top;
+}
+
+#divDebugTools {
+    padding: 0 10px;
+    display: none; /*inline-block*/
+    font-size: 12px;
+    vertical-align: top;
+}
+
+#divTblWrapper {
+    overflow: auto;
+}
