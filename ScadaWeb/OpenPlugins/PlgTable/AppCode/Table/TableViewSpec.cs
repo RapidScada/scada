@@ -60,7 +60,7 @@ namespace Scada.Web.Plugins.Table
         /// </summary>
         public override string GetViewUrl(int viewID)
         {
-            return "~/plugins/table/Table.aspx?viewID=" + viewID;
+            return "~/plugins/Table/Table.aspx?viewID=" + viewID;
         }
     }
 }
