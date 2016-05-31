@@ -71,6 +71,9 @@
     <Content Include="js\api\utils.js" />
     <Content Include="js\api\viewhub.js" />
     <Content Include="js\controls\notifier.js" />
+    <Content Include="lib\font-awesome\css\font-awesome.css" />
+    <Content Include="lib\font-awesome\css\font-awesome.min.css" />
+    <Content Include="lib\font-awesome\fonts\fontawesome-webfont.svg" />
     <Content Include="lib\jquery\jquery.min.js" />
     <Content Include="plugins\Table\css\events.css">
       <DependentUpon>events.less</DependentUpon>
@@ -91,6 +94,7 @@
       <DependentUpon>table.css</DependentUpon>
     </Content>
     <Content Include="plugins\Table\Events.aspx" />
+    <Content Include="plugins\Table\images\quantityicons\quantity.png" />
     <Content Include="plugins\Table\images\tableicon.png" />
     <Content Include="plugins\Table\js\events.js" />
     <Content Include="plugins\Table\js\layout.js" />
@@ -134,6 +138,11 @@
     <Content Include="css\shellvar.less" />
     <Content Include="plugins\Table\css\layout.less" />
     <Content Include="plugins\Table\css\events.less" />
+    <Content Include="lib\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="lib\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="lib\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="lib\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="lib\font-awesome\fonts\FontAwesome.otf" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -144,7 +153,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="log\" />
-    <Folder Include="plugins\Table\images\quantityicons\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

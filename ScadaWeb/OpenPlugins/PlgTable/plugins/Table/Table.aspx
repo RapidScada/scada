@@ -5,6 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Table - Rapid SCADA</title>
+    <link href="~/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <link href="~/lib/open-sans/css/open-sans.css" rel="stylesheet" type="text/css" />
     <link href="~/css/controls/notifier.min.css" rel="stylesheet" type="text/css" />
     <link href="~/plugins/Table/css/layout.min.css" rel="stylesheet" type="text/css" />
@@ -37,7 +38,7 @@
             </div>
         </div>
         <div id="divTblWrapper">
-            <%= GenerateTableViewHtml(tableView) %>
+            <%= tableViewHtml %>
         </div>
     </form>
 </body>

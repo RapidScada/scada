@@ -1,1 +1,53 @@
-﻿
+﻿@import "layout.less";
+
+@cmd-icon-fore-color: #a00;
+@cmd-icon-hover-fore-color: red;
+@cmd-icon-font-size: 15px;
+
+#divTblWrapper td.cap {
+    padding: 2px 5px;
+}
+
+#divTblWrapper td.cap img {
+    width: 16px;
+    height: 16px;
+    margin: 0 5px 0 0;
+    border: none;
+    cursor: pointer;
+}
+
+#divTblWrapper td.cap a {
+    margin-right: 5px;
+    color: @link-fore-color;
+    text-decoration: none;
+}
+
+#divTblWrapper td.cap a:hover {
+    color: @link-hover-fore-color;
+}
+
+#divTblWrapper td.cap span.cmd {
+    display: inline-block;
+    width: @cell-height;
+    height: @cell-height;
+    cursor: pointer;
+    color: @cmd-icon-fore-color;
+    float: right;
+    font-size: @cmd-icon-font-size;
+    line-height: @cell-height;
+    text-align: center;
+}
+
+#divTblWrapper td.cap span.cmd:hover {
+    color: @cmd-icon-hover-fore-color;
+}
+
+#divTblWrapper td.cap span.cmd::before {
+    content: "\f135";
+    font-family: FontAwesome;
+}
+
+#divTblWrapper td.cur,
+#divTblWrapper td.hour {
+    text-align: center;
+}

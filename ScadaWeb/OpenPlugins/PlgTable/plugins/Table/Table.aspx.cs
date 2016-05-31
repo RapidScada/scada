@@ -23,6 +23,7 @@
  * Modified : 2016
  */
 
+using Scada.Data;
 using Scada.UI;
 using Scada.Web.Shell;
 using System;
@@ -37,12 +38,21 @@ namespace Scada.Web.Plugins.Table
     /// </summary>
     public partial class WFrmTable : System.Web.UI.Page
     {
+        /// <summary>
+        /// Относительный путь к иконкам величин
+        /// </summary>
+        private const string QuantityIconsPath = "images/quantityicons/";
+        /// <summary>
+        /// Иконка величины по умолчанию
+        /// </summary>
+        private const string DefQuantityIcon = "quantity.png";
+
         // Переменные для вывода на веб-страницу
         protected bool debugMode = false; // режим отладки
         protected int viewID;             // ид. представления
         protected int refrRate;           // частота обновления данных
         protected string phrases;         // локализованные фразы
-        protected TableView tableView;    // табличное представление
+        protected string tableViewHtml;   // HTML-код табличного представления
 
 
         /// <summary>
@@ -89,15 +99,12 @@ namespace Scada.Web.Plugins.Table
         /// <summary>
         /// Добавить ячейку
         /// </summary>
-        private void AppendCell(StringBuilder sbHtml, string cssClass, int cnlNum, int? hour, string innerHtml)
+        private void AppendCell(StringBuilder sbHtml, string cssClass, int? hour, string innerHtml)
         {
             sbHtml.Append("<td");
 
             if (!string.IsNullOrEmpty(cssClass))
                 sbHtml.Append(" class='").Append(cssClass).Append("'");
-
-            if (cnlNum > 0)
-                sbHtml.Append(" data-cnl='").Append(cnlNum).Append("'");
 
             if (hour.HasValue)
                 sbHtml.Append(" data-hour='").Append(hour.Value).Append("'");
@@ -108,7 +115,7 @@ namespace Scada.Web.Plugins.Table
         /// <summary>
         /// Генерировать HTML-код табличного представления
         /// </summary>
-        protected string GenerateTableViewHtml(TableView tableView)
+        private string GenerateTableViewHtml(TableView tableView, bool cmdEnabled)
         {
             StringBuilder sbHtml = new StringBuilder();
             sbHtml.AppendLine("<table>");
@@ -125,12 +132,51 @@ namespace Scada.Web.Plugins.Table
             bool altRow = false;
             foreach(TableView.Item item in tableView.VisibleItems)
             {
+                InCnlProps cnlProps = item.CnlProps;
                 int cnlNum = item.CnlNum;
-                sbHtml.AppendLine(altRow ? "<tr class='item alt'>" : "<tr class='item'>");
-                AppendCell(sbHtml, "cap", cnlNum, null, item.Caption);
-                AppendCell(sbHtml, "cur", cnlNum, null, "---");
-                for (int hour = 0; hour < 24; hour++)
-                    AppendCell(sbHtml, "hour", cnlNum, hour, "---");
+                int ctrlCnlNum = cmdEnabled ? item.CtrlCnlNum : 0;
+
+                // тег начала строки
+                sbHtml.AppendLine(altRow ? "<tr class='item alt'" : "<tr class='item'");
+                if (cnlNum > 0)
+                    sbHtml.Append(" data-cnl='").Append(cnlNum).Append("'");
+                if (ctrlCnlNum > 0)
+                    sbHtml.Append(" data-ctrl='").Append(ctrlCnlNum).Append("'");
+                sbHtml.AppendLine(">");
+
+                // ячейка наименования
+                string caption = string.IsNullOrEmpty(item.Caption) ? "&nbsp;" : item.Caption;
+                if (cnlNum > 0 || ctrlCnlNum > 0)
+                {
+                    StringBuilder sbCapHtml = new StringBuilder();
+                    string iconFileName = cnlProps == null || cnlProps.IconFileName == "" ?
+                        DefQuantityIcon : cnlProps.IconFileName;
+                    sbCapHtml.Append("<img src='" + QuantityIconsPath + iconFileName + "' alt='' />")
+                        .Append("<a href='#'>").Append(caption).Append("</a>");
+                    if (ctrlCnlNum > 0)
+                        sbCapHtml.Append("<span class='cmd' title='Send Command'></span>");
+                    AppendCell(sbHtml, "cap", null, sbCapHtml.ToString());
+                }
+                else
+                {
+                    AppendCell(sbHtml, "cap", null, caption);
+                }
+
+                // ячейки текущих и часовых данных
+                if (cnlNum > 0)
+                {
+                    AppendCell(sbHtml, "cur", null, "---");
+                    for (int hour = 0; hour < 24; hour++)
+                        AppendCell(sbHtml, "hour", hour, "---");
+                }
+                else
+                {
+                    AppendCell(sbHtml, "cur", null, "");
+                    for (int hour = 0; hour < 24; hour++)
+                        AppendCell(sbHtml, "hour", hour, "");
+                }
+
+                // тег окончания строки
                 sbHtml.AppendLine().AppendLine("</tr>");
                 altRow = !altRow;
             }
@@ -157,11 +203,14 @@ namespace Scada.Web.Plugins.Table
             int.TryParse(Request.QueryString["viewID"], out viewID);
 
             // проверка прав на просмотр представления
-            if (!(userData.LoggedOn && userData.UserRights.GetViewRights(viewID).ViewRight))
+            EntityRights rights = userData.LoggedOn ? 
+                userData.UserRights.GetViewRights(viewID) : EntityRights.NoRights;
+            if (!rights.ViewRight)
                 Response.Redirect(UrlTemplates.NoView);
 
             // загрузка представления в кеш,
             // ошибка будет записана в журнал приложения
+            TableView tableView;
             try
             {
                 tableView = appData.ViewCache.GetView<TableView>(viewID, true);
@@ -179,6 +228,9 @@ namespace Scada.Web.Plugins.Table
             Localization.Dict dict;
             Localization.Dictionaries.TryGetValue("Scada.Web.Plugins.Table.WFrmTable.Js", out dict);
             phrases = WebUtils.DictionaryToJs(dict);
+
+            bool cmdEnabled = userData.WebSettings.CmdEnabled && rights.ControlRight;
+            tableViewHtml = GenerateTableViewHtml(tableView, cmdEnabled);
 
             FillTimeDropdowns();
         }

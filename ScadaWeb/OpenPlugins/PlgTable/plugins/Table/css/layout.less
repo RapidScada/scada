@@ -1,18 +1,31 @@
 ﻿@import "../../../css/globalvar.less";
 @import "../../../css/shellvar.less";
 
+@table-fore-color: black;
 @notif-back-color: white;
-@toolbar-fore-color: @menu-fore-color-dark;
 @toolbar-back-color: transparent;
+@toolbar-fore-color: @menu-fore-color-dark;
 @tool-btn-back-color: white;
 @tool-btn-hover-fore-color: @menu-item-hover-fore-color;
 @toolbar-ctrl-font-family: Arial, Helvetica, sans-serif;
 @toolbar-heigth: 30px;
+@row-back-color: white;
+@row-back-color-alt: #f9f9f9;
+@row-back-color-hdr: #ccc;
+@row-hover-back-color: #e0e0e0;
+@row-hover-fore-color: @table-fore-color;
+@cell-border-color: #999;
+@cell-border-color-hdr: #888;
+@link-fore-color: #0073aa;
+@link-hover-fore-color: #00a0d2;
+@cell-font-size: @default-font-size;
+@cell-height: 18px;
 
 body {
     margin: 0;
     padding: @toolbar-heigth 0 0 0;
     background-color: @content-back-color;
+    color: @table-fore-color;
     font-family: @default-font-family;
     font-size: @default-font-size;
     overflow: hidden;
@@ -79,30 +92,33 @@ body {
 }
 
 #divTblWrapper tr {
-    background-color: #f9f9f9;
+    background-color: @row-back-color;
 }
 
 #divTblWrapper tr.hdr {
-    background-color: #ccc;
+    background-color: @row-back-color-hdr;
 }
 
 #divTblWrapper tr.alt {
-    background-color: white;
+    background-color: @row-back-color-alt;
 }
 
 #divTblWrapper tr.item:hover {
-    background-color: #0073aa;
-    color: white;
+    background-color: @row-hover-back-color;
+    color: @row-hover-fore-color;
 }
 
 #divTblWrapper th,
 #divTblWrapper td { 
     white-space: nowrap;
-    border: 1px solid #999;
+    border: 1px solid @cell-border-color;
+    font-size: @cell-font-size;
+    line-height: @cell-height;
+    vertical-align: middle;
 }
 
 #divTblWrapper th {
-    border: 1px solid #888;
+    border: 1px solid @cell-border-color-hdr;
     font-weight: 600;
     padding: 2px 7px;
     text-align: center;
@@ -112,11 +128,8 @@ body {
     padding: 2px 3px;
 }
 
-#divTblWrapper td.cap {
-    padding: 2px 5px;
-}
-
-#divTblWrapper td.cur,
-#divTblWrapper td.hour {
-    text-align: center;
+#divTblWrapper td a,
+#divTblWrapper td span,
+#divTblWrapper td img {
+    vertical-align: middle;
 }
