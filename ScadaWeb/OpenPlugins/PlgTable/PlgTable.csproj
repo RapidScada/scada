@@ -72,32 +72,32 @@
     <Content Include="js\api\viewhub.js" />
     <Content Include="js\controls\notifier.js" />
     <Content Include="lib\jquery\jquery.min.js" />
-    <Content Include="plugins\Table\css\events.css">
+    <Content Include="plugins\table1\css\events.css">
       <DependentUpon>events.less</DependentUpon>
     </Content>
-    <Content Include="plugins\Table\css\events.min.css">
+    <Content Include="plugins\table1\css\events.min.css">
       <DependentUpon>events.css</DependentUpon>
     </Content>
-    <Content Include="plugins\Table\css\layout.css">
+    <Content Include="plugins\table1\css\layout.css">
       <DependentUpon>layout.less</DependentUpon>
     </Content>
-    <Content Include="plugins\Table\css\layout.min.css">
+    <Content Include="plugins\table1\css\layout.min.css">
       <DependentUpon>layout.css</DependentUpon>
     </Content>
-    <Content Include="plugins\Table\css\table.css">
+    <Content Include="plugins\table1\css\table.css">
       <DependentUpon>table.less</DependentUpon>
     </Content>
-    <Content Include="plugins\Table\css\table.min.css">
+    <Content Include="plugins\table1\css\table.min.css">
       <DependentUpon>table.css</DependentUpon>
     </Content>
-    <Content Include="plugins\Table\Events.aspx" />
-    <Content Include="plugins\Table\images\tableicon.png" />
-    <Content Include="plugins\Table\js\events.js" />
-    <Content Include="plugins\Table\js\layout.js" />
-    <Content Include="plugins\Table\js\table.js" />
-    <Content Include="plugins\Table\lang\PlgTable.ru-RU.xml" />
-    <Content Include="plugins\Table\lang\PlgTable.en-GB.xml" />
-    <Content Include="plugins\Table\Table.aspx" />
+    <Content Include="plugins\table1\Events.aspx" />
+    <Content Include="plugins\table1\images\tableicon.png" />
+    <Content Include="plugins\table1\js\events.js" />
+    <Content Include="plugins\table1\js\layout.js" />
+    <Content Include="plugins\table1\js\table.js" />
+    <Content Include="plugins\table1\lang\PlgTable.ru-RU.xml" />
+    <Content Include="plugins\table1\lang\PlgTable.en-GB.xml" />
+    <Content Include="plugins\table1\Table.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -107,24 +107,24 @@
     <Compile Include="AppCode\PlgTableSpec.cs" />
     <Compile Include="AppCode\Table\TableView.cs" />
     <Compile Include="AppCode\Table\TableViewSpec.cs" />
-    <Compile Include="plugins\Table\Events.aspx.cs">
+    <Compile Include="plugins\table1\Events.aspx.cs">
       <DependentUpon>Events.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="plugins\Table\Events.aspx.designer.cs">
+    <Compile Include="plugins\table1\Events.aspx.designer.cs">
       <DependentUpon>Events.aspx</DependentUpon>
     </Compile>
-    <Compile Include="plugins\Table\Table.aspx.cs">
+    <Compile Include="plugins\table1\Table.aspx.cs">
       <DependentUpon>Table.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="plugins\Table\Table.aspx.designer.cs">
+    <Compile Include="plugins\table1\Table.aspx.designer.cs">
       <DependentUpon>Table.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="plugins\Table\css\table.less" />
+    <Content Include="plugins\table1\css\table.less" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
@@ -132,8 +132,8 @@
     <Content Include="css\controls\notifier.less" />
     <Content Include="css\globalvar.less" />
     <Content Include="css\shellvar.less" />
-    <Content Include="plugins\Table\css\layout.less" />
-    <Content Include="plugins\Table\css\events.less" />
+    <Content Include="plugins\table1\css\layout.less" />
+    <Content Include="plugins\table1\css\events.less" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -144,7 +144,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="log\" />
-    <Folder Include="plugins\Table\images\quantityicons\" />
+    <Folder Include="plugins\table1\images\quantityicons\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
