@@ -264,6 +264,7 @@ namespace Scada.Web
                         username, RoleName, IpAddress));
                 }
 
+                AppData.UserMonitor.AddUser(this);
                 UpdateAppDataRefs();
                 UserRights = new UserRights();
                 UserRights.Init(roleID, AppData.DataAccess);
@@ -301,7 +302,6 @@ namespace Scada.Web
         public void LoginForDebug()
         {
             AppData.Init(HostingEnvironment.MapPath("~"));
-            AppData.UserMonitor.AddUser(this);
             string errMsg;
             Login("admin", out errMsg);
         }

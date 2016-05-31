@@ -28,15 +28,16 @@
     <form id="frmTable" runat="server">
         <div id="divNotif" class="notifier">
         </div>
-        <div id="divToolbar"><asp:TextBox ID="txtDate" runat="server"></asp:TextBox><asp:DropDownList 
+        <div id="divToolbar"><span class="tool-ctrl"><asp:TextBox ID="txtDate" runat="server"></asp:TextBox></span><span class="tool-ctrl"><asp:DropDownList 
             ID="ddlTimeFrom" runat="server"></asp:DropDownList> - <asp:DropDownList 
-            ID="ddlTimeTo" runat="server"></asp:DropDownList><div id="divDebugTools"><span 
+            ID="ddlTimeTo" runat="server"></asp:DropDownList></span><div id="divDebugTools"><span 
                 id="spanTitleChangedBtn" class="tool-btn">TitleChanged</span><span 
                 id="spanNavigateBtn" class="tool-btn">Navigate</span><span 
                 id="spanDateChangedBtn" class="tool-btn">DateChanged</span>
             </div>
         </div>
         <div id="divTblWrapper">
+            <%= GenerateTableViewHtml(tableView) %>
         </div>
     </form>
 </body>

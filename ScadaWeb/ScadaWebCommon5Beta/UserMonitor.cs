@@ -133,15 +133,28 @@ namespace Scada.Web
         {
             try
             {
-                if (userData != null && !string.IsNullOrEmpty(userData.SessionID))
+                string sessionID = userData.SessionID;
+
+                if (userData != null && !string.IsNullOrEmpty(sessionID))
                 {
                     lock (userDataDict)
                     {
-                        userDataDict[userData.SessionID] = userData;
-                        log.WriteAction(string.Format(Localization.UseRussian ?
-                            "Добавлена информация о пользователе. IP-адрес: {0}. Сессия: {1}" :
-                            "User information has been added. IP address: {0}. Session: {1}", 
-                            userData.IpAddress, userData.SessionID));
+                        if (userDataDict.ContainsKey(sessionID))
+                        {
+                            userDataDict[sessionID] = userData;
+                            log.WriteAction(string.Format(Localization.UseRussian ?
+                                "Обновлена информация о пользователе. IP-адрес: {0}. Сессия: {1}" :
+                                "User information has been updated. IP address: {0}. Session: {1}",
+                                userData.IpAddress, sessionID));
+                        }
+                        else
+                        {
+                            userDataDict.Add(sessionID, userData);
+                            log.WriteAction(string.Format(Localization.UseRussian ?
+                                "Добавлена информация о пользователе. IP-адрес: {0}. Сессия: {1}" :
+                                "User information has been added. IP address: {0}. Session: {1}",
+                                userData.IpAddress, sessionID));
+                        }
                     }
                 }
             }

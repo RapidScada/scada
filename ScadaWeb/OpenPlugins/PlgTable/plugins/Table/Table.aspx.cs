@@ -26,6 +26,7 @@
 using Scada.UI;
 using Scada.Web.Shell;
 using System;
+using System.Text;
 using System.Web.UI.WebControls;
 
 namespace Scada.Web.Plugins.Table
@@ -41,28 +42,101 @@ namespace Scada.Web.Plugins.Table
         protected int viewID;             // ид. представления
         protected int refrRate;           // частота обновления данных
         protected string phrases;         // локализованные фразы
+        protected TableView tableView;    // табличное представление
 
+
+        /// <summary>
+        ///Получить час в соответствии с текущей культурой
+        /// </summary>
+        private string GetLocalizedHour(int hour)
+        {
+            return DateTime.MinValue.AddHours(hour).ToString("t", Localization.Culture);
+        }
 
         /// <summary>
         /// Заполнить выпадающие списки выбора времени
         /// </summary>
         private void FillTimeDropdowns()
         {
-            DateTime date = DateTime.MinValue;
-
-            for (int i = 0; i < 24; i++)
+            for (int hour = 0; hour < 24; hour++)
             {
-                string text = date.AddHours(i).ToString("t", Localization.Culture);
-                string value = i.ToString();
+                string text = GetLocalizedHour(hour);
+                string value = hour.ToString();
                 ddlTimeFrom.Items.Add(new ListItem(text, value));
                 ddlTimeTo.Items.Add(new ListItem(text, value));
             }
 
-            for (int i = 0, val = -24; i < 24; i++, val++)
+            for (int hour = 0, val = -24; hour < 24; hour++, val++)
             {
-                string text = PlgPhrases.PrevDay + " " + date.AddHours(i).ToString("t", Localization.Culture);
+                string text = PlgPhrases.PrevDay + " " + GetLocalizedHour(hour);
                 ddlTimeFrom.Items.Add(new ListItem(text, val.ToString()));
             }
+        }
+
+        /// <summary>
+        /// Добавить ячейку заголовка
+        /// </summary>
+        private void AppendHeaderCell(StringBuilder sbHtml, string cssClass, string innerHtml)
+        {
+            if (string.IsNullOrEmpty(cssClass))
+                sbHtml.Append("<th>");
+            else
+                sbHtml.Append("<th class='").Append(cssClass).Append("'>");
+
+            sbHtml.Append(innerHtml).Append("</th>");
+        }
+
+        /// <summary>
+        /// Добавить ячейку
+        /// </summary>
+        private void AppendCell(StringBuilder sbHtml, string cssClass, int cnlNum, int? hour, string innerHtml)
+        {
+            sbHtml.Append("<td");
+
+            if (!string.IsNullOrEmpty(cssClass))
+                sbHtml.Append(" class='").Append(cssClass).Append("'");
+
+            if (cnlNum > 0)
+                sbHtml.Append(" data-cnl='").Append(cnlNum).Append("'");
+
+            if (hour.HasValue)
+                sbHtml.Append(" data-hour='").Append(hour.Value).Append("'");
+
+            sbHtml.Append(">").Append(innerHtml).Append("</td>");
+        }
+
+        /// <summary>
+        /// Генерировать HTML-код табличного представления
+        /// </summary>
+        protected string GenerateTableViewHtml(TableView tableView)
+        {
+            StringBuilder sbHtml = new StringBuilder();
+            sbHtml.AppendLine("<table>");
+
+            // заголовок таблицы
+            sbHtml.AppendLine("<tr class='hdr'>");
+            AppendHeaderCell(sbHtml, "", "Item");
+            AppendHeaderCell(sbHtml, "cur", "Current");
+            for (int hour = 0; hour < 24; hour++)
+                AppendHeaderCell(sbHtml, "", GetLocalizedHour(hour));
+            sbHtml.AppendLine().AppendLine("</tr>");
+
+            // строки таблицы
+            bool altRow = false;
+            foreach(TableView.Item item in tableView.VisibleItems)
+            {
+                int cnlNum = item.CnlNum;
+                sbHtml.AppendLine(altRow ? "<tr class='item alt'>" : "<tr class='item'>");
+                AppendCell(sbHtml, "cap", cnlNum, null, item.Caption);
+                AppendCell(sbHtml, "cur", cnlNum, null, "---");
+                for (int hour = 0; hour < 24; hour++)
+                    AppendCell(sbHtml, "hour", cnlNum, hour, "---");
+                sbHtml.AppendLine().AppendLine("</tr>");
+                altRow = !altRow;
+            }
+
+            sbHtml.AppendLine("</table>");
+            return sbHtml.ToString();
         }
 
 
@@ -90,11 +164,12 @@ namespace Scada.Web.Plugins.Table
             // ошибка будет записана в журнал приложения
             try
             {
-                TableView tableView = appData.ViewCache.GetView<TableView>(viewID, true);
+                tableView = appData.ViewCache.GetView<TableView>(viewID, true);
                 appData.AssignStamp(tableView);
             }
             catch
             {
+                tableView = null;
                 Response.Redirect(UrlTemplates.NoView);
             }
 

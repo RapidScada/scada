@@ -6,6 +6,7 @@
 @toolbar-back-color: transparent;
 @tool-btn-back-color: white;
 @tool-btn-hover-fore-color: @menu-item-hover-fore-color;
+@toolbar-ctrl-font-family: Arial, Helvetica, sans-serif;
 @toolbar-heigth: 30px;
 
 body {
@@ -16,6 +17,8 @@ body {
     font-size: @default-font-size;
     overflow: hidden;
 }
+
+/* Toolbar */
 
 #divToolbar {
     position: fixed;
@@ -29,6 +32,21 @@ body {
     font-size: 14px;
     line-height: @toolbar-heigth;
     white-space: nowrap;
+}
+
+#divToolbar .tool-ctrl {
+    height: @toolbar-heigth;
+    margin: 0 5px 0 0;
+    display: inline-block;
+    line-height: @toolbar-heigth;
+}
+
+#divToolbar .tool-ctrl input,
+#divToolbar .tool-ctrl select {
+    box-sizing: border-box;
+    font-family: @toolbar-ctrl-font-family;
+    font-size: 14px;
+    height: 20px;
 }
 
 #divToolbar .tool-btn {
@@ -49,6 +67,56 @@ body {
     vertical-align: top;
 }
 
+/* Table */
+
 #divTblWrapper {
+    padding: 10px 10px 0 10px;
     overflow: auto;
+}
+
+#divTblWrapper table {
+    border-collapse: collapse;
+}
+
+#divTblWrapper tr {
+    background-color: #f9f9f9;
+}
+
+#divTblWrapper tr.hdr {
+    background-color: #ccc;
+}
+
+#divTblWrapper tr.alt {
+    background-color: white;
+}
+
+#divTblWrapper tr.item:hover {
+    background-color: #0073aa;
+    color: white;
+}
+
+#divTblWrapper th,
+#divTblWrapper td { 
+    white-space: nowrap;
+    border: 1px solid #999;
+}
+
+#divTblWrapper th {
+    border: 1px solid #888;
+    font-weight: 600;
+    padding: 2px 7px;
+    text-align: center;
+}
+
+#divTblWrapper td {
+    padding: 2px 3px;
+}
+
+#divTblWrapper td.cap {
+    padding: 2px 5px;
+}
+
+#divTblWrapper td.cur,
+#divTblWrapper td.hour {
+    text-align: center;
 }

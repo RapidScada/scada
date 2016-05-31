@@ -192,7 +192,7 @@ namespace Scada.Web.Plugins
                 Assembly assembly = null;
                 try
                 {
-                    assembly = Assembly.LoadFile(path);
+                    assembly = Assembly.LoadFrom(path);
                 }
                 catch (Exception ex)
                 {
