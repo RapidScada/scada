@@ -7,4 +7,7 @@
     <Phrase key="LoadTableViewError">Ошибка при загрузке табличного представления из файла</Phrase>
     <Phrase key="SaveTableViewError">Ошибка при сохранении табличного представления в файле</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmTable">
+    <Phrase key="PrevDay">Пред. сутки</Phrase>
+  </Dictionary>
 </PlgTableDictionaries>

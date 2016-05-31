@@ -158,7 +158,7 @@ namespace Scada.Web
             }
             catch (Exception ex)
             {
-                errMsg = WebPhrases.LoadWebSettingsError + ": " + ex.Message;
+                errMsg = WebPhrases.LoadViewSettingsError + ": " + ex.Message;
                 return false;
             }
         }

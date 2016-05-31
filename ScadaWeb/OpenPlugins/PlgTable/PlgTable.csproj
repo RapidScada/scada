@@ -45,7 +45,8 @@
     <Reference Include="ScadaData">
       <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
     </Reference>
-    <Reference Include="ScadaWebCommon5Beta">
+    <Reference Include="ScadaWebCommon5Beta, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ScadaWebCommon5Beta\bin\Release\ScadaWebCommon5Beta.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -58,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="config\CommSettings.xml" />
+    <Content Include="config\WebSettings.xml" />
     <Content Include="css\controls\notifier.css">
       <DependentUpon>notifier.less</DependentUpon>
     </Content>

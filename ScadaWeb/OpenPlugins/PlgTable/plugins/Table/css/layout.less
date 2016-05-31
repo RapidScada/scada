@@ -3,7 +3,8 @@
 
 @notif-back-color: white;
 @toolbar-fore-color: @menu-fore-color-dark;
-@toolbar-back-color: white;
+@toolbar-back-color: transparent;
+@tool-btn-back-color: white;
 @tool-btn-hover-fore-color: @menu-item-hover-fore-color;
 @toolbar-heigth: 30px;
 
@@ -18,10 +19,11 @@ body {
 
 #divToolbar {
     position: fixed;
-    height: @toolbar-heigth;
     left: 0;
     top: 0;
     width: 100%;
+    height: @toolbar-heigth;
+    padding: 0 10px;
     background-color: @toolbar-back-color;
     color: @toolbar-fore-color;
     font-size: 14px;
@@ -33,6 +35,7 @@ body {
     height: @toolbar-heigth;
     margin: 0 5px 0 0;
     padding: 0 10px;
+    background-color: @tool-btn-back-color;
     cursor: pointer;
     display: inline-block;
     line-height: @toolbar-heigth;

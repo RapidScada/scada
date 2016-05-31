@@ -62,17 +62,25 @@ namespace Scada.Web.Plugins.Scheme
             if (!(userData.LoggedOn && userData.UserRights.GetViewRights(viewID).ViewRight))
                 Response.Redirect(UrlTemplates.NoView);
 
+            // загрузка представления в кеш, чтобы проверить, что оно доступно, присвоить метку
+            // и обеспечить возможность получения данных входных каналов через API,
+            // ошибка будет записана в журнал приложения
+            try
+            {
+                SchemeView schemeView = appData.ViewCache.GetView<SchemeView>(viewID, true);
+                appData.AssignStamp(schemeView);
+            }
+            catch
+            {
+                Response.Redirect(UrlTemplates.NoView);
+            }
+
             // подготовка данных для вывода на веб-страницу
             refrRate = userData.WebSettings.DataRefrRate;
 
             Localization.Dict dict;
             Localization.Dictionaries.TryGetValue("Scada.Web.Plugins.Scheme.WFrmScheme.Js", out dict);
             phrases = WebUtils.DictionaryToJs(dict);
-
-            // загрузка представления в кеш, чтобы проверить, что оно доступно, присвоить метку
-            // и обеспечить возможность получения данных входных каналов через API 
-            SchemeView schemeView = appData.ViewCache.GetView<SchemeView>(viewID, true);
-            appData.AssignStamp(schemeView);
         }
     }
 }

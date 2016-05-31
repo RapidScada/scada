@@ -26,10 +26,6 @@
 using Scada.UI;
 using Scada.Web.Shell;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace Scada.Web.Plugins.Table
@@ -45,6 +41,30 @@ namespace Scada.Web.Plugins.Table
         protected int viewID;             // ид. представления
         protected int refrRate;           // частота обновления данных
         protected string phrases;         // локализованные фразы
+
+
+        /// <summary>
+        /// Заполнить выпадающие списки выбора времени
+        /// </summary>
+        private void FillTimeDropdowns()
+        {
+            DateTime date = DateTime.MinValue;
+
+            for (int i = 0; i < 24; i++)
+            {
+                string text = date.AddHours(i).ToString("t", Localization.Culture);
+                string value = i.ToString();
+                ddlTimeFrom.Items.Add(new ListItem(text, value));
+                ddlTimeTo.Items.Add(new ListItem(text, value));
+            }
+
+            for (int i = 0, val = -24; i < 24; i++, val++)
+            {
+                string text = PlgPhrases.PrevDay + " " + date.AddHours(i).ToString("t", Localization.Culture);
+                ddlTimeFrom.Items.Add(new ListItem(text, val.ToString()));
+            }
+        }
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -66,6 +86,18 @@ namespace Scada.Web.Plugins.Table
             if (!(userData.LoggedOn && userData.UserRights.GetViewRights(viewID).ViewRight))
                 Response.Redirect(UrlTemplates.NoView);
 
+            // загрузка представления в кеш,
+            // ошибка будет записана в журнал приложения
+            try
+            {
+                TableView tableView = appData.ViewCache.GetView<TableView>(viewID, true);
+                appData.AssignStamp(tableView);
+            }
+            catch
+            {
+                Response.Redirect(UrlTemplates.NoView);
+            }
+
             // подготовка данных для вывода на веб-страницу
             refrRate = userData.WebSettings.DataRefrRate;
 
@@ -73,9 +105,7 @@ namespace Scada.Web.Plugins.Table
             Localization.Dictionaries.TryGetValue("Scada.Web.Plugins.Table.WFrmTable.Js", out dict);
             phrases = WebUtils.DictionaryToJs(dict);
 
-            // загрузка представления в кеш 
-            TableView tableView = appData.ViewCache.GetView<TableView>(viewID, true);
-            appData.AssignStamp(tableView);
+            FillTimeDropdowns();
         }
     }
 }

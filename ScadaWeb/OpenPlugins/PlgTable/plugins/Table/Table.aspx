@@ -29,7 +29,7 @@
         <div id="divNotif" class="notifier">
         </div>
         <div id="divToolbar"><asp:TextBox ID="txtDate" runat="server"></asp:TextBox><asp:DropDownList 
-            ID="ddlTimeFrom" runat="server"></asp:DropDownList><asp:DropDownList 
+            ID="ddlTimeFrom" runat="server"></asp:DropDownList> - <asp:DropDownList 
             ID="ddlTimeTo" runat="server"></asp:DropDownList><div id="divDebugTools"><span 
                 id="spanTitleChangedBtn" class="tool-btn">TitleChanged</span><span 
                 id="spanNavigateBtn" class="tool-btn">Navigate</span><span 

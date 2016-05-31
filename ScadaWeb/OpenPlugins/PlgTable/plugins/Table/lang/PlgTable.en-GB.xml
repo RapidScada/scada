@@ -7,4 +7,7 @@
     <Phrase key="LoadTableViewError">Error loading table view from file</Phrase>
     <Phrase key="SaveTableViewError">Error saving table view to file</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmTable">
+    <Phrase key="PrevDay">Prev. day</Phrase>
+  </Dictionary>
 </PlgTableDictionaries>

@@ -45,9 +45,17 @@ namespace Scada.Web
         public static string LoadTableViewError { get; private set; }
         public static string SaveTableViewError { get; private set; }
 
+        // Словарь Scada.Web.Plugins.Table.WFrmTable
+        public static string PrevDay { get; private set; }
+
         private static void SetToDefault()
         {
             EventsTitle = Localization.Dict.GetEmptyPhrase("EventsTitle");
+
+            LoadTableViewError = Localization.Dict.GetEmptyPhrase("LoadTableViewError");
+            SaveTableViewError = Localization.Dict.GetEmptyPhrase("SaveTableViewError");
+
+            PrevDay = Localization.Dict.GetEmptyPhrase("PrevDay");
         }
 
         public static void Init()
@@ -62,6 +70,11 @@ namespace Scada.Web
             {
                 LoadTableViewError = dict.GetPhrase("LoadTableViewError", LoadTableViewError);
                 SaveTableViewError = dict.GetPhrase("SaveTableViewError", SaveTableViewError);
+            }
+
+            if (Localization.Dictionaries.TryGetValue("Scada.Web.Plugins.Table.WFrmTable", out dict))
+            {
+                PrevDay = dict.GetPhrase("PrevDay", PrevDay);
             }
         }
     }
