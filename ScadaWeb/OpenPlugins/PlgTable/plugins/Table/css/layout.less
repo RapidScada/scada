@@ -8,7 +8,9 @@
 @tool-btn-back-color: white;
 @tool-btn-hover-fore-color: @menu-item-hover-fore-color;
 @toolbar-ctrl-font-family: Arial, Helvetica, sans-serif;
-@toolbar-heigth: 30px;
+@toolbar-height: 30px;
+@toolbar-input-height: 22px;
+
 @row-back-color: white;
 @row-back-color-alt: #f9f9f9;
 @row-back-color-hdr: #ccc;
@@ -23,7 +25,7 @@
 
 body {
     margin: 0;
-    padding: @toolbar-heigth 0 0 0;
+    padding: @toolbar-height 0 0 0;
     background-color: @content-back-color;
     color: @table-fore-color;
     font-family: @default-font-family;
@@ -38,39 +40,62 @@ body {
     left: 0;
     top: 0;
     width: 100%;
-    height: @toolbar-heigth;
+    height: @toolbar-height;
     padding: 0 10px;
     background-color: @toolbar-back-color;
     color: @toolbar-fore-color;
     font-size: 14px;
-    line-height: @toolbar-heigth;
     white-space: nowrap;
 }
 
 #divToolbar .tool-ctrl {
-    height: @toolbar-heigth;
-    margin: 0 5px 0 0;
+    height: @toolbar-height;
+    margin: 0 10px 0 0;
     display: inline-block;
-    line-height: @toolbar-heigth;
 }
 
 #divToolbar .tool-ctrl input,
 #divToolbar .tool-ctrl select {
+    margin-top: (@toolbar-height - @toolbar-input-height) / 2;
     box-sizing: border-box;
     font-family: @toolbar-ctrl-font-family;
     font-size: 14px;
-    height: 20px;
+    height: @toolbar-input-height;
 }
 
 #divToolbar .tool-btn {
-    height: @toolbar-heigth;
+    height: @toolbar-height;
     margin: 0 5px 0 0;
     padding: 0 10px;
     background-color: @tool-btn-back-color;
     cursor: pointer;
     display: inline-block;
-    line-height: @toolbar-heigth;
+    line-height: @toolbar-height;
     vertical-align: top;
+}
+
+#divToolbar .tool-btn:hover {
+    color: @tool-btn-hover-fore-color;
+}
+
+#spanDate {
+    position: relative;
+}
+
+#spanDate input {
+    width: 150px;
+    padding-right: 20px;
+}
+
+#spanDate i {
+    position: absolute;
+    right: 5px;
+    height: @toolbar-height;
+    line-height: @toolbar-height;
+}
+
+#spanDate:hover i {
+    color: @tool-btn-hover-fore-color;
 }
 
 #divDebugTools {
@@ -83,7 +108,7 @@ body {
 /* Table */
 
 #divTblWrapper {
-    padding: 10px 10px 0 10px;
+    padding: 0 10px;
     overflow: auto;
 }
 

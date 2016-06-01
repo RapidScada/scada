@@ -1,4 +1,5 @@
-﻿body {
+﻿/*to pretend splitter thinner*/
+body {
   margin: 0;
   padding: 30px 0 0 0;
   background-color: #f1f1f1;
@@ -18,21 +19,20 @@
   background-color: transparent;
   color: #9ca1a6;
   font-size: 14px;
-  line-height: 30px;
   white-space: nowrap;
 }
 #divToolbar .tool-ctrl {
   height: 30px;
-  margin: 0 5px 0 0;
+  margin: 0 10px 0 0;
   display: inline-block;
-  line-height: 30px;
 }
 #divToolbar .tool-ctrl input,
 #divToolbar .tool-ctrl select {
+  margin-top: 4px;
   box-sizing: border-box;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 14px;
-  height: 20px;
+  height: 22px;
 }
 #divToolbar .tool-btn {
   height: 30px;
@@ -44,6 +44,25 @@
   line-height: 30px;
   vertical-align: top;
 }
+#divToolbar .tool-btn:hover {
+  color: #00b9eb;
+}
+#spanDate {
+  position: relative;
+}
+#spanDate input {
+  width: 150px;
+  padding-right: 20px;
+}
+#spanDate i {
+  position: absolute;
+  right: 5px;
+  height: 30px;
+  line-height: 30px;
+}
+#spanDate:hover i {
+  color: #00b9eb;
+}
 #divDebugTools {
   padding: 0 10px;
   display: none;
@@ -53,7 +72,7 @@
 }
 /* Table */
 #divTblWrapper {
-  padding: 10px 10px 0 10px;
+  padding: 0 10px;
   overflow: auto;
 }
 #divTblWrapper table {
