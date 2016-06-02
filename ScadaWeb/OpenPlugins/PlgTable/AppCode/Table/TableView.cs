@@ -61,6 +61,7 @@ namespace Scada.Web.Plugins.Table
                 Hidden = hidden;
                 Caption = caption;
                 CnlProps = null;
+                CtrlCnlProps = null;
             }
 
             /// <summary>
@@ -80,9 +81,13 @@ namespace Scada.Web.Plugins.Table
             /// </summary>
             public string Caption { get; set; }
             /// <summary>
-            /// Получить или установить свойства канала элемента
+            /// Получить или установить свойства входного канала элемента
             /// </summary>
             public InCnlProps CnlProps { get; set; }
+            /// <summary>
+            /// Получить или установить свойства канала управления элемента
+            /// </summary>
+            public CtrlCnlProps CtrlCnlProps { get; set; }
         }
 
 
@@ -307,7 +312,9 @@ namespace Scada.Web.Plugins.Table
             {
                 foreach (Item item in Items)
                 {
-                    int ind = Array.BinarySearch(cnlPropsArr, item.CnlNum, InCnlProps.IntComp);
+                    int ind = item.CnlNum > 0 ? 
+                        Array.BinarySearch(cnlPropsArr, item.CnlNum, InCnlProps.IntComp) : -1;
+
                     if (ind >= 0)
                     {
                         InCnlProps cnlProps = cnlPropsArr[ind];
@@ -322,6 +329,24 @@ namespace Scada.Web.Plugins.Table
                     {
                         item.CnlProps = null;
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Привязать свойства каналов управления к элементам представления
+        /// </summary>
+        public override void BindCtrlCnlProps(CtrlCnlProps[] ctrlCnlPropsArr)
+        {
+            base.BindCtrlCnlProps(ctrlCnlPropsArr);
+
+            if (ctrlCnlPropsArr != null)
+            {
+                foreach (Item item in Items)
+                {
+                    int ind = item.CtrlCnlNum > 0 ?
+                        Array.BinarySearch(ctrlCnlPropsArr, item.CtrlCnlNum, CtrlCnlProps.IntComp) : -1;
+                    item.CtrlCnlProps = ind >= 0 ? ctrlCnlPropsArr[ind] : null;
                 }
             }
         }

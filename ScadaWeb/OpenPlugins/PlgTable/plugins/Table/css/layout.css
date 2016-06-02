@@ -93,11 +93,11 @@ body {
 }
 #divTblWrapper th,
 #divTblWrapper td {
-  white-space: nowrap;
   border: 1px solid #999;
   font-size: 12px;
   line-height: 18px;
   vertical-align: middle;
+  white-space: nowrap;
 }
 #divTblWrapper th {
   border: 1px solid #888;

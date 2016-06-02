@@ -201,6 +201,35 @@ namespace Scada.Client
         }
 
         /// <summary>
+        /// Привязать свойства входных каналов и каналов управления к элементам представления
+        /// </summary>
+        public void BindCnlProps(BaseView view)
+        {
+            try
+            {
+                lock (baseLock)
+                {
+                    dataCache.RefreshBaseTables();
+                }
+
+                lock (cnlPropsLock)
+                {
+                    if (view != null)
+                    {
+                        view.BindCnlProps(dataCache.CnlProps);
+                        view.BindCtrlCnlProps(dataCache.CtrlCnlProps);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при привязке свойств каналов к элементам представления" :
+                    "Error binding channel properties to the view elements");
+            }
+        }
+
+        /// <summary>
         /// Получить свойства представления по идентификатору
         /// </summary>
         /// <remarks>Используется таблица объектов интерфейса</remarks>

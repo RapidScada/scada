@@ -124,6 +124,13 @@ namespace Scada.Client
         }
 
         /// <summary>
+        /// Привязать свойства каналов управления к элементам представления
+        /// </summary>
+        public virtual void BindCtrlCnlProps(CtrlCnlProps[] ctrlCnlPropsArr)
+        {
+        }
+
+        /// <summary>
         /// Определить, что входной канал используется в представлении
         /// </summary>
         public virtual bool ContainsCnl(int cnlNum)

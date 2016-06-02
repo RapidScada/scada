@@ -29,9 +29,10 @@
     <form id="frmTable" runat="server">
         <div id="divNotif" class="notifier">
         </div>
-        <div id="divToolbar"><span id="spanDate" class="tool-ctrl"><asp:TextBox ID="txtDate" runat="server"></asp:TextBox><i class="fa fa-calendar" aria-hidden="true"></i></span><span class="tool-ctrl"><asp:DropDownList 
-            ID="ddlTimeFrom" runat="server"></asp:DropDownList> - <asp:DropDownList 
-            ID="ddlTimeTo" runat="server"></asp:DropDownList></span><span class="tool-btn"><i class="fa fa-print" aria-hidden="true"></i></span><div id="divDebugTools"><span 
+        <div id="divToolbar"><span 
+            id="spanDate" class="tool-ctrl"><asp:TextBox ID="txtDate" runat="server"></asp:TextBox><i class="fa fa-calendar" aria-hidden="true"></i></span><span 
+            id="spanTime" class="tool-ctrl"><%= GenerateTimeSelectHtml("selTimeFrom", true, 0) %> - <%= GenerateTimeSelectHtml("selTimeTo", false, 23) %></span><span 
+            id="spanExportBtn" class="tool-btn"><i class="fa fa-print" aria-hidden="true"></i></span><div id="divDebugTools"><span 
                 id="spanTitleChangedBtn" class="tool-btn">TitleChanged</span><span 
                 id="spanNavigateBtn" class="tool-btn">Navigate</span><span 
                 id="spanDateChangedBtn" class="tool-btn">DateChanged</span>

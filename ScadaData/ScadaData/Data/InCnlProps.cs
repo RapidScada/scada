@@ -85,7 +85,8 @@ namespace Scada.Data
             IconFileName = "";
             ShowNumber = true;
             DecDigits = 3;
-            UnitName = "";
+            UnitID = 0;
+            UnitSign = "";
             UnitArr = null;
             CtrlCnlNum = 0;
             EvEnabled = false;
@@ -180,9 +181,14 @@ namespace Scada.Data
         public int DecDigits { get; set; }
 
         /// <summary>
-        /// Получить или установить наименование размерности
+        /// Получить или установить идентификатор размерности
         /// </summary>
-        public string UnitName { get; set; }
+        public int UnitID { get; set; }
+
+        /// <summary>
+        /// Получить или установить обозначение размерности
+        /// </summary>
+        public string UnitSign { get; set; }
 
         /// <summary>
         /// Получить или установить размерности

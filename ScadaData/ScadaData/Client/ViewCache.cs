@@ -152,6 +152,9 @@ namespace Scada.Client
                             view = (T)Activator.CreateInstance(typeof(T));
                             if (serverComm.ReceiveView(viewProps.FileName, view))
                             {
+                                // привязка свойств каналов
+                                dataAccess.BindCnlProps(view);
+
                                 if (cacheItem == null)
                                     // добавление представления в кеш
                                     cache.AddValue(viewID, view, newViewAge, utcNowDT);

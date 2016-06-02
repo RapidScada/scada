@@ -3,6 +3,10 @@
 @cmd-icon-fore-color: #a00;
 @cmd-icon-hover-fore-color: red;
 @cmd-icon-font-size: 15px;
+@hint-back-color: white;
+@hint-fore-color: @content-fore-color;
+@hint-border-color: @cell-border-color-hdr;
+@hint-shadow-color: #aaa;
 
 #divTblWrapper td.cap {
     padding: 2px 5px;
@@ -17,8 +21,11 @@
 }
 
 #divTblWrapper td.cap a {
-    margin-right: 5px;
+    height: @cell-height;
+    padding-right: 5px;
     color: @link-fore-color;
+    display: inline-block;
+    line-height: @cell-height;
     text-decoration: none;
 }
 
@@ -32,7 +39,7 @@
     height: @cell-height;
     cursor: pointer;
     color: @cmd-icon-fore-color;
-    float: right;
+    /*float: right;*/
     font-size: @cmd-icon-font-size;
     line-height: @cell-height;
     text-align: center;
@@ -45,6 +52,18 @@
 #divTblWrapper td.cap span.cmd::before {
     content: "\f135";
     font-family: FontAwesome;
+}
+
+#divTblWrapper td.cap span.hint {
+    background-color: @hint-back-color;
+    border: 1px solid @hint-border-color;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px @hint-shadow-color;
+    color: @hint-fore-color;
+    display: none; /*inline-block*/
+    line-height: normal;
+    padding: 5px;
+    position: fixed;
 }
 
 #divTblWrapper td.cur,

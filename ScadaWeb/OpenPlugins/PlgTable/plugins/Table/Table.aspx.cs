@@ -28,6 +28,7 @@ using Scada.UI;
 using Scada.Web.Shell;
 using System;
 using System.Text;
+using System.Web;
 using System.Web.UI.WebControls;
 
 namespace Scada.Web.Plugins.Table
@@ -64,26 +65,6 @@ namespace Scada.Web.Plugins.Table
         }
 
         /// <summary>
-        /// Заполнить выпадающие списки выбора времени
-        /// </summary>
-        private void FillTimeDropdowns()
-        {
-            for (int hour = 0; hour < 24; hour++)
-            {
-                string text = GetLocalizedHour(hour);
-                string value = hour.ToString();
-                ddlTimeFrom.Items.Add(new ListItem(text, value));
-                ddlTimeTo.Items.Add(new ListItem(text, value));
-            }
-
-            for (int hour = 0, val = -24; hour < 24; hour++, val++)
-            {
-                string text = PlgPhrases.PrevDay + " " + GetLocalizedHour(hour);
-                ddlTimeFrom.Items.Add(new ListItem(text, val.ToString()));
-            }
-        }
-
-        /// <summary>
         /// Добавить ячейку заголовка
         /// </summary>
         private void AppendHeaderCell(StringBuilder sbHtml, string cssClass, string innerHtml)
@@ -113,6 +94,19 @@ namespace Scada.Web.Plugins.Table
         }
 
         /// <summary>
+        /// Добавить текст подсказки
+        /// </summary>
+        private void AppendHint(StringBuilder sbHtml, bool addBreak, string label, int num, string name)
+        {
+            if (addBreak)
+                sbHtml.Append("<br />");
+            sbHtml.Append(label);
+            if (num > 0)
+                sbHtml.Append("[").Append(num).Append("] ");
+            sbHtml.Append(HttpUtility.HtmlEncode(name));
+        }
+
+        /// <summary>
         /// Генерировать HTML-код табличного представления
         /// </summary>
         private string GenerateTableViewHtml(TableView tableView, bool cmdEnabled)
@@ -137,7 +131,7 @@ namespace Scada.Web.Plugins.Table
                 int ctrlCnlNum = cmdEnabled ? item.CtrlCnlNum : 0;
 
                 // тег начала строки
-                sbHtml.AppendLine(altRow ? "<tr class='item alt'" : "<tr class='item'");
+                sbHtml.Append(altRow ? "<tr class='item alt'" : "<tr class='item'");
                 if (cnlNum > 0)
                     sbHtml.Append(" data-cnl='").Append(cnlNum).Append("'");
                 if (ctrlCnlNum > 0)
@@ -145,16 +139,42 @@ namespace Scada.Web.Plugins.Table
                 sbHtml.AppendLine(">");
 
                 // ячейка наименования
-                string caption = string.IsNullOrEmpty(item.Caption) ? "&nbsp;" : item.Caption;
+                string caption = string.IsNullOrEmpty(item.Caption) ? "&nbsp;" : HttpUtility.HtmlEncode(item.Caption);
                 if (cnlNum > 0 || ctrlCnlNum > 0)
                 {
                     StringBuilder sbCapHtml = new StringBuilder();
+
+                    // иконка и обозначение
                     string iconFileName = cnlProps == null || cnlProps.IconFileName == "" ?
                         DefQuantityIcon : cnlProps.IconFileName;
-                    sbCapHtml.Append("<img src='" + QuantityIconsPath + iconFileName + "' alt='' />")
-                        .Append("<a href='#'>").Append(caption).Append("</a>");
+                    sbCapHtml.Append("<img src='" + QuantityIconsPath + iconFileName + "' class='icon' alt='' />")
+                        .Append("<a href='#' class='lbl'>").Append(caption).Append("</a>");
+
+                    // команда
                     if (ctrlCnlNum > 0)
                         sbCapHtml.Append("<span class='cmd' title='Send Command'></span>");
+
+                    // всплывающая подсказка
+                    sbCapHtml.Append("<span class='hint'>");
+                    if (cnlNum > 0)
+                        AppendHint(sbCapHtml, false, PlgPhrases.InCnlHint, cnlNum, 
+                            cnlProps == null ? "" : cnlProps.CnlName);
+                    if (ctrlCnlNum > 0)
+                        AppendHint(sbCapHtml, cnlNum > 0, PlgPhrases.CtrlCnlHint, ctrlCnlNum,
+                          item.CtrlCnlProps == null ? "" : item.CtrlCnlProps.CtrlCnlName);
+                    if (cnlProps != null)
+                    {
+                        if (cnlProps.ObjNum > 0)
+                            AppendHint(sbCapHtml, true, PlgPhrases.ObjectHint, cnlProps.ObjNum, cnlProps.ObjName);
+                        if (cnlProps.KPNum > 0)
+                            AppendHint(sbCapHtml, true, PlgPhrases.DeviceHint, cnlProps.KPNum, cnlProps.KPName);
+                        if (cnlProps.ParamID > 0)
+                            AppendHint(sbCapHtml, true, PlgPhrases.QuantityHint, 0, cnlProps.ParamName);
+                        if (cnlProps.UnitID > 0 && cnlProps.ShowNumber)
+                            AppendHint(sbCapHtml, true, PlgPhrases.UnitHint, 0, cnlProps.UnitSign);
+                    }
+                    sbCapHtml.Append("</span>");
+
                     AppendCell(sbHtml, "cap", null, sbCapHtml.ToString());
                 }
                 else
@@ -182,6 +202,41 @@ namespace Scada.Web.Plugins.Table
             }
 
             sbHtml.AppendLine("</table>");
+            return sbHtml.ToString();
+        }
+
+        /// <summary>
+        /// Генерировать HTML-код выпадающего списка выбора времени
+        /// </summary>
+        protected string GenerateTimeSelectHtml(string elemID, bool addPrevDay, int selectedHour)
+        {
+            StringBuilder sbHtml = new StringBuilder();
+            sbHtml.Append("<select id='").Append(elemID).AppendLine("'>");
+
+            // выбранные сутки
+            sbHtml.Append("<optgroup label='").Append(PlgPhrases.SelectedDay).AppendLine("'>");
+            for (int hour = 0; hour < 24; hour++)
+            {
+                sbHtml.Append("<option value='").Append(hour).Append("'")
+                    .Append(hour == selectedHour ? " selected" : "").Append(">")
+                    .Append(GetLocalizedHour(hour)).Append("</option>");
+            }
+            sbHtml.AppendLine("</optgroup>");
+
+            // предыдущие сутки
+            if (addPrevDay)
+            {
+                sbHtml.Append("<optgroup label='").Append(PlgPhrases.PreviousDay).AppendLine("'>");
+                for (int hour = 0, val = -24; hour < 24; hour++, val++)
+                {
+                    sbHtml.Append("<option value='").Append(val).Append("'")
+                        .Append(val == selectedHour ? " selected" : "").Append(">")
+                        .Append(PlgPhrases.PrevDayItem).Append(GetLocalizedHour(hour)).Append("</option>");
+                }
+                sbHtml.AppendLine("</optgroup>");
+            }
+
+            sbHtml.AppendLine("</select>");
             return sbHtml.ToString();
         }
 
@@ -231,8 +286,6 @@ namespace Scada.Web.Plugins.Table
 
             bool cmdEnabled = userData.WebSettings.CmdEnabled && rights.ControlRight;
             tableViewHtml = GenerateTableViewHtml(tableView, cmdEnabled);
-
-            FillTimeDropdowns();
         }
     }
 }

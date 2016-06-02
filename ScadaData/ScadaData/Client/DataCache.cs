@@ -162,9 +162,9 @@ namespace Scada.Client
                 {
                     DataRowView rowView = tblInCnl.DefaultView[i];
                     InCnlProps cnlProps = new InCnlProps();
-                    cnlProps.CnlNum = (int)rowView["CnlNum"];
 
                     // определение свойств, не использующих внешних ключей
+                    cnlProps.CnlNum = (int)rowView["CnlNum"];
                     cnlProps.CnlName = (string)rowView["Name"];
                     cnlProps.CtrlCnlNum = (int)rowView["CtrlCnlNum"];
                     cnlProps.EvSound = (bool)rowView["EvSound"];
@@ -182,19 +182,15 @@ namespace Scada.Client
                     cnlProps.KPName = tblKP.DefaultView.Count > 0 ? (string)tblKP.DefaultView[0]["Name"] : "";
 
                     // определение наименования параметра и имени файла значка
+                    cnlProps.ParamID = (int)rowView["ParamID"];
                     DataTable tblParam = BaseTables.ParamTable;
-                    tblParam.DefaultView.RowFilter = "ParamID = " + rowView["ParamID"];
+                    tblParam.DefaultView.RowFilter = "ParamID = " + cnlProps.ParamID;
                     if (tblParam.DefaultView.Count > 0)
                     {
                         DataRowView paramRowView = tblParam.DefaultView[0];
                         cnlProps.ParamName = (string)paramRowView["Name"];
                         object iconFileName = paramRowView["IconFileName"];
                         cnlProps.IconFileName = iconFileName == DBNull.Value ? "" : iconFileName.ToString();
-                    }
-                    else
-                    {
-                        cnlProps.ParamName = "";
-                        cnlProps.IconFileName = "";
                     }
 
                     // определение формата вывода
@@ -208,20 +204,18 @@ namespace Scada.Client
                     }
 
                     // определение размерностей
+                    cnlProps.UnitID = (int)rowView["UnitID"];
                     DataTable tblUnit = BaseTables.UnitTable;
-                    tblUnit.DefaultView.RowFilter = "UnitID = " + rowView["UnitID"];
+                    tblUnit.DefaultView.RowFilter = "UnitID = " + cnlProps.UnitID;
                     if (tblUnit.DefaultView.Count > 0)
                     {
-                        string sign = (string)tblUnit.DefaultView[0]["Sign"];
-                        cnlProps.UnitArr = sign.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                        cnlProps.UnitSign = (string)tblUnit.DefaultView[0]["Sign"];
+                        cnlProps.UnitArr = cnlProps.UnitSign.Split(new char[] { ';' }, 
+                            StringSplitOptions.RemoveEmptyEntries);
                         for (int j = 0; j < cnlProps.UnitArr.Length; j++)
                             cnlProps.UnitArr[j] = cnlProps.UnitArr[j].Trim();
                         if (cnlProps.UnitArr.Length == 1 && cnlProps.UnitArr[0] == "")
                             cnlProps.UnitArr = null;
-                    }
-                    else
-                    {
-                        cnlProps.UnitArr = null;
                     }
 
                     newCnlProps[i] = cnlProps;
@@ -242,6 +236,40 @@ namespace Scada.Client
         /// </summary>
         protected void FillCtrlCnlProps()
         {
+            try
+            {
+                log.WriteAction(Localization.UseRussian ?
+                    "Заполнение свойств каналов управления" :
+                    "Fill output channels properties");
+
+                DataTable tblCtrlCnl = BaseTables.CtrlCnlTable;
+                int ctrlCnlCnt = tblCtrlCnl.Rows.Count;
+                CtrlCnlProps[] newCtrlCnlProps = new CtrlCnlProps[ctrlCnlCnt];
+
+                for (int i = 0; i < ctrlCnlCnt; i++)
+                {
+                    DataRowView rowView = tblCtrlCnl.DefaultView[i];
+                    CtrlCnlProps ctrlCnlProps = new CtrlCnlProps();
+
+                    // определение свойств, не использующих внешних ключей
+                    ctrlCnlProps.CtrlCnlNum = (int)rowView["CtrlCnlNum"];
+                    ctrlCnlProps.CtrlCnlName = (string)rowView["Name"];
+                    ctrlCnlProps.CmdTypeID = (int)rowView["CmdTypeID"];
+                    ctrlCnlProps.EvEnabled = (bool)rowView["EvEnabled"];
+
+                    // TODO: доделать
+
+                    newCtrlCnlProps[i] = ctrlCnlProps;
+                }
+
+                CtrlCnlProps = newCtrlCnlProps;
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, (Localization.UseRussian ?
+                    "Ошибка при заполнении свойств каналов управления: " :
+                    "Error filling output channels properties"));
+            }
         }
 
         /// <summary>

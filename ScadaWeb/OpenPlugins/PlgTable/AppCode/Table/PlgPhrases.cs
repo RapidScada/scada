@@ -46,7 +46,15 @@ namespace Scada.Web
         public static string SaveTableViewError { get; private set; }
 
         // Словарь Scada.Web.Plugins.Table.WFrmTable
-        public static string PrevDay { get; private set; }
+        public static string SelectedDay { get; private set; }
+        public static string PreviousDay { get; private set; }
+        public static string PrevDayItem { get; private set; }
+        public static string InCnlHint { get; private set; }
+        public static string CtrlCnlHint { get; private set; }
+        public static string ObjectHint { get; private set; }
+        public static string DeviceHint { get; private set; }
+        public static string QuantityHint { get; private set; }
+        public static string UnitHint { get; private set; }
 
         private static void SetToDefault()
         {
@@ -55,7 +63,15 @@ namespace Scada.Web
             LoadTableViewError = Localization.Dict.GetEmptyPhrase("LoadTableViewError");
             SaveTableViewError = Localization.Dict.GetEmptyPhrase("SaveTableViewError");
 
-            PrevDay = Localization.Dict.GetEmptyPhrase("PrevDay");
+            SelectedDay = Localization.Dict.GetEmptyPhrase("SelectedDay");
+            PreviousDay = Localization.Dict.GetEmptyPhrase("PreviousDay");
+            PrevDayItem = Localization.Dict.GetEmptyPhrase("PrevDayItem");
+            InCnlHint = Localization.Dict.GetEmptyPhrase("InCnlHint");
+            CtrlCnlHint = Localization.Dict.GetEmptyPhrase("CtrlCnlHint");
+            ObjectHint = Localization.Dict.GetEmptyPhrase("ObjectHint");
+            DeviceHint = Localization.Dict.GetEmptyPhrase("DeviceHint");
+            QuantityHint = Localization.Dict.GetEmptyPhrase("QuantityHint");
+            UnitHint = Localization.Dict.GetEmptyPhrase("UnitHint");
         }
 
         public static void Init()
@@ -74,7 +90,15 @@ namespace Scada.Web
 
             if (Localization.Dictionaries.TryGetValue("Scada.Web.Plugins.Table.WFrmTable", out dict))
             {
-                PrevDay = dict.GetPhrase("PrevDay", PrevDay);
+                SelectedDay = dict.GetPhrase("SelectedDay", SelectedDay);
+                PreviousDay = dict.GetPhrase("PreviousDay", PreviousDay);
+                PrevDayItem = dict.GetPhrase("PrevDayItem", PrevDayItem);
+                InCnlHint = dict.GetPhrase("InCnlHint", InCnlHint);
+                CtrlCnlHint = dict.GetPhrase("CtrlCnlHint", CtrlCnlHint);
+                ObjectHint = dict.GetPhrase("ObjectHint", ObjectHint);
+                DeviceHint = dict.GetPhrase("DeviceHint", DeviceHint);
+                QuantityHint = dict.GetPhrase("QuantityHint", QuantityHint);
+                UnitHint = dict.GetPhrase("UnitHint", UnitHint);
             }
         }
     }

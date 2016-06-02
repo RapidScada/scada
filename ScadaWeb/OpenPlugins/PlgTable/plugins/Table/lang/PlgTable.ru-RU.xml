@@ -8,6 +8,14 @@
     <Phrase key="SaveTableViewError">Ошибка при сохранении табличного представления в файле</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.WFrmTable">
-    <Phrase key="PrevDay">Пред. сутки</Phrase>
+    <Phrase key="SelectedDay">Выбранные сутки:</Phrase>
+    <Phrase key="PreviousDay">Предыдущие сутки:</Phrase>
+    <Phrase key="PrevDayItem">Пред. </Phrase>
+    <Phrase key="InCnlHint">Вх. канал: </Phrase>
+    <Phrase key="CtrlCnlHint">Канал упр.: </Phrase>
+    <Phrase key="ObjectHint">Объект: </Phrase>
+    <Phrase key="DeviceHint">КП: </Phrase>
+    <Phrase key="QuantityHint">Величина: </Phrase>
+    <Phrase key="UnitHint">Размерность: </Phrase>
   </Dictionary>
 </PlgTableDictionaries>
