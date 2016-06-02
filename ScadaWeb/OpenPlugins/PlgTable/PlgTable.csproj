@@ -94,7 +94,11 @@
       <DependentUpon>table.css</DependentUpon>
     </Content>
     <Content Include="plugins\Table\Events.aspx" />
+    <Content Include="plugins\Table\images\quantityicons\fire.png" />
+    <Content Include="plugins\Table\images\quantityicons\lamp.png" />
     <Content Include="plugins\Table\images\quantityicons\quantity.png" />
+    <Content Include="plugins\Table\images\quantityicons\switch.png" />
+    <Content Include="plugins\Table\images\quantityicons\temp.png" />
     <Content Include="plugins\Table\images\tableicon.png" />
     <Content Include="plugins\Table\js\events.js" />
     <Content Include="plugins\Table\js\layout.js" />
