@@ -1,0 +1,27 @@
+﻿body {
+  margin: 0;
+  padding: 0;
+  background-color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  overflow: hidden;
+  display: inline-block;
+}
+#frmCalendar td {
+  margin: 0;
+  padding: 0;
+  vertical-align: middle;
+}
+#frmCalendar a {
+  display: inline-block;
+  text-decoration: none;
+}
+#frmCalendar td.day a {
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+}
+#frmCalendar a:hover {
+  background-color: #e0e0e0;
+}

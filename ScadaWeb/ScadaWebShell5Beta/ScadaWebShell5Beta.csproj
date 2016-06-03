@@ -71,6 +71,12 @@
     <Content Include="config\CommSettings.xml" />
     <Content Include="config\ViewSettings.xml" />
     <Content Include="config\WebSettings.xml" />
+    <Content Include="css\calendar.css">
+      <DependentUpon>calendar.less</DependentUpon>
+    </Content>
+    <Content Include="css\calendar.min.css">
+      <DependentUpon>calendar.css</DependentUpon>
+    </Content>
     <Content Include="css\controls\notifier.css">
       <DependentUpon>notifier.less</DependentUpon>
     </Content>
@@ -222,6 +228,7 @@
     <Content Include="css\login.less" />
     <Content Include="css\controls\notifier.less" />
     <Content Include="css\controls\popup.less" />
+    <Content Include="css\calendar.less" />
     <None Include="css\mastermain.less" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">

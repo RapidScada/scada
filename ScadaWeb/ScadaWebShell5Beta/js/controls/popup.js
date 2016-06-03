@@ -31,12 +31,12 @@ scada.Popup.prototype._removePopupOnEscape = function (event) {
 // Show popup with the specified url as a dropdown menu below the anchorElem.
 // callback is function (success, dialogResult, extraParams)
 scada.Popup.prototype.showDropdown = function (url, anchorElem, callback) {
-    var popupElem = $("<div class='popup-overlay'><div class='popup-wrapper'>" +
-        "<iframe class='popup-frame'></iframe></div></div>");
+    var popupElem = $("<div class='popup-overlay'></div>" +
+        "<div class='popup-wrapper'><iframe class='popup-frame'></iframe></div>");
     $("body").append(popupElem);
 
-    var overlay = popupElem;
-    var wrapper = popupElem.find(".popup-wrapper");
+    var overlay = popupElem.filter(".popup-overlay");
+    var wrapper = popupElem.filter(".popup-wrapper");
     var frame = popupElem.find(".popup-frame");
 
     // setup overlay
@@ -49,19 +49,22 @@ scada.Popup.prototype.showDropdown = function (url, anchorElem, callback) {
     // setup wrapper
     wrapper
     .focus()
-    .css("opacity", 0.0); // hide the popup while it's loading
+    .css({
+        "z-index": scada.utils.FRONT_ZINDEX + 1, // above the overlay
+        "opacity": 0.0 // hide the popup while it's loading
+    }); 
 
     // remove the popup on press Escape key in the parent window
-    $(document)
+    /*$(document)
     .off(this._removePopupOnEscape)
-    .on("keydown", null, popupElem, this._removePopupOnEscape);
+    .on("keydown", null, popupElem, this._removePopupOnEscape);*/
 
     // load the frame
     var thisObj = this;
     frame
     .on("load", function () {
         // remove the popup on press Escape key in the frame
-        var frameWnd = frame[0].contentWindow;
+        /*var frameWnd = frame[0].contentWindow;
         if (frameWnd.$) {
             var jqFrameDoc = frameWnd.$(frameWnd.document);
             jqFrameDoc.ready(function () {
@@ -69,13 +72,13 @@ scada.Popup.prototype.showDropdown = function (url, anchorElem, callback) {
                 .off(thisObj._removePopupOnEscape)
                 .on("keydown", null, popupElem, thisObj._removePopupOnEscape);
             });
-        }
+        }*/
     })
     .one("load", function () {
         // set the popup position
         var frameBody = frame.contents().find("body");
-        var width = frameBody.width();
-        var height = frameBody.height();
+        var width = frameBody.outerWidth(true);
+        var height = frameBody.outerHeight(true);
         var left = 0;
         var top = 0;
 

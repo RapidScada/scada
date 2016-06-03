@@ -80,8 +80,8 @@ $(document).ready(function () {
     // TODO
     var dialogs = viewHub ? viewHub.dialogs : null;
     if (dialogs) {
-        $("#spanDate").click(function () {
-            dialogs.showCalendar($(this), null);
+        $("#spanDate *").click(function () {
+            dialogs.showCalendar($("#txtDate"), null);
         });
     }
 });

@@ -1,0 +1,38 @@
+﻿@calendar-back-color: white;
+@day-hover-back-color: #e0e0e0;
+@calendar-font-family: Arial, Helvetica, sans-serif;
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: @calendar-back-color;
+    font-family: @calendar-font-family;
+    font-size: 12px;
+    overflow: hidden;
+    display: inline-block;
+}
+
+#frmCalendar table {
+}
+
+#frmCalendar td {
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+}
+
+#frmCalendar a {
+    display: inline-block;
+    text-decoration: none;
+}
+
+#frmCalendar td.day a {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+}
+
+#frmCalendar a:hover {
+    background-color: @day-hover-back-color;
+}

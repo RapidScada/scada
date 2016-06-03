@@ -4,11 +4,14 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title></title>
+    <title>Calendar - Rapid SCADA</title>
+    <link href="~/css/calendar.min.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
     <form id="frmCalendar" runat="server">
-        <asp:Calendar ID="Calendar" runat="server"></asp:Calendar>
+        <asp:Calendar ID="Calendar" runat="server" BorderStyle="None">
+            <DayStyle CssClass="day" />
+        </asp:Calendar>
     </form>
 </body>
 </html>
