@@ -64,7 +64,7 @@ $(document).ready(function () {
         updateLayout();
     });
 
-    // show and hide hint on hover
+    // show and hide hint on hover and click
     $("#divTblWrapper img.icon").hover(
         function () {
             showHint($(this));
@@ -72,4 +72,8 @@ $(document).ready(function () {
             hideHint($(this));
         }
     );
+
+    $("span.hint").click(function () {
+        $(this).css("display", "none");
+    });
 });
