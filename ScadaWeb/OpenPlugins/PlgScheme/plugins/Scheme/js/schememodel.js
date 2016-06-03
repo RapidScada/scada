@@ -7,7 +7,7 @@
  *
  * Requires:
  * - jquery
- * - scadautils.js
+ * - utils.js
  * - clientapi.js
  * - schemerender.js
  *

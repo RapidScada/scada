@@ -7,7 +7,7 @@
  *
  * Requires:
  * - jquery
- * - scadautils.js
+ * - utils.js
  */
 
 // Rapid SCADA namespace

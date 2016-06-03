@@ -13,8 +13,11 @@ var scada = scada || {};
 
 // JavaScript utilities object
 scada.utils = {
+    // z-index that moves element to the front
+    FRONT_ZINDEX: 10000,
+
     // Default cookie expiration period in days
-    cookieExpiration: 7,
+    COOKIE_EXPIRATION: 7,
 
     // Get cookie
     getCookie: function (name) {
@@ -37,7 +40,7 @@ scada.utils = {
 
     // Set cookie
     setCookie: function (name, value, opt_expDays) {
-        var expDays = opt_expDays ? opt_expDays : this.cookieExpiration;
+        var expDays = opt_expDays ? opt_expDays : this.COOKIE_EXPIRATION;
         var expires = new Date();
         expires.setDate(expires.getDate() + expDays);
         document.cookie = name + "=" + encodeURIComponent(value) + "; expires=" + expires.toUTCString();

@@ -4,6 +4,11 @@
  * Created  : 2016
  * Modified : 2016
  *
+ * Requires:
+ * - jquery
+ * - utils.js
+ * - popup.js
+ *
  * Requires external objects:
  * - scada.chart
  * - scada.cmd
@@ -15,6 +20,9 @@ var scada = scada || {};
 
 // Common dialogs object
 scada.dialogs = {
+    // Web application root path
+    rootPath: "",
+
     // Show chart web page
     showChart: function (viewID, cnlNums) {
         if (scada.chart && scada.chart.show) {
@@ -39,6 +47,14 @@ scada.dialogs = {
             scada.eventAck.show(viewID, year, month, day, evNum);
         } else {
             console.warn("Unable to show event acknowledgement dialog because scada.eventAck is undefined");
+        }
+    },
+
+    // Show calendar dropdown form
+    showCalendar: function (anchorElem, callback) {
+        var popup = scada.popupLocator.getPopup();
+        if (popup) {
+            popup.showDropdown(this.rootPath + "Calendar.aspx", anchorElem, callback);
         }
     }
 };

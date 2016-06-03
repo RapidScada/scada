@@ -7,6 +7,7 @@
  *
  * Requires:
  * - jquery
+ * - utils.js
  */
 
 // Rapid SCADA namespace
@@ -65,7 +66,7 @@ scada.SplitterBulk.prototype._addOverlay = function () {
         "background-color": "gray",
         "cursor": this.isHorizontal ? "ns-resize" : "ew-resize",
         "opacity": 0,
-        "z-index": 10000
+        "z-index": scada.utils.FRONT_ZINDEX
     });
     $("body").append(overlay);
 };

@@ -1,4 +1,5 @@
 ﻿var scada = scada || {};
+var popup = new scada.Popup();
 scada.view = scada.view || {}; // defined if the current page is View.aspx
 
 scada.masterMain = {
@@ -191,6 +192,7 @@ $(document).ready(function () {
 
     // page setup
     scada.clientAPI.rootPath = scada.env.rootPath;
+    scada.dialogs.rootPath = scada.env.rootPath;
     scada.masterMain.updateLayout();
     scada.masterMain.chooseToolWindow();
     scada.masterMain.loadVisualState();

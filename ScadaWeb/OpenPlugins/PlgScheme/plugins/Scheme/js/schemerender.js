@@ -7,7 +7,6 @@
  *
  * Requires:
  * - jquery
- * - clientapi.js
  * - eventtypes.js
  * - schemecommon.js
  *

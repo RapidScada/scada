@@ -26,5 +26,9 @@
   {
     "outputFile": "css/controls/notifier.css",
     "inputFile": "css/controls/notifier.less"
+  },
+  {
+    "outputFile": "css/controls/popup.css",
+    "inputFile": "css/controls/popup.less"
   }
 ]

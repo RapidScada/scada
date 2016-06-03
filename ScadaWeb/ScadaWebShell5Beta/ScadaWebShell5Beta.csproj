@@ -67,6 +67,7 @@
       <Link>lang\ScadaData.en-GB.xml</Link>
     </Content>
     <Content Include="About.aspx" />
+    <Content Include="Calendar.aspx" />
     <Content Include="config\CommSettings.xml" />
     <Content Include="config\ViewSettings.xml" />
     <Content Include="config\WebSettings.xml" />
@@ -75,6 +76,12 @@
     </Content>
     <Content Include="css\controls\notifier.min.css">
       <DependentUpon>notifier.css</DependentUpon>
+    </Content>
+    <Content Include="css\controls\popup.css">
+      <DependentUpon>popup.less</DependentUpon>
+    </Content>
+    <Content Include="css\controls\popup.min.css">
+      <DependentUpon>popup.css</DependentUpon>
     </Content>
     <Content Include="css\globalvar.css">
       <DependentUpon>globalvar.less</DependentUpon>
@@ -121,6 +128,7 @@
     <Content Include="js\api\dialogs.js" />
     <Content Include="js\api\viewhub.js" />
     <Content Include="js\controls\notifier.js" />
+    <Content Include="js\controls\popup.js" />
     <Content Include="js\login.js" />
     <Content Include="js\mastermain.js" />
     <Content Include="js\api\eventtypes.js" />
@@ -168,6 +176,13 @@
     <Compile Include="About.aspx.designer.cs">
       <DependentUpon>About.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Calendar.aspx.cs">
+      <DependentUpon>Calendar.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Calendar.aspx.designer.cs">
+      <DependentUpon>Calendar.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -206,6 +221,7 @@
     <Content Include="css\globalvar.less" />
     <Content Include="css\login.less" />
     <Content Include="css\controls\notifier.less" />
+    <Content Include="css\controls\popup.less" />
     <None Include="css\mastermain.less" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">

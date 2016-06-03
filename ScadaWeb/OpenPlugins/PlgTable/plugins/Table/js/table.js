@@ -76,4 +76,12 @@ $(document).ready(function () {
     $("span.hint").click(function () {
         $(this).css("display", "none");
     });
+
+    // TODO
+    var dialogs = viewHub ? viewHub.dialogs : null;
+    if (dialogs) {
+        $("#spanDate").click(function () {
+            dialogs.showCalendar($(this), null);
+        });
+    }
 });

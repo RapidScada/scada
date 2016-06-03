@@ -15,6 +15,9 @@ var scada = scada || {};
 // Scheme namespace
 scada.scheme = scada.scheme || {};
 
+// The view hub object
+scada.scheme.viewHub = scada.viewHubLocator.getViewHub();
+
 // Compare operators enumeration
 scada.scheme.CompareOperators = {
     EQUAL: 0,
@@ -126,6 +129,3 @@ scada.scheme.calc = {
         }
     }
 }
-
-// The view hub object
-scada.scheme.viewHub = scada.viewHubLocator.getViewHub();
