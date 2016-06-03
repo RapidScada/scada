@@ -178,14 +178,17 @@ scada.view = {
         scada.utils.setCookie("DataWindowHeight", dataWindowHeight);
     },
 
-    // Reload view and data windows
-    reloadWindows: function (){
-        if (viewHub.viewWindow) {
-            viewHub.viewWindow.location.reload();
-        }
+    // Reload view and data windows on iOS to fix frame size,
+    // because setting frame size using jQuery doesn't work on iOS
+    reloadWindowsOnIOS: function () {
+        if (scada.utils.iOS()) {
+            if (viewHub.viewWindow) {
+                viewHub.viewWindow.location.reload();
+            }
 
-        if (viewHub.dataWindow) {
-            viewHub.dataWindow.location.reload();
+            if (viewHub.dataWindow) {
+                viewHub.dataWindow.location.reload();
+            }
         }
     }
 };
@@ -202,17 +205,14 @@ $(document).ready(function () {
     scada.splitter.prepare(function (splitterBulk) {
         if (splitterBulk.splitter.attr("id") == "divViewSplitter") {
             scada.view.saveSplitterPosition();
-
-            if (scada.utils.iOS()) {
-                // fix frame size
-                scada.view.reloadWindows();
-            }
+            scada.view.reloadWindowsOnIOS();
         }
     });
 
     // update layout on window resize and master page layout changes
     $(window).on("resize " + scada.EventTypes.UPDATE_LAYOUT, function () {
         scada.view.updateLayout();
+        scada.view.reloadWindowsOnIOS();
     });
 
     // set window title on view title changed

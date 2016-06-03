@@ -77,7 +77,8 @@ namespace Scada.Data
             KPNum = 0;
             KPName = "";
             CmdNum = 0;
-            CmdValName = "";
+            CmdValID = 0;
+            CmdVal = "";
             CmdValArr = null;
             FormulaUsed = false;
             Formula = "";
@@ -126,12 +127,17 @@ namespace Scada.Data
         public int CmdNum { get; set; }
 
         /// <summary>
-        /// Получить или установить наименование значений команды
+        /// Получить или установить идентификатор значений команды
         /// </summary>
-        public string CmdValName { get; set; }
+        public int CmdValID { get; set; }
 
         /// <summary>
         /// Получить или установить значения команды
+        /// </summary>
+        public string CmdVal { get; set; }
+
+        /// <summary>
+        /// Получить или установить массив значений команды
         /// </summary>
         public string[] CmdValArr { get; set; }
 

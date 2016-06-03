@@ -186,12 +186,12 @@ namespace Scada.Data
         public int UnitID { get; set; }
 
         /// <summary>
-        /// Получить или установить обозначение размерности
+        /// Получить или установить размерности
         /// </summary>
         public string UnitSign { get; set; }
 
         /// <summary>
-        /// Получить или установить размерности
+        /// Получить или установить массив размерностей
         /// </summary>
         public string[] UnitArr { get; set; }
 

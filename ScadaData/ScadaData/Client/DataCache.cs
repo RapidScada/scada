@@ -51,6 +51,10 @@ namespace Scada.Client
         /// Время ожидания снятия блокировки базы конфигурации
         /// </summary>
         protected static readonly TimeSpan WaitBaseLock = TimeSpan.FromSeconds(5);
+        /// <summary>
+        /// Разделитель значений внутри поля таблицы
+        /// </summary>
+        protected static readonly char[] FieldSeparator = new char[] { ';' };
 
 
         /// <summary>
@@ -75,10 +79,6 @@ namespace Scada.Client
         /// Время последего успешного обновления таблиц базы конфигурации
         /// </summary>
         protected DateTime baseRefrDT;
-        /// <summary>
-        /// Время последнего изменения успешно считанной базы конфигурации
-        /// </summary>
-        protected DateTime baseAge;
         /// <summary>
         /// Таблица текущего среза
         /// </summary>
@@ -113,15 +113,20 @@ namespace Scada.Client
             curDataLock = new object();
 
             baseRefrDT = DateTime.MinValue;
-            baseAge = DateTime.MinValue;
             tblCur = new SrezTableLight();
             curRefrDT = DateTime.MinValue;
 
+            BaseAge = DateTime.MinValue;
             BaseTables = new BaseTables();
             CnlProps = new InCnlProps[0];
             CtrlCnlProps = new CtrlCnlProps[0];
         }
 
+
+        /// <summary>
+        /// Получить время последнего изменения успешно считанной базы конфигурации
+        /// </summary>
+        public DateTime BaseAge { get; protected set; }
 
         /// <summary>
         /// Получить таблицы базы конфигурации
@@ -166,31 +171,43 @@ namespace Scada.Client
                     // определение свойств, не использующих внешних ключей
                     cnlProps.CnlNum = (int)rowView["CnlNum"];
                     cnlProps.CnlName = (string)rowView["Name"];
-                    cnlProps.CtrlCnlNum = (int)rowView["CtrlCnlNum"];
-                    cnlProps.EvSound = (bool)rowView["EvSound"];
-
-                    // определение номера и наименования объекта
+                    cnlProps.CnlTypeID = (int)rowView["CnlTypeID"];
                     cnlProps.ObjNum = (int)rowView["ObjNum"];
+                    cnlProps.KPNum = (int)rowView["KPNum"];
+                    cnlProps.Signal = (int)rowView["Signal"];
+                    cnlProps.FormulaUsed = (bool)rowView["FormulaUsed"];
+                    cnlProps.Formula = (string)rowView["Formula"];
+                    cnlProps.Averaging = (bool)rowView["Averaging"];
+                    cnlProps.ParamID = (int)rowView["ParamID"];
+                    cnlProps.UnitID = (int)rowView["UnitID"];
+                    cnlProps.CtrlCnlNum = (int)rowView["CtrlCnlNum"];
+                    cnlProps.EvEnabled = (bool)rowView["EvEnabled"];
+                    cnlProps.EvSound = (bool)rowView["EvSound"];
+                    cnlProps.EvOnChange = (bool)rowView["EvOnChange"];
+                    cnlProps.EvOnUndef = (bool)rowView["EvOnUndef"];
+                    cnlProps.LimLowCrash = (double)rowView["LimLowCrash"];
+                    cnlProps.LimLow = (double)rowView["LimLow"];
+                    cnlProps.LimHigh = (double)rowView["LimHigh"];
+                    cnlProps.LimHighCrash = (double)rowView["LimHighCrash"];
+
+                    // определение наименования объекта
                     DataTable tblObj = BaseTables.ObjTable;
                     tblObj.DefaultView.RowFilter = "ObjNum = " + cnlProps.ObjNum;
                     cnlProps.ObjName = tblObj.DefaultView.Count > 0 ? (string)tblObj.DefaultView[0]["Name"] : "";
 
-                    // определение номера и наименования КП
-                    cnlProps.KPNum = (int)rowView["KPNum"];
+                    // определение наименования КП
                     DataTable tblKP = BaseTables.KPTable;
                     tblKP.DefaultView.RowFilter = "KPNum = " + cnlProps.KPNum;
                     cnlProps.KPName = tblKP.DefaultView.Count > 0 ? (string)tblKP.DefaultView[0]["Name"] : "";
 
                     // определение наименования параметра и имени файла значка
-                    cnlProps.ParamID = (int)rowView["ParamID"];
                     DataTable tblParam = BaseTables.ParamTable;
                     tblParam.DefaultView.RowFilter = "ParamID = " + cnlProps.ParamID;
                     if (tblParam.DefaultView.Count > 0)
                     {
                         DataRowView paramRowView = tblParam.DefaultView[0];
                         cnlProps.ParamName = (string)paramRowView["Name"];
-                        object iconFileName = paramRowView["IconFileName"];
-                        cnlProps.IconFileName = iconFileName == DBNull.Value ? "" : iconFileName.ToString();
+                        cnlProps.IconFileName = (string)paramRowView["IconFileName"];
                     }
 
                     // определение формата вывода
@@ -204,17 +221,16 @@ namespace Scada.Client
                     }
 
                     // определение размерностей
-                    cnlProps.UnitID = (int)rowView["UnitID"];
                     DataTable tblUnit = BaseTables.UnitTable;
                     tblUnit.DefaultView.RowFilter = "UnitID = " + cnlProps.UnitID;
                     if (tblUnit.DefaultView.Count > 0)
                     {
                         cnlProps.UnitSign = (string)tblUnit.DefaultView[0]["Sign"];
-                        cnlProps.UnitArr = cnlProps.UnitSign.Split(new char[] { ';' }, 
-                            StringSplitOptions.RemoveEmptyEntries);
-                        for (int j = 0; j < cnlProps.UnitArr.Length; j++)
-                            cnlProps.UnitArr[j] = cnlProps.UnitArr[j].Trim();
-                        if (cnlProps.UnitArr.Length == 1 && cnlProps.UnitArr[0] == "")
+                        string[] unitArr = cnlProps.UnitArr = 
+                            cnlProps.UnitSign.Split(FieldSeparator, StringSplitOptions.RemoveEmptyEntries);
+                        for (int j = 0; j < unitArr.Length; j++)
+                            unitArr[j] = unitArr[j].Trim();
+                        if (unitArr.Length == 1 && unitArr[0] == "")
                             cnlProps.UnitArr = null;
                     }
 
@@ -255,9 +271,37 @@ namespace Scada.Client
                     ctrlCnlProps.CtrlCnlNum = (int)rowView["CtrlCnlNum"];
                     ctrlCnlProps.CtrlCnlName = (string)rowView["Name"];
                     ctrlCnlProps.CmdTypeID = (int)rowView["CmdTypeID"];
+                    ctrlCnlProps.ObjNum = (int)rowView["ObjNum"];
+                    ctrlCnlProps.KPNum = (int)rowView["KPNum"];
+                    ctrlCnlProps.CmdNum = (int)rowView["CmdNum"];
+                    ctrlCnlProps.CmdValID = (int)rowView["CmdValID"];
+                    ctrlCnlProps.FormulaUsed = (bool)rowView["FormulaUsed"];
+                    ctrlCnlProps.Formula = (string)rowView["Formula"];
                     ctrlCnlProps.EvEnabled = (bool)rowView["EvEnabled"];
 
-                    // TODO: доделать
+                    // определение наименования объекта
+                    DataTable tblObj = BaseTables.ObjTable;
+                    tblObj.DefaultView.RowFilter = "ObjNum = " + ctrlCnlProps.ObjNum;
+                    ctrlCnlProps.ObjName = tblObj.DefaultView.Count > 0 ? (string)tblObj.DefaultView[0]["Name"] : "";
+
+                    // определение наименования КП
+                    DataTable tblKP = BaseTables.KPTable;
+                    tblKP.DefaultView.RowFilter = "KPNum = " + ctrlCnlProps.KPNum;
+                    ctrlCnlProps.KPName = tblKP.DefaultView.Count > 0 ? (string)tblKP.DefaultView[0]["Name"] : "";
+
+                    // определение размерностей
+                    DataTable tblCmdVal = BaseTables.CmdValTable;
+                    tblCmdVal.DefaultView.RowFilter = "CmdValID = " + ctrlCnlProps.CmdValID;
+                    if (tblCmdVal.DefaultView.Count > 0)
+                    {
+                        ctrlCnlProps.CmdVal = (string)tblCmdVal.DefaultView[0]["Val"];
+                        string[] cmdValArr = ctrlCnlProps.CmdValArr = 
+                            ctrlCnlProps.CmdVal.Split(FieldSeparator, StringSplitOptions.RemoveEmptyEntries);
+                        for (int j = 0; j < cmdValArr.Length; j++)
+                            cmdValArr[j] = cmdValArr[j].Trim();
+                        if (cmdValArr.Length == 1 && cmdValArr[0] == "")
+                            ctrlCnlProps.CmdValArr = null;
+                    }
 
                     newCtrlCnlProps[i] = ctrlCnlProps;
                 }
@@ -341,9 +385,9 @@ namespace Scada.Client
                                 "Не удалось принять время изменения базы конфигурации." :
                                 "Unable to receive the configuration database modification time.");
                         }
-                        else if (baseAge != newBaseAge) // база конфигурации изменена
+                        else if (BaseAge != newBaseAge) // база конфигурации изменена
                         {
-                            baseAge = newBaseAge;
+                            BaseAge = newBaseAge;
                             log.WriteAction(Localization.UseRussian ? 
                                 "Обновление таблиц базы конфигурации" :
                                 "Refresh the tables of the configuration database");
@@ -368,7 +412,7 @@ namespace Scada.Client
                                         "Unable to receive the table {0}", tableName));
 
                                     baseRefrDT = DateTime.MinValue;
-                                    baseAge = DateTime.MinValue;
+                                    BaseAge = DateTime.MinValue;
                                 }
                             }
 
@@ -381,7 +425,7 @@ namespace Scada.Client
                 catch (Exception ex)
                 {
                     baseRefrDT = DateTime.MinValue;
-                    baseAge = DateTime.MinValue;
+                    BaseAge = DateTime.MinValue;
 
                     log.WriteException(ex, Localization.UseRussian ?
                         "Ошибка при обновлении таблиц базы конфигурации" :

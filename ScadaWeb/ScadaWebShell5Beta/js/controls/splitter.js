@@ -190,7 +190,7 @@ scada.splitter = {
     _bindCommonEvents: function () {
         var thisObj = this;
 
-        $("body").on("mouseup mouseleave touchend touchleave touchcancel", function () {
+        $("body").on("mouseup mouseleave touchend touchcancel", function () {
             thisObj._stopAllResizing();
         });
 

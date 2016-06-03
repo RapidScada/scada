@@ -6,7 +6,9 @@ function styleIOS() {
     if (scada.utils.iOS()) {
         $("#divTblWrapper").css({
             "overflow": "scroll",
-            "-webkit-overflow-scrolling": "touch"
+            "-webkit-overflow-scrolling": "touch",
+            "width": 0, // initial size
+            "height": 0
         });
     }
 }

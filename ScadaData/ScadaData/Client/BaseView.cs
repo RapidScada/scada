@@ -24,6 +24,7 @@
  */
 
 using Scada.Data;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -44,6 +45,7 @@ namespace Scada.Client
             CnlList = new List<int>();
             CtrlCnlList = new List<int>();
             StoredOnServer = true;
+            BaseAge = DateTime.MinValue;
             Stamp = 0;
         }
 
@@ -74,6 +76,12 @@ namespace Scada.Client
         /// Получить признак хранения файла представления на сервере (в директории интерфейса)
         /// </summary>
         public bool StoredOnServer { get; protected set; }
+
+        /// <summary>
+        /// Получить или установить время последнего изменения базы конфигурации, 
+        /// для которого выполнена привязка каналов
+        /// </summary>
+        public DateTime BaseAge { get; set; }
 
         /// <summary>
         /// Получить или установить уникальную метку объекта в пределах некоторого набора данных

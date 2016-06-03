@@ -152,9 +152,6 @@ namespace Scada.Client
                             view = (T)Activator.CreateInstance(typeof(T));
                             if (serverComm.ReceiveView(viewProps.FileName, view))
                             {
-                                // привязка свойств каналов
-                                dataAccess.BindCnlProps(view);
-
                                 if (cacheItem == null)
                                     // добавление представления в кеш
                                     cache.AddValue(viewID, view, newViewAge, utcNowDT);
@@ -173,7 +170,7 @@ namespace Scada.Client
                     }
                 }
                 
-                // использование представление из кеша
+                // использование представления из кеша
                 if (view == null && viewFromCache != null)
                 {
                     view = viewFromCache as T;
@@ -182,6 +179,10 @@ namespace Scada.Client
                             "Несоответствие типа представления." :
                             "View type mismatch.");
                 }
+
+                // привязка свойств каналов после получения представления или при изменении базы конфигурации
+                if (view != null)
+                    dataAccess.BindCnlProps(view);
 
                 return view;
             }

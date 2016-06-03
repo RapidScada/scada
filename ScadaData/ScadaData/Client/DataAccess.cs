@@ -214,8 +214,9 @@ namespace Scada.Client
 
                 lock (cnlPropsLock)
                 {
-                    if (view != null)
+                    if (view != null && view.BaseAge != dataCache.BaseAge && dataCache.BaseAge > DateTime.MinValue)
                     {
+                        view.BaseAge = dataCache.BaseAge;
                         view.BindCnlProps(dataCache.CnlProps);
                         view.BindCtrlCnlProps(dataCache.CtrlCnlProps);
                     }
