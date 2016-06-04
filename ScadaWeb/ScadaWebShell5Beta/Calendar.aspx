@@ -6,6 +6,7 @@
 <head runat="server">
     <title>Calendar - Rapid SCADA</title>
     <link href="~/css/calendar.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
 </head>
 <body>
     <form id="frmCalendar" runat="server">

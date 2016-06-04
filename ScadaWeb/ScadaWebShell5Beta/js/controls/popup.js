@@ -18,6 +18,8 @@ var scada = scada || {};
 
 // Popup dialogs manipulation type
 scada.Popup = function () {
+    // Window that holds popups
+    this._holderWindow = window;
 };
 
 // Event handler that removes the popup on press Escape key
@@ -26,7 +28,43 @@ scada.Popup.prototype._removePopupOnEscape = function (event) {
         var popupElem = event.data;
         popupElem.remove();
     }
-}
+};
+
+// Get coodinates of the specified element relative to the holder window
+scada.Popup.prototype._getOffset = function (elem) {
+    // validate the element
+    var defaultOffset = { left: 0, top: 0 };
+    if (!(elem && elem.length)) {
+        return defaultOffset;
+    }
+
+    // get coodinates within a window that contains the element
+    var wnd = elem[0].ownerDocument.defaultView;
+    var offset = elem.offset();
+    var left = offset.left + $(wnd).scrollLeft();
+    var top = offset.top + $(wnd).scrollTop();
+
+    // add coordinates of the parent frames
+    do {
+        var parentWnd = wnd.parent;
+        if (wnd != parentWnd) {
+            if (parentWnd.$) {
+                var frame = parentWnd.$(wnd.frameElement);
+                if (frame.length > 0) {
+                    offset = frame.offset();
+                    left += offset.left + $(parentWnd).scrollLeft();
+                    top += offset.top + $(parentWnd).scrollTop();
+                }
+            } else {
+                console.warn("Unable to get offset, because jQuery is not found");
+                return defaultOffset;
+            }
+            wnd = parentWnd;
+        }
+    } while (wnd != this._holderWindow && wnd != window.top);
+
+    return { left: left, top: top };
+};
 
 // Show popup with the specified url as a dropdown menu below the anchorElem.
 // callback is function (success, dialogResult, extraParams)
@@ -47,32 +85,30 @@ scada.Popup.prototype.showDropdown = function (url, anchorElem, callback) {
     });
 
     // setup wrapper
-    wrapper
-    .focus()
-    .css({
+    wrapper.css({
         "z-index": scada.utils.FRONT_ZINDEX + 1, // above the overlay
         "opacity": 0.0 // hide the popup while it's loading
     }); 
 
     // remove the popup on press Escape key in the parent window
-    /*$(document)
-    .off(this._removePopupOnEscape)
-    .on("keydown", null, popupElem, this._removePopupOnEscape);*/
+    $(document)
+    .off("keydown", null, this._removePopupOnEscape)
+    .on("keydown", null, popupElem, this._removePopupOnEscape);
 
     // load the frame
     var thisObj = this;
     frame
     .on("load", function () {
         // remove the popup on press Escape key in the frame
-        /*var frameWnd = frame[0].contentWindow;
+        var frameWnd = frame[0].contentWindow;
         if (frameWnd.$) {
             var jqFrameDoc = frameWnd.$(frameWnd.document);
             jqFrameDoc.ready(function () {
                 jqFrameDoc
-                .off(thisObj._removePopupOnEscape)
+                .off("keydown", null, thisObj._removePopupOnEscape)
                 .on("keydown", null, popupElem, thisObj._removePopupOnEscape);
             });
-        }*/
+        }
     })
     .one("load", function () {
         // set the popup position
@@ -83,8 +119,9 @@ scada.Popup.prototype.showDropdown = function (url, anchorElem, callback) {
         var top = 0;
 
         if (anchorElem.length > 0) {
-            left = anchorElem.offset().left;
-            top = anchorElem.offset().top + anchorElem.outerHeight();
+            var offset = thisObj._getOffset(anchorElem);
+            left = offset.left;
+            top = offset.top + anchorElem.outerHeight();
             var borderWidthX2 = parseInt(wrapper.css("border-width"), 10) * 2;
 
             if (left + width + borderWidthX2 > $(document).width())
@@ -104,10 +141,12 @@ scada.Popup.prototype.showDropdown = function (url, anchorElem, callback) {
         });
 
         // set the popup size and display the popup
-        frame.css({
+        frame
+        .css({
             "width": width,
             "height": height
-        });
+        })
+        .focus();
 
         wrapper.css({
             "width": width,
