@@ -1,6 +1,10 @@
-﻿@calendar-back-color: white;
+﻿@import "globalvar.less";
+
+@calendar-back-color: white;
+@header-back-color: #ccc;
+@day-hdr-back-color: #f9f9f9;
 @day-hover-back-color: #e0e0e0;
-@calendar-font-family: Arial, Helvetica, sans-serif;
+@calendar-font-family: @default-font-family;// Arial, Helvetica, sans-serif;
 
 body {
     margin: 0;
@@ -13,6 +17,16 @@ body {
 }
 
 #frmCalendar table {
+}
+
+#frmCalendar .header {
+    background-color: @header-back-color;
+    height: 25px;
+}
+
+#frmCalendar th.day-header {
+    background-color: @day-hdr-back-color;
+    height: 25px;
 }
 
 #frmCalendar td {

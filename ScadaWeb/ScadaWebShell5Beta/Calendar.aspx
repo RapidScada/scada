@@ -11,7 +11,13 @@
 <body>
     <form id="frmCalendar" runat="server">
         <asp:Calendar ID="Calendar" runat="server" BorderStyle="None">
+            <DayHeaderStyle CssClass="day-header" />
             <DayStyle CssClass="day" />
+            <OtherMonthDayStyle CssClass="day other-month" />
+            <SelectedDayStyle CssClass="day selected" />
+            <TitleStyle CssClass="header" />
+            <TodayDayStyle CssClass="day today" />
+            <WeekendDayStyle CssClass="day weekend" />
         </asp:Calendar>
     </form>
 </body>

@@ -2,10 +2,18 @@
   margin: 0;
   padding: 0;
   background-color: white;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 12px;
   overflow: hidden;
   display: inline-block;
+}
+#frmCalendar .header {
+  background-color: #ccc;
+  height: 25px;
+}
+#frmCalendar th.day-header {
+  background-color: #f9f9f9;
+  height: 25px;
 }
 #frmCalendar td {
   margin: 0;
