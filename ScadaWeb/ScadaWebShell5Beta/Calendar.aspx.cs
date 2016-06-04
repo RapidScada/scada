@@ -13,5 +13,10 @@ namespace Scada.Web
         {
 
         }
+
+        protected void Calendar_DayRender(object sender, DayRenderEventArgs e)
+        {
+
+        }
     }
 }

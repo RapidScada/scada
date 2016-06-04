@@ -133,6 +133,7 @@
     <Content Include="js\api\clientapi.js" />
     <Content Include="js\api\dialogs.js" />
     <Content Include="js\api\viewhub.js" />
+    <Content Include="js\calendar.js" />
     <Content Include="js\controls\notifier.js" />
     <Content Include="js\controls\popup.js" />
     <Content Include="js\login.js" />
