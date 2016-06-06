@@ -133,24 +133,20 @@ body {
     color: @row-hover-fore-color;
 }
 
-#divTblWrapper th,
 #divTblWrapper td { 
     border: 1px solid @cell-border-color;
     font-size: @cell-font-size;
     line-height: @cell-height;
+    padding: 2px 3px;
     vertical-align: middle;
     white-space: nowrap;
 }
 
-#divTblWrapper th {
+#divTblWrapper tr.hdr td {
     border: 1px solid @cell-border-color-hdr;
     font-weight: 600;
     padding: 2px 7px;
     text-align: center;
-}
-
-#divTblWrapper td {
-    padding: 2px 3px;
 }
 
 #divTblWrapper td a,

@@ -59,13 +59,21 @@
     border-radius: 5px;
     box-shadow: 2px 2px 5px @hint-shadow-color;
     color: @hint-fore-color;
-    display: none; /*inline-block*/
+    display: none;
     line-height: normal;
     padding: 5px;
     position: fixed;
 }
 
+#divTblWrapper td.cap span.hint.visible {
+    display: inline-block;
+}
+
 #divTblWrapper td.cur,
 #divTblWrapper td.hour {
     text-align: center;
+}
+
+#divTblWrapper td.hidden {
+    display: none;
 }

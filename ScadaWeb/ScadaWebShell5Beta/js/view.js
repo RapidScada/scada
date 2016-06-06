@@ -49,9 +49,10 @@ scada.view = {
         return jqObj.css("display") == "none" ? 0 : jqObj.outerHeight();
     },
 
-    // Load the splitter position from cookies
+    // Load the splitter position from the cookies
     _loadSplitterPosition: function () {
-        var dataWindowHeight = scada.utils.getCookie("DataWindowHeight") || $("#divDataWindow").outerHeight();
+        var dataWindowHeight = parseInt(scada.utils.getCookie("Shell.DataWindowHeight")) ||
+            $("#divDataWindow").outerHeight();
         var minHeight = parseInt($("#divDataWindow").css("min-height"), 10);
         var maxHeight = $("#divViewContent").innerHeight() -
             parseInt($("#divView").css("min-height"), 10) -
@@ -71,7 +72,7 @@ scada.view = {
 
     // Load active data window URL from the cookies
     _loadActiveDataWindow: function () {
-        var activeDataWindow = scada.utils.getCookie("ActiveDataWindow");
+        var activeDataWindow = scada.utils.getCookie("Shell.ActiveDataWindow");
         var thisView = this;
 
         if (activeDataWindow) {
@@ -87,7 +88,7 @@ scada.view = {
 
     // Save active data window URL in the cookies
     _saveActiveDataWindow: function () {
-        scada.utils.setCookie("ActiveDataWindow", this._dataWindow.url);
+        scada.utils.setCookie("Shell.ActiveDataWindow", this._dataWindow.url);
     },
 
     // Hide bottom pane if no data windows exist
@@ -175,7 +176,7 @@ scada.view = {
     // Save the splitter position in the cookies
     saveSplitterPosition: function () {
         var dataWindowHeight = $("#divDataWindow").outerHeight();
-        scada.utils.setCookie("DataWindowHeight", dataWindowHeight);
+        scada.utils.setCookie("Shell.DataWindowHeight", dataWindowHeight);
     },
 
     // Reload view and data windows on iOS to fix frame size,

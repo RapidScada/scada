@@ -91,22 +91,19 @@ body {
   background-color: #e0e0e0;
   color: black;
 }
-#divTblWrapper th,
 #divTblWrapper td {
   border: 1px solid #999;
   font-size: 12px;
   line-height: 18px;
+  padding: 2px 3px;
   vertical-align: middle;
   white-space: nowrap;
 }
-#divTblWrapper th {
+#divTblWrapper tr.hdr td {
   border: 1px solid #888;
   font-weight: 600;
   padding: 2px 7px;
   text-align: center;
-}
-#divTblWrapper td {
-  padding: 2px 3px;
 }
 #divTblWrapper td a,
 #divTblWrapper td span,
@@ -158,12 +155,17 @@ body {
   box-shadow: 2px 2px 5px #aaa;
   color: #444;
   display: none;
-  /*inline-block*/
   line-height: normal;
   padding: 5px;
   position: fixed;
 }
+#divTblWrapper td.cap span.hint.visible {
+  display: inline-block;
+}
 #divTblWrapper td.cur,
 #divTblWrapper td.hour {
   text-align: center;
+}
+#divTblWrapper td.hidden {
+  display: none;
 }

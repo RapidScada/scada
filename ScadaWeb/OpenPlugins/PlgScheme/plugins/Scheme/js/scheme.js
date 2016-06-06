@@ -122,7 +122,7 @@ function displayScale() {
 
 // Load the scheme scale from the cookies
 function loadScale() {
-    var scale = scada.utils.getCookie("SchemeScale");
+    var scale = scada.utils.getCookie("Scheme.SchemeScale");
     if (scale) {
         scheme.setScale(scale);
     }
@@ -130,7 +130,7 @@ function loadScale() {
 
 // Save the scheme scale in the cookies
 function saveScale(opt_scale) {
-    scada.utils.setCookie("SchemeScale", opt_scale ? opt_scale : scheme.scale);
+    scada.utils.setCookie("Scheme.SchemeScale", opt_scale ? opt_scale : scheme.scale);
 }
 
 // Apply additional css styles in case of using iOS
@@ -190,13 +190,13 @@ $(document).ready(function () {
     notifier = new scada.Notifier("#divNotif");
     notifier.startClearingNotifications();
 
+    $(window).on("resize " + scada.EventTypes.UPDATE_LAYOUT, function () {
+        updateLayout();
+    });
+
     if (DEBUG_MODE) {
         initDebugTools();
     } else {
         startLoadingScheme(viewID);
     }
-
-    $(window).on("resize " + scada.EventTypes.UPDATE_LAYOUT, function () {
-        updateLayout();
-    });
 });

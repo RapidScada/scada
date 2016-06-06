@@ -1,5 +1,4 @@
-﻿// View hub. Must be defined in the parent window
-// TODO: move to another *.js
+﻿// The view hub object
 var viewHub = scada.viewHubLocator.getViewHub();
 
 // Apply additional css styles in case of using iOS

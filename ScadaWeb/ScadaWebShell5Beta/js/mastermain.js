@@ -40,7 +40,7 @@ scada.masterMain = {
 
     // Save the left pane visibility in the cookies
     _saveLeftPaneVisible: function () {
-        scada.utils.setCookie("LeftPaneVisible", this.leftPaneExpanded);
+        scada.utils.setCookie("Shell.LeftPaneVisible", this.leftPaneExpanded);
     },
 
     // Check that a user is logged on
@@ -162,7 +162,7 @@ scada.masterMain = {
 
     // Load page visual state from the cookies
     loadVisualState: function () {
-        var leftPaneVisible = scada.utils.getCookie("LeftPaneVisible");
+        var leftPaneVisible = scada.utils.getCookie("Shell.LeftPaneVisible");
         if (leftPaneVisible == "false") {
             this.collapseLeftPane();
         }

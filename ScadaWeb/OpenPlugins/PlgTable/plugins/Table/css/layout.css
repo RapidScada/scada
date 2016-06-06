@@ -91,22 +91,19 @@ body {
   background-color: #e0e0e0;
   color: black;
 }
-#divTblWrapper th,
 #divTblWrapper td {
   border: 1px solid #999;
   font-size: 12px;
   line-height: 18px;
+  padding: 2px 3px;
   vertical-align: middle;
   white-space: nowrap;
 }
-#divTblWrapper th {
+#divTblWrapper tr.hdr td {
   border: 1px solid #888;
   font-weight: 600;
   padding: 2px 7px;
   text-align: center;
-}
-#divTblWrapper td {
-  padding: 2px 3px;
 }
 #divTblWrapper td a,
 #divTblWrapper td span,

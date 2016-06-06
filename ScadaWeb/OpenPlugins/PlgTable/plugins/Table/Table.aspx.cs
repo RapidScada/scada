@@ -53,6 +53,8 @@ namespace Scada.Web.Plugins.Table
         protected int viewID;             // ид. представления
         protected int refrRate;           // частота обновления данных
         protected string phrases;         // локализованные фразы
+        protected string selTimeFromHtml; // HTML-код выбора начального времени
+        protected string selTimeToHtml;   // HTML-код выбора конечного времени
         protected string tableViewHtml;   // HTML-код табличного представления
 
 
@@ -61,20 +63,44 @@ namespace Scada.Web.Plugins.Table
         /// </summary>
         private string GetLocalizedHour(int hour)
         {
-            return DateTime.MinValue.AddHours(hour).ToString("t", Localization.Culture);
+            return 
+                (hour >= 0 ? "" : PlgPhrases.PrevDayItem) + 
+                DateTime.MinValue.AddHours(hour > 0 ? hour : hour + 24).ToString("t", Localization.Culture);
         }
 
         /// <summary>
-        /// Добавить ячейку заголовка
+        /// Генерировать HTML-код выпадающего списка выбора времени
         /// </summary>
-        private void AppendHeaderCell(StringBuilder sbHtml, string cssClass, string innerHtml)
+        private string GenerateTimeSelectHtml(string elemID, bool addPrevDay, int selectedHour)
         {
-            if (string.IsNullOrEmpty(cssClass))
-                sbHtml.Append("<th>");
-            else
-                sbHtml.Append("<th class='").Append(cssClass).Append("'>");
+            StringBuilder sbHtml = new StringBuilder();
+            sbHtml.Append("<select id='").Append(elemID).AppendLine("'>");
 
-            sbHtml.Append(innerHtml).Append("</th>");
+            // предыдущие сутки
+            if (addPrevDay)
+            {
+                sbHtml.Append("<optgroup label='").Append(PlgPhrases.PreviousDay).AppendLine("'>");
+                for (int hour = 0, val = -24; hour < 24; hour++, val++)
+                {
+                    sbHtml.Append("<option value='").Append(val).Append("'")
+                        .Append(val == selectedHour ? " selected" : "").Append(">")
+                        .Append(PlgPhrases.PrevDayItem).Append(GetLocalizedHour(hour)).Append("</option>");
+                }
+                sbHtml.AppendLine("</optgroup>");
+            }
+
+            // выбранные сутки
+            sbHtml.Append("<optgroup label='").Append(PlgPhrases.SelectedDay).AppendLine("'>");
+            for (int hour = 0; hour < 24; hour++)
+            {
+                sbHtml.Append("<option value='").Append(hour).Append("'")
+                    .Append(hour == selectedHour ? " selected" : "").Append(">")
+                    .Append(GetLocalizedHour(hour)).Append("</option>");
+            }
+            sbHtml.AppendLine("</optgroup>");
+
+            sbHtml.AppendLine("</select>");
+            return sbHtml.ToString();
         }
 
         /// <summary>
@@ -109,17 +135,23 @@ namespace Scada.Web.Plugins.Table
         /// <summary>
         /// Генерировать HTML-код табличного представления
         /// </summary>
-        private string GenerateTableViewHtml(TableView tableView, bool cmdEnabled)
+        private string GenerateTableViewHtml(TableView tableView, bool cmdEnabled, int timeFrom, int timeTo)
         {
+            const int FirstHour = -24;
+            const int LastHour = 23;
+
             StringBuilder sbHtml = new StringBuilder();
             sbHtml.AppendLine("<table>");
 
             // заголовок таблицы
             sbHtml.AppendLine("<tr class='hdr'>");
-            AppendHeaderCell(sbHtml, "", "Item");
-            AppendHeaderCell(sbHtml, "cur", "Current");
-            for (int hour = 0; hour < 24; hour++)
-                AppendHeaderCell(sbHtml, "", GetLocalizedHour(hour));
+            AppendCell(sbHtml, "cap", null, "Item");
+            AppendCell(sbHtml, "cur", null, "Current");
+            for (int hour = FirstHour; hour <= LastHour; hour++)
+            {
+                AppendCell(sbHtml, timeFrom <= hour && hour <= timeTo ? "hour" : "hour hidden", hour, 
+                    GetLocalizedHour(hour));
+            }
             sbHtml.AppendLine().AppendLine("</tr>");
 
             // строки таблицы
@@ -183,18 +215,9 @@ namespace Scada.Web.Plugins.Table
                 }
 
                 // ячейки текущих и часовых данных
-                if (cnlNum > 0)
-                {
-                    AppendCell(sbHtml, "cur", null, "---");
-                    for (int hour = 0; hour < 24; hour++)
-                        AppendCell(sbHtml, "hour", hour, "---");
-                }
-                else
-                {
-                    AppendCell(sbHtml, "cur", null, "");
-                    for (int hour = 0; hour < 24; hour++)
-                        AppendCell(sbHtml, "hour", hour, "");
-                }
+                AppendCell(sbHtml, "cur", null, "");
+                for (int hour = FirstHour; hour <= LastHour; hour++)
+                    AppendCell(sbHtml, timeFrom <= hour && hour <= timeTo ? "hour" : "hour hidden", hour, "");
 
                 // тег окончания строки
                 sbHtml.AppendLine().AppendLine("</tr>");
@@ -202,41 +225,6 @@ namespace Scada.Web.Plugins.Table
             }
 
             sbHtml.AppendLine("</table>");
-            return sbHtml.ToString();
-        }
-
-        /// <summary>
-        /// Генерировать HTML-код выпадающего списка выбора времени
-        /// </summary>
-        protected string GenerateTimeSelectHtml(string elemID, bool addPrevDay, int selectedHour)
-        {
-            StringBuilder sbHtml = new StringBuilder();
-            sbHtml.Append("<select id='").Append(elemID).AppendLine("'>");
-
-            // выбранные сутки
-            sbHtml.Append("<optgroup label='").Append(PlgPhrases.SelectedDay).AppendLine("'>");
-            for (int hour = 0; hour < 24; hour++)
-            {
-                sbHtml.Append("<option value='").Append(hour).Append("'")
-                    .Append(hour == selectedHour ? " selected" : "").Append(">")
-                    .Append(GetLocalizedHour(hour)).Append("</option>");
-            }
-            sbHtml.AppendLine("</optgroup>");
-
-            // предыдущие сутки
-            if (addPrevDay)
-            {
-                sbHtml.Append("<optgroup label='").Append(PlgPhrases.PreviousDay).AppendLine("'>");
-                for (int hour = 0, val = -24; hour < 24; hour++, val++)
-                {
-                    sbHtml.Append("<option value='").Append(val).Append("'")
-                        .Append(val == selectedHour ? " selected" : "").Append(">")
-                        .Append(PlgPhrases.PrevDayItem).Append(GetLocalizedHour(hour)).Append("</option>");
-                }
-                sbHtml.AppendLine("</optgroup>");
-            }
-
-            sbHtml.AppendLine("</select>");
             return sbHtml.ToString();
         }
 
@@ -277,6 +265,17 @@ namespace Scada.Web.Plugins.Table
                 Response.Redirect(UrlTemplates.NoView);
             }
 
+            // получение периода времени из cookies
+            HttpCookie cookie = Request.Cookies["Table.TimeFrom"];
+            int timeFrom;
+            if (cookie == null || !int.TryParse(cookie.Value, out timeFrom))
+                timeFrom = 0;
+
+            cookie = Request.Cookies["Table.TimeTo"];
+            int timeTo;
+            if (cookie == null || !int.TryParse(cookie.Value, out timeTo))
+                timeTo = 23;
+
             // подготовка данных для вывода на веб-страницу
             refrRate = userData.WebSettings.DataRefrRate;
 
@@ -284,8 +283,10 @@ namespace Scada.Web.Plugins.Table
             Localization.Dictionaries.TryGetValue("Scada.Web.Plugins.Table.WFrmTable.Js", out dict);
             phrases = WebUtils.DictionaryToJs(dict);
 
+            selTimeFromHtml = GenerateTimeSelectHtml("selTimeFrom", true, timeFrom);
+            selTimeToHtml = GenerateTimeSelectHtml("selTimeTo", false, timeTo);
             bool cmdEnabled = userData.WebSettings.CmdEnabled && rights.ControlRight;
-            tableViewHtml = GenerateTableViewHtml(tableView, cmdEnabled);
+            tableViewHtml = GenerateTableViewHtml(tableView, cmdEnabled, timeFrom, timeTo);
         }
     }
 }
