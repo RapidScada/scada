@@ -49,7 +49,7 @@ scada.utils = {
     // Get the query string parameter value
     getQueryStringParam: function (paramName, opt_url) {
         if (paramName) {
-            var url = opt_url ? opt_url : unescape(window.location);
+            var url = opt_url ? opt_url : decodeURIComponent(window.location);
             var begInd = queryString.indexOf("?");
 
             if (begInd > 0) {
@@ -73,7 +73,7 @@ scada.utils = {
     // The method returns a new string
     setQueryStringParam: function (paramName, paramVal, opt_url) {
         if (paramName) {
-            var url = opt_url ? opt_url : unescape(window.location);
+            var url = opt_url ? opt_url : decodeURIComponent(window.location);
             var searchName = "?" + paramName + "=";
             var nameBegInd = url.indexOf(searchName);
 
@@ -86,14 +86,14 @@ scada.utils = {
                 // replace parameter value
                 var valBegInd = nameBegInd + searchName.length;
                 var valEndInd = url.indexOf("&", valBegInd);
-                var newUrl = url.substring(0, valBegInd) + paramVal;
+                var newUrl = url.substring(0, valBegInd) + encodeURIComponent(paramVal);
                 return valEndInd > 0 ?
                     newUrl + url.substring(valEndInd) :
                     newUrl;
             } else {
                 // add parameter
                 var mark = url.indexOf("?") >= 0 ? "&" : "?";
-                return url + mark + paramName + "=" + paramVal;
+                return url + mark + paramName + "=" + encodeURIComponent(paramVal);
             }
         } else {
             return "";

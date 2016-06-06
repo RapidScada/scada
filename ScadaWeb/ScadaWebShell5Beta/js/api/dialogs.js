@@ -50,11 +50,15 @@ scada.dialogs = {
         }
     },
 
-    // Show calendar dropdown form
-    showCalendar: function (anchorElem, callback) {
+    // Show calendar dropdown form.
+    // callback is function (dialogResult, extraParams),
+    // dialogResult is true or false,
+    // extraParams is object { date, dateStr }
+    showCalendar: function (anchorElem, selectedDate, callback) {
         var popup = scada.popupLocator.getPopup();
         if (popup) {
-            popup.showDropdown(this.rootPath + "Calendar.aspx", anchorElem, callback);
+            var queryString = selectedDate ? "?date=" + encodeURIComponent(selectedDate) : "";
+            popup.showDropdown(this.rootPath + "Calendar.aspx" + queryString, anchorElem, callback);
         }
     }
 };

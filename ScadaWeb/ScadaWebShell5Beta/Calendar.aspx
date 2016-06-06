@@ -7,6 +7,8 @@
     <title>Calendar - Rapid SCADA</title>
     <link href="~/css/calendar.min.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="js/api/utils.js"></script>
+    <script type="text/javascript" src="js/controls/popup.js"></script>
     <script type="text/javascript" src="js/calendar.js"></script>
 </head>
 <body>
