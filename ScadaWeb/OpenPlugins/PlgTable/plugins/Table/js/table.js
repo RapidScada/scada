@@ -81,7 +81,9 @@ $(document).ready(function () {
     var dialogs = viewHub ? viewHub.dialogs : null;
     if (dialogs) {
         $("#spanDate *").click(function (event) {
-            dialogs.showCalendar($("#txtDate"), null);
+            dialogs.showCalendar($("#txtDate"), function (dialogResult) {
+                alert("dialogResult = " + dialogResult);
+            });
         });
     }
 });

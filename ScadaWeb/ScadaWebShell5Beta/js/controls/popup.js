@@ -20,12 +20,31 @@ var scada = scada || {};
 scada.Popup = function () {
     // Window that holds popups
     this._holderWindow = window;
+
+    // Callback functions of the existing popups
+    this._popupCallbacks = new Map();
 };
 
 // Event handler that removes the popup on press Escape key
 scada.Popup.prototype._removePopupOnEscape = function (event) {
     if (event.which == 27 /*Escape*/) {
-        var popupElem = event.data;
+        this._cancelDropdown(event.data);
+    }
+};
+
+// Close the dropdown popup and execute a callback with a cancel result
+scada.Popup.prototype._cancelDropdown = function (popupElem) {
+    var frame = popupElem.find(".popup-frame");
+    if (frame.length > 0) {
+        var frameWnd = frame[0].contentWindow;
+        var callback = this._popupCallbacks.get(frameWnd);
+        this._popupCallbacks.delete(frameWnd);
+        popupElem.remove();
+
+        if (callback) {
+            callback(false);
+        }
+    } else {
         popupElem.remove();
     }
 };
@@ -61,27 +80,28 @@ scada.Popup.prototype._getOffset = function (elem) {
             }
             wnd = parentWnd;
         }
-    } while (wnd != this._holderWindow && wnd != window.top);
+    } while (wnd != this._holderWindow && wnd != wnd.parent);
 
     return { left: left, top: top };
 };
 
 // Show popup with the specified url as a dropdown menu below the anchorElem.
-// callback is function (success, dialogResult, extraParams)
+// callback is function (dialogResult, extraParams)
 scada.Popup.prototype.showDropdown = function (url, anchorElem, callback) {
-    var popupElem = $("<div class='popup-overlay'></div>" +
-        "<div class='popup-wrapper'><iframe class='popup-frame'></iframe></div>");
+    var thisObj = this;
+    var popupElem = $("<div class='popup-dropdown'><div class='popup-overlay'></div>" +
+        "<div class='popup-wrapper'><iframe class='popup-frame'></iframe></div></div>");
     $("body").append(popupElem);
 
-    var overlay = popupElem.filter(".popup-overlay");
-    var wrapper = popupElem.filter(".popup-wrapper");
+    var overlay = popupElem.find(".popup-overlay");
+    var wrapper = popupElem.find(".popup-wrapper");
     var frame = popupElem.find(".popup-frame");
 
     // setup overlay
     overlay
     .css("z-index", scada.utils.FRONT_ZINDEX)
     .click(function () {
-        popupElem.remove();
+        thisObj._cancelDropdown(popupElem);
     });
 
     // setup wrapper
@@ -91,22 +111,25 @@ scada.Popup.prototype.showDropdown = function (url, anchorElem, callback) {
     }); 
 
     // remove the popup on press Escape key in the parent window
+    var removePopupOnEscape = this._removePopupOnEscape.bind(this);
     $(document)
-    .off("keydown", null, this._removePopupOnEscape)
-    .on("keydown", null, popupElem, this._removePopupOnEscape);
+    .off("keydown", null, removePopupOnEscape)
+    .on("keydown", null, popupElem, removePopupOnEscape);
 
     // load the frame
-    var thisObj = this;
     frame
     .on("load", function () {
-        // remove the popup on press Escape key in the frame
+        // store callback function
         var frameWnd = frame[0].contentWindow;
+        thisObj._popupCallbacks.set(frameWnd, callback);
+
+        // remove the popup on press Escape key in the frame
         if (frameWnd.$) {
             var jqFrameDoc = frameWnd.$(frameWnd.document);
             jqFrameDoc.ready(function () {
                 jqFrameDoc
-                .off("keydown", null, thisObj._removePopupOnEscape)
-                .on("keydown", null, popupElem, thisObj._removePopupOnEscape);
+                .off("keydown", null, removePopupOnEscape)
+                .on("keydown", null, popupElem, removePopupOnEscape);
             });
         }
     })
@@ -157,8 +180,21 @@ scada.Popup.prototype.showDropdown = function (url, anchorElem, callback) {
     .attr("src", url);
 };
 
+// Close the dropdown popup and execute a callback with the specified result
+scada.Popup.prototype.closeDropdown = function (popupWnd, dialogResult, extraParams) {
+    var frame = $(popupWnd.frameElement);
+    var popupElem = frame.closest(".popup-dropdown");
+    var callback = this._popupCallbacks.get(popupWnd);
+    this._popupCallbacks.delete(popupWnd);
+    popupElem.remove();
+
+    if (callback) {
+        callback(dialogResult, extraParams);
+    }
+};
+
 // Show modal dialog with the specified url.
-// callback is function (success, dialogResult, extraParams),
+// callback is function (dialogResult, extraParams),
 // requires Bootstrap
 scada.Popup.prototype.showModal = function (url, callback) {
 
