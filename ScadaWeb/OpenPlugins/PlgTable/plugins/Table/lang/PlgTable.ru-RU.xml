@@ -18,4 +18,8 @@
     <Phrase key="QuantityHint">Величина: </Phrase>
     <Phrase key="UnitHint">Размерность: </Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmTable.Js">
+    <Phrase key="UpdateCurDataError">Ошибка при обновлении текущих данных</Phrase>
+    <Phrase key="UpdateHourDataError">Ошибка при обновлении часовых данных</Phrase>
+  </Dictionary>
 </PlgTableDictionaries>

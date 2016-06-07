@@ -25,6 +25,7 @@
 
 using System;
 using System.Globalization;
+using System.Threading;
 using System.Web.UI.WebControls;
 
 namespace Scada.Web
@@ -35,6 +36,13 @@ namespace Scada.Web
     /// </summary>
     public partial class WFrmCalendar : System.Web.UI.Page
     {
+        protected override void InitializeCulture()
+        {
+            // установить культуру для отображения календаря
+            Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture = Localization.Culture;
+            base.InitializeCulture();
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             // установка выбранной даты, если она задана в параметрах запроса

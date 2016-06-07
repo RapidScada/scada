@@ -368,21 +368,6 @@ scada.scheme.Scheme.prototype._appendImages = function (parsedImages) {
     }
 };
 
-// Create map of current input channel data to access by channel number
-scada.scheme.Scheme.prototype._createCurCnlDataMap = function (cnlDataExtArr) {
-    try {
-        var map = new Map();
-        for (var cnlDataExt of cnlDataExtArr) {
-            map.set(cnlDataExt.CnlNum, cnlDataExt);
-        }
-        return map;
-    }
-    catch (ex) {
-        console.error(scada.utils.getCurTime() + " Error creating map of current input channel data:", ex.message);
-        return null;
-    }
-}
-
 // Update the element using the current input channel data
 scada.scheme.Scheme.prototype._updateElement = function (elem, renderContext) {
     try {
@@ -495,7 +480,7 @@ scada.scheme.Scheme.prototype.update = function (clientAPI, callback) {
 
     clientAPI.getCurCnlDataExtByView(this.viewID, function (success, cnlDataExtArr) {
         if (success) {
-            var curCnlDataMap = thisScheme._createCurCnlDataMap(cnlDataExtArr);
+            var curCnlDataMap = clientAPI.createCnlDataExtMap(cnlDataExtArr);
 
             if (curCnlDataMap) {
                 thisScheme.renderContext.curCnlDataMap = curCnlDataMap;

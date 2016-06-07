@@ -18,4 +18,8 @@
     <Phrase key="QuantityHint">Quantity: </Phrase>
     <Phrase key="UnitHint">Unit: </Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmTable.Js">
+    <Phrase key="UpdateCurDataError">Error updating current data</Phrase>
+    <Phrase key="UpdateHourDataError">Error updating hourly data</Phrase>
+  </Dictionary>
 </PlgTableDictionaries>

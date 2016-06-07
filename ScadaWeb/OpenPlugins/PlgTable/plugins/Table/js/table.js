@@ -7,6 +7,9 @@ var timeFrom = null;
 // End of the time period
 var timeTo = null;
 
+// jQuery cells that display current data
+var curDataCells = null;
+
 // Set current view date to the initial value
 function initViewDate() {
     if (viewHub) {
@@ -68,6 +71,16 @@ function correctTimeTo()
 function saveTimePeriod() {
     scada.utils.setCookie("Table.TimeFrom", $("#selTimeFrom").val());
     scada.utils.setCookie("Table.TimeTo", $("#selTimeTo").val());
+}
+
+// Select and prepare current data cells
+function initCurDataCells() {
+    // select cells
+    curDataCells = $("#divTblWrapper td.cur");
+    // copy data-cnl attributes from rows to the cells
+    curDataCells.each(function () {
+        $(this).data("cnl", $(this).closest("tr.item").data("cnl"));
+    });
 }
 
 // Set visibility of the table view columns according to the time period
@@ -142,6 +155,52 @@ function hideHint(imgIcon) {
     imgIcon.siblings("span.hint").removeClass("visible");
 }
 
+// Request and display current data.
+// callback is function (success)
+function updateCurrentData(callback) {
+    scada.clientAPI.getCurCnlDataExtByView(viewID, function (success, cnlDataExtArr) {
+        if (success) {
+            var curCnlDataMap = scada.clientAPI.createCnlDataExtMap(cnlDataExtArr);
+
+            if (curCnlDataMap) {
+                curDataCells.each(function () {
+                    var cell = $(this);
+                    var cnlNum = cell.data("cnl");
+                    if (cnlNum) {
+                        // display current data
+                        var curCnlDataExt = curCnlDataMap.get(cnlNum);
+                        if (curCnlDataExt) {
+                            cell.text(curCnlDataExt.Text);
+                            cell.css("color", curCnlDataExt.Color);
+                        } else {
+                            cell.text("");
+                            cell.css("color", "");
+                        }
+                    }
+                });
+            }
+
+            callback(true);
+        } else {
+            callback(false);
+        }
+    });
+}
+
+// Start cyclic updating of current data
+function startUpdatingCurData() {
+    updateCurrentData(function (success) {
+        if (!success) {
+            notifier.addNotification(phrases.UpdateCurDataError, true, notifier.DEF_NOTIF_LIFETIME);
+        }
+
+        setTimeout(startUpdatingCurData, refrRate);
+    });
+}
+
+// Start cyclic updating of hourly data
+function startUpdatingHourData() {
+}
 
 $(document).ready(function () {
     scada.clientAPI.rootPath = "../../";
@@ -150,6 +209,7 @@ $(document).ready(function () {
     setItemLinkWidths();
     initViewDate();
     retrieveTimePeriod();
+    initCurDataCells();
     notifier = new scada.Notifier("#divNotif");
     notifier.startClearingNotifications();
 
@@ -207,13 +267,14 @@ $(document).ready(function () {
         }
     );
 
-    $("span.hint").click(function () {
+    $("#divTblWrapper span.hint").click(function () {
         $(this).css("display", "none");
     });
 
     if (DEBUG_MODE) {
         initDebugTools();
     } else {
-        // TODO: start updating
+        startUpdatingCurData();
+        startUpdatingHourData();
     }
 });

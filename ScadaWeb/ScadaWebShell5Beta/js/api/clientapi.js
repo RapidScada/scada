@@ -74,6 +74,16 @@ scada.clientAPI = {
         });
     },
 
+    // Extract year, month and day from the date and join them into query string
+    _getDateQueryString: function (date, opt_startHour, opt_endHour) {
+        return
+            "year=" + date.getFullYear() +
+            "&month=" + (date.getMonth() + 1) +
+            "&date=" + date.getDay() +
+            (opt_startHour ? "&startHour=" + opt_startHour : "") +
+            (opt_endHour ? "&endHour=" + opt_endHour : "");
+    },
+
     // Check that a user is logged on.
     // callback is function (success, loggedOn)
     checkLoggedOn: function (callback) {
@@ -109,12 +119,30 @@ scada.clientAPI = {
             callback, []);
     },
 
-    // Get extended current input channel data of the view.
+    // Get extended current data of the input channels of the specified view.
     // callback is function (success, cnlDataExtArr)
     getCurCnlDataExtByView: function (viewID, callback) {
         this._request(
             "ClientApiSvc.svc/GetCurCnlDataExtByView",
             "?viewID=" + viewID,
+            callback, []);
+    },
+
+    // Get extended hourly data of the input channels for the specified date and hours.
+    // callback is function (success, cnlDataExtMatrix)
+    getHourCnlDataExtByCnlNums: function (date, startHour, endHour, cnlNums, callback) {
+        this._request(
+            "ClientApiSvc.svc/GetHourCnlDataExtByCnlNums",
+            "?" + this._getDateQueryString(date, startHour, endHour) + "&cnlNums=" + cnlNums,
+            callback, []);
+    },
+
+    // Get extended hourly data of the input channel of the view for the specified date and hours.
+    // callback is function (success, cnlDataExtMatrix)
+    getHourCnlDataExtByView: function (date, startHour, endHour, viewID, callback) {
+        this._request(
+            "ClientApiSvc.svc/GetHourCnlDataExtByView",
+            "?" + this._getDateQueryString(date, startHour, endHour) + "&viewID=" + viewID,
             callback, []);
     },
 
@@ -125,5 +153,21 @@ scada.clientAPI = {
             "ClientApiSvc.svc/GetViewStamp",
             "?viewID=" + viewID,
             callback, 0);
+    },
+    
+    // Create map of extended input channel data to access by channel number
+    createCnlDataExtMap: function (cnlDataExtArr) {
+        try {
+            var map = new Map();
+            for (var cnlDataExt of cnlDataExtArr) {
+                map.set(cnlDataExt.CnlNum, cnlDataExt);
+            }
+            return map;
+        }
+        catch (ex) {
+            console.error(scada.utils.getCurTime() + " Error creating map of extended input channel data:",
+                ex.message);
+            return null;
+        }
     }
 };

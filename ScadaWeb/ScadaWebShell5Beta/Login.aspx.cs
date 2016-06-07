@@ -24,7 +24,6 @@
  */
 
 using Scada.UI;
-using Scada.Web.Shell;
 using System;
 using System.IO;
 
