@@ -8,11 +8,11 @@
     "inputFile": "css/controls/notifier.less"
   },
   {
-    "outputFile": "plugins/table/css/layout.css",
-    "inputFile": "plugins/table/css/layout.less"
-  },
-  {
     "outputFile": "plugins/table/css/events.css",
     "inputFile": "plugins/table/css/events.less"
+  },
+  {
+    "outputFile": "plugins/Table/css/tablecommon.css",
+    "inputFile": "plugins/Table/css/tablecommon.less"
   }
 ]

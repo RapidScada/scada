@@ -4,6 +4,18 @@ var VIEW_DATE_OPTIONS = { year: "numeric", month: "long", day: "2-digit" };
 // The view hub object
 var viewHub = scada.viewHubLocator.getViewHub();
 
+// The variables below must be defined in *.aspx
+// View ID
+var viewID = viewID || 0;
+// Current data refresh rate
+var refrRate = refrRate || 1000;
+// Localized phrases
+var phrases = phrases || {};
+// Current server date
+var today = today || new Date();
+// Application culture name
+var locale = locale || "en-GB";
+
 // Apply additional css styles in case of using iOS
 function styleIOS() {
     if (scada.utils.iOS()) {

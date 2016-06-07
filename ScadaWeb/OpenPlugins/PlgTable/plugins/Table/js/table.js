@@ -1,16 +1,4 @@
-﻿// The variables below must be defined in Table.aspx
-// View ID
-var viewID = viewID || 0;
-// Current data refresh rate
-var refrRate = refrRate || 1000;
-// Localized phrases
-var phrases = phrases || {};
-// Current server date
-var today = today || new Date();
-// Application culture name
-var locale = locale || "en-GB";
-
-// Notifier control
+﻿// Notifier control
 var notifier = null;
 // Current view date
 var viewDate = null;
