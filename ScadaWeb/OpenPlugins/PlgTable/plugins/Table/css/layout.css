@@ -59,8 +59,9 @@ body {
   right: 5px;
   height: 30px;
   line-height: 30px;
+  cursor: pointer;
 }
-#spanDate:hover i {
+#spanDate i:hover {
   color: #00b9eb;
 }
 #divDebugTools {

@@ -20,6 +20,9 @@ scada.ViewHub = function (mainWindow) {
     // Current view ID
     this.currentViewID = 0;
 
+    // Current view date for displaying data
+    this.currentViewDate = null;
+
     // Main window object that manages a view and data windows
     this.mainWindow = mainWindow;
 
@@ -57,13 +60,17 @@ scada.ViewHub.prototype.notify = function (eventType, senderWnd, opt_extraParams
     var handled = false;
     var senderIsView = senderWnd == this.viewWindow;
 
-    // preprocess navigation
+    // preprocess events
     if (eventType == scada.EventTypes.VIEW_NAVIGATE) {
         if (senderIsView) {
             this.currentViewID = opt_extraParams;
         } else {
             handled = true; // cancel notification
         }
+    }
+
+    if (eventType == scada.EventTypes.VIEW_DATE_CHANGED) {
+        this.currentViewDate = opt_extraParams;
     }
 
     // pass the notification to the main window

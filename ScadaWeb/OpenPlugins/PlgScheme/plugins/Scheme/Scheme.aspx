@@ -27,22 +27,20 @@
     <script type="text/javascript" src="js/scheme.js"></script>
 </head>
 <body>
-    <form id="frmScheme" runat="server">
-        <div id="divNotif" class="notifier">
+    <div id="divNotif" class="notifier">
+    </div>
+    <div id="divSchWrapper">
+    </div>
+    <div id="divToolbar"><asp:Label 
+        ID="lblFitScreenBtn" runat="server" CssClass="tool-btn" ToolTip="Fit to Screen"><i class="fa fa-arrows" aria-hidden="true"></i></asp:Label><asp:Label 
+        ID="lblFitWidthBtn" runat="server" CssClass="tool-btn" ToolTip="Fit to Width"><i class="fa fa-arrows-h" aria-hidden="true"></i></asp:Label><asp:Label 
+        ID="lblZoomOutBtn" runat="server" CssClass="tool-btn" ToolTip="Zoom Out"><i class="fa fa-search-minus" aria-hidden="true"></i></asp:Label><asp:Label 
+        ID="lblZoomInBtn" runat="server" CssClass="tool-btn" ToolTip="Zoom In"><i class="fa fa-search-plus" aria-hidden="true"></i></asp:Label><span id="spanCurScale">100%</span><div id="divDebugTools"><span 
+            id="spanLoadSchemeBtn" class="tool-btn">Load Scheme</span><span 
+            id="spanCreateDomBtn" class="tool-btn">Create DOM</span><span 
+            id="spanStartUpdBtn" class="tool-btn">Start Updating</span><span 
+            id="spanAddNotifBtn" class="tool-btn">Add Notification</span>
         </div>
-        <div id="divSchWrapper">
-        </div>
-        <div id="divToolbar"><asp:Label 
-            ID="lblFitScreenBtn" runat="server" CssClass="tool-btn" ToolTip="Fit to Screen"><i class="fa fa-arrows" aria-hidden="true"></i></asp:Label><asp:Label 
-            ID="lblFitWidthBtn" runat="server" CssClass="tool-btn" ToolTip="Fit to Width"><i class="fa fa-arrows-h" aria-hidden="true"></i></asp:Label><asp:Label 
-            ID="lblZoomOutBtn" runat="server" CssClass="tool-btn" ToolTip="Zoom Out"><i class="fa fa-search-minus" aria-hidden="true"></i></asp:Label><asp:Label 
-            ID="lblZoomInBtn" runat="server" CssClass="tool-btn" ToolTip="Zoom In"><i class="fa fa-search-plus" aria-hidden="true"></i></asp:Label><span id="spanCurScale">100%</span><div id="divDebugTools"><span 
-                id="spanLoadSchemeBtn" class="tool-btn">Load Scheme</span><span 
-                id="spanCreateDomBtn" class="tool-btn">Create DOM</span><span 
-                id="spanStartUpdBtn" class="tool-btn">Start Updating</span><span 
-                id="spanAddNotifBtn" class="tool-btn">Add Notification</span>
-            </div>
-        </div>
-    </form>
+    </div>
 </body>
 </html>

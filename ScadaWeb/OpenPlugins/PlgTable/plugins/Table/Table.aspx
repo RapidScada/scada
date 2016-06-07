@@ -22,25 +22,25 @@
         var viewID = <%= viewID %>;
         var refrRate = <%= refrRate %>;
         var phrases = <%= phrases %>;
+        var today = <%= today %>;
+        var locale = "<%= Scada.Localization.Culture.Name %>";
     </script>
     <script type="text/javascript" src="js/table.js"></script>
 </head>
 <body>
-    <form id="frmTable" runat="server">
-        <div id="divNotif" class="notifier">
+    <div id="divNotif" class="notifier">
+    </div>
+    <div id="divToolbar"><span 
+        id="spanDate" class="tool-ctrl"><input id="txtDate" type="text" /><i class="fa fa-calendar" aria-hidden="true"></i></span><span 
+        id="spanTime" class="tool-ctrl"><%= selTimeFromHtml %> - <%= selTimeToHtml %></span><span 
+        id="spanExportBtn" class="tool-btn"><i class="fa fa-print" aria-hidden="true"></i></span><div id="divDebugTools"><span 
+            id="spanTitleChangedBtn" class="tool-btn">TitleChanged</span><span 
+            id="spanNavigateBtn" class="tool-btn">Navigate</span><span 
+            id="spanDateChangedBtn" class="tool-btn">DateChanged</span>
         </div>
-        <div id="divToolbar"><span 
-            id="spanDate" class="tool-ctrl"><asp:TextBox ID="txtDate" runat="server"></asp:TextBox><i class="fa fa-calendar" aria-hidden="true"></i></span><span 
-            id="spanTime" class="tool-ctrl"><%= selTimeFromHtml %> - <%= selTimeToHtml %></span><span 
-            id="spanExportBtn" class="tool-btn"><i class="fa fa-print" aria-hidden="true"></i></span><div id="divDebugTools"><span 
-                id="spanTitleChangedBtn" class="tool-btn">TitleChanged</span><span 
-                id="spanNavigateBtn" class="tool-btn">Navigate</span><span 
-                id="spanDateChangedBtn" class="tool-btn">DateChanged</span>
-            </div>
-        </div>
-        <div id="divTblWrapper">
-            <%= tableViewHtml %>
-        </div>
-    </form>
+    </div>
+    <div id="divTblWrapper">
+        <%= tableViewHtml %>
+    </div>
 </body>
 </html>

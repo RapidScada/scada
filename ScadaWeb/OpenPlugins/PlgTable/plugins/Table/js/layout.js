@@ -1,4 +1,7 @@
-﻿// The view hub object
+﻿// View date format options
+var VIEW_DATE_OPTIONS = { year: "numeric", month: "long", day: "2-digit" };
+
+// The view hub object
 var viewHub = scada.viewHubLocator.getViewHub();
 
 // Apply additional css styles in case of using iOS

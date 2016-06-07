@@ -53,6 +53,7 @@ namespace Scada.Web.Plugins.Table
         protected int viewID;             // ид. представления
         protected int refrRate;           // частота обновления данных
         protected string phrases;         // локализованные фразы
+        protected string today;           // текущая дата
         protected string selTimeFromHtml; // HTML-код выбора начального времени
         protected string selTimeToHtml;   // HTML-код выбора конечного времени
         protected string tableViewHtml;   // HTML-код табличного представления
@@ -282,6 +283,9 @@ namespace Scada.Web.Plugins.Table
             Localization.Dict dict;
             Localization.Dictionaries.TryGetValue("Scada.Web.Plugins.Table.WFrmTable.Js", out dict);
             phrases = WebUtils.DictionaryToJs(dict);
+
+            DateTime nowDT = DateTime.Now;
+            today = string.Format("new Date({0}, {1}, {2})", nowDT.Year, nowDT.Month - 1, nowDT.Day);
 
             selTimeFromHtml = GenerateTimeSelectHtml("selTimeFrom", true, timeFrom);
             selTimeToHtml = GenerateTimeSelectHtml("selTimeTo", false, timeTo);
