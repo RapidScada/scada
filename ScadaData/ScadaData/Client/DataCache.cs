@@ -493,9 +493,9 @@ namespace Scada.Client
                 date = date.Date;
                 DateTime utcNowDT = DateTime.UtcNow;
                 Cache<DateTime, SrezTableLight>.CacheItem cacheItem = hourTableCache.GetItem(date, utcNowDT);
-                SrezTableLight tableFromCache;
-                DateTime tableAge;    // время изменения файла таблицы
-                bool tableIsNotValid; // таблица могла устареть
+                SrezTableLight tableFromCache; // таблица из кеша
+                DateTime tableAge;             // время изменения файла таблицы
+                bool tableIsNotValid;          // таблица могла устареть
 
                 if (cacheItem == null)
                 {
@@ -538,14 +538,12 @@ namespace Scada.Client
                         }
                         else
                         {
-                            // TODO
                             throw new ScadaException(Localization.UseRussian ?
-                                "Не удалось принять представление." :
-                                "Unable to receive view.");
+                                "Не удалось принять таблицу часовых срезов." :
+                                "Unable to receive hour data table.");
                         }
                     }
                 }
-
 
                 return table;
             }

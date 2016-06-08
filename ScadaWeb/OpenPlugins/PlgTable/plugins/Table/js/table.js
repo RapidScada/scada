@@ -9,6 +9,8 @@ var timeTo = null;
 
 // jQuery cells that display current data
 var curDataCells = null;
+// Array of columns those display hourly data, and consist of jQuery cells
+var hourDataCols = [];
 
 // Set current view date to the initial value
 function initViewDate() {
@@ -77,9 +79,31 @@ function saveTimePeriod() {
 function initCurDataCells() {
     // select cells
     curDataCells = $("#divTblWrapper td.cur");
+
     // copy data-cnl attributes from rows to the cells
     curDataCells.each(function () {
         $(this).data("cnl", $(this).closest("tr.item").data("cnl"));
+    });
+}
+
+// Select and prepare hourly data columns
+function initHourDataCols() {
+    // init columns
+    hourDataCols.length = timeTo - timeFrom + 1;
+    for (var hour = timeFrom; hour <= timeTo; hour++) {
+        hourDataCols[hour] = [];
+    }
+
+    // get and arrange cells
+    $("#divTblWrapper tr.item").each(function () {
+        var row = $(this);
+        var cnlNum = row.data("cnl");
+        row.find("td.hour").each(function () {
+            var cell = $(this);
+            cell.data("cnl", cnlNum);
+            var hour = cell.data("hour");
+            hourDataCols[hour].push(cell);
+        });
     });
 }
 
@@ -210,6 +234,7 @@ $(document).ready(function () {
     initViewDate();
     retrieveTimePeriod();
     initCurDataCells();
+    initHourDataCols();
     notifier = new scada.Notifier("#divNotif");
     notifier.startClearingNotifications();
 
