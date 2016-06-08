@@ -433,8 +433,8 @@ namespace Scada.Client
         /// </summary>
         public SrezTableLight.CnlData GetCurCnlData(int cnlNum)
         {
-            DateTime dateTime;
-            return GetCurCnlData(cnlNum, out dateTime);
+            DateTime dataAge;
+            return GetCurCnlData(cnlNum, out dataAge);
         }
 
         /// <summary>

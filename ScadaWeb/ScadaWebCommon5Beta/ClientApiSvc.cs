@@ -87,6 +87,31 @@ namespace Scada.Web
         }
 
         /// <summary>
+        /// Расширенные часовые данные входных каналов
+        /// </summary>
+        private class HourCnlDataExt
+        {
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public HourCnlDataExt(double hour)
+            {
+                Hour = hour;
+                CnlDataExtArr = null;
+            }
+
+            /// <summary>
+            /// Получить час от начала суток
+            /// </summary>
+            public double Hour { get; private set; }
+            /// <summary>
+            /// Получить или установить массив расширенных данных входных каналов
+            /// </summary>
+            public CnlDataExt[] CnlDataExtArr { get; set; }
+        }
+
+
+        /// <summary>
         /// Максимальное количество символов в строке данных формата JSON, 10 МБ
         /// </summary>
         private const int MaxJsonLen = 10485760;
@@ -102,23 +127,22 @@ namespace Scada.Web
         /// Общие данные веб-приложения
         /// </summary>
         private static readonly AppData AppData = AppData.GetAppData();
+        /// <summary>
+        /// Сообщение о невозможности получить представление
+        /// </summary>
+        private static readonly string UnableGetViewMsg = Localization.UseRussian ? 
+            "Не удалось получить представление из кеша" : "Unable to get view from the cache";
 
 
         /// <summary>
-        /// Получить расширенные текущие данные входных каналов
+        /// Создать и заполнить массив расширенных данных входных каналов
         /// </summary>
-        private CnlDataExt[] GetCnlDataExtArr(IList<int> cnlList)
+        private CnlDataExt[] CreateCnlDataExtArr(IList<int> cnlList, SrezTableLight.Srez snapshot, 
+            bool dataVisible, string emptyVal)
         {
+            DataAccess dataAccess = AppData.DataAccess;
             int cnlCnt = cnlList.Count;
             CnlDataExt[] cnlDataExtArr = new CnlDataExt[cnlCnt];
-
-            DataAccess dataAccess = AppData.DataAccess;
-            DateTime dataAge;
-            SrezTableLight.Srez snapshot = dataAccess.DataCache.GetCurSnapshot(out dataAge);
-
-            string emptyVal = "";
-            bool dataVisible = snapshot != null &&
-                DataFormatter.CurDataVisible(dataAge, DateTime.Now, out emptyVal);
 
             for (int i = 0; i < cnlCnt; i++)
             {
@@ -126,13 +150,13 @@ namespace Scada.Web
                 CnlDataExt cnlDataExt = new CnlDataExt(cnlNum);
                 cnlDataExtArr[i] = cnlDataExt;
 
-                SrezTableLight.CnlData cnlData;
-                snapshot.GetCnlData(cnlNum, out cnlData);
-                cnlDataExt.Val = cnlData.Val;
-                cnlDataExt.Stat = cnlData.Stat;
-
                 if (dataVisible)
                 {
+                    SrezTableLight.CnlData cnlData;
+                    snapshot.GetCnlData(cnlNum, out cnlData);
+                    cnlDataExt.Val = cnlData.Val;
+                    cnlDataExt.Stat = cnlData.Stat;
+
                     InCnlProps cnlProps = dataAccess.GetCnlProps(cnlNum);
                     string text;
                     string textWithUnit;
@@ -150,6 +174,97 @@ namespace Scada.Web
             }
 
             return cnlDataExtArr;
+        }
+
+        /// <summary>
+        /// Добавить расширенные часовые данные в список
+        /// </summary>
+        private void AppendCnlDataExtArr(List<HourCnlDataExt> hourCnlDataList, double hour, IList<int> cnlList,
+            SrezTableLight.Srez snapshot, DateTime snapshotDT, DateTime nowDT)
+        {
+            HourCnlDataExt hourCnlData = new HourCnlDataExt(hour);
+
+            string emptyVal = "";
+            bool dataVisible = DataFormatter.HourDataVisible(snapshotDT, nowDT, snapshot != null, out emptyVal);
+
+            hourCnlData.CnlDataExtArr = CreateCnlDataExtArr(cnlList, snapshot, dataVisible, emptyVal);
+            hourCnlDataList.Add(hourCnlData);
+        }
+
+        /// <summary>
+        /// Получить расширенные текущие данные входных каналов
+        /// </summary>
+        private CnlDataExt[] GetCurCnlDataExtArr(IList<int> cnlList)
+        {
+            DateTime dataAge;
+            SrezTableLight.Srez snapshot = AppData.DataAccess.DataCache.GetCurSnapshot(out dataAge);
+
+            string emptyVal;
+            bool dataVisible = DataFormatter.CurDataVisible(dataAge, DateTime.Now, out emptyVal);
+
+            return CreateCnlDataExtArr(cnlList, snapshot, dataVisible, emptyVal);
+        }
+
+        /// <summary>
+        /// Получить часовые данные входных каналов
+        /// </summary>
+        private HourCnlDataExt[] GetHourCnlDataExtArr(int year, int month, int day, 
+            int startHour, int endHour, IList<int> cnlList, bool existing)
+        {
+            DataAccess dataAccess = AppData.DataAccess;
+            DataCache dataCache = dataAccess.DataCache;
+
+            DateTime date = new DateTime(year, month, day);
+            DateTime startDT = date.AddHours(startHour);
+            DateTime startDate = startDT.Date;
+            DateTime endDT = date.AddHours(endHour);
+            DateTime endDate = endDT.Date;
+
+            int cnlCnt = cnlList.Count;
+            List<HourCnlDataExt> hourCnlDataList = new List<HourCnlDataExt>();
+            DateTime nowDT = DateTime.Now;
+            DateTime reqDate = startDate;
+
+            while (reqDate < endDate)
+            {
+                SrezTableLight tblHour = dataCache.GetHourTable(reqDate);
+                DateTime nextReqDate = reqDate.AddDays(1.0);
+
+                if (existing)
+                {
+                    // получение всех существующих часовых срезов
+                    DateTime dayStartDT = reqDate > startDate ? reqDate : startDT;
+                    DateTime dayEndDT = reqDate < endDate ? nextReqDate : endDT;
+
+                    foreach (SrezTableLight.Srez snapshot in tblHour.SrezList.Values)
+                    {
+                        DateTime snapshotDT = snapshot.DateTime;
+                        if (dayStartDT <= snapshotDT && snapshotDT <= dayEndDT)
+                        {
+                            double hour = (snapshotDT - date).TotalHours;
+                            AppendCnlDataExtArr(hourCnlDataList, hour, cnlList, snapshot, snapshotDT, nowDT);
+                        }
+                    }
+                }
+                else
+                {
+                    // заполнение данных по целым часам
+                    int dayStartHour = reqDate > startDate ? 0 : startHour;
+                    int dayEndHour = reqDate < endDate ? 23 : endHour;
+
+                    for (int hour = dayStartHour; hour <= dayEndHour; hour++)
+                    {
+                        DateTime snapshotDT = reqDate.AddHours(hour);
+                        SrezTableLight.Srez snapshot;
+                        tblHour.SrezList.TryGetValue(snapshotDT, out snapshot);
+                        AppendCnlDataExtArr(hourCnlDataList, hour, cnlList, snapshot, snapshotDT, nowDT);
+                    }
+                }
+
+                reqDate = nextReqDate;
+            }
+
+            return hourCnlDataList.ToArray();
         }
 
         /// <summary>
@@ -266,7 +381,7 @@ namespace Scada.Web
             {
                 AppData.CheckLoggedOn();
                 int[] cnlNumArr = WebUtils.QueryParamToIntArray(cnlNums);
-                CnlDataExt[] cnlDataExtArr = GetCnlDataExtArr(cnlNumArr);
+                CnlDataExt[] cnlDataExtArr = GetCurCnlDataExtArr(cnlNumArr);
                 return JsSerializer.Serialize(new DataTransferObject(cnlDataExtArr));
             }
             catch (Exception ex)
@@ -279,7 +394,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Получить расширенные текущие данные входных каналов представления
+        /// Получить расширенные текущие данные входных каналов заданного представления
         /// </summary>
         /// <remarks>Возвращает CnlDataExt[], упакованный в DataTransferObject, в формате в JSON.
         /// Представление должно быть уже загружено в кеш (для ускорения работы метода)</remarks>
@@ -294,13 +409,11 @@ namespace Scada.Web
 
                 if (view == null)
                 {
-                    throw new ScadaException(Localization.UseRussian ?
-                        "Не удалось получить представление из кеша" :
-                        "Unable to get view from the cache");
+                    throw new ScadaException(UnableGetViewMsg);
                 }
                 else
                 {
-                    CnlDataExt[] cnlDataExtArr = GetCnlDataExtArr(view.CnlList);
+                    CnlDataExt[] cnlDataExtArr = GetCurCnlDataExtArr(view.CnlList);
                     return JsSerializer.Serialize(new DataTransferObject(cnlDataExtArr));
                 }
             }
@@ -308,7 +421,68 @@ namespace Scada.Web
             {
                 AppData.Log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при получении расширенных текущих данных входных каналов предсталения с ид.={0}" :
-                    "Error getting extended current input channel data of the view with id={0}", viewID);
+                    "Error getting extended current data of the input channels of the view with id={0}", viewID);
+                return GetErrorDtoJs(ex);
+            }
+        }
+
+        /// <summary>
+        /// Получить расширенные часовые данные заданных входных каналов
+        /// </summary>
+        /// <remarks>Возвращает HourCnlData[], упакованный в DataTransferObject, в формате в JSON</remarks>
+        [OperationContract]
+        [WebGet]
+        public string GetHourCnlDataExtByCnlNums(int year, int month, int day, 
+            int startHour, int endHour, string cnlNums, bool existing)
+        {
+            try
+            {
+                AppData.CheckLoggedOn();
+                int[] cnlNumArr = WebUtils.QueryParamToIntArray(cnlNums);
+                HourCnlDataExt[] hourCnlDataArr = 
+                    GetHourCnlDataExtArr(year, month, day, startHour, endHour, cnlNumArr, existing);
+                return JsSerializer.Serialize(new DataTransferObject(hourCnlDataArr));
+            }
+            catch (Exception ex)
+            {
+                AppData.Log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении расширенных часовых данных заданных входных каналов" :
+                    "Error getting extended hourly data of the specified input channels");
+                return GetErrorDtoJs(ex);
+            }
+        }
+
+        /// <summary>
+        /// Получить расширенные часовые данные входных каналов заданного представления
+        /// </summary>
+        /// <remarks>Возвращает HourCnlData[], упакованный в DataTransferObject, в формате в JSON.
+        /// Представление должно быть уже загружено в кеш (для ускорения работы метода)</remarks>
+        [OperationContract]
+        [WebGet]
+        public string GetHourCnlDataExtByView(int year, int month, int day,
+            int startHour, int endHour, int viewID, bool existing)
+        {
+            try
+            {
+                AppData.CheckLoggedOn();
+                BaseView view = AppData.ViewCache.GetViewFromCache(viewID);
+
+                if (view == null)
+                {
+                    throw new ScadaException(UnableGetViewMsg);
+                }
+                else
+                {
+                    HourCnlDataExt[] hourCnlDataArr = 
+                        GetHourCnlDataExtArr(year, month, day, startHour, endHour, view.CnlList, existing);
+                    return JsSerializer.Serialize(new DataTransferObject(hourCnlDataArr));
+                }
+            }
+            catch (Exception ex)
+            {
+                AppData.Log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении расширенных часовых данных входных каналов представления с ид.={0}" :
+                    "Error getting extended hourly data of the input channels of the view with id={0}", viewID);
                 return GetErrorDtoJs(ex);
             }
         }

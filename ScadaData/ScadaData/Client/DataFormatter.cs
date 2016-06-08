@@ -240,9 +240,9 @@ namespace Scada.Client
         /// <summary>
         /// Определить необходимость отображения часовых данных
         /// </summary>
-        public bool HourDataVisible(DateTime dataAge, DateTime nowDT, int stat, out string emptyVal)
+        public bool HourDataVisible(DateTime dataAge, DateTime nowDT, bool snapshotExists, out string emptyVal)
         {
-            if (stat > 0 || dataAge.Date < nowDT.Date)
+            if (snapshotExists || dataAge.Date < nowDT.Date)
             {
                 emptyVal = EmptyVal;
                 return true;

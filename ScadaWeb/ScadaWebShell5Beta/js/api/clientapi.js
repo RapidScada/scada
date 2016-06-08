@@ -33,6 +33,20 @@ scada.CnlDataExt = function () {
 scada.CnlDataExt.prototype = Object.create(scada.CnlData.prototype);
 scada.CnlDataExt.constructor = scada.CnlDataExt;
 
+// Hourly input channel data type
+scada.HourCnlData = function () {
+    this.Hour = NaN;
+    this.CnlDataExtArr = [];
+}
+
+// Getting hour data modes enumeration
+scada.HourDataModes = {
+    // Get data for integer hours even if a snapshot doesn't exist
+    INTEGER_HOURS: false,
+    // Get existing snapshots
+    EXISTING: true
+};
+
 // Client API object
 scada.clientAPI = {
     // Empty input channel data
@@ -128,21 +142,21 @@ scada.clientAPI = {
             callback, []);
     },
 
-    // Get extended hourly data of the input channels for the specified date and hours.
-    // callback is function (success, cnlDataExtMatrix)
-    getHourCnlDataExtByCnlNums: function (date, startHour, endHour, cnlNums, callback) {
+    // Get extended hourly data of the specified input channels.
+    // callback is function (success, hourCnlDataArr)
+    getHourCnlDataExtByCnlNums: function (date, startHour, endHour, cnlNums, mode, callback) {
         this._request(
             "ClientApiSvc.svc/GetHourCnlDataExtByCnlNums",
-            "?" + this._getDateQueryString(date, startHour, endHour) + "&cnlNums=" + cnlNums,
+            "?" + this._getDateQueryString(date, startHour, endHour) + "&cnlNums=" + cnlNums + "&existing=" + mode,
             callback, []);
     },
 
-    // Get extended hourly data of the input channel of the view for the specified date and hours.
-    // callback is function (success, cnlDataExtMatrix)
-    getHourCnlDataExtByView: function (date, startHour, endHour, viewID, callback) {
+    // Get extended hourly data of the input channels of the specified view.
+    // callback is function (success, hourCnlDataArr)
+    getHourCnlDataExtByView: function (date, startHour, endHour, viewID, mode, callback) {
         this._request(
             "ClientApiSvc.svc/GetHourCnlDataExtByView",
-            "?" + this._getDateQueryString(date, startHour, endHour) + "&viewID=" + viewID,
+            "?" + this._getDateQueryString(date, startHour, endHour) + "&viewID=" + viewID + "&existing=" + mode,
             callback, []);
     },
 
