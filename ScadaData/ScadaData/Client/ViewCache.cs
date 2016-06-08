@@ -40,7 +40,7 @@ namespace Scada.Client
         /// </summary>
         protected const int Capacity = int.MaxValue;
         /// <summary>
-        /// Период хранения в кеше
+        /// Период хранения в кеше с момента последнего доступа
         /// </summary>
         protected static readonly TimeSpan StorePeriod = TimeSpan.FromMinutes(10);
         /// <summary>

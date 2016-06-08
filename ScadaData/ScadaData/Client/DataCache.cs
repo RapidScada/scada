@@ -40,11 +40,20 @@ namespace Scada.Client
     public class DataCache
     {
         /// <summary>
-        /// Время актуальности архивных данных в кэше
+        /// Вместимость кеша таблиц часовых срезов
+        /// </summary>
+        protected const int HourCacheCapacity = 100;
+
+        /// <summary>
+        /// Период хранения таблиц часовых срезов в кеше с момента последнего доступа
+        /// </summary>
+        protected static readonly TimeSpan HourCacheStorePeriod = TimeSpan.FromMinutes(10);
+        /// <summary>
+        /// Время актуальности таблиц базы конфигурации
         /// </summary>
         protected static readonly TimeSpan BaseValidSpan = TimeSpan.FromSeconds(1);
         /// <summary>
-        /// Время актуальности архивных данных в кэше
+        /// Время актуальности текущих и архивных данных
         /// </summary>
         protected static readonly TimeSpan DataValidSpan = TimeSpan.FromMilliseconds(500);
         /// <summary>
@@ -71,9 +80,13 @@ namespace Scada.Client
         /// </summary>
         protected readonly object baseLock;
         /// <summary>
-        /// Объект для синхронизации достапа к текущим даным
+        /// Объект для синхронизации достапа к текущим данным
         /// </summary>
         protected readonly object curDataLock;
+        /// <summary>
+        /// Объект для синхронизации достапа к часовым данным
+        /// </summary>
+        protected readonly object hourDataLock;
 
         /// <summary>
         /// Время последего успешного обновления таблиц базы конфигурации
@@ -84,9 +97,13 @@ namespace Scada.Client
         /// </summary>
         protected SrezTableLight tblCur;
         /// <summary>
-        /// Время последего успешного обновления таблицы текущего среза
+        /// Время последнего успешного обновления таблицы текущего среза
         /// </summary>
-        protected DateTime curRefrDT;
+        protected DateTime curDataRefrDT;
+        /// <summary>
+        /// Кеш таблиц часовых срезов
+        /// </summary>
+        protected Cache<DateTime, SrezTableLight> hourTableCache;
 
 
         /// <summary>
@@ -111,10 +128,12 @@ namespace Scada.Client
 
             baseLock = new object();
             curDataLock = new object();
+            hourDataLock = new object();
 
             baseRefrDT = DateTime.MinValue;
             tblCur = new SrezTableLight();
-            curRefrDT = DateTime.MinValue;
+            curDataRefrDT = DateTime.MinValue;
+            hourTableCache = new Cache<DateTime, SrezTableLight>(HourCacheStorePeriod, HourCacheCapacity);
 
             BaseAge = DateTime.MinValue;
             BaseTables = new BaseTables();
@@ -324,27 +343,27 @@ namespace Scada.Client
             try
             {
                 DateTime utcNowDT = DateTime.UtcNow;
-                if (utcNowDT - curRefrDT > DataValidSpan) // данные устарели
+                if (utcNowDT - curDataRefrDT > DataValidSpan) // данные устарели
                 {
-                    curRefrDT = utcNowDT;
-                    DateTime newCurAge = serverComm.ReceiveFileAge(ServerComm.Dirs.Cur, SrezAdapter.CurTableName);
+                    curDataRefrDT = utcNowDT;
+                    DateTime newCurTableAge = serverComm.ReceiveFileAge(ServerComm.Dirs.Cur, SrezAdapter.CurTableName);
 
-                    if (newCurAge == DateTime.MinValue)
+                    if (newCurTableAge == DateTime.MinValue)
                     {
                         throw new ScadaException(Localization.UseRussian ?
                             "Не удалось принять время изменения файла текущих данных." :
                             "Unable to receive the current data file modification time.");
                     }
-                    else if (tblCur.FileModTime != newCurAge) // файл среза изменён
+                    else if (tblCur.FileModTime != newCurTableAge) // файл среза изменён
                     {
                         if (serverComm.ReceiveSrezTable(SrezAdapter.CurTableName, tblCur))
                         {
-                            tblCur.FileModTime = newCurAge;
+                            tblCur.FileModTime = newCurTableAge;
                             tblCur.LastFillTime = utcNowDT;
                         }
                         else
                         {
-                            curRefrDT = DateTime.MinValue;
+                            curDataRefrDT = DateTime.MinValue;
                             tblCur.FileModTime = DateTime.MinValue;
                         }
                     }
@@ -352,7 +371,7 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                curRefrDT = DateTime.MinValue;
+                curDataRefrDT = DateTime.MinValue;
                 tblCur.FileModTime = DateTime.MinValue;
 
                 log.WriteException(ex, Localization.UseRussian ?
@@ -468,7 +487,76 @@ namespace Scada.Client
         /// Метод всегда возвращает объект, не равный null</remarks>
         public SrezTableLight GetHourTable(DateTime date)
         {
-            return new SrezTableLight();
+            try
+            {
+                // получение таблицы часовых срезов из кеша
+                date = date.Date;
+                DateTime utcNowDT = DateTime.UtcNow;
+                Cache<DateTime, SrezTableLight>.CacheItem cacheItem = hourTableCache.GetItem(date, utcNowDT);
+                SrezTableLight tableFromCache;
+                DateTime tableAge;    // время изменения файла таблицы
+                bool tableIsNotValid; // таблица могла устареть
+
+                if (cacheItem == null)
+                {
+                    tableFromCache = null;
+                    tableAge = DateTime.MinValue;
+                    tableIsNotValid = true;
+                }
+                else
+                {
+                    tableFromCache = cacheItem.Value;
+                    tableAge = cacheItem.ValueAge;
+                    tableIsNotValid = utcNowDT - cacheItem.ValueRefrDT > DataValidSpan;
+                }
+
+                // получение таблицы часовых срезов от сервера
+                SrezTableLight table = tableFromCache;
+
+                if (tableFromCache == null || tableIsNotValid)
+                {
+                    string tableName = SrezAdapter.BuildHourTableName(date);
+                    DateTime newTableAge = serverComm.ReceiveFileAge(ServerComm.Dirs.Itf, tableName);
+
+                    if (newTableAge == DateTime.MinValue)
+                    {
+                        throw new ScadaException(Localization.UseRussian ?
+                            "Не удалось принять время изменения файла часовых данных." :
+                            "Unable to receive hourly data file modification time.");
+                    }
+                    else if (newTableAge != tableAge) // файл таблицы изменён
+                    {
+                        table = new SrezTableLight();
+                        if (serverComm.ReceiveSrezTable(tableName, table))
+                        {
+                            if (cacheItem == null)
+                                // добавление таблицы в кеш
+                                hourTableCache.AddValue(date, table, newTableAge, utcNowDT);
+                            else
+                                // обновление таблицы в кеше
+                                hourTableCache.UpdateItem(cacheItem, table, newTableAge, utcNowDT);
+                        }
+                        else
+                        {
+                            // TODO
+                            throw new ScadaException(Localization.UseRussian ?
+                                "Не удалось принять представление." :
+                                "Unable to receive view.");
+                        }
+                    }
+                }
+
+
+                return table;
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении таблицы часового среза за {0} из кэша или от сервера" :
+                    "Error getting hour data table for {0} from the cache or from the server", 
+                    date.ToString("d", Localization.Culture));
+                return new SrezTableLight();
+            }
         }
 
         /// <summary>
