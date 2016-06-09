@@ -27,6 +27,7 @@ using Scada.Client;
 using Scada.Data;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
 using System.ServiceModel.Web;
@@ -132,6 +133,10 @@ namespace Scada.Web
         /// </summary>
         private static readonly string UnableGetViewMsg = Localization.UseRussian ? 
             "Не удалось получить представление из кеша" : "Unable to get view from the cache";
+        /// <summary>
+        /// Начало отчёта времени в Unix, которое используется в Javascript реализации даты
+        /// </summary>
+        private static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
 
         /// <summary>
@@ -223,18 +228,18 @@ namespace Scada.Web
             int cnlCnt = cnlList.Count;
             List<HourCnlDataExt> hourCnlDataList = new List<HourCnlDataExt>();
             DateTime nowDT = DateTime.Now;
-            DateTime reqDate = startDate;
+            DateTime curDate = startDate;
 
-            while (reqDate <= endDate)
+            while (curDate <= endDate)
             {
-                SrezTableLight tblHour = dataCache.GetHourTable(reqDate);
-                DateTime nextReqDate = reqDate.AddDays(1.0);
+                SrezTableLight tblHour = dataCache.GetHourTable(curDate);
+                DateTime nextDate = curDate.AddDays(1.0);
 
                 if (existing)
                 {
                     // получение всех существующих часовых срезов
-                    DateTime dayStartDT = reqDate > startDate ? reqDate : startDT;
-                    DateTime dayEndDT = reqDate < endDate ? nextReqDate : endDT;
+                    DateTime dayStartDT = curDate > startDate ? curDate : startDT;
+                    DateTime dayEndDT = curDate < endDate ? nextDate : endDT;
 
                     foreach (SrezTableLight.Srez snapshot in tblHour.SrezList.Values)
                     {
@@ -249,19 +254,20 @@ namespace Scada.Web
                 else
                 {
                     // заполнение данных по целым часам
-                    int dayStartHour = reqDate > startDate ? 0 : startHour;
-                    int dayEndHour = reqDate < endDate ? 23 : endHour;
+                    int dayStartHour = curDate > startDate ? 0 : startDT.Hour;
+                    int dayEndHour = curDate < endDate ? 23 : endDT.Hour;
 
-                    for (int hour = dayStartHour; hour <= dayEndHour; hour++)
+                    for (int dayHour = dayStartHour; dayHour <= dayEndHour; dayHour++)
                     {
-                        DateTime snapshotDT = reqDate.AddHours(hour);
+                        DateTime snapshotDT = curDate.AddHours(dayHour);
                         SrezTableLight.Srez snapshot;
                         tblHour.SrezList.TryGetValue(snapshotDT, out snapshot);
+                        double hour = (snapshotDT - date).TotalHours;
                         AppendCnlDataExtArr(hourCnlDataList, hour, cnlList, snapshot, snapshotDT, nowDT);
                     }
                 }
 
-                reqDate = nextReqDate;
+                curDate = nextDate;
             }
 
             return hourCnlDataList.ToArray();
@@ -491,6 +497,8 @@ namespace Scada.Web
         /// Получить метку представления из кеша
         /// </summary>
         /// <remarks>Возвращает long, упакованный в DataTransferObject, в формате в JSON</remarks>
+        [OperationContract]
+        [WebGet]
         public string GetViewStamp(int viewID)
         {
             try
@@ -505,6 +513,38 @@ namespace Scada.Web
                 AppData.Log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при получении метки предсталения с ид.={0} из кеша" :
                     "Error getting stamp of the view with id={0} from the cache", viewID);
+                return GetErrorDtoJs(ex);
+            }
+        }
+
+        /// <summary>
+        /// Преобразовать строку в дату
+        /// </summary>
+        /// <remarks>Возвращает long или null упакованный в DataTransferObject, в формате в JSON.
+        /// Число означает количество миллисекунд для создания даты в Javascript или 0 в случае ошибки</remarks>
+        [OperationContract]
+        [WebGet]
+        public string ParseDateTime(string s)
+        {
+            try
+            {
+                AppData.CheckLoggedOn();
+                DateTime dateTime;
+                if (DateTime.TryParse(s, Localization.Culture, DateTimeStyles.None, out dateTime))
+                {
+                    long ms = (long)(dateTime - UnixEpoch).TotalMilliseconds;
+                    return JsSerializer.Serialize(new DataTransferObject(ms));
+                }
+                else
+                {
+                    return JsSerializer.Serialize(new DataTransferObject(null));
+                }
+            }
+            catch (Exception ex)
+            {
+                AppData.Log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при преобразовани строки в число" :
+                    "Error parsing date and time");
                 return GetErrorDtoJs(ex);
             }
         }

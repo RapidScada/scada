@@ -8,7 +8,6 @@
     <link href="~/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <link href="~/lib/open-sans/css/open-sans.css" rel="stylesheet" type="text/css" />
     <link href="~/css/controls/notifier.min.css" rel="stylesheet" type="text/css" />
-    <link href="~/plugins/Table/css/tablecommon.min.css" rel="stylesheet" type="text/css" />
     <link href="~/plugins/Table/css/table.min.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../../lib/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="../../js/api/utils.js"></script>
@@ -32,7 +31,7 @@
     <div id="divNotif" class="notifier">
     </div>
     <div id="divToolbar"><span 
-        id="spanDate" class="tool-ctrl"><input id="txtDate" type="text" /><i class="fa fa-calendar" aria-hidden="true"></i></span><span 
+        id="spanDate" class="tool-ctrl"><input id="txtDate" type="text" autocomplete="off" /><i class="fa fa-calendar" aria-hidden="true"></i></span><span 
         id="spanTime" class="tool-ctrl"><%= selTimeFromHtml %> - <%= selTimeToHtml %></span><span 
         id="spanExportBtn" class="tool-btn"><i class="fa fa-print" aria-hidden="true"></i></span><div id="divDebugTools"><span 
             id="spanTitleChangedBtn" class="tool-btn">TitleChanged</span><span 

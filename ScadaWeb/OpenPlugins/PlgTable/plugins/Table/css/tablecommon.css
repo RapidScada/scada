@@ -64,6 +64,11 @@ body {
 #spanDate i:hover {
   color: #00b9eb;
 }
+#spanDate i.error::before {
+  color: #a00;
+  content: "\f06a";
+  /*exclamation*/
+}
 #divDebugTools {
   padding: 0 10px;
   display: none;

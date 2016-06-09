@@ -166,10 +166,14 @@ scada.clientAPI = {
     // Get the stamp of the view from the cache.
     // callback is function (success, stamp)
     getViewStamp: function (viewID, callback) {
-        this._request(
-            "ClientApiSvc.svc/GetViewStamp",
-            "?viewID=" + viewID,
-            callback, 0);
+        this._request("ClientApiSvc.svc/GetViewStamp", "?viewID=" + viewID, callback, 0);
+    },
+
+    // Parse date and time using the application culture
+    // callback is function (success, value),
+    // value is the number of milliseconds or null in case of any error
+    parseDateTime: function (s, callback) {
+        this._request("ClientApiSvc.svc/ParseDateTime", "?s=" + s, callback, null);
     },
     
     // Create map of extended input channel data to access by channel number

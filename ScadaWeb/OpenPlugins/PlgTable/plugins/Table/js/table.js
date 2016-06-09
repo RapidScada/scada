@@ -17,6 +17,8 @@ var lastHour = null
 var curDataCells = null;
 // Array of columns those display hourly data, and consist of jQuery cells
 var hourDataCols = [];
+// Timeout ID of the hourly data updating timer
+var updateHourDataTimeoutID = null;
 
 // Set current view date to the initial value
 function initViewDate() {
@@ -34,15 +36,23 @@ function initViewDate() {
 
 // Parse manually entered view date and apply it
 function parseViewDate(dateStr) {
-    // TODO: ajax request here
-    var d = new Date(dateStr);
-    alert(d);
+    scada.clientAPI.parseDateTime(dateStr, function (success, value) {
+        if (Number.isInteger(value)) {
+            var parsedDate = new Date(value);
+            setViewDate(parsedDate);
+            sendViewDateNotification(parsedDate);
+            restartUpdatingHourData();
+        } else {
+            $("#spanDate i").addClass("error");
+        }
+    });
 }
 
 // Set current view date
 function setViewDate(date) {
     viewDate = date;
     $("#txtDate").val(date.toLocaleDateString(locale, VIEW_DATE_OPTIONS));
+    $("#spanDate i").removeClass("error");
 }
 
 // Send view date changed notification to data windows
@@ -270,8 +280,14 @@ function startUpdatingHourData() {
             notifier.addNotification(phrases.UpdateHourDataError, true, notifier.DEF_NOTIF_LIFETIME);
         }
 
-        setTimeout(startUpdatingHourData, arcRefrRate);
+        updateHourDataTimeoutID = setTimeout(startUpdatingHourData, arcRefrRate);
     });
+}
+
+// Restart updating of hourly data immediately
+function restartUpdatingHourData() {
+    clearTimeout(updateHourDataTimeoutID);
+    startUpdatingHourData();
 }
 
 $(document).ready(function () {
@@ -294,6 +310,7 @@ $(document).ready(function () {
     // process the view date changing
     $(window).on(scada.EventTypes.VIEW_DATE_CHANGED, function (event, sender, extraParams) {
         setViewDate(extraParams);
+        restartUpdatingHourData();
     });
 
     // show calendar popup on click the calendar icon
@@ -305,6 +322,7 @@ $(document).ready(function () {
                 if (dialogResult) {
                     setViewDate(extraParams.date);
                     sendViewDateNotification(extraParams.date);
+                    restartUpdatingHourData();
                 }
             });
         } else {
@@ -329,6 +347,7 @@ $(document).ready(function () {
 
         saveTimePeriod();
         updateTableViewHours();
+        restartUpdatingHourData();
     });
 
     // show and hide hint on hover and click

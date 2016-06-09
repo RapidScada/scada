@@ -6,6 +6,7 @@
 @toolbar-back-color: transparent;
 @toolbar-fore-color: @menu-fore-color-dark;
 @tool-btn-back-color: white;
+@tool-btn-fore-color-err: #a00;
 @tool-btn-hover-fore-color: @menu-item-hover-fore-color;
 @toolbar-ctrl-font-family: Arial, Helvetica, sans-serif;
 @toolbar-height: 30px;
@@ -97,6 +98,11 @@ body {
 
 #spanDate i:hover {
     color: @tool-btn-hover-fore-color;
+}
+
+#spanDate i.error::before {
+  color: @tool-btn-fore-color-err;
+  content: "\f06a"; /*exclamation*/
 }
 
 #divDebugTools {
