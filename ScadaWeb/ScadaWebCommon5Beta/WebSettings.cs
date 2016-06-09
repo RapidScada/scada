@@ -57,9 +57,14 @@ namespace Scada.Web
 
 
         /// <summary>
-        /// Получить или установить частоту обновления данных, мс
+        /// Получить или установить частоту обновления текущих данных и событий, мс
         /// </summary>
         public int DataRefrRate { get; set; }
+
+        /// <summary>
+        /// Получить или установить частоту обновления архивных данных, мс
+        /// </summary>
+        public int ArcRefrRate { get; set; }
 
         /// <summary>
         /// Получить или установить количество отображаемых событий
@@ -98,6 +103,7 @@ namespace Scada.Web
         protected void SetToDefault()
         {
             DataRefrRate = 1000;
+            ArcRefrRate = 10000;
             DispEventCnt = 100;
             CmdEnabled = true;
             CmdPassword = true; // TODO: перенести в базу конфигурации для каждого канала управления
@@ -156,6 +162,8 @@ namespace Scada.Web
                         {
                             if (nameL == "datarefrrate")
                                 DataRefrRate = Math.Max(MinDataRefrRate, int.Parse(val));
+                            else if (nameL == "arcrefrrate")
+                                ArcRefrRate = Math.Max(MinDataRefrRate, int.Parse(val));
                             else if (nameL == "dispeventcnt")
                                 DispEventCnt = int.Parse(val);
                             else if (nameL == "cmdenabled")

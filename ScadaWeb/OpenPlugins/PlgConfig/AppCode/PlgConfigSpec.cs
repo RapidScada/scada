@@ -83,6 +83,7 @@ namespace Scada.Web.Plugins
 
                 MenuItem adminMenuItem = MenuItem.FromStandardMenuItem(StandardMenuItems.Admin);
                 adminMenuItem.Subitems.Add(new MenuItem("Active users", "~/plugins/Config/ActiveUsers.aspx"));
+                adminMenuItem.Subitems.Add(new MenuItem("Cache state", "~/plugins/Config/CacheState.aspx"));
                 menuItems.Add(adminMenuItem);
 
                 MenuItem configMenuItem = MenuItem.FromStandardMenuItem(StandardMenuItems.Config);

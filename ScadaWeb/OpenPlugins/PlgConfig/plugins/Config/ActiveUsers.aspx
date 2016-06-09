@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterMain.Master" AutoEventWireup="true" CodeBehind="ActiveUsers.aspx.cs" Inherits="Scada.Web.Plugins.Config.WFrmActiveUsers" %>
+﻿<%@ Page Title="Active Users - Rapid SCADA" Language="C#" MasterPageFile="~/MasterMain.Master" AutoEventWireup="true" CodeBehind="ActiveUsers.aspx.cs" Inherits="Scada.Web.Plugins.Config.WFrmActiveUsers" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="cphMainHead" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="cphMainContent" runat="server">

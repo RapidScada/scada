@@ -51,7 +51,8 @@ namespace Scada.Web.Plugins.Table
         // Переменные для вывода на веб-страницу
         protected bool debugMode = false; // режим отладки
         protected int viewID;             // ид. представления
-        protected int refrRate;           // частота обновления данных
+        protected int dataRefrRate;       // частота обновления текущих данных
+        protected int arcRefrRate;        // частота обновления архивных данных
         protected string phrases;         // локализованные фразы
         protected string today;           // текущая дата
         protected string selTimeFromHtml; // HTML-код выбора начального времени
@@ -278,7 +279,8 @@ namespace Scada.Web.Plugins.Table
                 timeTo = 23;
 
             // подготовка данных для вывода на веб-страницу
-            refrRate = userData.WebSettings.DataRefrRate;
+            dataRefrRate = userData.WebSettings.DataRefrRate;
+            arcRefrRate = userData.WebSettings.ArcRefrRate;
 
             Localization.Dict dict;
             Localization.Dictionaries.TryGetValue("Scada.Web.Plugins.Table.WFrmTable.Js", out dict);

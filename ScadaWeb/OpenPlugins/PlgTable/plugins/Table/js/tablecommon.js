@@ -8,7 +8,9 @@ var viewHub = scada.viewHubLocator.getViewHub();
 // View ID
 var viewID = viewID || 0;
 // Current data refresh rate
-var refrRate = refrRate || 1000;
+var dataRefrRate = dataRefrRate || 1000;
+// Archive data refresh rate
+var arcRefrRate = arcRefrRate || 10000;
 // Localized phrases
 var phrases = phrases || {};
 // Current server date

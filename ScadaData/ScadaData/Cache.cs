@@ -173,16 +173,31 @@ namespace Scada
 
             lock (this)
             {
+                // получение запрошенного элемента
                 CacheItem item;
                 if (items.TryGetValue(key, out item))
-                {
                     item.AccessDT = nowDT;
-                    return item;
-                }
-                else
-                {
-                    return null;
-                }
+
+                // автоматическая очистка устаревших элементов
+                if (nowDT - LastRemoveDT > StorePeriod)
+                    RemoveOutdatedItems(nowDT);
+
+                return item;
+            }
+        }
+
+        /// <summary>
+        /// Получить все элементы для просмотра без обновления времени доступа
+        /// </summary>
+        public CacheItem[] GetAllItemsForWatching()
+        {
+            lock (this)
+            {
+                CacheItem[] itemsCopy = new CacheItem[items.Count];
+                int i = 0;
+                foreach (CacheItem item in items.Values)
+                    itemsCopy[i++] = item;
+                return itemsCopy;
             }
         }
 

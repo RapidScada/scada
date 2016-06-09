@@ -61,11 +61,6 @@ namespace Scada.Client
         /// </summary>
         protected readonly Log log;
 
-        /// <summary>
-        /// Объект кеша представлений
-        /// </summary>
-        protected Cache<int, BaseView> cache;
-
 
         /// <summary>
         /// Конструктор, ограничивающий создание объекта без параметров
@@ -90,8 +85,15 @@ namespace Scada.Client
             this.dataAccess = dataAccess;
             this.log = log;
 
-            cache = new Cache<int, BaseView>(StorePeriod, Capacity);
+            Cache = new Cache<int, BaseView>(StorePeriod, Capacity);
         }
+
+
+        /// <summary>
+        /// Получить объект кеша представлений
+        /// </summary>
+        /// <remarks>Использовать вне данного класса только для получения состояния кеша</remarks>
+        public Cache<int, BaseView> Cache { get; protected set; }
 
 
         /// <summary>
@@ -105,7 +107,7 @@ namespace Scada.Client
 
                 // получение представления из кеша
                 DateTime utcNowDT = DateTime.UtcNow;
-                Cache<int, BaseView>.CacheItem cacheItem = cache.GetItem(viewID, utcNowDT);
+                Cache<int, BaseView>.CacheItem cacheItem = Cache.GetItem(viewID, utcNowDT);
                 BaseView viewFromCache; // представление из кеша
                 DateTime viewAge;       // время изменения файла представления
                 bool viewIsNotValid;    // представление могло устареть
@@ -152,10 +154,10 @@ namespace Scada.Client
                             {
                                 if (cacheItem == null)
                                     // добавление представления в кеш
-                                    cache.AddValue(viewID, view, newViewAge, utcNowDT);
+                                    Cache.AddValue(viewID, view, newViewAge, utcNowDT);
                                 else
                                     // обновление представления в кеше
-                                    cache.UpdateItem(cacheItem, view, newViewAge, utcNowDT);
+                                    Cache.UpdateItem(cacheItem, view, newViewAge, utcNowDT);
                             }
                             else
                             {
@@ -204,7 +206,7 @@ namespace Scada.Client
         {
             try
             {
-                Cache<int, BaseView>.CacheItem cacheItem = cache.GetItem(viewID, DateTime.UtcNow);
+                Cache<int, BaseView>.CacheItem cacheItem = Cache.GetItem(viewID, DateTime.UtcNow);
                 return cacheItem == null ? null : cacheItem.Value;
             }
             catch (Exception ex)

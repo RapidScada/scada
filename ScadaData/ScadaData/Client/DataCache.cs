@@ -100,10 +100,6 @@ namespace Scada.Client
         /// Время последнего успешного обновления таблицы текущего среза
         /// </summary>
         protected DateTime curDataRefrDT;
-        /// <summary>
-        /// Кеш таблиц часовых срезов
-        /// </summary>
-        protected Cache<DateTime, SrezTableLight> hourTableCache;
 
 
         /// <summary>
@@ -133,12 +129,12 @@ namespace Scada.Client
             baseRefrDT = DateTime.MinValue;
             tblCur = new SrezTableLight();
             curDataRefrDT = DateTime.MinValue;
-            hourTableCache = new Cache<DateTime, SrezTableLight>(HourCacheStorePeriod, HourCacheCapacity);
 
             BaseAge = DateTime.MinValue;
             BaseTables = new BaseTables();
             CnlProps = new InCnlProps[0];
             CtrlCnlProps = new CtrlCnlProps[0];
+            HourTableCache = new Cache<DateTime, SrezTableLight>(HourCacheStorePeriod, HourCacheCapacity);
         }
 
 
@@ -165,6 +161,12 @@ namespace Scada.Client
         /// </summary>
         /// <remarks>Свойства каналов автоматически создаются после обновления таблиц базы конфигурации</remarks>
         public CtrlCnlProps[] CtrlCnlProps { get; protected set; }
+
+        /// <summary>
+        /// Получить кеш таблиц часовых срезов
+        /// </summary>
+        /// <remarks>Использовать вне данного класса только для получения состояния кеша</remarks>
+        public Cache<DateTime, SrezTableLight> HourTableCache { get; protected set; }
 
 
         /// <summary>
@@ -492,7 +494,7 @@ namespace Scada.Client
                 // получение таблицы часовых срезов из кеша
                 date = date.Date;
                 DateTime utcNowDT = DateTime.UtcNow;
-                Cache<DateTime, SrezTableLight>.CacheItem cacheItem = hourTableCache.GetItem(date, utcNowDT);
+                Cache<DateTime, SrezTableLight>.CacheItem cacheItem = HourTableCache.GetItem(date, utcNowDT);
                 SrezTableLight tableFromCache; // таблица из кеша
                 DateTime tableAge;             // время изменения файла таблицы
                 bool tableIsNotValid;          // таблица могла устареть
@@ -516,7 +518,7 @@ namespace Scada.Client
                 if (tableFromCache == null || tableIsNotValid)
                 {
                     string tableName = SrezAdapter.BuildHourTableName(date);
-                    DateTime newTableAge = serverComm.ReceiveFileAge(ServerComm.Dirs.Itf, tableName);
+                    DateTime newTableAge = serverComm.ReceiveFileAge(ServerComm.Dirs.Hour, tableName);
 
                     if (newTableAge == DateTime.MinValue)
                     {
@@ -531,10 +533,10 @@ namespace Scada.Client
                         {
                             if (cacheItem == null)
                                 // добавление таблицы в кеш
-                                hourTableCache.AddValue(date, table, newTableAge, utcNowDT);
+                                HourTableCache.AddValue(date, table, newTableAge, utcNowDT);
                             else
                                 // обновление таблицы в кеше
-                                hourTableCache.UpdateItem(cacheItem, table, newTableAge, utcNowDT);
+                                HourTableCache.UpdateItem(cacheItem, table, newTableAge, utcNowDT);
                         }
                         else
                         {

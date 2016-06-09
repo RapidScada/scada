@@ -20,7 +20,8 @@
     <script type="text/javascript">
         var DEBUG_MODE = <%= debugMode ? "true" : "false" %>;
         var viewID = <%= viewID %>;
-        var refrRate = <%= refrRate %>;
+        var dataRefrRate = <%= dataRefrRate %>;
+        var arcRefrRate = <%= arcRefrRate %>;
         var phrases = <%= phrases %>;
         var today = <%= today %>;
         var locale = "<%= Scada.Localization.Culture.Name %>";

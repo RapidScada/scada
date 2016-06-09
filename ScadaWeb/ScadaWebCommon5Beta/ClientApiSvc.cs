@@ -225,7 +225,7 @@ namespace Scada.Web
             DateTime nowDT = DateTime.Now;
             DateTime reqDate = startDate;
 
-            while (reqDate < endDate)
+            while (reqDate <= endDate)
             {
                 SrezTableLight tblHour = dataCache.GetHourTable(reqDate);
                 DateTime nextReqDate = reqDate.AddDays(1.0);
@@ -429,7 +429,7 @@ namespace Scada.Web
         /// <summary>
         /// Получить расширенные часовые данные заданных входных каналов
         /// </summary>
-        /// <remarks>Возвращает HourCnlData[], упакованный в DataTransferObject, в формате в JSON</remarks>
+        /// <remarks>Возвращает HourCnlDataExt[], упакованный в DataTransferObject, в формате в JSON</remarks>
         [OperationContract]
         [WebGet]
         public string GetHourCnlDataExtByCnlNums(int year, int month, int day, 
@@ -439,9 +439,9 @@ namespace Scada.Web
             {
                 AppData.CheckLoggedOn();
                 int[] cnlNumArr = WebUtils.QueryParamToIntArray(cnlNums);
-                HourCnlDataExt[] hourCnlDataArr = 
+                HourCnlDataExt[] hourCnlDataExtArr = 
                     GetHourCnlDataExtArr(year, month, day, startHour, endHour, cnlNumArr, existing);
-                return JsSerializer.Serialize(new DataTransferObject(hourCnlDataArr));
+                return JsSerializer.Serialize(new DataTransferObject(hourCnlDataExtArr));
             }
             catch (Exception ex)
             {
@@ -455,7 +455,7 @@ namespace Scada.Web
         /// <summary>
         /// Получить расширенные часовые данные входных каналов заданного представления
         /// </summary>
-        /// <remarks>Возвращает HourCnlData[], упакованный в DataTransferObject, в формате в JSON.
+        /// <remarks>Возвращает HourCnlDataExt[], упакованный в DataTransferObject, в формате в JSON.
         /// Представление должно быть уже загружено в кеш (для ускорения работы метода)</remarks>
         [OperationContract]
         [WebGet]
@@ -473,9 +473,9 @@ namespace Scada.Web
                 }
                 else
                 {
-                    HourCnlDataExt[] hourCnlDataArr = 
+                    HourCnlDataExt[] hourCnlDataExtArr = 
                         GetHourCnlDataExtArr(year, month, day, startHour, endHour, view.CnlList, existing);
-                    return JsSerializer.Serialize(new DataTransferObject(hourCnlDataArr));
+                    return JsSerializer.Serialize(new DataTransferObject(hourCnlDataExtArr));
                 }
             }
             catch (Exception ex)

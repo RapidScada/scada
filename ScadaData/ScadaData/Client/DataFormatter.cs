@@ -58,7 +58,7 @@ namespace Scada.Client
         /// <summary>
         /// Обозначение следующего часа
         /// </summary>
-        protected const string NextHourVal = "***";
+        protected const string NextHourVal = "*";
         /// <summary>
         /// Цвет значения по умолчанию
         /// </summary>
@@ -245,7 +245,7 @@ namespace Scada.Client
             if (snapshotExists || dataAge.Date < nowDT.Date)
             {
                 emptyVal = EmptyVal;
-                return true;
+                return snapshotExists;
             }
             else if (dataAge.Date > nowDT.Date)
             {
@@ -267,7 +267,7 @@ namespace Scada.Client
                 else
                 {
                     emptyVal = EmptyVal;
-                    return true;
+                    return snapshotExists;
                 }
             }
         }

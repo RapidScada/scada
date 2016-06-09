@@ -33,8 +33,8 @@ scada.CnlDataExt = function () {
 scada.CnlDataExt.prototype = Object.create(scada.CnlData.prototype);
 scada.CnlDataExt.constructor = scada.CnlDataExt;
 
-// Hourly input channel data type
-scada.HourCnlData = function () {
+// Extended hourly input channel data type
+scada.HourCnlDataExt = function () {
     this.Hour = NaN;
     this.CnlDataExtArr = [];
 }
@@ -143,7 +143,7 @@ scada.clientAPI = {
     },
 
     // Get extended hourly data of the specified input channels.
-    // callback is function (success, hourCnlDataArr)
+    // callback is function (success, hourCnlDataExtArr)
     getHourCnlDataExtByCnlNums: function (date, startHour, endHour, cnlNums, mode, callback) {
         this._request(
             "ClientApiSvc.svc/GetHourCnlDataExtByCnlNums",
@@ -152,7 +152,7 @@ scada.clientAPI = {
     },
 
     // Get extended hourly data of the input channels of the specified view.
-    // callback is function (success, hourCnlDataArr)
+    // callback is function (success, hourCnlDataExtArr)
     getHourCnlDataExtByView: function (date, startHour, endHour, viewID, mode, callback) {
         this._request(
             "ClientApiSvc.svc/GetHourCnlDataExtByView",

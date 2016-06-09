@@ -2,10 +2,16 @@
 var notifier = null;
 // Current view date
 var viewDate = null;
-// Beginning of the time period
+
+// Time period: firstHour <= timeFrom <= timeTo <= lastHour
+// Beginning of the displayed time period
 var timeFrom = null;
-// End of the time period
+// End of the displayed time period
 var timeTo = null;
+// First possible hour of the time period
+var firstHour = null;
+// Last possible hour of the time period
+var lastHour = null
 
 // jQuery cells that display current data
 var curDataCells = null;
@@ -50,6 +56,8 @@ function sendViewDateNotification(date) {
 function retrieveTimePeriod() {
     timeFrom = parseInt($("#selTimeFrom").val());
     timeTo = parseInt($("#selTimeTo").val());
+    firstHour = $("#divTblWrapper tr:first td.hour:first").data("hour");
+    lastHour = $("#divTblWrapper tr:first td.hour:last").data("hour");
 }
 
 // Correct the beginning of the time period
@@ -89,9 +97,9 @@ function initCurDataCells() {
 // Select and prepare hourly data columns
 function initHourDataCols() {
     // init columns
-    hourDataCols.length = timeTo - timeFrom + 1;
-    for (var hour = timeFrom; hour <= timeTo; hour++) {
-        hourDataCols[hour] = [];
+    hourDataCols.length = lastHour - firstHour + 1;
+    for (var i = 0, len = hourDataCols.length; i < len; i++) {
+        hourDataCols[i] = [];
     }
 
     // get and arrange cells
@@ -102,16 +110,13 @@ function initHourDataCols() {
             var cell = $(this);
             cell.data("cnl", cnlNum);
             var hour = cell.data("hour");
-            hourDataCols[hour].push(cell);
+            hourDataCols[hour - firstHour].push(cell);
         });
     });
 }
 
 // Set visibility of the table view columns according to the time period
 function updateTableViewHours() {
-    var firstHour = $("#divTblWrapper tr:first td.hour:first").data("hour");
-    var lastHour = $("#divTblWrapper tr:first td.hour:last").data("hour");
-
     $("#divTblWrapper tr").each(function () {
         var row = $(this);
         var hourCells = row.find("td.hour");
@@ -179,30 +184,32 @@ function hideHint(imgIcon) {
     imgIcon.siblings("span.hint").removeClass("visible");
 }
 
+// Display the given data in the cell
+function displayCellData(cell, cnlDataMap) {
+    var cnlNum = cell.data("cnl");
+    if (cnlNum) {
+        var cnlData = cnlDataMap.get(cnlNum);
+        if (cnlData) {
+            cell.text(cnlData.Text);
+            cell.css("color", cnlData.Color);
+        } else {
+            cell.text("");
+            cell.css("color", "");
+        }
+    }
+}
+
 // Request and display current data.
 // callback is function (success)
-function updateCurrentData(callback) {
+function updateCurData(callback) {
     scada.clientAPI.getCurCnlDataExtByView(viewID, function (success, cnlDataExtArr) {
         if (success) {
-            var curCnlDataMap = scada.clientAPI.createCnlDataExtMap(cnlDataExtArr);
+            var cnlDataMap = scada.clientAPI.createCnlDataExtMap(cnlDataExtArr);
 
-            if (curCnlDataMap) {
-                curDataCells.each(function () {
-                    var cell = $(this);
-                    var cnlNum = cell.data("cnl");
-                    if (cnlNum) {
-                        // display current data
-                        var curCnlDataExt = curCnlDataMap.get(cnlNum);
-                        if (curCnlDataExt) {
-                            cell.text(curCnlDataExt.Text);
-                            cell.css("color", curCnlDataExt.Color);
-                        } else {
-                            cell.text("");
-                            cell.css("color", "");
-                        }
-                    }
-                });
-            }
+            curDataCells.each(function () {
+                var cell = $(this);
+                displayCellData(cell, cnlDataMap);
+            });
 
             callback(true);
         } else {
@@ -211,19 +218,60 @@ function updateCurrentData(callback) {
     });
 }
 
+// Request and display hourly data.
+// callback is function (success)
+function updateHourData(callback) {
+    scada.clientAPI.getHourCnlDataExtByView(viewDate, timeFrom, timeTo, viewID, scada.HourDataModes.INTEGER_HOURS,
+        function (success, hourCnlDataExtArr) {
+            if (success) {
+                var hourDataMap = scada.clientAPI.createHourCnlDataExtMap(hourCnlDataExtArr);
+
+                for (var hour = timeFrom; hour <= timeTo; hour++) {
+                    var hourData = hourDataMap.get(hour);
+                    var hourCol = hourDataCols[hour - firstHour];
+
+                    if (hourData) {
+                        var cnlDataMap = scada.clientAPI.createCnlDataExtMap(hourData.CnlDataExtArr);
+                        $.each(hourCol, function () {
+                            var cell = $(this);
+                            displayCellData(cell, cnlDataMap);
+                        });
+                    } else {
+                        $.each(hourCol, function () {
+                            var cell = $(this);
+                            cell.text("");
+                            cell.css("color", "");
+                        });
+                    }
+                }
+
+                callback(true);
+            } else {
+                callback(false);
+            }
+        });
+}
+
 // Start cyclic updating of current data
 function startUpdatingCurData() {
-    updateCurrentData(function (success) {
+    updateCurData(function (success) {
         if (!success) {
             notifier.addNotification(phrases.UpdateCurDataError, true, notifier.DEF_NOTIF_LIFETIME);
         }
 
-        setTimeout(startUpdatingCurData, refrRate);
+        setTimeout(startUpdatingCurData, dataRefrRate);
     });
 }
 
 // Start cyclic updating of hourly data
 function startUpdatingHourData() {
+    updateHourData(function (success) {
+        if (!success) {
+            notifier.addNotification(phrases.UpdateHourDataError, true, notifier.DEF_NOTIF_LIFETIME);
+        }
+
+        setTimeout(startUpdatingHourData, arcRefrRate);
+    });
 }
 
 $(document).ready(function () {
