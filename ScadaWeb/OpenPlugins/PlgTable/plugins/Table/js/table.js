@@ -196,7 +196,7 @@ function setItemLinkWidths() {
 }
 
 // Show hint associated with the icon
-function showHint(imgIcon) {
+function showHintByIcon(imgIcon) {
     var iconOffset = imgIcon.offset();
     var hint = imgIcon.siblings("span.hint");
     var hintTop = iconOffset.top + imgIcon.height();
@@ -218,8 +218,13 @@ function showHint(imgIcon) {
 }
 
 // Hide hint associated with the icon
-function hideHint(imgIcon) {
-    imgIcon.siblings("span.hint").removeClass("visible");
+function hideHintByIcon(imgIcon) {
+    hideHint(imgIcon.siblings("span.hint"));
+}
+
+// Hide hint associated with the icon
+function hideHint(spanHint) {
+    spanHint.removeClass("visible");
 }
 
 // Display the given data in the cell
@@ -391,21 +396,28 @@ $(document).ready(function () {
         alert("Export is not implemented yet.");
     });
 
-    // show and hide hint on hover and click
+    // show and hide hint on hover or touch events
     $("#divTblWrapper img.icon").hover(
         function () {
-            showHint($(this));
+            showHintByIcon($(this));
         }, function () {
-            hideHint($(this));
+            // timeout prevents label click on tablets
+            var icon = $(this);
+            setTimeout(function () { hideHintByIcon(icon); }, 100);
         }
     );
 
-    $("#divTblWrapper span.hint").click(function () {
-        $(this).css("display", "none");
+    $("#divTblWrapper img.icon").on("touchstart", function () {
+        showHintByIcon($(this));
     });
 
-    // show chart on item icon or label click
-    $("#divTblWrapper img.icon, #divTblWrapper a.lbl").click(function () {
+    $("#divTblWrapper span.hint").on("touchend touchcancel", function () {
+        var hint = $(this);
+        setTimeout(function () { hideHint(hint); }, 100);
+    });
+
+    // show chart on label click
+    $("#divTblWrapper a.lbl").click(function () {
         alert("Charts are not implemented yet.");
     });
 

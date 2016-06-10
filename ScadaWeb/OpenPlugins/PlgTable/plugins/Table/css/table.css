@@ -127,7 +127,6 @@ body {
   height: 16px;
   margin: 0 5px 0 0;
   border: none;
-  cursor: pointer;
 }
 #divTblWrapper td.cap a {
   height: 18px;
@@ -167,6 +166,8 @@ body {
   line-height: normal;
   padding: 5px;
   position: fixed;
+  z-index: 10;
+  /*above the fixed table header*/
 }
 #divTblWrapper td.cap span.hint.visible {
   display: inline-block;
