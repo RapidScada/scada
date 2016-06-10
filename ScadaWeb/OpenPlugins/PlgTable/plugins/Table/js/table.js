@@ -1,7 +1,7 @@
-﻿// Column header date format options
-var HEADER_DATE_OPTIONS = { month: "short", day: "2-digit" };
-// Column header time format options
+﻿// Column header time format options
 var HEADER_TIME_OPTIONS = { hour: "2-digit", minute: "2-digit" };
+// Column header date and time format options
+var HEADER_DATETIME_OPTIONS = { month: "short", day: "2-digit", hour: "2-digit", minute: "2-digit" };
 
 // Notifier control
 var notifier = null;
@@ -144,8 +144,7 @@ function updateHourDataColHdrText() {
             cell.text(colDT.toLocaleTimeString(locale, HEADER_TIME_OPTIONS));
         } else {
             // display date and time
-            cell.text(colDT.toLocaleDateString(locale, HEADER_DATE_OPTIONS) + " " +
-                colDT.toLocaleTimeString(locale, HEADER_TIME_OPTIONS));
+            cell.text(colDT.toLocaleString(locale, HEADER_DATETIME_OPTIONS));
         }
     });
 }
