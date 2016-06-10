@@ -79,23 +79,26 @@ scada.clientAPI = {
             } 
             catch (ex) {
                 scada.utils.logServiceFormatError(operation);
-                callback(false, errorResult);
+                if (typeof callback === "function") {
+                    callback(false, errorResult);
+                }
             }
         })
         .fail(function (jqXHR, textStatus, errorThrown) {
             scada.utils.logFailedRequest(operation, jqXHR);
-            callback(false, errorResult);
+            if (typeof callback === "function") {
+                callback(false, errorResult);
+            }
         });
     },
 
-    // Extract year, month and day from the date and join them into query string
-    _getDateQueryString: function (date, opt_startHour, opt_endHour) {
-        return
-            "year=" + date.getFullYear() +
+    // Extract year, month and day from the date, and join them with the hours into a query string
+    _getDateTimeQueryString: function (date, startHour, endHour) {
+        return "year=" + date.getFullYear() +
             "&month=" + (date.getMonth() + 1) +
-            "&date=" + date.getDay() +
-            (opt_startHour ? "&startHour=" + opt_startHour : "") +
-            (opt_endHour ? "&endHour=" + opt_endHour : "");
+            "&day=" + date.getDate() +
+            "&startHour=" + startHour +
+            "&endHour=" + endHour;
     },
 
     // Check that a user is logged on.
@@ -147,7 +150,7 @@ scada.clientAPI = {
     getHourCnlDataExtByCnlNums: function (date, startHour, endHour, cnlNums, mode, callback) {
         this._request(
             "ClientApiSvc.svc/GetHourCnlDataExtByCnlNums",
-            "?" + this._getDateQueryString(date, startHour, endHour) + "&cnlNums=" + cnlNums + "&existing=" + mode,
+            "?" + this._getDateTimeQueryString(date, startHour, endHour) + "&cnlNums=" + cnlNums + "&existing=" + mode,
             callback, []);
     },
 
@@ -156,17 +159,21 @@ scada.clientAPI = {
     getHourCnlDataExtByView: function (date, startHour, endHour, viewID, mode, callback) {
         this._request(
             "ClientApiSvc.svc/GetHourCnlDataExtByView",
-            "?" + this._getDateQueryString(date, startHour, endHour) + "&viewID=" + viewID + "&existing=" + mode,
+            "?" + this._getDateTimeQueryString(date, startHour, endHour) + "&viewID=" + viewID + "&existing=" + mode,
             callback, []);
     },
 
     // Get the stamp of the view from the cache.
     // callback is function (success, stamp)
     getViewStamp: function (viewID, callback) {
-        this._request(
-            "ClientApiSvc.svc/GetViewStamp",
-            "?viewID=" + viewID,
-            callback, 0);
+        this._request("ClientApiSvc.svc/GetViewStamp", "?viewID=" + viewID, callback, 0);
+    },
+
+    // Parse date and time using the application culture
+    // callback is function (success, value),
+    // value is the number of milliseconds or null in case of any error
+    parseDateTime: function (s, callback) {
+        this._request("ClientApiSvc.svc/ParseDateTime", "?s=" + s, callback, null);
     },
     
     // Create map of extended input channel data to access by channel number
@@ -181,7 +188,23 @@ scada.clientAPI = {
         catch (ex) {
             console.error(scada.utils.getCurTime() + " Error creating map of extended input channel data:",
                 ex.message);
-            return null;
+            return new Map();
+        }
+    },
+    
+    // Create map of extended hourly input channel data to access by hour
+    createHourCnlDataExtMap: function (hourCnlDataExtArr) {
+        try {
+            var map = new Map();
+            for (var hourCnlDataExt of hourCnlDataExtArr) {
+                map.set(hourCnlDataExt.Hour, hourCnlDataExt);
+            }
+            return map;
+        }
+        catch (ex) {
+            console.error(scada.utils.getCurTime() + " Error creating map of extended hourly input channel data:",
+                ex.message);
+            return new Map();
         }
     }
 };

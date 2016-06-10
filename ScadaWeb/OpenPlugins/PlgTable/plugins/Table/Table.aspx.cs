@@ -71,6 +71,21 @@ namespace Scada.Web.Plugins.Table
         }
 
         /// <summary>
+        /// Добавить группу элементов в выпадающий список выбора времени
+        /// </summary>
+        private void AppendOptGroup(StringBuilder sbHtml, string label, int startHour, int endHour, int selectedHour)
+        {
+            sbHtml.Append("<optgroup label='").Append(label).AppendLine("'>");
+            for (int hour = startHour; hour <= endHour; hour++)
+            {
+                sbHtml.Append("<option value='").Append(hour).Append("'")
+                    .Append(hour == selectedHour ? " selected" : "").Append(">")
+                    .Append(GetLocalizedHour(hour)).Append("</option>");
+            }
+            sbHtml.AppendLine("</optgroup>");
+        }
+
+        /// <summary>
         /// Генерировать HTML-код выпадающего списка выбора времени
         /// </summary>
         private string GenerateTimeSelectHtml(string elemID, bool addPrevDay, int selectedHour)
@@ -78,35 +93,16 @@ namespace Scada.Web.Plugins.Table
             StringBuilder sbHtml = new StringBuilder();
             sbHtml.Append("<select id='").Append(elemID).AppendLine("'>");
 
-            // предыдущие сутки
             if (addPrevDay)
-            {
-                sbHtml.Append("<optgroup label='").Append(PlgPhrases.PreviousDay).AppendLine("'>");
-                for (int hour = 0, val = -24; hour < 24; hour++, val++)
-                {
-                    sbHtml.Append("<option value='").Append(val).Append("'")
-                        .Append(val == selectedHour ? " selected" : "").Append(">")
-                        .Append(PlgPhrases.PrevDayItem).Append(GetLocalizedHour(hour)).Append("</option>");
-                }
-                sbHtml.AppendLine("</optgroup>");
-            }
+                AppendOptGroup(sbHtml, PlgPhrases.PreviousDay, -24, -1, selectedHour);
 
-            // выбранные сутки
-            sbHtml.Append("<optgroup label='").Append(PlgPhrases.SelectedDay).AppendLine("'>");
-            for (int hour = 0; hour < 24; hour++)
-            {
-                sbHtml.Append("<option value='").Append(hour).Append("'")
-                    .Append(hour == selectedHour ? " selected" : "").Append(">")
-                    .Append(GetLocalizedHour(hour)).Append("</option>");
-            }
-            sbHtml.AppendLine("</optgroup>");
-
+            AppendOptGroup(sbHtml, PlgPhrases.SelectedDay, 0, 23, selectedHour);
             sbHtml.AppendLine("</select>");
             return sbHtml.ToString();
         }
 
         /// <summary>
-        /// Добавить ячейку
+        /// Добавить ячейку в табличное представление
         /// </summary>
         private void AppendCell(StringBuilder sbHtml, string cssClass, int? hour, string innerHtml)
         {
@@ -122,7 +118,7 @@ namespace Scada.Web.Plugins.Table
         }
 
         /// <summary>
-        /// Добавить текст подсказки
+        /// Добавить текст подсказки в табличное представление
         /// </summary>
         private void AppendHint(StringBuilder sbHtml, bool addBreak, string label, int num, string name)
         {

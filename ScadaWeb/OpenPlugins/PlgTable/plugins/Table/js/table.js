@@ -1,4 +1,9 @@
-﻿// Notifier control
+﻿// Column header date format options
+var HEADER_DATE_OPTIONS = { month: "short", day: "2-digit" };
+// Column header time format options
+var HEADER_TIME_OPTIONS = { hour: "2-digit", minute: "2-digit" };
+
+// Notifier control
 var notifier = null;
 // Current view date
 var viewDate = null;
@@ -53,6 +58,7 @@ function setViewDate(date) {
     viewDate = date;
     $("#txtDate").val(date.toLocaleDateString(locale, VIEW_DATE_OPTIONS));
     $("#spanDate i").removeClass("error");
+    updateHourDataColHdrText();
 }
 
 // Send view date changed notification to data windows
@@ -93,7 +99,7 @@ function saveTimePeriod() {
     scada.utils.setCookie("Table.TimeTo", $("#selTimeTo").val());
 }
 
-// Select and prepare current data cells
+// Select and prepare the current data cells
 function initCurDataCells() {
     // select cells
     curDataCells = $("#divTblWrapper td.cur");
@@ -104,7 +110,7 @@ function initCurDataCells() {
     });
 }
 
-// Select and prepare hourly data columns
+// Select and prepare the hourly data columns
 function initHourDataCols() {
     // init columns
     hourDataCols.length = lastHour - firstHour + 1;
@@ -125,8 +131,27 @@ function initHourDataCols() {
     });
 }
 
-// Set visibility of the table view columns according to the time period
-function updateTableViewHours() {
+// Update header text of the hourly data columns
+function updateHourDataColHdrText() {
+    $("#divTblWrapper tr.hdr td.hour").each(function () {
+        var cell = $(this);
+        var hour = cell.data("hour");
+        var colDT = new Date(viewDate.getTime());
+        colDT.setHours(hour);
+
+        if (timeFrom >= 0) {
+            // display time only
+            cell.text(colDT.toLocaleTimeString(locale, HEADER_TIME_OPTIONS));
+        } else {
+            // display date and time
+            cell.text(colDT.toLocaleDateString(locale, HEADER_DATE_OPTIONS) + " " +
+                colDT.toLocaleTimeString(locale, HEADER_TIME_OPTIONS));
+        }
+    });
+}
+
+// Update visibility of the table view columns according to the time period
+function updateHourDataColVisibility() {
     $("#divTblWrapper tr").each(function () {
         var row = $(this);
         var hourCells = row.find("td.hour");
@@ -299,6 +324,7 @@ $(document).ready(function () {
     retrieveTimePeriod();
     initCurDataCells();
     initHourDataCols();
+    updateHourDataColHdrText();
     notifier = new scada.Notifier("#divNotif");
     notifier.startClearingNotifications();
 
@@ -346,7 +372,8 @@ $(document).ready(function () {
         }
 
         saveTimePeriod();
-        updateTableViewHours();
+        updateHourDataColHdrText();
+        updateHourDataColVisibility();
         restartUpdatingHourData();
     });
 
