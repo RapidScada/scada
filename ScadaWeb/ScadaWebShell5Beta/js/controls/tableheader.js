@@ -7,6 +7,7 @@
  *
  * Requires:
  * - jquery
+ * - utils.js
  */
 
 // Rapid SCADA namespace
@@ -46,12 +47,24 @@ scada.tableHeader = {
             table.append(fixedHeader);
             thisObj._updateHeaderCellWidths(origHeader, fixedHeader);
 
-            wrapper
-            .off("scroll")
-            .scroll(function () {
-                var fixedHeaderTop = -table.position().top;
-                fixedHeader.css("top", fixedHeaderTop);
-            });
+            var setHeaderTopFunc = function () {
+                fixedHeader.css("top", -table.position().top);
+            };
+
+            if (scada.utils.iOS()) {
+                // prevent header blinking on iOS
+                var scrollTimer = null;
+                wrapper
+                .off("scroll")
+                .on("scroll", function () {
+                    if (scrollTimer) {
+                        clearTimeout(scrollTimer);
+                    }
+                    scrollTimer = setTimeout(setHeaderTopFunc, 100);
+                });
+            } else {
+                wrapper.off("scroll").on("scroll", setHeaderTopFunc);
+            }
         });
     },
 

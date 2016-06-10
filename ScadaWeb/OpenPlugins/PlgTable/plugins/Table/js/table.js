@@ -133,20 +133,24 @@ function initHourDataCols() {
 
 // Update header text of the hourly data columns
 function updateHourDataColHdrText() {
-    $("#divTblWrapper tr.hdr td.hour").each(function () {
-        var cell = $(this);
-        var hour = cell.data("hour");
-        var colDT = new Date(viewDate.getTime());
-        colDT.setHours(hour);
+    // converting date to string doesn't work properly on iOS 
+    if (!scada.utils.iOS()) {
+        $("#divTblWrapper tr.hdr td.hour").each(function () {
+            var cell = $(this);
+            var hour = cell.data("hour");
+            var colDT = new Date(viewDate.getTime());
+            colDT.setHours(hour);
 
-        if (timeFrom >= 0) {
-            // display time only
-            //cell.text(colDT.toLocaleTimeString(locale, HEADER_TIME_OPTIONS));
-        } else {
-            // display date and time
-            //cell.text(colDT.toLocaleString(locale, HEADER_DATETIME_OPTIONS));
-        }
-    });
+            // replacing span is required for fixed table header calculations
+            if (timeFrom >= 0) {
+                // display time only
+                cell.html("<span>" + colDT.toLocaleTimeString(locale, HEADER_TIME_OPTIONS) + "</span>");
+            } else {
+                // display date and time
+                cell.html("<span>" + colDT.toLocaleString(locale, HEADER_DATETIME_OPTIONS) + "</span>");
+            }
+        });
+    }
 }
 
 // Update visibility of the table view columns according to the time period
@@ -398,6 +402,16 @@ $(document).ready(function () {
 
     $("#divTblWrapper span.hint").click(function () {
         $(this).css("display", "none");
+    });
+
+    // show chart on item icon or label click
+    $("#divTblWrapper img.icon, #divTblWrapper a.lbl").click(function () {
+        alert("Charts are not implemented yet.");
+    });
+
+    // send command on command icon click
+    $("#divTblWrapper span.cmd").click(function () {
+        alert("Commands are not implemented yet.");
     });
 
     // start updating data
