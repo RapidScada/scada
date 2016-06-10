@@ -89,6 +89,12 @@
     <Content Include="css\controls\popup.min.css">
       <DependentUpon>popup.css</DependentUpon>
     </Content>
+    <Content Include="css\controls\tableheader.css">
+      <DependentUpon>tableheader.less</DependentUpon>
+    </Content>
+    <Content Include="css\controls\tableheader.min.css">
+      <DependentUpon>tableheader.css</DependentUpon>
+    </Content>
     <Content Include="css\globalvar.css">
       <DependentUpon>globalvar.less</DependentUpon>
     </Content>
@@ -136,6 +142,7 @@
     <Content Include="js\calendar.js" />
     <Content Include="js\controls\notifier.js" />
     <Content Include="js\controls\popup.js" />
+    <Content Include="js\controls\tableheader.js" />
     <Content Include="js\login.js" />
     <Content Include="js\mastermain.js" />
     <Content Include="js\api\eventtypes.js" />
@@ -230,6 +237,7 @@
     <Content Include="css\controls\notifier.less" />
     <Content Include="css\controls\popup.less" />
     <Content Include="css\calendar.less" />
+    <Content Include="css\controls\tableheader.less" />
     <None Include="css\mastermain.less" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">

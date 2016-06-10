@@ -143,12 +143,12 @@ namespace Scada.Web.Plugins.Table
 
             // заголовок таблицы
             sbHtml.AppendLine("<tr class='hdr'>");
-            AppendCell(sbHtml, "cap", null, "Item");
-            AppendCell(sbHtml, "cur", null, "Current");
+            AppendCell(sbHtml, "cap", null, "<span>Item</span>");
+            AppendCell(sbHtml, "cur", null, "<span>Current</span>");
             for (int hour = FirstHour; hour <= LastHour; hour++)
             {
                 AppendCell(sbHtml, timeFrom <= hour && hour <= timeTo ? "hour" : "hour hidden", hour, 
-                    GetLocalizedHour(hour));
+                    "<span>" + GetLocalizedHour(hour) + "</span>");
             }
             sbHtml.AppendLine().AppendLine("</tr>");
 

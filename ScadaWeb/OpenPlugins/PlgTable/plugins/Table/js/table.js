@@ -141,10 +141,10 @@ function updateHourDataColHdrText() {
 
         if (timeFrom >= 0) {
             // display time only
-            cell.text(colDT.toLocaleTimeString(locale, HEADER_TIME_OPTIONS));
+            //cell.text(colDT.toLocaleTimeString(locale, HEADER_TIME_OPTIONS));
         } else {
             // display date and time
-            cell.text(colDT.toLocaleString(locale, HEADER_DATETIME_OPTIONS));
+            //cell.text(colDT.toLocaleString(locale, HEADER_DATETIME_OPTIONS));
         }
     });
 }
@@ -324,8 +324,13 @@ $(document).ready(function () {
     initCurDataCells();
     initHourDataCols();
     updateHourDataColHdrText();
+    scada.tableHeader.create();
     notifier = new scada.Notifier("#divNotif");
     notifier.startClearingNotifications();
+
+    if (DEBUG_MODE) {
+        initDebugTools();
+    }
 
     // update layout on window and table area resize
     $(window).on("resize " + scada.EventTypes.UPDATE_LAYOUT, function () {
@@ -373,7 +378,13 @@ $(document).ready(function () {
         saveTimePeriod();
         updateHourDataColHdrText();
         updateHourDataColVisibility();
+        scada.tableHeader.update();
         restartUpdatingHourData();
+    });
+
+    // export the table view on button click
+    $("#spanExportBtn").click(function () {
+        alert("Export is not implemented yet.");
     });
 
     // show and hide hint on hover and click
@@ -389,10 +400,7 @@ $(document).ready(function () {
         $(this).css("display", "none");
     });
 
-    if (DEBUG_MODE) {
-        initDebugTools();
-    } else {
-        startUpdatingCurData();
-        startUpdatingHourData();
-    }
+    // start updating data
+    startUpdatingCurData();
+    startUpdatingHourData();
 });

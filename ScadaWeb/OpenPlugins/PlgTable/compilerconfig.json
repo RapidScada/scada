@@ -14,5 +14,9 @@
   {
     "outputFile": "plugins/Table/css/tablecommon.css",
     "inputFile": "plugins/Table/css/tablecommon.less"
+  },
+  {
+    "outputFile": "css/controls/tableheader.css",
+    "inputFile": "css/controls/tableheader.less"
   }
 ]

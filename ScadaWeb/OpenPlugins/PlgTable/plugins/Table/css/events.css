@@ -90,6 +90,9 @@ body {
 #divTblWrapper tr.hdr {
   background-color: #ccc;
 }
+#divTblWrapper tr.hdr.fixed-table-header {
+  left: 10px;
+}
 #divTblWrapper tr.alt {
   background-color: #f9f9f9;
 }

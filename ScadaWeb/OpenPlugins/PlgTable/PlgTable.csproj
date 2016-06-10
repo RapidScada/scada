@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ClientApiSvc.svc" />
     <Content Include="config\CommSettings.xml" />
     <Content Include="config\WebSettings.xml" />
     <Content Include="css\controls\notifier.css">
@@ -66,11 +67,18 @@
     <Content Include="css\controls\notifier.min.css">
       <DependentUpon>notifier.css</DependentUpon>
     </Content>
+    <Content Include="css\controls\tableheader.css">
+      <DependentUpon>tableheader.less</DependentUpon>
+    </Content>
+    <Content Include="css\controls\tableheader.min.css">
+      <DependentUpon>tableheader.css</DependentUpon>
+    </Content>
     <Content Include="js\api\clientapi.js" />
     <Content Include="js\api\eventtypes.js" />
     <Content Include="js\api\utils.js" />
     <Content Include="js\api\viewhub.js" />
     <Content Include="js\controls\notifier.js" />
+    <Content Include="js\controls\tableheader.js" />
     <Content Include="lib\font-awesome\css\font-awesome.css" />
     <Content Include="lib\font-awesome\css\font-awesome.min.css" />
     <Content Include="lib\font-awesome\fonts\fontawesome-webfont.svg" />
@@ -147,6 +155,7 @@
     <Content Include="lib\font-awesome\fonts\fontawesome-webfont.woff" />
     <Content Include="lib\font-awesome\fonts\fontawesome-webfont.woff2" />
     <Content Include="lib\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="css\controls\tableheader.less" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

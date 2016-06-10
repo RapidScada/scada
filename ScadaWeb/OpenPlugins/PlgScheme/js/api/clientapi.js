@@ -33,6 +33,20 @@ scada.CnlDataExt = function () {
 scada.CnlDataExt.prototype = Object.create(scada.CnlData.prototype);
 scada.CnlDataExt.constructor = scada.CnlDataExt;
 
+// Extended hourly input channel data type
+scada.HourCnlDataExt = function () {
+    this.Hour = NaN;
+    this.CnlDataExtArr = [];
+}
+
+// Getting hour data modes enumeration
+scada.HourDataModes = {
+    // Get data for integer hours even if a snapshot doesn't exist
+    INTEGER_HOURS: false,
+    // Get existing snapshots
+    EXISTING: true
+};
+
 // Client API object
 scada.clientAPI = {
     // Empty input channel data
@@ -65,13 +79,26 @@ scada.clientAPI = {
             } 
             catch (ex) {
                 scada.utils.logServiceFormatError(operation);
-                callback(false, errorResult);
+                if (typeof callback === "function") {
+                    callback(false, errorResult);
+                }
             }
         })
         .fail(function (jqXHR, textStatus, errorThrown) {
             scada.utils.logFailedRequest(operation, jqXHR);
-            callback(false, errorResult);
+            if (typeof callback === "function") {
+                callback(false, errorResult);
+            }
         });
+    },
+
+    // Extract year, month and day from the date, and join them with the hours into a query string
+    _getDateTimeQueryString: function (date, startHour, endHour) {
+        return "year=" + date.getFullYear() +
+            "&month=" + (date.getMonth() + 1) +
+            "&day=" + date.getDate() +
+            "&startHour=" + startHour +
+            "&endHour=" + endHour;
     },
 
     // Check that a user is logged on.
@@ -109,7 +136,7 @@ scada.clientAPI = {
             callback, []);
     },
 
-    // Get extended current input channel data of the view.
+    // Get extended current data of the input channels of the specified view.
     // callback is function (success, cnlDataExtArr)
     getCurCnlDataExtByView: function (viewID, callback) {
         this._request(
@@ -118,12 +145,66 @@ scada.clientAPI = {
             callback, []);
     },
 
+    // Get extended hourly data of the specified input channels.
+    // callback is function (success, hourCnlDataExtArr)
+    getHourCnlDataExtByCnlNums: function (date, startHour, endHour, cnlNums, mode, callback) {
+        this._request(
+            "ClientApiSvc.svc/GetHourCnlDataExtByCnlNums",
+            "?" + this._getDateTimeQueryString(date, startHour, endHour) + "&cnlNums=" + cnlNums + "&existing=" + mode,
+            callback, []);
+    },
+
+    // Get extended hourly data of the input channels of the specified view.
+    // callback is function (success, hourCnlDataExtArr)
+    getHourCnlDataExtByView: function (date, startHour, endHour, viewID, mode, callback) {
+        this._request(
+            "ClientApiSvc.svc/GetHourCnlDataExtByView",
+            "?" + this._getDateTimeQueryString(date, startHour, endHour) + "&viewID=" + viewID + "&existing=" + mode,
+            callback, []);
+    },
+
     // Get the stamp of the view from the cache.
     // callback is function (success, stamp)
     getViewStamp: function (viewID, callback) {
-        this._request(
-            "ClientApiSvc.svc/GetViewStamp",
-            "?viewID=" + viewID,
-            callback, 0);
+        this._request("ClientApiSvc.svc/GetViewStamp", "?viewID=" + viewID, callback, 0);
+    },
+
+    // Parse date and time using the application culture
+    // callback is function (success, value),
+    // value is the number of milliseconds or null in case of any error
+    parseDateTime: function (s, callback) {
+        this._request("ClientApiSvc.svc/ParseDateTime", "?s=" + s, callback, null);
+    },
+    
+    // Create map of extended input channel data to access by channel number
+    createCnlDataExtMap: function (cnlDataExtArr) {
+        try {
+            var map = new Map();
+            for (var cnlDataExt of cnlDataExtArr) {
+                map.set(cnlDataExt.CnlNum, cnlDataExt);
+            }
+            return map;
+        }
+        catch (ex) {
+            console.error(scada.utils.getCurTime() + " Error creating map of extended input channel data:",
+                ex.message);
+            return new Map();
+        }
+    },
+    
+    // Create map of extended hourly input channel data to access by hour
+    createHourCnlDataExtMap: function (hourCnlDataExtArr) {
+        try {
+            var map = new Map();
+            for (var hourCnlDataExt of hourCnlDataExtArr) {
+                map.set(hourCnlDataExt.Hour, hourCnlDataExt);
+            }
+            return map;
+        }
+        catch (ex) {
+            console.error(scada.utils.getCurTime() + " Error creating map of extended hourly input channel data:",
+                ex.message);
+            return new Map();
+        }
     }
 };
