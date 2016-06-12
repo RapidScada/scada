@@ -430,7 +430,7 @@ scada.scheme.DynamicTextRenderer.prototype.update = function (elem, renderContex
     var ShowValueKinds = scada.scheme.ShowValueKinds;
     var props = elem.props;
 
-    var curCnlDataExt = renderContext.curCnlDataMap.get(props.InCnlNum);
+    var curCnlDataExt = props.InCnlNum > 0 ? renderContext.curCnlDataMap.get(props.InCnlNum) : null;
     var spanElem = elem.dom;
     var spanText = spanElem.children();
 
@@ -462,7 +462,7 @@ scada.scheme.DynamicTextRenderer.prototype.update = function (elem, renderContex
         if (foreColor == this.STATUS_COLOR) {
             spanElem.css("color", curCnlDataExt.Color);
         }
-    } else {
+    } else if (props.InCnlNum > 0) {
         spanText.text("");
     }
 };
