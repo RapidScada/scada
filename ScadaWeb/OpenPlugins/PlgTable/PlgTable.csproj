@@ -102,6 +102,7 @@
       <DependentUpon>tablecommon.css</DependentUpon>
     </Content>
     <Content Include="plugins\Table\Events.aspx" />
+    <Content Include="plugins\Table\images\quantityicons\clock.png" />
     <Content Include="plugins\Table\images\quantityicons\fire.png" />
     <Content Include="plugins\Table\images\quantityicons\lamp.png" />
     <Content Include="plugins\Table\images\quantityicons\quantity.png" />
