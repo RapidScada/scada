@@ -2,10 +2,16 @@
 
 @tool-btn-selected-back-color: @menu-item-selected-back-color;
 @tool-btn-selected-fore-color: @menu-item-selected-fore-color;
+@tool-btn-disabled-fore-color: @menu-item-disabled-fore-color-air;
 
 #divToolbar .tool-btn.selected {
     background-color: @tool-btn-selected-back-color;
     color: @tool-btn-selected-fore-color;
+}
+
+#divToolbar .tool-btn.disabled {
+    color: @tool-btn-disabled-fore-color;
+    cursor: default;
 }
 
 #tblEvents {

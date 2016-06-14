@@ -17,7 +17,6 @@
   padding: 0 10px;
   background-color: transparent;
   color: #444;
-  font-size: 14px;
   white-space: nowrap;
 }
 #divToolbar .tool-ctrl {
@@ -40,11 +39,13 @@
   background-color: white;
   cursor: pointer;
   display: inline-block;
+  font-size: 13px;
   line-height: 30px;
   vertical-align: top;
 }
 #divToolbar .tool-btn i {
   color: #8f8f8f;
+  font-size: 14px;
 }
 #divToolbar .tool-btn:hover,
 #divToolbar .tool-btn:hover i {
@@ -64,6 +65,7 @@
   line-height: 30px;
   color: #8f8f8f;
   cursor: pointer;
+  font-size: 14px;
 }
 #spanDate i:hover {
   color: #00b9eb;
@@ -127,6 +129,10 @@
 #divToolbar .tool-btn.selected {
   background-color: #0073aa;
   color: white;
+}
+#divToolbar .tool-btn.disabled {
+  color: #e5e5e5;
+  cursor: default;
 }
 #tblEvents {
   width: 100%;

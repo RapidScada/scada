@@ -8,9 +8,12 @@
 @tool-btn-back-color: white;
 @tool-btn-fore-color-err: #a00;
 @tool-btn-hover-fore-color: @menu-item-hover-fore-color;
-@toolbar-ctrl-font-family: Arial, Helvetica, sans-serif;
 @toolbar-height: 30px;
 @toolbar-input-height: 22px;
+@tool-ctrl-font-family: Arial, Helvetica, sans-serif;
+@tool-btn-font-size: 13px;
+@tool-ctrl-font-size: 14px;
+@tool-img-btn-font-size: 14px;
 
 @row-back-color: white;
 @row-back-color-alt: #f9f9f9;
@@ -45,7 +48,6 @@ body {
     padding: 0 10px;
     background-color: @toolbar-back-color;
     color: @toolbar-fore-color;
-    font-size: 14px;
     white-space: nowrap;
 }
 
@@ -59,8 +61,8 @@ body {
 #divToolbar .tool-ctrl select {
     margin-top: (@toolbar-height - @toolbar-input-height) / 2;
     box-sizing: border-box;
-    font-family: @toolbar-ctrl-font-family;
-    font-size: 14px;
+    font-family: @tool-ctrl-font-family;
+    font-size: @tool-ctrl-font-size;
     height: @toolbar-input-height;
 }
 
@@ -71,12 +73,14 @@ body {
     background-color: @tool-btn-back-color;
     cursor: pointer;
     display: inline-block;
+    font-size: @tool-btn-font-size;
     line-height: @toolbar-height;
     vertical-align: top;
 }
 
 #divToolbar .tool-btn i {
     color: @toolbar-fore-color-light;
+    font-size: @tool-img-btn-font-size;
 }
 
 #divToolbar .tool-btn:hover,
@@ -100,6 +104,7 @@ body {
     line-height: @toolbar-height;
     color: @toolbar-fore-color-light;
     cursor: pointer;
+    font-size: @tool-img-btn-font-size;
 }
 
 #spanDate i:hover {

@@ -37,14 +37,6 @@ namespace Scada.Web
     public class UserRights
     {
         /// <summary>
-        /// Права на все представления
-        /// </summary>
-        protected EntityRights allViewsRights;
-        /// <summary>
-        /// Права на весь контент
-        /// </summary>
-        protected EntityRights allContentRights;
-        /// <summary>
         /// Права на предсталения
         /// </summary>
         protected Dictionary<int, EntityRights> viewRightsDict;
@@ -64,6 +56,16 @@ namespace Scada.Web
 
 
         /// <summary>
+        /// Получить права на все представления
+        /// </summary>
+        public EntityRights AllViewsRights { get; protected set; }
+
+        /// <summary>
+        /// Получить права на весь контент
+        /// </summary>
+        public EntityRights AllContentRights { get; protected set; }
+
+        /// <summary>
         /// Получить право конфигурирования системы
         /// </summary>
         public bool ConfigRight { get; protected set; }
@@ -74,11 +76,11 @@ namespace Scada.Web
         /// </summary>
         protected void SetToDefault()
         {
-            allViewsRights = EntityRights.NoRights;
-            allContentRights = EntityRights.NoRights;
             viewRightsDict = null;
             contentRightsDict = null;
 
+            AllViewsRights = EntityRights.NoRights;
+            AllContentRights = EntityRights.NoRights;
             ConfigRight = false;
         }
 
@@ -94,19 +96,19 @@ namespace Scada.Web
 
             if (roleID == BaseValues.Roles.Admin)
             {
-                allViewsRights = new EntityRights(true, true);
-                allContentRights = new EntityRights(true, true);
+                AllViewsRights = new EntityRights(true, true);
+                AllContentRights = new EntityRights(true, true);
                 ConfigRight = true;
             }
             else if (roleID == BaseValues.Roles.Dispatcher)
             {
-                allViewsRights = new EntityRights(true, true);
-                allContentRights = new EntityRights(true, true);
+                AllViewsRights = new EntityRights(true, true);
+                AllContentRights = new EntityRights(true, true);
             }
             else if (roleID == BaseValues.Roles.Guest)
             {
-                allViewsRights = new EntityRights(true, false);
-                allContentRights = new EntityRights(true, false);
+                AllViewsRights = new EntityRights(true, false);
+                AllContentRights = new EntityRights(true, false);
             }
             else if (BaseValues.Roles.Custom <= roleID && roleID < BaseValues.Roles.Err)
             {
@@ -120,9 +122,9 @@ namespace Scada.Web
         /// </summary>
         public EntityRights GetViewRights(int viewID)
         {
-            if (allViewsRights.ViewRight)
+            if (AllViewsRights.ViewRight)
             {
-                return allViewsRights;
+                return AllViewsRights;
             }
             else
             {
@@ -137,9 +139,9 @@ namespace Scada.Web
         /// </summary>
         public EntityRights GetContentRights(string contentTypeCode)
         {
-            if (allContentRights.ViewRight)
+            if (AllContentRights.ViewRight)
             {
-                return allContentRights;
+                return AllContentRights;
             }
             else
             {

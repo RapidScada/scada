@@ -346,7 +346,7 @@ $(document).ready(function () {
         restartUpdatingHourData();
     });
 
-    // export the table view on button click
+    // export the table view on the button click
     $("#spanExportBtn").click(function () {
         alert("Export is not implemented yet.");
     });
@@ -371,12 +371,12 @@ $(document).ready(function () {
         setTimeout(function () { hideHint(hint); }, 100);
     });
 
-    // show chart on label click
+    // show chart on a label click
     $("#divTblWrapper a.lbl").click(function () {
         alert("Charts are not implemented yet.");
     });
 
-    // send command on command icon click
+    // send command on a command icon click
     $("#divTblWrapper span.cmd").click(function () {
         alert("Commands are not implemented yet.");
     });

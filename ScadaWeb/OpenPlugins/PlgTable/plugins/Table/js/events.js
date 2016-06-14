@@ -40,6 +40,19 @@ $(document).ready(function () {
         parseViewDate($(this).val(), changeViewDate);
     });
 
-    // temp
-    $("#spanEventsByViewBtn").addClass("selected");
+    // switch event filter
+    $("#spanAllEventsBtn").click(function () {
+        $("#spanAllEventsBtn").addClass("selected");
+        $("#spanEventsByViewBtn").removeClass("selected");
+    });
+
+    $("#spanEventsByViewBtn").click(function () {
+        $("#spanAllEventsBtn").removeClass("selected");
+        $("#spanEventsByViewBtn").addClass("selected");
+    });
+
+    // export events on the button click
+    $("#spanExportBtn").click(function () {
+        alert("Export is not implemented yet.");
+    });
 });

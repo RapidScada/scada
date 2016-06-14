@@ -43,6 +43,10 @@ namespace Scada.Web.Plugins.Table
             if (!rights.ViewRight)
                 Response.Redirect(UrlTemplates.NoView);
 
+            // запретить отображение всех событий, если нет соответствующих прав
+            if (!userData.UserRights.AllViewsRights.ViewRight)
+                spanAllEventsBtn.Attributes["class"] += " disabled";
+
             // подготовка данных для вывода на веб-страницу
             dataRefrRate = userData.WebSettings.DataRefrRate;
             arcRefrRate = userData.WebSettings.ArcRefrRate;
@@ -53,7 +57,6 @@ namespace Scada.Web.Plugins.Table
 
             DateTime nowDT = DateTime.Now;
             today = string.Format("new Date({0}, {1}, {2})", nowDT.Year, nowDT.Month - 1, nowDT.Day);
-
         }
     }
 }
