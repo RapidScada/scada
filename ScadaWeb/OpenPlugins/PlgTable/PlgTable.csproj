@@ -148,7 +148,6 @@
     </None>
     <Content Include="css\controls\notifier.less" />
     <Content Include="css\globalvar.less" />
-    <Content Include="css\shellvar.less" />
     <Content Include="plugins\Table\css\tablecommon.less" />
     <Content Include="plugins\Table\css\events.less" />
     <Content Include="lib\font-awesome\fonts\fontawesome-webfont.eot" />

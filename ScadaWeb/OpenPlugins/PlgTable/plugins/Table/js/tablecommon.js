@@ -47,9 +47,67 @@ function updateLayout() {
     divToolbar.css("top", notifHeight);
 }
 
+// Set current view date to the initial value
+function initViewDate() {
+    if (viewHub) {
+        if (viewHub.currentViewDate) {
+            setViewDate(viewHub.currentViewDate);
+        } else {
+            viewHub.currentViewDate = today;
+            setViewDate(today);
+        }
+    } else {
+        setViewDate(today);
+    }
+}
+
+// Set current view date
+function setViewDate(date) {
+    viewDate = date;
+    $("#txtDate").val(date.toLocaleDateString(locale, VIEW_DATE_OPTIONS));
+    $("#spanDate i").removeClass("error");
+}
+
+// Send view date changed notification to data windows
+function sendViewDateNotification(date) {
+    if (viewHub) {
+        viewHub.notify(scada.EventTypes.VIEW_DATE_CHANGED, window, date);
+    }
+}
+
+// Select view date using a calendar popup.
+// changeViewDateFunc is function (date, notify)
+function selectViewDate(changeViewDateFunc) {
+    var dialogs = viewHub ? viewHub.dialogs : null;
+    if (dialogs) {
+        var txtDate = $("#txtDate");
+        dialogs.showCalendar(txtDate, txtDate.val(), function (dialogResult, extraParams) {
+            if (dialogResult) {
+                // copy the date to avoid toLocaleDateString() bug in Edge
+                var date = new Date(extraParams.date.getTime());
+                changeViewDateFunc(date, true);
+            }
+        });
+    } else {
+        console.warn("Unable to show calendar because dialogs object is undefined");
+    }
+}
+
+// Parse manually entered view date and apply it
+function parseViewDate(dateStr, changeViewDateFunc) {
+    scada.clientAPI.parseDateTime(dateStr, function (success, value) {
+        if (Number.isInteger(value)) {
+            var parsedDate = new Date(value);
+            changeViewDateFunc(parsedDate, true);
+        } else {
+            $("#spanDate i").addClass("error");
+        }
+    });
+}
+
 // Initialize debug tools
 function initDebugTools() {
-    $("#divDebugTools").css("display", "inline-block");
+    $("#divDebugTools").addClass("visible");
 
     $(window).on(
         scada.EventTypes.VIEW_TITLE_CHANGED + " " +

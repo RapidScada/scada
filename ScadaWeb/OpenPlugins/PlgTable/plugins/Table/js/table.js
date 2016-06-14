@@ -25,46 +25,14 @@ var hourDataCols = [];
 // Timeout ID of the hourly data updating timer
 var updateHourDataTimeoutID = null;
 
-// Set current view date to the initial value
-function initViewDate() {
-    if (viewHub) {
-        if (viewHub.currentViewDate) {
-            setViewDate(viewHub.currentViewDate);
-        } else {
-            viewHub.currentViewDate = today;
-            setViewDate(today);
-        }
-    } else {
-        setViewDate(today);
-    }
-}
-
-// Parse manually entered view date and apply it
-function parseViewDate(dateStr) {
-    scada.clientAPI.parseDateTime(dateStr, function (success, value) {
-        if (Number.isInteger(value)) {
-            var parsedDate = new Date(value);
-            setViewDate(parsedDate);
-            sendViewDateNotification(parsedDate);
-            restartUpdatingHourData();
-        } else {
-            $("#spanDate i").addClass("error");
-        }
-    });
-}
-
-// Set current view date
-function setViewDate(date) {
-    viewDate = date;
-    $("#txtDate").val(date.toLocaleDateString(locale, VIEW_DATE_OPTIONS));
-    $("#spanDate i").removeClass("error");
+// Set current view date and process the consequent changes
+function changeViewDate(date, notify) {
+    setViewDate(date);
     updateHourDataColHdrText();
-}
+    restartUpdatingHourData();
 
-// Send view date changed notification to data windows
-function sendViewDateNotification(date) {
-    if (viewHub) {
-        viewHub.notify(scada.EventTypes.VIEW_DATE_CHANGED, window, date);
+    if (notify) {
+        sendViewDateNotification(date);
     }
 }
 
@@ -348,30 +316,17 @@ $(document).ready(function () {
 
     // process the view date changing
     $(window).on(scada.EventTypes.VIEW_DATE_CHANGED, function (event, sender, extraParams) {
-        setViewDate(extraParams);
-        restartUpdatingHourData();
+        changeViewDate(extraParams, false);
     });
 
-    // show calendar popup on click the calendar icon
+    // select view date on click the calendar icon
     $("#spanDate i").click(function (event) {
-        var dialogs = viewHub ? viewHub.dialogs : null;
-        if (dialogs) {
-            var txtDate = $("#txtDate");
-            dialogs.showCalendar(txtDate, txtDate.val(), function (dialogResult, extraParams) {
-                if (dialogResult) {
-                    setViewDate(extraParams.date);
-                    sendViewDateNotification(extraParams.date);
-                    restartUpdatingHourData();
-                }
-            });
-        } else {
-            console.warn("Unable to show calendar because dialogs object is undefined");
-        }
+        selectViewDate(changeViewDate);
     });
 
     // parse manually entered view date
     $("#txtDate").change(function () {
-        parseViewDate($(this).val());
+        parseViewDate($(this).val(), changeViewDate);
     });
 
     // process the time period changing

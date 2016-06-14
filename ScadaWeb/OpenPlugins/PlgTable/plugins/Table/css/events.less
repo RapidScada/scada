@@ -1,5 +1,38 @@
 ﻿@import "tablecommon.less";
 
-#divToolbar {
-    margin-top: -@splitter-border-width;
+@tool-btn-selected-back-color: @menu-item-selected-back-color;
+@tool-btn-selected-fore-color: @menu-item-selected-fore-color;
+
+#divToolbar .tool-btn.selected {
+    background-color: @tool-btn-selected-back-color;
+    color: @tool-btn-selected-fore-color;
+}
+
+#tblEvents {
+    width :100%;
+}
+
+#tblEvents td.num,
+#tblEvents td.time,
+#tblEvents td.ack {
+    text-align: center;
+}
+
+#tblEvents td.num,
+#tblEvents td.ack {
+  width: 5%;
+}
+
+#tblEvents td.time {
+  width: 10%;
+}
+
+#tblEvents td.obj,
+#tblEvents td.dev,
+#tblEvents td.cnl {
+  width: 15%;
+}
+
+#tblEvents td.descr {
+  width: 35%;
 }

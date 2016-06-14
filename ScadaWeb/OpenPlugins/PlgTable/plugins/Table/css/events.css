@@ -1,5 +1,4 @@
-﻿/*to pretend splitter thinner*/
-body {
+﻿body {
   margin: 0;
   padding: 30px 0 0 0;
   background-color: #f1f1f1;
@@ -17,7 +16,7 @@ body {
   height: 30px;
   padding: 0 10px;
   background-color: transparent;
-  color: #9ca1a6;
+  color: #444;
   font-size: 14px;
   white-space: nowrap;
 }
@@ -44,7 +43,11 @@ body {
   line-height: 30px;
   vertical-align: top;
 }
-#divToolbar .tool-btn:hover {
+#divToolbar .tool-btn i {
+  color: #8f8f8f;
+}
+#divToolbar .tool-btn:hover,
+#divToolbar .tool-btn:hover i {
   color: #00b9eb;
 }
 #spanDate {
@@ -59,6 +62,7 @@ body {
   right: 5px;
   height: 30px;
   line-height: 30px;
+  color: #8f8f8f;
   cursor: pointer;
 }
 #spanDate i:hover {
@@ -72,9 +76,10 @@ body {
 #divDebugTools {
   padding: 0 10px;
   display: none;
-  /*inline-block*/
-  font-size: 12px;
   vertical-align: top;
+}
+#divDebugTools.visible {
+  display: inline-block;
 }
 /* Table */
 #divTblWrapper {
@@ -119,6 +124,30 @@ body {
 #divTblWrapper td img {
   vertical-align: middle;
 }
-#divToolbar {
-  margin-top: -3px;
+#divToolbar .tool-btn.selected {
+  background-color: #0073aa;
+  color: white;
+}
+#tblEvents {
+  width: 100%;
+}
+#tblEvents td.num,
+#tblEvents td.time,
+#tblEvents td.ack {
+  text-align: center;
+}
+#tblEvents td.num,
+#tblEvents td.ack {
+  width: 5%;
+}
+#tblEvents td.time {
+  width: 10%;
+}
+#tblEvents td.obj,
+#tblEvents td.dev,
+#tblEvents td.cnl {
+  width: 15%;
+}
+#tblEvents td.descr {
+  width: 35%;
 }

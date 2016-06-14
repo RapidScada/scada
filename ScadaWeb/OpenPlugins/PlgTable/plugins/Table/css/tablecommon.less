@@ -1,10 +1,10 @@
 ﻿@import "../../../css/globalvar.less";
-@import "../../../css/shellvar.less";
 
 @table-fore-color: black;
 @notif-back-color: white;
 @toolbar-back-color: transparent;
-@toolbar-fore-color: @menu-fore-color-dark;
+@toolbar-fore-color: @menu-fore-color-air;
+@toolbar-fore-color-light: @menu-fore-color-air-light;
 @tool-btn-back-color: white;
 @tool-btn-fore-color-err: #a00;
 @tool-btn-hover-fore-color: @menu-item-hover-fore-color;
@@ -75,7 +75,12 @@ body {
     vertical-align: top;
 }
 
-#divToolbar .tool-btn:hover {
+#divToolbar .tool-btn i {
+    color: @toolbar-fore-color-light;
+}
+
+#divToolbar .tool-btn:hover,
+#divToolbar .tool-btn:hover i {
     color: @tool-btn-hover-fore-color;
 }
 
@@ -93,6 +98,7 @@ body {
     right: 5px;
     height: @toolbar-height;
     line-height: @toolbar-height;
+    color: @toolbar-fore-color-light;
     cursor: pointer;
 }
 
@@ -107,9 +113,12 @@ body {
 
 #divDebugTools {
     padding: 0 10px;
-    display: none; /*inline-block*/
-    font-size: 12px;
+    display: none;
     vertical-align: top;
+}
+
+#divDebugTools.visible {
+    display: inline-block;
 }
 
 /* Table */

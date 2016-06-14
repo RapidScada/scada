@@ -1,5 +1,4 @@
-﻿/*to pretend splitter thinner*/
-#divViewContent {
+﻿#divViewContent {
   height: 100%;
   overflow: hidden;
 }
@@ -16,9 +15,8 @@
   display: block;
 }
 #divViewSplitter {
-  height: 10px;
+  height: 9px;
   background-color: #ddd;
-  border-bottom: 3px solid #f1f1f1;
   cursor: ns-resize;
   display: none;
   /*block*/
