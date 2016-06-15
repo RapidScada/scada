@@ -47,7 +47,7 @@ scada.utils = {
     },
 
     // Get the query string parameter value
-    getQueryStringParam: function (paramName, opt_url) {
+    getQueryParam: function (paramName, opt_url) {
         if (paramName) {
             var url = opt_url ? opt_url : decodeURIComponent(window.location);
             var begInd = queryString.indexOf("?");
@@ -71,7 +71,7 @@ scada.utils = {
 
     // Set or add the query string parameter value.
     // The method returns a new string
-    setQueryStringParam: function (paramName, paramVal, opt_url) {
+    setQueryParam: function (paramName, paramVal, opt_url) {
         if (paramName) {
             var url = opt_url ? opt_url : decodeURIComponent(window.location);
             var searchName = "?" + paramName + "=";
@@ -98,6 +98,11 @@ scada.utils = {
         } else {
             return "";
         }
+    },
+
+    // Convert array to a query string parameter by joining array elements with a comma
+    arrayToQueryParam: function (arr) {
+        return arr ? (Array.isArray(arr) ? arr.join(",") : arr) : "";
     },
 
     // Returns the current time string

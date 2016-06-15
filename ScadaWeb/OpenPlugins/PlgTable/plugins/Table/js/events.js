@@ -1,4 +1,7 @@
-﻿// Set current view date and process the consequent changes
+﻿// Filter events by view
+var eventsByView = true;
+
+// Set current view date and process the consequent changes
 function changeViewDate(date, notify) {
     setViewDate(date);
     //updateHourDataColHdrText();
@@ -9,11 +12,37 @@ function changeViewDate(date, notify) {
     }
 }
 
+// Enable or disable events by view filter
+function setEventsByVeiw(val) {
+    eventsByView = val;
+    saveEventFilter();
+
+    if (val) {
+        $("#spanAllEventsBtn").removeClass("selected");
+        $("#spanEventsByViewBtn").addClass("selected");
+    } else {
+        $("#spanAllEventsBtn").addClass("selected");
+        $("#spanEventsByViewBtn").removeClass("selected");
+    }
+}
+
+// Load the event filter from the cookies
+function loadEventFilter() {
+    var val = scada.utils.getCookie("Table.EventsByView");
+    setEventsByVeiw(val != "false");
+}
+
+// Save the event filter in the cookies
+function saveEventFilter() {
+    scada.utils.setCookie("Table.EventsByView", eventsByView);
+}
+
 $(document).ready(function () {
     scada.clientAPI.rootPath = "../../";
     styleIOS();
     updateLayout();
     initViewDate();
+    loadEventFilter();
     notifier = new scada.Notifier("#divNotif");
     notifier.startClearingNotifications();
 
@@ -42,13 +71,13 @@ $(document).ready(function () {
 
     // switch event filter
     $("#spanAllEventsBtn").click(function () {
-        $("#spanAllEventsBtn").addClass("selected");
-        $("#spanEventsByViewBtn").removeClass("selected");
+        if (!$(this).hasClass("disabled")) {
+            setEventsByVeiw(false);
+        }
     });
 
     $("#spanEventsByViewBtn").click(function () {
-        $("#spanAllEventsBtn").removeClass("selected");
-        $("#spanEventsByViewBtn").addClass("selected");
+        setEventsByVeiw(true);
     });
 
     // export events on the button click

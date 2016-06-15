@@ -13,6 +13,8 @@
 // Rapid SCADA namespace
 var scada = scada || {};
 
+/********** Input Channel Data **********/
+
 // Input channel data type.
 // Note: Casing is caused by C# naming rules
 scada.CnlData = function () {
@@ -36,16 +38,56 @@ scada.CnlDataExt.constructor = scada.CnlDataExt;
 // Extended hourly input channel data type
 scada.HourCnlDataExt = function () {
     this.Hour = NaN;
+    this.Modified = false;
     this.CnlDataExtArr = [];
 }
 
-// Getting hour data modes enumeration
+/********** Auxiliary Request Parameters **********/
+
+// Input channel filter type.
+// Warning: role access rights are validated only for the view
+scada.CnlFilter = function () {
+    // Filter by the explicitly specified input channel numbers. No other filtering is applied
+    this.cnlNums = [];
+    // Filter by input channels included in the view
+    this.viewID = 0;
+};
+
+// Convert the input channel filter to a query string
+scada.CnlFilter.prototype.toQueryString = function () {
+    return "cnlNums=" + scada.utils.arrayToQueryParam(this.cnlNums) +
+        "&viewID=" + (this.viewID ? this.viewID : 0);
+};
+
+// Time period in hours type
+scada.HourPeriod = function () {
+    // Date is a reference point of the period
+    this.date = 0;
+    // Start hour relative to the date. May be negative
+    this.startHour = 0;
+    // End hour relative to the date
+    this.endHour = 0;
+};
+
+// Convert the time period to a query string
+scada.HourPeriod.prototype.toQueryString = function () {
+    return "year=" + this.date.getFullYear() +
+        "&month=" + (this.date.getMonth() + 1) +
+        "&day=" + this.date.getDate() +
+        "&startHour=" + this.startHour +
+        "&endHour=" + this.endHour;
+};
+
+// Hourly data selection modes enumeration
+// TODO: rename HourDataModes -> HourDataSelectModes
 scada.HourDataModes = {
-    // Get data for integer hours even if a snapshot doesn't exist
+    // Select data for integer hours even if a snapshot doesn't exist
     INTEGER_HOURS: false,
-    // Get existing snapshots
+    // Select existing hourly snapshots
     EXISTING: true
 };
+
+/********** Client API **********/
 
 // Client API object
 scada.clientAPI = {
@@ -71,7 +113,7 @@ scada.clientAPI = {
                 var parsedData = $.parseJSON(data.d);
                 if (parsedData.Success) {
                     scada.utils.logSuccessfulRequest(operation/*, data*/);
-                    callback(true, parsedData.Data == null ? parsedData : parsedData.Data);
+                    callback(true, parsedData.Data);
                 } else {
                     scada.utils.logServiceError(operation, parsedData.ErrorMessage);
                     callback(false, errorResult);
@@ -92,6 +134,13 @@ scada.clientAPI = {
         });
     },
 
+    // Extract year, month and day from the date, and join them into a query string
+    _dateToQueryString: function (date) {
+        return "year=" + date.getFullYear() +
+            "&month=" + (date.getMonth() + 1) +
+            "&day=" + date.getDate();
+    },
+
     // Extract year, month and day from the date, and join them with the hours into a query string
     _getDateTimeQueryString: function (date, startHour, endHour) {
         return "year=" + date.getFullYear() +
@@ -102,7 +151,7 @@ scada.clientAPI = {
     },
 
     // Check that a user is logged on.
-    // callback is function (success, loggedOn)
+    // callback is a function (success, loggedOn)
     checkLoggedOn: function (callback) {
         this._request(
             "ClientApiSvc.svc/CheckLoggedOn", "",
@@ -110,7 +159,7 @@ scada.clientAPI = {
     },
 
     // Get current value and status of the input channel.
-    // callback is function (success, cnlData)
+    // callback is a function (success, cnlData)
     getCurCnlData: function (cnlNum, callback) {
         this._request(
             "ClientApiSvc.svc/GetCurCnlData",
@@ -119,7 +168,7 @@ scada.clientAPI = {
     },
 
     // Get extended current data of the input channel. 
-    // callback is function (success, cnlDataExt)
+    // callback is a function (success, cnlDataExt)
     getCurCnlDataExt: function (cnlNum, callback) {
         this._request(
             "ClientApiSvc.svc/GetCurCnlDataExt",
@@ -128,7 +177,7 @@ scada.clientAPI = {
     },
 
     // Get extended current data of the specified input channels.
-    // callback is function (success, cnlDataExtArr)
+    // callback is a function (success, cnlDataExtArr)
     getCurCnlDataExtByCnlNums: function (cnlNums, callback) {
         this._request(
             "ClientApiSvc.svc/GetCurCnlDataExtByCnlNums",
@@ -137,7 +186,8 @@ scada.clientAPI = {
     },
 
     // Get extended current data of the input channels of the specified view.
-    // callback is function (success, cnlDataExtArr)
+    // callback is a function (success, cnlDataExtArr)
+    // TODO: getCurCnlDataExt: function (cnlFilter, callback)
     getCurCnlDataExtByView: function (viewID, callback) {
         this._request(
             "ClientApiSvc.svc/GetCurCnlDataExtByView",
@@ -146,7 +196,7 @@ scada.clientAPI = {
     },
 
     // Get extended hourly data of the specified input channels.
-    // callback is function (success, hourCnlDataExtArr)
+    // callback is a function (success, hourCnlDataExtArr)
     getHourCnlDataExtByCnlNums: function (date, startHour, endHour, cnlNums, mode, callback) {
         this._request(
             "ClientApiSvc.svc/GetHourCnlDataExtByCnlNums",
@@ -155,7 +205,8 @@ scada.clientAPI = {
     },
 
     // Get extended hourly data of the input channels of the specified view.
-    // callback is function (success, hourCnlDataExtArr)
+    // callback is a function (success, hourCnlDataExtArr)
+    // TODO: getHourCnlData: function (hourPeriod, cnlFilter, selectMode, dataAge /*array*/, callback)
     getHourCnlDataExtByView: function (date, startHour, endHour, viewID, mode, callback) {
         this._request(
             "ClientApiSvc.svc/GetHourCnlDataExtByView",
@@ -163,14 +214,24 @@ scada.clientAPI = {
             callback, []);
     },
 
+    // Get events for the specified date and channel filter.
+    // callback is a function (success, eventExtArr, dataAge)
+    getEvents: function (date, cnlFilter, lastCount, startEvNum, dataAge, callback) {
+        this._request(
+            "ClientApiSvc.svc/GetEvents",
+            "?" + this._dateToQueryString(date) + "&" + cnlFilter.toQueryString() +
+            "&lastCount=" + lastCount + "&startEvNum=" + startEvNum + "&dataAge=" + dataAge,
+            callback, []);
+    },
+
     // Get the stamp of the view from the cache.
-    // callback is function (success, stamp)
+    // callback is a function (success, stamp)
     getViewStamp: function (viewID, callback) {
         this._request("ClientApiSvc.svc/GetViewStamp", "?viewID=" + viewID, callback, 0);
     },
 
     // Parse date and time using the application culture
-    // callback is function (success, value),
+    // callback is a function (success, value),
     // value is the number of milliseconds or null in case of any error
     parseDateTime: function (s, callback) {
         this._request("ClientApiSvc.svc/ParseDateTime", "?s=" + s, callback, null);

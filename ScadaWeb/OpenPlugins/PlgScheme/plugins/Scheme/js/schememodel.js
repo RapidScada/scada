@@ -90,7 +90,7 @@ scada.scheme.Scheme.prototype = Object.create(scada.scheme.BaseElement.prototype
 scada.scheme.Scheme.constructor = scada.scheme.Scheme;
 
 // Load scheme properties
-// callback is function (success, complete)
+// callback is a function (success, complete)
 scada.scheme.Scheme.prototype._loadSchemeProps = function (viewID, callback) {
     var operation = "SchemeSvc.svc/GetSchemeProps";
     var thisScheme = this;
@@ -177,7 +177,7 @@ scada.scheme.Scheme.prototype._obtainSchemeProps = function (parsedProps) {
 };
 
 // Load scheme elements
-// callback is function (success, complete)
+// callback is a function (success, complete)
 scada.scheme.Scheme.prototype._loadElements = function (viewID, callback) {
     var operation = "SchemeSvc.svc/GetElements";
     var thisScheme = this;
@@ -277,7 +277,7 @@ scada.scheme.Scheme.prototype._appendElements = function (parsedElems) {
 };
 
 // Load scheme images
-// callback is function (success, complete)
+// callback is a function (success, complete)
 scada.scheme.Scheme.prototype._loadImages = function (viewID, callback) {
     var operation = "SchemeSvc.svc/GetImages";
     var thisScheme = this;
@@ -400,7 +400,7 @@ scada.scheme.Scheme.prototype.clear = function () {
 };
 
 // Load scheme.
-// callback is function (success, complete)
+// callback is a function (success, complete)
 scada.scheme.Scheme.prototype.load = function (viewID, callback) {
     var LoadStates = scada.scheme.LoadStates;
 
@@ -474,7 +474,7 @@ scada.scheme.Scheme.prototype.createDom = function () {
 };
 
 // Update the scheme elements
-// callback is function (success)
+// callback is a function (success)
 scada.scheme.Scheme.prototype.update = function (clientAPI, callback) {
     var thisScheme = this;
 

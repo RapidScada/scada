@@ -51,7 +51,7 @@ scada.dialogs = {
     },
 
     // Show calendar dropdown form.
-    // callback is function (dialogResult, extraParams),
+    // callback is a function (dialogResult, extraParams),
     // dialogResult is true or false,
     // extraParams is object { date, dateStr }
     showCalendar: function (anchorElem, selectedDate, callback) {

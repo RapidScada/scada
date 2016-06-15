@@ -86,7 +86,7 @@ scada.Popup.prototype._getOffset = function (elem) {
 };
 
 // Show popup with the specified url as a dropdown menu below the anchorElem.
-// callback is function (dialogResult, extraParams)
+// callback is a function (dialogResult, extraParams)
 scada.Popup.prototype.showDropdown = function (url, anchorElem, callback) {
     var thisObj = this;
     var popupElem = $("<div class='popup-dropdown'><div class='popup-overlay'></div>" +
@@ -194,7 +194,7 @@ scada.Popup.prototype.closeDropdown = function (popupWnd, dialogResult, extraPar
 };
 
 // Show modal dialog with the specified url.
-// callback is function (dialogResult, extraParams),
+// callback is a function (dialogResult, extraParams),
 // requires Bootstrap
 scada.Popup.prototype.showModal = function (url, callback) {
 

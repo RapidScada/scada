@@ -20,7 +20,7 @@ scada.view = {
             if (this.url) {
                 var viewID = viewHub.currentViewID;
                 var newUrl = this.dependsOnView && viewID > 0 ?
-                    scada.utils.setQueryStringParam("viewID", viewID, this.url) :
+                    scada.utils.setQueryParam("viewID", viewID, this.url) :
                     this.url;
                 var frameDataWindow = $("#frameDataWindow");
                 frameDataWindow

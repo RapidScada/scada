@@ -211,7 +211,7 @@ function displayCellData(cell, cnlDataMap) {
 }
 
 // Request and display current data.
-// callback is function (success)
+// callback is a function (success)
 function updateCurData(callback) {
     scada.clientAPI.getCurCnlDataExtByView(viewID, function (success, cnlDataExtArr) {
         if (success) {
@@ -230,7 +230,7 @@ function updateCurData(callback) {
 }
 
 // Request and display hourly data.
-// callback is function (success)
+// callback is a function (success)
 function updateHourData(callback) {
     scada.clientAPI.getHourCnlDataExtByView(viewDate, timeFrom, timeTo, viewID, scada.HourDataModes.INTEGER_HOURS,
         function (success, hourCnlDataExtArr) {
