@@ -92,10 +92,10 @@ scada.HourDataModes = {
 // Client API object
 scada.clientAPI = {
     // Empty input channel data
-    _emptyCnlData: Object.freeze(new scada.CnlData()),
+    _EMPTY_CNL_DATA: Object.freeze(new scada.CnlData()),
 
     // Empty extended input channel data
-    _emptyCnlDataExt: Object.freeze(new scada.CnlDataExt()),
+    _EMPTY_CNL_DATA_EXT: Object.freeze(new scada.CnlDataExt()),
 
     // Web service root path
     rootPath: "",
@@ -142,6 +142,7 @@ scada.clientAPI = {
     },
 
     // Extract year, month and day from the date, and join them with the hours into a query string
+    // TODO: obsolete
     _getDateTimeQueryString: function (date, startHour, endHour) {
         return "year=" + date.getFullYear() +
             "&month=" + (date.getMonth() + 1) +
@@ -153,53 +154,41 @@ scada.clientAPI = {
     // Check that a user is logged on.
     // callback is a function (success, loggedOn)
     checkLoggedOn: function (callback) {
-        this._request(
-            "ClientApiSvc.svc/CheckLoggedOn", "",
-            callback, false);
+        this._request("ClientApiSvc.svc/CheckLoggedOn", "", callback, false);
     },
 
     // Get current value and status of the input channel.
     // callback is a function (success, cnlData)
     getCurCnlData: function (cnlNum, callback) {
-        this._request(
-            "ClientApiSvc.svc/GetCurCnlData",
-            "?cnlNum=" + cnlNum,
-            callback, this._emptyCnlData);
+        this._request("ClientApiSvc.svc/GetCurCnlData", "?cnlNum=" + cnlNum, callback, this._EMPTY_CNL_DATA);
     },
 
     // Get extended current data of the input channel. 
     // callback is a function (success, cnlDataExt)
+    // TODO: obsolete
     getCurCnlDataExt: function (cnlNum, callback) {
-        this._request(
-            "ClientApiSvc.svc/GetCurCnlDataExt",
-            "?cnlNum=" + cnlNum,
-            callback, this._emptyCnlDataExt);
+        this._request("ClientApiSvc.svc/GetCurCnlDataExt", "?cnlNum=" + cnlNum, callback, this._EMPTY_CNL_DATA_EXT);
     },
 
     // Get extended current data of the specified input channels.
     // callback is a function (success, cnlDataExtArr)
+    // TODO: obsolete
     getCurCnlDataExtByCnlNums: function (cnlNums, callback) {
-        this._request(
-            "ClientApiSvc.svc/GetCurCnlDataExtByCnlNums",
-            "?cnlNums=" + cnlNums,
-            callback, []);
+        this._request("ClientApiSvc.svc/GetCurCnlDataExtByCnlNums", "?cnlNums=" + cnlNums, callback, []);
     },
 
     // Get extended current data of the input channels of the specified view.
     // callback is a function (success, cnlDataExtArr)
     // TODO: getCurCnlDataExt: function (cnlFilter, callback)
     getCurCnlDataExtByView: function (viewID, callback) {
-        this._request(
-            "ClientApiSvc.svc/GetCurCnlDataExtByView",
-            "?viewID=" + viewID,
-            callback, []);
+        this._request("ClientApiSvc.svc/GetCurCnlDataExtByView", "?viewID=" + viewID, callback, []);
     },
 
     // Get extended hourly data of the specified input channels.
     // callback is a function (success, hourCnlDataExtArr)
+    // TODO: getCurCnlDataExt: function (cnlFilter, callback)
     getHourCnlDataExtByCnlNums: function (date, startHour, endHour, cnlNums, mode, callback) {
-        this._request(
-            "ClientApiSvc.svc/GetHourCnlDataExtByCnlNums",
+        this._request("ClientApiSvc.svc/GetHourCnlDataExtByCnlNums",
             "?" + this._getDateTimeQueryString(date, startHour, endHour) + "&cnlNums=" + cnlNums + "&existing=" + mode,
             callback, []);
     },
@@ -208,17 +197,15 @@ scada.clientAPI = {
     // callback is a function (success, hourCnlDataExtArr)
     // TODO: getHourCnlData: function (hourPeriod, cnlFilter, selectMode, dataAge /*array*/, callback)
     getHourCnlDataExtByView: function (date, startHour, endHour, viewID, mode, callback) {
-        this._request(
-            "ClientApiSvc.svc/GetHourCnlDataExtByView",
+        this._request("ClientApiSvc.svc/GetHourCnlDataExtByView",
             "?" + this._getDateTimeQueryString(date, startHour, endHour) + "&viewID=" + viewID + "&existing=" + mode,
             callback, []);
     },
 
-    // Get events for the specified date and channel filter.
-    // callback is a function (success, eventExtArr, dataAge)
+    // Get events by the specified filter.
+    // callback is a function (success, eventArr, dataAge)
     getEvents: function (date, cnlFilter, lastCount, startEvNum, dataAge, callback) {
-        this._request(
-            "ClientApiSvc.svc/GetEvents",
+        this._request("ClientApiSvc.svc/GetEvents",
             "?" + this._dateToQueryString(date) + "&" + cnlFilter.toQueryString() +
             "&lastCount=" + lastCount + "&startEvNum=" + startEvNum + "&dataAge=" + dataAge,
             callback, []);

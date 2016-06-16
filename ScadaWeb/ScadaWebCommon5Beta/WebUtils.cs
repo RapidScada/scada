@@ -37,6 +37,12 @@ namespace Scada.Web
     public static class WebUtils
     {
         /// <summary>
+        /// Начало отчёта времени в Unix, которое используется в Javascript реализации даты
+        /// </summary>
+        public static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+
+        /// <summary>
         /// Проверить HTTP-контекст и его основные свойства на null
         /// </summary>
         public static void CheckHttpContext(HttpContext httpContext, bool checkCookies = false)

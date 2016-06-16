@@ -51,6 +51,7 @@ namespace Scada.Web.Plugins.Scheme
             /// Конструктор
             /// </summary>
             public SchemeDTO()
+                : base()
             {
                 ViewStamp = 0;
             }

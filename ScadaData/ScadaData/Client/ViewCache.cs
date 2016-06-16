@@ -103,87 +103,74 @@ namespace Scada.Client
         {
             try
             {
-                T view = null;
-
                 // получение представления из кеша
                 DateTime utcNowDT = DateTime.UtcNow;
-                Cache<int, BaseView>.CacheItem cacheItem = Cache.GetItem(viewID, utcNowDT);
-                BaseView viewFromCache; // представление из кеша
-                DateTime viewAge;       // время изменения файла представления
-                bool viewIsNotValid;    // представление могло устареть
+                Cache<int, BaseView>.CacheItem cacheItem = Cache.GetOrCreateItem(viewID, utcNowDT);
 
-                if (cacheItem == null)
+                // блокировка доступа только к одному представлению
+                lock (cacheItem)
                 {
-                    viewFromCache = null;
-                    viewAge = DateTime.MinValue;
-                    viewIsNotValid = true;
-                }
-                else
-                {
-                    viewFromCache = cacheItem.Value;
-                    viewAge = cacheItem.ValueAge;
-                    viewIsNotValid = utcNowDT - cacheItem.ValueRefrDT > ViewValidSpan;
-                }
+                    T view = null;                            // представление, которое необходимо получить
+                    BaseView viewFromCache = cacheItem.Value; // представление из кеша
+                    DateTime viewAge = cacheItem.ValueAge;    // время изменения файла представления
+                    bool viewIsNotValid = utcNowDT - cacheItem.ValueRefrDT > ViewValidSpan; // представление могло устареть
 
-                // получение представления от сервера
-                if (viewFromCache == null || viewIsNotValid)
-                {
-                    ViewProps viewProps = dataAccess.GetViewProps(viewID);
-
-                    if (viewProps == null)
+                    // получение представления от сервера
+                    if (viewFromCache == null || viewIsNotValid)
                     {
-                        throw new ScadaException(Localization.UseRussian ?
-                            "Отсутствуют свойства представления." : 
-                            "View properties are missing.");
-                    }
-                    else 
-                    {
-                        DateTime newViewAge = serverComm.ReceiveFileAge(ServerComm.Dirs.Itf, viewProps.FileName);
+                        ViewProps viewProps = dataAccess.GetViewProps(viewID);
 
-                        if (newViewAge == DateTime.MinValue)
+                        if (viewProps == null)
                         {
                             throw new ScadaException(Localization.UseRussian ?
-                                "Не удалось принять время изменения файла представления." :
-                                "Unable to receive view file modification time.");
+                                "Отсутствуют свойства представления." :
+                                "View properties are missing.");
                         }
-                        else if (newViewAge != viewAge) // файл представления изменён
+                        else
                         {
-                            // создание и загрузка нового представления
-                            view = (T)Activator.CreateInstance(typeof(T));
-                            if (serverComm.ReceiveView(viewProps.FileName, view))
-                            {
-                                if (cacheItem == null)
-                                    // добавление представления в кеш
-                                    Cache.AddValue(viewID, view, newViewAge, utcNowDT);
-                                else
-                                    // обновление представления в кеше
-                                    Cache.UpdateItem(cacheItem, view, newViewAge, utcNowDT);
-                            }
-                            else
+                            DateTime newViewAge = serverComm.ReceiveFileAge(ServerComm.Dirs.Itf, viewProps.FileName);
+
+                            if (newViewAge == DateTime.MinValue)
                             {
                                 throw new ScadaException(Localization.UseRussian ?
-                                    "Не удалось принять представление." :
-                                    "Unable to receive view.");
+                                    "Не удалось принять время изменения файла представления." :
+                                    "Unable to receive view file modification time.");
+                            }
+                            else if (newViewAge != viewAge) // файл представления изменён
+                            {
+                                // создание и загрузка нового представления
+                                view = (T)Activator.CreateInstance(typeof(T));
+                                if (serverComm.ReceiveView(viewProps.FileName, view))
+                                {
+                                    // обновление представления в кеше
+                                    Cache.UpdateItem(cacheItem, view, newViewAge, utcNowDT);
+                                }
+                                else
+                                {
+                                    throw new ScadaException(Localization.UseRussian ?
+                                        "Не удалось принять представление." :
+                                        "Unable to receive view.");
+                                }
                             }
                         }
                     }
-                }
-                
-                // использование представления из кеша
-                if (view == null && viewFromCache != null)
-                {
-                    view = viewFromCache as T;
-                    if (view == null)
-                        throw new ScadaException(Localization.UseRussian ?
-                            "Несоответствие типа представления." :
-                            "View type mismatch.");
-                }
 
-                // привязка свойств каналов после получения представления или при изменении базы конфигурации
-                if (view != null)
-                    dataAccess.BindCnlProps(view);
+                    // использование представления из кеша
+                    if (view == null && viewFromCache != null)
+                    {
+                        view = viewFromCache as T;
+                        if (view == null)
+                            throw new ScadaException(Localization.UseRussian ?
+                                "Несоответствие типа представления." :
+                                "View type mismatch.");
+                    }
 
-                return view;
+                    // привязка свойств каналов или обновление существующей привязки
+                    if (view != null)
+                        dataAccess.BindCnlProps(view);
+
+                    return view;
+                }
             }
             catch (Exception ex)
             {

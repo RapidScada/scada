@@ -50,7 +50,7 @@ namespace Scada.Client
         protected readonly Log log;
 
         /// <summary>
-        /// Объект для синхронизации доступа к таблицам базы конфигурации
+        /// Объект для синхронизации доступа к информации из базы конфигурации
         /// </summary>
         protected readonly object baseLock;
         /// <summary>
@@ -61,6 +61,10 @@ namespace Scada.Client
         /// Объект для синхронизации достапа к свойствам каналов управления
         /// </summary>
         protected readonly object ctrlCnlPropsLock;
+        /// <summary>
+        /// Объект для синхронизации достапа к цветам статусов входных каналов
+        /// </summary>
+        protected readonly object statColorsLock;
         /// <summary>
         /// Объект для синхронизации достапа к текущим даным
         /// </summary>
@@ -90,6 +94,7 @@ namespace Scada.Client
             baseLock = new object();
             cnlPropsLock = new object();
             ctrlCnlPropsLock = new object();
+            statColorsLock = new object();
             curDataLock = new object();
         }
 
@@ -151,7 +156,7 @@ namespace Scada.Client
                 lock (cnlPropsLock)
                 {
                     // сохранение ссылки на свойства каналов,
-                    // т.к. свойство CnlProps может быть изменено из другого потока
+                    // т.к. объект dataCache.CnlProps может создан заново из другого потока
                     InCnlProps[] cnlProps = dataCache.CnlProps;
 
                     // поиск свойств заданного канала
@@ -183,7 +188,7 @@ namespace Scada.Client
                 lock (ctrlCnlPropsLock)
                 {
                     // сохранение ссылки на свойства каналов,
-                    // т.к. свойство CtrlCnlProps может быть изменено из другого потока
+                    // т.к. объект dataCache.CtrlCnlProps может создан заново из другого потока
                     CtrlCnlProps[] ctrlCnlProps = dataCache.CtrlCnlProps;
 
                     // поиск свойств заданного канала
@@ -201,6 +206,35 @@ namespace Scada.Client
         }
 
         /// <summary>
+        /// Получить цвет по статусу входного канала
+        /// </summary>
+        public string GetColorByStat(int stat, string defaultColor)
+        {
+            try
+            {
+                lock (baseLock)
+                {
+                    dataCache.RefreshBaseTables();
+                }
+
+                lock (statColorsLock)
+                {
+                    string color;
+                    if (dataCache.StatColors.TryGetValue(stat, out color) && !string.IsNullOrEmpty(color))
+                        return color;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении цвета по статусу {0}" :
+                    "Error getting color by status {0}", stat);
+            }
+
+            return defaultColor;
+        }
+
+        /// <summary>
         /// Привязать свойства входных каналов и каналов управления к элементам представления
         /// </summary>
         public void BindCnlProps(BaseView view)
@@ -214,9 +248,10 @@ namespace Scada.Client
 
                 lock (cnlPropsLock)
                 {
-                    if (view != null && view.BaseAge != dataCache.BaseAge && dataCache.BaseAge > DateTime.MinValue)
+                    DateTime baseAge = dataCache.BaseAge;
+                    if (view != null && view.BaseAge != baseAge && baseAge > DateTime.MinValue)
                     {
-                        view.BaseAge = dataCache.BaseAge;
+                        view.BaseAge = baseAge;
                         view.BindCnlProps(dataCache.CnlProps);
                         view.BindCtrlCnlProps(dataCache.CtrlCnlProps);
                     }
@@ -392,39 +427,6 @@ namespace Scada.Client
             return BaseValues.Roles.Custom <= roleID && roleID < BaseValues.Roles.Err ?
                 GetRoleNameFromBase(roleID, roleName) :
                 roleName;
-        }
-        
-        /// <summary>
-        /// Получить цвет по статусу
-        /// </summary>
-        public string GetColorByStat(int stat, string defaultColor)
-        {
-            lock (baseLock)
-            {
-                try
-                {
-                    dataCache.RefreshBaseTables();
-
-                    DataTable tblEvType = dataCache.BaseTables.EvTypeTable;
-                    BaseTables.CheckColumnsExist(tblEvType, true);
-                    tblEvType.DefaultView.RowFilter = "CnlStatus = " + stat;
-
-                    if (tblEvType.DefaultView.Count > 0)
-                    {
-                        object colorObj = tblEvType.DefaultView[0]["Color"];
-                        if (colorObj != DBNull.Value)
-                            return colorObj.ToString();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    log.WriteException(ex, Localization.UseRussian ?
-                        "Ошибка при получении цвета по статусу {0}" :
-                        "Error getting color by status {0}", stat);
-                }
-
-                return defaultColor;
-            }
         }
 
 

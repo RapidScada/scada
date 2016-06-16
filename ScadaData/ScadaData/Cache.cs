@@ -126,23 +126,23 @@ namespace Scada
         /// <summary>
         /// Добавить значение в кеш
         /// </summary>
-        public void AddValue(TKey key, TValue value)
+        public CacheItem AddValue(TKey key, TValue value)
         {
-            AddValue(key, value, DateTime.MinValue, DateTime.Now);
+            return AddValue(key, value, DateTime.MinValue, DateTime.Now);
         }
 
         /// <summary>
         /// Добавить значение в кеш
         /// </summary>
-        public void AddValue(TKey key, TValue value, DateTime valueAge)
+        public CacheItem AddValue(TKey key, TValue value, DateTime valueAge)
         {
-            AddValue(key, value, valueAge, DateTime.Now);
+            return AddValue(key, value, valueAge, DateTime.Now);
         }
 
         /// <summary>
         /// Добавить значение в кеш
         /// </summary>
-        public void AddValue(TKey key, TValue value, DateTime valueAge, DateTime nowDT)
+        public CacheItem AddValue(TKey key, TValue value, DateTime valueAge, DateTime nowDT)
         {
             if (key == null)
                 throw new ArgumentNullException("key");
@@ -151,6 +151,7 @@ namespace Scada
             {
                 CacheItem cacheItem = new CacheItem(value, valueAge, nowDT);
                 items.Add(key, cacheItem);
+                return cacheItem;
             }
         }
 
@@ -183,6 +184,21 @@ namespace Scada
                     RemoveOutdatedItems(nowDT);
 
                 return item;
+            }
+        }
+
+        /// <summary>
+        /// Получить элемент по ключу, обновив время доступа, 
+        /// или создать новый пустой элемент, если ключ не содержится в кеше
+        /// </summary>
+        public CacheItem GetOrCreateItem(TKey key, DateTime nowDT)
+        {
+            lock (this)
+            {
+                CacheItem cacheItem = GetItem(key, nowDT);
+                if (cacheItem == null)
+                    cacheItem = AddValue(key, default(TValue), DateTime.MinValue, nowDT);
+                return cacheItem;
             }
         }
 

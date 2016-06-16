@@ -430,10 +430,17 @@ namespace Scada.Web
         /// </summary>
         public long AssignStamp(BaseView view)
         {
-            if (view.Stamp <= 0)
-                view.Stamp = ++viewStampCntr;
+            if (view == null)
+            {
+                return 0;
+            }
+            else lock (view)
+            {
+                if (view.Stamp <= 0)
+                    view.Stamp = ++viewStampCntr;
 
-            return view.Stamp;
+                return view.Stamp;
+            }
         }
 
 

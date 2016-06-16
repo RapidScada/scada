@@ -25,6 +25,7 @@
 
 using Scada.Data;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using Utils;
@@ -43,11 +44,19 @@ namespace Scada.Client
         /// Вместимость кеша таблиц часовых срезов
         /// </summary>
         protected const int HourCacheCapacity = 100;
+        /// <summary>
+        /// Вместимость кеша таблиц событий
+        /// </summary>
+        protected const int EventCacheCapacity = 100;
 
         /// <summary>
         /// Период хранения таблиц часовых срезов в кеше с момента последнего доступа
         /// </summary>
         protected static readonly TimeSpan HourCacheStorePeriod = TimeSpan.FromMinutes(10);
+        /// <summary>
+        /// Период хранения таблиц событий в кеше с момента последнего доступа
+        /// </summary>
+        protected static readonly TimeSpan EventCacheStorePeriod = TimeSpan.FromMinutes(10);
         /// <summary>
         /// Время актуальности таблиц базы конфигурации
         /// </summary>
@@ -83,10 +92,6 @@ namespace Scada.Client
         /// Объект для синхронизации достапа к текущим данным
         /// </summary>
         protected readonly object curDataLock;
-        /// <summary>
-        /// Объект для синхронизации достапа к часовым данным
-        /// </summary>
-        protected readonly object hourDataLock;
 
         /// <summary>
         /// Время последего успешного обновления таблиц базы конфигурации
@@ -124,7 +129,6 @@ namespace Scada.Client
 
             baseLock = new object();
             curDataLock = new object();
-            hourDataLock = new object();
 
             baseRefrDT = DateTime.MinValue;
             tblCur = new SrezTableLight();
@@ -134,7 +138,9 @@ namespace Scada.Client
             BaseTables = new BaseTables();
             CnlProps = new InCnlProps[0];
             CtrlCnlProps = new CtrlCnlProps[0];
+            StatColors = new SortedList<int, string>();
             HourTableCache = new Cache<DateTime, SrezTableLight>(HourCacheStorePeriod, HourCacheCapacity);
+            EventTableCache = new Cache<DateTime, EventTableLight>(EventCacheStorePeriod, EventCacheCapacity);
         }
 
 
@@ -153,20 +159,41 @@ namespace Scada.Client
         /// <summary>
         /// Получить свойства входных каналов
         /// </summary>
-        /// <remarks>Свойства каналов автоматически создаются после обновления таблиц базы конфигурации</remarks>
+        /// <remarks>Создаются автоматически после обновления таблиц базы конфигурации.
+        /// Массив после создания не изменяется экземпляром данного класса и не должен изменяться извне,
+        /// таким образом, чтение его данных является потокобезопасным
+        /// </remarks>
         public InCnlProps[] CnlProps { get; protected set; }
 
         /// <summary>
         /// Получить свойства входных каналов
         /// </summary>
-        /// <remarks>Свойства каналов автоматически создаются после обновления таблиц базы конфигурации</remarks>
+        /// <remarks>Создаются автоматически после обновления таблиц базы конфигурации.
+        /// Массив после создания не изменяется экземпляром данного класса и не должен изменяться извне,
+        /// таким образом, чтение его данных является потокобезопасным
+        /// </remarks>
         public CtrlCnlProps[] CtrlCnlProps { get; protected set; }
+
+        /// <summary>
+        /// Получить цвета, соответствующие статусам входных каналов
+        /// </summary>
+        /// <remarks>Создаются автоматически после обновления таблиц базы конфигурации.
+        /// Список после создания не изменяется экземпляром данного класса и не должен изменяться извне,
+        /// таким образом, чтение его данных является потокобезопасным
+        /// </remarks>
+        public SortedList<int, string> StatColors { get; protected set; }
 
         /// <summary>
         /// Получить кеш таблиц часовых срезов
         /// </summary>
         /// <remarks>Использовать вне данного класса только для получения состояния кеша</remarks>
         public Cache<DateTime, SrezTableLight> HourTableCache { get; protected set; }
+
+        /// <summary>
+        /// Получить кеш таблиц событий
+        /// </summary>
+        /// <remarks>Использовать вне данного класса только для получения состояния кеша</remarks>
+        public Cache<DateTime, EventTableLight> EventTableCache { get; protected set; }
 
 
         /// <summary>
@@ -338,6 +365,37 @@ namespace Scada.Client
         }
 
         /// <summary>
+        /// Заполнить цвета статусов входных каналов
+        /// </summary>
+        protected void FillStatColors()
+        {
+            try
+            {
+                log.WriteAction(Localization.UseRussian ?
+                    "Заполнение цветов статусов входных каналов" :
+                    "Fill input channel statuses colors");
+
+                DataTable tblEvType = BaseTables.EvTypeTable;
+                int statusCnt = tblEvType.Rows.Count;
+                SortedList<int, string> newStatColors = new SortedList<int, string>(statusCnt);
+
+                for (int i = 0; i < statusCnt; i++)
+                {
+                    DataRowView rowView = tblEvType.DefaultView[i];
+                    StatColors.Add((int)rowView["CnlStatus"], (string)rowView["Color"]);
+                }
+
+                StatColors = newStatColors;
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, (Localization.UseRussian ?
+                    "Ошибка при заполнении цветов статусов входных каналов: " :
+                    "Error filling input channel statuses colors"));
+            }
+        }
+
+        /// <summary>
         /// Обновить текущие данные
         /// </summary>
         protected void RefreshCurData()
@@ -384,7 +442,7 @@ namespace Scada.Client
 
 
         /// <summary>
-        /// Обновить таблицы базы конфигурации и свойства каналов
+        /// Обновить таблицы базы конфигурации, свойства каналов и цвета статусов каналов
         /// </summary>
         public void RefreshBaseTables()
         {
@@ -437,9 +495,10 @@ namespace Scada.Client
                                 }
                             }
 
-                            // заполнение свойств каналов
+                            // заполнение свойств каналов и цветов статустов
                             FillCnlProps();
                             FillCtrlCnlProps();
+                            FillStatColors();
                         }
                     }
                 }
@@ -494,66 +553,55 @@ namespace Scada.Client
                 // получение таблицы часовых срезов из кеша
                 date = date.Date;
                 DateTime utcNowDT = DateTime.UtcNow;
-                Cache<DateTime, SrezTableLight>.CacheItem cacheItem = HourTableCache.GetItem(date, utcNowDT);
-                SrezTableLight tableFromCache; // таблица из кеша
-                DateTime tableAge;             // время изменения файла таблицы
-                bool tableIsNotValid;          // таблица могла устареть
+                Cache<DateTime, SrezTableLight>.CacheItem  cacheItem = HourTableCache.GetOrCreateItem(date, utcNowDT);
 
-                if (cacheItem == null)
+                // блокировка доступа только к одной таблице часовых срезов
+                lock (cacheItem)
                 {
-                    tableFromCache = null;
-                    tableAge = DateTime.MinValue;
-                    tableIsNotValid = true;
-                }
-                else
-                {
-                    tableFromCache = cacheItem.Value;
-                    tableAge = cacheItem.ValueAge;
-                    tableIsNotValid = utcNowDT - cacheItem.ValueRefrDT > DataValidSpan;
-                }
+                    SrezTableLight table = cacheItem.Value; // таблица, которую необходимо получить
+                    DateTime tableAge = cacheItem.ValueAge; // время изменения файла таблицы
+                    bool tableIsNotValid = utcNowDT - cacheItem.ValueRefrDT > DataValidSpan; // таблица могла устареть
 
-                // получение таблицы часовых срезов от сервера
-                SrezTableLight table = tableFromCache;
-
-                if (tableFromCache == null || tableIsNotValid)
-                {
-                    string tableName = SrezAdapter.BuildHourTableName(date);
-                    DateTime newTableAge = serverComm.ReceiveFileAge(ServerComm.Dirs.Hour, tableName);
-
-                    if (newTableAge == DateTime.MinValue)
+                    // получение таблицы часовых срезов от сервера
+                    if (table == null || tableIsNotValid)
                     {
-                        throw new ScadaException(Localization.UseRussian ?
-                            "Не удалось принять время изменения файла часовых данных." :
-                            "Unable to receive hourly data file modification time.");
-                    }
-                    else if (newTableAge != tableAge) // файл таблицы изменён
-                    {
-                        table = new SrezTableLight();
-                        if (serverComm.ReceiveSrezTable(tableName, table))
-                        {
-                            if (cacheItem == null)
-                                // добавление таблицы в кеш
-                                HourTableCache.AddValue(date, table, newTableAge, utcNowDT);
-                            else
-                                // обновление таблицы в кеше
-                                HourTableCache.UpdateItem(cacheItem, table, newTableAge, utcNowDT);
-                        }
-                        else
+                        string tableName = SrezAdapter.BuildHourTableName(date);
+                        DateTime newTableAge = serverComm.ReceiveFileAge(ServerComm.Dirs.Hour, tableName);
+
+                        if (newTableAge == DateTime.MinValue)
                         {
                             throw new ScadaException(Localization.UseRussian ?
-                                "Не удалось принять таблицу часовых срезов." :
-                                "Unable to receive hour data table.");
+                                "Не удалось принять время изменения файла часовых данных." :
+                                "Unable to receive hourly data file modification time.");
+                        }
+                        else if (newTableAge != tableAge) // файл таблицы изменён
+                        {
+                            table = new SrezTableLight();
+                            if (serverComm.ReceiveSrezTable(tableName, table))
+                            {
+                                table.FileModTime = newTableAge;
+                                table.LastFillTime = utcNowDT;
+
+                                // обновление таблицы в кеше
+                                HourTableCache.UpdateItem(cacheItem, table, newTableAge, utcNowDT);
+                            }
+                            else
+                            {
+                                throw new ScadaException(Localization.UseRussian ?
+                                    "Не удалось принять таблицу часовых срезов." :
+                                    "Unable to receive hourly data table.");
+                            }
                         }
                     }
-                }
 
-                return table;
+                    return table;
+                }
             }
             catch (Exception ex)
             {
                 log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при получении таблицы часового среза за {0} из кэша или от сервера" :
-                    "Error getting hour data table for {0} from the cache or from the server", 
+                    "Error getting hourly data table for {0} from the cache or from the server", 
                     date.ToString("d", Localization.Culture));
                 return new SrezTableLight();
             }
@@ -567,7 +615,63 @@ namespace Scada.Client
         /// Метод всегда возвращает объект, не равный null</remarks>
         public EventTableLight GetEventTable(DateTime date)
         {
-            return new EventTableLight();
+            try
+            {
+                // получение таблицы событий из кеша
+                date = date.Date;
+                DateTime utcNowDT = DateTime.UtcNow;
+                Cache<DateTime, EventTableLight>.CacheItem cacheItem = EventTableCache.GetOrCreateItem(date, utcNowDT);
+
+                // блокировка доступа только к одной таблице событий
+                lock (cacheItem)
+                {
+                    EventTableLight table = cacheItem.Value; // таблица, которую необходимо получить
+                    DateTime tableAge = cacheItem.ValueAge; // время изменения файла таблицы
+                    bool tableIsNotValid = utcNowDT - cacheItem.ValueRefrDT > DataValidSpan; // таблица могла устареть
+
+                    // получение таблицы событий от сервера
+                    if (table == null || tableIsNotValid)
+                    {
+                        string tableName = EventAdapter.BuildEvTableName(date);
+                        DateTime newTableAge = serverComm.ReceiveFileAge(ServerComm.Dirs.Events, tableName);
+
+                        if (newTableAge == DateTime.MinValue)
+                        {
+                            throw new ScadaException(Localization.UseRussian ?
+                                "Не удалось принять время изменения файла событий." :
+                                "Unable to receive event file modification time.");
+                        }
+                        else if (newTableAge != tableAge) // файл таблицы изменён
+                        {
+                            table = new EventTableLight();
+                            if (serverComm.ReceiveEventTable(tableName, table))
+                            {
+                                table.FileModTime = newTableAge;
+                                table.LastFillTime = utcNowDT;
+
+                                // обновление таблицы в кеше
+                                EventTableCache.UpdateItem(cacheItem, table, newTableAge, utcNowDT);
+                            }
+                            else
+                            {
+                                throw new ScadaException(Localization.UseRussian ?
+                                    "Не удалось принять таблицу событий." :
+                                    "Unable to receive event table.");
+                            }
+                        }
+                    }
+
+                    return table;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении таблицы событий за {0} из кэша или от сервера" :
+                    "Error getting event table for {0} from the cache or from the server",
+                    date.ToString("d", Localization.Culture));
+                return new EventTableLight();
+            }
         }
 
         /// <summary>

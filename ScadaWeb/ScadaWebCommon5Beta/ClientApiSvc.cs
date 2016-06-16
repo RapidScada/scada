@@ -44,6 +44,26 @@ namespace Scada.Web
     public class ClientApiSvc
     {
         /// <summary>
+        /// Объект для передачи архивных данных и событий
+        /// </summary>
+        private class ArcDTO : DataTransferObject
+        {
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public ArcDTO()
+                : base()
+            {
+                DataAge = null;
+            }
+
+            /// <summary>
+            /// Получить или установить время изменения данных в источнике
+            /// </summary>
+            public object DataAge { get; set; }
+        }
+
+        /// <summary>
         /// Расширенные данные входого канала
         /// </summary>
         private class CnlDataExt
@@ -111,6 +131,65 @@ namespace Scada.Web
             public CnlDataExt[] CnlDataExtArr { get; set; }
         }
 
+        /// <summary>
+        /// Данные события
+        /// </summary>
+        private class Event
+        {
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public Event()
+            {
+                Num = 0;
+                Time = "";
+                Obj = "";
+                KP = "";
+                Cnl = "";
+                Text = "";
+                Ack = "";
+                Color = "";
+                Sound = false;
+            }
+
+            /// <summary>
+            /// Получить или установить порядковый номер
+            /// </summary>
+            public int Num { get; set; }
+            /// <summary>
+            /// Получить или установить отформатированную дату и время
+            /// </summary>
+            public string Time { get; set; }
+            /// <summary>
+            /// Получить или установить наименование объекта
+            /// </summary>
+            public string Obj { get; set; }
+            /// <summary>
+            /// Получить или установить наименование КП
+            /// </summary>
+            public string KP { get; set; }
+            /// <summary>
+            /// Получить или установить наименование входного канала
+            /// </summary>
+            public string Cnl { get; set; }
+            /// <summary>
+            /// Получить или установить текст события
+            /// </summary>
+            public string Text { get; set; }
+            /// <summary>
+            /// Получить или установить информацию о квитировании
+            /// </summary>
+            public string Ack { get; set; }
+            /// <summary>
+            /// Получить или установить цвет
+            /// </summary>
+            public string Color { get; set; }
+            /// <summary>
+            /// Получить или установить признак воспроизведения звука
+            /// </summary>
+            public bool Sound { get; set; }
+        }
+
 
         /// <summary>
         /// Максимальное количество символов в строке данных формата JSON, 10 МБ
@@ -133,10 +212,6 @@ namespace Scada.Web
         /// </summary>
         private static readonly string UnableGetViewMsg = Localization.UseRussian ? 
             "Не удалось получить представление из кеша" : "Unable to get view from the cache";
-        /// <summary>
-        /// Начало отчёта времени в Unix, которое используется в Javascript реализации даты
-        /// </summary>
-        private static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
 
         /// <summary>
@@ -494,6 +569,45 @@ namespace Scada.Web
         }
 
         /// <summary>
+        /// Получить события по заданному фильтру
+        /// </summary>
+        /// <remarks>Возвращает Event[], упакованный в ArcDTO, в формате в JSON.
+        /// Если задан фильтр по представлению, то оно должно быть уже загружено в кеш</remarks>
+        [OperationContract]
+        [WebGet]
+        public string GetEvents(int year, int month, int day, string cnlNums, int viewID,
+            int lastCount, int startEvNum, int dataAge)
+        {
+            try
+            {
+                AppData.CheckLoggedOn();
+
+                if (viewID > 0)
+                {
+
+                }
+
+                BaseView view = AppData.ViewCache.GetViewFromCache(viewID);
+
+                if (view == null)
+                {
+                    throw new ScadaException(UnableGetViewMsg);
+                }
+                else
+                {
+                    return JsSerializer.Serialize(new ArcDTO());
+                }
+            }
+            catch (Exception ex)
+            {
+                AppData.Log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении событий по фильтру, где каналы={0}, ид. представления={1}" :
+                    "Error getting events by the filter where channels={0}, view id={1}", cnlNums, viewID);
+                return GetErrorDtoJs(ex);
+            }
+        }
+
+        /// <summary>
         /// Получить метку представления из кеша
         /// </summary>
         /// <remarks>Возвращает long, упакованный в DataTransferObject, в формате в JSON</remarks>
@@ -532,7 +646,7 @@ namespace Scada.Web
                 DateTime dateTime;
                 if (DateTime.TryParse(s, Localization.Culture, DateTimeStyles.None, out dateTime))
                 {
-                    long ms = (long)(dateTime - UnixEpoch).TotalMilliseconds;
+                    long ms = (long)(dateTime - WebUtils.UnixEpoch).TotalMilliseconds;
                     return JsSerializer.Serialize(new DataTransferObject(ms));
                 }
                 else
