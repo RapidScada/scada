@@ -123,6 +123,7 @@ namespace Scada.Data
         /// Фильтры таблицы событий
         /// </summary>
         [Flags]
+        [Obsolete]
         public enum EventFilters
         {
             /// <summary>
@@ -297,6 +298,7 @@ namespace Scada.Data
         /// <summary>
         /// Получить отфильтрованный список событий
         /// </summary>
+        [Obsolete]
         public List<Event> FilteredEvents
         {
             get
@@ -318,6 +320,7 @@ namespace Scada.Data
         /// <summary>
         /// Получить или установить фильтры таблицы событий
         /// </summary>
+        [Obsolete]
         public EventFilters Filters
         {
             get
@@ -339,6 +342,7 @@ namespace Scada.Data
         /// <summary>
         /// Получить или установить номер объекта, по которому фильтруется таблица
         /// </summary>
+        [Obsolete]
         public int ObjNumFilter
         {
             get
@@ -360,6 +364,7 @@ namespace Scada.Data
         /// <summary>
         /// Получить или установить номер КП, по которому фильтруется таблица
         /// </summary>
+        [Obsolete]
         public int KPNumFilter
         {
             get
@@ -381,6 +386,7 @@ namespace Scada.Data
         /// <summary>
         /// Получить или установить номер параметра, по которому фильтруется таблица
         /// </summary>
+        [Obsolete]
         public int ParamNumFilter
         {
             get
@@ -402,6 +408,7 @@ namespace Scada.Data
         /// <summary>
         /// Получить или установить список каналов, по которому фильтруется таблица
         /// </summary>
+        [Obsolete]
         public List<int> CnlsFilter
         {
             get
@@ -456,6 +463,7 @@ namespace Scada.Data
         /// <summary>
         /// Получить часть отфильтрованного списка событий, начиная с заданного номера события
         /// </summary>
+        [Obsolete]
         public List<Event> GetEvents(int startEvNum)
         {
             if (eventsCache == null || this.startEvNum != startEvNum)
@@ -481,6 +489,7 @@ namespace Scada.Data
         /// <summary>
         /// Получить конечную часть отфильтрованного списка событий
         /// </summary>
+        [Obsolete]
         public List<Event> GetLastEvents(int count)
         {
             if (lastEventsCache == null || lastEvCnt != count)
@@ -516,6 +525,38 @@ namespace Scada.Data
             }
 
             return lastEventsCache;
+        }
+
+        /// <summary>
+        /// Получить отфильтрованные события
+        /// </summary>
+        public List<Event> GetFilteredEvents(ISet<int> cnlNums, int lastCount, int startEvNum)
+        {
+            List<Event> filteredEvents = lastCount > 0 ? new List<Event>(lastCount) : new List<Event>();
+            int startEvInd = Math.Max(0, startEvNum - 1);
+            int allEventsCnt = allEvents.Count;
+            bool anyCnlNum = cnlNums == null;
+
+            Action<int> addEventAction = delegate(int i) 
+            {
+                Event ev = allEvents[i];
+                if (anyCnlNum || cnlNums.Contains(ev.CnlNum))
+                    filteredEvents.Add(ev);
+            };
+
+            if (lastCount > 0)
+            {
+                for (int i = allEventsCnt - 1; i >= startEvInd && filteredEvents.Count < lastCount; i--)
+                    addEventAction(i);
+                filteredEvents.Reverse();
+            }
+            else if (startEvNum > 0)
+            {
+                for (int i = startEvInd; i < allEventsCnt; i++)
+                    addEventAction(i);
+            }
+
+            return filteredEvents;
         }
     }
 }

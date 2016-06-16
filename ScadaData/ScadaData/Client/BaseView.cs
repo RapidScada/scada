@@ -42,7 +42,9 @@ namespace Scada.Client
         public BaseView()
         {
             ItfObjName = "";
+            CnlSet = new HashSet<int>();
             CnlList = new List<int>();
+            CtrlCnlSet = new HashSet<int>();
             CtrlCnlList = new List<int>();
             StoredOnServer = true;
             BaseAge = DateTime.MinValue;
@@ -61,10 +63,20 @@ namespace Scada.Client
         public string ItfObjName { get; set; }
 
         /// <summary>
+        /// Получить множество номеров входных каналов, которые используются в представлении
+        /// </summary>
+        public HashSet<int> CnlSet { get; protected set; }
+
+        /// <summary>
         /// Получить упорядоченный без повторений список номеров входных каналов, 
         /// которые используются в представлении
         /// </summary>
         public List<int> CnlList { get; protected set; }
+
+        /// <summary>
+        /// Получить множество номеров каналов управления, которые используются в представлении
+        /// </summary>
+        public HashSet<int> CtrlCnlSet { get; protected set; }
 
         /// <summary>
         /// Получить упорядоченный без повторений список номеров каналов управления, 
@@ -91,11 +103,11 @@ namespace Scada.Client
 
 
         /// <summary>
-        /// Добавить номер входного канала в список, сохраняя упорядоченность и уникальность его элементов
+        /// Добавить номер входного канала в множество и в список
         /// </summary>
         protected void AddCnlNum(int cnlNum)
         {
-            if (cnlNum > 0)
+            if (cnlNum > 0 && CnlSet.Add(cnlNum))
             {
                 int index = CnlList.BinarySearch(cnlNum);
                 if (index < 0)
@@ -104,11 +116,11 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Добавить номер канала управления в список, сохраняя упорядоченность и уникальность его элементов
+        /// Добавить номер канала управления в множество и в список
         /// </summary>
         protected void AddCtrlCnlNum(int ctrlCnlNum)
         {
-            if (ctrlCnlNum > 0)
+            if (ctrlCnlNum > 0 && CtrlCnlSet.Add(ctrlCnlNum))
             {
                 int index = CtrlCnlList.BinarySearch(ctrlCnlNum);
                 if (index < 0)
@@ -143,7 +155,7 @@ namespace Scada.Client
         /// </summary>
         public virtual bool ContainsCnl(int cnlNum)
         {
-            return CnlList.BinarySearch(cnlNum) >= 0;
+            return CnlSet.Contains(cnlNum);
         }
 
         /// <summary>
@@ -151,11 +163,8 @@ namespace Scada.Client
         /// </summary>
         public virtual bool ContainsAllCnls(IEnumerable<int> cnlNums)
         {
-            foreach (int cnlNum in cnlNums)
-                if (!ContainsCnl(cnlNum))
-                    return false;
-
-            return true;
+            // в случае пустых CnlSet и cnlNums возвращает false
+            return CnlSet.IsProperSupersetOf(cnlNums);
         }
 
         /// <summary>
@@ -163,7 +172,7 @@ namespace Scada.Client
         /// </summary>
         public virtual bool ContainsCtrlCnl(int ctrlCnlNum)
         {
-            return CtrlCnlList.BinarySearch(ctrlCnlNum) >= 0;
+            return CtrlCnlSet.Contains(ctrlCnlNum);
         }
         
         /// <summary>
@@ -175,6 +184,8 @@ namespace Scada.Client
             ItfObjName = "";
             CnlList.Clear();
             CtrlCnlList.Clear();
+            CnlSet.Clear();
+            CtrlCnlSet.Clear();
         }
     }
 }
