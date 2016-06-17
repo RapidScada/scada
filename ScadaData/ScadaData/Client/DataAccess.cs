@@ -194,9 +194,12 @@ namespace Scada.Client
                 DateTime baseAge = dataCache.BaseAge;
                 if (view != null && view.BaseAge != baseAge && baseAge > DateTime.MinValue)
                 {
-                    view.BaseAge = baseAge;
-                    view.BindCnlProps(dataCache.CnlProps);
-                    view.BindCtrlCnlProps(dataCache.CtrlCnlProps);
+                    lock (view)
+                    {
+                        view.BaseAge = baseAge;
+                        view.BindCnlProps(dataCache.CnlProps);
+                        view.BindCtrlCnlProps(dataCache.CtrlCnlProps);
+                    }
                 }
             }
             catch (Exception ex)
