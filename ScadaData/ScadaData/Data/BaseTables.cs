@@ -152,6 +152,17 @@ namespace Scada.Data
         /// </summary>
         public DataTable[] AllTables { get; protected set; }
 
+        /// <summary>
+        /// Получить объект для синхронизации доступа к таблицам
+        /// </summary>
+        public object SyncRoot
+        {
+            get
+            {
+                return this;
+            }
+        }
+
 
         /// <summary>
         /// Получить имя файла таблицы без директории

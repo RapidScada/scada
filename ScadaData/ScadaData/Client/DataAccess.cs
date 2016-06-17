@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaData
- * Summary  : Thread safe access to the client cache data
+ * Summary  : Handy and thread safe access to the client cache data
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
@@ -33,11 +33,9 @@ using Utils;
 namespace Scada.Client
 {
     /// <summary>
-    /// Thread safe access to the client cache data
-    /// <para>Потокобезопасный доступ к данным кеша клиентов</para>
+    /// Handy and thread safe access to the client cache data
+    /// <para>Удобный и потокобезопасный доступ к данным кеша клиентов</para>
     /// </summary>
-    /// <remarks>The class replaces Scada.Web.MainData
-    /// <para>Класс заменяет Scada.Web.MainData</para></remarks>
     public class DataAccess
     {
         /// <summary>
@@ -48,27 +46,6 @@ namespace Scada.Client
         /// Журнал
         /// </summary>
         protected readonly Log log;
-
-        /// <summary>
-        /// Объект для синхронизации доступа к информации из базы конфигурации
-        /// </summary>
-        protected readonly object baseLock;
-        /// <summary>
-        /// Объект для синхронизации достапа к свойствам входных каналов
-        /// </summary>
-        protected readonly object cnlPropsLock;
-        /// <summary>
-        /// Объект для синхронизации достапа к свойствам каналов управления
-        /// </summary>
-        protected readonly object ctrlCnlPropsLock;
-        /// <summary>
-        /// Объект для синхронизации достапа к цветам статусов входных каналов
-        /// </summary>
-        protected readonly object statColorsLock;
-        /// <summary>
-        /// Объект для синхронизации достапа к текущим даным
-        /// </summary>
-        protected readonly object curDataLock;
 
 
         /// <summary>
@@ -90,12 +67,6 @@ namespace Scada.Client
 
             this.dataCache = dataCache;
             this.log = log;
-
-            baseLock = new object();
-            cnlPropsLock = new object();
-            ctrlCnlPropsLock = new object();
-            statColorsLock = new object();
-            curDataLock = new object();
         }
 
 
@@ -116,27 +87,26 @@ namespace Scada.Client
         /// </summary>
         protected string GetRoleNameFromBase(int roleID, string defaultRoleName)
         {
-            lock (baseLock)
+            try
             {
-                try
-                {
-                    dataCache.RefreshBaseTables();
+                dataCache.RefreshBaseTables();
+                BaseTables baseTables = dataCache.BaseTables;
 
-                    DataTable tblRole = dataCache.BaseTables.RightTable;
-                    BaseTables.CheckColumnsExist(tblRole, true);
-                    tblRole.DefaultView.RowFilter = "RoleID = " + roleID;
-
-                    return tblRole.DefaultView.Count > 0 ?
-                        (string)tblRole.DefaultView[0]["Name"] :
-                        defaultRoleName;
-                }
-                catch (Exception ex)
+                lock (baseTables.SyncRoot)
                 {
-                    log.WriteException(ex, Localization.UseRussian ?
-                        "Ошибка при получении наименования роли по идентификатору {0}" :
-                        "Error getting role name by ID {0}", roleID);
-                    return defaultRoleName;
+                    BaseTables.CheckColumnsExist(baseTables.RoleTable, true);
+                    DataView viewRole = baseTables.RoleTable.DefaultView;
+                    viewRole.Sort = "RoleID";
+                    int rowInd = viewRole.Find(roleID);
+                    return rowInd >= 0 ? (string)viewRole[rowInd]["Name"] : defaultRoleName;
                 }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении наименования роли по идентификатору {0}" :
+                    "Error getting role name by ID {0}", roleID);
+                return defaultRoleName;
             }
         }
 
@@ -148,21 +118,14 @@ namespace Scada.Client
         {
             try
             {
-                lock (baseLock)
-                {
-                    dataCache.RefreshBaseTables();
-                }
+                dataCache.RefreshBaseTables();
 
-                lock (cnlPropsLock)
-                {
-                    // сохранение ссылки на свойства каналов,
-                    // т.к. объект dataCache.CnlProps может создан заново из другого потока
-                    InCnlProps[] cnlProps = dataCache.CnlProps;
+                // необходимо сохранить ссылку, т.к. объект может быть пересоздан другим потоком
+                InCnlProps[] cnlProps = dataCache.CnlProps;
 
-                    // поиск свойств заданного канала
-                    int ind = Array.BinarySearch(cnlProps, cnlNum, InCnlProps.IntComp);
-                    return ind >= 0 ? cnlProps[ind] : null;
-                }
+                // поиск свойств заданного канала
+                int ind = Array.BinarySearch(cnlProps, cnlNum, InCnlProps.IntComp);
+                return ind >= 0 ? cnlProps[ind] : null;
             }
             catch (Exception ex)
             {
@@ -180,21 +143,14 @@ namespace Scada.Client
         {
             try
             {
-                lock (baseLock)
-                {
-                    dataCache.RefreshBaseTables();
-                }
+                dataCache.RefreshBaseTables();
 
-                lock (ctrlCnlPropsLock)
-                {
-                    // сохранение ссылки на свойства каналов,
-                    // т.к. объект dataCache.CtrlCnlProps может создан заново из другого потока
-                    CtrlCnlProps[] ctrlCnlProps = dataCache.CtrlCnlProps;
+                // необходимо сохранить ссылку, т.к. объект может быть пересоздан другим потоком
+                CtrlCnlProps[] ctrlCnlProps = dataCache.CtrlCnlProps;
 
-                    // поиск свойств заданного канала
-                    int ind = Array.BinarySearch(ctrlCnlProps, ctrlCnlNum, CtrlCnlProps.IntComp);
-                    return ind >= 0 ? ctrlCnlProps[ind] : null;
-                }
+                // поиск свойств заданного канала
+                int ind = Array.BinarySearch(ctrlCnlProps, ctrlCnlNum, CtrlCnlProps.IntComp);
+                return ind >= 0 ? ctrlCnlProps[ind] : null;
             }
             catch (Exception ex)
             {
@@ -212,17 +168,10 @@ namespace Scada.Client
         {
             try
             {
-                lock (baseLock)
-                {
-                    dataCache.RefreshBaseTables();
-                }
-
-                lock (statColorsLock)
-                {
-                    string color;
-                    if (dataCache.StatColors.TryGetValue(stat, out color) && !string.IsNullOrEmpty(color))
-                        return color;
-                }
+                dataCache.RefreshBaseTables();
+                string color;
+                if (dataCache.StatColors.TryGetValue(stat, out color) && !string.IsNullOrEmpty(color))
+                    return color;
             }
             catch (Exception ex)
             {
@@ -241,20 +190,13 @@ namespace Scada.Client
         {
             try
             {
-                lock (baseLock)
+                dataCache.RefreshBaseTables();
+                DateTime baseAge = dataCache.BaseAge;
+                if (view != null && view.BaseAge != baseAge && baseAge > DateTime.MinValue)
                 {
-                    dataCache.RefreshBaseTables();
-                }
-
-                lock (cnlPropsLock)
-                {
-                    DateTime baseAge = dataCache.BaseAge;
-                    if (view != null && view.BaseAge != baseAge && baseAge > DateTime.MinValue)
-                    {
-                        view.BaseAge = baseAge;
-                        view.BindCnlProps(dataCache.CnlProps);
-                        view.BindCtrlCnlProps(dataCache.CtrlCnlProps);
-                    }
+                    view.BaseAge = baseAge;
+                    view.BindCnlProps(dataCache.CnlProps);
+                    view.BindCtrlCnlProps(dataCache.CtrlCnlProps);
                 }
             }
             catch (Exception ex)
@@ -271,20 +213,24 @@ namespace Scada.Client
         /// <remarks>Используется таблица объектов интерфейса</remarks>
         public ViewProps GetViewProps(int viewID)
         {
-            lock (baseLock)
+            try
             {
-                try
+                dataCache.RefreshBaseTables();
+
+                // необходимо сохранить ссылку, т.к. объект может быть пересоздан другим потоком
+                BaseTables baseTables = dataCache.BaseTables;
+
+                lock (baseTables.SyncRoot)
                 {
-                    dataCache.RefreshBaseTables();
+                    BaseTables.CheckColumnsExist(baseTables.InterfaceTable, true);
+                    DataView viewInterface = baseTables.InterfaceTable.DefaultView;
+                    viewInterface.Sort = "ItfID";
+                    int rowInd = viewInterface.Find(viewID);
 
-                    DataTable tblInterface = dataCache.BaseTables.InterfaceTable;
-                    BaseTables.CheckColumnsExist(tblInterface, true);
-                    tblInterface.DefaultView.RowFilter = "ItfID = " + viewID;
-
-                    if (tblInterface.DefaultView.Count > 0)
+                    if (rowInd >= 0)
                     {
                         ViewProps viewProps = new ViewProps(viewID);
-                        viewProps.FileName = (string)tblInterface.DefaultView[0]["Name"];
+                        viewProps.FileName = (string)viewInterface[rowInd]["Name"];
                         string ext = Path.GetExtension(viewProps.FileName);
                         viewProps.ViewTypeCode = ext == null ? "" : ext.TrimStart('.');
                         return viewProps;
@@ -294,13 +240,13 @@ namespace Scada.Client
                         return null;
                     }
                 }
-                catch (Exception ex)
-                {
-                    log.WriteException(ex, Localization.UseRussian ?
-                        "Ошибка при получении свойств представления по ид.={0}" :
-                        "Error getting view properties by ID={0}", viewID);
-                    return null;
-                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении свойств представления по ид.={0}" :
+                    "Error getting view properties by ID={0}", viewID);
+                return null;
             }
         }
 
@@ -309,34 +255,35 @@ namespace Scada.Client
         /// </summary>
         public Dictionary<int, EntityRights> GetViewRights(int roleID)
         {
-            lock (baseLock)
+            Dictionary<int, EntityRights> viewRightsDict = new Dictionary<int, EntityRights>();
+
+            try
             {
-                Dictionary<int, EntityRights> viewRightsDict = new Dictionary<int, EntityRights>();
+                dataCache.RefreshBaseTables();
+                BaseTables baseTables = dataCache.BaseTables;
 
-                try
+                lock (baseTables.SyncRoot)
                 {
-                    dataCache.RefreshBaseTables();
+                    BaseTables.CheckColumnsExist(baseTables.RightTable, true);
+                    DataView viewRight = baseTables.RightTable.DefaultView;
+                    viewRight.Sort = "RoleID";
 
-                    DataTable tblRight = dataCache.BaseTables.RightTable;
-                    BaseTables.CheckColumnsExist(tblRight, true);
-                    tblRight.DefaultView.RowFilter = "RoleID = " + roleID;
-
-                    foreach (DataRowView rowView in tblRight.DefaultView)
+                    foreach (DataRowView rowView in viewRight.FindRows(roleID))
                     {
                         int viewID = (int)rowView["ItfID"];
                         EntityRights rights = new EntityRights((bool)rowView["ViewRight"], (bool)rowView["CtrlRight"]);
                         viewRightsDict[viewID] = rights;
                     }
                 }
-                catch (Exception ex)
-                {
-                    log.WriteException(ex, Localization.UseRussian ?
-                        "Ошибка при получении прав на представления для роли с ид.={0}" :
-                        "Error getting view access rights for the role with ID={0}", roleID);
-                }
-
-                return viewRightsDict;
             }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении прав на представления для роли с ид.={0}" :
+                    "Error getting view access rights for the role with ID={0}", roleID);
+            }
+
+            return viewRightsDict;
         }
 
         /// <summary>
@@ -344,32 +291,33 @@ namespace Scada.Client
         /// </summary>
         public Dictionary<string, EntityRights> GetContentRights(int roleID)
         {
-            lock (baseLock)
+            Dictionary<string, EntityRights> contentRightsDict = new Dictionary<string, EntityRights>();
+
+            try
             {
-                Dictionary<string, EntityRights> contentRightsDict = new Dictionary<string, EntityRights>();
+                dataCache.RefreshBaseTables();
+                BaseTables baseTables = dataCache.BaseTables;
 
-                try
+                lock (baseTables.SyncRoot)
                 {
-                    dataCache.RefreshBaseTables();
-
-                    DataTable tblInterface = dataCache.BaseTables.InterfaceTable;
-                    DataTable tblRight = dataCache.BaseTables.RightTable;
+                    DataTable tblInterface = baseTables.InterfaceTable;
+                    DataTable tblRight = baseTables.RightTable;
                     BaseTables.CheckColumnsExist(tblInterface, true);
                     BaseTables.CheckColumnsExist(tblRight, true);
+                    DataView viewRight = tblRight.DefaultView;
+                    viewRight.Sort = "ItfID, RoleID";
 
-                    foreach (DataRowView itfRowView in tblInterface.DefaultView)
+                    foreach (DataRow itfRow in tblInterface.Rows)
                     {
-                        int contentTypeID = (int)itfRowView["ItfID"];
-                        string contentTypeCode = (string)itfRowView["Name"];
+                        int contentTypeID = (int)itfRow["ItfID"];
+                        string contentTypeCode = (string)itfRow["Name"];
 
                         if (string.IsNullOrEmpty(Path.GetExtension(contentTypeCode)))
                         {
-                            tblRight.DefaultView.RowFilter = string.Format("ItfID = {0} and RoleID = {1}",
-                                contentTypeID, roleID);
-
-                            if (tblRight.DefaultView.Count > 0)
+                            int rightRowInd = viewRight.Find(new object[] { contentTypeID, roleID });
+                            if (rightRowInd >= 0)
                             {
-                                DataRowView rightRowView = tblRight.DefaultView[0];
+                                DataRowView rightRowView = viewRight[rightRowInd];
                                 EntityRights rights = new EntityRights(
                                     (bool)rightRowView["ViewRight"], (bool)rightRowView["CtrlRight"]);
                                 contentRightsDict[contentTypeCode] = rights;
@@ -377,15 +325,15 @@ namespace Scada.Client
                         }
                     }
                 }
-                catch (Exception ex)
-                {
-                    log.WriteException(ex, Localization.UseRussian ?
-                        "Ошибка при получении прав на контент для роли с ид.={0}" :
-                        "Error getting content access rights for the role with ID={0}", roleID);
-                }
-
-                return contentRightsDict;
             }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении прав на контент для роли с ид.={0}" :
+                    "Error getting content access rights for the role with ID={0}", roleID);
+            }
+
+            return contentRightsDict;
         }
 
         /// <summary>
@@ -393,28 +341,27 @@ namespace Scada.Client
         /// </summary>
         public int GetUserID(string username)
         {
-            lock (baseLock)
+            try
             {
-                try
-                {
-                    username = username ?? "";
-                    dataCache.RefreshBaseTables();
+                username = username ?? "";
+                dataCache.RefreshBaseTables();
+                BaseTables baseTables = dataCache.BaseTables;
 
-                    DataTable tblUser = dataCache.BaseTables.UserTable;
-                    BaseTables.CheckColumnsExist(tblUser, true);
-                    tblUser.DefaultView.RowFilter = "Name = '" + username + "'";
-
-                    return tblUser.DefaultView.Count > 0 ?
-                        (int)tblUser.DefaultView[0]["UserID"] :
-                        BaseValues.EmptyDataID;
-                }
-                catch (Exception ex)
+                lock (baseTables.SyncRoot)
                 {
-                    log.WriteException(ex, Localization.UseRussian ?
-                        "Ошибка при получении идентификатора пользователя по имени \"{0}\"" :
-                        "Error getting user ID by name \"{0}\"", username);
-                    return BaseValues.EmptyDataID;
+                    BaseTables.CheckColumnsExist(baseTables.UserTable, true);
+                    DataView viewUser = baseTables.UserTable.DefaultView;
+                    viewUser.Sort = "Name";
+                    int rowInd = viewUser.Find(username);
+                    return rowInd >= 0 ? (int)viewUser[rowInd]["UserID"] : BaseValues.EmptyDataID;
                 }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении идентификатора пользователя по имени \"{0}\"" :
+                    "Error getting user ID by name \"{0}\"", username);
+                return BaseValues.EmptyDataID;
             }
         }
 
@@ -444,24 +391,21 @@ namespace Scada.Client
         /// </summary>
         public SrezTableLight.CnlData GetCurCnlData(int cnlNum, out DateTime dataAge)
         {
-            lock (curDataLock)
+            try
             {
-                try
-                {
-                    SrezTableLight.Srez snapshot = dataCache.GetCurSnapshot(out dataAge);
-                    SrezTableLight.CnlData cnlData;
-                    return snapshot != null && snapshot.GetCnlData(cnlNum, out cnlData) ? 
-                        cnlData : SrezTableLight.CnlData.Empty;
-                }
-                catch (Exception ex)
-                {
-                    log.WriteException(ex, Localization.UseRussian ?
-                        "Ошибка при получении текущих данных входного канала {0}" :
-                        "Error getting current data of the input channel {0}", cnlNum);
+                SrezTableLight.Srez snapshot = dataCache.GetCurSnapshot(out dataAge);
+                SrezTableLight.CnlData cnlData;
+                return snapshot != null && snapshot.GetCnlData(cnlNum, out cnlData) ? 
+                    cnlData : SrezTableLight.CnlData.Empty;
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении текущих данных входного канала {0}" :
+                    "Error getting current data of the input channel {0}", cnlNum);
 
-                    dataAge = DateTime.MinValue;
-                    return SrezTableLight.CnlData.Empty;
-                }
+                dataAge = DateTime.MinValue;
+                return SrezTableLight.CnlData.Empty;
             }
         }
     }

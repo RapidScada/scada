@@ -152,14 +152,17 @@ namespace Scada.Client
         /// <summary>
         /// Получить таблицы базы конфигурации
         /// </summary>
-        /// <remarks>Таблицы после загрузки не изменяются экземпляром данного класса.
-        /// При обновлении таблиц объект таблиц пересоздаётся, обеспечивая целостность</remarks>
+        /// <remarks>При обновлении объект таблиц пересоздаётся, обеспечивая целостность.
+        /// Таблицы после загрузки не изменяются экземпляром данного класса и не должны изменяться извне,
+        /// таким образом, чтение данных из таблиц является потокобезопасным.
+        /// Однако, при использовании DataTable.DefaultView небходимо синхронизировать доступ к таблицам 
+        /// с помощью вызова lock (BaseTables.SyncRoot)</remarks>
         public BaseTables BaseTables { get; protected set; }
 
         /// <summary>
         /// Получить свойства входных каналов
         /// </summary>
-        /// <remarks>Создаются автоматически после обновления таблиц базы конфигурации.
+        /// <remarks>Объект пересоздаётся после обновления таблиц базы конфигурации.
         /// Массив после создания не изменяется экземпляром данного класса и не должен изменяться извне,
         /// таким образом, чтение его данных является потокобезопасным
         /// </remarks>
@@ -168,7 +171,7 @@ namespace Scada.Client
         /// <summary>
         /// Получить свойства входных каналов
         /// </summary>
-        /// <remarks>Создаются автоматически после обновления таблиц базы конфигурации.
+        /// <remarks>Объект пересоздаётся после обновления таблиц базы конфигурации.
         /// Массив после создания не изменяется экземпляром данного класса и не должен изменяться извне,
         /// таким образом, чтение его данных является потокобезопасным
         /// </remarks>
@@ -177,7 +180,7 @@ namespace Scada.Client
         /// <summary>
         /// Получить цвета, соответствующие статусам входных каналов
         /// </summary>
-        /// <remarks>Создаются автоматически после обновления таблиц базы конфигурации.
+        /// <remarks>Объект пересоздаётся после обновления таблиц базы конфигурации.
         /// Список после создания не изменяется экземпляром данного класса и не должен изменяться извне,
         /// таким образом, чтение его данных является потокобезопасным
         /// </remarks>
@@ -208,72 +211,82 @@ namespace Scada.Client
                     "Fill input channels properties");
 
                 DataTable tblInCnl = BaseTables.InCnlTable;
+                DataView viewObj = BaseTables.ObjTable.DefaultView;
+                DataView viewKP = BaseTables.KPTable.DefaultView;
+                DataView viewParam = BaseTables.ParamTable.DefaultView;
+                DataView viewFormat = BaseTables.FormatTable.DefaultView;
+                DataView viewUnit = BaseTables.UnitTable.DefaultView;
+
+                // установка сортировки для последующего поиска строк
+                viewObj.Sort = "ObjNum";
+                viewKP.Sort = "KPNum";
+                viewParam.Sort = "ParamID";
+                viewFormat.Sort = "FormatID";
+                viewUnit.Sort = "UnitID";
+
                 int inCnlCnt = tblInCnl.Rows.Count; // количество входных каналов
                 InCnlProps[] newCnlProps = new InCnlProps[inCnlCnt];
 
                 for (int i = 0; i < inCnlCnt; i++)
                 {
-                    DataRowView rowView = tblInCnl.DefaultView[i];
+                    DataRow inCnlRow = tblInCnl.Rows[i];
                     InCnlProps cnlProps = new InCnlProps();
 
                     // определение свойств, не использующих внешних ключей
-                    cnlProps.CnlNum = (int)rowView["CnlNum"];
-                    cnlProps.CnlName = (string)rowView["Name"];
-                    cnlProps.CnlTypeID = (int)rowView["CnlTypeID"];
-                    cnlProps.ObjNum = (int)rowView["ObjNum"];
-                    cnlProps.KPNum = (int)rowView["KPNum"];
-                    cnlProps.Signal = (int)rowView["Signal"];
-                    cnlProps.FormulaUsed = (bool)rowView["FormulaUsed"];
-                    cnlProps.Formula = (string)rowView["Formula"];
-                    cnlProps.Averaging = (bool)rowView["Averaging"];
-                    cnlProps.ParamID = (int)rowView["ParamID"];
-                    cnlProps.UnitID = (int)rowView["UnitID"];
-                    cnlProps.CtrlCnlNum = (int)rowView["CtrlCnlNum"];
-                    cnlProps.EvEnabled = (bool)rowView["EvEnabled"];
-                    cnlProps.EvSound = (bool)rowView["EvSound"];
-                    cnlProps.EvOnChange = (bool)rowView["EvOnChange"];
-                    cnlProps.EvOnUndef = (bool)rowView["EvOnUndef"];
-                    cnlProps.LimLowCrash = (double)rowView["LimLowCrash"];
-                    cnlProps.LimLow = (double)rowView["LimLow"];
-                    cnlProps.LimHigh = (double)rowView["LimHigh"];
-                    cnlProps.LimHighCrash = (double)rowView["LimHighCrash"];
+                    cnlProps.CnlNum = (int)inCnlRow["CnlNum"];
+                    cnlProps.CnlName = (string)inCnlRow["Name"];
+                    cnlProps.CnlTypeID = (int)inCnlRow["CnlTypeID"];
+                    cnlProps.ObjNum = (int)inCnlRow["ObjNum"];
+                    cnlProps.KPNum = (int)inCnlRow["KPNum"];
+                    cnlProps.Signal = (int)inCnlRow["Signal"];
+                    cnlProps.FormulaUsed = (bool)inCnlRow["FormulaUsed"];
+                    cnlProps.Formula = (string)inCnlRow["Formula"];
+                    cnlProps.Averaging = (bool)inCnlRow["Averaging"];
+                    cnlProps.ParamID = (int)inCnlRow["ParamID"];
+                    cnlProps.UnitID = (int)inCnlRow["UnitID"];
+                    cnlProps.CtrlCnlNum = (int)inCnlRow["CtrlCnlNum"];
+                    cnlProps.EvEnabled = (bool)inCnlRow["EvEnabled"];
+                    cnlProps.EvSound = (bool)inCnlRow["EvSound"];
+                    cnlProps.EvOnChange = (bool)inCnlRow["EvOnChange"];
+                    cnlProps.EvOnUndef = (bool)inCnlRow["EvOnUndef"];
+                    cnlProps.LimLowCrash = (double)inCnlRow["LimLowCrash"];
+                    cnlProps.LimLow = (double)inCnlRow["LimLow"];
+                    cnlProps.LimHigh = (double)inCnlRow["LimHigh"];
+                    cnlProps.LimHighCrash = (double)inCnlRow["LimHighCrash"];
 
                     // определение наименования объекта
-                    DataTable tblObj = BaseTables.ObjTable;
-                    tblObj.DefaultView.RowFilter = "ObjNum = " + cnlProps.ObjNum;
-                    cnlProps.ObjName = tblObj.DefaultView.Count > 0 ? (string)tblObj.DefaultView[0]["Name"] : "";
+                    int objRowInd = viewObj.Find(cnlProps.ObjNum);
+                    if (objRowInd >= 0)
+                        cnlProps.ObjName = (string)viewObj[objRowInd]["Name"];
 
                     // определение наименования КП
-                    DataTable tblKP = BaseTables.KPTable;
-                    tblKP.DefaultView.RowFilter = "KPNum = " + cnlProps.KPNum;
-                    cnlProps.KPName = tblKP.DefaultView.Count > 0 ? (string)tblKP.DefaultView[0]["Name"] : "";
+                    int kpRowInd = viewKP.Find(cnlProps.KPNum);
+                    if (kpRowInd >= 0)
+                        cnlProps.KPName = (string)viewKP[kpRowInd]["Name"];
 
                     // определение наименования параметра и имени файла значка
-                    DataTable tblParam = BaseTables.ParamTable;
-                    tblParam.DefaultView.RowFilter = "ParamID = " + cnlProps.ParamID;
-                    if (tblParam.DefaultView.Count > 0)
+                    int paramRowInd = viewParam.Find(cnlProps.ParamID);
+                    if (paramRowInd >= 0)
                     {
-                        DataRowView paramRowView = tblParam.DefaultView[0];
+                        DataRowView paramRowView = viewParam[paramRowInd];
                         cnlProps.ParamName = (string)paramRowView["Name"];
                         cnlProps.IconFileName = (string)paramRowView["IconFileName"];
                     }
 
                     // определение формата вывода
-                    DataTable tblFormat = BaseTables.FormatTable;
-                    tblFormat.DefaultView.RowFilter = "FormatID = " + rowView["FormatID"];
-                    if (tblFormat.DefaultView.Count > 0)
+                    int formatRowInd = viewFormat.Find(inCnlRow["FormatID"]);
+                    if (formatRowInd >= 0)
                     {
-                        DataRowView formatRowView = tblFormat.DefaultView[0];
+                        DataRowView formatRowView = viewFormat[formatRowInd];
                         cnlProps.ShowNumber = (bool)formatRowView["ShowNumber"];
                         cnlProps.DecDigits = (int)formatRowView["DecDigits"];
                     }
 
                     // определение размерностей
-                    DataTable tblUnit = BaseTables.UnitTable;
-                    tblUnit.DefaultView.RowFilter = "UnitID = " + cnlProps.UnitID;
-                    if (tblUnit.DefaultView.Count > 0)
+                    int unitRowInd = viewUnit.Find(cnlProps.UnitID);
+                    if (unitRowInd >= 0)
                     {
-                        cnlProps.UnitSign = (string)tblUnit.DefaultView[0]["Sign"];
+                        cnlProps.UnitSign = (string)viewUnit[unitRowInd]["Sign"];
                         string[] unitArr = cnlProps.UnitArr = 
                             cnlProps.UnitSign.Split(FieldSeparator, StringSplitOptions.RemoveEmptyEntries);
                         for (int j = 0; j < unitArr.Length; j++)
@@ -307,42 +320,50 @@ namespace Scada.Client
                     "Fill output channels properties");
 
                 DataTable tblCtrlCnl = BaseTables.CtrlCnlTable;
+                DataView viewObj = BaseTables.ObjTable.DefaultView;
+                DataView viewKP = BaseTables.KPTable.DefaultView;
+                DataView viewCmdVal = BaseTables.CmdValTable.DefaultView;
+
+                // установка сортировки для последующего поиска строк
+                viewObj.Sort = "ObjNum";
+                viewKP.Sort = "KPNum";
+                viewCmdVal.Sort = "CmdValID";
+
                 int ctrlCnlCnt = tblCtrlCnl.Rows.Count;
                 CtrlCnlProps[] newCtrlCnlProps = new CtrlCnlProps[ctrlCnlCnt];
 
                 for (int i = 0; i < ctrlCnlCnt; i++)
                 {
-                    DataRowView rowView = tblCtrlCnl.DefaultView[i];
+                    DataRow ctrlCnlRow = tblCtrlCnl.Rows[i];
                     CtrlCnlProps ctrlCnlProps = new CtrlCnlProps();
 
                     // определение свойств, не использующих внешних ключей
-                    ctrlCnlProps.CtrlCnlNum = (int)rowView["CtrlCnlNum"];
-                    ctrlCnlProps.CtrlCnlName = (string)rowView["Name"];
-                    ctrlCnlProps.CmdTypeID = (int)rowView["CmdTypeID"];
-                    ctrlCnlProps.ObjNum = (int)rowView["ObjNum"];
-                    ctrlCnlProps.KPNum = (int)rowView["KPNum"];
-                    ctrlCnlProps.CmdNum = (int)rowView["CmdNum"];
-                    ctrlCnlProps.CmdValID = (int)rowView["CmdValID"];
-                    ctrlCnlProps.FormulaUsed = (bool)rowView["FormulaUsed"];
-                    ctrlCnlProps.Formula = (string)rowView["Formula"];
-                    ctrlCnlProps.EvEnabled = (bool)rowView["EvEnabled"];
+                    ctrlCnlProps.CtrlCnlNum = (int)ctrlCnlRow["CtrlCnlNum"];
+                    ctrlCnlProps.CtrlCnlName = (string)ctrlCnlRow["Name"];
+                    ctrlCnlProps.CmdTypeID = (int)ctrlCnlRow["CmdTypeID"];
+                    ctrlCnlProps.ObjNum = (int)ctrlCnlRow["ObjNum"];
+                    ctrlCnlProps.KPNum = (int)ctrlCnlRow["KPNum"];
+                    ctrlCnlProps.CmdNum = (int)ctrlCnlRow["CmdNum"];
+                    ctrlCnlProps.CmdValID = (int)ctrlCnlRow["CmdValID"];
+                    ctrlCnlProps.FormulaUsed = (bool)ctrlCnlRow["FormulaUsed"];
+                    ctrlCnlProps.Formula = (string)ctrlCnlRow["Formula"];
+                    ctrlCnlProps.EvEnabled = (bool)ctrlCnlRow["EvEnabled"];
 
                     // определение наименования объекта
-                    DataTable tblObj = BaseTables.ObjTable;
-                    tblObj.DefaultView.RowFilter = "ObjNum = " + ctrlCnlProps.ObjNum;
-                    ctrlCnlProps.ObjName = tblObj.DefaultView.Count > 0 ? (string)tblObj.DefaultView[0]["Name"] : "";
+                    int objRowInd = viewObj.Find(ctrlCnlProps.ObjNum);
+                    if (objRowInd >= 0)
+                        ctrlCnlProps.ObjName = (string)viewObj[objRowInd]["Name"];
 
                     // определение наименования КП
-                    DataTable tblKP = BaseTables.KPTable;
-                    tblKP.DefaultView.RowFilter = "KPNum = " + ctrlCnlProps.KPNum;
-                    ctrlCnlProps.KPName = tblKP.DefaultView.Count > 0 ? (string)tblKP.DefaultView[0]["Name"] : "";
+                    int kpRowInd = viewKP.Find(ctrlCnlProps.KPNum);
+                    if (kpRowInd >= 0)
+                        ctrlCnlProps.KPName = (string)viewKP[kpRowInd]["Name"];
 
-                    // определение размерностей
-                    DataTable tblCmdVal = BaseTables.CmdValTable;
-                    tblCmdVal.DefaultView.RowFilter = "CmdValID = " + ctrlCnlProps.CmdValID;
-                    if (tblCmdVal.DefaultView.Count > 0)
+                    // определение значений команды
+                    int cmdValInd = viewCmdVal.Find(ctrlCnlProps.CmdValID);
+                    if (cmdValInd >= 0)
                     {
-                        ctrlCnlProps.CmdVal = (string)tblCmdVal.DefaultView[0]["Val"];
+                        ctrlCnlProps.CmdVal = (string)viewCmdVal[cmdValInd]["Val"];
                         string[] cmdValArr = ctrlCnlProps.CmdValArr = 
                             ctrlCnlProps.CmdVal.Split(FieldSeparator, StringSplitOptions.RemoveEmptyEntries);
                         for (int j = 0; j < cmdValArr.Length; j++)
@@ -381,8 +402,8 @@ namespace Scada.Client
 
                 for (int i = 0; i < statusCnt; i++)
                 {
-                    DataRowView rowView = tblEvType.DefaultView[i];
-                    StatColors.Add((int)rowView["CnlStatus"], (string)rowView["Color"]);
+                    DataRow row = tblEvType.Rows[i];
+                    StatColors.Add((int)row["CnlStatus"], (string)row["Color"]);
                 }
 
                 StatColors = newStatColors;
@@ -479,26 +500,28 @@ namespace Scada.Client
                                 Thread.Sleep(ScadaUtils.ThreadDelay);
                             }
 
-                            // получение данных таблиц
-                            foreach (DataTable dataTable in BaseTables.AllTables)
+                            // загрузка данных в таблицы
+                            BaseTables newBaseTables = new BaseTables();
+                            foreach (DataTable dataTable in newBaseTables.AllTables)
                             {
                                 string tableName = BaseTables.GetFileName(dataTable);
 
                                 if (!serverComm.ReceiveBaseTable(tableName, dataTable))
                                 {
-                                    log.WriteError(string.Format(Localization.UseRussian ?
+                                    throw new ScadaException(string.Format(Localization.UseRussian ?
                                         "Не удалось принять таблицу {0}" :
                                         "Unable to receive the table {0}", tableName));
-
-                                    baseRefrDT = DateTime.MinValue;
-                                    BaseAge = DateTime.MinValue;
                                 }
                             }
+                            BaseTables = newBaseTables;
 
                             // заполнение свойств каналов и цветов статустов
-                            FillCnlProps();
-                            FillCtrlCnlProps();
-                            FillStatColors();
+                            lock (BaseTables.SyncRoot)
+                            {
+                                FillCnlProps();
+                                FillCtrlCnlProps();
+                                FillStatColors();
+                            }
                         }
                     }
                 }
