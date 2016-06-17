@@ -252,7 +252,7 @@ namespace Scada.Client
                 emptyVal = NoVal;
                 return false;
             }
-            else // dataDT.Date == nowDT.Date
+            else // dataAge.Date == nowDT.Date
             {
                 if (dataAge.Hour > nowDT.Hour + 1)
                 {

@@ -429,8 +429,9 @@ namespace Scada.Client
                     curDataRefrDT = utcNowDT;
                     DateTime newCurTableAge = serverComm.ReceiveFileAge(ServerComm.Dirs.Cur, SrezAdapter.CurTableName);
 
-                    if (newCurTableAge == DateTime.MinValue)
+                    if (newCurTableAge == DateTime.MinValue) // файл среза не существует или нет связи с сервером
                     {
+                        tblCur.FileModTime = DateTime.MinValue;
                         log.WriteError(Localization.UseRussian ?
                             "Не удалось принять время изменения файла текущих данных." :
                             "Unable to receive the current data file modification time.");
@@ -444,7 +445,6 @@ namespace Scada.Client
                         }
                         else
                         {
-                            curDataRefrDT = DateTime.MinValue;
                             tblCur.FileModTime = DateTime.MinValue;
                         }
                     }
@@ -452,9 +452,7 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                curDataRefrDT = DateTime.MinValue;
                 tblCur.FileModTime = DateTime.MinValue;
-
                 log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при обновлении текущих данных" :
                     "Error refreshing the current data");
@@ -479,7 +477,7 @@ namespace Scada.Client
                         DateTime newBaseAge = serverComm.ReceiveFileAge(ServerComm.Dirs.BaseDAT,
                             BaseTables.GetFileName(BaseTables.InCnlTable));
 
-                        if (newBaseAge == DateTime.MinValue)
+                        if (newBaseAge == DateTime.MinValue) // база конфигурации не существует или нет связи с сервером
                         {
                             throw new ScadaException(Localization.UseRussian ?
                                 "Не удалось принять время изменения базы конфигурации." :
@@ -527,9 +525,7 @@ namespace Scada.Client
                 }
                 catch (Exception ex)
                 {
-                    baseRefrDT = DateTime.MinValue;
                     BaseAge = DateTime.MinValue;
-
                     log.WriteException(ex, Localization.UseRussian ?
                         "Ошибка при обновлении таблиц базы конфигурации" :
                         "Error refreshing the tables of the configuration database");
@@ -571,8 +567,6 @@ namespace Scada.Client
         /// Метод всегда возвращает объект, не равный null</remarks>
         public SrezTableLight GetHourTable(DateTime date)
         {
-            SrezTableLight table = null; // таблица часовых срезов, которую необходимо получить
-
             try
             {
                 // получение таблицы часовых срезов из кеша
@@ -583,7 +577,7 @@ namespace Scada.Client
                 // блокировка доступа только к одной таблице часовых срезов
                 lock (cacheItem)
                 {
-                    table = cacheItem.Value;                // таблица из кеша
+                    SrezTableLight table = cacheItem.Value; // таблица, которую необходимо получить
                     DateTime tableAge = cacheItem.ValueAge; // время изменения файла таблицы
                     bool tableIsNotValid = utcNowDT - cacheItem.ValueRefrDT > DataValidSpan; // таблица могла устареть
 
@@ -593,8 +587,9 @@ namespace Scada.Client
                         string tableName = SrezAdapter.BuildHourTableName(date);
                         DateTime newTableAge = serverComm.ReceiveFileAge(ServerComm.Dirs.Hour, tableName);
 
-                        if (newTableAge == DateTime.MinValue)
+                        if (newTableAge == DateTime.MinValue) // файл таблицы не существует или нет связи с сервером
                         {
+                            table = null;
                             log.WriteError(string.Format(Localization.UseRussian ?
                                 "Не удалось принять время изменения таблицы часовых данных {0}" :
                                 "Unable to receive modification time of the hourly data table {0}", tableName));
@@ -618,6 +613,8 @@ namespace Scada.Client
                             }
                         }
                     }
+
+                    return table == null ? new SrezTableLight() : table;
                 }
             }
             catch (Exception ex)
@@ -626,9 +623,8 @@ namespace Scada.Client
                     "Ошибка при получении таблицы часовых данных за {0} из кэша или от сервера" :
                     "Error getting hourly data table for {0} from the cache or from the server", 
                     date.ToString("d", Localization.Culture));
+                return new SrezTableLight();
             }
-
-            return table == null ? new SrezTableLight() : table;
         }
 
         /// <summary>
@@ -639,8 +635,6 @@ namespace Scada.Client
         /// Метод всегда возвращает объект, не равный null</remarks>
         public EventTableLight GetEventTable(DateTime date)
         {
-            EventTableLight table = null; // таблица событий, которую необходимо получить
-
             try
             {
                 // получение таблицы событий из кеша
@@ -651,8 +645,8 @@ namespace Scada.Client
                 // блокировка доступа только к одной таблице событий
                 lock (cacheItem)
                 {
-                    table = cacheItem.Value;                // таблица из кеша
-                    DateTime tableAge = cacheItem.ValueAge; // время изменения файла таблицы
+                    EventTableLight table = cacheItem.Value; // таблица, которую необходимо получить
+                    DateTime tableAge = cacheItem.ValueAge;  // время изменения файла таблицы
                     bool tableIsNotValid = utcNowDT - cacheItem.ValueRefrDT > DataValidSpan; // таблица могла устареть
 
                     // получение таблицы событий от сервера
@@ -661,8 +655,9 @@ namespace Scada.Client
                         string tableName = EventAdapter.BuildEvTableName(date);
                         DateTime newTableAge = serverComm.ReceiveFileAge(ServerComm.Dirs.Events, tableName);
 
-                        if (newTableAge == DateTime.MinValue)
+                        if (newTableAge == DateTime.MinValue) // файл таблицы не существует или нет связи с сервером
                         {
+                            table = null;
                             log.WriteError(string.Format(Localization.UseRussian ?
                                 "Не удалось принять время изменения таблицы событий {0}" :
                                 "Unable to receive modification time of the event table {0}", tableName));
@@ -687,7 +682,7 @@ namespace Scada.Client
                         }
                     }
 
-                    return table;
+                    return table == null ? new EventTableLight() : table;
                 }
             }
             catch (Exception ex)
@@ -696,9 +691,8 @@ namespace Scada.Client
                     "Ошибка при получении таблицы событий за {0} из кэша или от сервера" :
                     "Error getting event table for {0} from the cache or from the server",
                     date.ToString("d", Localization.Culture));
+                return new EventTableLight();
             }
-
-            return table == null ? new EventTableLight() : table;
         }
 
         /// <summary>
