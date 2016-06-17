@@ -60,7 +60,7 @@ namespace Scada.Client
         /// <summary>
         /// Время актуальности таблиц базы конфигурации
         /// </summary>
-        protected static readonly TimeSpan BaseValidSpan = TimeSpan.FromSeconds(1);
+        protected static readonly TimeSpan BaseValidSpan = TimeSpan.FromSeconds(5);
         /// <summary>
         /// Время актуальности текущих и архивных данных
         /// </summary>

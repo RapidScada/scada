@@ -32,6 +32,9 @@ namespace Scada.Data
     /// The tables of the configuration database
     /// <para>Таблицы базы конфигурации</para>
     /// </summary>
+    /// <remarks>
+    /// After using DataTable.DefaultView.RowFilter restore the empty value
+    /// <para>После использования DataTable.DefaultView.RowFilter нужно вернуть пустое значение</para></remarks>
     public class BaseTables
     {
         /// <summary>
