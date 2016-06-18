@@ -111,6 +111,29 @@ namespace Scada.Web
         }
 
         /// <summary>
+        /// Преобразовать параметр запроса в множество целых чисел
+        /// </summary>
+        public static HashSet<int> QueryParamToIntSet(string param)
+        {
+            try
+            {
+                string[] elems = (param ?? "").Split(new char[] { ' ', ',' },
+                    StringSplitOptions.RemoveEmptyEntries);
+                int len = elems.Length;
+                HashSet<int> hashSet = new HashSet<int>();
+
+                for (int i = 0; i < len; i++)
+                    hashSet.Add(int.Parse(elems[i]));
+
+                return hashSet;
+            }
+            catch (FormatException ex)
+            {
+                throw new FormatException("Query parameter is not set of integers.", ex);
+            }
+        }
+
+        /// <summary>
         /// Преобразовать словарь в объект JavaScript
         /// </summary>
         public static string DictionaryToJs(Localization.Dict dict)

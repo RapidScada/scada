@@ -530,7 +530,7 @@ namespace Scada.Data
         /// <summary>
         /// Получить отфильтрованные события
         /// </summary>
-        public List<Event> GetFilteredEvents(ISet<int> cnlNums, int lastCount, int startEvNum, out bool reversed)
+        public List<Event> GetFilteredEvents(ISet<int> cnlNums /*TODO: фильтр*/, int lastCount, int startEvNum, out bool reversed)
         {
             reversed = false;
             List<Event> filteredEvents = lastCount > 0 ? new List<Event>(lastCount) : new List<Event>();
@@ -551,7 +551,7 @@ namespace Scada.Data
                     addEventAction(i);
                 reversed = true;
             }
-            else if (startEvNum > 0)
+            else
             {
                 for (int i = startEvInd; i < allEventsCnt; i++)
                     addEventAction(i);

@@ -105,6 +105,10 @@ namespace Scada.Web
         /// <summary>
         /// Получить права пользователя
         /// </summary>
+        /// <remarks>Объект пересоздаётся после входа в систему.
+        /// Объект после инициализации не изменяется экземпляром данного класса и не должен изменяться извне,
+        /// таким образом, чтение его данных является потокобезопасным
+        /// </remarks>
         public UserRights UserRights { get; private set; }
 
         /// <summary>
@@ -264,11 +268,14 @@ namespace Scada.Web
                         username, RoleName, IpAddress));
                 }
 
+                UserRights userRights = new UserRights();
+                userRights.Init(roleID, AppData.DataAccess);
+                UserRights = userRights;
+
                 AppData.UserMonitor.AddUser(this);
                 UpdateAppDataRefs();
-                UserRights = new UserRights();
-                UserRights.Init(roleID, AppData.DataAccess);
                 RaiseOnUserLogin();
+
                 UserMenu = new UserMenu(AppData.Log);
                 UserMenu.Init(this);
                 UserViews = new UserViews(AppData.Log);

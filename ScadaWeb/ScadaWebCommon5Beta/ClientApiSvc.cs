@@ -215,6 +215,22 @@ namespace Scada.Web
 
 
         /// <summary>
+        /// Получить представление из кеша с проверкой прав на него
+        /// </summary>
+        private BaseView GetViewFromCache(int viewID, UserRights userRights)
+        {
+            if (!userRights.GetViewRights(viewID).ViewRight)
+                throw new ScadaException(WebPhrases.NoRights);
+
+            BaseView view = AppData.ViewCache.GetViewFromCache(viewID);
+
+            if (view == null)
+                throw new ScadaException(UnableGetViewMsg);
+            else
+                return view;
+        }
+
+        /// <summary>
         /// Создать и заполнить массив расширенных данных входных каналов
         /// </summary>
         private CnlDataExt[] CreateCnlDataExtArr(IList<int> cnlList, SrezTableLight.Srez snapshot, 
@@ -580,23 +596,36 @@ namespace Scada.Web
         {
             try
             {
-                AppData.CheckLoggedOn();
+                UserRights userRights;
+                AppData.CheckLoggedOn(out userRights);
 
-                if (viewID > 0)
+                // TODO: получение cnlSet в отдельный метод
+                HashSet<int> cnlSet;
+
+                if (!string.IsNullOrEmpty(cnlNums))
                 {
-
+                    cnlSet = WebUtils.QueryParamToIntSet(cnlNums);
                 }
-
-                BaseView view = AppData.ViewCache.GetViewFromCache(viewID);
-
-                if (view == null)
+                else if (viewID > 0)
                 {
-                    throw new ScadaException(UnableGetViewMsg);
+                    BaseView view = GetViewFromCache(viewID, userRights);
+                    cnlSet = view.CnlSet;
                 }
                 else
                 {
-                    return JsSerializer.Serialize(new ArcDTO());
+                    cnlSet = null;
                 }
+
+                DateTime date = new DateTime(year, month, day);
+                EventTableLight tblEvent = AppData.DataAccess.DataCache.GetEventTable(date);
+
+                bool reversed;
+                List<EventTableLight.Event> events = 
+                    tblEvent.GetFilteredEvents(cnlSet, lastCount, startEvNum, out reversed);
+
+                // TODO: преобразовать события для передачи
+
+                return JsSerializer.Serialize(new ArcDTO(/*data, dataAge*/));
             }
             catch (Exception ex)
             {

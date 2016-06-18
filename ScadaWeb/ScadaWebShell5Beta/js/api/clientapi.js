@@ -186,7 +186,7 @@ scada.clientAPI = {
 
     // Get extended hourly data of the specified input channels.
     // callback is a function (success, hourCnlDataExtArr)
-    // TODO: getCurCnlDataExt: function (cnlFilter, callback)
+    // TODO: obsolete
     getHourCnlDataExtByCnlNums: function (date, startHour, endHour, cnlNums, mode, callback) {
         this._request("ClientApiSvc.svc/GetHourCnlDataExtByCnlNums",
             "?" + this._getDateTimeQueryString(date, startHour, endHour) + "&cnlNums=" + cnlNums + "&existing=" + mode,

@@ -200,9 +200,9 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Проверить, что пользователь вошёл в систему
+        /// Проверить, что пользователь вошёл в систему, и получить его права
         /// </summary>
-        public bool UserIsLoggedOn(WebOperationContext webOpContext)
+        public bool UserIsLoggedOn(WebOperationContext webOpContext, out UserRights userRights)
         {
             const string msg = "Web operation context or its properties are undefined.";
 
@@ -216,17 +216,16 @@ namespace Scada.Web
                 string cookieHeader = webOpContext.IncomingRequest.Headers[HttpRequestHeader.Cookie];
                 string sessionID = ExtractSessionID(cookieHeader);
 
-                if (sessionID == null)
-                {
-                    return false;
-                }
-                else
+                if (sessionID != null)
                 {
                     lock (userDataDict)
                     {
                         UserData userData;
-                        return userDataDict.TryGetValue(sessionID, out userData) ?
-                            userData.LoggedOn : false;
+                        if (userDataDict.TryGetValue(sessionID, out userData))
+                        {
+                            userRights = userData.UserRights;
+                            return userData.LoggedOn && userRights != null;
+                        }
                     }
                 }
             }
@@ -235,8 +234,10 @@ namespace Scada.Web
                 log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при проверке того, что пользователь вошел в систему" :
                     "Error checking that a user is logged on");
-                return false;
             }
+
+            userRights = null;
+            return false;
         }
 
         /// <summary>

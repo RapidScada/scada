@@ -34,6 +34,11 @@ namespace Scada.Client
     /// The base class for view
     /// <para>Базовый класс представления</para>
     /// </summary>
+    /// <remarks>
+    /// Derived views must provide thread safe read access in case that the object is not being changed. 
+    /// Write operations must be synchronized
+    /// <para>Дочерние представления должны обеспечивать потокобезопасный доступ на чтение при условии, 
+    /// что объект не изменяется. Операции записи должны синхронизироваться</para></remarks>
     public abstract class BaseView
     {
         /// <summary>
@@ -100,6 +105,17 @@ namespace Scada.Client
         /// </summary>
         /// <remarks>Используется для контроля целостности данных при получении представления из кеша</remarks>
         public long Stamp { get; set; }
+
+        /// <summary>
+        /// Получить объект для синхронизации доступа к представлению
+        /// </summary>
+        public object SyncRoot
+        {
+            get
+            {
+                return this;
+            }
+        }
 
 
         /// <summary>

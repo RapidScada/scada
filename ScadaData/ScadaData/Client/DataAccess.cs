@@ -194,7 +194,7 @@ namespace Scada.Client
                 DateTime baseAge = dataCache.BaseAge;
                 if (view != null && view.BaseAge != baseAge && baseAge > DateTime.MinValue)
                 {
-                    lock (view)
+                    lock (view.SyncRoot)
                     {
                         view.BaseAge = baseAge;
                         view.BindCnlProps(dataCache.CnlProps);

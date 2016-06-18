@@ -415,9 +415,20 @@ namespace Scada.Web
         /// <summary>
         /// Проверить, что пользователь вошёл систему
         /// </summary>
+        /// <remarks>Метод используется, если сессия не доступна</remarks>
         public bool CheckLoggedOn(bool throwOnFail = true)
         {
-            if (UserMonitor.UserIsLoggedOn(WebOperationContext.Current))
+            UserRights userRights;
+            return CheckLoggedOn(out userRights, throwOnFail);
+        }
+
+        /// <summary>
+        /// Проверить, что пользователь вошёл систему, и получить его права
+        /// </summary>
+        /// <remarks>Метод используется, если сессия не доступна</remarks>
+        public bool CheckLoggedOn(out UserRights userRights, bool throwOnFail = true)
+        {
+            if (UserMonitor.UserIsLoggedOn(WebOperationContext.Current, out userRights))
                 return true;
             else if (throwOnFail)
                 throw new ScadaException(WebPhrases.NotLoggedOn);
@@ -434,7 +445,7 @@ namespace Scada.Web
             {
                 return 0;
             }
-            else lock (view)
+            else lock (view.SyncRoot)
             {
                 if (view.Stamp <= 0)
                     view.Stamp = ++viewStampCntr;
