@@ -422,6 +422,7 @@ namespace Scada.Web
                 destEvent.Cnl = cnlProps.CnlName;
                 destEvent.Sound = cnlProps.EvSound;
 
+                // определение цвета
                 double cnlVal = srcEvent.NewCnlVal;
                 int cnlStat = srcEvent.NewCnlStat;
                 CnlStatProps cnlStatProps = dataAccess.GetCnlStatProps(cnlStat);
