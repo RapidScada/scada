@@ -281,20 +281,21 @@ namespace Scada.Web
 
                 if (dataVisible)
                 {
-                    SrezTableLight.CnlData cnlData;
-                    snapshot.GetCnlData(cnlNum, out cnlData);
-                    cnlDataExt.Val = cnlData.Val;
-                    cnlDataExt.Stat = cnlData.Stat;
+                    double val;
+                    int stat;
+                    snapshot.GetCnlData(cnlNum, out val, out stat);
+                    cnlDataExt.Val = val;
+                    cnlDataExt.Stat = stat;
 
                     InCnlProps cnlProps = dataAccess.GetCnlProps(cnlNum);
                     string text;
                     string textWithUnit;
-                    DataFormatter.FormatCnlVal(cnlData.Val, cnlData.Stat, cnlProps, out text, out textWithUnit);
+                    DataFormatter.FormatCnlVal(val, stat, cnlProps, out text, out textWithUnit);
 
                     cnlDataExt.Text = text;
                     cnlDataExt.TextWithUnit = textWithUnit;
-                    cnlDataExt.Color = DataFormatter.GetCnlValColor(cnlData.Val, cnlData.Stat, cnlProps,
-                        dataAccess.GetColorByStat);
+                    CnlStatProps cnlStatProps = dataAccess.GetCnlStatProps(stat);
+                    cnlDataExt.Color = DataFormatter.GetCnlValColor(val, stat, cnlProps, cnlStatProps);
                 }
                 else
                 {
@@ -406,7 +407,7 @@ namespace Scada.Web
             destEvent.Num = srcEvent.Number;
             destEvent.Time = srcEvent.DateTime.ToLocalizedString();
             destEvent.Text = srcEvent.Descr;
-            destEvent.Ack = srcEvent.Checked ? "???" : "???";
+            destEvent.Ack = srcEvent.Checked ? WebPhrases.EventAck : WebPhrases.EventNotAck;
 
             DataAccess dataAccess = AppData.DataAccess;
             InCnlProps cnlProps = dataAccess.GetCnlProps(srcEvent.CnlNum);
@@ -423,13 +424,14 @@ namespace Scada.Web
 
                 double cnlVal = srcEvent.NewCnlVal;
                 int cnlStat = srcEvent.NewCnlStat;
-                destEvent.Color = DataFormatter.GetCnlValColor(cnlVal, cnlStat, cnlProps, dataAccess.GetColorByStat);
+                CnlStatProps cnlStatProps = dataAccess.GetCnlStatProps(cnlStat);
+                destEvent.Color = DataFormatter.GetCnlValColor(cnlVal, cnlStat, cnlProps, cnlStatProps);
 
                 // формирование текста в формате "<статус>: <значение>"
-                // TODO: доделать
                 if (destEvent.Text == "")
                 {
-                    StringBuilder sbText = new StringBuilder("eventTypeName");
+                    StringBuilder sbText = cnlStatProps == null ? 
+                        new StringBuilder() : new StringBuilder(cnlStatProps.Name);
                     if (cnlVal > BaseValues.CnlStatuses.Undefined)
                     {
                         if (sbText.Length > 0)
@@ -525,8 +527,8 @@ namespace Scada.Web
 
                     cnlDataExt.Text = text;
                     cnlDataExt.TextWithUnit = textWithUnit;
-                    cnlDataExt.Color = DataFormatter.GetCnlValColor(cnlData.Val, cnlData.Stat, cnlProps, 
-                        dataAccess.GetColorByStat);
+                    CnlStatProps cnlStatProps = dataAccess.GetCnlStatProps(cnlData.Stat);
+                    cnlDataExt.Color = DataFormatter.GetCnlValColor(cnlData.Val, cnlData.Stat, cnlProps, cnlStatProps);
                 }
                 else
                 {

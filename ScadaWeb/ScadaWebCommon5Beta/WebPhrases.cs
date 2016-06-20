@@ -47,6 +47,10 @@ namespace Scada.Web
         public static string NoRights { get; private set; }
         public static string IllegalRole { get; private set; }
 
+        // Словарь Scada.Web.ClientApiSvc
+        public static string EventAck { get; private set; }
+        public static string EventNotAck { get; private set; }
+
         // Словарь Scada.Web.ViewSettings
         public static string LoadViewSettingsError { get; private set; }
         public static string SaveViewSettingsError { get; private set; }
@@ -72,6 +76,9 @@ namespace Scada.Web
             WrongPassword = Localization.Dict.GetEmptyPhrase("WrongPassword");
             NoRights = Localization.Dict.GetEmptyPhrase("NoRights");
             IllegalRole = Localization.Dict.GetEmptyPhrase("IllegalRole");
+
+            EventAck = Localization.Dict.GetEmptyPhrase("EventAck");
+            EventNotAck = Localization.Dict.GetEmptyPhrase("EventNotAck");
 
             LoadViewSettingsError = Localization.Dict.GetEmptyPhrase("LoadViewSettingsError");
             SaveViewSettingsError = Localization.Dict.GetEmptyPhrase("SaveViewSettingsError");
@@ -101,6 +108,12 @@ namespace Scada.Web
                 WrongPassword = dict.GetPhrase("WrongPassword", WrongPassword);
                 NoRights = dict.GetPhrase("NoRightsL", NoRights);
                 IllegalRole = dict.GetPhrase("IllegalRole", IllegalRole);
+            }
+
+            if (Localization.Dictionaries.TryGetValue("Scada.Web.ClientApiSvc", out dict))
+            {
+                EventAck = dict.GetPhrase("EventAck", EventAck);
+                EventNotAck = dict.GetPhrase("EventNotAck", EventNotAck);
             }
 
             if (Localization.Dictionaries.TryGetValue("Scada.Web.ViewSettings", out dict))

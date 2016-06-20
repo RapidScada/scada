@@ -139,7 +139,7 @@ namespace Scada.Client
             BaseTables = new BaseTables();
             CnlProps = new InCnlProps[0];
             CtrlCnlProps = new CtrlCnlProps[0];
-            StatColors = new SortedList<int, string>();
+            CnlStatProps = new SortedList<int, CnlStatProps>();
             HourTableCache = new Cache<DateTime, SrezTableLight>(HourCacheStorePeriod, HourCacheCapacity);
             EventTableCache = new Cache<DateTime, EventTableLight>(EventCacheStorePeriod, EventCacheCapacity);
         }
@@ -163,7 +163,7 @@ namespace Scada.Client
         /// <summary>
         /// Получить свойства входных каналов
         /// </summary>
-        /// <remarks>Объект пересоздаётся после обновления таблиц базы конфигурации.
+        /// <remarks>Массив пересоздаётся после обновления таблиц базы конфигурации.
         /// Массив после инициализации не изменяется экземпляром данного класса и не должен изменяться извне,
         /// таким образом, чтение его данных является потокобезопасным
         /// </remarks>
@@ -172,20 +172,20 @@ namespace Scada.Client
         /// <summary>
         /// Получить свойства входных каналов
         /// </summary>
-        /// <remarks>Объект пересоздаётся после обновления таблиц базы конфигурации.
+        /// <remarks>Массив пересоздаётся после обновления таблиц базы конфигурации.
         /// Массив после инициализации не изменяется экземпляром данного класса и не должен изменяться извне,
         /// таким образом, чтение его данных является потокобезопасным
         /// </remarks>
         public CtrlCnlProps[] CtrlCnlProps { get; protected set; }
 
         /// <summary>
-        /// Получить цвета, соответствующие статусам входных каналов
+        /// Получить свойства статусов входных каналов
         /// </summary>
-        /// <remarks>Объект пересоздаётся после обновления таблиц базы конфигурации.
+        /// <remarks>Список пересоздаётся после обновления таблиц базы конфигурации.
         /// Список после инициализации не изменяется экземпляром данного класса и не должен изменяться извне,
         /// таким образом, чтение его данных является потокобезопасным
         /// </remarks>
-        public SortedList<int, string> StatColors { get; protected set; }
+        public SortedList<int, CnlStatProps> CnlStatProps { get; protected set; }
 
         /// <summary>
         /// Получить кеш таблиц часовых срезов
@@ -387,9 +387,9 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Заполнить цвета статусов входных каналов
+        /// Заполнить свойства статусов входных каналов
         /// </summary>
-        protected void FillStatColors()
+        protected void FillCnlStatProps()
         {
             try
             {
@@ -399,15 +399,16 @@ namespace Scada.Client
 
                 DataTable tblEvType = BaseTables.EvTypeTable;
                 int statusCnt = tblEvType.Rows.Count;
-                SortedList<int, string> newStatColors = new SortedList<int, string>(statusCnt);
+                SortedList<int, CnlStatProps> newCnlStatProps = new SortedList<int, CnlStatProps>(statusCnt);
 
                 for (int i = 0; i < statusCnt; i++)
                 {
                     DataRow row = tblEvType.Rows[i];
-                    StatColors.Add((int)row["CnlStatus"], (string)row["Color"]);
+                    CnlStatProps cnlStatProps = new CnlStatProps((int)row["CnlStatus"]) { Color = (string)row["Color"] };
+                    CnlStatProps.Add(cnlStatProps.Status, cnlStatProps);
                 }
 
-                StatColors = newStatColors;
+                CnlStatProps = newCnlStatProps;
             }
             catch (Exception ex)
             {
@@ -462,7 +463,7 @@ namespace Scada.Client
 
 
         /// <summary>
-        /// Обновить таблицы базы конфигурации, свойства каналов и цвета статусов каналов
+        /// Обновить таблицы базы конфигурации, свойства каналов и статусов
         /// </summary>
         public void RefreshBaseTables()
         {
@@ -514,12 +515,12 @@ namespace Scada.Client
                             }
                             BaseTables = newBaseTables;
 
-                            // заполнение свойств каналов и цветов статустов
+                            // заполнение свойств каналов и статусов
                             lock (BaseTables.SyncRoot)
                             {
                                 FillCnlProps();
                                 FillCtrlCnlProps();
-                                FillStatColors();
+                                FillCnlStatProps();
                             }
                         }
                     }

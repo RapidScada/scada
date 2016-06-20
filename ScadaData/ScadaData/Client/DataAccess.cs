@@ -163,25 +163,24 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить цвет по статусу входного канала
+        /// Получить свойства статуса входного канала по значению статуса
         /// </summary>
-        public string GetColorByStat(int stat, string defaultColor)
+        public CnlStatProps GetCnlStatProps(int stat)
         {
             try
             {
                 dataCache.RefreshBaseTables();
-                string color;
-                if (dataCache.StatColors.TryGetValue(stat, out color) && !string.IsNullOrEmpty(color))
-                    return color;
+                CnlStatProps cnlStatProps;
+                return dataCache.CnlStatProps.TryGetValue(stat, out cnlStatProps) ?
+                    cnlStatProps : null;
             }
             catch (Exception ex)
             {
                 log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при получении цвета по статусу {0}" :
                     "Error getting color by status {0}", stat);
+                return null;
             }
-
-            return defaultColor;
         }
 
         /// <summary>

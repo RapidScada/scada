@@ -131,6 +131,17 @@ namespace Scada.Data.Tables
                 }
             }
             /// <summary>
+            /// Получить значение и статус входного канала по номеру
+            /// </summary>
+            public bool GetCnlData(int cnlNum, out double val, out int stat)
+            {
+                CnlData cnlData;
+                bool result = GetCnlData(cnlNum, out cnlData);
+                val = cnlData.Val;
+                stat = cnlData.Stat;
+                return result;
+            }
+            /// <summary>
             /// Сравнить текущий объект с другим объектом такого же типа
             /// </summary>
             public int CompareTo(Srez other)

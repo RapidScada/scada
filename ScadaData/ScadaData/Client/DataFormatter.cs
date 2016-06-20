@@ -37,9 +37,9 @@ namespace Scada.Client
     public class DataFormatter
     {
         /// <summary>
-        /// Делегат получения цвета по статусу
+        /// Делегат получения свойств статуса входного канала
         /// </summary>
-        public delegate string GetColorByStatDelegate(int stat, string defaultColor);
+        public delegate CnlStatProps GetCnlStatPropsDelegate(int stat);
 
         /// <summary>
         /// Количество знаков дробной части по умолчанию
@@ -191,13 +191,13 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить цвет значения входного канала 
+        /// Получить цвет значения входного канала
         /// </summary>
-        public string GetCnlValColor(double val, int stat, InCnlProps cnlProps, GetColorByStatDelegate getColorByStat)
+        public string GetCnlValColor(double val, int stat, InCnlProps cnlProps, CnlStatProps cnlStatProps)
         {
             try
             {
-                if (cnlProps == null || getColorByStat == null)
+                if (cnlProps == null)
                 {
                     return DefColor;
                 }
@@ -209,7 +209,8 @@ namespace Scada.Client
                         stat == BaseValues.CnlStatuses.FormulaError ||
                         stat == BaseValues.CnlStatuses.Unreliable)
                     {
-                        return getColorByStat(stat, DefColor);
+                        return cnlStatProps == null || string.IsNullOrEmpty(cnlStatProps.Color) ? 
+                            DefColor : cnlStatProps.Color;
                     }
                     else
                     {
