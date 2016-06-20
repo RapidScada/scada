@@ -31,6 +31,7 @@ using System.Globalization;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
 using System.ServiceModel.Web;
+using System.Text;
 using System.Web.Script.Serialization;
 
 namespace Scada.Web
@@ -55,6 +56,15 @@ namespace Scada.Web
                 : base()
             {
                 DataAge = null;
+            }
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public ArcDTO(object data, object dataAge)
+                : base(data)
+            {
+                Data = data;
+                DataAge = dataAge;
             }
 
             /// <summary>
@@ -231,6 +241,28 @@ namespace Scada.Web
         }
 
         /// <summary>
+        /// Получить множество номеров каналов из условий запроса с проверкой прав
+        /// </summary>
+        private HashSet<int> GetCnlSet(string cnlNums, int viewID, UserRights userRights)
+        {
+            if (!string.IsNullOrEmpty(cnlNums))
+            {
+                if (!userRights.ViewAllRight)
+                    throw new ScadaException(WebPhrases.NoRights);
+                return WebUtils.QueryParamToIntSet(cnlNums);
+            }
+            else if (viewID > 0)
+            {
+                BaseView view = GetViewFromCache(viewID, userRights);
+                return view.CnlSet;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Создать и заполнить массив расширенных данных входных каналов
         /// </summary>
         private CnlDataExt[] CreateCnlDataExtArr(IList<int> cnlList, SrezTableLight.Srez snapshot, 
@@ -362,6 +394,52 @@ namespace Scada.Web
             }
 
             return hourCnlDataList.ToArray();
+        }
+
+        /// <summary>
+        /// Преобразовать событие из таблицы в событие для передачи сервисом
+        /// </summary>
+        private Event ConvertEvent(EventTableLight.Event srcEvent)
+        {
+            Event destEvent = new Event();
+            destEvent.Num = srcEvent.Number;
+            destEvent.Time = srcEvent.DateTime.ToLocalizedString();
+            destEvent.Text = srcEvent.Descr;
+            destEvent.Ack = srcEvent.Checked ? "???" : "???";
+
+            DataAccess dataAccess = AppData.DataAccess;
+            InCnlProps cnlProps = dataAccess.GetCnlProps(srcEvent.CnlNum);
+
+            destEvent.Obj = cnlProps != null && cnlProps.ObjNum == srcEvent.ObjNum ?
+                dataAccess.GetObjName(srcEvent.ObjNum) : cnlProps.ObjName;
+            destEvent.KP = cnlProps != null && cnlProps.KPNum == srcEvent.KPNum ?
+                dataAccess.GetKPName(srcEvent.KPNum) : cnlProps.KPName;
+
+            if (cnlProps != null)
+            {
+                destEvent.Cnl = cnlProps.CnlName;
+                destEvent.Sound = cnlProps.EvSound;
+
+                double cnlVal = srcEvent.NewCnlVal;
+                int cnlStat = srcEvent.NewCnlStat;
+                destEvent.Color = DataFormatter.GetCnlValColor(cnlVal, cnlStat, cnlProps, dataAccess.GetColorByStat);
+
+                // формирование текста в формате "<статус>: <значение>"
+                // TODO: доделать
+                if (destEvent.Text == "")
+                {
+                    StringBuilder sbText = new StringBuilder("eventTypeName");
+                    if (cnlVal > BaseValues.CnlStatuses.Undefined)
+                    {
+                        if (sbText.Length > 0)
+                            sbText.Append(": ");
+                        sbText.Append(DataFormatter.FormatCnlVal(cnlVal, cnlStat, cnlProps, true));
+                    }
+                    destEvent.Text = sbText.ToString();
+                }
+            }
+
+            return destEvent;
         }
 
         /// <summary>
@@ -599,33 +677,27 @@ namespace Scada.Web
                 UserRights userRights;
                 AppData.CheckLoggedOn(out userRights);
 
-                // TODO: получение cnlSet в отдельный метод
-                HashSet<int> cnlSet;
+                // создание фильтра событий
+                HashSet<int> cnlSet = GetCnlSet(cnlNums, viewID, userRights);
+                EventTableLight.EventFilter eventFilter = cnlSet == null ?
+                    new EventTableLight.EventFilter(EventTableLight.EventFilters.None) :
+                    new EventTableLight.EventFilter(EventTableLight.EventFilters.Cnls);
+                eventFilter.CnlNums = cnlSet;
 
-                if (!string.IsNullOrEmpty(cnlNums))
-                {
-                    cnlSet = WebUtils.QueryParamToIntSet(cnlNums);
-                }
-                else if (viewID > 0)
-                {
-                    BaseView view = GetViewFromCache(viewID, userRights);
-                    cnlSet = view.CnlSet;
-                }
-                else
-                {
-                    cnlSet = null;
-                }
-
+                // получение событий
                 DateTime date = new DateTime(year, month, day);
                 EventTableLight tblEvent = AppData.DataAccess.DataCache.GetEventTable(date);
-
                 bool reversed;
                 List<EventTableLight.Event> events = 
-                    tblEvent.GetFilteredEvents(cnlSet, lastCount, startEvNum, out reversed);
+                    tblEvent.GetFilteredEvents(eventFilter, lastCount, startEvNum, out reversed);
 
-                // TODO: преобразовать события для передачи
+                // преобразование событий для передачи
+                int evCnt = events.Count;
+                Event[] eventsToSend = new Event[evCnt];
+                for (int i = 0; i < evCnt; i++)
+                    eventsToSend[i] = ConvertEvent(events[i]);
 
-                return JsSerializer.Serialize(new ArcDTO(/*data, dataAge*/));
+                return JsSerializer.Serialize(new ArcDTO(eventsToSend, WebUtils.DateTimeToJs(tblEvent.FileModTime)));
             }
             catch (Exception ex)
             {
@@ -673,15 +745,9 @@ namespace Scada.Web
             {
                 AppData.CheckLoggedOn();
                 DateTime dateTime;
-                if (DateTime.TryParse(s, Localization.Culture, DateTimeStyles.None, out dateTime))
-                {
-                    long ms = (long)(dateTime - WebUtils.UnixEpoch).TotalMilliseconds;
-                    return JsSerializer.Serialize(new DataTransferObject(ms));
-                }
-                else
-                {
-                    return JsSerializer.Serialize(new DataTransferObject(null));
-                }
+                object data = DateTime.TryParse(s, Localization.Culture, DateTimeStyles.None, out dateTime) ?
+                    (object)WebUtils.DateTimeToJs(dateTime) : null;
+                return JsSerializer.Serialize(new DataTransferObject(data));
             }
             catch (Exception ex)
             {

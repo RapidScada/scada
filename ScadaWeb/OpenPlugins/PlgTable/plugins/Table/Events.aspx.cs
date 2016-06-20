@@ -44,7 +44,7 @@ namespace Scada.Web.Plugins.Table
                 Response.Redirect(UrlTemplates.NoView);
 
             // запретить отображение всех событий, если нет соответствующих прав
-            if (!userData.UserRights.AllViewsRights.ViewRight)
+            if (!userData.UserRights.ViewAllRight)
                 spanAllEventsBtn.Attributes["class"] += " disabled";
 
             // подготовка данных для вывода на веб-страницу

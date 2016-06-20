@@ -369,6 +369,62 @@ namespace Scada.Client
         }
 
         /// <summary>
+        /// Получить наименование объекта по номеру
+        /// </summary>
+        public string GetObjName(int objNum)
+        {
+            try
+            {
+                dataCache.RefreshBaseTables();
+                BaseTables baseTables = dataCache.BaseTables;
+
+                lock (baseTables.SyncRoot)
+                {
+                    BaseTables.CheckColumnsExist(baseTables.ObjTable, true);
+                    DataView viewObj = baseTables.ObjTable.DefaultView;
+                    viewObj.Sort = "ObjNum";
+                    int rowInd = viewObj.Find(objNum);
+                    return rowInd >= 0 ? (string)viewObj[rowInd]["Name"] : "";
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении наименования объекта по номеру {0}" :
+                    "Error getting object name by number {0}", objNum);
+                return "";
+            }
+        }
+
+        /// <summary>
+        /// Получить наименование КП по номеру
+        /// </summary>
+        public string GetKPName(int kpNum)
+        {
+            try
+            {
+                dataCache.RefreshBaseTables();
+                BaseTables baseTables = dataCache.BaseTables;
+
+                lock (baseTables.SyncRoot)
+                {
+                    BaseTables.CheckColumnsExist(baseTables.ObjTable, true);
+                    DataView viewObj = baseTables.KPTable.DefaultView;
+                    viewObj.Sort = "KPNum";
+                    int rowInd = viewObj.Find(kpNum);
+                    return rowInd >= 0 ? (string)viewObj[rowInd]["Name"] : "";
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении наименования КП по номеру {0}" :
+                    "Error getting device name by number {0}", kpNum);
+                return "";
+            }
+        }
+
+        /// <summary>
         /// Получить наименование роли по идентификатору
         /// </summary>
         public string GetRoleName(int roleID)

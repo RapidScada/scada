@@ -44,8 +44,7 @@ scada.HourCnlDataExt = function () {
 
 /********** Auxiliary Request Parameters **********/
 
-// Input channel filter type.
-// Warning: role access rights are validated only for the view
+// Input channel filter type
 scada.CnlFilter = function () {
     // Filter by the explicitly specified input channel numbers. No other filtering is applied
     this.cnlNums = [];

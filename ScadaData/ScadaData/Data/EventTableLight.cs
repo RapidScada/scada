@@ -193,18 +193,41 @@ namespace Scada.Data
             public ISet<int> CnlNums { get; set; }
 
             /// <summary>
+            /// Проверить корректность фильтра
+            /// </summary>
+            public bool Check(bool throwOnFail = true)
+            {
+                if (Filters.HasFlag(EventFilters.Cnls) && CnlNums == null)
+                {
+                    if (throwOnFail)
+                        throw new ScadaException("Event filter is incorrect.");
+                    else
+                        return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            /// <summary>
             /// Проверить, что событие удовлетворяет фильтру
             /// </summary>
-            public bool Satisfies(Event ev)
+            public bool Satisfied(Event ev)
             {
+                // если используется фильтр по номерам каналов, CnlNums должно быть не равно null
                 if (Filters == EventFilters.Cnls)
                 {
-                    // быстрая проверка только номеров каналов
+                    // быстрая проверка фильтра только по номерам каналов
                     return CnlNums.Contains(ev.CnlNum);
                 }
                 else
                 {
-
+                    // полная проверка условий фильтра
+                    return
+                        (!Filters.HasFlag(EventFilters.Obj) || ObjNum == ev.ObjNum) &&
+                        (!Filters.HasFlag(EventFilters.KP) || KPNum == ev.KPNum) &&
+                        (!Filters.HasFlag(EventFilters.Param) || ParamID == ev.ParamID) &&
+                        (!Filters.HasFlag(EventFilters.Cnls) || CnlNums.Contains(ev.CnlNum));
                 }
             }
         }
@@ -591,18 +614,30 @@ namespace Scada.Data
         /// <summary>
         /// Получить отфильтрованные события
         /// </summary>
-        public List<Event> GetFilteredEvents(ISet<int> cnlNums /*TODO: фильтр*/, int lastCount, int startEvNum, out bool reversed)
+        public List<Event> GetFilteredEvents(EventFilter filter)
         {
+            bool reversed;
+            return GetFilteredEvents(filter, 0, 0, out reversed);
+        }
+
+        /// <summary>
+        /// Получить отфильтрованные события в указанном диапазоне
+        /// </summary>
+        public List<Event> GetFilteredEvents(EventFilter filter, int lastCount, int startEvNum, out bool reversed)
+        {
+            if (filter == null)
+                throw new ArgumentNullException("filter");
+            filter.Check();
+
             reversed = false;
             List<Event> filteredEvents = lastCount > 0 ? new List<Event>(lastCount) : new List<Event>();
             int startEvInd = Math.Max(0, startEvNum - 1);
             int allEventsCnt = allEvents.Count;
-            bool anyCnlNum = cnlNums == null;
 
             Action<int> addEventAction = delegate(int i) 
             {
                 Event ev = allEvents[i];
-                if (anyCnlNum || cnlNums.Contains(ev.CnlNum))
+                if (filter.Satisfied(ev))
                     filteredEvents.Add(ev);
             };
 

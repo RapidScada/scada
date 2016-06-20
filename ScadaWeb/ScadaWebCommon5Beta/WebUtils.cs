@@ -152,5 +152,13 @@ namespace Scada.Web
             sbJs.Append("}");
             return sbJs.ToString();
         }
+
+        /// <summary>
+        /// Преобразовать дату в время в число миллисекунд для создания даты в JavaScript
+        /// </summary>
+        public static long DateTimeToJs(DateTime dateTime)
+        {
+            return (long)(dateTime - UnixEpoch).TotalMilliseconds;
+        }
     }
 }
