@@ -120,10 +120,9 @@ namespace Scada.Data
         }
 
         /// <summary>
-        /// Фильтры таблицы событий
+        /// Фильтры (типы фильтров) событий
         /// </summary>
         [Flags]
-        [Obsolete]
         public enum EventFilters
         {
             /// <summary>
@@ -146,6 +145,68 @@ namespace Scada.Data
             /// Фильтр по каналам
             /// </summary>
             Cnls = 8
+        }
+
+        /// <summary>
+        /// Фильтр событий
+        /// </summary>
+        public class EventFilter
+        {
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public EventFilter()
+                : this(EventFilters.None)
+            {
+            }
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public EventFilter(EventFilters filters)
+            {
+                Filters = filters;
+                ObjNum = 0;
+                KPNum = 0;
+                ParamID = 0;
+                CnlNums = null;
+            }
+
+            /// <summary>
+            /// Получить или установить типы применяемых фильтров
+            /// </summary>
+            public EventFilters Filters { get; set; }
+            /// <summary>
+            /// Получить или установить номер объекта для фильтрации
+            /// </summary>
+            public int ObjNum { get; set; }
+            /// <summary>
+            /// Получить или установить номер КП для фильтрации
+            /// </summary>
+            public int KPNum { get; set; }
+            /// <summary>
+            /// Получить или установить ид. параметра для фильтрации
+            /// </summary>
+            public int ParamID { get; set; }
+            /// <summary>
+            /// Получить или установить номера входны каналов для фильтрации
+            /// </summary>
+            public ISet<int> CnlNums { get; set; }
+
+            /// <summary>
+            /// Проверить, что событие удовлетворяет фильтру
+            /// </summary>
+            public bool Satisfies(Event ev)
+            {
+                if (Filters == EventFilters.Cnls)
+                {
+                    // быстрая проверка только номеров каналов
+                    return CnlNums.Contains(ev.CnlNum);
+                }
+                else
+                {
+
+                }
+            }
         }
 
         /// <summary>
