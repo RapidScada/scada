@@ -25,15 +25,14 @@
 
 #undef DETAILED_LOG // выводить в журнал подробную информацию об обмене данными со SCADA-Сервером
 
+using Scada.Data.Tables;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
+using System.Data;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.Data;
-using Scada.Data;
+using System.Text;
+using System.Threading;
 using Utils;
 
 namespace Scada.Client
@@ -1187,7 +1186,7 @@ namespace Scada.Client
                             {
                                 Trend.Point point;
                                 int pos = i * 18 + 7;
-                                point.DateTime = Arithmetic.DecodeDateTime(BitConverter.ToDouble(buf, pos));
+                                point.DateTime = ScadaUtils.DecodeDateTime(BitConverter.ToDouble(buf, pos));
                                 point.Val = BitConverter.ToDouble(buf, pos + 8);
                                 point.Stat = BitConverter.ToUInt16(buf, pos + 16);
 
@@ -1407,7 +1406,7 @@ namespace Scada.Client
                     if (CheckDataFormat(buf, 0x0C))
                     {
                         double dt = BitConverter.ToDouble(buf, 4);
-                        result = dt == 0.0 ? DateTime.MinValue : Arithmetic.DecodeDateTime(dt);
+                        result = dt == 0.0 ? DateTime.MinValue : ScadaUtils.DecodeDateTime(dt);
                         commState = CommStates.Authorized;
                     }
                     else
@@ -1671,7 +1670,7 @@ namespace Scada.Client
                     buf[1] = (byte)(cmdLen / 256);
                     buf[2] = 0x04;
 
-                    double arcDT = Arithmetic.EncodeDateTime(arcSrez.DateTime);
+                    double arcDT = ScadaUtils.EncodeDateTime(arcSrez.DateTime);
                     byte[] bytes = BitConverter.GetBytes(arcDT);
                     Array.Copy(bytes, 0, buf, 3, 8);
 
@@ -1756,7 +1755,7 @@ namespace Scada.Client
                     buf[1] = (byte)(cmdLen / 256);
                     buf[2] = 0x05;
 
-                    double evDT = Arithmetic.EncodeDateTime(aEvent.DateTime);
+                    double evDT = ScadaUtils.EncodeDateTime(aEvent.DateTime);
                     byte[] bytes = BitConverter.GetBytes(evDT);
                     Array.Copy(bytes, 0, buf, 3, 8);
 

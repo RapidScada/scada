@@ -27,7 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 
-namespace Scada.Data
+namespace Scada.Data.Tables
 {
     /// <summary>
     /// Snapshot table for read and write data access

@@ -23,10 +23,11 @@
  * Modified : 2015
  */
 
+using Scada.Data.Tables;
 using System;
 using System.Collections;
 
-namespace Scada.Data
+namespace Scada.Data.Models
 {
     /// <summary>
     /// Input channel properties

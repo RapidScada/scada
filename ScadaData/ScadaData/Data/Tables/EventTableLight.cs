@@ -25,9 +25,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Scada.Data
+namespace Scada.Data.Tables
 {
     /// <summary>
     /// Event table for fast read data access

@@ -48,13 +48,13 @@ using System.Data;
 using System.IO;
 using System.Text;
 
-namespace Scada.Data
+namespace Scada.Data.Tables
 {
     /// <summary>
     /// Adapter for reading and writing event tables
     /// <para>Адаптер для чтения и записи таблиц событий</para>
     /// </summary>
-    public class EventAdapter
+    public class EventAdapter : Adapter
     {
         /// <summary>
         /// Размер данных события в файле
@@ -69,119 +69,13 @@ namespace Scada.Data
         /// </summary>
         public const int MaxDataLen = 50;
 
-        /// <summary>
-        /// Директория таблицы событий
-        /// </summary>
-        protected string directory;
-        /// <summary>
-        /// Входной и выходной поток
-        /// </summary>
-        protected Stream ioStream;
-        /// <summary>
-        /// Имя файла таблицы событий
-        /// </summary>
-        protected string tableName;
-        /// <summary>
-        /// Полное имя файла таблицы событий
-        /// </summary>
-        protected string fileName;
-        /// <summary>
-        /// Доступ к данным выполняется через файл на диске
-        /// </summary>
-        protected bool fileMode;
-
 
         /// <summary>
         /// Конструктор
         /// </summary>
         public EventAdapter()
+            : base()
         {
-            directory = "";
-            ioStream = null;
-            tableName = "";
-            fileName = "";
-            fileMode = true;
-        }
-
-
-        /// <summary>
-        /// Получить или установить директорию таблицы событий
-        /// </summary>
-        public string Directory
-        {
-            get
-            {
-                return directory;
-            }
-            set
-            {
-                ioStream = null;
-                fileMode = true;
-                if (directory != value)
-                {
-                    directory = value;
-                    fileName = directory + tableName;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Получить или установить входной и выходной поток (вместо директории)
-        /// </summary>
-        public Stream Stream
-        {
-            get
-            {
-                return ioStream;
-            }
-            set
-            {
-                directory = "";
-                ioStream = value;
-                fileName = tableName;
-                fileMode = false;
-            }
-        }
-
-        /// <summary>
-        /// Получить или установить имя файла таблицы событий
-        /// </summary>
-        public string TableName
-        {
-            get
-            {
-                return tableName;
-            }
-            set
-            {
-                if (tableName != value)
-                {
-                    tableName = value;
-                    fileName = directory + tableName;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Получить или установить полное имя файла таблицы событий
-        /// </summary>
-        public string FileName
-        {
-            get
-            {
-                return fileName;
-            }
-            set
-            {
-                if (fileName != value)
-                {
-                    directory = Path.GetDirectoryName(value);
-                    ioStream = null;
-                    tableName = Path.GetFileName(value);
-                    fileName = value;
-                    fileMode = true;
-                }
-            }
         }
 
 
@@ -262,7 +156,7 @@ namespace Scada.Data
         protected byte[] CreateEventBuffer(EventTableLight.Event ev)
         {
             byte[] evBuf = new byte[EventDataSize];
-            Array.Copy(BitConverter.GetBytes(Arithmetic.EncodeDateTime(ev.DateTime)), 0, evBuf, 0, 8);
+            Array.Copy(BitConverter.GetBytes(ScadaUtils.EncodeDateTime(ev.DateTime)), 0, evBuf, 0, 8);
             evBuf[8] = (byte)(ev.ObjNum % 256);
             evBuf[9] = (byte)(ev.ObjNum / 256);
             evBuf[10] = (byte)(ev.KPNum % 256);
@@ -313,7 +207,7 @@ namespace Scada.Data
                     throw new ScadaException("Destination object is invalid.");
 
                 // определение даты событий в таблице
-                DateTime date = Arithmetic.ExtractDate(tableName);
+                DateTime date = ExtractDate(tableName);
 
                 // подготовка объекта для хранения данных
                 if (eventTableLight != null)
@@ -377,7 +271,7 @@ namespace Scada.Data
 
                         double time = BitConverter.ToDouble(eventBuf, 0);
                         int hour, min, sec;
-                        Arithmetic.DecodeTime(time, out hour, out min, out sec);
+                        ScadaUtils.DecodeTime(time, out hour, out min, out sec);
                         ev.DateTime = new DateTime(date.Year, date.Month, date.Day, hour, min, sec);
 
                         ev.ObjNum = BitConverter.ToUInt16(eventBuf, 8);

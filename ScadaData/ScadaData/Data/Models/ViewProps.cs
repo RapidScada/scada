@@ -23,7 +23,7 @@
  * Modified : 2016
  */
 
-namespace Scada.Data
+namespace Scada.Data.Models
 {
     /// <summary>
     /// View properties

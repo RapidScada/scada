@@ -62,13 +62,13 @@ using System.IO;
 using System.Data;
 using System.Text;
 
-namespace Scada.Data
+namespace Scada.Data.Tables
 {
     /// <summary>
     /// Adapter for reading and writing configuration database tables
     /// <para>Адаптер для чтения и записи таблиц базы конфигурации</para>
     /// </summary>
-    public class BaseAdapter
+    public class BaseAdapter : Adapter
     {
         /// <summary>
         /// Определение поля таблицы
@@ -145,119 +145,13 @@ namespace Scada.Data
         /// </summary>
         protected static readonly int MaxStringLen = Encoding.UTF8.GetMaxCharCount(MaxStringDataSize);
 
-        /// <summary>
-        /// Директория базы конфигурации
-        /// </summary>
-        protected string directory;
-        /// <summary>
-        /// Входной и выходной поток
-        /// </summary>
-        protected Stream ioStream;
-        /// <summary>
-        /// Имя файла таблицы базы конфигурации
-        /// </summary>
-        protected string tableName;
-        /// <summary>
-        /// Полное имя файла таблицы базы конфигурации
-        /// </summary>
-        protected string fileName;
-        /// <summary>
-        /// Доступ к данным выполняется через файл на диске
-        /// </summary>
-        protected bool fileMode;
-
 
         /// <summary>
         /// Конструктор
         /// </summary>
         public BaseAdapter()
+            : base()
         {
-            directory = "";
-            ioStream = null;
-            tableName = "";
-            fileName = "";
-            fileMode = true;
-        }
-
-
-        /// <summary>
-        /// Получить или установить директорию базы конфигурации
-        /// </summary>
-        public string Directory
-        {
-            get
-            {
-                return directory;
-            }
-            set
-            {
-                ioStream = null;
-                fileMode = true;
-                if (directory != value)
-                {
-                    directory = value;
-                    fileName = directory + tableName;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Получить или установить входной и выходной поток (вместо директории)
-        /// </summary>
-        public Stream Stream
-        {
-            get
-            {
-                return ioStream;
-            }
-            set
-            {
-                directory = "";
-                ioStream = value;
-                fileName = tableName;
-                fileMode = false;
-            }
-        }
-
-        /// <summary>
-        /// Получить или установить имя файла таблицы базы конфигурации
-        /// </summary>
-        public string TableName
-        {
-            get
-            {
-                return tableName;
-            }
-            set
-            {
-                if (tableName != value)
-                {
-                    tableName = value;
-                    fileName = directory + tableName;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Получить или установить полное имя файла таблицы базы конфигурации
-        /// </summary>
-        public string FileName
-        {
-            get
-            {
-                return fileName;
-            }
-            set
-            {
-                if (fileName != value)
-                {
-                    directory = Path.GetDirectoryName(value);
-                    ioStream = null;
-                    tableName = Path.GetFileName(value);
-                    fileName = value;
-                    fileMode = true;
-                }
-            }
         }
 
 
@@ -275,7 +169,7 @@ namespace Scada.Data
                 case DataTypes.Boolean:
                     return bytes[index] > 0;
                 case DataTypes.DateTime:
-                    return Arithmetic.DecodeDateTime(BitConverter.ToDouble(bytes, index));
+                    return ScadaUtils.DecodeDateTime(BitConverter.ToDouble(bytes, index));
                 case DataTypes.String:
                     int strDataSize = BitConverter.ToUInt16(bytes, index);
                     index += 2;
@@ -582,7 +476,7 @@ namespace Scada.Data
                                     rowBuf[bufInd] = (byte)(isNull ? 0 : (bool)val ? 1 : 0);
                                     break;
                                 case DataTypes.DateTime:
-                                    double dtVal = isNull ? 0.0 : Arithmetic.EncodeDateTime((DateTime)val);
+                                    double dtVal = isNull ? 0.0 : ScadaUtils.EncodeDateTime((DateTime)val);
                                     Array.Copy(BitConverter.GetBytes(dtVal), 0, rowBuf, bufInd, fieldDef.DataSize);
                                     break;
                                 default:

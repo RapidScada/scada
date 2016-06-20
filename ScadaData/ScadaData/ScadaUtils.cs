@@ -46,6 +46,12 @@ namespace Scada
         public const int ThreadDelay = 100;
 
         /// <summary>
+        /// Начало отчёта времени, которое используется приложениями Rapid SCADA
+        /// </summary>
+        /// <remarks>Совпадает с началом отсчёта времени в OLE Automation и Delphi</remarks>
+        public static readonly DateTime ScadaEpoch = new DateTime(1899, 12, 30, 0, 0, 0, DateTimeKind.Utc);
+
+        /// <summary>
         /// Длительность хранения данных в cookies
         /// </summary>
         [Obsolete("Use Scada.Web.WebUtils")]
@@ -81,6 +87,45 @@ namespace Scada
         {
             // Path.AltDirectorySeparatorChar == '/' для Mono на Linux, что некорректно 
             return path.Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar);
+        }
+
+        /// <summary>
+        /// Выделить час, минуту и секунду из закодированного вещественного значения времени
+        /// </summary>
+        public static void DecodeTime(double time, out int hour, out int min, out int sec)
+        {
+            const double hh = 1.0 / 24;                  // 1 час
+            const double mm = 1.0 / 24 / 60;             // 1 мин
+            const double ms = 1.0 / 24 / 60 / 60 / 1000; // 1 мс
+
+            if (time < 0)
+                time = -time;
+
+            time += ms;
+            time -= Math.Truncate(time); // (int)time работает некорректно для чисел time > int.MaxValue
+            hour = (int)(time * 24);
+            time -= hour * hh;
+            min = (int)(time * 24 * 60);
+            time -= min * mm;
+            sec = (int)(time * 24 * 60 * 60);
+        }
+
+        /// <summary>
+        /// Декодировать вещественное значение времени, преобразовав его в формат DateTime
+        /// </summary>
+        /// <remarks>Требуется проверить идентичность с методом DateTime.FromOADate()</remarks>
+        public static DateTime DecodeDateTime(double dateTime)
+        {
+            return ScadaEpoch.AddDays(dateTime);
+        }
+
+        /// <summary>
+        /// Закодировать дату и время в вещественное значение времени
+        /// </summary>
+        /// <remarks>Требуется проверить идентичность с методом DateTime.ToOADate()</remarks>
+        public static double EncodeDateTime(DateTime dateTime)
+        {
+            return (dateTime - ScadaEpoch).TotalDays;
         }
 
         /// <summary>

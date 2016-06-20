@@ -23,10 +23,11 @@
  * Modified : 2016
  */
 
+using Scada.Data.Tables;
 using System;
 using System.Text;
 
-namespace Scada.Data
+namespace Scada.Data.Models
 {
     /// <summary>
     /// Telecontrol command

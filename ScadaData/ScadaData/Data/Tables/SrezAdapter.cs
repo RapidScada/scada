@@ -38,17 +38,17 @@
  */
 
 using System;
-using System.IO;
 using System.Data;
+using System.IO;
 using System.Text;
 
-namespace Scada.Data
+namespace Scada.Data.Tables
 {
     /// <summary>
     /// Adapter for reading and writing data tables
     /// <para>Адаптер для чтения и записи таблиц срезов</para>
     /// </summary>
-    public class SrezAdapter
+    public class SrezAdapter : Adapter
     {
         /// <summary>
         /// Имя таблицы текущего среза
@@ -59,119 +59,13 @@ namespace Scada.Data
         /// </summary>
         protected static readonly byte[] EmptyCnlNumsBuf = new byte[] { 0x00, 0x00, 0x01, 0x00 };
 
-        /// <summary>
-        /// Директория таблицы срезов
-        /// </summary>
-        protected string directory;
-        /// <summary>
-        /// Входной и выходной поток
-        /// </summary>
-        protected Stream ioStream;
-        /// <summary>
-        /// Имя файла таблицы срезов
-        /// </summary>
-        protected string tableName;
-        /// <summary>
-        /// Полное имя файла таблицы срезов
-        /// </summary>
-        protected string fileName;
-        /// <summary>
-        /// Доступ к данным выполняется через файл на диске
-        /// </summary>
-        protected bool fileMode;
-
 
         /// <summary>
         /// Конструктор
         /// </summary>
         public SrezAdapter()
+            : base()
         {
-            directory = "";
-            ioStream = null;
-            tableName = "";
-            fileName = "";
-            fileMode = true;
-        }
-
-
-        /// <summary>
-        /// Получить или установить директорию таблицы срезов
-        /// </summary>
-        public string Directory
-        {
-            get
-            {
-                return directory;
-            }
-            set
-            {
-                ioStream = null;
-                fileMode = true;
-                if (directory != value)
-                {
-                    directory = value;
-                    fileName = directory + tableName;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Получить или установить входной и выходной поток (вместо директории)
-        /// </summary>
-        public Stream Stream
-        {
-            get
-            {
-                return ioStream;
-            }
-            set
-            {
-                directory = "";
-                ioStream = value;
-                fileName = tableName;
-                fileMode = false;
-            }
-        }
-
-        /// <summary>
-        /// Получить или установить имя файла таблицы срезов
-        /// </summary>
-        public string TableName
-        {
-            get
-            {
-                return tableName;
-            }
-            set
-            {
-                if (tableName != value)
-                {
-                    tableName = value;
-                    fileName = directory + tableName;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Получить или установить полное имя файла таблицы срезов
-        /// </summary>
-        public string FileName
-        {
-            get
-            {
-                return fileName;
-            }
-            set
-            {
-                if (fileName != value)
-                {
-                    directory = Path.GetDirectoryName(value);
-                    ioStream = null;
-                    tableName = Path.GetFileName(value);
-                    fileName = value;
-                    fileMode = true;
-                }
-            }
         }
 
 
@@ -291,7 +185,7 @@ namespace Scada.Data
                     ioStream;
                 reader = new BinaryReader(stream);
 
-                DateTime date = Arithmetic.ExtractDate(tableName); // определение даты срезов
+                DateTime date = ExtractDate(tableName); // определение даты срезов
                 SrezTable.SrezDescr srezDescr = null;              // описание среза
                 int[] cnlNums = null; // ссылка на номера входных каналов из описания среза
                 while (stream.Position < stream.Length)
@@ -339,7 +233,7 @@ namespace Scada.Data
                         long srezPos = stream.Position;
                         double time = reader.ReadDouble();
                         int hour, min, sec;
-                        Arithmetic.DecodeTime(time, out hour, out min, out sec);
+                        ScadaUtils.DecodeTime(time, out hour, out min, out sec);
                         DateTime srezDT = new DateTime(date.Year, date.Month, date.Day, hour, min, sec);
 
                         // инициализация нового среза
@@ -525,7 +419,7 @@ namespace Scada.Data
                 writer = new BinaryWriter(stream);
 
                 writer.Write(GetSrezDescrBuf(srez.SrezDescr));
-                writer.Write(Arithmetic.EncodeDateTime(srezDT));
+                writer.Write(ScadaUtils.EncodeDateTime(srezDT));
                 writer.Write(GetCnlDataBuf(srez.CnlData));
                 stream.SetLength(stream.Position);
             }
@@ -605,7 +499,7 @@ namespace Scada.Data
 
                     // запись данных среза
                     srez.Position = stream.Position;
-                    writer.Write(Arithmetic.EncodeDateTime(srez.DateTime));
+                    writer.Write(ScadaUtils.EncodeDateTime(srez.DateTime));
                     writer.Write(GetCnlDataBuf(srez.CnlData));
                     lastSrez = srez;
                 }

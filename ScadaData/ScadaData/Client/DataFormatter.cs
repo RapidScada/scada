@@ -23,12 +23,10 @@
  * Modified : 2016
  */
 
-using Scada.Data;
+using Scada.Data.Models;
+using Scada.Data.Tables;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 
 namespace Scada.Client
 {

@@ -26,7 +26,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Scada.Data
+namespace Scada.Data.Tables
 {
     /// <summary>
     /// Trend for fast reading one input channel data
