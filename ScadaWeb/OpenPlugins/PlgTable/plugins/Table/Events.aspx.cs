@@ -1,4 +1,5 @@
 ﻿using Scada.Data;
+using Scada.Data.Models;
 using Scada.UI;
 using Scada.Web.Shell;
 using System;

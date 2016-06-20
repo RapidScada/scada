@@ -23,13 +23,12 @@
  * Modified : 2016
  */
 
-using Scada.Data;
+using Scada.Data.Models;
 using Scada.UI;
 using Scada.Web.Shell;
 using System;
 using System.Text;
 using System.Web;
-using System.Web.UI.WebControls;
 
 namespace Scada.Web.Plugins.Table
 {

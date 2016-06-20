@@ -1,5 +1,5 @@
 ﻿using Scada.Client;
-using Scada.Data;
+using Scada.Data.Tables;
 using System;
 
 namespace Scada.Web.Plugins.Config
