@@ -3,6 +3,10 @@ var VIEW_DATE_OPTIONS = { year: "numeric", month: "long", day: "2-digit" };
 
 // The view hub object
 var viewHub = scada.viewHubLocator.getViewHub();
+// Notifier control
+var notifier = null;
+// Current view date
+var viewDate = null;
 
 // The variables below must be defined in *.aspx
 // View ID

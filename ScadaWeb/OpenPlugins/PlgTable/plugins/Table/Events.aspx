@@ -26,6 +26,7 @@
         var phrases = <%= phrases %>;
         var today = <%= today %>;
         var locale = "<%= Scada.Localization.Culture.Name %>";
+        var dispEventCnt = <%= dispEventCnt %>;
     </script>
     <script type="text/javascript" src="js/events.js"></script>
 </head>
@@ -50,18 +51,18 @@
                     <td class="obj">Object</td>
                     <td class="dev">Device</td>
                     <td class="cnl">Channel</td>
-                    <td class="descr">Description</td>
+                    <td class="text">Description</td>
                     <td class="ack">Ack</td>
                 </tr>
-                <tr class="event">
+                <!--<tr class="event">
                     <td class="num">1</td>
                     <td class="time">14/06/2016 10:45:23</td>
                     <td class="obj">Enterprise</td>
                     <td class="dev">ADAM-6015 Server room</td>
                     <td class="cnl">t4_delayed</td>
-                    <td class="descr">Normal: 21.0 °C</td>
+                    <td class="text">Normal: 21.0 °C</td>
                     <td class="ack">No</td>
-                </tr>
+                </tr>-->
             </table>
         </div>
     </form>

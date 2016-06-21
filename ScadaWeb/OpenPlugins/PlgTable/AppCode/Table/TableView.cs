@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : ScadaWebCommon
+ * Module   : PlgTable
  * Summary  : Table view
  * 
  * Author   : Mikhail Shiryaev

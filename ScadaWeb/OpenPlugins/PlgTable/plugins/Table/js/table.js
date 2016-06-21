@@ -3,11 +3,6 @@ var HEADER_TIME_OPTIONS = { hour: "2-digit", minute: "2-digit" };
 // Column header date and time format options
 var HEADER_DATETIME_OPTIONS = { month: "short", day: "2-digit", hour: "2-digit", minute: "2-digit" };
 
-// Notifier control
-var notifier = null;
-// Current view date
-var viewDate = null;
-
 // Time period: firstHour <= timeFrom <= timeTo <= lastHour
 // Beginning of the displayed time period
 var timeFrom = null;

@@ -674,7 +674,7 @@ namespace Scada.Web
         [OperationContract]
         [WebGet]
         public string GetEvents(int year, int month, int day, string cnlNums, int viewID,
-            int lastCount, int startEvNum, int dataAge)
+            int lastCount, int startEvNum, long dataAge)
         {
             try
             {
@@ -691,17 +691,37 @@ namespace Scada.Web
                 // получение событий
                 DateTime date = new DateTime(year, month, day);
                 EventTableLight tblEvent = AppData.DataAccess.DataCache.GetEventTable(date);
-                bool reversed;
-                List<EventTableLight.Event> events = 
-                    tblEvent.GetFilteredEvents(eventFilter, lastCount, startEvNum, out reversed);
+                long newDataAge = WebUtils.DateTimeToJs(tblEvent.FileModTime);
+                Event[] eventsToSend;
 
-                // преобразование событий для передачи
-                int evCnt = events.Count;
-                Event[] eventsToSend = new Event[evCnt];
-                for (int i = 0; i < evCnt; i++)
-                    eventsToSend[i] = ConvertEvent(events[i]);
+                if (tblEvent.FileModTime > DateTime.MinValue && dataAge < newDataAge)
+                {
+                    // применение фильтра событий
+                    bool reversed;
+                    List<EventTableLight.Event> events = 
+                        tblEvent.GetFilteredEvents(eventFilter, lastCount, startEvNum, out reversed);
 
-                return JsSerializer.Serialize(new ArcDTO(eventsToSend, WebUtils.DateTimeToJs(tblEvent.FileModTime)));
+                    // преобразование событий для передачи
+                    int evCnt = events.Count;
+                    eventsToSend = new Event[evCnt];
+                    if (reversed)
+                    {
+                        for (int i = 0, j = evCnt - 1; i < evCnt; i++, j--)
+                            eventsToSend[i] = ConvertEvent(events[j]);
+                    }
+                    else
+                    {
+                        for (int i = 0; i < evCnt; i++)
+                            eventsToSend[i] = ConvertEvent(events[i]);
+                    }
+                }
+                else
+                {
+                    eventsToSend = new Event[0];
+                    newDataAge = 0;
+                }
+
+                return JsSerializer.Serialize(new ArcDTO(eventsToSend, newDataAge));
             }
             catch (Exception ex)
             {

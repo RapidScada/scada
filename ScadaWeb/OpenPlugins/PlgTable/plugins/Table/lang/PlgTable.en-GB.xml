@@ -7,6 +7,11 @@
     <Phrase key="LoadTableViewError">Error loading table view from file</Phrase>
     <Phrase key="SaveTableViewError">Error saving table view to file</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmEvents">
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmEvents.Js">
+    <Phrase key="UpdateEventsError">Error updating events</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.WFrmTable">
     <Phrase key="SelectedDay">Selected day:</Phrase>
     <Phrase key="PreviousDay">Previous day:</Phrase>

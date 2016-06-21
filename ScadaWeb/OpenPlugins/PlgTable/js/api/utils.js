@@ -13,8 +13,11 @@ var scada = scada || {};
 
 // JavaScript utilities object
 scada.utils = {
+    // z-index that moves element to the front
+    FRONT_ZINDEX: 10000,
+
     // Default cookie expiration period in days
-    cookieExpiration: 7,
+    COOKIE_EXPIRATION: 7,
 
     // Get cookie
     getCookie: function (name) {
@@ -37,16 +40,16 @@ scada.utils = {
 
     // Set cookie
     setCookie: function (name, value, opt_expDays) {
-        var expDays = opt_expDays ? opt_expDays : this.cookieExpiration;
+        var expDays = opt_expDays ? opt_expDays : this.COOKIE_EXPIRATION;
         var expires = new Date();
         expires.setDate(expires.getDate() + expDays);
         document.cookie = name + "=" + encodeURIComponent(value) + "; expires=" + expires.toUTCString();
     },
 
     // Get the query string parameter value
-    getQueryStringParam: function (paramName, opt_url) {
+    getQueryParam: function (paramName, opt_url) {
         if (paramName) {
-            var url = opt_url ? opt_url : unescape(window.location);
+            var url = opt_url ? opt_url : decodeURIComponent(window.location);
             var begInd = queryString.indexOf("?");
 
             if (begInd > 0) {
@@ -68,9 +71,9 @@ scada.utils = {
 
     // Set or add the query string parameter value.
     // The method returns a new string
-    setQueryStringParam: function (paramName, paramVal, opt_url) {
+    setQueryParam: function (paramName, paramVal, opt_url) {
         if (paramName) {
-            var url = opt_url ? opt_url : unescape(window.location);
+            var url = opt_url ? opt_url : decodeURIComponent(window.location);
             var searchName = "?" + paramName + "=";
             var nameBegInd = url.indexOf(searchName);
 
@@ -83,18 +86,23 @@ scada.utils = {
                 // replace parameter value
                 var valBegInd = nameBegInd + searchName.length;
                 var valEndInd = url.indexOf("&", valBegInd);
-                var newUrl = url.substring(0, valBegInd) + paramVal;
+                var newUrl = url.substring(0, valBegInd) + encodeURIComponent(paramVal);
                 return valEndInd > 0 ?
                     newUrl + url.substring(valEndInd) :
                     newUrl;
             } else {
                 // add parameter
                 var mark = url.indexOf("?") >= 0 ? "&" : "?";
-                return url + mark + paramName + "=" + paramVal;
+                return url + mark + paramName + "=" + encodeURIComponent(paramVal);
             }
         } else {
             return "";
         }
+    },
+
+    // Convert array to a query string parameter by joining array elements with a comma
+    arrayToQueryParam: function (arr) {
+        return arr ? (Array.isArray(arr) ? arr.join(",") : arr) : "";
     },
 
     // Returns the current time string

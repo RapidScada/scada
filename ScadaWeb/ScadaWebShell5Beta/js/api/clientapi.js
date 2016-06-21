@@ -42,6 +42,21 @@ scada.HourCnlDataExt = function () {
     this.CnlDataExtArr = [];
 }
 
+/********** Event **********/
+
+// Event type
+scada.Event = function () {
+    this.Num = 0;
+    this.Time = "";
+    this.Obj = "";
+    this.KP = "";
+    this.Cnl = "";
+    this.Text = "";
+    this.Ack = "";
+    this.Color = "";
+    this.Sound = false;
+};
+
 /********** Auxiliary Request Parameters **********/
 
 // Input channel filter type
@@ -112,7 +127,11 @@ scada.clientAPI = {
                 var parsedData = $.parseJSON(data.d);
                 if (parsedData.Success) {
                     scada.utils.logSuccessfulRequest(operation/*, data*/);
-                    callback(true, parsedData.Data);
+                    if (typeof parsedData.DataAge === "undefined") {
+                        callback(true, parsedData.Data);
+                    } else {
+                        callback(true, parsedData.Data, parsedData.DataAge);
+                    }
                 } else {
                     scada.utils.logServiceError(operation, parsedData.ErrorMessage);
                     callback(false, errorResult);

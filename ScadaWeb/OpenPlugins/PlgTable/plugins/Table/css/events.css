@@ -131,7 +131,7 @@
   color: white;
 }
 #divToolbar .tool-btn.disabled {
-  color: #e5e5e5;
+  color: #ccc;
   cursor: default;
 }
 #tblEvents {
@@ -154,6 +154,6 @@
 #tblEvents td.cnl {
   width: 15%;
 }
-#tblEvents td.descr {
+#tblEvents td.text {
   width: 35%;
 }
