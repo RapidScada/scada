@@ -406,41 +406,44 @@ namespace Scada.Web
             Event destEvent = new Event();
             destEvent.Num = srcEvent.Number;
             destEvent.Time = srcEvent.DateTime.ToLocalizedString();
-            destEvent.Text = srcEvent.Descr;
             destEvent.Ack = srcEvent.Checked ? WebPhrases.EventAck : WebPhrases.EventNotAck;
 
             DataAccess dataAccess = AppData.DataAccess;
             InCnlProps cnlProps = dataAccess.GetCnlProps(srcEvent.CnlNum);
 
             destEvent.Obj = cnlProps != null && cnlProps.ObjNum == srcEvent.ObjNum ?
-                dataAccess.GetObjName(srcEvent.ObjNum) : cnlProps.ObjName;
+                cnlProps.ObjName : dataAccess.GetObjName(srcEvent.ObjNum);
             destEvent.KP = cnlProps != null && cnlProps.KPNum == srcEvent.KPNum ?
-                dataAccess.GetKPName(srcEvent.KPNum) : cnlProps.KPName;
+                cnlProps.KPName : dataAccess.GetKPName(srcEvent.KPNum);
+
+            double cnlVal = srcEvent.NewCnlVal;
+            int cnlStat = srcEvent.NewCnlStat;
+            CnlStatProps cnlStatProps = dataAccess.GetCnlStatProps(cnlStat);
 
             if (cnlProps != null)
             {
                 destEvent.Cnl = cnlProps.CnlName;
-                destEvent.Sound = cnlProps.EvSound;
-
-                // определение цвета
-                double cnlVal = srcEvent.NewCnlVal;
-                int cnlStat = srcEvent.NewCnlStat;
-                CnlStatProps cnlStatProps = dataAccess.GetCnlStatProps(cnlStat);
                 destEvent.Color = DataFormatter.GetCnlValColor(cnlVal, cnlStat, cnlProps, cnlStatProps);
+                destEvent.Sound = cnlProps.EvSound;
+            }
 
-                // формирование текста в формате "<статус>: <значение>"
-                if (destEvent.Text == "")
+            // формирование текста события
+            if (string.IsNullOrEmpty(srcEvent.Descr))
+            {
+                // текст в формате "<статус>: <значение>"
+                StringBuilder sbText = cnlStatProps == null ?
+                    new StringBuilder() : new StringBuilder(cnlStatProps.Name);
+                if (cnlVal > BaseValues.CnlStatuses.Undefined)
                 {
-                    StringBuilder sbText = cnlStatProps == null ? 
-                        new StringBuilder() : new StringBuilder(cnlStatProps.Name);
-                    if (cnlVal > BaseValues.CnlStatuses.Undefined)
-                    {
-                        if (sbText.Length > 0)
-                            sbText.Append(": ");
-                        sbText.Append(DataFormatter.FormatCnlVal(cnlVal, cnlStat, cnlProps, true));
-                    }
-                    destEvent.Text = sbText.ToString();
+                    if (sbText.Length > 0)
+                        sbText.Append(": ");
+                    sbText.Append(DataFormatter.FormatCnlVal(cnlVal, cnlStat, cnlProps, true));
                 }
+                destEvent.Text = sbText.ToString();
+            }
+            else
+            {
+                destEvent.Text = srcEvent.Descr;
             }
 
             return destEvent;
@@ -718,7 +721,6 @@ namespace Scada.Web
                 else
                 {
                     eventsToSend = new Event[0];
-                    newDataAge = 0;
                 }
 
                 return JsSerializer.Serialize(new ArcDTO(eventsToSend, newDataAge));

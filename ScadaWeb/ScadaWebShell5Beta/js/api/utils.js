@@ -118,21 +118,22 @@ scada.utils = {
         }
     },
 
+    // Write information about the failed request to console
+    logFailedRequest: function (operation, jqXHR) {
+        console.error(this.getCurTime() + " Request '" + operation + "' failed: " +
+            jqXHR.status + " (" + jqXHR.statusText + ")");
+    },
+
     // Write information about the internal service error to console
     logServiceError: function (operation,  opt_message) {
         console.error(this.getCurTime() + " Request '" + operation + "' reports internal service error" +
             (opt_message ? ": " + opt_message : ""));
     },
 
-    // Write information about the internal service error to console
-    logServiceFormatError: function (operation) {
-        console.error(this.getCurTime() + " Request '" + operation + "' returns data in incorrect format");
-    },
-
-    // Write information about the failed request to console
-    logFailedRequest: function (operation, jqXHR) {
-        console.error(this.getCurTime() + " Request '" + operation + "' failed: " +
-            jqXHR.status + " (" + jqXHR.statusText + ")");
+    // Write information about the request processing error to console
+    logProcessingError: function (operation, opt_message) {
+        console.error(this.getCurTime() + " Error processing request '" + operation + "'" +
+            (opt_message ? ": " + opt_message : ""));
     },
 
     // Check if browser is in fullscreen mode

@@ -120,7 +120,7 @@ scada.scheme.Scheme.prototype._loadSchemeProps = function (viewID, callback) {
             }
         }
         catch (ex) {
-            scada.utils.logServiceFormatError(operation);
+            scada.utils.logProcessingError(operation, ex.message);
             callback(false, false);
         }
     })
@@ -211,7 +211,7 @@ scada.scheme.Scheme.prototype._loadElements = function (viewID, callback) {
             }
         }
         catch (ex) {
-            scada.utils.logServiceFormatError(operation);
+            scada.utils.logProcessingError(operation, ex.message);
             callback(false, false);
         }
     })
@@ -313,7 +313,7 @@ scada.scheme.Scheme.prototype._loadImages = function (viewID, callback) {
             }
         }
         catch (ex) {
-            scada.utils.logServiceFormatError(operation);
+            scada.utils.logProcessingError(operation, ex.message);
             callback(false, false);
         }
     })

@@ -229,6 +229,8 @@ function updateCurData(callback) {
 function updateHourData(callback) {
     scada.clientAPI.getHourCnlDataExtByView(viewDate, timeFrom, timeTo, viewID, scada.HourDataModes.INTEGER_HOURS,
         function (success, hourCnlDataExtArr) {
+            // TODO: check that hourPeriod and cnlFilter were not changed
+
             if (success) {
                 var hourDataMap = scada.clientAPI.createHourCnlDataExtMap(hourCnlDataExtArr);
 
@@ -258,7 +260,7 @@ function updateHourData(callback) {
         });
 }
 
-// Start cyclic updating of current data
+// Start cyclic updating current data
 function startUpdatingCurData() {
     updateCurData(function (success) {
         if (!success) {
@@ -269,7 +271,7 @@ function startUpdatingCurData() {
     });
 }
 
-// Start cyclic updating of hourly data
+// Start cyclic updating hourly data
 function startUpdatingHourData() {
     updateHourData(function (success) {
         if (!success) {
@@ -280,7 +282,7 @@ function startUpdatingHourData() {
     });
 }
 
-// Restart updating of hourly data immediately
+// Restart updating hourly data immediately
 function restartUpdatingHourData() {
     clearTimeout(updateHourDataTimeoutID);
     startUpdatingHourData();

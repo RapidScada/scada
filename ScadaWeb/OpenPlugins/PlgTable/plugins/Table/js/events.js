@@ -1,13 +1,22 @@
 ﻿// Filter events by view
 var eventsByView = true;
 // Input channel filter for event requests
-var cnlFilter = new scada.CnlFilter();
+var cnlFilter = null;
+
+// Array of jQuery objects, where each element represents an event row
+var eventRows = [];
 // Events data age after full update
 var fullDataAge = 0;
 // Events data age after partial update
 var partialDataAge = 0;
 // Number of the last received event
 var lastEvNum = 0;
+// The last received event has the alternate style
+var lastEvAlt = true;
+// Timeout ID of the full events updating timer
+var fullUpdateTimeoutID = null;
+// Timeout ID of the partial events updating timer
+var partUpdateTimeoutID = null;
 
 // Displayed event count. Must be defined in Events.aspx
 var dispEventCnt = dispEventCnt || 0;
@@ -15,8 +24,7 @@ var dispEventCnt = dispEventCnt || 0;
 // Set current view date and process the consequent changes
 function changeViewDate(date, notify) {
     setViewDate(date);
-    //updateHourDataColHdrText();
-    //restartUpdatingHourData();
+    resetEvents();
 
     if (notify) {
         sendViewDateNotification(date);
@@ -26,6 +34,7 @@ function changeViewDate(date, notify) {
 // Enable or disable events by view filter
 function setEventsByVeiw(val) {
     eventsByView = val;
+    cnlFilter = new scada.CnlFilter();
     cnlFilter.viewID = val ? viewID : 0;
     saveEventFilter();
 
@@ -49,9 +58,9 @@ function saveEventFilter() {
     scada.utils.setCookie("Table.EventsByView", eventsByView);
 }
 
-// Append new event to the event table
-function appendEvent(tableElem, event) {
-    var eventElem = $("<tr class='event'>" +
+// Create detached jQuery object that represents an event row
+function createEventRow(event) {
+    var eventRow = $("<tr class='event'>" +
         "<td class='num'>" + event.Num + "</td>" +
         "<td class='time'>" + event.Time + "</td>" +
         "<td class='obj'>" + event.Obj + "</td>" +
@@ -62,37 +71,146 @@ function appendEvent(tableElem, event) {
         "</tr>");
 
     if (event.Color) {
-        eventElem.css("color", event.Color);
+        eventRow.css("color", event.Color);
     }
 
-    tableElem.append(eventElem);
+    eventRow.data("num", event.Num);
+    return eventRow;
+}
+
+// Append new event to the event table
+function appendEvent(tableElem, event) {
+    var eventRow = createEventRow(event);
+
+    lastEvAlt = !lastEvAlt;
+    if (lastEvAlt) {
+        eventRow.addClass("alt");
+    }
+
+    eventRows.push(eventRow);
+    tableElem.append(eventRow);
+}
+
+// Rewrite event HTML
+function rewriteEvent(eventRow, event) {
+    if (eventRow.data("num") == event.Num) {
+        eventRow.children("td.time").text(event.Time);
+        eventRow.children("td.obj").text(event.Obj);
+        eventRow.children("td.dev").text(event.KP);
+        eventRow.children("td.cnl").text(event.Cnl);
+        eventRow.children("td.text").text(event.Text);
+        eventRow.children("td.ack").text(event.Ack);
+    } else {
+        console.error(scada.utils.getCurTime() + " Event number mismatch");
+    }
+}
+
+// Append new events to the event table starting from the specified index
+function appendEvents(tableElem, eventArr, startIndex) {
+    var len = eventArr.length ? eventArr.length : 0;
+    for (var i = startIndex; i < len; i++) {
+        appendEvent(tableElem, eventArr[i]);
+    }
+}
+
+// Rewrite HTML of the events from the specified range not including the end index
+function rewriteEvents(tableElem, eventArr, startIndex, endIndex) {
+    for (var i = startIndex; i < endIndex; i++) {
+        rewriteEvent(eventRows[i], eventArr[i]);
+    }
+}
+
+// Remove events from the specified range not including the end index
+function removeEvents(tableElem, startIndex, endIndex) {
+    for (var i = startIndex; i < endIndex; i++) {
+        eventRows[i].remove();
+    }
+    eventRows.splice(startIndex, endIndex - startIndex);
+}
+
+// Clear the event table
+function clearEvents(tableElem) {
+    tableElem.find("tr.event").remove();
+    eventRows = [];
+    lastEvAlt = true;
+}
+
+// Reset the event table to the default state and restart updating
+function resetEvents() {
+    clearEvents($("#tblEvents"));
+    fullDataAge = 0;
+    partialDataAge = 0;
+    lastEvNum = 0;
+
+    restartUpdatingEvents();
 }
 
 // Request and display events.
 // callback is a function (success)
 function updateEvents(full, callback) {
+    var reqViewDate = viewDate;
+    var reqCnlFilter = cnlFilter;
     var startEvNum = full ? 0 : lastEvNum + 1;
     var reqDataAge = full ? fullDataAge : partialDataAge;
 
-    scada.clientAPI.getEvents(viewDate, cnlFilter, dispEventCnt, startEvNum, reqDataAge,
+    scada.clientAPI.getEvents(reqViewDate, reqCnlFilter, dispEventCnt, startEvNum, reqDataAge,
         function (success, eventArr, dataAge) {
-            if (success) {
-                partialDataAge = dataAge;
-
-                if (eventArr.length) {
-                    lastEvNum = eventArr[eventArr.length - 1].Num;
-                }
-
+            if (reqViewDate != viewDate || reqCnlFilter != cnlFilter) {
+                // do nothing
+            }
+            else if (success) {
                 var tableElem = $("#tblEvents");
+                var eventArrLen = eventArr.length ? eventArr.length : 0;
 
                 if (full) {
-                    fullDataAge = dataAge;
-                } else {
-                    for (var event of eventArr) {
-                        appendEvent(tableElem, event);
+                    if (eventArrLen > 0) {
+                        var firstEvNum = eventArr[0].Num;
+                        var firstEvInd = 0;
+                        var eventRowsCnt = eventRows.length;
+                        while (firstEvInd < eventRowsCnt && eventRows[firstEvInd].data("num") < firstEvNum) {
+                            firstEvInd++;
+                        }
+
+                        var eventsToMerge = eventRowsCnt - firstEvInd;
+                        var evNumsMatched = eventsToMerge <= eventArrLen;
+                        var eventRowInd = firstEvInd;
+                        var eventArrInd = 0;
+                        while (eventRowInd < eventRowsCnt && eventArrInd < eventArrLen && evNumsMatched) {
+                            evNumsMatched = eventRows[eventRowInd].data("num") == eventArr[eventArrInd].Num;
+                            eventRowInd++;
+                            eventArrInd++;
+                        }
+
+                        if (evNumsMatched) {
+                            // merge received events with the existing
+                            removeEvents(tableElem, 0, firstEvInd);
+                            rewriteEvents(tableElem, eventArr, 0, eventsToMerge);
+                            appendEvents(tableElem, eventArr, eventsToMerge);
+                        } else {
+                            // clear and fill again the event table
+                            clearEvents(tableElem);
+                            appendEvents(tableElem, eventArr, 0);
+                        }
+                    } else if (fullDataAge != dataAge) {
+                        // clear the event table
+                        clearEvents(tableElem);
                     }
+                } else {
+                    // append new events to the event table
+                    appendEvents(tableElem, eventArr, 0);
                 }
 
+                partialDataAge = dataAge;
+
+                if (full || startEvNum <= 1) {
+                    fullDataAge = dataAge;
+                }
+
+                if (eventArrLen > 0) {
+                    lastEvNum = eventArr[eventArrLen - 1].Num;
+                }
+
+                scada.tableHeader.update();
                 callback(true);
             } else {
                 callback(false);
@@ -100,15 +218,35 @@ function updateEvents(full, callback) {
         });
 }
 
-// Start cyclic updating of all displayed or newly added events
-function startUpdatingEvents(full) {
-    updateEvents(full, function (success) {
+// Start cyclic updating all displayed events
+function startFullUpdatingEvents() {
+    updateEvents(true, function (success) {
         if (!success) {
             notifier.addNotification(phrases.UpdateEventsError, true, notifier.DEF_NOTIF_LIFETIME);
         }
 
-        setTimeout(startUpdatingEvents, full ? arcRefrRate : dataRefrRate, full);
+        fullUpdateTimeoutID = setTimeout(startFullUpdatingEvents, arcRefrRate);
     });
+}
+
+// Start cyclic updating newly added events
+function startPartialUpdatingEvents() {
+    updateEvents(false, function (success) {
+        if (!success) {
+            notifier.addNotification(phrases.UpdateEventsError, true, notifier.DEF_NOTIF_LIFETIME);
+        }
+
+        partUpdateTimeoutID = setTimeout(startPartialUpdatingEvents, dataRefrRate);
+    });
+}
+
+// Restart updating events immediately
+function restartUpdatingEvents() {
+    clearTimeout(fullUpdateTimeoutID);
+    clearTimeout(partUpdateTimeoutID);
+
+    startFullUpdatingEvents();
+    partUpdateTimeoutID = setTimeout(startPartialUpdatingEvents, dataRefrRate);
 }
 
 $(document).ready(function () {
@@ -117,6 +255,7 @@ $(document).ready(function () {
     updateLayout();
     initViewDate();
     loadEventFilter();
+    scada.tableHeader.create();
     notifier = new scada.Notifier("#divNotif");
     notifier.startClearingNotifications();
 
@@ -147,11 +286,13 @@ $(document).ready(function () {
     $("#spanAllEventsBtn").click(function () {
         if (!$(this).hasClass("disabled")) {
             setEventsByVeiw(false);
+            resetEvents();
         }
     });
 
     $("#spanEventsByViewBtn").click(function () {
         setEventsByVeiw(true);
+        resetEvents();
     });
 
     // export events on the button click
@@ -160,6 +301,6 @@ $(document).ready(function () {
     });
 
     // start updating events
-    setTimeout(startUpdatingEvents, arcRefrRate, true);
-    setTimeout(startUpdatingEvents, dataRefrRate, false);
+    startFullUpdatingEvents();
+    partUpdateTimeoutID = setTimeout(startPartialUpdatingEvents, dataRefrRate);
 });

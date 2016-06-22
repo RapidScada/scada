@@ -158,7 +158,7 @@ namespace Scada.Web
         /// </summary>
         public static long DateTimeToJs(DateTime dateTime)
         {
-            return (long)(dateTime - UnixEpoch).TotalMilliseconds;
+            return dateTime > UnixEpoch ? (long)(dateTime - UnixEpoch).TotalMilliseconds : 0;
         }
     }
 }

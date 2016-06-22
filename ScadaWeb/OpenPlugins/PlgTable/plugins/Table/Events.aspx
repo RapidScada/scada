@@ -46,23 +46,14 @@
         <div id="divTblWrapper" class="table-wrapper">
             <table id="tblEvents">
                 <tr class="hdr">
-                    <td class="num">Number</td>
-                    <td class="time">Date and Time</td>
-                    <td class="obj">Object</td>
-                    <td class="dev">Device</td>
-                    <td class="cnl">Channel</td>
-                    <td class="text">Description</td>
-                    <td class="ack">Ack</td>
+                    <td class="num"><span>Number</span></td>
+                    <td class="time"><span>Date and Time</span></td>
+                    <td class="obj"><span>Object</span></td>
+                    <td class="dev"><span>Device</span></td>
+                    <td class="cnl"><span>Channel</span></td>
+                    <td class="text"><span>Description</span></td>
+                    <td class="ack"><span>Ack</span></td>
                 </tr>
-                <!--<tr class="event">
-                    <td class="num">1</td>
-                    <td class="time">14/06/2016 10:45:23</td>
-                    <td class="obj">Enterprise</td>
-                    <td class="dev">ADAM-6015 Server room</td>
-                    <td class="cnl">t4_delayed</td>
-                    <td class="text">Normal: 21.0 °C</td>
-                    <td class="ack">No</td>
-                </tr>-->
             </table>
         </div>
     </form>
