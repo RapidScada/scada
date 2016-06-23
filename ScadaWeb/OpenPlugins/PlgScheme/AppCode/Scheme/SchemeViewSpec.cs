@@ -23,6 +23,9 @@
  * Modified : 2016
  */
 
+using Scada.Scheme;
+using System;
+
 namespace Scada.Web.Plugins.Scheme
 {
     /// <summary>
@@ -51,6 +54,17 @@ namespace Scada.Web.Plugins.Scheme
             get
             {
                 return "~/plugins/Scheme/images/schemeicon.png";
+            }
+        }
+
+        /// <summary>
+        /// Получить тип представления
+        /// </summary>
+        public override Type ViewType
+        {
+            get
+            {
+                return typeof(SchemeView);
             }
         }
 

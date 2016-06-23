@@ -46,6 +46,10 @@ namespace Scada.Web.Shell
         /// Ссылки на представления, ключ - ид. представления
         /// </summary>
         protected readonly Dictionary<int, string> viewUrls;
+        /// <summary>
+        /// Типы представлений, ключ - ид. представления
+        /// </summary>
+        protected readonly Dictionary<int, Type> viewTypes;
 
         /// <summary>
         /// Права пользователя
@@ -78,12 +82,13 @@ namespace Scada.Web.Shell
 
             this.log = log;
             viewUrls = new Dictionary<int, string>();
+            viewTypes = new Dictionary<int, Type>();
 
             userRights = null;
             viewSpecs = null;
             dataAccess = null;
 
-            ViewNodes = new List<ViewNode>();
+            ViewNodes = new List<ViewNode>();           
         }
 
 
@@ -125,6 +130,10 @@ namespace Scada.Web.Shell
                     destViewNodes.Add(viewNode);
                     viewUrls[viewID] = viewNode.ViewUrl;
                 }
+
+                // добавление типа предсталения в справочник
+                if (viewID > 0 && viewSpec != null)
+                    viewTypes[viewID] = viewSpec.ViewType;
             }
         }
 
@@ -215,6 +224,15 @@ namespace Scada.Web.Shell
                     "Error getting the first accessible view");
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Получить ссылку на тип представления с заданным идентификатором
+        /// </summary>
+        public Type GetViewType(int viewID)
+        {
+            Type viewType;
+            return viewTypes.TryGetValue(viewID, out viewType) ? viewType : null;
         }
     }
 }

@@ -138,7 +138,7 @@ namespace Scada.Web
         public ViewSettings ViewSettings { get; private set; }
 
         /// <summary>
-        /// Получить ссылку на список плагинов
+        /// Получить ссылку на список спецификаций плагинов
         /// </summary>
         public List<PluginSpec> PluginSpecs { get; private set; }
 

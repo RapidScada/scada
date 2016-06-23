@@ -116,7 +116,7 @@
   white-space: nowrap;
 }
 #divTblWrapper tr.hdr td {
-  border: 1px solid #888;
+  border-color: #888;
   font-weight: 600;
   padding: 2px 7px;
   text-align: center;

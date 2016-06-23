@@ -108,7 +108,7 @@ namespace Scada.Web
         internal ViewSettings ViewSettings { get; private set; }
 
         /// <summary>
-        /// Получить список плагинов
+        /// Получить список спецификаций плагинов
         /// </summary>
         /// <remarks>Объект создаётся заново при изменении файла настроек веб-приложения</remarks>
         internal List<PluginSpec> PluginSpecs { get; private set; }

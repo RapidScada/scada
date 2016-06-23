@@ -67,6 +67,10 @@ namespace Scada.Web.Plugins.Table
             if (!rights.ViewRight)
                 Response.Redirect(UrlTemplates.NoView);
 
+            // загрузка представления в кеш для последующего получения событий
+            Type viewType = userData.UserViews.GetViewType(viewID);
+            appData.ViewCache.GetView(viewType, viewID, false);
+
             // запретить отображение всех событий, если нет соответствующих прав
             if (!userData.UserRights.ViewAllRight)
                 spanAllEventsBtn.Attributes["class"] += " disabled";

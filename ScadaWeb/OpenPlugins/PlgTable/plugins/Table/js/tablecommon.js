@@ -49,6 +49,8 @@ function updateLayout() {
         .outerWidth(windowWidth)
         .outerHeight($(window).height() - notifHeight - toolbarHeight);
     divToolbar.css("top", notifHeight);
+
+    scada.tableHeader.update();
 }
 
 // Set current view date to the initial value

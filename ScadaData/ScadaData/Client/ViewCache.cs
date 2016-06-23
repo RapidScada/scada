@@ -99,10 +99,14 @@ namespace Scada.Client
         /// <summary>
         /// Получить представление из кэша или от сервера
         /// </summary>
-        public T GetView<T>(int viewID, bool throwOnError = false) where T : BaseView
+        /// <remarks>Метод используется, если тип предсталения неизвестен на момент компиляции</remarks>
+        public BaseView GetView(Type viewType, int viewID, bool throwOnError = false)
         {
             try
             {
+                if (viewType == null)
+                    throw new ArgumentNullException("viewType");
+
                 // получение представления из кеша
                 DateTime utcNowDT = DateTime.UtcNow;
                 Cache<int, BaseView>.CacheItem cacheItem = Cache.GetOrCreateItem(viewID, utcNowDT);
@@ -110,7 +114,7 @@ namespace Scada.Client
                 // блокировка доступа только к одному представлению
                 lock (cacheItem)
                 {
-                    T view = null;                            // представление, которое необходимо получить
+                    BaseView view = null;                     // представление, которое необходимо получить
                     BaseView viewFromCache = cacheItem.Value; // представление из кеша
                     DateTime viewAge = cacheItem.ValueAge;    // время изменения файла представления
                     bool viewIsNotValid = utcNowDT - cacheItem.ValueRefrDT > ViewValidSpan; // представление могло устареть
@@ -139,7 +143,7 @@ namespace Scada.Client
                             else if (newViewAge != viewAge) // файл представления изменён
                             {
                                 // создание и загрузка нового представления
-                                view = (T)Activator.CreateInstance(typeof(T));
+                                view = (BaseView)Activator.CreateInstance(viewType);
                                 if (serverComm.ReceiveView(viewProps.FileName, view))
                                 {
                                     // обновление представления в кеше
@@ -158,8 +162,9 @@ namespace Scada.Client
                     // использование представления из кеша
                     if (view == null && viewFromCache != null)
                     {
-                        view = viewFromCache as T;
-                        if (view == null)
+                        if (viewFromCache.GetType().Equals(viewType))
+                            view = viewFromCache;
+                        else
                             throw new ScadaException(Localization.UseRussian ?
                                 "Несоответствие типа представления." :
                                 "View type mismatch.");
@@ -184,6 +189,14 @@ namespace Scada.Client
                 else
                     return null;
             }
+        }
+
+        /// <summary>
+        /// Получить представление из кэша или от сервера
+        /// </summary>
+        public T GetView<T>(int viewID, bool throwOnError = false) where T : BaseView
+        {
+            return GetView(typeof(T), viewID, throwOnError) as T;
         }
 
         /// <summary>

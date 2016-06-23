@@ -25,9 +25,11 @@ scada.tableHeader = {
 
             if (origCell.css("display") != "none") {
                 var origCellSpan = origCell.children("span");
-                var cellWidth = origCellSpan.width(); // jQuery may round fractional part
-                origCellSpan.width(cellWidth);
-                $(this).find("span").width(cellWidth);
+                if (origCellSpan.length > 0) {
+                    var cellWidth = origCellSpan[0].getBoundingClientRect().width; // fractional value is required
+                    $(this).find("span").width(cellWidth);
+                    $(this).css("width", cellWidth);
+                }
             }
         });
     },
@@ -74,9 +76,12 @@ scada.tableHeader = {
 
         $(".table-wrapper").each(function () {
             var wrapper = $(this);
-            var origHeader = $(this).find("tr.orig-table-header:first");
-            var fixedHeader = $(this).find("tr.fixed-table-header:first");
+            var table = wrapper.children("table");
+            var origHeader = table.find("tr.orig-table-header:first");
+            var fixedHeader = table.find("tr.fixed-table-header:first");
+            fixedHeader.detach();
             thisObj._updateHeaderCellWidths(origHeader, fixedHeader);
+            table.append(fixedHeader); // make sure that the fixed header is the last row
         });
     }
 }

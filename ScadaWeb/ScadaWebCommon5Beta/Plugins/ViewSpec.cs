@@ -23,6 +23,8 @@
  * Modified : 2016
  */
 
+using System;
+
 namespace Scada.Web.Plugins
 {
     /// <summary>
@@ -40,6 +42,11 @@ namespace Scada.Web.Plugins
         /// Получить ссылку на иконку типа представлений
         /// </summary>
         public abstract string IconUrl { get; }
+
+        /// <summary>
+        /// Получить тип представления
+        /// </summary>
+        public abstract Type ViewType { get; }
 
 
         /// <summary>

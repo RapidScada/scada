@@ -23,6 +23,8 @@
  * Modified : 2016
  */
 
+using System;
+
 namespace Scada.Web.Plugins.Table
 {
     /// <summary>
@@ -51,6 +53,17 @@ namespace Scada.Web.Plugins.Table
             get
             {
                 return "~/plugins/Table/images/tableicon.png";
+            }
+        }
+        
+        /// <summary>
+        /// Получить тип представления
+        /// </summary>
+        public override Type ViewType
+        {
+            get
+            {
+                return typeof(TableView);
             }
         }
 

@@ -61,7 +61,7 @@ namespace Scada.Web.Shell
 
             this.log = log;
             Reports = new List<ContentSpec>();
-            DataWindows = new List<ContentSpec>();
+            DataWindows = new List<DataWindowSpec>();
         }
 
 
@@ -73,7 +73,7 @@ namespace Scada.Web.Shell
         /// <summary>
         /// Получить окна данных, доступные пользователю
         /// </summary>
-        public List<ContentSpec> DataWindows { get; protected set; }
+        public List<DataWindowSpec> DataWindows { get; protected set; }
 
         
         /// <summary>
