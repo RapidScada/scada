@@ -137,12 +137,29 @@ function clearEvents(tableElem) {
 
 // Reset the event table to the default state and restart updating
 function resetEvents() {
+    $("#divTblWrapper").addClass("hidden");
+    $("#divNoEvents").addClass("hidden");
+    $("#divLoading").removeClass("hidden");
+
     clearEvents($("#tblEvents"));
     fullDataAge = 0;
     partialDataAge = 0;
     lastEvNum = 0;
 
     restartUpdatingEvents();
+}
+
+// Set elements visibility after loading events
+function afterLoading() {
+    $("#divLoading").addClass("hidden");
+
+    if ($("#tblEvents tr.event:first").length > 0) {
+        $("#divTblWrapper").removeClass("hidden");
+        setTimeout(scada.tableHeader.update.bind(scada.tableHeader), 0);
+    } else {
+        $("#divTblWrapper").addClass("hidden");
+        $("#divNoEvents").removeClass("hidden");
+    }
 }
 
 // Request and display events.
@@ -210,7 +227,7 @@ function updateEvents(full, callback) {
                     lastEvNum = eventArr[eventArrLen - 1].Num;
                 }
 
-                scada.tableHeader.update();
+                afterLoading();
                 callback(true);
             } else {
                 callback(false);

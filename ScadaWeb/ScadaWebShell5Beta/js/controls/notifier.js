@@ -45,7 +45,7 @@ scada.Notifier.prototype.addNotification = function (messageHtml, error, lifetim
     }
 
     if (lifetime) {
-        divMessage.attr("data-expires", Date.now() + lifetime);
+        divMessage.data("expires", Date.now() + lifetime);
     }
 
     this._notifier
@@ -65,7 +65,7 @@ scada.Notifier.prototype.clearOutdatedNotifications = function () {
         var removed = false;
 
         $.each(messages, function () {
-            var expires = $(this).attr("data-expires");
+            var expires = $(this).data("expires");
             if (expires < nowMs) {
                 $(this).remove();
                 removed = true;

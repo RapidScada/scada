@@ -7,6 +7,9 @@
   font-size: 12px;
   overflow: hidden;
 }
+.hidden {
+  display: none;
+}
 /* Toolbar */
 #divToolbar {
   position: fixed;
@@ -80,7 +83,7 @@
   display: none;
   vertical-align: top;
 }
-#divDebugTools.visible {
+#divDebugTools.show {
   display: inline-block;
 }
 /* Table */
@@ -176,13 +179,10 @@
   z-index: 10;
   /*above the fixed table header*/
 }
-#divTblWrapper td.cap span.hint.visible {
+#divTblWrapper td.cap span.hint.show {
   display: inline-block;
 }
 #divTblWrapper td.cur,
 #divTblWrapper td.hour {
   text-align: center;
-}
-#divTblWrapper td.hidden {
-  display: none;
 }

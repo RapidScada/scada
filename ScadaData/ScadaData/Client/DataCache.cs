@@ -404,7 +404,8 @@ namespace Scada.Client
                 for (int i = 0; i < statusCnt; i++)
                 {
                     DataRow row = tblEvType.Rows[i];
-                    CnlStatProps cnlStatProps = new CnlStatProps((int)row["CnlStatus"]) { Color = (string)row["Color"] };
+                    CnlStatProps cnlStatProps = new CnlStatProps((int)row["CnlStatus"]) {
+                        Color = (string)row["Color"], Name = (string)row["Name"] };
                     newCnlStatProps.Add(cnlStatProps.Status, cnlStatProps);
                 }
 

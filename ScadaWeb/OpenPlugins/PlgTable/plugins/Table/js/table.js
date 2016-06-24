@@ -177,7 +177,7 @@ function showHintByIcon(imgIcon) {
         "left": iconOffset.left + imgIcon.outerWidth(true),
         "top": hintTop
     })
-    .addClass("visible");
+    .addClass("show");
 }
 
 // Hide hint associated with the icon
@@ -187,7 +187,7 @@ function hideHintByIcon(imgIcon) {
 
 // Hide hint associated with the icon
 function hideHint(spanHint) {
-    spanHint.removeClass("visible");
+    spanHint.removeClass("show");
 }
 
 // Display the given data in the cell

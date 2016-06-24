@@ -43,19 +43,21 @@
                  id="spanDateChangedBtn" class="tool-btn">DateChanged</span>
             </div>
         </div>
-        <div id="divTblWrapper" class="table-wrapper">
+        <div id="divTblWrapper" class="table-wrapper hidden">
             <table id="tblEvents">
                 <tr class="hdr">
-                    <td class="num"><span>Number</span></td>
-                    <td class="time"><span>Date and Time</span></td>
-                    <td class="obj"><span>Object</span></td>
-                    <td class="dev"><span>Device</span></td>
-                    <td class="cnl"><span>Channel</span></td>
-                    <td class="text"><span>Description</span></td>
-                    <td class="ack"><span>Ack</span></td>
+                    <td class="num"><asp:Label ID="lblNumCol" runat="server" Text="Number"></asp:Label></td>
+                    <td class="time"><asp:Label ID="lblTimeCol" runat="server" Text="Date and Time"></asp:Label></td>
+                    <td class="obj"><asp:Label ID="lblObjCol" runat="server" Text="Object"></asp:Label></td>
+                    <td class="dev"><asp:Label ID="lblDevCol" runat="server" Text="Device"></asp:Label></td>
+                    <td class="cnl"><asp:Label ID="lblCnlCol" runat="server" Text="Channel"></asp:Label></td>
+                    <td class="text"><asp:Label ID="lblTextCol" runat="server" Text="Description"></asp:Label></td>
+                    <td class="ack"><asp:Label ID="lblAckCol" runat="server" Text="Ack"></asp:Label></td>
                 </tr>
             </table>
         </div>
+        <div id="divNoEvents" class="hidden"><asp:Label ID="lblNoEvents" runat="server" Text="No events"></asp:Label></div>
+        <div id="divLoading"><asp:Label ID="lblLoading" runat="server" Text="Loading..."></asp:Label></div>
     </form>
 </body>
 </html>

@@ -143,7 +143,7 @@ scada.SplitterBulk.prototype.bindEvents = function () {
 
     $("body").on("mousemove touchmove", function (event) {
         if (event.type == "touchmove") {
-            $(this).off("mousedown");
+            $(this).off("mousemove");
             event = event.originalEvent.touches[0];
         }
 

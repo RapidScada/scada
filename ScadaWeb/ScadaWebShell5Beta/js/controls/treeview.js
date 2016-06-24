@@ -46,7 +46,7 @@ scada.treeView = {
 
         // set width of indents according to their level
         allNodes.each(function () {
-            var level = $(this).attr("data-level");
+            var level = $(this).data("level");
             $(this).find(".indent").width(oneIndent * level);
         });
 
@@ -64,7 +64,7 @@ scada.treeView = {
 
             event.preventDefault();
             var node = $(this);
-            var script = node.attr("data-script");
+            var script = node.data("script");
             var expander = node.find(".expander");
             var href = node.attr("href");
 

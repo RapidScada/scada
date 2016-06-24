@@ -113,7 +113,7 @@ function parseViewDate(dateStr, changeViewDateFunc) {
 
 // Initialize debug tools
 function initDebugTools() {
-    $("#divDebugTools").addClass("visible");
+    $("#divDebugTools").addClass("show");
 
     $(window).on(
         scada.EventTypes.VIEW_TITLE_CHANGED + " " +

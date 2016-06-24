@@ -40,6 +40,9 @@ scada.view = {
     },
 
 
+    // Events data window code
+    _EVENTS_WND_CODE: "Events",
+
     // Page title just after loading
     initialPageTitle: "",
 
@@ -77,10 +80,19 @@ scada.view = {
 
         if (activeDataWindow) {
             $("#divBottomTabsContainer .tab").each(function () {
-                var tabUrl = $(this).attr("data-url");
+                var tabUrl = $(this).data("url");
                 if (activeDataWindow == tabUrl) {
                     thisView.activateDataWindow($(this));
                     return false; // break the loop
+                }
+            });
+        } else {
+            // activate events window if presented
+            $("#divBottomTabsContainer .tab").each(function () {
+                var code = $(this).data("code");
+                if (code == thisView._EVENTS_WND_CODE) {
+                    thisView.activateDataWindow($(this));
+                    return false;
                 }
             });
         }
@@ -127,7 +139,6 @@ scada.view = {
         $("#divDataWindow").css("display", "block");
         $("#divCollapseDataWindowBtn").css("display", "inline-block");
 
-        this._dataWindow.load(divClickedTab.attr("data-url"), divClickedTab.attr("data-depends") == "true");
         this._saveActiveDataWindow();
         this.updateLayout();
     },
