@@ -8,6 +8,15 @@
     <Phrase key="SaveTableViewError">Error saving table view to file</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.WFrmEvents">
+    <Phrase key="lblNumCol">Number</Phrase>
+    <Phrase key="lblTimeCol">Date and Time</Phrase>
+    <Phrase key="lblObjCol">Object</Phrase>
+    <Phrase key="lblDevCol">Device</Phrase>
+    <Phrase key="lblCnlCol">Channel</Phrase>
+    <Phrase key="lblTextCol">Description</Phrase>
+    <Phrase key="lblAckCol">Ack</Phrase>
+    <Phrase key="lblNoEvents">No events</Phrase>
+    <Phrase key="lblLoading">Loading...</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.WFrmEvents.Js">
     <Phrase key="UpdateEventsError">Error updating events</Phrase>

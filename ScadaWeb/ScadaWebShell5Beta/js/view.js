@@ -139,6 +139,7 @@ scada.view = {
         $("#divDataWindow").css("display", "block");
         $("#divCollapseDataWindowBtn").css("display", "inline-block");
 
+        this._dataWindow.load(divClickedTab.data("url"), divClickedTab.data("depends")/*boolean*/);
         this._saveActiveDataWindow();
         this.updateLayout();
     },

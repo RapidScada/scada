@@ -124,6 +124,13 @@
   padding: 2px 7px;
   text-align: center;
 }
+#divTblWrapper td a {
+  color: #0073aa;
+  text-decoration: none;
+}
+#divTblWrapper td a:hover {
+  color: #00a0d2;
+}
 #divTblWrapper td a,
 #divTblWrapper td span,
 #divTblWrapper td img {

@@ -314,7 +314,7 @@ scada.scheme.ElementRenderer.prototype.bindAction = function (jqObj, elem) {
                         if (dialogs) {
                             dialogs.showChart(scada.scheme.viewHub.currentViewID, props.InCnlNum);
                         } else {
-                            console.warn("Unable to show chart because viewHub.dialogs is undefined");
+                            console.warn("Dialogs object is undefined");
                         }
                     }
                     break;
@@ -323,7 +323,7 @@ scada.scheme.ElementRenderer.prototype.bindAction = function (jqObj, elem) {
                         if (dialogs) {
                             dialogs.showCmd(scada.scheme.viewHub.currentViewID, props.CtrlCnlNum);
                         } else {
-                            console.warn("Unable to show command dialog because viewHub.dialogs is undefined");
+                            console.warn("Dialogs object is undefined");
                         }
                     }
                     break;

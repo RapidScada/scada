@@ -1,5 +1,7 @@
 ﻿// View date format options
 var VIEW_DATE_OPTIONS = { year: "numeric", month: "long", day: "2-digit" };
+// Error message that is shown if dialogs object is undefined
+var DIALOGS_UNDEFINED = "Dialogs object is undefined";
 
 // The view hub object
 var viewHub = scada.viewHubLocator.getViewHub();
@@ -95,7 +97,7 @@ function selectViewDate(changeViewDateFunc) {
             }
         });
     } else {
-        console.warn("Unable to show calendar because dialogs object is undefined");
+        console.warn(DIALOGS_UNDEFINED);
     }
 }
 

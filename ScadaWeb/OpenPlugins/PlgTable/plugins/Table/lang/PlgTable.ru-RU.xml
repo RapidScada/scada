@@ -8,6 +8,15 @@
     <Phrase key="SaveTableViewError">Ошибка при сохранении табличного представления в файле</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.WFrmEvents">
+    <Phrase key="lblNumCol">Номер</Phrase>
+    <Phrase key="lblTimeCol">Дата и время</Phrase>
+    <Phrase key="lblObjCol">Объект</Phrase>
+    <Phrase key="lblDevCol">КП</Phrase>
+    <Phrase key="lblCnlCol">Канал</Phrase>
+    <Phrase key="lblTextCol">Описание</Phrase>
+    <Phrase key="lblAckCol">Квит</Phrase>
+    <Phrase key="lblNoEvents">Нет событий</Phrase>
+    <Phrase key="lblLoading">Загрузка...</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.WFrmEvents.Js">
     <Phrase key="UpdateEventsError">Ошибка при обновлении событий</Phrase>

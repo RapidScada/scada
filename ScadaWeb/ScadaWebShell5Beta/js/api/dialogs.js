@@ -51,6 +51,7 @@ scada.dialogs = {
     },
 
     // Show calendar dropdown form.
+    // selectedDate is a string date representation,
     // callback is a function (dialogResult, extraParams),
     // dialogResult is true or false,
     // extraParams is object { date, dateStr }

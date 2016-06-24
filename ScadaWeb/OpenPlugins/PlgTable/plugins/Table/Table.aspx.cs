@@ -177,7 +177,7 @@ namespace Scada.Web.Plugins.Table
                     string iconFileName = cnlProps == null || cnlProps.IconFileName == "" ?
                         DefQuantityIcon : cnlProps.IconFileName;
                     sbCapHtml.Append("<img src='" + QuantityIconsPath + iconFileName + "' class='icon' alt='' />")
-                        .Append("<a href='#' class='lbl'>").Append(caption).Append("</a>");
+                        .Append("<a href='' class='lbl'>").Append(caption).Append("</a>");
 
                     // команда
                     if (ctrlCnlNum > 0)

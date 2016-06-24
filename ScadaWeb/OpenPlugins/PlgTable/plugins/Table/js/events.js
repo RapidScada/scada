@@ -18,8 +18,15 @@ var fullUpdateTimeoutID = null;
 // Timeout ID of the partial events updating timer
 var partUpdateTimeoutID = null;
 
-// Displayed event count. Must be defined in Events.aspx
+// The variables below must be defined in Events.aspx
+// Displayed event count
 var dispEventCnt = dispEventCnt || 0;
+// Right to view all data
+var viewAllRight = viewAllRight || false;
+// Right to any control
+var controlAllRight = controlAllRight || false;
+// Right to control the view
+var controlViewRight = controlViewRight || false;
 
 // Set current view date and process the consequent changes
 function changeViewDate(date, notify) {
@@ -31,14 +38,21 @@ function changeViewDate(date, notify) {
     }
 }
 
+// Init the page controls
+function initControls() {
+    if (!viewAllRight) {
+        $("#spanAllEventsBtn").addClass("disabled");
+    }
+}
+
 // Enable or disable events by view filter
 function setEventsByVeiw(val) {
-    eventsByView = val;
+    eventsByView = val || !viewAllRight;
     cnlFilter = new scada.CnlFilter();
-    cnlFilter.viewID = val ? viewID : 0;
+    cnlFilter.viewID = eventsByView ? viewID : 0;
     saveEventFilter();
 
-    if (val) {
+    if (eventsByView) {
         $("#spanAllEventsBtn").removeClass("selected");
         $("#spanEventsByViewBtn").addClass("selected");
     } else {
@@ -58,8 +72,22 @@ function saveEventFilter() {
     scada.utils.setCookie("Table.EventsByView", eventsByView);
 }
 
+// Show event acknowledgement dialog
+function showEventAck(evNum) {
+    var dialogs = viewHub ? viewHub.dialogs : null;
+    if (dialogs) {
+        dialogs.showEventAck(viewID, viewDate.getFullYear(), viewDate.getMonth() + 1, viewDate.getDate(), evNum);
+    } else {
+        console.warn(DIALOGS_UNDEFINED);
+    }
+}
+
 // Create detached jQuery object that represents an event row
 function createEventRow(event) {
+    var ackHtml = controlAllRight || viewID > 0 && controlViewRight ?
+        "<a href='javascript:showEventAck(" + event.Num + ");'>" + event.Ack + "</a>" :
+        event.Ack;
+
     var eventRow = $("<tr class='event'>" +
         "<td class='num'>" + event.Num + "</td>" +
         "<td class='time'>" + event.Time + "</td>" +
@@ -67,7 +95,7 @@ function createEventRow(event) {
         "<td class='dev'>" + event.KP + "</td>" +
         "<td class='cnl'>" + event.Cnl + "</td>" +
         "<td class='text'>" + event.Text + "</td>" +
-        "<td class='ack'>" + event.Ack + "</td>" +
+        "<td class='ack'>" + ackHtml + "</td>" +
         "</tr>");
 
     if (event.Color) {
@@ -271,6 +299,7 @@ $(document).ready(function () {
     styleIOS();
     updateLayout();
     initViewDate();
+    initControls();
     loadEventFilter();
     scada.tableHeader.create();
     notifier = new scada.Notifier("#divNotif");
@@ -301,7 +330,7 @@ $(document).ready(function () {
 
     // switch event filter
     $("#spanAllEventsBtn").click(function () {
-        if (!$(this).hasClass("disabled")) {
+        if (viewAllRight) {
             setEventsByVeiw(false);
             resetEvents();
         }

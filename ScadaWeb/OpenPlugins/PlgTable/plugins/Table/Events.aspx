@@ -27,6 +27,9 @@
         var today = <%= today %>;
         var locale = "<%= Scada.Localization.Culture.Name %>";
         var dispEventCnt = <%= dispEventCnt %>;
+        var viewAllRight = <%= viewAllRight ? "true" : "false" %>;
+        var controlAllRight = <%= controlAllRight ? "true" : "false" %>;
+        var controlViewRight = <%= controlViewRight ? "true" : "false" %>;
     </script>
     <script type="text/javascript" src="js/events.js"></script>
 </head>

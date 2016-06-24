@@ -44,6 +44,9 @@ namespace Scada.Web.Plugins.Table
         protected string phrases;         // локализованные фразы
         protected string today;           // текущая дата
         protected int dispEventCnt;       // количество отображаемых событий
+        protected bool viewAllRight;      // право на просмотр всех данных
+        protected bool controlAllRight;   // право на любое управление
+        protected bool controlViewRight;  // право на управление представлением
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -71,14 +74,13 @@ namespace Scada.Web.Plugins.Table
             Type viewType = userData.UserViews.GetViewType(viewID);
             appData.ViewCache.GetView(viewType, viewID, false);
 
-            // запретить отображение всех событий, если нет соответствующих прав
-            if (!userData.UserRights.ViewAllRight)
-                spanAllEventsBtn.Attributes["class"] += " disabled";
-
             // подготовка данных для вывода на веб-страницу
             dataRefrRate = userData.WebSettings.DataRefrRate;
             arcRefrRate = userData.WebSettings.ArcRefrRate;
             dispEventCnt = userData.WebSettings.DispEventCnt;
+            viewAllRight = userData.UserRights.ViewAllRight;
+            controlAllRight = userData.UserRights.ControlAllRight;
+            controlViewRight = rights.ControlRight;
 
             Localization.Dict dict;
             Localization.Dictionaries.TryGetValue("Scada.Web.Plugins.Table.WFrmEvents.Js", out dict);

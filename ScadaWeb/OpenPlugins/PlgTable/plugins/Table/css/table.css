@@ -124,6 +124,13 @@
   padding: 2px 7px;
   text-align: center;
 }
+#divTblWrapper td a {
+  color: #0073aa;
+  text-decoration: none;
+}
+#divTblWrapper td a:hover {
+  color: #00a0d2;
+}
 #divTblWrapper td a,
 #divTblWrapper td span,
 #divTblWrapper td img {
@@ -141,13 +148,8 @@
 #divTblWrapper td.cap a {
   height: 18px;
   padding-right: 5px;
-  color: #0073aa;
   display: inline-block;
   line-height: 18px;
-  text-decoration: none;
-}
-#divTblWrapper td.cap a:hover {
-  color: #00a0d2;
 }
 #divTblWrapper td.cap span.cmd {
   display: inline-block;
