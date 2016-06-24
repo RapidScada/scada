@@ -217,6 +217,7 @@ function updateCurData(callback) {
                 displayCellData(cell, cnlDataMap);
             });
 
+            scada.tableHeader.update();
             callback(true);
         } else {
             callback(false);
@@ -252,7 +253,8 @@ function updateHourData(callback) {
                         });
                     }
                 }
-
+                
+                scada.tableHeader.update(); // TODO: check that hour data changed
                 callback(true);
             } else {
                 callback(false);
@@ -371,6 +373,7 @@ $(document).ready(function () {
     // show chart on a label click
     $("#divTblWrapper a.lbl").click(function () {
         alert("Charts are not implemented yet.");
+        return false;
     });
 
     // send command on a command icon click

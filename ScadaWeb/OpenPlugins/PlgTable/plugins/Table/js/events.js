@@ -1,4 +1,7 @@
-﻿// Filter events by view
+﻿// Period of preventing auto scrolling the event table after a user scrolling, ms
+var STOP_SCROLL_PERIOD = 30000;
+
+// Filter events by view
 var eventsByView = true;
 // Input channel filter for event requests
 var cnlFilter = null;
@@ -13,6 +16,8 @@ var partialDataAge = 0;
 var lastEvNum = 0;
 // The last received event has the alternate style
 var lastEvAlt = true;
+// Date and time of recent user activity
+var activityTime = 0;
 // Timeout ID of the full events updating timer
 var fullUpdateTimeoutID = null;
 // Timeout ID of the partial events updating timer
@@ -189,8 +194,20 @@ function afterLoading() {
     $("#divLoading").addClass("hidden");
 
     if ($("#tblEvents tr.event:first").length > 0) {
-        $("#divTblWrapper").removeClass("hidden");
+        var divTblWrapper = $("#divTblWrapper");
+        divTblWrapper.removeClass("hidden");
         setTimeout(scada.tableHeader.update.bind(scada.tableHeader), 0);
+
+        // scroll down the event table if a user has been idle for the time
+        if ((new Date()) - activityTime > STOP_SCROLL_PERIOD) {
+            var scrollHeight = divTblWrapper[0].scrollHeight;
+            var newScrollTop = scrollHeight - divTblWrapper.innerHeight();
+            if (divTblWrapper.scrollTop() < newScrollTop) {
+                divTblWrapper.animate({ scrollTop: newScrollTop }, "slow", function () {
+                    activityTime = 0; // allow auto scrolling again
+                });
+            }
+        }
     } else {
         $("#divTblWrapper").addClass("hidden");
         $("#divNoEvents").removeClass("hidden");
@@ -351,6 +368,11 @@ $(document).ready(function () {
     // export events on the button click
     $("#spanExportBtn").click(function () {
         alert("Export is not implemented yet.");
+    });
+
+    // register the activity time
+    $("#divTblWrapper").on("scroll mousemove", function () {
+        activityTime = new Date();
     });
 
     // start updating events

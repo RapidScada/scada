@@ -77,11 +77,19 @@ scada.tableHeader = {
         $(".table-wrapper").each(function () {
             var wrapper = $(this);
             var table = wrapper.children("table");
-            var origHeader = table.find("tr.orig-table-header:first");
             var fixedHeader = table.find("tr.fixed-table-header:first");
-            fixedHeader.detach();
-            thisObj._updateHeaderCellWidths(origHeader, fixedHeader);
-            table.append(fixedHeader); // make sure that the fixed header is the last row
+
+            if (fixedHeader.length > 0 /*already created*/) {
+                var origHeader = table.find("tr.orig-table-header:first");
+                thisObj._updateHeaderCellWidths(origHeader, fixedHeader);
+
+                // make sure that the fixed header is the last row
+                var lastRow = table.find("tr:last");
+                if (!fixedHeader.is(lastRow)) {
+                    fixedHeader.detach();
+                    table.append(fixedHeader);
+                }
+            }
         });
     }
 }

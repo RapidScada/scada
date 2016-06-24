@@ -106,10 +106,6 @@
 #divTblWrapper tr.alt {
   background-color: #f9f9f9;
 }
-#divTblWrapper tr.item:hover {
-  background-color: #e0e0e0;
-  color: black;
-}
 #divTblWrapper td {
   border: 1px solid #999;
   font-size: 12px;
