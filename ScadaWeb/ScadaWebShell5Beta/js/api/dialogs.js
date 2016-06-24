@@ -32,19 +32,25 @@ scada.dialogs = {
         }
     },
 
-    // Show command dialog
-    showCmd: function (viewID, ctrlCnlNum) {
+    // Show command dialog.
+    // opt_callback is a function (dialogResult, cmdVal),
+    // dialogResult is true or false,
+    // cmdVal is a command value which can be a number, array of bytes or string
+    showCmd: function (viewID, ctrlCnlNum, opt_callback) {
         if (scada.cmd && scada.cmd.show) {
-            scada.cmd.show(viewID, ctrlCnlNum);
+            scada.cmd.show(viewID, ctrlCnlNum, opt_callback);
         } else {
             console.warn("Unable to show command dialog because scada.cmd is undefined");
         }
     },
 
-    // Show event acknowledgement dialog
-    showEventAck: function (viewID, year, month, day, evNum) {
+    // Show event acknowledgement dialog.
+    // date is a JavaScript date object,
+    // opt_callback is a function (dialogResult),
+    // dialogResult is true or false
+    showEventAck: function (viewID, date, evNum, opt_callback) {
         if (scada.eventAck && scada.eventAck.show) {
-            scada.eventAck.show(viewID, year, month, day, evNum);
+            scada.eventAck.show(viewID, date, evNum, opt_callback);
         } else {
             console.warn("Unable to show event acknowledgement dialog because scada.eventAck is undefined");
         }

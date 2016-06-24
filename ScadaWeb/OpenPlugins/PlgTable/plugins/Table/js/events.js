@@ -76,18 +76,25 @@ function saveEventFilter() {
 function showEventAck(evNum) {
     var dialogs = viewHub ? viewHub.dialogs : null;
     if (dialogs) {
-        dialogs.showEventAck(viewID, viewDate.getFullYear(), viewDate.getMonth() + 1, viewDate.getDate(), evNum);
+        dialogs.showEventAck(viewID, viewDate, evNum, function (dialogResult) {
+            if (dialogResult) {
+                restartUpdatingEvents();
+            }
+        });
     } else {
         console.warn(DIALOGS_UNDEFINED);
     }
 }
 
+// Generate HTML of acknowledgement cell
+function generateAckHtml(evNum, ack) {
+    return controlAllRight || viewID > 0 && controlViewRight ?
+        "<a href='javascript:showEventAck(" + evNum + ");'>" + ack + "</a>" :
+        ack;
+}
+
 // Create detached jQuery object that represents an event row
 function createEventRow(event) {
-    var ackHtml = controlAllRight || viewID > 0 && controlViewRight ?
-        "<a href='javascript:showEventAck(" + event.Num + ");'>" + event.Ack + "</a>" :
-        event.Ack;
-
     var eventRow = $("<tr class='event'>" +
         "<td class='num'>" + event.Num + "</td>" +
         "<td class='time'>" + event.Time + "</td>" +
@@ -95,7 +102,7 @@ function createEventRow(event) {
         "<td class='dev'>" + event.KP + "</td>" +
         "<td class='cnl'>" + event.Cnl + "</td>" +
         "<td class='text'>" + event.Text + "</td>" +
-        "<td class='ack'>" + ackHtml + "</td>" +
+        "<td class='ack'>" + generateAckHtml(event.Num, event.Ack) + "</td>" +
         "</tr>");
 
     if (event.Color) {
@@ -127,7 +134,7 @@ function rewriteEvent(eventRow, event) {
         eventRow.children("td.dev").text(event.KP);
         eventRow.children("td.cnl").text(event.Cnl);
         eventRow.children("td.text").text(event.Text);
-        eventRow.children("td.ack").text(event.Ack);
+        eventRow.children("td.ack").html(generateAckHtml(event.Num, event.Ack));
     } else {
         console.error(scada.utils.getCurTime() + " Event number mismatch");
     }
@@ -347,6 +354,5 @@ $(document).ready(function () {
     });
 
     // start updating events
-    startFullUpdatingEvents();
-    partUpdateTimeoutID = setTimeout(startPartialUpdatingEvents, dataRefrRate);
+    restartUpdatingEvents();
 });

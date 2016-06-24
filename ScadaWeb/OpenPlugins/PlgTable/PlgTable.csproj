@@ -118,7 +118,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppCode\Table\CustomDataWndSpec.cs" />
+    <Compile Include="AppCode\Table\SampleWndSpec.cs" />
     <Compile Include="AppCode\Table\EventsWndSpec.cs" />
     <Compile Include="AppCode\Table\PlgPhrases.cs" />
     <Compile Include="AppCode\PlgTableSpec.cs" />

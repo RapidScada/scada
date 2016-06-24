@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : PlgTable
- * Summary  : Events data window specification
+ * Summary  : Sample data window specification
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
@@ -26,10 +26,10 @@
 namespace Scada.Web.Plugins.Table
 {
     /// <summary>
-    /// Events data window specification
-    /// <para>Спецификация окна данных для отображения событий</para>
+    /// Sample data window specification
+    /// <para>Спецификация-пример окна данных</para>
     /// </summary>
-    public class EventsWndSpec : DataWindowSpec
+    public class SampleWndSpec : DataWindowSpec
     {
         /// <summary>
         /// Получить код типа контента
@@ -38,7 +38,7 @@ namespace Scada.Web.Plugins.Table
         {
             get
             {
-                return "Events";
+                return "SampleWnd";
             }
         }
 
@@ -49,29 +49,19 @@ namespace Scada.Web.Plugins.Table
         {
             get
             {
-                return PlgPhrases.EventsTitle;
+                return "Sample Window";
             }
         }
 
         /// <summary>
         /// Получить ссылку на страницу окна данных
         /// </summary>
+        /// <remarks>Страница не существует</remarks>
         public override string Url
         {
             get
             {
-                return "~/plugins/Table/Events.aspx";
-            }
-        }
-
-        /// <summary>
-        /// Получить признак, что содержимое окна зависит от текущего представления
-        /// </summary>
-        public override bool DependsOnView
-        {
-            get
-            {
-                return true;
+                return "~/plugins/Table/SampleData.aspx";
             }
         }
     }
