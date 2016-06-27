@@ -114,6 +114,7 @@
     <Content Include="plugins\Table\js\table.js" />
     <Content Include="plugins\Table\lang\PlgTable.ru-RU.xml" />
     <Content Include="plugins\Table\lang\PlgTable.en-GB.xml" />
+    <Content Include="plugins\Table\sounds\event.mp3" />
     <Content Include="plugins\Table\Table.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>

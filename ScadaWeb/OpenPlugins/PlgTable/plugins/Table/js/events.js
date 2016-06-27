@@ -18,6 +18,8 @@ var lastEvNum = 0;
 var lastEvAlt = true;
 // Date and time of recent user activity
 var activityTime = 0;
+// Event sound is enabled
+var evSoundEnabled = false;
 // Timeout ID of the full events updating timer
 var fullUpdateTimeoutID = null;
 // Timeout ID of the partial events updating timer
@@ -75,6 +77,11 @@ function loadEventFilter() {
 // Save the event filter in the cookies
 function saveEventFilter() {
     scada.utils.setCookie("Table.EventsByView", eventsByView);
+}
+
+// Play a sound if a new event is received
+function playEventBeep() {
+    $("#audEvent")[0].play();
 }
 
 // Show event acknowledgement dialog
@@ -148,8 +155,18 @@ function rewriteEvent(eventRow, event) {
 // Append new events to the event table starting from the specified index
 function appendEvents(tableElem, eventArr, startIndex) {
     var len = eventArr.length ? eventArr.length : 0;
+    var beep = false;
+
     for (var i = startIndex; i < len; i++) {
-        appendEvent(tableElem, eventArr[i]);
+        var event = eventArr[i];
+        if (event.Sound) {
+            beep = true;
+        }
+        appendEvent(tableElem, event);
+    }
+
+    if (beep && evSoundEnabled) {
+        playEventBeep();
     }
 }
 
@@ -185,12 +202,14 @@ function resetEvents() {
     fullDataAge = 0;
     partialDataAge = 0;
     lastEvNum = 0;
+    evSoundEnabled = false;
 
     restartUpdatingEvents();
 }
 
 // Set elements visibility after loading events
 function afterLoading() {
+    evSoundEnabled = true; // enable event sound starting from the second response
     $("#divLoading").addClass("hidden");
 
     if ($("#tblEvents tr.event:first").length > 0) {

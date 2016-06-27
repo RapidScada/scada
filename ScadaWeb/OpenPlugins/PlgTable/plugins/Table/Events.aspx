@@ -38,12 +38,12 @@
         <div id="divNotif" class="notifier">
         </div>
         <div id="divToolbar"><span id="spanDate" class="tool-ctrl"><asp:TextBox ID="txtDate" runat="server"></asp:TextBox><i class="fa fa-calendar" aria-hidden="true"></i></span><span 
-             id="spanAllEventsBtn" runat="server" class="tool-btn">All Events</span><span 
-             id="spanEventsByViewBtn" class="tool-btn">Events by View</span><span 
-             id="spanExportBtn" class="tool-btn"><i class="fa fa-print" aria-hidden="true"></i></span><div id="divDebugTools"><span 
-                 id="spanTitleChangedBtn" class="tool-btn">TitleChanged</span><span 
-                 id="spanNavigateBtn" class="tool-btn">Navigate</span><span 
-                 id="spanDateChangedBtn" class="tool-btn">DateChanged</span>
+            id="spanAllEventsBtn" runat="server" class="tool-btn">All Events</span><span 
+            id="spanEventsByViewBtn" class="tool-btn">Events by View</span><span 
+            id="spanExportBtn" class="tool-btn"><i class="fa fa-print" aria-hidden="true"></i></span><div id="divDebugTools"><span 
+                id="spanTitleChangedBtn" class="tool-btn">TitleChanged</span><span 
+                id="spanNavigateBtn" class="tool-btn">Navigate</span><span 
+                id="spanDateChangedBtn" class="tool-btn">DateChanged</span>
             </div>
         </div>
         <div id="divTblWrapper" class="table-wrapper hidden">
@@ -61,6 +61,9 @@
         </div>
         <div id="divNoEvents" class="hidden"><asp:Label ID="lblNoEvents" runat="server" Text="No events"></asp:Label></div>
         <div id="divLoading"><asp:Label ID="lblLoading" runat="server" Text="Loading..."></asp:Label></div>
+        <audio id="audEvent" preload="auto">
+            <source src="sounds/event.mp3" type="audio/mpeg" />
+        </audio>
     </form>
 </body>
 </html>
