@@ -74,22 +74,12 @@ namespace Scada.Web.Plugins.Scheme
                 : base()
             {
                 SchemeProps = null;
-                ElementCount = 0;
-                ImageCount = 0;
             }
 
             /// <summary>
             /// Получить или установить свойства схемы
             /// </summary>
             public SchemeView.Scheme SchemeProps { get; set; }
-            /// <summary>
-            /// Получить или установить количество элементов схемы
-            /// </summary>
-            public int ElementCount { get; set; }
-            /// <summary>
-            /// Получить или установить количество изображений схемы
-            /// </summary>
-            public int ImageCount { get; set; }
         }
 
         /// <summary>
@@ -244,9 +234,6 @@ namespace Scada.Web.Plugins.Scheme
                         Font = srcSchemeProps.Font,
                         Title = srcSchemeProps.Title
                     };
-
-                    dto.ElementCount = schemeView.ElementList.Count;
-                    dto.ImageCount = schemeView.ImageDict.Count;
                 }
 
                 return JsSerializer.Serialize(dto);

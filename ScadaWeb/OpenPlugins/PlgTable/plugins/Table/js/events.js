@@ -45,7 +45,7 @@ function changeViewDate(date, notify) {
     }
 }
 
-// Init the page controls
+// Initialize the page controls
 function initControls() {
     if (!viewAllRight) {
         $("#spanAllEventsBtn").addClass("disabled");

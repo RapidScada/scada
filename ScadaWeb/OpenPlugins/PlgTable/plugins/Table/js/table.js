@@ -3,20 +3,21 @@ var HEADER_TIME_OPTIONS = { hour: "2-digit", minute: "2-digit" };
 // Column header date and time format options
 var HEADER_DATETIME_OPTIONS = { month: "short", day: "2-digit", hour: "2-digit", minute: "2-digit" };
 
-// Time period: firstHour <= timeFrom <= timeTo <= lastHour
-// Beginning of the displayed time period
-var timeFrom = null;
-// End of the displayed time period
-var timeTo = null;
-// First possible hour of the time period
+// Input channel filter for current and hourly data requests
+var cnlFilter = null;
+// Hour period for hourly data requests: firstHour <= hourPeriod.startHour <= hourPeriod.endHour <= lastHour
+var hourPeriod = null;
+// First possible hour of the hour period
 var firstHour = null;
-// Last possible hour of the time period
+// Last possible hour of the hour period
 var lastHour = null
 
 // jQuery cells that display current data
 var curDataCells = null;
 // Array of columns those display hourly data, and consist of jQuery cells
 var hourDataCols = [];
+// Hourly data age
+var dataAge = [];
 // Timeout ID of the hourly data updating timer
 var updateHourDataTimeoutID = null;
 
@@ -31,33 +32,39 @@ function changeViewDate(date, notify) {
     }
 }
 
-// Retrieve the time period from the control values
-function retrieveTimePeriod() {
-    timeFrom = parseInt($("#selTimeFrom").val());
-    timeTo = parseInt($("#selTimeTo").val());
+// Initialize first and last possible hours of the time period
+function initHourLimits() {
     firstHour = $("#divTblWrapper tr:first td.hour:first").data("hour");
     lastHour = $("#divTblWrapper tr:first td.hour:last").data("hour");
 }
 
-// Correct the beginning of the time period
-function correctTimeFrom() {
-    if (timeFrom > timeTo) {
-        timeFrom = timeTo;
-        $("#selTimeFrom").val(timeFrom);
+// Create the hour period according to the control values
+function createHourPeriod() {
+    hourPeriod = new scada.HourPeriod();
+    hourPeriod.date = viewDate;
+    hourPeriod.startHour = parseInt($("#selTimeFrom").val());
+    hourPeriod.endHour = parseInt($("#selTimeTo").val());
+}
+
+// Correct the beginning of the hour period
+function correctStartHour() {
+    if (hourPeriod.startHour > hourPeriod.endHour) {
+        hourPeriod.startHour = hourPeriod.endHour;
+        $("#selTimeFrom").val(hourPeriod.startHour);
     }
 }
 
-// Correct the end of the time period
-function correctTimeTo()
+// Correct the end of the hour period
+function correctEndHour()
 {
-    if (timeTo < timeFrom) {
-        timeTo = timeFrom;
-        $("#selTimeTo").val(timeFrom);
+    if (hourPeriod.endHour < hourPeriod.startHour) {
+        hourPeriod.endHour = hourPeriod.startHour;
+        $("#selTimeTo").val(hourPeriod.endHour);
     }
 }
 
-// Save the time period in the cookies
-function saveTimePeriod() {
+// Save the hour period in the cookies
+function saveHourPeriod() {
     scada.utils.setCookie("Table.TimeFrom", $("#selTimeFrom").val());
     scada.utils.setCookie("Table.TimeTo", $("#selTimeTo").val());
 }
@@ -104,13 +111,12 @@ function updateHourDataColHdrText() {
             var colDT = new Date(viewDate.getTime());
             colDT.setHours(hour);
 
-            // replacing span is required for fixed table header calculations
-            if (timeFrom >= 0) {
+            if (hourPeriod.startHour >= 0) {
                 // display time only
-                cell.html("<span>" + colDT.toLocaleTimeString(locale, HEADER_TIME_OPTIONS) + "</span>");
+                cell.children("span").text(colDT.toLocaleTimeString(locale, HEADER_TIME_OPTIONS));
             } else {
                 // display date and time
-                cell.html("<span>" + colDT.toLocaleString(locale, HEADER_DATETIME_OPTIONS) + "</span>");
+                cell.children("span").text(colDT.toLocaleString(locale, HEADER_DATETIME_OPTIONS));
             }
         });
     }
@@ -126,7 +132,7 @@ function updateHourDataColVisibility() {
         hourCells.removeClass("hidden");
 
         // hide cells from the left
-        var cellsToHide = timeFrom - firstHour;
+        var cellsToHide = hourPeriod.startHour - firstHour;
         if (cellsToHide > 0) {
             var cells = hourCells.slice(0, cellsToHide);
             cells.addClass("hidden");
@@ -136,7 +142,7 @@ function updateHourDataColVisibility() {
         }
 
         // hide cells from the right
-        cellsToHide = lastHour - timeTo;
+        cellsToHide = lastHour - hourPeriod.endHour;
         if (cellsToHide > 0) {
             cells = hourCells.slice(-cellsToHide);
             cells.addClass("hidden");
@@ -190,34 +196,38 @@ function hideHint(spanHint) {
     spanHint.removeClass("show");
 }
 
-// Display the given data in the cell
+// Display the given data in the cell and return true if the cell text has been changed
 function displayCellData(cell, cnlDataMap) {
     var cnlNum = cell.data("cnl");
     if (cnlNum) {
         var cnlData = cnlDataMap.get(cnlNum);
-        if (cnlData) {
-            cell.text(cnlData.Text);
-            cell.css("color", cnlData.Color);
-        } else {
-            cell.text("");
-            cell.css("color", "");
-        }
+        var text = cnlData ? cnlData.Text : "";
+        var textChanged = cell.text() != text;
+        cell.text(text);
+        cell.css("color", cnlData ? cnlData.Color : "");
+        return textChanged;
     }
 }
 
 // Request and display current data.
 // callback is a function (success)
 function updateCurData(callback) {
-    scada.clientAPI.getCurCnlDataExtByView(viewID, function (success, cnlDataExtArr) {
+    scada.clientAPI.getCurCnlDataExt(cnlFilter, function (success, cnlDataExtArr) {
         if (success) {
             var cnlDataMap = scada.clientAPI.createCnlDataExtMap(cnlDataExtArr);
+            var updateHeader = false;
 
             curDataCells.each(function () {
                 var cell = $(this);
-                displayCellData(cell, cnlDataMap);
+                if (displayCellData(cell, cnlDataMap)) {
+                    updateHeader = true;
+                }
             });
 
-            scada.tableHeader.update();
+            if (updateHeader) {
+                scada.tableHeader.update();
+            }
+
             callback(true);
         } else {
             callback(false);
@@ -228,33 +238,49 @@ function updateCurData(callback) {
 // Request and display hourly data.
 // callback is a function (success)
 function updateHourData(callback) {
-    scada.clientAPI.getHourCnlDataExtByView(viewDate, timeFrom, timeTo, viewID, scada.HourDataModes.INTEGER_HOURS,
-        function (success, hourCnlDataExtArr) {
-            // TODO: check that hourPeriod and cnlFilter were not changed
+    var reqHourPeriod = hourPeriod;
+    var reqDataAge = dataAge;
 
+    scada.clientAPI.getHourCnlData(hourPeriod, cnlFilter, scada.HourDataModes.INTEGER_HOURS, reqDataAge,
+        function (success, hourCnlDataArr, dataAge) {
+            if (reqHourPeriod != hourPeriod) {
+                // do nothing
+            }
             if (success) {
-                var hourDataMap = scada.clientAPI.createHourCnlDataExtMap(hourCnlDataExtArr);
+                var hourCnlDataMap = scada.clientAPI.createHourCnlDataMap(hourCnlDataArr);
+                var updateHeader = false;
 
-                for (var hour = timeFrom; hour <= timeTo; hour++) {
-                    var hourData = hourDataMap.get(hour);
+                for (var hour = hourPeriod.startHour; hour <= hourPeriod.endHour; hour++) {
+                    var hourData = hourCnlDataMap.get(hour);
                     var hourCol = hourDataCols[hour - firstHour];
 
                     if (hourData) {
-                        var cnlDataMap = scada.clientAPI.createCnlDataExtMap(hourData.CnlDataExtArr);
-                        $.each(hourCol, function () {
-                            var cell = $(this);
-                            displayCellData(cell, cnlDataMap);
-                        });
+                        if (hourData.Modified) {
+                            var cnlDataMap = scada.clientAPI.createCnlDataExtMap(hourData.CnlDataExtArr);
+                            $.each(hourCol, function () {
+                                var cell = $(this);
+                                if (displayCellData(cell, cnlDataMap)) {
+                                    updateHeader = true;
+                                }
+                            });
+                        }
                     } else {
                         $.each(hourCol, function () {
                             var cell = $(this);
+                            if (cell.text() != "") {
+                                updateHeader = true;
+                            }
                             cell.text("");
                             cell.css("color", "");
                         });
+                        updateHeader = true;
                     }
                 }
-                
-                scada.tableHeader.update(); // TODO: check that hour data changed
+
+                if (updateHeader) {
+                    scada.tableHeader.update();
+                }
+
                 callback(true);
             } else {
                 callback(false);
@@ -296,13 +322,16 @@ $(document).ready(function () {
     updateLayout();
     setItemLinkWidths();
     initViewDate();
-    retrieveTimePeriod();
+    initHourLimits();
+    createHourPeriod();
     initCurDataCells();
     initHourDataCols();
     updateHourDataColHdrText();
     scada.tableHeader.create();
     notifier = new scada.Notifier("#divNotif");
     notifier.startClearingNotifications();
+    cnlFilter = new scada.CnlFilter();
+    cnlFilter.viewID = viewID;
 
     if (DEBUG_MODE) {
         initDebugTools();
@@ -330,15 +359,15 @@ $(document).ready(function () {
 
     // process the time period changing
     $("#selTimeFrom, #selTimeTo").change(function () {
-        retrieveTimePeriod();
+        createHourPeriod();
 
         if ($(this).attr("id") == "selTimeFrom") {
-            correctTimeTo();
+            correctEndHour();
         } else {
-            correctTimeFrom();
+            correctStartHour();
         }
 
-        saveTimePeriod();
+        saveHourPeriod();
         updateHourDataColHdrText();
         updateHourDataColVisibility();
         scada.tableHeader.update();

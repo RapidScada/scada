@@ -35,8 +35,8 @@ scada.CnlDataExt = function () {
 scada.CnlDataExt.prototype = Object.create(scada.CnlData.prototype);
 scada.CnlDataExt.constructor = scada.CnlDataExt;
 
-// Extended hourly input channel data type
-scada.HourCnlDataExt = function () {
+// Hourly input channel data type
+scada.HourCnlData = function () {
     this.Hour = NaN;
     this.Modified = false;
     this.CnlDataExtArr = [];
@@ -159,64 +159,31 @@ scada.clientAPI = {
             "&day=" + date.getDate();
     },
 
-    // Extract year, month and day from the date, and join them with the hours into a query string
-    // TODO: obsolete
-    _getDateTimeQueryString: function (date, startHour, endHour) {
-        return "year=" + date.getFullYear() +
-            "&month=" + (date.getMonth() + 1) +
-            "&day=" + date.getDate() +
-            "&startHour=" + startHour +
-            "&endHour=" + endHour;
-    },
-
     // Check that a user is logged on.
     // callback is a function (success, loggedOn)
     checkLoggedOn: function (callback) {
         this._request("ClientApiSvc.svc/CheckLoggedOn", "", callback, false);
     },
 
-    // Get current value and status of the input channel.
+    // Get current data of the input channel.
     // callback is a function (success, cnlData)
     getCurCnlData: function (cnlNum, callback) {
         this._request("ClientApiSvc.svc/GetCurCnlData", "?cnlNum=" + cnlNum, callback, this._EMPTY_CNL_DATA);
     },
 
-    // Get extended current data of the input channel. 
-    // callback is a function (success, cnlDataExt)
-    // TODO: obsolete
-    getCurCnlDataExt: function (cnlNum, callback) {
-        this._request("ClientApiSvc.svc/GetCurCnlDataExt", "?cnlNum=" + cnlNum, callback, this._EMPTY_CNL_DATA_EXT);
-    },
-
-    // Get extended current data of the specified input channels.
+    // Get extended current data by the specified filter.
     // callback is a function (success, cnlDataExtArr)
-    // TODO: obsolete
-    getCurCnlDataExtByCnlNums: function (cnlNums, callback) {
-        this._request("ClientApiSvc.svc/GetCurCnlDataExtByCnlNums", "?cnlNums=" + cnlNums, callback, []);
+    getCurCnlDataExt: function (cnlFilter, callback) {
+        this._request("ClientApiSvc.svc/GetCurCnlDataExt", "?" + cnlFilter.toQueryString(), callback, []);
     },
 
-    // Get extended current data of the input channels of the specified view.
-    // callback is a function (success, cnlDataExtArr)
-    // TODO: getCurCnlDataExt: function (cnlFilter, callback)
-    getCurCnlDataExtByView: function (viewID, callback) {
-        this._request("ClientApiSvc.svc/GetCurCnlDataExtByView", "?viewID=" + viewID, callback, []);
-    },
-
-    // Get extended hourly data of the specified input channels.
-    // callback is a function (success, hourCnlDataExtArr)
-    // TODO: obsolete
-    getHourCnlDataExtByCnlNums: function (date, startHour, endHour, cnlNums, mode, callback) {
-        this._request("ClientApiSvc.svc/GetHourCnlDataExtByCnlNums",
-            "?" + this._getDateTimeQueryString(date, startHour, endHour) + "&cnlNums=" + cnlNums + "&existing=" + mode,
-            callback, []);
-    },
-
-    // Get extended hourly data of the input channels of the specified view.
-    // callback is a function (success, hourCnlDataExtArr)
-    // TODO: getHourCnlData: function (hourPeriod, cnlFilter, selectMode, dataAge /*array*/, callback)
-    getHourCnlDataExtByView: function (date, startHour, endHour, viewID, mode, callback) {
-        this._request("ClientApiSvc.svc/GetHourCnlDataExtByView",
-            "?" + this._getDateTimeQueryString(date, startHour, endHour) + "&viewID=" + viewID + "&existing=" + mode,
+    // Get hourly data by the specified filter.
+    // dataAge is an array of dates in milliseconds,
+    // callback is a function (success, hourCnlDataArr)
+    getHourCnlData: function (hourPeriod, cnlFilter, selectMode, dataAge, callback) {
+        this._request("ClientApiSvc.svc/GetHourCnlData",
+            "?" + hourPeriod.toQueryString() + "&" + cnlFilter.toQueryString() + "&existing=" + selectMode +
+            "&dataAge=" + scada.utils.arrayToQueryParam(dataAge),
             callback, []);
     },
 
@@ -258,17 +225,17 @@ scada.clientAPI = {
         }
     },
     
-    // Create map of extended hourly input channel data to access by hour
-    createHourCnlDataExtMap: function (hourCnlDataExtArr) {
+    // Create map of hourly input channel data to access by hour
+    createHourCnlDataMap: function (hourCnlDataArr) {
         try {
             var map = new Map();
-            for (var hourCnlDataExt of hourCnlDataExtArr) {
-                map.set(hourCnlDataExt.Hour, hourCnlDataExt);
+            for (var hourCnlData of hourCnlDataArr) {
+                map.set(hourCnlData.Hour, hourCnlData);
             }
             return map;
         }
         catch (ex) {
-            console.error(scada.utils.getCurTime() + " Error creating map of extended hourly input channel data:",
+            console.error(scada.utils.getCurTime() + " Error creating map of hourly input channel data:",
                 ex.message);
             return new Map();
         }

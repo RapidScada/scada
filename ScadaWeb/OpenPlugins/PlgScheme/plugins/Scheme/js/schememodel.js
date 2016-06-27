@@ -56,15 +56,11 @@ scada.scheme.Scheme = function () {
 
     // Count of elements received by a one request
     this.LOAD_ELEM_CNT = 100;
-    // Maximum count of elements
-    this.MAX_ELEM_CNT = 10000;
     // Total data size of images received by a one request, 1 MB
     this.LOAD_IMG_SIZE = 1048576;
 
-    // Expected element count
-    this._expectedElemCnt = 0;
-    // Expected image count
-    this._expectedImageCnt = 0;
+    // Input channel filter for request current data
+    this._cnlFilter = null;
 
     // Scheme loading state
     this.loadState = scada.scheme.LoadStates.UNDEFINED;
@@ -151,20 +147,10 @@ scada.scheme.Scheme.prototype._obtainSchemeProps = function (parsedProps) {
             throw { message: "SchemeProps property is missing." };
         }
 
-        if (typeof parsedProps.ElementCount === "undefined") {
-            throw { message: "ElementCount property is missing." };
-        }
-
-        if (typeof parsedProps.ImageCount === "undefined") {
-            throw { message: "ImageCount property is missing." };
-        }
-
         if (this._viewStampsMatched(this.viewStamp, parsedProps.ViewStamp)) {
             this.type = parsedProps.Type;
             this.props = parsedProps.SchemeProps;
             this.viewStamp = parsedProps.ViewStamp;
-            this._expectedElemCnl = parsedProps.ElementCount;
-            this._expectedImageCnt = parsedProps.ImageCount;
             return true;
         } else {
             return false;
@@ -390,6 +376,7 @@ scada.scheme.Scheme.prototype.clear = function () {
         this.dom = null;
     }
 
+    this._cnlFilter = null;
     this.loadState = scada.scheme.LoadStates.UNDEFINED;
     this.viewID = 0;
     this.viewStamp = 0;
@@ -405,6 +392,8 @@ scada.scheme.Scheme.prototype.load = function (viewID, callback) {
     var LoadStates = scada.scheme.LoadStates;
 
     if (this.viewID == 0) {
+        this._cnlFilter = new scada.CnlFilter();
+        this._cnlFilter.viewID = viewID;
         this.viewID = viewID;
     } else if (this.viewID != viewID) {
         console.warn(scada.utils.getCurTime() +
@@ -478,7 +467,7 @@ scada.scheme.Scheme.prototype.createDom = function () {
 scada.scheme.Scheme.prototype.update = function (clientAPI, callback) {
     var thisScheme = this;
 
-    clientAPI.getCurCnlDataExtByView(this.viewID, function (success, cnlDataExtArr) {
+    clientAPI.getCurCnlDataExt(this._cnlFilter, function (success, cnlDataExtArr) {
         if (success) {
             var curCnlDataMap = clientAPI.createCnlDataExtMap(cnlDataExtArr);
 
