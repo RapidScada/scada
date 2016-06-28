@@ -57,6 +57,12 @@ namespace Scada.Web
 
 
         /// <summary>
+        /// Получить или установить культуру веб-приложения
+        /// </summary>
+        /// <remarks>Переопределяет культуру, заданную в реестре для всех приложений SCADA</remarks>
+        public string Culture { get; set; }
+
+        /// <summary>
         /// Получить или установить частоту обновления текущих данных и событий, мс
         /// </summary>
         public int DataRefrRate { get; set; }
@@ -102,6 +108,7 @@ namespace Scada.Web
         /// </summary>
         protected void SetToDefault()
         {
+            Culture = "";
             DataRefrRate = 1000;
             ArcRefrRate = 10000;
             DispEventCnt = 100;
@@ -160,7 +167,9 @@ namespace Scada.Web
 
                         try
                         {
-                            if (nameL == "datarefrrate")
+                            if (nameL == "culture")
+                                Culture = val;
+                            else if (nameL == "datarefrrate")
                                 DataRefrRate = Math.Max(MinDataRefrRate, int.Parse(val));
                             else if (nameL == "arcrefrrate")
                                 ArcRefrRate = Math.Max(MinDataRefrRate, int.Parse(val));

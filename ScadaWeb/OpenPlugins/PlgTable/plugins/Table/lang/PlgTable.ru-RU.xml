@@ -8,6 +8,8 @@
     <Phrase key="SaveTableViewError">Ошибка при сохранении табличного представления в файле</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.WFrmEvents">
+    <Phrase key="lblAllEventsBtn">Все события</Phrase>
+    <Phrase key="lblEventsByViewBtn">По представлению</Phrase>
     <Phrase key="lblNumCol">Номер</Phrase>
     <Phrase key="lblTimeCol">Дата и время</Phrase>
     <Phrase key="lblObjCol">Объект</Phrase>
@@ -25,6 +27,8 @@
     <Phrase key="SelectedDay">Выбранные сутки:</Phrase>
     <Phrase key="PreviousDay">Предыдущие сутки:</Phrase>
     <Phrase key="PrevDayItem">Пред. </Phrase>
+    <Phrase key="ItemCol">Элемент</Phrase>
+    <Phrase key="CurCol">Текущие</Phrase>
     <Phrase key="InCnlHint">Вх. канал: </Phrase>
     <Phrase key="CtrlCnlHint">Канал упр.: </Phrase>
     <Phrase key="ObjectHint">Объект: </Phrase>

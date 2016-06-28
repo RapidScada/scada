@@ -50,6 +50,7 @@ namespace Scada.Web
         private readonly object appDataLock;             // объект для синхронизации доступа к данным приложения
 
         private bool inited;                         // признак инициализации данных приложения
+        private string cultureName;                  // имя используемой культуры
         private CommSettings commSettings;           // настройки соединения с сервером
         private ServerComm serverComm;               // объект для обмена данными с сервером
         private long viewStampCntr;                  // счётчик для генерации меток представлений
@@ -77,8 +78,15 @@ namespace Scada.Web
             appDataLock = new object();
 
             inited = false;
+            cultureName = Localization.Culture.Name;
             commSettings = new CommSettings();
             viewStampCntr = 0;
+
+            scadaDataDictUpdater = null;
+            scadaWebDictUpdater = null;
+            commSettingsUpdater = null;
+            webSettingsUpdater = null;
+            viewSettingsUpdater = null;
 
             WebSettings = new WebSettings();
             ViewSettings = new ViewSettings();
@@ -90,7 +98,6 @@ namespace Scada.Web
             RememberMe = new RememberMe(Storage, Log);
             UserMonitor = new UserMonitor(Log);
 
-            InitUpdaters();
             CreateDataObjects();
         }
 
@@ -160,13 +167,19 @@ namespace Scada.Web
 
 
         /// <summary>
-        /// Инициализировать объекты для обновления словарей и настроек
+        /// Инициализировать объекты для обновления словарей
         /// </summary>
-        private void InitUpdaters()
+        private void InitDictUpdaters()
         {
             scadaDataDictUpdater = new DictUpdater(AppDirs.LangDir, "ScadaData", CommonPhrases.Init, Log);
             scadaWebDictUpdater = new DictUpdater(AppDirs.LangDir, "ScadaWeb", WebPhrases.Init, Log);
+        }
 
+        /// <summary>
+        /// Инициализировать объекты для обновления настроек
+        /// </summary>
+        private void InitSettingsUpdaters()
+        {
             commSettingsUpdater = new SettingsUpdater(commSettings, 
                 AppDirs.ConfigDir + CommSettings.DefFileName, true, Log);
             webSettingsUpdater = new SettingsUpdater(WebSettings, 
@@ -225,6 +238,20 @@ namespace Scada.Web
             bool changed;
             if (viewSettingsUpdater.Update(out changed) && changed)
                 ViewSettings = (ViewSettings)viewSettingsUpdater.Settings;
+        }
+
+        /// <summary>
+        /// Обработать изменение культуры веб-приложения
+        /// </summary>
+        private void ProcCultureChange()
+        {
+            if (cultureName != WebSettings.Culture)
+            {
+                cultureName = WebSettings.Culture;
+                Localization.ChangeCulture(cultureName);
+                InitDictUpdaters();
+                RefreshDictionaries();
+            }
         }
 
         /// <summary>
@@ -333,7 +360,8 @@ namespace Scada.Web
                     Storage.StorageDir = AppDirs.StorageDir;
 
                     // инициализация объектов для обновления настроек
-                    InitUpdaters();
+                    InitDictUpdaters();
+                    InitSettingsUpdaters();
                 }
 
                 // обновление данных веб-приложения
@@ -357,6 +385,7 @@ namespace Scada.Web
 
                     if (RefreshWebSettings())
                     {
+                        ProcCultureChange();
                         LoadPlugins();
                         InitPlugins();
                         FillViewSpecs();

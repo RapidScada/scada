@@ -31,13 +31,22 @@ namespace Scada.Web.Plugins.Table {
         protected global::System.Web.UI.WebControls.TextBox txtDate;
         
         /// <summary>
-        /// spanAllEventsBtn control.
+        /// lblAllEventsBtn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanAllEventsBtn;
+        protected global::System.Web.UI.WebControls.Label lblAllEventsBtn;
+        
+        /// <summary>
+        /// lblEventsByViewBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblEventsByViewBtn;
         
         /// <summary>
         /// lblNumCol control.

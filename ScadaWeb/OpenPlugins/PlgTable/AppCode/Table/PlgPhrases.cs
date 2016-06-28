@@ -49,6 +49,8 @@ namespace Scada.Web
         public static string SelectedDay { get; private set; }
         public static string PreviousDay { get; private set; }
         public static string PrevDayItem { get; private set; }
+        public static string ItemCol { get; private set; }
+        public static string CurCol { get; private set; }
         public static string InCnlHint { get; private set; }
         public static string CtrlCnlHint { get; private set; }
         public static string ObjectHint { get; private set; }
@@ -66,6 +68,8 @@ namespace Scada.Web
             SelectedDay = Localization.Dict.GetEmptyPhrase("SelectedDay");
             PreviousDay = Localization.Dict.GetEmptyPhrase("PreviousDay");
             PrevDayItem = Localization.Dict.GetEmptyPhrase("PrevDayItem");
+            ItemCol = Localization.Dict.GetEmptyPhrase("ItemCol");
+            CurCol = Localization.Dict.GetEmptyPhrase("CurCol");
             InCnlHint = Localization.Dict.GetEmptyPhrase("InCnlHint");
             CtrlCnlHint = Localization.Dict.GetEmptyPhrase("CtrlCnlHint");
             ObjectHint = Localization.Dict.GetEmptyPhrase("ObjectHint");
@@ -93,6 +97,8 @@ namespace Scada.Web
                 SelectedDay = dict.GetPhrase("SelectedDay", SelectedDay);
                 PreviousDay = dict.GetPhrase("PreviousDay", PreviousDay);
                 PrevDayItem = dict.GetPhrase("PrevDayItem", PrevDayItem);
+                ItemCol = dict.GetPhrase("ItemCol", ItemCol);
+                CurCol = dict.GetPhrase("CurCol", CurCol);
                 InCnlHint = dict.GetPhrase("InCnlHint", InCnlHint);
                 CtrlCnlHint = dict.GetPhrase("CtrlCnlHint", CtrlCnlHint);
                 ObjectHint = dict.GetPhrase("ObjectHint", ObjectHint);

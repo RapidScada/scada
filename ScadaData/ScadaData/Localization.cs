@@ -102,7 +102,7 @@ namespace Scada
         static Localization()
         {
             InitDefaultCulture();
-            ReadCulture();
+            SetCulture(ReadCulture());
             Dictionaries = new Dictionary<string, Dict>();
         }
 
@@ -163,19 +163,33 @@ namespace Scada
         }
 
         /// <summary>
-        /// Считать информацию о культуре из реестра
+        /// Считать наименование культуры из реестра
         /// </summary>
-        private static void ReadCulture()
+        private static string ReadCulture()
         {
             try
             {
                 using (RegistryKey key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64)
                     .OpenSubKey("Software\\SCADA", false))
                 {
-                    string cultureName = key.GetValue("Culture").ToString();
-                    Culture = string.IsNullOrEmpty(cultureName) ? 
-                        DefaultCulture : CultureInfo.GetCultureInfo(cultureName);
+                    return key.GetValue("Culture").ToString();
                 }
+            }
+            catch
+            {
+                return "";
+            }
+        }
+
+        /// <summary>
+        /// Установить культуру
+        /// </summary>
+        public static void SetCulture(string cultureName)
+        {
+            try
+            {
+                Culture = string.IsNullOrEmpty(cultureName) ?
+                   DefaultCulture : CultureInfo.GetCultureInfo(cultureName);
             }
             catch
             {
@@ -197,7 +211,17 @@ namespace Scada
 
 
         /// <summary>
-        /// Записать информацию о культуре в реестр
+        /// Изменить культуру
+        /// </summary>
+        public static void ChangeCulture(string cultureName)
+        {
+            if (string.IsNullOrEmpty(cultureName))
+                cultureName = ReadCulture();
+            SetCulture(cultureName);
+        }
+
+        /// <summary>
+        /// Записать наименование культуры в реестр
         /// </summary>
         public static bool WriteCulture(string cultureName, out string errMsg)
         {

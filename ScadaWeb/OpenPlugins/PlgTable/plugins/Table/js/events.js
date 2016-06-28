@@ -48,7 +48,7 @@ function changeViewDate(date, notify) {
 // Initialize the page controls
 function initControls() {
     if (!viewAllRight) {
-        $("#spanAllEventsBtn").addClass("disabled");
+        $("#lblAllEventsBtn").addClass("disabled");
     }
 }
 
@@ -60,11 +60,11 @@ function setEventsByVeiw(val) {
     saveEventFilter();
 
     if (eventsByView) {
-        $("#spanAllEventsBtn").removeClass("selected");
-        $("#spanEventsByViewBtn").addClass("selected");
+        $("#lblAllEventsBtn").removeClass("selected");
+        $("#lblEventsByViewBtn").addClass("selected");
     } else {
-        $("#spanAllEventsBtn").addClass("selected");
-        $("#spanEventsByViewBtn").removeClass("selected");
+        $("#lblAllEventsBtn").addClass("selected");
+        $("#lblEventsByViewBtn").removeClass("selected");
     }
 }
 
@@ -372,14 +372,14 @@ $(document).ready(function () {
     });
 
     // switch event filter
-    $("#spanAllEventsBtn").click(function () {
+    $("#lblAllEventsBtn").click(function () {
         if (viewAllRight) {
             setEventsByVeiw(false);
             resetEvents();
         }
     });
 
-    $("#spanEventsByViewBtn").click(function () {
+    $("#lblEventsByViewBtn").click(function () {
         setEventsByVeiw(true);
         resetEvents();
     });

@@ -37,9 +37,9 @@
     <form id="frmEvents" runat="server" onsubmit="return false;">
         <div id="divNotif" class="notifier">
         </div>
-        <div id="divToolbar"><span id="spanDate" class="tool-ctrl"><asp:TextBox ID="txtDate" runat="server"></asp:TextBox><i class="fa fa-calendar" aria-hidden="true"></i></span><span 
-            id="spanAllEventsBtn" runat="server" class="tool-btn">All Events</span><span 
-            id="spanEventsByViewBtn" class="tool-btn">Events by View</span><span 
+        <div id="divToolbar"><span id="spanDate" class="tool-ctrl"><asp:TextBox ID="txtDate" runat="server"></asp:TextBox><i class="fa fa-calendar" aria-hidden="true"></i></span><asp:Label 
+            ID="lblAllEventsBtn" runat="server" CssClass="tool-btn" Text="All Events"></asp:Label><asp:Label 
+            ID="lblEventsByViewBtn" runat="server" CssClass="tool-btn" Text="Events by View"></asp:Label><span 
             id="spanExportBtn" class="tool-btn"><i class="fa fa-print" aria-hidden="true"></i></span><div id="divDebugTools"><span 
                 id="spanTitleChangedBtn" class="tool-btn">TitleChanged</span><span 
                 id="spanNavigateBtn" class="tool-btn">Navigate</span><span 

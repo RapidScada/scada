@@ -8,6 +8,8 @@
     <Phrase key="SaveTableViewError">Error saving table view to file</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.WFrmEvents">
+    <Phrase key="lblAllEventsBtn">All Events</Phrase>
+    <Phrase key="lblEventsByViewBtn">Events by View</Phrase>
     <Phrase key="lblNumCol">Number</Phrase>
     <Phrase key="lblTimeCol">Date and Time</Phrase>
     <Phrase key="lblObjCol">Object</Phrase>
@@ -25,6 +27,8 @@
     <Phrase key="SelectedDay">Selected day:</Phrase>
     <Phrase key="PreviousDay">Previous day:</Phrase>
     <Phrase key="PrevDayItem">Prev. </Phrase>
+    <Phrase key="ItemCol">Item</Phrase>
+    <Phrase key="CurCol">Current</Phrase>
     <Phrase key="InCnlHint">In channel: </Phrase>
     <Phrase key="CtrlCnlHint">Out channel: </Phrase>
     <Phrase key="ObjectHint">Object: </Phrase>
