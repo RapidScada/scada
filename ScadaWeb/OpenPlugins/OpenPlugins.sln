@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlgScheme", "PlgScheme\PlgScheme.csproj", "{36CBF606-7F85-4E46-BC7A-C86CACF675B2}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlgConfig", "PlgConfig\PlgConfig.csproj", "{BA16503A-0E79-42C1-94C7-F690A0DA145E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlgTable", "PlgTable\PlgTable.csproj", "{7AE30E67-D10E-44B9-AC7A-81E21C8839E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlgChart", "PlgChart\PlgChart.csproj", "{72AFAED2-953D-4939-A828-8EC8A63AB19F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{7AE30E67-D10E-44B9-AC7A-81E21C8839E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7AE30E67-D10E-44B9-AC7A-81E21C8839E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7AE30E67-D10E-44B9-AC7A-81E21C8839E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72AFAED2-953D-4939-A828-8EC8A63AB19F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72AFAED2-953D-4939-A828-8EC8A63AB19F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72AFAED2-953D-4939-A828-8EC8A63AB19F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72AFAED2-953D-4939-A828-8EC8A63AB19F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
