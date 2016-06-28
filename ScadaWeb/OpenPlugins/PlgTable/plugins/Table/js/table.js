@@ -16,7 +16,7 @@ var lastHour = null
 var curDataCells = null;
 // Array of columns those display hourly data, and which consist of jQuery cells
 var hourDataCols = [];
-// Hourly data age
+// Received hourly data age
 var dataAge = [];
 // Timeout ID of the hourly data updating timer
 var updateHourDataTimeoutID = null;
@@ -24,6 +24,7 @@ var updateHourDataTimeoutID = null;
 // Set current view date and process the consequent changes
 function changeViewDate(date, notify) {
     setViewDate(date);
+    createHourPeriod();
     updateHourDataColHdrText();
     restartUpdatingHourData();
 
@@ -44,6 +45,7 @@ function createHourPeriod() {
     hourPeriod.date = viewDate;
     hourPeriod.startHour = parseInt($("#selTimeFrom").val());
     hourPeriod.endHour = parseInt($("#selTimeTo").val());
+    dataAge = []; // reset received hourly data age
 }
 
 // Correct the beginning of the hour period
@@ -193,6 +195,28 @@ function hideHint(spanHint) {
     spanHint.removeClass("show");
 }
 
+// Show chart web page
+function showChart(clickedElem) {
+    var dialogs = viewHub ? viewHub.dialogs : null;
+    if (dialogs) {
+        var cnlNum = clickedElem.closest("tr.item").data("cnl");
+        dialogs.showChart(viewID, cnlNum);
+    } else {
+        console.warn(DIALOGS_UNDEFINED);
+    }
+}
+
+// Show command dialog
+function showCmd(clickedElem) {
+    var dialogs = viewHub ? viewHub.dialogs : null;
+    if (dialogs) {
+        var ctrlCnlNum = clickedElem.closest("tr.item").data("ctrl");
+        dialogs.showCmd(viewID, ctrlCnlNum);
+    } else {
+        console.warn(DIALOGS_UNDEFINED);
+    }
+}
+
 // Display the given data in the cell. 
 // Returns true if the cell text has been changed
 function displayCellData(cell, cnlDataMap) {
@@ -240,7 +264,7 @@ function updateHourData(callback) {
     var reqDataAge = dataAge;
 
     scada.clientAPI.getHourCnlData(hourPeriod, cnlFilter, scada.HourDataModes.INTEGER_HOURS, reqDataAge,
-        function (success, hourCnlDataArr, dataAge) {
+        function (success, hourCnlDataArr, respDataAge) {
             if (reqHourPeriod != hourPeriod) {
                 // do nothing
             }
@@ -274,6 +298,8 @@ function updateHourData(callback) {
                         updateHeader = true;
                     }
                 }
+
+                dataAge = respDataAge;
 
                 if (updateHeader) {
                     scada.tableHeader.update();
@@ -399,13 +425,13 @@ $(document).ready(function () {
 
     // show chart on a label click
     $("#divTblWrapper a.lbl").click(function () {
-        alert("Charts are not implemented yet.");
+        showChart($(this));
         return false;
     });
 
     // send command on a command icon click
     $("#divTblWrapper span.cmd").click(function () {
-        alert("Commands are not implemented yet.");
+        showCmd($(this));
     });
 
     // start updating data

@@ -30,6 +30,7 @@ scada.dialogs = {
         } else {
             console.warn("Unable to show chart because scada.chart is undefined");
         }
+        alert("Charts are not implemented yet, cnlNums=" + cnlNums);
     },
 
     // Show command dialog.
@@ -42,6 +43,7 @@ scada.dialogs = {
         } else {
             console.warn("Unable to show command dialog because scada.cmd is undefined");
         }
+        alert("Commands are not implemented yet, ctrlCnlNum=" + ctrlCnlNum);
     },
 
     // Show event acknowledgement dialog.
@@ -54,6 +56,7 @@ scada.dialogs = {
         } else {
             console.warn("Unable to show event acknowledgement dialog because scada.eventAck is undefined");
         }
+        alert("Acknowledgement is not implemented yet, evNum=" + evNum);
     },
 
     // Show calendar dropdown form.

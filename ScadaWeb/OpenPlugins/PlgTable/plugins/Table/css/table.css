@@ -147,7 +147,7 @@
 }
 #divTblWrapper td.cap a {
   height: 18px;
-  padding-right: 5px;
+  margin-right: 5px;
   display: inline-block;
   line-height: 18px;
 }

@@ -303,7 +303,7 @@ namespace Scada.Web
                 long[] arr = new long[len];
 
                 for (int i = 0; i < len; i++)
-                    arr[i] = int.Parse(elems[i]);
+                    arr[i] = long.Parse(elems[i]);
 
                 return arr;
             }
@@ -424,7 +424,7 @@ namespace Scada.Web
                 SrezTableLight tblHour = dataCache.GetHourTable(curDate);
                 long newDataAge = WebUtils.DateTimeToJs(tblHour.FileModTime);
                 long prevDataAge = dayInd < dataAgeArr.Length ? dataAgeArr[dayInd] : 0;
-                bool modified = tblHour.FileModTime > DateTime.MinValue && prevDataAge < newDataAge;
+                bool modified = prevDataAge <= 0 || prevDataAge < newDataAge;
                 newDataAgeArr[dayInd] = newDataAge;
                 DateTime nextDate = curDate.AddDays(1.0);
 

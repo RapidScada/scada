@@ -34,7 +34,7 @@
     <script type="text/javascript" src="js/events.js"></script>
 </head>
 <body>
-    <form id="frmEvents" runat="server">
+    <form id="frmEvents" runat="server" onsubmit="return false;">
         <div id="divNotif" class="notifier">
         </div>
         <div id="divToolbar"><span id="spanDate" class="tool-ctrl"><asp:TextBox ID="txtDate" runat="server"></asp:TextBox><i class="fa fa-calendar" aria-hidden="true"></i></span><span 
