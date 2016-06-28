@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Chart Test - Rapid SCADA</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #divChart,
+        #cnvChart {
+            width: 100%;
+            height: 500px;
+        }
+    </style>
+    <script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/api/utils.js"></script>
+    <script type="text/javascript" src="../js/api/clientapi.js"></script>
+    <script type="text/javascript" src="../plugins/Chart/js/chart.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var displaySettings = new scada.chart.DisplaySettings();
+            displaySettings.cultureName = "en-US";
+            displaySettings.chartGap = 6 / 24; // 6 hours
+
+            var timeRange = new scada.chart.TimeRange();
+            timeRange.startDate = new Date();
+            timeRange.startTime = 2;
+            timeRange.endTime = 2;
+
+            var trend1 = new scada.chart.TrendExt();
+            trend1.CnlNum = 1;
+            trend1.CnlName = "Channel 1"
+            trend1.QuantityName = "Voltage";
+            trend1.TrendPoints =
+                [[0, "0", "0 V", "#ff0000"], [4, "4", "4 V", "green"], [5, "5", "5 V", ""],
+                [2.5, "2,5", "2,5 V", ""], [2.5, "2,5", "2,5 V", ""], [7, "7", "7 V", ""],
+                [7.5, "7.5", "7.5 V", ""], [6.7, "6,7", "6,7 V", ""], [8, "8", "8 V", ""]];
+
+            var trend2 = new scada.chart.TrendExt();
+            trend1.CnlNum = 2;
+            trend1.CnlName = "Channel 2"
+            trend1.QuantityName = "Voltage";
+            trend2.TrendPoints =
+                [[3, "Three", "Three", ""], [0, "Zero", "Zero", ""], [Number.NaN, "", "", ""],
+                [1, "One", "One", ""], [2, "Two", "Two", ""], [5, "Five", "Five", ""],
+                [4, "Four", "Four", ""], [5, "Five", "Five", ""], [3, "Three", "Three", ""]];
+
+            var chartData = new scada.chart.ChartData();
+            chartData.TimePoints = [0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
+            chartData.Trends = [trend1, trend2];
+
+            var chart = new scada.chart.Chart($("#cnvChart"));
+            chart.displaySettings = displaySettings;
+            chart.timeRange = timeRange;
+            chart.chartData = chartData;
+            chart.draw();
+        });
+    </script>
+</head>
+<body>
+    <div id="divChart"><canvas id="cnvChart">Upgrade the browser to display chart.</canvas></div>
+</body>
+</html>
