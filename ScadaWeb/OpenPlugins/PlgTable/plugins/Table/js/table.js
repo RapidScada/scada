@@ -225,7 +225,7 @@ function displayCellData(cell, cnlDataMap) {
         var cnlData = cnlDataMap.get(cnlNum);
         var text = cnlData ? cnlData.Text : "";
         var textChanged = cell.text() != text;
-        cell.text(text);
+        cell.text(text); // special characters will be encoded
         cell.css("color", cnlData ? cnlData.Color : "");
         return textChanged;
     }

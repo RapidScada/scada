@@ -176,7 +176,7 @@
   color: #444;
   display: none;
   line-height: normal;
-  padding: 5px;
+  padding: 5px 10px;
   position: fixed;
   z-index: 10;
   /*above the fixed table header*/

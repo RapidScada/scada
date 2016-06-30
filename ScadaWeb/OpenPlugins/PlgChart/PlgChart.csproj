@@ -89,6 +89,7 @@
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
+    <Content Include="css\globalvar.less" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -99,7 +100,6 @@
   <ItemGroup>
     <Folder Include="AppCode\" />
     <Folder Include="config\" />
-    <Folder Include="css\" />
     <Folder Include="lang\" />
     <Folder Include="log\" />
     <Folder Include="plugins\Chart\lang\" />

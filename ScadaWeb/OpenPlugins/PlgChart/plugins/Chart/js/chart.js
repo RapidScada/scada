@@ -55,8 +55,6 @@ scada.chart.TrendExt = function () {
     this.CnlNum = 0;
     // Input channel name
     this.CnlName = "";
-    // Name of input channel quantity
-    this.QuantityName = "";
     // Trend points where each point is array [value, "text", "text with unit", "color"]
     this.TrendPoints = [];
 }
@@ -79,6 +77,8 @@ scada.chart.ChartData = function () {
     this.TimePoints = [];
     // Trends to display
     this.Trends = [];
+    // Name of input channel quantity (and unit)
+    this.QuantityName = "";
 }
 
 /********** Chart Layout **********/
@@ -108,6 +108,8 @@ scada.chart.ChartLayout = function () {
     this.LBL_FONT_SIZE = 12;
     // Line height of various kinds of texts
     this.LINE_HEIGHT = 18;
+    // Vertical hint offset relative to the cursot
+    this.HINT_OFFSET = 20;
     // Chart back color
     this.BACK_COLOR = "#ffffff";
     // Default fore color
@@ -261,8 +263,8 @@ scada.chart.Chart = function (canvasJqObj) {
     this._TIME_OPTIONS = { hour: "2-digit", minute: "2-digit", timeZone: "UTC" };
     // Colors assigned to trends
     this._TREND_COLORS =
-        ["#ff0000" /*Red*/, "#0000ff" /*Blue*/, "#008000" /*Green*/, "#ff00ff" /*Fuchsia*/, "#ffa500"/*Orange*/,
-         "#00ffff"/*Aqua*/, "#00ff00" /*Lime*/, "#4b0082" /*Indigo*/, "#ff1493"/*DeepPink*/, "#8b4513"/*SaddleBrown*/];
+        ["#ff0000" /*Red*/, "#0000ff" /*Blue*/, "#008000" /*Green*/, "#ff00ff" /*Fuchsia*/, "#ffa500" /*Orange*/,
+         "#00ffff" /*Aqua*/, "#00ff00" /*Lime*/, "#4b0082" /*Indigo*/, "#ff1493" /*DeepPink*/, "#8b4513" /*SaddleBrown*/];
 
     // Canvas jQuery object
     this._canvasJqObj = canvasJqObj;
@@ -276,6 +278,8 @@ scada.chart.Chart = function (canvasJqObj) {
     this._chartLayout = new scada.chart.ChartLayout();
     // Time mark jQuery object
     this._timeMark = null;
+    // Trend hint jQuery object
+    this._trendHint = null;
 
     // Left edge of the displayed range
     this._minX = 0;
@@ -298,6 +302,70 @@ scada.chart.Chart = function (canvasJqObj) {
     this.chartData = null;
 };
 
+// Claculate top and bottom edges of the displayed range
+scada.chart.Chart.prototype._calcYRange = function () {
+    // find min and max trend value
+    var minY = NaN;
+    var maxY = NaN;
+    var minX = this._minX - this.displaySettings.chartGap;
+    var maxX = this._maxX + this.displaySettings.chartGap;
+
+    var timePoints = this.chartData.TimePoints;
+    var ptCnt = timePoints.length;
+    var VAL_IND = scada.chart.TrendPointIndexes.VAL_IND;
+
+    for (var trend of this.chartData.Trends) {
+        var trendPoints = trend.TrendPoints;
+
+        for (var ptInd = 0; ptInd < ptCnt; ptInd++) {
+            var x = timePoints[ptInd];
+
+            if (minX <= x && x <= maxX) {
+                var y = trendPoints[ptInd][VAL_IND];
+                if (isNaN(minY) || minY > y) {
+                    minY = y;
+                }
+                if (isNaN(maxY) || maxY < y) {
+                    maxY = y;
+                }
+            }
+        }
+    }
+
+    if (isNaN(minY)) {
+        minY = -1;
+        maxY = 1;
+    } else {
+        // calculate extra space
+        var extraSpace = minY == maxY ? 1 : (maxY - minY) * 0.05;
+
+        // include zero if zoom is off
+        var origMinY = minY;
+        var origMaxY = maxY;
+
+        if (true /*zoom is off*/) {
+            if (minY > 0 && maxY > 0) {
+                minY = 0;
+            }
+            else if (minY < 0 && maxY < 0) {
+                maxY = 0;
+            }            
+            extraSpace = Math.max(extraSpace, (maxY - minY) * 0.05);
+        }
+
+        // add extra space
+        if (origMinY - minY < extraSpace) {
+            minY -= extraSpace;
+        }
+        if (maxY - origMaxY < extraSpace) {
+            maxY += extraSpace;
+        }
+    }
+
+    this._minY = minY;
+    this._maxY = maxY;
+};
+
 // Convert trend x-coordinate to the chart x-coordinate
 scada.chart.Chart.prototype._trendXToChartX = function (x) {
     return Math.round((x - this._minX) * this._coefX + this._chartLayout.plotAreaLeft);
@@ -310,7 +378,7 @@ scada.chart.Chart.prototype._trendYToChartY = function (y) {
 
 // Convert trend x-coordinate to the page x-coordinate
 scada.chart.Chart.prototype._trendXToPageX = function (x) {
-    return this._trendXToChartX(x) + this._chartLayout.absPlotAreaLeft;
+    return Math.round((x - this._minX) * this._coefX + this._chartLayout.absPlotAreaLeft);
 };
 
 // Convert chart x-coordinate to the trend x-coordinate
@@ -557,9 +625,7 @@ scada.chart.Chart.prototype._drawGridY = function () {
 
 // Draw the y-axis title
 scada.chart.Chart.prototype._drawYAxisTitle = function () {
-    var titleText = "test!"; // TODO
-
-    if (titleText) {
+    if (this.chartData.QuantityName) {
         var ctx = this._context;
         var layout = this._chartLayout;
         ctx.textAlign = "center";
@@ -567,8 +633,8 @@ scada.chart.Chart.prototype._drawYAxisTitle = function () {
         ctx.save();
         ctx.translate(0, layout.plotAreaBottom);
         ctx.rotate(-Math.PI / 2);
-        ctx.fillText(titleText, layout.plotAreaHeight / 2, layout.LEFT_PADDING + layout.LINE_HEIGHT / 2,
-            layout.plotAreaHeight);
+        ctx.fillText(this.chartData.QuantityName, layout.plotAreaHeight / 2, 
+    layout.LEFT_PADDING + layout.LINE_HEIGHT / 2, layout.plotAreaHeight);
         ctx.restore();
     }
 };
@@ -661,15 +727,40 @@ scada.chart.Chart.prototype._initTimeMark = function () {
     }
 }
 
+// Create a trend hint if it doesn't exist
+scada.chart.Chart.prototype._initTrendHint = function () {
+    if (this._trendHint) {
+        this._trendHint.addClass("hidden");
+    } else {
+        var trendCnt = this.chartData.Trends.length;
+        if (trendCnt > 0) {
+            this._trendHint = $("<div class='chart-trend-hint hidden'><div class='time'></div><table></table></div>");
+            var table = this._trendHint.children("table");
+
+            for (var trendInd = 0; trendInd < trendCnt; trendInd++) {
+                var trend = this.chartData.Trends[trendInd];
+                var row = $("<tr><td class='color'><span></span></td><td class='text'></td>" +
+                    "<td class='colon'>:</td><td class='val'></td></tr>");
+                row.find("td.color span").css("background-color", this._getColorByTrend(trendInd));
+                row.children("td.text").text("[" + trend.CnlNum + "] " + trend.CnlName);
+                table.append(row);
+            }
+
+            this._canvasJqObj.after(this._trendHint);
+        } else {
+            this._trendHint = $();
+        }
+    }
+}
+
 // Draw the chart
 scada.chart.Chart.prototype.draw = function () {
     if (this._canvasOK && this.displaySettings && this.timeRange && this.chartData) {
         var layout = this._chartLayout;
 
-        this._minX = this.timeRange.startTime; // TODO
-        this._maxX = this.timeRange.endTime; // TODO
-        this._minY = -10; // TODO
-        this._maxY = 10; // TODO
+        this._minX = Math.min(this.timeRange.startTime, 0);
+        this._maxX = Math.max(this.timeRange.endTime, 1);
+        this._calcYRange();
 
         // prepare canvas
         this._canvas.width = this._canvasJqObj.width();
@@ -677,10 +768,11 @@ scada.chart.Chart.prototype.draw = function () {
         this._context = this._canvas.getContext("2d");
         this._context.font = layout.LBL_FONT;
         this._initTimeMark();
+        this._initTrendHint();
 
         // calculate layout
         var trendCnt = this.chartData.Trends.length;
-        var showDates = true; // TODO
+        var showDates = this.timeRange.startDate.getTime() > 0 && this._maxX - this._minX > 1;
         layout.calculate(this._canvasJqObj, this._context,
             this._minX, this._maxX, this._minY, this._maxY, trendCnt, showDates);
 
@@ -702,7 +794,7 @@ scada.chart.Chart.prototype.draw = function () {
 // Show hint with the values nearest to the pointer
 scada.chart.Chart.prototype.showHint = function (pageX, pageY) {
     var layout = this._chartLayout;
-    var hideTimeMark = true;
+    var hideHint = true;
 
     if (layout.absPlotAreaLeft <= pageX && pageX <= layout.absPlotAreaRight &&
         layout.absPlotAreaTop <= pageY && pageY <= layout.absPlotAreaBottom) {
@@ -713,6 +805,8 @@ scada.chart.Chart.prototype.showHint = function (pageX, pageY) {
             var ptPageX = this._trendXToPageX(x);
 
             if (layout.absPlotAreaLeft <= ptPageX && ptPageX <= layout.absPlotAreaRight) {
+                hideHint = false;
+
                 // set position and show the time mark
                 this._timeMark
                 .removeClass("hidden")
@@ -722,12 +816,35 @@ scada.chart.Chart.prototype.showHint = function (pageX, pageY) {
                     "height": layout.plotAreaHeight,
                 });
 
-                hideTimeMark = false;
+                // set text, position and show the trend hint
+                this._trendHint.find("div.time").text(this._timeToStr(x));
+                var trendCnt = this.chartData.Trends.length;
+                var hintValCells = this._trendHint.find("td.val");
+
+                for (var trendInd = 0; trendInd < trendCnt; trendInd++) {
+                    var trend = this.chartData.Trends[trendInd];
+                    var trendPoint = trend.TrendPoints[ptInd];
+                    hintValCells.eq(trendInd)
+                    .text(trendPoint[scada.chart.TrendPointIndexes.TEXT_WITH_UNIT_IND])
+                    .css("color", trendPoint[scada.chart.TrendPointIndexes.COLOR_IND]);
+                }
+
+                var hintWidth = this._trendHint.outerWidth();
+                var docWidth = $(document).width();
+                var hintLeft = pageX + hintWidth < docWidth ? pageX : Math.max(docWidth - hintWidth, 0);
+
+                this._trendHint
+                .removeClass("hidden")
+                .css({
+                    "left": hintLeft,
+                    "top": pageY + layout.HINT_OFFSET
+                });
             }
         }
     }
 
-    if (hideTimeMark) {
+    if (hideHint) {
         this._timeMark.addClass("hidden");
+        this._trendHint.addClass("hidden");
     }
 };

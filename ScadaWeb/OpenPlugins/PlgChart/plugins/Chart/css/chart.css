@@ -1,9 +1,40 @@
-﻿.chart-time-mark {
+﻿body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+.chart-time-mark {
   background-color: black;
   opacity: 0.25;
   position: absolute;
   width: 1px;
+  z-index: 1;
 }
-.chart-time-mark.hidden {
+.chart-trend-hint {
+  background-color: white;
+  border: 1px solid #888;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px #aaa;
+  color: #444;
+  font-size: 12px;
+  padding: 5px 10px;
+  position: absolute;
+  z-index: 2;
+}
+.chart-trend-hint table {
+  border-collapse: collapse;
+}
+.chart-trend-hint td {
+  padding: 2px 5px 0 0;
+}
+.chart-trend-hint td:last-child {
+  padding-right: 0;
+}
+.chart-trend-hint td.color span {
+  border: 1px solid black;
+  display: inline-block;
+  height: 12px;
+  width: 12px;
+}
+.chart-time-mark.hidden,
+.chart-trend-hint.hidden {
   display: none;
 }
