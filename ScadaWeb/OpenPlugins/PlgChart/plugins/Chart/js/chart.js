@@ -61,6 +61,16 @@ scada.chart.TrendExt = function () {
     this.TrendPoints = [];
 }
 
+/********** Trend Point Indexes **********/
+
+// Trend point indexes enumeration
+scada.chart.TrendPointIndexes = {
+    VAL_IND: 0,
+    TEXT_IND: 1,
+    TEXT_WITH_UNIT_IND: 2,
+    COLOR_IND: 3
+};
+
 /********** Chart Data **********/
 
 // Chart data type
@@ -78,8 +88,14 @@ scada.chart.ChartLayout = function () {
     // Desirable number of horizontal grid lines
     this._GRID_HOR_LINE_CNT = 10;
 
-    // Chart padding
-    this.PADDING = 20;
+    // Chart left padding
+    this.LEFT_PADDING = 10;
+    // Chart right padding
+    this.RIGHT_PADDING = 20;
+    // Chart top padding
+    this.TOP_PADDING = 20;
+    // Chart bottom padding
+    this.BOTTOM_PADDING = 10;
     // Tick mark size
     this.TICK_SIZE = 3;
     // Data label left and right margins
@@ -197,11 +213,12 @@ scada.chart.ChartLayout.prototype._calcGridY = function (context, minY, maxY) {
 
 // Calculate coordinates of the drawing area
 scada.chart.ChartLayout.prototype._calcPlotArea = function (trendCnt, showDates) {
-    this.plotAreaLeft = this.PADDING + this.LINE_HEIGHT /*y-axis title*/ + this.maxYLblWidth + this.LBL_LR_MARGIN * 2;
-    this.plotAreaRight = this.width - this.PADDING;
-    this.plotAreaTop = this.PADDING;
-    this.plotAreaBottom = this.height - this.PADDING - this.LBL_TB_MARGIN - this.LINE_HEIGHT /*time labels*/ -
-         (showDates ? this.LINE_HEIGHT : 0) - trendCnt * this.LINE_HEIGHT;
+    this.plotAreaLeft = this.LEFT_PADDING + this.LINE_HEIGHT /*y-axis title*/ +
+        this.maxYLblWidth + this.LBL_LR_MARGIN * 2;
+    this.plotAreaRight = this.width - this.RIGHT_PADDING;
+    this.plotAreaTop = this.TOP_PADDING;
+    this.plotAreaBottom = this.height - this.BOTTOM_PADDING - this.LBL_TB_MARGIN - this.LINE_HEIGHT /*time labels*/ -
+         (showDates ? this.LINE_HEIGHT : 0) - this.LBL_TB_MARGIN - trendCnt * this.LINE_HEIGHT;
     this.plotAreaWidth = this.plotAreaRight - this.plotAreaLeft;
     this.plotAreaHeight = this.plotAreaBottom - this.plotAreaTop;
 }
@@ -226,6 +243,10 @@ scada.chart.Chart = function (canvasJqObj) {
     this._DATE_OPTIONS = { month: "short", day: "2-digit", timeZone: "UTC" };
     // Time format options
     this._TIME_OPTIONS = { hour: "2-digit", minute: "2-digit", timeZone: "UTC" };
+    // Colors assigned to trends
+    this._TREND_COLORS =
+        ["#ff0000" /*Red*/, "#0000ff" /*Blue*/, "#008000" /*Green*/, "#ff00ff" /*Fuchsia*/, "#ffa500"/*Orange*/,
+         "#00ffff"/*Aqua*/, "#00ff00" /*Lime*/, "#4b0082" /*Indigo*/, "#ff1493"/*DeepPink*/, "#8b4513"/*SaddleBrown*/];
 
     // Canvas jQuery object
     this._canvasJqObj = canvasJqObj;
@@ -290,12 +311,38 @@ scada.chart.Chart.prototype._dateToStr = function (t) {
 };
 
 // Draw pixel on the chart
-scada.chart.Chart.prototype._drawPixel = function (x, y) {
-    this._context.fillRect(x, y, 1, 1);
+scada.chart.Chart.prototype._drawPixel = function (x, y, opt_checkBounds) {
+    if (opt_checkBounds) {
+        // check if the given coordinates are located within the drawing area
+        var layout = this._chartLayout;
+        if (layout.plotAreaLeft <= x && x <= layout.plotAreaRight &&
+            layout.plotAreaTop <= y && y <= layout.plotAreaBottom) {
+            this._context.fillRect(x, y, 1, 1);
+        }
+    } else {
+        // just draw a pixel
+        this._context.fillRect(x, y, 1, 1);
+    }
 },
 
 // Draw line on the chart
-scada.chart.Chart.prototype._drawLine = function (x1, y1, x2, y2) {
+scada.chart.Chart.prototype._drawLine = function (x1, y1, x2, y2, opt_checkBounds) {
+    if (opt_checkBounds) {
+        var layout = this._chartLayout;
+        var minX = Math.min(x1, x2);
+        var maxX = Math.max(x1, x2);
+        var minY = Math.min(y1, y2);
+        var maxY = Math.max(y1, y2);
+
+        if (layout.plotAreaLeft <= minX && maxX <= layout.plotAreaRight &&
+            layout.plotAreaTop <= minY && maxY <= layout.plotAreaBottom) {
+            opt_checkBounds = false; // the line is fully inside the drawing area
+        } else if (layout.plotAreaLeft > maxX || minX > layout.plotAreaRight ||
+            layout.plotAreaTop > maxY || minY > layout.plotAreaBottom) {
+            return; // the line is outside the drawing area
+        }
+    }
+
     var dx = x2 - x1;
     var dy = y2 - y1;
 
@@ -312,7 +359,7 @@ scada.chart.Chart.prototype._drawLine = function (x1, y1, x2, y2) {
 
             for (var x = x1; x <= x2; x++) {
                 var y = Math.round(a * x + b);
-                this._drawPixel(x, y);
+                this._drawPixel(x, y, opt_checkBounds);
             }
         } else {
             var a = dx / dy;
@@ -326,7 +373,7 @@ scada.chart.Chart.prototype._drawLine = function (x1, y1, x2, y2) {
 
             for (var y = y1; y <= y2; y++) {
                 var x = Math.round(a * y + b);
-                this._drawPixel(x, y);
+                this._drawPixel(x, y, opt_checkBounds);
             }
         }
     }
@@ -342,6 +389,11 @@ scada.chart.Chart.prototype._clearRect = function (x, y, width, height) {
 scada.chart.Chart.prototype._setColor = function (color) {
     this._context.fillStyle = this._context.strokeStyle = 
         color ? color : this._chartLayout.DEF_COLOR;
+}
+
+// Get color of the trend with the specified index
+scada.chart.Chart.prototype._getColorByTrend = function (trendInd) {
+    return this._TREND_COLORS[trendInd % this._TREND_COLORS.length];
 }
 
 // Draw the chart frame
@@ -370,7 +422,7 @@ scada.chart.Chart.prototype._drawGridX = function (showDates) {
     var frameB = layout.plotAreaBottom + 1;
     var tickT = frameB + 1;
     var tickB = frameB + layout.TICK_SIZE;
-    var lblY = frameB + layout.LBL_TB_MARGIN + layout.LINE_HEIGHT / 2;
+    var lblY = layout.plotAreaBottom + layout.LBL_TB_MARGIN + layout.LINE_HEIGHT / 2;
     var lblDateY = lblY + layout.LINE_HEIGHT;
     var dayBegTimeText = this._timeToStr(0);
 
@@ -447,11 +499,89 @@ scada.chart.Chart.prototype._drawYAxisTitle = function () {
         ctx.save();
         ctx.translate(0, layout.plotAreaBottom);
         ctx.rotate(-Math.PI / 2);
-        ctx.fillText(titleText, layout.plotAreaHeight / 2, layout.PADDING + layout.LINE_HEIGHT / 2,
+        ctx.fillText(titleText, layout.plotAreaHeight / 2, layout.LEFT_PADDING + layout.LINE_HEIGHT / 2,
             layout.plotAreaHeight);
         ctx.restore();
     }
 };
+
+// Draw lagand that is the input channel names
+scada.chart.Chart.prototype._drawLegend = function (showDates) {
+    var layout = this._chartLayout;
+    this._context.textAlign = "left";
+    this._context.textBaseline = "middle";
+
+    var lblX = layout.plotAreaLeft + layout.LBL_FONT_SIZE + layout.LBL_LR_MARGIN;
+    var lblY = layout.plotAreaBottom + layout.LBL_TB_MARGIN + layout.LINE_HEIGHT /*time labels*/ +
+        (showDates ? layout.LINE_HEIGHT : 0) + layout.LBL_TB_MARGIN + layout.LINE_HEIGHT / 2;
+    var rectSize = layout.LBL_FONT_SIZE;
+    var rectX = layout.plotAreaLeft - 0.5;
+    var rectY = lblY - rectSize / 2 - 0.5;
+    var trendCnt = this.chartData.Trends.length;
+
+    for (var trendInd = 0; trendInd < trendCnt; trendInd++) {
+        var trend = this.chartData.Trends[trendInd];
+        var legendText = "[" + trend.CnlNum + "] " + trend.CnlName;
+
+        this._setColor(this._getColorByTrend(trendInd));
+        this._context.fillRect(rectX, rectY, rectSize, rectSize);
+        this._setColor(layout.LBL_COLOR);
+        this._context.strokeRect(rectX, rectY, rectSize, rectSize);
+        this._context.fillText(legendText, lblX, lblY);
+
+        lblY += layout.LINE_HEIGHT;
+        rectY += layout.LINE_HEIGHT;
+    }
+}
+
+// Draw all the trends
+scada.chart.Chart.prototype._drawTrends = function () {
+    var trendCnt = this.chartData.Trends.length;
+    for (var trendInd = 0; trendInd < trendCnt; trendInd++) {
+        this._drawTrend(this.chartData.TimePoints, this.chartData.Trends[trendInd], this._getColorByTrend(trendInd));
+    }
+}
+
+// Draw the specified trend
+scada.chart.Chart.prototype._drawTrend = function (timePoints, trend, color) {
+    var trendPoints = trend.TrendPoints;
+    var chartGap = this.displaySettings.chartGap;
+    var VAL_IND = scada.chart.TrendPointIndexes.VAL_IND;
+
+    this._setColor(color);
+
+    var prevX = NaN;
+    var prevPtX = NaN;
+    var prevPtY = NaN;
+    var ptCnt = timePoints.length;
+
+    for (var ptInd = 0; ptInd < ptCnt; ptInd++) {
+        var pt = trendPoints[ptInd];
+        var y = pt[VAL_IND];
+
+        if (!isNaN(y)) {
+            var x = timePoints[ptInd];
+            var ptX = this._toChartX(x);
+            var ptY = this._toChartY(y);
+
+            if (isNaN(prevX)) {
+            }
+            else if (x - prevX > chartGap) {
+                this._drawPixel(prevPtX, prevPtY, true);
+                this._drawPixel(ptX, ptY, true);
+            } else if (prevPtX != ptX || prevPtY != ptY) {
+                this._drawLine(prevPtX, prevPtY, ptX, ptY, true);
+            }
+
+            prevX = x;
+            prevPtX = ptX;
+            prevPtY = ptY;
+        }
+    }
+
+    if (!isNaN(prevPtX))
+        this._drawPixel(prevPtX, prevPtY, true);
+}
 
 // Draw the chart
 scada.chart.Chart.prototype.draw = function () {
@@ -485,5 +615,7 @@ scada.chart.Chart.prototype.draw = function () {
         this._drawGridX(showDates);
         this._drawGridY();
         this._drawYAxisTitle();
+        this._drawLegend(showDates);
+        this._drawTrends();
     }
 };
