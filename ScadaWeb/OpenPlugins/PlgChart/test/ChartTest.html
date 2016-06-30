@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Chart Test - Rapid SCADA</title>
+    <link href="../plugins/Chart/css/chart.min.css" rel="stylesheet" type="text/css" />
     <style type="text/css">
         body {
             margin: 10px;
@@ -56,6 +57,14 @@
             chart.timeRange = timeRange;
             chart.chartData = chartData;
             chart.draw();
+
+            $(window).resize(function () {
+                chart.draw();
+            });
+
+            $(window).mousemove(function (event) {
+                chart.showHint(event.pageX, event.pageY);
+            })
         });
     </script>
 </head>

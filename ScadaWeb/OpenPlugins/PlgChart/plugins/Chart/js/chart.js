@@ -149,6 +149,14 @@ scada.chart.ChartLayout = function () {
     this.plotAreaWidth = 0;
     // Drawing area height
     this.plotAreaHeight = 0;
+    // Absolute left coordinate of the drawing area relative to the document
+    this.absPlotAreaLeft = 0;
+    // Absolute right coordinate of the drawing area relative to the document
+    this.absPlotAreaRight = 0;
+    // Absolute top coordinate of the drawing area relative to the document
+    this.absPlotAreaTop = 0;
+    // Absolute bottom coordinate of the drawing area relative to the document
+    this.absPlotAreaBottom = 0;
 }
 
 // Calculate grid parameters for the x-axis
@@ -212,7 +220,7 @@ scada.chart.ChartLayout.prototype._calcGridY = function (context, minY, maxY) {
 }
 
 // Calculate coordinates of the drawing area
-scada.chart.ChartLayout.prototype._calcPlotArea = function (trendCnt, showDates) {
+scada.chart.ChartLayout.prototype._calcPlotArea = function (canvasJqObj, trendCnt, showDates) {
     this.plotAreaLeft = this.LEFT_PADDING + this.LINE_HEIGHT /*y-axis title*/ +
         this.maxYLblWidth + this.LBL_LR_MARGIN * 2;
     this.plotAreaRight = this.width - this.RIGHT_PADDING;
@@ -221,6 +229,14 @@ scada.chart.ChartLayout.prototype._calcPlotArea = function (trendCnt, showDates)
          (showDates ? this.LINE_HEIGHT : 0) - this.LBL_TB_MARGIN - trendCnt * this.LINE_HEIGHT;
     this.plotAreaWidth = this.plotAreaRight - this.plotAreaLeft;
     this.plotAreaHeight = this.plotAreaBottom - this.plotAreaTop;
+
+    var offset = canvasJqObj.offset();
+    var canvasLeft = offset.left + parseInt(canvasJqObj.css("border-left-width"));
+    var canvasTop = offset.top + parseInt(canvasJqObj.css("border-top-width"));
+    this.absPlotAreaLeft = canvasLeft + this.plotAreaLeft;
+    this.absPlotAreaRight = canvasLeft + this.plotAreaRight;
+    this.absPlotAreaTop = canvasTop + this.plotAreaTop;
+    this.absPlotAreaBottom = canvasTop + this.plotAreaBottom;
 }
 
 // Calculate chart layout
@@ -232,7 +248,7 @@ scada.chart.ChartLayout.prototype.calculate = function (canvasJqObj, context,
 
     this._calcGridX(minX, maxX);
     this._calcGridY(context, minY, maxY);
-    this._calcPlotArea(trendCnt, showDates);
+    this._calcPlotArea(canvasJqObj, trendCnt, showDates);
 }
 
 /********** Chart Control **********/
@@ -258,6 +274,8 @@ scada.chart.Chart = function (canvasJqObj) {
     this._context = null;
     // Layout of the chart
     this._chartLayout = new scada.chart.ChartLayout();
+    // Time mark jQuery object
+    this._timeMark = null;
 
     // Left edge of the displayed range
     this._minX = 0;
@@ -281,13 +299,63 @@ scada.chart.Chart = function (canvasJqObj) {
 };
 
 // Convert trend x-coordinate to the chart x-coordinate
-scada.chart.Chart.prototype._toChartX = function (x) {
+scada.chart.Chart.prototype._trendXToChartX = function (x) {
     return Math.round((x - this._minX) * this._coefX + this._chartLayout.plotAreaLeft);
 };
 
 // Convert trend y-coordinate to the chart y-coordinate
-scada.chart.Chart.prototype._toChartY = function (y) {
+scada.chart.Chart.prototype._trendYToChartY = function (y) {
     return Math.round((this._maxY - y) * this._coefY + this._chartLayout.plotAreaTop);
+};
+
+// Convert trend x-coordinate to the page x-coordinate
+scada.chart.Chart.prototype._trendXToPageX = function (x) {
+    return this._trendXToChartX(x) + this._chartLayout.absPlotAreaLeft;
+};
+
+// Convert chart x-coordinate to the trend x-coordinate
+scada.chart.Chart.prototype._pageXToTrendX = function (pageX) {
+    return (pageX - this._chartLayout.absPlotAreaLeft) / this._coefX + this._minX;
+},
+
+// Get index of the point nearest to the specified page x-coordinate
+scada.chart.Chart.prototype._getPointIndex = function (pageX) {
+    var timePoints = this.chartData.TimePoints;
+    var ptCnt = timePoints.length;
+
+    if (ptCnt < 1) {
+        return -1;
+    } else {
+        var x = this._pageXToTrendX(pageX);
+        var ptInd = 0;
+
+        if (ptCnt == 1) {
+            ptInd = 0;
+        } else {
+            // binary search
+            var iL = 0;
+            var iR = ptCnt - 1;
+
+            if (x < timePoints[iL] || x > timePoints[iR])
+                return -1;
+
+            while (iR - iL > 1) {
+                var iM = Math.floor((iR + iL) / 2);
+                var xM = timePoints[iM];
+
+                if (xM == x)
+                    return iM;
+                else if (xM < x)
+                    iL = iM;
+                else
+                    iR = iM;
+            }
+
+            ptInd = x - timePoints[iL] < timePoints[iR] - x ? iL : iR;
+        }
+
+        return Math.abs(x - timePoints[ptInd]) <= this.displaySettings.chartGap ? ptInd : -1;
+    }
 };
 
 // Correct left and right edges of the displayed range to align to the grid
@@ -427,7 +495,7 @@ scada.chart.Chart.prototype._drawGridX = function (showDates) {
     var dayBegTimeText = this._timeToStr(0);
 
     for (var x = this._minX; x <= this._maxX; x += layout.gridXStep) {
-        var ptX = this._toChartX(x);
+        var ptX = this._trendXToChartX(x);
 
         // vertical grid line
         this._setColor(layout.GRID_COLOR);
@@ -467,7 +535,7 @@ scada.chart.Chart.prototype._drawGridY = function () {
     var lblX = frameL - layout.LBL_LR_MARGIN;
 
     for (var y = layout.gridYStart; y < this._maxY; y += layout.gridYStep) {
-        var ptY = this._toChartY(y);
+        var ptY = this._trendYToChartY(y);
 
         // horizontal grid line
         this._setColor(layout.GRID_COLOR);
@@ -561,8 +629,8 @@ scada.chart.Chart.prototype._drawTrend = function (timePoints, trend, color) {
 
         if (!isNaN(y)) {
             var x = timePoints[ptInd];
-            var ptX = this._toChartX(x);
-            var ptY = this._toChartY(y);
+            var ptX = this._trendXToChartX(x);
+            var ptY = this._trendYToChartY(y);
 
             if (isNaN(prevX)) {
             }
@@ -583,6 +651,16 @@ scada.chart.Chart.prototype._drawTrend = function (timePoints, trend, color) {
         this._drawPixel(prevPtX, prevPtY, true);
 }
 
+// Create a time mark if it doesn't exist
+scada.chart.Chart.prototype._initTimeMark = function () {
+    if (this._timeMark) {
+        this._timeMark.addClass("hidden");
+    } else {
+        this._timeMark = $("<div class='chart-time-mark hidden'></div>");
+        this._canvasJqObj.after(this._timeMark);
+    }
+}
+
 // Draw the chart
 scada.chart.Chart.prototype.draw = function () {
     if (this._canvasOK && this.displaySettings && this.timeRange && this.chartData) {
@@ -598,6 +676,7 @@ scada.chart.Chart.prototype.draw = function () {
         this._canvas.height = this._canvasJqObj.height();
         this._context = this._canvas.getContext("2d");
         this._context.font = layout.LBL_FONT;
+        this._initTimeMark();
 
         // calculate layout
         var trendCnt = this.chartData.Trends.length;
@@ -617,5 +696,38 @@ scada.chart.Chart.prototype.draw = function () {
         this._drawYAxisTitle();
         this._drawLegend(showDates);
         this._drawTrends();
+    }
+};
+
+// Show hint with the values nearest to the pointer
+scada.chart.Chart.prototype.showHint = function (pageX, pageY) {
+    var layout = this._chartLayout;
+    var hideTimeMark = true;
+
+    if (layout.absPlotAreaLeft <= pageX && pageX <= layout.absPlotAreaRight &&
+        layout.absPlotAreaTop <= pageY && pageY <= layout.absPlotAreaBottom) {
+        var ptInd = this._getPointIndex(pageX);
+
+        if (ptInd >= 0) {
+            var x = this.chartData.TimePoints[ptInd];
+            var ptPageX = this._trendXToPageX(x);
+
+            if (layout.absPlotAreaLeft <= ptPageX && ptPageX <= layout.absPlotAreaRight) {
+                // set position and show the time mark
+                this._timeMark
+                .removeClass("hidden")
+                .css({
+                    "left": ptPageX,
+                    "top": layout.absPlotAreaTop,
+                    "height": layout.plotAreaHeight,
+                });
+
+                hideTimeMark = false;
+            }
+        }
+    }
+
+    if (hideTimeMark) {
+        this._timeMark.addClass("hidden");
     }
 };

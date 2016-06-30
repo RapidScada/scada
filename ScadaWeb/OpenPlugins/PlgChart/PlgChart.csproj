@@ -62,6 +62,12 @@
     <Content Include="js\api\utils.js" />
     <Content Include="lib\jquery\jquery.min.js" />
     <Content Include="plugins\Chart\Chart.aspx" />
+    <Content Include="plugins\Chart\css\chart.css">
+      <DependentUpon>chart.less</DependentUpon>
+    </Content>
+    <Content Include="plugins\Chart\css\chart.min.css">
+      <DependentUpon>chart.css</DependentUpon>
+    </Content>
     <Content Include="plugins\Chart\js\chartform.js" />
     <Content Include="plugins\Chart\js\chart.js" />
     <Content Include="test\ChartTest.html" />
@@ -78,6 +84,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="plugins\Chart\css\chart.less" />
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -91,7 +102,6 @@
     <Folder Include="css\" />
     <Folder Include="lang\" />
     <Folder Include="log\" />
-    <Folder Include="plugins\Chart\css\" />
     <Folder Include="plugins\Chart\lang\" />
   </ItemGroup>
   <PropertyGroup>
