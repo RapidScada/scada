@@ -1,5 +1,6 @@
 ﻿.chart {
   border: 1px solid gray;
+  display: block;
 }
 .chart-time-mark {
   background-color: black;

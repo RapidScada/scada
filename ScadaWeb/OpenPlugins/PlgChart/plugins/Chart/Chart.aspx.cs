@@ -128,14 +128,20 @@ namespace Scada.Web.Plugins.Chart
             if (!userData.UserRights.GetViewRights(viewID).ViewRight)
                 throw new ScadaException(CommonPhrases.NoRights);
 
-#if !DEBUG 
+#if !DEBUG
             // в режиме отладки невозможно получить тип представления, т.к. плагины не загружены
             Type viewType = userData.UserViews.GetViewType(viewID);
             BaseView view = appData.ViewCache.GetView(viewType, viewID, true);
 
             if (!view.ContainsCnl(cnlNum))
                 throw new ScadaException(CommonPhrases.NoRights);
+
+            // вывод заголовка
+            lblTitle.Text = view.Title;
 #endif
+            lblStartDate.Text = (string.IsNullOrEmpty(lblTitle.Text) ? "" : ", ") + 
+                startDate.ToString("d", Localization.Culture);
+            lblGenDT.Text = DateTime.Now.ToLocalizedString();
 
             // получение данных, по которым строится график
             InCnlProps cnlProps = appData.DataAccess.GetCnlProps(cnlNum);

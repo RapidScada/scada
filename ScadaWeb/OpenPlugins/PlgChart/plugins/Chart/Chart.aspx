@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Chart.aspx.cs" Inherits="Scada.Web.Plugins.Chart.WFrmChart" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Chart.aspx.cs" Inherits="Scada.Web.Plugins.Chart.WFrmChart" EnableViewState="false" %>
 
 <!DOCTYPE html>
 
@@ -33,15 +33,15 @@
 </head>
 <body>
     <form id="frmChart" runat="server">
-        <div>
-            <asp:Label ID="lblTitle" runat="server" Text=""></asp:Label>
+        <div id="divTitle">
+            <asp:Label ID="lblTitle" runat="server" Text="Title"></asp:Label><asp:Label 
+                ID="lblStartDate" runat="server" Text=""></asp:Label>
         </div>
-        <div>
-            <asp:Label ID="lblGenerated" runat="server" Text=""></asp:Label>
+        <div id="divGen">
+            <asp:Label ID="lblGenerated" runat="server" Text="Generated"></asp:Label>
+            <asp:Label ID="lblGenDT" runat="server" Text=""></asp:Label>
         </div>
-        <div>
-            <canvas id="cnvChart" class="chart">Upgrade the browser to display chart.</canvas>
-        </div>
+        <canvas id="cnvChart" class="chart">Upgrade the browser to display chart.</canvas>
     </form>
 </body>
 </html>

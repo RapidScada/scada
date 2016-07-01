@@ -842,8 +842,8 @@ scada.chart.Chart.prototype.showHint = function (pageX, pageY) {
                 }
 
                 var hintWidth = this._trendHint.outerWidth();
-                var docWidth = $(document).width();
-                var hintLeft = pageX + hintWidth < docWidth ? pageX : Math.max(docWidth - hintWidth, 0);
+                var winRight = $(window).scrollLeft() + $(window).width();
+                var hintLeft = pageX + hintWidth < winRight ? pageX : Math.max(winRight - hintWidth, 0);
 
                 this._trendHint
                 .removeClass("hidden")

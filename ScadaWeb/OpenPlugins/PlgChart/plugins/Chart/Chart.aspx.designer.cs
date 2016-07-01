@@ -31,6 +31,15 @@ namespace Scada.Web.Plugins.Chart {
         protected global::System.Web.UI.WebControls.Label lblTitle;
         
         /// <summary>
+        /// lblStartDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblStartDate;
+        
+        /// <summary>
         /// lblGenerated control.
         /// </summary>
         /// <remarks>
@@ -38,5 +47,14 @@ namespace Scada.Web.Plugins.Chart {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblGenerated;
+        
+        /// <summary>
+        /// lblGenDT control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblGenDT;
     }
 }

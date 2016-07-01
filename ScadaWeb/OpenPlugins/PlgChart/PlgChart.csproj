@@ -97,6 +97,7 @@
     </None>
     <Content Include="css\globalvar.less" />
     <Content Include="plugins\Chart\css\chartform.less" />
+    <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
