@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PlgChartDictionaries>
+  <Dictionary key="Scada.Web.Plugins.Chart.WFrmChart">
+    <Phrase key="this">Chart - Rapid SCADA</Phrase>
+    <Phrase key="lblGenerated">Generated</Phrase>
+  </Dictionary>
+</PlgChartDictionaries>

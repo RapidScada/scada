@@ -508,7 +508,7 @@ namespace Scada.Web
                 // текст в формате "<статус>: <значение>"
                 StringBuilder sbText = cnlStatProps == null ?
                     new StringBuilder() : new StringBuilder(cnlStatProps.Name);
-                if (cnlVal > BaseValues.CnlStatuses.Undefined)
+                if (cnlStat > BaseValues.CnlStatuses.Undefined)
                 {
                     if (sbText.Length > 0)
                         sbText.Append(": ");

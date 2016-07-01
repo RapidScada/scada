@@ -8,6 +8,8 @@ var cnlFilter = null;
 
 // Array of jQuery objects, where each element represents an event row
 var eventRows = [];
+// Initial events loading
+var initialLoad = true;
 // Events data age after full update
 var fullDataAge = 0;
 // Events data age after partial update
@@ -217,16 +219,19 @@ function afterLoading() {
         divTblWrapper.removeClass("hidden");
         setTimeout(scada.tableHeader.update.bind(scada.tableHeader), 0);
 
-        // scroll down the event table if a user has been idle for the time
-        if ((new Date()) - activityTime > STOP_SCROLL_PERIOD) {
+        // scroll down the event table on initial loading or if a user has been idle for the time
+        if (initialLoad || (new Date()) - activityTime > STOP_SCROLL_PERIOD) {
             var scrollHeight = divTblWrapper[0].scrollHeight;
             var newScrollTop = scrollHeight - divTblWrapper.innerHeight();
             if (divTblWrapper.scrollTop() < newScrollTop) {
-                divTblWrapper.animate({ scrollTop: newScrollTop }, "slow", function () {
-                    activityTime = 0; // allow auto scrolling again
-                });
+                if (initialLoad) {
+                    divTblWrapper.scrollTop(newScrollTop);
+                } else {
+                    divTblWrapper.animate({ scrollTop: newScrollTop }, "slow");
+                }
             }
         }
+        initialLoad = false;
     } else {
         $("#divTblWrapper").addClass("hidden");
         $("#divNoEvents").removeClass("hidden");

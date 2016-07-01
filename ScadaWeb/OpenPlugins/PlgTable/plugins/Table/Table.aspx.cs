@@ -50,6 +50,7 @@ namespace Scada.Web.Plugins.Table
         // Переменные для вывода на веб-страницу
         protected bool debugMode = false; // режим отладки
         protected int viewID;             // ид. представления
+        protected string viewTitle;       // заголовок представления
         protected int dataRefrRate;       // частота обновления текущих данных
         protected int arcRefrRate;        // частота обновления архивных данных
         protected string phrases;         // локализованные фразы
@@ -274,6 +275,7 @@ namespace Scada.Web.Plugins.Table
                 timeTo = 23;
 
             // подготовка данных для вывода на веб-страницу
+            viewTitle = HttpUtility.JavaScriptStringEncode(tableView.Title);
             dataRefrRate = userData.WebSettings.DataRefrRate;
             arcRefrRate = userData.WebSettings.ArcRefrRate;
 

@@ -139,6 +139,8 @@ namespace Scada.Web.Plugins.Chart
             // вывод заголовка
             lblTitle.Text = view.Title;
 #endif
+
+            // вывод дополнительной информации
             lblStartDate.Text = (string.IsNullOrEmpty(lblTitle.Text) ? "" : ", ") + 
                 startDate.ToString("d", Localization.Culture);
             lblGenDT.Text = DateTime.Now.ToLocalizedString();

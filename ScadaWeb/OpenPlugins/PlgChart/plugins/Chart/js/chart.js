@@ -229,8 +229,8 @@ scada.chart.ChartLayout.prototype._calcPlotArea = function (canvasJqObj, trendCn
     this.plotAreaTop = this.TOP_PADDING;
     this.plotAreaBottom = this.height - this.BOTTOM_PADDING - this.LBL_TB_MARGIN - this.LINE_HEIGHT /*time labels*/ -
          (showDates ? this.LINE_HEIGHT : 0) - this.LBL_TB_MARGIN - trendCnt * this.LINE_HEIGHT;
-    this.plotAreaWidth = this.plotAreaRight - this.plotAreaLeft;
-    this.plotAreaHeight = this.plotAreaBottom - this.plotAreaTop;
+    this.plotAreaWidth = this.plotAreaRight - this.plotAreaLeft + 1;
+    this.plotAreaHeight = this.plotAreaBottom - this.plotAreaTop + 1;
 
     var offset = canvasJqObj.offset();
     var canvasLeft = offset.left + parseInt(canvasJqObj.css("border-left-width"));
@@ -789,8 +789,8 @@ scada.chart.Chart.prototype.draw = function () {
             this._minX, this._maxX, this._minY, this._maxY, trendCnt, this._showDates);
 
         this._alignToGridX();
-        this._coefX = layout.plotAreaWidth / (this._maxX - this._minX);
-        this._coefY = layout.plotAreaHeight / (this._maxY - this._minY);
+        this._coefX = (layout.plotAreaWidth - 1) / (this._maxX - this._minX);
+        this._coefY = (layout.plotAreaHeight - 1) / (this._maxY - this._minY);
 
         // draw chart
         this._clearRect(0, 0, layout.width, layout.height);

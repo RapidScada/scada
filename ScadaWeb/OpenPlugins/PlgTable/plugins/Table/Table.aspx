@@ -26,6 +26,7 @@
         var phrases = <%= phrases %>;
         var today = <%= today %>;
         var locale = "<%= Scada.Localization.Culture.Name %>";
+        var viewTitle = "<%= viewTitle %>";
     </script>
     <script type="text/javascript" src="js/table.js"></script>
 </head>

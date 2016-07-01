@@ -21,6 +21,19 @@ var dataAge = [];
 // Timeout ID of the hourly data updating timer
 var updateHourDataTimeoutID = null;
 
+// View title. Must be defined in Table.aspx
+var viewTitle = viewTitle || "";
+
+// Set window title
+function setTitle() {
+    if (viewTitle) {
+        document.title = viewTitle + " - Rapid SCADA";
+        if (viewHub) {
+            viewHub.notify(scada.EventTypes.VIEW_TITLE_CHANGED, window, document.title);
+        }
+    }
+}
+
 // Set current view date and process the consequent changes
 function changeViewDate(date, notify) {
     setViewDate(date);
@@ -342,6 +355,7 @@ function restartUpdatingHourData() {
 
 $(document).ready(function () {
     scada.clientAPI.rootPath = "../../";
+    setTitle();
     styleIOS();
     updateLayout();
     setItemLinkWidths();
