@@ -300,27 +300,33 @@ namespace Scada.Client
                 switch (commState)
                 {
                     case CommStates.Disconnected:
-                        stateDescr.Append(Localization.UseRussian ? "соединение не установлено" : 
+                        stateDescr.Append(Localization.UseRussian ? 
+                            "соединение не установлено" : 
                             "not connected");
                         break;
                     case CommStates.Connected:
-                        stateDescr.Append(Localization.UseRussian ? "соединение установлено" : 
+                        stateDescr.Append(Localization.UseRussian ? 
+                            "соединение установлено" : 
                             "connected");
                         break;
                     case CommStates.Authorized:
-                        stateDescr.Append(Localization.UseRussian ? "авторизация успешна" : 
+                        stateDescr.Append(Localization.UseRussian ? 
+                            "авторизация успешна" : 
                             "authentication is successful");
                         break;
                     case CommStates.NotReady:
-                        stateDescr.Append(Localization.UseRussian ? "SCADA-Сервер не готов" : 
+                        stateDescr.Append(Localization.UseRussian ? 
+                            "SCADA-Сервер не готов" : 
                             "SCADA-Server isn't ready");
                         break;
                     case CommStates.Error:
-                        stateDescr.Append(Localization.UseRussian ? "ошибка обмена данными" : 
+                        stateDescr.Append(Localization.UseRussian ? 
+                            "ошибка обмена данными" : 
                             "communication error");
                         break;
                     case CommStates.WaitResponse:
-                        stateDescr.Append(Localization.UseRussian ? "ожидание ответа" : 
+                        stateDescr.Append(Localization.UseRussian ? 
+                            "ожидание ответа" : 
                             "waiting for response");
                         break;
                 }
@@ -467,14 +473,16 @@ namespace Scada.Client
                         }
                         else if (role < Roles.Err)
                         {
-                            errMsg = Localization.UseRussian ? "Недостаточно прав для соединения со SCADA-Сервером" :
+                            errMsg = Localization.UseRussian ? 
+                                "Недостаточно прав для соединения со SCADA-Сервером" :
                                 "Insufficient rights to connect to SCADA-Server";
                             WriteAction(errMsg, Log.ActTypes.Error);
                             commState = CommStates.Error;
                         }
                         else // role == Roles.Err
                         {
-                            errMsg = Localization.UseRussian ? "Неверное имя пользователя или пароль" :
+                            errMsg = Localization.UseRussian ? 
+                                "Неверное имя пользователя или пароль" :
                                 "User name or password is incorrect";
                             WriteAction(errMsg, Log.ActTypes.Error);
                             commState = CommStates.Error;
@@ -491,7 +499,8 @@ namespace Scada.Client
                 }
                 else
                 {
-                    errMsg = Localization.UseRussian ? "Неверный формат ответа SCADA-Сервера на запрос версии" :
+                    errMsg = Localization.UseRussian ? 
+                        "Неверный формат ответа SCADA-Сервера на запрос версии" :
                         "Incorrect SCADA-Server response to version request";
                     WriteAction(errMsg, Log.ActTypes.Error);
                     commState = CommStates.Error;
@@ -499,7 +508,8 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                errMsg = (Localization.UseRussian ? "Ошибка при установке соединения со SCADA-Сервером: " : 
+                errMsg = (Localization.UseRussian ? 
+                    "Ошибка при установке соединения со SCADA-Сервером: " : 
                     "Error connecting to SCADA-Server: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
             }
@@ -528,7 +538,8 @@ namespace Scada.Client
 
                 if (tcpClient != null)
                 {
-                    WriteAction(Localization.UseRussian ? "Разрыв соединения со SCADA-Сервером" : 
+                    WriteAction(Localization.UseRussian ? 
+                        "Разрыв соединения со SCADA-Сервером" : 
                         "Disconnect from SCADA-Server", Log.ActTypes.Action);
 
                     if (netStream != null)
@@ -545,7 +556,8 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                errMsg = (Localization.UseRussian ? "Ошибка при разрыве соединения со SCADA-Сервером: " : 
+                errMsg = (Localization.UseRussian ? 
+                    "Ошибка при разрыве соединения со SCADA-Сервером: " : 
                     "Error disconnecting from SCADA-Server: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
             }
@@ -587,7 +599,8 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                errMsg = (Localization.UseRussian ? "Ошибка при очистке сетевого потока: " : 
+                errMsg = (Localization.UseRussian ? 
+                    "Ошибка при очистке сетевого потока: " : 
                     "Error clear network stream: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
             }
@@ -608,7 +621,8 @@ namespace Scada.Client
                     // проверка соединения
                     try
                     {
-                        WriteAction(Localization.UseRussian ? "Запрос состояния SCADA-Сервера" : 
+                        WriteAction(Localization.UseRussian ? 
+                            "Запрос состояния SCADA-Сервера" : 
                             "Request SCADA-Server state", Log.ActTypes.Action);
                         commState = CommStates.WaitResponse;
 
@@ -679,7 +693,8 @@ namespace Scada.Client
                 }
                 else
                 {
-                    errMsg = Localization.UseRussian ? "Невозможно соединиться со SCADA-Сервером. Повторите попытку." :
+                    errMsg = Localization.UseRussian ? 
+                        "Невозможно соединиться со SCADA-Сервером. Повторите попытку." :
                         "Unable to connect to SCADA-Server. Try again.";
                     return false;
                 }
@@ -710,7 +725,8 @@ namespace Scada.Client
             try
             {
 #if DETAILED_LOG
-                WriteAction(string.Format(Localization.UseRussian ? "Приём файла {0} от SCADA-Сервера" : 
+                WriteAction(string.Format(Localization.UseRussian ? 
+                    "Приём файла {0} от SCADA-Сервера" : 
                     "Receive file {0} from SCADA-Server", filePath), Log.ActTypes.Action);
 #endif
 
@@ -816,7 +832,8 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                errMsg = string.Format(Localization.UseRussian ? "Ошибка при приёме файла {0} от SCADA-Сервера: " :
+                errMsg = string.Format(Localization.UseRussian ? 
+                    "Ошибка при приёме файла {0} от SCADA-Сервера: " :
                     "Error receiving file {0} from SCADA-Server: ", filePath) + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
                 Disconnect();
@@ -843,7 +860,8 @@ namespace Scada.Client
             {
                 if (RestoreConnection())
                 {
-                    WriteAction(Localization.UseRussian ? "Отправка команды ТУ SCADA-Серверу" :
+                    WriteAction(Localization.UseRussian ? 
+                        "Отправка команды ТУ SCADA-Серверу" :
                         "Send telecommand to SCADA-Server", Log.ActTypes.Action);
 
                     commState = CommStates.WaitResponse;
@@ -900,7 +918,8 @@ namespace Scada.Client
                     }
                     else
                     {
-                        errMsg = Localization.UseRussian ? "Неверный формат ответа SCADA-Сервера на команду ТУ" :
+                        errMsg = Localization.UseRussian ? 
+                            "Неверный формат ответа SCADA-Сервера на команду ТУ" :
                             "Incorrect SCADA-Server response to telecommand";
                         WriteAction(errMsg, Log.ActTypes.Error);
                         commState = CommStates.Error;
@@ -909,7 +928,8 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                errMsg = (Localization.UseRussian ? "Ошибка при отправке команды ТУ SCADA-Серверу: " :
+                errMsg = (Localization.UseRussian ? 
+                    "Ошибка при отправке команды ТУ SCADA-Серверу: " :
                     "Error sending telecommand to SCADA-Server: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
                 Disconnect();
@@ -1034,7 +1054,8 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                errMsg = (Localization.UseRussian ? "Ошибка при приёме таблицы базы конфигурации от SCADA-Сервера: " : 
+                errMsg = (Localization.UseRussian ? 
+                    "Ошибка при приёме таблицы базы конфигурации от SCADA-Сервера: " : 
                     "Error receiving configuration database table from SCADA-Server: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
             }
@@ -1097,7 +1118,8 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                errMsg = (Localization.UseRussian ? "Ошибка при приёме таблицы срезов от SCADA-Сервера: " :
+                errMsg = (Localization.UseRussian ? 
+                    "Ошибка при приёме таблицы срезов от SCADA-Сервера: " :
                     "Error receiving data table from SCADA-Server: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
             }
@@ -1137,7 +1159,7 @@ namespace Scada.Client
 
                         if (tableName == SrezAdapter.CurTableName)
                         {
-                            tableType = (byte)0x01;
+                            tableType = 0x01;
                             year = month = day = 0;
                         }
                         else
@@ -1219,7 +1241,8 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                errMsg = (Localization.UseRussian ? "Ошибка при приёме тренда входного канала от SCADA-Сервера: " :
+                errMsg = (Localization.UseRussian ? 
+                    "Ошибка при приёме тренда входного канала от SCADA-Сервера: " :
                     "Error receiving input channel trend from SCADA-Server: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
                 Disconnect();
@@ -1273,7 +1296,8 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                errMsg = (Localization.UseRussian ? "Ошибка при приёме таблицы событий от SCADA-Сервера: " : 
+                errMsg = (Localization.UseRussian ? 
+                    "Ошибка при приёме таблицы событий от SCADA-Сервера: " : 
                     "Error receiving event table from SCADA-Server: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
             }
@@ -1321,7 +1345,8 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                errMsg = (Localization.UseRussian ? "Ошибка при приёме представления от SCADA-Сервера: " :
+                errMsg = (Localization.UseRussian ? 
+                    "Ошибка при приёме представления от SCADA-Сервера: " :
                     "Error receiving view from SCADA-Server: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
             }
@@ -1349,7 +1374,8 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                errMsg = (Localization.UseRussian ? "Ошибка при приёме объекта интерфейса от SCADA-Сервера: " :
+                errMsg = (Localization.UseRussian ? 
+                    "Ошибка при приёме объекта интерфейса от SCADA-Сервера: " :
                     "Error receiving interface object from SCADA-Server: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
             }
@@ -1549,7 +1575,8 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                errMsg = (Localization.UseRussian ? "Ошибка при приёме команды ТУ от SCADA-Сервера: " : 
+                errMsg = (Localization.UseRussian ? 
+                    "Ошибка при приёме команды ТУ от SCADA-Сервера: " : 
                     "Error requesting telecommand from SCADA-Server: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
                 Disconnect();
@@ -1630,7 +1657,8 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                errMsg = (Localization.UseRussian ? "Ошибка при отправке текущего среза SCADA-Серверу: " : 
+                errMsg = (Localization.UseRussian ? 
+                    "Ошибка при отправке текущего среза SCADA-Серверу: " : 
                     "Error sending current data to SCADA-Server: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
                 Disconnect();
@@ -1715,7 +1743,8 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                errMsg = (Localization.UseRussian ? "Ошибка при отправке архивного среза SCADA-Серверу: " : 
+                errMsg = (Localization.UseRussian ? 
+                    "Ошибка при отправке архивного среза SCADA-Серверу: " : 
                     "Error sending archive data to SCADA-Server: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
                 Disconnect();
@@ -1811,7 +1840,8 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                errMsg = (Localization.UseRussian ? "Ошибка при отправке события SCADA-Серверу: " :
+                errMsg = (Localization.UseRussian ? 
+                    "Ошибка при отправке события SCADA-Серверу: " :
                     "Error sending event to SCADA-Server: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
                 Disconnect();
@@ -1839,7 +1869,8 @@ namespace Scada.Client
             {
                 if (RestoreConnection())
                 {
-                    WriteAction(Localization.UseRussian ? "Отправка команды квитирования события SCADA-Серверу" :
+                    WriteAction(Localization.UseRussian ? 
+                        "Отправка команды квитирования события SCADA-Серверу" :
                         "Send check event command to SCADA-Server", Log.ActTypes.Action);
 
                     commState = CommStates.WaitResponse;
