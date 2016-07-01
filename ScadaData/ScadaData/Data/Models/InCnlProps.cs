@@ -197,6 +197,17 @@ namespace Scada.Data.Models
         public string[] UnitArr { get; set; }
 
         /// <summary>
+        /// Получить размерность числового канала, если она единственная
+        /// </summary>
+        public string SingleUnit
+        {
+            get
+            {
+                return ShowNumber && UnitArr != null && UnitArr.Length == 1 ? UnitArr[0] : "";
+            }
+        }
+
+        /// <summary>
         /// Получить или установить номер канала управления
         /// </summary>
         public int CtrlCnlNum { get; set; }

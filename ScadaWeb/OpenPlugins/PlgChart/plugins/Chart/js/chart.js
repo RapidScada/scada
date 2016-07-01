@@ -28,8 +28,8 @@ scada.chart.const = {
 
 // Display settings type
 scada.chart.DisplaySettings = function () {
-    // Date and time format culture
-    this.cultureName = "en-GB";
+    // Application culture name
+    this.locale = "en-GB";
     // Distance between chart points to make a gap
     this.chartGap = 90 / scada.chart.const.SEC_PER_DAY; // 90 seconds
 };
@@ -38,8 +38,8 @@ scada.chart.DisplaySettings = function () {
 
 // Time range type
 scada.chart.TimeRange = function () {
-    // Date of the beginning of the range
-    this.startDate = new Date();
+    // Date of the beginning of the range in milliseconds
+    this.startDate = 0;
     // Left edge of the range, where 0 is 00:00 and 1 is 24:00
     this.startTime = 0;
     // Right edge of the range
@@ -261,6 +261,8 @@ scada.chart.Chart = function (canvasJqObj) {
     this._DATE_OPTIONS = { month: "short", day: "2-digit", timeZone: "UTC" };
     // Time format options
     this._TIME_OPTIONS = { hour: "2-digit", minute: "2-digit", timeZone: "UTC" };
+    // Date and time format options
+    this._DATE_TIME_OPTIONS = $.extend({}, this._DATE_OPTIONS, this._TIME_OPTIONS);
     // Colors assigned to trends
     this._TREND_COLORS =
         ["#ff0000" /*Red*/, "#0000ff" /*Blue*/, "#008000" /*Green*/, "#ff00ff" /*Fuchsia*/, "#ffa500" /*Orange*/,
@@ -293,6 +295,8 @@ scada.chart.Chart = function (canvasJqObj) {
     this._coefX = 1;
     // Transformation coefficient of the y-coordinate
     this._coefY = 1;
+    // Show date labels below the x-axis
+    this._showDates = false;
 
     // Display settings
     this.displaySettings = new scada.chart.DisplaySettings();
@@ -386,6 +390,11 @@ scada.chart.Chart.prototype._pageXToTrendX = function (pageX) {
     return (pageX - this._chartLayout.absPlotAreaLeft) / this._coefX + this._minX;
 },
 
+// Convert trend x-coordinate to the date object
+scada.chart.Chart.prototype._trendXToDate = function (x) {
+    return new Date(this.timeRange.startDate + Math.round(x * scada.chart.const.MS_PER_DAY));
+}
+
 // Get index of the point nearest to the specified page x-coordinate
 scada.chart.Chart.prototype._getPointIndex = function (pageX) {
     var timePoints = this.chartData.TimePoints;
@@ -436,14 +445,17 @@ scada.chart.Chart.prototype._alignToGridX = function () {
 // Convert x-coordinate that means time into a time string
 scada.chart.Chart.prototype._timeToStr = function (t) {
     var time = new Date(Math.round(t * scada.chart.const.MS_PER_DAY));
-    return time.toLocaleTimeString(this.displaySettings.cultureName, this._TIME_OPTIONS);
+    return time.toLocaleTimeString(this.displaySettings.locale, this._TIME_OPTIONS);
 };
 
 // Convert x-coordinate that means time into a date string
 scada.chart.Chart.prototype._dateToStr = function (t) {
-    var dateDelta = Math.floor(t) * scada.chart.const.MS_PER_DAY;
-    var date = new Date(this.timeRange.startDate.getTime() + dateDelta);
-    return date.toLocaleDateString(this.displaySettings.cultureName, this._DATE_OPTIONS);
+    return this._trendXToDate(t).toLocaleDateString(this.displaySettings.locale, this._DATE_OPTIONS);
+};
+
+// Convert x-coordinate that means time into a date and time string
+scada.chart.Chart.prototype._dateTimeToStr = function (t) {
+    return this._trendXToDate(t).toLocaleString(this.displaySettings.locale, this._DATE_TIME_OPTIONS);
 };
 
 // Draw pixel on the chart
@@ -548,7 +560,7 @@ scada.chart.Chart.prototype._drawFrame = function () {
 }
 
 // Draw chart grid of the x-axis
-scada.chart.Chart.prototype._drawGridX = function (showDates) {
+scada.chart.Chart.prototype._drawGridX = function () {
     var layout = this._chartLayout;
     this._context.textAlign = "center";
     this._context.textBaseline = "middle";
@@ -581,8 +593,8 @@ scada.chart.Chart.prototype._drawGridX = function (showDates) {
 
         if (isNaN(prevLblX) || lblX - lblHalfW > prevLblX + prevLblHalfW + layout.LBL_LR_MARGIN) {
             this._context.fillText(timeText, lblX, lblY);
-            if (showDates && timeText == dayBegTimeText) {
-                this._context.fillText(this._dateToStr(Math.round(x)), lblX, lblDateY);
+            if (this._showDates && timeText == dayBegTimeText) {
+                this._context.fillText(this._dateToStr(x), lblX, lblDateY);
             }
             prevLblX = lblX;
             prevLblHalfW = lblHalfW;
@@ -640,14 +652,14 @@ scada.chart.Chart.prototype._drawYAxisTitle = function () {
 };
 
 // Draw lagand that is the input channel names
-scada.chart.Chart.prototype._drawLegend = function (showDates) {
+scada.chart.Chart.prototype._drawLegend = function () {
     var layout = this._chartLayout;
     this._context.textAlign = "left";
     this._context.textBaseline = "middle";
 
     var lblX = layout.plotAreaLeft + layout.LBL_FONT_SIZE + layout.LBL_LR_MARGIN;
     var lblY = layout.plotAreaBottom + layout.LBL_TB_MARGIN + layout.LINE_HEIGHT /*time labels*/ +
-        (showDates ? layout.LINE_HEIGHT : 0) + layout.LBL_TB_MARGIN + layout.LINE_HEIGHT / 2;
+        (this._showDates ? layout.LINE_HEIGHT : 0) + layout.LBL_TB_MARGIN + layout.LINE_HEIGHT / 2;
     var rectSize = layout.LBL_FONT_SIZE;
     var rectX = layout.plotAreaLeft - 0.5;
     var rectY = lblY - rectSize / 2 - 0.5;
@@ -761,6 +773,7 @@ scada.chart.Chart.prototype.draw = function () {
         this._minX = Math.min(this.timeRange.startTime, 0);
         this._maxX = Math.max(this.timeRange.endTime, 1);
         this._calcYRange();
+        this._showDates = this._maxX - this._minX > 1;
 
         // prepare canvas
         this._canvas.width = this._canvasJqObj.width();
@@ -772,9 +785,8 @@ scada.chart.Chart.prototype.draw = function () {
 
         // calculate layout
         var trendCnt = this.chartData.Trends.length;
-        var showDates = this.timeRange.startDate.getTime() > 0 && this._maxX - this._minX > 1;
         layout.calculate(this._canvasJqObj, this._context,
-            this._minX, this._maxX, this._minY, this._maxY, trendCnt, showDates);
+            this._minX, this._maxX, this._minY, this._maxY, trendCnt, this._showDates);
 
         this._alignToGridX();
         this._coefX = layout.plotAreaWidth / (this._maxX - this._minX);
@@ -783,10 +795,10 @@ scada.chart.Chart.prototype.draw = function () {
         // draw chart
         this._clearRect(0, 0, layout.width, layout.height);
         this._drawFrame();
-        this._drawGridX(showDates);
+        this._drawGridX();
         this._drawGridY();
         this._drawYAxisTitle();
-        this._drawLegend(showDates);
+        this._drawLegend();
         this._drawTrends();
     }
 };
@@ -817,7 +829,7 @@ scada.chart.Chart.prototype.showHint = function (pageX, pageY) {
                 });
 
                 // set text, position and show the trend hint
-                this._trendHint.find("div.time").text(this._timeToStr(x));
+                this._trendHint.find("div.time").text(this._showDates ? this._dateTimeToStr(x) : this._timeToStr(x));
                 var trendCnt = this.chartData.Trends.length;
                 var hintValCells = this._trendHint.find("td.val");
 

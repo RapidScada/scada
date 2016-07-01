@@ -2,5 +2,9 @@
   {
     "outputFile": "plugins/Chart/css/chart.css",
     "inputFile": "plugins/Chart/css/chart.less"
+  },
+  {
+    "outputFile": "plugins/Chart/css/chartform.css",
+    "inputFile": "plugins/Chart/css/chartform.less"
   }
 ]

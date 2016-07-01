@@ -78,6 +78,11 @@ namespace Scada.Web
         public int DispEventCnt { get; set; }
 
         /// <summary>
+        /// Получить или установить расстояние между разделяемыми точками графика, с
+        /// </summary>
+        public int ChartGap { get; set; }
+
+        /// <summary>
         /// Получить или установить разрешение команд управления
         /// </summary>
         public bool CmdEnabled { get; set; }
@@ -112,6 +117,7 @@ namespace Scada.Web
             DataRefrRate = 1000;
             ArcRefrRate = 10000;
             DispEventCnt = 100;
+            ChartGap = 90;
             CmdEnabled = true;
             CmdPassword = true; // TODO: перенести в базу конфигурации для каждого канала управления
             RemEnabled = false;
@@ -175,6 +181,8 @@ namespace Scada.Web
                                 ArcRefrRate = Math.Max(MinDataRefrRate, int.Parse(val));
                             else if (nameL == "dispeventcnt")
                                 DispEventCnt = int.Parse(val);
+                            else if (nameL == "chartgap")
+                                ChartGap = int.Parse(val);
                             else if (nameL == "cmdenabled")
                                 CmdEnabled = bool.Parse(val);
                             else if (nameL == "cmdpassword")

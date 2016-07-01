@@ -2,6 +2,7 @@
 <ScadaWebDictionaries>
   <Dictionary key="Scada.Web">
     <Phrase key="NotLoggedOn">Пользователь не вошёл в систему.</Phrase>
+    <Phrase key="IncorrectDate">Некорректная дата запрашиваемых данных.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.AppData">
     <Phrase key="ServerUnavailable">Сервер недоступен.</Phrase>

@@ -704,9 +704,31 @@ namespace Scada.Client
         /// <remarks>Возвращаемый тренд после загрузки не изменяется экземпляром данного класса,
         /// таким образом, чтение его данных является потокобезопасным.
         /// Метод всегда возвращает объект, не равный null</remarks>
-        public Trend GetMinTrend(int cnlNum, DateTime date)
+        public Trend GetMinTrend(DateTime date, int cnlNum)
         {
-            return new Trend(cnlNum);
+            Trend trend = new Trend(cnlNum);
+
+            try
+            {
+                if (serverComm.ReceiveTrend(SrezAdapter.BuildMinTableName(date), date, trend))
+                {
+                    trend.LastFillTime = DateTime.UtcNow; // единообразно с часовыми данными и событиями
+                }
+                else
+                {
+                    throw new ScadaException(Localization.UseRussian ?
+                        "Не удалось принять тренд." :
+                        "Unable to receive trend.");
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении тренда минутных данных за {0}" :
+                    "Error getting minute data trend for {0}", date.ToString("d", Localization.Culture));
+            }
+
+            return trend;
         }
     }
 }

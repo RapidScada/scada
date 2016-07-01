@@ -88,6 +88,31 @@ namespace Scada.Web
         }
 
         /// <summary>
+        /// Получить дату из параметров запроса
+        /// </summary>
+        public static DateTime GetDateFromQueryString(HttpRequest request,
+            string yearParamName = "year", string monthParamName = "month", string dayParamName = "day")
+        {
+            if (request == null)
+                throw new ArgumentNullException("request");
+
+            int year, month, day;
+            int.TryParse(request.QueryString[yearParamName], out year);
+            int.TryParse(request.QueryString[monthParamName], out month);
+            int.TryParse(request.QueryString[dayParamName], out day);
+
+            if (year == 0 && month == 0 && day == 0)
+            {
+                return DateTime.Today;
+            }
+            else
+            {
+                try { return new DateTime(year, month, day); }
+                catch { throw new Exception(WebPhrases.IncorrectDate); }
+            }
+        }
+
+        /// <summary>
         /// Преобразовать параметр запроса в массив целых чисел
         /// </summary>
         public static int[] QueryParamToIntArray(string param)

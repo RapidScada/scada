@@ -89,9 +89,7 @@ namespace Scada
             /// </summary>
             public static string GetEmptyPhrase(string key)
             {
-                return string.Format(UseRussian ?
-                    "Фраза {0} не загружена" :
-                    "The phrase {0} is not loaded", key);
+                return "[" + key + "]";
             }
         }
 

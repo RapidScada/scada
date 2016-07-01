@@ -40,6 +40,7 @@ namespace Scada.Web
 
         // Словарь Scada.Web
         public static string NotLoggedOn { get; private set; }
+        public static string IncorrectDate { get; private set; }
 
         // Словарь Scada.Web.AppData
         public static string ServerUnavailable { get; private set; }
@@ -71,6 +72,7 @@ namespace Scada.Web
         private static void SetToDefault()
         {
             NotLoggedOn = Localization.Dict.GetEmptyPhrase("NotLoggedOn");
+            IncorrectDate = Localization.Dict.GetEmptyPhrase("IncorrectDate");
 
             ServerUnavailable = Localization.Dict.GetEmptyPhrase("ServerUnavailable");
             WrongPassword = Localization.Dict.GetEmptyPhrase("WrongPassword");
@@ -100,6 +102,7 @@ namespace Scada.Web
             if (Localization.Dictionaries.TryGetValue("Scada.Web", out dict))
             {
                 NotLoggedOn = dict.GetPhrase("NotLoggedOn", NotLoggedOn);
+                IncorrectDate = dict.GetPhrase("IncorrectDate", IncorrectDate);
             }
 
             if (Localization.Dictionaries.TryGetValue("Scada.Web.AppData", out dict))

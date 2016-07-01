@@ -39,25 +39,25 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Web.DynamicData" />
-    <Reference Include="System.Web.Entity" />
-    <Reference Include="System.Web.ApplicationServices" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="Log">
+      <HintPath>..\..\..\Log\bin\Release\Log.dll</HintPath>
+    </Reference>
+    <Reference Include="ScadaData">
+      <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
+    </Reference>
+    <Reference Include="ScadaWebCommon5Beta">
+      <HintPath>..\..\ScadaWebCommon5Beta\bin\Release\ScadaWebCommon5Beta.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="config\CommSettings.xml" />
     <Content Include="js\api\clientapi.js" />
     <Content Include="js\api\utils.js" />
     <Content Include="lib\jquery\jquery.min.js" />
@@ -67,6 +67,12 @@
     </Content>
     <Content Include="plugins\Chart\css\chart.min.css">
       <DependentUpon>chart.css</DependentUpon>
+    </Content>
+    <Content Include="plugins\Chart\css\chartform.css">
+      <DependentUpon>chartform.less</DependentUpon>
+    </Content>
+    <Content Include="plugins\Chart\css\chartform.min.css">
+      <DependentUpon>chartform.css</DependentUpon>
     </Content>
     <Content Include="plugins\Chart\js\chartform.js" />
     <Content Include="plugins\Chart\js\chart.js" />
@@ -90,6 +96,7 @@
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
     <Content Include="css\globalvar.less" />
+    <Content Include="plugins\Chart\css\chartform.less" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -99,7 +106,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppCode\" />
-    <Folder Include="config\" />
     <Folder Include="lang\" />
     <Folder Include="log\" />
     <Folder Include="plugins\Chart\lang\" />

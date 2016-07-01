@@ -5,11 +5,12 @@
 @hint-fore-color: @content-fore-color;
 @hint-border-color: #888;
 @hint-shadow-color: #aaa;
+@chart-border-color: gray;
 @square-border-color: black;
 @chart-font-family: Arial, Helvetica, sans-serif;
 
-body {
-    font-family: @chart-font-family;
+.chart {
+    border: 1px solid @chart-border-color;
 }
 
 .chart-time-mark {
@@ -26,6 +27,7 @@ body {
     border-radius: 5px;
     box-shadow: 2px 2px 5px @hint-shadow-color;
     color: @hint-fore-color;
+    font-family: @chart-font-family;
     font-size: 12px;
     padding: 5px 10px;
     position: absolute;
@@ -38,6 +40,7 @@ body {
 
 .chart-trend-hint td {
     padding: 2px 5px 0 0;
+    white-space: nowrap;
 }
 
 .chart-trend-hint td:last-child {
