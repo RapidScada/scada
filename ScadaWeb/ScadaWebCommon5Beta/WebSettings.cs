@@ -23,6 +23,7 @@
  * Modified : 2016
  */
 
+using Scada.Web.Shell;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -103,6 +104,11 @@ namespace Scada.Web
         public string StartPage { get; set; }
 
         /// <summary>
+        /// Получить пути к дополнительным скриптам, реализующим функциональность оболочки
+        /// </summary>
+        public ScriptPaths ScriptPaths { get; protected set; }
+
+        /// <summary>
         /// Получить имена файлов библиотек подключенных плагинов
         /// </summary>
         public List<string> PluginFileNames { get; protected set; }
@@ -122,6 +128,7 @@ namespace Scada.Web
             CmdPassword = true; // TODO: перенести в базу конфигурации для каждого канала управления
             RemEnabled = false;
             StartPage = "";
+            ScriptPaths = new ScriptPaths();
             PluginFileNames.Clear();
         }
 
@@ -161,10 +168,10 @@ namespace Scada.Web
                 XmlElement rootElem = xmlDoc.DocumentElement;
 
                 // загрузка общих параметров
-                XmlNode paramsNode = rootElem.SelectSingleNode("CommonParams");
-                if (paramsNode != null)
+                XmlNode commonParamsNode = rootElem.SelectSingleNode("CommonParams");
+                if (commonParamsNode != null)
                 {
-                    XmlNodeList paramNodeList = paramsNode.SelectNodes("Param");
+                    XmlNodeList paramNodeList = commonParamsNode.SelectNodes("Param");
                     foreach (XmlElement paramElem in paramNodeList)
                     {
                         string name = paramElem.GetAttribute("name").Trim();
@@ -196,6 +203,26 @@ namespace Scada.Web
                         {
                             throw new Exception(string.Format(CommonPhrases.IncorrectXmlParamVal, name));
                         }
+                    }
+                }
+
+                // загрузка путей к скриптам
+                XmlNode scriptPathsNode = rootElem.SelectSingleNode("ScriptPaths");
+                if (scriptPathsNode != null)
+                {
+                    XmlNodeList scriptNodeList = scriptPathsNode.SelectNodes("Script");
+                    foreach (XmlElement scriptElem in scriptNodeList)
+                    {
+                        string name = scriptElem.GetAttribute("name").Trim();
+                        string nameL = name.ToLowerInvariant();
+                        string path = scriptElem.GetAttribute("path");
+
+                        if (nameL == "chartscript")
+                            ScriptPaths.ChartScriptPath = path;
+                        else if (nameL == "cmdscript")
+                            ScriptPaths.CmdScriptPath = path;
+                        else if (nameL == "eventackscript")
+                            ScriptPaths.EventAckScriptPath = path;
                     }
                 }
 

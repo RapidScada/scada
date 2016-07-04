@@ -113,6 +113,17 @@ namespace Scada.Web.Plugins
         }
 
         /// <summary>
+        /// Получить пути к дополнительным скриптам, которые реализуются плагином
+        /// </summary>
+        public virtual ScriptPaths ScriptPaths
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Получить или установить директории веб-приложения
         /// </summary>
         public AppDirs AppDirs

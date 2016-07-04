@@ -24,13 +24,12 @@ scada.dialogs = {
     rootPath: "",
 
     // Show chart web page
-    showChart: function (viewID, cnlNums) {
+    showChart: function (viewID, date, cnlNums) {
         if (scada.chart && scada.chart.show) {
-            scada.chart.show(viewID, cnlNums);
+            scada.chart.show(this.rootPath, viewID, date, cnlNums);
         } else {
             console.warn("Unable to show chart because scada.chart is undefined");
         }
-        alert("Charts are not implemented yet, cnlNums=" + cnlNums);
     },
 
     // Show command dialog.
@@ -39,7 +38,7 @@ scada.dialogs = {
     // cmdVal is a command value which can be a number, array of bytes or string
     showCmd: function (viewID, ctrlCnlNum, opt_callback) {
         if (scada.cmd && scada.cmd.show) {
-            scada.cmd.show(viewID, ctrlCnlNum, opt_callback);
+            scada.cmd.show(this.rootPath, viewID, ctrlCnlNum, opt_callback);
         } else {
             console.warn("Unable to show command dialog because scada.cmd is undefined");
         }
@@ -52,7 +51,7 @@ scada.dialogs = {
     // dialogResult is true or false
     showEventAck: function (viewID, date, evNum, opt_callback) {
         if (scada.eventAck && scada.eventAck.show) {
-            scada.eventAck.show(viewID, date, evNum, opt_callback);
+            scada.eventAck.show(this.rootPath, viewID, date, evNum, opt_callback);
         } else {
             console.warn("Unable to show event acknowledgement dialog because scada.eventAck is undefined");
         }

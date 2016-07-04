@@ -312,7 +312,7 @@ scada.scheme.ElementRenderer.prototype.bindAction = function (jqObj, elem) {
                 case Actions.DRAW_DIAGRAM:
                     if (props.InCnlNum > 0) {
                         if (dialogs) {
-                            dialogs.showChart(scada.scheme.viewHub.currentViewID, props.InCnlNum);
+                            dialogs.showChart(scada.scheme.viewHub.currentViewID, new Date(), props.InCnlNum);
                         } else {
                             console.warn("Dialogs object is undefined");
                         }

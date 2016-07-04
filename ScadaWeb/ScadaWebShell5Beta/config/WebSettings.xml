@@ -9,6 +9,11 @@
     <Param name="RemEnabled" value="true" descr="Allow to remember logged on user" />
     <Param name="StartPage" value="" descr="Start page after login" />
   </CommonParams>
+  <ScriptPaths>
+    <Script name="ChartScript" path="~/plugins/Chart/js/chartobj.js" />
+    <Script name="CmdScript" path="" />
+    <Script name="EventAckScript" path="" />
+  </ScriptPaths>
   <Plugins>
     <Plugin fileName="PlgConfig.dll" />
     <Plugin fileName="PlgScheme.dll" />

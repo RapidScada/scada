@@ -24,6 +24,7 @@
  */
 
 using Scada.Web.Plugins.Chart;
+using Scada.Web.Shell;
 using System.Collections.Generic;
 using System.IO;
 
@@ -82,6 +83,17 @@ namespace Scada.Web.Plugins
             get
             {
                 return "0.0.0.1";
+            }
+        }
+
+        /// <summary>
+        /// Получить пути к дополнительным скриптам, которые реализуются плагином
+        /// </summary>
+        public override ScriptPaths ScriptPaths
+        {
+            get
+            {
+                return new ScriptPaths() { ChartScriptPath = "~/plugins/Chart/js/chartobj.js" };
             }
         }
 

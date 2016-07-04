@@ -76,6 +76,7 @@
     </Content>
     <Content Include="plugins\Chart\js\chartform.js" />
     <Content Include="plugins\Chart\js\chart.js" />
+    <Content Include="plugins\Chart\js\chartobj.js" />
     <Content Include="plugins\Chart\lang\PlgChart.en-GB.xml" />
     <Content Include="plugins\Chart\lang\PlgChart.ru-RU.xml" />
     <Content Include="test\ChartTest.html" />

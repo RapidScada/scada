@@ -152,13 +152,6 @@ scada.clientAPI = {
         });
     },
 
-    // Extract year, month and day from the date, and join them into a query string
-    _dateToQueryString: function (date) {
-        return "year=" + date.getFullYear() +
-            "&month=" + (date.getMonth() + 1) +
-            "&day=" + date.getDate();
-    },
-
     // Check that a user is logged on.
     // callback is a function (success, loggedOn)
     checkLoggedOn: function (callback) {
@@ -191,7 +184,7 @@ scada.clientAPI = {
     // callback is a function (success, eventArr, dataAge)
     getEvents: function (date, cnlFilter, lastCount, startEvNum, dataAge, callback) {
         this._request("ClientApiSvc.svc/GetEvents",
-            "?" + this._dateToQueryString(date) + "&" + cnlFilter.toQueryString() +
+            "?" + scada.utils.dateToQueryString(date) + "&" + cnlFilter.toQueryString() +
             "&lastCount=" + lastCount + "&startEvNum=" + startEvNum + "&dataAge=" + dataAge,
             callback, []);
     },

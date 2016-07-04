@@ -52,9 +52,17 @@ namespace Scada.Web
 
 
         /// <summary>
+        /// Генерировать HTML-код дополнительных скриптов
+        /// </summary>
+        protected string GenScriptPathsHtml()
+        {
+            return userData.WebSettings.ScriptPaths.GenerateHtml();
+        }
+
+        /// <summary>
         /// Генерировать HTML-код главного меню
         /// </summary>
-        protected string GenerateMainMenuHtml()
+        protected string GenMainMenuHtml()
         {
             TreeViewRenderer.Options options = new TreeViewRenderer.Options() { ShowIcons = false };
             return treeViewRenderer.GenerateHtml(userData.UserMenu.MenuItems, Request.Url.AbsolutePath, options);
@@ -63,7 +71,7 @@ namespace Scada.Web
         /// <summary>
         /// Генерировать HTML-код проводника представлений
         /// </summary>
-        protected string GenerateExplorerHtml()
+        protected string GenExplorerHtml()
         {
             TreeViewRenderer.Options options = new TreeViewRenderer.Options()
             {

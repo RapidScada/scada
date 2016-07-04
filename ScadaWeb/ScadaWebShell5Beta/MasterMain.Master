@@ -30,6 +30,7 @@
             rootPath: "<%= VirtualPathUtility.AppendTrailingSlash(VirtualPathUtility.ToAbsolute("~")) %>"
         };
     </script>
+    <%= GenScriptPathsHtml() %>
     <script type="text/javascript" src="<%= ResolveClientUrl("~/js/mastermain.js") %>"></script>
     <asp:ContentPlaceHolder ID="cphMainHead" runat="server">
     </asp:ContentPlaceHolder>
@@ -53,10 +54,10 @@
                 <div id="divMainExplorerTab" class="tab"><asp:Label ID="lblMainExplorerTab" runat="server" Text="Views"></asp:Label></div>
             </div>
             <div id="divMainMenu" class="tool-window">
-                <%= GenerateMainMenuHtml() %>
+                <%= GenMainMenuHtml() %>
             </div>
             <div id="divMainExplorer" class="tool-window">
-                <%= GenerateExplorerHtml() %>
+                <%= GenExplorerHtml() %>
             </div>
             <div id="divMainCollapseLeftPaneBtn">
                 <i class="fa fa-chevron-circle-left" aria-hidden="true"></i><asp:Label ID="lblMainCollapseMenu" runat="server" Text="Collapse menu"></asp:Label>
