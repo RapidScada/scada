@@ -27,7 +27,19 @@ $(document).ready(function () {
         chart.draw();
     });
 
-    $(window).mousemove(function (event) {
-        chart.showHint(event.pageX, event.pageY);
+    $(document).on("mousemove touchstart touchmove", function (event) {
+        var touch = false;
+        if (event.type == "touchstart") {
+            event = event.originalEvent.touches[0];
+            touch = true;
+        }
+        else if (event.type == "touchmove") {
+            $(this).off("mousemove");
+            event = event.originalEvent.touches[0];
+            touch = true;
+        }
+
+        chart.showHint(event.pageX, event.pageY, touch);
+        return false;
     })
 });

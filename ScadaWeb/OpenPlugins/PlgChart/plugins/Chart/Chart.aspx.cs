@@ -102,6 +102,16 @@ namespace Scada.Web.Plugins.Chart
                 .Append("\"]")).ToString();
         }
 
+        /// <summary>
+        /// Получить имя величины с указанием размерности
+        /// </summary>
+        private string GetQuantityName(string paramName, string singleUnit)
+        {
+            return !string.IsNullOrEmpty(paramName) && !string.IsNullOrEmpty(singleUnit) ?
+                paramName + ", " + singleUnit :
+                paramName + singleUnit;
+        }
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -160,8 +170,8 @@ namespace Scada.Web.Plugins.Chart
             else
             {
                 cnlName = HttpUtility.JavaScriptStringEncode(cnlProps.CnlName);
-                string singleUnit = cnlProps.SingleUnit;
-                quantityName = HttpUtility.JavaScriptStringEncode(string.Join(", ", cnlProps.ParamName, singleUnit));
+                quantityName = HttpUtility.JavaScriptStringEncode(
+                    GetQuantityName(cnlProps.ParamName, cnlProps.SingleUnit));
             }
 
             FillPoints(trend, cnlProps, appData.DataAccess);

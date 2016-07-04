@@ -7,6 +7,7 @@
  *
  * Requires:
  * - jquery
+ * - utils.js
  */
 
 // Rapid SCADA namespace
@@ -108,7 +109,7 @@ scada.chart.ChartLayout = function () {
     this.LBL_FONT_SIZE = 12;
     // Line height of various kinds of texts
     this.LINE_HEIGHT = 18;
-    // Vertical hint offset relative to the cursot
+    // Vertical hint offset relative to the cursor
     this.HINT_OFFSET = 20;
     // Chart back color
     this.BACK_COLOR = "#ffffff";
@@ -442,20 +443,40 @@ scada.chart.Chart.prototype._alignToGridX = function () {
     this._maxX = Math.ceil(this._maxX / gridXStep) * gridXStep;
 }
 
+// Convert time to a string using manual transformations
+scada.chart.Chart.prototype._simpleTimeToStr = function (time) {
+    var min = time.getUTCMinutes();
+    return time.getUTCHours() + ":" + (min < 10 ? "0" + min : min);
+}
+
 // Convert x-coordinate that means time into a time string
 scada.chart.Chart.prototype._timeToStr = function (t) {
     var time = new Date(Math.round(t * scada.chart.const.MS_PER_DAY));
-    return time.toLocaleTimeString(this.displaySettings.locale, this._TIME_OPTIONS);
+    return scada.utils.iOS() ? // iOS requires manual time formatting
+        this._simpleTimeToStr(time) :
+        time.toLocaleTimeString(this.displaySettings.locale, this._TIME_OPTIONS);
 };
 
 // Convert x-coordinate that means time into a date string
 scada.chart.Chart.prototype._dateToStr = function (t) {
-    return this._trendXToDate(t).toLocaleDateString(this.displaySettings.locale, this._DATE_OPTIONS);
+    var date = this._trendXToDate(t);
+    if (scada.utils.iOS()) {
+        date.setUTCMinutes(date.getUTCMinutes() + date.getTimezoneOffset());
+    }
+    return date.toLocaleDateString(this.displaySettings.locale, this._DATE_OPTIONS);
 };
 
 // Convert x-coordinate that means time into a date and time string
 scada.chart.Chart.prototype._dateTimeToStr = function (t) {
-    return this._trendXToDate(t).toLocaleString(this.displaySettings.locale, this._DATE_TIME_OPTIONS);
+    var dateTime = this._trendXToDate(t);
+    if (scada.utils.iOS()) {
+        var date = new Date(dateTime.getTime());
+        date.setUTCMinutes(date.getUTCMinutes() + date.getTimezoneOffset());
+        return date.toLocaleDateString(this.displaySettings.locale, this._DATE_OPTIONS) + ", " +
+            this._simpleTimeToStr(dateTime);
+    } else {
+        return dateTime.toLocaleString(this.displaySettings.locale, this._DATE_TIME_OPTIONS);
+    }
 };
 
 // Draw pixel on the chart
@@ -804,7 +825,7 @@ scada.chart.Chart.prototype.draw = function () {
 };
 
 // Show hint with the values nearest to the pointer
-scada.chart.Chart.prototype.showHint = function (pageX, pageY) {
+scada.chart.Chart.prototype.showHint = function (pageX, pageY, opt_touch) {
     var layout = this._chartLayout;
     var hideHint = true;
 
@@ -842,6 +863,7 @@ scada.chart.Chart.prototype.showHint = function (pageX, pageY) {
                 }
 
                 var hintWidth = this._trendHint.outerWidth();
+                var hintHeight = this._trendHint.outerHeight();
                 var winRight = $(window).scrollLeft() + $(window).width();
                 var hintLeft = pageX + hintWidth < winRight ? pageX : Math.max(winRight - hintWidth, 0);
 
@@ -849,7 +871,7 @@ scada.chart.Chart.prototype.showHint = function (pageX, pageY) {
                 .removeClass("hidden")
                 .css({
                     "left": hintLeft,
-                    "top": pageY + layout.HINT_OFFSET
+                    "top": pageY - hintHeight - (opt_touch ? layout.HINT_OFFSET /*above a finger*/ : 0)
                 });
             }
         }

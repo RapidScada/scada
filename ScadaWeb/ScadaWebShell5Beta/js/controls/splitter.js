@@ -141,7 +141,7 @@ scada.SplitterBulk.prototype.bindEvents = function () {
         thisBulk._startResizing(event.pageX, event.pageY);
     });
 
-    $("body").on("mousemove touchmove", function (event) {
+    $(document).on("mousemove touchmove", function (event) {
         if (event.type == "touchmove") {
             $(this).off("mousemove");
             event = event.originalEvent.touches[0];
@@ -191,7 +191,7 @@ scada.splitter = {
     _bindCommonEvents: function () {
         var thisObj = this;
 
-        $("body").on("mouseup mouseleave touchend touchcancel", function () {
+        $(document).on("mouseup mouseleave touchend touchcancel", function () {
             thisObj._stopAllResizing();
         });
 
