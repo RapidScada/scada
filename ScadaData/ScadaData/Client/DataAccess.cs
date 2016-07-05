@@ -191,7 +191,7 @@ namespace Scada.Client
             try
             {
                 dataCache.RefreshBaseTables();
-                DateTime baseAge = dataCache.BaseAge;
+                DateTime baseAge = dataCache.BaseTables.BaseAge;
                 if (view != null && view.BaseAge != baseAge && baseAge > DateTime.MinValue)
                 {
                     lock (view.SyncRoot)

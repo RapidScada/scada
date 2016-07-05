@@ -8,6 +8,7 @@
     <Param name="CmdPassword" value="true" descr="Require password on sending command" />
     <Param name="RemEnabled" value="true" descr="Allow to remember logged on user" />
     <Param name="StartPage" value="" descr="Start page after login" />
+    <Param name="ViewsFromBase" value="true" descr="Load view settings from the database" />
   </CommonParams>
   <ScriptPaths>
     <Script name="ChartScript" path="~/plugins/Chart/js/chartobj.js" />

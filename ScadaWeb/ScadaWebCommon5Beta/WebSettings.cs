@@ -104,6 +104,11 @@ namespace Scada.Web
         public string StartPage { get; set; }
 
         /// <summary>
+        /// Получить или установить признак загрузки настроек представлений из базы конфигурации
+        /// </summary>
+        public bool ViewsFromBase { get; set; }
+
+        /// <summary>
         /// Получить пути к дополнительным скриптам, реализующим функциональность оболочки
         /// </summary>
         public ScriptPaths ScriptPaths { get; protected set; }
@@ -128,6 +133,7 @@ namespace Scada.Web
             CmdPassword = true; // TODO: перенести в базу конфигурации для каждого канала управления
             RemEnabled = false;
             StartPage = "";
+            ViewsFromBase = true;
             ScriptPaths = new ScriptPaths();
             PluginFileNames.Clear();
         }
@@ -198,6 +204,8 @@ namespace Scada.Web
                                 RemEnabled = bool.Parse(val);
                             else if (nameL == "startpage")
                                 StartPage = val;
+                            else if (nameL == "viewsfrombase")
+                                ViewsFromBase = bool.Parse(val);
                         }
                         catch
                         {

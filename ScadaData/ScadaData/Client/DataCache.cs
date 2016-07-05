@@ -135,7 +135,6 @@ namespace Scada.Client
             tblCur = new SrezTableLight();
             curDataRefrDT = DateTime.MinValue;
 
-            BaseAge = DateTime.MinValue;
             BaseTables = new BaseTables();
             CnlProps = new InCnlProps[0];
             CtrlCnlProps = new CtrlCnlProps[0];
@@ -144,11 +143,6 @@ namespace Scada.Client
             EventTableCache = new Cache<DateTime, EventTableLight>(EventCacheStorePeriod, EventCacheCapacity);
         }
 
-
-        /// <summary>
-        /// Получить время последнего изменения успешно считанной базы конфигурации
-        /// </summary>
-        public DateTime BaseAge { get; protected set; }
 
         /// <summary>
         /// Получить таблицы базы конфигурации
@@ -487,9 +481,8 @@ namespace Scada.Client
                                 "Не удалось принять время изменения базы конфигурации." :
                                 "Unable to receive the configuration database modification time.");
                         }
-                        else if (BaseAge != newBaseAge) // база конфигурации изменена
+                        else if (BaseTables.BaseAge != newBaseAge) // база конфигурации изменена
                         {
-                            BaseAge = newBaseAge;
                             log.WriteAction(Localization.UseRussian ? 
                                 "Обновление таблиц базы конфигурации" :
                                 "Refresh the tables of the configuration database");
@@ -503,7 +496,7 @@ namespace Scada.Client
                             }
 
                             // загрузка данных в таблицы
-                            BaseTables newBaseTables = new BaseTables();
+                            BaseTables newBaseTables = new BaseTables() { BaseAge = newBaseAge };
                             foreach (DataTable dataTable in newBaseTables.AllTables)
                             {
                                 string tableName = BaseTables.GetFileName(dataTable);
@@ -529,7 +522,7 @@ namespace Scada.Client
                 }
                 catch (Exception ex)
                 {
-                    BaseAge = DateTime.MinValue;
+                    BaseTables.BaseAge = DateTime.MinValue;
                     log.WriteException(ex, Localization.UseRussian ?
                         "Ошибка при обновлении таблиц базы конфигурации" :
                         "Error refreshing the tables of the configuration database");

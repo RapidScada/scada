@@ -62,6 +62,8 @@ namespace Scada.Data.Tables
                 FormatTable = new DataTable("Format"),
                 FormulaTable = new DataTable("Formula")
             };
+
+            BaseAge = DateTime.MinValue;
         }
 
 
@@ -154,6 +156,11 @@ namespace Scada.Data.Tables
         /// Получить массив ссылок на все таблицы базы конфигурации
         /// </summary>
         public DataTable[] AllTables { get; protected set; }
+
+        /// <summary>
+        /// Получить или установить время последнего изменения успешно считанной базы конфигурации
+        /// </summary>
+        public DateTime BaseAge { get; set; }
 
         /// <summary>
         /// Получить объект для синхронизации доступа к таблицам

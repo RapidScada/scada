@@ -60,6 +60,7 @@ namespace Scada.Web
         private SettingsUpdater commSettingsUpdater; // объект для обновления настроек соединения с сервером
         private SettingsUpdater webSettingsUpdater;  // объект для обновления настроек веб-приложения
         private SettingsUpdater viewSettingsUpdater; // объект для обновления настроек представлений
+        private DateTime viewSettingsBaseAge;        // время изменения базы конфигурации для настроек представлений
 
 
         /// <summary>
@@ -87,6 +88,7 @@ namespace Scada.Web
             commSettingsUpdater = null;
             webSettingsUpdater = null;
             viewSettingsUpdater = null;
+            viewSettingsBaseAge = DateTime.MinValue;
 
             WebSettings = new WebSettings();
             ViewSettings = new ViewSettings();
@@ -235,9 +237,38 @@ namespace Scada.Web
         /// </summary>
         private void RefreshViewSettings()
         {
-            bool changed;
-            if (viewSettingsUpdater.Update(out changed) && changed)
-                ViewSettings = (ViewSettings)viewSettingsUpdater.Settings;
+            if (WebSettings.ViewsFromBase)
+            {
+                // обновление настроек представлений из базы конфигурации
+                BaseTables baseTables = DataAccess.DataCache.BaseTables;
+                DateTime baseAge = baseTables.BaseAge;
+
+                if (baseAge > DateTime.MinValue && viewSettingsBaseAge != baseAge)
+                {
+                    ViewSettings newViewSettings = new ViewSettings();
+                    string errMsg;
+
+                    if (newViewSettings.LoadFromBase(baseTables.InterfaceTable, out errMsg))
+                    {
+                        if (!ViewSettings.Equals(newViewSettings))
+                        {
+                            ViewSettings = newViewSettings;
+                            viewSettingsBaseAge = baseAge;
+                        }
+                    }
+                    else
+                    {
+                        Log.WriteError(errMsg);
+                    }
+                }
+            }
+            else
+            {
+                // обновление настроек представлений из файла
+                bool changed;
+                if (viewSettingsUpdater.Update(out changed) && changed)
+                    ViewSettings = (ViewSettings)viewSettingsUpdater.Settings;
+            }
         }
 
         /// <summary>

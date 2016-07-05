@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Xml;
 
@@ -170,13 +171,22 @@ namespace Scada.Web
         {
             try
             {
-                throw new NotImplementedException("Method not implemented.");
+                throw new NotImplementedException("Method is not implemented.");
             }
             catch (Exception ex)
             {
                 errMsg = WebPhrases.SaveViewSettingsError + ": " + ex.Message;
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Загрузить настройки из базы конфигурации
+        /// </summary>
+        public bool LoadFromBase(DataTable tblInterface, out string errMsg)
+        {
+            errMsg = "Method is not implemented.";
+            return false;
         }
     }
 }
