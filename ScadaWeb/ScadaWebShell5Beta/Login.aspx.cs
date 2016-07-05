@@ -49,7 +49,15 @@ namespace Scada.Web
         /// </summary>
         private void AddShowAlertScript(string message)
         {
-            ClientScript.RegisterStartupScript(GetType(), "Startup", "showAlert('" + message + "');", true);
+            ClientScript.RegisterStartupScript(GetType(), "Startup1", "showAlert('" + message + "');", true);
+        }
+
+        /// <summary>
+        /// Добавить на страницу скрипт проверки браузера
+        /// </summary>
+        private void AddCheckBrowserScript()
+        {
+            ClientScript.RegisterStartupScript(GetType(), "Startup2", "checkBrowser();", true);
         }
 
         /// <summary>
@@ -122,6 +130,9 @@ namespace Scada.Web
                 txtUsername.Text = userData.LoggedOn ?
                     userData.UserName :
                     appData.RememberMe.RestoreUsername(Context); // из cookie
+
+                // добавление скрипта проверки браузера
+                AddCheckBrowserScript();
             }
         }
 

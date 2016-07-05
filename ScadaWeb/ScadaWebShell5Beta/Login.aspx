@@ -25,7 +25,7 @@
             <div id="divTitle">
                 Rapid SCADA
             </div>
-            <div id="divAlertContainer"></div>
+            <div id="divAlertsOuter"><div id="divAlertsInner"></div></div>
             <div id="divLogin">
                 <div>
                     <asp:Label ID="lblUsername" runat="server" Text="Username" AssociatedControlID="txtUsername"></asp:Label></div>
@@ -46,6 +46,7 @@
                 </div>
             </div>
         </div>
+        <asp:HiddenField ID="hidBrowserOutdatedMsg" runat="server" Value="Your browser is out of date." />
     </form>
 </body>
 </html>

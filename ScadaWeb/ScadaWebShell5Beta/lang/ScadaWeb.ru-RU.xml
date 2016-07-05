@@ -36,6 +36,7 @@
     <Phrase key="lblPassword">Пароль</Phrase>
     <Phrase key="lblRememberMe">Запомнить меня</Phrase>
     <Phrase key="btnLogin">Войти</Phrase>
+    <Phrase key="hidBrowserOutdatedMsg">Ваш браузер устарел. Установите современный браузер, пожалуйста.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WFrmNoView">
     <Phrase key="this">Представление не существует - Rapid SCADA</Phrase>

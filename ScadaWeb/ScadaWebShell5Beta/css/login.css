@@ -13,13 +13,16 @@
   margin: 20px 0;
   font-size: 30px;
 }
-#divAlertContainer {
-  font-size: 13px;
+#divAlertsOuter {
+  text-align: center;
 }
-div .alert {
+#divAlertsInner {
+  display: inline-block;
+}
+div.alert {
   margin: 0 0 10px 0;
   padding-left: 25px;
-  display: inline-block;
+  font-size: 13px;
   text-align: left;
 }
 #divLogin {

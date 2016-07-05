@@ -394,8 +394,8 @@ namespace Scada.Client
             try
             {
                 log.WriteAction(Localization.UseRussian ?
-                    "Заполнение цветов статусов входных каналов" :
-                    "Fill input channel statuses colors");
+                    "Заполнение свойств статусов входных каналов" :
+                    "Fill input channel statuses properties");
 
                 DataTable tblEvType = BaseTables.EvTypeTable;
                 int statusCnt = tblEvType.Rows.Count;
@@ -414,8 +414,8 @@ namespace Scada.Client
             catch (Exception ex)
             {
                 log.WriteException(ex, (Localization.UseRussian ?
-                    "Ошибка при заполнении цветов статусов входных каналов: " :
-                    "Error filling input channel statuses colors"));
+                    "Ошибка при заполнении свойств статусов входных каналов: " :
+                    "Error filling input channel statuses properties"));
             }
         }
 
@@ -434,6 +434,7 @@ namespace Scada.Client
 
                     if (newCurTableAge == DateTime.MinValue) // файл среза не существует или нет связи с сервером
                     {
+                        tblCur.Clear();
                         tblCur.FileModTime = DateTime.MinValue;
                         log.WriteError(Localization.UseRussian ?
                             "Не удалось принять время изменения файла текущих данных." :
@@ -593,9 +594,10 @@ namespace Scada.Client
                         if (newTableAge == DateTime.MinValue) // файл таблицы не существует или нет связи с сервером
                         {
                             table = null;
-                            log.WriteError(string.Format(Localization.UseRussian ?
+                            // не засорять лог
+                            /*log.WriteError(string.Format(Localization.UseRussian ?
                                 "Не удалось принять время изменения таблицы часовых данных {0}" :
-                                "Unable to receive modification time of the hourly data table {0}", tableName));
+                                "Unable to receive modification time of the hourly data table {0}", tableName));*/
                         }
                         else if (newTableAge != tableAge) // файл таблицы изменён
                         {
@@ -604,9 +606,6 @@ namespace Scada.Client
                             {
                                 table.FileModTime = newTableAge;
                                 table.LastFillTime = utcNowDT;
-
-                                // обновление таблицы в кеше
-                                HourTableCache.UpdateItem(cacheItem, table, newTableAge, utcNowDT);
                             }
                             else
                             {
@@ -615,9 +614,15 @@ namespace Scada.Client
                                     "Unable to receive hourly data table.");
                             }
                         }
+
+                        if (table == null)
+                            table = new SrezTableLight();
+
+                        // обновление таблицы в кеше
+                        HourTableCache.UpdateItem(cacheItem, table, newTableAge, utcNowDT);
                     }
 
-                    return table == null ? new SrezTableLight() : table;
+                    return table;
                 }
             }
             catch (Exception ex)
@@ -661,9 +666,10 @@ namespace Scada.Client
                         if (newTableAge == DateTime.MinValue) // файл таблицы не существует или нет связи с сервером
                         {
                             table = null;
-                            log.WriteError(string.Format(Localization.UseRussian ?
+                            // не засорять лог
+                            /*log.WriteError(string.Format(Localization.UseRussian ?
                                 "Не удалось принять время изменения таблицы событий {0}" :
-                                "Unable to receive modification time of the event table {0}", tableName));
+                                "Unable to receive modification time of the event table {0}", tableName));*/
                         }
                         else if (newTableAge != tableAge) // файл таблицы изменён
                         {
@@ -672,9 +678,6 @@ namespace Scada.Client
                             {
                                 table.FileModTime = newTableAge;
                                 table.LastFillTime = utcNowDT;
-
-                                // обновление таблицы в кеше
-                                EventTableCache.UpdateItem(cacheItem, table, newTableAge, utcNowDT);
                             }
                             else
                             {
@@ -683,9 +686,15 @@ namespace Scada.Client
                                     "Unable to receive event table.");
                             }
                         }
+
+                        if (table == null)
+                            table = new EventTableLight();
+
+                        // обновление таблицы в кеше
+                        EventTableCache.UpdateItem(cacheItem, table, newTableAge, utcNowDT);
                     }
 
-                    return table == null ? new EventTableLight() : table;
+                    return table;
                 }
             }
             catch (Exception ex)

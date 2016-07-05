@@ -36,6 +36,7 @@
     <Phrase key="lblPassword">Password</Phrase>
     <Phrase key="lblRememberMe">Remember me</Phrase>
     <Phrase key="btnLogin">Login</Phrase>
+    <Phrase key="hidBrowserOutdatedMsg">Your browser is out of date.&lt;br/&gt;Please update to a modern browser.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WFrmNoView">
     <Phrase key="this">No View - Rapid SCADA</Phrase>
