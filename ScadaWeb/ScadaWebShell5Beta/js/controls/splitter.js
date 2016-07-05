@@ -82,6 +82,7 @@ scada.SplitterBulk.prototype._startResizing = function (x, y) {
     this._curX = x;
     this._curY = y;
     this._addOverlay(); // allow to receive events
+    this.splitter.addClass("splitter-active");
 };
 
 // Change splitter position according to the cursor coordinates
@@ -119,6 +120,7 @@ scada.SplitterBulk.prototype.stopResizing = function (opt_stopResizingCallback) 
     if (this._isResizing) {
         this._isResizing = false;
         this._removeOverlay();
+        this.splitter.removeClass("splitter-active");
 
         if (opt_stopResizingCallback) {
             opt_stopResizingCallback(this);

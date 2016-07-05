@@ -3,6 +3,7 @@
 @bottom-tabs-heigth: 30px;
 @collapse-btn-width: 40px;
 @splitter-color: #ddd;
+@splitter-active-color: #ccc;
 
 #divViewContent {
     height: 100%;
@@ -28,6 +29,10 @@
     background-color: @splitter-color;
     cursor: ns-resize;
     display: none; /*block*/
+}
+
+#divViewSplitter.splitter-active {
+    background-color: @splitter-active-color;
 }
 
 #divDataWindow {
