@@ -129,7 +129,11 @@ namespace Scada.Web
         /// </summary>
         public EntityRights GetViewRights(int viewID)
         {
-            if (ViewAllRight)
+            if (viewID <= 0)
+            {
+                return EntityRights.NoRights;
+            }
+            else if (ViewAllRight)
             {
                 return globalRights;
             }
@@ -146,7 +150,11 @@ namespace Scada.Web
         /// </summary>
         public EntityRights GetContentRights(string contentTypeCode)
         {
-            if (ViewAllRight)
+            if (string.IsNullOrEmpty(contentTypeCode))
+            {
+                return EntityRights.NoRights;
+            }
+            else if (ViewAllRight)
             {
                 return globalRights;
             }

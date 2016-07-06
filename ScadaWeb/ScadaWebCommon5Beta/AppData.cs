@@ -240,6 +240,7 @@ namespace Scada.Web
             if (WebSettings.ViewsFromBase)
             {
                 // обновление настроек представлений из базы конфигурации
+                DataAccess.DataCache.RefreshBaseTables();
                 BaseTables baseTables = DataAccess.DataCache.BaseTables;
                 DateTime baseAge = baseTables.BaseAge;
 
@@ -254,6 +255,7 @@ namespace Scada.Web
                         {
                             ViewSettings = newViewSettings;
                             viewSettingsBaseAge = baseAge;
+                            viewSettingsUpdater.ResetFileAge();
                         }
                     }
                     else
@@ -267,7 +269,10 @@ namespace Scada.Web
                 // обновление настроек представлений из файла
                 bool changed;
                 if (viewSettingsUpdater.Update(out changed) && changed)
+                {
                     ViewSettings = (ViewSettings)viewSettingsUpdater.Settings;
+                    viewSettingsBaseAge = DateTime.MinValue;
+                }
             }
         }
 

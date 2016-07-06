@@ -169,15 +169,8 @@ namespace Scada.Web
         /// </summary>
         public bool SaveToFile(string fileName, out string errMsg)
         {
-            try
-            {
-                throw new NotImplementedException("Method is not implemented.");
-            }
-            catch (Exception ex)
-            {
-                errMsg = WebPhrases.SaveViewSettingsError + ": " + ex.Message;
-                return false;
-            }
+            errMsg = WebPhrases.SaveViewSettingsError + ": Method is not implemented.";
+            return false;
         }
 
         /// <summary>
@@ -185,8 +178,46 @@ namespace Scada.Web
         /// </summary>
         public bool LoadFromBase(DataTable tblInterface, out string errMsg)
         {
-            errMsg = "Method is not implemented.";
-            return false;
+            // установка значений по умолчанию
+            ViewItems.Clear();
+
+            // загрузка настроек
+            try
+            {
+                DataView viewInterface = new DataView(tblInterface);
+                viewInterface.Sort = "ItfID";
+
+                foreach (DataRowView rowView in viewInterface)
+                {
+                    int itfID = (int)rowView["ItfID"];
+                    string name = ((string)rowView["Name"]).Trim();
+                    string descr = (string)rowView["Descr"];
+
+                    if (name != "")
+                    {
+                        if (name.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
+                            name.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+                        {
+                            string text = descr == "" ? name : descr;
+                            ViewItem viewItem = new ViewItem(itfID, text, 0);
+                            ViewItems.Add(viewItem);
+                        }
+                        else
+                        {
+                            ViewItem viewItem = new ViewItem(itfID, descr == "" ? name : descr, 0);
+                            ViewItems.Add(viewItem);
+                        }
+                    }
+                }
+
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = WebPhrases.LoadViewSettingsBaseError + ": " + ex.Message;
+                return false;
+            }
         }
     }
 }

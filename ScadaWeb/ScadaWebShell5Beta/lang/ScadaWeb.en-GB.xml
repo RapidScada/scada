@@ -25,6 +25,7 @@
   <Dictionary key="Scada.Web.ViewSettings">
     <Phrase key="LoadViewSettingsError">Error loading view settings</Phrase>
     <Phrase key="SaveViewSettingsError">Error saving view settings</Phrase>
+    <Phrase key="LoadViewSettingsBaseError">Error loading view settings from the configuration database</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WebSettings">
     <Phrase key="LoadWebSettingsError">Error loading web application settings</Phrase>

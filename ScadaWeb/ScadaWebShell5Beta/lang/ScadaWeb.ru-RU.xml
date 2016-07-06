@@ -25,6 +25,7 @@
   <Dictionary key="Scada.Web.ViewSettings">
     <Phrase key="LoadViewSettingsError">Ошибка при загрузке настроек представлений</Phrase>
     <Phrase key="SaveViewSettingsError">Ошибка при сохранении настроек представлений</Phrase>
+    <Phrase key="LoadViewSettingsBaseError">Ошибка при загрузке настроек представлений из базы конфигурации</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WebSettings">
     <Phrase key="LoadWebSettingsError">Ошибка при загрузке настроек веб-приложения</Phrase>

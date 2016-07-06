@@ -55,6 +55,7 @@ namespace Scada.Web
         // Словарь Scada.Web.ViewSettings
         public static string LoadViewSettingsError { get; private set; }
         public static string SaveViewSettingsError { get; private set; }
+        public static string LoadViewSettingsBaseError { get; private set; }
 
         // Словарь Scada.Web.WebSettings
         public static string LoadWebSettingsError { get; private set; }
@@ -84,6 +85,7 @@ namespace Scada.Web
 
             LoadViewSettingsError = Localization.Dict.GetEmptyPhrase("LoadViewSettingsError");
             SaveViewSettingsError = Localization.Dict.GetEmptyPhrase("SaveViewSettingsError");
+            LoadViewSettingsBaseError = Localization.Dict.GetEmptyPhrase("LoadViewSettingsBaseError");
 
             LoadWebSettingsError = Localization.Dict.GetEmptyPhrase("LoadWebSettingsError");
             SaveWebSettingsError = Localization.Dict.GetEmptyPhrase("SaveWebSettingsError");
@@ -123,6 +125,7 @@ namespace Scada.Web
             {
                 LoadWebSettingsError = dict.GetPhrase("LoadViewSettingsError", LoadViewSettingsError);
                 SaveWebSettingsError = dict.GetPhrase("SaveViewSettingsError", SaveViewSettingsError);
+                LoadViewSettingsBaseError = dict.GetPhrase("LoadViewSettingsBaseError", LoadViewSettingsBaseError);
             }
 
             if (Localization.Dictionaries.TryGetValue("Scada.Web.WebSettings", out dict))

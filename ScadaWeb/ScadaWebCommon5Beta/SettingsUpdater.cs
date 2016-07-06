@@ -156,5 +156,13 @@ namespace Scada.Web
             string errMsg;
             return Update(out changed, out errMsg);
         }
+
+        /// <summary>
+        /// Сбросить время изменения файла настроек
+        /// </summary>
+        public void ResetFileAge()
+        {
+            FileAge = DateTime.MinValue;
+        }
     }
 }
