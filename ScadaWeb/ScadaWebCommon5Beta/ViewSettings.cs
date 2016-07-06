@@ -186,6 +186,7 @@ namespace Scada.Web
             {
                 DataView viewInterface = new DataView(tblInterface);
                 viewInterface.Sort = "ItfID";
+                char[] separator = { '\\', '/' };
 
                 foreach (DataRowView rowView in viewInterface)
                 {
@@ -204,7 +205,9 @@ namespace Scada.Web
                         }
                         else
                         {
-                            ViewItem viewItem = new ViewItem(itfID, descr == "" ? name : descr, 0);
+                            string[] pathParts = name.Split(separator, StringSplitOptions.RemoveEmptyEntries);
+                            string text = descr == "" ? pathParts[pathParts.Length - 1] : descr;
+                            ViewItem viewItem = new ViewItem(itfID, text, 0);
                             ViewItems.Add(viewItem);
                         }
                     }
