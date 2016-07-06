@@ -184,6 +184,7 @@ a:active {
 }
 #divMainExplorer .tree-view .icon {
   width: 21px;
+  min-width: 21px;
 }
 #divMainExplorer .tree-view img {
   position: relative;
