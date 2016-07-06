@@ -30,8 +30,14 @@
     <Phrase key="LoadWebSettingsError">Error loading web application settings</Phrase>
     <Phrase key="SaveWebSettingsError">Error saving web application settings</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.WFrmAbout">
+    <Phrase key="this">About - Rapid SCADA</Phrase>
+    <Phrase key="hlAppName">Webstation</Phrase>
+    <Phrase key="hlAppName.NavigateUrl">http://rapidscada.org</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.WFrmLogin">
     <Phrase key="this">Login - Rapid SCADA</Phrase>
+    <Phrase key="hlRapidScada.NavigateUrl">http://rapidscada.org</Phrase>
     <Phrase key="lblUsername">Username</Phrase>
     <Phrase key="lblPassword">Password</Phrase>
     <Phrase key="lblRememberMe">Remember me</Phrase>

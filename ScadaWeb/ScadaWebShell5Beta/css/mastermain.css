@@ -211,3 +211,6 @@ a:active {
 #divMainCollapseLeftPaneBtn:hover {
   color: #00b9eb;
 }
+#divMainContent {
+  overflow: auto;
+}

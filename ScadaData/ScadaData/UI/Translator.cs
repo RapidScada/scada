@@ -50,6 +50,7 @@ namespace Scada.UI
             {
                 Text = null;
                 ToolTip = null;
+                Props = null;
                 Items = null;
             }
 
@@ -62,10 +63,23 @@ namespace Scada.UI
             /// </summary>
             public string ToolTip { get; set; }
             /// <summary>
-            /// Получить или установить список элементов
+            /// Получить словарь свойств, исключая текст и подсказку
             /// </summary>
-            public List<string> Items { get; set; }
+            public Dictionary<string, string> Props { get; private set; }
+            /// <summary>
+            /// Получить список элементов
+            /// </summary>
+            public List<string> Items { get; private set; }
 
+            /// <summary>
+            /// Установить значение свойства, инициализировав словарь при необходимости
+            /// </summary>
+            public void SetProp(string name, string val)
+            {
+                if (Props == null)
+                    Props = new Dictionary<string, string>();
+                Props[name] = val;
+            }
             /// <summary>
             /// Установить значение элемента списка, инициализировав список при необходимости
             /// </summary>
@@ -133,6 +147,10 @@ namespace Scada.UI
                         int ind;
                         if (pos >= 0 && int.TryParse(ctrlProp.Substring(6, pos - 6), out ind))
                             controlInfo.SetItem(ind, phraseVal);
+                    }
+                    else if (ctrlProp != "")
+                    {
+                        controlInfo.SetProp(ctrlProp, phraseVal);
                     }
                     else
                     {
@@ -290,6 +308,15 @@ namespace Scada.UI
                             checkBox.Text = controlInfo.Text;
                         if (controlInfo.ToolTip != null)
                             checkBox.ToolTip = controlInfo.ToolTip;
+                    }
+                    else if (control is HyperLink)
+                    {
+                        HyperLink hyperLink = (HyperLink)control;
+                        if (controlInfo.Text != null)
+                            hyperLink.Text = controlInfo.Text;
+                        string navigateUrl;
+                        if (controlInfo.Props != null && controlInfo.Props.TryGetValue("NavigateUrl", out navigateUrl))
+                            hyperLink.NavigateUrl = navigateUrl;
                     }
                     else if (control is Button)
                     {

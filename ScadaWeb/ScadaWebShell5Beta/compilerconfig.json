@@ -38,5 +38,9 @@
   {
     "outputFile": "css/controls/tableheader.css",
     "inputFile": "css/controls/tableheader.less"
+  },
+  {
+    "outputFile": "css/about.css",
+    "inputFile": "css/about.less"
   }
 ]
