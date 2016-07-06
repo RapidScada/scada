@@ -43,6 +43,8 @@ namespace Scada.Web
         private AppData appData;   // общие данные веб-приложения
         private UserData userData; // данные пользователя приложения
 
+        protected string phrases;  // локализованные фразы
+
 
         /// <summary>
         /// Добавить на страницу скрипт вывода сообщения об ошибке
@@ -107,6 +109,10 @@ namespace Scada.Web
                 // перевод веб-страницы
                 Translator.TranslatePage(this, "Scada.Web.WFrmLogin");
                 ViewState["Title"] = Title;
+
+                Localization.Dict dict;
+                Localization.Dictionaries.TryGetValue("Scada.Web.WFrmLogin.Js", out dict);
+                phrases = WebUtils.DictionaryToJs(dict);
 
                 // вывод сообщения, заданного в параметрах запроса
                 string alert = Request.QueryString["alert"];

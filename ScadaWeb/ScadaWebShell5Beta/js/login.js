@@ -1,4 +1,7 @@
-﻿// Show alert before login form
+﻿// Localized phrases. Must be defined in Login.aspx
+var phrases = phrases || {};
+
+// Show alert before login form
 function showAlert(message) {
     var divAlert = $('<div class="alert alert-danger alert-dismissible" role="alert">' +
         '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
@@ -17,6 +20,6 @@ function checkBrowser() {
         eval("var map = new Map(); map.set(1, 1); map.get(1); ");
     }
     catch (ex) {
-        showAlert($("#hidBrowserOutdatedMsg").val());
+        showAlert(phrases.BrowserOutdated);
     }
 }

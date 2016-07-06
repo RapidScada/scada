@@ -170,7 +170,8 @@ namespace Scada.Web
             {
                 foreach (KeyValuePair<string, string> pair in dict.Phrases)
                 {
-                    sbJs.Append(pair.Key).Append(": \"").Append(pair.Value).AppendLine("\",");
+                    sbJs.Append(pair.Key).Append(": \"")
+                        .Append(HttpUtility.JavaScriptStringEncode(pair.Value)).AppendLine("\",");
                 }
             }
 

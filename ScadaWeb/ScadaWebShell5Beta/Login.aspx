@@ -15,6 +15,9 @@
     <link href="~/css/login.min.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="lib/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        var phrases = <%= phrases %>;
+    </script>
     <script type="text/javascript" src="js/login.js"></script>
 </head>
 <body>
@@ -46,7 +49,6 @@
                 </div>
             </div>
         </div>
-        <asp:HiddenField ID="hidBrowserOutdatedMsg" runat="server" Value="Your browser is out of date." />
     </form>
 </body>
 </html>
