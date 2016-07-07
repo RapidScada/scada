@@ -111,23 +111,6 @@ namespace Scada.Client
             }
         }
 
-        /// <summary>
-        /// Получить код типа представления на основе имени файла представления
-        /// </summary>
-        protected string GetViewTypeCode(string fileName)
-        {
-            if (fileName.StartsWith("http://", StringComparison.OrdinalIgnoreCase) || 
-                fileName.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
-            {
-                return "WebPageView";
-            }
-            else
-            {
-                string ext = Path.GetExtension(fileName);
-                return ext == null ? "" : ext.TrimStart('.');
-            }
-        }
-
 
         /// <summary>
         /// Получить свойства входного канала по его номеру
@@ -251,7 +234,7 @@ namespace Scada.Client
                     {
                         ViewProps viewProps = new ViewProps(viewID);
                         viewProps.FileName = ((string)viewInterface[rowInd]["Name"]).Trim();
-                        viewProps.ViewTypeCode = GetViewTypeCode(viewProps.FileName);
+                        viewProps.ViewTypeCode = ViewProps.GetViewTypeCode(viewProps.FileName);
                         return viewProps;
                     }
                     else

@@ -23,6 +23,9 @@
  * Modified : 2016
  */
 
+using System;
+using System.IO;
+
 namespace Scada.Data.Models
 {
     /// <summary>
@@ -65,5 +68,23 @@ namespace Scada.Data.Models
         /// Получить или установить код типа представления
         /// </summary>
         public string ViewTypeCode { get; set; }
+
+
+        /// <summary>
+        /// Получить код типа представления на основе имени файла представления
+        /// </summary>
+        public static string GetViewTypeCode(string fileName)
+        {
+            if (fileName.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
+                fileName.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+            {
+                return "WebPageView";
+            }
+            else
+            {
+                string ext = Path.GetExtension(fileName);
+                return ext == null ? "" : ext.TrimStart('.');
+            }
+        }
     }
 }
