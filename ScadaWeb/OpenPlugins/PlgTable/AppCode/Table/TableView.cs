@@ -95,6 +95,7 @@ namespace Scada.Web.Plugins.Table
         /// Конструктор
         /// </summary>
         public TableView()
+            : base()
         {
             Items = new List<Item>();
             VisibleItems = new List<Item>();

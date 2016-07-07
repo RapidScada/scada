@@ -97,6 +97,61 @@ namespace Scada.Client
 
 
         /// <summary>
+        /// Получить свойства представления, вызвав исключение в случае неудачи
+        /// </summary>
+        protected ViewProps GetViewProps(int viewID)
+        {
+            ViewProps viewProps = dataAccess.GetViewProps(viewID);
+
+            if (viewProps == null)
+            {
+                throw new ScadaException(Localization.UseRussian ?
+                    "Отсутствуют свойства представления." :
+                    "View properties are missing.");
+            }
+
+            return viewProps;
+        }
+
+        /// <summary>
+        /// Загрузить представление от сервера
+        /// </summary>
+        protected bool LoadView(Type viewType, int viewID, DateTime viewAge, 
+            ref BaseView view, out DateTime newViewAge)
+        {
+            ViewProps viewProps = GetViewProps(viewID);
+            newViewAge = serverComm.ReceiveFileAge(ServerComm.Dirs.Itf, viewProps.FileName);
+
+            if (newViewAge == DateTime.MinValue)
+            {
+                throw new ScadaException(Localization.UseRussian ?
+                    "Не удалось принять время изменения файла представления." :
+                    "Unable to receive view file modification time.");
+            }
+            else if (newViewAge != viewAge) // файл представления изменён
+            {
+                // создание и загрузка нового представления
+                if (view == null)
+                    view = (BaseView)Activator.CreateInstance(viewType);
+
+                if (serverComm.ReceiveView(viewProps.FileName, view))
+                {
+                    return true;
+                }
+                else
+                {
+                    throw new ScadaException(Localization.UseRussian ?
+                        "Не удалось принять представление." :
+                        "Unable to receive view.");
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Получить представление из кэша или от сервера
         /// </summary>
         /// <remarks>Метод используется, если тип предсталения неизвестен на момент компиляции</remarks>
@@ -117,46 +172,32 @@ namespace Scada.Client
                     BaseView view = null;                     // представление, которое необходимо получить
                     BaseView viewFromCache = cacheItem.Value; // представление из кеша
                     DateTime viewAge = cacheItem.ValueAge;    // время изменения файла представления
-                    bool viewIsNotValid = utcNowDT - cacheItem.ValueRefrDT > ViewValidSpan; // представление могло устареть
+                    DateTime newViewAge;                      // новое время изменения файла представления
 
-                    // получение представления от сервера
-                    if (viewFromCache == null || viewIsNotValid)
+                    if (viewFromCache == null)
                     {
-                        ViewProps viewProps = dataAccess.GetViewProps(viewID);
+                        // создание нового представления
+                        view = (BaseView)Activator.CreateInstance(viewType);
 
-                        if (viewProps == null)
+                        if (view.StoredOnServer)
                         {
-                            throw new ScadaException(Localization.UseRussian ?
-                                "Отсутствуют свойства представления." :
-                                "View properties are missing.");
+                            if (LoadView(viewType, viewID, viewAge, ref view, out newViewAge))
+                                Cache.UpdateItem(cacheItem, view, newViewAge, utcNowDT);
                         }
                         else
                         {
-                            DateTime newViewAge = serverComm.ReceiveFileAge(ServerComm.Dirs.Itf, viewProps.FileName);
-
-                            if (newViewAge == DateTime.MinValue)
-                            {
-                                throw new ScadaException(Localization.UseRussian ?
-                                    "Не удалось принять время изменения файла представления." :
-                                    "Unable to receive view file modification time.");
-                            }
-                            else if (newViewAge != viewAge) // файл представления изменён
-                            {
-                                // создание и загрузка нового представления
-                                view = (BaseView)Activator.CreateInstance(viewType);
-                                if (serverComm.ReceiveView(viewProps.FileName, view))
-                                {
-                                    // обновление представления в кеше
-                                    Cache.UpdateItem(cacheItem, view, newViewAge, utcNowDT);
-                                }
-                                else
-                                {
-                                    throw new ScadaException(Localization.UseRussian ?
-                                        "Не удалось принять представление." :
-                                        "Unable to receive view.");
-                                }
-                            }
+                            ViewProps viewProps = GetViewProps(viewID);
+                            view.ItfObjName = viewProps.FileName;
+                            Cache.UpdateItem(cacheItem, view, DateTime.Now, utcNowDT);
                         }
+                    }
+                    else if (viewFromCache.StoredOnServer)
+                    {
+                        // представление могло устареть
+                        bool viewIsNotValid = utcNowDT - cacheItem.ValueRefrDT > ViewValidSpan;
+
+                        if (viewIsNotValid && LoadView(viewType, viewID, viewAge, ref view, out newViewAge))
+                            Cache.UpdateItem(cacheItem, view, newViewAge, utcNowDT);
                     }
 
                     // использование представления из кеша
