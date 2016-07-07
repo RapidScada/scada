@@ -71,7 +71,7 @@ namespace Scada.Web.Shell
         /// <summary>
         /// Рекурсивно слить элементы меню
         /// </summary>
-        protected static void MergeMenuItems(List<MenuItem> existingItems, List<MenuItem> addedItems, int level)
+        protected void MergeMenuItems(List<MenuItem> existingItems, List<MenuItem> addedItems, int level)
         {
             if (addedItems != null)
             {
@@ -113,7 +113,7 @@ namespace Scada.Web.Shell
         /// <summary>
         /// Рекурсивно установить уровень вложенности элементов меню
         /// </summary>
-        protected static void SetMenuItemLevels(List<MenuItem> items, int level)
+        protected void SetMenuItemLevels(List<MenuItem> items, int level)
         {
             if (items != null)
             {

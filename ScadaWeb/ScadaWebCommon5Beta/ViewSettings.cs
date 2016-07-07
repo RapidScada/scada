@@ -40,8 +40,27 @@ namespace Scada.Web
         /// <summary>
         /// Элемент настроек, соответствующий представлению
         /// </summary>
-        public class ViewItem
+        public class ViewItem : IComparable<ViewItem>
         {
+            /// <summary>
+            /// Сравнение элементов по пути
+            /// </summary>
+            internal class PathComparer : IComparer<ViewItem>
+            {
+                /// <summary>
+                /// Сравнить два объекта
+                /// </summary>
+                public int Compare(ViewItem x, ViewItem y)
+                {
+                    return string.Compare(x.PathPart, y.PathPart, StringComparison.OrdinalIgnoreCase);
+                }
+            }
+
+            /// <summary>
+            /// Объект для сравнения элементов по пути
+            /// </summary>
+            internal static readonly PathComparer PathComp = new PathComparer();
+
             /// <summary>
             /// Конструктор
             /// </summary>
@@ -56,6 +75,7 @@ namespace Scada.Web
             {
                 ViewID = viewID;
                 Text = text;
+                PathPart = "";
                 AlarmCnlNum = alarmCnlNum;
                 Subitems = new List<ViewItem>();
             }
@@ -69,6 +89,11 @@ namespace Scada.Web
             /// </summary>
             public string Text { get; set; }
             /// <summary>
+            /// Получить или установить часть пути, соответствующую элементу
+            /// </summary>
+            /// <remarks>Свойство необходимо для загрузки настроек из базы конфигурации</remarks>
+            internal string PathPart { get; set; }
+            /// <summary>
             /// Получить или установить номер входного канала, информирующего о тревожном состоянии представления
             /// </summary>
             public int AlarmCnlNum { get; set; }
@@ -76,6 +101,16 @@ namespace Scada.Web
             /// Получить дочерние элементы
             /// </summary>
             public List<ViewItem> Subitems { get; protected set; }
+
+            /// <summary>
+            /// Сравнить текущий объект с другим объектом такого же типа
+            /// </summary>
+            public int CompareTo(ViewItem other)
+            {
+                int subsWeight1 = Subitems.Count > 0 ? 0 : 1;
+                int subsWeight2 = other.Subitems.Count > 0 ? 0 : 1;
+                return subsWeight1 == subsWeight2 ? Text.CompareTo(other.Text) : subsWeight1.CompareTo(subsWeight2);
+            }
         }
 
 
@@ -103,7 +138,7 @@ namespace Scada.Web
         /// <summary>
         /// Рекурсивно загрузить элемент настроек представлений
         /// </summary>
-        private void LoadViewItem(XmlElement viewItemElem, List<ViewItem> viewItems)
+        protected void LoadViewItem(XmlElement viewItemElem, List<ViewItem> viewItems)
         {
             ViewItem viewItem = new ViewItem();
             viewItem.ViewID = viewItemElem.GetAttrAsInt("viewID");
@@ -114,6 +149,57 @@ namespace Scada.Web
             XmlNodeList viewItemNodes = viewItemElem.SelectNodes("ViewItem");
             foreach (XmlElement elem in viewItemNodes)
                 LoadViewItem(elem, viewItem.Subitems);
+        }
+
+        /// <summary>
+        /// Рекурсивно добавить элемент настроек представлений
+        /// </summary>
+        protected void AppendViewItem(int viewID, string text, 
+            string[] pathParts, int pathPartInd, List<ViewItem> viewItems)
+        {
+            string pathPart = pathParts[pathPartInd];
+            ViewItem newViewItem = new ViewItem();
+            newViewItem.PathPart = pathPart;
+            int viewItemInd = viewItems.BinarySearch(newViewItem, ViewItem.PathComp);
+
+            if (pathPartInd < pathParts.Length - 1) // не последние части пути
+            {
+                if (viewItemInd >= 0)
+                {
+                    newViewItem = viewItems[viewItemInd];
+                }
+                else
+                {
+                    newViewItem.Text = pathPart;
+                    viewItems.Insert(~viewItemInd, newViewItem);
+                }
+
+                AppendViewItem(viewID, text, pathParts, pathPartInd + 1, newViewItem.Subitems);
+            }
+            else // последняя часть пути
+            {
+                if (Path.GetExtension(pathPart) == null)
+                    viewID = 0;
+
+                if (viewItemInd >= 0)
+                    newViewItem = viewItems[viewItemInd];
+
+                newViewItem.ViewID = viewID;
+                newViewItem.Text = text;
+
+                if (viewItemInd < 0)
+                    viewItems.Insert(~viewItemInd, newViewItem);
+            }
+        }
+
+        /// <summary>
+        /// Рекурсивно сортировать элементы настроек представлений
+        /// </summary>
+        protected void SortViewItems(List<ViewItem> viewItems)
+        {
+            foreach (ViewItem viewItem in viewItems)
+                SortViewItems(viewItem.Subitems);
+            viewItems.Sort();
         }
 
 
@@ -207,12 +293,12 @@ namespace Scada.Web
                         {
                             string[] pathParts = name.Split(separator, StringSplitOptions.RemoveEmptyEntries);
                             string text = descr == "" ? pathParts[pathParts.Length - 1] : descr;
-                            ViewItem viewItem = new ViewItem(itfID, text, 0);
-                            ViewItems.Add(viewItem);
+                            AppendViewItem(itfID, text, pathParts, 0, ViewItems);
                         }
                     }
                 }
 
+                SortViewItems(ViewItems);
                 errMsg = "";
                 return true;
             }
