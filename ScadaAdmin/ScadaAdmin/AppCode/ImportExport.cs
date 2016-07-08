@@ -25,15 +25,13 @@
 
 using Ionic.Zip;
 using Scada;
-using Scada.Data;
+using Scada.Data.Tables;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlServerCe;
 using System.IO;
-using System.Linq;
 using System.Text;
-using Utils;
 
 namespace ScadaAdmin
 {
