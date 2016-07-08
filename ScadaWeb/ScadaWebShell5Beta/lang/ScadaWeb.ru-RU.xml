@@ -51,6 +51,12 @@
     <Phrase key="this">Представление не существует - Rapid SCADA</Phrase>
     <Phrase key="lblViewNotExist">Запрошенное представление не существует или у Вас недостаточно прав для доступа к нему.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.WFrmView">
+    <Phrase key="this">Представление - Rapid SCADA</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmView.Js">
+    <Phrase key="ExternalLinkTitle">Внешняя ссылка - Rapid SCADA</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.Shell.MenuItem">
     <Phrase key="ReportsMenuItem">Отчёты</Phrase>
     <Phrase key="AdminMenuItem">Администрирование</Phrase>

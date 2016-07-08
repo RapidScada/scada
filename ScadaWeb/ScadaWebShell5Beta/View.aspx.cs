@@ -23,6 +23,7 @@
  * Modified : 2016
  */
 
+using Scada.UI;
 using Scada.Web.Plugins;
 using Scada.Web.Shell;
 using System;
@@ -39,6 +40,7 @@ namespace Scada.Web
         private UserData userData;       // данные пользователя приложения
         protected int initialViewID;     // ид. первоначального представления
         protected string initialViewUrl; // ссылка первоначального представления
+        protected string phrases;        // локализованные фразы
 
 
         /// <summary>
@@ -62,6 +64,13 @@ namespace Scada.Web
         {
             userData = UserData.GetUserData();
             userData.CheckLoggedOn(true);
+
+            // перевод веб-страницы
+            Translator.TranslatePage(Page, "Scada.Web.WFrmView");
+
+            Localization.Dict dict;
+            Localization.Dictionaries.TryGetValue("Scada.Web.WFrmView.Js", out dict);
+            phrases = WebUtils.DictionaryToJs(dict);
 
             // получение ид. и ссылки представления для загрузки
             int.TryParse(Request.QueryString["viewID"], out initialViewID);

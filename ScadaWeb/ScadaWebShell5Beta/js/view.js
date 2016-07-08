@@ -1,6 +1,15 @@
 ﻿var scada = scada || {};
 var viewHub = new scada.ViewHub(window);
 
+// The variables below must be defined in Events.aspx
+// Initial view ID when the page just loaded
+var initialViewID = initialViewID || 0;
+// Initial view URL
+var initialViewUrl = initialViewUrl || "";
+// Localized phrases
+var phrases = phrases || {};
+
+
 scada.view = {
     // The active data window object
     _dataWindow: {
@@ -164,12 +173,20 @@ scada.view = {
         var frameView = $("#frameView");
 
         frameView
-        .load(function () {
+        .off("load")
+        .on("load", function () {
             var wnd = frameView[0].contentWindow;
             // add the view to the view hub
             viewHub.addView(wnd);
-            // set the page title the same as the frame title
-            document.title = wnd.document.title;
+
+            try {
+                // set the page title the same as the frame title
+                document.title = wnd.document.title;
+            }
+            catch (ex) {
+                // security error if the frame has the different origin
+                document.title = phrases.ExternalLinkTitle;
+            }
         })
         .attr("src", viewUrl);
 

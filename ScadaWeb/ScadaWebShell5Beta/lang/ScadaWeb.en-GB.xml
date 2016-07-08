@@ -51,6 +51,12 @@
     <Phrase key="this">No View - Rapid SCADA</Phrase>
     <Phrase key="lblViewNotExist">The requested view does not exist or you have insufficient rights to access it.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.WFrmView">
+    <Phrase key="this">View - Rapid SCADA</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmView.Js">
+    <Phrase key="ExternalLinkTitle">External Link - Rapid SCADA</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.Shell.MenuItem">
     <Phrase key="ReportsMenuItem">Reports</Phrase>
     <Phrase key="AdminMenuItem">Administration</Phrase>

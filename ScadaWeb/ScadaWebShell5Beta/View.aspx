@@ -6,6 +6,7 @@
     <script type="text/javascript">
         var initialViewID = <%= initialViewID %>;
         var initialViewUrl = "<%= initialViewUrl %>";
+        var phrases = <%= phrases %>;
     </script>
     <script type="text/javascript" src="js/view.js"></script>
 </asp:Content>
