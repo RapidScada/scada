@@ -26,7 +26,8 @@
 using Scada.Client;
 using Scada.Comm.Channels;
 using Scada.Comm.Devices;
-using Scada.Data;
+using Scada.Data.Models;
+using Scada.Data.Tables;
 using Scada.Svc;
 using Scada.UI;
 using System;

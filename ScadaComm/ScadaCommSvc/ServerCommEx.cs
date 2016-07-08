@@ -25,7 +25,8 @@
 
 using Scada.Client;
 using Scada.Comm.Devices;
-using Scada.Data;
+using Scada.Data.Models;
+using Scada.Data.Tables;
 using System.Collections.Generic;
 using Utils;
 

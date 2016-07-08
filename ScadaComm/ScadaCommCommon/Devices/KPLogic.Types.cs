@@ -23,10 +23,9 @@
  * Modified : 2016
  */
 
-using Scada.Data;
+using Scada.Data.Tables;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Scada.Comm.Devices
 {

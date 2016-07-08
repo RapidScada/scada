@@ -23,7 +23,7 @@
  * Modified : 2016
  */
 
-using Scada.Data;
+using Scada.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;

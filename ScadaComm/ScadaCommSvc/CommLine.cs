@@ -25,12 +25,12 @@
 
 using Scada.Comm.Channels;
 using Scada.Comm.Devices;
-using Scada.Data;
+using Scada.Data.Models;
+using Scada.Data.Tables;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
-using System.Reflection;
 using System.Text;
 using System.Threading;
 using Utils;
