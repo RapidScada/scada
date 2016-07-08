@@ -26,12 +26,10 @@
  * Device library for testing.
  */
 
+using Scada.Comm.Channels;
+using Scada.Data.Models;
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Text;
-using Scada.Data;
-using Scada.Comm.Channels;
 
 namespace Scada.Comm.Devices
 {

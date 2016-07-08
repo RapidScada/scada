@@ -24,7 +24,7 @@
  */
 
 using Scada.Comm.Devices.AddressBook;
-using Scada.Data;
+using Scada.Data.Tables;
 using System.Collections.Generic;
 
 namespace Scada.Comm.Devices

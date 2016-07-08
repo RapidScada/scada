@@ -87,6 +87,7 @@ namespace Scada.Data.Models
             ShowNumber = true;
             DecDigits = 3;
             UnitID = 0;
+            UnitName = "";
             UnitSign = "";
             UnitArr = null;
             CtrlCnlNum = 0;
@@ -185,6 +186,11 @@ namespace Scada.Data.Models
         /// Получить или установить идентификатор размерности
         /// </summary>
         public int UnitID { get; set; }
+        
+        /// <summary>
+        /// Получить или установить наименование размерности
+        /// </summary>
+        public string UnitName { get; set; }
 
         /// <summary>
         /// Получить или установить размерности

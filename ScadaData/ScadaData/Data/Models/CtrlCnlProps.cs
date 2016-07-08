@@ -79,6 +79,7 @@ namespace Scada.Data.Models
             KPName = "";
             CmdNum = 0;
             CmdValID = 0;
+            CmdValName = "";
             CmdVal = "";
             CmdValArr = null;
             FormulaUsed = false;
@@ -131,6 +132,11 @@ namespace Scada.Data.Models
         /// Получить или установить идентификатор значений команды
         /// </summary>
         public int CmdValID { get; set; }
+        
+        /// <summary>
+        /// Получить или установить наименование значений команды
+        /// </summary>
+        public string CmdValName { get; set; }
 
         /// <summary>
         /// Получить или установить значения команды
