@@ -24,7 +24,7 @@
  */
 
 using Scada.Client;
-using Scada.Data;
+using Scada.Data.Tables;
 using Scada.Server.Modules;
 using Scada.Svc;
 using Scada.UI;

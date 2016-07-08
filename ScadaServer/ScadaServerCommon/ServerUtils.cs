@@ -23,7 +23,7 @@
  * Modified : 2015
  */
 
-using Scada.Data;
+using Scada.Data.Tables;
 using System;
 using System.IO;
 using System.Text;

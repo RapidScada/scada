@@ -23,6 +23,9 @@
  * Modified : 2015
  */
 
+using Scada.Data.Models;
+using Scada.Data.Tables;
+using Scada.Server.Modules;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -30,9 +33,6 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Threading;
-using Microsoft.Win32;
-using Scada.Data;
-using Scada.Server.Modules;
 using Utils;
 
 namespace Scada.Server.Svc
