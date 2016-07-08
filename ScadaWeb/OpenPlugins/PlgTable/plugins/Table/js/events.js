@@ -201,6 +201,7 @@ function resetEvents() {
     $("#divLoading").removeClass("hidden");
 
     clearEvents($("#tblEvents"));
+    initialLoad = true;
     fullDataAge = 0;
     partialDataAge = 0;
     lastEvNum = 0;

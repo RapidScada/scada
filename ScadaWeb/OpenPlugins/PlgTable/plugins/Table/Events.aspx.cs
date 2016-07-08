@@ -23,6 +23,7 @@
  * Modified : 2016
  */
 
+using Scada.Client;
 using Scada.Data.Models;
 using Scada.UI;
 using Scada.Web.Shell;
@@ -70,9 +71,12 @@ namespace Scada.Web.Plugins.Table
             if (!rights.ViewRight)
                 Response.Redirect(UrlTemplates.NoView);
 
-            // загрузка представления в кеш для последующего получения событий
+            // загрузка представления в кеш для последующего получения событий через API
             Type viewType = userData.UserViews.GetViewType(viewID);
-            appData.ViewCache.GetView(viewType, viewID, false);
+            BaseView view = appData.ViewCache.GetView(viewType, viewID, false);
+
+            if (view == null)
+                Response.Redirect(UrlTemplates.NoView);
 
             // подготовка данных для вывода на веб-страницу
             dataRefrRate = userData.WebSettings.DataRefrRate;

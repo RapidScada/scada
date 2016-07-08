@@ -249,19 +249,12 @@ namespace Scada.Web.Plugins.Table
             if (!rights.ViewRight)
                 Response.Redirect(UrlTemplates.NoView);
 
-            // загрузка представления в кеш,
-            // ошибка будет записана в журнал приложения
-            TableView tableView;
-            try
-            {
-                tableView = appData.ViewCache.GetView<TableView>(viewID, true);
-                appData.AssignStamp(tableView);
-            }
-            catch
-            {
-                tableView = null;
+            // загрузка представления в кеш для последующего получения данных через API
+            TableView tableView = appData.ViewCache.GetView<TableView>(viewID);
+            if (tableView == null)
                 Response.Redirect(UrlTemplates.NoView);
-            }
+            else
+                appData.AssignStamp(tableView);
 
             // получение периода времени из cookies
             HttpCookie cookie = Request.Cookies["Table.TimeFrom"];

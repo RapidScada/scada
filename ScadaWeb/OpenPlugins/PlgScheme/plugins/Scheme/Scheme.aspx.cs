@@ -65,15 +65,11 @@ namespace Scada.Web.Plugins.Scheme
             // загрузка представления в кеш, чтобы проверить, что оно доступно, присвоить метку
             // и обеспечить возможность получения данных входных каналов через API,
             // ошибка будет записана в журнал приложения
-            try
-            {
-                SchemeView schemeView = appData.ViewCache.GetView<SchemeView>(viewID, true);
-                appData.AssignStamp(schemeView);
-            }
-            catch
-            {
+            SchemeView schemeView = appData.ViewCache.GetView<SchemeView>(viewID);
+            if (schemeView == null)
                 Response.Redirect(UrlTemplates.NoView);
-            }
+            else
+                appData.AssignStamp(schemeView);
 
             // подготовка данных для вывода на веб-страницу
             refrRate = userData.WebSettings.DataRefrRate;
