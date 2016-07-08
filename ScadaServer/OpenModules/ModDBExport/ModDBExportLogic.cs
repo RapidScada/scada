@@ -26,11 +26,11 @@
  * Server module for real time data export from Rapid SCADA to DB.
  */
 
-using Scada.Data;
+using Scada.Data.Models;
+using Scada.Data.Tables;
 using Scada.Server.Modules.DBExport;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.IO;
 using System.Text;
 using System.Threading;
