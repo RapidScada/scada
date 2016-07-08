@@ -281,7 +281,9 @@ namespace Scada.Client
                     int unitRowInd = viewUnit.Find(cnlProps.UnitID);
                     if (unitRowInd >= 0)
                     {
-                        cnlProps.UnitSign = (string)viewUnit[unitRowInd]["Sign"];
+                        DataRowView unitRowView = viewUnit[unitRowInd];
+                        cnlProps.UnitName = (string)unitRowView["Name"];
+                        cnlProps.UnitSign = (string)unitRowView["Sign"];
                         string[] unitArr = cnlProps.UnitArr = 
                             cnlProps.UnitSign.Split(FieldSeparator, StringSplitOptions.RemoveEmptyEntries);
                         for (int j = 0; j < unitArr.Length; j++)
@@ -358,7 +360,9 @@ namespace Scada.Client
                     int cmdValInd = viewCmdVal.Find(ctrlCnlProps.CmdValID);
                     if (cmdValInd >= 0)
                     {
-                        ctrlCnlProps.CmdVal = (string)viewCmdVal[cmdValInd]["Val"];
+                        DataRowView cmdValRowView = viewCmdVal[cmdValInd];
+                        ctrlCnlProps.CmdValName = (string)cmdValRowView["Name"];
+                        ctrlCnlProps.CmdVal = (string)cmdValRowView["Val"];
                         string[] cmdValArr = ctrlCnlProps.CmdValArr = 
                             ctrlCnlProps.CmdVal.Split(FieldSeparator, StringSplitOptions.RemoveEmptyEntries);
                         for (int j = 0; j < cmdValArr.Length; j++)

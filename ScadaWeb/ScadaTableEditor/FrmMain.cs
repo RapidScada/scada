@@ -24,7 +24,7 @@
  */
 
 using Scada;
-using Scada.Data;
+using Scada.Data.Tables;
 using Scada.UI;
 using Scada.Web;
 using System;
