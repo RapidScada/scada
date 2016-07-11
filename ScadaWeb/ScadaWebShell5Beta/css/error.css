@@ -1,0 +1,28 @@
+﻿body {
+  margin: 0;
+  padding: 0;
+  background-color: #f1f1f1;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 13px;
+}
+#divHeader {
+  width: 100%;
+  height: 30px;
+  margin: 0;
+  padding: 0 10px;
+  background-color: #23282d;
+  color: #eee;
+  font-size: 17px;
+  line-height: 30px;
+  white-space: nowrap;
+}
+h1 {
+  font-size: 30px;
+  font-weight: 500;
+  margin: 10px;
+  color: red;
+}
+div.error {
+  color: red;
+  margin: 0 10px 10px;
+}

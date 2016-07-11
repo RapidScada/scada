@@ -101,6 +101,12 @@
     <Content Include="css\controls\tableheader.min.css">
       <DependentUpon>tableheader.css</DependentUpon>
     </Content>
+    <Content Include="css\error.css">
+      <DependentUpon>error.less</DependentUpon>
+    </Content>
+    <Content Include="css\error.min.css">
+      <DependentUpon>error.css</DependentUpon>
+    </Content>
     <Content Include="css\globalvar.css">
       <DependentUpon>globalvar.less</DependentUpon>
     </Content>
@@ -137,6 +143,7 @@
     <Content Include="css\view.min.css">
       <DependentUpon>view.css</DependentUpon>
     </Content>
+    <Content Include="Error.aspx" />
     <Content Include="Global.asax" />
     <Content Include="images\favicon.ico" />
     <Content Include="images\gear.png" />
@@ -203,6 +210,13 @@
     <Compile Include="Calendar.aspx.designer.cs">
       <DependentUpon>Calendar.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Error.aspx.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Error.aspx.designer.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -245,6 +259,7 @@
     <Content Include="css\calendar.less" />
     <Content Include="css\controls\tableheader.less" />
     <Content Include="css\about.less" />
+    <Content Include="css\error.less" />
     <None Include="css\mastermain.less" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">

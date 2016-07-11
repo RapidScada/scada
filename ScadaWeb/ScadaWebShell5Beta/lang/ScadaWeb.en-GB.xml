@@ -36,6 +36,12 @@
     <Phrase key="hlAppName">Webstation</Phrase>
     <Phrase key="hlAppName.NavigateUrl">http://rapidscada.org</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.WFrmError">
+    <Phrase key="this">Application Error - Rapid SCADA</Phrase>
+    <Phrase key="lblTitle">Application Error</Phrase>
+    <Phrase key="lblErrMsg">An application error occurred. If it repeats often, please contact the support.</Phrase>
+    <Phrase key="lblErrDetailsCaption">Details:</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.WFrmLogin">
     <Phrase key="this">Login - Rapid SCADA</Phrase>
     <Phrase key="hlRapidScada.NavigateUrl">http://rapidscada.org</Phrase>

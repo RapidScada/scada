@@ -57,7 +57,7 @@ namespace Scada.Web
 
         protected void Application_Error(object sender, EventArgs e)
         {
-
+            Server.Transfer("~/Error.aspx");
         }
 
         protected void Session_End(object sender, EventArgs e)

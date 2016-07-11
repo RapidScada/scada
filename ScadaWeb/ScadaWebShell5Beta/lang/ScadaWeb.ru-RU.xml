@@ -36,6 +36,12 @@
     <Phrase key="hlAppName">Вебстанция</Phrase>
     <Phrase key="hlAppName.NavigateUrl">http://rapidscada.ru</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.WFrmError">
+    <Phrase key="this">Ошибка приложения - Rapid SCADA</Phrase>
+    <Phrase key="lblTitle">Ошибка приложения</Phrase>
+    <Phrase key="lblErrMsg">Произошла ошибка приложения. Если она повторяется часто, обратитесь в службу поддержки, пожалуйста.</Phrase>
+    <Phrase key="lblErrDetailsCaption">Дополнительная информация:</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.WFrmLogin">
     <Phrase key="this">Вход в систему - Rapid SCADA</Phrase>
     <Phrase key="hlRapidScada.NavigateUrl">http://rapidscada.ru</Phrase>

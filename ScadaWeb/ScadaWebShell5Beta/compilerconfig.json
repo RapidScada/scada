@@ -42,5 +42,9 @@
   {
     "outputFile": "css/about.css",
     "inputFile": "css/about.less"
+  },
+  {
+    "outputFile": "css/error.css",
+    "inputFile": "css/error.less"
   }
 ]
