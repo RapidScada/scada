@@ -57,6 +57,18 @@
     <Phrase key="this">Представление не существует - Rapid SCADA</Phrase>
     <Phrase key="lblViewNotExist">Запрошенное представление не существует или у Вас недостаточно прав для доступа к нему.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.WFrmUser">
+    <Phrase key="this">Профиль пользователя - Rapid SCADA</Phrase>
+    <Phrase key="lblTitle">Профиль пользователя</Phrase>
+    <Phrase key="lblUserNameCaption">Имя пользователя:</Phrase>
+    <Phrase key="lblRoleNameCaption">Роль:</Phrase>
+    <Phrase key="lblGeneralRightsTitle">Основные права</Phrase>
+    <Phrase key="lblViewAllRightCaption">Просмотр всех данных:</Phrase>
+    <Phrase key="lblControlAllRightCaption">Управление всеми устройствами:</Phrase>
+    <Phrase key="lblConfigRightCaption">Конфигурирование системы:</Phrase>
+    <Phrase key="RightYes">Да</Phrase>
+    <Phrase key="RightNo">Нет</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.WFrmView">
     <Phrase key="this">Представление - Rapid SCADA</Phrase>
   </Dictionary>

@@ -53,6 +53,7 @@
     <Compile Include="Cache.cs" />
     <Compile Include="Client\ViewCache.cs" />
     <Compile Include="Data\Models\CnlStatProps.cs" />
+    <Compile Include="Data\Models\UserProps.cs" />
     <Compile Include="Data\Tables\Adapter.cs" />
     <Compile Include="Data\Tables\BaseTables.cs" />
     <Compile Include="Client\BaseView.cs" />

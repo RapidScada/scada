@@ -95,8 +95,8 @@ namespace Scada.Web
                 Translator.TranslatePage(Page, "Scada.Web.MasterMain");
 
                 // настройка элементов управления
-                hlMainUser.Text = userData.UserName;
-                hlMainUser.NavigateUrl = string.Format(UrlTemplates.User, userData.UserID);
+                hlMainUser.Text = userData.UserProps.UserName;
+                hlMainUser.NavigateUrl = string.Format(UrlTemplates.User, userData.UserProps.UserID);
             }
         }
 

@@ -90,14 +90,12 @@ namespace Scada.Web
             ConfigRight = false;
         }
 
-        /// <summary>
-        /// Инициализировать права пользователя
-        /// </summary>
-        public void Init(int roleID, DataAccess dataAccess)
-        {
-            if (dataAccess == null)
-                throw new ArgumentNullException("dataAccess");
 
+        /// <summary>
+        /// Инициализировать только основные права пользователя, исключая права на представления и контент
+        /// </summary>
+        public void InitGeneralRights(int roleID)
+        {
             SetToDefault();
 
             if (roleID == BaseValues.Roles.Admin)
@@ -115,13 +113,25 @@ namespace Scada.Web
             {
                 ViewAllRight = true;
             }
-            else if (BaseValues.Roles.Custom <= roleID && roleID < BaseValues.Roles.Err)
+
+            globalRights = new EntityRights(ViewAllRight, ControlAllRight);
+        }
+
+        /// <summary>
+        /// Инициализировать права пользователя
+        /// </summary>
+        public void Init(int roleID, DataAccess dataAccess)
+        {
+            if (dataAccess == null)
+                throw new ArgumentNullException("dataAccess");
+
+            InitGeneralRights(roleID);
+
+            if (BaseValues.Roles.Custom <= roleID && roleID < BaseValues.Roles.Err)
             {
                 viewRightsDict = dataAccess.GetViewRights(roleID);
                 contentRightsDict = dataAccess.GetContentRights(roleID);
             }
-
-            globalRights = new EntityRights(ViewAllRight, ControlAllRight);
         }
 
         /// <summary>

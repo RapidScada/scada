@@ -213,7 +213,6 @@ namespace Scada.Client
         /// <summary>
         /// Получить свойства представления по идентификатору
         /// </summary>
-        /// <remarks>Используется таблица объектов интерфейса</remarks>
         public ViewProps GetViewProps(int viewID)
         {
             try
@@ -336,6 +335,48 @@ namespace Scada.Client
             }
 
             return contentRightsDict;
+        }
+
+        /// <summary>
+        /// Получить свойства пользователя по идентификатору
+        /// </summary>
+        public UserProps GetUserProps(int userID)
+        {
+            try
+            {
+                dataCache.RefreshBaseTables();
+
+                // необходимо сохранить ссылку, т.к. объект может быть пересоздан другим потоком
+                BaseTables baseTables = dataCache.BaseTables;
+
+                lock (baseTables.SyncRoot)
+                {
+                    BaseTables.CheckColumnsExist(baseTables.UserTable, true);
+                    DataView viewUser = baseTables.UserTable.DefaultView;
+                    viewUser.Sort = "UserID";
+                    int rowInd = viewUser.Find(userID);
+
+                    if (rowInd >= 0)
+                    {
+                        UserProps userProps = new UserProps(userID);
+                        userProps.UserName = (string)viewUser[rowInd]["Name"];
+                        userProps.RoleID = (int)viewUser[rowInd]["RoleID"];
+                        userProps.RoleName = GetRoleName(userProps.RoleID);
+                        return userProps;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении свойств пользователя по ид.={0}" :
+                    "Error getting user properties by ID={0}", userID);
+                return null;
+            }
         }
 
         /// <summary>

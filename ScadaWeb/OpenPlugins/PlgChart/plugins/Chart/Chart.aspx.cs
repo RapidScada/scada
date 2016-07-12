@@ -132,10 +132,8 @@ namespace Scada.Web.Plugins.Chart
             int.TryParse(Request.QueryString["cnlNum"], out cnlNum);
 
             // проверка прав
-            if (!userData.LoggedOn)
-                throw new ScadaException(CommonPhrases.NoRights);
-
-            if (!userData.UserRights.GetViewRights(viewID).ViewRight)
+            if (!userData.LoggedOn ||
+                !userData.UserRights.GetViewRights(viewID).ViewRight)
                 throw new ScadaException(CommonPhrases.NoRights);
 
 #if !DEBUG

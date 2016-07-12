@@ -1,0 +1,22 @@
+﻿#divMainContent {
+  padding: 20px;
+  font-size: 14px;
+}
+h1 {
+  font-size: 23px;
+}
+h2 {
+  font-size: 17px;
+}
+h3 {
+  font-size: 14px;
+}
+h1,
+h2,
+h3 {
+  font-weight: 500;
+  margin: 20px 0 10px;
+}
+h1:first-child {
+  margin-top: 0;
+}

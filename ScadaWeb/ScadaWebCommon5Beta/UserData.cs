@@ -31,6 +31,7 @@ using System.Web.SessionState;
 using Scada.Web.Plugins;
 using Scada.Web.Shell;
 using System.Web.Hosting;
+using Scada.Data.Models;
 
 namespace Scada.Web
 {
@@ -73,26 +74,6 @@ namespace Scada.Web
 
 
         /// <summary>
-        /// Получить имя пользователя
-        /// </summary>
-        public string UserName { get; private set; }
-
-        /// <summary>
-        /// Получить идентификатор пользователя в базе конфигурации
-        /// </summary>
-        public int UserID { get; private set; }
-
-        /// <summary>
-        /// Получить идентификатор роли пользователя
-        /// </summary>
-        public int RoleID { get; private set; }
-
-        /// <summary>
-        /// Получить наименование роли пользователя
-        /// </summary>
-        public string RoleName { get; private set; }
-
-        /// <summary>
         /// Получить признак, выполнен ли вход пользователя в систему
         /// </summary>
         public bool LoggedOn { get; private set; }
@@ -103,12 +84,17 @@ namespace Scada.Web
         public DateTime LogonDT { get; private set; }
 
         /// <summary>
+        /// Получить свойства пользователя
+        /// </summary>
+        /// <remarks>Объект пересоздаётся после входа в систему</remarks>
+        public UserProps UserProps { get; private set; }
+
+        /// <summary>
         /// Получить права пользователя
         /// </summary>
         /// <remarks>Объект пересоздаётся после входа в систему.
         /// Объект после инициализации не изменяется экземпляром данного класса и не должен изменяться извне,
-        /// таким образом, чтение его данных является потокобезопасным
-        /// </remarks>
+        /// таким образом, чтение его данных является потокобезопасным</remarks>
         public UserRights UserRights { get; private set; }
 
         /// <summary>
@@ -153,11 +139,9 @@ namespace Scada.Web
         /// </summary>
         private void ClearUser()
         {
-            UserName = "";
-            UserID = 0;
-            RoleName = "";
             LoggedOn = false;
             LogonDT = DateTime.MinValue;
+            UserProps = null;
             UserRights = null;
             UserMenu = null;
             UserViews = null;
@@ -245,27 +229,29 @@ namespace Scada.Web
 
             if (AppData.CheckUser(username, password, password != null, out roleID, out errMsg))
             {
-                // заполнение свойств пользователя
-                UserName = username;
-                UserID = AppData.DataAccess.GetUserID(username);
-                RoleID = roleID;
-                RoleName = AppData.DataAccess.GetRoleName(RoleID);
                 LoggedOn = true;
                 LogonDT = DateTime.Now;
+
+                // заполнение свойств пользователя
+                UserProps = new UserProps();
+                UserProps.UserID = AppData.DataAccess.GetUserID(username);
+                UserProps.UserName = username;
+                UserProps.RoleID = roleID;
+                UserProps.RoleName = AppData.DataAccess.GetRoleName(roleID);
 
                 if (password == null)
                 {
                     AppData.Log.WriteAction(string.Format(Localization.UseRussian ?
                         "Вход в систему без пароля: {0} ({1}). IP-адрес: {2}" :
                         "Login without a password: {0} ({1}). IP address: {2}", 
-                        username, RoleName, IpAddress));
+                        username, UserProps.RoleName, IpAddress));
                 }
                 else
                 {
                     AppData.Log.WriteAction(string.Format(Localization.UseRussian ?
                         "Вход в систему: {0} ({1}). IP-адрес: {2}" :
                         "Login: {0} ({1}). IP address: {2}", 
-                        username, RoleName, IpAddress));
+                        username, UserProps.RoleName, IpAddress));
                 }
 
                 UserRights userRights = new UserRights();
@@ -323,7 +309,7 @@ namespace Scada.Web
                 RaiseOnUserLogout();
                 AppData.Log.WriteAction(string.Format(Localization.UseRussian ?
                     "Выход из системы: {0}. IP-адрес: {1}" :
-                    "Logout: {0}. IP address: {1}", UserName, IpAddress));
+                    "Logout: {0}. IP address: {1}", UserProps.UserName, IpAddress));
             }
 
             ClearUser();

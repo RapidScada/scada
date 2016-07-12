@@ -50,7 +50,9 @@ namespace Scada.Web
                 int comp1 = x.LoggedOn.CompareTo(y.LoggedOn);
                 if (comp1 == 0)
                 {
-                    int comp2 = string.Compare(x.UserName, y.UserName, StringComparison.OrdinalIgnoreCase);
+                    string userName1 = x.UserProps == null ? "" : x.UserProps.UserName;
+                    string userName2 = y.UserProps == null ? "" : y.UserProps.UserName;
+                    int comp2 = string.Compare(userName1, userName2, StringComparison.OrdinalIgnoreCase);
                     return comp2 == 0 ? 
                         string.Compare(x.IpAddress, y.IpAddress, StringComparison.OrdinalIgnoreCase) : 
                         comp2;

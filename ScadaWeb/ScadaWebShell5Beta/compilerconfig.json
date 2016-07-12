@@ -46,5 +46,13 @@
   {
     "outputFile": "css/error.css",
     "inputFile": "css/error.less"
+  },
+  {
+    "outputFile": "css/contentform.css",
+    "inputFile": "css/contentform.less"
+  },
+  {
+    "outputFile": "css/user.css",
+    "inputFile": "css/user.less"
   }
 ]

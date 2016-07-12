@@ -83,6 +83,12 @@
     <Content Include="css\calendar.min.css">
       <DependentUpon>calendar.css</DependentUpon>
     </Content>
+    <Content Include="css\contentform.css">
+      <DependentUpon>contentform.less</DependentUpon>
+    </Content>
+    <Content Include="css\contentform.min.css">
+      <DependentUpon>contentform.css</DependentUpon>
+    </Content>
     <Content Include="css\controls\notifier.css">
       <DependentUpon>notifier.less</DependentUpon>
     </Content>
@@ -136,6 +142,12 @@
     </Content>
     <Content Include="css\controls\treeview.min.css">
       <DependentUpon>treeview.css</DependentUpon>
+    </Content>
+    <Content Include="css\user.css">
+      <DependentUpon>user.less</DependentUpon>
+    </Content>
+    <Content Include="css\user.min.css">
+      <DependentUpon>user.css</DependentUpon>
     </Content>
     <Content Include="css\view.css">
       <DependentUpon>view.less</DependentUpon>
@@ -192,6 +204,7 @@
     <Content Include="Login.aspx" />
     <Content Include="ClientApiSvc.svc" />
     <Content Include="NoView.aspx" />
+    <Content Include="User.aspx" />
     <Content Include="View.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -242,6 +255,13 @@
       <DependentUpon>NoView.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="User.aspx.cs">
+      <DependentUpon>User.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User.aspx.designer.cs">
+      <DependentUpon>User.aspx</DependentUpon>
+    </Compile>
     <Compile Include="View.aspx.cs">
       <DependentUpon>View.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -260,6 +280,7 @@
     <Content Include="css\controls\tableheader.less" />
     <Content Include="css\about.less" />
     <Content Include="css\error.less" />
+    <Content Include="css\contentform.less" />
     <None Include="css\mastermain.less" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
@@ -323,6 +344,7 @@
     <Content Include="css\controls\treeview.less" />
     <Content Include="css\view.less" />
     <Content Include="css\noview.less" />
+    <Content Include="css\user.less" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

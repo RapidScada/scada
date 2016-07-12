@@ -88,7 +88,7 @@ namespace Scada.Web
                             .AppendLine()
                             .Append(Localization.UseRussian ? "Пользователь: " : "User: ")
                             .Append(userData.LoggedOn ?
-                                userData.UserName :
+                                userData.UserProps.UserName :
                                 (Localization.UseRussian ? "вход не выполнен" : "not logged on"));
                 }
 

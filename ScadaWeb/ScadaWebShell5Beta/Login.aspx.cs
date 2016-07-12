@@ -134,7 +134,7 @@ namespace Scada.Web
                 // настройка элементов управления
                 pnlRememberMe.Visible = userData.WebSettings.RemEnabled;
                 txtUsername.Text = userData.LoggedOn ?
-                    userData.UserName :
+                    userData.UserProps.UserName :
                     appData.RememberMe.RestoreUsername(Context); // из cookie
 
                 // добавление скрипта проверки браузера
@@ -150,9 +150,9 @@ namespace Scada.Web
             {
                 // сохранение информации о входе пользователя
                 if (chkRememberMe.Checked)
-                    appData.RememberMe.RememberUser(userData.UserName, Context);
+                    appData.RememberMe.RememberUser(userData.UserProps.UserName, Context);
                 else
-                    appData.RememberMe.RememberUsername(userData.UserName, Context);
+                    appData.RememberMe.RememberUsername(userData.UserProps.UserName, Context);
 
                 // переход на стартовую страницу
                 GoToStartPage();

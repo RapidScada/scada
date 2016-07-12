@@ -57,6 +57,18 @@
     <Phrase key="this">No View - Rapid SCADA</Phrase>
     <Phrase key="lblViewNotExist">The requested view does not exist or you have insufficient rights to access it.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.WFrmUser">
+    <Phrase key="this">User Profile - Rapid SCADA</Phrase>
+    <Phrase key="lblTitle">User Profile</Phrase>
+    <Phrase key="lblUserNameCaption">Username:</Phrase>
+    <Phrase key="lblRoleNameCaption">Role:</Phrase>
+    <Phrase key="lblGeneralRightsTitle">General Rights</Phrase>
+    <Phrase key="lblViewAllRightCaption">View all data:</Phrase>
+    <Phrase key="lblControlAllRightCaption">Control all devices:</Phrase>
+    <Phrase key="lblConfigRightCaption">System configuration:</Phrase>
+    <Phrase key="RightYes">Yes</Phrase>
+    <Phrase key="RightNo">No</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.WFrmView">
     <Phrase key="this">View - Rapid SCADA</Phrase>
   </Dictionary>

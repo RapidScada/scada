@@ -61,6 +61,10 @@ namespace Scada.Web
         public static string LoadWebSettingsError { get; private set; }
         public static string SaveWebSettingsError { get; private set; }
 
+        // Словарь Scada.Web.WFrmUser
+        public static string RightYes { get; private set; }
+        public static string RightNo { get; private set; }
+
         // Словарь Scada.Web.Shell.MenuItem
         public static string ReportsMenuItem { get; private set; }
         public static string AdminMenuItem { get; private set; }
@@ -89,6 +93,9 @@ namespace Scada.Web
 
             LoadWebSettingsError = Localization.Dict.GetEmptyPhrase("LoadWebSettingsError");
             SaveWebSettingsError = Localization.Dict.GetEmptyPhrase("SaveWebSettingsError");
+
+            RightYes = Localization.Dict.GetEmptyPhrase("RightYes");
+            RightNo = Localization.Dict.GetEmptyPhrase("RightNo");
 
             ReportsMenuItem = Localization.Dict.GetEmptyPhrase("ReportsMenuItem");
             AdminMenuItem = Localization.Dict.GetEmptyPhrase("AdminMenuItem");
@@ -132,6 +139,12 @@ namespace Scada.Web
             {
                 LoadWebSettingsError = dict.GetPhrase("LoadWebSettingsError", LoadWebSettingsError);
                 SaveWebSettingsError = dict.GetPhrase("SaveWebSettingsError", SaveWebSettingsError);
+            }
+
+            if (Localization.Dictionaries.TryGetValue("Scada.Web.WFrmUser", out dict))
+            {
+                RightYes = dict.GetPhrase("RightYes", RightYes);
+                RightNo = dict.GetPhrase("RightNo", RightNo);
             }
 
             if (Localization.Dictionaries.TryGetValue("Scada.Web.Shell.MenuItem", out dict))
