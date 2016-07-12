@@ -1,8 +1,9 @@
 ﻿<%@ Page Title="Cache State - Rapid SCADA" Language="C#" MasterPageFile="~/MasterMain.Master" AutoEventWireup="true" CodeBehind="CacheState.aspx.cs" Inherits="Scada.Web.Plugins.Config.WFrmCacheState" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="cphMainHead" runat="server">
+    <link href="../../css/contentform.min.css" rel="stylesheet" type="text/css" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="cphMainContent" runat="server">
-    <h2>Hour Table Cache</h2>
+    <h1>Hour Table Cache</h1>
     <asp:Label ID="lblHourTableCacheInfo" runat="server" Text=""></asp:Label>
     <asp:Repeater ID="repHourTableCache" runat="server">
         <ItemTemplate>
@@ -14,7 +15,7 @@
             </div>
         </ItemTemplate>
     </asp:Repeater>
-    <h2>View Cache</h2>
+    <h1>View Cache</h1>
     <asp:Label ID="lblViewCacheInfo" runat="server" Text=""></asp:Label>
     <asp:Repeater ID="repViewCache" runat="server">
         <ItemTemplate>
