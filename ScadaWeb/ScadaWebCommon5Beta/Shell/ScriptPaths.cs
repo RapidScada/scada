@@ -73,10 +73,10 @@ namespace Scada.Web.Shell
                 sbHtml.AppendLine(string.Format(ScriptTemplate, VirtualPathUtility.ToAbsolute(ChartScriptPath)));
 
             if (!string.IsNullOrEmpty(CmdScriptPath))
-                sbHtml.AppendLine(string.Format(CmdScriptPath, VirtualPathUtility.ToAbsolute(ChartScriptPath)));
+                sbHtml.AppendLine(string.Format(ScriptTemplate, VirtualPathUtility.ToAbsolute(CmdScriptPath)));
 
             if (!string.IsNullOrEmpty(EventAckScriptPath))
-                sbHtml.AppendLine(string.Format(EventAckScriptPath, VirtualPathUtility.ToAbsolute(ChartScriptPath)));
+                sbHtml.AppendLine(string.Format(ScriptTemplate, VirtualPathUtility.ToAbsolute(EventAckScriptPath)));
 
             return sbHtml.ToString();
         }

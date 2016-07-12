@@ -41,8 +41,8 @@ scada.dialogs = {
             scada.cmd.show(this.rootPath, viewID, ctrlCnlNum, opt_callback);
         } else {
             console.warn("Unable to show command dialog because scada.cmd is undefined");
+            alert("Commands are not implemented yet, ctrlCnlNum=" + ctrlCnlNum);
         }
-        alert("Commands are not implemented yet, ctrlCnlNum=" + ctrlCnlNum);
     },
 
     // Show event acknowledgement dialog.
@@ -54,8 +54,8 @@ scada.dialogs = {
             scada.eventAck.show(this.rootPath, viewID, date, evNum, opt_callback);
         } else {
             console.warn("Unable to show event acknowledgement dialog because scada.eventAck is undefined");
+            alert("Acknowledgement is not implemented yet, evNum=" + evNum);
         }
-        alert("Acknowledgement is not implemented yet, evNum=" + evNum);
     },
 
     // Show calendar dropdown form.
