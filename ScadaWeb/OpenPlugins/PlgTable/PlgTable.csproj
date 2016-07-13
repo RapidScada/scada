@@ -78,6 +78,7 @@
     <Content Include="js\api\utils.js" />
     <Content Include="js\api\viewhub.js" />
     <Content Include="js\controls\notifier.js" />
+    <Content Include="js\controls\popup.js" />
     <Content Include="js\controls\tableheader.js" />
     <Content Include="lib\font-awesome\css\font-awesome.css" />
     <Content Include="lib\font-awesome\css\font-awesome.min.css" />
