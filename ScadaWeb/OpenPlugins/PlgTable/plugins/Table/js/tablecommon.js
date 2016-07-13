@@ -58,21 +58,22 @@ function updateLayout() {
 // Set current view date to the initial value
 function initViewDate() {
     if (viewHub) {
-        if (viewHub.currentViewDate) {
-            setViewDate(viewHub.currentViewDate);
-        } else {
-            viewHub.currentViewDate = today;
-            setViewDate(today);
+        if (!viewHub.curViewDateMs) {
+            viewHub.curViewDateMs = today.getTime();
         }
+        setViewDate(viewHub.curViewDateMs);
     } else {
-        setViewDate(today);
+        setViewDate(today.getTime());
     }
 }
 
 // Set current view date
-function setViewDate(date) {
-    viewDate = date;
-    $("#txtDate").val(date.toLocaleDateString(locale, VIEW_DATE_OPTIONS));
+function setViewDate(dateMs) {
+    viewDate = new Date(dateMs);
+    // convert date to string and remove invisible left-to-right marks in case of using Edge
+    var viewDateStr = viewDate.toLocaleDateString(locale, VIEW_DATE_OPTIONS).replace(/\u200E/g, '');
+    // display date
+    $("#txtDate").val(viewDateStr);
     $("#spanDate i").removeClass("error");
 }
 

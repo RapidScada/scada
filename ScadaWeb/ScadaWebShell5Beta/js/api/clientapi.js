@@ -199,7 +199,7 @@ scada.clientAPI = {
     // callback is a function (success, value),
     // value is the number of milliseconds or null in case of any error
     parseDateTime: function (s, callback) {
-        this._request("ClientApiSvc.svc/ParseDateTime", "?s=" + s, callback, null);
+        this._request("ClientApiSvc.svc/ParseDateTime", "?s=" + encodeURIComponent(s), callback, null);
     },
     
     // Create map of extended input channel data to access by channel number

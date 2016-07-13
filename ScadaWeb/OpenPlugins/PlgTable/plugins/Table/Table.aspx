@@ -17,7 +17,6 @@
     <script type="text/javascript" src="../../js/api/viewhub.js"></script>
     <script type="text/javascript" src="../../js/controls/notifier.js"></script>
     <script type="text/javascript" src="../../js/controls/tableheader.js"></script>
-    <script type="text/javascript" src="js/tablecommon.js"></script>
     <script type="text/javascript">
         var DEBUG_MODE = <%= debugMode ? "true" : "false" %>;
         var viewID = <%= viewID %>;
@@ -28,6 +27,7 @@
         var locale = "<%= Scada.Localization.Culture.Name %>";
         var viewTitle = "<%= viewTitle %>";
     </script>
+    <script type="text/javascript" src="js/tablecommon.js"></script>
     <script type="text/javascript" src="js/table.js"></script>
 </head>
 <body>

@@ -312,7 +312,7 @@ scada.scheme.ElementRenderer.prototype.bindAction = function (jqObj, elem) {
                 case Actions.DRAW_DIAGRAM:
                     if (props.InCnlNum > 0) {
                         if (dialogs) {
-                            dialogs.showChart(scada.scheme.viewHub.currentViewID, new Date(), props.InCnlNum);
+                            dialogs.showChart(scada.scheme.viewHub.curViewID, new Date(), props.InCnlNum);
                         } else {
                             console.warn("Dialogs object is undefined");
                         }
@@ -321,7 +321,7 @@ scada.scheme.ElementRenderer.prototype.bindAction = function (jqObj, elem) {
                 case Actions.SEND_COMMAND:
                     if (props.CtrlCnlNum > 0) {
                         if (dialogs) {
-                            dialogs.showCmd(scada.scheme.viewHub.currentViewID, props.CtrlCnlNum);
+                            dialogs.showCmd(scada.scheme.viewHub.curViewID, props.CtrlCnlNum);
                         } else {
                             console.warn("Dialogs object is undefined");
                         }

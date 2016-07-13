@@ -27,7 +27,7 @@ scada.view = {
         // Reload the data window using the current properties and the current view
         reload: function () {
             if (this.url) {
-                var viewID = viewHub.currentViewID;
+                var viewID = viewHub.curViewID;
                 var newUrl = this.dependsOnView && viewID > 0 ?
                     scada.utils.setQueryParam("viewID", viewID, this.url) :
                     this.url;
@@ -95,7 +95,7 @@ scada.view = {
                     return false; // break the loop
                 }
             });
-        } else {
+        } else if (activeDataWindow == null /*no cookie*/) {
             // activate events window if presented
             $("#divBottomTabsContainer .tab").each(function () {
                 var code = $(this).data("code");
@@ -169,7 +169,7 @@ scada.view = {
     loadView: function (viewID, viewUrl) {
         // load view
         document.title = this.initialPageTitle;
-        viewHub.currentViewID = viewID;
+        viewHub.curViewID = viewID;
         var frameView = $("#frameView");
 
         frameView
