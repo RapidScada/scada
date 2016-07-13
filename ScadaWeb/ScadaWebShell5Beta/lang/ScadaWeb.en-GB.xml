@@ -22,6 +22,14 @@
     <Phrase key="lblMainExplorerTab">Views</Phrase>
     <Phrase key="lblMainCollapseMenu">Collapse menu</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.MasterMain.Js.ModalButtons">
+    <Phrase key="ok">OK</Phrase>
+    <Phrase key="yes">Yes</Phrase>
+    <Phrase key="no">No</Phrase>
+    <Phrase key="execute">Execute</Phrase>
+    <Phrase key="cancel">Cancel</Phrase>
+    <Phrase key="close">Close</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.ViewSettings">
     <Phrase key="LoadViewSettingsError">Error loading view settings</Phrase>
     <Phrase key="SaveViewSettingsError">Error saving view settings</Phrase>

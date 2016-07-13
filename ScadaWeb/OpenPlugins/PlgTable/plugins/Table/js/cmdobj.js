@@ -20,7 +20,7 @@ scada.cmd = {
     show: function (rootPath, viewID, ctrlCnlNum, opt_callback) {
         var popup = scada.popupLocator.getPopup();
         if (popup) {
-            popup.showModal(rootPath + "plugins/Chart/Chart.aspx?viewID=" + viewID + "&cnlNum=101");
+            popup.showModal(rootPath + "Calendar.aspx", ["execute", "close"], opt_callback);
         }
     }
 }

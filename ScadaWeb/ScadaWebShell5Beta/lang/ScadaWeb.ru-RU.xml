@@ -22,6 +22,14 @@
     <Phrase key="lblMainExplorerTab">Представления</Phrase>
     <Phrase key="lblMainCollapseMenu">Свернуть меню</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.MasterMain.Js.ModalButtons">
+    <Phrase key="ok">OK</Phrase>
+    <Phrase key="yes">Да</Phrase>
+    <Phrase key="no">Нет</Phrase>
+    <Phrase key="execute">Выполнить</Phrase>
+    <Phrase key="cancel">Отмена</Phrase>
+    <Phrase key="close">Закрыть</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.ViewSettings">
     <Phrase key="LoadViewSettingsError">Ошибка при загрузке настроек представлений</Phrase>
     <Phrase key="SaveViewSettingsError">Ошибка при сохранении настроек представлений</Phrase>

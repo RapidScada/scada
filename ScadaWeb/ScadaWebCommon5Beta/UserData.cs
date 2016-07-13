@@ -276,7 +276,7 @@ namespace Scada.Web
                 AppData.Log.WriteError(string.Format(Localization.UseRussian ?
                     "Неудачная попытка входа в систему: {0}{1}. IP-адрес: {2}" :
                     "Unsuccessful login attempt: {0}{1}. IP address: {2}",
-                    username == "" ? "" : username + " - ", errMsg, IpAddress));
+                    username == "" ? "" : username + " - ", errMsg.TrimEnd('.'), IpAddress));
                 return false;
             }
         }

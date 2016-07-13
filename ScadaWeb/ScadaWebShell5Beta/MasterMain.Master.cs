@@ -26,6 +26,9 @@
 using Scada.UI;
 using Scada.Web.Shell;
 using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Web;
 
 namespace Scada.Web
 {
@@ -50,6 +53,30 @@ namespace Scada.Web
         /// </summary>
         public int SelectedViewID = 0;
 
+
+        /// <summary>
+        /// Генерировать JavaScript-код карты кнопок для модальных диалогов
+        /// </summary>
+        protected string GenModalButtonMapJs()
+        {
+            StringBuilder sbJs = new StringBuilder();
+            sbJs.AppendLine("new Map([");
+
+            Localization.Dict dict;
+            Localization.Dictionaries.TryGetValue("Scada.Web.MasterMain.Js.ModalButtons", out dict);
+
+            if (dict != null)
+            {
+                foreach (KeyValuePair<string, string> pair in dict.Phrases)
+                {
+                    sbJs.Append("[\"").Append(pair.Key).Append("\", \"")
+                        .Append(HttpUtility.JavaScriptStringEncode(pair.Value)).AppendLine("\"],");
+                }
+            }
+
+            sbJs.Append("])");
+            return sbJs.ToString();
+        }
 
         /// <summary>
         /// Генерировать HTML-код дополнительных скриптов

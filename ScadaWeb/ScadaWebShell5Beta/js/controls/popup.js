@@ -11,10 +11,21 @@
  *
  * Optional:
  * - bootstrap
+ * - scada.modalButtonMap object
  */
 
 // Rapid SCADA namespace
 var scada = scada || {};
+
+// Modal dialog buttons enumeration
+scada.ModalButtons = {
+    OK: "ok",
+    YES: "yes",
+    NO: "no",
+    EXEC: "execute",
+    CANCEL: "cancel",
+    CLOSE: "close"
+};
 
 // Popup dialogs manipulation type
 scada.Popup = function () {
@@ -85,9 +96,33 @@ scada.Popup.prototype._getOffset = function (elem) {
     return { left: left, top: top };
 };
 
+// Get html markup of a modal dialog footer buttons
+scada.Popup.prototype._genModalButtonsHtml = function (buttons) {
+    var html = "";
+
+    for (var btn of buttons) {
+        var btnText = scada.modalButtonMap ? scada.modalButtonMap.get(btn) : null;
+        if (!btnText) {
+            btnText = btn;
+        }
+
+        if (btn == scada.ModalButtons.CANCEL || btn == scada.ModalButtons.CLOSE) {
+            html += "<button type='button' class='btn btn-default' data-dismiss='modal'>" + btnText + "</button>";
+        } else {
+            var subclass = btn == scada.ModalButtons.OK || btn == scada.ModalButtons.YES ? "btn-primary" :
+                (btn == scada.ModalButtons.EXEC ? "btn-danger" : "btn-default");
+
+            html += "<button type='button' class='btn " + subclass +
+                "' data-result='" + btn + "'>" + btnText + "</button>";
+        }
+    }
+
+    return html;
+}
+
 // Show popup with the specified url as a dropdown menu below the anchorElem.
-// callback is a function (dialogResult, extraParams)
-scada.Popup.prototype.showDropdown = function (url, anchorElem, callback) {
+// opt_callback is a function (dialogResult, extraParams)
+scada.Popup.prototype.showDropdown = function (url, anchorElem, opt_callback) {
     var thisObj = this;
     var popupElem = $("<div class='popup-dropdown'><div class='popup-overlay'></div>" +
         "<div class='popup-wrapper'><iframe class='popup-frame'></iframe></div></div>");
@@ -121,7 +156,7 @@ scada.Popup.prototype.showDropdown = function (url, anchorElem, callback) {
     .on("load", function () {
         // store callback function
         var frameWnd = frame[0].contentWindow;
-        thisObj._popupCallbacks.set(frameWnd, callback);
+        thisObj._popupCallbacks.set(frameWnd, opt_callback);
 
         // remove the popup on press Escape key in the frame
         if (frameWnd.$) {
@@ -194,32 +229,52 @@ scada.Popup.prototype.closeDropdown = function (popupWnd, dialogResult, extraPar
 };
 
 // Show modal dialog with the specified url.
-// callback is a function (dialogResult, extraParams),
+// opt_callback is a function (dialogResult, extraParams),
 // requires Bootstrap
-scada.Popup.prototype.showModal = function (url, callback) {
-    var popupElem = $(
+scada.Popup.prototype.showModal = function (url, opt_buttons, opt_callback) {
+    var footerHtml = opt_buttons && opt_buttons.length ?
+        "<div class='modal-footer'>" + this._genModalButtonsHtml(opt_buttons) + "</div>" : "";
+
+    var modalElem = $(
         "<div class='modal fade' tabindex='-1'>" +
         "<div class='modal-dialog'>" +
         "<div class='modal-content'>" +
         "<div class='modal-header'>" +
         "<button type='button' class='close' data-dismiss='modal'><span>&times;</span></button>" +
-        "<h4 class='modal-title'>Modal title</h4></div>" +
+        "<h4 class='modal-title'></h4></div>" +
         "<div class='modal-body'><iframe class='modal-frame'></iframe></div>" +
-        "<div class='modal-footer'>" +
-        "<button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>" +
-        "</div></div></div></div>");
-    $("body").append(popupElem);
+        footerHtml +
+        "</div></div></div>");
+    $("body").append(modalElem);
 
     // load the frame
-    var frame = popupElem.find(".modal-frame");
+    var modalFrame = modalElem.find(".modal-frame");
 
-    frame
+    modalFrame
     .one("load", function () {
+        // set the frame size
+        var frameBody = modalFrame.contents().find("body");
+        var frameWidth = frameBody.outerWidth(true);
+        var frameHeight = frameBody.outerHeight(true);
+
+        modalFrame.css({
+            "width": frameWidth,
+            "height": frameHeight
+        });
+
         // display the modal
-        popupElem
+        var modalBody = modalElem.find(".modal-body");
+        var modalPaddings = parseInt(modalBody.css("padding-left")) + parseInt(modalBody.css("padding-right"));
+        modalElem.find(".modal-content").css("min-width", frameWidth + modalPaddings)
+
+        modalElem
+        .on('shown.bs.modal', function () {
+            modalFrame.focus();
+            modalElem.find(".modal-title").text(modalFrame[0].contentWindow.document.title);
+        })
         .on('hidden.bs.modal', function () {
             $(this).remove();
-        })
+        })        
         .modal("show");
     })
     .attr("src", url);

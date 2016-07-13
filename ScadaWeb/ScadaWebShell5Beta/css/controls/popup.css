@@ -21,7 +21,8 @@
   display: inline-block;
   overflow: hidden;
 }
-.popup-frame {
+.popup-frame,
+.modal-frame {
   margin: 0;
   padding: 0;
   border: none;
