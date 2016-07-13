@@ -105,6 +105,13 @@ scada.utils = {
         return arr ? (Array.isArray(arr) ? arr.join(",") : arr) : "";
     },
 
+    // Extract year, month and day from the date, and join them into a query string
+    dateToQueryString: function (date) {
+        return "year=" + date.getFullYear() +
+            "&month=" + (date.getMonth() + 1) +
+            "&day=" + date.getDate();
+    },
+
     // Returns the current time string
     getCurTime: function () {
         return new Date().toLocaleTimeString("en-GB");

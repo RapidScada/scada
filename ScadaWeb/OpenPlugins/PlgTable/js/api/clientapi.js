@@ -152,13 +152,6 @@ scada.clientAPI = {
         });
     },
 
-    // Extract year, month and day from the date, and join them into a query string
-    _dateToQueryString: function (date) {
-        return "year=" + date.getFullYear() +
-            "&month=" + (date.getMonth() + 1) +
-            "&day=" + date.getDate();
-    },
-
     // Check that a user is logged on.
     // callback is a function (success, loggedOn)
     checkLoggedOn: function (callback) {
@@ -179,7 +172,7 @@ scada.clientAPI = {
 
     // Get hourly data by the specified filter.
     // dataAge is an array of dates in milliseconds,
-    // callback is a function (success, hourCnlDataArr)
+    // callback is a function (success, hourCnlDataArr, dataAge)
     getHourCnlData: function (hourPeriod, cnlFilter, selectMode, dataAge, callback) {
         this._request("ClientApiSvc.svc/GetHourCnlData",
             "?" + hourPeriod.toQueryString() + "&" + cnlFilter.toQueryString() + "&existing=" + selectMode +
@@ -191,7 +184,7 @@ scada.clientAPI = {
     // callback is a function (success, eventArr, dataAge)
     getEvents: function (date, cnlFilter, lastCount, startEvNum, dataAge, callback) {
         this._request("ClientApiSvc.svc/GetEvents",
-            "?" + this._dateToQueryString(date) + "&" + cnlFilter.toQueryString() +
+            "?" + scada.utils.dateToQueryString(date) + "&" + cnlFilter.toQueryString() +
             "&lastCount=" + lastCount + "&startEvNum=" + startEvNum + "&dataAge=" + dataAge,
             callback, []);
     },
@@ -206,7 +199,7 @@ scada.clientAPI = {
     // callback is a function (success, value),
     // value is the number of milliseconds or null in case of any error
     parseDateTime: function (s, callback) {
-        this._request("ClientApiSvc.svc/ParseDateTime", "?s=" + s, callback, null);
+        this._request("ClientApiSvc.svc/ParseDateTime", "?s=" + encodeURIComponent(s), callback, null);
     },
     
     // Create map of extended input channel data to access by channel number
