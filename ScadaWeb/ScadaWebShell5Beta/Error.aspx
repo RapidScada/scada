@@ -9,6 +9,8 @@
     <link href="~/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link href="~/lib/open-sans/css/open-sans.css" rel="stylesheet" type="text/css" />
     <link href="~/css/error.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="<%= ResolveClientUrl("~/lib/jquery/jquery.min.js") %>"></script>
+    <script type="text/javascript" src="<%= ResolveClientUrl("~/js/error.js") %>"></script>
 </head>
 <body>
     <div id="divHeader">Rapid SCADA</div>

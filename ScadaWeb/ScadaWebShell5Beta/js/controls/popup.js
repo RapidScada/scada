@@ -258,7 +258,7 @@ scada.Popup.prototype.showModal = function (url, opt_buttons, opt_callback) {
         var frameHeight = frameBody.outerHeight(true);
 
         modalFrame.css({
-            "width": frameWidth,
+            "width": frameWidth ? frameWidth : "100%",
             "height": frameHeight
         });
 

@@ -2,6 +2,7 @@
 
 @header-heigth: 30px;
 @error-fore-color: red;
+@popup-back-color: white;
 
 body {
     margin: 0;
@@ -9,6 +10,14 @@ body {
     background-color: @content-back-color;
     font-family: @default-font-family;
     font-size: 14px;
+}
+
+body.popup {
+    background-color: @popup-back-color;
+}
+
+div {
+    box-sizing: border-box;
 }
 
 #divHeader {

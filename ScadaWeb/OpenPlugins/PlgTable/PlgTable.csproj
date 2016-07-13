@@ -84,6 +84,7 @@
     <Content Include="lib\font-awesome\css\font-awesome.min.css" />
     <Content Include="lib\font-awesome\fonts\fontawesome-webfont.svg" />
     <Content Include="lib\jquery\jquery.min.js" />
+    <Content Include="plugins\Table\Command.aspx" />
     <Content Include="plugins\Table\css\events.css">
       <DependentUpon>events.less</DependentUpon>
     </Content>
@@ -127,6 +128,13 @@
     <Compile Include="AppCode\PlgTableSpec.cs" />
     <Compile Include="AppCode\Table\TableView.cs" />
     <Compile Include="AppCode\Table\TableViewSpec.cs" />
+    <Compile Include="plugins\Table\Command.aspx.cs">
+      <DependentUpon>Command.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="plugins\Table\Command.aspx.designer.cs">
+      <DependentUpon>Command.aspx</DependentUpon>
+    </Compile>
     <Compile Include="plugins\Table\Events.aspx.cs">
       <DependentUpon>Events.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

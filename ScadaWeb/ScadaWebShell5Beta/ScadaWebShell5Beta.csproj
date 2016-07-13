@@ -168,6 +168,7 @@
     <Content Include="js\controls\notifier.js" />
     <Content Include="js\controls\popup.js" />
     <Content Include="js\controls\tableheader.js" />
+    <Content Include="js\error.js" />
     <Content Include="js\login.js" />
     <Content Include="js\mastermain.js" />
     <Content Include="js\api\eventtypes.js" />

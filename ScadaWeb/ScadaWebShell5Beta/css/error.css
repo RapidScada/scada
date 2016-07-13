@@ -5,6 +5,12 @@
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
 }
+body.popup {
+  background-color: white;
+}
+div {
+  box-sizing: border-box;
+}
 #divHeader {
   width: 100%;
   height: 30px;
