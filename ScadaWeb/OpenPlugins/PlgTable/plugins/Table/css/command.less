@@ -1,0 +1,70 @@
+﻿@import "../../../css/globalvar.less";
+
+@form-back-color: white;
+@info-fore-color: red;
+@cmd-fore-color: red;
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: @form-back-color;
+    font-family: @default-font-family;
+    font-size: @form-font-size;
+    min-width: 200px;
+    overflow: hidden;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+label,
+.cmd-lbl {
+    display: inline-block;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+input[type=text],
+input[type=password] {
+    width: calc(~"100% - 5px");
+}
+
+#tblInfo {
+    margin-bottom: 10px;
+}
+
+#tblInfo th {
+    font-weight: normal;
+    padding: 2px 0;
+    vertical-align: top;
+}
+
+#tblInfo td {
+    color: @info-fore-color;
+    padding: 2px 10px;
+    vertical-align: top;
+}
+
+#pnlPassword {
+    margin-bottom: 10px;
+}
+
+/* Real Value Commands */
+
+#txtCmdVal {
+    color: @cmd-fore-color;
+}
+
+/* Discrete Value Commands */
+
+#divCommands {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#divCommands input {
+    color: @cmd-fore-color;
+    flex-grow: 1;
+    margin: 0 5px 5px 0;
+}

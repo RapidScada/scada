@@ -52,7 +52,9 @@ scada.masterMain = {
                 setTimeout(function () { thisObj._checkLoggedOn(); }, thisObj.CHECK_LOGGEDON_RATE);
             } else {
                 // redirect to login page
-                setTimeout(function() { location.href = scada.env.rootPath + "Login.aspx" }, thisObj.LOGIN_DELAY);
+                setTimeout(function () {
+                    location.href = scada.env.rootPath + "Login.aspx?return=" + encodeURIComponent(location.href);
+                }, thisObj.LOGIN_DELAY);
             }
         });
     },

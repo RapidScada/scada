@@ -258,15 +258,16 @@ scada.Popup.prototype.showModal = function (url, opt_buttons, opt_callback) {
         var frameHeight = frameBody.outerHeight(true);
 
         modalFrame.css({
-            "width": frameWidth ? frameWidth : "100%",
+            "width": "100%",
             "height": frameHeight
         });
 
-        // display the modal
+        // tune the modal
         var modalBody = modalElem.find(".modal-body");
         var modalPaddings = parseInt(modalBody.css("padding-left")) + parseInt(modalBody.css("padding-right"));
         modalElem.find(".modal-content").css("min-width", frameWidth + modalPaddings)
 
+        // display the modal
         modalElem
         .on('shown.bs.modal', function () {
             modalFrame.focus();

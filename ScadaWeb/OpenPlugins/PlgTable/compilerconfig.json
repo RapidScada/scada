@@ -18,5 +18,9 @@
   {
     "outputFile": "css/controls/tableheader.css",
     "inputFile": "css/controls/tableheader.less"
+  },
+  {
+    "outputFile": "plugins/Table/css/command.css",
+    "inputFile": "plugins/Table/css/command.less"
   }
 ]

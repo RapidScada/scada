@@ -85,6 +85,12 @@
     <Content Include="lib\font-awesome\fonts\fontawesome-webfont.svg" />
     <Content Include="lib\jquery\jquery.min.js" />
     <Content Include="plugins\Table\Command.aspx" />
+    <Content Include="plugins\Table\css\command.css">
+      <DependentUpon>command.less</DependentUpon>
+    </Content>
+    <Content Include="plugins\Table\css\command.min.css">
+      <DependentUpon>command.css</DependentUpon>
+    </Content>
     <Content Include="plugins\Table\css\events.css">
       <DependentUpon>events.less</DependentUpon>
     </Content>
@@ -167,6 +173,7 @@
     <Content Include="lib\font-awesome\fonts\fontawesome-webfont.woff2" />
     <Content Include="lib\font-awesome\fonts\FontAwesome.otf" />
     <Content Include="css\controls\tableheader.less" />
+    <Content Include="plugins\Table\css\command.less" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

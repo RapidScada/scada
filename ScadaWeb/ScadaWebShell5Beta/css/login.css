@@ -3,7 +3,7 @@
   padding: 0;
   background-color: #f1f1f1;
   font-family: 'Open Sans', sans-serif;
-  font-size: 12px;
+  font-size: 13px;
 }
 #divLoginContainer {
   margin: 40px 0 0 0;
@@ -22,7 +22,6 @@
 div.alert {
   margin: 0 0 10px 0;
   padding-left: 25px;
-  font-size: 13px;
   text-align: left;
 }
 #divLogin {
