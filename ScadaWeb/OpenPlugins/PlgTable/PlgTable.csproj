@@ -118,6 +118,7 @@
     <Content Include="plugins\Table\images\quantityicons\temp.png" />
     <Content Include="plugins\Table\images\tableicon.png" />
     <Content Include="plugins\Table\js\cmdobj.js" />
+    <Content Include="plugins\Table\js\command.js" />
     <Content Include="plugins\Table\js\events.js" />
     <Content Include="plugins\Table\js\tablecommon.js" />
     <Content Include="plugins\Table\js\table.js" />

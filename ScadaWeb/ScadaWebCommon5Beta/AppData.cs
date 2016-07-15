@@ -52,7 +52,6 @@ namespace Scada.Web
         private bool inited;                         // признак инициализации данных приложения
         private string cultureName;                  // имя используемой культуры
         private CommSettings commSettings;           // настройки соединения с сервером
-        private ServerComm serverComm;               // объект для обмена данными с сервером
         private long viewStampCntr;                  // счётчик для генерации меток представлений
 
         private DictUpdater scadaDataDictUpdater;    // объект для обновления словаря ScadaData
@@ -156,6 +155,11 @@ namespace Scada.Web
         public UserMonitor UserMonitor { get; private set; }
 
         /// <summary>
+        /// Получить объект для обмена данными с сервером
+        /// </summary>
+        public ServerComm ServerComm { get; private set; }
+
+        /// <summary>
         /// Получить объект для потокобезопасного доступа к данным кеша клиентов
         /// </summary>
         /// <remarks>Объект создаётся заново при изменении файла настройки соединения с сервером</remarks>
@@ -195,10 +199,10 @@ namespace Scada.Web
         /// </summary>
         private void CreateDataObjects()
         {
-            serverComm = new ServerComm(commSettings, Log);
-            DataCache dataCache = new DataCache(serverComm, Log);
+            ServerComm = new ServerComm(commSettings, Log);
+            DataCache dataCache = new DataCache(ServerComm, Log);
             DataAccess = new DataAccess(dataCache, Log);
-            ViewCache = new ViewCache(serverComm, DataAccess, Log);
+            ViewCache = new ViewCache(ServerComm, DataAccess, Log);
         }
 
         /// <summary>
@@ -446,7 +450,7 @@ namespace Scada.Web
             }
             else
             {
-                if (serverComm.CheckUser(username, checkPassword ? password : null, out roleID))
+                if (ServerComm.CheckUser(username, checkPassword ? password : null, out roleID))
                 {
                     if (roleID == BaseValues.Roles.Disabled)
                     {

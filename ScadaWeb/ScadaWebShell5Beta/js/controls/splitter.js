@@ -13,7 +13,7 @@
 // Rapid SCADA namespace
 var scada = scada || {};
 
-/********** Splitter bulk **********/
+/********** Splitter Bulk **********/
 
 // Splitter bulk contains the splitter and the resized divs
 // Splitter bulk type
@@ -153,7 +153,7 @@ scada.SplitterBulk.prototype.bindEvents = function () {
     });
 };
 
-/********** Splitters processing **********/
+/********** Splitters Processing **********/
 
 // Splitters processing object
 scada.splitter = {

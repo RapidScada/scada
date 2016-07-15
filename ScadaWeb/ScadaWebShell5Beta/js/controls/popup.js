@@ -9,13 +9,16 @@
  * - jquery
  * - utils.js
  *
- * Optional:
+ * Requires for modal dialogs:
  * - bootstrap
+ * - eventtypes.js
  * - scada.modalButtonMap object
  */
 
 // Rapid SCADA namespace
 var scada = scada || {};
+
+/********** Modal Dialog Buttons **********/
 
 // Modal dialog buttons enumeration
 scada.ModalButtons = {
@@ -26,6 +29,8 @@ scada.ModalButtons = {
     CANCEL: "cancel",
     CLOSE: "close"
 };
+
+/********** Popup **********/
 
 // Popup dialogs manipulation type
 scada.Popup = function () {
@@ -106,15 +111,13 @@ scada.Popup.prototype._genModalButtonsHtml = function (buttons) {
             btnText = btn;
         }
 
-        if (btn == scada.ModalButtons.CANCEL || btn == scada.ModalButtons.CLOSE) {
-            html += "<button type='button' class='btn btn-default' data-dismiss='modal'>" + btnText + "</button>";
-        } else {
-            var subclass = btn == scada.ModalButtons.OK || btn == scada.ModalButtons.YES ? "btn-primary" :
-                (btn == scada.ModalButtons.EXEC ? "btn-danger" : "btn-default");
+        var subclass = btn == scada.ModalButtons.OK || btn == scada.ModalButtons.YES ? "btn-primary" :
+            (btn == scada.ModalButtons.EXEC ? "btn-danger" : "btn-default");
+        var dismiss = btn == scada.ModalButtons.CANCEL || btn == scada.ModalButtons.CLOSE ?
+            " data-dismiss='modal'" : "";
 
-            html += "<button type='button' class='btn " + subclass +
-                "' data-result='" + btn + "'>" + btnText + "</button>";
-        }
+        html += "<button type='button' class='btn " + subclass +
+            "' data-result='" + btn + "'" + dismiss + ">" + btnText + "</button>";
     }
 
     return html;
@@ -267,6 +270,16 @@ scada.Popup.prototype.showModal = function (url, opt_buttons, opt_callback) {
         var modalPaddings = parseInt(modalBody.css("padding-left")) + parseInt(modalBody.css("padding-right"));
         modalElem.find(".modal-content").css("min-width", frameWidth + modalPaddings)
 
+        // raise event on modal button click
+        modalElem.find(".modal-footer button").click(function () {
+            var result = $(this).data("result");
+            var frameWnd = modalFrame[0].contentWindow;
+            var frameJq = frameWnd.$;
+            if (result && frameJq) {
+                frameJq(frameWnd).trigger(scada.EventTypes.MODAL_BTN_CLICK, result);
+            }
+        });
+
         // display the modal
         modalElem
         .on('shown.bs.modal', function () {
@@ -279,9 +292,29 @@ scada.Popup.prototype.showModal = function (url, opt_buttons, opt_callback) {
         .modal("show");
     })
     .attr("src", url);
+
+    // TODO: callback
 };
 
-// Popup instance locator object
+// Show the modal dialog
+scada.Popup.prototype.closeModal = function (modalWnd, dialogResult, extraParams) {
+    var frame = $(modalWnd.frameElement);
+    var modalElem = frame.closest(".modal");
+    modalElem.modal("hide");
+    // TODO: callback
+}
+
+// Show or hide the modal button
+scada.Popup.prototype.setButtonVisible = function (modalWnd, btn, val) {
+    var frame = $(modalWnd.frameElement);
+    var modalElem = frame.closest(".modal");
+    var btnElem = modalElem.find(".modal-footer button[data-result='" + btn + "']");
+    btnElem.css("display", val ? "" : "none");
+}
+
+/********** Popup Locator **********/
+
+// Popup locator object
 scada.popupLocator = {
     // Find and return an existing popup object
     getPopup: function () {

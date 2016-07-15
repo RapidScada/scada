@@ -29,6 +29,7 @@ using Scada.Data.Tables;
 using Scada.UI;
 using System;
 using System.Collections.Generic;
+using System.Web.UI.WebControls;
 
 namespace Scada.Web.Plugins.Table
 {
@@ -48,6 +49,11 @@ namespace Scada.Web.Plugins.Table
         }
 
 
+        private AppData appData;   // общие данные веб-приложения
+        private UserData userData; // данные пользователя приложения
+        private int ctrlCnlNum;    // номер канала управления
+
+
         /// <summary>
         /// Получить список дискретных команд
         /// </summary>
@@ -61,16 +67,64 @@ namespace Scada.Web.Plugins.Table
             return discreteCmds;
         }
 
+        /// <summary>
+        /// Проверить пароль, если он используется
+        /// </summary>
+        private bool CheckPassword()
+        {
+            if (pnlPassword.Visible)
+            {
+                //bool pwdOK = appData.
+                return true;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Отправить стандартную команду
+        /// </summary>
+        private void SendStandardCmd(double cmdVal)
+        {
+            bool result;
+            bool sendOK = appData.ServerComm.SendStandardCommand(
+                userData.UserProps.UserID, ctrlCnlNum, cmdVal, out result);
+            ShowCmdResult(sendOK, result);
+        }
+
+        /// <summary>
+        /// Отобразить результат выполнения команды
+        /// </summary>
+        private void ShowCmdResult(bool sendOK, bool result)
+        {
+            mvCommand.SetActiveView(viewCmdResult);
+
+            if (sendOK && result)
+            {
+                pnlSuccess.Visible = true;
+                ClientScript.RegisterStartupScript(GetType(), "Startup", "startDowncount();", true);
+            }
+            else
+            {
+                pnlError.Visible = true;
+                if (sendOK)
+                    lblCmdRejected.Visible = true;
+                else
+                    lblCmdNotSent.Visible = true;
+            }
+        }
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            AppData appData = AppData.GetAppData();
-            UserData userData = UserData.GetUserData();
+            appData = AppData.GetAppData();
+            userData = UserData.GetUserData();
 
             // получение параметров запроса
             int viewID;
             int.TryParse(Request.QueryString["viewID"], out viewID);
-            int ctrlCnlNum;
             int.TryParse(Request.QueryString["ctrlCnlNum"], out ctrlCnlNum);
 
             // проверка прав
@@ -104,8 +158,10 @@ namespace Scada.Web.Plugins.Table
                 {
                     // вывод информации по каналу управления
                     lblCtrlCnl.Text = string.Format("[{0}] {1}", ctrlCnlProps.CtrlCnlNum, ctrlCnlProps.CtrlCnlName);
-                    lblObj.Text = string.Format("[{0}] {1}", ctrlCnlProps.ObjNum, ctrlCnlProps.ObjName);
-                    lblDev.Text = string.Format("[{0}] {1}", ctrlCnlProps.KPNum, ctrlCnlProps.KPName);
+                    lblObj.Text = ctrlCnlProps.ObjNum > 0 ? 
+                        string.Format("[{0}] {1}", ctrlCnlProps.ObjNum, ctrlCnlProps.ObjName) : "";
+                    lblDev.Text = ctrlCnlProps.KPNum > 0 ?
+                        string.Format("[{0}] {1}", ctrlCnlProps.KPNum, ctrlCnlProps.KPName) : "";
 
                     // установка видимости поля для ввода пароля
                     pnlPassword.Visible = userData.WebSettings.CmdPassword;
@@ -114,7 +170,7 @@ namespace Scada.Web.Plugins.Table
                     switch (ctrlCnlProps.CmdTypeID)
                     {
                         case BaseValues.CmdTypes.Standard:
-                            if (ctrlCnlProps.CmdValArr == null && ctrlCnlProps.CmdValArr.Length > 0)
+                            if (ctrlCnlProps.CmdValArr == null)
                             {
                                 pnlRealValue.Visible = true;
                             }
@@ -134,6 +190,21 @@ namespace Scada.Web.Plugins.Table
                             break;
                     }
                 }
+            }
+        }
+
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            appData.Log.WriteLine("!!!btnSubmit_Click");
+        }
+
+        protected void repCommands_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            if (CheckPassword())
+            {
+                Button btn = (Button)e.CommandSource;
+                int cmdVal = int.Parse(btn.Attributes["data-cmdval"]);
+                SendStandardCmd(cmdVal);
             }
         }
     }

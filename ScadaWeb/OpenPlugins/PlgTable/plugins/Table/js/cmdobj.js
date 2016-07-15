@@ -21,7 +21,7 @@ scada.cmd = {
         var popup = scada.popupLocator.getPopup();
         if (popup) {
             popup.showModal(rootPath + "plugins/Table/Command.aspx?viewID=" + viewID + "&ctrlCnlNum=" + ctrlCnlNum,
-                [scada.ModalButtons.EXEC, scada.ModalButtons.CANCEL], opt_callback);
+                [scada.ModalButtons.EXEC, scada.ModalButtons.CLOSE], opt_callback);
         }
     }
 }

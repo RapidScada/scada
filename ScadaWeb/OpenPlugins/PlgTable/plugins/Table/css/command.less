@@ -1,8 +1,8 @@
 ﻿@import "../../../css/globalvar.less";
 
 @form-back-color: white;
-@info-fore-color: red;
-@cmd-fore-color: red;
+@info-fore-color: #d9534f; /* Bootstrap danger color */
+@cmd-fore-color: @info-fore-color;
 
 body {
     margin: 0;
@@ -30,10 +30,6 @@ input[type=password] {
     width: calc(~"100% - 5px");
 }
 
-#tblInfo {
-    margin-bottom: 10px;
-}
-
 #tblInfo th {
     font-weight: normal;
     padding: 2px 0;
@@ -46,8 +42,8 @@ input[type=password] {
     vertical-align: top;
 }
 
-#pnlPassword {
-    margin-bottom: 10px;
+#btnSubmit {
+    display: none;
 }
 
 /* Real Value Commands */
@@ -64,7 +60,6 @@ input[type=password] {
 }
 
 #divCommands input {
-    color: @cmd-fore-color;
     flex-grow: 1;
     margin: 0 5px 5px 0;
 }
