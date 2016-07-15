@@ -40,13 +40,22 @@ namespace Scada.Web.Plugins.Table {
         protected global::System.Web.UI.WebControls.View viewCmdParams;
         
         /// <summary>
-        /// hidCmdEnabled control.
+        /// pnlErrMsg control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hidCmdEnabled;
+        protected global::System.Web.UI.WebControls.Panel pnlErrMsg;
+        
+        /// <summary>
+        /// lblWrongPwdErr control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblWrongPwdErr;
         
         /// <summary>
         /// btnSubmit control.
@@ -202,6 +211,69 @@ namespace Scada.Web.Plugins.Table {
         protected global::System.Web.UI.WebControls.Repeater repCommands;
         
         /// <summary>
+        /// pnlData control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlData;
+        
+        /// <summary>
+        /// lblCmdData control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCmdData;
+        
+        /// <summary>
+        /// rbStr control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rbStr;
+        
+        /// <summary>
+        /// lblStr control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblStr;
+        
+        /// <summary>
+        /// rbHex control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rbHex;
+        
+        /// <summary>
+        /// lblHex control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblHex;
+        
+        /// <summary>
+        /// txtCmdData control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtCmdData;
+        
+        /// <summary>
         /// viewCmdResult control.
         /// </summary>
         /// <remarks>
@@ -247,13 +319,13 @@ namespace Scada.Web.Plugins.Table {
         protected global::System.Web.UI.WebControls.Label lblSec;
         
         /// <summary>
-        /// pnlError control.
+        /// pnlFail control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlError;
+        protected global::System.Web.UI.WebControls.Panel pnlFail;
         
         /// <summary>
         /// lblCmdNotSent control.

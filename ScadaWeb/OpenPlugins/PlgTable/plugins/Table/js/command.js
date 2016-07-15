@@ -3,16 +3,15 @@ var popup = scada.popupLocator.getPopup();
 // Time before closing, sec
 var closeTimeout = 3;
 
+// Start countdown before closing
+function startCountdown() {
+    var spanCountdown = $("#spanCountdown");
 
-// Start downcount before closing
-function startDowncount() {
-    var spanDowncount = $("#spanDowncount");
-
-    var downcountFunc = function () {
+    var countdownFunc = function () {
         if (closeTimeout) {
             closeTimeout--;
-            spanDowncount.text(closeTimeout);
-            setTimeout(downcountFunc, 1000);
+            spanCountdown.text(closeTimeout);
+            setTimeout(countdownFunc, 1000);
         } else {
             if (popup) {
                 popup.closeModal(window, true);
@@ -20,8 +19,8 @@ function startDowncount() {
         }
     }
 
-    spanDowncount.text(closeTimeout);
-    setTimeout(downcountFunc, 1000);
+    spanCountdown.text(closeTimeout);
+    setTimeout(countdownFunc, 1000);
 }
 
 $(document).ready(function () {
@@ -30,6 +29,11 @@ $(document).ready(function () {
         if (popup) {
             popup.setButtonVisible(window, scada.ModalButtons.EXEC, false);
         }
+    }
+
+    // highlight password error
+    if ($("#lblWrongPwdErr").length > 0) {
+        $("#pnlPassword").addClass("has-error");
     }
 
     // submit the form on modal execute button click

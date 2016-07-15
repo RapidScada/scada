@@ -10,7 +10,7 @@ body {
     background-color: @form-back-color;
     font-family: @default-font-family;
     font-size: @form-font-size;
-    min-width: 200px;
+    min-width: @popup-min-width;
     overflow: hidden;
 }
 
@@ -18,16 +18,21 @@ table {
     border-collapse: collapse;
 }
 
-label,
-.cmd-lbl {
-    display: inline-block;
+label {
     font-weight: 600;
-    margin-bottom: 5px;
 }
 
 input[type=text],
 input[type=password] {
     width: calc(~"100% - 5px");
+}
+
+.form-control-feedback {
+    color:transparent;
+}
+
+#btnSubmit {
+    display: none;
 }
 
 #tblInfo th {
@@ -42,17 +47,13 @@ input[type=password] {
     vertical-align: top;
 }
 
-#btnSubmit {
-    display: none;
-}
-
-/* Real Value Commands */
+/* Real Value Command */
 
 #txtCmdVal {
     color: @cmd-fore-color;
 }
 
-/* Discrete Value Commands */
+/* Discrete Value Command */
 
 #divCommands {
     display: flex;
@@ -62,4 +63,11 @@ input[type=password] {
 #divCommands input {
     flex-grow: 1;
     margin: 0 5px 5px 0;
+}
+
+/* Binary Command Data */
+
+#divCmdDataFormat {
+    position: relative;
+    top: -5px;
 }

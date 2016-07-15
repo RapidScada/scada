@@ -68,14 +68,58 @@ namespace Scada.Web.Plugins.Table
         }
 
         /// <summary>
+        /// Скрыть сообщение об ошибке
+        /// </summary>
+        private void HideErrMsg()
+        {
+            pnlErrMsg.Visible = false;
+            lblWrongPwdErr.Visible = false;
+        }
+
+        /// <summary>
+        /// Вывести сообщение об ошибке
+        /// </summary>
+        private void ShowErrMsg(Label lblMessage)
+        {
+            pnlErrMsg.Visible = true;
+            lblMessage.Visible = true;
+        }
+
+        /// <summary>
+        /// Вывести информацию о неудачном результате отправки команды
+        /// </summary>
+        private void ShowFailResult(Label lblMessage)
+        {
+            pnlFail.Visible = true;
+            lblMessage.Visible = true;
+        }
+
+        /// <summary>
         /// Проверить пароль, если он используется
         /// </summary>
         private bool CheckPassword()
         {
             if (pnlPassword.Visible)
             {
-                //bool pwdOK = appData.
-                return true;
+                int roleID;
+                bool reqOK = appData.ServerComm.CheckUser(userData.UserProps.UserName, txtPassword.Text, out roleID);
+
+                if (reqOK)
+                {
+                    if (roleID == BaseValues.Roles.Err)
+                    {
+                        ShowErrMsg(lblWrongPwdErr);
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
@@ -104,15 +148,15 @@ namespace Scada.Web.Plugins.Table
             if (sendOK && result)
             {
                 pnlSuccess.Visible = true;
-                ClientScript.RegisterStartupScript(GetType(), "Startup", "startDowncount();", true);
+                ClientScript.RegisterStartupScript(GetType(), "Startup", "startCountdown();", true);
+            }
+            else if (sendOK)
+            {
+                ShowFailResult(lblCmdRejected);
             }
             else
             {
-                pnlError.Visible = true;
-                if (sendOK)
-                    lblCmdRejected.Visible = true;
-                else
-                    lblCmdNotSent.Visible = true;
+                ShowFailResult(lblCmdNotSent);
             }
         }
 
@@ -138,6 +182,9 @@ namespace Scada.Web.Plugins.Table
 
             if (!view.ContainsCtrlCnl(ctrlCnlNum))
                 throw new ScadaException(CommonPhrases.NoRights);
+
+            // скрытие сообщения об ошибке
+            HideErrMsg();
 
             if (!IsPostBack)
             {
@@ -180,13 +227,11 @@ namespace Scada.Web.Plugins.Table
                                 repCommands.DataBind();
                                 pnlDiscreteValue.Visible = true;
                             }
-                            hidCmdEnabled.Value = "true";
                             break;
                         case BaseValues.CmdTypes.Binary:
+                            pnlData.Visible = true;
                             break;
-                        case BaseValues.CmdTypes.Request:
-                            break;
-                        default:
+                        default: // BaseValues.CmdTypes.Request:
                             break;
                     }
                 }

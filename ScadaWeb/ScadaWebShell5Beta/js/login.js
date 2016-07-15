@@ -3,9 +3,9 @@ var phrases = phrases || {};
 
 // Show alert before login form
 function showAlert(message) {
-    var divAlert = $('<div class="alert alert-danger alert-dismissible" role="alert">' +
-        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-        '<span aria-hidden="true">&times;</span></button>' + message + '</div>');
+    var divAlert = $('<div class="alert alert-danger alert-dismissible">' +
+        '<button type="button" class="close" data-dismiss="alert">' +
+        '<span>&times;</span></button>' + message + '</div>');
 
     divAlert.first().outerWidth($("#divLogin").outerWidth());
     $("#divAlertsInner").append(divAlert);
