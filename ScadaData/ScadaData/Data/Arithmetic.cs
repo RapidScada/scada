@@ -31,28 +31,32 @@ namespace Scada.Data
     /// <summary>
     /// Auxiliary math calculations
     /// <para>Вспомогательные математические расчёты</para>
+    /// <para>Supporting mathematical calculations</para>
     /// </summary>
     public static class Arithmetic
     {
         /// <summary>
         /// Начало отсчёта времени в Delphi
+        /// The beginning of the countdown in Delphi
         /// </summary>
         private static readonly DateTime DelphiTimeBegin = new DateTime(1899, 12, 30);
 
         /// <summary>
         /// Выделить час, минуту и секунду из вещественного значения времени формата Delphi
+        /// Select the hour, minute, and second of real time Delphi format
         /// </summary>
         public static void DecodeTime(double time, out int hour, out int min, out int sec)
         {
-            const double hh = 1.0 / 24;                  // 1 час
-            const double mm = 1.0 / 24 / 60;             // 1 мин
-            const double ms = 1.0 / 24 / 60 / 60 / 1000; // 1 мс
+            const double hh = 1.0 / 24;                  // 1 час  // 1 hour
+            const double mm = 1.0 / 24 / 60;             // 1 мин // 1 min
+            const double ms = 1.0 / 24 / 60 / 60 / 1000; // 1 мс // 1 ms
 
             if (time < 0)
                 time = -time;
 
             time += ms;
             time -= Math.Truncate(time); // (int)time работает некорректно для чисел time > int.MaxValue
+                                         //  (int)time works correctly for numbers time > int.MaxValue
             hour = (int)(time * 24);
             time -= hour * hh;
             min = (int)(time * 24 * 60);
@@ -62,6 +66,7 @@ namespace Scada.Data
 
         /// <summary>
         /// Преобразовать дату и время в формат DateTime из вещественного значения времени формата Delphi
+        /// Convert a date and time in DateTime format of real time Delphi format
         /// </summary>
         public static DateTime DecodeDateTime(double dateTime)
         {

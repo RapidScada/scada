@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="windows-1251"?>
+<?xml version="1.0" encoding="gb2312"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -40,7 +40,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Log">
-      <HintPath>..\..\Log\bin\Release\Log.dll</HintPath>
+      <HintPath>..\..\Log\bin\Debug\Log.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
