@@ -123,6 +123,13 @@ scada.Popup.prototype._genModalButtonsHtml = function (buttons) {
     return html;
 }
 
+// Find modal button by result
+scada.Popup.prototype._findModalButton = function (modalWnd, btn) {
+    var frame = $(modalWnd.frameElement);
+    var modalElem = frame.closest(".modal");
+    return modalElem.find(".modal-footer button[data-result='" + btn + "']");
+}
+
 // Show popup with the specified url as a dropdown menu below the anchorElem.
 // opt_callback is a function (dialogResult, extraParams)
 scada.Popup.prototype.showDropdown = function (url, anchorElem, opt_callback) {
@@ -306,10 +313,17 @@ scada.Popup.prototype.closeModal = function (modalWnd, dialogResult, extraParams
 
 // Show or hide the modal button
 scada.Popup.prototype.setButtonVisible = function (modalWnd, btn, val) {
-    var frame = $(modalWnd.frameElement);
-    var modalElem = frame.closest(".modal");
-    var btnElem = modalElem.find(".modal-footer button[data-result='" + btn + "']");
-    btnElem.css("display", val ? "" : "none");
+    this._findModalButton(modalWnd, btn).css("display", val ? "" : "none");
+}
+
+// Enable or disable the modal button
+scada.Popup.prototype.setButtonEnabled = function (modalWnd, btn, val) {
+    var btnElem = this._findModalButton(modalWnd, btn);
+    if (val) {
+        btnElem.removeAttr("disabled");
+    } else {
+        btnElem.attr("disabled", "disabled");
+    }
 }
 
 /********** Popup Locator **********/

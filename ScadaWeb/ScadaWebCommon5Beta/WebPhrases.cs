@@ -118,7 +118,7 @@ namespace Scada.Web
             {
                 ServerUnavailable = dict.GetPhrase("ServerUnavailable", ServerUnavailable);
                 WrongPassword = dict.GetPhrase("WrongPassword", WrongPassword);
-                NoRights = dict.GetPhrase("NoRightsL", NoRights);
+                NoRights = dict.GetPhrase("NoRights", NoRights);
                 IllegalRole = dict.GetPhrase("IllegalRole", IllegalRole);
             }
 

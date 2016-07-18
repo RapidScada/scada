@@ -31,12 +31,19 @@ $(document).ready(function () {
         }
     }
 
+    // disable execute button if the output channel is not found
+    if ($("#lblCtrlCnlNotFound").length > 0) {
+        if (popup) {
+            popup.setButtonEnabled(window, scada.ModalButtons.EXEC, false);
+        }
+    }
+
     // highlight password error
     if ($("#lblWrongPwdErr").length > 0) {
         $("#pnlPassword").addClass("has-error");
     }
 
-    // submit the form on modal execute button click
+    // submit the form on execute button click
     $(window).on(scada.EventTypes.MODAL_BTN_CLICK, function (event, result) {
         if (result == scada.ModalButtons.EXEC) {
             $("#btnSubmit").click();

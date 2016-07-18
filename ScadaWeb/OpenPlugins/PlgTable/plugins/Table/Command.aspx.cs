@@ -74,6 +74,7 @@ namespace Scada.Web.Plugins.Table
         {
             pnlErrMsg.Visible = false;
             lblWrongPwdErr.Visible = false;
+            lblNoRights.Visible = false;
         }
 
         /// <summary>
@@ -101,12 +102,18 @@ namespace Scada.Web.Plugins.Table
         {
             if (pnlPassword.Visible)
             {
-                int roleID;
-                bool reqOK = appData.ServerComm.CheckUser(userData.UserProps.UserName, txtPassword.Text, out roleID);
+                int roleID = BaseValues.Roles.Err; // неверный пароль
+                bool reqOK = txtPassword.Text == "" ? 
+                    true : appData.ServerComm.CheckUser(userData.UserProps.UserName, txtPassword.Text, out roleID);
 
                 if (reqOK)
                 {
-                    if (roleID == BaseValues.Roles.Err)
+                    if (roleID == BaseValues.Roles.Disabled || roleID == BaseValues.Roles.App) 
+                    {
+                        ShowErrMsg(lblNoRights);
+                        return false;
+                    }
+                    else if (roleID == BaseValues.Roles.Err)
                     {
                         ShowErrMsg(lblWrongPwdErr);
                         return false;
@@ -118,6 +125,7 @@ namespace Scada.Web.Plugins.Table
                 }
                 else
                 {
+                    ShowCmdResult(false, false);
                     return false;
                 }
             }
@@ -166,28 +174,38 @@ namespace Scada.Web.Plugins.Table
             appData = AppData.GetAppData();
             userData = UserData.GetUserData();
 
-            // получение параметров запроса
-            int viewID;
-            int.TryParse(Request.QueryString["viewID"], out viewID);
-            int.TryParse(Request.QueryString["ctrlCnlNum"], out ctrlCnlNum);
-
-            // проверка прав
-            if (!userData.LoggedOn ||
-                !userData.UserRights.GetViewRights(viewID).ControlRight ||
-                !userData.WebSettings.CmdEnabled)
-                throw new ScadaException(CommonPhrases.NoRights);
-
-            Type viewType = userData.UserViews.GetViewType(viewID);
-            BaseView view = appData.ViewCache.GetView(viewType, viewID, true);
-
-            if (!view.ContainsCtrlCnl(ctrlCnlNum))
+            // проверка входа в систему
+            if (!userData.LoggedOn)
                 throw new ScadaException(CommonPhrases.NoRights);
 
             // скрытие сообщения об ошибке
             HideErrMsg();
 
-            if (!IsPostBack)
+            if (IsPostBack)
             {
+                ctrlCnlNum = (int)ViewState["ctrlCnlNum"];
+            }
+            else
+            {
+                // получение параметров запроса
+                int viewID;
+                int.TryParse(Request.QueryString["viewID"], out viewID);
+                int.TryParse(Request.QueryString["ctrlCnlNum"], out ctrlCnlNum);
+
+                // проверка прав
+                if (!userData.UserRights.GetViewRights(viewID).ControlRight ||
+                    !userData.WebSettings.CmdEnabled)
+                    throw new ScadaException(CommonPhrases.NoRights);
+
+                Type viewType = userData.UserViews.GetViewType(viewID);
+                BaseView view = appData.ViewCache.GetView(viewType, viewID, true);
+
+                if (!view.ContainsCtrlCnl(ctrlCnlNum))
+                    throw new ScadaException(CommonPhrases.NoRights);
+
+                // сохранение номера канала управления во ViewState
+                ViewState["ctrlCnlNum"] = ctrlCnlNum;
+
                 // перевод веб-страницы
                 Translator.TranslatePage(Page, "Scada.Web.Plugins.Table.WFrmCommand");
 

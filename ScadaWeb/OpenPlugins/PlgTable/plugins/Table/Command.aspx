@@ -24,7 +24,8 @@
         <asp:MultiView ID="mvCommand" runat="server" ActiveViewIndex="0">
             <asp:View ID="viewCmdParams" runat="server">
                 <asp:Panel ID="pnlErrMsg" runat="server" CssClass="alert alert-danger">
-                    <asp:Label ID="lblWrongPwdErr" runat="server" Text="Incorrect password."></asp:Label>
+                    <asp:Label ID="lblWrongPwdErr" runat="server" Text="Incorrect password."></asp:Label><asp:Label 
+                        ID="lblNoRights" runat="server" Text="Insufficient rights."></asp:Label>
                 </asp:Panel>
                 <asp:Button ID="btnSubmit" runat="server" Text="Submit" OnClick="btnSubmit_Click" />
 
