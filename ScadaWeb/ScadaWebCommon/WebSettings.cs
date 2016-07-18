@@ -31,22 +31,20 @@ namespace Scada.Web
 {
 	/// <summary>
     /// Web application settings
-    /// <para>Настройки веб-приложения</para>
+    /// <para>Настройк?ве?приложен?</para>
 	/// </summary>
 	public class WebSettings
 	{
         /// <summary>
-        /// Имя файла настроек веб-приложения по умолчанию
-		/// </summary>
+        /// Имя файл?настроек ве?приложен? по умолчани?		/// </summary>
 		public const string DefFileName = "WebSettings.xml";
 
-        private string lastFileName;  // последнее использовавшееся имя файла настроек
-        private DateTime lastFileAge; // время последнего изменения файла настроек
+        private string lastFileName;  // последне?использовавшее? имя файл?настроек
+        private DateTime lastFileAge; // время последнего изменения файл?настроек
 
 
         /// <summary>
-        /// Конструктор
-        /// </summary>
+        /// Конструкто?        /// </summary>
         public WebSettings()
 		{
             lastFileName = "";
@@ -56,49 +54,42 @@ namespace Scada.Web
 
 
 		/// <summary>
-		/// Получить или установить частоту обновления срезов, с
-		/// </summary>
+		/// Получить ил?установить частот?обновлен? срезов, ?		/// </summary>
         public int SrezRefrFreq { get; set; }
 
         /// <summary>
-        /// Получить или установить частоту обновления событий
-        /// </summary>
+        /// Получить ил?установить частот?обновлен? событи?        /// </summary>
         public int EventRefrFreq { get; set; }
 
         /// <summary>
-        /// Получить или установить количество отображаемых событий
-        /// </summary>
+        /// Получить ил?установить количество отображаемых событи?        /// </summary>
         public int EventCnt { get; set; }
 
         /// <summary>
-        /// Получить или установить признак включения фильтра событий по представлению по умолчанию
-        /// </summary>
+        /// Получить ил?установить призна?включения фильтр?событи?по представлени?по умолчани?        /// </summary>
         public bool EventFltr { get; set; }
 
         /// <summary>
-        /// Получить или установить расстояние между точками графика, при котором делать разрыв, с
-        /// </summary>
+        /// Получить ил?установить расстояни?межд?точкам?график? пр?которо?делать разрыв, ?        /// </summary>
         public int DiagBreak { get; set; }
 
         /// <summary>
-        /// Получить или установить разрешение команд управления
+        /// Получить ил?установить разрешение команд управлен?
         /// </summary>
         public bool CmdEnabled { get; set; }
 
         /// <summary>
-        /// Получить или установить признак простой отправки команд управления
+        /// Получить ил?установить призна?просто?отправки команд управлен?
         /// </summary>
         public bool SimpleCmd { get; set; }
 
         /// <summary>
-        /// Получить или установить разрешение запоминать пользователя, вошедшего в систему
-        /// </summary>
+        /// Получить ил?установить разрешение запоминать пользовате?, вошедшег??систем?        /// </summary>
         public bool RemEnabled { get; set; }
 
 
         /// <summary>
-        /// Установить значения настроек по умолчанию
-        /// </summary>
+        /// Установить значен? настроек по умолчани?        /// </summary>
         private void SetToDefault()
         {
             SrezRefrFreq = 5;
@@ -113,7 +104,7 @@ namespace Scada.Web
 
 
         /// <summary>
-        /// Создать копию настроек веб-приложения
+        /// Создат?копи?настроек ве?приложен?
         /// </summary>
         public WebSettings Clone()
         {
@@ -128,7 +119,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Загрузить настройки веб-приложения из файла, если файл изменился
+        /// Загрузит?настройк?ве?приложен? из файл? если файл изменился
 		/// </summary>
 		public bool LoadFromFile(string fileName, out string errMsg)
 		{
@@ -136,9 +127,8 @@ namespace Scada.Web
             {
                 if (!File.Exists(fileName))
                 {
-                    // установка значений по умолчанию
-                    SetToDefault();
-                    // вызов исключения, если файл не существует
+                    // установк?значений по умолчани?                    SetToDefault();
+                    // вызо?исключен?, если файл не существует
                     throw new FileNotFoundException(string.Format(CommonPhrases.NamedFileNotFound, fileName));
                 }
 
@@ -146,8 +136,7 @@ namespace Scada.Web
 
                 if (lastFileName != fileName || lastFileAge != fileAge)
                 {
-                    // установка значений по умолчанию
-                    SetToDefault();
+                    // установк?значений по умолчани?                    SetToDefault();
 
                     // загрузка настроек
                     XmlDocument xmlDoc = new XmlDocument();
@@ -200,8 +189,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Сохранить настройки веб-приложения в файле
-        /// </summary>
+        /// Сохранит?настройк?ве?приложен? ?файл?        /// </summary>
         public bool SaveToFile(string fileName, out string errMsg)
         {
             try
@@ -215,22 +203,21 @@ namespace Scada.Web
                 xmlDoc.AppendChild(rootElem);
 
                 rootElem.AppendParamElem("SrezRefrFreq", SrezRefrFreq, 
-                    "Частота обновления срезов, с", "Values refresh frequency, sec");
+                    "Text1,Values refresh frequency, sec");
                 rootElem.AppendParamElem("EventRefrFreq", EventRefrFreq,
-                    "Частота обновления событий, с", "Events refresh frequency, sec");
+                    "Частот?обновлен? событи? ?, Events refresh frequency, sec");
                 rootElem.AppendParamElem("EventCnt", EventCnt, 
-                    "Количество отображаемых событий", "Display events count");
+                    "Количество отображаемых событи?, Display events count");
                 rootElem.AppendParamElem("EventFltr", EventFltr,
-                    "Установка фильтра событий по представлению по умолчанию", "Set 'View' events filter by default");
+                    "Установк?фильтр?событи?по представлени?по умолчани?, Set 'View' events filter by default");
                 rootElem.AppendParamElem("DiagBreak", DiagBreak,
-                    "Расстояние между точками графика, при котором делать разрыв, с", 
-                    "Distance between points on the diagramm to make a break, sec");
+                    "Text5,Distance between points on the diagramm to make a break, sec");
                 rootElem.AppendParamElem("CmdEnabled", CmdEnabled,
-                    "Разрешение команд управления", "Enable commands");
+                    "Разрешение команд управлен?Enable commands");
                 rootElem.AppendParamElem("SimpleCmd", SimpleCmd,
-                    "Простая отправка команд управления", "Simple commands sending");
+                    "Простая отправка команд управлен?Simple commands sending");
                 rootElem.AppendParamElem("RemEnabled", RemEnabled,
-                    "Разрешение запоминать пользователя, вошедшего в систему", "Enable to remember logged on user");
+                    "Разрешение запоминать пользовате?, вошедшег??систем?Enable to remember logged on user");
 
                 xmlDoc.Save(fileName);
                 errMsg = "";

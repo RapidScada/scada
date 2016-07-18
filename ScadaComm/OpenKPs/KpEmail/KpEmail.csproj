@@ -32,13 +32,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Log">
-      <HintPath>..\..\..\Log\bin\Release\Log.dll</HintPath>
+      <HintPath>..\..\ScadaCommCommon\bin\Debug\Log.dll</HintPath>
     </Reference>
     <Reference Include="ScadaCommCommon">
-      <HintPath>..\..\ScadaCommCommon\bin\Release\ScadaCommCommon.dll</HintPath>
+      <HintPath>..\..\ScadaCommCommon\bin\Debug\ScadaCommCommon.dll</HintPath>
     </Reference>
     <Reference Include="ScadaData">
-      <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
+      <HintPath>..\..\ScadaCommCommon\bin\Debug\ScadaData.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

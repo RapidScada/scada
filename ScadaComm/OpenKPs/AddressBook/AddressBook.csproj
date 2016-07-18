@@ -31,12 +31,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ScadaCommCommon, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ScadaCommCommon\bin\Release\ScadaCommCommon.dll</HintPath>
+    <Reference Include="ScadaCommCommon">
+      <HintPath>..\..\ScadaCommCommon\bin\Debug\ScadaCommCommon.dll</HintPath>
     </Reference>
     <Reference Include="ScadaData">
-      <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
+      <HintPath>..\..\ScadaCommCommon\bin\Debug\ScadaData.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />

@@ -46,13 +46,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ScadaData">
-      <HintPath>..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
+      <HintPath>..\..\ScadaData\ScadaData\bin\Debug\ScadaData.dll</HintPath>
     </Reference>
     <Reference Include="ScadaWeb">
       <HintPath>..\ScadaWeb\bin\ScadaWeb.dll</HintPath>
     </Reference>
     <Reference Include="ScadaWebCommon">
-      <HintPath>..\ScadaWebCommon\bin\Release\ScadaWebCommon.dll</HintPath>
+      <HintPath>..\ScadaWebCommon\bin\Debug\ScadaWebCommon.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

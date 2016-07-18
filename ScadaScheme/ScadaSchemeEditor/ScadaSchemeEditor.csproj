@@ -77,13 +77,11 @@
     <CodeAnalysisRuleSet>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Team Tools\Static Analysis Tools\Rule Sets\MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Log, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Log\bin\Release\Log.dll</HintPath>
+    <Reference Include="Log">
+      <HintPath>..\..\Log\bin\Debug\Log.dll</HintPath>
     </Reference>
-    <Reference Include="ScadaData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
+    <Reference Include="ScadaData">
+      <HintPath>..\..\ScadaData\ScadaData\bin\Debug\ScadaData.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Runtime.Serialization" />
@@ -173,10 +171,6 @@
   <ItemGroup>
     <Content Include="..\..\ScadaData\ScadaData\Lang\ScadaData.en-GB.xml">
       <Link>lang\ScadaData.en-GB.xml</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\ScadaScheme\Bin\Release\ScadaScheme.xap">
-      <Link>web\ScadaScheme.xap</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="edit.ico" />

@@ -36,13 +36,12 @@ namespace Scada.Web
 {
     /// <summary>
     /// Available reports web form
-    /// <para>Веб-форма доступных отчётов</para>
+    /// <para>Ве?форм?доступны?отчёто?/para>
     /// </summary>
     public partial class WFrmReport : System.Web.UI.Page
     {
         /// <summary>
-        /// Добавить отчёт в список подключенных отчётов
-        /// </summary>
+        /// Добавить отчё??список подключенных отчёто?        /// </summary>
         private void AddReport(int num, string text, string link)
         {
             TableRow row = new TableRow();
@@ -61,17 +60,17 @@ namespace Scada.Web
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            // получение данных пользователя
+            // получени?данных пользовате?
             UserData userData = UserData.GetUserData();
 
-            // проверка входа в систему
+            // проверка вход??систем?            
             if (!userData.LoggedOn)
                 throw new Exception(WebPhrases.NotLoggedOn);
 
-            // перевод веб-страницы
+            // перево?ве?страницы
             Translator.TranslatePage(this, "Scada.Web.WFrmReport");
 
-            // заполнение списка отчётов
+            // заполнение списка отчёто?            
             DirectoryInfo dirInfo = new DirectoryInfo(AppData.BinDir);
             SortedList<string, RepBuilder> repList = new SortedList<string, RepBuilder>();
 
@@ -83,7 +82,7 @@ namespace Scada.Web
                     string fileName = fileInfo.Name;
                     string fullName = fileInfo.FullName;
 
-                    // пропуск библиотеки базового абстрактного класса и библиотек отчётов, на которые недостаточно прав
+                    // пропус?библиотеки базового абстрактного класса ?библиоте?отчёто? на которы?недостаточно прав
                     if (fileName == "RepBuilder.dll" || !userData.GetRight(fileName).ViewRight)
                         continue;
 
@@ -96,17 +95,17 @@ namespace Scada.Web
                     catch (Exception ex)
                     {
                         AppData.Log.WriteAction(string.Format(Localization.UseRussian ? 
-                            "Ошибка при загрузке отчёта из библиотеки\n{0}\n{1}" : 
+                            "Ошибка пр?загрузке отчёта из библиотеки\n{0}\n{1}" : 
                             "Error loading report from the assembly\n{0}\n{1}", fullName, ex.Message), 
                             Log.ActTypes.Error);
                         continue;
                     }
 
-                    // получение типа из загруженной библиотеки
+                    // получени?типа из загруженно?библиотеки
                     Type repType = null;
                     string typeName = "Scada.Report." + fileName.Substring(0, fileName.Length - 4);
                     string unableMsg = string.Format(Localization.UseRussian ?
-                        "Не удалось получить тип отчёта {0} из библиотеки\n{1}" :
+                        "Не удалос?получить ти?отчёта {0} из библиотеки\n{1}" :
                         "Unable to get the report type {0} from the assembly\n{1}", typeName, fullName);
 
                     try
@@ -126,23 +125,23 @@ namespace Scada.Web
 
                     try
                     {
-                        // создание экземпляра класса отчёта
+                        // создание экземп?ра класса отчёта
                         RepBuilder rep = Activator.CreateInstance(repType) as RepBuilder;
 
-                        // добавление отчёта в список
+                        // добавление отчёта ?список
                         repList.Add(rep.RepName, rep);
                     }
                     catch (Exception ex)
                     {
                         AppData.Log.WriteAction(string.Format(Localization.UseRussian ?
-                            "Ошибка при создании экземпляра класса отчёта {0} из библиотеки\n{1}\n{2}" :
+                            "Ошибка пр?создании экземп?ра класса отчёта {0} из библиотеки\n{1}\n{2}" :
                             "Error creating report class instance {0} from the assembly\n{1}\n{2}", 
                             repType, fullName, ex.Message), Log.ActTypes.Error);
                     }
                 }
             }
 
-            // вывод списка отчётов на форму
+            // выво?списка отчёто?на форм?            
             if (repList.Count == 0)
             {
                 lblReportList.Visible = false;

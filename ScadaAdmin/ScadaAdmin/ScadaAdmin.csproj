@@ -61,18 +61,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Ionic.Zip">
-      <HintPath>..\..\..\dll\Ionic.Zip.dll</HintPath>
+      <HintPath>..\..\..\RapidSCADA_dll\Ionic.Zip.dll</HintPath>
     </Reference>
-    <Reference Include="Log, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Log\bin\Release\Log.dll</HintPath>
+    <Reference Include="Log">
+      <HintPath>..\..\Log\bin\Debug\Log.dll</HintPath>
     </Reference>
     <Reference Include="ScadaCommCommon">
-      <HintPath>..\..\ScadaComm\ScadaCommCommon\bin\Release\ScadaCommCommon.dll</HintPath>
+      <HintPath>..\..\ScadaComm\ScadaCommCommon\bin\Debug\ScadaCommCommon.dll</HintPath>
     </Reference>
-    <Reference Include="ScadaData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
+    <Reference Include="ScadaData">
+      <HintPath>..\..\ScadaData\ScadaData\bin\Debug\ScadaData.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -88,7 +86,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="WinControl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\DLL\WinControl.dll</HintPath>
+      <HintPath>..\..\..\RapidSCADA_dll\WinControl.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -37,14 +37,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Log">
-      <HintPath>..\..\..\Log\bin\Release\Log.dll</HintPath>
+      <HintPath>..\..\..\Log\bin\Debug\Log.dll</HintPath>
     </Reference>
     <Reference Include="ScadaCommCommon">
-      <HintPath>..\..\ScadaCommCommon\bin\Release\ScadaCommCommon.dll</HintPath>
+      <HintPath>..\..\ScadaCommCommon\bin\Debug\ScadaCommCommon.dll</HintPath>
     </Reference>
-    <Reference Include="ScadaData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
+    <Reference Include="ScadaData">
+      <HintPath>..\..\..\ScadaData\ScadaData\bin\Debug\ScadaData.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

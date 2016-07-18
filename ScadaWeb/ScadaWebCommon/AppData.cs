@@ -35,22 +35,20 @@ namespace Scada.Web
 {
 	/// <summary>
     /// The common application data
-    /// <para>Общие данные приложения</para>
+    /// <para>Общи?данные приложен?</para>
 	/// </summary>
 	public static class AppData
 	{
         /// <summary>
-        /// Имя файла журнала приложения по умолчанию
-        /// </summary>
+        /// Имя файл?журнал?приложен? по умолчани?        /// </summary>
         public const string DefLogFileName = "ScadaWeb.log";
 
 
-        private static string dictWriteTimeStr; // время записи в файлы словарей
+        private static string dictWriteTimeStr; // время записи ?файл?словарей
 
         
         /// <summary>
-        /// Конструктор
-        /// </summary>
+        /// Конструкто?        /// </summary>
         static AppData()
 		{
             dictWriteTimeStr = "";
@@ -63,28 +61,27 @@ namespace Scada.Web
 
 
         /// <summary>
-        /// Получить признак инициализации общих данных приложения
+        /// Получить призна?инициализаци?общи?данных приложен?
         /// </summary>
         public static bool Inited { get; private set; }
         
         /// <summary>
-        /// Получить журнал приложения
+        /// Получить журнал приложен?
         /// </summary>
         public static Log Log { get; private set; }
 
         /// <summary>
-        /// Получить объект для работы с данными системы
-        /// </summary>
+        /// Получить объект для работы ?данным?систем?        /// </summary>
         public static MainData MainData { get; private set; }
 
         /// <summary>
-        /// Получить настройки веб-приложения
+        /// Получить настройк?ве?приложен?
         /// </summary>
         public static WebSettings WebSettings { get; private set; }
 
 
         /// <summary>
-        /// Получить директорию приложения
+        /// Получить директорию приложен?
         /// </summary>
         public static string AppDir { get; private set; }
 
@@ -99,7 +96,7 @@ namespace Scada.Web
         public static string ConfigDir { get; private set; }
 
         /// <summary>
-        /// Получить директорию перевода на различные языки
+        /// Получить директорию перевода на различны?языки
         /// </summary>
         public static string LangDir { get; private set; }
 
@@ -109,24 +106,22 @@ namespace Scada.Web
         public static string LogDir { get; private set; }
 
         /// <summary>
-        /// Получить или установить имя файла журнала приложения (без директории)
+        /// Получить ил?установить имя файл?журнал?приложен? (бе?директории)
         /// </summary>
-        /// <remarks>Имя файла должно устанавливаться до инициализации общих данных приложения</remarks>
+        /// <remarks>Имя файл?должно устанавливаться до инициализаци?общи?данных приложен?</remarks>
         public static string LogFileName { get; set; }
 
         /// <summary>
-        /// Получить директорию веб-страниц отчётов
-        /// </summary>
+        /// Получить директорию ве?страни?отчёто?        /// </summary>
         public static string ReportDir { get; private set; }
 
         /// <summary>
-        /// Получить директорию шаблонов отчётов
-        /// </summary>
+        /// Получить директорию шаблонов отчёто?        /// </summary>
         public static string TemplateDir { get; private set; }
 
 
         /// <summary>
-        /// Обновить настройки веб-приложения
+        /// Обновить настройк?ве?приложен?
         /// </summary>
         private static void RefreshWebSettings()
         {
@@ -136,7 +131,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Обновить словари, если файл словарей изменился
+        /// Обновить словар? если файл словарей изменился
         /// </summary>
         private static void RefreshDictionaries()
         {
@@ -168,7 +163,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Получить время последней записи в файл
+        /// Получить время последне?записи ?файл
         /// </summary>
         private static DateTime GetFileWriteTime(string fileName)
         {
@@ -178,7 +173,7 @@ namespace Scada.Web
 
 
         /// <summary>
-        /// Инициализировать общие данные приложения
+        /// Инициализировать общи?данные приложен?
         /// </summary>
         public static void InitAppData()
         {
@@ -186,7 +181,7 @@ namespace Scada.Web
             {
                 Inited = true;
 
-                // определение директорий приложения
+                // определени?директорий приложен?
                 if (HttpContext.Current == null)
                 {
                     AppDir = ScadaUtils.NormalDir(Path.GetDirectoryName(Application.ExecutablePath));
@@ -204,21 +199,20 @@ namespace Scada.Web
                 ReportDir = AppDir + "report" + Path.DirectorySeparatorChar;
                 TemplateDir = AppDir + "templates" + Path.DirectorySeparatorChar;
 
-                // настройка объекта для работы с данными системы
-                MainData.SettingsFileName = ConfigDir + CommSettings.DefFileName;
+                // настройк?объект?для работы ?данным?систем?                MainData.SettingsFileName = ConfigDir + CommSettings.DefFileName;
 
-                // настройка журнала приложения
+                // настройк?журнал?приложен?
                 Log.FileName = LogDir + LogFileName;
                 Log.Encoding = Encoding.UTF8;
                 Log.WriteBreak();
-                Log.WriteAction(Localization.UseRussian ? "Инициализация общих данных приложения" : 
+                Log.WriteAction(Localization.UseRussian ? "Инициализация общи?данных приложен?" : 
                     "Initialize common application data", Log.ActTypes.Action);
             }
 
             // обновление словарей
             RefreshDictionaries();
 
-            // обновление настроек веб-приложения
+            // обновление настроек ве?приложен?
             RefreshWebSettings();
         }
     }

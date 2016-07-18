@@ -37,6 +37,7 @@ namespace Scada
     public class Cache<TKey, TValue>
     {
         /// <summary>
+        /// Cached item
         /// Кешированный элемент
         /// </summary>
         public class CacheItem

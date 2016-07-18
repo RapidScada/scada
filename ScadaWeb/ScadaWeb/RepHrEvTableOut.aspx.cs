@@ -33,7 +33,7 @@ namespace Scada.Web
 {
     /// <summary>
     /// Output page of "Hourly data and events" report
-    /// <para>Выходная страница отчёта "Часовые срезы и события"</para>
+    /// <para>Выходн? страница отчёта "Часовы?срез??события"</para>
     /// </summary>
     public partial class WFrmRepHrEvTableOut : System.Web.UI.Page
     {
@@ -42,48 +42,47 @@ namespace Scada.Web
             // отключение кэширования страницы
             ScadaUtils.DisablePageCache(Response);
 
-            // получение данных пользователя
+            // получени?данных пользовате?
             UserData userData = UserData.GetUserData();
 
-            // проверка входа в систему
+            // проверка вход??систем?            
             if (!userData.LoggedOn)
                 throw new Exception(WebPhrases.NotLoggedOn);
 
-            // определение индексов выбранного представления
+            // определени?индексов выбранного представления
             int viewSetIndex, viewIndex;
             if (!int.TryParse(Request["viewSet"], out viewSetIndex))
                 viewSetIndex = -1;
             if (!int.TryParse(Request["view"], out viewIndex))
                 viewIndex = -1;
 
-            // получение представления и прав пользователя на него
+            // получени?представления ?прав пользовате? на него
             BaseView baseView;
             MainData.Right right;
             TableView tableView = userData.GetView(null, viewSetIndex, viewIndex, out baseView, out right) ?
                 baseView as TableView : null;
 
-            // определение типа вывода событий
+            // определени?типа вывода событи?
             int eventOut;
             string eventOutStr = Request["eventOut"];
 
             if (eventOutStr == "all") 
-                eventOut = 1; // все события
+                eventOut = 1; // вс?события
             else if (eventOutStr == "view") 
-                eventOut = 2; // по представлению
-            else 
+                eventOut = 2; // по представлени?            else 
                 eventOut = 0; // не выводить
 
-            // проверка параметров генерации отчёта
+            // проверка параметров генераци?отчёта
             if (tableView == null && eventOut == 0)
                 throw new Exception(WebPhrases.NoReportData);
 
-            // проверка загрузки представления и прав на получение информации
+            // проверка загрузки представления ?прав на получени?информации
             if (baseView == null)
                 throw new Exception(WebPhrases.UnableLoadView);
             else if (!right.ViewRight || eventOut == 1 && userData.Role == ServerComm.Roles.Custom)
                 throw new Exception(CommonPhrases.NoRights);
 
-            // определение даты, за которую формируется отчёт
+            // определени?даты, за котору?формируется отчё?            
             int year, month, day;
             int.TryParse(Request["year"], out year);
             int.TryParse(Request["month"], out month);
@@ -104,17 +103,17 @@ namespace Scada.Web
 
             try
             {
-                // вывод в журнал
+                // выво??журнал
                 AppData.Log.WriteAction(string.Format(WebPhrases.GenReport, rep.RepName, userData.UserLogin), 
                     Log.ActTypes.Action);
 
-                // установка типа страницы и имени файла отчёта                
+                // установк?типа страницы ?имен?файл?отчёта                
                 Response.ClearHeaders();
                 Response.ContentType = "application/octet-stream";
                 Response.AppendHeader("Content-Disposition", "attachment;filename=\"" +
                     Path.GetFileNameWithoutExtension(baseView.ItfObjName) + reqDate.ToString(" yyyy-MM-dd") + ".xml\"");
 
-                // установка параметров отчёта
+                // установк?параметров отчёта
                 rep.SetParams(baseView, reqDate, eventOut);
 
                 // генерация отчёта

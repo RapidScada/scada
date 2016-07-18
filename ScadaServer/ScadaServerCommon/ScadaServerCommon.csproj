@@ -33,10 +33,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Log">
-      <HintPath>..\..\Log\bin\Release\Log.dll</HintPath>
+      <HintPath>..\..\Log\bin\Debug\Log.dll</HintPath>
     </Reference>
     <Reference Include="ScadaData">
-      <HintPath>..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
+      <HintPath>..\..\ScadaData\ScadaData\bin\Debug\ScadaData.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Windows.Forms" />

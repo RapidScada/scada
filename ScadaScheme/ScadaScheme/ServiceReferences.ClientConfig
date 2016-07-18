@@ -9,9 +9,9 @@
             </basicHttpBinding>
         </bindings>
         <client>
-            <endpoint address="http://localhost:59434/scheme/ScadaSchemeSvc.svc"
-                binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IScadaSchemeSvc"
-                contract="ScadaSchemeSvc.IScadaSchemeSvc" name="BasicHttpBinding_IScadaSchemeSvc" />
+            <endpoint address="../scheme/ScadaSchemeSvc.svc" binding="basicHttpBinding"
+                bindingConfiguration="BasicHttpBinding_IScadaSchemeSvc" contract="ScadaSchemeSvc.IScadaSchemeSvc"
+                name="BasicHttpBinding_IScadaSchemeSvc" />
         </client>
     </system.serviceModel>
 </configuration>
