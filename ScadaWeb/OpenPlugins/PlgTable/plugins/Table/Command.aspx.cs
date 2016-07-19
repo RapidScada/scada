@@ -29,6 +29,7 @@ using Scada.Data.Tables;
 using Scada.UI;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Web.UI.WebControls;
 
 namespace Scada.Web.Plugins.Table
@@ -51,6 +52,7 @@ namespace Scada.Web.Plugins.Table
 
         private AppData appData;   // общие данные веб-приложения
         private UserData userData; // данные пользователя приложения
+        private bool cmdEnabled;   // отправка команды разрешена
         private int ctrlCnlNum;    // номер канала управления
 
 
@@ -68,13 +70,36 @@ namespace Scada.Web.Plugins.Table
         }
 
         /// <summary>
+        /// Попытаться получить данные бинарной команды, введённые пользователем
+        /// </summary>
+        private bool TryParseCmdData(out byte[] cmdData)
+        {
+            if (txtCmdData.Text == "")
+            {
+                cmdData = null;
+                return false;
+            }
+            else if (rbStr.Checked)
+            {
+                cmdData = Encoding.Default.GetBytes(txtCmdData.Text);
+                return true;
+            }
+            else
+            {
+                return ScadaUtils.HexToBytes(txtCmdData.Text, out cmdData, true);
+            }
+        }
+
+        /// <summary>
         /// Скрыть сообщение об ошибке
         /// </summary>
         private void HideErrMsg()
         {
             pnlErrMsg.Visible = false;
-            lblWrongPwdErr.Visible = false;
+            lblWrongPwd.Visible = false;
             lblNoRights.Visible = false;
+            lblIncorrectCmdVal.Visible = false;
+            lblIncorrectCmdData.Visible = false;
         }
 
         /// <summary>
@@ -115,7 +140,7 @@ namespace Scada.Web.Plugins.Table
                     }
                     else if (roleID == BaseValues.Roles.Err)
                     {
-                        ShowErrMsg(lblWrongPwdErr);
+                        ShowErrMsg(lblWrongPwd);
                         return false;
                     }
                     else
@@ -147,11 +172,34 @@ namespace Scada.Web.Plugins.Table
         }
 
         /// <summary>
+        /// Отправить бинарную команду
+        /// </summary>
+        private void SendBinaryCmd(byte[] cmdData)
+        {
+            bool result;
+            bool sendOK = appData.ServerComm.SendBinaryCommand(
+                userData.UserProps.UserID, ctrlCnlNum, cmdData, out result);
+            ShowCmdResult(sendOK, result);
+        }
+
+        /// <summary>
+        /// Отправить команду опроса КП
+        /// </summary>
+        private void SendRequestCmd(int kpNum)
+        {
+            bool result;
+            bool sendOK = appData.ServerComm.SendRequestCommand(
+                userData.UserProps.UserID, ctrlCnlNum, kpNum, out result);
+            ShowCmdResult(sendOK, result);
+        }
+
+        /// <summary>
         /// Отобразить результат выполнения команды
         /// </summary>
         private void ShowCmdResult(bool sendOK, bool result)
         {
             mvCommand.SetActiveView(viewCmdResult);
+            hidDisableExecuteBtn.Value = "true";
 
             if (sendOK && result)
             {
@@ -183,7 +231,8 @@ namespace Scada.Web.Plugins.Table
 
             if (IsPostBack)
             {
-                ctrlCnlNum = (int)ViewState["ctrlCnlNum"];
+                cmdEnabled = (bool)ViewState["CmdEnabled"];
+                ctrlCnlNum = (int)ViewState["CtrlCnlNum"];
             }
             else
             {
@@ -204,13 +253,14 @@ namespace Scada.Web.Plugins.Table
                     throw new ScadaException(CommonPhrases.NoRights);
 
                 // сохранение номера канала управления во ViewState
-                ViewState["ctrlCnlNum"] = ctrlCnlNum;
+                ViewState["CtrlCnlNum"] = ctrlCnlNum;
 
                 // перевод веб-страницы
                 Translator.TranslatePage(Page, "Scada.Web.Plugins.Table.WFrmCommand");
 
                 // получение канала управления
                 CtrlCnlProps ctrlCnlProps = appData.DataAccess.GetCtrlCnlProps(ctrlCnlNum);
+                ViewState["CmdEnabled"] = ctrlCnlProps != null;
 
                 if (ctrlCnlProps == null)
                 {
@@ -218,6 +268,7 @@ namespace Scada.Web.Plugins.Table
                     // элементы управления ввода команды скрыты по умолчанию
                     lblCtrlCnl.Visible = false;
                     lblCtrlCnlNotFound.Visible = true;
+                    hidDisableExecuteBtn.Value = "true";
                 }
                 else
                 {
@@ -250,6 +301,7 @@ namespace Scada.Web.Plugins.Table
                             pnlData.Visible = true;
                             break;
                         default: // BaseValues.CmdTypes.Request:
+                            ViewState["KPNum"] = ctrlCnlProps.KPNum;
                             break;
                     }
                 }
@@ -258,13 +310,40 @@ namespace Scada.Web.Plugins.Table
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            appData.Log.WriteLine("!!!btnSubmit_Click");
+            if (cmdEnabled && CheckPassword())
+            {
+                if (pnlRealValue.Visible)
+                {
+                    // отправка стандартной команды для вещественных значений
+                    double cmdVal;
+                    if (ScadaUtils.TryParseDouble(txtCmdVal.Text, out cmdVal))
+                        SendStandardCmd(cmdVal);
+                    else
+                        ShowErrMsg(lblIncorrectCmdVal);
+                }
+                else if (pnlData.Visible)
+                {
+                    // отправка бинарной команды
+                    byte[] cmdData;
+                    if (TryParseCmdData(out cmdData))
+                        SendBinaryCmd(cmdData);
+                    else
+                        ShowErrMsg(lblIncorrectCmdData);
+                }
+                else
+                {
+                    // отправка команды опроса КП
+                    int kpNum = (int)ViewState["KPNum"];
+                    SendRequestCmd(kpNum);
+                }
+            }
         }
 
         protected void repCommands_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            if (CheckPassword())
+            if (cmdEnabled && CheckPassword())
             {
+                // отправка стандартной команды для дискретных значений
                 Button btn = (Button)e.CommandSource;
                 int cmdVal = int.Parse(btn.Attributes["data-cmdval"]);
                 SendStandardCmd(cmdVal);

@@ -162,9 +162,10 @@ namespace Scada
         }
 
         /// <summary>
-        /// Преобразовать строку в вещественное число. Метод работает с разделителями целой части '.' и ','
+        /// Преобразовать строку в вещественное число
         /// </summary>
-        /// <remarks>Если преобразование невозможно, вызывается исключение FormatException</remarks>
+        /// <remarks>Метод работает с разделителями целой части '.' и ','.
+        /// Если преобразование невозможно, вызывается исключение FormatException</remarks>
         public static double StrToDoubleExc(string s)
         {
             try { return ParseDouble(s); }
@@ -172,14 +173,31 @@ namespace Scada
         }
 
         /// <summary>
-        /// Преобразовать строку в вещественное число. Метод работает с разделителями целой части '.' и ','
+        /// Преобразовать строку в вещественное число
         /// </summary>
+        /// <remarks>Метод работает с разделителями целой части '.' и ','</remarks>
         public static double ParseDouble(string s)
         {
-            nfi.NumberDecimalSeparator = s.Contains(".") ? "." : ",";
-            return double.Parse(s, nfi);
+            lock (nfi)
+            {
+                nfi.NumberDecimalSeparator = s.Contains(".") ? "." : ",";
+                return double.Parse(s, nfi);
+            }
         }
-        
+
+        /// <summary>
+        /// Попытаться преобразовать строку в вещественное число
+        /// </summary>
+        /// <remarks>Метод работает с разделителями целой части '.' и ','</remarks>
+        public static bool TryParseDouble(string s, out double result)
+        {
+            lock (nfi)
+            {
+                nfi.NumberDecimalSeparator = s.Contains(".") ? "." : ",";
+                return double.TryParse(s, NumberStyles.Float, nfi, out result);
+            }
+        }
+
         /// <summary>
         /// Преобразовать массив байт в строку на основе 16-ричного представления
         /// </summary>
@@ -203,26 +221,56 @@ namespace Scada
         /// <summary>
         /// Преобразовать строку 16-ричных чисел в массив байт
         /// </summary>
-        public static bool HexToBytes(string s, out byte[] bytes)
+        public static bool HexToBytes(string s, out byte[] bytes, bool skipWhiteSpace = false)
         {
-            int len = s == null ? 0 : s.Length;
+            int strLen = s == null ? 0 : s.Length;
+            int bufLen = strLen / 2;
+            byte[] buf = new byte[bufLen];
 
-            if (len > 0 && len % 2 == 0)
+            int strInd = 0;
+            int bufInd = 0;
+            bool parseOK = true;
+
+            while (strInd < strLen && parseOK)
             {
-                bool parseOk = true;
-                bytes = new byte[len / 2];
-
-                for (int i = 0, j = 0; i < len && parseOk; i += 2, j++)
+                if (skipWhiteSpace)
                 {
-                    try { bytes[j] = (byte)int.Parse(s.Substring(i, 2), NumberStyles.HexNumber); }
-                    catch { parseOk = false; }
+                    while (strInd < strLen && char.IsWhiteSpace(s[strInd]))
+                    {
+                        strInd++;
+                    }
+                    if (strInd == strLen)
+                        break;
                 }
 
-                return parseOk;
+                try
+                {
+                    buf[bufInd] = byte.Parse(s.Substring(strInd, 2), NumberStyles.HexNumber);
+                    bufInd++;
+                    strInd += 2;
+                }
+                catch
+                {
+                    parseOK = false;
+                }
+            }
+
+            if (parseOK && bufInd > 0)
+            {
+                if (bufInd < bufLen)
+                {
+                    bytes = new byte[bufInd];
+                    Array.Copy(buf, 0, bytes, 0, bufInd);
+                }
+                else
+                {
+                    bytes = buf;
+                }
+                return true;
             }
             else
             {
-                bytes = new byte[0];
+                bytes = buf;
                 return false;
             }
         }

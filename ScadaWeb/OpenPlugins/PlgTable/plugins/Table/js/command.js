@@ -31,16 +31,26 @@ $(document).ready(function () {
         }
     }
 
-    // disable execute button if the output channel is not found
-    if ($("#lblCtrlCnlNotFound").length > 0) {
+    // disable execute button if it is specified by the server code
+    if ($("#hidDisableExecuteBtn").val() == "true") {
         if (popup) {
             popup.setButtonEnabled(window, scada.ModalButtons.EXEC, false);
         }
     }
 
     // highlight password error
-    if ($("#lblWrongPwdErr").length > 0) {
+    if ($("#lblWrongPwd").length > 0) {
         $("#pnlPassword").addClass("has-error");
+    }
+
+    // highlight command value error
+    if ($("#lblIncorrectCmdVal").length > 0) {
+        $("#pnlRealValue").addClass("has-error");
+    }
+
+    // highlight command data error
+    if ($("#lblIncorrectCmdData").length > 0) {
+        $("#pnlData").addClass("has-error");
     }
 
     // submit the form on execute button click

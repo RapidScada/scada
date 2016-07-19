@@ -21,11 +21,14 @@
 </head>
 <body>
     <form id="frmCommand" runat="server">
+        <asp:HiddenField ID="hidDisableExecuteBtn" runat="server" Value="false" />
         <asp:MultiView ID="mvCommand" runat="server" ActiveViewIndex="0">
             <asp:View ID="viewCmdParams" runat="server">
                 <asp:Panel ID="pnlErrMsg" runat="server" CssClass="alert alert-danger">
-                    <asp:Label ID="lblWrongPwdErr" runat="server" Text="Incorrect password."></asp:Label><asp:Label 
-                        ID="lblNoRights" runat="server" Text="Insufficient rights."></asp:Label>
+                    <asp:Label ID="lblWrongPwd" runat="server" Text="Incorrect password."></asp:Label><asp:Label 
+                        ID="lblNoRights" runat="server" Text="Insufficient rights."></asp:Label><asp:Label 
+                        ID="lblIncorrectCmdVal" runat="server" Text="Incorrect command value."></asp:Label><asp:Label 
+                        ID="lblIncorrectCmdData" runat="server" Text="Incorrect command data."></asp:Label>
                 </asp:Panel>
                 <asp:Button ID="btnSubmit" runat="server" Text="Submit" OnClick="btnSubmit_Click" />
 
@@ -53,9 +56,10 @@
                     <span class="glyphicon glyphicon-exclamation-sign form-control-feedback"></span>
                 </asp:Panel>
 
-                <asp:Panel ID="pnlRealValue" runat="server" CssClass="form-group" Visible="False">
-                    <div><asp:Label ID="lblCmdVal" runat="server" CssClass="control-label" Text="Value" AssociatedControlID="txtCmdVal"></asp:Label></div>
-                    <div><asp:TextBox ID="txtCmdVal" runat="server" CssClass="form-control"></asp:TextBox></div>
+                <asp:Panel ID="pnlRealValue" runat="server" CssClass="form-group has-feedback" Visible="False">
+                    <asp:Label ID="lblCmdVal" runat="server" CssClass="control-label" Text="Value" AssociatedControlID="txtCmdVal"></asp:Label>
+                    <asp:TextBox ID="txtCmdVal" runat="server" CssClass="form-control"></asp:TextBox>
+                    <span class="glyphicon glyphicon-exclamation-sign form-control-feedback"></span>
                 </asp:Panel>
 
                 <asp:Panel ID="pnlDiscreteValue" runat="server" CssClass="form-group" Visible="False">
@@ -69,7 +73,7 @@
                 </asp:Panel>
 
                 <asp:Panel ID="pnlData" runat="server" CssClass="form-group" Visible="False">
-                    <div><asp:Label ID="lblCmdData" runat="server" CssClass="control-label" Text="Data" AssociatedControlID="txtCmdData"></asp:Label></div>
+                    <asp:Label ID="lblCmdData" runat="server" CssClass="control-label" Text="Data" AssociatedControlID="txtCmdData"></asp:Label>
                     <div id="divCmdDataFormat">
                         <label class="radio-inline">
                             <asp:RadioButton ID="rbStr" runat="server" Checked="True" GroupName="CmdDataFormat" /><asp:Label ID="lblStr" runat="server" Text="String"></asp:Label>
@@ -78,10 +82,11 @@
                             <asp:RadioButton ID="rbHex" runat="server" GroupName="CmdDataFormat" /><asp:Label ID="lblHex" runat="server" Text="Hexadecimal"></asp:Label>
                         </label>
                     </div>
-                    <div><asp:TextBox ID="txtCmdData" runat="server" CssClass="form-control" Rows="3" TextMode="MultiLine"></asp:TextBox></div>
+                    <asp:TextBox ID="txtCmdData" runat="server" CssClass="form-control" Rows="3" TextMode="MultiLine"></asp:TextBox>
                 </asp:Panel>
 
-                <div class="alert alert-danger invisible">Vertical Spacer</div>
+                <div class="alert alert-danger invisible">Vertical Spacer Begin</div>
+                <div class="invisible" style="height:0">Vertical Spacer End</div>
             </asp:View>
 
             <asp:View ID="viewCmdResult" runat="server">

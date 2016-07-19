@@ -22,6 +22,15 @@ namespace Scada.Web.Plugins.Table {
         protected global::System.Web.UI.HtmlControls.HtmlForm frmCommand;
         
         /// <summary>
+        /// hidDisableExecuteBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hidDisableExecuteBtn;
+        
+        /// <summary>
         /// mvCommand control.
         /// </summary>
         /// <remarks>
@@ -49,13 +58,13 @@ namespace Scada.Web.Plugins.Table {
         protected global::System.Web.UI.WebControls.Panel pnlErrMsg;
         
         /// <summary>
-        /// lblWrongPwdErr control.
+        /// lblWrongPwd control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblWrongPwdErr;
+        protected global::System.Web.UI.WebControls.Label lblWrongPwd;
         
         /// <summary>
         /// lblNoRights control.
@@ -65,6 +74,24 @@ namespace Scada.Web.Plugins.Table {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblNoRights;
+        
+        /// <summary>
+        /// lblIncorrectCmdVal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblIncorrectCmdVal;
+        
+        /// <summary>
+        /// lblIncorrectCmdData control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblIncorrectCmdData;
         
         /// <summary>
         /// btnSubmit control.

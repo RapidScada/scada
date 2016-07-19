@@ -18,6 +18,9 @@ input[type=text],
 input[type=password] {
   width: calc(100% - 5px);
 }
+textarea {
+  resize: none;
+}
 .form-control-feedback {
   color: transparent;
 }
