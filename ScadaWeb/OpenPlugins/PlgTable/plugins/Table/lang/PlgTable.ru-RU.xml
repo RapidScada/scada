@@ -7,6 +7,28 @@
     <Phrase key="LoadTableViewError">Ошибка при загрузке табличного представления из файла</Phrase>
     <Phrase key="SaveTableViewError">Ошибка при сохранении табличного представления в файле</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmCommand">
+    <Phrase key="this">Команда - Rapid SCADA</Phrase>
+    <Phrase key="lblWrongPwd">Неверный пароль.</Phrase>
+    <Phrase key="lblNoRights">Insufficient rights.</Phrase>
+    <Phrase key="lblIncorrectCmdVal">Некорректное значение команды.</Phrase>
+    <Phrase key="lblIncorrectCmdData">Некорректные данные команды.</Phrase>
+    <Phrase key="lblCtrlCnlCaption">Канал упр.:</Phrase>
+    <Phrase key="lblCtrlCnlNotFound">Не найден</Phrase>
+    <Phrase key="lblObjCaption">Объект:</Phrase>
+    <Phrase key="lblDevCaption">КП:</Phrase>
+    <Phrase key="lblPassword">Пароль</Phrase>
+    <Phrase key="lblCmdVal">Значение</Phrase>
+    <Phrase key="lblCommand">Команда</Phrase>
+    <Phrase key="lblCmdData">Данные</Phrase>
+    <Phrase key="lblStr">Строка</Phrase>
+    <Phrase key="lblHex">16-ричные данные</Phrase>
+    <Phrase key="lblCmdEnqueded">Команда поставлена в очередь на выполнение.</Phrase>
+    <Phrase key="lblCloseAfter">Окно будет закрыто через</Phrase>
+    <Phrase key="lblSec">с.</Phrase>
+    <Phrase key="lblCmdNotSent">Невозможно отправить команду. Сервер недоступен.</Phrase>
+    <Phrase key="lblCmdRejected">Команда отклонена сервером.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.WFrmEvents">
     <Phrase key="lblAllEventsBtn">Все события</Phrase>
     <Phrase key="lblEventsByViewBtn">По представлению</Phrase>

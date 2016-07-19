@@ -22,6 +22,15 @@ namespace Scada.Web.Plugins.Table {
         protected global::System.Web.UI.HtmlControls.HtmlForm frmCommand;
         
         /// <summary>
+        /// hidHideExecuteBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hidHideExecuteBtn;
+        
+        /// <summary>
         /// hidDisableExecuteBtn control.
         /// </summary>
         /// <remarks>

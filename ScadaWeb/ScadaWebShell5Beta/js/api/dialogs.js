@@ -33,9 +33,8 @@ scada.dialogs = {
     },
 
     // Show command dialog.
-    // opt_callback is a function (dialogResult, cmdVal),
-    // dialogResult is true or false,
-    // cmdVal is a command value which can be a number, array of bytes or string
+    // opt_callback is a function (dialogResult),
+    // dialogResult is true or false
     showCmd: function (viewID, ctrlCnlNum, opt_callback) {
         if (scada.cmd && scada.cmd.show) {
             scada.cmd.show(this.rootPath, viewID, ctrlCnlNum, opt_callback);

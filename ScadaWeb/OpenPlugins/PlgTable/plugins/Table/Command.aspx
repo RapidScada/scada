@@ -21,6 +21,7 @@
 </head>
 <body>
     <form id="frmCommand" runat="server">
+        <asp:HiddenField ID="hidHideExecuteBtn" runat="server" Value="false" />
         <asp:HiddenField ID="hidDisableExecuteBtn" runat="server" Value="false" />
         <asp:MultiView ID="mvCommand" runat="server" ActiveViewIndex="0">
             <asp:View ID="viewCmdParams" runat="server">
@@ -58,7 +59,7 @@
 
                 <asp:Panel ID="pnlRealValue" runat="server" CssClass="form-group has-feedback" Visible="False">
                     <asp:Label ID="lblCmdVal" runat="server" CssClass="control-label" Text="Value" AssociatedControlID="txtCmdVal"></asp:Label>
-                    <asp:TextBox ID="txtCmdVal" runat="server" CssClass="form-control"></asp:TextBox>
+                    <asp:TextBox ID="txtCmdVal" runat="server" CssClass="form-control" autocomplete="off"></asp:TextBox>
                     <span class="glyphicon glyphicon-exclamation-sign form-control-feedback"></span>
                 </asp:Panel>
 
@@ -67,7 +68,7 @@
                     <div id="divCommands">
                         <asp:Repeater ID="repCommands" runat="server" OnItemCommand="repCommands_ItemCommand">
                             <ItemTemplate><asp:Button ID="btnCmd" runat="server" 
-                                CssClass="btn btn-danger" Text='<%#: Eval("Text") %>' data-cmdval='<%# Eval("Val") %>' /></ItemTemplate>
+                                CssClass="btn btn-danger" UseSubmitBehavior="False" Text='<%#: Eval("Text") %>' data-cmdval='<%# Eval("Val") %>' /></ItemTemplate>
                         </asp:Repeater>
                     </div>
                 </asp:Panel>

@@ -19,21 +19,20 @@ function startCountdown() {
         }
     }
 
+    if (popup) {
+        popup.setModalResult(window, true);
+    }
+
     spanCountdown.text(closeTimeout);
     setTimeout(countdownFunc, 1000);
 }
 
 $(document).ready(function () {
-    // hide execute button for discrete command
-    if ($("#pnlDiscreteValue").length > 0) {
-        if (popup) {
+    // hide or disable execute button if it is specified by the server code
+    if (popup) {
+        if ($("#hidHideExecuteBtn").val() == "true") {
             popup.setButtonVisible(window, scada.ModalButtons.EXEC, false);
-        }
-    }
-
-    // disable execute button if it is specified by the server code
-    if ($("#hidDisableExecuteBtn").val() == "true") {
-        if (popup) {
+        } else if ($("#hidDisableExecuteBtn").val() == "true") {
             popup.setButtonEnabled(window, scada.ModalButtons.EXEC, false);
         }
     }

@@ -7,6 +7,28 @@
     <Phrase key="LoadTableViewError">Error loading table view from file</Phrase>
     <Phrase key="SaveTableViewError">Error saving table view to file</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmCommand">
+    <Phrase key="this">Command - Rapid SCADA</Phrase>
+    <Phrase key="lblWrongPwd">Incorrect password.</Phrase>
+    <Phrase key="lblNoRights">Insufficient rights.</Phrase>
+    <Phrase key="lblIncorrectCmdVal">Incorrect command value.</Phrase>
+    <Phrase key="lblIncorrectCmdData">Incorrect command data.</Phrase>
+    <Phrase key="lblCtrlCnlCaption">Out channel:</Phrase>
+    <Phrase key="lblCtrlCnlNotFound">Not found</Phrase>
+    <Phrase key="lblObjCaption">Object:</Phrase>
+    <Phrase key="lblDevCaption">Device:</Phrase>
+    <Phrase key="lblPassword">Password</Phrase>
+    <Phrase key="lblCmdVal">Value</Phrase>
+    <Phrase key="lblCommand">Command</Phrase>
+    <Phrase key="lblCmdData">Data</Phrase>
+    <Phrase key="lblStr">String</Phrase>
+    <Phrase key="lblHex">Hexadecimal</Phrase>
+    <Phrase key="lblCmdEnqueded">The command is enqueued for execution.</Phrase>
+    <Phrase key="lblCloseAfter">The window will be closed after</Phrase>
+    <Phrase key="lblSec">sec.</Phrase>
+    <Phrase key="lblCmdNotSent">Unable to send the command. Server is unavailable.</Phrase>
+    <Phrase key="lblCmdRejected">The command is rejected by the server.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.WFrmEvents">
     <Phrase key="lblAllEventsBtn">All Events</Phrase>
     <Phrase key="lblEventsByViewBtn">Events by View</Phrase>
