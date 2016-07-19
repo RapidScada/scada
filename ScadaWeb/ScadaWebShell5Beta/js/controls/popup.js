@@ -36,32 +36,15 @@ scada.ModalButtons = {
 scada.Popup = function () {
     // Window that holds popups
     this._holderWindow = window;
-
-    // Callback functions of the existing popups
-    this._popupCallbacks = new Map();
-};
-
-// Event handler that removes the popup on press Escape key
-scada.Popup.prototype._removePopupOnEscape = function (event) {
-    if (event.which == 27 /*Escape*/) {
-        this._cancelDropdown(event.data);
-    }
 };
 
 // Close the dropdown popup and execute a callback with a cancel result
 scada.Popup.prototype._cancelDropdown = function (popupElem) {
-    var frame = popupElem.find(".popup-frame");
-    if (frame.length > 0) {
-        var frameWnd = frame[0].contentWindow;
-        var callback = this._popupCallbacks.get(frameWnd);
-        this._popupCallbacks.delete(frameWnd);
-        popupElem.remove();
+    var callback = popupElem.data("popup-callback");
+    popupElem.remove();
 
-        if (callback) {
-            callback(false);
-        }
-    } else {
-        popupElem.remove();
+    if (callback) {
+        callback(false);
     }
 };
 
@@ -136,6 +119,11 @@ scada.Popup.prototype.showDropdown = function (url, anchorElem, opt_callback) {
     var thisObj = this;
     var popupElem = $("<div class='popup-dropdown'><div class='popup-overlay'></div>" +
         "<div class='popup-wrapper'><iframe class='popup-frame'></iframe></div></div>");
+
+    if (opt_callback) {
+        popupElem.data("popup-callback", opt_callback);
+    }
+
     $("body").append(popupElem);
 
     var overlay = popupElem.find(".popup-overlay");
@@ -156,25 +144,27 @@ scada.Popup.prototype.showDropdown = function (url, anchorElem, opt_callback) {
     }); 
 
     // remove the popup on press Escape key in the parent window
-    var removePopupOnEscape = this._removePopupOnEscape.bind(this);
+    var removePopupOnEscapeFunc = function (event) {
+        if (event.which == 27 /*Escape*/) {
+            thisObj._cancelDropdown(popupElem);
+        }
+    }
+
     $(document)
-    .off("keydown", null, removePopupOnEscape)
-    .on("keydown", null, popupElem, removePopupOnEscape);
+    .off("keydown", removePopupOnEscapeFunc)
+    .on("keydown", removePopupOnEscapeFunc);
 
     // load the frame
     frame
     .on("load", function () {
-        // store callback function
-        var frameWnd = frame[0].contentWindow;
-        thisObj._popupCallbacks.set(frameWnd, opt_callback);
-
         // remove the popup on press Escape key in the frame
+        var frameWnd = frame[0].contentWindow;
         if (frameWnd.$) {
             var jqFrameDoc = frameWnd.$(frameWnd.document);
             jqFrameDoc.ready(function () {
                 jqFrameDoc
-                .off("keydown", null, removePopupOnEscape)
-                .on("keydown", null, popupElem, removePopupOnEscape);
+                .off("keydown", removePopupOnEscapeFunc)
+                .on("keydown", removePopupOnEscapeFunc);
             });
         }
     })
@@ -229,8 +219,7 @@ scada.Popup.prototype.showDropdown = function (url, anchorElem, opt_callback) {
 scada.Popup.prototype.closeDropdown = function (popupWnd, dialogResult, extraParams) {
     var frame = $(popupWnd.frameElement);
     var popupElem = frame.closest(".popup-dropdown");
-    var callback = this._popupCallbacks.get(popupWnd);
-    this._popupCallbacks.delete(popupWnd);
+    var callback = popupElem.data("popup-callback");
     popupElem.remove();
 
     if (callback) {
@@ -255,12 +244,36 @@ scada.Popup.prototype.showModal = function (url, opt_buttons, opt_callback) {
         "<div class='modal-body'><iframe class='modal-frame'></iframe></div>" +
         footerHtml +
         "</div></div></div>");
+
+    if (opt_callback) {
+        modalElem
+            .data("modal-callback", opt_callback)
+            .data("dialog-result", false);
+    }
+
     $("body").append(modalElem);
 
     // load the frame
     var modalFrame = modalElem.find(".modal-frame");
+    var hideModalOnEscapeFunc = function (event) {
+        if (event.which == 27 /*Escape*/) {
+            modalElem.modal("hide");
+        }
+    }
 
     modalFrame
+    .on("load", function () {
+        // remove the modal on press Escape key in the frame
+        var frameWnd = modalFrame[0].contentWindow;
+        if (frameWnd.$) {
+            var jqFrameDoc = frameWnd.$(frameWnd.document);
+            jqFrameDoc.ready(function () {
+                jqFrameDoc
+                .off("keydown", hideModalOnEscapeFunc)
+                .on("keydown", hideModalOnEscapeFunc);
+            });
+        }
+    })
     .one("load", function () {
         // set the frame size
         var frameBody = modalFrame.contents().find("body");
@@ -294,29 +307,39 @@ scada.Popup.prototype.showModal = function (url, opt_buttons, opt_callback) {
             modalElem.find(".modal-title").text(modalFrame[0].contentWindow.document.title);
         })
         .on('hidden.bs.modal', function () {
+            var callback = $(this).data("modal-callback");
+            if (callback) {
+                callback($(this).data("dialog-result"), $(this).data("extra-params"));
+            }
+
             $(this).remove();
         })        
         .modal("show");
     })
     .attr("src", url);
-
-    // TODO: callback
 };
 
 // Show the modal dialog
 scada.Popup.prototype.closeModal = function (modalWnd, dialogResult, extraParams) {
-    var frame = $(modalWnd.frameElement);
-    var modalElem = frame.closest(".modal");
-    modalElem.modal("hide");
-    // TODO: callback
+    this.setModalResult(modalWnd, dialogResult, extraParams).modal("hide");
 }
 
-// Show or hide the modal button
+// Set dialog result for the whole modal dialog
+scada.Popup.prototype.setModalResult = function (modalWnd, dialogResult, extraParams) {
+    var frame = $(modalWnd.frameElement);
+    var modalElem = frame.closest(".modal");
+    modalElem
+        .data("dialog-result", dialogResult)
+        .data("extra-params", extraParams);
+    return modalElem;
+}
+
+// Show or hide the button of the modal dialog
 scada.Popup.prototype.setButtonVisible = function (modalWnd, btn, val) {
     this._findModalButton(modalWnd, btn).css("display", val ? "" : "none");
 }
 
-// Enable or disable the modal button
+// Enable or disable the button of the modal dialog
 scada.Popup.prototype.setButtonEnabled = function (modalWnd, btn, val) {
     var btnElem = this._findModalButton(modalWnd, btn);
     if (val) {
