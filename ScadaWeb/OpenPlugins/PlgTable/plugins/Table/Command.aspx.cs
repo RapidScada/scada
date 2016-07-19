@@ -96,6 +96,7 @@ namespace Scada.Web.Plugins.Table
         private void HideErrMsg()
         {
             pnlErrMsg.Visible = false;
+            lblCtrlCnlNotFound.Visible = false;
             lblWrongPwd.Visible = false;
             lblNoRights.Visible = false;
             lblIncorrectCmdVal.Visible = false;
@@ -264,15 +265,15 @@ namespace Scada.Web.Plugins.Table
 
                 if (ctrlCnlProps == null)
                 {
-                    // вывести сообщение, что канал не найден, 
-                    // элементы управления ввода команды скрыты по умолчанию
-                    lblCtrlCnl.Visible = false;
-                    lblCtrlCnlNotFound.Visible = true;
+                    // вывести сообщение, что канал управления не найден
+                    lblCtrlCnlNotFound.Text = string.Format(lblCtrlCnlNotFound.Text, ctrlCnlNum);
+                    ShowErrMsg(lblCtrlCnlNotFound);
                     hidDisableExecuteBtn.Value = "true";
                 }
                 else
                 {
                     // вывод информации по каналу управления
+                    pnlInfo.Visible = true;
                     lblCtrlCnl.Text = string.Format("[{0}] {1}", ctrlCnlProps.CtrlCnlNum, ctrlCnlProps.CtrlCnlName);
                     lblObj.Text = ctrlCnlProps.ObjNum > 0 ? 
                         string.Format("[{0}] {1}", ctrlCnlProps.ObjNum, ctrlCnlProps.ObjName) : "";

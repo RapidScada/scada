@@ -9,12 +9,12 @@
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.WFrmCommand">
     <Phrase key="this">Команда - Rapid SCADA</Phrase>
+    <Phrase key="lblCtrlCnlNotFound">Канал управления {0} не найден.</Phrase>
     <Phrase key="lblWrongPwd">Неверный пароль.</Phrase>
     <Phrase key="lblNoRights">Insufficient rights.</Phrase>
     <Phrase key="lblIncorrectCmdVal">Некорректное значение команды.</Phrase>
     <Phrase key="lblIncorrectCmdData">Некорректные данные команды.</Phrase>
     <Phrase key="lblCtrlCnlCaption">Канал упр.:</Phrase>
-    <Phrase key="lblCtrlCnlNotFound">Не найден</Phrase>
     <Phrase key="lblObjCaption">Объект:</Phrase>
     <Phrase key="lblDevCaption">КП:</Phrase>
     <Phrase key="lblPassword">Пароль</Phrase>

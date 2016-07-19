@@ -26,19 +26,19 @@
         <asp:MultiView ID="mvCommand" runat="server" ActiveViewIndex="0">
             <asp:View ID="viewCmdParams" runat="server">
                 <asp:Panel ID="pnlErrMsg" runat="server" CssClass="alert alert-danger">
-                    <asp:Label ID="lblWrongPwd" runat="server" Text="Incorrect password."></asp:Label><asp:Label 
+                    <asp:Label ID="lblCtrlCnlNotFound" runat="server" Text="Output channel {0} not found."></asp:Label><asp:Label 
+                        ID="lblWrongPwd" runat="server" Text="Incorrect password."></asp:Label><asp:Label 
                         ID="lblNoRights" runat="server" Text="Insufficient rights."></asp:Label><asp:Label 
                         ID="lblIncorrectCmdVal" runat="server" Text="Incorrect command value."></asp:Label><asp:Label 
                         ID="lblIncorrectCmdData" runat="server" Text="Incorrect command data."></asp:Label>
                 </asp:Panel>
                 <asp:Button ID="btnSubmit" runat="server" Text="Submit" OnClick="btnSubmit_Click" />
 
-                <div>
+                <asp:Panel ID="pnlInfo" runat="server" Visible="False">
                     <table id="tblInfo" class="form-group">
                         <tr>
                             <th><asp:Label ID="lblCtrlCnlCaption" runat="server" Text="Out channel:"></asp:Label></th>
-                            <td><asp:Label ID="lblCtrlCnl" runat="server" Text=""></asp:Label><asp:Label 
-                                ID="lblCtrlCnlNotFound" runat="server" Text="Not found" Visible="False"></asp:Label></td>
+                            <td><asp:Label ID="lblCtrlCnl" runat="server" Text=""></asp:Label></td>
                         </tr>
                         <tr>
                             <th><asp:Label ID="lblObjCaption" runat="server" Text="Object:"></asp:Label></th>
@@ -49,7 +49,7 @@
                             <td><asp:Label ID="lblDev" runat="server" Text=""></asp:Label></td>
                         </tr>
                     </table>
-                </div>
+                </asp:Panel>
 
                 <asp:Panel ID="pnlPassword" runat="server" CssClass="form-group has-feedback" Visible="False">
                     <asp:Label ID="lblPassword" runat="server" CssClass="control-label" Text="Password" AssociatedControlID="txtPassword"></asp:Label>

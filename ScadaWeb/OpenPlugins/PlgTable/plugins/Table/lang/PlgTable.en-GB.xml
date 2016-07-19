@@ -9,12 +9,12 @@
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.WFrmCommand">
     <Phrase key="this">Command - Rapid SCADA</Phrase>
+    <Phrase key="lblCtrlCnlNotFound">Output channel {0} not found.</Phrase>
     <Phrase key="lblWrongPwd">Incorrect password.</Phrase>
     <Phrase key="lblNoRights">Insufficient rights.</Phrase>
     <Phrase key="lblIncorrectCmdVal">Incorrect command value.</Phrase>
     <Phrase key="lblIncorrectCmdData">Incorrect command data.</Phrase>
     <Phrase key="lblCtrlCnlCaption">Out channel:</Phrase>
-    <Phrase key="lblCtrlCnlNotFound">Not found</Phrase>
     <Phrase key="lblObjCaption">Object:</Phrase>
     <Phrase key="lblDevCaption">Device:</Phrase>
     <Phrase key="lblPassword">Password</Phrase>

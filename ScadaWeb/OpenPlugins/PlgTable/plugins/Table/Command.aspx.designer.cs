@@ -67,6 +67,15 @@ namespace Scada.Web.Plugins.Table {
         protected global::System.Web.UI.WebControls.Panel pnlErrMsg;
         
         /// <summary>
+        /// lblCtrlCnlNotFound control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCtrlCnlNotFound;
+        
+        /// <summary>
         /// lblWrongPwd control.
         /// </summary>
         /// <remarks>
@@ -112,6 +121,15 @@ namespace Scada.Web.Plugins.Table {
         protected global::System.Web.UI.WebControls.Button btnSubmit;
         
         /// <summary>
+        /// pnlInfo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlInfo;
+        
+        /// <summary>
         /// lblCtrlCnlCaption control.
         /// </summary>
         /// <remarks>
@@ -128,15 +146,6 @@ namespace Scada.Web.Plugins.Table {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblCtrlCnl;
-        
-        /// <summary>
-        /// lblCtrlCnlNotFound control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCtrlCnlNotFound;
         
         /// <summary>
         /// lblObjCaption control.
