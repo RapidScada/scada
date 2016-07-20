@@ -13,7 +13,6 @@
     <link href="~/lib/open-sans/css/open-sans.css" rel="stylesheet" type="text/css" />
     <link href="~/plugins/Table/css/command.min.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../../lib/jquery/jquery.min.js"></script>
-    <!--<script type="text/javascript" src="../../lib/bootstrap/js/bootstrap.min.js"></script>-->
     <script type="text/javascript" src="../../js/api/utils.js"></script>
     <script type="text/javascript" src="../../js/api/eventtypes.js"></script>
     <script type="text/javascript" src="../../js/controls/popup.js"></script>
@@ -21,8 +20,7 @@
 </head>
 <body>
     <form id="frmCommand" runat="server">
-        <asp:HiddenField ID="hidHideExecuteBtn" runat="server" Value="false" />
-        <asp:HiddenField ID="hidDisableExecuteBtn" runat="server" Value="false" />
+        <asp:Button ID="btnSubmit" runat="server" Text="Submit" OnClick="btnSubmit_Click" />
         <asp:MultiView ID="mvCommand" runat="server" ActiveViewIndex="0">
             <asp:View ID="viewCmdParams" runat="server">
                 <asp:Panel ID="pnlErrMsg" runat="server" CssClass="alert alert-danger">
@@ -32,10 +30,9 @@
                         ID="lblIncorrectCmdVal" runat="server" Text="Incorrect command value."></asp:Label><asp:Label 
                         ID="lblIncorrectCmdData" runat="server" Text="Incorrect command data."></asp:Label>
                 </asp:Panel>
-                <asp:Button ID="btnSubmit" runat="server" Text="Submit" OnClick="btnSubmit_Click" />
 
-                <asp:Panel ID="pnlInfo" runat="server" Visible="False">
-                    <table id="tblInfo" class="form-group">
+                <asp:Panel ID="pnlInfo" runat="server" CssClass="form-group" Visible="False">
+                    <table id="tblInfo">
                         <tr>
                             <th><asp:Label ID="lblCtrlCnlCaption" runat="server" Text="Out channel:"></asp:Label></th>
                             <td><asp:Label ID="lblCtrlCnl" runat="server" Text=""></asp:Label></td>

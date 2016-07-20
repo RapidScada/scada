@@ -91,6 +91,12 @@
     <Content Include="plugins\Table\css\command.min.css">
       <DependentUpon>command.css</DependentUpon>
     </Content>
+    <Content Include="plugins\Table\css\eventack.css">
+      <DependentUpon>eventack.less</DependentUpon>
+    </Content>
+    <Content Include="plugins\Table\css\eventack.min.css">
+      <DependentUpon>eventack.css</DependentUpon>
+    </Content>
     <Content Include="plugins\Table\css\events.css">
       <DependentUpon>events.less</DependentUpon>
     </Content>
@@ -109,6 +115,7 @@
     <Content Include="plugins\Table\css\tablecommon.min.css">
       <DependentUpon>tablecommon.css</DependentUpon>
     </Content>
+    <Content Include="plugins\Table\EventAck.aspx" />
     <Content Include="plugins\Table\Events.aspx" />
     <Content Include="plugins\Table\images\quantityicons\clock.png" />
     <Content Include="plugins\Table\images\quantityicons\fire.png" />
@@ -119,6 +126,8 @@
     <Content Include="plugins\Table\images\tableicon.png" />
     <Content Include="plugins\Table\js\cmdobj.js" />
     <Content Include="plugins\Table\js\command.js" />
+    <Content Include="plugins\Table\js\eventack.js" />
+    <Content Include="plugins\Table\js\eventackobj.js" />
     <Content Include="plugins\Table\js\events.js" />
     <Content Include="plugins\Table\js\tablecommon.js" />
     <Content Include="plugins\Table\js\table.js" />
@@ -141,6 +150,13 @@
     </Compile>
     <Compile Include="plugins\Table\Command.aspx.designer.cs">
       <DependentUpon>Command.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="plugins\Table\EventAck.aspx.cs">
+      <DependentUpon>EventAck.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="plugins\Table\EventAck.aspx.designer.cs">
+      <DependentUpon>EventAck.aspx</DependentUpon>
     </Compile>
     <Compile Include="plugins\Table\Events.aspx.cs">
       <DependentUpon>Events.aspx</DependentUpon>
@@ -175,6 +191,7 @@
     <Content Include="lib\font-awesome\fonts\FontAwesome.otf" />
     <Content Include="css\controls\tableheader.less" />
     <Content Include="plugins\Table\css\command.less" />
+    <Content Include="plugins\Table\css\eventack.less" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

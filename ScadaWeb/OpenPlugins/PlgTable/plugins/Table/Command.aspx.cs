@@ -30,6 +30,7 @@ using Scada.UI;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Web;
 using System.Web.UI.WebControls;
 
 namespace Scada.Web.Plugins.Table
@@ -200,7 +201,7 @@ namespace Scada.Web.Plugins.Table
         private void ShowCmdResult(bool sendOK, bool result)
         {
             mvCommand.SetActiveView(viewCmdResult);
-            hidDisableExecuteBtn.Value = "true";
+            btnSubmit.Enabled = false;
 
             if (sendOK && result)
             {
@@ -268,17 +269,18 @@ namespace Scada.Web.Plugins.Table
                     // вывести сообщение, что канал управления не найден
                     lblCtrlCnlNotFound.Text = string.Format(lblCtrlCnlNotFound.Text, ctrlCnlNum);
                     ShowErrMsg(lblCtrlCnlNotFound);
-                    hidDisableExecuteBtn.Value = "true";
+                    btnSubmit.Enabled = false;
                 }
                 else
                 {
                     // вывод информации по каналу управления
                     pnlInfo.Visible = true;
-                    lblCtrlCnl.Text = string.Format("[{0}] {1}", ctrlCnlProps.CtrlCnlNum, ctrlCnlProps.CtrlCnlName);
-                    lblObj.Text = ctrlCnlProps.ObjNum > 0 ? 
-                        string.Format("[{0}] {1}", ctrlCnlProps.ObjNum, ctrlCnlProps.ObjName) : "";
-                    lblDev.Text = ctrlCnlProps.KPNum > 0 ?
-                        string.Format("[{0}] {1}", ctrlCnlProps.KPNum, ctrlCnlProps.KPName) : "";
+                    lblCtrlCnl.Text = HttpUtility.HtmlEncode(
+                        string.Format("[{0}] {1}", ctrlCnlProps.CtrlCnlNum, ctrlCnlProps.CtrlCnlName));
+                    lblObj.Text = HttpUtility.HtmlEncode(ctrlCnlProps.ObjNum > 0 ? 
+                        string.Format("[{0}] {1}", ctrlCnlProps.ObjNum, ctrlCnlProps.ObjName) : "");
+                    lblDev.Text = HttpUtility.HtmlEncode(ctrlCnlProps.KPNum > 0 ?
+                        string.Format("[{0}] {1}", ctrlCnlProps.KPNum, ctrlCnlProps.KPName) : "");
 
                     // установка видимости поля для ввода пароля
                     pnlPassword.Visible = userData.WebSettings.CmdPassword;
@@ -296,8 +298,7 @@ namespace Scada.Web.Plugins.Table
                                 repCommands.DataSource = GetDiscreteCmds(ctrlCnlProps.CmdValArr);
                                 repCommands.DataBind();
                                 pnlDiscreteValue.Visible = true;
-                                hidHideExecuteBtn.Value = "true";
-                                btnSubmit.Enabled = false;
+                                btnSubmit.Visible = false;
                             }
                             break;
                         case BaseValues.CmdTypes.Binary:

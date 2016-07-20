@@ -1,13 +1,13 @@
 ﻿@import "../../../css/globalvar.less";
 
-@form-back-color: white;
 @info-fore-color: #d9534f; /* Bootstrap danger color */
 @cmd-fore-color: @info-fore-color;
 
 body {
     margin: 0;
     padding: 0;
-    background-color: @form-back-color;
+    background-color: @popup-back-color;
+    color: @content-fore-color;
     font-family: @default-font-family;
     font-size: @form-font-size;
     min-width: @popup-min-width;
@@ -43,6 +43,7 @@ textarea {
     font-weight: normal;
     padding: 2px 0;
     vertical-align: top;
+    text-align: right;
 }
 
 #tblInfo td {

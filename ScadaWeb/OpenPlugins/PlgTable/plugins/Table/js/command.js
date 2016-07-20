@@ -28,14 +28,22 @@ function startCountdown() {
 }
 
 $(document).ready(function () {
-    // hide or disable execute button if it is specified by the server code
+    // hide or disable execute button according to the submit button state
     if (popup) {
-        if ($("#hidHideExecuteBtn").val() == "true") {
+        var btnSubmit = $("#btnSubmit");
+        if (btnSubmit.length == 0) {
             popup.setButtonVisible(window, scada.ModalButtons.EXEC, false);
-        } else if ($("#hidDisableExecuteBtn").val() == "true") {
+        } else if (btnSubmit.is(":disabled")) {
             popup.setButtonEnabled(window, scada.ModalButtons.EXEC, false);
         }
     }
+
+    // submit the form on execute button click
+    $(window).on(scada.EventTypes.MODAL_BTN_CLICK, function (event, result) {
+        if (result == scada.ModalButtons.EXEC) {
+            $("#btnSubmit").click();
+        }
+    });
 
     // highlight password error
     if ($("#lblWrongPwd").length > 0) {
@@ -51,11 +59,4 @@ $(document).ready(function () {
     if ($("#lblIncorrectCmdData").length > 0) {
         $("#pnlData").addClass("has-error");
     }
-
-    // submit the form on execute button click
-    $(window).on(scada.EventTypes.MODAL_BTN_CLICK, function (event, result) {
-        if (result == scada.ModalButtons.EXEC) {
-            $("#btnSubmit").click();
-        }
-    });
 });

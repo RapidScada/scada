@@ -53,7 +53,6 @@ scada.dialogs = {
             scada.eventAck.show(this.rootPath, viewID, date, evNum, opt_callback);
         } else {
             console.warn("Unable to show event acknowledgement dialog because scada.eventAck is undefined");
-            alert("Acknowledgement is not implemented yet, evNum=" + evNum);
         }
     },
 

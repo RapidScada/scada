@@ -1,5 +1,5 @@
 ﻿/*
- * Command object that implements sending commands
+ * Command object that implements showing of the appropriate dialog
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016

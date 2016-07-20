@@ -654,5 +654,21 @@ namespace Scada.Data.Tables
 
             return filteredEvents;
         }
+
+        /// <summary>
+        /// Получить событие по номеру
+        /// </summary>
+        public Event GetEventByNum(int evNum)
+        {
+            if (1 <= evNum && evNum <= allEvents.Count)
+            {
+                Event ev = allEvents[evNum - 1];
+                return ev.Number == evNum ? ev : null;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

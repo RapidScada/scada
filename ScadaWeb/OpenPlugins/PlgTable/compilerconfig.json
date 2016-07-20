@@ -22,5 +22,9 @@
   {
     "outputFile": "plugins/Table/css/command.css",
     "inputFile": "plugins/Table/css/command.less"
+  },
+  {
+    "outputFile": "plugins/Table/css/eventack.css",
+    "inputFile": "plugins/Table/css/eventack.less"
   }
 ]

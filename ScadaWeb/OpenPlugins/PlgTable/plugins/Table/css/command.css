@@ -3,6 +3,7 @@ body {
   margin: 0;
   padding: 0;
   background-color: white;
+  color: #333;
   font-family: 'Open Sans', sans-serif;
   font-size: 13px;
   min-width: 300px;
@@ -31,6 +32,7 @@ textarea {
   font-weight: normal;
   padding: 2px 0;
   vertical-align: top;
+  text-align: right;
 }
 #tblInfo td {
   color: #d9534f;
