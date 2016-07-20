@@ -130,7 +130,7 @@ namespace Scada.Web
             DispEventCnt = 100;
             ChartGap = 90;
             CmdEnabled = true;
-            CmdPassword = true; // TODO: перенести в базу конфигурации для каждого канала управления
+            CmdPassword = true;
             RemEnabled = false;
             StartPage = "";
             ViewsFromBase = true;

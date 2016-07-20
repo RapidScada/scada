@@ -289,9 +289,15 @@ function updateEvents(full, callback) {
                         // clear the event table
                         clearEvents(tableElem);
                     }
-                } else {
+                } else if (eventArrLen > 0) {
+                    // skip already loaded events
+                    var startIndex = 0;
+                    while (startIndex < eventArrLen && eventArr[startIndex].Num <= lastEvNum) {
+                        startIndex++;
+                    }
+
                     // append new events to the event table
-                    appendEvents(tableElem, eventArr, 0);
+                    appendEvents(tableElem, eventArr, startIndex);
                 }
 
                 partialDataAge = dataAge;
@@ -396,7 +402,7 @@ $(document).ready(function () {
     });
 
     // register the activity time
-    $("#divTblWrapper").on("scroll mousemove", function () {
+    $("#divTblWrapper").on("mousemove wheel touchstart", function () {
         activityTime = new Date();
     });
 
