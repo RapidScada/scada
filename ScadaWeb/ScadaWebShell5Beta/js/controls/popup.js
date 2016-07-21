@@ -288,11 +288,10 @@ scada.Popup.prototype.showModal = function (url, opt_buttons, opt_callback) {
         var frameHeight = frameBody.outerHeight(true);
 
         // tune the modal
-        var frameWnd = modalFrame[0].contentWindow;
         var modalBody = modalElem.find(".modal-body");
         var modalPaddings = parseInt(modalBody.css("padding-left")) + parseInt(modalBody.css("padding-right"));
         modalElem.find(".modal-content").css("min-width", frameWidth + modalPaddings)
-        modalElem.find(".modal-title").text(frameWnd.document.title);
+        modalElem.find(".modal-title").text(modalFrame[0].contentWindow.document.title);
 
         // move the frame into the modal
         modalFrame.detach();
@@ -310,6 +309,7 @@ scada.Popup.prototype.showModal = function (url, opt_buttons, opt_callback) {
         // raise event on modal button click
         modalElem.find(".modal-footer button").click(function () {
             var result = $(this).data("result");
+            var frameWnd = modalFrame[0].contentWindow;
             var frameJq = frameWnd.$;
             if (result && frameJq) {
                 frameJq(frameWnd).trigger(scada.EventTypes.MODAL_BTN_CLICK, result);
