@@ -32,10 +32,6 @@ var partUpdateTimeoutID = null;
 var dispEventCnt = dispEventCnt || 0;
 // Right to view all data
 var viewAllRight = viewAllRight || false;
-// Right to any control
-var controlAllRight = controlAllRight || false;
-// Right to control the view
-var controlViewRight = controlViewRight || false;
 
 // Set current view date and process the consequent changes
 function changeViewDate(date, notify) {
@@ -102,9 +98,7 @@ function showEventAck(evNum) {
 
 // Generate HTML of acknowledgement cell
 function generateAckHtml(evNum, ack) {
-    return controlAllRight || viewID > 0 && controlViewRight ?
-        "<a href='javascript:showEventAck(" + evNum + ");'>" + ack + "</a>" :
-        ack;
+    return "<a href='javascript:showEventAck(" + evNum + ");'>" + ack + "</a>";
 }
 
 // Create detached jQuery object that represents an event row
