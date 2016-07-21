@@ -297,7 +297,8 @@ namespace Scada.Web.Plugins.Table
                                 repCommands.DataSource = GetDiscreteCmds(ctrlCnlProps.CmdValArr);
                                 repCommands.DataBind();
                                 pnlDiscreteValue.Visible = true;
-                                btnSubmit.Visible = false;
+                                btnSubmit.Enabled = false; // disable postback on Enter
+                                btnSubmit.CssClass = "hide-exec-btn"; // hide Execute button
                             }
                             break;
                         case BaseValues.CmdTypes.Binary:

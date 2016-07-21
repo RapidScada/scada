@@ -31,7 +31,7 @@ $(document).ready(function () {
     // hide or disable execute button according to the submit button state
     if (popup) {
         var btnSubmit = $("#btnSubmit");
-        if (btnSubmit.length == 0) {
+        if (btnSubmit.hasClass("hide-exec-btn")) {
             popup.setButtonVisible(window, scada.ModalButtons.EXEC, false);
         } else if (btnSubmit.is(":disabled")) {
             popup.setButtonEnabled(window, scada.ModalButtons.EXEC, false);

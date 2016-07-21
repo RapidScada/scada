@@ -231,6 +231,7 @@ scada.Popup.prototype.closeDropdown = function (popupWnd, dialogResult, extraPar
 // opt_callback is a function (dialogResult, extraParams),
 // requires Bootstrap
 scada.Popup.prototype.showModal = function (url, opt_buttons, opt_callback) {
+    // create the modal
     var footerHtml = opt_buttons && opt_buttons.length ?
         "<div class='modal-footer'>" + this._genModalButtonsHtml(opt_buttons) + "</div>" : "";
 
@@ -241,7 +242,7 @@ scada.Popup.prototype.showModal = function (url, opt_buttons, opt_callback) {
         "<div class='modal-header'>" +
         "<button type='button' class='close' data-dismiss='modal'><span>&times;</span></button>" +
         "<h4 class='modal-title'></h4></div>" +
-        "<div class='modal-body'><iframe class='modal-frame'></iframe></div>" +
+        "<div class='modal-body'></div>" +
         footerHtml +
         "</div></div></div>");
 
@@ -251,16 +252,22 @@ scada.Popup.prototype.showModal = function (url, opt_buttons, opt_callback) {
             .data("dialog-result", false);
     }
 
-    $("body").append(modalElem);
+    // create the frame
+    var modalFrame = $("<iframe class='modal-frame'></iframe>");
+    modalFrame.css({
+        "position": "fixed",
+        "opacity": 0.0 // hide the frame while it's loading
+    });
+    $("body").append(modalFrame);
 
-    // load the frame
-    var modalFrame = modalElem.find(".modal-frame");
+    // create a function that hides the modal on press Escape key
     var hideModalOnEscapeFunc = function (event) {
         if (event.which == 27 /*Escape*/) {
             modalElem.modal("hide");
         }
     }
 
+    // load the frame
     modalFrame
     .on("load", function () {
         // remove the modal on press Escape key in the frame
@@ -275,25 +282,34 @@ scada.Popup.prototype.showModal = function (url, opt_buttons, opt_callback) {
         }
     })
     .one("load", function () {
-        // set the frame size
+        // get the frame size
         var frameBody = modalFrame.contents().find("body");
         var frameWidth = frameBody.outerWidth(true);
         var frameHeight = frameBody.outerHeight(true);
 
-        modalFrame.css({
-            "width": "100%",
-            "height": frameHeight
-        });
-
         // tune the modal
+        var frameWnd = modalFrame[0].contentWindow;
         var modalBody = modalElem.find(".modal-body");
         var modalPaddings = parseInt(modalBody.css("padding-left")) + parseInt(modalBody.css("padding-right"));
         modalElem.find(".modal-content").css("min-width", frameWidth + modalPaddings)
+        modalElem.find(".modal-title").text(frameWnd.document.title);
+
+        // move the frame into the modal
+        modalFrame.detach();
+        modalBody.append(modalFrame);
+        $("body").append(modalElem);
+
+        // set the frame style
+        modalFrame.css({
+            "width": "100%",
+            "height": frameHeight,
+            "position": "",
+            "opacity": 1.0
+        });
 
         // raise event on modal button click
         modalElem.find(".modal-footer button").click(function () {
             var result = $(this).data("result");
-            var frameWnd = modalFrame[0].contentWindow;
             var frameJq = frameWnd.$;
             if (result && frameJq) {
                 frameJq(frameWnd).trigger(scada.EventTypes.MODAL_BTN_CLICK, result);
@@ -304,7 +320,6 @@ scada.Popup.prototype.showModal = function (url, opt_buttons, opt_callback) {
         modalElem
         .on('shown.bs.modal', function () {
             modalFrame.focus();
-            modalElem.find(".modal-title").text(modalFrame[0].contentWindow.document.title);
         })
         .on('hidden.bs.modal', function () {
             var callback = $(this).data("modal-callback");
