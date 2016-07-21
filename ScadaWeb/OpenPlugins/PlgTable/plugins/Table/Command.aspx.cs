@@ -238,10 +238,12 @@ namespace Scada.Web.Plugins.Table
             }
             else
             {
-                // получение параметров запроса
+                // получение параметров запроса и сохранение во ViewState
                 int viewID;
                 int.TryParse(Request.QueryString["viewID"], out viewID);
                 int.TryParse(Request.QueryString["ctrlCnlNum"], out ctrlCnlNum);
+
+                ViewState["CtrlCnlNum"] = ctrlCnlNum;
 
                 // проверка прав
                 if (!userData.UserRights.GetViewRights(viewID).ControlRight ||
@@ -253,9 +255,6 @@ namespace Scada.Web.Plugins.Table
 
                 if (!view.ContainsCtrlCnl(ctrlCnlNum))
                     throw new ScadaException(CommonPhrases.NoRights);
-
-                // сохранение номера канала управления во ViewState
-                ViewState["CtrlCnlNum"] = ctrlCnlNum;
 
                 // перевод веб-страницы
                 Translator.TranslatePage(Page, "Scada.Web.Plugins.Table.WFrmCommand");

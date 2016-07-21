@@ -1,6 +1,13 @@
 ﻿// Popup dialogs manipulation object
 var popup = scada.popupLocator.getPopup();
 
+// Close the modal with successful result
+function closeModal() {
+    if (popup) {
+        popup.closeModal(window, true);
+    }
+}
+
 $(document).ready(function () {
     // hide or disable OK button according to the submit button state
     if (popup) {

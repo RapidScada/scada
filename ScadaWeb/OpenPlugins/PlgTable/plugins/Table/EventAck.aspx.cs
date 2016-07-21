@@ -24,9 +24,11 @@
  */
 
 using Scada.Client;
+using Scada.Data.Models;
 using Scada.Data.Tables;
 using Scada.UI;
 using System;
+using System.Drawing;
 using System.Web.UI.WebControls;
 
 namespace Scada.Web.plugins.Table
@@ -37,8 +39,10 @@ namespace Scada.Web.plugins.Table
     /// </summary>
     public partial class WFrmEventAck : System.Web.UI.Page
     {
-        private DateTime evDate; // дата события
-        private int evNum;       // номер события
+        private AppData appData;   // общие данные веб-приложения
+        private UserData userData; // данные пользователя приложения
+        private DateTime evDate;   // дата события
+        private int evNum;         // номер события
 
         
         /// <summary>
@@ -48,6 +52,8 @@ namespace Scada.Web.plugins.Table
         {
             pnlErrMsg.Visible = false;
             lblEventNotFound.Visible = false;
+            lblAckNotSent.Visible = false;
+            lblAckRejected.Visible = false;
         }
 
         /// <summary>
@@ -62,8 +68,8 @@ namespace Scada.Web.plugins.Table
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            AppData appData = AppData.GetAppData();
-            UserData userData = UserData.GetUserData();
+            appData = AppData.GetAppData();
+            userData = UserData.GetUserData();
 
             // проверка входа в систему
             if (!userData.LoggedOn)
@@ -72,16 +78,24 @@ namespace Scada.Web.plugins.Table
             // скрытие сообщения об ошибке
             HideErrMsg();
 
-            if (!IsPostBack)
+            if (IsPostBack)
+            {
+                evDate = (DateTime)ViewState["EvDate"];
+                evNum = (int)ViewState["EvNum"];
+            }
+            else
             {
                 // перевод веб-страницы
                 Translator.TranslatePage(Page, "Scada.Web.Plugins.Table.WFrmEventAck");
 
-                // получение параметров запроса
+                // получение параметров запроса и сохранение во ViewState
                 int viewID;
                 int.TryParse(Request.QueryString["viewID"], out viewID);
                 evDate = WebUtils.GetDateFromQueryString(Request);
                 int.TryParse(Request.QueryString["evNum"], out evNum);
+
+                ViewState["EvDate"] = evDate;
+                ViewState["EvNum"] = evNum;
 
                 // получение события
                 EventTableLight tblEvent = appData.DataAccess.DataCache.GetEventTable(evDate);
@@ -95,27 +109,74 @@ namespace Scada.Web.plugins.Table
                 else
                 {
                     // проверка прав
-                    /*if (!userData.UserRights.GetViewRights(viewID).ControlRight ||
-                        !userData.WebSettings.CmdEnabled)
+                    EntityRights rights = userData.UserRights.GetViewRights(viewID);
+                    if (!rights.ViewRight)
                         throw new ScadaException(CommonPhrases.NoRights);
 
                     Type viewType = userData.UserViews.GetViewType(viewID);
                     BaseView view = appData.ViewCache.GetView(viewType, viewID, true);
 
-                    if (!view.ContainsCtrlCnl(ev.CnlNum))
-                        throw new ScadaException(CommonPhrases.NoRights);*/
+                    if (!view.ContainsCnl(ev.CnlNum))
+                        throw new ScadaException(CommonPhrases.NoRights);
+
+                    btnSubmit.Visible = pnlTip.Visible = 
+                        rights.ControlRight && !ev.Checked;
 
                     // вывод информации по событию
                     pnlInfo.Visible = true;
-                    lblNum.Text = ev.Number.ToString();
-                    lblTime.Text = ev.DateTime.ToLocalizedString();
+                    DispEventProps evProps = appData.DataAccess.GetDispEventProps(ev, new DataFormatter());
+                    lblNum.Text = evProps.Num.ToString();
+                    lblTime.Text = evProps.Time;
+                    lblObj.Text = evProps.Obj;
+                    lblDev.Text = evProps.KP;
+                    lblCnl.Text = evProps.Cnl;
+                    lblText.Text = evProps.Text;
+                    lblAck.Text = evProps.Ack;
+                    lblAck.CssClass = ev.Checked ? "ack-yes" : "ack-no";
+
+                    if (ev.Checked && ev.UserID > 0)
+                    {
+                        string userName = appData.DataAccess.GetUserName(ev.UserID);
+                        lblByUser.Text = string.Format(lblByUser.Text, userName);
+                        lblByUser.Visible = userName != "";
+                    }
+
+                    if (evProps.Color != "")
+                    {
+                        try
+                        {
+                            lblNum.ForeColor = lblTime.ForeColor = lblObj.ForeColor = 
+                                lblDev.ForeColor = lblCnl.ForeColor = lblText.ForeColor = 
+                                ColorTranslator.FromHtml(evProps.Color);
+                        }
+                        catch { }
+                    }
                 }
             }
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
+            // отправка команды квитирования
+            bool result;
+            bool sendOK = appData.ServerComm.CheckEvent(userData.UserProps.UserID, evDate, evNum, out result);
 
+            btnSubmit.Enabled = false;
+            pnlInfo.Visible = false;
+            pnlTip.Visible = false;
+
+            if (sendOK && result)
+            {
+                ClientScript.RegisterStartupScript(GetType(), "Startup", "closeModal();", true);
+            }
+            else if (sendOK)
+            {
+                ShowErrMsg(lblAckRejected);
+            }
+            else
+            {
+                ShowErrMsg(lblAckNotSent);
+            }
         }
     }
 }

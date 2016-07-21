@@ -53,6 +53,7 @@
     <Compile Include="Cache.cs" />
     <Compile Include="Client\ViewCache.cs" />
     <Compile Include="Data\Models\CnlStatProps.cs" />
+    <Compile Include="Data\Models\DispEventProps.cs" />
     <Compile Include="Data\Models\UserProps.cs" />
     <Compile Include="Data\Tables\Adapter.cs" />
     <Compile Include="Data\Tables\BaseTables.cs" />
@@ -91,6 +92,9 @@
     <Compile Include="ScadaUtils.Xml.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Lang\ScadaData.ru-RU .xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Lang\ScadaData.en-GB.xml">
       <SubType>Designer</SubType>
     </Content>

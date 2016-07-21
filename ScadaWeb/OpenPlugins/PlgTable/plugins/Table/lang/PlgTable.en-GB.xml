@@ -29,6 +29,21 @@
     <Phrase key="lblCmdNotSent">Unable to send the command. Server is unavailable.</Phrase>
     <Phrase key="lblCmdRejected">The command is rejected by the server.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmEventAck">
+    <Phrase key="this">Event Acknowledgement - Rapid SCADA</Phrase>
+    <Phrase key="lblEventNotFound">Event not found.</Phrase>
+    <Phrase key="lblAckNotSent">Unable to send the acknowledgement. Server is unavailable.</Phrase>
+    <Phrase key="lblAckRejected">The acknowledgement is rejected by the server.</Phrase>
+    <Phrase key="lblNumCaption">Number:</Phrase>
+    <Phrase key="lblTimeCaption">Date and time:</Phrase>
+    <Phrase key="lblObjCaption">Object:</Phrase>
+    <Phrase key="lblDevCaption">Device:</Phrase>
+    <Phrase key="lblCnlCaption">Channel:</Phrase>
+    <Phrase key="lblTextCaption">Description:</Phrase>
+    <Phrase key="lblAckCaption">Acknowledged:</Phrase>
+    <Phrase key="lblByUser">by {0}</Phrase>
+    <Phrase key="lblTip">Click OK button to acknowledge the event.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.WFrmEvents">
     <Phrase key="lblAllEventsBtn">All Events</Phrase>
     <Phrase key="lblEventsByViewBtn">Events by View</Phrase>

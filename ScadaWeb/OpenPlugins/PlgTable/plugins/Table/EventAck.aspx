@@ -16,13 +16,16 @@
     <script type="text/javascript" src="../../js/api/utils.js"></script>
     <script type="text/javascript" src="../../js/api/eventtypes.js"></script>
     <script type="text/javascript" src="../../js/controls/popup.js"></script>
+    <script type="text/javascript" src="js/eventack.js"></script>
 </head>
 <body>
     <form id="frmEventAck" runat="server">
         <asp:Button ID="btnSubmit" runat="server" Text="Submit" OnClick="btnSubmit_Click" />
 
         <asp:Panel ID="pnlErrMsg" runat="server" CssClass="alert alert-danger">
-            <asp:Label ID="lblEventNotFound" runat="server" Text="Event not found."></asp:Label>
+            <asp:Label ID="lblEventNotFound" runat="server" Text="Event not found."></asp:Label><asp:Label 
+                ID="lblAckNotSent" runat="server" Text="Unable to send the acknowledgement. Server is unavailable."></asp:Label><asp:Label 
+                ID="lblAckRejected" runat="server" Text="The acknowledgement is rejected by the server."></asp:Label>
         </asp:Panel>
 
         <asp:Panel ID="pnlInfo" runat="server" CssClass="form-group" Visible="False">
@@ -52,14 +55,10 @@
                     <td><asp:Label ID="lblText" runat="server" Text=""></asp:Label></td>
                 </tr>
                 <tr>
-                    <th><asp:Label ID="lblAckCaption" runat="server" Text="Status:"></asp:Label></th>
-                    <td><asp:Label ID="lblAck" runat="server" CssClass="label label-primary" Text="Acknowledged" Visible="False"></asp:Label><asp:Label 
-                        ID="lblNotAck" runat="server" CssClass="label label-default" Text="Not acknowledged" Visible="False"></asp:Label></td>
-                </tr>
-                <tr id="rowUser" runat="server" Visible="False">
-                    <th><asp:Label ID="lblUserCaption" runat="server" Text="User:"></asp:Label></th>
-                    <td><asp:Label ID="lblUser" runat="server" Text="" Visible="False"></asp:Label><asp:Label 
-                        ID="lblUserNotFound" runat="server" Text="Not found" Visible="False"></asp:Label></td>
+                    <th><asp:Label ID="lblAckCaption" runat="server" Text="Acknowledged:"></asp:Label></th>
+                    <td class="ack"><asp:Label ID="lblAck" runat="server" Text=""></asp:Label>
+                        <asp:Label ID="lblByUser" runat="server" Text="by {0}" Visible="False"></asp:Label>
+                    </td>
                 </tr>
             </table>
         </asp:Panel>

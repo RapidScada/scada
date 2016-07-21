@@ -29,6 +29,21 @@
     <Phrase key="lblCmdNotSent">Невозможно отправить команду. Сервер недоступен.</Phrase>
     <Phrase key="lblCmdRejected">Команда отклонена сервером.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmEventAck">
+    <Phrase key="this">Квитирование события - Rapid SCADA</Phrase>
+    <Phrase key="lblEventNotFound">Событие не найдено.</Phrase>
+    <Phrase key="lblAckNotSent">Невозможно отправить команду квитирования. Сервер недоступен.</Phrase>
+    <Phrase key="lblAckRejected">Команда квитирования отклонена сервером.</Phrase>
+    <Phrase key="lblNumCaption">Номер:</Phrase>
+    <Phrase key="lblTimeCaption">Дата и время:</Phrase>
+    <Phrase key="lblObjCaption">Объект:</Phrase>
+    <Phrase key="lblDevCaption">КП:</Phrase>
+    <Phrase key="lblCnlCaption">Канал:</Phrase>
+    <Phrase key="lblTextCaption">Описание:</Phrase>
+    <Phrase key="lblAckCaption">Квитирование:</Phrase>
+    <Phrase key="lblByUser">пользователем {0}</Phrase>
+    <Phrase key="lblTip">Нажмите кнопку OK, чтобы квитировать событие.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.WFrmEvents">
     <Phrase key="lblAllEventsBtn">Все события</Phrase>
     <Phrase key="lblEventsByViewBtn">По представлению</Phrase>

@@ -36,6 +36,8 @@
     <Phrase key="IncorrectXmlAttrVal">Incorrect value of XML attribute &quot;{0}&quot;.</Phrase>
     <Phrase key="IncorrectXmlParamVal">Incorrect value of the parameter &quot;{0}&quot;.</Phrase>
     <Phrase key="XmlNodeNotFound">XML node &quot;{0}&quot; not found within the node &quot;{1}&quot;.</Phrase>
+    <Phrase key="EventAck">Yes</Phrase>
+    <Phrase key="EventNotAck">No</Phrase>
     <Phrase key="CmdTypeTable">Command types</Phrase>
     <Phrase key="CmdValTable">Command values</Phrase>
     <Phrase key="CnlTypeTable">Channel types</Phrase>

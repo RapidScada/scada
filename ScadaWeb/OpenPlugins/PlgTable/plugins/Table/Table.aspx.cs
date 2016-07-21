@@ -158,7 +158,7 @@ namespace Scada.Web.Plugins.Table
             {
                 InCnlProps cnlProps = item.CnlProps;
                 int cnlNum = item.CnlNum;
-                int ctrlCnlNum = cmdEnabled ? item.CtrlCnlNum : 0;
+                int ctrlCnlNum = item.CtrlCnlNum;
 
                 // тег начала строки
                 sbHtml.Append(altRow ? "<tr class='item alt'" : "<tr class='item'");
@@ -181,7 +181,7 @@ namespace Scada.Web.Plugins.Table
                         .Append("<a href='' class='lbl'>").Append(caption).Append("</a>");
 
                     // команда
-                    if (ctrlCnlNum > 0)
+                    if (ctrlCnlNum > 0 && cmdEnabled)
                         sbCapHtml.Append("<span class='cmd' title='Send Command'></span>");
 
                     // всплывающая подсказка

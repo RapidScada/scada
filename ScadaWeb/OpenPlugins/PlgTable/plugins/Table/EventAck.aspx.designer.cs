@@ -49,6 +49,24 @@ namespace Scada.Web.plugins.Table {
         protected global::System.Web.UI.WebControls.Label lblEventNotFound;
         
         /// <summary>
+        /// lblAckNotSent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAckNotSent;
+        
+        /// <summary>
+        /// lblAckRejected control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAckRejected;
+        
+        /// <summary>
         /// pnlInfo control.
         /// </summary>
         /// <remarks>
@@ -184,49 +202,13 @@ namespace Scada.Web.plugins.Table {
         protected global::System.Web.UI.WebControls.Label lblAck;
         
         /// <summary>
-        /// lblNotAck control.
+        /// lblByUser control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblNotAck;
-        
-        /// <summary>
-        /// rowUser control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTableRow rowUser;
-        
-        /// <summary>
-        /// lblUserCaption control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblUserCaption;
-        
-        /// <summary>
-        /// lblUser control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblUser;
-        
-        /// <summary>
-        /// lblUserNotFound control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblUserNotFound;
+        protected global::System.Web.UI.WebControls.Label lblByUser;
         
         /// <summary>
         /// pnlTip control.

@@ -147,65 +147,6 @@ namespace Scada.Web
             public CnlDataExt[] CnlDataExtArr { get; set; }
         }
 
-        /// <summary>
-        /// Данные события
-        /// </summary>
-        private class Event
-        {
-            /// <summary>
-            /// Конструктор
-            /// </summary>
-            public Event()
-            {
-                Num = 0;
-                Time = "";
-                Obj = "";
-                KP = "";
-                Cnl = "";
-                Text = "";
-                Ack = "";
-                Color = "";
-                Sound = false;
-            }
-
-            /// <summary>
-            /// Получить или установить порядковый номер
-            /// </summary>
-            public int Num { get; set; }
-            /// <summary>
-            /// Получить или установить отформатированную дату и время
-            /// </summary>
-            public string Time { get; set; }
-            /// <summary>
-            /// Получить или установить наименование объекта
-            /// </summary>
-            public string Obj { get; set; }
-            /// <summary>
-            /// Получить или установить наименование КП
-            /// </summary>
-            public string KP { get; set; }
-            /// <summary>
-            /// Получить или установить наименование входного канала
-            /// </summary>
-            public string Cnl { get; set; }
-            /// <summary>
-            /// Получить или установить текст события
-            /// </summary>
-            public string Text { get; set; }
-            /// <summary>
-            /// Получить или установить информацию о квитировании
-            /// </summary>
-            public string Ack { get; set; }
-            /// <summary>
-            /// Получить или установить цвет
-            /// </summary>
-            public string Color { get; set; }
-            /// <summary>
-            /// Получить или установить признак воспроизведения звука
-            /// </summary>
-            public bool Sound { get; set; }
-        }
-
 
         /// <summary>
         /// Максимальное количество символов в строке данных формата JSON, 10 МБ
@@ -474,57 +415,6 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Преобразовать событие из таблицы в событие для передачи сервисом
-        /// </summary>
-        private Event ConvertEvent(EventTableLight.Event srcEvent)
-        {
-            Event destEvent = new Event();
-            destEvent.Num = srcEvent.Number;
-            destEvent.Time = srcEvent.DateTime.ToLocalizedString();
-            destEvent.Ack = srcEvent.Checked ? WebPhrases.EventAck : WebPhrases.EventNotAck;
-
-            DataAccess dataAccess = AppData.DataAccess;
-            InCnlProps cnlProps = dataAccess.GetCnlProps(srcEvent.CnlNum);
-
-            destEvent.Obj = cnlProps != null && cnlProps.ObjNum == srcEvent.ObjNum ?
-                cnlProps.ObjName : dataAccess.GetObjName(srcEvent.ObjNum);
-            destEvent.KP = cnlProps != null && cnlProps.KPNum == srcEvent.KPNum ?
-                cnlProps.KPName : dataAccess.GetKPName(srcEvent.KPNum);
-
-            double cnlVal = srcEvent.NewCnlVal;
-            int cnlStat = srcEvent.NewCnlStat;
-            CnlStatProps cnlStatProps = dataAccess.GetCnlStatProps(cnlStat);
-
-            if (cnlProps != null)
-            {
-                destEvent.Cnl = cnlProps.CnlName;
-                destEvent.Color = DataFormatter.GetCnlValColor(cnlVal, cnlStat, cnlProps, cnlStatProps);
-                destEvent.Sound = cnlProps.EvSound;
-            }
-
-            // формирование текста события
-            if (string.IsNullOrEmpty(srcEvent.Descr))
-            {
-                // текст в формате "<статус>: <значение>"
-                StringBuilder sbText = cnlStatProps == null ?
-                    new StringBuilder() : new StringBuilder(cnlStatProps.Name);
-                if (cnlStat > BaseValues.CnlStatuses.Undefined)
-                {
-                    if (sbText.Length > 0)
-                        sbText.Append(": ");
-                    sbText.Append(DataFormatter.FormatCnlVal(cnlVal, cnlStat, cnlProps, true));
-                }
-                destEvent.Text = sbText.ToString();
-            }
-            else
-            {
-                destEvent.Text = srcEvent.Descr;
-            }
-
-            return destEvent;
-        }
-
-        /// <summary>
         /// Получить объект для передачи данных, содержащий информацию об ошибке, в формате JSON
         /// </summary>
         private string GetErrorDtoJs(Exception ex)
@@ -638,7 +528,7 @@ namespace Scada.Web
         /// <summary>
         /// Получить события по заданному фильтру
         /// </summary>
-        /// <remarks>Возвращает Event[], упакованный в ArcDTO, в формате в JSON.
+        /// <remarks>Возвращает DispEventProps[], упакованный в ArcDTO, в формате в JSON.
         /// Если задан фильтр по представлению, то оно должно быть уже загружено в кеш</remarks>
         [OperationContract]
         [WebGet]
@@ -658,10 +548,11 @@ namespace Scada.Web
                 eventFilter.CnlNums = cnlSet;
 
                 // получение событий
+                DataAccess dataAccess = AppData.DataAccess;
                 DateTime date = new DateTime(year, month, day);
-                EventTableLight tblEvent = AppData.DataAccess.DataCache.GetEventTable(date);
+                EventTableLight tblEvent = dataAccess.DataCache.GetEventTable(date);
                 long newDataAge = WebUtils.DateTimeToJs(tblEvent.FileModTime);
-                Event[] eventsToSend;
+                DispEventProps[] eventsToSend;
 
                 if (tblEvent.FileModTime > DateTime.MinValue && dataAge < newDataAge)
                 {
@@ -672,21 +563,21 @@ namespace Scada.Web
 
                     // преобразование событий для передачи
                     int evCnt = events.Count;
-                    eventsToSend = new Event[evCnt];
+                    eventsToSend = new DispEventProps[evCnt];
                     if (reversed)
                     {
                         for (int i = 0, j = evCnt - 1; i < evCnt; i++, j--)
-                            eventsToSend[i] = ConvertEvent(events[j]);
+                            eventsToSend[i] = dataAccess.GetDispEventProps(events[j], DataFormatter);
                     }
                     else
                     {
                         for (int i = 0; i < evCnt; i++)
-                            eventsToSend[i] = ConvertEvent(events[i]);
+                            eventsToSend[i] = dataAccess.GetDispEventProps(events[i], DataFormatter);
                     }
                 }
                 else
                 {
-                    eventsToSend = new Event[0];
+                    eventsToSend = new DispEventProps[0];
                 }
 
                 return JsSerializer.Serialize(new ArcDTO(eventsToSend, newDataAge));

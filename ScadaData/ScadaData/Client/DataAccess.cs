@@ -338,6 +338,34 @@ namespace Scada.Client
         }
 
         /// <summary>
+        /// Получить имя пользователя по идентификатору
+        /// </summary>
+        public string GetUserName(int userID)
+        {
+            try
+            {
+                dataCache.RefreshBaseTables();
+                BaseTables baseTables = dataCache.BaseTables;
+
+                lock (baseTables.SyncRoot)
+                {
+                    BaseTables.CheckColumnsExist(baseTables.UserTable, true);
+                    DataView viewUser = baseTables.UserTable.DefaultView;
+                    viewUser.Sort = "UserID";
+                    int rowInd = viewUser.Find(userID);
+                    return rowInd >= 0 ? (string)viewUser[rowInd]["Name"] : "";
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении имени пользователя по ид.={0}" :
+                    "Error getting user name by ID={0}", userID);
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Получить свойства пользователя по идентификатору
         /// </summary>
         public UserProps GetUserProps(int userID)
@@ -345,8 +373,6 @@ namespace Scada.Client
             try
             {
                 dataCache.RefreshBaseTables();
-
-                // необходимо сохранить ссылку, т.к. объект может быть пересоздан другим потоком
                 BaseTables baseTables = dataCache.BaseTables;
 
                 lock (baseTables.SyncRoot)
@@ -494,7 +520,7 @@ namespace Scada.Client
             {
                 SrezTableLight.Srez snapshot = dataCache.GetCurSnapshot(out dataAge);
                 SrezTableLight.CnlData cnlData;
-                return snapshot != null && snapshot.GetCnlData(cnlNum, out cnlData) ? 
+                return snapshot != null && snapshot.GetCnlData(cnlNum, out cnlData) ?
                     cnlData : SrezTableLight.CnlData.Empty;
             }
             catch (Exception ex)
@@ -506,6 +532,50 @@ namespace Scada.Client
                 dataAge = DateTime.MinValue;
                 return SrezTableLight.CnlData.Empty;
             }
+        }
+
+        /// <summary>
+        /// Получить отображаемые свойства события
+        /// </summary>
+        /// <remarks>Метод всегда возвращает объект, не равный null</remarks>
+        public DispEventProps GetDispEventProps(EventTableLight.Event ev, DataFormatter dataFormatter)
+        {
+            DispEventProps dispEventProps = new DispEventProps();
+
+            try
+            {
+                dispEventProps.Num = ev.Number;
+                dispEventProps.Time = ev.DateTime.ToLocalizedString();
+                dispEventProps.Ack = ev.Checked ? CommonPhrases.EventAck : CommonPhrases.EventNotAck;
+
+                InCnlProps cnlProps = GetCnlProps(ev.CnlNum);
+                CnlStatProps cnlStatProps = GetCnlStatProps(ev.NewCnlStat);
+
+                if (cnlProps == null)
+                {
+                    dispEventProps.Obj = GetObjName(ev.ObjNum);
+                    dispEventProps.KP = GetKPName(ev.KPNum);
+                }
+                else
+                {
+                    dispEventProps.Obj = cnlProps.ObjName;
+                    dispEventProps.KP = cnlProps.KPName;
+                    dispEventProps.Cnl = cnlProps.CnlName;
+                    dispEventProps.Color = dataFormatter.GetCnlValColor(
+                        ev.NewCnlVal, ev.NewCnlStat, cnlProps, cnlStatProps);
+                    dispEventProps.Sound = cnlProps.EvSound;
+                }
+
+                dispEventProps.Text = dataFormatter.GetEventText(ev, cnlProps, cnlStatProps);
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении отображаемых свойств события" :
+                    "Error getting displayed event properties");
+            }
+
+            return dispEventProps;
         }
     }
 }

@@ -27,8 +27,6 @@
         var locale = "<%= Scada.Localization.Culture.Name %>";
         var dispEventCnt = <%= dispEventCnt %>;
         var viewAllRight = <%= viewAllRight ? "true" : "false" %>;
-        var controlAllRight = <%= controlAllRight ? "true" : "false" %>;
-        var controlViewRight = <%= controlViewRight ? "true" : "false" %>;
     </script>
     <script type="text/javascript" src="js/tablecommon.js"></script>
     <script type="text/javascript" src="js/events.js"></script>
@@ -40,7 +38,7 @@
         <div id="divToolbar"><span id="spanDate" class="tool-ctrl"><asp:TextBox ID="txtDate" runat="server"></asp:TextBox><i class="fa fa-calendar" aria-hidden="true"></i></span><asp:Label 
             ID="lblAllEventsBtn" runat="server" CssClass="tool-btn" Text="All Events"></asp:Label><asp:Label 
             ID="lblEventsByViewBtn" runat="server" CssClass="tool-btn" Text="Events by View"></asp:Label><span 
-            id="spanExportBtn" class="tool-btn"><i class="fa fa-print" aria-hidden="true"></i></span><div id="divDebugTools"><span 
+            id="spanExportBtn" class="tool-btn not-implemented"><i class="fa fa-print" aria-hidden="true"></i></span><div id="divDebugTools"><span 
                 id="spanTitleChangedBtn" class="tool-btn">TitleChanged</span><span 
                 id="spanNavigateBtn" class="tool-btn">Navigate</span><span 
                 id="spanDateChangedBtn" class="tool-btn">DateChanged</span>

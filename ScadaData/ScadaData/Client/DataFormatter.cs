@@ -27,6 +27,7 @@ using Scada.Data.Models;
 using Scada.Data.Tables;
 using System;
 using System.Globalization;
+using System.Text;
 
 namespace Scada.Client
 {
@@ -187,6 +188,33 @@ namespace Scada.Client
                 throw new ScadaException(string.Format(Localization.UseRussian ?
                     "Ошибка при форматировании значения входного канала {0}" :
                     "Error formatting value of input channel {0}", cnlNumStr), ex);
+            }
+        }
+
+        /// <summary>
+        /// Получить текст события
+        /// </summary>
+        public string GetEventText(EventTableLight.Event ev, InCnlProps cnlProps, CnlStatProps cnlStatProps)
+        {
+            if (string.IsNullOrEmpty(ev.Descr))
+            {
+                // текст в формате "<статус>: <значение>"
+                StringBuilder sbText = cnlStatProps == null ?
+                    new StringBuilder() : new StringBuilder(cnlStatProps.Name);
+
+                if (ev.NewCnlStat > BaseValues.CnlStatuses.Undefined)
+                {
+                    if (sbText.Length > 0)
+                        sbText.Append(": ");
+                    sbText.Append(FormatCnlVal(ev.NewCnlVal, ev.NewCnlStat, cnlProps, true));
+                }
+
+                return sbText.ToString();
+            }
+            else
+            {
+                // только описание события
+                return ev.Descr;
             }
         }
 

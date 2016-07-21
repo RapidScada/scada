@@ -10,6 +10,9 @@
 .hidden {
   display: none;
 }
+.not-implemented {
+  display: none !important;
+}
 /* Toolbar */
 #divToolbar {
   position: fixed;
@@ -173,7 +176,7 @@
   border: 1px solid #888;
   border-radius: 5px;
   box-shadow: 2px 2px 5px #aaa;
-  color: #444;
+  color: #333;
   display: none;
   line-height: normal;
   padding: 5px 10px;

@@ -10,10 +10,6 @@
     <Phrase key="NoRights">Insufficient rights.</Phrase>
     <Phrase key="IllegalRole">Illegal user role.</Phrase>
   </Dictionary>
-  <Dictionary key="Scada.Web.ClientApiSvc">
-    <Phrase key="EventAck">Yes</Phrase>
-    <Phrase key="EventNotAck">No</Phrase>
-  </Dictionary>
   <Dictionary key="Scada.Web.MasterMain">
     <Phrase key="lbtnMainLogout">Logout</Phrase>
     <Phrase key="lblMainFullscreenBtn.ToolTip">Full Screen</Phrase>

@@ -66,6 +66,9 @@
     <Content Include="..\..\ScadaData\ScadaData\Lang\ScadaData.en-GB.xml">
       <Link>lang\ScadaData.en-GB.xml</Link>
     </Content>
+    <Content Include="..\..\ScadaData\ScadaData\Lang\ScadaData.ru-RU.xml">
+      <Link>lang\ScadaData.ru-RU.xml</Link>
+    </Content>
     <Content Include="About.aspx" />
     <Content Include="Calendar.aspx" />
     <Content Include="config\CommSettings.xml" />
