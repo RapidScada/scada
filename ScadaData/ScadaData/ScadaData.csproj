@@ -92,7 +92,7 @@
     <Compile Include="ScadaUtils.Xml.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Lang\ScadaData.ru-RU .xml">
+    <Content Include="Lang\ScadaData.ru-RU.xml">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Lang\ScadaData.en-GB.xml">
