@@ -13,6 +13,7 @@ function showAlert(message) {
 
 // Check that the browser is supported
 function checkBrowser() {
+    // check JavaScript support
     try {
         // supports for...of
         eval("var arr = []; for (var x of arr) {}");
@@ -21,5 +22,11 @@ function checkBrowser() {
     }
     catch (ex) {
         showAlert(phrases.BrowserOutdated);
+        return;
+    }
+
+    // check cookies
+    if (!navigator.cookieEnabled) {
+        showAlert(phrases.CookiesDisabled);
     }
 }

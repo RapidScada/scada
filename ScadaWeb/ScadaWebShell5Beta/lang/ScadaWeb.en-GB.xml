@@ -56,6 +56,7 @@
   </Dictionary>
   <Dictionary key="Scada.Web.WFrmLogin.Js">
     <Phrase key="BrowserOutdated">Your browser is out of date.&lt;br/&gt;Please update to a modern browser.</Phrase>
+    <Phrase key="CookiesDisabled">Cookies are disabled. Please enable cookies.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WFrmNoView">
     <Phrase key="this">No View - Rapid SCADA</Phrase>

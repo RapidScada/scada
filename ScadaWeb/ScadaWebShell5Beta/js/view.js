@@ -61,9 +61,9 @@ scada.view = {
         return jqObj.css("display") == "none" ? 0 : jqObj.outerHeight();
     },
 
-    // Load the splitter position from the cookies
+    // Load the splitter position from the local storage
     _loadSplitterPosition: function () {
-        var dataWindowHeight = parseInt(scada.utils.getCookie("Shell.DataWindowHeight")) ||
+        var dataWindowHeight = parseInt(localStorage.getItem("Shell.DataWindowHeight")) ||
             $("#divDataWindow").outerHeight();
         var minHeight = parseInt($("#divDataWindow").css("min-height"), 10);
         var maxHeight = $("#divViewContent").innerHeight() -
@@ -82,9 +82,9 @@ scada.view = {
         $("#divDataWindow").outerHeight(dataWindowHeight);
     },
 
-    // Load active data window URL from the cookies
+    // Load active data window URL from the local storage
     _loadActiveDataWindow: function () {
-        var activeDataWindow = scada.utils.getCookie("Shell.ActiveDataWindow");
+        var activeDataWindow = localStorage.getItem("Shell.ActiveDataWindow");
         var thisView = this;
 
         if (activeDataWindow) {
@@ -107,9 +107,9 @@ scada.view = {
         }
     },
 
-    // Save active data window URL in the cookies
+    // Save active data window URL in the local storage
     _saveActiveDataWindow: function () {
-        scada.utils.setCookie("Shell.ActiveDataWindow", this._dataWindow.url);
+        localStorage.setItem("Shell.ActiveDataWindow", this._dataWindow.url);
     },
 
     // Hide bottom pane if no data windows exist
@@ -202,10 +202,10 @@ scada.view = {
         this._loadActiveDataWindow();
     },
 
-    // Save the splitter position in the cookies
+    // Save the splitter position in the local storage
     saveSplitterPosition: function () {
         var dataWindowHeight = $("#divDataWindow").outerHeight();
-        scada.utils.setCookie("Shell.DataWindowHeight", dataWindowHeight);
+        localStorage.setItem("Shell.DataWindowHeight", dataWindowHeight);
     },
 
     // Reload view and data windows on iOS to fix frame size,

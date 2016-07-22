@@ -66,15 +66,15 @@ function setEventsByVeiw(val) {
     }
 }
 
-// Load the event filter from the cookies
+// Load the event filter from the local storage
 function loadEventFilter() {
-    var val = scada.utils.getCookie("Table.EventsByView");
+    var val = localStorage.getItem("Table.EventsByView");
     setEventsByVeiw(val != "false");
 }
 
-// Save the event filter in the cookies
+// Save the event filter in the local storage
 function saveEventFilter() {
-    scada.utils.setCookie("Table.EventsByView", eventsByView);
+    localStorage.setItem("Table.EventsByView", eventsByView);
 }
 
 // Play a sound if a new event is received

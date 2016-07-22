@@ -362,6 +362,7 @@ $(document).ready(function () {
     initViewDate();
     initHourLimits();
     createHourPeriod();
+    saveHourPeriod(); // update cookie expiration date
     initCurDataCells();
     initHourDataCols();
     updateHourDataColHdrText();

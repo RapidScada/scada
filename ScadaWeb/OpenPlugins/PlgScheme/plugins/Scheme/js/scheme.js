@@ -120,17 +120,17 @@ function displayScale() {
     $("#spanCurScale").text(Math.round(scheme.scale * 100) + "%");
 }
 
-// Load the scheme scale from the cookies
+// Load the scheme scale from the local storage
 function loadScale() {
-    var scale = scada.utils.getCookie("Scheme.SchemeScale");
+    var scale = localStorage.getItem("Scheme.SchemeScale");
     if (scale) {
         scheme.setScale(scale);
     }
 }
 
-// Save the scheme scale in the cookies
+// Save the scheme scale in the local storage
 function saveScale(opt_scale) {
-    scada.utils.setCookie("Scheme.SchemeScale", opt_scale ? opt_scale : scheme.scale);
+    localStorage.setItem("Scheme.SchemeScale", opt_scale ? opt_scale : scheme.scale);
 }
 
 // Apply additional css styles in case of using iOS

@@ -38,9 +38,9 @@ scada.masterMain = {
         $("body").css("padding-top", "");
     },
 
-    // Save the left pane visibility in the cookies
+    // Save the left pane visibility in the local storage
     _saveLeftPaneVisible: function () {
-        scada.utils.setCookie("Shell.LeftPaneVisible", this.leftPaneExpanded);
+        localStorage.setItem("Shell.LeftPaneVisible", this.leftPaneExpanded);
     },
 
     // Check that a user is logged on
@@ -162,9 +162,9 @@ scada.masterMain = {
         }
     },
 
-    // Load page visual state from the cookies
+    // Load page visual state from the local storage
     loadVisualState: function () {
-        var leftPaneVisible = scada.utils.getCookie("Shell.LeftPaneVisible");
+        var leftPaneVisible = localStorage.getItem("Shell.LeftPaneVisible");
         if (leftPaneVisible == "false") {
             this.collapseLeftPane();
         }
