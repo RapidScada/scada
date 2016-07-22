@@ -164,6 +164,7 @@
     <Content Include="images\gear.png" />
     <Content Include="images\treeview\document.png" />
     <Content Include="images\treeview\folder.png" />
+    <Content Include="index.htm" />
     <Content Include="js\api\clientapi.js" />
     <Content Include="js\api\dialogs.js" />
     <Content Include="js\api\viewhub.js" />

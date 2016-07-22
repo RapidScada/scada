@@ -192,7 +192,7 @@ namespace Scada.Web
         /// </summary>
         private HashSet<int> GetCnlSet(string cnlNums, int viewID, UserRights userRights)
         {
-            if (!string.IsNullOrEmpty(cnlNums))
+            if (!string.IsNullOrWhiteSpace(cnlNums))
             {
                 if (!userRights.ViewAllRight)
                     throw new ScadaException(WebPhrases.NoRights);
@@ -214,7 +214,7 @@ namespace Scada.Web
         /// </summary>
         private IList<int> GetCnlList(string cnlNums, int viewID, UserRights userRights)
         {
-            if (!string.IsNullOrEmpty(cnlNums))
+            if (!string.IsNullOrWhiteSpace(cnlNums))
             {
                 if (!userRights.ViewAllRight)
                     throw new ScadaException(WebPhrases.NoRights);

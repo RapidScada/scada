@@ -102,7 +102,9 @@ scada.utils = {
 
     // Convert array to a query string parameter by joining array elements with a comma
     arrayToQueryParam: function (arr) {
-        return arr ? (Array.isArray(arr) ? arr.join(",") : arr) : "";
+        var queryParam = arr ? (Array.isArray(arr) ? arr.join(",") : arr) : "";
+        // space instead of empty string is required by Mono WCF implementation
+        return encodeURIComponent(queryParam ? queryParam : " ");
     },
 
     // Extract year, month and day from the date, and join them into a query string
