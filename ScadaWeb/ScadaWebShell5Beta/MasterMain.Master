@@ -69,6 +69,7 @@
             </asp:ContentPlaceHolder>
         </div>
         <asp:Label ID="lblMainNormalViewBtn" ClientIDMode="Static" runat="server" ToolTip="Normal View"><span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span></asp:Label>
+        <%= GenStatsHtml() %>
     </form>
 </body>
 </html>

@@ -216,3 +216,11 @@ a:active {
 #divMainContent {
   overflow: auto;
 }
+/* Stats */
+#frameStats {
+  width: 0;
+  height: 0;
+  border: none;
+  position: fixed;
+  visibility: hidden;
+}

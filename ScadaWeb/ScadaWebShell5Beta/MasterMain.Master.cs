@@ -109,6 +109,26 @@ namespace Scada.Web
             return treeViewRenderer.GenerateHtml(userData.UserViews.ViewNodes, SelectedViewID, options);
         }
 
+        /// <summary>
+        /// Генерировать HTML-код для передачи обезличенной статистики команде разработчиков 
+        /// </summary>
+        protected string GenStatsHtml()
+        {
+            if (userData.WebSettings.ShareStats)
+            {
+                StringBuilder sbHtml = new StringBuilder();
+                sbHtml
+                    .Append("<iframe id='frameStats' src='")
+                    .Append(UrlTemplates.Stats)
+                    .Append("'></iframe>");
+                return sbHtml.ToString();
+            }
+            else
+            {
+                return "";
+            }
+        }
+
 
         protected void Page_Load(object sender, EventArgs e)
         {

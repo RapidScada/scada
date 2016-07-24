@@ -55,5 +55,10 @@ namespace Scada.Web.Shell
         /// Отсутствующее представление
         /// </summary>
         public const string NoView = "~/NoView.aspx";
+
+        /// <summary>
+        /// Сайт сбора статистики
+        /// </summary>
+        public const string Stats = "http://stats.rapidscada.net";
     }
 }

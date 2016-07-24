@@ -109,6 +109,11 @@ namespace Scada.Web
         public bool ViewsFromBase { get; set; }
 
         /// <summary>
+        /// Получить или установить разрешение передачи обезличенной статистики команде разработчиков
+        /// </summary>
+        public bool ShareStats { get; set; }
+
+        /// <summary>
         /// Получить пути к дополнительным скриптам, реализующим функциональность оболочки
         /// </summary>
         public ScriptPaths ScriptPaths { get; protected set; }
@@ -134,6 +139,7 @@ namespace Scada.Web
             RemEnabled = false;
             StartPage = "";
             ViewsFromBase = true;
+            ShareStats = true;
             ScriptPaths = new ScriptPaths();
             PluginFileNames.Clear();
         }
@@ -206,6 +212,8 @@ namespace Scada.Web
                                 StartPage = val;
                             else if (nameL == "viewsfrombase")
                                 ViewsFromBase = bool.Parse(val);
+                            else if (nameL == "sharestats")
+                                ShareStats = bool.Parse(val);
                         }
                         catch
                         {
