@@ -37,6 +37,8 @@ namespace Scada.Web.Shell
     /// Allows to remember that a user is logged on
     /// <para>Позволяет запоминать, что пользователь вошёл в систему</para>
     /// </summary>
+    /// <remarks>The object must be a singleton
+    /// <para>Объект должен являться синглтоном</para></remarks>
     public class RememberMe
     {
         /// <summary>
@@ -135,17 +137,18 @@ namespace Scada.Web.Shell
         /// <summary>
         /// Получить имя файла учётных данных пользователя
         /// </summary>
-        private string GetCredentialsFileName(string username, bool forceDir = false)
+        protected string GetCredentialsFileName(string username, bool forceDir = false)
         {
             string userAppDir = storage.GetUserAppDir(username);
-            Storage.ForceDir(userAppDir);
+            if (forceDir)
+                Storage.ForceDir(userAppDir);
             return userAppDir + "RememberMe.xml";
         }
 
         /// <summary>
         /// Загрузить учётные данные пользователя из файла
         /// </summary>
-        private List<Credentials> LoadCredentials(string username)
+        protected List<Credentials> LoadCredentials(string username)
         {
             List<Credentials> credList = new List<Credentials>();
             string fileName = GetCredentialsFileName(username);
@@ -181,7 +184,7 @@ namespace Scada.Web.Shell
         /// <summary>
         /// Сохранить учётные данные пользователя в файле
         /// </summary>
-        private void SaveCredentials(string username, List<Credentials> credList)
+        protected void SaveCredentials(string username, List<Credentials> credList)
         {
             XmlDocument xmlDoc = new XmlDocument();
             XmlDeclaration xmlDecl = xmlDoc.CreateXmlDeclaration("1.0", "utf-8", null);
@@ -205,7 +208,7 @@ namespace Scada.Web.Shell
         /// <summary>
         /// Проверить, что пользователю разрешён вход в систему
         /// </summary>
-        private bool ValidateUser(string username, Credentials cred, out Credentials newCred, out string alert)
+        protected bool ValidateUser(string username, Credentials cred, out Credentials newCred, out string alert)
         {
             lock (fileLock)
             {
@@ -280,7 +283,7 @@ namespace Scada.Web.Shell
         /// <summary>
         /// Создать учётные данные для пользователя на стороне сервера
         /// </summary>
-        private Credentials CreateCredentials(string username)
+        protected Credentials CreateCredentials(string username)
         {
             lock (fileLock)
             {
@@ -298,7 +301,7 @@ namespace Scada.Web.Shell
         /// <summary>
         /// Создать cookie для записи информации о входе в систему
         /// </summary>
-        private HttpCookie CreateCookie(string username, Credentials cred)
+        protected HttpCookie CreateCookie(string username, Credentials cred)
         {
             HttpCookie cookie = new HttpCookie("User");
             cookie.Values.Set("Username", username);

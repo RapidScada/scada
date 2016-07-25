@@ -59,6 +59,6 @@ namespace Scada.Web.Shell
         /// <summary>
         /// Сайт сбора статистики
         /// </summary>
-        public const string Stats = "http://stats.rapidscada.net";
+        public const string Stats = "http://stats.rapidscada.net?serverID={0}";
     }
 }

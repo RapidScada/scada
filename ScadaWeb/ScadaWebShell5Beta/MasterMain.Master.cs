@@ -41,11 +41,10 @@ namespace Scada.Web
         // Дерево представлений
         private const string FolderImageUrl = "~/images/treeview/folder.png";
         private const string DocumentImageUrl = "~/images/treeview/document.png";
-        private static readonly TreeViewRenderer treeViewRenderer =
-            new TreeViewRenderer();
+        private static readonly TreeViewRenderer treeViewRenderer = new TreeViewRenderer();
 
-        private AppData appData;   // общие данные веб-приложения
-        private UserData userData; // данные пользователя приложения
+        private AppData appData;           // общие данные веб-приложения
+        private UserData userData;         // данные пользователя приложения
 
 
         /// <summary>
@@ -114,19 +113,7 @@ namespace Scada.Web
         /// </summary>
         protected string GenStatsHtml()
         {
-            if (userData.WebSettings.ShareStats)
-            {
-                StringBuilder sbHtml = new StringBuilder();
-                sbHtml
-                    .Append("<iframe id='frameStats' src='")
-                    .Append(UrlTemplates.Stats)
-                    .Append("'></iframe>");
-                return sbHtml.ToString();
-            }
-            else
-            {
-                return "";
-            }
+            return appData.Stats.GenerateHtml(userData.WebSettings.ShareStats);
         }
 
 

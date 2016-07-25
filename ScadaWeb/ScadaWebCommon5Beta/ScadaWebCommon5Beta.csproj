@@ -62,6 +62,7 @@
     <Compile Include="Shell\IWebTreeNode.cs" />
     <Compile Include="Shell\RememberMe.cs" />
     <Compile Include="Shell\SortOrders.cs" />
+    <Compile Include="Shell\Stats.cs" />
     <Compile Include="Shell\TreeViewRenderer.cs" />
     <Compile Include="Shell\UrlTemplates.cs" />
     <Compile Include="Shell\UserContent.cs" />

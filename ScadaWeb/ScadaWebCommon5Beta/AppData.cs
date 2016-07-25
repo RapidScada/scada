@@ -97,6 +97,7 @@ namespace Scada.Web
             Log = new Log(Log.Formats.Full);
             Storage = new Storage(AppDirs.StorageDir);
             RememberMe = new RememberMe(Storage, Log);
+            Stats = new Stats(Storage, Log);
             UserMonitor = new UserMonitor(Log);
 
             CreateDataObjects();
@@ -148,6 +149,11 @@ namespace Scada.Web
         /// Получить объект для сохранения входа пользователей в систему
         /// </summary>
         public RememberMe RememberMe { get; private set; }
+
+        /// <summary>
+        /// Получить объект для передачи обезличенной статистики команде разработчиков
+        /// </summary>
+        public Stats Stats { get; private set; }
 
         /// <summary>
         /// Получить монитор активности пользователей
