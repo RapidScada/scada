@@ -342,7 +342,7 @@ namespace Scada.Web
                     // переход на страницу входа
                     if (!LoggedOn)
                     {
-                        string returnUrl = HttpUtility.UrlEncode(httpContext.Request.Url.ToString());
+                        string returnUrl = HttpUtility.UrlPathEncode(httpContext.Request.Url.ToString());
                         httpContext.Response.Redirect(alert == "" ?
                             string.Format(UrlTemplates.LoginWithReturn, returnUrl) :
                             string.Format(UrlTemplates.LoginWithAlert, returnUrl, HttpUtility.UrlEncode(alert)));

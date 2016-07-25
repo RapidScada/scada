@@ -26,6 +26,7 @@
 using System;
 using System.IO;
 using System.Text;
+using System.Web;
 using System.Xml;
 using Utils;
 
@@ -150,15 +151,19 @@ namespace Scada.Web.Shell
         /// <summary>
         /// Генерировать HTML-код для передачи статистики
         /// </summary>
-        public string GenerateHtml(bool shareStats)
+        public string GenerateHtml(bool shareStats, string customData = "")
         {
             if (shareStats)
             {
                 StringBuilder sbHtml = new StringBuilder();
                 sbHtml
                     .Append("<iframe id='frameStats' src='")
-                    .AppendFormat(UrlTemplates.Stats, GetServerID())
-                    .Append("'></iframe>");
+                    .AppendFormat(UrlTemplates.Stats, GetServerID());
+
+                if (string.IsNullOrEmpty(customData))
+                    sbHtml.Append("#").Append(HttpUtility.UrlEncode(customData));
+
+                sbHtml.Append("'></iframe>");
                 return sbHtml.ToString();
             }
             else
