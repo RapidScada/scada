@@ -356,7 +356,9 @@ scada.scheme.StaticTextRenderer.prototype.createDom = function (elem, renderCont
     this.setFont(spanElem, props.Font);
     this.setForeColor(spanElem, props.ForeColor);
 
-    if (!props.AutoSize) {
+    if (props.AutoSize) {
+        this.setWordWrap(spanText, false);
+    } else {
         spanElem.css("display", "table");
 
         spanText
@@ -565,14 +567,14 @@ scada.scheme.DynamicPictureRenderer.prototype.update = function (elem, renderCon
 
     if (curCnlDataExt) {
         // choose the image depending on the conditions
-        var imageName = props.Image.Name;
+        var imageName = props.Image ? props.Image.Name : "";
 
         if (curCnlDataExt.Stat && props.Conditions) {
             var cnlVal = curCnlDataExt.Val;
 
             for (var cond of props.Conditions) {
                 if (scada.scheme.calc.conditionSatisfied(cond, cnlVal)) {
-                    imageName = cond.Image.Name;
+                    imageName = cond.Image ? cond.Image.Name : "";
                     break;
                 }
             }
