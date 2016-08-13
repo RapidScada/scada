@@ -109,7 +109,17 @@ namespace Scada.Web
             {
                 int subsWeight1 = Subitems.Count > 0 ? 0 : 1;
                 int subsWeight2 = other.Subitems.Count > 0 ? 0 : 1;
-                return subsWeight1 == subsWeight2 ? Text.CompareTo(other.Text) : subsWeight1.CompareTo(subsWeight2);
+                int comp1 = subsWeight1.CompareTo(subsWeight2);
+
+                if (comp1 == 0)
+                {
+                    int comp2 = ViewID.CompareTo(other.ViewID);
+                    return comp2 == 0 ? Text.CompareTo(other.Text) : comp2;
+                }
+                else
+                {
+                    return comp1;
+                }
             }
         }
 
