@@ -8,6 +8,8 @@ var viewID = viewID || 0;
 var refrRate = refrRate || 1000;
 // Localized phrases
 var phrases = phrases || {};
+// View control right
+var controlRight = controlRight || false;
 // Possible scale values
 var scaleVals = [0.1, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 2, 2.5, 3, 4, 5];
 
@@ -30,7 +32,7 @@ function continueLoadingScheme(viewID) {
                 $("body").removeClass("loading");
 
                 if (!DEBUG_MODE) {
-                    scheme.createDom();
+                    scheme.createDom(controlRight);
                     loadScale();
                     displayScale();
                     startUpdatingScheme();

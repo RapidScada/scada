@@ -23,6 +23,7 @@
  * Modified : 2016
  */
 
+using Scada.Data.Models;
 using Scada.Scheme;
 using Scada.UI;
 using Scada.Web.Shell;
@@ -41,6 +42,7 @@ namespace Scada.Web.Plugins.Scheme
         protected int viewID;             // ид. представления
         protected int refrRate;           // частота обновления данных
         protected string phrases;         // локализованные фразы
+        protected bool controlRight;      // право на управление представлением
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -59,7 +61,9 @@ namespace Scada.Web.Plugins.Scheme
             int.TryParse(Request.QueryString["viewID"], out viewID);
 
             // проверка прав на просмотр представления
-            if (!(userData.LoggedOn && userData.UserRights.GetViewRights(viewID).ViewRight))
+            EntityRights rights = userData.LoggedOn ?
+                userData.UserRights.GetViewRights(viewID) : EntityRights.NoRights;
+            if (!rights.ViewRight)
                 Response.Redirect(UrlTemplates.NoView);
 
             // загрузка представления в кеш, чтобы проверить, что оно доступно, присвоить метку
@@ -73,10 +77,8 @@ namespace Scada.Web.Plugins.Scheme
 
             // подготовка данных для вывода на веб-страницу
             refrRate = userData.WebSettings.DataRefrRate;
-
-            Localization.Dict dict;
-            Localization.Dictionaries.TryGetValue("Scada.Web.Plugins.Scheme.WFrmScheme.Js", out dict);
-            phrases = WebUtils.DictionaryToJs(dict);
+            phrases = WebUtils.DictionaryToJs("Scada.Web.Plugins.Scheme.WFrmScheme.Js");
+            controlRight = rights.ControlRight;
         }
     }
 }

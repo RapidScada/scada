@@ -428,8 +428,10 @@ scada.scheme.Scheme.prototype.load = function (viewID, callback) {
 };
 
 // Create DOM content of the scheme elements
-scada.scheme.Scheme.prototype.createDom = function () {
+scada.scheme.Scheme.prototype.createDom = function (opt_controlRight) {
     this.renderContext.imageMap = this.imageMap;
+    this.renderContext.controlRight = typeof opt_controlRight === "undefined" ?
+        true : opt_controlRight;
 
     try
     {

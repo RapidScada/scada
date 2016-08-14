@@ -77,15 +77,13 @@ namespace Scada.Web.Plugins.Table
             // подготовка данных для вывода на веб-страницу
             dataRefrRate = userData.WebSettings.DataRefrRate;
             arcRefrRate = userData.WebSettings.ArcRefrRate;
-            dispEventCnt = userData.WebSettings.DispEventCnt;
-            viewAllRight = userData.UserRights.ViewAllRight;
-
-            Localization.Dict dict;
-            Localization.Dictionaries.TryGetValue("Scada.Web.Plugins.Table.WFrmEvents.Js", out dict);
-            phrases = WebUtils.DictionaryToJs(dict);
+            phrases = WebUtils.DictionaryToJs("Scada.Web.Plugins.Table.WFrmEvents.Js");
 
             DateTime nowDT = DateTime.Now;
             today = string.Format("new Date({0}, {1}, {2})", nowDT.Year, nowDT.Month - 1, nowDT.Day);
+
+            dispEventCnt = userData.WebSettings.DispEventCnt;
+            viewAllRight = userData.UserRights.ViewAllRight;
         }
     }
 }

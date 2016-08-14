@@ -23,6 +23,7 @@
         var viewID = <%= viewID %>;
         var refrRate = <%= refrRate %>;
         var phrases = <%= phrases %>;
+        var controlRight = <%= controlRight ? "true" : "false" %>;
     </script>
     <script type="text/javascript" src="js/scheme.js"></script>
 </head>

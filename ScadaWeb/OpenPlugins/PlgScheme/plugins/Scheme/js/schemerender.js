@@ -298,11 +298,15 @@ scada.scheme.ElementRenderer.prototype.prepareElem = function (jqObj, elem, opt_
 };
 
 // Bind user action to the element
-scada.scheme.ElementRenderer.prototype.bindAction = function (jqObj, elem) {
+scada.scheme.ElementRenderer.prototype.bindAction = function (jqObj, elem, controlRight) {
     var Actions = scada.scheme.Actions;
     var props = elem.props;
+    var action = props.Action;
+    var actionIsBound =
+        action == Actions.DRAW_DIAGRAM && props.InCnlNum > 0 ||
+        action == Actions.SEND_COMMAND && props.CtrlCnlNum > 0 && controlRight;
 
-    if (props.Action) {
+    if (actionIsBound) {
         var viewHub = scada.scheme.viewHub;
         var dialogs = viewHub ? viewHub.dialogs : null;
 
@@ -311,22 +315,18 @@ scada.scheme.ElementRenderer.prototype.bindAction = function (jqObj, elem) {
         .click(function () {
             switch (props.Action) {
                 case Actions.DRAW_DIAGRAM:
-                    if (props.InCnlNum > 0) {
-                        if (dialogs) {
-                            var date = viewHub.curViewDateMs ? new Date(viewHub.curViewDateMs) : new Date();
-                            dialogs.showChart(viewHub.curViewID, date, props.InCnlNum);
-                        } else {
-                            console.warn("Dialogs object is undefined");
-                        }
+                    if (dialogs) {
+                        var date = viewHub.curViewDateMs ? new Date(viewHub.curViewDateMs) : new Date();
+                        dialogs.showChart(viewHub.curViewID, date, props.InCnlNum);
+                    } else {
+                        console.warn("Dialogs object is undefined");
                     }
                     break;
                 case Actions.SEND_COMMAND:
-                    if (props.CtrlCnlNum > 0) {
-                        if (dialogs) {
-                            dialogs.showCmd(viewHub.curViewID, props.CtrlCnlNum);
-                        } else {
-                            console.warn("Dialogs object is undefined");
-                        }
+                    if (dialogs) {
+                        dialogs.showCmd(viewHub.curViewID, props.CtrlCnlNum);
+                    } else {
+                        console.warn("Dialogs object is undefined");
                     }
                     break;
             }
@@ -408,7 +408,7 @@ scada.scheme.DynamicTextRenderer.prototype.createDom = function (elem, renderCon
     var spanText = elem.dom.children();
 
     this.setToolTip(spanElem, props.ToolTip);
-    this.bindAction(spanElem, elem);
+    this.bindAction(spanElem, elem, renderContext.controlRight);
 
     // apply properties on hover
     var thisRenderer = this;
@@ -534,7 +534,7 @@ scada.scheme.DynamicPictureRenderer.prototype.createDom = function (elem, render
     var divElem = elem.dom;
 
     this.setToolTip(divElem, props.ToolTip);
-    this.bindAction(divElem, elem);
+    this.bindAction(divElem, elem, renderContext.controlRight);
 
     // apply properties on hover
     var thisRenderer = this;
@@ -599,6 +599,7 @@ scada.scheme.DynamicPictureRenderer.prototype.update = function (elem, renderCon
 scada.scheme.RenderContext = function () {
     this.curCnlDataMap = null;
     this.imageMap = null;
+    this.controlRight = true;
 };
 
 // Get scheme image object by image property of an element

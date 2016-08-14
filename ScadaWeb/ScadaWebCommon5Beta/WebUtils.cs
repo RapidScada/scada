@@ -180,6 +180,16 @@ namespace Scada.Web
         }
 
         /// <summary>
+        /// Получить словарь по ключу и преобразовать в объект JavaScript
+        /// </summary>
+        public static string DictionaryToJs(string dictKey)
+        {
+            Localization.Dict dict;
+            Localization.Dictionaries.TryGetValue(dictKey, out dict);
+            return DictionaryToJs(dict);
+        }
+
+        /// <summary>
         /// Преобразовать дату в время в число миллисекунд для создания даты в JavaScript
         /// </summary>
         public static long DateTimeToJs(DateTime dateTime)

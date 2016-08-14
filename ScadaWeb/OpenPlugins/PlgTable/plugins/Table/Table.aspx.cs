@@ -271,10 +271,7 @@ namespace Scada.Web.Plugins.Table
             viewTitle = HttpUtility.JavaScriptStringEncode(tableView.Title);
             dataRefrRate = userData.WebSettings.DataRefrRate;
             arcRefrRate = userData.WebSettings.ArcRefrRate;
-
-            Localization.Dict dict;
-            Localization.Dictionaries.TryGetValue("Scada.Web.Plugins.Table.WFrmTable.Js", out dict);
-            phrases = WebUtils.DictionaryToJs(dict);
+            phrases = WebUtils.DictionaryToJs("Scada.Web.Plugins.Table.WFrmTable.Js");
 
             DateTime nowDT = DateTime.Now;
             today = string.Format("new Date({0}, {1}, {2})", nowDT.Year, nowDT.Month - 1, nowDT.Day);
