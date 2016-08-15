@@ -104,15 +104,15 @@ namespace Scada.Web.Plugins.Table
         /// <summary>
         /// Добавить ячейку в табличное представление
         /// </summary>
-        private void AppendCell(StringBuilder sbHtml, string cssClass, int? hour, string innerHtml)
+        private void AppendCell(StringBuilder sbHtml, string cssClass, string innerHtml, string hour = null)
         {
             sbHtml.Append("<td");
 
             if (!string.IsNullOrEmpty(cssClass))
                 sbHtml.Append(" class='").Append(cssClass).Append("'");
 
-            if (hour.HasValue)
-                sbHtml.Append(" data-hour='").Append(hour.Value).Append("'");
+            if (hour != null)
+                sbHtml.Append(" data-hour='").Append(hour).Append("'");
 
             sbHtml.Append(">").Append(innerHtml).Append("</td>");
         }
@@ -138,17 +138,21 @@ namespace Scada.Web.Plugins.Table
             const int FirstHour = -24;
             const int LastHour = 23;
 
+            string[] hourStrings = new string[LastHour - FirstHour + 1];
+            for (int hour = FirstHour, hourInd = 0; hour <= LastHour; hour++, hourInd++)
+                hourStrings[hourInd] = hour.ToString();
+
             StringBuilder sbHtml = new StringBuilder();
             sbHtml.AppendLine("<table>");
 
             // заголовок таблицы
             sbHtml.AppendLine("<tr class='hdr'>");
-            AppendCell(sbHtml, "cap", null, "<span>" + PlgPhrases.ItemCol + "</span>");
-            AppendCell(sbHtml, "cur", null, "<span>" + PlgPhrases.CurCol + "</span>");
-            for (int hour = FirstHour; hour <= LastHour; hour++)
+            AppendCell(sbHtml, "cap", "<span>" + PlgPhrases.ItemCol + "</span>");
+            AppendCell(sbHtml, "cur", "<span>" + PlgPhrases.CurCol + "</span>");
+            for (int hour = FirstHour, hourInd = 0; hour <= LastHour; hour++, hourInd++)
             {
-                AppendCell(sbHtml, timeFrom <= hour && hour <= timeTo ? "hour" : "hour hidden", hour, 
-                    "<span>" + GetLocalizedHour(hour) + "</span>");
+                AppendCell(sbHtml, timeFrom <= hour && hour <= timeTo ? "hour" : "hour hidden", 
+                    "<span>" + GetLocalizedHour(hour) + "</span>", hourStrings[hourInd]);
             }
             sbHtml.AppendLine().AppendLine("</tr>");
 
@@ -205,17 +209,18 @@ namespace Scada.Web.Plugins.Table
                     }
                     sbCapHtml.Append("</span>");
 
-                    AppendCell(sbHtml, "cap", null, sbCapHtml.ToString());
+                    AppendCell(sbHtml, "cap", sbCapHtml.ToString());
                 }
                 else
                 {
-                    AppendCell(sbHtml, "cap", null, caption);
+                    AppendCell(sbHtml, "cap", caption);
                 }
 
                 // ячейки текущих и часовых данных
-                AppendCell(sbHtml, "cur", null, "");
-                for (int hour = FirstHour; hour <= LastHour; hour++)
-                    AppendCell(sbHtml, timeFrom <= hour && hour <= timeTo ? "hour" : "hour hidden", hour, "");
+                AppendCell(sbHtml, "cur", "");
+                for (int hour = FirstHour, hourInd = 0; hour <= LastHour; hour++, hourInd++)
+                    AppendCell(sbHtml, timeFrom <= hour && hour <= timeTo ? "hour" : "hour hidden", 
+                        "", hourStrings[hourInd]);
 
                 // тег окончания строки
                 sbHtml.AppendLine().AppendLine("</tr>");

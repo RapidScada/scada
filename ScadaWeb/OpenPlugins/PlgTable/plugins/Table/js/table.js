@@ -91,7 +91,7 @@ function initCurDataCells() {
 
     // copy data-cnl attributes from rows to the cells
     curDataCells.each(function () {
-        $(this).data("cnl", $(this).closest("tr.item").data("cnl"));
+        $(this).attr("data-cnl", $(this).closest("tr.item").data("cnl"));
     });
 }
 
@@ -104,13 +104,14 @@ function initHourDataCols() {
     }
 
     // get and arrange cells
+    // Note: cell.attr() significantly faster than cell.data()
     $("#divTblWrapper tr.item").each(function () {
         var row = $(this);
         var cnlNum = row.data("cnl");
         row.find("td.hour").each(function () {
             var cell = $(this);
-            cell.data("cnl", cnlNum);
-            var hour = cell.data("hour");
+            cell.attr("data-cnl", cnlNum);
+            var hour = cell.attr("data-hour"); // faster than cell.data("hour")
             hourDataCols[hour - firstHour].push(cell);
         });
     });
@@ -165,15 +166,9 @@ function updateHourDataColVisibility() {
     });
 }
 
-// Set widths of the item links to fill cells
-function setItemLinkWidths() {
-    var cellWidth = $("#divTblWrapper td.cap:first").width();
-    $("#divTblWrapper td.cap").each(function () {
-        var cell = $(this);
-        cell.children("a.lbl").outerWidth(cellWidth -
-            cell.children("img.icon").outerWidth(true) -
-            cell.children("span.cmd").outerWidth(true));
-    });
+// Tune style of the item links to fill cells
+function styleItemLinks() {
+    $("#divTblWrapper td.cap span.cmd").prev("a.lbl").addClass("before-cmd");
 }
 
 // Show hint associated with the icon
@@ -233,13 +228,20 @@ function showCmd(clickedElem) {
 // Display the given data in the cell. 
 // Returns true if the cell text has been changed
 function displayCellData(cell, cnlDataMap) {
-    var cnlNum = cell.data("cnl");
+    var cnlNum = parseInt(cell.attr("data-cnl"));
     if (cnlNum) {
         var cnlData = cnlDataMap.get(cnlNum);
-        var text = cnlData ? cnlData.Text : "";
+        var text = "";
+        var color = "";
+
+        if (cnlData) {
+            text = cnlData.Text;
+            color = cnlData.Color;
+        }
+
         var textChanged = cell.text() != text;
-        cell.text(text); // special characters will be encoded
-        cell.css("color", cnlData ? cnlData.Color : "");
+        cell.text(text); // special characters are encoded
+        cell.css("color", color);
         return textChanged;
     }
 }
@@ -358,7 +360,6 @@ $(document).ready(function () {
     setTitle();
     styleIOS();
     updateLayout();
-    setItemLinkWidths();
     initViewDate();
     initHourLimits();
     createHourPeriod();
@@ -366,6 +367,7 @@ $(document).ready(function () {
     initCurDataCells();
     initHourDataCols();
     updateHourDataColHdrText();
+    styleItemLinks();
     scada.tableHeader.create();
     notifier = new scada.Notifier("#divNotif");
     notifier.startClearingNotifications();

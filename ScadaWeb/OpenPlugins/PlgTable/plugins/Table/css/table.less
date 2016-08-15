@@ -14,21 +14,27 @@
 }
 
 #divTblWrapper td.cap {
+    overflow: hidden;
     padding: 2px 5px;
 }
 
-#divTblWrapper td.cap img {
+#divTblWrapper td.cap img.icon {
     width: 16px;
     height: 16px;
     margin: 0 5px 0 0;
     border: none;
 }
 
-#divTblWrapper td.cap a {
+#divTblWrapper td.cap a.lbl {
+    width: calc(~"100% - 21px");
     height: @cell-height;
     margin-right: 5px;
     display: inline-block;
     line-height: @cell-height;
+}
+
+#divTblWrapper td.cap a.lbl.before-cmd {
+    width: calc(~"100% - 26px - "@cell-height);
 }
 
 #divTblWrapper td.cap span.cmd {
