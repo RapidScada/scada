@@ -17,10 +17,10 @@ var scada = scada || {};
 
 scada.cmd = {
     // Show command dialog
-    show: function (rootPath, viewID, ctrlCnlNum, opt_callback) {
+    show: function (rootPath, ctrlCnlNum, viewID, opt_callback) {
         var popup = scada.popupLocator.getPopup();
         if (popup) {
-            popup.showModal(rootPath + "plugins/Table/Command.aspx?viewID=" + viewID + "&ctrlCnlNum=" + ctrlCnlNum,
+            popup.showModal(rootPath + "plugins/Table/Command.aspx?ctrlCnlNum=" + ctrlCnlNum + "&viewID=" + viewID,
                 [scada.ModalButtons.EXEC, scada.ModalButtons.CLOSE], opt_callback);
         }
     }

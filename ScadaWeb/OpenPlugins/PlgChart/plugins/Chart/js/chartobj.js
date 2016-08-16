@@ -14,13 +14,13 @@ var scada = scada || {};
 
 scada.chart = {
     // Get chart URL
-    getChartUrl: function (viewID, date, cnlNums) {
-        return "plugins/Chart/Chart.aspx?viewID=" + viewID +
-            "&" + scada.utils.dateToQueryString(date) + "&cnlNum=" + cnlNums;
+    getChartUrl: function (cnlNums, viewIDs, date) {
+        return "plugins/Chart/Chart.aspx?cnlNum=" + cnlNums + "&viewID=" + viewIDs +
+            "&" + scada.utils.dateToQueryString(date);
     },
 
     // Open chart in the new tab
-    show: function (rootPath, viewID, date, cnlNums) {
-        window.open(rootPath + this.getChartUrl(viewID, date, cnlNums));
+    show: function (rootPath, cnlNums, viewIDs, date) {
+        window.open(rootPath + this.getChartUrl(cnlNums, viewIDs, date));
     }
 }

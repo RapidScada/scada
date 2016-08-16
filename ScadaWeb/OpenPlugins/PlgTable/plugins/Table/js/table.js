@@ -208,7 +208,7 @@ function showChart(clickedElem) {
     var dialogs = viewHub ? viewHub.dialogs : null;
     if (dialogs) {
         var cnlNum = clickedElem.closest("tr.item").data("cnl");
-        dialogs.showChart(viewID, viewDate, cnlNum);
+        dialogs.showChart(cnlNum, viewID, viewDate);
     } else {
         console.warn(DIALOGS_UNDEFINED);
     }
@@ -219,7 +219,7 @@ function showCmd(clickedElem) {
     var dialogs = viewHub ? viewHub.dialogs : null;
     if (dialogs) {
         var ctrlCnlNum = clickedElem.closest("tr.item").data("ctrl");
-        dialogs.showCmd(viewID, ctrlCnlNum);
+        dialogs.showCmd(ctrlCnlNum, viewID);
     } else {
         console.warn(DIALOGS_UNDEFINED);
     }

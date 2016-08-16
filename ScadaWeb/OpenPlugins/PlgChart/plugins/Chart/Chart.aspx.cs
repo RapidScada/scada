@@ -126,10 +126,10 @@ namespace Scada.Web.Plugins.Chart
             Translator.TranslatePage(Page, "Scada.Web.Plugins.Chart.WFrmChart");
 
             // получение параметров запроса
+            int.TryParse(Request.QueryString["cnlNum"], out cnlNum);
             int viewID;
             int.TryParse(Request.QueryString["viewID"], out viewID);
             startDate = WebUtils.GetDateFromQueryString(Request);
-            int.TryParse(Request.QueryString["cnlNum"], out cnlNum);
 
             // проверка прав
             if (!userData.LoggedOn ||

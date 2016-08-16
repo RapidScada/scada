@@ -86,7 +86,7 @@ function playEventBeep() {
 function showEventAck(evNum) {
     var dialogs = viewHub ? viewHub.dialogs : null;
     if (dialogs) {
-        dialogs.showEventAck(viewID, viewDate, evNum, function (dialogResult) {
+        dialogs.showEventAck(viewDate, evNum, viewID, function (dialogResult) {
             if (dialogResult) {
                 restartUpdatingEvents();
             }

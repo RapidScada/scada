@@ -239,11 +239,11 @@ namespace Scada.Web.Plugins.Table
             else
             {
                 // получение параметров запроса и сохранение во ViewState
+                int.TryParse(Request.QueryString["ctrlCnlNum"], out ctrlCnlNum);
+                ViewState["CtrlCnlNum"] = ctrlCnlNum;
+
                 int viewID;
                 int.TryParse(Request.QueryString["viewID"], out viewID);
-                int.TryParse(Request.QueryString["ctrlCnlNum"], out ctrlCnlNum);
-
-                ViewState["CtrlCnlNum"] = ctrlCnlNum;
 
                 // проверка прав
                 if (!userData.UserRights.GetViewRights(viewID).ControlRight ||

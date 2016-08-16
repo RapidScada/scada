@@ -17,11 +17,11 @@ var scada = scada || {};
 
 scada.eventAck = {
     // Show event acknowledgement dialog
-    show: function (rootPath, viewID, date, evNum, opt_callback) {
+    show: function (rootPath, date, evNum, viewID, opt_callback) {
         var popup = scada.popupLocator.getPopup();
         if (popup) {
-            popup.showModal(rootPath + "plugins/Table/EventAck.aspx?viewID=" +
-                viewID + "&" + scada.utils.dateToQueryString(date) + "&evNum=" + evNum,
+            popup.showModal(rootPath + "plugins/Table/EventAck.aspx" +
+                scada.utils.dateToQueryString(date) + "&evNum=" + evNum + "&viewID=" + viewID,
                 [scada.ModalButtons.OK, scada.ModalButtons.CANCEL], opt_callback);
         }
     }

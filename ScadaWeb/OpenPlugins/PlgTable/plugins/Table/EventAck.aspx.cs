@@ -89,13 +89,13 @@ namespace Scada.Web.plugins.Table
                 Translator.TranslatePage(Page, "Scada.Web.Plugins.Table.WFrmEventAck");
 
                 // получение параметров запроса и сохранение во ViewState
-                int viewID;
-                int.TryParse(Request.QueryString["viewID"], out viewID);
                 evDate = WebUtils.GetDateFromQueryString(Request);
                 int.TryParse(Request.QueryString["evNum"], out evNum);
-
                 ViewState["EvDate"] = evDate;
                 ViewState["EvNum"] = evNum;
+
+                int viewID;
+                int.TryParse(Request.QueryString["viewID"], out viewID);
 
                 // получение события
                 EventTableLight tblEvent = appData.DataAccess.DataCache.GetEventTable(evDate);

@@ -317,14 +317,14 @@ scada.scheme.ElementRenderer.prototype.bindAction = function (jqObj, elem, contr
                 case Actions.DRAW_DIAGRAM:
                     if (dialogs) {
                         var date = viewHub.curViewDateMs ? new Date(viewHub.curViewDateMs) : new Date();
-                        dialogs.showChart(viewHub.curViewID, date, props.InCnlNum);
+                        dialogs.showChart(props.InCnlNum, viewHub.curViewID, date);
                     } else {
                         console.warn("Dialogs object is undefined");
                     }
                     break;
                 case Actions.SEND_COMMAND:
                     if (dialogs) {
-                        dialogs.showCmd(viewHub.curViewID, props.CtrlCnlNum);
+                        dialogs.showCmd(props.CtrlCnlNum, viewHub.curViewID);
                     } else {
                         console.warn("Dialogs object is undefined");
                     }
