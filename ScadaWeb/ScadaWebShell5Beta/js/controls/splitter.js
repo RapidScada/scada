@@ -58,14 +58,7 @@ scada.SplitterBulk.prototype._getMinHeight = function (jqObj) {
 // Add overlay div into the resized div too allow receiving events over iframe
 scada.SplitterBulk.prototype._addOverlay = function () {
     var overlay = $("<div class='splitter-overlay'><div/>").css({
-        "position": "fixed",
-        "left": 0,
-        "top": 0,
-        "width": "100%",
-        "height": "100%",
-        "background-color": "gray",
         "cursor": this.isHorizontal ? "ns-resize" : "ew-resize",
-        "opacity": 0,
         "z-index": scada.utils.FRONT_ZINDEX
     });
     $("body").append(overlay);

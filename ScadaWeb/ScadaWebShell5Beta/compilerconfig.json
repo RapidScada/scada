@@ -54,5 +54,9 @@
   {
     "outputFile": "css/user.css",
     "inputFile": "css/user.less"
+  },
+  {
+    "outputFile": "css/controls/splitter.css",
+    "inputFile": "css/controls/splitter.less"
   }
 ]

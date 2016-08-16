@@ -14,16 +14,6 @@
   border: none;
   display: block;
 }
-#divViewSplitter {
-  height: 9px;
-  background-color: #ddd;
-  cursor: ns-resize;
-  display: none;
-  /*block*/
-}
-#divViewSplitter.splitter-active {
-  background-color: #ccc;
-}
 #divDataWindow {
   height: 200px;
   min-height: 50px;
