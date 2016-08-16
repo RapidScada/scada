@@ -95,7 +95,7 @@ scada.view = {
                     return false; // break the loop
                 }
             });
-        } else if (activeDataWindow == null /*no cookie*/) {
+        } else if (activeDataWindow == null && !scada.utils.isSmallScreen()) {
             // activate events window if presented
             $("#divBottomTabsContainer .tab").each(function () {
                 var code = $(this).data("code");

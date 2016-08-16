@@ -19,6 +19,9 @@ scada.utils = {
     // Default cookie expiration period in days
     COOKIE_EXPIRATION: 7,
 
+    // Window width that is considered a small
+    SMALL_WND_WIDTH: 800,
+
     // Get cookie
     getCookie: function (name) {
         var cookie = " " + document.cookie;
@@ -185,6 +188,11 @@ scada.utils = {
         } else {
             this.requestFullscreen();
         }
+    },
+
+    // Check if a browser window is small sized
+    isSmallScreen() {
+        return top.innerWidth <= this.SMALL_WND_WIDTH;
     },
 
     // Click hyperlink programmatically

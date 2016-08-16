@@ -14,12 +14,14 @@
   </CommonParams>
   <ScriptPaths>
     <Script name="ChartScript" path="~/plugins/Chart/js/chartobj.js" />
-    <Script name="CmdScript" path="" />
-    <Script name="EventAckScript" path="" />
+    <Script name="CmdScript" path="~/plugins/Table/js/cmdobj.js" />
+    <Script name="EventAckScript" path="~/plugins/Table/js/eventackobj.js" />
   </ScriptPaths>
   <Plugins>
+    <Plugin fileName="PlgChart.dll" />
     <Plugin fileName="PlgConfig.dll" />
     <Plugin fileName="PlgScheme.dll" />
     <Plugin fileName="PlgTable.dll" />
+    <Plugin fileName="PlgWebPage.dll" />
   </Plugins>
 </WebSettings>

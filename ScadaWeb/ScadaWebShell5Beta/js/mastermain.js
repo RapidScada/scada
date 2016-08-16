@@ -165,7 +165,7 @@ scada.masterMain = {
     // Load page visual state from the local storage
     loadVisualState: function () {
         var leftPaneVisible = localStorage.getItem("Shell.LeftPaneVisible");
-        if (leftPaneVisible == "false") {
+        if (leftPaneVisible == "false" || leftPaneVisible == null && scada.utils.isSmallScreen()) {
             this.collapseLeftPane();
         }
     },
