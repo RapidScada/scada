@@ -231,6 +231,10 @@ scada.Popup.prototype.closeDropdown = function (popupWnd, dialogResult, extraPar
 // opt_callback is a function (dialogResult, extraParams),
 // requires Bootstrap
 scada.Popup.prototype.showModal = function (url, opt_buttons, opt_callback) {
+    // create temporary overlay to prevent user activity
+    var tempOverlay = $("<div class='popup-overlay'></div>");
+    $("body").append(tempOverlay);
+
     // create the modal
     var footerHtml = opt_buttons && opt_buttons.length ?
         "<div class='modal-footer'>" + this._genModalButtonsHtml(opt_buttons) + "</div>" : "";
@@ -319,6 +323,7 @@ scada.Popup.prototype.showModal = function (url, opt_buttons, opt_callback) {
         // display the modal
         modalElem
         .on('shown.bs.modal', function () {
+            tempOverlay.remove();
             modalFrame.focus();
         })
         .on('hidden.bs.modal', function () {

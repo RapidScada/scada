@@ -13,6 +13,9 @@
 .splitter.visible {
   display: block;
 }
+.splitter.vert.visible {
+  display: inline-block;
+}
 .splitter.splitter-active {
   background-color: #ccc;
 }
