@@ -9,9 +9,14 @@ body {
 /* Inclusion font in the body adds unexpected pixel to the document height */
 div {
     font-family: @default-font-family;
+    font-size: @form-font-size;
 }
 
-#divTitle {
+.chart-header {
+    overflow: hidden; /* to expand the container according to a float div  */
+}
+
+.chart-title {
     color: black;
     display: inline-block;
     font-size: 17px;
@@ -19,7 +24,7 @@ div {
     margin-bottom: 10px;
 }
 
-#divGen {
+.chart-status {
     color: #777;
     display: inline-block;
     font-size: 11px;
@@ -27,7 +32,7 @@ div {
     line-height: 20px;
 }
 
-#cnvChart {
+.chart {
     min-width: 300px;
     min-height: 200px;
 }

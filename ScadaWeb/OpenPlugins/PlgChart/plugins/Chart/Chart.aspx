@@ -33,13 +33,15 @@
 </head>
 <body>
     <form id="frmChart" runat="server">
-        <div id="divTitle">
-            <asp:Label ID="lblTitle" runat="server" Text="Title"></asp:Label><asp:Label 
-                ID="lblStartDate" runat="server" Text=""></asp:Label>
-        </div>
-        <div id="divGen">
-            <asp:Label ID="lblGenerated" runat="server" Text="Generated"></asp:Label>
-            <asp:Label ID="lblGenDT" runat="server" Text=""></asp:Label>
+        <div id="divHeader" class="chart-header">
+            <div class="chart-title">
+                <asp:Label ID="lblTitle" runat="server" Text="Title"></asp:Label><asp:Label 
+                    ID="lblStartDate" runat="server" Text=""></asp:Label>
+            </div>
+            <div class="chart-status">
+                <asp:Label ID="lblGenerated" runat="server" Text="Generated"></asp:Label>
+                <asp:Label ID="lblGenDT" runat="server" Text=""></asp:Label>
+            </div>
         </div>
         <canvas id="cnvChart" class="chart">Upgrade the browser to display chart.</canvas>
     </form>

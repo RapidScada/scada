@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlgScheme", "PlgScheme\PlgScheme.csproj", "{36CBF606-7F85-4E46-BC7A-C86CACF675B2}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlgChart", "PlgChart\PlgChart.csproj", "{72AFAED2-953D-4939-A828-8EC8A63AB19F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlgWebPage", "PlgWebPage\PlgWebPage.csproj", "{CC838844-D847-4230-B0B8-1747F4CA080B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlgChartCommon", "PlgChartCommon\PlgChartCommon.csproj", "{827AC062-9C5E-429F-ABBF-368E84CEC9B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{CC838844-D847-4230-B0B8-1747F4CA080B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC838844-D847-4230-B0B8-1747F4CA080B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC838844-D847-4230-B0B8-1747F4CA080B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{827AC062-9C5E-429F-ABBF-368E84CEC9B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{827AC062-9C5E-429F-ABBF-368E84CEC9B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{827AC062-9C5E-429F-ABBF-368E84CEC9B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{827AC062-9C5E-429F-ABBF-368E84CEC9B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

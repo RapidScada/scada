@@ -6,22 +6,27 @@
 /* Inclusion font in the body adds unexpected pixel to the document height */
 div {
   font-family: 'Open Sans', sans-serif;
+  font-size: 13px;
 }
-#divTitle {
+.chart-header {
+  overflow: hidden;
+  /* to expand the container according to a float div  */
+}
+.chart-title {
   color: black;
   display: inline-block;
   font-size: 17px;
   line-height: 20px;
   margin-bottom: 10px;
 }
-#divGen {
+.chart-status {
   color: #777;
   display: inline-block;
   font-size: 11px;
   float: right;
   line-height: 20px;
 }
-#cnvChart {
+.chart {
   min-width: 300px;
   min-height: 200px;
 }
