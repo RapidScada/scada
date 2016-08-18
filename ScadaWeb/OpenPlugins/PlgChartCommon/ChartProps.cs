@@ -23,6 +23,7 @@
  * Modified : 2016
  */
 
+using Scada.Client;
 using System;
 
 namespace Scada.Web.Plugins.Chart
@@ -33,13 +34,48 @@ namespace Scada.Web.Plugins.Chart
     /// </summary>
     public class ChartProps
     {
-        protected int chartGap;        // расстояние разрыва графика
+        /// <summary>
+        /// Конструктор, ограничивающий создание объекта без параметров
+        /// </summary>
+        protected ChartProps()
+        {
+        }
+
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        public ChartProps(int[] cnlNums, DateTime startDate, int period, int chartGap)
+        {
+            ChartGap = chartGap;
+        }
+
+
+        /// <summary>
+        /// Получить расстояние между разделяемыми точками графика, с
+        /// </summary>
+        public int ChartGap { get; protected set; }
+
+        /// <summary>
+        /// Получить имя величины с указанием размерности, общее для всех каналов
+        /// </summary>
+        public string QuantityName { get; protected set; }
+
+
         protected DateTime startDate;  // дата отображаемых данных
         protected int cnlNum;          // номер канала отображаемого графика
         protected string cnlName;      // имя канала
-        protected string quantityName; // имя величины с указанием размерности
+
         protected string timePoints;   // массив меток времени тренда
         protected string trendPoints;  // массив значений тренда
+
+
+        /// <summary>
+        /// Заполнить данные графика
+        /// </summary>
+        public void FillData(DataAccess dataAccess)
+        {
+
+        }
 
         /// <summary>
         /// Преобразовать свойства графика в JavaScript
