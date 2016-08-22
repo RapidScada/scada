@@ -254,11 +254,14 @@ namespace Scada.Web.Plugins.Chart
         {
             StringBuilder sbTrendPoints = new StringBuilder("[");
 
-            foreach (Trend.Point point in trend.Points)
+            if (trend != null)
             {
-                sbTrendPoints
-                    .Append(TrendPointToJs(point.Val, point.Stat, cnlProps))
-                    .Append(", ");
+                foreach (Trend.Point point in trend.Points)
+                {
+                    sbTrendPoints
+                        .Append(TrendPointToJs(point.Val, point.Stat, cnlProps))
+                        .Append(", ");
+                }
             }
 
             sbTrendPoints.Append("]");
@@ -273,12 +276,15 @@ namespace Scada.Web.Plugins.Chart
             StringBuilder sbTrendPoints = new StringBuilder("[");
             InCnlProps cnlProps = cnlPropsArr[trendInd];
 
-            foreach (TrendBundle.Point point in trendBundle.Series)
+            if (trendBundle != null)
             {
-                SrezTableLight.CnlData cnlData = point.CnlData[trendInd];
-                sbTrendPoints
-                    .Append(TrendPointToJs(cnlData.Val, cnlData.Stat, cnlProps))
-                    .Append(", ");
+                foreach (TrendBundle.Point point in trendBundle.Series)
+                {
+                    SrezTableLight.CnlData cnlData = point.CnlData[trendInd];
+                    sbTrendPoints
+                        .Append(TrendPointToJs(cnlData.Val, cnlData.Stat, cnlProps))
+                        .Append(", ");
+                }
             }
 
             sbTrendPoints.Append("]");
@@ -290,12 +296,16 @@ namespace Scada.Web.Plugins.Chart
         /// </summary>
         protected string GetTimePointsJs(Trend trend)
         {
+
             StringBuilder sbTimePoints = new StringBuilder("[");
 
-            foreach (Trend.Point point in trend.Points)
+            if (trend != null)
             {
-                double time = point.DateTime.TimeOfDay.TotalDays;
-                sbTimePoints.Append(time.ToString(CultureInfo.InvariantCulture)).Append(", ");
+                foreach (Trend.Point point in trend.Points)
+                {
+                    double time = point.DateTime.TimeOfDay.TotalDays;
+                    sbTimePoints.Append(time.ToString(CultureInfo.InvariantCulture)).Append(", ");
+                }
             }
 
             sbTimePoints.Append("]");
@@ -309,10 +319,13 @@ namespace Scada.Web.Plugins.Chart
         {
             StringBuilder sbTimePoints = new StringBuilder("[");
 
-            foreach (TrendBundle.Point point in trendBundle.Series)
+            if (trendBundle != null)
             {
-                double time = point.DateTime.TimeOfDay.TotalDays;
-                sbTimePoints.Append(time.ToString(CultureInfo.InvariantCulture)).Append(", ");
+                foreach (TrendBundle.Point point in trendBundle.Series)
+                {
+                    double time = point.DateTime.TimeOfDay.TotalDays;
+                    sbTimePoints.Append(time.ToString(CultureInfo.InvariantCulture)).Append(", ");
+                }
             }
 
             sbTimePoints.Append("]");
