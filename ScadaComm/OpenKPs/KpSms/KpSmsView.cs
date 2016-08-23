@@ -90,7 +90,7 @@ namespace Scada.Comm.Devices
                     Signal = 1,
                     ParamName = Localization.UseRussian ? "Связь" : "Connection",
                     ShowNumber = false,
-                    UnitName = Localization.UseRussian ? "Нет - Есть" : "No - Yes",
+                    UnitName = BaseValues.UnitNames.NoYes,
                     EvEnabled = true,
                     EvOnChange = true
                 });
