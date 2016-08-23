@@ -277,6 +277,83 @@ namespace Scada.Data.Tables
         }
 
         /// <summary>
+        /// Наименования размерностей
+        /// </summary>
+        public static class UnitNames
+        {
+            /// <summary>
+            /// Откл - Вкл
+            /// </summary>
+            public static string OffOn;
+            /// <summary>
+            /// Нет - Есть
+            /// </summary>
+            public static string NoYes;
+
+            /// <summary>
+            /// Статический конструктор
+            /// </summary>
+            static UnitNames()
+            {
+                if (Localization.UseRussian)
+                {
+                    OffOn = "Откл - Вкл";
+                    NoYes = "Нет - Есть";
+                }
+                else
+                {
+                    OffOn = "Off - On";
+                    NoYes = "No - Yes";
+                }
+            }
+        }
+
+        /// <summary>
+        /// Наименования значений команд
+        /// </summary>
+        public static class CmdValNames
+        {
+            /// <summary>
+            /// Откл
+            /// </summary>
+            public static string Off;
+            /// <summary>
+            /// Вкл
+            /// </summary>
+            public static string On;
+            /// <summary>
+            /// Откл - Вкл
+            /// </summary>
+            public static string OffOn;
+            /// <summary>
+            /// Выполнить
+            /// </summary>
+            public static string Execute;
+
+            /// <summary>
+            /// Статический конструктор
+            /// </summary>
+            static CmdValNames()
+            {
+                if (Localization.UseRussian)
+                {
+                    Off = "Откл";
+                    On = "Вкл";
+                    OffOn = "Откл - Вкл";
+                    Execute = "Выполнить";
+                }
+                else
+                {
+                    Off = "Off";
+                    On = "On";
+                    OffOn = "Off - On";
+                    Execute = "Execute";
+                }
+            }
+        }
+
+
+        /// <summary>
         /// Идентификатор пустых или неопределённых данных
         /// </summary>
         public const int EmptyDataID = 0;
