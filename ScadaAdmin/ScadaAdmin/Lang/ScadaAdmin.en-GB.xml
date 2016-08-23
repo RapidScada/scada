@@ -320,7 +320,7 @@
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
     <Phrase key="ChooseBaseSDFFile">Choose the configuration database file in SDF format</Phrase>
-    <Phrase key="BaseSDFFileFilter">Configuration Databases (*.sdf)|*.dat|All Files (*.*)|*.*</Phrase>
+    <Phrase key="BaseSDFFileFilter">Configuration Databases (*.sdf)|*.sdf|All Files (*.*)|*.*</Phrase>
     <Phrase key="ChooseBackupDir">Choose the configuration database backup directory</Phrase>
     <Phrase key="ChooseCommDir">Choose SCADA-Communicator directory</Phrase>
     <Phrase key="BaseSDFFileNotExists">The configuration database file in SDF format does not exist.</Phrase>
