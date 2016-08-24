@@ -124,6 +124,29 @@ namespace Scada.Web.Plugins.Chart
 
 
         /// <summary>
+        /// Получить нормализованную начальную дату отображаемых данных
+        /// </summary>
+        public DateTime StartDate
+        {
+            get
+            {
+                return startDate;
+            }
+        }
+
+        /// <summary>
+        /// Получить нормализованный период отображаемых данных
+        /// </summary>
+        public int Period
+        {
+            get
+            {
+                return period;
+            }
+        }
+
+
+        /// <summary>
         /// Нормализовать интервал времени
         /// </summary>
         /// <remarks>Чтобы начальная дата являлась левой границей интервала времени и период был положительным</remarks>
@@ -203,7 +226,7 @@ namespace Scada.Web.Plugins.Chart
         /// </summary>
         protected void FillSingleTrend()
         {
-            singleTrend = dataAccess.DataCache.GetMinTrend(startDate, cnlNums[0]);
+            singleTrend = cnlCnt > 0 ? dataAccess.DataCache.GetMinTrend(startDate, cnlNums[0]) : null;
             trendBundle = null;
         }
 
@@ -334,7 +357,7 @@ namespace Scada.Web.Plugins.Chart
 
 
         /// <summary>
-        /// Заполнить данные графика
+        /// Заполнить данные графика только за нормализованную начальную дату
         /// </summary>
         public void FillData()
         {

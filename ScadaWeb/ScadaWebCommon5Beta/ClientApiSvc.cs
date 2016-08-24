@@ -261,7 +261,7 @@ namespace Scada.Web
             bool dataVisible, string emptyVal)
         {
             DataAccess dataAccess = AppData.DataAccess;
-            int cnlCnt = cnlList.Count;
+            int cnlCnt = cnlList == null ? 0 : cnlList.Count;
             CnlDataExt[] cnlDataExtArr = new CnlDataExt[cnlCnt];
 
             for (int i = 0; i < cnlCnt; i++)
