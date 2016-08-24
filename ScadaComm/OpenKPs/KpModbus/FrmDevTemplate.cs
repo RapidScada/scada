@@ -374,6 +374,7 @@ namespace Scada.Comm.Devices.KpModbus
 
             if (elemGroup == null)
             {
+                chkGrActive.Checked = false;
                 txtGrName.Text = "";
                 cbGrTableType.SelectedIndex = 0;
                 numGrAddress.Value = 1;
@@ -382,6 +383,7 @@ namespace Scada.Comm.Devices.KpModbus
             }
             else
             {
+                chkGrActive.Checked = elemGroup.Active;
                 txtGrName.Text = elemGroup.Name;
                 cbGrTableType.SelectedIndex = (int)elemGroup.TableType;
                 numGrAddress.Value = elemGroup.Address + 1;
@@ -929,6 +931,27 @@ namespace Scada.Comm.Devices.KpModbus
         }
 
 
+        private void chkGrActive_CheckedChanged(object sender, EventArgs e)
+        {
+            // изменение наименования группы элементов
+            if (procChangedEv && selElemGroup != null)
+            {
+                selElemGroup.Active = chkGrActive.Checked;
+                Modified = true;
+            }
+        }
+
+        private void txtGrName_TextChanged(object sender, EventArgs e)
+        {
+            // изменение наименования группы элементов
+            if (procChangedEv && selElemGroup != null)
+            {
+                selElemGroup.Name = txtGrName.Text;
+                UpdateElemGroupNode();
+                Modified = true;
+            }
+        }
+
         private void cbGrTableType_SelectedIndexChanged(object sender, EventArgs e)
         {
             // изменение типа таблицы данных группы элементов
@@ -1030,17 +1053,6 @@ namespace Scada.Comm.Devices.KpModbus
                 UpdateSignals(selNode);
                 Modified = true;
                 treeView.EndUpdate();
-            }
-        }
-
-        private void txtGrName_TextChanged(object sender, EventArgs e)
-        {
-            // изменение наименования группы элементов
-            if (procChangedEv && selElemGroup != null)
-            {
-                selElemGroup.Name = txtGrName.Text;
-                UpdateElemGroupNode();
-                Modified = true;
             }
         }
 
