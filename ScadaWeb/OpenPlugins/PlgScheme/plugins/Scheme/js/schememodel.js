@@ -44,7 +44,7 @@ scada.scheme.LoadStates = {
     PROPS_LOADING: 1,
     ELEMS_LOADING: 2,
     IMAGES_LOADING: 3,
-    COMPLETED: 4
+    COMPLETE: 4
 };
 
 /********** Scheme **********/
@@ -285,7 +285,7 @@ scada.scheme.Scheme.prototype._loadImages = function (viewID, callback) {
                 scada.utils.logSuccessfulRequest(operation);
                 if (thisScheme._obtainImages(parsedData)) {
                     if (parsedData.EndOfImages) {
-                        thisScheme.loadState = scada.scheme.LoadStates.COMPLETED;
+                        thisScheme.loadState = scada.scheme.LoadStates.COMPLETE;
                         callback(true, true);
                     } else {
                         callback(true, false);
@@ -416,8 +416,8 @@ scada.scheme.Scheme.prototype.load = function (viewID, callback) {
         case LoadStates.IMAGES_LOADING:
             this._loadImages(viewID, callback);
             break;
-        case LoadStates.COMPLETED:
-            console.warn("Scheme loading is already completed");
+        case LoadStates.COMPLETE:
+            console.warn("Scheme loading is already complete");
             callback(true, true);
             break;
         default:

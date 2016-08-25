@@ -53,7 +53,7 @@ scada.utils = {
     getQueryParam: function (paramName, opt_url) {
         if (paramName) {
             var url = opt_url ? opt_url : decodeURIComponent(window.location);
-            var begInd = queryString.indexOf("?");
+            var begInd = url.indexOf("?");
 
             if (begInd > 0) {
                 url = "&" + url.substring(begInd + 1);
