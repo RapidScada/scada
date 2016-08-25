@@ -91,6 +91,14 @@ namespace Scada.Web.Plugins.Chart
         /// </summary>
         public void Init(Trend[] trends)
         {
+            Init(trends, DateTime.MinValue);
+        }
+
+        /// <summary>
+        /// Инициализировать связку трендов, включив в неё данные с указанного начального времени
+        /// </summary>
+        public void Init(Trend[] trends, DateTime startDT)
+        {
             // формирование данных графиков
             Series = new List<Point>();
 
@@ -109,15 +117,27 @@ namespace Scada.Web.Plugins.Chart
                 {
                     List<Trend.Point> trendPoints = trends[i].Points;
                     int trendPos = trendPosArr[i];
+                    int pointCnt = trendPoints.Count;
+                    bool pointCompared = false;
 
-                    if (trendPos < trendPoints.Count)
+                    while (trendPos < pointCnt && !pointCompared)
                     {
-                        complete = false;
-                        DateTime dateTime = trendPoints[trendPos].DateTime;
+                        DateTime pointDT = trendPoints[trendPos].DateTime;
 
-                        if (minDateTime > dateTime)
-                            minDateTime = dateTime;
+                        if (pointDT < startDT)
+                        {
+                            trendPos++;
+                            trendPosArr[i]++;
+                        }
+                        else 
+                        {
+                            pointCompared = true;
+                            if (minDateTime > pointDT)
+                                minDateTime = pointDT;
+                        }
                     }
+
+                    complete = complete && trendPos >= pointCnt;
                 }
 
                 // выход из цикла, если обработка данных завершена
