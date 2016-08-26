@@ -29,25 +29,25 @@
             timeRange.endTime = 2;
 
             var trend1 = new scada.chart.TrendExt();
-            trend1.CnlNum = 1;
-            trend1.CnlName = "Channel 1";
-            trend1.TrendPoints =
+            trend1.cnlNum = 1;
+            trend1.cnlName = "Channel 1";
+            trend1.trendPoints =
                 [[0, "0", "0 V", "#ff0000"], [4, "4", "4 V", "green"], [5, "5", "5 V", ""],
                 [2.5, "2,5", "2,5 V", ""], [2.5, "2,5", "2,5 V", ""], [7, "7", "7 V", ""],
                 [7.5, "7.5", "7.5 V", ""], [6.7, "6,7", "6,7 V", ""], [8, "8", "8 V", ""]];
 
             var trend2 = new scada.chart.TrendExt();
-            trend2.CnlNum = 2;
-            trend2.CnlName = "Channel 2";
-            trend2.TrendPoints =
+            trend2.cnlNum = 2;
+            trend2.cnlName = "Channel 2";
+            trend2.trendPoints =
                 [[3, "Three", "Three", ""], [0, "Zero", "Zero", ""], [Number.NaN, "---", "---", ""],
                 [1, "One", "One", ""], [2, "Two", "Two", ""], [5, "Five", "Five", ""],
                 [4, "Four", "Four", ""], [5, "Five", "Five", ""], [3, "Three", "Three", ""]];
 
             var chartData = new scada.chart.ChartData();
-            chartData.TimePoints = [0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
-            chartData.Trends = [trend1, trend2];
-            chartData.QuantityName = "Voltage, V";
+            chartData.timePoints = [0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
+            chartData.trends = [trend1, trend2];
+            chartData.quantityName = "Voltage, V";
 
             var chart = new scada.chart.Chart($("#cnvChart"));
             chart.displaySettings = displaySettings;

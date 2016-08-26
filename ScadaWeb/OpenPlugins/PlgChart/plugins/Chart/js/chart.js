@@ -53,11 +53,11 @@ scada.chart.TimeRange = function () {
 // Note: Casing is caused by C# naming rules
 scada.chart.TrendExt = function () {
     // Input channel number
-    this.CnlNum = 0;
+    this.cnlNum = 0;
     // Input channel name
-    this.CnlName = "";
+    this.cnlName = "";
     // Trend points where each point is array [value, "text", "text with unit", "color"]
-    this.TrendPoints = [];
+    this.trendPoints = [];
 }
 
 /********** Trend Point Indexes **********/
@@ -74,12 +74,12 @@ scada.chart.TrendPointIndexes = {
 
 // Chart data type
 scada.chart.ChartData = function () {
-    // Time points which number is matched with the number of trend points
-    this.TimePoints = [];
-    // Trends to display
-    this.Trends = [];
+    // Time points which number is matched with the number of trend points. Array of numbers
+    this.timePoints = [];
+    // Trends to display. Array of TrendExt
+    this.trends = [];
     // Name of input channel quantity (and unit)
-    this.QuantityName = "";
+    this.quantityName = "";
 }
 
 /********** Chart Layout **********/
@@ -315,12 +315,12 @@ scada.chart.Chart.prototype._calcYRange = function () {
     var minX = this._minX - this.displaySettings.chartGap;
     var maxX = this._maxX + this.displaySettings.chartGap;
 
-    var timePoints = this.chartData.TimePoints;
+    var timePoints = this.chartData.timePoints;
     var ptCnt = timePoints.length;
     var VAL_IND = scada.chart.TrendPointIndexes.VAL_IND;
 
-    for (var trend of this.chartData.Trends) {
-        var trendPoints = trend.TrendPoints;
+    for (var trend of this.chartData.trends) {
+        var trendPoints = trend.trendPoints;
 
         for (var ptInd = 0; ptInd < ptCnt; ptInd++) {
             var x = timePoints[ptInd];
@@ -398,7 +398,7 @@ scada.chart.Chart.prototype._trendXToDate = function (x) {
 
 // Get index of the point nearest to the specified page x-coordinate
 scada.chart.Chart.prototype._getPointIndex = function (pageX) {
-    var timePoints = this.chartData.TimePoints;
+    var timePoints = this.chartData.timePoints;
     var ptCnt = timePoints.length;
 
     if (ptCnt < 1) {
@@ -658,7 +658,7 @@ scada.chart.Chart.prototype._drawGridY = function () {
 
 // Draw the y-axis title
 scada.chart.Chart.prototype._drawYAxisTitle = function () {
-    if (this.chartData.QuantityName) {
+    if (this.chartData.quantityName) {
         var ctx = this._context;
         var layout = this._chartLayout;
         ctx.textAlign = "center";
@@ -666,7 +666,7 @@ scada.chart.Chart.prototype._drawYAxisTitle = function () {
         ctx.save();
         ctx.translate(0, layout.plotAreaBottom);
         ctx.rotate(-Math.PI / 2);
-        ctx.fillText(this.chartData.QuantityName, layout.plotAreaHeight / 2, 
+        ctx.fillText(this.chartData.quantityName, layout.plotAreaHeight / 2, 
     layout.LEFT_PADDING + layout.LINE_HEIGHT / 2, layout.plotAreaHeight);
         ctx.restore();
     }
@@ -684,11 +684,11 @@ scada.chart.Chart.prototype._drawLegend = function () {
     var rectSize = layout.LBL_FONT_SIZE;
     var rectX = layout.plotAreaLeft - 0.5;
     var rectY = lblY - rectSize / 2 - 0.5;
-    var trendCnt = this.chartData.Trends.length;
+    var trendCnt = this.chartData.trends.length;
 
     for (var trendInd = 0; trendInd < trendCnt; trendInd++) {
-        var trend = this.chartData.Trends[trendInd];
-        var legendText = "[" + trend.CnlNum + "] " + trend.CnlName;
+        var trend = this.chartData.trends[trendInd];
+        var legendText = "[" + trend.cnlNum + "] " + trend.cnlName;
 
         this._setColor(this._getColorByTrend(trendInd));
         this._context.fillRect(rectX, rectY, rectSize, rectSize);
@@ -703,15 +703,15 @@ scada.chart.Chart.prototype._drawLegend = function () {
 
 // Draw all the trends
 scada.chart.Chart.prototype._drawTrends = function () {
-    var trendCnt = this.chartData.Trends.length;
+    var trendCnt = this.chartData.trends.length;
     for (var trendInd = 0; trendInd < trendCnt; trendInd++) {
-        this._drawTrend(this.chartData.TimePoints, this.chartData.Trends[trendInd], this._getColorByTrend(trendInd));
+        this._drawTrend(this.chartData.timePoints, this.chartData.trends[trendInd], this._getColorByTrend(trendInd));
     }
 }
 
 // Draw the specified trend
 scada.chart.Chart.prototype._drawTrend = function (timePoints, trend, color) {
-    var trendPoints = trend.TrendPoints;
+    var trendPoints = trend.trendPoints;
     var chartGap = this.displaySettings.chartGap;
     var VAL_IND = scada.chart.TrendPointIndexes.VAL_IND;
 
@@ -765,17 +765,17 @@ scada.chart.Chart.prototype._initTrendHint = function () {
     if (this._trendHint) {
         this._trendHint.addClass("hidden");
     } else {
-        var trendCnt = this.chartData.Trends.length;
+        var trendCnt = this.chartData.trends.length;
         if (trendCnt > 0) {
             this._trendHint = $("<div class='chart-trend-hint hidden'><div class='time'></div><table></table></div>");
             var table = this._trendHint.children("table");
 
             for (var trendInd = 0; trendInd < trendCnt; trendInd++) {
-                var trend = this.chartData.Trends[trendInd];
+                var trend = this.chartData.trends[trendInd];
                 var row = $("<tr><td class='color'><span></span></td><td class='text'></td>" +
                     "<td class='colon'>:</td><td class='val'></td></tr>");
                 row.find("td.color span").css("background-color", this._getColorByTrend(trendInd));
-                row.children("td.text").text("[" + trend.CnlNum + "] " + trend.CnlName);
+                row.children("td.text").text("[" + trend.cnlNum + "] " + trend.cnlName);
                 table.append(row);
             }
 
@@ -805,7 +805,7 @@ scada.chart.Chart.prototype.draw = function () {
         this._initTrendHint();
 
         // calculate layout
-        var trendCnt = this.chartData.Trends.length;
+        var trendCnt = this.chartData.trends.length;
         layout.calculate(this._canvasJqObj, this._context,
             this._minX, this._maxX, this._minY, this._maxY, trendCnt, this._showDates);
 
@@ -834,7 +834,7 @@ scada.chart.Chart.prototype.showHint = function (pageX, pageY, opt_touch) {
         var ptInd = this._getPointIndex(pageX);
 
         if (ptInd >= 0) {
-            var x = this.chartData.TimePoints[ptInd];
+            var x = this.chartData.timePoints[ptInd];
             var ptPageX = this._trendXToPageX(x);
 
             if (layout.absPlotAreaLeft <= ptPageX && ptPageX <= layout.absPlotAreaRight) {
@@ -851,12 +851,12 @@ scada.chart.Chart.prototype.showHint = function (pageX, pageY, opt_touch) {
 
                 // set text, position and show the trend hint
                 this._trendHint.find("div.time").text(this._showDates ? this._dateTimeToStr(x) : this._timeToStr(x));
-                var trendCnt = this.chartData.Trends.length;
+                var trendCnt = this.chartData.trends.length;
                 var hintValCells = this._trendHint.find("td.val");
 
                 for (var trendInd = 0; trendInd < trendCnt; trendInd++) {
-                    var trend = this.chartData.Trends[trendInd];
-                    var trendPoint = trend.TrendPoints[ptInd];
+                    var trend = this.chartData.trends[trendInd];
+                    var trendPoint = trend.trendPoints[ptInd];
                     hintValCells.eq(trendInd)
                     .text(trendPoint[scada.chart.TrendPointIndexes.TEXT_WITH_UNIT_IND])
                     .css("color", trendPoint[scada.chart.TrendPointIndexes.COLOR_IND]);

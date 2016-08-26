@@ -22,9 +22,9 @@
         timeRange.endTime = 1;
 
         var trend = new scada.chart.TrendExt();
-        trend.CnlNum = <%= cnlNum %>;
-        trend.CnlName = "<%= cnlName %>";
-        trend.TrendPoints = <%= trendPoints %>;
+        trend.cnlNum = <%= cnlNum %>;
+        trend.cnlName = "<%= cnlName %>";
+        trend.trendPoints = <%= trendPoints %>;
 
         var timePoints = <%= timePoints %>;
         var quantityName = "<%= quantityName %>";
