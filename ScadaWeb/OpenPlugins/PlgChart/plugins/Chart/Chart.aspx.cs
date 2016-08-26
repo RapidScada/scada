@@ -144,7 +144,8 @@ namespace Scada.Web.Plugins.Chart
             if (!view.ContainsCnl(cnlNum))
                 throw new ScadaException(CommonPhrases.NoRights);
 
-            // вывод заголовка
+            // вывод заголовков
+            Title = cnlNum + " - " + Title;
             lblTitle.Text = view.Title;
 #endif
 
