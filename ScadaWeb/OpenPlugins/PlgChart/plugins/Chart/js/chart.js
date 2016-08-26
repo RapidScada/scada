@@ -308,7 +308,7 @@ scada.chart.Chart = function (canvasJqObj) {
 };
 
 // Claculate top and bottom edges of the displayed range
-scada.chart.Chart.prototype._calcYRange = function () {
+scada.chart.Chart.prototype._calcYRange = function (opt_startPtInd) {
     // find min and max trend value
     var minY = NaN;
     var maxY = NaN;
@@ -316,13 +316,14 @@ scada.chart.Chart.prototype._calcYRange = function () {
     var maxX = this._maxX + this.displaySettings.chartGap;
 
     var timePoints = this.chartData.timePoints;
+    var startPtInd = opt_startPtInd ? opt_startPtInd : 0;
     var ptCnt = timePoints.length;
     var VAL_IND = scada.chart.TrendPointIndexes.VAL_IND;
 
     for (var trend of this.chartData.trends) {
         var trendPoints = trend.trendPoints;
 
-        for (var ptInd = 0; ptInd < ptCnt; ptInd++) {
+        for (var ptInd = startPtInd; ptInd < ptCnt; ptInd++) {
             var x = timePoints[ptInd];
 
             if (minX <= x && x <= maxX) {
@@ -370,6 +371,20 @@ scada.chart.Chart.prototype._calcYRange = function () {
     this._minY = minY;
     this._maxY = maxY;
 };
+
+// Check if top and bottom edges are outdated because of new data
+scada.chart.Chart.prototype._yRangeIsOutdated = function (startPtInd) {
+    var oldMinY = this._minY;
+    var oldMaxY = this._maxY;
+    this._calcYRange(startPtInd);
+    var outdated = this._minY < oldMinY || this._maxY > oldMaxY;
+
+    // restore the range
+    this._minY = oldMinY;
+    this._maxY = oldMaxY;
+
+    return outdated;
+}
 
 // Convert trend x-coordinate to the chart x-coordinate
 scada.chart.Chart.prototype._trendXToChartX = function (x) {
@@ -702,15 +717,16 @@ scada.chart.Chart.prototype._drawLegend = function () {
 }
 
 // Draw all the trends
-scada.chart.Chart.prototype._drawTrends = function () {
+scada.chart.Chart.prototype._drawTrends = function (opt_startPtInd) {
     var trendCnt = this.chartData.trends.length;
     for (var trendInd = 0; trendInd < trendCnt; trendInd++) {
-        this._drawTrend(this.chartData.timePoints, this.chartData.trends[trendInd], this._getColorByTrend(trendInd));
+        this._drawTrend(this.chartData.timePoints, this.chartData.trends[trendInd],
+            this._getColorByTrend(trendInd), opt_startPtInd);
     }
 }
 
 // Draw the specified trend
-scada.chart.Chart.prototype._drawTrend = function (timePoints, trend, color) {
+scada.chart.Chart.prototype._drawTrend = function (timePoints, trend, color, opt_startPtInd) {
     var trendPoints = trend.trendPoints;
     var chartGap = this.displaySettings.chartGap;
     var VAL_IND = scada.chart.TrendPointIndexes.VAL_IND;
@@ -720,9 +736,10 @@ scada.chart.Chart.prototype._drawTrend = function (timePoints, trend, color) {
     var prevX = NaN;
     var prevPtX = NaN;
     var prevPtY = NaN;
+    var startPtInd = opt_startPtInd ? opt_startPtInd : 0;
     var ptCnt = timePoints.length;
 
-    for (var ptInd = 0; ptInd < ptCnt; ptInd++) {
+    for (var ptInd = startPtInd; ptInd < ptCnt; ptInd++) {
         var pt = trendPoints[ptInd];
         var y = pt[VAL_IND];
 
@@ -823,6 +840,17 @@ scada.chart.Chart.prototype.draw = function () {
         this._drawTrends();
     }
 };
+
+// Resume drawing of the chart
+scada.chart.Chart.prototype.resume = function (pointInd) {
+    if (pointInd < this.chartData.timePoints.length) {
+        if (this._yRangeIsOutdated(pointInd)) {
+            this.draw();
+        } else {
+            this._drawTrends(pointInd ? pointInd - 1 : 0);
+        }
+    }
+}
 
 // Show hint with the values nearest to the pointer
 scada.chart.Chart.prototype.showHint = function (pageX, pageY, opt_touch) {

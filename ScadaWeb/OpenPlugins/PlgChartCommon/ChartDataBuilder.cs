@@ -403,10 +403,10 @@ namespace Scada.Web.Plugins.Chart
 
                 sbJs
                     .Append("var ").Append(trendName).AppendLine(" = new scada.chart.TrendExt();")
-                    .Append(trendName).Append(".CnlNum = ").Append(cnlNums[i]).AppendLine(";")
-                    .Append(trendName).Append(".CnlName = '")
+                    .Append(trendName).Append(".cnlNum = ").Append(cnlNums[i]).AppendLine(";")
+                    .Append(trendName).Append(".cnlName = '")
                     .Append(HttpUtility.JavaScriptStringEncode(cnlNames[i])).AppendLine("';")
-                    .Append(trendName).Append(".TrendPoints = ")
+                    .Append(trendName).Append(".trendPoints = ")
                     .Append(single ? GetTrendPointsJs(singleTrend, cnlPropsArr[i]) : GetTrendPointsJs(trendBundle, i))
                     .AppendLine(";")
                     .AppendLine();
@@ -416,10 +416,10 @@ namespace Scada.Web.Plugins.Chart
 
             sbJs
                 .AppendLine("var chartData = new scada.chart.ChartData();")
-                .Append("chartData.TimePoints = ")
+                .Append("chartData.timePoints = ")
                 .Append(single ? GetTimePointsJs(singleTrend) : GetTimePointsJs(trendBundle)).AppendLine(";")
-                .Append("chartData.Trends = ").Append(sbTrends).AppendLine()
-                .Append("chartData.QuantityName = '")
+                .Append("chartData.trends = ").Append(sbTrends).AppendLine()
+                .Append("chartData.quantityName = '")
                 .Append(HttpUtility.JavaScriptStringEncode(quantityName)).AppendLine("';");
 
             return sbJs.ToString();
