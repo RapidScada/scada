@@ -243,12 +243,19 @@ namespace Scada.Client
         /// <summary>
         /// Получить уже загруженное представление только из кэша
         /// </summary>
-        public BaseView GetViewFromCache(int viewID)
+        public BaseView GetViewFromCache(int viewID, bool throwOnFail = false)
         {
             try
             {
                 Cache<int, BaseView>.CacheItem cacheItem = Cache.GetItem(viewID, DateTime.UtcNow);
-                return cacheItem == null ? null : cacheItem.Value;
+                BaseView view = cacheItem == null ? null : cacheItem.Value;
+
+                if (view == null && throwOnFail)
+                    throw new ScadaException(string.Format(Localization.UseRussian ?
+                        "Не удалось получить представление с ид.={0} из кеша" :
+                        "Unable to get view with ID={0} from the cache", viewID));
+
+                return view;
             }
             catch (Exception ex)
             {

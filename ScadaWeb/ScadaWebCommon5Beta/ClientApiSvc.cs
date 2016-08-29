@@ -164,11 +164,6 @@ namespace Scada.Web
         /// Общие данные веб-приложения
         /// </summary>
         private static readonly AppData AppData = AppData.GetAppData();
-        /// <summary>
-        /// Сообщение о невозможности получить представление
-        /// </summary>
-        private static readonly string UnableGetViewMsg = Localization.UseRussian ? 
-            "Не удалось получить представление из кеша" : "Unable to get view from the cache";
 
 
         /// <summary>
@@ -179,12 +174,7 @@ namespace Scada.Web
             if (!userRights.GetViewRights(viewID).ViewRight)
                 throw new ScadaException(WebPhrases.NoRights);
 
-            BaseView view = AppData.ViewCache.GetViewFromCache(viewID);
-
-            if (view == null)
-                throw new ScadaException(UnableGetViewMsg);
-            else
-                return view;
+            return AppData.ViewCache.GetViewFromCache(viewID, true);
         }
 
         /// <summary>
