@@ -204,6 +204,17 @@ namespace Scada.Web.Plugins.Scheme
         {
             return JsSerializer.Serialize(new DataTransferObject(false, ex.Message));
         }
+        
+        /// <summary>
+        /// Получить схему из кеша или от сервера с проверкой прав на неё
+        /// </summary>
+        private SchemeView GetSchemeView(int viewID, UserRights userRights)
+        {
+            if (!userRights.GetViewRights(viewID).ViewRight)
+                throw new ScadaException(WebPhrases.NoRights);
+
+            return AppData.ViewCache.GetView<SchemeView>(viewID, true);
+        }
 
 
         /// <summary>
@@ -216,8 +227,10 @@ namespace Scada.Web.Plugins.Scheme
         {
             try
             {
-                AppData.CheckLoggedOn();
-                SchemeView schemeView = AppData.ViewCache.GetView<SchemeView>(viewID, true);
+                UserRights userRights;
+                AppData.CheckLoggedOn(out userRights);
+
+                SchemeView schemeView = GetSchemeView(viewID, userRights);
                 SchemePropsDTO dto = new SchemePropsDTO();
                 dto.ViewStamp = schemeView.Stamp;
 
@@ -257,8 +270,10 @@ namespace Scada.Web.Plugins.Scheme
         {
             try
             {
-                AppData.CheckLoggedOn();
-                SchemeView schemeView = AppData.ViewCache.GetView<SchemeView>(viewID, true);
+                UserRights userRights;
+                AppData.CheckLoggedOn(out userRights);
+
+                SchemeView schemeView = GetSchemeView(viewID, userRights);
                 ElementsDTO dto = new ElementsDTO(count);
                 dto.ViewStamp = schemeView.Stamp;
 
@@ -293,8 +308,10 @@ namespace Scada.Web.Plugins.Scheme
         {
             try
             {
-                AppData.CheckLoggedOn();
-                SchemeView schemeView = AppData.ViewCache.GetView<SchemeView>(viewID, true);
+                UserRights userRights;
+                AppData.CheckLoggedOn(out userRights);
+
+                SchemeView schemeView = GetSchemeView(viewID, userRights);
                 ImagesDTO dto = new ImagesDTO();
                 dto.ViewStamp = schemeView.Stamp;
 
