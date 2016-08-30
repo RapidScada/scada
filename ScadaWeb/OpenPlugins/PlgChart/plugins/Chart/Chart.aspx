@@ -5,6 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Chart - Rapid SCADA</title>
+    <link href="~/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link href="~/lib/open-sans/css/open-sans.css" rel="stylesheet" type="text/css" />
     <link href="~/plugins/Chart/css/chart.min.css" rel="stylesheet" type="text/css" />
     <link href="~/plugins/Chart/css/chartform.min.css" rel="stylesheet" type="text/css" />

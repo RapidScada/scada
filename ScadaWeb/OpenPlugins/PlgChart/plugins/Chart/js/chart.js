@@ -910,3 +910,24 @@ scada.chart.Chart.prototype.showHint = function (pageX, pageY, opt_touch) {
         this._trendHint.addClass("hidden");
     }
 };
+
+// Bind events to allow hints and scaling
+scada.chart.Chart.prototype.bindEvents = function () {
+    var thisObj = this;
+
+    $(document).on("mousemove touchstart touchmove", function (event) {
+        var touch = false;
+        if (event.type == "touchstart") {
+            event = event.originalEvent.touches[0];
+            touch = true;
+        }
+        else if (event.type == "touchmove") {
+            $(this).off("mousemove");
+            event = event.originalEvent.touches[0];
+            touch = true;
+        }
+
+        thisObj.showHint(event.pageX, event.pageY, touch);
+        return false;
+    });
+}
