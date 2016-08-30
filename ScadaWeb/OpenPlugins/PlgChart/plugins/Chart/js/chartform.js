@@ -8,11 +8,6 @@ function updateLayout() {
 
 $(document).ready(function () {
     // chart parameters must be defined in Chart.aspx
-    var chartData = new scada.chart.ChartData();
-    chartData.timePoints = timePoints;
-    chartData.trends = [trend];
-    chartData.quantityName = quantityName;
-
     var chart = new scada.chart.Chart($("#cnvChart"));
     chart.displaySettings = displaySettings;
     chart.timeRange = timeRange;

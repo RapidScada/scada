@@ -26,6 +26,9 @@ div {
   float: right;
   line-height: 20px;
 }
+.chart-status.error {
+  color: red;
+}
 .chart {
   min-width: 300px;
   min-height: 200px;

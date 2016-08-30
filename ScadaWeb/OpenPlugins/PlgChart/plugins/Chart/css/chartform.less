@@ -1,5 +1,8 @@
 ﻿@import "../../../css/globalvar.less";
 
+@chart-status-fore-color: #777;
+@chart-status-error-fore-color: red;
+
 body {
     margin: 0;
     padding: 10px;
@@ -25,11 +28,15 @@ div {
 }
 
 .chart-status {
-    color: #777;
+    color: @chart-status-fore-color;
     display: inline-block;
     font-size: 11px;
     float: right;
     line-height: 20px;
+}
+
+.chart-status.error {
+    color: @chart-status-error-fore-color;
 }
 
 .chart {

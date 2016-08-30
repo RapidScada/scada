@@ -12,22 +12,7 @@
     <script type="text/javascript" src="../../js/api/utils.js"></script>
     <script type="text/javascript" src="js/chart.js"></script>
     <script type="text/javascript">
-        var displaySettings = new scada.chart.DisplaySettings();
-        displaySettings.locale = "<%= Scada.Localization.Culture.Name %>";
-        displaySettings.chartGap = <%= chartGap %> / scada.chart.const.SEC_PER_DAY;
-
-        var timeRange = new scada.chart.TimeRange();
-        timeRange.startDate = Date.UTC(<%= string.Format("{0}, {1}, {2}", startDate.Year, startDate.Month - 1, startDate.Day) %>);
-        timeRange.startTime = 0;
-        timeRange.endTime = 1;
-
-        var trend = new scada.chart.TrendExt();
-        trend.cnlNum = <%= cnlNum %>;
-        trend.cnlName = "<%= cnlName %>";
-        trend.trendPoints = <%= trendPoints %>;
-
-        var timePoints = <%= timePoints %>;
-        var quantityName = "<%= quantityName %>";
+        <%= chartDataBuilder.ToJs() %>
     </script>
     <script type="text/javascript" src="js/chartform.js"></script>
 </head>

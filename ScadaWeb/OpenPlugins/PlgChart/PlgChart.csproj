@@ -112,6 +112,12 @@
     <Folder Include="lang\" />
     <Folder Include="log\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PlgChartCommon\PlgChartCommon.csproj">
+      <Project>{827ac062-9c5e-429f-abbf-368e84cec9b7}</Project>
+      <Name>PlgChartCommon</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
