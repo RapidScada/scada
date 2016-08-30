@@ -40,7 +40,7 @@
     <form runat="server">
         <div id="divMainHeader">
             <span 
-                id="spanMainShowMenuBtn" class="hdr-btn img-btn"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></span><span 
+                id="spanMainShowMenuBtn" class="hdr-btn img-btn"><span class="glyphicon glyphicon-menu-hamburger"></span></span><span 
                 id="spanMainAppName">Rapid SCADA</span>
             <div id="divMainUserMenu">
                 <asp:HyperLink 
