@@ -13,6 +13,9 @@ var scada = scada || {};
 
 // JavaScript utilities object
 scada.utils = {
+    // Prospective browser scrollbar width
+    _SCROLLBAR_WIDTH: 20,
+
     // z-index that moves element to the front
     FRONT_ZINDEX: 10000,
 
@@ -193,6 +196,11 @@ scada.utils = {
     // Check if a browser window is small sized
     isSmallScreen() {
         return top.innerWidth <= this.SMALL_WND_WIDTH;
+    },
+
+    // Get browser scrollbar width
+    getScrollbarWidth: function () {
+        return this._SCROLLBAR_WIDTH;
     },
 
     // Click hyperlink programmatically

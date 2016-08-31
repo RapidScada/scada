@@ -458,29 +458,6 @@ scada.chart.Chart.prototype._alignToGridX = function () {
     this._maxX = Math.ceil(this._maxX / gridXStep) * gridXStep;
 }
 
-// Convert time to a string using manual transformations
-scada.chart.Chart.prototype._simpleTimeToStr = function (time) {
-    var min = time.getUTCMinutes();
-    return time.getUTCHours() + ":" + (min < 10 ? "0" + min : min);
-}
-
-// Convert x-coordinate that means time into a time string
-scada.chart.Chart.prototype._timeToStr = function (t) {
-    var time = new Date(Math.round(t * scada.chart.const.MS_PER_DAY));
-    return scada.utils.iOS() ? // iOS requires manual time formatting
-        this._simpleTimeToStr(time) :
-        time.toLocaleTimeString(this.displaySettings.locale, this._TIME_OPTIONS);
-};
-
-// Convert x-coordinate that means time into a date string
-scada.chart.Chart.prototype._dateToStr = function (t) {
-    var date = this._trendXToDate(t);
-    if (scada.utils.iOS()) {
-        date.setUTCMinutes(date.getUTCMinutes() + date.getTimezoneOffset());
-    }
-    return date.toLocaleDateString(this.displaySettings.locale, this._DATE_OPTIONS);
-};
-
 // Convert x-coordinate that means time into a date and time string
 scada.chart.Chart.prototype._dateTimeToStr = function (t) {
     var dateTime = this._trendXToDate(t);
@@ -492,6 +469,27 @@ scada.chart.Chart.prototype._dateTimeToStr = function (t) {
     } else {
         return dateTime.toLocaleString(this.displaySettings.locale, this._DATE_TIME_OPTIONS);
     }
+};
+
+// Convert time to a string using manual transformations
+scada.chart.Chart.prototype._simpleTimeToStr = function (time, opt_showSeconds) {
+    var min = time.getUTCMinutes();
+    var timeStr = time.getUTCHours() + ":" + (min < 10 ? "0" + min : min);
+
+    if (opt_showSeconds) {
+        var sec = time.getUTCSeconds();
+        timeStr += ":" + (sec < 10 ? "0" + sec : sec);
+    }
+
+    return timeStr;
+}
+
+// Convert x-coordinate that means time into a time string
+scada.chart.Chart.prototype._timeToStr = function (t) {
+    var time = new Date(Math.round(t * scada.chart.const.MS_PER_DAY));
+    return scada.utils.iOS() ? // iOS requires manual time formatting
+        this._simpleTimeToStr(time) :
+        time.toLocaleTimeString(this.displaySettings.locale, this._TIME_OPTIONS);
 };
 
 // Draw pixel on the chart
@@ -630,7 +628,7 @@ scada.chart.Chart.prototype._drawGridX = function () {
         if (isNaN(prevLblX) || lblX - lblHalfW > prevLblX + prevLblHalfW + layout.LBL_LR_MARGIN) {
             this._context.fillText(timeText, lblX, lblY);
             if (this._showDates && timeText == dayBegTimeText) {
-                this._context.fillText(this._dateToStr(x), lblX, lblDateY);
+                this._context.fillText(this.dateToStr(x), lblX, lblDateY);
             }
             prevLblX = lblX;
             prevLblHalfW = lblHalfW;
@@ -911,12 +909,29 @@ scada.chart.Chart.prototype.showHint = function (pageX, pageY, opt_touch) {
     }
 };
 
+// Convert x-coordinate that means time into a date string
+scada.chart.Chart.prototype.dateToStr = function (t) {
+    var date = this._trendXToDate(t);
+    if (scada.utils.iOS()) {
+        date.setUTCMinutes(date.getUTCMinutes() + date.getTimezoneOffset());
+    }
+    return date.toLocaleDateString(this.displaySettings.locale, this._DATE_OPTIONS);
+};
+
+// Convert x-coordinate that means time into a time string ignoring culture with high performance
+scada.chart.Chart.prototype.fastTimeToStr = function (t, opt_showSeconds) {
+    var time = new Date(Math.round(t * scada.chart.const.MS_PER_DAY));
+    return this._simpleTimeToStr(time, opt_showSeconds);
+}
+
 // Bind events to allow hints and scaling
 scada.chart.Chart.prototype.bindEvents = function () {
     var thisObj = this;
 
     $(document).on("mousemove touchstart touchmove", function (event) {
         var touch = false;
+        var stopEvent = false;
+
         if (event.type == "touchstart") {
             event = event.originalEvent.touches[0];
             touch = true;
@@ -925,9 +940,10 @@ scada.chart.Chart.prototype.bindEvents = function () {
             $(this).off("mousemove");
             event = event.originalEvent.touches[0];
             touch = true;
+            stopEvent = true;
         }
 
         thisObj.showHint(event.pageX, event.pageY, touch);
-        return false;
+        return !stopEvent;
     });
 }

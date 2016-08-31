@@ -23,9 +23,7 @@
  * Modified : 2016
  */
 
-using Scada.Web.Plugins.Chart;
 using Scada.Web.Shell;
-using System.Collections.Generic;
 using System.IO;
 
 namespace Scada.Web.Plugins
