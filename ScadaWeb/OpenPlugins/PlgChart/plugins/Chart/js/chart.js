@@ -254,6 +254,12 @@ scada.chart.ChartLayout.prototype.calculate = function (canvasJqObj, context,
     this._calcPlotArea(canvasJqObj, trendCnt, showDates);
 }
 
+// Check if the specified point is located within the chart area
+scada.chart.ChartLayout.prototype.pointInPlotArea = function (pageX, pageY) {
+    return this.absPlotAreaLeft <= pageX && pageX <= this.absPlotAreaRight &&
+        this.absPlotAreaTop <= pageY && pageY <= this.absPlotAreaBottom;
+}
+
 /********** Chart Control **********/
 
 // Chart type
@@ -855,8 +861,7 @@ scada.chart.Chart.prototype.showHint = function (pageX, pageY, opt_touch) {
     var layout = this._chartLayout;
     var hideHint = true;
 
-    if (layout.absPlotAreaLeft <= pageX && pageX <= layout.absPlotAreaRight &&
-        layout.absPlotAreaTop <= pageY && pageY <= layout.absPlotAreaBottom) {
+    if (layout.pointInPlotArea(pageX, pageY)) {
         var ptInd = this._getPointIndex(pageX);
 
         if (ptInd >= 0) {
