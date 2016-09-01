@@ -924,8 +924,8 @@ scada.chart.Chart.prototype.fastTimeToStr = function (t, opt_showSeconds) {
     return this._simpleTimeToStr(time, opt_showSeconds);
 }
 
-// Bind events to allow hints and scaling
-scada.chart.Chart.prototype.bindEvents = function () {
+// Bind events to allow hints
+scada.chart.Chart.prototype.bindHintEvents = function () {
     var thisObj = this;
 
     $(document).on("mousemove touchstart touchmove", function (event) {

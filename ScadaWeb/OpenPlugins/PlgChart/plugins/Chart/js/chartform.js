@@ -15,7 +15,7 @@ $(document).ready(function () {
 
     updateLayout();
     chart.draw();
-    chart.bindEvents();
+    chart.bindHintEvents();
 
     $(window).resize(function () {
         updateLayout();
