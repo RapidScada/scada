@@ -6,10 +6,10 @@
     <asp:Repeater ID="repActiveUsers" runat="server">
         <ItemTemplate>
             <div>
-                IpAddress: <%#: Eval("IpAddress") %>,
-                SessionID: <%#: Eval("SessionID") %>,
-                UserName: <%#: Eval("UserProps.UserName") %>,
-                LogonDT: <%#: Eval("LogonDT") %>
+                IpAddress: <%# Eval("IpAddress") %>,
+                SessionID: <%# HttpUtility.HtmlEncode(Eval("SessionID")) %>,
+                UserName: <%# HttpUtility.HtmlEncode(Eval("UserProps.UserName")) %>,
+                LogonDT: <%# Eval("LogonDT") %>
             </div>
         </ItemTemplate>
     </asp:Repeater>

@@ -8,10 +8,10 @@
     <asp:Repeater ID="repHourTableCache" runat="server">
         <ItemTemplate>
             <div>
-                ValueAge: <%#: Eval("ValueAge") %>,
-                ValueRefrDT (UTC): <%#: Eval("ValueRefrDT") %>,
-                AccessDT (UTC): <%#: Eval("AccessDT") %>,
-                SrezTableLight: <%#: Eval("Value.TableName") %>
+                ValueAge: <%# Eval("ValueAge") %>,
+                ValueRefrDT (UTC): <%# Eval("ValueRefrDT") %>,
+                AccessDT (UTC): <%# Eval("AccessDT") %>,
+                SrezTableLight: <%# HttpUtility.HtmlEncode(Eval("Value.TableName")) %>
             </div>
         </ItemTemplate>
     </asp:Repeater>
@@ -20,10 +20,10 @@
     <asp:Repeater ID="repViewCache" runat="server">
         <ItemTemplate>
             <div>
-                ValueAge: <%#: Eval("ValueAge") %>,
-                ValueRefrDT (UTC): <%#: Eval("ValueRefrDT") %>,
-                AccessDT (UTC): <%#: Eval("AccessDT") %>,
-                BaseView: <%#: Eval("Value.ItfObjName") %>
+                ValueAge: <%# Eval("ValueAge") %>,
+                ValueRefrDT (UTC): <%# Eval("ValueRefrDT") %>,
+                AccessDT (UTC): <%# Eval("AccessDT") %>,
+                BaseView: <%# HttpUtility.HtmlEncode(Eval("Value.ItfObjName")) %>
             </div>
         </ItemTemplate>
     </asp:Repeater>
