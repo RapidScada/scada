@@ -152,6 +152,11 @@ scada.chart.ChartLayout = function () {
     this.plotAreaWidth = 0;
     // Drawing area height
     this.plotAreaHeight = 0;
+
+    // Width of the canvas left border
+    this.canvasLeftBorder = 0;
+    // Width of the canvas top border
+    this.canvasTopBorder = 0;
     // Absolute left coordinate of the canvas relative to the document
     this.absCanvasLeft = 0;
     // Absolute top coordinate of the canvas relative to the document
@@ -236,6 +241,9 @@ scada.chart.ChartLayout.prototype._calcPlotArea = function (canvasJqObj, trendCn
          (showDates ? this.LINE_HEIGHT : 0) - this.LBL_TB_MARGIN - trendCnt * this.LINE_HEIGHT;
     this.plotAreaWidth = this.plotAreaRight - this.plotAreaLeft + 1;
     this.plotAreaHeight = this.plotAreaBottom - this.plotAreaTop + 1;
+
+    this.canvasLeftBorder = parseInt(canvasJqObj.css("border-left-width"));
+    this.canvasTopBorder = parseInt(canvasJqObj.css("border-top-width"));
     this.updateAbsCoordinates(canvasJqObj);
 }
 
@@ -254,12 +262,12 @@ scada.chart.ChartLayout.prototype.calculate = function (canvasJqObj, context,
 // Update absolute coordinates those depends on canvas offset
 scada.chart.ChartLayout.prototype.updateAbsCoordinates = function (canvasJqObj) {
     var offset = canvasJqObj.offset();
-    this.absCanvasLeft = offset.left + parseInt(canvasJqObj.css("border-left-width"));
-    this.absCanvasTop = offset.top + parseInt(canvasJqObj.css("border-top-width"));
-    this.absPlotAreaLeft = this.absCanvasLeft + this.plotAreaLeft;
-    this.absPlotAreaRight = this.absCanvasLeft + this.plotAreaRight;
-    this.absPlotAreaTop = this.absCanvasTop + this.plotAreaTop;
-    this.absPlotAreaBottom = this.absCanvasTop + this.plotAreaBottom;
+    this.absCanvasLeft = offset.left;
+    this.absCanvasTop = offset.top;
+    this.absPlotAreaLeft = this.absCanvasLeft + this.canvasLeftBorder + this.plotAreaLeft;
+    this.absPlotAreaRight = this.absCanvasLeft + this.canvasLeftBorder + this.plotAreaRight;
+    this.absPlotAreaTop = this.absCanvasTop + this.canvasTopBorder + this.plotAreaTop;
+    this.absPlotAreaBottom = this.absCanvasTop + this.canvasTopBorder + this.plotAreaBottom;
 }
 
 // Check if the specified point is located within the chart area
@@ -924,7 +932,7 @@ scada.chart.Chart.prototype.showHint = function (pageX, pageY, opt_touch) {
                 .removeClass("hidden")
                 .css({
                     "left": ptPageX - layout.absCanvasLeft,
-                    "top": layout.plotAreaTop,
+                    "top": layout.canvasTopBorder + layout.plotAreaTop,
                     "height": layout.plotAreaHeight,
                 });
 
@@ -941,17 +949,29 @@ scada.chart.Chart.prototype.showHint = function (pageX, pageY, opt_touch) {
                     .css("color", trendPoint[scada.chart.TrendPointIndexes.COLOR_IND]);
                 }
 
+                // allow measuring the hint size
+                this._trendHint
+                .css({
+                    "left": 0,
+                    "top": 0,
+                    "visibility": "hidden"
+                })
+                .removeClass("hidden");
+
                 var hintWidth = this._trendHint.outerWidth();
                 var hintHeight = this._trendHint.outerHeight();
-                var winRight = $(window).scrollLeft() + $(window).width();
-                var absHintLeft = pageX + hintWidth < winRight ? pageX : Math.max(winRight - hintWidth, 0);
+                var winScrollLeft = $(window).scrollLeft();
+                var winRight = winScrollLeft + $(window).width();
+                var chartRight = winScrollLeft + layout.absCanvasLeft + layout.canvasLeftBorder + layout.width;
+                var maxRight = Math.min(winRight, chartRight);
+                var absHintLeft = pageX + hintWidth < maxRight ? pageX : Math.max(maxRight - hintWidth, 0);
 
                 this._trendHint
-                .removeClass("hidden")
                 .css({
                     "left": absHintLeft - layout.absCanvasLeft,
                     "top": pageY - layout.absCanvasTop - hintHeight -
-                        (opt_touch ? layout.HINT_OFFSET /*above a finger*/ : 0)
+                        (opt_touch ? layout.HINT_OFFSET /*above a finger*/ : 0),
+                    "visibility": ""
                 });
             }
         }
