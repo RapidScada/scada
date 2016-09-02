@@ -152,6 +152,10 @@ scada.chart.ChartLayout = function () {
     this.plotAreaWidth = 0;
     // Drawing area height
     this.plotAreaHeight = 0;
+    // Absolute left coordinate of the canvas relative to the document
+    this.absCanvasLeft = 0;
+    // Absolute top coordinate of the canvas relative to the document
+    this.absCanvasTop = 0;
     // Absolute left coordinate of the drawing area relative to the document
     this.absPlotAreaLeft = 0;
     // Absolute right coordinate of the drawing area relative to the document
@@ -232,14 +236,7 @@ scada.chart.ChartLayout.prototype._calcPlotArea = function (canvasJqObj, trendCn
          (showDates ? this.LINE_HEIGHT : 0) - this.LBL_TB_MARGIN - trendCnt * this.LINE_HEIGHT;
     this.plotAreaWidth = this.plotAreaRight - this.plotAreaLeft + 1;
     this.plotAreaHeight = this.plotAreaBottom - this.plotAreaTop + 1;
-
-    var offset = canvasJqObj.offset();
-    var canvasLeft = offset.left + parseInt(canvasJqObj.css("border-left-width"));
-    var canvasTop = offset.top + parseInt(canvasJqObj.css("border-top-width"));
-    this.absPlotAreaLeft = canvasLeft + this.plotAreaLeft;
-    this.absPlotAreaRight = canvasLeft + this.plotAreaRight;
-    this.absPlotAreaTop = canvasTop + this.plotAreaTop;
-    this.absPlotAreaBottom = canvasTop + this.plotAreaBottom;
+    this.updateAbsCoordinates(canvasJqObj);
 }
 
 // Calculate chart layout
@@ -252,6 +249,17 @@ scada.chart.ChartLayout.prototype.calculate = function (canvasJqObj, context,
     this._calcGridX(minX, maxX);
     this._calcGridY(context, minY, maxY);
     this._calcPlotArea(canvasJqObj, trendCnt, showDates);
+}
+
+// Update absolute coordinates those depends on canvas offset
+scada.chart.ChartLayout.prototype.updateAbsCoordinates = function (canvasJqObj) {
+    var offset = canvasJqObj.offset();
+    this.absCanvasLeft = offset.left + parseInt(canvasJqObj.css("border-left-width"));
+    this.absCanvasTop = offset.top + parseInt(canvasJqObj.css("border-top-width"));
+    this.absPlotAreaLeft = this.absCanvasLeft + this.plotAreaLeft;
+    this.absPlotAreaRight = this.absCanvasLeft + this.plotAreaRight;
+    this.absPlotAreaTop = this.absCanvasTop + this.plotAreaTop;
+    this.absPlotAreaBottom = this.absCanvasTop + this.plotAreaBottom;
 }
 
 // Check if the specified point is located within the chart area
@@ -304,6 +312,8 @@ scada.chart.Chart = function (canvasJqObj) {
     this._coefY = 1;
     // Show date labels below the x-axis
     this._showDates = false;
+    // Zoom mode affects calculation of the vertical range
+    this._zoomMode = false;
 
     // Display settings
     this.displaySettings = new scada.chart.DisplaySettings();
@@ -312,6 +322,17 @@ scada.chart.Chart = function (canvasJqObj) {
     // Chart data
     this.chartData = null;
 };
+
+// Initialize displayed range according to the chart time range and data
+scada.chart.Chart.prototype._initRange = function (opt_reinit) {
+    if (this._minX == this._maxX /*not initialized yet*/ || opt_reinit) {
+        this._minX = Math.min(this.timeRange.startTime, 0);
+        this._maxX = Math.max(this.timeRange.endTime, 1);
+        this._zoomMode = false;
+        this._calcYRange();
+        this._showDates = this._maxX - this._minX > 1;
+    }
+}
 
 // Claculate top and bottom edges of the displayed range
 scada.chart.Chart.prototype._calcYRange = function (opt_startPtInd) {
@@ -355,7 +376,7 @@ scada.chart.Chart.prototype._calcYRange = function (opt_startPtInd) {
         var origMinY = minY;
         var origMaxY = maxY;
 
-        if (true /*zoom is off*/) {
+        if (!this._zoomMode) {
             if (minY > 0 && maxY > 0) {
                 minY = 0;
             }
@@ -810,14 +831,11 @@ scada.chart.Chart.prototype._initTrendHint = function () {
 // Draw the chart
 scada.chart.Chart.prototype.draw = function () {
     if (this._canvasOK && this.displaySettings && this.timeRange && this.chartData) {
-        var layout = this._chartLayout;
-
-        this._minX = Math.min(this.timeRange.startTime, 0);
-        this._maxX = Math.max(this.timeRange.endTime, 1);
-        this._calcYRange();
-        this._showDates = this._maxX - this._minX > 1;
+        // initialize displayed range on the first using
+        this._initRange();
 
         // prepare canvas
+        var layout = this._chartLayout;
         this._canvas.width = this._canvasJqObj.width();
         this._canvas.height = this._canvasJqObj.height();
         this._context = this._canvas.getContext("2d");
@@ -856,10 +874,40 @@ scada.chart.Chart.prototype.resume = function (pointInd) {
     }
 }
 
+// Set displayed time range
+scada.chart.Chart.prototype.setRange = function (startX, endX) {    
+    // swap the range if needed
+    if (startX > endX) {
+        var xbuf = startX;
+        startX = endX;
+        endX = xbuf;
+    }
+
+    // correct the range
+    startX = Math.max(startX, this.timeRange.startTime);
+    endX = Math.min(endX, this.timeRange.endTime);
+
+    // apply the new range
+    if (startX != endX) {
+        this._minX = startX;
+        this._maxX = endX;
+        this._zoomMode = this._minX > this.timeRange.startTime || this._maxX < this.timeRange.endTime;
+        this._calcYRange();
+        this.draw();
+    }
+}
+
+// Reset displayed time range according to the chart time range
+scada.chart.Chart.prototype.resetRange = function () {
+    this._initRange(true);
+    this.draw();
+}
+
 // Show hint with the values nearest to the pointer
 scada.chart.Chart.prototype.showHint = function (pageX, pageY, opt_touch) {
     var layout = this._chartLayout;
     var hideHint = true;
+    layout.updateAbsCoordinates(this._canvasJqObj);
 
     if (layout.pointInPlotArea(pageX, pageY)) {
         var ptInd = this._getPointIndex(pageX);
@@ -875,8 +923,8 @@ scada.chart.Chart.prototype.showHint = function (pageX, pageY, opt_touch) {
                 this._timeMark
                 .removeClass("hidden")
                 .css({
-                    "left": ptPageX,
-                    "top": layout.absPlotAreaTop,
+                    "left": ptPageX - layout.absCanvasLeft,
+                    "top": layout.plotAreaTop,
                     "height": layout.plotAreaHeight,
                 });
 
@@ -896,13 +944,14 @@ scada.chart.Chart.prototype.showHint = function (pageX, pageY, opt_touch) {
                 var hintWidth = this._trendHint.outerWidth();
                 var hintHeight = this._trendHint.outerHeight();
                 var winRight = $(window).scrollLeft() + $(window).width();
-                var hintLeft = pageX + hintWidth < winRight ? pageX : Math.max(winRight - hintWidth, 0);
+                var absHintLeft = pageX + hintWidth < winRight ? pageX : Math.max(winRight - hintWidth, 0);
 
                 this._trendHint
                 .removeClass("hidden")
                 .css({
-                    "left": hintLeft,
-                    "top": pageY - hintHeight - (opt_touch ? layout.HINT_OFFSET /*above a finger*/ : 0)
+                    "left": absHintLeft - layout.absCanvasLeft,
+                    "top": pageY - layout.absCanvasTop - hintHeight -
+                        (opt_touch ? layout.HINT_OFFSET /*above a finger*/ : 0)
                 });
             }
         }
