@@ -29,7 +29,9 @@
                 <asp:Label ID="lblGenDT" runat="server" Text=""></asp:Label>
             </div>
         </div>
-        <canvas id="cnvChart" class="chart">Upgrade the browser to display chart.</canvas>
+        <div class="chart-wrapper">
+            <canvas id="cnvChart" class="chart">Upgrade the browser to display chart.</canvas>
+        </div>
     </form>
 </body>
 </html>
