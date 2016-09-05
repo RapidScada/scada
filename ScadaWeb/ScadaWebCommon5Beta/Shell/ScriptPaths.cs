@@ -69,7 +69,7 @@ namespace Scada.Web.Shell
             const string ScriptTemplate = "<script type='text/javascript' src='{0}'></script>";
             StringBuilder sbHtml = new StringBuilder();
 
-            if (!string.IsNullOrEmpty(ScriptTemplate))
+            if (!string.IsNullOrEmpty(ChartScriptPath))
                 sbHtml.AppendLine(string.Format(ScriptTemplate, VirtualPathUtility.ToAbsolute(ChartScriptPath)));
 
             if (!string.IsNullOrEmpty(CmdScriptPath))
