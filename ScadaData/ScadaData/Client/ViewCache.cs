@@ -221,8 +221,8 @@ namespace Scada.Client
             catch (Exception ex)
             {
                 string errMsg = string.Format(Localization.UseRussian ?
-                    "Ошибка при получении представления с ид.={0} из кэша или от сервера" :
-                    "Error getting view with ID={0} from the cache or from the server", viewID);
+                    "Ошибка при получении представления с ид.={0} из кэша или от сервера: {1}" :
+                    "Error getting view with ID={0} from the cache or from the server: {1}", viewID, ex.Message);
                 log.WriteException(ex, errMsg);
 
                 if (throwOnError)
@@ -252,17 +252,16 @@ namespace Scada.Client
 
                 if (view == null && throwOnFail)
                     throw new ScadaException(string.Format(Localization.UseRussian ?
-                        "Не удалось получить представление с ид.={0} из кеша" :
-                        "Unable to get view with ID={0} from the cache", viewID));
+                        "Представление не найдено в кэше" :
+                        "The view is not found in the cache", viewID));
 
                 return view;
             }
             catch (Exception ex)
             {
-                // TODO: !!!
                 string errMsg = string.Format(Localization.UseRussian ?
-                    "Ошибка при получении представления с ид.={0} из кэша" :
-                    "Error getting view with ID={0} from the cache", viewID);
+                    "Ошибка при получении представления с ид.={0} из кэша: {1}" :
+                    "Error getting view with ID={0} from the cache: {1}", viewID, ex.Message);
                 log.WriteException(ex, errMsg);
 
                 if (throwOnFail)
