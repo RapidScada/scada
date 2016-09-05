@@ -32,7 +32,6 @@ using System.Globalization;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
 using System.ServiceModel.Web;
-using System.Text;
 using System.Web.Script.Serialization;
 
 namespace Scada.Web
@@ -412,6 +411,31 @@ namespace Scada.Web
             return JsSerializer.Serialize(new DataTransferObject(false, ex.Message));
         }
 
+
+        /// <summary>
+        /// Выполнить вход пользователя в систему
+        /// </summary>
+        /// <remarks>Для работы метода необходимо, чтобы существовал HTTP-контекст. 
+        /// Возвращает bool, упакованный в DataTransferObject, в формате в JSON</remarks>
+        [OperationContract]
+        [WebGet]
+        public string Login(string username, string password)
+        {
+            try
+            {
+                UserData userData = UserData.GetUserData();
+                string errMsg;
+                bool loggedOn = userData.Login(username, password, out errMsg);
+                return JsSerializer.Serialize(new DataTransferObject(loggedOn));
+            }
+            catch (Exception ex)
+            {
+                AppData.Log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при выполнении входа пользователя в систему" :
+                    "Error performing user login");
+                return GetErrorDtoJs(ex);
+            }
+        }
 
         /// <summary>
         /// Проверить, что пользователь вошёл систему

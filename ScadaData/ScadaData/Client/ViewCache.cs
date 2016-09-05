@@ -259,10 +259,16 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                log.WriteException(ex, Localization.UseRussian ?
+                // TODO: !!!
+                string errMsg = string.Format(Localization.UseRussian ?
                     "Ошибка при получении представления с ид.={0} из кэша" :
                     "Error getting view with ID={0} from the cache", viewID);
-                return null;
+                log.WriteException(ex, errMsg);
+
+                if (throwOnFail)
+                    throw new ScadaException(errMsg);
+                else
+                    return null;
             }
         }
     }

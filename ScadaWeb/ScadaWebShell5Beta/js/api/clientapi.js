@@ -152,20 +152,32 @@ scada.clientAPI = {
         });
     },
 
+    // Perform user login.
+    // callback is a function (success, loggedOn)
+    // URL example: http://webserver/scada/ClientApiSvc.svc/Login?username=admin&password=12345
+    login: function (username, password, callback) {
+        this._request("ClientApiSvc.svc/Login",
+            "?username=" + encodeURIComponent(username) + "&password=" + encodeURIComponent(password),
+            callback, false);
+    },
+
     // Check that a user is logged on.
     // callback is a function (success, loggedOn)
+    // URL example: http://webserver/scada/ClientApiSvc.svc/CheckLoggedOn
     checkLoggedOn: function (callback) {
         this._request("ClientApiSvc.svc/CheckLoggedOn", "", callback, false);
     },
 
     // Get current data of the input channel.
     // callback is a function (success, cnlData)
+    // URL example: http://webserver/scada/ClientApiSvc.svc/GetCurCnlData?cnlNum=1
     getCurCnlData: function (cnlNum, callback) {
         this._request("ClientApiSvc.svc/GetCurCnlData", "?cnlNum=" + cnlNum, callback, this._EMPTY_CNL_DATA);
     },
 
     // Get extended current data by the specified filter.
     // callback is a function (success, cnlDataExtArr)
+    // URL example: http://webserver/scada/ClientApiSvc.svc/GetCurCnlDataExt?cnlNums=&viewID=1
     getCurCnlDataExt: function (cnlFilter, callback) {
         this._request("ClientApiSvc.svc/GetCurCnlDataExt", "?" + cnlFilter.toQueryString(), callback, []);
     },
@@ -173,6 +185,7 @@ scada.clientAPI = {
     // Get hourly data by the specified filter.
     // dataAge is an array of dates in milliseconds,
     // callback is a function (success, hourCnlDataArr, dataAge)
+    // URL example: http://webserver/scada/ClientApiSvc.svc/GetHourCnlData?year=2016&month=1&day=1&startHour=0&endHour=23&cnlNums=&viewID=1&existing=true&dataAge=
     getHourCnlData: function (hourPeriod, cnlFilter, selectMode, dataAge, callback) {
         this._request("ClientApiSvc.svc/GetHourCnlData",
             "?" + hourPeriod.toQueryString() + "&" + cnlFilter.toQueryString() + "&existing=" + selectMode +
@@ -182,6 +195,7 @@ scada.clientAPI = {
 
     // Get events by the specified filter.
     // callback is a function (success, eventArr, dataAge)
+    // URL example: http://webserver/scada/ClientApiSvc.svc/GetEvents?year=2016&month=1&day=1&cnlNums=&viewID=1&lastCount=100&startEvNum=0&dataAge=0
     getEvents: function (date, cnlFilter, lastCount, startEvNum, dataAge, callback) {
         this._request("ClientApiSvc.svc/GetEvents",
             "?" + scada.utils.dateToQueryString(date) + "&" + cnlFilter.toQueryString() +
@@ -191,6 +205,7 @@ scada.clientAPI = {
 
     // Get the stamp of the view from the cache.
     // callback is a function (success, stamp)
+    // URL example: http://webserver/scada/ClientApiSvc.svc/GetViewStamp?viewID=1
     getViewStamp: function (viewID, callback) {
         this._request("ClientApiSvc.svc/GetViewStamp", "?viewID=" + viewID, callback, 0);
     },
@@ -198,6 +213,7 @@ scada.clientAPI = {
     // Parse date and time using the application culture
     // callback is a function (success, value),
     // value is the number of milliseconds or null in case of any error
+    // URL example: http://webserver/scada/ClientApiSvc.svc/ParseDateTime?s=01%20January%202016
     parseDateTime: function (s, callback) {
         this._request("ClientApiSvc.svc/ParseDateTime", "?s=" + encodeURIComponent(s), callback, null);
     },
