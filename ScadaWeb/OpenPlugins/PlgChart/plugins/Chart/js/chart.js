@@ -305,6 +305,8 @@ scada.chart.Chart = function (canvasJqObj) {
     this._timeMark = null;
     // Trend hint jQuery object
     this._trendHint = null;
+    // Enable or disable trend hint
+    this._hintEnabled = true;
 
     // Left edge of the displayed range
     this._minX = 0;
@@ -836,6 +838,77 @@ scada.chart.Chart.prototype._initTrendHint = function () {
     }
 }
 
+// Show hint with the values nearest to the pointer
+scada.chart.Chart.prototype._showHint = function (pageX, pageY, opt_touch) {
+    var layout = this._chartLayout;
+    var hideHint = true;
+    layout.updateAbsCoordinates(this._canvasJqObj);
+
+    if (this._hintEnabled && layout.pointInPlotArea(pageX, pageY)) {
+        var ptInd = this._getPointIndex(pageX);
+
+        if (ptInd >= 0) {
+            var x = this.chartData.timePoints[ptInd];
+            var ptPageX = this._trendXToPageX(x);
+
+            if (layout.absPlotAreaLeft <= ptPageX && ptPageX <= layout.absPlotAreaRight) {
+                hideHint = false;
+
+                // set position and show the time mark
+                this._timeMark
+                    .removeClass("hidden")
+                    .css({
+                        "left": ptPageX - layout.absCanvasLeft,
+                        "top": layout.canvasTopBorder + layout.plotAreaTop,
+                        "height": layout.plotAreaHeight,
+                    });
+
+                // set text, position and show the trend hint
+                this._trendHint.find("div.time").text(this._showDates ? this._dateTimeToStr(x) : this._timeToStr(x));
+                var trendCnt = this.chartData.trends.length;
+                var hintValCells = this._trendHint.find("td.val");
+
+                for (var trendInd = 0; trendInd < trendCnt; trendInd++) {
+                    var trend = this.chartData.trends[trendInd];
+                    var trendPoint = trend.trendPoints[ptInd];
+                    hintValCells.eq(trendInd)
+                        .text(trendPoint[scada.chart.TrendPointIndexes.TEXT_WITH_UNIT_IND])
+                        .css("color", trendPoint[scada.chart.TrendPointIndexes.COLOR_IND]);
+                }
+
+                // allow measuring the hint size
+                this._trendHint
+                    .css({
+                        "left": 0,
+                        "top": 0,
+                        "visibility": "hidden"
+                    })
+                    .removeClass("hidden");
+
+                var hintWidth = this._trendHint.outerWidth();
+                var hintHeight = this._trendHint.outerHeight();
+                var winScrollLeft = $(window).scrollLeft();
+                var winRight = winScrollLeft + $(window).width();
+                var chartRight = winScrollLeft + layout.absCanvasLeft + layout.canvasLeftBorder + layout.width;
+                var maxRight = Math.min(winRight, chartRight);
+                var absHintLeft = pageX + hintWidth < maxRight ? pageX : Math.max(maxRight - hintWidth, 0);
+
+                this._trendHint.css({
+                    "left": absHintLeft - layout.absCanvasLeft,
+                    "top": pageY - layout.absCanvasTop - hintHeight -
+                        (opt_touch ? layout.HINT_OFFSET /*above a finger*/ : 0),
+                    "visibility": ""
+                });
+            }
+        }
+    }
+
+    if (hideHint) {
+        this._timeMark.addClass("hidden");
+        this._trendHint.addClass("hidden");
+    }
+};
+
 // Draw the chart
 scada.chart.Chart.prototype.draw = function () {
     if (this._canvasOK && this.displaySettings && this.timeRange && this.chartData) {
@@ -875,6 +948,7 @@ scada.chart.Chart.prototype.draw = function () {
 scada.chart.Chart.prototype.resume = function (pointInd) {
     if (pointInd < this.chartData.timePoints.length) {
         if (this._yRangeIsOutdated(pointInd)) {
+            this._calcYRange();
             this.draw();
         } else {
             this._drawTrends(pointInd ? pointInd - 1 : 0);
@@ -911,72 +985,6 @@ scada.chart.Chart.prototype.resetRange = function () {
     this.draw();
 }
 
-// Show hint with the values nearest to the pointer
-scada.chart.Chart.prototype.showHint = function (pageX, pageY, opt_touch) {
-    var layout = this._chartLayout;
-    var hideHint = true;
-    layout.updateAbsCoordinates(this._canvasJqObj);
-
-    if (layout.pointInPlotArea(pageX, pageY)) {
-        var ptInd = this._getPointIndex(pageX);
-
-        if (ptInd >= 0) {
-            var x = this.chartData.timePoints[ptInd];
-            var ptPageX = this._trendXToPageX(x);
-
-            if (layout.absPlotAreaLeft <= ptPageX && ptPageX <= layout.absPlotAreaRight) {
-                hideHint = false;
-
-                // set position and show the time mark
-                this._timeMark
-                .removeClass("hidden")
-                .css({
-                    "left": ptPageX - layout.absCanvasLeft,
-                    "top": layout.canvasTopBorder + layout.plotAreaTop,
-                    "height": layout.plotAreaHeight,
-                });
-
-                // set text, position and show the trend hint
-                this._trendHint.find("div.time").text(this._showDates ? this._dateTimeToStr(x) : this._timeToStr(x));
-                var trendCnt = this.chartData.trends.length;
-                var hintValCells = this._trendHint.find("td.val");
-
-                for (var trendInd = 0; trendInd < trendCnt; trendInd++) {
-                    var trend = this.chartData.trends[trendInd];
-                    var trendPoint = trend.trendPoints[ptInd];
-                    hintValCells.eq(trendInd)
-                    .text(trendPoint[scada.chart.TrendPointIndexes.TEXT_WITH_UNIT_IND])
-                    .css("color", trendPoint[scada.chart.TrendPointIndexes.COLOR_IND]);
-                }
-
-                // allow measuring the hint size
-                this._trendHint.css("visibility", "hidden").removeClass("hidden");
-
-                var hintWidth = this._trendHint.outerWidth();
-                var hintHeight = this._trendHint.outerHeight();
-                var winScrollLeft = $(window).scrollLeft();
-                var winRight = winScrollLeft + $(window).width();
-                var chartRight = winScrollLeft + layout.absCanvasLeft + layout.canvasLeftBorder + layout.width;
-                var maxRight = Math.min(winRight, chartRight);
-                var absHintLeft = pageX + hintWidth < maxRight ? pageX : Math.max(maxRight - hintWidth, 0);
-
-                this._trendHint
-                .css({
-                    "left": absHintLeft - layout.absCanvasLeft,
-                    "top": pageY - layout.absCanvasTop - hintHeight -
-                        (opt_touch ? layout.HINT_OFFSET /*above a finger*/ : 0),
-                    "visibility": ""
-                });
-            }
-        }
-    }
-
-    if (hideHint) {
-        this._timeMark.addClass("hidden");
-        this._trendHint.addClass("hidden");
-    }
-};
-
 // Convert x-coordinate that means time into a date string
 scada.chart.Chart.prototype.dateToStr = function (t) {
     var date = this._trendXToDate(t);
@@ -1012,7 +1020,7 @@ scada.chart.Chart.prototype.bindHintEvents = function () {
                 stopEvent = true;
             }
 
-            thisObj.showHint(event.pageX, event.pageY, touch);
+            thisObj._showHint(event.pageX, event.pageY, touch);
             return !stopEvent;
         });
     }
