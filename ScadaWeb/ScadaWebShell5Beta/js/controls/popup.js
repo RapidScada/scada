@@ -151,8 +151,8 @@ scada.Popup.prototype.showDropdown = function (url, anchorElem, opt_callback) {
     }
 
     $(document)
-    .off("keydown", removePopupOnEscapeFunc)
-    .on("keydown", removePopupOnEscapeFunc);
+    .off("keydown.scada.dropdown", removePopupOnEscapeFunc)
+    .on("keydown.scada.dropdown", removePopupOnEscapeFunc);
 
     // load the frame
     frame
@@ -163,8 +163,8 @@ scada.Popup.prototype.showDropdown = function (url, anchorElem, opt_callback) {
             var jqFrameDoc = frameWnd.$(frameWnd.document);
             jqFrameDoc.ready(function () {
                 jqFrameDoc
-                .off("keydown", removePopupOnEscapeFunc)
-                .on("keydown", removePopupOnEscapeFunc);
+                .off("keydown.scada.dropdown", removePopupOnEscapeFunc)
+                .on("keydown.scada.dropdown", removePopupOnEscapeFunc);
             });
         }
     })
@@ -280,8 +280,8 @@ scada.Popup.prototype.showModal = function (url, opt_buttons, opt_callback) {
             var jqFrameDoc = frameWnd.$(frameWnd.document);
             jqFrameDoc.ready(function () {
                 jqFrameDoc
-                .off("keydown", hideModalOnEscapeFunc)
-                .on("keydown", hideModalOnEscapeFunc);
+                .off("keydown.scada.modal", hideModalOnEscapeFunc)
+                .on("keydown.scada.modal", hideModalOnEscapeFunc);
             });
         }
     })
