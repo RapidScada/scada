@@ -950,13 +950,7 @@ scada.chart.Chart.prototype.showHint = function (pageX, pageY, opt_touch) {
                 }
 
                 // allow measuring the hint size
-                this._trendHint
-                .css({
-                    "left": 0,
-                    "top": 0,
-                    "visibility": "hidden"
-                })
-                .removeClass("hidden");
+                this._trendHint.css("visibility", "hidden").removeClass("hidden");
 
                 var hintWidth = this._trendHint.outerWidth();
                 var hintHeight = this._trendHint.outerHeight();
@@ -1000,24 +994,26 @@ scada.chart.Chart.prototype.fastTimeToStr = function (t, opt_showSeconds) {
 
 // Bind events to allow hints
 scada.chart.Chart.prototype.bindHintEvents = function () {
-    var thisObj = this;
+    if (this._canvasJqObj.length) {
+        var thisObj = this;
 
-    $(document).on("mousemove touchstart touchmove", function (event) {
-        var touch = false;
-        var stopEvent = false;
+        $(document).on("mousemove touchstart touchmove", function (event) {
+            var touch = false;
+            var stopEvent = false;
 
-        if (event.type == "touchstart") {
-            event = event.originalEvent.touches[0];
-            touch = true;
-        }
-        else if (event.type == "touchmove") {
-            $(this).off("mousemove");
-            event = event.originalEvent.touches[0];
-            touch = true;
-            stopEvent = true;
-        }
+            if (event.type == "touchstart") {
+                event = event.originalEvent.touches[0];
+                touch = true;
+            }
+            else if (event.type == "touchmove") {
+                $(this).off("mousemove");
+                event = event.originalEvent.touches[0];
+                touch = true;
+                stopEvent = true;
+            }
 
-        thisObj.showHint(event.pageX, event.pageY, touch);
-        return !stopEvent;
-    });
+            thisObj.showHint(event.pageX, event.pageY, touch);
+            return !stopEvent;
+        });
+    }
 }
