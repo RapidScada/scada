@@ -358,7 +358,7 @@ function restartUpdatingHourData() {
 $(document).ready(function () {
     scada.clientAPI.rootPath = "../../";
     setTitle();
-    styleIOS();
+    scada.utils.styleIOS($("#divTblWrapper"), true);
     updateLayout();
     initViewDate();
     initHourLimits();

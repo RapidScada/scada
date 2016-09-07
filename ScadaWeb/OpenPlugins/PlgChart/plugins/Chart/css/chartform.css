@@ -29,7 +29,7 @@ div {
 .chart-status.error {
   color: red;
 }
-.chart {
+.chart-canvas {
   min-width: 300px;
   min-height: 200px;
 }

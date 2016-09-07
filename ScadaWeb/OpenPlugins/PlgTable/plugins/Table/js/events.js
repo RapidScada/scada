@@ -345,7 +345,7 @@ function restartUpdatingEvents() {
 
 $(document).ready(function () {
     scada.clientAPI.rootPath = "../../";
-    styleIOS();
+    scada.utils.styleIOS($("#divTblWrapper"), true);
     updateLayout();
     initViewDate();
     initControls();

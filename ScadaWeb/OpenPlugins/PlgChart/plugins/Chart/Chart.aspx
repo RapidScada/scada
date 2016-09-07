@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="chart-wrapper">
-            <canvas id="cnvChart" class="chart">Upgrade the browser to display chart.</canvas>
+            <canvas id="cnvChart" class="chart-canvas">Upgrade the browser to display chart.</canvas>
         </div>
     </form>
 </body>

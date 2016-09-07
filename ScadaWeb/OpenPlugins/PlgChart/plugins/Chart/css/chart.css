@@ -1,7 +1,7 @@
 ﻿.chart-wrapper {
   position: relative;
 }
-.chart {
+.chart-canvas {
   border: 1px solid gray;
   display: block;
 }

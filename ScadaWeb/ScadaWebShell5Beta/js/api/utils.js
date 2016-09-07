@@ -221,5 +221,22 @@ scada.utils = {
     // Detect if iOS is used
     iOS: function () {
         return /iPad|iPhone|iPod/.test(navigator.platform);
+    },
+
+    // Apply additional css styles to a container element in case of using iOS
+    styleIOS: function (jqElem, opt_resetSize) {
+        if (this.iOS()) {
+            jqElem.css({
+                "overflow": "scroll",
+                "-webkit-overflow-scrolling": "touch"
+            });
+
+            if (opt_resetSize) {
+                jqElem.css({
+                    "width": 0,
+                    "height": 0
+                });
+            }
+        }
     }
 };

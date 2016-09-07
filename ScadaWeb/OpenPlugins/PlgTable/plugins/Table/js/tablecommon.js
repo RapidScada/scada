@@ -24,18 +24,6 @@ var today = today || new Date();
 // Application culture name
 var locale = locale || "en-GB";
 
-// Apply additional css styles in case of using iOS
-function styleIOS() {
-    if (scada.utils.iOS()) {
-        $("#divTblWrapper").css({
-            "overflow": "scroll",
-            "-webkit-overflow-scrolling": "touch",
-            "width": 0, // initial size
-            "height": 0
-        });
-    }
-}
-
 // Update layout of the top level div elements
 function updateLayout() {
     var divNotif = $("#divNotif");

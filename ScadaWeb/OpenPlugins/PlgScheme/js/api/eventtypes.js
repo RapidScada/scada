@@ -27,4 +27,8 @@ scada.EventTypes = {
     // Current view date has been changed
     // Event parameter: date
     VIEW_DATE_CHANGED: "scada:viewDateChanged",
+
+    // Modal dialog button is clicked
+    // Event parameter: dialog result
+    MODAL_BTN_CLICK: "scada:modalBtnClick"
 };

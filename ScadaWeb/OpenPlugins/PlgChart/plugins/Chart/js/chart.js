@@ -1005,7 +1005,9 @@ scada.chart.Chart.prototype.bindHintEvents = function () {
     if (this._canvasJqObj.length) {
         var thisObj = this;
 
-        $(document).on("mousemove touchstart touchmove", function (event) {
+        $(this._canvasJqObj.parent())
+        .off(".scada.chart.hint")
+        .on("mousemove.scada.chart.hint touchstart.scada.chart.hint touchmove.scada.chart.hint", function (event) {
             var touch = false;
             var stopEvent = false;
 

@@ -135,16 +135,6 @@ function saveScale(opt_scale) {
     localStorage.setItem("Scheme.SchemeScale", opt_scale ? opt_scale : scheme.scale);
 }
 
-// Apply additional css styles in case of using iOS
-function styleIOS() {
-    if (scada.utils.iOS()) {
-        $("#divSchWrapper").css({
-            "overflow": "scroll",
-            "-webkit-overflow-scrolling": "touch"
-        });
-    }
-}
-
 // Update layout of the top level div elements
 function updateLayout() {
     var divNotif = $("#divNotif");
@@ -185,9 +175,10 @@ function initDebugTools() {
 
 $(document).ready(function () {
     scada.clientAPI.rootPath = "../../";
-    scheme.parentDomElem = $("#divSchWrapper");
+    var divSchWrapper = $("#divSchWrapper");
+    scheme.parentDomElem = divSchWrapper;
     initToolbar();
-    styleIOS();
+    scada.utils.styleIOS(divSchWrapper);
     updateLayout();
     notifier = new scada.Notifier("#divNotif");
     notifier.startClearingNotifications();
