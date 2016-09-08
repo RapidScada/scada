@@ -98,7 +98,7 @@
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
-    <Content Include="css\globalvar.less" />
+    <Content Include="css\common\globalvar.less" />
     <Content Include="plugins\Chart\css\chartform.less" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Web.Debug.config">

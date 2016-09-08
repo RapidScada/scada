@@ -86,11 +86,17 @@
     <Content Include="css\calendar.min.css">
       <DependentUpon>calendar.css</DependentUpon>
     </Content>
-    <Content Include="css\contentform.css">
+    <Content Include="css\common\contentform.css">
       <DependentUpon>contentform.less</DependentUpon>
     </Content>
-    <Content Include="css\contentform.min.css">
+    <Content Include="css\common\contentform.min.css">
       <DependentUpon>contentform.css</DependentUpon>
+    </Content>
+    <Content Include="css\common\modalform.css">
+      <DependentUpon>modalform.less</DependentUpon>
+    </Content>
+    <Content Include="css\common\modalform.min.css">
+      <DependentUpon>modalform.css</DependentUpon>
     </Content>
     <Content Include="css\controls\notifier.css">
       <DependentUpon>notifier.less</DependentUpon>
@@ -121,12 +127,6 @@
     </Content>
     <Content Include="css\error.min.css">
       <DependentUpon>error.css</DependentUpon>
-    </Content>
-    <Content Include="css\globalvar.css">
-      <DependentUpon>globalvar.less</DependentUpon>
-    </Content>
-    <Content Include="css\globalvar.min.css">
-      <DependentUpon>globalvar.css</DependentUpon>
     </Content>
     <Content Include="css\login.css">
       <DependentUpon>login.less</DependentUpon>
@@ -283,7 +283,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="MasterMain.Master" />
-    <Content Include="css\globalvar.less" />
+    <Content Include="css\common\globalvar.less" />
     <Content Include="css\login.less" />
     <Content Include="css\controls\notifier.less" />
     <Content Include="css\controls\popup.less" />
@@ -291,8 +291,9 @@
     <Content Include="css\controls\tableheader.less" />
     <Content Include="css\about.less" />
     <Content Include="css\error.less" />
-    <Content Include="css\contentform.less" />
+    <Content Include="css\common\contentform.less" />
     <Content Include="css\controls\splitter.less" />
+    <Content Include="css\common\modalform.less" />
     <None Include="css\mastermain.less" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">

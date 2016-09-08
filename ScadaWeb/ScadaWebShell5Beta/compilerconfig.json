@@ -4,10 +4,6 @@
     "inputFile": "css/mastermain.less"
   },
   {
-    "outputFile": "css/globalvar.css",
-    "inputFile": "css/globalvar.less"
-  },
-  {
     "outputFile": "css/login.css",
     "inputFile": "css/login.less"
   },
@@ -48,15 +44,19 @@
     "inputFile": "css/error.less"
   },
   {
-    "outputFile": "css/contentform.css",
-    "inputFile": "css/contentform.less"
-  },
-  {
     "outputFile": "css/user.css",
     "inputFile": "css/user.less"
   },
   {
     "outputFile": "css/controls/splitter.css",
     "inputFile": "css/controls/splitter.less"
+  },
+  {
+    "outputFile": "css/common/modalform.css",
+    "inputFile": "css/common/modalform.less"
+  },
+  {
+    "outputFile": "css/common/contentform.css",
+    "inputFile": "css/common/contentform.less"
   }
 ]

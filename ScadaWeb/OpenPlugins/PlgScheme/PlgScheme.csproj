@@ -131,7 +131,7 @@
     </None>
     <Content Include="packages.config" />
     <Content Include="plugins\Scheme\web.config" />
-    <Content Include="css\globalvar.less" />
+    <Content Include="css\common\globalvar.less" />
     <Content Include="lib\font-awesome\fonts\fontawesome-webfont.ttf" />
     <Content Include="css\controls\notifier.less" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />

@@ -9,6 +9,7 @@
   display: none;
   /*block*/
   font-family: 'Open Sans', sans-serif;
+  font-size: 12px;
   overflow: auto;
   white-space: nowrap;
 }
