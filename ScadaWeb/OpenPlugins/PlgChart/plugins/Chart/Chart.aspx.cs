@@ -80,8 +80,7 @@ namespace Scada.Web.Plugins.Chart
 #endif
 
             // вывод дополнительной информации
-            lblStartDate.Text = (string.IsNullOrEmpty(lblTitle.Text) ? "" : ", ") + 
-                startDate.ToString("d", Localization.Culture);
+            lblStartDate.Text = (string.IsNullOrEmpty(lblTitle.Text) ? "" : ", ") + startDate.ToLocalizedDateString();
             lblGenDT.Text = DateTime.Now.ToLocalizedString();
 
             // подготовка данных графика

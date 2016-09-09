@@ -344,12 +344,29 @@ namespace Scada
             return !UseRussian || File.Exists(GetDictionaryFileName(directory, fileNamePrefix));
         }
 
+
         /// <summary>
         /// Преобразовать дату и время в строку в соответствии с культурой SCADA
         /// </summary>
         public static string ToLocalizedString(this DateTime dateTime)
         {
             return dateTime.ToString("d", Culture) + " " + dateTime.ToString("T", Culture);
+        }
+
+        /// <summary>
+        /// Преобразовать дату в строку в соответствии с культурой SCADA
+        /// </summary>
+        public static string ToLocalizedDateString(this DateTime dateTime)
+        {
+            return dateTime.ToString("d", Culture);
+        }
+
+        /// <summary>
+        /// Преобразовать время в строку в соответствии с культурой SCADA
+        /// </summary>
+        public static string ToLocalizedTimeString(this DateTime dateTime)
+        {
+            return dateTime.ToString("T", Culture);
         }
     }
 }

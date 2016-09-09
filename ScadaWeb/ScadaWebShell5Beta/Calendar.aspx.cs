@@ -58,7 +58,7 @@ namespace Scada.Web
         {
             DateTime date = e.Day.Date;
             e.Cell.Text = string.Format("<a href='javascript:selectDate({0}, {1}, {2}, \"{3}\");'>{2}</a>", 
-                date.Year, date.Month, date.Day, date.ToString("d", Localization.Culture));
+                date.Year, date.Month, date.Day, date.ToLocalizedDateString());
         }
     }
 }

@@ -112,7 +112,7 @@ namespace Scada.Web.Plugins.Chart
             this.startDate = startDate;
             this.period = period;
             this.chartGap = chartGap;
-            NormalizeTimeRange();
+            NormalizeTimeRange(ref this.startDate, ref this.period);
 
             cnlCnt = cnlNums.Length;
             cnlPropsArr = new InCnlProps[cnlCnt];
@@ -145,29 +145,6 @@ namespace Scada.Web.Plugins.Chart
             }
         }
 
-
-        /// <summary>
-        /// Нормализовать интервал времени
-        /// </summary>
-        /// <remarks>Чтобы начальная дата являлась левой границей интервала времени и период был положительным</remarks>
-        protected void NormalizeTimeRange()
-        {
-            // Примеры:
-            // период равный -1, 0 или 1 - это одни сутки startDate,
-            // период 2 - двое суток, начиная от startDate включительно,
-            // период -2 - двое суток, заканчивая startDate включительно
-            if (period > -2)
-            {
-                startDate = startDate.Date;
-                if (period < 1)
-                    period = 1;
-            }
-            else
-            {
-                startDate = startDate.AddDays(period + 1).Date;
-                period = -period;
-            }
-        }
 
         /// <summary>
         /// Получить имя величины с указанием размерности
@@ -423,6 +400,29 @@ namespace Scada.Web.Plugins.Chart
                 .Append(HttpUtility.JavaScriptStringEncode(quantityName)).AppendLine("';");
 
             return sbJs.ToString();
+        }
+
+        /// <summary>
+        /// Нормализовать интервал времени
+        /// </summary>
+        /// <remarks>Чтобы начальная дата являлась левой границей интервала времени и период был положительным</remarks>
+        public static void NormalizeTimeRange(ref DateTime startDate, ref int period)
+        {
+            // Примеры:
+            // период равный -1, 0 или 1 - это одни сутки startDate,
+            // период 2 - двое суток, начиная от startDate включительно,
+            // период -2 - двое суток, заканчивая startDate включительно
+            if (period > -2)
+            {
+                startDate = startDate.Date;
+                if (period < 1)
+                    period = 1;
+            }
+            else
+            {
+                startDate = startDate.AddDays(period + 1).Date;
+                period = -period;
+            }
         }
     }
 }

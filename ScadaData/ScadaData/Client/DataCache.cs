@@ -627,7 +627,7 @@ namespace Scada.Client
                 log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при получении таблицы часовых данных за {0} из кэша или от сервера" :
                     "Error getting hourly data table for {0} from the cache or from the server", 
-                    date.ToString("d", Localization.Culture));
+                    date.ToLocalizedDateString());
                 return new SrezTableLight();
             }
         }
@@ -699,7 +699,7 @@ namespace Scada.Client
                 log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при получении таблицы событий за {0} из кэша или от сервера" :
                     "Error getting event table for {0} from the cache or from the server",
-                    date.ToString("d", Localization.Culture));
+                    date.ToLocalizedDateString());
                 return new EventTableLight();
             }
         }
@@ -731,7 +731,7 @@ namespace Scada.Client
             {
                 log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при получении тренда минутных данных за {0}" :
-                    "Error getting minute data trend for {0}", date.ToString("d", Localization.Culture));
+                    "Error getting minute data trend for {0}", date.ToLocalizedDateString());
             }
 
             return trend;
