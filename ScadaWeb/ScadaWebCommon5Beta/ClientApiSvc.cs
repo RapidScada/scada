@@ -642,7 +642,7 @@ namespace Scada.Web
             {
                 AppData.CheckLoggedOn();
                 DateTime dateTime;
-                object data = DateTime.TryParse(s, Localization.Culture, DateTimeStyles.None, out dateTime) ?
+                object data = ScadaUtils.TryParseDateTime(s, out dateTime) ? 
                     (object)WebUtils.DateTimeToJs(dateTime) : null;
                 return JsSerializer.Serialize(new DataTransferObject(data));
             }

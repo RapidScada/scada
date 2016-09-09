@@ -47,7 +47,7 @@ namespace Scada.Web
         {
             // установка выбранной даты, если она задана в параметрах запроса
             DateTime date;
-            if (DateTime.TryParse(Request.QueryString["date"], Localization.Culture, DateTimeStyles.None, out date))
+            if (ScadaUtils.TryParseDateTime(Request.QueryString["date"], out date))
                 Calendar.VisibleDate = Calendar.SelectedDate = date;
 
             // убрать всплывающую подсказку по умолчанию

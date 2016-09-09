@@ -151,6 +151,14 @@ namespace Scada
         }
 
         /// <summary>
+        /// Попытаться преобразовать строку в дату и время, используя Localization.Culture
+        /// </summary>
+        public static bool TryParseDateTime(string s, out DateTime result)
+        {
+            return DateTime.TryParse(s, Localization.Culture, DateTimeStyles.None, out result);
+        }
+
+        /// <summary>
         /// Преобразовать строку в вещественное число
         /// </summary>
         /// <remarks>Метод работает с разделителями целой части '.' и ','.
