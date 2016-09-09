@@ -1,5 +1,4 @@
-﻿/* Bootstrap danger color */
-body {
+﻿body {
   margin: 0;
   padding: 0;
   background-color: white;
@@ -15,6 +14,7 @@ table {
 label {
   font-weight: 600;
 }
+/* Bootstrap danger color */
 input[type=text],
 input[type=password] {
   width: calc(100% - 5px);

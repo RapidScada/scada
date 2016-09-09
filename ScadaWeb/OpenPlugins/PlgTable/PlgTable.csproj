@@ -192,6 +192,7 @@
     <Content Include="css\controls\tableheader.less" />
     <Content Include="plugins\Table\css\command.less" />
     <Content Include="plugins\Table\css\eventack.less" />
+    <Content Include="css\common\modalform.less" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

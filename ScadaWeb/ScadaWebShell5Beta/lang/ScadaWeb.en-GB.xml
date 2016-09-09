@@ -18,7 +18,7 @@
     <Phrase key="lblMainExplorerTab">Views</Phrase>
     <Phrase key="lblMainCollapseMenu">Collapse menu</Phrase>
   </Dictionary>
-  <Dictionary key="Scada.Web.MasterMain.Js.ModalButtons">
+  <Dictionary key="Scada.Web.ModalButtons.Js">
     <Phrase key="ok">OK</Phrase>
     <Phrase key="yes">Yes</Phrase>
     <Phrase key="no">No</Phrase>

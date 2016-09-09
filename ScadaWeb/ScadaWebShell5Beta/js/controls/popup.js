@@ -12,7 +12,7 @@
  * Requires for modal dialogs:
  * - bootstrap
  * - eventtypes.js
- * - scada.modalButtonMap object
+ * - scada.modalButtonCaptions object
  */
 
 // Rapid SCADA namespace
@@ -84,23 +84,28 @@ scada.Popup.prototype._getOffset = function (elem) {
     return { left: left, top: top };
 };
 
+// Get caption for the specified modal dialog button
+scada.Popup.prototype._getModalButtonCaption = function (btn) {
+    var btnCaption = scada.modalButtonCaptions ? scada.modalButtonCaptions[btn] : null;
+    if (!btnCaption) {
+        btnCaption = btn;
+    }
+    return btnCaption;
+}
+
 // Get html markup of a modal dialog footer buttons
 scada.Popup.prototype._genModalButtonsHtml = function (buttons) {
     var html = "";
 
     for (var btn of buttons) {
-        var btnText = scada.modalButtonMap ? scada.modalButtonMap.get(btn) : null;
-        if (!btnText) {
-            btnText = btn;
-        }
-
+        var btnCaption = this._getModalButtonCaption(btn);
         var subclass = btn == scada.ModalButtons.OK || btn == scada.ModalButtons.YES ? "btn-primary" :
             (btn == scada.ModalButtons.EXEC ? "btn-danger" : "btn-default");
         var dismiss = btn == scada.ModalButtons.CANCEL || btn == scada.ModalButtons.CLOSE ?
             " data-dismiss='modal'" : "";
 
         html += "<button type='button' class='btn " + subclass +
-            "' data-result='" + btn + "'" + dismiss + ">" + btnText + "</button>";
+            "' data-result='" + btn + "'" + dismiss + ">" + btnCaption + "</button>";
     }
 
     return html;

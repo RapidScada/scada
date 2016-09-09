@@ -29,7 +29,7 @@
         scada.env = {
             rootPath: "<%= VirtualPathUtility.AppendTrailingSlash(VirtualPathUtility.ToAbsolute("~")) %>"
         };
-        scada.modalButtonMap = <%= GenModalButtonMapJs() %>;
+        scada.modalButtonCaptions = <%= Scada.Web.WebUtils.DictionaryToJs("Scada.Web.ModalButtons.Js") %>;
     </script>
     <%= GenScriptPathsHtml() %>
     <script type="text/javascript" src="<%= ResolveClientUrl("~/js/mastermain.js") %>"></script>

@@ -1,6 +1,4 @@
-﻿/* Bootstrap primary color */
-/* Bootstrap default color */
-body {
+﻿body {
   margin: 0;
   padding: 0;
   background-color: white;
@@ -13,6 +11,11 @@ body {
 table {
   border-collapse: collapse;
 }
+label {
+  font-weight: 600;
+}
+/* Bootstrap primary color */
+/* Bootstrap default color */
 #btnSubmit {
   display: none;
 }
