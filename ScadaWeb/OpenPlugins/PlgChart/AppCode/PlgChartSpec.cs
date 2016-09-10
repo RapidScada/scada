@@ -91,7 +91,7 @@ namespace Scada.Web.Plugins
         {
             get
             {
-                return new ScriptPaths() { ChartScriptPath = "~/plugins/Chart/js/chartobj.js" };
+                return new ScriptPaths() { ChartScriptPath = "~/plugins/Chart/js/chartdialog.js" };
             }
         }
 

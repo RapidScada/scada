@@ -14,8 +14,10 @@
 
 // Rapid SCADA namespace
 var scada = scada || {};
+// Command namespace
+scada.cmd = scada.cmd || {};
 
-scada.cmd = {
+scada.cmd.dialog = {
     // Show command dialog
     show: function (rootPath, ctrlCnlNum, viewID, opt_callback) {
         var popup = scada.popupLocator.getPopup();

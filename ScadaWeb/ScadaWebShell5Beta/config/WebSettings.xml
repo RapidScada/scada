@@ -13,9 +13,9 @@
     <Param name="ShareStats" value="true" descr="Share depersonalized stats with the developer team" />
   </CommonParams>
   <ScriptPaths>
-    <Script name="ChartScript" path="~/plugins/Chart/js/chartobj.js" />
-    <Script name="CmdScript" path="~/plugins/Table/js/cmdobj.js" />
-    <Script name="EventAckScript" path="~/plugins/Table/js/eventackobj.js" />
+    <Script name="ChartScript" path="~/plugins/Chart/js/chartdialog.js" />
+    <Script name="CmdScript" path="~/plugins/Table/js/cmddialog.js" />
+    <Script name="EventAckScript" path="~/plugins/Table/js/eventackdialog.js" />
   </ScriptPaths>
   <Plugins>
     <Plugin fileName="PlgChart.dll" />

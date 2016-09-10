@@ -54,30 +54,6 @@ namespace Scada.Web
 
 
         /// <summary>
-        /// Генерировать JavaScript-код карты кнопок для модальных диалогов
-        /// </summary>
-        protected string GenModalButtonMapJs()
-        {
-            StringBuilder sbJs = new StringBuilder();
-            sbJs.AppendLine("new Map([");
-
-            Localization.Dict dict;
-            Localization.Dictionaries.TryGetValue("Scada.Web.MasterMain.Js.ModalButtons", out dict);
-
-            if (dict != null)
-            {
-                foreach (KeyValuePair<string, string> pair in dict.Phrases)
-                {
-                    sbJs.Append("[\"").Append(pair.Key).Append("\", \"")
-                        .Append(HttpUtility.JavaScriptStringEncode(pair.Value)).AppendLine("\"],");
-                }
-            }
-
-            sbJs.Append("])");
-            return sbJs.ToString();
-        }
-
-        /// <summary>
         /// Генерировать HTML-код дополнительных скриптов
         /// </summary>
         protected string GenScriptPathsHtml()

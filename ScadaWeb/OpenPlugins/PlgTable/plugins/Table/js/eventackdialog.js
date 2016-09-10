@@ -14,8 +14,10 @@
 
 // Rapid SCADA namespace
 var scada = scada || {};
+// Event acknowledgement namespace
+scada.eventAck = scada.eventAck || {};
 
-scada.eventAck = {
+scada.eventAck.dialog = {
     // Show event acknowledgement dialog
     show: function (rootPath, date, evNum, viewID, opt_callback) {
         var popup = scada.popupLocator.getPopup();

@@ -11,8 +11,10 @@
 
 // Rapid SCADA namespace
 var scada = scada || {};
+// Chart namespace
+scada.chart = scada.chart || {};
 
-scada.chart = {
+scada.chart.dialog = {
     // Get chart URL
     getChartUrl: function (cnlNums, viewIDs, date) {
         return "plugins/Chart/Chart.aspx?cnlNum=" + cnlNums + "&viewID=" + viewIDs +

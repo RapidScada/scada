@@ -10,9 +10,9 @@
  * - popup.js
  *
  * Requires external objects:
- * - scada.chart
- * - scada.cmd
- * - scada.eventAck
+ * - scada.chart.dialog
+ * - scada.cmd.dialog
+ * - scada.eventAck.dialog
  */
 
 // Rapid SCADA namespace
@@ -25,10 +25,10 @@ scada.dialogs = {
 
     // Show chart web page
     showChart: function (cnlNums, viewIDs, date) {
-        if (scada.chart && scada.chart.show) {
-            scada.chart.show(this.rootPath, cnlNums, viewIDs, date);
+        if (scada.chart.dialog && scada.chart.dialog.show) {
+            scada.chart.dialog.show(this.rootPath, cnlNums, viewIDs, date);
         } else {
-            console.warn("Unable to show chart because scada.chart is undefined");
+            console.warn("Unable to show chart because scada.chart.dialog is undefined");
         }
     },
 
@@ -36,11 +36,10 @@ scada.dialogs = {
     // opt_callback is a function (dialogResult),
     // dialogResult is true or false
     showCmd: function (ctrlCnlNum, viewID, opt_callback) {
-        if (scada.cmd && scada.cmd.show) {
-            scada.cmd.show(this.rootPath, ctrlCnlNum, viewID, opt_callback);
+        if (scada.cmd.dialog && scada.cmd.dialog.show) {
+            scada.cmd.dialog.show(this.rootPath, ctrlCnlNum, viewID, opt_callback);
         } else {
-            console.warn("Unable to show command dialog because scada.cmd is undefined");
-            alert("Commands are not implemented yet, ctrlCnlNum=" + ctrlCnlNum);
+            console.warn("Unable to show command dialog because scada.cmd.dialog is undefined");
         }
     },
 
@@ -49,10 +48,10 @@ scada.dialogs = {
     // opt_callback is a function (dialogResult),
     // dialogResult is true or false
     showEventAck: function (date, evNum, viewID, opt_callback) {
-        if (scada.eventAck && scada.eventAck.show) {
-            scada.eventAck.show(this.rootPath, date, evNum, viewID, opt_callback);
+        if (scada.eventAck.dialog && scada.eventAck.dialog.show) {
+            scada.eventAck.dialog.show(this.rootPath, date, evNum, viewID, opt_callback);
         } else {
-            console.warn("Unable to show event acknowledgement dialog because scada.eventAck is undefined");
+            console.warn("Unable to show event acknowledgement dialog because scada.eventAck.dialog is undefined");
         }
     },
 
