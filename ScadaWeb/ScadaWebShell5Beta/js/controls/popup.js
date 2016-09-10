@@ -344,7 +344,7 @@ scada.Popup.prototype.showModal = function (url, opt_buttons, opt_callback) {
     .attr("src", url);
 };
 
-// Show the modal dialog
+// Close the modal dialog
 scada.Popup.prototype.closeModal = function (modalWnd, dialogResult, extraParams) {
     this.setModalResult(modalWnd, dialogResult, extraParams).modal("hide");
 }
