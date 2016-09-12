@@ -74,14 +74,20 @@ namespace Scada.Web
 
             // получение ид. и ссылки представления для загрузки
             int.TryParse(Request.QueryString["viewID"], out initialViewID);
+            ViewNode viewNode;
 
             if (initialViewID > 0)
-                initialViewUrl = userData.UserViews.GetViewUrl(initialViewID);
+            {
+                viewNode = userData.UserViews.GetViewNode(initialViewID);
+            }
             else
-                userData.UserViews.GetFirstView(out initialViewID, out initialViewUrl);
+            {
+                viewNode = userData.UserViews.GetFirstViewNode();
+                initialViewID = viewNode == null ? 0 : viewNode.ViewID;
+            }
 
-            if (string.IsNullOrEmpty(initialViewUrl))
-                initialViewUrl = ResolveUrl(UrlTemplates.NoView);
+            initialViewUrl = viewNode == null || string.IsNullOrEmpty(viewNode.ViewUrl) ?
+                ResolveUrl(UrlTemplates.NoView) : viewNode.ViewUrl;
 
             ((MasterMain)Master).SelectedViewID = initialViewID;
         }

@@ -65,7 +65,7 @@
                     <div id="divCommands">
                         <asp:Repeater ID="repCommands" runat="server" OnItemCommand="repCommands_ItemCommand">
                             <ItemTemplate><asp:Button ID="btnCmd" runat="server" 
-                                CssClass="btn btn-danger" UseSubmitBehavior="False" Text='<%# Server.HtmlEncode((string)Eval("Text")) %>' data-cmdval='<%# Eval("Val") %>' /></ItemTemplate>
+                                CssClass="btn btn-danger" UseSubmitBehavior="False" Text='<%# HttpUtility.HtmlEncode(Eval("Text")) %>' data-cmdval='<%# Eval("Val") %>' /></ItemTemplate>
                         </asp:Repeater>
                     </div>
                 </asp:Panel>

@@ -39,30 +39,32 @@ namespace Scada.Web.Shell
     public class UserViews
     {
         /// <summary>
+        /// Контекст для получения данных
+        /// </summary>
+        protected class DataContext
+        {
+            /// <summary>
+            /// Права пользователя
+            /// </summary>
+            public UserRights UserRights;
+            /// <summary>
+            /// Спецификации представлений
+            /// </summary>
+            public Dictionary<string, ViewSpec> ViewSpecs;
+            /// <summary>
+            /// Объект для доступа к данным кеша клиентов
+            /// </summary>
+            public DataAccess DataAccess;
+        }
+
+        /// <summary>
         /// Журнал
         /// </summary>
         protected readonly Log log;
         /// <summary>
-        /// Ссылки на представления, ключ - ид. представления
+        /// Словарь узлов дерева представлений, ключ - ид. представления
         /// </summary>
-        protected readonly Dictionary<int, string> viewUrls;
-        /// <summary>
-        /// Типы представлений, ключ - ид. представления
-        /// </summary>
-        protected readonly Dictionary<int, Type> viewTypes;
-
-        /// <summary>
-        /// Права пользователя
-        /// </summary>
-        protected UserRights userRights;
-        /// <summary>
-        /// Спецификации представлений
-        /// </summary>
-        protected Dictionary<string, ViewSpec> viewSpecs;
-        /// <summary>
-        /// Объект для доступа к данным кеша клиентов
-        /// </summary>
-        protected DataAccess dataAccess;
+        protected readonly Dictionary<int, ViewNode> viewNodeDict;
 
 
         /// <summary>
@@ -81,12 +83,7 @@ namespace Scada.Web.Shell
                 throw new ArgumentNullException("log");
 
             this.log = log;
-            viewUrls = new Dictionary<int, string>();
-            viewTypes = new Dictionary<int, Type>();
-
-            userRights = null;
-            viewSpecs = null;
-            dataAccess = null;
+            viewNodeDict = new Dictionary<int, ViewNode>();
 
             ViewNodes = new List<ViewNode>();           
         }
@@ -101,39 +98,36 @@ namespace Scada.Web.Shell
         /// <summary>
         /// Рекурсивно создать узлы дерева представлений на основе элементов настроек
         /// </summary>
-        protected void CreateViewNodes(List<ViewNode> destViewNodes, List<ViewSettings.ViewItem> srcViewItems, int level)
+        protected void CreateViewNodes(List<ViewNode> destViewNodes, List<ViewSettings.ViewItem> srcViewItems, 
+            int level, DataContext dataContext)
         {
             foreach (ViewSettings.ViewItem viewItem in srcViewItems)
             {
                 int viewID = viewItem.ViewID;
 
                 // пропуск представления, на которое нет прав
-                if (viewID > 0 && !userRights.GetViewRights(viewItem.ViewID).ViewRight)
+                if (viewID > 0 && !dataContext.UserRights.GetViewRights(viewItem.ViewID).ViewRight)
                     continue;
 
                 // получение спецификации представления
                 ViewSpec viewSpec = null;
                 if (viewID > 0)
                 {
-                    ViewProps viewProps = dataAccess.GetViewProps(viewID);
+                    ViewProps viewProps = dataContext.DataAccess.GetViewProps(viewID);
                     if (viewProps != null)
-                        viewSpecs.TryGetValue(viewProps.ViewTypeCode, out viewSpec);
+                        dataContext.ViewSpecs.TryGetValue(viewProps.ViewTypeCode, out viewSpec);
                 }
 
                 // создание узла дерева и дочерних узлов
                 ViewNode viewNode = new ViewNode(viewItem, viewSpec) { Level = level };
-                CreateViewNodes(viewNode.ChildNodes, viewItem.Subitems, level + 1);
+                CreateViewNodes(viewNode.ChildNodes, viewItem.Subitems, level + 1, dataContext);
 
                 // добавление узла, если он соответствует представлению или имеет дочерние узлы
                 if (viewID > 0 || viewNode.ChildNodes.Count > 0)
                 {
                     destViewNodes.Add(viewNode);
-                    viewUrls[viewID] = viewNode.ViewUrl;
+                    viewNodeDict[viewID] = viewNode;
                 }
-
-                // добавление типа предсталения в справочник
-                if (viewID > 0 && viewSpec != null)
-                    viewTypes[viewID] = viewSpec.ViewType;
             }
         }
 
@@ -170,13 +164,19 @@ namespace Scada.Web.Shell
 
             try
             {
-                viewUrls.Clear();
-                userRights = userData.UserRights;
-                viewSpecs = userData.ViewSpecs;
-                this.dataAccess = dataAccess;
+                viewNodeDict.Clear();
 
-                if (userRights != null && viewSpecs != null)
-                    CreateViewNodes(ViewNodes, userData.ViewSettings.ViewItems, 0);
+                if (userData.UserRights != null && userData.ViewSpecs != null)
+                {
+                    DataContext dataContext = new DataContext()
+                    {
+                        UserRights = userData.UserRights,
+                        ViewSpecs = userData.ViewSpecs,
+                        DataAccess = dataAccess
+                    };
+
+                    CreateViewNodes(ViewNodes, userData.ViewSettings.ViewItems, 0, dataContext);
+                }
             }
             catch (Exception ex)
             {
@@ -187,42 +187,29 @@ namespace Scada.Web.Shell
         }
 
         /// <summary>
-        /// Получить ссылку на представление с заданным идентификатором
+        /// Получить узел дерева представлений по идентификатору
         /// </summary>
-        public string GetViewUrl(int viewID)
+        public ViewNode GetViewNode(int viewID)
         {
-            string viewUrl;
-            return viewUrls.TryGetValue(viewID, out viewUrl) ? viewUrl : "";
+            ViewNode viewNode;
+            return viewNodeDict.TryGetValue(viewID, out viewNode) ? viewNode : null;
         }
 
         /// <summary>
-        /// Получить первое доступное представление
+        /// Получить первый доступный узел дерева представлений
         /// </summary>
-        public bool GetFirstView(out int viewID, out string viewUrl)
+        public ViewNode GetFirstViewNode()
         {
-            viewID = 0;
-            viewUrl = "";
-
             try
             {
-                ViewNode viewNode = FindNonEmptyViewNode(ViewNodes);
-                if (viewNode == null)
-                {
-                    return false;
-                }
-                else
-                {
-                    viewID = viewNode.ViewID;
-                    viewUrl = viewNode.ViewUrl;
-                    return true;
-                }
+                return FindNonEmptyViewNode(ViewNodes);
             }
             catch (Exception ex)
             {
                 log.WriteException(ex, Localization.UseRussian ?
-                    "Ошибка при получении первого доступного представления" :
-                    "Error getting the first accessible view");
-                return false;
+                    "Ошибка при получении первого доступного узла дерева представлений" :
+                    "Error getting the first accessible view tree node");
+                return null;
             }
         }
 
@@ -231,8 +218,9 @@ namespace Scada.Web.Shell
         /// </summary>
         public Type GetViewType(int viewID)
         {
-            Type viewType;
-            return viewTypes.TryGetValue(viewID, out viewType) ? viewType : null;
+            ViewNode viewNode;
+            return viewNodeDict.TryGetValue(viewID, out viewNode) && viewNode.ViewSpec != null ? 
+                viewNode.ViewSpec.ViewType : null;
         }
     }
 }

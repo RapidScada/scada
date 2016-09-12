@@ -61,20 +61,21 @@ namespace Scada.Web.Shell
             ViewID = viewItem.ViewID;
             Text = viewItem.Text ?? "";
             AlarmCnlNum = viewItem.AlarmCnlNum;
+            ViewSpec = viewSpec;
 
-            if (viewSpec == null)
+            if (ViewSpec == null)
             {
-                Url = "";
                 ViewUrl = "";
+                Url = "";
                 Script = "";
                 IconUrl = "";
             }
             else
             {
+                ViewUrl = VirtualPathUtility.ToAbsolute(ViewSpec.GetViewUrl(ViewID));
                 Url = VirtualPathUtility.ToAbsolute(string.Format(UrlTemplates.View, ViewID));
-                ViewUrl = VirtualPathUtility.ToAbsolute(viewSpec.GetViewUrl(ViewID));
                 Script = string.Format(ScriptTemplate, ViewID, ViewUrl);
-                IconUrl = VirtualPathUtility.ToAbsolute(viewSpec.IconUrl);
+                IconUrl = VirtualPathUtility.ToAbsolute(ViewSpec.IconUrl);
             }
 
             Level = -1;
@@ -99,14 +100,19 @@ namespace Scada.Web.Shell
         public int AlarmCnlNum { get; protected set; }
 
         /// <summary>
-        /// Получить ссылку на страницу оболочки, содержащую представление
+        /// Получить спецификацию представления
         /// </summary>
-        public string Url { get; protected set; }
+        public ViewSpec ViewSpec { get; protected set; }
 
         /// <summary>
         /// Получить ссылку на представление
         /// </summary>
         public string ViewUrl { get; protected set; }
+
+        /// <summary>
+        /// Получить ссылку на страницу оболочки, содержащую представление
+        /// </summary>
+        public string Url { get; protected set; }
 
         /// <summary>
         /// Получить скрипт, открывающий представление

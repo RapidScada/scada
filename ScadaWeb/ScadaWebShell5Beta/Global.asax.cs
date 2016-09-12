@@ -24,6 +24,7 @@
  */
 
 using System;
+using Utils;
 
 namespace Scada.Web
 {
@@ -68,7 +69,11 @@ namespace Scada.Web
 
         protected void Application_End(object sender, EventArgs e)
         {
-
+            Log log = AppData.GetAppData().Log;
+            log.WriteAction(Localization.UseRussian ?
+                "Application shutdown" :
+                "Завершение работы приложения");
+            log.WriteBreak();
         }
     }
 }
