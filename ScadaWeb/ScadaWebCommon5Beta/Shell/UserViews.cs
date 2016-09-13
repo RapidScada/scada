@@ -140,15 +140,15 @@ namespace Scada.Web.Shell
             {
                 foreach (ViewNode viewNode in viewNodes)
                 {
-                    if (viewNode.ViewID > 0 && !string.IsNullOrEmpty(viewNode.ViewUrl))
-                    {
-                        return viewNode;
-                    }
-                    else
+                    if (viewNode.IsEmpty)
                     {
                         ViewNode node = FindNonEmptyViewNode(viewNode.ChildNodes);
                         if (node != null)
                             return node;
+                    }
+                    else
+                    {
+                        return viewNode;
                     }
                 }
             }

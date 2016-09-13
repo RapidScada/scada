@@ -349,6 +349,13 @@ scada.Popup.prototype.closeModal = function (modalWnd, dialogResult, extraParams
     this.setModalResult(modalWnd, dialogResult, extraParams).modal("hide");
 }
 
+// Update the modal dialog height according to a frame height
+scada.Popup.prototype.updateModalHeight = function (modalWnd) {
+    var frame = $(modalWnd.frameElement);
+    var frameBody = frame.contents().find("body");
+    frame.css("height", frameBody.outerHeight(true));
+}
+
 // Set dialog result for the whole modal dialog
 scada.Popup.prototype.setModalResult = function (modalWnd, dialogResult, extraParams) {
     var frame = $(modalWnd.frameElement);

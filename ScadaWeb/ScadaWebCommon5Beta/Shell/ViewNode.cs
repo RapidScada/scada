@@ -130,6 +130,17 @@ namespace Scada.Web.Shell
         public int Level { get; set; }
 
         /// <summary>
+        /// Получить признак, что узел пустой, т.е. для него не открывается представление
+        /// </summary>
+        public bool IsEmpty
+        {
+            get
+            {
+                return ViewID <= 0 || string.IsNullOrEmpty(ViewUrl);
+            }
+        }
+
+        /// <summary>
         /// Получить дочерние узлы
         /// </summary>
         public List<ViewNode> ChildNodes { get; protected set; }
