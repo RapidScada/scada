@@ -136,21 +136,39 @@ namespace Scada.Web.Shell
         /// </summary>
         protected ViewNode FindNonEmptyViewNode(List<ViewNode> viewNodes)
         {
-            foreach (ViewNode viewNode in viewNodes)
+            if (viewNodes != null)
             {
-                if (viewNode.ViewID > 0 && !string.IsNullOrEmpty(viewNode.ViewUrl))
+                foreach (ViewNode viewNode in viewNodes)
                 {
-                    return viewNode;
-                }
-                else
-                {
-                    ViewNode node = FindNonEmptyViewNode(viewNode.ChildNodes);
-                    if (node != null)
-                        return node;
+                    if (viewNode.ViewID > 0 && !string.IsNullOrEmpty(viewNode.ViewUrl))
+                    {
+                        return viewNode;
+                    }
+                    else
+                    {
+                        ViewNode node = FindNonEmptyViewNode(viewNode.ChildNodes);
+                        if (node != null)
+                            return node;
+                    }
                 }
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Рекурсивно слить узлы дерева в линейный список
+        /// </summary>
+        protected void LinearizeViewNodes(List<ViewNode> destViewNodes, List<ViewNode> addedViewNodes)
+        {
+            if (addedViewNodes != null)
+            {
+                foreach (ViewNode viewNode in addedViewNodes)
+                {
+                    destViewNodes.Add(viewNode);
+                    LinearizeViewNodes(destViewNodes, viewNode.ChildNodes);
+                }
+            }
         }
 
 
@@ -200,17 +218,7 @@ namespace Scada.Web.Shell
         /// </summary>
         public ViewNode GetFirstViewNode()
         {
-            try
-            {
-                return FindNonEmptyViewNode(ViewNodes);
-            }
-            catch (Exception ex)
-            {
-                log.WriteException(ex, Localization.UseRussian ?
-                    "Ошибка при получении первого доступного узла дерева представлений" :
-                    "Error getting the first accessible view tree node");
-                return null;
-            }
+            return FindNonEmptyViewNode(ViewNodes);
         }
 
         /// <summary>
@@ -221,6 +229,16 @@ namespace Scada.Web.Shell
             ViewNode viewNode;
             return viewNodeDict.TryGetValue(viewID, out viewNode) && viewNode.ViewSpec != null ? 
                 viewNode.ViewSpec.ViewType : null;
+        }
+
+        /// <summary>
+        /// Получить линейный список узлов дерева представлений
+        /// </summary>
+        public List<ViewNode> GetLinearViewNodes()
+        {
+            List<ViewNode> linearViewNodes = new List<ViewNode>();
+            LinearizeViewNodes(linearViewNodes, ViewNodes);
+            return linearViewNodes;
         }
     }
 }
