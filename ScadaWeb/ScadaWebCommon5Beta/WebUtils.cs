@@ -82,9 +82,9 @@ namespace Scada.Web
         /// <summary>
         /// Преобразовать строку для вывода на веб-страницу, заменив "\n" на тег "br"
         /// </summary>
-        public static string HtmlEncodeWithBreak(string s)
+        public static string HtmlEncodeWithBreak(object val)
         {
-            return HttpUtility.HtmlEncode(s).Replace("\n", "<br />");
+            return HttpUtility.HtmlEncode(val).Replace("\n", "<br />");
         }
 
         /// <summary>
