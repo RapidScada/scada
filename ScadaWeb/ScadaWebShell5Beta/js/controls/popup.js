@@ -353,7 +353,20 @@ scada.Popup.prototype.closeModal = function (modalWnd, dialogResult, extraParams
 scada.Popup.prototype.updateModalHeight = function (modalWnd) {
     var frame = $(modalWnd.frameElement);
     var frameBody = frame.contents().find("body");
+    var modalElem = frame.closest(".modal");
+
+    var iosScrollFix = scada.utils.iOS();
+    if (iosScrollFix) {
+        modalElem.css("overflow-y", "hidden");
+    }
+
     frame.css("height", frameBody.outerHeight(true));
+
+    if (iosScrollFix) {
+        modalElem.css("overflow-y", "");
+    }
+
+    modalElem.modal("handleUpdate");
 }
 
 // Set dialog result for the whole modal dialog
