@@ -24,7 +24,7 @@ scada.eventAck.dialog = {
         if (popup) {
             popup.showModal(rootPath + "plugins/Table/EventAck.aspx?" +
                 scada.utils.dateToQueryString(date) + "&evNum=" + evNum + "&viewID=" + viewID,
-                [scada.ModalButtons.OK, scada.ModalButtons.CANCEL], opt_callback);
+                new scada.ModalOptions([scada.ModalButtons.OK, scada.ModalButtons.CANCEL]), opt_callback);
         }
     }
 }

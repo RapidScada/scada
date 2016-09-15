@@ -30,6 +30,23 @@ scada.ModalButtons = {
     CLOSE: "close"
 };
 
+/********** Modal Dialog Sizes **********/
+
+// Modal dialog sizes enumeration
+scada.ModalSizes = {
+    NORMAL: 0,
+    SMALL: 1,
+    LARGE: 2
+};
+
+/********** Modal Dialog Options **********/
+
+// Modal dialog options class
+scada.ModalOptions = function (buttons, opt_size) {
+    this.buttons = buttons;
+    this.size = opt_size ? opt_size : scada.ModalSizes.NORMAL;
+}
+
 /********** Popup **********/
 
 // Popup dialogs manipulation type
@@ -235,18 +252,27 @@ scada.Popup.prototype.closeDropdown = function (popupWnd, dialogResult, extraPar
 // Show modal dialog with the specified url.
 // opt_callback is a function (dialogResult, extraParams),
 // requires Bootstrap
-scada.Popup.prototype.showModal = function (url, opt_buttons, opt_callback) {
+scada.Popup.prototype.showModal = function (url, opt_options, opt_callback) {
     // create temporary overlay to prevent user activity
     var tempOverlay = $("<div class='popup-overlay'></div>");
     $("body").append(tempOverlay);
 
     // create the modal
-    var footerHtml = opt_buttons && opt_buttons.length ?
-        "<div class='modal-footer'>" + this._genModalButtonsHtml(opt_buttons) + "</div>" : "";
+    var buttons = opt_options ? opt_options.buttons : null;
+    var footerHtml = buttons && buttons.length ?
+        "<div class='modal-footer'>" + this._genModalButtonsHtml(buttons) + "</div>" : "";
+
+    var size = opt_options ? opt_options.size : scada.ModalSizes.NORMAL;
+    var sizeClass = "";
+    if (size == scada.ModalSizes.SMALL) {
+        sizeClass = " modal-sm";
+    } else if (size == scada.ModalSizes.LARGE) {
+        sizeClass = " modal-lg";
+    }
 
     var modalElem = $(
         "<div class='modal fade' tabindex='-1'>" +
-        "<div class='modal-dialog'>" +
+        "<div class='modal-dialog" + sizeClass + "'>" +
         "<div class='modal-content'>" +
         "<div class='modal-header'>" +
         "<button type='button' class='close' data-dismiss='modal'><span>&times;</span></button>" +
