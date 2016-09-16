@@ -17,6 +17,12 @@
 
 // Rapid SCADA namespace
 var scada = scada || {};
+// Chart namespace
+scada.chart = scada.chart || {};
+// Command namespace
+scada.cmd = scada.cmd || {};
+// Event acknowledgement namespace
+scada.eventAck = scada.eventAck || {};
 
 // Common dialogs object
 scada.dialogs = {
