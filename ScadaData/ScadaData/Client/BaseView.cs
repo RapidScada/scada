@@ -65,6 +65,7 @@ namespace Scada.Client
         /// <summary>
         /// Получить или установить наименование объекта интерфейса
         /// </summary>
+        [Obsolete("Заменить на Path или FileName")]
         public string ItfObjName { get; set; }
 
         /// <summary>

@@ -55,6 +55,7 @@
     <Compile Include="Plugins\DataWindowSpec.cs" />
     <Compile Include="Plugins\PluginSpec.cs" />
     <Compile Include="Plugins\ContentSpec.cs" />
+    <Compile Include="Plugins\UiSpec.cs" />
     <Compile Include="Shell\ScriptPaths.cs" />
     <Compile Include="Plugins\ViewSpec.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -49,6 +49,17 @@ namespace Scada.Web.Plugins
         /// </summary>
         public abstract string Url { get; }
 
+        /// <summary>
+        /// Получить признак, что контент доступен всем ролям и не требует назначения прав
+        /// </summary>
+        public virtual bool ForEveryone
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         
         /// <summary>
         /// Сравнить текущий объект с другим объектом такого же типа
