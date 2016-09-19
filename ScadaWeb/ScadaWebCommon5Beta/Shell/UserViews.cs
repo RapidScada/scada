@@ -90,7 +90,7 @@ namespace Scada.Web.Shell
 
 
         /// <summary>
-        /// Получить узлы дерева представлений
+        /// Получить узлы дерева представлений, доступные пользователю
         /// </summary>
         public List<ViewNode> ViewNodes { get; protected set; }
 
@@ -113,9 +113,9 @@ namespace Scada.Web.Shell
                 ViewSpec viewSpec = null;
                 if (viewID > 0)
                 {
-                    ViewProps viewProps = dataContext.DataAccess.GetViewProps(viewID);
+                    UiObjProps viewProps = dataContext.DataAccess.GetUiObjProps(viewID);
                     if (viewProps != null)
-                        dataContext.ViewSpecs.TryGetValue(viewProps.ViewTypeCode, out viewSpec);
+                        dataContext.ViewSpecs.TryGetValue(viewProps.TypeCode, out viewSpec);
                 }
 
                 // создание узла дерева и дочерних узлов
@@ -173,7 +173,7 @@ namespace Scada.Web.Shell
 
 
         /// <summary>
-        /// Инициализировать представления пользователя
+        /// Инициализировать доступные представления пользователя
         /// </summary>
         public void Init(UserData userData, DataAccess dataAccess)
         {
@@ -199,8 +199,8 @@ namespace Scada.Web.Shell
             catch (Exception ex)
             {
                 log.WriteException(ex, Localization.UseRussian ?
-                    "Ошибка при инициализации представлений пользователя" :
-                    "Error initializing user views");
+                    "Ошибка при инициализации доступных представлений пользователя" :
+                    "Error initializing accessible user views");
             }
         }
 

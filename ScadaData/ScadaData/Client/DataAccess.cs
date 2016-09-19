@@ -211,9 +211,9 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить свойства представления по идентификатору
+        /// Получить свойства объекта пользовательского интерфейса по идентификатору
         /// </summary>
-        public ViewProps GetViewProps(int viewID)
+        public UiObjProps GetUiObjProps(int uiObjID)
         {
             try
             {
@@ -227,14 +227,13 @@ namespace Scada.Client
                     BaseTables.CheckColumnsExist(baseTables.InterfaceTable, true);
                     DataView viewInterface = baseTables.InterfaceTable.DefaultView;
                     viewInterface.Sort = "ItfID";
-                    int rowInd = viewInterface.Find(viewID);
+                    int rowInd = viewInterface.Find(uiObjID);
 
                     if (rowInd >= 0)
                     {
-                        ViewProps viewProps = new ViewProps(viewID);
-                        viewProps.FileName = ((string)viewInterface[rowInd]["Name"]).Trim();
-                        viewProps.ViewTypeCode = ViewProps.GetViewTypeCode(viewProps.FileName);
-                        return viewProps;
+                        UiObjProps uiObjProps = UiObjProps.Parse((string)viewInterface[rowInd]["Name"]);
+                        uiObjProps.UiObjID = uiObjID;
+                        return uiObjProps;
                     }
                     else
                     {
@@ -245,10 +244,19 @@ namespace Scada.Client
             catch (Exception ex)
             {
                 log.WriteException(ex, Localization.UseRussian ?
-                    "Ошибка при получении свойств представления по ид.={0}" :
-                    "Error getting view properties by ID={0}", viewID);
+                    "Ошибка при получении свойств объекта пользовательского интерфейса по ид.={0}" :
+                    "Error getting user interface object properties by ID={0}", uiObjID);
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Получить список свойств объектов пользовательского интерфейса
+        /// </summary>
+        public List<UiObjProps> GetUiObjPropsList(UiObjProps.BaseUiTypes baseUiTypes)
+        {
+            List<UiObjProps> list = new List<UiObjProps>();
+            return list;
         }
 
         /// <summary>

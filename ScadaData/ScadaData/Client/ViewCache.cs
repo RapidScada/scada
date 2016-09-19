@@ -99,9 +99,9 @@ namespace Scada.Client
         /// <summary>
         /// Получить свойства представления, вызвав исключение в случае неудачи
         /// </summary>
-        protected ViewProps GetViewProps(int viewID)
+        protected UiObjProps GetViewProps(int viewID)
         {
-            ViewProps viewProps = dataAccess.GetViewProps(viewID);
+            UiObjProps viewProps = dataAccess.GetUiObjProps(viewID);
 
             if (viewProps == null)
             {
@@ -119,8 +119,8 @@ namespace Scada.Client
         protected bool LoadView(Type viewType, int viewID, DateTime viewAge, 
             ref BaseView view, out DateTime newViewAge)
         {
-            ViewProps viewProps = GetViewProps(viewID);
-            newViewAge = serverComm.ReceiveFileAge(ServerComm.Dirs.Itf, viewProps.FileName);
+            UiObjProps viewProps = GetViewProps(viewID);
+            newViewAge = serverComm.ReceiveFileAge(ServerComm.Dirs.Itf, viewProps.Path);
 
             if (newViewAge == DateTime.MinValue)
             {
@@ -134,7 +134,7 @@ namespace Scada.Client
                 if (view == null)
                     view = (BaseView)Activator.CreateInstance(viewType);
 
-                if (serverComm.ReceiveView(viewProps.FileName, view))
+                if (serverComm.ReceiveView(viewProps.Path, view))
                 {
                     return true;
                 }
@@ -150,6 +150,7 @@ namespace Scada.Client
                 return false;
             }
         }
+
 
         /// <summary>
         /// Получить представление из кэша или от сервера
@@ -186,8 +187,8 @@ namespace Scada.Client
                         }
                         else
                         {
-                            ViewProps viewProps = GetViewProps(viewID);
-                            view.Path = viewProps.FileName;
+                            UiObjProps viewProps = GetViewProps(viewID);
+                            view.Path = viewProps.Path;
                             Cache.UpdateItem(cacheItem, view, DateTime.Now, utcNowDT);
                         }
                     }

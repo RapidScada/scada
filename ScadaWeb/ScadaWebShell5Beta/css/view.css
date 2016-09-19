@@ -45,6 +45,10 @@
 #divBottomTabsContainer .tab.selected {
   font-weight: 600;
 }
+#divBottomTabsContainer .tab.disabled {
+  cursor: not-allowed;
+  color: #ccc;
+}
 #divCollapseDataWindowBtn {
   width: 40px;
   height: 100%;

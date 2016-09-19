@@ -66,7 +66,7 @@
     <Compile Include="Data\Models\CtrlCnlProps.cs" />
     <Compile Include="Client\ServerComm.cs" />
     <Compile Include="Data\Models\EntityRights.cs" />
-    <Compile Include="Data\Models\ViewProps.cs" />
+    <Compile Include="Data\Models\UiObjProps.cs" />
     <Compile Include="FileListener.cs" />
     <Compile Include="Data\Tables\BaseAdapter.cs" />
     <Compile Include="Data\Tables\BaseValues.cs" />

@@ -31,7 +31,7 @@ namespace Scada.Web.Plugins
     /// The base class for content specification
     /// <para>Родительский класс спецификации контента</para>
     /// </summary>
-    public abstract class ContentSpec : UiSpec
+    public abstract class ContentSpec : UiObjSpec
     {
         /// <summary>
         /// Получить наименование контента

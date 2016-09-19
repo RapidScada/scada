@@ -85,9 +85,9 @@ namespace Scada.Web.Shell
 
 
         /// <summary>
-        /// Получить или установить идентификатор представления
+        /// Получить идентификатор представления
         /// </summary>
-        public int ViewID { get; set; }
+        public int ViewID { get; protected set; }
 
         /// <summary>
         /// Получить текст

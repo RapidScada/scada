@@ -23,11 +23,9 @@
  * Modified : 2016
  */
 
-using Scada.Web.Plugins;
+using Scada.Client;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Utils;
 
 namespace Scada.Web.Shell
@@ -60,37 +58,36 @@ namespace Scada.Web.Shell
                 throw new ArgumentNullException("log");
 
             this.log = log;
-            Reports = new List<ContentSpec>();
-            DataWindows = new List<DataWndSpec>();
+            ReportItems = new List<ReportItem>();
+            DataWndItems = new List<DataWndItem>();
         }
 
 
         /// <summary>
-        /// Получить отчёты, доступные пользователю
+        /// Получить элементы отчётов, доступные пользователю
         /// </summary>
-        public List<ContentSpec> Reports { get; protected set; }
+        public List<ReportItem> ReportItems { get; protected set; }
 
         /// <summary>
-        /// Получить окна данных, доступные пользователю
+        /// Получить элементы окон данных, доступные пользователю
         /// </summary>
-        public List<DataWndSpec> DataWindows { get; protected set; }
+        public List<DataWndItem> DataWndItems { get; protected set; }
 
         
         /// <summary>
-        /// Инициализировать контент пользователя
+        /// Инициализировать доступный контент пользователя
         /// </summary>
-        public void Init(UserData userData)
+        public void Init(UserData userData, DataAccess dataAccess)
         {
             if (userData == null)
                 throw new ArgumentNullException("userData");
 
             try
             {
-                // получение спецификаций отчётов и окон данных из плагинов
-                Reports.Clear();
-                DataWindows.Clear();
+                ReportItems.Clear();
+                DataWndItems.Clear();
 
-                if (userData.PluginSpecs != null)
+                /*if (userData.PluginSpecs != null)
                 {
                     foreach (PluginSpec pluginSpec in userData.PluginSpecs)
                     {
@@ -99,16 +96,16 @@ namespace Scada.Web.Shell
                         if (pluginSpec.DataWndSpecs != null)
                             DataWindows.AddRange(pluginSpec.DataWndSpecs);
                     }
-                }
+                }*/
 
-                Reports.Sort();
-                DataWindows.Sort();
+                ReportItems.Sort();
+                DataWndItems.Sort();
             }
             catch (Exception ex)
             {
                 log.WriteException(ex, Localization.UseRussian ?
-                    "Ошибка при инициализации контента пользователя" :
-                    "Error initializing user content");
+                    "Ошибка при инициализации доступного контента пользователя" :
+                    "Error initializing accessible user content");
             }
         }
     }

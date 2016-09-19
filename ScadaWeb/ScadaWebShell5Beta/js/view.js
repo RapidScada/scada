@@ -142,15 +142,18 @@ scada.view = {
 
     // Make the data window, that corresponds a clicked tab, visible
     activateDataWindow: function (divClickedTab) {
-        $("#divBottomTabsContainer .tab").removeClass("selected");
-        divClickedTab.addClass("selected");
-        $("#divViewSplitter").css("display", "block");
-        $("#divDataWindow").css("display", "block");
-        $("#divCollapseDataWindowBtn").css("display", "inline-block");
+        var url = divClickedTab.data("url");
+        if (url) {
+            $("#divBottomTabsContainer .tab").removeClass("selected");
+            divClickedTab.addClass("selected");
+            $("#divViewSplitter").css("display", "block");
+            $("#divDataWindow").css("display", "block");
+            $("#divCollapseDataWindowBtn").css("display", "inline-block");
 
-        this._dataWindow.load(divClickedTab.data("url"), divClickedTab.data("depends")/*boolean*/);
-        this._saveActiveDataWindow();
-        this.updateLayout();
+            this._dataWindow.load(url, divClickedTab.data("depends") /*boolean*/);
+            this._saveActiveDataWindow();
+            this.updateLayout();
+        }
     },
 
     // Collapse a data window and release resources

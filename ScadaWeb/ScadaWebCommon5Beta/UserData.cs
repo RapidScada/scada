@@ -267,7 +267,7 @@ namespace Scada.Web
                 UserViews = new UserViews(AppData.Log);
                 UserViews.Init(this, AppData.DataAccess);
                 UserContent = new UserContent(AppData.Log);
-                UserContent.Init(this);
+                UserContent.Init(this, AppData.DataAccess);
                 return true;
             }
             else

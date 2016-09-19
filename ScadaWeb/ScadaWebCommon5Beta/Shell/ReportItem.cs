@@ -16,29 +16,37 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaWebCommon
- * Summary  : The base class for UI specification
+ * Summary  : Report item
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
  * Modified : 2016
  */
 
-namespace Scada.Web.Plugins
+using Scada.Web.Plugins;
+
+namespace Scada.Web.Shell
 {
     /// <summary>
-    /// The base class for UI specification
-    /// <para>Родительский класс спецификации пользовательского интерфейса</para>
+    /// Report item
+    /// <para>Элемент отчёта</para>
     /// </summary>
-    public abstract class UiSpec
+    public class ReportItem : ContentItem
     {
         /// <summary>
-        /// Получить код типа, реализующего пользовательский интерфейс
+        /// Получить спецификацию отчёта
         /// </summary>
-        public abstract string TypeCode { get; }
+        public ReportSpec ReportSpec { get; protected set; }
 
         /// <summary>
-        /// Получить ссылку на объект пользовательского интерфейса с заданным идентификатором
+        /// Получить спецификацию контента
         /// </summary>
-        public abstract string GetUrl(int uiID);
+        public override ContentSpec ContentSpec
+        {
+            get
+            {
+                return ReportSpec;
+            }
+        }
     }
 }

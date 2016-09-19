@@ -56,7 +56,10 @@
     <Compile Include="Plugins\DataWndSpec.cs" />
     <Compile Include="Plugins\PluginSpec.cs" />
     <Compile Include="Plugins\ContentSpec.cs" />
-    <Compile Include="Plugins\UiSpec.cs" />
+    <Compile Include="Plugins\UiObjSpec.cs" />
+    <Compile Include="Shell\ContentItem.cs" />
+    <Compile Include="Shell\DataWndItem.cs" />
+    <Compile Include="Shell\ReportItem.cs" />
     <Compile Include="Shell\ScriptPaths.cs" />
     <Compile Include="Plugins\ViewSpec.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

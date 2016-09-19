@@ -16,31 +16,29 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaWebCommon
- * Summary  : The base class for view specification
+ * Summary  : The base class for UI object specification
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
  * Modified : 2016
  */
 
-using System;
-
 namespace Scada.Web.Plugins
 {
     /// <summary>
-    /// The base class for view specification
-    /// <para>Родительский класс спецификации представления</para>
+    /// The base class for UI object specification
+    /// <para>Родительский класс спецификации объекта пользовательского интерфейса</para>
     /// </summary>
-    public abstract class ViewSpec : UiObjSpec
+    public abstract class UiObjSpec
     {
         /// <summary>
-        /// Получить ссылку на иконку типа представлений
+        /// Получить код типа объекта пользовательского интерфейса
         /// </summary>
-        public abstract string IconUrl { get; }
+        public abstract string TypeCode { get; }
 
         /// <summary>
-        /// Получить тип представления
+        /// Получить ссылку на объект пользовательского интерфейса с заданным идентификатором
         /// </summary>
-        public abstract Type ViewType { get; }
+        public abstract string GetUrl(int uiObjID);
     }
 }

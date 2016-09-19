@@ -147,6 +147,7 @@ a:active {
   color: white;
 }
 #divMainLeftPane .tree-view .node.disabled {
+  cursor: not-allowed;
   color: #9ca1a6;
 }
 #divMainLeftPane .tree-view .expander::before {

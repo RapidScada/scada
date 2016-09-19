@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaWebCommon
- * Summary  : Content item
+ * Summary  : Data window item
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
@@ -24,43 +24,29 @@
  */
 
 using Scada.Web.Plugins;
-using System;
 
 namespace Scada.Web.Shell
 {
     /// <summary>
-    /// Content item
-    /// <para>Элемент контента</para>
+    /// Data window item
+    /// <para>Элемент окна данных</para>
     /// </summary>
-    public abstract class ContentItem: IComparable<ContentItem>
+    public class DataWndItem : ContentItem
     {
         /// <summary>
-        /// Получить идентификатор объекта пользовательского интерфейса
+        /// Получить спецификацию окна данных
         /// </summary>
-        public int UiID { get; protected set; }
-
-        /// <summary>
-        /// Получить текст
-        /// </summary>
-        public string Text { get; protected set; }
-
-        /// <summary>
-        /// Получить ссылку
-        /// </summary>
-        public string Url { get; protected set; }
+        public DataWndSpec DataWndSpec { get; protected set; }
 
         /// <summary>
         /// Получить спецификацию контента
         /// </summary>
-        public abstract ContentSpec ContentSpec { get; }
-
-
-        /// <summary>
-        /// Сравнить текущий объект с другим объектом такого же типа
-        /// </summary>
-        public int CompareTo(ContentItem other)
+        public override ContentSpec ContentSpec
         {
-            return Text.CompareTo(other.Text);
+            get
+            {
+                return DataWndSpec;
+            }
         }
     }
 }

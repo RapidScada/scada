@@ -141,7 +141,7 @@
 }
 #divToolbar .tool-btn.disabled {
   color: #ccc;
-  cursor: default;
+  cursor: not-allowed;
 }
 #tblEvents {
   width: 100%;
