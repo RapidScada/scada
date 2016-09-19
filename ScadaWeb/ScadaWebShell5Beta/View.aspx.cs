@@ -52,8 +52,8 @@ namespace Scada.Web
 
             StringBuilder sbHtml = new StringBuilder();
 
-            foreach (DataWindowSpec dataWnd in userData.UserContent.DataWindows)
-                sbHtml.AppendFormat(TabTemplate, dataWnd.ContentTypeCode, ResolveUrl(dataWnd.Url), 
+            foreach (DataWndSpec dataWnd in userData.UserContent.DataWindows)
+                sbHtml.AppendFormat(TabTemplate, dataWnd.TypeCode, ResolveUrl(dataWnd.Url), 
                     dataWnd.DependsOnView ? "true" : "false", dataWnd.Name);
 
             return sbHtml.ToString();

@@ -52,7 +52,8 @@
     <Compile Include="DataTransferObject.cs" />
     <Compile Include="ClientApiSvc.cs" />
     <Compile Include="DictUpdater.cs" />
-    <Compile Include="Plugins\DataWindowSpec.cs" />
+    <Compile Include="Plugins\ReportSpec.cs" />
+    <Compile Include="Plugins\DataWndSpec.cs" />
     <Compile Include="Plugins\PluginSpec.cs" />
     <Compile Include="Plugins\ContentSpec.cs" />
     <Compile Include="Plugins\UiSpec.cs" />

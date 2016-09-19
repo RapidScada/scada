@@ -16,31 +16,30 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaWebCommon
- * Summary  : The base class for view specification
+ * Summary  : The base class for data window specification
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
  * Modified : 2016
  */
 
-using System;
-
 namespace Scada.Web.Plugins
 {
     /// <summary>
-    /// The base class for view specification
-    /// <para>Родительский класс спецификации представления</para>
+    /// The base class for data window specification
+    /// <para>Родительский класс спецификации окна данных</para>
     /// </summary>
-    public abstract class ViewSpec : UiSpec
+    public abstract class DataWndSpec : ContentSpec
     {
         /// <summary>
-        /// Получить ссылку на иконку типа представлений
+        /// Получить признак, что содержимое окна зависит от текущего представления
         /// </summary>
-        public abstract string IconUrl { get; }
-
-        /// <summary>
-        /// Получить тип представления
-        /// </summary>
-        public abstract Type ViewType { get; }
+        public virtual bool DependsOnView
+        {
+            get
+            {
+                return false;
+            }
+        }
     }
 }

@@ -61,7 +61,7 @@ namespace Scada.Web.Shell
 
             this.log = log;
             Reports = new List<ContentSpec>();
-            DataWindows = new List<DataWindowSpec>();
+            DataWindows = new List<DataWndSpec>();
         }
 
 
@@ -73,7 +73,7 @@ namespace Scada.Web.Shell
         /// <summary>
         /// Получить окна данных, доступные пользователю
         /// </summary>
-        public List<DataWindowSpec> DataWindows { get; protected set; }
+        public List<DataWndSpec> DataWindows { get; protected set; }
 
         
         /// <summary>
@@ -96,8 +96,8 @@ namespace Scada.Web.Shell
                     {
                         if (pluginSpec.ReportSpecs != null)
                             Reports.AddRange(pluginSpec.ReportSpecs);
-                        if (pluginSpec.DataWindowSpecs != null)
-                            DataWindows.AddRange(pluginSpec.DataWindowSpecs);
+                        if (pluginSpec.DataWndSpecs != null)
+                            DataWindows.AddRange(pluginSpec.DataWndSpecs);
                     }
                 }
 

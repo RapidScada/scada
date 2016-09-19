@@ -187,7 +187,7 @@ namespace Scada.Client
                         else
                         {
                             ViewProps viewProps = GetViewProps(viewID);
-                            view.ItfObjName = viewProps.FileName;
+                            view.Path = viewProps.FileName;
                             Cache.UpdateItem(cacheItem, view, DateTime.Now, utcNowDT);
                         }
                     }

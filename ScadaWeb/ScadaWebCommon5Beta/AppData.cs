@@ -356,16 +356,16 @@ namespace Scada.Web
                     {
                         foreach (ViewSpec viewSpec in pluginSpec.ViewSpecs)
                         {
-                            if (ViewSpecs.ContainsKey(viewSpec.ViewTypeCode))
+                            if (ViewSpecs.ContainsKey(viewSpec.TypeCode))
                             {
                                 Log.WriteError(string.Format(Localization.UseRussian ?
                                     "Спецификация представлений \"{0}\" плагина \"{1}\" игнорируется, потому что дублируется" :
                                     "View specification \"{0}\" of the plugin \"{1}\" is ignored because it is duplicated",
-                                    viewSpec.ViewTypeCode, pluginSpec.Name));
+                                    viewSpec.TypeCode, pluginSpec.Name));
                             }
                             else
                             {
-                                ViewSpecs.Add(viewSpec.ViewTypeCode, viewSpec);
+                                ViewSpecs.Add(viewSpec.TypeCode, viewSpec);
                             }
                         }
                     }

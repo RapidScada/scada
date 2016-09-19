@@ -31,14 +31,8 @@ namespace Scada.Web.Plugins
     /// The base class for content specification
     /// <para>Родительский класс спецификации контента</para>
     /// </summary>
-    public abstract class ContentSpec : IComparable<ContentSpec>
+    public abstract class ContentSpec : UiSpec
     {
-        /// <summary>
-        /// Получить код типа контента
-        /// </summary>
-        /// <remarks>Используется для предоставления прав пользователям</remarks>
-        public abstract string ContentTypeCode { get; }
-
         /// <summary>
         /// Получить наименование контента
         /// </summary>
@@ -47,7 +41,16 @@ namespace Scada.Web.Plugins
         /// <summary>
         /// Получить ссылку на страницу контента
         /// </summary>
-        public abstract string Url { get; }
+        public virtual string Url
+        {
+            get
+            {
+                if (ForEveryone)
+                    return GetUrl(0);
+                else
+                    throw new InvalidOperationException();
+            }
+        }
 
         /// <summary>
         /// Получить признак, что контент доступен всем ролям и не требует назначения прав
@@ -58,15 +61,6 @@ namespace Scada.Web.Plugins
             {
                 return false;
             }
-        }
-
-        
-        /// <summary>
-        /// Сравнить текущий объект с другим объектом такого же типа
-        /// </summary>
-        public int CompareTo(ContentSpec other)
-        {
-            return Name.CompareTo(other.Name);
         }
     }
 }

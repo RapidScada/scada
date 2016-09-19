@@ -54,7 +54,7 @@ namespace Scada.Web.Plugins.WebPage
             WebPageView view = appData.ViewCache.GetView<WebPageView>(viewID);
 
             // переход на соответствующую веб-страницу
-            Response.Redirect(view == null ? UrlTemplates.NoView : view.ItfObjName);
+            Response.Redirect(view == null ? UrlTemplates.NoView : view.Path);
         }
     }
 }

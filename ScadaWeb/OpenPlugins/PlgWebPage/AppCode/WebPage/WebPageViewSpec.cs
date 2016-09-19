@@ -36,7 +36,7 @@ namespace Scada.Web.Plugins.WebPage
         /// <summary>
         /// Получить код типа представления
         /// </summary>
-        public override string ViewTypeCode
+        public override string TypeCode
         {
             get
             {
@@ -70,7 +70,7 @@ namespace Scada.Web.Plugins.WebPage
         /// <summary>
         /// Получить ссылку на представление с заданным идентификатором
         /// </summary>
-        public override string GetViewUrl(int viewID)
+        public override string GetUrl(int viewID)
         {
             return "~/plugins/WebPage/Landing.aspx?viewID=" + viewID;
         }

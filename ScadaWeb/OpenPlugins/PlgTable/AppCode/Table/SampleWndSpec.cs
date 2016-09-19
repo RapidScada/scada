@@ -29,12 +29,12 @@ namespace Scada.Web.Plugins.Table
     /// Sample data window specification
     /// <para>Спецификация-пример окна данных</para>
     /// </summary>
-    public class SampleWndSpec : DataWindowSpec
+    public class SampleWndSpec : DataWndSpec
     {
         /// <summary>
         /// Получить код типа контента
         /// </summary>
-        public override string ContentTypeCode
+        public override string TypeCode
         {
             get
             {
@@ -54,15 +54,23 @@ namespace Scada.Web.Plugins.Table
         }
 
         /// <summary>
-        /// Получить ссылку на страницу окна данных
+        /// Получить признак, что окно данных доступно всем ролям и не требует назначения прав
         /// </summary>
-        /// <remarks>Страница не существует</remarks>
-        public override string Url
+        public override bool ForEveryone
         {
             get
             {
-                return "~/plugins/Table/SampleData.aspx";
+                return true;
             }
+        }
+
+
+        /// <summary>
+        /// Получить ссылку на окно данных с заданным идентификатором
+        /// </summary>
+        public override string GetUrl(int dataWndID)
+        {
+            return "~/plugins/Table/SampleData.aspx";
         }
     }
 }

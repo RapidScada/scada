@@ -16,30 +16,40 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaWebCommon
- * Summary  : The base class for data window specification
+ * Summary  : Content item
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
  * Modified : 2016
  */
 
-namespace Scada.Web.Plugins
+using System;
+
+namespace Scada.Web.Shell
 {
     /// <summary>
-    /// The base class for data window specification
-    /// <para>Родительский класс спецификации окна данных</para>
+    /// Content item
+    /// <para>Элемент контента</para>
     /// </summary>
-    public abstract class DataWindowSpec : ContentSpec
+    public abstract class ContentItem: IComparable<ContentItem>
     {
         /// <summary>
-        /// Получить признак, что содержимое окна зависит от текущего представления
+        /// Получить текст
         /// </summary>
-        public virtual bool DependsOnView
+        public string Text { get; protected set; }
+
+        /// <summary>
+        /// Получить ссылку
+        /// </summary>
+        public string Url { get; protected set; }
+
+
+        /// <summary>
+        /// Сравнить текущий объект с другим объектом такого же типа
+        /// </summary>
+        public int CompareTo(ContentItem other)
         {
-            get
-            {
-                return false;
-            }
+            return Text.CompareTo(other.Text);
         }
     }
 }

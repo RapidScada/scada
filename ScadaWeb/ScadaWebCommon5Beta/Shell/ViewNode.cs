@@ -72,7 +72,7 @@ namespace Scada.Web.Shell
             }
             else
             {
-                ViewUrl = VirtualPathUtility.ToAbsolute(ViewSpec.GetViewUrl(ViewID));
+                ViewUrl = VirtualPathUtility.ToAbsolute(ViewSpec.GetUrl(ViewID));
                 Url = VirtualPathUtility.ToAbsolute(string.Format(UrlTemplates.View, ViewID));
                 Script = string.Format(ScriptTemplate, ViewID, ViewUrl);
                 IconUrl = VirtualPathUtility.ToAbsolute(ViewSpec.IconUrl);

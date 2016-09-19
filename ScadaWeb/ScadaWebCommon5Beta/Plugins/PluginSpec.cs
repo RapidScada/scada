@@ -93,7 +93,7 @@ namespace Scada.Web.Plugins
         /// <summary>
         /// Получить спецификации отчётов, которые реализуются плагином
         /// </summary>
-        public virtual List<ContentSpec> ReportSpecs
+        public virtual List<ReportSpec> ReportSpecs
         {
             get
             {
@@ -104,7 +104,7 @@ namespace Scada.Web.Plugins
         /// <summary>
         /// Получить спецификации окон данных, которые реализуются плагином
         /// </summary>
-        public virtual List<DataWindowSpec> DataWindowSpecs
+        public virtual List<DataWndSpec> DataWndSpecs
         {
             get
             {

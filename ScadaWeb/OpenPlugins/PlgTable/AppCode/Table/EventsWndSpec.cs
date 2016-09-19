@@ -29,12 +29,12 @@ namespace Scada.Web.Plugins.Table
     /// Events data window specification
     /// <para>Спецификация окна данных для отображения событий</para>
     /// </summary>
-    public class EventsWndSpec : DataWindowSpec
+    public class EventsWndSpec : DataWndSpec
     {
         /// <summary>
-        /// Получить код типа контента
+        /// Получить код типа окна данных
         /// </summary>
-        public override string ContentTypeCode
+        public override string TypeCode
         {
             get
             {
@@ -54,13 +54,13 @@ namespace Scada.Web.Plugins.Table
         }
 
         /// <summary>
-        /// Получить ссылку на страницу окна данных
+        /// Получить признак, что окно данных доступно всем ролям и не требует назначения прав
         /// </summary>
-        public override string Url
+        public override bool ForEveryone
         {
             get
             {
-                return "~/plugins/Table/Events.aspx";
+                return true;
             }
         }
 
@@ -73,6 +73,15 @@ namespace Scada.Web.Plugins.Table
             {
                 return true;
             }
+        }
+
+
+        /// <summary>
+        /// Получить ссылку на окно данных с заданным идентификатором
+        /// </summary>
+        public override string GetUrl(int dataWndID)
+        {
+            return "~/plugins/Table/Events.aspx";
         }
     }
 }

@@ -1339,8 +1339,8 @@ namespace Scada.Client
                     // очистка представления, если не удалось получить новые данные
                     if (!result)
                         view.Clear();
-                    // установка наименования объекта интерфейса
-                    view.ItfObjName = Path.GetFileName(fileName);
+                    // установка пути файла представления
+                    view.Path = fileName;
                 }
             }
             catch (Exception ex)

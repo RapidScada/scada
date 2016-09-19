@@ -46,7 +46,8 @@ namespace Scada.Client
         /// </summary>
         public BaseView()
         {
-            ItfObjName = "";
+            Title = "";
+            Path = "";
             CnlSet = new HashSet<int>();
             CnlList = new List<int>();
             CtrlCnlSet = new HashSet<int>();
@@ -63,10 +64,22 @@ namespace Scada.Client
         public string Title { get; set; }
 
         /// <summary>
-        /// Получить или установить наименование объекта интерфейса
+        /// Получить или установить путь файла представления
         /// </summary>
-        [Obsolete("Заменить на Path или FileName")]
-        public string ItfObjName { get; set; }
+        /// <remarks>Если файл представления хранится на сервере, 
+        /// то путь указывается относительно директории интерфейса</remarks>
+        public string Path { get; set; }
+
+        /// <summary>
+        /// Получить имя файла представления
+        /// </summary>
+        public string FileName
+        {
+            get
+            {
+                return System.IO.Path.GetFileName(Path);
+            }
+        }
 
         /// <summary>
         /// Получить множество номеров входных каналов, которые используются в представлении
@@ -198,7 +211,7 @@ namespace Scada.Client
         public virtual void Clear()
         {
             Title = "";
-            ItfObjName = "";
+            Path = "";
             CnlList.Clear();
             CtrlCnlList.Clear();
             CnlSet.Clear();

@@ -16,31 +16,20 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaWebCommon
- * Summary  : The base class for view specification
+ * Summary  : The base class for report specification
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
  * Modified : 2016
  */
 
-using System;
-
 namespace Scada.Web.Plugins
 {
     /// <summary>
-    /// The base class for view specification
-    /// <para>Родительский класс спецификации представления</para>
+    /// The base class for report specification
+    /// <para>Родительский класс спецификации отчёта</para>
     /// </summary>
-    public abstract class ViewSpec : UiSpec
+    public abstract class ReportSpec : ContentSpec
     {
-        /// <summary>
-        /// Получить ссылку на иконку типа представлений
-        /// </summary>
-        public abstract string IconUrl { get; }
-
-        /// <summary>
-        /// Получить тип представления
-        /// </summary>
-        public abstract Type ViewType { get; }
     }
 }

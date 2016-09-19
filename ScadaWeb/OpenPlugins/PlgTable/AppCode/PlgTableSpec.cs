@@ -99,13 +99,11 @@ namespace Scada.Web.Plugins
         /// <summary>
         /// Получить спецификации окон данных, которые реализуются плагином
         /// </summary>
-        public override List<DataWindowSpec> DataWindowSpecs
+        public override List<DataWndSpec> DataWndSpecs
         {
             get
             {
-                return new List<DataWindowSpec>() { new EventsWndSpec()/*,
-                    new SampleWndSpec(), new SampleWndSpec(), new SampleWndSpec(),
-                    new SampleWndSpec(), new SampleWndSpec(), new SampleWndSpec()*/ };
+                return new List<DataWndSpec>() { new EventsWndSpec()/*, new SampleWndSpec()*/ };
             }
         }
 
