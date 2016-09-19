@@ -24,6 +24,8 @@
  */
 
 using Scada.Client;
+using Scada.Data.Models;
+using Scada.Web.Plugins;
 using System;
 using System.Collections.Generic;
 using Utils;
@@ -73,7 +75,119 @@ namespace Scada.Web.Shell
         /// </summary>
         public List<DataWndItem> DataWndItems { get; protected set; }
 
-        
+
+        /// <summary>
+        /// Добавление контента, прописанного в базе конфигурации
+        /// </summary>
+        protected void AddContentFromBase(UserRights userRights, Dictionary<string, UiObjSpec> uiObjSpecs, 
+            DataAccess dataAccess)
+        {
+            if (userRights != null && uiObjSpecs != null)
+            {
+                List<UiObjProps> uiObjPropsList = dataAccess.GetUiObjPropsList(
+                    UiObjProps.BaseUiTypes.Report | UiObjProps.BaseUiTypes.DataWnd);
+
+                foreach (UiObjProps uiObjProps in uiObjPropsList)
+                {
+                    int uiObjID = uiObjProps.UiObjID;
+
+                    if (userRights.GetUiObjRights(uiObjID).ViewRight)
+                    {
+                        UiObjSpec uiObjSpec;
+                        uiObjSpecs.TryGetValue(uiObjProps.TypeCode, out uiObjSpec);
+
+                        if (uiObjProps.BaseUiType == UiObjProps.BaseUiTypes.Report)
+                        {
+                            // добавление элемента отчёта
+                            ReportItem reportItem = new ReportItem()
+                            {
+                                UiObjID = uiObjID,
+                                Text = uiObjProps.Title
+                            };
+
+                            if (uiObjSpec is ReportSpec)
+                            {
+                                ReportSpec reportSpec = (ReportSpec)uiObjSpec;
+                                if (string.IsNullOrEmpty(reportItem.Text))
+                                    reportItem.Text = reportSpec.Name;
+                                reportItem.Url = uiObjSpec.GetUrl(uiObjID);
+                                reportItem.ReportSpec = reportSpec;
+                            }
+
+                            ReportItems.Add(reportItem);
+                        }
+                        else if (uiObjProps.BaseUiType == UiObjProps.BaseUiTypes.DataWnd)
+                        {
+                            // добавление элемента окна данных
+                            DataWndItem dataWndItem = new DataWndItem()
+                            {
+                                UiObjID = uiObjID,
+                                Text = uiObjProps.Title
+                            };
+
+                            if (uiObjSpec is DataWndSpec)
+                            {
+                                DataWndSpec dataWndSpec = (DataWndSpec)uiObjSpec;
+                                if (string.IsNullOrEmpty(dataWndItem.Text))
+                                    dataWndItem.Text = dataWndSpec.Name;
+                                dataWndItem.Url = uiObjSpec.GetUrl(uiObjID);
+                                dataWndItem.DataWndSpec = dataWndSpec;
+                            }
+
+                            DataWndItems.Add(dataWndItem);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Добавление контента, доступного всем, который задаётся спецификациями плагинов
+        /// </summary>
+        protected void AddContentFromPlugins(List<PluginSpec> pluginSpecs)
+        {
+            if (pluginSpecs != null)
+            {
+                foreach (PluginSpec pluginSpec in pluginSpecs)
+                {
+                    // добавление общедоступных элементов отчётов
+                    if (pluginSpec.ReportSpecs != null)
+                    {
+                        foreach (ReportSpec reportSpec in pluginSpec.ReportSpecs)
+                        {
+                            if (reportSpec.ForEveryone)
+                            {
+                                ReportItems.Add(new ReportItem()
+                                {
+                                    Text = reportSpec.Name,
+                                    Url = reportSpec.Url,
+                                    ReportSpec = reportSpec
+                                });
+                            }
+                        }
+                    }
+
+                    // добавление общедоступных элементов окон данных
+                    if (pluginSpec.DataWndSpecs != null)
+                    {
+                        foreach (DataWndSpec dataWndSpec in pluginSpec.DataWndSpecs)
+                        {
+                            if (dataWndSpec.ForEveryone)
+                            {
+                                DataWndItems.Add(new DataWndItem()
+                                {
+                                    Text = dataWndSpec.Name,
+                                    Url = dataWndSpec.Url,
+                                    DataWndSpec = dataWndSpec
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
         /// <summary>
         /// Инициализировать доступный контент пользователя
         /// </summary>
@@ -87,16 +201,8 @@ namespace Scada.Web.Shell
                 ReportItems.Clear();
                 DataWndItems.Clear();
 
-                /*if (userData.PluginSpecs != null)
-                {
-                    foreach (PluginSpec pluginSpec in userData.PluginSpecs)
-                    {
-                        if (pluginSpec.ReportSpecs != null)
-                            Reports.AddRange(pluginSpec.ReportSpecs);
-                        if (pluginSpec.DataWndSpecs != null)
-                            DataWindows.AddRange(pluginSpec.DataWndSpecs);
-                    }
-                }*/
+                AddContentFromBase(userData.UserRights, userData.UiObjSpecs, dataAccess);
+                AddContentFromPlugins(userData.PluginSpecs);
 
                 ReportItems.Sort();
                 DataWndItems.Sort();

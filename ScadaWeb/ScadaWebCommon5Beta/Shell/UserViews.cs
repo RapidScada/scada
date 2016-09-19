@@ -48,9 +48,9 @@ namespace Scada.Web.Shell
             /// </summary>
             public UserRights UserRights;
             /// <summary>
-            /// Спецификации представлений
+            /// Спецификации объектов пользовательского интерфейса
             /// </summary>
-            public Dictionary<string, ViewSpec> ViewSpecs;
+            public Dictionary<string, UiObjSpec> UiObjSpecs;
             /// <summary>
             /// Объект для доступа к данным кеша клиентов
             /// </summary>
@@ -106,7 +106,7 @@ namespace Scada.Web.Shell
                 int viewID = viewItem.ViewID;
 
                 // пропуск представления, на которое нет прав
-                if (viewID > 0 && !dataContext.UserRights.GetViewRights(viewItem.ViewID).ViewRight)
+                if (viewID > 0 && !dataContext.UserRights.GetUiObjRights(viewID).ViewRight)
                     continue;
 
                 // получение спецификации представления
@@ -115,7 +115,11 @@ namespace Scada.Web.Shell
                 {
                     UiObjProps viewProps = dataContext.DataAccess.GetUiObjProps(viewID);
                     if (viewProps != null)
-                        dataContext.ViewSpecs.TryGetValue(viewProps.TypeCode, out viewSpec);
+                    {
+                        UiObjSpec uiObjSpec;
+                        if (dataContext.UiObjSpecs.TryGetValue(viewProps.TypeCode, out uiObjSpec))
+                            viewSpec = uiObjSpec as ViewSpec;
+                    }
                 }
 
                 // создание узла дерева и дочерних узлов
@@ -184,12 +188,12 @@ namespace Scada.Web.Shell
             {
                 viewNodeDict.Clear();
 
-                if (userData.UserRights != null && userData.ViewSpecs != null)
+                if (userData.UserRights != null && userData.UiObjSpecs != null)
                 {
                     DataContext dataContext = new DataContext()
                     {
                         UserRights = userData.UserRights,
-                        ViewSpecs = userData.ViewSpecs,
+                        UiObjSpecs = userData.UiObjSpecs,
                         DataAccess = dataAccess
                     };
 

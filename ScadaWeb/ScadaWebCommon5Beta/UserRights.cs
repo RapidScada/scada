@@ -42,13 +42,9 @@ namespace Scada.Web
         /// </summary>
         protected EntityRights globalRights;
         /// <summary>
-        /// Права на предсталения
+        /// Права на объекты пользовательского интерфейса
         /// </summary>
-        protected Dictionary<int, EntityRights> viewRightsDict;
-        /// <summary>
-        /// Права на контент
-        /// </summary>
-        protected Dictionary<string, EntityRights> contentRightsDict;
+        protected Dictionary<int, EntityRights> uiObjRightsDict;
 
 
         /// <summary>
@@ -81,9 +77,8 @@ namespace Scada.Web
         /// </summary>
         protected void SetToDefault()
         {
-            viewRightsDict = null;
-            contentRightsDict = null;
             globalRights = EntityRights.NoRights;
+            uiObjRightsDict = null;
 
             ViewAllRight = false;
             ControlAllRight = false;
@@ -128,18 +123,15 @@ namespace Scada.Web
             InitGeneralRights(roleID);
 
             if (BaseValues.Roles.Custom <= roleID && roleID < BaseValues.Roles.Err)
-            {
-                viewRightsDict = dataAccess.GetViewRights(roleID);
-                contentRightsDict = dataAccess.GetContentRights(roleID);
-            }
+                uiObjRightsDict = dataAccess.GetUiObjRights(roleID);
         }
 
         /// <summary>
-        /// Получить права на предсталение
+        /// Получить права на объект пользовательского интерфейса
         /// </summary>
-        public EntityRights GetViewRights(int viewID)
+        public EntityRights GetUiObjRights(int uiObjID)
         {
-            if (viewID <= 0)
+            if (uiObjID <= 0)
             {
                 return EntityRights.NoRights;
             }
@@ -150,7 +142,7 @@ namespace Scada.Web
             else
             {
                 EntityRights rights;
-                return viewRightsDict != null && viewRightsDict.TryGetValue(viewID, out rights) ?
+                return uiObjRightsDict != null && uiObjRightsDict.TryGetValue(uiObjID, out rights) ?
                     rights : EntityRights.NoRights;
             }
         }
@@ -158,22 +150,10 @@ namespace Scada.Web
         /// <summary>
         /// Получить права на контент
         /// </summary>
+        [Obsolete]
         public EntityRights GetContentRights(string contentTypeCode)
         {
-            if (string.IsNullOrEmpty(contentTypeCode))
-            {
-                return EntityRights.NoRights;
-            }
-            else if (ViewAllRight)
-            {
-                return globalRights;
-            }
-            else
-            {
-                EntityRights rights;
-                return contentRightsDict != null && contentRightsDict.TryGetValue(contentTypeCode, out rights) ?
-                    rights : EntityRights.NoRights;
-            }
+            return EntityRights.NoRights;
         }
     }
 }

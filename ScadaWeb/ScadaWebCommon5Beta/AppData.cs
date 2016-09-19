@@ -92,7 +92,7 @@ namespace Scada.Web
             WebSettings = new WebSettings();
             ViewSettings = new ViewSettings();
             PluginSpecs = new List<PluginSpec>();
-            ViewSpecs = new Dictionary<string, ViewSpec>();
+            UiObjSpecs = new Dictionary<string, UiObjSpec>();
             AppDirs = new AppDirs();
             Log = new Log(Log.Formats.Full);
             Storage = new Storage(AppDirs.StorageDir);
@@ -123,11 +123,11 @@ namespace Scada.Web
         internal List<PluginSpec> PluginSpecs { get; private set; }
 
         /// <summary>
-        /// Получить словарь спецификаций представлений, ключ - код типа представления
+        /// Получить словарь спецификаций объектов пользовательского интерфейса, ключ - код типа объекта
         /// </summary>
         /// <remarks>Словарь заполняется на основе списка плагинов и 
         /// создаётся заново при изменении файла настроек веб-приложения</remarks>
-        internal Dictionary<string, ViewSpec> ViewSpecs { get; private set; }
+        internal Dictionary<string, UiObjSpec> UiObjSpecs { get; private set; }
 
 
         /// <summary>
@@ -342,39 +342,59 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Создать и заполнить словарь спецификаций представлений
+        /// Создать и заполнить словарь спецификаций объектов пользовательского интерфейса
         /// </summary>
-        private void FillViewSpecs()
+        private void FillUiObjSpecs()
         {
-            ViewSpecs = new Dictionary<string, ViewSpec>();
+            UiObjSpecs = new Dictionary<string, UiObjSpec>();
 
             foreach (PluginSpec pluginSpec in PluginSpecs)
             {
                 try
                 {
+                    // функция добавления спецификации с сохранением уникальности по коду типа объекта
+                    Action<UiObjSpec> addSpecFunc = delegate (UiObjSpec spec)
+                    {
+                        if (UiObjSpecs.ContainsKey(spec.TypeCode))
+                        {
+                            Log.WriteError(string.Format(Localization.UseRussian ?
+                                "Спецификация \"{0}\" плагина \"{1}\" игнорируется, потому что дублируется" :
+                                "The specification \"{0}\" of the plugin \"{1}\" is ignored because it is duplicated",
+                                spec.TypeCode, pluginSpec.Name));
+                        }
+                        else
+                        {
+                            UiObjSpecs.Add(spec.TypeCode, spec);
+                        }
+                    };
+
+                    // добавление спецификаций представлений
                     if (pluginSpec.ViewSpecs != null)
                     {
                         foreach (ViewSpec viewSpec in pluginSpec.ViewSpecs)
-                        {
-                            if (ViewSpecs.ContainsKey(viewSpec.TypeCode))
-                            {
-                                Log.WriteError(string.Format(Localization.UseRussian ?
-                                    "Спецификация представлений \"{0}\" плагина \"{1}\" игнорируется, потому что дублируется" :
-                                    "View specification \"{0}\" of the plugin \"{1}\" is ignored because it is duplicated",
-                                    viewSpec.TypeCode, pluginSpec.Name));
-                            }
-                            else
-                            {
-                                ViewSpecs.Add(viewSpec.TypeCode, viewSpec);
-                            }
-                        }
+                            addSpecFunc(viewSpec);
+                    }
+
+                    // добавление спецификаций отчётов
+                    if (pluginSpec.ReportSpecs != null)
+                    {
+                        foreach (ReportSpec reportSpec in pluginSpec.ReportSpecs)
+                            addSpecFunc(reportSpec);
+                    }
+
+                    // добавление спецификаций окон данных
+                    if (pluginSpec.DataWndSpecs != null)
+                    {
+                        foreach (DataWndSpec dataWndSpec in pluginSpec.DataWndSpecs)
+                            addSpecFunc(dataWndSpec);
                     }
                 }
                 catch (Exception ex)
                 {
                     Log.WriteException(ex, Localization.UseRussian ?
-                        "Ошибка при получении спецификаций представлений, реализуемых плагином \"{0}\"" :
-                        "Error getting view specifications implemented by plugin \"{0}\"", pluginSpec.Name);
+                        "Ошибка при получении спецификаций, реализуемых плагином \"{0}\"" :
+                        "Error getting specifications implemented by plugin \"{0}\"", 
+                        pluginSpec.Name);
                 }
             }
         }
@@ -434,7 +454,7 @@ namespace Scada.Web
                         ProcCultureChange();
                         LoadPlugins();
                         InitPlugins();
-                        FillViewSpecs();
+                        FillUiObjSpecs();
                     }
 
                     RefreshViewSettings();

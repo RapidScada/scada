@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaWebCommon
- * Summary  : The base class for UI object specification
+ * Summary  : The base class for user interface object specification
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
@@ -26,7 +26,7 @@
 namespace Scada.Web.Plugins
 {
     /// <summary>
-    /// The base class for UI object specification
+    /// The base class for user interface object specification
     /// <para>Родительский класс спецификации объекта пользовательского интерфейса</para>
     /// </summary>
     public abstract class UiObjSpec

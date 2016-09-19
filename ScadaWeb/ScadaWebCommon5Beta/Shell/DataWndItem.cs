@@ -34,9 +34,19 @@ namespace Scada.Web.Shell
     public class DataWndItem : ContentItem
     {
         /// <summary>
-        /// Получить спецификацию окна данных
+        /// Конструктор
         /// </summary>
-        public DataWndSpec DataWndSpec { get; protected set; }
+        public DataWndItem()
+            : base()
+        {
+            DataWndSpec = null;
+        }
+
+
+        /// <summary>
+        /// Получить или установить спецификацию окна данных
+        /// </summary>
+        public DataWndSpec DataWndSpec { get; set; }
 
         /// <summary>
         /// Получить спецификацию контента

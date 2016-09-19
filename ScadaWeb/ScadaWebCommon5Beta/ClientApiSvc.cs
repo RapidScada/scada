@@ -170,7 +170,7 @@ namespace Scada.Web
         /// </summary>
         private BaseView GetViewFromCache(int viewID, UserRights userRights)
         {
-            if (!userRights.GetViewRights(viewID).ViewRight)
+            if (!userRights.GetUiObjRights(viewID).ViewRight)
                 throw new ScadaException(WebPhrases.NoRights);
 
             return AppData.ViewCache.GetViewFromCache(viewID, true);

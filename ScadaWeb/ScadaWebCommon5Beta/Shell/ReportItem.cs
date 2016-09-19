@@ -34,9 +34,19 @@ namespace Scada.Web.Shell
     public class ReportItem : ContentItem
     {
         /// <summary>
-        /// Получить спецификацию отчёта
+        /// Конструктор
         /// </summary>
-        public ReportSpec ReportSpec { get; protected set; }
+        public ReportItem()
+            : base()
+        {
+            ReportSpec = null;
+        }
+
+
+        /// <summary>
+        /// Получить или установить спецификацию отчёта
+        /// </summary>
+        public ReportSpec ReportSpec { get; set; }
 
         /// <summary>
         /// Получить спецификацию контента

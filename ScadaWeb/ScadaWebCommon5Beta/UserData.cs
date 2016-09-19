@@ -129,9 +129,9 @@ namespace Scada.Web
         public List<PluginSpec> PluginSpecs { get; private set; }
 
         /// <summary>
-        /// Получить ссылку на словарь спецификаций представлений, ключ - код типа представления
+        /// Получить ссылку на словарь спецификаций объектов пользовательского интерфейса, ключ - код типа объекта
         /// </summary>
-        public Dictionary<string, ViewSpec> ViewSpecs { get; private set; }
+        public Dictionary<string, UiObjSpec> UiObjSpecs { get; private set; }
 
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace Scada.Web
             WebSettings = null;
             ViewSettings = null;
             PluginSpecs = null;
-            ViewSpecs = null;
+            UiObjSpecs = null;
         }
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace Scada.Web
             WebSettings = AppData.WebSettings;
             ViewSettings = AppData.ViewSettings;
             PluginSpecs = AppData.PluginSpecs;
-            ViewSpecs = AppData.ViewSpecs;
+            UiObjSpecs = AppData.UiObjSpecs;
         }
 
         /// <summary>

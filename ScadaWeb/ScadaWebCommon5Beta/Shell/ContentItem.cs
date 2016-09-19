@@ -35,19 +35,30 @@ namespace Scada.Web.Shell
     public abstract class ContentItem: IComparable<ContentItem>
     {
         /// <summary>
-        /// Получить идентификатор объекта пользовательского интерфейса
+        /// Конструктор
         /// </summary>
-        public int UiID { get; protected set; }
+        public ContentItem()
+        {
+            UiObjID = 0;
+            Text = "";
+            Url = "";
+        }
+
 
         /// <summary>
-        /// Получить текст
+        /// Получить или установить идентификатор объекта пользовательского интерфейса
         /// </summary>
-        public string Text { get; protected set; }
+        public int UiObjID { get; set; }
 
         /// <summary>
-        /// Получить ссылку
+        /// Получить или установить текст
         /// </summary>
-        public string Url { get; protected set; }
+        public string Text { get; set; }
+
+        /// <summary>
+        /// Получить или установить ссылку
+        /// </summary>
+        public string Url { get; set; }
 
         /// <summary>
         /// Получить спецификацию контента

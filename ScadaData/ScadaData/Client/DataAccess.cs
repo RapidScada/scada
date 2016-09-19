@@ -231,8 +231,10 @@ namespace Scada.Client
 
                     if (rowInd >= 0)
                     {
-                        UiObjProps uiObjProps = UiObjProps.Parse((string)viewInterface[rowInd]["Name"]);
+                        DataRowView rowView = viewInterface[rowInd];
+                        UiObjProps uiObjProps = UiObjProps.Parse((string)rowView["Name"]);
                         uiObjProps.UiObjID = uiObjID;
+                        uiObjProps.Title = (string)rowView["Descr"];
                         return uiObjProps;
                     }
                     else
@@ -260,11 +262,11 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить права на представления по идентификатору роли
+        /// Получить права на объекты пользовательского интерфейса по идентификатору роли
         /// </summary>
-        public Dictionary<int, EntityRights> GetViewRights(int roleID)
+        public Dictionary<int, EntityRights> GetUiObjRights(int roleID)
         {
-            Dictionary<int, EntityRights> viewRightsDict = new Dictionary<int, EntityRights>();
+            Dictionary<int, EntityRights> rightsDict = new Dictionary<int, EntityRights>();
 
             try
             {
@@ -279,70 +281,20 @@ namespace Scada.Client
 
                     foreach (DataRowView rowView in viewRight.FindRows(roleID))
                     {
-                        int viewID = (int)rowView["ItfID"];
+                        int uiObjID = (int)rowView["ItfID"];
                         EntityRights rights = new EntityRights((bool)rowView["ViewRight"], (bool)rowView["CtrlRight"]);
-                        viewRightsDict[viewID] = rights;
+                        rightsDict[uiObjID] = rights;
                     }
                 }
             }
             catch (Exception ex)
             {
                 log.WriteException(ex, Localization.UseRussian ?
-                    "Ошибка при получении прав на представления для роли с ид.={0}" :
-                    "Error getting view access rights for the role with ID={0}", roleID);
+                    "Ошибка при получении прав на объекты пользовательского интерфейса для роли с ид.={0}" :
+                    "Error getting access rights on user interface objects for the role with ID={0}", roleID);
             }
 
-            return viewRightsDict;
-        }
-
-        /// <summary>
-        /// Получить права на контент по идентификатору роли
-        /// </summary>
-        public Dictionary<string, EntityRights> GetContentRights(int roleID)
-        {
-            Dictionary<string, EntityRights> contentRightsDict = new Dictionary<string, EntityRights>();
-
-            try
-            {
-                dataCache.RefreshBaseTables();
-                BaseTables baseTables = dataCache.BaseTables;
-
-                lock (baseTables.SyncRoot)
-                {
-                    DataTable tblInterface = baseTables.InterfaceTable;
-                    DataTable tblRight = baseTables.RightTable;
-                    BaseTables.CheckColumnsExist(tblInterface, true);
-                    BaseTables.CheckColumnsExist(tblRight, true);
-                    DataView viewRight = tblRight.DefaultView;
-                    viewRight.Sort = "ItfID, RoleID";
-
-                    foreach (DataRow itfRow in tblInterface.Rows)
-                    {
-                        int contentTypeID = (int)itfRow["ItfID"];
-                        string contentTypeCode = (string)itfRow["Name"];
-
-                        if (string.IsNullOrEmpty(Path.GetExtension(contentTypeCode)))
-                        {
-                            int rightRowInd = viewRight.Find(new object[] { contentTypeID, roleID });
-                            if (rightRowInd >= 0)
-                            {
-                                DataRowView rightRowView = viewRight[rightRowInd];
-                                EntityRights rights = new EntityRights(
-                                    (bool)rightRowView["ViewRight"], (bool)rightRowView["CtrlRight"]);
-                                contentRightsDict[contentTypeCode] = rights;
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                log.WriteException(ex, Localization.UseRussian ?
-                    "Ошибка при получении прав на контент для роли с ид.={0}" :
-                    "Error getting content access rights for the role with ID={0}", roleID);
-            }
-
-            return contentRightsDict;
+            return rightsDict;
         }
 
         /// <summary>
