@@ -53,6 +53,25 @@ namespace Scada.Data.Models
             DataWnd
         }
 
+        /// <summary>
+        /// Виды пути
+        /// </summary>
+        public enum PathKinds
+        {
+            /// <summary>
+            /// Не определён
+            /// </summary>
+            Undefined,
+            /// <summary>
+            /// Файл
+            /// </summary>
+            File,
+            /// <summary>
+            /// Ссылка
+            /// </summary>
+            Url
+        }
+
 
         /// <summary>
         /// Конструктор
@@ -100,6 +119,33 @@ namespace Scada.Data.Models
         /// </summary>
         public BaseUiTypes BaseUiType { get; set; }
 
+        /// <summary>
+        /// Получить признак, что объект интерфейса пустой
+        /// </summary>
+        public bool IsEmpty
+        {
+            get
+            {
+                return string.IsNullOrEmpty(Title) && string.IsNullOrEmpty(Path);
+            }
+        }
+
+        /// <summary>
+        /// Получить вид пути
+        /// </summary>
+        public PathKinds PathKind
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Path))
+                    return PathKinds.Undefined;
+                else if (Path.Contains("://"))
+                    return PathKinds.Url;
+                else
+                    return PathKinds.File;
+            }
+        }
+
 
         /// <summary>
         /// Извлечь путь, код типа и базовый тип объекта интерфейса из заданной строки
@@ -109,14 +155,14 @@ namespace Scada.Data.Models
             s = s ?? "";
             int sepInd = s.IndexOf('@');
             string path = (sepInd >= 0 ? s.Substring(0, sepInd) : s).Trim();
-            string typeCode = sepInd >= 0 ? s.Substring(sepInd).Trim() : "";
+            string typeCode = sepInd >= 0 ? s.Substring(sepInd + 1).Trim() : "";
             BaseUiTypes baseUiType = BaseUiTypes.View;
 
             if (typeCode.EndsWith("Report", StringComparison.Ordinal))
             {
                 baseUiType = BaseUiTypes.Report;
             }
-            else if (typeCode.EndsWith("DataWnd", StringComparison.Ordinal))
+            else if (typeCode.EndsWith("Wnd", StringComparison.Ordinal))
             {
                 baseUiType = BaseUiTypes.DataWnd;
             }

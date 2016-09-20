@@ -23,6 +23,8 @@
  * Modified : 2016
  */
 
+using Scada.Client;
+using Scada.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -272,7 +274,7 @@ namespace Scada.Web
         /// <summary>
         /// Загрузить настройки из базы конфигурации
         /// </summary>
-        public bool LoadFromBase(DataTable tblInterface, out string errMsg)
+        public bool LoadFromBase(DataAccess dataAccess, out string errMsg)
         {
             // установка значений по умолчанию
             ViewItems.Clear();
@@ -280,30 +282,30 @@ namespace Scada.Web
             // загрузка настроек
             try
             {
-                DataView viewInterface = new DataView(tblInterface);
-                viewInterface.Sort = "ItfID";
                 char[] separator = { '\\', '/' };
+                List<UiObjProps> viewPropsList = dataAccess.GetUiObjPropsList(UiObjProps.BaseUiTypes.View);
 
-                foreach (DataRowView rowView in viewInterface)
+                foreach (UiObjProps viewProps in viewPropsList)
                 {
-                    int itfID = (int)rowView["ItfID"];
-                    string name = ((string)rowView["Name"]).Trim();
-                    string descr = (string)rowView["Descr"];
-
-                    if (name != "")
+                    if (!viewProps.IsEmpty)
                     {
-                        if (name.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
-                            name.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+                        if (viewProps.PathKind == UiObjProps.PathKinds.File)
                         {
-                            string text = descr == "" ? name : descr;
-                            ViewItem viewItem = new ViewItem(itfID, text, 0);
-                            ViewItems.Add(viewItem);
+                            // для PathKinds.File свойство Path не равно null
+                            string[] pathParts = viewProps.Path.Split(separator, StringSplitOptions.RemoveEmptyEntries);
+                            if (pathParts.Length > 0)
+                            {
+                                string itemText = string.IsNullOrEmpty(viewProps.Title) ?
+                                    pathParts[pathParts.Length - 1] : viewProps.Title;
+                                AppendViewItem(viewProps.UiObjID, itemText, pathParts, 0, ViewItems);
+                            }
                         }
                         else
                         {
-                            string[] pathParts = name.Split(separator, StringSplitOptions.RemoveEmptyEntries);
-                            string text = descr == "" ? pathParts[pathParts.Length - 1] : descr;
-                            AppendViewItem(itfID, text, pathParts, 0, ViewItems);
+                            string itemText = string.IsNullOrEmpty(viewProps.Title) ? 
+                                viewProps.Path : viewProps.Title;
+                            ViewItem viewItem = new ViewItem(viewProps.UiObjID, itemText, 0);
+                            ViewItems.Add(viewItem);
                         }
                     }
                 }

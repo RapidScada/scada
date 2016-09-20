@@ -45,9 +45,13 @@
 #divBottomTabsContainer .tab.selected {
   font-weight: 600;
 }
-#divBottomTabsContainer .tab.disabled {
+#divBottomTabsContainer .tab.disabled,
+#divBottomTabsContainer .tab.disabled:hover {
   cursor: not-allowed;
   color: #ccc;
+}
+#divBottomTabsContainer .tab:hover {
+  color: #00b9eb;
 }
 #divCollapseDataWindowBtn {
   width: 40px;
@@ -64,7 +68,6 @@
   position: relative;
   top: 2px;
 }
-#divBottomTabsContainer .tab:hover,
 #divCollapseDataWindowBtn:hover {
   color: #00b9eb;
 }

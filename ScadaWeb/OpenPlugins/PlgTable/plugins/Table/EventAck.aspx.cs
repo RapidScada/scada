@@ -109,7 +109,7 @@ namespace Scada.Web.plugins.Table
                 else
                 {
                     // проверка прав
-                    EntityRights rights = userData.UserRights.GetViewRights(viewID);
+                    EntityRights rights = userData.UserRights.GetUiObjRights(viewID);
                     if (!rights.ViewRight)
                         throw new ScadaException(CommonPhrases.NoRights);
 
@@ -124,14 +124,14 @@ namespace Scada.Web.plugins.Table
 
                     // вывод информации по событию
                     pnlInfo.Visible = true;
-                    DispEventProps evProps = appData.DataAccess.GetDispEventProps(ev, new DataFormatter());
-                    lblNum.Text = evProps.Num.ToString();
-                    lblTime.Text = evProps.Time;
-                    lblObj.Text = evProps.Obj;
-                    lblDev.Text = evProps.KP;
-                    lblCnl.Text = evProps.Cnl;
-                    lblText.Text = evProps.Text;
-                    lblAck.Text = evProps.Ack;
+                    DispEvent dispEvent = appData.DataAccess.GetDispEvent(ev, new DataFormatter());
+                    lblNum.Text = dispEvent.Num.ToString();
+                    lblTime.Text = dispEvent.Time;
+                    lblObj.Text = dispEvent.Obj;
+                    lblDev.Text = dispEvent.KP;
+                    lblCnl.Text = dispEvent.Cnl;
+                    lblText.Text = dispEvent.Text;
+                    lblAck.Text = dispEvent.Ack;
                     lblAck.CssClass = ev.Checked ? "ack-yes" : "ack-no";
 
                     if (ev.Checked && ev.UserID > 0)
@@ -141,13 +141,13 @@ namespace Scada.Web.plugins.Table
                         lblByUser.Visible = userName != "";
                     }
 
-                    if (evProps.Color != "")
+                    if (dispEvent.Color != "")
                     {
                         try
                         {
                             lblNum.ForeColor = lblTime.ForeColor = lblObj.ForeColor = 
                                 lblDev.ForeColor = lblCnl.ForeColor = lblText.ForeColor = 
-                                ColorTranslator.FromHtml(evProps.Color);
+                                ColorTranslator.FromHtml(dispEvent.Color);
                         }
                         catch { }
                     }

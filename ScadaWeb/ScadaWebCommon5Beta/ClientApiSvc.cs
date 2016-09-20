@@ -566,7 +566,7 @@ namespace Scada.Web
                 DateTime date = new DateTime(year, month, day);
                 EventTableLight tblEvent = dataAccess.DataCache.GetEventTable(date);
                 long newDataAge = WebUtils.DateTimeToJs(tblEvent.FileModTime);
-                DispEventProps[] eventsToSend;
+                DispEvent[] eventsToSend;
 
                 if (tblEvent.FileModTime > DateTime.MinValue && dataAge < newDataAge)
                 {
@@ -577,21 +577,21 @@ namespace Scada.Web
 
                     // преобразование событий для передачи
                     int evCnt = events.Count;
-                    eventsToSend = new DispEventProps[evCnt];
+                    eventsToSend = new DispEvent[evCnt];
                     if (reversed)
                     {
                         for (int i = 0, j = evCnt - 1; i < evCnt; i++, j--)
-                            eventsToSend[i] = dataAccess.GetDispEventProps(events[j], DataFormatter);
+                            eventsToSend[i] = dataAccess.GetDispEvent(events[j], DataFormatter);
                     }
                     else
                     {
                         for (int i = 0; i < evCnt; i++)
-                            eventsToSend[i] = dataAccess.GetDispEventProps(events[i], DataFormatter);
+                            eventsToSend[i] = dataAccess.GetDispEvent(events[i], DataFormatter);
                     }
                 }
                 else
                 {
-                    eventsToSend = new DispEventProps[0];
+                    eventsToSend = new DispEvent[0];
                 }
 
                 return JsSerializer.Serialize(new ArcDTO(eventsToSend, newDataAge));

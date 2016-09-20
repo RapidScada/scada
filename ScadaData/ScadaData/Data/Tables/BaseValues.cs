@@ -33,7 +33,7 @@ namespace Scada.Data.Tables
     /// The main values from the configuration database
     /// <para>Основные значения из базы конфигурации</para>
     /// </summary>
-    public class BaseValues
+    public static class BaseValues
     {
         /// <summary>
         /// Роли пользователей

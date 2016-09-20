@@ -57,9 +57,14 @@
     font-weight: 600;
 }
 
-#divBottomTabsContainer .tab.disabled {
+#divBottomTabsContainer .tab.disabled,
+#divBottomTabsContainer .tab.disabled:hover {
     cursor: not-allowed;
     color: @menu-item-disabled-fore-color-air;
+}
+
+#divBottomTabsContainer .tab:hover {
+    color: @menu-item-hover-fore-color;
 }
 
 #divCollapseDataWindowBtn {
@@ -78,7 +83,6 @@
     top: 2px;
 }
 
-#divBottomTabsContainer .tab:hover,
 #divCollapseDataWindowBtn:hover {
     color: @menu-item-hover-fore-color;
 }

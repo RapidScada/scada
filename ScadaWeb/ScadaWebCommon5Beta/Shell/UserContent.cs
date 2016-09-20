@@ -102,7 +102,8 @@ namespace Scada.Web.Shell
                             ReportItem reportItem = new ReportItem()
                             {
                                 UiObjID = uiObjID,
-                                Text = uiObjProps.Title
+                                Text = uiObjProps.Title,
+                                Path = uiObjProps.Path
                             };
 
                             if (uiObjSpec is ReportSpec)
@@ -122,7 +123,8 @@ namespace Scada.Web.Shell
                             DataWndItem dataWndItem = new DataWndItem()
                             {
                                 UiObjID = uiObjID,
-                                Text = uiObjProps.Title
+                                Text = uiObjProps.Title,
+                                Path = uiObjProps.Path
                             };
 
                             if (uiObjSpec is DataWndSpec)
@@ -213,6 +215,22 @@ namespace Scada.Web.Shell
                     "Ошибка при инициализации доступного контента пользователя" :
                     "Error initializing accessible user content");
             }
+        }
+
+        /// <summary>
+        /// Получить элемент отчёта по идентификатору
+        /// </summary>
+        public ReportItem GetReportItem(int reportID)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Получить элемент окна данных по идентификатору
+        /// </summary>
+        public DataWndItem GetDataWndItem(int dataWndID)
+        {
+            throw new NotImplementedException();
         }
     }
 }

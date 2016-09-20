@@ -246,7 +246,7 @@ namespace Scada.Web.Plugins.Table
                 int.TryParse(Request.QueryString["viewID"], out viewID);
 
                 // проверка прав
-                if (!userData.UserRights.GetViewRights(viewID).ControlRight ||
+                if (!userData.UserRights.GetUiObjRights(viewID).ControlRight ||
                     !userData.WebSettings.CmdEnabled)
                     throw new ScadaException(CommonPhrases.NoRights);
 

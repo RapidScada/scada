@@ -63,7 +63,7 @@ namespace Scada.Web.Plugins.Chart
 
             // проверка прав
             if (!userData.LoggedOn ||
-                !userData.UserRights.GetViewRights(viewID).ViewRight)
+                !userData.UserRights.GetUiObjRights(viewID).ViewRight)
                 throw new ScadaException(CommonPhrases.NoRights);
 
 #if !DEBUG

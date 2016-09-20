@@ -23,7 +23,7 @@
                 ValueAge: <%# Eval("ValueAge") %>,
                 ValueRefrDT (UTC): <%# Eval("ValueRefrDT") %>,
                 AccessDT (UTC): <%# Eval("AccessDT") %>,
-                BaseView: <%# HttpUtility.HtmlEncode(Eval("Value.ItfObjName")) %>
+                BaseView: <%# HttpUtility.HtmlEncode(Eval("Value.Title")) %>
             </div>
         </ItemTemplate>
     </asp:Repeater>

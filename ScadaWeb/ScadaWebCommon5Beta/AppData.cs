@@ -251,15 +251,14 @@ namespace Scada.Web
             {
                 // обновление настроек представлений из базы конфигурации
                 DataAccess.DataCache.RefreshBaseTables();
-                BaseTables baseTables = DataAccess.DataCache.BaseTables;
-                DateTime baseAge = baseTables.BaseAge;
+                DateTime baseAge = DataAccess.DataCache.BaseTables.BaseAge;
 
                 if (baseAge > DateTime.MinValue && viewSettingsBaseAge != baseAge)
                 {
                     ViewSettings newViewSettings = new ViewSettings();
                     string errMsg;
 
-                    if (newViewSettings.LoadFromBase(baseTables.InterfaceTable, out errMsg))
+                    if (newViewSettings.LoadFromBase(DataAccess, out errMsg))
                     {
                         if (!ViewSettings.Equals(newViewSettings))
                         {
@@ -393,7 +392,7 @@ namespace Scada.Web
                 {
                     Log.WriteException(ex, Localization.UseRussian ?
                         "Ошибка при получении спецификаций, реализуемых плагином \"{0}\"" :
-                        "Error getting specifications implemented by plugin \"{0}\"", 
+                        "Error getting specifications implemented by the plugin \"{0}\"", 
                         pluginSpec.Name);
                 }
             }

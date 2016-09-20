@@ -64,7 +64,7 @@ namespace Scada.Web.Plugins.Table
             int.TryParse(Request.QueryString["viewID"], out viewID);
 
             // проверка прав на просмотр представления
-            if (!userData.UserRights.GetViewRights(viewID).ViewRight)
+            if (!userData.UserRights.GetUiObjRights(viewID).ViewRight)
                 Response.Redirect(UrlTemplates.NoView);
 
             // загрузка представления в кеш для последующего получения событий через API

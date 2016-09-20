@@ -258,6 +258,37 @@ namespace Scada.Client
         public List<UiObjProps> GetUiObjPropsList(UiObjProps.BaseUiTypes baseUiTypes)
         {
             List<UiObjProps> list = new List<UiObjProps>();
+
+            try
+            {
+                dataCache.RefreshBaseTables();
+                BaseTables baseTables = dataCache.BaseTables;
+
+                lock (baseTables.SyncRoot)
+                {
+                    BaseTables.CheckColumnsExist(baseTables.InterfaceTable, true);
+                    DataView viewInterface = baseTables.InterfaceTable.DefaultView;
+                    viewInterface.Sort = "ItfID";
+
+                    foreach (DataRowView rowView in viewInterface)
+                    {
+                        UiObjProps uiObjProps = UiObjProps.Parse((string)rowView["Name"]);
+                        if (baseUiTypes.HasFlag(uiObjProps.BaseUiType))
+                        {
+                            uiObjProps.UiObjID = (int)rowView["ItfID"];
+                            uiObjProps.Title = (string)rowView["Descr"];
+                            list.Add(uiObjProps);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении списка свойств объектов пользовательского интерфейса" :
+                    "Error getting list of user interface object properties");
+            }
+
             return list;
         }
 
@@ -495,47 +526,47 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить отображаемые свойства события
+        /// Получить отображаемое событие на основе данных события
         /// </summary>
         /// <remarks>Метод всегда возвращает объект, не равный null</remarks>
-        public DispEventProps GetDispEventProps(EventTableLight.Event ev, DataFormatter dataFormatter)
+        public DispEvent GetDispEvent(EventTableLight.Event ev, DataFormatter dataFormatter)
         {
-            DispEventProps dispEventProps = new DispEventProps();
+            DispEvent dispEvent = new DispEvent();
 
             try
             {
-                dispEventProps.Num = ev.Number;
-                dispEventProps.Time = ev.DateTime.ToLocalizedString();
-                dispEventProps.Ack = ev.Checked ? CommonPhrases.EventAck : CommonPhrases.EventNotAck;
+                dispEvent.Num = ev.Number;
+                dispEvent.Time = ev.DateTime.ToLocalizedString();
+                dispEvent.Ack = ev.Checked ? CommonPhrases.EventAck : CommonPhrases.EventNotAck;
 
                 InCnlProps cnlProps = GetCnlProps(ev.CnlNum);
                 CnlStatProps cnlStatProps = GetCnlStatProps(ev.NewCnlStat);
 
                 if (cnlProps == null)
                 {
-                    dispEventProps.Obj = GetObjName(ev.ObjNum);
-                    dispEventProps.KP = GetKPName(ev.KPNum);
+                    dispEvent.Obj = GetObjName(ev.ObjNum);
+                    dispEvent.KP = GetKPName(ev.KPNum);
                 }
                 else
                 {
-                    dispEventProps.Obj = cnlProps.ObjName;
-                    dispEventProps.KP = cnlProps.KPName;
-                    dispEventProps.Cnl = cnlProps.CnlName;
-                    dispEventProps.Color = dataFormatter.GetCnlValColor(
+                    dispEvent.Obj = cnlProps.ObjName;
+                    dispEvent.KP = cnlProps.KPName;
+                    dispEvent.Cnl = cnlProps.CnlName;
+                    dispEvent.Color = dataFormatter.GetCnlValColor(
                         ev.NewCnlVal, ev.NewCnlStat, cnlProps, cnlStatProps);
-                    dispEventProps.Sound = cnlProps.EvSound;
+                    dispEvent.Sound = cnlProps.EvSound;
                 }
 
-                dispEventProps.Text = dataFormatter.GetEventText(ev, cnlProps, cnlStatProps);
+                dispEvent.Text = dataFormatter.GetEventText(ev, cnlProps, cnlStatProps);
             }
             catch (Exception ex)
             {
                 log.WriteException(ex, Localization.UseRussian ?
-                    "Ошибка при получении отображаемых свойств события" :
-                    "Error getting displayed event properties");
+                    "Ошибка при получении отображаемого события на основе данных события" :
+                    "Error getting displayed event based on the event data");
             }
 
-            return dispEventProps;
+            return dispEvent;
         }
     }
 }

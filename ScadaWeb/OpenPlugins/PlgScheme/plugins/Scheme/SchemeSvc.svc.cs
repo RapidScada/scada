@@ -210,7 +210,7 @@ namespace Scada.Web.Plugins.Scheme
         /// </summary>
         private SchemeView GetSchemeView(int viewID, UserRights userRights)
         {
-            if (!userRights.GetViewRights(viewID).ViewRight)
+            if (!userRights.GetUiObjRights(viewID).ViewRight)
                 throw new ScadaException(WebPhrases.NoRights);
 
             return AppData.ViewCache.GetView<SchemeView>(viewID, true);

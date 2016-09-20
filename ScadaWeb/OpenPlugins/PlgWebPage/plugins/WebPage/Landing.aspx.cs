@@ -46,7 +46,7 @@ namespace Scada.Web.Plugins.WebPage
             
             // проверка прав на просмотр представления
             EntityRights rights = userData.LoggedOn ?
-                userData.UserRights.GetViewRights(viewID) : EntityRights.NoRights;
+                userData.UserRights.GetUiObjRights(viewID) : EntityRights.NoRights;
             if (!rights.ViewRight)
                 Response.Redirect(UrlTemplates.NoView);
 

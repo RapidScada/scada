@@ -42,6 +42,7 @@ namespace Scada.Web.Shell
             UiObjID = 0;
             Text = "";
             Url = "";
+            Path = "";
         }
 
 
@@ -61,6 +62,11 @@ namespace Scada.Web.Shell
         public string Url { get; set; }
 
         /// <summary>
+        /// Получить или установить путь
+        /// </summary>
+        public string Path { get; set; }
+
+        /// <summary>
         /// Получить спецификацию контента
         /// </summary>
         public abstract ContentSpec ContentSpec { get; }
@@ -71,7 +77,8 @@ namespace Scada.Web.Shell
         /// </summary>
         public int CompareTo(ContentItem other)
         {
-            return Text.CompareTo(other.Text);
+            int comp1 = UiObjID.CompareTo(other.UiObjID);
+            return comp1 == 0 ? Text.CompareTo(other.Text) : comp1;
         }
     }
 }

@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaData
- * Summary  : Displayed event properties
+ * Summary  : Displayed event
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
@@ -26,16 +26,16 @@
 namespace Scada.Data.Models
 {
     /// <summary>
-    /// Displayed event properties
-    /// <para>Отображаемые свойства события</para>
+    /// Displayed event
+    /// <para>Отображаемое событие</para>
     /// </summary>
     /// <remarks>Свойства имеют короткие имена для передачи в формате JSON</remarks>
-    public class DispEventProps
+    public class DispEvent
     {
         /// <summary>
         /// Конструктор
         /// </summary>
-        public DispEventProps()
+        public DispEvent()
         {
             Num = 0;
             Time = "";
