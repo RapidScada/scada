@@ -136,17 +136,23 @@ namespace Scada.Web.Shell
 
             try
             {
-                // слияние меню плагинов
+                // очистка меню
                 MenuItems.Clear();
 
+                // слияние меню плагинов
                 if (userData.PluginSpecs != null)
                 {
                     foreach (PluginSpec pluginSpec in userData.PluginSpecs)
                         MergeMenuItems(MenuItems, pluginSpec.GetMenuItems(userData), 0);
                 }
 
-                // добавление пункта меню о системе
-                MenuItems.Add(MenuItem.FromStandardMenuItem(StandardMenuItems.About));
+                // добавление пунктов меню по умолчанию
+                List<MenuItem> defaultItems = new List<MenuItem>()
+                {
+                    MenuItem.FromStandardMenuItem(StandardMenuItems.Reports),
+                    MenuItem.FromStandardMenuItem(StandardMenuItems.About)
+                };
+                MergeMenuItems(MenuItems, defaultItems, 0);
             }
             catch (Exception ex)
             {

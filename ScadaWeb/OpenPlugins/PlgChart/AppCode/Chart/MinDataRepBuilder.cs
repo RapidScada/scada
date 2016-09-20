@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
-namespace Scada.Web.Chart
+namespace Scada.Web.Plugins.Chart
 {
     public class MinDataRepBuilder
     {

@@ -115,7 +115,8 @@ namespace Scada.Web.Shell
                                 reportItem.ReportSpec = reportSpec;
                             }
 
-                            ReportItems.Add(reportItem);
+                            if (!string.IsNullOrEmpty(reportItem.Text))
+                                ReportItems.Add(reportItem);
                         }
                         else if (uiObjProps.BaseUiType == UiObjProps.BaseUiTypes.DataWnd)
                         {
@@ -136,7 +137,8 @@ namespace Scada.Web.Shell
                                 dataWndItem.DataWndSpec = dataWndSpec;
                             }
 
-                            DataWndItems.Add(dataWndItem);
+                            if (!string.IsNullOrEmpty(dataWndItem.Text))
+                                DataWndItems.Add(dataWndItem);
                         }
                     }
                 }

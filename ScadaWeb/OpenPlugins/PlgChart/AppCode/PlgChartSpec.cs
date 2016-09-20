@@ -23,7 +23,7 @@
  * Modified : 2016
  */
 
-using Scada.Web.Chart;
+using Scada.Web.Plugins.Chart;
 using Scada.Web.Shell;
 using System.Collections.Generic;
 using System.IO;

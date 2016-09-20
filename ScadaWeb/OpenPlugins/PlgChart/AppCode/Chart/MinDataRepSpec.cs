@@ -23,9 +23,7 @@
  * Modified : 2016
  */
 
-using Scada.Web.Plugins;
-
-namespace Scada.Web.Chart
+namespace Scada.Web.Plugins.Chart
 {
     /// <summary>
     /// Minute data report specification
@@ -72,7 +70,7 @@ namespace Scada.Web.Chart
         /// <summary>
         /// Получить ссылку на страницу отчёта
         /// </summary>
-        public override string GetUrl(int uiObjID)
+        public override string GetUrl(int reportID)
         {
             return "~/plugins/Chart/MinDataRepParams.aspx";
         }
