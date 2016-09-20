@@ -23,7 +23,9 @@
  * Modified : 2016
  */
 
+using Scada.Web.Chart;
 using Scada.Web.Shell;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Scada.Web.Plugins
@@ -81,6 +83,17 @@ namespace Scada.Web.Plugins
             get
             {
                 return "0.0.0.1";
+            }
+        }
+
+        /// <summary>
+        /// Получить спецификации отчётов, которые реализуются плагином
+        /// </summary>
+        public override List<ReportSpec> ReportSpecs
+        {
+            get
+            {
+                return new List<ReportSpec>() { new MinDataRepSpec() };
             }
         }
 

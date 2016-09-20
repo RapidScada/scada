@@ -50,7 +50,7 @@ scada.view = {
 
 
     // Events data window code
-    _EVENTS_WND_CODE: "Events",
+    _EVENTS_WND_CODE: "EventsWnd",
 
     // Page title just after loading
     initialPageTitle: "",

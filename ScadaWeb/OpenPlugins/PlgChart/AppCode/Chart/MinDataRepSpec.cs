@@ -15,46 +15,50 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : PlgTable
- * Summary  : Events data window specification
+ * Module   : PlgChart
+ * Summary  : Minute data report specification
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
  * Modified : 2016
  */
 
-namespace Scada.Web.Plugins.Table
+using Scada.Web.Plugins;
+
+namespace Scada.Web.Chart
 {
     /// <summary>
-    /// Events data window specification
-    /// <para>Спецификация окна данных для отображения событий</para>
+    /// Minute data report specification
+    /// <para>Спецификация отчёта минутных данных</para>
     /// </summary>
-    public class EventsWndSpec : DataWndSpec
+    public class MinDataRepSpec : ReportSpec
     {
         /// <summary>
-        /// Получить код типа окна данных
+        /// Получить код типа отчёта
         /// </summary>
         public override string TypeCode
         {
             get
             {
-                return "EventsWnd";
+                return "MinDataRep";
             }
         }
 
         /// <summary>
-        /// Получить наименование окна данных
+        /// Получить наименование отчёта
         /// </summary>
         public override string Name
         {
             get
             {
-                return PlgPhrases.EventsTitle;
+                return Localization.UseRussian ? 
+                    "Минутные данные" : 
+                    "Minute data";
             }
         }
-
+        
         /// <summary>
-        /// Получить признак, что окно данных доступно всем ролям и не требует назначения прав
+        /// Получить признак, что отчёт доступен всем ролям и не требует назначения прав
         /// </summary>
         public override bool ForEveryone
         {
@@ -64,24 +68,13 @@ namespace Scada.Web.Plugins.Table
             }
         }
 
-        /// <summary>
-        /// Получить признак, что содержимое окна зависит от текущего представления
-        /// </summary>
-        public override bool DependsOnView
-        {
-            get
-            {
-                return true;
-            }
-        }
-
 
         /// <summary>
-        /// Получить ссылку на окно данных с заданным идентификатором
+        /// Получить ссылку на страницу отчёта
         /// </summary>
-        public override string GetUrl(int dataWndID)
+        public override string GetUrl(int uiObjID)
         {
-            return "~/plugins/Table/Events.aspx";
+            return "~/plugins/Chart/MinDataRepParams.aspx";
         }
     }
 }

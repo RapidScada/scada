@@ -158,7 +158,7 @@ namespace Scada.Data.Models
             string typeCode = sepInd >= 0 ? s.Substring(sepInd + 1).Trim() : "";
             BaseUiTypes baseUiType = BaseUiTypes.View;
 
-            if (typeCode.EndsWith("Report", StringComparison.Ordinal))
+            if (typeCode.EndsWith("Rep", StringComparison.Ordinal))
             {
                 baseUiType = BaseUiTypes.Report;
             }

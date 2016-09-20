@@ -103,7 +103,7 @@ namespace Scada.Web.Plugins
         {
             get
             {
-                return new List<DataWndSpec>() { new EventsWndSpec(), new SampleWndSpec() };
+                return new List<DataWndSpec>() { new EventsWndSpec()/*, new SampleWndSpec()*/ };
             }
         }
 
