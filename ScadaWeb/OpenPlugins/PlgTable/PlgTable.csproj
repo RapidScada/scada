@@ -117,6 +117,8 @@
     </Content>
     <Content Include="plugins\Table\EventAck.aspx" />
     <Content Include="plugins\Table\Events.aspx" />
+    <Content Include="plugins\Table\EventsRepOut.aspx" />
+    <Content Include="plugins\Table\HourDataRepOut.aspx" />
     <Content Include="plugins\Table\images\quantityicons\clock.png" />
     <Content Include="plugins\Table\images\quantityicons\fire.png" />
     <Content Include="plugins\Table\images\quantityicons\lamp.png" />
@@ -165,6 +167,20 @@
     <Compile Include="plugins\Table\Events.aspx.designer.cs">
       <DependentUpon>Events.aspx</DependentUpon>
     </Compile>
+    <Compile Include="plugins\Table\EventsRepOut.aspx.cs">
+      <DependentUpon>EventsRepOut.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="plugins\Table\EventsRepOut.aspx.designer.cs">
+      <DependentUpon>EventsRepOut.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="plugins\Table\HourDataRepOut.aspx.cs">
+      <DependentUpon>HourDataRepOut.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="plugins\Table\HourDataRepOut.aspx.designer.cs">
+      <DependentUpon>HourDataRepOut.aspx</DependentUpon>
+    </Compile>
     <Compile Include="plugins\Table\Table.aspx.cs">
       <DependentUpon>Table.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -203,6 +219,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="log\" />
+    <Folder Include="plugins\Table\templates\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
