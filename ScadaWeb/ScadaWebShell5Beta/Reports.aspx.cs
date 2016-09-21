@@ -23,6 +23,7 @@
  * Modified : 2016
  */
 
+using Scada.UI;
 using System;
 
 namespace Scada.Web
@@ -35,7 +36,17 @@ namespace Scada.Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            // перевод веб-страницы
+            Translator.TranslatePage(this, "Scada.Web.WFrmReports");
 
+            // установка источника данных для списка отчётов
+            UserData userData = UserData.GetUserData();
+            if (userData.UserContent != null && userData.UserContent.ReportItems.Count > 0)
+            {
+                repReports.DataSource = userData.UserContent.ReportItems;
+                repReports.DataBind();
+                lblNoReports.Visible = false;
+            }
         }
     }
 }

@@ -62,6 +62,11 @@
     <Phrase key="this">No View - Rapid SCADA</Phrase>
     <Phrase key="lblViewNotExist">The requested view does not exist or you have insufficient rights to access it.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.WFrmReports">
+    <Phrase key="this">Reports - Rapid SCADA</Phrase>
+    <Phrase key="lblTitle">Available Reports</Phrase>
+    <Phrase key="lblNoReports">No reports available</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.WFrmUser">
     <Phrase key="this">User Profile - Rapid SCADA</Phrase>
     <Phrase key="lblTitle">User Profile</Phrase>

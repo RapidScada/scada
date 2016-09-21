@@ -1,4 +1,6 @@
-﻿#divMainContent {
+﻿@import "globalvar.less";
+
+#divMainContent {
     padding: 20px;
     font-size: 14px;
 }
@@ -22,4 +24,12 @@ h1, h2, h3 {
 
 h1:first-child {
     margin-top: 0;
+}
+
+a {
+    color: @link-fore-color;
+}
+
+a:hover {
+    color: @link-hover-fore-color;
 }

@@ -20,3 +20,9 @@ h3 {
 h1:first-child {
   margin-top: 0;
 }
+a {
+  color: #0073aa;
+}
+a:hover {
+  color: #00a0d2;
+}

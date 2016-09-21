@@ -152,6 +152,12 @@
     <Content Include="css\controls\treeview.min.css">
       <DependentUpon>treeview.css</DependentUpon>
     </Content>
+    <Content Include="css\reports.css">
+      <DependentUpon>reports.less</DependentUpon>
+    </Content>
+    <Content Include="css\reports.min.css">
+      <DependentUpon>reports.css</DependentUpon>
+    </Content>
     <Content Include="css\user.css">
       <DependentUpon>user.less</DependentUpon>
     </Content>
@@ -366,6 +372,7 @@
     <Content Include="css\view.less" />
     <Content Include="css\noview.less" />
     <Content Include="css\user.less" />
+    <Content Include="css\reports.less" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
