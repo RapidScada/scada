@@ -38,6 +38,19 @@ namespace Scada.Web.Plugins.Table
             SetToDefault();
         }
 
+        // Словарь Scada.Web.Plugins.Table.EventsRepBuilder
+        public static string EventsWorksheet { get; private set; }
+        public static string AllEventsTitle { get; private set; }
+        public static string EventsByViewTitle { get; private set; }
+        public static string GenCaption { get; private set; }
+        public static string NumCol { get; private set; }
+        public static string TimeCol { get; private set; }
+        public static string ObjCol { get; private set; }
+        public static string DevCol { get; private set; }
+        public static string CnlCol { get; private set; }
+        public static string TextCol { get; private set; }
+        public static string AckCol { get; private set; }
+
         // Словарь Scada.Web.Plugins.Table.EventsWndSpec
         public static string EventsTitle { get; private set; }
 
@@ -60,6 +73,18 @@ namespace Scada.Web.Plugins.Table
 
         private static void SetToDefault()
         {
+            EventsWorksheet = Localization.Dict.GetEmptyPhrase("EventsWorksheet");
+            AllEventsTitle = Localization.Dict.GetEmptyPhrase("AllEventsTitle");
+            EventsByViewTitle = Localization.Dict.GetEmptyPhrase("EventsByViewTitle");
+            GenCaption = Localization.Dict.GetEmptyPhrase("GenCaption");
+            NumCol = Localization.Dict.GetEmptyPhrase("NumCol");
+            TimeCol = Localization.Dict.GetEmptyPhrase("TimeCol");
+            ObjCol = Localization.Dict.GetEmptyPhrase("ObjCol");
+            DevCol = Localization.Dict.GetEmptyPhrase("DevCol");
+            CnlCol = Localization.Dict.GetEmptyPhrase("CnlCol");
+            TextCol = Localization.Dict.GetEmptyPhrase("TextCol");
+            AckCol = Localization.Dict.GetEmptyPhrase("AckCol");
+
             EventsTitle = Localization.Dict.GetEmptyPhrase("EventsTitle");
 
             LoadTableViewError = Localization.Dict.GetEmptyPhrase("LoadTableViewError");
@@ -81,6 +106,21 @@ namespace Scada.Web.Plugins.Table
         public static void Init()
         {
             Localization.Dict dict;
+            if (Localization.Dictionaries.TryGetValue("Scada.Web.Plugins.Table.EventsRepBuilder", out dict))
+            {
+                EventsWorksheet = dict.GetPhrase("EventsWorksheet", EventsWorksheet);
+                AllEventsTitle = dict.GetPhrase("AllEventsTitle", AllEventsTitle);
+                EventsByViewTitle = dict.GetPhrase("EventsByViewTitle", EventsByViewTitle);
+                GenCaption = dict.GetPhrase("GenCaption", GenCaption);
+                NumCol = dict.GetPhrase("NumCol", NumCol);
+                TimeCol = dict.GetPhrase("TimeCol", TimeCol);
+                ObjCol = dict.GetPhrase("ObjCol", ObjCol);
+                DevCol = dict.GetPhrase("DevCol", DevCol);
+                CnlCol = dict.GetPhrase("CnlCol", CnlCol);
+                TextCol = dict.GetPhrase("TextCol", TextCol);
+                AckCol = dict.GetPhrase("AckCol", AckCol);
+            }
+
             if (Localization.Dictionaries.TryGetValue("Scada.Web.Plugins.Table.EventsWndSpec", out dict))
             {
                 EventsTitle = dict.GetPhrase("EventsTitle", EventsTitle);

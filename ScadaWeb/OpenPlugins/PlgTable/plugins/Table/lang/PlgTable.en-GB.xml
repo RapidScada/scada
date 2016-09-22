@@ -1,5 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PlgTableDictionaries>
+  <Dictionary key="Scada.Web.Plugins.Table.EventsRepBuilder">
+    <Phrase key="EventsWorksheet">Events</Phrase>
+    <Phrase key="AllEventsTitle">All Events, {0}</Phrase>
+    <Phrase key="EventsByViewTitle">{0}, {1}</Phrase>
+    <Phrase key="GenCaption">Generated </Phrase>
+    <Phrase key="NumCol">Number</Phrase>
+    <Phrase key="TimeCol">Date and Time</Phrase>
+    <Phrase key="ObjCol">Object</Phrase>
+    <Phrase key="DevCol">Device</Phrase>
+    <Phrase key="CnlCol">Channel</Phrase>
+    <Phrase key="TextCol">Description</Phrase>
+    <Phrase key="AckCol">Ack</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.EventsWndSpec">
     <Phrase key="EventsTitle">Events</Phrase>
   </Dictionary>

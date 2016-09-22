@@ -25,8 +25,9 @@
     <Phrase key="cancel">Cancel</Phrase>
     <Phrase key="close">Close</Phrase>
   </Dictionary>
-  <Dictionary key="Scada.Web.RepUtils">
+  <Dictionary key="Scada.Web.Report">
     <Phrase key="GenReport">Generate &quot;{0}&quot; report by the user {1}</Phrase>
+    <Phrase key="IncorrectRepTemplate">Incorrect report template.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.ViewSettings">
     <Phrase key="LoadViewSettingsError">Error loading view settings</Phrase>

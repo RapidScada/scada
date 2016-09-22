@@ -34,9 +34,9 @@
     <div id="divNotif" class="notifier">
     </div>
     <div id="divToolbar"><span 
-        id="spanDate" class="tool-ctrl"><input id="txtDate" type="text" autocomplete="off" /><i class="fa fa-calendar" aria-hidden="true"></i></span><span 
+        id="spanDate" class="tool-ctrl"><input id="txtDate" type="text" autocomplete="off" /><i class="fa fa-calendar"></i></span><span 
         id="spanTime" class="tool-ctrl"><%= selTimeFromHtml %> - <%= selTimeToHtml %></span><span 
-        id="spanExportBtn" class="tool-btn not-implemented"><i class="fa fa-print" aria-hidden="true"></i></span><div id="divDebugTools"><span 
+        id="spanExportBtn" class="tool-btn no-ios"><i class="fa fa-print"></i></span><div id="divDebugTools"><span 
             id="spanTitleChangedBtn" class="tool-btn">TitleChanged</span><span 
             id="spanNavigateBtn" class="tool-btn">Navigate</span><span 
             id="spanDateChangedBtn" class="tool-btn">DateChanged</span>

@@ -24,6 +24,7 @@
  */
 
 using Scada.Client;
+using Scada.Data.Models;
 using Scada.Data.Tables;
 using System;
 using System.Collections.Generic;
@@ -38,28 +39,31 @@ namespace Scada.Web.Plugins.Table
     /// </summary>
     public class EventsRepBuilder : ExcelRepBuilder
     {
-        /*
-        private BaseView baseView;            // представление, по которому генерируется отчёт
-        private TableView tableView;          // представление, приведённое к типу табличного представления
-        private DateTime date;                // дата запрашиваемых данных
-        private int eventOut;                 // тип вывода событий
-        private DateTime genDT;               // дата и время генерации отчёта
+        private DataAccess dataAccess; // объект для доступа к данным
 
-        private Row templItemRow;             // строка-шаблон элемента таблицы часовых срезов
-        private Row templEventRow;            // строка-шаблон таблицы событий
+        private BaseView view;         // представление, по которому генерируется отчёт
+        private DateTime date;         // дата запрашиваемых данных
 
-        private SrezTableLight hourTable;     // таблица часовых срезов
-        private EventTableLight eventTable;   // таблица событий
-        private TableView.Item item;          // обрабатываемый элемент представления
-        private MainData.EventView eventView; // обрабатываемое событие
-        */
+        private Row eventRowTemplate;  // строка-шаблон таблицы событий
+        private DispEvent dispEvent;   // событие для вывода в отчёт
+
 
         /// <summary>
         /// Конструктор
         /// </summary>
-        public EventsRepBuilder()
+        public EventsRepBuilder(DataAccess dataAccess)
             : base()
         {
+            if (dataAccess == null)
+                throw new ArgumentNullException("dataAccess");
+
+            this.dataAccess = dataAccess;
+
+            view = null;
+            date = DateTime.MinValue;
+
+            eventRowTemplate = null;
+            dispEvent = null;
         }
 
 
@@ -90,19 +94,13 @@ namespace Scada.Web.Plugins.Table
 
         /// <summary>
         /// Установить параметры отчёта.
-        /// repParams[0] - табличное представление типа TableView,
-        /// repParams[1] - дата запрашиваемых данных типа DateTime,
-        /// repParams[2] - вывод событий типа int: 0 и меньше - не выводить, 1 - все события, иначе - по представлению
+        /// repParams[0] - представление типа BaseView,
+        /// repParams[1] - дата запрашиваемых данных типа DateTime
         /// </summary>
         public override void SetParams(params object[] repParams)
         {
-            /*baseView = (BaseView)repParams[0];
-            tableView = baseView as TableView;
+            view = (BaseView)repParams[0];
             date = (DateTime)repParams[1];
-            eventOut = (int)repParams[2];
-
-            if (tableView == null && eventOut <= 0)
-                throw new Exception(WebPhrases.NoReportData);*/
         }
 
 
@@ -111,22 +109,8 @@ namespace Scada.Web.Plugins.Table
         /// </summary>
         protected override void StartXmlDocProc()
         {
-            /*genDT = DateTime.Now;
-
-            if (tableView == null)
-                hourTable = null;
-            else
-                AppData.MainData.RefreshData(date, out hourTable);
-
-            if (eventOut <= 0)
-                eventTable = null;
-            else
-                AppData.MainData.RefreshEvents(date, out eventTable);
-
-            templItemRow = null;
-            templEventRow = null;
-            item = null;
-            eventView = null;*/
+            eventRowTemplate = null;
+            dispEvent = null;
         }
 
         /// <summary>
@@ -134,88 +118,38 @@ namespace Scada.Web.Plugins.Table
         /// </summary>
         protected override void FinalXmlDocProc()
         {
-            /*int hourDataWsInd = 0; // индекс листа часовых срезов
-            int eventsWsInd = 1;   // индекс листа событий
-            bool hourDataWsExists = workbook != null && workbook.Worksheets.Count > hourDataWsInd;
-            bool eventsWsExists = workbook != null && workbook.Worksheets.Count > eventsWsInd;
+            // проверка шаблона
+            if (workbook.Worksheets.Count == 0 || eventRowTemplate == null)
+                throw new Exception(WebPhrases.IncorrectRepTemplate);
 
-            // работа с листом часовых срезов
-            if (tableView == null)
+            // перевод наименования листа
+            workbook.Worksheets[0].Name = PlgPhrases.EventsWorksheet;
+
+            // удаление лишних атрибутов таблицы
+            Table table = eventRowTemplate.ParentTable;
+            table.RemoveTableNodeAttrs();
+
+            // удаление строки-шаблона
+            int eventRowIndex = table.Rows.IndexOf(eventRowTemplate);
+            table.RemoveRow(eventRowIndex);
+
+            // выбор событий
+            EventTableLight tblEvent = dataAccess.DataCache.GetEventTable(date);
+            List<EventTableLight.Event> events = view == null ?
+                tblEvent.AllEvents :
+                tblEvent.GetFilteredEvents(new EventTableLight.EventFilter(
+                    EventTableLight.EventFilters.Cnls) { CnlNums = view.CnlSet });
+
+            // вывод событий в отчёт
+            DataFormatter dataFormatter = new DataFormatter();
+
+            foreach (EventTableLight.Event ev in events)
             {
-                // удаление листа часовых срезов
-                if (hourDataWsExists)
-                {
-                    workbook.RemoveWorksheet(hourDataWsInd);
-                    eventsWsInd--;
-                }
+                dispEvent = dataAccess.GetDispEvent(ev, dataFormatter);
+                Row newRow = eventRowTemplate.Clone();
+                ExcelProc(newRow);
+                table.AppendRow(newRow);
             }
-            else
-            {
-                // перевод наименования листа
-                if (hourDataWsExists)
-                    workbook.Worksheets[hourDataWsInd].Name = WebPhrases.HourDataPage;
-
-                if (templItemRow != null)
-                {
-                    // удаление лишних атрибутов таблицы
-                    Table table = templItemRow.ParentTable;
-                    table.RemoveTableNodeAttrs();
-
-                    // заполнение таблицы часовых срезов
-                    for (int i = 0; i < tableView.VisibleCount; i++)
-                    {
-                        item = tableView.VisibleItems[i];
-                        Row rowClone = templItemRow.Clone();
-                        ExcelProc(rowClone);
-                        table.AppendRow(rowClone);
-                    }
-                    item = null;
-
-                    // удаление строки-шаблона
-                    int rowIndex = table.Rows.IndexOf(templItemRow);
-                    table.RemoveRow(rowIndex);
-                }
-            }
-
-            // работа с листом событий
-            if (eventOut <= 0)
-            {
-                // удаление листа событий
-                if (eventsWsExists)
-                    workbook.RemoveWorksheet(eventsWsInd);
-            }
-            else
-            {
-                // перевод наименования листа
-                if (eventsWsExists)
-                    workbook.Worksheets[eventsWsInd].Name = WebPhrases.EventsPage;
-
-                if (templEventRow != null)
-                {
-                    // удаление лишних атрибутов таблицы
-                    Table table = templEventRow.ParentTable;
-                    table.RemoveTableNodeAttrs();
-
-                    // выбор событий
-                    List<MainData.EventView> eventViewList =
-                        AppData.MainData.ConvertEvents(eventOut == 1 ?
-                            AppData.MainData.GetEvents(eventTable, null) :
-                            AppData.MainData.GetEvents(eventTable, baseView.CnlList));
-
-                    // заполнение таблицы событий
-                    for (int i = 0; i < eventViewList.Count; i++)
-                    {
-                        eventView = eventViewList[i];
-                        Row rowClone = templEventRow.Clone();
-                        ExcelProc(rowClone);
-                        table.AppendRow(rowClone);
-                    }
-
-                    // удаление строки-шаблона
-                    int rowIndex = table.Rows.IndexOf(templEventRow);
-                    table.RemoveRow(rowIndex);
-                }
-            }*/
         }
 
         /// <summary>
@@ -223,124 +157,69 @@ namespace Scada.Web.Plugins.Table
         /// </summary>
         protected override void ProcVal(Cell cell, string valName)
         {
-            /*XmlNode dataNode = cell.DataNode;
+            string nodeText = null;
 
-            if (valName == "HourDataPage")
+            if (valName == "Title")
             {
-                dataNode.InnerText = WebPhrases.HourDataPage;
+                nodeText = view == null ?
+                    string.Format(PlgPhrases.AllEventsTitle, date.ToLocalizedDateString()) :
+                    string.Format(PlgPhrases.EventsByViewTitle, view.Title, date.ToLocalizedDateString());
             }
-            else if (valName == "HourDataTitle")
+            else if (valName == "Gen")
             {
-                dataNode.InnerText = string.Format(WebPhrases.HourDataTitle, date.ToString("d", Localization.Culture),
-                    baseView.Title, genDT.ToString("d", Localization.Culture));
-            }
-            else if (valName == "ItemCol")
-            {
-                dataNode.InnerText = WebPhrases.ItemColumn;
-            }
-            else if (valName == "EventsPage")
-            {
-                dataNode.InnerText = WebPhrases.EventsPage;
-            }
-            else if (valName == "EventsTitle")
-            {
-                string dateStr = date.ToString("d", Localization.Culture);
-                string genDTStr = genDT.ToString("d", Localization.Culture);
-                dataNode.InnerText = eventOut <= 1 ?
-                    string.Format(WebPhrases.AllEventsTitle, dateStr, genDTStr) :
-                    string.Format(WebPhrases.EventsByViewTitle, dateStr, baseView.Title, genDTStr);
+                nodeText = PlgPhrases.GenCaption + DateTime.Now.ToLocalizedString();
             }
             else if (valName == "NumCol")
             {
-                dataNode.InnerText = WebPhrases.NumColumn;
-            }
-            else if (valName == "DateCol")
-            {
-                dataNode.InnerText = WebPhrases.DateColumn;
+                nodeText = PlgPhrases.NumCol;
             }
             else if (valName == "TimeCol")
             {
-                dataNode.InnerText = WebPhrases.TimeColumn;
+                nodeText = PlgPhrases.TimeCol;
             }
             else if (valName == "ObjCol")
             {
-                dataNode.InnerText = WebPhrases.ObjColumn;
+                nodeText = PlgPhrases.ObjCol;
             }
-            else if (valName == "KPCol")
+            else if (valName == "DevCol")
             {
-                dataNode.InnerText = WebPhrases.KPColumn;
+                nodeText = PlgPhrases.DevCol;
             }
             else if (valName == "CnlCol")
             {
-                dataNode.InnerText = WebPhrases.CnlColumn;
+                nodeText = PlgPhrases.CnlCol;
             }
-            else if (valName == "EvCol")
+            else if (valName == "TextCol")
             {
-                dataNode.InnerText = WebPhrases.EventColumn;
+                nodeText = PlgPhrases.TextCol;
             }
-            else if (valName == "ChkCol")
+            else if (valName == "AckCol")
             {
-                dataNode.InnerText = WebPhrases.CheckColumn;
+                nodeText = PlgPhrases.AckCol;
             }
-            else if (item != null)
-            {
-                if (valName == "Name")
-                {
-                    dataNode.InnerText = item.Caption;
-                }
-                else if (valName.Length >= 2 && valName[0] == 'h')
-                {
-                    int hour = -1;
-                    try { hour = int.Parse(valName.Substring(1)); }
-                    catch { }
-
-                    int cnlNum = item.CnlNum;
-                    if (hour >= 0 && cnlNum > 0)
-                    {
-                        DateTime dateTime = date.AddHours(hour);
-                        double val;
-                        int stat;
-                        bool isNumber;
-                        string color;
-
-                        AppData.MainData.GetHourData(hourTable, cnlNum, dateTime, out val, out stat);
-                        InCnlProps cnlProps = AppData.MainData.GetCnlProps(cnlNum);
-                        dataNode.InnerText = AppData.MainData.FormatCnlVal(val, stat, cnlProps, false, false,
-                            dateTime, genDT, out isNumber, out color, ".", "");
-
-                        if (isNumber)
-                            dataNode.Attributes["ss:Type"].Value = "Number";
-                    }
-                    else
-                    {
-                        dataNode.InnerText = "";
-                    }
-                }
-            }
-            else if (eventView != null)
+            else if (dispEvent != null)
             {
                 if (valName == "Num")
                 {
-                    dataNode.InnerText = eventView.Num;
-                    dataNode.Attributes["ss:Type"].Value = "Number";
+                    nodeText = dispEvent.Num.ToString();
+                    cell.SetNumberType();
                 }
-                else if (valName == "Date")
-                    dataNode.InnerText = eventView.Date;
                 else if (valName == "Time")
-                    dataNode.InnerText = eventView.Time;
+                    nodeText = dispEvent.Time;
                 else if (valName == "Obj")
-                    dataNode.InnerText = eventView.Obj;
-                else if (valName == "KP")
-                    dataNode.InnerText = eventView.KP;
+                    nodeText = dispEvent.Obj;
+                else if (valName == "Dev")
+                    nodeText = dispEvent.KP;
                 else if (valName == "Cnl")
-                    dataNode.InnerText = eventView.Cnl;
-                else if (valName == "Ev")
-                    dataNode.InnerText = eventView.Text;
-                else if (valName == "Chk")
-                    dataNode.InnerText = eventView.User;
-                else
-                    dataNode.InnerText = "";
-            }*/
+                    nodeText = dispEvent.Cnl;
+                else if (valName == "Text")
+                    nodeText = dispEvent.Text;
+                else if (valName == "Ack")
+                    nodeText = dispEvent.Ack;
+            }
+
+            if (nodeText != null)
+                cell.DataNode.InnerText = nodeText;
         }
 
         /// <summary>
@@ -350,10 +229,8 @@ namespace Scada.Web.Plugins.Table
         /// <param name="rowName">Имя строки, заданное директивой</param>
         protected override void ProcRow(Cell cell, string rowName)
         {
-            /*if (rowName == "Item")
-                templItemRow = cell.ParentRow;
-            else if (rowName == "Event")
-                templEventRow = cell.ParentRow;*/
+            if (rowName == "Event")
+                eventRowTemplate = cell.ParentRow;
         }
     }
 }

@@ -8,9 +8,6 @@
   overflow: hidden;
 }
 .hidden {
-  display: none;
-}
-.not-implemented {
   display: none !important;
 }
 /* Toolbar */

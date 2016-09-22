@@ -23,6 +23,7 @@
  * Modified : 2016
  */
 
+using Scada.Client;
 using System;
 using Utils.Report;
 
@@ -42,21 +43,34 @@ namespace Scada.Web.Plugins.Table
             // получение ид. представления из параметров запроса
             int viewID;
             int.TryParse(Request.QueryString["viewID"], out viewID);
+            bool eventsByView = viewID > 0;
 
             // проверка прав
             if (!(userData.LoggedOn && (userData.UserRights.ViewAllRight ||
-                viewID > 0 && userData.UserRights.GetUiObjRights(viewID).ViewRight)))
+                eventsByView && userData.UserRights.GetUiObjRights(viewID).ViewRight)))
                 throw new ScadaException(CommonPhrases.NoRights);
+
+            // загрузка представления
+            BaseView view;
+            if (eventsByView)
+            {
+                Type viewType = userData.UserViews.GetViewType(viewID);
+                view = appData.ViewCache.GetView(viewType, viewID, true);
+            }
+            else
+            {
+                view = null;
+            }
 
             // получение даты запрашиваемых событий
             DateTime reqDate = WebUtils.GetDateFromQueryString(Request);
 
             // генерация отчёта
-            RepBuilder repBuilder = new EventsRepBuilder();
+            RepBuilder repBuilder = new EventsRepBuilder(appData.DataAccess);
             RepUtils.WriteGenerationAction(appData.Log, repBuilder, userData);
             RepUtils.GenerateReport(
                 repBuilder, 
-                new object[] { viewID, reqDate }, 
+                new object[] { view, reqDate }, 
                 Server.MapPath("~/plugins/Table/templates/"), 
                 RepUtils.BuildFileName("Events", "xml"), 
                 Response);

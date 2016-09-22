@@ -77,6 +77,13 @@ function saveEventFilter() {
     localStorage.setItem("Table.EventsByView", eventsByView);
 }
 
+// Export events to Excel
+function exportEvents() {
+    var exportUrl = "EventsRepOut.aspx?" + scada.utils.dateToQueryString(viewDate) +
+        (eventsByView ? "&viewID=" + viewID : "");
+    window.open(exportUrl);
+}
+
 // Play a sound if a new event is received
 function playEventBeep() {
     $("#audEvent")[0].play();
@@ -345,7 +352,7 @@ function restartUpdatingEvents() {
 
 $(document).ready(function () {
     scada.clientAPI.rootPath = "../../";
-    scada.utils.styleIOS($("#divTblWrapper"), true);
+    styleIOS();
     updateLayout();
     initViewDate();
     initControls();
@@ -392,7 +399,7 @@ $(document).ready(function () {
 
     // export events on the button click
     $("#spanExportBtn").click(function () {
-        alert("Export is not implemented yet.");
+        exportEvents();
     });
 
     // register the activity time
