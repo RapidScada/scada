@@ -81,7 +81,7 @@ function saveEventFilter() {
 function exportEvents() {
     var exportUrl = "EventsRepOut.aspx?" + scada.utils.dateToQueryString(viewDate) +
         (eventsByView ? "&viewID=" + viewID : "");
-    window.open(exportUrl);
+    window.location = exportUrl;
 }
 
 // Play a sound if a new event is received
