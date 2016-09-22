@@ -43,10 +43,22 @@ namespace Utils.Report
         /// </summary>
         protected class Workbook
         {
-            protected XmlNode node;                     // ссылка на XML-узел, соответствующий книге Excel
-            protected XmlNode stylesNode;               // ссылка на XML-узел, содержащий стили книги Excel
-            protected SortedList<string, Style> styles; // список стилей книги Excel с возможностью доступа по ID стиля
-            protected List<Worksheet> worksheets;       // список листов книги Excel
+            /// <summary>
+            /// Ссылка на XML-узел, соответствующий книге Excel
+            /// </summary>
+            protected XmlNode node;
+            /// <summary>
+            /// Ссылка на XML-узел, содержащий стили книги Excel
+            /// </summary>
+            protected XmlNode stylesNode;
+            /// <summary>
+            /// Список стилей книги Excel с возможностью доступа по ID стиля
+            /// </summary>
+            protected SortedList<string, Style> styles;
+            /// <summary>
+            /// Список листов книги Excel
+            /// </summary>
+            protected List<Worksheet> worksheets;
 
 
             /// <summary>
@@ -266,8 +278,14 @@ namespace Utils.Report
         /// </summary>
         protected class Style
         {
-            protected XmlNode node; // ссылка на XML-узел, соответствующий стилю книги Excel
-            protected string id;    // идентификатор стиля
+            /// <summary>
+            /// Ссылка на XML-узел, соответствующий стилю книги Excel
+            /// </summary>
+            protected XmlNode node;
+            /// <summary>
+            /// Идентификатор стиля
+            /// </summary>
+            protected string id;
 
 
             /// <summary>
@@ -331,10 +349,22 @@ namespace Utils.Report
         /// </summary>
         protected class Worksheet
         {
-            protected XmlNode node;            // ссылка на XML-узел, соответствующий листу книги Excel
-            protected string name;             // имя листа
-            protected Table table;             // таблица с содержимым листа
-            protected Workbook parentWorkbook; // родительский книга данного листа
+            /// <summary>
+            /// Ссылка на XML-узел, соответствующий листу книги Excel
+            /// </summary>
+            protected XmlNode node;
+            /// <summary>
+            /// Имя листа
+            /// </summary>
+            protected string name;
+            /// <summary>
+            /// Таблица с содержимым листа
+            /// </summary>
+            protected Table table;
+            /// <summary>
+            /// Родительская книга данного листа
+            /// </summary>
+            protected Workbook parentWorkbook;
 
 
             /// <summary>
@@ -441,10 +471,22 @@ namespace Utils.Report
         /// </summary>
         protected class Table
         {
-            protected XmlNode node;              // ссылка на XML-узел, соответствующий таблице листа Excel
-            protected List<Column> columns;      // список столбцов таблицы
-            protected List<Row> rows;            // список строк таблицы
-            protected Worksheet parentWorksheet; // родительский лист данной таблицы
+            /// <summary>
+            /// Ссылка на XML-узел, соответствующий таблице листа Excel
+            /// </summary>
+            protected XmlNode node;
+            /// <summary>
+            /// Список столбцов таблицы
+            /// </summary>
+            protected List<Column> columns;
+            /// <summary>
+            /// Список строк таблицы
+            /// </summary>
+            protected List<Row> rows;
+            /// <summary>
+            /// Родительский лист данной таблицы
+            /// </summary>
+            protected Worksheet parentWorksheet;
 
 
             /// <summary>
@@ -666,9 +708,18 @@ namespace Utils.Report
         /// </summary>
         protected class Column
         {
-            protected XmlNode node;      // ссылка на XML-узел, соответствующий столбцу таблицы Excel
-            protected int index;         // индекс столбца, 0 - неопределён
-            protected Table parentTable; // родительская таблица данного столбца
+            /// <summary>
+            /// Ссылка на XML-узел, соответствующий столбцу таблицы Excel
+            /// </summary>
+            protected XmlNode node;
+            /// <summary>
+            /// Индекс столбца, 0 - неопределён
+            /// </summary>
+            protected int index;
+            /// <summary>
+            /// Родительская таблица данного столбца
+            /// </summary>
+            protected Table parentTable;
 
 
             /// <summary>
@@ -767,9 +818,18 @@ namespace Utils.Report
         /// </summary>
         protected class Row
         {
-            protected XmlNode node;      // ссылка на XML-узел, соответствующий строке таблицы Excel
-            protected List<Cell> cells;  // список ячеек строки
-            protected Table parentTable; // родительская таблица данной строки
+            /// <summary>
+            /// Ссылка на XML-узел, соответствующий строке таблицы Excel
+            /// </summary>
+            protected XmlNode node;
+            /// <summary>
+            /// Список ячеек строки
+            /// </summary>
+            protected List<Cell> cells;
+            /// <summary>
+            /// Родительская таблица данной строки
+            /// </summary>
+            protected Table parentTable;
 
 
             /// <summary>
@@ -958,10 +1018,22 @@ namespace Utils.Report
         /// </summary>
         protected class Cell
         {
-            protected XmlNode node;     // ссылка на XML-узел, соответствующий ячейке строки таблицы Excel
-            protected XmlNode dataNode; // ссылка на XML-узел, соответствующий данным ячейки
-            protected int index;        // индекс ячейки, 0 - неопределён
-            protected Row parentRow;    // родительская строка данной ячейки
+            /// <summary>
+            /// Ссылка на XML-узел, соответствующий ячейке строки таблицы Excel
+            /// </summary>
+            protected XmlNode node;
+            /// <summary>
+            /// Ссылка на XML-узел, соответствующий данным ячейки
+            /// </summary>
+            protected XmlNode dataNode;
+            /// <summary>
+            /// Индекс ячейки, 0 - неопределён
+            /// </summary>
+            protected int index;
+            /// <summary>
+            /// Родительская строка данной ячейки
+            /// </summary>
+            protected Row parentRow;
 
 
             /// <summary>
