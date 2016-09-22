@@ -34,6 +34,9 @@
     <Reference Include="Log">
       <HintPath>..\..\Log\bin\Release\Log.dll</HintPath>
     </Reference>
+    <Reference Include="RepBuilder">
+      <HintPath>..\..\Report\RepBuilder\bin\Release\RepBuilder.dll</HintPath>
+    </Reference>
     <Reference Include="ScadaData">
       <HintPath>..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
     </Reference>
@@ -57,6 +60,7 @@
     <Compile Include="Plugins\PluginSpec.cs" />
     <Compile Include="Plugins\ContentSpec.cs" />
     <Compile Include="Plugins\UiObjSpec.cs" />
+    <Compile Include="RepUtils.cs" />
     <Compile Include="Shell\ContentItem.cs" />
     <Compile Include="Shell\DataWndItem.cs" />
     <Compile Include="Shell\ReportItem.cs" />

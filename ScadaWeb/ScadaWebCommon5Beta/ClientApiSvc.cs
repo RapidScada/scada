@@ -171,7 +171,7 @@ namespace Scada.Web
         private BaseView GetViewFromCache(int viewID, UserRights userRights)
         {
             if (!userRights.GetUiObjRights(viewID).ViewRight)
-                throw new ScadaException(WebPhrases.NoRights);
+                throw new ScadaException(CommonPhrases.NoRights);
 
             return AppData.ViewCache.GetViewFromCache(viewID, true);
         }
@@ -184,7 +184,7 @@ namespace Scada.Web
             if (!string.IsNullOrWhiteSpace(cnlNums))
             {
                 if (!userRights.ViewAllRight)
-                    throw new ScadaException(WebPhrases.NoRights);
+                    throw new ScadaException(CommonPhrases.NoRights);
                 return WebUtils.QueryParamToIntSet(cnlNums);
             }
             else if (viewID > 0)
@@ -206,7 +206,7 @@ namespace Scada.Web
             if (!string.IsNullOrWhiteSpace(cnlNums))
             {
                 if (!userRights.ViewAllRight)
-                    throw new ScadaException(WebPhrases.NoRights);
+                    throw new ScadaException(CommonPhrases.NoRights);
                 return WebUtils.QueryParamToIntArray(cnlNums);
             }
             else if (viewID > 0)

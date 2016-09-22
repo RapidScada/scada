@@ -35,16 +35,12 @@ namespace Scada.Web.Plugins.Table
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            // отключение кэширования страницы
-            WebUtils.DisablePageCache(Response);
-
             // получение данных пользователя
             UserData userData = UserData.GetUserData();
 
             // проверка входа в систему
             if (!userData.LoggedOn)
                 throw new ScadaException(CommonPhrases.NoRights);
-            throw new ScadaException(WebPhrases.NoRights);
         }
     }
 }

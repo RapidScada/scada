@@ -45,8 +45,10 @@ namespace Scada.Web
         // Словарь Scada.Web.AppData
         public static string ServerUnavailable { get; private set; }
         public static string WrongPassword { get; private set; }
-        public static string NoRights { get; private set; }
         public static string IllegalRole { get; private set; }
+
+        // Словарь Scada.Web.RepUtils
+        public static string GenReport { get; private set; }
 
         // Словарь Scada.Web.ViewSettings
         public static string LoadViewSettingsError { get; private set; }
@@ -77,8 +79,9 @@ namespace Scada.Web
 
             ServerUnavailable = Localization.Dict.GetEmptyPhrase("ServerUnavailable");
             WrongPassword = Localization.Dict.GetEmptyPhrase("WrongPassword");
-            NoRights = Localization.Dict.GetEmptyPhrase("NoRights");
             IllegalRole = Localization.Dict.GetEmptyPhrase("IllegalRole");
+
+            GenReport = Localization.Dict.GetEmptyPhrase("GenReport");
 
             LoadViewSettingsError = Localization.Dict.GetEmptyPhrase("LoadViewSettingsError");
             SaveViewSettingsError = Localization.Dict.GetEmptyPhrase("SaveViewSettingsError");
@@ -111,8 +114,12 @@ namespace Scada.Web
             {
                 ServerUnavailable = dict.GetPhrase("ServerUnavailable", ServerUnavailable);
                 WrongPassword = dict.GetPhrase("WrongPassword", WrongPassword);
-                NoRights = dict.GetPhrase("NoRights", NoRights);
                 IllegalRole = dict.GetPhrase("IllegalRole", IllegalRole);
+            }
+
+            if (Localization.Dictionaries.TryGetValue("Scada.Web.RepUtils", out dict))
+            {
+                GenReport = dict.GetPhrase("GenReport", GenReport);
             }
 
             if (Localization.Dictionaries.TryGetValue("Scada.Web.ViewSettings", out dict))

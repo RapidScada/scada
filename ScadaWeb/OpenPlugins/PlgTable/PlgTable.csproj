@@ -42,6 +42,9 @@
     <Reference Include="Log">
       <HintPath>..\..\..\Log\bin\Release\Log.dll</HintPath>
     </Reference>
+    <Reference Include="RepBuilder">
+      <HintPath>..\..\..\Report\RepBuilder\bin\Release\RepBuilder.dll</HintPath>
+    </Reference>
     <Reference Include="ScadaData">
       <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
     </Reference>
@@ -137,9 +140,12 @@
     <Content Include="plugins\Table\lang\PlgTable.en-GB.xml" />
     <Content Include="plugins\Table\sounds\event.mp3" />
     <Content Include="plugins\Table\Table.aspx" />
+    <Content Include="plugins\Table\templates\EventsRep.xml" />
+    <Content Include="plugins\Table\templates\HourDataRep.xml" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppCode\Table\EventsRepBuilder.cs" />
     <Compile Include="AppCode\Table\SampleWndSpec.cs" />
     <Compile Include="AppCode\Table\EventsWndSpec.cs" />
     <Compile Include="AppCode\Table\PlgPhrases.cs" />
@@ -219,7 +225,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="log\" />
-    <Folder Include="plugins\Table\templates\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

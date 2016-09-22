@@ -211,7 +211,7 @@ namespace Scada.Web.Plugins.Scheme
         private SchemeView GetSchemeView(int viewID, UserRights userRights)
         {
             if (!userRights.GetUiObjRights(viewID).ViewRight)
-                throw new ScadaException(WebPhrases.NoRights);
+                throw new ScadaException(CommonPhrases.NoRights);
 
             return AppData.ViewCache.GetView<SchemeView>(viewID, true);
         }
