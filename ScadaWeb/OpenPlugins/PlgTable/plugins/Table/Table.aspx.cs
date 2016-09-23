@@ -63,11 +63,11 @@ namespace Scada.Web.Plugins.Table
         /// <summary>
         ///Получить час в соответствии с текущей культурой
         /// </summary>
-        private string GetLocalizedHour(int hour)
+        internal static string GetLocalizedHour(int hour)
         {
             return 
                 (hour >= 0 ? "" : PlgPhrases.PrevDayItem) + 
-                DateTime.MinValue.AddHours(hour > 0 ? hour : hour + 24).ToString("t", Localization.Culture);
+                DateTime.MinValue.AddHours(hour >= 0 ? hour : hour + 24).ToString("t", Localization.Culture);
         }
 
         /// <summary>

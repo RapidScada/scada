@@ -84,6 +84,14 @@ function saveHourPeriod() {
     scada.utils.setCookie("Table.TimeTo", $("#selTimeTo").val());
 }
 
+// Export hour data to Excel
+function exportHourData() {
+    var exportUrl = "HourDataRepOut.aspx?viewID=" + viewID +
+        "&" + scada.utils.dateToQueryString(viewDate) +
+        "&startHour=" + hourPeriod.startHour + "&endHour=" + hourPeriod.endHour;
+    window.location = exportUrl;
+}
+
 // Select and prepare the current data cells
 function initCurDataCells() {
     // select cells
@@ -417,7 +425,7 @@ $(document).ready(function () {
 
     // export the table view on the button click
     $("#spanExportBtn").click(function () {
-        alert("Export is not implemented yet.");
+        exportHourData();
     });
 
     // show and hide hint on hover or touch events

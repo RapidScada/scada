@@ -309,7 +309,7 @@ namespace Scada.Web
             HourCnlData hourCnlData = new HourCnlData(hour);
             hourCnlData.Modified = true;
 
-            string emptyVal = "";
+            string emptyVal;
             bool dataVisible = DataFormatter.HourDataVisible(snapshotDT, nowDT, snapshot != null, out emptyVal);
 
             hourCnlData.CnlDataExtArr = CreateCnlDataExtArr(cnlList, snapshot, dataVisible, emptyVal);

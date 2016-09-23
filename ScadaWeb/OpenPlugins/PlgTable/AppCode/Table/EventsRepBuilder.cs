@@ -167,7 +167,7 @@ namespace Scada.Web.Plugins.Table
             }
             else if (valName == "Gen")
             {
-                nodeText = PlgPhrases.GenCaption + DateTime.Now.ToLocalizedString();
+                nodeText = PlgPhrases.EventsGen + DateTime.Now.ToLocalizedString();
             }
             else if (valName == "NumCol")
             {

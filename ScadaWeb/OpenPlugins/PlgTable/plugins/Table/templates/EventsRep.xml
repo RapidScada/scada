@@ -86,12 +86,6 @@
    <Column ss:AutoFitWidth="0" ss:Width="56.25"/>
    <Row ss:AutoFitHeight="0" ss:Height="19.5">
     <Cell ss:StyleID="s62"><Data ss:Type="String">repVal=Title</Data></Cell>
-    <Cell ss:StyleID="s62"/>
-    <Cell ss:StyleID="s62"/>
-    <Cell ss:StyleID="s62"/>
-    <Cell ss:StyleID="s62"/>
-    <Cell ss:StyleID="s62"/>
-    <Cell ss:StyleID="s62"/>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">repVal=Gen</Data></Cell>

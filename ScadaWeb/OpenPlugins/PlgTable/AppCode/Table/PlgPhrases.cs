@@ -42,7 +42,7 @@ namespace Scada.Web.Plugins.Table
         public static string EventsWorksheet { get; private set; }
         public static string AllEventsTitle { get; private set; }
         public static string EventsByViewTitle { get; private set; }
-        public static string GenCaption { get; private set; }
+        public static string EventsGen { get; private set; }
         public static string NumCol { get; private set; }
         public static string TimeCol { get; private set; }
         public static string ObjCol { get; private set; }
@@ -50,6 +50,11 @@ namespace Scada.Web.Plugins.Table
         public static string CnlCol { get; private set; }
         public static string TextCol { get; private set; }
         public static string AckCol { get; private set; }
+
+        // Словарь Scada.Web.Plugins.Table.HourDataRepBuilder
+        public static string HourDataWorksheet { get; private set; }
+        public static string HourDataTitle { get; private set; }
+        public static string HourDataGen { get; private set; }
 
         // Словарь Scada.Web.Plugins.Table.EventsWndSpec
         public static string EventsTitle { get; private set; }
@@ -76,7 +81,7 @@ namespace Scada.Web.Plugins.Table
             EventsWorksheet = Localization.Dict.GetEmptyPhrase("EventsWorksheet");
             AllEventsTitle = Localization.Dict.GetEmptyPhrase("AllEventsTitle");
             EventsByViewTitle = Localization.Dict.GetEmptyPhrase("EventsByViewTitle");
-            GenCaption = Localization.Dict.GetEmptyPhrase("GenCaption");
+            EventsGen = Localization.Dict.GetEmptyPhrase("EventsGen");
             NumCol = Localization.Dict.GetEmptyPhrase("NumCol");
             TimeCol = Localization.Dict.GetEmptyPhrase("TimeCol");
             ObjCol = Localization.Dict.GetEmptyPhrase("ObjCol");
@@ -84,6 +89,10 @@ namespace Scada.Web.Plugins.Table
             CnlCol = Localization.Dict.GetEmptyPhrase("CnlCol");
             TextCol = Localization.Dict.GetEmptyPhrase("TextCol");
             AckCol = Localization.Dict.GetEmptyPhrase("AckCol");
+
+            HourDataWorksheet = Localization.Dict.GetEmptyPhrase("HourDataWorksheet");
+            HourDataTitle = Localization.Dict.GetEmptyPhrase("HourDataTitle");
+            HourDataGen = Localization.Dict.GetEmptyPhrase("HourDataGen");
 
             EventsTitle = Localization.Dict.GetEmptyPhrase("EventsTitle");
 
@@ -111,7 +120,7 @@ namespace Scada.Web.Plugins.Table
                 EventsWorksheet = dict.GetPhrase("EventsWorksheet", EventsWorksheet);
                 AllEventsTitle = dict.GetPhrase("AllEventsTitle", AllEventsTitle);
                 EventsByViewTitle = dict.GetPhrase("EventsByViewTitle", EventsByViewTitle);
-                GenCaption = dict.GetPhrase("GenCaption", GenCaption);
+                EventsGen = dict.GetPhrase("EventsGen", EventsGen);
                 NumCol = dict.GetPhrase("NumCol", NumCol);
                 TimeCol = dict.GetPhrase("TimeCol", TimeCol);
                 ObjCol = dict.GetPhrase("ObjCol", ObjCol);
@@ -119,6 +128,13 @@ namespace Scada.Web.Plugins.Table
                 CnlCol = dict.GetPhrase("CnlCol", CnlCol);
                 TextCol = dict.GetPhrase("TextCol", TextCol);
                 AckCol = dict.GetPhrase("AckCol", AckCol);
+            }
+
+            if (Localization.Dictionaries.TryGetValue("Scada.Web.Plugins.Table.HourDataRepBuilder", out dict))
+            {
+                HourDataWorksheet = dict.GetPhrase("HourDataWorksheet", HourDataWorksheet);
+                HourDataTitle = dict.GetPhrase("HourDataTitle", HourDataTitle);
+                HourDataGen = dict.GetPhrase("HourDataGen", HourDataGen);
             }
 
             if (Localization.Dictionaries.TryGetValue("Scada.Web.Plugins.Table.EventsWndSpec", out dict))

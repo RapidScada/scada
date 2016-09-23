@@ -24,6 +24,7 @@
  */
 
 using System;
+using Utils.Report;
 
 namespace Scada.Web.Plugins.Table
 {
@@ -35,12 +36,35 @@ namespace Scada.Web.Plugins.Table
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            // получение данных пользователя
+            AppData appData = AppData.GetAppData();
             UserData userData = UserData.GetUserData();
 
-            // проверка входа в систему
-            if (!userData.LoggedOn)
+            // получение ид. представления из параметров запроса
+            int viewID;
+            int.TryParse(Request.QueryString["viewID"], out viewID);
+
+            // проверка прав
+            if (!(userData.LoggedOn && userData.UserRights.GetUiObjRights(viewID).ViewRight))
                 throw new ScadaException(CommonPhrases.NoRights);
+
+            // загрузка представления
+            TableView tableView = appData.ViewCache.GetView<TableView>(viewID, true);
+
+            // получение оставшихся параметров запроса
+            DateTime reqDate = WebUtils.GetDateFromQueryString(Request);
+            int startHour, endHour;
+            int.TryParse(Request.QueryString["startHour"], out startHour);
+            int.TryParse(Request.QueryString["endHour"], out endHour);
+
+            // генерация отчёта
+            RepBuilder repBuilder = new HourDataRepBuilder(appData.DataAccess);
+            RepUtils.WriteGenerationAction(appData.Log, repBuilder, userData);
+            RepUtils.GenerateReport(
+                repBuilder,
+                new object[] { tableView, reqDate, startHour, endHour },
+                Server.MapPath("~/plugins/Table/templates/"),
+                RepUtils.BuildFileName("HourData", "xml"),
+                Response);
         }
     }
 }

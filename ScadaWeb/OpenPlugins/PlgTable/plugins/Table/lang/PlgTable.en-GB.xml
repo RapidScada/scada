@@ -4,7 +4,7 @@
     <Phrase key="EventsWorksheet">Events</Phrase>
     <Phrase key="AllEventsTitle">All Events, {0}</Phrase>
     <Phrase key="EventsByViewTitle">{0}, {1}</Phrase>
-    <Phrase key="GenCaption">Generated </Phrase>
+    <Phrase key="EventsGen">Generated </Phrase>
     <Phrase key="NumCol">Number</Phrase>
     <Phrase key="TimeCol">Date and Time</Phrase>
     <Phrase key="ObjCol">Object</Phrase>
@@ -12,6 +12,11 @@
     <Phrase key="CnlCol">Channel</Phrase>
     <Phrase key="TextCol">Description</Phrase>
     <Phrase key="AckCol">Ack</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.HourDataRepBuilder">
+    <Phrase key="HourDataWorksheet">Hour Data</Phrase>
+    <Phrase key="HourDataTitle">{0}, {1}, {2}</Phrase>
+    <Phrase key="HourDataGen">Generated </Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.EventsWndSpec">
     <Phrase key="EventsTitle">Events</Phrase>

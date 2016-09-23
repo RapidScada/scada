@@ -4,7 +4,7 @@
     <Phrase key="EventsWorksheet">События</Phrase>
     <Phrase key="AllEventsTitle">Все события, {0}</Phrase>
     <Phrase key="EventsByViewTitle">{0}, {1}</Phrase>
-    <Phrase key="GenCaption">Получено </Phrase>
+    <Phrase key="EventsGen">Получено </Phrase>
     <Phrase key="NumCol">Номер</Phrase>
     <Phrase key="TimeCol">Дата и время</Phrase>
     <Phrase key="ObjCol">Объект</Phrase>
@@ -12,6 +12,11 @@
     <Phrase key="CnlCol">Канал</Phrase>
     <Phrase key="TextCol">Описание</Phrase>
     <Phrase key="AckCol">Квит</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.HourDataRepBuilder">
+    <Phrase key="HourDataWorksheet">Часовые данные</Phrase>
+    <Phrase key="HourDataTitle">{0}, {1}, {2}</Phrase>
+    <Phrase key="HourDataGen">Получено </Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.EventsWndSpec">
     <Phrase key="EventsTitle">События</Phrase>

@@ -79,8 +79,8 @@ function saveEventFilter() {
 
 // Export events to Excel
 function exportEvents() {
-    var exportUrl = "EventsRepOut.aspx?" + scada.utils.dateToQueryString(viewDate) +
-        (eventsByView ? "&viewID=" + viewID : "");
+    var exportUrl = "EventsRepOut.aspx?viewID=" + (eventsByView ? viewID : "") +
+        "&" + scada.utils.dateToQueryString(viewDate);
     window.location = exportUrl;
 }
 
