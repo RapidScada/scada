@@ -39,6 +39,33 @@ namespace Utils.Report
     public abstract class ExcelRepBuilder : RepBuilder
     {
         /// <summary>
+        /// Пространства имён, которые используются в SpreadsheetML
+        /// </summary>
+        protected static class XmlNamespaces
+        {
+            /// <summary>
+            /// Пространстро имён xmlns
+            /// </summary>
+            public const string noprefix = "urn:schemas-microsoft-com:office:spreadsheet";
+            /// <summary>
+            /// Пространстро имён xmlns:o
+            /// </summary>
+            public const string o = "urn:schemas-microsoft-com:office:office";
+            /// <summary>
+            /// Пространстро имён xmlns:x
+            /// </summary>
+            public const string x = "urn:schemas-microsoft-com:office:excel";
+            /// <summary>
+            /// Пространстро имён xmlns:ss
+            /// </summary>
+            public const string ss = "urn:schemas-microsoft-com:office:spreadsheet";
+            /// <summary>
+            /// Пространстро имён xmlns:html
+            /// </summary>
+            public const string html = "http://www.w3.org/TR/REC-html40";
+        }
+
+        /// <summary>
         /// Книга Excel
         /// </summary>
         protected class Workbook
@@ -605,8 +632,12 @@ namespace Utils.Report
             /// <param name="column">Добавляемый столбец</param>
             public void AppendColumn(Column column)
             {
+                if (columns.Count > 0)
+                    node.InsertAfter(column.Node, columns[columns.Count - 1].Node);
+                else
+                    node.PrependChild(column.Node);
+
                 columns.Add(column);
-                node.AppendChild(column.Node);
             }
 
             /// <summary>
@@ -616,14 +647,12 @@ namespace Utils.Report
             /// <param name="column">Вставляемый столбец</param>
             public void InsertColumn(int listIndex, Column column)
             {
-                columns.Insert(listIndex, column);
-
-                if (columns.Count == 1)
-                    node.AppendChild(column.Node);
-                else if (listIndex == 0)
+                if (columns.Count == 0 || listIndex == 0)
                     node.PrependChild(column.Node);
                 else
                     node.InsertAfter(column.Node, columns[listIndex - 1].Node);
+
+                columns.Insert(listIndex, column);
             }
 
             /// <summary>
@@ -643,8 +672,8 @@ namespace Utils.Report
             /// <param name="row">Добавляемая строка</param>
             public void AppendRow(Row row)
             {
-                rows.Add(row);
                 node.AppendChild(row.Node);
+                rows.Add(row);
             }
 
             /// <summary>
@@ -654,14 +683,14 @@ namespace Utils.Report
             /// <param name="row">Вставляемая строка</param>
             public void InsertRow(int listIndex, Row row)
             {
-                rows.Insert(listIndex, row);
-
-                if (rows.Count == 1)
+                if (rows.Count == 0)
                     node.AppendChild(row.Node);
                 else if (listIndex == 0)
-                    node.PrependChild(row.Node);
+                    node.InsertBefore(row.Node, rows[0].Node);
                 else
                     node.InsertAfter(row.Node, rows[listIndex - 1].Node);
+
+                rows.Insert(listIndex, row);
             }
 
             /// <summary>
