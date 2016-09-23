@@ -42,6 +42,10 @@
     <Reference Include="Log">
       <HintPath>..\..\..\Log\bin\Release\Log.dll</HintPath>
     </Reference>
+    <Reference Include="RepBuilder, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Report\RepBuilder\bin\Release\RepBuilder.dll</HintPath>
+    </Reference>
     <Reference Include="ScadaData">
       <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
     </Reference>
@@ -73,11 +77,13 @@
     <Content Include="plugins\Chart\css\chartform.min.css">
       <DependentUpon>chartform.css</DependentUpon>
     </Content>
+    <Content Include="plugins\Chart\MinDataRepOut.aspx" />
     <Content Include="plugins\Chart\js\chartform.js" />
     <Content Include="plugins\Chart\js\chart.js" />
     <Content Include="plugins\Chart\js\chartdialog.js" />
     <Content Include="plugins\Chart\lang\PlgChart.en-GB.xml" />
     <Content Include="plugins\Chart\lang\PlgChart.ru-RU.xml" />
+    <Content Include="plugins\Chart\templates\MinDataRep.xml" />
     <Content Include="test\ChartTest.html" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -91,6 +97,13 @@
     </Compile>
     <Compile Include="plugins\Chart\Chart.aspx.designer.cs">
       <DependentUpon>Chart.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="plugins\Chart\MinDataRepOut.aspx.cs">
+      <DependentUpon>MinDataRepOut.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="plugins\Chart\MinDataRepOut.aspx.designer.cs">
+      <DependentUpon>MinDataRepOut.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

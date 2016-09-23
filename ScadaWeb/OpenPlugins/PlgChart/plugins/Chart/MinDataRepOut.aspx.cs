@@ -15,8 +15,8 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : PlgTable
- * Summary  : Hourly data report output web form
+ * Module   : PlgChart
+ * Summary  : Minute data report output web form
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
@@ -26,13 +26,13 @@
 using System;
 using Utils.Report;
 
-namespace Scada.Web.Plugins.Table
+namespace Scada.Web.Plugins.Chart
 {
     /// <summary>
-    /// Hourly data report output web form
-    /// <para>Выходная веб-форма отчёта по часовым данным</para>
+    /// Minute data report output web form
+    /// <para>Выходная веб-форма отчёта по минутным данным</para>
     /// </summary>
-    public partial class WFrmHourDataRepOut : System.Web.UI.Page
+    public partial class WFrmMinDataRepOut : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -48,7 +48,7 @@ namespace Scada.Web.Plugins.Table
                 throw new ScadaException(CommonPhrases.NoRights);
 
             // загрузка представления
-            TableView tableView = appData.ViewCache.GetView<TableView>(viewID, true);
+            //TableView tableView = appData.ViewCache.GetView<TableView>(viewID, true);
 
             // получение оставшихся параметров запроса
             DateTime reqDate = WebUtils.GetDateFromQueryString(Request);
@@ -57,13 +57,13 @@ namespace Scada.Web.Plugins.Table
             int.TryParse(Request.QueryString["endHour"], out endHour);
 
             // генерация отчёта
-            RepBuilder repBuilder = new HourDataRepBuilder(appData.DataAccess);
+            RepBuilder repBuilder = new MinDataRepBuilder(appData.DataAccess);
             RepUtils.WriteGenerationAction(appData.Log, repBuilder, userData);
             RepUtils.GenerateReport(
                 repBuilder,
-                new object[] { tableView, reqDate, startHour, endHour },
-                Server.MapPath("~/plugins/Table/templates/"),
-                RepUtils.BuildFileName("HourData", "xml"),
+                new object[] { /*tableView,*/ reqDate, startHour, endHour },
+                Server.MapPath("~/plugins/Chart/templates/"),
+                RepUtils.BuildFileName("MinData", "xml"),
                 Response);
         }
     }
