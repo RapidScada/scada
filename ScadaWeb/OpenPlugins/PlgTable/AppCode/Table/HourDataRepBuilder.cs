@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : PlgTable
- * Summary  : Hour data report builder
+ * Summary  : Hourly data report builder
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
@@ -34,7 +34,7 @@ using Utils.Report;
 namespace Scada.Web.Plugins.Table
 {
     /// <summary>
-    /// Hour data report builder
+    /// Hourly data report builder
     /// <para>Формирует отчёт по часовым данным</para>
     /// </summary>
     public class HourDataRepBuilder : ExcelRepBuilder
@@ -92,7 +92,7 @@ namespace Scada.Web.Plugins.Table
             {
                 return Localization.UseRussian ?
                     "Часовые данные" : 
-                    "Hour data";
+                    "Hourly data";
             }
         }
 

@@ -14,7 +14,7 @@
     <Phrase key="AckCol">Ack</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.HourDataRepBuilder">
-    <Phrase key="HourDataWorksheet">Hour Data</Phrase>
+    <Phrase key="HourDataWorksheet">Hourly Data</Phrase>
     <Phrase key="HourDataTitle">{0}, {1}, {2}</Phrase>
     <Phrase key="HourDataGen">Generated </Phrase>
   </Dictionary>
