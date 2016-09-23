@@ -33,6 +33,10 @@ namespace Scada.Web.Plugins.Table
     /// Events report output web form
     /// <para>Выходная веб-форма отчёта по событиям</para>
     /// </summary>
+    /// <remarks>
+    /// URL example: 
+    /// http://webserver/scada/plugins/Table/EventsRepOut.aspx?viewID=1&year=2016&month=1&day=1
+    /// </remarks>
     public partial class WFrmEventsRepOut : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)

@@ -32,6 +32,10 @@ namespace Scada.Web.Plugins.Table
     /// Hourly data report output web form
     /// <para>Выходная веб-форма отчёта по часовым данным</para>
     /// </summary>
+    /// <remarks>
+    /// URL example: 
+    /// http://webserver/scada/plugins/Table/HourDataRepOut.aspx?viewID=1&year=2016&month=1&day=1&startHour=0&endHour=23
+    /// </remarks>
     public partial class WFrmHourDataRepOut : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
