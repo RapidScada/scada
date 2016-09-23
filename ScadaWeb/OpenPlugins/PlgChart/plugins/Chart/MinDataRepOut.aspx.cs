@@ -32,6 +32,10 @@ namespace Scada.Web.Plugins.Chart
     /// Minute data report output web form
     /// <para>Выходная веб-форма отчёта по минутным данным</para>
     /// </summary>
+    /// <remarks>
+    /// URL example: 
+    /// http://webserver/scada/plugins/Chart/MinDataRepOut.aspx?cnlNums=1,2&views=1,1&year=2016&month=1&day=1&period=2
+    /// </remarks>
     public partial class WFrmMinDataRepOut : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
@@ -44,24 +48,24 @@ namespace Scada.Web.Plugins.Chart
             int.TryParse(Request.QueryString["viewID"], out viewID);
 
             // проверка прав
-            if (!(userData.LoggedOn && userData.UserRights.GetUiObjRights(viewID).ViewRight))
+            if (!(userData.LoggedOn /*&& userData.UserRights.GetUiObjRights(viewID).ViewRight*/))
                 throw new ScadaException(CommonPhrases.NoRights);
 
             // загрузка представления
             //TableView tableView = appData.ViewCache.GetView<TableView>(viewID, true);
 
             // получение оставшихся параметров запроса
-            DateTime reqDate = WebUtils.GetDateFromQueryString(Request);
+            /*DateTime reqDate = WebUtils.GetDateFromQueryString(Request);
             int startHour, endHour;
             int.TryParse(Request.QueryString["startHour"], out startHour);
-            int.TryParse(Request.QueryString["endHour"], out endHour);
+            int.TryParse(Request.QueryString["endHour"], out endHour);*/
 
             // генерация отчёта
             RepBuilder repBuilder = new MinDataRepBuilder(appData.DataAccess);
             RepUtils.WriteGenerationAction(appData.Log, repBuilder, userData);
             RepUtils.GenerateReport(
                 repBuilder,
-                new object[] { /*tableView,*/ reqDate, startHour, endHour },
+                new object[] { /*tableView, reqDate, startHour, endHour*/ },
                 Server.MapPath("~/plugins/Chart/templates/"),
                 RepUtils.BuildFileName("MinData", "xml"),
                 Response);
