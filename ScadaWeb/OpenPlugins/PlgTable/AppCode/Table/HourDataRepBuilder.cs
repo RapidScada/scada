@@ -109,6 +109,35 @@ namespace Scada.Web.Plugins.Table
 
 
         /// <summary>
+        /// Скрыть неиспользуемые столбцы часовых данных
+        /// </summary>
+        protected void HideUnusedColumns(Table table)
+        {
+            // в шаблоне один узел Column отвечает за все столбцы часовых данных,
+            // в генерируемом отчёте создаётся свой узел Column для каждого столбца
+            const int HourColInd = 1; // индекс описанного выше исходного узла
+
+            if (table.Columns.Count == HourColInd + 1)
+            {
+                Column srcColumn = table.Columns[HourColInd];
+                srcColumn.Node.Attributes.RemoveNamedItem("ss:Span");
+                table.RemoveColumn(HourColInd);
+
+                Column visColTemplate = srcColumn.Clone();
+                Column hidColTemplate = srcColumn.Clone();
+                XmlAttribute hiddenAttr = xmlDoc.CreateAttribute("ss:Hidden", XmlNamespaces.ss);
+                hiddenAttr.Value = "1";
+                hidColTemplate.Node.Attributes.Append(hiddenAttr);
+
+                for (int hour = MinHour; hour <= MaxHour; hour++)
+                {
+                    table.AppendColumn(startHour <= hour && hour <= endHour ?
+                        visColTemplate.Clone() : hidColTemplate.Clone());
+                }
+            }
+        }
+
+        /// <summary>
         /// Установить параметры отчёта.
         /// repParams[0] - представление типа TableView,
         /// repParams[1] - дата запрашиваемых данных типа DateTime
@@ -157,6 +186,9 @@ namespace Scada.Web.Plugins.Table
             // удаление лишних атрибутов таблицы
             Table table = itemRowTemplate.ParentTable;
             table.RemoveTableNodeAttrs();
+
+            // скрытие неиспользуемых столбцов
+            HideUnusedColumns(table);
 
             // удаление строки-шаблона
             int itemRowIndex = table.Rows.IndexOf(itemRowTemplate);
@@ -229,10 +261,22 @@ namespace Scada.Web.Plugins.Table
                             string emptyVal;
                             if (dataFormatter.HourDataVisible(colDT, genDT, snapshot != null, out emptyVal))
                             {
+                                // получение данных
                                 double val;
                                 int stat;
                                 snapshot.GetCnlData(viewItem.CnlNum, out val, out stat);
-                                nodeText = dataFormatter.FormatCnlVal(val, stat, cnlProps, false);
+
+                                // форматирование данных
+                                string text;
+                                string textWithUnit;
+                                bool textIsNumber;
+                                dataFormatter.FormatCnlVal(val, stat, cnlProps, ".", "", 
+                                    out text, out textWithUnit, out textIsNumber);
+
+                                // вывод данных
+                                nodeText = text;
+                                if (textIsNumber)
+                                    cell.SetNumberType();
                             }
                             else
                             {
