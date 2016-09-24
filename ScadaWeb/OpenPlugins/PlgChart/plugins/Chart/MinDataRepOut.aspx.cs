@@ -23,6 +23,7 @@
  * Modified : 2016
  */
 
+using Scada.Client;
 using System;
 using Utils.Report;
 
@@ -43,29 +44,29 @@ namespace Scada.Web.Plugins.Chart
             AppData appData = AppData.GetAppData();
             UserData userData = UserData.GetUserData();
 
-            // получение ид. представления из параметров запроса
-            int viewID;
-            int.TryParse(Request.QueryString["viewID"], out viewID);
-
-            // проверка прав
-            if (!(userData.LoggedOn /*&& userData.UserRights.GetUiObjRights(viewID).ViewRight*/))
+            // проверка входа в систему
+            if (!userData.LoggedOn)
                 throw new ScadaException(CommonPhrases.NoRights);
 
-            // загрузка представления
-            //TableView tableView = appData.ViewCache.GetView<TableView>(viewID, true);
+            // получение параметров запроса
+            int[] cnlNums = WebUtils.QueryParamToIntArray(Request.QueryString["cnlNums"]);
+            int[] viewIDs = WebUtils.QueryParamToIntArray(Request.QueryString["viewIDs"]);
+            DateTime startDate = WebUtils.GetDateFromQueryString(Request);
+            int period;
+            int.TryParse(Request.QueryString["period"], out period);
 
-            // получение оставшихся параметров запроса
-            /*DateTime reqDate = WebUtils.GetDateFromQueryString(Request);
-            int startHour, endHour;
-            int.TryParse(Request.QueryString["startHour"], out startHour);
-            int.TryParse(Request.QueryString["endHour"], out endHour);*/
+            // проверка прав и получение представления, если оно единственное
+            RightsChecker rightsChecker = new RightsChecker(appData.ViewCache);
+            BaseView singleView;
+            rightsChecker.CheckRights(userData, cnlNums, viewIDs, out singleView);
+            string viewTitle = singleView == null ? "" : singleView.Title;
 
             // генерация отчёта
             RepBuilder repBuilder = new MinDataRepBuilder(appData.DataAccess);
             RepUtils.WriteGenerationAction(appData.Log, repBuilder, userData);
             RepUtils.GenerateReport(
                 repBuilder,
-                new object[] { /*tableView, reqDate, startHour, endHour*/ },
+                new object[] { cnlNums, startDate, period, viewTitle },
                 Server.MapPath("~/plugins/Chart/templates/"),
                 RepUtils.BuildFileName("MinData", "xml"),
                 Response);

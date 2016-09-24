@@ -473,6 +473,39 @@ namespace Utils.Report
 
 
             /// <summary>
+            /// Установить горизонтальный разделитель области прокрутки
+            /// </summary>
+            public void SplitHorizontal(int rowIndex)
+            {
+                XmlDocument xmlDoc = node.OwnerDocument;
+                XmlNamespaceManager nsmgr = new XmlNamespaceManager(xmlDoc.NameTable);
+                nsmgr.AddNamespace("report", XmlNamespaces.x);
+
+                XmlNode optionsNode = node.SelectSingleNode("report:WorksheetOptions", nsmgr);
+
+                if (optionsNode != null)
+                {
+                    string rowIndexStr = rowIndex.ToString();
+
+                    XmlNode splitNode = optionsNode.SelectSingleNode("report:SplitHorizontal", nsmgr);
+                    if (splitNode == null)
+                    {
+                        splitNode = xmlDoc.CreateElement("SplitHorizontal");
+                        optionsNode.AppendChild(splitNode);
+                    }
+                    splitNode.InnerText = rowIndexStr;
+
+                    XmlNode paneNode = optionsNode.SelectSingleNode("report:TopRowBottomPane", nsmgr);
+                    if (paneNode == null)
+                    {
+                        paneNode = xmlDoc.CreateElement("TopRowBottomPane");
+                        optionsNode.AppendChild(paneNode);
+                    }
+                    paneNode.InnerText = rowIndexStr;
+                }
+            }
+
+            /// <summary>
             /// Клонировать лист
             /// </summary>
             /// <returns>Копия листа</returns>

@@ -42,13 +42,13 @@ namespace Scada.Web.Plugins.Table
         private const int MinHour = -24; // минимально допустимый час
         private const int MaxHour = 23;  // максимально допустимый час
 
-        private DataAccess dataAccess;       // объект для доступа к данным
-        private DataFormatter dataFormatter; // объект для форматирования данных
+        private readonly DataAccess dataAccess;       // объект для доступа к данным
+        private readonly DataFormatter dataFormatter; // объект для форматирования данных
 
-        private TableView tableView;         // табличное представление, по которому генерируется отчёт
-        private DateTime date;               // дата запрашиваемых данных
-        private int startHour;               // начальный час
-        private int endHour;                 // конечный час
+        private TableView tableView;              // табличное представление, по которому генерируется отчёт
+        private DateTime date;                    // дата запрашиваемых данных
+        private int startHour;                    // начальный час
+        private int endHour;                      // конечный час
 
         private DateTime genDT;                   // дата и время генерации отчёта
         private Row itemRowTemplate;              // строка-шаблон табличного представления

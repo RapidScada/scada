@@ -74,7 +74,7 @@
    <Column ss:AutoFitWidth="0" ss:Width="66.75"/>
    <Column ss:AutoFitWidth="0" ss:Width="82.5"/>
    <Row ss:AutoFitHeight="0" ss:Height="20.25">
-    <Cell ss:StyleID="s62"><Data ss:Type="String">repVal=ViewName_Date</Data></Cell>
+    <Cell ss:StyleID="s62"><Data ss:Type="String">repVal=Title</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">repVal=Gen</Data></Cell>

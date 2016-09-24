@@ -31,7 +31,7 @@ namespace Scada.Web.Plugins.Table
     /// The phrases used by the plugin
     /// <para>Фразы, используемые плагином</para>
     /// </summary>
-    public static class PlgPhrases
+    internal static class PlgPhrases
     {
         static PlgPhrases()
         {
@@ -78,7 +78,7 @@ namespace Scada.Web.Plugins.Table
 
         private static void SetToDefault()
         {
-            EventsWorksheet = Localization.Dict.GetEmptyPhrase("EventsWorksheet");
+            EventsWorksheet = "EventsWorksheet"; // GetEmptyPhrase() не удовлетворяет ограничениям Excel
             AllEventsTitle = Localization.Dict.GetEmptyPhrase("AllEventsTitle");
             EventsByViewTitle = Localization.Dict.GetEmptyPhrase("EventsByViewTitle");
             EventsGen = Localization.Dict.GetEmptyPhrase("EventsGen");
@@ -90,7 +90,7 @@ namespace Scada.Web.Plugins.Table
             TextCol = Localization.Dict.GetEmptyPhrase("TextCol");
             AckCol = Localization.Dict.GetEmptyPhrase("AckCol");
 
-            HourDataWorksheet = Localization.Dict.GetEmptyPhrase("HourDataWorksheet");
+            HourDataWorksheet = "HourDataWorksheet";
             HourDataTitle = Localization.Dict.GetEmptyPhrase("HourDataTitle");
             HourDataGen = Localization.Dict.GetEmptyPhrase("HourDataGen");
 

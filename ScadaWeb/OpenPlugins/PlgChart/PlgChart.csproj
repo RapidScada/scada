@@ -58,6 +58,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="config\CommSettings.xml" />
@@ -90,6 +91,7 @@
   <ItemGroup>
     <Compile Include="AppCode\Chart\MinDataRepBuilder.cs" />
     <Compile Include="AppCode\Chart\MinDataRepSpec.cs" />
+    <Compile Include="AppCode\Chart\PlgPhrases.cs" />
     <Compile Include="AppCode\PlgChartSpec.cs" />
     <Compile Include="plugins\Chart\Chart.aspx.cs">
       <DependentUpon>Chart.aspx</DependentUpon>

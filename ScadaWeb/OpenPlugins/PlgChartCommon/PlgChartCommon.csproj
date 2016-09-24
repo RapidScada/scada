@@ -37,6 +37,9 @@
     <Reference Include="ScadaData">
       <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
     </Reference>
+    <Reference Include="ScadaWebCommon5Beta">
+      <HintPath>..\..\ScadaWebCommon5Beta\bin\Release\ScadaWebCommon5Beta.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -44,7 +47,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChartDataBuilder.cs" />
+    <Compile Include="ChartUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RightsChecker.cs" />
     <Compile Include="TrendBundle.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -39,13 +39,13 @@ namespace Scada.Web.Plugins.Table
     /// </summary>
     public class EventsRepBuilder : ExcelRepBuilder
     {
-        private DataAccess dataAccess; // объект для доступа к данным
+        private readonly DataAccess dataAccess; // объект для доступа к данным
 
-        private BaseView view;         // представление, по которому генерируется отчёт
-        private DateTime date;         // дата запрашиваемых данных
+        private BaseView view;        // представление, по которому генерируется отчёт
+        private DateTime date;        // дата запрашиваемых данных
 
-        private Row eventRowTemplate;  // строка-шаблон таблицы событий
-        private DispEvent dispEvent;   // событие для вывода в отчёт
+        private Row eventRowTemplate; // строка-шаблон таблицы событий
+        private DispEvent dispEvent;  // событие для вывода в отчёт
 
 
         /// <summary>

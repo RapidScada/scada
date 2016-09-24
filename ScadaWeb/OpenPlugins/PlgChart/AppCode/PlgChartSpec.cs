@@ -116,7 +116,7 @@ namespace Scada.Web.Plugins
         {
             dictUpdater = new DictUpdater(
                 string.Format("{0}Chart{1}lang{1}", AppDirs.PluginsDir, Path.DirectorySeparatorChar), 
-                "PlgChart", null, Log);
+                "PlgChart", PlgPhrases.Init, Log);
         }
 
         /// <summary>

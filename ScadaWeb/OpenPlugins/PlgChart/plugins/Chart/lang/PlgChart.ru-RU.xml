@@ -1,5 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PlgChartDictionaries>
+  <Dictionary key="Scada.Web.Plugins.Chart.MinDataRepBuilder">
+    <Phrase key="MinDataWorksheet">Минутные данные</Phrase>
+    <Phrase key="MinDataGen">Получено: </Phrase>
+    <Phrase key="CnlsCaption">Входные каналы:</Phrase>
+    <Phrase key="TimeColTitle">Время</Phrase>
+    <Phrase key="ValColTitle">Канал {0}</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Chart.WFrmChart">
     <Phrase key="this">График - Rapid SCADA</Phrase>
     <Phrase key="lblGenerated">Получено</Phrase>
