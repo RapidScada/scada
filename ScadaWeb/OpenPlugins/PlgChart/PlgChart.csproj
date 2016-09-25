@@ -78,6 +78,20 @@
     <Content Include="plugins\Chart\css\chartform.min.css">
       <DependentUpon>chartform.css</DependentUpon>
     </Content>
+    <Content Include="plugins\Chart\css\cnllist.css">
+      <DependentUpon>cnllist.less</DependentUpon>
+    </Content>
+    <Content Include="plugins\Chart\css\cnllist.min.css">
+      <DependentUpon>cnllist.css</DependentUpon>
+    </Content>
+    <Content Include="plugins\Chart\css\mindatarep.css">
+      <DependentUpon>mindatarep.less</DependentUpon>
+    </Content>
+    <Content Include="plugins\Chart\css\mindatarep.min.css">
+      <DependentUpon>mindatarep.css</DependentUpon>
+    </Content>
+    <Content Include="plugins\Chart\js\mindatarep.js" />
+    <Content Include="plugins\Chart\MinDataRep.aspx" />
     <Content Include="plugins\Chart\MinDataRepOut.aspx" />
     <Content Include="plugins\Chart\js\chartform.js" />
     <Content Include="plugins\Chart\js\chart.js" />
@@ -100,6 +114,13 @@
     <Compile Include="plugins\Chart\Chart.aspx.designer.cs">
       <DependentUpon>Chart.aspx</DependentUpon>
     </Compile>
+    <Compile Include="plugins\Chart\MinDataRep.aspx.cs">
+      <DependentUpon>MinDataRep.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="plugins\Chart\MinDataRep.aspx.designer.cs">
+      <DependentUpon>MinDataRep.aspx</DependentUpon>
+    </Compile>
     <Compile Include="plugins\Chart\MinDataRepOut.aspx.cs">
       <DependentUpon>MinDataRepOut.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -117,6 +138,9 @@
     </None>
     <Content Include="css\common\globalvar.less" />
     <Content Include="plugins\Chart\css\chartform.less" />
+    <Content Include="MasterMain.Master" />
+    <Content Include="plugins\Chart\css\mindatarep.less" />
+    <Content Include="plugins\Chart\css\cnllist.less" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

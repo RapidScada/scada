@@ -1,6 +1,6 @@
 ﻿@import "globalvar.less";
 
-#divMainContent {
+.main-content {
     padding: 20px;
     font-size: 14px;
 }
@@ -26,10 +26,20 @@ h1:first-child {
     margin-top: 0;
 }
 
-a {
+a,
+a:active,
+a:hover,
+a:focus,
+a:visited {
     color: @link-fore-color;
+    outline: 0;
+    text-decoration: none;
 }
 
 a:hover {
     color: @link-hover-fore-color;
+}
+
+label {
+    font-weight: 600;
 }

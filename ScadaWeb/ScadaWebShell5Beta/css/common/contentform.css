@@ -1,4 +1,4 @@
-﻿#divMainContent {
+﻿.main-content {
   padding: 20px;
   font-size: 14px;
 }
@@ -20,9 +20,18 @@ h3 {
 h1:first-child {
   margin-top: 0;
 }
-a {
+a,
+a:active,
+a:hover,
+a:focus,
+a:visited {
   color: #0073aa;
+  outline: 0;
+  text-decoration: none;
 }
 a:hover {
   color: #00a0d2;
+}
+label {
+  font-weight: 600;
 }

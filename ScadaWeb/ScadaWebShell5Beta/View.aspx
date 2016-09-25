@@ -17,7 +17,7 @@
         <div id="divViewSplitter" class="splitter hor"></div>
         <div id="divDataWindow"><iframe id="frameDataWindow"></iframe></div>
         <div id="divBottomTabs">
-            <div id="divBottomTabsContainer"><%= GenerateBottomTabsHtml() %></div><div id="divCollapseDataWindowBtn"><i class="fa fa-chevron-circle-down" aria-hidden="true"></i></div>
+            <div id="divBottomTabsContainer"><%= GenerateBottomTabsHtml() %></div><div id="divCollapseDataWindowBtn"><i class="fa fa-chevron-circle-down"></i></div>
         </div>
     </div>
 </asp:Content>

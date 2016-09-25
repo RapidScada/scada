@@ -72,7 +72,7 @@ namespace Scada.Web.Plugins.Chart
         /// </summary>
         public override string GetUrl(int reportID)
         {
-            return "~/plugins/Chart/MinDataRepParams.aspx";
+            return "~/plugins/Chart/MinDataRep.aspx";
         }
     }
 }

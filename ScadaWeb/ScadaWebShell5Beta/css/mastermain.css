@@ -6,13 +6,13 @@
   font-family: 'Open Sans', sans-serif;
   font-size: 13px;
 }
-a,
-a:visited,
-a:hover,
-a:focus,
-a:active {
-  outline: 0;
+.main-shell a,
+.main-shell a:active,
+.main-shell a:focus,
+.main-shell a:hover,
+.main-shell a:visited {
   color: inherit;
+  outline: 0;
   text-decoration: none;
 }
 /* Header */

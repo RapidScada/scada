@@ -38,7 +38,7 @@
 </head>
 <body>
     <form runat="server">
-        <div id="divMainHeader">
+        <div id="divMainHeader" class="main-shell">
             <span 
                 id="spanMainShowMenuBtn" class="hdr-btn img-btn"><span class="glyphicon glyphicon-menu-hamburger"></span></span><span 
                 id="spanMainAppName">Rapid SCADA</span>
@@ -46,10 +46,10 @@
                 <asp:HyperLink 
                     ID="hlMainUser" runat="server" CssClass="hdr-btn txt-btn" NavigateUrl="#">Admin</asp:HyperLink><asp:LinkButton 
                     ID="lbtnMainLogout" runat="server" CssClass="hdr-btn txt-btn" OnClick="lbtnMainLogout_Click">Logout</asp:LinkButton><asp:Label 
-                    ID="lblMainFullscreenBtn" ClientIDMode="Static" runat="server" CssClass="hdr-btn img-btn" ToolTip="Full Screen"><span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span></asp:Label>
+                    ID="lblMainFullscreenBtn" ClientIDMode="Static" runat="server" CssClass="hdr-btn img-btn" ToolTip="Full Screen"><span class="glyphicon glyphicon-fullscreen"></span></asp:Label>
             </div>
         </div>
-        <div id="divMainLeftPane">
+        <div id="divMainLeftPane" class="main-shell">
             <div id="divMainTabs">
                 <div id="divMainMenuTab" class="tab selected"><asp:Label ID="lblMainMenuTab" runat="server" Text="Main Menu"></asp:Label></div>
                 <div id="divMainExplorerTab" class="tab"><asp:Label ID="lblMainExplorerTab" runat="server" Text="Views"></asp:Label></div>
@@ -61,14 +61,14 @@
                 <%= GenExplorerHtml() %>
             </div>
             <div id="divMainCollapseLeftPaneBtn">
-                <i class="fa fa-chevron-circle-left" aria-hidden="true"></i><asp:Label ID="lblMainCollapseMenu" runat="server" Text="Collapse menu"></asp:Label>
+                <i class="fa fa-chevron-circle-left"></i><asp:Label ID="lblMainCollapseMenu" runat="server" Text="Collapse menu"></asp:Label>
             </div>
         </div>
-        <div id="divMainContent">
+        <div id="divMainContent" class="main-content">
             <asp:ContentPlaceHolder ID="cphMainContent" runat="server">
             </asp:ContentPlaceHolder>
         </div>
-        <asp:Label ID="lblMainNormalViewBtn" ClientIDMode="Static" runat="server" ToolTip="Normal View"><span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span></asp:Label>
+        <asp:Label ID="lblMainNormalViewBtn" ClientIDMode="Static" runat="server" ToolTip="Normal View"><span class="glyphicon glyphicon-fullscreen"></span></asp:Label>
         <%= GenStatsHtml() %>
     </form>
 </body>
