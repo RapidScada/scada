@@ -23,7 +23,10 @@
  * Modified : 2016
  */
 
+using Scada.UI;
 using System;
+using System.Collections.Generic;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace Scada.Web.Plugins.Chart
@@ -34,19 +37,135 @@ namespace Scada.Web.Plugins.Chart
     /// </summary>
     public partial class WFrmMinDataRep : System.Web.UI.Page
     {
-        protected void Page_Load(object sender, EventArgs e)
-        {
+        private AppData appData;           // общие данные веб-приложения
+        private UserData userData;         // данные пользователя приложения
+        private List<CnlViewPair> selCnls; // выбранные каналы
 
+
+        /// <summary>
+        /// Скрыть сообщение об ошибке
+        /// </summary>
+        private void HideErrMsg()
+        {
+            pnlErrMsg.Visible = false;
         }
 
-        protected void btnAddCnls_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Вывести сообщение об ошибке
+        /// </summary>
+        private void ShowErrMsg(string errMsg)
         {
+            lblErrMsg.Text = errMsg;
+            pnlErrMsg.Visible = true;
+        }
 
+        /// <summary>
+        /// Отобразить выбранные каналы
+        /// </summary>
+        private void ShowSelCnls()
+        {
+            repSelCnls.DataSource = selCnls;
+            repSelCnls.DataBind();
+            btnGenReport.Enabled = selCnls.Count > 0;
+            lblNoSelCnls.Visible = !btnGenReport.Enabled;
+        }
+
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            appData = AppData.GetAppData();
+            userData = UserData.GetUserData();
+
+            // скрытие сообщения об ошибке
+            HideErrMsg();
+
+            if (IsPostBack)
+            {
+                selCnls = (List<CnlViewPair>)ViewState["SelCnls"];
+            }
+            else
+            {
+                // перевод веб-страницы
+                Translator.TranslatePage(Page, "Scada.Web.Plugins.Chart.WFrmMinDataRep");
+
+                // установка периода по умолчанию
+                txtDateFrom.Text = txtDateTo.Text = DateTime.Today.ToLocalizedDateString();
+
+                // создание списка выбранных каналов
+                selCnls = new List<CnlViewPair>();
+                ViewState.Add("SelCnls", selCnls);
+
+                // отображение выбранных каналов
+                ShowSelCnls();
+            }
+        }
+
+        protected void btnApplyAddedCnls_Click(object sender, EventArgs e)
+        {
+            // добавление каналов
+            if (hidAddedCnlNums.Value != "")
+            {
+                int[] addedCnls = WebUtils.QueryParamToIntArray(hidAddedCnlNums.Value);
+                int[] addedViewIDs = WebUtils.QueryParamToIntArray(hidAddedViewIDs.Value);
+                ChartUtils.CheckArrays(addedCnls, addedViewIDs);
+
+                for (int i = 0, cnt = addedCnls.Length; i < cnt; i++)
+                {
+                    int cnlNum = addedCnls[i];
+                    CnlViewPair pair = new CnlViewPair(cnlNum, addedViewIDs[i]);
+                    pair.FillInfo(appData.DataAccess.GetCnlProps(cnlNum), userData.UserViews);
+                    selCnls.Add(pair);
+                }
+
+                ViewState.Add("SelCnls", selCnls);
+                ShowSelCnls();
+
+                hidAddedCnlNums.Value = "";
+                hidAddedViewIDs.Value = "";
+            }
         }
 
         protected void repSelCnls_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
+            // удаление выбранного канала из списка
+            if (e.CommandName == "RemoveCnl")
+            {
+                int index = int.Parse((string)e.CommandArgument);
+                if (index < selCnls.Count)
+                {
+                    selCnls.RemoveAt(index);
+                    ViewState.Add("SelCnls", selCnls);
+                    ShowSelCnls();
+                }
+            }
+        }
 
+        protected void btnGenReport_Click(object sender, EventArgs e)
+        {
+            // проверка параметров отчёта и добавление скрипта генерации отчёта
+            if (selCnls.Count > 0)
+            {
+                DateTime dateFrom;
+                DateTime dateTo;
+                int period;
+                string errMsg;
+
+                if (ChartUtils.ParseDates(txtDateFrom, txtDateTo, out dateFrom, out dateTo, out errMsg) &&
+                    ChartUtils.CheckDates(dateFrom, dateTo, out period, out errMsg))
+                {
+                    string cnlNums;
+                    string viewIDs;
+                    ChartUtils.GetSelection(selCnls, out cnlNums, out viewIDs);
+
+                    ScriptManager.RegisterClientScriptBlock(this, GetType(), "GenerateReportScript",
+                        string.Format("generateReport('{0}', '{1}', {2}, {3}, {4}, {5});",
+                        cnlNums, viewIDs, dateFrom.Year, dateFrom.Month, dateFrom.Day, period), true);
+                }
+                else
+                {
+                    ShowErrMsg(errMsg);
+                }
+            }
         }
     }
 }

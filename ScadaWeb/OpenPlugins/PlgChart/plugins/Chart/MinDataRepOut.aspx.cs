@@ -35,7 +35,7 @@ namespace Scada.Web.Plugins.Chart
     /// </summary>
     /// <remarks>
     /// URL example: 
-    /// http://webserver/scada/plugins/Chart/MinDataRepOut.aspx?cnlNums=1,2&views=1,1&year=2016&month=1&day=1&period=2
+    /// http://webserver/scada/plugins/Chart/MinDataRepOut.aspx?cnlNums=1,2&viewIDs=1,1&year=2016&month=1&day=1&period=2
     /// </remarks>
     public partial class WFrmMinDataRepOut : System.Web.UI.Page
     {

@@ -25,8 +25,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
+using System.Web.UI.WebControls;
 
 namespace Scada.Web.Plugins.Chart
 {
@@ -37,25 +37,64 @@ namespace Scada.Web.Plugins.Chart
     public static class ChartUtils
     {
         /// <summary>
-        /// Проверить корректность заданных массивов
+        /// Макс. длина периода, дн.
         /// </summary>
-        public static void CheckArrays(int[] cnlNums, int[] viewIDs)
+        public const int MaxPeriodLength = 31;
+
+        /// <summary>
+        /// Количество графиков, выше которого могут быть проблемы с производительностью
+        /// </summary>
+        public const int NormalChartCnt = 10;
+
+
+        /// <summary>
+        /// Распознать даты, введённые пользователем, и вернуть сообщение в случае ошибки
+        /// </summary>
+        public static bool ParseDates(TextBox txtDateFrom, TextBox txtDateTo, 
+            out DateTime dateFrom, out DateTime dateTo, out string errMsg)
         {
-            if (cnlNums == null)
-                throw new ArgumentNullException("cnlNums");
+            dateFrom = DateTime.MinValue;
+            dateTo = DateTime.MinValue;
 
-            if (viewIDs == null)
-                throw new ArgumentNullException("viewIDs");
+            if (!ScadaUtils.TryParseDateTime(txtDateFrom.Text, out dateFrom))
+            {
+                errMsg = ChartPhrases.IncorrectStartDate;
+                return false;
+            }
+            else if (!ScadaUtils.TryParseDateTime(txtDateTo.Text, out dateTo))
+            {
+                errMsg = ChartPhrases.IncorrectEndDate;
+                return false;
+            }
+            else
+            {
+                errMsg = "";
+                return true;
+            }
+        }
 
-            if (cnlNums.Length == 0)
-                throw new ArgumentException(Localization.UseRussian ?
-                    "Номера каналов не заданы." :
-                    "Channel numbers are not specified.");
+        /// <summary>
+        /// Проверить даты, введённые пользователем, и вернуть сообщение в случае ошибки
+        /// </summary>
+        public static bool CheckDates(DateTime dateFrom, DateTime dateTo, out int period, out string errMsg)
+        {
+            period = (int)(dateTo - dateFrom).TotalDays + 1;
 
-            if (cnlNums.Length != viewIDs.Length)
-                throw new ScadaException(Localization.UseRussian ?
-                    "Несоответствие количества каналов и ид. представлений." :
-                    "Mismatch in number of channels and view IDs.");
+            if (dateFrom > dateTo)
+            {
+                errMsg = ChartPhrases.IncorrectPeriod;
+                return false;
+            }
+            else if (period > MaxPeriodLength)
+            {
+                errMsg = string.Format(ChartPhrases.PeriodTooLong, MaxPeriodLength);
+                return false;
+            }
+            else
+            {
+                errMsg = "";
+                return true;
+            }
         }
 
         /// <summary>
@@ -79,6 +118,49 @@ namespace Scada.Web.Plugins.Chart
                 startDate = startDate.AddDays(period + 1).Date;
                 period = -period;
             }
+        }
+
+        /// <summary>
+        /// Проверить корректность заданных массивов
+        /// </summary>
+        public static void CheckArrays(int[] cnlNums, int[] viewIDs)
+        {
+            if (cnlNums == null)
+                throw new ArgumentNullException("cnlNums");
+
+            if (viewIDs == null)
+                throw new ArgumentNullException("viewIDs");
+
+            if (cnlNums.Length == 0)
+                throw new ArgumentException(ChartPhrases.CnlNumsEmptyError);
+
+            if (cnlNums.Length != viewIDs.Length)
+                throw new ScadaException(ChartPhrases.CountMismatchError);
+        }
+
+        /// <summary>
+        /// Получить выбранные каналы и соответствующие им представления
+        /// </summary>
+        public static void GetSelection(List<CnlViewPair> selectedCnls, out string cnlNums, out string viewIDs)
+        {
+            StringBuilder sbCnlNums = new StringBuilder();
+            StringBuilder sbViewIDs = new StringBuilder();
+
+            for (int i = 0, lastInd = selectedCnls.Count - 1; i <= lastInd; i++)
+            {
+                CnlViewPair pair = selectedCnls[i];
+                sbCnlNums.Append(pair.CnlNum);
+                sbViewIDs.Append(pair.ViewID);
+
+                if (i < lastInd)
+                {
+                    sbCnlNums.Append(",");
+                    sbViewIDs.Append(",");
+                }
+            }
+
+            cnlNums = sbCnlNums.ToString();
+            viewIDs = sbViewIDs.ToString();
         }
     }
 }

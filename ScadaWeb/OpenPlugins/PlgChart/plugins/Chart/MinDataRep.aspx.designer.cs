@@ -13,6 +13,42 @@ namespace Scada.Web.Plugins.Chart {
     public partial class WFrmMinDataRep {
         
         /// <summary>
+        /// ScriptManager control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.ScriptManager ScriptManager;
+        
+        /// <summary>
+        /// upnlMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel upnlMessage;
+        
+        /// <summary>
+        /// pnlErrMsg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlErrMsg;
+        
+        /// <summary>
+        /// lblErrMsg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblErrMsg;
+        
+        /// <summary>
         /// lblTitle control.
         /// </summary>
         /// <remarks>
@@ -58,6 +94,15 @@ namespace Scada.Web.Plugins.Chart {
         protected global::System.Web.UI.WebControls.TextBox txtDateTo;
         
         /// <summary>
+        /// upnlCnls control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel upnlCnls;
+        
+        /// <summary>
         /// btnAddCnls control.
         /// </summary>
         /// <remarks>
@@ -65,6 +110,33 @@ namespace Scada.Web.Plugins.Chart {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAddCnls;
+        
+        /// <summary>
+        /// btnApplyAddedCnls control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnApplyAddedCnls;
+        
+        /// <summary>
+        /// hidAddedCnlNums control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hidAddedCnlNums;
+        
+        /// <summary>
+        /// hidAddedViewIDs control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hidAddedViewIDs;
         
         /// <summary>
         /// lblSelCnls control.
@@ -103,12 +175,30 @@ namespace Scada.Web.Plugins.Chart {
         protected global::System.Web.UI.WebControls.Label lblNoSelCnls;
         
         /// <summary>
-        /// btnGenerate control.
+        /// upnlGen control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnGenerate;
+        protected global::System.Web.UI.UpdatePanel upnlGen;
+        
+        /// <summary>
+        /// btnGenReport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnGenReport;
+        
+        /// <summary>
+        /// lblGenStarted control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblGenStarted;
     }
 }

@@ -49,6 +49,7 @@
     <Compile Include="ChartDataBuilder.cs" />
     <Compile Include="ChartUtils.cs" />
     <Compile Include="ChartPhrases.cs" />
+    <Compile Include="CnlViewPair.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RightsChecker.cs" />
     <Compile Include="TrendBundle.cs" />

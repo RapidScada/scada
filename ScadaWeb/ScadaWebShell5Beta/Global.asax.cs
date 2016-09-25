@@ -24,6 +24,7 @@
  */
 
 using System;
+using System.Web;
 using Utils;
 
 namespace Scada.Web
@@ -58,7 +59,8 @@ namespace Scada.Web
 
         protected void Application_Error(object sender, EventArgs e)
         {
-            Server.Transfer("~/Error.aspx");
+            if (!WebUtils.IsAjaxRequest(HttpContext.Current.Request))
+                Server.Transfer("~/Error.aspx");
         }
 
         protected void Session_End(object sender, EventArgs e)

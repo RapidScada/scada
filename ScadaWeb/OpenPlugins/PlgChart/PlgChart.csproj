@@ -58,6 +58,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +92,7 @@
       <DependentUpon>mindatarep.css</DependentUpon>
     </Content>
     <Content Include="plugins\Chart\js\mindatarep.js" />
+    <Content Include="plugins\Chart\js\selectcnls.js" />
     <Content Include="plugins\Chart\MinDataRep.aspx" />
     <Content Include="plugins\Chart\MinDataRepOut.aspx" />
     <Content Include="plugins\Chart\js\chartform.js" />
@@ -98,6 +100,7 @@
     <Content Include="plugins\Chart\js\chartdialog.js" />
     <Content Include="plugins\Chart\lang\PlgChart.en-GB.xml" />
     <Content Include="plugins\Chart\lang\PlgChart.ru-RU.xml" />
+    <Content Include="plugins\Chart\SelectCnls.aspx" />
     <Content Include="plugins\Chart\templates\MinDataRep.xml" />
     <Content Include="test\ChartTest.html" />
     <Content Include="Web.config" />
@@ -128,6 +131,13 @@
     <Compile Include="plugins\Chart\MinDataRepOut.aspx.designer.cs">
       <DependentUpon>MinDataRepOut.aspx</DependentUpon>
     </Compile>
+    <Compile Include="plugins\Chart\SelectCnls.aspx.cs">
+      <DependentUpon>SelectCnls.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="plugins\Chart\SelectCnls.aspx.designer.cs">
+      <DependentUpon>SelectCnls.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -141,6 +151,7 @@
     <Content Include="MasterMain.Master" />
     <Content Include="plugins\Chart\css\mindatarep.less" />
     <Content Include="plugins\Chart\css\cnllist.less" />
+    <Content Include="css\common\contentform.less" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

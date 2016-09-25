@@ -188,9 +188,9 @@ scada.masterMain = {
 
 $(document).ready(function () {
     // unbind events to avoid doubling in case of using ASP.NET AJAX
-    $(window).off();
+    /*$(window).off();
     $(document).off();
-    $("body").off();
+    $("body").off();*/
 
     // page setup
     scada.clientAPI.rootPath = scada.env.rootPath;

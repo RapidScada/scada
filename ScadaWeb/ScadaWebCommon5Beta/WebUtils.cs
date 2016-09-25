@@ -68,6 +68,14 @@ namespace Scada.Web
         }
 
         /// <summary>
+        /// Проверить, что выполняется AJAX-запрос
+        /// </summary>
+        public static bool IsAjaxRequest(HttpRequest request)
+        {
+            return request.Headers["X-Requested-With"] == "XMLHttpRequest";
+        }
+
+        /// <summary>
         /// Отключить кэширование страницы
         /// </summary>
         public static void DisablePageCache(HttpResponse response)
