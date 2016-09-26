@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : PlgChart
- * Summary  : The phrases used by the plugin
+ * Summary  : The phrases used by the minute data report
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
@@ -28,12 +28,12 @@
 namespace Scada.Web.Plugins.Chart
 {
     /// <summary>
-    /// The phrases used by the plugin
-    /// <para>Фразы, используемые плагином</para>
+    /// The phrases used by the minute data report
+    /// <para>Фразы, используемые отчётом по минутным данным</para>
     /// </summary>
-    internal static class PlgPhrases
+    internal static class MinDataRepPhrases
     {
-        static PlgPhrases()
+        static MinDataRepPhrases()
         {
             SetToDefault();
         }

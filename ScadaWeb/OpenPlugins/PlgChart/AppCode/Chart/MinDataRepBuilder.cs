@@ -37,7 +37,7 @@ namespace Scada.Web.Plugins.Chart
     /// Minute data report builder
     /// <para>Формирует отчёт по минутным данным</para>
     /// </summary>
-    public class MinDataRepBuilder : ExcelRepBuilder
+    internal class MinDataRepBuilder : ExcelRepBuilder
     {
         private DataAccess dataAccess;   // объект для доступа к данным
 
@@ -164,7 +164,7 @@ namespace Scada.Web.Plugins.Chart
                 colIndex++;
 
                 Cell valColCell = valColCellTemplate.Clone();
-                valColCell.DataNode.InnerText = string.Format(PlgPhrases.ValColTitle, cnlNums[i]);
+                valColCell.DataNode.InnerText = string.Format(MinDataRepPhrases.ValColTitle, cnlNums[i]);
                 dataHdrRow.AppendCell(valColCell);
 
                 Cell emptyCell = valCellTemplate.Clone();
@@ -320,7 +320,7 @@ namespace Scada.Web.Plugins.Chart
             }
 
             // перевод наименования листа
-            workbook.Worksheets[0].Name = PlgPhrases.MinDataWorksheet;
+            workbook.Worksheets[0].Name = MinDataRepPhrases.MinDataWorksheet;
 
             // удаление лишних атрибутов таблицы
             table.RemoveTableNodeAttrs();
@@ -357,11 +357,11 @@ namespace Scada.Web.Plugins.Chart
             }
             else if (valName == "Gen")
             {
-                nodeText = PlgPhrases.MinDataGen + DateTime.Now.ToLocalizedString();
+                nodeText = MinDataRepPhrases.MinDataGen + DateTime.Now.ToLocalizedString();
             }
             else if (valName == "CnlsCaption")
             {
-                nodeText = PlgPhrases.CnlsCaption;
+                nodeText = MinDataRepPhrases.CnlsCaption;
             }
             else if (procCnlRow)
             {
@@ -379,13 +379,13 @@ namespace Scada.Web.Plugins.Chart
             }
             else if (valName == "TimeCol")
             {
-                nodeText = PlgPhrases.TimeColTitle;
+                nodeText = MinDataRepPhrases.TimeColTitle;
                 dataHdrRow = cell.ParentRow;
             }
             else if (valName == "ValCol")
             {
                 valColCellTemplate = cell;
-                nodeText = string.Format(PlgPhrases.ValColTitle, cnlNums[0]);
+                nodeText = string.Format(MinDataRepPhrases.ValColTitle, cnlNums[0]);
             }
             else if (valName == "Date")
             {

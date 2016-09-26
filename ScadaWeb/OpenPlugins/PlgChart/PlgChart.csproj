@@ -114,7 +114,7 @@
   <ItemGroup>
     <Compile Include="AppCode\Chart\MinDataRepBuilder.cs" />
     <Compile Include="AppCode\Chart\MinDataRepSpec.cs" />
-    <Compile Include="AppCode\Chart\PlgPhrases.cs" />
+    <Compile Include="AppCode\Chart\MinDataRepPhrases.cs" />
     <Compile Include="AppCode\PlgChartSpec.cs" />
     <Compile Include="plugins\Chart\Chart.aspx.cs">
       <DependentUpon>Chart.aspx</DependentUpon>

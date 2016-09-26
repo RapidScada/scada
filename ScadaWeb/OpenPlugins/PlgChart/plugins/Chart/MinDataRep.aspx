@@ -13,11 +13,11 @@
         <ContentTemplate>
             <asp:Panel ID="pnlErrMsg" runat="server" CssClass="alert alert-danger alert-dismissible">
                 <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-                <asp:Label ID="lblErrMsg" runat="server" Text="Error message."></asp:Label>
+                <asp:Label ID="lblErrMsg" runat="server" Text=""></asp:Label>
             </asp:Panel>
             <asp:Panel ID="pnlWarnMsg" runat="server" CssClass="alert alert-warning alert-dismissible">
                 <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-                <asp:Label ID="lblWarnMsg" runat="server" Text="Warning message."></asp:Label>
+                <asp:Label ID="lblWarnMsg" runat="server" Text=""></asp:Label>
             </asp:Panel>
         </ContentTemplate>
     </asp:UpdatePanel>

@@ -27,7 +27,7 @@ namespace Scada.Web.Plugins.Chart
 {
     /// <summary>
     /// Minute data report specification
-    /// <para>Спецификация отчёта минутных данных</para>
+    /// <para>Спецификация отчёта по минутным данным</para>
     /// </summary>
     public class MinDataRepSpec : ReportSpec
     {
@@ -50,8 +50,8 @@ namespace Scada.Web.Plugins.Chart
             get
             {
                 return Localization.UseRussian ? 
-                    "Минутные данные" : 
-                    "Minute data";
+                    "Отчёт по минутным данным" : 
+                    "Minute data report";
             }
         }
         
