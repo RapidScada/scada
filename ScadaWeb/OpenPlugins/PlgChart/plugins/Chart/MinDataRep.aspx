@@ -1,7 +1,6 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterMain.Master" AutoEventWireup="true" CodeBehind="MinDataRep.aspx.cs" Inherits="Scada.Web.Plugins.Chart.WFrmMinDataRep" %>
+﻿<%@ Page Title="Minute Data Report" Language="C#" MasterPageFile="~/MasterMain.Master" AutoEventWireup="true" CodeBehind="MinDataRep.aspx.cs" Inherits="Scada.Web.Plugins.Chart.WFrmMinDataRep" %>
 <%@ Import Namespace="Scada.Web.Plugins.Chart" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="cphMainHead" runat="server">
-    <link href="css/cnllist.min.css" rel="stylesheet" type="text/css" />
     <link href="css/mindatarep.min.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="js/mindatarep.js"></script>
 </asp:Content>
@@ -15,6 +14,10 @@
             <asp:Panel ID="pnlErrMsg" runat="server" CssClass="alert alert-danger alert-dismissible">
                 <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
                 <asp:Label ID="lblErrMsg" runat="server" Text="Error message."></asp:Label>
+            </asp:Panel>
+            <asp:Panel ID="pnlWarnMsg" runat="server" CssClass="alert alert-warning alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+                <asp:Label ID="lblWarnMsg" runat="server" Text="Warning message."></asp:Label>
             </asp:Panel>
         </ContentTemplate>
     </asp:UpdatePanel>

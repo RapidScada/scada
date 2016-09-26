@@ -101,7 +101,7 @@ namespace Scada.Web.Plugins.Chart
                         .AppendLine(cnlProps.KPName);
             }
 
-            if (ViewID > 0)
+            if (ViewID > 0 && userViews != null)
             {
                 ViewNode viewNode = userViews.GetViewNode(ViewID);
                 if (viewNode != null)

@@ -91,6 +91,12 @@
     <Content Include="plugins\Chart\css\mindatarep.min.css">
       <DependentUpon>mindatarep.css</DependentUpon>
     </Content>
+    <Content Include="plugins\Chart\css\selectcnls.css">
+      <DependentUpon>selectcnls.less</DependentUpon>
+    </Content>
+    <Content Include="plugins\Chart\css\selectcnls.min.css">
+      <DependentUpon>selectcnls.css</DependentUpon>
+    </Content>
     <Content Include="plugins\Chart\js\mindatarep.js" />
     <Content Include="plugins\Chart\js\selectcnls.js" />
     <Content Include="plugins\Chart\MinDataRep.aspx" />
@@ -152,6 +158,8 @@
     <Content Include="plugins\Chart\css\mindatarep.less" />
     <Content Include="plugins\Chart\css\cnllist.less" />
     <Content Include="css\common\contentform.less" />
+    <Content Include="plugins\Chart\css\selectcnls.less" />
+    <Content Include="css\common\modalform.less" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

@@ -14,5 +14,9 @@
   {
     "outputFile": "plugins/Chart/css/cnllist.css",
     "inputFile": "plugins/Chart/css/cnllist.less"
+  },
+  {
+    "outputFile": "plugins/Chart/css/selectcnls.css",
+    "inputFile": "plugins/Chart/css/selectcnls.less"
   }
 ]

@@ -43,11 +43,12 @@ namespace Scada.Web.Plugins.Chart
 
 
         /// <summary>
-        /// Скрыть сообщение об ошибке
+        /// Скрыть все сообщения
         /// </summary>
-        private void HideErrMsg()
+        private void HideAllMsgs()
         {
             pnlErrMsg.Visible = false;
+            pnlWarnMsg.Visible = false;
         }
 
         /// <summary>
@@ -60,6 +61,15 @@ namespace Scada.Web.Plugins.Chart
         }
 
         /// <summary>
+        /// Вывести предупреждение
+        /// </summary>
+        private void ShowWarnMsg(string warnMsg)
+        {
+            lblWarnMsg.Text = warnMsg;
+            pnlWarnMsg.Visible = true;
+        }
+
+        /// <summary>
         /// Отобразить выбранные каналы
         /// </summary>
         private void ShowSelCnls()
@@ -68,6 +78,9 @@ namespace Scada.Web.Plugins.Chart
             repSelCnls.DataBind();
             btnGenReport.Enabled = selCnls.Count > 0;
             lblNoSelCnls.Visible = !btnGenReport.Enabled;
+
+            if (selCnls.Count > ChartUtils.NormalChartCnt)
+                ShowWarnMsg(ChartPhrases.PerfWarning);
         }
 
 
@@ -76,11 +89,12 @@ namespace Scada.Web.Plugins.Chart
             appData = AppData.GetAppData();
             userData = UserData.GetUserData();
 
-            // скрытие сообщения об ошибке
-            HideErrMsg();
+            // скрытие всех сообщений
+            HideAllMsgs();
 
             if (IsPostBack)
             {
+                // получение выбранных каналов
                 selCnls = (List<CnlViewPair>)ViewState["SelCnls"];
             }
             else
@@ -108,13 +122,17 @@ namespace Scada.Web.Plugins.Chart
                 int[] addedCnls = WebUtils.QueryParamToIntArray(hidAddedCnlNums.Value);
                 int[] addedViewIDs = WebUtils.QueryParamToIntArray(hidAddedViewIDs.Value);
                 ChartUtils.CheckArrays(addedCnls, addedViewIDs);
+                HashSet<int> selCnlSet = ChartUtils.GetCnlSet(selCnls);
 
                 for (int i = 0, cnt = addedCnls.Length; i < cnt; i++)
                 {
                     int cnlNum = addedCnls[i];
-                    CnlViewPair pair = new CnlViewPair(cnlNum, addedViewIDs[i]);
-                    pair.FillInfo(appData.DataAccess.GetCnlProps(cnlNum), userData.UserViews);
-                    selCnls.Add(pair);
+                    if (!selCnlSet.Contains(cnlNum))
+                    {
+                        CnlViewPair pair = new CnlViewPair(cnlNum, addedViewIDs[i]);
+                        pair.FillInfo(appData.DataAccess.GetCnlProps(cnlNum), userData.UserViews);
+                        selCnls.Add(pair);
+                    }
                 }
 
                 ViewState.Add("SelCnls", selCnls);

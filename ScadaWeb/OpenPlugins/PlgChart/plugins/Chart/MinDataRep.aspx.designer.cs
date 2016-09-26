@@ -49,6 +49,24 @@ namespace Scada.Web.Plugins.Chart {
         protected global::System.Web.UI.WebControls.Label lblErrMsg;
         
         /// <summary>
+        /// pnlWarnMsg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlWarnMsg;
+        
+        /// <summary>
+        /// lblWarnMsg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblWarnMsg;
+        
+        /// <summary>
         /// lblTitle control.
         /// </summary>
         /// <remarks>

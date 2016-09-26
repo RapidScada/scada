@@ -1,36 +1,15 @@
-﻿.main-content {
-  padding: 20px;
-  font-size: 14px;
+﻿body {
+  margin: 0;
+  padding: 0;
+  background-color: white;
+  color: #333;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 13px;
+  min-width: 250px;
+  overflow: hidden;
 }
-h1 {
-  font-size: 23px;
-}
-h2 {
-  font-size: 17px;
-}
-h3 {
-  font-size: 14px;
-}
-h1,
-h2,
-h3 {
-  font-weight: 500;
-  margin: 20px 0 10px;
-}
-h1:first-of-type {
-  margin-top: 0;
-}
-a,
-a:active,
-a:hover,
-a:focus,
-a:visited {
-  color: #0073aa;
-  outline: 0;
-  text-decoration: none;
-}
-a:hover {
-  color: #00a0d2;
+table {
+  border-collapse: collapse;
 }
 label {
   font-weight: 600;
@@ -64,14 +43,4 @@ label {
 }
 .cnl-list-msg {
   margin-left: 15px;
-}
-.form-group.period {
-  max-width: 300px;
-}
-.popovers-container {
-  position: relative;
-}
-#lblGenStarted {
-  display: block;
-  margin-top: 5px;
 }

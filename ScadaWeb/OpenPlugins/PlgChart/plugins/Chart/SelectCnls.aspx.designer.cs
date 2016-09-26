@@ -31,21 +31,75 @@ namespace Scada.Web.Plugins.Chart {
         protected global::System.Web.UI.WebControls.Button btnSubmit;
         
         /// <summary>
-        /// txtCnls control.
+        /// pnlPerfWarn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCnls;
+        protected global::System.Web.UI.WebControls.Panel pnlPerfWarn;
         
         /// <summary>
-        /// txtViewIDs control.
+        /// lblPerfWarn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtViewIDs;
+        protected global::System.Web.UI.WebControls.Label lblPerfWarn;
+        
+        /// <summary>
+        /// ddlView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlView;
+        
+        /// <summary>
+        /// pnlCnlsByView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlCnlsByView;
+        
+        /// <summary>
+        /// repCnlsByView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater repCnlsByView;
+        
+        /// <summary>
+        /// lblLoading control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblLoading;
+        
+        /// <summary>
+        /// lblUnableLoadView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblUnableLoadView;
+        
+        /// <summary>
+        /// lblNoCnlsByView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblNoCnlsByView;
     }
 }

@@ -7,6 +7,7 @@
     <Phrase key="PeriodTooLong">Максимальная длина периода {0} день.</Phrase>
     <Phrase key="CnlNumsEmptyError">Номера каналов не заданы.</Phrase>
     <Phrase key="CountMismatchError">Несоответствие количества каналов и ид. представлений.</Phrase>
+    <Phrase key="PerfWarning">Предупреждение! Слишком много каналов могут снизить производительность.</Phrase>
     <Phrase key="AddCnlBtn">Добавить</Phrase>
     <Phrase key="RemoveCnlBtn">Удалить</Phrase>
     <Phrase key="CnlInfoBtn">Инфо</Phrase>
@@ -24,5 +25,22 @@
   <Dictionary key="Scada.Web.Plugins.Chart.WFrmChart">
     <Phrase key="this">График - Rapid SCADA</Phrase>
     <Phrase key="lblGenerated">Получено</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Chart.WFrmMinDataRep">
+    <Phrase key="this">Отчёт по минутным данным - Rapid SCADA</Phrase>
+    <Phrase key="lblTitle">Отчёт по минутным данным</Phrase>
+    <Phrase key="lblDateFrom">Начало</Phrase>
+    <Phrase key="lblDateTo">Окончание</Phrase>
+    <Phrase key="btnAddCnls">Добавить каналы</Phrase>
+    <Phrase key="lblSelCnls">Выбранные каналы:</Phrase>
+    <Phrase key="lblNoSelCnls">Входные каналы не выбраны</Phrase>
+    <Phrase key="btnGenReport">Скачать отчёт</Phrase>
+    <Phrase key="lblGenStarted">Отчёт формируется. Пожалуйста, подождите...</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Chart.WFrmSelectCnls">
+    <Phrase key="this">Выбор каналов - Rapid SCADA</Phrase>
+    <Phrase key="lblLoading">Загрузка...</Phrase>
+    <Phrase key="lblUnableLoadView">Не удалось загрузить представление</Phrase>
+    <Phrase key="lblNoCnlsByView">Входные каналы не найдены</Phrase>
   </Dictionary>
 </PlgChartDictionaries>

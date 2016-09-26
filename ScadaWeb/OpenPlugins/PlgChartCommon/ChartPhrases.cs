@@ -45,6 +45,7 @@ namespace Scada.Web.Plugins.Chart
         public static string PeriodTooLong { get; private set; }
         public static string CnlNumsEmptyError { get; private set; }
         public static string CountMismatchError { get; private set; }
+        public static string PerfWarning { get; private set; }
         public static string AddCnlBtn { get; private set; }
         public static string RemoveCnlBtn { get; private set; }
         public static string CnlInfoBtn { get; private set; }
@@ -60,6 +61,7 @@ namespace Scada.Web.Plugins.Chart
             PeriodTooLong = Localization.Dict.GetEmptyPhrase("PeriodTooLong");
             CnlNumsEmptyError = Localization.Dict.GetEmptyPhrase("CnlNumsEmptyError");
             CountMismatchError = Localization.Dict.GetEmptyPhrase("CountMismatchError");
+            PerfWarning = Localization.Dict.GetEmptyPhrase("PerfWarning");
             AddCnlBtn = Localization.Dict.GetEmptyPhrase("AddCnlBtn");
             RemoveCnlBtn = Localization.Dict.GetEmptyPhrase("RemoveCnlBtn");
             CnlInfoBtn = Localization.Dict.GetEmptyPhrase("CnlInfoBtn");
@@ -79,6 +81,7 @@ namespace Scada.Web.Plugins.Chart
                 PeriodTooLong = dict.GetPhrase("PeriodTooLong", PeriodTooLong);
                 CnlNumsEmptyError = dict.GetPhrase("CnlNumsEmptyError", CnlNumsEmptyError);
                 CountMismatchError = dict.GetPhrase("CountMismatchError", CountMismatchError);
+                PerfWarning = dict.GetPhrase("PerfWarning", PerfWarning);
                 AddCnlBtn = dict.GetPhrase("AddCnlBtn", AddCnlBtn);
                 RemoveCnlBtn = dict.GetPhrase("RemoveCnlBtn", RemoveCnlBtn);
                 CnlInfoBtn = dict.GetPhrase("CnlInfoBtn", CnlInfoBtn);
