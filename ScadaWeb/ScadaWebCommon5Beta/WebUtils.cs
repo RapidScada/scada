@@ -116,7 +116,7 @@ namespace Scada.Web
             else
             {
                 try { return new DateTime(year, month, day); }
-                catch { throw new Exception(WebPhrases.IncorrectDate); }
+                catch { throw new ScadaException(WebPhrases.IncorrectDate); }
             }
         }
 

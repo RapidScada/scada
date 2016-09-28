@@ -217,7 +217,7 @@ namespace Scada.Web
                         }
                         catch
                         {
-                            throw new Exception(string.Format(CommonPhrases.IncorrectXmlParamVal, name));
+                            throw new ScadaException(string.Format(CommonPhrases.IncorrectXmlParamVal, name));
                         }
                     }
                 }
