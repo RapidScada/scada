@@ -49,11 +49,10 @@ namespace Scada.Web.Plugins.Chart
                 throw new ScadaException(CommonPhrases.NoRights);
 
             // получение параметров запроса
-            int[] cnlNums = WebUtils.QueryParamToIntArray(Request.QueryString["cnlNums"]);
-            int[] viewIDs = WebUtils.QueryParamToIntArray(Request.QueryString["viewIDs"]);
-            DateTime startDate = WebUtils.GetDateFromQueryString(Request);
-            int period;
-            int.TryParse(Request.QueryString["period"], out period);
+            int[] cnlNums = Request.QueryString.GetParamAsIntArray("cnlNums");
+            int[] viewIDs = Request.QueryString.GetParamAsIntArray("viewIDs");
+            DateTime startDate = Request.QueryString.GetParamAsDate();
+            int period = Request.QueryString.GetParamAsInt("period");
 
             // проверка прав и получение представления, если оно единственное
             RightsChecker rightsChecker = new RightsChecker(appData.ViewCache);

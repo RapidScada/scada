@@ -1272,7 +1272,7 @@ namespace Utils.Report
         /// <summary>
         /// XML-узлы могут иметь текст, содержащий переносы строк
         /// </summary>
-        protected bool textBreaked;
+        protected bool textBroken;
 
 
         /// <summary>
@@ -1333,7 +1333,7 @@ namespace Utils.Report
         {
             if (text == null) text = "";
             xmlNode.InnerText = text.Replace(textBreak, Break);
-            textBreaked = true;
+            textBroken = true;
         }
 
         /// <summary>
@@ -1534,7 +1534,7 @@ namespace Utils.Report
             table = null;
             row = null;
             cell = null;
-            textBreaked = false;
+            textBroken = false;
 
             // создание отчёта - модификация xmlDoc
             StartXmlDocProc();
@@ -1542,7 +1542,7 @@ namespace Utils.Report
             FinalXmlDocProc();
 
             // запись в выходной поток
-            if (textBreaked)
+            if (textBroken)
             {
                 StringWriter stringWriter = new StringWriter();
                 xmlDoc.Save(stringWriter);

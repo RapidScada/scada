@@ -41,8 +41,7 @@ namespace Scada.Web.Plugins.WebPage
             UserData userData = UserData.GetUserData();
 
             // получение ид. представления из параметров запроса
-            int viewID;
-            int.TryParse(Request.QueryString["viewID"], out viewID);
+            int viewID = Request.QueryString.GetParamAsInt("viewID");
             
             // проверка прав на просмотр представления
             EntityRights rights = userData.LoggedOn ?

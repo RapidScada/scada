@@ -95,7 +95,7 @@ namespace Scada.Web.Shell
         /// <summary>
         /// Длительность хранения информации о входе пользователя в систему
         /// </summary>
-        protected static readonly TimeSpan ExpireSpan = TimeSpan.FromDays(7);
+        protected static readonly TimeSpan ExpireSpan = WebUtils.CookieExpiration;
 
         /// <summary>
         /// Объект для работы с хранилищем приложения

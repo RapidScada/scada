@@ -34,12 +34,20 @@ namespace Scada.Web
     /// The class contains utility methods for web applications
     /// <para>Класс, содержащий вспомогательные методы для веб-приложений</para>
     /// </summary>
-    public static class WebUtils
+    public static partial class WebUtils
     {
         /// <summary>
         /// Начало отчёта времени в Unix, которое используется в Javascript реализации даты
         /// </summary>
         public static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        /// <summary>
+        /// Длительность хранения данных в кэше приложения
+        /// </summary>
+        public static readonly TimeSpan CacheExpiration = TimeSpan.FromMinutes(1);
+        /// <summary>
+        /// Длительность хранения данных в cookies
+        /// </summary>
+        public static readonly TimeSpan CookieExpiration = TimeSpan.FromDays(7);
 
 
         /// <summary>
@@ -93,77 +101,6 @@ namespace Scada.Web
         public static string HtmlEncodeWithBreak(object val)
         {
             return HttpUtility.HtmlEncode(val).Replace("\n", "<br />");
-        }
-
-        /// <summary>
-        /// Получить дату из параметров запроса
-        /// </summary>
-        public static DateTime GetDateFromQueryString(HttpRequest request,
-            string yearParamName = "year", string monthParamName = "month", string dayParamName = "day")
-        {
-            if (request == null)
-                throw new ArgumentNullException("request");
-
-            int year, month, day;
-            int.TryParse(request.QueryString[yearParamName], out year);
-            int.TryParse(request.QueryString[monthParamName], out month);
-            int.TryParse(request.QueryString[dayParamName], out day);
-
-            if (year == 0 && month == 0 && day == 0)
-            {
-                return DateTime.Today;
-            }
-            else
-            {
-                try { return new DateTime(year, month, day); }
-                catch { throw new ScadaException(WebPhrases.IncorrectDate); }
-            }
-        }
-
-        /// <summary>
-        /// Преобразовать параметр запроса в массив целых чисел
-        /// </summary>
-        public static int[] QueryParamToIntArray(string param)
-        {
-            try
-            {
-                string[] elems = (param ?? "").Split(new char[] { ' ', ',' },
-                    StringSplitOptions.RemoveEmptyEntries);
-                int len = elems.Length;
-                int[] arr = new int[len];
-
-                for (int i = 0; i < len; i++)
-                    arr[i] = int.Parse(elems[i]);
-
-                return arr;
-            }
-            catch (FormatException ex)
-            {
-                throw new FormatException("Query parameter is not array of integers.", ex);
-            }
-        }
-
-        /// <summary>
-        /// Преобразовать параметр запроса в множество целых чисел
-        /// </summary>
-        public static HashSet<int> QueryParamToIntSet(string param)
-        {
-            try
-            {
-                string[] elems = (param ?? "").Split(new char[] { ' ', ',' },
-                    StringSplitOptions.RemoveEmptyEntries);
-                int len = elems.Length;
-                HashSet<int> hashSet = new HashSet<int>();
-
-                for (int i = 0; i < len; i++)
-                    hashSet.Add(int.Parse(elems[i]));
-
-                return hashSet;
-            }
-            catch (FormatException ex)
-            {
-                throw new FormatException("Query parameter is not set of integers.", ex);
-            }
         }
 
         /// <summary>

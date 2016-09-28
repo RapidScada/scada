@@ -44,8 +44,7 @@ namespace Scada.Web.Plugins.Table
             UserData userData = UserData.GetUserData();
 
             // получение ид. представления из параметров запроса
-            int viewID;
-            int.TryParse(Request.QueryString["viewID"], out viewID);
+            int viewID = Request.QueryString.GetParamAsInt("viewID");
 
             // проверка прав
             if (!(userData.LoggedOn && userData.UserRights.GetUiObjRights(viewID).ViewRight))
@@ -55,10 +54,9 @@ namespace Scada.Web.Plugins.Table
             TableView tableView = appData.ViewCache.GetView<TableView>(viewID, true);
 
             // получение оставшихся параметров запроса
-            DateTime reqDate = WebUtils.GetDateFromQueryString(Request);
-            int startHour, endHour;
-            int.TryParse(Request.QueryString["startHour"], out startHour);
-            int.TryParse(Request.QueryString["endHour"], out endHour);
+            DateTime reqDate = Request.QueryString.GetParamAsDate();
+            int startHour = Request.QueryString.GetParamAsInt("startHour");
+            int endHour = Request.QueryString.GetParamAsInt("endHour");
 
             // генерация отчёта
             RepBuilder repBuilder = new HourDataRepBuilder(appData.DataAccess);

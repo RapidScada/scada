@@ -88,6 +88,7 @@
     <Compile Include="ViewSettings.cs" />
     <Compile Include="WebSettings.cs" />
     <Compile Include="Storage.cs" />
+    <Compile Include="WebUtils.QueryString.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

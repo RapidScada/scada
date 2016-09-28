@@ -79,7 +79,7 @@ namespace Scada.Web
             phrases = WebUtils.DictionaryToJs(dict);
 
             // получение ид. и ссылки представления для загрузки
-            int.TryParse(Request.QueryString["viewID"], out initialViewID);
+            initialViewID = Request.QueryString.GetParamAsInt("viewID");
             ViewNode viewNode;
 
             if (initialViewID > 0)

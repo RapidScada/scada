@@ -55,11 +55,9 @@ namespace Scada.Web.Plugins.Chart
             Translator.TranslatePage(Page, "Scada.Web.Plugins.Chart.WFrmChart");
 
             // получение параметров запроса
-            int cnlNum;
-            int.TryParse(Request.QueryString["cnlNum"], out cnlNum);
-            int viewID;
-            int.TryParse(Request.QueryString["viewID"], out viewID);
-            DateTime startDate = WebUtils.GetDateFromQueryString(Request);
+            int cnlNum = Request.QueryString.GetParamAsInt("cnlNum");
+            int viewID = Request.QueryString.GetParamAsInt("viewID");
+            DateTime startDate = Request.QueryString.GetParamAsDate();
 
             // проверка прав
             if (!userData.LoggedOn ||

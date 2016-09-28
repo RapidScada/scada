@@ -45,8 +45,7 @@ namespace Scada.Web.Plugins.Table
             UserData userData = UserData.GetUserData();
 
             // получение ид. представления из параметров запроса
-            int viewID;
-            int.TryParse(Request.QueryString["viewID"], out viewID);
+            int viewID = Request.QueryString.GetParamAsInt("viewID");
             bool eventsByView = viewID > 0;
 
             // проверка прав
@@ -67,7 +66,7 @@ namespace Scada.Web.Plugins.Table
             }
 
             // получение даты запрашиваемых событий
-            DateTime reqDate = WebUtils.GetDateFromQueryString(Request);
+            DateTime reqDate = Request.QueryString.GetParamAsDate();
 
             // генерация отчёта
             RepBuilder repBuilder = new EventsRepBuilder(appData.DataAccess);

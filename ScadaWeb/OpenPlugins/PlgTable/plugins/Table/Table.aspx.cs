@@ -246,7 +246,7 @@ namespace Scada.Web.Plugins.Table
             Translator.TranslatePage(Page, "Scada.Web.Plugins.Table.WFrmTable");
 
             // получение ид. представления из параметров запроса
-            int.TryParse(Request.QueryString["viewID"], out viewID);
+            viewID = Request.QueryString.GetParamAsInt("viewID");
 
             // проверка прав на просмотр представления
             EntityRights rights = userData.LoggedOn ? 
