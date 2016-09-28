@@ -228,9 +228,44 @@ namespace Scada.Web.Shell
         }
 
         /// <summary>
+        /// Получить элемент отчёта, имеющий спецификацию заданного типа, по идентификатору
+        /// </summary>
+        public ReportItem GetReportItem(int reportID, Type specType, bool throwOnFail = false)
+        {
+            ReportItem reportItem = GetReportItem(reportID);
+
+            if (reportItem == null)
+            {
+                if (throwOnFail)
+                    throw new ScadaException("!!!");
+                else
+                    return null;
+            }
+            else if (reportItem.ReportSpec == null || reportItem.ReportSpec.GetType() != specType)
+            {
+                if (throwOnFail)
+                    throw new ScadaException("!!!");
+                else
+                    return null;
+            }
+            else
+            {
+                return reportItem;
+            }
+        }
+
+        /// <summary>
         /// Получить элемент окна данных по идентификатору
         /// </summary>
         public DataWndItem GetDataWndItem(int dataWndID)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Получить элемент окна данных, имеющий спецификацию заданного типа, по идентификатору
+        /// </summary>
+        public DataWndItem GetDataWndItem(int dataWndID, bool throwOnFail = false)
         {
             throw new NotImplementedException();
         }
