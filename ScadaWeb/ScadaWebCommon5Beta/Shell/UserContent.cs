@@ -42,6 +42,14 @@ namespace Scada.Web.Shell
         /// Журнал
         /// </summary>
         protected readonly Log log;
+        /// <summary>
+        /// Словарь элементов отчётов, ключ - ид. отчёта
+        /// </summary>
+        protected readonly Dictionary<int, ReportItem> reportItemDict;
+        /// <summary>
+        /// Словарь элементов окон данных, ключ - ид. окна данных
+        /// </summary>
+        protected readonly Dictionary<int, DataWndItem> dataWndItemDict;
 
 
         /// <summary>
@@ -60,6 +68,9 @@ namespace Scada.Web.Shell
                 throw new ArgumentNullException("log");
 
             this.log = log;
+            reportItemDict = new Dictionary<int, ReportItem>();
+            dataWndItemDict = new Dictionary<int, DataWndItem>();
+
             ReportItems = new List<ReportItem>();
             DataWndItems = new List<DataWndItem>();
         }
@@ -116,7 +127,10 @@ namespace Scada.Web.Shell
                             }
 
                             if (!string.IsNullOrEmpty(reportItem.Text))
+                            {
                                 ReportItems.Add(reportItem);
+                                reportItemDict[uiObjID] = reportItem;
+                            }
                         }
                         else if (uiObjProps.BaseUiType == UiObjProps.BaseUiTypes.DataWnd)
                         {
@@ -138,7 +152,10 @@ namespace Scada.Web.Shell
                             }
 
                             if (!string.IsNullOrEmpty(dataWndItem.Text))
+                            {
                                 DataWndItems.Add(dataWndItem);
+                                dataWndItemDict[uiObjID] = dataWndItem;
+                            }
                         }
                     }
                 }
@@ -202,6 +219,8 @@ namespace Scada.Web.Shell
 
             try
             {
+                reportItemDict.Clear();
+                dataWndItemDict.Clear();
                 ReportItems.Clear();
                 DataWndItems.Clear();
 
@@ -224,7 +243,8 @@ namespace Scada.Web.Shell
         /// </summary>
         public ReportItem GetReportItem(int reportID)
         {
-            throw new NotImplementedException();
+            ReportItem reportItem;
+            return reportItemDict.TryGetValue(reportID, out reportItem) ? reportItem : null;
         }
 
         /// <summary>
@@ -237,14 +257,14 @@ namespace Scada.Web.Shell
             if (reportItem == null)
             {
                 if (throwOnFail)
-                    throw new ScadaException("!!!");
+                    throw new ScadaException(string.Format(WebPhrases.ReportNotFound, reportID));
                 else
                     return null;
             }
             else if (reportItem.ReportSpec == null || reportItem.ReportSpec.GetType() != specType)
             {
                 if (throwOnFail)
-                    throw new ScadaException("!!!");
+                    throw new ScadaException(string.Format(WebPhrases.UnexpectedReportSpec, reportID));
                 else
                     return null;
             }
@@ -259,15 +279,35 @@ namespace Scada.Web.Shell
         /// </summary>
         public DataWndItem GetDataWndItem(int dataWndID)
         {
-            throw new NotImplementedException();
+            DataWndItem dataWndItem;
+            return dataWndItemDict.TryGetValue(dataWndID, out dataWndItem) ? dataWndItem : null;
         }
 
         /// <summary>
         /// Получить элемент окна данных, имеющий спецификацию заданного типа, по идентификатору
         /// </summary>
-        public DataWndItem GetDataWndItem(int dataWndID, bool throwOnFail = false)
+        public DataWndItem GetDataWndItem(int dataWndID, Type specType, bool throwOnFail = false)
         {
-            throw new NotImplementedException();
+            DataWndItem dataWndItem = GetDataWndItem(dataWndID);
+
+            if (dataWndItem == null)
+            {
+                if (throwOnFail)
+                    throw new ScadaException(string.Format(WebPhrases.DataWndNotFound, dataWndID));
+                else
+                    return null;
+            }
+            else if (dataWndItem.DataWndSpec == null || dataWndItem.DataWndSpec.GetType() != specType)
+            {
+                if (throwOnFail)
+                    throw new ScadaException(string.Format(WebPhrases.UnexpectedDataWndSpec, dataWndID));
+                else
+                    return null;
+            }
+            else
+            {
+                return dataWndItem;
+            }
         }
     }
 }

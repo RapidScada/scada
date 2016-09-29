@@ -83,5 +83,13 @@ namespace Scada.Web
         {
             log.WriteAction(string.Format(WebPhrases.GenReport, repBuilder.RepName, userData.UserProps.UserName));
         }
+
+        /// <summary>
+        /// Записать сообщение о генерации отчёта в журнал
+        /// </summary>
+        public static void WriteGenerationAction(Log log, string repName, UserData userData)
+        {
+            log.WriteAction(string.Format(WebPhrases.GenReport, repName, userData.UserProps.UserName));
+        }
     }
 }

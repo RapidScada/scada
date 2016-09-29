@@ -73,6 +73,12 @@ namespace Scada.Web
         // Словарь Scada.Web.Shell.RememberMe
         public static string SecurityViolation { get; private set; }
 
+        // Словарь Scada.Web.Shell.UserContent
+        public static string ReportNotFound { get; private set; }
+        public static string UnexpectedReportSpec { get; private set; }
+        public static string DataWndNotFound { get; private set; }
+        public static string UnexpectedDataWndSpec { get; private set; }
+
         private static void SetToDefault()
         {
             NotLoggedOn = Localization.Dict.GetEmptyPhrase("NotLoggedOn");
@@ -101,6 +107,11 @@ namespace Scada.Web
             AboutMenuItem = Localization.Dict.GetEmptyPhrase("AboutMenuItem");
 
             SecurityViolation = Localization.Dict.GetEmptyPhrase("SecurityViolation");
+
+            ReportNotFound = Localization.Dict.GetEmptyPhrase("ReportNotFound");
+            UnexpectedReportSpec = Localization.Dict.GetEmptyPhrase("UnexpectedReportSpec");
+            DataWndNotFound = Localization.Dict.GetEmptyPhrase("DataWndNotFound");
+            UnexpectedDataWndSpec = Localization.Dict.GetEmptyPhrase("UnexpectedDataWndSpec");
         }
 
         public static void Init()
@@ -155,6 +166,14 @@ namespace Scada.Web
             if (Localization.Dictionaries.TryGetValue("Scada.Web.Shell.RememberMe", out dict))
             {
                 SecurityViolation = dict.GetPhrase("SecurityViolation", SecurityViolation);
+            }
+
+            if (Localization.Dictionaries.TryGetValue("Scada.Web.Shell.UserContent", out dict))
+            {
+                ReportNotFound = dict.GetPhrase("ReportNotFound", ReportNotFound);
+                UnexpectedReportSpec = dict.GetPhrase("UnexpectedReportSpec", UnexpectedReportSpec);
+                DataWndNotFound = dict.GetPhrase("DataWndNotFound", DataWndNotFound);
+                UnexpectedDataWndSpec = dict.GetPhrase("UnexpectedDataWndSpec", UnexpectedDataWndSpec);
             }
         }
     }

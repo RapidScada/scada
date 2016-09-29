@@ -624,7 +624,7 @@ namespace Scada.Web
             {
                 AppData.Log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при получении метки предсталения с ид.={0} из кеша" :
-                    "Error getting stamp of the view with id={0} from the cache", viewID);
+                    "Error getting stamp of the view with ID={0} from the cache", viewID);
                 return GetErrorDtoJs(ex);
             }
         }

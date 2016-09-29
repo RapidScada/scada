@@ -97,4 +97,10 @@
   <Dictionary key="Scada.Web.Shell.RememberMe">
     <Phrase key="SecurityViolation">Обнаружено нарушение безопасности. Незамедлительно обратитесь к системному администратору.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.Shell.UserContent">
+    <Phrase key="ReportNotFound">Отчёт с ид.={0} не найден.</Phrase>
+    <Phrase key="UnexpectedReportSpec">Отчёт с ид.={0} имеет несоответствующий тип спецификации.</Phrase>
+    <Phrase key="DataWndNotFound">Окно данных с ид.={0} не найдено.</Phrase>
+    <Phrase key="UnexpectedDataWndSpec">Окно данных с ид.={0} имеет несоответствующий тип спецификации.</Phrase>
+  </Dictionary>
 </ScadaWebDictionaries>

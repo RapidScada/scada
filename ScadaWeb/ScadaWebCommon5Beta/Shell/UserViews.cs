@@ -187,6 +187,7 @@ namespace Scada.Web.Shell
             try
             {
                 viewNodeDict.Clear();
+                ViewNodes.Clear();
 
                 if (userData.UserRights != null && userData.UiObjSpecs != null)
                 {

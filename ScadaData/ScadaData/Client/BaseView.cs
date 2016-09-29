@@ -39,7 +39,7 @@ namespace Scada.Client
     /// Write operations must be synchronized
     /// <para>Дочерние представления должны обеспечивать потокобезопасный доступ на чтение при условии, 
     /// что объект не изменяется. Операции записи должны синхронизироваться</para></remarks>
-    public abstract class BaseView
+    public abstract class BaseView : ISupportLoading
     {
         /// <summary>
         /// Конструктор

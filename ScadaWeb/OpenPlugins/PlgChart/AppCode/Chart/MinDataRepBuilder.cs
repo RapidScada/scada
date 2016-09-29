@@ -27,8 +27,6 @@ using Scada.Client;
 using Scada.Data.Models;
 using Scada.Data.Tables;
 using System;
-using System.Collections.Generic;
-using System.Xml;
 using Utils.Report;
 
 namespace Scada.Web.Plugins.Chart

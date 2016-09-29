@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cache.cs" />
+    <Compile Include="Client\ISupportLoading.cs" />
     <Compile Include="Client\ViewCache.cs" />
     <Compile Include="Data\Models\CnlStatProps.cs" />
     <Compile Include="Data\Models\DispEvent.cs" />

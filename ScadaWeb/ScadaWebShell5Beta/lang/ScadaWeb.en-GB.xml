@@ -97,4 +97,10 @@
   <Dictionary key="Scada.Web.Shell.RememberMe">
     <Phrase key="SecurityViolation">Security violation is detected. Immediately contact your system administrator.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.Shell.UserContent">
+    <Phrase key="ReportNotFound">Report with ID={0} not found.</Phrase>
+    <Phrase key="UnexpectedReportSpec">Report with ID={0} has the unexpected specification type.</Phrase>
+    <Phrase key="DataWndNotFound">Data window with ID={0} not found.</Phrase>
+    <Phrase key="UnexpectedDataWndSpec">Data window with ID={0} has the unexpected specification type.</Phrase>
+  </Dictionary>
 </ScadaWebDictionaries>

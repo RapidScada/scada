@@ -146,14 +146,5 @@ namespace Scada.Web
                     rights : EntityRights.NoRights;
             }
         }
-
-        /// <summary>
-        /// Получить права на контент
-        /// </summary>
-        [Obsolete]
-        public EntityRights GetContentRights(string contentTypeCode)
-        {
-            return EntityRights.NoRights;
-        }
     }
 }
