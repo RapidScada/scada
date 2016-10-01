@@ -131,6 +131,15 @@ namespace Scada.Data.Tables
                 }
             }
             /// <summary>
+            /// Получить данные входного канала по номеру
+            /// </summary>
+            public CnlData GetCnlData(int cnlNum)
+            {
+                CnlData cnlData;
+                GetCnlData(cnlNum, out cnlData);
+                return cnlData;
+            }
+            /// <summary>
             /// Получить значение и статус входного канала по номеру
             /// </summary>
             public bool GetCnlData(int cnlNum, out double val, out int stat)

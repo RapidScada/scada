@@ -43,13 +43,9 @@ namespace Scada.Client
         public delegate CnlStatProps GetCnlStatPropsDelegate(int stat);
 
         /// <summary>
-        /// Количество знаков дробной части по умолчанию
-        /// </summary>
-        protected const int DefDecDig = 3;
-        /// <summary>
         /// Пустое значение входного канала
         /// </summary>
-        protected const string EmptyVal = "---";
+        public const string EmptyVal = "---";
         /// <summary>
         /// Отсутствующее значение входного канала
         /// </summary>
@@ -58,6 +54,10 @@ namespace Scada.Client
         /// Обозначение следующего часа
         /// </summary>
         protected const string NextHourVal = "*";
+        /// <summary>
+        /// Количество знаков дробной части по умолчанию
+        /// </summary>
+        protected const int DefDecDig = 3;
         /// <summary>
         /// Цвет значения по умолчанию
         /// </summary>
