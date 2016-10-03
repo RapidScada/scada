@@ -31,7 +31,7 @@ using System;
 using System.Drawing;
 using System.Web.UI.WebControls;
 
-namespace Scada.Web.plugins.Table
+namespace Scada.Web.Plugins.Table
 {
     /// <summary>
     /// Event acknowledgement dialog web form

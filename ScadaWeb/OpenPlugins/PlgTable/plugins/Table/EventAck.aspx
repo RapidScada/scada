@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EventAck.aspx.cs" Inherits="Scada.Web.plugins.Table.WFrmEventAck" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EventAck.aspx.cs" Inherits="Scada.Web.Plugins.Table.WFrmEventAck" %>
 
 <!DOCTYPE html>
 

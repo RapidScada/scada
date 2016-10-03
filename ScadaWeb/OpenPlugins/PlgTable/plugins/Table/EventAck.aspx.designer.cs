@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Scada.Web.plugins.Table {
+namespace Scada.Web.Plugins.Table {
     
     
     public partial class WFrmEventAck {
