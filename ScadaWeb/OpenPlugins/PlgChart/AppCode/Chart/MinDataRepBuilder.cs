@@ -37,7 +37,7 @@ namespace Scada.Web.Plugins.Chart
     /// </summary>
     internal class MinDataRepBuilder : ExcelRepBuilder
     {
-        private DataAccess dataAccess;   // объект для доступа к данным
+        private readonly DataAccess dataAccess; // объект для доступа к данным
 
         private int[] cnlNums;           // номера каналов, по которым строится отчёт
         private DateTime startDate;      // начальная дата данных отчёта
@@ -55,6 +55,12 @@ namespace Scada.Web.Plugins.Chart
         private InCnlProps[] cnlPropsArr;          // массив свойств входных каналов отчёта
         private InCnlProps curCnlProps;            // свойства текущего обрабатываемого входного канала
 
+        /// <summary>
+        /// Конструктор, ограничивающий создание объекта без параметров
+        /// </summary>
+        protected MinDataRepBuilder()
+        {
+        }
 
         /// <summary>
         /// Конструктор

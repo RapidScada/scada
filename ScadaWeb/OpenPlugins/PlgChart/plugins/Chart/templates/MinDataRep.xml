@@ -6,8 +6,9 @@
  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
  xmlns:html="http://www.w3.org/TR/REC-html40">
  <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
-  <LastPrinted>2016-02-19T09:00:44Z</LastPrinted>
-  <Created>2016-02-19T09:00:44Z</Created>
+   <Author>Rapid SCADA</Author>
+   <LastAuthor>Rapid SCADA</LastAuthor>
+   <Created>2016-02-19T09:00:44Z</Created>
   <Version>14.00</Version>
  </DocumentProperties>
  <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
@@ -25,14 +26,14 @@
   <Style ss:ID="Default" ss:Name="Normal">
    <Alignment ss:Vertical="Bottom"/>
    <Borders/>
-   <Font ss:FontName="Arial Cyr" x:CharSet="204"/>
+   <Font ss:FontName="Arial" x:CharSet="204"/>
    <Interior/>
    <NumberFormat/>
    <Protection/>
   </Style>
   <Style ss:ID="s62">
    <Alignment ss:Vertical="Bottom"/>
-   <Font ss:FontName="Arial Cyr" x:CharSet="204" ss:Size="18"/>
+   <Font ss:FontName="Arial" x:CharSet="204" ss:Size="18"/>
   </Style>
   <Style ss:ID="s64">
    <Alignment ss:Vertical="Center"/>
@@ -45,7 +46,7 @@
     <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
     <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
    </Borders>
-   <Font ss:FontName="Arial Cyr" x:CharSet="204" ss:Size="12" ss:Bold="1"/>
+   <Font ss:FontName="Arial" x:CharSet="204" ss:Size="12" ss:Bold="1"/>
    <Interior ss:Color="#C0C0C0" ss:Pattern="Solid"/>
   </Style>
   <Style ss:ID="s66">
@@ -56,7 +57,7 @@
     <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
     <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
    </Borders>
-   <Font ss:FontName="Arial Cyr" x:CharSet="204" ss:Bold="1"/>
+   <Font ss:FontName="Arial" x:CharSet="204" ss:Bold="1"/>
   </Style>
   <Style ss:ID="s67">
    <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
