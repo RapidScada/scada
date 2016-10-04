@@ -662,7 +662,6 @@ namespace Utils.Report
             /// <summary>
             /// Добавить столбец в конец списка столбцов таблицы и модифицировать дерево XML-документа
             /// </summary>
-            /// <param name="column">Добавляемый столбец</param>
             public void AppendColumn(Column column)
             {
                 if (columns.Count > 0)
@@ -677,8 +676,6 @@ namespace Utils.Report
             /// <summary>
             /// Вставить столбец в список столбцов таблицы и модифицировать дерево XML-документа
             /// </summary>
-            /// <param name="listIndex">Индекс вставляемого столбца в списке</param>
-            /// <param name="column">Вставляемый столбец</param>
             public void InsertColumn(int listIndex, Column column)
             {
                 if (columns.Count == 0 || listIndex == 0)
@@ -693,7 +690,6 @@ namespace Utils.Report
             /// <summary>
             /// Удалить столбец из списка столбцов таблицы и модифицировать дерево XML-документа
             /// </summary>
-            /// <param name="listIndex">Индекс удаляемого столбца в списке</param>
             public void RemoveColumn(int listIndex)
             {
                 Column column = columns[listIndex];
@@ -703,9 +699,17 @@ namespace Utils.Report
             }
 
             /// <summary>
+            /// Удалить все столбцы из списка столбцов таблицы и модифицировать дерево XML-документа
+            /// </summary>
+            public void RemoveAllColumns()
+            {
+                while (columns.Count > 0)
+                    RemoveColumn(0);
+            }
+
+            /// <summary>
             /// Добавить строку в конец списка строк таблицы и модифицировать дерево XML-документа
             /// </summary>
-            /// <param name="row">Добавляемая строка</param>
             public void AppendRow(Row row)
             {
                 node.AppendChild(row.Node);
@@ -716,8 +720,6 @@ namespace Utils.Report
             /// <summary>
             /// Вставить строку в список строк таблицы и модифицировать дерево XML-документа
             /// </summary>
-            /// <param name="listIndex">Индекс вставляемой строки в списке</param>
-            /// <param name="row">Вставляемая строка</param>
             public void InsertRow(int listIndex, Row row)
             {
                 if (rows.Count == 0)
@@ -734,13 +736,21 @@ namespace Utils.Report
             /// <summary>
             /// Удалить строку из списка строк таблицы и модифицировать дерево XML-документа
             /// </summary>
-            /// <param name="listIndex">Индекс удаляемой строки в списке</param>
             public void RemoveRow(int listIndex)
             {
                 Row row = rows[listIndex];
                 row.ParentTable = null;
                 node.RemoveChild(row.Node);
                 rows.RemoveAt(listIndex);
+            }
+
+            /// <summary>
+            /// Удалить все строки из списка строк таблицы и модифицировать дерево XML-документа
+            /// </summary>
+            public void RemoveAllRows()
+            {
+                while (rows.Count > 0)
+                    RemoveRow(0);
             }
 
             /// <summary>
@@ -1002,7 +1012,6 @@ namespace Utils.Report
             /// <summary>
             /// Добавить ячейку в конец списка ячеек строки и модифицировать дерево XML-документа
             /// </summary>
-            /// <param name="cell">Добавляемая ячейка</param>
             public void AppendCell(Cell cell)
             {
                 cells.Add(cell);
@@ -1013,8 +1022,6 @@ namespace Utils.Report
             /// <summary>
             /// Вставить ячейку в список ячеек строки и модифицировать дерево XML-документа
             /// </summary>
-            /// <param name="listIndex">Индекс вставляемой ячейки в списке</param>
-            /// <param name="cell">Вставляемая ячейка</param>
             public void InsertCell(int listIndex, Cell cell)
             {
                 cells.Insert(listIndex, cell);
@@ -1031,7 +1038,6 @@ namespace Utils.Report
             /// <summary>
             /// Удалить ячейку из списка ячеек строки и модифицировать дерево XML-документа
             /// </summary>
-            /// <param name="listIndex">Индекс удаляемой ячейки в списке</param>
             public void RemoveCell(int listIndex)
             {
                 Cell cell = cells[listIndex];
@@ -1044,7 +1050,6 @@ namespace Utils.Report
             /// <summary>
             /// Установить высоту строки
             /// </summary>
-            /// <param name="height">Высота строки</param>
             public void SetRowHeight(double height)
             {
                 SetRowHeight(node, height);
@@ -1053,8 +1058,6 @@ namespace Utils.Report
             /// <summary>
             /// Установить высоту строки
             /// </summary>
-            /// <param name="rowNode">Ссылка на XML-узел, соответствующий строке таблицы Excel</param>
-            /// <param name="height">Высота строки</param>
             public static void SetRowHeight(XmlNode rowNode, double height)
             {
                 rowNode.Attributes.RemoveNamedItem("ss:AutoFitHeight");
@@ -1227,6 +1230,21 @@ namespace Utils.Report
                 set
                 {
                     SetAttribute(node, "Formula", XmlNamespaces.ss, value, true);
+                }
+            }
+
+            /// <summary>
+            /// Получить или установить ид. стиля
+            /// </summary>
+            public string StyleID
+            {
+                get
+                {
+                    return GetAttribute(node, "ss:StyleID");
+                }
+                set
+                {
+                    SetAttribute(node, "StyleID", XmlNamespaces.ss, value, true);
                 }
             }
 
