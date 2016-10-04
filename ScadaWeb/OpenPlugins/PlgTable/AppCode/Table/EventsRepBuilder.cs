@@ -105,7 +105,7 @@ namespace Scada.Web.Plugins.Table
 
 
         /// <summary>
-        /// Начальная обработка дерева XML-документа
+        /// Предварительно обработать дерево XML-документа
         /// </summary>
         protected override void StartXmlDocProc()
         {
@@ -114,7 +114,7 @@ namespace Scada.Web.Plugins.Table
         }
 
         /// <summary>
-        /// Окончательная обработка дерева XML-документа
+        /// Окончательно обработать дерево XML-документа
         /// </summary>
         protected override void FinalXmlDocProc()
         {
@@ -153,7 +153,7 @@ namespace Scada.Web.Plugins.Table
         }
 
         /// <summary>
-        /// Обработка директивы, изменяющей значение элемента
+        /// Обработать директиву, связанную со значением ячейки
         /// </summary>
         protected override void ProcVal(Cell cell, string valName)
         {
@@ -223,10 +223,8 @@ namespace Scada.Web.Plugins.Table
         }
 
         /// <summary>
-        /// Обработка директивы, создающей строки таблицы
+        /// Обработать директиву, связанную со строкой таблицы
         /// </summary>
-        /// <param name="xmlNode">XML-узел, содержащий директиву</param>
-        /// <param name="rowName">Имя строки, заданное директивой</param>
         protected override void ProcRow(Cell cell, string rowName)
         {
             if (rowName == "Event")
