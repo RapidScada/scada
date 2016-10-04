@@ -1301,9 +1301,9 @@ namespace Utils.Report
         /// </summary>
         protected const string Break = "&#10;";
         /// <summary>
-        /// Имя с префиксом XML-элемента в шаблоне, значение которого может содержать директивы изменения
+        /// Имя XML-элемента в шаблоне, который может содержать директивы преобразований
         /// </summary>
-        protected const string ElemName = "Data";
+        protected const string DirectiveElem = "Data";
 
 
         /// <summary>
@@ -1404,37 +1404,38 @@ namespace Utils.Report
         }
 
         /// <summary>
-        /// Найти атрибут (директиву) в строке и получить его значение
+        /// Найти директиву в строке, получить её значение и остаток строки
         /// </summary>
-        /// <param name="str">Строка для поиска</param>
-        /// <param name="attrName">Имя искомого атрибута</param>
-        /// <param name="attrVal">Значение атрибута</param>
-        /// <returns>Найден ли атрибут</returns>
-        protected bool FindAttr(string str, string attrName, out string attrVal)
+        protected bool FindDirective(string s, string attrName, out string attrVal, out string rest)
         {
             // "attrName=attrVal", вместо '=' может быть любой символ
-            attrVal = "";
-            if (str.StartsWith(attrName))
+            int valStartInd = attrName.Length + 1;
+            if (valStartInd <= s.Length && s.StartsWith(attrName, StringComparison.Ordinal))
             {
-                int start = attrName.Length + 1;
-                if (start < str.Length)
+                int valEndInd = s.IndexOf(" ", valStartInd);
+                if (valEndInd < 0)
                 {
-                    int end = str.IndexOf(" ", start);
-                    if (end < 0) end = str.Length;
-                    attrVal = str.Substring(start, end - start);
+                    attrVal = s.Substring(valStartInd);
+                    rest = "";
+                }
+                else
+                {
+                    attrVal = s.Substring(valStartInd, valEndInd - valStartInd);
+                    rest = s.Substring(valEndInd + 1);
                 }
                 return true;
             }
             else
+            {
+                attrVal = "";
+                rest = s;
                 return false;
+            }
         }
 
         /// <summary>
         /// Установить XML-узлу текст, содержащий переносы строк, разбив при необходимости элемент на несколько
         /// </summary>
-        /// <param name="xmlNode">XML-узел</param>
-        /// <param name="text">Устанавливаемый текст</param>
-        /// <param name="textBreak">Обозначение переноса строки в устанавливаемом тексте</param>
         protected void SetNodeTextWithBreak(XmlNode xmlNode, string text, string textBreak)
         {
             if (text == null) text = "";
@@ -1445,9 +1446,6 @@ namespace Utils.Report
         /// <summary>
         /// Установить XML-узлу текст, содержащий переносы строк, разбив при необходимости элемент на несколько
         /// </summary>
-        /// <param name="xmlNode">XML-узел</param>
-        /// <param name="text">Устанавливаемый текст</param>
-        /// <param name="textBreak">Обозначение переноса строки в устанавливаемом тексте</param>
         protected void SetNodeTextWithBreak(XmlNode xmlNode, object text, string textBreak)
         {
             string textStr = text == null ? "" : text.ToString();
@@ -1457,8 +1455,6 @@ namespace Utils.Report
         /// <summary>
         /// Установить XML-узлу текст, содержащий переносы строк "\n", разбив при необходимости элемент на несколько
         /// </summary>
-        /// <param name="xmlNode">XML-узел</param>
-        /// <param name="text">Устанавливаемый текст</param>
         protected void SetNodeTextWithBreak(XmlNode xmlNode, string text)
         {
             SetNodeTextWithBreak(xmlNode, text, "\n");
@@ -1467,8 +1463,6 @@ namespace Utils.Report
         /// <summary>
         /// Установить XML-узлу текст, содержащий переносы строк "\n", разбив при необходимости элемент на несколько
         /// </summary>
-        /// <param name="xmlNode">XML-узел</param>
-        /// <param name="text">Устанавливаемый текст</param>
         protected void SetNodeTextWithBreak(XmlNode xmlNode, object text)
         {
             SetNodeTextWithBreak(xmlNode, text, "\n");
@@ -1476,43 +1470,33 @@ namespace Utils.Report
 
 
         /// <summary>
-        /// Начальная обработка дерева XML-документа
+        /// Предварительно обработать дерево XML-документа
         /// </summary>
         protected virtual void StartXmlDocProc()
         {
         }
 
         /// <summary>
-        /// Рекурсивный обход, распознавание и обработка дерева XML-документа согласно директивам для получения отчёта
+        /// Рекурсивно обработать дерево XML-документа согласно директивам
         /// </summary>
-        /// <param name="xmlNode">Обрабатываемый XML-узел</param>
         protected virtual void XmlDocProc(XmlNode xmlNode)
         {
-            if (xmlNode.Name == ElemName)
+            if (xmlNode.Name == DirectiveElem)
             {
                 cell.DataNode = xmlNode;
-
-                // поиск директив преобразований элементов
-                string nodeVal = xmlNode.InnerText;
-                string attrVal;
-                if (FindAttr(nodeVal, "repRow", out attrVal))
-                {
-                    if (nodeVal.Length < 8 /*"repRow=".Length + 1*/ + attrVal.Length)
-                        xmlNode.InnerText = "";
-                    else
-                        xmlNode.InnerText = nodeVal.Substring(8 + attrVal.Length);
-                    ProcRow(cell, attrVal);
-                }
-                else if (FindAttr(nodeVal, "repVal", out attrVal))
-                    ProcVal(cell, attrVal);
+                FindDirectives(cell); // поиск и обработка директив
             }
             else
             {
                 // формирование книги Excel на основе XML-документа
                 if (xmlNode.Name == "Workbook")
+                {
                     workbook = new Workbook(xmlNode);
+                }
                 else if (xmlNode.Name == "Styles")
+                {
                     workbook.StylesNode = xmlNode;
+                }
                 else if (xmlNode.Name == "Style")
                 {
                     Style style = new Style(xmlNode);
@@ -1557,16 +1541,15 @@ namespace Utils.Report
         }
 
         /// <summary>
-        /// Окончательная обработка дерева XML-документа
+        /// Окончательно обработать дерево XML-документа
         /// </summary>
         protected virtual void FinalXmlDocProc()
         {
         }
 
         /// <summary>
-        /// Обработка структур, представляющих книгу Excel
+        /// Обработать структуры, представляющие таблицу листа Excel
         /// </summary>
-        /// <param name="table">Таблица листа Excel</param>
         protected virtual void ExcelProc(Table table)
         {
             foreach (Row row in table.Rows)
@@ -1574,47 +1557,47 @@ namespace Utils.Report
         }
 
         /// <summary>
-        /// Обработка структур, представляющих книгу Excel
+        /// Обработать структуры, представляющие строку таблицы листа Excel
         /// </summary>
-        /// <param name="row">Строка таблицы Excel</param>
         protected virtual void ExcelProc(Row row)
         {
+            // поиск и обработка директив для ячеек строки
             foreach (Cell cell in row.Cells)
+                FindDirectives(cell);
+        }
+
+        /// <summary>
+        /// Найти и обработать директивы, которые могут содержаться в заданной ячейке
+        /// </summary>
+        protected virtual void FindDirectives(Cell cell)
+        {
+            XmlNode dataNode = cell.DataNode;
+            if (dataNode != null)
             {
-                // поиск директив преобразований элементов
-                XmlNode dataNode = cell.DataNode;
-                if (dataNode != null)
+                string attrVal;
+                string rest;
+                if (FindDirective(dataNode.InnerText, "repRow", out attrVal, out rest))
                 {
-                    string nodeVal = cell.DataNode.InnerText;
-                    string attrVal;
-                    if (FindAttr(nodeVal, "repRow", out attrVal))
-                    {
-                        if (nodeVal.Length < 8 /*"repRow=".Length + 1*/ + attrVal.Length)
-                            dataNode.InnerText = "";
-                        else
-                            dataNode.InnerText = nodeVal.Substring(8 + attrVal.Length);
-                        ProcRow(cell, attrVal);
-                    }
-                    else if (FindAttr(nodeVal, "repVal", out attrVal))
-                        ProcVal(cell, attrVal);
+                    dataNode.InnerText = rest;
+                    ProcRow(cell, attrVal);
+                }
+                else if (FindDirective(dataNode.InnerText, "repVal", out attrVal, out rest))
+                {
+                    ProcVal(cell, attrVal);
                 }
             }
         }
 
         /// <summary>
-        /// Обработка директивы, изменяющей значение элемента
+        /// Обработать директиву, связанную со значением ячейки
         /// </summary>
-        /// <param name="cell">Ячейка строки таблицы Excel, содержащая директиву</param>
-        /// <param name="valName">Имя элемента, заданное директивой</param>
         protected virtual void ProcVal(Cell cell, string valName)
         {
         }
 
         /// <summary>
-        /// Обработка директивы, создающей строки таблицы
+        /// Обработать директиву, связанную со строкой таблицы
         /// </summary>
-        /// <param name="cell">Ячейка строки таблицы Excel, содержащая директиву</param>
-        /// <param name="rowName">Имя строки, заданное директивой</param>
         protected virtual void ProcRow(Cell cell, string rowName)
         {
         }
@@ -1623,8 +1606,7 @@ namespace Utils.Report
         /// <summary>
         /// Генерировать отчёт в поток в формате SpreadsheetML
         /// </summary>
-        /// <param name="outStream">Выходной поток</param>
-        /// <param name="templateDir">Директория шаблона со '\' на конце</param>
+        /// <remarks>Директория шаблона должна оканчиваться на слеш</remarks>
         public override void Make(Stream outStream, string templateDir)
         {
             // имя файла шаблона отчёта
@@ -1652,13 +1634,16 @@ namespace Utils.Report
             {
                 StringWriter stringWriter = new StringWriter();
                 xmlDoc.Save(stringWriter);
-                string xmlText = stringWriter.GetStringBuilder().Replace("encoding=\"utf-16\"", "encoding=\"utf-8\"").
-                    Replace("&amp;#10", "&#10").ToString();
+                string xmlText = stringWriter.GetStringBuilder()
+                    .Replace("encoding=\"utf-16\"", "encoding=\"utf-8\"")
+                    .Replace("&amp;#10", "&#10").ToString();
                 byte[] bytes = Encoding.UTF8.GetBytes(xmlText);
                 outStream.Write(bytes, 0, bytes.Length);
             }
             else
+            {
                 xmlDoc.Save(outStream);
+            }
         }
     }
 }
