@@ -630,32 +630,21 @@ namespace Utils.Report
             /// <summary>
             /// Найти столбец в таблице по индексу
             /// </summary>
-            /// <param name="columnIndex">Индекс искомого столбца</param>
-            /// <param name="exact">Получен столбец с указанным индексом (true) или с ближайшим большим (false)</param>
-            /// <returns>Столбец, удовлетворяющий критерию поиска, или null, если индексы всех столбцов меньше заданного</returns>
-            public Column FindColumn(int columnIndex, out bool exact)
+            /// <param name="columnIndex">Индекс искомого столбца, начиная с 1</param>
+            /// <returns>Столбец, удовлетворяющий критерию поиска, или null, если столбец не найден</returns>
+            public Column FindColumn(int columnIndex)
             {
                 int index = 0;
                 foreach (Column column in columns)
                 {
-                    if (column.Index > 0)
-                        index = column.Index;
-                    else
-                        index++;
+                    index = column.Index > 0 ? column.Index : index + 1;
 
                     if (index == columnIndex)
-                    {
-                        exact = true;
                         return column;
-                    }
                     else if (index > columnIndex)
-                    {
-                        exact = false;
-                        return column;
-                    }
+                        return null;
                 }
 
-                exact = false;
                 return null;
             }
 
@@ -975,38 +964,58 @@ namespace Utils.Report
             /// <summary>
             /// Найти ячейку в строке по индексу
             /// </summary>
-            /// <param name="cellIndex">Индекс искомой ячейки</param>
-            /// <param name="exact">Получена ячейка с указанным индексом (true) или с ближайшим большим (false)</param>
-            /// <returns>Ячейка, удовлетворяющая критерию поиска, или null, если индексы всех ячеек меньше заданного</returns>
-            public Cell FindCell(int cellIndex, out bool exact)
+            /// <param name="cellIndex">Индекс искомой ячейки, начиная с 1</param>
+            /// <returns>Ячейка, удовлетворяющая критерию поиска, или null, если ячейка не найдена</returns>
+            public Cell FindCell(int cellIndex)
             {
                 int index = 0;
                 foreach (Cell cell in cells)
                 {
-                    XmlAttribute attr = cell.Node.Attributes["ss:MergeAcross"];
-                    int merge = attr == null ? 0 : int.Parse(attr.Value);
+                    index = cell.Index > 0 ? cell.Index : index + 1;
+                    int endIndex = index + cell.MergeAcross;
 
-                    if (cell.Index > 0)
-                        index = cell.Index;
-                    else
-                        index++;
-
-                    if (index == cellIndex || index < cellIndex && cellIndex <= index + merge)
-                    {
-                        exact = true;
+                    if (index <= cellIndex && cellIndex <= endIndex)
                         return cell;
-                    }
-                    else if (index > cellIndex)
-                    {
-                        exact = false;
-                        return cell;
-                    }
+                    else if (index > endIndex)
+                        return null;
 
-                    index += merge;
+                    index = endIndex;
                 }
 
-                exact = false;
                 return null;
+            }
+
+            /// <summary>
+            /// Рассчитать индекс в строке для заданной ячейки
+            /// </summary>
+            /// <param name="cell">Ячейка, индекс которой рассчитывается</param>
+            /// <returns>Индекс заданной ячейки, начинающийся от 1, 
+            /// или 0, если ячейка не относится к данной строке</returns>
+            public int CalcCellIndex(Cell cell)
+            {
+                if (cell.ParentRow == this)
+                {
+                    if (cell.Index > 0)
+                    {
+                        return cell.Index;
+                    }
+                    else
+                    {
+                        int index = 0;
+                        foreach (Cell c in cells)
+                        {
+                            index = c.Index > 0 ? c.Index : index + 1;
+                            if (c == cell)
+                                return index;
+                            index += c.MergeAcross;
+                        }
+                        return 0;
+                    }
+                }
+                else
+                {
+                    return 0;
+                }
             }
 
             /// <summary>
