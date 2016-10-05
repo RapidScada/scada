@@ -1384,19 +1384,19 @@ namespace Utils.Report
         /// <summary>
         /// Обрабатываемый лист Excel
         /// </summary>
-        protected Worksheet worksheet;
+        protected Worksheet procWorksheet;
         /// <summary>
         /// Обрабатываемая таблица листа Excel
         /// </summary>
-        protected Table table;
+        protected Table procTable;
         /// <summary>
         /// Обрабатываемая строка таблицы Excel
         /// </summary>
-        protected Row row;
+        protected Row procRow;
         /// <summary>
         /// Обрабатываемая ячейка строки таблицы Excel
         /// </summary>
-        protected Cell cell;
+        protected Cell procCell;
         /// <summary>
         /// XML-узлы могут иметь текст, содержащий переносы строк
         /// </summary>
@@ -1550,8 +1550,8 @@ namespace Utils.Report
         {
             if (xmlNode.Name == DirectiveElem)
             {
-                cell.DataNode = xmlNode;
-                FindDirectives(cell); // поиск и обработка директив
+                procCell.DataNode = xmlNode;
+                FindDirectives(procCell); // поиск и обработка директив
             }
             else
             {
@@ -1571,33 +1571,33 @@ namespace Utils.Report
                 }
                 else if (xmlNode.Name == "Worksheet")
                 {
-                    worksheet = new Worksheet(xmlNode);
-                    worksheet.ParentWorkbook = workbook;
-                    workbook.Worksheets.Add(worksheet);
+                    procWorksheet = new Worksheet(xmlNode);
+                    procWorksheet.ParentWorkbook = workbook;
+                    workbook.Worksheets.Add(procWorksheet);
                 }
                 else if (xmlNode.Name == "Table")
                 {
-                    table = new Table(xmlNode);
-                    table.ParentWorksheet = worksheet;
-                    worksheet.Table = table;
+                    procTable = new Table(xmlNode);
+                    procTable.ParentWorksheet = procWorksheet;
+                    procWorksheet.Table = procTable;
                 }
                 else if (xmlNode.Name == "Column")
                 {
                     Column column = new Column(xmlNode);
-                    column.ParentTable = table;
-                    table.Columns.Add(column);
+                    column.ParentTable = procTable;
+                    procTable.Columns.Add(column);
                 }
                 else if (xmlNode.Name == "Row")
                 {
-                    row = new Row(xmlNode);
-                    row.ParentTable = table;
-                    table.Rows.Add(row);
+                    procRow = new Row(xmlNode);
+                    procRow.ParentTable = procTable;
+                    procTable.Rows.Add(procRow);
                 }
                 else if (xmlNode.Name == "Cell")
                 {
-                    cell = new Cell(xmlNode);
-                    cell.ParentRow = row;
-                    row.Cells.Add(cell);
+                    procCell = new Cell(xmlNode);
+                    procCell.ParentRow = procRow;
+                    procRow.Cells.Add(procCell);
                 }
 
                 // рекурсивный перебор потомков текущего элемента
@@ -1685,10 +1685,10 @@ namespace Utils.Report
 
             // инициализация полей
             workbook = null;
-            worksheet = null;
-            table = null;
-            row = null;
-            cell = null;
+            procWorksheet = null;
+            procTable = null;
+            procRow = null;
+            procCell = null;
             textBroken = false;
 
             // создание отчёта - модификация xmlDoc
