@@ -638,11 +638,12 @@ namespace Utils.Report
                 foreach (Column column in columns)
                 {
                     index = column.Index > 0 ? column.Index : index + 1;
+                    int endIndex = index + column.Span;
 
-                    if (index == columnIndex)
+                    if (index <= columnIndex && columnIndex <= endIndex)
                         return column;
-                    else if (index > columnIndex)
-                        return null;
+
+                    index = endIndex;
                 }
 
                 return null;
@@ -852,6 +853,40 @@ namespace Utils.Report
                 }
             }
 
+            /// <summary>
+            /// Получить или установить ширину
+            /// </summary>
+            public double Width
+            {
+                get
+                {
+                    string widthStr = GetAttribute(node, "ss:Width");
+                    double width;
+                    return double.TryParse(widthStr, NumberStyles.Any, NumberFormatInfo.InvariantInfo, out width) ?
+                        width : 0;
+                }
+                set
+                {
+                    SetColumnWidth(node, value);
+                }
+            }
+
+            /// <summary>
+            /// Получить или установить количество объединямых колонок справа
+            /// </summary>
+            public int Span
+            {
+                get
+                {
+                    string valStr = GetAttribute(node, "ss:Span");
+                    return valStr == "" ? 0 : int.Parse(valStr);
+                }
+                set
+                {
+                    SetAttribute(node, "Span", XmlNamespaces.ss, value < 1 ? "" : value.ToString(), true);
+                }
+            }
+
 
             /// <summary>
             /// Клонировать столбец
@@ -862,6 +897,16 @@ namespace Utils.Report
                 Column columnClone = new Column(node.Clone());
                 columnClone.parentTable = parentTable;
                 return columnClone;
+            }
+
+            /// <summary>
+            /// Установить ширину столбца
+            /// </summary>
+            public static void SetColumnWidth(XmlNode columnNode, double width)
+            {
+                SetAttribute(columnNode, "AutoFitWidth", XmlNamespaces.ss, "0");
+                SetAttribute(columnNode, "Width", XmlNamespaces.ss, 
+                    width > 0 ? width.ToString(NumberFormatInfo.InvariantInfo) : "", true);
             }
         }
 
@@ -940,6 +985,24 @@ namespace Utils.Report
                 }
             }
 
+            /// <summary>
+            /// Получить или установить высоту
+            /// </summary>
+            public double Height
+            {
+                get
+                {
+                    string heightStr = GetAttribute(node, "ss:Height");
+                    double height;
+                    return double.TryParse(heightStr, NumberStyles.Any, NumberFormatInfo.InvariantInfo, out height) ?
+                        height : 0;
+                }
+                set
+                {
+                    SetRowHeight(node, value);
+                }
+            }
+
 
             /// <summary>
             /// Клонировать строку
@@ -976,46 +1039,11 @@ namespace Utils.Report
 
                     if (index <= cellIndex && cellIndex <= endIndex)
                         return cell;
-                    else if (index > endIndex)
-                        return null;
 
                     index = endIndex;
                 }
 
                 return null;
-            }
-
-            /// <summary>
-            /// Рассчитать индекс в строке для заданной ячейки
-            /// </summary>
-            /// <param name="cell">Ячейка, индекс которой рассчитывается</param>
-            /// <returns>Индекс заданной ячейки, начинающийся от 1, 
-            /// или 0, если ячейка не относится к данной строке</returns>
-            public int CalcCellIndex(Cell cell)
-            {
-                if (cell.ParentRow == this)
-                {
-                    if (cell.Index > 0)
-                    {
-                        return cell.Index;
-                    }
-                    else
-                    {
-                        int index = 0;
-                        foreach (Cell c in cells)
-                        {
-                            index = c.Index > 0 ? c.Index : index + 1;
-                            if (c == cell)
-                                return index;
-                            index += c.MergeAcross;
-                        }
-                        return 0;
-                    }
-                }
-                else
-                {
-                    return 0;
-                }
             }
 
             /// <summary>
@@ -1059,22 +1087,11 @@ namespace Utils.Report
             /// <summary>
             /// Установить высоту строки
             /// </summary>
-            public void SetRowHeight(double height)
-            {
-                SetRowHeight(node, height);
-            }
-
-            /// <summary>
-            /// Установить высоту строки
-            /// </summary>
             public static void SetRowHeight(XmlNode rowNode, double height)
             {
-                rowNode.Attributes.RemoveNamedItem("ss:AutoFitHeight");
-                rowNode.Attributes.RemoveNamedItem("ss:Height");
-
-                XmlAttribute attr = rowNode.OwnerDocument.CreateAttribute("ss", "Height", rowNode.NamespaceURI);
-                attr.Value = height.ToString(NumberFormatInfo.InvariantInfo);
-                rowNode.Attributes.Append(attr);
+                SetAttribute(rowNode, "AutoFitHeight", XmlNamespaces.ss, "0");
+                SetAttribute(rowNode, "Height", XmlNamespaces.ss,
+                    height > 0 ? height.ToString(NumberFormatInfo.InvariantInfo) : "", true);
             }
         }
 
@@ -1289,6 +1306,29 @@ namespace Utils.Report
                 }
             }
 
+
+            /// <summary>
+            /// Рассчитать индекс в строке
+            /// </summary>
+            public int CalcIndex()
+            {
+                if (index > 0)
+                {
+                    return index;
+                }
+                else
+                {
+                    int index = 0;
+                    foreach (Cell cell in parentRow.Cells)
+                    {
+                        index = cell.Index > 0 ? cell.Index : index + 1;
+                        if (cell == this)
+                            return index;
+                        index += cell.MergeAcross;
+                    }
+                    return 0;
+                }
+            }
 
             /// <summary>
             /// Клонировать ячейку
