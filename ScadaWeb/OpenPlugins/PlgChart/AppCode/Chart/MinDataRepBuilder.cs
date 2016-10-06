@@ -295,7 +295,7 @@ namespace Scada.Web.Plugins.Chart
             period = (int)repParams[2];
             viewTitle = (string)repParams[3];
 
-            ChartUtils.NormalizeTimeRange(ref startDate, ref period);
+            RepUtils.NormalizeTimeRange(ref startDate, ref period);
         }
 
         /// <summary>

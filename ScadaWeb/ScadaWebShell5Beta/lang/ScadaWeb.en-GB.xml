@@ -28,6 +28,11 @@
   <Dictionary key="Scada.Web.Report">
     <Phrase key="GenReport">Generate &quot;{0}&quot; report by the user {1}</Phrase>
     <Phrase key="IncorrectRepTemplate">Incorrect report template.</Phrase>
+    <Phrase key="IncorrectStartDate">Incorrect start date.</Phrase>
+    <Phrase key="IncorrectEndDate">Incorrect end date.</Phrase>
+    <Phrase key="IncorrectPeriod">Start date must be less or equal than end date.</Phrase>
+    <Phrase key="DayPeriodTooLong">The maximum period length is {0} days.</Phrase>
+    <Phrase key="MonthPeriodTooLong">The maximum period length is {0} months.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.ViewSettings">
     <Phrase key="LoadViewSettingsError">Error loading view settings</Phrase>

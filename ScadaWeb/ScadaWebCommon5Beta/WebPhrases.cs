@@ -50,6 +50,11 @@ namespace Scada.Web
         // Словарь Scada.Web.Report
         public static string GenReport { get; private set; }
         public static string IncorrectRepTemplate { get; private set; }
+        public static string IncorrectStartDate { get; private set; }
+        public static string IncorrectEndDate { get; private set; }
+        public static string IncorrectPeriod { get; private set; }
+        public static string DayPeriodTooLong { get; private set; }
+        public static string MonthPeriodTooLong { get; private set; }
 
         // Словарь Scada.Web.ViewSettings
         public static string LoadViewSettingsError { get; private set; }
@@ -90,6 +95,11 @@ namespace Scada.Web
 
             GenReport = Localization.Dict.GetEmptyPhrase("GenReport");
             IncorrectRepTemplate = Localization.Dict.GetEmptyPhrase("IncorrectRepTemplate");
+            IncorrectStartDate = Localization.Dict.GetEmptyPhrase("IncorrectStartDate");
+            IncorrectEndDate = Localization.Dict.GetEmptyPhrase("IncorrectEndDate");
+            IncorrectPeriod = Localization.Dict.GetEmptyPhrase("IncorrectPeriod");
+            DayPeriodTooLong = Localization.Dict.GetEmptyPhrase("DayPeriodTooLong");
+            MonthPeriodTooLong = Localization.Dict.GetEmptyPhrase("MonthPeriodTooLong");
 
             LoadViewSettingsError = Localization.Dict.GetEmptyPhrase("LoadViewSettingsError");
             SaveViewSettingsError = Localization.Dict.GetEmptyPhrase("SaveViewSettingsError");
@@ -134,6 +144,11 @@ namespace Scada.Web
             {
                 GenReport = dict.GetPhrase("GenReport", GenReport);
                 IncorrectRepTemplate = dict.GetPhrase("IncorrectRepTemplate", IncorrectRepTemplate);
+                IncorrectStartDate = dict.GetPhrase("IncorrectStartDate", IncorrectStartDate);
+                IncorrectEndDate = dict.GetPhrase("IncorrectEndDate", IncorrectEndDate);
+                IncorrectPeriod = dict.GetPhrase("IncorrectPeriod", IncorrectPeriod);
+                DayPeriodTooLong = dict.GetPhrase("DayPeriodTooLong", DayPeriodTooLong);
+                MonthPeriodTooLong = dict.GetPhrase("MonthPeriodTooLong", MonthPeriodTooLong);
             }
 
             if (Localization.Dictionaries.TryGetValue("Scada.Web.ViewSettings", out dict))

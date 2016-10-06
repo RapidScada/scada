@@ -168,8 +168,8 @@ namespace Scada.Web.Plugins.Chart
                 int period;
                 string errMsg;
 
-                if (ChartUtils.ParseDates(txtDateFrom, txtDateTo, out dateFrom, out dateTo, out errMsg) &&
-                    ChartUtils.CheckDates(dateFrom, dateTo, out period, out errMsg))
+                if (RepUtils.ParseDates(txtDateFrom.Text, txtDateTo.Text, out dateFrom, out dateTo, out errMsg) &&
+                    RepUtils.CheckDayPeriod(dateFrom, dateTo, out period, out errMsg))
                 {
                     string cnlNums;
                     string viewIDs;

@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PlgChartDictionaries>
   <Dictionary key="Scada.Web.Plugins.Chart">
-    <Phrase key="IncorrectStartDate">Некорректная дата начала.</Phrase>
-    <Phrase key="IncorrectEndDate">Некорректная дата окончания.</Phrase>
-    <Phrase key="IncorrectPeriod">Дата начала должна быть меньше или равна дате окончания.</Phrase>
-    <Phrase key="PeriodTooLong">Максимальная длина периода {0} день.</Phrase>
     <Phrase key="CnlNumsEmptyError">Номера каналов не заданы.</Phrase>
     <Phrase key="CountMismatchError">Несоответствие количества каналов и ид. представлений.</Phrase>
     <Phrase key="PerfWarning">Предупреждение! Слишком много каналов могут снизить производительность.</Phrase>

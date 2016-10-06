@@ -13,13 +13,13 @@ namespace Scada.Web.Plugins.Chart {
     public partial class WFrmMinDataRep {
         
         /// <summary>
-        /// ScriptManager control.
+        /// ScriptMan control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.ScriptManager ScriptManager;
+        protected global::System.Web.UI.ScriptManager ScriptMan;
         
         /// <summary>
         /// upnlMessage control.
@@ -193,13 +193,13 @@ namespace Scada.Web.Plugins.Chart {
         protected global::System.Web.UI.WebControls.Label lblNoSelCnls;
         
         /// <summary>
-        /// upnlGen control.
+        /// upnlGenReport control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel upnlGen;
+        protected global::System.Web.UI.UpdatePanel upnlGenReport;
         
         /// <summary>
         /// btnGenReport control.

@@ -5,7 +5,7 @@
     <script type="text/javascript" src="js/mindatarep.js"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="cphMainContent" runat="server">
-    <asp:ScriptManager ID="ScriptManager" runat="server"></asp:ScriptManager>
+    <asp:ScriptManager ID="ScriptMan" runat="server"></asp:ScriptManager>
     <script type="text/javascript">
         Sys.WebForms.PageRequestManager.getInstance().add_endRequest(asyncEndRequest);
     </script>
@@ -71,7 +71,7 @@
             <asp:AsyncPostBackTrigger ControlID="btnApplyAddedCnls" EventName="Click" />
         </Triggers>
     </asp:UpdatePanel>
-    <asp:UpdatePanel ID="upnlGen" runat="server" UpdateMode="Always">
+    <asp:UpdatePanel ID="upnlGenReport" runat="server" UpdateMode="Always">
         <ContentTemplate>
             <div class="form-group">
                 <asp:Button ID="btnGenReport" runat="server" ClientIDMode="Static" CssClass="btn btn-primary" Text="Download Report" OnClick="btnGenReport_Click" />

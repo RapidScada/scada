@@ -39,10 +39,6 @@ namespace Scada.Web.Plugins.Chart
         }
 
         // Словарь Scada.Web.Plugins.Chart
-        public static string IncorrectStartDate { get; private set; }
-        public static string IncorrectEndDate { get; private set; }
-        public static string IncorrectPeriod { get; private set; }
-        public static string PeriodTooLong { get; private set; }
         public static string CnlNumsEmptyError { get; private set; }
         public static string CountMismatchError { get; private set; }
         public static string PerfWarning { get; private set; }
@@ -55,10 +51,6 @@ namespace Scada.Web.Plugins.Chart
 
         private static void SetToDefault()
         {
-            IncorrectStartDate = Localization.Dict.GetEmptyPhrase("IncorrectStartDate");
-            IncorrectEndDate = Localization.Dict.GetEmptyPhrase("IncorrectEndDate");
-            IncorrectPeriod = Localization.Dict.GetEmptyPhrase("IncorrectPeriod");
-            PeriodTooLong = Localization.Dict.GetEmptyPhrase("PeriodTooLong");
             CnlNumsEmptyError = Localization.Dict.GetEmptyPhrase("CnlNumsEmptyError");
             CountMismatchError = Localization.Dict.GetEmptyPhrase("CountMismatchError");
             PerfWarning = Localization.Dict.GetEmptyPhrase("PerfWarning");
@@ -75,10 +67,6 @@ namespace Scada.Web.Plugins.Chart
             Localization.Dict dict;
             if (Localization.Dictionaries.TryGetValue("Scada.Web.Plugins.Chart", out dict))
             {
-                IncorrectStartDate = dict.GetPhrase("IncorrectStartDate", IncorrectStartDate);
-                IncorrectEndDate = dict.GetPhrase("IncorrectEndDate", IncorrectEndDate);
-                IncorrectPeriod = dict.GetPhrase("IncorrectPeriod", IncorrectPeriod);
-                PeriodTooLong = dict.GetPhrase("PeriodTooLong", PeriodTooLong);
                 CnlNumsEmptyError = dict.GetPhrase("CnlNumsEmptyError", CnlNumsEmptyError);
                 CountMismatchError = dict.GetPhrase("CountMismatchError", CountMismatchError);
                 PerfWarning = dict.GetPhrase("PerfWarning", PerfWarning);

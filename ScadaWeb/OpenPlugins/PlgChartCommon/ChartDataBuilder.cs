@@ -112,7 +112,7 @@ namespace Scada.Web.Plugins.Chart
             this.startDate = startDate;
             this.period = period;
             this.chartGap = chartGap;
-            ChartUtils.NormalizeTimeRange(ref this.startDate, ref this.period);
+            RepUtils.NormalizeTimeRange(ref this.startDate, ref this.period);
 
             cnlCnt = cnlNums.Length;
             cnlPropsArr = new InCnlProps[cnlCnt];

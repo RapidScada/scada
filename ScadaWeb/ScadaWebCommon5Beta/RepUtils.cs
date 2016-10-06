@@ -37,6 +37,16 @@ namespace Scada.Web
     public static class RepUtils
     {
         /// <summary>
+        /// Макс. длина периода, который задаётся в днях
+        /// </summary>
+        public const int MaxDayPeriodLength = 31;
+        /// <summary>
+        /// Макс. длина периода, который задаётся в месяцах
+        /// </summary>
+        public const int MaxMonthPeriodLength = 31;
+
+
+        /// <summary>
         /// Генерировать отчёт для загрузки через браузер
         /// </summary>
         public static void GenerateReport(RepBuilder repBuilder, object[] repParams, 
@@ -90,6 +100,113 @@ namespace Scada.Web
         public static void WriteGenerationAction(Log log, string repName, UserData userData)
         {
             log.WriteAction(string.Format(WebPhrases.GenReport, repName, userData.UserProps.UserName));
+        }
+        
+        
+        /// <summary>
+        /// Распознать даты, введённые пользователем, и вернуть сообщение в случае ошибки
+        /// </summary>
+        public static bool ParseDates(string dateFromStr, string dateToStr,
+            out DateTime dateFrom, out DateTime dateTo, out string errMsg)
+        {
+            dateFrom = DateTime.MinValue;
+            dateTo = DateTime.MinValue;
+
+            if (!ScadaUtils.TryParseDateTime(dateFromStr, out dateFrom))
+            {
+                errMsg = WebPhrases.IncorrectStartDate;
+                return false;
+            }
+            else if (!ScadaUtils.TryParseDateTime(dateToStr, out dateTo))
+            {
+                errMsg = WebPhrases.IncorrectEndDate;
+                return false;
+            }
+            else
+            {
+                errMsg = "";
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Проверить период, указанный в днях, рассчитать его длительность и вернуть сообщение в случае ошибки
+        /// </summary>
+        public static bool CheckDayPeriod(DateTime dateFrom, DateTime dateTo, out int period, out string errMsg)
+        {
+            period = (int)(dateTo - dateFrom).TotalDays + 1;
+
+            if (dateFrom > dateTo)
+            {
+                errMsg = WebPhrases.IncorrectPeriod;
+                return false;
+            }
+            else if (period > MaxDayPeriodLength)
+            {
+                errMsg = string.Format(WebPhrases.DayPeriodTooLong, MaxDayPeriodLength);
+                return false;
+            }
+            else
+            {
+                errMsg = "";
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Проверить период, указанный в днях, и вернуть сообщение в случае ошибки
+        /// </summary>
+        public static bool CheckDayPeriod(DateTime dateFrom, DateTime dateTo, out string errMsg)
+        {
+            int period;
+            return CheckDayPeriod(dateFrom, dateTo, out period, out errMsg);
+        }
+
+        /// <summary>
+        /// Проверить период, указанный в месяцах, и вернуть сообщение в случае ошибки
+        /// </summary>
+        public static bool CheckMonthPeriod(DateTime dateFrom, DateTime dateTo, out string errMsg)
+        {
+            int period = dateTo.Year * 12 + dateTo.Month - (dateFrom.Year * 12 + dateFrom.Month);
+
+            if (dateFrom > dateTo)
+            {
+                errMsg = WebPhrases.IncorrectPeriod;
+                return false;
+            }
+            else if (period > MaxMonthPeriodLength)
+            {
+                errMsg = string.Format(WebPhrases.MonthPeriodTooLong, MaxMonthPeriodLength);
+                return false;
+            }
+            else
+            {
+                errMsg = "";
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Нормализовать интервал времени
+        /// </summary>
+        /// <remarks>Чтобы начальная дата являлась левой границей интервала времени и период был положительным</remarks>
+        public static void NormalizeTimeRange(ref DateTime startDate, ref int period)
+        {
+            // Примеры:
+            // период равный -1, 0 или 1 - это одни сутки startDate,
+            // период 2 - двое суток, начиная от startDate включительно,
+            // период -2 - двое суток, заканчивая startDate включительно
+            if (period > -2)
+            {
+                startDate = startDate.Date;
+                if (period < 1)
+                    period = 1;
+            }
+            else
+            {
+                startDate = startDate.AddDays(period + 1).Date;
+                period = -period;
+            }
         }
     }
 }
