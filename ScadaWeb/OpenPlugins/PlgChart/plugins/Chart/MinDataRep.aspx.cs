@@ -94,6 +94,9 @@ namespace Scada.Web.Plugins.Chart
 
             if (IsPostBack)
             {
+                // восстановление заголовка при работе с AJAX
+                Title = (string)ViewState["Title"];
+
                 // получение выбранных каналов
                 selCnls = (List<CnlViewPair>)ViewState["SelCnls"];
             }
@@ -101,6 +104,7 @@ namespace Scada.Web.Plugins.Chart
             {
                 // перевод веб-страницы
                 Translator.TranslatePage(Page, "Scada.Web.Plugins.Chart.WFrmMinDataRep");
+                ViewState["Title"] = Title;
 
                 // установка периода по умолчанию
                 txtDateFrom.Text = txtDateTo.Text = DateTime.Today.ToLocalizedDateString();

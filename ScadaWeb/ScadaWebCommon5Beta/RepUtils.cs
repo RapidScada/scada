@@ -43,7 +43,7 @@ namespace Scada.Web
         /// <summary>
         /// Макс. длина периода, который задаётся в месяцах
         /// </summary>
-        public const int MaxMonthPeriodLength = 31;
+        public const int MaxMonthPeriodLength = 12;
 
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace Scada.Web
         /// </summary>
         public static bool CheckMonthPeriod(DateTime dateFrom, DateTime dateTo, out string errMsg)
         {
-            int period = dateTo.Year * 12 + dateTo.Month - (dateFrom.Year * 12 + dateFrom.Month);
+            int period = dateTo.Year * 12 + dateTo.Month - (dateFrom.Year * 12 + dateFrom.Month) + 1;
 
             if (dateFrom > dateTo)
             {

@@ -1,5 +1,5 @@
 ﻿// Duration of locking the generate report button, ms
-var GenBtnLockDuration = 3000;
+var GEN_BTN_LOCK_DURATION = 3000;
 
 // Select begin or end date using a calendar popup
 function selectDate(inputElem, buttonElem) {
@@ -41,7 +41,7 @@ function lockGenerateButton() {
     setTimeout(function () {
         $("#btnGenReport").prop("disabled", false);
         $("#lblGenStarted").addClass("hidden");
-    }, GenBtnLockDuration)
+    }, GEN_BTN_LOCK_DURATION)
 }
 
 // Initialize Bootstrap popovers
