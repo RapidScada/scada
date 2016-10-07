@@ -120,6 +120,7 @@ scada.scheme.SchemeRenderer.prototype.createDom = function (elem, renderContext)
             "position": "relative", // to position scheme elements
             "width": schemeWidth,
             "height": schemeHeight,
+            "overflow": "hidden",
             "transform-origin": "left top" // for scaling
         });
 
