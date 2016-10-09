@@ -312,7 +312,7 @@ namespace Scada
         /// </summary>
         public static string ComputeHash(string s)
         {
-            return ComputeHash(Encoding.Default.GetBytes(s));
+            return ComputeHash(Encoding.UTF8.GetBytes(s));
         }
         
         /// <summary>
