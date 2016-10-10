@@ -44,27 +44,6 @@ namespace Scada.Web.Plugins.Table
         private DateTime evDate;   // дата события
         private int evNum;         // номер события
 
-        
-        /// <summary>
-        /// Скрыть сообщение об ошибке
-        /// </summary>
-        private void HideErrMsg()
-        {
-            pnlErrMsg.Visible = false;
-            lblEventNotFound.Visible = false;
-            lblAckNotSent.Visible = false;
-            lblAckRejected.Visible = false;
-        }
-
-        /// <summary>
-        /// Вывести сообщение об ошибке
-        /// </summary>
-        private void ShowErrMsg(Label lblMessage)
-        {
-            pnlErrMsg.Visible = true;
-            lblMessage.Visible = true;
-        }
-
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -76,7 +55,7 @@ namespace Scada.Web.Plugins.Table
                 throw new ScadaException(CommonPhrases.NoRights);
 
             // скрытие сообщения об ошибке
-            HideErrMsg();
+            pnlErrMsg.HideAlert();
 
             if (IsPostBack)
             {
@@ -102,7 +81,7 @@ namespace Scada.Web.Plugins.Table
 
                 if (ev == null)
                 {
-                    ShowErrMsg(lblEventNotFound);
+                    pnlErrMsg.ShowAlert(lblEventNotFound);
                     btnSubmit.Enabled = false;
                 }
                 else
@@ -170,11 +149,11 @@ namespace Scada.Web.Plugins.Table
             }
             else if (sendOK)
             {
-                ShowErrMsg(lblAckRejected);
+                pnlErrMsg.ShowAlert(lblAckRejected);
             }
             else
             {
-                ShowErrMsg(lblAckNotSent);
+                pnlErrMsg.ShowAlert(lblAckNotSent);
             }
         }
     }

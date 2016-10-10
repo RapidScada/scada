@@ -26,6 +26,7 @@
 using Scada.UI;
 using System;
 using System.IO;
+using System.Web;
 
 namespace Scada.Web
 {
@@ -51,7 +52,8 @@ namespace Scada.Web
         /// </summary>
         private void AddShowAlertScript(string message)
         {
-            ClientScript.RegisterStartupScript(GetType(), "Startup1", "showAlert('" + message + "');", true);
+            ClientScript.RegisterStartupScript(GetType(), "ShowAlertScript", 
+                "showAlert('" + HttpUtility.JavaScriptStringEncode(message) + "');", true);
         }
 
         /// <summary>
@@ -59,7 +61,7 @@ namespace Scada.Web
         /// </summary>
         private void AddCheckBrowserScript()
         {
-            ClientScript.RegisterStartupScript(GetType(), "Startup2", "checkBrowser();", true);
+            ClientScript.RegisterStartupScript(GetType(), "CheckBrowserScript", "checkBrowser();", true);
         }
 
         /// <summary>

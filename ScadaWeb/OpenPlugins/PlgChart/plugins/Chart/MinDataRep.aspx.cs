@@ -43,33 +43,6 @@ namespace Scada.Web.Plugins.Chart
 
 
         /// <summary>
-        /// Скрыть все сообщения
-        /// </summary>
-        private void HideAllMsgs()
-        {
-            pnlErrMsg.Visible = false;
-            pnlWarnMsg.Visible = false;
-        }
-
-        /// <summary>
-        /// Вывести сообщение об ошибке
-        /// </summary>
-        private void ShowErrMsg(string errMsg)
-        {
-            lblErrMsg.Text = errMsg;
-            pnlErrMsg.Visible = true;
-        }
-
-        /// <summary>
-        /// Вывести предупреждение
-        /// </summary>
-        private void ShowWarnMsg(string warnMsg)
-        {
-            lblWarnMsg.Text = warnMsg;
-            pnlWarnMsg.Visible = true;
-        }
-
-        /// <summary>
         /// Отобразить выбранные каналы
         /// </summary>
         private void ShowSelCnls()
@@ -80,7 +53,7 @@ namespace Scada.Web.Plugins.Chart
             lblNoSelCnls.Visible = !btnGenReport.Enabled;
 
             if (selCnls.Count > ChartUtils.NormalChartCnt)
-                ShowWarnMsg(ChartPhrases.PerfWarning);
+                pnlWarnMsg.ShowAlert(ChartPhrases.PerfWarning);
         }
 
 
@@ -90,7 +63,8 @@ namespace Scada.Web.Plugins.Chart
             userData = UserData.GetUserData();
 
             // скрытие всех сообщений
-            HideAllMsgs();
+            pnlErrMsg.HideAlert();
+            pnlWarnMsg.HideAlert();
 
             if (IsPostBack)
             {
@@ -185,7 +159,7 @@ namespace Scada.Web.Plugins.Chart
                 }
                 else
                 {
-                    ShowErrMsg(errMsg);
+                    pnlErrMsg.ShowAlert(errMsg);
                 }
             }
         }

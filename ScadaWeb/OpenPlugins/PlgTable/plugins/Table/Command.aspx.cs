@@ -92,28 +92,6 @@ namespace Scada.Web.Plugins.Table
         }
 
         /// <summary>
-        /// Скрыть сообщение об ошибке
-        /// </summary>
-        private void HideErrMsg()
-        {
-            pnlErrMsg.Visible = false;
-            lblCtrlCnlNotFound.Visible = false;
-            lblWrongPwd.Visible = false;
-            lblNoRights.Visible = false;
-            lblIncorrectCmdVal.Visible = false;
-            lblIncorrectCmdData.Visible = false;
-        }
-
-        /// <summary>
-        /// Вывести сообщение об ошибке
-        /// </summary>
-        private void ShowErrMsg(Label lblMessage)
-        {
-            pnlErrMsg.Visible = true;
-            lblMessage.Visible = true;
-        }
-
-        /// <summary>
         /// Вывести информацию о неудачном результате отправки команды
         /// </summary>
         private void ShowFailResult(Label lblMessage)
@@ -229,7 +207,7 @@ namespace Scada.Web.Plugins.Table
                 throw new ScadaException(CommonPhrases.NoRights);
 
             // скрытие сообщения об ошибке
-            HideErrMsg();
+            pnlErrMsg.HideAlert();
 
             if (IsPostBack)
             {
@@ -266,7 +244,7 @@ namespace Scada.Web.Plugins.Table
                 {
                     // вывести сообщение, что канал управления не найден
                     lblCtrlCnlNotFound.Text = string.Format(lblCtrlCnlNotFound.Text, ctrlCnlNum);
-                    ShowErrMsg(lblCtrlCnlNotFound);
+                    pnlErrMsg.ShowAlert(lblCtrlCnlNotFound);
                     btnSubmit.Enabled = false;
                 }
                 else
@@ -322,7 +300,7 @@ namespace Scada.Web.Plugins.Table
                     if (ScadaUtils.TryParseDouble(txtCmdVal.Text, out cmdVal))
                         SendStandardCmd(cmdVal);
                     else
-                        ShowErrMsg(lblIncorrectCmdVal);
+                        pnlErrMsg.ShowAlert(lblIncorrectCmdVal);
                 }
                 else if (pnlData.Visible)
                 {
@@ -331,7 +309,7 @@ namespace Scada.Web.Plugins.Table
                     if (TryParseCmdData(out cmdData))
                         SendBinaryCmd(cmdData);
                     else
-                        ShowErrMsg(lblIncorrectCmdData);
+                        pnlErrMsg.ShowAlert(lblIncorrectCmdData);
                 }
                 else
                 {
