@@ -53,18 +53,6 @@ namespace Scada.Web.Plugins
 
 
         /// <summary>
-        /// Получить уникальный ключ для записи данных в сессию
-        /// </summary>
-        protected string SessionKey
-        {
-            get
-            {
-                return GetType().Name;
-            }
-        }
-
-
-        /// <summary>
         /// Получить наименование плагина
         /// </summary>
         public abstract string Name { get; }
