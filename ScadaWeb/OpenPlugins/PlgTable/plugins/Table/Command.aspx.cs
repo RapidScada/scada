@@ -115,12 +115,12 @@ namespace Scada.Web.Plugins.Table
                 {
                     if (roleID == BaseValues.Roles.Disabled || roleID == BaseValues.Roles.App) 
                     {
-                        ShowErrMsg(lblNoRights);
+                        pnlErrMsg.ShowAlert(lblNoRights);
                         return false;
                     }
                     else if (roleID == BaseValues.Roles.Err)
                     {
-                        ShowErrMsg(lblWrongPwd);
+                        pnlErrMsg.ShowAlert(lblWrongPwd);
                         return false;
                     }
                     else
