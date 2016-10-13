@@ -41,3 +41,6 @@ label {
 .report-item {
   margin: 10px 0;
 }
+.report-item a:not([href]) {
+  color: #333;
+}

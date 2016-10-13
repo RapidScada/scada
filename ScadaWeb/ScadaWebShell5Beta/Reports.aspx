@@ -8,7 +8,7 @@
         <ItemTemplate>
             <div class="report-item">
                 <asp:HyperLink ID="hlReportItem" runat="server" 
-                    NavigateUrl='<%# VirtualPathUtility.ToAbsolute((string)Eval("Url")) %>'><%# (Container.ItemIndex + 1).ToString() + ". " + HttpUtility.HtmlEncode(Eval("Text")) %></asp:HyperLink>
+                    NavigateUrl='<%# string.IsNullOrEmpty((string)Eval("Url")) ? "" : VirtualPathUtility.ToAbsolute((string)Eval("Url")) %>'><%# (Container.ItemIndex + 1).ToString() + ". " + HttpUtility.HtmlEncode(Eval("Text")) %></asp:HyperLink>
             </div>
         </ItemTemplate>
     </asp:Repeater>
