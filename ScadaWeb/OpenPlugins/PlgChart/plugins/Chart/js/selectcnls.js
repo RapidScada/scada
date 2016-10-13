@@ -4,7 +4,7 @@ var popup = scada.popupLocator.getPopup();
 // Update the modal dialog height according to a frame height
 function updateModalHeight() {
     if (popup) {
-        popup.updateModalHeight(window);
+        setTimeout(popup.updateModalHeight, 0, window);
     }
 }
 

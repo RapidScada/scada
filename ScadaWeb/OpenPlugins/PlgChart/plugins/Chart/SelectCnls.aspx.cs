@@ -94,7 +94,6 @@ namespace Scada.Web.Plugins.Chart
                 // заполнение выпадающего списка представлений и отображение каналов по представлению
                 ChartUtils.FillViewList(ddlView, 0, userData.UserViews);
                 ShowCnlsByView();
-                ChartUtils.AddUpdateModalHeightScript(this);
             }
         }
 
