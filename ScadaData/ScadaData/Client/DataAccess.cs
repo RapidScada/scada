@@ -119,14 +119,21 @@ namespace Scada.Client
         {
             try
             {
-                dataCache.RefreshBaseTables();
+                if (cnlNum > 0)
+                {
+                    dataCache.RefreshBaseTables();
 
-                // необходимо сохранить ссылку, т.к. объект может быть пересоздан другим потоком
-                InCnlProps[] cnlProps = dataCache.CnlProps;
+                    // необходимо сохранить ссылку, т.к. объект может быть пересоздан другим потоком
+                    InCnlProps[] cnlProps = dataCache.CnlProps;
 
-                // поиск свойств заданного канала
-                int ind = Array.BinarySearch(cnlProps, cnlNum, InCnlProps.IntComp);
-                return ind >= 0 ? cnlProps[ind] : null;
+                    // поиск свойств заданного канала
+                    int ind = Array.BinarySearch(cnlProps, cnlNum, InCnlProps.IntComp);
+                    return ind >= 0 ? cnlProps[ind] : null;
+                }
+                else
+                {
+                    return null;
+                }
             }
             catch (Exception ex)
             {
