@@ -4,27 +4,55 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="cphMainContent" runat="server">
     <h1>Hour Table Cache</h1>
-    <asp:Label ID="lblHourTableCacheInfo" runat="server" Text=""></asp:Label>
+    <p><asp:Label ID="lblHourTableCacheInfo" runat="server" Text=""></asp:Label></p>
     <asp:Repeater ID="repHourTableCache" runat="server">
+        <HeaderTemplate>
+            <table class="table table-striped table-condensed">
+                <tr>
+                    <th>Key</th>
+                    <th>Value Age</th>
+                    <th>Value Refresh Time (UTC)</th>
+                    <th>Access Time (UTC)</th>
+                    <th>Snapshot Table</th>
+                </tr>
+        </HeaderTemplate>
         <ItemTemplate>
-            <div>
-                ValueAge: <%# Eval("ValueAge") %>,
-                ValueRefrDT (UTC): <%# Eval("ValueRefrDT") %>,
-                AccessDT (UTC): <%# Eval("AccessDT") %>,
-                SrezTableLight: <%# HttpUtility.HtmlEncode(Eval("Value.TableName")) %>
-            </div>
+            <tr>
+                <td><%# HttpUtility.HtmlEncode(Eval("Key", "{0:d}")) %></td>
+                <td><%# Eval("ValueAge") %></td>
+                <td><%# Eval("ValueRefrDT") %></td>
+                <td><%# Eval("AccessDT") %></td>
+                <td><%# HttpUtility.HtmlEncode(Eval("Value.TableName")) %></td>
+            </tr>
         </ItemTemplate>
+        <FooterTemplate>
+            </table>
+        </FooterTemplate>
     </asp:Repeater>
     <h1>View Cache</h1>
-    <asp:Label ID="lblViewCacheInfo" runat="server" Text=""></asp:Label>
+    <p><asp:Label ID="lblViewCacheInfo" runat="server" Text=""></asp:Label></p>
     <asp:Repeater ID="repViewCache" runat="server">
+        <HeaderTemplate>
+            <table class="table table-striped table-condensed">
+                <tr>
+                    <th>Key</th>
+                    <th>Value Age</th>
+                    <th>Value Refresh Time (UTC)</th>
+                    <th>Access Time (UTC)</th>
+                    <th>View</th>
+                </tr>
+        </HeaderTemplate>
         <ItemTemplate>
-            <div>
-                ValueAge: <%# Eval("ValueAge") %>,
-                ValueRefrDT (UTC): <%# Eval("ValueRefrDT") %>,
-                AccessDT (UTC): <%# Eval("AccessDT") %>,
-                BaseView: <%# HttpUtility.HtmlEncode(Eval("Value.Title")) %>
-            </div>
+            <tr>
+                <td><%# HttpUtility.HtmlEncode(Eval("Key")) %></td>
+                <td><%# Eval("ValueAge") %></td>
+                <td><%# Eval("ValueRefrDT") %></td>
+                <td><%# Eval("AccessDT") %></td>
+                <td><%# HttpUtility.HtmlEncode(Eval("Value.Title")) %></td>
+            </tr>
         </ItemTemplate>
+        <FooterTemplate>
+            </table>
+        </FooterTemplate>
     </asp:Repeater>
 </asp:Content>

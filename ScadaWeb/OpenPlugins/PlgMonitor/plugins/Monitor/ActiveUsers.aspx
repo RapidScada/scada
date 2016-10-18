@@ -6,7 +6,7 @@
     <h1>Active Users</h1>
     <asp:Repeater ID="repActiveUsers" runat="server">
         <HeaderTemplate>
-            <table class="table">
+            <table class="table table-striped">
                 <tr>
                     <th>IP Address</th>
                     <th>Session ID</th>
