@@ -24,7 +24,6 @@
  */
 
 using Scada.Client;
-using Scada.Data.Models;
 using Scada.UI;
 using Scada.Web.Shell;
 using System;

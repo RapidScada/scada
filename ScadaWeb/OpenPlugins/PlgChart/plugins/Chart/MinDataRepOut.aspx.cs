@@ -46,7 +46,7 @@ namespace Scada.Web.Plugins.Chart
 
             // проверка входа в систему
             if (!userData.LoggedOn)
-                throw new ScadaException(CommonPhrases.NoRights);
+                throw new ScadaException(WebPhrases.NotLoggedOn);
 
             // получение параметров запроса
             int[] cnlNums = Request.QueryString.GetParamAsIntArray("cnlNums");

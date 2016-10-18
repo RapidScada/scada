@@ -59,9 +59,11 @@ namespace Scada.Web.Plugins.Chart
             int viewID = Request.QueryString.GetParamAsInt("viewID");
             DateTime startDate = Request.QueryString.GetParamAsDate();
 
-            // проверка прав
-            if (!userData.LoggedOn ||
-                !userData.UserRights.GetUiObjRights(viewID).ViewRight)
+            // проверка входа в систему и прав
+            if (!userData.LoggedOn)
+                throw new ScadaException(WebPhrases.NotLoggedOn);
+
+            if (!userData.UserRights.GetUiObjRights(viewID).ViewRight)
                 throw new ScadaException(CommonPhrases.NoRights);
 
 #if !DEBUG

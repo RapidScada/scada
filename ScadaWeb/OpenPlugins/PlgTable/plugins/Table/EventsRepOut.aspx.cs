@@ -48,9 +48,12 @@ namespace Scada.Web.Plugins.Table
             int viewID = Request.QueryString.GetParamAsInt("viewID");
             bool eventsByView = viewID > 0;
 
-            // проверка прав
-            if (!(userData.LoggedOn && (userData.UserRights.ViewAllRight ||
-                eventsByView && userData.UserRights.GetUiObjRights(viewID).ViewRight)))
+            // проверка входа в систему и прав
+            if (!userData.LoggedOn)
+                throw new ScadaException(WebPhrases.NotLoggedOn);
+
+            if (!(userData.UserRights.ViewAllRight || 
+                eventsByView && userData.UserRights.GetUiObjRights(viewID).ViewRight))
                 throw new ScadaException(CommonPhrases.NoRights);
 
             // загрузка представления

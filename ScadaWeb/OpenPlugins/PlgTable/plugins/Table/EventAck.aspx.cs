@@ -52,7 +52,7 @@ namespace Scada.Web.Plugins.Table
 
             // проверка входа в систему
             if (!userData.LoggedOn)
-                throw new ScadaException(CommonPhrases.NoRights);
+                throw new ScadaException(WebPhrases.NotLoggedOn);
 
             // скрытие сообщения об ошибке
             pnlErrMsg.HideAlert();

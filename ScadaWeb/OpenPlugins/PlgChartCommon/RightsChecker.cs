@@ -184,7 +184,7 @@ namespace Scada.Web.Plugins.Chart
             if (userData == null)
                 throw new ArgumentNullException("userData");
             if (!userData.LoggedOn)
-                throw new ScadaException(CommonPhrases.NoRights);
+                throw new ScadaException(WebPhrases.NotLoggedOn);
             ChartUtils.CheckArrays(cnlNums, viewIDs);
 
             this.userData = userData;

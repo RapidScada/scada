@@ -3,14 +3,27 @@
     <link href="../../css/common/contentform.min.css" rel="stylesheet" type="text/css" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="cphMainContent" runat="server">
+    <h1>Active Users</h1>
     <asp:Repeater ID="repActiveUsers" runat="server">
+        <HeaderTemplate>
+            <table class="table">
+                <tr>
+                    <th>IP Address</th>
+                    <th>Session ID</th>
+                    <th>Username</th>
+                    <th>Logon Time</th>
+                </tr>
+        </HeaderTemplate>
         <ItemTemplate>
-            <div>
-                IpAddress: <%# Eval("IpAddress") %>,
-                SessionID: <%# HttpUtility.HtmlEncode(Eval("SessionID")) %>,
-                UserName: <%# HttpUtility.HtmlEncode(Eval("UserProps.UserName")) %>,
-                LogonDT: <%# Eval("LogonDT") %>
-            </div>
+            <tr>
+                <td><%# Eval("IpAddress") %></td>
+                <td><%# HttpUtility.HtmlEncode(Eval("SessionID")) %></td>
+                <td><%# HttpUtility.HtmlEncode(Eval("UserProps.UserName")) %></td>
+                <td><%# Eval("LogonDT") %></td>
+            </tr>
         </ItemTemplate>
+        <FooterTemplate>
+            </table>
+        </FooterTemplate>
     </asp:Repeater>
 </asp:Content>
