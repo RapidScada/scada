@@ -50,14 +50,19 @@ namespace Scada
             /// <summary>
             /// Конструктор
             /// </summary>
-            protected internal CacheItem(TValue value, DateTime valueAge, DateTime nowDT)
+            protected internal CacheItem(TKey key, TValue value, DateTime valueAge, DateTime nowDT)
             {
+                Key = key;
                 Value = value;
                 ValueAge = valueAge;
                 ValueRefrDT = nowDT;
                 AccessDT = nowDT;
             }
 
+            /// <summary>
+            /// Получить или установить ключ
+            /// </summary>
+            public TKey Key { get; set; }
             /// <summary>
             /// Получить или установить кешированное значение
             /// </summary>
@@ -149,7 +154,7 @@ namespace Scada
 
             lock (this)
             {
-                CacheItem cacheItem = new CacheItem(value, valueAge, nowDT);
+                CacheItem cacheItem = new CacheItem(key, value, valueAge, nowDT);
                 items.Add(key, cacheItem);
                 return cacheItem;
             }
