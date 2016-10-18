@@ -55,8 +55,8 @@ namespace Scada.Web.Plugins
             get
             {
                 return Localization.UseRussian ?
-                    "Плагин позволяет конфигурировать Rapid SCADA через веб-интерфейс." :
-                    "The plugin allows to configure Rapid SCADA using web interface.";
+                    "Плагин позволяет конфигурировать веб-приложение через браузер." :
+                    "The plugin allows to configure the web application using browser.";
             }
         }
 
@@ -81,13 +81,8 @@ namespace Scada.Web.Plugins
             {
                 List<MenuItem> menuItems = new List<MenuItem>();
 
-                MenuItem adminMenuItem = MenuItem.FromStandardMenuItem(StandardMenuItems.Admin);
-                adminMenuItem.Subitems.Add(new MenuItem("Active users", "~/plugins/Config/ActiveUsers.aspx"));
-                adminMenuItem.Subitems.Add(new MenuItem("Cache state", "~/plugins/Config/CacheState.aspx"));
-                menuItems.Add(adminMenuItem);
-
                 MenuItem configMenuItem = MenuItem.FromStandardMenuItem(StandardMenuItems.Config);
-                configMenuItem.Subitems.Add(new MenuItem("Web application", "~/plugins/Config/WebConfig.aspx"));
+                configMenuItem.Subitems.Add(new MenuItem("Web Application", "~/plugins/Config/WebConfig.aspx"));
                 menuItems.Add(configMenuItem);
 
                 return menuItems;

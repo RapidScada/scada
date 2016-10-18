@@ -59,27 +59,11 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="plugins\Config\ActiveUsers.aspx" />
-    <Content Include="plugins\Config\CacheState.aspx" />
     <Content Include="plugins\Config\WebConfig.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppCode\PlgConfigSpec.cs" />
-    <Compile Include="plugins\Config\ActiveUsers.aspx.cs">
-      <DependentUpon>ActiveUsers.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="plugins\Config\ActiveUsers.aspx.designer.cs">
-      <DependentUpon>ActiveUsers.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="plugins\Config\CacheState.aspx.cs">
-      <DependentUpon>CacheState.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="plugins\Config\CacheState.aspx.designer.cs">
-      <DependentUpon>CacheState.aspx</DependentUpon>
-    </Compile>
     <Compile Include="plugins\Config\WebConfig.aspx.cs">
       <DependentUpon>WebConfig.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
