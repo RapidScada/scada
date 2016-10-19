@@ -66,11 +66,14 @@
     <Content Include="plugins\Config\css\webconfig.min.css">
       <DependentUpon>webconfig.css</DependentUpon>
     </Content>
+    <Content Include="plugins\Config\lang\PlgConfig.ru-RU.xml" />
+    <Content Include="plugins\Config\lang\PlgConfig.en-GB.xml" />
     <Content Include="plugins\Config\Plugins.aspx" />
     <Content Include="plugins\Config\WebConfig.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppCode\Config\PlgPhrases.cs" />
     <Compile Include="AppCode\PlgConfigSpec.cs" />
     <Compile Include="plugins\Config\Plugins.aspx.cs">
       <DependentUpon>Plugins.aspx</DependentUpon>
@@ -106,9 +109,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="plugins\Config\lang\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

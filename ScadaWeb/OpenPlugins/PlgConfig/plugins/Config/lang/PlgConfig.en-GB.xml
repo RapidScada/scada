@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PlgConfigDictionaries>
+  <Dictionary key="Scada.Web.Plugins.Config.WFrmWebConfig">
+    <Phrase key="UnknownPlugin">Unknown plugin</Phrase>
+  </Dictionary>
+</PlgConfigDictionaries>

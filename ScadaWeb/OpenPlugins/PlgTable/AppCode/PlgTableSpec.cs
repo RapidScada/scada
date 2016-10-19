@@ -24,6 +24,7 @@
  */
 
 using Scada.Web.Plugins.Table;
+using Scada.Web.Shell;
 using System.Collections.Generic;
 using System.IO;
 
@@ -104,6 +105,21 @@ namespace Scada.Web.Plugins
             get
             {
                 return new List<DataWndSpec>() { new EventsWndSpec()/*, new SampleWndSpec()*/ };
+            }
+        }
+
+        /// <summary>
+        /// Получить пути к дополнительным скриптам, которые реализуются плагином
+        /// </summary>
+        public override ScriptPaths ScriptPaths
+        {
+            get
+            {
+                return new ScriptPaths()
+                {
+                    CmdScriptPath = "~/plugins/Table/js/cmddialog.js",
+                    EventAckScriptPath = "~/plugins/Table/js/eventackdialog.js"
+                };
             }
         }
 

@@ -84,6 +84,11 @@ namespace Scada.Web
         public int ChartGap { get; set; }
 
         /// <summary>
+        /// Получить или установить стартовую страницу после входа в систему
+        /// </summary>
+        public string StartPage { get; set; }
+
+        /// <summary>
         /// Получить или установить разрешение команд управления
         /// </summary>
         public bool CmdEnabled { get; set; }
@@ -97,11 +102,6 @@ namespace Scada.Web
         /// Получить или установить разрешение запоминать пользователя, вошедшего в систему
         /// </summary>
         public bool RemEnabled { get; set; }
-
-        /// <summary>
-        /// Получить или установить стартовую страницу после входа в систему
-        /// </summary>
-        public string StartPage { get; set; }
 
         /// <summary>
         /// Получить или установить признак загрузки настроек представлений из базы конфигурации
@@ -134,10 +134,10 @@ namespace Scada.Web
             ArcRefrRate = 10000;
             DispEventCnt = 100;
             ChartGap = 90;
+            StartPage = "";
             CmdEnabled = true;
             CmdPassword = true;
             RemEnabled = false;
-            StartPage = "";
             ViewsFromBase = true;
             ShareStats = true;
             ScriptPaths = new ScriptPaths();

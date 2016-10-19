@@ -23,8 +23,10 @@
  * Modified : 2016
  */
 
+using Scada.Web.Plugins.Config;
 using Scada.Web.Shell;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Scada.Web.Plugins
 {
@@ -34,6 +36,19 @@ namespace Scada.Web.Plugins
     /// </summary>
     public class PlgConfigSpec : PluginSpec
     {
+        private DictUpdater dictUpdater; // объект для обновления словаря плагина
+
+        
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        public PlgConfigSpec()
+            : base()
+        {
+            dictUpdater = null;
+        }
+
+
         /// <summary>
         /// Получить наименование плагина
         /// </summary>
@@ -71,6 +86,24 @@ namespace Scada.Web.Plugins
             }
         }
 
+
+        /// <summary>
+        /// Инициализировать плагин
+        /// </summary>
+        public override void Init()
+        {
+            dictUpdater = new DictUpdater(
+                string.Format("{0}Config{1}lang{1}", AppDirs.PluginsDir, Path.DirectorySeparatorChar),
+                "PlgConfig", PlgPhrases.Init, Log);
+        }
+
+        /// <summary>
+        /// Выполнить действия после успешного входа пользователя в систему
+        /// </summary>
+        public override void OnUserLogin(UserData userData)
+        {
+            dictUpdater.Update();
+        }
 
         /// <summary>
         /// Получить элементы меню, доступные пользователю
