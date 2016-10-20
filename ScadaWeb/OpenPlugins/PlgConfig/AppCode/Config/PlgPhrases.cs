@@ -40,10 +40,14 @@ namespace Scada.Web.Plugins.Config
 
         // Словарь Scada.Web.Plugins.Config.WFrmWebConfig
         public static string UnknownPlugin { get; private set; }
+        public static string IncorrectFields { get; private set; }
+        public static string ConfigSaved { get; private set; }
 
         private static void SetToDefault()
         {
             UnknownPlugin = Localization.Dict.GetEmptyPhrase("UnknownPlugin");
+            IncorrectFields = Localization.Dict.GetEmptyPhrase("IncorrectFields");
+            ConfigSaved = Localization.Dict.GetEmptyPhrase("ConfigSaved");
         }
 
         public static void Init()
@@ -52,6 +56,8 @@ namespace Scada.Web.Plugins.Config
             if (Localization.Dictionaries.TryGetValue("Scada.Web.Plugins.Config.WFrmWebConfig", out dict))
             {
                 UnknownPlugin = dict.GetPhrase("UnknownPlugin", UnknownPlugin);
+                IncorrectFields = dict.GetPhrase("IncorrectFields", IncorrectFields);
+                ConfigSaved = dict.GetPhrase("ConfigSaved", ConfigSaved);
             }
         }
     }

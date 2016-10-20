@@ -55,7 +55,7 @@ namespace Scada.Web
                 {
                     pnlMessage.Visible = true;
                     Label lblMessage = (Label)control;
-                    lblMessage.Text = text;
+                    lblMessage.Text = HtmlEncodeWithBreak(text);
                     lblMessage.Visible = true;
                     break;
                 }

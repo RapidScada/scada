@@ -31,6 +31,24 @@ namespace Scada.Web.Plugins.Config {
         protected global::System.Web.UI.WebControls.Label lblErrMsg;
         
         /// <summary>
+        /// pnlSuccMsg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlSuccMsg;
+        
+        /// <summary>
+        /// lblSuccMsg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblSuccMsg;
+        
+        /// <summary>
         /// lblTitle control.
         /// </summary>
         /// <remarks>
@@ -184,6 +202,15 @@ namespace Scada.Web.Plugins.Config {
         protected global::System.Web.UI.WebControls.Label lblCultureHelp;
         
         /// <summary>
+        /// pnlDataRefrRate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlDataRefrRate;
+        
+        /// <summary>
         /// lblDataRefrRate control.
         /// </summary>
         /// <remarks>
@@ -209,6 +236,15 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lbltxtDataRefrRateUnit;
+        
+        /// <summary>
+        /// pnlArcRefrRate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlArcRefrRate;
         
         /// <summary>
         /// lblArcRefrRate control.
@@ -238,6 +274,15 @@ namespace Scada.Web.Plugins.Config {
         protected global::System.Web.UI.WebControls.Label lblArcRefrRateUnit;
         
         /// <summary>
+        /// pnlDispEventCnt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlDispEventCnt;
+        
+        /// <summary>
         /// lblDispEventCnt control.
         /// </summary>
         /// <remarks>
@@ -254,6 +299,15 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtDispEventCnt;
+        
+        /// <summary>
+        /// pnlChartGap control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlChartGap;
         
         /// <summary>
         /// lblChartGap control.

@@ -2,5 +2,7 @@
 <PlgConfigDictionaries>
   <Dictionary key="Scada.Web.Plugins.Config.WFrmWebConfig">
     <Phrase key="UnknownPlugin">Неизвестный плагин</Phrase>
+    <Phrase key="IncorrectFields">Следующие поля некорректны:</Phrase>
+    <Phrase key="ConfigSaved">Конфигурация сохранена успешно.</Phrase>
   </Dictionary>
 </PlgConfigDictionaries>

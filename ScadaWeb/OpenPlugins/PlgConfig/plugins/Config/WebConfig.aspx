@@ -7,6 +7,10 @@
         <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
         <asp:Label ID="lblErrMsg" runat="server" Text=""></asp:Label>
     </asp:Panel>
+    <asp:Panel ID="pnlSuccMsg" runat="server" CssClass="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+        <asp:Label ID="lblSuccMsg" runat="server" Text=""></asp:Label>
+    </asp:Panel>
     <h1><asp:Label ID="lblTitle" runat="server" Text="Web Application Configuration"></asp:Label></h1>
     <div class="form-horizontal">
         <h2><asp:Label ID="lblConnection" runat="server" Text="Connection to Server"></asp:Label></h2>
@@ -52,7 +56,7 @@
                 <asp:Label ID="lblCultureHelp" runat="server" CssClass="help-block" Text="Example: en-GB. Empty is the default."></asp:Label>
             </div>
         </div>
-        <div class="form-group">
+        <asp:Panel ID="pnlDataRefrRate" runat="server" CssClass="form-group">
             <asp:Label ID="lblDataRefrRate" runat="server" CssClass="col-sm-4 control-label" Text="Data refresh rate" AssociatedControlID="txtDataRefrRate"></asp:Label>
             <div class="col-sm-8">
                 <div class="input-group">
@@ -60,8 +64,8 @@
                     <asp:Label ID="lbltxtDataRefrRateUnit" runat="server" CssClass="input-group-addon" Text="ms"></asp:Label>
                 </div>
             </div>
-        </div>
-        <div class="form-group">
+        </asp:Panel>
+        <asp:Panel ID="pnlArcRefrRate" runat="server" CssClass="form-group">
             <asp:Label ID="lblArcRefrRate" runat="server" CssClass="col-sm-4 control-label" Text="Archive refresh rate" AssociatedControlID="txtArcRefrRate"></asp:Label>
             <div class="col-sm-8">
                 <div class="input-group">
@@ -69,14 +73,14 @@
                     <asp:Label ID="lblArcRefrRateUnit" runat="server" CssClass="input-group-addon" Text="ms"></asp:Label>
                 </div>
             </div>
-        </div>
-        <div class="form-group">
+        </asp:Panel>
+        <asp:Panel ID="pnlDispEventCnt" runat="server" CssClass="form-group">
             <asp:Label ID="lblDispEventCnt" runat="server" CssClass="col-sm-4 control-label" Text="Display event count" AssociatedControlID="txtDispEventCnt"></asp:Label>
             <div class="col-sm-8">
                 <asp:TextBox ID="txtDispEventCnt" runat="server" CssClass="form-control"></asp:TextBox>
             </div>
-        </div>
-        <div class="form-group">
+        </asp:Panel>
+        <asp:Panel ID="pnlChartGap" runat="server" CssClass="form-group">
             <asp:Label ID="lblChartGap" runat="server" CssClass="col-sm-4 control-label" Text="Chart gap" AssociatedControlID="txtChartGap"></asp:Label>
             <div class="col-sm-8">
                 <div class="input-group">
@@ -84,7 +88,7 @@
                     <asp:Label ID="lblChartGapUnit" runat="server" CssClass="input-group-addon" Text="sec"></asp:Label>
                 </div>
             </div>
-        </div>
+        </asp:Panel>
         <div class="form-group">
             <asp:Label ID="lblStartPage" runat="server" CssClass="col-sm-4 control-label" Text="Start page" AssociatedControlID="txtStartPage"></asp:Label>
             <div class="col-sm-8">

@@ -26,6 +26,7 @@
 using Scada.UI;
 using Scada.Web.Shell;
 using System;
+using System.Collections.Generic;
 using System.Web.UI.WebControls;
 
 namespace Scada.Web.Plugins.Config
@@ -62,7 +63,26 @@ namespace Scada.Web.Plugins.Config
         /// </summary>
         private void SaveSettings()
         {
+            // загрузка актуальных настроек
+            WebSettings webSettings = new WebSettings();
+            string errMsg;
+            string fileName = appData.AppDirs.ConfigDir + WebSettings.DefFileName;
 
+            if (!webSettings.LoadFromFile(fileName, out errMsg))
+                appData.Log.WriteError(errMsg);
+
+            // проверка и сохранение настроек
+            if (ControlsToSettings(webSettings, out errMsg))
+            {
+                if (webSettings.SaveToFile(fileName, out errMsg))
+                    pnlSuccMsg.ShowAlert(PlgPhrases.ConfigSaved);
+                else
+                    pnlErrMsg.ShowAlert(errMsg);
+            }
+            else
+            {
+                pnlErrMsg.ShowAlert(errMsg);
+            }
         }
 
         /// <summary>
@@ -162,6 +182,69 @@ namespace Scada.Web.Plugins.Config
             }
         }
 
+        /// <summary>
+        /// Получить параметры настроек из элементов управления
+        /// </summary>
+        private bool ControlsToSettings(WebSettings webSettings, out string errMsg)
+        {
+            // проверка текстовых полей и установка числовых настроек
+            List<string> errFields = new List<string>();
+            int val;
+
+            if (ValidateIntField(pnlDataRefrRate, lblDataRefrRate, txtDataRefrRate, errFields, out val))
+                webSettings.DataRefrRate = val;
+
+            if (ValidateIntField(pnlArcRefrRate, lblArcRefrRate, txtArcRefrRate, errFields, out val))
+                webSettings.ArcRefrRate = val;
+
+            if (ValidateIntField(pnlDispEventCnt, lblDispEventCnt, txtDispEventCnt, errFields, out val))
+                webSettings.DispEventCnt = val;
+
+            if (ValidateIntField(pnlChartGap, lblChartGap, txtChartGap, errFields, out val))
+                webSettings.ChartGap = val;
+
+            if (errFields.Count > 0)
+            {
+                errMsg = PlgPhrases.IncorrectFields + "\n" + string.Join(",\n", errFields.ToArray());
+                return false;
+            }
+            else
+            {
+                // установка настроек, не требующих проверки
+                webSettings.Culture = txtCulture.Text;
+                webSettings.StartPage = txtStartPage.Text;
+                webSettings.CmdEnabled = chkCmdEnabled.Checked;
+                webSettings.CmdPassword = chkCmdPassword.Checked;
+                webSettings.RemEnabled = chkRemEnabled.Checked;
+                webSettings.ViewsFromBase = chkViewsFromBase.Checked;
+                webSettings.ShareStats = chkShareStats.Checked;
+                webSettings.ScriptPaths.ChartScriptPath = ddlChartScript.SelectedValue;
+                webSettings.ScriptPaths.CmdScriptPath = ddlCmdScript.SelectedValue;
+                webSettings.ScriptPaths.EventAckScriptPath = ddlEventAckScript.SelectedValue;
+
+                errMsg = "";
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Проверить целочисленное поле
+        /// </summary>
+        private bool ValidateIntField(Panel pnlField, Label lblFieldCaption, TextBox txtFieldVal, 
+            List<string> errFields, out int val)
+        {
+            if (int.TryParse(txtFieldVal.Text, out val))
+            {
+                return true;
+            }
+            else
+            {
+                errFields.Add(lblFieldCaption.Text);
+                pnlField.CssClass += " has-error";
+                return false;
+            }
+        }
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -174,8 +257,9 @@ namespace Scada.Web.Plugins.Config
             if (!userData.UserRights.ConfigRight)
                 throw new ScadaException(CommonPhrases.NoRights);
 
-            // скрытие сообщения об ошибке
+            // скрытие сообщений
             pnlErrMsg.HideAlert();
+            pnlSuccMsg.HideAlert();
 
             if (!IsPostBack)
             {
