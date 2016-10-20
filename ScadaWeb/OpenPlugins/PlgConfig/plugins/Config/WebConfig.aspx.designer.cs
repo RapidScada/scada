@@ -85,6 +85,15 @@ namespace Scada.Web.Plugins.Config {
         protected global::System.Web.UI.WebControls.TextBox txtServerHost;
         
         /// <summary>
+        /// pnlServerPort control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlServerPort;
+        
+        /// <summary>
         /// lblServerPort control.
         /// </summary>
         /// <remarks>
@@ -101,6 +110,15 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtServerPort;
+        
+        /// <summary>
+        /// pnlServerTimeout control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlServerTimeout;
         
         /// <summary>
         /// lblServerTimeout control.
@@ -164,6 +182,15 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtServerPwd;
+        
+        /// <summary>
+        /// lblServerPwdHelp control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblServerPwdHelp;
         
         /// <summary>
         /// lblCommonParams control.

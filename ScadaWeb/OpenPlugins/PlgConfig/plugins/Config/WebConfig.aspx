@@ -20,13 +20,13 @@
                 <asp:TextBox ID="txtServerHost" runat="server" CssClass="form-control"></asp:TextBox>
             </div>
         </div>
-        <div class="form-group">
+        <asp:Panel ID="pnlServerPort" runat="server" CssClass="form-group">
             <asp:Label ID="lblServerPort" runat="server" CssClass="col-sm-4 control-label" Text="Port" AssociatedControlID="txtServerPort"></asp:Label>
             <div class="col-sm-8">
                 <asp:TextBox ID="txtServerPort" runat="server" CssClass="form-control"></asp:TextBox>
             </div>
-        </div>
-        <div class="form-group">
+        </asp:Panel>
+        <asp:Panel ID="pnlServerTimeout" runat="server" CssClass="form-group">
             <asp:Label ID="lblServerTimeout" runat="server" CssClass="col-sm-4 control-label" Text="Timeout" AssociatedControlID="txtServerTimeout"></asp:Label>
             <div class="col-sm-8">
                 <div class="input-group">
@@ -34,7 +34,7 @@
                     <asp:Label ID="txtServerTimeoutUnit" runat="server" CssClass="input-group-addon" Text="ms"></asp:Label>
                 </div>
             </div>
-        </div>
+        </asp:Panel>
         <div class="form-group">
             <asp:Label ID="lblServerUser" runat="server" CssClass="col-sm-4 control-label" Text="User" AssociatedControlID="txtServerUser"></asp:Label>
             <div class="col-sm-8">
@@ -44,7 +44,8 @@
         <div class="form-group">
             <asp:Label ID="lblServerPwd" runat="server" CssClass="col-sm-4 control-label" Text="Password" AssociatedControlID="txtServerPwd"></asp:Label>
             <div class="col-sm-8">
-                <asp:TextBox ID="txtServerPwd" runat="server" CssClass="form-control" TextMode="Password"></asp:TextBox>
+                <asp:TextBox ID="txtServerPwd" runat="server" CssClass="form-control" TextMode="Password" autocomplete="new-password"></asp:TextBox>
+                <asp:Label ID="lblServerPwdHelp" runat="server" CssClass="help-block" Text="Leave blank to keep unchanged."></asp:Label>
             </div>
         </div>
 

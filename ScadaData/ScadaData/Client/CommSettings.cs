@@ -131,7 +131,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Создать копию настроек соединения со SCADA-Сервером
+        /// Создать копию настроек
         /// </summary>
         public CommSettings Clone()
         {
@@ -139,7 +139,43 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Загрузить настройки соединения со SCADA-Сервером из файла
+        /// Загрузить настройки из заданного XML-узла
+        /// </summary>
+        public void LoadFromXml(XmlNode commSettingsNode)
+        {
+            if (commSettingsNode == null)
+                throw new ArgumentNullException("commSettingsNode");
+
+            XmlNodeList xmlNodeList = commSettingsNode.SelectNodes("Param");
+
+            foreach (XmlElement xmlElement in xmlNodeList)
+            {
+                string name = xmlElement.GetAttribute("name").Trim();
+                string nameL = name.ToLowerInvariant();
+                string val = xmlElement.GetAttribute("value");
+
+                try
+                {
+                    if (nameL == "serverhost")
+                        ServerHost = val;
+                    else if (nameL == "serverport")
+                        ServerPort = int.Parse(val);
+                    else if (nameL == "serveruser")
+                        ServerUser = val;
+                    else if (nameL == "serverpwd")
+                        ServerPwd = val;
+                    else if (nameL == "servertimeout")
+                        ServerTimeout = int.Parse(val);
+                }
+                catch
+                {
+                    throw new ScadaException(string.Format(CommonPhrases.IncorrectXmlParamVal, name));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Загрузить настройки из файла
         /// </summary>
         public bool LoadFromFile(string fileName, out string errMsg)
         {
@@ -152,34 +188,9 @@ namespace Scada.Client
                 if (!File.Exists(fileName))
                     throw new FileNotFoundException(string.Format(CommonPhrases.NamedFileNotFound, fileName));
 
-                XmlDocument xmlDoc = new XmlDocument(); // обрабатываемый XML-документ
+                XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.Load(fileName);
-
-                XmlNodeList xmlNodeList = xmlDoc.DocumentElement.SelectNodes("Param");
-                foreach (XmlElement xmlElement in xmlNodeList)
-                {
-                    string name = xmlElement.GetAttribute("name").Trim();
-                    string nameL = name.ToLowerInvariant();
-                    string val = xmlElement.GetAttribute("value");
-
-                    try
-                    {
-                        if (nameL == "serverhost")
-                            ServerHost = val;
-                        else if (nameL == "serverport")
-                            ServerPort = int.Parse(val);
-                        else if (nameL == "serveruser")
-                            ServerUser = val;
-                        else if (nameL == "serverpwd")
-                            ServerPwd = val;
-                        else if (nameL == "servertimeout")
-                            ServerTimeout = int.Parse(val);
-                    }
-                    catch
-                    {
-                        throw new ScadaException(string.Format(CommonPhrases.IncorrectXmlParamVal, name));
-                    }
-                }
+                LoadFromXml(xmlDoc.DocumentElement);
 
                 errMsg = "";
                 return true;
@@ -192,7 +203,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Загрузить настройки соединения со SCADA-Сервером из файла
+        /// Загрузить настройки из файла
         /// </summary>
         [Obsolete]
         public void LoadFromFile(string fileName, Log log)
@@ -208,7 +219,24 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Сохранить настройки соединения со SCADA-Сервером в файле
+        /// Сохранить настройки в заданный XML-элемент
+        /// </summary>
+        public void SaveToXml(XmlElement commSettingsElem)
+        {
+            commSettingsElem.AppendParamElem("ServerHost", ServerHost,
+                "Имя компьютера или IP-адрес SCADA-Сервера", "SCADA-Server host or IP address");
+            commSettingsElem.AppendParamElem("ServerPort", ServerPort,
+                "Номер TCP-порта SCADA-Сервера", "SCADA-Server TCP port number");
+            commSettingsElem.AppendParamElem("ServerUser", ServerUser,
+                "Имя пользователя для подключения", "User name for the connection");
+            commSettingsElem.AppendParamElem("ServerPwd", ServerPwd,
+                "Пароль пользователя для подключения", "User password for the connection");
+            commSettingsElem.AppendParamElem("ServerTimeout", ServerTimeout,
+                "Таймаут ожидания ответа, мс", "Response timeout, ms");
+        }
+
+        /// <summary>
+        /// Сохранить настройки в файле
         /// </summary>
         public bool SaveToFile(string fileName, out string errMsg)
         {
@@ -221,17 +249,7 @@ namespace Scada.Client
 
                 XmlElement rootElem = xmlDoc.CreateElement("CommSettings");
                 xmlDoc.AppendChild(rootElem);
-
-                rootElem.AppendParamElem("ServerHost", ServerHost,
-                    "Имя компьютера или IP-адрес SCADA-Сервера", "SCADA-Server host or IP address");
-                rootElem.AppendParamElem("ServerPort", ServerPort,
-                    "Номер TCP-порта SCADA-Сервера", "SCADA-Server TCP port number");
-                rootElem.AppendParamElem("ServerUser", ServerUser,
-                    "Имя пользователя для подключения", "User name for the connection");
-                rootElem.AppendParamElem("ServerPwd", ServerPwd,
-                    "Пароль пользователя для подключения", "User password for the connection");
-                rootElem.AppendParamElem("ServerTimeout", ServerTimeout,
-                    "Таймаут ожидания ответа, мс", "Response timeout, ms");
+                SaveToXml(rootElem);
 
                 xmlDoc.Save(fileName);
                 errMsg = "";

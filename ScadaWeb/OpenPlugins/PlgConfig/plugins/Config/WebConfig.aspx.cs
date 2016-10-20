@@ -23,6 +23,7 @@
  * Modified : 2016
  */
 
+using Scada.Client;
 using Scada.UI;
 using Scada.Web.Shell;
 using System;
@@ -90,6 +91,13 @@ namespace Scada.Web.Plugins.Config
         /// </summary>
         private void SettingsToControls(WebSettings webSettings)
         {
+            CommSettings commSettings = webSettings.CommSettings;
+            txtServerHost.Text = commSettings.ServerHost;
+            txtServerPort.Text = commSettings.ServerPort.ToString();
+            txtServerTimeout.Text = commSettings.ServerTimeout.ToString();
+            txtServerUser.Text = commSettings.ServerUser;
+            txtServerPwd.Text = "";
+
             txtCulture.Text = webSettings.Culture;
             txtDataRefrRate.Text = webSettings.DataRefrRate.ToString();
             txtArcRefrRate.Text = webSettings.ArcRefrRate.ToString();
@@ -188,8 +196,15 @@ namespace Scada.Web.Plugins.Config
         private bool ControlsToSettings(WebSettings webSettings, out string errMsg)
         {
             // проверка текстовых полей и установка числовых настроек
+            CommSettings commSettings = webSettings.CommSettings;
             List<string> errFields = new List<string>();
             int val;
+
+            if (ValidateIntField(pnlServerPort, lblServerPort, txtServerPort, errFields, out val))
+                commSettings.ServerPort = val;
+
+            if (ValidateIntField(pnlServerTimeout, lblServerTimeout, txtServerTimeout, errFields, out val))
+                commSettings.ServerTimeout = val;
 
             if (ValidateIntField(pnlDataRefrRate, lblDataRefrRate, txtDataRefrRate, errFields, out val))
                 webSettings.DataRefrRate = val;
@@ -211,6 +226,11 @@ namespace Scada.Web.Plugins.Config
             else
             {
                 // установка настроек, не требующих проверки
+                commSettings.ServerHost = txtServerHost.Text;
+                commSettings.ServerUser = txtServerUser.Text;
+                if (txtServerPwd.Text != "")
+                    commSettings.ServerPwd = txtServerPwd.Text;
+
                 webSettings.Culture = txtCulture.Text;
                 webSettings.StartPage = txtStartPage.Text;
                 webSettings.CmdEnabled = chkCmdEnabled.Checked;
@@ -218,6 +238,7 @@ namespace Scada.Web.Plugins.Config
                 webSettings.RemEnabled = chkRemEnabled.Checked;
                 webSettings.ViewsFromBase = chkViewsFromBase.Checked;
                 webSettings.ShareStats = chkShareStats.Checked;
+
                 webSettings.ScriptPaths.ChartScriptPath = ddlChartScript.SelectedValue;
                 webSettings.ScriptPaths.CmdScriptPath = ddlCmdScript.SelectedValue;
                 webSettings.ScriptPaths.EventAckScriptPath = ddlEventAckScript.SelectedValue;

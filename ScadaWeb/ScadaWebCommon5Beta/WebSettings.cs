@@ -23,6 +23,7 @@
  * Modified : 2016
  */
 
+using Scada.Client;
 using Scada.Web.Shell;
 using System;
 using System.Collections.Generic;
@@ -113,6 +114,12 @@ namespace Scada.Web
         /// </summary>
         public bool ShareStats { get; set; }
 
+
+        /// <summary>
+        /// Получить настройки соединения с сервером
+        /// </summary>
+        public CommSettings CommSettings { get; protected set; }
+
         /// <summary>
         /// Получить пути к дополнительным скриптам, реализующим функциональность оболочки
         /// </summary>
@@ -140,6 +147,8 @@ namespace Scada.Web
             RemEnabled = false;
             ViewsFromBase = true;
             ShareStats = true;
+
+            CommSettings = new CommSettings();
             ScriptPaths = new ScriptPaths();
             PluginFileNames.Clear();
         }
@@ -178,6 +187,11 @@ namespace Scada.Web
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.Load(fileName);
                 XmlElement rootElem = xmlDoc.DocumentElement;
+
+                // загрузка настроек соединения с сервером
+                XmlNode commSettingsNode = rootElem.SelectSingleNode("CommSettings");
+                if (commSettingsNode != null)
+                    CommSettings.LoadFromXml(commSettingsNode);
 
                 // загрузка общих параметров
                 XmlNode commonParamsNode = rootElem.SelectSingleNode("CommonParams");
@@ -268,7 +282,83 @@ namespace Scada.Web
         {
             try
             {
-                throw new NotImplementedException("Method not implemented.");
+                XmlDocument xmlDoc = new XmlDocument();
+
+                XmlDeclaration xmlDecl = xmlDoc.CreateXmlDeclaration("1.0", "utf-8", null);
+                xmlDoc.AppendChild(xmlDecl);
+
+                XmlElement rootElem = xmlDoc.CreateElement("WebSettings");
+                xmlDoc.AppendChild(rootElem);
+
+                // настройки соединения
+                XmlElement commSettingsElem = xmlDoc.CreateElement("CommSettings");
+                rootElem.AppendChild(commSettingsElem);
+                CommSettings.SaveToXml(commSettingsElem);
+
+                // общие параметры
+                XmlElement commonParamsElem = xmlDoc.CreateElement("CommonParams");
+                rootElem.AppendChild(commonParamsElem);
+
+                commonParamsElem.AppendParamElem("Culture", Culture,
+                    "Культура веб-приложения", "Web application culture");
+                commonParamsElem.AppendParamElem("DataRefrRate", DataRefrRate,
+                    "Частота обновления текущих данных и событий, мс", "Current data and events refresh rate, ms");
+                commonParamsElem.AppendParamElem("ArcRefrRate", ArcRefrRate,
+                    "Частота обновления архивных данных, мс", "Archive data refresh rate, ms");
+                commonParamsElem.AppendParamElem("DispEventCnt", DispEventCnt,
+                    "Количество отображаемых событий", "Display events count");
+                commonParamsElem.AppendParamElem("ChartGap", ChartGap,
+                    "Расстояние между точками графика для разрыва, с", "Distance between chart points to make a gap, sec");
+                commonParamsElem.AppendParamElem("StartPage", StartPage,
+                    "Начальная страница после входа в систему", "Start page after login");
+                commonParamsElem.AppendParamElem("CmdEnabled", CmdEnabled,
+                    "Разрешить команды ТУ", "Enable commands");
+                commonParamsElem.AppendParamElem("CmdPassword", CmdPassword,
+                    "Требовать пароль при отправке команды", "Require password to send command");
+                commonParamsElem.AppendParamElem("RemEnabled", RemEnabled,
+                    "Разрешить запоминать вход пользователя", "Allow to remember logged on user");
+                commonParamsElem.AppendParamElem("ViewsFromBase", ViewsFromBase,
+                    "Загружать настройки представлений из базы", "Load view settings from the database");
+                commonParamsElem.AppendParamElem("ShareStats", ShareStats,
+                    "Поделиться обезличенной статистикой с разработчиками", "Share depersonalized stats with the developers");
+
+                // пути к скриптам
+                XmlElement scriptPathsElem = xmlDoc.CreateElement("ScriptPaths");
+                rootElem.AppendChild(scriptPathsElem);
+
+                XmlElement scriptElem = xmlDoc.CreateElement("Script");
+                scriptElem.SetAttribute("name", "ChartScript");
+                scriptElem.SetAttribute("path", ScriptPaths.ChartScriptPath);
+                scriptPathsElem.AppendChild(scriptElem);
+
+                scriptElem = xmlDoc.CreateElement("Script");
+                scriptElem.SetAttribute("name", "CmdScript");
+                scriptElem.SetAttribute("path", ScriptPaths.CmdScriptPath);
+                scriptPathsElem.AppendChild(scriptElem);
+
+                scriptElem = xmlDoc.CreateElement("Script");
+                scriptElem.SetAttribute("name", "EventAckScript");
+                scriptElem.SetAttribute("path", ScriptPaths.EventAckScriptPath);
+                scriptPathsElem.AppendChild(scriptElem);
+
+                // плагины
+                XmlElement pluginsElem = xmlDoc.CreateElement("Plugins");
+                rootElem.AppendChild(pluginsElem);
+
+                foreach (string pluginFileName in PluginFileNames)
+                {
+                    scriptElem = xmlDoc.CreateElement("Plugin");
+                    scriptElem.SetAttribute("fileName", pluginFileName);
+                    pluginsElem.AppendChild(scriptElem);
+                }
+
+                // сохранение в файле
+                string bakName = fileName + ".bak";
+                File.Copy(fileName, bakName, true);
+                xmlDoc.Save(fileName);
+
+                errMsg = "";
+                return true;
             }
             catch (Exception ex)
             {
