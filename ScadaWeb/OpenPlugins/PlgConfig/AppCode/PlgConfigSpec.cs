@@ -115,11 +115,12 @@ namespace Scada.Web.Plugins
                 List<MenuItem> menuItems = new List<MenuItem>();
 
                 MenuItem configMenuItem = MenuItem.FromStandardMenuItem(StandardMenuItems.Config);
-                configMenuItem.Subitems.Add(new MenuItem("Web Application", "~/plugins/Config/WebConfig.aspx"));
+                configMenuItem.Subitems.Add(new MenuItem(PlgPhrases.WebConfigMenuItem, 
+                    "~/plugins/Config/WebConfig.aspx"));
                 menuItems.Add(configMenuItem);
 
-                MenuItem pluginsMenuItem = new MenuItem("Plugins", "~/plugins/Config/Plugins.aspx", 
-                    configMenuItem.SortOrder + 100);
+                MenuItem pluginsMenuItem = new MenuItem(PlgPhrases.PluginsMenuItem, 
+                    "~/plugins/Config/Plugins.aspx", configMenuItem.SortOrder + 100);
                 menuItems.Add(pluginsMenuItem);
 
                 return menuItems;

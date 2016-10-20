@@ -43,11 +43,18 @@ namespace Scada.Web.Plugins.Config
         public static string IncorrectFields { get; private set; }
         public static string ConfigSaved { get; private set; }
 
+        // Словарь Scada.Web.Plugins.PlgConfigSpec
+        public static string WebConfigMenuItem { get; private set; }
+        public static string PluginsMenuItem { get; private set; }
+
         private static void SetToDefault()
         {
             UnknownPlugin = Localization.Dict.GetEmptyPhrase("UnknownPlugin");
             IncorrectFields = Localization.Dict.GetEmptyPhrase("IncorrectFields");
             ConfigSaved = Localization.Dict.GetEmptyPhrase("ConfigSaved");
+
+            WebConfigMenuItem = Localization.Dict.GetEmptyPhrase("WebConfigMenuItem");
+            PluginsMenuItem = Localization.Dict.GetEmptyPhrase("PluginsMenuItem");
         }
 
         public static void Init()
@@ -58,6 +65,12 @@ namespace Scada.Web.Plugins.Config
                 UnknownPlugin = dict.GetPhrase("UnknownPlugin", UnknownPlugin);
                 IncorrectFields = dict.GetPhrase("IncorrectFields", IncorrectFields);
                 ConfigSaved = dict.GetPhrase("ConfigSaved", ConfigSaved);
+            }
+
+            if (Localization.Dictionaries.TryGetValue("Scada.Web.Plugins.PlgConfigSpec", out dict))
+            {
+                WebConfigMenuItem = dict.GetPhrase("WebConfigMenuItem", WebConfigMenuItem);
+                PluginsMenuItem = dict.GetPhrase("PluginsMenuItem", PluginsMenuItem);
             }
         }
     }
