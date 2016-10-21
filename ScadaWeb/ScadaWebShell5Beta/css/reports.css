@@ -32,6 +32,7 @@ a:visited {
 a:hover {
   color: #00a0d2;
 }
+th,
 label {
   font-weight: 600;
 }

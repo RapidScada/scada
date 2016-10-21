@@ -66,7 +66,7 @@ namespace Scada.Web.Plugins
             {
                 return Localization.UseRussian ?
                     "Плагин обеспечивает отображение произвольных веб-страниц." :
-                    "The plugin provides displaying any web pages.";
+                    "The plugin provides displaying arbitrary web pages.";
             }
         }
 

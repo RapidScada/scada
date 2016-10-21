@@ -60,6 +60,12 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="plugins\Config\css\plugins.css">
+      <DependentUpon>plugins.less</DependentUpon>
+    </Content>
+    <Content Include="plugins\Config\css\plugins.min.css">
+      <DependentUpon>plugins.css</DependentUpon>
+    </Content>
     <Content Include="plugins\Config\css\webconfig.css">
       <DependentUpon>webconfig.less</DependentUpon>
     </Content>
@@ -101,6 +107,7 @@
     <Content Include="css\common\contentform.less" />
     <Content Include="css\common\globalvar.less" />
     <Content Include="packages.config" />
+    <Content Include="plugins\Config\css\plugins.less" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

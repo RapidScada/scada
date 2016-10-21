@@ -23,11 +23,9 @@
  * Modified : 2016
  */
 
+using Scada.UI;
 using System;
 using System.Collections.Generic;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace Scada.Web.Plugins.Config
 {
@@ -38,20 +36,94 @@ namespace Scada.Web.Plugins.Config
     public partial class WFrmPlugins : System.Web.UI.Page
     {
         /// <summary>
+        /// Состояния плагинов
+        /// </summary>
+        protected enum PlaginStates
+        {
+            /// <summary>
+            /// Не активен
+            /// </summary>
+            Inactive,
+            /// <summary>
+            /// Активен
+            /// </summary>
+            Active,
+            /// <summary>
+            /// Активен, но не загружен
+            /// </summary>
+            ActiveNotLoaded
+        }
+
+        /// <summary>
         /// Элемент списка плагинов
         /// </summary>
         protected class PluginItem
         {
-            public bool Active;
-            public string Name;
-            public string Description;
-            public string FileName;
+            /// <summary>
+            /// Получить или установить состояние плагина
+            /// </summary>
+            public PlaginStates State { get; set; }
+            /// <summary>
+            /// Получить или установить наименование плагина
+            /// </summary>
+            public string Name { get; set; }
+            /// <summary>
+            /// Получить или установить описание плагина
+            /// </summary>
+            public string Descr { get; set; }
+            /// <summary>
+            /// Получить или установить короткое имя файла библиотеки плагина
+            /// </summary>
+            public string FileName { get; set; }
+        }
+
+
+        private AppData appData;   // общие данные веб-приложения
+        private UserData userData; // данные пользователя приложения
+
+
+        /// <summary>
+        /// Получить список плагинов
+        /// </summary>
+        private List<PluginItem> GetPluginItems()
+        {
+            List<PluginItem> pluginItems = new List<PluginItem>();
+
+            foreach (PluginSpec pluginSpec in userData.PluginSpecs)
+            {
+                pluginItems.Add(new PluginItem()
+                {
+                    State = PlaginStates.Active,
+                    Name = pluginSpec.Name,
+                    Descr = pluginSpec.Descr,
+                    FileName = ""
+                });
+            }
+
+            return pluginItems;
         }
 
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            appData = AppData.GetAppData();
+            userData = UserData.GetUserData();
 
+            // проверка входа в систему и прав
+            userData.CheckLoggedOn(true);
+
+            if (!userData.UserRights.ConfigRight)
+                throw new ScadaException(CommonPhrases.NoRights);
+
+            if (!IsPostBack)
+            {
+                // перевод веб-страницы
+                Translator.TranslatePage(Page, "Scada.Web.Plugins.Config.WFrmPlugins");
+
+                // построение списка плагинов
+                repPlugins.DataSource = GetPluginItems();
+                repPlugins.DataBind();
+            }
         }
     }
 }
