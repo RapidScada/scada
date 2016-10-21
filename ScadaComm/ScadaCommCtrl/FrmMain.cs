@@ -970,9 +970,9 @@ namespace Scada.Comm.Ctrl
             try
             {
                 DirectoryInfo dirInfo = new DirectoryInfo(appDirs.KPDir);
-                FileInfo[] fileInfoAr = dirInfo.GetFiles("kp*.dll", SearchOption.TopDirectoryOnly);
+                FileInfo[] fileInfoArr = dirInfo.GetFiles("kp*.dll", SearchOption.TopDirectoryOnly);
 
-                foreach (FileInfo fileInfo in fileInfoAr)
+                foreach (FileInfo fileInfo in fileInfoArr)
                 {
                     if (!fileInfo.Name.Equals("kp.dll", StringComparison.OrdinalIgnoreCase))
                     {
