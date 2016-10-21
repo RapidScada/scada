@@ -204,6 +204,22 @@ namespace Scada.Web.Plugins.Config
             return activePlugins;
         }
 
+        /// <summary>
+        /// Получить строковое представление состояния плагина
+        /// </summary>
+        protected string StateToStr(PlaginStates state)
+        {
+            switch (state)
+            {
+                case PlaginStates.Inactive:
+                    return "Inactive";
+                case PlaginStates.Active:
+                    return "Active";
+                default: // PlaginStates.NotLoaded:
+                    return "Not loaded";
+            }
+        }
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -236,20 +252,43 @@ namespace Scada.Web.Plugins.Config
             {
                 if (pluginItem.State == PlaginStates.Inactive)
                 {
-                    Button btnDeactivate = (Button)e.Item.FindControl("btnDeactivate");
-                    btnDeactivate.Visible = false;
+                    LinkButton lbtnDeactivate = (LinkButton)e.Item.FindControl("lbtnDeactivate");
+                    lbtnDeactivate.Visible = false;
                 }
                 else
                 {
-                    Button btnActivate = (Button)e.Item.FindControl("btnActivate");
-                    btnActivate.Visible = false;
+                    LinkButton lbtnActivate = (LinkButton)e.Item.FindControl("lbtnActivate");
+                    lbtnActivate.Visible = false;
                 }
             }
         }
 
         protected void repPlugins_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
+            string cmdName = e.CommandName;
 
+            if (cmdName == "Activate" || cmdName == "Deactivate")
+            {
+                // загрузка актуальных настроек
+                WebSettings webSettings = new WebSettings();
+                string errMsg;
+                string fileName = appData.AppDirs.ConfigDir + WebSettings.DefFileName;
+
+                if (!webSettings.LoadFromFile(fileName, out errMsg))
+                    appData.Log.WriteError(errMsg);
+
+                // изменение настроек
+                string dllFileName = (string)e.CommandArgument;
+
+                if (cmdName == "Activate")
+                {
+
+                }
+                else if (e.CommandName == "Deactivate")
+                {
+
+                }
+            }
         }
     }
 }

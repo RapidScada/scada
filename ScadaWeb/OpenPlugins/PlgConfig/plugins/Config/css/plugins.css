@@ -39,6 +39,6 @@ label {
 td.name-cell span {
   font-weight: 600;
 }
-/*td.action-cell .btn {
-    min-width: 100px;
-}*/
+tr.state-notloaded {
+  color: #a00;
+}

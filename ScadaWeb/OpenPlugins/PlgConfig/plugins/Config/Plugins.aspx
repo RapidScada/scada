@@ -14,14 +14,12 @@
                 </tr>
         </HeaderTemplate>
         <ItemTemplate>
-            <tr>
-                <td class="name-cell"><span><%# HttpUtility.HtmlEncode(Eval("Name")) %></span><br/><asp:Button 
-                    ID="btnActivate" runat="server" CssClass="btn btn-link" Text="Activate" UseSubmitBehavior="False" 
-                        CommandName="Activate" CommandArgument='<%# Eval("FileName") %>' /><asp:Button 
-                    ID="btnDeactivate" runat="server" CssClass="btn btn-link" Text="Deactivate" UseSubmitBehavior="False" 
-                        CommandName="Deactivate" CommandArgument='<%# Eval("FileName") %>' /></td>
+            <tr class='state-<%# Eval("State").ToString().ToLowerInvariant() %>'>
+                <td class="name-cell"><span><%# HttpUtility.HtmlEncode(Eval("Name")) %></span><br/><asp:LinkButton 
+                    ID="lbtnActivate" runat="server" CommandName="Activate" CommandArgument='<%# Eval("FileName") %>'>Activate</asp:LinkButton><asp:LinkButton 
+                    ID="lbtnDeactivate" runat="server" CommandName="Deactivate" CommandArgument='<%# Eval("FileName") %>'>Deactivate</asp:LinkButton>
                 <td><%# HttpUtility.HtmlEncode(Eval("Descr")) %></td>
-                <td><%# HttpUtility.HtmlEncode(Eval("State")) %></td>
+                <td><%# StateToStr((PlaginStates)Eval("State")) %></td>
             </tr>
         </ItemTemplate>
         <FooterTemplate>
