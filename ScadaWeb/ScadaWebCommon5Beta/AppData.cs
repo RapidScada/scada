@@ -295,16 +295,22 @@ namespace Scada.Web
         private void LoadPlugins()
         {
             PluginSpecs = new List<PluginSpec>();
+            HashSet<string> procFileNames = new HashSet<string>();
 
             foreach (string fileName in WebSettings.PluginFileNames)
             {
-                string errMsg;
-                PluginSpec pluginSpec = PluginSpec.CreateFromDll(AppDirs.BinDir + fileName, out errMsg);
+                if (!procFileNames.Contains(fileName))
+                {
+                    string errMsg;
+                    PluginSpec pluginSpec = PluginSpec.CreateFromDll(AppDirs.BinDir + fileName, out errMsg);
 
-                if (pluginSpec == null)
-                    Log.WriteError(errMsg);
-                else
-                    PluginSpecs.Add(pluginSpec);
+                    if (pluginSpec == null)
+                        Log.WriteError(errMsg);
+                    else
+                        PluginSpecs.Add(pluginSpec);
+
+                    procFileNames.Add(fileName);
+                }
             }
         }
 

@@ -36,3 +36,9 @@ th,
 label {
   font-weight: 600;
 }
+td.name-cell span {
+  font-weight: 600;
+}
+/*td.action-cell .btn {
+    min-width: 100px;
+}*/
