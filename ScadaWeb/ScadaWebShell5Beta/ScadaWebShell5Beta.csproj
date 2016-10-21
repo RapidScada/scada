@@ -71,7 +71,6 @@
     </Content>
     <Content Include="About.aspx" />
     <Content Include="Calendar.aspx" />
-    <Content Include="config\CommSettings.xml" />
     <Content Include="config\ViewSettings.xml" />
     <Content Include="config\WebSettings.xml" />
     <Content Include="css\about.css">

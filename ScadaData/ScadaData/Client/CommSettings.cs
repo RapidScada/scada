@@ -91,19 +91,6 @@ namespace Scada.Client
 
 
         /// <summary>
-        /// Установить значения настроек по умолчанию
-        /// </summary>
-        private void SetToDefault()
-        {
-            ServerHost = "localhost";
-            ServerPort = 10000;
-            ServerUser = "";
-            ServerPwd = "12345";
-            ServerTimeout = 10000;
-        }
-
-
-        /// <summary>
         /// Создать новый объект настроек
         /// </summary>
         public ISettings Create()
@@ -124,10 +111,23 @@ namespace Scada.Client
         /// </summary>
         public bool Equals(CommSettings commSettings)
         {
-            return commSettings == null ? false : 
+            return commSettings == null ? false :
+                commSettings == this ? true :
                 ServerHost == commSettings.ServerHost && ServerPort == commSettings.ServerPort &&
                 ServerUser == commSettings.ServerUser && ServerPwd == commSettings.ServerPwd &&
                 ServerTimeout == commSettings.ServerTimeout;
+        }
+
+        /// <summary>
+        /// Установить значения настроек по умолчанию
+        /// </summary>
+        public void SetToDefault()
+        {
+            ServerHost = "localhost";
+            ServerPort = 10000;
+            ServerUser = "";
+            ServerPwd = "12345";
+            ServerTimeout = 10000;
         }
 
         /// <summary>

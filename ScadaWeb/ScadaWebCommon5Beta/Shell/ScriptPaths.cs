@@ -39,9 +39,7 @@ namespace Scada.Web.Shell
         /// </summary>
         public ScriptPaths()
         {
-            ChartScriptPath = "";
-            CmdScriptPath = "";
-            EventAckScriptPath = "";
+            SetToDefault();
         }
 
 
@@ -60,6 +58,16 @@ namespace Scada.Web.Shell
         /// </summary>
         public string EventAckScriptPath { get; set; }
 
+        
+        /// <summary>
+        /// Установить значения по умолчанию
+        /// </summary>
+        public void SetToDefault()
+        {
+            ChartScriptPath = "";
+            CmdScriptPath = "";
+            EventAckScriptPath = "";
+        }
 
         /// <summary>
         /// Генерировать HTML-код для добавления скриптов на веб-страницу

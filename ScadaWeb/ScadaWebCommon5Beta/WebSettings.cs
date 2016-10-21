@@ -53,6 +53,8 @@ namespace Scada.Web
         /// </summary>
         public WebSettings()
         {
+            CommSettings = new CommSettings();
+            ScriptPaths = new ScriptPaths();
             PluginFileNames = new List<string>();
             SetToDefault();
         }
@@ -148,8 +150,8 @@ namespace Scada.Web
             ViewsFromBase = true;
             ShareStats = true;
 
-            CommSettings = new CommSettings();
-            ScriptPaths = new ScriptPaths();
+            CommSettings.SetToDefault();
+            ScriptPaths.SetToDefault();
             PluginFileNames.Clear();
         }
 

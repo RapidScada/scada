@@ -51,12 +51,10 @@ namespace Scada.Web
 
         private bool inited;                         // признак инициализации данных приложения
         private string cultureName;                  // имя используемой культуры
-        private CommSettings commSettings;           // настройки соединения с сервером
         private long viewStampCntr;                  // счётчик для генерации меток представлений
 
         private DictUpdater scadaDataDictUpdater;    // объект для обновления словаря ScadaData
         private DictUpdater scadaWebDictUpdater;     // объект для обновления словаря ScadaWeb
-        private SettingsUpdater commSettingsUpdater; // объект для обновления настроек соединения с сервером
         private SettingsUpdater webSettingsUpdater;  // объект для обновления настроек веб-приложения
         private SettingsUpdater viewSettingsUpdater; // объект для обновления настроек представлений
         private DateTime viewSettingsBaseAge;        // время изменения базы конфигурации для настроек представлений
@@ -79,12 +77,10 @@ namespace Scada.Web
 
             inited = false;
             cultureName = Localization.Culture.Name;
-            commSettings = new CommSettings();
             viewStampCntr = 0;
 
             scadaDataDictUpdater = null;
             scadaWebDictUpdater = null;
-            commSettingsUpdater = null;
             webSettingsUpdater = null;
             viewSettingsUpdater = null;
             viewSettingsBaseAge = DateTime.MinValue;
@@ -192,8 +188,6 @@ namespace Scada.Web
         /// </summary>
         private void InitSettingsUpdaters()
         {
-            commSettingsUpdater = new SettingsUpdater(commSettings, 
-                AppDirs.ConfigDir + CommSettings.DefFileName, true, Log);
             webSettingsUpdater = new SettingsUpdater(WebSettings, 
                 AppDirs.ConfigDir + WebSettings.DefFileName, true, Log);
             viewSettingsUpdater = new SettingsUpdater(ViewSettings,
@@ -205,7 +199,7 @@ namespace Scada.Web
         /// </summary>
         private void CreateDataObjects()
         {
-            ServerComm = new ServerComm(commSettings, Log);
+            ServerComm = new ServerComm(WebSettings.CommSettings, Log);
             DataCache dataCache = new DataCache(ServerComm, Log);
             DataAccess = new DataAccess(dataCache, Log);
             ViewCache = new ViewCache(ServerComm, DataAccess, Log);
@@ -221,25 +215,21 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Обновить настройки соединения с сервером
-        /// </summary>
-        private bool RefreshCommSettings()
-        {
-            bool changed;
-            if (commSettingsUpdater.Update(out changed) && changed)
-                commSettings = (CommSettings)commSettingsUpdater.Settings;
-            return changed;
-        }
-
-        /// <summary>
         /// Обновить настройки веб-приложения
         /// </summary>
-        private bool RefreshWebSettings()
+        private void RefreshWebSettings(out bool webSettingsChanged, out bool commSettingsChanged)
         {
-            bool changed;
-            if (webSettingsUpdater.Update(out changed) && changed)
+            CommSettings oldCommSettings = WebSettings.CommSettings;
+
+            if (webSettingsUpdater.Update(out webSettingsChanged) && webSettingsChanged)
+            {
                 WebSettings = (WebSettings)webSettingsUpdater.Settings;
-            return changed;
+                commSettingsChanged = !oldCommSettings.Equals(WebSettings.CommSettings);
+            }
+            else
+            {
+                commSettingsChanged = false;
+            }
         }
 
         /// <summary>
@@ -445,10 +435,14 @@ namespace Scada.Web
                 {
                     RefreshDictionaries();
 
-                    if (RefreshCommSettings())
+                    bool webSettingsChanged;
+                    bool commSettingsChanged;
+                    RefreshWebSettings(out webSettingsChanged, out commSettingsChanged);
+
+                    if (commSettingsChanged)
                         CreateDataObjects();
 
-                    if (RefreshWebSettings())
+                    if (webSettingsChanged)
                     {
                         ProcCultureChange();
                         LoadPlugins();
