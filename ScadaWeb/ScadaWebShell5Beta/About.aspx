@@ -5,6 +5,6 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="cphMainContent" runat="server">
     <div id="divContainer">
         <div id="divAppName"><asp:HyperLink ID="hlAppName" runat="server" NavigateUrl="http://rapidscada.org" Target="_blank">Webstation</asp:HyperLink>
-            <span id="spanVersion">4.6.1.3 Beta</span></div>
+            <span id="spanVersion">5.0.0.0</span></div>
     </div>
 </asp:Content>
