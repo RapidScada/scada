@@ -70,7 +70,7 @@
       <Link>lang\ScadaData.ru-RU.xml</Link>
     </Content>
     <Content Include="About.aspx" />
-    <Content Include="Calendar.aspx" />
+    <Content Include="dialogs\Calendar.aspx" />
     <Content Include="config\ViewSettings.xml" />
     <Content Include="config\WebSettings.xml" />
     <Content Include="css\about.css">
@@ -79,10 +79,10 @@
     <Content Include="css\about.min.css">
       <DependentUpon>about.css</DependentUpon>
     </Content>
-    <Content Include="css\calendar.css">
+    <Content Include="css\dialogs\calendar.css">
       <DependentUpon>calendar.less</DependentUpon>
     </Content>
-    <Content Include="css\calendar.min.css">
+    <Content Include="css\dialogs\calendar.min.css">
       <DependentUpon>calendar.css</DependentUpon>
     </Content>
     <Content Include="css\common\contentform.css">
@@ -177,9 +177,9 @@
     <Content Include="images\treeview\folder.png" />
     <Content Include="index.htm" />
     <Content Include="js\api\clientapi.js" />
-    <Content Include="js\api\dialogs.js" />
+    <Content Include="js\dialogs\dialogs.js" />
     <Content Include="js\api\viewhub.js" />
-    <Content Include="js\calendar.js" />
+    <Content Include="js\dialogs\calendar.js" />
     <Content Include="js\controls\notifier.js" />
     <Content Include="js\controls\popup.js" />
     <Content Include="js\controls\tableheader.js" />
@@ -233,11 +233,11 @@
     <Compile Include="About.aspx.designer.cs">
       <DependentUpon>About.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Calendar.aspx.cs">
+    <Compile Include="dialogs\Calendar.aspx.cs">
       <DependentUpon>Calendar.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Calendar.aspx.designer.cs">
+    <Compile Include="dialogs\Calendar.aspx.designer.cs">
       <DependentUpon>Calendar.aspx</DependentUpon>
     </Compile>
     <Compile Include="Error.aspx.cs">
@@ -300,7 +300,7 @@
     <Content Include="css\login.less" />
     <Content Include="css\controls\notifier.less" />
     <Content Include="css\controls\popup.less" />
-    <Content Include="css\calendar.less" />
+    <Content Include="css\dialogs\calendar.less" />
     <Content Include="css\controls\tableheader.less" />
     <Content Include="css\about.less" />
     <Content Include="css\error.less" />

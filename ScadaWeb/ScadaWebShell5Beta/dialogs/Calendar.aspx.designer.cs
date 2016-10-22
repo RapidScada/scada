@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Scada.Web {
+namespace Scada.Web.Dialogs {
     
     
     public partial class WFrmCalendar {

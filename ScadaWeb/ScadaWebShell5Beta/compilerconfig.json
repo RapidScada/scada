@@ -28,8 +28,8 @@
     "inputFile": "css/controls/popup.less"
   },
   {
-    "outputFile": "css/calendar.css",
-    "inputFile": "css/calendar.less"
+    "outputFile": "css/dialogs/calendar.css",
+    "inputFile": "css/dialogs/calendar.less"
   },
   {
     "outputFile": "css/controls/tableheader.css",

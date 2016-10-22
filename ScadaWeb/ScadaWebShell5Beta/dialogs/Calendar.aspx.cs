@@ -28,7 +28,7 @@ using System.Globalization;
 using System.Threading;
 using System.Web.UI.WebControls;
 
-namespace Scada.Web
+namespace Scada.Web.Dialogs
 {
     /// <summary>
     /// Calendar popup web form
