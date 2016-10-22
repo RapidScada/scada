@@ -26,8 +26,8 @@
         <ItemTemplate>
             <tr class='state-<%# Eval("State").ToString().ToLowerInvariant() %>'>
                 <td class="name-cell"><span><%# HttpUtility.HtmlEncode(Eval("Name")) %></span><br/><asp:LinkButton 
-                    ID="lbtnActivate" runat="server" OnClientClick="return false;" CssClass="btn-confirm" CommandName="Activate" CommandArgument='<%# Eval("FileName") %>'><%= PlgPhrases.ActivateBtn %></asp:LinkButton><asp:LinkButton 
-                    ID="lbtnDeactivate" runat="server" OnClientClick="return false;" CssClass="btn-confirm" CommandName="Deactivate" CommandArgument='<%# Eval("FileName") %>'><%= PlgPhrases.DeactivateBtn %></asp:LinkButton>
+                    ID="lbtnActivate" runat="server" CssClass="btn-confirm" CommandName="Activate" CommandArgument='<%# Eval("FileName") %>'><%= PlgPhrases.ActivateBtn %></asp:LinkButton><asp:LinkButton 
+                    ID="lbtnDeactivate" runat="server" CssClass="btn-confirm" CommandName="Deactivate" CommandArgument='<%# Eval("FileName") %>'><%= PlgPhrases.DeactivateBtn %></asp:LinkButton>
                 <td><%# HttpUtility.HtmlEncode(Eval("Descr")) %></td>
                 <td><%# StateToStr((PlaginStates)Eval("State")) %></td>
             </tr>
