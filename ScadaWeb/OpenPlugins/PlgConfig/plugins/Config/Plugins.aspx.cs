@@ -205,6 +205,82 @@ namespace Scada.Web.Plugins.Config
         }
 
         /// <summary>
+        /// Активировать плагин по имени файла библиотеки
+        /// </summary>
+        private void ActivatePlugin(string fileName)
+        {
+            WebSettings webSettings = LoadSettings();
+            webSettings.AddPluginFileName(fileName);
+
+            if (SaveSettings(webSettings))
+            {
+                ReloadPlugins();
+                pnlSuccMsg.ShowAlert(PlgPhrases.PluginActivated);
+            }
+        }
+
+        /// <summary>
+        /// Деактивировать плагин по имени файла библиотеки
+        /// </summary>
+        private void DeactivatePlugin(string fileName)
+        {
+            WebSettings webSettings = LoadSettings();
+            webSettings.RemovePluginFileName(fileName);
+
+            if (SaveSettings(webSettings))
+            {
+                ReloadPlugins();
+                pnlSuccMsg.ShowAlert(PlgPhrases.PluginDeactivated);
+            }
+        }
+
+        /// <summary>
+        /// Загрузить актуальные настройки веб-приложения
+        /// </summary>
+        private WebSettings LoadSettings()
+        {
+            WebSettings webSettings = new WebSettings();
+            string fileName = appData.AppDirs.ConfigDir + WebSettings.DefFileName;
+            string errMsg;
+
+            if (!webSettings.LoadFromFile(fileName, out errMsg))
+                appData.Log.WriteError(errMsg);
+
+            return webSettings;
+        }
+
+        /// <summary>
+        /// Сохранить настройки веб-приложения
+        /// </summary>
+        private bool SaveSettings(WebSettings webSettings)
+        {
+            string fileName = appData.AppDirs.ConfigDir + WebSettings.DefFileName;
+            string errMsg;
+
+            if (webSettings.SaveToFile(fileName, out errMsg))
+            {
+                return true;
+            }
+            else
+            {
+                appData.Log.WriteError(errMsg);
+                pnlErrMsg.ShowAlert(errMsg);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Перезагрузить список плагинов
+        /// </summary>
+        private void ReloadPlugins()
+        {
+            userData.ReLogin();
+            userData.CheckLoggedOn(true);
+            repPlugins.DataSource = GetAllPlugins();
+            repPlugins.DataBind();
+        }
+
+        /// <summary>
         /// Получить строковое представление состояния плагина
         /// </summary>
         protected string StateToStr(PlaginStates state)
@@ -212,11 +288,11 @@ namespace Scada.Web.Plugins.Config
             switch (state)
             {
                 case PlaginStates.Inactive:
-                    return "Inactive";
+                    return PlgPhrases.InactiveState;
                 case PlaginStates.Active:
-                    return "Active";
+                    return PlgPhrases.ActiveState;
                 default: // PlaginStates.NotLoaded:
-                    return "Not loaded";
+                    return PlgPhrases.NotLoadedState;
             }
         }
 
@@ -231,6 +307,10 @@ namespace Scada.Web.Plugins.Config
 
             if (!userData.UserRights.ConfigRight)
                 throw new ScadaException(CommonPhrases.NoRights);
+
+            // скрытие сообщений
+            pnlErrMsg.HideAlert();
+            pnlSuccMsg.HideAlert();
 
             if (!IsPostBack)
             {
@@ -265,30 +345,13 @@ namespace Scada.Web.Plugins.Config
 
         protected void repPlugins_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            string cmdName = e.CommandName;
+            // активация / деактивация плагина
+            string fileName = (string)e.CommandArgument;
 
-            if (cmdName == "Activate" || cmdName == "Deactivate")
-            {
-                // загрузка актуальных настроек
-                WebSettings webSettings = new WebSettings();
-                string errMsg;
-                string fileName = appData.AppDirs.ConfigDir + WebSettings.DefFileName;
-
-                if (!webSettings.LoadFromFile(fileName, out errMsg))
-                    appData.Log.WriteError(errMsg);
-
-                // изменение настроек
-                string dllFileName = (string)e.CommandArgument;
-
-                if (cmdName == "Activate")
-                {
-
-                }
-                else if (e.CommandName == "Deactivate")
-                {
-
-                }
-            }
+            if (e.CommandName == "Activate")
+                ActivatePlugin(fileName);
+            else if (e.CommandName == "Deactivate")
+                DeactivatePlugin(fileName);
         }
     }
 }

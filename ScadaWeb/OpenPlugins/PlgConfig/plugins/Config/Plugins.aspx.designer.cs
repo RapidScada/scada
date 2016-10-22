@@ -13,6 +13,42 @@ namespace Scada.Web.Plugins.Config {
     public partial class WFrmPlugins {
         
         /// <summary>
+        /// pnlErrMsg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlErrMsg;
+        
+        /// <summary>
+        /// lblErrMsg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblErrMsg;
+        
+        /// <summary>
+        /// pnlSuccMsg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlSuccMsg;
+        
+        /// <summary>
+        /// lblSuccMsg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblSuccMsg;
+        
+        /// <summary>
         /// lblTitle control.
         /// </summary>
         /// <remarks>

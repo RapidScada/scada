@@ -13,11 +13,17 @@ var scada = scada || {};
 
 // JavaScript utilities object
 scada.utils = {
+    // Prospective browser scrollbar width
+    _SCROLLBAR_WIDTH: 20,
+
     // z-index that moves element to the front
     FRONT_ZINDEX: 10000,
 
     // Default cookie expiration period in days
     COOKIE_EXPIRATION: 7,
+
+    // Window width that is considered a small
+    SMALL_WND_WIDTH: 800,
 
     // Get cookie
     getCookie: function (name) {
@@ -50,7 +56,7 @@ scada.utils = {
     getQueryParam: function (paramName, opt_url) {
         if (paramName) {
             var url = opt_url ? opt_url : decodeURIComponent(window.location);
-            var begInd = queryString.indexOf("?");
+            var begInd = url.indexOf("?");
 
             if (begInd > 0) {
                 url = "&" + url.substring(begInd + 1);
@@ -102,7 +108,9 @@ scada.utils = {
 
     // Convert array to a query string parameter by joining array elements with a comma
     arrayToQueryParam: function (arr) {
-        return arr ? (Array.isArray(arr) ? arr.join(",") : arr) : "";
+        var queryParam = arr ? (Array.isArray(arr) ? arr.join(",") : arr) : "";
+        // space instead of empty string is required by Mono WCF implementation
+        return encodeURIComponent(queryParam ? queryParam : " ");
     },
 
     // Extract year, month and day from the date, and join them into a query string
@@ -185,6 +193,16 @@ scada.utils = {
         }
     },
 
+    // Check if a browser window is small sized
+    isSmallScreen() {
+        return top.innerWidth <= this.SMALL_WND_WIDTH;
+    },
+
+    // Get browser scrollbar width
+    getScrollbarWidth: function () {
+        return this._SCROLLBAR_WIDTH;
+    },
+
     // Click hyperlink programmatically
     clickLink: function (jqLink) {
         var href = jqLink.attr("href");
@@ -200,8 +218,36 @@ scada.utils = {
         }
     },
 
+    // Scroll the first specified element to make the second element visible if it exists
+    scrollTo: function (jqScrolledElem, jqTargetElem) {
+        if (jqTargetElem.length > 0) {
+            var targetTop = jqTargetElem.offset().top;
+
+            if (jqScrolledElem.scrollTop() > targetTop) {
+                jqScrolledElem.scrollTop(targetTop);
+            }
+        }
+    },
+
     // Detect if iOS is used
     iOS: function () {
         return /iPad|iPhone|iPod/.test(navigator.platform);
+    },
+
+    // Apply additional css styles to a container element in case of using iOS
+    styleIOS: function (jqElem, opt_resetSize) {
+        if (this.iOS()) {
+            jqElem.css({
+                "overflow": "scroll",
+                "-webkit-overflow-scrolling": "touch"
+            });
+
+            if (opt_resetSize) {
+                jqElem.css({
+                    "width": 0,
+                    "height": 0
+                });
+            }
+        }
     }
 };

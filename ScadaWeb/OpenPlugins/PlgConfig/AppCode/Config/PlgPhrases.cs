@@ -31,12 +31,24 @@ namespace Scada.Web.Plugins.Config
     /// The phrases used by the plugin
     /// <para>Фразы, используемые плагином</para>
     /// </summary>
-    internal static class PlgPhrases
+    public static class PlgPhrases
     {
         static PlgPhrases()
         {
             SetToDefault();
         }
+
+        // Словарь Scada.Web.Plugins.Config.WFrmPlugins
+        public static string NameCol { get; private set; }
+        public static string DescrCol { get; private set; }
+        public static string StateCol { get; private set; }
+        public static string ActivateBtn { get; private set; }
+        public static string DeactivateBtn { get; private set; }
+        public static string InactiveState { get; private set; }
+        public static string ActiveState { get; private set; }
+        public static string NotLoadedState { get; private set; }
+        public static string PluginActivated { get; private set; }
+        public static string PluginDeactivated { get; private set; }
 
         // Словарь Scada.Web.Plugins.Config.WFrmWebConfig
         public static string UnknownPlugin { get; private set; }
@@ -49,6 +61,17 @@ namespace Scada.Web.Plugins.Config
 
         private static void SetToDefault()
         {
+            NameCol = Localization.Dict.GetEmptyPhrase("NameCol");
+            DescrCol = Localization.Dict.GetEmptyPhrase("DescrCol");
+            StateCol = Localization.Dict.GetEmptyPhrase("StateCol");
+            ActivateBtn = Localization.Dict.GetEmptyPhrase("ActivateBtn");
+            DeactivateBtn = Localization.Dict.GetEmptyPhrase("DeactivateBtn");
+            InactiveState = Localization.Dict.GetEmptyPhrase("InactiveState");
+            ActiveState = Localization.Dict.GetEmptyPhrase("ActiveState");
+            NotLoadedState = Localization.Dict.GetEmptyPhrase("NotLoadedState");
+            PluginActivated = Localization.Dict.GetEmptyPhrase("PluginActivated");
+            PluginDeactivated = Localization.Dict.GetEmptyPhrase("PluginDeactivated");
+
             UnknownPlugin = Localization.Dict.GetEmptyPhrase("UnknownPlugin");
             IncorrectFields = Localization.Dict.GetEmptyPhrase("IncorrectFields");
             ConfigSaved = Localization.Dict.GetEmptyPhrase("ConfigSaved");
@@ -60,6 +83,20 @@ namespace Scada.Web.Plugins.Config
         public static void Init()
         {
             Localization.Dict dict;
+            if (Localization.Dictionaries.TryGetValue("Scada.Web.Plugins.Config.WFrmPlugins", out dict))
+            {
+                NameCol = dict.GetPhrase("NameCol", NameCol);
+                DescrCol = dict.GetPhrase("DescrCol", DescrCol);
+                StateCol = dict.GetPhrase("StateCol", StateCol);
+                ActivateBtn = dict.GetPhrase("ActivateBtn", ActivateBtn);
+                DeactivateBtn = dict.GetPhrase("DeactivateBtn", DeactivateBtn);
+                InactiveState = dict.GetPhrase("InactiveState", InactiveState);
+                ActiveState = dict.GetPhrase("ActiveState", ActiveState);
+                NotLoadedState = dict.GetPhrase("NotLoadedState", NotLoadedState);
+                PluginActivated = dict.GetPhrase("PluginActivated", PluginActivated);
+                PluginDeactivated = dict.GetPhrase("PluginDeactivated", PluginDeactivated);
+            }
+
             if (Localization.Dictionaries.TryGetValue("Scada.Web.Plugins.Config.WFrmWebConfig", out dict))
             {
                 UnknownPlugin = dict.GetPhrase("UnknownPlugin", UnknownPlugin);

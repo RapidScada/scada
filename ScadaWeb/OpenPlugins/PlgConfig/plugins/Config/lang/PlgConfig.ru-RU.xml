@@ -1,5 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PlgConfigDictionaries>
+  <Dictionary key="Scada.Web.Plugins.Config.WFrmPlugins">
+    <Phrase key="this">Плагины - Rapid SCADA</Phrase>
+    <Phrase key="lblTitle">Плагины</Phrase>
+    <Phrase key="NameCol">Наименование</Phrase>
+    <Phrase key="DescrCol">Описание</Phrase>
+    <Phrase key="StateCol">Состояние</Phrase>
+    <Phrase key="ActivateBtn">Активировать</Phrase>
+    <Phrase key="DeactivateBtn">Деактивировать</Phrase>
+    <Phrase key="InactiveState">Неактивен</Phrase>
+    <Phrase key="ActiveState">Активен</Phrase>
+    <Phrase key="NotLoadedState">Не загружен</Phrase>
+    <Phrase key="PluginActivated">Плагин активирован успешно.</Phrase>
+    <Phrase key="PluginDeactivated">Плагин деактивирован успешно.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Config.WFrmWebConfig">
     <Phrase key="this">Конфигурация веб-приложения - Rapid SCADA</Phrase>
     <Phrase key="lblTitle">Конфигурация веб-приложения</Phrase>

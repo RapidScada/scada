@@ -76,9 +76,16 @@ namespace Scada.Web.Plugins.Config
             if (ControlsToSettings(webSettings, out errMsg))
             {
                 if (webSettings.SaveToFile(fileName, out errMsg))
+                {
+                    userData.ReLogin();
+                    userData.CheckLoggedOn(true);
                     pnlSuccMsg.ShowAlert(PlgPhrases.ConfigSaved);
+                }
                 else
+                {
+                    appData.Log.WriteError(errMsg);
                     pnlErrMsg.ShowAlert(errMsg);
+                }
             }
             else
             {

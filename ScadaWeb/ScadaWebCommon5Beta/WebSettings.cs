@@ -128,7 +128,7 @@ namespace Scada.Web
         public ScriptPaths ScriptPaths { get; protected set; }
 
         /// <summary>
-        /// Получить имена файлов библиотек подключенных плагинов
+        /// Получить имена файлов библиотек подключенных плагинов, упорядоченные по возрастанию
         /// </summary>
         public List<string> PluginFileNames { get; protected set; }
 
@@ -266,6 +266,7 @@ namespace Scada.Web
                     foreach (XmlElement moduleElem in moduleNodeList)
                         PluginFileNames.Add(moduleElem.GetAttribute("fileName"));
                 }
+                PluginFileNames.Sort();
 
                 errMsg = "";
                 return true;
@@ -366,6 +367,32 @@ namespace Scada.Web
             {
                 errMsg = WebPhrases.SaveWebSettingsError + ": " + ex.Message;
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// Добавить имя файла библиотеки плагина в список
+        /// </summary>
+        public void AddPluginFileName(string fileName)
+        {
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                int ind = PluginFileNames.BinarySearch(fileName);
+                if (ind < 0)
+                    PluginFileNames.Insert(~ind, fileName);
+            }
+        }
+
+        /// <summary>
+        /// Удалить имя файла библиотеки плагина из списка
+        /// </summary>
+        public void RemovePluginFileName(string fileName)
+        {
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                int ind = PluginFileNames.BinarySearch(fileName);
+                if (ind >= 0)
+                    PluginFileNames.RemoveAt(ind);
             }
         }
     }

@@ -317,6 +317,24 @@ namespace Scada.Web
         }        
 
         /// <summary>
+        /// Выполнить выход и повторный вход в систему
+        /// </summary>
+        public bool ReLogin()
+        {
+            if (LoggedOn)
+            {
+                string username = UserProps.UserName;
+                Logout();
+                string errMsg;
+                return Login(username, out errMsg);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Проверить, что пользователь вошёл систему. 
         /// Если вход не выполнен, то перейти на страницу входа или вызвать исключение
         /// </summary>

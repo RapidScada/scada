@@ -93,7 +93,6 @@ scada.HourPeriod.prototype.toQueryString = function () {
 };
 
 // Hourly data selection modes enumeration
-// TODO: rename HourDataModes -> HourDataSelectModes
 scada.HourDataModes = {
     // Select data for integer hours even if a snapshot doesn't exist
     INTEGER_HOURS: false,

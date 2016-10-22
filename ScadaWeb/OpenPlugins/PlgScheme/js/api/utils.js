@@ -218,6 +218,17 @@ scada.utils = {
         }
     },
 
+    // Scroll the first specified element to make the second element visible if it exists
+    scrollTo: function (jqScrolledElem, jqTargetElem) {
+        if (jqTargetElem.length > 0) {
+            var targetTop = jqTargetElem.offset().top;
+
+            if (jqScrolledElem.scrollTop() > targetTop) {
+                jqScrolledElem.scrollTop(targetTop);
+            }
+        }
+    },
+
     // Detect if iOS is used
     iOS: function () {
         return /iPad|iPhone|iPod/.test(navigator.platform);

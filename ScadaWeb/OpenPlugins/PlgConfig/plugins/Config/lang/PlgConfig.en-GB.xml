@@ -1,5 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PlgConfigDictionaries>
+  <Dictionary key="Scada.Web.Plugins.Config.WFrmPlugins">
+    <Phrase key="this">Plugins - Rapid SCADA</Phrase>
+    <Phrase key="lblTitle">Plugins</Phrase>
+    <Phrase key="NameCol">Name</Phrase>
+    <Phrase key="DescrCol">Description</Phrase>
+    <Phrase key="StateCol">State</Phrase>
+    <Phrase key="ActivateBtn">Activate</Phrase>
+    <Phrase key="DeactivateBtn">Deactivate</Phrase>
+    <Phrase key="InactiveState">Inactive</Phrase>
+    <Phrase key="ActiveState">Active</Phrase>
+    <Phrase key="NotLoadedState">NotLoaded</Phrase>
+    <Phrase key="PluginActivated">Plugin activated successfully.</Phrase>
+    <Phrase key="PluginDeactivated">Plugin dectivated successfully.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Config.WFrmWebConfig">
     <Phrase key="this">Web Application Configuration - Rapid SCADA</Phrase>
     <Phrase key="lblTitle">Web Application Configuration</Phrase>
