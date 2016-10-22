@@ -9,7 +9,10 @@
  * - jquery
  * - utils.js
  *
- * Requires for modal dialogs:
+ * Requires for modal dialog:
+ * - eventtypes.js
+ *
+ * Requires for parent form of modal dialog:
  * - bootstrap
  * - eventtypes.js
  * - scada.modalButtonCaptions object
