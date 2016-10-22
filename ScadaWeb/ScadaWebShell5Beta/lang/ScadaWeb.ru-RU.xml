@@ -9,6 +9,10 @@
     <Phrase key="WrongPassword">Неверное имя пользователя или пароль.</Phrase>
     <Phrase key="IllegalRole">Недопустимая роль пользователя.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.Dialogs.WFrmConfirm">
+    <Phrase key="this">Подтверждение</Phrase>
+    <Phrase key="lblConfirm">Вы уверены?</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.MasterMain">
     <Phrase key="lbtnMainLogout">Выйти</Phrase>
     <Phrase key="lblMainFullscreenBtn.ToolTip">На весь экран</Phrase>

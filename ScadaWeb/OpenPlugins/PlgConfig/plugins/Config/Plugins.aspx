@@ -2,6 +2,7 @@
 <%@ Import Namespace="Scada.Web.Plugins.Config" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="cphMainHead" runat="server">
     <link href="css/plugins.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="js/plugins.js"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="cphMainContent" runat="server">
     <asp:Panel ID="pnlErrMsg" runat="server" CssClass="alert alert-danger alert-dismissible">
@@ -25,8 +26,8 @@
         <ItemTemplate>
             <tr class='state-<%# Eval("State").ToString().ToLowerInvariant() %>'>
                 <td class="name-cell"><span><%# HttpUtility.HtmlEncode(Eval("Name")) %></span><br/><asp:LinkButton 
-                    ID="lbtnActivate" runat="server" CommandName="Activate" CommandArgument='<%# Eval("FileName") %>'><%= PlgPhrases.ActivateBtn %></asp:LinkButton><asp:LinkButton 
-                    ID="lbtnDeactivate" runat="server" CommandName="Deactivate" CommandArgument='<%# Eval("FileName") %>'><%= PlgPhrases.DeactivateBtn %></asp:LinkButton>
+                    ID="lbtnActivate" runat="server" OnClientClick="return false;" CssClass="btn-confirm" CommandName="Activate" CommandArgument='<%# Eval("FileName") %>'><%= PlgPhrases.ActivateBtn %></asp:LinkButton><asp:LinkButton 
+                    ID="lbtnDeactivate" runat="server" OnClientClick="return false;" CssClass="btn-confirm" CommandName="Deactivate" CommandArgument='<%# Eval("FileName") %>'><%= PlgPhrases.DeactivateBtn %></asp:LinkButton>
                 <td><%# HttpUtility.HtmlEncode(Eval("Descr")) %></td>
                 <td><%# StateToStr((PlaginStates)Eval("State")) %></td>
             </tr>

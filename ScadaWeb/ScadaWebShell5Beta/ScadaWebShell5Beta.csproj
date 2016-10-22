@@ -70,6 +70,12 @@
       <Link>lang\ScadaData.ru-RU.xml</Link>
     </Content>
     <Content Include="About.aspx" />
+    <Content Include="css\dialogs\confirm.css">
+      <DependentUpon>confirm.less</DependentUpon>
+    </Content>
+    <Content Include="css\dialogs\confirm.min.css">
+      <DependentUpon>confirm.css</DependentUpon>
+    </Content>
     <Content Include="dialogs\Calendar.aspx" />
     <Content Include="config\ViewSettings.xml" />
     <Content Include="config\WebSettings.xml" />
@@ -169,6 +175,7 @@
     <Content Include="css\view.min.css">
       <DependentUpon>view.css</DependentUpon>
     </Content>
+    <Content Include="dialogs\Confirm.aspx" />
     <Content Include="Error.aspx" />
     <Content Include="Global.asax" />
     <Content Include="images\favicon.ico" />
@@ -177,6 +184,7 @@
     <Content Include="images\treeview\folder.png" />
     <Content Include="index.htm" />
     <Content Include="js\api\clientapi.js" />
+    <Content Include="js\dialogs\confirm.js" />
     <Content Include="js\dialogs\dialogs.js" />
     <Content Include="js\api\viewhub.js" />
     <Content Include="js\dialogs\calendar.js" />
@@ -239,6 +247,13 @@
     </Compile>
     <Compile Include="dialogs\Calendar.aspx.designer.cs">
       <DependentUpon>Calendar.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="dialogs\Confirm.aspx.cs">
+      <DependentUpon>Confirm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="dialogs\Confirm.aspx.designer.cs">
+      <DependentUpon>Confirm.aspx</DependentUpon>
     </Compile>
     <Compile Include="Error.aspx.cs">
       <DependentUpon>Error.aspx</DependentUpon>
@@ -307,6 +322,7 @@
     <Content Include="css\common\contentform.less" />
     <Content Include="css\controls\splitter.less" />
     <Content Include="css\common\modalform.less" />
+    <Content Include="css\dialogs\confirm.less" />
     <None Include="css\mastermain.less" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">

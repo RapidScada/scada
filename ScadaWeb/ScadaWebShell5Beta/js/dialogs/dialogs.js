@@ -72,5 +72,16 @@ scada.dialogs = {
             var queryString = selectedDate ? "?date=" + encodeURIComponent(selectedDate) : "";
             popup.showDropdown(this.rootPath + "/dialogs/Calendar.aspx" + queryString, anchorElem, callback);
         }
+    },
+
+    // Show confirmation modal dialog.
+    // callback is a function (dialogResult)
+    showConfirm: function (callback) {
+        var popup = scada.popupLocator.getPopup();
+        if (popup) {
+            popup.showModal(this.rootPath + "dialogs/Confirm.aspx",
+                new scada.ModalOptions([scada.ModalButtons.YES, scada.ModalButtons.NO], scada.ModalSizes.SMALL),
+                callback);
+        }
     }
 };

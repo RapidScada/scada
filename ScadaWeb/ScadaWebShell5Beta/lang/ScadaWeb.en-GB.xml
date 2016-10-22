@@ -9,6 +9,10 @@
     <Phrase key="WrongPassword">Incorrect username or password.</Phrase>
     <Phrase key="IllegalRole">Illegal user role.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.Dialogs.WFrmConfirm">
+    <Phrase key="this">Confirmation</Phrase>
+    <Phrase key="lblConfirm">Are you sure?</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.MasterMain">
     <Phrase key="lbtnMainLogout">Logout</Phrase>
     <Phrase key="lblMainFullscreenBtn.ToolTip">Full Screen</Phrase>

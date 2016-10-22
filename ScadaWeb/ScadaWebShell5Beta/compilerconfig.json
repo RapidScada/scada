@@ -62,5 +62,9 @@
   {
     "outputFile": "css/reports.css",
     "inputFile": "css/reports.less"
+  },
+  {
+    "outputFile": "css/dialogs/confirm.css",
+    "inputFile": "css/dialogs/confirm.less"
   }
 ]

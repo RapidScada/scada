@@ -72,6 +72,7 @@
     <Content Include="plugins\Config\css\webconfig.min.css">
       <DependentUpon>webconfig.css</DependentUpon>
     </Content>
+    <Content Include="plugins\Config\js\plugins.js" />
     <Content Include="plugins\Config\lang\PlgConfig.ru-RU.xml" />
     <Content Include="plugins\Config\lang\PlgConfig.en-GB.xml" />
     <Content Include="plugins\Config\Plugins.aspx" />
