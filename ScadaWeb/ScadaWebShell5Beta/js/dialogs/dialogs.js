@@ -74,7 +74,7 @@ scada.dialogs = {
         }
     },
 
-    // Show confirmation modal dialog.
+    // Show confirmation dialog.
     // callback is a function (dialogResult)
     showConfirm: function (callback) {
         var popup = scada.popupLocator.getPopup();
