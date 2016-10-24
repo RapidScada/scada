@@ -65,11 +65,12 @@ namespace Scada.Web.Plugins.Config
             /// <summary>
             /// Конструктор
             /// </summary>
-            public PluginItem(string name, string descr, string fileName, PlaginStates state)
+            public PluginItem(string name, string descr, string version, string fileName, PlaginStates state)
             {
                 State = state;
                 Name = name;
                 Descr = descr;
+                Version = version;
                 FileName = fileName;
             }
             /// <summary>
@@ -80,6 +81,7 @@ namespace Scada.Web.Plugins.Config
                 State = state;
                 Name = pluginSpec.Name;
                 Descr = pluginSpec.Descr;
+                Version = pluginSpec.Version;
                 FileName = Path.GetFileName(Assembly.GetAssembly(pluginSpec.GetType()).Location);
             }
 
@@ -91,6 +93,21 @@ namespace Scada.Web.Plugins.Config
             /// Получить или установить описание плагина
             /// </summary>
             public string Descr { get; set; }
+            /// <summary>
+            /// Получить или установить версию плагина
+            /// </summary>
+            public string Version { get; set; }
+            /// <summary>
+            /// Получить полное описание плагина
+            /// </summary>
+            public string FullDescr
+            {
+                get
+                {
+                    return Descr + 
+                        (string.IsNullOrEmpty(Version) ? "" : "\n" + PlgPhrases.PluginVersion + Version );
+                }
+            }
             /// <summary>
             /// Получить или установить короткое имя файла библиотеки плагина
             /// </summary>
@@ -139,7 +156,7 @@ namespace Scada.Web.Plugins.Config
                 else if (settingsFileNames.Contains(fileName))
                 {
                     // добавление активного, но не загруженного плагина
-                    pluginItems.Add(new PluginItem(fileName, "", fileName, PlaginStates.NotLoaded));
+                    pluginItems.Add(new PluginItem(fileName, "", "", fileName, PlaginStates.NotLoaded));
                 }
                 else
                 {

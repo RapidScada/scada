@@ -13,6 +13,7 @@
     <Phrase key="NotLoadedState">NotLoaded</Phrase>
     <Phrase key="PluginActivated">Plugin activated successfully.</Phrase>
     <Phrase key="PluginDeactivated">Plugin dectivated successfully.</Phrase>
+    <Phrase key="PluginVersion">Version </Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Config.WFrmWebConfig">
     <Phrase key="this">Web Application Configuration - Rapid SCADA</Phrase>

@@ -13,6 +13,7 @@
     <Phrase key="NotLoadedState">Не загружен</Phrase>
     <Phrase key="PluginActivated">Плагин активирован успешно.</Phrase>
     <Phrase key="PluginDeactivated">Плагин деактивирован успешно.</Phrase>
+    <Phrase key="PluginVersion">Версия </Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Config.WFrmWebConfig">
     <Phrase key="this">Конфигурация веб-приложения - Rapid SCADA</Phrase>

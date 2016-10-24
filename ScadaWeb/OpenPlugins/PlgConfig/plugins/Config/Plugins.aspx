@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="Plugins - Rapid SCADA" Language="C#" MasterPageFile="~/MasterMain.Master" AutoEventWireup="true" CodeBehind="Plugins.aspx.cs" Inherits="Scada.Web.Plugins.Config.WFrmPlugins" %>
+<%@ Import Namespace="Scada.Web" %>
 <%@ Import Namespace="Scada.Web.Plugins.Config" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="cphMainHead" runat="server">
     <link href="css/plugins.min.css" rel="stylesheet" type="text/css" />
@@ -28,7 +29,7 @@
                 <td class="name-cell"><span><%# HttpUtility.HtmlEncode(Eval("Name")) %></span><br/><asp:LinkButton 
                     ID="lbtnActivate" runat="server" CssClass="btn-confirm" CommandName="Activate" CommandArgument='<%# Eval("FileName") %>'><%= PlgPhrases.ActivateBtn %></asp:LinkButton><asp:LinkButton 
                     ID="lbtnDeactivate" runat="server" CssClass="btn-confirm" CommandName="Deactivate" CommandArgument='<%# Eval("FileName") %>'><%= PlgPhrases.DeactivateBtn %></asp:LinkButton>
-                <td><%# HttpUtility.HtmlEncode(Eval("Descr")) %></td>
+                <td><%# WebUtils.HtmlEncodeWithBreak(Eval("FullDescr")) %></td>
                 <td><%# StateToStr((PlaginStates)Eval("State")) %></td>
             </tr>
         </ItemTemplate>

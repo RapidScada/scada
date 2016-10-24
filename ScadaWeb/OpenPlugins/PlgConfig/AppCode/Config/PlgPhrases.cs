@@ -49,6 +49,7 @@ namespace Scada.Web.Plugins.Config
         public static string NotLoadedState { get; private set; }
         public static string PluginActivated { get; private set; }
         public static string PluginDeactivated { get; private set; }
+        public static string PluginVersion { get; private set; }
 
         // Словарь Scada.Web.Plugins.Config.WFrmWebConfig
         public static string UnknownPlugin { get; private set; }
@@ -71,6 +72,7 @@ namespace Scada.Web.Plugins.Config
             NotLoadedState = Localization.Dict.GetEmptyPhrase("NotLoadedState");
             PluginActivated = Localization.Dict.GetEmptyPhrase("PluginActivated");
             PluginDeactivated = Localization.Dict.GetEmptyPhrase("PluginDeactivated");
+            PluginVersion = Localization.Dict.GetEmptyPhrase("PluginVersion");
 
             UnknownPlugin = Localization.Dict.GetEmptyPhrase("UnknownPlugin");
             IncorrectFields = Localization.Dict.GetEmptyPhrase("IncorrectFields");
@@ -95,6 +97,7 @@ namespace Scada.Web.Plugins.Config
                 NotLoadedState = dict.GetPhrase("NotLoadedState", NotLoadedState);
                 PluginActivated = dict.GetPhrase("PluginActivated", PluginActivated);
                 PluginDeactivated = dict.GetPhrase("PluginDeactivated", PluginDeactivated);
+                PluginVersion = dict.GetPhrase("PluginVersion", PluginVersion);
             }
 
             if (Localization.Dictionaries.TryGetValue("Scada.Web.Plugins.Config.WFrmWebConfig", out dict))
