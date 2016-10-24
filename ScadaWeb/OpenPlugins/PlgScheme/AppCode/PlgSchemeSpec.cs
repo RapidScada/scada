@@ -81,7 +81,7 @@ namespace Scada.Web.Plugins
         {
             get
             {
-                return "0.0.0.1";
+                return "1.0.0.0";
             }
         }
 
