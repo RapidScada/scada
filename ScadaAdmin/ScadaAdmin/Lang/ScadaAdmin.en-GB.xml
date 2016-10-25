@@ -442,8 +442,8 @@
   </Dictionary>
   <Dictionary key="ScadaAdmin.Tables.InterfaceTable">
     <Phrase key="ItfID">ID</Phrase>
-    <Phrase key="Name">Interface object</Phrase>
-    <Phrase key="Descr">Description</Phrase>
+    <Phrase key="Name">Path</Phrase>
+    <Phrase key="Descr">Title</Phrase>
   </Dictionary>
   <Dictionary key="ScadaAdmin.Tables.KPTable">
     <Phrase key="KPNum">Number</Phrase>

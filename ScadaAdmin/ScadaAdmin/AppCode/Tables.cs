@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
  * 
  * Product  : Rapid SCADA
  * Module   : SCADA-Administrator
- * Summary  : Access configuration tables
+ * Summary  : Data access to the configuration tables
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2010
- * Modified : 2015
+ * Modified : 2016
  */
 
 using Scada;
@@ -35,7 +35,7 @@ using Utils;
 namespace ScadaAdmin
 {
     /// <summary>
-    /// Access configuration tables
+    /// Data access to the configuration tables
     /// <para>Доступ к данным таблиц конфигурации</para>
     /// </summary>
     internal static class Tables
@@ -432,8 +432,8 @@ namespace ScadaAdmin
             return TranslateColHeaders("ScadaAdmin.Tables.InterfaceTable", new DataGridViewColumn[]
             {
                 NewTextBoxColumn("Идент.", "ItfID"),
-                NewTextBoxColumn("Объект интерфейса", "Name"),
-                NewTextBoxColumn("Описание", "Descr")
+                NewTextBoxColumn("Путь", "Name"),
+                NewTextBoxColumn("Заголовок", "Descr")
             });
         }
 
