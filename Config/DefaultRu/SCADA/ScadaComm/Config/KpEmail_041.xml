@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<KpEmailConfig>
+  <Host>smtp.gmail.com</Host>
+  <Port>587</Port>
+  <User>myemail@gmail.com</User>
+  <UserDisplayName>Rapid SCADA</UserDisplayName>
+  <Password>12345</Password>
+  <EnableSsl>true</EnableSsl>
+</KpEmailConfig>

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableView title="Server room">
+  <Param cnlNum="101">t4</Param>
+  <Param cnlNum="106">t4_min</Param>
+  <Param cnlNum="104">t4_max</Param>
+  <Param />
+  <Param cnlNum="102">t5</Param>
+  <Param cnlNum="107">t5_min</Param>
+  <Param cnlNum="105">t5_max</Param>
+  <Param />
+  <Param cnlNum="103">t_avg</Param>
+</TableView>
