@@ -289,6 +289,10 @@ namespace Scada.Data.Tables
             /// Нет - Есть
             /// </summary>
             public static string NoYes;
+            /// <summary>
+            /// Шт.
+            /// </summary>
+            public static string Pcs;
 
             /// <summary>
             /// Статический конструктор
@@ -299,11 +303,13 @@ namespace Scada.Data.Tables
                 {
                     OffOn = "Откл - Вкл";
                     NoYes = "Нет - Есть";
+                    Pcs = "шт.";
                 }
                 else
                 {
                     OffOn = "Off - On";
                     NoYes = "No - Yes";
+                    Pcs = "pcs.";
                 }
             }
         }

@@ -101,7 +101,7 @@ namespace Scada.Comm.Devices
                     Signal = 2,
                     ParamName = Localization.UseRussian ? "Событие" : "Event",
                     DecDigits = 0,
-                    UnitName = Localization.UseRussian ? "Шт." : "pcs."
+                    UnitName = BaseValues.UnitNames.Pcs
                 });
 
                 // создание прототипов каналов управления
