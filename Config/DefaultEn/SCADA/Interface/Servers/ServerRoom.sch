@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<SchemeView title="">
+<SchemeView title="Server Room">
   <Scheme>
     <Size>
       <Width>1000</Width>

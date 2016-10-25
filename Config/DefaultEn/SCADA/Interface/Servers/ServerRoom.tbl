@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TableView title="Server room">
+<TableView title="Server Room">
   <Param cnlNum="101">t0</Param>
   <Param cnlNum="102">t1</Param>
   <Param cnlNum="103">t2</Param>
