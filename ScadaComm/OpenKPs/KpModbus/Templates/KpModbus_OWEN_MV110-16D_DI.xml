@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DevTemplate>
+  <ElemGroups>
+    <ElemGroup active="true" tableType="InputRegisters" address="51" name="Дискретные входы">
+      <Elem name="Входы 1-16" type="ushort" byteOrder="" />
+    </ElemGroup>
+  </ElemGroups>
+  <Cmds />
+</DevTemplate>

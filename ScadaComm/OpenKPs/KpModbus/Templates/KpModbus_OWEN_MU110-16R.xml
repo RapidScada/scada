@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DevTemplate>
+  <ElemGroups>
+    <ElemGroup active="true" tableType="InputRegisters" address="0" name="Дискретные выходы">
+      <Elem name="DO1" type="ushort" byteOrder="" />
+      <Elem name="DO2" type="ushort" byteOrder="" />
+      <Elem name="DO3" type="ushort" byteOrder="" />
+      <Elem name="DO4" type="ushort" byteOrder="" />
+      <Elem name="DO5" type="ushort" byteOrder="" />
+      <Elem name="DO6" type="ushort" byteOrder="" />
+      <Elem name="DO7" type="ushort" byteOrder="" />
+      <Elem name="DO8" type="ushort" byteOrder="" />
+      <Elem name="DO9" type="ushort" byteOrder="" />
+      <Elem name="DO10" type="ushort" byteOrder="" />
+      <Elem name="DO11" type="ushort" byteOrder="" />
+      <Elem name="DO12" type="ushort" byteOrder="" />
+      <Elem name="DO13" type="ushort" byteOrder="" />
+      <Elem name="DO14" type="ushort" byteOrder="" />
+      <Elem name="DO15" type="ushort" byteOrder="" />
+      <Elem name="DO16" type="ushort" byteOrder="" />
+    </ElemGroup>
+  </ElemGroups>
+  <Cmds>
+    <Cmd tableType="Coils" multiple="true" address="0" elemCnt="1" cmdNum="1" name="Установка DO1" />
+    <Cmd tableType="Coils" multiple="true" address="1" elemCnt="1" cmdNum="2" name="Установка DO2" />
+    <Cmd tableType="Coils" multiple="true" address="2" elemCnt="1" cmdNum="3" name="Установка DO3" />
+    <Cmd tableType="Coils" multiple="true" address="3" elemCnt="1" cmdNum="4" name="Установка DO4" />
+    <Cmd tableType="Coils" multiple="true" address="4" elemCnt="1" cmdNum="5" name="Установка DO5" />
+    <Cmd tableType="Coils" multiple="true" address="5" elemCnt="1" cmdNum="6" name="Установка DO6" />
+    <Cmd tableType="Coils" multiple="true" address="6" elemCnt="1" cmdNum="7" name="Установка DO7" />
+    <Cmd tableType="Coils" multiple="true" address="7" elemCnt="1" cmdNum="8" name="Установка DO8" />
+    <Cmd tableType="Coils" multiple="true" address="8" elemCnt="1" cmdNum="9" name="Установка DO9" />
+    <Cmd tableType="Coils" multiple="true" address="9" elemCnt="1" cmdNum="10" name="Установка DO10" />
+    <Cmd tableType="Coils" multiple="true" address="10" elemCnt="1" cmdNum="11" name="Установка DO11" />
+    <Cmd tableType="Coils" multiple="true" address="11" elemCnt="1" cmdNum="12" name="Установка DO12" />
+    <Cmd tableType="Coils" multiple="true" address="12" elemCnt="1" cmdNum="13" name="Установка DO13" />
+    <Cmd tableType="Coils" multiple="true" address="13" elemCnt="1" cmdNum="14" name="Установка DO14" />
+    <Cmd tableType="Coils" multiple="true" address="14" elemCnt="1" cmdNum="15" name="Установка DO15" />
+    <Cmd tableType="Coils" multiple="true" address="15" elemCnt="1" cmdNum="16" name="Установка DO16" />
+    <Cmd tableType="HoldingRegisters" multiple="true" address="50" elemCnt="1" cmdNum="17" name="Установка по маске" />
+  </Cmds>
+</DevTemplate>

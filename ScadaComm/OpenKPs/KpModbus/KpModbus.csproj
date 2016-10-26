@@ -103,7 +103,9 @@
     <Content Include="Res\save.png" />
     <Content Include="Res\save_as.png" />
     <Content Include="Res\up.png" />
-    <Content Include="Templates\KpModbus_DemoTemplate.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Templates\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

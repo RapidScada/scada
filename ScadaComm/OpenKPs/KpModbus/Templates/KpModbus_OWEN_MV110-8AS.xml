@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DevTemplate>
+  <ElemGroups>
+    <ElemGroup active="true" tableType="InputRegisters" address="288" name="AI1 float">
+      <Elem name="AI1" type="float" byteOrder="" />
+    </ElemGroup>
+    <ElemGroup active="true" tableType="InputRegisters" address="291" name="AI2 float">
+      <Elem name="AI2" type="float" byteOrder="" />
+    </ElemGroup>
+    <ElemGroup active="true" tableType="InputRegisters" address="294" name="AI3 float">
+      <Elem name="AI3" type="float" byteOrder="" />
+    </ElemGroup>
+    <ElemGroup active="true" tableType="InputRegisters" address="297" name="AI4 float">
+      <Elem name="AI4" type="float" byteOrder="" />
+    </ElemGroup>
+    <ElemGroup active="true" tableType="InputRegisters" address="300" name="AI5 float">
+      <Elem name="AI5" type="float" byteOrder="" />
+    </ElemGroup>
+    <ElemGroup active="true" tableType="InputRegisters" address="303" name="AI6 float">
+      <Elem name="AI6" type="float" byteOrder="" />
+    </ElemGroup>
+    <ElemGroup active="true" tableType="InputRegisters" address="306" name="AI7 float">
+      <Elem name="AI7" type="float" byteOrder="" />
+    </ElemGroup>
+    <ElemGroup active="true" tableType="InputRegisters" address="309" name="AI8 float">
+      <Elem name="AI8" type="float" byteOrder="" />
+    </ElemGroup>
+    <ElemGroup active="true" tableType="InputRegisters" address="280" name="Статусы">
+      <Elem name="AI1 статус" type="ushort" byteOrder="" />
+      <Elem name="AI2 статус" type="ushort" byteOrder="" />
+      <Elem name="AI3 статус" type="ushort" byteOrder="" />
+      <Elem name="AI4 статус" type="ushort" byteOrder="" />
+      <Elem name="AI5 статус" type="ushort" byteOrder="" />
+      <Elem name="AI6 статус" type="ushort" byteOrder="" />
+      <Elem name="AI7 статус" type="ushort" byteOrder="" />
+      <Elem name="AI8 статус" type="ushort" byteOrder="" />
+    </ElemGroup>
+  </ElemGroups>
+  <Cmds />
+</DevTemplate>
