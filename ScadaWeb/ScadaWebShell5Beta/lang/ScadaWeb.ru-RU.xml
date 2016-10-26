@@ -30,7 +30,7 @@
     <Phrase key="close">Закрыть</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Report">
-    <Phrase key="GenReport">Генерация отчёта \"{0}\" пользователем {1}</Phrase>
+    <Phrase key="GenReport">Генерация отчёта &quot;{0}&quot; пользователем {1}</Phrase>
     <Phrase key="IncorrectRepTemplate">Некорректный шаблон отчёта.</Phrase>
     <Phrase key="IncorrectStartDate">Некорректная дата начала.</Phrase>
     <Phrase key="IncorrectEndDate">Некорректная дата окончания.</Phrase>
