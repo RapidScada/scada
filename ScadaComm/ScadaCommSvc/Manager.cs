@@ -45,7 +45,7 @@ namespace Scada.Comm.Svc
         /// <summary>
         /// Версия приложения
         /// </summary>
-        private const string AppVersion = "4.5.0.7";
+        private const string AppVersion = "5.0.0.0";
         /// <summary>
         /// Имя файла конфигурации
         /// </summary>
