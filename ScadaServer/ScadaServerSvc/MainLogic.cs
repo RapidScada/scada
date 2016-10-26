@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2015
+ * Modified : 2016
  */
 
 using Scada.Data.Models;
@@ -84,15 +84,15 @@ namespace Scada.Server.Svc
         /// <summary>
         /// Старший байт номера версии приложения
         /// </summary>
-        public const byte AppVersionHi = 4;
+        public const byte AppVersionHi = 5;
         /// <summary>
         /// Младший байт номера версии приложения
         /// </summary>
-        public const byte AppVersionLo = 5;
+        public const byte AppVersionLo = 0;
         /// <summary>
         /// Строковая запись версии приложения
         /// </summary>
-        public const string AppVersion = "4.5.0.6";
+        public const string AppVersion = "5.0.0.0";
         /// <summary>
         /// Имя файла журнала приложения
         /// </summary>
