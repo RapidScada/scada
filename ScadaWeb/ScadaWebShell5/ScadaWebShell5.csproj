@@ -12,7 +12,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Scada.Web</RootNamespace>
-    <AssemblyName>ScadaWebShell5Beta</AssemblyName>
+    <AssemblyName>ScadaWebShell5</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -402,9 +402,9 @@
     <Folder Include="storage\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ScadaWebCommon5Beta\ScadaWebCommon5Beta.csproj">
+    <ProjectReference Include="..\ScadaWebCommon5\ScadaWebCommon5.csproj">
       <Project>{baf45c4f-1be3-4810-9ea6-3b53894e32bf}</Project>
-      <Name>ScadaWebCommon5Beta</Name>
+      <Name>ScadaWebCommon5</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

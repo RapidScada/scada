@@ -48,8 +48,8 @@
     <Reference Include="ScadaData">
       <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
     </Reference>
-    <Reference Include="ScadaWebCommon5Beta">
-      <HintPath>..\..\ScadaWebShell5Beta\bin\ScadaWebCommon5Beta.dll</HintPath>
+    <Reference Include="ScadaWebCommon5">
+      <HintPath>..\..\ScadaWebShell5\bin\ScadaWebCommon5.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

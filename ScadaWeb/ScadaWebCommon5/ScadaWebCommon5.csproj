@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Scada.Web</RootNamespace>
-    <AssemblyName>ScadaWebCommon5Beta</AssemblyName>
+    <AssemblyName>ScadaWebCommon5</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -28,7 +28,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\ScadaWebCommon5Beta.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\ScadaWebCommon5.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Log">

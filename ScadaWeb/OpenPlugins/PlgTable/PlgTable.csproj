@@ -48,9 +48,9 @@
     <Reference Include="ScadaData">
       <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
     </Reference>
-    <Reference Include="ScadaWebCommon5Beta, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ScadaWebCommon5, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ScadaWebCommon5Beta\bin\Release\ScadaWebCommon5Beta.dll</HintPath>
+      <HintPath>..\..\ScadaWebCommon5\bin\Release\ScadaWebCommon5.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
