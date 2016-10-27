@@ -26,7 +26,7 @@
 using Scada;
 using Scada.Data.Tables;
 using Scada.UI;
-using Scada.Web;
+using Scada.Web.Plugins.Table;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -153,6 +153,7 @@ namespace ScadaTableEditor
         private bool SaveTableView(bool saveAs)
         {
             bool result = false;
+            dgvItems.EndEdit();
 
             if (fileName == "")
             {
@@ -190,6 +191,8 @@ namespace ScadaTableEditor
         /// </summary>
         private bool CanCloseTableView()
         {
+            dgvItems.EndEdit();
+
             if (modified)
             {
                 switch (MessageBox.Show(AppPhrases.SaveConfirm, CommonPhrases.QuestionCaption, 
@@ -568,7 +571,7 @@ namespace ScadaTableEditor
                 if (Localization.LoadDictionaries(langDir, "ScadaTableEditor", out errMsg))
                 {
                     Translator.TranslateForm(this, "ScadaTableEditor.FrmMain", toolTip);
-                    WebPhrases.Init();
+                    PlgPhrases.Init();
                     AppPhrases.Init();
                     openFileDialog.Filter = AppPhrases.OpenFileFilter;
                     saveFileDialog.Filter = AppPhrases.SaveFileFilter;

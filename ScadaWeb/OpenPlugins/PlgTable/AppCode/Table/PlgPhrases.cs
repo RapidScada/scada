@@ -31,7 +31,7 @@ namespace Scada.Web.Plugins.Table
     /// The phrases used by the plugin
     /// <para>Фразы, используемые плагином</para>
     /// </summary>
-    internal static class PlgPhrases
+    public static class PlgPhrases
     {
         static PlgPhrases()
         {
