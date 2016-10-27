@@ -66,7 +66,7 @@
   </Dictionary>
   <Dictionary key="ScadaTableEditor.FrmSettings">
     <Phrase key="this">Settings</Phrase>
-    <Phrase key="lblBaseDATDir">Configuration database directory for DAT format</Phrase>
+    <Phrase key="lblBaseDATDir">Directory of the configuration database in DAT format</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
   </Dictionary>
