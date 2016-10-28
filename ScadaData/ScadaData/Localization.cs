@@ -319,9 +319,9 @@ namespace Scada
                 }
                 catch (Exception ex)
                 {
-                    errMsg = (UseRussian ? 
-                        "Ошибка при загрузке словарей: " : 
-                        "Error loading dictionaries: ") + ex.Message;
+                    errMsg = string.Format(UseRussian ? 
+                        "Ошибка при загрузке словарей из файла {0}: {1}" : 
+                        "Error loading dictionaries from file {0}: {1}", fileName, ex.Message);
                     return false;
                 }
             }
