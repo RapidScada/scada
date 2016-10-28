@@ -399,5 +399,16 @@ namespace Scada.UI
 
             return errMsg == "";
         }
+
+        /// <summary>
+        /// Получить ссылку на онлайн генератор ключей
+        /// </summary>
+        public static string GetKeyGenUrl(string prod, bool trial)
+        {
+            string langParam = Localization.UseRussian ? "&lang=ru" : "";
+            return trial ?
+                "http://trial.rapidscada.net/?prod=" + prod + langParam :
+                "http://rapidscada.org/download-all-files/purchase-module/";
+        }
     }
 }
