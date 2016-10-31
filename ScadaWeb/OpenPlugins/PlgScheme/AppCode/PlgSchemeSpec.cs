@@ -23,6 +23,7 @@
  * Modified : 2016
  */
 
+using Scada.Web.Plugins.Scheme;
 using System.Collections.Generic;
 using System.IO;
 
@@ -80,7 +81,7 @@ namespace Scada.Web.Plugins
         {
             get
             {
-                return "0.0.0.1";
+                return "1.0.0.0";
             }
         }
 
@@ -91,7 +92,7 @@ namespace Scada.Web.Plugins
         {
             get
             {
-                return new List<ViewSpec>() { new SchemeSpec() };
+                return new List<ViewSpec>() { new SchemeViewSpec() };
             }
         }
 

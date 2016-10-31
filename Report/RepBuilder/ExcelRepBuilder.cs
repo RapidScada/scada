@@ -39,14 +39,72 @@ namespace Utils.Report
     public abstract class ExcelRepBuilder : RepBuilder
     {
         /// <summary>
+        /// Пространства имён, которые используются в SpreadsheetML
+        /// </summary>
+        protected static class XmlNamespaces
+        {
+            /// <summary>
+            /// Пространстро имён xmlns
+            /// </summary>
+            public const string noprefix = "urn:schemas-microsoft-com:office:spreadsheet";
+            /// <summary>
+            /// Пространстро имён xmlns:o
+            /// </summary>
+            public const string o = "urn:schemas-microsoft-com:office:office";
+            /// <summary>
+            /// Пространстро имён xmlns:x
+            /// </summary>
+            public const string x = "urn:schemas-microsoft-com:office:excel";
+            /// <summary>
+            /// Пространстро имён xmlns:ss
+            /// </summary>
+            public const string ss = "urn:schemas-microsoft-com:office:spreadsheet";
+            /// <summary>
+            /// Пространстро имён xmlns:html
+            /// </summary>
+            public const string html = "http://www.w3.org/TR/REC-html40";
+        }
+
+        /// <summary>
         /// Книга Excel
         /// </summary>
         protected class Workbook
         {
-            protected XmlNode node;                     // ссылка на XML-узел, соответствующий книге Excel
-            protected XmlNode stylesNode;               // ссылка на XML-узел, содержащий стили книги Excel
-            protected SortedList<string, Style> styles; // список стилей книги Excel с возможностью доступа по ID стиля
-            protected List<Worksheet> worksheets;       // список листов книги Excel
+            /// <summary>
+            /// Ссылка на XML-узел, соответствующий книге Excel
+            /// </summary>
+            protected XmlNode node;
+            /// <summary>
+            /// Ссылка на XML-узел, содержащий стили книги Excel
+            /// </summary>
+            protected XmlNode stylesNode;
+            /// <summary>
+            /// Список стилей книги Excel с возможностью доступа по ID стиля
+            /// </summary>
+            protected SortedList<string, Style> styles;
+            /// <summary>
+            /// Список листов книги Excel
+            /// </summary>
+            protected List<Worksheet> worksheets;
+
+
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            protected Workbook()
+            {
+            }
+
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            /// <param name="xmlNode">Ссылка на XML-узел, соответствующий книге Excel</param>
+            public Workbook(XmlNode xmlNode)
+            {
+                node = xmlNode;
+                styles = new SortedList<string, Style>();
+                worksheets = new List<Worksheet>();
+            }
 
 
             /// <summary>
@@ -95,25 +153,6 @@ namespace Utils.Report
                 {
                     return worksheets;
                 }
-            }
-
-
-            /// <summary>
-            /// Конструктор
-            /// </summary>
-            protected Workbook()
-            {
-            }
-
-            /// <summary>
-            /// Конструктор
-            /// </summary>
-            /// <param name="xmlNode">Ссылка на XML-узел, соответствующий книге Excel</param>
-            public Workbook(XmlNode xmlNode)
-            {
-                node = xmlNode;
-                styles = new SortedList<string, Style>();
-                worksheets = new List<Worksheet>();
             }
 
 
@@ -266,8 +305,32 @@ namespace Utils.Report
         /// </summary>
         protected class Style
         {
-            protected XmlNode node; // ссылка на XML-узел, соответствующий стилю книги Excel
-            protected string id;    // идентификатор стиля
+            /// <summary>
+            /// Ссылка на XML-узел, соответствующий стилю книги Excel
+            /// </summary>
+            protected XmlNode node;
+            /// <summary>
+            /// Идентификатор стиля
+            /// </summary>
+            protected string id;
+
+
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            protected Style()
+            {
+            }
+
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            /// <param name="xmlNode">Ссылка на XML-узел, соответствующий стилю книги Excel</param>
+            public Style(XmlNode xmlNode)
+            {
+                node = xmlNode;
+                id = xmlNode.Attributes["ss:ID"].Value;
+            }
 
 
             /// <summary>
@@ -299,24 +362,6 @@ namespace Utils.Report
 
 
             /// <summary>
-            /// Конструктор
-            /// </summary>
-            protected Style()
-            {
-            }
-
-            /// <summary>
-            /// Конструктор
-            /// </summary>
-            /// <param name="xmlNode">Ссылка на XML-узел, соответствующий стилю книги Excel</param>
-            public Style(XmlNode xmlNode)
-            {
-                node = xmlNode;
-                id = xmlNode.Attributes["ss:ID"].Value;
-            }
-
-
-            /// <summary>
             /// Клонировать стиль
             /// </summary>
             /// <returns>Копия стиля</returns>
@@ -331,10 +376,41 @@ namespace Utils.Report
         /// </summary>
         protected class Worksheet
         {
-            protected XmlNode node;            // ссылка на XML-узел, соответствующий листу книги Excel
-            protected string name;             // имя листа
-            protected Table table;             // таблица с содержимым листа
-            protected Workbook parentWorkbook; // родительский книга данного листа
+            /// <summary>
+            /// Ссылка на XML-узел, соответствующий листу книги Excel
+            /// </summary>
+            protected XmlNode node;
+            /// <summary>
+            /// Имя листа
+            /// </summary>
+            protected string name;
+            /// <summary>
+            /// Таблица с содержимым листа
+            /// </summary>
+            protected Table table;
+            /// <summary>
+            /// Родительская книга данного листа
+            /// </summary>
+            protected Workbook parentWorkbook;
+
+
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            protected Worksheet()
+            {
+            }
+
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            /// <param name="xmlNode">Ссылка на XML-узел, соответствующий листу книги Excel</param>
+            public Worksheet(XmlNode xmlNode)
+            {
+                node = xmlNode;
+                name = xmlNode.Attributes["ss:Name"].Value;
+                table = null;
+            }
 
 
             /// <summary>
@@ -397,23 +473,37 @@ namespace Utils.Report
 
 
             /// <summary>
-            /// Конструктор
+            /// Установить горизонтальный разделитель области прокрутки
             /// </summary>
-            protected Worksheet()
+            public void SplitHorizontal(int rowIndex)
             {
-            }
+                XmlDocument xmlDoc = node.OwnerDocument;
+                XmlNamespaceManager nsmgr = new XmlNamespaceManager(xmlDoc.NameTable);
+                nsmgr.AddNamespace("report", XmlNamespaces.x);
 
-            /// <summary>
-            /// Конструктор
-            /// </summary>
-            /// <param name="xmlNode">Ссылка на XML-узел, соответствующий листу книги Excel</param>
-            public Worksheet(XmlNode xmlNode)
-            {
-                node = xmlNode;
-                name = xmlNode.Attributes["ss:Name"].Value;
-                table = null;
-            }
+                XmlNode optionsNode = node.SelectSingleNode("report:WorksheetOptions", nsmgr);
 
+                if (optionsNode != null)
+                {
+                    string rowIndexStr = rowIndex.ToString();
+
+                    XmlNode splitNode = optionsNode.SelectSingleNode("report:SplitHorizontal", nsmgr);
+                    if (splitNode == null)
+                    {
+                        splitNode = xmlDoc.CreateElement("SplitHorizontal");
+                        optionsNode.AppendChild(splitNode);
+                    }
+                    splitNode.InnerText = rowIndexStr;
+
+                    XmlNode paneNode = optionsNode.SelectSingleNode("report:TopRowBottomPane", nsmgr);
+                    if (paneNode == null)
+                    {
+                        paneNode = xmlDoc.CreateElement("TopRowBottomPane");
+                        optionsNode.AppendChild(paneNode);
+                    }
+                    paneNode.InnerText = rowIndexStr;
+                }
+            }
 
             /// <summary>
             /// Клонировать лист
@@ -441,10 +531,42 @@ namespace Utils.Report
         /// </summary>
         protected class Table
         {
-            protected XmlNode node;              // ссылка на XML-узел, соответствующий таблице листа Excel
-            protected List<Column> columns;      // список столбцов таблицы
-            protected List<Row> rows;            // список строк таблицы
-            protected Worksheet parentWorksheet; // родительский лист данной таблицы
+            /// <summary>
+            /// Ссылка на XML-узел, соответствующий таблице листа Excel
+            /// </summary>
+            protected XmlNode node;
+            /// <summary>
+            /// Список столбцов таблицы
+            /// </summary>
+            protected List<Column> columns;
+            /// <summary>
+            /// Список строк таблицы
+            /// </summary>
+            protected List<Row> rows;
+            /// <summary>
+            /// Родительский лист данной таблицы
+            /// </summary>
+            protected Worksheet parentWorksheet;
+
+
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            protected Table()
+            {
+            }
+
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            /// <param name="xmlNode">Ссылка на XML-узел, соответствующий таблице листа Excel</param>
+            public Table(XmlNode xmlNode)
+            {
+                node = xmlNode;
+                columns = new List<Column>();
+                rows = new List<Row>();
+                parentWorksheet = null;
+            }
 
 
             /// <summary>
@@ -497,26 +619,6 @@ namespace Utils.Report
 
 
             /// <summary>
-            /// Конструктор
-            /// </summary>
-            protected Table()
-            {
-            }
-
-            /// <summary>
-            /// Конструктор
-            /// </summary>
-            /// <param name="xmlNode">Ссылка на XML-узел, соответствующий таблице листа Excel</param>
-            public Table(XmlNode xmlNode)
-            {
-                node = xmlNode;
-                columns = new List<Column>();
-                rows = new List<Row>();
-                parentWorksheet = null;
-            }
-
-
-            /// <summary>
             /// Удалить атрибуты XML-узла таблицы, необходимые для корректного отображения книги Excel
             /// </summary>
             public void RemoveTableNodeAttrs()
@@ -528,109 +630,117 @@ namespace Utils.Report
             /// <summary>
             /// Найти столбец в таблице по индексу
             /// </summary>
-            /// <param name="columnIndex">Индекс искомого столбца</param>
-            /// <param name="exact">Получен столбец с указанным индексом (true) или с ближайшим большим (false)</param>
-            /// <returns>Столбец, удовлетворяющий критерию поиска, или null, если индексы всех столбцов меньше заданного</returns>
-            public Column FindColumn(int columnIndex, out bool exact)
+            /// <param name="columnIndex">Индекс искомого столбца, начиная с 1</param>
+            /// <returns>Столбец, удовлетворяющий критерию поиска, или null, если столбец не найден</returns>
+            public Column FindColumn(int columnIndex)
             {
                 int index = 0;
                 foreach (Column column in columns)
                 {
-                    if (column.Index > 0)
-                        index = column.Index;
-                    else
-                        index++;
+                    index = column.Index > 0 ? column.Index : index + 1;
+                    int endIndex = index + column.Span;
 
-                    if (index == columnIndex)
-                    {
-                        exact = true;
+                    if (index <= columnIndex && columnIndex <= endIndex)
                         return column;
-                    }
-                    else if (index > columnIndex)
-                    {
-                        exact = false;
-                        return column;
-                    }
+
+                    index = endIndex;
                 }
 
-                exact = false;
                 return null;
             }
 
             /// <summary>
             /// Добавить столбец в конец списка столбцов таблицы и модифицировать дерево XML-документа
             /// </summary>
-            /// <param name="column">Добавляемый столбец</param>
             public void AppendColumn(Column column)
             {
+                if (columns.Count > 0)
+                    node.InsertAfter(column.Node, columns[columns.Count - 1].Node);
+                else
+                    node.PrependChild(column.Node);
+
+                column.ParentTable = this;
                 columns.Add(column);
-                node.AppendChild(column.Node);
             }
 
             /// <summary>
             /// Вставить столбец в список столбцов таблицы и модифицировать дерево XML-документа
             /// </summary>
-            /// <param name="listIndex">Индекс вставляемого столбца в списке</param>
-            /// <param name="column">Вставляемый столбец</param>
             public void InsertColumn(int listIndex, Column column)
             {
-                columns.Insert(listIndex, column);
-
-                if (columns.Count == 1)
-                    node.AppendChild(column.Node);
-                else if (listIndex == 0)
+                if (columns.Count == 0 || listIndex == 0)
                     node.PrependChild(column.Node);
                 else
                     node.InsertAfter(column.Node, columns[listIndex - 1].Node);
+
+                column.ParentTable = this;
+                columns.Insert(listIndex, column);
             }
 
             /// <summary>
             /// Удалить столбец из списка столбцов таблицы и модифицировать дерево XML-документа
             /// </summary>
-            /// <param name="listIndex">Индекс удаляемого столбца в списке</param>
             public void RemoveColumn(int listIndex)
             {
                 Column column = columns[listIndex];
+                column.ParentTable = null;
                 node.RemoveChild(column.Node);
                 columns.RemoveAt(listIndex);
             }
 
             /// <summary>
+            /// Удалить все столбцы из списка столбцов таблицы и модифицировать дерево XML-документа
+            /// </summary>
+            public void RemoveAllColumns()
+            {
+                while (columns.Count > 0)
+                    RemoveColumn(0);
+            }
+
+            /// <summary>
             /// Добавить строку в конец списка строк таблицы и модифицировать дерево XML-документа
             /// </summary>
-            /// <param name="row">Добавляемая строка</param>
             public void AppendRow(Row row)
             {
-                rows.Add(row);
                 node.AppendChild(row.Node);
+                row.ParentTable = this;
+                rows.Add(row);
             }
 
             /// <summary>
             /// Вставить строку в список строк таблицы и модифицировать дерево XML-документа
             /// </summary>
-            /// <param name="listIndex">Индекс вставляемой строки в списке</param>
-            /// <param name="row">Вставляемая строка</param>
             public void InsertRow(int listIndex, Row row)
             {
-                rows.Insert(listIndex, row);
-
-                if (rows.Count == 1)
+                if (rows.Count == 0)
                     node.AppendChild(row.Node);
                 else if (listIndex == 0)
-                    node.PrependChild(row.Node);
+                    node.InsertBefore(row.Node, rows[0].Node);
                 else
                     node.InsertAfter(row.Node, rows[listIndex - 1].Node);
+
+                row.ParentTable = this;
+                rows.Insert(listIndex, row);
             }
 
             /// <summary>
             /// Удалить строку из списка строк таблицы и модифицировать дерево XML-документа
             /// </summary>
-            /// <param name="listIndex">Индекс удаляемой строки в списке</param>
             public void RemoveRow(int listIndex)
             {
                 Row row = rows[listIndex];
+                row.ParentTable = null;
                 node.RemoveChild(row.Node);
                 rows.RemoveAt(listIndex);
+            }
+
+            /// <summary>
+            /// Удалить все строки из списка строк таблицы и модифицировать дерево XML-документа
+            /// </summary>
+            public void RemoveAllRows()
+            {
+                while (rows.Count > 0)
+                    RemoveRow(0);
             }
 
             /// <summary>
@@ -666,9 +776,39 @@ namespace Utils.Report
         /// </summary>
         protected class Column
         {
-            protected XmlNode node;      // ссылка на XML-узел, соответствующий столбцу таблицы Excel
-            protected int index;         // индекс столбца, 0 - неопределён
-            protected Table parentTable; // родительская таблица данного столбца
+            /// <summary>
+            /// Ссылка на XML-узел, соответствующий столбцу таблицы Excel
+            /// </summary>
+            protected XmlNode node;
+            /// <summary>
+            /// Родительская таблица данного столбца
+            /// </summary>
+            protected Table parentTable;
+            /// <summary>
+            /// Индекс столбца, 0 - неопределён
+            /// </summary>
+            protected int index;
+
+
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            protected Column()
+            {
+            }
+
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            /// <param name="xmlNode">Ссылка на XML-узел, соответствующий столбцу таблицы Excel</param>
+            public Column(XmlNode xmlNode)
+            {
+                node = xmlNode;
+                parentTable = null;
+
+                XmlAttribute attr = node.Attributes["ss:Index"];
+                index = attr == null ? 0 : int.Parse(attr.Value);
+            }
 
 
             /// <summary>
@@ -679,38 +819,6 @@ namespace Utils.Report
                 get
                 {
                     return node;
-                }
-            }
-
-            /// <summary>
-            /// Получить или установить индекс столбца (0 - неопределён), при установке модифицируется дерево XML-документа
-            /// </summary>
-            public int Index
-            {
-                get
-                {
-                    return index;
-                }
-                set
-                {
-                    if (index <= 0)
-                    {
-                        if (value <= 0)
-                            index = value;
-                        else
-                        {
-                            XmlAttribute attr = node.OwnerDocument.CreateAttribute("ss:Index");
-                            attr.Value = index.ToString();
-                            node.Attributes.SetNamedItem(attr);
-                        }
-                    }
-                    else
-                    {
-                        if (value <= 0)
-                            node.Attributes.RemoveNamedItem("ss:Index");
-                        else
-                            node.Attributes["ss:Index"].Value = index.ToString();
-                    }
                 }
             }
 
@@ -729,24 +837,54 @@ namespace Utils.Report
                 }
             }
 
-
             /// <summary>
-            /// Конструктор
+            /// Получить или установить индекс столбца (0 - неопределён), при установке модифицируется дерево XML-документа
             /// </summary>
-            protected Column()
+            public int Index
             {
+                get
+                {
+                    return index;
+                }
+                set
+                {
+                    index = value;
+                    SetAttribute(node, "Index", XmlNamespaces.ss, index <= 0 ? null : index.ToString(), true);
+                }
             }
 
             /// <summary>
-            /// Конструктор
+            /// Получить или установить ширину
             /// </summary>
-            /// <param name="xmlNode">Ссылка на XML-узел, соответствующий столбцу таблицы Excel</param>
-            public Column(XmlNode xmlNode)
+            public double Width
             {
-                node = xmlNode;
-                XmlAttribute attr = node.Attributes["ss:Index"];
-                index = attr == null ? 0 : int.Parse(attr.Value);
-                parentTable = null;
+                get
+                {
+                    string widthStr = GetAttribute(node, "ss:Width");
+                    double width;
+                    return double.TryParse(widthStr, NumberStyles.Any, NumberFormatInfo.InvariantInfo, out width) ?
+                        width : 0;
+                }
+                set
+                {
+                    SetColumnWidth(node, value);
+                }
+            }
+
+            /// <summary>
+            /// Получить или установить количество объединямых колонок справа
+            /// </summary>
+            public int Span
+            {
+                get
+                {
+                    string valStr = GetAttribute(node, "ss:Span");
+                    return valStr == "" ? 0 : int.Parse(valStr);
+                }
+                set
+                {
+                    SetAttribute(node, "Span", XmlNamespaces.ss, value < 1 ? "" : value.ToString(), true);
+                }
             }
 
 
@@ -760,6 +898,16 @@ namespace Utils.Report
                 columnClone.parentTable = parentTable;
                 return columnClone;
             }
+
+            /// <summary>
+            /// Установить ширину столбца
+            /// </summary>
+            public static void SetColumnWidth(XmlNode columnNode, double width)
+            {
+                SetAttribute(columnNode, "AutoFitWidth", XmlNamespaces.ss, "0");
+                SetAttribute(columnNode, "Width", XmlNamespaces.ss, 
+                    width > 0 ? width.ToString(NumberFormatInfo.InvariantInfo) : "", true);
+            }
         }
 
         /// <summary>
@@ -767,9 +915,37 @@ namespace Utils.Report
         /// </summary>
         protected class Row
         {
-            protected XmlNode node;      // ссылка на XML-узел, соответствующий строке таблицы Excel
-            protected List<Cell> cells;  // список ячеек строки
-            protected Table parentTable; // родительская таблица данной строки
+            /// <summary>
+            /// Ссылка на XML-узел, соответствующий строке таблицы Excel
+            /// </summary>
+            protected XmlNode node;
+            /// <summary>
+            /// Список ячеек строки
+            /// </summary>
+            protected List<Cell> cells;
+            /// <summary>
+            /// Родительская таблица данной строки
+            /// </summary>
+            protected Table parentTable;
+
+
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            protected Row()
+            {
+            }
+
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            /// <param name="xmlNode">Ссылка на XML-узел, соответствующий строке таблицы Excel</param>
+            public Row(XmlNode xmlNode)
+            {
+                node = xmlNode;
+                cells = new List<Cell>();
+                parentTable = null;
+            }
 
 
             /// <summary>
@@ -809,23 +985,22 @@ namespace Utils.Report
                 }
             }
 
-
             /// <summary>
-            /// Конструктор
+            /// Получить или установить высоту
             /// </summary>
-            protected Row()
+            public double Height
             {
-            }
-
-            /// <summary>
-            /// Конструктор
-            /// </summary>
-            /// <param name="xmlNode">Ссылка на XML-узел, соответствующий строке таблицы Excel</param>
-            public Row(XmlNode xmlNode)
-            {
-                node = xmlNode;
-                cells = new List<Cell>();
-                parentTable = null;
+                get
+                {
+                    string heightStr = GetAttribute(node, "ss:Height");
+                    double height;
+                    return double.TryParse(heightStr, NumberStyles.Any, NumberFormatInfo.InvariantInfo, out height) ?
+                        height : 0;
+                }
+                set
+                {
+                    SetRowHeight(node, value);
+                }
             }
 
 
@@ -852,58 +1027,42 @@ namespace Utils.Report
             /// <summary>
             /// Найти ячейку в строке по индексу
             /// </summary>
-            /// <param name="cellIndex">Индекс искомой ячейки</param>
-            /// <param name="exact">Получена ячейка с указанным индексом (true) или с ближайшим большим (false)</param>
-            /// <returns>Ячейка, удовлетворяющая критерию поиска, или null, если индексы всех ячеек меньше заданного</returns>
-            public Cell FindCell(int cellIndex, out bool exact)
+            /// <param name="cellIndex">Индекс искомой ячейки, начиная с 1</param>
+            /// <returns>Ячейка, удовлетворяющая критерию поиска, или null, если ячейка не найдена</returns>
+            public Cell FindCell(int cellIndex)
             {
                 int index = 0;
                 foreach (Cell cell in cells)
                 {
-                    XmlAttribute attr = cell.Node.Attributes["ss:MergeAcross"];
-                    int merge = attr == null ? 0 : int.Parse(attr.Value);
+                    index = cell.Index > 0 ? cell.Index : index + 1;
+                    int endIndex = index + cell.MergeAcross;
 
-                    if (cell.Index > 0)
-                        index = cell.Index;
-                    else
-                        index++;
-
-                    if (index == cellIndex || index < cellIndex && cellIndex <= index + merge)
-                    {
-                        exact = true;
+                    if (index <= cellIndex && cellIndex <= endIndex)
                         return cell;
-                    }
-                    else if (index > cellIndex)
-                    {
-                        exact = false;
-                        return cell;
-                    }
 
-                    index += merge;
+                    index = endIndex;
                 }
 
-                exact = false;
                 return null;
             }
 
             /// <summary>
             /// Добавить ячейку в конец списка ячеек строки и модифицировать дерево XML-документа
             /// </summary>
-            /// <param name="cell">Добавляемая ячейка</param>
             public void AppendCell(Cell cell)
             {
                 cells.Add(cell);
+                cell.ParentRow = this;
                 node.AppendChild(cell.Node);
             }
 
             /// <summary>
             /// Вставить ячейку в список ячеек строки и модифицировать дерево XML-документа
             /// </summary>
-            /// <param name="listIndex">Индекс вставляемой ячейки в списке</param>
-            /// <param name="cell">Вставляемая ячейка</param>
             public void InsertCell(int listIndex, Cell cell)
             {
                 cells.Insert(listIndex, cell);
+                cell.ParentRow = this;
 
                 if (cells.Count == 1)
                     node.AppendChild(cell.Node);
@@ -916,10 +1075,10 @@ namespace Utils.Report
             /// <summary>
             /// Удалить ячейку из списка ячеек строки и модифицировать дерево XML-документа
             /// </summary>
-            /// <param name="listIndex">Индекс удаляемой ячейки в списке</param>
             public void RemoveCell(int listIndex)
             {
                 Cell cell = cells[listIndex];
+                cell.ParentRow = null;
                 node.RemoveChild(cell.Node);
                 cells.RemoveAt(listIndex);
             }
@@ -928,28 +1087,11 @@ namespace Utils.Report
             /// <summary>
             /// Установить высоту строки
             /// </summary>
-            /// <param name="height">Высота строки</param>
-            public void SetRowHeight(double height)
-            {
-                SetRowHeight(node, height);
-            }
-
-            /// <summary>
-            /// Установить высоту строки
-            /// </summary>
-            /// <param name="rowNode">Ссылка на XML-узел, соответствующий строке таблицы Excel</param>
-            /// <param name="height">Высота строки</param>
             public static void SetRowHeight(XmlNode rowNode, double height)
             {
-                rowNode.Attributes.RemoveNamedItem("ss:AutoFitHeight");
-                rowNode.Attributes.RemoveNamedItem("ss:Height");
-
-                NumberFormatInfo nfi = new NumberFormatInfo();
-                nfi.NumberDecimalSeparator = ".";
-
-                XmlAttribute attr = rowNode.OwnerDocument.CreateAttribute("ss", "Height", rowNode.NamespaceURI);
-                attr.Value = height.ToString(nfi);
-                rowNode.Attributes.Append(attr);
+                SetAttribute(rowNode, "AutoFitHeight", XmlNamespaces.ss, "0");
+                SetAttribute(rowNode, "Height", XmlNamespaces.ss,
+                    height > 0 ? height.ToString(NumberFormatInfo.InvariantInfo) : "", true);
             }
         }
 
@@ -958,10 +1100,59 @@ namespace Utils.Report
         /// </summary>
         protected class Cell
         {
-            protected XmlNode node;     // ссылка на XML-узел, соответствующий ячейке строки таблицы Excel
-            protected XmlNode dataNode; // ссылка на XML-узел, соответствующий данным ячейки
-            protected int index;        // индекс ячейки, 0 - неопределён
-            protected Row parentRow;    // родительская строка данной ячейки
+            /// <summary>
+            /// Типы данных ячеек
+            /// </summary>
+            public static class DataTypes
+            {
+                /// <summary>
+                /// Строковый тип
+                /// </summary>
+                public const string String = "String";
+                /// <summary>
+                /// Числовой тип
+                /// </summary>
+                public const string Number = "Number";
+            }
+
+            /// <summary>
+            /// Ссылка на XML-узел, соответствующий ячейке строки таблицы Excel
+            /// </summary>
+            protected XmlNode node;
+            /// <summary>
+            /// Ссылка на XML-узел, соответствующий данным ячейки
+            /// </summary>
+            protected XmlNode dataNode;
+            /// <summary>
+            /// Родительская строка данной ячейки
+            /// </summary>
+            protected Row parentRow;
+            /// <summary>
+            /// Индекс ячейки, 0 - неопределён
+            /// </summary>
+            protected int index;
+
+
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            protected Cell()
+            {
+            }
+
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            /// <param name="xmlNode">Ссылка на XML-узел, соответствующий ячейке строки таблицы Excel</param>
+            public Cell(XmlNode xmlNode)
+            {
+                node = xmlNode;
+                dataNode = null;
+                parentRow = null;
+
+                XmlAttribute attr = node.Attributes["ss:Index"];
+                index = attr == null ? 0 : int.Parse(attr.Value);
+            }
 
 
             /// <summary>
@@ -991,38 +1182,6 @@ namespace Utils.Report
             }
 
             /// <summary>
-            /// Получить или установить индекс ячейки (0 - неопределён), при установке модифицируется дерево XML-документа
-            /// </summary>
-            public int Index
-            {
-                get
-                {
-                    return index;
-                }
-                set
-                {
-                    if (index <= 0)
-                    {
-                        if (value <= 0)
-                            index = value;
-                        else
-                        {
-                            XmlAttribute attr = node.OwnerDocument.CreateAttribute("ss:Index");
-                            attr.Value = index.ToString();
-                            node.Attributes.SetNamedItem(attr);
-                        }
-                    }
-                    else
-                    {
-                        if (value <= 0)
-                            node.Attributes.RemoveNamedItem("ss:Index");
-                        else
-                            node.Attributes["ss:Index"].Value = index.ToString();
-                    }
-                }
-            }
-
-            /// <summary>
             /// Получить или установить родительскую строку данной ячейки
             /// </summary>
             public Row ParentRow
@@ -1037,27 +1196,139 @@ namespace Utils.Report
                 }
             }
 
-
             /// <summary>
-            /// Конструктор
+            /// Получить или установить индекс ячейки (0 - неопределён), при установке модифицируется дерево XML-документа
             /// </summary>
-            protected Cell()
+            public int Index
             {
+                get
+                {
+                    return index;
+                }
+                set
+                {
+                    index = value;
+                    SetAttribute(node, "Index", XmlNamespaces.ss, index <= 0 ? null : index.ToString(), true);
+                }
             }
 
             /// <summary>
-            /// Конструктор
+            /// Получить или установить тип данных (формат) ячейки
             /// </summary>
-            /// <param name="xmlNode">Ссылка на XML-узел, соответствующий ячейке строки таблицы Excel</param>
-            public Cell(XmlNode xmlNode)
+            public string DataType
             {
-                node = xmlNode;
-                dataNode = null;
-                XmlAttribute attr = node.Attributes["ss:Index"];
-                index = attr == null ? 0 : int.Parse(attr.Value);
-                parentRow = null;
+                get
+                {
+                    return GetAttribute(dataNode, "ss:Type");
+                }
+                set
+                {
+                    SetAttribute(dataNode, "Type", XmlNamespaces.ss, 
+                        string.IsNullOrEmpty(value) ? DataTypes.String : value);
+                }
             }
 
+            /// <summary>
+            /// Получить или установить текст
+            /// </summary>
+            public string Text
+            {
+                get
+                {
+                    return dataNode == null ? "" : dataNode.InnerText;
+                }
+                set
+                {
+                    if (dataNode != null)
+                        dataNode.InnerText = value;
+                }
+            }
+
+            /// <summary>
+            /// Получить или установить формулу
+            /// </summary>
+            public string Formula
+            {
+                get
+                {
+                    return GetAttribute(node, "ss:Formula");
+                }
+                set
+                {
+                    SetAttribute(node, "Formula", XmlNamespaces.ss, value, true);
+                }
+            }
+
+            /// <summary>
+            /// Получить или установить ид. стиля
+            /// </summary>
+            public string StyleID
+            {
+                get
+                {
+                    return GetAttribute(node, "ss:StyleID");
+                }
+                set
+                {
+                    SetAttribute(node, "StyleID", XmlNamespaces.ss, value, true);
+                }
+            }
+
+            /// <summary>
+            /// Получить или установить количество объединямых ячеек справа
+            /// </summary>
+            public int MergeAcross
+            {
+                get
+                {
+                    string valStr = GetAttribute(node, "ss:MergeAcross");
+                    return valStr == "" ? 0 : int.Parse(valStr);
+                }
+                set
+                {
+                    SetAttribute(node, "MergeAcross", XmlNamespaces.ss, value < 1 ? "" : value.ToString(), true);
+                }
+            }
+
+            /// <summary>
+            /// Получить или установить количество объединямых ячеек вниз
+            /// </summary>
+            public int MergeDown
+            {
+                get
+                {
+                    string valStr = GetAttribute(node, "ss:MergeDown");
+                    return valStr == "" ? 0 : int.Parse(valStr);
+                }
+                set
+                {
+                    SetAttribute(node, "MergeDown", XmlNamespaces.ss, value < 1 ? "" : value.ToString(), true);
+                }
+            }
+
+
+            /// <summary>
+            /// Рассчитать индекс в строке
+            /// </summary>
+            public int CalcIndex()
+            {
+                if (index > 0)
+                {
+                    return index;
+                }
+                else
+                {
+                    int index = 0;
+                    foreach (Cell cell in parentRow.Cells)
+                    {
+                        index = cell.Index > 0 ? cell.Index : index + 1;
+                        if (cell == this)
+                            return index;
+                        index += cell.MergeAcross;
+                    }
+                    return 0;
+                }
+            }
 
             /// <summary>
             /// Клонировать ячейку
@@ -1083,20 +1354,11 @@ namespace Utils.Report
             }
 
             /// <summary>
-            /// Установить тип данных (формат) ячейки
-            /// </summary>
-            public void SetDataType(string dataTypeName)
-            {
-                if (dataNode != null)
-                    dataNode.Attributes["ss:Type"].Value = dataTypeName;
-            }
-
-            /// <summary>
             /// Установить числовой тип данных ячейки
             /// </summary>
             public void SetNumberType()
             {
-                SetDataType("Number");
+                DataType = DataTypes.Number;
             }
         }
 
@@ -1106,9 +1368,9 @@ namespace Utils.Report
         /// </summary>
         protected const string Break = "&#10;";
         /// <summary>
-        /// Имя с префиксом XML-элемента в шаблоне, значение которого может содержать директивы изменения
+        /// Имя XML-элемента в шаблоне, который может содержать директивы преобразований
         /// </summary>
-        protected const string ElemName = "Data";
+        protected const string DirectiveElem = "Data";
 
 
         /// <summary>
@@ -1122,23 +1384,23 @@ namespace Utils.Report
         /// <summary>
         /// Обрабатываемый лист Excel
         /// </summary>
-        protected Worksheet worksheet;
+        protected Worksheet procWorksheet;
         /// <summary>
         /// Обрабатываемая таблица листа Excel
         /// </summary>
-        protected Table table;
+        protected Table procTable;
         /// <summary>
         /// Обрабатываемая строка таблицы Excel
         /// </summary>
-        protected Row row;
+        protected Row procRow;
         /// <summary>
         /// Обрабатываемая ячейка строки таблицы Excel
         /// </summary>
-        protected Cell cell;
+        protected Cell procCell;
         /// <summary>
         /// XML-узлы могут иметь текст, содержащий переносы строк
         /// </summary>
-        protected bool textBreaked;
+        protected bool textBroken;
 
 
         /// <summary>
@@ -1164,50 +1426,93 @@ namespace Utils.Report
 
 
         /// <summary>
-        /// Найти атрибут (директиву) в строке и получить его значение
+        /// Получить значение атрибута XML-узла
         /// </summary>
-        /// <param name="str">Строка для поиска</param>
-        /// <param name="attrName">Имя искомого атрибута</param>
-        /// <param name="attrVal">Значение атрибута</param>
-        /// <returns>Найден ли атрибут</returns>
-        protected bool FindAttr(string str, string attrName, out string attrVal)
+        protected static string GetAttribute(XmlNode xmlNode, string name)
+        {
+            if (xmlNode == null)
+            {
+                return "";
+            }
+            else
+            {
+                XmlAttribute xmlAttr = xmlNode.Attributes[name];
+                return xmlAttr == null ? "" : xmlAttr.Value;
+            }
+        }
+
+        /// <summary>
+        /// Установить атрибут XML-узла, создав его при необходимости
+        /// </summary>
+        protected static void SetAttribute(XmlNode xmlNode, string localName, string namespaceURI, string value, 
+            bool removeEmpty = false)
+        {
+            if (xmlNode != null)
+            {
+                if (string.IsNullOrEmpty(value) && removeEmpty)
+                {
+                    xmlNode.Attributes.RemoveNamedItem(localName, namespaceURI);
+                }
+                else
+                {
+                    XmlAttribute xmlAttr = xmlNode.Attributes.GetNamedItem(localName, namespaceURI) as XmlAttribute;
+                    if (xmlAttr == null)
+                    {
+                        xmlAttr = xmlNode.OwnerDocument.CreateAttribute("", localName, namespaceURI);
+                        xmlAttr.Value = value;
+                        xmlNode.Attributes.SetNamedItem(xmlAttr);
+                    }
+                    else
+                    {
+                        xmlAttr.Value = value;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Найти директиву в строке, получить её значение и остаток строки
+        /// </summary>
+        protected bool FindDirective(string s, string attrName, out string attrVal, out string rest)
         {
             // "attrName=attrVal", вместо '=' может быть любой символ
-            attrVal = "";
-            if (str.StartsWith(attrName))
+            int valStartInd = attrName.Length + 1;
+            if (valStartInd <= s.Length && s.StartsWith(attrName, StringComparison.Ordinal))
             {
-                int start = attrName.Length + 1;
-                if (start < str.Length)
+                int valEndInd = s.IndexOf(" ", valStartInd);
+                if (valEndInd < 0)
                 {
-                    int end = str.IndexOf(" ", start);
-                    if (end < 0) end = str.Length;
-                    attrVal = str.Substring(start, end - start);
+                    attrVal = s.Substring(valStartInd);
+                    rest = "";
+                }
+                else
+                {
+                    attrVal = s.Substring(valStartInd, valEndInd - valStartInd);
+                    rest = s.Substring(valEndInd + 1);
                 }
                 return true;
             }
             else
+            {
+                attrVal = "";
+                rest = s;
                 return false;
+            }
         }
 
         /// <summary>
         /// Установить XML-узлу текст, содержащий переносы строк, разбив при необходимости элемент на несколько
         /// </summary>
-        /// <param name="xmlNode">XML-узел</param>
-        /// <param name="text">Устанавливаемый текст</param>
-        /// <param name="textBreak">Обозначение переноса строки в устанавливаемом тексте</param>
         protected void SetNodeTextWithBreak(XmlNode xmlNode, string text, string textBreak)
         {
             if (text == null) text = "";
             xmlNode.InnerText = text.Replace(textBreak, Break);
-            textBreaked = true;
+            textBroken = true;
         }
 
         /// <summary>
         /// Установить XML-узлу текст, содержащий переносы строк, разбив при необходимости элемент на несколько
         /// </summary>
-        /// <param name="xmlNode">XML-узел</param>
-        /// <param name="text">Устанавливаемый текст</param>
-        /// <param name="textBreak">Обозначение переноса строки в устанавливаемом тексте</param>
         protected void SetNodeTextWithBreak(XmlNode xmlNode, object text, string textBreak)
         {
             string textStr = text == null ? "" : text.ToString();
@@ -1217,8 +1522,6 @@ namespace Utils.Report
         /// <summary>
         /// Установить XML-узлу текст, содержащий переносы строк "\n", разбив при необходимости элемент на несколько
         /// </summary>
-        /// <param name="xmlNode">XML-узел</param>
-        /// <param name="text">Устанавливаемый текст</param>
         protected void SetNodeTextWithBreak(XmlNode xmlNode, string text)
         {
             SetNodeTextWithBreak(xmlNode, text, "\n");
@@ -1227,8 +1530,6 @@ namespace Utils.Report
         /// <summary>
         /// Установить XML-узлу текст, содержащий переносы строк "\n", разбив при необходимости элемент на несколько
         /// </summary>
-        /// <param name="xmlNode">XML-узел</param>
-        /// <param name="text">Устанавливаемый текст</param>
         protected void SetNodeTextWithBreak(XmlNode xmlNode, object text)
         {
             SetNodeTextWithBreak(xmlNode, text, "\n");
@@ -1236,43 +1537,33 @@ namespace Utils.Report
 
 
         /// <summary>
-        /// Начальная обработка дерева XML-документа
+        /// Предварительно обработать дерево XML-документа
         /// </summary>
         protected virtual void StartXmlDocProc()
         {
         }
 
         /// <summary>
-        /// Рекурсивный обход, распознавание и обработка дерева XML-документа согласно директивам для получения отчёта
+        /// Рекурсивно обработать дерево XML-документа согласно директивам
         /// </summary>
-        /// <param name="xmlNode">Обрабатываемый XML-узел</param>
         protected virtual void XmlDocProc(XmlNode xmlNode)
         {
-            if (xmlNode.Name == ElemName)
+            if (xmlNode.Name == DirectiveElem)
             {
-                cell.DataNode = xmlNode;
-
-                // поиск директив преобразований элементов
-                string nodeVal = xmlNode.InnerText;
-                string attrVal;
-                if (FindAttr(nodeVal, "repRow", out attrVal))
-                {
-                    if (nodeVal.Length < 8 /*"repRow=".Length + 1*/ + attrVal.Length)
-                        xmlNode.InnerText = "";
-                    else
-                        xmlNode.InnerText = nodeVal.Substring(8 + attrVal.Length);
-                    ProcRow(cell, attrVal);
-                }
-                else if (FindAttr(nodeVal, "repVal", out attrVal))
-                    ProcVal(cell, attrVal);
+                procCell.DataNode = xmlNode;
+                FindDirectives(procCell); // поиск и обработка директив
             }
             else
             {
                 // формирование книги Excel на основе XML-документа
                 if (xmlNode.Name == "Workbook")
+                {
                     workbook = new Workbook(xmlNode);
+                }
                 else if (xmlNode.Name == "Styles")
+                {
                     workbook.StylesNode = xmlNode;
+                }
                 else if (xmlNode.Name == "Style")
                 {
                     Style style = new Style(xmlNode);
@@ -1280,33 +1571,33 @@ namespace Utils.Report
                 }
                 else if (xmlNode.Name == "Worksheet")
                 {
-                    worksheet = new Worksheet(xmlNode);
-                    worksheet.ParentWorkbook = workbook;
-                    workbook.Worksheets.Add(worksheet);
+                    procWorksheet = new Worksheet(xmlNode);
+                    procWorksheet.ParentWorkbook = workbook;
+                    workbook.Worksheets.Add(procWorksheet);
                 }
                 else if (xmlNode.Name == "Table")
                 {
-                    table = new Table(xmlNode);
-                    table.ParentWorksheet = worksheet;
-                    worksheet.Table = table;
+                    procTable = new Table(xmlNode);
+                    procTable.ParentWorksheet = procWorksheet;
+                    procWorksheet.Table = procTable;
                 }
                 else if (xmlNode.Name == "Column")
                 {
                     Column column = new Column(xmlNode);
-                    column.ParentTable = table;
-                    table.Columns.Add(column);
+                    column.ParentTable = procTable;
+                    procTable.Columns.Add(column);
                 }
                 else if (xmlNode.Name == "Row")
                 {
-                    row = new Row(xmlNode);
-                    row.ParentTable = table;
-                    table.Rows.Add(row);
+                    procRow = new Row(xmlNode);
+                    procRow.ParentTable = procTable;
+                    procTable.Rows.Add(procRow);
                 }
                 else if (xmlNode.Name == "Cell")
                 {
-                    cell = new Cell(xmlNode);
-                    cell.ParentRow = row;
-                    row.Cells.Add(cell);
+                    procCell = new Cell(xmlNode);
+                    procCell.ParentRow = procRow;
+                    procRow.Cells.Add(procCell);
                 }
 
                 // рекурсивный перебор потомков текущего элемента
@@ -1317,16 +1608,15 @@ namespace Utils.Report
         }
 
         /// <summary>
-        /// Окончательная обработка дерева XML-документа
+        /// Окончательно обработать дерево XML-документа
         /// </summary>
         protected virtual void FinalXmlDocProc()
         {
         }
 
         /// <summary>
-        /// Обработка структур, представляющих книгу Excel
+        /// Обработать структуры, представляющие таблицу листа Excel
         /// </summary>
-        /// <param name="table">Таблица листа Excel</param>
         protected virtual void ExcelProc(Table table)
         {
             foreach (Row row in table.Rows)
@@ -1334,47 +1624,47 @@ namespace Utils.Report
         }
 
         /// <summary>
-        /// Обработка структур, представляющих книгу Excel
+        /// Обработать структуры, представляющие строку таблицы листа Excel
         /// </summary>
-        /// <param name="row">Строка таблицы Excel</param>
         protected virtual void ExcelProc(Row row)
         {
+            // поиск и обработка директив для ячеек строки
             foreach (Cell cell in row.Cells)
+                FindDirectives(cell);
+        }
+
+        /// <summary>
+        /// Найти и обработать директивы, которые могут содержаться в заданной ячейке
+        /// </summary>
+        protected virtual void FindDirectives(Cell cell)
+        {
+            XmlNode dataNode = cell.DataNode;
+            if (dataNode != null)
             {
-                // поиск директив преобразований элементов
-                XmlNode dataNode = cell.DataNode;
-                if (dataNode != null)
+                string attrVal;
+                string rest;
+                if (FindDirective(dataNode.InnerText, "repRow", out attrVal, out rest))
                 {
-                    string nodeVal = cell.DataNode.InnerText;
-                    string attrVal;
-                    if (FindAttr(nodeVal, "repRow", out attrVal))
-                    {
-                        if (nodeVal.Length < 8 /*"repRow=".Length + 1*/ + attrVal.Length)
-                            dataNode.InnerText = "";
-                        else
-                            dataNode.InnerText = nodeVal.Substring(8 + attrVal.Length);
-                        ProcRow(cell, attrVal);
-                    }
-                    else if (FindAttr(nodeVal, "repVal", out attrVal))
-                        ProcVal(cell, attrVal);
+                    dataNode.InnerText = rest;
+                    ProcRow(cell, attrVal);
+                }
+                else if (FindDirective(dataNode.InnerText, "repVal", out attrVal, out rest))
+                {
+                    ProcVal(cell, attrVal);
                 }
             }
         }
 
         /// <summary>
-        /// Обработка директивы, изменяющей значение элемента
+        /// Обработать директиву, связанную со значением ячейки
         /// </summary>
-        /// <param name="cell">Ячейка строки таблицы Excel, содержащая директиву</param>
-        /// <param name="valName">Имя элемента, заданное директивой</param>
         protected virtual void ProcVal(Cell cell, string valName)
         {
         }
 
         /// <summary>
-        /// Обработка директивы, создающей строки таблицы
+        /// Обработать директиву, связанную со строкой таблицы
         /// </summary>
-        /// <param name="cell">Ячейка строки таблицы Excel, содержащая директиву</param>
-        /// <param name="rowName">Имя строки, заданное директивой</param>
         protected virtual void ProcRow(Cell cell, string rowName)
         {
         }
@@ -1383,8 +1673,7 @@ namespace Utils.Report
         /// <summary>
         /// Генерировать отчёт в поток в формате SpreadsheetML
         /// </summary>
-        /// <param name="outStream">Выходной поток</param>
-        /// <param name="templateDir">Директория шаблона со '\' на конце</param>
+        /// <remarks>Директория шаблона должна оканчиваться на слеш</remarks>
         public override void Make(Stream outStream, string templateDir)
         {
             // имя файла шаблона отчёта
@@ -1396,11 +1685,11 @@ namespace Utils.Report
 
             // инициализация полей
             workbook = null;
-            worksheet = null;
-            table = null;
-            row = null;
-            cell = null;
-            textBreaked = false;
+            procWorksheet = null;
+            procTable = null;
+            procRow = null;
+            procCell = null;
+            textBroken = false;
 
             // создание отчёта - модификация xmlDoc
             StartXmlDocProc();
@@ -1408,17 +1697,20 @@ namespace Utils.Report
             FinalXmlDocProc();
 
             // запись в выходной поток
-            if (textBreaked)
+            if (textBroken)
             {
                 StringWriter stringWriter = new StringWriter();
                 xmlDoc.Save(stringWriter);
-                string xmlText = stringWriter.GetStringBuilder().Replace("encoding=\"utf-16\"", "encoding=\"utf-8\"").
-                    Replace("&amp;#10", "&#10").ToString();
+                string xmlText = stringWriter.GetStringBuilder()
+                    .Replace("encoding=\"utf-16\"", "encoding=\"utf-8\"")
+                    .Replace("&amp;#10", "&#10").ToString();
                 byte[] bytes = Encoding.UTF8.GetBytes(xmlText);
                 outStream.Write(bytes, 0, bytes.Length);
             }
             else
+            {
                 xmlDoc.Save(outStream);
+            }
         }
     }
 }

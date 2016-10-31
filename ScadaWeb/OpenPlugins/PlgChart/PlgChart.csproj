@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{72AFAED2-953D-4939-A828-8EC8A63AB19F}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Scada.Web</RootNamespace>
+    <AssemblyName>PlgChart</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Log">
+      <HintPath>..\..\..\Log\bin\Release\Log.dll</HintPath>
+    </Reference>
+    <Reference Include="RepBuilder, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Report\RepBuilder\bin\Release\RepBuilder.dll</HintPath>
+    </Reference>
+    <Reference Include="ScadaData">
+      <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
+    </Reference>
+    <Reference Include="ScadaWebCommon5">
+      <HintPath>..\..\ScadaWebCommon5\bin\Release\ScadaWebCommon5.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="config\CommSettings.xml" />
+    <Content Include="js\api\clientapi.js" />
+    <Content Include="js\api\utils.js" />
+    <Content Include="lib\jquery\jquery.min.js" />
+    <Content Include="plugins\Chart\Chart.aspx" />
+    <Content Include="plugins\Chart\css\chart.css">
+      <DependentUpon>chart.less</DependentUpon>
+    </Content>
+    <Content Include="plugins\Chart\css\chart.min.css">
+      <DependentUpon>chart.css</DependentUpon>
+    </Content>
+    <Content Include="plugins\Chart\css\chartform.css">
+      <DependentUpon>chartform.less</DependentUpon>
+    </Content>
+    <Content Include="plugins\Chart\css\chartform.min.css">
+      <DependentUpon>chartform.css</DependentUpon>
+    </Content>
+    <Content Include="plugins\Chart\css\cnllist.css">
+      <DependentUpon>cnllist.less</DependentUpon>
+    </Content>
+    <Content Include="plugins\Chart\css\cnllist.min.css">
+      <DependentUpon>cnllist.css</DependentUpon>
+    </Content>
+    <Content Include="plugins\Chart\css\mindatarep.css">
+      <DependentUpon>mindatarep.less</DependentUpon>
+    </Content>
+    <Content Include="plugins\Chart\css\mindatarep.min.css">
+      <DependentUpon>mindatarep.css</DependentUpon>
+    </Content>
+    <Content Include="plugins\Chart\css\selectcnls.css">
+      <DependentUpon>selectcnls.less</DependentUpon>
+    </Content>
+    <Content Include="plugins\Chart\css\selectcnls.min.css">
+      <DependentUpon>selectcnls.css</DependentUpon>
+    </Content>
+    <Content Include="plugins\Chart\js\mindatarep.js" />
+    <Content Include="plugins\Chart\js\selectcnls.js" />
+    <Content Include="plugins\Chart\MinDataRep.aspx" />
+    <Content Include="plugins\Chart\MinDataRepOut.aspx" />
+    <Content Include="plugins\Chart\js\chartform.js" />
+    <Content Include="plugins\Chart\js\chart.js" />
+    <Content Include="plugins\Chart\js\chartdialog.js" />
+    <Content Include="plugins\Chart\lang\PlgChart.en-GB.xml" />
+    <Content Include="plugins\Chart\lang\PlgChart.ru-RU.xml" />
+    <Content Include="plugins\Chart\SelectCnls.aspx" />
+    <Content Include="plugins\Chart\templates\MinDataRep.xml" />
+    <Content Include="test\ChartTest.html" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppCode\Chart\MinDataRepBuilder.cs" />
+    <Compile Include="AppCode\Chart\MinDataRepSpec.cs" />
+    <Compile Include="AppCode\Chart\MinDataRepPhrases.cs" />
+    <Compile Include="AppCode\PlgChartSpec.cs" />
+    <Compile Include="plugins\Chart\Chart.aspx.cs">
+      <DependentUpon>Chart.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="plugins\Chart\Chart.aspx.designer.cs">
+      <DependentUpon>Chart.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="plugins\Chart\MinDataRep.aspx.cs">
+      <DependentUpon>MinDataRep.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="plugins\Chart\MinDataRep.aspx.designer.cs">
+      <DependentUpon>MinDataRep.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="plugins\Chart\MinDataRepOut.aspx.cs">
+      <DependentUpon>MinDataRepOut.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="plugins\Chart\MinDataRepOut.aspx.designer.cs">
+      <DependentUpon>MinDataRepOut.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="plugins\Chart\SelectCnls.aspx.cs">
+      <DependentUpon>SelectCnls.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="plugins\Chart\SelectCnls.aspx.designer.cs">
+      <DependentUpon>SelectCnls.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="plugins\Chart\css\chart.less" />
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
+    <Content Include="css\common\globalvar.less" />
+    <Content Include="plugins\Chart\css\chartform.less" />
+    <Content Include="MasterMain.Master" />
+    <Content Include="plugins\Chart\css\mindatarep.less" />
+    <Content Include="plugins\Chart\css\cnllist.less" />
+    <Content Include="css\common\contentform.less" />
+    <Content Include="plugins\Chart\css\selectcnls.less" />
+    <Content Include="css\common\modalform.less" />
+    <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="lang\" />
+    <Folder Include="log\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PlgChartCommon\PlgChartCommon.csproj">
+      <Project>{827ac062-9c5e-429f-abbf-368e84cec9b7}</Project>
+      <Name>PlgChartCommon</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>54466</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:54466/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

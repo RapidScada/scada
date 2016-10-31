@@ -1,0 +1,195 @@
+﻿body {
+  margin: 0;
+  padding: 30px 0 0 0;
+  background-color: #f1f1f1;
+  color: black;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 13px;
+  overflow: hidden;
+}
+.hidden {
+  display: none !important;
+}
+/* Toolbar */
+#divToolbar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 30px;
+  padding: 0 10px;
+  background-color: transparent;
+  color: #444;
+  white-space: nowrap;
+}
+#divToolbar .tool-ctrl {
+  height: 30px;
+  margin: 0 10px 0 0;
+  display: inline-block;
+}
+#divToolbar .tool-ctrl input,
+#divToolbar .tool-ctrl select {
+  margin-top: 4px;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  height: 22px;
+}
+#divToolbar .tool-btn {
+  height: 30px;
+  margin: 0 5px 0 0;
+  padding: 0 10px;
+  background-color: white;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 13px;
+  line-height: 30px;
+  vertical-align: top;
+}
+#divToolbar .tool-btn i {
+  color: #8f8f8f;
+  font-size: 14px;
+}
+#divToolbar .tool-btn:hover,
+#divToolbar .tool-btn:hover i {
+  color: #00b9eb;
+}
+#spanDate {
+  position: relative;
+}
+#spanDate input {
+  width: 150px;
+  padding-right: 20px;
+}
+#spanDate i {
+  position: absolute;
+  right: 5px;
+  height: 30px;
+  line-height: 30px;
+  color: #8f8f8f;
+  cursor: pointer;
+  font-size: 14px;
+}
+#spanDate i:hover {
+  color: #00b9eb;
+}
+#spanDate i.error::before {
+  color: #a00;
+  content: "\f06a";
+  /*exclamation*/
+}
+#divDebugTools {
+  padding: 0 10px;
+  display: none;
+  vertical-align: top;
+}
+#divDebugTools.show {
+  display: inline-block;
+}
+/* Table */
+#divTblWrapper {
+  padding: 0 10px;
+  overflow: auto;
+}
+#divTblWrapper table {
+  border-collapse: collapse;
+}
+#divTblWrapper tr {
+  background-color: white;
+}
+#divTblWrapper tr.hdr {
+  background-color: #ccc;
+}
+#divTblWrapper tr.hdr.fixed-table-header {
+  left: 10px;
+}
+#divTblWrapper tr.alt {
+  background-color: #f9f9f9;
+}
+#divTblWrapper td {
+  border: 1px solid #999;
+  font-size: 12px;
+  line-height: 18px;
+  padding: 2px 3px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+#divTblWrapper tr.hdr td {
+  border-color: #888;
+  font-weight: 600;
+  padding: 2px 7px;
+  text-align: center;
+}
+#divTblWrapper td a {
+  color: #0073aa;
+  text-decoration: none;
+}
+#divTblWrapper td a:hover {
+  color: #00a0d2;
+}
+#divTblWrapper td a,
+#divTblWrapper td span,
+#divTblWrapper td img {
+  vertical-align: middle;
+}
+#divTblWrapper tr.item:hover {
+  background-color: #e0e0e0;
+  color: black;
+}
+#divTblWrapper td.cap {
+  overflow: hidden;
+  padding: 2px 5px;
+}
+#divTblWrapper td.cap img.icon {
+  width: 16px;
+  height: 16px;
+  margin: 0 5px 0 0;
+  border: none;
+}
+#divTblWrapper td.cap a.lbl {
+  width: calc(100% - 21px);
+  height: 18px;
+  margin-right: 5px;
+  display: inline-block;
+  line-height: 18px;
+}
+#divTblWrapper td.cap a.lbl.before-cmd {
+  width: calc(100% - 26px -  18px);
+}
+#divTblWrapper td.cap span.cmd {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  color: #a00;
+  font-size: 15px;
+  line-height: 18px;
+  text-align: center;
+}
+#divTblWrapper td.cap span.cmd:hover {
+  color: red;
+}
+#divTblWrapper td.cap span.cmd::before {
+  content: "\f135";
+  font-family: FontAwesome;
+}
+#divTblWrapper td.cap span.hint {
+  background-color: white;
+  border: 1px solid #888;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px #aaa;
+  color: #333;
+  display: none;
+  line-height: normal;
+  padding: 5px 10px;
+  position: fixed;
+  z-index: 10;
+  /*above the fixed table header*/
+}
+#divTblWrapper td.cap span.hint.show {
+  display: inline-block;
+}
+#divTblWrapper td.cur,
+#divTblWrapper td.hour {
+  text-align: center;
+}

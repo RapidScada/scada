@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaCommSvcConfig>
+  <!--Общие параметры-->
+  <CommonParams>
+    <Param name="ServerUse" value="true" descr="Использовать SCADA-Сервер" />
+    <Param name="ServerHost" value="localhost" descr="Имя компьютера или IP-адрес SCADA-Сервера" />
+    <Param name="ServerPort" value="10000" descr="Номер TCP-порта SCADA-Сервера" />
+    <Param name="ServerUser" value="ScadaComm" descr="Имя пользователя для подключения к SCADA-Серверу" />
+    <Param name="ServerPwd" value="12345" descr="Пароль пользователя для подключения к SCADA-Серверу" />
+    <Param name="ServerTimeout" value="10000" descr="Таймаут ожидания ответа SCADA-Сервера, мс" />
+    <Param name="WaitForStop" value="10000" descr="Ожидание остановки линий связи, мс" />
+    <Param name="SendAllDataPer" value="60" descr="Период передачи всех данных КП, с" />
+  </CommonParams>
+  <!--Линии связи-->
+  <CommLines>
+    <!--Линия 1-->
+    <CommLine active="true" bind="true" number="1" name="Modbus">
+      <CommChannel type="TcpClient">
+        <Param name="Behavior" value="Master" />
+        <Param name="ConnMode" value="Individual" />
+        <Param name="IpAddress" value="" />
+        <Param name="TcpPort" value="502" />
+      </CommChannel>
+      <LineParams>
+        <Param name="ReqTriesCnt" value="3" descr="Количество попыток перезапроса КП при ошибке" />
+        <Param name="CycleDelay" value="0" descr="Задержка после цикла опроса, мс" />
+        <Param name="CmdEnabled" value="true" descr="Команды ТУ разрешены" />
+        <Param name="DetailedLog" value="true" descr="Записывать в журнал подробную информацию" />
+      </LineParams>
+      <CustomParams>
+        <Param name="TransMode" value="TCP" />
+      </CustomParams>
+      <ReqSequence>
+        <KP active="true" bind="true" number="11" name="ADAM-6015 Серверная" dll="KpModbus.dll" address="1" callNum="127.0.0.1" timeout="1000" delay="200" time="00:00:00" period="00:00:00" cmdLine="KpModbus_Adam6015.xml" />
+      </ReqSequence>
+    </CommLine>
+    <!--Линия 2-->
+    <CommLine active="true" bind="true" number="2" name="OPC">
+      <CommChannel type="" />
+      <LineParams>
+        <Param name="ReqTriesCnt" value="3" descr="Количество попыток перезапроса КП при ошибке" />
+        <Param name="CycleDelay" value="0" descr="Задержка после цикла опроса, мс" />
+        <Param name="CmdEnabled" value="false" descr="Команды ТУ разрешены" />
+        <Param name="DetailedLog" value="true" descr="Записывать в журнал подробную информацию" />
+      </LineParams>
+      <CustomParams />
+      <ReqSequence>
+        <KP active="true" bind="true" number="21" name="OPC Демо" dll="KpOpc.dll" address="0" callNum="" timeout="0" delay="200" time="00:00:00" period="00:00:00" cmdLine="" />
+      </ReqSequence>
+    </CommLine>
+    <!--Линия 3-->
+    <CommLine active="true" bind="true" number="3" name="GSM">
+      <CommChannel type="Serial">
+        <Param name="BaudRate" value="19200" />
+        <Param name="Behavior" value="Master" />
+        <Param name="DataBits" value="8" />
+        <Param name="DtrEnable" value="False" />
+        <Param name="Parity" value="None" />
+        <Param name="PortName" value="COM1" />
+        <Param name="RtsEnable" value="False" />
+        <Param name="StopBits" value="One" />
+      </CommChannel>
+      <LineParams>
+        <Param name="ReqTriesCnt" value="3" descr="Количество попыток перезапроса КП при ошибке" />
+        <Param name="CycleDelay" value="0" descr="Задержка после цикла опроса, мс" />
+        <Param name="CmdEnabled" value="true" descr="Команды ТУ разрешены" />
+        <Param name="DetailedLog" value="true" descr="Записывать в журнал подробную информацию" />
+      </LineParams>
+      <CustomParams />
+      <ReqSequence>
+        <KP active="true" bind="true" number="31" name="Cinterion MC52iT" dll="KpSms.dll" address="0" callNum="+01234567890" timeout="5000" delay="500" time="00:00:00" period="00:00:00" cmdLine="" />
+      </ReqSequence>
+    </CommLine>
+    <!--Линия 4-->
+    <CommLine active="true" bind="true" number="4" name="Email">
+      <CommChannel type="" />
+      <LineParams>
+        <Param name="ReqTriesCnt" value="3" descr="Количество попыток перезапроса КП при ошибке" />
+        <Param name="CycleDelay" value="0" descr="Задержка после цикла опроса, мс" />
+        <Param name="CmdEnabled" value="true" descr="Команды ТУ разрешены" />
+        <Param name="DetailedLog" value="true" descr="Записывать в журнал подробную информацию" />
+      </LineParams>
+      <CustomParams />
+      <ReqSequence>
+        <KP active="true" bind="true" number="41" name="Отправка эл. почты" dll="KpEmail.dll" address="0" callNum="" timeout="10000" delay="200" time="00:00:00" period="00:00:00" cmdLine="" />
+      </ReqSequence>
+    </CommLine>
+    <!--Линия 5-->
+    <CommLine active="true" bind="true" number="5" name="SNMP">
+      <CommChannel type="" />
+      <LineParams>
+        <Param name="ReqTriesCnt" value="3" descr="Количество попыток перезапроса КП при ошибке" />
+        <Param name="CycleDelay" value="0" descr="Задержка после цикла опроса, мс" />
+        <Param name="CmdEnabled" value="false" descr="Команды ТУ разрешены" />
+        <Param name="DetailedLog" value="true" descr="Записывать в журнал подробную информацию" />
+      </LineParams>
+      <CustomParams />
+      <ReqSequence>
+        <KP active="true" bind="true" number="51" name="Локальный ПК" dll="KpSnmp.dll" address="0" callNum="127.0.0.1" timeout="1000" delay="200" time="00:00:00" period="00:00:00" cmdLine="" />
+      </ReqSequence>
+    </CommLine>
+  </CommLines>
+</ScadaCommSvcConfig>

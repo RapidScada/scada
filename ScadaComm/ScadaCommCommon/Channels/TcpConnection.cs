@@ -47,7 +47,7 @@ namespace Scada.Comm.Channels
         /// <summary>
         /// Максимальный размер считываемых строк по умолчанию
         /// </summary>
-        protected const int DeaultMaxLineSize = 1000;
+        protected const int DefaultMaxLineSize = 1000;
         /// <summary>
         /// Периодичность попыток установки TCP-соединения, с
         /// </summary>
@@ -88,7 +88,7 @@ namespace Scada.Comm.Channels
             if (tcpClient == null)
                 throw new ArgumentNullException("tcpClient");
 
-            maxLineSize = DeaultMaxLineSize;
+            maxLineSize = DefaultMaxLineSize;
             connFailDT = DateTime.MinValue;
             relatedKPList = null;
 
@@ -145,7 +145,7 @@ namespace Scada.Comm.Channels
         public bool JustConnected { get; set; }
 
         /// <summary>
-        /// Получить или установить признак, что соединение обрвано и его необходимо закрыть
+        /// Получить или установить признак, что соединение обровано и его необходимо закрыть
         /// </summary>
         public bool Broken { get; set; }
 
@@ -432,7 +432,7 @@ namespace Scada.Comm.Channels
                         }
                         else
                         {
-                            sb.Append(Localization.UseRussian ? "КП " : "Device ");
+                            sb.Append(Localization.UseRussian ? "КП " : "Devices ");
                             for (int i = 0, lastInd = kpCnt - 1; i < kpCnt; i++)
                             {
                                 sb.Append(relatedKPList[i].Number);

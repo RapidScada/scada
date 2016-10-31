@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DevTemplate>
+  <ElemGroups>
+    <ElemGroup active="true" tableType="Coils" address="0" name="Системные дискретные выходы">
+      <Elem name="СПВ Привод жалюзи - Открытие/Закрытие" />
+      <Elem name="СПВ Привод жалюзи - Закрытие" />
+      <Elem name="СПВ Вентилятор приточный Старт/Стоп" />
+      <Elem name="СПВ Вентилятор приточный Скорость" />
+      <Elem name="СПВ Вентилятор вытяжной Старт/Стоп" />
+      <Elem name="СПВ Вентилятор вытяжной Скорость" />
+      <Elem name="СПВ Насос калорифера основной" />
+      <Elem name="СПВ Насос калорифера резервный" />
+      <Elem name="СПВ Насос кондиционера основной" />
+      <Elem name="СПВ Насос кондиционера резервный" />
+      <Elem name="СПВ Обогрев жалюзи" />
+      <Elem name="СОт Насос основной" />
+      <Elem name="СОт Насос резервный" />
+      <Elem name="СГВС Насос основной" />
+      <Elem name="СГВС Насос резервный" />
+      <Elem name="Выход Зима/Лето" />
+      <Elem name="Выход День/Ночь" />
+      <Elem name="Авария" />
+      <Elem name="Грязный воздушный фильтр" />
+      <Elem name="СПВ Насос рекуператора" />
+      <Elem name="ШИМ1" />
+      <Elem name="ШИМ2" />
+      <Elem name="ШИМ3" />
+      <Elem name="Свободный дискретный выход 1" />
+      <Elem name="Свободный дискретный выход 2" />
+      <Elem name="Свободный дискретный выход 3" />
+      <Elem name="Свободный дискретный выход 4" />
+      <Elem name="Свободный дискретный выход 5" />
+      <Elem name="Свободный дискретный выход 6" />
+      <Elem name="Свободный дискретный выход 7" />
+      <Elem name="Свободный дискретный выход 8" />
+      <Elem name="Свободный дискретный выход 9" />
+    </ElemGroup>
+    <ElemGroup active="true" tableType="Coils" address="32" name="Логические флаги условий">
+      <Elem name="Флаг 1" />
+      <Elem name="Флаг 2" />
+      <Elem name="Флаг 3" />
+      <Elem name="Флаг 4" />
+      <Elem name="Флаг 5" />
+      <Elem name="Флаг 6" />
+      <Elem name="Флаг 7" />
+      <Elem name="Флаг 8" />
+      <Elem name="Флаг 9" />
+      <Elem name="Флаг 10" />
+      <Elem name="Флаг 11" />
+      <Elem name="Флаг 12" />
+      <Elem name="Флаг 13" />
+      <Elem name="Флаг 14" />
+      <Elem name="Флаг 15" />
+      <Elem name="Флаг 16" />
+      <Elem name="Флаг 17" />
+      <Elem name="Флаг 18" />
+      <Elem name="Флаг 19" />
+      <Elem name="Флаг 20" />
+      <Elem name="Флаг 21" />
+      <Elem name="Флаг 22" />
+      <Elem name="Флаг 23" />
+      <Elem name="Флаг 24" />
+      <Elem name="Флаг 25" />
+      <Elem name="Флаг 26" />
+      <Elem name="Флаг 27" />
+      <Elem name="Флаг 28" />
+      <Elem name="Флаг 29" />
+      <Elem name="Флаг 30" />
+      <Elem name="Флаг 31" />
+      <Elem name="Флаг 32" />
+    </ElemGroup>
+    <ElemGroup active="true" tableType="DiscreteInputs" address="10000" name="Системные дискретные входы">
+      <Elem name="СПВ Дежурный режим" />
+      <Elem name="СПВ Активный режим" />
+      <Elem name="СПВ Термостат" />
+      <Elem name="СПВ Перепад давл. на возд. фильтре" />
+      <Elem name="СПВ Перепад давл. на прит. вентиляторе" />
+      <Elem name="СПВ Перепад давл. на вытяж. вентиляторе" />
+      <Elem name="СПВ Датчик протока калорифера NO" />
+      <Elem name="СПВ Датчик протока калорифера NC" />
+      <Elem name="СПВ Датчик протока кондиционера NO" />
+      <Elem name="СПВ Датчик протока кондиционера NC" />
+      <Elem name="СОт Принудительно ночь" />
+      <Elem name="СОт Датчик протока NO" />
+      <Elem name="СОт Датчик протока NC" />
+      <Elem name="СГВС Датчик протока NO" />
+      <Elem name="СГВС Датчик протока NC" />
+      <Elem name="Датчик аварии роторного рекуператора" />
+      <Elem name="Датчик обмерзания трубчатого рекуператора" />
+      <Elem name="СПВ Контактный датчик Жалюзи открыты" />
+      <Elem name="СПВ Контактный датчик Жалюзи закрыты" />
+      <Elem name="Контроль РИП" />
+      <Elem name="Счётчик импульсов №1" />
+      <Elem name="Счётчик импульсов №2" />
+      <Elem name="Счётчик импульсов №3" />
+      <Elem name="Счётчик импульсов №4" />
+      <Elem name="Дискретный вход Пожар" />
+      <Elem name="Свободный дискретный датчик 1" />
+      <Elem name="Свободный дискретный датчик 2" />
+      <Elem name="Свободный дискретный датчик 3" />
+      <Elem name="Свободный дискретный датчик 4" />
+      <Elem name="Свободный дискретный датчик 5" />
+      <Elem name="Свободный дискретный датчик 6" />
+      <Elem name="Свободный дискретный датчик 7" />
+    </ElemGroup>
+    <ElemGroup active="true" tableType="HoldingRegisters" address="40000" name="Датчики 1">
+      <Elem name="СПВ Т канала" type="float" byteOrder="3210" />
+      <Elem name="СПВ Т обратной воды" type="float" byteOrder="3210" />
+      <Elem name="Т наружного воздуха" type="float" byteOrder="3210" />
+      <Elem name="СПВ Т помещения" type="float" byteOrder="3210" />
+      <Elem name="СПВ Т задатчика" type="float" byteOrder="3210" />
+      <Elem name="СПВ Т корректора" type="float" byteOrder="3210" />
+      <Elem name="СОт Т прямой воды" type="float" byteOrder="3210" />
+      <Elem name="СОт Т обратной воды" type="float" byteOrder="3210" />
+      <Elem name="СГВС Т воды" type="float" byteOrder="3210" />
+      <Elem name="Технологический параметр" type="float" byteOrder="3210" />
+      <Elem name="СПВ Т гликоля" type="float" byteOrder="3210" />
+      <Elem name="СПВ Задатчик скорости вентилятора" type="float" byteOrder="3210" />
+      <Elem name="Свободный датчик 1" type="float" byteOrder="3210" />
+      <Elem name="Свободный датчик 2" type="float" byteOrder="3210" />
+    </ElemGroup>
+    <ElemGroup active="true" tableType="HoldingRegisters" address="40028" name="Датчики 2">
+      <Elem name="СПВ привод КЗР калорифера" type="float" byteOrder="3210" />
+      <Elem name="СПВ привод КЗР кондиционера" type="float" byteOrder="3210" />
+      <Elem name="СОт привод КЗР" type="float" byteOrder="3210" />
+      <Elem name="СГВС привод КЗР" type="float" byteOrder="3210" />
+      <Elem name="Технологический процесс" type="float" byteOrder="3210" />
+      <Elem name="Рекуперация" type="float" byteOrder="3210" />
+    </ElemGroup>
+    <ElemGroup active="true" tableType="HoldingRegisters" address="42000" name="Дата и время">
+      <Elem name="Час" type="ushort" byteOrder="" />
+      <Elem name="Минута" type="ushort" byteOrder="" />
+      <Elem name="Секунда" type="ushort" byteOrder="" />
+      <Elem name="Число" type="ushort" byteOrder="" />
+      <Elem name="Месяц" type="ushort" byteOrder="" />
+      <Elem name="Год" type="ushort" byteOrder="" />
+    </ElemGroup>
+    <ElemGroup active="true" tableType="HoldingRegisters" address="50000" name="Состояние">
+      <Elem name="Регистр состояния числовой" type="ushort" byteOrder="" />
+    </ElemGroup>
+  </ElemGroups>
+  <Cmds>
+    <Cmd tableType="Coils" multiple="false" address="0" elemCnt="1" cmdNum="1" name="Установка СПВ Привод жалюзи - Открытие/Закрытие" />
+    <Cmd tableType="Coils" multiple="false" address="1" elemCnt="1" cmdNum="2" name="Установка СПВ Привод жалюзи - Закрытие" />
+    <Cmd tableType="Coils" multiple="false" address="2" elemCnt="1" cmdNum="3" name="Установка СПВ Вентилятор приточный Старт/Стоп" />
+    <Cmd tableType="Coils" multiple="false" address="3" elemCnt="1" cmdNum="4" name="Установка СПВ Вентилятор приточный Скорость" />
+    <Cmd tableType="Coils" multiple="false" address="4" elemCnt="1" cmdNum="5" name="Установка СПВ Вентилятор вытяжной Старт/Стоп" />
+    <Cmd tableType="Coils" multiple="false" address="5" elemCnt="1" cmdNum="6" name="Установка СПВ Вентилятор вытяжной Скорость" />
+    <Cmd tableType="Coils" multiple="false" address="6" elemCnt="1" cmdNum="7" name="Установка СПВ Насос калорифера основной" />
+    <Cmd tableType="Coils" multiple="false" address="7" elemCnt="1" cmdNum="8" name="Установка СПВ Насос калорифера резервный" />
+    <Cmd tableType="Coils" multiple="false" address="8" elemCnt="1" cmdNum="9" name="Установка СПВ Насос кондиционера основной" />
+    <Cmd tableType="Coils" multiple="false" address="9" elemCnt="1" cmdNum="10" name="Установка СПВ Насос кондиционера резервный" />
+    <Cmd tableType="Coils" multiple="false" address="10" elemCnt="1" cmdNum="11" name="Установка СПВ Обогрев жалюзи" />
+    <Cmd tableType="Coils" multiple="false" address="11" elemCnt="1" cmdNum="12" name="Установка СОт Насос основной" />
+    <Cmd tableType="Coils" multiple="false" address="12" elemCnt="1" cmdNum="13" name="Установка СОт Насос резервный" />
+    <Cmd tableType="Coils" multiple="false" address="13" elemCnt="1" cmdNum="14" name="Установка СГВС Насос основной" />
+    <Cmd tableType="Coils" multiple="false" address="14" elemCnt="1" cmdNum="15" name="Установка СГВС Насос резервный" />
+    <Cmd tableType="Coils" multiple="false" address="15" elemCnt="1" cmdNum="16" name="Установка Выход Зима/Лето" />
+    <Cmd tableType="Coils" multiple="false" address="16" elemCnt="1" cmdNum="17" name="Установка Выход День/Ночь" />
+    <Cmd tableType="Coils" multiple="false" address="17" elemCnt="1" cmdNum="18" name="Установка Авария" />
+    <Cmd tableType="Coils" multiple="false" address="18" elemCnt="1" cmdNum="19" name="Установка Грязный воздушный фильтр" />
+    <Cmd tableType="Coils" multiple="false" address="19" elemCnt="1" cmdNum="20" name="Установка СПВ Насос рекуператора" />
+    <Cmd tableType="Coils" multiple="false" address="20" elemCnt="1" cmdNum="21" name="Установка ШИМ1" />
+    <Cmd tableType="Coils" multiple="false" address="21" elemCnt="1" cmdNum="22" name="Установка ШИМ2" />
+    <Cmd tableType="Coils" multiple="false" address="22" elemCnt="1" cmdNum="23" name="Установка ШИМ3" />
+    <Cmd tableType="Coils" multiple="false" address="23" elemCnt="1" cmdNum="24" name="Установка Свободный дискретный выход 1" />
+    <Cmd tableType="Coils" multiple="false" address="24" elemCnt="1" cmdNum="25" name="Установка Свободный дискретный выход 2" />
+    <Cmd tableType="Coils" multiple="false" address="25" elemCnt="1" cmdNum="26" name="Установка Свободный дискретный выход 3" />
+    <Cmd tableType="Coils" multiple="false" address="26" elemCnt="1" cmdNum="27" name="Установка Свободный дискретный выход 4" />
+    <Cmd tableType="Coils" multiple="false" address="27" elemCnt="1" cmdNum="28" name="Установка Свободный дискретный выход 5" />
+    <Cmd tableType="Coils" multiple="false" address="28" elemCnt="1" cmdNum="29" name="Установка Свободный дискретный выход 6" />
+    <Cmd tableType="Coils" multiple="false" address="29" elemCnt="1" cmdNum="30" name="Установка Свободный дискретный выход 7" />
+    <Cmd tableType="Coils" multiple="false" address="30" elemCnt="1" cmdNum="31" name="Установка Свободный дискретный выход 8" />
+    <Cmd tableType="Coils" multiple="false" address="31" elemCnt="1" cmdNum="32" name="Установка Свободный дискретный выход 9" />
+    <Cmd tableType="HoldingRegisters" multiple="true" address="40028" elemCnt="2" cmdNum="33" name="Установка СПВ привод КЗР калорифера" />
+    <Cmd tableType="HoldingRegisters" multiple="true" address="40029" elemCnt="2" cmdNum="34" name="Установка СПВ привод КЗР кондиционера" />
+    <Cmd tableType="HoldingRegisters" multiple="true" address="40030" elemCnt="2" cmdNum="35" name="Установка СОт привод КЗР" />
+    <Cmd tableType="HoldingRegisters" multiple="true" address="40031" elemCnt="2" cmdNum="36" name="Установка СГВС привод КЗР" />
+    <Cmd tableType="HoldingRegisters" multiple="true" address="40032" elemCnt="2" cmdNum="37" name="Установка Технологический процесс" />
+    <Cmd tableType="HoldingRegisters" multiple="true" address="40033" elemCnt="1" cmdNum="38" name="Установка Рекуперация" />
+    <Cmd tableType="HoldingRegisters" multiple="false" address="42000" elemCnt="1" cmdNum="39" name="Установка Часа" />
+    <Cmd tableType="HoldingRegisters" multiple="false" address="42001" elemCnt="1" cmdNum="40" name="Установка Минуты" />
+    <Cmd tableType="HoldingRegisters" multiple="false" address="42002" elemCnt="1" cmdNum="41" name="Установка Секунды" />
+    <Cmd tableType="HoldingRegisters" multiple="false" address="42003" elemCnt="1" cmdNum="42" name="Установка Числа" />
+    <Cmd tableType="HoldingRegisters" multiple="false" address="42004" elemCnt="1" cmdNum="43" name="Установка Месяца" />
+    <Cmd tableType="HoldingRegisters" multiple="false" address="42005" elemCnt="1" cmdNum="44" name="Установка Года" />
+  </Cmds>
+</DevTemplate>

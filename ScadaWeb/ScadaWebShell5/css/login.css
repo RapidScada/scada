@@ -1,0 +1,52 @@
+﻿body {
+  margin: 0;
+  padding: 0;
+  background-color: #f1f1f1;
+  color: #333;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 13px;
+}
+#divLoginContainer {
+  margin: 40px 0 0 0;
+  text-align: center;
+}
+#divTitle {
+  margin: 20px 0;
+  font-size: 30px;
+}
+#divAlertsOuter {
+  text-align: center;
+}
+#divAlertsInner {
+  display: inline-block;
+}
+div.alert {
+  margin: 0 0 10px 0;
+  padding-left: 25px;
+  text-align: left;
+}
+#divLogin {
+  padding: 25px 25px 35px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 1px;
+  color: #777;
+  display: inline-block;
+  text-align: left;
+}
+#divLogin span,
+#divLogin label {
+  font-size: 14px;
+  font-weight: normal;
+}
+#divLogin input[type=text],
+#divLogin input[type=password] {
+  width: 265px;
+  margin: 0 0 20px 0;
+  color: black;
+}
+#divLogin input[type=submit] {
+  padding-left: 20px;
+  padding-right: 20px;
+  font-size: 14px;
+}

@@ -1,0 +1,28 @@
+﻿@import "../common/globalvar.less";
+
+@notifier-back-color: white;
+@notifier-msg-fore-color: #0073aa;
+@notifier-err-fore-color: red;
+
+.notifier {
+    position: fixed;
+    top: 0;
+    left: 0;
+    max-height: 100px;
+    padding: 10px;
+    background-color: @notifier-back-color;
+    border-bottom: 1px solid @panel-border-color;
+    display: none; /*block*/
+    font-family: @default-font-family;
+    font-size: @data-font-size;
+    overflow: auto;
+    white-space: nowrap;
+}
+
+.notifier .message {
+    color: @notifier-msg-fore-color;
+}
+
+.notifier .message.error {
+    color: @notifier-err-fore-color;
+}

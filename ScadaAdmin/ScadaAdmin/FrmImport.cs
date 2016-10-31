@@ -165,7 +165,7 @@ namespace ScadaAdmin
                 else
                 {
                     // импорт таблицы
-                    int minID = gbIDs.Enabled && chkStartID.Checked ? Convert.ToInt32(numStartID.Value) : 0;
+                    int minID = gbIDs.Enabled && chkStartID.Checked ? Convert.ToInt32(numStartID.Value) : 1;
                     int maxID = gbIDs.Enabled && chkFinalID.Checked ? Convert.ToInt32(numFinalID.Value) : int.MaxValue;
                     int newMinID = gbIDs.Enabled && chkNewStartID.Checked ? Convert.ToInt32(numNewStartID.Value) : 0;
                     importOK = ImportExport.ImportTable(txtFileName.Text, tableInfo, minID, maxID, newMinID,

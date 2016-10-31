@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2016
  */
 
 using Scada.Comm.Devices;
@@ -171,6 +171,30 @@ namespace Scada.Comm.Channels
 
 
         /// <summary>
+        /// Открытие последовательного порта
+        /// </summary>
+        protected void OpenSerialPort()
+        {
+            WriteToLog("");
+            WriteToLog(string.Format(Localization.UseRussian ?
+                "{0} Открытие последовательного порта {1}" :
+                "{0} Open serial port {1}", CommUtils.GetNowDT(), serialConn.SerialPort.PortName));
+            serialConn.Open();
+        }
+
+        /// <summary>
+        /// Закрытие последовательного порта
+        /// </summary>
+        protected void CloseSerialPort()
+        {
+            WriteToLog("");
+            WriteToLog(string.Format(Localization.UseRussian ?
+                "{0} Закрытие последовательного порта {1}" :
+                "{0} Close serial port {1}", CommUtils.GetNowDT(), serialConn.SerialPort.PortName));
+            serialConn.Close();
+        }
+
+        /// <summary>
         /// Обработать событие приёма данных по последовательному порту
         /// </summary>
         protected void serialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
@@ -214,10 +238,7 @@ namespace Scada.Comm.Channels
         public override void Start()
         {
             // попытка открыть последовательный порт
-            serialConn.Open();
-            WriteToLog(string.Format(Localization.UseRussian ?
-                "{0} Последовательный порт '{1}' открыт" :
-                "{0} Serial port '{1}' is open", CommUtils.GetNowDT(), serialConn.SerialPort.PortName));
+            OpenSerialPort();
 
             // привязка события приёма данных в режиме ведомого
             if (settings.Behavior == OperatingBehaviors.Slave && kpList.Count > 0)
@@ -237,11 +258,27 @@ namespace Scada.Comm.Channels
                 kpLogic.Connection = null;
 
             // закрытие последовательного порта
-            serialConn.Close();
-            WriteToLog("");
-            WriteToLog(string.Format(Localization.UseRussian ?
-                "{0} Последовательный порт '{1}' закрыт" :
-                "{0} Serial port '{1}' is closed", CommUtils.GetNowDT(), serialConn.SerialPort.PortName));
+            CloseSerialPort();
+        }
+
+        /// <summary>
+        /// Выполнить действия перед сеансом опроса КП или отправкой команды
+        /// </summary>
+        public override void BeforeSession(KPLogic kpLogic)
+        {
+            // открытие последовательного порта, если он закрыт
+            if (serialConn != null && !serialConn.Connected)
+                OpenSerialPort();
+        }
+
+        /// <summary>
+        /// Выполнить действия после сеанса опроса КП или отправки команды
+        /// </summary>
+        public override void AfterSession(KPLogic kpLogic)
+        {
+            // закрытие последовательного порта, если произошла ошибка записи в порт
+            if (serialConn != null && serialConn.Connected && serialConn.WriteError)
+                CloseSerialPort();
         }
 
         /// <summary>

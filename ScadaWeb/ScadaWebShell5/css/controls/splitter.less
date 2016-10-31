@@ -1,0 +1,38 @@
+﻿@import "../common/globalvar.less";
+
+.splitter {
+    background-color: @splitter-color;
+    display: none;
+}
+
+.splitter.hor {
+    height: @splitter-width;
+    cursor: ns-resize;
+}
+
+.splitter.vert {
+    width: @splitter-width;
+    cursor: ew-resize;
+}
+
+.splitter.show {
+    display: block !important;
+}
+
+.splitter.vert.show {
+    display: inline-block !important;
+}
+
+.splitter.splitter-active {
+    background-color: @splitter-active-color;
+}
+
+.splitter-overlay {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: gray;
+    opacity: 0;
+}

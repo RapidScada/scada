@@ -23,11 +23,11 @@
  * Modified : 2013
  */
 
+using Scada.Client;
+using Scada.Data.Tables;
 using System;
 using System.Drawing;
 using System.Web.UI.WebControls;
-using Scada.Client;
-using Scada.Data;
 
 namespace Scada.Web
 {

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ScadaTableEditorDictionaries>
-  <Dictionary key="Scada.Web.TableView">
+  <Dictionary key="Scada.Web.Plugins.Table.TableView">
     <Phrase key="LoadTableViewError">Error loading table view from file</Phrase>
     <Phrase key="SaveTableViewError">Error saving table view to file</Phrase>
   </Dictionary>
@@ -30,7 +30,7 @@
     <Phrase key="rbCtrlCnls">Output channels</Phrase>
     <Phrase key="colCnlNum">Num.</Phrase>
     <Phrase key="colCnlName">Name</Phrase>
-    <Phrase key="gbTableView">Edited table view</Phrase>
+    <Phrase key="gbTableView">Table view</Phrase>
     <Phrase key="lblTableTitle">Title</Phrase>
     <Phrase key="lblTableItems">Items</Phrase>
     <Phrase key="btnAddItem.ToolTip">Add item from the configuration database</Phrase>
@@ -66,7 +66,7 @@
   </Dictionary>
   <Dictionary key="ScadaTableEditor.FrmSettings">
     <Phrase key="this">Settings</Phrase>
-    <Phrase key="lblBaseDATDir">Configuration database directory for DAT format</Phrase>
+    <Phrase key="lblBaseDATDir">Directory of the configuration database in DAT format</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
   </Dictionary>

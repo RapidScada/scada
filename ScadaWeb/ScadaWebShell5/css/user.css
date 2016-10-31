@@ -1,0 +1,7 @@
+﻿.props-table th {
+  font-weight: normal;
+  padding: 2px 15px 2px 0;
+}
+.props-table td {
+  padding: 2px 5px;
+}

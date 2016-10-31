@@ -120,6 +120,8 @@
     <Phrase key="CmdValsNotFound">Command values &quot;{0}&quot; not found.</Phrase>
     <Phrase key="CreateCnlsImpossible">It is imposible to create channels.</Phrase>
     <Phrase key="CreateCnlsStart">Create channels.</Phrase>
+    <Phrase key="InCnlNameTrancated">Input channel {0} name was trancated.</Phrase>
+    <Phrase key="CtrlCnlNameTrancated">Output channel {0} name was trancated.</Phrase>
     <Phrase key="NumFormatNotFound">Input channel {0} format not found. Format description: numeric, number of decimal digits is {1}.</Phrase>
     <Phrase key="TextFormatNotFound">Input channel {0} format not found. Format description: textual.</Phrase>
     <Phrase key="AddedInCnlsCount">Count of added input channels: {0}.</Phrase>
@@ -318,7 +320,7 @@
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
     <Phrase key="ChooseBaseSDFFile">Choose the configuration database file in SDF format</Phrase>
-    <Phrase key="BaseSDFFileFilter">Configuration Databases (*.sdf)|*.dat|All Files (*.*)|*.*</Phrase>
+    <Phrase key="BaseSDFFileFilter">Configuration Databases (*.sdf)|*.sdf|All Files (*.*)|*.*</Phrase>
     <Phrase key="ChooseBackupDir">Choose the configuration database backup directory</Phrase>
     <Phrase key="ChooseCommDir">Choose SCADA-Communicator directory</Phrase>
     <Phrase key="BaseSDFFileNotExists">The configuration database file in SDF format does not exist.</Phrase>
@@ -440,8 +442,8 @@
   </Dictionary>
   <Dictionary key="ScadaAdmin.Tables.InterfaceTable">
     <Phrase key="ItfID">ID</Phrase>
-    <Phrase key="Name">Interface object</Phrase>
-    <Phrase key="Descr">Description</Phrase>
+    <Phrase key="Name">Path</Phrase>
+    <Phrase key="Descr">Title</Phrase>
   </Dictionary>
   <Dictionary key="ScadaAdmin.Tables.KPTable">
     <Phrase key="KPNum">Number</Phrase>

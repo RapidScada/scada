@@ -37,7 +37,7 @@ namespace ScadaTableEditor
     /// </summary>
     public partial class FrmAbout : Form
     {
-        private const string Version = "4.5.0.1"; // версия приложения
+        private const string Version = "5.0.0.0"; // версия приложения
         private static FrmAbout frmAbout = null;  // форма о программе
 
         private string exeDir;  // директория исполняемого файла приложения

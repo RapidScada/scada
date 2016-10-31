@@ -6,13 +6,17 @@
  * Modified : 2016
  *
  * Requires:
- * nothing
+ * - jquery
+ * - viewhub.js
  */
 
 // Rapid SCADA namespace
 var scada = scada || {};
 // Scheme namespace
 scada.scheme = scada.scheme || {};
+
+// The view hub object
+scada.scheme.viewHub = scada.viewHubLocator.getViewHub();
 
 // Compare operators enumeration
 scada.scheme.CompareOperators = {
@@ -64,6 +68,12 @@ scada.scheme.ShowValueKinds = {
     NOT_SHOW: 0,
     SHOW_WITH_UNIT: 1,
     SHOW_WITHOUT_UNIT: 2
+};
+
+// Predefined scales enumeration
+scada.scheme.Scales = {
+    FIT_SCREEN: "FitScreen",
+    FIT_WIDTH: "FitWidth"
 };
 
 // Scheme calculations

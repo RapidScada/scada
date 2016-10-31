@@ -1,0 +1,80 @@
+﻿@import "tablecommon.less";
+
+@cmd-icon-fore-color: #a00;
+@cmd-icon-hover-fore-color: red;
+@cmd-icon-font-size: 15px;
+@hint-back-color: white;
+@hint-fore-color: @content-fore-color;
+@hint-border-color: @cell-border-color-hdr;
+@hint-shadow-color: #aaa;
+
+#divTblWrapper tr.item:hover {
+    background-color: @row-hover-back-color;
+    color: @row-hover-fore-color;
+}
+
+#divTblWrapper td.cap {
+    overflow: hidden;
+    padding: 2px 5px;
+}
+
+#divTblWrapper td.cap img.icon {
+    width: 16px;
+    height: 16px;
+    margin: 0 5px 0 0;
+    border: none;
+}
+
+#divTblWrapper td.cap a.lbl {
+    width: calc(~"100% - 21px");
+    height: @cell-height;
+    margin-right: 5px;
+    display: inline-block;
+    line-height: @cell-height;
+}
+
+#divTblWrapper td.cap a.lbl.before-cmd {
+    width: calc(~"100% - 26px - "@cell-height);
+}
+
+#divTblWrapper td.cap span.cmd {
+    display: inline-block;
+    width: @cell-height;
+    height: @cell-height;
+    cursor: pointer;
+    color: @cmd-icon-fore-color;
+    font-size: @cmd-icon-font-size;
+    line-height: @cell-height;
+    text-align: center;
+}
+
+#divTblWrapper td.cap span.cmd:hover {
+    color: @cmd-icon-hover-fore-color;
+}
+
+#divTblWrapper td.cap span.cmd::before {
+    content: "\f135";
+    font-family: FontAwesome;
+}
+
+#divTblWrapper td.cap span.hint {
+    background-color: @hint-back-color;
+    border: 1px solid @hint-border-color;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px @hint-shadow-color;
+    color: @hint-fore-color;
+    display: none;
+    line-height: normal;
+    padding: 5px 10px;
+    position: fixed;
+    z-index: 10; /*above the fixed table header*/
+}
+
+#divTblWrapper td.cap span.hint.show {
+    display: inline-block;
+}
+
+#divTblWrapper td.cur,
+#divTblWrapper td.hour {
+    text-align: center;
+}

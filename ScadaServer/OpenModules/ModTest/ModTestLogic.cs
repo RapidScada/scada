@@ -26,10 +26,9 @@
  * Server module for testing.
  */
 
+using Scada.Data.Models;
+using Scada.Data.Tables;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Scada.Data;
 using Utils;
 
 namespace Scada.Server.Modules

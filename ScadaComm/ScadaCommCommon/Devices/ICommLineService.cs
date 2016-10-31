@@ -23,7 +23,7 @@
  * Modified : 2015
  */
 
-using Scada.Data;
+using Scada.Data.Models;
 
 namespace Scada.Comm.Devices
 {

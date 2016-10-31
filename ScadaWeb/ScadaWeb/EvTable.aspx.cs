@@ -24,7 +24,7 @@
  */
 
 using Scada.Client;
-using Scada.Data;
+using Scada.Data.Tables;
 using Scada.UI;
 using System;
 using System.Collections.Generic;

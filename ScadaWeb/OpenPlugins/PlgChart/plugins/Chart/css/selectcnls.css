@@ -1,0 +1,46 @@
+﻿body {
+  margin: 0;
+  padding: 0;
+  background-color: white;
+  color: #333;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 13px;
+  min-width: 250px;
+  overflow: hidden;
+}
+table {
+  border-collapse: collapse;
+}
+label {
+  font-weight: 600;
+}
+.cnl-list {
+  display: table;
+}
+.cnl-list .cnl-item {
+  display: table-row;
+}
+.cnl-list .cnl-field {
+  display: table-cell;
+  padding: 2px 0;
+}
+.cnl-list .cnl-name {
+  padding-left: 15px;
+  vertical-align: middle;
+}
+.cnl-list .cnl-btns {
+  padding-left: 10px;
+  vertical-align: top;
+  white-space: nowrap;
+}
+.cnl-list .cnl-btns input,
+.cnl-list .cnl-btns a {
+  margin-right: 5px;
+}
+.cnl-list .popover {
+  font-size: 12px;
+  line-height: normal;
+}
+.cnl-list-msg {
+  margin-left: 15px;
+}

@@ -1,0 +1,59 @@
+﻿@import "tablecommon.less";
+
+@tool-btn-selected-back-color: @menu-item-selected-back-color;
+@tool-btn-selected-fore-color: @menu-item-selected-fore-color;
+@tool-btn-disabled-fore-color: @menu-item-disabled-fore-color-air;
+
+#divToolbar .tool-btn.selected {
+    background-color: @tool-btn-selected-back-color;
+    color: @tool-btn-selected-fore-color;
+}
+
+#divToolbar .tool-btn.disabled {
+    color: @tool-btn-disabled-fore-color;
+    cursor: not-allowed;
+}
+
+#tblEvents {
+    width: 100%;
+}
+
+#divTblWrapper tr.event:hover {
+    background-color: @row-hover-back-color;
+    color: @row-hover-fore-color;
+}
+
+#tblEvents td.num,
+#tblEvents td.time,
+#tblEvents td.ack {
+    text-align: center;
+}
+
+#tblEvents td.num,
+#tblEvents td.ack {
+  width: 5%;
+}
+
+#tblEvents td.time {
+  width: 10%;
+}
+
+#tblEvents td.obj,
+#tblEvents td.dev,
+#tblEvents td.cnl {
+  width: 15%;
+}
+
+#tblEvents td.text {
+  width: 35%;
+}
+
+#tblEvents td.ack a {
+    display: inline-block;
+    padding: 0 5px;
+}
+
+#divLoading,
+#divNoEvents {
+    padding: 5px 10px;
+}

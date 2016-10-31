@@ -25,7 +25,8 @@
 
 using System;
 using System.IO;
-using Scada.Data;
+using Scada.Data.Models;
+using Scada.Data.Tables;
 
 namespace Scada.Server.Svc
 {

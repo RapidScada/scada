@@ -112,7 +112,7 @@ namespace Scada.Web
                 Response.ClearHeaders();
                 Response.ContentType = "application/octet-stream";
                 Response.AppendHeader("Content-Disposition", "attachment;filename=\"" +
-                    Path.GetFileNameWithoutExtension(baseView.ItfObjName) + reqDate.ToString(" yyyy-MM-dd") + ".xml\"");
+                    Path.GetFileNameWithoutExtension(baseView.FileName) + reqDate.ToString(" yyyy-MM-dd") + ".xml\"");
 
                 // установка параметров отчёта
                 rep.SetParams(baseView, reqDate, eventOut);

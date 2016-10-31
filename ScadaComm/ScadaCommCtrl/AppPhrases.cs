@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2014
- * Modified : 2015
+ * Modified : 2016
  */
 
 namespace Scada.Comm.Ctrl
@@ -88,7 +88,7 @@ namespace Scada.Comm.Ctrl
             LinesNode = "Линии связи";
             LineStatsNode = "Статистика линии связи";
             StatsNode = "Статистика";
-            ServiceState = "Состояние службы SCADA-Коммуникатора: {0}";
+            ServiceState = "Состояние службы {0}: {1}";
             RestartNeeded = "Изменения настроек вступят в силу после перезапуска службы SCADA-Коммуникатора.";
             Yes = "Да";
             No = "Нет";

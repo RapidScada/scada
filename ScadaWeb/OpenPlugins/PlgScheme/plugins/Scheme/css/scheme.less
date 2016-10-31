@@ -1,7 +1,12 @@
-﻿@import "../../../css/globalvar.less";
+﻿@import "../../../css/common/globalvar.less";
 
 @scheme-back-color: white;
+@notif-back-color: white;
+@toolbar-fore-color: @menu-fore-color-dark;
+@tool-btn-back-color: white;
+@tool-btn-hover-fore-color: @menu-item-hover-fore-color;
 @scheme-font-family: Verdana, Geneva, Tahoma, sans-serif;
+@toolbar-height: 30px;
 
 
 body {
@@ -9,7 +14,7 @@ body {
     padding: 0;
     background-color: @scheme-back-color;
     font-family: @scheme-font-family;
-    font-size: @default-font-size;
+    font-size: @data-font-size;
     overflow: hidden;
 }
 
@@ -20,54 +25,60 @@ body {
     background-repeat: no-repeat;
 }
 
+/* Scheme */
+
+#divSchWrapper {
+    overflow: auto;
+}
+
+/* Toolbar (above the scheme) */
+
+#divToolbar {
+    position: fixed;
+    height: @toolbar-height;
+    left: 0;
+    top: 0;
+    color: @toolbar-fore-color;
+    display: inline-block;
+    font-size: 14px;
+    opacity: 0.5;
+    white-space: nowrap;
+}
+
+#divToolbar:hover {
+    opacity: 1;
+}
+
+#divToolbar .tool-btn,
+#spanCurScale {
+    height: @toolbar-height;
+    margin: 0 5px 0 0;
+    padding: 0 10px;
+    cursor: pointer;
+    background-color: @tool-btn-back-color;
+    display: inline-block;
+    line-height: @toolbar-height;
+    vertical-align: top;
+}
+
+#divToolbar .tool-btn:hover {
+    color: @tool-btn-hover-fore-color;
+}
+
+#spanCurScale {
+    cursor: default;
+    font-size: 12px;
+}
+
+#spanCurScale:hover {
+    opacity: 1;
+}
 
 /* Debug tools */
 
 #divDebugTools {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 10px;
-    background-color: @content-back-color;
-    display: none;
-    white-space: nowrap;
-}
-
-#divDebugTools input {
-    margin-right: 10px;
-    padding: 3px 15px;
-}
-
-/* Notifications */
-
-#divNotif {
-    position: fixed;
-    top: 50px;
-    left: 0;
-    max-height: 100px;
-    padding: 10px;
-    border-bottom: 1px solid @panel-border-color;
-    display: none;
-    font-family: @default-font-family;
-    overflow: auto;
-    white-space: nowrap;
-}
-
-#divNotif .message
-{
-    color: #0073aa;
-}
-
-#divNotif .message.error
-{
-    color: red;
-}
-
-/* Scheme */
-
-#divSchParent {
-    min-width: 300px;
-    min-height: 200px;
-    overflow: auto;
+    padding: 0 10px;
+    display: none; /*inline-block*/
+    font-size: 12px;
+    vertical-align: top;
 }

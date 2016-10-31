@@ -27,7 +27,8 @@
  */
 
 using Scada.Comm.Devices.KpModbus;
-using Scada.Data;
+using Scada.Data.Models;
+using Scada.Data.Tables;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -61,13 +62,14 @@ namespace Scada.Comm.Devices
         /// </summary>
         private const int TcpConnectPer = 5;
 
-        private Modbus.DeviceModel deviceModel; // модель устройства, используемая данным КП
-        private Modbus.TransModes transMode;    // режим передачи данных
-        private Modbus modbus;                  // объект, реализующий протокол Modbus
-        private RequestDelegate request;        // метод выполнения запроса
-        private byte devAddr;                   // адрес устройства
-        private int elemGroupCnt;               // количество групп элементов
-        private HashSet<int> floatSignals;      // множество сигналов, форматируемых как вещественное число
+        private Modbus.DeviceModel deviceModel;    // модель устройства, используемая данным КП
+        private Modbus.TransModes transMode;       // режим передачи данных
+        private Modbus modbus;                     // объект, реализующий протокол Modbus
+        private RequestDelegate request;           // метод выполнения запроса
+        private byte devAddr;                      // адрес устройства
+        private List<Modbus.ElemGroup> elemGroups; // активные запрашиваемые группы элементов
+        private int elemGroupCnt;                  // количество активных групп элементов
+        private HashSet<int> floatSignals;         // множество сигналов, форматируемых как вещественное число
 
 
         /// <summary>
@@ -153,56 +155,53 @@ namespace Scada.Comm.Devices
                 Thread.Sleep(ReqParams.Delay);
                 lastCommSucc = false;
             }
-            else
+            else if (elemGroupCnt > 0)
             {
-                if (deviceModel.ElemGroups.Count > 0)
+                // выполнение запросов по группам элементов
+                int elemGroupInd = 0;
+                while (elemGroupInd < elemGroupCnt && lastCommSucc)
                 {
-                    // выполнение запросов по группам элементов
-                    int elemGroupInd = 0;
-                    while (elemGroupInd < elemGroupCnt && lastCommSucc)
+                    Modbus.ElemGroup elemGroup = elemGroups[elemGroupInd];
+                    lastCommSucc = false;
+                    int tryNum = 0;
+
+                    while (RequestNeeded(ref tryNum))
                     {
-                        Modbus.ElemGroup elemGroup = deviceModel.ElemGroups[elemGroupInd];
-                        lastCommSucc = false;
-                        int tryNum = 0;
-
-                        while (RequestNeeded(ref tryNum))
+                        // выполнение запроса
+                        if (request(elemGroup))
                         {
-                            // выполнение запроса
-                            if (request(elemGroup))
-                            {
-                                lastCommSucc = true;
-                                SetTagsData(elemGroup); // установка значений тегов КП
-                            }
-
-                            // завершение запроса
-                            FinishRequest();
-                            tryNum++;
+                            lastCommSucc = true;
+                            SetTagsData(elemGroup); // установка значений тегов КП
                         }
 
-                        if (lastCommSucc)
+                        // завершение запроса
+                        FinishRequest();
+                        tryNum++;
+                    }
+
+                    if (lastCommSucc)
+                    {
+                        // переход к следующей группе элементов
+                        elemGroupInd++;
+                    }
+                    else if (tryNum > 0)
+                    {
+                        // установка неопределённого статуса тегов КП текущей и следующих групп, если запрос неудачный
+                        while (elemGroupInd < elemGroupCnt)
                         {
-                            // переход к следующей группе элементов
+                            elemGroup = elemGroups[elemGroupInd];
+                            InvalTagsData(elemGroup);
                             elemGroupInd++;
-                        }
-                        else if (tryNum > 0)
-                        {
-                            // установка неопределённого статуса тегов КП текущей и следующих групп, если запрос неудачный
-                            while (elemGroupInd < elemGroupCnt)
-                            {
-                                elemGroup = deviceModel.ElemGroups[elemGroupInd];
-                                InvalTagsData(elemGroup);
-                                elemGroupInd++;
-                            }
                         }
                     }
                 }
-                else
-                {
-                    WriteToLog(Localization.UseRussian ?
-                        "Отсутствуют элементы для запроса" : 
-                        "No elements for request");
-                    Thread.Sleep(ReqParams.Delay);
-                }
+            }
+            else
+            {
+                WriteToLog(Localization.UseRussian ?
+                    "Отсутствуют элементы для запроса" : 
+                    "No elements for request");
+                Thread.Sleep(ReqParams.Delay);
             }
 
             // расчёт статистики
@@ -274,6 +273,7 @@ namespace Scada.Comm.Devices
         {
             // загрузка шаблона устройства
             deviceModel = null;
+            elemGroups = null;
             elemGroupCnt = 0;
             floatSignals = new HashSet<int>();
             string fileName = ReqParams.CmdLine.Trim();
@@ -295,7 +295,6 @@ namespace Scada.Comm.Devices
                     {
                         deviceModel = new Modbus.DeviceModel();
                         deviceModel.CopyFrom(template);
-                        elemGroupCnt = deviceModel.ElemGroups.Count;
                     }
                 }
                 else
@@ -309,7 +308,6 @@ namespace Scada.Comm.Devices
                     if (template.LoadTemplate(AppDirs.ConfigDir + fileName, out errMsg))
                     {
                         deviceModel = template;
-                        elemGroupCnt = deviceModel.ElemGroups.Count;
                         templates.Add(fileName, template);
                     }
                     else
@@ -320,8 +318,14 @@ namespace Scada.Comm.Devices
                 }
             }
 
+            if (deviceModel != null)
+            {
+                elemGroups = deviceModel.GetActiveElemGroups();
+                elemGroupCnt = elemGroups.Count;
+            }
+
             // инициализация тегов КП на основе модели устройства
-            if (elemGroupCnt > 0)
+            if (deviceModel.ElemGroups.Count > 0)
             {
                 List<TagGroup> tagGroups = new List<TagGroup>();
                 int tagInd = 0;
@@ -352,7 +356,7 @@ namespace Scada.Comm.Devices
         public override void OnCommLineStart()
         {
             // получение режима передачи данных
-            transMode = CustomParams.GetEnumParam<Modbus.TransModes>("TransMode", false, Modbus.TransModes.RTU);
+            transMode = CustomParams.GetEnumParam("TransMode", false, Modbus.TransModes.RTU);
 
             // настройка библиотеки в зависимости от режима передачи данных
             switch (transMode)

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2016 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2014
- * Modified : 2014
+ * Modified : 2016
  */
 
 #pragma warning disable 1591 // отключение warning CS1591: Missing XML comment for publicly visible type or member
@@ -63,6 +63,7 @@ namespace Scada.Scheme
         public static string EditorFormTitle { get; private set; }
         public static string FileFilter { get; private set; }
         public static string SaveConfirm { get; private set; }
+        public static string UseArrows { get; private set; }
 
         // Словарь Scada.Scheme.EditorData
         public static string LoadSchemeError { get; private set; }
@@ -98,6 +99,7 @@ namespace Scada.Scheme
             EditorFormTitle = "SCADA-Редактор схем";
             FileFilter = "Схемы (*.sch)|*.sch|Все файлы (*.*)|*.*";
             SaveConfirm = "Схема была изменена. Сохранить изменения?";
+            UseArrows = "Используйте клавиши со стрелками, чтобы переместить выбранный элемент.";
 
             LoadSchemeError = "Ошибка при загрузке схемы из файла";
             SaveSchemeError = "Ошибка при сохранении схемы в файле";
@@ -137,6 +139,7 @@ namespace Scada.Scheme
                 EditorFormTitle = dict.GetPhrase("this", EditorFormTitle);
                 FileFilter = dict.GetPhrase("FileFilter", FileFilter);
                 SaveConfirm = dict.GetPhrase("SaveConfirm", SaveConfirm);
+                UseArrows = dict.GetPhrase("UseArrows", UseArrows);
             }
 
             if (Localization.Dictionaries.TryGetValue("Scada.Scheme.EditorData", out dict))

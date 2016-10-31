@@ -1,0 +1,30 @@
+﻿[
+  {
+    "outputFile": "plugins/table/css/table.css",
+    "inputFile": "plugins/table/css/table.less"
+  },
+  {
+    "outputFile": "css/controls/notifier.css",
+    "inputFile": "css/controls/notifier.less"
+  },
+  {
+    "outputFile": "plugins/table/css/events.css",
+    "inputFile": "plugins/table/css/events.less"
+  },
+  {
+    "outputFile": "plugins/Table/css/tablecommon.css",
+    "inputFile": "plugins/Table/css/tablecommon.less"
+  },
+  {
+    "outputFile": "css/controls/tableheader.css",
+    "inputFile": "css/controls/tableheader.less"
+  },
+  {
+    "outputFile": "plugins/Table/css/command.css",
+    "inputFile": "plugins/Table/css/command.less"
+  },
+  {
+    "outputFile": "plugins/Table/css/eventack.css",
+    "inputFile": "plugins/Table/css/eventack.less"
+  }
+]

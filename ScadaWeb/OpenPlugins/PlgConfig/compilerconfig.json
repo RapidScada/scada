@@ -1,0 +1,10 @@
+﻿[
+  {
+    "outputFile": "plugins/Config/css/webconfig.css",
+    "inputFile": "plugins/Config/css/webconfig.less"
+  },
+  {
+    "outputFile": "plugins/Config/css/plugins.css",
+    "inputFile": "plugins/Config/css/plugins.less"
+  }
+]

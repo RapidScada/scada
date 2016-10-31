@@ -51,34 +51,39 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cache.cs" />
+    <Compile Include="Client\ISupportLoading.cs" />
     <Compile Include="Client\ViewCache.cs" />
-    <Compile Include="Data\BaseTables.cs" />
+    <Compile Include="Data\Models\CnlStatProps.cs" />
+    <Compile Include="Data\Models\DispEvent.cs" />
+    <Compile Include="Data\Models\UserProps.cs" />
+    <Compile Include="Data\Tables\Adapter.cs" />
+    <Compile Include="Data\Tables\BaseTables.cs" />
     <Compile Include="Client\BaseView.cs" />
     <Compile Include="Client\DataCache.cs" />
     <Compile Include="Client\DataAccess.cs" />
     <Compile Include="Client\DataFormatter.cs" />
-    <Compile Include="Data\Command.cs" />
+    <Compile Include="Data\Models\Command.cs" />
     <Compile Include="Client\CommSettings.cs" />
-    <Compile Include="Data\CtrlCnlProps.cs" />
+    <Compile Include="Data\Models\CtrlCnlProps.cs" />
     <Compile Include="Client\ServerComm.cs" />
-    <Compile Include="Data\ViewProps.cs" />
+    <Compile Include="Data\Models\EntityRights.cs" />
+    <Compile Include="Data\Models\UiObjProps.cs" />
     <Compile Include="FileListener.cs" />
-    <Compile Include="Data\Arithmetic.cs" />
-    <Compile Include="Data\BaseAdapter.cs" />
-    <Compile Include="Data\BaseValues.cs" />
+    <Compile Include="Data\Tables\BaseAdapter.cs" />
+    <Compile Include="Data\Tables\BaseValues.cs" />
     <Compile Include="CommonPhrases.cs" />
-    <Compile Include="Data\EventAdapter.cs" />
-    <Compile Include="Data\EventTableLight.cs" />
+    <Compile Include="Data\Tables\EventAdapter.cs" />
+    <Compile Include="Data\Tables\EventTableLight.cs" />
     <Compile Include="ISettings.cs" />
     <Compile Include="Localization.cs" />
-    <Compile Include="Data\InCnlProps.cs" />
+    <Compile Include="Data\Models\InCnlProps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScadaException.cs" />
     <Compile Include="ScadaUtils.cs" />
-    <Compile Include="Data\SrezAdapter.cs" />
-    <Compile Include="Data\SrezTable.cs" />
-    <Compile Include="Data\SrezTableLight.cs" />
-    <Compile Include="Data\Trend.cs" />
+    <Compile Include="Data\Tables\SrezAdapter.cs" />
+    <Compile Include="Data\Tables\SrezTable.cs" />
+    <Compile Include="Data\Tables\SrezTableLight.cs" />
+    <Compile Include="Data\Tables\Trend.cs" />
     <Compile Include="ITreeNode.cs" />
     <Compile Include="UI\ScadaUiUtils.cs" />
     <Compile Include="UI\Translator.cs" />
@@ -88,10 +93,14 @@
     <Compile Include="ScadaUtils.Xml.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Lang\ScadaData.ru-RU.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Lang\ScadaData.en-GB.xml">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

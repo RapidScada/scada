@@ -25,6 +25,8 @@
 
 using Scada.Comm.Devices.AddressBook;
 using Scada.Comm.Devices.KpEmail;
+using Scada.Data.Tables;
+using System.Collections.Generic;
 
 namespace Scada.Comm.Devices
 {
@@ -75,6 +77,32 @@ namespace Scada.Comm.Devices
                     "group_name;subject;message\n" +
                     "contact_name;subject;message\n" +
                     "email;subject;message";
+            }
+        }
+
+        /// <summary>
+        /// Получить прототипы каналов КП по умолчанию
+        /// </summary>
+        public override KPCnlPrototypes DefaultCnls
+        {
+            get
+            {
+                KPCnlPrototypes prototypes = new KPCnlPrototypes();
+
+                prototypes.InCnls.Add(new InCnlPrototype(
+                    Localization.UseRussian ? "Отправлено писем" : "Sent emails",
+                    BaseValues.CnlTypes.TI)
+                {
+                    Signal = 1,
+                    DecDigits = 0,
+                    UnitName = BaseValues.UnitNames.Pcs
+                });
+
+                prototypes.CtrlCnls.Add(new CtrlCnlPrototype(
+                    Localization.UseRussian ? "Отправка письма" : "Send email",
+                    BaseValues.CmdTypes.Binary) { CmdNum = 1 });
+
+                return prototypes;
             }
         }
 

@@ -1,0 +1,17 @@
+﻿body {
+  margin: 0;
+  padding: 0;
+  background-color: #f1f1f1;
+  color: #333;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 17px;
+}
+#divViewNotExist {
+  position: absolute;
+  padding: 10px 20px;
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
+  box-sizing: border-box;
+}

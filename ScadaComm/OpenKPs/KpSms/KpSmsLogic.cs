@@ -27,7 +27,8 @@
  */
 
 using Scada.Comm.Channels;
-using Scada.Data;
+using Scada.Data.Models;
+using Scada.Data.Tables;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

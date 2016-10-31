@@ -137,7 +137,7 @@
     <Phrase key="LinesNode">Communication Lines</Phrase>
     <Phrase key="LineStatsNode">Communication Line Stats</Phrase>
     <Phrase key="StatsNode">Stats</Phrase>
-    <Phrase key="ServiceState">SCADA-Communicator service state: {0}</Phrase>
+    <Phrase key="ServiceState">State of {0}: {1}</Phrase>
     <Phrase key="RestartNeeded">Settings changes will take effect after restarting SCADA-Communicator service.</Phrase>
     <Phrase key="Yes">Yes</Phrase>
     <Phrase key="No">No</Phrase>

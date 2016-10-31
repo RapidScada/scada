@@ -1,0 +1,68 @@
+﻿@import "common/globalvar.less";
+
+@form-border-color: #ddd;
+@label-fore-color: #777;
+@input-fore-color: black;
+@side-padding: 25px;
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: @content-back-color;
+    color: @content-fore-color;
+    font-family: @default-font-family;
+    font-size: @form-font-size;
+}
+
+#divLoginContainer {
+    margin: 40px 0 0 0;
+    text-align: center;
+}
+
+#divTitle {
+    margin: 20px 0;
+    font-size: 30px;
+}
+
+#divAlertsOuter {
+    text-align: center;
+}
+
+#divAlertsInner {
+    display: inline-block;
+}
+
+div.alert {
+    margin: 0 0 10px 0;
+    padding-left: @side-padding;
+    text-align: left;
+}
+
+#divLogin {
+    padding: @side-padding @side-padding 35px;
+    background-color: white;
+    border: 1px solid @form-border-color;
+    border-radius: 1px;
+    color: @label-fore-color;
+    display: inline-block;
+    text-align: left;
+}
+
+#divLogin span,
+#divLogin label {
+    font-size: 14px;
+    font-weight: normal;
+}
+
+#divLogin input[type=text],
+#divLogin input[type=password] {
+    width: 265px;
+    margin: 0 0 20px 0;
+    color: @input-fore-color;
+}
+
+#divLogin input[type=submit] {
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 14px;
+}

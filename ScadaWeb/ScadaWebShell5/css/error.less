@@ -1,0 +1,50 @@
+﻿@import "common/globalvar.less";
+
+@header-heigth: 30px;
+@error-fore-color: red;
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: @content-back-color;
+    font-family: @default-font-family;
+    font-size: 14px;
+}
+
+body.popup {
+    background-color: @popup-back-color;
+    min-width: @popup-min-width;
+    overflow: hidden;
+}
+
+div {
+    box-sizing: border-box;
+}
+
+#divHeader {
+    width: 100%;
+    height: @header-heigth;
+    margin: 0;
+    padding: 0 10px;
+    background-color: @menu-back-color;
+    color: @menu-fore-color;
+    font-size: 17px;
+    line-height: @header-heigth;
+    white-space: nowrap;
+}
+
+#divContent {
+    padding: 20px;
+}
+
+h1 {
+    font-size: 30px;
+    font-weight: 500;
+    margin: 0 0 10px;
+    color: @error-fore-color;
+}
+
+div.error {
+    color: @error-fore-color;
+    margin: 0 0 10px;
+}

@@ -23,7 +23,8 @@
  * Modified : 2016
  */
 
-using Scada.Data;
+using Scada.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -33,17 +34,26 @@ namespace Scada.Client
     /// The base class for view
     /// <para>Базовый класс представления</para>
     /// </summary>
-    public abstract class BaseView
+    /// <remarks>
+    /// Derived views must provide thread safe read access in case that the object is not being changed. 
+    /// Write operations must be synchronized
+    /// <para>Дочерние представления должны обеспечивать потокобезопасный доступ на чтение при условии, 
+    /// что объект не изменяется. Операции записи должны синхронизироваться</para></remarks>
+    public abstract class BaseView : ISupportLoading
     {
         /// <summary>
         /// Конструктор
         /// </summary>
         public BaseView()
         {
-            ItfObjName = "";
+            Title = "";
+            Path = "";
+            CnlSet = new HashSet<int>();
             CnlList = new List<int>();
+            CtrlCnlSet = new HashSet<int>();
             CtrlCnlList = new List<int>();
             StoredOnServer = true;
+            BaseAge = DateTime.MinValue;
             Stamp = 0;
         }
 
@@ -54,15 +64,38 @@ namespace Scada.Client
         public string Title { get; set; }
 
         /// <summary>
-        /// Получить или установить наименование объекта интерфейса
+        /// Получить или установить путь файла представления
         /// </summary>
-        public string ItfObjName { get; set; }
+        /// <remarks>Если файл представления хранится на сервере, 
+        /// то путь указывается относительно директории интерфейса</remarks>
+        public string Path { get; set; }
+
+        /// <summary>
+        /// Получить имя файла представления
+        /// </summary>
+        public string FileName
+        {
+            get
+            {
+                return System.IO.Path.GetFileName(Path);
+            }
+        }
+
+        /// <summary>
+        /// Получить множество номеров входных каналов, которые используются в представлении
+        /// </summary>
+        public HashSet<int> CnlSet { get; protected set; }
 
         /// <summary>
         /// Получить упорядоченный без повторений список номеров входных каналов, 
         /// которые используются в представлении
         /// </summary>
         public List<int> CnlList { get; protected set; }
+
+        /// <summary>
+        /// Получить множество номеров каналов управления, которые используются в представлении
+        /// </summary>
+        public HashSet<int> CtrlCnlSet { get; protected set; }
 
         /// <summary>
         /// Получить упорядоченный без повторений список номеров каналов управления, 
@@ -76,18 +109,35 @@ namespace Scada.Client
         public bool StoredOnServer { get; protected set; }
 
         /// <summary>
+        /// Получить или установить время последнего изменения базы конфигурации, 
+        /// для которого выполнена привязка каналов
+        /// </summary>
+        public DateTime BaseAge { get; set; }
+
+        /// <summary>
         /// Получить или установить уникальную метку объекта в пределах некоторого набора данных
         /// </summary>
         /// <remarks>Используется для контроля целостности данных при получении представления из кеша</remarks>
         public long Stamp { get; set; }
 
+        /// <summary>
+        /// Получить объект для синхронизации доступа к представлению
+        /// </summary>
+        public object SyncRoot
+        {
+            get
+            {
+                return this;
+            }
+        }
+
 
         /// <summary>
-        /// Добавить номер входного канала в список, сохраняя упорядоченность и уникальность его элементов
+        /// Добавить номер входного канала в множество и в список
         /// </summary>
         protected void AddCnlNum(int cnlNum)
         {
-            if (cnlNum > 0)
+            if (cnlNum > 0 && CnlSet.Add(cnlNum))
             {
                 int index = CnlList.BinarySearch(cnlNum);
                 if (index < 0)
@@ -96,11 +146,11 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Добавить номер канала управления в список, сохраняя упорядоченность и уникальность его элементов
+        /// Добавить номер канала управления в множество и в список
         /// </summary>
         protected void AddCtrlCnlNum(int ctrlCnlNum)
         {
-            if (ctrlCnlNum > 0)
+            if (ctrlCnlNum > 0 && CtrlCnlSet.Add(ctrlCnlNum))
             {
                 int index = CtrlCnlList.BinarySearch(ctrlCnlNum);
                 if (index < 0)
@@ -124,11 +174,18 @@ namespace Scada.Client
         }
 
         /// <summary>
+        /// Привязать свойства каналов управления к элементам представления
+        /// </summary>
+        public virtual void BindCtrlCnlProps(CtrlCnlProps[] ctrlCnlPropsArr)
+        {
+        }
+
+        /// <summary>
         /// Определить, что входной канал используется в представлении
         /// </summary>
         public virtual bool ContainsCnl(int cnlNum)
         {
-            return CnlList.BinarySearch(cnlNum) >= 0;
+            return CnlSet.Contains(cnlNum);
         }
 
         /// <summary>
@@ -136,11 +193,8 @@ namespace Scada.Client
         /// </summary>
         public virtual bool ContainsAllCnls(IEnumerable<int> cnlNums)
         {
-            foreach (int cnlNum in cnlNums)
-                if (!ContainsCnl(cnlNum))
-                    return false;
-
-            return true;
+            // в случае пустых CnlSet и cnlNums возвращает false
+            return CnlSet.IsProperSupersetOf(cnlNums);
         }
 
         /// <summary>
@@ -148,7 +202,7 @@ namespace Scada.Client
         /// </summary>
         public virtual bool ContainsCtrlCnl(int ctrlCnlNum)
         {
-            return CtrlCnlList.BinarySearch(ctrlCnlNum) >= 0;
+            return CtrlCnlSet.Contains(ctrlCnlNum);
         }
         
         /// <summary>
@@ -157,9 +211,11 @@ namespace Scada.Client
         public virtual void Clear()
         {
             Title = "";
-            ItfObjName = "";
+            Path = "";
             CnlList.Clear();
             CtrlCnlList.Clear();
+            CnlSet.Clear();
+            CtrlCnlSet.Clear();
         }
     }
 }

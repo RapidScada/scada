@@ -24,7 +24,7 @@
  */
 
 using Scada.Comm.Devices.KpModbus;
-using Scada.Data;
+using Scada.Data.Tables;
 using Scada.UI;
 using System;
 using System.Collections.Generic;
@@ -115,22 +115,35 @@ namespace Scada.Comm.Devices
 
                     foreach (Modbus.Elem elem in elemGroup.Elems)
                     {
-                        inCnls.Add(new InCnlPrototype(elem.Name, isTS ? BaseValues.CnlTypes.TS : BaseValues.CnlTypes.TI)
+                        InCnlPrototype inCnl = isTS ?
+                            new InCnlPrototype(elem.Name, BaseValues.CnlTypes.TS) :
+                            new InCnlPrototype(elem.Name, BaseValues.CnlTypes.TI);
+                        inCnl.Signal = signal++;
+
+                        if (isTS)
                         {
-                            Signal = signal++,
-                            ShowNumber = !isTS,
-                            EvEnabled = isTS,
-                            EvOnChange = isTS
-                        });
+                            inCnl.ShowNumber = false;
+                            inCnl.UnitName = BaseValues.UnitNames.OffOn;
+                            inCnl.EvEnabled = true;
+                            inCnl.EvOnChange = true;
+                        }
+
+                        inCnls.Add(inCnl);
                     }
                 }
 
                 // создание прототипов каналов управления
                 foreach (Modbus.Cmd cmd in template.Cmds)
                 {
-                    ctrlCnls.Add(new CtrlCnlPrototype(cmd.Name,
-                        cmd.Multiple ? BaseValues.CmdTypes.Binary : BaseValues.CmdTypes.Standard) 
-                            { CmdNum = cmd.CmdNum });
+                    CtrlCnlPrototype ctrlCnl = cmd.Multiple ?
+                        new CtrlCnlPrototype(cmd.Name, BaseValues.CmdTypes.Binary) :
+                        new CtrlCnlPrototype(cmd.Name, BaseValues.CmdTypes.Standard);
+                    ctrlCnl.CmdNum = cmd.CmdNum;
+
+                    if (cmd.TableType == Modbus.TableTypes.Coils && !cmd.Multiple)
+                        ctrlCnl.CmdValName = BaseValues.CmdValNames.OffOn;
+
+                    ctrlCnls.Add(ctrlCnl);
                 }
 
                 return prototypes;

@@ -1,0 +1,94 @@
+﻿@import "../common/globalvar.less";
+
+@link-hover-fore-color: @menu-item-hover-fore-color;
+@header-back-color: #ccc;
+@day-header-back-color: #f9f9f9;
+@day-hover-back-color: #e0e0e0;
+@day-other-month-fore-color: @menu-fore-color-dark;
+@day-today-back-color: @header-back-color;
+@day-selected-back-color: @menu-item-selected-back-color;
+@day-selected-fore-color: @menu-item-selected-fore-color;
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: @popup-back-color;
+    color: @content-fore-color;
+    font-family: @default-font-family;
+    font-size: 12px;
+    overflow: hidden;
+    display: inline-block;
+}
+
+a,
+a:visited,
+a:hover,
+a:focus,
+a:active {
+    outline: 0;
+    color: inherit;
+    text-decoration: none;
+}
+
+#frmCalendar .header {
+    background-color: @header-back-color;
+    font-weight: @bold-weight;
+}
+
+#frmCalendar .header a {
+    font-weight: @bold-weight;
+    width: 30px;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+}
+
+#frmCalendar th.day-header {
+    background-color: @day-header-back-color;
+    font-size: 11px;
+    font-weight: @bold-weight;
+    height: 25px;
+}
+
+#frmCalendar td {
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+}
+
+#frmCalendar a {
+    display: inline-block;
+}
+
+#frmCalendar a:hover {
+    color: @link-hover-fore-color;
+}
+
+#frmCalendar td.day a {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+}
+
+#frmCalendar td.day.other-month a {
+    color: @day-other-month-fore-color;
+}
+
+#frmCalendar td.day.today a {
+    background-color: @day-today-back-color;
+}
+
+#frmCalendar td.day.selected a {
+    background-color: @day-selected-back-color;
+    color: @day-selected-fore-color;
+}
+
+#frmCalendar td.day a:hover {
+    color: @link-hover-fore-color;
+}
+
+#frmCalendar td.day.regular a:hover,
+#frmCalendar td.day.other-month a:hover {
+    background-color: @day-hover-back-color;
+}

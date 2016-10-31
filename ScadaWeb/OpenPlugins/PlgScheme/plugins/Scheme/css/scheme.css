@@ -1,5 +1,4 @@
-﻿/*Verdana, Geneva, Tahoma, sans-serif;*/
-body {
+﻿body {
   margin: 0;
   padding: 0;
   background-color: white;
@@ -13,43 +12,51 @@ body {
   background-position: center;
   background-repeat: no-repeat;
 }
+/* Scheme */
+#divSchWrapper {
+  overflow: auto;
+}
+/* Toolbar (above the scheme) */
+#divToolbar {
+  position: fixed;
+  height: 30px;
+  left: 0;
+  top: 0;
+  color: #9ca1a6;
+  display: inline-block;
+  font-size: 14px;
+  opacity: 0.5;
+  white-space: nowrap;
+}
+#divToolbar:hover {
+  opacity: 1;
+}
+#divToolbar .tool-btn,
+#spanCurScale {
+  height: 30px;
+  margin: 0 5px 0 0;
+  padding: 0 10px;
+  cursor: pointer;
+  background-color: white;
+  display: inline-block;
+  line-height: 30px;
+  vertical-align: top;
+}
+#divToolbar .tool-btn:hover {
+  color: #00b9eb;
+}
+#spanCurScale {
+  cursor: default;
+  font-size: 12px;
+}
+#spanCurScale:hover {
+  opacity: 1;
+}
 /* Debug tools */
 #divDebugTools {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 10px;
-  background-color: #f1f1f1;
+  padding: 0 10px;
   display: none;
-  white-space: nowrap;
-}
-#divDebugTools input {
-  margin-right: 10px;
-  padding: 3px 15px;
-}
-/* Notifications */
-#divNotif {
-  position: fixed;
-  top: 50px;
-  left: 0;
-  max-height: 100px;
-  padding: 10px;
-  border-bottom: 1px solid #eee;
-  display: none;
-  font-family: 'Open Sans', sans-serif;
-  overflow: auto;
-  white-space: nowrap;
-}
-#divNotif .message {
-  color: #0073aa;
-}
-#divNotif .message.error {
-  color: red;
-}
-/* Scheme */
-#divSchParent {
-  min-width: 300px;
-  min-height: 200px;
-  overflow: auto;
+  /*inline-block*/
+  font-size: 12px;
+  vertical-align: top;
 }

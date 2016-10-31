@@ -1,0 +1,22 @@
+﻿[
+  {
+    "outputFile": "plugins/Chart/css/chart.css",
+    "inputFile": "plugins/Chart/css/chart.less"
+  },
+  {
+    "outputFile": "plugins/Chart/css/chartform.css",
+    "inputFile": "plugins/Chart/css/chartform.less"
+  },
+  {
+    "outputFile": "plugins/Chart/css/mindatarep.css",
+    "inputFile": "plugins/Chart/css/mindatarep.less"
+  },
+  {
+    "outputFile": "plugins/Chart/css/cnllist.css",
+    "inputFile": "plugins/Chart/css/cnllist.less"
+  },
+  {
+    "outputFile": "plugins/Chart/css/selectcnls.css",
+    "inputFile": "plugins/Chart/css/selectcnls.less"
+  }
+]

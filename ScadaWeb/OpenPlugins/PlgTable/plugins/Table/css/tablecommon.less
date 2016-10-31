@@ -1,0 +1,187 @@
+﻿@import "../../../css/common/globalvar.less";
+
+@table-fore-color: black;
+@notif-back-color: white;
+@toolbar-back-color: transparent;
+@toolbar-fore-color: @menu-fore-color-air;
+@toolbar-fore-color-light: @menu-fore-color-air-light;
+@tool-btn-back-color: white;
+@tool-btn-fore-color-err: #a00;
+@tool-btn-hover-fore-color: @menu-item-hover-fore-color;
+@toolbar-height: 30px;
+@toolbar-input-height: 22px;
+@tool-ctrl-font-family: Arial, Helvetica, sans-serif;
+@tool-btn-font-size: 13px;
+@tool-ctrl-font-size: 14px;
+@tool-img-btn-font-size: 14px;
+
+@row-back-color: white;
+@row-back-color-alt: #f9f9f9;
+@row-back-color-hdr: #ccc;
+@row-hover-back-color: #e0e0e0;
+@row-hover-fore-color: @table-fore-color;
+@cell-border-color: #999;
+@cell-border-color-hdr: #888;
+@cell-font-size: @data-font-size;
+@cell-height: 18px;
+
+body {
+    margin: 0;
+    padding: @toolbar-height 0 0 0;
+    background-color: @content-back-color;
+    color: @table-fore-color;
+    font-family: @default-font-family;
+    font-size: @form-font-size;
+    overflow: hidden;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Toolbar */
+
+#divToolbar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: @toolbar-height;
+    padding: 0 10px;
+    background-color: @toolbar-back-color;
+    color: @toolbar-fore-color;
+    white-space: nowrap;
+}
+
+#divToolbar .tool-ctrl {
+    height: @toolbar-height;
+    margin: 0 10px 0 0;
+    display: inline-block;
+}
+
+#divToolbar .tool-ctrl input,
+#divToolbar .tool-ctrl select {
+    margin-top: (@toolbar-height - @toolbar-input-height) / 2;
+    box-sizing: border-box;
+    font-family: @tool-ctrl-font-family;
+    font-size: @tool-ctrl-font-size;
+    height: @toolbar-input-height;
+}
+
+#divToolbar .tool-btn {
+    height: @toolbar-height;
+    margin: 0 5px 0 0;
+    padding: 0 10px;
+    background-color: @tool-btn-back-color;
+    cursor: pointer;
+    display: inline-block;
+    font-size: @tool-btn-font-size;
+    line-height: @toolbar-height;
+    vertical-align: top;
+}
+
+#divToolbar .tool-btn i {
+    color: @toolbar-fore-color-light;
+    font-size: @tool-img-btn-font-size;
+}
+
+#divToolbar .tool-btn:hover,
+#divToolbar .tool-btn:hover i {
+    color: @tool-btn-hover-fore-color;
+}
+
+#spanDate {
+    position: relative;
+}
+
+#spanDate input {
+    width: 150px;
+    padding-right: 20px;
+}
+
+#spanDate i {
+    position: absolute;
+    right: 5px;
+    height: @toolbar-height;
+    line-height: @toolbar-height;
+    color: @toolbar-fore-color-light;
+    cursor: pointer;
+    font-size: @tool-img-btn-font-size;
+}
+
+#spanDate i:hover {
+    color: @tool-btn-hover-fore-color;
+}
+
+#spanDate i.error::before {
+  color: @tool-btn-fore-color-err;
+  content: "\f06a"; /*exclamation*/
+}
+
+#divDebugTools {
+    padding: 0 10px;
+    display: none;
+    vertical-align: top;
+}
+
+#divDebugTools.show {
+    display: inline-block;
+}
+
+/* Table */
+
+#divTblWrapper {
+    padding: 0 10px;
+    overflow: auto;
+}
+
+#divTblWrapper table {
+    border-collapse: collapse;
+}
+
+#divTblWrapper tr {
+    background-color: @row-back-color;
+}
+
+#divTblWrapper tr.hdr {
+    background-color: @row-back-color-hdr;
+}
+
+#divTblWrapper tr.hdr.fixed-table-header {
+    left: 10px;
+}
+
+#divTblWrapper tr.alt {
+    background-color: @row-back-color-alt;
+}
+
+#divTblWrapper td { 
+    border: 1px solid @cell-border-color;
+    font-size: @cell-font-size;
+    line-height: @cell-height;
+    padding: 2px 3px;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+#divTblWrapper tr.hdr td {
+    border-color: @cell-border-color-hdr;
+    font-weight: 600;
+    padding: 2px 7px;
+    text-align: center;
+}
+
+#divTblWrapper td a {
+    color: @link-fore-color;
+    text-decoration: none;
+}
+
+#divTblWrapper td a:hover {
+    color: @link-hover-fore-color;
+}
+
+#divTblWrapper td a,
+#divTblWrapper td span,
+#divTblWrapper td img {
+    vertical-align: middle;
+}

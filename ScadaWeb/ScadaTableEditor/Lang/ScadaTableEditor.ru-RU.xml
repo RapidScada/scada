@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaTableEditorDictionaries>
+  <Dictionary key="Scada.Web.Plugins.Table.TableView">
+    <Phrase key="LoadTableViewError">Ошибка при загрузке табличного представления из файла</Phrase>
+    <Phrase key="SaveTableViewError">Ошибка при сохранении табличного представления в файле</Phrase>
+  </Dictionary>
+</ScadaTableEditorDictionaries>

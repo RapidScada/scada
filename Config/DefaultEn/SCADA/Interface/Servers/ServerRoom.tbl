@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableView title="Server Room">
+  <Param cnlNum="101">t0</Param>
+  <Param cnlNum="102">t1</Param>
+  <Param cnlNum="103">t2</Param>
+  <Param cnlNum="104">t3</Param>
+  <Param cnlNum="105">t4</Param>
+  <Param cnlNum="106">t5</Param>
+  <Param cnlNum="107">t6</Param>
+  <Param cnlNum="115">t_avg</Param>
+  <Param />
+  <Param cnlNum="116">t0_max</Param>
+  <Param cnlNum="117">t1_max</Param>
+  <Param cnlNum="118">t2_max</Param>
+  <Param cnlNum="119">t3_max</Param>
+  <Param cnlNum="120">t4_max</Param>
+  <Param cnlNum="121">t5_max</Param>
+  <Param cnlNum="122">t6_max</Param>
+  <Param />
+  <Param cnlNum="123">t0_min</Param>
+  <Param cnlNum="124">t1_min</Param>
+  <Param cnlNum="125">t2_min</Param>
+  <Param cnlNum="126">t3_min</Param>
+  <Param cnlNum="127">t4_min</Param>
+  <Param cnlNum="128">t5_min</Param>
+  <Param cnlNum="129">t6_min</Param>
+</TableView>

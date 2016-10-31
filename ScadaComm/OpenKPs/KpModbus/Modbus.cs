@@ -536,6 +536,7 @@ namespace Scada.Comm.Devices.KpModbus
                 : base(tableType)
             {
                 reqDescr = "";
+                Active = true;
                 Elems = new List<Elem>();
                 ElemVals = null;
                 TotalElemLength = -1;
@@ -563,6 +564,11 @@ namespace Scada.Comm.Devices.KpModbus
                 ExcFuncCode = (byte)(FuncCode | 0x80);
             }
 
+
+            /// <summary>
+            /// Получить или установить признак активности
+            /// </summary>
+            public bool Active { get; set; }
 
             /// <summary>
             /// Получить список элементов в группе
@@ -989,6 +995,22 @@ namespace Scada.Comm.Devices.KpModbus
             }
 
             /// <summary>
+            /// Получить активные группы элементов
+            /// </summary>
+            public List<ElemGroup> GetActiveElemGroups()
+            {
+                List<ElemGroup> activeElemGroups = new List<ElemGroup>();
+
+                foreach (ElemGroup elemGroup in ElemGroups)
+                {
+                    if (elemGroup.Active)
+                        activeElemGroups.Add(elemGroup);
+                }
+
+                return activeElemGroups;
+            }
+
+            /// <summary>
             /// Загрузить шаблон устройства
             /// </summary>
             public bool LoadTemplate(string fileName, out string errMsg)
@@ -1012,11 +1034,14 @@ namespace Scada.Comm.Devices.KpModbus
 
                         foreach (XmlElement elemGroupElem in elemGroupsNode.ChildNodes)
                         {
-                            TableTypes tableType = (TableTypes)(Enum.Parse(typeof(TableTypes), 
+                            TableTypes tableType = 
+                                (TableTypes)(Enum.Parse(typeof(TableTypes), 
                                 elemGroupElem.GetAttribute("tableType"), true));
                             ElemGroup elemGroup = new ElemGroup(tableType);
-                            elemGroup.Address = ushort.Parse(elemGroupElem.GetAttribute("address"));
                             elemGroup.Name = elemGroupElem.GetAttribute("name");
+                            elemGroup.Address = (ushort)elemGroupElem.GetAttrAsInt("address");
+                            string active = elemGroupElem.GetAttribute("active");
+                            elemGroup.Active = active == "" ? true : bool.Parse(active);
                             elemGroup.StartKPTagInd = kpTagInd;
                             elemGroup.StartSignal = kpTagInd + 1;
 
@@ -1047,16 +1072,16 @@ namespace Scada.Comm.Devices.KpModbus
                     {
                         foreach (XmlElement cmdElem in cmdsNode.ChildNodes)
                         {
-                            TableTypes tableType = (TableTypes)(Enum.Parse(typeof(TableTypes),
-                                cmdElem.GetAttribute("tableType"), true));
+                            TableTypes tableType = 
+                                (TableTypes)(Enum.Parse(typeof(TableTypes), cmdElem.GetAttribute("tableType"), true));
                             string multiple = cmdElem.GetAttribute("multiple");
                             string elemCnt = cmdElem.GetAttribute("elemCnt");
                             Cmd cmd = multiple == "" || elemCnt == "" ? 
                                 new Cmd(tableType) : 
                                 new Cmd(tableType, bool.Parse(multiple), int.Parse(elemCnt));
-                            cmd.Address = ushort.Parse(cmdElem.GetAttribute("address"));
+                            cmd.Address = (ushort)cmdElem.GetAttrAsInt("address");
                             cmd.Name = cmdElem.GetAttribute("name");
-                            cmd.CmdNum = int.Parse(cmdElem.GetAttribute("cmdNum"));
+                            cmd.CmdNum = cmdElem.GetAttrAsInt("cmdNum");
 
                             if (0 < cmd.CmdNum && cmd.CmdNum <= ushort.MaxValue)
                                 Cmds.Add(cmd);
@@ -1095,9 +1120,10 @@ namespace Scada.Comm.Devices.KpModbus
                     foreach (ElemGroup elemGroup in ElemGroups)
                     {
                         XmlElement elemGroupElem = xmlDoc.CreateElement("ElemGroup");
+                        elemGroupElem.SetAttribute("active", elemGroup.Active);
+                        elemGroupElem.SetAttribute("tableType", elemGroup.TableType);
+                        elemGroupElem.SetAttribute("address", elemGroup.Address);
                         elemGroupElem.SetAttribute("name", elemGroup.Name);
-                        elemGroupElem.SetAttribute("tableType", elemGroup.TableType.ToString());
-                        elemGroupElem.SetAttribute("address", elemGroup.Address.ToString());
                         elemGroupsElem.AppendChild(elemGroupElem);
 
                         bool writeElemType = elemGroup.TableType == TableTypes.InputRegisters || 
@@ -1125,12 +1151,12 @@ namespace Scada.Comm.Devices.KpModbus
                         XmlElement cmdElem = xmlDoc.CreateElement("Cmd");
                         cmdsElem.AppendChild(cmdElem);
 
+                        cmdElem.SetAttribute("tableType", cmd.TableType);
+                        cmdElem.SetAttribute("multiple", cmd.Multiple);
+                        cmdElem.SetAttribute("address", cmd.Address);
+                        cmdElem.SetAttribute("elemCnt", cmd.ElemCnt);
+                        cmdElem.SetAttribute("cmdNum", cmd.CmdNum);
                         cmdElem.SetAttribute("name", cmd.Name);
-                        cmdElem.SetAttribute("tableType", cmd.TableType.ToString());
-                        cmdElem.SetAttribute("multiple", cmd.Multiple.ToString().ToLowerInvariant());
-                        cmdElem.SetAttribute("address", cmd.Address.ToString());
-                        cmdElem.SetAttribute("elemCnt", cmd.ElemCnt.ToString());
-                        cmdElem.SetAttribute("cmdNum", cmd.CmdNum.ToString());
                     }
 
                     xmlDoc.Save(fileName);
@@ -1161,8 +1187,9 @@ namespace Scada.Comm.Devices.KpModbus
                 {
                     ElemGroup elemGroup = new ElemGroup(srcGroup.TableType)
                     {
-                        Address = srcGroup.Address,
                         Name = srcGroup.Name,
+                        Address = srcGroup.Address,
+                        Active = srcGroup.Active,
                         StartKPTagInd = srcGroup.StartKPTagInd,
                         StartSignal = srcGroup.StartSignal,
                     };

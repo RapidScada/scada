@@ -1,0 +1,1 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EventsRepOut.aspx.cs" Inherits="Scada.Web.Plugins.Table.WFrmEventsRepOut" %>

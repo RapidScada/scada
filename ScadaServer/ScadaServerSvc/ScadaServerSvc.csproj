@@ -57,6 +57,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
     </Reference>
+    <Reference Include="ScadaData.Svc">
+      <HintPath>..\..\ScadaData\ScadaData.Svc\bin\Release\ScadaData.Svc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.DirectoryServices" />
@@ -68,15 +71,12 @@
     <EmbeddedResource Include="CalcEngine.cs" />
     <Compile Include="Calculator.cs" />
     <Compile Include="Comm.cs" />
-    <Compile Include="InstMain.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="InstMain.Designer.cs">
-      <DependentUpon>InstMain.cs</DependentUpon>
-    </Compile>
     <Compile Include="MainLogic.cs" />
     <Compile Include="MainLogic.Types.cs" />
     <Compile Include="Manager.cs" />
+    <Compile Include="SvcInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="SvcMain.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -87,9 +87,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="InstMain.resx">
-      <DependentUpon>InstMain.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="SvcMain.resx">
       <DependentUpon>SvcMain.cs</DependentUpon>
     </EmbeddedResource>

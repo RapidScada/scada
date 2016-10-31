@@ -24,7 +24,7 @@
  */
 
 using Scada.Comm.Devices.AddressBook;
-using Scada.Data;
+using Scada.Data.Tables;
 using System.Collections.Generic;
 
 namespace Scada.Comm.Devices
@@ -90,7 +90,7 @@ namespace Scada.Comm.Devices
                     Signal = 1,
                     ParamName = Localization.UseRussian ? "Связь" : "Connection",
                     ShowNumber = false,
-                    UnitName = Localization.UseRussian ? "Нет - Есть" : "No - Yes",
+                    UnitName = BaseValues.UnitNames.NoYes,
                     EvEnabled = true,
                     EvOnChange = true
                 });
@@ -101,7 +101,7 @@ namespace Scada.Comm.Devices
                     Signal = 2,
                     ParamName = Localization.UseRussian ? "Событие" : "Event",
                     DecDigits = 0,
-                    UnitName = Localization.UseRussian ? "Шт." : "pcs."
+                    UnitName = BaseValues.UnitNames.Pcs
                 });
 
                 // создание прототипов каналов управления

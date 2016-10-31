@@ -1,0 +1,223 @@
+<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+   <Author>Rapid SCADA</Author>
+   <LastAuthor>Rapid SCADA</LastAuthor>
+   <Created>2006-08-29T09:50:54Z</Created>
+  <Version>14.00</Version>
+ </DocumentProperties>
+ <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
+  <DownloadComponents/>
+  <LocationOfComponents HRef="file:///G:\"/>
+ </OfficeDocumentSettings>
+ <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
+  <WindowHeight>11760</WindowHeight>
+  <WindowWidth>15195</WindowWidth>
+  <WindowTopX>480</WindowTopX>
+  <WindowTopY>120</WindowTopY>
+  <ProtectStructure>False</ProtectStructure>
+  <ProtectWindows>False</ProtectWindows>
+ </ExcelWorkbook>
+ <Styles>
+  <Style ss:ID="Default" ss:Name="Normal">
+   <Alignment ss:Vertical="Bottom"/>
+   <Borders/>
+   <Font ss:FontName="Arial" x:CharSet="204"/>
+   <Interior/>
+   <NumberFormat/>
+   <Protection/>
+  </Style>
+  <Style ss:ID="s62">
+   <Alignment ss:Vertical="Bottom"/>
+   <Font ss:FontName="Arial" x:CharSet="204" ss:Size="18"/>
+  </Style>
+  <Style ss:ID="s63">
+   <Alignment ss:Vertical="Center"/>
+  </Style>
+  <Style ss:ID="s64">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
+   <Font ss:FontName="Arial" x:CharSet="204" ss:Size="12" ss:Bold="1"/>
+   <Interior ss:Color="#C0C0C0" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s65">
+   <Alignment ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
+  </Style>
+  <Style ss:ID="s66">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
+  </Style>
+ </Styles>
+ <Worksheet ss:Name="Hour Data">
+  <Table ss:ExpandedColumnCount="49" ss:ExpandedRowCount="5" x:FullColumns="1"
+   x:FullRows="1">
+   <Column ss:AutoFitWidth="0" ss:Width="213.75"/>
+   <Column ss:AutoFitWidth="0" ss:Width="66.75" ss:Span="47"/>
+   <Row ss:AutoFitHeight="0" ss:Height="20.25">
+    <Cell ss:StyleID="s62"><Data ss:Type="String">repVal=Title</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">repVal=Gen</Data></Cell>
+   </Row>
+   <Row ss:Index="4" ss:AutoFitHeight="0" ss:Height="15.75" ss:StyleID="s63">
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=ItemCol</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H-24</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H-23</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H-22</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H-21</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H-20</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H-19</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H-18</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H-17</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H-16</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H-15</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H-14</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H-13</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H-12</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H-11</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H-10</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H-9</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H-8</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H-7</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H-6</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H-5</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H-4</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H-3</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H-2</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H-1</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H0</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H1</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H2</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H3</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H4</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H5</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H6</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H7</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H8</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H9</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H10</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H11</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H12</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H13</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H14</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H15</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H16</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H17</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H18</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H19</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H20</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H21</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H22</Data></Cell>
+    <Cell ss:StyleID="s64"><Data ss:Type="String">repVal=H23</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="15.75" ss:StyleID="s63">
+    <Cell ss:StyleID="s65"><Data ss:Type="String">repRow=Item repVal=Name</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h-24</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h-23</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h-22</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h-21</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h-20</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h-19</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h-18</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h-17</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h-16</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h-15</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h-14</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h-13</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h-12</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h-11</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h-10</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h-9</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h-8</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h-7</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h-6</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h-5</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h-4</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h-3</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h-2</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h-1</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h0</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h1</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h2</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h3</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h4</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h5</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h6</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h7</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h8</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h9</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h10</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h11</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h12</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h13</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h14</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h15</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h16</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h17</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h18</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h19</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h20</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h21</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h22</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">repVal=h23</Data></Cell>
+   </Row>
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup>
+    <Layout x:Orientation="Landscape"/>
+    <Header x:Margin="0"/>
+    <Footer x:Margin="0"/>
+    <PageMargins x:Bottom="0.78740157480314965" x:Left="0.39370078740157483"
+     x:Right="0.39370078740157483" x:Top="0.39370078740157483"/>
+   </PageSetup>
+   <FitToPage/>
+   <Print>
+    <FitHeight>0</FitHeight>
+    <ValidPrinterInfo/>
+    <PaperSizeIndex>9</PaperSizeIndex>
+    <Scale>21</Scale>
+    <HorizontalResolution>600</HorizontalResolution>
+    <VerticalResolution>600</VerticalResolution>
+   </Print>
+   <Zoom>75</Zoom>
+   <Selected/>
+   <FreezePanes/>
+   <FrozenNoSplit/>
+   <SplitHorizontal>4</SplitHorizontal>
+   <TopRowBottomPane>4</TopRowBottomPane>
+   <ActivePane>2</ActivePane>
+   <Panes>
+    <Pane>
+     <Number>3</Number>
+    </Pane>
+    <Pane>
+     <Number>2</Number>
+     <ActiveRow>0</ActiveRow>
+    </Pane>
+   </Panes>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+ </Worksheet>
+</Workbook>

@@ -24,10 +24,10 @@
  */
 
 using Scada.Comm.Channels;
-using Scada.Data;
+using Scada.Data.Models;
+using Scada.Data.Tables;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO.Ports;
 using System.Reflection;
 using System.Text;
@@ -910,6 +910,23 @@ namespace Scada.Comm.Devices
                     SrezTableLight.CnlData curTagData = curData[tagIndex];
                     curDataModified[tagIndex] |= curTagData.Val != newData.Val || curTagData.Stat != newData.Stat;
                     curData[tagIndex] = newData;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Потокобезопасно увеличить текущее значение тега КП без изменения статуса
+        /// </summary>
+        protected void IncCurData(int tagIndex, double number)
+        {
+            lock (curData)
+            {
+                if (0 <= tagIndex && tagIndex < curData.Length)
+                {
+                    SrezTableLight.CnlData curTagData = curData[tagIndex];
+                    double newVal = curTagData.Val + number;
+                    curDataModified[tagIndex] |= number != 0;
+                    curData[tagIndex] = new SrezTableLight.CnlData(newVal, curTagData.Stat);
                 }
             }
         }

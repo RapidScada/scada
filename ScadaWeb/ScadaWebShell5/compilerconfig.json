@@ -1,0 +1,70 @@
+﻿[
+  {
+    "outputFile": "css/mastermain.css",
+    "inputFile": "css/mastermain.less"
+  },
+  {
+    "outputFile": "css/login.css",
+    "inputFile": "css/login.less"
+  },
+  {
+    "outputFile": "css/controls/treeview.css",
+    "inputFile": "css/controls/treeview.less"
+  },
+  {
+    "outputFile": "css/view.css",
+    "inputFile": "css/view.less"
+  },
+  {
+    "outputFile": "css/noview.css",
+    "inputFile": "css/noview.less"
+  },
+  {
+    "outputFile": "css/controls/notifier.css",
+    "inputFile": "css/controls/notifier.less"
+  },
+  {
+    "outputFile": "css/controls/popup.css",
+    "inputFile": "css/controls/popup.less"
+  },
+  {
+    "outputFile": "css/dialogs/calendar.css",
+    "inputFile": "css/dialogs/calendar.less"
+  },
+  {
+    "outputFile": "css/controls/tableheader.css",
+    "inputFile": "css/controls/tableheader.less"
+  },
+  {
+    "outputFile": "css/about.css",
+    "inputFile": "css/about.less"
+  },
+  {
+    "outputFile": "css/error.css",
+    "inputFile": "css/error.less"
+  },
+  {
+    "outputFile": "css/user.css",
+    "inputFile": "css/user.less"
+  },
+  {
+    "outputFile": "css/controls/splitter.css",
+    "inputFile": "css/controls/splitter.less"
+  },
+  {
+    "outputFile": "css/common/modalform.css",
+    "inputFile": "css/common/modalform.less"
+  },
+  {
+    "outputFile": "css/common/contentform.css",
+    "inputFile": "css/common/contentform.less"
+  },
+  {
+    "outputFile": "css/reports.css",
+    "inputFile": "css/reports.less"
+  },
+  {
+    "outputFile": "css/dialogs/confirm.css",
+    "inputFile": "css/dialogs/confirm.less"
+  }
+]

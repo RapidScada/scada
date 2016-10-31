@@ -1,0 +1,42 @@
+﻿@import "../../../css/common/modalform.less";
+
+@ack-fore-color: white;
+@ack-yes-back-color: #337ab7; /* Bootstrap primary color */
+@ack-no-back-color: #777; /* Bootstrap default color */
+
+#btnSubmit {
+    display: none;
+}
+
+#tblInfo th {
+    font-weight: normal;
+    padding: 2px 0;
+    vertical-align: top;
+    text-align: right;
+}
+
+#tblInfo td {
+    padding: 2px 10px;
+    vertical-align: top;
+}
+
+#tblInfo td.ack span {
+    position: relative;
+    top: -2px;
+}
+
+#tblInfo .ack-yes,
+#tblInfo .ack-no {
+    border-radius: 3px;
+    color: @ack-fore-color;
+    display: inline-block;
+    padding: 2px 5px;
+}
+
+#tblInfo .ack-yes {
+    background-color: @ack-yes-back-color;   
+}
+
+#tblInfo .ack-no {
+    background-color: @ack-no-back-color;   
+}

@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : PlgSchemeCommon
+ * Module   : PlgScheme
  * Summary  : Scheme layout web form
  * 
  * Author   : Mikhail Shiryaev
@@ -23,11 +23,11 @@
  * Modified : 2016
  */
 
-//#define DEBUG_MODE
-
+using Scada.Data.Models;
 using Scada.Scheme;
+using Scada.UI;
+using Scada.Web.Shell;
 using System;
-using System.Web;
 
 namespace Scada.Web.Plugins.Scheme
 {
@@ -37,43 +37,48 @@ namespace Scada.Web.Plugins.Scheme
     /// </summary>
     public partial class WFrmScheme : System.Web.UI.Page
     {
-        /// <summary>
-        /// Имя словаря с фразами для формирования JavaScript
-        /// </summary>
-        private const string DictName = "Scada.Web.Plugins.Scheme.WFrmScheme.Js";
-
         // Переменные для вывода на веб-страницу
-        protected bool debugMode; // режим отладки
-        protected int viewID;     // ид. представления
-        protected int refrRate;   // частота обновления данных
-        protected string phrases; // локализованные фразы
-
-        private AppData appData;  // общие данные веб-приложения
-
+        protected bool debugMode = false; // режим отладки
+        protected int viewID;             // ид. представления
+        protected int refrRate;           // частота обновления данных
+        protected string phrases;         // локализованные фразы
+        protected bool controlRight;      // право на управление представлением
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            appData = AppData.GetAppData();
+            AppData appData = AppData.GetAppData();
             UserData userData = UserData.GetUserData();
 
-#if DEBUG_MODE
-            appData.Init(Server.MapPath("~"));
+#if DEBUG
             debugMode = true;
-#else
-            debugMode = false;
+            userData.LoginForDebug();
 #endif
 
-            int.TryParse(Request["viewID"], out viewID);
-            refrRate = userData.WebSettings.DataRefrRate;
+            // перевод веб-страницы
+            Translator.TranslatePage(Page, "Scada.Web.Plugins.Scheme.WFrmScheme");
 
-            Localization.Dict dict;
-            Localization.Dictionaries.TryGetValue(DictName, out dict);
-            phrases = WebUtils.DictionaryToJs(dict);
+            // получение ид. представления из параметров запроса
+            viewID = Request.QueryString.GetParamAsInt("viewID");
+
+            // проверка прав на просмотр представления
+            EntityRights rights = userData.LoggedOn ?
+                userData.UserRights.GetUiObjRights(viewID) : EntityRights.NoRights;
+            if (!rights.ViewRight)
+                Response.Redirect(UrlTemplates.NoView);
 
             // загрузка представления в кеш, чтобы проверить, что оно доступно, присвоить метку
-            // и обеспечить возможность получения данных входных каналов через API 
-            SchemeView schemeView = appData.ViewCache.GetView<SchemeView>(viewID, true);
-            appData.AssignStamp(schemeView);
+            // и обеспечить возможность получения данных входных каналов через API,
+            // ошибка будет записана в журнал приложения
+            SchemeView schemeView = appData.ViewCache.GetView<SchemeView>(viewID);
+            if (schemeView == null)
+                Response.Redirect(UrlTemplates.NoView);
+            else
+                appData.AssignStamp(schemeView);
+
+            // подготовка данных для вывода на веб-страницу
+            refrRate = userData.WebSettings.DataRefrRate;
+            phrases = WebUtils.DictionaryToJs("Scada.Web.Plugins.Scheme.WFrmScheme.Js");
+            controlRight = rights.ControlRight;
         }
     }
 }
