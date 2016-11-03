@@ -39,7 +39,7 @@ namespace Scada.Web
         /// <summary>
         /// Макс. длина периода, который задаётся в днях
         /// </summary>
-        public const int MaxDayPeriodLength = 31;
+        public const int MaxDayPeriodLength = 32;
         /// <summary>
         /// Макс. длина периода, который задаётся в месяцах
         /// </summary>
