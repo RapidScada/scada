@@ -130,7 +130,7 @@ namespace Scada.Comm.Devices
             {
                 state = Localization.UseRussian ? 
                     "Ожидание команд..." :
-                    "Waiting for commads...";
+                    "Waiting for commands...";
             }
         }
 
@@ -147,9 +147,9 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Преобразовать команду в список почтовых сообщений
+        /// Попытаться получить почтовое сообщение из команды ТУ
         /// </summary>
-        private bool ParseCmd(Command cmd, out MailMessage message)
+        private bool TryGetMessage(Command cmd, out MailMessage message)
         {
             string cmdDataStr = cmd.GetCmdDataStr();
             int ind1 = cmdDataStr.IndexOf(';');
@@ -320,7 +320,7 @@ namespace Scada.Comm.Devices
                 if (cmd.CmdNum == 1 && cmd.CmdTypeID == BaseValues.CmdTypes.Binary)
                 {
                     MailMessage message;
-                    if (ParseCmd(cmd, out message))
+                    if (TryGetMessage(cmd, out message))
                     {
                         if (SendMessage(message))
                             lastCommSucc = true;
