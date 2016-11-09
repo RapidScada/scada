@@ -66,9 +66,9 @@ namespace Scada.Comm.Devices
                     "Команды ТУ:\n" +
                     "1 (бинарная) - отправка уведомления.\n\n" +
                     "Примеры текста команды:\n" +
-                    "group_name;subject;message\n" +
-                    "contact_name;subject;message\n" +
-                    "email;subject;message" :
+                    "имя_группы;тема;сообщение\n" +
+                    "имя_контакта;тема;сообщение\n" +
+                    "эл_почта;тема;сообщение" :
 
                     "Sending email notifications.\n\n" +
                     "Commands:\n" +
