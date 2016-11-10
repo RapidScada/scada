@@ -28,7 +28,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
 
-namespace Scada.Comm.Devices.AddressBook
+namespace Scada.Comm.Devices.AB
 {
     /// <summary>
     /// Address book

@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using System.IO;
 using Utils;
 
-namespace Scada.Comm.Devices.AddressBook
+namespace Scada.Comm.Devices.AB
 {
     /// <summary>
     /// The class contains utility methods for the address book

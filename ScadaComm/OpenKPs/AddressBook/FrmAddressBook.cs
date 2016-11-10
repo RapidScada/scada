@@ -31,7 +31,7 @@ using System.IO;
 using System.Net.Mail;
 using System.Windows.Forms;
 
-namespace Scada.Comm.Devices.AddressBook
+namespace Scada.Comm.Devices.AB
 {
     /// <summary>
     /// Address book form
@@ -231,7 +231,7 @@ namespace Scada.Comm.Devices.AddressBook
             {
                 if (Localization.LoadDictionaries(appDirs.LangDir, "AddressBook", out errMsg))
                 {
-                    Translator.TranslateForm(this, "Scada.Comm.Devices.AddressBook.FrmAddressBook");
+                    Translator.TranslateForm(this, "Scada.Comm.Devices.AB.FrmAddressBook");
                     AbPhrases.Init();
                     rootNode.Text = AbPhrases.AddressBookNode;
                 }

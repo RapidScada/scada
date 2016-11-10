@@ -23,7 +23,7 @@
  * Modified : 2016
  */
 
-using Scada.Comm.Devices.AddressBook;
+using Scada.Comm.Devices.AB;
 using Scada.Data.Tables;
 using System.Collections.Generic;
 

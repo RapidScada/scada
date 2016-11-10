@@ -7,7 +7,7 @@
     <ProjectGuid>{CB3BC544-51CB-4A40-8CF0-4B769C01F996}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Scada.Comm.Devices.AddressBook</RootNamespace>
+    <RootNamespace>Scada.Comm.Devices.AB</RootNamespace>
     <AssemblyName>AddressBook</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

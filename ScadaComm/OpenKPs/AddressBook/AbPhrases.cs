@@ -23,7 +23,7 @@
  * Modified : 2016
  */
 
-namespace Scada.Comm.Devices.AddressBook
+namespace Scada.Comm.Devices.AB
 {
     /// <summary>
     /// The phrases used by the address book

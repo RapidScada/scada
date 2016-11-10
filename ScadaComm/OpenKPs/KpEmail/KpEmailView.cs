@@ -23,10 +23,9 @@
  * Modified : 2016
  */
 
-using Scada.Comm.Devices.AddressBook;
+using Scada.Comm.Devices.AB;
 using Scada.Comm.Devices.KpEmail;
 using Scada.Data.Tables;
-using System.Collections.Generic;
 
 namespace Scada.Comm.Devices
 {
@@ -89,18 +88,22 @@ namespace Scada.Comm.Devices
             {
                 KPCnlPrototypes prototypes = new KPCnlPrototypes();
 
+                prototypes.CtrlCnls.Add(new CtrlCnlPrototype(
+                    Localization.UseRussian ? "Отправка письма" : "Send email",
+                    BaseValues.CmdTypes.Binary)
+                {
+                    CmdNum = 1
+                });
+
                 prototypes.InCnls.Add(new InCnlPrototype(
                     Localization.UseRussian ? "Отправлено писем" : "Sent emails",
                     BaseValues.CnlTypes.TI)
                 {
                     Signal = 1,
                     DecDigits = 0,
-                    UnitName = BaseValues.UnitNames.Pcs
+                    UnitName = BaseValues.UnitNames.Pcs,
+                    CtrlCnlProps = prototypes.CtrlCnls[0]
                 });
-
-                prototypes.CtrlCnls.Add(new CtrlCnlPrototype(
-                    Localization.UseRussian ? "Отправка письма" : "Send email",
-                    BaseValues.CmdTypes.Binary) { CmdNum = 1 });
 
                 return prototypes;
             }

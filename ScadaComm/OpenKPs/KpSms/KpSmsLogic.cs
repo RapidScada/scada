@@ -27,15 +27,14 @@
  */
 
 using Scada.Comm.Channels;
+using Scada.Comm.Devices.AB;
 using Scada.Data.Models;
 using Scada.Data.Tables;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Text;
 using System.Threading;
-using AB = Scada.Comm.Devices.AddressBook;
 
 namespace Scada.Comm.Devices
 {
@@ -951,7 +950,7 @@ namespace Scada.Comm.Devices
                 CommonProps.Add("KpSmsPrimary", Caption);
 
                 // загрузка адресной книги
-                if (!AB.AbUtils.LoadAddressBook(AppDirs.ConfigDir, WriteToLog, out addressBook))
+                if (!AbUtils.LoadAddressBook(AppDirs.ConfigDir, WriteToLog, out addressBook))
                     addressBook = null;
             }
         }

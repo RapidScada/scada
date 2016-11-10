@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Scada.Comm.Devices.AddressBook.Properties {
+namespace Scada.Comm.Devices.AB.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Scada.Comm.Devices.AddressBook.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Scada.Comm.Devices.AddressBook.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Scada.Comm.Devices.AB.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

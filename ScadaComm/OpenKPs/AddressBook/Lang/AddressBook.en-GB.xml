@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <AddressBookDictionaries>
-  <Dictionary key="Scada.Comm.Devices.AddressBook">
+  <Dictionary key="Scada.Comm.Devices.AB">
     <Phrase key="LoadAddressBookError">Error loading address book</Phrase>
     <Phrase key="SaveAddressBookError">Error saving address book</Phrase>
   </Dictionary>
-  <Dictionary key="Scada.Comm.Devices.AddressBook.FrmAddressBook">
+  <Dictionary key="Scada.Comm.Devices.AB.FrmAddressBook">
     <Phrase key="this">Address Book</Phrase>
     <Phrase key="btnAddContactGroup.ToolTip">Add contact group</Phrase>
     <Phrase key="btnAddContact.ToolTip">Add contact</Phrase>

@@ -26,16 +26,15 @@
  * Sending email notifications.
  */
 
+using Scada.Comm.Devices.AB;
 using Scada.Comm.Devices.KpEmail;
 using Scada.Data.Models;
 using Scada.Data.Tables;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Net.Mail;
 using System.Threading;
-using AB = Scada.Comm.Devices.AddressBook;
 
 namespace Scada.Comm.Devices
 {
@@ -313,7 +312,7 @@ namespace Scada.Comm.Devices
         public override void OnCommLineStart()
         {
             writeState = true;
-            addressBook = AB.AbUtils.GetAddressBook(AppDirs.ConfigDir, CommonProps, WriteToLog);
+            addressBook = AbUtils.GetAddressBook(AppDirs.ConfigDir, CommonProps, WriteToLog);
             LoadConfig();
             InitSnmpClient();
             SetCurData(0, 0, 1);
