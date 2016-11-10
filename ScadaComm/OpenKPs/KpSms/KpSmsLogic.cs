@@ -951,24 +951,8 @@ namespace Scada.Comm.Devices
                 CommonProps.Add("KpSmsPrimary", Caption);
 
                 // загрузка адресной книги
-                string fileName = AppDirs.ConfigDir + AB.AddressBook.DefFileName;
-                if (File.Exists(fileName))
-                {
-                    WriteToLog(Localization.UseRussian ?
-                        "Загрузка адресной книги" :
-                        "Loading address book");
-                    addressBook = new AB.AddressBook();
-                    string errMsg;
-                    if (!addressBook.Load(fileName, out errMsg))
-                        WriteToLog(errMsg);
-                }
-                else
-                {
+                if (!AB.AbUtils.LoadAddressBook(AppDirs.ConfigDir, WriteToLog, out addressBook))
                     addressBook = null;
-                    WriteToLog(Localization.UseRussian ?
-                        "Адресная книга отсутствует" :
-                        "Address book is missing");
-                }
             }
         }
 

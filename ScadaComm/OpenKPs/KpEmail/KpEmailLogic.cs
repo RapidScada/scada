@@ -78,40 +78,6 @@ namespace Scada.Comm.Devices
 
 
         /// <summary>
-        /// Загрузить адресную книгу или получить её из общих свойств линии связи
-        /// </summary>
-        private void LoadAddressBook()
-        {
-            object addrBookObj;
-            if (CommonProps.TryGetValue("AddressBook", out addrBookObj))
-            {
-                addressBook = addrBookObj as AB.AddressBook;
-            }
-            else
-            {
-                addressBook = new AB.AddressBook();
-                CommonProps.Add("AddressBook", addressBook);
-
-                string fileName = AppDirs.ConfigDir + AB.AddressBook.DefFileName;
-                if (File.Exists(fileName))
-                {
-                    WriteToLog(Localization.UseRussian ?
-                        "Загрузка адресной книги" :
-                        "Loading address book");
-                    string errMsg;
-                    if (!addressBook.Load(fileName, out errMsg))
-                        WriteToLog(errMsg);
-                }
-                else
-                {
-                    WriteToLog(Localization.UseRussian ?
-                        "Адресная книга отсутствует" :
-                        "Address book is missing");
-                }
-            }
-        }
-
-        /// <summary>
         /// Загрузить конфигурацию соединения с почтовым сервером
         /// </summary>
         private void LoadConfig()
@@ -347,7 +313,7 @@ namespace Scada.Comm.Devices
         public override void OnCommLineStart()
         {
             writeState = true;
-            LoadAddressBook();
+            addressBook = AB.AbUtils.GetAddressBook(AppDirs.ConfigDir, CommonProps, WriteToLog);
             LoadConfig();
             InitSnmpClient();
             SetCurData(0, 0, 1);

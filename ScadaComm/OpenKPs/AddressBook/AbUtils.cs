@@ -36,39 +36,57 @@ namespace Scada.Comm.Devices.AddressBook
     public static class AbUtils
     {
         /// <summary>
+        /// Загрузить адресную книгу из файла
+        /// </summary>
+        public static bool LoadAddressBook(string configDir, Log.WriteLineDelegate writeToLog, 
+            out AddressBook addressBook)
+        {
+            addressBook = new AddressBook();
+
+            string fileName = configDir + AddressBook.DefFileName;
+            if (File.Exists(fileName))
+            {
+                writeToLog(Localization.UseRussian ?
+                    "Загрузка адресной книги" :
+                    "Loading address book");
+                string errMsg;
+
+                if (addressBook.Load(fileName, out errMsg))
+                {
+                    return true;
+                }
+                else
+                {
+                    writeToLog(errMsg);
+                    return false;
+                }
+            }
+            else
+            {
+                writeToLog(Localization.UseRussian ?
+                    "Адресная книга отсутствует" :
+                    "Address book is missing");
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Загрузить адресную книгу из файла или получить её из общих свойств линии связи Коммуникатора
         /// </summary>
         public static AddressBook GetAddressBook(string configDir, SortedList<string, object> commonProps, 
             Log.WriteLineDelegate writeToLog)
         {
             AddressBook addressBook;
-
             object addrBookObj;
+
             if (commonProps.TryGetValue("AddressBook", out addrBookObj))
             {
                 addressBook = addrBookObj as AddressBook;
             }
             else
             {
-                addressBook = new AddressBook();
+                LoadAddressBook(configDir, writeToLog, out addressBook);
                 commonProps.Add("AddressBook", addressBook);
-
-                string fileName = configDir + AddressBook.DefFileName;
-                if (File.Exists(fileName))
-                {
-                    writeToLog(Localization.UseRussian ?
-                        "Загрузка адресной книги" :
-                        "Loading address book");
-                    string errMsg;
-                    if (!addressBook.Load(fileName, out errMsg))
-                        writeToLog(errMsg);
-                }
-                else
-                {
-                    writeToLog(Localization.UseRussian ?
-                        "Адресная книга отсутствует" :
-                        "Address book is missing");
-                }
             }
 
             return addressBook;
