@@ -460,7 +460,7 @@ namespace Scada.Comm.Devices.AddressBook
             }
             catch (Exception ex)
             {
-                errMsg = LibPhrases.LoadAddressBookError + ":" + Environment.NewLine + ex.Message;
+                errMsg = AbPhrases.LoadAddressBookError + ":" + Environment.NewLine + ex.Message;
                 return false;
             }
         }
@@ -509,7 +509,7 @@ namespace Scada.Comm.Devices.AddressBook
             }
             catch (Exception ex)
             {
-                errMsg = LibPhrases.SaveAddressBookError + ":" + Environment.NewLine + ex.Message;
+                errMsg = AbPhrases.SaveAddressBookError + ":" + Environment.NewLine + ex.Message;
                 return false;
             }
         }

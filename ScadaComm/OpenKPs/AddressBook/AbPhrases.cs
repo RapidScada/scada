@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : AddressBook
- * Summary  : The phrases used by the library
+ * Summary  : The phrases used by the address book
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
@@ -26,12 +26,12 @@
 namespace Scada.Comm.Devices.AddressBook
 {
     /// <summary>
-    /// The phrases used by the library
-    /// <para>Фразы, используемые библиотекой</para>
+    /// The phrases used by the address book
+    /// <para>Фразы, используемые адресной книгой</para>
     /// </summary>
-    internal static class LibPhrases
+    internal static class AbPhrases
     {
-        static LibPhrases()
+        static AbPhrases()
         {
             SetToDefault();
         }

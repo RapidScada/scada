@@ -29,8 +29,13 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\AddressBook.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Log, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Log\bin\Release\Log.dll</HintPath>
+    </Reference>
     <Reference Include="ScadaCommCommon, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ScadaCommCommon\bin\Release\ScadaCommCommon.dll</HintPath>
@@ -45,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbUtils.cs" />
     <Compile Include="AddressBook.cs" />
     <Compile Include="FrmAddressBook.cs">
       <SubType>Form</SubType>
@@ -52,7 +58,7 @@
     <Compile Include="FrmAddressBook.designer.cs">
       <DependentUpon>FrmAddressBook.cs</DependentUpon>
     </Compile>
-    <Compile Include="LibPhrases.cs" />
+    <Compile Include="AbPhrases.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

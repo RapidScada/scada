@@ -232,8 +232,8 @@ namespace Scada.Comm.Devices.AddressBook
                 if (Localization.LoadDictionaries(appDirs.LangDir, "AddressBook", out errMsg))
                 {
                     Translator.TranslateForm(this, "Scada.Comm.Devices.AddressBook.FrmAddressBook");
-                    LibPhrases.Init();
-                    rootNode.Text = LibPhrases.AddressBookNode;
+                    AbPhrases.Init();
+                    rootNode.Text = AbPhrases.AddressBookNode;
                 }
                 else
                 {
@@ -258,7 +258,7 @@ namespace Scada.Comm.Devices.AddressBook
         {
             if (Modified)
             {
-                DialogResult result = MessageBox.Show(LibPhrases.SavePhonebookConfirm,
+                DialogResult result = MessageBox.Show(AbPhrases.SavePhonebookConfirm,
                     CommonPhrases.QuestionCaption, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 
                 switch (result)
@@ -284,7 +284,7 @@ namespace Scada.Comm.Devices.AddressBook
         private void btnAddContactGroup_Click(object sender, EventArgs e)
         {
             // добавление группы контактов
-            AddressBook.ContactGroup contactGroup = new AddressBook.ContactGroup(LibPhrases.NewContactGroup);
+            AddressBook.ContactGroup contactGroup = new AddressBook.ContactGroup(AbPhrases.NewContactGroup);
             TreeNode contactGroupNode = CreateContactGroupNode(contactGroup);
 
             treeView.Add(rootNode, contactGroupNode);
@@ -298,7 +298,7 @@ namespace Scada.Comm.Devices.AddressBook
             TreeNode contactGroupNode = treeView.FindClosest(typeof(AddressBook.ContactGroup));
             if (contactGroupNode != null)
             {
-                AddressBook.Contact contact = new AddressBook.Contact(LibPhrases.NewContact);
+                AddressBook.Contact contact = new AddressBook.Contact(AbPhrases.NewContact);
                 TreeNode contactNode = CreateContactNode(contact);
 
                 treeView.Add(contactGroupNode, contactNode);
@@ -313,7 +313,7 @@ namespace Scada.Comm.Devices.AddressBook
             TreeNode contactNode = treeView.FindClosest(typeof(AddressBook.Contact));
             if (contactNode != null)
             {
-                AddressBook.PhoneNumber phoneNumber = new AddressBook.PhoneNumber(LibPhrases.NewPhoneNumber);
+                AddressBook.PhoneNumber phoneNumber = new AddressBook.PhoneNumber(AbPhrases.NewPhoneNumber);
                 TreeNode phoneNumberNode = CreatePhoneNumberNode(phoneNumber);
 
                 treeView.Add(contactNode, phoneNumberNode);
@@ -328,7 +328,7 @@ namespace Scada.Comm.Devices.AddressBook
             TreeNode contactNode = treeView.FindClosest(typeof(AddressBook.Contact));
             if (contactNode != null)
             {
-                AddressBook.Email email = new AddressBook.Email(LibPhrases.NewEmail);
+                AddressBook.Email email = new AddressBook.Email(AbPhrases.NewEmail);
                 TreeNode emailNode = CreateEmailNode(email);
 
                 treeView.Add(contactNode, emailNode);
@@ -400,7 +400,7 @@ namespace Scada.Comm.Devices.AddressBook
                     if (newVal == "")
                     {
                         e.CancelEdit = true;
-                        ScadaUiUtils.ShowError(LibPhrases.EmptyValueNotAllowed);
+                        ScadaUiUtils.ShowError(AbPhrases.EmptyValueNotAllowed);
                         e.Node.BeginEdit();
                     }
                     else if (!oldVal.Equals(newVal, StringComparison.Ordinal))
@@ -420,14 +420,14 @@ namespace Scada.Comm.Devices.AddressBook
                             newInd = FindInsertIndex<AddressBook.ContactGroup>(
                                 (List<AddressBook.ContactGroup>)list, curInd, out duplicated);
                             if (duplicated)
-                                errMsg = LibPhrases.ContactGroupExists;
+                                errMsg = AbPhrases.ContactGroupExists;
                         }
                         else if (bookItem is AddressBook.Contact)
                         {
                             newInd = FindInsertIndex<AddressBook.Contact>(
                                 (List<AddressBook.Contact>)list, curInd, out duplicated);
                             if (duplicated)
-                                errMsg = LibPhrases.ContactExists;
+                                errMsg = AbPhrases.ContactExists;
                         }
                         else if (bookItem is AddressBook.ContactRecord)
                         {
@@ -437,14 +437,14 @@ namespace Scada.Comm.Devices.AddressBook
                             if (bookItem is AddressBook.PhoneNumber)
                             {
                                 if (duplicated)
-                                    errMsg = LibPhrases.PhoneNumberExists;
+                                    errMsg = AbPhrases.PhoneNumberExists;
                             }
                             else
                             {
                                 if (duplicated)
-                                    errMsg = LibPhrases.EmailExists;
+                                    errMsg = AbPhrases.EmailExists;
                                 if (!CheckEmail(newVal))
-                                    errMsg = LibPhrases.IncorrectEmail;
+                                    errMsg = AbPhrases.IncorrectEmail;
                             }
                         }
 
