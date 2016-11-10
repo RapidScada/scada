@@ -181,7 +181,7 @@ namespace Scada.Comm.Devices
                         }
                         else
                         {
-                            // добавление адресов получателей из контакта
+                            // добавление адреса получателя из контакта
                             addresses.AddRange(contact.Emails);
                         }
                     }
