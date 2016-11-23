@@ -96,7 +96,7 @@
     <Content Include="css\article.min.css">
       <DependentUpon>article.css</DependentUpon>
     </Content>
-    <Content Include="js\article.js" />
+    <Content Include="js\scadadoc.js" />
     <Content Include="js\contents-en.js" />
     <Content Include="js\jquery.min.js" />
     <Content Include="Web.config" />
