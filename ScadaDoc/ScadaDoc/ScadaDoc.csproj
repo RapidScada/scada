@@ -60,7 +60,6 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="content\en\contents.html" />
     <Content Include="content\en\use-cases\modbus-protocol-files\btn_apply.png" />
     <Content Include="content\en\use-cases\modbus-protocol-files\btn_blank.png" />
     <Content Include="content\en\use-cases\modbus-protocol-files\btn_edit.png" />
@@ -97,19 +96,8 @@
     <Content Include="css\article.min.css">
       <DependentUpon>article.css</DependentUpon>
     </Content>
-    <Content Include="css\common.css">
-      <DependentUpon>common.less</DependentUpon>
-    </Content>
-    <Content Include="css\common.min.css">
-      <DependentUpon>common.css</DependentUpon>
-    </Content>
-    <Content Include="css\contents.css">
-      <DependentUpon>contents.less</DependentUpon>
-    </Content>
-    <Content Include="css\contents.min.css">
-      <DependentUpon>contents.css</DependentUpon>
-    </Content>
     <Content Include="js\article.js" />
+    <Content Include="js\contents-en.js" />
     <Content Include="js\jquery.min.js" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -122,8 +110,6 @@
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
     <Content Include="css\article.less" />
-    <Content Include="css\contents.less" />
-    <Content Include="css\common.less" />
     <Content Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

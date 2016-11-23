@@ -2,13 +2,5 @@
   {
     "outputFile": "css/article.css",
     "inputFile": "css/article.less"
-  },
-  {
-    "outputFile": "css/contents.css",
-    "inputFile": "css/contents.less"
-  },
-  {
-    "outputFile": "css/common.css",
-    "inputFile": "css/common.less"
   }
 ]

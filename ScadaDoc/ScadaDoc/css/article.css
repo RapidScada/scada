@@ -30,25 +30,17 @@ ul {
 em {
   color: #dd0055;
 }
+/* Table of Contents */
 .sd-contents {
   border-right: 5px solid #ddd;
   display: inline-block;
   margin: 0;
-  min-width: 100px;
+  min-width: 200px;
   padding: 0;
   overflow: hidden;
   width: 25%;
 }
-.sd-contents-frame {
-  display: block;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  border: none;
-  display: inline-block;
-  overflow: hidden;
-  width: 100%;
-}
+/* Articles */
 .sd-article {
   display: inline-block;
   margin: 0;
