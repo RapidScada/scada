@@ -4,8 +4,8 @@
     "inputFile": "css/article.less"
   },
   {
-    "outputFile": "css/content.css",
-    "inputFile": "css/content.less"
+    "outputFile": "css/contents.css",
+    "inputFile": "css/contents.less"
   },
   {
     "outputFile": "css/common.css",

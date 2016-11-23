@@ -1,6 +1,11 @@
 ﻿body {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 14px;
+  margin: 0;
+  padding: 0;
+}
+* {
+  box-sizing: border-box;
 }
 h1 {
   font-size: 36px;
@@ -24,6 +29,31 @@ ul {
 }
 em {
   color: #dd0055;
+}
+.sd-contents {
+  border-right: 5px solid #ddd;
+  display: inline-block;
+  margin: 0;
+  min-width: 100px;
+  padding: 0;
+  overflow: hidden;
+  width: 25%;
+}
+.sd-contents-frame {
+  display: block;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
+  display: inline-block;
+  overflow: hidden;
+  width: 100%;
+}
+.sd-article {
+  display: inline-block;
+  margin: 0;
+  padding: 0 20px;
+  overflow: auto;
 }
 .sd-article-meta {
   font-size: 12px;
