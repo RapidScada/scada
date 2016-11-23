@@ -1,0 +1,14 @@
+﻿[
+  {
+    "outputFile": "css/article.css",
+    "inputFile": "css/article.less"
+  },
+  {
+    "outputFile": "css/content.css",
+    "inputFile": "css/content.less"
+  },
+  {
+    "outputFile": "css/common.css",
+    "inputFile": "css/common.less"
+  }
+]

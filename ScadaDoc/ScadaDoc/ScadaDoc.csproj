@@ -20,6 +20,8 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -58,13 +60,71 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="content\en\content.html" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\btn_apply.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\btn_blank.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\btn_edit.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\btn_open.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\btn_pass.gif" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\btn_plus.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\btn_props.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\btn_restart_blue.gif" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\btn_restart_yellow.gif" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\btn_start.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_commline_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_create_cnls_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_data_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_data_with_cnls_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_device_props_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_dll_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_import_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_mode_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_popup_commlines_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_request_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_table_commline_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_table_editor_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_table_kp_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_table_obj_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_template_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_web1_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_web2_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_web_config1_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_web_config2_en.png" />
     <Content Include="content\en\use-cases\modbus-protocol.html" />
+    <Content Include="css\article.css">
+      <DependentUpon>article.less</DependentUpon>
+    </Content>
+    <Content Include="css\article.min.css">
+      <DependentUpon>article.css</DependentUpon>
+    </Content>
+    <Content Include="css\common.css">
+      <DependentUpon>common.less</DependentUpon>
+    </Content>
+    <Content Include="css\common.min.css">
+      <DependentUpon>common.css</DependentUpon>
+    </Content>
+    <Content Include="css\content.css">
+      <DependentUpon>content.less</DependentUpon>
+    </Content>
+    <Content Include="css\content.min.css">
+      <DependentUpon>content.css</DependentUpon>
+    </Content>
+    <Content Include="js\article.js" />
+    <Content Include="js\jquery.min.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
+    <Content Include="css\article.less" />
+    <Content Include="css\content.less" />
+    <Content Include="css\common.less" />
+    <Content Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -75,8 +135,6 @@
   <ItemGroup>
     <Folder Include="content\en\software-overview\" />
     <Folder Include="content\ru\" />
-    <Folder Include="css\" />
-    <Folder Include="js\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -103,6 +161,13 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="..\packages\BuildWebCompiler.1.11.319\build\BuildWebCompiler.targets" Condition="Exists('..\packages\BuildWebCompiler.1.11.319\build\BuildWebCompiler.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\BuildWebCompiler.1.11.319\build\BuildWebCompiler.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\BuildWebCompiler.1.11.319\build\BuildWebCompiler.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
