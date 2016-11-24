@@ -1,9 +1,5 @@
 ﻿[
   {
-    "outputFile": "css/article.css",
-    "inputFile": "css/article.less"
-  },
-  {
     "outputFile": "css/scadadoc.css",
     "inputFile": "css/scadadoc.less"
   },
