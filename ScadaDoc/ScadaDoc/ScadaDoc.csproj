@@ -90,12 +90,16 @@
     <Content Include="content\en\use-cases\modbus-protocol-files\modbus_web_config1_en.png" />
     <Content Include="content\en\use-cases\modbus-protocol-files\modbus_web_config2_en.png" />
     <Content Include="content\en\use-cases\modbus-protocol.html" />
-    <Content Include="css\article.css">
-      <DependentUpon>article.less</DependentUpon>
+    <Content Include="content\en\use-cases\opc-standard.html" />
+    <Content Include="content\ru\use-cases\modbus-protocol.html" />
+    <Content Include="css\scadadoc.css">
+      <DependentUpon>scadadoc.less</DependentUpon>
     </Content>
-    <Content Include="css\article.min.css">
-      <DependentUpon>article.css</DependentUpon>
+    <Content Include="css\scadadoc.min.css">
+      <DependentUpon>scadadoc.css</DependentUpon>
     </Content>
+    <Content Include="favicon.ico" />
+    <Content Include="js\contents-ru.js" />
     <Content Include="js\scadadoc.js" />
     <Content Include="js\contents-en.js" />
     <Content Include="js\jquery.min.js" />
@@ -111,6 +115,10 @@
     </None>
     <Content Include="css\article.less" />
     <Content Include="packages.config" />
+    <Content Include="css\scadadoc.less" />
+    <Content Include="css\common.less" />
+    <Content Include="css\contents.less" />
+    <Content Include="css\search.less" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -120,7 +128,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="content\en\software-overview\" />
-    <Folder Include="content\ru\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -11,6 +11,7 @@
     divArticle.append(articleElems);
 
     updateLayout();
+    createSearch();
     createContents();
 }
 
@@ -25,6 +26,24 @@ function updateLayout() {
     divArticle.outerWidth($(window).width() - contW);
 }
 
+function createSearch() {
+    var searchHtml =
+        "<script>" +
+        "  (function() {" +
+        "    var cx = '003943521229341952511:vsuy-pqfiri';" +
+        "    var gcse = document.createElement('script');" +
+        "    gcse.type = 'text/javascript';" +
+        "    gcse.async = true;\n" +
+        "    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;" +
+        "    var s = document.getElementsByTagName('script')[0];" +
+        "    s.parentNode.insertBefore(gcse, s);" +
+        "  })();" +
+        "</script>" +
+        "<gcse:search></gcse:search>";
+
+    $("div.sd-contents").append(searchHtml);
+}
+
 function createContents() {
     var context = createContext();
 
@@ -34,20 +53,40 @@ function createContents() {
 }
 
 function createContext() {
-    var siteRoot = "http://localhost:60765/";
-    var docRoot = "http://localhost:60765/content/en/";
+    var siteRoot = location.origin + "/";
+    var docRoot = siteRoot + "content/en/";
     var lang = "en";
 
+    var href = location.href;
+    var i1 = href.indexOf("/content/");
+
+    if (i1 >= 0) {
+        siteRoot = href.substring(0, i1 + 1);
+        docRoot = siteRoot + "content/en/";
+        var i2 = i1 + "/content/".length;
+        var i3 = href.indexOf("/", i2);
+
+        if (i3 >= 0) {
+            lang = href.substring(i2, i3);
+            docRoot = siteRoot + "content/" + lang + "/";
+        }
+    }
+
     return {
-        parDiv: $("div.sd-contents"),
+        contents: $("div.sd-contents"),
         siteRoot: siteRoot,
         docRoot: docRoot,
         lang: lang
     };
 }
 
-function addArticle(context, link, title) {
-    context.parDiv.append("<div><a href='" + context.docRoot + link + "'>" + title + "</a></div>");
+function addArticle(context, link, title, level) {
+    var levelClass = level ? " level" + level : "";
+    var itemInnerHtml = link ?
+        "<a href='" + context.docRoot + link + "'>" + title + "</a>" :
+        title;
+
+    context.contents.append("<div class='sd-contents-item" + levelClass + "'>" + itemInnerHtml + "</div>");
 }
 
 $(document).ready(function () {
