@@ -1,4 +1,5 @@
-﻿function addContents(context) {
+﻿// Add table of contents in English here
+function addContents(context) {
     addArticle(context, "", "Software Overview");
     addArticle(context, "", "Software Purpose and Characteristics", 1);
     addArticle(context, "", "Software Architecture", 1);

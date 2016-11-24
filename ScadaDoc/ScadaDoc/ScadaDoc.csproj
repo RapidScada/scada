@@ -60,6 +60,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="content\en\index.html" />
     <Content Include="content\en\use-cases\modbus-protocol-files\btn_apply.png" />
     <Content Include="content\en\use-cases\modbus-protocol-files\btn_blank.png" />
     <Content Include="content\en\use-cases\modbus-protocol-files\btn_edit.png" />
@@ -91,7 +92,14 @@
     <Content Include="content\en\use-cases\modbus-protocol-files\modbus_web_config2_en.png" />
     <Content Include="content\en\use-cases\modbus-protocol.html" />
     <Content Include="content\en\use-cases\opc-standard.html" />
+    <Content Include="content\ru\index.html" />
     <Content Include="content\ru\use-cases\modbus-protocol.html" />
+    <Content Include="css\index.css">
+      <DependentUpon>index.less</DependentUpon>
+    </Content>
+    <Content Include="css\index.min.css">
+      <DependentUpon>index.css</DependentUpon>
+    </Content>
     <Content Include="css\scadadoc.css">
       <DependentUpon>scadadoc.less</DependentUpon>
     </Content>
@@ -99,6 +107,7 @@
       <DependentUpon>scadadoc.css</DependentUpon>
     </Content>
     <Content Include="favicon.ico" />
+    <Content Include="index.html" />
     <Content Include="js\contents-ru.js" />
     <Content Include="js\scadadoc.js" />
     <Content Include="js\contents-en.js" />
@@ -119,6 +128,7 @@
     <Content Include="css\common.less" />
     <Content Include="css\contents.less" />
     <Content Include="css\search.less" />
+    <Content Include="css\index.less" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

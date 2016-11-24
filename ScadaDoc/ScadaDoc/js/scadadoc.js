@@ -81,12 +81,12 @@ function createContext() {
 }
 
 function addArticle(context, link, title, level) {
-    var levelClass = level ? " level" + level : "";
-    var itemInnerHtml = link ?
-        "<a href='" + context.docRoot + link + "'>" + title + "</a>" :
-        title;
+    var url = context.docRoot + link;
+    var itemInnerHtml = link ? "<a href='" + url + "'>" + title + "</a>" : title;
+    var levClass = level ? " level" + level : "";
+    var selClass = link && url == location.href ? " selected" : "";
 
-    context.contents.append("<div class='sd-contents-item" + levelClass + "'>" + itemInnerHtml + "</div>");
+    context.contents.append("<div class='sd-contents-item" + levClass + selClass + "'>" + itemInnerHtml + "</div>");
 }
 
 $(document).ready(function () {
