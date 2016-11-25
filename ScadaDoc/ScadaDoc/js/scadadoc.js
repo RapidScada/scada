@@ -49,6 +49,11 @@ function createContents() {
 
     $.getScript(context.siteRoot + "js/contents-" + context.lang + ".js", function () {
         addContents(context);
+
+        var selItem = $(".sd-contents-item.selected:first");
+        if (selItem.length > 0) {
+            context.contents.scrollTop(selItem.offset().top);
+        }
     });
 }
 
@@ -86,7 +91,8 @@ function addArticle(context, link, title, level) {
     var levClass = level ? " level" + level : "";
     var selClass = link && url == location.href ? " selected" : "";
 
-    context.contents.append("<div class='sd-contents-item" + levClass + selClass + "'>" + itemInnerHtml + "</div>");
+    var contentsItem = $("<div class='sd-contents-item" + levClass + selClass + "'>" + itemInnerHtml + "</div>");
+    context.contents.append(contentsItem);
 }
 
 $(document).ready(function () {

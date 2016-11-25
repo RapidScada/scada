@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="content\en\index.html" />
+    <Content Include="content\en\software-overview\software-purpose.html" />
     <Content Include="content\en\use-cases\modbus-protocol-files\btn_apply.png" />
     <Content Include="content\en\use-cases\modbus-protocol-files\btn_blank.png" />
     <Content Include="content\en\use-cases\modbus-protocol-files\btn_edit.png" />
@@ -136,9 +137,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="content\en\software-overview\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
