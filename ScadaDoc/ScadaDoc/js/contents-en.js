@@ -2,7 +2,7 @@
 function addContents(context) {
     addArticle(context, "", "Software Overview");
     addArticle(context, "software-overview/software-purpose.html", "Software Purpose and Characteristics", 1);
-    addArticle(context, "", "Software Architecture", 1);
+    addArticle(context, "software-overview/software-architecture.html", "Software Architecture", 1);
     addArticle(context, "", "Description of Applications", 1);
     addArticle(context, "", "Administrator", 2);
     addArticle(context, "", "Server", 2);

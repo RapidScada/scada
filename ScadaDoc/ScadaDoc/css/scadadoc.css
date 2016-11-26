@@ -23,7 +23,8 @@ h3 {
   margin: 30px 0 20px;
 }
 p,
-ul {
+ul,
+ol {
   line-height: 20px;
   margin: 20px 0 20px;
 }
@@ -81,6 +82,9 @@ a:hover {
 .sd-article-image {
   text-align: center;
   margin: 20px 0 20px;
+}
+.sd-article-image img {
+  max-width: 100%;
 }
 table.sd-article-table {
   border-collapse: collapse;

@@ -61,6 +61,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="content\en\index.html" />
+    <Content Include="content\en\software-overview\software-architecture-files\scada_arc_en.png" />
+    <Content Include="content\en\software-overview\software-architecture.html" />
     <Content Include="content\en\software-overview\software-purpose.html" />
     <Content Include="content\en\use-cases\modbus-protocol-files\btn_apply.png" />
     <Content Include="content\en\use-cases\modbus-protocol-files\btn_blank.png" />
@@ -94,6 +96,9 @@
     <Content Include="content\en\use-cases\modbus-protocol.html" />
     <Content Include="content\en\use-cases\opc-standard.html" />
     <Content Include="content\ru\index.html" />
+    <Content Include="content\ru\software-overview\software-architecture-files\scada_arc_ru.png" />
+    <Content Include="content\ru\software-overview\software-architecture.html" />
+    <Content Include="content\ru\software-overview\software-purpose.html" />
     <Content Include="content\ru\use-cases\modbus-protocol.html" />
     <Content Include="css\index.css">
       <DependentUpon>index.less</DependentUpon>
