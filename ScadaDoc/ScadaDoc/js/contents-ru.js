@@ -1,7 +1,7 @@
 ﻿// Add table of contents in Russian here
 function addContents(context) {
     addArticle(context, "", "Обзор комплекса");
-    addArticle(context, "", "Software Purpose and Characteristics", 1);
+    addArticle(context, "software-overview/software-purpose.html", "Назначение и характеристики программного комплекса", 1);
     addArticle(context, "", "Software Architecture", 1);
     addArticle(context, "", "Description of Applications", 1);
     addArticle(context, "", "Administrator", 2);
