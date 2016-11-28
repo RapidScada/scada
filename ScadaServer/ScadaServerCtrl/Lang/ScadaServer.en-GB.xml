@@ -109,7 +109,7 @@
     <Phrase key="chkWriteHrCopy">Write data copy</Phrase>
     <Phrase key="gbSaveParamsEv">Events</Phrase>
     <Phrase key="lblWriteEvPer">Writing period</Phrase>
-    <Phrase key="cbWriteEvPer">On change</Phrase>
+    <Phrase key="cbWriteEvPer.Items[0]">On change</Phrase>
     <Phrase key="lblStoreEvPer">Storing period, days</Phrase>
     <Phrase key="chkWriteEv">Write data</Phrase>
     <Phrase key="chkWriteEvCopy">Write data copy</Phrase>
