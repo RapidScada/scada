@@ -4,10 +4,10 @@ function addContents(context) {
     addArticle(context, "", "Обзор комплекса");
     addArticle(context, "software-overview/software-purpose.html", "Назначение и характеристики программного комплекса", 1);
     addArticle(context, "software-overview/software-architecture.html", "Архитектура программного комплекса", 1);
-    addArticle(context, "", "Description of Applications", 1);
-    addArticle(context, "", "Server", 2);
-    addArticle(context, "", "Communicator", 2);
-    addArticle(context, "", "Webstation", 2);
+    addArticle(context, "", "Описание приложений", 1);
+    addArticle(context, "software-overview/server-application.html", "Сервер", 2);
+    addArticle(context, "software-overview/communicator-application.html", "Коммуникатор", 2);
+    addArticle(context, "software-overview/webstation-application.html", "Вебстанция", 2);
     addArticle(context, "", "Administrator", 2);
     addArticle(context, "", "Table Editor", 2);
     addArticle(context, "", "Scheme Editor", 2);
