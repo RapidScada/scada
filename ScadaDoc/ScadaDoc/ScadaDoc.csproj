@@ -61,9 +61,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="content\en\index.html" />
+    <Content Include="content\en\software-overview\administrator-application-files\scada_admin_en.png" />
+    <Content Include="content\en\software-overview\administrator-application.html" />
+    <Content Include="content\en\software-overview\communicator-application-files\scada_comm_en.png" />
+    <Content Include="content\en\software-overview\communicator-application.html" />
+    <Content Include="content\en\software-overview\server-application-files\scada_server_en.png" />
+    <Content Include="content\en\software-overview\server-application.html" />
     <Content Include="content\en\software-overview\software-architecture-files\scada_arc_en.png" />
     <Content Include="content\en\software-overview\software-architecture.html" />
     <Content Include="content\en\software-overview\software-purpose.html" />
+    <Content Include="content\en\software-overview\webstation-application-files\scada_web_scheme_en.png" />
+    <Content Include="content\en\software-overview\webstation-application-files\scada_web_table_en.png" />
+    <Content Include="content\en\software-overview\webstation-application.html" />
     <Content Include="content\en\use-cases\modbus-protocol-files\btn_apply.png" />
     <Content Include="content\en\use-cases\modbus-protocol-files\btn_blank.png" />
     <Content Include="content\en\use-cases\modbus-protocol-files\btn_edit.png" />
@@ -96,9 +105,17 @@
     <Content Include="content\en\use-cases\modbus-protocol.html" />
     <Content Include="content\en\use-cases\opc-standard.html" />
     <Content Include="content\ru\index.html" />
+    <Content Include="content\ru\software-overview\administrator-application-files\scada_admin_ru.png" />
+    <Content Include="content\ru\software-overview\communicator-application-files\scada_comm_ru.png" />
+    <Content Include="content\ru\software-overview\communicator-application.html" />
+    <Content Include="content\ru\software-overview\server-application-files\scada_server_ru.png" />
+    <Content Include="content\ru\software-overview\server-application.html" />
     <Content Include="content\ru\software-overview\software-architecture-files\scada_arc_ru.png" />
     <Content Include="content\ru\software-overview\software-architecture.html" />
     <Content Include="content\ru\software-overview\software-purpose.html" />
+    <Content Include="content\ru\software-overview\webstation-application-files\scada_web_scheme_ru.png" />
+    <Content Include="content\ru\software-overview\webstation-application-files\scada_web_table_en.png" />
+    <Content Include="content\ru\software-overview\webstation-application.html" />
     <Content Include="content\ru\use-cases\modbus-protocol.html" />
     <Content Include="css\index.css">
       <DependentUpon>index.less</DependentUpon>
