@@ -106,6 +106,7 @@
     <Content Include="content\en\use-cases\opc-standard.html" />
     <Content Include="content\ru\index.html" />
     <Content Include="content\ru\software-overview\administrator-application-files\scada_admin_ru.png" />
+    <Content Include="content\ru\software-overview\administrator-application.html" />
     <Content Include="content\ru\software-overview\communicator-application-files\scada_comm_ru.png" />
     <Content Include="content\ru\software-overview\communicator-application.html" />
     <Content Include="content\ru\software-overview\server-application-files\scada_server_ru.png" />
