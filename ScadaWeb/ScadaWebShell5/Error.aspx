@@ -14,7 +14,7 @@
     <script type="text/javascript" src="<%= ResolveClientUrl("~/js/error.js") %>"></script>
 </head>
 <body>
-    <div id="divHeader">Rapid SCADA</div>
+    <div id="divHeader" class="plain-header">Rapid SCADA</div>
     <div id="divContent">
         <h1><asp:Label ID="lblTitle" runat="server" Text="Application Error"></asp:Label></h1>
         <div class="error"><asp:Label ID="lblErrMsg" runat="server" Text="An application error occurred. If it repeats often, please contact the support."></asp:Label></div>

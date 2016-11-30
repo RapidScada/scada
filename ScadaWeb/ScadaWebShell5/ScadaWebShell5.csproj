@@ -91,18 +91,6 @@
     <Content Include="css\dialogs\calendar.min.css">
       <DependentUpon>calendar.css</DependentUpon>
     </Content>
-    <Content Include="css\common\contentform.css">
-      <DependentUpon>contentform.less</DependentUpon>
-    </Content>
-    <Content Include="css\common\contentform.min.css">
-      <DependentUpon>contentform.css</DependentUpon>
-    </Content>
-    <Content Include="css\common\modalform.css">
-      <DependentUpon>modalform.less</DependentUpon>
-    </Content>
-    <Content Include="css\common\modalform.min.css">
-      <DependentUpon>modalform.css</DependentUpon>
-    </Content>
     <Content Include="css\controls\notifier.css">
       <DependentUpon>notifier.less</DependentUpon>
     </Content>
@@ -323,6 +311,7 @@
     <Content Include="css\controls\splitter.less" />
     <Content Include="css\common\modalform.less" />
     <Content Include="css\dialogs\confirm.less" />
+    <Content Include="css\common\plainform.less" />
     <None Include="css\mastermain.less" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
@@ -418,7 +407,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>51221</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
