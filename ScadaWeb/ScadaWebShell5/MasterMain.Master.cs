@@ -67,7 +67,7 @@ namespace Scada.Web
         protected string GenMainMenuHtml()
         {
             TreeViewRenderer.Options options = new TreeViewRenderer.Options() { ShowIcons = false };
-            return treeViewRenderer.GenerateHtml(userData.UserMenu.MenuItems, Request.Url.AbsolutePath, options);
+            return treeViewRenderer.GenerateHtml(userData.UserMenu.MenuItems, Request.Url.PathAndQuery, options);
         }
 
         /// <summary>
