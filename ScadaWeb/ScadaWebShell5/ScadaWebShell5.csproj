@@ -70,6 +70,18 @@
       <Link>lang\ScadaData.ru-RU.xml</Link>
     </Content>
     <Content Include="About.aspx" />
+    <Content Include="css\common\contentform.css">
+      <DependentUpon>contentform.less</DependentUpon>
+    </Content>
+    <Content Include="css\common\contentform.min.css">
+      <DependentUpon>contentform.css</DependentUpon>
+    </Content>
+    <Content Include="css\common\modalform.css">
+      <DependentUpon>modalform.less</DependentUpon>
+    </Content>
+    <Content Include="css\common\modalform.min.css">
+      <DependentUpon>modalform.css</DependentUpon>
+    </Content>
     <Content Include="css\dialogs\confirm.css">
       <DependentUpon>confirm.less</DependentUpon>
     </Content>
