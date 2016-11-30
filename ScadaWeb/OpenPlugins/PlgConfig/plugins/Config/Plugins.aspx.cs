@@ -182,7 +182,7 @@ namespace Scada.Web.Plugins.Config
         {
             HashSet<string> fileNameSet = new HashSet<string>();
             DirectoryInfo dirInfo = new DirectoryInfo(appData.AppDirs.BinDir);
-            FileInfo[] fileInfoArr = dirInfo.GetFiles("plg*.dll", SearchOption.TopDirectoryOnly);
+            FileInfo[] fileInfoArr = dirInfo.GetFiles("Plg*.dll", SearchOption.TopDirectoryOnly);
 
             foreach (FileInfo fileInfo in fileInfoArr)
             {
