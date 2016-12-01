@@ -23,10 +23,8 @@
  * Modified : 2016
  */
 
-using Scada.Web.Plugins.Config;
 using Scada.Web.Shell;
 using System.Collections.Generic;
-using System.IO;
 
 namespace Scada.Web.Plugins
 {
@@ -36,19 +34,6 @@ namespace Scada.Web.Plugins
     /// </summary>
     public class PlgConfigSpec : PluginSpec
     {
-        private DictUpdater dictUpdater; // объект для обновления словаря плагина
-
-        
-        /// <summary>
-        /// Конструктор
-        /// </summary>
-        public PlgConfigSpec()
-            : base()
-        {
-            dictUpdater = null;
-        }
-
-
         /// <summary>
         /// Получить наименование плагина
         /// </summary>
@@ -70,8 +55,8 @@ namespace Scada.Web.Plugins
             get
             {
                 return Localization.UseRussian ?
-                    "Плагин позволяет конфигурировать веб-приложение через браузер." :
-                    "The plugin allows to configure the web application using browser.";
+                    "Плагин позволяет конфигурировать Rapid SCADA через веб-интерфейс." :
+                    "The plugin allows to configure Rapid SCADA using web interface.";
             }
         }
 
@@ -82,28 +67,10 @@ namespace Scada.Web.Plugins
         {
             get
             {
-                return "1.0.0.0";
+                return "0.0.0.1";
             }
         }
 
-
-        /// <summary>
-        /// Инициализировать плагин
-        /// </summary>
-        public override void Init()
-        {
-            dictUpdater = new DictUpdater(
-                string.Format("{0}Config{1}lang{1}", AppDirs.PluginsDir, Path.DirectorySeparatorChar),
-                "PlgConfig", PlgPhrases.Init, Log);
-        }
-
-        /// <summary>
-        /// Выполнить действия после успешного входа пользователя в систему
-        /// </summary>
-        public override void OnUserLogin(UserData userData)
-        {
-            dictUpdater.Update();
-        }
 
         /// <summary>
         /// Получить элементы меню, доступные пользователю
@@ -113,16 +80,9 @@ namespace Scada.Web.Plugins
             if (userData.UserRights.ConfigRight)
             {
                 List<MenuItem> menuItems = new List<MenuItem>();
-
                 MenuItem configMenuItem = MenuItem.FromStandardMenuItem(StandardMenuItems.Config);
-                configMenuItem.Subitems.Add(new MenuItem(PlgPhrases.WebConfigMenuItem, 
-                    "~/plugins/Config/WebConfig.aspx"));
+                configMenuItem.Subitems.Add(new MenuItem("Web application", "~/plugins/Config/WebConfig.aspx", 100));
                 menuItems.Add(configMenuItem);
-
-                MenuItem pluginsMenuItem = new MenuItem(PlgPhrases.PluginsMenuItem, 
-                    "~/plugins/Config/Plugins.aspx", configMenuItem.SortOrder + 100);
-                menuItems.Add(pluginsMenuItem);
-
                 return menuItems;
             }
             else

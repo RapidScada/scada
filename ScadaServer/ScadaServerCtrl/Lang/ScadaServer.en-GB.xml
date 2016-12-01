@@ -198,7 +198,7 @@
     <Phrase key="ModulesNode">Modules</Phrase>
     <Phrase key="GeneratorNode">Generator</Phrase>
     <Phrase key="StatsNode">Stats</Phrase>
-    <Phrase key="ServiceState">State of {0}: {1}</Phrase>
+    <Phrase key="ServiceState">SCADA-Server service state: {0}</Phrase>
     <Phrase key="RestartNeeded">Settings changes will take effect after restarting SCADA-Server service.</Phrase>
     <Phrase key="GetFileListError">Error getting list of data files</Phrase>
     <Phrase key="LoadModuleError">Error loading module</Phrase>

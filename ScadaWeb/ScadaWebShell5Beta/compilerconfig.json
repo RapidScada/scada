@@ -1,0 +1,14 @@
+﻿[
+  {
+    "outputFile": "css/mastermain.css",
+    "inputFile": "css/mastermain.less"
+  },
+  {
+    "outputFile": "css/globalvar.css",
+    "inputFile": "css/globalvar.less"
+  },
+  {
+    "outputFile": "css/login.css",
+    "inputFile": "css/login.less"
+  }
+]

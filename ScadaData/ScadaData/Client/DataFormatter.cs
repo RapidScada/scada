@@ -23,10 +23,11 @@
  * Modified : 2016
  */
 
-using Scada.Data.Models;
-using Scada.Data.Tables;
+using Scada.Data;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 
 namespace Scada.Client
@@ -38,14 +39,18 @@ namespace Scada.Client
     public class DataFormatter
     {
         /// <summary>
-        /// Делегат получения свойств статуса входного канала
+        /// Делегат получения цвета по статусу
         /// </summary>
-        public delegate CnlStatProps GetCnlStatPropsDelegate(int stat);
+        public delegate string GetColorByStatDelegate(int stat, string defaultColor);
 
+        /// <summary>
+        /// Количество знаков дробной части по умолчанию
+        /// </summary>
+        protected const int DefDecDig = 3;
         /// <summary>
         /// Пустое значение входного канала
         /// </summary>
-        public const string EmptyVal = "---";
+        protected const string EmptyVal = "---";
         /// <summary>
         /// Отсутствующее значение входного канала
         /// </summary>
@@ -53,11 +58,7 @@ namespace Scada.Client
         /// <summary>
         /// Обозначение следующего часа
         /// </summary>
-        protected const string NextHourVal = "*";
-        /// <summary>
-        /// Количество знаков дробной части по умолчанию
-        /// </summary>
-        protected const int DefDecDig = 3;
+        protected const string NextHourVal = "***";
         /// <summary>
         /// Цвет значения по умолчанию
         /// </summary>
@@ -192,40 +193,13 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить текст события
+        /// Получить цвет значения входного канала 
         /// </summary>
-        public string GetEventText(EventTableLight.Event ev, InCnlProps cnlProps, CnlStatProps cnlStatProps)
-        {
-            if (string.IsNullOrEmpty(ev.Descr))
-            {
-                // текст в формате "<статус>: <значение>"
-                StringBuilder sbText = cnlStatProps == null ?
-                    new StringBuilder() : new StringBuilder(cnlStatProps.Name);
-
-                if (ev.NewCnlStat > BaseValues.CnlStatuses.Undefined)
-                {
-                    if (sbText.Length > 0)
-                        sbText.Append(": ");
-                    sbText.Append(FormatCnlVal(ev.NewCnlVal, ev.NewCnlStat, cnlProps, true));
-                }
-
-                return sbText.ToString();
-            }
-            else
-            {
-                // только описание события
-                return ev.Descr;
-            }
-        }
-
-        /// <summary>
-        /// Получить цвет значения входного канала
-        /// </summary>
-        public string GetCnlValColor(double val, int stat, InCnlProps cnlProps, CnlStatProps cnlStatProps)
+        public string GetCnlValColor(double val, int stat, InCnlProps cnlProps, GetColorByStatDelegate getColorByStat)
         {
             try
             {
-                if (cnlProps == null)
+                if (cnlProps == null || getColorByStat == null)
                 {
                     return DefColor;
                 }
@@ -237,8 +211,7 @@ namespace Scada.Client
                         stat == BaseValues.CnlStatuses.FormulaError ||
                         stat == BaseValues.CnlStatuses.Unreliable)
                     {
-                        return cnlStatProps == null || string.IsNullOrEmpty(cnlStatProps.Color) ? 
-                            DefColor : cnlStatProps.Color;
+                        return getColorByStat(stat, DefColor);
                     }
                     else
                     {
@@ -267,19 +240,19 @@ namespace Scada.Client
         /// <summary>
         /// Определить необходимость отображения часовых данных
         /// </summary>
-        public bool HourDataVisible(DateTime dataAge, DateTime nowDT, bool snapshotExists, out string emptyVal)
+        public bool HourDataVisible(DateTime dataAge, DateTime nowDT, int stat, out string emptyVal)
         {
-            if (snapshotExists || dataAge.Date < nowDT.Date)
+            if (stat > 0 || dataAge.Date < nowDT.Date)
             {
                 emptyVal = EmptyVal;
-                return snapshotExists;
+                return true;
             }
             else if (dataAge.Date > nowDT.Date)
             {
                 emptyVal = NoVal;
                 return false;
             }
-            else // dataAge.Date == nowDT.Date
+            else // dataDT.Date == nowDT.Date
             {
                 if (dataAge.Hour > nowDT.Hour + 1)
                 {
@@ -294,7 +267,7 @@ namespace Scada.Client
                 else
                 {
                     emptyVal = EmptyVal;
-                    return snapshotExists;
+                    return true;
                 }
             }
         }

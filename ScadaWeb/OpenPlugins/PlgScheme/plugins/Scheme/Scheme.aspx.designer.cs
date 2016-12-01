@@ -13,39 +13,12 @@ namespace Scada.Web.Plugins.Scheme {
     public partial class WFrmScheme {
         
         /// <summary>
-        /// lblFitScreenBtn control.
+        /// frmScheme control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblFitScreenBtn;
-        
-        /// <summary>
-        /// lblFitWidthBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblFitWidthBtn;
-        
-        /// <summary>
-        /// lblZoomOutBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblZoomOutBtn;
-        
-        /// <summary>
-        /// lblZoomInBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblZoomInBtn;
+        protected global::System.Web.UI.HtmlControls.HtmlForm frmScheme;
     }
 }

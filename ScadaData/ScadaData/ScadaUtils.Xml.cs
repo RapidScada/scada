@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2014 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -97,14 +97,6 @@ namespace Scada
         public static TimeSpan XmlParseTimeSpan(string s)
         {
             return TimeSpan.Parse(s, DateTimeFormatInfo.InvariantInfo);
-        }
-
-        /// <summary>
-        /// Преобразовать строку, считанную из XML-документа, в перечислимое значение
-        /// </summary>
-        public static T XmlParseEnum<T>(string s) where T : struct
-        {
-            return (T)Enum.Parse(typeof(T), s);
         }
 
 
@@ -233,22 +225,6 @@ namespace Scada
             }
         }
 
-        /// <summary>
-        /// Получить перечислимое значение дочернего XML-узла
-        /// </summary>
-        public static T GetChildAsEnum<T>(this XmlNode parentXmlNode, string childNodeName) where T : struct
-        {
-            try
-            {
-                XmlNode node = parentXmlNode.SelectSingleNode(childNodeName);
-                return node == null ? default(T) : XmlParseEnum<T>(node.InnerText);
-            }
-            catch (FormatException)
-            {
-                throw NewXmlNodeFormatException(childNodeName);
-            }
-        }
-
 
         /// <summary>
         /// Установить значение атрибута XML-элемента
@@ -331,22 +307,6 @@ namespace Scada
             {
                 return xmlElem.HasAttribute(attrName) ? 
                     XmlParseTimeSpan(xmlElem.GetAttribute(attrName)) : TimeSpan.Zero;
-            }
-            catch (FormatException)
-            {
-                throw NewXmlAttrFormatException(attrName);
-            }
-        }
-
-        /// <summary>
-        /// Получить перечислимое значение атрибута XML-элемента
-        /// </summary>
-        public static T GetAttrAsEnum<T>(this XmlElement xmlElem, string attrName) where T : struct
-        {
-            try
-            {
-                return xmlElem.HasAttribute(attrName) ?
-                    XmlParseEnum<T>(xmlElem.GetAttribute(attrName)) : default(T);
             }
             catch (FormatException)
             {

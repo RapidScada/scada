@@ -88,7 +88,7 @@ namespace Scada.Comm.Channels
             foreach (KPLogic kpLogic in kpList)
             {
                 string callNum = kpLogic.CallNum;
-                if (!string.IsNullOrEmpty(callNum))
+                if (!string.IsNullOrEmpty(callNum) && !kpCallNumDict.ContainsKey(callNum))
                 {
                     List<KPLogic> kpByCallNumList;
                     if (!kpCallNumDict.TryGetValue(callNum, out kpByCallNumList))

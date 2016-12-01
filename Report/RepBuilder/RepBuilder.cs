@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2014 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,10 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2016
+ * Modified : 2006
  */
 
+using System;
 using System.IO;
 using System.Windows.Forms;
 
@@ -37,23 +38,26 @@ namespace Utils.Report
         /// <summary>
         /// Получить имя отчёта
         /// </summary>
-        public abstract string RepName { get; }
+        public abstract string RepName
+        {
+            get;
+        }
 
         /// <summary>
         /// Получить описание отчёта
         /// </summary>
-        public virtual string RepDescr
+        public abstract string RepDescr
         {
-            get
-            {
-                return "";
-            }
+            get;
         }
 
         /// <summary>
         /// Получить формат отчёта
         /// </summary>
-        public abstract string RepFormat { get; }
+        public abstract string RepFormat
+        {
+            get;
+        }
 
         /// <summary>
         /// Получить имя файла шаблона

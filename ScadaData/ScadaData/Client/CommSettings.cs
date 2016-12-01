@@ -91,6 +91,19 @@ namespace Scada.Client
 
 
         /// <summary>
+        /// Установить значения настроек по умолчанию
+        /// </summary>
+        private void SetToDefault()
+        {
+            ServerHost = "localhost";
+            ServerPort = 10000;
+            ServerUser = "";
+            ServerPwd = "12345";
+            ServerTimeout = 10000;
+        }
+
+
+        /// <summary>
         /// Создать новый объект настроек
         /// </summary>
         public ISettings Create()
@@ -111,27 +124,14 @@ namespace Scada.Client
         /// </summary>
         public bool Equals(CommSettings commSettings)
         {
-            return commSettings == null ? false :
-                commSettings == this ? true :
+            return commSettings == null ? false : 
                 ServerHost == commSettings.ServerHost && ServerPort == commSettings.ServerPort &&
                 ServerUser == commSettings.ServerUser && ServerPwd == commSettings.ServerPwd &&
                 ServerTimeout == commSettings.ServerTimeout;
         }
 
         /// <summary>
-        /// Установить значения настроек по умолчанию
-        /// </summary>
-        public void SetToDefault()
-        {
-            ServerHost = "localhost";
-            ServerPort = 10000;
-            ServerUser = "";
-            ServerPwd = "12345";
-            ServerTimeout = 10000;
-        }
-
-        /// <summary>
-        /// Создать копию настроек
+        /// Создать копию настроек соединения со SCADA-Сервером
         /// </summary>
         public CommSettings Clone()
         {
@@ -139,43 +139,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Загрузить настройки из заданного XML-узла
-        /// </summary>
-        public void LoadFromXml(XmlNode commSettingsNode)
-        {
-            if (commSettingsNode == null)
-                throw new ArgumentNullException("commSettingsNode");
-
-            XmlNodeList xmlNodeList = commSettingsNode.SelectNodes("Param");
-
-            foreach (XmlElement xmlElement in xmlNodeList)
-            {
-                string name = xmlElement.GetAttribute("name").Trim();
-                string nameL = name.ToLowerInvariant();
-                string val = xmlElement.GetAttribute("value");
-
-                try
-                {
-                    if (nameL == "serverhost")
-                        ServerHost = val;
-                    else if (nameL == "serverport")
-                        ServerPort = int.Parse(val);
-                    else if (nameL == "serveruser")
-                        ServerUser = val;
-                    else if (nameL == "serverpwd")
-                        ServerPwd = val;
-                    else if (nameL == "servertimeout")
-                        ServerTimeout = int.Parse(val);
-                }
-                catch
-                {
-                    throw new ScadaException(string.Format(CommonPhrases.IncorrectXmlParamVal, name));
-                }
-            }
-        }
-
-        /// <summary>
-        /// Загрузить настройки из файла
+        /// Загрузить настройки соединения со SCADA-Сервером из файла
         /// </summary>
         public bool LoadFromFile(string fileName, out string errMsg)
         {
@@ -188,9 +152,34 @@ namespace Scada.Client
                 if (!File.Exists(fileName))
                     throw new FileNotFoundException(string.Format(CommonPhrases.NamedFileNotFound, fileName));
 
-                XmlDocument xmlDoc = new XmlDocument();
+                XmlDocument xmlDoc = new XmlDocument(); // обрабатываемый XML-документ
                 xmlDoc.Load(fileName);
-                LoadFromXml(xmlDoc.DocumentElement);
+
+                XmlNodeList xmlNodeList = xmlDoc.DocumentElement.SelectNodes("Param");
+                foreach (XmlElement xmlElement in xmlNodeList)
+                {
+                    string name = xmlElement.GetAttribute("name").Trim();
+                    string nameL = name.ToLowerInvariant();
+                    string val = xmlElement.GetAttribute("value");
+
+                    try
+                    {
+                        if (nameL == "serverhost")
+                            ServerHost = val;
+                        else if (nameL == "serverport")
+                            ServerPort = int.Parse(val);
+                        else if (nameL == "serveruser")
+                            ServerUser = val;
+                        else if (nameL == "serverpwd")
+                            ServerPwd = val;
+                        else if (nameL == "servertimeout")
+                            ServerTimeout = int.Parse(val);
+                    }
+                    catch
+                    {
+                        throw new ScadaException(string.Format(CommonPhrases.IncorrectXmlParamVal, name));
+                    }
+                }
 
                 errMsg = "";
                 return true;
@@ -203,7 +192,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Загрузить настройки из файла
+        /// Загрузить настройки соединения со SCADA-Сервером из файла
         /// </summary>
         [Obsolete]
         public void LoadFromFile(string fileName, Log log)
@@ -219,24 +208,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Сохранить настройки в заданный XML-элемент
-        /// </summary>
-        public void SaveToXml(XmlElement commSettingsElem)
-        {
-            commSettingsElem.AppendParamElem("ServerHost", ServerHost,
-                "Имя компьютера или IP-адрес SCADA-Сервера", "SCADA-Server host or IP address");
-            commSettingsElem.AppendParamElem("ServerPort", ServerPort,
-                "Номер TCP-порта SCADA-Сервера", "SCADA-Server TCP port number");
-            commSettingsElem.AppendParamElem("ServerUser", ServerUser,
-                "Имя пользователя для подключения", "User name for the connection");
-            commSettingsElem.AppendParamElem("ServerPwd", ServerPwd,
-                "Пароль пользователя для подключения", "User password for the connection");
-            commSettingsElem.AppendParamElem("ServerTimeout", ServerTimeout,
-                "Таймаут ожидания ответа, мс", "Response timeout, ms");
-        }
-
-        /// <summary>
-        /// Сохранить настройки в файле
+        /// Сохранить настройки соединения со SCADA-Сервером в файле
         /// </summary>
         public bool SaveToFile(string fileName, out string errMsg)
         {
@@ -249,7 +221,17 @@ namespace Scada.Client
 
                 XmlElement rootElem = xmlDoc.CreateElement("CommSettings");
                 xmlDoc.AppendChild(rootElem);
-                SaveToXml(rootElem);
+
+                rootElem.AppendParamElem("ServerHost", ServerHost,
+                    "Имя компьютера или IP-адрес SCADA-Сервера", "SCADA-Server host or IP address");
+                rootElem.AppendParamElem("ServerPort", ServerPort,
+                    "Номер TCP-порта SCADA-Сервера", "SCADA-Server TCP port number");
+                rootElem.AppendParamElem("ServerUser", ServerUser,
+                    "Имя пользователя для подключения", "User name for the connection");
+                rootElem.AppendParamElem("ServerPwd", ServerPwd,
+                    "Пароль пользователя для подключения", "User password for the connection");
+                rootElem.AppendParamElem("ServerTimeout", ServerTimeout,
+                    "Таймаут ожидания ответа, мс", "Response timeout, ms");
 
                 xmlDoc.Save(fileName);
                 errMsg = "";

@@ -341,7 +341,7 @@ namespace Scada.Web
                                 view = (BaseView)Activator.CreateInstance(viewType);
 
                                 if (!view.StoredOnServer)
-                                    view.Path = viewInfo.FileName;
+                                    view.ItfObjName = Path.GetFileName(viewInfo.FileName);
 
                                 if (!view.StoredOnServer || 
                                     AppData.MainData.ServerComm.ReceiveView(viewSet.Directory + viewInfo.FileName, view))

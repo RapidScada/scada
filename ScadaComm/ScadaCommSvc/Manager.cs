@@ -23,7 +23,7 @@
  * Modified : 2016
  */
 
-using Scada.Data.Models;
+using Scada.Data;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -45,7 +45,7 @@ namespace Scada.Comm.Svc
         /// <summary>
         /// Версия приложения
         /// </summary>
-        private const string AppVersion = "5.0.0.0";
+        private const string AppVersion = "4.5.0.6";
         /// <summary>
         /// Имя файла конфигурации
         /// </summary>

@@ -24,7 +24,7 @@
  */
 
 using Scada.Comm.Devices.KpModbus;
-using Scada.Data.Tables;
+using Scada.Data;
 using Scada.UI;
 using System;
 using System.Collections.Generic;
@@ -115,35 +115,22 @@ namespace Scada.Comm.Devices
 
                     foreach (Modbus.Elem elem in elemGroup.Elems)
                     {
-                        InCnlPrototype inCnl = isTS ?
-                            new InCnlPrototype(elem.Name, BaseValues.CnlTypes.TS) :
-                            new InCnlPrototype(elem.Name, BaseValues.CnlTypes.TI);
-                        inCnl.Signal = signal++;
-
-                        if (isTS)
+                        inCnls.Add(new InCnlPrototype(elem.Name, isTS ? BaseValues.CnlTypes.TS : BaseValues.CnlTypes.TI)
                         {
-                            inCnl.ShowNumber = false;
-                            inCnl.UnitName = BaseValues.UnitNames.OffOn;
-                            inCnl.EvEnabled = true;
-                            inCnl.EvOnChange = true;
-                        }
-
-                        inCnls.Add(inCnl);
+                            Signal = signal++,
+                            ShowNumber = !isTS,
+                            EvEnabled = isTS,
+                            EvOnChange = isTS
+                        });
                     }
                 }
 
                 // создание прототипов каналов управления
                 foreach (Modbus.Cmd cmd in template.Cmds)
                 {
-                    CtrlCnlPrototype ctrlCnl = cmd.Multiple ?
-                        new CtrlCnlPrototype(cmd.Name, BaseValues.CmdTypes.Binary) :
-                        new CtrlCnlPrototype(cmd.Name, BaseValues.CmdTypes.Standard);
-                    ctrlCnl.CmdNum = cmd.CmdNum;
-
-                    if (cmd.TableType == Modbus.TableTypes.Coils && !cmd.Multiple)
-                        ctrlCnl.CmdValName = BaseValues.CmdValNames.OffOn;
-
-                    ctrlCnls.Add(ctrlCnl);
+                    ctrlCnls.Add(new CtrlCnlPrototype(cmd.Name,
+                        cmd.Multiple ? BaseValues.CmdTypes.Binary : BaseValues.CmdTypes.Standard) 
+                            { CmdNum = cmd.CmdNum });
                 }
 
                 return prototypes;

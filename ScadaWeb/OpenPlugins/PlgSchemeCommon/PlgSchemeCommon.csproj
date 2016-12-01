@@ -33,6 +33,9 @@
     <Reference Include="ScadaData">
       <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
     </Reference>
+    <Reference Include="ScadaSchemeCommon">
+      <HintPath>..\..\..\ScadaScheme\ScadaSchemeCommon\bin\Release\ScadaSchemeCommon.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />

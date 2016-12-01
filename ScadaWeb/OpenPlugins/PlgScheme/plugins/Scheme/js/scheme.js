@@ -1,17 +1,16 @@
 ﻿// Scheme object
 var scheme = new scada.scheme.Scheme();
-// Notifier control
-var notifier = null;
 // View ID. Must be defined in Scheme.aspx
 var viewID = viewID || 0;
 // Scheme refresh rate
 var refrRate = refrRate || 1000;
 // Localized phrases
 var phrases = phrases || {};
-// View control right
-var controlRight = controlRight || false;
-// Possible scale values
-var scaleVals = [0.1, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 2, 2.5, 3, 4, 5];
+
+// Default notification message lifetime, ms
+var DEF_NOTIF_LIFETIME = 10000;
+// Infinite notification message lifetime
+var INFINITE_NOTIF_LIFETIME = 0;
 
 // Start scheme loading process
 function startLoadingScheme(viewID) {
@@ -32,9 +31,7 @@ function continueLoadingScheme(viewID) {
                 $("body").removeClass("loading");
 
                 if (!DEBUG_MODE) {
-                    scheme.createDom(controlRight);
-                    loadScale();
-                    displayScale();
+                    scheme.createDom();
                     startUpdatingScheme();
                 }
             } else {
@@ -43,9 +40,9 @@ function continueLoadingScheme(viewID) {
         } else {
             console.error(getCurTime() + " Scheme loading failed");
             $("body").removeClass("loading");
-            notifier.addNotification(phrases.LoadSchemeError +
+            addNotification(phrases.LoadSchemeError +
                 " <input type='button' value='" + phrases.ReloadButton + "' onclick='reloadScheme()' />",
-                true, notifier.INFINITE_NOTIF_LIFETIME);
+                true, INFINITE_NOTIF_LIFETIME);
         }
     });
 }
@@ -54,142 +51,128 @@ function continueLoadingScheme(viewID) {
 function startUpdatingScheme() {
     scheme.update(scada.clientAPI, function (success) {
         if (!success) {
-            notifier.addNotification(phrases.UpdateError, true, notifier.DEF_NOTIF_LIFETIME);
+            addNotification(phrases.UpdateError, true, DEF_NOTIF_LIFETIME);
         }
 
         setTimeout(startUpdatingScheme, refrRate);
     });
 }
 
+// Add notification to the notification panel
+function addNotification(messageHtml, error, lifetime) {
+    var divNotif = $("#divNotif");
+    var divMessage = $("<div class='message'></div>").html(messageHtml);
+
+    if (error) {
+        divMessage.addClass("error");
+    }
+
+    if (lifetime) {
+        $("<input type='hidden' />").val(Date.now() + lifetime).appendTo(divMessage);
+    }
+
+    divNotif
+        .css("display", "block")
+        .append(divMessage)
+        .scrollTop(divNotif.prop("scrollHeight"));
+
+    updateLayout();
+}
+
+// Clear the notifications which lifetime is expired
+function clearOutdatedNotifications() {
+    var messages = $("#divNotif .message");
+
+    if (messages.length > 0) {
+        var nowMs = Date.now();
+
+        $.each(messages, function () {
+            var expireMs = $(this).find("input:hidden").val();
+            if (expireMs < nowMs) {
+                $(this).remove();
+            }
+        });
+
+        if ($("#divNotif .message").length == 0) {
+            $("#divNotif").css("display", "none");
+        }
+
+        updateLayout();
+    }
+}
+
+// Clear all the notifications
+function clearAllNotifications() {
+    $("#divNotif .message").remove();
+    updateLayout();
+}
+
+// Start outdated notifications clearing process
+function startClearingNotifications() {
+    setInterval(clearOutdatedNotifications, 1000);
+}
+
 // Reload scheme
 function reloadScheme() {
-    location.reload(true);
-}
-
-// Bind handlers of the toolbar buttons
-function initToolbar() {
-    var Scales = scada.scheme.Scales;
-
-    $("#lblFitScreenBtn").click(function () {
-        scheme.setScale(Scales.FIT_SCREEN);
-        displayScale();
-        saveScale(Scales.FIT_SCREEN);
-    });
-
-    $("#lblFitWidthBtn").click(function () {
-        scheme.setScale(Scales.FIT_WIDTH);
-        displayScale();
-        saveScale(Scales.FIT_WIDTH);
-    });
-
-    $("#lblZoomInBtn").click(function (event) {
-        scheme.setScale(getNextScale());
-        displayScale();
-        saveScale();
-    });
-
-    $("#lblZoomOutBtn").click(function (event) {
-        scheme.setScale(getPrevScale());
-        displayScale();
-        saveScale();
-    });
-}
-
-// Get the previous scale value from the possible values array
-function getPrevScale() {
-    var curScale = scheme.scale;
-    for (var i = scaleVals.length - 1; i >= 0; i--) {
-        var prevScale = scaleVals[i];
-        if (curScale > prevScale)
-            return prevScale;
-    }
-    return curScale;
-}
-
-// Get the next scale value from the possible values array
-function getNextScale() {
-    var curScale = scheme.scale;
-    for (var i = 0, len = scaleVals.length; i < len; i++) {
-        var nextScale = scaleVals[i];
-        if (curScale < nextScale)
-            return nextScale;
-    }
-    return curScale;
-}
-
-// Display the scheme scale
-function displayScale() {
-    $("#spanCurScale").text(Math.round(scheme.scale * 100) + "%");
-}
-
-// Load the scheme scale from the local storage
-function loadScale() {
-    var scale = localStorage.getItem("Scheme.SchemeScale");
-    if (scale) {
-        scheme.setScale(scale);
-    }
-}
-
-// Save the scheme scale in the local storage
-function saveScale(opt_scale) {
-    localStorage.setItem("Scheme.SchemeScale", opt_scale ? opt_scale : scheme.scale);
-}
-
-// Update layout of the top level div elements
-function updateLayout() {
-    var divNotif = $("#divNotif");
-    var divSchWrapper = $("#divSchWrapper");
-    var divToolbar = $("#divToolbar");
-    var notifHeight = divNotif.css("display") == "block" ? divNotif.outerHeight() : 0;
-    var windowWidth = $(window).width();
-
-    $("body").css("padding-top", notifHeight);
-    divNotif.outerWidth(windowWidth);
-    divSchWrapper
-        .outerWidth(windowWidth)
-        .outerHeight($(window).height() - notifHeight);
-    divToolbar.css("top", notifHeight);
+    location = location;
 }
 
 // Initialize debug tools
 function initDebugTools() {
-    $("#divDebugTools").css("display", "inline-block");
+    $("#divDebugTools").css("display", "block");
 
-    $("#spanLoadSchemeBtn").click(function () {
+    $("#btnLoadScheme").click(function (event) {
+        event.preventDefault();
         startLoadingScheme(viewID);
     });
 
-    $("#spanCreateDomBtn").click(function () {
+    $("#btnCreateDom").click(function (event) {
+        event.preventDefault();
         scheme.createDom();
     });
 
-    $("#spanStartUpdBtn").click(function () {
+    $("#btnStartUpd").click(function (event) {
+        event.preventDefault();
         startUpdatingScheme();
         $(this).prop("disabled", true);
     });
 
-    $("#spanAddNotifBtn").click(function () {
-        notifier.addNotification(scada.utils.getCurTime() + " Test notification", false, notifier.DEF_NOTIF_LIFETIME);
+    $("#btnAddNotif").click(function (event) {
+        event.preventDefault();
+        addNotification(scada.utils.getCurTime() + " Test notification", false, DEF_NOTIF_LIFETIME);
     });
 }
 
+// Update layout of the top level div elements
+function updateLayout() {
+    var divDebugTools = $("#divDebugTools");
+    var divNotif = $("#divNotif");
+    var divSchParent = $("#divSchParent");
+
+    var debugToolsHeight = divDebugTools.css("display") == "block" ? divDebugTools.outerHeight() : 0;
+    var notifHeight = divNotif.css("display") == "block" ? divNotif.outerHeight() : 0;
+
+    $("body").css("padding-top", debugToolsHeight + notifHeight);
+    divNotif.css("top", debugToolsHeight);
+    divNotif.outerWidth($(window).width());
+    divSchParent.height($(window).height() - debugToolsHeight - notifHeight);
+}
+
+
 $(document).ready(function () {
     scada.clientAPI.rootPath = "../../";
-    var divSchWrapper = $("#divSchWrapper");
-    scheme.parentDomElem = divSchWrapper;
-    initToolbar();
-    scada.utils.styleIOS(divSchWrapper);
-    updateLayout();
-    notifier = new scada.Notifier("#divNotif");
-    notifier.startClearingNotifications();
-
-    $(window).on("resize " + scada.EventTypes.UPDATE_LAYOUT, function () {
-        updateLayout();
-    });
+    scheme.parentDomElem = $("#divSchParent");
 
     if (DEBUG_MODE) {
         initDebugTools();
     } else {
         startLoadingScheme(viewID);
     }
+
+    $(window).resize(function () {
+        updateLayout();
+    });
+
+    updateLayout();
+    startClearingNotifications();
 });

@@ -23,10 +23,10 @@
  * Modified : 2014
  */
 
-using Scada.Data.Tables;
 using System;
 using System.Data;
 using System.Windows.Forms;
+using Scada.Data;
 
 namespace ScadaDataTest
 {

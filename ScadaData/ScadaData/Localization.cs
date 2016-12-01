@@ -89,7 +89,9 @@ namespace Scada
             /// </summary>
             public static string GetEmptyPhrase(string key)
             {
-                return "[" + key + "]";
+                return string.Format(UseRussian ?
+                    "Фраза с ключом {0} не загружена." :
+                    "The phrase with the key {0} is not loaded.", key);
             }
         }
 
@@ -100,7 +102,7 @@ namespace Scada
         static Localization()
         {
             InitDefaultCulture();
-            SetCulture(ReadCulture());
+            ReadCulture();
             Dictionaries = new Dictionary<string, Dict>();
         }
 
@@ -161,33 +163,19 @@ namespace Scada
         }
 
         /// <summary>
-        /// Считать наименование культуры из реестра
+        /// Считать информацию о культуре из реестра
         /// </summary>
-        private static string ReadCulture()
+        private static void ReadCulture()
         {
             try
             {
                 using (RegistryKey key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64)
                     .OpenSubKey("Software\\SCADA", false))
                 {
-                    return key.GetValue("Culture").ToString();
+                    string cultureName = key.GetValue("Culture").ToString();
+                    Culture = string.IsNullOrEmpty(cultureName) ? 
+                        DefaultCulture : CultureInfo.GetCultureInfo(cultureName);
                 }
-            }
-            catch
-            {
-                return "";
-            }
-        }
-
-        /// <summary>
-        /// Установить культуру
-        /// </summary>
-        public static void SetCulture(string cultureName)
-        {
-            try
-            {
-                Culture = string.IsNullOrEmpty(cultureName) ?
-                   DefaultCulture : CultureInfo.GetCultureInfo(cultureName);
             }
             catch
             {
@@ -209,17 +197,7 @@ namespace Scada
 
 
         /// <summary>
-        /// Изменить культуру
-        /// </summary>
-        public static void ChangeCulture(string cultureName)
-        {
-            if (string.IsNullOrEmpty(cultureName))
-                cultureName = ReadCulture();
-            SetCulture(cultureName);
-        }
-
-        /// <summary>
-        /// Записать наименование культуры в реестр
+        /// Записать информацию о культуре в реестр
         /// </summary>
         public static bool WriteCulture(string cultureName, out string errMsg)
         {
@@ -319,9 +297,9 @@ namespace Scada
                 }
                 catch (Exception ex)
                 {
-                    errMsg = string.Format(UseRussian ? 
-                        "Ошибка при загрузке словарей из файла {0}: {1}" : 
-                        "Error loading dictionaries from file {0}: {1}", fileName, ex.Message);
+                    errMsg = (UseRussian ? 
+                        "Ошибка при загрузке словарей: " : 
+                        "Error loading dictionaries: ") + ex.Message;
                     return false;
                 }
             }
@@ -344,29 +322,12 @@ namespace Scada
             return !UseRussian || File.Exists(GetDictionaryFileName(directory, fileNamePrefix));
         }
 
-
         /// <summary>
         /// Преобразовать дату и время в строку в соответствии с культурой SCADA
         /// </summary>
         public static string ToLocalizedString(this DateTime dateTime)
         {
             return dateTime.ToString("d", Culture) + " " + dateTime.ToString("T", Culture);
-        }
-
-        /// <summary>
-        /// Преобразовать дату в строку в соответствии с культурой SCADA
-        /// </summary>
-        public static string ToLocalizedDateString(this DateTime dateTime)
-        {
-            return dateTime.ToString("d", Culture);
-        }
-
-        /// <summary>
-        /// Преобразовать время в строку в соответствии с культурой SCADA
-        /// </summary>
-        public static string ToLocalizedTimeString(this DateTime dateTime)
-        {
-            return dateTime.ToString("T", Culture);
         }
     }
 }

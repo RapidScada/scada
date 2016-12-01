@@ -23,14 +23,14 @@
  * Modified : 2015
  */
 
-using Microsoft.CSharp;
-using Scada.Data.Tables;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using Microsoft.CSharp;
+using Scada.Data;
 using Utils;
 
 namespace Scada.Server.Svc

@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Группы элементов");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Команды");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Группы элементов");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Команды");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDevTemplate));
             this.treeView = new System.Windows.Forms.TreeView();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
@@ -48,7 +48,6 @@
             this.btnDelete = new System.Windows.Forms.ToolStripButton();
             this.gbDevTemplate = new System.Windows.Forms.GroupBox();
             this.gbElemGroup = new System.Windows.Forms.GroupBox();
-            this.chkGrActive = new System.Windows.Forms.CheckBox();
             this.lblGrElemCnt = new System.Windows.Forms.Label();
             this.numGrElemCnt = new System.Windows.Forms.NumericUpDown();
             this.txtGrName = new System.Windows.Forms.TextBox();
@@ -58,7 +57,6 @@
             this.lblGrTableType = new System.Windows.Forms.Label();
             this.cbGrTableType = new System.Windows.Forms.ComboBox();
             this.gbElem = new System.Windows.Forms.GroupBox();
-            this.lblByteOrderExample = new System.Windows.Forms.Label();
             this.txtByteOrder = new System.Windows.Forms.TextBox();
             this.lblByteOrder = new System.Windows.Forms.Label();
             this.rbDouble = new System.Windows.Forms.RadioButton();
@@ -91,6 +89,7 @@
             this.cbCmdTableType = new System.Windows.Forms.ComboBox();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.lblByteOrderExample = new System.Windows.Forms.Label();
             this.toolStrip.SuspendLayout();
             this.gbDevTemplate.SuspendLayout();
             this.gbElemGroup.SuspendLayout();
@@ -110,17 +109,17 @@
             this.treeView.ImageList = this.imageList;
             this.treeView.Location = new System.Drawing.Point(13, 19);
             this.treeView.Name = "treeView";
-            treeNode3.ImageKey = "group.png";
-            treeNode3.Name = "grsNode";
-            treeNode3.SelectedImageKey = "group.png";
-            treeNode3.Text = "Группы элементов";
-            treeNode4.ImageIndex = 2;
-            treeNode4.Name = "cmdsNode";
-            treeNode4.SelectedImageKey = "cmds.png";
-            treeNode4.Text = "Команды";
+            treeNode1.ImageKey = "group.png";
+            treeNode1.Name = "grsNode";
+            treeNode1.SelectedImageKey = "group.png";
+            treeNode1.Text = "Группы элементов";
+            treeNode2.ImageIndex = 2;
+            treeNode2.Name = "cmdsNode";
+            treeNode2.SelectedImageKey = "cmds.png";
+            treeNode2.Text = "Команды";
             this.treeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode3,
-            treeNode4});
+            treeNode1,
+            treeNode2});
             this.treeView.SelectedImageIndex = 0;
             this.treeView.ShowRootLines = false;
             this.treeView.Size = new System.Drawing.Size(254, 372);
@@ -274,7 +273,6 @@
             // 
             // gbElemGroup
             // 
-            this.gbElemGroup.Controls.Add(this.chkGrActive);
             this.gbElemGroup.Controls.Add(this.lblGrElemCnt);
             this.gbElemGroup.Controls.Add(this.numGrElemCnt);
             this.gbElemGroup.Controls.Add(this.txtGrName);
@@ -286,34 +284,23 @@
             this.gbElemGroup.Location = new System.Drawing.Point(298, 28);
             this.gbElemGroup.Name = "gbElemGroup";
             this.gbElemGroup.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbElemGroup.Size = new System.Drawing.Size(280, 167);
+            this.gbElemGroup.Size = new System.Drawing.Size(280, 144);
             this.gbElemGroup.TabIndex = 2;
             this.gbElemGroup.TabStop = false;
             this.gbElemGroup.Text = "Параметры группы элементов";
             // 
-            // chkGrActive
-            // 
-            this.chkGrActive.AutoSize = true;
-            this.chkGrActive.Location = new System.Drawing.Point(13, 19);
-            this.chkGrActive.Name = "chkGrActive";
-            this.chkGrActive.Size = new System.Drawing.Size(85, 17);
-            this.chkGrActive.TabIndex = 0;
-            this.chkGrActive.Text = "Активность";
-            this.chkGrActive.UseVisualStyleBackColor = true;
-            this.chkGrActive.CheckedChanged += new System.EventHandler(this.chkGrActive_CheckedChanged);
-            // 
             // lblGrElemCnt
             // 
             this.lblGrElemCnt.AutoSize = true;
-            this.lblGrElemCnt.Location = new System.Drawing.Point(140, 118);
+            this.lblGrElemCnt.Location = new System.Drawing.Point(140, 95);
             this.lblGrElemCnt.Name = "lblGrElemCnt";
             this.lblGrElemCnt.Size = new System.Drawing.Size(124, 13);
-            this.lblGrElemCnt.TabIndex = 7;
+            this.lblGrElemCnt.TabIndex = 6;
             this.lblGrElemCnt.Text = "Количество элементов";
             // 
             // numGrElemCnt
             // 
-            this.numGrElemCnt.Location = new System.Drawing.Point(143, 134);
+            this.numGrElemCnt.Location = new System.Drawing.Point(143, 111);
             this.numGrElemCnt.Maximum = new decimal(new int[] {
             2000,
             0,
@@ -326,7 +313,7 @@
             0});
             this.numGrElemCnt.Name = "numGrElemCnt";
             this.numGrElemCnt.Size = new System.Drawing.Size(124, 20);
-            this.numGrElemCnt.TabIndex = 8;
+            this.numGrElemCnt.TabIndex = 7;
             this.numGrElemCnt.Value = new decimal(new int[] {
             1,
             0,
@@ -336,24 +323,24 @@
             // 
             // txtGrName
             // 
-            this.txtGrName.Location = new System.Drawing.Point(13, 55);
+            this.txtGrName.Location = new System.Drawing.Point(13, 32);
             this.txtGrName.Name = "txtGrName";
             this.txtGrName.Size = new System.Drawing.Size(254, 20);
-            this.txtGrName.TabIndex = 2;
+            this.txtGrName.TabIndex = 1;
             this.txtGrName.TextChanged += new System.EventHandler(this.txtGrName_TextChanged);
             // 
             // lblGrName
             // 
             this.lblGrName.AutoSize = true;
-            this.lblGrName.Location = new System.Drawing.Point(10, 39);
+            this.lblGrName.Location = new System.Drawing.Point(10, 16);
             this.lblGrName.Name = "lblGrName";
             this.lblGrName.Size = new System.Drawing.Size(83, 13);
-            this.lblGrName.TabIndex = 1;
+            this.lblGrName.TabIndex = 0;
             this.lblGrName.Text = "Наименование";
             // 
             // numGrAddress
             // 
-            this.numGrAddress.Location = new System.Drawing.Point(13, 134);
+            this.numGrAddress.Location = new System.Drawing.Point(13, 111);
             this.numGrAddress.Maximum = new decimal(new int[] {
             65536,
             0,
@@ -366,7 +353,7 @@
             0});
             this.numGrAddress.Name = "numGrAddress";
             this.numGrAddress.Size = new System.Drawing.Size(124, 20);
-            this.numGrAddress.TabIndex = 6;
+            this.numGrAddress.TabIndex = 5;
             this.numGrAddress.Value = new decimal(new int[] {
             1,
             0,
@@ -377,19 +364,19 @@
             // lblGrAddress
             // 
             this.lblGrAddress.AutoSize = true;
-            this.lblGrAddress.Location = new System.Drawing.Point(10, 118);
+            this.lblGrAddress.Location = new System.Drawing.Point(10, 95);
             this.lblGrAddress.Name = "lblGrAddress";
             this.lblGrAddress.Size = new System.Drawing.Size(113, 13);
-            this.lblGrAddress.TabIndex = 5;
+            this.lblGrAddress.TabIndex = 4;
             this.lblGrAddress.Text = "Адрес нач. элемента";
             // 
             // lblGrTableType
             // 
             this.lblGrTableType.AutoSize = true;
-            this.lblGrTableType.Location = new System.Drawing.Point(10, 78);
+            this.lblGrTableType.Location = new System.Drawing.Point(10, 55);
             this.lblGrTableType.Name = "lblGrTableType";
             this.lblGrTableType.Size = new System.Drawing.Size(90, 13);
-            this.lblGrTableType.TabIndex = 3;
+            this.lblGrTableType.TabIndex = 2;
             this.lblGrTableType.Text = "Таблица данных";
             // 
             // cbGrTableType
@@ -401,10 +388,10 @@
             "Coils (Флаги, 0X)",
             "Input Registers (Входные регистры, 3X)",
             "Holding Registers (Регистры хранения, 4X)"});
-            this.cbGrTableType.Location = new System.Drawing.Point(13, 94);
+            this.cbGrTableType.Location = new System.Drawing.Point(13, 71);
             this.cbGrTableType.Name = "cbGrTableType";
             this.cbGrTableType.Size = new System.Drawing.Size(254, 21);
-            this.cbGrTableType.TabIndex = 4;
+            this.cbGrTableType.TabIndex = 3;
             this.cbGrTableType.SelectedIndexChanged += new System.EventHandler(this.cbGrTableType_SelectedIndexChanged);
             // 
             // gbElem
@@ -435,16 +422,6 @@
             this.gbElem.TabIndex = 3;
             this.gbElem.TabStop = false;
             this.gbElem.Text = "Параметры элемента";
-            // 
-            // lblByteOrderExample
-            // 
-            this.lblByteOrderExample.AutoSize = true;
-            this.lblByteOrderExample.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.lblByteOrderExample.Location = new System.Drawing.Point(143, 242);
-            this.lblByteOrderExample.Name = "lblByteOrderExample";
-            this.lblByteOrderExample.Size = new System.Drawing.Size(113, 13);
-            this.lblByteOrderExample.TabIndex = 18;
-            this.lblByteOrderExample.Text = "Например, 01234567";
             // 
             // txtByteOrder
             // 
@@ -812,6 +789,16 @@
             this.saveFileDialog.FilterIndex = 0;
             this.saveFileDialog.Title = "Сохранить файл";
             // 
+            // lblByteOrderExample
+            // 
+            this.lblByteOrderExample.AutoSize = true;
+            this.lblByteOrderExample.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.lblByteOrderExample.Location = new System.Drawing.Point(143, 242);
+            this.lblByteOrderExample.Name = "lblByteOrderExample";
+            this.lblByteOrderExample.Size = new System.Drawing.Size(113, 13);
+            this.lblByteOrderExample.TabIndex = 18;
+            this.lblByteOrderExample.Text = "Например, 01234567";
+            // 
             // FrmDevTemplate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -910,6 +897,5 @@
         private System.Windows.Forms.Label lblByteOrder;
         private System.Windows.Forms.TextBox txtByteOrder;
         private System.Windows.Forms.Label lblByteOrderExample;
-        private System.Windows.Forms.CheckBox chkGrActive;
     }
 }

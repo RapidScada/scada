@@ -30,11 +30,11 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.miFile = new System.Windows.Forms.ToolStripMenuItem();
             this.miFileNew = new System.Windows.Forms.ToolStripMenuItem();
@@ -77,10 +77,6 @@
             this.btnAddItem = new System.Windows.Forms.Button();
             this.btnShowItemInfo = new System.Windows.Forms.Button();
             this.dgvItems = new System.Windows.Forms.DataGridView();
-            this.colItemCnlNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colItemCtrlCnlNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colItemCaption = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colItemHidden = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.bsItems = new System.Windows.Forms.BindingSource(this.components);
             this.lblTableItems = new System.Windows.Forms.Label();
             this.btnDeleteItem = new System.Windows.Forms.Button();
@@ -90,6 +86,10 @@
             this.btnMoveUpItem = new System.Windows.Forms.Button();
             this.btnAddEmptyItem = new System.Windows.Forms.Button();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.colItemCnlNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colItemCtrlCnlNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colItemCaption = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colItemHidden = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.menuMain.SuspendLayout();
             this.toolMain.SuspendLayout();
             this.statusMain.SuspendLayout();
@@ -285,7 +285,7 @@
             // lblBaseDATDir
             // 
             this.lblBaseDATDir.Name = "lblBaseDATDir";
-            this.lblBaseDATDir.Size = new System.Drawing.Size(117, 17);
+            this.lblBaseDATDir.Size = new System.Drawing.Size(118, 17);
             this.lblBaseDATDir.Text = "C:\\SCADA\\BaseDAT\\";
             // 
             // pnlLeft
@@ -391,14 +391,14 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvCnls.AutoGenerateColumns = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvCnls.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvCnls.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.dgvCnls.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvCnls.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colCnlNum,
@@ -418,8 +418,8 @@
             // 
             // colCnlNum
             // 
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.colCnlNum.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.colCnlNum.DefaultCellStyle = dataGridViewCellStyle7;
             this.colCnlNum.HeaderText = "№";
             this.colCnlNum.Name = "colCnlNum";
             this.colCnlNum.ReadOnly = true;
@@ -511,7 +511,7 @@
             this.gbTableView.Size = new System.Drawing.Size(438, 468);
             this.gbTableView.TabIndex = 0;
             this.gbTableView.TabStop = false;
-            this.gbTableView.Text = "Табличное представление";
+            this.gbTableView.Text = "Редактируемое табличное представление";
             // 
             // btnAddItem
             // 
@@ -546,14 +546,14 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvItems.AutoGenerateColumns = false;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvItems.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvItems.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
             this.dgvItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvItems.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colItemCnlNum,
@@ -561,14 +561,14 @@
             this.colItemCaption,
             this.colItemHidden});
             this.dgvItems.DataSource = this.bsItems;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvItems.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvItems.DefaultCellStyle = dataGridViewCellStyle10;
             this.dgvItems.Location = new System.Drawing.Point(13, 86);
             this.dgvItems.Margin = new System.Windows.Forms.Padding(0, 3, 3, 0);
             this.dgvItems.Name = "dgvItems";
@@ -580,40 +580,6 @@
             this.dgvItems.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgvItems_DataError);
             this.dgvItems.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.dgvItems_RowsRemoved);
             this.dgvItems.SelectionChanged += new System.EventHandler(this.dgvItems_SelectionChanged);
-            // 
-            // colItemCnlNum
-            // 
-            this.colItemCnlNum.DataPropertyName = "CnlNum";
-            this.colItemCnlNum.HeaderText = "№ вх. кан.";
-            this.colItemCnlNum.Name = "colItemCnlNum";
-            this.colItemCnlNum.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colItemCnlNum.Width = 65;
-            // 
-            // colItemCtrlCnlNum
-            // 
-            this.colItemCtrlCnlNum.DataPropertyName = "CtrlCnlNum";
-            this.colItemCtrlCnlNum.HeaderText = "№ кан. упр.";
-            this.colItemCtrlCnlNum.Name = "colItemCtrlCnlNum";
-            this.colItemCtrlCnlNum.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colItemCtrlCnlNum.Width = 75;
-            // 
-            // colItemCaption
-            // 
-            this.colItemCaption.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colItemCaption.DataPropertyName = "Caption";
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.colItemCaption.DefaultCellStyle = dataGridViewCellStyle4;
-            this.colItemCaption.HeaderText = "Обозначение";
-            this.colItemCaption.Name = "colItemCaption";
-            this.colItemCaption.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // colItemHidden
-            // 
-            this.colItemHidden.DataPropertyName = "Hidden";
-            this.colItemHidden.HeaderText = "Скрыть";
-            this.colItemHidden.Name = "colItemHidden";
-            this.colItemHidden.Width = 60;
             // 
             // bsItems
             // 
@@ -698,6 +664,40 @@
             this.toolTip.SetToolTip(this.btnAddEmptyItem, "Добавить пустой элемент");
             this.btnAddEmptyItem.UseVisualStyleBackColor = true;
             this.btnAddEmptyItem.Click += new System.EventHandler(this.btnAddEmptyItem_Click);
+            // 
+            // colItemCnlNum
+            // 
+            this.colItemCnlNum.DataPropertyName = "CnlNum";
+            this.colItemCnlNum.HeaderText = "№ вх. кан.";
+            this.colItemCnlNum.Name = "colItemCnlNum";
+            this.colItemCnlNum.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colItemCnlNum.Width = 65;
+            // 
+            // colItemCtrlCnlNum
+            // 
+            this.colItemCtrlCnlNum.DataPropertyName = "CtrlCnlNum";
+            this.colItemCtrlCnlNum.HeaderText = "№ кан. упр.";
+            this.colItemCtrlCnlNum.Name = "colItemCtrlCnlNum";
+            this.colItemCtrlCnlNum.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colItemCtrlCnlNum.Width = 75;
+            // 
+            // colItemCaption
+            // 
+            this.colItemCaption.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colItemCaption.DataPropertyName = "Caption";
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.colItemCaption.DefaultCellStyle = dataGridViewCellStyle9;
+            this.colItemCaption.HeaderText = "Обозначение";
+            this.colItemCaption.Name = "colItemCaption";
+            this.colItemCaption.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // colItemHidden
+            // 
+            this.colItemHidden.DataPropertyName = "Hidden";
+            this.colItemHidden.HeaderText = "Скрыть";
+            this.colItemHidden.Name = "colItemHidden";
+            this.colItemHidden.Width = 60;
             // 
             // FrmMain
             // 
