@@ -70,7 +70,7 @@ scada.dialogs = {
         var popup = scada.popupLocator.getPopup();
         if (popup) {
             var queryString = selectedDate ? "?date=" + encodeURIComponent(selectedDate) : "";
-            popup.showDropdown(this.rootPath + "/dialogs/Calendar.aspx" + queryString, anchorElem, callback);
+            popup.showDropdown(this.rootPath + "dialogs/Calendar.aspx" + queryString, anchorElem, callback);
         }
     },
 
