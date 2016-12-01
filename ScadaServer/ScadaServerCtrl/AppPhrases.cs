@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2014
- * Modified : 2016
+ * Modified : 2015
  */
 
 namespace Scada.Server.Ctrl
@@ -116,7 +116,7 @@ namespace Scada.Server.Ctrl
             ModulesNode = "Модули";
             GeneratorNode = "Генератор";
             StatsNode = "Статистика";
-            ServiceState = "Состояние службы {0}: {1}";
+            ServiceState = "Состояние службы SCADA-Сервера: {0}";
             RestartNeeded = "Изменения настроек вступят в силу после перезапуска службы SCADA-Сервера.";
             GetFileListError = "Ошибка при получении списка файлов данных";
             LoadModuleError = "Ошибка при загрузке модуля";

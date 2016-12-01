@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,9 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2016
+ * Modified : 2015
  */
 
-using Scada.Data.Models;
-using Scada.Data.Tables;
-using Scada.Server.Modules;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -33,6 +30,9 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using Microsoft.Win32;
+using Scada.Data;
+using Scada.Server.Modules;
 using Utils;
 
 namespace Scada.Server.Svc
@@ -84,15 +84,15 @@ namespace Scada.Server.Svc
         /// <summary>
         /// Старший байт номера версии приложения
         /// </summary>
-        public const byte AppVersionHi = 5;
+        public const byte AppVersionHi = 4;
         /// <summary>
         /// Младший байт номера версии приложения
         /// </summary>
-        public const byte AppVersionLo = 0;
+        public const byte AppVersionLo = 5;
         /// <summary>
         /// Строковая запись версии приложения
         /// </summary>
-        public const string AppVersion = "5.0.0.0";
+        public const string AppVersion = "4.5.0.5";
         /// <summary>
         /// Имя файла журнала приложения
         /// </summary>

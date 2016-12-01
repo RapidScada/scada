@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<TableView title="SNMP demo">
-  <Param cnlNum="501">sysDescr</Param>
-  <Param cnlNum="502">sysUpTime</Param>
-  <Param cnlNum="503">sysName</Param>
-  <Param cnlNum="504">sysServices</Param>
-  <Param cnlNum="505">snmpInPkts</Param>
-</TableView>

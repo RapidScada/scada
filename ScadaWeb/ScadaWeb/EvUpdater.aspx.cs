@@ -23,8 +23,8 @@
  * Modified : 2012
  */
 
-using Scada.Data.Tables;
 using System;
+using Scada.Data;
 
 namespace Scada.Web
 {

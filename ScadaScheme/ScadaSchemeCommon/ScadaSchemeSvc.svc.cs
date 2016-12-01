@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2014 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2016
+ * Modified : 2014
  */
 
 using System;
@@ -103,7 +103,7 @@ namespace Scada.Scheme
                     {
                         schemeApp.Log.WriteAction(string.Format(Localization.UseRussian ? 
                             "Загружена схема {0} пользователем {1}" : "Scheme {0} has been loaded by user {1}",
-                            schemeView.Path, userData.UserLogin), Log.ActTypes.Action);
+                            schemeView.ItfObjName, userData.UserLogin), Log.ActTypes.Action);
 
                         // сохранение списка входных каналов схемы в сессии
                         HttpSessionState session = context == null ? null : context.Session;
@@ -126,8 +126,8 @@ namespace Scada.Scheme
                     }
                     else
                     {
-                        string itfObjName = schemeView == null || string.IsNullOrEmpty(schemeView.Path) ?
-                            "" : " " + schemeView.Path;
+                        string itfObjName = schemeView == null || string.IsNullOrEmpty(schemeView.ItfObjName) ?
+                            "" : " " + schemeView.ItfObjName;
                         schemeApp.Log.WriteAction(string.Format(Localization.UseRussian ? 
                             "Не удалось загрузить схему{0} пользователем {1}" : "Unable to load scheme{0} by user {1}",
                             itfObjName, userData.UserLogin), Log.ActTypes.Error);

@@ -31,9 +31,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using Scada.Data;
+using Scada.Server.Modules;
 using Utils;
-using Scada.Data.Models;
-using Scada.Data.Tables;
 
 namespace Scada.Server.Svc
 {
@@ -718,7 +718,7 @@ namespace Scada.Server.Svc
                 case 0x04: // запись архивного среза
                     if (client.UserRoleID == BaseValues.Roles.App)
                     {
-                        DateTime dateTime = ScadaUtils.DecodeDateTime(BitConverter.ToDouble(inBuf, 3));
+                        DateTime dateTime = Arithmetic.DecodeDateTime(BitConverter.ToDouble(inBuf, 3));
                         int cnlCnt = BitConverter.ToUInt16(inBuf, 11);
                         SrezTableLight.Srez srez = new SrezTableLight.Srez(dateTime, cnlCnt);
 
@@ -743,7 +743,7 @@ namespace Scada.Server.Svc
                     if (client.UserRoleID == BaseValues.Roles.App)
                     {
                         EventTableLight.Event ev = new EventTableLight.Event();
-                        ev.DateTime = ScadaUtils.DecodeDateTime(BitConverter.ToDouble(inBuf, 3));
+                        ev.DateTime = Arithmetic.DecodeDateTime(BitConverter.ToDouble(inBuf, 3));
                         ev.ObjNum = BitConverter.ToUInt16(inBuf, 11);
                         ev.KPNum = BitConverter.ToUInt16(inBuf, 13);
                         ev.ParamID = BitConverter.ToUInt16(inBuf, 15);
@@ -1002,7 +1002,7 @@ namespace Scada.Server.Svc
                         try 
                         {
                             fileModTime = File.Exists(fullFileName) ?
-                                ScadaUtils.EncodeDateTime(File.GetLastWriteTime(fullFileName)) : 0; 
+                                Arithmetic.EncodeDateTime(File.GetLastWriteTime(fullFileName)) : 0; 
                         }
                         catch { fileModTime = 0; }
 
@@ -1059,7 +1059,7 @@ namespace Scada.Server.Svc
                     for (int i = 0, j = 0; i < srezCnt; i++)
                     {
                         SrezTableLight.Srez srez = srezTable.SrezList.Values[i];
-                        Array.Copy(BitConverter.GetBytes(ScadaUtils.EncodeDateTime(srez.DateTime)), 0, extraData, j, 8);
+                        Array.Copy(BitConverter.GetBytes(Arithmetic.EncodeDateTime(srez.DateTime)), 0, extraData, j, 8);
                         j += 8;
 
                         for (int k = 0; k < cnlNumCnt; k++)

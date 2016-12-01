@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<TableView title="OPC demo">
-  <Param cnlNum="201">Tag 1</Param>
-  <Param cnlNum="202">Tag 2</Param>
-  <Param cnlNum="203">Tag 3</Param>
-</TableView>

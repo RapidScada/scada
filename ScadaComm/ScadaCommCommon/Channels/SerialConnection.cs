@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2016
+ * Modified : 2015
  */
 
 using System;
@@ -38,17 +38,6 @@ namespace Scada.Comm.Channels
     public class SerialConnection : Connection
     {
         /// <summary>
-        /// Периодичность попыток открытия порта, с
-        /// </summary>
-        protected const int OpenPeriod = 5;
-
-        /// <summary>
-        /// Дата и время неудачной попытки открытия порта
-        /// </summary>
-        protected DateTime openFailDT;
-
-
-        /// <summary>
         /// Конструктор, ограничивающий создание объекта без параметров
         /// </summary>
         protected SerialConnection()
@@ -63,13 +52,10 @@ namespace Scada.Comm.Channels
         {
             if (serialPort == null)
                 throw new ArgumentNullException("serialPort");
-
-            openFailDT = DateTime.MinValue;
-
+            
             SerialPort = serialPort;
             SerialPort.WriteTimeout = DefaultWriteTimeout;
             SerialPort.NewLine = NewLine;
-            WriteError = false;
         }
 
 
@@ -104,12 +90,6 @@ namespace Scada.Comm.Channels
         /// Получить последовательный порт
         /// </summary>
         public SerialPort SerialPort { get; protected set; }
-
-        /// <summary>
-        /// Ошибка записи в порт
-        /// </summary>
-        /// <remarks>Сигнализирует о нарушении связи с сетевым конвертером</remarks>
-        public bool WriteError { get; protected set; }
 
 
         /// <summary>
@@ -256,7 +236,6 @@ namespace Scada.Comm.Channels
                 {
                     SerialPort.Write(buffer, offset, count);
                     logText = BuildWriteLogText(buffer, offset, count, logFormat);
-                    WriteError = false;
                 }
                 catch (TimeoutException ex)
                 {
@@ -265,7 +244,6 @@ namespace Scada.Comm.Channels
             }
             catch (Exception ex)
             {
-                WriteError = true;
                 throw new InvalidOperationException(CommPhrases.WriteDataError + ": " + ex.Message, ex);
             }
         }
@@ -284,7 +262,6 @@ namespace Scada.Comm.Channels
                 {
                     SerialPort.WriteLine(text);
                     logText = CommPhrases.SendNotation + ": " + text;
-                    WriteError = false;
                 }
                 catch (TimeoutException ex)
                 {
@@ -293,7 +270,6 @@ namespace Scada.Comm.Channels
             }
             catch (Exception ex)
             {
-                WriteError = true;
                 throw new InvalidOperationException(CommPhrases.WriteLineError + ": " + ex.Message, ex);
             }
         }
@@ -304,31 +280,7 @@ namespace Scada.Comm.Channels
         /// </summary>
         public void Open()
         {
-            WriteError = false;
-            DateTime nowDT = DateTime.Now;
-
-            if ((nowDT - openFailDT).TotalSeconds >= OpenPeriod || nowDT < openFailDT /*время переведено назад*/)
-            {
-                try
-                {
-                    SerialPort.Open();
-                    openFailDT = DateTime.MinValue;
-                }
-                catch (Exception ex)
-                {
-                    openFailDT = nowDT;
-                    throw new Exception((Localization.UseRussian ?
-                        "Ошибка при открытии последовательного порта: " :
-                        "Error opening serial port: ") + ex.Message, ex);
-                }
-            }
-            else
-            {
-                throw new InvalidOperationException(string.Format(Localization.UseRussian ?
-                    "Попытка открытия последовательного порта может быть не ранее, чем через {0} с после предыдущей." :
-                    "Attempt to open serial port can not be earlier than {0} seconds after the previous.",
-                    OpenPeriod));
-            }
+            SerialPort.Open();
         }
 
         /// <summary>

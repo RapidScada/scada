@@ -7,7 +7,7 @@
  *
  * Requires:
  * - jquery
- * - eventtypes.js
+ * - clientapi.js
  * - schemecommon.js
  *
  * Inheritance hierarchy:
@@ -112,75 +112,29 @@ scada.scheme.SchemeRenderer.constructor = scada.scheme.SchemeRenderer;
 
 scada.scheme.SchemeRenderer.prototype.createDom = function (elem, renderContext) {
     var props = elem.props; // scheme properties
-    var schemeWidth = props.Size.Width;
-    var schemeHeight = props.Size.Height;
     var divScheme =
         $("<div id='scheme'></div>")
         .css({
             "position": "relative", // to position scheme elements
-            "width": schemeWidth,
-            "height": schemeHeight,
-            "transform-origin": "left top" // for scaling
+            "width": props.Size.Width,
+            "height": props.Size.Height
         });
 
-    this.setBackColor($("body"), props.BackColor);
     this.setBackColor(divScheme, props.BackColor);
     this.setFont(divScheme, props.Font);
     this.setForeColor(divScheme, props.ForeColor);
 
-    // set background image if presents,
-    // the additional div is required for correct scaling
+    // set background image if presents
     var backImage = renderContext.getImage(elem.props.BackImage);
     if (backImage) {
-        $("<div id='schemeBack'></div>").css({
-            "width": schemeWidth,
-            "height": schemeHeight,
+        divScheme.css({
             "background-image": this.imageToDataUrlCss(backImage),
-            "background-size": schemeWidth + "px " + schemeHeight + "px",
+            "background-size": props.Size.Width + "px " + props.Size.Height + "px",
             "background-repeat": "no-repeat"
-        }).appendTo(divScheme);
-    }
-
-    // set title
-    if (props.Title) {
-        document.title = props.Title + " - Rapid SCADA";
-        if (scada.scheme.viewHub) {
-            scada.scheme.viewHub.notify(scada.EventTypes.VIEW_TITLE_CHANGED, window, document.title);
-        }
+        });
     }
 
     elem.dom = divScheme;
-};
-
-// Calculate numeric scale based on the predefined string value
-scada.scheme.SchemeRenderer.prototype.calcScale = function (elem, scaleStr) {
-    var Scales = scada.scheme.Scales;
-    var areaWidth = elem.parentDomElem.innerWidth();
-    var schemeWidth = elem.props.Size.Width;
-    var horScale = areaWidth / schemeWidth;
-
-    if (scaleStr == Scales.FIT_SCREEN) {
-        var schemeHeight = elem.props.Size.Height;
-        var areaHeight = elem.parentDomElem.innerHeight();
-        var vertScale = areaHeight / schemeHeight;
-        return Math.min(horScale, vertScale);
-    } else if (scaleStr == Scales.FIT_WIDTH) {
-        return horScale;
-    } else {
-        return 1.0;
-    }
-}
-
-// Set the scheme scale.
-// scaleVal is a floating point number
-scada.scheme.SchemeRenderer.prototype.setScale = function (elem, scaleVal) {
-    // set style of #divScheme
-    var sizeCoef = Math.min(scaleVal, 1);
-    elem.dom.css({
-        "transform": "scale(" + scaleVal + ", " + scaleVal + ")",
-        "width": elem.props.Size.Width * sizeCoef,
-        "height": elem.props.Size.Height * sizeCoef
-    });
 };
 
 /********** Element Renderer **********/
@@ -298,35 +252,23 @@ scada.scheme.ElementRenderer.prototype.prepareElem = function (jqObj, elem, opt_
 };
 
 // Bind user action to the element
-scada.scheme.ElementRenderer.prototype.bindAction = function (jqObj, elem, controlRight) {
+scada.scheme.ElementRenderer.prototype.bindAction = function (jqObj, elem) {
     var Actions = scada.scheme.Actions;
     var props = elem.props;
-    var action = props.Action;
-    var actionIsBound =
-        action == Actions.DRAW_DIAGRAM && props.InCnlNum > 0 ||
-        action == Actions.SEND_COMMAND && props.CtrlCnlNum > 0 && controlRight;
 
-    if (actionIsBound) {
-        var viewHub = scada.scheme.viewHub;
-        var dialogs = viewHub ? viewHub.dialogs : null;
+    if (props.Action) {
+        jqObj.css("cursor", "pointer");
 
-        jqObj
-        .css("cursor", "pointer")
-        .click(function () {
+        jqObj.click(function () {
             switch (props.Action) {
                 case Actions.DRAW_DIAGRAM:
-                    if (dialogs) {
-                        var date = viewHub.curViewDateMs ? new Date(viewHub.curViewDateMs) : new Date();
-                        dialogs.showChart(props.InCnlNum, viewHub.curViewID, date);
-                    } else {
-                        console.warn("Dialogs object is undefined");
+                    if (props.InCnlNum > 0) {
+                        alert("Draw diagramm of the input channel " + props.InCnlNum); // TODO: use SCADA API
                     }
                     break;
                 case Actions.SEND_COMMAND:
-                    if (dialogs) {
-                        dialogs.showCmd(props.CtrlCnlNum, viewHub.curViewID);
-                    } else {
-                        console.warn("Dialogs object is undefined");
+                    if (props.CtrlCnlNum > 0) {
+                        alert("Send command for the output channel " + props.CtrlCnlNum); // TODO: use SCADA API
                     }
                     break;
             }
@@ -356,9 +298,7 @@ scada.scheme.StaticTextRenderer.prototype.createDom = function (elem, renderCont
     this.setFont(spanElem, props.Font);
     this.setForeColor(spanElem, props.ForeColor);
 
-    if (props.AutoSize) {
-        this.setWordWrap(spanText, false);
-    } else {
+    if (!props.AutoSize) {
         spanElem.css("display", "table");
 
         spanText
@@ -408,7 +348,7 @@ scada.scheme.DynamicTextRenderer.prototype.createDom = function (elem, renderCon
     var spanText = elem.dom.children();
 
     this.setToolTip(spanElem, props.ToolTip);
-    this.bindAction(spanElem, elem, renderContext.controlRight);
+    this.bindAction(spanElem, elem);
 
     // apply properties on hover
     var thisRenderer = this;
@@ -434,7 +374,7 @@ scada.scheme.DynamicTextRenderer.prototype.update = function (elem, renderContex
     var ShowValueKinds = scada.scheme.ShowValueKinds;
     var props = elem.props;
 
-    var curCnlDataExt = props.InCnlNum > 0 ? renderContext.curCnlDataMap.get(props.InCnlNum) : null;
+    var curCnlDataExt = renderContext.curCnlDataMap.get(props.InCnlNum);
     var spanElem = elem.dom;
     var spanText = spanElem.children();
 
@@ -466,7 +406,7 @@ scada.scheme.DynamicTextRenderer.prototype.update = function (elem, renderContex
         if (foreColor == this.STATUS_COLOR) {
             spanElem.css("color", curCnlDataExt.Color);
         }
-    } else if (props.InCnlNum > 0) {
+    } else {
         spanText.text("");
     }
 };
@@ -503,14 +443,14 @@ scada.scheme.StaticPictureRenderer.prototype.createDom = function (elem, renderC
             divElem.css("background-size", props.Size.Width + "px " + props.Size.Height + "px");
             break;
         case ImageStretches.ZOOM:
-            divElem.css("background-size", "contain");
+            divElem.css({
+                "background-size": "contain",
+                "background-position": "center"
+            });
             break;
     }
 
-    divElem.css({
-        "background-repeat": "no-repeat",
-        "background-position": "center"
-    });
+    divElem.css("background-repeat", "no-repeat");
     var image = renderContext.getImage(props.Image);
     this.setBackgroundImage(divElem, image);
 
@@ -534,7 +474,7 @@ scada.scheme.DynamicPictureRenderer.prototype.createDom = function (elem, render
     var divElem = elem.dom;
 
     this.setToolTip(divElem, props.ToolTip);
-    this.bindAction(divElem, elem, renderContext.controlRight);
+    this.bindAction(divElem, elem);
 
     // apply properties on hover
     var thisRenderer = this;
@@ -567,14 +507,14 @@ scada.scheme.DynamicPictureRenderer.prototype.update = function (elem, renderCon
 
     if (curCnlDataExt) {
         // choose the image depending on the conditions
-        var imageName = props.Image ? props.Image.Name : "";
+        var imageName = props.Image.Name;
 
         if (curCnlDataExt.Stat && props.Conditions) {
             var cnlVal = curCnlDataExt.Val;
 
             for (var cond of props.Conditions) {
                 if (scada.scheme.calc.conditionSatisfied(cond, cnlVal)) {
-                    imageName = cond.Image ? cond.Image.Name : "";
+                    imageName = cond.Image.Name;
                     break;
                 }
             }
@@ -599,7 +539,6 @@ scada.scheme.DynamicPictureRenderer.prototype.update = function (elem, renderCon
 scada.scheme.RenderContext = function () {
     this.curCnlDataMap = null;
     this.imageMap = null;
-    this.controlRight = true;
 };
 
 // Get scheme image object by image property of an element

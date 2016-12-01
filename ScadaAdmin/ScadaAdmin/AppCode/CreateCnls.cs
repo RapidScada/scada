@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2016
+ * Modified : 2015
  */
 
 using Scada;
@@ -326,16 +326,7 @@ namespace ScadaAdmin
             DataRow newInCnlRow = tblInCnl.NewRow();
             newInCnlRow["CnlNum"] = inCnl.CnlNum;
             newInCnlRow["Active"] = true;
-
-            int maxCnlNameLen = tblInCnl.Columns["Name"].MaxLength;
-            string cnlName = kpNameToInsert + inCnl.CnlName;
-            if (cnlName.Length > maxCnlNameLen)
-            {
-                cnlName = cnlName.Substring(0, maxCnlNameLen);
-                writer.WriteLine(string.Format(AppPhrases.InCnlNameTrancated, inCnl.CnlNum));
-            }
-            newInCnlRow["Name"] = cnlName;
-
+            newInCnlRow["Name"] = kpNameToInsert + inCnl.CnlName;
             newInCnlRow["CnlTypeID"] = inCnl.CnlTypeID;
             newInCnlRow["ObjNum"] = objNum;
             newInCnlRow["KPNum"] = kpNum;
@@ -351,17 +342,26 @@ namespace ScadaAdmin
             {
                 int ind = tblFormat.DefaultView.Find(new object[] { true, inCnl.DecDigits });
                 if (ind >= 0)
+                {
                     newInCnlRow["FormatID"] = tblFormat.DefaultView[ind]["FormatID"];
+                }
                 else
-                    writer.WriteLine(string.Format(AppPhrases.NumFormatNotFound, inCnl.CnlNum, inCnl.DecDigits));
+                {
+                    writer.WriteLine(string.Format(
+                        AppPhrases.NumFormatNotFound, inCnl.CnlNum, inCnl.DecDigits));
+                }
             }
             else
             {
                 int ind = tblFormat.DefaultView.Find(new object[] { false, DBNull.Value });
                 if (ind >= 0)
+                {
                     newInCnlRow["FormatID"] = tblFormat.DefaultView[ind]["FormatID"];
+                }
                 else
+                {
                     writer.WriteLine(string.Format(AppPhrases.TextFormatNotFound, inCnl.CnlNum));
+                }
             }
 
             newInCnlRow["UnitID"] = string.IsNullOrEmpty(inCnl.UnitName) ?
@@ -390,21 +390,12 @@ namespace ScadaAdmin
         /// Создать строку канала управления
         /// </summary>
         private static DataRow CreateCtrlCnlRow(DataTable tblCtrlCnl, SortedList<string, int> cmdValList,
-            KPView.CtrlCnlPrototype ctrlCnl, object objNum, int kpNum, string kpNameToInsert, StreamWriter writer)
+            KPView.CtrlCnlPrototype ctrlCnl, object objNum, int kpNum, string kpNameToInsert)
         {
             DataRow newCtrlCnlRow = tblCtrlCnl.NewRow();
             newCtrlCnlRow["CtrlCnlNum"] = ctrlCnl.CtrlCnlNum;
             newCtrlCnlRow["Active"] = true;
-
-            int maxCtrlCnlNameLen = tblCtrlCnl.Columns["Name"].MaxLength;
-            string ctrlCnlName = kpNameToInsert + ctrlCnl.CtrlCnlName;
-            if (ctrlCnlName.Length > maxCtrlCnlNameLen)
-            {
-                ctrlCnlName = ctrlCnlName.Substring(0, maxCtrlCnlNameLen);
-                writer.WriteLine(string.Format(AppPhrases.CtrlCnlNameTrancated, ctrlCnl.CtrlCnlNum));
-            }
-            newCtrlCnlRow["Name"] = ctrlCnlName;
-
+            newCtrlCnlRow["Name"] = kpNameToInsert + ctrlCnl.CtrlCnlName;
             newCtrlCnlRow["CmdTypeID"] = ctrlCnl.CmdTypeID;
             newCtrlCnlRow["ObjNum"] = objNum;
             newCtrlCnlRow["KPNum"] = kpNum;
@@ -443,7 +434,7 @@ namespace ScadaAdmin
             }
             else
             {
-                writer.WriteLine(string.Format(descr, updRowCnt) + " " + 
+                writer.WriteLine(string.Format(descr, updRowCnt) + ". " + 
                     string.Format(AppPhrases.ErrorsCount, errRowCnt));
                 foreach (DataRow row in rowsInError)
                     writer.WriteLine(string.Format(AppPhrases.CnlError,  row[0], row.RowError));
@@ -742,7 +733,7 @@ namespace ScadaAdmin
                             {
                                 ctrlCnl.CtrlCnlNum = ctrlCnlNum;
                                 DataRow newCtrlCnlRow = CreateCtrlCnlRow(tblCtrlCnl, cmdValList, 
-                                    ctrlCnl, objNum, kpNum, kpNameToInsert, writer);
+                                    ctrlCnl, objNum, kpNum, kpNameToInsert);
                                 tblCtrlCnl.Rows.Add(newCtrlCnlRow);
                                 ctrlCnlNum++;
                             }

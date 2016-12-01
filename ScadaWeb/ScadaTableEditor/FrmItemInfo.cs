@@ -25,7 +25,7 @@
 
 using Scada;
 using Scada.UI;
-using Scada.Web.Plugins.Table;
+using Scada.Web;
 using System;
 using System.Data;
 using System.Windows.Forms;

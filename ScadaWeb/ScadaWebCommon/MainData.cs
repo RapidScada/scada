@@ -24,8 +24,7 @@
  */
 
 using Scada.Client;
-using Scada.Data.Models;
-using Scada.Data.Tables;
+using Scada.Data;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -36,11 +35,11 @@ using Utils;
 
 namespace Scada.Web
 {
-    /// <summary>
+	/// <summary>
     /// Retrieve data from the configuration database, snapshot tables and events
     /// <para>Получение данных из базы конфигурации, таблиц срезов и событий</para>
-    /// </summary>
-    public class MainData
+	/// </summary>
+	public class MainData
 	{
         /// <summary>
         /// Событие в удобной для отображения форме

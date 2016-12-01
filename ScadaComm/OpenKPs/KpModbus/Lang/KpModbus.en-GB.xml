@@ -14,7 +14,6 @@
     <Phrase key="btnDelete.ToolTip">Delete</Phrase>
     <Phrase key="gbDevTemplate">Device template</Phrase>
     <Phrase key="gbElemGroup">Element group parameters</Phrase>
-    <Phrase key="chkGrActive">Active</Phrase>
     <Phrase key="lblGrName">Name</Phrase>
     <Phrase key="lblGrTableType">Data table</Phrase>
     <Phrase key="cbGrTableType.Items[0]">Discretes Inputs (1X)</Phrase>

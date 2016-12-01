@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<TableView title="Notifications">
-  <Param>SMS</Param>
-  <Param cnlNum="301">Connection</Param>
-  <Param cnlNum="302">Event count</Param>
-  <Param />
-  <Param>Email</Param>
-  <Param cnlNum="401">Sent emails</Param>
-</TableView>

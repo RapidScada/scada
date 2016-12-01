@@ -196,6 +196,3 @@ FakesAssemblies/
 *.opt
 
 *.bak
-
-# Unignore the configuration database files
-!Base/data/*.sdf

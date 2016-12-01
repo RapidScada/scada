@@ -50,19 +50,14 @@ namespace Scada
             /// <summary>
             /// Конструктор
             /// </summary>
-            protected internal CacheItem(TKey key, TValue value, DateTime valueAge, DateTime nowDT)
+            protected internal CacheItem(TValue value, DateTime valueAge, DateTime nowDT)
             {
-                Key = key;
                 Value = value;
                 ValueAge = valueAge;
                 ValueRefrDT = nowDT;
                 AccessDT = nowDT;
             }
 
-            /// <summary>
-            /// Получить или установить ключ
-            /// </summary>
-            public TKey Key { get; set; }
             /// <summary>
             /// Получить или установить кешированное значение
             /// </summary>
@@ -131,32 +126,31 @@ namespace Scada
         /// <summary>
         /// Добавить значение в кеш
         /// </summary>
-        public CacheItem AddValue(TKey key, TValue value)
+        public void AddValue(TKey key, TValue value)
         {
-            return AddValue(key, value, DateTime.MinValue, DateTime.Now);
+            AddValue(key, value, DateTime.MinValue, DateTime.Now);
         }
 
         /// <summary>
         /// Добавить значение в кеш
         /// </summary>
-        public CacheItem AddValue(TKey key, TValue value, DateTime valueAge)
+        public void AddValue(TKey key, TValue value, DateTime valueAge)
         {
-            return AddValue(key, value, valueAge, DateTime.Now);
+            AddValue(key, value, valueAge, DateTime.Now);
         }
 
         /// <summary>
         /// Добавить значение в кеш
         /// </summary>
-        public CacheItem AddValue(TKey key, TValue value, DateTime valueAge, DateTime nowDT)
+        public void AddValue(TKey key, TValue value, DateTime valueAge, DateTime nowDT)
         {
             if (key == null)
                 throw new ArgumentNullException("key");
 
             lock (this)
             {
-                CacheItem cacheItem = new CacheItem(key, value, valueAge, nowDT);
+                CacheItem cacheItem = new CacheItem(value, valueAge, nowDT);
                 items.Add(key, cacheItem);
-                return cacheItem;
             }
         }
 
@@ -179,46 +173,16 @@ namespace Scada
 
             lock (this)
             {
-                // получение запрошенного элемента
                 CacheItem item;
                 if (items.TryGetValue(key, out item))
+                {
                     item.AccessDT = nowDT;
-
-                // автоматическая очистка устаревших элементов
-                if (nowDT - LastRemoveDT > StorePeriod)
-                    RemoveOutdatedItems(nowDT);
-
-                return item;
-            }
-        }
-
-        /// <summary>
-        /// Получить элемент по ключу, обновив время доступа, 
-        /// или создать новый пустой элемент, если ключ не содержится в кеше
-        /// </summary>
-        public CacheItem GetOrCreateItem(TKey key, DateTime nowDT)
-        {
-            lock (this)
-            {
-                CacheItem cacheItem = GetItem(key, nowDT);
-                if (cacheItem == null)
-                    cacheItem = AddValue(key, default(TValue), DateTime.MinValue, nowDT);
-                return cacheItem;
-            }
-        }
-
-        /// <summary>
-        /// Получить все элементы для просмотра без обновления времени доступа
-        /// </summary>
-        public CacheItem[] GetAllItemsForWatching()
-        {
-            lock (this)
-            {
-                CacheItem[] itemsCopy = new CacheItem[items.Count];
-                int i = 0;
-                foreach (CacheItem item in items.Values)
-                    itemsCopy[i++] = item;
-                return itemsCopy;
+                    return item;
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 

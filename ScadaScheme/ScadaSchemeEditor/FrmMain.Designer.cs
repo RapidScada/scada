@@ -75,7 +75,6 @@
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
-            this.lblTip = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuMain.SuspendLayout();
             this.toolMain.SuspendLayout();
             this.pnlLeft.SuspendLayout();
@@ -481,7 +480,6 @@
             this.webBrowser.WebBrowserShortcutsEnabled = false;
             this.webBrowser.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.webBrowser_Navigating);
             this.webBrowser.NewWindow += new System.ComponentModel.CancelEventHandler(this.webBrowser_NewWindow);
-            this.webBrowser.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.webBrowser_PreviewKeyDown);
             // 
             // openFileDialog
             // 
@@ -496,8 +494,7 @@
             // statusStrip
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.lblStatus,
-            this.lblTip});
+            this.lblStatus});
             this.statusStrip.Location = new System.Drawing.Point(0, 390);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(584, 22);
@@ -508,12 +505,6 @@
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(52, 17);
             this.lblStatus.Text = "lblStatus";
-            // 
-            // lblTip
-            // 
-            this.lblTip.Name = "lblTip";
-            this.lblTip.Size = new System.Drawing.Size(37, 17);
-            this.lblTip.Text = "lblTip";
             // 
             // FrmMain
             // 
@@ -597,7 +588,6 @@
         private System.Windows.Forms.ToolStripMenuItem miHelpAbout;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel lblStatus;
-        private System.Windows.Forms.ToolStripStatusLabel lblTip;
     }
 }
 

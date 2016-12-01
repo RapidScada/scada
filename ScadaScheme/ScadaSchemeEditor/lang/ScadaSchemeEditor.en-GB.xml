@@ -36,7 +36,6 @@
     <Phrase key="lblNoSelObj">Select element to edit its properties</Phrase>
     <Phrase key="FileFilter">Schemes (*.sch)|*.sch|All Files (*.*)|*.*</Phrase>
     <Phrase key="SaveConfirm">The scheme has been modified. Save the changes?</Phrase>
-    <Phrase key="UseArrows">Use the arrow keys to move the selected element.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.EditorData">
     <Phrase key="LoadSchemeError">Error loading scheme from file</Phrase>

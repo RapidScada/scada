@@ -44,10 +44,6 @@ namespace Scada.Scheme.Editor
         /// Имя файла схемы по умолчанию
         /// </summary>
         private const string DefFileName = "NewScheme.sch";
-        /// <summary>
-        /// Шаг сетки в режиме редактирования
-        /// </summary>
-        private const int GridStep = 5;
 
         private Mutex mutex;                      // объект для проверки запуска второй копии программы
         private string schemeUrl;                 // ссылка на веб-страницу, обеспечивающущю отображение схем
@@ -170,8 +166,8 @@ namespace Scada.Scheme.Editor
             }
             else
             {
-                lblNoSelObj.Visible = elem == null;
-                lblTip.Text = elem is SchemeView.Element ? SchemePhrases.UseArrows : "";
+                if (elem != null)
+                    lblNoSelObj.Visible = false;
 
                 propGrid.SelectedObject = elem;
 
@@ -536,38 +532,6 @@ namespace Scada.Scheme.Editor
         private void webBrowser_NewWindow(object sender, CancelEventArgs e)
         {
             e.Cancel = true;
-        }
-
-        private void webBrowser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-            // переместить выбранный элемент при нажатии стрелок
-            SchemeView.Element elem = propGrid.SelectedObject as SchemeView.Element;
-            Keys keyCode = e.KeyCode;
-
-            if (elem != null && 
-                (keyCode == Keys.Left || keyCode == Keys.Right || keyCode == Keys.Up || keyCode == Keys.Down))
-            {
-                // расчёт нового положения
-                int x = elem.Location.X;
-                int y = elem.Location.Y;
-                int step = e.Control ? 1 : GridStep;
-
-                if (keyCode == Keys.Left)
-                    elem.Location = new SchemeView.Point(x - step, y);
-                else if (keyCode == Keys.Right)
-                    elem.Location = new SchemeView.Point(x + step, y);
-                else if (keyCode == Keys.Up)
-                    elem.Location = new SchemeView.Point(x, y - step);
-                else if (keyCode == Keys.Down)
-                    elem.Location = new SchemeView.Point(x, y + step);
-
-                // установка изменения схемы
-                SchemeView.SchemeChange change = new SchemeView.SchemeChange(SchemeView.ChangeType.ElementChanged);
-                change.ElementData = new SchemeView.ElementData(elem);
-                editorData.TrySetSchemeChange(change);
-                SetFormTitleModified();
-                propGrid.Refresh();
-            }
         }
     }
 }

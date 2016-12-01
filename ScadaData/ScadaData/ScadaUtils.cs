@@ -46,12 +46,6 @@ namespace Scada
         public const int ThreadDelay = 100;
 
         /// <summary>
-        /// Начало отчёта времени, которое используется приложениями Rapid SCADA
-        /// </summary>
-        /// <remarks>Совпадает с началом отсчёта времени в OLE Automation и Delphi</remarks>
-        public static readonly DateTime ScadaEpoch = new DateTime(1899, 12, 30, 0, 0, 0, DateTimeKind.Utc);
-
-        /// <summary>
         /// Длительность хранения данных в cookies
         /// </summary>
         [Obsolete("Use Scada.Web.WebUtils")]
@@ -90,45 +84,6 @@ namespace Scada
         }
 
         /// <summary>
-        /// Выделить час, минуту и секунду из закодированного вещественного значения времени
-        /// </summary>
-        public static void DecodeTime(double time, out int hour, out int min, out int sec)
-        {
-            const double hh = 1.0 / 24;                  // 1 час
-            const double mm = 1.0 / 24 / 60;             // 1 мин
-            const double ms = 1.0 / 24 / 60 / 60 / 1000; // 1 мс
-
-            if (time < 0)
-                time = -time;
-
-            time += ms;
-            time -= Math.Truncate(time); // (int)time работает некорректно для чисел time > int.MaxValue
-            hour = (int)(time * 24);
-            time -= hour * hh;
-            min = (int)(time * 24 * 60);
-            time -= min * mm;
-            sec = (int)(time * 24 * 60 * 60);
-        }
-
-        /// <summary>
-        /// Декодировать вещественное значение времени, преобразовав его в формат DateTime
-        /// </summary>
-        /// <remarks>Требуется проверить идентичность с методом DateTime.FromOADate()</remarks>
-        public static DateTime DecodeDateTime(double dateTime)
-        {
-            return ScadaEpoch.AddDays(dateTime);
-        }
-
-        /// <summary>
-        /// Закодировать дату и время в вещественное значение времени
-        /// </summary>
-        /// <remarks>Требуется проверить идентичность с методом DateTime.ToOADate()</remarks>
-        public static double EncodeDateTime(DateTime dateTime)
-        {
-            return (dateTime - ScadaEpoch).TotalDays;
-        }
-
-        /// <summary>
         /// Определить, является ли заданная строка записью даты, используя Localization.Culture
         /// </summary>
         public static bool StrIsDate(string s)
@@ -151,14 +106,6 @@ namespace Scada
         }
 
         /// <summary>
-        /// Попытаться преобразовать строку в дату и время, используя Localization.Culture
-        /// </summary>
-        public static bool TryParseDateTime(string s, out DateTime result)
-        {
-            return DateTime.TryParse(s, Localization.Culture, DateTimeStyles.None, out result);
-        }
-
-        /// <summary>
         /// Преобразовать строку в вещественное число
         /// </summary>
         /// <remarks>Метод работает с разделителями целой части '.' и ','.
@@ -170,10 +117,9 @@ namespace Scada
         }
 
         /// <summary>
-        /// Преобразовать строку в вещественное число
+        /// Преобразовать строку в вещественное число. Метод работает с разделителями целой части '.' и ','
         /// </summary>
-        /// <remarks>Метод работает с разделителями целой части '.' и ','.
-        /// Если преобразование невозможно, вызывается исключение FormatException</remarks>
+        /// <remarks>Если преобразование невозможно, вызывается исключение FormatException</remarks>
         public static double StrToDoubleExc(string s)
         {
             try { return ParseDouble(s); }
@@ -181,31 +127,14 @@ namespace Scada
         }
 
         /// <summary>
-        /// Преобразовать строку в вещественное число
+        /// Преобразовать строку в вещественное число. Метод работает с разделителями целой части '.' и ','
         /// </summary>
-        /// <remarks>Метод работает с разделителями целой части '.' и ','</remarks>
         public static double ParseDouble(string s)
         {
-            lock (nfi)
-            {
-                nfi.NumberDecimalSeparator = s.Contains(".") ? "." : ",";
-                return double.Parse(s, nfi);
-            }
+            nfi.NumberDecimalSeparator = s.Contains(".") ? "." : ",";
+            return double.Parse(s, nfi);
         }
-
-        /// <summary>
-        /// Попытаться преобразовать строку в вещественное число
-        /// </summary>
-        /// <remarks>Метод работает с разделителями целой части '.' и ','</remarks>
-        public static bool TryParseDouble(string s, out double result)
-        {
-            lock (nfi)
-            {
-                nfi.NumberDecimalSeparator = s.Contains(".") ? "." : ",";
-                return double.TryParse(s, NumberStyles.Float, nfi, out result);
-            }
-        }
-
+        
         /// <summary>
         /// Преобразовать массив байт в строку на основе 16-ричного представления
         /// </summary>
@@ -229,56 +158,26 @@ namespace Scada
         /// <summary>
         /// Преобразовать строку 16-ричных чисел в массив байт
         /// </summary>
-        public static bool HexToBytes(string s, out byte[] bytes, bool skipWhiteSpace = false)
+        public static bool HexToBytes(string s, out byte[] bytes)
         {
-            int strLen = s == null ? 0 : s.Length;
-            int bufLen = strLen / 2;
-            byte[] buf = new byte[bufLen];
+            int len = s == null ? 0 : s.Length;
 
-            int strInd = 0;
-            int bufInd = 0;
-            bool parseOK = true;
-
-            while (strInd < strLen && parseOK)
+            if (len > 0 && len % 2 == 0)
             {
-                if (skipWhiteSpace)
+                bool parseOk = true;
+                bytes = new byte[len / 2];
+
+                for (int i = 0, j = 0; i < len && parseOk; i += 2, j++)
                 {
-                    while (strInd < strLen && char.IsWhiteSpace(s[strInd]))
-                    {
-                        strInd++;
-                    }
-                    if (strInd == strLen)
-                        break;
+                    try { bytes[j] = (byte)int.Parse(s.Substring(i, 2), NumberStyles.HexNumber); }
+                    catch { parseOk = false; }
                 }
 
-                try
-                {
-                    buf[bufInd] = byte.Parse(s.Substring(strInd, 2), NumberStyles.HexNumber);
-                    bufInd++;
-                    strInd += 2;
-                }
-                catch
-                {
-                    parseOK = false;
-                }
-            }
-
-            if (parseOK && bufInd > 0)
-            {
-                if (bufInd < bufLen)
-                {
-                    bytes = new byte[bufInd];
-                    Array.Copy(buf, 0, bytes, 0, bufInd);
-                }
-                else
-                {
-                    bytes = buf;
-                }
-                return true;
+                return parseOk;
             }
             else
             {
-                bytes = buf;
+                bytes = new byte[0];
                 return false;
             }
         }
@@ -312,7 +211,7 @@ namespace Scada
         /// </summary>
         public static string ComputeHash(string s)
         {
-            return ComputeHash(Encoding.UTF8.GetBytes(s));
+            return ComputeHash(Encoding.Default.GetBytes(s));
         }
         
         /// <summary>

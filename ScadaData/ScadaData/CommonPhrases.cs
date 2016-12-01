@@ -73,8 +73,6 @@ namespace Scada
         public static string IncorrectXmlAttrVal { get; private set; }
         public static string IncorrectXmlParamVal { get; private set; }
         public static string XmlNodeNotFound { get; private set; }
-        public static string EventAck { get; private set; }
-        public static string EventNotAck { get; private set; }
 
         public static string CmdTypeTable { get; private set; }
         public static string CmdValTable { get; private set; }
@@ -135,7 +133,7 @@ namespace Scada
             NonemptyRequired = "Требуется непустое значение.";
             DateTimeRequired = "Требуется дата и время.";
             LineLengthLimit = "Длина строки должна быть не более {0} символов.";
-            NotNumber = "\"{0}\" не является числом.";
+            NotNumber = "\"{0}\" не является числом";
             LoadImageError = "Ошибка при загрузке изображения из файла:\n{0}";
             LoadHyperlinkError = "Ошибка при загрузке гиперссылки из файла:\n{0}";
             IncorrectFileFormat = "Некорректный формат файла.";
@@ -145,8 +143,6 @@ namespace Scada
             IncorrectXmlAttrVal = "Некорректное значение XML-атрибута \"{0}\".";
             IncorrectXmlParamVal = "Некорректное значение параметра \"{0}\".";
             XmlNodeNotFound = "XML-узел \"{0}\" не найден внутри узла \"{1}\".";
-            EventAck = "Да";
-            EventNotAck = "Нет";
 
             CmdTypeTable = "Типы команд";
             CmdValTable = "Значения команд";
@@ -220,8 +216,6 @@ namespace Scada
                 IncorrectXmlAttrVal = dict.GetPhrase("IncorrectXmlAttrVal", IncorrectXmlAttrVal);
                 IncorrectXmlParamVal = dict.GetPhrase("IncorrectXmlParamVal", IncorrectXmlParamVal);
                 XmlNodeNotFound = dict.GetPhrase("XmlNodeNotFound", XmlNodeNotFound);
-                EventAck = dict.GetPhrase("EventAck", EventAck);
-                EventNotAck = dict.GetPhrase("EventNotAck", EventNotAck);
 
                 CmdTypeTable = dict.GetPhrase("CmdTypeTable", CmdTypeTable);
                 CmdValTable = dict.GetPhrase("CmdValTable", CmdValTable);

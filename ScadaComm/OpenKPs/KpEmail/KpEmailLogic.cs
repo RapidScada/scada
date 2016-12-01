@@ -27,8 +27,7 @@
  */
 
 using Scada.Comm.Devices.KpEmail;
-using Scada.Data.Models;
-using Scada.Data.Tables;
+using Scada.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;

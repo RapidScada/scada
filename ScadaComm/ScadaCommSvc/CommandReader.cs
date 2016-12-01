@@ -23,8 +23,6 @@
  * Modified : 2016
  */
 
-using Scada.Data.Models;
-using Scada.Data.Tables;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -32,6 +30,7 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using Utils;
+using Scada.Data;
 
 namespace Scada.Comm.Svc
 {

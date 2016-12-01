@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2015 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,17 +20,17 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2016
+ * Modified : 2015
  */
 
 using Scada.Comm.Channels;
 using Scada.Comm.Devices;
-using Scada.Data.Models;
-using Scada.Data.Tables;
+using Scada.Data;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using Utils;
@@ -881,13 +881,13 @@ namespace Scada.Comm.Svc
                             {
                                 KPInvalidateCurData(kpLogic);
                                 log.WriteLine();
-                                log.WriteAction(string.Format(Localization.UseRussian ?
-                                    "Невозможно выполнить сеанс связи с {0}, т.к. соединение не установлено" :
-                                    "Unable to communicate with {0} because connection is not established", 
-                                    kpLogic.Caption));
+                                log.WriteAction(Localization.UseRussian ?
+                                    "Невозможно выполнить сеанс опроса КП, т.к. соединение не установлено" :
+                                    "Unable to communicate with the device because connection is not established");
                             }
-                            else if (KPSession(kpLogic))
+                            else
                             {
+                                KPSession(kpLogic);
                                 commCnt++;
                             }
                             WriteKPInfo(kpLogic);
@@ -982,7 +982,7 @@ namespace Scada.Comm.Svc
             {
                 log.WriteAction((Localization.UseRussian ?
                     "Ошибка при выполнении действий канала связи перед сеансом опроса КП: " :
-                    "Error executing the communication channel actions before session with a device: ") + ex.Message);
+                    "Error executing actions of communication channel before session with a device: ") + ex.Message);
             }
         }
 
@@ -1000,19 +1000,18 @@ namespace Scada.Comm.Svc
             {
                 log.WriteAction((Localization.UseRussian ?
                     "Ошибка при выполнении действий канала связи после сеанса опроса КП: " :
-                    "Error executing the communication channel actions after session with a device: ") + ex.Message);
+                    "Error executing actions of communication channel after session with a device: ") + ex.Message);
             }
         }
 
         /// <summary>
         /// Выполнить сеанс опроса КП
         /// </summary>
-        private bool KPSession(KPLogic kpLogic)
+        private void KPSession(KPLogic kpLogic)
         {
             try
             {
                 kpLogic.Session();
-                return true;
             }
             catch (Exception ex)
             {
@@ -1020,7 +1019,6 @@ namespace Scada.Comm.Svc
                 log.WriteAction((Localization.UseRussian ?
                     "Ошибка при выполнении сеанса опроса КП: " :
                     "Error communicating with the device: ") + ex.Message);
-                return false;
             }
         }
 
@@ -1045,12 +1043,11 @@ namespace Scada.Comm.Svc
         /// <summary>
         /// Отправить команду ТУ
         /// </summary>
-        private bool KPSendCmd(KPLogic kpLogic, Command cmd)
+        private void KPSendCmd(KPLogic kpLogic, Command cmd)
         {
             try
             {
                 kpLogic.SendCmd(cmd);
-                return true;
             }
             catch (Exception ex)
             {
@@ -1058,7 +1055,6 @@ namespace Scada.Comm.Svc
                 log.WriteAction((Localization.UseRussian ?
                     "Ошибка при отправке команды ТУ: " :
                     "Error sending command: ") + ex.Message);
-                return false;
             }
         }
 
@@ -1130,16 +1126,15 @@ namespace Scada.Comm.Svc
                             CommCnlBeforeSession(kpLogic);
                             if (kpLogic.ConnRequired && (kpLogic.Connection == null || !kpLogic.Connection.Connected))
                             {
-                                log.WriteAction(string.Format(Localization.UseRussian ?
-                                    "Невозможно отправить команду ТУ для {0}, т.к. соединение не установлено: " :
-                                    "Unable to send command to {0} because connection is not established",
-                                    kpLogic.Caption));
+                                log.WriteAction(Localization.UseRussian ?
+                                    "Невозможно отправить команду ТУ, т.к. соединение не установлено: " :
+                                    "Unable to send command because connection is not established");
                             }
                             else
                             {
-                                if (KPSendCmd(kpLogic, cmd))
-                                    commCnt++;
+                                KPSendCmd(kpLogic, cmd);
                                 WriteKPInfo(kpLogic);
+                                commCnt++;
                             }
                             CommCnlAfterSession(kpLogic);
                         }
