@@ -891,7 +891,7 @@ scada.chart.Chart.prototype._showHint = function (pageX, pageY, opt_touch) {
                 var winRight = winScrollLeft + $(window).width();
                 var chartRight = winScrollLeft + layout.absCanvasLeft + layout.canvasLeftBorder + layout.width;
                 var maxRight = Math.min(winRight, chartRight);
-                var absHintLeft = pageX + hintWidth < maxRight ? pageX : Math.max(maxRight - hintWidth, 0);
+                var absHintLeft = pageX + hintWidth < maxRight ? pageX : Math.max(pageX - hintWidth, 0);
 
                 this._trendHint.css({
                     "left": absHintLeft - layout.absCanvasLeft,
