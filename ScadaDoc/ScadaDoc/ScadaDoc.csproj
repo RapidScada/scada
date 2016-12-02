@@ -65,6 +65,8 @@
     <Content Include="content\en\software-overview\administrator-application.html" />
     <Content Include="content\en\software-overview\communicator-application-files\scada_comm_en.png" />
     <Content Include="content\en\software-overview\communicator-application.html" />
+    <Content Include="content\en\software-overview\scheme-editor-application-files\scada_scheme_editor_en.png" />
+    <Content Include="content\en\software-overview\scheme-editor-application.html" />
     <Content Include="content\en\software-overview\server-application-files\scada_server_en.png" />
     <Content Include="content\en\software-overview\server-application.html" />
     <Content Include="content\en\software-overview\software-architecture-files\scada_arc_en.png" />
@@ -111,6 +113,8 @@
     <Content Include="content\ru\software-overview\administrator-application.html" />
     <Content Include="content\ru\software-overview\communicator-application-files\scada_comm_ru.png" />
     <Content Include="content\ru\software-overview\communicator-application.html" />
+    <Content Include="content\ru\software-overview\scheme-editor-application-files\scada_scheme_editor_ru.png" />
+    <Content Include="content\ru\software-overview\scheme-editor-application.html" />
     <Content Include="content\ru\software-overview\server-application-files\scada_server_ru.png" />
     <Content Include="content\ru\software-overview\server-application.html" />
     <Content Include="content\ru\software-overview\software-architecture-files\scada_arc_ru.png" />

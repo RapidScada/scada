@@ -10,8 +10,7 @@ function addContents(context) {
     addArticle(context, "software-overview/webstation-application.html", "Webstation", 2);
     addArticle(context, "software-overview/administrator-application.html", "Administrator", 2);
     addArticle(context, "software-overview/table-editor-application.html", "Table Editor", 2);
-    addArticle(context, "", "Scheme Editor", 2);
-    addArticle(context, "", "Examples of Systems", 1);
+    addArticle(context, "software-overview/scheme-editor-application.html", "Scheme Editor", 2);
 
     addArticle(context, "", "Installation and Start");
     addArticle(context, "", "System Requirements", 1);
