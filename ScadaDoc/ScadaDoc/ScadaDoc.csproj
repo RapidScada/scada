@@ -70,6 +70,8 @@
     <Content Include="content\en\software-overview\software-architecture-files\scada_arc_en.png" />
     <Content Include="content\en\software-overview\software-architecture.html" />
     <Content Include="content\en\software-overview\software-purpose.html" />
+    <Content Include="content\en\software-overview\table-editor-application-files\scada_table_editor_en.png" />
+    <Content Include="content\en\software-overview\table-editor-application.html" />
     <Content Include="content\en\software-overview\webstation-application-files\scada_web_scheme_en.png" />
     <Content Include="content\en\software-overview\webstation-application-files\scada_web_table_en.png" />
     <Content Include="content\en\software-overview\webstation-application.html" />
@@ -114,6 +116,8 @@
     <Content Include="content\ru\software-overview\software-architecture-files\scada_arc_ru.png" />
     <Content Include="content\ru\software-overview\software-architecture.html" />
     <Content Include="content\ru\software-overview\software-purpose.html" />
+    <Content Include="content\ru\software-overview\table-editor-application-files\scada_table_editor_ru.png" />
+    <Content Include="content\ru\software-overview\table-editor-application.html" />
     <Content Include="content\ru\software-overview\webstation-application-files\scada_web_scheme_ru.png" />
     <Content Include="content\ru\software-overview\webstation-application-files\scada_web_table_en.png" />
     <Content Include="content\ru\software-overview\webstation-application.html" />

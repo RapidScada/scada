@@ -9,7 +9,7 @@ function addContents(context) {
     addArticle(context, "software-overview/communicator-application.html", "Коммуникатор", 2);
     addArticle(context, "software-overview/webstation-application.html", "Вебстанция", 2);
     addArticle(context, "software-overview/administrator-application.html", "Администратор", 2);
-    addArticle(context, "", "Table Editor", 2);
+    addArticle(context, "software-overview/table-editor-application.html", "Редактор таблиц", 2);
     addArticle(context, "", "Scheme Editor", 2);
     addArticle(context, "", "Examples of Systems", 1);
 
