@@ -13,7 +13,7 @@ function addContents(context) {
     addArticle(context, "software-overview/scheme-editor-application.html", "Редактор схем", 2);
 
     addArticle(context, "", "Установка и запуск");
-    addArticle(context, "", "System Requirements", 1);
+    addArticle(context, "installation-and-run/system-requirements.html", "Системные требования", 1);
     addArticle(context, "", "Installing Software", 1);
     addArticle(context, "", "Start Applications", 1);
     addArticle(context, "", "Migrating Configuration to New Server", 1);

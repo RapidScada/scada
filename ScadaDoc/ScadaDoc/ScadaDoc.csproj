@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="content\en\index.html" />
+    <Content Include="content\en\installation-and-run\system-requirements.html" />
     <Content Include="content\en\software-overview\administrator-application-files\scada_admin_en.png" />
     <Content Include="content\en\software-overview\administrator-application.html" />
     <Content Include="content\en\software-overview\communicator-application-files\scada_comm_en.png" />
@@ -109,6 +110,7 @@
     <Content Include="content\en\use-cases\modbus-protocol.html" />
     <Content Include="content\en\use-cases\opc-standard.html" />
     <Content Include="content\ru\index.html" />
+    <Content Include="content\ru\installation-and-run\system-requirements.html" />
     <Content Include="content\ru\software-overview\administrator-application-files\scada_admin_ru.png" />
     <Content Include="content\ru\software-overview\administrator-application.html" />
     <Content Include="content\ru\software-overview\communicator-application-files\scada_comm_ru.png" />
