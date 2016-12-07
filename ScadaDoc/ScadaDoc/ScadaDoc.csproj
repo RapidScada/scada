@@ -62,6 +62,11 @@
   <ItemGroup>
     <Content Include="content\en\index.html" />
     <Content Include="content\en\installation-and-run\software-installation-files\install_dir_en.png" />
+    <Content Include="content\en\installation-and-run\software-installation-files\web_params_en.png" />
+    <Content Include="content\en\installation-and-run\software-installation-files\win10_features_dotnet_en.png" />
+    <Content Include="content\en\installation-and-run\software-installation-files\win10_features_iis_en.png" />
+    <Content Include="content\en\installation-and-run\software-installation-files\win7_features_dotnet_en.png" />
+    <Content Include="content\en\installation-and-run\software-installation-files\win7_features_iis_en.png" />
     <Content Include="content\en\installation-and-run\software-installation.html" />
     <Content Include="content\en\installation-and-run\system-requirements.html" />
     <Content Include="content\en\software-overview\administrator-application-files\scada_admin_en.png" />
@@ -114,6 +119,11 @@
     <Content Include="content\ru\index.html" />
     <Content Include="content\ru\installation-and-run\software-installation-files\install_dir_ru.png" />
     <Content Include="content\ru\installation-and-run\software-installation-files\scada_setup_ru.png" />
+    <Content Include="content\ru\installation-and-run\software-installation-files\web_params_ru.png" />
+    <Content Include="content\ru\installation-and-run\software-installation-files\win10_features_dotnet_ru.png" />
+    <Content Include="content\ru\installation-and-run\software-installation-files\win10_features_iis_ru.png" />
+    <Content Include="content\ru\installation-and-run\software-installation-files\win7_features_dotnet_en.png" />
+    <Content Include="content\ru\installation-and-run\software-installation-files\win7_features_iis_ru.png" />
     <Content Include="content\ru\installation-and-run\software-installation.html" />
     <Content Include="content\ru\installation-and-run\system-requirements.html" />
     <Content Include="content\ru\software-overview\administrator-application-files\scada_admin_ru.png" />
