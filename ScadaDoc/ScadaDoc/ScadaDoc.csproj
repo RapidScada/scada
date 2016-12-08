@@ -69,6 +69,8 @@
     <Content Include="content\en\installation-and-run\software-installation-files\win7_features_dotnet_en.png" />
     <Content Include="content\en\installation-and-run\software-installation-files\win7_features_iis_en.png" />
     <Content Include="content\en\installation-and-run\software-installation.html" />
+    <Content Include="content\en\installation-and-run\start-applications-files\service_props_en.png" />
+    <Content Include="content\en\installation-and-run\start-applications.html" />
     <Content Include="content\en\installation-and-run\system-requirements.html" />
     <Content Include="content\en\software-overview\administrator-application-files\scada_admin_en.png" />
     <Content Include="content\en\software-overview\administrator-application.html" />
@@ -126,6 +128,8 @@
     <Content Include="content\ru\installation-and-run\software-installation-files\win7_features_dotnet_en.png" />
     <Content Include="content\ru\installation-and-run\software-installation-files\win7_features_iis_ru.png" />
     <Content Include="content\ru\installation-and-run\software-installation.html" />
+    <Content Include="content\ru\installation-and-run\start-applications-files\service_props_ru.png" />
+    <Content Include="content\ru\installation-and-run\start-applications.html" />
     <Content Include="content\ru\installation-and-run\system-requirements.html" />
     <Content Include="content\ru\software-overview\administrator-application-files\scada_admin_ru.png" />
     <Content Include="content\ru\software-overview\administrator-application.html" />

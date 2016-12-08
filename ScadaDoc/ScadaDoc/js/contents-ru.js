@@ -15,7 +15,7 @@ function addContents(context) {
     addArticle(context, "", "Установка и запуск");
     addArticle(context, "installation-and-run/system-requirements.html", "Системные требования", 1);
     addArticle(context, "installation-and-run/software-installation.html", "Установка программного комплекса", 1);
-    addArticle(context, "", "Start Applications", 1);
+    addArticle(context, "installation-and-run/start-applications.html", "Запуск приложений", 1);
     addArticle(context, "", "Migrating Configuration to New Server", 1);
     addArticle(context, "", "Software Update", 1);
 
