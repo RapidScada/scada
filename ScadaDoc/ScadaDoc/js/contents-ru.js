@@ -16,8 +16,8 @@ function addContents(context) {
     addArticle(context, "installation-and-run/system-requirements.html", "Системные требования", 1);
     addArticle(context, "installation-and-run/software-installation.html", "Установка программного комплекса", 1);
     addArticle(context, "installation-and-run/start-applications.html", "Запуск приложений", 1);
-    addArticle(context, "", "Migrating Configuration to New Server", 1);
-    addArticle(context, "", "Software Update", 1);
+    addArticle(context, "installation-and-run/migrate-configuration.html", "Перенос конфигурации на новый сервер", 1);
+    addArticle(context, "installation-and-run/software-update.html", "Обновление программного комплекса", 1);
 
     addArticle(context, "", "Настройка комплекса");
     addArticle(context, "", "General Configuration Sequence", 1);
@@ -30,4 +30,10 @@ function addContents(context) {
     addArticle(context, "", "Сценарии использования");
     addArticle(context, "use-cases/modbus-protocol.html", "Connecting Devices Using Modbus Protocol", 1);
     addArticle(context, "use-cases/opc-standard.html", "Connecting Devices Using OPC Standard", 1);
+
+    addArticle(context, "", "История версий");
+    addArticle(context, "version-history/scada-history.html", "Rapid SCADA", 1);
+    addArticle(context, "", "Модули", 1);
+    addArticle(context, "version-history/modules/chart-pro-history.html", "Графики Про", 2);
+    addArticle(context, "version-history/modules/elastic-report-history.html", "Гибкий отчёт", 2);
 }

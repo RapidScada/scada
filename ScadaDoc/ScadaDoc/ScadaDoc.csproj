@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="content\en\index.html" />
+    <Content Include="content\en\installation-and-run\migrate-configuration.html" />
     <Content Include="content\en\installation-and-run\software-installation-files\install_dir_en.png" />
     <Content Include="content\en\installation-and-run\software-installation-files\scada_setup_en.png" />
     <Content Include="content\en\installation-and-run\software-installation-files\web_params_en.png" />
@@ -69,6 +70,7 @@
     <Content Include="content\en\installation-and-run\software-installation-files\win7_features_dotnet_en.png" />
     <Content Include="content\en\installation-and-run\software-installation-files\win7_features_iis_en.png" />
     <Content Include="content\en\installation-and-run\software-installation.html" />
+    <Content Include="content\en\installation-and-run\software-update.html" />
     <Content Include="content\en\installation-and-run\start-applications-files\service_props_en.png" />
     <Content Include="content\en\installation-and-run\start-applications.html" />
     <Content Include="content\en\installation-and-run\system-requirements.html" />
@@ -119,6 +121,7 @@
     <Content Include="content\en\use-cases\modbus-protocol-files\modbus_web_config2_en.png" />
     <Content Include="content\en\use-cases\modbus-protocol.html" />
     <Content Include="content\en\use-cases\opc-standard.html" />
+    <Content Include="content\en\version-history\scada-history.html" />
     <Content Include="content\ru\index.html" />
     <Content Include="content\ru\installation-and-run\software-installation-files\install_dir_ru.png" />
     <Content Include="content\ru\installation-and-run\software-installation-files\scada_setup_ru.png" />
@@ -128,9 +131,11 @@
     <Content Include="content\ru\installation-and-run\software-installation-files\win7_features_dotnet_en.png" />
     <Content Include="content\ru\installation-and-run\software-installation-files\win7_features_iis_ru.png" />
     <Content Include="content\ru\installation-and-run\software-installation.html" />
+    <Content Include="content\ru\installation-and-run\software-update.html" />
     <Content Include="content\ru\installation-and-run\start-applications-files\service_props_ru.png" />
     <Content Include="content\ru\installation-and-run\start-applications.html" />
     <Content Include="content\ru\installation-and-run\system-requirements.html" />
+    <Content Include="content\ru\installation-and-run\migrate-configuration.html" />
     <Content Include="content\ru\software-overview\administrator-application-files\scada_admin_ru.png" />
     <Content Include="content\ru\software-overview\administrator-application.html" />
     <Content Include="content\ru\software-overview\communicator-application-files\scada_comm_ru.png" />
@@ -148,6 +153,7 @@
     <Content Include="content\ru\software-overview\webstation-application-files\scada_web_table_en.png" />
     <Content Include="content\ru\software-overview\webstation-application.html" />
     <Content Include="content\ru\use-cases\modbus-protocol.html" />
+    <Content Include="content\ru\version-history\scada-history.html" />
     <Content Include="css\index.css">
       <DependentUpon>index.less</DependentUpon>
     </Content>
