@@ -54,6 +54,10 @@ function createContents() {
         if (selItem.length > 0) {
             context.contents.scrollTop(selItem.offset().top);
         }
+
+        if (typeof onContentsCreated == "function") {
+            onContentsCreated();
+        }
     });
 }
 
@@ -93,6 +97,33 @@ function addArticle(context, link, title, level) {
 
     var contentsItem = $("<div class='sd-contents-item" + levClass + selClass + "'>" + itemInnerHtml + "</div>");
     context.contents.append(contentsItem);
+}
+
+function copyContentsToArticle() {
+    var selItem = $(".sd-contents-item.selected:first");
+
+    if (selItem.length) {
+        var stopClass = selItem.attr("class").replace(" selected", "");
+        var reqClass = selItem.next(".sd-contents-item").attr("class");
+        var divArticle = $(".sd-article");
+
+        var titleText = selItem.find("a").text();
+        document.title = titleText + " - " + document.title;
+        $("<h1>").text(titleText).appendTo(divArticle);
+
+        selItem.nextAll().each(function () {
+            var curClass = $(this).attr("class");
+
+            if (curClass == reqClass) {
+                var linkElem = $(this).find("a");
+                if (linkElem.length) {
+                    $("<p>").append(linkElem.clone()).appendTo(divArticle);
+                }
+            } else if (curClass == stopClass) {
+                return false;
+            }
+        });
+    }
 }
 
 $(document).ready(function () {
