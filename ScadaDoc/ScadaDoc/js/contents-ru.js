@@ -1,21 +1,21 @@
 ﻿// Add table of contents in Russian here
 function addContents(context) {
     addArticle(context, "../../", "Главная");
-    addArticle(context, "", "Обзор комплекса");
+    addArticle(context, "software-overview/", "Обзор комплекса");
     addArticle(context, "software-overview/software-purpose.html", "Назначение и характеристики программного комплекса", 1);
     addArticle(context, "software-overview/software-architecture.html", "Архитектура программного комплекса", 1);
-    addArticle(context, "", "Описание приложений", 1);
-    addArticle(context, "software-overview/server-application.html", "Сервер", 2);
-    addArticle(context, "software-overview/communicator-application.html", "Коммуникатор", 2);
-    addArticle(context, "software-overview/webstation-application.html", "Вебстанция", 2);
-    addArticle(context, "software-overview/administrator-application.html", "Администратор", 2);
-    addArticle(context, "software-overview/table-editor-application.html", "Редактор таблиц", 2);
-    addArticle(context, "software-overview/scheme-editor-application.html", "Редактор схем", 2);
+    addArticle(context, "software-overview/applications/", "Описание приложений", 1);
+    addArticle(context, "software-overview/applications/server-application.html", "Приложение Сервер", 2);
+    addArticle(context, "software-overview/applications/communicator-application.html", "Приложение Коммуникатор", 2);
+    addArticle(context, "software-overview/applications/webstation-application.html", "Приложение Вебстанция", 2);
+    addArticle(context, "software-overview/applications/administrator-application.html", "Приложение Администратор", 2);
+    addArticle(context, "software-overview/applications/table-editor-application.html", "Приложение Редактор таблиц", 2);
+    addArticle(context, "software-overview/applications/scheme-editor-application.html", "Приложение Редактор схем", 2);
 
-    addArticle(context, "", "Установка и запуск");
+    addArticle(context, "installation-and-run/", "Установка и запуск");
     addArticle(context, "installation-and-run/system-requirements.html", "Системные требования", 1);
     addArticle(context, "installation-and-run/software-installation.html", "Установка программного комплекса", 1);
-    addArticle(context, "installation-and-run/start-applications.html", "Запуск приложений", 1);
+    addArticle(context, "installation-and-run/run-applications.html", "Запуск приложений", 1);
     addArticle(context, "installation-and-run/migrate-configuration.html", "Перенос конфигурации на новый сервер", 1);
     addArticle(context, "installation-and-run/software-update.html", "Обновление программного комплекса", 1);
 

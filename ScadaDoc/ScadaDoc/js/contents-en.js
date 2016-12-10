@@ -1,21 +1,21 @@
 ﻿// Add table of contents in English here
 function addContents(context) {
     addArticle(context, "../../", "Home");
-    addArticle(context, "", "Software Overview");
+    addArticle(context, "software-overview/", "Software Overview");
     addArticle(context, "software-overview/software-purpose.html", "Software Purpose and Characteristics", 1);
     addArticle(context, "software-overview/software-architecture.html", "Software Architecture", 1);
-    addArticle(context, "", "Description of Applications", 1);
-    addArticle(context, "software-overview/server-application.html", "Server", 2);
-    addArticle(context, "software-overview/communicator-application.html", "Communicator", 2);
-    addArticle(context, "software-overview/webstation-application.html", "Webstation", 2);
-    addArticle(context, "software-overview/administrator-application.html", "Administrator", 2);
-    addArticle(context, "software-overview/table-editor-application.html", "Table Editor", 2);
-    addArticle(context, "software-overview/scheme-editor-application.html", "Scheme Editor", 2);
+    addArticle(context, "software-overview/applications/", "Description of Applications", 1);
+    addArticle(context, "software-overview/applications/server-application.html", "Server Application", 2);
+    addArticle(context, "software-overview/applications/communicator-application.html", "Communicator Application", 2);
+    addArticle(context, "software-overview/applications/webstation-application.html", "Webstation Application", 2);
+    addArticle(context, "software-overview/applications/administrator-application.html", "Administrator Application", 2);
+    addArticle(context, "software-overview/applications/table-editor-application.html", "Table Editor Application", 2);
+    addArticle(context, "software-overview/applications/scheme-editor-application.html", "Scheme Editor Application", 2);
 
-    addArticle(context, "", "Installation and Start");
+    addArticle(context, "installation-and-run/", "Installation and Run");
     addArticle(context, "installation-and-run/system-requirements.html", "System Requirements", 1);
     addArticle(context, "installation-and-run/software-installation.html", "Software Installation", 1);
-    addArticle(context, "installation-and-run/start-applications.html", "Start Applications", 1);
+    addArticle(context, "installation-and-run/run-applications.html", "Run Applications", 1);
     addArticle(context, "installation-and-run/migrate-configuration.html", "Migrate Configuration to New Server", 1);
     addArticle(context, "installation-and-run/software-update.html", "Software Update", 1);
 
