@@ -264,8 +264,12 @@ namespace Scada.Web
                     double val;
                     int stat;
                     snapshot.GetCnlData(cnlNum, out val, out stat);
-                    cnlDataExt.Val = val;
-                    cnlDataExt.Stat = stat;
+
+                    if (!double.IsNaN(val))
+                    {
+                        cnlDataExt.Val = val;
+                        cnlDataExt.Stat = stat;
+                    }
 
                     InCnlProps cnlProps = dataAccess.GetCnlProps(cnlNum);
                     string text;
