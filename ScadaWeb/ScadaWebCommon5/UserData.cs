@@ -48,9 +48,9 @@ namespace Scada.Web
         /// </summary>
         private static readonly AppData AppData = AppData.GetAppData();
 
-        
+
         /// <summary>
-        /// Конструктор, ограничивающий создание объекта без параметров
+        /// Конструктор, ограничивающий создание объекта из других классов
         /// </summary>
         private UserData()
         {
