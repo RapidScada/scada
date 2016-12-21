@@ -269,18 +269,18 @@ namespace Scada.Web
         /// <summary>
         /// Проверить, что пользователь вошёл в систему, и получить его имя
         /// </summary>
-        public bool UserIsLoggedOn(WebOperationContext webOpContext, out string userName)
+        public bool UserIsLoggedOn(WebOperationContext webOpContext, out string username)
         {
             UserData userData;
 
             if (TryGetUserData(webOpContext, out userData) && userData.LoggedOn && userData.UserProps != null)
             {
-                userName = userData.UserProps.UserName;
+                username = userData.UserProps.UserName;
                 return true;
             }
             else
             {
-                userName = "";
+                username = "";
                 return false;
             }
         }
@@ -301,9 +301,9 @@ namespace Scada.Web
         /// <summary>
         /// Проверить, что пользователь вошёл систему, и получить его имя
         /// </summary>
-        public bool CheckLoggedOn(out string userName, bool throwOnFail = true)
+        public bool CheckLoggedOn(out string username, bool throwOnFail = true)
         {
-            if (UserIsLoggedOn(WebOperationContext.Current, out userName))
+            if (UserIsLoggedOn(WebOperationContext.Current, out username))
                 return true;
             else if (throwOnFail)
                 throw new ScadaException(WebPhrases.NotLoggedOn);
