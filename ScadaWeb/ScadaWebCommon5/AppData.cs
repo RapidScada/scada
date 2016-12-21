@@ -522,12 +522,7 @@ namespace Scada.Web
         /// <remarks>Метод используется, если сессия не доступна</remarks>
         public bool CheckLoggedOn(out UserRights userRights, bool throwOnFail = true)
         {
-            if (UserMonitor.UserIsLoggedOn(WebOperationContext.Current, out userRights))
-                return true;
-            else if (throwOnFail)
-                throw new ScadaException(WebPhrases.NotLoggedOn);
-            else
-                return false;
+            return UserMonitor.CheckLoggedOn(out userRights, throwOnFail);
         }
 
         /// <summary>

@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web;
+using System.Web.Script.Serialization;
 
 namespace Scada.Web
 {
@@ -140,6 +141,14 @@ namespace Scada.Web
         public static long DateTimeToJs(DateTime dateTime)
         {
             return dateTime > UnixEpoch ? (long)(dateTime - UnixEpoch).TotalMilliseconds : 0;
+        }
+
+        /// <summary>
+        /// Получить объект для передачи данных, содержащий информацию об ошибке, в формате JSON
+        /// </summary>
+        public static string GetErrorJson(this JavaScriptSerializer jsSerializer, Exception ex)
+        {
+            return jsSerializer.Serialize(new DataTransferObject(false, ex.Message));
         }
     }
 }

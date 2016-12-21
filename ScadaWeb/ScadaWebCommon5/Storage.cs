@@ -80,7 +80,7 @@ namespace Scada.Web
         public string GetUserDir(string username)
         {
             UserData.ValidateUserName(username);
-            return StorageDir + username + Path.DirectorySeparatorChar;
+            return StorageDir + username.ToLowerInvariant() + Path.DirectorySeparatorChar;
         }
 
         /// <summary>
