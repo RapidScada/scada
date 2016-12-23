@@ -153,6 +153,16 @@ scada.utils = {
             (opt_message ? ": " + opt_message : ""));
     },
 
+    // Check that the frame is accessible by the same-origin policy
+    frameAvailable(frameWnd) {
+        try {
+            var x = frameWnd.location.href;
+            return true;
+        } catch (ex) {
+            return false;
+        }
+    },        
+
     // Check if browser is in fullscreen mode
     // See https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API
     isFullscreen: function() {
