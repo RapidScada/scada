@@ -115,9 +115,11 @@ scada.utils = {
 
     // Extract year, month and day from the date, and join them into a query string
     dateToQueryString: function (date) {
-        return "year=" + date.getFullYear() +
+        return date ? 
+            "year=" + date.getFullYear() +
             "&month=" + (date.getMonth() + 1) +
-            "&day=" + date.getDate();
+            "&day=" + date.getDate() :
+            "";
     },
 
     // Returns the current time string
