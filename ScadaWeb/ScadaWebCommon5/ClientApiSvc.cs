@@ -473,7 +473,12 @@ namespace Scada.Web
         {
             try
             {
-                AppData.CheckLoggedOn();
+                UserRights userRights;
+                AppData.CheckLoggedOn(out userRights);
+
+                if (!userRights.ViewAllRight)
+                    throw new ScadaException(CommonPhrases.NoRights);
+
                 SrezTableLight.CnlData cnlData = AppData.DataAccess.GetCurCnlData(cnlNum);
                 return JsSerializer.Serialize(new DataTransferObject(cnlData));
             }
