@@ -106,6 +106,17 @@ scada.utils = {
         }
     },
 
+    // Convert the value of the query string parameter to an array of integers
+    queryParamToIntArray: function (paramVal) {
+        var arr = [];
+
+        for (var elemStr of paramVal.split(",")) {
+            arr.push(parseInt(elemStr));
+        }
+
+        return arr;
+    },
+
     // Convert array to a query string parameter by joining array elements with a comma
     arrayToQueryParam: function (arr) {
         var queryParam = arr ? (Array.isArray(arr) ? arr.join(",") : arr) : "";
