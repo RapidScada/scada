@@ -227,9 +227,7 @@ namespace Scada.Web.Plugins.Table
                     !userData.WebSettings.CmdEnabled)
                     throw new ScadaException(CommonPhrases.NoRights);
 
-                Type viewType = userData.UserViews.GetViewType(viewID);
-                BaseView view = appData.ViewCache.GetView(viewType, viewID, true);
-
+                BaseView view = userData.UserViews.GetView(viewID, true);
                 if (!view.ContainsCtrlCnl(ctrlCnlNum))
                     throw new ScadaException(CommonPhrases.NoRights);
 

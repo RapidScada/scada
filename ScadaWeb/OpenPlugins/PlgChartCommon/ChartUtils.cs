@@ -46,24 +46,6 @@ namespace Scada.Web.Plugins.Chart
 
 
         /// <summary>
-        /// Проверить корректность заданных массивов
-        /// </summary>
-        public static void CheckArrays(int[] cnlNums, int[] viewIDs)
-        {
-            if (cnlNums == null)
-                throw new ArgumentNullException("cnlNums");
-
-            if (viewIDs == null)
-                throw new ArgumentNullException("viewIDs");
-
-            if (cnlNums.Length == 0)
-                throw new ArgumentException(ChartPhrases.CnlNumsEmptyError);
-
-            if (cnlNums.Length != viewIDs.Length)
-                throw new ScadaException(ChartPhrases.CountMismatchError);
-        }
-
-        /// <summary>
         /// Получить можество номеров канала из списка пар канал/представление
         /// </summary>
         public static HashSet<int> GetCnlSet(List<CnlViewPair> cnlViewPairs)
@@ -103,15 +85,9 @@ namespace Scada.Web.Plugins.Chart
         /// Получить список пар канал/представление по ид. представления
         /// </summary>
         public static List<CnlViewPair> GetCnlViewPairsByView(
-            int viewID, DataAccess dataAccess, ViewCache viewCache, UserViews userViews)
+            int viewID, DataAccess dataAccess, UserViews userViews)
         {
-            BaseView view = null;
-
-            if (viewID > 0)
-            {
-                Type viewType = userViews.GetViewType(viewID);
-                view = viewCache.GetView(viewType, viewID);
-            }
+            BaseView view = userViews.GetView(viewID, false, true);
 
             if (view == null)
             {

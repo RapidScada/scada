@@ -52,7 +52,7 @@ namespace Scada.Web.Plugins.Chart
             int viewID;
             int.TryParse(ddlView.SelectedValue, out viewID);
             List<CnlViewPair> cnlsByView = ChartUtils.GetCnlViewPairsByView(
-                viewID, appData.DataAccess, appData.ViewCache, userData.UserViews);
+                viewID, appData.DataAccess, userData.UserViews);
 
             repCnlsByView.DataSource = cnlsByView;
             repCnlsByView.DataBind();

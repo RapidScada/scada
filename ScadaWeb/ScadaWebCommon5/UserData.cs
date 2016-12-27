@@ -254,8 +254,8 @@ namespace Scada.Web
                         username, UserProps.RoleName, IpAddress));
                 }
 
-                UserRights userRights = new UserRights();
-                userRights.Init(roleID, AppData.DataAccess, AppData.ViewCache);
+                UserRights userRights = new UserRights(AppData.ViewCache);
+                userRights.Init(roleID, AppData.DataAccess);
                 UserRights = userRights;
 
                 AppData.UserMonitor.AddUser(this);
@@ -264,7 +264,7 @@ namespace Scada.Web
 
                 UserMenu = new UserMenu(AppData.Log);
                 UserMenu.Init(this);
-                UserViews = new UserViews(AppData.Log);
+                UserViews = new UserViews(AppData.ViewCache, AppData.Log);
                 UserViews.Init(this, AppData.DataAccess);
                 UserContent = new UserContent(AppData.Log);
                 UserContent.Init(this, AppData.DataAccess);

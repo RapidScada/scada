@@ -40,7 +40,8 @@ namespace Scada.Web
         /// <summary>
         /// Кэш представлений
         /// </summary>
-        protected ViewCache viewCache;
+        protected readonly ViewCache viewCache;
+
         /// <summary>
         /// Общие права пользователя на все сущности
         /// </summary>
@@ -55,7 +56,16 @@ namespace Scada.Web
         /// Конструктор
         /// </summary>
         public UserRights()
+            : this(null)
         {
+        }
+
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        public UserRights(ViewCache viewCache)
+        {
+            this.viewCache = viewCache;
             SetToDefault();
         }
 
@@ -81,7 +91,6 @@ namespace Scada.Web
         /// </summary>
         protected void SetToDefault()
         {
-            viewCache = null;
             globalRights = EntityRights.NoRights;
             uiObjRightsDict = null;
 
@@ -215,15 +224,12 @@ namespace Scada.Web
         /// <summary>
         /// Инициализировать права пользователя
         /// </summary>
-        public void Init(int roleID, DataAccess dataAccess, ViewCache viewCache)
+        public void Init(int roleID, DataAccess dataAccess)
         {
             if (dataAccess == null)
                 throw new ArgumentNullException("dataAccess");
-            if (viewCache == null)
-                throw new ArgumentNullException("viewCache");
 
             InitGeneralRights(roleID);
-            this.viewCache = viewCache;
 
             if (BaseValues.Roles.Custom <= roleID && roleID < BaseValues.Roles.Err)
                 uiObjRightsDict = dataAccess.GetUiObjRights(roleID);

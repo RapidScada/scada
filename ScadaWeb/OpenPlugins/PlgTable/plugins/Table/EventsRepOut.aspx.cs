@@ -57,16 +57,7 @@ namespace Scada.Web.Plugins.Table
                 throw new ScadaException(CommonPhrases.NoRights);
 
             // загрузка представления
-            BaseView view;
-            if (eventsByView)
-            {
-                Type viewType = userData.UserViews.GetViewType(viewID);
-                view = appData.ViewCache.GetView(viewType, viewID, true);
-            }
-            else
-            {
-                view = null;
-            }
+            BaseView view = eventsByView ? userData.UserViews.GetView(viewID, true) : null;
 
             // получение даты запрашиваемых событий
             DateTime reqDate = Request.QueryString.GetParamAsDate();

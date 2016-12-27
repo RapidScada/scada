@@ -39,8 +39,6 @@ namespace Scada.Web.Plugins.Chart
         }
 
         // Словарь Scada.Web.Plugins.Chart
-        public static string CnlNumsEmptyError { get; private set; }
-        public static string CountMismatchError { get; private set; }
         public static string PerfWarning { get; private set; }
         public static string AddCnlBtn { get; private set; }
         public static string RemoveCnlBtn { get; private set; }
@@ -51,8 +49,6 @@ namespace Scada.Web.Plugins.Chart
 
         private static void SetToDefault()
         {
-            CnlNumsEmptyError = Localization.Dict.GetEmptyPhrase("CnlNumsEmptyError");
-            CountMismatchError = Localization.Dict.GetEmptyPhrase("CountMismatchError");
             PerfWarning = Localization.Dict.GetEmptyPhrase("PerfWarning");
             AddCnlBtn = Localization.Dict.GetEmptyPhrase("AddCnlBtn");
             RemoveCnlBtn = Localization.Dict.GetEmptyPhrase("RemoveCnlBtn");
@@ -67,8 +63,6 @@ namespace Scada.Web.Plugins.Chart
             Localization.Dict dict;
             if (Localization.Dictionaries.TryGetValue("Scada.Web.Plugins.Chart", out dict))
             {
-                CnlNumsEmptyError = dict.GetPhrase("CnlNumsEmptyError", CnlNumsEmptyError);
-                CountMismatchError = dict.GetPhrase("CountMismatchError", CountMismatchError);
                 PerfWarning = dict.GetPhrase("PerfWarning", PerfWarning);
                 AddCnlBtn = dict.GetPhrase("AddCnlBtn", AddCnlBtn);
                 RemoveCnlBtn = dict.GetPhrase("RemoveCnlBtn", RemoveCnlBtn);
