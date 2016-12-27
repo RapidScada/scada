@@ -33,6 +33,12 @@ namespace Scada.Web
     partial class WebUtils
     {
         /// <summary>
+        /// Разделитель элементов массива, передаваемого в параметре запроса
+        /// </summary>
+        private static readonly char[] QueryParamSeparator = { ',' };
+
+
+        /// <summary>
         /// Получить значение параметра из строки запроса как целое число
         /// </summary>
         public static int GetParamAsInt(this NameValueCollection queryString, string paramName)
@@ -102,8 +108,7 @@ namespace Scada.Web
         {
             try
             {
-                string[] elems = (paramVal ?? "").Split(new char[] { ' ', ',' },
-                    StringSplitOptions.RemoveEmptyEntries);
+                string[] elems = (paramVal ?? "").Split(QueryParamSeparator, StringSplitOptions.None);
                 int len = elems.Length;
                 int[] arr = new int[len];
 
@@ -125,8 +130,7 @@ namespace Scada.Web
         {
             try
             {
-                string[] elems = (paramVal ?? "").Split(new char[] { ' ', ',' },
-                    StringSplitOptions.RemoveEmptyEntries);
+                string[] elems = (paramVal ?? "").Split(QueryParamSeparator, StringSplitOptions.None);
                 int len = elems.Length;
                 HashSet<int> hashSet = new HashSet<int>();
 
