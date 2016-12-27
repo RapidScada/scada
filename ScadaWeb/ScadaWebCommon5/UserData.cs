@@ -255,7 +255,7 @@ namespace Scada.Web
                 }
 
                 UserRights userRights = new UserRights();
-                userRights.Init(roleID, AppData.DataAccess);
+                userRights.Init(roleID, AppData.DataAccess, AppData.ViewCache);
                 UserRights = userRights;
 
                 AppData.UserMonitor.AddUser(this);

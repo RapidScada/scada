@@ -38,6 +38,10 @@ namespace Scada.Web
     public class UserRights
     {
         /// <summary>
+        /// Кэш представлений
+        /// </summary>
+        protected ViewCache viewCache;
+        /// <summary>
         /// Общие права пользователя на все сущности
         /// </summary>
         protected EntityRights globalRights;
@@ -77,12 +81,108 @@ namespace Scada.Web
         /// </summary>
         protected void SetToDefault()
         {
+            viewCache = null;
             globalRights = EntityRights.NoRights;
             uiObjRightsDict = null;
 
             ViewAllRight = false;
             ControlAllRight = false;
             ConfigRight = false;
+        }
+        
+        /// <summary>
+        /// Проверить корректность массивов номеров входных каналов и ид. представлений
+        /// </summary>
+        protected void CheckArrays(int[] cnlNums, int[] viewIDs)
+        {
+            if (cnlNums == null)
+                throw new ArgumentNullException("cnlNums");
+
+            if (viewIDs == null)
+                throw new ArgumentNullException("viewIDs");
+
+            if (cnlNums.Length == 0)
+                throw new ArgumentException(WebPhrases.CnlNumsEmptyError);
+
+            if (cnlNums.Length != viewIDs.Length)
+                throw new ScadaException(WebPhrases.CnlsViewsCountError);
+        }
+
+        /// <summary>
+        /// Проверить, что все элементы непустого массива равны
+        /// </summary>
+        protected bool ElementsEqual(int[] arr)
+        {
+            int first = arr[0];
+            int len = arr.Length;
+            for (int i = 1; i < len; i++)
+                if (arr[i] != first)
+                    return false;
+            return true;
+        }
+
+        /// <summary>
+        /// Проверить права на входные каналы, которые относятся к указанным представлениям
+        /// </summary>
+        protected bool CheckRights(int[] cnlNums, int[] viewIDs, out int singleViewID)
+        {
+            if (ElementsEqual(viewIDs))
+            {
+                singleViewID = viewIDs[0];
+                return CheckRights(cnlNums, singleViewID);
+            }
+            else
+            {
+                singleViewID = -1;
+
+                for (int i = 0, cnt = cnlNums.Length; i < cnt; i++)
+                {
+                    if (!CheckRights(cnlNums[i], viewIDs[i]))
+                        return false;
+                }
+
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Проверить права на входной канал, который относится к указанному представлению
+        /// </summary>
+        protected bool CheckRights(int cnlNum, int viewID)
+        {
+            if (GetUiObjRights(viewID).ViewRight)
+            {
+#if DEBUG
+                return true;
+#else
+                BaseView view = viewCache == null ? null : viewCache.GetViewFromCache(viewID);
+                return view != null && view.ContainsCnl(cnlNum);
+#endif
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Проверить права на входные каналы, все из которых относятся к указанному представлению
+        /// </summary>
+        protected bool CheckRights(int[] cnlNums, int viewID)
+        {
+            if (GetUiObjRights(viewID).ViewRight)
+            {
+#if DEBUG
+                return true;
+#else
+                BaseView view = viewCache == null ? null : viewCache.GetViewFromCache(viewID);
+                return view != null && view.ContainsAllCnls(cnlNums);
+#endif
+            }
+            else
+            {
+                return false;
+            }
         }
 
 
@@ -115,12 +215,15 @@ namespace Scada.Web
         /// <summary>
         /// Инициализировать права пользователя
         /// </summary>
-        public void Init(int roleID, DataAccess dataAccess)
+        public void Init(int roleID, DataAccess dataAccess, ViewCache viewCache)
         {
             if (dataAccess == null)
                 throw new ArgumentNullException("dataAccess");
+            if (viewCache == null)
+                throw new ArgumentNullException("viewCache");
 
             InitGeneralRights(roleID);
+            this.viewCache = viewCache;
 
             if (BaseValues.Roles.Custom <= roleID && roleID < BaseValues.Roles.Err)
                 uiObjRightsDict = dataAccess.GetUiObjRights(roleID);
@@ -144,6 +247,43 @@ namespace Scada.Web
                 EntityRights rights;
                 return uiObjRightsDict != null && uiObjRightsDict.TryGetValue(uiObjID, out rights) ?
                     rights : EntityRights.NoRights;
+            }
+        }
+
+        /// <summary>
+        /// Проверить права на входные каналы, которые относятся к указанным представлениям
+        /// </summary>
+        public bool CheckInCnlRights(int[] cnlNums, int[] viewIDs)
+        {
+            CheckArrays(cnlNums, viewIDs);
+
+            if (ViewAllRight)
+            {
+                return true;
+            }
+            else
+            {
+                int singleViewID;
+                return CheckRights(cnlNums, viewIDs, out singleViewID);
+            }
+        }
+
+        /// <summary>
+        /// Проверить права на входные каналы, которые относятся к указанным представлениям,
+        /// и вернуть ид. представления, если оно единственное
+        /// </summary>
+        public bool CheckInCnlRights(int[] cnlNums, int[] viewIDs, out int singleViewID)
+        {
+            CheckArrays(cnlNums, viewIDs);
+
+            if (ViewAllRight)
+            {
+                singleViewID = ElementsEqual(viewIDs) ? viewIDs[0] : -1;
+                return true;
+            }
+            else
+            {
+                return CheckRights(cnlNums, viewIDs, out singleViewID);
             }
         }
     }

@@ -38,6 +38,10 @@
     <Phrase key="DayPeriodTooLong">The maximum period length is {0} days.</Phrase>
     <Phrase key="MonthPeriodTooLong">The maximum period length is {0} months.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.UserRights">
+    <Phrase key="CnlNumsEmptyError">Channel numbers are not specified.</Phrase>
+    <Phrase key="CnlsViewsCountError">Mismatch in number of channels and view IDs.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.ViewSettings">
     <Phrase key="LoadViewSettingsError">Error loading view settings</Phrase>
     <Phrase key="SaveViewSettingsError">Error saving view settings</Phrase>

@@ -56,6 +56,10 @@ namespace Scada.Web
         public static string DayPeriodTooLong { get; private set; }
         public static string MonthPeriodTooLong { get; private set; }
 
+        // Словарь Scada.Web.UserRights
+        public static string CnlNumsEmptyError { get; private set; }
+        public static string CnlsViewsCountError { get; private set; }
+
         // Словарь Scada.Web.ViewSettings
         public static string LoadViewSettingsError { get; private set; }
         public static string SaveViewSettingsError { get; private set; }
@@ -100,6 +104,9 @@ namespace Scada.Web
             IncorrectPeriod = Localization.Dict.GetEmptyPhrase("IncorrectPeriod");
             DayPeriodTooLong = Localization.Dict.GetEmptyPhrase("DayPeriodTooLong");
             MonthPeriodTooLong = Localization.Dict.GetEmptyPhrase("MonthPeriodTooLong");
+
+            CnlNumsEmptyError = Localization.Dict.GetEmptyPhrase("CnlNumsEmptyError");
+            CnlsViewsCountError = Localization.Dict.GetEmptyPhrase("CnlsViewsCountError");
 
             LoadViewSettingsError = Localization.Dict.GetEmptyPhrase("LoadViewSettingsError");
             SaveViewSettingsError = Localization.Dict.GetEmptyPhrase("SaveViewSettingsError");
@@ -149,6 +156,12 @@ namespace Scada.Web
                 IncorrectPeriod = dict.GetPhrase("IncorrectPeriod", IncorrectPeriod);
                 DayPeriodTooLong = dict.GetPhrase("DayPeriodTooLong", DayPeriodTooLong);
                 MonthPeriodTooLong = dict.GetPhrase("MonthPeriodTooLong", MonthPeriodTooLong);
+            }
+
+            if (Localization.Dictionaries.TryGetValue("Scada.Web.UserRights", out dict))
+            {
+                CnlNumsEmptyError = dict.GetPhrase("CnlNumsEmptyError", CnlNumsEmptyError);
+                CnlsViewsCountError = dict.GetPhrase("CnlsViewsCountError", CnlsViewsCountError);
             }
 
             if (Localization.Dictionaries.TryGetValue("Scada.Web.ViewSettings", out dict))
