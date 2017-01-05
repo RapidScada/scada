@@ -274,9 +274,11 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Расшифровать данные переменной SNMP
         /// </summary>
-        private bool DecodeVarData(ISnmpData snmpData, bool isBits, out SrezTableLight.CnlData tagData)
+        private bool DecodeVarData(ISnmpData snmpData, bool isBits, 
+            out SrezTableLight.CnlData tagData, out bool isString)
         {
             tagData = SrezTableLight.CnlData.Empty;
+            isString = false;
 
             if (snmpData == null)
             {
@@ -342,7 +344,13 @@ namespace Scada.Comm.Devices
                             }
                             else
                             {
-                                return false;
+                                // преобразование 8 байт строки в число double
+                                byte[] snmpRaw = ((OctetString)snmpData).GetRaw();
+                                byte[] tagRaw = new byte[8];
+                                Array.Copy(snmpRaw, 0, tagRaw, 0, Math.Min(snmpRaw.Length, tagRaw.Length));
+                                tagData = new SrezTableLight.CnlData(BitConverter.ToDouble(tagRaw, 0), 1);
+                                isString = true;
+                                return true;
                             }
                         default:
                             return false;
@@ -466,10 +474,11 @@ namespace Scada.Comm.Devices
 
                                 // расшифровка данных переменной и установка данных тега КП
                                 SrezTableLight.CnlData tagData;
-                                bool decodeOK = DecodeVarData(snmpData, isBits, out tagData);
+                                bool isString;
+                                bool decodeOK = DecodeVarData(snmpData, isBits, out tagData, out isString);
                                 SetCurData(tagInd, tagData);
-                                strVals[tagInd] = decodeOK || snmpData == null ?
-                                    null : ConvertVarDataToString(snmpData, isBits, MaxTagStrLen, false);
+                                strVals[tagInd] = isString ?
+                                    ConvertVarDataToString(snmpData, isBits, MaxTagStrLen, false) : null;
                             }
                         }
                         else
