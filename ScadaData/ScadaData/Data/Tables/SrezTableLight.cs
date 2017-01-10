@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2016
+ * Modified : 2017
  */
 
 using System;
@@ -91,8 +91,30 @@ namespace Scada.Data.Tables
                 CnlNums = new int[cnlCnt];
                 CnlData = new CnlData[cnlCnt];
             }
-            
-            
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            /// <param name="dateTime">Временная метка среза</param>
+            /// <param name="cnlNums">Номера каналов среза, упорядоченные по возростанию</param>
+            /// <param name="sourceSrez">Срез, который является источником данных</param>
+            public Srez(DateTime dateTime, int[] cnlNums, SrezTableLight.Srez sourceSrez)
+                : this(dateTime, cnlNums == null ? 0 : cnlNums.Length)
+            {
+                if (sourceSrez == null)
+                    throw new ArgumentNullException("sourceSrez");
+
+                for (int i = 0, cnt = cnlNums.Length; i < cnt; i++)
+                {
+                    int cnlNum = cnlNums[i];
+                    CnlData cnlData;
+                    sourceSrez.GetCnlData(cnlNum, out cnlData);
+
+                    CnlNums[i] = cnlNum;
+                    CnlData[i] = cnlData;
+                }
+            }
+
+
             /// <summary>
             /// Получить временную метку среза
             /// </summary>
