@@ -65,7 +65,9 @@ namespace Scada.Web.Plugins.Table
             List<DiscreteCmd> discreteCmds = new List<DiscreteCmd>();
             for (int i = 0, len = cmdValArr.Length; i < len; i++)
             {
-                discreteCmds.Add(new DiscreteCmd() { Val = i, Text = cmdValArr[i] });
+                string cmdText = cmdValArr[i];
+                if (cmdText != "")
+                    discreteCmds.Add(new DiscreteCmd() { Val = i, Text = cmdValArr[i] });
             }
             return discreteCmds;
         }

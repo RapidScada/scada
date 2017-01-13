@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2017
  */
 
 using Scada.Data.Models;
@@ -285,7 +285,7 @@ namespace Scada.Client
                         cnlProps.UnitName = (string)unitRowView["Name"];
                         cnlProps.UnitSign = (string)unitRowView["Sign"];
                         string[] unitArr = cnlProps.UnitArr = 
-                            cnlProps.UnitSign.Split(FieldSeparator, StringSplitOptions.RemoveEmptyEntries);
+                            cnlProps.UnitSign.Split(FieldSeparator, StringSplitOptions.None);
                         for (int j = 0; j < unitArr.Length; j++)
                             unitArr[j] = unitArr[j].Trim();
                         if (unitArr.Length == 1 && unitArr[0] == "")
@@ -364,7 +364,7 @@ namespace Scada.Client
                         ctrlCnlProps.CmdValName = (string)cmdValRowView["Name"];
                         ctrlCnlProps.CmdVal = (string)cmdValRowView["Val"];
                         string[] cmdValArr = ctrlCnlProps.CmdValArr = 
-                            ctrlCnlProps.CmdVal.Split(FieldSeparator, StringSplitOptions.RemoveEmptyEntries);
+                            ctrlCnlProps.CmdVal.Split(FieldSeparator, StringSplitOptions.None);
                         for (int j = 0; j < cmdValArr.Length; j++)
                             cmdValArr[j] = cmdValArr[j].Trim();
                         if (cmdValArr.Length == 1 && cmdValArr[0] == "")
