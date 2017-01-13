@@ -38,6 +38,10 @@ namespace Scada.Web
     public static partial class WebUtils
     {
         /// <summary>
+        /// Версия веб-приложения
+        /// </summary>
+        public const string AppVersion = "5.0.0.5";
+        /// <summary>
         /// Начало отчёта времени в Unix, которое используется в Javascript реализации даты
         /// </summary>
         public static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);

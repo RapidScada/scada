@@ -45,7 +45,7 @@ label {
   font-size: 35px;
   white-space: nowrap;
 }
-#spanVersion {
+#lblVersion {
   font-size: 15px;
   position: relative;
   top: -20px;
