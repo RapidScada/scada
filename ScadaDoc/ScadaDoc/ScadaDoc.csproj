@@ -60,6 +60,8 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="content\common-images\import.png" />
+    <Content Include="content\common-images\pass.gif" />
     <Content Include="content\en\index.html" />
     <Content Include="content\en\installation-and-run\index.html" />
     <Content Include="content\en\installation-and-run\migrate-configuration.html" />
@@ -75,6 +77,8 @@
     <Content Include="content\en\installation-and-run\start-applications-files\service_props_en.png" />
     <Content Include="content\en\installation-and-run\run-applications.html" />
     <Content Include="content\en\installation-and-run\system-requirements.html" />
+    <Content Include="content\en\software-configuration\general-configuration.html" />
+    <Content Include="content\en\software-configuration\index.html" />
     <Content Include="content\en\software-overview\applications\administrator-application-files\scada_admin_en.png" />
     <Content Include="content\en\software-overview\applications\administrator-application.html" />
     <Content Include="content\en\software-overview\applications\communicator-application-files\scada_comm_en.png" />
@@ -141,6 +145,7 @@
     <Content Include="content\ru\installation-and-run\system-requirements.html" />
     <Content Include="content\ru\installation-and-run\migrate-configuration.html" />
     <Content Include="content\ru\software-configuration\general-configuration.html" />
+    <Content Include="content\ru\software-configuration\index.html" />
     <Content Include="content\ru\software-overview\applications\administrator-application-files\scada_admin_ru.png" />
     <Content Include="content\ru\software-overview\applications\administrator-application.html" />
     <Content Include="content\ru\software-overview\applications\communicator-application-files\scada_comm_ru.png" />

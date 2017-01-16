@@ -6,9 +6,5 @@
   {
     "outputFile": "css/index.css",
     "inputFile": "css/index.less"
-  },
-  {
-    "outputFile": "css/common.css",
-    "inputFile": "css/common.less"
   }
 ]
