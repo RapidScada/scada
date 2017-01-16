@@ -19,13 +19,13 @@ function addContents(context) {
     addArticle(context, "installation-and-run/migrate-configuration.html", "Migrate Configuration to New Server", 1);
     addArticle(context, "installation-and-run/software-update.html", "Software Update", 1);
 
-    addArticle(context, "", "Software Configuration");
-    addArticle(context, "", "General Configuration Sequence", 1);
-    addArticle(context, "", "Tune up Configuration Database", 1);
-    addArticle(context, "", "Using Formulas", 1);
-    addArticle(context, "", "User Authentication Configuration", 1);
-    addArticle(context, "", "Communication with Devices Configuration", 1);
-    addArticle(context, "", "Creating Views", 1);
+    addArticle(context, "software-configuration/", "Software Configuration");
+    addArticle(context, "software-configuration/general-configuration.html", "General Configuration Sequence", 1);
+    addArticle(context, "software-configuration/tune-database.html", "Tune up Configuration Database", 1);
+    addArticle(context, "software-configuration/using-formulas.html", "Using Formulas", 1);
+    addArticle(context, "software-configuration/user-authentication.html", "User Authentication Configuration", 1);
+    addArticle(context, "software-configuration/communication-with-devices.html", "Communication with Devices Configuration", 1);
+    addArticle(context, "software-configuration/creating-views.html", "Creating Views", 1);
 
     addArticle(context, "", "Use Cases");
     addArticle(context, "use-cases/modbus-protocol.html", "Connecting Devices Using Modbus Protocol", 1);
