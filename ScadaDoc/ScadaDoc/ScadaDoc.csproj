@@ -146,6 +146,7 @@
     <Content Include="content\ru\installation-and-run\migrate-configuration.html" />
     <Content Include="content\ru\software-configuration\general-configuration.html" />
     <Content Include="content\ru\software-configuration\index.html" />
+    <Content Include="content\ru\software-configuration\tune-database.html" />
     <Content Include="content\ru\software-overview\applications\administrator-application-files\scada_admin_ru.png" />
     <Content Include="content\ru\software-overview\applications\administrator-application.html" />
     <Content Include="content\ru\software-overview\applications\communicator-application-files\scada_comm_ru.png" />
