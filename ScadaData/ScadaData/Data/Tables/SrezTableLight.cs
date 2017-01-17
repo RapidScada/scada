@@ -84,7 +84,7 @@ namespace Scada.Data.Tables
             /// <param name="cnlCnt">Количество входных каналов</param>
             public Srez(DateTime dateTime, int cnlCnt)
             {
-                if (cnlCnt <= 0)
+                if (cnlCnt < 0)
                     throw new ArgumentOutOfRangeException("cnlCnt");
 
                 DateTime = dateTime;

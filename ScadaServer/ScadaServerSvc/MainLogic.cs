@@ -854,13 +854,13 @@ namespace Scada.Server.Svc
                         {
                             if (writeCurOnMod)
                             {
-                                WriteSrez(SrezTypes.Cur, nowDT);
+                                WriteSrez(SnapshotTypes.Cur, nowDT);
                                 curSrezMod = false;
                                 writeCurSrezDT = DateTime.MaxValue;
                             }
                             else
                             {
-                                WriteSrez(SrezTypes.Cur, writeCurSrezDT);
+                                WriteSrez(SnapshotTypes.Cur, writeCurSrezDT);
                                 writeCurSrezDT = CalcNextTime(nowDT, Settings.WriteCurPer);
                             }
                         }
@@ -868,14 +868,14 @@ namespace Scada.Server.Svc
                         // запись минутного среза
                         if (writeMinSrezDT <= nowDT && writeMin)
                         {
-                            WriteSrez(SrezTypes.Min, writeMinSrezDT);
+                            WriteSrez(SnapshotTypes.Min, writeMinSrezDT);
                             writeMinSrezDT = CalcNextTime(nowDT, Settings.WriteMinPer);
                         }
 
                         // запись часового среза
                         if (writeHrSrezDT <= nowDT && writeHr)
                         {
-                            WriteSrez(SrezTypes.Hour, writeHrSrezDT);
+                            WriteSrez(SnapshotTypes.Hour, writeHrSrezDT);
                             writeHrSrezDT = CalcNextTime(nowDT, Settings.WriteHrPer);
                         }
                     }
@@ -940,14 +940,14 @@ namespace Scada.Server.Svc
         /// <summary>
         /// Получить кэш таблицы срезов, создав его при необходимости
         /// </summary>
-        private SrezTableCache GetSrezTableCache(DateTime date, SrezTypes srezType)
+        private SrezTableCache GetSrezTableCache(DateTime date, SnapshotTypes srezType)
         {
             SortedList<DateTime, SrezTableCache> srezTableCacheList;
             SrezTableCache srezTableCache;
 
-            if (srezType == SrezTypes.Min)
+            if (srezType == SnapshotTypes.Min)
                 srezTableCacheList = minSrezTableCache;
-            else if (srezType == SrezTypes.Hour)
+            else if (srezType == SnapshotTypes.Hour)
                 srezTableCacheList = hrSrezTableCache;
             else
                 throw new ArgumentException(Localization.UseRussian ? 
@@ -965,7 +965,7 @@ namespace Scada.Server.Svc
                     srezTableCache = new SrezTableCache(date);
                     srezTableCacheList.Add(date, srezTableCache);
 
-                    if (srezType == SrezTypes.Min)
+                    if (srezType == SnapshotTypes.Min)
                     {
                         if (Localization.UseRussian)
                         {
@@ -1106,9 +1106,9 @@ namespace Scada.Server.Svc
         /// <summary>
         /// Записать срез в таблицы срезов, выбрав нужные таблицы
         /// </summary>
-        private void WriteSrez(SrezTypes srezType, DateTime srezDT)
+        private void WriteSrez(SnapshotTypes srezType, DateTime srezDT)
         {
-            if (srezType == SrezTypes.Cur)
+            if (srezType == SnapshotTypes.Cur)
             {
                 // запись нового текущего среза
                 if (Settings.WriteCur)
@@ -1124,7 +1124,7 @@ namespace Scada.Server.Svc
                 bool writeCopy;
                 AvgData[] avgData;
 
-                if (srezType == SrezTypes.Min)
+                if (srezType == SnapshotTypes.Min)
                 {
                     writeMain = Settings.WriteMin;
                     writeCopy = Settings.WriteMinCopy;
@@ -1991,17 +1991,18 @@ namespace Scada.Server.Svc
         /// <summary>
         /// Получить таблицу срезов, содержащую данные заданных каналов
         /// </summary>
-        public SrezTableLight GetSrezTable(DateTime date, SrezTypes srezType, int[] cnlNums)
+        /// <remarks>Номера каналов должны быть упорядочены по возрастанию</remarks>
+        public SrezTableLight GetSnapshotTable(DateTime date, SnapshotTypes snapshotType, int[] cnlNums)
         {
             try
             {
-                SrezTableLight destSrezTable;
-                int cnlNumsLen = cnlNums == null ? 0 : cnlNums.Length;
+                SrezTableLight destSnapshotTable;
+                int cnlCnt = cnlNums == null ? 0 : cnlNums.Length;
 
-                if (serverIsReady && cnlNumsLen > 0)
+                if (serverIsReady && cnlCnt > 0)
                 {
                     // получение кэша таблицы срезов
-                    SrezTableCache srezTableCache = GetSrezTableCache(date.Date, srezType);
+                    SrezTableCache srezTableCache = GetSrezTableCache(date.Date, snapshotType);
 
                     lock (srezTableCache)
                     {
@@ -2009,48 +2010,98 @@ namespace Scada.Server.Svc
                         srezTableCache.FillSrezTable();
 
                         // создание новой таблицы срезов и копирование в неё данных заданных каналов
-                        SrezTable srcSrezTable = srezTableCache.SrezTable;
-                        SrezTable.SrezDescr prevSrezDescr = null;
-                        int[] cnlNumIndexes = new int[cnlNumsLen];
-                        destSrezTable = new SrezTableLight();
+                        SrezTable srcSnapshotTable = srezTableCache.SrezTable;
+                        SrezTable.SrezDescr prevSnapshotDescr = null;
+                        int[] cnlNumIndexes = new int[cnlCnt];
+                        destSnapshotTable = new SrezTableLight();
 
-                        foreach (SrezTable.Srez srcSrez in srcSrezTable.SrezList.Values)
+                        foreach (SrezTable.Srez srcSnapshot in srcSnapshotTable.SrezList.Values)
                         {
                             // определение индексов каналов
-                            if (!srcSrez.SrezDescr.Equals(prevSrezDescr))
+                            if (!srcSnapshot.SrezDescr.Equals(prevSnapshotDescr))
                             {
-                                for (int i = 0; i < cnlNumsLen; i++)
-                                    cnlNumIndexes[i] = Array.BinarySearch<int>(srcSrez.CnlNums, cnlNums[i]);
+                                for (int i = 0; i < cnlCnt; i++)
+                                    cnlNumIndexes[i] = Array.BinarySearch<int>(srcSnapshot.CnlNums, cnlNums[i]);
                             }
 
                             // создание и заполнение среза, содержащего заданные каналы
-                            SrezTableLight.Srez destSrez = new SrezTableLight.Srez(srcSrez.DateTime, cnlNumsLen);
+                            SrezTableLight.Srez destSnapshot = new SrezTableLight.Srez(srcSnapshot.DateTime, cnlCnt);
 
-                            for (int i = 0; i < cnlNumsLen; i++)
+                            for (int i = 0; i < cnlCnt; i++)
                             {
-                                destSrez.CnlNums[i] = cnlNums[i];
+                                destSnapshot.CnlNums[i] = cnlNums[i];
                                 int cnlNumInd = cnlNumIndexes[i];
-                                destSrez.CnlData[i] = cnlNumInd < 0 ?
-                                    SrezTableLight.CnlData.Empty : srcSrez.CnlData[cnlNumInd];
+                                destSnapshot.CnlData[i] = cnlNumInd < 0 ?
+                                    SrezTableLight.CnlData.Empty : srcSnapshot.CnlData[cnlNumInd];
                             }
 
-                            destSrezTable.SrezList.Add(destSrez.DateTime, destSrez);
-                            prevSrezDescr = srcSrez.SrezDescr;
+                            destSnapshotTable.SrezList.Add(destSnapshot.DateTime, destSnapshot);
+                            prevSnapshotDescr = srcSnapshot.SrezDescr;
                         }
                     }
                 }
                 else
                 {
-                    destSrezTable = null;
+                    destSnapshotTable = null;
                 }
 
-                return destSrezTable;
+                return destSnapshotTable;
             }
             catch (Exception ex)
             {
-                AppLog.WriteAction((Localization.UseRussian ? 
-                    "Ошибка при получении таблицы срезов: " : 
-                    "Error getting snapshot table: ") + ex.Message, Log.ActTypes.Exception);
+                AppLog.WriteException(ex, Localization.UseRussian ? 
+                    "Ошибка при получении таблицы срезов" : 
+                    "Error getting snapshot table");
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Получить срез, содержащий данные заданных каналов
+        /// </summary>
+        /// <remarks>Номера каналов должны быть упорядочены по возрастанию</remarks>
+        public SrezTableLight.Srez GetSnapshot(DateTime dateTime, SnapshotTypes snapshotType, int[] cnlNums)
+        {
+            try
+            {
+                int cnlCnt = cnlNums == null ? 0 : cnlNums.Length;
+
+                if (serverIsReady && cnlCnt > 0)
+                {
+                    // получение кэша таблицы срезов
+                    SrezTableCache srezTableCache = GetSrezTableCache(dateTime.Date, snapshotType);
+
+                    // создание среза с заданными каналами
+                    SrezTableLight.Srez destSnapshot = new SrezTableLight.Srez(dateTime, cnlCnt);
+
+                    lock (srezTableCache)
+                    {
+                        // заполнение таблицы срезов в кэше
+                        srezTableCache.FillSrezTable();
+                        SrezTableLight.Srez srcSnapshot = srezTableCache.SrezTable.GetSrez(dateTime);
+
+                        // копирование номеров каналов и данных в новый срез
+                        for (int i = 0; i < cnlCnt; i++)
+                        {
+                            int cnlNum = cnlNums[i];
+                            destSnapshot.CnlNums[i] = cnlNum;
+                            destSnapshot.CnlData[i] = srcSnapshot == null ?
+                                SrezTableLight.CnlData.Empty : srcSnapshot.GetCnlData(cnlNum);
+                        }
+                    }
+
+                    return destSnapshot;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                AppLog.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении среза" :
+                    "Error getting snapshot");
                 return null;
             }
         }
@@ -2128,9 +2179,9 @@ namespace Scada.Server.Svc
                 }
                 catch (Exception ex)
                 {
-                    AppLog.WriteAction((Localization.UseRussian ?
-                        "Ошибка при обработке новых текущих данных: " :
-                        "Error processing the new current data: ") + ex.Message, Log.ActTypes.Exception);
+                    AppLog.WriteException(ex, Localization.UseRussian ?
+                        "Ошибка при обработке новых текущих данных" :
+                        "Error processing the new current data");
                     return false;
                 }
                 finally
@@ -2163,10 +2214,10 @@ namespace Scada.Server.Svc
 
                         // получение кэша таблиц срезов
                         SrezTableCache minCache = Settings.WriteMin || Settings.WriteMinCopy ?
-                            GetSrezTableCache(paramSrezDate, SrezTypes.Min) : null;
+                            GetSrezTableCache(paramSrezDate, SnapshotTypes.Min) : null;
                         SrezTableCache hrCache = 
                             nearestHrDT == paramSrezDT && (Settings.WriteHr || Settings.WriteHrCopy) ?
-                                GetSrezTableCache(paramSrezDate, SrezTypes.Hour) : null;
+                                GetSrezTableCache(paramSrezDate, SnapshotTypes.Hour) : null;
                         SrezTableLight.Srez arcSrez = null;
 
                         // запись минутных данных
@@ -2212,9 +2263,9 @@ namespace Scada.Server.Svc
             }
             catch (Exception ex)
             {
-                AppLog.WriteAction((Localization.UseRussian ?
-                    "Ошибка при обработке новых архивных данных: " : 
-                    "Error processing the new archive data: ") + ex.Message, Log.ActTypes.Exception);
+                AppLog.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при обработке новых архивных данных" : 
+                    "Error processing the new archive data");
                 return false;
             }
         }
@@ -2233,10 +2284,9 @@ namespace Scada.Server.Svc
             }
             catch (Exception ex)
             {
-                AppLog.WriteAction((Localization.UseRussian ?
-                    "Ошибка при получении данных входного канала обрабатываемого среза: " :
-                    "Error getting the input channel data of the processed snapshot: ") + 
-                    ex.Message, Log.ActTypes.Exception);
+                AppLog.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении данных входного канала обрабатываемого среза" :
+                    "Error getting the input channel data of the processed snapshot");
             }
 
             return cnlData;
@@ -2305,10 +2355,10 @@ namespace Scada.Server.Svc
                         }
                         catch (Exception ex)
                         {
-                            AppLog.WriteAction(string.Format(Localization.UseRussian ?
+                            AppLog.WriteError(string.Format(Localization.UseRussian ?
                                 "Ошибка при вычислении значения стандартной команды для канала управления {0}: {1}" :
                                 "Error calculating standard command value for the output channel {0}: {1}",
-                                ctrlCnlNum, ex.Message), Log.ActTypes.Error);
+                                ctrlCnlNum, ex.Message));
                             cmd.CmdVal = double.NaN;
                         }
                         finally
@@ -2332,10 +2382,10 @@ namespace Scada.Server.Svc
                         }
                         catch (Exception ex)
                         {
-                            AppLog.WriteAction(string.Format(Localization.UseRussian ?
+                            AppLog.WriteError(string.Format(Localization.UseRussian ?
                                 "Ошибка при вычислении данных бинарной команды для канала управления {0}: {1}" :
                                 "Error calculating binary command data for the output channel {0}: {1}",
-                                ctrlCnlNum, ex.Message), Log.ActTypes.Error);
+                                ctrlCnlNum, ex.Message));
                             cmd.CmdVal = double.NaN;
                         }
                         finally

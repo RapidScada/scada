@@ -51,6 +51,7 @@
     <Compile Include="Modules\ModLogic.cs" />
     <Compile Include="Modules\ModPhrases.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="SnapshotTypes.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

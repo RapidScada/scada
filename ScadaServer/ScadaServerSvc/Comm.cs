@@ -1013,17 +1013,17 @@ namespace Scada.Server.Svc
                     break;
                 case 0x0D: // запрос данных из таблицы среза
                     byte srezTypeNum = inBuf[3];
-                    MainLogic.SrezTypes srezType;
+                    SnapshotTypes srezType;
                     DateTime srezDate;
 
                     if (srezTypeNum == 0x01)
                     {
-                        srezType = MainLogic.SrezTypes.Cur;
+                        srezType = SnapshotTypes.Cur;
                         srezDate = DateTime.MinValue;
                     }
                     else
                     {
-                        srezType = srezTypeNum == 0x02 ? MainLogic.SrezTypes.Hour : MainLogic.SrezTypes.Min;
+                        srezType = srezTypeNum == 0x02 ? SnapshotTypes.Hour : SnapshotTypes.Min;
                         srezDate = new DateTime(inBuf[4] + 2000, inBuf[5], inBuf[6]);
                     }
 
@@ -1036,9 +1036,9 @@ namespace Scada.Server.Svc
                     if (settings.DetailedLog)
                     {
                         string srezTypeStr;
-                        if (srezType == MainLogic.SrezTypes.Cur)
+                        if (srezType == SnapshotTypes.Cur)
                             srezTypeStr = Localization.UseRussian ? "текущие" : "current";
-                        else if (srezType == MainLogic.SrezTypes.Min)
+                        else if (srezType == SnapshotTypes.Min)
                             srezTypeStr = Localization.UseRussian ? "минутные" : "minute";
                         else
                             srezTypeStr = Localization.UseRussian ? "часовые" : "hourly";
@@ -1050,7 +1050,7 @@ namespace Scada.Server.Svc
                             Log.ActTypes.Action);
                     }
 
-                    SrezTableLight srezTable = mainLogic.GetSrezTable(srezDate, srezType, cnlNums);
+                    SrezTableLight srezTable = mainLogic.GetSnapshotTable(srezDate, srezType, cnlNums);
                     int srezCnt = srezTable == null ? 0 : srezTable.SrezList.Count;
                     outBuf[5] = (byte)(srezCnt % 256);
                     outBuf[6] = (byte)(srezCnt / 256);

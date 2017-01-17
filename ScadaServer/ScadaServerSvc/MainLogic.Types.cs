@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2015
+ * Modified : 2017
  */
 
 using System;
@@ -32,25 +32,6 @@ namespace Scada.Server.Svc
 {
     partial class MainLogic
     {
-        /// <summary>
-        /// Типы срезов
-        /// </summary>
-        internal enum SrezTypes
-        {
-            /// <summary>
-            /// Текущий
-            /// </summary>
-            Cur,
-            /// <summary>
-            /// Минутный
-            /// </summary>
-            Min,
-            /// <summary>
-            /// Часовой
-            /// </summary>
-            Hour
-        }
-
         /// <summary>
         /// Входной канал
         /// </summary>

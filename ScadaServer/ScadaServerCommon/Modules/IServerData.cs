@@ -24,6 +24,7 @@
  */
 
 using Scada.Data.Tables;
+using System;
 
 namespace Scada.Server.Modules
 {
@@ -34,13 +35,21 @@ namespace Scada.Server.Modules
     public interface IServerData
     {
         /// <summary>
+        /// Получить срез, содержащий данные заданных каналов
+        /// </summary>
+        /// <remarks>Номера каналов должны быть упорядочены по возрастанию</remarks>
+        SrezTableLight.Srez GetSnapshot(DateTime dateTime, SnapshotTypes snapshotType, int[] cnlNums);
+
+        /// <summary>
         /// Обработать (записать) новые текущие данные
         /// </summary>
         bool ProcCurData(SrezTableLight.Srez snapshot);
+
         /// <summary>
         /// Обработать (записать) новые архивные данные
         /// </summary>
         bool ProcArcData(SrezTableLight.Srez snapshot);
+
         /// <summary>
         /// Обработать (записать) новое событие
         /// </summary>
