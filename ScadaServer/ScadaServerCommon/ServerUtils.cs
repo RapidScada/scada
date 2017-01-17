@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2017
  */
 
 using Scada.Data.Tables;
@@ -36,6 +36,20 @@ namespace Scada.Server
     /// </summary>
     public static class ServerUtils
     {
+        /// <summary>
+        /// Версия Сервера
+        /// </summary>
+        public const string AppVersion = "5.0.1.0";
+        /// <summary>
+        /// Старший байт номера версии Сервера
+        /// </summary>
+        public const byte AppVersionHi = 5;
+        /// <summary>
+        /// Младший байт номера версии Сервера
+        /// </summary>
+        public const byte AppVersionLo = 0;
+
+
         /// <summary>
         /// Построить полное имя файла текущего среза
         /// </summary>

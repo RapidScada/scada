@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2016
+ * Modified : 2017
  */
 
 using Scada.Data.Models;
@@ -41,7 +41,7 @@ namespace Scada.Server.Svc
     /// Main server logic implementation
     /// <para>Реализация основной логики сервера</para>
     /// </summary>
-    sealed partial class MainLogic
+    sealed partial class MainLogic : IServerData
     {
         /// <summary>
         /// Наименования состояний работы
@@ -81,18 +81,6 @@ namespace Scada.Server.Svc
             public static readonly string Error;
         }
 
-        /// <summary>
-        /// Старший байт номера версии приложения
-        /// </summary>
-        public const byte AppVersionHi = 5;
-        /// <summary>
-        /// Младший байт номера версии приложения
-        /// </summary>
-        public const byte AppVersionLo = 0;
-        /// <summary>
-        /// Строковая запись версии приложения
-        /// </summary>
-        public const string AppVersion = "5.0.0.0";
         /// <summary>
         /// Имя файла журнала приложения
         /// </summary>
@@ -291,6 +279,7 @@ namespace Scada.Server.Svc
                         modLogic.AppDirs = AppDirs;
                         modLogic.Settings = Settings;
                         modLogic.WriteToLog = AppLog.WriteAction;
+                        modLogic.ServerData = this;
                         modLogic.PassCommand = comm.PassCommand;
                         modules.Add(modLogic);
                         AppLog.WriteAction(string.Format(Localization.UseRussian ? 
@@ -1634,7 +1623,7 @@ namespace Scada.Server.Svc
                     writer.WriteLine(AppInfoFormat,
                         startDT.ToLocalizedString(),
                         workSpan.Days > 0 ? workSpan.ToString(@"d\.hh\:mm\:ss") : workSpan.ToString(@"hh\:mm\:ss"),
-                        workState, AppVersion);
+                        workState, ServerUtils.AppVersion);
                     writer.WriteLine();
                     writer.Write(comm.GetClientsInfo());
                 }

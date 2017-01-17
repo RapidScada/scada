@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2015
+ * Modified : 2017
  */
 
 using System;
@@ -278,7 +278,7 @@ namespace Scada.Server.Svc
         /// <summary>
         /// Буфер для передачи номера версии приложения
         /// </summary>
-        private readonly byte[] AppVersionBuf = { 0x05, 0x00, 0x00, MainLogic.AppVersionLo, MainLogic.AppVersionHi };
+        private readonly byte[] AppVersionBuf = { 0x05, 0x00, 0x00, ServerUtils.AppVersionLo, ServerUtils.AppVersionHi };
         /// <summary>
         /// Описания команд
         /// </summary>

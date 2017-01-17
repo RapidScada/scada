@@ -63,6 +63,7 @@ namespace Scada.Server.Modules
             appDirs = new AppDirs();
             Settings = null;
             WriteToLog = null;
+            ServerData = null;
             PassCommand = null;
         }
 
@@ -98,6 +99,11 @@ namespace Scada.Server.Modules
         /// Получить или установить метод записи в журнал приложения
         /// </summary>
         public WriteToLogDelegate WriteToLog { get; set; }
+
+        /// <summary>
+        /// Получить или установить объект для доступа к данным сервера
+        /// </summary>
+        public IServerData ServerData { get; set; }
 
         /// <summary>
         /// Получить или установить метод передачи команды ТУ
