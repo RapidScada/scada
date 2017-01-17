@@ -87,9 +87,21 @@ namespace Scada.Data.Tables
                 if (cnlCnt < 0)
                     throw new ArgumentOutOfRangeException("cnlCnt");
 
-                DateTime = dateTime;
-                CnlNums = new int[cnlCnt];
-                CnlData = new CnlData[cnlCnt];
+                InitData(dateTime, cnlCnt);
+            }
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            /// <param name="dateTime">Временная метка среза</param>
+            /// <param name="sourceSrez">Срез, который является источником данных</param>
+            public Srez(DateTime dateTime, Srez sourceSrez)
+            {
+                if (sourceSrez == null)
+                    throw new ArgumentNullException("sourceSrez");
+
+                InitData(dateTime, sourceSrez.CnlNums.Length);
+                sourceSrez.CnlNums.CopyTo(CnlNums, 0);
+                sourceSrez.CnlData.CopyTo(CnlData, 0);
             }
             /// <summary>
             /// Конструктор
@@ -97,13 +109,17 @@ namespace Scada.Data.Tables
             /// <param name="dateTime">Временная метка среза</param>
             /// <param name="cnlNums">Номера каналов среза, упорядоченные по возростанию</param>
             /// <param name="sourceSrez">Срез, который является источником данных</param>
-            public Srez(DateTime dateTime, int[] cnlNums, SrezTableLight.Srez sourceSrez)
-                : this(dateTime, cnlNums == null ? 0 : cnlNums.Length)
+            public Srez(DateTime dateTime, int[] cnlNums, Srez sourceSrez)
             {
+                if (cnlNums == null)
+                    throw new ArgumentNullException("cnlNums");
                 if (sourceSrez == null)
                     throw new ArgumentNullException("sourceSrez");
 
-                for (int i = 0, cnt = cnlNums.Length; i < cnt; i++)
+                int cnlCnt = cnlNums.Length;
+                InitData(dateTime, cnlCnt);
+
+                for (int i = 0, cnt = cnlCnt; i < cnt; i++)
                 {
                     int cnlNum = cnlNums[i];
                     CnlData cnlData;
@@ -113,7 +129,6 @@ namespace Scada.Data.Tables
                     CnlData[i] = cnlData;
                 }
             }
-
 
             /// <summary>
             /// Получить временную метку среза
@@ -128,6 +143,15 @@ namespace Scada.Data.Tables
             /// </summary>
             public CnlData[] CnlData { get; protected set; }
 
+            /// <summary>
+            /// Инициализировать данные среза
+            /// </summary>
+            protected void InitData(DateTime dateTime, int cnlCnt)
+            {
+                DateTime = dateTime;
+                CnlNums = new int[cnlCnt];
+                CnlData = new CnlData[cnlCnt];
+            }
             /// <summary>
             /// Получить индекс входного канала по номеру
             /// </summary>
