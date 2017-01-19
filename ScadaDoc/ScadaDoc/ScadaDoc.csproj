@@ -60,6 +60,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="content\common-images\backup.gif" />
     <Content Include="content\common-images\import.png" />
     <Content Include="content\common-images\pass.gif" />
     <Content Include="content\en\index.html" />
@@ -79,6 +80,7 @@
     <Content Include="content\en\installation-and-run\system-requirements.html" />
     <Content Include="content\en\software-configuration\general-configuration.html" />
     <Content Include="content\en\software-configuration\index.html" />
+    <Content Include="content\en\software-configuration\tune-database.html" />
     <Content Include="content\en\software-overview\applications\administrator-application-files\scada_admin_en.png" />
     <Content Include="content\en\software-overview\applications\administrator-application.html" />
     <Content Include="content\en\software-overview\applications\communicator-application-files\scada_comm_en.png" />
