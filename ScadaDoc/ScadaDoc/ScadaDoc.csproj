@@ -80,6 +80,10 @@
     <Content Include="content\en\installation-and-run\system-requirements.html" />
     <Content Include="content\en\software-configuration\general-configuration.html" />
     <Content Include="content\en\software-configuration\index.html" />
+    <Content Include="content\en\software-configuration\tune-database-files\scada_admin_clone_cnls_en.png" />
+    <Content Include="content\en\software-configuration\tune-database-files\scada_admin_cnl_props_en.png" />
+    <Content Include="content\en\software-configuration\tune-database-files\scada_admin_create_cnls_en.png" />
+    <Content Include="content\en\software-configuration\tune-database-files\scada_admin_import_en.png" />
     <Content Include="content\en\software-configuration\tune-database.html" />
     <Content Include="content\en\software-overview\applications\administrator-application-files\scada_admin_en.png" />
     <Content Include="content\en\software-overview\applications\administrator-application.html" />
@@ -215,9 +219,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="content\en\software-configuration\tune-database-files\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
