@@ -27,7 +27,7 @@ function addContents(context) {
     addArticle(context, "software-configuration/communication-with-devices.html", "Настройка обмена данными с устройствами", 1);
     addArticle(context, "software-configuration/creating-views.html", "Создание представлений", 1);
 
-    addArticle(context, "", "Сценарии использования");
+    /*addArticle(context, "", "Сценарии использования");
     addArticle(context, "use-cases/modbus-protocol.html", "Connecting Devices Using Modbus Protocol", 1);
     addArticle(context, "use-cases/opc-standard.html", "Connecting Devices Using OPC Standard", 1);
 
@@ -35,5 +35,5 @@ function addContents(context) {
     addArticle(context, "version-history/scada-history.html", "Rapid SCADA", 1);
     addArticle(context, "", "Модули", 1);
     addArticle(context, "version-history/modules/chart-pro-history.html", "Графики Про", 2);
-    addArticle(context, "version-history/modules/elastic-report-history.html", "Гибкий отчёт", 2);
+    addArticle(context, "version-history/modules/elastic-report-history.html", "Гибкий отчёт", 2);*/
 }
