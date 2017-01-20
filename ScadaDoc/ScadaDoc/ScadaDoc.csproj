@@ -85,6 +85,7 @@
     <Content Include="content\en\software-configuration\tune-database-files\scada_admin_create_cnls_en.png" />
     <Content Include="content\en\software-configuration\tune-database-files\scada_admin_import_en.png" />
     <Content Include="content\en\software-configuration\tune-database.html" />
+    <Content Include="content\en\software-configuration\using-formulas.html" />
     <Content Include="content\en\software-overview\applications\administrator-application-files\scada_admin_en.png" />
     <Content Include="content\en\software-overview\applications\administrator-application.html" />
     <Content Include="content\en\software-overview\applications\communicator-application-files\scada_comm_en.png" />
@@ -157,6 +158,7 @@
     <Content Include="content\ru\software-configuration\tune-database-files\scada_admin_create_cnls_ru.png" />
     <Content Include="content\ru\software-configuration\tune-database-files\scada_admin_import_ru.png" />
     <Content Include="content\ru\software-configuration\tune-database.html" />
+    <Content Include="content\ru\software-configuration\using-formulas.html" />
     <Content Include="content\ru\software-overview\applications\administrator-application-files\scada_admin_ru.png" />
     <Content Include="content\ru\software-overview\applications\administrator-application.html" />
     <Content Include="content\ru\software-overview\applications\communicator-application-files\scada_comm_ru.png" />
