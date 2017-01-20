@@ -10,21 +10,21 @@
 <body>
     <h1>Creating Views</h1>
 
-    <p>Представление – это форма отображения информации в приложении Вебстанция. По умолчанию поддерживается 2 типа представлений: табличные представления и схемы. С помощью подключения дополнительных плагинов может быть добавлена поддержка других типов представлений.</p>
+    <p>View is a form of data representation in the Webstation application. There are 2 types of views supported by default: table views and schemes. Support other types of views can be added by installing additional plugins.</p>
 
-    <p>Для создания представлений предназначены специальные редакторы: <a href="../software-overview/applications/table-editor-application.html">Редактор таблиц</a> и <a href="../software-overview/applications/scheme-editor-application.html">Редактор схем</a>. Созданые представления сохраняются в файлы, которые должны располагаться в директории интерфейса, указанной в настройках программы Сервер, или в её поддиректориях. Директория интерфейса по умолчанию C:\SCADA\Interface\</p>
+    <p>Special editors are designed to create views: <a href="../software-overview/applications/table-editor-application.html">Table Editor</a> and <a href="../software-overview/applications/scheme-editor-application.html">Scheme editor</a>. Views are stored in files which must be located in the interface directory (or its subdirectory) that is specified in the settings of the Server application. The default interface directory is C:\SCADA\Interface\</p>
 
-    <p>Примеры файлов представлений:<br />
-        C:\SCADA\Interface\Servers\ServerRoom.sch - схема,<br />
-        C:\SCADA\Interface\Servers\ServerRoom.tbl - табличное представление.</p>
+    <p>Examples of view files:<br />
+        C:\SCADA\Interface\Servers\ServerRoom.sch - scheme,<br />
+        C:\SCADA\Interface\Servers\ServerRoom.tbl - table view.</p>
 
-    <p>После того, как файлы представления созданы, их необходимо прописать в базе конфигурации в таблице <em>Интерфейс</em> с помощью программы Администратор, как показано а рис. 1. Идентификатор представления вводится произвольно, обеспечивая уникальность. Путь к представлению указывается относительно директории интерфейса. Текст, указанный в столбце <em>Заголовок</em> отображается в дереве представлений в Вебстанции.</p>
+    <p>When view files are created, they must be defined in the <em>Interface</em> table of the configuration database by the <em>Administrator</em> application as shown in Figure 1. View ID is an arbitrary unique number. View path is relative to the interface directory. View title is shown in the explorer tree of Webstation.</p>
 
     <p class="sd-article-image">
-        <img src="creating-views-files/scada_admin_itf_en.png" alt="Редактирование таблицы Интерфейс"><br>
-        Рис. 1. Редактирование таблицы Интерфейс
+        <img src="creating-views-files/scada_admin_itf_en.png" alt="Editing the Interface table"><br>
+        Figure 1. Editing the Interface table
     </p>
 
-    <p>Чтобы сделанные изменения вступили в силу, необходимо передать базу Серверу с помощью кнопки <img src="../../common-images/pass.gif" />, перезапустить службу Сервера кнопкой <img src="../../common-images/restart_blue.gif" />, затем выполнить выход и повторный вход в веб-приложение.</p>
+    <p>To apply the changes, send the database to Server by <img src="../../common-images/pass.gif" /> button, restart the Server service by <img src="../../common-images/restart_blue.gif" /> buttin, then logout and login again the web application.</p>
 </body>
 </html>
