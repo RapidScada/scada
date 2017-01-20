@@ -13,6 +13,7 @@
     updateLayout();
     createSearch();
     createContents();
+    createCounter();
 }
 
 function updateLayout() {
@@ -89,6 +90,11 @@ function createContext() {
     };
 }
 
+function createCounter() {
+    var counterScript = '<!-- Yandex.Metrika counter --> <script type="text/javascript"> (function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter42248389 = new Ya.Metrika({ id:42248389, clickmap:true, trackLinks:true, accurateTrackBounce:true }); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = "https://mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks"); </script> <noscript><div><img src="https://mc.yandex.ru/watch/42248389" style="position:absolute; left:-9999px;" alt="" /></div></noscript> <!-- /Yandex.Metrika counter -->';
+    $("body").prepend(counterScript);
+}
+
 function addArticle(context, link, title, level) {
     var url = context.docRoot + link;
     var itemInnerHtml = link ? "<a href='" + url + "'>" + title + "</a>" : title;
@@ -127,9 +133,15 @@ function copyContentsToArticle() {
 }
 
 $(document).ready(function () {
-    createLayout();
+    if ($("body").hasClass("home")) {
+        // add counter only to home page
+        createCounter();
+    } else {
+        // create layout of article page
+        createLayout();
 
-    $(window).resize(function () {
-        updateLayout();
-    });
+        $(window).resize(function () {
+            updateLayout();
+        });
+    }
 });
