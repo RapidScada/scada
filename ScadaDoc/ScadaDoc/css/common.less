@@ -1,4 +1,8 @@
-﻿body {
+﻿@import "variables.less";
+
+body {
+    background-color: @content-back-color;
+    color: @content-fore-color;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
     margin: 0;
@@ -33,7 +37,7 @@ p, ul, ol {
 }
 
 em {
-    color: #dd0055;
+    color: @content-fore-color-em;
 }
 
 a,
@@ -41,12 +45,12 @@ a:active,
 a:hover,
 a:focus,
 a:visited {
-    color: #1fa2d6;
+    color: @link-fore-color;
     outline: 0;
     text-decoration: none;
 }
 
 a:hover {
-    color: #0074a2;
+    color: @link-hover-fore-color;
     text-decoration: underline;
 }

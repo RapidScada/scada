@@ -1,4 +1,6 @@
-﻿.sd-contents-wrapper {
+﻿@import "variables.less";
+
+.sd-contents-wrapper {
     border-right: 5px solid #ddd;
     display: inline-block;
     margin: 0;
@@ -11,25 +13,30 @@
 .sd-contents {
     font-size: 13px;
     margin: 0;
-    padding: 10px;
+    padding: 10px 0;
 }
 
 .sd-contents-item {
-    margin: 7px 0;
+    padding: 5px 10px;
 }
 
 .sd-contents-item.level1 {
-    margin-left: 20px;
+    padding-left: 30px;
 }
 
 .sd-contents-item.level2 {
-    margin-left: 40px;
+    padding-left: 40px;
 }
 
 .sd-contents-item.level3 {
-    margin-left: 60px;
+    padding-left: 70px;
 }
 
 .sd-contents-item.selected {
-    font-weight: bold;
+    background-color: @link-fore-color;
+    color: @content-back-color;
+}
+
+.sd-contents-item.selected a {
+    color: @content-back-color;
 }

@@ -232,6 +232,7 @@
     <Content Include="css\contents.less" />
     <Content Include="css\search.less" />
     <Content Include="css\cover.less" />
+    <Content Include="css\variables.less" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

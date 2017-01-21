@@ -57,13 +57,17 @@ function createContents() {
     $.getScript(context.siteRoot + "js/contents-" + context.lang + ".js", function () {
         addContents(context);
 
-        var selItem = $(".sd-contents-item.selected:first");
-        if (selItem.length > 0) {
-            context.contents.scrollTop(selItem.offset().top);
-        }
-
         if (typeof onContentsCreated == "function") {
             onContentsCreated();
+        }
+
+        // scroll contents
+        var selItem = $(".sd-contents-item.selected:first");
+        if (selItem.length > 0) {
+            // delay is needed to load search panel that affects contents height
+            setTimeout(function () {
+                context.contents.parent().scrollTop(selItem.offset().top)
+            }, 200);
         }
     });
 }
