@@ -197,11 +197,11 @@
     <Content Include="content\ru\software-overview\applications\webstation-application.html" />
     <Content Include="content\ru\use-cases\modbus-protocol.html" />
     <Content Include="content\ru\version-history\scada-history.html" />
-    <Content Include="css\index.css">
-      <DependentUpon>index.less</DependentUpon>
+    <Content Include="css\cover.css">
+      <DependentUpon>cover.less</DependentUpon>
     </Content>
-    <Content Include="css\index.min.css">
-      <DependentUpon>index.css</DependentUpon>
+    <Content Include="css\cover.min.css">
+      <DependentUpon>cover.css</DependentUpon>
     </Content>
     <Content Include="css\scadadoc.css">
       <DependentUpon>scadadoc.less</DependentUpon>
@@ -231,7 +231,7 @@
     <Content Include="css\common.less" />
     <Content Include="css\contents.less" />
     <Content Include="css\search.less" />
-    <Content Include="css\index.less" />
+    <Content Include="css\cover.less" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

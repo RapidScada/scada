@@ -4,7 +4,7 @@
     "inputFile": "css/scadadoc.less"
   },
   {
-    "outputFile": "css/index.css",
-    "inputFile": "css/index.less"
+    "outputFile": "css/cover.css",
+    "inputFile": "css/cover.less"
   }
 ]

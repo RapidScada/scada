@@ -44,15 +44,19 @@ a:hover {
   color: #0074a2;
   text-decoration: underline;
 }
-.sd-contents {
+.sd-contents-wrapper {
   border-right: 5px solid #ddd;
   display: inline-block;
-  font-size: 13px;
   margin: 0;
   min-width: 200px;
-  padding: 10px;
   overflow: auto;
+  padding: 0;
   width: 25%;
+}
+.sd-contents {
+  font-size: 13px;
+  margin: 0;
+  padding: 10px;
 }
 .sd-contents-item {
   margin: 7px 0;
@@ -69,11 +73,15 @@ a:hover {
 .sd-contents-item.selected {
   font-weight: bold;
 }
-.sd-article {
+.sd-article-wrapper {
   display: inline-block;
   margin: 0;
-  padding: 0 20px;
   overflow: auto;
+  padding: 0;
+}
+.sd-article {
+  margin: 0;
+  padding: 0 20px;
 }
 .sd-article-meta {
   font-size: 12px;

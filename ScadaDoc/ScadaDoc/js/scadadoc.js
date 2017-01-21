@@ -4,7 +4,8 @@ function createLayout() {
     var articleElems = $("body").children();
     articleElems.detach();
 
-    var layoutElem = $("<div class='sd-contents'></div><div class='sd-article'></div>");
+    var layoutElem = $("<div class='sd-contents-wrapper'><div class='sd-contents'></div></div>" +
+        "<div class='sd-article-wrapper'><div class='sd-article'></div></div>");
     $("body").append(layoutElem);
     $("body").css("overflow", "hidden");
 
@@ -16,17 +17,20 @@ function createLayout() {
     createSearch();
     createContents();
     createCounter();
+
+    styleIOS($("div.sd-contents-wrapper"));
+    styleIOS($("div.sd-article-wrapper"));
 }
 
 function updateLayout() {
-    var divContents = $("div.sd-contents");
-    var divArticle = $("div.sd-article");
+    var divContentsWrapper = $("div.sd-contents-wrapper");
+    var divArticleWrapper = $("div.sd-article-wrapper");
 
     var winH = $(window).height();
-    var contW = divContents[0].getBoundingClientRect().width; // fractional value is required
-    divContents.outerHeight(winH);
-    divArticle.outerHeight(winH);
-    divArticle.outerWidth($(window).width() - contW);
+    var contW = divContentsWrapper[0].getBoundingClientRect().width; // fractional value is required
+    divContentsWrapper.outerHeight(winH);
+    divArticleWrapper.outerHeight(winH);
+    divArticleWrapper.outerWidth($(window).width() - contW);
 }
 
 function createSearch() {
@@ -132,6 +136,19 @@ function copyContentsToArticle() {
             } else if (curClass == stopClass) {
                 return false;
             }
+        });
+    }
+}
+
+function iOS() {
+    return /iPad|iPhone|iPod/.test(navigator.platform);
+}
+
+function styleIOS(jqElem) {
+    if (iOS()) {
+        jqElem.css({
+            "overflow": "scroll",
+            "-webkit-overflow-scrolling": "touch"
         });
     }
 }
