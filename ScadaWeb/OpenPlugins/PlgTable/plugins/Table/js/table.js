@@ -216,7 +216,9 @@ function showChart(clickedElem) {
     var dialogs = viewHub ? viewHub.dialogs : null;
     if (dialogs) {
         var cnlNum = clickedElem.closest("tr.item").data("cnl");
-        dialogs.showChart(cnlNum, viewID, viewDate);
+        if (cnlNum) {
+            dialogs.showChart(cnlNum, viewID, viewDate);
+        }
     } else {
         console.warn(DIALOGS_UNDEFINED);
     }

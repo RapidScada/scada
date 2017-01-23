@@ -1,4 +1,4 @@
-﻿namespace Scada.Comm.Devices.AddressBook
+﻿namespace Scada.Comm.Devices.AB
 {
     partial class FrmAddressBook
     {

@@ -28,7 +28,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
 
-namespace Scada.Comm.Devices.AddressBook
+namespace Scada.Comm.Devices.AB
 {
     /// <summary>
     /// Address book
@@ -460,7 +460,7 @@ namespace Scada.Comm.Devices.AddressBook
             }
             catch (Exception ex)
             {
-                errMsg = LibPhrases.LoadAddressBookError + ":" + Environment.NewLine + ex.Message;
+                errMsg = AbPhrases.LoadAddressBookError + ":" + Environment.NewLine + ex.Message;
                 return false;
             }
         }
@@ -509,7 +509,7 @@ namespace Scada.Comm.Devices.AddressBook
             }
             catch (Exception ex)
             {
-                errMsg = LibPhrases.SaveAddressBookError + ":" + Environment.NewLine + ex.Message;
+                errMsg = AbPhrases.SaveAddressBookError + ":" + Environment.NewLine + ex.Message;
                 return false;
             }
         }

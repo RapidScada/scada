@@ -1,0 +1,283 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8CE5A4CC-455F-41DC-9BB8-A68D3034E75F}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ScadaDoc</RootNamespace>
+    <AssemblyName>ScadaDoc</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="content\common-images\backup.gif" />
+    <Content Include="content\common-images\import.png" />
+    <Content Include="content\common-images\pass.gif" />
+    <Content Include="content\common-images\props.png" />
+    <Content Include="content\common-images\refresh.png" />
+    <Content Include="content\common-images\reset.png" />
+    <Content Include="content\common-images\restart_blue.gif" />
+    <Content Include="content\en\index.html" />
+    <Content Include="content\en\installation-and-run\index.html" />
+    <Content Include="content\en\installation-and-run\migrate-configuration.html" />
+    <Content Include="content\en\installation-and-run\software-installation-files\install_dir_en.png" />
+    <Content Include="content\en\installation-and-run\software-installation-files\scada_setup_en.png" />
+    <Content Include="content\en\installation-and-run\software-installation-files\web_params_en.png" />
+    <Content Include="content\en\installation-and-run\software-installation-files\win10_features_dotnet_en.png" />
+    <Content Include="content\en\installation-and-run\software-installation-files\win10_features_iis_en.png" />
+    <Content Include="content\en\installation-and-run\software-installation-files\win7_features_dotnet_en.png" />
+    <Content Include="content\en\installation-and-run\software-installation-files\win7_features_iis_en.png" />
+    <Content Include="content\en\installation-and-run\software-installation.html" />
+    <Content Include="content\en\installation-and-run\software-update.html" />
+    <Content Include="content\en\installation-and-run\start-applications-files\service_props_en.png" />
+    <Content Include="content\en\installation-and-run\run-applications.html" />
+    <Content Include="content\en\installation-and-run\system-requirements.html" />
+    <Content Include="content\en\software-configuration\communication-with-devices-files\scada_comm_import_en.png" />
+    <Content Include="content\en\software-configuration\communication-with-devices-files\scada_comm_line_en.png" />
+    <Content Include="content\en\software-configuration\communication-with-devices.html" />
+    <Content Include="content\en\software-configuration\creating-views-files\scada_admin_itf_en.png" />
+    <Content Include="content\en\software-configuration\creating-views.html" />
+    <Content Include="content\ru\software-configuration\communication-with-devices-files\scada_comm_import_ru.png" />
+    <Content Include="content\ru\software-configuration\communication-with-devices-files\scada_comm_line_ru.png" />
+    <Content Include="content\en\software-configuration\communication-with-devices-files\scada_comm_req_seq_en.png" />
+    <Content Include="content\ru\software-configuration\communication-with-devices-files\scada_comm_req_seq_ru.png" />
+    <Content Include="content\en\software-configuration\general-configuration.html" />
+    <Content Include="content\en\software-configuration\index.html" />
+    <Content Include="content\en\software-configuration\tune-database-files\scada_admin_clone_cnls_en.png" />
+    <Content Include="content\en\software-configuration\tune-database-files\scada_admin_cnl_props_en.png" />
+    <Content Include="content\en\software-configuration\tune-database-files\scada_admin_create_cnls_en.png" />
+    <Content Include="content\en\software-configuration\tune-database-files\scada_admin_import_en.png" />
+    <Content Include="content\en\software-configuration\tune-database.html" />
+    <Content Include="content\en\software-configuration\user-authentication.html" />
+    <Content Include="content\en\software-configuration\using-formulas.html" />
+    <Content Include="content\en\software-overview\applications\administrator-application-files\scada_admin_en.png" />
+    <Content Include="content\en\software-overview\applications\administrator-application.html" />
+    <Content Include="content\en\software-overview\applications\communicator-application-files\scada_comm_en.png" />
+    <Content Include="content\en\software-overview\applications\communicator-application.html" />
+    <Content Include="content\en\software-overview\applications\index.html" />
+    <Content Include="content\en\software-overview\index.html" />
+    <Content Include="content\en\software-overview\applications\scheme-editor-application-files\scada_scheme_editor_en.png" />
+    <Content Include="content\en\software-overview\applications\scheme-editor-application.html" />
+    <Content Include="content\en\software-overview\applications\server-application-files\scada_server_en.png" />
+    <Content Include="content\en\software-overview\applications\server-application.html" />
+    <Content Include="content\en\software-overview\software-architecture-files\scada_arc_en.png" />
+    <Content Include="content\en\software-overview\software-architecture.html" />
+    <Content Include="content\en\software-overview\software-purpose.html" />
+    <Content Include="content\en\software-overview\applications\table-editor-application-files\scada_table_editor_en.png" />
+    <Content Include="content\en\software-overview\applications\table-editor-application.html" />
+    <Content Include="content\en\software-overview\applications\webstation-application-files\scada_web_scheme_en.png" />
+    <Content Include="content\en\software-overview\applications\webstation-application-files\scada_web_table_en.png" />
+    <Content Include="content\en\software-overview\applications\webstation-application.html" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\btn_apply.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\btn_blank.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\btn_edit.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\btn_open.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\btn_pass.gif" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\btn_plus.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\btn_props.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\btn_restart_blue.gif" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\btn_restart_yellow.gif" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\btn_start.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_commline_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_create_cnls_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_data_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_data_with_cnls_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_device_props_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_dll_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_import_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_mode_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_popup_commlines_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_request_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_table_commline_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_table_editor_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_table_kp_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_table_obj_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_template_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_web1_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_web2_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_web_config1_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_web_config2_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol.html" />
+    <Content Include="content\en\use-cases\opc-standard.html" />
+    <Content Include="content\en\version-history\scada-history.html" />
+    <Content Include="content\ru\index.html" />
+    <Content Include="content\ru\installation-and-run\index.html" />
+    <Content Include="content\ru\installation-and-run\software-installation-files\install_dir_ru.png" />
+    <Content Include="content\ru\installation-and-run\software-installation-files\scada_setup_ru.png" />
+    <Content Include="content\ru\installation-and-run\software-installation-files\web_params_ru.png" />
+    <Content Include="content\ru\installation-and-run\software-installation-files\win10_features_dotnet_ru.png" />
+    <Content Include="content\ru\installation-and-run\software-installation-files\win10_features_iis_ru.png" />
+    <Content Include="content\ru\installation-and-run\software-installation-files\win7_features_dotnet_en.png" />
+    <Content Include="content\ru\installation-and-run\software-installation-files\win7_features_iis_ru.png" />
+    <Content Include="content\ru\installation-and-run\software-installation.html" />
+    <Content Include="content\ru\installation-and-run\software-update.html" />
+    <Content Include="content\ru\installation-and-run\start-applications-files\service_props_ru.png" />
+    <Content Include="content\ru\installation-and-run\run-applications.html" />
+    <Content Include="content\ru\installation-and-run\system-requirements.html" />
+    <Content Include="content\ru\installation-and-run\migrate-configuration.html" />
+    <Content Include="content\ru\software-configuration\communication-with-devices.html" />
+    <Content Include="content\ru\software-configuration\creating-views-files\scada_admin_itf_ru.png" />
+    <Content Include="content\ru\software-configuration\general-configuration.html" />
+    <Content Include="content\ru\software-configuration\creating-views.html" />
+    <Content Include="content\ru\software-configuration\index.html" />
+    <Content Include="content\ru\software-configuration\tune-database-files\scada_admin_clone_cnls_ru.png" />
+    <Content Include="content\ru\software-configuration\tune-database-files\scada_admin_cnl_props_ru.png" />
+    <Content Include="content\ru\software-configuration\tune-database-files\scada_admin_create_cnls_ru.png" />
+    <Content Include="content\ru\software-configuration\tune-database-files\scada_admin_import_ru.png" />
+    <Content Include="content\ru\software-configuration\tune-database.html" />
+    <Content Include="content\ru\software-configuration\user-authentication.html" />
+    <Content Include="content\ru\software-configuration\using-formulas.html" />
+    <Content Include="content\ru\software-overview\applications\administrator-application-files\scada_admin_ru.png" />
+    <Content Include="content\ru\software-overview\applications\administrator-application.html" />
+    <Content Include="content\ru\software-overview\applications\communicator-application-files\scada_comm_ru.png" />
+    <Content Include="content\ru\software-overview\applications\communicator-application.html" />
+    <Content Include="content\ru\software-overview\applications\index.html" />
+    <Content Include="content\ru\software-overview\applications\scheme-editor-application-files\scada_scheme_editor_ru.png" />
+    <Content Include="content\ru\software-overview\applications\scheme-editor-application.html" />
+    <Content Include="content\ru\software-overview\applications\server-application-files\scada_server_ru.png" />
+    <Content Include="content\ru\software-overview\applications\server-application.html" />
+    <Content Include="content\ru\software-overview\index.html" />
+    <Content Include="content\ru\software-overview\software-architecture-files\scada_arc_ru.png" />
+    <Content Include="content\ru\software-overview\software-architecture.html" />
+    <Content Include="content\ru\software-overview\software-purpose.html" />
+    <Content Include="content\ru\software-overview\applications\table-editor-application-files\scada_table_editor_ru.png" />
+    <Content Include="content\ru\software-overview\applications\table-editor-application.html" />
+    <Content Include="content\ru\software-overview\applications\webstation-application-files\scada_web_scheme_ru.png" />
+    <Content Include="content\ru\software-overview\applications\webstation-application-files\scada_web_table_en.png" />
+    <Content Include="content\ru\software-overview\applications\webstation-application.html" />
+    <Content Include="content\ru\use-cases\modbus-protocol.html" />
+    <Content Include="content\ru\version-history\scada-history.html" />
+    <Content Include="css\cover.css">
+      <DependentUpon>cover.less</DependentUpon>
+    </Content>
+    <Content Include="css\cover.min.css">
+      <DependentUpon>cover.css</DependentUpon>
+    </Content>
+    <Content Include="css\scadadoc.css">
+      <DependentUpon>scadadoc.less</DependentUpon>
+    </Content>
+    <Content Include="css\scadadoc.min.css">
+      <DependentUpon>scadadoc.css</DependentUpon>
+    </Content>
+    <Content Include="favicon.ico" />
+    <Content Include="index.html" />
+    <Content Include="js\contents-ru.js" />
+    <Content Include="js\scadadoc.js" />
+    <Content Include="js\contents-en.js" />
+    <Content Include="js\jquery.min.js" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
+    <Content Include="css\article.less" />
+    <Content Include="packages.config" />
+    <Content Include="css\scadadoc.less" />
+    <Content Include="css\common.less" />
+    <Content Include="css\contents.less" />
+    <Content Include="css\search.less" />
+    <Content Include="css\cover.less" />
+    <Content Include="css\variables.less" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>60765</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:60765/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="..\packages\BuildWebCompiler.1.11.319\build\BuildWebCompiler.targets" Condition="Exists('..\packages\BuildWebCompiler.1.11.319\build\BuildWebCompiler.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\BuildWebCompiler.1.11.319\build\BuildWebCompiler.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\BuildWebCompiler.1.11.319\build\BuildWebCompiler.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

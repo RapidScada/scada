@@ -48,9 +48,9 @@ namespace Scada.Web
         /// </summary>
         private static readonly AppData AppData = AppData.GetAppData();
 
-        
+
         /// <summary>
-        /// Конструктор, ограничивающий создание объекта без параметров
+        /// Конструктор, ограничивающий создание объекта из других классов
         /// </summary>
         private UserData()
         {
@@ -254,7 +254,7 @@ namespace Scada.Web
                         username, UserProps.RoleName, IpAddress));
                 }
 
-                UserRights userRights = new UserRights();
+                UserRights userRights = new UserRights(AppData.ViewCache);
                 userRights.Init(roleID, AppData.DataAccess);
                 UserRights = userRights;
 
@@ -264,7 +264,7 @@ namespace Scada.Web
 
                 UserMenu = new UserMenu(AppData.Log);
                 UserMenu.Init(this);
-                UserViews = new UserViews(AppData.Log);
+                UserViews = new UserViews(AppData.ViewCache, AppData.Log);
                 UserViews.Init(this, AppData.DataAccess);
                 UserContent = new UserContent(AppData.Log);
                 UserContent.Init(this, AppData.DataAccess);
@@ -360,7 +360,7 @@ namespace Scada.Web
                     // переход на страницу входа
                     if (!LoggedOn)
                     {
-                        string returnUrl = HttpUtility.UrlPathEncode(httpContext.Request.Url.ToString());
+                        string returnUrl = HttpUtility.UrlEncode(httpContext.Request.Url.ToString());
                         httpContext.Response.Redirect(alert == "" ?
                             string.Format(UrlTemplates.LoginWithReturn, returnUrl) :
                             string.Format(UrlTemplates.LoginWithAlert, returnUrl, HttpUtility.UrlEncode(alert)));

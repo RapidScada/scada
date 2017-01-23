@@ -1,8 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PlgChartDictionaries>
   <Dictionary key="Scada.Web.Plugins.Chart">
-    <Phrase key="CnlNumsEmptyError">Channel numbers are not specified.</Phrase>
-    <Phrase key="CountMismatchError">Mismatch in number of channels and view IDs.</Phrase>
     <Phrase key="PerfWarning">Warning! Too many channels may affect performance.</Phrase>
     <Phrase key="AddCnlBtn">Add</Phrase>
     <Phrase key="RemoveCnlBtn">Remove</Phrase>

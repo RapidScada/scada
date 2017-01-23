@@ -67,9 +67,7 @@ namespace Scada.Web.Plugins.Table
                 Response.Redirect(UrlTemplates.NoView);
 
             // загрузка представления в кеш для последующего получения событий через API
-            Type viewType = userData.UserViews.GetViewType(viewID);
-            BaseView view = appData.ViewCache.GetView(viewType, viewID, false);
-
+            BaseView view = userData.UserViews.GetView(viewID);
             if (view == null)
                 Response.Redirect(UrlTemplates.NoView);
 

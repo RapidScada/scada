@@ -1,0 +1,10 @@
+﻿[
+  {
+    "outputFile": "css/scadadoc.css",
+    "inputFile": "css/scadadoc.less"
+  },
+  {
+    "outputFile": "css/cover.css",
+    "inputFile": "css/cover.less"
+  }
+]

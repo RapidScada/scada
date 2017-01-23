@@ -70,6 +70,18 @@
       <Link>lang\ScadaData.ru-RU.xml</Link>
     </Content>
     <Content Include="About.aspx" />
+    <Content Include="css\common\contentform.css">
+      <DependentUpon>contentform.less</DependentUpon>
+    </Content>
+    <Content Include="css\common\contentform.min.css">
+      <DependentUpon>contentform.css</DependentUpon>
+    </Content>
+    <Content Include="css\common\modalform.css">
+      <DependentUpon>modalform.less</DependentUpon>
+    </Content>
+    <Content Include="css\common\modalform.min.css">
+      <DependentUpon>modalform.css</DependentUpon>
+    </Content>
     <Content Include="css\dialogs\confirm.css">
       <DependentUpon>confirm.less</DependentUpon>
     </Content>
@@ -90,18 +102,6 @@
     </Content>
     <Content Include="css\dialogs\calendar.min.css">
       <DependentUpon>calendar.css</DependentUpon>
-    </Content>
-    <Content Include="css\common\contentform.css">
-      <DependentUpon>contentform.less</DependentUpon>
-    </Content>
-    <Content Include="css\common\contentform.min.css">
-      <DependentUpon>contentform.css</DependentUpon>
-    </Content>
-    <Content Include="css\common\modalform.css">
-      <DependentUpon>modalform.less</DependentUpon>
-    </Content>
-    <Content Include="css\common\modalform.min.css">
-      <DependentUpon>modalform.css</DependentUpon>
     </Content>
     <Content Include="css\controls\notifier.css">
       <DependentUpon>notifier.less</DependentUpon>
@@ -184,6 +184,7 @@
     <Content Include="images\treeview\folder.png" />
     <Content Include="index.htm" />
     <Content Include="js\api\clientapi.js" />
+    <Content Include="js\api\export.js" />
     <Content Include="js\dialogs\confirm.js" />
     <Content Include="js\dialogs\dialogs.js" />
     <Content Include="js\api\viewhub.js" />
@@ -225,6 +226,8 @@
     <Content Include="lib\open-sans\fonts\open-sans-v13-latin-ext_cyrillic_latin_cyrillic-ext_greek-ext_vietnamese_greek-800italic.svg" />
     <Content Include="lib\open-sans\fonts\open-sans-v13-latin-ext_cyrillic_latin_cyrillic-ext_greek-ext_vietnamese_greek-italic.svg" />
     <Content Include="lib\open-sans\fonts\open-sans-v13-latin-ext_cyrillic_latin_cyrillic-ext_greek-ext_vietnamese_greek-regular.svg" />
+    <Content Include="lib\pdfmake\pdfmake.min.js" />
+    <Content Include="lib\pdfmake\vfs_fonts.js" />
     <Content Include="Login.aspx" />
     <Content Include="ClientApiSvc.svc" />
     <Content Include="NoView.aspx" />
@@ -323,6 +326,7 @@
     <Content Include="css\controls\splitter.less" />
     <Content Include="css\common\modalform.less" />
     <Content Include="css\dialogs\confirm.less" />
+    <Content Include="css\common\plainform.less" />
     <None Include="css\mastermain.less" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
@@ -418,7 +422,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>51221</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

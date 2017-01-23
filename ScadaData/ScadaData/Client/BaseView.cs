@@ -193,8 +193,7 @@ namespace Scada.Client
         /// </summary>
         public virtual bool ContainsAllCnls(IEnumerable<int> cnlNums)
         {
-            // в случае пустых CnlSet и cnlNums возвращает false
-            return CnlSet.IsProperSupersetOf(cnlNums);
+            return CnlSet.Count > 0 && CnlSet.IsSupersetOf(cnlNums);
         }
 
         /// <summary>

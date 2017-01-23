@@ -1505,7 +1505,8 @@ namespace Utils.Report
         /// </summary>
         protected void SetNodeTextWithBreak(XmlNode xmlNode, string text, string textBreak)
         {
-            if (text == null) text = "";
+            if (text == null)
+                text = "";
             xmlNode.InnerText = text.Replace(textBreak, Break);
             textBroken = true;
         }

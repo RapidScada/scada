@@ -38,6 +38,8 @@ namespace Scada.Web
         {
             // перевод веб-страницы
             Translator.TranslatePage(this, "Scada.Web.WFrmAbout");
+            // вывод версии
+            lblVersion.Text = WebUtils.AppVersion;
         }
     }
 }

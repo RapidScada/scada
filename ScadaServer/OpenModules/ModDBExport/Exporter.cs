@@ -237,7 +237,7 @@ namespace Scada.Server.Modules.DBExport
         {
             if (ExportParams.ExportCurData)
             {
-                SrezTableLight.Srez sres = null;
+                SrezTableLight.Srez srez = null;
                 try
                 {
                     for (int i = 0; i < BundleSize; i++)
@@ -246,13 +246,13 @@ namespace Scada.Server.Modules.DBExport
                         lock (curSrezQueue)
                         {
                             if (curSrezQueue.Count > 0)
-                                sres = curSrezQueue.Dequeue();
+                                srez = curSrezQueue.Dequeue();
                             else
                                 break;
                         }
 
                         // экспорт
-                        ExportSrez(DataSource.ExportCurDataCmd, sres);
+                        ExportSrez(DataSource.ExportCurDataCmd, srez);
 
                         expCurSrezCnt++;
                         exportError = false;
@@ -261,9 +261,9 @@ namespace Scada.Server.Modules.DBExport
                 catch (Exception ex)
                 {
                     // возврат среза в очередь
-                    if (sres != null)
+                    if (srez != null)
                         lock (curSrezQueue)
-                            curSrezQueue.Enqueue(sres);
+                            curSrezQueue.Enqueue(srez);
 
                     log.WriteAction(string.Format(Localization.UseRussian ?
                         "Ошибка при экспорте текущих данных в БД {0}: {1}" :

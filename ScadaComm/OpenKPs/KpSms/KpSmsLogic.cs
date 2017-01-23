@@ -27,15 +27,14 @@
  */
 
 using Scada.Comm.Channels;
+using Scada.Comm.Devices.AB;
 using Scada.Data.Models;
 using Scada.Data.Tables;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Text;
 using System.Threading;
-using AB = Scada.Comm.Devices.AddressBook;
 
 namespace Scada.Comm.Devices
 {
@@ -376,9 +375,10 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Заполнить список сообщений по входным данным, полученным от GSM-терминала
         /// </summary>
-        private bool FillMessageList(List<string> inData, out string errMsg)
+        private bool FillMessageList(List<string> inData, out string logMsg)
         {
-            StringBuilder errMsgSB = new StringBuilder();
+            bool result = true;
+            StringBuilder logMsgSB = new StringBuilder();
             messageList.Clear();
 
             int i = 1;
@@ -435,48 +435,54 @@ namespace Scada.Comm.Devices
                                     int udl = int.Parse(line.Substring(udPos - 2, 2),
                                         NumberStyles.HexNumber);                      // длина текста сообщения
                                     string ud = line.Substring(udPos);                // текст сообщения
-                                    if (dcs == "00" && ud.Length * 4 / 7 == udl || dcs != "00" && ud.Length == udl * 2)
-                                    {
-                                        if (dcs == "00")
-                                            msg.Text = Decode7bitText(ud);
-                                        else if (dcs == "F6")
-                                            msg.Text = Decode8bitText(ud);
-                                        else if (dcs == "08")
-                                            msg.Text = DecodeUnicodeText(ud);
 
-                                        messageList.Add(msg);
-                                    }
-                                    else
+                                    // проверка длины текста сообщения, разные модемы вычиляют UDL по-разному
+                                    if (!(dcs == "00" && ud.Length * 4 / 7 == udl || 
+                                        dcs != "00" && ud.Length == udl * 2))
                                     {
-                                        errMsgSB.AppendLine(string.Format(Localization.UseRussian ?
-                                            "Ошибка в строке {0}: некорректная длина текста сообщения" :
-                                            "Error in line {0}: incorrect message length", i));
+                                        logMsgSB.AppendLine(string.Format(Localization.UseRussian ?
+                                            "Предупреждение в строке {0}: некорректная длина текста сообщения" :
+                                            "Warning in line {0}: incorrect message length", i));
                                     }
+
+                                    // декодирование сообщения
+                                    if (dcs == "00")
+                                        msg.Text = Decode7bitText(ud);
+                                    else if (dcs == "F6")
+                                        msg.Text = Decode8bitText(ud);
+                                    else if (dcs == "08")
+                                        msg.Text = DecodeUnicodeText(ud);
+
+                                    messageList.Add(msg);
                                 }
                                 else
                                 {
-                                    errMsgSB.AppendLine(string.Format(Localization.UseRussian ?
+                                    result = false;
+                                    logMsgSB.AppendLine(string.Format(Localization.UseRussian ?
                                         "Ошибка в строке {0}: некорректная длина PDU" :
                                         "Error in line {0}: incorrect PDU length", i));
                                 }
                             }
                             catch
                             {
-                                errMsgSB.AppendLine(string.Format(Localization.UseRussian ?
+                                result = false;
+                                logMsgSB.AppendLine(string.Format(Localization.UseRussian ?
                                     "Ошибка в строке {0}: невозможно расшифровать PDU" :
                                     "Error in line {0}: unable to decode PDU", i));
                             }
                         }
                         else
                         {
-                            errMsgSB.AppendLine(Localization.UseRussian ?
+                            result = false;
+                            logMsgSB.AppendLine(Localization.UseRussian ?
                                 "Ошибка: некорректное завершение входных данных" :
                                 "Error: incorrect termination of the input data");
                         }
                     }
                     else
                     {
-                        errMsgSB.AppendLine(string.Format(Localization.UseRussian ?
+                        result = false;
+                        logMsgSB.AppendLine(string.Format(Localization.UseRussian ?
                             "Ошибка в строке {0}: некорректные параметры сообщения" :
                             "Error in line {0}: incorrect message parameters", i));
                     }
@@ -485,8 +491,8 @@ namespace Scada.Comm.Devices
                 i++;
             }
 
-            errMsg = errMsgSB.ToString();
-            return errMsg == "";
+            logMsg = logMsgSB.ToString();
+            return result;
         }
 
         /// <summary>
@@ -667,12 +673,12 @@ namespace Scada.Comm.Devices
                     // расшифровка сообщений
                     if (lastCommSucc)
                     {
-                        string errMsg;
-                        if (!FillMessageList(inData, out errMsg))
-                        {
-                            WriteToLog(errMsg);
+                        string logMsg;
+                        if (!FillMessageList(inData, out logMsg))
                             lastCommSucc = false;
-                        }
+
+                        if (logMsg != "")
+                            WriteToLog(logMsg);
                     }
 
                     FinishRequest();
@@ -944,24 +950,8 @@ namespace Scada.Comm.Devices
                 CommonProps.Add("KpSmsPrimary", Caption);
 
                 // загрузка адресной книги
-                string fileName = AppDirs.ConfigDir + AB.AddressBook.DefFileName;
-                if (File.Exists(fileName))
-                {
-                    WriteToLog(Localization.UseRussian ?
-                        "Загрузка адресной книги" :
-                        "Loading address book");
-                    addressBook = new AB.AddressBook();
-                    string errMsg;
-                    if (!addressBook.Load(fileName, out errMsg))
-                        WriteToLog(errMsg);
-                }
-                else
-                {
+                if (!AbUtils.LoadAddressBook(AppDirs.ConfigDir, WriteToLog, out addressBook))
                     addressBook = null;
-                    WriteToLog(Localization.UseRussian ?
-                        "Адресная книга отсутствует" :
-                        "Address book is missing");
-                }
             }
         }
 

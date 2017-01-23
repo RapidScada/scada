@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2016
+ * Modified : 2017
  */
 
 using System;
@@ -84,15 +84,52 @@ namespace Scada.Data.Tables
             /// <param name="cnlCnt">Количество входных каналов</param>
             public Srez(DateTime dateTime, int cnlCnt)
             {
-                if (cnlCnt <= 0)
+                if (cnlCnt < 0)
                     throw new ArgumentOutOfRangeException("cnlCnt");
 
-                DateTime = dateTime;
-                CnlNums = new int[cnlCnt];
-                CnlData = new CnlData[cnlCnt];
+                InitData(dateTime, cnlCnt);
             }
-            
-            
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            /// <param name="dateTime">Временная метка среза</param>
+            /// <param name="sourceSrez">Срез, который является источником данных</param>
+            public Srez(DateTime dateTime, Srez sourceSrez)
+            {
+                if (sourceSrez == null)
+                    throw new ArgumentNullException("sourceSrez");
+
+                InitData(dateTime, sourceSrez.CnlNums.Length);
+                sourceSrez.CnlNums.CopyTo(CnlNums, 0);
+                sourceSrez.CnlData.CopyTo(CnlData, 0);
+            }
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            /// <param name="dateTime">Временная метка среза</param>
+            /// <param name="cnlNums">Номера каналов среза, упорядоченные по возростанию</param>
+            /// <param name="sourceSrez">Срез, который является источником данных</param>
+            public Srez(DateTime dateTime, int[] cnlNums, Srez sourceSrez)
+            {
+                if (cnlNums == null)
+                    throw new ArgumentNullException("cnlNums");
+                if (sourceSrez == null)
+                    throw new ArgumentNullException("sourceSrez");
+
+                int cnlCnt = cnlNums.Length;
+                InitData(dateTime, cnlCnt);
+
+                for (int i = 0, cnt = cnlCnt; i < cnt; i++)
+                {
+                    int cnlNum = cnlNums[i];
+                    CnlData cnlData;
+                    sourceSrez.GetCnlData(cnlNum, out cnlData);
+
+                    CnlNums[i] = cnlNum;
+                    CnlData[i] = cnlData;
+                }
+            }
+
             /// <summary>
             /// Получить временную метку среза
             /// </summary>
@@ -106,6 +143,15 @@ namespace Scada.Data.Tables
             /// </summary>
             public CnlData[] CnlData { get; protected set; }
 
+            /// <summary>
+            /// Инициализировать данные среза
+            /// </summary>
+            protected void InitData(DateTime dateTime, int cnlCnt)
+            {
+                DateTime = dateTime;
+                CnlNums = new int[cnlCnt];
+                CnlData = new CnlData[cnlCnt];
+            }
             /// <summary>
             /// Получить индекс входного канала по номеру
             /// </summary>

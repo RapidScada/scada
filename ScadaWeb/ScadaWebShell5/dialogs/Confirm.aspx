@@ -4,6 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
+    <meta charset="utf-8" />
     <title>Confirmation - Rapid SCADA</title>
     <link href="~/css/dialogs/confirm.min.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>

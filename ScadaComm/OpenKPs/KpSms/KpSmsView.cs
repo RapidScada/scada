@@ -23,7 +23,7 @@
  * Modified : 2016
  */
 
-using Scada.Comm.Devices.AddressBook;
+using Scada.Comm.Devices.AB;
 using Scada.Data.Tables;
 using System.Collections.Generic;
 
@@ -64,12 +64,20 @@ namespace Scada.Comm.Devices
                     "Отправка и приём SMS с использованием AT-команд.\n\n" +
                     "Команды ТУ:\n" +
                     "1 (бинарная) - отправка SMS;\n" +
-                    "2 (бинарная) - произвольная AT-команда." :
+                    "2 (бинарная) - произвольная AT-команда.\n\n" +
+                    "Примеры текста команды отправки SMS:\n" +
+                    "имя_группы;сообщение\n" +
+                    "имя_контакта;сообщение\n" +
+                    "телефон;сообщение" :
 
                     "Sending and receiving SMS messages using AT commands.\n\n" +
                     "Commands:\n" +
                     "1 (binary) - send SMS message;\n" +
-                    "2 (binary) - custom AT command.";
+                    "2 (binary) - custom AT command.\n\n" +
+                    "Sending SMS command text examples:\n" +
+                    "group_name;message\n" +
+                    "contact_name;message\n" +
+                    "email;message";
             }
         }
 

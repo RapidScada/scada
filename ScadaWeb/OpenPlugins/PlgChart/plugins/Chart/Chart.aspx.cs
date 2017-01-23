@@ -24,13 +24,8 @@
  */
 
 using Scada.Client;
-using Scada.Data.Models;
-using Scada.Data.Tables;
 using Scada.UI;
 using System;
-using System.Globalization;
-using System.Text;
-using System.Web;
 
 namespace Scada.Web.Plugins.Chart
 {
@@ -67,9 +62,8 @@ namespace Scada.Web.Plugins.Chart
                 throw new ScadaException(CommonPhrases.NoRights);
 
 #if !DEBUG
-            // в режиме отладки невозможно получить тип представления, т.к. плагины не загружены
-            Type viewType = userData.UserViews.GetViewType(viewID);
-            BaseView view = appData.ViewCache.GetView(viewType, viewID, true);
+            // в режиме отладки невозможно получить представление, т.к. плагины не загружены
+            BaseView view = userData.UserViews.GetView(viewID, true);
 
             if (!view.ContainsCnl(cnlNum))
                 throw new ScadaException(CommonPhrases.NoRights);

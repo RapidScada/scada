@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2017
  */
 
 using System;
@@ -77,7 +77,7 @@ namespace Scada.Server.Svc
                 appLog.WriteBreak();
                 appLog.WriteAction(string.Format(Localization.UseRussian ? 
                     "Служба ScadaServerService {0} запущена" :
-                    "ScadaServerService {0} is started", MainLogic.AppVersion), Log.ActTypes.Action);
+                    "ScadaServerService {0} is started", ServerUtils.AppVersion), Log.ActTypes.Action);
             }
 
             if (dirsExist)

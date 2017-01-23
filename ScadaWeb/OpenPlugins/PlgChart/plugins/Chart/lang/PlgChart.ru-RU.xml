@@ -1,8 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PlgChartDictionaries>
   <Dictionary key="Scada.Web.Plugins.Chart">
-    <Phrase key="CnlNumsEmptyError">Номера каналов не заданы.</Phrase>
-    <Phrase key="CountMismatchError">Несоответствие количества каналов и ид. представлений.</Phrase>
     <Phrase key="PerfWarning">Предупреждение! Слишком много каналов могут снизить производительность.</Phrase>
     <Phrase key="AddCnlBtn">Добавить</Phrase>
     <Phrase key="RemoveCnlBtn">Удалить</Phrase>

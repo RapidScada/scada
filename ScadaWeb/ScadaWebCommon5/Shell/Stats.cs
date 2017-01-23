@@ -104,7 +104,7 @@ namespace Scada.Web.Shell
                         }
                         else
                         {
-                            serverID = Guid.NewGuid().ToString();
+                            serverID = GenerateServerID();
                             SaveServerID(statsParamsFileName, serverID);
                         }
                     }
@@ -119,6 +119,23 @@ namespace Scada.Web.Shell
             }
 
             return serverID;
+        }
+
+        /// <summary>
+        /// Генерировать ид. сервера
+        /// </summary>
+        protected string GenerateServerID()
+        {
+            // используется GUID с заменой первой группы чисел на дату в 16-ричном формате
+            Guid guid = Guid.NewGuid();
+            byte[] guidBuf = guid.ToByteArray();
+            DateTime utcNowDT = DateTime.UtcNow;
+            guidBuf[0] = (byte)utcNowDT.Day;
+            guidBuf[1] = (byte)utcNowDT.Month;
+            guidBuf[2] = (byte)(utcNowDT.Year % 256);
+            guidBuf[3] = (byte)(utcNowDT.Year / 256);
+            guidBuf[7] &= 0x0F; // установка нестандартной версии GUID
+            return new Guid(guidBuf).ToString();
         }
 
         /// <summary>

@@ -94,27 +94,6 @@ namespace Scada.Server.Modules
 
 
         /// <summary>
-        /// Создать срез с заданными номерами каналов, используя данные из исходного среза
-        /// </summary>
-        private SrezTableLight.Srez CreateSrez(DateTime srezDT, int[] cnlNums, SrezTableLight.Srez sourceSrez)
-        {
-            int cnlCnt = cnlNums.Length;
-            SrezTableLight.Srez srez = new SrezTableLight.Srez(srezDT, cnlCnt);
-
-            for (int i = 0; i < cnlCnt; i++)
-            {
-                int cnlNum = cnlNums[i];
-                SrezTableLight.CnlData cnlData;
-                sourceSrez.GetCnlData(cnlNum, out cnlData);
-
-                srez.CnlNums[i] = cnlNum;
-                srez.CnlData[i] = cnlData;
-            }
-
-            return srez;
-        }
-
-        /// <summary>
         /// Получить параметры команды
         /// </summary>
         private void GetCmdParams(Command cmd, out string dataSourceName, out DateTime dateTime)
@@ -163,7 +142,7 @@ namespace Scada.Server.Modules
             if (srezTable.SrezList.Count > 0)
             {
                 SrezTableLight.Srez sourceSrez = srezTable.SrezList.Values[0];
-                SrezTableLight.Srez srez = CreateSrez(DateTime.Now, sourceSrez.CnlNums, sourceSrez);
+                SrezTableLight.Srez srez = new SrezTableLight.Srez(DateTime.Now, sourceSrez.CnlNums, sourceSrez);
                 exporter.EnqueueCurData(srez);
                 log.WriteAction(Localization.UseRussian ? "Текущие данные добавлены в очередь экспорта" :
                     "Current data added to export queue");
@@ -411,7 +390,7 @@ namespace Scada.Server.Modules
             if (normalWork)
             {
                 // создание экпортируемого среза
-                SrezTableLight.Srez srez = CreateSrez(DateTime.Now, cnlNums, curSrez);
+                SrezTableLight.Srez srez = new SrezTableLight.Srez(DateTime.Now, cnlNums, curSrez);
 
                 // добавление среза в очередь экспорта
                 foreach (Exporter exporter in exporters)
@@ -428,7 +407,7 @@ namespace Scada.Server.Modules
             if (normalWork)
             {
                 // создание экпортируемого среза
-                SrezTableLight.Srez srez = CreateSrez(arcSrez.DateTime, cnlNums, arcSrez);
+                SrezTableLight.Srez srez = new SrezTableLight.Srez(arcSrez.DateTime, cnlNums, arcSrez);
 
                 // добавление среза в очередь экспорта
                 foreach (Exporter exporter in exporters)

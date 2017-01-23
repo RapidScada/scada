@@ -55,9 +55,11 @@ namespace Scada.Web.Plugins.Chart
             int period = Request.QueryString.GetParamAsInt("period");
 
             // проверка прав и получение представления, если оно единственное
-            RightsChecker rightsChecker = new RightsChecker(appData.ViewCache);
-            BaseView singleView;
-            rightsChecker.CheckRights(userData, cnlNums, viewIDs, out singleView);
+            int singleViewID;
+            if (!userData.UserRights.CheckInCnlRights(cnlNums, viewIDs, out singleViewID))
+                throw new ScadaException(CommonPhrases.NoRights);
+
+            BaseView singleView = userData.UserViews.GetView(singleViewID, true, true);
             string viewTitle = singleView == null ? "" : singleView.Title;
 
             // генерация отчёта

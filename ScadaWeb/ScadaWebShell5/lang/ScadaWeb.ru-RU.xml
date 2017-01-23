@@ -35,8 +35,12 @@
     <Phrase key="IncorrectStartDate">Некорректная дата начала.</Phrase>
     <Phrase key="IncorrectEndDate">Некорректная дата окончания.</Phrase>
     <Phrase key="IncorrectPeriod">Дата начала должна быть меньше или равна дате окончания.</Phrase>
-    <Phrase key="DayPeriodTooLong">Максимальная длина периода {0} день.</Phrase>
-    <Phrase key="MonthPeriodTooLong">Максимальная длина периода {0} месяцев.</Phrase>
+    <Phrase key="DayPeriodTooLong">Максимальная длина периода {0} дн.</Phrase>
+    <Phrase key="MonthPeriodTooLong">Максимальная длина периода {0} мес.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.UserRights">
+    <Phrase key="CnlNumsEmptyError">Номера каналов не заданы.</Phrase>
+    <Phrase key="CnlsViewsCountError">Несоответствие количества каналов и ид. представлений.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.ViewSettings">
     <Phrase key="LoadViewSettingsError">Ошибка при загрузке настроек представлений</Phrase>

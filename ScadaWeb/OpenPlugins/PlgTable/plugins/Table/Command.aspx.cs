@@ -65,7 +65,9 @@ namespace Scada.Web.Plugins.Table
             List<DiscreteCmd> discreteCmds = new List<DiscreteCmd>();
             for (int i = 0, len = cmdValArr.Length; i < len; i++)
             {
-                discreteCmds.Add(new DiscreteCmd() { Val = i, Text = cmdValArr[i] });
+                string cmdText = cmdValArr[i];
+                if (cmdText != "")
+                    discreteCmds.Add(new DiscreteCmd() { Val = i, Text = cmdValArr[i] });
             }
             return discreteCmds;
         }
@@ -227,9 +229,7 @@ namespace Scada.Web.Plugins.Table
                     !userData.WebSettings.CmdEnabled)
                     throw new ScadaException(CommonPhrases.NoRights);
 
-                Type viewType = userData.UserViews.GetViewType(viewID);
-                BaseView view = appData.ViewCache.GetView(viewType, viewID, true);
-
+                BaseView view = userData.UserViews.GetView(viewID, true);
                 if (!view.ContainsCtrlCnl(ctrlCnlNum))
                     throw new ScadaException(CommonPhrases.NoRights);
 

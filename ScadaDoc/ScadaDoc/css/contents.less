@@ -1,0 +1,42 @@
+﻿@import "variables.less";
+
+.sd-contents-wrapper {
+    border-right: 5px solid #ddd;
+    display: inline-block;
+    margin: 0;
+    min-width: 200px;
+    overflow: auto;
+    padding: 0;
+    width: 25%;
+}
+
+.sd-contents {
+    font-size: 13px;
+    margin: 0;
+    padding: 10px 0;
+}
+
+.sd-contents-item {
+    padding: 5px 10px;
+}
+
+.sd-contents-item.level1 {
+    padding-left: 30px;
+}
+
+.sd-contents-item.level2 {
+    padding-left: 40px;
+}
+
+.sd-contents-item.level3 {
+    padding-left: 70px;
+}
+
+.sd-contents-item.selected {
+    background-color: @link-fore-color;
+    color: @content-back-color;
+}
+
+.sd-contents-item.selected a {
+    color: @content-back-color;
+}

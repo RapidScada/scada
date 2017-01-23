@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Connecting Devices Using Modbus Protocol - Rapid SCADA Documentation</title>
+	<meta charset="utf-8" />
+    <link href="../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Connecting Devices Using Modbus Protocol</h1>
+    <p class="sd-article-meta">
+        Written by Rapid SCADA on January 5, 2015<br />
+        Updated on November 23, 2016
+    </p>
+    <p>This article describes how to configure communication with devices using Modbus protocol. Simple and robust, Modbus has since become a de facto standard communication protocol, and it is now a commonly available means of connecting industrial electronic devices (see Wikipedia). Rapid SCADA supports Modbus RTU, ASCII and TCP modes.</p>
+    <p>The general sequence of configuring:</p>
+    <ol>
+        <li>Create an object, a communication line and devices in the configuration database using SCADA-Administrator.</li>
+        <li>Configure communication between SCADA-Communicator and the devices.</li>
+        <li>Create input channels in the configuration database according to the tags of the devices. Create output channels according to the commands.</li>
+        <li>Create views to display data in SCADA-Web. Specify the views using SCADA-Web Configurator.</li>
+    </ol>
+    <p>The following is a step by step guide to setup a new Modbus device. To ensure that the process of adding the device completely coincides with the text of the article, you have to install Rapid SCADA with the default configuration.</p>
+
+    <h2>Preliminary Database Configuration</h2>
+    <p>Editing the configuration database is performed using SCADA-Administrator.</p>
+    <p>Run SCADA-Administrator. Open <em>Objects</em> table and add a new line for the object 2 “Test object” (see Figure 1). Then open <em>Communication lines</em> table and add the line 4 “Test line” (see Figure 2). After that open <em>Devices</em> table and add the device 41 “Test device” (see Figure 3).</p>
+    <p>
+        Fill the following fields for the device (see Figure 3):
+    </p>
+    <table class="sd-article-table">
+        <tr>
+            <td>Device type:</td>
+            <td> Modbus</td>
+        </tr>
+        <tr>
+            <td>Address:</td>
+            <td>Modbus address of your device, for example, 1</td>
+        </tr>
+        <tr>
+            <td>Call number:</td>
+            <td>IP address, if the device is connected via Ethernet</td>
+        </tr>
+        <tr>
+            <td>Communication line:</td>
+            <td>"Test line", which was recently created</td>
+        </tr>
+    </table>
+    <p class="sd-article-image">
+        <img src="modbus-protocol-files/modbus_table_obj_en.png" alt="Adding an object"><br>
+        Figure 1. Adding an object
+    </p>
+</body>
+</html>

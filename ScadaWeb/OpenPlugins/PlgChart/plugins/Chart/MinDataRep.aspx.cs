@@ -99,10 +99,9 @@ namespace Scada.Web.Plugins.Chart
             {
                 int[] addedCnls = WebUtils.QueryParamToIntArray(hidAddedCnlNums.Value);
                 int[] addedViewIDs = WebUtils.QueryParamToIntArray(hidAddedViewIDs.Value);
-                ChartUtils.CheckArrays(addedCnls, addedViewIDs);
                 HashSet<int> selCnlSet = ChartUtils.GetCnlSet(selCnls);
 
-                for (int i = 0, cnt = addedCnls.Length; i < cnt; i++)
+                for (int i = 0, cnt = Math.Min(addedCnls.Length, addedViewIDs.Length); i < cnt; i++)
                 {
                     int cnlNum = addedCnls[i];
                     if (!selCnlSet.Contains(cnlNum))

@@ -179,12 +179,19 @@ namespace Scada.Web
         /// <summary>
         /// Получить множество номеров каналов из условий запроса с проверкой прав
         /// </summary>
-        private HashSet<int> GetCnlSet(string cnlNums, int viewID, UserRights userRights)
+        private HashSet<int> GetCnlSet(string cnlNums, string viewIDs, int viewID, UserRights userRights)
         {
             if (!string.IsNullOrWhiteSpace(cnlNums))
             {
                 if (!userRights.ViewAllRight)
-                    throw new ScadaException(CommonPhrases.NoRights);
+                {
+                    int[] cnlNumArr = WebUtils.QueryParamToIntArray(cnlNums);
+                    int[] viewIDArr = WebUtils.QueryParamToIntArray(viewIDs);
+
+                    if (!userRights.CheckInCnlRights(cnlNumArr, viewIDArr))
+                        throw new ScadaException(CommonPhrases.NoRights);
+                }
+
                 return WebUtils.QueryParamToIntSet(cnlNums);
             }
             else if (viewID > 0)
@@ -201,13 +208,17 @@ namespace Scada.Web
         /// <summary>
         /// Получить список номеров каналов из условий запроса с проверкой прав
         /// </summary>
-        private IList<int> GetCnlList(string cnlNums, int viewID, UserRights userRights)
+        private IList<int> GetCnlList(string cnlNums, string viewIDs, int viewID, UserRights userRights)
         {
             if (!string.IsNullOrWhiteSpace(cnlNums))
             {
-                if (!userRights.ViewAllRight)
+                int[] cnlNumArr = WebUtils.QueryParamToIntArray(cnlNums);
+                int[] viewIDArr = WebUtils.QueryParamToIntArray(viewIDs);
+
+                if (!userRights.CheckInCnlRights(cnlNumArr, viewIDArr))
                     throw new ScadaException(CommonPhrases.NoRights);
-                return WebUtils.QueryParamToIntArray(cnlNums);
+
+                return cnlNumArr;
             }
             else if (viewID > 0)
             {
@@ -264,8 +275,12 @@ namespace Scada.Web
                     double val;
                     int stat;
                     snapshot.GetCnlData(cnlNum, out val, out stat);
-                    cnlDataExt.Val = val;
-                    cnlDataExt.Stat = stat;
+
+                    if (!double.IsNaN(val))
+                    {
+                        cnlDataExt.Val = val;
+                        cnlDataExt.Stat = stat;
+                    }
 
                     InCnlProps cnlProps = dataAccess.GetCnlProps(cnlNum);
                     string text;
@@ -469,7 +484,12 @@ namespace Scada.Web
         {
             try
             {
-                AppData.CheckLoggedOn();
+                UserRights userRights;
+                AppData.CheckLoggedOn(out userRights);
+
+                if (!userRights.ViewAllRight)
+                    throw new ScadaException(CommonPhrases.NoRights);
+
                 SrezTableLight.CnlData cnlData = AppData.DataAccess.GetCurCnlData(cnlNum);
                 return JsSerializer.Serialize(new DataTransferObject(cnlData));
             }
@@ -489,14 +509,14 @@ namespace Scada.Web
         /// Если задан фильтр по представлению, то оно должно быть уже загружено в кеш</remarks>
         [OperationContract]
         [WebGet]
-        public string GetCurCnlDataExt(string cnlNums, int viewID)
+        public string GetCurCnlDataExt(string cnlNums, string viewIDs, int viewID)
         {
             try
             {
                 UserRights userRights;
                 AppData.CheckLoggedOn(out userRights);
 
-                IList<int> cnlList = GetCnlList(cnlNums, viewID, userRights);
+                IList<int> cnlList = GetCnlList(cnlNums, viewIDs, viewID, userRights);
                 CnlDataExt[] cnlDataExtArr = GetCurCnlDataExtArr(cnlList);
                 return JsSerializer.Serialize(new DataTransferObject(cnlDataExtArr));
             }
@@ -517,14 +537,14 @@ namespace Scada.Web
         [OperationContract]
         [WebGet]
         public string GetHourCnlData(int year, int month, int day, int startHour, int endHour, 
-            string cnlNums, int viewID, bool existing, string dataAge)
+            string cnlNums, string viewIDs, int viewID, bool existing, string dataAge)
         {
             try
             {
                 UserRights userRights;
                 AppData.CheckLoggedOn(out userRights);
 
-                IList<int> cnlList = GetCnlList(cnlNums, viewID, userRights);
+                IList<int> cnlList = GetCnlList(cnlNums, viewIDs, viewID, userRights);
                 long[] dataAgeArr = QueryParamToLongArray(dataAge);
                 HourCnlData[] hourCnlDataArr = 
                     GetHourCnlDataArr(year, month, day, startHour, endHour, cnlList, existing, ref dataAgeArr);
@@ -546,7 +566,7 @@ namespace Scada.Web
         /// Если задан фильтр по представлению, то оно должно быть уже загружено в кеш</remarks>
         [OperationContract]
         [WebGet]
-        public string GetEvents(int year, int month, int day, string cnlNums, int viewID,
+        public string GetEvents(int year, int month, int day, string cnlNums, string viewIDs, int viewID,
             int lastCount, int startEvNum, long dataAge)
         {
             try
@@ -555,7 +575,7 @@ namespace Scada.Web
                 AppData.CheckLoggedOn(out userRights);
 
                 // создание фильтра событий
-                HashSet<int> cnlSet = GetCnlSet(cnlNums, viewID, userRights);
+                HashSet<int> cnlSet = GetCnlSet(cnlNums, viewIDs, viewID, userRights);
                 EventTableLight.EventFilter eventFilter = cnlSet == null ?
                     new EventTableLight.EventFilter(EventTableLight.EventFilters.None) :
                     new EventTableLight.EventFilter(EventTableLight.EventFilters.Cnls);

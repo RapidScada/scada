@@ -91,9 +91,7 @@ namespace Scada.Web.Plugins.Table
                     if (!rights.ViewRight)
                         throw new ScadaException(CommonPhrases.NoRights);
 
-                    Type viewType = userData.UserViews.GetViewType(viewID);
-                    BaseView view = appData.ViewCache.GetView(viewType, viewID, true);
-
+                    BaseView view = userData.UserViews.GetView(viewID, true);
                     if (!view.ContainsCnl(ev.CnlNum))
                         throw new ScadaException(CommonPhrases.NoRights);
 

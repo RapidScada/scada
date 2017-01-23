@@ -52,19 +52,19 @@
     "inputFile": "css/controls/splitter.less"
   },
   {
-    "outputFile": "css/common/modalform.css",
-    "inputFile": "css/common/modalform.less"
-  },
-  {
-    "outputFile": "css/common/contentform.css",
-    "inputFile": "css/common/contentform.less"
-  },
-  {
     "outputFile": "css/reports.css",
     "inputFile": "css/reports.less"
   },
   {
     "outputFile": "css/dialogs/confirm.css",
     "inputFile": "css/dialogs/confirm.less"
+  },
+  {
+    "outputFile": "css/common/contentform.css",
+    "inputFile": "css/common/contentform.less"
+  },
+  {
+    "outputFile": "css/common/modalform.css",
+    "inputFile": "css/common/modalform.less"
   }
 ]

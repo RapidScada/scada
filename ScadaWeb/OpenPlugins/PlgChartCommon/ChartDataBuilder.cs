@@ -135,6 +135,17 @@ namespace Scada.Web.Plugins.Chart
         }
 
         /// <summary>
+        /// Получить нормализованную конечную дату отображаемых данных
+        /// </summary>
+        public DateTime EndDate
+        {
+            get
+            {
+                return StartDate.AddDays(Period - 1);
+            }
+        }
+
+        /// <summary>
         /// Получить нормализованный период отображаемых данных
         /// </summary>
         public int Period

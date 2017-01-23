@@ -58,6 +58,10 @@ namespace Scada.Web.Shell
         }
 
         /// <summary>
+        /// Кэш представлений
+        /// </summary>
+        protected readonly ViewCache viewCache;
+        /// <summary>
         /// Журнал
         /// </summary>
         protected readonly Log log;
@@ -77,11 +81,14 @@ namespace Scada.Web.Shell
         /// <summary>
         /// Конструктор
         /// </summary>
-        public UserViews(Log log)
+        public UserViews(ViewCache viewCache, Log log)
         {
+            if (viewCache == null)
+                throw new ArgumentNullException("viewCache");
             if (log == null)
                 throw new ArgumentNullException("log");
 
+            this.viewCache = viewCache;
             this.log = log;
             viewNodeDict = new Dictionary<int, ViewNode>();
 
@@ -161,6 +168,16 @@ namespace Scada.Web.Shell
         }
 
         /// <summary>
+        /// Получить ссылку на тип представления с заданным идентификатором
+        /// </summary>
+        protected Type GetViewType(int viewID)
+        {
+            ViewNode viewNode;
+            return viewNodeDict.TryGetValue(viewID, out viewNode) && viewNode.ViewSpec != null ?
+                viewNode.ViewSpec.ViewType : null;
+        }
+
+        /// <summary>
         /// Рекурсивно слить узлы дерева в линейный список
         /// </summary>
         protected void LinearizeViewNodes(List<ViewNode> destViewNodes, List<ViewNode> addedViewNodes)
@@ -227,13 +244,16 @@ namespace Scada.Web.Shell
         }
 
         /// <summary>
-        /// Получить ссылку на тип представления с заданным идентификатором
+        /// Получить представление по идентификатору, если тип представления заранее не известен
         /// </summary>
-        public Type GetViewType(int viewID)
+        /// <remarks>Если тип представления известен, эффективнее использовать ViewCache.GetView</remarks>
+        public BaseView GetView(int viewID, bool throwOnError = false, bool allowUndefView = false)
         {
-            ViewNode viewNode;
-            return viewNodeDict.TryGetValue(viewID, out viewNode) && viewNode.ViewSpec != null ? 
-                viewNode.ViewSpec.ViewType : null;
+            if (viewID <= 0 && allowUndefView)
+                return null;
+
+            Type viewType = GetViewType(viewID);
+            return viewCache.GetView(viewType, viewID, throwOnError);
         }
 
         /// <summary>

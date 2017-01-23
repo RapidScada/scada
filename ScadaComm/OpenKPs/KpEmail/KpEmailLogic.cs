@@ -26,16 +26,15 @@
  * Sending email notifications.
  */
 
+using Scada.Comm.Devices.AB;
 using Scada.Comm.Devices.KpEmail;
 using Scada.Data.Models;
 using Scada.Data.Tables;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Net.Mail;
 using System.Threading;
-using AB = Scada.Comm.Devices.AddressBook;
 
 namespace Scada.Comm.Devices
 {
@@ -78,40 +77,6 @@ namespace Scada.Comm.Devices
 
 
         /// <summary>
-        /// Загрузить адресную книгу или получить её из общих свойств линии связи
-        /// </summary>
-        private void LoadAddressBook()
-        {
-            object addrBookObj;
-            if (CommonProps.TryGetValue("AddressBook", out addrBookObj))
-            {
-                addressBook = addrBookObj as AB.AddressBook;
-            }
-            else
-            {
-                addressBook = new AB.AddressBook();
-                CommonProps.Add("AddressBook", addressBook);
-
-                string fileName = AppDirs.ConfigDir + AB.AddressBook.DefFileName;
-                if (File.Exists(fileName))
-                {
-                    WriteToLog(Localization.UseRussian ?
-                        "Загрузка адресной книги" :
-                        "Loading address book");
-                    string errMsg;
-                    if (!addressBook.Load(fileName, out errMsg))
-                        WriteToLog(errMsg);
-                }
-                else
-                {
-                    WriteToLog(Localization.UseRussian ?
-                        "Адресная книга отсутствует" :
-                        "Address book is missing");
-                }
-            }
-        }
-
-        /// <summary>
         /// Загрузить конфигурацию соединения с почтовым сервером
         /// </summary>
         private void LoadConfig()
@@ -130,7 +95,7 @@ namespace Scada.Comm.Devices
             {
                 state = Localization.UseRussian ? 
                     "Ожидание команд..." :
-                    "Waiting for commads...";
+                    "Waiting for commands...";
             }
         }
 
@@ -147,9 +112,9 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Преобразовать команду в список почтовых сообщений
+        /// Попытаться получить почтовое сообщение из команды ТУ
         /// </summary>
-        private bool ParseCmd(Command cmd, out MailMessage message)
+        private bool TryGetMessage(Command cmd, out MailMessage message)
         {
             string cmdDataStr = cmd.GetCmdDataStr();
             int ind1 = cmdDataStr.IndexOf(';');
@@ -181,7 +146,7 @@ namespace Scada.Comm.Devices
                         }
                         else
                         {
-                            // добавление адресов получателей из контакта
+                            // добавление адреса получателя из контакта
                             addresses.AddRange(contact.Emails);
                         }
                     }
@@ -320,7 +285,7 @@ namespace Scada.Comm.Devices
                 if (cmd.CmdNum == 1 && cmd.CmdTypeID == BaseValues.CmdTypes.Binary)
                 {
                     MailMessage message;
-                    if (ParseCmd(cmd, out message))
+                    if (TryGetMessage(cmd, out message))
                     {
                         if (SendMessage(message))
                             lastCommSucc = true;
@@ -347,7 +312,7 @@ namespace Scada.Comm.Devices
         public override void OnCommLineStart()
         {
             writeState = true;
-            LoadAddressBook();
+            addressBook = AbUtils.GetAddressBook(AppDirs.ConfigDir, CommonProps, WriteToLog);
             LoadConfig();
             InitSnmpClient();
             SetCurData(0, 0, 1);

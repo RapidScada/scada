@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2015
+ * Modified : 2017
  */
 
 using Scada.Data.Models;
@@ -39,7 +39,7 @@ namespace Scada.Server.Modules
         /// <summary>
         /// Время ожидания остановки работы модуля, мс
         /// </summary>
-        protected const int WaitForStop = 7000;
+        public const int WaitForStop = 7000;
 
         private AppDirs appDirs; // директории приложения
 
@@ -63,6 +63,7 @@ namespace Scada.Server.Modules
             appDirs = new AppDirs();
             Settings = null;
             WriteToLog = null;
+            ServerData = null;
             PassCommand = null;
         }
 
@@ -98,6 +99,11 @@ namespace Scada.Server.Modules
         /// Получить или установить метод записи в журнал приложения
         /// </summary>
         public WriteToLogDelegate WriteToLog { get; set; }
+
+        /// <summary>
+        /// Получить или установить объект для доступа к данным сервера
+        /// </summary>
+        public IServerData ServerData { get; set; }
 
         /// <summary>
         /// Получить или установить метод передачи команды ТУ

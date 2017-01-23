@@ -51,7 +51,6 @@
     <Compile Include="ChartPhrases.cs" />
     <Compile Include="CnlViewPair.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RightsChecker.cs" />
     <Compile Include="TrendBundle.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

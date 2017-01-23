@@ -99,6 +99,19 @@ namespace Scada.Web
 
 
         /// <summary>
+        /// Проверить контекст веб-операции и его основные свойства на null
+        /// </summary>
+        private void CheckWebOperationContext(WebOperationContext webOpContext)
+        {
+            const string msg = "Web operation context or its properties are undefined.";
+
+            if (webOpContext == null)
+                throw new ArgumentNullException("webOpContext", msg);
+            if (webOpContext.IncomingRequest == null)
+                throw new ArgumentNullException("webOpContext.IncomingRequest", msg);
+        }
+
+        /// <summary>
         /// Извлечь ид. сессии из HTTP-заголовка
         /// </summary>
         private string ExtractSessionID(string cookieHeader)
@@ -125,6 +138,39 @@ namespace Scada.Web
                         cookieHeader.Substring(i1, i2 - i1);
                 }
             }
+        }
+
+        /// <summary>
+        /// Попытаться получить данные пользователя по контексту веб-операции
+        /// </summary>
+        /// <remarks>Метод получения данных пользователя не должен быть public,
+        /// потому что возникнут проблемы с многопоточностью</remarks>
+        private bool TryGetUserData(WebOperationContext webOpContext, out UserData userData)
+        {
+            CheckWebOperationContext(webOpContext);
+
+            try
+            {
+                string cookieHeader = webOpContext.IncomingRequest.Headers[HttpRequestHeader.Cookie];
+                string sessionID = ExtractSessionID(cookieHeader);
+
+                if (sessionID != null)
+                {
+                    lock (userDataDict)
+                    {
+                        return userDataDict.TryGetValue(sessionID, out userData);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении данных пользователя по контексту веб-операции" :
+                    "Error getting user data by the web operation context");
+            }
+
+            userData = null;
+            return false;
         }
 
 
@@ -206,40 +252,63 @@ namespace Scada.Web
         /// </summary>
         public bool UserIsLoggedOn(WebOperationContext webOpContext, out UserRights userRights)
         {
-            const string msg = "Web operation context or its properties are undefined.";
+            UserData userData;
 
-            if (webOpContext == null)
-                throw new ArgumentNullException("webOpContext", msg);
-            if (webOpContext.IncomingRequest == null)
-                throw new ArgumentNullException("webOpContext.IncomingRequest", msg);
-
-            try
+            if (TryGetUserData(webOpContext, out userData) && userData.LoggedOn && userData.UserRights != null)
             {
-                string cookieHeader = webOpContext.IncomingRequest.Headers[HttpRequestHeader.Cookie];
-                string sessionID = ExtractSessionID(cookieHeader);
-
-                if (sessionID != null)
-                {
-                    lock (userDataDict)
-                    {
-                        UserData userData;
-                        if (userDataDict.TryGetValue(sessionID, out userData))
-                        {
-                            userRights = userData.UserRights;
-                            return userData.LoggedOn && userRights != null;
-                        }
-                    }
-                }
+                userRights = userData.UserRights;
+                return true;
             }
-            catch (Exception ex)
+            else
             {
-                log.WriteException(ex, Localization.UseRussian ?
-                    "Ошибка при проверке того, что пользователь вошел в систему" :
-                    "Error checking that a user is logged on");
+                userRights = null;
+                return false;
             }
+        }
 
-            userRights = null;
-            return false;
+        /// <summary>
+        /// Проверить, что пользователь вошёл в систему, и получить его имя
+        /// </summary>
+        public bool UserIsLoggedOn(WebOperationContext webOpContext, out string username)
+        {
+            UserData userData;
+
+            if (TryGetUserData(webOpContext, out userData) && userData.LoggedOn && userData.UserProps != null)
+            {
+                username = userData.UserProps.UserName;
+                return true;
+            }
+            else
+            {
+                username = "";
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Проверить, что пользователь вошёл систему, и получить его права
+        /// </summary>
+        public bool CheckLoggedOn(out UserRights userRights, bool throwOnFail = true)
+        {
+            if (UserIsLoggedOn(WebOperationContext.Current, out userRights))
+                return true;
+            else if (throwOnFail)
+                throw new ScadaException(WebPhrases.NotLoggedOn);
+            else
+                return false;
+        }
+
+        /// <summary>
+        /// Проверить, что пользователь вошёл систему, и получить его имя
+        /// </summary>
+        public bool CheckLoggedOn(out string username, bool throwOnFail = true)
+        {
+            if (UserIsLoggedOn(WebOperationContext.Current, out username))
+                return true;
+            else if (throwOnFail)
+                throw new ScadaException(WebPhrases.NotLoggedOn);
+            else
+                return false;
         }
 
         /// <summary>
