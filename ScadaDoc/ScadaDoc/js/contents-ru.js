@@ -35,9 +35,18 @@ function addContents(context) {
     addArticle(context, "use-cases/modbus-protocol.html", "Подключение устройств по протоколу Modbus", 1);
     addArticle(context, "use-cases/opc-standard.html", "Подключение устройств с использованием стандарта OPC", 1);
 
-    /*addArticle(context, "", "История версий");
-    addArticle(context, "version-history/scada-history.html", "Rapid SCADA", 1);
-    addArticle(context, "", "Модули", 1);
-    addArticle(context, "version-history/modules/chart-pro-history.html", "Графики Про", 2);
-    addArticle(context, "version-history/modules/elastic-report-history.html", "Гибкий отчёт", 2);*/
+    addArticle(context, "", "История версий");
+    addArticle(context, "version-history/scada-history.html", "История Rapid SCADA", 1);
+    addArticle(context, "version-history/scada-server-history.html", "История приложения Сервер", 1);
+    addArticle(context, "version-history/scada-comm-history.html", "История приложения Коммуникатор", 1);
+    addArticle(context, "version-history/scada-web-history.html", "История приложения Вебстанция", 1);
+    addArticle(context, "version-history/scada-admin-history.html", "История приложения Администратор", 1);
+    addArticle(context, "version-history/scada-table-editor-history.html", "История приложения Редактор таблиц", 1);
+    addArticle(context, "version-history/scada-scheme-editor-history.html", "История приложения Редактор схем", 1);
+    addArticle(context, "version-history/plg-chart-pro-history.html", "История плагина Графики Про", 1);
+    addArticle(context, "version-history/plg-dashboard-history.html", "История плагина Дэшборды", 1);
+    addArticle(context, "version-history/plg-elastic-report-history.html", "История плагина Гибкий отчёт", 1);
+    addArticle(context, "version-history/mod-auto-control-history.html", "История Модуля автоматического управления", 1);
+    addArticle(context, "version-history/mod-rapid-gate-history.html", "История модуля Быстрый шлюз", 1);
+    addArticle(context, "version-history/kp-s2000pp-history.html", "История драйвера С2000-ПП", 1);
 }

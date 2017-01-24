@@ -73,7 +73,7 @@ a:hover {
   padding-left: 30px;
 }
 .sd-contents-item.level2 {
-  padding-left: 40px;
+  padding-left: 50px;
 }
 .sd-contents-item.level3 {
   padding-left: 70px;
@@ -126,6 +126,10 @@ table.sd-article-table {
 }
 .sd-article-table tr:hover td {
   background-color: #f5f5f5;
+}
+pre.sd-article-history {
+  background: white;
+  padding: 0;
 }
 .gsc-control-cse {
   padding: 0 !important;

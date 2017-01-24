@@ -1,4 +1,6 @@
-﻿.sd-article-wrapper {
+﻿@import "variables.less";
+
+.sd-article-wrapper {
     display: inline-block;
     margin: 0;
     overflow: auto;
@@ -47,4 +49,9 @@ table.sd-article-table {
 
 .sd-article-table tr:hover td {
     background-color: #f5f5f5;
+}
+
+pre.sd-article-history {
+    background: @content-back-color;
+    padding: 0;
 }
