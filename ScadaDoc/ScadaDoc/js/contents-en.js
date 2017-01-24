@@ -15,6 +15,7 @@ function addContents(context) {
     addArticle(context, "installation-and-run/", "Installation and Run");
     addArticle(context, "installation-and-run/system-requirements.html", "System Requirements", 1);
     addArticle(context, "installation-and-run/software-installation.html", "Software Installation", 1);
+    addArticle(context, "installation-and-run/manual-installation.html", "Manual Installation", 1);
     addArticle(context, "installation-and-run/run-applications.html", "Run Applications", 1);
     addArticle(context, "installation-and-run/migrate-configuration.html", "Migrate Configuration to New Server", 1);
     addArticle(context, "installation-and-run/software-update.html", "Software Update", 1);
