@@ -36,8 +36,5 @@ function addContents(context) {
     addArticle(context, "use-cases/opc-standard.html", "Connecting Devices Using OPC Standard", 1);
 
     /*addArticle(context, "", "Version History");
-    addArticle(context, "version-history/scada-history.html", "Rapid SCADA", 1);
-    addArticle(context, "", "Modules", 1);
-    addArticle(context, "version-history/modules/chart-pro-history.html", "Chart Pro", 2);
-    addArticle(context, "version-history/modules/elastic-report-history.html", "Elastic Report", 2);*/
+    addArticle(context, "version-history/scada-history.html", "History of Rapid SCADA", 1);*/
 }

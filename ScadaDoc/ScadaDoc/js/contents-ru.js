@@ -37,16 +37,13 @@ function addContents(context) {
 
     addArticle(context, "", "История версий");
     addArticle(context, "version-history/scada-history.html", "История Rapid SCADA", 1);
-    addArticle(context, "version-history/scada-server-history.html", "История приложения Сервер", 1);
-    addArticle(context, "version-history/scada-comm-history.html", "История приложения Коммуникатор", 1);
-    addArticle(context, "version-history/scada-web-history.html", "История приложения Вебстанция", 1);
-    addArticle(context, "version-history/scada-admin-history.html", "История приложения Администратор", 1);
-    addArticle(context, "version-history/scada-table-editor-history.html", "История приложения Редактор таблиц", 1);
-    addArticle(context, "version-history/scada-scheme-editor-history.html", "История приложения Редактор схем", 1);
-    addArticle(context, "version-history/plg-chart-pro-history.html", "История плагина Графики Про", 1);
-    addArticle(context, "version-history/plg-dashboard-history.html", "История плагина Дэшборды", 1);
-    addArticle(context, "version-history/plg-elastic-report-history.html", "История плагина Гибкий отчёт", 1);
-    addArticle(context, "version-history/mod-auto-control-history.html", "История Модуля автоматического управления", 1);
-    addArticle(context, "version-history/mod-rapid-gate-history.html", "История модуля Быстрый шлюз", 1);
-    addArticle(context, "version-history/kp-s2000pp-history.html", "История драйвера С2000-ПП", 1);
+    addArticle(context, "version-history/server-history.html", "История приложения Сервер", 1);
+    addArticle(context, "version-history/modules-history.html", "История модулей Сервера", 1);
+    addArticle(context, "version-history/comm-history.html", "История приложения Коммуникатор", 1);
+    //addArticle(context, "version-history/drivers-history.html", "История драйверов Коммуникатора", 1);
+    addArticle(context, "version-history/web-history.html", "История приложения Вебстанция", 1);
+    addArticle(context, "version-history/plugins-history.html", "История плагинов Вебстанции", 1);
+    addArticle(context, "version-history/admin-history.html", "История приложения Администратор", 1);
+    addArticle(context, "version-history/table-editor-history.html", "История приложения Редактор таблиц", 1);
+    addArticle(context, "version-history/scheme-editor-history.html", "История приложения Редактор схем", 1);
 }
