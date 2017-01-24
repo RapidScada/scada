@@ -30,9 +30,12 @@ function addContents(context) {
 
     /*addArticle(context, "", "Use Cases");
     addArticle(context, "use-cases/modbus-protocol.html", "Connecting Devices Using Modbus Protocol", 1);
-    addArticle(context, "use-cases/opc-standard.html", "Connecting Devices Using OPC Standard", 1);
+    addArticle(context, "use-cases/opc-standard.html", "Connecting Devices Using OPC Standard", 1);*/
 
-    addArticle(context, "", "Version History");
+    addArticle(context, "", "Modules");
+    addArticle(context, "modules/mod-db-export.html", "Export to Database Module", 1);
+
+    /*addArticle(context, "", "Version History");
     addArticle(context, "version-history/scada-history.html", "Rapid SCADA", 1);
     addArticle(context, "", "Modules", 1);
     addArticle(context, "version-history/modules/chart-pro-history.html", "Chart Pro", 2);
