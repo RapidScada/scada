@@ -26,9 +26,15 @@ h3 {
 }
 p,
 ul,
-ol {
+ol,
+pre {
   line-height: 20px;
   margin: 20px 0 20px;
+}
+pre {
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  background-color: #f5f2f0;
+  padding: 10px;
 }
 em {
   color: #dd0055;

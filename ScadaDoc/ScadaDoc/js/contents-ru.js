@@ -28,12 +28,12 @@ function addContents(context) {
     addArticle(context, "software-configuration/communication-with-devices.html", "Настройка обмена данными с устройствами", 1);
     addArticle(context, "software-configuration/creating-views.html", "Создание представлений", 1);
 
-    /*addArticle(context, "", "Сценарии использования");
-    addArticle(context, "use-cases/modbus-protocol.html", "Connecting Devices Using Modbus Protocol", 1);
-    addArticle(context, "use-cases/opc-standard.html", "Connecting Devices Using OPC Standard", 1);*/
-
     addArticle(context, "", "Модули");
     addArticle(context, "modules/mod-db-export.html", "Модуль экспорта в БД", 1);
+
+    addArticle(context, "", "Сценарии использования");
+    addArticle(context, "use-cases/modbus-protocol.html", "Подключение устройств по протоколу Modbus", 1);
+    /*addArticle(context, "use-cases/opc-standard.html", "Connecting Devices Using OPC Standard", 1);*/
 
     /*addArticle(context, "", "История версий");
     addArticle(context, "version-history/scada-history.html", "Rapid SCADA", 1);

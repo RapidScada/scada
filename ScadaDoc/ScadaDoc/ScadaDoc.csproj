@@ -60,13 +60,18 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="content\common-images\apply.png" />
     <Content Include="content\common-images\backup.gif" />
+    <Content Include="content\common-images\blank.png" />
+    <Content Include="content\common-images\edit.png" />
     <Content Include="content\common-images\import.png" />
+    <Content Include="content\common-images\open.png" />
     <Content Include="content\common-images\pass.gif" />
     <Content Include="content\common-images\props.png" />
     <Content Include="content\common-images\refresh.png" />
     <Content Include="content\common-images\reset.png" />
     <Content Include="content\common-images\restart_blue.gif" />
+    <Content Include="content\common-images\start.png" />
     <Content Include="content\en\index.html" />
     <Content Include="content\en\installation-and-run\index.html" />
     <Content Include="content\en\installation-and-run\manual-installation.html" />
@@ -199,6 +204,25 @@
     <Content Include="content\ru\software-overview\applications\webstation-application-files\scada_web_scheme_ru.png" />
     <Content Include="content\ru\software-overview\applications\webstation-application-files\scada_web_table_en.png" />
     <Content Include="content\ru\software-overview\applications\webstation-application.html" />
+    <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_commline_ru.png" />
+    <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_create_cnls_ru.png" />
+    <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_data_ru.png" />
+    <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_data_with_cnls_ru.png" />
+    <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_device_props_ru.png" />
+    <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_dll_ru.png" />
+    <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_import_ru.png" />
+    <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_mode_ru.png" />
+    <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_popup_commlines_ru.png" />
+    <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_request_ru.png" />
+    <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_table_commline_ru.png" />
+    <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_table_editor_ru.png" />
+    <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_table_kp_ru.png" />
+    <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_table_obj_ru.png" />
+    <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_template_ru.png" />
+    <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_web1_ru.png" />
+    <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_web2_ru.png" />
+    <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_web_config1_ru.png" />
+    <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_web_config2_ru.png" />
     <Content Include="content\ru\use-cases\modbus-protocol.html" />
     <Content Include="content\ru\version-history\scada-history.html" />
     <Content Include="css\cover.css">
