@@ -67,10 +67,12 @@
     <Content Include="content\common-images\import.png" />
     <Content Include="content\common-images\open.png" />
     <Content Include="content\common-images\pass.gif" />
+    <Content Include="content\common-images\plus.png" />
     <Content Include="content\common-images\props.png" />
     <Content Include="content\common-images\refresh.png" />
     <Content Include="content\common-images\reset.png" />
     <Content Include="content\common-images\restart_blue.gif" />
+    <Content Include="content\common-images\restart_yellow.gif" />
     <Content Include="content\common-images\start.png" />
     <Content Include="content\en\index.html" />
     <Content Include="content\en\installation-and-run\index.html" />
@@ -127,16 +129,6 @@
     <Content Include="content\en\software-overview\applications\webstation-application-files\scada_web_scheme_en.png" />
     <Content Include="content\en\software-overview\applications\webstation-application-files\scada_web_table_en.png" />
     <Content Include="content\en\software-overview\applications\webstation-application.html" />
-    <Content Include="content\en\use-cases\modbus-protocol-files\btn_apply.png" />
-    <Content Include="content\en\use-cases\modbus-protocol-files\btn_blank.png" />
-    <Content Include="content\en\use-cases\modbus-protocol-files\btn_edit.png" />
-    <Content Include="content\en\use-cases\modbus-protocol-files\btn_open.png" />
-    <Content Include="content\en\use-cases\modbus-protocol-files\btn_pass.gif" />
-    <Content Include="content\en\use-cases\modbus-protocol-files\btn_plus.png" />
-    <Content Include="content\en\use-cases\modbus-protocol-files\btn_props.png" />
-    <Content Include="content\en\use-cases\modbus-protocol-files\btn_restart_blue.gif" />
-    <Content Include="content\en\use-cases\modbus-protocol-files\btn_restart_yellow.gif" />
-    <Content Include="content\en\use-cases\modbus-protocol-files\btn_start.png" />
     <Content Include="content\en\use-cases\modbus-protocol-files\modbus_commline_en.png" />
     <Content Include="content\en\use-cases\modbus-protocol-files\modbus_create_cnls_en.png" />
     <Content Include="content\en\use-cases\modbus-protocol-files\modbus_data_en.png" />
@@ -154,8 +146,6 @@
     <Content Include="content\en\use-cases\modbus-protocol-files\modbus_template_en.png" />
     <Content Include="content\en\use-cases\modbus-protocol-files\modbus_web1_en.png" />
     <Content Include="content\en\use-cases\modbus-protocol-files\modbus_web2_en.png" />
-    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_web_config1_en.png" />
-    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_web_config2_en.png" />
     <Content Include="content\en\use-cases\modbus-protocol.html" />
     <Content Include="content\en\use-cases\opc-standard.html" />
     <Content Include="content\en\version-history\scada-history.html" />
@@ -221,9 +211,12 @@
     <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_template_ru.png" />
     <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_web1_ru.png" />
     <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_web2_ru.png" />
-    <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_web_config1_ru.png" />
-    <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_web_config2_ru.png" />
     <Content Include="content\ru\use-cases\modbus-protocol.html" />
+    <Content Include="content\ru\use-cases\opc-standard-files\comm_svc_logon_ru.png" />
+    <Content Include="content\ru\use-cases\opc-standard-files\dcom_config_ru.png" />
+    <Content Include="content\ru\use-cases\opc-standard-files\opc_config_ru.png" />
+    <Content Include="content\ru\use-cases\opc-standard-files\opc_vals_ru.png" />
+    <Content Include="content\ru\use-cases\opc-standard.html" />
     <Content Include="content\ru\version-history\scada-history.html" />
     <Content Include="css\cover.css">
       <DependentUpon>cover.less</DependentUpon>

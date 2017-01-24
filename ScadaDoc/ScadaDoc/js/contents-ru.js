@@ -33,7 +33,7 @@ function addContents(context) {
 
     addArticle(context, "", "Сценарии использования");
     addArticle(context, "use-cases/modbus-protocol.html", "Подключение устройств по протоколу Modbus", 1);
-    /*addArticle(context, "use-cases/opc-standard.html", "Connecting Devices Using OPC Standard", 1);*/
+    addArticle(context, "use-cases/opc-standard.html", "Подключение устройств с использованием стандарта OPC", 1);
 
     /*addArticle(context, "", "История версий");
     addArticle(context, "version-history/scada-history.html", "Rapid SCADA", 1);
