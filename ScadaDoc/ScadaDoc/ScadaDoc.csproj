@@ -96,6 +96,7 @@
     <Content Include="content\en\software-configuration\communication-with-devices.html" />
     <Content Include="content\en\software-configuration\creating-views-files\scada_admin_itf_en.png" />
     <Content Include="content\en\software-configuration\creating-views.html" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_table_itf_en.png" />
     <Content Include="content\en\use-cases\opc-standard-files\comm_svc_logon_en.png" />
     <Content Include="content\en\use-cases\opc-standard-files\dcom_config_en.png" />
     <Content Include="content\en\use-cases\opc-standard-files\opc_config_en.png" />
