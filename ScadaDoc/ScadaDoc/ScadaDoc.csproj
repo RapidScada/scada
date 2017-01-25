@@ -138,9 +138,7 @@
     <Content Include="content\en\use-cases\modbus-protocol-files\modbus_data_en.png" />
     <Content Include="content\en\use-cases\modbus-protocol-files\modbus_data_with_cnls_en.png" />
     <Content Include="content\en\use-cases\modbus-protocol-files\modbus_device_props_en.png" />
-    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_dll_en.png" />
     <Content Include="content\en\use-cases\modbus-protocol-files\modbus_import_en.png" />
-    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_mode_en.png" />
     <Content Include="content\en\use-cases\modbus-protocol-files\modbus_popup_commlines_en.png" />
     <Content Include="content\en\use-cases\modbus-protocol-files\modbus_request_en.png" />
     <Content Include="content\en\use-cases\modbus-protocol-files\modbus_table_commline_en.png" />
@@ -203,13 +201,12 @@
     <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_data_ru.png" />
     <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_data_with_cnls_ru.png" />
     <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_device_props_ru.png" />
-    <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_dll_ru.png" />
     <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_import_ru.png" />
-    <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_mode_ru.png" />
     <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_popup_commlines_ru.png" />
     <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_request_ru.png" />
     <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_table_commline_ru.png" />
     <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_table_editor_ru.png" />
+    <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_table_itf_ru.png" />
     <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_table_kp_ru.png" />
     <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_table_obj_ru.png" />
     <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_template_ru.png" />
