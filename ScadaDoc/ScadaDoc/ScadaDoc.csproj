@@ -221,15 +221,15 @@
     <Content Include="content\ru\use-cases\opc-standard-files\opc_config_ru.png" />
     <Content Include="content\ru\use-cases\opc-standard-files\opc_vals_ru.png" />
     <Content Include="content\ru\use-cases\opc-standard.html" />
-    <Content Include="content\ru\version-history\modules-history.html" />
-    <Content Include="content\ru\version-history\plugins-history.html" />
-    <Content Include="content\ru\version-history\admin-history.html" />
-    <Content Include="content\ru\version-history\comm-history.html" />
+    <Content Include="content\ru\version-history\server-modules-history.html" />
+    <Content Include="content\ru\version-history\webstation-plugins-history.html" />
+    <Content Include="content\ru\version-history\administrator-history.html" />
+    <Content Include="content\ru\version-history\communicator-history.html" />
     <Content Include="content\ru\version-history\scada-history.html" />
     <Content Include="content\ru\version-history\scheme-editor-history.html" />
     <Content Include="content\ru\version-history\server-history.html" />
     <Content Include="content\ru\version-history\table-editor-history.html" />
-    <Content Include="content\ru\version-history\web-history.html" />
+    <Content Include="content\ru\version-history\webstation-history.html" />
     <Content Include="css\cover.css">
       <DependentUpon>cover.less</DependentUpon>
     </Content>

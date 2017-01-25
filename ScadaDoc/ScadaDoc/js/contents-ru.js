@@ -38,12 +38,12 @@ function addContents(context) {
     addArticle(context, "", "История версий");
     addArticle(context, "version-history/scada-history.html", "История Rapid SCADA", 1);
     addArticle(context, "version-history/server-history.html", "История приложения Сервер", 1);
-    addArticle(context, "version-history/modules-history.html", "История модулей Сервера", 1);
-    addArticle(context, "version-history/comm-history.html", "История приложения Коммуникатор", 1);
-    //addArticle(context, "version-history/drivers-history.html", "История драйверов Коммуникатора", 1);
-    addArticle(context, "version-history/web-history.html", "История приложения Вебстанция", 1);
-    addArticle(context, "version-history/plugins-history.html", "История плагинов Вебстанции", 1);
-    addArticle(context, "version-history/admin-history.html", "История приложения Администратор", 1);
+    addArticle(context, "version-history/server-modules-history.html", "История модулей Сервера", 1);
+    addArticle(context, "version-history/communicator-history.html", "История приложения Коммуникатор", 1);
+    //addArticle(context, "version-history/communicator-drivers-history.html", "История драйверов Коммуникатора", 1);
+    addArticle(context, "version-history/webstation-history.html", "История приложения Вебстанция", 1);
+    addArticle(context, "version-history/webstation-plugins-history.html", "История плагинов Вебстанции", 1);
+    addArticle(context, "version-history/administrator-history.html", "История приложения Администратор", 1);
     addArticle(context, "version-history/table-editor-history.html", "История приложения Редактор таблиц", 1);
     addArticle(context, "version-history/scheme-editor-history.html", "История приложения Редактор схем", 1);
 }
