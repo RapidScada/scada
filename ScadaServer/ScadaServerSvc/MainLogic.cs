@@ -1555,7 +1555,8 @@ namespace Scada.Server.Svc
                         {
                             // вычисление новых данных входного канала
                             SrezTableLight.CnlData oldCnlData = srez.CnlData[cnlInd];
-                            SrezTableLight.CnlData newCnlData = oldCnlData;
+                            SrezTableLight.CnlData newCnlData =
+                                new SrezTableLight.CnlData(oldCnlData.Val, BaseValues.CnlStatuses.Defined);
                             CalcCnlData(inCnl, oldCnlData, ref newCnlData);
 
                             // запись новых данных в срез
