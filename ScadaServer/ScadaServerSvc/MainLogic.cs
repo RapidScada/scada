@@ -1288,15 +1288,20 @@ namespace Scada.Server.Svc
                             int cnlInd = srez.GetCnlIndex(cnlNum);
                             InCnl inCnl;
 
-                            if (inCnls.TryGetValue(cnlNum, out inCnl) && cnlInd >= 0 &&
-                                (inCnl.CnlTypeID == BaseValues.CnlTypes.TS || inCnl.CnlTypeID == BaseValues.CnlTypes.TI))
+                            if (inCnls.TryGetValue(cnlNum, out inCnl) && cnlInd >= 0) // входной канал существует
                             {
-                                // вычисление новых данных входного канала
-                                SrezTableLight.CnlData oldCnlData = srez.CnlData[cnlInd];
+                                // установка архивного статуса канала
                                 SrezTableLight.CnlData newCnlData = receivedSrez.CnlData[i];
                                 if (newCnlData.Stat == BaseValues.CnlStatuses.Defined)
                                     newCnlData.Stat = BaseValues.CnlStatuses.Archival;
-                                CalcCnlData(inCnl, oldCnlData, ref newCnlData);
+
+                                // вычисление новых данных входного канала типа ТС или ТИ
+                                if (inCnl.CnlTypeID == BaseValues.CnlTypes.TS || 
+                                    inCnl.CnlTypeID == BaseValues.CnlTypes.TI)
+                                {
+                                    SrezTableLight.CnlData oldCnlData = srez.CnlData[cnlInd];
+                                    CalcCnlData(inCnl, oldCnlData, ref newCnlData);
+                                }
 
                                 // запись новых данных в архивный срез
                                 srez.CnlData[cnlInd] = newCnlData;
@@ -1550,8 +1555,7 @@ namespace Scada.Server.Svc
                         {
                             // вычисление новых данных входного канала
                             SrezTableLight.CnlData oldCnlData = srez.CnlData[cnlInd];
-                            SrezTableLight.CnlData newCnlData =
-                                new SrezTableLight.CnlData(oldCnlData.Val, BaseValues.CnlStatuses.Defined);
+                            SrezTableLight.CnlData newCnlData = oldCnlData;
                             CalcCnlData(inCnl, oldCnlData, ref newCnlData);
 
                             // запись новых данных в срез
@@ -2156,11 +2160,9 @@ namespace Scada.Server.Svc
                                     // обновление информации об активности канала
                                     activeDTs[cnlInd] = DateTime.Now;
                                 }
-                                else if (inCnl.CnlTypeID != BaseValues.CnlTypes.TSDR &&
-                                    inCnl.CnlTypeID != BaseValues.CnlTypes.TIDR)
+                                else
                                 {
-                                    // запись новых данных минутных и часовых каналов, а также
-                                    // количества переключений в текущий срез без вычислений
+                                    // запись новых данных в текущий срез без вычислений для дорасчётных каналов
                                     curSrez.CnlData[cnlInd] = receivedSrez.CnlData[i];
                                 }
                             }
