@@ -2271,8 +2271,9 @@ namespace Scada.Server.Svc
         }
 
         /// <summary>
-        /// Получить данные входного канала обрабатываемого среза для вычисления по формулам
+        /// Получить данные входного канала обрабатываемого среза
         /// </summary>
+        /// <remarks>Метод используется для вычисления по формулам базы конфигурации</remarks>
         public SrezTableLight.CnlData GetProcSrezCnlData(int cnlNum)
         {
             SrezTableLight.CnlData cnlData = SrezTableLight.CnlData.Empty;
@@ -2286,10 +2287,29 @@ namespace Scada.Server.Svc
             {
                 AppLog.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при получении данных входного канала обрабатываемого среза" :
-                    "Error getting the input channel data of the processed snapshot");
+                    "Error getting input channel data of the processed snapshot");
             }
 
             return cnlData;
+        }
+
+        /// <summary>
+        /// Установить данные входного канала обрабатываемого среза
+        /// </summary>
+        /// <remarks>Метод используется для вычисления по формулам базы конфигурации</remarks>
+        public void SetProcSrezCnlData(int cnlNum, SrezTableLight.CnlData cnlData)
+        {
+            try
+            {
+                if (procSrez != null)
+                    procSrez.SetCnlData(cnlNum, cnlData);
+            }
+            catch (Exception ex)
+            {
+                AppLog.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при установке данных входного канала обрабатываемого среза" :
+                    "Error setting input channel data of the processed snapshot");
+            }
         }
 
         /// <summary>

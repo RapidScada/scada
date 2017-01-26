@@ -164,7 +164,7 @@ namespace Scada.Data.Tables
             /// </summary>
             public bool GetCnlData(int cnlNum, out CnlData cnlData)
             {
-                int index = Array.BinarySearch<int>(CnlNums, cnlNum);
+                int index = GetCnlIndex(cnlNum);
                 if (index < 0)
                 {
                     cnlData = SrezTableLight.CnlData.Empty;
@@ -195,6 +195,22 @@ namespace Scada.Data.Tables
                 val = cnlData.Val;
                 stat = cnlData.Stat;
                 return result;
+            }
+            /// <summary>
+            /// Установить данные входного канала
+            /// </summary>
+            public bool SetCnlData(int cnlNum, CnlData cnlData)
+            {
+                int index = GetCnlIndex(cnlNum);
+                if (index < 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    CnlData[index] = cnlData;
+                    return true;
+                }
             }
             /// <summary>
             /// Сравнить текущий объект с другим объектом такого же типа

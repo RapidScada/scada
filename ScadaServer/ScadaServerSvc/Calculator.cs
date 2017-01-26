@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2015
+ * Modified : 2017
  */
 
 using Microsoft.CSharp;
@@ -208,6 +208,7 @@ namespace Scada.Server.Svc
                 compParams.GenerateInMemory = true;
                 compParams.IncludeDebugInformation = false;
                 compParams.ReferencedAssemblies.Add("System.dll");
+                compParams.ReferencedAssemblies.Add("System.Core.dll");
                 compParams.ReferencedAssemblies.Add(mainLogic.AppDirs.ExeDir + "ScadaData.dll");
                 CodeDomProvider compiler = CSharpCodeProvider.CreateProvider("CSharp");
                 CompilerResults compilerResults = compiler.CompileAssemblyFromSource(compParams, source);
@@ -234,7 +235,8 @@ namespace Scada.Server.Svc
                 {
                     Type calcEngineType = compilerResults.CompiledAssembly.GetType("Scada.Server.Svc.CalcEngine", true);
                     calcEngine = Activator.CreateInstance(calcEngineType, 
-                        new Func<int, SrezTableLight.CnlData>(mainLogic.GetProcSrezCnlData));
+                        new Func<int, SrezTableLight.CnlData>(mainLogic.GetProcSrezCnlData),
+                        new Action<int, SrezTableLight.CnlData>(mainLogic.SetProcSrezCnlData));
 
                     appLog.WriteAction(Localization.UseRussian ? 
                         "Исходный код формул калькулятора откомпилирован" :
