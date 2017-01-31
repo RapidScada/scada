@@ -73,8 +73,8 @@ namespace Scada.Web
         {
             Log log = AppData.GetAppData().Log;
             log.WriteAction(Localization.UseRussian ?
-                "Application shutdown" :
-                "Завершение работы приложения");
+                "Завершение работы приложения" :
+                "Application shutdown");
             log.WriteBreak();
         }
     }
