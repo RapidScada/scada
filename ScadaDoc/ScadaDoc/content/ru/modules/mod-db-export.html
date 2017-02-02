@@ -22,6 +22,7 @@
     <pre><code class="language-sql">-- Удалить таблицу данных входных каналов, если она существует
 IF OBJECT_ID('CnlData', 'U') IS NOT NULL
 DROP TABLE CnlData;
+
 -- Создать таблицу данных входных каналов
 CREATE TABLE CnlData (
   DateTime datetime2 NOT NULL,
@@ -30,10 +31,13 @@ CREATE TABLE CnlData (
   Stat     int NOT NULL,
   PRIMARY KEY (DateTime, CnlNum)
 );
+
 CREATE INDEX idx_CnlData_CnlNum ON CnlData (CnlNum);
+
 -- Удалить таблицу событий, если она существует
 IF OBJECT_ID('Events', 'U') IS NOT NULL
 DROP TABLE Events;
+
 -- Создать таблицу событий
 CREATE TABLE Events (
   DateTime   datetime2 NOT NULL,
@@ -50,10 +54,12 @@ CREATE TABLE Events (
   Descr      char(100),
   Data       char(50)
 );
+
 CREATE INDEX idx_Events_DateTime ON Events (DateTime);
 CREATE INDEX idx_Events_ObjNum ON Events (ObjNum);
 CREATE INDEX idx_Events_KPNum ON Events (KPNum);
 CREATE INDEX idx_Events_CnlNum ON Events (CnlNum);
+
 -- Вставить текущие данные
 INSERT INTO CnlData (DateTime, CnlNum, Val, Stat)
 VALUES (@dateTime, @cnlNum, @val, @stat)
@@ -83,6 +89,7 @@ EXCEPTION
       RAISE;
     END IF;
 END;
+
 -- Создать таблицу данных входных каналов
 CREATE TABLE cnldata (
   datetime TIMESTAMP NOT NULL,
@@ -91,7 +98,9 @@ CREATE TABLE cnldata (
   stat     INTEGER NOT NULL,
   PRIMARY KEY (datetime, cnlnum)
 );
+
 CREATE INDEX idx_cnldata_cnlnum ON cnldata (cnlnum);
+
 -- Удалить таблицу событий, если она существует
 BEGIN
   EXECUTE IMMEDIATE 'DROP TABLE events';
@@ -101,6 +110,7 @@ EXCEPTION
       RAISE;
     END IF;
 END;
+
 -- Создать таблицу событий
 CREATE TABLE events (
   datetime   TIMESTAMP NOT NULL,
@@ -117,13 +127,16 @@ CREATE TABLE events (
   descr      CHAR(100),
   data       CHAR(50)
 );
+
 CREATE INDEX idx_events_datetime ON events (datetime);
 CREATE INDEX idx_events_objnum ON events (objnum);
 CREATE INDEX idx_events_kpnum ON events (kpnum);
 CREATE INDEX idx_events_cnlnum ON events (cnlnum);
+
 -- Вставить текущие данные
 INSERT INTO cnldata (datetime, cnlnum, val, stat)
 VALUES (:dateTime, :cnlNum, @val, :stat)
+
 -- Вставить или обновить существующие архивные данные
 MERGE INTO cnldata
 USING dual ON (datetime = :dateTime AND cnlnum = :cnlnum)
@@ -132,6 +145,7 @@ WHEN MATCHED THEN
 WHEN NOT MATCHED THEN 
   INSERT (datetime, cnlnum, val, stat)
   VALUES (:dateTime, :cnlNum, :val, :stat)
+
 -- Вставить событие
 INSERT INTO events (datetime, objnum, kpnum, paramid, cnlnum, oldcnlval, oldcnlstat, newcnlval, newcnlstat, checked, userid, descr, data)
 VALUES (:dateTime, :objNum, :kpNum, :paramID, :cnlNum, :oldCnlVal, :oldCnlStat, :newCnlVal, :newCnlStat, :checked, :userID, :descr, :data)</code></pre>
@@ -140,6 +154,7 @@ VALUES (:dateTime, :objNum, :kpNum, :paramID, :cnlNum, :oldCnlVal, :oldCnlStat, 
 
     <pre><code class="language-sql">-- Удалить таблицу данных входных каналов, если она существует
 DROP TABLE IF EXISTS cnldata;
+
 -- Создать таблицу данных входных каналов
 CREATE TABLE cnldata (
   datetime timestamp NOT NULL,
@@ -148,9 +163,12 @@ CREATE TABLE cnldata (
   stat     integer NOT NULL,
   PRIMARY KEY (datetime, cnlnum)
 );
+
 CREATE INDEX ON cnldata (cnlnum);
+
 -- Удалить таблицу событий, если она существует
 DROP TABLE IF EXISTS events;
+
 -- Создать таблицу событий
 CREATE TABLE events (
   datetime   timestamp NOT NULL,
@@ -167,19 +185,23 @@ CREATE TABLE events (
   descr      char(100),
   data       char(50)
 );
+
 CREATE INDEX ON events (datetime);
 CREATE INDEX ON events (objnum);
 CREATE INDEX ON events (kpnum);
 CREATE INDEX ON events (cnlnum);
+
 -- Вставить текущие данные
 INSERT INTO cnldata (datetime, cnlnum, val, stat)
 VALUES (@dateTime, @cnlNum, @val, @stat)
+
 -- Вставить или обновить существующие архивные данные
 WITH upsert AS (UPDATE cnldata SET val = @val, stat = @stat 
 WHERE datetime = @datetime AND cnlnum = @cnlNum RETURNING *)
 INSERT INTO cnldata (datetime, cnlnum, val, stat)
 SELECT @dateTime, @cnlNum, @val, @stat
 WHERE NOT EXISTS (SELECT * FROM upsert)
+
 -- Вставить событие
 INSERT INTO events (datetime, objnum, kpnum, paramid, cnlnum, oldcnlval, oldcnlstat, newcnlval, newcnlstat, checked, userid, descr, data)
 VALUES (@dateTime, @objNum, @kpNum, @paramID, @cnlNum, @oldCnlVal, @oldCnlStat, @newCnlVal, @newCnlStat, @checked, @userID, @descr, @data)</code></pre>
