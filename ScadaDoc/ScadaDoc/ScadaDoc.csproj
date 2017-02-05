@@ -219,6 +219,7 @@
     <Content Include="content\ru\use-cases\opc-standard-files\opc_config_ru.png" />
     <Content Include="content\ru\use-cases\opc-standard-files\opc_vals_ru.png" />
     <Content Include="content\ru\use-cases\opc-standard.html" />
+    <Content Include="content\ru\version-history\communicator-drivers-history.html" />
     <Content Include="content\ru\version-history\server-modules-history.html" />
     <Content Include="content\ru\version-history\webstation-plugins-history.html" />
     <Content Include="content\ru\version-history\administrator-history.html" />
