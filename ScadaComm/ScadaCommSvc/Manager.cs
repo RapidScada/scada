@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2016
+ * Modified : 2017
  */
 
 using Scada.Data.Models;
@@ -42,10 +42,6 @@ namespace Scada.Comm.Svc
     /// </summary>
     internal sealed class Manager
     {
-        /// <summary>
-        /// Версия приложения
-        /// </summary>
-        private const string AppVersion = "5.0.0.0";
         /// <summary>
         /// Имя файла конфигурации
         /// </summary>
@@ -304,7 +300,7 @@ namespace Scada.Comm.Svc
                         .AppendLine("------------------")
                         .Append("Запуск       : ").AppendLine(startDT.ToLocalizedString())
                         .Append("Время работы : ").AppendLine(workStr)
-                        .Append("Версия       : ").AppendLine(AppVersion)
+                        .Append("Версия       : ").AppendLine(CommUtils.AppVersion)
                         .Append("SCADA-Сервер : ").AppendLine(Settings.Params.ServerUse ?
                             (ServerComm == null ? "не инициализирован" : ServerComm.CommStateDescr) :
                             "не используется")
@@ -319,7 +315,7 @@ namespace Scada.Comm.Svc
                         .AppendLine("------------------")
                         .Append("Started        : ").AppendLine(startDT.ToLocalizedString())
                         .Append("Execution time : ").AppendLine(workStr)
-                        .Append("Version        : ").AppendLine(AppVersion)
+                        .Append("Version        : ").AppendLine(CommUtils.AppVersion)
                         .Append("SCADA-Server   : ").AppendLine(Settings.Params.ServerUse ?
                             (ServerComm == null ? "not initialized" : ServerComm.CommStateDescr) :
                             "not used")
@@ -833,7 +829,7 @@ namespace Scada.Comm.Svc
                 AppLog.WriteBreak();
                 AppLog.WriteAction(string.Format(Localization.UseRussian ? 
                     "Служба ScadaCommService {0} запущена" :
-                    "ScadaCommService {0} is started", AppVersion), Log.ActTypes.Action);
+                    "ScadaCommService {0} is started", CommUtils.AppVersion), Log.ActTypes.Action);
             }
 
             if (dirsExist)

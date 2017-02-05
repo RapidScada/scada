@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2008
- * Modified : 2016
+ * Modified : 2017
  */
 
 using Scada.UI;
@@ -37,7 +37,6 @@ namespace Scada.Comm.Ctrl
     /// </summary>
     public partial class FrmAbout : Form
     {
-        private const string Version = "5.0.0.0"; // версия приложения
         private static FrmAbout frmAbout = null;  // форма о программе
 
         private string exeDir;  // директория исполняемого файла приложения
@@ -98,14 +97,14 @@ namespace Scada.Comm.Ctrl
                     activePictureBox = pbAboutRu;
                     pbAboutEn.Visible = false;
                     lblVersionEn.Visible = false;
-                    lblVersionRu.Text = "Версия " + Version;
+                    lblVersionRu.Text = "Версия " + CommUtils.AppVersion;
                 }
                 else
                 {
                     activePictureBox = pbAboutEn;
                     pbAboutRu.Visible = false;
                     lblVersionRu.Visible = false;
-                    lblVersionEn.Text = "Version " + Version;
+                    lblVersionEn.Text = "Version " + CommUtils.AppVersion;
                 }
 
                 // изменение родительских элементов для работы прозрачности

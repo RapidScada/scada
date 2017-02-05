@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2015
+ * Modified : 2017
  */
 
 using Scada.Data.Models;
@@ -176,6 +176,18 @@ namespace Scada.Comm.Devices
         /// Получить описание библиотеки КП
         /// </summary>
         public abstract string KPDescr { get; }
+
+        /// <summary>
+        /// Получить версию библиотеки КП
+        /// </summary>
+        /// <remarks>В будущем сделать данное свойство abstract</remarks>
+        public virtual string Version
+        {
+            get
+            {
+                return "";
+            }
+        }
 
         /// <summary>
         /// Получить прототипы каналов КП по умолчанию
