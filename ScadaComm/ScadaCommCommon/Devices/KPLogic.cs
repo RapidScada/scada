@@ -938,6 +938,11 @@ namespace Scada.Comm.Devices
         {
             lock (curData)
             {
+                if (tagIndex < 0)
+                    tagIndex = 0;
+                if (tagIndex >= curData.Length - tagCount)
+                    tagCount = curData.Length - tagIndex;
+
                 SrezTableLight.CnlData newData = SrezTableLight.CnlData.Empty;
                 for (int i = 0; i < tagCount; i++)
                 {
