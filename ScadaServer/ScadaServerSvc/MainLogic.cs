@@ -1502,20 +1502,23 @@ namespace Scada.Server.Svc
                 int oldStat = oldCnlData.Stat;
                 int newStat = newCnlData.Stat;
 
-                bool dataHasChanged = 
+                bool dataChanged = 
                     oldStat > BaseValues.CnlStatuses.Undefined && newStat > BaseValues.CnlStatuses.Undefined &&
                     (oldVal != newVal || oldStat != newStat);
 
                 if (// события по изменению
-                    inCnl.EvOnChange && dataHasChanged || 
+                    inCnl.EvOnChange && dataChanged || 
                     // события по неопределённому состоянию и выходу из него
                     inCnl.EvOnUndef && 
                     (oldStat > BaseValues.CnlStatuses.Undefined && newStat == BaseValues.CnlStatuses.Undefined || 
                     oldStat == BaseValues.CnlStatuses.Undefined && newStat > BaseValues.CnlStatuses.Undefined) ||
-                    // события нормализации, занижения и завышения
-                    (newStat == BaseValues.CnlStatuses.Normal || newStat == BaseValues.CnlStatuses.LowCrash || 
-                    newStat == BaseValues.CnlStatuses.Low || newStat == BaseValues.CnlStatuses.High || 
-                    newStat == BaseValues.CnlStatuses.HighCrash) && oldStat != newStat)
+                    // события нормализации
+                    newStat == BaseValues.CnlStatuses.Normal && 
+                    oldStat != newStat && oldStat != BaseValues.CnlStatuses.Undefined ||
+                    // события занижения и завышения
+                    (newStat == BaseValues.CnlStatuses.LowCrash || newStat == BaseValues.CnlStatuses.Low || 
+                    newStat == BaseValues.CnlStatuses.High || newStat == BaseValues.CnlStatuses.HighCrash) && 
+                    oldStat != newStat)
                 {
                     // создание события
                     EventTableLight.Event ev = new EventTableLight.Event();
@@ -1527,7 +1530,7 @@ namespace Scada.Server.Svc
                     ev.OldCnlVal = oldCnlData.Val;
                     ev.OldCnlStat = oldStat;
                     ev.NewCnlVal = newCnlData.Val;
-                    ev.NewCnlStat = dataHasChanged && oldStat == BaseValues.CnlStatuses.Defined && 
+                    ev.NewCnlStat = dataChanged && oldStat == BaseValues.CnlStatuses.Defined && 
                         newStat == BaseValues.CnlStatuses.Defined ? BaseValues.CnlStatuses.Changed : newStat;
 
                     // запись события и выполнение действий модулей
