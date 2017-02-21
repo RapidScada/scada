@@ -28,6 +28,7 @@
 
 using Scada.Comm.Channels;
 using Scada.Data.Models;
+using Scada.Data.Tables;
 using System;
 using System.Collections.Generic;
 
@@ -48,6 +49,7 @@ namespace Scada.Comm.Devices
             : base(number)
         {
             random = new Random();
+            CanSendCmd = true;
 
             List<TagGroup> tagGroups = new List<TagGroup>();
             TagGroup tagGroup = new TagGroup("Group 1");
@@ -125,6 +127,33 @@ namespace Scada.Comm.Devices
         public override void SendCmd(Command cmd)
         {
             base.SendCmd(cmd);
+
+            if ((cmd.CmdNum == 1 || cmd.CmdNum == 2) && cmd.CmdTypeID == BaseValues.CmdTypes.Binary)
+            {
+                if (cmd.CmdNum == 1)
+                {
+                    // send command data as string
+                    // отправка данных команды как строки
+                    string logText;
+                    Connection.WriteLine(cmd.GetCmdDataStr(), out logText);
+                    WriteToLog(logText);
+                }
+                else
+                {
+                    // send command data as array of bytes
+                    // отправка данных команды как массива байт
+                    string logText;
+                    Connection.Write(cmd.CmdData, 0, cmd.CmdData.Length, CommUtils.ProtocolLogFormats.Hex, 
+                        out logText);
+                    WriteToLog(logText);
+                }
+            }
+            else
+            {
+                WriteToLog(CommPhrases.IllegalCommand);
+                lastCommSucc = false;
+            }
+
             CalcCmdStats();
         }
     }
