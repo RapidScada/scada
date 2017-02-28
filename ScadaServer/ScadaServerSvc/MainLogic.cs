@@ -1456,7 +1456,7 @@ namespace Scada.Server.Svc
                         newCnlData.Stat > BaseValues.CnlStatuses.Undefined)
                     {
                         bool even = (int)oldCnlData.Val % 2 == 0; // старое значение чётное
-                        newCnlData.Val = newCnlData.Val < 0 && even || newCnlData.Val >= 0 && !even ? 
+                        newCnlData.Val = newCnlData.Val <= 0 && even || newCnlData.Val > 0 && !even ? 
                             Math.Truncate(oldCnlData.Val) + 1 : Math.Truncate(oldCnlData.Val);
                     }
 
