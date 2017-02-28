@@ -84,6 +84,7 @@ namespace Scada.Data.Models
             ParamID = 0;
             ParamName = "";
             IconFileName = "";
+            FormatID = 0;
             ShowNumber = true;
             DecDigits = 3;
             UnitID = 0;
@@ -171,6 +172,11 @@ namespace Scada.Data.Models
         /// Получить или установить короткое имя файла значка
         /// </summary>
         public string IconFileName { get; set; }
+
+        /// <summary>
+        /// Получить или установить идентификатор формата
+        /// </summary>
+        public int FormatID { get; set; }
 
         /// <summary>
         /// Получить или установить признак вывода значения канала как числа
