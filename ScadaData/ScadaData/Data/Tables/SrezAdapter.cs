@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2005
- * Modified : 2016
+ * Modified : 2017
  * 
  * --------------------------------
  * Table file structure (version 2)
@@ -232,9 +232,7 @@ namespace Scada.Data.Tables
                     {
                         long srezPos = stream.Position;
                         double time = reader.ReadDouble();
-                        int hour, min, sec;
-                        ScadaUtils.DecodeTime(time, out hour, out min, out sec);
-                        DateTime srezDT = new DateTime(date.Year, date.Month, date.Day, hour, min, sec);
+                        DateTime srezDT = ScadaUtils.CombineDateTime(date, time);
 
                         // инициализация нового среза
                         SrezTableLight.Srez srez;

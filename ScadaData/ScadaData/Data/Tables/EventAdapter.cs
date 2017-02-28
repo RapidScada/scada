@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2007
- * Modified : 2016
+ * Modified : 2017
  * 
  * --------------------------------
  * Table file structure (version 3)
@@ -270,9 +270,7 @@ namespace Scada.Data.Tables
                         evNum++;
 
                         double time = BitConverter.ToDouble(eventBuf, 0);
-                        int hour, min, sec;
-                        ScadaUtils.DecodeTime(time, out hour, out min, out sec);
-                        ev.DateTime = new DateTime(date.Year, date.Month, date.Day, hour, min, sec);
+                        ev.DateTime = ScadaUtils.CombineDateTime(date, time);
 
                         ev.ObjNum = BitConverter.ToUInt16(eventBuf, 8);
                         ev.KPNum = BitConverter.ToUInt16(eventBuf, 10);
