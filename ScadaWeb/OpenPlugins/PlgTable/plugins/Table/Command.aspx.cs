@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2017
  */
 
 using Scada.Client;
@@ -55,6 +55,7 @@ namespace Scada.Web.Plugins.Table
         private UserData userData; // данные пользователя приложения
         private bool cmdEnabled;   // отправка команды разрешена
         private int ctrlCnlNum;    // номер канала управления
+        private int cmdTypeID;     // ид. типа команды
 
 
         /// <summary>
@@ -215,6 +216,7 @@ namespace Scada.Web.Plugins.Table
             {
                 cmdEnabled = (bool)ViewState["CmdEnabled"];
                 ctrlCnlNum = (int)ViewState["CtrlCnlNum"];
+                cmdTypeID = (int)ViewState["CmdTypeID"];
             }
             else
             {
@@ -240,6 +242,9 @@ namespace Scada.Web.Plugins.Table
                 CtrlCnlProps ctrlCnlProps = appData.DataAccess.GetCtrlCnlProps(ctrlCnlNum);
                 ViewState["CmdEnabled"] = ctrlCnlProps != null;
 
+                cmdTypeID = ctrlCnlProps == null ? BaseValues.CmdTypes.Standard : ctrlCnlProps.CmdTypeID;
+                ViewState["CmdTypeID"] = cmdTypeID;
+
                 if (ctrlCnlProps == null)
                 {
                     // вывести сообщение, что канал управления не найден
@@ -262,28 +267,27 @@ namespace Scada.Web.Plugins.Table
                     pnlPassword.Visible = userData.WebSettings.CmdPassword;
 
                     // настройка элементов управления в зависимости от типа команды
-                    switch (ctrlCnlProps.CmdTypeID)
+                    if (cmdTypeID == BaseValues.CmdTypes.Standard || cmdTypeID == BaseValues.CmdTypes.Binary)
                     {
-                        case BaseValues.CmdTypes.Standard:
-                            if (ctrlCnlProps.CmdValArr == null)
-                            {
+                        if (ctrlCnlProps.CmdValArr == null)
+                        {
+                            if (cmdTypeID == BaseValues.CmdTypes.Standard)
                                 pnlRealValue.Visible = true;
-                            }
                             else
-                            {
-                                repCommands.DataSource = GetDiscreteCmds(ctrlCnlProps.CmdValArr);
-                                repCommands.DataBind();
-                                pnlDiscreteValue.Visible = true;
-                                btnSubmit.Enabled = false; // disable postback on Enter
-                                btnSubmit.CssClass = "hide-exec-btn"; // hide Execute button
-                            }
-                            break;
-                        case BaseValues.CmdTypes.Binary:
-                            pnlData.Visible = true;
-                            break;
-                        default: // BaseValues.CmdTypes.Request:
-                            ViewState["KPNum"] = ctrlCnlProps.KPNum;
-                            break;
+                                pnlData.Visible = true;
+                        }
+                        else
+                        {
+                            repCommands.DataSource = GetDiscreteCmds(ctrlCnlProps.CmdValArr);
+                            repCommands.DataBind();
+                            pnlDiscreteValue.Visible = true;
+                            btnSubmit.Enabled = false; // disable postback on Enter
+                            btnSubmit.CssClass = "hide-exec-btn"; // hide Execute button
+                        }
+                    }
+                    else // BaseValues.CmdTypes.Request
+                    {
+                        ViewState["KPNum"] = ctrlCnlProps.KPNum;
                     }
                 }
             }
@@ -324,10 +328,14 @@ namespace Scada.Web.Plugins.Table
         {
             if (cmdEnabled && CheckPassword())
             {
-                // отправка стандартной команды для дискретных значений
+                // отправка стандартной или бинарной команды для дискретных значений
                 Button btn = (Button)e.CommandSource;
                 int cmdVal = int.Parse(btn.Attributes["data-cmdval"]);
-                SendStandardCmd(cmdVal);
+
+                if (cmdTypeID == BaseValues.CmdTypes.Standard)
+                    SendStandardCmd(cmdVal);
+                else
+                    SendBinaryCmd(BitConverter.GetBytes(cmdVal));
             }
         }
     }
