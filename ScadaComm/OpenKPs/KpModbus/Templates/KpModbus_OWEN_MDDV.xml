@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DevTemplate>
+  <ElemGroups>
+    <ElemGroup active="true" tableType="HoldingRegisters" address="64" name="Счётчики">
+      <Elem name="Счётчик 1" type="ushort" byteOrder="" />
+      <Elem name="Счётчик 2" type="ushort" byteOrder="" />
+      <Elem name="Счётчик 3" type="ushort" byteOrder="" />
+      <Elem name="Счётчик 4" type="ushort" byteOrder="" />
+      <Elem name="Счётчик 5" type="ushort" byteOrder="" />
+      <Elem name="Счётчик 6" type="ushort" byteOrder="" />
+      <Elem name="Счётчик 7" type="ushort" byteOrder="" />
+      <Elem name="Счётчик 8" type="ushort" byteOrder="" />
+      <Elem name="Счётчик 9" type="ushort" byteOrder="" />
+      <Elem name="Счётчик 10" type="ushort" byteOrder="" />
+      <Elem name="Счётчик 11" type="ushort" byteOrder="" />
+      <Elem name="Счётчик 12" type="ushort" byteOrder="" />
+    </ElemGroup>
+    <ElemGroup active="true" tableType="HoldingRegisters" address="50" name="Дискретные выходы">
+      <Elem name="Выходы 1-16" type="ushort" byteOrder="" />
+    </ElemGroup>
+    <ElemGroup active="true" tableType="HoldingRegisters" address="51" name="Дискретные входы">
+      <Elem name="Входы 1-16" type="ushort" byteOrder="" />
+    </ElemGroup>
+  </ElemGroups>
+  <Cmds>
+    <Cmd tableType="HoldingRegisters" multiple="true" address="0" elemCnt="1" cmdNum="1" name="Установка DO1" />
+    <Cmd tableType="HoldingRegisters" multiple="true" address="1" elemCnt="1" cmdNum="2" name="Установка DO2" />
+    <Cmd tableType="HoldingRegisters" multiple="true" address="2" elemCnt="1" cmdNum="3" name="Установка DO3" />
+    <Cmd tableType="HoldingRegisters" multiple="true" address="3" elemCnt="1" cmdNum="4" name="Установка DO4" />
+    <Cmd tableType="HoldingRegisters" multiple="true" address="4" elemCnt="1" cmdNum="5" name="Установка DO5" />
+    <Cmd tableType="HoldingRegisters" multiple="true" address="5" elemCnt="1" cmdNum="6" name="Установка DO6" />
+    <Cmd tableType="HoldingRegisters" multiple="true" address="6" elemCnt="1" cmdNum="7" name="Установка DO7" />
+    <Cmd tableType="HoldingRegisters" multiple="true" address="7" elemCnt="1" cmdNum="8" name="Установка DO8" />
+    <Cmd tableType="HoldingRegisters" multiple="true" address="50" elemCnt="1" cmdNum="9" name="Установка по маске" />
+  </Cmds>
+</DevTemplate>

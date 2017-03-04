@@ -238,6 +238,7 @@ namespace Scada.Client
                     cnlProps.Formula = (string)inCnlRow["Formula"];
                     cnlProps.Averaging = (bool)inCnlRow["Averaging"];
                     cnlProps.ParamID = (int)inCnlRow["ParamID"];
+                    cnlProps.FormatID = (int)inCnlRow["FormatID"];
                     cnlProps.UnitID = (int)inCnlRow["UnitID"];
                     cnlProps.CtrlCnlNum = (int)inCnlRow["CtrlCnlNum"];
                     cnlProps.EvEnabled = (bool)inCnlRow["EvEnabled"];

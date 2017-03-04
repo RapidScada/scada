@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2016
+ * Modified : 2017
  */
 
 using System;
@@ -274,6 +274,37 @@ namespace Scada.Data.Tables
             /// Тревога
             /// </summary>
             public const int Alarm = 114;
+        }
+
+        /// <summary>
+        /// Форматы чисел
+        /// </summary>
+        public static class Formats
+        {
+            /// <summary>
+            /// Текст из перечисления
+            /// </summary>
+            public const int EnumText = 10;
+            /// <summary>
+            /// Текст в кодировке ASCII
+            /// </summary>
+            public const int AsciiText = 11;
+            /// <summary>
+            /// Текст в кодировке Unicode
+            /// </summary>
+            public const int UnicodeText = 12;
+            /// <summary>
+            /// Дата и время
+            /// </summary>
+            public const int DateTime = 13;
+            /// <summary>
+            /// Дата
+            /// </summary>
+            public const int Date = 14;
+            /// <summary>
+            /// Время
+            /// </summary>
+            public const int Time = 15;
         }
 
         /// <summary>

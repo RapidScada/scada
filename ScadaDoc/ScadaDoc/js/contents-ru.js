@@ -15,6 +15,7 @@ function addContents(context) {
     addArticle(context, "installation-and-run/", "Установка и запуск");
     addArticle(context, "installation-and-run/system-requirements.html", "Системные требования", 1);
     addArticle(context, "installation-and-run/software-installation.html", "Установка программного комплекса", 1);
+    addArticle(context, "installation-and-run/manual-installation.html", "Установка вручную", 1);
     addArticle(context, "installation-and-run/run-applications.html", "Запуск приложений", 1);
     addArticle(context, "installation-and-run/migrate-configuration.html", "Перенос конфигурации на новый сервер", 1);
     addArticle(context, "installation-and-run/software-update.html", "Обновление программного комплекса", 1);
@@ -27,13 +28,22 @@ function addContents(context) {
     addArticle(context, "software-configuration/communication-with-devices.html", "Настройка обмена данными с устройствами", 1);
     addArticle(context, "software-configuration/creating-views.html", "Создание представлений", 1);
 
-    /*addArticle(context, "", "Сценарии использования");
-    addArticle(context, "use-cases/modbus-protocol.html", "Connecting Devices Using Modbus Protocol", 1);
-    addArticle(context, "use-cases/opc-standard.html", "Connecting Devices Using OPC Standard", 1);
+    addArticle(context, "", "Модули");
+    addArticle(context, "modules/mod-db-export.html", "Модуль экспорта в БД", 1);
+
+    addArticle(context, "", "Сценарии использования");
+    addArticle(context, "use-cases/modbus-protocol.html", "Подключение устройств по протоколу Modbus", 1);
+    addArticle(context, "use-cases/opc-standard.html", "Подключение устройств с использованием стандарта OPC", 1);
 
     addArticle(context, "", "История версий");
-    addArticle(context, "version-history/scada-history.html", "Rapid SCADA", 1);
-    addArticle(context, "", "Модули", 1);
-    addArticle(context, "version-history/modules/chart-pro-history.html", "Графики Про", 2);
-    addArticle(context, "version-history/modules/elastic-report-history.html", "Гибкий отчёт", 2);*/
+    addArticle(context, "version-history/scada-history.html", "История Rapid SCADA", 1);
+    addArticle(context, "version-history/server-history.html", "История приложения Сервер", 1);
+    addArticle(context, "version-history/server-modules-history.html", "История модулей Сервера", 1);
+    addArticle(context, "version-history/communicator-history.html", "История приложения Коммуникатор", 1);
+    addArticle(context, "version-history/communicator-drivers-history.html", "История драйверов Коммуникатора", 1);
+    addArticle(context, "version-history/webstation-history.html", "История приложения Вебстанция", 1);
+    addArticle(context, "version-history/webstation-plugins-history.html", "История плагинов Вебстанции", 1);
+    addArticle(context, "version-history/administrator-history.html", "История приложения Администратор", 1);
+    addArticle(context, "version-history/table-editor-history.html", "История приложения Редактор таблиц", 1);
+    addArticle(context, "version-history/scheme-editor-history.html", "История приложения Редактор схем", 1);
 }

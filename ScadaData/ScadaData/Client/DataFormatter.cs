@@ -136,55 +136,74 @@ namespace Scada.Client
         public void FormatCnlVal(double val, int stat, InCnlProps cnlProps, string decSep, string grSep, 
             out string text, out string textWithUnit, out bool textIsNumber)
         {
+            bool cnlPropsIsNull = cnlProps == null;
+
             try
             {
                 if (stat <= 0)
                 {
                     text = textWithUnit = EmptyVal;
                     textIsNumber = false;
-                    return;
                 }
                 else
                 {
-                    int unitArrLen = cnlProps == null || cnlProps.UnitArr == null ?
-                        0 : cnlProps.UnitArr.Length;
+                    text = textWithUnit = NoVal;
+                    textIsNumber = false;
 
-                    if (cnlProps == null || cnlProps.ShowNumber)
+                    int formatID = cnlPropsIsNull ? 0 : cnlProps.FormatID;
+                    int unitArrLen = cnlPropsIsNull || cnlProps.UnitArr == null ? 0 : cnlProps.UnitArr.Length;
+
+                    if (cnlPropsIsNull || cnlProps.ShowNumber)
                     {
                         string unit = unitArrLen > 0 ? " " + cnlProps.UnitArr[0] : "";
 
-                        nfi.NumberDecimalDigits = cnlProps == null ? DefDecDig : cnlProps.DecDigits;
+                        nfi.NumberDecimalDigits = cnlPropsIsNull ? DefDecDig : cnlProps.DecDigits;
                         nfi.NumberDecimalSeparator = decSep == null ? defDecSep : decSep;
                         nfi.NumberGroupSeparator = grSep == null ? defGrSep : grSep;
 
                         text = val.ToString("N", nfi);
                         textWithUnit = text + unit;
                         textIsNumber = true;
-                        return;
                     }
-                    else if (unitArrLen > 0)
+                    else if (formatID == BaseValues.Formats.EnumText)
                     {
-                        int unitInd = (int)val;
-                        if (unitInd < 0)
-                            unitInd = 0;
-                        else if (unitInd >= unitArrLen)
-                            unitInd = unitArrLen - 1;
-
-                        text = textWithUnit = cnlProps.UnitArr[unitInd];
-                        textIsNumber = false;
-                        return;
+                        if (unitArrLen > 0)
+                        {
+                            int unitInd = (int)val;
+                            if (unitInd < 0)
+                                unitInd = 0;
+                            else if (unitInd >= unitArrLen)
+                                unitInd = unitArrLen - 1;
+                            text = textWithUnit = cnlProps.UnitArr[unitInd];
+                        }
                     }
-                    else
+                    else if (formatID == BaseValues.Formats.AsciiText)
                     {
-                        text = textWithUnit = NoVal;
-                        textIsNumber = false;
-                        return;
+                        byte[] buf = BitConverter.GetBytes(val);
+                        text = textWithUnit = Encoding.ASCII.GetString(buf).TrimEnd((char)0);
+                    }
+                    else if (formatID == BaseValues.Formats.UnicodeText)
+                    {
+                        byte[] buf = BitConverter.GetBytes(val);
+                        text = textWithUnit = Encoding.Unicode.GetString(buf).TrimEnd((char)0);
+                    }
+                    else if (formatID == BaseValues.Formats.DateTime)
+                    {
+                        text = textWithUnit = ScadaUtils.DecodeDateTime(val).ToLocalizedString();
+                    }
+                    else if (formatID == BaseValues.Formats.Date)
+                    {
+                        text = textWithUnit = ScadaUtils.DecodeDateTime(val).ToLocalizedDateString();
+                    }
+                    else if (formatID == BaseValues.Formats.Time)
+                    {
+                        text = textWithUnit = ScadaUtils.DecodeDateTime(val).ToLocalizedTimeString();
                     }
                 }
             }
             catch (Exception ex)
             {
-                string cnlNumStr = cnlProps == null ? cnlProps.CnlNum.ToString() : "?";
+                string cnlNumStr = cnlPropsIsNull ? cnlProps.CnlNum.ToString() : "?";
                 throw new ScadaException(string.Format(Localization.UseRussian ?
                     "Ошибка при форматировании значения входного канала {0}" :
                     "Error formatting value of input channel {0}", cnlNumStr), ex);

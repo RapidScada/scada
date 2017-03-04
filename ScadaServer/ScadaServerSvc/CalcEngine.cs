@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2016
+ * Modified : 2017
  */
 
 using System;
@@ -63,12 +63,17 @@ namespace Scada.Server.Svc
         /// </summary>
         private bool calcInCnl;
         /// <summary>
-        /// Getting input channel data method
+        /// Method of getting input channel data
         /// <para>Метод получения данных входного канала</para>
         /// </summary>
         private Func<int, SrezTableLight.CnlData> getCnlData;
+        /// <summary>
+        /// Method of setting input channel data
+        /// <para>Метод установки данных входного канала</para>
+        /// </summary>
+        private Action<int, SrezTableLight.CnlData> setCnlData;
 
-        
+
         /// <summary>
         /// Initializes a new instance of the class
         /// <para>Конструктор</para>
@@ -87,10 +92,13 @@ namespace Scada.Server.Svc
         /// Initializes a new instance of the class
         /// <para>Конструктор</para>
         /// </summary>
-        public CalcEngine(Func<int, SrezTableLight.CnlData> getCnlData)
+        public CalcEngine(
+            Func<int, SrezTableLight.CnlData> getCnlData, 
+            Action<int, SrezTableLight.CnlData> setCnlData)
             : this()
         {
             this.getCnlData = getCnlData;
+            this.setCnlData = setCnlData;
         }
 
 
@@ -270,6 +278,16 @@ namespace Scada.Server.Svc
         }
 
         /// <summary>
+        /// Sets the current value of the channel n
+        /// <para>Установить текущее значение канала n</para>
+        /// </summary>
+        public void SetVal(int n, double val)
+        {
+            if (setCnlData != null)
+                setCnlData(n, new SrezTableLight.CnlData(val, Stat(n)));
+        }
+
+        /// <summary>
         /// Gets the current status of the formula channel
         /// <para>Получить текущий статус канала формулы</para>
         /// </summary>
@@ -285,6 +303,16 @@ namespace Scada.Server.Svc
         public int Stat(int n)
         {
             return (getCnlData == null ? SrezTableLight.CnlData.Empty : getCnlData(n)).Stat;
+        }
+
+        /// <summary>
+        /// Sets the current status of the channel n
+        /// <para>Установить текущий статус канала n</para>
+        /// </summary>
+        public void SetStat(int n, int stat)
+        {
+            if (setCnlData != null)
+                setCnlData(n, new SrezTableLight.CnlData(Val(n), stat));
         }
 
         /// <summary>

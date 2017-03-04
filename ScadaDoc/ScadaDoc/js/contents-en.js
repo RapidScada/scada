@@ -15,6 +15,7 @@ function addContents(context) {
     addArticle(context, "installation-and-run/", "Installation and Run");
     addArticle(context, "installation-and-run/system-requirements.html", "System Requirements", 1);
     addArticle(context, "installation-and-run/software-installation.html", "Software Installation", 1);
+    addArticle(context, "installation-and-run/manual-installation.html", "Manual Installation", 1);
     addArticle(context, "installation-and-run/run-applications.html", "Run Applications", 1);
     addArticle(context, "installation-and-run/migrate-configuration.html", "Migrate Configuration to New Server", 1);
     addArticle(context, "installation-and-run/software-update.html", "Software Update", 1);
@@ -27,13 +28,13 @@ function addContents(context) {
     addArticle(context, "software-configuration/communication-with-devices.html", "Communication with Devices Configuration", 1);
     addArticle(context, "software-configuration/creating-views.html", "Creating Views", 1);
 
-    /*addArticle(context, "", "Use Cases");
+    addArticle(context, "", "Modules");
+    addArticle(context, "modules/mod-db-export.html", "Export to Database Module", 1);
+
+    addArticle(context, "", "Use Cases");
     addArticle(context, "use-cases/modbus-protocol.html", "Connecting Devices Using Modbus Protocol", 1);
     addArticle(context, "use-cases/opc-standard.html", "Connecting Devices Using OPC Standard", 1);
 
-    addArticle(context, "", "Version History");
-    addArticle(context, "version-history/scada-history.html", "Rapid SCADA", 1);
-    addArticle(context, "", "Modules", 1);
-    addArticle(context, "version-history/modules/chart-pro-history.html", "Chart Pro", 2);
-    addArticle(context, "version-history/modules/elastic-report-history.html", "Elastic Report", 2);*/
+    /*addArticle(context, "", "Version History");
+    addArticle(context, "version-history/scada-history.html", "History of Rapid SCADA", 1);*/
 }

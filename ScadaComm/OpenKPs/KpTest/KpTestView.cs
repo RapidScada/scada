@@ -45,9 +45,16 @@ namespace Scada.Comm.Devices
         {
             get
             {
-                return Localization.UseRussian ? 
-                    "Библиотека КП для тестирования." : 
-                    "Device library for testing.";
+                return Localization.UseRussian ?
+                    "Библиотека КП для тестирования.\n\n" +
+                    "Команды ТУ:\n" +
+                    "1 (бинарная) - отправка данных как строки,\n" +
+                    "2 (бинарная) - отправка данных как массива байт." :
+
+                    "Device library for testing.\n\n" +
+                    "Commands:\n" +
+                    "1 (binary) - send data as string.\n" +
+                    "2 (binary) - send data as array of bytes.";
             }
         }
     }

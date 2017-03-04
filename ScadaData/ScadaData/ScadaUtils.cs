@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2007
- * Modified : 2016
+ * Modified : 2017
  */
 
 using System;
@@ -92,6 +92,7 @@ namespace Scada
         /// <summary>
         /// Выделить час, минуту и секунду из закодированного вещественного значения времени
         /// </summary>
+        [Obsolete]
         public static void DecodeTime(double time, out int hour, out int min, out int sec)
         {
             const double hh = 1.0 / 24;                  // 1 час
@@ -111,9 +112,17 @@ namespace Scada
         }
 
         /// <summary>
+        /// Комбинировать заданные дату и время в единое значение
+        /// </summary>
+        public static DateTime CombineDateTime(DateTime date, double time)
+        {
+            return date.AddDays(time - Math.Truncate(time));
+        }
+
+        /// <summary>
         /// Декодировать вещественное значение времени, преобразовав его в формат DateTime
         /// </summary>
-        /// <remarks>Требуется проверить идентичность с методом DateTime.FromOADate()</remarks>
+        /// <remarks>Совместим с методом DateTime.FromOADate()</remarks>
         public static DateTime DecodeDateTime(double dateTime)
         {
             return ScadaEpoch.AddDays(dateTime);
@@ -122,7 +131,7 @@ namespace Scada
         /// <summary>
         /// Закодировать дату и время в вещественное значение времени
         /// </summary>
-        /// <remarks>Требуется проверить идентичность с методом DateTime.ToOADate()</remarks>
+        /// <remarks>Совместим с методом DateTime.ToOADate()</remarks>
         public static double EncodeDateTime(DateTime dateTime)
         {
             return (dateTime - ScadaEpoch).TotalDays;

@@ -26,9 +26,15 @@ h3 {
 }
 p,
 ul,
-ol {
+ol,
+pre {
   line-height: 20px;
   margin: 20px 0 20px;
+}
+pre {
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  background-color: #f5f2f0;
+  padding: 10px;
 }
 em {
   color: #dd0055;
@@ -58,7 +64,7 @@ a:hover {
 .sd-contents {
   font-size: 13px;
   margin: 0;
-  padding: 10px 0;
+  padding: 10px 0 20px;
 }
 .sd-contents-item {
   padding: 5px 10px;
@@ -67,7 +73,7 @@ a:hover {
   padding-left: 30px;
 }
 .sd-contents-item.level2 {
-  padding-left: 40px;
+  padding-left: 50px;
 }
 .sd-contents-item.level3 {
   padding-left: 70px;
@@ -120,6 +126,10 @@ table.sd-article-table {
 }
 .sd-article-table tr:hover td {
   background-color: #f5f5f5;
+}
+pre.sd-article-history {
+  background: white;
+  padding: 0;
 }
 .gsc-control-cse {
   padding: 0 !important;

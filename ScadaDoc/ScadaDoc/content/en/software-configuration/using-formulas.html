@@ -29,7 +29,7 @@
         <li>For channels of types <em>Calculated *</em> and <em>Switching counter</em> calculations are performed permanent and ordered by channel numbers. A formula of a calculated channel usually refers to data of other channels.</li>
         <li>For channels of types <em>Minute *</em> and <em>Hourly *</em> calculation starts periodically once per minute or once per hour. Use these channel types to create accumulated values, for example, energy consumption or operating time.</li>
         <li>For channels of types <em>Discrete</em> and <em>Real</em> statuses of the channels after calculating are equal to the statuses of these channels received by Server if status calculation does not specified explicitly.</li>
-        <li>For channels of the other types the statuses do not change after calculating if status calculation does not specified explicitly.</li>
+        <li>For channels of the other types the statuses set to <em>Defined</em> if status calculation does not specified explicitly.</li>
         <li>An input channel formula that does not contain &quot;;&quot; (semicolon) symbol calculates the input channel value only.</li>
         <li>If an input channel formula contains &quot;;&quot;, the formula calculates the input channel value and status. The first part before semicolon is a formula for value calculation and the second part after semicolon calculates status.</li>
     </ol>
@@ -105,6 +105,11 @@
             <td>Gets the current value of the channel n</td>
         </tr>
         <tr>
+            <td>SetVal(n, val)</td>
+            <td>void</td>
+            <td>Sets the current value of the channel n</td>
+        </tr>
+        <tr>
             <td>Stat()</td>
             <td>int</td>
             <td>Gets the current status of the formula channel</td>
@@ -113,6 +118,11 @@
             <td>Stat(n)</td>
             <td>int</td>
             <td>Gets the current status of the channel n</td>
+        </tr>
+        <tr>
+            <td>SetStat(n, stat)</td>
+            <td>void</td>
+            <td>Sets the current status of the channel n</td>
         </tr>
         <tr>
             <td>Abs(x)</td>

@@ -1288,15 +1288,20 @@ namespace Scada.Server.Svc
                             int cnlInd = srez.GetCnlIndex(cnlNum);
                             InCnl inCnl;
 
-                            if (inCnls.TryGetValue(cnlNum, out inCnl) && cnlInd >= 0 &&
-                                (inCnl.CnlTypeID == BaseValues.CnlTypes.TS || inCnl.CnlTypeID == BaseValues.CnlTypes.TI))
+                            if (inCnls.TryGetValue(cnlNum, out inCnl) && cnlInd >= 0) // входной канал существует
                             {
-                                // вычисление новых данных входного канала
-                                SrezTableLight.CnlData oldCnlData = srez.CnlData[cnlInd];
+                                // установка архивного статуса канала
                                 SrezTableLight.CnlData newCnlData = receivedSrez.CnlData[i];
                                 if (newCnlData.Stat == BaseValues.CnlStatuses.Defined)
                                     newCnlData.Stat = BaseValues.CnlStatuses.Archival;
-                                CalcCnlData(inCnl, oldCnlData, ref newCnlData);
+
+                                // вычисление новых данных входного канала типа ТС или ТИ
+                                if (inCnl.CnlTypeID == BaseValues.CnlTypes.TS || 
+                                    inCnl.CnlTypeID == BaseValues.CnlTypes.TI)
+                                {
+                                    SrezTableLight.CnlData oldCnlData = srez.CnlData[cnlInd];
+                                    CalcCnlData(inCnl, oldCnlData, ref newCnlData);
+                                }
 
                                 // запись новых данных в архивный срез
                                 srez.CnlData[cnlInd] = newCnlData;
@@ -1451,7 +1456,7 @@ namespace Scada.Server.Svc
                         newCnlData.Stat > BaseValues.CnlStatuses.Undefined)
                     {
                         bool even = (int)oldCnlData.Val % 2 == 0; // старое значение чётное
-                        newCnlData.Val = newCnlData.Val < 0 && even || newCnlData.Val >= 0 && !even ? 
+                        newCnlData.Val = newCnlData.Val <= 0 && even || newCnlData.Val > 0 && !even ? 
                             Math.Truncate(oldCnlData.Val) + 1 : Math.Truncate(oldCnlData.Val);
                     }
 
@@ -1497,20 +1502,23 @@ namespace Scada.Server.Svc
                 int oldStat = oldCnlData.Stat;
                 int newStat = newCnlData.Stat;
 
-                bool dataHasChanged = 
+                bool dataChanged = 
                     oldStat > BaseValues.CnlStatuses.Undefined && newStat > BaseValues.CnlStatuses.Undefined &&
                     (oldVal != newVal || oldStat != newStat);
 
                 if (// события по изменению
-                    inCnl.EvOnChange && dataHasChanged || 
+                    inCnl.EvOnChange && dataChanged || 
                     // события по неопределённому состоянию и выходу из него
                     inCnl.EvOnUndef && 
                     (oldStat > BaseValues.CnlStatuses.Undefined && newStat == BaseValues.CnlStatuses.Undefined || 
                     oldStat == BaseValues.CnlStatuses.Undefined && newStat > BaseValues.CnlStatuses.Undefined) ||
-                    // события нормализации, занижения и завышения
-                    (newStat == BaseValues.CnlStatuses.Normal || newStat == BaseValues.CnlStatuses.LowCrash || 
-                    newStat == BaseValues.CnlStatuses.Low || newStat == BaseValues.CnlStatuses.High || 
-                    newStat == BaseValues.CnlStatuses.HighCrash) && oldStat != newStat)
+                    // события нормализации
+                    newStat == BaseValues.CnlStatuses.Normal && 
+                    oldStat != newStat && oldStat != BaseValues.CnlStatuses.Undefined ||
+                    // события занижения и завышения
+                    (newStat == BaseValues.CnlStatuses.LowCrash || newStat == BaseValues.CnlStatuses.Low || 
+                    newStat == BaseValues.CnlStatuses.High || newStat == BaseValues.CnlStatuses.HighCrash) && 
+                    oldStat != newStat)
                 {
                     // создание события
                     EventTableLight.Event ev = new EventTableLight.Event();
@@ -1522,7 +1530,7 @@ namespace Scada.Server.Svc
                     ev.OldCnlVal = oldCnlData.Val;
                     ev.OldCnlStat = oldStat;
                     ev.NewCnlVal = newCnlData.Val;
-                    ev.NewCnlStat = dataHasChanged && oldStat == BaseValues.CnlStatuses.Defined && 
+                    ev.NewCnlStat = dataChanged && oldStat == BaseValues.CnlStatuses.Defined && 
                         newStat == BaseValues.CnlStatuses.Defined ? BaseValues.CnlStatuses.Changed : newStat;
 
                     // запись события и выполнение действий модулей
@@ -2156,11 +2164,9 @@ namespace Scada.Server.Svc
                                     // обновление информации об активности канала
                                     activeDTs[cnlInd] = DateTime.Now;
                                 }
-                                else if (inCnl.CnlTypeID != BaseValues.CnlTypes.TSDR &&
-                                    inCnl.CnlTypeID != BaseValues.CnlTypes.TIDR)
+                                else
                                 {
-                                    // запись новых данных минутных и часовых каналов, а также
-                                    // количества переключений в текущий срез без вычислений
+                                    // запись новых данных в текущий срез без вычислений для дорасчётных каналов
                                     curSrez.CnlData[cnlInd] = receivedSrez.CnlData[i];
                                 }
                             }
@@ -2271,8 +2277,9 @@ namespace Scada.Server.Svc
         }
 
         /// <summary>
-        /// Получить данные входного канала обрабатываемого среза для вычисления по формулам
+        /// Получить данные входного канала обрабатываемого среза
         /// </summary>
+        /// <remarks>Метод используется для вычисления по формулам базы конфигурации</remarks>
         public SrezTableLight.CnlData GetProcSrezCnlData(int cnlNum)
         {
             SrezTableLight.CnlData cnlData = SrezTableLight.CnlData.Empty;
@@ -2286,10 +2293,29 @@ namespace Scada.Server.Svc
             {
                 AppLog.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при получении данных входного канала обрабатываемого среза" :
-                    "Error getting the input channel data of the processed snapshot");
+                    "Error getting input channel data of the processed snapshot");
             }
 
             return cnlData;
+        }
+
+        /// <summary>
+        /// Установить данные входного канала обрабатываемого среза
+        /// </summary>
+        /// <remarks>Метод используется для вычисления по формулам базы конфигурации</remarks>
+        public void SetProcSrezCnlData(int cnlNum, SrezTableLight.CnlData cnlData)
+        {
+            try
+            {
+                if (procSrez != null)
+                    procSrez.SetCnlData(cnlNum, cnlData);
+            }
+            catch (Exception ex)
+            {
+                AppLog.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при установке данных входного канала обрабатываемого среза" :
+                    "Error setting input channel data of the processed snapshot");
+            }
         }
 
         /// <summary>
