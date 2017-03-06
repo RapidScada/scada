@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2017
  */
 
 using Scada.Data.Models;
@@ -50,6 +50,10 @@ namespace Scada.Client
         /// Отсутствующее значение входного канала
         /// </summary>
         protected const string NoVal = "";
+        /// <summary>
+        /// Значение входного канала в случае ошибки при форматировании
+        /// </summary>
+        protected const string FrmtErrVal = "!";
         /// <summary>
         /// Обозначение следующего часа
         /// </summary>
@@ -134,7 +138,7 @@ namespace Scada.Client
         /// Форматировать значение входного канала
         /// </summary>
         public void FormatCnlVal(double val, int stat, InCnlProps cnlProps, string decSep, string grSep, 
-            out string text, out string textWithUnit, out bool textIsNumber)
+            out string text, out string textWithUnit, out bool textIsNumber, bool throwOnError = false)
         {
             bool cnlPropsIsNull = cnlProps == null;
 
@@ -203,10 +207,18 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                string cnlNumStr = cnlPropsIsNull ? cnlProps.CnlNum.ToString() : "?";
-                throw new ScadaException(string.Format(Localization.UseRussian ?
-                    "Ошибка при форматировании значения входного канала {0}" :
-                    "Error formatting value of input channel {0}", cnlNumStr), ex);
+                if (throwOnError)
+                {
+                    string cnlNumStr = cnlPropsIsNull ? "?" : cnlProps.CnlNum.ToString();
+                    throw new ScadaException(string.Format(Localization.UseRussian ?
+                        "Ошибка при форматировании значения входного канала {0}" :
+                        "Error formatting value of input channel {0}", cnlNumStr), ex);
+                }
+                else
+                {
+                    text = textWithUnit = FrmtErrVal;
+                    textIsNumber = false;
+                }
             }
         }
 
