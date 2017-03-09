@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2017
  */
 
 using System;
@@ -167,6 +167,8 @@ namespace Scada.Web.Shell
                     return new MenuItem(WebPhrases.AdminMenuItem, "", 200);
                 case StandardMenuItems.Config:
                     return new MenuItem(WebPhrases.ConfigMenuItem, "", 300);
+                case StandardMenuItems.Plugins:
+                    return new MenuItem(WebPhrases.PluginsMenuItem, "", 400);
                 default: // StandardMenuItem.About
                     return new MenuItem(WebPhrases.AboutMenuItem, "~/About.aspx", SortOrders.Last);
             }
