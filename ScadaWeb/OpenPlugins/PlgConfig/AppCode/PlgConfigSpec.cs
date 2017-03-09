@@ -82,7 +82,7 @@ namespace Scada.Web.Plugins
         {
             get
             {
-                return "1.0.0.1";
+                return "5.0.0.2";
             }
         }
 
@@ -119,8 +119,9 @@ namespace Scada.Web.Plugins
                     "~/plugins/Config/WebConfig.aspx"));
                 menuItems.Add(configMenuItem);
 
-                MenuItem pluginsMenuItem = new MenuItem(PlgPhrases.PluginsMenuItem, 
-                    "~/plugins/Config/Plugins.aspx", configMenuItem.SortOrder + 100);
+                MenuItem pluginsMenuItem = MenuItem.FromStandardMenuItem(StandardMenuItems.Plugins);
+                pluginsMenuItem.Subitems.Add(new MenuItem(PlgPhrases.InstalledPluginsMenuItem,
+                    "~/plugins/Config/Plugins.aspx"));
                 menuItems.Add(pluginsMenuItem);
 
                 return menuItems;

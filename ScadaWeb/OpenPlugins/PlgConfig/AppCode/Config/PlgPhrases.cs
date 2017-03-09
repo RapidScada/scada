@@ -58,7 +58,7 @@ namespace Scada.Web.Plugins.Config
 
         // Словарь Scada.Web.Plugins.PlgConfigSpec
         public static string WebConfigMenuItem { get; private set; }
-        public static string PluginsMenuItem { get; private set; }
+        public static string InstalledPluginsMenuItem { get; private set; }
 
         private static void SetToDefault()
         {
@@ -79,7 +79,7 @@ namespace Scada.Web.Plugins.Config
             ConfigSaved = Localization.Dict.GetEmptyPhrase("ConfigSaved");
 
             WebConfigMenuItem = Localization.Dict.GetEmptyPhrase("WebConfigMenuItem");
-            PluginsMenuItem = Localization.Dict.GetEmptyPhrase("PluginsMenuItem");
+            InstalledPluginsMenuItem = Localization.Dict.GetEmptyPhrase("InstalledPluginsMenuItem");
         }
 
         public static void Init()
@@ -110,7 +110,7 @@ namespace Scada.Web.Plugins.Config
             if (Localization.Dictionaries.TryGetValue("Scada.Web.Plugins.PlgConfigSpec", out dict))
             {
                 WebConfigMenuItem = dict.GetPhrase("WebConfigMenuItem", WebConfigMenuItem);
-                PluginsMenuItem = dict.GetPhrase("PluginsMenuItem", PluginsMenuItem);
+                InstalledPluginsMenuItem = dict.GetPhrase("InstalledPluginsMenuItem", InstalledPluginsMenuItem);
             }
         }
     }

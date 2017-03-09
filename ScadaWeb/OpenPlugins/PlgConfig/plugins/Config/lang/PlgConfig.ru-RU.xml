@@ -53,6 +53,6 @@
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.PlgConfigSpec">
     <Phrase key="WebConfigMenuItem">Веб-приложение</Phrase>
-    <Phrase key="PluginsMenuItem">Плагины</Phrase>
+    <Phrase key="InstalledPluginsMenuItem">Установленные</Phrase>
   </Dictionary>
 </PlgConfigDictionaries>
