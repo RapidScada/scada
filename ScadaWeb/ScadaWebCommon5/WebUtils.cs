@@ -40,7 +40,7 @@ namespace Scada.Web
         /// <summary>
         /// Версия веб-приложения
         /// </summary>
-        public const string AppVersion = "5.0.1.0";
+        public const string AppVersion = "5.0.2.0";
         /// <summary>
         /// Начало отчёта времени в Unix, которое используется в Javascript реализации даты
         /// </summary>
