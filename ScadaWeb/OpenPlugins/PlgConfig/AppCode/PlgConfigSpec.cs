@@ -36,6 +36,11 @@ namespace Scada.Web.Plugins
     /// </summary>
     public class PlgConfigSpec : PluginSpec
     {
+        /// <summary>
+        /// Версия плагина
+        /// </summary>
+        internal const string PlgVersion = "5.0.0.2";
+
         private DictUpdater dictUpdater; // объект для обновления словаря плагина
 
         
@@ -82,7 +87,7 @@ namespace Scada.Web.Plugins
         {
             get
             {
-                return "5.0.0.2";
+                return PlgVersion;
             }
         }
 
