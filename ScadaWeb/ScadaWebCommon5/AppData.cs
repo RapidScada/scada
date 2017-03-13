@@ -29,7 +29,6 @@ using Scada.Web.Plugins;
 using Scada.Web.Shell;
 using System;
 using System.Collections.Generic;
-using System.ServiceModel.Web;
 using System.Text;
 using Utils;
 
