@@ -52,7 +52,7 @@ namespace Scada.Web.Shell
             /// </summary>
             public Dictionary<string, UiObjSpec> UiObjSpecs;
             /// <summary>
-            /// Объект для доступа к данным кеша клиентов
+            /// Объект для доступа к данным кэша клиентов
             /// </summary>
             public DataAccess DataAccess;
         }

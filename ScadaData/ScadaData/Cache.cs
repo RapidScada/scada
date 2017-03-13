@@ -30,14 +30,14 @@ namespace Scada
 {
     /// <summary>
     /// Generic cache
-    /// <para>Универсальный кеш</para>
+    /// <para>Универсальный кэш</para>
     /// </summary>
     /// <remarks>The class is thread safe
     /// <para>Класс является потокобезопасным</para></remarks>
     public class Cache<TKey, TValue>
     {
         /// <summary>
-        /// Кешированный элемент
+        /// Кэшированный элемент
         /// </summary>
         public class CacheItem
         {
@@ -64,7 +64,7 @@ namespace Scada
             /// </summary>
             public TKey Key { get; set; }
             /// <summary>
-            /// Получить или установить кешированное значение
+            /// Получить или установить кэшированное значение
             /// </summary>
             public TValue Value { get; set; }
             /// <summary>
@@ -72,7 +72,7 @@ namespace Scada
             /// </summary>
             public DateTime ValueAge { get; set; }
             /// <summary>
-            /// Получить или установить время обновления значения в кеше
+            /// Получить или установить время обновления значения в кэше
             /// </summary>
             public DateTime ValueRefrDT { get; set; }
             /// <summary>
@@ -83,7 +83,7 @@ namespace Scada
 
 
         /// <summary>
-        /// Кешированные элементы 
+        /// Кэшированные элементы 
         /// </summary>
         /// <remarks>SortedDictionary по сравнению с SortedList: 
         /// вставка и удаление элементов быстрее, скорость извлечения аналогична</remarks>
@@ -129,7 +129,7 @@ namespace Scada
 
 
         /// <summary>
-        /// Добавить значение в кеш
+        /// Добавить значение в кэш
         /// </summary>
         public CacheItem AddValue(TKey key, TValue value)
         {
@@ -137,7 +137,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Добавить значение в кеш
+        /// Добавить значение в кэш
         /// </summary>
         public CacheItem AddValue(TKey key, TValue value, DateTime valueAge)
         {
@@ -145,7 +145,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Добавить значение в кеш
+        /// Добавить значение в кэш
         /// </summary>
         public CacheItem AddValue(TKey key, TValue value, DateTime valueAge, DateTime nowDT)
         {
@@ -194,7 +194,7 @@ namespace Scada
 
         /// <summary>
         /// Получить элемент по ключу, обновив время доступа, 
-        /// или создать новый пустой элемент, если ключ не содержится в кеше
+        /// или создать новый пустой элемент, если ключ не содержится в кэше
         /// </summary>
         public CacheItem GetOrCreateItem(TKey key, DateTime nowDT)
         {

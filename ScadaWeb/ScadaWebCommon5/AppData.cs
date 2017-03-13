@@ -161,7 +161,7 @@ namespace Scada.Web
         public ServerComm ServerComm { get; private set; }
 
         /// <summary>
-        /// Получить объект для потокобезопасного доступа к данным кеша клиентов
+        /// Получить объект для потокобезопасного доступа к данным кэша клиентов
         /// </summary>
         /// <remarks>Объект создаётся заново при изменении файла настройки соединения с сервером</remarks>
         public DataAccess DataAccess { get; private set; }

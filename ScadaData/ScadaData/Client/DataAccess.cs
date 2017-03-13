@@ -35,12 +35,12 @@ namespace Scada.Client
 {
     /// <summary>
     /// Handy and thread safe access to the client cache data
-    /// <para>Удобный и потокобезопасный доступ к данным кеша клиентов</para>
+    /// <para>Удобный и потокобезопасный доступ к данным кэша клиентов</para>
     /// </summary>
     public class DataAccess
     {
         /// <summary>
-        /// Кеш данных
+        /// Кэш данных
         /// </summary>
         protected readonly DataCache dataCache;
         /// <summary>
@@ -72,7 +72,7 @@ namespace Scada.Client
 
 
         /// <summary>
-        /// Получить кеш данных
+        /// Получить кэш данных
         /// </summary>
         public DataCache DataCache
         {
