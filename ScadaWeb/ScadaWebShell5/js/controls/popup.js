@@ -291,12 +291,14 @@ scada.Popup.prototype.showModal = function (url, opt_options, opt_callback) {
     }
 
     // create the frame
-    var modalFrame = $("<iframe class='modal-frame'></iframe>");
-    modalFrame.css({
+    var modalFrame = $("<iframe class='modal-frame'></iframe>").css({
         "position": "fixed",
         "opacity": 0.0 // hide the frame while it's loading
     });
-    $("body").append(modalFrame);
+
+    var modalBody = modalElem.find(".modal-body");
+    modalBody.append(modalFrame);
+    $("body").append(modalElem);
 
     // create a function that hides the modal on press Escape key
     var hideModalOnEscapeFunc = function (event) {
@@ -326,15 +328,9 @@ scada.Popup.prototype.showModal = function (url, opt_options, opt_callback) {
         var frameHeight = frameBody.outerHeight(true);
 
         // tune the modal
-        var modalBody = modalElem.find(".modal-body");
         var modalPaddings = parseInt(modalBody.css("padding-left")) + parseInt(modalBody.css("padding-right"));
         modalElem.find(".modal-content").css("min-width", frameWidth + modalPaddings)
         modalElem.find(".modal-title").text(modalFrame[0].contentWindow.document.title);
-
-        // move the frame into the modal
-        modalFrame.detach();
-        modalBody.append(modalFrame);
-        $("body").append(modalElem);
 
         // set the frame style
         modalFrame.css({
