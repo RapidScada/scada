@@ -3,7 +3,7 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2017
  *
  * Requires:
  * - jquery
@@ -397,12 +397,17 @@ scada.Popup.prototype.updateModalHeight = function (modalWnd) {
 
 // Set dialog result for the whole modal dialog
 scada.Popup.prototype.setModalResult = function (modalWnd, dialogResult, extraParams) {
-    var frame = $(modalWnd.frameElement);
-    var modalElem = frame.closest(".modal");
+    var modalElem = $(modalWnd.frameElement).closest(".modal");
     modalElem
         .data("dialog-result", dialogResult)
         .data("extra-params", extraParams);
     return modalElem;
+}
+
+// Set title of the modal dialog
+scada.Popup.prototype.setModalTitle = function (modalWnd, title) {
+    var modalElem = $(modalWnd.frameElement).closest(".modal");
+    modalElem.find(".modal-title").text(title);
 }
 
 // Show or hide the button of the modal dialog
