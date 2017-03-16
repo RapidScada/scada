@@ -353,6 +353,7 @@ scada.Popup.prototype.showModal = function (url, opt_options, opt_callback) {
         // display the modal
         modalElem
         .on('shown.bs.modal', function () {
+            modalFrame.css("height", frameBody.outerHeight(true)); // final height update
             tempOverlay.remove();
             modalFrame.focus();
         })
