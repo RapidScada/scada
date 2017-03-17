@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2017
  */
 
 using Scada.UI;
@@ -319,11 +319,8 @@ namespace Scada.Web.Plugins.Config
             appData = AppData.GetAppData();
             userData = UserData.GetUserData();
 
-            // проверка входа в систему и прав
+            // проверка входа в систему
             userData.CheckLoggedOn(true);
-
-            if (!userData.UserRights.ConfigRight)
-                throw new ScadaException(CommonPhrases.NoRights);
 
             // скрытие сообщений
             pnlErrMsg.HideAlert();
@@ -347,15 +344,20 @@ namespace Scada.Web.Plugins.Config
 
             if (pluginItem != null)
             {
-                if (pluginItem.State == PlaginStates.Inactive)
+                LinkButton lbtnActivate = (LinkButton)e.Item.FindControl("lbtnActivate");
+                LinkButton lbtnDeactivate = (LinkButton)e.Item.FindControl("lbtnDeactivate");
+
+                if (userData.UserRights.ConfigRight)
                 {
-                    LinkButton lbtnDeactivate = (LinkButton)e.Item.FindControl("lbtnDeactivate");
-                    lbtnDeactivate.Visible = false;
+                    if (pluginItem.State == PlaginStates.Inactive)
+                        lbtnDeactivate.Visible = false;
+                    else
+                        lbtnActivate.Visible = false;
                 }
                 else
                 {
-                    LinkButton lbtnActivate = (LinkButton)e.Item.FindControl("lbtnActivate");
                     lbtnActivate.Visible = false;
+                    lbtnDeactivate.Visible = false;
                 }
             }
         }
@@ -363,12 +365,15 @@ namespace Scada.Web.Plugins.Config
         protected void repPlugins_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
             // активация / деактивация плагина
-            string fileName = (string)e.CommandArgument;
+            if (userData.UserRights.ConfigRight)
+            {
+                string fileName = (string)e.CommandArgument;
 
-            if (e.CommandName == "Activate")
-                ActivatePlugin(fileName);
-            else if (e.CommandName == "Deactivate")
-                DeactivatePlugin(fileName);
+                if (e.CommandName == "Activate")
+                    ActivatePlugin(fileName);
+                else if (e.CommandName == "Deactivate")
+                    DeactivatePlugin(fileName);
+            }
         }
     }
 }

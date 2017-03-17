@@ -115,15 +115,20 @@ namespace Scada.Web.Plugins
         /// </summary>
         public override List<MenuItem> GetMenuItems(UserData userData)
         {
-            if (userData.UserRights.ConfigRight)
+            if (userData.LoggedOn)
             {
                 List<MenuItem> menuItems = new List<MenuItem>();
 
-                MenuItem configMenuItem = MenuItem.FromStandardMenuItem(StandardMenuItems.Config);
-                configMenuItem.Subitems.Add(new MenuItem(PlgPhrases.WebConfigMenuItem, 
-                    "~/plugins/Config/WebConfig.aspx"));
-                menuItems.Add(configMenuItem);
+                // элемент меню для конфигурации веб-приложения
+                if (userData.UserRights.ConfigRight)
+                {
+                    MenuItem configMenuItem = MenuItem.FromStandardMenuItem(StandardMenuItems.Config);
+                    configMenuItem.Subitems.Add(new MenuItem(PlgPhrases.WebConfigMenuItem,
+                        "~/plugins/Config/WebConfig.aspx"));
+                    menuItems.Add(configMenuItem);
+                }
 
+                // элемент меню для просмотра или управления установленными плагинами
                 MenuItem pluginsMenuItem = MenuItem.FromStandardMenuItem(StandardMenuItems.Plugins);
                 pluginsMenuItem.Subitems.Add(new MenuItem(PlgPhrases.InstalledPluginsMenuItem,
                     "~/plugins/Config/Plugins.aspx"));
