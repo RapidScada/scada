@@ -16,6 +16,7 @@ function addContents(context) {
     addArticle(context, "installation-and-run/system-requirements.html", "Системные требования", 1);
     addArticle(context, "installation-and-run/software-installation.html", "Установка программного комплекса", 1);
     addArticle(context, "installation-and-run/manual-installation.html", "Установка вручную", 1);
+    addArticle(context, "installation-and-run/module-installation.html", "Установка дополнительных модулей", 1);
     addArticle(context, "installation-and-run/run-applications.html", "Запуск приложений", 1);
     addArticle(context, "installation-and-run/migrate-configuration.html", "Перенос конфигурации на новый сервер", 1);
     addArticle(context, "installation-and-run/software-update.html", "Обновление программного комплекса", 1);
@@ -30,6 +31,7 @@ function addContents(context) {
 
     addArticle(context, "", "Модули");
     addArticle(context, "modules/mod-db-export.html", "Модуль экспорта в БД", 1);
+    addArticle(context, "modules/plg-chart-pro.html", "Плагин Графики Про", 1);
 
     addArticle(context, "", "Сценарии использования");
     addArticle(context, "use-cases/modbus-protocol.html", "Подключение устройств по протоколу Modbus", 1);

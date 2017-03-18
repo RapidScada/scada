@@ -71,9 +71,11 @@
     <Content Include="content\common-images\props.png" />
     <Content Include="content\common-images\refresh.png" />
     <Content Include="content\common-images\reset.png" />
+    <Content Include="content\common-images\restart.png" />
     <Content Include="content\common-images\restart_blue.gif" />
     <Content Include="content\common-images\restart_yellow.gif" />
     <Content Include="content\common-images\start.png" />
+    <Content Include="content\common-images\stop.png" />
     <Content Include="content\en\index.html" />
     <Content Include="content\en\installation-and-run\index.html" />
     <Content Include="content\en\installation-and-run\manual-installation.html" />
@@ -102,7 +104,9 @@
     <Content Include="content\en\use-cases\opc-standard-files\opc_config_en.png" />
     <Content Include="content\en\use-cases\opc-standard-files\opc_vals_en.png" />
     <Content Include="content\ru\installation-and-run\manual-installation.html" />
+    <Content Include="content\ru\installation-and-run\module-installation.html" />
     <Content Include="content\ru\modules\mod-db-export.html" />
+    <Content Include="content\ru\modules\plg-chart-pro.html" />
     <Content Include="content\ru\software-configuration\communication-with-devices-files\scada_comm_import_ru.png" />
     <Content Include="content\ru\software-configuration\communication-with-devices-files\scada_comm_line_ru.png" />
     <Content Include="content\en\software-configuration\communication-with-devices-files\scada_comm_req_seq_en.png" />

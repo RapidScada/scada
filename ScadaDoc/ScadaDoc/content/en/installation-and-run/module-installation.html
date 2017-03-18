@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Installation of Additional Modules - Rapid SCADA Documentation</title>
+    <meta charset="utf-8" />
+    <link href="../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Installation of Additional Modules</h1>
+    <p>Rapid SCADA supports additional modules which extend the software functionality. This section contains a description of the common installation sequence that is typical for most modules.</p>
+
+    <h2>Installation of Server Modules</h2>
+    <p>The sequence of installing a new or updating an existing module of the Server application:</p>
+    <ol>
+        <li>Stop the Server service using the <img src="../../common-images/stop.png" /> button, and close the Server graphical shell.</li>
+        <li>Unzip the module installation package.</li>
+        <li>Copy all the files from the SCADA folder of the module installation package to the Rapid SCADA installation directory, the default is C:\SCADA, with the hierarchy of directories retained.</li>
+        <li>In case of using Windows 8 or higher, find C:\SCADA\ScadaServer\Mod\Mod*.dll, open the file properties and unblock the file.</li>
+        <li>Run the Server graphical shell and go to the Modules page.</li>
+        <li>Click the <img src="../../common-images/plus.png" /> button, then use the file dialog to select the module library and apply the changes with the <img src="../../common-images/apply.png" /> button.</li>
+        <li>Perform the configuration of the module specified in the module documentation.</li>
+        <li>Start the Server service using the <img src="../../common-images/start.png" /> button.</li>
+    </ol>
+
+    <h2>Установка драйверов Коммуникатора</h2>
+    <p>Последовательность установки нового или обновления существующего драйвера для приложения Коммуникатор:</p>
+    <ol>
+        <li>Остановить службу Коммуникатора, щелкнув по кнопке <img src="../../common-images/stop.png" />, и закрыть графическую оболочку Коммуникатора.</li>
+        <li>Распаковать архив дистрибутива драйвера.</li>
+        <li>Скопировать все файлы из папки SCADA дистрибутива драйвера в директорию установки Rapid SCADA, по умолчанию C:\SCADA, с сохранением иерархии директорий.</li>
+        <li>Если используется Windows 8 и выше, найти файл библиотеки драйвера C:\SCADA\ScadaComm\KP\Kp*.dll, открыть его свойства и разблокировать файл.</li>
+        <li>Запустить графическую оболочку Коммуникатора, затем запустить службу Коммуникатора с помощью кнопки <img src="../../common-images/start.png" />.</li>
+        <li>Драйвер готов к использованию.</li>
+    </ol>
+
+    <h2 id="plugins">Установка плагинов Вебстанции</h2>
+    <p>Дополнительные модули для веб-приложения Вебстанция называются плагины. Последовательность установки нового плагина:</p>
+    <ol>
+        <li>Распаковать архив дистрибутива плагина.</li>
+        <li>Скопировать все файлы из папки SCADA дистрибутива плагина в директорию установки Rapid SCADA, по умолчанию C:\SCADA, с сохранением иерархии директорий.</li>
+        <li>Если используется Windows 8 и выше, найти файл библиотеки плагина C:\SCADA\ScadaWeb\bin\Plg*.dll, открыть его свойства и разблокировать файл.</li>
+        <li>Выполнить вход в веб-приложение как администратор и перейти на страницу <em>Главное меню &gt; Плагины</em>.</li>
+        <li>Найти на странице новый плагин и щёлкнуть по ссылке <em>Активировать</em>.</li>
+        <li>Выполнить действия по настройке плагина, указанные в документации на конкретный плагин.</li>
+    </ol>
+</body>
+</html>

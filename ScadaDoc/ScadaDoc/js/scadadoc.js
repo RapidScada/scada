@@ -111,7 +111,7 @@ function addArticle(context, link, title, level) {
     var url = context.docRoot + link;
     var itemInnerHtml = link ? "<a href='" + url + "'>" + title + "</a>" : title;
     var levClass = level ? " level" + level : "";
-    var selClass = link && url == location.href ? " selected" : "";
+    var selClass = link && url == location.href.split("#")[0] ? " selected" : "";
 
     var contentsItem = $("<div class='sd-contents-item" + levClass + selClass + "'>" + itemInnerHtml + "</div>");
     context.contents.append(contentsItem);
