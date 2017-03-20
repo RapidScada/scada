@@ -107,7 +107,11 @@
     <Content Include="content\en\use-cases\opc-standard-files\opc_vals_en.png" />
     <Content Include="content\ru\installation-and-run\manual-installation.html" />
     <Content Include="content\ru\installation-and-run\module-installation.html" />
+    <Content Include="content\ru\modules\index.html" />
     <Content Include="content\ru\modules\mod-db-export.html" />
+    <Content Include="content\ru\modules\plg-elastic-report-files\interface_table_ru.png" />
+    <Content Include="content\ru\modules\plg-elastic-report.html" />
+    <Content Include="content\ru\modules\plg-dashboard.html" />
     <Content Include="content\ru\modules\plg-chart-pro.html" />
     <Content Include="content\ru\software-configuration\communication-with-devices-files\scada_comm_import_ru.png" />
     <Content Include="content\ru\software-configuration\communication-with-devices-files\scada_comm_line_ru.png" />
@@ -203,6 +207,7 @@
     <Content Include="content\ru\software-overview\applications\webstation-application-files\scada_web_scheme_ru.png" />
     <Content Include="content\ru\software-overview\applications\webstation-application-files\scada_web_table_en.png" />
     <Content Include="content\ru\software-overview\applications\webstation-application.html" />
+    <Content Include="content\ru\use-cases\index.html" />
     <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_commline_ru.png" />
     <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_create_cnls_ru.png" />
     <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_data_ru.png" />
@@ -226,6 +231,7 @@
     <Content Include="content\ru\use-cases\opc-standard-files\opc_vals_ru.png" />
     <Content Include="content\ru\use-cases\opc-standard.html" />
     <Content Include="content\ru\version-history\communicator-drivers-history.html" />
+    <Content Include="content\ru\version-history\index.html" />
     <Content Include="content\ru\version-history\server-modules-history.html" />
     <Content Include="content\ru\version-history\webstation-plugins-history.html" />
     <Content Include="content\ru\version-history\administrator-history.html" />
