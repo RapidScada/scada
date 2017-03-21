@@ -29,8 +29,12 @@ function addContents(context) {
     addArticle(context, "software-configuration/communication-with-devices.html", "Communication with Devices Configuration", 1);
     addArticle(context, "software-configuration/creating-views.html", "Creating Views", 1);
 
-    addArticle(context, "", "Modules");
+    addArticle(context, "modules/", "Modules");
+    addArticle(context, "modules/mod-auto-control.html", "Automatic Control Module", 1);
     addArticle(context, "modules/mod-db-export.html", "Export to Database Module", 1);
+    addArticle(context, "modules/plg-chart-pro.html", "Chart Pro Plugin", 1);
+    addArticle(context, "modules/plg-dashboard.html", "Dashboard Plugin", 1);
+    addArticle(context, "modules/plg-elastic-report.html", "Elastic Report Plugin", 1);
 
     addArticle(context, "use-cases/", "Use Cases");
     addArticle(context, "use-cases/modbus-protocol.html", "Connecting Devices Using Modbus Protocol", 1);
