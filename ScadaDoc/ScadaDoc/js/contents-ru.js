@@ -30,6 +30,7 @@ function addContents(context) {
     addArticle(context, "software-configuration/creating-views.html", "Создание представлений", 1);
 
     addArticle(context, "modules/", "Модули");
+    addArticle(context, "modules/mod-auto-control.html", "Модуль автоматического управления", 1);
     addArticle(context, "modules/mod-db-export.html", "Модуль экспорта в БД", 1);
     addArticle(context, "modules/plg-chart-pro.html", "Плагин Графики Про", 1);
     addArticle(context, "modules/plg-dashboard.html", "Плагин Дэшборды", 1);
