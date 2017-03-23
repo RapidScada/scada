@@ -304,7 +304,7 @@ namespace Scada.Web.Shell
         protected HttpCookie CreateCookie(string username, Credentials cred)
         {
             HttpCookie cookie = new HttpCookie("User");
-            cookie.Values.Set("Username", username);
+            cookie.Values.Set("Username", HttpUtility.UrlEncode(username));
             cookie.Values.Set("BrowserID", cred == null ? "" : cred.BrowserID);
             cookie.Values.Set("OneTimePassword", cred == null ? "" : cred.OneTimePassword);
             cookie.Expires = DateTime.Now.Add(ExpireSpan);
@@ -327,7 +327,7 @@ namespace Scada.Web.Shell
 
                 if (reqCookie != null && reqCookie.HasKeys)
                 {
-                    username = reqCookie.Values["Username"] ?? "";
+                    username = HttpUtility.UrlDecode(reqCookie.Values["Username"]);
                     Credentials cred = new Credentials(
                         reqCookie.Values["BrowserID"], reqCookie.Values["OneTimePassword"], DateTime.MinValue);
                     Credentials newCred;
@@ -368,7 +368,8 @@ namespace Scada.Web.Shell
             {
                 WebUtils.CheckHttpContext(httpContext, true);
                 HttpCookie cookie = httpContext.Request.Cookies["User"];
-                return cookie != null && cookie.HasKeys ? (cookie.Values["Username"] ?? "") : "";
+                return cookie != null && cookie.HasKeys ? 
+                    HttpUtility.UrlDecode(cookie.Values["Username"]) : "";
             }
             catch (Exception ex)
             {
@@ -430,7 +431,7 @@ namespace Scada.Web.Shell
 
                 if (reqCookie != null && reqCookie.HasKeys)
                 {
-                    string username = reqCookie.Values["Username"] ?? "";
+                    string username = HttpUtility.UrlDecode(reqCookie.Values["Username"]);
                     HttpCookie respCookie = CreateCookie(username, null);
                     httpContext.Response.Cookies.Set(respCookie);
                 }

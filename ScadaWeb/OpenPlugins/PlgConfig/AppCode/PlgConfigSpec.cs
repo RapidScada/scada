@@ -36,6 +36,11 @@ namespace Scada.Web.Plugins
     /// </summary>
     public class PlgConfigSpec : PluginSpec
     {
+        /// <summary>
+        /// Версия плагина
+        /// </summary>
+        internal const string PlgVersion = "5.0.0.2";
+
         private DictUpdater dictUpdater; // объект для обновления словаря плагина
 
         
@@ -82,7 +87,7 @@ namespace Scada.Web.Plugins
         {
             get
             {
-                return "1.0.0.1";
+                return PlgVersion;
             }
         }
 
@@ -110,17 +115,23 @@ namespace Scada.Web.Plugins
         /// </summary>
         public override List<MenuItem> GetMenuItems(UserData userData)
         {
-            if (userData.UserRights.ConfigRight)
+            if (userData.LoggedOn)
             {
                 List<MenuItem> menuItems = new List<MenuItem>();
 
-                MenuItem configMenuItem = MenuItem.FromStandardMenuItem(StandardMenuItems.Config);
-                configMenuItem.Subitems.Add(new MenuItem(PlgPhrases.WebConfigMenuItem, 
-                    "~/plugins/Config/WebConfig.aspx"));
-                menuItems.Add(configMenuItem);
+                // элемент меню для конфигурации веб-приложения
+                if (userData.UserRights.ConfigRight)
+                {
+                    MenuItem configMenuItem = MenuItem.FromStandardMenuItem(StandardMenuItems.Config);
+                    configMenuItem.Subitems.Add(new MenuItem(PlgPhrases.WebConfigMenuItem,
+                        "~/plugins/Config/WebConfig.aspx"));
+                    menuItems.Add(configMenuItem);
+                }
 
-                MenuItem pluginsMenuItem = new MenuItem(PlgPhrases.PluginsMenuItem, 
-                    "~/plugins/Config/Plugins.aspx", configMenuItem.SortOrder + 100);
+                // элемент меню для просмотра или управления установленными плагинами
+                MenuItem pluginsMenuItem = MenuItem.FromStandardMenuItem(StandardMenuItems.Plugins);
+                pluginsMenuItem.Subitems.Add(new MenuItem(PlgPhrases.InstalledPluginsMenuItem,
+                    "~/plugins/Config/Plugins.aspx"));
                 menuItems.Add(pluginsMenuItem);
 
                 return menuItems;

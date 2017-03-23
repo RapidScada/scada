@@ -166,7 +166,7 @@ namespace Scada.Web
 
 
         /// <summary>
-        /// Получить представление из кеша с проверкой прав на него
+        /// Получить представление из кэша с проверкой прав на него
         /// </summary>
         private BaseView GetViewFromCache(int viewID, UserRights userRights)
         {
@@ -506,7 +506,7 @@ namespace Scada.Web
         /// Получить расширенные текущие данные по заданному фильтру
         /// </summary>
         /// <remarks>Возвращает CnlDataExt[], упакованный в DataTransferObject, в формате в JSON.
-        /// Если задан фильтр по представлению, то оно должно быть уже загружено в кеш</remarks>
+        /// Если задан фильтр по представлению, то оно должно быть уже загружено в кэш</remarks>
         [OperationContract]
         [WebGet]
         public string GetCurCnlDataExt(string cnlNums, string viewIDs, int viewID)
@@ -533,7 +533,7 @@ namespace Scada.Web
         /// Получить часовые данные по заданному фильтру
         /// </summary>
         /// <remarks>Возвращает HourCnlDataExt[], упакованный в ArcDTO, в формате в JSON.
-        /// Если задан фильтр по представлению, то оно должно быть уже загружено в кеш</remarks>
+        /// Если задан фильтр по представлению, то оно должно быть уже загружено в кэш</remarks>
         [OperationContract]
         [WebGet]
         public string GetHourCnlData(int year, int month, int day, int startHour, int endHour, 
@@ -563,7 +563,7 @@ namespace Scada.Web
         /// Получить события по заданному фильтру
         /// </summary>
         /// <remarks>Возвращает DispEventProps[], упакованный в ArcDTO, в формате в JSON.
-        /// Если задан фильтр по представлению, то оно должно быть уже загружено в кеш</remarks>
+        /// Если задан фильтр по представлению, то оно должно быть уже загружено в кэш</remarks>
         [OperationContract]
         [WebGet]
         public string GetEvents(int year, int month, int day, string cnlNums, string viewIDs, int viewID,
@@ -626,7 +626,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Получить метку представления из кеша
+        /// Получить метку представления из кэша
         /// </summary>
         /// <remarks>Возвращает long, упакованный в DataTransferObject, в формате в JSON</remarks>
         [OperationContract]
@@ -643,7 +643,7 @@ namespace Scada.Web
             catch (Exception ex)
             {
                 AppData.Log.WriteException(ex, Localization.UseRussian ?
-                    "Ошибка при получении метки предсталения с ид.={0} из кеша" :
+                    "Ошибка при получении метки предсталения с ид.={0} из кэша" :
                     "Error getting stamp of the view with ID={0} from the cache", viewID);
                 return GetErrorDtoJs(ex);
             }

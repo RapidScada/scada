@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2017
  */
 
 #pragma warning disable 1591 // отключение warning CS1591: Missing XML comment for publicly visible type or member
@@ -77,6 +77,7 @@ namespace Scada.Web
         public static string ReportsMenuItem { get; private set; }
         public static string AdminMenuItem { get; private set; }
         public static string ConfigMenuItem { get; private set; }
+        public static string PluginsMenuItem { get; private set; }
         public static string AboutMenuItem { get; private set; }
 
         // Словарь Scada.Web.Shell.RememberMe
@@ -121,6 +122,7 @@ namespace Scada.Web
             ReportsMenuItem = Localization.Dict.GetEmptyPhrase("ReportsMenuItem");
             AdminMenuItem = Localization.Dict.GetEmptyPhrase("AdminMenuItem");
             ConfigMenuItem = Localization.Dict.GetEmptyPhrase("ConfigMenuItem");
+            PluginsMenuItem = Localization.Dict.GetEmptyPhrase("PluginsMenuItem");
             AboutMenuItem = Localization.Dict.GetEmptyPhrase("AboutMenuItem");
 
             SecurityViolation = Localization.Dict.GetEmptyPhrase("SecurityViolation");
@@ -188,6 +190,7 @@ namespace Scada.Web
                 ReportsMenuItem = dict.GetPhrase("ReportsMenuItem", ReportsMenuItem);
                 AdminMenuItem = dict.GetPhrase("AdminMenuItem", AdminMenuItem);
                 ConfigMenuItem = dict.GetPhrase("ConfigMenuItem", ConfigMenuItem);
+                PluginsMenuItem = dict.GetPhrase("PluginsMenuItem", PluginsMenuItem);
                 AboutMenuItem = dict.GetPhrase("AboutMenuItem", AboutMenuItem);
             }
 

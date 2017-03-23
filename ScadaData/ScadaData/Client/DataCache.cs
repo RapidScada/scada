@@ -42,20 +42,20 @@ namespace Scada.Client
     public class DataCache
     {
         /// <summary>
-        /// Вместимость кеша таблиц часовых срезов
+        /// Вместимость кэша таблиц часовых срезов
         /// </summary>
         protected const int HourCacheCapacity = 100;
         /// <summary>
-        /// Вместимость кеша таблиц событий
+        /// Вместимость кэша таблиц событий
         /// </summary>
         protected const int EventCacheCapacity = 100;
 
         /// <summary>
-        /// Период хранения таблиц часовых срезов в кеше с момента последнего доступа
+        /// Период хранения таблиц часовых срезов в кэше с момента последнего доступа
         /// </summary>
         protected static readonly TimeSpan HourCacheStorePeriod = TimeSpan.FromMinutes(10);
         /// <summary>
-        /// Период хранения таблиц событий в кеше с момента последнего доступа
+        /// Период хранения таблиц событий в кэше с момента последнего доступа
         /// </summary>
         protected static readonly TimeSpan EventCacheStorePeriod = TimeSpan.FromMinutes(10);
         /// <summary>
@@ -182,15 +182,15 @@ namespace Scada.Client
         public SortedList<int, CnlStatProps> CnlStatProps { get; protected set; }
 
         /// <summary>
-        /// Получить кеш таблиц часовых срезов
+        /// Получить кэш таблиц часовых срезов
         /// </summary>
-        /// <remarks>Использовать вне данного класса только для получения состояния кеша</remarks>
+        /// <remarks>Использовать вне данного класса только для получения состояния кэша</remarks>
         public Cache<DateTime, SrezTableLight> HourTableCache { get; protected set; }
 
         /// <summary>
-        /// Получить кеш таблиц событий
+        /// Получить кэш таблиц событий
         /// </summary>
-        /// <remarks>Использовать вне данного класса только для получения состояния кеша</remarks>
+        /// <remarks>Использовать вне данного класса только для получения состояния кэша</remarks>
         public Cache<DateTime, EventTableLight> EventTableCache { get; protected set; }
 
 
@@ -536,7 +536,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить текущий срез из кеша или от сервера
+        /// Получить текущий срез из кэша или от сервера
         /// </summary>
         /// <remarks>Возвращаемый срез после загрузки не изменяется экземпляром данного класса,
         /// таким образом, чтение его данных является потокобезопасным</remarks>
@@ -553,7 +553,7 @@ namespace Scada.Client
                 catch (Exception ex)
                 {
                     log.WriteException(ex, Localization.UseRussian ?
-                        "Ошибка при получении текущего среза из кеша или от сервера" :
+                        "Ошибка при получении текущего среза из кэша или от сервера" :
                         "Error getting the current snapshot the cache or from the server");
                     dataAge = DateTime.MinValue;
                     return null;
@@ -562,7 +562,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить таблицу часовых данных за сутки из кеша или от сервера
+        /// Получить таблицу часовых данных за сутки из кэша или от сервера
         /// </summary>
         /// <remarks>Возвращаемая таблица после загрузки не изменяется экземпляром данного класса,
         /// таким образом, чтение её данных является потокобезопасным. 
@@ -571,7 +571,7 @@ namespace Scada.Client
         {
             try
             {
-                // получение таблицы часовых срезов из кеша
+                // получение таблицы часовых срезов из кэша
                 date = date.Date;
                 DateTime utcNowDT = DateTime.UtcNow;
                 Cache<DateTime, SrezTableLight>.CacheItem  cacheItem = HourTableCache.GetOrCreateItem(date, utcNowDT);
@@ -616,7 +616,7 @@ namespace Scada.Client
                         if (table == null)
                             table = new SrezTableLight();
 
-                        // обновление таблицы в кеше
+                        // обновление таблицы в кэше
                         HourTableCache.UpdateItem(cacheItem, table, newTableAge, utcNowDT);
                     }
 
@@ -634,7 +634,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить таблицу событий за сутки из кеша или от сервера
+        /// Получить таблицу событий за сутки из кэша или от сервера
         /// </summary>
         /// <remarks>Возвращаемая таблица после загрузки не изменяется экземпляром данного класса,
         /// таким образом, чтение её данных является потокобезопасным.
@@ -643,7 +643,7 @@ namespace Scada.Client
         {
             try
             {
-                // получение таблицы событий из кеша
+                // получение таблицы событий из кэша
                 date = date.Date;
                 DateTime utcNowDT = DateTime.UtcNow;
                 Cache<DateTime, EventTableLight>.CacheItem cacheItem = EventTableCache.GetOrCreateItem(date, utcNowDT);
@@ -688,7 +688,7 @@ namespace Scada.Client
                         if (table == null)
                             table = new EventTableLight();
 
-                        // обновление таблицы в кеше
+                        // обновление таблицы в кэше
                         EventTableCache.UpdateItem(cacheItem, table, newTableAge, utcNowDT);
                     }
 

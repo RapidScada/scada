@@ -13,11 +13,11 @@
     <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="~/lib/open-sans/css/open-sans.css" rel="stylesheet" type="text/css" />
     <link href="~/plugins/Chart/css/selectcnls.min.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="../../js/controls/popup.js"></script>
     <script type="text/javascript" src="../../lib/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="../../lib/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../js/api/utils.js"></script>
     <script type="text/javascript" src="../../js/api/eventtypes.js"></script>
+    <script type="text/javascript" src="../../js/controls/popup.js"></script>
     <script type="text/javascript" src="js/selectcnls.js"></script>
 </head>
 <body>

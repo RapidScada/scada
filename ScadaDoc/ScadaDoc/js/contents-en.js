@@ -16,6 +16,7 @@ function addContents(context) {
     addArticle(context, "installation-and-run/system-requirements.html", "System Requirements", 1);
     addArticle(context, "installation-and-run/software-installation.html", "Software Installation", 1);
     addArticle(context, "installation-and-run/manual-installation.html", "Manual Installation", 1);
+    addArticle(context, "installation-and-run/module-installation.html", "Installation of Additional Modules", 1);
     addArticle(context, "installation-and-run/run-applications.html", "Run Applications", 1);
     addArticle(context, "installation-and-run/migrate-configuration.html", "Migrate Configuration to New Server", 1);
     addArticle(context, "installation-and-run/software-update.html", "Software Update", 1);
@@ -28,10 +29,14 @@ function addContents(context) {
     addArticle(context, "software-configuration/communication-with-devices.html", "Communication with Devices Configuration", 1);
     addArticle(context, "software-configuration/creating-views.html", "Creating Views", 1);
 
-    addArticle(context, "", "Modules");
+    addArticle(context, "modules/", "Modules");
+    addArticle(context, "modules/mod-auto-control.html", "Automatic Control Module", 1);
     addArticle(context, "modules/mod-db-export.html", "Export to Database Module", 1);
+    addArticle(context, "modules/plg-chart-pro.html", "Chart Pro Plugin", 1);
+    addArticle(context, "modules/plg-dashboard.html", "Dashboard Plugin", 1);
+    addArticle(context, "modules/plg-elastic-report.html", "Elastic Report Plugin", 1);
 
-    addArticle(context, "", "Use Cases");
+    addArticle(context, "use-cases/", "Use Cases");
     addArticle(context, "use-cases/modbus-protocol.html", "Connecting Devices Using Modbus Protocol", 1);
     addArticle(context, "use-cases/opc-standard.html", "Connecting Devices Using OPC Standard", 1);
 

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Plugins - Rapid SCADA" Language="C#" MasterPageFile="~/MasterMain.Master" AutoEventWireup="true" CodeBehind="Plugins.aspx.cs" Inherits="Scada.Web.Plugins.Config.WFrmPlugins" %>
+﻿<%@ Page Title="Installed Plugins - Rapid SCADA" Language="C#" MasterPageFile="~/MasterMain.Master" AutoEventWireup="true" CodeBehind="Plugins.aspx.cs" Inherits="Scada.Web.Plugins.Config.WFrmPlugins" %>
 <%@ Import Namespace="Scada.Web" %>
 <%@ Import Namespace="Scada.Web.Plugins.Config" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="cphMainHead" runat="server">
@@ -14,7 +14,7 @@
         <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
         <asp:Label ID="lblSuccMsg" runat="server" Text=""></asp:Label>
     </asp:Panel>
-    <h1><asp:Label ID="lblTitle" runat="server" Text="Plugins"></asp:Label></h1>
+    <h1><asp:Label ID="lblTitle" runat="server" Text="Installed Plugins"></asp:Label></h1>
     <asp:Repeater ID="repPlugins" runat="server" OnItemCommand="repPlugins_ItemCommand" OnItemDataBound="repPlugins_ItemDataBound">
         <HeaderTemplate>
             <table class="table table-striped">

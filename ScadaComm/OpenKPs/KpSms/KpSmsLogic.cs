@@ -390,13 +390,15 @@ namespace Scada.Comm.Devices
                 {
                     // получение индекса, статуса и длины сообщения
                     Message msg = new Message();
-                    string[] parts = line.Substring(7).Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    bool paramsOK = false;
+                    string[] parts = line.Substring(7).Split(new char[] { ',' }, StringSplitOptions.None);
                     if (parts.Length >= 3)
                     {
                         int val1, val2, val3;
                         if (int.TryParse(parts[0], out val1) && int.TryParse(parts[1], out val2) &&
                             int.TryParse(parts[parts.Length - 1], out val3))
                         {
+                            paramsOK = true;
                             msg.Index = val1;
                             msg.Status = val2;
                             msg.Length = val3;
@@ -405,7 +407,7 @@ namespace Scada.Comm.Devices
                     }
 
                     // расшифровка PDU
-                    if (msg.Index > 0)
+                    if (paramsOK)
                     {
                         if (i <= lineCnt)
                         {

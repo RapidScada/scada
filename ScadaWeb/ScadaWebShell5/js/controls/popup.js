@@ -3,7 +3,7 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2017
  *
  * Requires:
  * - jquery
@@ -291,12 +291,14 @@ scada.Popup.prototype.showModal = function (url, opt_options, opt_callback) {
     }
 
     // create the frame
-    var modalFrame = $("<iframe class='modal-frame'></iframe>");
-    modalFrame.css({
+    var modalFrame = $("<iframe class='modal-frame'></iframe>").css({
         "position": "fixed",
         "opacity": 0.0 // hide the frame while it's loading
     });
-    $("body").append(modalFrame);
+
+    var modalBody = modalElem.find(".modal-body");
+    modalBody.append(modalFrame);
+    $("body").append(modalElem);
 
     // create a function that hides the modal on press Escape key
     var hideModalOnEscapeFunc = function (event) {
@@ -326,15 +328,9 @@ scada.Popup.prototype.showModal = function (url, opt_options, opt_callback) {
         var frameHeight = frameBody.outerHeight(true);
 
         // tune the modal
-        var modalBody = modalElem.find(".modal-body");
         var modalPaddings = parseInt(modalBody.css("padding-left")) + parseInt(modalBody.css("padding-right"));
         modalElem.find(".modal-content").css("min-width", frameWidth + modalPaddings)
         modalElem.find(".modal-title").text(modalFrame[0].contentWindow.document.title);
-
-        // move the frame into the modal
-        modalFrame.detach();
-        modalBody.append(modalFrame);
-        $("body").append(modalElem);
 
         // set the frame style
         modalFrame.css({
@@ -357,6 +353,7 @@ scada.Popup.prototype.showModal = function (url, opt_options, opt_callback) {
         // display the modal
         modalElem
         .on('shown.bs.modal', function () {
+            modalFrame.css("height", frameBody.outerHeight(true)); // final height update
             tempOverlay.remove();
             modalFrame.focus();
         })
@@ -400,12 +397,17 @@ scada.Popup.prototype.updateModalHeight = function (modalWnd) {
 
 // Set dialog result for the whole modal dialog
 scada.Popup.prototype.setModalResult = function (modalWnd, dialogResult, extraParams) {
-    var frame = $(modalWnd.frameElement);
-    var modalElem = frame.closest(".modal");
+    var modalElem = $(modalWnd.frameElement).closest(".modal");
     modalElem
         .data("dialog-result", dialogResult)
         .data("extra-params", extraParams);
     return modalElem;
+}
+
+// Set title of the modal dialog
+scada.Popup.prototype.setModalTitle = function (modalWnd, title) {
+    var modalElem = $(modalWnd.frameElement).closest(".modal");
+    modalElem.find(".modal-title").text(title);
 }
 
 // Show or hide the button of the modal dialog

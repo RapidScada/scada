@@ -36,11 +36,11 @@ namespace Scada.Client
     public class ViewCache
     {
         /// <summary>
-        /// Вместимость кеша неограниченная по количеству элементов
+        /// Вместимость кэша неограниченная по количеству элементов
         /// </summary>
         protected const int Capacity = int.MaxValue;
         /// <summary>
-        /// Период хранения в кеше с момента последнего доступа
+        /// Период хранения в кэше с момента последнего доступа
         /// </summary>
         protected static readonly TimeSpan StorePeriod = TimeSpan.FromMinutes(10);
         /// <summary>
@@ -53,7 +53,7 @@ namespace Scada.Client
         /// </summary>
         protected readonly ServerComm serverComm;
         /// <summary>
-        /// Объект для потокобезопасного доступа к данным кеша клиентов
+        /// Объект для потокобезопасного доступа к данным кэша клиентов
         /// </summary>
         protected readonly DataAccess dataAccess;
         /// <summary>
@@ -90,9 +90,9 @@ namespace Scada.Client
 
 
         /// <summary>
-        /// Получить объект кеша представлений
+        /// Получить объект кэша представлений
         /// </summary>
-        /// <remarks>Использовать вне данного класса только для получения состояния кеша</remarks>
+        /// <remarks>Использовать вне данного класса только для получения состояния кэша</remarks>
         public Cache<int, BaseView> Cache { get; protected set; }
 
 
@@ -163,7 +163,7 @@ namespace Scada.Client
                 if (viewType == null)
                     throw new ArgumentNullException("viewType");
 
-                // получение представления из кеша
+                // получение представления из кэша
                 DateTime utcNowDT = DateTime.UtcNow;
                 Cache<int, BaseView>.CacheItem cacheItem = Cache.GetOrCreateItem(viewID, utcNowDT);
 
@@ -171,7 +171,7 @@ namespace Scada.Client
                 lock (cacheItem)
                 {
                     BaseView view = null;                     // представление, которое необходимо получить
-                    BaseView viewFromCache = cacheItem.Value; // представление из кеша
+                    BaseView viewFromCache = cacheItem.Value; // представление из кэша
                     DateTime viewAge = cacheItem.ValueAge;    // время изменения файла представления
                     DateTime newViewAge;                      // новое время изменения файла представления
 
@@ -201,7 +201,7 @@ namespace Scada.Client
                             Cache.UpdateItem(cacheItem, view, newViewAge, utcNowDT);
                     }
 
-                    // использование представления из кеша
+                    // использование представления из кэша
                     if (view == null && viewFromCache != null)
                     {
                         if (viewFromCache.GetType().Equals(viewType))
