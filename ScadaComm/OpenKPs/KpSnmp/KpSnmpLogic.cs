@@ -272,7 +272,7 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Расшифровать данные переменной SNMP
+        /// Декодировать данные переменной SNMP
         /// </summary>
         private bool DecodeVarData(ISnmpData snmpData, bool isBits, 
             out SrezTableLight.CnlData tagData, out bool isString)
