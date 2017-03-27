@@ -183,13 +183,11 @@ namespace Scada.Client
                     }
                     else if (formatID == BaseValues.Formats.AsciiText)
                     {
-                        byte[] buf = BitConverter.GetBytes(val);
-                        text = textWithUnit = Encoding.ASCII.GetString(buf).TrimEnd((char)0);
+                        text = textWithUnit = ScadaUtils.DecodeAscii(val);
                     }
                     else if (formatID == BaseValues.Formats.UnicodeText)
                     {
-                        byte[] buf = BitConverter.GetBytes(val);
-                        text = textWithUnit = Encoding.Unicode.GetString(buf).TrimEnd((char)0);
+                        text = textWithUnit = ScadaUtils.DecodeUnicode(val);
                     }
                     else if (formatID == BaseValues.Formats.DateTime)
                     {

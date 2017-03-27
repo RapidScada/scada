@@ -84,11 +84,12 @@ namespace Scada
         }
 
         /// <summary>
-        /// Комбинировать заданные дату и время в единое значение
+        /// Закодировать дату и время в вещественное значение времени
         /// </summary>
-        public static DateTime CombineDateTime(DateTime date, double time)
+        /// <remarks>Совместим с методом DateTime.ToOADate()</remarks>
+        public static double EncodeDateTime(DateTime dateTime)
         {
-            return date.AddDays(time - Math.Truncate(time));
+            return (dateTime - ScadaEpoch).TotalDays;
         }
 
         /// <summary>
@@ -101,12 +102,51 @@ namespace Scada
         }
 
         /// <summary>
-        /// Закодировать дату и время в вещественное значение времени
+        /// Комбинировать заданные дату и время в единое значение
         /// </summary>
-        /// <remarks>Совместим с методом DateTime.ToOADate()</remarks>
-        public static double EncodeDateTime(DateTime dateTime)
+        public static DateTime CombineDateTime(DateTime date, double time)
         {
-            return (dateTime - ScadaEpoch).TotalDays;
+            return date.AddDays(time - Math.Truncate(time));
+        }
+
+        /// <summary>
+        /// Закодировать первые 8 символов строки ASCII в вещественное число
+        /// </summary>
+        public static double EncodeAscii(string s)
+        {
+            byte[] buf = new byte[8];
+            int len = Math.Min(8, s.Length);
+            Encoding.ASCII.GetBytes(s, 0, len, buf, 0);
+            return BitConverter.ToDouble(buf, 0);
+        }
+
+        /// <summary>
+        /// Декодировать вещественное число, преобразовав его в строку ASCII
+        /// </summary>
+        public static string DecodeAscii(double val)
+        {
+            byte[] buf = BitConverter.GetBytes(val);
+            return Encoding.ASCII.GetString(buf).TrimEnd((char)0);
+        }
+
+        /// <summary>
+        /// Закодировать первые 4 символа строки Unicode в вещественное число
+        /// </summary>
+        public static double EncodeUnicode(string s)
+        {
+            byte[] buf = new byte[8];
+            int len = Math.Min(4, s.Length);
+            Encoding.Unicode.GetBytes(s, 0, len, buf, 0);
+            return BitConverter.ToDouble(buf, 0);
+        }
+
+        /// <summary>
+        /// Декодировать вещественное число, преобразовав его в строку Unicode
+        /// </summary>
+        public static string DecodeUnicode(double val)
+        {
+            byte[] buf = BitConverter.GetBytes(val);
+            return Encoding.Unicode.GetString(buf).TrimEnd((char)0);
         }
 
         /// <summary>
