@@ -51,12 +51,6 @@ namespace Scada
         /// <remarks>Совпадает с началом отсчёта времени в OLE Automation и Delphi</remarks>
         public static readonly DateTime ScadaEpoch = new DateTime(1899, 12, 30, 0, 0, 0, DateTimeKind.Utc);
 
-        /// <summary>
-        /// Длительность хранения данных в cookies
-        /// </summary>
-        [Obsolete("Use Scada.Web.WebUtils")]
-        public static readonly TimeSpan CookieExpiration = TimeSpan.FromDays(30);
-
         private static NumberFormatInfo nfi; // формат вещественных чисел
 
 
@@ -87,28 +81,6 @@ namespace Scada
         {
             // Path.AltDirectorySeparatorChar == '/' для Mono на Linux, что некорректно 
             return path.Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar);
-        }
-
-        /// <summary>
-        /// Выделить час, минуту и секунду из закодированного вещественного значения времени
-        /// </summary>
-        [Obsolete]
-        public static void DecodeTime(double time, out int hour, out int min, out int sec)
-        {
-            const double hh = 1.0 / 24;                  // 1 час
-            const double mm = 1.0 / 24 / 60;             // 1 мин
-            const double ms = 1.0 / 24 / 60 / 60 / 1000; // 1 мс
-
-            if (time < 0)
-                time = -time;
-
-            time += ms;
-            time -= Math.Truncate(time); // (int)time работает некорректно для чисел time > int.MaxValue
-            hour = (int)(time * 24);
-            time -= hour * hh;
-            min = (int)(time * 24 * 60);
-            time -= min * mm;
-            sec = (int)(time * 24 * 60 * 60);
         }
 
         /// <summary>
@@ -293,22 +265,6 @@ namespace Scada
         }
 
         /// <summary>
-        /// Преобразовать дату и время в вещественное число побайтно
-        /// </summary>
-        public static double DateTimeToDouble(DateTime dateTime)
-        {
-            return BitConverter.ToDouble(BitConverter.GetBytes(dateTime.ToBinary()), 0);
-        }
-
-        /// <summary>
-        /// Преобразовать вещественное число в дату и время побайтно
-        /// </summary>
-        public static DateTime DoubleToDateTime(double value)
-        {
-            return DateTime.FromBinary(BitConverter.ToInt64(BitConverter.GetBytes(value), 0));
-        }
-
-        /// <summary>
         /// Вычислить хеш-функцию MD5 по массиву байт
         /// </summary>
         public static string ComputeHash(byte[] bytes)
@@ -370,29 +326,6 @@ namespace Scada
             {
                 return DateTime.MinValue;
             }
-        }
-
-
-        /// <summary>
-        /// Отключить кэширование страницы
-        /// </summary>
-        [Obsolete("Use Scada.Web.WebUtils")]
-        public static void DisablePageCache(HttpResponse response)
-        {
-            if (response != null)
-            {
-                response.AppendHeader("Pragma", "No-cache");
-                response.AppendHeader("Cache-Control", "no-store, no-cache, must-revalidate, post-check=0, pre-check=0");
-            }
-        }
-
-        /// <summary>
-        /// Преобразовать строку для вывода на веб-страницу, заменив "\n" на тег "br"
-        /// </summary>
-        [Obsolete("Use Scada.Web.WebUtils")]
-        public static string HtmlEncodeWithBreak(string s)
-        {
-            return HttpUtility.HtmlEncode(s).Replace("\n", "<br />");
         }
     }
 }
