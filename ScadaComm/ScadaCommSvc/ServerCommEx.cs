@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2015
+ * Modified : 2017
  */
 
 using Scada.Client;
@@ -145,36 +145,6 @@ namespace Scada.Comm.Svc
 
                 bool result;
                 return SendEvent(ev, out result) && result;
-            }
-        }
-
-        /// <summary>
-        /// Принять команду от SCADA-Сервера
-        /// </summary>
-        public bool ReceiveCommand(out Command cmd)
-        {
-            int kpNum;
-            int cmdNum;
-            double cmdVal;
-            byte[] cmdData;
-
-            if (ReceiveCommand(out kpNum, out cmdNum, out cmdVal, out cmdData))
-            {
-                int cmdType = cmdData == null ? double.IsNaN(cmdVal) ? 
-                    BaseValues.CmdTypes.Request : BaseValues.CmdTypes.Standard : BaseValues.CmdTypes.Binary;
-                cmd = new Command(cmdType);
-                cmd.KPNum = kpNum;
-                cmd.CmdNum = cmdNum;
-                if (cmdType == BaseValues.CmdTypes.Standard)
-                    cmd.CmdVal = cmdVal;
-                else if (cmdType == BaseValues.CmdTypes.Binary)
-                    cmd.CmdData = cmdData;
-                return true;
-            }
-            else
-            {
-                cmd = null;
-                return false;
             }
         }
     }

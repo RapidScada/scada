@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,12 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2016
+ * Modified : 2017
  */
 
 #undef DETAILED_LOG // выводить в журнал подробную информацию об обмене данными со SCADA-Сервером
 
+using Scada.Data.Models;
 using Scada.Data.Tables;
 using System;
 using System.Data;
@@ -1501,12 +1502,35 @@ namespace Scada.Client
         /// Для команды опроса КП возвращаемое значение команды равно double.NaN и данные команды равны null.</remarks>
         public bool ReceiveCommand(out int kpNum, out int cmdNum, out double cmdVal, out byte[] cmdData)
         {
+            Command cmd;
+            bool result = ReceiveCommand(out cmd);
+
+            if (result)
+            {
+                kpNum = cmd.KPNum;
+                cmdNum = cmd.CmdNum;
+                cmdVal = cmd.CmdTypeID == BaseValues.CmdTypes.Standard ? cmd.CmdVal : double.NaN;
+                cmdData = cmd.CmdTypeID == BaseValues.CmdTypes.Binary ? cmd.CmdData : null;
+            }
+            else
+            {
+                kpNum = 0;
+                cmdNum = 0;
+                cmdVal = double.NaN;
+                cmdData = null;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Принять команду от SCADA-Сервера
+        /// </summary>
+        public bool ReceiveCommand(out Command cmd)
+        {
             Monitor.Enter(tcpLock);
             bool result = false;
-            kpNum = 0;
-            cmdNum = 0;
-            cmdVal = double.NaN;
-            cmdData = null;
+            cmd = null;
             errMsg = "";
 
             try
@@ -1545,19 +1569,21 @@ namespace Scada.Client
                         if (cmdDataLen > 0)
                         {
                             byte cmdType = buf[5];
+                            cmd = new Command(cmdType);
 
                             if (cmdType == 0)
                             {
-                                cmdVal = BitConverter.ToDouble(buf, 10);
+                                cmd.CmdVal = BitConverter.ToDouble(buf, 10);
                             }
                             else if (cmdType == 1)
                             {
-                                cmdData = new byte[cmdDataLen];
+                                byte[] cmdData = new byte[cmdDataLen];
                                 Array.Copy(buf, 10, cmdData, 0, cmdDataLen);
+                                cmd.CmdData = cmdData;
                             }
 
-                            kpNum = buf[6] + buf[7] * 256;
-                            cmdNum = buf[8] + buf[9] * 256;
+                            cmd.KPNum = buf[6] + buf[7] * 256;
+                            cmd.CmdNum = buf[8] + buf[9] * 256;
 
                             commState = CommStates.Authorized;
                             result = true;
@@ -1579,8 +1605,8 @@ namespace Scada.Client
             }
             catch (Exception ex)
             {
-                errMsg = (Localization.UseRussian ? 
-                    "Ошибка при приёме команды ТУ от SCADA-Сервера: " : 
+                errMsg = (Localization.UseRussian ?
+                    "Ошибка при приёме команды ТУ от SCADA-Сервера: " :
                     "Error requesting telecommand from SCADA-Server: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
                 Disconnect();
