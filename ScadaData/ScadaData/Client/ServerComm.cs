@@ -76,43 +76,6 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Роли пользователей
-        /// </summary>
-        [Obsolete("Use BaseValues.Roles")]
-        public enum Roles
-        {
-            /// <summary>
-            /// Отключен
-            /// </summary>
-            Disabled = 0x00,
-            /// <summary>
-            /// Администратор
-            /// </summary>
-            Admin = 0x01,
-            /// <summary>
-            /// Диспетчер
-            /// </summary>
-            Dispatcher = 0x02,
-            /// <summary>
-            /// Гость
-            /// </summary>
-            Guest = 0x03,
-            /// <summary>
-            /// Приложение
-            /// </summary>
-            App = 0x04,
-            /// <summary>
-            /// Настраиваемая роль
-            /// </summary>
-            /// <remarks>Минимальный идентификатор настраиваемой роли равен 0x0B</remarks>
-            Custom = 0x0B,
-            /// <summary>
-            /// Ошибка (неверное имя пользователя или пароль)
-            /// </summary>
-            Err = 0xFF
-        }
-
-        /// <summary>
         /// Директории на SCADA-Сервере
         /// </summary>
         public enum Dirs
@@ -1964,23 +1927,6 @@ namespace Scada.Client
         public void Close()
         {
             Disconnect();
-        }
-
-
-        /// <summary>
-        /// Получить роль пользователя по её идентификатору
-        /// </summary>
-        [Obsolete("Use BaseValues.Roles")]
-        public static Roles GetRole(int roleID)
-        {
-            if ((int)Roles.Admin <= roleID && roleID <= (int)Roles.App)
-                return (Roles)roleID;
-            if ((int)Roles.Custom <= roleID && roleID < (int)Roles.Err)
-                return Roles.Custom;
-            else if (roleID == (int)Roles.Err)
-                return Roles.Err;
-            else
-                return Roles.Disabled;
         }
     }
 }
