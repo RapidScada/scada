@@ -114,6 +114,7 @@
     <Content Include="content\en\use-cases\opc-standard-files\opc_vals_en.png" />
     <Content Include="content\ru\installation-and-run\manual-installation.html" />
     <Content Include="content\ru\installation-and-run\module-installation.html" />
+    <Content Include="content\ru\installation-and-run\software-installation-files\win7_features_dotnet_ru.png" />
     <Content Include="content\ru\modules\index.html" />
     <Content Include="content\ru\modules\mod-auto-control-files\mod_auto_control_ru.png" />
     <Content Include="content\ru\modules\mod-auto-control.html" />
