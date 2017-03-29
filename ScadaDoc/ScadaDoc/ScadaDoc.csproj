@@ -178,7 +178,6 @@
     <Content Include="content\ru\installation-and-run\software-installation-files\web_params_ru.png" />
     <Content Include="content\ru\installation-and-run\software-installation-files\win10_features_dotnet_ru.png" />
     <Content Include="content\ru\installation-and-run\software-installation-files\win10_features_iis_ru.png" />
-    <Content Include="content\ru\installation-and-run\software-installation-files\win7_features_dotnet_en.png" />
     <Content Include="content\ru\installation-and-run\software-installation-files\win7_features_iis_ru.png" />
     <Content Include="content\ru\installation-and-run\software-installation.html" />
     <Content Include="content\ru\installation-and-run\software-update.html" />
