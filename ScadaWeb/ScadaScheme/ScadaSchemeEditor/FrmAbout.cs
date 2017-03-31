@@ -40,7 +40,7 @@ namespace Scada.Scheme.Editor
         private static FrmAbout frmAbout = null;  // форма о программе
 
         private string exeDir;  // директория исполняемого файла приложения
-        private Log errLog;     // журнал ошибок приложения
+        private ILog errLog;    // журнал ошибок приложения
         private bool inited;    // форма инициализирована
         private string linkUrl; // гиперссылка
 
@@ -60,7 +60,7 @@ namespace Scada.Scheme.Editor
         /// <summary>
         /// Отобразить форму о программе
         /// </summary>
-        public static void ShowAbout(string exeDir, Log errLog)
+        public static void ShowAbout(string exeDir, ILog errLog)
         {
             if (exeDir == null)
                 throw new ArgumentNullException("exeDir");

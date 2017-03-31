@@ -27,6 +27,7 @@ using System;
 using System.Diagnostics;
 using System.ServiceModel;
 using System.Windows.Forms;
+using Utils;
 
 namespace Scada.Scheme.Editor
 {
@@ -92,7 +93,7 @@ namespace Scada.Scheme.Editor
         private void btnHelpAbout_Click(object sender, EventArgs e)
         {
             // отображение формы о программе
-            //FrmAbout.ShowAbout(appDirs.ExeDir, log);
+            FrmAbout.ShowAbout(""/*appDirs.ExeDir*/, new LogStub());
         }
     }
 }
