@@ -8,7 +8,7 @@
     <ProjectGuid>{A05EA084-E509-4025-9241-6A5BE5C2B328}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Log</RootNamespace>
+    <RootNamespace>Utils</RootNamespace>
     <AssemblyName>Log</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -42,7 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ILog.cs" />
     <Compile Include="Log.cs" />
+    <Compile Include="LogStub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
