@@ -23,6 +23,7 @@
  * Modified : 2017
  */
 
+using Scada.Scheme.Model.DataTypes;
 using System.Xml;
 
 namespace Scada.Scheme.Model
@@ -33,6 +34,66 @@ namespace Scada.Scheme.Model
     /// </summary>
     public abstract class BaseComponent
     {
+        /// <summary>
+        /// Положение компонента по умолчанию
+        /// </summary>
+        public static readonly Point DefaultLocation = new Point(0, 0);
+        /// <summary>
+        /// Размер компонента по умолчанию
+        /// </summary>
+        public static readonly Size DefaultSize = new Size(100, 100);
+
+
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        public BaseComponent()
+        {
+            ID = 0;
+            Name = "";
+            Location = DefaultLocation;
+            Size = DefaultSize;
+            ZIndex = 0;
+        }
+
+
+        /// <summary>
+        /// Получить или установить идентификатор
+        /// </summary>
+        public int ID { get; set; }
+
+        /// <summary>
+        /// Получить или установить наименование
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Получить имя типа компонента
+        /// </summary>
+        public string TypeName
+        {
+            get
+            {
+                return GetType().FullName;
+            }
+        }
+
+        /// <summary>
+        /// Получить или установить положение
+        /// </summary>
+        public Point Location { get; set; }
+
+        /// <summary>
+        /// Получить или установить размер
+        /// </summary>
+        public Size Size { get; set; }
+
+        /// <summary>
+        /// Получить или установить порядок отображения
+        /// </summary>
+        public int ZIndex { get; set; }
+
+
         /// <summary>
         /// Загрузить конфигурацию компонента из XML-узла
         /// </summary>
