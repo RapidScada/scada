@@ -32,24 +32,24 @@
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.btnFileNew = new System.Windows.Forms.ToolStripButton();
             this.btnFileOpen = new System.Windows.Forms.ToolStripButton();
-            this.btnEditCut = new System.Windows.Forms.ToolStripButton();
-            this.btnEditCopy = new System.Windows.Forms.ToolStripButton();
-            this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.tabControl = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
-            this.sep1 = new System.Windows.Forms.ToolStripSeparator();
             this.btnFileSave = new System.Windows.Forms.ToolStripSplitButton();
             this.miFileSaveAs = new System.Windows.Forms.ToolStripMenuItem();
+            this.sep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnEditCut = new System.Windows.Forms.ToolStripButton();
+            this.btnEditCopy = new System.Windows.Forms.ToolStripButton();
             this.btnEditPaste = new System.Windows.Forms.ToolStripButton();
             this.sep2 = new System.Windows.Forms.ToolStripSeparator();
             this.btnSchemePointer = new System.Windows.Forms.ToolStripButton();
             this.btnSchemeDelete = new System.Windows.Forms.ToolStripButton();
             this.sep3 = new System.Windows.Forms.ToolStripSeparator();
             this.btnHelpAbout = new System.Windows.Forms.ToolStripButton();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tabControl = new System.Windows.Forms.TabControl();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.tabControl.SuspendLayout();
@@ -97,6 +97,29 @@
             this.btnFileOpen.ToolTipText = "Open scheme";
             this.btnFileOpen.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
+            // btnFileSave
+            // 
+            this.btnFileSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnFileSave.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miFileSaveAs});
+            this.btnFileSave.Image = ((System.Drawing.Image)(resources.GetObject("btnFileSave.Image")));
+            this.btnFileSave.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnFileSave.Name = "btnFileSave";
+            this.btnFileSave.Size = new System.Drawing.Size(32, 22);
+            this.btnFileSave.ToolTipText = "Save scheme";
+            // 
+            // miFileSaveAs
+            // 
+            this.miFileSaveAs.Image = ((System.Drawing.Image)(resources.GetObject("miFileSaveAs.Image")));
+            this.miFileSaveAs.Name = "miFileSaveAs";
+            this.miFileSaveAs.Size = new System.Drawing.Size(123, 22);
+            this.miFileSaveAs.Text = "Save As...";
+            // 
+            // sep1
+            // 
+            this.sep1.Name = "sep1";
+            this.sep1.Size = new System.Drawing.Size(6, 25);
+            // 
             // btnEditCut
             // 
             this.btnEditCut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -115,98 +138,6 @@
             this.btnEditCopy.Size = new System.Drawing.Size(23, 22);
             this.btnEditCopy.Text = "toolStripButton5";
             this.btnEditCopy.ToolTipText = "Copy scheme component";
-            // 
-            // statusStrip
-            // 
-            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.lblStatus});
-            this.statusStrip.Location = new System.Drawing.Point(0, 439);
-            this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(284, 22);
-            this.statusStrip.TabIndex = 2;
-            this.statusStrip.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FrmMain_MouseMove);
-            // 
-            // tabControl
-            // 
-            this.tabControl.Controls.Add(this.tabPage3);
-            this.tabControl.Controls.Add(this.tabPage1);
-            this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl.Location = new System.Drawing.Point(0, 25);
-            this.tabControl.Multiline = true;
-            this.tabControl.Name = "tabControl";
-            this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(284, 414);
-            this.tabControl.TabIndex = 1;
-            this.tabControl.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FrmMain_MouseMove);
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.propertyGrid1);
-            this.tabPage1.Controls.Add(this.comboBox1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(276, 388);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Properties";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // propertyGrid1
-            // 
-            this.propertyGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.propertyGrid1.Location = new System.Drawing.Point(3, 24);
-            this.propertyGrid1.Name = "propertyGrid1";
-            this.propertyGrid1.Size = new System.Drawing.Size(270, 361);
-            this.propertyGrid1.TabIndex = 1;
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(3, 3);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(270, 21);
-            this.comboBox1.TabIndex = 0;
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(276, 388);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Components";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // lblStatus
-            // 
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(52, 17);
-            this.lblStatus.Text = "lblStatus";
-            // 
-            // sep1
-            // 
-            this.sep1.Name = "sep1";
-            this.sep1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // btnFileSave
-            // 
-            this.btnFileSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnFileSave.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.miFileSaveAs});
-            this.btnFileSave.Image = ((System.Drawing.Image)(resources.GetObject("btnFileSave.Image")));
-            this.btnFileSave.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnFileSave.Name = "btnFileSave";
-            this.btnFileSave.Size = new System.Drawing.Size(32, 22);
-            this.btnFileSave.ToolTipText = "Save scheme";
-            // 
-            // miFileSaveAs
-            // 
-            this.miFileSaveAs.Image = ((System.Drawing.Image)(resources.GetObject("miFileSaveAs.Image")));
-            this.miFileSaveAs.Name = "miFileSaveAs";
-            this.miFileSaveAs.Size = new System.Drawing.Size(152, 22);
-            this.miFileSaveAs.Text = "Save As...";
             // 
             // btnEditPaste
             // 
@@ -256,6 +187,75 @@
             this.btnHelpAbout.ToolTipText = "About";
             this.btnHelpAbout.Click += new System.EventHandler(this.btnHelpAbout_Click);
             // 
+            // statusStrip
+            // 
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lblStatus});
+            this.statusStrip.Location = new System.Drawing.Point(0, 439);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(284, 22);
+            this.statusStrip.TabIndex = 2;
+            this.statusStrip.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FrmMain_MouseMove);
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(52, 17);
+            this.lblStatus.Text = "lblStatus";
+            // 
+            // tabControl
+            // 
+            this.tabControl.Controls.Add(this.tabPage3);
+            this.tabControl.Controls.Add(this.tabPage1);
+            this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl.Location = new System.Drawing.Point(0, 25);
+            this.tabControl.Multiline = true;
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(284, 414);
+            this.tabControl.TabIndex = 1;
+            this.tabControl.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FrmMain_MouseMove);
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(276, 388);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Components";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.propertyGrid1);
+            this.tabPage1.Controls.Add(this.comboBox1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(276, 388);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Properties";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // propertyGrid1
+            // 
+            this.propertyGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGrid1.Location = new System.Drawing.Point(3, 24);
+            this.propertyGrid1.Name = "propertyGrid1";
+            this.propertyGrid1.Size = new System.Drawing.Size(270, 361);
+            this.propertyGrid1.TabIndex = 1;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(3, 3);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(270, 21);
+            this.comboBox1.TabIndex = 0;
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -271,6 +271,9 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Scheme Editor";
             this.TopMost = true;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMain_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmMain_FormClosed);
+            this.Load += new System.EventHandler(this.FrmMain_Load);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FrmMain_MouseMove);
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();

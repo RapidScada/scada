@@ -60,7 +60,7 @@ namespace Scada.Scheme.Editor
         /// <summary>
         /// Отобразить форму о программе
         /// </summary>
-        public static void ShowAbout(string exeDir, ILog errLog)
+        public static void ShowAbout(string exeDir, ILog errLog, IWin32Window owner)
         {
             if (exeDir == null)
                 throw new ArgumentNullException("exeDir");
@@ -75,7 +75,7 @@ namespace Scada.Scheme.Editor
             }
 
             frmAbout.Init();
-            frmAbout.ShowDialog();
+            frmAbout.ShowDialog(owner);
         }
 
 

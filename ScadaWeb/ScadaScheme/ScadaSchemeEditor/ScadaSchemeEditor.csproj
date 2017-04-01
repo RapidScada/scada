@@ -54,6 +54,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppCode\AppData.cs" />
+    <Compile Include="AppCode\AppDirs.cs" />
     <Compile Include="FrmAbout.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -116,6 +118,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Config\" />
     <Folder Include="Lang\" />
     <Folder Include="Log\" />
     <Folder Include="Web\css\" />

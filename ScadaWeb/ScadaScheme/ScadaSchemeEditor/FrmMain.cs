@@ -23,9 +23,12 @@
  * Modified : 2017
  */
 
+using Scada.UI;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.ServiceModel;
+using System.Threading;
 using System.Windows.Forms;
 using Utils;
 
@@ -37,6 +40,7 @@ namespace Scada.Scheme.Editor
     /// </summary>
     public partial class FrmMain : Form
     {
+        private AppData appData; // общие данные приложения
         private ServiceHost schemeEditorSvcHost;
 
 
@@ -46,7 +50,36 @@ namespace Scada.Scheme.Editor
         public FrmMain()
         {
             InitializeComponent();
+
+            appData = AppData.GetAppData();
+            Application.ThreadException += Application_ThreadException;
         }
+
+
+        private void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
+        {
+            string errMsg = CommonPhrases.UnhandledException + ":\r\n" + e.Exception.Message;
+            appData.Log.WriteAction(errMsg, Log.ActTypes.Exception);
+            ScadaUiUtils.ShowError(errMsg);
+        }
+
+        private void FrmMain_Load(object sender, EventArgs e)
+        {
+            // инициализация общих данных приложения
+            appData.Init(Path.GetDirectoryName(Application.ExecutablePath));
+        }
+
+        private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
+        }
+
+        private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            // завершить работу приложения
+            appData.FinalizeApp();
+        }
+
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -93,7 +126,7 @@ namespace Scada.Scheme.Editor
         private void btnHelpAbout_Click(object sender, EventArgs e)
         {
             // отображение формы о программе
-            FrmAbout.ShowAbout(""/*appDirs.ExeDir*/, new LogStub());
+            FrmAbout.ShowAbout(appData.AppDirs.ExeDir, appData.Log, this);
         }
     }
 }
