@@ -23,6 +23,8 @@
  * Modified : 2017
  */
 
+using System;
+using System.ServiceModel;
 using System.Text;
 using Utils;
 
@@ -41,6 +43,8 @@ namespace Scada.Scheme.Editor
 
         private static readonly AppData appDataInstance; // экземпляр объекта AppData
 
+        private ServiceHost schemeEditorSvcHost; // хост WCF-службы для взаимодействия с веб-интерфейсом
+
 
         /// <summary>
         /// Статический конструктор
@@ -55,6 +59,8 @@ namespace Scada.Scheme.Editor
         /// </summary>
         private AppData()
         {
+            schemeEditorSvcHost = null;
+
             AppDirs = new AppDirs();
             Log = new Log(Log.Formats.Full);
         }
@@ -69,6 +75,51 @@ namespace Scada.Scheme.Editor
         /// Получить журнал приложения
         /// </summary>
         public Log Log { get; private set; }
+
+
+        /// <summary>
+        /// Запустить WCF-службу для взаимодействия с веб-интерфейсом
+        /// </summary>
+        private bool StartWcfService()
+        {
+            try
+            {
+                schemeEditorSvcHost = new ServiceHost(typeof(SchemeEditorSvc));
+                ServiceBehaviorAttribute behavior =
+                    schemeEditorSvcHost.Description.Behaviors.Find<ServiceBehaviorAttribute>();
+                behavior.InstanceContextMode = InstanceContextMode.Single;
+                behavior.UseSynchronizationContext = false;
+                schemeEditorSvcHost.Open();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Log.WriteException(ex, Localization.UseRussian ? 
+                    "Ошибка при запуске WCF-службы" :
+                    "Error starting WCF service");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Остановить WCF-службу, взаимодействующую с веб-интерфейсом
+        /// </summary>
+        private void StopWcfService()
+        {
+            if (schemeEditorSvcHost != null)
+            {
+                try
+                {
+                    schemeEditorSvcHost.Close();
+                }
+                catch
+                {
+                    schemeEditorSvcHost.Abort();
+                }
+
+                schemeEditorSvcHost = null;
+            }
+        }
 
 
         /// <summary>
