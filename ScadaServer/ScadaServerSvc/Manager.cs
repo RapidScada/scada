@@ -23,6 +23,7 @@
  * Modified : 2017
  */
 
+using Scada.Server.Modules;
 using System;
 using System.Diagnostics;
 using Utils;
@@ -82,12 +83,17 @@ namespace Scada.Server.Svc
 
             if (dirsExist)
             {
-                // локализация ScadaData.dll
-                if (!Localization.UseRussian)
+                // локализация приложения
+                string errMsg;
+                if (Localization.LoadDictionaries(mainLogic.AppDirs.LangDir, "ScadaData", out errMsg))
+                    CommonPhrases.Init();
+                else
+                    appLog.WriteAction(errMsg, Log.ActTypes.Error);
+
+                if (Localization.LoadingRequired(mainLogic.AppDirs.LangDir, "ScadaServer"))
                 {
-                    string errMsg;
-                    if (Localization.LoadDictionaries(mainLogic.AppDirs.LangDir, "ScadaData", out errMsg))
-                        CommonPhrases.Init();
+                    if (Localization.LoadDictionaries(mainLogic.AppDirs.LangDir, "ScadaServer", out errMsg))
+                        ModPhrases.InitFromDictionaries();
                     else
                         appLog.WriteAction(errMsg, Log.ActTypes.Error);
                 }
