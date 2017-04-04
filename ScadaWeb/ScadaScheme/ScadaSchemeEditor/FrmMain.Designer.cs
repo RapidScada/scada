@@ -95,7 +95,6 @@
             this.btnFileOpen.Name = "btnFileOpen";
             this.btnFileOpen.Size = new System.Drawing.Size(23, 22);
             this.btnFileOpen.ToolTipText = "Open scheme";
-            this.btnFileOpen.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
             // btnFileSave
             // 

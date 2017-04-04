@@ -28,6 +28,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.ServiceModel;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using Utils;
@@ -41,7 +42,7 @@ namespace Scada.Scheme.Editor
     public partial class FrmMain : Form
     {
         private AppData appData; // общие данные приложения
-        private ServiceHost schemeEditorSvcHost;
+        private Mutex mutex;     // объект для проверки запуска второй копии приложения
 
 
         /// <summary>
@@ -52,7 +53,52 @@ namespace Scada.Scheme.Editor
             InitializeComponent();
 
             appData = AppData.GetAppData();
+            mutex = null;
+
             Application.ThreadException += Application_ThreadException;
+        }
+
+        /// <summary>
+        /// Локализовать приложение
+        /// </summary>
+        private void Localize()
+        {
+            string errMsg;
+
+            if (Localization.LoadDictionaries(appData.AppDirs.LangDir, "ScadaData", out errMsg))
+                CommonPhrases.Init();
+            else
+                appData.Log.WriteError(errMsg);
+
+            if (Localization.LoadDictionaries(appData.AppDirs.LangDir, "ScadaSchemeEditor", out errMsg))
+            {
+                Translator.TranslateForm(this, "Scada.Scheme.Editor.FrmMain");
+                AppPhrases.Init();
+            }
+            else
+            {
+                appData.Log.WriteError(errMsg);
+            }
+        }
+
+        /// <summary>
+        /// Проверить, что запущена вторая копия приложения
+        /// </summary>
+        private bool SecondInstanceExists()
+        {
+            try
+            {
+                bool createdNew;
+                mutex = new Mutex(true, "ScadaSchemeEditorMutex", out createdNew);
+                return !createdNew;
+            }
+            catch (Exception ex)
+            {
+                appData.Log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при проверке существования второй копии приложения" :
+                    "Error checking existence of a second copy of the application");
+                return false;
+            }
         }
 
 
@@ -67,6 +113,27 @@ namespace Scada.Scheme.Editor
         {
             // инициализация общих данных приложения
             appData.Init(Path.GetDirectoryName(Application.ExecutablePath));
+
+            // локализация приложения
+            Localize();
+
+            // проверка существования второй копии приложения
+            if (SecondInstanceExists())
+            {
+                ScadaUiUtils.ShowInfo(AppPhrases.CloseSecondInstance);
+                Close();
+                appData.Log.WriteAction(Localization.UseRussian ?
+                    "Вторая копия Редактора схем закрыта." :
+                    "The second instance of Scheme Editor has been closed.");
+                return;
+            }
+
+            // запуск механизма редактора схем
+            if (!appData.StartEditor())
+            {
+                ScadaUiUtils.ShowInfo(string.Format(AppPhrases.FailedToStartEditor, appData.Log.FileName));
+                Close();
+            }
         }
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -80,47 +147,18 @@ namespace Scada.Scheme.Editor
             appData.FinalizeApp();
         }
 
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            //Process.Start("chrome");
-            Process.Start("file:///D:/Misha/My%20progs/SCADA/Source/scada/ScadaWeb/ScadaScheme/ScadaSchemeEditor/bin/Debug/Web/page.html");
-        }
-
-        private void toolStripButton2_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                schemeEditorSvcHost = new ServiceHost(typeof(SchemeEditorSvc));
-                ServiceBehaviorAttribute behavior =
-                    schemeEditorSvcHost.Description.Behaviors.Find<ServiceBehaviorAttribute>();
-                behavior.InstanceContextMode = InstanceContextMode.Single;
-                behavior.UseSynchronizationContext = false;
-                schemeEditorSvcHost.Open();
-
-                MessageBox.Show("OK");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-        }
-
-        private void toolStripButton3_Click(object sender, EventArgs e)
-        {
-            if (schemeEditorSvcHost != null)
-            {
-                try { schemeEditorSvcHost.Close(); }
-                catch { schemeEditorSvcHost.Abort(); }
-                MessageBox.Show("Closed");
-            }
-        }
-
         private void FrmMain_MouseMove(object sender, MouseEventArgs e)
         {
             // активировать форму при наведении мыши
             if (ActiveForm != this)
                 BringToFront();
+        }
+
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //Process.Start("chrome");
+            Process.Start("file:///D:/Misha/My%20progs/SCADA/Source/scada/ScadaWeb/ScadaScheme/ScadaSchemeEditor/bin/Debug/Web/page.html");
         }
 
         private void btnHelpAbout_Click(object sender, EventArgs e)

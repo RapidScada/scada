@@ -90,6 +90,11 @@ namespace Scada.Scheme.Editor
                 behavior.InstanceContextMode = InstanceContextMode.Single;
                 behavior.UseSynchronizationContext = false;
                 schemeEditorSvcHost.Open();
+
+                Log.WriteAction(Localization.UseRussian ?
+                    "WCF-служба запущена" :
+                    "WCF service is started");
+
                 return true;
             }
             catch (Exception ex)
@@ -111,10 +116,16 @@ namespace Scada.Scheme.Editor
                 try
                 {
                     schemeEditorSvcHost.Close();
+                    Log.WriteAction(Localization.UseRussian ?
+                        "WCF-служба остановлена" :
+                        "WCF service is stopped");
                 }
                 catch
                 {
                     schemeEditorSvcHost.Abort();
+                    Log.WriteAction(Localization.UseRussian ?
+                        "WCF-служба прервана" :
+                        "WCF service is aborted");
                 }
 
                 schemeEditorSvcHost = null;
@@ -140,10 +151,23 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
+        /// Запустить механизм редактора схем
+        /// </summary>
+        public bool StartEditor()
+        {
+            return StartWcfService();
+        }
+
+        /// <summary>
         /// Завершить работу приложения
         /// </summary>
         public void FinalizeApp()
         {
+            StopWcfService();
+
+            Log.WriteAction(Localization.UseRussian ?
+                "Работа Редактора схем завершена" :
+                "Scheme Editor is shutdown", Log.ActTypes.Action);
             Log.WriteBreak();
         }
 

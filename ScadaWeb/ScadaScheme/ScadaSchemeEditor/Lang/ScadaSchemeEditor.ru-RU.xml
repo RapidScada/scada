@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaServerDictionaries>
+  <Dictionary key="Scada.Scheme.Editor.FrmMain">
+    <Phrase key="this">Редактор схем</Phrase>
+    <Phrase key="btnFileNew.ToolTip">Создать новую схему</Phrase>
+    <Phrase key="CloseSecondInstance">Редактор схем уже запущен.\r\nВторая копия будет закрыта.</Phrase>
+    <Phrase key="FailedToStartEditor">Не удалось запустить Редактор схем.&#13;&#10;Смотрите подробности в &#13;&#10;{0}</Phrase>
+    <Phrase key=""></Phrase>
+    <Phrase key=""></Phrase>
+    <Phrase key=""></Phrase>
+    <Phrase key=""></Phrase>
+    <Phrase key=""></Phrase>
+  </Dictionary>
+</ScadaServerDictionaries>
