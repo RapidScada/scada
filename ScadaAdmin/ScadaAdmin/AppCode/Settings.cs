@@ -32,13 +32,13 @@ using Utils;
 namespace ScadaAdmin
 {
     /// <summary>
-    /// Настройки приложения
+    /// Application settings
+    /// <para>Настройки приложения</para>
     /// </summary>
     public class Settings
     {
         /// <summary>
-        /// Application settings
-        /// <para>Настройки приложения</para>
+        /// Настройки приложения
         /// </summary>
         public class AppSettings
         {
