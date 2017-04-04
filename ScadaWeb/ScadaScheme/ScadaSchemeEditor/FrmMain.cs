@@ -41,6 +41,11 @@ namespace Scada.Scheme.Editor
     /// </summary>
     public partial class FrmMain : Form
     {
+        /// <summary>
+        /// Стартовая веб-страница редактора
+        /// </summary>
+        private const string StartPage = "editor.html";
+
         private AppData appData; // общие данные приложения
         private Mutex mutex;     // объект для проверки запуска второй копии приложения
 
@@ -101,6 +106,16 @@ namespace Scada.Scheme.Editor
             }
         }
 
+        /// <summary>
+        /// Открыть браузер со страницей редактора
+        /// </summary>
+        private void OpenBrowser()
+        {
+            Uri startUri = new Uri(appData.AppDirs.WebDir + StartPage);
+            //Process.Start("firefox", startUri.AbsoluteUri);
+            Process.Start(startUri.AbsoluteUri);
+        }
+
 
         private void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
@@ -129,7 +144,12 @@ namespace Scada.Scheme.Editor
             }
 
             // запуск механизма редактора схем
-            if (!appData.StartEditor())
+            if (appData.StartEditor())
+            {
+                // открытие браузера со страницей редактора
+                OpenBrowser();
+            }
+            else
             {
                 ScadaUiUtils.ShowInfo(string.Format(AppPhrases.FailedToStartEditor, appData.Log.FileName));
                 Close();
@@ -155,10 +175,55 @@ namespace Scada.Scheme.Editor
         }
 
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnFileNew_Click(object sender, EventArgs e)
         {
-            //Process.Start("chrome");
-            Process.Start("file:///D:/Misha/My%20progs/SCADA/Source/scada/ScadaWeb/ScadaScheme/ScadaSchemeEditor/bin/Debug/Web/page.html");
+            // создание новой схемы
+            appData.Editor.NewScheme();
+        }
+
+        private void btnFileOpen_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnFileSave_ButtonClick(object sender, EventArgs e)
+        {
+
+        }
+
+        private void miFileSaveAs_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnFileOpenBrowser_Click(object sender, EventArgs e)
+        {
+            OpenBrowser();
+        }
+
+        private void btnEditCut_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnEditCopy_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnEditPaste_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnSchemePointer_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnSchemeDelete_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void btnHelpAbout_Click(object sender, EventArgs e)

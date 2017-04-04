@@ -50,6 +50,7 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.btnFileOpenBrowser = new System.Windows.Forms.ToolStripButton();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.tabControl.SuspendLayout();
@@ -62,6 +63,7 @@
             this.btnFileNew,
             this.btnFileOpen,
             this.btnFileSave,
+            this.btnFileOpenBrowser,
             this.sep1,
             this.btnEditCut,
             this.btnEditCopy,
@@ -85,7 +87,7 @@
             this.btnFileNew.Name = "btnFileNew";
             this.btnFileNew.Size = new System.Drawing.Size(23, 22);
             this.btnFileNew.ToolTipText = "Create new scheme";
-            this.btnFileNew.Click += new System.EventHandler(this.button1_Click);
+            this.btnFileNew.Click += new System.EventHandler(this.btnFileNew_Click);
             // 
             // btnFileOpen
             // 
@@ -95,6 +97,7 @@
             this.btnFileOpen.Name = "btnFileOpen";
             this.btnFileOpen.Size = new System.Drawing.Size(23, 22);
             this.btnFileOpen.ToolTipText = "Open scheme";
+            this.btnFileOpen.Click += new System.EventHandler(this.btnFileOpen_Click);
             // 
             // btnFileSave
             // 
@@ -106,13 +109,15 @@
             this.btnFileSave.Name = "btnFileSave";
             this.btnFileSave.Size = new System.Drawing.Size(32, 22);
             this.btnFileSave.ToolTipText = "Save scheme";
+            this.btnFileSave.ButtonClick += new System.EventHandler(this.btnFileSave_ButtonClick);
             // 
             // miFileSaveAs
             // 
             this.miFileSaveAs.Image = ((System.Drawing.Image)(resources.GetObject("miFileSaveAs.Image")));
             this.miFileSaveAs.Name = "miFileSaveAs";
-            this.miFileSaveAs.Size = new System.Drawing.Size(123, 22);
+            this.miFileSaveAs.Size = new System.Drawing.Size(152, 22);
             this.miFileSaveAs.Text = "Save As...";
+            this.miFileSaveAs.Click += new System.EventHandler(this.miFileSaveAs_Click);
             // 
             // sep1
             // 
@@ -127,6 +132,7 @@
             this.btnEditCut.Name = "btnEditCut";
             this.btnEditCut.Size = new System.Drawing.Size(23, 22);
             this.btnEditCut.ToolTipText = "Cut scheme component";
+            this.btnEditCut.Click += new System.EventHandler(this.btnEditCut_Click);
             // 
             // btnEditCopy
             // 
@@ -137,6 +143,7 @@
             this.btnEditCopy.Size = new System.Drawing.Size(23, 22);
             this.btnEditCopy.Text = "toolStripButton5";
             this.btnEditCopy.ToolTipText = "Copy scheme component";
+            this.btnEditCopy.Click += new System.EventHandler(this.btnEditCopy_Click);
             // 
             // btnEditPaste
             // 
@@ -147,6 +154,7 @@
             this.btnEditPaste.Size = new System.Drawing.Size(23, 22);
             this.btnEditPaste.Text = "toolStripButton1";
             this.btnEditPaste.ToolTipText = "Paste scheme component";
+            this.btnEditPaste.Click += new System.EventHandler(this.btnEditPaste_Click);
             // 
             // sep2
             // 
@@ -161,6 +169,7 @@
             this.btnSchemePointer.Name = "btnSchemePointer";
             this.btnSchemePointer.Size = new System.Drawing.Size(23, 22);
             this.btnSchemePointer.ToolTipText = "Cancel adding component";
+            this.btnSchemePointer.Click += new System.EventHandler(this.btnSchemePointer_Click);
             // 
             // btnSchemeDelete
             // 
@@ -170,6 +179,7 @@
             this.btnSchemeDelete.Name = "btnSchemeDelete";
             this.btnSchemeDelete.Size = new System.Drawing.Size(23, 22);
             this.btnSchemeDelete.ToolTipText = "Delete selected component";
+            this.btnSchemeDelete.Click += new System.EventHandler(this.btnSchemeDelete_Click);
             // 
             // sep3
             // 
@@ -255,6 +265,16 @@
             this.comboBox1.Size = new System.Drawing.Size(270, 21);
             this.comboBox1.TabIndex = 0;
             // 
+            // btnFileOpenBrowser
+            // 
+            this.btnFileOpenBrowser.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnFileOpenBrowser.Image = ((System.Drawing.Image)(resources.GetObject("btnFileOpenBrowser.Image")));
+            this.btnFileOpenBrowser.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnFileOpenBrowser.Name = "btnFileOpenBrowser";
+            this.btnFileOpenBrowser.Size = new System.Drawing.Size(23, 22);
+            this.btnFileOpenBrowser.ToolTipText = "Open new browser tab";
+            this.btnFileOpenBrowser.Click += new System.EventHandler(this.btnFileOpenBrowser_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -307,6 +327,7 @@
         private System.Windows.Forms.ToolStripButton btnSchemeDelete;
         private System.Windows.Forms.ToolStripSeparator sep3;
         private System.Windows.Forms.ToolStripButton btnHelpAbout;
+        private System.Windows.Forms.ToolStripButton btnFileOpenBrowser;
     }
 }
 

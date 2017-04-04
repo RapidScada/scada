@@ -34,7 +34,7 @@ namespace Scada.Scheme.Editor
     /// Common data of Scheme Editor
     /// <para>Общие данные Редактора схем</para>
     /// </summary>
-    public sealed class AppData
+    internal sealed class AppData
     {
         /// <summary>
         /// Имя файла журнала приложения без директории
@@ -63,6 +63,7 @@ namespace Scada.Scheme.Editor
 
             AppDirs = new AppDirs();
             Log = new Log(Log.Formats.Full);
+            Editor = new Editor();
         }
 
 
@@ -75,6 +76,11 @@ namespace Scada.Scheme.Editor
         /// Получить журнал приложения
         /// </summary>
         public Log Log { get; private set; }
+
+        /// <summary>
+        /// Получить объект, содержащий данные и реализующий логику редактора
+        /// </summary>
+        public Editor Editor { get; private set; }
 
 
         /// <summary>
@@ -155,7 +161,7 @@ namespace Scada.Scheme.Editor
         /// </summary>
         public bool StartEditor()
         {
-            return StartWcfService();
+            return Editor.CreateWebPage(AppDirs.WebDir) && StartWcfService();
         }
 
         /// <summary>

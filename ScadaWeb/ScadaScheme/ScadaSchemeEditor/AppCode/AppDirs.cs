@@ -31,7 +31,7 @@ namespace Scada.Scheme.Editor
     /// Application directories
     /// <para>Директории приложения</para>
     /// </summary>
-    public class AppDirs
+    internal class AppDirs
     {
         /// <summary>
         /// Конструктор

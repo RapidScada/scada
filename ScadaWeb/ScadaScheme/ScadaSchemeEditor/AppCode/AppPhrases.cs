@@ -37,13 +37,11 @@ namespace Scada.Scheme.Editor
         }
 
         // Словарь Scada.Scheme.Editor.FrmMain
-        public static string MainFormTitle { get; private set; }
         public static string CloseSecondInstance { get; private set; }
         public static string FailedToStartEditor { get; private set; }
 
         private static void SetToDefault()
         {
-            MainFormTitle = Localization.Dict.GetEmptyPhrase("MainFormTitle");
             CloseSecondInstance = Localization.Dict.GetEmptyPhrase("CloseSecondInstance");
             FailedToStartEditor = Localization.Dict.GetEmptyPhrase("FailedToStartEditor");
         }
@@ -53,7 +51,6 @@ namespace Scada.Scheme.Editor
             Localization.Dict dict;
             if (Localization.Dictionaries.TryGetValue("Scada.Scheme.Editor.FrmMain", out dict))
             {
-                MainFormTitle = dict.GetPhrase("this", MainFormTitle);
                 CloseSecondInstance = dict.GetPhrase("CloseSecondInstance", CloseSecondInstance);
                 FailedToStartEditor = dict.GetPhrase("FailedToStartEditor", FailedToStartEditor);
             }

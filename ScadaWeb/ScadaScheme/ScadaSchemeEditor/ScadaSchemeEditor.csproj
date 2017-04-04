@@ -57,6 +57,8 @@
     <Compile Include="AppCode\AppData.cs" />
     <Compile Include="AppCode\AppDirs.cs" />
     <Compile Include="AppCode\AppPhrases.cs" />
+    <Compile Include="AppCode\Editor.cs" />
+    <Compile Include="AppCode\Settings.cs" />
     <Compile Include="FrmAbout.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -122,15 +124,13 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="paintbrush.ico" />
-    <Content Include="Web\js\page.js">
+    <Content Include="Web\js\editor.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Web\lib\jquery\jquery.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Web\page.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="Web\editor.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Config\" />
