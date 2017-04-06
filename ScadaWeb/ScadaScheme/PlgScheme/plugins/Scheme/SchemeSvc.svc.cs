@@ -184,7 +184,7 @@ namespace Scada.Web.Plugins.Scheme
 
 
         /// <summary>
-        /// Мексимальное количество символов строке данных в формате JSON, 10 МБ
+        /// Максимальное количество символов строке данных в формате JSON, 10 МБ
         /// </summary>
         private const int MaxJsonLen = 10485760;
         /// <summary>

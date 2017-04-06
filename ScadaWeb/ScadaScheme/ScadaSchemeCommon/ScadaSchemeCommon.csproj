@@ -38,10 +38,18 @@
     <Reference Include="ScadaData">
       <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
     </Reference>
+    <Reference Include="ScadaWebCommon5">
+      <HintPath>..\..\ScadaWebCommon5\bin\Release\ScadaWebCommon5.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTransfer\ComponentsDTO.cs" />
+    <Compile Include="DataTransfer\ImageDTO.cs" />
+    <Compile Include="DataTransfer\ImagesDTO.cs" />
+    <Compile Include="DataTransfer\SchemeDocDTO.cs" />
+    <Compile Include="DataTransfer\SchemeDTO.cs" />
     <Compile Include="Model\BaseComponent.cs" />
     <Compile Include="Model\DataTypes\Point.cs" />
     <Compile Include="Model\DataTypes\Size.cs" />
