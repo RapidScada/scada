@@ -23,6 +23,10 @@
  * Modified : 2017
  */
 
+using Scada.Scheme.DataTransfer;
+using Scada.Scheme.Model;
+using Scada.Web;
+using System;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
 using System.ServiceModel.Web;
@@ -46,6 +50,14 @@ namespace Scada.Scheme.Editor
         /// Обеспечивает сериализацию результатов методов сервиса
         /// </summary>
         private static readonly JavaScriptSerializer JsSerializer = new JavaScriptSerializer() { MaxJsonLength = MaxJsonLen };
+        /// <summary>
+        /// Общие данные приложения
+        /// </summary>
+        private static readonly AppData AppData = AppData.GetAppData();
+        /// <summary>
+        /// Редактор
+        /// </summary>
+        private static readonly Editor Editor = AppData.Editor;
 
 
         /// <summary>
@@ -69,14 +81,39 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Получить свойства схемы
+        /// Получить свойства документа схемы
         /// </summary>
         /// <remarks>Возвращает SchemeDocDTO в формате в JSON</remarks>
         [OperationContract]
         [WebGet]
-        public string GetSchemeDoc(string sessionID, long viewStamp)
+        public string GetSchemeDoc(string editorID)
         {
-            return "";
+            try
+            {
+                AllowAccess();
+                SchemeDocDTO dto;
+
+                if (editorID == Editor.EditorID)
+                {
+                    SchemeView srcSchemeView = Editor.SchemeView;
+                    dto = srcSchemeView == null ?
+                        new SchemeDocDTO() :
+                        new SchemeDocDTO(srcSchemeView.SchemeDocument) { ViewStamp = srcSchemeView.Stamp };
+                }
+                else
+                {
+                    dto = new SchemeDocDTO() { EditorUnknown = true };
+                }
+
+                return JsSerializer.Serialize(dto);
+            }
+            catch (Exception ex)
+            {
+                AppData.Log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении документа схемы" :
+                    "Error getting scheme document properties");
+                return JsSerializer.GetErrorJson(ex);
+            }
         }
 
         /// <summary>
@@ -85,7 +122,7 @@ namespace Scada.Scheme.Editor
         /// <remarks>Возвращает ComponentsDTO в формате в JSON</remarks>
         [OperationContract]
         [WebGet]
-        public string GetComponents(string sessionID, long viewStamp, int startIndex, int count)
+        public string GetComponents(string editorID, long viewStamp, int startIndex, int count)
         {
             return "";
         }
@@ -96,7 +133,7 @@ namespace Scada.Scheme.Editor
         /// <remarks>Возвращает ImagesDTO в формате в JSON</remarks>
         [OperationContract]
         [WebGet]
-        public string GetImages(string sessionID, long viewStamp, int startIndex, int totalDataSize)
+        public string GetImages(string editorID, long viewStamp, int startIndex, int totalDataSize)
         {
             return "";
         }

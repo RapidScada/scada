@@ -40,11 +40,18 @@ namespace Scada.Scheme.DataTransfer
             : base()
         {
             ViewStamp = 0;
+            EditorUnknown = false;
         }
+
 
         /// <summary>
         /// Получить или установить метку представления, уникальную в пределах приложения
         /// </summary>
         public long ViewStamp { get; set; }
+
+        /// <summary>
+        /// Получить или установить признак, что заданный в запросе редактор схем неизвестен
+        /// </summary>
+        public bool EditorUnknown { get; set; }
     }
 }

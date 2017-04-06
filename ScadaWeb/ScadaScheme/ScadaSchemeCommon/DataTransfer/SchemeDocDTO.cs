@@ -41,6 +41,17 @@ namespace Scada.Scheme.DataTransfer
         {
             SchemeDoc = null;
         }
+        
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        public SchemeDocDTO(SchemeDocument srcSchemeDoc)
+            : base()
+        {
+            // TODO: копирование свойств документа схемы, исключая изображения
+            SchemeDoc = new SchemeDocument();
+        }
+
 
         /// <summary>
         /// Получить или установить свойства схемы

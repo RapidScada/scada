@@ -208,7 +208,10 @@ namespace Scada.Scheme.Editor
         {
             // создание новой схемы
             if (ConfirmCloseScheme())
+            {
                 editor.NewScheme();
+                appData.AssignViewStamp(editor.SchemeView);
+            }
         }
 
         private void btnFileOpen_Click(object sender, EventArgs e)
@@ -217,7 +220,9 @@ namespace Scada.Scheme.Editor
             if (ConfirmCloseScheme() && ofdScheme.ShowDialog() == DialogResult.OK)
             {
                 string errMsg;
-                if (!editor.LoadSchemeFromFile(ofdScheme.FileName, out errMsg))
+                if (editor.LoadSchemeFromFile(ofdScheme.FileName, out errMsg))
+                    appData.AssignViewStamp(editor.SchemeView);
+                else
                     ScadaUiUtils.ShowError(errMsg);
             }
         }

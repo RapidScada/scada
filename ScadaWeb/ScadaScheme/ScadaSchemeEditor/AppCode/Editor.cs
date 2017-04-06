@@ -39,13 +39,9 @@ namespace Scada.Scheme.Editor
     internal class Editor
     {
         /// <summary>
-        /// Длина идентификатора сессии
+        /// Длина идентификатора редактора
         /// </summary>
-        private const int SessionIDLength = 10;
-        /// <summary>
-        /// Длина идентификатора редактируемой схемы
-        /// </summary>
-        private const int SchemeIDLength = 10;
+        private const int EditorIDLength = 10;
         /// <summary>
         /// Имя файла веб-страницы редактора
         /// </summary>
@@ -74,8 +70,7 @@ namespace Scada.Scheme.Editor
 
             this.log = log;
 
-            SessionID = GetRandomString(SessionIDLength);
-            SchemeID = "";
+            EditorID = GetRandomString(EditorIDLength);
             SchemeView = null;
             Modified = false;
         }
@@ -97,24 +92,11 @@ namespace Scada.Scheme.Editor
             return new string(chars);
     }
 
-        /// <summary>
-        /// Обновить идентификатор редактируемой схемы
-        /// </summary>
-        private void RefreshSchemeID()
-        {
-            SchemeID = GetRandomString(SchemeIDLength);
-        }
-
 
         /// <summary>
-        /// Получить идентификатор сессии
+        /// Получить идентификатор редактора
         /// </summary>
-        public string SessionID { get; private set; }
-
-        /// <summary>
-        /// Получить идентификатор редактируемой схемы
-        /// </summary>
-        public string SchemeID { get; private set; }
+        public string EditorID { get; private set; }
 
         /// <summary>
         /// Получить представление редактируемой схемы
@@ -149,7 +131,7 @@ namespace Scada.Scheme.Editor
                 // создание файла веб-страницы
                 StringBuilder sbCustomScript = new StringBuilder();
                 sbCustomScript
-                    .AppendFormat("var sessionID = '{0}';", SessionID)
+                    .AppendFormat("var sessionID = '{0}';", EditorID)
                     .AppendLine()
                     .Append("var phrases = ")
                     .Append(WebUtils.DictionaryToJs("Scada.Scheme.Editor.Js"));
@@ -177,7 +159,6 @@ namespace Scada.Scheme.Editor
         public void NewScheme()
         {
             SchemeView = new SchemeView();
-            RefreshSchemeID();
             Modified = false;
         }
 
@@ -186,17 +167,14 @@ namespace Scada.Scheme.Editor
         /// </summary>
         public bool LoadSchemeFromFile(string fileName, out string errMsg)
         {
-            NewScheme();
+            SchemeView = new SchemeView();
+            bool loadOK = SchemeView.LoadFromFile(fileName, out errMsg);
+            Modified = false;
 
-            if (SchemeView.LoadFromFile(fileName, out errMsg))
-            {
-                return true;
-            }
-            else
-            {
+            if (!SchemeView.LoadFromFile(fileName, out errMsg))
                 log.WriteError(errMsg);
-                return false;
-            }
+
+            return loadOK;
         }
 
         /// <summary>

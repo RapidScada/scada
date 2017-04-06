@@ -23,6 +23,7 @@
  * Modified : 2017
  */
 
+using Scada.Client;
 using System;
 using System.ServiceModel;
 using System.Text;
@@ -44,6 +45,7 @@ namespace Scada.Scheme.Editor
         private static readonly AppData appDataInstance; // экземпляр объекта AppData
 
         private ServiceHost schemeEditorSvcHost; // хост WCF-службы для взаимодействия с веб-интерфейсом
+        private long viewStampCntr;              // счётчик для генерации меток представлений
 
 
         /// <summary>
@@ -60,6 +62,7 @@ namespace Scada.Scheme.Editor
         private AppData()
         {
             schemeEditorSvcHost = null;
+            viewStampCntr = 0;
 
             AppDirs = new AppDirs();
             Log = new Log(Log.Formats.Full);
@@ -176,6 +179,28 @@ namespace Scada.Scheme.Editor
                 "Scheme Editor is shutdown", Log.ActTypes.Action);
             Log.WriteBreak();
         }
+
+        /// <summary>
+        /// Присвоить представлению уникальную в пределах приложения метку
+        /// </summary>
+        public long AssignViewStamp(BaseView view)
+        {
+            if (view == null)
+            {
+                return 0;
+            }
+            else
+            {
+                lock (view.SyncRoot)
+                {
+                    if (view.Stamp <= 0)
+                        view.Stamp = ++viewStampCntr;
+
+                    return view.Stamp;
+                }
+            }
+        }
+
 
         /// <summary>
         /// Получить общие данные приложения
