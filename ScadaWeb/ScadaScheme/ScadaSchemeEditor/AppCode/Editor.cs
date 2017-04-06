@@ -23,7 +23,12 @@
  * Modified : 2017
  */
 
+using Scada.Web;
 using System;
+using System.IO;
+using System.Reflection;
+using System.Text;
+using Utils;
 
 namespace Scada.Scheme.Editor
 {
@@ -46,12 +51,29 @@ namespace Scada.Scheme.Editor
         /// </summary>
         private const string WebPageFileName = "editor.html";
 
+        /// <summary>
+        /// Журнал приложения
+        /// </summary>
+        protected readonly Log log;
+
+
+        /// <summary>
+        /// Конструктор, ограничивающий создание объекта без параметров
+        /// </summary>
+        protected Editor()
+        {
+        }
 
         /// <summary>
         /// Конструктор
         /// </summary>
-        public Editor()
+        public Editor(Log log)
         {
+            if (log == null)
+                throw new ArgumentNullException("log");
+
+            this.log = log;
+
             SessionID = GetRandomString(SessionIDLength);
             SchemeID = "";
             SchemeView = null;
@@ -100,17 +122,45 @@ namespace Scada.Scheme.Editor
 
 
         /// <summary>
-        /// Создать файл веб-страницы редактора
+        /// Создать веб-страницу редактора
         /// </summary>
         public bool CreateWebPage(string webDir)
         {
             try
             {
-                string fileName = webDir + WebPageFileName;
+                // загрузка шаблона веб-страницы
+                string webPageTemplate;
+
+                using (Stream stream = Assembly.GetExecutingAssembly().
+                    GetManifestResourceStream("Scada.Scheme.Editor.Web.editor.html"))
+                {
+                    using (StreamReader reader = new StreamReader(stream))
+                    {
+                        webPageTemplate = reader.ReadToEnd();
+                    }
+                }
+
+                // создание файла веб-страницы
+                StringBuilder sbCustomScript = new StringBuilder();
+                sbCustomScript
+                    .AppendFormat("var sessionID = '{0}';", SessionID)
+                    .AppendLine()
+                    .Append("var phrases = ")
+                    .Append(WebUtils.DictionaryToJs("Scada.Scheme.Editor.Js"));
+                string webPageContent = string.Format(webPageTemplate, sbCustomScript.ToString());
+
+                using (StreamWriter writer = new StreamWriter(webDir + WebPageFileName, false, Encoding.UTF8))
+                {
+                    writer.Write(webPageContent);
+                }
+
                 return true;
             }
             catch (Exception ex)
             {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при создании веб-страницы редактора" :
+                    "Error creating editor web page");
                 return false;
             }
         }

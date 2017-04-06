@@ -11,4 +11,7 @@
     <Phrase key=""></Phrase>
     <Phrase key=""></Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Scheme.Editor.Js">
+    <Phrase key="Test">тест</Phrase>
+  </Dictionary>
 </ScadaServerDictionaries>

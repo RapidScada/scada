@@ -216,6 +216,16 @@ namespace Scada.Scheme.Editor
 
         }
 
+        private void btnEditUndo_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnEditRedo_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void btnSchemePointer_Click(object sender, EventArgs e)
         {
 

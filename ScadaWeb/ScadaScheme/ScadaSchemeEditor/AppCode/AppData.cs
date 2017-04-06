@@ -63,7 +63,7 @@ namespace Scada.Scheme.Editor
 
             AppDirs = new AppDirs();
             Log = new Log(Log.Formats.Full);
-            Editor = new Editor();
+            Editor = new Editor(Log);
         }
 
 

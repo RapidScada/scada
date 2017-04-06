@@ -34,6 +34,7 @@
             this.btnFileOpen = new System.Windows.Forms.ToolStripButton();
             this.btnFileSave = new System.Windows.Forms.ToolStripSplitButton();
             this.miFileSaveAs = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnFileOpenBrowser = new System.Windows.Forms.ToolStripButton();
             this.sep1 = new System.Windows.Forms.ToolStripSeparator();
             this.btnEditCut = new System.Windows.Forms.ToolStripButton();
             this.btnEditCopy = new System.Windows.Forms.ToolStripButton();
@@ -50,7 +51,9 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.btnFileOpenBrowser = new System.Windows.Forms.ToolStripButton();
+            this.btnEditUndo = new System.Windows.Forms.ToolStripButton();
+            this.btnEditRedo = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.tabControl.SuspendLayout();
@@ -69,13 +72,16 @@
             this.btnEditCopy,
             this.btnEditPaste,
             this.sep2,
+            this.btnEditUndo,
+            this.btnEditRedo,
+            this.sep3,
             this.btnSchemePointer,
             this.btnSchemeDelete,
-            this.sep3,
+            this.toolStripSeparator1,
             this.btnHelpAbout});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(284, 25);
+            this.toolStrip.Size = new System.Drawing.Size(309, 25);
             this.toolStrip.TabIndex = 0;
             this.toolStrip.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FrmMain_MouseMove);
             // 
@@ -115,9 +121,19 @@
             // 
             this.miFileSaveAs.Image = ((System.Drawing.Image)(resources.GetObject("miFileSaveAs.Image")));
             this.miFileSaveAs.Name = "miFileSaveAs";
-            this.miFileSaveAs.Size = new System.Drawing.Size(152, 22);
+            this.miFileSaveAs.Size = new System.Drawing.Size(123, 22);
             this.miFileSaveAs.Text = "Save As...";
             this.miFileSaveAs.Click += new System.EventHandler(this.miFileSaveAs_Click);
+            // 
+            // btnFileOpenBrowser
+            // 
+            this.btnFileOpenBrowser.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnFileOpenBrowser.Image = ((System.Drawing.Image)(resources.GetObject("btnFileOpenBrowser.Image")));
+            this.btnFileOpenBrowser.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnFileOpenBrowser.Name = "btnFileOpenBrowser";
+            this.btnFileOpenBrowser.Size = new System.Drawing.Size(23, 22);
+            this.btnFileOpenBrowser.ToolTipText = "Open new browser tab";
+            this.btnFileOpenBrowser.Click += new System.EventHandler(this.btnFileOpenBrowser_Click);
             // 
             // sep1
             // 
@@ -192,7 +208,7 @@
             this.btnHelpAbout.Image = ((System.Drawing.Image)(resources.GetObject("btnHelpAbout.Image")));
             this.btnHelpAbout.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnHelpAbout.Name = "btnHelpAbout";
-            this.btnHelpAbout.Size = new System.Drawing.Size(23, 22);
+            this.btnHelpAbout.Size = new System.Drawing.Size(23, 20);
             this.btnHelpAbout.ToolTipText = "About";
             this.btnHelpAbout.Click += new System.EventHandler(this.btnHelpAbout_Click);
             // 
@@ -200,9 +216,9 @@
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblStatus});
-            this.statusStrip.Location = new System.Drawing.Point(0, 439);
+            this.statusStrip.Location = new System.Drawing.Point(0, 489);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(284, 22);
+            this.statusStrip.Size = new System.Drawing.Size(309, 22);
             this.statusStrip.TabIndex = 2;
             this.statusStrip.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FrmMain_MouseMove);
             // 
@@ -221,7 +237,7 @@
             this.tabControl.Multiline = true;
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(284, 414);
+            this.tabControl.Size = new System.Drawing.Size(309, 464);
             this.tabControl.TabIndex = 1;
             this.tabControl.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FrmMain_MouseMove);
             // 
@@ -230,7 +246,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(276, 388);
+            this.tabPage3.Size = new System.Drawing.Size(301, 438);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Components";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -265,21 +281,36 @@
             this.comboBox1.Size = new System.Drawing.Size(270, 21);
             this.comboBox1.TabIndex = 0;
             // 
-            // btnFileOpenBrowser
+            // btnEditUndo
             // 
-            this.btnFileOpenBrowser.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnFileOpenBrowser.Image = ((System.Drawing.Image)(resources.GetObject("btnFileOpenBrowser.Image")));
-            this.btnFileOpenBrowser.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnFileOpenBrowser.Name = "btnFileOpenBrowser";
-            this.btnFileOpenBrowser.Size = new System.Drawing.Size(23, 22);
-            this.btnFileOpenBrowser.ToolTipText = "Open new browser tab";
-            this.btnFileOpenBrowser.Click += new System.EventHandler(this.btnFileOpenBrowser_Click);
+            this.btnEditUndo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnEditUndo.Image = ((System.Drawing.Image)(resources.GetObject("btnEditUndo.Image")));
+            this.btnEditUndo.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnEditUndo.Name = "btnEditUndo";
+            this.btnEditUndo.Size = new System.Drawing.Size(23, 22);
+            this.btnEditUndo.ToolTipText = "Undo";
+            this.btnEditUndo.Click += new System.EventHandler(this.btnEditUndo_Click);
+            // 
+            // btnEditRedo
+            // 
+            this.btnEditRedo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnEditRedo.Image = ((System.Drawing.Image)(resources.GetObject("btnEditRedo.Image")));
+            this.btnEditRedo.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnEditRedo.Name = "btnEditRedo";
+            this.btnEditRedo.Size = new System.Drawing.Size(23, 22);
+            this.btnEditRedo.ToolTipText = "Redo";
+            this.btnEditRedo.Click += new System.EventHandler(this.btnEditRedo_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 461);
+            this.ClientSize = new System.Drawing.Size(309, 511);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.toolStrip);
             this.Controls.Add(this.statusStrip);
@@ -328,6 +359,9 @@
         private System.Windows.Forms.ToolStripSeparator sep3;
         private System.Windows.Forms.ToolStripButton btnHelpAbout;
         private System.Windows.Forms.ToolStripButton btnFileOpenBrowser;
+        private System.Windows.Forms.ToolStripButton btnEditUndo;
+        private System.Windows.Forms.ToolStripButton btnEditRedo;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }
 
