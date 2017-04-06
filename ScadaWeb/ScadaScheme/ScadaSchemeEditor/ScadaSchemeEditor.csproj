@@ -139,6 +139,7 @@
     <Folder Include="Config\" />
     <Folder Include="Log\" />
     <Folder Include="Web\css\" />
+    <Folder Include="Web\plugins\Scheme\js\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
