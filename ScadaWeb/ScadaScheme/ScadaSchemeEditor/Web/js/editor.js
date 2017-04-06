@@ -33,6 +33,19 @@ function obtainPluginInfo(parsedData) {
     }
 }
 
+// Update layout of the top level div elements
+function updateLayout() {
+    $("#divSchWrapper")
+        .outerWidth($(window).width())
+        .outerHeight($(window).height());
+}
+
 $(document).ready(function () {
-    getPluginInfo();
+    //getPluginInfo();
+
+    updateLayout();
+
+    $(window).on("resize", function () {
+        updateLayout();
+    });
 });

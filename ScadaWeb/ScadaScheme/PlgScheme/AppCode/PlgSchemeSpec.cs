@@ -81,7 +81,7 @@ namespace Scada.Web.Plugins
         {
             get
             {
-                return "1.0.0.0";
+                return "5.1.0.0"; // TODO: SchemeUtils.SchemeVersion
             }
         }
 
