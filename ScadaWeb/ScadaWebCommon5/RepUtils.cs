@@ -49,6 +49,7 @@ namespace Scada.Web
         /// <summary>
         /// Генерировать отчёт для загрузки через браузер
         /// </summary>
+        [Obsolete("Move the method to RepBuilder class.")]
         public static void GenerateReport(RepBuilder repBuilder, object[] repParams, 
             string templateDir, string fileName, HttpResponse response)
         {
@@ -89,6 +90,7 @@ namespace Scada.Web
         /// <summary>
         /// Записать сообщение о генерации отчёта в журнал
         /// </summary>
+        [Obsolete("Get rid of RepBuilder dependency here.")]
         public static void WriteGenerationAction(Log log, RepBuilder repBuilder, UserData userData)
         {
             log.WriteAction(string.Format(WebPhrases.GenReport, repBuilder.RepName, userData.UserProps.UserName));
