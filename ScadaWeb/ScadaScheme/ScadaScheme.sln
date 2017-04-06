@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaSchemeCommon", "ScadaS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaSchemeEditor", "ScadaSchemeEditor\ScadaSchemeEditor.csproj", "{E9317739-84F5-4207-87E3-F7AC6192EE48}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlgScheme", "PlgScheme\PlgScheme.csproj", "{36CBF606-7F85-4E46-BC7A-C86CACF675B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{E9317739-84F5-4207-87E3-F7AC6192EE48}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9317739-84F5-4207-87E3-F7AC6192EE48}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9317739-84F5-4207-87E3-F7AC6192EE48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36CBF606-7F85-4E46-BC7A-C86CACF675B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36CBF606-7F85-4E46-BC7A-C86CACF675B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36CBF606-7F85-4E46-BC7A-C86CACF675B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36CBF606-7F85-4E46-BC7A-C86CACF675B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
