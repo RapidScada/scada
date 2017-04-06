@@ -39,11 +39,15 @@ namespace Scada.Scheme.Editor
         // Словарь Scada.Scheme.Editor.FrmMain
         public static string CloseSecondInstance { get; private set; }
         public static string FailedToStartEditor { get; private set; }
+        public static string SchemeFileFilter { get; private set; }
+        public static string SaveSchemeConfirm { get; private set; }
 
         private static void SetToDefault()
         {
             CloseSecondInstance = Localization.Dict.GetEmptyPhrase("CloseSecondInstance");
             FailedToStartEditor = Localization.Dict.GetEmptyPhrase("FailedToStartEditor");
+            SchemeFileFilter = Localization.Dict.GetEmptyPhrase("SchemeFileFilter");
+            SaveSchemeConfirm = Localization.Dict.GetEmptyPhrase("SaveSchemeConfirm");
         }
 
         public static void Init()
@@ -53,6 +57,8 @@ namespace Scada.Scheme.Editor
             {
                 CloseSecondInstance = dict.GetPhrase("CloseSecondInstance", CloseSecondInstance);
                 FailedToStartEditor = dict.GetPhrase("FailedToStartEditor", FailedToStartEditor);
+                SchemeFileFilter = dict.GetPhrase("SchemeFileFilter", SchemeFileFilter);
+                SaveSchemeConfirm = dict.GetPhrase("SaveSchemeConfirm", SaveSchemeConfirm);
             }
         }
     }

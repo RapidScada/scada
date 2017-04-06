@@ -54,6 +54,8 @@
             this.btnEditUndo = new System.Windows.Forms.ToolStripButton();
             this.btnEditRedo = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.ofdScheme = new System.Windows.Forms.OpenFileDialog();
+            this.sfdScheme = new System.Windows.Forms.SaveFileDialog();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.tabControl.SuspendLayout();
@@ -306,6 +308,16 @@
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
+            // ofdScheme
+            // 
+            this.ofdScheme.DefaultExt = "*.sch";
+            this.ofdScheme.Filter = "Schemes (*.sch)|*.sch|All Files (*.*)|*.*";
+            // 
+            // sfdScheme
+            // 
+            this.sfdScheme.DefaultExt = "*.sch";
+            this.sfdScheme.Filter = "Schemes (*.sch)|*.sch|All Files (*.*)|*.*";
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -362,6 +374,8 @@
         private System.Windows.Forms.ToolStripButton btnEditUndo;
         private System.Windows.Forms.ToolStripButton btnEditRedo;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.OpenFileDialog ofdScheme;
+        private System.Windows.Forms.SaveFileDialog sfdScheme;
     }
 }
 

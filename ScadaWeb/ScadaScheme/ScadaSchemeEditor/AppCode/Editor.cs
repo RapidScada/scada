@@ -77,6 +77,7 @@ namespace Scada.Scheme.Editor
             SessionID = GetRandomString(SessionIDLength);
             SchemeID = "";
             SchemeView = null;
+            Modified = false;
         }
 
 
@@ -119,6 +120,11 @@ namespace Scada.Scheme.Editor
         /// Получить представление редактируемой схемы
         /// </summary>
         public SchemeView SchemeView { get; private set; }
+
+        /// <summary>
+        /// Получить признак изменения схемы
+        /// </summary>
+        public bool Modified { get; private set; }
 
 
         /// <summary>
@@ -172,6 +178,7 @@ namespace Scada.Scheme.Editor
         {
             SchemeView = new SchemeView();
             RefreshSchemeID();
+            Modified = false;
         }
 
         /// <summary>
@@ -179,8 +186,17 @@ namespace Scada.Scheme.Editor
         /// </summary>
         public bool LoadSchemeFromFile(string fileName, out string errMsg)
         {
-            errMsg = "";
-            return true;
+            NewScheme();
+
+            if (SchemeView.LoadFromFile(fileName, out errMsg))
+            {
+                return true;
+            }
+            else
+            {
+                log.WriteError(errMsg);
+                return false;
+            }
         }
 
         /// <summary>

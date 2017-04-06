@@ -25,6 +25,7 @@
 
 using Scada.Client;
 using Scada.Scheme.Model;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -63,7 +64,34 @@ namespace Scada.Scheme
         /// </summary>
         public override void LoadFromStream(Stream stream)
         {
-            base.LoadFromStream(stream);
+            // очистка представления
+            Clear();
+
+            // загрузка представления
+            Components.Add(new StaticText());
+        }
+
+        /// <summary>
+        /// Загрузить схему из файла
+        /// </summary>
+        public bool LoadFromFile(string fileName, out string errMsg)
+        {
+            try
+            {
+                using (FileStream fileStream =
+                    new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                {
+                    LoadFromStream(fileStream);
+                }
+
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = SchemePhrases.LoadSchemeViewError + ": " + ex.Message;
+                return false;
+            }
         }
 
         /// <summary>

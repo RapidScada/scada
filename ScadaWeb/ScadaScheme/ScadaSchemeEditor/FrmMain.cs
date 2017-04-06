@@ -47,6 +47,8 @@ namespace Scada.Scheme.Editor
         private const string StartPage = "editor.html";
 
         private AppData appData; // общие данные приложения
+        private Editor editor;   // редактор
+        private Log log;         // журнал приложения
         private Mutex mutex;     // объект для проверки запуска второй копии приложения
 
 
@@ -58,6 +60,8 @@ namespace Scada.Scheme.Editor
             InitializeComponent();
 
             appData = AppData.GetAppData();
+            editor = appData.Editor;
+            log = appData.Log;
             mutex = null;
 
             Application.ThreadException += Application_ThreadException;
@@ -73,16 +77,17 @@ namespace Scada.Scheme.Editor
             if (Localization.LoadDictionaries(appData.AppDirs.LangDir, "ScadaData", out errMsg))
                 CommonPhrases.Init();
             else
-                appData.Log.WriteError(errMsg);
+                log.WriteError(errMsg);
 
             if (Localization.LoadDictionaries(appData.AppDirs.LangDir, "ScadaSchemeEditor", out errMsg))
             {
                 Translator.TranslateForm(this, "Scada.Scheme.Editor.FrmMain");
                 AppPhrases.Init();
+                ofdScheme.Filter = sfdScheme.Filter = AppPhrases.SchemeFileFilter;
             }
             else
             {
-                appData.Log.WriteError(errMsg);
+                log.WriteError(errMsg);
             }
         }
 
@@ -99,7 +104,7 @@ namespace Scada.Scheme.Editor
             }
             catch (Exception ex)
             {
-                appData.Log.WriteException(ex, Localization.UseRussian ?
+                log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при проверке существования второй копии приложения" :
                     "Error checking existence of a second copy of the application");
                 return false;
@@ -116,11 +121,35 @@ namespace Scada.Scheme.Editor
             Process.Start(startUri.AbsoluteUri);
         }
 
+        /// <summary>
+        /// Подтвердить возможность закрыть схему
+        /// </summary>
+        private bool ConfirmCloseScheme()
+        {
+            if (editor.Modified)
+            {
+                switch (MessageBox.Show(AppPhrases.SaveSchemeConfirm, CommonPhrases.QuestionCaption,
+                    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question))
+                {
+                    case DialogResult.Yes:
+                        return true; // SaveScheme(false);
+                    case DialogResult.No:
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+            else
+            {
+                return true;
+            }
+        }
+
 
         private void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
             string errMsg = CommonPhrases.UnhandledException + ":\r\n" + e.Exception.Message;
-            appData.Log.WriteAction(errMsg, Log.ActTypes.Exception);
+            log.WriteAction(errMsg, Log.ActTypes.Exception);
             ScadaUiUtils.ShowError(errMsg);
         }
 
@@ -137,7 +166,7 @@ namespace Scada.Scheme.Editor
             {
                 ScadaUiUtils.ShowInfo(AppPhrases.CloseSecondInstance);
                 Close();
-                appData.Log.WriteAction(Localization.UseRussian ?
+                log.WriteAction(Localization.UseRussian ?
                     "Вторая копия Редактора схем закрыта." :
                     "The second instance of Scheme Editor has been closed.");
                 return;
@@ -151,7 +180,7 @@ namespace Scada.Scheme.Editor
             }
             else
             {
-                ScadaUiUtils.ShowInfo(string.Format(AppPhrases.FailedToStartEditor, appData.Log.FileName));
+                ScadaUiUtils.ShowInfo(string.Format(AppPhrases.FailedToStartEditor, log.FileName));
                 Close();
             }
         }
@@ -178,12 +207,19 @@ namespace Scada.Scheme.Editor
         private void btnFileNew_Click(object sender, EventArgs e)
         {
             // создание новой схемы
-            appData.Editor.NewScheme();
+            if (ConfirmCloseScheme())
+                editor.NewScheme();
         }
 
         private void btnFileOpen_Click(object sender, EventArgs e)
         {
-
+            // открытие схемы из файла
+            if (ConfirmCloseScheme() && ofdScheme.ShowDialog() == DialogResult.OK)
+            {
+                string errMsg;
+                if (!editor.LoadSchemeFromFile(ofdScheme.FileName, out errMsg))
+                    ScadaUiUtils.ShowError(errMsg);
+            }
         }
 
         private void btnFileSave_ButtonClick(object sender, EventArgs e)
@@ -239,7 +275,7 @@ namespace Scada.Scheme.Editor
         private void btnHelpAbout_Click(object sender, EventArgs e)
         {
             // отображение формы о программе
-            FrmAbout.ShowAbout(appData.AppDirs.ExeDir, appData.Log, this);
+            FrmAbout.ShowAbout(appData.AppDirs.ExeDir, log, this);
         }
     }
 }

@@ -50,6 +50,7 @@
     <Compile Include="SchemeUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SchemeView.cs" />
+    <Compile Include="SchemePhrases.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
