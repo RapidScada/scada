@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : SCADA-Scheme Editor
+ * Module   : Scheme Editor
  * Summary  : Main form of the application
  * 
  * Author   : Mikhail Shiryaev
@@ -24,16 +24,17 @@
  */
 
 using Scada.Scheme.Model;
+using Scada.Scheme.Model.PropertyGrid;
 using Scada.UI;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using Utils;
+using CM = System.ComponentModel;
 
 namespace Scada.Scheme.Editor
 {
@@ -70,9 +71,9 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Локализовать приложение
+        /// Локализовать форму
         /// </summary>
-        private void Localize()
+        private void LocalizeForm()
         {
             string errMsg;
 
@@ -98,21 +99,23 @@ namespace Scada.Scheme.Editor
         /// </summary>
         private void LocalizeAttributes()
         {
-            PropertyDescriptor textPropDescr = TypeDescriptor.GetProperties(typeof(StaticText))["Text"];
-            AttributeCollection attrs = textPropDescr.Attributes;
+            CM.PropertyDescriptor textPropDescr = CM.TypeDescriptor.GetProperties(typeof(StaticText))["Text"];
+            CM.AttributeCollection attrs = textPropDescr.Attributes;
 
             DescriptionAttribute descrAttr = (DescriptionAttribute)attrs[typeof(DescriptionAttribute)];
-            PropertyInfo descrValProp = typeof(DescriptionAttribute).GetProperty("DescriptionValue", 
+            descrAttr.DescriptionValue = "My descr";
+            /*PropertyInfo descrValProp = typeof(DescriptionAttribute).GetProperty("DescriptionValue", 
                 BindingFlags.NonPublic | BindingFlags.Instance);
-            descrValProp.SetValue(descrAttr, "My custom val2", null);
+            descrValProp.SetValue(descrAttr, "My custom val2", null);*/
 
             DisplayNameAttribute dispAttr = (DisplayNameAttribute)attrs[typeof(DisplayNameAttribute)];
-            PropertyInfo dispValProp = typeof(DisplayNameAttribute).GetProperty("DisplayNameValue",
+            dispAttr.DisplayNameValue = "My Text";
+            /*PropertyInfo dispValProp = typeof(DisplayNameAttribute).GetProperty("DisplayNameValue",
                 BindingFlags.NonPublic | BindingFlags.Instance);
-            dispValProp.SetValue(dispAttr, "MyDispName", null);
+            dispValProp.SetValue(dispAttr, "MyDispName", null);*/
 
-            StaticText.MyCategoryAttribute catAttr = (StaticText.MyCategoryAttribute)attrs[typeof(StaticText.MyCategoryAttribute)];
-            catAttr.Cat = "Custom cat";
+            CategoryAttribute catAttr = (CategoryAttribute)attrs[typeof(CategoryAttribute)];
+            catAttr.CategoryName = "My Cat";
         }
 
         /// <summary>
@@ -210,8 +213,9 @@ namespace Scada.Scheme.Editor
             // инициализация общих данных приложения
             appData.Init(Path.GetDirectoryName(Application.ExecutablePath));
 
-            // локализация приложения
-            Localize();
+            // локализация
+            LocalizeForm();
+            LocalizeAttributes();
 
             // проверка существования второй копии приложения
             if (SecondInstanceExists())
@@ -299,7 +303,6 @@ namespace Scada.Scheme.Editor
 
         private void btnEditCut_Click(object sender, EventArgs e)
         {
-            LocalizeAttributes();
         }
 
         private void btnEditCopy_Click(object sender, EventArgs e)

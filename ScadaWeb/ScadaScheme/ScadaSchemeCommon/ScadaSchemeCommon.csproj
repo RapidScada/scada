@@ -53,6 +53,10 @@
     <Compile Include="Model\BaseComponent.cs" />
     <Compile Include="Model\DataTypes\Point.cs" />
     <Compile Include="Model\DataTypes\Size.cs" />
+    <Compile Include="Model\PropertyGrid\Categories.cs" />
+    <Compile Include="Model\PropertyGrid\CategoryAttribute.cs" />
+    <Compile Include="Model\PropertyGrid\DescriptionAttribute.cs" />
+    <Compile Include="Model\PropertyGrid\DisplayNameAttribute.cs" />
     <Compile Include="Model\SchemeDocument.cs" />
     <Compile Include="Model\StaticText.cs" />
     <Compile Include="SchemeUtils.cs" />

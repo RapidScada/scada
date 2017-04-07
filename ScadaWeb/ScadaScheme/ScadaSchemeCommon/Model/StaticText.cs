@@ -1,23 +1,16 @@
-﻿using System;
-using System.ComponentModel;
+﻿using Scada.Scheme.Model.PropertyGrid;
+using System;
 using System.Xml;
 
 namespace Scada.Scheme.Model
 {
     public class StaticText : BaseComponent
     {
-        public class MyCategoryAttribute : CategoryAttribute
-        {
-            public string Cat { get; set; }
-
-            protected override string GetLocalizedString(string value)
-            {
-                return "My " + Cat + " - " + value;
-            }
-        }
-
-        [Description("Initial descr"), MyCategory(), DisplayName("Txt")]
+        [DisplayName("Txt"), Category(Categories.Appearance), Description("Initial descr")]
         public string Text { get; set; }
+
+        [DisplayName(""), Category(""), Description("")]
+        public string Text2 { get; set; }
 
         public override void LoadFromXml(XmlNode xmlNode)
         {
