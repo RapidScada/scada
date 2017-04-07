@@ -3,7 +3,7 @@
   <Dictionary key="Scada.Scheme.Editor.FrmMain">
     <Phrase key="this">Редактор схем</Phrase>
     <Phrase key="btnFileNew.ToolTip">Создать новую схему</Phrase>
-    <Phrase key="CloseSecondInstance">Редактор схем уже запущен.\r\nВторая копия будет закрыта.</Phrase>
+    <Phrase key="CloseSecondInstance">Редактор схем уже запущен.&#13;&#10;Вторая копия будет закрыта.</Phrase>
     <Phrase key="FailedToStartEditor">Не удалось запустить Редактор схем.&#13;&#10;Смотрите подробности в &#13;&#10;{0}</Phrase>
     <Phrase key="SchemeFileFilter">Схемы (*.sch)|*.sch|Все файлы (*.*)|*.*</Phrase>
     <Phrase key="SaveSchemeConfirm">Схема была изменена. Сохранить изменения?</Phrase>

@@ -34,5 +34,12 @@ namespace Scada.Scheme.Model
     /// </summary>
     public class SchemeDocument
     {
+        /// <summary>
+        /// Вернуть строковое представление объекта
+        /// </summary>
+        public override string ToString()
+        {
+            return SchemePhrases.SchemeItemName;
+        }
     }
 }

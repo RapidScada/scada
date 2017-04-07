@@ -40,26 +40,26 @@
             this.btnEditCopy = new System.Windows.Forms.ToolStripButton();
             this.btnEditPaste = new System.Windows.Forms.ToolStripButton();
             this.sep2 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnEditUndo = new System.Windows.Forms.ToolStripButton();
+            this.btnEditRedo = new System.Windows.Forms.ToolStripButton();
+            this.sep3 = new System.Windows.Forms.ToolStripSeparator();
             this.btnSchemePointer = new System.Windows.Forms.ToolStripButton();
             this.btnSchemeDelete = new System.Windows.Forms.ToolStripButton();
-            this.sep3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.btnHelpAbout = new System.Windows.Forms.ToolStripButton();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControl = new System.Windows.Forms.TabControl();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.btnEditUndo = new System.Windows.Forms.ToolStripButton();
-            this.btnEditRedo = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.pageComponents = new System.Windows.Forms.TabPage();
+            this.pageProperties = new System.Windows.Forms.TabPage();
+            this.propertyGrid = new System.Windows.Forms.PropertyGrid();
+            this.cbSchComp = new System.Windows.Forms.ComboBox();
             this.ofdScheme = new System.Windows.Forms.OpenFileDialog();
             this.sfdScheme = new System.Windows.Forms.SaveFileDialog();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.tabControl.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.pageProperties.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip
@@ -179,6 +179,31 @@
             this.sep2.Name = "sep2";
             this.sep2.Size = new System.Drawing.Size(6, 25);
             // 
+            // btnEditUndo
+            // 
+            this.btnEditUndo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnEditUndo.Image = ((System.Drawing.Image)(resources.GetObject("btnEditUndo.Image")));
+            this.btnEditUndo.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnEditUndo.Name = "btnEditUndo";
+            this.btnEditUndo.Size = new System.Drawing.Size(23, 22);
+            this.btnEditUndo.ToolTipText = "Undo";
+            this.btnEditUndo.Click += new System.EventHandler(this.btnEditUndo_Click);
+            // 
+            // btnEditRedo
+            // 
+            this.btnEditRedo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnEditRedo.Image = ((System.Drawing.Image)(resources.GetObject("btnEditRedo.Image")));
+            this.btnEditRedo.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnEditRedo.Name = "btnEditRedo";
+            this.btnEditRedo.Size = new System.Drawing.Size(23, 22);
+            this.btnEditRedo.ToolTipText = "Redo";
+            this.btnEditRedo.Click += new System.EventHandler(this.btnEditRedo_Click);
+            // 
+            // sep3
+            // 
+            this.sep3.Name = "sep3";
+            this.sep3.Size = new System.Drawing.Size(6, 25);
+            // 
             // btnSchemePointer
             // 
             this.btnSchemePointer.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -199,10 +224,10 @@
             this.btnSchemeDelete.ToolTipText = "Delete selected component";
             this.btnSchemeDelete.Click += new System.EventHandler(this.btnSchemeDelete_Click);
             // 
-            // sep3
+            // toolStripSeparator1
             // 
-            this.sep3.Name = "sep3";
-            this.sep3.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // btnHelpAbout
             // 
@@ -232,8 +257,8 @@
             // 
             // tabControl
             // 
-            this.tabControl.Controls.Add(this.tabPage3);
-            this.tabControl.Controls.Add(this.tabPage1);
+            this.tabControl.Controls.Add(this.pageComponents);
+            this.tabControl.Controls.Add(this.pageProperties);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Location = new System.Drawing.Point(0, 25);
             this.tabControl.Multiline = true;
@@ -243,70 +268,47 @@
             this.tabControl.TabIndex = 1;
             this.tabControl.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FrmMain_MouseMove);
             // 
-            // tabPage3
+            // pageComponents
             // 
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(301, 438);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Components";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.pageComponents.Location = new System.Drawing.Point(4, 22);
+            this.pageComponents.Name = "pageComponents";
+            this.pageComponents.Padding = new System.Windows.Forms.Padding(3);
+            this.pageComponents.Size = new System.Drawing.Size(301, 438);
+            this.pageComponents.TabIndex = 2;
+            this.pageComponents.Text = "Components";
+            this.pageComponents.UseVisualStyleBackColor = true;
             // 
-            // tabPage1
+            // pageProperties
             // 
-            this.tabPage1.Controls.Add(this.propertyGrid1);
-            this.tabPage1.Controls.Add(this.comboBox1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(276, 388);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Properties";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.pageProperties.Controls.Add(this.propertyGrid);
+            this.pageProperties.Controls.Add(this.cbSchComp);
+            this.pageProperties.Location = new System.Drawing.Point(4, 22);
+            this.pageProperties.Name = "pageProperties";
+            this.pageProperties.Padding = new System.Windows.Forms.Padding(3);
+            this.pageProperties.Size = new System.Drawing.Size(301, 438);
+            this.pageProperties.TabIndex = 0;
+            this.pageProperties.Text = "Properties";
+            this.pageProperties.UseVisualStyleBackColor = true;
             // 
-            // propertyGrid1
+            // propertyGrid
             // 
-            this.propertyGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.propertyGrid1.Location = new System.Drawing.Point(3, 24);
-            this.propertyGrid1.Name = "propertyGrid1";
-            this.propertyGrid1.Size = new System.Drawing.Size(270, 361);
-            this.propertyGrid1.TabIndex = 1;
+            this.propertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGrid.Location = new System.Drawing.Point(3, 24);
+            this.propertyGrid.Name = "propertyGrid";
+            this.propertyGrid.Size = new System.Drawing.Size(295, 411);
+            this.propertyGrid.TabIndex = 1;
+            this.propertyGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.propertyGrid_PropertyValueChanged);
             // 
-            // comboBox1
+            // cbSchComp
             // 
-            this.comboBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(3, 3);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(270, 21);
-            this.comboBox1.TabIndex = 0;
-            // 
-            // btnEditUndo
-            // 
-            this.btnEditUndo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnEditUndo.Image = ((System.Drawing.Image)(resources.GetObject("btnEditUndo.Image")));
-            this.btnEditUndo.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnEditUndo.Name = "btnEditUndo";
-            this.btnEditUndo.Size = new System.Drawing.Size(23, 22);
-            this.btnEditUndo.ToolTipText = "Undo";
-            this.btnEditUndo.Click += new System.EventHandler(this.btnEditUndo_Click);
-            // 
-            // btnEditRedo
-            // 
-            this.btnEditRedo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnEditRedo.Image = ((System.Drawing.Image)(resources.GetObject("btnEditRedo.Image")));
-            this.btnEditRedo.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnEditRedo.Name = "btnEditRedo";
-            this.btnEditRedo.Size = new System.Drawing.Size(23, 22);
-            this.btnEditRedo.ToolTipText = "Redo";
-            this.btnEditRedo.Click += new System.EventHandler(this.btnEditRedo_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            this.cbSchComp.Dock = System.Windows.Forms.DockStyle.Top;
+            this.cbSchComp.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSchComp.FormattingEnabled = true;
+            this.cbSchComp.Location = new System.Drawing.Point(3, 3);
+            this.cbSchComp.Name = "cbSchComp";
+            this.cbSchComp.Size = new System.Drawing.Size(295, 21);
+            this.cbSchComp.TabIndex = 0;
+            this.cbSchComp.SelectedIndexChanged += new System.EventHandler(this.cbSchComp_SelectedIndexChanged);
             // 
             // ofdScheme
             // 
@@ -342,7 +344,7 @@
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.tabControl.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
+            this.pageProperties.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -356,10 +358,10 @@
         private System.Windows.Forms.ToolStripButton btnEditCopy;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.TabControl tabControl;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.PropertyGrid propertyGrid1;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabPage pageProperties;
+        private System.Windows.Forms.PropertyGrid propertyGrid;
+        private System.Windows.Forms.ComboBox cbSchComp;
+        private System.Windows.Forms.TabPage pageComponents;
         private System.Windows.Forms.ToolStripStatusLabel lblStatus;
         private System.Windows.Forms.ToolStripSeparator sep1;
         private System.Windows.Forms.ToolStripSplitButton btnFileSave;

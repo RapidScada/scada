@@ -23,12 +23,14 @@
  * Modified : 2017
  */
 
+using Scada.Scheme.Model;
 using Scada.UI;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.ServiceModel;
-using System.Text;
+using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using Utils;
@@ -92,6 +94,28 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
+        /// Локализовать атрибуты для отображения свойств компонентов
+        /// </summary>
+        private void LocalizeAttributes()
+        {
+            PropertyDescriptor textPropDescr = TypeDescriptor.GetProperties(typeof(StaticText))["Text"];
+            AttributeCollection attrs = textPropDescr.Attributes;
+
+            DescriptionAttribute descrAttr = (DescriptionAttribute)attrs[typeof(DescriptionAttribute)];
+            PropertyInfo descrValProp = typeof(DescriptionAttribute).GetProperty("DescriptionValue", 
+                BindingFlags.NonPublic | BindingFlags.Instance);
+            descrValProp.SetValue(descrAttr, "My custom val2", null);
+
+            DisplayNameAttribute dispAttr = (DisplayNameAttribute)attrs[typeof(DisplayNameAttribute)];
+            PropertyInfo dispValProp = typeof(DisplayNameAttribute).GetProperty("DisplayNameValue",
+                BindingFlags.NonPublic | BindingFlags.Instance);
+            dispValProp.SetValue(dispAttr, "MyDispName", null);
+
+            StaticText.MyCategoryAttribute catAttr = (StaticText.MyCategoryAttribute)attrs[typeof(StaticText.MyCategoryAttribute)];
+            catAttr.Cat = "Custom cat";
+        }
+
+        /// <summary>
         /// Проверить, что запущена вторая копия приложения
         /// </summary>
         private bool SecondInstanceExists()
@@ -142,6 +166,34 @@ namespace Scada.Scheme.Editor
             else
             {
                 return true;
+            }
+        }
+
+        /// <summary>
+        /// Заполнить выпадающий список компонентов схемы
+        /// </summary>
+        private void FillSchemeComponents()
+        {
+            try
+            {
+                cbSchComp.BeginUpdate();
+                cbSchComp.Items.Clear();
+
+                if (editor.SchemeView != null)
+                {
+                    cbSchComp.Items.Add(editor.SchemeView.SchemeDocument);
+                    List<BaseComponent> componentList = new List<BaseComponent>(editor.SchemeView.Components);
+                    componentList.Sort();
+
+                    foreach (BaseComponent component in componentList)
+                    {
+                        cbSchComp.Items.Add(component);
+                    }
+                }
+            }
+            finally
+            {
+                cbSchComp.EndUpdate();
             }
         }
 
@@ -211,6 +263,7 @@ namespace Scada.Scheme.Editor
             {
                 editor.NewScheme();
                 appData.AssignViewStamp(editor.SchemeView);
+                FillSchemeComponents();
             }
         }
 
@@ -220,9 +273,11 @@ namespace Scada.Scheme.Editor
             if (ConfirmCloseScheme() && ofdScheme.ShowDialog() == DialogResult.OK)
             {
                 string errMsg;
-                if (editor.LoadSchemeFromFile(ofdScheme.FileName, out errMsg))
-                    appData.AssignViewStamp(editor.SchemeView);
-                else
+                bool loadOK = editor.LoadSchemeFromFile(ofdScheme.FileName, out errMsg);
+                appData.AssignViewStamp(editor.SchemeView);
+                FillSchemeComponents();
+
+                if (!loadOK)
                     ScadaUiUtils.ShowError(errMsg);
             }
         }
@@ -244,7 +299,7 @@ namespace Scada.Scheme.Editor
 
         private void btnEditCut_Click(object sender, EventArgs e)
         {
-
+            LocalizeAttributes();
         }
 
         private void btnEditCopy_Click(object sender, EventArgs e)
@@ -281,6 +336,27 @@ namespace Scada.Scheme.Editor
         {
             // отображение формы о программе
             FrmAbout.ShowAbout(appData.AppDirs.ExeDir, log, this);
+        }
+
+
+        private void cbSchComp_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // отображение свойств объекта, выбранного в выпадающем списке
+            propertyGrid.SelectedObject = cbSchComp.SelectedItem;
+        }
+
+        private void propertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+        {
+            // обновление текста выпадающего списка при изменении отображаемого наименования компонента
+            if (cbSchComp.SelectedItem is BaseComponent)
+            {
+                BaseComponent selComponent = (BaseComponent)cbSchComp.SelectedItem;
+                string newDisplayName = selComponent.ToString();
+                string oldDisplayName = cbSchComp.Text;
+
+                if (oldDisplayName != newDisplayName)
+                    cbSchComp.Items[cbSchComp.SelectedIndex] = selComponent;
+            }
         }
     }
 }

@@ -24,7 +24,10 @@
  */
 
 using Scada.Scheme.Model.DataTypes;
+using System.Collections.Generic;
 using System.Xml;
+using System;
+using System.Text;
 
 namespace Scada.Scheme.Model
 {
@@ -32,7 +35,7 @@ namespace Scada.Scheme.Model
     /// The base class for scheme component
     /// <para>Базовый класс компонента схемы</para>
     /// </summary>
-    public abstract class BaseComponent
+    public abstract class BaseComponent : IComparable<BaseComponent>
     {
         /// <summary>
         /// Положение компонента по умолчанию
@@ -98,5 +101,26 @@ namespace Scada.Scheme.Model
         /// Загрузить конфигурацию компонента из XML-узла
         /// </summary>
         public abstract void LoadFromXml(XmlNode xmlNode);
+
+        /// <summary>
+        /// Вернуть строковое представление объекта
+        /// </summary>
+        public override string ToString()
+        {
+            return (new StringBuilder())
+                .Append("[").Append(ID).Append("] ")
+                .Append(Name)
+                .Append(string.IsNullOrEmpty(Name) ? "" : " - ")
+                .Append(GetType().Name)
+                .ToString();
+        }
+
+        /// <summary>
+        /// Сравнить текущий объект с другим объектом такого же типа
+        /// </summary>
+        public int CompareTo(BaseComponent other)
+        {
+            return ID.CompareTo(other.ID);
+        }
     }
 }

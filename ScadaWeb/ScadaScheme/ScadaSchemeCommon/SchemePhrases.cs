@@ -38,12 +38,17 @@ namespace Scada.Scheme
             SetToDefault();
         }
 
+        // Словарь Scada.Scheme.SchemeDocument
+        public static string SchemeItemName { get; private set; }
+
         // Словарь Scada.Scheme.SchemeView
         public static string LoadSchemeViewError { get; private set; }
         public static string SaveSchemeViewError { get; private set; }
 
         private static void SetToDefault()
         {
+            SchemeItemName = Localization.Dict.GetEmptyPhrase("SchemeItemName");
+
             LoadSchemeViewError = Localization.Dict.GetEmptyPhrase("LoadSchemeViewError");
             SaveSchemeViewError = Localization.Dict.GetEmptyPhrase("SaveSchemeViewError");
         }
@@ -51,6 +56,11 @@ namespace Scada.Scheme
         public static void Init()
         {
             Localization.Dict dict;
+            if (Localization.Dictionaries.TryGetValue("Scada.Scheme.SchemeDocument", out dict))
+            {
+                SchemeItemName = dict.GetPhrase("SchemeItemName", SchemeItemName);
+            }
+
             if (Localization.Dictionaries.TryGetValue("Scada.Scheme.SchemeView", out dict))
             {
                 LoadSchemeViewError = dict.GetPhrase("LoadSchemeViewError", LoadSchemeViewError);
