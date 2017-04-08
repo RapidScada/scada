@@ -9,9 +9,6 @@ namespace Scada.Scheme.Model
         [DisplayName("Txt"), Category(Categories.Appearance), Description("Initial descr")]
         public string Text { get; set; }
 
-        [DisplayName(""), Category(""), Description("")]
-        public string Text2 { get; set; }
-
         public override void LoadFromXml(XmlNode xmlNode)
         {
             throw new NotImplementedException();

@@ -99,23 +99,17 @@ namespace Scada.Scheme.Editor
         /// </summary>
         private void LocalizeAttributes()
         {
-            CM.PropertyDescriptor textPropDescr = CM.TypeDescriptor.GetProperties(typeof(StaticText))["Text"];
-            CM.AttributeCollection attrs = textPropDescr.Attributes;
-
-            DescriptionAttribute descrAttr = (DescriptionAttribute)attrs[typeof(DescriptionAttribute)];
-            descrAttr.DescriptionValue = "My descr";
-            /*PropertyInfo descrValProp = typeof(DescriptionAttribute).GetProperty("DescriptionValue", 
-                BindingFlags.NonPublic | BindingFlags.Instance);
-            descrValProp.SetValue(descrAttr, "My custom val2", null);*/
-
-            DisplayNameAttribute dispAttr = (DisplayNameAttribute)attrs[typeof(DisplayNameAttribute)];
-            dispAttr.DisplayNameValue = "My Text";
-            /*PropertyInfo dispValProp = typeof(DisplayNameAttribute).GetProperty("DisplayNameValue",
-                BindingFlags.NonPublic | BindingFlags.Instance);
-            dispValProp.SetValue(dispAttr, "MyDispName", null);*/
-
-            CategoryAttribute catAttr = (CategoryAttribute)attrs[typeof(CategoryAttribute)];
-            catAttr.CategoryName = "My Cat";
+            try
+            {
+                AttrTranslator attrTranslator = new AttrTranslator();
+                attrTranslator.TranslateAttrs(typeof(StaticText));
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при локализации атрибутов" :
+                    "Error localizing attributes");
+            }
         }
 
         /// <summary>
