@@ -64,6 +64,26 @@ namespace Scada
 
 
         /// <summary>
+        /// Удалить пробелы из строки
+        /// </summary>
+        private static string RemoveWhiteSpace(string s)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            if (s != null)
+            {
+                foreach (char c in s)
+                {
+                    if (!char.IsWhiteSpace(c))
+                        sb.Append(c);
+                }
+            }
+
+            return sb.ToString();
+        }
+
+
+        /// <summary>
         /// Добавить "\" к имени директории, если необходимо
         /// </summary>
         public static string NormalDir(string dir)
@@ -246,62 +266,45 @@ namespace Scada
                 sb.Append(bytes[i].ToString("X2"));
             return sb.ToString();
         }
-
+        
         /// <summary>
-        /// Преобразовать строку 16-ричных чисел в массив байт
+        /// Преобразовать строку 16-ричных чисел в массив байт, используя существующий массив
         /// </summary>
-        public static bool HexToBytes(string s, out byte[] bytes, bool skipWhiteSpace = false)
+        public static bool HexToBytes(string s, int strIndex, byte[] buf, int bufIndex, int byteCount)
         {
             int strLen = s == null ? 0 : s.Length;
-            int bufLen = strLen / 2;
-            byte[] buf = new byte[bufLen];
+            int convBytes = 0;
 
-            int strInd = 0;
-            int bufInd = 0;
-            bool parseOK = true;
-
-            while (strInd < strLen && parseOK)
+            while (strIndex < strLen && convBytes < byteCount)
             {
-                if (skipWhiteSpace)
-                {
-                    while (strInd < strLen && char.IsWhiteSpace(s[strInd]))
-                    {
-                        strInd++;
-                    }
-                    if (strInd == strLen)
-                        break;
-                }
-
                 try
                 {
-                    buf[bufInd] = byte.Parse(s.Substring(strInd, 2), NumberStyles.HexNumber);
-                    bufInd++;
-                    strInd += 2;
+                    buf[bufIndex] = byte.Parse(s.Substring(strIndex, 2), NumberStyles.HexNumber);
+                    bufIndex++;
+                    convBytes++;
+                    strIndex += 2;
                 }
                 catch
                 {
-                    parseOK = false;
+                    return false;
                 }
             }
 
-            if (parseOK && bufInd > 0)
-            {
-                if (bufInd < bufLen)
-                {
-                    bytes = new byte[bufInd];
-                    Array.Copy(buf, 0, bytes, 0, bufInd);
-                }
-                else
-                {
-                    bytes = buf;
-                }
-                return true;
-            }
-            else
-            {
-                bytes = buf;
-                return false;
-            }
+            return convBytes > 0;
+        }
+
+        /// <summary>
+        /// Преобразовать строку 16-ричных чисел в массив байт, создав новый массив
+        /// </summary>
+        public static bool HexToBytes(string s, out byte[] bytes, bool skipWhiteSpace = false)
+        {
+            if (skipWhiteSpace)
+                s = RemoveWhiteSpace(s);
+
+            int strLen = s == null ? 0 : s.Length;
+            int bufLen = strLen / 2;
+            bytes = new byte[bufLen];
+            return HexToBytes(s, 0, bytes, 0, bufLen);
         }
 
         /// <summary>
