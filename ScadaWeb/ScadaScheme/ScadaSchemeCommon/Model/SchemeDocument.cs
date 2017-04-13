@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Xml;
 
 namespace Scada.Scheme.Model
 {
@@ -34,6 +35,20 @@ namespace Scada.Scheme.Model
     /// </summary>
     public class SchemeDocument
     {
+        /// <summary>
+        /// Установить значения свойств документа схемы по умолчанию
+        /// </summary>
+        public void SetToDefault()
+        {
+        }
+
+        /// <summary>
+        /// Загрузить свойства документа схемы из XML-узла
+        /// </summary>
+        public void LoadFromXml(XmlNode xmlNode)
+        {
+        }
+
         /// <summary>
         /// Вернуть строковое представление объекта
         /// </summary>

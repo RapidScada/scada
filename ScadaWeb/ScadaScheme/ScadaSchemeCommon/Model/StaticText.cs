@@ -11,7 +11,7 @@ namespace Scada.Scheme.Model
 
         public override void LoadFromXml(XmlNode xmlNode)
         {
-            throw new NotImplementedException();
+            Text = "Aaa";
         }
     }
 }

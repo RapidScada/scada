@@ -28,6 +28,7 @@ using Scada.Scheme.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Xml;
 
 namespace Scada.Scheme
 {
@@ -67,8 +68,58 @@ namespace Scada.Scheme
             // очистка представления
             Clear();
 
-            // загрузка представления
-            Components.Add(new StaticText());
+            // загрузка XML-документа
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load(stream);
+
+            // проверка формата файла (потока)
+            XmlElement rootElem = xmlDoc.DocumentElement;
+            if (!rootElem.Name.Equals("SchemeView", StringComparison.OrdinalIgnoreCase))
+                throw new ScadaException(SchemePhrases.IncorrectFileFormat);
+
+            // загрузка параметров схемы
+            XmlNode documentNode = rootElem.SelectSingleNode("Document") ?? rootElem.SelectSingleNode("Scheme");
+            if (documentNode != null)
+            {
+                SchemeDocument.LoadFromXml(documentNode);
+
+                // загрузка фильтра по входным каналам для старого формата
+                if (documentNode.Name.Equals("Scheme", StringComparison.OrdinalIgnoreCase))
+                {
+                    XmlNode cnlsFilterNode = rootElem.SelectSingleNode("CnlsFilter");
+                    if (cnlsFilterNode != null)
+                    {
+
+                    }
+                }
+            }
+
+            // загрузка компонентов схемы
+            XmlNode componentsNode = rootElem.SelectSingleNode("Components") ?? rootElem.SelectSingleNode("Elements");
+            if (componentsNode != null)
+            {
+                foreach (XmlNode componentNode in componentsNode.ChildNodes)
+                {
+                    string nodeName = componentNode.Name.ToLowerInvariant();
+                    BaseComponent comp = null;
+
+                    if (nodeName == "statictext")
+                    {
+                        comp = new StaticText();
+                        comp.LoadFromXml(componentNode);
+                    }
+
+                    if (comp != null)
+                        Components.Add(comp);
+                }
+            }
+
+            // загрузка изображений схемы
+            XmlNode imagesNode = rootElem.SelectSingleNode("Images");
+            if (imagesNode != null)
+            {
+
+            }
         }
 
         /// <summary>
@@ -100,6 +151,7 @@ namespace Scada.Scheme
         public override void Clear()
         {
             base.Clear();
+            SchemeDocument.SetToDefault();
             Components.Clear();
         }
     }

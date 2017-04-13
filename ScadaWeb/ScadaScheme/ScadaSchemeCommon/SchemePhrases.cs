@@ -44,6 +44,7 @@ namespace Scada.Scheme
         // Словарь Scada.Scheme.SchemeView
         public static string LoadSchemeViewError { get; private set; }
         public static string SaveSchemeViewError { get; private set; }
+        public static string IncorrectFileFormat { get; private set; }
 
         private static void SetToDefault()
         {
@@ -51,6 +52,7 @@ namespace Scada.Scheme
 
             LoadSchemeViewError = Localization.Dict.GetEmptyPhrase("LoadSchemeViewError");
             SaveSchemeViewError = Localization.Dict.GetEmptyPhrase("SaveSchemeViewError");
+            IncorrectFileFormat = Localization.Dict.GetEmptyPhrase("IncorrectFileFormat");
         }
 
         public static void Init()
@@ -65,6 +67,7 @@ namespace Scada.Scheme
             {
                 LoadSchemeViewError = dict.GetPhrase("LoadSchemeViewError", LoadSchemeViewError);
                 SaveSchemeViewError = dict.GetPhrase("SaveSchemeViewError", SaveSchemeViewError);
+                IncorrectFileFormat = dict.GetPhrase("IncorrectFileFormat", IncorrectFileFormat);
             }
         }
     }
