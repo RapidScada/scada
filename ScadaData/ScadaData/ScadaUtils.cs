@@ -284,7 +284,7 @@ namespace Scada
                     convBytes++;
                     strIndex += 2;
                 }
-                catch
+                catch (FormatException)
                 {
                     return false;
                 }
