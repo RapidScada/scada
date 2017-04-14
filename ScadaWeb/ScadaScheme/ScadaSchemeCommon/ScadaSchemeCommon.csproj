@@ -56,6 +56,7 @@
     <Compile Include="Model\DataTypes\Size.cs" />
     <Compile Include="Model\DataTypes\Font.cs" />
     <Compile Include="Model\DataTypes\HorizontalAlignments.cs" />
+    <Compile Include="Model\Image.cs" />
     <Compile Include="Model\PropertyGrid\Categories.cs" />
     <Compile Include="Model\PropertyGrid\CategoryAttribute.cs" />
     <Compile Include="Model\PropertyGrid\DescriptionAttribute.cs" />

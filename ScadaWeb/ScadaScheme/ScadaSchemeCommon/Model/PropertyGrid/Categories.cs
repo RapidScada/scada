@@ -34,6 +34,7 @@ namespace Scada.Scheme.Model.PropertyGrid
     public static class Categories
     {
         public const string Appearance = "Appearance";
+        public const string Data = "Data";
         public const string Design = "Design";
         public const string Layout = "Layout";
     }
