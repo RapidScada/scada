@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaSchemeCommon
- * Summary  : Categories of a property grid
+ * Summary  : Categories of PropertyGrid
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
@@ -28,8 +28,8 @@
 namespace Scada.Scheme.Model.PropertyGrid
 {
     /// <summary>
-    /// Categories of a property grid
-    /// <para>Категории таблицы свойств</para>
+    /// Categories of PropertyGrid
+    /// <para>Категории PropertyGrid</para>
     /// </summary>
     public static class Categories
     {

@@ -23,14 +23,25 @@
  * Modified : 2017
  */
 
+using Scada.Scheme.Model.PropertyGrid;
+using System.ComponentModel;
+using System.Xml;
+
 namespace Scada.Scheme.Model.DataTypes
 {
     /// <summary>
     /// Point in a two-dimensional plane
     /// <para>Точка в двумерной плоскости</para>
     /// </summary>
+    [TypeConverter(typeof(PointConverter))]
     public struct Point
     {
+        /// <summary>
+        /// Точка по умолчанию
+        /// </summary>
+        public static readonly Point Default = new Point(0, 0);
+
+
         /// <summary>
         /// Конструктор
         /// </summary>
@@ -51,5 +62,17 @@ namespace Scada.Scheme.Model.DataTypes
         /// Получить или установить координату Y
         /// </summary>
         public int Y { get; set; }
+
+
+        /// <summary>
+        /// Получить значение дочернего XML-узла в виде точки
+        /// </summary>
+        public static Point GetChildAsPoint(XmlNode parentXmlNode, string childNodeName)
+        {
+            XmlNode node = parentXmlNode.SelectSingleNode(childNodeName);
+            return node == null ?
+                Default :
+                new Point(node.GetChildAsInt("X"), node.GetChildAsInt("Y"));
+        }
     }
 }

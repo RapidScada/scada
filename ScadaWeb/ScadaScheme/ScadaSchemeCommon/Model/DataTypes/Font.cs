@@ -27,7 +27,7 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.Xml;
 
-namespace Scada.Scheme.Model
+namespace Scada.Scheme.Model.DataTypes
 {
     /// <summary>
     /// Defines a font
@@ -88,10 +88,10 @@ namespace Scada.Scheme.Model
         /// Получить или установить признак, что шрифт подчёркнутый
         /// </summary>
         public bool Underline { get; set; }
-        
-        
+
+
         /// <summary>
-        /// Считать значение свойства, в котором записан шрифт
+        /// Получить значение дочернего XML-узла в виде шрифта
         /// </summary>
         public static Font GetChildAsFont(XmlNode parentXmlNode, string childNodeName)
         {

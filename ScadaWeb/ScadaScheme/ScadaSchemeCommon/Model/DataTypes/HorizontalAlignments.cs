@@ -25,7 +25,7 @@
 
 using Scada.Scheme.Model.PropertyGrid;
 
-namespace Scada.Scheme.Model
+namespace Scada.Scheme.Model.DataTypes
 {
     /// <summary>
     /// Horizontal alignments

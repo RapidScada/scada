@@ -23,14 +23,25 @@
  * Modified : 2017
  */
 
+using Scada.Scheme.Model.PropertyGrid;
+using System.ComponentModel;
+using System.Xml;
+
 namespace Scada.Scheme.Model.DataTypes
 {
     /// <summary>
     /// Size in two-dimensional space
     /// <para>Размер в двумерном пространстве</para>
     /// </summary>
+    [TypeConverter(typeof(SizeConverter))]
     public struct Size
     {
+        /// <summary>
+        /// Размер по умолчанию
+        /// </summary>
+        public static readonly Size Default = new Size(100, 100);
+
+
         /// <summary>
         /// Конструктор
         /// </summary>
@@ -51,5 +62,17 @@ namespace Scada.Scheme.Model.DataTypes
         /// Получить или установить высоту
         /// </summary>
         public int Height { get; set; }
+
+
+        /// <summary>
+        /// Получить значение дочернего XML-узла в виде размера
+        /// </summary>
+        public static Size GetChildAsSize(XmlNode parentXmlNode, string childNodeName)
+        {
+            XmlNode node = parentXmlNode.SelectSingleNode(childNodeName);
+            return node == null ?
+                Default :
+                new Size(node.GetChildAsInt("Width"), node.GetChildAsInt("Height"));
+        }
     }
 }

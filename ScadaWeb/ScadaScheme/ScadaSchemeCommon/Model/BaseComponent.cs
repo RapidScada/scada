@@ -39,24 +39,14 @@ namespace Scada.Scheme.Model
     public abstract class BaseComponent : IComparable<BaseComponent>
     {
         /// <summary>
-        /// Положение компонента по умолчанию
-        /// </summary>
-        public static readonly Point DefaultLocation = new Point(0, 0);
-        /// <summary>
-        /// Размер компонента по умолчанию
-        /// </summary>
-        public static readonly Size DefaultSize = new Size(100, 100);
-
-
-        /// <summary>
         /// Конструктор
         /// </summary>
         public BaseComponent()
         {
             ID = 0;
             Name = "";
-            Location = DefaultLocation;
-            Size = DefaultSize;
+            Location = Point.Default;
+            Size = Size.Default;
             ZIndex = 0;
         }
 
@@ -129,6 +119,12 @@ namespace Scada.Scheme.Model
         {
             if (xmlNode == null)
                 throw new ArgumentNullException("xmlNode");
+
+            ID = xmlNode.GetChildAsInt("ID");
+            Name = xmlNode.GetChildAsString("Name");
+            Location = Point.GetChildAsPoint(xmlNode, "Location");
+            Size = Size.GetChildAsSize(xmlNode, "Size");
+            ZIndex = xmlNode.GetChildAsInt("ZIndex");
         }
 
         /// <summary>
