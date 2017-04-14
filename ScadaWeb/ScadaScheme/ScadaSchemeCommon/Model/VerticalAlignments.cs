@@ -16,25 +16,38 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaSchemeCommon
- * Summary  : Categories of a property grid
+ * Summary  : Vertical alignments
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
  * Modified : 2017
  */
 
-#pragma warning disable 1591 // CS1591: Missing XML comment for publicly visible type or member
+using Scada.Scheme.Model.PropertyGrid;
 
-namespace Scada.Scheme.Model.PropertyGrid
+namespace Scada.Scheme.Model
 {
     /// <summary>
-    /// Categories of a property grid
-    /// <para>Категории таблицы свойств</para>
+    /// Vertical alignments
+    /// <para>Вертикальные выравнивания</para>
     /// </summary>
-    public static class Categories
+    //[TypeConverter(typeof(EnumConverterEx))]
+    public enum VerticalAlignments
     {
-        public const string Appearance = "Appearance";
-        public const string Design = "Design";
-        public const string Layout = "Layout";
+        /// <summary>
+        /// Сверху
+        /// </summary>
+        [Description("Top")]
+        Top,
+        /// <summary>
+        /// По центру
+        /// </summary>
+        [Description("Center")]
+        Center,
+        /// <summary>
+        /// Снизу
+        /// </summary>
+        [Description("Bottom")]
+        Bottom
     }
 }

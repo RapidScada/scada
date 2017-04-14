@@ -23,7 +23,7 @@
  * Modified : 2017
  */
 
-#pragma warning disable 1591 // отключение warning CS1591: Missing XML comment for publicly visible type or member
+#pragma warning disable 1591 // CS1591: Missing XML comment for publicly visible type or member
 
 namespace Scada.Scheme
 {

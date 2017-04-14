@@ -24,10 +24,11 @@
  */
 
 using Scada.Scheme.Model.DataTypes;
-using System.Collections.Generic;
 using System.Xml;
 using System;
 using System.Text;
+using Scada.Scheme.Model.PropertyGrid;
+using CM = System.ComponentModel;
 
 namespace Scada.Scheme.Model
 {
@@ -63,16 +64,28 @@ namespace Scada.Scheme.Model
         /// <summary>
         /// Получить или установить идентификатор
         /// </summary>
+        #region Attributes
+        [DisplayName("ID"), Category(Categories.Design), CM.ReadOnly(true)]
+        [Description("The unique identifier of the scheme component.")]
+        #endregion
         public int ID { get; set; }
 
         /// <summary>
         /// Получить или установить наименование
         /// </summary>
+        #region Attributes
+        [DisplayName("Name"), Category(Categories.Design)]
+        [Description("The name of the scheme component.")]
+        #endregion
         public string Name { get; set; }
 
         /// <summary>
         /// Получить имя типа компонента
         /// </summary>
+        #region Attributes
+        [DisplayName("Type name"), Category(Categories.Design), CM.ReadOnly(true)]
+        [Description("The full name of the scheme component type.")]
+        #endregion
         public string TypeName
         {
             get
@@ -84,23 +97,39 @@ namespace Scada.Scheme.Model
         /// <summary>
         /// Получить или установить положение
         /// </summary>
+        #region Attributes
+        [DisplayName("Location"), Category(Categories.Layout)]
+        [Description("The coordinates of the upper-left corner of the scheme component.")]
+        #endregion
         public Point Location { get; set; }
 
         /// <summary>
         /// Получить или установить размер
         /// </summary>
+        #region Attributes
+        [DisplayName("Size"), Category(Categories.Layout)]
+        [Description("The size of the scheme component in pixels.")]
+        #endregion
         public Size Size { get; set; }
 
         /// <summary>
         /// Получить или установить порядок отображения
         /// </summary>
+        #region Attributes
+        [DisplayName("ZIndex"), Category(Categories.Layout), CM.DefaultValue(0)]
+        [Description("The stack order of the scheme component.")]
+        #endregion
         public int ZIndex { get; set; }
 
 
         /// <summary>
         /// Загрузить конфигурацию компонента из XML-узла
         /// </summary>
-        public abstract void LoadFromXml(XmlNode xmlNode);
+        public virtual void LoadFromXml(XmlNode xmlNode)
+        {
+            if (xmlNode == null)
+                throw new ArgumentNullException("xmlNode");
+        }
 
         /// <summary>
         /// Вернуть строковое представление объекта

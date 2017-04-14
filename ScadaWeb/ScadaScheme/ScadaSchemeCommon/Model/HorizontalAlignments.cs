@@ -16,25 +16,38 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaSchemeCommon
- * Summary  : Categories of a property grid
+ * Summary  : Horizontal alignments
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
  * Modified : 2017
  */
 
-#pragma warning disable 1591 // CS1591: Missing XML comment for publicly visible type or member
+using Scada.Scheme.Model.PropertyGrid;
 
-namespace Scada.Scheme.Model.PropertyGrid
+namespace Scada.Scheme.Model
 {
     /// <summary>
-    /// Categories of a property grid
-    /// <para>Категории таблицы свойств</para>
+    /// Horizontal alignments
+    /// <para>Горизонтальные выравнивания</para>
     /// </summary>
-    public static class Categories
+    //[TypeConverter(typeof(EnumConverterEx))]
+    public enum HorizontalAlignments
     {
-        public const string Appearance = "Appearance";
-        public const string Design = "Design";
-        public const string Layout = "Layout";
+        /// <summary>
+        /// Слева
+        /// </summary>
+        [Description("Left")]
+        Left,
+        /// <summary>
+        /// По центру
+        /// </summary>
+        [Description("Center")]
+        Center,
+        /// <summary>
+        /// Справа
+        /// </summary>
+        [Description("Right")]
+        Right
     }
 }
