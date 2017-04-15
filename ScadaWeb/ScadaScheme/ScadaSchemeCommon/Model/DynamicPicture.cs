@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaSchemeCommon
- * Summary  : Scheme component that represents dynamic text
+ * Summary  : Scheme component that represents dynamic picture
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
@@ -26,6 +26,7 @@
 using Scada.Scheme.Model.DataTypes;
 using Scada.Scheme.Model.PropertyGrid;
 using System;
+using System.Collections.Generic;
 using System.Drawing.Design;
 using System.Xml;
 using CM = System.ComponentModel;
@@ -33,34 +34,23 @@ using CM = System.ComponentModel;
 namespace Scada.Scheme.Model
 {
     /// <summary>
-    /// Scheme component that represents dynamic text
-    /// <para>Компонент схемы, представляющий динамическую надпись</para>
+    /// Динамический рисунок
     /// </summary>
-    public class DynamicText : StaticText
+    public class DynamicPicture : StaticPicture
     {
-        /// <summary>
-        /// Текст надписи по умолчанию
-        /// </summary>
-        new public static readonly string DefaultText =
-            Localization.UseRussian ? "Динамическая надпись" : "Dynamic text";
-
-
         /// <summary>
         /// Конструктор
         /// </summary>
-        public DynamicText()
+        public DynamicPicture()
             : base()
         {
-            Text = DefaultText;
             ToolTip = "";
-            UnderlineOnHover = false;
-            BackColorOnHover = "";
+            ImageOnHover = null;
             BorderColorOnHover = "";
-            ForeColorOnHover = "";
             InCnlNum = 0;
             CtrlCnlNum = 0;
             Action = Actions.None;
-            ShowValue = ShowValueKinds.ShowWithUnit;
+            Conditions = null;
         }
 
 
@@ -74,24 +64,14 @@ namespace Scada.Scheme.Model
         public string ToolTip { get; set; }
 
         /// <summary>
-        /// Получить или установить признак подчёркивания при наведении указателя мыши
+        /// Получить или установить изображение, отображаемое при наведении указателя мыши
         /// </summary>
         #region Attributes
-        [DisplayName("Underline on hover"), Category(Categories.Behavior)]
-        [Description("Underline text when user rests the pointer on the component.")]
-        [CM.DefaultValue(false), CM.TypeConverter(typeof(BooleanConverterEx))]
+        [DisplayName("Image on hover"), Category(Categories.Behavior)]
+        [Description("The image shown when user rests the pointer on the component.")]
+        [CM.DefaultValue(null)]
         #endregion
-        public bool UnderlineOnHover { get; set; }
-
-        /// <summary>
-        /// Получить или установить цвет фона при наведении указателя мыши
-        /// </summary>
-        #region Attributes
-        [DisplayName("Back color on hover"), Category(Categories.Behavior)]
-        [Description("The background color of the component when user rests the pointer on it.")]
-        //[CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
-        #endregion
-        public string BackColorOnHover { get; set; }
+        public Image ImageOnHover { get; set; }
 
         /// <summary>
         /// Получить или установить цвет рамки при наведении указателя мыши
@@ -102,16 +82,6 @@ namespace Scada.Scheme.Model
         //[CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
         #endregion
         public string BorderColorOnHover { get; set; }
-
-        /// <summary>
-        /// Получить или установить цвет текста при наведени указателя мыши
-        /// </summary>
-        #region Attributes
-        [DisplayName("Fore color on hover"), Category(Categories.Behavior)]
-        [Description("The foreground color of the component, which is used to display text, when user rests the pointer on it.")]
-        //[CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
-        #endregion
-        public string ForeColorOnHover { get; set; }
 
         /// <summary>
         /// Получить или установить номер входного канала
@@ -144,16 +114,17 @@ namespace Scada.Scheme.Model
         public Actions Action { get; set; }
 
         /// <summary>
-        /// Получить или установить признак вывода значения входного канала
+        /// Получить или установить условия для изображений
         /// </summary>
         #region Attributes
-        [DisplayName("Show value"), Category(Categories.Behavior)]
-        [Description("Show a value of the input channel associated with the component.")]
-        [CM.DefaultValue(ShowValueKinds.ShowWithUnit)]
+        [DisplayName("Conditions"), Category(Categories.Behavior)]
+        [Description("The conditions for image output depending on the value of the input channel.")]
+        [CM.DefaultValue(null), CM.TypeConverter(typeof(CM.CollectionConverter))]
+        //[CM.Editor(typeof(CondEditor), typeof(UITypeEditor))]
         #endregion
-        public ShowValueKinds ShowValue { get; set; }
+        public List<Condition> Conditions { get; set; }
 
-
+        
         /// <summary>
         /// Загрузить конфигурацию компонента из XML-узла
         /// </summary>
@@ -162,14 +133,25 @@ namespace Scada.Scheme.Model
             base.LoadFromXml(xmlNode);
 
             ToolTip = xmlNode.GetChildAsString("ToolTip");
-            UnderlineOnHover = xmlNode.GetChildAsBool("UnderlineOnHover");
-            BackColorOnHover = xmlNode.GetChildAsString("BackColorOnHover");
+            string imageName = xmlNode.GetChildAsString("ImageOnHoverName");
+            ImageOnHover = imageName == "" ? null : new Image() { Name = imageName };
             BorderColorOnHover = xmlNode.GetChildAsString("BorderColorOnHover");
-            ForeColorOnHover = xmlNode.GetChildAsString("ForeColorOnHover");
             InCnlNum = xmlNode.GetChildAsInt("InCnlNum");
             CtrlCnlNum = xmlNode.GetChildAsInt("CtrlCnlNum");
             Action = xmlNode.GetChildAsEnum<Actions>("Action");
-            ShowValue = xmlNode.GetChildAsEnum<ShowValueKinds>("ShowValue");
+
+            XmlNode conditionsNode = xmlNode.SelectSingleNode("Conditions");
+            if (conditionsNode != null)
+            {
+                Conditions = new List<Condition>();
+                XmlNodeList conditionNodes = conditionsNode.SelectNodes("Condition");
+                foreach (XmlNode conditionNode in conditionNodes)
+                {
+                    Condition condition = new Condition();
+                    condition.LoadFromXml(conditionNode);
+                    Conditions.Add(condition);
+                }
+            }
         }
     }
 }

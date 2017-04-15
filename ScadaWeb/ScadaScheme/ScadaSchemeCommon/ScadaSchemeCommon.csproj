@@ -53,12 +53,16 @@
     <Compile Include="DataTransfer\SchemeDTO.cs" />
     <Compile Include="Model\BaseComponent.cs" />
     <Compile Include="Model\DataTypes\Actions.cs" />
+    <Compile Include="Model\DataTypes\CompareOperators.cs" />
+    <Compile Include="Model\DataTypes\Condition.cs" />
     <Compile Include="Model\DataTypes\ImageStretches.cs" />
+    <Compile Include="Model\DataTypes\LogicalOperators.cs" />
     <Compile Include="Model\DataTypes\Point.cs" />
     <Compile Include="Model\DataTypes\ShowValueKinds.cs" />
     <Compile Include="Model\DataTypes\Size.cs" />
     <Compile Include="Model\DataTypes\Font.cs" />
     <Compile Include="Model\DataTypes\HorizontalAlignments.cs" />
+    <Compile Include="Model\DynamicPicture.cs" />
     <Compile Include="Model\DynamicText.cs" />
     <Compile Include="Model\Image.cs" />
     <Compile Include="Model\PropertyGrid\BooleanConverterEx.cs" />

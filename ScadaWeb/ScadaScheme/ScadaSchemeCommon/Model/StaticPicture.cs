@@ -84,6 +84,7 @@ namespace Scada.Scheme.Model
         public override void LoadFromXml(XmlNode xmlNode)
         {
             base.LoadFromXml(xmlNode);
+
             BorderColor = xmlNode.GetChildAsString("BorderColor");
             string imageName = xmlNode.GetChildAsString("ImageName");
             Image = imageName == "" ? null : new Image() { Name = imageName };

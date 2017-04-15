@@ -157,6 +157,7 @@ namespace Scada.Scheme.Model
         public override void LoadFromXml(XmlNode xmlNode)
         {
             base.LoadFromXml(xmlNode);
+
             AutoSize = xmlNode.GetChildAsBool("AutoSize");
             BackColor = xmlNode.GetChildAsString("BackColor");
             BorderColor = xmlNode.GetChildAsString("BorderColor");

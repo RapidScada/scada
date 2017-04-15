@@ -109,6 +109,8 @@ namespace Scada.Scheme
                         comp = new DynamicText();
                     else if (nodeName == "staticpicture")
                         comp = new StaticPicture();
+                    else if (nodeName == "dynamicpicture")
+                        comp = new DynamicPicture();
 
                     if (comp != null)
                     {
