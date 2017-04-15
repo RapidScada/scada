@@ -53,6 +53,7 @@
     <Compile Include="DataTransfer\SchemeDTO.cs" />
     <Compile Include="Model\BaseComponent.cs" />
     <Compile Include="Model\DataTypes\Actions.cs" />
+    <Compile Include="Model\DataTypes\ImageStretches.cs" />
     <Compile Include="Model\DataTypes\Point.cs" />
     <Compile Include="Model\DataTypes\ShowValueKinds.cs" />
     <Compile Include="Model\DataTypes\Size.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Model\PropertyGrid\PointConverter.cs" />
     <Compile Include="Model\PropertyGrid\SizeConverter.cs" />
     <Compile Include="Model\SchemeDocument.cs" />
+    <Compile Include="Model\StaticPicture.cs" />
     <Compile Include="Model\StaticText.cs" />
     <Compile Include="Model\DataTypes\VerticalAlignments.cs" />
     <Compile Include="SchemeUtils.cs" />

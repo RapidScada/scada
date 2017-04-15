@@ -16,44 +16,41 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaSchemeCommon
- * Summary  : Image of a scheme
+ * Summary  : Ways of stretching image
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
  * Modified : 2017
  */
 
-using System.ComponentModel;
-using System.Drawing.Design;
+using Scada.Scheme.Model.PropertyGrid;
+using CM = System.ComponentModel;
 
-namespace Scada.Scheme.Model
+namespace Scada.Scheme.Model.DataTypes
 {
     /// <summary>
-    /// Image of a scheme
-    /// <para>Изображение схемы</para>
+    /// Ways of stretching image
+    /// <para>Способы растяжения изображения</para>
     /// </summary>
-    //[TypeConverter(typeof(ImageConverter))]
-    //[Editor(typeof(ImageEditor), typeof(UITypeEditor))]
-    public class Image
+    [CM.TypeConverter(typeof(EnumConverterEx))]
+    public enum ImageStretches
     {
         /// <summary>
-        /// Конструктор
+        /// Не задано
         /// </summary>
-        public Image()
-        {
-            Name = "";
-            Data = null;
-        }
-
+        [Description("None")]
+        None,
 
         /// <summary>
-        /// Получить или установить наименование
+        /// Заполнить заданный размер
         /// </summary>
-        public string Name { get; set; }
+        [Description("Fill")]
+        Fill,
 
         /// <summary>
-        /// Получить или установить данные
+        /// Растянуть пропорционально в рамках заданного размера
         /// </summary>
-        public byte[] Data { get; set; }
+        [Description("Zoom")]
+        Zoom
     }
 }
