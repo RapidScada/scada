@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaSchemeCommon
- * Summary  : Horizontal alignments
+ * Summary  : Actions of a dynamic component
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
@@ -29,28 +29,28 @@ using CM = System.ComponentModel;
 namespace Scada.Scheme.Model.DataTypes
 {
     /// <summary>
-    /// Horizontal alignments
-    /// <para>Горизонтальные выравнивания</para>
+    /// Actions of a dynamic component
+    /// <para>Действия динамического элемента</para>
     /// </summary>
     [CM.TypeConverter(typeof(EnumConverterEx))]
-    public enum HorizontalAlignments
+    public enum Actions
     {
         /// <summary>
-        /// Слева
+        /// Не задано
         /// </summary>
-        [Description("Left")]
-        Left,
+        [Description("None")]
+        None,
 
         /// <summary>
-        /// По центру
+        /// Построить график
         /// </summary>
-        [Description("Center")]
-        Center,
-        
+        [Description("Draw diagram")]
+        DrawDiagram,
+
         /// <summary>
-        /// Справа
+        /// Отправить команду
         /// </summary>
-        [Description("Right")]
-        Right
+        [Description("Send command")]
+        SendCommand
     }
 }

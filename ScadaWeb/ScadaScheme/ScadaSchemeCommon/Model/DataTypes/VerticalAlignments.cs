@@ -24,6 +24,7 @@
  */
 
 using Scada.Scheme.Model.PropertyGrid;
+using CM = System.ComponentModel;
 
 namespace Scada.Scheme.Model.DataTypes
 {
@@ -31,7 +32,7 @@ namespace Scada.Scheme.Model.DataTypes
     /// Vertical alignments
     /// <para>Вертикальные выравнивания</para>
     /// </summary>
-    //[TypeConverter(typeof(EnumConverterEx))]
+    [CM.TypeConverter(typeof(EnumConverterEx))]
     public enum VerticalAlignments
     {
         /// <summary>
@@ -39,11 +40,13 @@ namespace Scada.Scheme.Model.DataTypes
         /// </summary>
         [Description("Top")]
         Top,
+
         /// <summary>
         /// По центру
         /// </summary>
         [Description("Center")]
         Center,
+
         /// <summary>
         /// Снизу
         /// </summary>

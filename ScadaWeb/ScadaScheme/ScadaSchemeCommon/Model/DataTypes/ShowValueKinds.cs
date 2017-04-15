@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaSchemeCommon
- * Summary  : Horizontal alignments
+ * Summary  : Kinds of displaying input channel value of a dynamic component
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
@@ -29,28 +29,34 @@ using CM = System.ComponentModel;
 namespace Scada.Scheme.Model.DataTypes
 {
     /// <summary>
-    /// Horizontal alignments
-    /// <para>Горизонтальные выравнивания</para>
+    /// Kinds of displaying input channel value of a dynamic component
+    /// <para>Виды отображения значения входного канала динамического компонента</para>
     /// </summary>
     [CM.TypeConverter(typeof(EnumConverterEx))]
-    public enum HorizontalAlignments
+    public enum ShowValueKinds
     {
         /// <summary>
-        /// Слева
+        /// Нет
         /// </summary>
-        [Description("Left")]
-        Left,
+        #region Attributes
+        [Description("No")]
+        #endregion
+        NotShow,
 
         /// <summary>
-        /// По центру
+        /// С размерностью
         /// </summary>
-        [Description("Center")]
-        Center,
-        
+        #region Attributes
+        [Description("With unit")]
+        #endregion
+        ShowWithUnit,
+
         /// <summary>
-        /// Справа
+        /// Без размерности
         /// </summary>
-        [Description("Right")]
-        Right
+        #region Attributes
+        [Description("Without unit")]
+        #endregion
+        ShowWithoutUnit
     }
 }

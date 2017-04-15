@@ -13,9 +13,4 @@
   <Dictionary key="Scada.Scheme.Editor.Js">
     <Phrase key="Test">test</Phrase>
   </Dictionary>
-  <Dictionary key="Scada.Scheme.Model.StaticText">
-    <Phrase key="Text.DisplayName">MyText</Phrase>
-    <Phrase key="Text.Category">MyCat</Phrase>
-    <Phrase key="Text.Description">MyDescr</Phrase>
-  </Dictionary>
 </ScadaServerDictionaries>

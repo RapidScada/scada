@@ -68,7 +68,7 @@ namespace Scada.Scheme.Model
         #region Attributes
         [DisplayName("Auto size"), Category(Categories.Layout)]
         [Description("Automatic resizing based on content size.")]
-        [CM.DefaultValue(true)/*, CM.TypeConverter(typeof(BooleanConverterEx))*/]
+        [CM.DefaultValue(true), CM.TypeConverter(typeof(BooleanConverterEx))]
         #endregion
         public bool AutoSize { get; set; }
 
@@ -126,7 +126,7 @@ namespace Scada.Scheme.Model
         #region Attributes
         [DisplayName("Word wrap"), Category(Categories.Appearance)]
         [Description("Text is automatically word-wrapped.")]
-        [CM.DefaultValue(false)/*, CM.TypeConverter(typeof(BooleanConverterEx))*/]
+        [CM.DefaultValue(false), CM.TypeConverter(typeof(BooleanConverterEx))]
         #endregion
         public bool WordWrap { get; set; }
 

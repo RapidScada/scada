@@ -104,13 +104,15 @@ namespace Scada.Scheme
                     BaseComponent comp = null;
 
                     if (nodeName == "statictext")
-                    {
                         comp = new StaticText();
-                        comp.LoadFromXml(componentNode);
-                    }
+                    else if (nodeName == "dynamictext")
+                        comp = new DynamicText();
 
                     if (comp != null)
+                    {
+                        comp.LoadFromXml(componentNode);
                         Components.Add(comp);
+                    }
                 }
             }
 
