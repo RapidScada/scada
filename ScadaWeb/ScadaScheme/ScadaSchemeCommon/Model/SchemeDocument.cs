@@ -37,7 +37,7 @@ namespace Scada.Scheme.Model
     /// Scheme document properties
     /// <para>Свойства документа схемы</para>
     /// </summary>
-    public class SchemeDocument
+    public class SchemeDocument : IObservableItem
     {
         /// <summary>
         /// Размер схемы по умолчанию
@@ -118,9 +118,9 @@ namespace Scada.Scheme.Model
         #region Attributes
         [DisplayName("Channel filter"), Category(Categories.Data)]
         [Description("The input channels used as a filter for showing events filtered by view.")]
-        [CM.TypeConverter(typeof(CnlFilterConverter))/*, CM.Editor(typeof(CnlsFilterEditor), typeof(UITypeEditor))*/]
+        [CM.TypeConverter(typeof(CnlFilterConverter)), CM.Editor(typeof(CnlFilterEditor), typeof(UITypeEditor))]
         #endregion
-        public List<int> CnlFilter { get; private set; }
+        public List<int> CnlFilter { get; protected set; }
 
         /// <summary>
         /// Получить словарь изображений схемы
@@ -130,7 +130,7 @@ namespace Scada.Scheme.Model
         [Description("The collection of images used in the scheme.")]
         [CM.TypeConverter(typeof(CollectionConverter))/*, CM.Editor(typeof(ImageEditor), typeof(UITypeEditor))*/]
         #endregion
-        public Dictionary<string, Image> Images { get; private set; }
+        public Dictionary<string, Image> Images { get; protected set; }
 
 
         /// <summary>
@@ -174,5 +174,20 @@ namespace Scada.Scheme.Model
         {
             return SchemePhrases.SchemeItemName;
         }
+
+        /// <summary>
+        /// Вызвать событие ItemChanged
+        /// </summary>
+        public void OnItemChanged()
+        {
+            if (ItemChanged != null)
+                ItemChanged(this, EventArgs.Empty);
+        }
+
+
+        /// <summary>
+        /// Событие возникающее при изменении документа схемы
+        /// </summary>
+        public event EventHandler ItemChanged;
     }
 }

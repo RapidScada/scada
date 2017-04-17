@@ -50,7 +50,7 @@ namespace Scada.Scheme.Model
             InCnlNum = 0;
             CtrlCnlNum = 0;
             Action = Actions.None;
-            Conditions = null;
+            Conditions = new List<Condition>();
         }
 
 
@@ -114,15 +114,15 @@ namespace Scada.Scheme.Model
         public Actions Action { get; set; }
 
         /// <summary>
-        /// Получить или установить условия для изображений
+        /// Получить условия вывода изображений
         /// </summary>
         #region Attributes
         [DisplayName("Conditions"), Category(Categories.Behavior)]
         [Description("The conditions for image output depending on the value of the input channel.")]
         [CM.DefaultValue(null), CM.TypeConverter(typeof(CollectionConverter))]
-        //[CM.Editor(typeof(CondEditor), typeof(UITypeEditor))]
+        [CM.Editor(typeof(ConditionEditor), typeof(UITypeEditor))]
         #endregion
-        public List<Condition> Conditions { get; set; }
+        public List<Condition> Conditions { get; protected set; }
 
         
         /// <summary>

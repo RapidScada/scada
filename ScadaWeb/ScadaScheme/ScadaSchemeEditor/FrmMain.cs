@@ -354,6 +354,10 @@ namespace Scada.Scheme.Editor
                 if (oldDisplayName != newDisplayName)
                     cbSchComp.Items[cbSchComp.SelectedIndex] = selComponent;
             }
+
+            // отслеживание изменения схемы
+            if (propertyGrid.SelectedObject is IObservableItem)
+                ((IObservableItem)propertyGrid.SelectedObject).OnItemChanged();
         }
     }
 }

@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaSchemeCommon
- * Summary  : Condition
+ * Summary  : Image output condition
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
@@ -34,8 +34,8 @@ using System.Xml;
 namespace Scada.Scheme.Model.DataTypes
 {
     /// <summary>
-    /// Condition
-    /// <para>Условие</para>
+    /// Image output condition
+    /// <para>Условие вывода изображения</para>
     /// </summary>
     public class Condition
     {

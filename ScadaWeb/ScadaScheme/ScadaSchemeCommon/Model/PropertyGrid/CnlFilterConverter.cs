@@ -23,8 +23,6 @@
  * Modified : 2017
  */
 
-#pragma warning disable 1591 // CS1591: Missing XML comment for publicly visible type or member
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -36,14 +34,23 @@ namespace Scada.Scheme.Model.PropertyGrid
     /// Converter of channel filter for PropertyGrid
     /// <para>Преобразователь фильтра по каналам для PropertyGrid</para>
     /// </summary>
-    public class CnlFilterConverter : System.ComponentModel.CollectionConverter
+    internal class CnlFilterConverter : System.ComponentModel.CollectionConverter
     {
+        /// <summary>
+        /// Основной разделитель номеров каналов
+        /// </summary>
+        public const string MainCnlSep = " ";
+        /// <summary>
+        /// Допустимые разделители номеров каналов
+        /// </summary>
+        public static readonly char[] CnlSep = new char[] { ';', ',', ' ' };
+
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
             if (destinationType == typeof(string))
             {
                 List<int> cnlFilter = value as List<int>;
-                return cnlFilter == null || cnlFilter.Count == 0 ? "" : string.Join(" ", cnlFilter);
+                return cnlFilter == null || cnlFilter.Count == 0 ? "" : string.Join(MainCnlSep, cnlFilter);
             }
             else
             {

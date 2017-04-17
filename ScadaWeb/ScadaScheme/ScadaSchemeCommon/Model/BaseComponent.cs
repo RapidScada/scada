@@ -36,7 +36,7 @@ namespace Scada.Scheme.Model
     /// The base class for scheme component
     /// <para>Базовый класс компонента схемы</para>
     /// </summary>
-    public abstract class BaseComponent : IComparable<BaseComponent>
+    public abstract class BaseComponent : IComparable<BaseComponent>, IObservableItem
     {
         /// <summary>
         /// Конструктор
@@ -147,5 +147,20 @@ namespace Scada.Scheme.Model
         {
             return ID.CompareTo(other.ID);
         }
+
+        /// <summary>
+        /// Вызвать событие ItemChanged
+        /// </summary>
+        public void OnItemChanged()
+        {
+            if (ItemChanged != null)
+                ItemChanged(this, EventArgs.Empty);
+        }
+
+
+        /// <summary>
+        /// Событие возникающее при изменении компонента
+        /// </summary>
+        public event EventHandler ItemChanged;
     }
 }
