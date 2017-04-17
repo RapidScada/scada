@@ -102,8 +102,8 @@ namespace Scada.Scheme.Model.PropertyGrid
             lbCond.BeginUpdate();
             try
             {
-                //foreach (Condition condition in conditions)
-                //    lbCond.Items.Add(condition.Clone());
+                foreach (Condition condition in conditions)
+                    lbCond.Items.Add(condition.Clone());
             }
             finally
             {
@@ -189,7 +189,7 @@ namespace Scada.Scheme.Model.PropertyGrid
 
         private void btnDown_Click(object sender, EventArgs e)
         {
-            // перемещение условия вверх
+            // перемещение условия вниз
             int selInd = lbCond.SelectedIndex;
             int itemCnt = lbCond.Items.Count;
 
@@ -213,17 +213,11 @@ namespace Scada.Scheme.Model.PropertyGrid
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            // заполнение списка выбранных условий
-            if (lbCond.Items.Count > 0)
-            {
-                SelectedConditions = new List<Condition>();
-                foreach (object item in lbCond.Items)
-                    SelectedConditions.Add((Condition)item);
-            }
-            else
-            {
-                SelectedConditions = null;
-            }
+            // заполнение списка условий после редактирования
+            conditions.Clear();
+
+            foreach (object item in lbCond.Items)
+                conditions.Add((Condition)item);
 
             DialogResult = DialogResult.OK;
         }

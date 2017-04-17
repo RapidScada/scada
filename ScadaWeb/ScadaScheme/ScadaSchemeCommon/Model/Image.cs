@@ -56,5 +56,18 @@ namespace Scada.Scheme.Model
         /// Получить или установить данные
         /// </summary>
         public byte[] Data { get; set; }
+
+
+        /// <summary>
+        /// Клонировать объект, передав ссылку на существующие данные
+        /// </summary>
+        public Image ShallowClone()
+        {
+            return new Image()
+            {
+                Name = Name,
+                Data = Data
+            };
+        }
     }
 }

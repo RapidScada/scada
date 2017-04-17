@@ -150,6 +150,40 @@ namespace Scada.Scheme.Model.DataTypes
             }
         }
 
+
+        /// <summary>
+        /// Загрузить условие из XML-узла
+        /// </summary>
+        public void LoadFromXml(XmlNode xmlNode)
+        {
+            if (xmlNode == null)
+                throw new ArgumentNullException("xmlNode");
+
+            CompareOperator1 = xmlNode.GetChildAsEnum<CompareOperators>("CompareOperator1");
+            CompareArgument1 = xmlNode.GetChildAsDouble("CompareArgument1");
+            CompareOperator2 = xmlNode.GetChildAsEnum<CompareOperators>("CompareOperator2");
+            CompareArgument2 = xmlNode.GetChildAsDouble("CompareArgument2");
+            LogicalOperator = xmlNode.GetChildAsEnum<LogicalOperators>("LogicalOperator");
+            string imageName = xmlNode.GetChildAsString("ImageName");
+            Image = imageName == "" ? null : new Image() { Name = imageName };
+        }
+
+        /// <summary>
+        /// Клонировать объект
+        /// </summary>
+        public Condition Clone()
+        {
+            return new Condition()
+            {
+                CompareOperator1 = CompareOperator1,
+                CompareArgument1 = CompareArgument1,
+                LogicalOperator = LogicalOperator,
+                CompareOperator2 = CompareOperator2,
+                CompareArgument2 = CompareArgument2,
+                Image = Image == null ? null : Image.ShallowClone()
+            };
+        }
+
         /// <summary>
         /// Получить строковое представление объекта
         /// </summary>
@@ -167,23 +201,6 @@ namespace Scada.Scheme.Model.DataTypes
                 sb.Append(CompareArgument2);
             }
             return sb.ToString();
-        }
-        
-        /// <summary>
-        /// Загрузить условие из XML-узла
-        /// </summary>
-        public void LoadFromXml(XmlNode xmlNode)
-        {
-            if (xmlNode == null)
-                throw new ArgumentNullException("xmlNode");
-
-            CompareOperator1 = xmlNode.GetChildAsEnum<CompareOperators>("CompareOperator1");
-            CompareArgument1 = xmlNode.GetChildAsDouble("CompareArgument1");
-            CompareOperator2 = xmlNode.GetChildAsEnum<CompareOperators>("CompareOperator2");
-            CompareArgument2 = xmlNode.GetChildAsDouble("CompareArgument2");
-            LogicalOperator = xmlNode.GetChildAsEnum<LogicalOperators>("LogicalOperator");
-            string imageName = xmlNode.GetChildAsString("ImageName");
-            Image = imageName == "" ? null : new Image() { Name = imageName };
         }
     }
 }
