@@ -32,7 +32,7 @@ namespace Scada.Scheme.Model.DataTypes
     /// Actions of a dynamic component
     /// <para>Действия динамического элемента</para>
     /// </summary>
-    [CM.TypeConverter(typeof(EnumConverterEx))]
+    [CM.TypeConverter(typeof(EnumConverter))]
     public enum Actions
     {
         /// <summary>

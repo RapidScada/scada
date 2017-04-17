@@ -32,7 +32,7 @@ namespace Scada.Scheme.Model.DataTypes
     /// Logical operators
     /// <para>Логические операторы</para>
     /// </summary>
-    [CM.TypeConverter(typeof(EnumConverterEx))]
+    [CM.TypeConverter(typeof(EnumConverter))]
     public enum LogicalOperators
     {
         /// <summary>

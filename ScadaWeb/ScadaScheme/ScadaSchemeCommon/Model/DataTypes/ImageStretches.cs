@@ -32,7 +32,7 @@ namespace Scada.Scheme.Model.DataTypes
     /// Ways of stretching image
     /// <para>Способы растяжения изображения</para>
     /// </summary>
-    [CM.TypeConverter(typeof(EnumConverterEx))]
+    [CM.TypeConverter(typeof(EnumConverter))]
     public enum ImageStretches
     {
         /// <summary>

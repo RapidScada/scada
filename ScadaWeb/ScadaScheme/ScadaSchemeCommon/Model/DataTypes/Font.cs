@@ -23,6 +23,7 @@
  * Modified : 2017
  */
 
+using Scada.Scheme.Model.PropertyGrid;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Xml;
@@ -33,7 +34,7 @@ namespace Scada.Scheme.Model.DataTypes
     /// Defines a font
     /// <para>Определяет шрифт</para>
     /// </summary>
-    //[TypeConverter(typeof(FontConverter))]
+    [TypeConverter(typeof(FontConverter))]
     //[Editor(typeof(FontEditor), typeof(UITypeEditor))]
     public class Font
     {

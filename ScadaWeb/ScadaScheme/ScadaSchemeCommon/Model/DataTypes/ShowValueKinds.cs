@@ -32,7 +32,7 @@ namespace Scada.Scheme.Model.DataTypes
     /// Kinds of displaying input channel value of a dynamic component
     /// <para>Виды отображения значения входного канала динамического компонента</para>
     /// </summary>
-    [CM.TypeConverter(typeof(EnumConverterEx))]
+    [CM.TypeConverter(typeof(EnumConverter))]
     public enum ShowValueKinds
     {
         /// <summary>

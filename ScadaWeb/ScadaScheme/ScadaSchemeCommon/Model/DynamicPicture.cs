@@ -119,7 +119,7 @@ namespace Scada.Scheme.Model
         #region Attributes
         [DisplayName("Conditions"), Category(Categories.Behavior)]
         [Description("The conditions for image output depending on the value of the input channel.")]
-        [CM.DefaultValue(null), CM.TypeConverter(typeof(CM.CollectionConverter))]
+        [CM.DefaultValue(null), CM.TypeConverter(typeof(CollectionConverter))]
         //[CM.Editor(typeof(CondEditor), typeof(UITypeEditor))]
         #endregion
         public List<Condition> Conditions { get; set; }

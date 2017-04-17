@@ -79,7 +79,7 @@ namespace Scada.Scheme.Model
         #region Attributes
         [DisplayName("Underline on hover"), Category(Categories.Behavior)]
         [Description("Underline text when user rests the pointer on the component.")]
-        [CM.DefaultValue(false), CM.TypeConverter(typeof(BooleanConverterEx))]
+        [CM.DefaultValue(false), CM.TypeConverter(typeof(BooleanConverter))]
         #endregion
         public bool UnderlineOnHover { get; set; }
 

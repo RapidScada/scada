@@ -36,11 +36,11 @@ namespace Scada.Scheme.Model.PropertyGrid
     /// Converter of enumerations for PropertyGrid which reflects element description
     /// <para>Преобразователь перечислений для PropertyGrid, который отображает описание элемента</para>
     /// </summary>
-    public class EnumConverterEx : EnumConverter
+    public class EnumConverter : System.ComponentModel.EnumConverter
     {
         private Type enumType;
 
-        public EnumConverterEx(Type type)
+        public EnumConverter(Type type)
             : base(type)
         {
             enumType = type;

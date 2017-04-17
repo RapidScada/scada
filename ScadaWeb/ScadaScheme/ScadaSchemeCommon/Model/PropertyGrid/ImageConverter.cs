@@ -16,47 +16,39 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaSchemeCommon
- * Summary  : Converter of boolean values for PropertyGrid which uses 'Yes' and 'No' labels
+ * Summary  : Converter of images for PropertyGrid
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
  * Modified : 2017
  */
 
+#pragma warning disable 1591 // CS1591: Missing XML comment for publicly visible type or member
+
 using System;
 using System.ComponentModel;
 using System.Globalization;
 
-#pragma warning disable 1591 // CS1591: Missing XML comment for publicly visible type or member
-
 namespace Scada.Scheme.Model.PropertyGrid
 {
     /// <summary>
-    /// Converter of boolean values for PropertyGrid which uses 'Yes' and 'No' labels
-    /// <para>Преобразователь логических значений для PropertyGrid, который использует обозначения 'Да' и 'Нет'</para>
+    /// Converter of images for PropertyGrid
+    /// <para>Преобразователь изображений для PropertyGrid</para>
     /// </summary>
-    public class BooleanConverterEx : BooleanConverter
+    public class ImageConverter : TypeConverter
     {
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
             if (destinationType == typeof(string))
-                return (bool)value ?
-                    (Localization.UseRussian ? "Да" : "Yes") :
-                    (Localization.UseRussian ? "Нет" : "No");
-            else
-                return base.ConvertTo(context, culture, value, destinationType);
-        }
-
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-        {
-            if (value is string)
             {
-                string val = ((string)value).ToLowerInvariant();
-                return val == "да" || val == "yes";
+                Image image = value as Image;
+                return image == null ?
+                    (Localization.UseRussian ? "(Нет)" : "(None)") :
+                    image.Name;
             }
             else
             {
-                return base.ConvertFrom(context, culture, value);
+                return base.ConvertTo(context, culture, value, destinationType);
             }
         }
     }

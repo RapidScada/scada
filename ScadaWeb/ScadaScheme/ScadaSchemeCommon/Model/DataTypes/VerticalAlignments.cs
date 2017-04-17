@@ -32,7 +32,7 @@ namespace Scada.Scheme.Model.DataTypes
     /// Vertical alignments
     /// <para>Вертикальные выравнивания</para>
     /// </summary>
-    [CM.TypeConverter(typeof(EnumConverterEx))]
+    [CM.TypeConverter(typeof(EnumConverter))]
     public enum VerticalAlignments
     {
         /// <summary>

@@ -32,7 +32,7 @@ namespace Scada.Scheme.Model.DataTypes
     /// Compare operators
     /// <para>Операторы сравнения</para>
     /// </summary>
-    [CM.TypeConverter(typeof(EnumConverterEx))]
+    [CM.TypeConverter(typeof(EnumConverter))]
     public enum CompareOperators
     {
         /// <summary>

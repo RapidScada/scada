@@ -118,7 +118,7 @@ namespace Scada.Scheme.Model
         #region Attributes
         [DisplayName("Channel filter"), Category(Categories.Data)]
         [Description("The input channels used as a filter for showing events filtered by view.")]
-        //[CM.TypeConverter(typeof(CnlsFilterConverter)), CM.Editor(typeof(CnlsFilterEditor), typeof(UITypeEditor))]
+        [CM.TypeConverter(typeof(CnlFilterConverter))/*, CM.Editor(typeof(CnlsFilterEditor), typeof(UITypeEditor))*/]
         #endregion
         public List<int> CnlFilter { get; private set; }
 
@@ -128,7 +128,7 @@ namespace Scada.Scheme.Model
         #region Attributes
         [DisplayName("Images"), Category(Categories.Data)]
         [Description("The collection of images used in the scheme.")]
-        //[CM.TypeConverter(typeof(CollectionConverter)), CM.Editor(typeof(ImageEditor), typeof(UITypeEditor))]
+        [CM.TypeConverter(typeof(CollectionConverter))/*, CM.Editor(typeof(ImageEditor), typeof(UITypeEditor))*/]
         #endregion
         public Dictionary<string, Image> Images { get; private set; }
 

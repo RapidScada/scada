@@ -23,6 +23,7 @@
  * Modified : 2017
  */
 
+using Scada.Scheme.Model.PropertyGrid;
 using System.ComponentModel;
 using System.Drawing.Design;
 
@@ -32,7 +33,7 @@ namespace Scada.Scheme.Model
     /// Image of a scheme
     /// <para>Изображение схемы</para>
     /// </summary>
-    //[TypeConverter(typeof(ImageConverter))]
+    [TypeConverter(typeof(ImageConverter))]
     //[Editor(typeof(ImageEditor), typeof(UITypeEditor))]
     public class Image
     {
