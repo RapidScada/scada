@@ -25,6 +25,7 @@
 
 using Scada.Client;
 using Scada.Scheme.Model;
+using Scada.Scheme.Model.DataTypes;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -44,7 +45,7 @@ namespace Scada.Scheme
         public SchemeView()
             : base()
         {
-            SchemeDocument = new SchemeDocument();
+            SchemeDoc = new SchemeDocument();
             Components = new List<BaseComponent>();
         }
 
@@ -52,7 +53,7 @@ namespace Scada.Scheme
         /// <summary>
         /// Получить свойства документа схемы
         /// </summary>
-        public SchemeDocument SchemeDocument { get; protected set; }
+        public SchemeDocument SchemeDoc { get; protected set; }
 
         /// <summary>
         /// Получить компоненты схемы
@@ -81,17 +82,12 @@ namespace Scada.Scheme
             XmlNode documentNode = rootElem.SelectSingleNode("Document") ?? rootElem.SelectSingleNode("Scheme");
             if (documentNode != null)
             {
-                SchemeDocument.LoadFromXml(documentNode);
+                SchemeDoc.LoadFromXml(documentNode);
 
                 // загрузка фильтра по входным каналам для старого формата
-                if (documentNode.Name.Equals("Scheme", StringComparison.OrdinalIgnoreCase))
-                {
-                    XmlNode cnlsFilterNode = rootElem.SelectSingleNode("CnlsFilter");
-                    if (cnlsFilterNode != null)
-                    {
-
-                    }
-                }
+                XmlNode cnlsFilterNode = rootElem.SelectSingleNode("CnlsFilter");
+                if (cnlsFilterNode != null)
+                    SchemeDoc.CnlFilter.ParseCnlFilter(cnlsFilterNode.InnerText);
             }
 
             // загрузка компонентов схемы
@@ -101,21 +97,22 @@ namespace Scada.Scheme
                 foreach (XmlNode componentNode in componentsNode.ChildNodes)
                 {
                     string nodeName = componentNode.Name.ToLowerInvariant();
-                    BaseComponent comp = null;
+                    BaseComponent component = null;
 
                     if (nodeName == "statictext")
-                        comp = new StaticText();
+                        component = new StaticText();
                     else if (nodeName == "dynamictext")
-                        comp = new DynamicText();
+                        component = new DynamicText();
                     else if (nodeName == "staticpicture")
-                        comp = new StaticPicture();
+                        component = new StaticPicture();
                     else if (nodeName == "dynamicpicture")
-                        comp = new DynamicPicture();
+                        component = new DynamicPicture();
 
-                    if (comp != null)
+                    if (component != null)
                     {
-                        comp.LoadFromXml(componentNode);
-                        Components.Add(comp);
+                        component.SchemeDoc = SchemeDoc;
+                        component.LoadFromXml(componentNode);
+                        Components.Add(component);
                     }
                 }
             }
@@ -124,7 +121,15 @@ namespace Scada.Scheme
             XmlNode imagesNode = rootElem.SelectSingleNode("Images");
             if (imagesNode != null)
             {
-
+                Dictionary<string, Image> images = SchemeDoc.Images;
+                XmlNodeList imageNodes = imagesNode.SelectNodes("Image");
+                foreach (XmlNode imageNode in imageNodes)
+                {
+                    Image image = new Image();
+                    image.LoadFromXml(imageNode);
+                    if (!string.IsNullOrEmpty(image.Name))
+                        images[image.Name] = image;
+                }
             }
         }
 
@@ -157,7 +162,7 @@ namespace Scada.Scheme
         public override void Clear()
         {
             base.Clear();
-            SchemeDocument.SetToDefault();
+            SchemeDoc.SetToDefault();
             Components.Clear();
         }
     }

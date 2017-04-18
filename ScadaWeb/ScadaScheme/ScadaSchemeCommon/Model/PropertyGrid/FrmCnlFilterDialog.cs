@@ -23,6 +23,7 @@
  * Modified : 2017
  */
 
+using Scada.Scheme.Model.DataTypes;
 using Scada.UI;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace Scada.Scheme.Model.PropertyGrid
     /// </summary>
     internal partial class FrmCnlFilterDialog : Form
     {
-        private List<int> cnlFilter;    // ссылка на редактируемый фильтр по входным каналам
+        private List<int> cnlFilter;    // ссылка на редактируемый фильтр по каналам
         IObservableItem observableItem; // элемент, изменения которого отслеживаются
 
 
@@ -68,29 +69,15 @@ namespace Scada.Scheme.Model.PropertyGrid
         {
             // перевод формы
             Translator.TranslateForm(this, "Scada.Scheme.Model.PropertyGrid.FrmCnlFilterDialog");
-            
+
             // вывод фильтра по входным каналам
-            txtCnlNums.Text = string.Join(CnlFilterConverter.MainCnlSep, cnlFilter);
+            txtCnlNums.Text = cnlFilter.CnlFilterToString();
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            // разбор текста и заполнение фильтра по входным каналам
-            cnlFilter.Clear();
-            string[] cnlNums = txtCnlNums.Text.Split(CnlFilterConverter.CnlSep, 
-                StringSplitOptions.RemoveEmptyEntries);
-
-            foreach (string cnlNumStr in cnlNums)
-            {
-                int cnlNum;
-                if (int.TryParse(cnlNumStr, out cnlNum))
-                {
-                    int ind = cnlFilter.BinarySearch(cnlNum);
-                    if (ind < 0)
-                        cnlFilter.Insert(~ind, cnlNum);
-                }
-            }
-
+            // разбор текста и заполнение фильтра по каналам
+            cnlFilter.ParseCnlFilter(txtCnlNums.Text);
             observableItem.OnItemChanged();
             DialogResult = DialogResult.OK;
         }

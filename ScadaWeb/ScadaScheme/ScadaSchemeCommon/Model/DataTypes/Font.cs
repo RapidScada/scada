@@ -35,7 +35,7 @@ namespace Scada.Scheme.Model.DataTypes
     /// <para>Определяет шрифт</para>
     /// </summary>
     [TypeConverter(typeof(FontConverter))]
-    //[Editor(typeof(FontEditor), typeof(UITypeEditor))]
+    [Editor(typeof(FontEditor), typeof(UITypeEditor))]
     public class Font
     {
         /// <summary>

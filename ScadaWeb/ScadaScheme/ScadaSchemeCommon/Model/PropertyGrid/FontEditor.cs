@@ -16,40 +16,40 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaSchemeCommon
- * Summary  : Editor of image output conditions for PropertyGrid
+ * Summary  : Editor of font for PropertyGrid
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
  * Modified : 2017
  */
 
-#pragma warning disable 1591 // CS1591: Missing XML comment for publicly visible type or member
-
 using Scada.Scheme.Model.DataTypes;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;
+using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
 namespace Scada.Scheme.Model.PropertyGrid
 {
     /// <summary>
-    /// Editor of image output conditions for PropertyGrid
-    /// Редактор условий вывода изображений для PropertyGrid
+    /// Editor of font for PropertyGrid
+    /// <para>Редактор шрифта для PropertyGrid</para>
     /// </summary>
-    public class ConditionEditor : UITypeEditor
+    internal class FontEditor : UITypeEditor
     {
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
             IWindowsFormsEditorService editorSvc = provider == null ? null :
                 (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
 
-            if (context != null && context.Instance is BaseComponent && editorSvc != null)
+            if (context != null && context.Instance != null && editorSvc != null)
             {
-                List<Condition> conditions = (List<Condition>)value;
-                BaseComponent component = (BaseComponent)context.Instance;
-                editorSvc.ShowDialog(new FrmConditionDialog(conditions, component));
+                Font font = value as Font;
+                FrmFontDialog frmFontDialog = new FrmFontDialog(font);
+
+                if (editorSvc.ShowDialog(frmFontDialog) == DialogResult.OK)
+                    value = frmFontDialog.FontResult;
             }
 
             return value;

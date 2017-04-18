@@ -28,6 +28,7 @@ using Scada.Scheme.Model.PropertyGrid;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Design;
+using System.Web.Script.Serialization;
 using System.Xml;
 using CM = System.ComponentModel;
 
@@ -37,7 +38,7 @@ namespace Scada.Scheme.Model
     /// Scheme document properties
     /// <para>Свойства документа схемы</para>
     /// </summary>
-    public class SchemeDocument : IObservableItem
+    public class SchemeDocument : IObservableItem, ISchemeDocAvailable
     {
         /// <summary>
         /// Размер схемы по умолчанию
@@ -51,6 +52,7 @@ namespace Scada.Scheme.Model
         public SchemeDocument()
         {
             CnlFilter = new List<int>();
+            Images = new Dictionary<string, Image>();
             SetToDefault();
         }
 
@@ -75,14 +77,15 @@ namespace Scada.Scheme.Model
         public string BackColor { get; set; }
 
         /// <summary>
-        /// Получить или установить фоновое изображение
+        /// Получить или установить наименование фонового изображения
         /// </summary>
         #region Attributes
         [DisplayName("Background image"), Category(Categories.Appearance)]
         [Description("The background image used for the scheme.")]
-        [CM.DefaultValue(null)]
+        [CM.TypeConverter(typeof(ImageConverter)), CM.Editor(typeof(ImageEditor), typeof(UITypeEditor))]
+        [CM.DefaultValue("")]
         #endregion
-        public Image BackImage { get; set; }
+        public string BackImageName { get; set; }
 
         /// <summary>
         /// Получить или установить основной цвет
@@ -119,6 +122,7 @@ namespace Scada.Scheme.Model
         [DisplayName("Channel filter"), Category(Categories.Data)]
         [Description("The input channels used as a filter for showing events filtered by view.")]
         [CM.TypeConverter(typeof(CnlFilterConverter)), CM.Editor(typeof(CnlFilterEditor), typeof(UITypeEditor))]
+        [ScriptIgnore]
         #endregion
         public List<int> CnlFilter { get; protected set; }
 
@@ -128,9 +132,22 @@ namespace Scada.Scheme.Model
         #region Attributes
         [DisplayName("Images"), Category(Categories.Data)]
         [Description("The collection of images used in the scheme.")]
-        [CM.TypeConverter(typeof(CollectionConverter))/*, CM.Editor(typeof(ImageEditor), typeof(UITypeEditor))*/]
+        [CM.TypeConverter(typeof(CollectionConverter)), CM.Editor(typeof(ImageEditor), typeof(UITypeEditor))]
+        [ScriptIgnore]
         #endregion
         public Dictionary<string, Image> Images { get; protected set; }
+
+        /// <summary>
+        /// Получить ссылку на свойства документа схемы
+        /// </summary>
+        [CM.Browsable(false), ScriptIgnore]
+        public SchemeDocument SchemeDoc
+        {
+            get
+            {
+                return this;
+            }
+        }
 
 
         /// <summary>
@@ -140,12 +157,12 @@ namespace Scada.Scheme.Model
         {
             Size = DefaultSize;
             BackColor = "White";
-            BackImage = null;
+            BackImageName = "";
             ForeColor = "Black";
             Font = new Font();
             Title = "";
             CnlFilter.Clear();
-            Images = null;
+            Images.Clear();
         }
 
         /// <summary>
@@ -160,11 +177,11 @@ namespace Scada.Scheme.Model
 
             Size = Size.GetChildAsSize(xmlNode, "Size");
             BackColor = xmlNode.GetChildAsString("BackColor");
-            //BackImage = 
+            BackImageName = xmlNode.GetChildAsString("BackImageName");
             ForeColor = xmlNode.GetChildAsString("ForeColor");
             Font = Font.GetChildAsFont(xmlNode, "Font");
             Title = xmlNode.GetChildAsString("Title");
-            //CnlFilter = 
+            CnlFilter.ParseCnlFilter(xmlNode.GetChildAsString("CnlFilter"));
         }
 
         /// <summary>

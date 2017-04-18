@@ -29,6 +29,7 @@ using System;
 using System.Text;
 using Scada.Scheme.Model.PropertyGrid;
 using CM = System.ComponentModel;
+using System.Web.Script.Serialization;
 
 namespace Scada.Scheme.Model
 {
@@ -36,7 +37,7 @@ namespace Scada.Scheme.Model
     /// The base class for scheme component
     /// <para>Базовый класс компонента схемы</para>
     /// </summary>
-    public abstract class BaseComponent : IComparable<BaseComponent>, IObservableItem
+    public abstract class BaseComponent : IComparable<BaseComponent>, IObservableItem, ISchemeDocAvailable
     {
         /// <summary>
         /// Конструктор
@@ -48,6 +49,7 @@ namespace Scada.Scheme.Model
             Location = Point.Default;
             Size = Size.Default;
             ZIndex = 0;
+            SchemeDoc = null;
         }
 
 
@@ -110,6 +112,12 @@ namespace Scada.Scheme.Model
         [Description("The stack order of the scheme component.")]
         #endregion
         public int ZIndex { get; set; }
+
+        /// <summary>
+        /// Получить или установить ссылку на свойства документа схемы
+        /// </summary>
+        [CM.Browsable(false), ScriptIgnore]
+        public SchemeDocument SchemeDoc { get; set; }
 
 
         /// <summary>

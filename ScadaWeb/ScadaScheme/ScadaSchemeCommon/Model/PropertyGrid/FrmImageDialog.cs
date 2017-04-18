@@ -41,14 +41,20 @@ namespace Scada.Scheme.Model.PropertyGrid
     internal partial class FrmImageDialog : Form
     {
         /// <summary>
-        /// Информация об изображении
+        /// Элемент списка изображений
         /// </summary>
-        private class ImageInfo //: SchemeView.ICheckNameUnique
+        private class ImageListItem //: SchemeView.ICheckNameUnique
         {
+            /// <summary>
+            /// Конструктор, ограничивающий создание объекта без параметров
+            /// </summary>
+            private ImageListItem()
+            {
+            }
             /// <summary>
             /// Конструктор
             /// </summary>
-            public ImageInfo(Image image, Func<string, bool> nameIsUniqueMethod)
+            public ImageListItem(Image image, Func<string, bool> nameIsUniqueMethod)
             {
                 Image = image;
                 Source = null;
@@ -163,95 +169,129 @@ namespace Scada.Scheme.Model.PropertyGrid
         }
 
 
-        //private EditorData editorData;                          // ссылка на данные редактора схем
-        private Dictionary<string, Image> imageDict; // ссылка на словарь изображений схемы
+        private Dictionary<string, Image> images; // словарь изображений схемы
+        IObservableItem observableItem;           // элемент, изменения которого отслеживаются
 
 
         /// <summary>
-        /// Конструктор
+        /// Конструктор, ограничивающий создание объекта без параметров
         /// </summary>
-        public FrmImageDialog()
+        private FrmImageDialog()
         {
             InitializeComponent();
-            imageDict = null;
+        }
+
+        /// <summary>
+        /// Конструктор для режима редактирования словаря изображений
+        /// </summary>
+        public FrmImageDialog(Dictionary<string, Image> images, IObservableItem observableItem)
+            : this()
+        {
+            if (images == null)
+                throw new ArgumentNullException("images");
+            if (observableItem == null)
+                throw new ArgumentNullException("observableItem");
+
+            this.images = images;
+            this.observableItem = observableItem;
+            SelectedImageName = "";
+            CanSelectImage = false;
+
+            btnSelectEmpty.Visible = false;
+            btnSelect.Visible = false;
+        }
+
+        /// <summary>
+        /// Конструктор для режима выбора изображения
+        /// </summary>
+        public FrmImageDialog(string imageName, Dictionary<string, Image> images, IObservableItem observableItem)
+            : this()
+        {
+            if (images == null)
+                throw new ArgumentNullException("images");
+            if (observableItem == null)
+                throw new ArgumentNullException("observableItem");
+
+            this.images = images;
+            this.observableItem = observableItem;
+            SelectedImageName = imageName;
             CanSelectImage = true;
-            SelectedImage = null;
         }
 
 
         /// <summary>
-        /// Получить или установить признак, возможно ли с помощью формы выбирать изображение
+        /// Получить признак, что форма позволяет выбирать изображение
         /// </summary>
-        public bool CanSelectImage { get; set; }
+        public bool CanSelectImage { get; private set; }
 
         /// <summary>
-        /// Получить или установить выбранное изображение
+        /// Получить наименование выбранного изображения
         /// </summary>
-        public Image SelectedImage { get; set; }
+        public string SelectedImageName { get; private set; }
 
+
+        /// <summary>
+        /// Заполнить список изображений
+        /// </summary>
+        private void FillImageList()
+        {
+            try
+            {
+                lbImages.BeginUpdate();
+                Image selImage = null;
+
+                foreach (Image image in images.Values)
+                {
+                    if (image.Name == SelectedImageName)
+                        selImage = image;
+                    else
+                        lbImages.Items.Add(new ImageListItem(image, ImageNameIsUnique));
+                }
+
+                if (selImage != null)
+                    lbImages.SelectedIndex = lbImages.Items.Add(new ImageListItem(selImage, ImageNameIsUnique));
+            }
+            finally
+            {
+                lbImages.EndUpdate();
+            }
+        }
+
+        /// <summary>
+        /// Установить доступность кнопок
+        /// </summary>
+        private void SetBtnsEnabled()
+        {
+            btnSelect.Enabled = btnSave.Enabled = btnDel.Enabled = 
+                lbImages.SelectedIndex >= 0;
+        }
 
         /// <summary>
         /// Проверить уникальность наименования изображения
         /// </summary>
         private bool ImageNameIsUnique(string name)
         {
-            return !imageDict.ContainsKey(name);
-        }
-
-        /// <summary>
-        /// Начать ожидание считывания изменения
-        /// </summary>
-        private void StartWaitForChange()
-        {
-            btnOpen.Enabled = btnDel.Enabled = btnClear.Enabled = btnSelect.Enabled = false;
-            tmrAllowChange.Enabled = true;
+            return !images.ContainsKey(name);
         }
 
 
         private void FrmImageDialog_Load(object sender, EventArgs e)
         {
             // перевод формы
-            Translator.TranslateForm(this, "Scada.Scheme.FrmImageDialog");
+            Translator.TranslateForm(this, "Scada.Scheme.Model.PropertyGrid.FrmImageDialog");
+            //openFileDialog.Filter = saveFileDialog.Filter = "";
 
-            // установка видимости кнопок выбора изображения
-            if (!CanSelectImage)
-            {
-                btnClear.Visible = false;
-                btnSelect.Visible = false;
-            }
+            // заполнение списка изображений
+            FillImageList();
 
-            // вывод словаря изображений схемы
-            //SchemeApp schemeApp = SchemeApp.GetSchemeApp();
-            //editorData = schemeApp.EditorData;
-            //if (editorData != null && editorData.SchemeView != null)
-            //    imageDict = schemeApp.EditorData.SchemeView.ImageDict;
-
-            if (imageDict != null)
-            {
-                lbImages.BeginUpdate();
-                string selName = SelectedImage == null ? "" : SelectedImage.Name;
-                Image selImage = null;
-
-                foreach (Image image in imageDict.Values)
-                {
-                    if (image.Name == selName)
-                        selImage = image;
-                    else
-                        lbImages.Items.Add(new ImageInfo(image, ImageNameIsUnique));
-                }
-
-                if (selImage != null)
-                    lbImages.SelectedIndex = lbImages.Items.Add(new ImageInfo(selImage, ImageNameIsUnique));
-
-                lbImages.EndUpdate();
-                btnOpen.Enabled = true;
-            }
+            // установка доступности кнопок
+            SetBtnsEnabled();
         }
 
         private void lbImage_SelectedIndexChanged(object sender, EventArgs e)
         {
             // вывод свойств выбранного изображения
-            ImageInfo imageInfo = lbImages.SelectedItem as ImageInfo;
+            ImageListItem imageInfo = lbImages.SelectedItem as ImageListItem;
 
             if (imageInfo == null)
             {
@@ -297,13 +337,13 @@ namespace Scada.Scheme.Model.PropertyGrid
                 if (oldName != newName)
                 {
                     // изменение наименования изображения
-                    ImageInfo imageInfo = lbImages.SelectedItem as ImageInfo;
+                    ImageListItem imageInfo = lbImages.SelectedItem as ImageListItem;
                     imageInfo.Name = newName;
                     imageInfo.Image.Name = newName;
 
                     // обновление словаря изображений схемы
-                    imageDict.Remove(oldName);
-                    imageDict.Add(newName, imageInfo.Image);
+                    images.Remove(oldName);
+                    images.Add(newName, imageInfo.Image);
 
                     // обновление списка изображений на форме
                     lbImages.SelectedIndexChanged -= lbImage_SelectedIndexChanged;
@@ -321,7 +361,6 @@ namespace Scada.Scheme.Model.PropertyGrid
                     //change.ImageNewName = newName;
                     //editorData.TrySetSchemeChange(change);
                     //editorData.SetFormTitle();
-                    StartWaitForChange();
                 }
             }
         }
@@ -335,7 +374,7 @@ namespace Scada.Scheme.Model.PropertyGrid
                 {
                     Image image = new Image();
                     string name = Path.GetFileName(openFileDialog.FileName);
-                    image.Name = imageDict.ContainsKey(name) ? "image" + (imageDict.Count + 1) : name;
+                    image.Name = images.ContainsKey(name) ? "image" + (images.Count + 1) : name;
 
                     using (FileStream fileStream = new FileStream(
                         openFileDialog.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
@@ -344,8 +383,8 @@ namespace Scada.Scheme.Model.PropertyGrid
                         fileStream.Read(image.Data, 0, image.Data.Length);
                     }
 
-                    ImageInfo imageInfo = new ImageInfo(image, ImageNameIsUnique);
-                    imageDict.Add(image.Name, image);
+                    ImageListItem imageInfo = new ImageListItem(image, ImageNameIsUnique);
+                    images.Add(image.Name, image);
                     lbImages.SelectedIndex = lbImages.Items.Add(imageInfo);
 
                     // создание объекта для передачи изменений
@@ -353,7 +392,6 @@ namespace Scada.Scheme.Model.PropertyGrid
                     //change.Image = image;
                     //editorData.TrySetSchemeChange(change);
                     //editorData.SetFormTitle();
-                    StartWaitForChange();
                 }
                 catch (Exception ex)
                 {
@@ -365,7 +403,7 @@ namespace Scada.Scheme.Model.PropertyGrid
         private void btnSave_Click(object sender, EventArgs e)
         {
             // сохранение изображения в выбранный файл
-            ImageInfo imageInfo = lbImages.SelectedItem as ImageInfo;
+            ImageListItem imageInfo = lbImages.SelectedItem as ImageListItem;
 
             if (imageInfo != null && imageInfo.Image != null)
             {
@@ -393,12 +431,12 @@ namespace Scada.Scheme.Model.PropertyGrid
         private void btnDel_Click(object sender, EventArgs e)
         {
             // удаление изображения из словаря изображений схемы
-            ImageInfo imageInfo = lbImages.SelectedItem as ImageInfo;
+            ImageListItem imageInfo = lbImages.SelectedItem as ImageListItem;
             int selInd = lbImages.SelectedIndex;
 
             if (imageInfo != null)
             {
-                imageDict.Remove(imageInfo.Name);
+                images.Remove(imageInfo.Name);
                 lbImages.Items.RemoveAt(selInd);
                 int itemCnt = lbImages.Items.Count;
                 if (itemCnt > 0)
@@ -409,38 +447,24 @@ namespace Scada.Scheme.Model.PropertyGrid
                 //change.ImageOldName = imageInfo.Name;
                 //editorData.TrySetSchemeChange(change);
                 //editorData.SetFormTitle();
-                StartWaitForChange();
             }
 
             propGrid.Select();
         }
 
-        private void btnClear_Click(object sender, EventArgs e)
+        private void btnSelectEmpty_Click(object sender, EventArgs e)
         {
-            // установка выбранного изображения пустым
-            SelectedImage = null;
+            // выбор пустого изображения
+            SelectedImageName = "";
             DialogResult = DialogResult.OK;
         }
 
         private void btnSelect_Click(object sender, EventArgs e)
         {
             // установка выбранного изображения
-            ImageInfo imageInfo = lbImages.SelectedItem as ImageInfo;
-            if (imageInfo != null)
-            {
-                SelectedImage = new Image();
-                SelectedImage.Name = imageInfo.Name;
-            }
+            ImageListItem imageInfo = lbImages.SelectedItem as ImageListItem;
+            SelectedImageName = imageInfo.Name;
             DialogResult = DialogResult.OK;
-        }
-
-        private void tmrAllowChange_Tick(object sender, EventArgs e)
-        {
-            //if (editorData.SchemeChange == null)
-            //{
-            //    tmrAllowChange.Enabled = false;
-            //    btnOpen.Enabled = btnDel.Enabled = btnClear.Enabled = btnSelect.Enabled = true;
-            //}
         }
     }
 }

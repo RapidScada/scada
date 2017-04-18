@@ -178,7 +178,7 @@ namespace Scada.Scheme.Editor
 
                 if (editor.SchemeView != null)
                 {
-                    cbSchComp.Items.Add(editor.SchemeView.SchemeDocument);
+                    cbSchComp.Items.Add(editor.SchemeView.SchemeDoc);
                     List<BaseComponent> componentList = new List<BaseComponent>(editor.SchemeView.Components);
                     componentList.Sort();
 

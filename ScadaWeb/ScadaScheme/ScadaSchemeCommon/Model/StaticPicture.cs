@@ -25,6 +25,7 @@
 
 using Scada.Scheme.Model.DataTypes;
 using Scada.Scheme.Model.PropertyGrid;
+using System.Drawing.Design;
 using System.Xml;
 using CM = System.ComponentModel;
 
@@ -42,7 +43,7 @@ namespace Scada.Scheme.Model
         public StaticPicture()
         {
             BorderColor = "Gray";
-            Image = null;
+            ImageName = "";
             ImageStretch = ImageStretches.None;
         }
 
@@ -58,14 +59,15 @@ namespace Scada.Scheme.Model
         public string BorderColor { get; set; }
 
         /// <summary>
-        /// Получить или установить изображение
+        /// Получить или установить наименование изображения
         /// </summary>
         #region Attributes
         [DisplayName("Image"), Category(Categories.Appearance)]
         [Description("The image from the collection of scheme images.")]
-        [CM.DefaultValue(null)]
+        [CM.TypeConverter(typeof(ImageConverter)), CM.Editor(typeof(ImageEditor), typeof(UITypeEditor))]
+        [CM.DefaultValue("")]
         #endregion
-        public Image Image { get; set; }
+        public string ImageName { get; set; }
 
         /// <summary>
         /// Получить или установить растяжение изображения
@@ -86,8 +88,7 @@ namespace Scada.Scheme.Model
             base.LoadFromXml(xmlNode);
 
             BorderColor = xmlNode.GetChildAsString("BorderColor");
-            string imageName = xmlNode.GetChildAsString("ImageName");
-            Image = imageName == "" ? null : new Image() { Name = imageName };
+            ImageName = xmlNode.GetChildAsString("ImageName");
             ImageStretch = xmlNode.GetChildAsEnum<ImageStretches>("ImageStretch");
         }
     }

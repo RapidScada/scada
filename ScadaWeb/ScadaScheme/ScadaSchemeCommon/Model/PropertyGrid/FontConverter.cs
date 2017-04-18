@@ -23,8 +23,6 @@
  * Modified : 2017
  */
 
-#pragma warning disable 1591 // CS1591: Missing XML comment for publicly visible type or member
-
 using Scada.Scheme.Model.DataTypes;
 using System;
 using System.ComponentModel;
@@ -37,7 +35,7 @@ namespace Scada.Scheme.Model.PropertyGrid
     /// Converter of fonts for PropertyGrid
     /// <para>Преобразователь шрифтов для PropertyGrid</para>
     /// </summary>
-    public class FontConverter : TypeConverter
+    internal class FontConverter : TypeConverter
     {
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {

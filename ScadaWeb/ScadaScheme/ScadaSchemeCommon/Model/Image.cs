@@ -24,8 +24,10 @@
  */
 
 using Scada.Scheme.Model.PropertyGrid;
+using System;
 using System.ComponentModel;
 using System.Drawing.Design;
+using System.Xml;
 
 namespace Scada.Scheme.Model
 {
@@ -34,7 +36,7 @@ namespace Scada.Scheme.Model
     /// <para>Изображение схемы</para>
     /// </summary>
     [TypeConverter(typeof(ImageConverter))]
-    //[Editor(typeof(ImageEditor), typeof(UITypeEditor))]
+    [Editor(typeof(ImageEditor), typeof(UITypeEditor))]
     public class Image
     {
         /// <summary>
@@ -59,15 +61,12 @@ namespace Scada.Scheme.Model
 
 
         /// <summary>
-        /// Клонировать объект, передав ссылку на существующие данные
+        /// Загрузить изображение из XML-узла
         /// </summary>
-        public Image ShallowClone()
+        public void LoadFromXml(XmlNode xmlNode)
         {
-            return new Image()
-            {
-                Name = Name,
-                Data = Data
-            };
+            Name = xmlNode.GetChildAsString("Name");
+            Data = Convert.FromBase64String(xmlNode.GetChildAsString("Data"));
         }
     }
 }

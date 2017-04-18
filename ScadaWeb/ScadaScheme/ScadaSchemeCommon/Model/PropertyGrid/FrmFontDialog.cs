@@ -37,21 +37,23 @@ namespace Scada.Scheme.Model.PropertyGrid
     internal partial class FrmFontDialog : Form
     {
         /// <summary>
-        /// Информация группе шрифтов
+        /// Элемент списка шрифтов
         /// </summary>
-        private class FontFamilyInfo
+        private class FontListItem
         {
             /// <summary>
             /// Конструктор
             /// </summary>
-            public FontFamilyInfo(FontFamily fontFamily)
+            public FontListItem(FontFamily fontFamily)
             {
                 FontFamily = fontFamily;
             }
+
             /// <summary>
-            /// Получить или установить группу шрифтов
+            /// Получить группу шрифтов
             /// </summary>
             public FontFamily FontFamily { get; private set; }
+
             /// <summary>
             /// Получить строковое представление объекта
             /// </summary>
@@ -66,46 +68,69 @@ namespace Scada.Scheme.Model.PropertyGrid
 
 
         /// <summary>
-        /// Конструктор
+        /// Конструктор, ограничивающий создание объекта без параметров
         /// </summary>
-        public FrmFontDialog()
+        private FrmFontDialog()
         {
             InitializeComponent();
-            SelectedFont = null;
+        }
+
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        public FrmFontDialog(DataTypes.Font font)
+            : this()
+        {
+            FontResult = font;
         }
 
 
         /// <summary>
-        /// Получить или установить выбранный шрифт
+        /// Получить шрифт в результате редактирования
         /// </summary>
-        public DataTypes.Font SelectedFont { get; set; }
+        public DataTypes.Font FontResult { get; private set; }
+
+
+        /// <summary>
+        /// Заполнить список доступных шрифтов
+        /// </summary>
+        private void FillFontList()
+        {
+            try
+            {
+                cbFontName.BeginUpdate();
+                foreach (FontFamily fontFamily in FontFamily.Families)
+                {
+                    if (fontFamily.IsStyleAvailable(FontStyle.Regular))
+                        cbFontName.Items.Add(new FontListItem(fontFamily));
+                }
+            }
+            finally
+            {
+                cbFontName.EndUpdate();
+            }
+        }
 
 
         private void FrmFontDialog_Load(object sender, EventArgs e)
         {
             // перевод формы
-            Translator.TranslateForm(this, "Scada.Scheme.Model.PropertyGrid");
-            
+            Translator.TranslateForm(this, "Scada.Scheme.Model.PropertyGrid.FrmFontDialog");
+
             // заполнение списка шрифтов
-            cbFontName.BeginUpdate();
-            foreach (FontFamily fontFamily in FontFamily.Families)
-            {
-                if (fontFamily.IsStyleAvailable(FontStyle.Regular))
-                    cbFontName.Items.Add(new FontFamilyInfo(fontFamily));
-            }
-            cbFontName.EndUpdate();
+            FillFontList();
 
             // создание кисти для вывода текста
             textBrush = new SolidBrush(cbFontName.ForeColor);
 
-            // вывод выбранного шрифта
-            if (SelectedFont != null)
+            // вывод шрифта
+            if (FontResult != null)
             {
-                cbFontName.Text = SelectedFont.Name;
-                cbFontSize.Text = SelectedFont.Size.ToString();
-                chkBold.Checked = SelectedFont.Bold;
-                chkItalic.Checked = SelectedFont.Italic;
-                chkUnderline.Checked = SelectedFont.Underline;
+                cbFontName.Text = FontResult.Name;
+                cbFontSize.Text = FontResult.Size.ToString();
+                chkBold.Checked = FontResult.Bold;
+                chkItalic.Checked = FontResult.Italic;
+                chkUnderline.Checked = FontResult.Underline;
             }
         }
 
@@ -115,9 +140,9 @@ namespace Scada.Scheme.Model.PropertyGrid
             e.DrawBackground();
 
             // отображение значка и текста элемента
-            FontFamilyInfo fontFamilyInfo = (FontFamilyInfo)cbFontName.Items[e.Index];
-            Font font = new Font(fontFamilyInfo.FontFamily, 14, FontStyle.Regular, GraphicsUnit.Pixel);
-            e.Graphics.DrawString(fontFamilyInfo.ToString(), font, textBrush, e.Bounds.X + 2, e.Bounds.Y + 2);
+            FontListItem item = (FontListItem)cbFontName.Items[e.Index];
+            Font font = new Font(item.FontFamily, 14, FontStyle.Regular, GraphicsUnit.Pixel);
+            e.Graphics.DrawString(item.ToString(), font, textBrush, e.Bounds.X + 2, e.Bounds.Y + 2);
 
             // отображение фокуса элемента
             e.DrawFocusRectangle();
@@ -130,28 +155,27 @@ namespace Scada.Scheme.Model.PropertyGrid
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            // создание выбранного шрифта
-            string name = cbFontName.Text.Trim();
-            int size;
+            string fontName = cbFontName.Text.Trim();
 
-            if (name == "")
+            if (fontName == "")
             {
-                SelectedFont = null;
+                FontResult = null;
                 DialogResult = DialogResult.OK;
             }
-            else if (int.TryParse(cbFontSize.Text, out size))
+            else 
             {
-                SelectedFont = new DataTypes.Font();
-                SelectedFont.Name = name;
-                SelectedFont.Size = size;
-                SelectedFont.Bold = chkBold.Checked;
-                SelectedFont.Italic = chkItalic.Checked;
-                SelectedFont.Underline = chkUnderline.Checked;
+                int size;
+                if (!int.TryParse(cbFontSize.Text, out size))
+                    size = DataTypes.Font.DefaultSize;
+
+                // создание шрифта в соответствии с выбранными параметрами
+                FontResult = new DataTypes.Font();
+                FontResult.Name = fontName;
+                FontResult.Size = size;
+                FontResult.Bold = chkBold.Checked;
+                FontResult.Italic = chkItalic.Checked;
+                FontResult.Underline = chkUnderline.Checked;
                 DialogResult = DialogResult.OK;
-            }
-            else
-            {
-                ScadaUiUtils.ShowError("!!!"/*SchemePhrases.SizeInteger*/); // TODO
             }
         }
     }

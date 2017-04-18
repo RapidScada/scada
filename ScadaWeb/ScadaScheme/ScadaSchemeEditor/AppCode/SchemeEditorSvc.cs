@@ -98,7 +98,7 @@ namespace Scada.Scheme.Editor
                     SchemeView srcSchemeView = Editor.SchemeView;
                     dto = srcSchemeView == null ?
                         new SchemeDocDTO() :
-                        new SchemeDocDTO(srcSchemeView.SchemeDocument) { ViewStamp = srcSchemeView.Stamp };
+                        new SchemeDocDTO(srcSchemeView.SchemeDoc) { ViewStamp = srcSchemeView.Stamp };
                 }
                 else
                 {

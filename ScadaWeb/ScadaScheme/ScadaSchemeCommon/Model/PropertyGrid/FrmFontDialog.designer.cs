@@ -46,18 +46,18 @@
             this.lblFontName.AutoSize = true;
             this.lblFontName.Location = new System.Drawing.Point(9, 9);
             this.lblFontName.Name = "lblFontName";
-            this.lblFontName.Size = new System.Drawing.Size(41, 13);
+            this.lblFontName.Size = new System.Drawing.Size(28, 13);
             this.lblFontName.TabIndex = 0;
-            this.lblFontName.Text = "Шрифт";
+            this.lblFontName.Text = "Font";
             // 
             // lblFontSize
             // 
             this.lblFontSize.AutoSize = true;
             this.lblFontSize.Location = new System.Drawing.Point(165, 9);
             this.lblFontSize.Name = "lblFontSize";
-            this.lblFontSize.Size = new System.Drawing.Size(46, 13);
+            this.lblFontSize.Size = new System.Drawing.Size(27, 13);
             this.lblFontSize.TabIndex = 2;
-            this.lblFontSize.Text = "Размер";
+            this.lblFontSize.Text = "Size";
             // 
             // btnCancel
             // 
@@ -66,7 +66,7 @@
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 6;
-            this.btnCancel.Text = "Отмена";
+            this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
             // btnOK
@@ -115,16 +115,16 @@
             this.gbStyle.Size = new System.Drawing.Size(256, 95);
             this.gbStyle.TabIndex = 4;
             this.gbStyle.TabStop = false;
-            this.gbStyle.Text = "Стиль";
+            this.gbStyle.Text = "Style";
             // 
             // chkUnderline
             // 
             this.chkUnderline.AutoSize = true;
             this.chkUnderline.Location = new System.Drawing.Point(13, 65);
             this.chkUnderline.Name = "chkUnderline";
-            this.chkUnderline.Size = new System.Drawing.Size(99, 17);
+            this.chkUnderline.Size = new System.Drawing.Size(71, 17);
             this.chkUnderline.TabIndex = 2;
-            this.chkUnderline.Text = "Подчеркнутый";
+            this.chkUnderline.Text = "Underline";
             this.chkUnderline.UseVisualStyleBackColor = true;
             // 
             // chkItalic
@@ -132,9 +132,9 @@
             this.chkItalic.AutoSize = true;
             this.chkItalic.Location = new System.Drawing.Point(13, 42);
             this.chkItalic.Name = "chkItalic";
-            this.chkItalic.Size = new System.Drawing.Size(62, 17);
+            this.chkItalic.Size = new System.Drawing.Size(48, 17);
             this.chkItalic.TabIndex = 1;
-            this.chkItalic.Text = "Курсив";
+            this.chkItalic.Text = "Italic";
             this.chkItalic.UseVisualStyleBackColor = true;
             // 
             // chkBold
@@ -142,9 +142,9 @@
             this.chkBold.AutoSize = true;
             this.chkBold.Location = new System.Drawing.Point(13, 19);
             this.chkBold.Name = "chkBold";
-            this.chkBold.Size = new System.Drawing.Size(69, 17);
+            this.chkBold.Size = new System.Drawing.Size(47, 17);
             this.chkBold.TabIndex = 0;
-            this.chkBold.Text = "Жирный";
+            this.chkBold.Text = "Bold";
             this.chkBold.UseVisualStyleBackColor = true;
             // 
             // cbFontName
@@ -177,8 +177,8 @@
             this.MinimizeBox = false;
             this.Name = "FrmFontDialog";
             this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Шрифт";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Font";
             this.Load += new System.EventHandler(this.FrmFontDialog_Load);
             this.gbStyle.ResumeLayout(false);
             this.gbStyle.PerformLayout();

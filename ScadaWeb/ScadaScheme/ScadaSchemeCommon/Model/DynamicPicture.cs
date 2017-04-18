@@ -25,7 +25,6 @@
 
 using Scada.Scheme.Model.DataTypes;
 using Scada.Scheme.Model.PropertyGrid;
-using System;
 using System.Collections.Generic;
 using System.Drawing.Design;
 using System.Xml;
@@ -45,7 +44,7 @@ namespace Scada.Scheme.Model
             : base()
         {
             ToolTip = "";
-            ImageOnHover = null;
+            ImageOnHoverName = "";
             BorderColorOnHover = "";
             InCnlNum = 0;
             CtrlCnlNum = 0;
@@ -64,14 +63,15 @@ namespace Scada.Scheme.Model
         public string ToolTip { get; set; }
 
         /// <summary>
-        /// Получить или установить изображение, отображаемое при наведении указателя мыши
+        /// Получить или установить наименование изображения, отображаемого при наведении указателя мыши
         /// </summary>
         #region Attributes
         [DisplayName("Image on hover"), Category(Categories.Behavior)]
         [Description("The image shown when user rests the pointer on the component.")]
-        [CM.DefaultValue(null)]
+        [CM.TypeConverter(typeof(ImageConverter)), CM.Editor(typeof(ImageEditor), typeof(UITypeEditor))]
+        [CM.DefaultValue("")]
         #endregion
-        public Image ImageOnHover { get; set; }
+        public string ImageOnHoverName { get; set; }
 
         /// <summary>
         /// Получить или установить цвет рамки при наведении указателя мыши
@@ -133,8 +133,7 @@ namespace Scada.Scheme.Model
             base.LoadFromXml(xmlNode);
 
             ToolTip = xmlNode.GetChildAsString("ToolTip");
-            string imageName = xmlNode.GetChildAsString("ImageOnHoverName");
-            ImageOnHover = imageName == "" ? null : new Image() { Name = imageName };
+            ImageOnHoverName = xmlNode.GetChildAsString("ImageOnHoverName");
             BorderColorOnHover = xmlNode.GetChildAsString("BorderColorOnHover");
             InCnlNum = xmlNode.GetChildAsInt("InCnlNum");
             CtrlCnlNum = xmlNode.GetChildAsInt("CtrlCnlNum");
@@ -148,6 +147,7 @@ namespace Scada.Scheme.Model
                 foreach (XmlNode conditionNode in conditionNodes)
                 {
                     Condition condition = new Condition();
+                    condition.SchemeDoc = SchemeDoc;
                     condition.LoadFromXml(conditionNode);
                     Conditions.Add(condition);
                 }

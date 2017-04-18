@@ -28,9 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmImageDialog));
-            this.btnClear = new System.Windows.Forms.Button();
+            this.btnSelectEmpty = new System.Windows.Forms.Button();
             this.btnSelect = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.lbImages = new System.Windows.Forms.ListBox();
@@ -42,21 +41,20 @@
             this.lblImageProps = new System.Windows.Forms.Label();
             this.lblPreview = new System.Windows.Forms.Label();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.tmrAllowChange = new System.Windows.Forms.Timer(this.components);
             this.btnSave = new System.Windows.Forms.Button();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
-            // btnClear
+            // btnSelectEmpty
             // 
-            this.btnClear.Location = new System.Drawing.Point(181, 350);
-            this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(75, 23);
-            this.btnClear.TabIndex = 8;
-            this.btnClear.Text = "Очистить";
-            this.btnClear.UseVisualStyleBackColor = true;
-            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
+            this.btnSelectEmpty.Location = new System.Drawing.Point(181, 350);
+            this.btnSelectEmpty.Name = "btnSelectEmpty";
+            this.btnSelectEmpty.Size = new System.Drawing.Size(75, 23);
+            this.btnSelectEmpty.TabIndex = 8;
+            this.btnSelectEmpty.Text = "Empty";
+            this.btnSelectEmpty.UseVisualStyleBackColor = true;
+            this.btnSelectEmpty.Click += new System.EventHandler(this.btnSelectEmpty_Click);
             // 
             // btnSelect
             // 
@@ -65,7 +63,7 @@
             this.btnSelect.Name = "btnSelect";
             this.btnSelect.Size = new System.Drawing.Size(75, 23);
             this.btnSelect.TabIndex = 9;
-            this.btnSelect.Text = "Выбрать";
+            this.btnSelect.Text = "Select";
             this.btnSelect.UseVisualStyleBackColor = true;
             this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click);
             // 
@@ -76,7 +74,7 @@
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
             this.btnClose.TabIndex = 10;
-            this.btnClose.Text = "Закрыть";
+            this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
             // 
             // lbImages
@@ -93,7 +91,6 @@
             // 
             // btnDel
             // 
-            this.btnDel.Enabled = false;
             this.btnDel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnDel.Image = ((System.Drawing.Image)(resources.GetObject("btnDel.Image")));
             this.btnDel.Location = new System.Drawing.Point(70, 350);
@@ -105,7 +102,6 @@
             // 
             // btnOpen
             // 
-            this.btnOpen.Enabled = false;
             this.btnOpen.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnOpen.Image = ((System.Drawing.Image)(resources.GetObject("btnOpen.Image")));
             this.btnOpen.Location = new System.Drawing.Point(12, 350);
@@ -139,40 +135,34 @@
             this.lblImages.AutoSize = true;
             this.lblImages.Location = new System.Drawing.Point(9, 9);
             this.lblImages.Name = "lblImages";
-            this.lblImages.Size = new System.Drawing.Size(115, 13);
+            this.lblImages.Size = new System.Drawing.Size(41, 13);
             this.lblImages.TabIndex = 0;
-            this.lblImages.Text = "Список изображений";
+            this.lblImages.Text = "Images";
             // 
             // lblImageProps
             // 
             this.lblImageProps.AutoSize = true;
             this.lblImageProps.Location = new System.Drawing.Point(185, 9);
             this.lblImageProps.Name = "lblImageProps";
-            this.lblImageProps.Size = new System.Drawing.Size(126, 13);
+            this.lblImageProps.Size = new System.Drawing.Size(85, 13);
             this.lblImageProps.TabIndex = 2;
-            this.lblImageProps.Text = "Свойства изображения";
+            this.lblImageProps.Text = "Image properties";
             // 
             // lblPreview
             // 
             this.lblPreview.AutoSize = true;
             this.lblPreview.Location = new System.Drawing.Point(185, 148);
             this.lblPreview.Name = "lblPreview";
-            this.lblPreview.Size = new System.Drawing.Size(152, 13);
+            this.lblPreview.Size = new System.Drawing.Size(45, 13);
             this.lblPreview.TabIndex = 4;
-            this.lblPreview.Text = "Предварительный просмотр";
+            this.lblPreview.Text = "Preview";
             // 
             // openFileDialog
             // 
-            this.openFileDialog.FileName = "Открыть";
-            this.openFileDialog.Filter = "Изображения (*.jpg;*.png)|*.jpg;*.png|Все файлы (*.*)|*.*";
-            // 
-            // tmrAllowChange
-            // 
-            this.tmrAllowChange.Tick += new System.EventHandler(this.tmrAllowChange_Tick);
+            this.openFileDialog.Filter = "Images (*.jpg;*.png;*.gif;*.svg)|*.jpg;*.png;*.gif;*.svg|All Files (*.*)|*.*";
             // 
             // btnSave
             // 
-            this.btnSave.Enabled = false;
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnSave.Image = ((System.Drawing.Image)(resources.GetObject("btnSave.Image")));
             this.btnSave.Location = new System.Drawing.Point(41, 350);
@@ -184,7 +174,7 @@
             // 
             // saveFileDialog
             // 
-            this.saveFileDialog.Filter = "Изображения (*.jpg;*.png)|*.jpg;*.png|Все файлы (*.*)|*.*";
+            this.saveFileDialog.Filter = "Images (*.jpg;*.png;*.gif;*.svg)|*.jpg;*.png;*.gif;*.svg|All Files (*.*)|*.*";
             // 
             // FrmImageDialog
             // 
@@ -204,14 +194,14 @@
             this.Controls.Add(this.lbImages);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnSelect);
-            this.Controls.Add(this.btnClear);
+            this.Controls.Add(this.btnSelectEmpty);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FrmImageDialog";
             this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Изображения";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Images";
             this.Load += new System.EventHandler(this.FrmImageDialog_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.ResumeLayout(false);
@@ -221,7 +211,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button btnClear;
+        private System.Windows.Forms.Button btnSelectEmpty;
         private System.Windows.Forms.Button btnSelect;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.ListBox lbImages;
@@ -233,7 +223,6 @@
         private System.Windows.Forms.Label lblImageProps;
         private System.Windows.Forms.Label lblPreview;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
-        private System.Windows.Forms.Timer tmrAllowChange;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
     }

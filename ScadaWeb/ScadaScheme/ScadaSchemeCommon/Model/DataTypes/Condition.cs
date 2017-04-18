@@ -25,11 +25,11 @@
 
 using Scada.Scheme.Model.PropertyGrid;
 using System;
-using System.Collections.Generic;
-using CM = System.ComponentModel;
-using System.Linq;
+using System.Drawing.Design;
 using System.Text;
+using System.Web.Script.Serialization;
 using System.Xml;
+using CM = System.ComponentModel;
 
 namespace Scada.Scheme.Model.DataTypes
 {
@@ -37,7 +37,7 @@ namespace Scada.Scheme.Model.DataTypes
     /// Image output condition
     /// <para>Условие вывода изображения</para>
     /// </summary>
-    public class Condition
+    public class Condition : ISchemeDocAvailable
     {
         /// <summary>
         /// Наименование категории условия
@@ -55,7 +55,8 @@ namespace Scada.Scheme.Model.DataTypes
             LogicalOperator = LogicalOperators.None;
             CompareOperator2 = CompareOperators.LessThan;
             CompareArgument2 = 0.0;
-            Image = null;
+            ImageName = "";
+            SchemeDoc = null;
         }
 
 
@@ -103,13 +104,20 @@ namespace Scada.Scheme.Model.DataTypes
         public double CompareArgument2 { get; set; }
 
         /// <summary>
-        /// Получить или установить изображение, отображаемое при выполнении условия
+        /// Получить или установить наименование изображения, отображаемого при выполнении условия
         /// </summary>
         #region Attributes
         [DisplayName("Image"), Category(Categories.Appearance)]
-        [CM.DefaultValue(null)]
+        [CM.TypeConverter(typeof(ImageConverter)), CM.Editor(typeof(ImageEditor), typeof(UITypeEditor))]
+        [CM.DefaultValue("")]
         #endregion
-        public Image Image { get; set; }
+        public string ImageName { get; set; }
+
+        /// <summary>
+        /// Получить или установить ссылку на свойства документа схемы
+        /// </summary>
+        [CM.Browsable(false), ScriptIgnore]
+        public SchemeDocument SchemeDoc { get; set; }
 
 
         /// <summary>
@@ -164,8 +172,7 @@ namespace Scada.Scheme.Model.DataTypes
             CompareOperator2 = xmlNode.GetChildAsEnum<CompareOperators>("CompareOperator2");
             CompareArgument2 = xmlNode.GetChildAsDouble("CompareArgument2");
             LogicalOperator = xmlNode.GetChildAsEnum<LogicalOperators>("LogicalOperator");
-            string imageName = xmlNode.GetChildAsString("ImageName");
-            Image = imageName == "" ? null : new Image() { Name = imageName };
+            ImageName = xmlNode.GetChildAsString("ImageName");
         }
 
         /// <summary>
@@ -180,7 +187,8 @@ namespace Scada.Scheme.Model.DataTypes
                 LogicalOperator = LogicalOperator,
                 CompareOperator2 = CompareOperator2,
                 CompareArgument2 = CompareArgument2,
-                Image = Image == null ? null : Image.ShallowClone()
+                ImageName = ImageName,
+                SchemeDoc = SchemeDoc
             };
         }
 
