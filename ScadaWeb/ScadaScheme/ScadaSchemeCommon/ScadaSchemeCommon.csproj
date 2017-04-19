@@ -70,6 +70,7 @@
     <Compile Include="Model\Image.cs" />
     <Compile Include="Model\IObservableItem.cs" />
     <Compile Include="Model\ISchemeDocAvailable.cs" />
+    <Compile Include="Model\IUniqueItem.cs" />
     <Compile Include="Model\PropertyGrid\BooleanConverter.cs" />
     <Compile Include="Model\PropertyGrid\Categories.cs" />
     <Compile Include="Model\PropertyGrid\CategoryAttribute.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="Model\PropertyGrid\ImageEditor.cs" />
     <Compile Include="Model\PropertyGrid\PointConverter.cs" />
     <Compile Include="Model\PropertyGrid\SizeConverter.cs" />
+    <Compile Include="Model\PropertyGrid\UniqueStringConverter.cs" />
     <Compile Include="Model\SchemeDocument.cs" />
     <Compile Include="Model\StaticPicture.cs" />
     <Compile Include="Model\StaticText.cs" />

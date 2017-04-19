@@ -43,8 +43,11 @@ namespace Scada.Scheme.Model.PropertyGrid
         /// <summary>
         /// Элемент списка изображений
         /// </summary>
-        private class ImageListItem //: SchemeView.ICheckNameUnique
+        private class ImageListItem : IUniqueItem
         {
+            private const string ImageCat = "Image";            // наименование категории изображения
+            private Func<string, bool> imageNameIsUniqueMethod; // метод проверки наименования на уникальность
+
             /// <summary>
             /// Конструктор, ограничивающий создание объекта без параметров
             /// </summary>
@@ -54,77 +57,66 @@ namespace Scada.Scheme.Model.PropertyGrid
             /// <summary>
             /// Конструктор
             /// </summary>
-            public ImageListItem(Image image, Func<string, bool> nameIsUniqueMethod)
+            public ImageListItem(Image image, Func<string, bool> imageNameIsUniqueMethod)
             {
+                if (image == null)
+                    throw new ArgumentNullException("image");
+                if (imageNameIsUniqueMethod == null)
+                    throw new ArgumentNullException("imageNameIsUniqueMethod");
+
+                this.imageNameIsUniqueMethod = imageNameIsUniqueMethod;
+
                 Image = image;
                 Source = null;
                 Name = image.Name;
                 DataSize = 0;
-                ImageSize = new Size(0, 0);
+                ImageSize = Size.Empty;
                 Format = "";
-                NameIsUniqueMethod = nameIsUniqueMethod;
             }
 
             /// <summary>
             /// Получить изображение
             /// </summary>
+            #region Attributes
             [Browsable(false)]
+            #endregion
             public Image Image { get; private set; }
             /// <summary>
             /// Получить данные изображения
             /// </summary>
+            #region Attributes
             [Browsable(false)]
+            #endregion
             public System.Drawing.Image Source { get; private set; }
             /// <summary>
             /// Получить или установить наименование изображения
             /// </summary>
             #region Attributes
-#if USE_RUSSIAN
-            [Category("Изображение"), DisplayName("Наименование")]
-#else
-            [Category("Image"), DisplayName("Name")]
-#endif
-            //[TypeConverter(typeof(SchemeView.NameConverter))]
+            [DisplayName("Name"), Category(ImageCat)]
+            [TypeConverter(typeof(UniqueStringConverter))]
             #endregion
             public string Name { get; set; }
             /// <summary>
             /// Получить размер данных изображения
             /// </summary>
             #region Attributes
-#if USE_RUSSIAN
-            [Category("Изображение"), DisplayName("Размер данных")]
-#else
-            [Category("Image"), DisplayName("Data size")]
-#endif
+            [DisplayName("Data size"), Category(ImageCat)]
             #endregion
             public int DataSize { get; private set; }
             /// <summary>
             /// Получить размер изображения
             /// </summary>
             #region Attributes
-#if USE_RUSSIAN
-            [Category("Изображение"), DisplayName("Размер")]
-#else
-            [Category("Image"), DisplayName("Size")]
-#endif
+            [DisplayName("Size"), Category(ImageCat)]
             #endregion
             public Size ImageSize { get; private set; }
             /// <summary>
             /// Получить формат данных изображения
             /// </summary>
             #region Attributes
-#if USE_RUSSIAN
-            [Category("Изображение"), DisplayName("Формат")]
-#else
-            [Category("Image"), DisplayName("Format")]
-#endif
+            [DisplayName("Format"), Category(ImageCat)]
             #endregion
             public string Format { get; private set; }
-            /// <summary>
-            /// Получить формат метод проверки уникальности наименования
-            /// </summary>
-            [Browsable(false)]
-            public Func<string, bool> NameIsUniqueMethod { get; private set; }
 
             /// <summary>
             /// Загрузить изображение из его данных
@@ -135,7 +127,7 @@ namespace Scada.Scheme.Model.PropertyGrid
                 {
                     // using не используется, т.к. поток memStream должен существовать одновременно с изображением
                     MemoryStream memStream = new MemoryStream(Image.Data);
-                    Source = Bitmap.FromStream(memStream);
+                    Source = System.Drawing.Image.FromStream(memStream);
                     DataSize = (int)memStream.Length;
                     ImageSize = new Size(Source.Width, Source.Height);
 
@@ -153,11 +145,11 @@ namespace Scada.Scheme.Model.PropertyGrid
                 }
             }
             /// <summary>
-            /// Проверить уникальность наименования
+            /// Проверить наименование на уникальность
             /// </summary>
-            public bool NameIsUnique(string name)
+            public bool KeyIsUnique(string key)
             {
-                return NameIsUniqueMethod == null ? true : NameIsUniqueMethod(name);
+                return imageNameIsUniqueMethod(key);
             }
             /// <summary>
             /// Получить строковое представление объекта

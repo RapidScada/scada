@@ -48,6 +48,7 @@ namespace Scada.Scheme
 
         // Словарь Scada.Scheme.Model.PropertyGrid
         public static string StringConvertError { get; private set; }
+        public static string StringUniqueError { get; private set; }
 
         private static void SetToDefault()
         {
@@ -58,6 +59,7 @@ namespace Scada.Scheme
             IncorrectFileFormat = Localization.Dict.GetEmptyPhrase("IncorrectFileFormat");
 
             StringConvertError = Localization.Dict.GetEmptyPhrase("StringConvertError");
+            StringUniqueError = Localization.Dict.GetEmptyPhrase("StringUniqueError");
         }
 
         public static void Init()
@@ -78,6 +80,7 @@ namespace Scada.Scheme
             if (Localization.Dictionaries.TryGetValue("Scada.Scheme.Model.PropertyGrid", out dict))
             {
                 StringConvertError = dict.GetPhrase("StringConvertError", StringConvertError);
+                StringUniqueError = dict.GetPhrase("StringUniqueError", StringUniqueError);
             }
         }
     }

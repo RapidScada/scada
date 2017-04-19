@@ -187,6 +187,12 @@ namespace Scada.Scheme.Editor
                         cbSchComp.Items.Add(component);
                     }
                 }
+
+                // выбор объекта
+                if (cbSchComp.Items.Count > 0)
+                    cbSchComp.SelectedIndex = 0;
+                else
+                    propertyGrid.SelectedObject = null;
             }
             finally
             {
