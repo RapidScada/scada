@@ -202,6 +202,9 @@ namespace Scada.Scheme
 
                 foreach (Image image in SchemeDoc.Images.Values)
                 {
+                    XmlElement imageElem = xmlDoc.CreateElement("Image");
+                    imagesElem.AppendChild(imageElem);
+                    image.SaveToXml(imageElem);
                 }
 
                 // запись фильтра по входным каналам

@@ -168,5 +168,23 @@ namespace Scada.Scheme.Model
             HAlign = xmlNode.GetChildAsEnum<HorizontalAlignments>("HAlign");
             VAlign = xmlNode.GetChildAsEnum<VerticalAlignments>("VAlign");
         }
+
+        /// <summary>
+        /// Сохранить конфигурацию компонента в XML-узле
+        /// </summary>
+        public override void SaveToXml(XmlElement xmlElem)
+        {
+            base.SaveToXml(xmlElem);
+
+            xmlElem.AppendElem("AutoSize", AutoSize);
+            xmlElem.AppendElem("BackColor", BackColor);
+            xmlElem.AppendElem("BorderColor", BorderColor);
+            xmlElem.AppendElem("ForeColor", ForeColor);
+            Font.AppendElem(xmlElem, "Font", Font);
+            xmlElem.AppendElem("Text", Text);
+            xmlElem.AppendElem("WordWrap", WordWrap);
+            xmlElem.AppendElem("HAlign", HAlign);
+            xmlElem.AppendElem("VAlign", VAlign);
+        }
     }
 }

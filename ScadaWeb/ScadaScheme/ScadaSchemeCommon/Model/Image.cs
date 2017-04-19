@@ -65,8 +65,25 @@ namespace Scada.Scheme.Model
         /// </summary>
         public void LoadFromXml(XmlNode xmlNode)
         {
+            if (xmlNode == null)
+                throw new ArgumentNullException("xmlNode");
+
             Name = xmlNode.GetChildAsString("Name");
             Data = Convert.FromBase64String(xmlNode.GetChildAsString("Data"));
+        }
+
+        /// <summary>
+        /// Сохранить изображение в XML-узле
+        /// </summary>
+        public virtual void SaveToXml(XmlElement xmlElem)
+        {
+            if (xmlElem == null)
+                throw new ArgumentNullException("xmlElem");
+
+            xmlElem.AppendElem("Name", Name);
+            xmlElem.AppendElem("Data", 
+                Data != null && Data.Length > 0 ? 
+                Convert.ToBase64String(Data, Base64FormattingOptions.None) : "");
         }
     }
 }

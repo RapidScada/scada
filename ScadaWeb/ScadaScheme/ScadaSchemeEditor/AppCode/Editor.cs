@@ -45,7 +45,11 @@ namespace Scada.Scheme.Editor
         /// <summary>
         /// Имя файла веб-страницы редактора
         /// </summary>
-        private const string WebPageFileName = "editor.html";
+        public const string WebPageFileName = "editor.html";
+        /// <summary>
+        /// Имя файла схемы по умолчанию
+        /// </summary>
+        public const string DefSchemeFileName = "NewScheme.sch";
 
         /// <summary>
         /// Журнал приложения
@@ -72,6 +76,7 @@ namespace Scada.Scheme.Editor
 
             EditorID = GetRandomString(EditorIDLength);
             SchemeView = null;
+            FileName = "";
             Modified = false;
         }
 
@@ -102,6 +107,11 @@ namespace Scada.Scheme.Editor
         /// Получить представление редактируемой схемы
         /// </summary>
         public SchemeView SchemeView { get; private set; }
+
+        /// <summary>
+        /// Получить имя файла схемы
+        /// </summary>
+        public string FileName { get; private set; }
 
         /// <summary>
         /// Получить признак изменения схемы
@@ -169,9 +179,10 @@ namespace Scada.Scheme.Editor
         {
             SchemeView = new SchemeView();
             bool loadOK = SchemeView.LoadFromFile(fileName, out errMsg);
+            FileName = fileName;
             Modified = false;
 
-            if (!SchemeView.LoadFromFile(fileName, out errMsg))
+            if (!loadOK)
                 log.WriteError(errMsg);
 
             return loadOK;
@@ -182,8 +193,22 @@ namespace Scada.Scheme.Editor
         /// </summary>
         public bool SaveSchemeToFile(string fileName, out string errMsg)
         {
-            errMsg = "";
-            return true;
+            FileName = fileName;
+
+            if (SchemeView == null)
+            {
+                errMsg = "";
+                return true;
+            }
+            else if (SchemeView.SaveToFile(fileName, out errMsg))
+            {
+                return true;
+            }
+            else
+            {
+                log.WriteError(errMsg);
+                return false;
+            }
         }
     }
 }

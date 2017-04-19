@@ -153,5 +153,27 @@ namespace Scada.Scheme.Model
                 }
             }
         }
+
+        /// <summary>
+        /// Сохранить конфигурацию компонента в XML-узле
+        /// </summary>
+        public override void SaveToXml(XmlElement xmlElem)
+        {
+            base.SaveToXml(xmlElem);
+
+            xmlElem.AppendElem("ToolTip", ToolTip);
+            xmlElem.AppendElem("ImageOnHoverName", ImageOnHoverName);
+            xmlElem.AppendElem("BorderColorOnHover", BorderColorOnHover);
+            xmlElem.AppendElem("InCnlNum", InCnlNum);
+            xmlElem.AppendElem("CtrlCnlNum", CtrlCnlNum);
+            xmlElem.AppendElem("Action", Action);
+
+            XmlElement conditionsElem = xmlElem.AppendElem("Conditions");
+            foreach (Condition condition in Conditions)
+            {
+                XmlElement conditionElem = conditionsElem.AppendElem("Condition");
+                condition.SaveToXml(conditionElem);
+            }
+        }
     }
 }

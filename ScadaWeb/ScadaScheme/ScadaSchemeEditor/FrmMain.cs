@@ -44,11 +44,6 @@ namespace Scada.Scheme.Editor
     /// </summary>
     public partial class FrmMain : Form
     {
-        /// <summary>
-        /// Стартовая веб-страница редактора
-        /// </summary>
-        private const string StartPage = "editor.html";
-
         private AppData appData; // общие данные приложения
         private Editor editor;   // редактор
         private Log log;         // журнал приложения
@@ -137,9 +132,50 @@ namespace Scada.Scheme.Editor
         /// </summary>
         private void OpenBrowser()
         {
-            Uri startUri = new Uri(appData.AppDirs.WebDir + StartPage);
+            Uri startUri = new Uri(appData.AppDirs.WebDir + Editor.WebPageFileName);
             //Process.Start("firefox", startUri.AbsoluteUri);
             Process.Start(startUri.AbsoluteUri);
+        }
+        
+        /// <summary>
+        /// Сохранить схему
+        /// </summary>
+        private bool SaveScheme(bool saveAs)
+        {
+            bool result = false;
+            bool refrPropGrid = propertyGrid.SelectedObject is SchemeDocument &&
+                ((SchemeDocument)propertyGrid.SelectedObject).Version != SchemeUtils.SchemeVersion;
+
+            if (string.IsNullOrEmpty(editor.FileName))
+            {
+                sfdScheme.FileName = Editor.DefSchemeFileName;
+                saveAs = true;
+            }
+            else
+            {
+                sfdScheme.FileName = editor.FileName;
+            }
+
+            if (!saveAs || sfdScheme.ShowDialog() == DialogResult.OK)
+            {
+                // сохранение схемы
+                string errMsg;
+                if (editor.SaveSchemeToFile(sfdScheme.FileName, out errMsg))
+                {
+                    result = true;
+                }
+                else
+                {
+                    log.WriteError(errMsg);
+                    ScadaUiUtils.ShowError(errMsg);
+                }
+
+                // обновить свойства документа схемы, если файл сохраняется другой версией редактора
+                if (refrPropGrid)
+                    propertyGrid.Refresh();
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -153,7 +189,7 @@ namespace Scada.Scheme.Editor
                     MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question))
                 {
                     case DialogResult.Yes:
-                        return true; // SaveScheme(false);
+                        return SaveScheme(false);
                     case DialogResult.No:
                         return true;
                     default:
@@ -288,12 +324,14 @@ namespace Scada.Scheme.Editor
 
         private void btnFileSave_ButtonClick(object sender, EventArgs e)
         {
-            // обновить свойства выбранного объекта, если файл сохраняется другой версией редактора
+            // сохранение схемы
+            SaveScheme(false);
         }
 
         private void miFileSaveAs_Click(object sender, EventArgs e)
         {
-
+            // сохранение схемы с выбором имени файла
+            SaveScheme(true);
         }
 
         private void btnFileOpenBrowser_Click(object sender, EventArgs e)

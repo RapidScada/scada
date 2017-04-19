@@ -91,5 +91,17 @@ namespace Scada.Scheme.Model
             ImageName = xmlNode.GetChildAsString("ImageName");
             ImageStretch = xmlNode.GetChildAsEnum<ImageStretches>("ImageStretch");
         }
+
+        /// <summary>
+        /// Сохранить конфигурацию компонента в XML-узле
+        /// </summary>
+        public override void SaveToXml(XmlElement xmlElem)
+        {
+            base.SaveToXml(xmlElem);
+
+            xmlElem.AppendElem("BorderColor", BorderColor);
+            xmlElem.AppendElem("ImageName", ImageName);
+            xmlElem.AppendElem("ImageStretch", ImageStretch);
+        }
     }
 }

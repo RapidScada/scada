@@ -208,7 +208,7 @@ namespace Scada.Scheme.Model
             Size.AppendElem(xmlElem, "Size", Size);
             xmlElem.AppendElem("BackColor", BackColor);
             xmlElem.AppendElem("BackImageName", BackImageName);
-            // TODO: Font
+            Font.AppendElem(xmlElem, "Font", Font);
             xmlElem.AppendElem("ForeColor", ForeColor);
             xmlElem.AppendElem("Title", Title);
             xmlElem.AppendElem("CnlFilter", CnlFilter.CnlFilterToString());

@@ -171,5 +171,23 @@ namespace Scada.Scheme.Model
             Action = xmlNode.GetChildAsEnum<Actions>("Action");
             ShowValue = xmlNode.GetChildAsEnum<ShowValueKinds>("ShowValue");
         }
+
+        /// <summary>
+        /// Сохранить конфигурацию компонента в XML-узле
+        /// </summary>
+        public override void SaveToXml(XmlElement xmlElem)
+        {
+            base.SaveToXml(xmlElem);
+
+            xmlElem.AppendElem("ToolTip", ToolTip);
+            xmlElem.AppendElem("UnderlineOnHover", UnderlineOnHover);
+            xmlElem.AppendElem("BackColorOnHover", BackColorOnHover);
+            xmlElem.AppendElem("BorderColorOnHover", BorderColorOnHover);
+            xmlElem.AppendElem("ForeColorOnHover", ForeColorOnHover);
+            xmlElem.AppendElem("InCnlNum", InCnlNum);
+            xmlElem.AppendElem("CtrlCnlNum", CtrlCnlNum);
+            xmlElem.AppendElem("Action", Action);
+            xmlElem.AppendElem("ShowValue", ShowValue);
+        }
     }
 }

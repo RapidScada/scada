@@ -113,5 +113,26 @@ namespace Scada.Scheme.Model.DataTypes
                 return font;
             }
         }
+
+        /// <summary>
+        /// Создать и добавить XML-элемент шрифта
+        /// </summary>
+        public static XmlElement AppendElem(XmlElement parentXmlElem, string elemName, Font font)
+        {
+            if (font == null)
+            {
+                return null;
+            }
+            else
+            {
+                XmlElement xmlElem = parentXmlElem.OwnerDocument.CreateElement(elemName);
+                xmlElem.AppendElem("Name", font.Name);
+                xmlElem.AppendElem("Size", font.Size);
+                xmlElem.AppendElem("Bold", font.Bold);
+                xmlElem.AppendElem("Italic", font.Italic);
+                xmlElem.AppendElem("Underline", font.Underline);
+                return (XmlElement)parentXmlElem.AppendChild(xmlElem);
+            }
+        }
     }
 }

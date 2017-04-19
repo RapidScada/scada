@@ -176,6 +176,22 @@ namespace Scada.Scheme.Model.DataTypes
         }
 
         /// <summary>
+        /// Сохранить условие в XML-узле
+        /// </summary>
+        public void SaveToXml(XmlElement xmlElem)
+        {
+            if (xmlElem == null)
+                throw new ArgumentNullException("xmlElem");
+
+            xmlElem.AppendElem("CompareOperator1", CompareOperator1);
+            xmlElem.AppendElem("CompareArgument1", CompareArgument1);
+            xmlElem.AppendElem("CompareOperator2", CompareOperator2);
+            xmlElem.AppendElem("CompareArgument2", CompareArgument2);
+            xmlElem.AppendElem("LogicalOperator", LogicalOperator);
+            xmlElem.AppendElem("ImageName", ImageName);
+        }
+
+        /// <summary>
         /// Клонировать объект
         /// </summary>
         public Condition Clone()
