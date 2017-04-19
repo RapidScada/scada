@@ -74,5 +74,16 @@ namespace Scada.Scheme.Model.DataTypes
                 Default :
                 new Size(node.GetChildAsInt("Width"), node.GetChildAsInt("Height"));
         }
+
+        /// <summary>
+        /// Создать и добавить XML-элемент размера
+        /// </summary>
+        public static XmlElement AppendElem(XmlElement parentXmlElem, string elemName, Size size)
+        {
+            XmlElement xmlElem = parentXmlElem.OwnerDocument.CreateElement(elemName);
+            xmlElem.AppendElem("Width", size.Width);
+            xmlElem.AppendElem("Height", size.Height);
+            return (XmlElement)parentXmlElem.AppendChild(xmlElem);
+        }
     }
 }

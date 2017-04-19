@@ -74,5 +74,16 @@ namespace Scada.Scheme.Model.DataTypes
                 Default :
                 new Point(node.GetChildAsInt("X"), node.GetChildAsInt("Y"));
         }
+
+        /// <summary>
+        /// Создать и добавить XML-элемент точки
+        /// </summary>
+        public static XmlElement AppendElem(XmlElement parentXmlElem, string elemName, Point point)
+        {
+            XmlElement xmlElem = parentXmlElem.OwnerDocument.CreateElement(elemName);
+            xmlElem.AppendElem("X", point.X);
+            xmlElem.AppendElem("Y", point.Y);
+            return (XmlElement)parentXmlElem.AppendChild(xmlElem);
+        }
     }
 }

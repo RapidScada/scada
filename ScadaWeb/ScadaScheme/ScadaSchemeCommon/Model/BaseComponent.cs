@@ -136,6 +136,21 @@ namespace Scada.Scheme.Model
         }
 
         /// <summary>
+        /// Сохранить конфигурацию компонента в XML-узле
+        /// </summary>
+        public virtual void SaveToXml(XmlElement xmlElem)
+        {
+            if (xmlElem == null)
+                throw new ArgumentNullException("xmlElem");
+
+            xmlElem.AppendElem("ID", ID);
+            xmlElem.AppendElem("Name", Name);
+            Point.AppendElem(xmlElem, "Location", Location);
+            Size.AppendElem(xmlElem, "Size", Size);
+            xmlElem.AppendElem("ZIndex", ZIndex);
+        }
+
+        /// <summary>
         /// Вернуть строковое представление объекта
         /// </summary>
         public override string ToString()

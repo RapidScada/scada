@@ -78,7 +78,7 @@ namespace Scada.Scheme
             if (!rootElem.Name.Equals("SchemeView", StringComparison.OrdinalIgnoreCase))
                 throw new ScadaException(SchemePhrases.IncorrectFileFormat);
 
-            // загрузка параметров схемы
+            // загрузка документа схемы
             XmlNode documentNode = rootElem.SelectSingleNode("Document") ?? rootElem.SelectSingleNode("Scheme");
             if (documentNode != null)
             {
@@ -174,7 +174,40 @@ namespace Scada.Scheme
                 XmlDeclaration xmlDecl = xmlDoc.CreateXmlDeclaration("1.0", "utf-8", null);
                 xmlDoc.AppendChild(xmlDecl);
 
+                // запись заголовка представления
+                XmlElement rootElem = xmlDoc.CreateElement("SchemeView");
+                rootElem.SetAttribute("title", SchemeDoc.Title);
+                xmlDoc.AppendChild(rootElem);
 
+                // пока используется старый формат файла
+                // запись документа схемы
+                XmlElement documentElem = xmlDoc.CreateElement("Scheme");
+                rootElem.AppendChild(documentElem);
+                SchemeDoc.SaveToXml(documentElem);
+
+                // запись компонентов схемы
+                XmlElement componentsElem = xmlDoc.CreateElement("Elements");
+                rootElem.AppendChild(componentsElem);
+
+                foreach (BaseComponent component in Components)
+                {
+                    XmlElement componentElem = xmlDoc.CreateElement(component.GetType().Name);
+                    componentsElem.AppendChild(componentElem);
+                    component.SaveToXml(componentElem);
+                }
+
+                // запись изображений схемы
+                XmlElement imagesElem = xmlDoc.CreateElement("Images");
+                rootElem.AppendChild(imagesElem);
+
+                foreach (Image image in SchemeDoc.Images.Values)
+                {
+                }
+
+                // запись фильтра по входным каналам
+                XmlElement cnlsFilterElem = xmlDoc.CreateElement("CnlsFilter");
+                cnlsFilterElem.InnerText = SchemeDoc.CnlFilter.CnlFilterToString();
+                rootElem.AppendChild(cnlsFilterElem);
 
                 xmlDoc.Save(fileName);
                 errMsg = "";

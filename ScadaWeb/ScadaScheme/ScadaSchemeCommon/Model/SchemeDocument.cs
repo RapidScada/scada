@@ -58,6 +58,15 @@ namespace Scada.Scheme.Model
 
 
         /// <summary>
+        /// Получить версию редактора схем, в котором сохранён файл схемы
+        /// </summary>
+        #region Attributes
+        [DisplayName("Version"), Category(Categories.Design)]
+        [Description("Version of Scheme Editor that saved the file of the scheme.")]
+        #endregion
+        public string Version { get; protected set; }
+
+        /// <summary>
         /// Получить или установить размер
         /// </summary>
         #region Attributes
@@ -88,6 +97,15 @@ namespace Scada.Scheme.Model
         public string BackImageName { get; set; }
 
         /// <summary>
+        /// Получить или установить шрифт
+        /// </summary>
+        #region Attributes
+        [DisplayName("Font"), Category(Categories.Appearance)]
+        [Description("The font used to display text in the scheme.")]
+        #endregion
+        public Font Font { get; set; }
+
+        /// <summary>
         /// Получить или установить основной цвет
         /// </summary>
         #region Attributes
@@ -96,15 +114,6 @@ namespace Scada.Scheme.Model
         [CM.DefaultValue("Black"), CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
         #endregion
         public string ForeColor { get; set; }
-
-        /// <summary>
-        /// Получить или установить шрифт
-        /// </summary>
-        #region Attributes
-        [DisplayName("Font"), Category(Categories.Appearance)]
-        [Description("The font used to display text in the scheme.")]
-        #endregion
-        public Font Font { get; set; }
 
         /// <summary>
         /// Получить или установить заголовок
@@ -155,11 +164,12 @@ namespace Scada.Scheme.Model
         /// </summary>
         public void SetToDefault()
         {
+            Version = "";
             Size = DefaultSize;
             BackColor = "White";
             BackImageName = "";
-            ForeColor = "Black";
             Font = new Font();
+            ForeColor = "Black";
             Title = "";
             CnlFilter.Clear();
             Images.Clear();
@@ -175,14 +185,35 @@ namespace Scada.Scheme.Model
 
             SetToDefault();
 
+            Version = xmlNode.GetChildAsString("Version");
             Size = Size.GetChildAsSize(xmlNode, "Size");
             BackColor = xmlNode.GetChildAsString("BackColor");
             BackImageName = xmlNode.GetChildAsString("BackImageName");
-            ForeColor = xmlNode.GetChildAsString("ForeColor");
             Font = Font.GetChildAsFont(xmlNode, "Font");
+            ForeColor = xmlNode.GetChildAsString("ForeColor");
             Title = xmlNode.GetChildAsString("Title");
             CnlFilter.ParseCnlFilter(xmlNode.GetChildAsString("CnlFilter"));
         }
+
+        /// <summary>
+        /// Сохранить свойства документа схемы в XML-узле
+        /// </summary>
+        public void SaveToXml(XmlElement xmlElem)
+        {
+            if (xmlElem == null)
+                throw new ArgumentNullException("xmlElem");
+
+            Version = SchemeUtils.SchemeVersion;
+            xmlElem.AppendElem("Version", Version);
+            Size.AppendElem(xmlElem, "Size", Size);
+            xmlElem.AppendElem("BackColor", BackColor);
+            xmlElem.AppendElem("BackImageName", BackImageName);
+            // TODO: Font
+            xmlElem.AppendElem("ForeColor", ForeColor);
+            xmlElem.AppendElem("Title", Title);
+            xmlElem.AppendElem("CnlFilter", CnlFilter.CnlFilterToString());
+        }
+
 
         /// <summary>
         /// Вернуть строковое представление объекта

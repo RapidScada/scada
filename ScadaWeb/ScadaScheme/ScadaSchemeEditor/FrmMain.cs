@@ -288,7 +288,7 @@ namespace Scada.Scheme.Editor
 
         private void btnFileSave_ButtonClick(object sender, EventArgs e)
         {
-
+            // обновить свойства выбранного объекта, если файл сохраняется другой версией редактора
         }
 
         private void miFileSaveAs_Click(object sender, EventArgs e)
