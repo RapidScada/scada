@@ -49,6 +49,9 @@ namespace Scada.Scheme
         // Словарь Scada.Scheme.Model.PropertyGrid
         public static string StringConvertError { get; private set; }
         public static string StringUniqueError { get; private set; }
+        public static string DisplayImageError { get; private set; }
+        public static string LoadImageError { get; private set; }
+        public static string SaveImageError { get; private set; }
 
         private static void SetToDefault()
         {
@@ -60,6 +63,9 @@ namespace Scada.Scheme
 
             StringConvertError = Localization.Dict.GetEmptyPhrase("StringConvertError");
             StringUniqueError = Localization.Dict.GetEmptyPhrase("StringUniqueError");
+            DisplayImageError = Localization.Dict.GetEmptyPhrase("DisplayImageError");
+            LoadImageError = Localization.Dict.GetEmptyPhrase("LoadImageError");
+            SaveImageError = Localization.Dict.GetEmptyPhrase("SaveImageError");
         }
 
         public static void Init()
@@ -81,6 +87,9 @@ namespace Scada.Scheme
             {
                 StringConvertError = dict.GetPhrase("StringConvertError", StringConvertError);
                 StringUniqueError = dict.GetPhrase("StringUniqueError", StringUniqueError);
+                DisplayImageError = dict.GetPhrase("DisplayImageError", DisplayImageError);
+                LoadImageError = dict.GetPhrase("LoadImageError", LoadImageError);
+                SaveImageError = dict.GetPhrase("SaveImageError", SaveImageError);
             }
         }
     }

@@ -72,7 +72,7 @@ namespace Scada.Scheme.Model
         #region Attributes
         [DisplayName("Back color"), Category(Categories.Appearance)]
         [Description("The background color of the scheme.")]
-        [CM.DefaultValue("White")/*, CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))*/]
+        [CM.DefaultValue("White"), CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
         #endregion
         public string BackColor { get; set; }
 
@@ -93,7 +93,7 @@ namespace Scada.Scheme.Model
         #region Attributes
         [DisplayName("Fore color"), Category(Categories.Appearance)]
         [Description("The foreground color of the scheme, which is used to display text.")]
-        [CM.DefaultValue("Black")/*, CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))*/]
+        [CM.DefaultValue("Black"), CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
         #endregion
         public string ForeColor { get; set; }
 
@@ -195,16 +195,16 @@ namespace Scada.Scheme.Model
         /// <summary>
         /// Вызвать событие ItemChanged
         /// </summary>
-        public void OnItemChanged()
+        public void OnItemChanged(SchemeChangeTypes changeType, object changedObject)
         {
             if (ItemChanged != null)
-                ItemChanged(this, EventArgs.Empty);
+                ItemChanged(this, changeType, changedObject);
         }
 
 
         /// <summary>
         /// Событие возникающее при изменении документа схемы
         /// </summary>
-        public event EventHandler ItemChanged;
+        public event ItemChangedEventHandler ItemChanged;
     }
 }

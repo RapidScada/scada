@@ -89,7 +89,7 @@ namespace Scada.Scheme.Model
         #region Attributes
         [DisplayName("Back color on hover"), Category(Categories.Behavior)]
         [Description("The background color of the component when user rests the pointer on it.")]
-        //[CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
+        [CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
         #endregion
         public string BackColorOnHover { get; set; }
 
@@ -99,7 +99,7 @@ namespace Scada.Scheme.Model
         #region Attributes
         [DisplayName("Border color on hover"), Category(Categories.Behavior)]
         [Description("The border color of the component when user rests the pointer on it.")]
-        //[CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
+        [CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
         #endregion
         public string BorderColorOnHover { get; set; }
 
@@ -109,7 +109,7 @@ namespace Scada.Scheme.Model
         #region Attributes
         [DisplayName("Fore color on hover"), Category(Categories.Behavior)]
         [Description("The foreground color of the component, which is used to display text, when user rests the pointer on it.")]
-        //[CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
+        [CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
         #endregion
         public string ForeColorOnHover { get; set; }
 

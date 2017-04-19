@@ -70,6 +70,7 @@
     <Compile Include="Model\Image.cs" />
     <Compile Include="Model\IObservableItem.cs" />
     <Compile Include="Model\ISchemeDocAvailable.cs" />
+    <Compile Include="Model\ItemChangedEventHandler.cs" />
     <Compile Include="Model\IUniqueItem.cs" />
     <Compile Include="Model\PropertyGrid\BooleanConverter.cs" />
     <Compile Include="Model\PropertyGrid\Categories.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Model\PropertyGrid\CnlFilterConverter.cs" />
     <Compile Include="Model\PropertyGrid\CnlFilterEditor.cs" />
     <Compile Include="Model\PropertyGrid\CollectionConverter.cs" />
+    <Compile Include="Model\PropertyGrid\ColorEditor.cs" />
     <Compile Include="Model\PropertyGrid\ConditionEditor.cs" />
     <Compile Include="Model\PropertyGrid\DescriptionAttribute.cs" />
     <Compile Include="Model\PropertyGrid\DisplayNameAttribute.cs" />
@@ -112,6 +114,7 @@
     <Compile Include="Model\PropertyGrid\PointConverter.cs" />
     <Compile Include="Model\PropertyGrid\SizeConverter.cs" />
     <Compile Include="Model\PropertyGrid\UniqueStringConverter.cs" />
+    <Compile Include="Model\SchemeChangeTypes.cs" />
     <Compile Include="Model\SchemeDocument.cs" />
     <Compile Include="Model\StaticPicture.cs" />
     <Compile Include="Model\StaticText.cs" />

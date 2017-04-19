@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2011
- * Modified : 2016
+ * Modified : 2017
  */
 
 using Scada.Data.Models;
@@ -59,7 +59,7 @@ namespace Scada.Client
 
 
         /// <summary>
-        /// Получить заголовок представления
+        /// Получить или установить заголовок представления
         /// </summary>
         public string Title { get; set; }
 

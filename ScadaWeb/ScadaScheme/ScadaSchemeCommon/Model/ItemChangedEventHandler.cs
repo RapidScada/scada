@@ -16,31 +16,21 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaSchemeCommon
- * Summary  : Specifies items whose changes are observed
+ * Summary  : Represents a method that will handle an event raised when a scheme item is changed
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
  * Modified : 2017
  */
 
-using System;
-
 namespace Scada.Scheme.Model
 {
     /// <summary>
-    /// Specifies items whose changes are observed
-    /// <para>Определяет элементы, изменения которых отслеживаются</para>
+    /// Represents a method that will handle an event raised when a scheme item is changed
+    /// <para>Представляет метод для обработки события, возникающего при изменении элемента схемы</para>
     /// </summary>
-    public interface IObservableItem
-    {
-        /// <summary>
-        /// Вызвать событие ItemChanged
-        /// </summary>
-        void OnItemChanged(SchemeChangeTypes changeType, object changedObject);
-
-        /// <summary>
-        /// Событие возникающее при изменении элемента
-        /// </summary>
-        event ItemChangedEventHandler ItemChanged;
-    }
+    public delegate void ItemChangedEventHandler(
+        object sender, 
+        SchemeChangeTypes changeType,
+        object changedObject);
 }

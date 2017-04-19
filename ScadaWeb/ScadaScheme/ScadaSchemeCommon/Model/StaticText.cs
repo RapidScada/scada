@@ -78,7 +78,7 @@ namespace Scada.Scheme.Model
         #region Attributes
         [DisplayName("Back color"), Category(Categories.Appearance)]
         [Description("The background color of the component.")]
-        /*[CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]*/
+        [CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
         #endregion
         public string BackColor { get; set; }
 
@@ -88,7 +88,7 @@ namespace Scada.Scheme.Model
         #region Attributes
         [DisplayName("Border color"), Category(Categories.Appearance)]
         [Description("The border color of the component.")]
-        /*[CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]*/
+        [CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
         #endregion
         public string BorderColor { get; set; }
 
@@ -98,7 +98,7 @@ namespace Scada.Scheme.Model
         #region Attributes
         [DisplayName("Fore color"), Category(Categories.Appearance)]
         [Description("The foreground color of the component, which is used to display text.")]
-        /*[CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]*/
+        [CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
         #endregion
         public string ForeColor { get; set; }
 

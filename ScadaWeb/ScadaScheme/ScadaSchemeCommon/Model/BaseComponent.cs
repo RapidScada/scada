@@ -159,16 +159,16 @@ namespace Scada.Scheme.Model
         /// <summary>
         /// Вызвать событие ItemChanged
         /// </summary>
-        public void OnItemChanged()
+        public void OnItemChanged(SchemeChangeTypes changeType, object changedObject)
         {
             if (ItemChanged != null)
-                ItemChanged(this, EventArgs.Empty);
+                ItemChanged(this, changeType, changedObject);
         }
 
 
         /// <summary>
         /// Событие возникающее при изменении компонента
         /// </summary>
-        public event EventHandler ItemChanged;
+        public event ItemChangedEventHandler ItemChanged;
     }
 }

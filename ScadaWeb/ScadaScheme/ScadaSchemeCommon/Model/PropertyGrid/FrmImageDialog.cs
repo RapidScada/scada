@@ -47,6 +47,7 @@ namespace Scada.Scheme.Model.PropertyGrid
         {
             private const string ImageCat = "Image";            // наименование категории изображения
             private Func<string, bool> imageNameIsUniqueMethod; // метод проверки наименования на уникальность
+            private System.Drawing.Image source;                // источник данных изображения
 
             /// <summary>
             /// Конструктор, ограничивающий создание объекта без параметров
@@ -65,9 +66,9 @@ namespace Scada.Scheme.Model.PropertyGrid
                     throw new ArgumentNullException("imageNameIsUniqueMethod");
 
                 this.imageNameIsUniqueMethod = imageNameIsUniqueMethod;
+                source = null;
 
                 Image = image;
-                Source = null;
                 Name = image.Name;
                 DataSize = 0;
                 ImageSize = Size.Empty;
@@ -82,12 +83,20 @@ namespace Scada.Scheme.Model.PropertyGrid
             #endregion
             public Image Image { get; private set; }
             /// <summary>
-            /// Получить данные изображения
+            /// Получить источник данных изображения
             /// </summary>
             #region Attributes
             [Browsable(false)]
             #endregion
-            public System.Drawing.Image Source { get; private set; }
+            public System.Drawing.Image Source
+            {
+                get
+                {
+                    if (source == null)
+                        LoadImage();
+                    return source;
+                }
+            }
             /// <summary>
             /// Получить или установить наименование изображения
             /// </summary>
@@ -121,27 +130,29 @@ namespace Scada.Scheme.Model.PropertyGrid
             /// <summary>
             /// Загрузить изображение из его данных
             /// </summary>
-            public void LoadImage()
+            private void LoadImage()
             {
-                if (Source == null && Image != null && Image.Data != null)
+                if (Image == null || Image.Data == null)
+                {
+                    source = null;
+                }
+                else
                 {
                     // using не используется, т.к. поток memStream должен существовать одновременно с изображением
                     MemoryStream memStream = new MemoryStream(Image.Data);
-                    Source = System.Drawing.Image.FromStream(memStream);
+                    source = System.Drawing.Image.FromStream(memStream);
                     DataSize = (int)memStream.Length;
                     ImageSize = new Size(Source.Width, Source.Height);
 
                     ImageFormat imageFormat = Source.RawFormat;
-                    if (imageFormat.Equals(ImageFormat.Bmp))
-                        Format = "Bmp";
-                    else if (imageFormat.Equals(ImageFormat.Gif))
+                    if (imageFormat.Equals(ImageFormat.Gif))
                         Format = "Gif";
                     else if (imageFormat.Equals(ImageFormat.Jpeg))
                         Format = "Jpeg";
                     else if (imageFormat.Equals(ImageFormat.Png))
                         Format = "Png";
-                    else if (imageFormat.Equals(ImageFormat.Tiff))
-                        Format = "Tiff";
+                    else
+                        Format = "";
                 }
             }
             /// <summary>
@@ -266,6 +277,51 @@ namespace Scada.Scheme.Model.PropertyGrid
             return !images.ContainsKey(name);
         }
 
+        /// <summary>
+        /// Загрузить изображение из файла
+        /// </summary>
+        private bool LoadImage(string fileName, out Image image)
+        {
+            try
+            {
+                image = new Image();
+
+                using (FileStream fileStream = 
+                    new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                {
+                    image.Data = new byte[fileStream.Length];
+                    fileStream.Read(image.Data, 0, image.Data.Length);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ScadaUiUtils.ShowError(SchemePhrases.LoadImageError + ":\n" + ex.Message);
+                image = null;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Сохранить изображение в файле
+        /// </summary>
+        private void SaveImage(string fileName, ImageListItem imageInfo)
+        {
+            try
+            {
+                using (FileStream fileStream = 
+                    new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.Read))
+                {
+                    fileStream.Write(imageInfo.Image.Data, 0, imageInfo.DataSize);
+                }
+            }
+            catch (Exception ex)
+            {
+                ScadaUiUtils.ShowError(SchemePhrases.SaveImageError + ":\n" + ex.Message);
+            }
+        }
+
 
         private void FrmImageDialog_Load(object sender, EventArgs e)
         {
@@ -282,7 +338,7 @@ namespace Scada.Scheme.Model.PropertyGrid
 
         private void lbImage_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // вывод свойств выбранного изображения
+            // вывод выбранного изображения
             ImageListItem imageInfo = lbImages.SelectedItem as ImageListItem;
 
             if (imageInfo == null)
@@ -293,23 +349,21 @@ namespace Scada.Scheme.Model.PropertyGrid
             {
                 try
                 {
-                    imageInfo.LoadImage();
+                    pictureBox.Image = imageInfo.Source;
+                    pictureBox.SizeMode =
+                        imageInfo.ImageSize.Width <= pictureBox.Width &&
+                        imageInfo.ImageSize.Height <= pictureBox.Height ?
+                        PictureBoxSizeMode.CenterImage : PictureBoxSizeMode.Zoom;
                 }
                 catch (Exception ex)
                 {
-                    //ScadaUiUtils.ShowError(SchemePhrases.LoadImageError + ":\n" + ex.Message);
+                    pictureBox.Image = null;
+                    ScadaUiUtils.ShowError(SchemePhrases.DisplayImageError + ":\n" + ex.Message);
                 }
-
-                if (imageInfo.Source != null)
-                    pictureBox.SizeMode = imageInfo.ImageSize.Width <= pictureBox.Width &&
-                        imageInfo.ImageSize.Height <= pictureBox.Height ?
-                        PictureBoxSizeMode.CenterImage : PictureBoxSizeMode.Zoom;
-
-                pictureBox.Image = imageInfo.Source;
             }
 
             propGrid.SelectedObject = imageInfo;
-            btnSelect.Enabled = btnSave.Enabled = btnDel.Enabled = imageInfo != null;
+            SetBtnsEnabled();
         }
 
         private void lbImage_DoubleClick(object sender, EventArgs e)
@@ -329,30 +383,23 @@ namespace Scada.Scheme.Model.PropertyGrid
                 if (oldName != newName)
                 {
                     // изменение наименования изображения
-                    ImageListItem imageInfo = lbImages.SelectedItem as ImageListItem;
-                    imageInfo.Name = newName;
+                    ImageListItem imageInfo = propGrid.SelectedObject as ImageListItem;
                     imageInfo.Image.Name = newName;
 
                     // обновление словаря изображений схемы
                     images.Remove(oldName);
-                    images.Add(newName, imageInfo.Image);
+                    images[newName] = imageInfo.Image;
 
                     // обновление списка изображений на форме
                     lbImages.SelectedIndexChanged -= lbImage_SelectedIndexChanged;
                     lbImages.BeginUpdate();
-
                     lbImages.Items.RemoveAt(lbImages.SelectedIndex);
                     lbImages.SelectedIndex = lbImages.Items.Add(imageInfo);
-                    
                     lbImages.EndUpdate();
                     lbImages.SelectedIndexChanged += lbImage_SelectedIndexChanged;
 
-                    // создание объекта для передачи изменений
-                    //SchemeView.SchemeChange change = new SchemeView.SchemeChange(SchemeView.ChangeType.ImageRenamed);
-                    //change.ImageOldName = oldName;
-                    //change.ImageNewName = newName;
-                    //editorData.TrySetSchemeChange(change);
-                    //editorData.SetFormTitle();
+                    // отслеживание изменений
+                    observableItem.OnItemChanged(SchemeChangeTypes.ImageRenamed, imageInfo.Image);
                 }
             }
         }
@@ -362,32 +409,18 @@ namespace Scada.Scheme.Model.PropertyGrid
             // добавление изображения в словарь изображений схемы
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                try
+                Image image;
+                if (LoadImage(openFileDialog.FileName, out image))
                 {
-                    Image image = new Image();
                     string name = Path.GetFileName(openFileDialog.FileName);
                     image.Name = images.ContainsKey(name) ? "image" + (images.Count + 1) : name;
-
-                    using (FileStream fileStream = new FileStream(
-                        openFileDialog.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                    {
-                        image.Data = new byte[fileStream.Length];
-                        fileStream.Read(image.Data, 0, image.Data.Length);
-                    }
 
                     ImageListItem imageInfo = new ImageListItem(image, ImageNameIsUnique);
                     images.Add(image.Name, image);
                     lbImages.SelectedIndex = lbImages.Items.Add(imageInfo);
 
-                    // создание объекта для передачи изменений
-                    //SchemeView.SchemeChange change = new SchemeView.SchemeChange(SchemeView.ChangeType.ImageAdded);
-                    //change.Image = image;
-                    //editorData.TrySetSchemeChange(change);
-                    //editorData.SetFormTitle();
-                }
-                catch (Exception ex)
-                {
-                    //ScadaUiUtils.ShowError(SchemePhrases.LoadImageError + ":\n" + ex.Message);
+                    // отслеживание изменений
+                    observableItem.OnItemChanged(SchemeChangeTypes.ImageAdded, image);
                 }
             }
         }
@@ -403,20 +436,7 @@ namespace Scada.Scheme.Model.PropertyGrid
                 saveFileDialog.DefaultExt = imageInfo.Format.ToLowerInvariant();
 
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    try
-                    {
-                        using (FileStream fileStream = new FileStream(
-                            saveFileDialog.FileName, FileMode.Create, FileAccess.Write, FileShare.Read))
-                        {
-                            fileStream.Write(imageInfo.Image.Data, 0, imageInfo.DataSize);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        //ScadaUiUtils.ShowError(SchemePhrases.SaveImageError + ":\n" + ex.Message);
-                    }
-                }
+                    SaveImage(saveFileDialog.FileName, imageInfo);
             }
         }
 
@@ -434,11 +454,8 @@ namespace Scada.Scheme.Model.PropertyGrid
                 if (itemCnt > 0)
                     lbImages.SelectedIndex = selInd < itemCnt ? selInd : itemCnt - 1;
 
-                // создание объекта для передачи изменений
-                //SchemeView.SchemeChange change = new SchemeView.SchemeChange(SchemeView.ChangeType.ImageDeleted);
-                //change.ImageOldName = imageInfo.Name;
-                //editorData.TrySetSchemeChange(change);
-                //editorData.SetFormTitle();
+                // отслеживание изменений
+                observableItem.OnItemChanged(SchemeChangeTypes.ImageDeleted, imageInfo.Image);
             }
 
             propGrid.Select();
@@ -455,7 +472,7 @@ namespace Scada.Scheme.Model.PropertyGrid
         {
             // установка выбранного изображения
             ImageListItem imageInfo = lbImages.SelectedItem as ImageListItem;
-            SelectedImageName = imageInfo.Name;
+            SelectedImageName = imageInfo == null ? "" : imageInfo.Name;
             DialogResult = DialogResult.OK;
         }
     }

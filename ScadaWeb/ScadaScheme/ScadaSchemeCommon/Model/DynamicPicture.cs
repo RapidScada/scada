@@ -79,7 +79,7 @@ namespace Scada.Scheme.Model
         #region Attributes
         [DisplayName("Border color on hover"), Category(Categories.Behavior)]
         [Description("The border color of the component when user rests the pointer on it.")]
-        //[CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
+        [CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
         #endregion
         public string BorderColorOnHover { get; set; }
 

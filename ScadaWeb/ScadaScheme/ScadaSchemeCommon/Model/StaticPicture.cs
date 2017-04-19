@@ -54,7 +54,7 @@ namespace Scada.Scheme.Model
         #region Attributes
         [DisplayName("Border color"), Category(Categories.Appearance)]
         [Description("The border color of the component.")]
-        //[CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
+        [CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
         #endregion
         public string BorderColor { get; set; }
 

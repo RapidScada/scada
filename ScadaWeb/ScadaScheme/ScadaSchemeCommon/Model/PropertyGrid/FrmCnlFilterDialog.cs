@@ -78,7 +78,10 @@ namespace Scada.Scheme.Model.PropertyGrid
         {
             // разбор текста и заполнение фильтра по каналам
             cnlFilter.ParseCnlFilter(txtCnlNums.Text);
-            observableItem.OnItemChanged();
+
+            // отслеживание изменений
+            observableItem.OnItemChanged(SchemeChangeTypes.SchemeDocChanged, observableItem);
+
             DialogResult = DialogResult.OK;
         }
     }

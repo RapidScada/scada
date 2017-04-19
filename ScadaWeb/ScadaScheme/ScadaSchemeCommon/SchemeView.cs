@@ -84,6 +84,13 @@ namespace Scada.Scheme
             {
                 SchemeDoc.LoadFromXml(documentNode);
 
+                // загрузка заголовка схемы для старого формата
+                if (SchemeDoc.Title == "")
+                    SchemeDoc.Title = rootElem.GetAttribute("title");
+
+                // установка заголовка представления
+                Title = SchemeDoc.Title;
+
                 // загрузка фильтра по входным каналам для старого формата
                 XmlNode cnlsFilterNode = rootElem.SelectSingleNode("CnlsFilter");
                 if (cnlsFilterNode != null)
@@ -152,6 +159,30 @@ namespace Scada.Scheme
             catch (Exception ex)
             {
                 errMsg = SchemePhrases.LoadSchemeViewError + ": " + ex.Message;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Сохранить схему в файле
+        /// </summary>
+        public bool SaveToFile(string fileName, out string errMsg)
+        {
+            try
+            {
+                XmlDocument xmlDoc = new XmlDocument();
+                XmlDeclaration xmlDecl = xmlDoc.CreateXmlDeclaration("1.0", "utf-8", null);
+                xmlDoc.AppendChild(xmlDecl);
+
+
+
+                xmlDoc.Save(fileName);
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = SchemePhrases.SaveSchemeViewError + ": " + ex.Message;
                 return false;
             }
         }
