@@ -123,7 +123,7 @@
             // 
             this.miFileSaveAs.Image = ((System.Drawing.Image)(resources.GetObject("miFileSaveAs.Image")));
             this.miFileSaveAs.Name = "miFileSaveAs";
-            this.miFileSaveAs.Size = new System.Drawing.Size(123, 22);
+            this.miFileSaveAs.Size = new System.Drawing.Size(152, 22);
             this.miFileSaveAs.Text = "Save As...";
             this.miFileSaveAs.Click += new System.EventHandler(this.miFileSaveAs_Click);
             // 
@@ -159,7 +159,6 @@
             this.btnEditCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnEditCopy.Name = "btnEditCopy";
             this.btnEditCopy.Size = new System.Drawing.Size(23, 22);
-            this.btnEditCopy.Text = "toolStripButton5";
             this.btnEditCopy.ToolTipText = "Copy scheme component";
             this.btnEditCopy.Click += new System.EventHandler(this.btnEditCopy_Click);
             // 
@@ -170,7 +169,6 @@
             this.btnEditPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnEditPaste.Name = "btnEditPaste";
             this.btnEditPaste.Size = new System.Drawing.Size(23, 22);
-            this.btnEditPaste.Text = "toolStripButton1";
             this.btnEditPaste.ToolTipText = "Paste scheme component";
             this.btnEditPaste.Click += new System.EventHandler(this.btnEditPaste_Click);
             // 
