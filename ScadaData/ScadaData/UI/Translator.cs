@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2016
+ * Modified : 2017
  */
 
 using System;
@@ -245,12 +245,12 @@ namespace Scada.UI
                             item.ToolTipText = controlInfo.ToolTip;
                     }
 
-                    if (elem is WinForms.ToolStripMenuItem)
+                    if (elem is WinForms.ToolStripDropDownItem)
                     {
                         // запуск обработки элементов подменю
-                        WinForms.ToolStripMenuItem menuItem = (WinForms.ToolStripMenuItem)elem;
-                        if (menuItem.HasDropDownItems)
-                            TranslateWinControls(menuItem.DropDownItems, toolTip, controlInfoDict);
+                        WinForms.ToolStripDropDownItem dropDownItem = (WinForms.ToolStripDropDownItem)elem;
+                        if (dropDownItem.HasDropDownItems)
+                            TranslateWinControls(dropDownItem.DropDownItems, toolTip, controlInfoDict);
                     }
                 }
                 else if (elem is WinForms.DataGridViewColumn)
