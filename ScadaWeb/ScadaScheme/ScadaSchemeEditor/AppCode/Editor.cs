@@ -169,6 +169,7 @@ namespace Scada.Scheme.Editor
         public void NewScheme()
         {
             SchemeView = new SchemeView();
+            FileName = "";
             Modified = false;
         }
 

@@ -407,6 +407,8 @@ namespace Scada.Scheme.Model.PropertyGrid
         private void btnOpen_Click(object sender, EventArgs e)
         {
             // добавление изображения в словарь изображений схемы
+            openFileDialog.FileName = "";
+
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 Image image;

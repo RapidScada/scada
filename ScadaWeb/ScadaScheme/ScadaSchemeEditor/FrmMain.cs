@@ -147,6 +147,16 @@ namespace Scada.Scheme.Editor
         }
         
         /// <summary>
+        /// Создать новую схему
+        /// </summary>
+        private void NewScheme()
+        {
+            editor.NewScheme();
+            appData.AssignViewStamp(editor.SchemeView);
+            FillSchemeComponents();
+        }
+
+        /// <summary>
         /// Сохранить схему
         /// </summary>
         private bool SaveScheme(bool saveAs)
@@ -272,6 +282,9 @@ namespace Scada.Scheme.Editor
                 return;
             }
 
+            // создание новой схемы
+            NewScheme();
+
             // запуск механизма редактора схем
             if (appData.StartEditor())
             {
@@ -287,7 +300,8 @@ namespace Scada.Scheme.Editor
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-
+            // проверка возможности закрыть схему
+            e.Cancel = !ConfirmCloseScheme();
         }
 
         private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
@@ -308,25 +322,28 @@ namespace Scada.Scheme.Editor
         {
             // создание новой схемы
             if (ConfirmCloseScheme())
-            {
-                editor.NewScheme();
-                appData.AssignViewStamp(editor.SchemeView);
-                FillSchemeComponents();
-            }
+                NewScheme();
         }
 
         private void btnFileOpen_Click(object sender, EventArgs e)
         {
             // открытие схемы из файла
-            if (ConfirmCloseScheme() && ofdScheme.ShowDialog() == DialogResult.OK)
+            if (ConfirmCloseScheme())
             {
-                string errMsg;
-                bool loadOK = editor.LoadSchemeFromFile(ofdScheme.FileName, out errMsg);
-                appData.AssignViewStamp(editor.SchemeView);
-                FillSchemeComponents();
+                ofdScheme.InitialDirectory = string.IsNullOrEmpty(editor.FileName) ? 
+                    "" : Path.GetDirectoryName(editor.FileName);
+                ofdScheme.FileName = "";
 
-                if (!loadOK)
-                    ScadaUiUtils.ShowError(errMsg);
+                if (ofdScheme.ShowDialog() == DialogResult.OK)
+                {
+                    string errMsg;
+                    bool loadOK = editor.LoadSchemeFromFile(ofdScheme.FileName, out errMsg);
+                    appData.AssignViewStamp(editor.SchemeView);
+                    FillSchemeComponents();
+
+                    if (!loadOK)
+                        ScadaUiUtils.ShowError(errMsg);
+                }
             }
         }
 
