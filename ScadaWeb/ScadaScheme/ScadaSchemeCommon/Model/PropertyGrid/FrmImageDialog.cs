@@ -38,12 +38,12 @@ namespace Scada.Scheme.Model.PropertyGrid
     /// Form for editing image dictionary
     /// <para>Форма редактирования словаря изображений</para>
     /// </summary>
-    internal partial class FrmImageDialog : Form
+    public partial class FrmImageDialog : Form
     {
         /// <summary>
         /// Элемент списка изображений
         /// </summary>
-        private class ImageListItem : IUniqueItem
+        public class ImageListItem : IUniqueItem
         {
             private const string ImageCat = "Image";            // наименование категории изображения
             private Func<string, bool> imageNameIsUniqueMethod; // метод проверки наименования на уникальность
@@ -327,7 +327,7 @@ namespace Scada.Scheme.Model.PropertyGrid
         {
             // перевод формы
             Translator.TranslateForm(this, "Scada.Scheme.Model.PropertyGrid.FrmImageDialog");
-            //openFileDialog.Filter = saveFileDialog.Filter = "";
+            openFileDialog.Filter = saveFileDialog.Filter = SchemePhrases.ImageFileFilter;
 
             // заполнение списка изображений
             FillImageList();

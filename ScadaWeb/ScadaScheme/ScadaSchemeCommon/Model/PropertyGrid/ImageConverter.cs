@@ -42,9 +42,7 @@ namespace Scada.Scheme.Model.PropertyGrid
             if (destinationType == typeof(string))
             {
                 string imageName = (value ?? "").ToString();
-                return string.IsNullOrEmpty(imageName) ?
-                    (Localization.UseRussian ? "(Нет)" : "(None)") :
-                    imageName;
+                return string.IsNullOrEmpty(imageName) ? SchemePhrases.EmptyValue : imageName;
             }
             else
             {

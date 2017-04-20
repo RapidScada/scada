@@ -24,6 +24,7 @@
  */
 
 using Scada.Scheme.Model;
+using Scada.Scheme.Model.DataTypes;
 using Scada.Scheme.Model.PropertyGrid;
 using Scada.UI;
 using System;
@@ -80,6 +81,7 @@ namespace Scada.Scheme.Editor
             if (Localization.LoadDictionaries(appData.AppDirs.LangDir, "ScadaSchemeEditor", out errMsg))
             {
                 Translator.TranslateForm(this, "Scada.Scheme.Editor.FrmMain");
+                SchemePhrases.Init();
                 AppPhrases.Init();
                 ofdScheme.Filter = sfdScheme.Filter = AppPhrases.SchemeFileFilter;
             }
@@ -97,7 +99,14 @@ namespace Scada.Scheme.Editor
             try
             {
                 AttrTranslator attrTranslator = new AttrTranslator();
+                attrTranslator.TranslateAttrs(typeof(SchemeDocument));
+                attrTranslator.TranslateAttrs(typeof(BaseComponent));
                 attrTranslator.TranslateAttrs(typeof(StaticText));
+                attrTranslator.TranslateAttrs(typeof(DynamicText));
+                attrTranslator.TranslateAttrs(typeof(StaticPicture));
+                attrTranslator.TranslateAttrs(typeof(DynamicPicture));
+                attrTranslator.TranslateAttrs(typeof(Condition));
+                attrTranslator.TranslateAttrs(typeof(FrmImageDialog.ImageListItem));
             }
             catch (Exception ex)
             {
@@ -239,9 +248,8 @@ namespace Scada.Scheme.Editor
 
         private void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
-            string errMsg = CommonPhrases.UnhandledException + ":\r\n" + e.Exception.Message;
-            log.WriteAction(errMsg, Log.ActTypes.Exception);
-            ScadaUiUtils.ShowError(errMsg);
+            log.WriteException(e.Exception, CommonPhrases.UnhandledException);
+            ScadaUiUtils.ShowError(CommonPhrases.UnhandledException + ":\r\n" + e.Exception.Message);
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
@@ -388,17 +396,15 @@ namespace Scada.Scheme.Editor
 
         private void propertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
-            // обновление текста выпадающего списка при изменении отображаемого наименования компонента
-            if (cbSchComp.SelectedItem is BaseComponent)
+            // обновление текста выпадающего списка при изменении отображаемого наименования выбранного объекта
+            object selItem = cbSchComp.SelectedItem;
+            if (selItem != null)
             {
-                BaseComponent selComponent = (BaseComponent)cbSchComp.SelectedItem;
-                string newDisplayName = selComponent.ToString();
+                string newDisplayName = selItem.ToString();
                 string oldDisplayName = cbSchComp.Text;
 
                 if (oldDisplayName != newDisplayName)
-                    cbSchComp.Items[cbSchComp.SelectedIndex] = selComponent;
-
-                selComponent.OnItemChanged(SchemeChangeTypes.ComponentChanged, selComponent);
+                    cbSchComp.Items[cbSchComp.SelectedIndex] = selItem;
             }
 
             // отслеживание изменений

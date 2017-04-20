@@ -56,11 +56,11 @@ namespace Scada.Scheme.Model.PropertyGrid
                         sb.Append("; ");
                     sb.Append(font.Size);
                     if (font.Bold)
-                        sb.Append(Localization.UseRussian ? "; Ж" : "; B");
+                        sb.Append("; ").Append(SchemePhrases.BoldSymbol);
                     if (font.Italic)
-                        sb.Append(Localization.UseRussian ? "; К" : "; I");
+                        sb.Append("; ").Append(SchemePhrases.ItalicSymbol);
                     if (font.Underline)
-                        sb.Append(Localization.UseRussian ? "; П" : "; U");
+                        sb.Append("; ").Append(SchemePhrases.UnderlineSymbol);
                     return sb.ToString();
                 }
             }

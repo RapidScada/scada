@@ -129,7 +129,7 @@ namespace Scada.Scheme.Model
         /// </summary>
         #region Attributes
         [DisplayName("Channel filter"), Category(Categories.Data)]
-        [Description("The input channels used as a filter for showing events filtered by view.")]
+        [Description("The input channels used as a filter for displaying events filtered by view.")]
         [CM.TypeConverter(typeof(CnlFilterConverter)), CM.Editor(typeof(CnlFilterEditor), typeof(UITypeEditor))]
         [ScriptIgnore]
         #endregion
@@ -220,7 +220,7 @@ namespace Scada.Scheme.Model
         /// </summary>
         public override string ToString()
         {
-            return SchemePhrases.SchemeItemName;
+            return Title + (string.IsNullOrEmpty(Title) ? "" : " - ") + GetType().Name;
         }
 
         /// <summary>

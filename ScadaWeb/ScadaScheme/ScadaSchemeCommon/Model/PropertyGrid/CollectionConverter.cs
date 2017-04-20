@@ -43,9 +43,9 @@ namespace Scada.Scheme.Model.PropertyGrid
             if (destinationType == typeof(string))
             {
                 ICollection collection = value as ICollection;
-                return collection == null || collection.Count == 0 ?
-                    (Localization.UseRussian ? "(Нет)" : "(None)") :
-                    (Localization.UseRussian ? "(Коллекция)" : "(Collection)");
+                return collection == null || collection.Count == 0 ? 
+                    SchemePhrases.EmptyValue : 
+                    SchemePhrases.CollectionValue;
             }
             else
             {

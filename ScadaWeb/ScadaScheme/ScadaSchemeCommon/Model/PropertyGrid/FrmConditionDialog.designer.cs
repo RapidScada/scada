@@ -96,9 +96,9 @@
             this.lblProps.AutoSize = true;
             this.lblProps.Location = new System.Drawing.Point(244, 9);
             this.lblProps.Name = "lblProps";
-            this.lblProps.Size = new System.Drawing.Size(144, 13);
+            this.lblProps.Size = new System.Drawing.Size(100, 13);
             this.lblProps.TabIndex = 6;
-            this.lblProps.Text = "Selected condition properties";
+            this.lblProps.Text = "Condition properties";
             // 
             // btnAdd
             // 

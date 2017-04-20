@@ -25,7 +25,6 @@
 
 using Scada.Scheme.Model.DataTypes;
 using Scada.Scheme.Model.PropertyGrid;
-using System;
 using System.Drawing.Design;
 using System.Xml;
 using CM = System.ComponentModel;

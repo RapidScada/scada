@@ -39,11 +39,30 @@ namespace Scada.Scheme.Model.PropertyGrid
     public class EnumConverter : System.ComponentModel.EnumConverter
     {
         private Type enumType;
+        private Localization.Dict enumDict;
 
         public EnumConverter(Type type)
             : base(type)
         {
             enumType = type;
+            Localization.Dictionaries.TryGetValue(enumType.FullName, out enumDict);
+        }
+
+        private string TranslateEnumField(string fieldName)
+        {
+            if (enumDict == null)
+            {
+                // получение значение из атрибута
+                FieldInfo fi = enumType.GetField(fieldName);
+                DescriptionAttribute da =
+                    (DescriptionAttribute)Attribute.GetCustomAttribute(fi, typeof(DescriptionAttribute));
+                return da == null ? fieldName : da.Description;
+            }
+            else
+            {
+                // получение значение из словаря
+                return enumDict.GetPhrase(fieldName, fieldName);
+            }
         }
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, 
@@ -51,10 +70,8 @@ namespace Scada.Scheme.Model.PropertyGrid
         {
             if (destinationType == typeof(string))
             {
-                FieldInfo fi = enumType.GetField(Enum.GetName(enumType, value));
-                DescriptionAttribute da = 
-                    (DescriptionAttribute)Attribute.GetCustomAttribute(fi, typeof(DescriptionAttribute));
-                return da == null ? value.ToString() : da.Description;
+                string fieldName = Enum.GetName(enumType, value);
+                return TranslateEnumField(fieldName);
             }
             else
             {
@@ -71,20 +88,14 @@ namespace Scada.Scheme.Model.PropertyGrid
         {
             if (value is string)
             {
-                foreach (FieldInfo fi in enumType.GetFields())
+                foreach (string fieldName in Enum.GetNames(enumType))
                 {
-                    DescriptionAttribute da = 
-                        (DescriptionAttribute)Attribute.GetCustomAttribute(fi, typeof(DescriptionAttribute));
-                    if (da != null && (string)value == da.Description)
-                        return Enum.Parse(enumType, fi.Name);
+                    if (TranslateEnumField(fieldName) == (string)value)
+                        return Enum.Parse(enumType, fieldName);
                 }
+            }
 
-                return Enum.Parse(enumType, (string)value);
-            }
-            else
-            {
-                return base.ConvertFrom(context, culture, value);
-            }
+            return base.ConvertFrom(context, culture, value);
         }
     }
 }

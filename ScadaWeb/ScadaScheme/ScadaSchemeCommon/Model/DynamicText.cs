@@ -57,10 +57,10 @@ namespace Scada.Scheme.Model
             BackColorOnHover = "";
             BorderColorOnHover = "";
             ForeColorOnHover = "";
-            InCnlNum = 0;
-            CtrlCnlNum = 0;
             Action = Actions.None;
             ShowValue = ShowValueKinds.ShowWithUnit;
+            InCnlNum = 0;
+            CtrlCnlNum = 0;
         }
 
 
@@ -114,26 +114,6 @@ namespace Scada.Scheme.Model
         public string ForeColorOnHover { get; set; }
 
         /// <summary>
-        /// Получить или установить номер входного канала
-        /// </summary>
-        #region Attributes
-        [DisplayName("Input channel"), Category(Categories.Data)]
-        [Description("The input channel number associated with the component.")]
-        [CM.DefaultValue(0)]
-        #endregion
-        public int InCnlNum { get; set; }
-
-        /// <summary>
-        /// Получить или установить номер канала управления
-        /// </summary>
-        #region Attributes
-        [DisplayName("Output channel"), Category(Categories.Data)]
-        [Description("The output channel number associated with the component.")]
-        [CM.DefaultValue(0)]
-        #endregion
-        public int CtrlCnlNum { get; set; }
-
-        /// <summary>
         /// Получить или установить действие
         /// </summary>
         #region Attributes
@@ -153,6 +133,26 @@ namespace Scada.Scheme.Model
         #endregion
         public ShowValueKinds ShowValue { get; set; }
 
+        /// <summary>
+        /// Получить или установить номер входного канала
+        /// </summary>
+        #region Attributes
+        [DisplayName("Input channel"), Category(Categories.Data)]
+        [Description("The input channel number associated with the component.")]
+        [CM.DefaultValue(0)]
+        #endregion
+        public int InCnlNum { get; set; }
+
+        /// <summary>
+        /// Получить или установить номер канала управления
+        /// </summary>
+        #region Attributes
+        [DisplayName("Output channel"), Category(Categories.Data)]
+        [Description("The output channel number associated with the component.")]
+        [CM.DefaultValue(0)]
+        #endregion
+        public int CtrlCnlNum { get; set; }
+
 
         /// <summary>
         /// Загрузить конфигурацию компонента из XML-узла
@@ -166,10 +166,10 @@ namespace Scada.Scheme.Model
             BackColorOnHover = xmlNode.GetChildAsString("BackColorOnHover");
             BorderColorOnHover = xmlNode.GetChildAsString("BorderColorOnHover");
             ForeColorOnHover = xmlNode.GetChildAsString("ForeColorOnHover");
-            InCnlNum = xmlNode.GetChildAsInt("InCnlNum");
-            CtrlCnlNum = xmlNode.GetChildAsInt("CtrlCnlNum");
             Action = xmlNode.GetChildAsEnum<Actions>("Action");
             ShowValue = xmlNode.GetChildAsEnum<ShowValueKinds>("ShowValue");
+            InCnlNum = xmlNode.GetChildAsInt("InCnlNum");
+            CtrlCnlNum = xmlNode.GetChildAsInt("CtrlCnlNum");
         }
 
         /// <summary>
@@ -184,10 +184,10 @@ namespace Scada.Scheme.Model
             xmlElem.AppendElem("BackColorOnHover", BackColorOnHover);
             xmlElem.AppendElem("BorderColorOnHover", BorderColorOnHover);
             xmlElem.AppendElem("ForeColorOnHover", ForeColorOnHover);
-            xmlElem.AppendElem("InCnlNum", InCnlNum);
-            xmlElem.AppendElem("CtrlCnlNum", CtrlCnlNum);
             xmlElem.AppendElem("Action", Action);
             xmlElem.AppendElem("ShowValue", ShowValue);
+            xmlElem.AppendElem("InCnlNum", InCnlNum);
+            xmlElem.AppendElem("CtrlCnlNum", CtrlCnlNum);
         }
     }
 }

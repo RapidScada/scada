@@ -46,10 +46,10 @@ namespace Scada.Scheme.Model
             ToolTip = "";
             ImageOnHoverName = "";
             BorderColorOnHover = "";
-            InCnlNum = 0;
-            CtrlCnlNum = 0;
             Action = Actions.None;
             Conditions = new List<Condition>();
+            InCnlNum = 0;
+            CtrlCnlNum = 0;
         }
 
 
@@ -84,26 +84,6 @@ namespace Scada.Scheme.Model
         public string BorderColorOnHover { get; set; }
 
         /// <summary>
-        /// Получить или установить номер входного канала
-        /// </summary>
-        #region Attributes
-        [DisplayName("Input channel"), Category(Categories.Data)]
-        [Description("The input channel number associated with the component.")]
-        [CM.DefaultValue(0)]
-        #endregion
-        public int InCnlNum { get; set; }
-
-        /// <summary>
-        /// Получить или установить номер канала управления
-        /// </summary>
-        #region Attributes
-        [DisplayName("Output channel"), Category(Categories.Data)]
-        [Description("The output channel number associated with the component.")]
-        [CM.DefaultValue(0)]
-        #endregion
-        public int CtrlCnlNum { get; set; }
-
-        /// <summary>
         /// Получить или установить действие
         /// </summary>
         #region Attributes
@@ -124,7 +104,27 @@ namespace Scada.Scheme.Model
         #endregion
         public List<Condition> Conditions { get; protected set; }
 
-        
+        /// <summary>
+        /// Получить или установить номер входного канала
+        /// </summary>
+        #region Attributes
+        [DisplayName("Input channel"), Category(Categories.Data)]
+        [Description("The input channel number associated with the component.")]
+        [CM.DefaultValue(0)]
+        #endregion
+        public int InCnlNum { get; set; }
+
+        /// <summary>
+        /// Получить или установить номер канала управления
+        /// </summary>
+        #region Attributes
+        [DisplayName("Output channel"), Category(Categories.Data)]
+        [Description("The output channel number associated with the component.")]
+        [CM.DefaultValue(0)]
+        #endregion
+        public int CtrlCnlNum { get; set; }
+
+
         /// <summary>
         /// Загрузить конфигурацию компонента из XML-узла
         /// </summary>
@@ -135,8 +135,6 @@ namespace Scada.Scheme.Model
             ToolTip = xmlNode.GetChildAsString("ToolTip");
             ImageOnHoverName = xmlNode.GetChildAsString("ImageOnHoverName");
             BorderColorOnHover = xmlNode.GetChildAsString("BorderColorOnHover");
-            InCnlNum = xmlNode.GetChildAsInt("InCnlNum");
-            CtrlCnlNum = xmlNode.GetChildAsInt("CtrlCnlNum");
             Action = xmlNode.GetChildAsEnum<Actions>("Action");
 
             XmlNode conditionsNode = xmlNode.SelectSingleNode("Conditions");
@@ -152,6 +150,9 @@ namespace Scada.Scheme.Model
                     Conditions.Add(condition);
                 }
             }
+
+            InCnlNum = xmlNode.GetChildAsInt("InCnlNum");
+            CtrlCnlNum = xmlNode.GetChildAsInt("CtrlCnlNum");
         }
 
         /// <summary>
@@ -164,8 +165,6 @@ namespace Scada.Scheme.Model
             xmlElem.AppendElem("ToolTip", ToolTip);
             xmlElem.AppendElem("ImageOnHoverName", ImageOnHoverName);
             xmlElem.AppendElem("BorderColorOnHover", BorderColorOnHover);
-            xmlElem.AppendElem("InCnlNum", InCnlNum);
-            xmlElem.AppendElem("CtrlCnlNum", CtrlCnlNum);
             xmlElem.AppendElem("Action", Action);
 
             XmlElement conditionsElem = xmlElem.AppendElem("Conditions");
@@ -174,6 +173,9 @@ namespace Scada.Scheme.Model
                 XmlElement conditionElem = conditionsElem.AppendElem("Condition");
                 condition.SaveToXml(conditionElem);
             }
+
+            xmlElem.AppendElem("InCnlNum", InCnlNum);
+            xmlElem.AppendElem("CtrlCnlNum", CtrlCnlNum);
         }
     }
 }

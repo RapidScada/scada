@@ -40,24 +40,16 @@ namespace Scada.Scheme.Model.PropertyGrid
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
             if (destinationType == typeof(string))
-                return (bool)value ?
-                    (Localization.UseRussian ? "Да" : "Yes") :
-                    (Localization.UseRussian ? "Нет" : "No");
+                return (bool)value ? SchemePhrases.TrueValue : SchemePhrases.FalseValue;
             else
                 return base.ConvertTo(context, culture, value, destinationType);
         }
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            if (value is string)
-            {
-                string val = ((string)value).ToLowerInvariant();
-                return val == "да" || val == "yes";
-            }
-            else
-            {
-                return base.ConvertFrom(context, culture, value);
-            }
+            return value is string ?
+                string.Equals((string)value, SchemePhrases.TrueValue, StringComparison.OrdinalIgnoreCase) :
+                base.ConvertFrom(context, culture, value);
         }
     }
 }
