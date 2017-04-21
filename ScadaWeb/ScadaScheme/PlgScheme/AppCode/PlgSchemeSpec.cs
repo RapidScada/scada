@@ -23,6 +23,7 @@
  * Modified : 2016
  */
 
+using Scada.Scheme;
 using Scada.Web.Plugins.Scheme;
 using System.Collections.Generic;
 using System.IO;
@@ -81,7 +82,7 @@ namespace Scada.Web.Plugins
         {
             get
             {
-                return "5.1.0.0"; // TODO: SchemeUtils.SchemeVersion
+                return SchemeUtils.SchemeVersion;
             }
         }
 

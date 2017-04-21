@@ -50,10 +50,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
     </Reference>
-    <Reference Include="ScadaSchemeCommon, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\ScadaScheme\ScadaSchemeCommon\bin\Release\ScadaSchemeCommon.dll</HintPath>
-    </Reference>
     <Reference Include="ScadaWebCommon5, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ScadaWebShell5\bin\ScadaWebCommon5.dll</HintPath>
@@ -72,7 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ClientApiSvc.svc" />
-    <Content Include="config\CommSettings.xml" />
+    <Content Include="config\WebSettings.xml" />
     <Content Include="css\controls\notifier.css">
       <DependentUpon>notifier.less</DependentUpon>
     </Content>
@@ -144,6 +140,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="log\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ScadaSchemeCommon\ScadaSchemeCommon.csproj">
+      <Project>{b61c631d-5ab8-431a-93c9-3dc8b36878bb}</Project>
+      <Name>ScadaSchemeCommon</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -95,6 +95,10 @@ namespace Scada.Scheme
                 XmlNode cnlsFilterNode = rootElem.SelectSingleNode("CnlsFilter");
                 if (cnlsFilterNode != null)
                     SchemeDoc.CnlFilter.ParseCnlFilter(cnlsFilterNode.InnerText);
+
+                // добавление входных каналов представления
+                foreach (int cnlNum in SchemeDoc.CnlFilter)
+                    AddCnlNum(cnlNum);
             }
 
             // загрузка компонентов схемы
@@ -103,6 +107,7 @@ namespace Scada.Scheme
             {
                 foreach (XmlNode componentNode in componentsNode.ChildNodes)
                 {
+                    // создание компонента
                     string nodeName = componentNode.Name.ToLowerInvariant();
                     BaseComponent component = null;
 
@@ -117,9 +122,18 @@ namespace Scada.Scheme
 
                     if (component != null)
                     {
+                        // загрузка компонента и добавление его в представление
                         component.SchemeDoc = SchemeDoc;
                         component.LoadFromXml(componentNode);
                         Components.Add(component);
+
+                        // добавление входных каналов представления
+                        if (component is IDynamicComponent)
+                        {
+                            IDynamicComponent dynamicComponent = (IDynamicComponent)component;
+                            AddCnlNum(dynamicComponent.InCnlNum);
+                            AddCtrlCnlNum(dynamicComponent.CtrlCnlNum);
+                        }
                     }
                 }
             }

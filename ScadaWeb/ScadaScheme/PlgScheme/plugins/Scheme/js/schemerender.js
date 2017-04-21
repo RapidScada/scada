@@ -130,7 +130,7 @@ scada.scheme.SchemeRenderer.prototype.createDom = function (elem, renderContext)
 
     // set background image if presents,
     // the additional div is required for correct scaling
-    var backImage = renderContext.getImage(elem.props.BackImage);
+    var backImage = renderContext.getImage(elem.props.BackImageName);
     if (backImage) {
         $("<div id='schemeBack'></div>").css({
             "width": schemeWidth,
@@ -511,7 +511,7 @@ scada.scheme.StaticPictureRenderer.prototype.createDom = function (elem, renderC
         "background-repeat": "no-repeat",
         "background-position": "center"
     });
-    var image = renderContext.getImage(props.Image);
+    var image = renderContext.getImage(props.ImageName);
     this.setBackgroundImage(divElem, image);
 
     elem.dom = divElem;
@@ -545,7 +545,7 @@ scada.scheme.DynamicPictureRenderer.prototype.createDom = function (elem, render
             thisRenderer.setDynamicBorderColor(divElem, props.BorderColorOnHover, cnlNum, renderContext);
 
             if (cnlNum <= 0) {
-                var image = renderContext.getImage(props.ImageOnHover);
+                var image = renderContext.getImage(props.ImageOnHoverName);
                 thisRenderer.setBackgroundImage(divElem, image);
             }
         },
@@ -553,7 +553,7 @@ scada.scheme.DynamicPictureRenderer.prototype.createDom = function (elem, render
             thisRenderer.setDynamicBorderColor(divElem, props.BorderColor, cnlNum, renderContext, true);
 
             if (cnlNum <= 0) {
-                var image = renderContext.getImage(props.Image);
+                var image = renderContext.getImage(props.ImageName);
                 thisRenderer.setBackgroundImage(divElem, image, true);
             }
         }
@@ -603,8 +603,8 @@ scada.scheme.RenderContext = function () {
 };
 
 // Get scheme image object by image property of an element
-scada.scheme.RenderContext.prototype.getImage = function (imageProp) {
-    return imageProp ? this.imageMap.get(imageProp.Name) : null;
+scada.scheme.RenderContext.prototype.getImage = function (imageName) {
+    return this.imageMap.get(imageName);
 };
 
 /********** Renderer Map **********/
@@ -612,10 +612,10 @@ scada.scheme.RenderContext.prototype.getImage = function (imageProp) {
 // Renderer map object
 scada.scheme.rendererMap = {
     map: new Map([
-        ["Static text", new scada.scheme.StaticTextRenderer()],
-        ["Dynamic text", new scada.scheme.DynamicTextRenderer()],
-        ["Static picture", new scada.scheme.StaticPictureRenderer()],
-        ["Dynamic picture", new scada.scheme.DynamicPictureRenderer()]]),
+        ["Scada.Scheme.Model.StaticText", new scada.scheme.StaticTextRenderer()],
+        ["Scada.Scheme.Model.DynamicText", new scada.scheme.DynamicTextRenderer()],
+        ["Scada.Scheme.Model.StaticPicture", new scada.scheme.StaticPictureRenderer()],
+        ["Scada.Scheme.Model.DynamicPicture", new scada.scheme.DynamicPictureRenderer()]]),
 
     // Get renderer according to the specified scheme element type
     getRenderer: function (elemType) {

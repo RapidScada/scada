@@ -36,7 +36,7 @@ namespace Scada.Scheme.Model
     /// Scheme component that represents dynamic text
     /// <para>Компонент схемы, представляющий динамическую надпись</para>
     /// </summary>
-    public class DynamicText : StaticText
+    public class DynamicText : StaticText, IDynamicComponent
     {
         /// <summary>
         /// Текст надписи по умолчанию

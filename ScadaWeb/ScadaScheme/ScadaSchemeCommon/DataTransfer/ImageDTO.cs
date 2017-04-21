@@ -23,6 +23,8 @@
  * Modified : 2017
  */
 
+using Scada.Scheme.Model;
+using System;
 using System.IO;
 
 namespace Scada.Scheme.DataTransfer
@@ -34,32 +36,38 @@ namespace Scada.Scheme.DataTransfer
     public class ImageDTO
     {
         /// <summary>
+        /// Конструктор, ограничивающий создание объекта без параметров
+        /// </summary>
+        protected ImageDTO()
+        {
+        }
+
+        /// <summary>
         /// Конструктор
         /// </summary>
-        public ImageDTO(/*SchemeView.Image image*/)
+        public ImageDTO(Image image)
         {
-            // TODO
-            //Name = image.Name ?? "";
-            //Data = Convert.ToBase64String(image.Data == null ? new byte[0] : image.Data,
-            //    Base64FormattingOptions.None);
-            //SetMediaType();
+            Name = image.Name ?? "";
+            Data = Convert.ToBase64String(image.Data == null ? new byte[0] : image.Data,
+                Base64FormattingOptions.None);
+            SetMediaType();
         }
 
 
         /// <summary>
         /// Получить наименование
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; protected set; }
 
         /// <summary>
         /// Получить медиа-тип
         /// </summary>
-        public string MediaType { get; private set; }
+        public string MediaType { get; protected set; }
 
         /// <summary>
         /// Получить данные в формате base 64
         /// </summary>
-        public string Data { get; private set; }
+        public string Data { get; protected set; }
 
 
         /// <summary>

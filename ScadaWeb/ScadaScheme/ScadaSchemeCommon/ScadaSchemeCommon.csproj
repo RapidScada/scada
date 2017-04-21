@@ -67,6 +67,7 @@
     <Compile Include="Model\DataTypes\HorizontalAlignments.cs" />
     <Compile Include="Model\DynamicPicture.cs" />
     <Compile Include="Model\DynamicText.cs" />
+    <Compile Include="Model\IDynamicComponent.cs" />
     <Compile Include="Model\Image.cs" />
     <Compile Include="Model\IObservableItem.cs" />
     <Compile Include="Model\ISchemeDocAvailable.cs" />

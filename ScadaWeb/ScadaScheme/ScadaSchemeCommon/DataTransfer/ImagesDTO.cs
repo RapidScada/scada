@@ -52,6 +52,6 @@ namespace Scada.Scheme.DataTransfer
         /// <summary>
         /// Получить изображения схемы
         /// </summary>
-        public List<ImageDTO> Images { get; private set; }
+        public List<ImageDTO> Images { get; protected set; }
     }
 }

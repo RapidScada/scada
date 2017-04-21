@@ -16,44 +16,30 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaSchemeCommon
- * Summary  : The class for transfer scheme document properties
+ * Summary  : Specifies scheme components bound to input or output channels
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
  * Modified : 2017
  */
 
-using Scada.Scheme.Model;
-
-namespace Scada.Scheme.DataTransfer
+namespace Scada.Scheme.Model
 {
     /// <summary>
-    /// The class for transfer scheme document properties
-    /// <para>Класс для передачи свойств документа схемы</para>
+    /// Specifies scheme components bound to input or output channels
+    /// <para>Определяет компоненты схемы, привязаные к входным каналам или каналам управления</para>
     /// </summary>
-    public class SchemeDocDTO : SchemeDTO
+    interface IDynamicComponent
     {
-        /// <summary>
-        /// Конструктор
-        /// </summary>
-        public SchemeDocDTO()
-            : this(null)
-        {
-        }
-        
-        /// <summary>
-        /// Конструктор
-        /// </summary>
-        public SchemeDocDTO(SchemeDocument srcSchemeDoc)
-            : base()
-        {
-            SchemeDoc = srcSchemeDoc;
-        }
-
 
         /// <summary>
-        /// Получить или установить свойства схемы
+        /// Получить номер входного канала
         /// </summary>
-        public SchemeDocument SchemeDoc { get; set; }
+        int InCnlNum { get; }
+
+        /// <summary>
+        /// Получить номер канала управления
+        /// </summary>
+        int CtrlCnlNum { get; }
     }
 }

@@ -63,6 +63,6 @@ namespace Scada.Scheme.DataTransfer
         /// <summary>
         /// Получить компоненты схемы
         /// </summary>
-        public List<BaseComponent> Components { get; private set; }
+        public List<BaseComponent> Components { get; protected set; }
     }
 }
