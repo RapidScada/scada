@@ -64,5 +64,18 @@ namespace Scada.Scheme.DataTransfer
         /// Получить компоненты схемы
         /// </summary>
         public List<BaseComponent> Components { get; protected set; }
+
+
+        /// <summary>
+        /// Копировать заданные компоненты в объект для передачи данных
+        /// </summary>
+        public void CopyComponents(List<BaseComponent> srcComponents, int startIndex, int count)
+        {
+            int srcCnt = srcComponents.Count;
+            EndOfComponents = startIndex + count >= srcCnt;
+
+            for (int i = startIndex, j = 0; i < srcCnt && j < count; i++, j++)
+                Components.Add(srcComponents[i]);
+        }
     }
 }

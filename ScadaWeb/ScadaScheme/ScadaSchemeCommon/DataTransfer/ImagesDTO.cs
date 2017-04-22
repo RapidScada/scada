@@ -23,6 +23,7 @@
  * Modified : 2017
  */
 
+using Scada.Scheme.Model;
 using System.Collections.Generic;
 
 namespace Scada.Scheme.DataTransfer
@@ -53,5 +54,33 @@ namespace Scada.Scheme.DataTransfer
         /// Получить изображения схемы
         /// </summary>
         public List<ImageDTO> Images { get; protected set; }
+
+
+        /// <summary>
+        /// Копировать заданные изображения в объект для передачи данных
+        /// </summary>
+        public void CopyImages(Dictionary<string, Image> imageDict, int startIndex, int totalDataSize)
+        {
+            Dictionary<string, Image>.ValueCollection srcImages = imageDict.Values;
+            int i = 0;
+            int size = 0;
+
+            foreach (Image image in srcImages)
+            {
+                if (i >= startIndex)
+                {
+                    Images.Add(new ImageDTO(image));
+                    if (image.Data != null)
+                        size += image.Data.Length;
+                }
+
+                if (size >= totalDataSize)
+                    break;
+
+                i++;
+            }
+
+            EndOfImages = i == srcImages.Count;
+        }
     }
 }

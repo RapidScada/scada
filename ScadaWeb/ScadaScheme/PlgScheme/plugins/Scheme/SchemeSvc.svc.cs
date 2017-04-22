@@ -94,7 +94,7 @@ namespace Scada.Web.Plugins.Scheme
                 SchemeDocDTO dto = new SchemeDocDTO();
                 dto.ViewStamp = schemeView.Stamp;
 
-                if (viewStamp == 0 || viewStamp == dto.ViewStamp)
+                if (SchemeUtils.ViewStampsMatched(viewStamp, schemeView.Stamp))
                     dto.SchemeDoc = schemeView.SchemeDoc;
 
                 return JsSerializer.Serialize(dto);
@@ -125,15 +125,8 @@ namespace Scada.Web.Plugins.Scheme
                 ComponentsDTO dto = new ComponentsDTO(count);
                 dto.ViewStamp = schemeView.Stamp;
 
-                if (viewStamp == 0 || viewStamp == dto.ViewStamp)
-                {
-                    List<BaseComponent> srcComponents = schemeView.Components;
-                    int srcCnt = srcComponents.Count;
-                    dto.EndOfComponents = startIndex + count >= srcCnt;
-
-                    for (int i = startIndex, j = 0; i < srcCnt && j < count; i++, j++)
-                        dto.Components.Add(srcComponents[i]);
-                }
+                if (SchemeUtils.ViewStampsMatched(viewStamp, schemeView.Stamp))
+                    dto.CopyComponents(schemeView.Components, startIndex, count);
 
                 return JsSerializer.Serialize(dto);
             }
@@ -163,29 +156,8 @@ namespace Scada.Web.Plugins.Scheme
                 ImagesDTO dto = new ImagesDTO();
                 dto.ViewStamp = schemeView.Stamp;
 
-                if (viewStamp == 0 || viewStamp == dto.ViewStamp)
-                {
-                    Dictionary<string, Image>.ValueCollection images = schemeView.SchemeDoc.Images.Values;
-                    int i = 0;
-                    int size = 0;
-
-                    foreach (Image image in images)
-                    {
-                        if (i >= startIndex)
-                        {
-                            dto.Images.Add(new ImageDTO(image));
-                            if (image.Data != null)
-                                size += image.Data.Length;
-                        }
-
-                        if (size >= totalDataSize)
-                            break;
-
-                        i++;
-                    }
-
-                    dto.EndOfImages = i == images.Count;
-                }
+                if (SchemeUtils.ViewStampsMatched(viewStamp, schemeView.Stamp))
+                    dto.CopyImages(schemeView.SchemeDoc.Images, startIndex, totalDataSize);
 
                 return JsSerializer.Serialize(dto);
             }

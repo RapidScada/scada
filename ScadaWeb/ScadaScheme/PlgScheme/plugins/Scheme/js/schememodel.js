@@ -8,8 +8,10 @@
  * Requires:
  * - jquery
  * - utils.js
- * - clientapi.js
  * - schemerender.js
+ *
+ * At runtime:
+ * - clientapi.js
  *
  * Inheritance hierarchy:
  * BaseComponent
@@ -50,7 +52,7 @@ scada.scheme.LoadStates = {
 /********** Scheme **********/
 
 // Scheme type
-scada.scheme.Scheme = function () {
+scada.scheme.Scheme = function (editMode) {
     scada.scheme.BaseComponent.call(this);
     this.renderer = new scada.scheme.SchemeRenderer();
 
@@ -62,6 +64,10 @@ scada.scheme.Scheme = function () {
     // Input channel filter for request current data
     this._cnlFilter = null;
 
+    // Indicates whether the scheme is used by an editor
+    this.editMode = editMode;
+    // WCF-service URL
+    this.serviceUrl = "SchemeSvc.svc/";
     // Scheme loading state
     this.loadState = scada.scheme.LoadStates.UNDEFINED;
     // Scheme view ID
@@ -114,8 +120,10 @@ scada.scheme.Scheme.prototype._loadPart = function (viewID, callback) {
     var LoadStates = scada.scheme.LoadStates;
 
     if (this.viewID == 0) {
-        this._cnlFilter = new scada.CnlFilter();
-        this._cnlFilter.viewID = viewID;
+        if (!this.editMode) {
+            this._cnlFilter = new scada.CnlFilter();
+            this._cnlFilter.viewID = viewID;
+        }
         this.viewID = viewID;
     } else if (this.viewID != viewID) {
         console.warn(scada.utils.getCurTime() +
@@ -149,15 +157,30 @@ scada.scheme.Scheme.prototype._loadPart = function (viewID, callback) {
     }
 };
 
+// Get part of query string to request scheme by view ID or editor ID
+scada.scheme.Scheme.prototype._getAccessParamStr = function (viewOrEditorID) {
+    return (this.editMode ? "?editorID=" : "?viewID=") + viewOrEditorID;
+};
+
+// Parse received scheme properties
+scada.scheme.Scheme.prototype._viewStampsMatched = function (viewStamp1, viewStamp2) {
+    if (viewStamp1 && viewStamp2 && viewStamp1 != viewStamp2) {
+        console.warn(scada.utils.getCurTime() + " Scheme view stamp mismatch");
+        return false;
+    } else {
+        return true;
+    }
+};
+
 // Load scheme document properties
 // callback is a function (success, complete)
 scada.scheme.Scheme.prototype._loadSchemeDoc = function (viewID, callback) {
-    var operation = "SchemeSvc.svc/GetSchemeDoc";
+    var operation = this.serviceUrl + "GetSchemeDoc";
     var thisScheme = this;
 
     $.ajax({
         url: operation +
-            "?viewID=" + viewID +
+            this._getAccessParamStr(viewID) +
             "&viewStamp=" + this.viewStamp,
         method: "GET",
         dataType: "json",
@@ -190,16 +213,6 @@ scada.scheme.Scheme.prototype._loadSchemeDoc = function (viewID, callback) {
     });
 };
 
-// Parse received scheme properties
-scada.scheme.Scheme.prototype._viewStampsMatched = function (viewStamp1, viewStamp2) {
-    if (viewStamp1 && viewStamp2 && viewStamp1 != viewStamp2) {
-        console.warn(scada.utils.getCurTime() + " Scheme view stamp mismatch");
-        return false;
-    } else {
-        return true;
-    }
-};
-
 // Obtain received scheme document properties
 scada.scheme.Scheme.prototype._obtainSchemeDoc = function (parsedData) {
     try {
@@ -212,7 +225,7 @@ scada.scheme.Scheme.prototype._obtainSchemeDoc = function (parsedData) {
         }
 
         if (this._viewStampsMatched(this.viewStamp, parsedData.ViewStamp)) {
-            this.type = parsedData.Type;
+            this.type = "";
             this.props = parsedData.SchemeDoc;
             this.viewStamp = parsedData.ViewStamp;
             return true;
@@ -229,12 +242,12 @@ scada.scheme.Scheme.prototype._obtainSchemeDoc = function (parsedData) {
 // Load scheme components
 // callback is a function (success, complete)
 scada.scheme.Scheme.prototype._loadComponents = function (viewID, callback) {
-    var operation = "SchemeSvc.svc/GetComponents";
+    var operation = this.serviceUrl + "GetComponents";
     var thisScheme = this;
 
     $.ajax({
         url: operation +
-            "?viewID=" + viewID +
+            this._getAccessParamStr(viewID) +
             "&viewStamp=" + this.viewStamp +
             "&startIndex=" + this.components.length +
             "&count=" + this.LOAD_COMP_CNT,
@@ -329,12 +342,12 @@ scada.scheme.Scheme.prototype._appendComponents = function (parsedComponents) {
 // Load scheme images
 // callback is a function (success, complete)
 scada.scheme.Scheme.prototype._loadImages = function (viewID, callback) {
-    var operation = "SchemeSvc.svc/GetImages";
+    var operation = this.serviceUrl + "GetImages";
     var thisScheme = this;
 
     $.ajax({
         url: operation +
-            "?viewID=" + viewID +
+            this._getAccessParamStr(viewID) +
             "&viewStamp=" + this.viewStamp +
             "&startIndex=" + this.images.length +
             "&totalDataSize=" + this.LOAD_IMG_SIZE,

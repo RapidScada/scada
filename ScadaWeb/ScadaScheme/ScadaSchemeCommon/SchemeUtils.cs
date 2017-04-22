@@ -35,5 +35,13 @@ namespace Scada.Scheme
         /// Версия схем
         /// </summary>
         public const string SchemeVersion = "5.1.0.0";
+
+        /// <summary>
+        /// Проверить, что метки представления соответствуют друг другу
+        /// </summary>
+        public static bool ViewStampsMatched(long viewStamp1, long viewStamp2)
+        {
+            return !(viewStamp1 > 0 && viewStamp2 > 0 && viewStamp1 != viewStamp2);
+        }
     }
 }

@@ -7,6 +7,8 @@
  *
  * Requires:
  * - jquery
+ *
+ * Optional:
  * - viewhub.js
  */
 
@@ -16,7 +18,7 @@ var scada = scada || {};
 scada.scheme = scada.scheme || {};
 
 // The view hub object
-scada.scheme.viewHub = scada.viewHubLocator.getViewHub();
+scada.scheme.viewHub = scada.viewHubLocator ? scada.viewHubLocator.getViewHub() : null;
 
 // Compare operators enumeration
 scada.scheme.CompareOperators = {

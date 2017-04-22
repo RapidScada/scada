@@ -2,7 +2,11 @@
 var scheme = new scada.scheme.Scheme();
 // Notifier control
 var notifier = null;
-// View ID. Must be defined in Scheme.aspx
+// Possible scale values
+var scaleVals = [0.1, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 2, 2.5, 3, 4, 5];
+
+// The variables below must be defined in Scheme.aspx
+// View ID
 var viewID = viewID || 0;
 // Scheme refresh rate
 var refrRate = refrRate || 1000;
@@ -10,8 +14,6 @@ var refrRate = refrRate || 1000;
 var phrases = phrases || {};
 // View control right
 var controlRight = controlRight || false;
-// Possible scale values
-var scaleVals = [0.1, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 2, 2.5, 3, 4, 5];
 
 // Load the scheme
 function loadScheme(viewID) {

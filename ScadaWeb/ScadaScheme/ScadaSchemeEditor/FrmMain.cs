@@ -45,10 +45,11 @@ namespace Scada.Scheme.Editor
     /// </summary>
     public partial class FrmMain : Form
     {
-        private AppData appData; // общие данные приложения
-        private Editor editor;   // редактор
-        private Log log;         // журнал приложения
-        private Mutex mutex;     // объект для проверки запуска второй копии приложения
+        private readonly AppData appData; // общие данные приложения
+        private readonly Log log;         // журнал приложения
+        private readonly Editor editor;   // редактор
+
+        private Mutex mutex; // объект для проверки запуска второй копии приложения
 
 
         /// <summary>
@@ -59,8 +60,8 @@ namespace Scada.Scheme.Editor
             InitializeComponent();
 
             appData = AppData.GetAppData();
-            editor = appData.Editor;
             log = appData.Log;
+            editor = appData.Editor;
             mutex = null;
 
             Application.ThreadException += Application_ThreadException;

@@ -51,10 +51,7 @@ namespace Scada.Scheme.Editor
         /// </summary>
         public const string DefSchemeFileName = "NewScheme.sch";
 
-        /// <summary>
-        /// Журнал приложения
-        /// </summary>
-        protected readonly Log log;
+        protected readonly Log log; // журнал приложения
 
 
         /// <summary>
@@ -141,7 +138,7 @@ namespace Scada.Scheme.Editor
                 // создание файла веб-страницы
                 StringBuilder sbCustomScript = new StringBuilder();
                 sbCustomScript
-                    .AppendFormat("var sessionID = '{0}';", EditorID)
+                    .AppendFormat("var editorID = '{0}';", EditorID)
                     .AppendLine()
                     .Append("var phrases = ")
                     .Append(WebUtils.DictionaryToJs("Scada.Scheme.Editor.Js"));

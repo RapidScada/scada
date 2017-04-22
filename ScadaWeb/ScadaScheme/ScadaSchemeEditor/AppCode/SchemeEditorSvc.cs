@@ -27,6 +27,7 @@ using Scada.Scheme.DataTransfer;
 using Scada.Scheme.Model;
 using Scada.Web;
 using System;
+using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
 using System.ServiceModel.Web;
@@ -86,23 +87,27 @@ namespace Scada.Scheme.Editor
         /// <remarks>Возвращает SchemeDocDTO в формате в JSON</remarks>
         [OperationContract]
         [WebGet]
-        public string GetSchemeDoc(string editorID)
+        public string GetSchemeDoc(string editorID, long viewStamp)
         {
             try
             {
                 AllowAccess();
-                SchemeDocDTO dto;
+                SchemeDocDTO dto = new SchemeDocDTO();
 
                 if (editorID == Editor.EditorID)
                 {
-                    SchemeView srcSchemeView = Editor.SchemeView;
-                    dto = srcSchemeView == null ?
-                        new SchemeDocDTO() :
-                        new SchemeDocDTO(srcSchemeView.SchemeDoc) { ViewStamp = srcSchemeView.Stamp };
+                    SchemeView schemeView = Editor.SchemeView;
+
+                    if (schemeView != null)
+                    {
+                        dto.ViewStamp = schemeView.Stamp;
+                        if (SchemeUtils.ViewStampsMatched(viewStamp, schemeView.Stamp))
+                            dto.SchemeDoc = schemeView.SchemeDoc;
+                    }
                 }
                 else
                 {
-                    dto = new SchemeDocDTO() { EditorUnknown = true };
+                    dto.EditorUnknown = true;
                 }
 
                 return JsSerializer.Serialize(dto);
@@ -124,7 +129,36 @@ namespace Scada.Scheme.Editor
         [WebGet]
         public string GetComponents(string editorID, long viewStamp, int startIndex, int count)
         {
-            return "";
+            try
+            {
+                AllowAccess();
+                ComponentsDTO dto = new ComponentsDTO();
+
+                if (editorID == Editor.EditorID)
+                {
+                    SchemeView schemeView = Editor.SchemeView;
+
+                    if (schemeView != null)
+                    {
+                        dto.ViewStamp = schemeView.Stamp;
+                        if (SchemeUtils.ViewStampsMatched(viewStamp, schemeView.Stamp))
+                            dto.CopyComponents(schemeView.Components, startIndex, count);
+                    }
+                }
+                else
+                {
+                    dto.EditorUnknown = true;
+                }
+
+                return JsSerializer.Serialize(dto);
+            }
+            catch (Exception ex)
+            {
+                AppData.Log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении компонентов схемы" :
+                    "Error getting scheme components");
+                return JsSerializer.GetErrorJson(ex);
+            }
         }
 
         /// <summary>
@@ -135,7 +169,36 @@ namespace Scada.Scheme.Editor
         [WebGet]
         public string GetImages(string editorID, long viewStamp, int startIndex, int totalDataSize)
         {
-            return "";
+            try
+            {
+                AllowAccess();
+                ImagesDTO dto = new ImagesDTO();
+
+                if (editorID == Editor.EditorID)
+                {
+                    SchemeView schemeView = Editor.SchemeView;
+
+                    if (schemeView != null)
+                    {
+                        dto.ViewStamp = schemeView.Stamp;
+                        if (SchemeUtils.ViewStampsMatched(viewStamp, schemeView.Stamp))
+                            dto.CopyImages(schemeView.SchemeDoc.Images, startIndex, totalDataSize);
+                    }
+                }
+                else
+                {
+                    dto.EditorUnknown = true;
+                }
+
+                return JsSerializer.Serialize(dto);
+            }
+            catch (Exception ex)
+            {
+                AppData.Log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении изображений схемы" :
+                    "Error getting scheme images");
+                return JsSerializer.GetErrorJson(ex);
+            }
         }
     }
 }
