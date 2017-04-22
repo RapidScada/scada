@@ -3,7 +3,7 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2017
  *
  * Requires:
  * - jquery
@@ -84,6 +84,70 @@ scada.scheme.Scheme = function () {
 
 scada.scheme.Scheme.prototype = Object.create(scada.scheme.BaseComponent.prototype);
 scada.scheme.Scheme.constructor = scada.scheme.Scheme;
+
+// Continue scheme loading process
+// callback is a function (success)
+scada.scheme.Scheme.prototype._continueLoading = function (viewID, callback) {
+    var getCurTime = scada.utils.getCurTime;
+    var thisScheme = this;
+
+    this._loadPart(viewID, function (success, complete) {
+        if (success) {
+            if (complete) {
+                console.info(getCurTime() + " Scheme loading completed successfully");
+                thisScheme.parentDomElem.removeClass("loading");
+                callback(true);
+            } else {
+                setTimeout(thisScheme._continueLoading.bind(thisScheme), 0, viewID, callback);
+            }
+        } else {
+            console.error(getCurTime() + " Scheme loading failed");
+            thisScheme.parentDomElem.removeClass("loading");
+            callback(false);
+        }
+    });
+};
+
+// Load a part of the scheme depending on the loading state
+// callback is a function (success, complete)
+scada.scheme.Scheme.prototype._loadPart = function (viewID, callback) {
+    var LoadStates = scada.scheme.LoadStates;
+
+    if (this.viewID == 0) {
+        this._cnlFilter = new scada.CnlFilter();
+        this._cnlFilter.viewID = viewID;
+        this.viewID = viewID;
+    } else if (this.viewID != viewID) {
+        console.warn(scada.utils.getCurTime() +
+            " Scheme view ID mismatch. The existing ID=" + this.viewID + ". The requsested ID=" + viewID);
+        callback(false, false);
+        return;
+    }
+
+    if (this.loadState == LoadStates.UNDEFINED) {
+        this.loadState = LoadStates.DOC_LOADING;
+    }
+
+    switch (this.loadState) {
+        case LoadStates.DOC_LOADING:
+            this._loadSchemeDoc(viewID, callback);
+            break;
+        case LoadStates.COMPONENTS_LOADING:
+            this._loadComponents(viewID, callback);
+            break;
+        case LoadStates.IMAGES_LOADING:
+            this._loadImages(viewID, callback);
+            break;
+        case LoadStates.COMPLETE:
+            console.warn("Scheme loading is already complete");
+            callback(true, true);
+            break;
+        default:
+            console.warn("Unknown scheme loading state " + this.loadState);
+            callback(false, false);
+            break;
+    }
+};
 
 // Load scheme document properties
 // callback is a function (success, complete)
@@ -387,45 +451,13 @@ scada.scheme.Scheme.prototype.clear = function () {
     this.renderContext = new scada.scheme.RenderContext();
 };
 
-// Load scheme.
-// callback is a function (success, complete)
+// Load the scheme
+// callback is a function (success)
 scada.scheme.Scheme.prototype.load = function (viewID, callback) {
-    var LoadStates = scada.scheme.LoadStates;
-
-    if (this.viewID == 0) {
-        this._cnlFilter = new scada.CnlFilter();
-        this._cnlFilter.viewID = viewID;
-        this.viewID = viewID;
-    } else if (this.viewID != viewID) {
-        console.warn(scada.utils.getCurTime() +
-            " Scheme view ID mismatch. The existing ID=" + this.viewID + ". The requsested ID=" + viewID);
-        callback(false, false);
-        return;
-    }
-
-    if (this.loadState == LoadStates.UNDEFINED) {
-        this.loadState = LoadStates.DOC_LOADING;
-    }
-
-    switch (this.loadState) {
-        case LoadStates.DOC_LOADING:
-            this._loadSchemeDoc(viewID, callback);
-            break;
-        case LoadStates.COMPONENTS_LOADING:
-            this._loadComponents(viewID, callback);
-            break;
-        case LoadStates.IMAGES_LOADING:
-            this._loadImages(viewID, callback);
-            break;
-        case LoadStates.COMPLETE:
-            console.warn("Scheme loading is already complete");
-            callback(true, true);
-            break;
-        default:
-            console.warn("Unknown scheme loading state " + this.loadState);
-            callback(false, false);
-            break;
-    }
+    console.info(scada.utils.getCurTime() + " Start loading scheme");
+    this.parentDomElem.addClass("loading");
+    this.clear();
+    this._continueLoading(viewID, callback);
 };
 
 // Create DOM content of the scheme
@@ -460,7 +492,7 @@ scada.scheme.Scheme.prototype.createDom = function (opt_controlRight) {
         catch (ex) {
             console.error("Error creating DOM content for the component of type '" +
                 component.type + "' with ID=" + component.id + ":", ex.message);
-            elem.dom = null;
+            component.dom = null;
         }
     }
 };

@@ -1,0 +1,69 @@
+﻿@import "../../../css/common/globalvar.less";
+@import "scheme.less";
+
+@notif-back-color: white;
+@toolbar-fore-color: @menu-fore-color-dark;
+@tool-btn-back-color: white;
+@tool-btn-hover-fore-color: @menu-item-hover-fore-color;
+@toolbar-height: 30px;
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: @scheme-back-color;
+    font-family: @scheme-font-family;
+    font-size: @data-font-size;
+    overflow: hidden;
+}
+
+/* Toolbar (above the scheme) */
+
+#divToolbar {
+    position: fixed;
+    height: @toolbar-height;
+    left: 0;
+    top: 0;
+    color: @toolbar-fore-color;
+    display: inline-block;
+    font-size: 14px;
+    opacity: 0.5;
+    white-space: nowrap;
+}
+
+#divToolbar:hover {
+    opacity: 1;
+}
+
+#divToolbar .tool-btn,
+#spanCurScale {
+    height: @toolbar-height;
+    margin: 0 5px 0 0;
+    padding: 0 10px;
+    cursor: pointer;
+    background-color: @tool-btn-back-color;
+    display: inline-block;
+    line-height: @toolbar-height;
+    vertical-align: top;
+}
+
+#divToolbar .tool-btn:hover {
+    color: @tool-btn-hover-fore-color;
+}
+
+#spanCurScale {
+    cursor: default;
+    font-size: 12px;
+}
+
+#spanCurScale:hover {
+    opacity: 1;
+}
+
+/* Debug tools */
+
+#divDebugTools {
+    padding: 0 10px;
+    display: none; /*inline-block*/
+    font-size: 12px;
+    vertical-align: top;
+}

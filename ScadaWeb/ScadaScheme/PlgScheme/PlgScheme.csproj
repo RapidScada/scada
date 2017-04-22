@@ -90,9 +90,15 @@
     <Content Include="plugins\Scheme\css\scheme.min.css">
       <DependentUpon>scheme.css</DependentUpon>
     </Content>
+    <Content Include="plugins\Scheme\css\schemeform.css">
+      <DependentUpon>schemeform.less</DependentUpon>
+    </Content>
+    <Content Include="plugins\Scheme\css\schemeform.min.css">
+      <DependentUpon>schemeform.css</DependentUpon>
+    </Content>
     <Content Include="plugins\Scheme\images\loading.gif" />
     <Content Include="plugins\Scheme\images\schemeicon.png" />
-    <Content Include="plugins\Scheme\js\scheme.js" />
+    <Content Include="plugins\Scheme\js\schemeform.js" />
     <Content Include="plugins\Scheme\js\schemecommon.js" />
     <Content Include="plugins\Scheme\js\schememodel.js" />
     <Content Include="plugins\Scheme\js\schemerender.js" />
@@ -120,7 +126,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="plugins\Scheme\css\scheme.less" />
+    <Content Include="plugins\Scheme\css\schemeform.less" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
@@ -130,6 +136,7 @@
     <Content Include="lib\font-awesome\fonts\fontawesome-webfont.ttf" />
     <Content Include="css\controls\notifier.less" />
     <Content Include="packages.config" />
+    <Content Include="plugins\Scheme\css\scheme.less" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

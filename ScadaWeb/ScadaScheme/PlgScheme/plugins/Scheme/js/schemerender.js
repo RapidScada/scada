@@ -3,7 +3,7 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2017
  *
  * Requires:
  * - jquery
@@ -350,7 +350,7 @@ scada.scheme.StaticTextRenderer.prototype.createDom = function (component, rende
     var spanComp = $("<span id='comp" + component.id + "'></span>");
     var spanText = $("<span></span>");
 
-    this.prepareConponent(spanComp, component);
+    this.prepareComponent(spanComp, component);
     this.setBackColor(spanComp, props.BackColor);
     this.setBorderColor(spanComp, props.BorderColor, true);
     this.setFont(spanComp, props.Font);

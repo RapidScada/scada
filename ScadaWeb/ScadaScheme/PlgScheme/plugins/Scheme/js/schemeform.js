@@ -13,41 +13,27 @@ var controlRight = controlRight || false;
 // Possible scale values
 var scaleVals = [0.1, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 2, 2.5, 3, 4, 5];
 
-// Start scheme loading process
-function startLoadingScheme(viewID) {
-    console.info(scada.utils.getCurTime() + " Start loading scheme");
-    $("body").addClass("loading");
-    scheme.clear();
-    continueLoadingScheme(viewID);
-}
-
-// Continue scheme loading process
-function continueLoadingScheme(viewID) {
-    var getCurTime = scada.utils.getCurTime;
-
-    scheme.load(viewID, function (success, complete) {
+// Load the scheme
+function loadScheme(viewID) {
+    scheme.load(viewID, function (success) {
         if (success) {
-            if (complete) {
-                console.info(getCurTime() + " Scheme loading completed successfully");
-                $("body").removeClass("loading");
-
-                if (!DEBUG_MODE) {
-                    scheme.createDom(controlRight);
-                    loadScale();
-                    displayScale();
-                    startUpdatingScheme();
-                }
-            } else {
-                setTimeout(continueLoadingScheme, 0, viewID);
+            if (!DEBUG_MODE) {
+                scheme.createDom(controlRight);
+                loadScale();
+                displayScale();
+                startUpdatingScheme();
             }
         } else {
-            console.error(getCurTime() + " Scheme loading failed");
-            $("body").removeClass("loading");
             notifier.addNotification(phrases.LoadSchemeError +
                 " <input type='button' value='" + phrases.ReloadButton + "' onclick='reloadScheme()' />",
                 true, notifier.INFINITE_NOTIF_LIFETIME);
         }
     });
+}
+
+// Reload the scheme
+function reloadScheme() {
+    location.reload(true);
 }
 
 // Start cyclic scheme updating process
@@ -59,11 +45,6 @@ function startUpdatingScheme() {
 
         setTimeout(startUpdatingScheme, refrRate);
     });
-}
-
-// Reload scheme
-function reloadScheme() {
-    location.reload(true);
 }
 
 // Bind handlers of the toolbar buttons
@@ -156,7 +137,7 @@ function initDebugTools() {
     $("#divDebugTools").css("display", "inline-block");
 
     $("#spanLoadSchemeBtn").click(function () {
-        startLoadingScheme(viewID);
+        loadScheme(viewID);
     });
 
     $("#spanCreateDomBtn").click(function () {
@@ -190,6 +171,6 @@ $(document).ready(function () {
     if (DEBUG_MODE) {
         initDebugTools();
     } else {
-        startLoadingScheme(viewID);
+        loadScheme(viewID);
     }
 });

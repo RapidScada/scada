@@ -9,7 +9,7 @@
     <link href="~/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <link href="~/lib/open-sans/css/open-sans.css" rel="stylesheet" type="text/css" />
     <link href="~/css/controls/notifier.min.css" rel="stylesheet" type="text/css" />
-    <link href="~/plugins/Scheme/css/scheme.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/Scheme/css/schemeform.min.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../../lib/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="../../js/api/utils.js"></script>
     <script type="text/javascript" src="../../js/api/clientapi.js"></script>
@@ -26,12 +26,12 @@
         var phrases = <%= phrases %>;
         var controlRight = <%= controlRight ? "true" : "false" %>;
     </script>
-    <script type="text/javascript" src="js/scheme.js"></script>
+    <script type="text/javascript" src="js/schemeform.js"></script>
 </head>
 <body>
     <div id="divNotif" class="notifier">
     </div>
-    <div id="divSchWrapper">
+    <div id="divSchWrapper" class="scheme-wrapper">
     </div>
     <div id="divToolbar"><asp:Label 
         ID="lblFitScreenBtn" runat="server" CssClass="tool-btn" ToolTip="Fit to Screen"><i class="fa fa-arrows"></i></asp:Label><asp:Label 
