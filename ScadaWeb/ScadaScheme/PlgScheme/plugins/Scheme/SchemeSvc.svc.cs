@@ -78,12 +78,12 @@ namespace Scada.Web.Plugins.Scheme
 
 
         /// <summary>
-        /// Получить свойства схемы
+        /// Получить свойства документа схемы
         /// </summary>
-        /// <remarks>Возвращает SchemePropsDTO в формате в JSON</remarks>
+        /// <remarks>Возвращает SchemeDocDTO в формате в JSON</remarks>
         [OperationContract]
         [WebGet]
-        public string GetSchemeProps(int viewID, long viewStamp)
+        public string GetSchemeDoc(int viewID, long viewStamp)
         {
             try
             {
@@ -102,8 +102,8 @@ namespace Scada.Web.Plugins.Scheme
             catch (Exception ex)
             {
                 AppData.Log.WriteException(ex, Localization.UseRussian ?
-                    "Ошибка при получении свойств схемы с ид.={0}" :
-                    "Error getting the properties of the scheme with ID={0}", viewID);
+                    "Ошибка при получении свойств документа схемы с ид.={0}" :
+                    "Error getting document properties of the scheme with ID={0}", viewID);
                 return GetErrorDtoJs(ex);
             }
         }
@@ -114,7 +114,7 @@ namespace Scada.Web.Plugins.Scheme
         /// <remarks>Возвращает ComponentsDTO в формате в JSON</remarks>
         [OperationContract]
         [WebGet]
-        public string GetElements(int viewID, long viewStamp, int startIndex, int count)
+        public string GetComponents(int viewID, long viewStamp, int startIndex, int count)
         {
             try
             {
@@ -141,7 +141,7 @@ namespace Scada.Web.Plugins.Scheme
             {
                 AppData.Log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при получении компонентов схемы с ид.={0}" :
-                    "Error getting the components of the scheme with ID={0}", viewID);
+                    "Error getting components of the scheme with ID={0}", viewID);
                 return GetErrorDtoJs(ex);
             }
         }
@@ -193,7 +193,7 @@ namespace Scada.Web.Plugins.Scheme
             {
                 AppData.Log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при получении изображений схемы с ид.={0}" :
-                    "Error getting the images of the scheme with ID={0}", viewID);
+                    "Error getting images of the scheme with ID={0}", viewID);
                 return GetErrorDtoJs(ex);
             }
         }

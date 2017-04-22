@@ -27,7 +27,7 @@ scada.scheme = scada.scheme || {};
 
 /********** Renderer **********/
 
-// Abstract parent type of renderers
+// Abstract parent type for renderers
 scada.scheme.Renderer = function () {
     // Color bound to an input channel status
     this.STATUS_COLOR = "Status";

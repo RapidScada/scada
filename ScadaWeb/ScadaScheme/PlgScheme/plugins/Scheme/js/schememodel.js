@@ -22,17 +22,17 @@ var scada = scada || {};
 // Scheme namespace
 scada.scheme = scada.scheme || {};
 
-/********** Base Element **********/
+/********** Base Component **********/
 
-// Abstract parent type of scheme elements
-scada.scheme.BaseElement = function (type) {
-    // Name of the element type
+// Abstract parent type for scheme and its components
+scada.scheme.BaseComponent = function (type) {
+    // Name of the component type
     this.type = type;
-    // Element properties received from server. They are different depending on element type
+    // Component properties received from a server. They are different depending on component type
     this.props = null;
     // jQuery objects representing DOM content
     this.dom = null;
-    // Renderer of the element
+    // Renderer of the component
     this.renderer = null;
 };
 
@@ -41,8 +41,8 @@ scada.scheme.BaseElement = function (type) {
 // Scheme loading states enumeration
 scada.scheme.LoadStates = {
     UNDEFINED: 0,
-    PROPS_LOADING: 1,
-    ELEMS_LOADING: 2,
+    DOC_LOADING: 1,
+    COMPONENTS_LOADING: 2,
     IMAGES_LOADING: 3,
     COMPLETE: 4
 };
@@ -51,7 +51,7 @@ scada.scheme.LoadStates = {
 
 // Scheme type
 scada.scheme.Scheme = function () {
-    scada.scheme.BaseElement.call(this);
+    scada.scheme.BaseComponent.call(this);
     this.renderer = new scada.scheme.SchemeRenderer();
 
     // Count of elements received by a one request
@@ -68,8 +68,8 @@ scada.scheme.Scheme = function () {
     this.viewID = 0;
     // Stamp of the view, unique within application scope
     this.viewStamp = 0;
-    // Scheme elements
-    this.elements = [];
+    // Scheme components
+    this.components = [];
     // Scheme images
     this.images = [];
     // Scheme images indexed by name
@@ -82,13 +82,13 @@ scada.scheme.Scheme = function () {
     this.scale = 1.0;
 };
 
-scada.scheme.Scheme.prototype = Object.create(scada.scheme.BaseElement.prototype);
+scada.scheme.Scheme.prototype = Object.create(scada.scheme.BaseComponent.prototype);
 scada.scheme.Scheme.constructor = scada.scheme.Scheme;
 
-// Load scheme properties
+// Load scheme document properties
 // callback is a function (success, complete)
-scada.scheme.Scheme.prototype._loadSchemeProps = function (viewID, callback) {
-    var operation = "SchemeSvc.svc/GetSchemeProps";
+scada.scheme.Scheme.prototype._loadSchemeDoc = function (viewID, callback) {
+    var operation = "SchemeSvc.svc/GetSchemeDoc";
     var thisScheme = this;
 
     $.ajax({
@@ -104,8 +104,8 @@ scada.scheme.Scheme.prototype._loadSchemeProps = function (viewID, callback) {
             var parsedData = $.parseJSON(data.d);
             if (parsedData.Success) {
                 scada.utils.logSuccessfulRequest(operation);
-                if (thisScheme._obtainSchemeProps(parsedData)) {
-                    thisScheme.loadState = scada.scheme.LoadStates.ELEMS_LOADING;
+                if (thisScheme._obtainSchemeDoc(parsedData)) {
+                    thisScheme.loadState = scada.scheme.LoadStates.COMPONENTS_LOADING;
                     callback(true, false);
                 } else {
                     callback(false, false);
@@ -136,21 +136,21 @@ scada.scheme.Scheme.prototype._viewStampsMatched = function (viewStamp1, viewSta
     }
 };
 
-// Obtain received scheme properties
-scada.scheme.Scheme.prototype._obtainSchemeProps = function (parsedProps) {
+// Obtain received scheme document properties
+scada.scheme.Scheme.prototype._obtainSchemeDoc = function (parsedData) {
     try {
-        if (typeof parsedProps.ViewStamp === "undefined") {
+        if (typeof parsedData.ViewStamp === "undefined") {
             throw { message: "ViewStamp property is missing." };
         }
 
-        if (typeof parsedProps.SchemeDoc === "undefined") {
+        if (typeof parsedData.SchemeDoc === "undefined") {
             throw { message: "SchemeDoc property is missing." };
         }
 
-        if (this._viewStampsMatched(this.viewStamp, parsedProps.ViewStamp)) {
-            this.type = parsedProps.Type;
-            this.props = parsedProps.SchemeDoc;
-            this.viewStamp = parsedProps.ViewStamp;
+        if (this._viewStampsMatched(this.viewStamp, parsedData.ViewStamp)) {
+            this.type = parsedData.Type;
+            this.props = parsedData.SchemeDoc;
+            this.viewStamp = parsedData.ViewStamp;
             return true;
         } else {
             return false;
@@ -162,17 +162,17 @@ scada.scheme.Scheme.prototype._obtainSchemeProps = function (parsedProps) {
     }
 };
 
-// Load scheme elements
+// Load scheme components
 // callback is a function (success, complete)
-scada.scheme.Scheme.prototype._loadElements = function (viewID, callback) {
-    var operation = "SchemeSvc.svc/GetElements";
+scada.scheme.Scheme.prototype._loadComponents = function (viewID, callback) {
+    var operation = "SchemeSvc.svc/GetComponents";
     var thisScheme = this;
 
     $.ajax({
         url: operation +
             "?viewID=" + viewID +
             "&viewStamp=" + this.viewStamp +
-            "&startIndex=" + this.elements.length +
+            "&startIndex=" + this.components.length +
             "&count=" + this.LOAD_ELEM_CNT,
         method: "GET",
         dataType: "json",
@@ -183,7 +183,7 @@ scada.scheme.Scheme.prototype._loadElements = function (viewID, callback) {
             var parsedData = $.parseJSON(data.d);
             if (parsedData.Success) {
                 scada.utils.logSuccessfulRequest(operation);
-                if (thisScheme._obtainElements(parsedData)) {
+                if (thisScheme._obtainComponents(parsedData)) {
                     if (parsedData.EndOfComponents) {
                         thisScheme.loadState = scada.scheme.LoadStates.IMAGES_LOADING;
                     }
@@ -207,57 +207,57 @@ scada.scheme.Scheme.prototype._loadElements = function (viewID, callback) {
     });
 }
 
-// Obtain received scheme elements
-scada.scheme.Scheme.prototype._obtainElements = function (parsedElems) {
+// Obtain received scheme components
+scada.scheme.Scheme.prototype._obtainComponents = function (parsedData) {
     try {
-        if (typeof parsedElems.ViewStamp === "undefined") {
+        if (typeof parsedData.ViewStamp === "undefined") {
             throw { message: "ViewStamp property is missing." };
         }
 
-        if (typeof parsedElems.EndOfComponents === "undefined") {
+        if (typeof parsedData.EndOfComponents === "undefined") {
             throw { message: "EndOfComponents property is missing." };
         }
 
-        if (typeof parsedElems.Components === "undefined") {
+        if (typeof parsedData.Components === "undefined") {
             throw { message: "Components property is missing." };
         }
 
-        if (this._viewStampsMatched(this.viewStamp, parsedElems.ViewStamp)) {
-            this.viewStamp = parsedElems.ViewStamp;
-            this._appendElements(parsedElems.Components);
+        if (this._viewStampsMatched(this.viewStamp, parsedData.ViewStamp)) {
+            this.viewStamp = parsedData.ViewStamp;
+            this._appendComponents(parsedData.Components);
             return true;
         } else {
             return false;
         }
     }
     catch (ex) {
-        console.error(scada.utils.getCurTime() + " Error obtaining scheme elements:", ex.message);
+        console.error(scada.utils.getCurTime() + " Error obtaining scheme components:", ex.message);
         return false;
     }
 };
 
-// Append received elements to the scheme
-scada.scheme.Scheme.prototype._appendElements = function (parsedElems) {
-    for (var parsedElem of parsedElems) {
-        if (typeof parsedElem === "undefined" ||
-            typeof parsedElem.TypeName === "undefined" ||
-            typeof parsedElem.ID === "undefined") {
-            console.warn("The element is skipped because the required properties are missed");
+// Append received components to the scheme
+scada.scheme.Scheme.prototype._appendComponents = function (parsedComponents) {
+    for (var parsedComponent of parsedComponents) {
+        if (typeof parsedComponent === "undefined" ||
+            typeof parsedComponent.TypeName === "undefined" ||
+            typeof parsedComponent.ID === "undefined") {
+            console.warn("The component is skipped because the required properties are missed");
             continue;
         }
 
-        var schemeElem = new scada.scheme.Element();
-        schemeElem.type = parsedElem.TypeName;
-        schemeElem.id = parsedElem.ID;
-        schemeElem.props = parsedElem;
-        schemeElem.renderer = scada.scheme.rendererMap.getRenderer(schemeElem.type);
+        var schemeComponent = new scada.scheme.Element();
+        schemeComponent.type = parsedComponent.TypeName;
+        schemeComponent.id = parsedComponent.ID;
+        schemeComponent.props = parsedComponent;
+        schemeComponent.renderer = scada.scheme.rendererMap.getRenderer(schemeComponent.type);
 
-        if (schemeElem.renderer) {
-            // add the element to the scheme
-            this.elements.push(schemeElem);
+        if (schemeComponent.renderer) {
+            // add the component to the scheme
+            this.components.push(schemeComponent);
         } else {
-            console.warn("The element of type '" + schemeElem.type +
-                "' with ID=" + schemeElem.id + " is not supported");
+            console.warn("The component of type '" + schemeComponent.type +
+                "' with ID=" + schemeComponent.id + " is not supported");
         }
     }
 };
@@ -310,31 +310,31 @@ scada.scheme.Scheme.prototype._loadImages = function (viewID, callback) {
 }
 
 // Obtain received scheme images
-scada.scheme.Scheme.prototype._obtainImages = function (parsedImages) {
+scada.scheme.Scheme.prototype._obtainImages = function (parsedData) {
     try {
-        if (typeof parsedImages.ViewStamp === "undefined") {
+        if (typeof parsedData.ViewStamp === "undefined") {
             throw { message: "ViewStamp property is missing." };
         }
 
-        if (typeof parsedImages.EndOfImages === "undefined") {
+        if (typeof parsedData.EndOfImages === "undefined") {
             throw { message: "EndOfImages property is missing." };
         }
 
-        if (typeof parsedImages.Images === "undefined") {
+        if (typeof parsedData.Images === "undefined") {
             throw { message: "Images property is missing." };
         }
 
-        if (this._viewStampsMatched(this.viewStamp, parsedImages.ViewStamp)) {
-            this.viewStamp = parsedImages.ViewStamp;
-            this._appendImages(parsedImages.Images);
-            return parsedImages;
+        if (this._viewStampsMatched(this.viewStamp, parsedData.ViewStamp)) {
+            this.viewStamp = parsedData.ViewStamp;
+            this._appendImages(parsedData.Images);
+            return true;
         } else {
-            return null;
+            return false;
         }
     }
     catch (ex) {
         console.error(scada.utils.getCurTime() + " Error obtaining scheme images:", ex.message);
-        return null;
+        return false;
     }
 };
 
@@ -380,7 +380,7 @@ scada.scheme.Scheme.prototype.clear = function () {
     this.loadState = scada.scheme.LoadStates.UNDEFINED;
     this.viewID = 0;
     this.viewStamp = 0;
-    this.elements = [];
+    this.components = [];
     this.images = [];
     this.imageMap = new Map();
     this.renderContext = new scada.scheme.RenderContext();
@@ -403,15 +403,15 @@ scada.scheme.Scheme.prototype.load = function (viewID, callback) {
     }
 
     if (this.loadState == LoadStates.UNDEFINED) {
-        this.loadState = LoadStates.PROPS_LOADING;
+        this.loadState = LoadStates.DOC_LOADING;
     }
 
     switch (this.loadState) {
-        case LoadStates.PROPS_LOADING:
-            this._loadSchemeProps(viewID, callback);
+        case LoadStates.DOC_LOADING:
+            this._loadSchemeDoc(viewID, callback);
             break;
-        case LoadStates.ELEMS_LOADING:
-            this._loadElements(viewID, callback);
+        case LoadStates.COMPONENTS_LOADING:
+            this._loadComponents(viewID, callback);
             break;
         case LoadStates.IMAGES_LOADING:
             this._loadImages(viewID, callback);
@@ -449,11 +449,11 @@ scada.scheme.Scheme.prototype.createDom = function (opt_controlRight) {
         return;
     }
 
-    for (var elem of this.elements) {
+    for (var component of this.components) {
         try {
-            elem.renderer.createDom(elem, this.renderContext);
+            component.renderer.createDom(component, this.renderContext);
             if (this.dom) {
-                this.dom.append(elem.dom);
+                this.dom.append(component.dom);
             }
         }
         catch (ex) {
@@ -477,8 +477,8 @@ scada.scheme.Scheme.prototype.update = function (clientAPI, callback) {
                 thisScheme.renderContext.curCnlDataMap = curCnlDataMap;
                 thisScheme.renderContext.imageMap = thisScheme.imageMap;
 
-                for (var elem of thisScheme.elements) {
-                    thisScheme._updateElement(elem, thisScheme.renderContext);
+                for (var component of thisScheme.components) {
+                    thisScheme._updateElement(component, thisScheme.renderContext);
                 }
             }
 
@@ -506,11 +506,11 @@ scada.scheme.Scheme.prototype.setScale = function (scale) {
 
 // Element type
 scada.scheme.Element = function () {
-    scada.scheme.BaseElement.call(this);
+    scada.scheme.BaseComponent.call(this);
 
     // Element ID
     this.id = 0;
 };
 
-scada.scheme.Element.prototype = Object.create(scada.scheme.BaseElement.prototype);
+scada.scheme.Element.prototype = Object.create(scada.scheme.BaseComponent.prototype);
 scada.scheme.Element.constructor = scada.scheme.Element;

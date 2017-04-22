@@ -35,35 +35,35 @@ scada.scheme.LogicalOperators = {
     OR: 2
 };
 
-// Horizontal alignment enumeration
+// Horizontal alignments enumeration
 scada.scheme.HorizontalAlignments = {
     LEFT: 0,
     CENTER: 1,
     RIGHT: 2
 };
 
-// Vertical alignment enumeration
+// Vertical alignments enumeration
 scada.scheme.VerticalAlignments = {
     TOP: 0,
     CENTER: 1,
     BOTTOM: 2
 };
 
-// Image stretch enumeration
+// Image stretches enumeration
 scada.scheme.ImageStretches = {
     NONE: 0,
     FILL: 1,
     ZOOM: 2
 };
 
-// Actions of dynamic elements enumeration
+// Actions of a dynamic component enumeration
 scada.scheme.Actions = {
     NONE: 0,
     DRAW_DIAGRAM: 1,
     SEND_COMMAND: 2
 };
 
-// Show value kinds enumeration
+// Kinds of displaying input channel value of a dynamic component
 scada.scheme.ShowValueKinds = {
     NOT_SHOW: 0,
     SHOW_WITH_UNIT: 1,
