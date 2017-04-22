@@ -12,9 +12,9 @@
  * - schemerender.js
  *
  * Inheritance hierarchy:
- * BaseElement
+ * BaseComponent
  *   Scheme
- *   Element
+ *   Component
  */
 
 // Rapid SCADA namespace
@@ -54,8 +54,8 @@ scada.scheme.Scheme = function () {
     scada.scheme.BaseComponent.call(this);
     this.renderer = new scada.scheme.SchemeRenderer();
 
-    // Count of elements received by a one request
-    this.LOAD_ELEM_CNT = 100;
+    // Count of components received by a one request
+    this.LOAD_COMP_CNT = 100;
     // Total data size of images received by a one request, 1 MB
     this.LOAD_IMG_SIZE = 1048576;
 
@@ -173,7 +173,7 @@ scada.scheme.Scheme.prototype._loadComponents = function (viewID, callback) {
             "?viewID=" + viewID +
             "&viewStamp=" + this.viewStamp +
             "&startIndex=" + this.components.length +
-            "&count=" + this.LOAD_ELEM_CNT,
+            "&count=" + this.LOAD_COMP_CNT,
         method: "GET",
         dataType: "json",
         cache: false
@@ -246,7 +246,7 @@ scada.scheme.Scheme.prototype._appendComponents = function (parsedComponents) {
             continue;
         }
 
-        var schemeComponent = new scada.scheme.Element();
+        var schemeComponent = new scada.scheme.Component();
         schemeComponent.type = parsedComponent.TypeName;
         schemeComponent.id = parsedComponent.ID;
         schemeComponent.props = parsedComponent;
@@ -354,16 +354,17 @@ scada.scheme.Scheme.prototype._appendImages = function (parsedImages) {
     }
 };
 
-// Update the element using the current input channel data
-scada.scheme.Scheme.prototype._updateElement = function (elem, renderContext) {
+// Update the component using the current input channel data
+scada.scheme.Scheme.prototype._updateComponent = function (component, renderContext) {
     try {
-        if (elem.dom) {
-            elem.renderer.update(elem, renderContext);
+        if (component.dom) {
+            component.renderer.update(component, renderContext);
         }
     }
     catch (ex) {
-        console.error("Error updating the element of type '" + elem.type + "' with ID=" + elem.id + ":", ex.message);
-        elem.dom = null;
+        console.error("Error updating the component of type '" +
+            component.type + "' with ID=" + component.id + ":", ex.message);
+        component.dom = null;
     }
 };
 
@@ -427,7 +428,7 @@ scada.scheme.Scheme.prototype.load = function (viewID, callback) {
     }
 };
 
-// Create DOM content of the scheme elements
+// Create DOM content of the scheme
 scada.scheme.Scheme.prototype.createDom = function (opt_controlRight) {
     this.renderContext.imageMap = this.imageMap;
     this.renderContext.controlRight = typeof opt_controlRight === "undefined" ?
@@ -457,14 +458,14 @@ scada.scheme.Scheme.prototype.createDom = function (opt_controlRight) {
             }
         }
         catch (ex) {
-            console.error("Error creating DOM content for the element of type '" +
-                elem.type + "' with ID=" + elem.id + ":", ex.message);
+            console.error("Error creating DOM content for the component of type '" +
+                component.type + "' with ID=" + component.id + ":", ex.message);
             elem.dom = null;
         }
     }
 };
 
-// Update the scheme elements
+// Update the scheme components
 // callback is a function (success)
 scada.scheme.Scheme.prototype.update = function (clientAPI, callback) {
     var thisScheme = this;
@@ -478,7 +479,7 @@ scada.scheme.Scheme.prototype.update = function (clientAPI, callback) {
                 thisScheme.renderContext.imageMap = thisScheme.imageMap;
 
                 for (var component of thisScheme.components) {
-                    thisScheme._updateElement(component, thisScheme.renderContext);
+                    thisScheme._updateComponent(component, thisScheme.renderContext);
                 }
             }
 
@@ -502,15 +503,15 @@ scada.scheme.Scheme.prototype.setScale = function (scale) {
     }
 }
 
-/********** Element **********/
+/********** Component **********/
 
-// Element type
-scada.scheme.Element = function () {
+// Component type
+scada.scheme.Component = function () {
     scada.scheme.BaseComponent.call(this);
 
-    // Element ID
+    // Component ID
     this.id = 0;
 };
 
-scada.scheme.Element.prototype = Object.create(scada.scheme.BaseComponent.prototype);
-scada.scheme.Element.constructor = scada.scheme.Element;
+scada.scheme.Component.prototype = Object.create(scada.scheme.BaseComponent.prototype);
+scada.scheme.Component.constructor = scada.scheme.Component;

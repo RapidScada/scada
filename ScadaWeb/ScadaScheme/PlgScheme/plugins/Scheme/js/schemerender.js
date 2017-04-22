@@ -13,7 +13,7 @@
  * Inheritance hierarchy:
  * Renderer
  *   SchemeRenderer
- *   ElementRenderer
+ *   ComponentRenderer
  *     StaticTextRenderer
  *       DynamicTextRenderer
  *     StaticPictureRenderer
@@ -37,7 +37,7 @@ scada.scheme.Renderer = function () {
     this.DEF_BACK_COLOR = "transparent";
     // Default border color
     this.DEF_BORDER_COLOR = "transparent";
-    // Element border width if border presents
+    // Component border width if border presents
     this.BORDER_WIDTH = 1;
 };
 
@@ -91,13 +91,13 @@ scada.scheme.Renderer.prototype.imageToDataUrlCss = function (image) {
     return "url('" + this.imageToDataURL(image) + "')";
 }
 
-// Create DOM content of the element according to element properties.
-// If element properties are incorrect, no DOM content is created
-scada.scheme.Renderer.prototype.createDom = function (elem, renderContext) {
+// Create DOM content of the component according to component properties.
+// If component properties are incorrect, no DOM content is created
+scada.scheme.Renderer.prototype.createDom = function (component, renderContext) {
 };
 
-// Update the element using its existing DOM content
-scada.scheme.Renderer.prototype.update = function (elem, renderContext) {
+// Update the component using its existing DOM content
+scada.scheme.Renderer.prototype.update = function (component, renderContext) {
 };
 
 /********** Scheme Renderer **********/
@@ -110,14 +110,14 @@ scada.scheme.SchemeRenderer = function () {
 scada.scheme.SchemeRenderer.prototype = Object.create(scada.scheme.Renderer.prototype);
 scada.scheme.SchemeRenderer.constructor = scada.scheme.SchemeRenderer;
 
-scada.scheme.SchemeRenderer.prototype.createDom = function (elem, renderContext) {
-    var props = elem.props; // scheme properties
+scada.scheme.SchemeRenderer.prototype.createDom = function (component, renderContext) {
+    var props = component.props; // scheme document properties
     var schemeWidth = props.Size.Width;
     var schemeHeight = props.Size.Height;
     var divScheme =
         $("<div id='scheme'></div>")
         .css({
-            "position": "relative", // to position scheme elements
+            "position": "relative", // to position scheme components
             "width": schemeWidth,
             "height": schemeHeight,
             "transform-origin": "left top" // for scaling
@@ -130,7 +130,7 @@ scada.scheme.SchemeRenderer.prototype.createDom = function (elem, renderContext)
 
     // set background image if presents,
     // the additional div is required for correct scaling
-    var backImage = renderContext.getImage(elem.props.BackImageName);
+    var backImage = renderContext.getImage(component.props.BackImageName);
     if (backImage) {
         $("<div id='schemeBack'></div>").css({
             "width": schemeWidth,
@@ -149,19 +149,19 @@ scada.scheme.SchemeRenderer.prototype.createDom = function (elem, renderContext)
         }
     }
 
-    elem.dom = divScheme;
+    component.dom = divScheme;
 };
 
 // Calculate numeric scale based on the predefined string value
-scada.scheme.SchemeRenderer.prototype.calcScale = function (elem, scaleStr) {
+scada.scheme.SchemeRenderer.prototype.calcScale = function (component, scaleStr) {
     var Scales = scada.scheme.Scales;
-    var areaWidth = elem.parentDomElem.innerWidth();
-    var schemeWidth = elem.props.Size.Width;
+    var areaWidth = component.parentDomElem.innerWidth();
+    var schemeWidth = component.props.Size.Width;
     var horScale = areaWidth / schemeWidth;
 
     if (scaleStr == Scales.FIT_SCREEN) {
-        var schemeHeight = elem.props.Size.Height;
-        var areaHeight = elem.parentDomElem.innerHeight();
+        var schemeHeight = component.props.Size.Height;
+        var areaHeight = component.parentDomElem.innerHeight();
         var vertScale = areaHeight / schemeHeight;
         return Math.min(horScale, vertScale);
     } else if (scaleStr == Scales.FIT_WIDTH) {
@@ -173,28 +173,28 @@ scada.scheme.SchemeRenderer.prototype.calcScale = function (elem, scaleStr) {
 
 // Set the scheme scale.
 // scaleVal is a floating point number
-scada.scheme.SchemeRenderer.prototype.setScale = function (elem, scaleVal) {
+scada.scheme.SchemeRenderer.prototype.setScale = function (component, scaleVal) {
     // set style of #divScheme
     var sizeCoef = Math.min(scaleVal, 1);
-    elem.dom.css({
+    component.dom.css({
         "transform": "scale(" + scaleVal + ", " + scaleVal + ")",
-        "width": elem.props.Size.Width * sizeCoef,
-        "height": elem.props.Size.Height * sizeCoef
+        "width": component.props.Size.Width * sizeCoef,
+        "height": component.props.Size.Height * sizeCoef
     });
 };
 
-/********** Element Renderer **********/
+/********** Component Renderer **********/
 
-// Abstract element renderer type extends scada.scheme.Renderer
-scada.scheme.ElementRenderer = function () {
+// Abstract component renderer type extends scada.scheme.Renderer
+scada.scheme.ComponentRenderer = function () {
     scada.scheme.Renderer.call(this);
 };
 
-scada.scheme.ElementRenderer.prototype = Object.create(scada.scheme.Renderer.prototype);
-scada.scheme.ElementRenderer.constructor = scada.scheme.ElementRenderer;
+scada.scheme.ComponentRenderer.prototype = Object.create(scada.scheme.Renderer.prototype);
+scada.scheme.ComponentRenderer.constructor = scada.scheme.ComponentRenderer;
 
 // Get dynamic color that may depend on input channel status
-scada.scheme.ElementRenderer.prototype._getDynamicColor = function (color, cnlNum, renderContext) {
+scada.scheme.ComponentRenderer.prototype._getDynamicColor = function (color, cnlNum, renderContext) {
     if (color) {
         if (color == this.STATUS_COLOR) {
             var curCnlDataExt = renderContext.curCnlDataMap ?
@@ -232,12 +232,12 @@ scada.scheme.Renderer.prototype.chooseColor = function (isHovered, color, colorO
 };
 
 // Set text wrapping of the jQuery object
-scada.scheme.ElementRenderer.prototype.setWordWrap = function (jqObj, wordWrap) {
+scada.scheme.ComponentRenderer.prototype.setWordWrap = function (jqObj, wordWrap) {
     jqObj.css("white-space", wordWrap ? "normal" : "nowrap");
 };
 
 // Set horizontal algnment of the jQuery object
-scada.scheme.ElementRenderer.prototype.setHAlign = function (jqObj, hAlign) {
+scada.scheme.ComponentRenderer.prototype.setHAlign = function (jqObj, hAlign) {
     var HorizontalAlignments = scada.scheme.HorizontalAlignments;
 
     switch (hAlign) {
@@ -254,7 +254,7 @@ scada.scheme.ElementRenderer.prototype.setHAlign = function (jqObj, hAlign) {
 };
 
 // Set vertical algnment of the jQuery object
-scada.scheme.ElementRenderer.prototype.setVAlign = function (jqObj, vAlign) {
+scada.scheme.ComponentRenderer.prototype.setVAlign = function (jqObj, vAlign) {
     var VerticalAlignments = scada.scheme.VerticalAlignments;
 
     switch (vAlign) {
@@ -271,15 +271,15 @@ scada.scheme.ElementRenderer.prototype.setVAlign = function (jqObj, vAlign) {
 };
 
 // Set tooltip (title) of the jQuery object
-scada.scheme.ElementRenderer.prototype.setToolTip = function (jqObj, toolTip) {
+scada.scheme.ComponentRenderer.prototype.setToolTip = function (jqObj, toolTip) {
     if (toolTip) {
         jqObj.prop("title", toolTip);
     }
 };
 
-// Set primary css properties of the jQuery object of the scheme element
-scada.scheme.ElementRenderer.prototype.prepareElem = function (jqObj, elem, opt_setSize) {
-    var props = elem.props;
+// Set primary css properties of the jQuery object of the scheme component
+scada.scheme.ComponentRenderer.prototype.prepareComponent = function (jqObj, component, opt_setSize) {
+    var props = component.props;
     jqObj.css({
         "position": "absolute",
         "z-index": props.ZIndex,
@@ -297,10 +297,10 @@ scada.scheme.ElementRenderer.prototype.prepareElem = function (jqObj, elem, opt_
     }
 };
 
-// Bind user action to the element
-scada.scheme.ElementRenderer.prototype.bindAction = function (jqObj, elem, controlRight) {
+// Bind user action to the component
+scada.scheme.ComponentRenderer.prototype.bindAction = function (jqObj, component, controlRight) {
     var Actions = scada.scheme.Actions;
-    var props = elem.props;
+    var props = component.props;
     var action = props.Action;
     var actionIsBound =
         action == Actions.DRAW_DIAGRAM && props.InCnlNum > 0 ||
@@ -336,30 +336,30 @@ scada.scheme.ElementRenderer.prototype.bindAction = function (jqObj, elem, contr
 
 /********** Static Text Renderer **********/
 
-// Static text renderer type extends scada.scheme.ElementRenderer
+// Static text renderer type extends scada.scheme.ComponentRenderer
 scada.scheme.StaticTextRenderer = function () {
-    scada.scheme.ElementRenderer.call(this);
+    scada.scheme.ComponentRenderer.call(this);
 };
 
-scada.scheme.StaticTextRenderer.prototype = Object.create(scada.scheme.ElementRenderer.prototype);
+scada.scheme.StaticTextRenderer.prototype = Object.create(scada.scheme.ComponentRenderer.prototype);
 scada.scheme.StaticTextRenderer.constructor = scada.scheme.StaticTextRenderer;
 
-scada.scheme.StaticTextRenderer.prototype.createDom = function (elem, renderContext) {
-    var props = elem.props;
+scada.scheme.StaticTextRenderer.prototype.createDom = function (component, renderContext) {
+    var props = component.props;
 
-    var spanElem = $("<span id='elem" + elem.id + "'></span>");
+    var spanComp = $("<span id='comp" + component.id + "'></span>");
     var spanText = $("<span></span>");
 
-    this.prepareElem(spanElem, elem);
-    this.setBackColor(spanElem, props.BackColor);
-    this.setBorderColor(spanElem, props.BorderColor, true);
-    this.setFont(spanElem, props.Font);
-    this.setForeColor(spanElem, props.ForeColor);
+    this.prepareConponent(spanComp, component);
+    this.setBackColor(spanComp, props.BackColor);
+    this.setBorderColor(spanComp, props.BorderColor, true);
+    this.setFont(spanComp, props.Font);
+    this.setForeColor(spanComp, props.ForeColor);
 
     if (props.AutoSize) {
         this.setWordWrap(spanText, false);
     } else {
-        spanElem.css("display", "table");
+        spanComp.css("display", "table");
 
         spanText
             .css({
@@ -370,14 +370,14 @@ scada.scheme.StaticTextRenderer.prototype.createDom = function (elem, renderCont
                 "height": props.Size.Height
             });
 
-        this.setHAlign(spanElem, props.HAlign);
+        this.setHAlign(spanComp, props.HAlign);
         this.setVAlign(spanText, props.VAlign);
         this.setWordWrap(spanText, props.WordWrap);
     }
 
     spanText.text(props.Text);
-    spanElem.append(spanText);
-    elem.dom = spanElem;
+    spanComp.append(spanText);
+    component.dom = spanComp;
 };
 
 /********** Dynamic Text Renderer **********/
@@ -400,43 +400,43 @@ scada.scheme.DynamicTextRenderer.prototype._restoreUnderline = function (jqObj, 
     jqObj.css("text-decoration", font && font.Underline ? "underline" : "none");
 };
 
-scada.scheme.DynamicTextRenderer.prototype.createDom = function (elem, renderContext) {
-    scada.scheme.StaticTextRenderer.prototype.createDom.call(this, elem, renderContext);
+scada.scheme.DynamicTextRenderer.prototype.createDom = function (component, renderContext) {
+    scada.scheme.StaticTextRenderer.prototype.createDom.call(this, component, renderContext);
 
-    var props = elem.props;
-    var spanElem = elem.dom.first();
-    var spanText = elem.dom.children();
+    var props = component.props;
+    var spanComp = component.dom.first();
+    var spanText = component.dom.children();
 
-    this.setToolTip(spanElem, props.ToolTip);
-    this.bindAction(spanElem, elem, renderContext.controlRight);
+    this.setToolTip(spanComp, props.ToolTip);
+    this.bindAction(spanComp, component, renderContext.controlRight);
 
     // apply properties on hover
     var thisRenderer = this;
     var cnlNum = props.InCnlNum;
 
-    spanElem.hover(
+    spanComp.hover(
         function () {
-            thisRenderer.setDynamicBackColor(spanElem, props.BackColorOnHover, cnlNum, renderContext);
-            thisRenderer.setDynamicBorderColor(spanElem, props.BorderColorOnHover, cnlNum, renderContext);
-            thisRenderer.setDynamicForeColor(spanElem, props.ForeColorOnHover, cnlNum, renderContext);
-            thisRenderer._setUnderline(spanElem, props.UnderlineOnHover);
+            thisRenderer.setDynamicBackColor(spanComp, props.BackColorOnHover, cnlNum, renderContext);
+            thisRenderer.setDynamicBorderColor(spanComp, props.BorderColorOnHover, cnlNum, renderContext);
+            thisRenderer.setDynamicForeColor(spanComp, props.ForeColorOnHover, cnlNum, renderContext);
+            thisRenderer._setUnderline(spanComp, props.UnderlineOnHover);
         },
         function () {
-            thisRenderer.setDynamicBackColor(spanElem, props.BackColor, cnlNum, renderContext, true);
-            thisRenderer.setDynamicBorderColor(spanElem, props.BorderColor, cnlNum, renderContext, true);
-            thisRenderer.setDynamicForeColor(spanElem, props.ForeColor, cnlNum, renderContext, true);
-            thisRenderer._restoreUnderline(spanElem, props.Font);
+            thisRenderer.setDynamicBackColor(spanComp, props.BackColor, cnlNum, renderContext, true);
+            thisRenderer.setDynamicBorderColor(spanComp, props.BorderColor, cnlNum, renderContext, true);
+            thisRenderer.setDynamicForeColor(spanComp, props.ForeColor, cnlNum, renderContext, true);
+            thisRenderer._restoreUnderline(spanComp, props.Font);
         }
     );
 };
 
-scada.scheme.DynamicTextRenderer.prototype.update = function (elem, renderContext) {
+scada.scheme.DynamicTextRenderer.prototype.update = function (component, renderContext) {
     var ShowValueKinds = scada.scheme.ShowValueKinds;
-    var props = elem.props;
+    var props = component.props;
 
     var curCnlDataExt = props.InCnlNum > 0 ? renderContext.curCnlDataMap.get(props.InCnlNum) : null;
-    var spanElem = elem.dom;
-    var spanText = spanElem.children();
+    var spanComp = component.dom;
+    var spanText = spanComp.children();
 
     if (curCnlDataExt) {
         // show value of the appropriate input channel
@@ -449,22 +449,22 @@ scada.scheme.DynamicTextRenderer.prototype.update = function (elem, renderContex
                 break;
         }
 
-        // choose and set colors of the element
-        var isHovered = spanElem.is(":hover");
+        // choose and set colors of the component
+        var isHovered = spanComp.is(":hover");
         var backColor = this.chooseColor(isHovered, props.BackColor, props.BackColorOnHover);
         var borderColor = this.chooseColor(isHovered, props.BorderColor, props.BorderColorOnHover);
         var foreColor = this.chooseColor(isHovered, props.ForeColor, props.ForeColorOnHover);
 
         if (backColor == this.STATUS_COLOR) {
-            spanElem.css("background-color", curCnlDataExt.Color);
+            spanComp.css("background-color", curCnlDataExt.Color);
         }
 
         if (borderColor == this.STATUS_COLOR) {
-            spanElem.css("border-color", curCnlDataExt.Color);
+            spanComp.css("border-color", curCnlDataExt.Color);
         }
 
         if (foreColor == this.STATUS_COLOR) {
-            spanElem.css("color", curCnlDataExt.Color);
+            spanComp.css("color", curCnlDataExt.Color);
         }
     } else if (props.InCnlNum > 0) {
         spanText.text("");
@@ -473,12 +473,12 @@ scada.scheme.DynamicTextRenderer.prototype.update = function (elem, renderContex
 
 /********** Static Picture Renderer **********/
 
-// Static picture renderer type extends scada.scheme.ElementRenderer
+// Static picture renderer type extends scada.scheme.ComponentRenderer
 scada.scheme.StaticPictureRenderer = function () {
-    scada.scheme.ElementRenderer.call(this);
+    scada.scheme.ComponentRenderer.call(this);
 };
 
-scada.scheme.StaticPictureRenderer.prototype = Object.create(scada.scheme.ElementRenderer.prototype);
+scada.scheme.StaticPictureRenderer.prototype = Object.create(scada.scheme.ComponentRenderer.prototype);
 scada.scheme.StaticPictureRenderer.constructor = scada.scheme.StaticPictureRenderer;
 
 scada.scheme.Renderer.prototype.setBackgroundImage = function (jqObj, image, opt_removeIfEmpty) {
@@ -489,32 +489,32 @@ scada.scheme.Renderer.prototype.setBackgroundImage = function (jqObj, image, opt
     }
 };
 
-scada.scheme.StaticPictureRenderer.prototype.createDom = function (elem, renderContext) {
+scada.scheme.StaticPictureRenderer.prototype.createDom = function (component, renderContext) {
     var ImageStretches = scada.scheme.ImageStretches;
-    var props = elem.props;
+    var props = component.props;
 
-    var divElem = $("<div id='divElem" + elem.id + "'></div>");
-    this.prepareElem(divElem, elem, true);
-    this.setBorderColor(divElem, props.BorderColor, true);
+    var divComp = $("<div id='comp" + component.id + "'></div>");
+    this.prepareComponent(divComp, component, true);
+    this.setBorderColor(divComp, props.BorderColor, true);
 
     // set image
     switch (props.ImageStretch) {
         case ImageStretches.FILL:
-            divElem.css("background-size", props.Size.Width + "px " + props.Size.Height + "px");
+            divComp.css("background-size", props.Size.Width + "px " + props.Size.Height + "px");
             break;
         case ImageStretches.ZOOM:
-            divElem.css("background-size", "contain");
+            divComp.css("background-size", "contain");
             break;
     }
 
-    divElem.css({
+    divComp.css({
         "background-repeat": "no-repeat",
         "background-position": "center"
     });
     var image = renderContext.getImage(props.ImageName);
-    this.setBackgroundImage(divElem, image);
+    this.setBackgroundImage(divComp, image);
 
-    elem.dom = divElem;
+    component.dom = divComp;
 };
 
 /********** Dynamic Picture Renderer **********/
@@ -527,42 +527,42 @@ scada.scheme.DynamicPictureRenderer = function () {
 scada.scheme.DynamicPictureRenderer.prototype = Object.create(scada.scheme.StaticPictureRenderer.prototype);
 scada.scheme.DynamicPictureRenderer.constructor = scada.scheme.DynamicPictureRenderer;
 
-scada.scheme.DynamicPictureRenderer.prototype.createDom = function (elem, renderContext) {
-    scada.scheme.StaticPictureRenderer.prototype.createDom.call(this, elem, renderContext);
+scada.scheme.DynamicPictureRenderer.prototype.createDom = function (component, renderContext) {
+    scada.scheme.StaticPictureRenderer.prototype.createDom.call(this, component, renderContext);
 
-    var props = elem.props;
-    var divElem = elem.dom;
+    var props = component.props;
+    var divComp = component.dom;
 
-    this.setToolTip(divElem, props.ToolTip);
-    this.bindAction(divElem, elem, renderContext.controlRight);
+    this.setToolTip(divComp, props.ToolTip);
+    this.bindAction(divComp, component, renderContext.controlRight);
 
     // apply properties on hover
     var thisRenderer = this;
     var cnlNum = props.InCnlNum;
 
-    divElem.hover(
+    divComp.hover(
         function () {
-            thisRenderer.setDynamicBorderColor(divElem, props.BorderColorOnHover, cnlNum, renderContext);
+            thisRenderer.setDynamicBorderColor(divComp, props.BorderColorOnHover, cnlNum, renderContext);
 
             if (cnlNum <= 0) {
                 var image = renderContext.getImage(props.ImageOnHoverName);
-                thisRenderer.setBackgroundImage(divElem, image);
+                thisRenderer.setBackgroundImage(divComp, image);
             }
         },
         function () {
-            thisRenderer.setDynamicBorderColor(divElem, props.BorderColor, cnlNum, renderContext, true);
+            thisRenderer.setDynamicBorderColor(divComp, props.BorderColor, cnlNum, renderContext, true);
 
             if (cnlNum <= 0) {
                 var image = renderContext.getImage(props.ImageName);
-                thisRenderer.setBackgroundImage(divElem, image, true);
+                thisRenderer.setBackgroundImage(divComp, image, true);
             }
         }
     );
 };
 
-scada.scheme.DynamicPictureRenderer.prototype.update = function (elem, renderContext) {
-    var props = elem.props;
-    var divElem = elem.dom;
+scada.scheme.DynamicPictureRenderer.prototype.update = function (component, renderContext) {
+    var props = component.props;
+    var divComp = component.dom;
     var curCnlDataExt = renderContext.curCnlDataMap.get(props.InCnlNum);
 
     if (curCnlDataExt) {
@@ -582,13 +582,13 @@ scada.scheme.DynamicPictureRenderer.prototype.update = function (elem, renderCon
 
         // set the image
         var image = renderContext.imageMap.get(imageName);
-        this.setBackgroundImage(divElem, image, true);
+        this.setBackgroundImage(divComp, image, true);
 
         // set border color
-        var borderColor = this.chooseColor(divElem.is(":hover"), props.BorderColor, props.BorderColorOnHover);
+        var borderColor = this.chooseColor(divComp.is(":hover"), props.BorderColor, props.BorderColorOnHover);
 
         if (borderColor == this.STATUS_COLOR) {
-            divElem.css("border-color", curCnlDataExt.Color);
+            divComp.css("border-color", curCnlDataExt.Color);
         }
     }
 };
@@ -602,7 +602,7 @@ scada.scheme.RenderContext = function () {
     this.controlRight = true;
 };
 
-// Get scheme image object by image property of an element
+// Get scheme image object by the image name
 scada.scheme.RenderContext.prototype.getImage = function (imageName) {
     return this.imageMap.get(imageName);
 };
@@ -617,8 +617,8 @@ scada.scheme.rendererMap = {
         ["Scada.Scheme.Model.StaticPicture", new scada.scheme.StaticPictureRenderer()],
         ["Scada.Scheme.Model.DynamicPicture", new scada.scheme.DynamicPictureRenderer()]]),
 
-    // Get renderer according to the specified scheme element type
-    getRenderer: function (elemType) {
-        return this.map.get(elemType);
+    // Get renderer according to the specified scheme component type
+    getRenderer: function (typeName) {
+        return this.map.get(typeName);
     }
 };
