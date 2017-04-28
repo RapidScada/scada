@@ -1,12 +1,14 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaData", "ScadaData\ScadaData.csproj", "{C5DC293F-13CA-435F-A7DB-4BA91639C292}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaDataTest", "ScadaDataTest\ScadaDataTest.csproj", "{31415B61-53C3-4746-B586-CFD7FC16CED2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaData.Svc", "ScadaData.Svc\ScadaData.Svc.csproj", "{827CCEDC-F418-4261-9448-EA28F9033A4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaData.Dao", "ScadaData.Dao\ScadaData.Dao.csproj", "{1DDE26A2-1E24-4680-A635-2760B37CAFDB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +28,10 @@ Global
 		{827CCEDC-F418-4261-9448-EA28F9033A4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{827CCEDC-F418-4261-9448-EA28F9033A4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{827CCEDC-F418-4261-9448-EA28F9033A4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DDE26A2-1E24-4680-A635-2760B37CAFDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DDE26A2-1E24-4680-A635-2760B37CAFDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DDE26A2-1E24-4680-A635-2760B37CAFDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DDE26A2-1E24-4680-A635-2760B37CAFDB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

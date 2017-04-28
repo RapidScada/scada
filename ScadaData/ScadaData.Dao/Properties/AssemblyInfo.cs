@@ -1,11 +1,10 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ScadaData.Svc")]
+[assembly: AssemblyTitle("ScadaData.Dao")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
@@ -20,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("827ccedc-f418-4261-9448-ea28f9033a4d")]
+[assembly: Guid("1dde26a2-1e24-4680-a635-2760b37cafdb")]
 
 // Version information for an assembly consists of the following four values:
 //
