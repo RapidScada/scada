@@ -24,10 +24,8 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace ScadaData.Dao
+namespace Scada.Dao
 {
     /// <summary>
     /// The base class for database access
