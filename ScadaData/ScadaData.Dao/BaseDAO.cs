@@ -73,5 +73,21 @@ namespace Scada.Dao
         {
             return value == null || value == DBNull.Value ? -1 : (int)value;
         }
+
+        /// <summary>
+        /// Преобразовать полученный из БД объект в вещественное число
+        /// </summary>
+        protected double ConvertToDouble(object value)
+        {
+            return value == null || value == DBNull.Value ? double.NaN : (double)value;
+        }
+
+        /// <summary>
+        /// Преобразовать полученный из БД объект в дату и время
+        /// </summary>
+        protected DateTime ConvertToDateTime(object value)
+        {
+            return value == null || value == DBNull.Value ? DateTime.MinValue : (DateTime)value;
+        }
     }
 }
