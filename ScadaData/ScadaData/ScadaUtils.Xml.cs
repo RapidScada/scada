@@ -144,6 +144,15 @@ namespace Scada
         }
 
         /// <summary>
+        /// Получить XML-элемент параметра
+        /// </summary>
+        public static XmlElement GetParamElem(this XmlElement parentXmlElem, string paramName)
+        {
+            XmlNodeList xmlNodes = parentXmlElem.SelectNodes(string.Format("Param[@name='{0}'][1]", paramName));
+            return xmlNodes.Count > 0 ? xmlNodes[0] as XmlElement : null;
+        }
+
+        /// <summary>
         /// Получить строковое значение дочернего XML-узла
         /// </summary>
         /// <remarks>Если XML-узел не существует, вызывается исключение InvalidOperationException</remarks>
