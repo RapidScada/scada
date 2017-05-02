@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2005
- * Modified : 2016
+ * Modified : 2017
  */
 
 using System;
@@ -200,22 +200,6 @@ namespace Scada.Client
                 errMsg = CommonPhrases.LoadCommSettingsError + ": " + ex.Message;
                 return false;
             }
-        }
-
-        /// <summary>
-        /// Загрузить настройки из файла
-        /// </summary>
-        [Obsolete]
-        public void LoadFromFile(string fileName, Log log)
-        {
-            if (log == null)
-                throw new ArgumentNullException("log");
-
-            log.WriteAction(Localization.UseRussian ? "Загрузка настроек соединения с сервером" : 
-                "Load server connection settings", Log.ActTypes.Action);
-            string errMsg;
-            if (!LoadFromFile(fileName, out errMsg))
-                log.WriteAction(errMsg, Log.ActTypes.Exception);
         }
 
         /// <summary>
