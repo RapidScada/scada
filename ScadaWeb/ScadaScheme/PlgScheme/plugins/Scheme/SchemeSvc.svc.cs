@@ -25,9 +25,7 @@
 
 using Scada.Scheme;
 using Scada.Scheme.DataTransfer;
-using Scada.Scheme.Model;
 using System;
-using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
 using System.ServiceModel.Web;

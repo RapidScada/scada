@@ -32,5 +32,6 @@ namespace Scada.Scheme.Model
     public delegate void ItemChangedEventHandler(
         object sender, 
         SchemeChangeTypes changeType,
-        object changedObject);
+        object changedObject,
+        object oldKey);
 }

@@ -399,7 +399,7 @@ namespace Scada.Scheme.Model.PropertyGrid
                     lbImages.SelectedIndexChanged += lbImage_SelectedIndexChanged;
 
                     // отслеживание изменений
-                    observableItem.OnItemChanged(SchemeChangeTypes.ImageRenamed, imageInfo.Image);
+                    observableItem.OnItemChanged(SchemeChangeTypes.ImageRenamed, imageInfo.Image, oldName);
                 }
             }
         }

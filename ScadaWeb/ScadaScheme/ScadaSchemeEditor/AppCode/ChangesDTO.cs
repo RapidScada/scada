@@ -16,29 +16,43 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaSchemeCommon
- * Summary  : Specifies items whose changes are observed
+ * Summary  : The class for transfer scheme changes
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
  * Modified : 2017
  */
 
-namespace Scada.Scheme.Model
+using Scada.Scheme.DataTransfer;
+using System.Collections.Generic;
+
+namespace Scada.Scheme.Editor
 {
     /// <summary>
-    /// Specifies items whose changes are observed
-    /// <para>Определяет элементы, изменения которых отслеживаются</para>
+    /// The class for transfer scheme changes
+    /// <para>Класс для передачи изменений схемы</para>
     /// </summary>
-    public interface IObservableItem
+    internal class ChangesDTO : SchemeDTO
     {
         /// <summary>
-        /// Вызвать событие ItemChanged
+        /// Конструктор
         /// </summary>
-        void OnItemChanged(SchemeChangeTypes changeType, object changedObject, object oldKey = null);
+        public ChangesDTO()
+            : base()
+        {
+            Changes = null;
+            SelCompIDs = null;
+        }
+
 
         /// <summary>
-        /// Событие возникающее при изменении элемента
+        /// Получить или установить изменения схемы
         /// </summary>
-        event ItemChangedEventHandler ItemChanged;
+        public List<Change> Changes { get; set; }
+
+        /// <summary>
+        /// Получить или установить идентификаторы выбранных компонентов
+        /// </summary>
+        public List<int> SelCompIDs { get; set; }
     }
 }

@@ -200,5 +200,48 @@ namespace Scada.Scheme.Editor
                 return JsSerializer.GetErrorJson(ex);
             }
         }
+
+        /// <summary>
+        /// Выполнить обмен данными между схемой и редактором
+        /// </summary>
+        /// <remarks>Возвращает ChangesDTO в формате в JSON</remarks>
+        [OperationContract]
+        [WebGet]
+        public string DataExchange(string editorID, long viewStamp, string action, long changeStamp)
+        {
+            try
+            {
+                AllowAccess();
+                ChangesDTO dto = new ChangesDTO();
+
+                if (editorID == Editor.EditorID)
+                {
+                    SchemeView schemeView = Editor.SchemeView;
+
+                    if (schemeView != null)
+                    {
+                        dto.ViewStamp = schemeView.Stamp;
+                        if (SchemeUtils.ViewStampsMatched(viewStamp, schemeView.Stamp))
+                        {
+                            dto.Changes = Editor.GetChanges(changeStamp);
+                            dto.SelCompIDs = Editor.GetSelectedComponentIDs();
+                        }
+                    }
+                }
+                else
+                {
+                    dto.EditorUnknown = true;
+                }
+
+                return JsSerializer.Serialize(dto);
+            }
+            catch (Exception ex)
+            {
+                AppData.Log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при выполнении обмена данными между схемой и редактором" :
+                    "Error performing data exchange between the scheme and the editor");
+                return JsSerializer.GetErrorJson(ex);
+            }
+        }
     }
 }

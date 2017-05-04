@@ -174,10 +174,9 @@ namespace Scada.Scheme.Model
         /// <summary>
         /// Вызвать событие ItemChanged
         /// </summary>
-        public void OnItemChanged(SchemeChangeTypes changeType, object changedObject)
+        public void OnItemChanged(SchemeChangeTypes changeType, object changedObject, object oldKey = null)
         {
-            if (ItemChanged != null)
-                ItemChanged(this, changeType, changedObject);
+            ItemChanged?.Invoke(this, changeType, changedObject, oldKey);
         }
 
 

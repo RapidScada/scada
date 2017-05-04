@@ -27,7 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Scada.Scheme.Editor.AppCode
+namespace Scada.Scheme.Editor
 {
     /// <summary>
     /// Application settings

@@ -25,6 +25,7 @@
 
 using Scada.Web;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -51,7 +52,8 @@ namespace Scada.Scheme.Editor
         /// </summary>
         public const string DefSchemeFileName = "NewScheme.sch";
 
-        protected readonly Log log; // журнал приложения
+        private readonly Log log;     // журнал приложения
+        private List<Change> changes; // изменения схемы
 
 
         /// <summary>
@@ -70,6 +72,7 @@ namespace Scada.Scheme.Editor
                 throw new ArgumentNullException("log");
 
             this.log = log;
+            changes = new List<Change>();
 
             EditorID = GetRandomString(EditorIDLength);
             SchemeView = null;
@@ -207,6 +210,22 @@ namespace Scada.Scheme.Editor
                 log.WriteError(errMsg);
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Получить изменения схемы
+        /// </summary>
+        public List<Change> GetChanges(long trimBeforeStamp)
+        {
+            return new List<Change>();
+        }
+
+        /// <summary>
+        /// Получить идентификаторы выбранных компонентов схемы
+        /// </summary>
+        public List<int> GetSelectedComponentIDs()
+        {
+            return new List<int>();
         }
     }
 }

@@ -65,13 +65,15 @@ scada.scheme.Scheme = function (editMode) {
     this._cnlFilter = null;
 
     // Indicates whether the scheme is used by an editor
-    this.editMode = editMode;
+    this.editMode = !!editMode;
     // WCF-service URL
     this.serviceUrl = "SchemeSvc.svc/";
     // Scheme loading state
     this.loadState = scada.scheme.LoadStates.UNDEFINED;
     // Scheme view ID
     this.viewID = 0;
+    // Scheme editor ID
+    this.editorID = 0;
     // Stamp of the view, unique within application scope
     this.viewStamp = 0;
     // Scheme components
@@ -93,18 +95,18 @@ scada.scheme.Scheme.constructor = scada.scheme.Scheme;
 
 // Continue scheme loading process
 // callback is a function (success)
-scada.scheme.Scheme.prototype._continueLoading = function (viewID, callback) {
+scada.scheme.Scheme.prototype._continueLoading = function (viewOrEditorID, callback) {
     var getCurTime = scada.utils.getCurTime;
     var thisScheme = this;
 
-    this._loadPart(viewID, function (success, complete) {
+    this._loadPart(viewOrEditorID, function (success, complete) {
         if (success) {
             if (complete) {
                 console.info(getCurTime() + " Scheme loading completed successfully");
                 thisScheme.parentDomElem.removeClass("loading");
                 callback(true);
             } else {
-                setTimeout(thisScheme._continueLoading.bind(thisScheme), 0, viewID, callback);
+                setTimeout(thisScheme._continueLoading.bind(thisScheme), 0, viewOrEditorID, callback);
             }
         } else {
             console.error(getCurTime() + " Scheme loading failed");
@@ -116,35 +118,46 @@ scada.scheme.Scheme.prototype._continueLoading = function (viewID, callback) {
 
 // Load a part of the scheme depending on the loading state
 // callback is a function (success, complete)
-scada.scheme.Scheme.prototype._loadPart = function (viewID, callback) {
+scada.scheme.Scheme.prototype._loadPart = function (viewOrEditorID, callback) {
     var LoadStates = scada.scheme.LoadStates;
 
-    if (this.viewID == 0) {
-        if (!this.editMode) {
-            this._cnlFilter = new scada.CnlFilter();
-            this._cnlFilter.viewID = viewID;
+    // check matching of view or editor
+    if (this.editMode) {
+        if (this.editorID == 0) {
+            this.editorID = viewOrEditorID;
+        } else if (this.editorID != viewOrEditorID) {
+            console.warn(scada.utils.getCurTime() + " Scheme editor ID mismatch. The existing ID=" +
+                this.editorID + ". The requsested ID=" + viewOrEditorID);
+            callback(false, false);
+            return;
         }
-        this.viewID = viewID;
-    } else if (this.viewID != viewID) {
-        console.warn(scada.utils.getCurTime() +
-            " Scheme view ID mismatch. The existing ID=" + this.viewID + ". The requsested ID=" + viewID);
-        callback(false, false);
-        return;
+    } else {
+        if (this.viewID == 0) {
+            this.viewID = viewOrEditorID;
+            this._cnlFilter = new scada.CnlFilter();
+            this._cnlFilter.viewID = viewOrEditorID;
+        } else if (this.viewID != viewOrEditorID) {
+            console.warn(scada.utils.getCurTime() + " Scheme view ID mismatch. The existing ID=" +
+                this.viewID + ". The requsested ID=" + viewOrEditorID);
+            callback(false, false);
+            return;
+        }
     }
 
+    // loading data depending on the state
     if (this.loadState == LoadStates.UNDEFINED) {
         this.loadState = LoadStates.DOC_LOADING;
     }
 
     switch (this.loadState) {
         case LoadStates.DOC_LOADING:
-            this._loadSchemeDoc(viewID, callback);
+            this._loadSchemeDoc(viewOrEditorID, callback);
             break;
         case LoadStates.COMPONENTS_LOADING:
-            this._loadComponents(viewID, callback);
+            this._loadComponents(viewOrEditorID, callback);
             break;
         case LoadStates.IMAGES_LOADING:
-            this._loadImages(viewID, callback);
+            this._loadImages(viewOrEditorID, callback);
             break;
         case LoadStates.COMPLETE:
             console.warn("Scheme loading is already complete");
@@ -174,13 +187,13 @@ scada.scheme.Scheme.prototype._viewStampsMatched = function (viewStamp1, viewSta
 
 // Load scheme document properties
 // callback is a function (success, complete)
-scada.scheme.Scheme.prototype._loadSchemeDoc = function (viewID, callback) {
+scada.scheme.Scheme.prototype._loadSchemeDoc = function (viewOrEditorID, callback) {
     var operation = this.serviceUrl + "GetSchemeDoc";
     var thisScheme = this;
 
     $.ajax({
         url: operation +
-            this._getAccessParamStr(viewID) +
+            this._getAccessParamStr(viewOrEditorID) +
             "&viewStamp=" + this.viewStamp,
         method: "GET",
         dataType: "json",
@@ -241,13 +254,13 @@ scada.scheme.Scheme.prototype._obtainSchemeDoc = function (parsedData) {
 
 // Load scheme components
 // callback is a function (success, complete)
-scada.scheme.Scheme.prototype._loadComponents = function (viewID, callback) {
+scada.scheme.Scheme.prototype._loadComponents = function (viewOrEditorID, callback) {
     var operation = this.serviceUrl + "GetComponents";
     var thisScheme = this;
 
     $.ajax({
         url: operation +
-            this._getAccessParamStr(viewID) +
+            this._getAccessParamStr(viewOrEditorID) +
             "&viewStamp=" + this.viewStamp +
             "&startIndex=" + this.components.length +
             "&count=" + this.LOAD_COMP_CNT,
@@ -341,13 +354,13 @@ scada.scheme.Scheme.prototype._appendComponents = function (parsedComponents) {
 
 // Load scheme images
 // callback is a function (success, complete)
-scada.scheme.Scheme.prototype._loadImages = function (viewID, callback) {
+scada.scheme.Scheme.prototype._loadImages = function (viewOrEditorID, callback) {
     var operation = this.serviceUrl + "GetImages";
     var thisScheme = this;
 
     $.ajax({
         url: operation +
-            this._getAccessParamStr(viewID) +
+            this._getAccessParamStr(viewOrEditorID) +
             "&viewStamp=" + this.viewStamp +
             "&startIndex=" + this.images.length +
             "&totalDataSize=" + this.LOAD_IMG_SIZE,
@@ -457,6 +470,7 @@ scada.scheme.Scheme.prototype.clear = function () {
     this._cnlFilter = null;
     this.loadState = scada.scheme.LoadStates.UNDEFINED;
     this.viewID = 0;
+    this.editorID = 0;
     this.viewStamp = 0;
     this.components = [];
     this.images = [];
@@ -466,11 +480,11 @@ scada.scheme.Scheme.prototype.clear = function () {
 
 // Load the scheme
 // callback is a function (success)
-scada.scheme.Scheme.prototype.load = function (viewID, callback) {
+scada.scheme.Scheme.prototype.load = function (viewOrEditorID, callback) {
     console.info(scada.utils.getCurTime() + " Start loading scheme");
     this.parentDomElem.addClass("loading");
     this.clear();
-    this._continueLoading(viewID, callback);
+    this._continueLoading(viewOrEditorID, callback);
 };
 
 // Create DOM content of the scheme
