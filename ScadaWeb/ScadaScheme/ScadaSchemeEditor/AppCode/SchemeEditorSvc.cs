@@ -202,12 +202,12 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Выполнить обмен данными между схемой и редактором
+        /// Получить изменения схемы
         /// </summary>
         /// <remarks>Возвращает ChangesDTO в формате в JSON</remarks>
         [OperationContract]
         [WebGet]
-        public string DataExchange(string editorID, long viewStamp, string action, long changeStamp)
+        public string GetChanges(string editorID, long viewStamp, long changeStamp)
         {
             try
             {
@@ -238,8 +238,8 @@ namespace Scada.Scheme.Editor
             catch (Exception ex)
             {
                 AppData.Log.WriteException(ex, Localization.UseRussian ?
-                    "Ошибка при выполнении обмена данными между схемой и редактором" :
-                    "Error performing data exchange between the scheme and the editor");
+                    "Ошибка при получении изменений схемы" :
+                    "Error getting scheme chages");
                 return JsSerializer.GetErrorJson(ex);
             }
         }
