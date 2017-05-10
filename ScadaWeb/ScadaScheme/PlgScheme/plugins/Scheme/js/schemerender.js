@@ -610,15 +610,8 @@ scada.scheme.RenderContext.prototype.getImage = function (imageName) {
 /********** Renderer Map **********/
 
 // Renderer map object
-scada.scheme.rendererMap = {
-    map: new Map([
-        ["Scada.Scheme.Model.StaticText", new scada.scheme.StaticTextRenderer()],
-        ["Scada.Scheme.Model.DynamicText", new scada.scheme.DynamicTextRenderer()],
-        ["Scada.Scheme.Model.StaticPicture", new scada.scheme.StaticPictureRenderer()],
-        ["Scada.Scheme.Model.DynamicPicture", new scada.scheme.DynamicPictureRenderer()]]),
-
-    // Get renderer according to the specified scheme component type
-    getRenderer: function (typeName) {
-        return this.map.get(typeName);
-    }
-};
+scada.scheme.rendererMap = new Map([
+    ["Scada.Scheme.Model.StaticText", new scada.scheme.StaticTextRenderer()],
+    ["Scada.Scheme.Model.DynamicText", new scada.scheme.DynamicTextRenderer()],
+    ["Scada.Scheme.Model.StaticPicture", new scada.scheme.StaticPictureRenderer()],
+    ["Scada.Scheme.Model.DynamicPicture", new scada.scheme.DynamicPictureRenderer()]]);

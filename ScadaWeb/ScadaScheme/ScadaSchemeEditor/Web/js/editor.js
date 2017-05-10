@@ -1,4 +1,4 @@
-﻿// Get scheme changes results enumeration
+﻿// Scheme changes results enumeration
 var GetChangesResults = {
     SUCCESS: 0,
     RELOAD_SCHEME: 1,
@@ -6,11 +6,22 @@ var GetChangesResults = {
     ERROR: 3
 };
 
+// Types of scheme changes enumeration
+var SchemeChangeTypes = {
+    NONE: 0,
+    SCHEME_DOC_CHANGED: 1,
+    COMPONENT_ADDED: 2,
+    COMPONENT_CHANGED: 3,
+    COMPONENT_DELETED: 4
+};
+
 // Data exchange rate, ms
 var GET_CHANGES_RATE = 300;
 
 // Scheme object
 var scheme = new scada.scheme.Scheme(true);
+// Stamp of the last processed change
+var lastChangeStamp = 0;
 
 // The variables below must be defined in editor.html
 // Editor session ID
@@ -69,7 +80,7 @@ function getChanges(callback) {
         url: operation +
             "?editorID=" + editorID +
             "&viewStamp=" + scheme.viewStamp +
-            "&changeStamp=" + 0,
+            "&changeStamp=" + lastChangeStamp,
         method: "GET",
         dataType: "json",
         cache: false
@@ -85,7 +96,8 @@ function getChanges(callback) {
                     callback(GetChangesResults.EDITOR_UNKNOWN);
                 } else if (scheme.viewStamp && parsedData.ViewStamp) {
                     if (scheme.viewStamp == parsedData.ViewStamp) {
-                        // TODO: process changes
+                        processChanges(parsedData.Changes);
+                        // TODO: highlight selected objects
                         callback(GetChangesResults.SUCCESS);
                     } else {
                         console.log(scada.utils.getCurTime() + " View stamps are different. Need to reload scheme.");
@@ -109,6 +121,18 @@ function getChanges(callback) {
         scada.utils.logFailedRequest(operation, jqXHR);
         callback(GetChangesResults.ERROR);
     });
+}
+
+// Apply the received scheme changes
+function processChanges(changes) {
+    for (var change of changes) {
+        switch (change.ChangeType) {
+            case SchemeChangeTypes.COMPONENT_CHANGED:
+                break;
+        }
+
+        lastChangeStamp = change.Stamp;
+    }
 }
 
 // Update layout of the top level div elements

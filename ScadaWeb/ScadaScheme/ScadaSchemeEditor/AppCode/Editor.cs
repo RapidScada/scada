@@ -23,6 +23,7 @@
  * Modified : 2017
  */
 
+using Scada.Scheme.Model;
 using Scada.Web;
 using System;
 using System.Collections.Generic;
@@ -54,6 +55,7 @@ namespace Scada.Scheme.Editor
 
         private readonly Log log;     // журнал приложения
         private List<Change> changes; // изменения схемы
+        private long changeStampCntr; // счётчик для генерации меток изменений схемы
 
 
         /// <summary>
@@ -73,6 +75,7 @@ namespace Scada.Scheme.Editor
 
             this.log = log;
             changes = new List<Change>();
+            changeStampCntr = 0;
 
             EditorID = GetRandomString(EditorIDLength);
             SchemeView = null;
@@ -117,6 +120,38 @@ namespace Scada.Scheme.Editor
         /// Получить признак изменения схемы
         /// </summary>
         public bool Modified { get; private set; }
+
+
+        /// <summary>
+        /// Подписаться на изменения схемы
+        /// </summary>
+        private void SubscribeToChanges()
+        {
+            if (SchemeView != null)
+            {
+                SchemeView.SchemeDoc.ItemChanged += Scheme_ItemChanged;
+
+                foreach (BaseComponent component in SchemeView.Components)
+                    component.ItemChanged += Scheme_ItemChanged;
+            }
+        }
+
+        /// <summary>
+        /// Обработать событие изменения схемы
+        /// </summary>
+        private void Scheme_ItemChanged(object sender, SchemeChangeTypes changeType, object changedObject, object oldKey)
+        {
+            lock (changes)
+            {
+                Change change = new Change(changeType)
+                {
+                    Stamp = ++changeStampCntr,
+                    ChangedObject = changedObject
+                };
+
+                changes.Add(change);
+            }
+        }
 
 
         /// <summary>
@@ -171,6 +206,7 @@ namespace Scada.Scheme.Editor
             SchemeView = new SchemeView();
             FileName = "";
             Modified = false;
+            SubscribeToChanges();
         }
 
         /// <summary>
@@ -182,6 +218,7 @@ namespace Scada.Scheme.Editor
             bool loadOK = SchemeView.LoadFromFile(fileName, out errMsg);
             FileName = fileName;
             Modified = false;
+            SubscribeToChanges();
 
             if (!loadOK)
                 log.WriteError(errMsg);
@@ -217,7 +254,15 @@ namespace Scada.Scheme.Editor
         /// </summary>
         public List<Change> GetChanges(long trimBeforeStamp)
         {
-            return new List<Change>();
+            lock (changes)
+            {
+                while (changes.Count > 0 && changes[0].Stamp <= trimBeforeStamp)
+                {
+                    changes.RemoveAt(0);
+                }
+
+                return new List<Change>(changes);
+            }
         }
 
         /// <summary>

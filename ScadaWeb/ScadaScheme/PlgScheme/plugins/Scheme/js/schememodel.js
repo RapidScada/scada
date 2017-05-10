@@ -77,9 +77,11 @@ scada.scheme.Scheme = function (editMode) {
     // Stamp of the view, unique within application scope
     this.viewStamp = 0;
     // Scheme components
-    this.components = [];
+    this.components = []; // TODO: obsolete, remove
+    // Scheme components indexed by ID
+    this.componentMap = new Map();
     // Scheme images
-    this.images = [];
+    this.images = []; // TODO: obsolete, remove
     // Scheme images indexed by name
     this.imageMap = new Map();
     // Render context
@@ -336,15 +338,13 @@ scada.scheme.Scheme.prototype._appendComponents = function (parsedComponents) {
             continue;
         }
 
-        var schemeComponent = new scada.scheme.Component();
-        schemeComponent.type = parsedComponent.TypeName;
-        schemeComponent.id = parsedComponent.ID;
-        schemeComponent.props = parsedComponent;
-        schemeComponent.renderer = scada.scheme.rendererMap.getRenderer(schemeComponent.type);
+        var schemeComponent = new scada.scheme.Component(parsedComponent);
+        schemeComponent.renderer = scada.scheme.rendererMap.get(schemeComponent.type);
 
         if (schemeComponent.renderer) {
             // add the component to the scheme
             this.components.push(schemeComponent);
+            this.componentMap.set(schemeComponent.id, schemeComponent);
         } else {
             console.warn("The component of type '" + schemeComponent.type +
                 "' with ID=" + schemeComponent.id + " is not supported");
@@ -473,6 +473,7 @@ scada.scheme.Scheme.prototype.clear = function () {
     this.editorID = 0;
     this.viewStamp = 0;
     this.components = [];
+    this.componentMap = new Map();
     this.images = [];
     this.imageMap = new Map();
     this.renderContext = new scada.scheme.RenderContext();
@@ -565,11 +566,12 @@ scada.scheme.Scheme.prototype.setScale = function (scale) {
 /********** Component **********/
 
 // Component type
-scada.scheme.Component = function () {
-    scada.scheme.BaseComponent.call(this);
+scada.scheme.Component = function (componentProps) {
+    scada.scheme.BaseComponent.call(this, componentProps.TypeName);
+    this.props = componentProps;
 
     // Component ID
-    this.id = 0;
+    this.id = componentProps.ID;
 };
 
 scada.scheme.Component.prototype = Object.create(scada.scheme.BaseComponent.prototype);
