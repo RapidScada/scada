@@ -104,8 +104,12 @@ scada.scheme.Renderer.prototype.imageToDataUrlCss = function (image) {
 scada.scheme.Renderer.prototype.createDom = function (component, renderContext) {
 };
 
-// Update the component using its existing DOM content
-scada.scheme.Renderer.prototype.update = function (component, renderContext) {
+// Refresh the component if it contains the specified images
+scada.scheme.Renderer.prototype.refreshImages = function (component, renderContext, imageNames) {
+};
+
+// Update the component according to the current input channel data
+scada.scheme.Renderer.prototype.updateData = function (component, renderContext) {
 };
 
 /********** Scheme Renderer **********/
@@ -131,7 +135,7 @@ scada.scheme.SchemeRenderer.prototype.updateDom = function (component, renderCon
         var schemeWidth = props.Size.Width;
         var schemeHeight = props.Size.Height;
 
-        var divScheme = component.dom.find("#scheme");
+        var divScheme = component.dom.first();
         divScheme.css({
             "position": "relative", // to position scheme components
             "width": schemeWidth,
@@ -457,7 +461,7 @@ scada.scheme.DynamicTextRenderer.prototype.createDom = function (component, rend
     );
 };
 
-scada.scheme.DynamicTextRenderer.prototype.update = function (component, renderContext) {
+scada.scheme.DynamicTextRenderer.prototype.updateData = function (component, renderContext) {
     var ShowValueKinds = scada.scheme.ShowValueKinds;
     var props = component.props;
 
@@ -587,7 +591,7 @@ scada.scheme.DynamicPictureRenderer.prototype.createDom = function (component, r
     );
 };
 
-scada.scheme.DynamicPictureRenderer.prototype.update = function (component, renderContext) {
+scada.scheme.DynamicPictureRenderer.prototype.updateData = function (component, renderContext) {
     var props = component.props;
     var divComp = component.dom;
     var curCnlDataExt = renderContext.curCnlDataMap.get(props.InCnlNum);

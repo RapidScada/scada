@@ -36,7 +36,10 @@ scada.scheme.SchemeChangeTypes = {
     SCHEME_DOC_CHANGED: 1,
     COMPONENT_ADDED: 2,
     COMPONENT_CHANGED: 3,
-    COMPONENT_DELETED: 4
+    COMPONENT_DELETED: 4,
+    IMAGE_ADDED: 5,
+    IMAGE_RENAMED: 6,
+    IMAGE_DELETED: 7
 };
 
 /********** Editable Scheme **********/
@@ -67,6 +70,18 @@ scada.scheme.EditableScheme.prototype._processChanges = function (changes) {
                 if (this._validateComponent(changedObject)) {
                     this._updateComponentProps(changedObject);
                 }
+                break;
+            case SchemeChangeTypes.COMPONENT_ADDED:
+                break;
+            case SchemeChangeTypes.COMPONENT_CHANGED:
+                break;
+            case SchemeChangeTypes.COMPONENT_DELETED:
+                break;
+            case SchemeChangeTypes.IMAGE_ADDED:
+                break;
+            case SchemeChangeTypes.IMAGE_RENAMED:
+                break;
+            case SchemeChangeTypes.IMAGE_DELETED:
                 break;
         }
 

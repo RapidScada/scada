@@ -453,7 +453,7 @@ scada.scheme.Scheme.prototype._appendImages = function (parsedImages) {
 scada.scheme.Scheme.prototype._updateComponentData = function (component) {
     try {
         if (component.dom) {
-            component.renderer.update(component, this.renderContext);
+            component.renderer.updateData(component, this.renderContext);
         }
     }
     catch (ex) {
@@ -525,7 +525,7 @@ scada.scheme.Scheme.prototype.createDom = function (opt_controlRight) {
     }
 };
 
-// Update the scheme components using the current input channel data
+// Update the scheme components according to the current input channel data
 // callback is a function (success)
 scada.scheme.Scheme.prototype.updateData = function (clientAPI, callback) {
     var thisScheme = this;
