@@ -40,7 +40,7 @@ function reloadScheme() {
 
 // Start cyclic scheme updating process
 function startUpdatingScheme() {
-    scheme.update(scada.clientAPI, function (success) {
+    scheme.updateData(scada.clientAPI, function (success) {
         if (!success) {
             notifier.addNotification(phrases.UpdateError, true, notifier.DEF_NOTIF_LIFETIME);
         }

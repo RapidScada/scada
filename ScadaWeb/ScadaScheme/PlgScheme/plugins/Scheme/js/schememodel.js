@@ -73,7 +73,7 @@ scada.scheme.Scheme = function (editMode) {
     // Scheme view ID
     this.viewID = 0;
     // Scheme editor ID
-    this.editorID = 0;
+    this.editorID = "";
     // Stamp of the view, unique within application scope
     this.viewStamp = 0;
     // Scheme components
@@ -125,7 +125,7 @@ scada.scheme.Scheme.prototype._loadPart = function (viewOrEditorID, callback) {
 
     // check matching of view or editor
     if (this.editMode) {
-        if (this.editorID == 0) {
+        if (!this.editorID) {
             this.editorID = viewOrEditorID;
         } else if (this.editorID != viewOrEditorID) {
             console.warn(scada.utils.getCurTime() + " Scheme editor ID mismatch. The existing ID=" +
@@ -331,9 +331,7 @@ scada.scheme.Scheme.prototype._obtainComponents = function (parsedData) {
 // Append received components to the scheme
 scada.scheme.Scheme.prototype._appendComponents = function (parsedComponents) {
     for (var parsedComponent of parsedComponents) {
-        if (typeof parsedComponent === "undefined" ||
-            typeof parsedComponent.TypeName === "undefined" ||
-            typeof parsedComponent.ID === "undefined") {
+        if (!this._validateComponent(parsedComponent)) {
             console.warn("The component is skipped because the required properties are missed");
             continue;
         }
@@ -350,6 +348,13 @@ scada.scheme.Scheme.prototype._appendComponents = function (parsedComponents) {
                 "' with ID=" + schemeComponent.id + " is not supported");
         }
     }
+};
+
+// Validate main component properties
+scada.scheme.Scheme.prototype._validateComponent = function (parsedComponent) {
+    return typeof parsedComponent !== "undefined" &&
+        typeof parsedComponent.TypeName !== "undefined" &&
+        typeof parsedComponent.ID !== "undefined";
 };
 
 // Load scheme images
@@ -445,14 +450,14 @@ scada.scheme.Scheme.prototype._appendImages = function (parsedImages) {
 };
 
 // Update the component using the current input channel data
-scada.scheme.Scheme.prototype._updateComponent = function (component, renderContext) {
+scada.scheme.Scheme.prototype._updateComponentData = function (component) {
     try {
         if (component.dom) {
-            component.renderer.update(component, renderContext);
+            component.renderer.update(component, this.renderContext);
         }
     }
     catch (ex) {
-        console.error("Error updating the component of type '" +
+        console.error("Error updating data of the component of type '" +
             component.type + "' with ID=" + component.id + ":", ex.message);
         component.dom = null;
     }
@@ -470,7 +475,7 @@ scada.scheme.Scheme.prototype.clear = function () {
     this._cnlFilter = null;
     this.loadState = scada.scheme.LoadStates.UNDEFINED;
     this.viewID = 0;
-    this.editorID = 0;
+    this.editorID = "";
     this.viewStamp = 0;
     this.components = [];
     this.componentMap = new Map();
@@ -525,9 +530,9 @@ scada.scheme.Scheme.prototype.createDom = function (opt_controlRight) {
     }
 };
 
-// Update the scheme components
+// Update the scheme components using the current input channel data
 // callback is a function (success)
-scada.scheme.Scheme.prototype.update = function (clientAPI, callback) {
+scada.scheme.Scheme.prototype.updateData = function (clientAPI, callback) {
     var thisScheme = this;
 
     clientAPI.getCurCnlDataExt(this._cnlFilter, function (success, cnlDataExtArr) {
@@ -539,7 +544,7 @@ scada.scheme.Scheme.prototype.update = function (clientAPI, callback) {
                 thisScheme.renderContext.imageMap = thisScheme.imageMap;
 
                 for (var component of thisScheme.components) {
-                    thisScheme._updateComponent(component, thisScheme.renderContext);
+                    thisScheme._updateComponentData(component);
                 }
             }
 
