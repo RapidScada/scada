@@ -57,15 +57,33 @@ scada.scheme.EditableScheme.prototype._processChanges = function (changes) {
     var SchemeChangeTypes = scada.scheme.SchemeChangeTypes;
 
     for (var change of changes) {
+        var changedObject = change.ChangedObject;
+
         switch (change.ChangeType) {
+            case SchemeChangeTypes.SCHEME_DOC_CHANGED:
+                this._updateSchemeProps(changedObject);
+                break;
             case SchemeChangeTypes.COMPONENT_CHANGED:
-                if (this._validateComponent(change.ChangedObject)) {
-                    this._updateComponentProps(change.ChangedObject);
+                if (this._validateComponent(changedObject)) {
+                    this._updateComponentProps(changedObject);
                 }
                 break;
         }
 
         this.lastChangeStamp = change.Stamp;
+    }
+};
+
+// Update the scheme properties
+scada.scheme.EditableScheme.prototype._updateSchemeProps = function (parsedSchemeDoc) {
+    try {
+        this.props = parsedSchemeDoc;
+        this.dom.detach();
+        this.renderer.updateDom(this, this.renderContext);
+        this.parentDomElem.append(this.dom);
+    }
+    catch (ex) {
+        console.error("Error updating scheme properties:", ex.message);
     }
 };
 

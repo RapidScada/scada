@@ -502,15 +502,10 @@ scada.scheme.Scheme.prototype.createDom = function (opt_controlRight) {
     try
     {
         this.renderer.createDom(this, this.renderContext);
-
-        if (this.dom) {
-            this.parentDomElem.append(this.dom);
-        } else {
-            return;
-        }
+        this.parentDomElem.append(this.dom);
     }
     catch (ex) {
-        console.error("Error creating DOM content for the scheme:", ex.message);
+        console.error("Error creating DOM content of the scheme:", ex.message);
         this.dom = null;
         return;
     }
@@ -523,7 +518,7 @@ scada.scheme.Scheme.prototype.createDom = function (opt_controlRight) {
             }
         }
         catch (ex) {
-            console.error("Error creating DOM content for the component of type '" +
+            console.error("Error creating DOM content of the component of type '" +
                 component.type + "' with ID=" + component.id + ":", ex.message);
             component.dom = null;
         }

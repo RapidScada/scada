@@ -69,7 +69,7 @@ scada.scheme.Renderer.prototype.setBorderColor = function (jqObj, borderColor, o
 };
 
 // Set font of the jQuery object
-scada.scheme.Renderer.prototype.setFont = function (jqObj, font) {
+scada.scheme.Renderer.prototype.setFont = function (jqObj, font, opt_removeIfEmpty) {
     if (font) {
         jqObj.css({
             "font-family": font.Name,
@@ -77,6 +77,14 @@ scada.scheme.Renderer.prototype.setFont = function (jqObj, font) {
             "font-weight": font.Bold ? "bold" : "normal",
             "font-style": font.Italic ? "italic" : "normal",
             "text-decoration": font.Underline ? "underline" : "none"
+        });
+    } else if (opt_removeIfEmpty) {
+        jqObj.css({
+            "font-family": "",
+            "font-size": "",
+            "font-weight": "",
+            "font-style": "",
+            "text-decoration": ""
         });
     }
 };
@@ -91,7 +99,7 @@ scada.scheme.Renderer.prototype.imageToDataUrlCss = function (image) {
     return "url('" + this.imageToDataURL(image) + "')";
 }
 
-// Create DOM content of the component according to component properties.
+// Create DOM content of the component according to the component properties.
 // If component properties are incorrect, no DOM content is created
 scada.scheme.Renderer.prototype.createDom = function (component, renderContext) {
 };
@@ -111,45 +119,64 @@ scada.scheme.SchemeRenderer.prototype = Object.create(scada.scheme.Renderer.prot
 scada.scheme.SchemeRenderer.constructor = scada.scheme.SchemeRenderer;
 
 scada.scheme.SchemeRenderer.prototype.createDom = function (component, renderContext) {
-    var props = component.props; // scheme document properties
-    var schemeWidth = props.Size.Width;
-    var schemeHeight = props.Size.Height;
-    var divScheme =
-        $("<div id='scheme'></div>")
-        .css({
+    var divScheme = $("<div id='scheme'></div>");
+    component.dom = divScheme;
+    this.updateDom(component, renderContext);
+};
+
+// Update existing DOM content of the scheme according to the scheme properties
+scada.scheme.SchemeRenderer.prototype.updateDom = function (component, renderContext) {
+    if (component.dom) {
+        var props = component.props; // scheme document properties
+        var schemeWidth = props.Size.Width;
+        var schemeHeight = props.Size.Height;
+
+        var divScheme = component.dom.find("#scheme");
+        divScheme.css({
             "position": "relative", // to position scheme components
             "width": schemeWidth,
             "height": schemeHeight,
             "transform-origin": "left top" // for scaling
         });
 
-    this.setBackColor($("body"), props.BackColor);
-    this.setBackColor(divScheme, props.BackColor);
-    this.setFont(divScheme, props.Font);
-    this.setForeColor(divScheme, props.ForeColor);
+        this.setBackColor($("body"), props.BackColor, true);
+        this.setBackColor(divScheme, props.BackColor, true);
+        this.setFont(divScheme, props.Font, true);
+        this.setForeColor(divScheme, props.ForeColor, true);
 
-    // set background image if presents,
-    // the additional div is required for correct scaling
-    var backImage = renderContext.getImage(component.props.BackImageName);
-    if (backImage) {
-        $("<div id='schemeBack'></div>").css({
-            "width": schemeWidth,
-            "height": schemeHeight,
-            "background-image": this.imageToDataUrlCss(backImage),
-            "background-size": schemeWidth + "px " + schemeHeight + "px",
-            "background-repeat": "no-repeat"
-        }).appendTo(divScheme);
-    }
+        // set background image if presents,
+        // the additional div is required for correct scaling
+        var divSchemeBack = divScheme.children("#schemeBack");
+        var backImage = renderContext.getImage(component.props.BackImageName);
 
-    // set title
-    if (props.Title) {
-        document.title = props.Title + " - Rapid SCADA";
-        if (scada.scheme.viewHub) {
-            scada.scheme.viewHub.notify(scada.EventTypes.VIEW_TITLE_CHANGED, window, document.title);
+        if (backImage) {
+            if (divSchemeBack.length == 0) {
+                divSchemeBack = $("<div id='schemeBack'></div>");
+                divScheme.append(divSchemeBack);
+            }
+
+            divSchemeBack.css({
+                "width": schemeWidth,
+                "height": schemeHeight,
+                "background-image": this.imageToDataUrlCss(backImage),
+                "background-size": schemeWidth + "px " + schemeHeight + "px",
+                "background-repeat": "no-repeat"
+            });
+        } else {
+            divSchemeBack.remove();
+        }
+
+        // set title
+        if (props.Title) {
+            var oldTitle = document.title;
+            var newTitle = props.Title + " - Rapid SCADA";
+            document.title = newTitle;
+
+            if (scada.scheme.viewHub && oldTitle != newTitle) {
+                scada.scheme.viewHub.notify(scada.EventTypes.VIEW_TITLE_CHANGED, window, document.title);
+            }
         }
     }
-
-    component.dom = divScheme;
 };
 
 // Calculate numeric scale based on the predefined string value
