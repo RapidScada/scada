@@ -66,16 +66,20 @@ scada.scheme.EditableScheme.prototype._processChanges = function (changes) {
             case SchemeChangeTypes.SCHEME_DOC_CHANGED:
                 this._updateSchemeProps(changedObject);
                 break;
+            case SchemeChangeTypes.COMPONENT_ADDED:
             case SchemeChangeTypes.COMPONENT_CHANGED:
                 if (this._validateComponent(changedObject)) {
                     this._updateComponentProps(changedObject);
                 }
                 break;
-            case SchemeChangeTypes.COMPONENT_ADDED:
-                break;
-            case SchemeChangeTypes.COMPONENT_CHANGED:
-                break;
             case SchemeChangeTypes.COMPONENT_DELETED:
+                var component = this.componentMap.get(change.DeletedComponentID);
+                if (component) {
+                    this.componentMap.delete(component.id);
+                    if (component.dom) {
+                        component.dom.remove();
+                    }
+                }
                 break;
             case SchemeChangeTypes.IMAGE_ADDED:
                 if (this._validateImage(changedObject)) {
@@ -115,22 +119,28 @@ scada.scheme.EditableScheme.prototype._updateSchemeProps = function (parsedSchem
     }
 };
 
-// Update the component properties
+// Update the component properties or add the new component
 scada.scheme.EditableScheme.prototype._updateComponentProps = function (parsedComponent) {
     try {
-        var componentID = parsedComponent.ID;
-        var oldComponent = this.componentMap.get(componentID);
+        var newComponent = new scada.scheme.Component(parsedComponent);
+        newComponent.renderer = scada.scheme.rendererMap.get(newComponent.type);
 
-        if (oldComponent) {
-            var newComponent = new scada.scheme.Component(parsedComponent);
-            newComponent.renderer = scada.scheme.rendererMap.get(newComponent.type);
+        if (newComponent.renderer) {
+            newComponent.renderer.createDom(newComponent, this.renderContext);
 
-            if (newComponent.renderer) {
-                newComponent.renderer.createDom(newComponent, this.renderContext);
+            if (newComponent.dom) {
+                var componentID = parsedComponent.ID;
+                var oldComponent = this.componentMap.get(componentID);
 
-                if (oldComponent.dom && newComponent.dom) {
-                    this.componentMap.set(componentID, newComponent);
-                    oldComponent.dom.replaceWith(newComponent.dom);
+                if (oldComponent) {
+                    // replace component
+                    if (oldComponent.dom) {
+                        this.componentMap.set(componentID, newComponent);
+                        oldComponent.dom.replaceWith(newComponent.dom);
+                    }
+                } else {
+                    // add component
+                    this.dom.append(newComponent.dom);
                 }
             }
         }

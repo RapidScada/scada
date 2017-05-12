@@ -28,7 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
+            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Standard", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("Pointer", "pointer.png");
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("Static Text", "comp_st.png");
+            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("Dynamic Text", "comp_dt.png");
+            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("Static Picture", "comp_sp.png");
+            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem("Dynamic Picture", "comp_dp.png");
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.btnFileNew = new System.Windows.Forms.ToolStripButton();
             this.btnFileOpen = new System.Windows.Forms.ToolStripButton();
@@ -56,9 +63,13 @@
             this.cbSchComp = new System.Windows.Forms.ComboBox();
             this.ofdScheme = new System.Windows.Forms.OpenFileDialog();
             this.sfdScheme = new System.Windows.Forms.SaveFileDialog();
+            this.lvComponents = new System.Windows.Forms.ListView();
+            this.ilComponents = new System.Windows.Forms.ImageList(this.components);
+            this.colCompName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.tabControl.SuspendLayout();
+            this.pageComponents.SuspendLayout();
             this.pageProperties.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -268,6 +279,7 @@
             // 
             // pageComponents
             // 
+            this.pageComponents.Controls.Add(this.lvComponents);
             this.pageComponents.Location = new System.Drawing.Point(4, 22);
             this.pageComponents.Name = "pageComponents";
             this.pageComponents.Padding = new System.Windows.Forms.Padding(3);
@@ -318,6 +330,57 @@
             this.sfdScheme.DefaultExt = "*.sch";
             this.sfdScheme.Filter = "Schemes (*.sch)|*.sch|All Files (*.*)|*.*";
             // 
+            // lvComponents
+            // 
+            this.lvComponents.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.colCompName});
+            this.lvComponents.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvComponents.FullRowSelect = true;
+            listViewGroup1.Header = "Standard";
+            listViewGroup1.Name = "lvgStandard";
+            this.lvComponents.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
+            listViewGroup1});
+            this.lvComponents.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            listViewItem1.Group = listViewGroup1;
+            listViewItem1.IndentCount = 1;
+            listViewItem2.Group = listViewGroup1;
+            listViewItem2.IndentCount = 1;
+            listViewItem3.Group = listViewGroup1;
+            listViewItem3.IndentCount = 1;
+            listViewItem4.Group = listViewGroup1;
+            listViewItem4.IndentCount = 1;
+            listViewItem5.Group = listViewGroup1;
+            listViewItem5.IndentCount = 1;
+            this.lvComponents.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+            listViewItem1,
+            listViewItem2,
+            listViewItem3,
+            listViewItem4,
+            listViewItem5});
+            this.lvComponents.LabelWrap = false;
+            this.lvComponents.Location = new System.Drawing.Point(3, 3);
+            this.lvComponents.MultiSelect = false;
+            this.lvComponents.Name = "lvComponents";
+            this.lvComponents.Size = new System.Drawing.Size(295, 432);
+            this.lvComponents.SmallImageList = this.ilComponents;
+            this.lvComponents.TabIndex = 0;
+            this.lvComponents.UseCompatibleStateImageBehavior = false;
+            this.lvComponents.View = System.Windows.Forms.View.Details;
+            // 
+            // ilComponents
+            // 
+            this.ilComponents.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilComponents.ImageStream")));
+            this.ilComponents.TransparentColor = System.Drawing.Color.Transparent;
+            this.ilComponents.Images.SetKeyName(0, "pointer.png");
+            this.ilComponents.Images.SetKeyName(1, "comp_st.png");
+            this.ilComponents.Images.SetKeyName(2, "comp_dt.png");
+            this.ilComponents.Images.SetKeyName(3, "comp_sp.png");
+            this.ilComponents.Images.SetKeyName(4, "comp_dp.png");
+            // 
+            // colCompName
+            // 
+            this.colCompName.Width = 250;
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -342,6 +405,7 @@
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.tabControl.ResumeLayout(false);
+            this.pageComponents.ResumeLayout(false);
             this.pageProperties.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -376,6 +440,9 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.OpenFileDialog ofdScheme;
         private System.Windows.Forms.SaveFileDialog sfdScheme;
+        private System.Windows.Forms.ListView lvComponents;
+        private System.Windows.Forms.ImageList ilComponents;
+        private System.Windows.Forms.ColumnHeader colCompName;
     }
 }
 

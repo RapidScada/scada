@@ -76,12 +76,8 @@ scada.scheme.Scheme = function (editMode) {
     this.editorID = "";
     // Stamp of the view, unique within application scope
     this.viewStamp = 0;
-    // Scheme components
-    this.components = []; // TODO: obsolete, remove
     // Scheme components indexed by ID
     this.componentMap = new Map();
-    // Scheme images
-    this.images = []; // TODO: obsolete, remove
     // Scheme images indexed by name
     this.imageMap = new Map();
     // Render context
@@ -264,7 +260,7 @@ scada.scheme.Scheme.prototype._loadComponents = function (viewOrEditorID, callba
         url: operation +
             this._getAccessParamStr(viewOrEditorID) +
             "&viewStamp=" + this.viewStamp +
-            "&startIndex=" + this.components.length +
+            "&startIndex=" + this.componentMap.size +
             "&count=" + this.LOAD_COMP_CNT,
         method: "GET",
         dataType: "json",
@@ -341,7 +337,6 @@ scada.scheme.Scheme.prototype._appendComponents = function (parsedComponents) {
 
         if (schemeComponent.renderer) {
             // add the component to the scheme
-            this.components.push(schemeComponent);
             this.componentMap.set(schemeComponent.id, schemeComponent);
         } else {
             console.warn("The component of type '" + schemeComponent.type +
@@ -367,7 +362,7 @@ scada.scheme.Scheme.prototype._loadImages = function (viewOrEditorID, callback) 
         url: operation +
             this._getAccessParamStr(viewOrEditorID) +
             "&viewStamp=" + this.viewStamp +
-            "&startIndex=" + this.images.length +
+            "&startIndex=" + this.imageMap.size +
             "&totalDataSize=" + this.LOAD_IMG_SIZE,
         method: "GET",
         dataType: "json",
@@ -442,7 +437,6 @@ scada.scheme.Scheme.prototype._appendImages = function (parsedImages) {
         }
 
         // add the image to the scheme
-        this.images.push(parsedImage);
         this.imageMap.set(parsedImage.Name, parsedImage);
     }
 };
@@ -482,9 +476,7 @@ scada.scheme.Scheme.prototype.clear = function () {
     this.viewID = 0;
     this.editorID = "";
     this.viewStamp = 0;
-    this.components = [];
     this.componentMap = new Map();
-    this.images = [];
     this.imageMap = new Map();
     this.renderContext = new scada.scheme.RenderContext();
 };
@@ -500,6 +492,7 @@ scada.scheme.Scheme.prototype.load = function (viewOrEditorID, callback) {
 
 // Create DOM content of the scheme
 scada.scheme.Scheme.prototype.createDom = function (opt_controlRight) {
+    this.renderContext.editMode = this.editMode;
     this.renderContext.imageMap = this.imageMap;
     this.renderContext.controlRight = typeof opt_controlRight === "undefined" ?
         true : opt_controlRight;
@@ -515,7 +508,7 @@ scada.scheme.Scheme.prototype.createDom = function (opt_controlRight) {
         return;
     }
 
-    for (var component of this.components) {
+    for (var component of this.componentMap.values()) {
         try {
             component.renderer.createDom(component, this.renderContext);
             if (this.dom) {
@@ -543,7 +536,7 @@ scada.scheme.Scheme.prototype.updateData = function (clientAPI, callback) {
                 thisScheme.renderContext.curCnlDataMap = curCnlDataMap;
                 thisScheme.renderContext.imageMap = thisScheme.imageMap;
 
-                for (var component of thisScheme.components) {
+                for (var component of thisScheme.componentMap.values()) {
                     thisScheme._updateComponentData(component);
                 }
             }

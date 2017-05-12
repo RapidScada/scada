@@ -145,7 +145,12 @@ namespace Scada.Scheme.Editor
             {
                 Change change = new Change(changeType) { Stamp = ++changeStampCntr };
 
-                if (changeType == SchemeChangeTypes.ImageRenamed ||
+                if (changeType == SchemeChangeTypes.ComponentDeleted)
+                {
+                    if (changedObject is BaseComponent)
+                        change.DeletedComponentID = ((BaseComponent)changedObject).ID;
+                }
+                else if (changeType == SchemeChangeTypes.ImageRenamed ||
                     changeType == SchemeChangeTypes.ImageDeleted)
                 {
                     change.ImageName = (changedObject as Image)?.Name;
