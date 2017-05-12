@@ -78,10 +78,23 @@ scada.scheme.EditableScheme.prototype._processChanges = function (changes) {
             case SchemeChangeTypes.COMPONENT_DELETED:
                 break;
             case SchemeChangeTypes.IMAGE_ADDED:
+                if (this._validateImage(changedObject)) {
+                    this.imageMap.set(changedObject.Name, changedObject);
+                    this._refreshImages([changedObject.Name]);
+                }
                 break;
             case SchemeChangeTypes.IMAGE_RENAMED:
+                var image = this.imageMap.get(change.OldImageName);
+                if (image) {
+                    this.imageMap.delete(change.OldImageName);
+                    image.Name = change.ImageName;
+                    this.imageMap.set(image.Name, image);
+                    this._refreshImages([change.OldImageName, change.ImageName]);
+                }
                 break;
             case SchemeChangeTypes.IMAGE_DELETED:
+                this.imageMap.delete(change.ImageName);
+                this._refreshImages([change.ImageName]);
                 break;
         }
 
@@ -125,6 +138,20 @@ scada.scheme.EditableScheme.prototype._updateComponentProps = function (parsedCo
     catch (ex) {
         console.error("Error updating properties of the component of type '" +
             parsedComponent.TypeName + "' with ID=" + parsedComponent.ID + ":", ex.message);
+    }
+};
+
+// Refresh scheme components that contain the specified images
+scada.scheme.EditableScheme.prototype._refreshImages = function (imageNames) {
+    try {
+        this.renderer.refreshImages(this, this.renderContext, imageNames);
+
+        for (var component of this.components) {
+            component.renderer.refreshImages(component, this.renderContext, imageNames);
+        }
+    }
+    catch (ex) {
+        console.error("Error refreshing scheme images:", ex.message);
     }
 };
 

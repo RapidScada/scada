@@ -436,9 +436,7 @@ scada.scheme.Scheme.prototype._obtainImages = function (parsedData) {
 // Append received images to the scheme
 scada.scheme.Scheme.prototype._appendImages = function (parsedImages) {
     for (var parsedImage of parsedImages) {
-        if (typeof parsedImage === "undefined" ||
-            typeof parsedImage.Name === "undefined" ||
-            typeof parsedImage.Data === "undefined") {
+        if (!this._validateImage(parsedImage)) {
             console.warn("The image is skipped because the required properties are missed");
             continue;
         }
@@ -447,6 +445,13 @@ scada.scheme.Scheme.prototype._appendImages = function (parsedImages) {
         this.images.push(parsedImage);
         this.imageMap.set(parsedImage.Name, parsedImage);
     }
+};
+
+// Validate main image properties
+scada.scheme.Scheme.prototype._validateImage = function (parsedImage) {
+    return typeof parsedImage !== "undefined" &&
+        typeof parsedImage.Name !== "undefined" &&
+        typeof parsedImage.Data !== "undefined";
 };
 
 // Update the component using the current input channel data

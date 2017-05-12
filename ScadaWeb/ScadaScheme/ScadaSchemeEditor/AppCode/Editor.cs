@@ -143,11 +143,18 @@ namespace Scada.Scheme.Editor
         {
             lock (changes)
             {
-                Change change = new Change(changeType)
+                Change change = new Change(changeType) { Stamp = ++changeStampCntr };
+
+                if (changeType == SchemeChangeTypes.ImageRenamed ||
+                    changeType == SchemeChangeTypes.ImageDeleted)
                 {
-                    Stamp = ++changeStampCntr,
-                    ChangedObject = changedObject
-                };
+                    change.ImageName = (changedObject as Image)?.Name;
+                    change.OldImageName = oldKey as string;
+                }
+                else
+                {
+                    change.ChangedObject = changedObject;
+                }
 
                 changes.Add(change);
             }
@@ -250,7 +257,7 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Получить изменения схемы
+        /// Получить изменения схемы для передачи
         /// </summary>
         public List<Change> GetChanges(long trimBeforeStamp)
         {
@@ -261,7 +268,14 @@ namespace Scada.Scheme.Editor
                     changes.RemoveAt(0);
                 }
 
-                return new List<Change>(changes);
+                List<Change> destChanges = new List<Change>(changes.Count);
+
+                foreach (Change change in changes)
+                {
+                    destChanges.Add(change.ConvertToDTO());
+                }
+
+                return new List<Change>(destChanges);
             }
         }
 

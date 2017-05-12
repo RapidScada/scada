@@ -23,7 +23,9 @@
  * Modified : 2017
  */
 
+using Scada.Scheme.DataTransfer;
 using Scada.Scheme.Model;
+using System;
 
 namespace Scada.Scheme.Editor
 {
@@ -85,5 +87,21 @@ namespace Scada.Scheme.Editor
         /// наименование удалённого изображения
         /// </summary>
         public string ImageName { get; set; }
+
+
+        /// <summary>
+        /// Преобразовать изменение для передачи WCF-сервисом
+        /// </summary>
+        public Change ConvertToDTO()
+        {
+            return new Change(ChangeType)
+            {
+                Stamp = Stamp,
+                ChangedObject = ChangedObject is Image ? new ImageDTO((Image)ChangedObject) : ChangedObject,
+                DeletedComponentID = DeletedComponentID,
+                OldImageName = OldImageName,
+                ImageName = ImageName
+            };
+        }
     }
 }

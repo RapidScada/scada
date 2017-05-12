@@ -89,6 +89,15 @@ scada.scheme.Renderer.prototype.setFont = function (jqObj, font, opt_removeIfEmp
     }
 };
 
+// Set background image of the jQuery object
+scada.scheme.Renderer.prototype.setBackgroundImage = function (jqObj, image, opt_removeIfEmpty) {
+    if (image) {
+        jqObj.css("background-image", this.imageToDataUrlCss(image));
+    } else if (opt_removeIfEmpty) {
+        jqObj.css("background-image", "");
+    }
+};
+
 // Returns a data URI containing a representation of the image
 scada.scheme.Renderer.prototype.imageToDataURL = function (image) {
     return "data:" + (image.MediaType ? image.MediaType : "image/png") + ";base64," + image.Data
@@ -128,6 +137,18 @@ scada.scheme.SchemeRenderer.prototype.createDom = function (component, renderCon
     this.updateDom(component, renderContext);
 };
 
+scada.scheme.SchemeRenderer.prototype.refreshImages = function (component, renderContext, imageNames) {
+    if (component.dom) {
+        var props = component.props;
+
+        if (Array.isArray(imageNames) && imageNames.includes(props.BackImageName)) {
+            var divSchemeBack = component.dom.find("#schemeBack");
+            var backImage = renderContext.getImage(props.BackImageName);
+            this.setBackgroundImage(divSchemeBack, backImage, true);
+        }
+    }
+};
+
 // Update existing DOM content of the scheme according to the scheme properties
 scada.scheme.SchemeRenderer.prototype.updateDom = function (component, renderContext) {
     if (component.dom) {
@@ -151,24 +172,21 @@ scada.scheme.SchemeRenderer.prototype.updateDom = function (component, renderCon
         // set background image if presents,
         // the additional div is required for correct scaling
         var divSchemeBack = divScheme.children("#schemeBack");
-        var backImage = renderContext.getImage(component.props.BackImageName);
 
-        if (backImage) {
-            if (divSchemeBack.length == 0) {
-                divSchemeBack = $("<div id='schemeBack'></div>");
-                divScheme.append(divSchemeBack);
-            }
-
-            divSchemeBack.css({
-                "width": schemeWidth,
-                "height": schemeHeight,
-                "background-image": this.imageToDataUrlCss(backImage),
-                "background-size": schemeWidth + "px " + schemeHeight + "px",
-                "background-repeat": "no-repeat"
-            });
-        } else {
-            divSchemeBack.remove();
+        if (divSchemeBack.length == 0) {
+            divSchemeBack = $("<div id='schemeBack'></div>");
+            divScheme.append(divSchemeBack);
         }
+
+        divSchemeBack.css({
+            "width": schemeWidth,
+            "height": schemeHeight,
+            "background-size": schemeWidth + "px " + schemeHeight + "px",
+            "background-repeat": "no-repeat"
+        });
+
+        var backImage = renderContext.getImage(props.BackImageName);
+        this.setBackgroundImage(divSchemeBack, backImage, true);
 
         // set title
         if (props.Title) {
@@ -512,14 +530,6 @@ scada.scheme.StaticPictureRenderer = function () {
 scada.scheme.StaticPictureRenderer.prototype = Object.create(scada.scheme.ComponentRenderer.prototype);
 scada.scheme.StaticPictureRenderer.constructor = scada.scheme.StaticPictureRenderer;
 
-scada.scheme.Renderer.prototype.setBackgroundImage = function (jqObj, image, opt_removeIfEmpty) {
-    if (image) {
-        jqObj.css("background-image", this.imageToDataUrlCss(image));
-    } else if (opt_removeIfEmpty) {
-        jqObj.css("background-image", "");
-    }
-};
-
 scada.scheme.StaticPictureRenderer.prototype.createDom = function (component, renderContext) {
     var ImageStretches = scada.scheme.ImageStretches;
     var props = component.props;
@@ -542,10 +552,23 @@ scada.scheme.StaticPictureRenderer.prototype.createDom = function (component, re
         "background-repeat": "no-repeat",
         "background-position": "center"
     });
+
     var image = renderContext.getImage(props.ImageName);
     this.setBackgroundImage(divComp, image);
 
     component.dom = divComp;
+};
+
+scada.scheme.StaticPictureRenderer.prototype.refreshImages = function (component, renderContext, imageNames) {
+    if (component.dom) {
+        var props = component.props;
+
+        if (Array.isArray(imageNames) && imageNames.includes(props.ImageName)) {
+            var divComp = component.dom;
+            var image = renderContext.getImage(props.ImageName);
+            this.setBackgroundImage(divComp, image, true);
+        }
+    }
 };
 
 /********** Dynamic Picture Renderer **********/
