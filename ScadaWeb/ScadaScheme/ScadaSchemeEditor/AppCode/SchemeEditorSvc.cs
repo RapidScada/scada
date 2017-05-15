@@ -221,8 +221,7 @@ namespace Scada.Scheme.Editor
                 SchemeDTO dto = new SchemeDTO();
 
                 if (CheckArguments(editorID, viewStamp, dto))
-                {
-                }
+                    dto.Success = Editor.CreateComponent(x, y);
 
                 return JsSerializer.Serialize(dto);
             }

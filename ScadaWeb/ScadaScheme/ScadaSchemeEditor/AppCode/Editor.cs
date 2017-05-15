@@ -24,6 +24,7 @@
  */
 
 using Scada.Scheme.Model;
+using Scada.Scheme.Model.DataTypes;
 using Scada.Web;
 using System;
 using System.Collections.Generic;
@@ -53,10 +54,29 @@ namespace Scada.Scheme.Editor
         /// </summary>
         public const string DefSchemeFileName = "NewScheme.sch";
 
+        /// <summary>
+        /// Типы компонентов, поддерживаемые редактором. Ключ - полное имя типа
+        /// </summary>
+        private static readonly Dictionary<string, Type> ComponentTypes;
+
         private readonly Log log;     // журнал приложения
         private List<Change> changes; // изменения схемы
         private long changeStampCntr; // счётчик для генерации меток изменений схемы
 
+
+        /// <summary>
+        /// Статический конструктор
+        /// </summary>
+        static Editor()
+        {
+            ComponentTypes = new Dictionary<string, Type>()
+            {
+                { typeof(StaticText).FullName, typeof(StaticText) },
+                { typeof(DynamicText).FullName, typeof(DynamicText) },
+                { typeof(StaticPicture).FullName, typeof(StaticPicture) },
+                { typeof(DynamicPicture).FullName, typeof(DynamicPicture) }
+            };
+        }
 
         /// <summary>
         /// Конструктор, ограничивающий создание объекта без параметров
@@ -296,6 +316,78 @@ namespace Scada.Scheme.Editor
         public List<int> GetSelectedComponentIDs()
         {
             return new List<int>();
+        }
+
+        /// <summary>
+        /// Создать компонент схемы
+        /// </summary>
+        public bool CreateComponent(int x, int y)
+        {
+            try
+            {
+                // проверка возможности создания компонента
+                if (SchemeView == null)
+                    throw new ScadaException(Localization.UseRussian ? 
+                        "Схема не загружена." :
+                        "Scheme is not loaded.");
+
+                if (string.IsNullOrEmpty(NewComponentTypeName))
+                    throw new ScadaException(Localization.UseRussian ? 
+                        "Не определён тип создаваемого компонента." :
+                        "Type of the creating component is not defined.");
+
+                // получение типа компонента
+                Type componentType;
+                if (!ComponentTypes.TryGetValue(NewComponentTypeName, out componentType))
+                    throw new ScadaException(string.Format(Localization.UseRussian ?
+                        "Не найден тип создаваемого компонента {0}." :
+                        "Type of the creating component {0} not found.", NewComponentTypeName));
+
+                // создание компонента и добавление на схему
+                BaseComponent component = (BaseComponent)Activator.CreateInstance(componentType);
+                component.ID = SchemeView.GetNextComponentID();
+                component.Location = new Point(x, y);
+                component.ItemChanged += Scheme_ItemChanged;
+                SchemeView.Components.Add(component);
+                SchemeView.SchemeDoc.OnItemChanged(SchemeChangeTypes.ComponentAdded, component);
+
+                return true;
+            }
+            catch (ScadaException ex)
+            {
+                log.WriteError(string.Format(Localization.UseRussian ?
+                    "Ошибка при создании компонента схемы: {0}" :
+                    "Error creating scheme component: {0}", ex.Message));
+                return false;
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при создании компонента схемы" :
+                    "Error creating scheme component");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Удалить компонент схемы
+        /// </summary>
+        public void DeleteComponent(int componentID)
+        {
+            try
+            {
+                if (SchemeView != null)
+                {
+                    //BaseComponent component = null;
+                    //SchemeView.SchemeDoc.OnItemChanged(SchemeChangeTypes.ComponentDeleted, component);
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при удалении компонента схемы" :
+                    "Error deleting scheme component");
+            }
         }
     }
 }

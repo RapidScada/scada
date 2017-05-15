@@ -40,11 +40,18 @@ namespace Scada.Scheme
     public class SchemeView : BaseView
     {
         /// <summary>
+        /// Максимальный идентификатор компонентов схемы
+        /// </summary>
+        protected int maxComponentID;
+
+        
+        /// <summary>
         /// Конструктор
         /// </summary>
         public SchemeView()
             : base()
         {
+            maxComponentID = 0;
             SchemeDoc = new SchemeDocument();
             Components = new List<BaseComponent>();
         }
@@ -58,7 +65,7 @@ namespace Scada.Scheme
         /// <summary>
         /// Получить компоненты схемы
         /// </summary>
-        public List<BaseComponent> Components { get; protected set; }
+        public List<BaseComponent> Components { get; protected set; } // TODO: change to SortedList by ID
 
 
         /// <summary>
@@ -134,6 +141,10 @@ namespace Scada.Scheme
                             AddCnlNum(dynamicComponent.InCnlNum);
                             AddCtrlCnlNum(dynamicComponent.CtrlCnlNum);
                         }
+
+                        // определение макс. идентификатора компонентов
+                        if (component.ID > maxComponentID)
+                            maxComponentID = component.ID;
                     }
                 }
             }
@@ -243,8 +254,17 @@ namespace Scada.Scheme
         public override void Clear()
         {
             base.Clear();
+            maxComponentID = 0;
             SchemeDoc.SetToDefault();
             Components.Clear();
+        }
+
+        /// <summary>
+        /// Получить следующий идентификатор компонента схемы
+        /// </summary>
+        public int GetNextComponentID()
+        {
+            return ++maxComponentID;
         }
     }
 }

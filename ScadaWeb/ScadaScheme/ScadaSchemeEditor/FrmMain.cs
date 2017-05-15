@@ -397,7 +397,17 @@ namespace Scada.Scheme.Editor
 
         private void btnSchemeDelete_Click(object sender, EventArgs e)
         {
+            // удаление выбранных компонентов схемы
+            if (editor.SchemeView != null)
+            {
+                foreach (object obj in propertyGrid.SelectedObjects)
+                {
+                    if (obj is BaseComponent)
+                        editor.DeleteComponent(((BaseComponent)obj).ID);
+                }
 
+                propertyGrid.SelectedObject = editor.SchemeView.SchemeDoc;
+            }
         }
 
         private void btnHelpAbout_Click(object sender, EventArgs e)
