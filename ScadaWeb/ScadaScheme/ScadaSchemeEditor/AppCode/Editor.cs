@@ -81,6 +81,7 @@ namespace Scada.Scheme.Editor
             SchemeView = null;
             FileName = "";
             Modified = false;
+            NewComponentTypeName = "";
         }
 
 
@@ -120,6 +121,11 @@ namespace Scada.Scheme.Editor
         /// Получить признак изменения схемы
         /// </summary>
         public bool Modified { get; private set; }
+
+        /// <summary>
+        /// Получить или установить имя типа компонента, который может быть создан пользователем
+        /// </summary>
+        public string NewComponentTypeName { get; set; }
 
 
         /// <summary>

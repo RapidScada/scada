@@ -69,17 +69,31 @@ namespace Scada.Scheme.Editor
             WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Origin: *");
         }
 
-
         /// <summary>
-        /// Временно
+        /// Проверить аргументы метода сервиса
         /// </summary>
-        [OperationContract]
-        [WebGet]
-        public string DoWork(string arg)
+        private bool CheckArguments(string editorID, long viewStamp, SchemeDTO dto)
         {
-            AllowAccess();
-            return JsSerializer.Serialize("Test Result, arg = " + arg);
+            if (editorID == Editor.EditorID)
+            {
+                SchemeView schemeView = Editor.SchemeView;
+
+                if (schemeView != null)
+                {
+                    dto.ViewStamp = schemeView.Stamp;
+
+                    if (SchemeUtils.ViewStampsMatched(viewStamp, schemeView.Stamp))
+                        return true;
+                }
+            }
+            else
+            {
+                dto.EditorUnknown = true;
+            }
+
+            return false;
         }
+
 
         /// <summary>
         /// Получить свойства документа схемы
@@ -94,21 +108,8 @@ namespace Scada.Scheme.Editor
                 AllowAccess();
                 SchemeDocDTO dto = new SchemeDocDTO();
 
-                if (editorID == Editor.EditorID)
-                {
-                    SchemeView schemeView = Editor.SchemeView;
-
-                    if (schemeView != null)
-                    {
-                        dto.ViewStamp = schemeView.Stamp;
-                        if (SchemeUtils.ViewStampsMatched(viewStamp, schemeView.Stamp))
-                            dto.SchemeDoc = schemeView.SchemeDoc;
-                    }
-                }
-                else
-                {
-                    dto.EditorUnknown = true;
-                }
+                if (CheckArguments(editorID, viewStamp, dto))
+                    dto.SchemeDoc = Editor.SchemeView.SchemeDoc;
 
                 return JsSerializer.Serialize(dto);
             }
@@ -134,21 +135,8 @@ namespace Scada.Scheme.Editor
                 AllowAccess();
                 ComponentsDTO dto = new ComponentsDTO();
 
-                if (editorID == Editor.EditorID)
-                {
-                    SchemeView schemeView = Editor.SchemeView;
-
-                    if (schemeView != null)
-                    {
-                        dto.ViewStamp = schemeView.Stamp;
-                        if (SchemeUtils.ViewStampsMatched(viewStamp, schemeView.Stamp))
-                            dto.CopyComponents(schemeView.Components, startIndex, count);
-                    }
-                }
-                else
-                {
-                    dto.EditorUnknown = true;
-                }
+                if (CheckArguments(editorID, viewStamp, dto))
+                    dto.CopyComponents(Editor.SchemeView.Components, startIndex, count);
 
                 return JsSerializer.Serialize(dto);
             }
@@ -174,21 +162,8 @@ namespace Scada.Scheme.Editor
                 AllowAccess();
                 ImagesDTO dto = new ImagesDTO();
 
-                if (editorID == Editor.EditorID)
-                {
-                    SchemeView schemeView = Editor.SchemeView;
-
-                    if (schemeView != null)
-                    {
-                        dto.ViewStamp = schemeView.Stamp;
-                        if (SchemeUtils.ViewStampsMatched(viewStamp, schemeView.Stamp))
-                            dto.CopyImages(schemeView.SchemeDoc.Images, startIndex, totalDataSize);
-                    }
-                }
-                else
-                {
-                    dto.EditorUnknown = true;
-                }
+                if (CheckArguments(editorID, viewStamp, dto))
+                    dto.CopyImages(Editor.SchemeView.SchemeDoc.Images, startIndex, totalDataSize);
 
                 return JsSerializer.Serialize(dto);
             }
@@ -214,23 +189,11 @@ namespace Scada.Scheme.Editor
                 AllowAccess();
                 ChangesDTO dto = new ChangesDTO();
 
-                if (editorID == Editor.EditorID)
+                if (CheckArguments(editorID, viewStamp, dto))
                 {
-                    SchemeView schemeView = Editor.SchemeView;
-
-                    if (schemeView != null)
-                    {
-                        dto.ViewStamp = schemeView.Stamp;
-                        if (SchemeUtils.ViewStampsMatched(viewStamp, schemeView.Stamp))
-                        {
-                            dto.Changes = Editor.GetChanges(changeStamp);
-                            dto.SelCompIDs = Editor.GetSelectedComponentIDs();
-                        }
-                    }
-                }
-                else
-                {
-                    dto.EditorUnknown = true;
+                    dto.Changes = Editor.GetChanges(changeStamp);
+                    dto.SelCompIDs = Editor.GetSelectedComponentIDs();
+                    dto.NewComponentMode = !string.IsNullOrEmpty(Editor.NewComponentTypeName);
                 }
 
                 return JsSerializer.Serialize(dto);
@@ -240,6 +203,34 @@ namespace Scada.Scheme.Editor
                 AppData.Log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при получении изменений схемы" :
                     "Error getting scheme chages");
+                return JsSerializer.GetErrorJson(ex);
+            }
+        }
+
+        /// <summary>
+        /// Добавить компонент на схему
+        /// </summary>
+        /// <remarks>Возвращает SchemeDTO в формате в JSON</remarks>
+        [OperationContract]
+        [WebGet]
+        public string AddComponent(string editorID, long viewStamp, int x, int y)
+        {
+            try
+            {
+                AllowAccess();
+                SchemeDTO dto = new SchemeDTO();
+
+                if (CheckArguments(editorID, viewStamp, dto))
+                {
+                }
+
+                return JsSerializer.Serialize(dto);
+            }
+            catch (Exception ex)
+            {
+                AppData.Log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при добавлении компонента на схему" :
+                    "Error adding component to the scheme");
                 return JsSerializer.GetErrorJson(ex);
             }
         }

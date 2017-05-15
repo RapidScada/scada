@@ -31,7 +31,7 @@ namespace Scada.Scheme.DataTransfer
     /// The base class for scheme data transfer objects
     /// <para>Базовый класс для объектов передачи данных схемы</para>
     /// </summary>
-    public abstract class SchemeDTO : DataTransferObject
+    public class SchemeDTO : DataTransferObject
     {
         /// <summary>
         /// Конструктор

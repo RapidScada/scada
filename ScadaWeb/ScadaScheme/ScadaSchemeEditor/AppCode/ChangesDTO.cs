@@ -42,6 +42,7 @@ namespace Scada.Scheme.Editor
         {
             Changes = null;
             SelCompIDs = null;
+            NewComponentMode = false;
         }
 
 
@@ -54,5 +55,10 @@ namespace Scada.Scheme.Editor
         /// Получить или установить идентификаторы выбранных компонентов
         /// </summary>
         public List<int> SelCompIDs { get; set; }
+
+        /// <summary>
+        /// Получить или установить режим добавления нового компонента
+        /// </summary>
+        public bool NewComponentMode { get; set; }
     }
 }
