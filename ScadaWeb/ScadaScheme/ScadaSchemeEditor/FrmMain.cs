@@ -155,6 +155,7 @@ namespace Scada.Scheme.Editor
             editor.NewScheme();
             appData.AssignViewStamp(editor.SchemeView);
             FillSchemeComponents();
+            BindSchemeEvents();
         }
 
         /// <summary>
@@ -235,20 +236,14 @@ namespace Scada.Scheme.Editor
                 if (editor.SchemeView != null)
                 {
                     cbSchComp.Items.Add(editor.SchemeView.SchemeDoc);
-                    List<BaseComponent> componentList = new List<BaseComponent>(editor.SchemeView.Components);
-                    componentList.Sort();
 
-                    foreach (BaseComponent component in componentList)
+                    foreach (BaseComponent component in editor.SchemeView.Components.Values)
                     {
                         cbSchComp.Items.Add(component);
                     }
                 }
 
-                // выбор объекта
-                if (cbSchComp.Items.Count > 0)
-                    cbSchComp.SelectedIndex = 0;
-                else
-                    propertyGrid.SelectedObject = null;
+                SelectFirstComponent();
             }
             finally
             {
@@ -256,6 +251,53 @@ namespace Scada.Scheme.Editor
             }
         }
 
+        /// <summary>
+        /// Выбрать первый компонент схемы в списке
+        /// </summary>
+        private void SelectFirstComponent()
+        {
+            if (cbSchComp.Items.Count > 0)
+                cbSchComp.SelectedIndex = 0;
+            else
+                propertyGrid.SelectedObject = null;
+        }
+
+        /// <summary>
+        /// Привязать события схемы
+        /// </summary>
+        private void BindSchemeEvents()
+        {
+            if (editor.SchemeView != null)
+            {
+                editor.SchemeView.SchemeDoc.ItemChanged += SchemeDoc_ItemChanged;
+            }
+        }
+
+        /// <summary>
+        /// Выключить режим добавления компонента
+        /// </summary>
+        private void StopNewComponentMode()
+        {
+            editor.NewComponentTypeName = "";
+            lvComponents.SelectedItems.Clear();
+        }
+
+
+        private void SchemeDoc_ItemChanged(object sender, SchemeChangeTypes changeType, 
+            object changedObject, object oldKey)
+        {
+            BeginInvoke(new Action(() =>
+            {
+                if (changeType == SchemeChangeTypes.ComponentAdded)
+                {
+                    // выключение режима добавления компонента
+                    StopNewComponentMode();
+
+                    // вставка в список и выбор добавленного компонента
+                    cbSchComp.SelectedIndex = cbSchComp.Items.Add(changedObject);
+                }
+            }));
+        }
 
         private void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
@@ -282,6 +324,9 @@ namespace Scada.Scheme.Editor
                     "The second instance of Scheme Editor has been closed.");
                 return;
             }
+
+            // настройка элментов управления
+            lvComponents.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
 
             // создание новой схемы
             NewScheme();
@@ -318,6 +363,11 @@ namespace Scada.Scheme.Editor
                 BringToFront();
         }
 
+        private void FrmMain_Resize(object sender, EventArgs e)
+        {
+            lvComponents.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+        }
+
 
         private void btnFileNew_Click(object sender, EventArgs e)
         {
@@ -341,6 +391,7 @@ namespace Scada.Scheme.Editor
                     bool loadOK = editor.LoadSchemeFromFile(ofdScheme.FileName, out errMsg);
                     appData.AssignViewStamp(editor.SchemeView);
                     FillSchemeComponents();
+                    BindSchemeEvents();
 
                     if (!loadOK)
                         ScadaUiUtils.ShowError(errMsg);
@@ -391,22 +442,34 @@ namespace Scada.Scheme.Editor
 
         private void btnSchemePointer_Click(object sender, EventArgs e)
         {
-            // отмена выбора компонента для добавления на схему
-            editor.NewComponentTypeName = "";
+            // выключение режима добавления компонента
+            StopNewComponentMode();
         }
 
         private void btnSchemeDelete_Click(object sender, EventArgs e)
         {
             // удаление выбранных компонентов схемы
-            if (editor.SchemeView != null)
+            try
             {
-                foreach (object obj in propertyGrid.SelectedObjects)
-                {
-                    if (obj is BaseComponent)
-                        editor.DeleteComponent(((BaseComponent)obj).ID);
-                }
+                cbSchComp.BeginUpdate();
 
-                propertyGrid.SelectedObject = editor.SchemeView.SchemeDoc;
+                if (editor.SchemeView != null)
+                {
+                    foreach (object obj in propertyGrid.SelectedObjects)
+                    {
+                        if (obj is BaseComponent)
+                        {
+                            editor.DeleteComponent(((BaseComponent)obj).ID);
+                            cbSchComp.Items.Remove(obj);
+                        }
+                    }
+
+                    SelectFirstComponent();
+                }
+            }
+            finally
+            {
+                cbSchComp.EndUpdate();
             }
         }
 

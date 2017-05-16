@@ -37,8 +37,14 @@ namespace Scada.Scheme.Model
     /// The base class for scheme component
     /// <para>Базовый класс компонента схемы</para>
     /// </summary>
-    public abstract class BaseComponent : IComparable<BaseComponent>, IObservableItem, ISchemeDocAvailable
+    public abstract class BaseComponent : IObservableItem, ISchemeDocAvailable
     {
+        /// <summary>
+        /// Макс. длина произвольного текста в отображаемом имени
+        /// </summary>
+        protected int MaxAuxTextLength = 20;
+
+
         /// <summary>
         /// Конструктор
         /// </summary>
@@ -121,6 +127,22 @@ namespace Scada.Scheme.Model
 
 
         /// <summary>
+        /// Сформировать отображаемое имя для редактора
+        /// </summary>
+        protected string BuildDisplayName(string auxText = "")
+        {
+            return (new StringBuilder())
+                .Append("[").Append(ID).Append("] ")
+                .Append(auxText == null || auxText.Length <= MaxAuxTextLength ? 
+                    auxText : auxText.Substring(0, MaxAuxTextLength) + "...")
+                .Append(string.IsNullOrEmpty(auxText) ? "" : " - ")
+                .Append(Name)
+                .Append(string.IsNullOrEmpty(Name) ? "" : " - ")
+                .Append(GetType().Name)
+                .ToString();
+        }
+
+        /// <summary>
         /// Загрузить конфигурацию компонента из XML-узла
         /// </summary>
         public virtual void LoadFromXml(XmlNode xmlNode)
@@ -155,20 +177,7 @@ namespace Scada.Scheme.Model
         /// </summary>
         public override string ToString()
         {
-            return (new StringBuilder())
-                .Append("[").Append(ID).Append("] ")
-                .Append(Name)
-                .Append(string.IsNullOrEmpty(Name) ? "" : " - ")
-                .Append(GetType().Name)
-                .ToString();
-        }
-
-        /// <summary>
-        /// Сравнить текущий объект с другим объектом такого же типа
-        /// </summary>
-        public int CompareTo(BaseComponent other)
-        {
-            return ID.CompareTo(other.ID);
+            return BuildDisplayName();
         }
 
         /// <summary>

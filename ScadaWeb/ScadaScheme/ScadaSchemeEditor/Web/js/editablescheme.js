@@ -50,6 +50,8 @@ scada.scheme.EditableScheme = function () {
 
     // Stamp of the last processed change
     this.lastChangeStamp = 0;
+    // Adding new component mode
+    this.newComponentMode = false;
 };
 
 scada.scheme.EditableScheme.prototype = Object.create(scada.scheme.Scheme.prototype);
@@ -140,6 +142,7 @@ scada.scheme.EditableScheme.prototype._updateComponentProps = function (parsedCo
                     }
                 } else {
                     // add component
+                    this.componentMap.set(componentID, newComponent);
                     this.dom.append(newComponent.dom);
                 }
             }
@@ -164,6 +167,60 @@ scada.scheme.EditableScheme.prototype._refreshImages = function (imageNames) {
         console.error("Error refreshing scheme images:", ex.message);
     }
 };
+
+// Proccess mode of the editor
+scada.scheme.EditableScheme.prototype._processMode = function (mode) {
+    mode = !!mode;
+
+    if (this.newComponentMode != mode) {
+        if (mode) {
+            this._getSchemeDiv().addClass("new-component-mode");
+        } else {
+            this._getSchemeDiv().removeClass("new-component-mode");
+        }
+
+        this.newComponentMode = mode;
+    }
+}
+
+// Get the main div element of the scheme
+scada.scheme.EditableScheme.prototype._getSchemeDiv = function () {
+    return this.dom ? this.dom.first() : $();
+}
+
+// Send a request to add a new component to the scheme
+scada.scheme.EditableScheme.prototype._addComponent = function (x, y) {
+    var operation = this.serviceUrl + "AddComponent";
+
+    $.ajax({
+        url: operation +
+            "?editorID=" + this.editorID +
+            "&viewStamp=" + this.viewStamp +
+            "&x=" + x +
+            "&y=" + y,
+        method: "GET",
+        dataType: "json",
+        cache: false
+    })
+    .done(function () {
+        scada.utils.logSuccessfulRequest(operation);
+    })
+    .fail(function (jqXHR) {
+        scada.utils.logFailedRequest(operation, jqXHR);
+    });
+}
+
+// Create DOM content of the scheme
+scada.scheme.EditableScheme.prototype.createDom = function (opt_controlRight) {
+    scada.scheme.Scheme.prototype.createDom.call(this, opt_controlRight);
+    var thisScheme = this;
+
+    this._getSchemeDiv().mousedown(function (event) {
+        if (thisScheme.newComponentMode) {
+            thisScheme._addComponent(event.pageX, event.pageY);
+        }
+    });
+}
 
 // Iteration of getting scheme changes
 // callback is a function (result)
@@ -194,6 +251,7 @@ scada.scheme.EditableScheme.prototype.getChanges = function (callback) {
                     if (thisScheme.viewStamp == parsedData.ViewStamp) {
                         thisScheme._processChanges(parsedData.Changes);
                         // TODO: highlight selected objects
+                        thisScheme._processMode(parsedData.NewComponentMode);
                         callback(GetChangesResults.SUCCESS);
                     } else {
                         console.log(scada.utils.getCurTime() + " View stamps are different. Need to reload scheme.");

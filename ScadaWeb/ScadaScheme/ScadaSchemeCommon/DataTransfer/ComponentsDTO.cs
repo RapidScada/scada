@@ -69,7 +69,7 @@ namespace Scada.Scheme.DataTransfer
         /// <summary>
         /// Копировать заданные компоненты в объект для передачи данных
         /// </summary>
-        public void CopyComponents(List<BaseComponent> srcComponents, int startIndex, int count)
+        public void CopyComponents(IList<BaseComponent> srcComponents, int startIndex, int count)
         {
             int srcCnt = srcComponents.Count;
             EndOfComponents = startIndex + count >= srcCnt;

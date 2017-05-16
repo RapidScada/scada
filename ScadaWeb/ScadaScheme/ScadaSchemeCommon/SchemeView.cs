@@ -53,7 +53,7 @@ namespace Scada.Scheme
         {
             maxComponentID = 0;
             SchemeDoc = new SchemeDocument();
-            Components = new List<BaseComponent>();
+            Components = new SortedList<int, BaseComponent>();
         }
 
 
@@ -63,9 +63,9 @@ namespace Scada.Scheme
         public SchemeDocument SchemeDoc { get; protected set; }
 
         /// <summary>
-        /// Получить компоненты схемы
+        /// Получить компоненты схемы, ключ - идентификатор компонента
         /// </summary>
-        public List<BaseComponent> Components { get; protected set; } // TODO: change to SortedList by ID
+        public SortedList<int, BaseComponent> Components { get; protected set; }
 
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace Scada.Scheme
                         // загрузка компонента и добавление его в представление
                         component.SchemeDoc = SchemeDoc;
                         component.LoadFromXml(componentNode);
-                        Components.Add(component);
+                        Components[component.ID] = component;
 
                         // добавление входных каналов представления
                         if (component is IDynamicComponent)
@@ -214,7 +214,7 @@ namespace Scada.Scheme
                 XmlElement componentsElem = xmlDoc.CreateElement("Elements");
                 rootElem.AppendChild(componentsElem);
 
-                foreach (BaseComponent component in Components)
+                foreach (BaseComponent component in Components.Values)
                 {
                     XmlElement componentElem = xmlDoc.CreateElement(component.GetType().Name);
                     componentsElem.AppendChild(componentElem);

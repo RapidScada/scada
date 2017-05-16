@@ -136,7 +136,7 @@ namespace Scada.Scheme.Editor
                 ComponentsDTO dto = new ComponentsDTO();
 
                 if (CheckArguments(editorID, viewStamp, dto))
-                    dto.CopyComponents(Editor.SchemeView.Components, startIndex, count);
+                    dto.CopyComponents(Editor.SchemeView.Components.Values, startIndex, count);
 
                 return JsSerializer.Serialize(dto);
             }

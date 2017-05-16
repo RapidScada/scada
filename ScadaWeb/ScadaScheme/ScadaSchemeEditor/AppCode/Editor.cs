@@ -157,7 +157,7 @@ namespace Scada.Scheme.Editor
             {
                 SchemeView.SchemeDoc.ItemChanged += Scheme_ItemChanged;
 
-                foreach (BaseComponent component in SchemeView.Components)
+                foreach (BaseComponent component in SchemeView.Components.Values)
                     component.ItemChanged += Scheme_ItemChanged;
             }
         }
@@ -348,7 +348,7 @@ namespace Scada.Scheme.Editor
                 component.ID = SchemeView.GetNextComponentID();
                 component.Location = new Point(x, y);
                 component.ItemChanged += Scheme_ItemChanged;
-                SchemeView.Components.Add(component);
+                SchemeView.Components[component.ID] = component;
                 SchemeView.SchemeDoc.OnItemChanged(SchemeChangeTypes.ComponentAdded, component);
 
                 return true;
@@ -378,8 +378,13 @@ namespace Scada.Scheme.Editor
             {
                 if (SchemeView != null)
                 {
-                    //BaseComponent component = null;
-                    //SchemeView.SchemeDoc.OnItemChanged(SchemeChangeTypes.ComponentDeleted, component);
+                    BaseComponent component;
+
+                    if (SchemeView.Components.TryGetValue(componentID, out component))
+                    {
+                        SchemeView.Components.Remove(componentID);
+                        SchemeView.SchemeDoc.OnItemChanged(SchemeChangeTypes.ComponentDeleted, component);
+                    }
                 }
             }
             catch (Exception ex)

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2017
  */
 
 using Scada.Scheme;
@@ -124,7 +124,7 @@ namespace Scada.Web.Plugins.Scheme
                 dto.ViewStamp = schemeView.Stamp;
 
                 if (SchemeUtils.ViewStampsMatched(viewStamp, schemeView.Stamp))
-                    dto.CopyComponents(schemeView.Components, startIndex, count);
+                    dto.CopyComponents(schemeView.Components.Values, startIndex, count);
 
                 return JsSerializer.Serialize(dto);
             }

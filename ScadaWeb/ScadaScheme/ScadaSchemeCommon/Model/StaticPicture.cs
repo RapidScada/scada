@@ -103,5 +103,13 @@ namespace Scada.Scheme.Model
             xmlElem.AppendElem("ImageName", ImageName);
             xmlElem.AppendElem("ImageStretch", ImageStretch);
         }
+
+        /// <summary>
+        /// Вернуть строковое представление объекта
+        /// </summary>
+        public override string ToString()
+        {
+            return BuildDisplayName(ImageName);
+        }
     }
 }

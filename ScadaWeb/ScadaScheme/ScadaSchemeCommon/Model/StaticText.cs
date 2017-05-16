@@ -26,6 +26,7 @@
 using Scada.Scheme.Model.DataTypes;
 using Scada.Scheme.Model.PropertyGrid;
 using System.Drawing.Design;
+using System.Text;
 using System.Xml;
 using CM = System.ComponentModel;
 
@@ -184,6 +185,14 @@ namespace Scada.Scheme.Model
             xmlElem.AppendElem("WordWrap", WordWrap);
             xmlElem.AppendElem("HAlign", HAlign);
             xmlElem.AppendElem("VAlign", VAlign);
+        }
+
+        /// <summary>
+        /// Вернуть строковое представление объекта
+        /// </summary>
+        public override string ToString()
+        {
+            return BuildDisplayName(Text);
         }
     }
 }

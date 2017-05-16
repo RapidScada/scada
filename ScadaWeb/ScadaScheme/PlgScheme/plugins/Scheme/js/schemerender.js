@@ -349,6 +349,8 @@ scada.scheme.ComponentRenderer.prototype.prepareComponent = function (jqObj, com
             "height": props.Size.Height
         });
     }
+
+    jqObj.addClass("comp");
 };
 
 // Bind user action to the component
