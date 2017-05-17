@@ -64,6 +64,7 @@ namespace Scada.Scheme.Editor
             editor = appData.Editor;
             mutex = null;
 
+            editor.SelectionChanged += Editor_SelectionChanged;
             Application.ThreadException += Application_ThreadException;
         }
 
@@ -297,6 +298,12 @@ namespace Scada.Scheme.Editor
                     cbSchComp.SelectedIndex = cbSchComp.Items.Add(changedObject);
                 }
             }));
+        }
+
+        private void Editor_SelectionChanged(BaseComponent[] selection)
+        {
+            // отображение свойств выбранных компонентов схемы
+            propertyGrid.SelectedObjects = selection;
         }
 
         private void Application_ThreadException(object sender, ThreadExceptionEventArgs e)

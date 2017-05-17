@@ -42,6 +42,12 @@ namespace Scada.Scheme.Editor
     internal class Editor
     {
         /// <summary>
+        /// Представляет метод для обработки события, возникающего при изменении выбранных компонентов схемы
+        /// </summary>
+        public delegate void SelectionChangedEventHandler(BaseComponent[] selection);
+
+
+        /// <summary>
         /// Длина идентификатора редактора
         /// </summary>
         private const int EditorIDLength = 10;
@@ -160,6 +166,14 @@ namespace Scada.Scheme.Editor
                 foreach (BaseComponent component in SchemeView.Components.Values)
                     component.ItemChanged += Scheme_ItemChanged;
             }
+        }
+
+        /// <summary>
+        /// Вызвать событие SelectionChanged
+        /// </summary>
+        private void OnSelectionChanged(BaseComponent[] selection)
+        {
+            SelectionChanged?.Invoke(selection);
         }
 
         /// <summary>
@@ -394,5 +408,11 @@ namespace Scada.Scheme.Editor
                     "Error deleting scheme component");
             }
         }
+
+
+        /// <summary>
+        /// Событие возникающее при изменении выбранных компонентов схемы
+        /// </summary>
+        public event SelectionChangedEventHandler SelectionChanged;
     }
 }
