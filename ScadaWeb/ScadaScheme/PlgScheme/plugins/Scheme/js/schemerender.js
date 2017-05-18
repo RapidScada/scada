@@ -351,42 +351,45 @@ scada.scheme.ComponentRenderer.prototype.prepareComponent = function (jqObj, com
     }
 
     jqObj.addClass("comp");
+    jqObj.data("id", props.ID);
 };
 
 // Bind user action to the component
-scada.scheme.ComponentRenderer.prototype.bindAction = function (jqObj, component, controlRight) {
+scada.scheme.ComponentRenderer.prototype.bindAction = function (jqObj, component, renderContext) {
     var Actions = scada.scheme.Actions;
     var props = component.props;
     var action = props.Action;
     var actionIsBound =
         action == Actions.DRAW_DIAGRAM && props.InCnlNum > 0 ||
-        action == Actions.SEND_COMMAND && props.CtrlCnlNum > 0 && controlRight;
+        action == Actions.SEND_COMMAND && props.CtrlCnlNum > 0 && renderContext.controlRight;
 
     if (actionIsBound) {
-        var viewHub = scada.scheme.viewHub;
-        var dialogs = viewHub ? viewHub.dialogs : null;
+        jqObj.css("cursor", "pointer");
 
-        jqObj
-        .css("cursor", "pointer")
-        .click(function () {
-            switch (props.Action) {
-                case Actions.DRAW_DIAGRAM:
-                    if (dialogs) {
-                        var date = viewHub.curViewDateMs ? new Date(viewHub.curViewDateMs) : new Date();
-                        dialogs.showChart(props.InCnlNum, viewHub.curViewID, date);
-                    } else {
-                        console.warn("Dialogs object is undefined");
-                    }
-                    break;
-                case Actions.SEND_COMMAND:
-                    if (dialogs) {
-                        dialogs.showCmd(props.CtrlCnlNum, viewHub.curViewID);
-                    } else {
-                        console.warn("Dialogs object is undefined");
-                    }
-                    break;
-            }
-        });
+        if (!renderContext.editMode) {
+            var viewHub = scada.scheme.viewHub;
+            var dialogs = viewHub ? viewHub.dialogs : null;
+
+            jqObj.click(function () {
+                switch (props.Action) {
+                    case Actions.DRAW_DIAGRAM:
+                        if (dialogs) {
+                            var date = viewHub.curViewDateMs ? new Date(viewHub.curViewDateMs) : new Date();
+                            dialogs.showChart(props.InCnlNum, viewHub.curViewID, date);
+                        } else {
+                            console.warn("Dialogs object is undefined");
+                        }
+                        break;
+                    case Actions.SEND_COMMAND:
+                        if (dialogs) {
+                            dialogs.showCmd(props.CtrlCnlNum, viewHub.curViewID);
+                        } else {
+                            console.warn("Dialogs object is undefined");
+                        }
+                        break;
+                }
+            });
+        }
     }
 };
 
@@ -464,7 +467,7 @@ scada.scheme.DynamicTextRenderer.prototype.createDom = function (component, rend
     var spanText = component.dom.children();
 
     this.setToolTip(spanComp, props.ToolTip);
-    this.bindAction(spanComp, component, renderContext.controlRight);
+    this.bindAction(spanComp, component, renderContext);
 
     // apply properties on hover
     var thisRenderer = this;
@@ -595,7 +598,7 @@ scada.scheme.DynamicPictureRenderer.prototype.createDom = function (component, r
     var divComp = component.dom;
 
     this.setToolTip(divComp, props.ToolTip);
-    this.bindAction(divComp, component, renderContext.controlRight);
+    this.bindAction(divComp, component, renderContext);
 
     // apply properties on hover
     var thisRenderer = this;

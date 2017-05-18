@@ -42,6 +42,15 @@ scada.scheme.SchemeChangeTypes = {
     IMAGE_DELETED: 7
 };
 
+/********** Select Component Actions **********/
+
+scada.scheme.SelectActions = {
+    SELECT: "select",
+    APPEND: "append",
+    DESELECT: "deselect",
+    DESELECT_ALL: "deselectall"
+};
+
 /********** Editable Scheme **********/
 
 // Editable scheme type
@@ -52,6 +61,8 @@ scada.scheme.EditableScheme = function () {
     this.lastChangeStamp = 0;
     // Adding new component mode
     this.newComponentMode = false;
+    // IDs of the selected components
+    this.selComponentIDs = [];
 };
 
 scada.scheme.EditableScheme.prototype = Object.create(scada.scheme.Scheme.prototype);
@@ -135,8 +146,13 @@ scada.scheme.EditableScheme.prototype._updateComponentProps = function (parsedCo
                 var oldComponent = this.componentMap.get(componentID);
 
                 if (oldComponent) {
-                    // replace component
                     if (oldComponent.dom) {
+                        // copy selection
+                        if (oldComponent.dom.hasClass("selected")) {
+                            newComponent.dom.addClass("selected");
+                        }
+
+                        // replace component
                         this.componentMap.set(componentID, newComponent);
                         oldComponent.dom.replaceWith(newComponent.dom);
                     }
@@ -167,6 +183,27 @@ scada.scheme.EditableScheme.prototype._refreshImages = function (imageNames) {
         console.error("Error refreshing scheme images:", ex.message);
     }
 };
+
+// Highlight the selected components
+scada.scheme.EditableScheme.prototype._processSelection = function (selCompIDs) {
+    // add currently selected components to the set
+    var idSet = new Set(this.selComponentIDs);
+
+    // process changes of the selection
+    for (var selCompID of selCompIDs) {
+        if (idSet.has(selCompID)) {
+            idSet.delete(selCompID);
+        } else {
+            $("#comp" + selCompID).addClass("selected");
+        }
+    }
+
+    for (var deselCompID of idSet) {
+        $("#comp" + deselCompID).removeClass("selected");
+    }
+
+    this.selComponentIDs = Array.isArray(selCompIDs) ? selCompIDs : [];
+}
 
 // Proccess mode of the editor
 scada.scheme.EditableScheme.prototype._processMode = function (mode) {
@@ -210,16 +247,62 @@ scada.scheme.EditableScheme.prototype._addComponent = function (x, y) {
     });
 }
 
+// Send a request to change scheme component selection
+scada.scheme.EditableScheme.prototype._changeSelection = function (action, opt_componentID) {
+    var operation = this.serviceUrl + "ChangeSelection";
+
+    $.ajax({
+        url: operation +
+            "?editorID=" + this.editorID +
+            "&viewStamp=" + this.viewStamp +
+            "&action=" + action +
+            "&componentID=" + (opt_componentID ? opt_componentID : "-1"),
+        method: "GET",
+        dataType: "json",
+        cache: false
+    })
+    .done(function () {
+        scada.utils.logSuccessfulRequest(operation);
+    })
+    .fail(function (jqXHR) {
+        scada.utils.logFailedRequest(operation, jqXHR);
+    });
+}
+
 // Create DOM content of the scheme
 scada.scheme.EditableScheme.prototype.createDom = function (opt_controlRight) {
     scada.scheme.Scheme.prototype.createDom.call(this, opt_controlRight);
+    var SelectActions = scada.scheme.SelectActions;
     var thisScheme = this;
 
-    this._getSchemeDiv().mousedown(function (event) {
-        if (thisScheme.newComponentMode) {
-            thisScheme._addComponent(event.pageX, event.pageY);
-        }
-    });
+    this._getSchemeDiv()
+        .on("mousedown", function (event) {
+            if (thisScheme.newComponentMode) {
+                // add new component
+                thisScheme._addComponent(event.pageX, event.pageY);
+            } else {
+                // deselect all components
+                console.log(scada.utils.getCurTime() + " Scheme background is clicked.");
+                thisScheme._changeSelection(SelectActions.DESELECT_ALL);
+            }
+        })
+        .on("mousedown", ".comp", function (event) {
+            if (!thisScheme.newComponentMode) {
+                // select or deselect component
+                var componentID = $(this).data("id");
+                console.log(scada.utils.getCurTime() + " Component with ID=" + componentID + " is clicked.");
+
+                if (event.ctrlKey) {
+                    thisScheme._changeSelection(
+                        $(this).hasClass("selected") ? SelectActions.DESELECT : SelectActions.APPEND,
+                        componentID);
+                } else {
+                    thisScheme._changeSelection(SelectActions.SELECT, componentID);
+                }
+
+                event.stopPropagation();
+            }
+        });
 }
 
 // Iteration of getting scheme changes
@@ -250,8 +333,8 @@ scada.scheme.EditableScheme.prototype.getChanges = function (callback) {
                 } else if (thisScheme.viewStamp && parsedData.ViewStamp) {
                     if (thisScheme.viewStamp == parsedData.ViewStamp) {
                         thisScheme._processChanges(parsedData.Changes);
-                        // TODO: highlight selected objects
-                        thisScheme._processMode(parsedData.NewComponentMode);
+                        thisScheme._processSelection(parsedData.SelCompIDs);
+                        thisScheme._processMode(parsedData.NewCompMode);
                         callback(GetChangesResults.SUCCESS);
                     } else {
                         console.log(scada.utils.getCurTime() + " View stamps are different. Need to reload scheme.");

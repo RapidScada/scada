@@ -44,6 +44,17 @@ namespace Scada.Scheme.Editor
     public class SchemeEditorSvc
     {
         /// <summary>
+        /// Действия при выборе компонентов схемы
+        /// </summary>
+        private class SelectActions
+        {
+            public const string Select = "select";
+            public const string Append = "append";
+            public const string Deselect = "deselect";
+            public const string DeselectAll = "deselectall";
+        }
+
+        /// <summary>
         /// Максимальное количество символов строке данных в формате JSON, 10 МБ
         /// </summary>
         private const int MaxJsonLen = 10485760;
@@ -109,7 +120,12 @@ namespace Scada.Scheme.Editor
                 SchemeDocDTO dto = new SchemeDocDTO();
 
                 if (CheckArguments(editorID, viewStamp, dto))
-                    dto.SchemeDoc = Editor.SchemeView.SchemeDoc;
+                {
+                    lock (Editor.SchemeView.SyncRoot)
+                    {
+                        dto.SchemeDoc = Editor.SchemeView.SchemeDoc;
+                    }
+                }
 
                 return JsSerializer.Serialize(dto);
             }
@@ -136,7 +152,12 @@ namespace Scada.Scheme.Editor
                 ComponentsDTO dto = new ComponentsDTO();
 
                 if (CheckArguments(editorID, viewStamp, dto))
-                    dto.CopyComponents(Editor.SchemeView.Components.Values, startIndex, count);
+                {
+                    lock (Editor.SchemeView.SyncRoot)
+                    {
+                        dto.CopyComponents(Editor.SchemeView.Components.Values, startIndex, count);
+                    }
+                }
 
                 return JsSerializer.Serialize(dto);
             }
@@ -163,7 +184,12 @@ namespace Scada.Scheme.Editor
                 ImagesDTO dto = new ImagesDTO();
 
                 if (CheckArguments(editorID, viewStamp, dto))
-                    dto.CopyImages(Editor.SchemeView.SchemeDoc.Images, startIndex, totalDataSize);
+                {
+                    lock (Editor.SchemeView.SyncRoot)
+                    {
+                        dto.CopyImages(Editor.SchemeView.SchemeDoc.Images.Values, startIndex, totalDataSize);
+                    }
+                }
 
                 return JsSerializer.Serialize(dto);
             }
@@ -193,7 +219,7 @@ namespace Scada.Scheme.Editor
                 {
                     dto.Changes = Editor.GetChanges(changeStamp);
                     dto.SelCompIDs = Editor.GetSelectedComponentIDs();
-                    dto.NewComponentMode = !string.IsNullOrEmpty(Editor.NewComponentTypeName);
+                    dto.NewCompMode = !string.IsNullOrEmpty(Editor.NewComponentTypeName);
                 }
 
                 return JsSerializer.Serialize(dto);
@@ -230,6 +256,42 @@ namespace Scada.Scheme.Editor
                 AppData.Log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при добавлении компонента на схему" :
                     "Error adding component to the scheme");
+                return JsSerializer.GetErrorJson(ex);
+            }
+        }
+
+        /// <summary>
+        /// Изменить выбор компонентов схемы
+        /// </summary>
+        /// <remarks>Возвращает SchemeDTO в формате в JSON</remarks>
+        [OperationContract]
+        [WebGet]
+        public string ChangeSelection(string editorID, long viewStamp, string action, int componentID)
+        {
+            try
+            {
+                AllowAccess();
+                SchemeDTO dto = new SchemeDTO();
+
+                if (CheckArguments(editorID, viewStamp, dto))
+                {
+                    if (action == SelectActions.Select)
+                        Editor.SelectComponent(componentID);
+                    else if (action == SelectActions.Append)
+                        Editor.SelectComponent(componentID, true);
+                    else if (action == SelectActions.Deselect)
+                        Editor.DeselectComponent(componentID);
+                    else if (action == SelectActions.DeselectAll)
+                        Editor.DeselectAllComponents();
+                }
+
+                return JsSerializer.Serialize(dto);
+            }
+            catch (Exception ex)
+            {
+                AppData.Log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при изменении выбора компонентов схемы" :
+                    "Error changing scheme component selection");
                 return JsSerializer.GetErrorJson(ex);
             }
         }

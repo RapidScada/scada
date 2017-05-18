@@ -39,7 +39,7 @@ namespace Scada.Scheme.Editor
     /// Editor data and logic
     /// <para>Данные и логика редактора</para>
     /// </summary>
-    internal class Editor
+    internal sealed class Editor
     {
         /// <summary>
         /// Представляет метод для обработки события, возникающего при изменении выбранных компонентов схемы
@@ -68,6 +68,7 @@ namespace Scada.Scheme.Editor
         private readonly Log log;     // журнал приложения
         private List<Change> changes; // изменения схемы
         private long changeStampCntr; // счётчик для генерации меток изменений схемы
+        private List<BaseComponent> selComponents; // выбранные компоненты схемы
 
 
         /// <summary>
@@ -87,7 +88,7 @@ namespace Scada.Scheme.Editor
         /// <summary>
         /// Конструктор, ограничивающий создание объекта без параметров
         /// </summary>
-        protected Editor()
+        private Editor()
         {
         }
 
@@ -102,6 +103,7 @@ namespace Scada.Scheme.Editor
             this.log = log;
             changes = new List<Change>();
             changeStampCntr = 0;
+            selComponents = new List<BaseComponent>();
 
             EditorID = GetRandomString(EditorIDLength);
             SchemeView = null;
@@ -155,6 +157,18 @@ namespace Scada.Scheme.Editor
 
 
         /// <summary>
+        /// Очистить изменения схемы
+        /// </summary>
+        private void ClearChanges()
+        {
+            lock (changes)
+            {
+                changes.Clear();
+                changeStampCntr = 0;
+            }
+        }
+
+        /// <summary>
         /// Подписаться на изменения схемы
         /// </summary>
         private void SubscribeToChanges()
@@ -169,11 +183,22 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
+        /// Очистить выбранные компоненты схемы
+        /// </summary>
+        private void ClearSelComponents()
+        {
+            lock (selComponents)
+            {
+                selComponents.Clear();
+            }
+        }
+
+        /// <summary>
         /// Вызвать событие SelectionChanged
         /// </summary>
-        private void OnSelectionChanged(BaseComponent[] selection)
+        private void OnSelectionChanged()
         {
-            SelectionChanged?.Invoke(selection);
+            SelectionChanged?.Invoke(GetSelectedComponents());
         }
 
         /// <summary>
@@ -255,6 +280,8 @@ namespace Scada.Scheme.Editor
         /// </summary>
         public void NewScheme()
         {
+            ClearChanges();
+            ClearSelComponents();
             SchemeView = new SchemeView();
             FileName = "";
             Modified = false;
@@ -266,8 +293,16 @@ namespace Scada.Scheme.Editor
         /// </summary>
         public bool LoadSchemeFromFile(string fileName, out string errMsg)
         {
+            ClearChanges();
+            ClearSelComponents();
             SchemeView = new SchemeView();
-            bool loadOK = SchemeView.LoadFromFile(fileName, out errMsg);
+            bool loadOK;
+
+            lock (SchemeView.SyncRoot)
+            {
+                loadOK = SchemeView.LoadFromFile(fileName, out errMsg);
+            }
+
             FileName = fileName;
             Modified = false;
             SubscribeToChanges();
@@ -290,21 +325,26 @@ namespace Scada.Scheme.Editor
                 errMsg = "";
                 return true;
             }
-            else if (SchemeView.SaveToFile(fileName, out errMsg))
-            {
-                return true;
-            }
             else
             {
-                log.WriteError(errMsg);
-                return false;
+                bool saveOK;
+
+                lock (SchemeView.SyncRoot)
+                {
+                    saveOK = SchemeView.SaveToFile(fileName, out errMsg);
+                }
+
+                if (!saveOK)
+                    log.WriteError(errMsg);
+
+                return saveOK;
             }
         }
 
         /// <summary>
         /// Получить изменения схемы для передачи
         /// </summary>
-        public List<Change> GetChanges(long trimBeforeStamp)
+        public Change[] GetChanges(long trimBeforeStamp)
         {
             lock (changes)
             {
@@ -313,23 +353,54 @@ namespace Scada.Scheme.Editor
                     changes.RemoveAt(0);
                 }
 
-                List<Change> destChanges = new List<Change>(changes.Count);
+                int cnt = changes.Count;
+                Change[] destChanges = new Change[cnt];
 
-                foreach (Change change in changes)
+                for (int i = 0; i < cnt; i++)
                 {
-                    destChanges.Add(change.ConvertToDTO());
+                    destChanges[i] = changes[i].ConvertToDTO();
                 }
 
-                return new List<Change>(destChanges);
+                return destChanges;
+            }
+        }
+
+        /// <summary>
+        /// Получить выбранные компоненты схемы
+        /// </summary>
+        public BaseComponent[] GetSelectedComponents()
+        {
+            lock (selComponents)
+            {
+                int cnt = selComponents.Count;
+                BaseComponent[] destSelComponents = new BaseComponent[cnt];
+
+                for (int i = 0; i < cnt; i++)
+                {
+                    destSelComponents[i] = selComponents[i];
+                }
+
+                return destSelComponents;
             }
         }
 
         /// <summary>
         /// Получить идентификаторы выбранных компонентов схемы
         /// </summary>
-        public List<int> GetSelectedComponentIDs()
+        public int[] GetSelectedComponentIDs()
         {
-            return new List<int>();
+            lock (selComponents)
+            {
+                int cnt = selComponents.Count;
+                int[] ids = new int[cnt];
+
+                for (int i = 0; i < cnt; i++)
+                {
+                    ids[i] = selComponents[i].ID;
+                }
+
+                return ids;
+            }
         }
 
         /// <summary>
@@ -357,13 +428,18 @@ namespace Scada.Scheme.Editor
                         "Не найден тип создаваемого компонента {0}." :
                         "Type of the creating component {0} not found.", NewComponentTypeName));
 
-                // создание компонента и добавление на схему
+                // создание компонента
                 BaseComponent component = (BaseComponent)Activator.CreateInstance(componentType);
                 component.ID = SchemeView.GetNextComponentID();
                 component.Location = new Point(x, y);
                 component.ItemChanged += Scheme_ItemChanged;
-                SchemeView.Components[component.ID] = component;
-                SchemeView.SchemeDoc.OnItemChanged(SchemeChangeTypes.ComponentAdded, component);
+
+                // добавление компонента на схему
+                lock (SchemeView.SyncRoot)
+                {
+                    SchemeView.Components[component.ID] = component;
+                    SchemeView.SchemeDoc.OnItemChanged(SchemeChangeTypes.ComponentAdded, component);
+                }
 
                 return true;
             }
@@ -384,21 +460,31 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Удалить компонент схемы
+        /// Удалить компоненты схемы
         /// </summary>
-        public void DeleteComponent(int componentID)
+        public void DeleteComponents(ICollection<int> componentIDs)
         {
             try
             {
                 if (SchemeView != null)
                 {
-                    BaseComponent component;
-
-                    if (SchemeView.Components.TryGetValue(componentID, out component))
+                    // удаление заданных компонентов
+                    lock (SchemeView.SyncRoot)
                     {
-                        SchemeView.Components.Remove(componentID);
-                        SchemeView.SchemeDoc.OnItemChanged(SchemeChangeTypes.ComponentDeleted, component);
+                        foreach (int componentID in componentIDs)
+                        {
+                            BaseComponent component;
+                            if (SchemeView.Components.TryGetValue(componentID, out component))
+                            {
+                                SchemeView.Components.Remove(componentID);
+                                SchemeView.SchemeDoc.OnItemChanged(SchemeChangeTypes.ComponentDeleted, component);
+                            }
+                        }
                     }
+
+                    // очистка выбранных компонентов
+                    ClearSelComponents();
+                    OnSelectionChanged();
                 }
             }
             catch (Exception ex)
@@ -406,6 +492,101 @@ namespace Scada.Scheme.Editor
                 log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при удалении компонента схемы" :
                     "Error deleting scheme component");
+            }
+        }
+
+        /// <summary>
+        /// Выбрать компонент схемы
+        /// </summary>
+        public void SelectComponent(int componentID, bool append = false)
+        {
+            try
+            {
+                if (SchemeView != null)
+                {
+                    BaseComponent component;
+                    lock (SchemeView.SyncRoot)
+                    {
+                        SchemeView.Components.TryGetValue(componentID, out component);
+                    }
+
+                    if (component != null)
+                    {
+                        lock (selComponents)
+                        {
+                            if (append)
+                            {
+                                if (!selComponents.Contains(component))
+                                    selComponents.Add(component);
+                            }
+                            else
+                            {
+                                selComponents.Clear();
+                                selComponents.Add(component);
+                            }
+                        }
+
+                        OnSelectionChanged();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при выборе компонента схемы" :
+                    "Error selecting scheme component");
+            }
+        }
+
+        /// <summary>
+        /// Отменить выбор компонента схемы
+        /// </summary>
+        public void DeselectComponent(int componentID)
+        {
+            try
+            {
+                if (SchemeView != null)
+                {
+                    lock (selComponents)
+                    {
+                        for (int i = 0, cnt = selComponents.Count; i < cnt; i++)
+                        {
+                            if (selComponents[i].ID == componentID)
+                            {
+                                selComponents.RemoveAt(i);
+                                OnSelectionChanged();
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при отмене выбора компонента схемы" :
+                    "Error deselecting scheme component");
+            }
+        }
+
+        /// <summary>
+        /// Отменить выбор всех компонентов схемы
+        /// </summary>
+        public void DeselectAllComponents()
+        {
+            try
+            {
+                if (SchemeView != null)
+                {
+                    ClearSelComponents();
+                    OnSelectionChanged();
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при отмене выбора всех компонентов схемы" :
+                    "Error deselecting all scheme components");
             }
         }
 

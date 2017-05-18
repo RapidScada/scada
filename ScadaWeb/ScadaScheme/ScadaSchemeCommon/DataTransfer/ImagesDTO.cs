@@ -59,9 +59,8 @@ namespace Scada.Scheme.DataTransfer
         /// <summary>
         /// Копировать заданные изображения в объект для передачи данных
         /// </summary>
-        public void CopyImages(Dictionary<string, Image> imageDict, int startIndex, int totalDataSize)
+        public void CopyImages(ICollection<Image> srcImages, int startIndex, int totalDataSize)
         {
-            Dictionary<string, Image>.ValueCollection srcImages = imageDict.Values;
             int i = 0;
             int size = 0;
 

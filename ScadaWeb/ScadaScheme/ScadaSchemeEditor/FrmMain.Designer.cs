@@ -30,12 +30,12 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
-            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Standard", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem("Pointer", "pointer.png");
-            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem("Static Text", "comp_st.png");
-            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem("Dynamic Text", "comp_dt.png");
-            System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem("Static Picture", "comp_sp.png");
-            System.Windows.Forms.ListViewItem listViewItem10 = new System.Windows.Forms.ListViewItem("Dynamic Picture", "comp_dp.png");
+            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Standard", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("Pointer", "pointer.png");
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("Static Text", "comp_st.png");
+            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("Dynamic Text", "comp_dt.png");
+            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("Static Picture", "comp_sp.png");
+            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem("Dynamic Picture", "comp_dp.png");
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.btnFileNew = new System.Windows.Forms.ToolStripButton();
             this.btnFileOpen = new System.Windows.Forms.ToolStripButton();
@@ -58,9 +58,9 @@
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.pageComponents = new System.Windows.Forms.TabPage();
-            this.lvComponents = new System.Windows.Forms.ListView();
+            this.lvCompTypes = new System.Windows.Forms.ListView();
             this.colCompName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.ilComponents = new System.Windows.Forms.ImageList(this.components);
+            this.ilCompTypes = new System.Windows.Forms.ImageList(this.components);
             this.pageProperties = new System.Windows.Forms.TabPage();
             this.propertyGrid = new System.Windows.Forms.PropertyGrid();
             this.cbSchComp = new System.Windows.Forms.ComboBox();
@@ -279,7 +279,7 @@
             // 
             // pageComponents
             // 
-            this.pageComponents.Controls.Add(this.lvComponents);
+            this.pageComponents.Controls.Add(this.lvCompTypes);
             this.pageComponents.Location = new System.Drawing.Point(4, 22);
             this.pageComponents.Name = "pageComponents";
             this.pageComponents.Padding = new System.Windows.Forms.Padding(3);
@@ -288,62 +288,62 @@
             this.pageComponents.Text = "Components";
             this.pageComponents.UseVisualStyleBackColor = true;
             // 
-            // lvComponents
+            // lvCompTypes
             // 
-            this.lvComponents.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.lvCompTypes.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.colCompName});
-            this.lvComponents.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lvComponents.FullRowSelect = true;
-            listViewGroup2.Header = "Standard";
-            listViewGroup2.Name = "lvgStandard";
-            this.lvComponents.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup2});
-            this.lvComponents.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.lvComponents.HideSelection = false;
-            listViewItem6.Group = listViewGroup2;
-            listViewItem6.IndentCount = 1;
-            listViewItem7.Group = listViewGroup2;
-            listViewItem7.IndentCount = 1;
-            listViewItem7.Tag = "Scada.Scheme.Model.StaticText";
-            listViewItem8.Group = listViewGroup2;
-            listViewItem8.IndentCount = 1;
-            listViewItem8.Tag = "Scada.Scheme.Model.DynamicText";
-            listViewItem9.Group = listViewGroup2;
-            listViewItem9.IndentCount = 1;
-            listViewItem9.Tag = "Scada.Scheme.Model.StaticPicture";
-            listViewItem10.Group = listViewGroup2;
-            listViewItem10.IndentCount = 1;
-            listViewItem10.Tag = "Scada.Scheme.Model.DynamicPicture";
-            this.lvComponents.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem6,
-            listViewItem7,
-            listViewItem8,
-            listViewItem9,
-            listViewItem10});
-            this.lvComponents.LabelWrap = false;
-            this.lvComponents.Location = new System.Drawing.Point(3, 3);
-            this.lvComponents.MultiSelect = false;
-            this.lvComponents.Name = "lvComponents";
-            this.lvComponents.Size = new System.Drawing.Size(295, 432);
-            this.lvComponents.SmallImageList = this.ilComponents;
-            this.lvComponents.TabIndex = 0;
-            this.lvComponents.UseCompatibleStateImageBehavior = false;
-            this.lvComponents.View = System.Windows.Forms.View.Details;
-            this.lvComponents.SelectedIndexChanged += new System.EventHandler(this.lvComponents_SelectedIndexChanged);
+            this.lvCompTypes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvCompTypes.FullRowSelect = true;
+            listViewGroup1.Header = "Standard";
+            listViewGroup1.Name = "lvgStandard";
+            this.lvCompTypes.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
+            listViewGroup1});
+            this.lvCompTypes.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.lvCompTypes.HideSelection = false;
+            listViewItem1.Group = listViewGroup1;
+            listViewItem1.IndentCount = 1;
+            listViewItem2.Group = listViewGroup1;
+            listViewItem2.IndentCount = 1;
+            listViewItem2.Tag = "Scada.Scheme.Model.StaticText";
+            listViewItem3.Group = listViewGroup1;
+            listViewItem3.IndentCount = 1;
+            listViewItem3.Tag = "Scada.Scheme.Model.DynamicText";
+            listViewItem4.Group = listViewGroup1;
+            listViewItem4.IndentCount = 1;
+            listViewItem4.Tag = "Scada.Scheme.Model.StaticPicture";
+            listViewItem5.Group = listViewGroup1;
+            listViewItem5.IndentCount = 1;
+            listViewItem5.Tag = "Scada.Scheme.Model.DynamicPicture";
+            this.lvCompTypes.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+            listViewItem1,
+            listViewItem2,
+            listViewItem3,
+            listViewItem4,
+            listViewItem5});
+            this.lvCompTypes.LabelWrap = false;
+            this.lvCompTypes.Location = new System.Drawing.Point(3, 3);
+            this.lvCompTypes.MultiSelect = false;
+            this.lvCompTypes.Name = "lvCompTypes";
+            this.lvCompTypes.Size = new System.Drawing.Size(295, 432);
+            this.lvCompTypes.SmallImageList = this.ilCompTypes;
+            this.lvCompTypes.TabIndex = 0;
+            this.lvCompTypes.UseCompatibleStateImageBehavior = false;
+            this.lvCompTypes.View = System.Windows.Forms.View.Details;
+            this.lvCompTypes.SelectedIndexChanged += new System.EventHandler(this.lvCompTypes_SelectedIndexChanged);
             // 
             // colCompName
             // 
             this.colCompName.Width = 250;
             // 
-            // ilComponents
+            // ilCompTypes
             // 
-            this.ilComponents.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilComponents.ImageStream")));
-            this.ilComponents.TransparentColor = System.Drawing.Color.Transparent;
-            this.ilComponents.Images.SetKeyName(0, "pointer.png");
-            this.ilComponents.Images.SetKeyName(1, "comp_st.png");
-            this.ilComponents.Images.SetKeyName(2, "comp_dt.png");
-            this.ilComponents.Images.SetKeyName(3, "comp_sp.png");
-            this.ilComponents.Images.SetKeyName(4, "comp_dp.png");
+            this.ilCompTypes.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilCompTypes.ImageStream")));
+            this.ilCompTypes.TransparentColor = System.Drawing.Color.Transparent;
+            this.ilCompTypes.Images.SetKeyName(0, "pointer.png");
+            this.ilCompTypes.Images.SetKeyName(1, "comp_st.png");
+            this.ilCompTypes.Images.SetKeyName(2, "comp_dt.png");
+            this.ilCompTypes.Images.SetKeyName(3, "comp_sp.png");
+            this.ilCompTypes.Images.SetKeyName(4, "comp_dp.png");
             // 
             // pageProperties
             // 
@@ -447,8 +447,8 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.OpenFileDialog ofdScheme;
         private System.Windows.Forms.SaveFileDialog sfdScheme;
-        private System.Windows.Forms.ListView lvComponents;
-        private System.Windows.Forms.ImageList ilComponents;
+        private System.Windows.Forms.ListView lvCompTypes;
+        private System.Windows.Forms.ImageList ilCompTypes;
         private System.Windows.Forms.ColumnHeader colCompName;
     }
 }

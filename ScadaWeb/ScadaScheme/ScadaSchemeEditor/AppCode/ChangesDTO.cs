@@ -42,23 +42,23 @@ namespace Scada.Scheme.Editor
         {
             Changes = null;
             SelCompIDs = null;
-            NewComponentMode = false;
+            NewCompMode = false;
         }
 
 
         /// <summary>
         /// Получить или установить изменения схемы
         /// </summary>
-        public List<Change> Changes { get; set; }
+        public ICollection<Change> Changes { get; set; }
 
         /// <summary>
         /// Получить или установить идентификаторы выбранных компонентов
         /// </summary>
-        public List<int> SelCompIDs { get; set; }
+        public ICollection<int> SelCompIDs { get; set; }
 
         /// <summary>
         /// Получить или установить режим добавления нового компонента
         /// </summary>
-        public bool NewComponentMode { get; set; }
+        public bool NewCompMode { get; set; }
     }
 }
