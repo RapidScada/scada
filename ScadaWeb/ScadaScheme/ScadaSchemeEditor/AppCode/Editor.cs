@@ -42,6 +42,25 @@ namespace Scada.Scheme.Editor
     internal sealed class Editor
     {
         /// <summary>
+        /// Режимы указателя мыши редактора
+        /// </summary>
+        public enum PointerMode
+        {
+            /// <summary>
+            /// Выбор компонентов
+            /// </summary>
+            Select,
+            /// <summary>
+            /// Создание компонента
+            /// </summary>
+            Create,
+            /// <summary>
+            /// Вставка скопированных компонентов
+            /// </summary>
+            Paste
+        }
+
+        /// <summary>
         /// Представляет метод для обработки события, возникающего при изменении выбранных компонентов схемы
         /// </summary>
         public delegate void SelectionChangedEventHandler(BaseComponent[] selection);
