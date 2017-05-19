@@ -7,13 +7,13 @@
     <Phrase key="btnFileSave.ToolTip">Сохранить схему</Phrase>
     <Phrase key="miFileSaveAs">Сохранить как...</Phrase>
     <Phrase key="btnFileOpenBrowser.ToolTip">Открыть новую вкладку браузера</Phrase>
-    <Phrase key="btnEditCut.ToolTip">Вырезать компонент схемы</Phrase>
-    <Phrase key="btnEditCopy.ToolTip">Копировать компонент схемы</Phrase>
-    <Phrase key="btnEditPaste.ToolTip">Вставить компонент схемы</Phrase>
+    <Phrase key="btnEditCut.ToolTip">Вырезать компоненты схемы</Phrase>
+    <Phrase key="btnEditCopy.ToolTip">Копировать компоненты схемы</Phrase>
+    <Phrase key="btnEditPaste.ToolTip">Вставить компоненты схемы</Phrase>
     <Phrase key="btnEditUndo.ToolTip">Отменить</Phrase>
     <Phrase key="btnEditRedo.ToolTip">Вернуть</Phrase>
     <Phrase key="btnSchemePointer.ToolTip">Отменить добавление компонента</Phrase>
-    <Phrase key="btnSchemeDelete.ToolTip">Удалить выбранный компонент</Phrase>
+    <Phrase key="btnSchemeDelete.ToolTip">Удалить выбранные компоненты</Phrase>
     <Phrase key="btnHelpAbout.ToolTip">О программе</Phrase>
     <Phrase key="pageComponents">Компоненты</Phrase>
     <Phrase key="pageProperties">Свойства</Phrase>

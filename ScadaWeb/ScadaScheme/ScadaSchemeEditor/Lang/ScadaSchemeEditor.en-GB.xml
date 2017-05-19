@@ -7,13 +7,13 @@
     <Phrase key="btnFileSave.ToolTip">Save scheme</Phrase>
     <Phrase key="miFileSaveAs">Save As...</Phrase>
     <Phrase key="btnFileOpenBrowser.ToolTip">Open new browser tab</Phrase>
-    <Phrase key="btnEditCut.ToolTip">Cut scheme component</Phrase>
-    <Phrase key="btnEditCopy.ToolTip">Copy scheme component</Phrase>
-    <Phrase key="btnEditPaste.ToolTip">Paste scheme component</Phrase>
+    <Phrase key="btnEditCut.ToolTip">Cut scheme components</Phrase>
+    <Phrase key="btnEditCopy.ToolTip">Copy scheme components</Phrase>
+    <Phrase key="btnEditPaste.ToolTip">Paste scheme components</Phrase>
     <Phrase key="btnEditUndo.ToolTip">Undo</Phrase>
     <Phrase key="btnEditRedo.ToolTip">Redo</Phrase>
     <Phrase key="btnSchemePointer.ToolTip">Cancel adding component</Phrase>
-    <Phrase key="btnSchemeDelete.ToolTip">Delete selected component</Phrase>
+    <Phrase key="btnSchemeDelete.ToolTip">Delete selected components</Phrase>
     <Phrase key="btnHelpAbout.ToolTip">About</Phrase>
     <Phrase key="pageComponents">Components</Phrase>
     <Phrase key="pageProperties">Properties</Phrase>

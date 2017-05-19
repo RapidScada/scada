@@ -292,8 +292,8 @@ namespace Scada.Scheme.Editor
                 cbSchComp.SelectedIndexChanged += cbSchComp_SelectedIndexChanged;
             }
 
-            // установка доступности кнопок редактировани
-            SetEditButtonsEnabled();
+            // установка доступности кнопок
+            SetButtonsEnabled();
         }
 
         /// <summary>
@@ -308,12 +308,13 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Установить доступность кнопок редактирования
+        /// Установить доступность кнопок панели инструментов
         /// </summary>
-        private void SetEditButtonsEnabled()
+        private void SetButtonsEnabled()
         {
-            btnEditCut.Enabled = btnEditCopy.Enabled = editor.SelectionNotEmpty;
+            btnEditCut.Enabled = btnEditCopy.Enabled = btnEditDelete.Enabled = editor.SelectionNotEmpty;
             btnEditPaste.Enabled = editor.ClipboardNotEmpty;
+            btnEditPointer.Enabled = editor.PointerMode != Editor.PointerModes.Select;
         }
 
 
@@ -353,8 +354,8 @@ namespace Scada.Scheme.Editor
 
         private void Editor_ClipboardChanged(object sender, EventArgs e)
         {
-            // установка доступности кнопок редактировани
-            SetEditButtonsEnabled();
+            // установка доступности кнопок
+            SetButtonsEnabled();
         }
 
         private void Editor_PointerModeChanged(object sender, EventArgs e)
@@ -366,6 +367,9 @@ namespace Scada.Scheme.Editor
                 lvCompTypes.SelectedItems.Clear();
                 lvCompTypes.SelectedIndexChanged += lvCompTypes_SelectedIndexChanged;
             }
+            
+            // установка доступности кнопок
+            SetButtonsEnabled();
         }
 
 
@@ -516,13 +520,13 @@ namespace Scada.Scheme.Editor
 
         }
 
-        private void btnSchemePointer_Click(object sender, EventArgs e)
+        private void btnEditPointer_Click(object sender, EventArgs e)
         {
             // включение режима выбора компонентов
             editor.PointerMode = Editor.PointerModes.Select;
         }
 
-        private void btnSchemeDelete_Click(object sender, EventArgs e)
+        private void btnEditDelete_Click(object sender, EventArgs e)
         {
             // удаление выбранных компонентов схемы
             editor.DeleteSelectedComponents();

@@ -302,7 +302,8 @@ scada.scheme.EditableScheme.prototype.createDom = function (opt_controlRight) {
 
                 event.stopPropagation();
             }
-        });
+        })
+        .on("selectstart", ".comp", false);
 }
 
 // Iteration of getting scheme changes

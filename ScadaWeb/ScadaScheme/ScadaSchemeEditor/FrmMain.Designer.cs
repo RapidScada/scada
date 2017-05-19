@@ -50,8 +50,8 @@
             this.btnEditUndo = new System.Windows.Forms.ToolStripButton();
             this.btnEditRedo = new System.Windows.Forms.ToolStripButton();
             this.sep3 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnSchemePointer = new System.Windows.Forms.ToolStripButton();
-            this.btnSchemeDelete = new System.Windows.Forms.ToolStripButton();
+            this.btnEditPointer = new System.Windows.Forms.ToolStripButton();
+            this.btnEditDelete = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.btnHelpAbout = new System.Windows.Forms.ToolStripButton();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
@@ -88,8 +88,8 @@
             this.btnEditUndo,
             this.btnEditRedo,
             this.sep3,
-            this.btnSchemePointer,
-            this.btnSchemeDelete,
+            this.btnEditPointer,
+            this.btnEditDelete,
             this.toolStripSeparator1,
             this.btnHelpAbout});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
@@ -160,7 +160,7 @@
             this.btnEditCut.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnEditCut.Name = "btnEditCut";
             this.btnEditCut.Size = new System.Drawing.Size(23, 22);
-            this.btnEditCut.ToolTipText = "Cut scheme component";
+            this.btnEditCut.ToolTipText = "Cut scheme components";
             this.btnEditCut.Click += new System.EventHandler(this.btnEditCut_Click);
             // 
             // btnEditCopy
@@ -170,7 +170,7 @@
             this.btnEditCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnEditCopy.Name = "btnEditCopy";
             this.btnEditCopy.Size = new System.Drawing.Size(23, 22);
-            this.btnEditCopy.ToolTipText = "Copy scheme component";
+            this.btnEditCopy.ToolTipText = "Copy scheme components";
             this.btnEditCopy.Click += new System.EventHandler(this.btnEditCopy_Click);
             // 
             // btnEditPaste
@@ -180,7 +180,7 @@
             this.btnEditPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnEditPaste.Name = "btnEditPaste";
             this.btnEditPaste.Size = new System.Drawing.Size(23, 22);
-            this.btnEditPaste.ToolTipText = "Paste scheme component";
+            this.btnEditPaste.ToolTipText = "Paste scheme components";
             this.btnEditPaste.Click += new System.EventHandler(this.btnEditPaste_Click);
             // 
             // sep2
@@ -213,25 +213,25 @@
             this.sep3.Name = "sep3";
             this.sep3.Size = new System.Drawing.Size(6, 25);
             // 
-            // btnSchemePointer
+            // btnEditPointer
             // 
-            this.btnSchemePointer.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnSchemePointer.Image = ((System.Drawing.Image)(resources.GetObject("btnSchemePointer.Image")));
-            this.btnSchemePointer.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnSchemePointer.Name = "btnSchemePointer";
-            this.btnSchemePointer.Size = new System.Drawing.Size(23, 22);
-            this.btnSchemePointer.ToolTipText = "Cancel adding component";
-            this.btnSchemePointer.Click += new System.EventHandler(this.btnSchemePointer_Click);
+            this.btnEditPointer.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnEditPointer.Image = ((System.Drawing.Image)(resources.GetObject("btnEditPointer.Image")));
+            this.btnEditPointer.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnEditPointer.Name = "btnEditPointer";
+            this.btnEditPointer.Size = new System.Drawing.Size(23, 22);
+            this.btnEditPointer.ToolTipText = "Cancel adding component";
+            this.btnEditPointer.Click += new System.EventHandler(this.btnEditPointer_Click);
             // 
-            // btnSchemeDelete
+            // btnEditDelete
             // 
-            this.btnSchemeDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnSchemeDelete.Image = ((System.Drawing.Image)(resources.GetObject("btnSchemeDelete.Image")));
-            this.btnSchemeDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnSchemeDelete.Name = "btnSchemeDelete";
-            this.btnSchemeDelete.Size = new System.Drawing.Size(23, 22);
-            this.btnSchemeDelete.ToolTipText = "Delete selected component";
-            this.btnSchemeDelete.Click += new System.EventHandler(this.btnSchemeDelete_Click);
+            this.btnEditDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnEditDelete.Image = ((System.Drawing.Image)(resources.GetObject("btnEditDelete.Image")));
+            this.btnEditDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnEditDelete.Name = "btnEditDelete";
+            this.btnEditDelete.Size = new System.Drawing.Size(23, 22);
+            this.btnEditDelete.ToolTipText = "Delete selected components";
+            this.btnEditDelete.Click += new System.EventHandler(this.btnEditDelete_Click);
             // 
             // toolStripSeparator1
             // 
@@ -437,8 +437,8 @@
         private System.Windows.Forms.ToolStripMenuItem miFileSaveAs;
         private System.Windows.Forms.ToolStripButton btnEditPaste;
         private System.Windows.Forms.ToolStripSeparator sep2;
-        private System.Windows.Forms.ToolStripButton btnSchemePointer;
-        private System.Windows.Forms.ToolStripButton btnSchemeDelete;
+        private System.Windows.Forms.ToolStripButton btnEditPointer;
+        private System.Windows.Forms.ToolStripButton btnEditDelete;
         private System.Windows.Forms.ToolStripSeparator sep3;
         private System.Windows.Forms.ToolStripButton btnHelpAbout;
         private System.Windows.Forms.ToolStripButton btnFileOpenBrowser;
