@@ -44,7 +44,7 @@ namespace Scada.Scheme.Editor
         /// <summary>
         /// Режимы указателя мыши редактора
         /// </summary>
-        public enum PointerMode
+        public enum PointerModes
         {
             /// <summary>
             /// Выбор компонентов
@@ -63,7 +63,7 @@ namespace Scada.Scheme.Editor
         /// <summary>
         /// Представляет метод для обработки события, возникающего при изменении выбранных компонентов схемы
         /// </summary>
-        public delegate void SelectionChangedEventHandler(BaseComponent[] selection);
+        public delegate void SelectionChangedEventHandler(object sender, BaseComponent[] selection);
 
 
         /// <summary>
@@ -84,10 +84,12 @@ namespace Scada.Scheme.Editor
         /// </summary>
         private static readonly Dictionary<string, Type> ComponentTypes;
 
-        private readonly Log log;     // журнал приложения
-        private List<Change> changes; // изменения схемы
-        private long changeStampCntr; // счётчик для генерации меток изменений схемы
+        private readonly Log log;         // журнал приложения
+        private List<Change> changes;     // изменения схемы
+        private long changeStampCntr;     // счётчик для генерации меток изменений схемы
+        private PointerModes pointerMode; // режим указателя мыши редактора
         private List<BaseComponent> selComponents; // выбранные компоненты схемы
+        private List<BaseComponent> clipboard;     // буфер обмена, содержащий скопированные компоненты
 
 
         /// <summary>
@@ -122,7 +124,9 @@ namespace Scada.Scheme.Editor
             this.log = log;
             changes = new List<Change>();
             changeStampCntr = 0;
+            pointerMode = PointerModes.Select;
             selComponents = new List<BaseComponent>();
+            clipboard = new List<BaseComponent>();
 
             EditorID = GetRandomString(EditorIDLength);
             SchemeView = null;
@@ -168,6 +172,24 @@ namespace Scada.Scheme.Editor
         /// Получить признак изменения схемы
         /// </summary>
         public bool Modified { get; private set; }
+
+        /// <summary>
+        /// Получить или установть режим указателя мыши редактора
+        /// </summary>
+        public PointerModes PointerMode
+        {
+            get
+            {
+                return pointerMode;
+            }
+            set
+            {
+                pointerMode = value;
+
+                if (pointerMode != PointerModes.Create)
+                    NewComponentTypeName = "";
+            }
+        }
 
         /// <summary>
         /// Получить или установить имя типа компонента, который может быть создан пользователем
@@ -217,7 +239,7 @@ namespace Scada.Scheme.Editor
         /// </summary>
         private void OnSelectionChanged()
         {
-            SelectionChanged?.Invoke(GetSelectedComponents());
+            SelectionChanged?.Invoke(this, GetSelectedComponents());
         }
 
         /// <summary>
@@ -304,6 +326,7 @@ namespace Scada.Scheme.Editor
             SchemeView = new SchemeView();
             FileName = "";
             Modified = false;
+            PointerMode = PointerModes.Select;
             SubscribeToChanges();
         }
 
@@ -324,6 +347,7 @@ namespace Scada.Scheme.Editor
 
             FileName = fileName;
             Modified = false;
+            PointerMode = PointerModes.Select;
             SubscribeToChanges();
 
             if (!loadOK)
@@ -606,6 +630,80 @@ namespace Scada.Scheme.Editor
                 log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при отмене выбора всех компонентов схемы" :
                     "Error deselecting all scheme components");
+            }
+        }
+
+        /// <summary>
+        /// Копировать выбранные компоненты схемы в буфер обмена
+        /// </summary>
+        public void CopyToClipboard()
+        {
+            try
+            {
+                lock (clipboard)
+                {
+                    clipboard.Clear();
+
+                    // копирование в буфер обмена
+                    int minX = int.MaxValue;
+                    int minY = int.MaxValue;
+
+                    lock (selComponents)
+                    {
+                        foreach (BaseComponent selComponent in selComponents)
+                        {
+                            if (minX > selComponent.Location.X)
+                                minX = selComponent.Location.X;
+
+                            if (minY > selComponent.Location.Y)
+                                minY = selComponent.Location.Y;
+
+                            clipboard.Add(selComponent.Clone());
+                        }
+                    }
+
+                    // нормализация положения скопированных компонентов
+                    foreach (BaseComponent component in clipboard)
+                    {
+                        component.Location = new Point(component.Location.X - minX, component.Location.Y - minY);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при копировании выбранных компонентов схемы в буфер обмена" :
+                    "Error copying selected scheme components to clipboard");
+            }
+        }
+
+        /// <summary>
+        /// Вставить компоненты схемы из буфера обмена
+        /// </summary>
+        public void PasteFromClipboard(int x, int y)
+        {
+            try
+            {
+                lock (clipboard)
+                {
+                    lock (SchemeView.SyncRoot)
+                    {
+                        foreach (BaseComponent component in clipboard)
+                        {
+                            BaseComponent newComponent = component.Clone();
+                            newComponent.Location = new Point(newComponent.Location.X + x, newComponent.Location.Y + y);
+
+                            SchemeView.Components[newComponent.ID] = newComponent;
+                            SchemeView.SchemeDoc.OnItemChanged(SchemeChangeTypes.ComponentAdded, newComponent);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при вставке компонентов схемы из буфера обмена" :
+                    "Error pasting scheme components from clipboard");
             }
         }
 

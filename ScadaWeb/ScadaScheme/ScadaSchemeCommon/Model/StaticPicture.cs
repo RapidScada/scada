@@ -105,6 +105,14 @@ namespace Scada.Scheme.Model
         }
 
         /// <summary>
+        /// Клонировать объект
+        /// </summary>
+        public override BaseComponent Clone()
+        {
+            return null;
+        }
+
+        /// <summary>
         /// Вернуть строковое представление объекта
         /// </summary>
         public override string ToString()

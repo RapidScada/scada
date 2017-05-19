@@ -299,12 +299,14 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Выключить режим добавления компонента
+        /// Переключиться в режим выбора компонентов
         /// </summary>
-        private void StopNewComponentMode()
+        private void SwitchToSelectMode()
         {
-            editor.NewComponentTypeName = "";
+            editor.PointerMode = Editor.PointerModes.Select;
+            lvCompTypes.SelectedIndexChanged -= lvCompTypes_SelectedIndexChanged;
             lvCompTypes.SelectedItems.Clear();
+            lvCompTypes.SelectedIndexChanged += lvCompTypes_SelectedIndexChanged;
         }
 
 
@@ -315,8 +317,8 @@ namespace Scada.Scheme.Editor
             {
                 if (changeType == SchemeChangeTypes.ComponentAdded)
                 {
-                    // выключение режима добавления компонента
-                    StopNewComponentMode();
+                    // переключение в режим выбора компонентов
+                    SwitchToSelectMode();
 
                     // вставка в выпадающий список и выбор добавленного компонента
                     cbSchComp.Items.Add(changedObject);
@@ -330,7 +332,7 @@ namespace Scada.Scheme.Editor
                 action();
         }
 
-        private void Editor_SelectionChanged(BaseComponent[] selection)
+        private void Editor_SelectionChanged(object sender, BaseComponent[] selection)
         {
             // отображение свойств выбранных компонентов схемы
             if (InvokeRequired)
@@ -463,12 +465,14 @@ namespace Scada.Scheme.Editor
 
         private void btnEditCopy_Click(object sender, EventArgs e)
         {
-
+            // копировать выбранные компоненты в буфер обмена
+            editor.CopyToClipboard();
         }
 
         private void btnEditPaste_Click(object sender, EventArgs e)
         {
-
+            // включить режим вставки компонентов
+            editor.PointerMode = Editor.PointerModes.Paste;
         }
 
         private void btnEditUndo_Click(object sender, EventArgs e)
@@ -483,8 +487,8 @@ namespace Scada.Scheme.Editor
 
         private void btnSchemePointer_Click(object sender, EventArgs e)
         {
-            // выключение режима добавления компонента
-            StopNewComponentMode();
+            // переключение в режим выбора компонентов
+            SwitchToSelectMode();
         }
 
         private void btnSchemeDelete_Click(object sender, EventArgs e)
@@ -523,8 +527,20 @@ namespace Scada.Scheme.Editor
         private void lvCompTypes_SelectedIndexChanged(object sender, EventArgs e)
         {
             // выбор компонента для добавления на схему
-            editor.NewComponentTypeName = lvCompTypes.SelectedItems.Count > 0 ? 
+            string typeName = lvCompTypes.SelectedItems.Count > 0 ?
                 lvCompTypes.SelectedItems[0].Tag as string : "";
+
+            if (string.IsNullOrEmpty(typeName))
+            {
+                // включить режим выбора компонентов
+                editor.PointerMode = Editor.PointerModes.Select;
+            }
+            else
+            {
+                // включить режим создания компонента
+                editor.NewComponentTypeName = typeName;
+                editor.PointerMode = Editor.PointerModes.Create;
+            }
         }
 
         private void cbSchComp_SelectedIndexChanged(object sender, EventArgs e)
