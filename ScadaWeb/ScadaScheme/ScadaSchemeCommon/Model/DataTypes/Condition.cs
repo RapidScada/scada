@@ -37,12 +37,19 @@ namespace Scada.Scheme.Model.DataTypes
     /// Image output condition
     /// <para>Условие вывода изображения</para>
     /// </summary>
+    [Serializable]
     public class Condition : ISchemeDocAvailable
     {
         /// <summary>
         /// Наименование категории условия
         /// </summary>
         protected const string ConditionCat = "Condition";
+        
+        /// <summary>
+        /// Ссылка на свойства документа схемы
+        /// </summary>
+        [NonSerialized]
+        protected SchemeDocument schemeDoc;
 
 
         /// <summary>
@@ -117,7 +124,17 @@ namespace Scada.Scheme.Model.DataTypes
         /// Получить или установить ссылку на свойства документа схемы
         /// </summary>
         [CM.Browsable(false), ScriptIgnore]
-        public SchemeDocument SchemeDoc { get; set; }
+        public SchemeDocument SchemeDoc
+        {
+            get
+            {
+                return schemeDoc;
+            }
+            set
+            {
+                schemeDoc = value;
+            }
+        }
 
 
         /// <summary>
@@ -196,16 +213,9 @@ namespace Scada.Scheme.Model.DataTypes
         /// </summary>
         public Condition Clone()
         {
-            return new Condition()
-            {
-                CompareOperator1 = CompareOperator1,
-                CompareArgument1 = CompareArgument1,
-                LogicalOperator = LogicalOperator,
-                CompareOperator2 = CompareOperator2,
-                CompareArgument2 = CompareArgument2,
-                ImageName = ImageName,
-                SchemeDoc = SchemeDoc
-            };
+            Condition clonedCondition = (Condition)ScadaUtils.DeepClone(this);
+            clonedCondition.SchemeDoc = SchemeDoc;
+            return clonedCondition;
         }
 
         /// <summary>

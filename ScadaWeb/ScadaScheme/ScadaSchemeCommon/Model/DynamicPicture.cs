@@ -25,6 +25,7 @@
 
 using Scada.Scheme.Model.DataTypes;
 using Scada.Scheme.Model.PropertyGrid;
+using System;
 using System.Collections.Generic;
 using System.Drawing.Design;
 using System.Xml;
@@ -35,6 +36,7 @@ namespace Scada.Scheme.Model
     /// <summary>
     /// Динамический рисунок
     /// </summary>
+    [Serializable]
     public class DynamicPicture : StaticPicture
     {
         /// <summary>
@@ -176,6 +178,21 @@ namespace Scada.Scheme.Model
 
             xmlElem.AppendElem("InCnlNum", InCnlNum);
             xmlElem.AppendElem("CtrlCnlNum", CtrlCnlNum);
+        }
+
+        /// <summary>
+        /// Клонировать объект
+        /// </summary>
+        public override BaseComponent Clone()
+        {
+            DynamicPicture clonedComponent = (DynamicPicture)base.Clone();
+
+            foreach (Condition condition in clonedComponent.Conditions)
+            {
+                condition.SchemeDoc = SchemeDoc;
+            }
+
+            return clonedComponent;
         }
     }
 }

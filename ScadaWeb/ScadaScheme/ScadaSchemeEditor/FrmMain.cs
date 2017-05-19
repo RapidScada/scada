@@ -49,8 +49,9 @@ namespace Scada.Scheme.Editor
         private readonly Log log;         // журнал приложения
         private readonly Editor editor;   // редактор
 
-        private Mutex mutex;    // объект для проверки запуска второй копии приложения
-        private bool selecting; // выполняется выбор компонента с помощью выпадающего списка
+        private Mutex mutex;              // объект для проверки запуска второй копии приложения
+        private bool compTypesChanging;   // пользователь изменяет выбранный элемент lvCompTypes
+        private bool schCompChanging;     // пользователь изменяет выбранный элемент cbSchComp
 
 
         /// <summary>
@@ -64,11 +65,15 @@ namespace Scada.Scheme.Editor
             log = appData.Log;
             editor = appData.Editor;
             mutex = null;
-            selecting = false;
+            compTypesChanging = false;
+            schCompChanging = false;
 
             editor.SelectionChanged += Editor_SelectionChanged;
+            editor.ClipboardChanged += Editor_ClipboardChanged;
+            editor.PointerModeChanged += Editor_PointerModeChanged;
             Application.ThreadException += Application_ThreadException;
         }
+
 
         /// <summary>
         /// Локализовать форму
@@ -158,7 +163,7 @@ namespace Scada.Scheme.Editor
             editor.NewScheme();
             appData.AssignViewStamp(editor.SchemeView);
             FillSchemeComponents();
-            ShowSchemeSelection(editor.GetSelectedComponents());
+            ShowSchemeSelection();
             BindSchemeEvents();
         }
 
@@ -259,8 +264,9 @@ namespace Scada.Scheme.Editor
         /// <summary>
         /// Отобразить свойства выбранных компонентов схемы
         /// </summary>
-        private void ShowSchemeSelection(BaseComponent[] selection)
+        private void ShowSchemeSelection()
         {
+            BaseComponent[] selection = editor.GetSelectedComponents();
             object[] selObjects;
 
             if (selection != null && selection.Length > 0)
@@ -279,12 +285,15 @@ namespace Scada.Scheme.Editor
             propertyGrid.SelectedObjects = selObjects;
 
             // выбор объекта в выпадающем списке
-            if (!selecting)
+            if (!schCompChanging)
             {
                 cbSchComp.SelectedIndexChanged -= cbSchComp_SelectedIndexChanged;
                 cbSchComp.SelectedItem = selObjects != null && selObjects.Length == 1 ? selObjects[0] : null;
                 cbSchComp.SelectedIndexChanged += cbSchComp_SelectedIndexChanged;
             }
+
+            // установка доступности кнопок редактировани
+            SetEditButtonsEnabled();
         }
 
         /// <summary>
@@ -299,14 +308,12 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Переключиться в режим выбора компонентов
+        /// Установить доступность кнопок редактирования
         /// </summary>
-        private void SwitchToSelectMode()
+        private void SetEditButtonsEnabled()
         {
-            editor.PointerMode = Editor.PointerModes.Select;
-            lvCompTypes.SelectedIndexChanged -= lvCompTypes_SelectedIndexChanged;
-            lvCompTypes.SelectedItems.Clear();
-            lvCompTypes.SelectedIndexChanged += lvCompTypes_SelectedIndexChanged;
+            btnEditCut.Enabled = btnEditCopy.Enabled = editor.SelectionNotEmpty;
+            btnEditPaste.Enabled = editor.ClipboardNotEmpty;
         }
 
 
@@ -315,14 +322,17 @@ namespace Scada.Scheme.Editor
         {
             Action action = new Action(() =>
             {
-                if (changeType == SchemeChangeTypes.ComponentAdded)
+                switch (changeType)
                 {
-                    // переключение в режим выбора компонентов
-                    SwitchToSelectMode();
+                    case SchemeChangeTypes.ComponentAdded:
+                        // добавление компонента в выпадающий список
+                        cbSchComp.Items.Add(changedObject);
+                        break;
 
-                    // вставка в выпадающий список и выбор добавленного компонента
-                    cbSchComp.Items.Add(changedObject);
-                    editor.SelectComponent(((BaseComponent)changedObject).ID);
+                    case SchemeChangeTypes.ComponentDeleted:
+                        // удаление компонента из выпадающего списка
+                        cbSchComp.Items.Remove(changedObject);
+                        break;
                 }
             });
 
@@ -332,14 +342,32 @@ namespace Scada.Scheme.Editor
                 action();
         }
 
-        private void Editor_SelectionChanged(object sender, BaseComponent[] selection)
+        private void Editor_SelectionChanged(object sender, EventArgs e)
         {
             // отображение свойств выбранных компонентов схемы
             if (InvokeRequired)
-                BeginInvoke(new Action(() => ShowSchemeSelection(selection)));
+                BeginInvoke(new Action(ShowSchemeSelection));
             else
-                ShowSchemeSelection(selection);
+                ShowSchemeSelection();
         }
+
+        private void Editor_ClipboardChanged(object sender, EventArgs e)
+        {
+            // установка доступности кнопок редактировани
+            SetEditButtonsEnabled();
+        }
+
+        private void Editor_PointerModeChanged(object sender, EventArgs e)
+        {
+            // очистка типа создаваемых компонентов, если режим создания выключен
+            if (!compTypesChanging && editor.PointerMode != Editor.PointerModes.Create)
+            {
+                lvCompTypes.SelectedIndexChanged -= lvCompTypes_SelectedIndexChanged;
+                lvCompTypes.SelectedItems.Clear();
+                lvCompTypes.SelectedIndexChanged += lvCompTypes_SelectedIndexChanged;
+            }
+        }
+
 
         private void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
@@ -433,7 +461,7 @@ namespace Scada.Scheme.Editor
                     bool loadOK = editor.LoadSchemeFromFile(ofdScheme.FileName, out errMsg);
                     appData.AssignViewStamp(editor.SchemeView);
                     FillSchemeComponents();
-                    ShowSchemeSelection(editor.GetSelectedComponents());
+                    ShowSchemeSelection();
                     BindSchemeEvents();
 
                     if (!loadOK)
@@ -461,6 +489,9 @@ namespace Scada.Scheme.Editor
 
         private void btnEditCut_Click(object sender, EventArgs e)
         {
+            // копирование в буфер обмена и удаление выбранных компонентов схемы
+            editor.CopyToClipboard();
+            editor.DeleteSelectedComponents();
         }
 
         private void btnEditCopy_Click(object sender, EventArgs e)
@@ -471,7 +502,7 @@ namespace Scada.Scheme.Editor
 
         private void btnEditPaste_Click(object sender, EventArgs e)
         {
-            // включить режим вставки компонентов
+            // включение режима вставки компонентов
             editor.PointerMode = Editor.PointerModes.Paste;
         }
 
@@ -487,34 +518,14 @@ namespace Scada.Scheme.Editor
 
         private void btnSchemePointer_Click(object sender, EventArgs e)
         {
-            // переключение в режим выбора компонентов
-            SwitchToSelectMode();
+            // включение режима выбора компонентов
+            editor.PointerMode = Editor.PointerModes.Select;
         }
 
         private void btnSchemeDelete_Click(object sender, EventArgs e)
         {
             // удаление выбранных компонентов схемы
-            try
-            {
-                cbSchComp.BeginUpdate();
-                List<int> componentIDs = new List<int>();
-
-                foreach (object obj in propertyGrid.SelectedObjects)
-                {
-                    if (obj is BaseComponent)
-                    {
-                        componentIDs.Add(((BaseComponent)obj).ID);
-                        cbSchComp.Items.Remove(obj);
-                    }
-                }
-
-                if (componentIDs.Count > 0)
-                    editor.DeleteComponents(componentIDs);
-            }
-            finally
-            {
-                cbSchComp.EndUpdate();
-            }
+            editor.DeleteSelectedComponents();
         }
 
         private void btnHelpAbout_Click(object sender, EventArgs e)
@@ -527,26 +538,29 @@ namespace Scada.Scheme.Editor
         private void lvCompTypes_SelectedIndexChanged(object sender, EventArgs e)
         {
             // выбор компонента для добавления на схему
+            compTypesChanging = true;
             string typeName = lvCompTypes.SelectedItems.Count > 0 ?
                 lvCompTypes.SelectedItems[0].Tag as string : "";
 
             if (string.IsNullOrEmpty(typeName))
             {
-                // включить режим выбора компонентов
+                // включение режима выбора компонентов
                 editor.PointerMode = Editor.PointerModes.Select;
             }
             else
             {
-                // включить режим создания компонента
+                // включение режима создания компонента
                 editor.NewComponentTypeName = typeName;
                 editor.PointerMode = Editor.PointerModes.Create;
             }
+
+            compTypesChanging = false;
         }
 
         private void cbSchComp_SelectedIndexChanged(object sender, EventArgs e)
         {
             // отображение свойств объекта, выбранного в выпадающем списке
-            selecting = true;
+            schCompChanging = true;
             BaseComponent component = cbSchComp.SelectedItem as BaseComponent;
 
             if (component == null)
@@ -554,7 +568,7 @@ namespace Scada.Scheme.Editor
             else
                 editor.SelectComponent(component.ID);
 
-            selecting = false;
+            schCompChanging = false;
         }
 
         private void propertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)

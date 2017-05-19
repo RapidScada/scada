@@ -37,12 +37,19 @@ namespace Scada.Scheme.Model
     /// The base class for scheme component
     /// <para>Базовый класс компонента схемы</para>
     /// </summary>
+    [Serializable]
     public abstract class BaseComponent : IObservableItem, ISchemeDocAvailable
     {
         /// <summary>
         /// Макс. длина произвольного текста в отображаемом имени
         /// </summary>
-        protected int MaxAuxTextLength = 20;
+        protected readonly int MaxAuxTextLength = 20;
+
+        /// <summary>
+        /// Ссылка на свойства документа схемы
+        /// </summary>
+        [NonSerialized]
+        protected SchemeDocument schemeDoc;
 
 
         /// <summary>
@@ -123,7 +130,17 @@ namespace Scada.Scheme.Model
         /// Получить или установить ссылку на свойства документа схемы
         /// </summary>
         [CM.Browsable(false), ScriptIgnore]
-        public SchemeDocument SchemeDoc { get; set; }
+        public SchemeDocument SchemeDoc
+        {
+            get
+            {
+                return schemeDoc;
+            }
+            set
+            {
+                schemeDoc = value;
+            }
+        }
 
 
         /// <summary>
@@ -175,7 +192,13 @@ namespace Scada.Scheme.Model
         /// <summary>
         /// Клонировать объект
         /// </summary>
-        public abstract BaseComponent Clone();
+        public virtual BaseComponent Clone()
+        {
+            BaseComponent clonedComponent = (BaseComponent)ScadaUtils.DeepClone(this);
+            clonedComponent.SchemeDoc = SchemeDoc;
+            clonedComponent.ItemChanged += ItemChanged;
+            return clonedComponent;
+        }
 
         /// <summary>
         /// Вернуть строковое представление объекта
@@ -197,6 +220,7 @@ namespace Scada.Scheme.Model
         /// <summary>
         /// Событие возникающее при изменении компонента
         /// </summary>
+        [field: NonSerialized]
         public event ItemChangedEventHandler ItemChanged;
     }
 }

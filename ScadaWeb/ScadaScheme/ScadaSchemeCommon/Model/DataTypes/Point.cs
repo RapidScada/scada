@@ -24,6 +24,7 @@
  */
 
 using Scada.Scheme.Model.PropertyGrid;
+using System;
 using System.ComponentModel;
 using System.Xml;
 
@@ -34,6 +35,7 @@ namespace Scada.Scheme.Model.DataTypes
     /// <para>Точка в двумерной плоскости</para>
     /// </summary>
     [TypeConverter(typeof(PointConverter))]
+    [Serializable]
     public struct Point
     {
         /// <summary>

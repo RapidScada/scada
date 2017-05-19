@@ -60,11 +60,6 @@ namespace Scada.Scheme.Editor
             Paste
         }
 
-        /// <summary>
-        /// Представляет метод для обработки события, возникающего при изменении выбранных компонентов схемы
-        /// </summary>
-        public delegate void SelectionChangedEventHandler(object sender, BaseComponent[] selection);
-
 
         /// <summary>
         /// Длина идентификатора редактора
@@ -184,7 +179,11 @@ namespace Scada.Scheme.Editor
             }
             set
             {
-                pointerMode = value;
+                if (pointerMode != value)
+                {
+                    pointerMode = value;
+                    OnPointerModeChanged();
+                }
 
                 if (pointerMode != PointerModes.Create)
                     NewComponentTypeName = "";
@@ -195,6 +194,28 @@ namespace Scada.Scheme.Editor
         /// Получить или установить имя типа компонента, который может быть создан пользователем
         /// </summary>
         public string NewComponentTypeName { get; set; }
+
+        /// <summary>
+        /// Получить признак, что имеются выбранные компоненты схемы
+        /// </summary>
+        public bool SelectionNotEmpty
+        {
+            get
+            {
+                return selComponents.Count > 0;
+            }
+        }
+
+        /// <summary>
+        /// Получить признак, что буфер обмена не пуст
+        /// </summary>
+        public bool ClipboardNotEmpty
+        {
+            get
+            {
+                return clipboard.Count > 0;
+            }
+        }
 
 
         /// <summary>
@@ -239,7 +260,23 @@ namespace Scada.Scheme.Editor
         /// </summary>
         private void OnSelectionChanged()
         {
-            SelectionChanged?.Invoke(this, GetSelectedComponents());
+            SelectionChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Вызвать событие ClipboardChanged
+        /// </summary>
+        private void OnClipboardChanged()
+        {
+            ClipboardChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Вызвать событие PointerModeChanged
+        /// </summary>
+        private void OnPointerModeChanged()
+        {
+            PointerModeChanged?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -481,8 +518,19 @@ namespace Scada.Scheme.Editor
                 lock (SchemeView.SyncRoot)
                 {
                     SchemeView.Components[component.ID] = component;
-                    SchemeView.SchemeDoc.OnItemChanged(SchemeChangeTypes.ComponentAdded, component);
                 }
+
+                SchemeView.SchemeDoc.OnItemChanged(SchemeChangeTypes.ComponentAdded, component);
+
+                // выбор добавленного компонента
+                lock (selComponents)
+                {
+                    selComponents.Clear();
+                    selComponents.Add(component);
+                }
+
+                OnSelectionChanged();
+                PointerMode = PointerModes.Select;
 
                 return true;
             }
@@ -503,38 +551,37 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Удалить компоненты схемы
+        /// Удалить выбранные компоненты схемы
         /// </summary>
-        public void DeleteComponents(ICollection<int> componentIDs)
+        public void DeleteSelectedComponents()
         {
             try
             {
                 if (SchemeView != null)
                 {
-                    // удаление заданных компонентов
+                    // удаление выбранных компонентов
                     lock (SchemeView.SyncRoot)
                     {
-                        foreach (int componentID in componentIDs)
+                        lock (selComponents)
                         {
-                            BaseComponent component;
-                            if (SchemeView.Components.TryGetValue(componentID, out component))
+                            foreach (BaseComponent selComponent in selComponents)
                             {
-                                SchemeView.Components.Remove(componentID);
-                                SchemeView.SchemeDoc.OnItemChanged(SchemeChangeTypes.ComponentDeleted, component);
+                                SchemeView.Components.Remove(selComponent.ID);
+                                SchemeView.SchemeDoc.OnItemChanged(SchemeChangeTypes.ComponentDeleted, selComponent);
                             }
+
+                            selComponents.Clear();
                         }
                     }
 
-                    // очистка выбранных компонентов
-                    ClearSelComponents();
                     OnSelectionChanged();
                 }
             }
             catch (Exception ex)
             {
                 log.WriteException(ex, Localization.UseRussian ?
-                    "Ошибка при удалении компонента схемы" :
-                    "Error deleting scheme component");
+                    "Ошибка при удалении выбранных компонентов схемы" :
+                    "Error deleting selected scheme components");
             }
         }
 
@@ -668,6 +715,8 @@ namespace Scada.Scheme.Editor
                         component.Location = new Point(component.Location.X - minX, component.Location.Y - minY);
                     }
                 }
+
+                OnClipboardChanged();
             }
             catch (Exception ex)
             {
@@ -680,30 +729,48 @@ namespace Scada.Scheme.Editor
         /// <summary>
         /// Вставить компоненты схемы из буфера обмена
         /// </summary>
-        public void PasteFromClipboard(int x, int y)
+        public bool PasteFromClipboard(int x, int y)
         {
             try
             {
-                lock (clipboard)
-                {
-                    lock (SchemeView.SyncRoot)
-                    {
-                        foreach (BaseComponent component in clipboard)
-                        {
-                            BaseComponent newComponent = component.Clone();
-                            newComponent.Location = new Point(newComponent.Location.X + x, newComponent.Location.Y + y);
+                if (SchemeView == null)
+                    throw new ScadaException(Localization.UseRussian ?
+                        "Схема не загружена." :
+                        "Scheme is not loaded.");
 
-                            SchemeView.Components[newComponent.ID] = newComponent;
-                            SchemeView.SchemeDoc.OnItemChanged(SchemeChangeTypes.ComponentAdded, newComponent);
-                        }
+                lock (SchemeView.SyncRoot) lock (clipboard) lock (selComponents)
+                {
+                    selComponents.Clear();
+
+                    foreach (BaseComponent srcComponent in clipboard)
+                    {
+                        BaseComponent newComponent = srcComponent.Clone();
+                        newComponent.ID = SchemeView.GetNextComponentID();
+                        newComponent.Location = new Point(newComponent.Location.X + x, newComponent.Location.Y + y);
+
+                        SchemeView.Components[newComponent.ID] = newComponent;
+                        SchemeView.SchemeDoc.OnItemChanged(SchemeChangeTypes.ComponentAdded, newComponent);
+                        selComponents.Add(newComponent);
                     }
                 }
+
+                OnSelectionChanged();
+                PointerMode = PointerModes.Select;
+                return true;
+            }
+            catch (ScadaException ex)
+            {
+                log.WriteError(string.Format(Localization.UseRussian ?
+                    "Ошибка при вставке компонентов схемы из буфера обмена: {0}" :
+                    "Error pasting scheme components from clipboard: {0}", ex.Message));
+                return false;
             }
             catch (Exception ex)
             {
                 log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при вставке компонентов схемы из буфера обмена" :
                     "Error pasting scheme components from clipboard");
+                return false;
             }
         }
 
@@ -711,6 +778,16 @@ namespace Scada.Scheme.Editor
         /// <summary>
         /// Событие возникающее при изменении выбранных компонентов схемы
         /// </summary>
-        public event SelectionChangedEventHandler SelectionChanged;
+        public event EventHandler SelectionChanged;
+
+        /// <summary>
+        /// Событие возникающее при изменении содержимого буфера обмена
+        /// </summary>
+        public event EventHandler ClipboardChanged;
+
+        /// <summary>
+        /// Событие возникающее при изменении режима указателя мыши редактора
+        /// </summary>
+        public event EventHandler PointerModeChanged;
     }
 }

@@ -25,8 +25,8 @@
 
 using Scada.Scheme.Model.DataTypes;
 using Scada.Scheme.Model.PropertyGrid;
+using System;
 using System.Drawing.Design;
-using System.Text;
 using System.Xml;
 using CM = System.ComponentModel;
 
@@ -36,6 +36,7 @@ namespace Scada.Scheme.Model
     /// Scheme component that represents static text
     /// <para>Компонент схемы, представляющий статическую надпись</para>
     /// </summary>
+    [Serializable]
     public class StaticText : BaseComponent
     {
         /// <summary>
@@ -185,14 +186,6 @@ namespace Scada.Scheme.Model
             xmlElem.AppendElem("WordWrap", WordWrap);
             xmlElem.AppendElem("HAlign", HAlign);
             xmlElem.AppendElem("VAlign", VAlign);
-        }
-
-        /// <summary>
-        /// Клонировать объект
-        /// </summary>
-        public override BaseComponent Clone()
-        {
-            return null;
         }
 
         /// <summary>

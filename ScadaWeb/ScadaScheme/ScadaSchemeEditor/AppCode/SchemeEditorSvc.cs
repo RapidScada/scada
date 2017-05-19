@@ -219,7 +219,7 @@ namespace Scada.Scheme.Editor
                 {
                     dto.Changes = Editor.GetChanges(changeStamp);
                     dto.SelCompIDs = Editor.GetSelectedComponentIDs();
-                    dto.NewCompMode = !string.IsNullOrEmpty(Editor.NewComponentTypeName);
+                    dto.NewCompMode = Editor.PointerMode != Editor.PointerModes.Select;
                 }
 
                 return JsSerializer.Serialize(dto);
@@ -247,7 +247,17 @@ namespace Scada.Scheme.Editor
                 SchemeDTO dto = new SchemeDTO();
 
                 if (CheckArguments(editorID, viewStamp, dto))
-                    dto.Success = Editor.CreateComponent(x, y);
+                {
+                    switch (Editor.PointerMode)
+                    {
+                        case Editor.PointerModes.Create:
+                            dto.Success = Editor.CreateComponent(x, y);
+                            break;
+                        case Editor.PointerModes.Paste:
+                            dto.Success = Editor.PasteFromClipboard(x, y);
+                            break;
+                    }
+                }
 
                 return JsSerializer.Serialize(dto);
             }

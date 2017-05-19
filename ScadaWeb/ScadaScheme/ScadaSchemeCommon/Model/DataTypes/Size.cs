@@ -24,6 +24,7 @@
  */
 
 using Scada.Scheme.Model.PropertyGrid;
+using System;
 using System.ComponentModel;
 using System.Xml;
 
@@ -34,6 +35,7 @@ namespace Scada.Scheme.Model.DataTypes
     /// <para>Размер в двумерном пространстве</para>
     /// </summary>
     [TypeConverter(typeof(SizeConverter))]
+    [Serializable]
     public struct Size
     {
         /// <summary>

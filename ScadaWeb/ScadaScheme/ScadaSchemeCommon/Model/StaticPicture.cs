@@ -25,6 +25,7 @@
 
 using Scada.Scheme.Model.DataTypes;
 using Scada.Scheme.Model.PropertyGrid;
+using System;
 using System.Drawing.Design;
 using System.Xml;
 using CM = System.ComponentModel;
@@ -35,6 +36,7 @@ namespace Scada.Scheme.Model
     /// Scheme component that represents static picture
     /// <para>Компонент схемы, представляющий статический рисунок</para>
     /// </summary>
+    [Serializable]
     public class StaticPicture : BaseComponent
     {
         /// <summary>
@@ -102,14 +104,6 @@ namespace Scada.Scheme.Model
             xmlElem.AppendElem("BorderColor", BorderColor);
             xmlElem.AppendElem("ImageName", ImageName);
             xmlElem.AppendElem("ImageStretch", ImageStretch);
-        }
-
-        /// <summary>
-        /// Клонировать объект
-        /// </summary>
-        public override BaseComponent Clone()
-        {
-            return null;
         }
 
         /// <summary>

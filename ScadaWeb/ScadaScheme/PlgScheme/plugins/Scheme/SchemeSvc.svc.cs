@@ -155,7 +155,7 @@ namespace Scada.Web.Plugins.Scheme
                 dto.ViewStamp = schemeView.Stamp;
 
                 if (SchemeUtils.ViewStampsMatched(viewStamp, schemeView.Stamp))
-                    dto.CopyImages(schemeView.SchemeDoc.Images, startIndex, totalDataSize);
+                    dto.CopyImages(schemeView.SchemeDoc.Images.Values, startIndex, totalDataSize);
 
                 return JsSerializer.Serialize(dto);
             }

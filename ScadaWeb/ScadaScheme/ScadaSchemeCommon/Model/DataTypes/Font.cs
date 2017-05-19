@@ -24,6 +24,7 @@
  */
 
 using Scada.Scheme.Model.PropertyGrid;
+using System;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Xml;
@@ -36,6 +37,7 @@ namespace Scada.Scheme.Model.DataTypes
     /// </summary>
     [TypeConverter(typeof(FontConverter))]
     [Editor(typeof(FontEditor), typeof(UITypeEditor))]
+    [Serializable]
     public class Font
     {
         /// <summary>
