@@ -51,6 +51,14 @@ scada.scheme.SelectActions = {
     DESELECT_ALL: "deselectall"
 };
 
+/********** Dragging **********/
+
+// Dragging type
+scada.scheme.Dragging = function () {
+    this.startX = 0;
+    this.startY = 0;
+}
+
 /********** Editable Scheme **********/
 
 // Editable scheme type
@@ -63,6 +71,8 @@ scada.scheme.EditableScheme = function () {
     this.newComponentMode = false;
     // IDs of the selected components
     this.selComponentIDs = [];
+    // Provides dragging and resizing
+    this.dragging = new scada.scheme.Dragging();
 };
 
 scada.scheme.EditableScheme.prototype = Object.create(scada.scheme.Scheme.prototype);
@@ -302,6 +312,12 @@ scada.scheme.EditableScheme.prototype.createDom = function (opt_controlRight) {
 
                 event.stopPropagation();
             }
+        })
+        .on("mousemove", function (event) {
+            console.log("mousemove " + event.pageX + " " + event.pageY);
+        })
+        .on("mouseup", function () {
+
         })
         .on("selectstart", ".comp", false);
 }

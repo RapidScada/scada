@@ -553,7 +553,7 @@ namespace Scada.Scheme.Editor
         /// <summary>
         /// Удалить выбранные компоненты схемы
         /// </summary>
-        public void DeleteSelectedComponents()
+        public void DeleteSelected()
         {
             try
             {
@@ -582,6 +582,42 @@ namespace Scada.Scheme.Editor
                 log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при удалении выбранных компонентов схемы" :
                     "Error deleting selected scheme components");
+            }
+        }
+
+        /// <summary>
+        /// Переместить и изменить размер выбранных компонентов схемы
+        /// </summary>
+        public void MoveResizeSelected(int dx, int dy, int w, int h, bool writeChanges)
+        {
+            try
+            {
+                if (SchemeView != null)
+                {
+                    // удаление выбранных компонентов
+                    lock (SchemeView.SyncRoot)
+                    {
+                        lock (selComponents)
+                        {
+                            foreach (BaseComponent selComponent in selComponents)
+                            {
+                                selComponent.Location = 
+                                    new Point(selComponent.Location.X + dx, selComponent.Location.Y + dy);
+
+                                selComponent.Size = new Size(w, h);
+
+                                if (writeChanges)
+                                    SchemeView.SchemeDoc.OnItemChanged(SchemeChangeTypes.ComponentChanged, selComponent);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при перемещении и изменении размера выбранных компонентов схемы" :
+                    "Error moving and resizing selected scheme components");
             }
         }
 
@@ -662,7 +698,7 @@ namespace Scada.Scheme.Editor
         /// <summary>
         /// Отменить выбор всех компонентов схемы
         /// </summary>
-        public void DeselectAllComponents()
+        public void DeselectAll()
         {
             try
             {

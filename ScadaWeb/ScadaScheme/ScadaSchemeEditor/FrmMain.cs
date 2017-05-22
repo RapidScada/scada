@@ -495,7 +495,7 @@ namespace Scada.Scheme.Editor
         {
             // копирование в буфер обмена и удаление выбранных компонентов схемы
             editor.CopyToClipboard();
-            editor.DeleteSelectedComponents();
+            editor.DeleteSelected();
         }
 
         private void btnEditCopy_Click(object sender, EventArgs e)
@@ -529,7 +529,7 @@ namespace Scada.Scheme.Editor
         private void btnEditDelete_Click(object sender, EventArgs e)
         {
             // удаление выбранных компонентов схемы
-            editor.DeleteSelectedComponents();
+            editor.DeleteSelected();
         }
 
         private void btnHelpAbout_Click(object sender, EventArgs e)
@@ -568,7 +568,7 @@ namespace Scada.Scheme.Editor
             BaseComponent component = cbSchComp.SelectedItem as BaseComponent;
 
             if (component == null)
-                editor.DeselectAllComponents();
+                editor.DeselectAll();
             else
                 editor.SelectComponent(component.ID);
 

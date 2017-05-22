@@ -292,7 +292,7 @@ namespace Scada.Scheme.Editor
                     else if (action == SelectActions.Deselect)
                         Editor.DeselectComponent(componentID);
                     else if (action == SelectActions.DeselectAll)
-                        Editor.DeselectAllComponents();
+                        Editor.DeselectAll();
                 }
 
                 return JsSerializer.Serialize(dto);
@@ -302,6 +302,32 @@ namespace Scada.Scheme.Editor
                 AppData.Log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при изменении выбора компонентов схемы" :
                     "Error changing scheme component selection");
+                return JsSerializer.GetErrorJson(ex);
+            }
+        }
+
+        /// <summary>
+        /// Переместить и изменить размер выбранных компонентов схемы
+        /// </summary>
+        [OperationContract]
+        [WebGet]
+        public string MoveResize(string editorID, long viewStamp, int dx, int dy, int w, int h)
+        {
+            try
+            {
+                AllowAccess();
+                SchemeDTO dto = new SchemeDTO();
+
+                if (CheckArguments(editorID, viewStamp, dto))
+                    Editor.MoveResizeSelected(dx, dy, w, h, false);
+
+                return JsSerializer.Serialize(dto);
+            }
+            catch (Exception ex)
+            {
+                AppData.Log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при перемещении и изменении размера выбранных компонентов схемы" :
+                    "Error moving and resizing selected scheme components");
                 return JsSerializer.GetErrorJson(ex);
             }
         }
