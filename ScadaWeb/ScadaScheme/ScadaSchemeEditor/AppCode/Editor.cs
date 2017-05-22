@@ -592,7 +592,10 @@ namespace Scada.Scheme.Editor
         {
             try
             {
-                if (SchemeView != null)
+                bool moved = dx != 0 || dy != 0;
+                bool resized = w > 0 && h > 0;
+
+                if ((moved || resized) && SchemeView != null)
                 {
                     // удаление выбранных компонентов
                     lock (SchemeView.SyncRoot)
@@ -601,10 +604,12 @@ namespace Scada.Scheme.Editor
                         {
                             foreach (BaseComponent selComponent in selComponents)
                             {
-                                selComponent.Location = 
-                                    new Point(selComponent.Location.X + dx, selComponent.Location.Y + dy);
+                                if (moved)
+                                    selComponent.Location = 
+                                        new Point(selComponent.Location.X + dx, selComponent.Location.Y + dy);
 
-                                selComponent.Size = new Size(w, h);
+                                if (resized)
+                                    selComponent.Size = new Size(w, h);
 
                                 if (writeChanges)
                                     SchemeView.SchemeDoc.OnItemChanged(SchemeChangeTypes.ComponentChanged, selComponent);

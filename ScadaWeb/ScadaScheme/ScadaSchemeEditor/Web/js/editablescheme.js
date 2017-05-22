@@ -51,12 +51,95 @@ scada.scheme.SelectActions = {
     DESELECT_ALL: "deselectall"
 };
 
+/********** Drag Modes **********/
+
+scada.scheme.DragModes = {
+    NONE: 0,
+    MOVE: 1,
+    NW_RESIZE: 2,
+    NE_RESIZE: 3,
+    SW_RESIZE: 4,
+    SE_RESIZE: 5,
+    W_RESIZE: 6,
+    E_RESIZE: 7,
+    N_RESIZE: 8,
+    S_RESIZE: 9
+};
+
 /********** Dragging **********/
 
 // Dragging type
 scada.scheme.Dragging = function () {
+    // Width of the border allows to resize component
+    this.BORDER_WIDTH = 5;
+    // Minimally moving
+    this.MIN_MOVING = 5;
+
+    // Dragging mode
+    this.mode = scada.scheme.DragModes.NONE;
+    // X coordinate of dragging start
     this.startX = 0;
+    // Y coordinate of dragging start
     this.startY = 0;
+};
+
+// Define the cursor depending on the pointer position
+scada.scheme.Dragging.prototype.defineCursor = function (jqElem, pageX, pageY, singleSelection) {
+    var compElem = jqElem.closest(".comp");
+
+    if (compElem.length > 0) {
+        var cursor = "";
+
+        if (compElem.is(".selected")) {
+            cursor = "move";
+
+            if (singleSelection) {
+                var compOffset = compElem.offset();
+                var compPtrX = pageX - compOffset.left;
+                var compPtrY = pageY - compOffset.top;
+                var compW = compElem.outerWidth();
+                var compH = compElem.outerHeight();
+                var brdW = this.BORDER_WIDTH;
+                var minSize = brdW * 3; // minimum size required for enable resizing
+
+                if (compW >= minSize && compH >= minSize) {
+                    // check if the cursor is over the border
+                    var onTheLeft = compPtrX <= brdW;
+                    var onTheRight = compPtrX >= compW - brdW;
+                    var onTheTop = compPtrY <= brdW;
+                    var atTheBot = compPtrY >= compH - brdW;
+
+                    if (onTheTop && onTheLeft || atTheBot && onTheRight) {
+                        cursor = "nwse-resize";
+                    } else if (onTheTop && onTheRight || atTheBot && onTheLeft) {
+                        cursor = "nesw-resize";
+                    } else if (onTheLeft || onTheRight) {
+                        cursor = "ew-resize";
+                    } else if (onTheTop || atTheBot) {
+                        cursor = "ns-resize";
+                    }
+                }
+            }
+        }
+
+        compElem.css("cursor", cursor);
+    }
+};
+
+// Start dragging the specified elements
+scada.scheme.Dragging.prototype.startDragging = function (jqElem, pageX, pageY) {
+
+}
+
+// Continue dragging
+scada.scheme.Dragging.prototype.continueDragging = function (pageX, pageY) {
+
+}
+
+// Stop dragging.
+// callback is a function (dx, dy, w, h)
+scada.scheme.Dragging.prototype.stopDragging = function (callback) {
+
 }
 
 /********** Editable Scheme **********/
@@ -279,6 +362,30 @@ scada.scheme.EditableScheme.prototype._changeSelection = function (action, opt_c
     });
 }
 
+// Send a request to move and resize selected scheme components
+scada.scheme.EditableScheme.prototype._moveResize = function (dx, dy, w, h) {
+    var operation = this.serviceUrl + "MoveResize";
+
+    $.ajax({
+        url: operation +
+            "?editorID=" + this.editorID +
+            "&viewStamp=" + this.viewStamp +
+            "&dx=" + dx +
+            "&dy=" + dy +
+            "&w=" + w +
+            "&h=" + h,
+        method: "GET",
+        dataType: "json",
+        cache: false
+    })
+    .done(function () {
+        scada.utils.logSuccessfulRequest(operation);
+    })
+    .fail(function (jqXHR) {
+        scada.utils.logFailedRequest(operation, jqXHR);
+    });
+}
+
 // Create DOM content of the scheme
 scada.scheme.EditableScheme.prototype.createDom = function (opt_controlRight) {
     scada.scheme.Scheme.prototype.createDom.call(this, opt_controlRight);
@@ -298,26 +405,40 @@ scada.scheme.EditableScheme.prototype.createDom = function (opt_controlRight) {
         })
         .on("mousedown", ".comp", function (event) {
             if (!thisScheme.newComponentMode) {
-                // select or deselect component
+                // select or deselect component and start dragging
                 var componentID = $(this).data("id");
+                var selected = $(this).hasClass("selected");
                 console.log(scada.utils.getCurTime() + " Component with ID=" + componentID + " is clicked.");
 
                 if (event.ctrlKey) {
                     thisScheme._changeSelection(
-                        $(this).hasClass("selected") ? SelectActions.DESELECT : SelectActions.APPEND,
+                        selected ? SelectActions.DESELECT : SelectActions.APPEND,
                         componentID);
                 } else {
-                    thisScheme._changeSelection(SelectActions.SELECT, componentID);
+                    if (!selected) {
+                        thisScheme._changeSelection(SelectActions.SELECT, componentID);
+                    }
+
+                    thisScheme.dragging.startDragging(
+                        thisScheme._getSchemeDiv().find(".comp.selected"), event.pageX, event.pageY);
                 }
 
                 event.stopPropagation();
             }
         })
         .on("mousemove", function (event) {
-            console.log("mousemove " + event.pageX + " " + event.pageY);
+            if (thisScheme.dragging.mode == scada.scheme.DragModes.NONE) {
+                thisScheme.dragging.defineCursor($(event.target), event.pageX, event.pageY,
+                    thisScheme.selComponentIDs.length <= 1);
+            } else {
+                thisScheme.dragging.continueDragging(event.pageX, event.pageY);
+            }
         })
-        .on("mouseup", function () {
-
+        .on("mouseup mouseleave", function () {
+            thisScheme.dragging.stopDragging(function (dx, dy, w, h) {
+                // send changes to server under the assumption that the selection was not changed during dragging
+                thisScheme._moveResize(dx, dy, w, h);
+            });
         })
         .on("selectstart", ".comp", false);
 }
