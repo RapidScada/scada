@@ -72,6 +72,8 @@ scada.scheme.DragModes = {
 scada.scheme.Dragging = function () {
     // Width of the border allows to resize component
     this.BORDER_WIDTH = 5;
+    // Minimum size required for enable resizing
+    this.MIN_SIZE = 15;
     // Minimally moving
     this.MIN_MOVING = 5;
 
@@ -83,8 +85,10 @@ scada.scheme.Dragging = function () {
     this.startY = 0;
     // Dragged elements
     this.draggedElem = $();
-    // Element was shifted during dragging
-    this.shifted = false;
+    // Element was moved during dragging
+    this.moved = false;
+    // Element was resized during dragging
+    this.resized = false;
 };
 
 // Get drag mode depending on the pointer position over the element
@@ -97,15 +101,13 @@ scada.scheme.Dragging.prototype._getDragMode = function (jqElem, pageX, pageY, s
         var elemPtrY = pageY - elemOffset.top;
         var compW = jqElem.outerWidth();
         var compH = jqElem.outerHeight();
-        var brdW = this.BORDER_WIDTH;
-        var minSize = brdW * 3; // minimum size required for enable resizing
 
-        if (compW >= minSize && compH >= minSize) {
+        if (compW >= this.MIN_SIZE && compH >= this.MIN_SIZE) {
             // check if the cursor is over the border
-            var onTheLeft = elemPtrX <= brdW;
-            var onTheRight = elemPtrX >= compW - brdW;
-            var onTheTop = elemPtrY <= brdW;
-            var atTheBot = elemPtrY >= compH - brdW;
+            var onTheLeft = elemPtrX <= this.BORDER_WIDTH;
+            var onTheRight = elemPtrX >= compW - this.BORDER_WIDTH;
+            var onTheTop = elemPtrY <= this.BORDER_WIDTH;
+            var atTheBot = elemPtrY >= compH - this.BORDER_WIDTH;
 
             if (onTheTop && onTheLeft) {
                 return DragModes.NW_RESIZE;
@@ -160,35 +162,96 @@ scada.scheme.Dragging.prototype.defineCursor = function (jqElem, pageX, pageY, s
 
 // Start dragging the specified elements
 scada.scheme.Dragging.prototype.startDragging = function (captJqElem, selJqElem, pageX, pageY) {
-    // element.setCapture(retargetToElement);
     this.mode = this._getDragMode(captJqElem, pageX, pageY, selJqElem.length <= 1);
     this.startX = pageX;
     this.startY = pageY;
     this.draggedElem = selJqElem;
-    this.shifted = false;
+    this.moved = false;
+    this.resized = false;
 
     // save starting offsets
     this.draggedElem.each(function () {
-        $(this).data("start-offset", $(this).offset());
+        $(this)
+            .data("start-offset", $(this).offset())
+            .data("start-width", $(this).outerWidth())
+            .data("start-height", $(this).outerHeight());
     });
 }
 
 // Continue dragging
 scada.scheme.Dragging.prototype.continueDragging = function (pageX, pageY) {
     var DragModes = scada.scheme.DragModes;
+    var thisObj = this;
     var dx = pageX - this.startX;
     var dy = pageY - this.startY;
 
-    if (this.shifted || Math.abs(dx) >= this.MIN_MOVING || Math.abs(dy) >= this.MIN_MOVING) {
+    if ((this.moved || this.resized) || Math.abs(dx) >= this.MIN_MOVING || Math.abs(dy) >= this.MIN_MOVING) {
+        if (this.mode == DragModes.MOVE) {
+            // move elements
+            this.moved = true;
+            this.draggedElem.each(function () {
+                var startOffset = $(this).data("start-offset");
+                $(this).offset({ left: startOffset.left + dx, top: startOffset.top + dy });
+            });
+        } else {
+            var resizeLeft = this.mode == DragModes.NW_RESIZE ||
+                this.mode == DragModes.SW_RESIZE || this.mode == DragModes.W_RESIZE;
+            var resizeRight = this.mode == DragModes.NE_RESIZE ||
+                this.mode == DragModes.SE_RESIZE || this.mode == DragModes.E_RESIZE;
+            var resizeTop = this.mode == DragModes.NW_RESIZE ||
+                this.mode == DragModes.NE_RESIZE || this.mode == DragModes.N_RESIZE;
+            var resizeBot = this.mode == DragModes.SW_RESIZE ||
+                this.mode == DragModes.SE_RESIZE || this.mode == DragModes.S_RESIZE;
 
-        switch (this.mode) {
-            case DragModes.MOVE:
-                // move elements
+            if (resizeLeft) {
+                // resize by pulling the left edge
                 this.draggedElem.each(function () {
-                    var startOffset = $(this).data("start-offset");
-                    $(this).offset({ left: startOffset.left + dx, top: startOffset.top + dy });
+                    var elem = $(this);
+                    var newWidth = elem.data("start-width") - dx;
+
+                    if (newWidth >= thisObj.MIN_SIZE) {
+                        this.resized = true;
+                        var startOffset = elem.data("start-offset");
+                        elem.offset({ left: startOffset.left + dx, top: startOffset.top });
+                        elem.outerWidth(newWidth);
+                    }
                 });
-                break;
+            } else if (resizeRight) {
+                // resize by pulling the right edge
+                this.draggedElem.each(function () {
+                    var newWidth = $(this).data("start-width") + dx;
+
+                    if (newWidth >= thisObj.MIN_SIZE) {
+                        this.resized = true;
+                        $(this).outerWidth(newWidth);
+                    }
+                });
+            }
+
+            if (resizeTop) {
+                // resize by pulling the top edge
+                this.draggedElem.each(function () {
+                    var elem = $(this);
+                    var newHeight = elem.data("start-height") - dy;
+
+                    if (newHeight >= thisObj.MIN_SIZE) {
+                        this.resized = true;
+                        var startOffset = elem.data("start-offset");
+                        elem.offset({ left: startOffset.left, top: startOffset.top + dy });
+                        elem.outerHeight(newHeight);
+                    }
+                });
+            } else if (resizeBot) {
+                // resize by pulling the bottom edge
+                this.draggedElem.each(function () {
+                    var newHeight = $(this).data("start-height") + dy;
+
+                    if (newHeight >= thisObj.MIN_SIZE) {
+                        this.resized = true;
+                        $(this).outerHeight(newHeight);
+                    }
+                });
+            }
         }
     }
 }
@@ -196,7 +259,6 @@ scada.scheme.Dragging.prototype.continueDragging = function (pageX, pageY) {
 // Stop dragging.
 // callback is a function (dx, dy, w, h)
 scada.scheme.Dragging.prototype.stopDragging = function (callback) {
-    // document.releaseCapture()
     this.mode = scada.scheme.DragModes.NONE;
 
     // clear starting offsets
@@ -455,6 +517,14 @@ scada.scheme.EditableScheme.prototype.createDom = function (opt_controlRight) {
     var SelectActions = scada.scheme.SelectActions;
     var thisScheme = this;
 
+    // store references to the components in the DOM
+    for (var component of this.componentMap.values()) {
+        if (component.dom) {
+            component.dom.first().data("component", component);
+        }
+    }
+
+    // bind events for dragging
     this._getSchemeDiv()
         .on("mousedown", function (event) {
             if (thisScheme.newComponentMode) {

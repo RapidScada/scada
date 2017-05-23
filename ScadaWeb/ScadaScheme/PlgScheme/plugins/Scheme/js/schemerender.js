@@ -393,6 +393,40 @@ scada.scheme.ComponentRenderer.prototype.bindAction = function (jqObj, component
     }
 };
 
+// Check the possibility of resizing in edit mode
+scada.scheme.ComponentRenderer.prototype.allowResizing = function (component) {
+    return true;
+}
+
+// Get size of the component. Returns an object containing the properties width and height
+scada.scheme.ComponentRenderer.prototype.getSize = function (component) {
+    if (component.props && component.props.Size) {
+        return {
+            width: component.props.Size.Width,
+            height: component.props.Size.Height
+        };
+    } else {
+        return {
+            width: 0,
+            height: 0
+        };
+    }
+}
+
+// Set size of the component
+scada.scheme.ComponentRenderer.prototype.setSize = function (component, width, height) {
+    if (component.props) {
+        component.props.Size = { width: width, height: height };
+    }
+
+    if (component.dom) {
+        component.dom.css({
+            "width": width,
+            "height": height
+        });
+    }
+}
+
 /********** Static Text Renderer **********/
 
 // Static text renderer type extends scada.scheme.ComponentRenderer
@@ -438,6 +472,21 @@ scada.scheme.StaticTextRenderer.prototype.createDom = function (component, rende
     spanComp.append(spanText);
     component.dom = spanComp;
 };
+
+scada.scheme.StaticTextRenderer.prototype.setSize = function (component, width, height) {
+    if (component.props) {
+        component.props.Size = { width: width, height: height };
+    }
+
+    if (component.dom) {
+        var spanText = component.dom.children();
+        jqObj.children().css({
+            "max-width": width,
+            "width": width,
+            "height": height
+        });
+    }
+}
 
 /********** Dynamic Text Renderer **********/
 

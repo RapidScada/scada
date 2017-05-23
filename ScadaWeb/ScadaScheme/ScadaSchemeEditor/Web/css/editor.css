@@ -13,5 +13,4 @@
 }
 .comp.selected {
   border: 1px dashed lime !important;
-  /*cursor: move !important;*/
 }
