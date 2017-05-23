@@ -140,7 +140,7 @@ scada.scheme.SchemeRenderer.prototype._getDocTitle = function (viewTitle) {
 }
 
 scada.scheme.SchemeRenderer.prototype.createDom = function (component, renderContext) {
-    var divScheme = $("<div id='scheme'></div>");
+    var divScheme = $("<div class='scheme'></div>");
     component.dom = divScheme;
     this.updateDom(component, renderContext);
 };
@@ -208,32 +208,36 @@ scada.scheme.SchemeRenderer.prototype.updateDom = function (component, renderCon
 
 // Calculate numeric scale based on the predefined string value
 scada.scheme.SchemeRenderer.prototype.calcScale = function (component, scaleStr) {
-    var Scales = scada.scheme.Scales;
-    var areaWidth = component.parentDomElem.innerWidth();
-    var schemeWidth = component.props.Size.Width;
-    var horScale = areaWidth / schemeWidth;
+    if (component.parentDomElem) {
+        var Scales = scada.scheme.Scales;
+        var areaWidth = component.parentDomElem.innerWidth();
+        var schemeWidth = component.props.Size.Width;
+        var horScale = areaWidth / schemeWidth;
 
-    if (scaleStr == Scales.FIT_SCREEN) {
-        var schemeHeight = component.props.Size.Height;
-        var areaHeight = component.parentDomElem.innerHeight();
-        var vertScale = areaHeight / schemeHeight;
-        return Math.min(horScale, vertScale);
-    } else if (scaleStr == Scales.FIT_WIDTH) {
-        return horScale;
-    } else {
-        return 1.0;
+        if (scaleStr == Scales.FIT_SCREEN) {
+            var schemeHeight = component.props.Size.Height;
+            var areaHeight = component.parentDomElem.innerHeight();
+            var vertScale = areaHeight / schemeHeight;
+            return Math.min(horScale, vertScale);
+        } else if (scaleStr == Scales.FIT_WIDTH) {
+            return horScale;
+        }
     }
+
+    return 1.0;
 }
 
 // Set the scheme scale.
 // scaleVal is a floating point number
 scada.scheme.SchemeRenderer.prototype.setScale = function (component, scaleVal) {
-    var sizeCoef = Math.min(scaleVal, 1);
-    component.dom.css({
-        "transform": "scale(" + scaleVal + ", " + scaleVal + ")",
-        "width": component.props.Size.Width * sizeCoef,
-        "height": component.props.Size.Height * sizeCoef
-    });
+    if (component.dom) {
+        var sizeCoef = Math.min(scaleVal, 1);
+        component.dom.css({
+            "transform": "scale(" + scaleVal + ", " + scaleVal + ")",
+            "width": component.props.Size.Width * sizeCoef,
+            "height": component.props.Size.Height * sizeCoef
+        });
+    }
 };
 
 /********** Component Renderer **********/
@@ -414,9 +418,7 @@ scada.scheme.ComponentRenderer.prototype.getSize = function (component) {
 
 // Set size of the component
 scada.scheme.ComponentRenderer.prototype.setSize = function (component, width, height) {
-    if (component.props) {
-        component.props.Size = { width: width, height: height };
-    }
+    component.props.Size = { width: width, height: height };
 
     if (component.dom) {
         component.dom.css({
@@ -538,43 +540,44 @@ scada.scheme.DynamicTextRenderer.prototype.createDom = function (component, rend
 };
 
 scada.scheme.DynamicTextRenderer.prototype.updateData = function (component, renderContext) {
-    var ShowValueKinds = scada.scheme.ShowValueKinds;
-    var props = component.props;
+    if (component.dom) {
+        var ShowValueKinds = scada.scheme.ShowValueKinds;
+        var props = component.props;
+        var spanComp = component.dom;
+        var spanText = spanComp.children();
+        var curCnlDataExt = props.InCnlNum > 0 ? renderContext.curCnlDataMap.get(props.InCnlNum) : null;
 
-    var curCnlDataExt = props.InCnlNum > 0 ? renderContext.curCnlDataMap.get(props.InCnlNum) : null;
-    var spanComp = component.dom;
-    var spanText = spanComp.children();
+        if (curCnlDataExt) {
+            // show value of the appropriate input channel
+            switch (props.ShowValue) {
+                case ShowValueKinds.SHOW_WITH_UNIT:
+                    spanText.text(curCnlDataExt.TextWithUnit);
+                    break;
+                case ShowValueKinds.SHOW_WITHOUT_UNIT:
+                    spanText.text(curCnlDataExt.Text);
+                    break;
+            }
 
-    if (curCnlDataExt) {
-        // show value of the appropriate input channel
-        switch (props.ShowValue) {
-            case ShowValueKinds.SHOW_WITH_UNIT:
-                spanText.text(curCnlDataExt.TextWithUnit);
-                break;
-            case ShowValueKinds.SHOW_WITHOUT_UNIT:
-                spanText.text(curCnlDataExt.Text);
-                break;
+            // choose and set colors of the component
+            var isHovered = spanComp.is(":hover");
+            var backColor = this.chooseColor(isHovered, props.BackColor, props.BackColorOnHover);
+            var borderColor = this.chooseColor(isHovered, props.BorderColor, props.BorderColorOnHover);
+            var foreColor = this.chooseColor(isHovered, props.ForeColor, props.ForeColorOnHover);
+
+            if (backColor == this.STATUS_COLOR) {
+                spanComp.css("background-color", curCnlDataExt.Color);
+            }
+
+            if (borderColor == this.STATUS_COLOR) {
+                spanComp.css("border-color", curCnlDataExt.Color);
+            }
+
+            if (foreColor == this.STATUS_COLOR) {
+                spanComp.css("color", curCnlDataExt.Color);
+            }
+        } else if (props.InCnlNum > 0) {
+            spanText.text("");
         }
-
-        // choose and set colors of the component
-        var isHovered = spanComp.is(":hover");
-        var backColor = this.chooseColor(isHovered, props.BackColor, props.BackColorOnHover);
-        var borderColor = this.chooseColor(isHovered, props.BorderColor, props.BorderColorOnHover);
-        var foreColor = this.chooseColor(isHovered, props.ForeColor, props.ForeColorOnHover);
-
-        if (backColor == this.STATUS_COLOR) {
-            spanComp.css("background-color", curCnlDataExt.Color);
-        }
-
-        if (borderColor == this.STATUS_COLOR) {
-            spanComp.css("border-color", curCnlDataExt.Color);
-        }
-
-        if (foreColor == this.STATUS_COLOR) {
-            spanComp.css("color", curCnlDataExt.Color);
-        }
-    } else if (props.InCnlNum > 0) {
-        spanText.text("");
     }
 };
 
@@ -677,7 +680,7 @@ scada.scheme.DynamicPictureRenderer.prototype.updateData = function (component, 
     var divComp = component.dom;
     var curCnlDataExt = renderContext.curCnlDataMap.get(props.InCnlNum);
 
-    if (curCnlDataExt) {
+    if (divComp && curCnlDataExt) {
         // choose the image depending on the conditions
         var imageName = props.Image ? props.Image.Name : "";
 
