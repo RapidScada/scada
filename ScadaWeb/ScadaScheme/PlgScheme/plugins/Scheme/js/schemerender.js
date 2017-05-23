@@ -150,7 +150,7 @@ scada.scheme.SchemeRenderer.prototype.refreshImages = function (component, rende
         var props = component.props;
 
         if (Array.isArray(imageNames) && imageNames.includes(props.BackImageName)) {
-            var divSchemeBack = component.dom.find("#schemeBack");
+            var divSchemeBack = component.dom.find(".scheme-back:first");
             var backImage = renderContext.getImage(props.BackImageName);
             this.setBackgroundImage(divSchemeBack, backImage, true);
         }
@@ -179,10 +179,10 @@ scada.scheme.SchemeRenderer.prototype.updateDom = function (component, renderCon
 
         // set background image if presents,
         // the additional div is required for correct scaling
-        var divSchemeBack = divScheme.children("#schemeBack");
+        var divSchemeBack = divScheme.children(".scheme-back:first");
 
         if (divSchemeBack.length == 0) {
-            divSchemeBack = $("<div id='schemeBack'></div>");
+            divSchemeBack = $("<div class='scheme-back'></div>");
             divScheme.append(divSchemeBack);
         }
 
@@ -228,7 +228,6 @@ scada.scheme.SchemeRenderer.prototype.calcScale = function (component, scaleStr)
 // Set the scheme scale.
 // scaleVal is a floating point number
 scada.scheme.SchemeRenderer.prototype.setScale = function (component, scaleVal) {
-    // set style of #divScheme
     var sizeCoef = Math.min(scaleVal, 1);
     component.dom.css({
         "transform": "scale(" + scaleVal + ", " + scaleVal + ")",
@@ -473,19 +472,19 @@ scada.scheme.StaticTextRenderer.prototype.createDom = function (component, rende
     component.dom = spanComp;
 };
 
-scada.scheme.StaticTextRenderer.prototype.setSize = function (component, width, height) {
-    if (component.props) {
-        component.props.Size = { width: width, height: height };
-    }
+scada.scheme.StaticTextRenderer.prototype.allowResizing = function (component) {
+    return !component.props.AutoSize;
+}
 
-    if (component.dom) {
-        var spanText = component.dom.children();
-        jqObj.children().css({
-            "max-width": width,
-            "width": width,
-            "height": height
-        });
-    }
+scada.scheme.StaticTextRenderer.prototype.setSize = function (component, width, height) {
+    component.props.Size = { width: width, height: height };
+
+    var spanText = component.dom.children();
+    jqObj.children().css({
+        "max-width": width,
+        "width": width,
+        "height": height
+    });
 }
 
 /********** Dynamic Text Renderer **********/
