@@ -83,6 +83,14 @@ scada.scheme.Dragging = function () {
     this.startX = 0;
     // Y coordinate of dragging start
     this.startY = 0;
+    // Last value of horizontal moving
+    this.lastDx = 0;
+    // Last value of vertical moving
+    this.lastDy = 0;
+    // Last value of resized width
+    this.lastW = 0;
+    // Last value of resized height
+    this.lastH = 0;
     // Dragged elements
     this.draggedElem = $();
     // Element was moved during dragging
@@ -94,8 +102,9 @@ scada.scheme.Dragging = function () {
 // Get drag mode depending on the pointer position over the element
 scada.scheme.Dragging.prototype._getDragMode = function (jqElem, pageX, pageY, singleSelection) {
     var DragModes = scada.scheme.DragModes;
+    var component = jqElem.data("component");
 
-    if (singleSelection) {
+    if (singleSelection && component && component.renderer.allowResizing(component)) {
         var elemOffset = jqElem.offset();
         var elemPtrX = pageX - elemOffset.left;
         var elemPtrY = pageY - elemOffset.top;
@@ -132,6 +141,31 @@ scada.scheme.Dragging.prototype._getDragMode = function (jqElem, pageX, pageY, s
     return DragModes.MOVE;
 };
 
+// Move element horizontally during dragging
+scada.scheme.Dragging.prototype._moveElemHor = function (jqElem, dx) {
+    this.lastDx = dx;
+    this.moved = true;
+    var startOffset = jqElem.data("start-offset");
+    jqElem.offset({ left: startOffset.left + dx, top: jqElem.offset().top });
+};
+
+// Move element vertically during dragging
+scada.scheme.Dragging.prototype._moveElemVert = function (jqElem, dy) {
+    this.lastDy = dy;
+    this.moved = true;
+    var startOffset = jqElem.data("start-offset");
+    jqElem.offset({ left: jqElem.offset().left, top: startOffset.top + dy });
+};
+
+// Resize element during dragging
+scada.scheme.Dragging.prototype._resizeElem = function (jqElem, width, height) {
+    this.lastW = width;
+    this.lastH = height;
+    this.resized = true;
+    var component = jqElem.data("component");
+    component.renderer.setSize(component, width, height);
+};
+
 // Define the cursor depending on the pointer position
 scada.scheme.Dragging.prototype.defineCursor = function (jqElem, pageX, pageY, singleSelection) {
     var DragModes = scada.scheme.DragModes;
@@ -162,20 +196,27 @@ scada.scheme.Dragging.prototype.defineCursor = function (jqElem, pageX, pageY, s
 
 // Start dragging the specified elements
 scada.scheme.Dragging.prototype.startDragging = function (captJqElem, selJqElem, pageX, pageY) {
-    this.mode = this._getDragMode(captJqElem, pageX, pageY, selJqElem.length <= 1);
-    this.startX = pageX;
-    this.startY = pageY;
-    this.draggedElem = selJqElem;
-    this.moved = false;
-    this.resized = false;
+    var component = captJqElem.data("component");
 
-    // save starting offsets
-    this.draggedElem.each(function () {
-        $(this)
-            .data("start-offset", $(this).offset())
-            .data("start-width", $(this).outerWidth())
-            .data("start-height", $(this).outerHeight());
-    });
+    if (component) {
+        this.mode = this._getDragMode(captJqElem, pageX, pageY, selJqElem.length <= 1);
+        this.startX = pageX;
+        this.startY = pageY;
+        this.lastDx = 0;
+        this.lastDy = 0;
+        this.lastW = 0;
+        this.lastH = 0;
+        this.draggedElem = selJqElem;
+        this.moved = false;
+        this.resized = false;
+
+        // save starting offset and size of the dragged components
+        this.draggedElem.each(function () {
+            $(this)
+                .data("start-offset", $(this).offset())
+                .data("start-size", component.renderer.getSize(component));
+        });
+    }
 }
 
 // Continue dragging
@@ -185,9 +226,12 @@ scada.scheme.Dragging.prototype.continueDragging = function (pageX, pageY) {
     var dx = pageX - this.startX;
     var dy = pageY - this.startY;
 
-    if ((this.moved || this.resized) || Math.abs(dx) >= this.MIN_MOVING || Math.abs(dy) >= this.MIN_MOVING) {
+    if (this.draggedElem.length > 0 &&
+        ((this.moved || this.resized) || Math.abs(dx) >= this.MIN_MOVING || Math.abs(dy) >= this.MIN_MOVING)) {
         if (this.mode == DragModes.MOVE) {
             // move elements
+            this.lastDx = dx;
+            this.lastDy = dy;
             this.moved = true;
             this.draggedElem.each(function () {
                 var startOffset = $(this).data("start-offset");
@@ -202,55 +246,39 @@ scada.scheme.Dragging.prototype.continueDragging = function (pageX, pageY) {
                 this.mode == DragModes.NE_RESIZE || this.mode == DragModes.N_RESIZE;
             var resizeBot = this.mode == DragModes.SW_RESIZE ||
                 this.mode == DragModes.SE_RESIZE || this.mode == DragModes.S_RESIZE;
+            var elem = this.draggedElem.eq(0);
+            var startSize = elem.data("start-size");
+            var newWidth = startSize.width;
+            var newHeight = startSize.height;
 
             if (resizeLeft) {
                 // resize by pulling the left edge
-                this.draggedElem.each(function () {
-                    var elem = $(this);
-                    var newWidth = elem.data("start-width") - dx;
-
-                    if (newWidth >= thisObj.MIN_SIZE) {
-                        this.resized = true;
-                        var startOffset = elem.data("start-offset");
-                        elem.offset({ left: startOffset.left + dx, top: startOffset.top });
-                        elem.outerWidth(newWidth);
-                    }
-                });
+                if (newWidth - dx >= this.MIN_SIZE) {
+                    newWidth -= dx;
+                    this._moveElemHor(elem, dx);
+                    this._resizeElem(elem, newWidth, newHeight);
+                }
             } else if (resizeRight) {
                 // resize by pulling the right edge
-                this.draggedElem.each(function () {
-                    var newWidth = $(this).data("start-width") + dx;
-
-                    if (newWidth >= thisObj.MIN_SIZE) {
-                        this.resized = true;
-                        $(this).outerWidth(newWidth);
-                    }
-                });
+                if (newWidth + dx >= this.MIN_SIZE) {
+                    newWidth += dx;
+                    this._resizeElem(elem, newWidth, newHeight);
+                }
             }
 
             if (resizeTop) {
                 // resize by pulling the top edge
-                this.draggedElem.each(function () {
-                    var elem = $(this);
-                    var newHeight = elem.data("start-height") - dy;
-
-                    if (newHeight >= thisObj.MIN_SIZE) {
-                        this.resized = true;
-                        var startOffset = elem.data("start-offset");
-                        elem.offset({ left: startOffset.left, top: startOffset.top + dy });
-                        elem.outerHeight(newHeight);
-                    }
-                });
+                if (newHeight - dy >= this.MIN_SIZE) {
+                    newHeight -= dy;
+                    this._moveElemVert(elem, dy);
+                    this._resizeElem(elem, newWidth, newHeight);
+                }
             } else if (resizeBot) {
                 // resize by pulling the bottom edge
-                this.draggedElem.each(function () {
-                    var newHeight = $(this).data("start-height") + dy;
-
-                    if (newHeight >= thisObj.MIN_SIZE) {
-                        this.resized = true;
-                        $(this).outerHeight(newHeight);
-                    }
-                });
+                if (newHeight + dy >= this.MIN_SIZE) {
+                    newHeight += dy;
+                    this._resizeElem(elem, newWidth, newHeight);
+                }
             }
         }
     }
@@ -261,10 +289,17 @@ scada.scheme.Dragging.prototype.continueDragging = function (pageX, pageY) {
 scada.scheme.Dragging.prototype.stopDragging = function (callback) {
     this.mode = scada.scheme.DragModes.NONE;
 
-    // clear starting offsets
+    // clear starting offsets and sizes
     this.draggedElem.each(function () {
-        $(this).removeData("start-offset");
+        $(this)
+            .removeData("start-offset")
+            .removeData("start-size");
     });
+
+    // execute callback function
+    if ((this.moved || this.resized) && typeof callback === "function") {
+        callback(this.lastDx, this.lastDy, this.lastW, this.lastH);
+    }
 }
 
 /********** Editable Scheme **********/

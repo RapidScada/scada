@@ -418,7 +418,7 @@ scada.scheme.ComponentRenderer.prototype.getSize = function (component) {
 
 // Set size of the component
 scada.scheme.ComponentRenderer.prototype.setSize = function (component, width, height) {
-    component.props.Size = { width: width, height: height };
+    component.props.Size = { Width: width, Height: height };
 
     if (component.dom) {
         component.dom.css({
@@ -479,10 +479,10 @@ scada.scheme.StaticTextRenderer.prototype.allowResizing = function (component) {
 }
 
 scada.scheme.StaticTextRenderer.prototype.setSize = function (component, width, height) {
-    component.props.Size = { width: width, height: height };
+    component.props.Size = { Width: width, Height: height };
 
     var spanText = component.dom.children();
-    jqObj.children().css({
+    spanText.css({
         "max-width": width,
         "width": width,
         "height": height
