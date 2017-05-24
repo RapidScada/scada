@@ -264,6 +264,14 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
+        /// Вызвать событие SelectionPropsChanged
+        /// </summary>
+        private void OnSelectionPropsChanged()
+        {
+            SelectionPropsChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
         /// Вызвать событие ClipboardChanged
         /// </summary>
         private void OnClipboardChanged()
@@ -612,7 +620,9 @@ namespace Scada.Scheme.Editor
                                     selComponent.Size = new Size(w, h);
 
                                 if (writeChanges)
-                                    SchemeView.SchemeDoc.OnItemChanged(SchemeChangeTypes.ComponentChanged, selComponent);
+                                    selComponent.OnItemChanged(SchemeChangeTypes.ComponentChanged, selComponent);
+
+                                OnSelectionPropsChanged();
                             }
                         }
                     }
@@ -817,9 +827,14 @@ namespace Scada.Scheme.Editor
 
 
         /// <summary>
-        /// Событие возникающее при изменении выбранных компонентов схемы
+        /// Событие возникающее при изменении набора выбранных компонентов схемы
         /// </summary>
         public event EventHandler SelectionChanged;
+
+        /// <summary>
+        /// Событие возникающее при изменении свойств выбранных компонентов схемы
+        /// </summary>
+        public event EventHandler SelectionPropsChanged;
 
         /// <summary>
         /// Событие возникающее при изменении содержимого буфера обмена

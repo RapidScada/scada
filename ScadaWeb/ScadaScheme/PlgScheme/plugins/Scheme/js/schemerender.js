@@ -632,6 +632,18 @@ scada.scheme.StaticPictureRenderer.prototype.refreshImages = function (component
     }
 };
 
+scada.scheme.StaticPictureRenderer.prototype.setSize = function (component, width, height) {
+    scada.scheme.ComponentRenderer.prototype.setSize.call(this, component, width, height);
+
+    var ImageStretches = scada.scheme.ImageStretches;
+    var props = component.props;
+
+    if (props.ImageStretch == ImageStretches.FILL) {
+        var divComp = component.dom;
+        divComp.css("background-size", props.Size.Width + "px " + props.Size.Height + "px");
+    }
+}
+
 /********** Dynamic Picture Renderer **********/
 
 // Dynamic picture renderer type extends scada.scheme.StaticPictureRenderer

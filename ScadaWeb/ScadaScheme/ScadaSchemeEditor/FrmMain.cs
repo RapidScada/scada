@@ -69,6 +69,7 @@ namespace Scada.Scheme.Editor
             schCompChanging = false;
 
             editor.SelectionChanged += Editor_SelectionChanged;
+            editor.SelectionPropsChanged += Editor_SelectionPropsChanged;
             editor.ClipboardChanged += Editor_ClipboardChanged;
             editor.PointerModeChanged += Editor_PointerModeChanged;
             Application.ThreadException += Application_ThreadException;
@@ -352,24 +353,44 @@ namespace Scada.Scheme.Editor
                 ShowSchemeSelection();
         }
 
+        private void Editor_SelectionPropsChanged(object sender, EventArgs e)
+        {
+            // обновление значений свойств
+            if (InvokeRequired)
+                BeginInvoke(new Action(propertyGrid.Refresh));
+            else
+                propertyGrid.Refresh();
+        }
+
         private void Editor_ClipboardChanged(object sender, EventArgs e)
         {
             // установка доступности кнопок
-            SetButtonsEnabled();
+            if (InvokeRequired)
+                BeginInvoke(new Action(SetButtonsEnabled));
+            else
+                SetButtonsEnabled();
         }
 
         private void Editor_PointerModeChanged(object sender, EventArgs e)
         {
-            // очистка типа создаваемых компонентов, если режим создания выключен
-            if (!compTypesChanging && editor.PointerMode != Editor.PointerModes.Create)
+            Action action = new Action(() =>
             {
-                lvCompTypes.SelectedIndexChanged -= lvCompTypes_SelectedIndexChanged;
-                lvCompTypes.SelectedItems.Clear();
-                lvCompTypes.SelectedIndexChanged += lvCompTypes_SelectedIndexChanged;
-            }
-            
-            // установка доступности кнопок
-            SetButtonsEnabled();
+                // очистка типа создаваемых компонентов, если режим создания выключен
+                if (!compTypesChanging && editor.PointerMode != Editor.PointerModes.Create)
+                {
+                    lvCompTypes.SelectedIndexChanged -= lvCompTypes_SelectedIndexChanged;
+                    lvCompTypes.SelectedItems.Clear();
+                    lvCompTypes.SelectedIndexChanged += lvCompTypes_SelectedIndexChanged;
+                }
+
+                // установка доступности кнопок
+                SetButtonsEnabled();
+            });
+
+            if (InvokeRequired)
+                BeginInvoke(action);
+            else
+                action();
         }
 
 
