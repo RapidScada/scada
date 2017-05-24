@@ -208,7 +208,7 @@ namespace Scada.Scheme.Editor
         /// <remarks>Возвращает ChangesDTO в формате в JSON</remarks>
         [OperationContract]
         [WebGet]
-        public string GetChanges(string editorID, long viewStamp, long changeStamp)
+        public string GetChanges(string editorID, long viewStamp, long changeStamp, string status)
         {
             try
             {
@@ -220,6 +220,7 @@ namespace Scada.Scheme.Editor
                     dto.Changes = Editor.GetChanges(changeStamp);
                     dto.SelCompIDs = Editor.GetSelectedComponentIDs();
                     dto.NewCompMode = Editor.PointerMode != Editor.PointerModes.Select;
+                    Editor.Status = status;
                 }
 
                 return JsSerializer.Serialize(dto);

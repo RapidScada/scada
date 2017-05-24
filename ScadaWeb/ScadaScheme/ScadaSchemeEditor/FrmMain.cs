@@ -68,10 +68,11 @@ namespace Scada.Scheme.Editor
             compTypesChanging = false;
             schCompChanging = false;
 
+            editor.PointerModeChanged += Editor_PointerModeChanged;
+            editor.StatusChanged += Editor_StatusChanged;
             editor.SelectionChanged += Editor_SelectionChanged;
             editor.SelectionPropsChanged += Editor_SelectionPropsChanged;
             editor.ClipboardChanged += Editor_ClipboardChanged;
-            editor.PointerModeChanged += Editor_PointerModeChanged;
             Application.ThreadException += Application_ThreadException;
         }
 
@@ -344,6 +345,41 @@ namespace Scada.Scheme.Editor
                 action();
         }
 
+        private void Editor_PointerModeChanged(object sender, EventArgs e)
+        {
+            Action action = new Action(() =>
+            {
+                // очистка типа создаваемых компонентов, если режим создания выключен
+                if (!compTypesChanging && editor.PointerMode != Editor.PointerModes.Create)
+                {
+                    lvCompTypes.SelectedIndexChanged -= lvCompTypes_SelectedIndexChanged;
+                    lvCompTypes.SelectedItems.Clear();
+                    lvCompTypes.SelectedIndexChanged += lvCompTypes_SelectedIndexChanged;
+                }
+
+                // установка доступности кнопок
+                SetButtonsEnabled();
+            });
+
+            if (InvokeRequired)
+                BeginInvoke(action);
+            else
+                action();
+        }
+
+        private void Editor_StatusChanged(object sender, EventArgs e)
+        {
+            Action action = new Action(() =>
+            {
+                lblStatus.Text = editor.Status;
+            });
+
+            if (InvokeRequired)
+                BeginInvoke(action);
+            else
+                action();
+        }
+
         private void Editor_SelectionChanged(object sender, EventArgs e)
         {
             // отображение свойств выбранных компонентов схемы
@@ -369,28 +405,6 @@ namespace Scada.Scheme.Editor
                 BeginInvoke(new Action(SetButtonsEnabled));
             else
                 SetButtonsEnabled();
-        }
-
-        private void Editor_PointerModeChanged(object sender, EventArgs e)
-        {
-            Action action = new Action(() =>
-            {
-                // очистка типа создаваемых компонентов, если режим создания выключен
-                if (!compTypesChanging && editor.PointerMode != Editor.PointerModes.Create)
-                {
-                    lvCompTypes.SelectedIndexChanged -= lvCompTypes_SelectedIndexChanged;
-                    lvCompTypes.SelectedItems.Clear();
-                    lvCompTypes.SelectedIndexChanged += lvCompTypes_SelectedIndexChanged;
-                }
-
-                // установка доступности кнопок
-                SetButtonsEnabled();
-            });
-
-            if (InvokeRequired)
-                BeginInvoke(action);
-            else
-                action();
         }
 
 
@@ -422,6 +436,7 @@ namespace Scada.Scheme.Editor
 
             // настройка элментов управления
             lvCompTypes.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            lblStatus.Text = "";
 
             // создание новой схемы
             NewScheme();

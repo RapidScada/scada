@@ -305,6 +305,23 @@ scada.scheme.Dragging.prototype.stopDragging = function (callback) {
     }
 }
 
+// Get status of dragging
+scada.scheme.Dragging.prototype.getStatus = function () {
+    var DragModes = scada.scheme.DragModes;
+
+    if (this.mode == DragModes.NONE) {
+        return "";
+    } else if (this.mode == DragModes.MOVE) {
+        var offset = this.draggedElem.offset();
+        return "X: " + offset.left + ", Y: " + offset.top;
+    } else {
+        var offset = this.draggedElem.offset();
+        var component = this.draggedElem.data("component");
+        var size = component.renderer.getSize(component);
+        return "X: " + offset.left + ", Y: " + offset.top + ", W: " + size.width + ", H: " + size.height;
+    }
+}
+
 /********** Editable Scheme **********/
 
 // Editable scheme type
@@ -319,6 +336,8 @@ scada.scheme.EditableScheme = function () {
     this.selComponentIDs = [];
     // Provides dragging and resizing
     this.dragging = new scada.scheme.Dragging();
+    // Useful information for a user
+    this.status = "";
 };
 
 scada.scheme.EditableScheme.prototype = Object.create(scada.scheme.Scheme.prototype);
@@ -608,8 +627,10 @@ scada.scheme.EditableScheme.prototype.createDom = function (opt_controlRight) {
             if (thisScheme.dragging.mode == DragModes.NONE) {
                 thisScheme.dragging.defineCursor($(event.target), event.pageX, event.pageY,
                     thisScheme.selComponentIDs.length <= 1);
+                thisScheme.status = thisScheme.newComponentMode ? "X: " + event.pageX + ", Y: " + event.pageY : "";
             } else {
                 thisScheme.dragging.continueDragging(event.pageX, event.pageY);
+                thisScheme.status = thisScheme.dragging.getStatus();
             }
         })
         .on("mouseup mouseleave", function () {
@@ -618,6 +639,7 @@ scada.scheme.EditableScheme.prototype.createDom = function (opt_controlRight) {
                     // send changes to server under the assumption that the selection was not changed during dragging
                     thisScheme._moveResize(dx, dy, w, h);
                 });
+                thisScheme.status = "";
             }
         })
         .on("selectstart", ".comp", false);
@@ -634,7 +656,8 @@ scada.scheme.EditableScheme.prototype.getChanges = function (callback) {
         url: operation +
             "?editorID=" + this.editorID +
             "&viewStamp=" + this.viewStamp +
-            "&changeStamp=" + this.lastChangeStamp,
+            "&changeStamp=" + this.lastChangeStamp +
+            "&status=" + encodeURIComponent(this.status),
         method: "GET",
         dataType: "json",
         cache: false

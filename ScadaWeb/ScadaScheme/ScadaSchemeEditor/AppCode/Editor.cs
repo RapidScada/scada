@@ -83,6 +83,7 @@ namespace Scada.Scheme.Editor
         private List<Change> changes;     // изменения схемы
         private long changeStampCntr;     // счётчик для генерации меток изменений схемы
         private PointerModes pointerMode; // режим указателя мыши редактора
+        private string status;            // статус редактора
         private List<BaseComponent> selComponents; // выбранные компоненты схемы
         private List<BaseComponent> clipboard;     // буфер обмена, содержащий скопированные компоненты
 
@@ -169,7 +170,7 @@ namespace Scada.Scheme.Editor
         public bool Modified { get; private set; }
 
         /// <summary>
-        /// Получить или установть режим указателя мыши редактора
+        /// Получить или установить режим указателя мыши редактора
         /// </summary>
         public PointerModes PointerMode
         {
@@ -187,6 +188,25 @@ namespace Scada.Scheme.Editor
 
                 if (pointerMode != PointerModes.Create)
                     NewComponentTypeName = "";
+            }
+        }
+
+        /// <summary>
+        /// Получить или установить статус редактора - полезную информацию для пользователя
+        /// </summary>
+        public string Status
+        {
+            get
+            {
+                return status;
+            }
+            set
+            {
+                if (status != value)
+                {
+                    status = value;
+                    OnStatusChanged();
+                }
             }
         }
 
@@ -256,6 +276,22 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
+        /// Вызвать событие PointerModeChanged
+        /// </summary>
+        private void OnPointerModeChanged()
+        {
+            PointerModeChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Вызвать событие StatusChanged
+        /// </summary>
+        private void OnStatusChanged()
+        {
+            StatusChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
         /// Вызвать событие SelectionChanged
         /// </summary>
         private void OnSelectionChanged()
@@ -277,14 +313,6 @@ namespace Scada.Scheme.Editor
         private void OnClipboardChanged()
         {
             ClipboardChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        /// <summary>
-        /// Вызвать событие PointerModeChanged
-        /// </summary>
-        private void OnPointerModeChanged()
-        {
-            PointerModeChanged?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -827,6 +855,16 @@ namespace Scada.Scheme.Editor
 
 
         /// <summary>
+        /// Событие возникающее при изменении режима указателя мыши редактора
+        /// </summary>
+        public event EventHandler PointerModeChanged;
+
+        /// <summary>
+        /// Событие возникающее при изменении статуса редактора
+        /// </summary>
+        public event EventHandler StatusChanged;
+
+        /// <summary>
         /// Событие возникающее при изменении набора выбранных компонентов схемы
         /// </summary>
         public event EventHandler SelectionChanged;
@@ -840,10 +878,5 @@ namespace Scada.Scheme.Editor
         /// Событие возникающее при изменении содержимого буфера обмена
         /// </summary>
         public event EventHandler ClipboardChanged;
-
-        /// <summary>
-        /// Событие возникающее при изменении режима указателя мыши редактора
-        /// </summary>
-        public event EventHandler PointerModeChanged;
     }
 }
