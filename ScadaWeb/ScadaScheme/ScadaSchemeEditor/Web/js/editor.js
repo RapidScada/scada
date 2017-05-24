@@ -71,5 +71,9 @@ $(document).ready(function () {
         updateLayout();
     });
 
+    $(document).on("keydown", function (event) {
+        return scheme.processKey(event.key, event.which, event.ctrlKey);
+    });
+
     loadScheme(editorID);
 });

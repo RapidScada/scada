@@ -328,6 +328,9 @@ scada.scheme.Dragging.prototype.getStatus = function () {
 scada.scheme.EditableScheme = function () {
     scada.scheme.Scheme.call(this, true);
 
+    // Editor grid step
+    this.GRID_STEP = 5;
+
     // Stamp of the last processed change
     this.lastChangeStamp = 0;
     // Adding new component mode
@@ -700,3 +703,35 @@ scada.scheme.EditableScheme.prototype.getChanges = function (callback) {
         callback(GetChangesResults.ERROR);
     });
 };
+
+// Perform an action depending on the pressed key. Returns false if the key is handled
+scada.scheme.EditableScheme.prototype.processKey = function (keyChar, keyCode, ctrlKey) {
+    if (37 <= keyCode && keyCode <= 40 /*arrow keys*/ &&
+        this.dragging.mode == scada.scheme.DragModes.NONE) {
+        // move selected components
+        var move = ctrlKey ? 1 : this.GRID_STEP;
+        var dx = 0;
+        var dy = 0;
+
+        if (keyCode == 37 /*left arrow*/) {
+            dx = -move;
+        } else if (keyCode == 39 /*right arrow*/) {
+            dx = move;
+        } else if (keyCode == 38 /*up arrow*/) {
+            dy = -move;
+        } else if (keyCode == 40 /*down arrow*/) {
+            dy = move;
+        }
+
+        this._getSchemeDiv().find(".comp.selected").each(function () {
+            var offset = $(this).offset();
+            $(this).offset({ left: offset.left + dx, top: offset.top + dy });
+        });
+
+        // send changes to server
+        this._moveResize(dx, dy, 0, 0);
+        return false;
+    }
+
+    return true;
+}
