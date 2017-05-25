@@ -318,7 +318,7 @@ namespace Scada.Scheme.Editor
                         {
                             case SchemeChangeTypes.SchemeDocChanged:
                                 // копирование изменений свойств документа схемы
-                                ((SchemeDocument)change.ChangedObject).CopyPropsTo(SchemeView.SchemeDoc);
+                                ((SchemeDocument)change.ChangedObject).CopyTo(SchemeView.SchemeDoc);
                                 schemeDoc.OnItemChanged(SchemeChangeTypes.SchemeDocChanged, schemeDoc);
                                 break;
 
@@ -357,14 +357,14 @@ namespace Scada.Scheme.Editor
 
                             case SchemeChangeTypes.ImageAdded:
                                 // добавление изображения
-                                Image addedImage = (Image)change.ChangedObject;
+                                Image addedImage = ((Image)change.ChangedObject).Copy();
                                 schemeDoc.Images[addedImage.Name] = addedImage;
                                 schemeDoc.OnItemChanged(SchemeChangeTypes.ImageAdded, addedImage);
                                 break;
 
                             case SchemeChangeTypes.ImageRenamed:
                                 // переименование изображения
-                                Image renamedImage = (Image)change.ChangedObject;
+                                Image renamedImage = ((Image)change.ChangedObject).Copy();
                                 schemeDoc.Images.Remove(change.OldImageName);
                                 schemeDoc.Images[renamedImage.Name] = renamedImage;
                                 schemeDoc.OnItemChanged(
@@ -434,23 +434,10 @@ namespace Scada.Scheme.Editor
         private void Scheme_ItemChanged(object sender, SchemeChangeTypes changeType, object changedObject, object oldKey)
         {
             // создание объекта изменения
-            Change change = new Change(changeType) { Stamp = ++changeStampCntr };
-
-            if (changeType == SchemeChangeTypes.ComponentDeleted)
+            Change change = new Change(changeType, changedObject, oldKey)
             {
-                if (changedObject is BaseComponent)
-                    change.DeletedComponentID = ((BaseComponent)changedObject).ID;
-            }
-            else if (changeType == SchemeChangeTypes.ImageRenamed ||
-                changeType == SchemeChangeTypes.ImageDeleted)
-            {
-                change.ImageName = (changedObject as Image)?.Name;
-                change.OldImageName = oldKey as string;
-            }
-            else
-            {
-                change.ChangedObject = changedObject;
-            }
+                Stamp = ++changeStampCntr
+            };
 
             // добавление изменения в список изменений
             lock (changes)

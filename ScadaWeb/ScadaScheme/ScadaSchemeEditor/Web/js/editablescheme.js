@@ -356,7 +356,7 @@ scada.scheme.EditableScheme.prototype._processChanges = function (changes) {
                 }
                 break;
             case SchemeChangeTypes.COMPONENT_DELETED:
-                var component = this.componentMap.get(change.DeletedComponentID);
+                var component = this.componentMap.get(change.ComponentID);
                 if (component) {
                     this.componentMap.delete(component.id);
                     if (component.dom) {

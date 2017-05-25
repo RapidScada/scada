@@ -24,6 +24,7 @@
  */
 
 using Scada.Scheme.Model;
+using System;
 using System.Collections.Generic;
 using Utils;
 
@@ -57,7 +58,9 @@ namespace Scada.Scheme.Editor
 
         private readonly Log log;   // журнал приложения
         private List<Point> points; // точки истории
-        private int pointsHead;     // позиция добавления точек истории
+        private int headIndex;      // индекс добавления точек истории
+        private Point currentPoint; // текущая сохраняемая точка истории
+        private bool addingEnabled; // добавление изменений разрешено
         private SchemeDocument schemeDocCopy; // копия свойств документа схемы
         private SortedList<int, BaseComponent> componentsCopy; // копия компонентов схемы
 
@@ -76,7 +79,9 @@ namespace Scada.Scheme.Editor
         {
             this.log = log;
             points = new List<Point>();
-            pointsHead = 0;
+            headIndex = 0;
+            currentPoint = null;
+            addingEnabled = true;
             schemeDocCopy = new SchemeDocument();
             componentsCopy = new SortedList<int, BaseComponent>();
         }
@@ -89,7 +94,10 @@ namespace Scada.Scheme.Editor
         {
             get
             {
-                return false;
+                lock (this)
+                {
+                    return headIndex > 0;
+                }
             }
         }
         
@@ -100,33 +108,170 @@ namespace Scada.Scheme.Editor
         {
             get
             {
-                return false;
+                lock (this)
+                {
+                    return headIndex < points.Count;
+                }
             }
         }
 
 
         /// <summary>
-        /// Сделать копию свойств документа и компонентов схемы
+        /// Очистить историю
+        /// </summary>
+        private void Clear()
+        {
+            points.Clear();
+            headIndex = 0;
+            currentPoint = null;
+            addingEnabled = true;
+            componentsCopy.Clear();
+        }
+
+        /// <summary>
+        /// Добавить точку истории
+        /// </summary>
+        private void AddPoint(Point point)
+        {
+            if (headIndex < points.Count)
+                points.RemoveRange(headIndex, points.Count - headIndex);
+
+            points.Add(point);
+            headIndex = points.Count;
+        }
+
+        /// <summary>
+        /// Заменить действие на противоположное
+        /// </summary>
+        private Change ReverseChange(Change srcChange)
+        {
+            switch (srcChange.ChangeType)
+            {
+                case SchemeChangeTypes.SchemeDocChanged:
+                    return new Change(SchemeChangeTypes.SchemeDocChanged)
+                    {
+                        ChangedObject = srcChange.OldObject
+                    };
+
+                case SchemeChangeTypes.ComponentAdded:
+                    return new Change(SchemeChangeTypes.ComponentDeleted)
+                    {
+                        ChangedObject = srcChange.ChangedObject,
+                        ComponentID = srcChange.ComponentID
+                    };
+
+                case SchemeChangeTypes.ComponentChanged:
+                    return new Change(SchemeChangeTypes.ComponentChanged)
+                    {
+                        ChangedObject = srcChange.OldObject,
+                        ComponentID = srcChange.ComponentID
+                    };
+
+                case SchemeChangeTypes.ComponentDeleted:
+                    return new Change(SchemeChangeTypes.ComponentAdded)
+                    {
+                        ChangedObject = srcChange.ChangedObject,
+                        ComponentID = srcChange.ComponentID
+                    };
+
+                case SchemeChangeTypes.ImageAdded:
+                    return new Change(SchemeChangeTypes.ImageDeleted)
+                    {
+                        ChangedObject = srcChange.ChangedObject,
+                        ImageName = srcChange.ImageName
+                    };
+
+                case SchemeChangeTypes.ImageRenamed:
+                    return new Change(SchemeChangeTypes.ImageRenamed)
+                    {
+                        ChangedObject = srcChange.OldObject,
+                        ImageName = srcChange.OldImageName,
+                        OldImageName = srcChange.ImageName
+                    };
+
+                case SchemeChangeTypes.ImageDeleted:
+                    return new Change(SchemeChangeTypes.ImageAdded)
+                    {
+                        ChangedObject = srcChange.ChangedObject,
+                        ImageName = srcChange.ImageName
+                    };
+
+                default:
+                    throw new ScadaException("Unknown type of scheme changes.");
+            }
+        }
+
+
+        /// <summary>
+        /// Создать копию свойств документа и компонентов схемы
         /// </summary>
         public void MakeCopy(SchemeView schemeView)
         {
+            try
+            {
+                lock (this)
+                {
+                    Clear();
+                    schemeView.SchemeDoc.CopyTo(schemeDocCopy);
 
+                    foreach (BaseComponent component in schemeView.Components.Values)
+                    {
+                        BaseComponent componentCopy = component.Clone();
+                        componentsCopy.Add(componentCopy.ID, componentCopy);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при создании копии свойств документа и компонентов схемы" :
+                    "Error making copy of the scheme document properties and components");
+            }
         }
 
         /// <summary>
-        /// Начать сохранение точки истории
+        /// Начать заполнение точки истории
         /// </summary>
         public void BeginPoint()
         {
-
+            try
+            {
+                lock (this)
+                {
+                    if (currentPoint == null)
+                        currentPoint = new Point();
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка в начале заполнения точки истории" :
+                    "Error beginning of history point");
+            }
         }
 
         /// <summary>
-        /// Завершить сохранение точки истории
+        /// Завершить заполнение точки истории
         /// </summary>
         public void EndPoint()
         {
-
+            try
+            {
+                lock (this)
+                {
+                    if (currentPoint != null)
+                    {
+                        AddPoint(currentPoint);
+                        currentPoint = null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при завершении заполнения точки истории" :
+                    "Error ending of history point");
+            }
         }
 
         /// <summary>
@@ -134,7 +279,7 @@ namespace Scada.Scheme.Editor
         /// </summary>
         public void DisableAdding()
         {
-
+            addingEnabled = false;
         }
 
         /// <summary>
@@ -142,7 +287,7 @@ namespace Scada.Scheme.Editor
         /// </summary>
         public void EnableAdding()
         {
-
+            addingEnabled = true;
         }
 
         /// <summary>
@@ -150,22 +295,98 @@ namespace Scada.Scheme.Editor
         /// </summary>
         public void Add(SchemeChangeTypes changeType, object changedObject, object oldKey = null)
         {
+            try
+            {
+                lock (this)
+                {
+                    Change change = new Change(changeType, changedObject, oldKey);
 
+                    switch (changeType)
+                    {
+                        case SchemeChangeTypes.SchemeDocChanged:
+                            change.OldObject = schemeDocCopy;
+                            schemeDocCopy = (SchemeDocument)changedObject;
+                            break;
+
+                        case SchemeChangeTypes.ComponentChanged:
+                            change.OldObject = componentsCopy[change.ComponentID];
+                            componentsCopy[change.ComponentID] = (BaseComponent)changedObject;
+                            break;
+
+                        case SchemeChangeTypes.ComponentDeleted:
+                            componentsCopy.Remove(change.ComponentID);
+                            break;
+                    }
+
+                    if (addingEnabled)
+                    {
+                        Point point = currentPoint ?? new Point();
+                        point.Changes.Add(change);
+                        AddPoint(point);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при добавлении изменения в историю" :
+                    "Error adding a change to the history");
+            }
         }
 
         /// <summary>
-        /// Получить изменения, необходимые для отмены действия
+        /// Получить изменения для отмены действия
         /// </summary>
         public List<Change> GetUndoChanges()
         {
-            return new List<Change>();
+            List<Change> changes = new List<Change>();
+
+            try
+            {
+                lock (this)
+                {
+                    if (headIndex > 0)
+                    {
+                        headIndex--;
+                        Point point = points[headIndex];
+
+                        foreach (Change change in point.Changes)
+                        {
+                            changes.Add(ReverseChange(change));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении изменений для отмены действия" :
+                    "Error getting changes for undoing action");
+            }
+
+            return changes;
         }
 
         /// <summary>
-        /// Получить изменения, необходимые для возврата действия
+        /// Получить изменения для возврата действия
         /// </summary>
         public List<Change> GetRedoChanges()
         {
+            try
+            {
+                lock (this)
+                {
+                    if (headIndex < points.Count)
+                        return points[headIndex++].Changes;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении изменений для возврата действия" :
+                    "Error getting changes for redoing action");
+            }
+
             return new List<Change>();
         }
     }

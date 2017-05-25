@@ -85,5 +85,17 @@ namespace Scada.Scheme.Model
                 Data != null && Data.Length > 0 ? 
                 Convert.ToBase64String(Data, Base64FormattingOptions.None) : "");
         }
+
+        /// <summary>
+        /// Копировать объект
+        /// </summary>
+        public Image Copy()
+        {
+            return new Image()
+            {
+                Name = Name,
+                Data = Data
+            };
+        }
     }
 }

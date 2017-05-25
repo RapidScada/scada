@@ -50,9 +50,56 @@ namespace Scada.Scheme.Editor
             ChangeType = changeType;
             Stamp = 0;
             ChangedObject = null;
-            DeletedComponentID = -1;
-            OldImageName = "";
+            OldObject = null;
+            ComponentID = -1;
             ImageName = "";
+            OldImageName = "";
+        }
+
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        public Change(SchemeChangeTypes changeType, object changedObject, object oldKey) 
+            : this(changeType)
+        {
+            switch (changeType)
+            {
+                case SchemeChangeTypes.SchemeDocChanged:
+                    if (changedObject is SchemeDocument)
+                        ChangedObject = ((SchemeDocument)changedObject).Copy();
+                    else
+                        throw new ScadaException("SchemeDocument expected.");
+                    break;
+
+                case SchemeChangeTypes.ComponentAdded:
+                case SchemeChangeTypes.ComponentChanged:
+                case SchemeChangeTypes.ComponentDeleted:
+                    if (changedObject is BaseComponent)
+                    {
+                        ChangedObject = ((BaseComponent)changedObject).Clone();
+                        ComponentID = ((BaseComponent)changedObject).ID;
+                    }
+                    else
+                    {
+                        throw new ScadaException("BaseComponent expected.");
+                    }
+                    break;
+
+                case SchemeChangeTypes.ImageAdded:
+                case SchemeChangeTypes.ImageRenamed:
+                case SchemeChangeTypes.ImageDeleted:
+                    if (changedObject is Image)
+                    {
+                        ChangedObject = ((Image)changedObject).Copy();
+                        ImageName = ((Image)changedObject).Name;
+                        OldImageName = (oldKey as string) ?? "";
+                    }
+                    else
+                    {
+                        throw new ScadaException("Image expected.");
+                    }
+                    break;
+            }
         }
 
 
@@ -68,25 +115,29 @@ namespace Scada.Scheme.Editor
         public long Stamp { get; set; }
 
         /// <summary>
-        /// Получить или установить изменившийся объект
+        /// Получить или установить добавленный, изменившийся или удалённый объект
         /// </summary>
         public object ChangedObject { get; set; }
 
         /// <summary>
-        /// Получить или установить ид. удалённого компонента схемы
+        /// Получить или установить копию изменившегося объекта в предыдущем состоянии
         /// </summary>
-        public int DeletedComponentID { get; set; }
+        public object OldObject { get; set; }
+
+        /// <summary>
+        /// Получить или установить ид. компонента
+        /// </summary>
+        public int ComponentID { get; set; }
+
+        /// <summary>
+        /// Получить или установить наименование изображения
+        /// </summary>
+        public string ImageName { get; set; }
 
         /// <summary>
         /// Получить или установить старое наименование изображения в случае переименования
         /// </summary>
         public string OldImageName { get; set; }
-
-        /// <summary>
-        /// Получить или установить новое наименование изображения в случае переименования или 
-        /// наименование удалённого изображения
-        /// </summary>
-        public string ImageName { get; set; }
 
 
         /// <summary>
@@ -94,14 +145,28 @@ namespace Scada.Scheme.Editor
         /// </summary>
         public Change ConvertToDTO()
         {
-            return new Change(ChangeType)
+            Change changeDTO = new Change(ChangeType)
             {
                 Stamp = Stamp,
-                ChangedObject = ChangedObject is Image ? new ImageDTO((Image)ChangedObject) : ChangedObject,
-                DeletedComponentID = DeletedComponentID,
-                OldImageName = OldImageName,
-                ImageName = ImageName
+                ComponentID = ComponentID,
+                ImageName = ImageName,
+                OldImageName = OldImageName
             };
+
+            switch (ChangeType)
+            {
+                case SchemeChangeTypes.SchemeDocChanged:
+                case SchemeChangeTypes.ComponentAdded:
+                case SchemeChangeTypes.ComponentChanged:
+                    changeDTO.ChangedObject = ChangedObject;
+                    break;
+
+                case SchemeChangeTypes.ImageAdded:
+                    ChangedObject = new ImageDTO((Image)ChangedObject);
+                    break;
+            }
+
+            return changeDTO;
         }
     }
 }

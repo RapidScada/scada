@@ -224,9 +224,9 @@ namespace Scada.Scheme.Model
         }
 
         /// <summary>
-        /// Копировать свойства объекта
+        /// Копировать свойства объекта в заданный объект
         /// </summary>
-        public void CopyPropsTo(SchemeDocument schemeDoc)
+        public void CopyTo(SchemeDocument schemeDoc)
         {
             if (schemeDoc == null)
                 throw new ArgumentNullException("schemeDoc");
@@ -239,6 +239,16 @@ namespace Scada.Scheme.Model
             schemeDoc.Title = Title;
             schemeDoc.CnlFilter.Clear();
             schemeDoc.CnlFilter.AddRange(CnlFilter);
+        }
+
+        /// <summary>
+        /// Копировать объект
+        /// </summary>
+        public SchemeDocument Copy()
+        {
+            SchemeDocument schemeDoc = new SchemeDocument();
+            CopyTo(schemeDoc);
+            return schemeDoc;
         }
 
         /// <summary>
