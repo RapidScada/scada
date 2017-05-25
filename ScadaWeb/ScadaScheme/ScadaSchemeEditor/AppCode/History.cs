@@ -56,6 +56,11 @@ namespace Scada.Scheme.Editor
         }
 
 
+        /// <summary>
+        /// Размер хранимой истории
+        /// </summary>
+        private const int HistorySize = 20;
+
         private readonly Log log;   // журнал приложения
         private List<Point> points; // точки истории
         private int headIndex;      // индекс добавления точек истории
@@ -133,10 +138,19 @@ namespace Scada.Scheme.Editor
         /// </summary>
         private void AddPoint(Point point)
         {
+            // удаление точек истории после индекса добавления
             if (headIndex < points.Count)
                 points.RemoveRange(headIndex, points.Count - headIndex);
 
+            // добавление точки истории
             points.Add(point);
+
+            // удаление части точек истории, если превышена длина истории
+            int removeCnt = points.Count - HistorySize;
+            if (removeCnt > 0)
+                points.RemoveRange(0, removeCnt);
+
+            // смещение индекса добавления
             headIndex = points.Count;
         }
 
