@@ -224,6 +224,24 @@ namespace Scada.Scheme.Model
         }
 
         /// <summary>
+        /// Копировать свойства объекта
+        /// </summary>
+        public void CopyPropsTo(SchemeDocument schemeDoc)
+        {
+            if (schemeDoc == null)
+                throw new ArgumentNullException("schemeDoc");
+
+            schemeDoc.Size = Size;
+            schemeDoc.BackColor = BackColor;
+            schemeDoc.BackImageName = BackImageName;
+            schemeDoc.Font = Font.Clone();
+            schemeDoc.ForeColor = ForeColor;
+            schemeDoc.Title = Title;
+            schemeDoc.CnlFilter.Clear();
+            schemeDoc.CnlFilter.AddRange(CnlFilter);
+        }
+
+        /// <summary>
         /// Вызвать событие ItemChanged
         /// </summary>
         public void OnItemChanged(SchemeChangeTypes changeType, object changedObject, object oldKey = null)

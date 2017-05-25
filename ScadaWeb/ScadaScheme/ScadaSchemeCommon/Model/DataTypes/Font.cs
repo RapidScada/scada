@@ -136,5 +136,13 @@ namespace Scada.Scheme.Model.DataTypes
                 return (XmlElement)parentXmlElem.AppendChild(xmlElem);
             }
         }
+
+        /// <summary>
+        /// Клонировать объект
+        /// </summary>
+        public Font Clone()
+        {
+            return (Font)ScadaUtils.DeepClone(this);
+        }
     }
 }

@@ -81,6 +81,7 @@ namespace Scada.Scheme.Editor
 
         private readonly Log log;         // журнал приложения
         private List<Change> changes;     // изменения схемы
+        private History history;          // история изменений
         private long changeStampCntr;     // счётчик для генерации меток изменений схемы
         private PointerModes pointerMode; // режим указателя мыши редактора
         private string status;            // статус редактора
@@ -119,6 +120,7 @@ namespace Scada.Scheme.Editor
 
             this.log = log;
             changes = new List<Change>();
+            history = new History(log);
             changeStampCntr = 0;
             pointerMode = PointerModes.Select;
             selComponents = new List<BaseComponent>();
@@ -236,6 +238,28 @@ namespace Scada.Scheme.Editor
                 return clipboard.Count > 0;
             }
         }
+        
+        /// <summary>
+        /// Получить признак, что возможно отменить действие
+        /// </summary>
+        public bool CanUndo
+        {
+            get
+            {
+                return history.CanUndo;
+            }
+        }
+
+        /// <summary>
+        /// Получить признак, что возможно вернуть действие
+        /// </summary>
+        public bool CanRedo
+        {
+            get
+            {
+                return history.CanRedo;
+            }
+        }
 
 
         /// <summary>
@@ -273,6 +297,95 @@ namespace Scada.Scheme.Editor
             {
                 selComponents.Clear();
             }
+        }
+
+        /// <summary>
+        /// Применить заданные изменения схемы
+        /// </summary>
+        private void ApplyChanges(List<Change> changeList)
+        {
+            lock (SchemeView.SyncRoot)
+            {
+                lock (selComponents)
+                {
+                    SchemeDocument schemeDoc = SchemeView.SchemeDoc;
+                    history.DisableAdding();
+                    selComponents.Clear();
+
+                    foreach (Change change in changeList)
+                    {
+                        switch (change.ChangeType)
+                        {
+                            case SchemeChangeTypes.SchemeDocChanged:
+                                // копирование изменений свойств документа схемы
+                                ((SchemeDocument)change.ChangedObject).CopyPropsTo(SchemeView.SchemeDoc);
+                                schemeDoc.OnItemChanged(SchemeChangeTypes.SchemeDocChanged, schemeDoc);
+                                break;
+
+                            case SchemeChangeTypes.ComponentAdded:
+                                // создание копии компонента
+                                BaseComponent addedComponent = ((BaseComponent)change.ChangedObject).Clone();
+                                addedComponent.ItemChanged += Scheme_ItemChanged;
+
+                                // добавление компонента на схему
+                                SchemeView.Components[addedComponent.ID] = addedComponent;
+                                schemeDoc.OnItemChanged(SchemeChangeTypes.ComponentAdded, addedComponent);
+
+                                // выбор добавленного компонента
+                                selComponents.Add(addedComponent);
+                                break;
+
+                            case SchemeChangeTypes.ComponentChanged:
+                                // создание копии компонента
+                                BaseComponent changedComponent = ((BaseComponent)change.ChangedObject).Clone();
+                                changedComponent.ItemChanged += Scheme_ItemChanged;
+
+                                // замена компонента на схеме
+                                SchemeView.Components[changedComponent.ID] = changedComponent;
+                                changedComponent.OnItemChanged(SchemeChangeTypes.ComponentChanged, changedComponent);
+
+                                // выбор изменённого компонента
+                                selComponents.Add(changedComponent);
+                                break;
+
+                            case SchemeChangeTypes.ComponentDeleted:
+                                // удаление компонента
+                                BaseComponent deletedComponent = (BaseComponent)change.ChangedObject;
+                                SchemeView.Components.Remove(deletedComponent.ID);
+                                schemeDoc.OnItemChanged(SchemeChangeTypes.ComponentDeleted, deletedComponent);
+                                break;
+
+                            case SchemeChangeTypes.ImageAdded:
+                                // добавление изображения
+                                Image addedImage = (Image)change.ChangedObject;
+                                schemeDoc.Images[addedImage.Name] = addedImage;
+                                schemeDoc.OnItemChanged(SchemeChangeTypes.ImageAdded, addedImage);
+                                break;
+
+                            case SchemeChangeTypes.ImageRenamed:
+                                // переименование изображения
+                                Image renamedImage = (Image)change.ChangedObject;
+                                schemeDoc.Images.Remove(change.OldImageName);
+                                schemeDoc.Images[renamedImage.Name] = renamedImage;
+                                schemeDoc.OnItemChanged(
+                                    SchemeChangeTypes.ImageRenamed, renamedImage, change.OldImageName);
+                                break;
+
+                            case SchemeChangeTypes.ImageDeleted:
+                                // удаление изображения
+                                Image deletedImage = (Image)change.ChangedObject;
+                                schemeDoc.Images.Remove(deletedImage.Name);
+                                schemeDoc.OnItemChanged(SchemeChangeTypes.ImageDeleted, deletedImage);
+                                break;
+                        }
+                    }
+
+                    history.EnableAdding();
+                }
+            }
+
+            OnSelectionChanged();
+            PointerMode = PointerModes.Select;
         }
 
         /// <summary>
@@ -320,28 +433,33 @@ namespace Scada.Scheme.Editor
         /// </summary>
         private void Scheme_ItemChanged(object sender, SchemeChangeTypes changeType, object changedObject, object oldKey)
         {
+            // создание объекта изменения
+            Change change = new Change(changeType) { Stamp = ++changeStampCntr };
+
+            if (changeType == SchemeChangeTypes.ComponentDeleted)
+            {
+                if (changedObject is BaseComponent)
+                    change.DeletedComponentID = ((BaseComponent)changedObject).ID;
+            }
+            else if (changeType == SchemeChangeTypes.ImageRenamed ||
+                changeType == SchemeChangeTypes.ImageDeleted)
+            {
+                change.ImageName = (changedObject as Image)?.Name;
+                change.OldImageName = oldKey as string;
+            }
+            else
+            {
+                change.ChangedObject = changedObject;
+            }
+
+            // добавление изменения в список изменений
             lock (changes)
             {
-                Change change = new Change(changeType) { Stamp = ++changeStampCntr };
-
-                if (changeType == SchemeChangeTypes.ComponentDeleted)
-                {
-                    if (changedObject is BaseComponent)
-                        change.DeletedComponentID = ((BaseComponent)changedObject).ID;
-                }
-                else if (changeType == SchemeChangeTypes.ImageRenamed ||
-                    changeType == SchemeChangeTypes.ImageDeleted)
-                {
-                    change.ImageName = (changedObject as Image)?.Name;
-                    change.OldImageName = oldKey as string;
-                }
-                else
-                {
-                    change.ChangedObject = changedObject;
-                }
-
                 changes.Add(change);
             }
+
+            // добавление изменения в историю
+            history.Add(changeType, changedObject, oldKey);
         }
 
 
@@ -397,10 +515,12 @@ namespace Scada.Scheme.Editor
             ClearChanges();
             ClearSelComponents();
             SchemeView = new SchemeView();
+
             FileName = "";
             Modified = false;
             PointerMode = PointerModes.Select;
             SubscribeToChanges();
+            history.MakeCopy(SchemeView);
         }
 
         /// <summary>
@@ -422,6 +542,7 @@ namespace Scada.Scheme.Editor
             Modified = false;
             PointerMode = PointerModes.Select;
             SubscribeToChanges();
+            history.MakeCopy(SchemeView);
 
             if (!loadOK)
                 log.WriteError(errMsg);
@@ -600,12 +721,15 @@ namespace Scada.Scheme.Editor
                     {
                         lock (selComponents)
                         {
+                            history.BeginPoint();
+
                             foreach (BaseComponent selComponent in selComponents)
                             {
                                 SchemeView.Components.Remove(selComponent.ID);
                                 SchemeView.SchemeDoc.OnItemChanged(SchemeChangeTypes.ComponentDeleted, selComponent);
                             }
 
+                            history.EndPoint();
                             selComponents.Clear();
                         }
                     }
@@ -638,6 +762,8 @@ namespace Scada.Scheme.Editor
                     {
                         lock (selComponents)
                         {
+                            history.BeginPoint();
+
                             foreach (BaseComponent selComponent in selComponents)
                             {
                                 if (moved)
@@ -649,9 +775,12 @@ namespace Scada.Scheme.Editor
 
                                 if (writeChanges)
                                     selComponent.OnItemChanged(SchemeChangeTypes.ComponentChanged, selComponent);
-
-                                OnSelectionPropsChanged();
+                                else
+                                    history.Add(SchemeChangeTypes.ComponentChanged, selComponent);
                             }
+
+                            history.EndPoint();
+                            OnSelectionPropsChanged();
                         }
                     }
                 }
@@ -820,6 +949,7 @@ namespace Scada.Scheme.Editor
                 lock (SchemeView.SyncRoot) lock (clipboard) lock (selComponents)
                 {
                     selComponents.Clear();
+                    history.BeginPoint();
 
                     foreach (BaseComponent srcComponent in clipboard)
                     {
@@ -831,6 +961,8 @@ namespace Scada.Scheme.Editor
                         SchemeView.SchemeDoc.OnItemChanged(SchemeChangeTypes.ComponentAdded, newComponent);
                         selComponents.Add(newComponent);
                     }
+
+                    history.EndPoint();
                 }
 
                 OnSelectionChanged();
@@ -850,6 +982,42 @@ namespace Scada.Scheme.Editor
                     "Ошибка при вставке компонентов схемы из буфера обмена" :
                     "Error pasting scheme components from clipboard");
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// Отменить последнее действие
+        /// </summary>
+        public void Undo()
+        {
+            try
+            {
+                if (SchemeView != null)
+                    ApplyChanges(history.GetUndoChanges());
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при отмене последнего действия" :
+                    "Error undoing the last action");
+            }
+        }
+
+        /// <summary>
+        /// Вернуть последнее действие
+        /// </summary>
+        public void Redo()
+        {
+            try
+            {
+                if (SchemeView != null)
+                    ApplyChanges(history.GetRedoChanges());
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при возврате последнего действия" :
+                    "Error redoing the last action");
             }
         }
 

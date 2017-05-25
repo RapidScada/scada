@@ -66,6 +66,7 @@
     <Compile Include="AppCode\Change.cs" />
     <Compile Include="AppCode\Editor.cs" />
     <Compile Include="AppCode\ChangesDTO.cs" />
+    <Compile Include="AppCode\History.cs" />
     <Compile Include="AppCode\Settings.cs" />
     <Compile Include="FrmAbout.cs">
       <SubType>Form</SubType>

@@ -256,32 +256,24 @@ scada.scheme.Dragging.prototype.continueDragging = function (pageX, pageY) {
 
             if (resizeLeft) {
                 // resize by pulling the left edge
-                if (newWidth - dx >= this.MIN_SIZE) {
-                    newWidth -= dx;
-                    this._moveElemHor(elem, dx);
-                    this._resizeElem(elem, newWidth, newHeight);
-                }
+                newWidth = Math.max(this.MIN_SIZE, newWidth - dx);
+                this._moveElemHor(elem, dx);
+                this._resizeElem(elem, newWidth, newHeight);
             } else if (resizeRight) {
                 // resize by pulling the right edge
-                if (newWidth + dx >= this.MIN_SIZE) {
-                    newWidth += dx;
-                    this._resizeElem(elem, newWidth, newHeight);
-                }
+                newWidth = Math.max(this.MIN_SIZE, newWidth + dx);
+                this._resizeElem(elem, newWidth, newHeight);
             }
 
             if (resizeTop) {
                 // resize by pulling the top edge
-                if (newHeight - dy >= this.MIN_SIZE) {
-                    newHeight -= dy;
-                    this._moveElemVert(elem, dy);
-                    this._resizeElem(elem, newWidth, newHeight);
-                }
+                newHeight = Math.max(this.MIN_SIZE, newHeight - dy);
+                this._moveElemVert(elem, dy);
+                this._resizeElem(elem, newWidth, newHeight);
             } else if (resizeBot) {
                 // resize by pulling the bottom edge
-                if (newHeight + dy >= this.MIN_SIZE) {
-                    newHeight += dy;
-                    this._resizeElem(elem, newWidth, newHeight);
-                }
+                newHeight = Math.max(this.MIN_SIZE, newHeight + dy);
+                this._resizeElem(elem, newWidth, newHeight);
             }
         }
     }

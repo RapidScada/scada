@@ -317,6 +317,8 @@ namespace Scada.Scheme.Editor
             btnEditCut.Enabled = btnEditCopy.Enabled = btnEditDelete.Enabled = editor.SelectionNotEmpty;
             btnEditPaste.Enabled = editor.ClipboardNotEmpty;
             btnEditPointer.Enabled = editor.PointerMode != Editor.PointerModes.Select;
+            btnEditUndo.Enabled = editor.CanUndo;
+            btnEditRedo.Enabled = editor.CanRedo;
         }
 
 
@@ -548,12 +550,16 @@ namespace Scada.Scheme.Editor
 
         private void btnEditUndo_Click(object sender, EventArgs e)
         {
-
+            // отмена последнего действия
+            editor.Undo();
+            SetButtonsEnabled();
         }
 
         private void btnEditRedo_Click(object sender, EventArgs e)
         {
-
+            // возврат последнего действия
+            editor.Redo();
+            SetButtonsEnabled();
         }
 
         private void btnEditPointer_Click(object sender, EventArgs e)
