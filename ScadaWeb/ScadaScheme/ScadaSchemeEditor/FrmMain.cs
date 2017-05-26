@@ -502,7 +502,7 @@ namespace Scada.Scheme.Editor
             appData.FinalizeApp();
         }
 
-        private void FrmMain_MouseMove(object sender, MouseEventArgs e)
+        private void FrmMain_MouseEnter(object sender, EventArgs e)
         {
             // активировать форму при наведении мыши
             if (ActiveForm != this)
@@ -512,6 +512,26 @@ namespace Scada.Scheme.Editor
         private void FrmMain_Resize(object sender, EventArgs e)
         {
             lvCompTypes.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+        }
+
+        private void FrmMain_KeyDown(object sender, KeyEventArgs e)
+        {
+            // реализация горячих клавиш
+            if (e.Control)
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.N:
+                        btnFileNew_Click(null, null);
+                        break;
+                    case Keys.O:
+                        btnFileOpen_Click(null, null);
+                        break;
+                    case Keys.S:
+                        btnFileSave_ButtonClick(null, null);
+                        break;
+                }
+            }
         }
 
 

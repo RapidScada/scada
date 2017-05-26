@@ -2,9 +2,9 @@
 <ScadaServerDictionaries>
   <Dictionary key="Scada.Scheme.Editor.FrmMain">
     <Phrase key="this">Scheme Editor</Phrase>
-    <Phrase key="btnFileNew.ToolTip">Create new scheme</Phrase>
-    <Phrase key="btnFileOpen.ToolTip">Open scheme</Phrase>
-    <Phrase key="btnFileSave.ToolTip">Save scheme</Phrase>
+    <Phrase key="btnFileNew.ToolTip">Create new scheme (Ctrl+N)</Phrase>
+    <Phrase key="btnFileOpen.ToolTip">Open scheme (Ctrl+O)</Phrase>
+    <Phrase key="btnFileSave.ToolTip">Save scheme (Ctrl+S)</Phrase>
     <Phrase key="miFileSaveAs">Save As...</Phrase>
     <Phrase key="btnFileOpenBrowser.ToolTip">Open new browser tab</Phrase>
     <Phrase key="btnEditCut.ToolTip">Cut scheme components</Phrase>

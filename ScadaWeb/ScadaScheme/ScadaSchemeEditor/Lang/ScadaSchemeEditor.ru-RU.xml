@@ -2,9 +2,9 @@
 <ScadaServerDictionaries>
   <Dictionary key="Scada.Scheme.Editor.FrmMain">
     <Phrase key="this">Редактор схем</Phrase>
-    <Phrase key="btnFileNew.ToolTip">Создать новую схему</Phrase>
-    <Phrase key="btnFileOpen.ToolTip">Открыть схему</Phrase>
-    <Phrase key="btnFileSave.ToolTip">Сохранить схему</Phrase>
+    <Phrase key="btnFileNew.ToolTip">Создать новую схему (Ctrl+N)</Phrase>
+    <Phrase key="btnFileOpen.ToolTip">Открыть схему (Ctrl+O)</Phrase>
+    <Phrase key="btnFileSave.ToolTip">Сохранить схему (Ctrl+S)</Phrase>
     <Phrase key="miFileSaveAs">Сохранить как...</Phrase>
     <Phrase key="btnFileOpenBrowser.ToolTip">Открыть новую вкладку браузера</Phrase>
     <Phrase key="btnEditCut.ToolTip">Вырезать компоненты схемы</Phrase>
