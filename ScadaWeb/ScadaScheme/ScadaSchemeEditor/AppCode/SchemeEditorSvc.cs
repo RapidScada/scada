@@ -55,6 +55,24 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
+        /// Действия главной формы
+        /// </summary>
+        private class FormActions
+        {
+            public const string New = "new";
+            public const string Open = "open";
+            public const string Save = "save";
+            public const string Cut = "cut";
+            public const string Copy = "copy";
+            public const string Paste = "paste";
+            public const string Undo = "undo";
+            public const string Redo = "redo";
+            public const string Pointer = "pointer";
+            public const string Delete = "delete";
+        }
+
+
+        /// <summary>
         /// Максимальное количество символов строке данных в формате JSON, 10 МБ
         /// </summary>
         private const int MaxJsonLen = 10485760;
@@ -331,6 +349,16 @@ namespace Scada.Scheme.Editor
                     "Error moving and resizing selected scheme components");
                 return JsSerializer.GetErrorJson(ex);
             }
+        }
+
+        /// <summary>
+        /// Выполнить действие главной формы
+        /// </summary>
+        [OperationContract]
+        [WebGet]
+        public string FormAction(string editorID, long viewStamp, string action)
+        {
+            return "";
         }
     }
 }
