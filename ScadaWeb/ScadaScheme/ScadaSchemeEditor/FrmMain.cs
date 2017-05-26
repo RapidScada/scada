@@ -43,7 +43,7 @@ namespace Scada.Scheme.Editor
     /// Main form of the application
     /// <para>Главная форма приложения</para>
     /// </summary>
-    public partial class FrmMain : Form
+    public partial class FrmMain : Form, IMainForm
     {
         private readonly AppData appData; // общие данные приложения
         private readonly Log log;         // журнал приложения
@@ -345,7 +345,7 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Выполнить действие потокобезопасно
+        /// Выполнить метод потокобезопасно
         /// </summary>
         private void ExecuteAction(Action action)
         {
@@ -353,6 +353,51 @@ namespace Scada.Scheme.Editor
                 BeginInvoke(action);
             else
                 action();
+        }
+
+        /// <summary>
+        /// Выполнить заданное действие
+        /// </summary>
+        public void PerformAction(FormActions formAction)
+        {
+            ExecuteAction(new Action(() =>
+            {
+                BringToFront();
+
+                switch (formAction)
+                {
+                    case FormActions.New:
+                        btnFileNew_Click(null, null);
+                        break;
+                    case FormActions.Open:
+                        btnFileOpen_Click(null, null);
+                        break;
+                    case FormActions.Save:
+                        btnFileSave_ButtonClick(null, null);
+                        break;
+                    case FormActions.Cut:
+                        btnEditCut_Click(null, null);
+                        break;
+                    case FormActions.Copy:
+                        btnEditCopy_Click(null, null);
+                        break;
+                    case FormActions.Paste:
+                        btnEditPaste_Click(null, null);
+                        break;
+                    case FormActions.Undo:
+                        btnEditUndo_Click(null, null);
+                        break;
+                    case FormActions.Redo:
+                        btnEditRedo_Click(null, null);
+                        break;
+                    case FormActions.Pointer:
+                        btnEditPointer_Click(null, null);
+                        break;
+                    case FormActions.Delete:
+                        btnEditDelete_Click(null, null);
+                        break;
+                }
+            }));
         }
 
 
@@ -453,7 +498,7 @@ namespace Scada.Scheme.Editor
         private void FrmMain_Load(object sender, EventArgs e)
         {
             // инициализация общих данных приложения
-            appData.Init(Path.GetDirectoryName(Application.ExecutablePath));
+            appData.Init(Path.GetDirectoryName(Application.ExecutablePath), this);
 
             // локализация
             LocalizeForm();

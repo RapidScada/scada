@@ -60,6 +60,29 @@ namespace Scada.Scheme.Editor
             Paste
         }
 
+        /// <summary>
+        /// Действия при выборе компонентов схемы
+        /// </summary>
+        public enum SelectActions
+        {
+            /// <summary>
+            /// Выбрать
+            /// </summary>
+            Select,
+            /// <summary>
+            /// Добавить к выбору
+            /// </summary>
+            Append,
+            /// <summary>
+            /// Отменить выбор
+            /// </summary>
+            Deselect,
+            /// <summary>
+            /// Отменить выбор всех компонентов
+            /// </summary>
+            DeselectAll
+        }
+
 
         /// <summary>
         /// Длина идентификатора редактора
@@ -861,6 +884,28 @@ namespace Scada.Scheme.Editor
                 log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при отмене выбора всех компонентов схемы" :
                     "Error deselecting all scheme components");
+            }
+        }
+        
+        /// <summary>
+        /// Выполнить действие по выбору компонента
+        /// </summary>
+        public void PerformSelectAction(SelectActions selectAction, int componentID)
+        {
+            switch (selectAction)
+            {
+                case SelectActions.Select:
+                    SelectComponent(componentID);
+                    break;
+                case SelectActions.Append:
+                    SelectComponent(componentID, true);
+                    break;
+                case SelectActions.Deselect:
+                    DeselectComponent(componentID);
+                    break;
+                case SelectActions.DeselectAll:
+                    DeselectAll();
+                    break;
             }
         }
 

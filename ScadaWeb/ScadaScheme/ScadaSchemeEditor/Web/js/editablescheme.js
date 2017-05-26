@@ -51,6 +51,14 @@ scada.scheme.SelectActions = {
     DESELECT_ALL: "deselectall"
 };
 
+/********** Main Form Actions **********/
+
+scada.scheme.FormActions = {
+    NEW: "new",
+    OPEN: "open",
+    SAVE: "save",
+};
+
 /********** Drag Modes **********/
 
 scada.scheme.DragModes = {
@@ -566,6 +574,27 @@ scada.scheme.EditableScheme.prototype._moveResize = function (dx, dy, w, h) {
     });
 }
 
+// Send a request to perform action of the main form
+scada.scheme.EditableScheme.prototype._formAction = function (action) {
+    var operation = this.serviceUrl + "FormAction";
+
+    $.ajax({
+        url: operation +
+            "?editorID=" + this.editorID +
+            "&viewStamp=" + this.viewStamp +
+            "&action=" + action,
+        method: "GET",
+        dataType: "json",
+        cache: false
+    })
+    .done(function () {
+        scada.utils.logSuccessfulRequest(operation);
+    })
+    .fail(function (jqXHR) {
+        scada.utils.logFailedRequest(operation, jqXHR);
+    });
+}
+
 // Create DOM content of the scheme
 scada.scheme.EditableScheme.prototype.createDom = function (opt_controlRight) {
     scada.scheme.Scheme.prototype.createDom.call(this, opt_controlRight);
@@ -698,8 +727,12 @@ scada.scheme.EditableScheme.prototype.getChanges = function (callback) {
 
 // Perform an action depending on the pressed key. Returns false if the key is handled
 scada.scheme.EditableScheme.prototype.processKey = function (keyChar, keyCode, ctrlKey) {
+    var DragModes = scada.scheme.DragModes;
+    var FormActions = scada.scheme.FormActions;
+
+    // use keyCode instead of keyChar to provide case insensitiveness and culture independence
     if (37 <= keyCode && keyCode <= 40 /*arrow keys*/ &&
-        this.dragging.mode == scada.scheme.DragModes.NONE) {
+        this.dragging.mode == DragModes.NONE) {
         // move selected components
         var move = ctrlKey ? 1 : this.GRID_STEP;
         var dx = 0;
@@ -723,7 +756,33 @@ scada.scheme.EditableScheme.prototype.processKey = function (keyChar, keyCode, c
         // send changes to server
         this._moveResize(dx, dy, 0, 0);
         return false;
+    } else if (ctrlKey) {
+        if (keyCode == 78 /*N*/) {
+            this._formAction(FormActions.NEW);
+        } else if (keyCode == 79 /*O*/) {
+            this._formAction(FormActions.OPEN);
+        } else if (keyCode == 83 /*S*/) {
+            //this._formAction(FormActions.SAVE);
+        } else if (keyCode == 88 /*X*/) {
+            //this._formAction(FormActions.);
+        } else if (keyCode == 67 /*C*/) {
+            //this._formAction(FormActions.);
+        } else if (keyCode == 86 /*V*/) {
+            //this._formAction(FormActions.);
+        } else if (keyCode == 90 /*Z*/) {
+            //this._formAction(FormActions.);
+        } else if (keyCode == 89 /*Y*/) {
+            //this._formAction(FormActions.);
+        } else {
+            return true;
+        }
+    } else if (keyCode == 27 /*Escape*/) {
+        //this._formAction(FormActions.);
+    } else if (keyCode == 46 /*Delete*/) {
+        //this._formAction(FormActions.);
+    } else {
+        return true;
     }
 
-    return true;
+    return false;
 }

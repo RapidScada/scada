@@ -67,6 +67,7 @@ namespace Scada.Scheme.Editor
             AppDirs = new AppDirs();
             Log = new Log(Log.Formats.Full);
             Editor = new Editor(Log);
+            MainForm = null;
         }
 
 
@@ -84,6 +85,11 @@ namespace Scada.Scheme.Editor
         /// Получить объект, содержащий данные и реализующий логику редактора
         /// </summary>
         public Editor Editor { get; private set; }
+
+        /// <summary>
+        /// Получить или установить интерфейс главной формы
+        /// </summary>
+        public IMainForm MainForm { get; private set; }
 
 
         /// <summary>
@@ -145,10 +151,13 @@ namespace Scada.Scheme.Editor
         /// <summary>
         /// Инициализировать общие данные веб-приложения
         /// </summary>
-        public void Init(string exeDir)
+        public void Init(string exeDir, IMainForm mainForm)
         {
             // инициализация директорий приложения
             AppDirs.Init(exeDir);
+
+            // установка интерфейса главной формы
+            MainForm = mainForm;
 
             // настройка журнала приложения
             Log.FileName = AppDirs.LogDir + LogFileName;

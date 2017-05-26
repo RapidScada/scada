@@ -44,35 +44,6 @@ namespace Scada.Scheme.Editor
     public class SchemeEditorSvc
     {
         /// <summary>
-        /// Действия при выборе компонентов схемы
-        /// </summary>
-        private class SelectActions
-        {
-            public const string Select = "select";
-            public const string Append = "append";
-            public const string Deselect = "deselect";
-            public const string DeselectAll = "deselectall";
-        }
-
-        /// <summary>
-        /// Действия главной формы
-        /// </summary>
-        private class FormActions
-        {
-            public const string New = "new";
-            public const string Open = "open";
-            public const string Save = "save";
-            public const string Cut = "cut";
-            public const string Copy = "copy";
-            public const string Paste = "paste";
-            public const string Undo = "undo";
-            public const string Redo = "redo";
-            public const string Pointer = "pointer";
-            public const string Delete = "delete";
-        }
-
-
-        /// <summary>
         /// Максимальное количество символов строке данных в формате JSON, 10 МБ
         /// </summary>
         private const int MaxJsonLen = 10485760;
@@ -301,17 +272,12 @@ namespace Scada.Scheme.Editor
             {
                 AllowAccess();
                 SchemeDTO dto = new SchemeDTO();
+                Editor.SelectActions selectAction;
 
-                if (CheckArguments(editorID, viewStamp, dto))
+                if (CheckArguments(editorID, viewStamp, dto) &&
+                    Enum.TryParse(action, true, out selectAction))
                 {
-                    if (action == SelectActions.Select)
-                        Editor.SelectComponent(componentID);
-                    else if (action == SelectActions.Append)
-                        Editor.SelectComponent(componentID, true);
-                    else if (action == SelectActions.Deselect)
-                        Editor.DeselectComponent(componentID);
-                    else if (action == SelectActions.DeselectAll)
-                        Editor.DeselectAll();
+                    Editor.PerformSelectAction(selectAction, componentID);
                 }
 
                 return JsSerializer.Serialize(dto);
@@ -358,7 +324,27 @@ namespace Scada.Scheme.Editor
         [WebGet]
         public string FormAction(string editorID, long viewStamp, string action)
         {
-            return "";
+            try
+            {
+                AllowAccess();
+                SchemeDTO dto = new SchemeDTO();
+                FormActions formAction;
+
+                if (CheckArguments(editorID, viewStamp, dto) &&
+                    Enum.TryParse(action, true, out formAction))
+                {
+                    AppData.MainForm.PerformAction(formAction);
+                }
+
+                return JsSerializer.Serialize(dto);
+            }
+            catch (Exception ex)
+            {
+                AppData.Log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при выполнении действия главной формы" :
+                    "Error performing action of the main form");
+                return JsSerializer.GetErrorJson(ex);
+            }
         }
     }
 }
