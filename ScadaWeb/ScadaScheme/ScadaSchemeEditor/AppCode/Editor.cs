@@ -81,7 +81,6 @@ namespace Scada.Scheme.Editor
 
         private readonly Log log;         // журнал приложения
         private List<Change> changes;     // изменения схемы
-        private History history;          // история изменений
         private long changeStampCntr;     // счётчик для генерации меток изменений схемы
         private PointerModes pointerMode; // режим указателя мыши редактора
         private string status;            // статус редактора
@@ -120,7 +119,6 @@ namespace Scada.Scheme.Editor
 
             this.log = log;
             changes = new List<Change>();
-            history = new History(log);
             changeStampCntr = 0;
             pointerMode = PointerModes.Select;
             selComponents = new List<BaseComponent>();
@@ -130,6 +128,7 @@ namespace Scada.Scheme.Editor
             SchemeView = null;
             FileName = "";
             Modified = false;
+            History = new History(log);
             NewComponentTypeName = "";
         }
 
@@ -170,6 +169,11 @@ namespace Scada.Scheme.Editor
         /// Получить признак изменения схемы
         /// </summary>
         public bool Modified { get; private set; }
+
+        /// <summary>
+        /// Получить историю изменений
+        /// </summary>
+        public History History { get; private set; }
 
         /// <summary>
         /// Получить или установить режим указателя мыши редактора
@@ -238,29 +242,56 @@ namespace Scada.Scheme.Editor
                 return clipboard.Count > 0;
             }
         }
-        
+
+
         /// <summary>
-        /// Получить признак, что возможно отменить действие
+        /// Инициализировать схему, создав новую или загрузив из файла
         /// </summary>
-        public bool CanUndo
+        private bool InitScheme(string fileName, out string errMsg)
         {
-            get
+            ClearChanges();
+            ClearSelComponents();
+            SchemeView = new SchemeView();
+            bool loadOK;
+
+            if (string.IsNullOrEmpty(fileName))
             {
-                return history.CanUndo;
+                loadOK = true;
+                errMsg = "";
             }
+            else
+            {
+                lock (SchemeView.SyncRoot)
+                {
+                    loadOK = SchemeView.LoadFromFile(fileName, out errMsg);
+                }
+
+                if (!loadOK)
+                    log.WriteError(errMsg);
+            }
+
+            FileName = fileName;
+            Modified = false;
+            History.Clear();
+            PointerMode = PointerModes.Select;
+            SubscribeToSchemeChanges();
+            OnSelectionChanged();
+            return loadOK;
         }
 
         /// <summary>
-        /// Получить признак, что возможно вернуть действие
+        /// Подписаться на изменения схемы
         /// </summary>
-        public bool CanRedo
+        private void SubscribeToSchemeChanges()
         {
-            get
+            if (SchemeView != null)
             {
-                return history.CanRedo;
+                SchemeView.SchemeDoc.ItemChanged += Scheme_ItemChanged;
+
+                foreach (BaseComponent component in SchemeView.Components.Values)
+                    component.ItemChanged += Scheme_ItemChanged;
             }
         }
-
 
         /// <summary>
         /// Очистить изменения схемы
@@ -271,20 +302,6 @@ namespace Scada.Scheme.Editor
             {
                 changes.Clear();
                 changeStampCntr = 0;
-            }
-        }
-
-        /// <summary>
-        /// Подписаться на изменения схемы
-        /// </summary>
-        private void SubscribeToChanges()
-        {
-            if (SchemeView != null)
-            {
-                SchemeView.SchemeDoc.ItemChanged += Scheme_ItemChanged;
-
-                foreach (BaseComponent component in SchemeView.Components.Values)
-                    component.ItemChanged += Scheme_ItemChanged;
             }
         }
 
@@ -309,7 +326,7 @@ namespace Scada.Scheme.Editor
                 lock (selComponents)
                 {
                     SchemeDocument schemeDoc = SchemeView.SchemeDoc;
-                    history.DisableAdding();
+                    History.DisableAdding();
                     selComponents.Clear();
 
                     foreach (Change change in changeList)
@@ -325,7 +342,6 @@ namespace Scada.Scheme.Editor
                             case SchemeChangeTypes.ComponentAdded:
                                 // создание копии компонента
                                 BaseComponent addedComponent = ((BaseComponent)change.ChangedObject).Clone();
-                                addedComponent.ItemChanged += Scheme_ItemChanged;
 
                                 // добавление компонента на схему
                                 SchemeView.Components[addedComponent.ID] = addedComponent;
@@ -338,7 +354,6 @@ namespace Scada.Scheme.Editor
                             case SchemeChangeTypes.ComponentChanged:
                                 // создание копии компонента
                                 BaseComponent changedComponent = ((BaseComponent)change.ChangedObject).Clone();
-                                changedComponent.ItemChanged += Scheme_ItemChanged;
 
                                 // замена компонента на схеме
                                 SchemeView.Components[changedComponent.ID] = changedComponent;
@@ -380,7 +395,7 @@ namespace Scada.Scheme.Editor
                         }
                     }
 
-                    history.EnableAdding();
+                    History.EnableAdding();
                 }
             }
 
@@ -446,7 +461,7 @@ namespace Scada.Scheme.Editor
             }
 
             // добавление изменения в историю
-            history.Add(changeType, changedObject, oldKey);
+            History.Add(changeType, changedObject, oldKey);
         }
 
 
@@ -499,15 +514,8 @@ namespace Scada.Scheme.Editor
         /// </summary>
         public void NewScheme()
         {
-            ClearChanges();
-            ClearSelComponents();
-            SchemeView = new SchemeView();
-
-            FileName = "";
-            Modified = false;
-            PointerMode = PointerModes.Select;
-            SubscribeToChanges();
-            history.MakeCopy(SchemeView);
+            string errMsg;
+            InitScheme("", out errMsg);
         }
 
         /// <summary>
@@ -515,26 +523,7 @@ namespace Scada.Scheme.Editor
         /// </summary>
         public bool LoadSchemeFromFile(string fileName, out string errMsg)
         {
-            ClearChanges();
-            ClearSelComponents();
-            SchemeView = new SchemeView();
-            bool loadOK;
-
-            lock (SchemeView.SyncRoot)
-            {
-                loadOK = SchemeView.LoadFromFile(fileName, out errMsg);
-            }
-
-            FileName = fileName;
-            Modified = false;
-            PointerMode = PointerModes.Select;
-            SubscribeToChanges();
-            history.MakeCopy(SchemeView);
-
-            if (!loadOK)
-                log.WriteError(errMsg);
-
-            return loadOK;
+            return InitScheme(fileName, out errMsg);
         }
 
         /// <summary>
@@ -708,7 +697,7 @@ namespace Scada.Scheme.Editor
                     {
                         lock (selComponents)
                         {
-                            history.BeginPoint();
+                            History.BeginPoint();
 
                             foreach (BaseComponent selComponent in selComponents)
                             {
@@ -716,7 +705,7 @@ namespace Scada.Scheme.Editor
                                 SchemeView.SchemeDoc.OnItemChanged(SchemeChangeTypes.ComponentDeleted, selComponent);
                             }
 
-                            history.EndPoint();
+                            History.EndPoint();
                             selComponents.Clear();
                         }
                     }
@@ -749,7 +738,7 @@ namespace Scada.Scheme.Editor
                     {
                         lock (selComponents)
                         {
-                            history.BeginPoint();
+                            History.BeginPoint();
 
                             foreach (BaseComponent selComponent in selComponents)
                             {
@@ -763,10 +752,10 @@ namespace Scada.Scheme.Editor
                                 if (writeChanges)
                                     selComponent.OnItemChanged(SchemeChangeTypes.ComponentChanged, selComponent);
                                 else
-                                    history.Add(SchemeChangeTypes.ComponentChanged, selComponent);
+                                    History.Add(SchemeChangeTypes.ComponentChanged, selComponent);
                             }
 
-                            history.EndPoint();
+                            History.EndPoint();
                             OnSelectionPropsChanged();
                         }
                     }
@@ -936,7 +925,7 @@ namespace Scada.Scheme.Editor
                 lock (SchemeView.SyncRoot) lock (clipboard) lock (selComponents)
                 {
                     selComponents.Clear();
-                    history.BeginPoint();
+                    History.BeginPoint();
 
                     foreach (BaseComponent srcComponent in clipboard)
                     {
@@ -949,7 +938,7 @@ namespace Scada.Scheme.Editor
                         selComponents.Add(newComponent);
                     }
 
-                    history.EndPoint();
+                    History.EndPoint();
                 }
 
                 OnSelectionChanged();
@@ -980,7 +969,7 @@ namespace Scada.Scheme.Editor
             try
             {
                 if (SchemeView != null)
-                    ApplyChanges(history.GetUndoChanges());
+                    ApplyChanges(History.GetUndoChanges());
             }
             catch (Exception ex)
             {
@@ -998,7 +987,7 @@ namespace Scada.Scheme.Editor
             try
             {
                 if (SchemeView != null)
-                    ApplyChanges(history.GetRedoChanges());
+                    ApplyChanges(History.GetRedoChanges());
             }
             catch (Exception ex)
             {

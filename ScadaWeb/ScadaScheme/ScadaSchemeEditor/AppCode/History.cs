@@ -122,18 +122,6 @@ namespace Scada.Scheme.Editor
 
 
         /// <summary>
-        /// Очистить историю
-        /// </summary>
-        private void Clear()
-        {
-            points.Clear();
-            headIndex = 0;
-            currentPoint = null;
-            addingEnabled = true;
-            componentsCopy.Clear();
-        }
-
-        /// <summary>
         /// Добавить точку истории
         /// </summary>
         private void AddPoint(Point point)
@@ -152,6 +140,9 @@ namespace Scada.Scheme.Editor
 
             // смещение индекса добавления
             headIndex = points.Count;
+
+            // вызов события
+            OnHistoryChanged();
         }
 
         /// <summary>
@@ -215,6 +206,28 @@ namespace Scada.Scheme.Editor
             }
         }
 
+        /// <summary>
+        /// Вызвать событие HistoryChanged
+        /// </summary>
+        private void OnHistoryChanged()
+        {
+            HistoryChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+
+        /// <summary>
+        /// Очистить историю
+        /// </summary>
+        public void Clear()
+        {
+            points.Clear();
+            headIndex = 0;
+            currentPoint = null;
+            addingEnabled = true;
+            schemeDocCopy = new SchemeDocument();
+            componentsCopy.Clear();
+            OnHistoryChanged();
+        }
 
         /// <summary>
         /// Создать копию свойств документа и компонентов схемы
@@ -319,12 +332,16 @@ namespace Scada.Scheme.Editor
                     {
                         case SchemeChangeTypes.SchemeDocChanged:
                             change.OldObject = schemeDocCopy;
-                            schemeDocCopy = (SchemeDocument)changedObject;
+                            schemeDocCopy = (SchemeDocument)change.ChangedObject;
+                            break;
+
+                        case SchemeChangeTypes.ComponentAdded:
+                            componentsCopy[change.ComponentID] = (BaseComponent)change.ChangedObject;
                             break;
 
                         case SchemeChangeTypes.ComponentChanged:
                             change.OldObject = componentsCopy[change.ComponentID];
-                            componentsCopy[change.ComponentID] = (BaseComponent)changedObject;
+                            componentsCopy[change.ComponentID] = (BaseComponent)change.ChangedObject;
                             break;
 
                         case SchemeChangeTypes.ComponentDeleted:
@@ -334,9 +351,16 @@ namespace Scada.Scheme.Editor
 
                     if (addingEnabled)
                     {
-                        Point point = currentPoint ?? new Point();
-                        point.Changes.Add(change);
-                        AddPoint(point);
+                        if (currentPoint == null)
+                        {
+                            Point point = new Point();
+                            point.Changes.Add(change);
+                            AddPoint(point);
+                        }
+                        else
+                        {
+                            currentPoint.Changes.Add(change);
+                        }
                     }
                 }
             }
@@ -368,6 +392,8 @@ namespace Scada.Scheme.Editor
                         {
                             changes.Add(ReverseChange(change));
                         }
+
+                        OnHistoryChanged();
                     }
                 }
             }
@@ -391,7 +417,12 @@ namespace Scada.Scheme.Editor
                 lock (this)
                 {
                     if (headIndex < points.Count)
-                        return points[headIndex++].Changes;
+                    {
+                        Point point = points[headIndex];
+                        headIndex++;
+                        OnHistoryChanged();
+                        return point.Changes;
+                    }
                 }
             }
             catch (Exception ex)
@@ -403,5 +434,11 @@ namespace Scada.Scheme.Editor
 
             return new List<Change>();
         }
+
+
+        /// <summary>
+        /// Событие возникающее при изменении истории действий
+        /// </summary>
+        public event EventHandler HistoryChanged;
     }
 }

@@ -73,6 +73,7 @@ namespace Scada.Scheme.Editor
             editor.SelectionChanged += Editor_SelectionChanged;
             editor.SelectionPropsChanged += Editor_SelectionPropsChanged;
             editor.ClipboardChanged += Editor_ClipboardChanged;
+            editor.History.HistoryChanged += History_HistoryChanged;
             Application.ThreadException += Application_ThreadException;
         }
 
@@ -156,17 +157,34 @@ namespace Scada.Scheme.Editor
             //Process.Start("firefox", startUri.AbsoluteUri);
             Process.Start(startUri.AbsoluteUri);
         }
-        
+
         /// <summary>
-        /// Создать новую схему
+        /// Инициализировать схему, создав новую или загрузив из файла
         /// </summary>
-        private void NewScheme()
+        private void InitScheme(string fileName = "")
         {
-            editor.NewScheme();
+            bool loadOK;
+            string errMsg;
+
+            if (string.IsNullOrEmpty(fileName))
+            {
+                loadOK = true;
+                errMsg = "";
+                editor.NewScheme();
+            }
+            else
+            {
+                loadOK = editor.LoadSchemeFromFile(ofdScheme.FileName, out errMsg);
+            }
+
             appData.AssignViewStamp(editor.SchemeView);
             FillSchemeComponents();
             ShowSchemeSelection();
-            BindSchemeEvents();
+            SubscribeToSchemeChanges();
+            editor.History.MakeCopy(editor.SchemeView);
+
+            if (!loadOK)
+                ScadaUiUtils.ShowError(errMsg);
         }
 
         /// <summary>
@@ -299,13 +317,18 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Привязать события схемы
+        /// Подписаться на изменения схемы
         /// </summary>
-        private void BindSchemeEvents()
+        private void SubscribeToSchemeChanges()
         {
-            if (editor.SchemeView != null)
+            SchemeView schemeView = editor.SchemeView;
+
+            if (schemeView != null)
             {
-                editor.SchemeView.SchemeDoc.ItemChanged += SchemeDoc_ItemChanged;
+                schemeView.SchemeDoc.ItemChanged += Scheme_ItemChanged;
+
+                foreach (BaseComponent component in schemeView.Components.Values)
+                    component.ItemChanged += Scheme_ItemChanged;
             }
         }
 
@@ -317,21 +340,47 @@ namespace Scada.Scheme.Editor
             btnEditCut.Enabled = btnEditCopy.Enabled = btnEditDelete.Enabled = editor.SelectionNotEmpty;
             btnEditPaste.Enabled = editor.ClipboardNotEmpty;
             btnEditPointer.Enabled = editor.PointerMode != Editor.PointerModes.Select;
-            btnEditUndo.Enabled = editor.CanUndo;
-            btnEditRedo.Enabled = editor.CanRedo;
+            btnEditUndo.Enabled = editor.History.CanUndo;
+            btnEditRedo.Enabled = editor.History.CanRedo;
+        }
+
+        /// <summary>
+        /// Выполнить действие потокобезопасно
+        /// </summary>
+        private void ExecuteAction(Action action)
+        {
+            if (InvokeRequired)
+                BeginInvoke(action);
+            else
+                action();
         }
 
 
-        private void SchemeDoc_ItemChanged(object sender, SchemeChangeTypes changeType, 
+        private void Scheme_ItemChanged(object sender, SchemeChangeTypes changeType, 
             object changedObject, object oldKey)
         {
-            Action action = new Action(() =>
+            ExecuteAction(new Action(() =>
             {
                 switch (changeType)
                 {
                     case SchemeChangeTypes.ComponentAdded:
+                        // привязка события на изменение компонента
+                        ((BaseComponent)changedObject).ItemChanged += Scheme_ItemChanged;
+
                         // добавление компонента в выпадающий список
                         cbSchComp.Items.Add(changedObject);
+                        break;
+
+                    case SchemeChangeTypes.ComponentChanged:
+                        // обновление текста выпадающего списка при изменении отображаемого наименования выбранного объекта
+                        object selItem = cbSchComp.SelectedItem;
+                        if (selItem != null)
+                        {
+                            string newDisplayName = selItem.ToString();
+                            string oldDisplayName = cbSchComp.Text;
+                            if (oldDisplayName != newDisplayName)
+                                cbSchComp.Items[cbSchComp.SelectedIndex] = selItem;
+                        }
                         break;
 
                     case SchemeChangeTypes.ComponentDeleted:
@@ -339,17 +388,14 @@ namespace Scada.Scheme.Editor
                         cbSchComp.Items.Remove(changedObject);
                         break;
                 }
-            });
 
-            if (InvokeRequired)
-                BeginInvoke(action);
-            else
-                action();
+                SetButtonsEnabled();
+            }));
         }
 
         private void Editor_PointerModeChanged(object sender, EventArgs e)
         {
-            Action action = new Action(() =>
+            ExecuteAction(new Action(() =>
             {
                 // очистка типа создаваемых компонентов, если режим создания выключен
                 if (!compTypesChanging && editor.PointerMode != Editor.PointerModes.Create)
@@ -361,52 +407,40 @@ namespace Scada.Scheme.Editor
 
                 // установка доступности кнопок
                 SetButtonsEnabled();
-            });
-
-            if (InvokeRequired)
-                BeginInvoke(action);
-            else
-                action();
+            }));
         }
 
         private void Editor_StatusChanged(object sender, EventArgs e)
         {
-            Action action = new Action(() =>
+            // вывод статуса редактора
+            ExecuteAction(new Action(() =>
             {
                 lblStatus.Text = editor.Status;
-            });
-
-            if (InvokeRequired)
-                BeginInvoke(action);
-            else
-                action();
+            }));
         }
 
         private void Editor_SelectionChanged(object sender, EventArgs e)
         {
             // отображение свойств выбранных компонентов схемы
-            if (InvokeRequired)
-                BeginInvoke(new Action(ShowSchemeSelection));
-            else
-                ShowSchemeSelection();
+            ExecuteAction(new Action(ShowSchemeSelection));
         }
 
         private void Editor_SelectionPropsChanged(object sender, EventArgs e)
         {
             // обновление значений свойств
-            if (InvokeRequired)
-                BeginInvoke(new Action(propertyGrid.Refresh));
-            else
-                propertyGrid.Refresh();
+            ExecuteAction(new Action(propertyGrid.Refresh));
         }
 
         private void Editor_ClipboardChanged(object sender, EventArgs e)
         {
             // установка доступности кнопок
-            if (InvokeRequired)
-                BeginInvoke(new Action(SetButtonsEnabled));
-            else
-                SetButtonsEnabled();
+            ExecuteAction(new Action(SetButtonsEnabled));
+        }
+
+        private void History_HistoryChanged(object sender, EventArgs e)
+        {
+            // установка доступности кнопок
+            ExecuteAction(new Action(SetButtonsEnabled));
         }
 
 
@@ -441,7 +475,7 @@ namespace Scada.Scheme.Editor
             lblStatus.Text = "";
 
             // создание новой схемы
-            NewScheme();
+            InitScheme();
 
             // запуск механизма редактора схем
             if (appData.StartEditor())
@@ -485,7 +519,7 @@ namespace Scada.Scheme.Editor
         {
             // создание новой схемы
             if (ConfirmCloseScheme())
-                NewScheme();
+                InitScheme();
         }
 
         private void btnFileOpen_Click(object sender, EventArgs e)
@@ -498,17 +532,7 @@ namespace Scada.Scheme.Editor
                 ofdScheme.FileName = "";
 
                 if (ofdScheme.ShowDialog() == DialogResult.OK)
-                {
-                    string errMsg;
-                    bool loadOK = editor.LoadSchemeFromFile(ofdScheme.FileName, out errMsg);
-                    appData.AssignViewStamp(editor.SchemeView);
-                    FillSchemeComponents();
-                    ShowSchemeSelection();
-                    BindSchemeEvents();
-
-                    if (!loadOK)
-                        ScadaUiUtils.ShowError(errMsg);
-                }
+                    InitScheme(ofdScheme.FileName);
             }
         }
 
@@ -551,15 +575,25 @@ namespace Scada.Scheme.Editor
         private void btnEditUndo_Click(object sender, EventArgs e)
         {
             // отмена последнего действия
+            schCompChanging = true;
             editor.Undo();
-            SetButtonsEnabled();
+            schCompChanging = false;
+
+            // обновление списка компонентов, т.к. при отмене происходит подмена объектов
+            FillSchemeComponents();
+            ShowSchemeSelection();
         }
 
         private void btnEditRedo_Click(object sender, EventArgs e)
         {
             // возврат последнего действия
+            schCompChanging = true;
             editor.Redo();
-            SetButtonsEnabled();
+            schCompChanging = false;
+
+            // обновление списка компонентов, т.к. при возврате происходит подмена объектов
+            FillSchemeComponents();
+            ShowSchemeSelection();
         }
 
         private void btnEditPointer_Click(object sender, EventArgs e)
@@ -619,20 +653,11 @@ namespace Scada.Scheme.Editor
 
         private void propertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
-            // обновление текста выпадающего списка при изменении отображаемого наименования выбранного объекта
-            object selItem = cbSchComp.SelectedItem;
-            if (selItem != null)
-            {
-                string newDisplayName = selItem.ToString();
-                string oldDisplayName = cbSchComp.Text;
-
-                if (oldDisplayName != newDisplayName)
-                    cbSchComp.Items[cbSchComp.SelectedIndex] = selItem;
-            }
-
             // отслеживание изменений
             if (propertyGrid.SelectedObjects != null)
             {
+                editor.History.BeginPoint();
+
                 foreach (object selObj in propertyGrid.SelectedObjects)
                 {
                     if (selObj is SchemeDocument)
@@ -640,6 +665,8 @@ namespace Scada.Scheme.Editor
                     else if (selObj is BaseComponent)
                         ((BaseComponent)selObj).OnItemChanged(SchemeChangeTypes.ComponentChanged, selObj);
                 }
+
+                editor.History.EndPoint();
             }
         }
     }
