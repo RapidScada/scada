@@ -576,6 +576,40 @@ namespace Scada.Scheme.Editor
                         btnFileSave_ButtonClick(null, null);
                         break;
                 }
+
+                if (ActiveControl != propertyGrid)
+                {
+                    switch (e.KeyCode)
+                    {
+                        case Keys.X:
+                            btnEditCut_Click(null, null);
+                            break;
+                        case Keys.C:
+                            btnEditCopy_Click(null, null);
+                            break;
+                        case Keys.V:
+                            btnEditPaste_Click(null, null);
+                            break;
+                        case Keys.Z:
+                            btnEditUndo_Click(null, null);
+                            break;
+                        case Keys.Y:
+                            btnEditRedo_Click(null, null);
+                            break;
+                    }
+                }
+            }
+            else if (ActiveControl != propertyGrid)
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.Escape:
+                        btnEditPointer_Click(null, null);
+                        break;
+                    case Keys.Delete:
+                        btnEditDelete_Click(null, null);
+                        break;
+                }
             }
         }
 

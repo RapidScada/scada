@@ -30,12 +30,12 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
-            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Standard", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem("Pointer", "pointer.png");
-            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem("Static Text", "comp_st.png");
-            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem("Dynamic Text", "comp_dt.png");
-            System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem("Static Picture", "comp_sp.png");
-            System.Windows.Forms.ListViewItem listViewItem10 = new System.Windows.Forms.ListViewItem("Dynamic Picture", "comp_dp.png");
+            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Standard", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("Pointer", "pointer.png");
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("Static Text", "comp_st.png");
+            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("Dynamic Text", "comp_dt.png");
+            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("Static Picture", "comp_sp.png");
+            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem("Dynamic Picture", "comp_dp.png");
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.btnFileNew = new System.Windows.Forms.ToolStripButton();
             this.btnFileOpen = new System.Windows.Forms.ToolStripButton();
@@ -160,7 +160,7 @@
             this.btnEditCut.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnEditCut.Name = "btnEditCut";
             this.btnEditCut.Size = new System.Drawing.Size(23, 22);
-            this.btnEditCut.ToolTipText = "Cut scheme components";
+            this.btnEditCut.ToolTipText = "Cut scheme components (Ctrl+X)";
             this.btnEditCut.Click += new System.EventHandler(this.btnEditCut_Click);
             // 
             // btnEditCopy
@@ -170,7 +170,7 @@
             this.btnEditCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnEditCopy.Name = "btnEditCopy";
             this.btnEditCopy.Size = new System.Drawing.Size(23, 22);
-            this.btnEditCopy.ToolTipText = "Copy scheme components";
+            this.btnEditCopy.ToolTipText = "Copy scheme components (Ctrl+C)";
             this.btnEditCopy.Click += new System.EventHandler(this.btnEditCopy_Click);
             // 
             // btnEditPaste
@@ -180,7 +180,7 @@
             this.btnEditPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnEditPaste.Name = "btnEditPaste";
             this.btnEditPaste.Size = new System.Drawing.Size(23, 22);
-            this.btnEditPaste.ToolTipText = "Paste scheme components";
+            this.btnEditPaste.ToolTipText = "Paste scheme components (Ctrl+V)";
             this.btnEditPaste.Click += new System.EventHandler(this.btnEditPaste_Click);
             // 
             // sep2
@@ -195,7 +195,7 @@
             this.btnEditUndo.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnEditUndo.Name = "btnEditUndo";
             this.btnEditUndo.Size = new System.Drawing.Size(23, 22);
-            this.btnEditUndo.ToolTipText = "Undo";
+            this.btnEditUndo.ToolTipText = "Undo (Ctrl+Z)";
             this.btnEditUndo.Click += new System.EventHandler(this.btnEditUndo_Click);
             // 
             // btnEditRedo
@@ -205,7 +205,7 @@
             this.btnEditRedo.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnEditRedo.Name = "btnEditRedo";
             this.btnEditRedo.Size = new System.Drawing.Size(23, 22);
-            this.btnEditRedo.ToolTipText = "Redo";
+            this.btnEditRedo.ToolTipText = "Redo (Ctrl+Y)";
             this.btnEditRedo.Click += new System.EventHandler(this.btnEditRedo_Click);
             // 
             // sep3
@@ -220,7 +220,7 @@
             this.btnEditPointer.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnEditPointer.Name = "btnEditPointer";
             this.btnEditPointer.Size = new System.Drawing.Size(23, 22);
-            this.btnEditPointer.ToolTipText = "Cancel adding component";
+            this.btnEditPointer.ToolTipText = "Cancel adding component (Esc)";
             this.btnEditPointer.Click += new System.EventHandler(this.btnEditPointer_Click);
             // 
             // btnEditDelete
@@ -230,7 +230,7 @@
             this.btnEditDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnEditDelete.Name = "btnEditDelete";
             this.btnEditDelete.Size = new System.Drawing.Size(23, 22);
-            this.btnEditDelete.ToolTipText = "Delete selected components";
+            this.btnEditDelete.ToolTipText = "Delete selected components (Del)";
             this.btnEditDelete.Click += new System.EventHandler(this.btnEditDelete_Click);
             // 
             // toolStripSeparator1
@@ -294,32 +294,32 @@
             this.colCompName});
             this.lvCompTypes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvCompTypes.FullRowSelect = true;
-            listViewGroup2.Header = "Standard";
-            listViewGroup2.Name = "lvgStandard";
+            listViewGroup1.Header = "Standard";
+            listViewGroup1.Name = "lvgStandard";
             this.lvCompTypes.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup2});
+            listViewGroup1});
             this.lvCompTypes.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.lvCompTypes.HideSelection = false;
-            listViewItem6.Group = listViewGroup2;
-            listViewItem6.IndentCount = 1;
-            listViewItem7.Group = listViewGroup2;
-            listViewItem7.IndentCount = 1;
-            listViewItem7.Tag = "Scada.Scheme.Model.StaticText";
-            listViewItem8.Group = listViewGroup2;
-            listViewItem8.IndentCount = 1;
-            listViewItem8.Tag = "Scada.Scheme.Model.DynamicText";
-            listViewItem9.Group = listViewGroup2;
-            listViewItem9.IndentCount = 1;
-            listViewItem9.Tag = "Scada.Scheme.Model.StaticPicture";
-            listViewItem10.Group = listViewGroup2;
-            listViewItem10.IndentCount = 1;
-            listViewItem10.Tag = "Scada.Scheme.Model.DynamicPicture";
+            listViewItem1.Group = listViewGroup1;
+            listViewItem1.IndentCount = 1;
+            listViewItem2.Group = listViewGroup1;
+            listViewItem2.IndentCount = 1;
+            listViewItem2.Tag = "Scada.Scheme.Model.StaticText";
+            listViewItem3.Group = listViewGroup1;
+            listViewItem3.IndentCount = 1;
+            listViewItem3.Tag = "Scada.Scheme.Model.DynamicText";
+            listViewItem4.Group = listViewGroup1;
+            listViewItem4.IndentCount = 1;
+            listViewItem4.Tag = "Scada.Scheme.Model.StaticPicture";
+            listViewItem5.Group = listViewGroup1;
+            listViewItem5.IndentCount = 1;
+            listViewItem5.Tag = "Scada.Scheme.Model.DynamicPicture";
             this.lvCompTypes.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem6,
-            listViewItem7,
-            listViewItem8,
-            listViewItem9,
-            listViewItem10});
+            listViewItem1,
+            listViewItem2,
+            listViewItem3,
+            listViewItem4,
+            listViewItem5});
             this.lvCompTypes.LabelWrap = false;
             this.lvCompTypes.Location = new System.Drawing.Point(3, 3);
             this.lvCompTypes.MultiSelect = false;

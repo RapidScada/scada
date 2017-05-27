@@ -57,6 +57,13 @@ scada.scheme.FormActions = {
     NEW: "new",
     OPEN: "open",
     SAVE: "save",
+    CUT: "cut",
+    COPY: "copy",
+    PASTE: "paste",
+    UNDO: "undo",
+    REDO: "redo",
+    POINTER: "pointer",
+    DELETE: "delete"
 };
 
 /********** Drag Modes **********/
@@ -755,31 +762,30 @@ scada.scheme.EditableScheme.prototype.processKey = function (keyChar, keyCode, c
 
         // send changes to server
         this._moveResize(dx, dy, 0, 0);
-        return false;
     } else if (ctrlKey) {
         if (keyCode == 78 /*N*/) {
-            this._formAction(FormActions.NEW);
+            this._formAction(FormActions.NEW); // doesn't work
         } else if (keyCode == 79 /*O*/) {
             this._formAction(FormActions.OPEN);
         } else if (keyCode == 83 /*S*/) {
-            //this._formAction(FormActions.SAVE);
+            this._formAction(FormActions.SAVE);
         } else if (keyCode == 88 /*X*/) {
-            //this._formAction(FormActions.);
+            this._formAction(FormActions.CUT);
         } else if (keyCode == 67 /*C*/) {
-            //this._formAction(FormActions.);
+            this._formAction(FormActions.COPY);
         } else if (keyCode == 86 /*V*/) {
-            //this._formAction(FormActions.);
+            this._formAction(FormActions.PASTE);
         } else if (keyCode == 90 /*Z*/) {
-            //this._formAction(FormActions.);
+            this._formAction(FormActions.UNDO);
         } else if (keyCode == 89 /*Y*/) {
-            //this._formAction(FormActions.);
+            this._formAction(FormActions.REDO);
         } else {
             return true;
         }
     } else if (keyCode == 27 /*Escape*/) {
-        //this._formAction(FormActions.);
+        this._formAction(FormActions.POINTER);
     } else if (keyCode == 46 /*Delete*/) {
-        //this._formAction(FormActions.);
+        this._formAction(FormActions.DELETE);
     } else {
         return true;
     }

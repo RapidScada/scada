@@ -720,16 +720,19 @@ namespace Scada.Scheme.Editor
                     {
                         lock (selComponents)
                         {
-                            History.BeginPoint();
-
-                            foreach (BaseComponent selComponent in selComponents)
+                            if (selComponents.Count > 0)
                             {
-                                SchemeView.Components.Remove(selComponent.ID);
-                                SchemeView.SchemeDoc.OnItemChanged(SchemeChangeTypes.ComponentDeleted, selComponent);
-                            }
+                                History.BeginPoint();
 
-                            History.EndPoint();
-                            selComponents.Clear();
+                                foreach (BaseComponent selComponent in selComponents)
+                                {
+                                    SchemeView.Components.Remove(selComponent.ID);
+                                    SchemeView.SchemeDoc.OnItemChanged(SchemeChangeTypes.ComponentDeleted, selComponent);
+                                }
+
+                                History.EndPoint();
+                                selComponents.Clear();
+                            }
                         }
                     }
 
