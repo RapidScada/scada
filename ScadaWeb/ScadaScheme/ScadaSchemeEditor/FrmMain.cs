@@ -182,6 +182,7 @@ namespace Scada.Scheme.Editor
             ShowSchemeSelection();
             SubscribeToSchemeChanges();
             editor.History.MakeCopy(editor.SchemeView);
+            Text = editor.Title;
 
             if (!loadOK)
                 ScadaUiUtils.ShowError(errMsg);

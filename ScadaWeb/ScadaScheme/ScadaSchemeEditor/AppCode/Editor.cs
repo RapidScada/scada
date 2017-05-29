@@ -194,6 +194,18 @@ namespace Scada.Scheme.Editor
         public bool Modified { get; private set; }
 
         /// <summary>
+        /// Получить заголовок редактора
+        /// </summary>
+        public string Title
+        {
+            get
+            {
+                return (string.IsNullOrEmpty(FileName) ? DefSchemeFileName : Path.GetFileName(FileName)) +
+                   (Modified ? "*" : "") + " - " + AppPhrases.EditorTitle;
+            }
+        }
+
+        /// <summary>
         /// Получить историю изменений
         /// </summary>
         public History History { get; private set; }

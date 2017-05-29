@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ScadaServerDictionaries>
+  <Dictionary key="Scada.Scheme.Editor.Editor">
+    <Phrase key="EditorTitle">Редактор схем</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Scheme.Editor.FrmMain">
-    <Phrase key="this">Редактор схем</Phrase>
     <Phrase key="btnFileNew.ToolTip">Создать новую схему (Ctrl+N)</Phrase>
     <Phrase key="btnFileOpen.ToolTip">Открыть схему (Ctrl+O)</Phrase>
     <Phrase key="btnFileSave.ToolTip">Сохранить схему (Ctrl+S)</Phrase>

@@ -42,12 +42,17 @@ namespace Scada.Scheme.Editor
         public static string SchemeFileFilter { get; private set; }
         public static string SaveSchemeConfirm { get; private set; }
 
+        // Словарь Scada.Scheme.Editor.Editor
+        public static string EditorTitle { get; private set; }
+
         private static void SetToDefault()
         {
             CloseSecondInstance = Localization.Dict.GetEmptyPhrase("CloseSecondInstance");
             FailedToStartEditor = Localization.Dict.GetEmptyPhrase("FailedToStartEditor");
             SchemeFileFilter = Localization.Dict.GetEmptyPhrase("SchemeFileFilter");
             SaveSchemeConfirm = Localization.Dict.GetEmptyPhrase("SaveSchemeConfirm");
+
+            EditorTitle = Localization.Dict.GetEmptyPhrase("EditorTitle");
         }
 
         public static void Init()
@@ -59,6 +64,11 @@ namespace Scada.Scheme.Editor
                 FailedToStartEditor = dict.GetPhrase("FailedToStartEditor", FailedToStartEditor);
                 SchemeFileFilter = dict.GetPhrase("SchemeFileFilter", SchemeFileFilter);
                 SaveSchemeConfirm = dict.GetPhrase("SaveSchemeConfirm", SaveSchemeConfirm);
+            }
+
+            if (Localization.Dictionaries.TryGetValue("Scada.Scheme.Editor.Editor", out dict))
+            {
+                EditorTitle = dict.GetPhrase("EditorTitle", EditorTitle);
             }
         }
     }

@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ScadaServerDictionaries>
+  <Dictionary key="Scada.Scheme.Editor.Editor">
+    <Phrase key="EditorTitle">Scheme Editor</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Scheme.Editor.FrmMain">
-    <Phrase key="this">Scheme Editor</Phrase>
     <Phrase key="btnFileNew.ToolTip">Create new scheme (Ctrl+N)</Phrase>
     <Phrase key="btnFileOpen.ToolTip">Open scheme (Ctrl+O)</Phrase>
     <Phrase key="btnFileSave.ToolTip">Save scheme (Ctrl+S)</Phrase>
