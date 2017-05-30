@@ -564,6 +564,11 @@ namespace Scada.Scheme.Editor
                 BringToFront();
         }
 
+        private void FrmMain_Move(object sender, EventArgs e)
+        {
+
+        }
+
         private void FrmMain_Resize(object sender, EventArgs e)
         {
             lvCompTypes.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);

@@ -408,6 +408,7 @@
             this.Load += new System.EventHandler(this.FrmMain_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmMain_KeyDown);
             this.MouseEnter += new System.EventHandler(this.FrmMain_MouseEnter);
+            this.Move += new System.EventHandler(this.FrmMain_Move);
             this.Resize += new System.EventHandler(this.FrmMain_Resize);
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
