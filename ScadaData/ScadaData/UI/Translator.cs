@@ -168,7 +168,7 @@ namespace Scada.UI
         /// <summary>
         /// Рекурсивно перевести элементы управления Windows-формы
         /// </summary>
-        private static void TranslateWinControls(IList controls, WinForms.ToolTip toolTip,
+        private static void TranslateWinControls(ICollection controls, WinForms.ToolTip toolTip,
             Dictionary<string, ControlInfo> controlInfoDict)
         {
             if (controls == null)
@@ -191,19 +191,34 @@ namespace Scada.UI
                         if (controlInfo.ToolTip != null && toolTip != null)
                             toolTip.SetToolTip(control, controlInfo.ToolTip);
 
-                        if (controlInfo.Items != null && elem is WinForms.ComboBox)
+                        if (controlInfo.Items != null)
                         {
-                            WinForms.ComboBox comboBox = (WinForms.ComboBox)elem;
-                            int cnt = Math.Min(comboBox.Items.Count, controlInfo.Items.Count);
-                            for (int i = 0; i < cnt; i++)
+                            if (elem is WinForms.ComboBox)
                             {
-                                string itemText = controlInfo.Items[i];
-                                if (itemText != null)
-                                    comboBox.Items[i] = itemText;
+                                WinForms.ComboBox comboBox = (WinForms.ComboBox)elem;
+                                int cnt = Math.Min(comboBox.Items.Count, controlInfo.Items.Count);
+                                for (int i = 0; i < cnt; i++)
+                                {
+                                    string itemText = controlInfo.Items[i];
+                                    if (itemText != null)
+                                        comboBox.Items[i] = itemText;
+                                }
+                            }
+                            else if (elem is WinForms.ListView)
+                            {
+                                WinForms.ListView listView = (WinForms.ListView)elem;
+                                int cnt = Math.Min(listView.Items.Count, controlInfo.Items.Count);
+                                for (int i = 0; i < cnt; i++)
+                                {
+                                    string itemText = controlInfo.Items[i];
+                                    if (itemText != null)
+                                        listView.Items[i].Text = itemText;
+                                }
                             }
                         }
                     }
 
+                    // запуск обработки вложенных элементов
                     if (elem is WinForms.MenuStrip)
                     {
                         // запуск обработки элементов меню
@@ -224,9 +239,10 @@ namespace Scada.UI
                     }
                     else if (elem is WinForms.ListView)
                     {
-                        // запуск обработки столбцов списка
+                        // запуск обработки столбцов и групп списка
                         WinForms.ListView listView = (WinForms.ListView)elem;
                         TranslateWinControls(listView.Columns, toolTip, controlInfoDict);
+                        TranslateWinControls(listView.Groups, toolTip, controlInfoDict);
                     }
 
                     // запуск обработки дочерних элементов
@@ -266,6 +282,13 @@ namespace Scada.UI
                     WinForms.ColumnHeader columnHeader = (WinForms.ColumnHeader)elem;
                     if (controlInfoDict.TryGetValue(columnHeader.Name, out controlInfo) && controlInfo.Text != null)
                         columnHeader.Text = controlInfo.Text;
+                }
+                else if (elem is WinForms.ListViewGroup)
+                {
+                    // обработка группы списка
+                    WinForms.ListViewGroup listViewGroup = (WinForms.ListViewGroup)elem;
+                    if (controlInfoDict.TryGetValue(listViewGroup.Name, out controlInfo) && controlInfo.Text != null)
+                        listViewGroup.Header = controlInfo.Text;
                 }
             }
         }
