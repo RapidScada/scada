@@ -707,6 +707,11 @@ scada.scheme.EditableScheme.prototype.getChanges = function (callback) {
                         thisScheme._processChanges(parsedData.Changes);
                         thisScheme._processSelection(parsedData.SelCompIDs);
                         thisScheme._processMode(parsedData.NewCompMode);
+
+                        if (document.title != parsedData.EditorTitle) {
+                            document.title = parsedData.EditorTitle;
+                        }
+
                         callback(GetChangesResults.SUCCESS);
                     } else {
                         console.log(scada.utils.getCurTime() + " View stamps are different. Need to reload scheme.");

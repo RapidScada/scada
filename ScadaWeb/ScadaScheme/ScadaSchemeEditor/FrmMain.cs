@@ -68,6 +68,7 @@ namespace Scada.Scheme.Editor
             compTypesChanging = false;
             schCompChanging = false;
 
+            editor.ModifiedChanged += Editor_ModifiedChanged;
             editor.PointerModeChanged += Editor_PointerModeChanged;
             editor.StatusChanged += Editor_StatusChanged;
             editor.SelectionChanged += Editor_SelectionChanged;
@@ -436,6 +437,14 @@ namespace Scada.Scheme.Editor
                 }
 
                 SetButtonsEnabled();
+            }));
+        }
+
+        private void Editor_ModifiedChanged(object sender, EventArgs e)
+        {
+            ExecuteAction(new Action(() =>
+            {
+                Text = editor.Title;
             }));
         }
 

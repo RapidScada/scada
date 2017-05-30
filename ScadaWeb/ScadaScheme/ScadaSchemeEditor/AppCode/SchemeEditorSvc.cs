@@ -209,6 +209,7 @@ namespace Scada.Scheme.Editor
                     dto.Changes = Editor.GetChanges(changeStamp);
                     dto.SelCompIDs = Editor.GetSelectedComponentIDs();
                     dto.NewCompMode = Editor.PointerMode != Editor.PointerModes.Select;
+                    dto.EditorTitle = Editor.Title;
                     Editor.Status = status;
                 }
 

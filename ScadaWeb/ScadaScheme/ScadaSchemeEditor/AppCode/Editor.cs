@@ -104,6 +104,7 @@ namespace Scada.Scheme.Editor
 
         private readonly Log log;         // журнал приложения
         private List<Change> changes;     // изменения схемы
+        private bool modified;            // признак изменения схемы
         private long changeStampCntr;     // счётчик для генерации меток изменений схемы
         private PointerModes pointerMode; // режим указателя мыши редактора
         private string status;            // статус редактора
@@ -143,6 +144,7 @@ namespace Scada.Scheme.Editor
             this.log = log;
             changes = new List<Change>();
             changeStampCntr = 0;
+            modified = false;
             pointerMode = PointerModes.Select;
             selComponents = new List<BaseComponent>();
             clipboard = new List<BaseComponent>();
@@ -150,7 +152,6 @@ namespace Scada.Scheme.Editor
             EditorID = GetRandomString(EditorIDLength);
             SchemeView = null;
             FileName = "";
-            Modified = false;
             History = new History(log);
             NewComponentTypeName = "";
         }
@@ -191,7 +192,21 @@ namespace Scada.Scheme.Editor
         /// <summary>
         /// Получить признак изменения схемы
         /// </summary>
-        public bool Modified { get; private set; }
+        public bool Modified
+        {
+            get
+            {
+                return modified;
+            }
+            private set
+            {
+                if (modified != value)
+                {
+                    modified = value;
+                    OnModifiedChanged();
+                }
+            }
+        }
 
         /// <summary>
         /// Получить заголовок редактора
@@ -439,6 +454,14 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
+        /// Вызвать событие ModifiedChanged
+        /// </summary>
+        private void OnModifiedChanged()
+        {
+            ModifiedChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
         /// Вызвать событие PointerModeChanged
         /// </summary>
         private void OnPointerModeChanged()
@@ -497,6 +520,9 @@ namespace Scada.Scheme.Editor
 
             // добавление изменения в историю
             History.Add(changeType, changedObject, oldKey);
+
+            // установка признака изменений
+            Modified = true;
         }
 
 
@@ -788,9 +814,14 @@ namespace Scada.Scheme.Editor
                                     selComponent.Size = new Size(w, h);
 
                                 if (writeChanges)
+                                {
                                     selComponent.OnItemChanged(SchemeChangeTypes.ComponentChanged, selComponent);
+                                }
                                 else
+                                {
                                     History.Add(SchemeChangeTypes.ComponentChanged, selComponent);
+                                    Modified = true;
+                                }
                             }
 
                             History.EndPoint();
@@ -1057,6 +1088,11 @@ namespace Scada.Scheme.Editor
             }
         }
 
+
+        /// <summary>
+        /// Событие возникающее при изменении схемы
+        /// </summary>
+        public event EventHandler ModifiedChanged;
 
         /// <summary>
         /// Событие возникающее при изменении режима указателя мыши редактора

@@ -43,6 +43,7 @@ namespace Scada.Scheme.Editor
             Changes = null;
             SelCompIDs = null;
             NewCompMode = false;
+            EditorTitle = "";
         }
 
 
@@ -60,5 +61,10 @@ namespace Scada.Scheme.Editor
         /// Получить или установить режим добавления нового компонента
         /// </summary>
         public bool NewCompMode { get; set; }
+
+        /// <summary>
+        /// Получить или установить заголовок редактора
+        /// </summary>
+        public string EditorTitle { get; set; }
     }
 }
