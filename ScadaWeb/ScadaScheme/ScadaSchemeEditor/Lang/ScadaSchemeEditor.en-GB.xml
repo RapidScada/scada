@@ -19,18 +19,16 @@
     <Phrase key="btnHelpAbout.ToolTip">About</Phrase>
     <Phrase key="pageComponents">Components</Phrase>
     <Phrase key="pageProperties">Properties</Phrase>
-    <Phrase key=""></Phrase>
-    <Phrase key=""></Phrase>
-    <Phrase key=""></Phrase>
-    <Phrase key=""></Phrase>
-    <Phrase key=""></Phrase>
-    <Phrase key=""></Phrase>
+    <Phrase key="lvgStandard">Standard</Phrase>
+    <Phrase key="lvCompTypes.Items[0]">Pointer</Phrase>
+    <Phrase key="lvCompTypes.Items[1]">Static Text</Phrase>
+    <Phrase key="lvCompTypes.Items[2]">Dynamic Text</Phrase>
+    <Phrase key="lvCompTypes.Items[3]">Static Picture</Phrase>
+    <Phrase key="lvCompTypes.Items[4]">Dynamic Picture</Phrase>
     <Phrase key="CloseSecondInstance">Scheme Editor already started.&#13;&#10;The second instance will be closed.</Phrase>
     <Phrase key="FailedToStartEditor">Failed to start Scada Editor.&#13;&#10;See the details in&#13;&#10;{0}</Phrase>
     <Phrase key="SchemeFileFilter">Schemes (*.sch)|*.sch|All Files (*.*)|*.*</Phrase>
     <Phrase key="SaveSchemeConfirm">The scheme has been modified. Save the changes?</Phrase>
-    <Phrase key=""></Phrase>
-    <Phrase key=""></Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Editor.Js">
     <Phrase key="Test">test</Phrase>
