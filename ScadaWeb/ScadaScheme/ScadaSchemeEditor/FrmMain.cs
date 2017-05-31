@@ -371,7 +371,7 @@ namespace Scada.Scheme.Editor
         /// </summary>
         private void UpdateFormStateDTO()
         {
-            UpdateFormStateDTO(FormState.GetCorrectFormState(this));
+            UpdateFormStateDTO(new FormState(this, true));
         }
 
 
@@ -601,7 +601,7 @@ namespace Scada.Scheme.Editor
         private void FrmMain_Move(object sender, EventArgs e)
         {
             // притягивание формы к краям экрана при необходимости
-            FormState correctFormState = FormState.GetCorrectFormState(this);
+            FormState correctFormState = new FormState(this, true);
             if (!correctFormState.PullToEdge(this))
                 UpdateFormStateDTO(correctFormState);
         }

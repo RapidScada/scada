@@ -44,7 +44,7 @@ namespace Scada.Scheme.Editor
         /// <summary>
         /// Высота панели инструментов браузера (на примере Chrome)
         /// </summary>
-        private int BrowserToolbarHeight = 66;
+        private int BrowserToolbarHeight = 65;
         /// <summary>
         /// Имя файла настроек по умолчанию
         /// </summary>
@@ -65,19 +65,34 @@ namespace Scada.Scheme.Editor
         /// <summary>
         /// Конструктор
         /// </summary>
-        public FormState(Form form)
+        public FormState(Form form, bool correct = false)
         {
             if (form == null)
                 throw new ArgumentNullException("form");
 
-            screenWidth = 0;
-            formAdj = 0;
+            if (correct)
+            {
+                // учёт особенностей ОС
+                screenWidth = Screen.FromControl(form).Bounds.Width;
+                formAdj = CalcFormAdj(form);
 
-            IsEmpty = false;
-            Left = form.Left;
-            Top = form.Top;
-            Width = form.Width;
-            Height = form.Height;
+                IsEmpty = false;
+                Left = form.Left + formAdj;
+                Top = form.Top;
+                Width = form.Width - formAdj * 2;
+                Height = form.Height - formAdj;
+            }
+            else
+            {
+                screenWidth = 0;
+                formAdj = 0;
+
+                IsEmpty = false;
+                Left = form.Left;
+                Top = form.Top;
+                Width = form.Width;
+                Height = form.Height;
+            }
         }
 
 
@@ -265,27 +280,6 @@ namespace Scada.Scheme.Editor
                 StickToLeft = formDisplayed && Left == 0,
                 StickToRight = formDisplayed && Left + Width == screenWidth,
                 Width = Width
-            };
-        }
-
-        /// <summary>
-        /// Получить корретное состояние формы с учётом особенностей ОС
-        /// </summary>
-        public static FormState GetCorrectFormState(Form form)
-        {
-            if (form == null)
-                throw new ArgumentNullException("form");
-
-            int adj = CalcFormAdj(form);
-            return new FormState()
-            {
-                screenWidth = Screen.FromControl(form).Bounds.Width,
-                formAdj = adj,
-                IsEmpty = false,
-                Left = form.Left + adj,
-                Top = form.Top,
-                Width = form.Width - adj * 2,
-                Height = form.Height - adj
             };
         }
     }
