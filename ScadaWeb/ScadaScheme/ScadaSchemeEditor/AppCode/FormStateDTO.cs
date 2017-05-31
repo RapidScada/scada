@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : ScadaSchemeCommon
+ * Module   : Scheme Editor
  * Summary  : The class for transfer form state
  * 
  * Author   : Mikhail Shiryaev

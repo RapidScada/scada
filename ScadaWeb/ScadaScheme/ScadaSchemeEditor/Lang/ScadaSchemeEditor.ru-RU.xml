@@ -30,6 +30,10 @@
     <Phrase key="SchemeFileFilter">Схемы (*.sch)|*.sch|Все файлы (*.*)|*.*</Phrase>
     <Phrase key="SaveSchemeConfirm">Схема была изменена. Сохранить изменения?</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Scheme.Editor.FormState">
+    <Phrase key="LoadFormStateError">Ошибка при загрузке состояния формы</Phrase>
+    <Phrase key="SaveFormStateError">Ошибка при сохранении состояния формы</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Scheme.Editor.Js">
     <Phrase key="Test">тест</Phrase>
   </Dictionary>

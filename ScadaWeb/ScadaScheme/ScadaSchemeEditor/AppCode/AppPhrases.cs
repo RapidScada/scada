@@ -45,6 +45,10 @@ namespace Scada.Scheme.Editor
         // Словарь Scada.Scheme.Editor.Editor
         public static string EditorTitle { get; private set; }
 
+        // Словарь Scada.Scheme.Editor.FormState
+        public static string LoadFormStateError { get; private set; }
+        public static string SaveFormStateError { get; private set; }
+
         private static void SetToDefault()
         {
             CloseSecondInstance = Localization.Dict.GetEmptyPhrase("CloseSecondInstance");
@@ -53,6 +57,9 @@ namespace Scada.Scheme.Editor
             SaveSchemeConfirm = Localization.Dict.GetEmptyPhrase("SaveSchemeConfirm");
 
             EditorTitle = Localization.Dict.GetEmptyPhrase("EditorTitle");
+
+            LoadFormStateError = Localization.Dict.GetEmptyPhrase("LoadFormStateError");
+            SaveFormStateError = Localization.Dict.GetEmptyPhrase("SaveFormStateError");
         }
 
         public static void Init()
@@ -69,6 +76,12 @@ namespace Scada.Scheme.Editor
             if (Localization.Dictionaries.TryGetValue("Scada.Scheme.Editor.Editor", out dict))
             {
                 EditorTitle = dict.GetPhrase("EditorTitle", EditorTitle);
+            }
+
+            if (Localization.Dictionaries.TryGetValue("Scada.Scheme.Editor.FormState", out dict))
+            {
+                LoadFormStateError = dict.GetPhrase("LoadFormStateError", LoadFormStateError);
+                SaveFormStateError = dict.GetPhrase("SaveFormStateError", SaveFormStateError);
             }
         }
     }

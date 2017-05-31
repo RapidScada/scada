@@ -30,6 +30,10 @@
     <Phrase key="SchemeFileFilter">Schemes (*.sch)|*.sch|All Files (*.*)|*.*</Phrase>
     <Phrase key="SaveSchemeConfirm">The scheme has been modified. Save the changes?</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Scheme.Editor.FormState">
+    <Phrase key="LoadFormStateError">Error loading form state</Phrase>
+    <Phrase key="SaveFormStateError">Error saving form state</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Scheme.Editor.Js">
     <Phrase key="Test">test</Phrase>
   </Dictionary>

@@ -45,8 +45,6 @@ namespace Scada.Scheme.Editor
     /// </summary>
     public partial class FrmMain : Form, IMainForm
     {
-        private const int StickDistance = 10; // расстояние прилипания к краям экрана
-
         private readonly AppData appData;  // общие данные приложения
         private readonly Log log;          // журнал приложения
         private readonly Editor editor;    // редактор
@@ -363,15 +361,17 @@ namespace Scada.Scheme.Editor
         /// <summary>
         /// Обновить объект состояния формы
         /// </summary>
+        private void UpdateFormStateDTO(FormState formState)
+        {
+            formStateDTO = formState.GetFormStateDTO(WindowState != FormWindowState.Minimized);
+        }
+
+        /// <summary>
+        /// Обновить объект состояния формы
+        /// </summary>
         private void UpdateFormStateDTO()
         {
-            bool normalState = WindowState == FormWindowState.Normal;
-            formStateDTO = new FormStateDTO()
-            {
-                StickToLeft = normalState && Left <= StickDistance,
-                StickToRight = normalState && Right >= Screen.FromControl(this).Bounds.Width - StickDistance,
-                Width = Width
-            };
+            UpdateFormStateDTO(FormState.GetCorrectFormState(this));
         }
 
 
@@ -546,6 +546,17 @@ namespace Scada.Scheme.Editor
             // создание новой схемы
             InitScheme();
 
+            // загрузка состояния формы
+            FormState formState = new FormState();
+            string errMsg;
+            if (!formState.Load(appData.AppDirs.ConfigDir + FormState.DefFileName, out errMsg))
+            {
+                log.WriteError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
+            }
+            formState.Apply(this);
+            UpdateFormStateDTO();
+
             // запуск механизма редактора схем
             if (appData.StartEditor())
             {
@@ -567,7 +578,16 @@ namespace Scada.Scheme.Editor
 
         private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
         {
-            // завершить работу приложения
+            // сохранение состояния формы
+            FormState formState = new FormState(this);
+            string errMsg;
+            if (!formState.Save(appData.AppDirs.ConfigDir + FormState.DefFileName, out errMsg))
+            {
+                log.WriteError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
+            }
+
+            // завершение работы приложения
             appData.FinalizeApp();
         }
 
@@ -580,23 +600,10 @@ namespace Scada.Scheme.Editor
 
         private void FrmMain_Move(object sender, EventArgs e)
         {
-            const int CorrX = 7;
-            int left = Left + CorrX;
-            int width = Width - CorrX * 2;
-            int newLeft = left;
-            int screenW = Screen.FromControl(this).Bounds.Width;
-
-            lblStatus.Text = "" + left + " " + width;
-
-            if (0 < left && left <= StickDistance)
-                newLeft = 0;
-            else if (screenW - width - StickDistance < left && left < screenW - width)
-                newLeft = screenW - width;
-
-            if (left == newLeft)
-                UpdateFormStateDTO();
-            else
-                Left = newLeft - CorrX;
+            // притягивание формы к краям экрана при необходимости
+            FormState correctFormState = FormState.GetCorrectFormState(this);
+            if (!correctFormState.PullToEdge(this))
+                UpdateFormStateDTO(correctFormState);
         }
 
         private void FrmMain_Resize(object sender, EventArgs e)
