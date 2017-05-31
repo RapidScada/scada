@@ -67,6 +67,7 @@
     <Compile Include="AppCode\Editor.cs" />
     <Compile Include="AppCode\ChangesDTO.cs" />
     <Compile Include="AppCode\FormActions.cs" />
+    <Compile Include="AppCode\FormStateDTO.cs" />
     <Compile Include="AppCode\History.cs" />
     <Compile Include="AppCode\IMainForm.cs" />
     <Compile Include="AppCode\Settings.cs" />

@@ -44,6 +44,7 @@ namespace Scada.Scheme.Editor
             SelCompIDs = null;
             NewCompMode = false;
             EditorTitle = "";
+            FormState = null;
         }
 
 
@@ -66,5 +67,10 @@ namespace Scada.Scheme.Editor
         /// Получить или установить заголовок редактора
         /// </summary>
         public string EditorTitle { get; set; }
+
+        /// <summary>
+        /// Получить или установить состояние формы
+        /// </summary>
+        public FormStateDTO FormState { get; set; }
     }
 }

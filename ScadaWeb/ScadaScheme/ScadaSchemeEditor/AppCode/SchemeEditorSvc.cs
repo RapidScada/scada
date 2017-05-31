@@ -210,6 +210,7 @@ namespace Scada.Scheme.Editor
                     dto.SelCompIDs = Editor.GetSelectedComponentIDs();
                     dto.NewCompMode = Editor.PointerMode != Editor.PointerModes.Select;
                     dto.EditorTitle = Editor.Title;
+                    dto.FormState = AppData.MainForm.GetFormState();
                     Editor.Status = status;
                 }
 

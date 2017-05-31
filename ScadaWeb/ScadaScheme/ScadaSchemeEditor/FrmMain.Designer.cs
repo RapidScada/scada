@@ -30,12 +30,12 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
-            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Standard", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("Pointer", "pointer.png");
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("Static Text", "comp_st.png");
-            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("Dynamic Text", "comp_dt.png");
-            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("Static Picture", "comp_sp.png");
-            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem("Dynamic Picture", "comp_dp.png");
+            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Standard", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem("Pointer", "pointer.png");
+            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem("Static Text", "comp_st.png");
+            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem("Dynamic Text", "comp_dt.png");
+            System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem("Static Picture", "comp_sp.png");
+            System.Windows.Forms.ListViewItem listViewItem10 = new System.Windows.Forms.ListViewItem("Dynamic Picture", "comp_dp.png");
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.btnFileNew = new System.Windows.Forms.ToolStripButton();
             this.btnFileOpen = new System.Windows.Forms.ToolStripButton();
@@ -294,32 +294,32 @@
             this.colCompName});
             this.lvCompTypes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvCompTypes.FullRowSelect = true;
-            listViewGroup1.Header = "Standard";
-            listViewGroup1.Name = "lvgStandard";
+            listViewGroup2.Header = "Standard";
+            listViewGroup2.Name = "lvgStandard";
             this.lvCompTypes.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup1});
+            listViewGroup2});
             this.lvCompTypes.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.lvCompTypes.HideSelection = false;
-            listViewItem1.Group = listViewGroup1;
-            listViewItem1.IndentCount = 1;
-            listViewItem2.Group = listViewGroup1;
-            listViewItem2.IndentCount = 1;
-            listViewItem2.Tag = "Scada.Scheme.Model.StaticText";
-            listViewItem3.Group = listViewGroup1;
-            listViewItem3.IndentCount = 1;
-            listViewItem3.Tag = "Scada.Scheme.Model.DynamicText";
-            listViewItem4.Group = listViewGroup1;
-            listViewItem4.IndentCount = 1;
-            listViewItem4.Tag = "Scada.Scheme.Model.StaticPicture";
-            listViewItem5.Group = listViewGroup1;
-            listViewItem5.IndentCount = 1;
-            listViewItem5.Tag = "Scada.Scheme.Model.DynamicPicture";
+            listViewItem6.Group = listViewGroup2;
+            listViewItem6.IndentCount = 1;
+            listViewItem7.Group = listViewGroup2;
+            listViewItem7.IndentCount = 1;
+            listViewItem7.Tag = "Scada.Scheme.Model.StaticText";
+            listViewItem8.Group = listViewGroup2;
+            listViewItem8.IndentCount = 1;
+            listViewItem8.Tag = "Scada.Scheme.Model.DynamicText";
+            listViewItem9.Group = listViewGroup2;
+            listViewItem9.IndentCount = 1;
+            listViewItem9.Tag = "Scada.Scheme.Model.StaticPicture";
+            listViewItem10.Group = listViewGroup2;
+            listViewItem10.IndentCount = 1;
+            listViewItem10.Tag = "Scada.Scheme.Model.DynamicPicture";
             this.lvCompTypes.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1,
-            listViewItem2,
-            listViewItem3,
-            listViewItem4,
-            listViewItem5});
+            listViewItem6,
+            listViewItem7,
+            listViewItem8,
+            listViewItem9,
+            listViewItem10});
             this.lvCompTypes.LabelWrap = false;
             this.lvCompTypes.Location = new System.Drawing.Point(3, 3);
             this.lvCompTypes.MultiSelect = false;
@@ -400,7 +400,7 @@
             this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(200, 300);
             this.Name = "FrmMain";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Scheme Editor";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMain_FormClosing);

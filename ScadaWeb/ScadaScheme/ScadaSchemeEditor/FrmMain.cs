@@ -45,13 +45,16 @@ namespace Scada.Scheme.Editor
     /// </summary>
     public partial class FrmMain : Form, IMainForm
     {
-        private readonly AppData appData; // общие данные приложения
-        private readonly Log log;         // журнал приложения
-        private readonly Editor editor;   // редактор
+        private const int StickDistance = 10; // расстояние прилипания к краям экрана
 
-        private Mutex mutex;              // объект для проверки запуска второй копии приложения
-        private bool compTypesChanging;   // пользователь изменяет выбранный элемент lvCompTypes
-        private bool schCompChanging;     // пользователь изменяет выбранный элемент cbSchComp
+        private readonly AppData appData;  // общие данные приложения
+        private readonly Log log;          // журнал приложения
+        private readonly Editor editor;    // редактор
+
+        private Mutex mutex;               // объект для проверки запуска второй копии приложения
+        private bool compTypesChanging;    // пользователь изменяет выбранный элемент lvCompTypes
+        private bool schCompChanging;      // пользователь изменяет выбранный элемент cbSchComp
+        private FormStateDTO formStateDTO; // состояние формы для передачи
 
 
         /// <summary>
@@ -67,6 +70,7 @@ namespace Scada.Scheme.Editor
             mutex = null;
             compTypesChanging = false;
             schCompChanging = false;
+            formStateDTO = null;
 
             editor.ModifiedChanged += Editor_ModifiedChanged;
             editor.PointerModeChanged += Editor_PointerModeChanged;
@@ -75,7 +79,6 @@ namespace Scada.Scheme.Editor
             editor.SelectionPropsChanged += Editor_SelectionPropsChanged;
             editor.ClipboardChanged += Editor_ClipboardChanged;
             editor.History.HistoryChanged += History_HistoryChanged;
-            Application.ThreadException += Application_ThreadException;
         }
 
 
@@ -358,11 +361,26 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
+        /// Обновить объект состояния формы
+        /// </summary>
+        private void UpdateFormStateDTO()
+        {
+            bool normalState = WindowState == FormWindowState.Normal;
+            formStateDTO = new FormStateDTO()
+            {
+                StickToLeft = normalState && Left <= StickDistance,
+                StickToRight = normalState && Right >= Screen.FromControl(this).Bounds.Width - StickDistance,
+                Width = Width
+            };
+        }
+
+
+        /// <summary>
         /// Выполнить заданное действие
         /// </summary>
         public void PerformAction(FormActions formAction)
         {
-            ExecuteAction(new Action(() =>
+            ExecuteAction(() =>
             {
                 BringToFront();
 
@@ -399,14 +417,22 @@ namespace Scada.Scheme.Editor
                         btnEditDelete_Click(null, null);
                         break;
                 }
-            }));
+            });
+        }
+
+        /// <summary>
+        /// Получить состояние формы
+        /// </summary>
+        public FormStateDTO GetFormState()
+        {
+            return formStateDTO;
         }
 
 
         private void Scheme_ItemChanged(object sender, SchemeChangeTypes changeType, 
             object changedObject, object oldKey)
         {
-            ExecuteAction(new Action(() =>
+            ExecuteAction(() =>
             {
                 switch (changeType)
                 {
@@ -437,20 +463,17 @@ namespace Scada.Scheme.Editor
                 }
 
                 SetButtonsEnabled();
-            }));
+            });
         }
 
         private void Editor_ModifiedChanged(object sender, EventArgs e)
         {
-            ExecuteAction(new Action(() =>
-            {
-                Text = editor.Title;
-            }));
+            ExecuteAction(() => { Text = editor.Title; });
         }
 
         private void Editor_PointerModeChanged(object sender, EventArgs e)
         {
-            ExecuteAction(new Action(() =>
+            ExecuteAction(() =>
             {
                 // очистка типа создаваемых компонентов, если режим создания выключен
                 if (!compTypesChanging && editor.PointerMode != Editor.PointerModes.Create)
@@ -462,48 +485,39 @@ namespace Scada.Scheme.Editor
 
                 // установка доступности кнопок
                 SetButtonsEnabled();
-            }));
+            });
         }
 
         private void Editor_StatusChanged(object sender, EventArgs e)
         {
             // вывод статуса редактора
-            ExecuteAction(new Action(() =>
-            {
-                lblStatus.Text = editor.Status;
-            }));
+            ExecuteAction(() => { lblStatus.Text = editor.Status; });
         }
 
         private void Editor_SelectionChanged(object sender, EventArgs e)
         {
             // отображение свойств выбранных компонентов схемы
-            ExecuteAction(new Action(ShowSchemeSelection));
+            ExecuteAction(ShowSchemeSelection);
         }
 
         private void Editor_SelectionPropsChanged(object sender, EventArgs e)
         {
             // обновление значений свойств
-            ExecuteAction(new Action(propertyGrid.Refresh));
+            ExecuteAction(propertyGrid.Refresh);
         }
 
         private void Editor_ClipboardChanged(object sender, EventArgs e)
         {
             // установка доступности кнопок
-            ExecuteAction(new Action(SetButtonsEnabled));
+            ExecuteAction(SetButtonsEnabled);
         }
 
         private void History_HistoryChanged(object sender, EventArgs e)
         {
             // установка доступности кнопок
-            ExecuteAction(new Action(SetButtonsEnabled));
+            ExecuteAction(SetButtonsEnabled);
         }
 
-
-        private void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
-        {
-            log.WriteException(e.Exception, CommonPhrases.UnhandledException);
-            ScadaUiUtils.ShowError(CommonPhrases.UnhandledException + ":\r\n" + e.Exception.Message);
-        }
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
@@ -566,11 +580,28 @@ namespace Scada.Scheme.Editor
 
         private void FrmMain_Move(object sender, EventArgs e)
         {
+            const int CorrX = 7;
+            int left = Left + CorrX;
+            int width = Width - CorrX * 2;
+            int newLeft = left;
+            int screenW = Screen.FromControl(this).Bounds.Width;
 
+            lblStatus.Text = "" + left + " " + width;
+
+            if (0 < left && left <= StickDistance)
+                newLeft = 0;
+            else if (screenW - width - StickDistance < left && left < screenW - width)
+                newLeft = screenW - width;
+
+            if (left == newLeft)
+                UpdateFormStateDTO();
+            else
+                Left = newLeft - CorrX;
         }
 
         private void FrmMain_Resize(object sender, EventArgs e)
         {
+            UpdateFormStateDTO();
             lvCompTypes.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
 

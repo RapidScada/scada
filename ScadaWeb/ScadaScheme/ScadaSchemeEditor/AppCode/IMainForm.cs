@@ -35,5 +35,10 @@ namespace Scada.Scheme.Editor
         /// Выполнить заданное действие
         /// </summary>
         void PerformAction(FormActions formAction);
+
+        /// <summary>
+        /// Получить состояние формы
+        /// </summary>
+        FormStateDTO GetFormState();
     }
 }
