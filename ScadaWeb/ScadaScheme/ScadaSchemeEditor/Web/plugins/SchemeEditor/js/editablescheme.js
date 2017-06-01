@@ -25,7 +25,8 @@ scada.scheme.GetChangesResults = {
     SUCCESS: 0,
     RELOAD_SCHEME: 1,
     EDITOR_UNKNOWN: 2,
-    ERROR: 3
+    DATA_ERROR: 3,
+    COMM_ERROR: 4
 };
 
 /********** Types of Scheme Changes **********/
@@ -560,7 +561,12 @@ scada.scheme.EditableScheme.prototype._processFormState = function (opt_formStat
     }
 
     if (changed) {
-        divSchWrapper.data("form-state", opt_formState);
+        if (opt_formState) {
+            divSchWrapper.data("form-state", opt_formState);
+        } else {
+            divSchWrapper.removeData("form-state");
+        }
+
         divSchWrapper.outerWidth($(window).width());
     }
 };
@@ -780,22 +786,22 @@ scada.scheme.EditableScheme.prototype.getChanges = function (callback) {
                     }
                 } else {
                     console.error(scada.utils.getCurTime() + " View stamp is undefined on client or server side.");
-                    callback(GetChangesResults.ERROR);
+                    callback(GetChangesResults.DATA_ERROR);
                 }
             } else {
                 scada.utils.logServiceError(operation, parsedData.ErrorMessage);
-                callback(GetChangesResults.ERROR);
+                callback(GetChangesResults.DATA_ERROR);
             }
         }
         catch (ex) {
             scada.utils.logProcessingError(operation, ex.message);
-            callback(GetChangesResults.ERROR);
+            callback(GetChangesResults.DATA_ERROR);
         }
     })
     .fail(function (jqXHR, textStatus, errorThrown) {
         scada.utils.logFailedRequest(operation, jqXHR);
         thisScheme._processFormState();
-        callback(GetChangesResults.ERROR);
+        callback(GetChangesResults.COMM_ERROR);
     });
 };
 
