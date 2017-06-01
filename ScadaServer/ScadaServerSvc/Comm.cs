@@ -649,8 +649,8 @@ namespace Scada.Server.Svc
                                 (Localization.UseRussian ? "успешно" : "success") :
                                 (Localization.UseRussian ? "ошибка" : "error");
                             appLog.WriteAction(string.Format(Localization.UseRussian ?
-                                "Получение роли пользователя {0}. Результат: {1}" : "Get user {0} role. Result: {1}",
-                                userName, checkOkStr), Log.ActTypes.Action);
+                                "Получение роли пользователя {0}. Результат: {1}" : 
+                                "Get user {0} role. Result: {1}", userName, checkOkStr));
                         }
                         else
                         {
@@ -659,8 +659,7 @@ namespace Scada.Server.Svc
                                 (Localization.UseRussian ? "неверно" : "failed");
                             appLog.WriteAction(string.Format(Localization.UseRussian ?
                                 "Проверка имени и пароля пользователя {0}. Результат: {1}" : 
-                                "Check user {0} name and password. Result: {1}", 
-                                userName, checkOkStr), Log.ActTypes.Action);
+                                "Check user {0} name and password. Result: {1}", userName, checkOkStr));
                         }
                     }
                     else
@@ -672,16 +671,14 @@ namespace Scada.Server.Svc
                             client.UserRoleID = roleID;
                             appLog.WriteAction(string.Format(Localization.UseRussian ?
                                 "Пользователь {0} успешно аутентифицирован" : 
-                                "The user {0} is successfully authenticated", 
-                                userName), Log.ActTypes.Action);
+                                "The user {0} is successfully authenticated", userName));
                         }
                         else
                         {
                             client.ActivityDT = DateTime.MinValue; // для отключения клиента после отправки ответа
                             appLog.WriteAction(string.Format(Localization.UseRussian ?
                                 "Неудачная попытка аутентификации пользователя {0}" : 
-                                "Unsuccessful attempt to authenticate the user {0}", 
-                                userName), Log.ActTypes.Action);
+                                "Unsuccessful attempt to authenticate the user {0}", userName));
                         }
                     }
 
@@ -784,7 +781,7 @@ namespace Scada.Server.Svc
                         appLog.WriteAction(string.Format(Localization.UseRussian ? 
                             "Команда ТУ: канал упр. = {0}{1}, ид. польз. = {2}" :
                             "Command: out channel = {0}{1}, user ID = {2}", 
-                            ctrlCnlNum, notFoundStr, cmdUserID), Log.ActTypes.Action);
+                            ctrlCnlNum, notFoundStr, cmdUserID));
 
                         if (ctrlCnl != null)
                         {
@@ -817,10 +814,11 @@ namespace Scada.Server.Svc
                                     if (cl.UserRoleID == BaseValues.Roles.App)
                                         cl.CmdList.Add(ctrlCmd);
                             }
-                            else
+                            else if (ctrlCmd.CmdNum > 0)
                             {
                                 appLog.WriteAction(Localization.UseRussian ? 
-                                    "Команда ТУ отменена" : "Command is canceled", Log.ActTypes.Action);
+                                    "Команда ТУ отменена" : 
+                                    "Command is canceled");
                             }
 
                             cmdProcOk = true;
@@ -874,7 +872,8 @@ namespace Scada.Server.Svc
 
                         if (settings.DetailedLog)
                             appLog.WriteAction(string.Format(Localization.UseRussian ?
-                                "Открытие файла {0}" : "Opening file {0}", fullFileName), Log.ActTypes.Action);
+                                "Открытие файла {0}" : 
+                                "Opening file {0}", fullFileName));
 
                         try
                         {
@@ -887,15 +886,16 @@ namespace Scada.Server.Svc
                             }
                             else
                             {
-                                appLog.WriteAction(string.Format(Localization.UseRussian ?
-                                    "Файл {0} не найден." : "File {0} not found.", 
-                                    client.FullFileNameInfo), Log.ActTypes.Error);
+                                appLog.WriteError(string.Format(Localization.UseRussian ?
+                                    "Файл {0} не найден." : 
+                                    "File {0} not found.", client.FullFileNameInfo));
                             }
                         }
                         catch (Exception ex)
                         {
                             appLog.WriteAction(string.Format(Localization.UseRussian ?
-                                "Ошибка при работе с файлом {0}: {1}" : "Error working with the file {0}: {1}", 
+                                "Ошибка при работе с файлом {0}: {1}" :
+                                "Error working with the file {0}: {1}",
                                 client.FullFileNameInfo, ex.Message), Log.ActTypes.Exception);
                         }
                         finally
@@ -928,8 +928,10 @@ namespace Scada.Server.Svc
                         }
                         catch (Exception ex)
                         {
-                            appLog.WriteAction("Ошибка при работе с файлом " + client.FullFileNameInfo +
-                                ": " + ex.Message, Log.ActTypes.Exception);
+                            appLog.WriteAction(string.Format(Localization.UseRussian ?
+                                "Ошибка при работе с файлом {0}: {1}" :
+                                "Error working with the file {0}: {1}",
+                                client.FullFileNameInfo, ex.Message), Log.ActTypes.Exception);
                         }
                     }
 
@@ -951,7 +953,8 @@ namespace Scada.Server.Svc
                         catch (Exception ex)
                         {
                             appLog.WriteAction(string.Format(Localization.UseRussian ?
-                                "Ошибка при работе с файлом {0}: {1}" : "Error working with the file {0}: {1}",
+                                "Ошибка при работе с файлом {0}: {1}" : 
+                                "Error working with the file {0}: {1}",
                                 client.FullFileNameInfo, ex.Message), Log.ActTypes.Exception);
                         }
                         finally
@@ -996,7 +999,7 @@ namespace Scada.Server.Svc
                         if (settings.DetailedLog)
                             appLog.WriteAction(string.Format(Localization.UseRussian ?
                                 "Получение времени изменения файла {0}" : 
-                                "Obtaining the modification time of the file {0}", fullFileName), Log.ActTypes.Action);
+                                "Obtaining the modification time of the file {0}", fullFileName));
 
                         double fileModTime;
                         try 
@@ -1004,7 +1007,10 @@ namespace Scada.Server.Svc
                             fileModTime = File.Exists(fullFileName) ?
                                 ScadaUtils.EncodeDateTime(File.GetLastWriteTime(fullFileName)) : 0; 
                         }
-                        catch { fileModTime = 0; }
+                        catch
+                        {
+                            fileModTime = 0;
+                        }
 
                         Array.Copy(BitConverter.GetBytes(fileModTime), 0, outBuf, k, 8);
                     }
@@ -1046,8 +1052,7 @@ namespace Scada.Server.Svc
                         appLog.WriteAction(string.Format(Localization.UseRussian ? 
                             "Запрос данных. Тип: {0}. Дата: {1}. Каналы: {2}" : 
                             "Data request. Type: {0}. Date: {1}. Channels: {2}",
-                            srezTypeStr, srezDate.ToString("d", Localization.Culture), string.Join(", ", cnlNums)),
-                            Log.ActTypes.Action);
+                            srezTypeStr, srezDate.ToString("d", Localization.Culture), string.Join(", ", cnlNums)));
                     }
 
                     SrezTableLight srezTable = mainLogic.GetSnapshotTable(srezDate, srezType, cnlNums);

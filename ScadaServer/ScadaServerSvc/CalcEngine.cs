@@ -281,10 +281,17 @@ namespace Scada.Server.Svc
         /// Sets the current value of the channel n
         /// <para>Установить текущее значение канала n</para>
         /// </summary>
-        public void SetVal(int n, double val)
+        public double SetVal(int n, double val)
         {
-            if (setCnlData != null)
+            if (setCnlData == null)
+            {
+                return double.NaN;
+            }
+            else
+            {
                 setCnlData(n, new SrezTableLight.CnlData(val, Stat(n)));
+                return val;
+            }
         }
 
         /// <summary>
@@ -309,10 +316,34 @@ namespace Scada.Server.Svc
         /// Sets the current status of the channel n
         /// <para>Установить текущий статус канала n</para>
         /// </summary>
-        public void SetStat(int n, int stat)
+        public int SetStat(int n, int stat)
         {
-            if (setCnlData != null)
+            if (setCnlData == null)
+            {
+                return 0;
+            }
+            else
+            {
                 setCnlData(n, new SrezTableLight.CnlData(Val(n), stat));
+                return stat;
+            }
+        }
+
+        /// <summary>
+        /// Sets the current value and status of the channel n
+        /// <para>Установить текущее значение и статус канала n</para>
+        /// </summary>
+        public double SetData(int n, double val, int stat)
+        {
+            if (setCnlData == null)
+            {
+                return double.NaN;
+            }
+            else
+            {
+                setCnlData(n, new SrezTableLight.CnlData(val, stat));
+                return val;
+            }
         }
 
         /// <summary>
