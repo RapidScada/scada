@@ -101,12 +101,12 @@ scada.scheme.Renderer.prototype.setBackgroundImage = function (jqObj, image, opt
 // Returns a data URI containing a representation of the image
 scada.scheme.Renderer.prototype.imageToDataURL = function (image) {
     return "data:" + (image.MediaType ? image.MediaType : "image/png") + ";base64," + image.Data
-}
+};
 
 // Returns a css property value for the image data URI
 scada.scheme.Renderer.prototype.imageToDataUrlCss = function (image) {
     return "url('" + this.imageToDataURL(image) + "')";
-}
+};
 
 // Create DOM content of the component according to the component properties.
 // If component properties are incorrect, no DOM content is created
@@ -137,7 +137,7 @@ scada.scheme.SchemeRenderer.prototype._getDocTitle = function (schemeTitle) {
     var dashInd = docTitle.lastIndexOf(" - ");
     var appName = dashInd >= 0 ? docTitle.substring(dashInd + 3) : docTitle;
     return (schemeTitle ? schemeTitle + " - " : schemeTitle) + appName;
-}
+};
 
 scada.scheme.SchemeRenderer.prototype.createDom = function (component, renderContext) {
     var divScheme = $("<div class='scheme'></div>");
@@ -227,7 +227,7 @@ scada.scheme.SchemeRenderer.prototype.calcScale = function (component, scaleStr)
     }
 
     return 1.0;
-}
+};
 
 // Set the scheme scale.
 // scaleVal is a floating point number
@@ -398,10 +398,32 @@ scada.scheme.ComponentRenderer.prototype.bindAction = function (jqObj, component
     }
 };
 
-// Check the possibility of resizing in edit mode
-scada.scheme.ComponentRenderer.prototype.allowResizing = function (component) {
-    return true;
-}
+// Get location of the component. Returns an object containing the properties x and y
+scada.scheme.ComponentRenderer.prototype.getLocation = function (component) {
+    if (component.props && component.props.Location) {
+        return {
+            x: component.props.Location.X,
+            y: component.props.Location.Y
+        };
+    } else {
+        return {
+            x: 0,
+            y: 0
+        };
+    }
+};
+
+// Set location of the component
+scada.scheme.ComponentRenderer.prototype.setLocation = function (component, x, y) {
+    component.props.Location = { X: x, Y: y };
+
+    if (component.dom) {
+        component.dom.css({
+            "left": x - this.BORDER_WIDTH,
+            "top": y - this.BORDER_WIDTH
+        });
+    }
+};
 
 // Get size of the component. Returns an object containing the properties width and height
 scada.scheme.ComponentRenderer.prototype.getSize = function (component) {
@@ -416,7 +438,7 @@ scada.scheme.ComponentRenderer.prototype.getSize = function (component) {
             height: 0
         };
     }
-}
+};
 
 // Set size of the component
 scada.scheme.ComponentRenderer.prototype.setSize = function (component, width, height) {
@@ -428,7 +450,12 @@ scada.scheme.ComponentRenderer.prototype.setSize = function (component, width, h
             "height": height
         });
     }
-}
+};
+
+// Check the possibility of resizing in edit mode
+scada.scheme.ComponentRenderer.prototype.allowResizing = function (component) {
+    return true;
+};
 
 /********** Static Text Renderer **********/
 
@@ -476,10 +503,6 @@ scada.scheme.StaticTextRenderer.prototype.createDom = function (component, rende
     component.dom = spanComp;
 };
 
-scada.scheme.StaticTextRenderer.prototype.allowResizing = function (component) {
-    return !component.props.AutoSize;
-}
-
 scada.scheme.StaticTextRenderer.prototype.setSize = function (component, width, height) {
     component.props.Size = { Width: width, Height: height };
 
@@ -489,7 +512,11 @@ scada.scheme.StaticTextRenderer.prototype.setSize = function (component, width, 
         "width": width,
         "height": height
     });
-}
+};
+
+scada.scheme.StaticTextRenderer.prototype.allowResizing = function (component) {
+    return !component.props.AutoSize;
+};
 
 /********** Dynamic Text Renderer **********/
 
@@ -644,7 +671,7 @@ scada.scheme.StaticPictureRenderer.prototype.setSize = function (component, widt
         var divComp = component.dom;
         divComp.css("background-size", props.Size.Width + "px " + props.Size.Height + "px");
     }
-}
+};
 
 /********** Dynamic Picture Renderer **********/
 

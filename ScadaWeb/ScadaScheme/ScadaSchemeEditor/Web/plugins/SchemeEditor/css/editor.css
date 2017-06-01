@@ -15,6 +15,9 @@ body {
   font-size: 12px;
   overflow: hidden;
 }
+.scheme-wrapper {
+  border: 0px solid #ddd;
+}
 .scheme.new-component-mode,
 .scheme.new-component-mode .comp {
   cursor: crosshair !important;

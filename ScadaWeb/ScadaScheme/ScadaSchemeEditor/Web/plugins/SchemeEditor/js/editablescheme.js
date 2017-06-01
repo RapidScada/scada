@@ -160,16 +160,20 @@ scada.scheme.Dragging.prototype._getDragMode = function (jqElem, pageX, pageY, s
 scada.scheme.Dragging.prototype._moveElemHor = function (jqElem, dx) {
     this.lastDx = dx;
     this.moved = true;
-    var startOffset = jqElem.data("start-offset");
-    jqElem.offset({ left: startOffset.left + dx, top: jqElem.offset().top });
+    var component = jqElem.data("component");
+    var startLocation = jqElem.data("start-location");
+    var location = component.renderer.getLocation(component);
+    component.renderer.setLocation(component, startLocation.x + dx, location.y);
 };
 
 // Move element vertically during dragging
 scada.scheme.Dragging.prototype._moveElemVert = function (jqElem, dy) {
     this.lastDy = dy;
     this.moved = true;
-    var startOffset = jqElem.data("start-offset");
-    jqElem.offset({ left: jqElem.offset().left, top: startOffset.top + dy });
+    var component = jqElem.data("component");
+    var startLocation = jqElem.data("start-location");
+    var location = component.renderer.getLocation(component);
+    component.renderer.setLocation(component, location.x, startLocation.y + dy);
 };
 
 // Resize element during dragging
@@ -228,10 +232,10 @@ scada.scheme.Dragging.prototype.startDragging = function (captJqElem, selJqElem,
     var thisObj = this;
     this.draggedElem.each(function () {
         var elem = $(this);
-        elem.data("start-offset", elem.offset());
+        var component = elem.data("component");
+        elem.data("start-location", component.renderer.getLocation(component));
 
         if (thisObj.mode > DragModes.MOVE) {
-            var component = elem.data("component");
             elem.data("start-size", component.renderer.getSize(component));
         }
     });
@@ -252,8 +256,9 @@ scada.scheme.Dragging.prototype.continueDragging = function (pageX, pageY) {
             this.lastDy = dy;
             this.moved = true;
             this.draggedElem.each(function () {
-                var startOffset = $(this).data("start-offset");
-                $(this).offset({ left: startOffset.left + dx, top: startOffset.top + dy });
+                var component = $(this).data("component");
+                var startLocation = $(this).data("start-location");
+                component.renderer.setLocation(component, startLocation.x + dx, startLocation.y + dy);
             });
         } else {
             var resizeLeft = this.mode == DragModes.NW_RESIZE ||
@@ -302,7 +307,7 @@ scada.scheme.Dragging.prototype.stopDragging = function (callback) {
     // clear starting offsets and sizes
     this.draggedElem.each(function () {
         $(this)
-            .removeData("start-offset")
+            .removeData("start-location")
             .removeData("start-size");
     });
 
@@ -318,14 +323,17 @@ scada.scheme.Dragging.prototype.getStatus = function () {
 
     if (this.mode == DragModes.NONE) {
         return "";
-    } else if (this.mode == DragModes.MOVE) {
-        var offset = this.draggedElem.offset();
-        return "X: " + offset.left + ", Y: " + offset.top;
     } else {
-        var offset = this.draggedElem.offset();
         var component = this.draggedElem.data("component");
-        var size = component.renderer.getSize(component);
-        return "X: " + offset.left + ", Y: " + offset.top + ", W: " + size.width + ", H: " + size.height;
+        var location = component.renderer.getLocation(component);
+        var locationStr = "X: " + location.x + ", Y: " + location.y;
+
+        if (this.mode == DragModes.MOVE) {
+            return locationStr;
+        } else {
+            var size = component.renderer.getSize(component);
+            return locationStr + ", W: " + size.width + ", H: " + size.height;
+        }
     }
 }
 
@@ -508,6 +516,55 @@ scada.scheme.EditableScheme.prototype._processMode = function (mode) {
     }
 }
 
+// Proccess editor title
+scada.scheme.EditableScheme.prototype._processTitle = function (editorTitle) {
+    if (editorTitle && document.title != editorTitle) {
+        document.title = editorTitle;
+    }
+};
+
+// Proccess editor form state
+scada.scheme.EditableScheme.prototype._processFormState = function (opt_formState) {
+    var divSchWrapper = this._getSchemeDiv().closest(".scheme-wrapper");
+    var stickToLeft = divSchWrapper.data("stick-to-left");
+    var stickToRight = divSchWrapper.data("stick-to-right");
+    var changed = false;
+
+    if (opt_formState && opt_formState.StickToLeft && opt_formState.Width > 0) {
+        if (!stickToLeft) {
+            // add space to the left
+            changed = true;
+            divSchWrapper
+                .css("border-left-width", opt_formState.Width)
+                .data("stick-to-left", true)
+                .data("stick-to-right", false);
+        }
+    } else if (opt_formState && opt_formState.StickToRight && opt_formState.Width > 0) {
+        if (!stickToRight) {
+            // add space to the right
+            changed = true;
+            divSchWrapper
+                .css("border-right-width", opt_formState.Width)
+                .data("stick-to-left", false)
+                .data("stick-to-right", true);
+        }
+    } else if (stickToLeft || stickToRight) {
+        // remove space
+        changed = true;
+        divSchWrapper
+            .css({
+                "border-left-width": 0,
+                "border-right-width": 0
+            })
+            .data("stick-to-left", false)
+            .data("stick-to-right", false);
+    }
+
+    if (changed) {
+        divSchWrapper.outerWidth($(window).width());
+    }
+};
+
 // Get the main div element of the scheme
 scada.scheme.EditableScheme.prototype._getSchemeDiv = function () {
     return this.dom ? this.dom.first() : $();
@@ -622,7 +679,8 @@ scada.scheme.EditableScheme.prototype.createDom = function (opt_controlRight) {
         .on("mousedown", function (event) {
             if (thisScheme.newComponentMode) {
                 // add new component
-                thisScheme._addComponent(event.pageX, event.pageY);
+                var offset = divScheme.offset();
+                thisScheme._addComponent(event.pageX - offset.left, event.pageY - offset.top);
             } else {
                 // deselect all components
                 console.log(scada.utils.getCurTime() + " Scheme background is clicked.");
@@ -658,7 +716,13 @@ scada.scheme.EditableScheme.prototype.createDom = function (opt_controlRight) {
             if (thisScheme.dragging.mode == DragModes.NONE) {
                 thisScheme.dragging.defineCursor($(event.target), event.pageX, event.pageY,
                     thisScheme.selComponentIDs.length <= 1);
-                thisScheme.status = thisScheme.newComponentMode ? "X: " + event.pageX + ", Y: " + event.pageY : "";
+
+                if (thisScheme.newComponentMode) {
+                    var offset = divScheme.offset();
+                    thisScheme.status = "X: " + (event.pageX - offset.left) + ", Y: " + (event.pageY - offset.top);
+                } else {
+                    thisScheme.status = "";
+                }
             } else {
                 thisScheme.dragging.continueDragging(event.pageX, event.pageY);
                 thisScheme.status = thisScheme.dragging.getStatus();
@@ -698,6 +762,7 @@ scada.scheme.EditableScheme.prototype.getChanges = function (callback) {
             var parsedData = $.parseJSON(data.d);
             if (parsedData.Success) {
                 scada.utils.logSuccessfulRequest(operation);
+                thisScheme._processFormState(parsedData.FormState);
 
                 if (parsedData.EditorUnknown) {
                     console.error(scada.utils.getCurTime() + " Editor is unknown. Normal operation is impossible.");
@@ -707,11 +772,7 @@ scada.scheme.EditableScheme.prototype.getChanges = function (callback) {
                         thisScheme._processChanges(parsedData.Changes);
                         thisScheme._processSelection(parsedData.SelCompIDs);
                         thisScheme._processMode(parsedData.NewCompMode);
-
-                        if (document.title != parsedData.EditorTitle) {
-                            document.title = parsedData.EditorTitle;
-                        }
-
+                        thisScheme._processTitle(parsedData.EditorTitle);
                         callback(GetChangesResults.SUCCESS);
                     } else {
                         console.log(scada.utils.getCurTime() + " View stamps are different. Need to reload scheme.");
@@ -733,6 +794,7 @@ scada.scheme.EditableScheme.prototype.getChanges = function (callback) {
     })
     .fail(function (jqXHR, textStatus, errorThrown) {
         scada.utils.logFailedRequest(operation, jqXHR);
+        thisScheme._processFormState();
         callback(GetChangesResults.ERROR);
     });
 };
