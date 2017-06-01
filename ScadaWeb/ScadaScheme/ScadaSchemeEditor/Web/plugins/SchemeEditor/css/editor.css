@@ -1,0 +1,24 @@
+﻿.scheme-wrapper {
+  overflow: auto;
+}
+.scheme-wrapper.loading {
+  background-image: url('../../Scheme/images/loading.gif');
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+body {
+  margin: 0;
+  padding: 0;
+  background-color: white;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 12px;
+  overflow: hidden;
+}
+.scheme.new-component-mode,
+.scheme.new-component-mode .comp {
+  cursor: crosshair !important;
+}
+.comp.selected {
+  border: 1px dashed lime !important;
+}

@@ -119,9 +119,11 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="Web\css\editor.less">
+    <None Include="Web\css\common\globalvar.less" />
+    <None Include="Web\plugins\SchemeEditor\css\editor.less">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Web\plugins\Scheme\css\scheme.less" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ScadaSchemeCommon\ScadaSchemeCommon.csproj">
@@ -157,27 +159,30 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="paintbrush.ico" />
-    <Content Include="Web\css\editor.css">
+    <Content Include="Web\plugins\SchemeEditor\css\editor.css">
       <DependentUpon>editor.less</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Web\css\editor.min.css">
+    <Content Include="Web\plugins\SchemeEditor\css\editor.min.css">
       <DependentUpon>editor.css</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Web\js\api\utils.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Web\js\editablescheme.js">
+    <Content Include="Web\plugins\SchemeEditor\js\editablescheme.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Web\js\editor.js">
+    <Content Include="Web\plugins\SchemeEditor\js\editor.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Web\lib\jquery\jquery.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="Web\editor.html" />
+    <Content Include="Web\plugins\Scheme\images\loading.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="Web\plugins\SchemeEditor\editor.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Config\" />

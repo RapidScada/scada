@@ -527,6 +527,14 @@ namespace Scada.Scheme.Editor
 
 
         /// <summary>
+        /// Получить полный путь файла веб-страницы редактора
+        /// </summary>
+        public string GetWebPageFilePath(string webDir)
+        {
+            return webDir + @"plugins\SchemeEditor\" + WebPageFileName;
+        }
+
+        /// <summary>
         /// Создать веб-страницу редактора
         /// </summary>
         public bool CreateWebPage(string webDir)
@@ -537,7 +545,7 @@ namespace Scada.Scheme.Editor
                 string webPageTemplate;
 
                 using (Stream stream = Assembly.GetExecutingAssembly().
-                    GetManifestResourceStream("Scada.Scheme.Editor.Web.editor.html"))
+                    GetManifestResourceStream("Scada.Scheme.Editor.Web.plugins.SchemeEditor.editor.html"))
                 {
                     using (StreamReader reader = new StreamReader(stream))
                     {
@@ -554,7 +562,7 @@ namespace Scada.Scheme.Editor
                     .Append(WebUtils.DictionaryToJs("Scada.Scheme.Editor.Js"));
                 string webPageContent = string.Format(webPageTemplate, sbCustomScript.ToString());
 
-                using (StreamWriter writer = new StreamWriter(webDir + WebPageFileName, false, Encoding.UTF8))
+                using (StreamWriter writer = new StreamWriter(GetWebPageFilePath(webDir), false, Encoding.UTF8))
                 {
                     writer.Write(webPageContent);
                 }

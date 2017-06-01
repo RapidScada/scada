@@ -155,7 +155,7 @@ namespace Scada.Scheme.Editor
         /// </summary>
         private void OpenBrowser()
         {
-            Uri startUri = new Uri(appData.AppDirs.WebDir + Editor.WebPageFileName);
+            Uri startUri = new Uri(editor.GetWebPageFilePath(appData.AppDirs.WebDir));
             //Process.Start("firefox", startUri.AbsoluteUri);
             Process.Start(startUri.AbsoluteUri);
         }

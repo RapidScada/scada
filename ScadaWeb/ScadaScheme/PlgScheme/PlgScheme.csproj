@@ -84,12 +84,6 @@
     <Content Include="lang\ScadaWeb.en-GB.xml" />
     <Content Include="lib\font-awesome\css\font-awesome.min.css" />
     <Content Include="lib\jquery\jquery.min.js" />
-    <Content Include="plugins\Scheme\css\scheme.css">
-      <DependentUpon>scheme.less</DependentUpon>
-    </Content>
-    <Content Include="plugins\Scheme\css\scheme.min.css">
-      <DependentUpon>scheme.css</DependentUpon>
-    </Content>
     <Content Include="plugins\Scheme\css\schemeform.css">
       <DependentUpon>schemeform.less</DependentUpon>
     </Content>
