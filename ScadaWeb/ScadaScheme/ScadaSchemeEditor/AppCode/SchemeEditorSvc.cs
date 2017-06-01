@@ -37,7 +37,7 @@ namespace Scada.Scheme.Editor
 {
     /// <summary>
     /// WCF service for interacting with the editor JavaScript code
-    /// <para>WCF-сервис для взаимодействия с JavaScript-кодом редактор</para>
+    /// <para>WCF-сервис для взаимодействия с JavaScript-кодом редактора</para>
     /// </summary>
     [ServiceContract]
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]

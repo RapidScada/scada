@@ -70,6 +70,9 @@ namespace Scada.Scheme.Editor
             if (form == null)
                 throw new ArgumentNullException("form");
 
+            Rectangle bounds = form.WindowState == FormWindowState.Normal ? 
+                form.Bounds : form.RestoreBounds;
+
             if (correct)
             {
                 // учёт особенностей ОС
@@ -77,10 +80,10 @@ namespace Scada.Scheme.Editor
                 formAdj = CalcFormAdj(form);
 
                 IsEmpty = false;
-                Left = form.Left + formAdj;
-                Top = form.Top;
-                Width = form.Width - formAdj * 2;
-                Height = form.Height - formAdj;
+                Left = bounds.Left + formAdj;
+                Top = bounds.Top;
+                Width = bounds.Width - formAdj * 2;
+                Height = bounds.Height - formAdj;
             }
             else
             {
@@ -88,10 +91,10 @@ namespace Scada.Scheme.Editor
                 formAdj = 0;
 
                 IsEmpty = false;
-                Left = form.Left;
-                Top = form.Top;
-                Width = form.Width;
-                Height = form.Height;
+                Left = bounds.Left;
+                Top = bounds.Top;
+                Width = bounds.Width;
+                Height = bounds.Height;
             }
         }
 

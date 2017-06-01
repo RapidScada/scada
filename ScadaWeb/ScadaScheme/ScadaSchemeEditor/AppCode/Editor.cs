@@ -537,7 +537,7 @@ namespace Scada.Scheme.Editor
         /// <summary>
         /// Создать веб-страницу редактора
         /// </summary>
-        public bool CreateWebPage(string webDir)
+        public bool CreateWebPage(string webDir, string serviceUrl)
         {
             try
             {
@@ -559,7 +559,9 @@ namespace Scada.Scheme.Editor
                     .AppendFormat("var editorID = '{0}';", EditorID)
                     .AppendLine()
                     .Append("var phrases = ")
-                    .Append(WebUtils.DictionaryToJs("Scada.Scheme.Editor.Js"));
+                    .Append(WebUtils.DictionaryToJs("Scada.Scheme.Editor.Js"))
+                    .AppendLine(";")
+                    .AppendFormat("var serviceUrl = '{0}';", serviceUrl);
                 string webPageContent = string.Format(webPageTemplate, sbCustomScript.ToString());
 
                 using (StreamWriter writer = new StreamWriter(GetWebPageFilePath(webDir), false, Encoding.UTF8))

@@ -7,14 +7,16 @@ var scheme = new scada.scheme.EditableScheme();
 // The variables below must be defined in editor.html
 // Editor session ID
 var editorID = editorID || "";
+// Localized phrases
+var phrases = phrases || {};
 // WCF-service URL
-var serviceUrl = "http://localhost:10001/ScadaSchemeEditor/SchemeEditorSvc/";
+var serviceUrl = serviceUrl || "http://localhost:10001/ScadaSchemeEditor/SchemeEditorSvc/";
 
 // Load the scheme
 function loadScheme(editorID) {
     scheme.load(editorID, function (success) {
         if (success) {
-            scheme.createDom(true/*controlRight*/);
+            scheme.createDom(true);
             startGettingChanges();
         } else {
             // TODO: show alert

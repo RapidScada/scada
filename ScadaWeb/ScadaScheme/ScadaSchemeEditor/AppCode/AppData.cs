@@ -95,7 +95,7 @@ namespace Scada.Scheme.Editor
         /// <summary>
         /// Запустить WCF-службу для взаимодействия с веб-интерфейсом
         /// </summary>
-        private bool StartWcfService()
+        private bool StartWcfService(out string serviceUrl)
         {
             try
             {
@@ -105,6 +105,8 @@ namespace Scada.Scheme.Editor
                 behavior.InstanceContextMode = InstanceContextMode.Single;
                 behavior.UseSynchronizationContext = false;
                 schemeEditorSvcHost.Open();
+                serviceUrl = schemeEditorSvcHost.BaseAddresses.Count > 0 ?
+                    schemeEditorSvcHost.BaseAddresses[0].AbsoluteUri : "";
 
                 Log.WriteAction(Localization.UseRussian ?
                     "WCF-служба запущена" :
@@ -117,6 +119,7 @@ namespace Scada.Scheme.Editor
                 Log.WriteException(ex, Localization.UseRussian ? 
                     "Ошибка при запуске WCF-службы" :
                     "Error starting WCF service");
+                serviceUrl = "";
                 return false;
             }
         }
@@ -173,7 +176,8 @@ namespace Scada.Scheme.Editor
         /// </summary>
         public bool StartEditor()
         {
-            return Editor.CreateWebPage(AppDirs.WebDir) && StartWcfService();
+            string serviceUrl;
+            return StartWcfService(out serviceUrl) && Editor.CreateWebPage(AppDirs.WebDir, serviceUrl);
         }
 
         /// <summary>
