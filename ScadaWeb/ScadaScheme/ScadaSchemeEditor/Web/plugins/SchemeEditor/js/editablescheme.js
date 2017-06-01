@@ -526,41 +526,41 @@ scada.scheme.EditableScheme.prototype._processTitle = function (editorTitle) {
 // Proccess editor form state
 scada.scheme.EditableScheme.prototype._processFormState = function (opt_formState) {
     var divSchWrapper = this._getSchemeDiv().closest(".scheme-wrapper");
-    var stickToLeft = divSchWrapper.data("stick-to-left");
-    var stickToRight = divSchWrapper.data("stick-to-right");
+    var prevFormState = divSchWrapper.data("form-state");
+    var stickToLeft = prevFormState ? prevFormState.StickToLeft : false;
+    var stickToRight = prevFormState ? prevFormState.StickToRight : false;
+    var width = prevFormState ? prevFormState.Width : 0;
     var changed = false;
 
     if (opt_formState && opt_formState.StickToLeft && opt_formState.Width > 0) {
-        if (!stickToLeft) {
+        if (!(stickToLeft && width == opt_formState.Width)) {
             // add space to the left
             changed = true;
-            divSchWrapper
-                .css("border-left-width", opt_formState.Width)
-                .data("stick-to-left", true)
-                .data("stick-to-right", false);
+            divSchWrapper.css({
+                "border-left-width": opt_formState.Width,
+                "border-right-width": 0
+            });
         }
     } else if (opt_formState && opt_formState.StickToRight && opt_formState.Width > 0) {
-        if (!stickToRight) {
+        if (!(stickToRight && width == opt_formState.Width)) {
             // add space to the right
             changed = true;
-            divSchWrapper
-                .css("border-right-width", opt_formState.Width)
-                .data("stick-to-left", false)
-                .data("stick-to-right", true);
+            divSchWrapper.css({
+                "border-left-width": 0,
+                "border-right-width": opt_formState.Width
+            });
         }
     } else if (stickToLeft || stickToRight) {
         // remove space
         changed = true;
-        divSchWrapper
-            .css({
-                "border-left-width": 0,
-                "border-right-width": 0
-            })
-            .data("stick-to-left", false)
-            .data("stick-to-right", false);
+        divSchWrapper.css({
+            "border-left-width": 0,
+            "border-right-width": 0
+        });
     }
 
     if (changed) {
+        divSchWrapper.data("form-state", opt_formState);
         divSchWrapper.outerWidth($(window).width());
     }
 };
