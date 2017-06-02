@@ -39,6 +39,7 @@
     <Phrase key="PageNotValid">The web page is no longer actual. It is recommended to close it.</Phrase>
     <Phrase key="DataError">Error processing data.</Phrase>
     <Phrase key="EditorClosed">Scheme Editor was probably closed. It is recommended to close the web page.</Phrase>
+    <Phrase key="BrowserOutdated">Your browser is out of date. Please update to a modern browser.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.SchemeView">
     <Phrase key="LoadSchemeViewError">Error loading scheme from file</Phrase>

@@ -39,6 +39,7 @@
     <Phrase key="PageNotValid">Веб-страница более не актуальна. Рекомендуется её закрыть.</Phrase>
     <Phrase key="DataError">Ошибка при обработке данных.</Phrase>
     <Phrase key="EditorClosed">Редактор схем, вероятно, был закрыт. Рекомендуется закрыть веб-страницу.</Phrase>
+    <Phrase key="BrowserOutdated">Ваш браузер устарел. Установите современный браузер, пожалуйста.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.SchemeView">
     <Phrase key="LoadSchemeViewError">Ошибка при загрузке схемы из файла</Phrase>

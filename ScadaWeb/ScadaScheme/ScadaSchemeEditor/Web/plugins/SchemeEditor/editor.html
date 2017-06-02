@@ -7,12 +7,21 @@
     <link href="css/editor.min.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../../lib/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="../../js/api/utils.js"></script>
+    <script type="text/javascript" src="../../js/api/checkbrowser.js"></script>
     <script type="text/javascript" src="../Scheme/js/schemecommon.js"></script>
     <script type="text/javascript" src="../Scheme/js/schememodel.js"></script>
     <script type="text/javascript" src="../Scheme/js/schemerender.js"></script>
     <script type="text/javascript" src="js/editablescheme.js"></script>
+    <script type="text/javascript" src="js/showalert.js"></script>
     <script type="text/javascript">
         {0}
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {{
+            if (!checkBrowser()) {{
+                showAlert(phrases.BrowserOutdated);
+            }}
+        }});
     </script>
     <script type="text/javascript" src="js/editor.js"></script>
 </head>

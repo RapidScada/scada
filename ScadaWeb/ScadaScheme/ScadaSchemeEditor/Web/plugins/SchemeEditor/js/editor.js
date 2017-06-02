@@ -1,12 +1,8 @@
 ﻿// Data exchange rate, ms
 var GET_CHANGES_RATE = 300;
-// Timeout to dismiss alert, ms
-var ALERT_DISMISS_TIMEOUT = 10000;
 
 // Scheme object
 var scheme = new scada.scheme.EditableScheme();
-// The ID of alert dismissing timer
-var alertTimeoutID = 0;
 
 // The variables below must be defined in editor.html
 // Editor session ID
@@ -61,29 +57,6 @@ function startGettingChanges() {
             setTimeout(startGettingChanges, GET_CHANGES_RATE);
         }
     });
-}
-
-// Show alert message
-function showAlert(message, opt_auto_dismiss) {
-    // prevent dismissing alert
-    if (alertTimeoutID) {
-        clearTimeout(alertTimeoutID);
-        alertTimeoutID = 0;
-    }
-
-    // create or replace alert message
-    var divAlert = $("#divAlertWrapper div.alert");
-
-    if (divAlert.length > 0) {
-        divAlert.text(message);
-    } else {
-        $("<div class='alert'></div>").text(message).appendTo("#divAlertWrapper");
-    }
-
-    // start alert dismissing timer
-    if (opt_auto_dismiss) {
-        alertTimeoutID = setTimeout(function () { divAlert.remove(); }, ALERT_DISMISS_TIMEOUT);
-    }
 }
 
 // Update layout of the top level div elements
