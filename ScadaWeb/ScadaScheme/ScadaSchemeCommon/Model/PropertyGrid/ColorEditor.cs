@@ -78,7 +78,6 @@ namespace Scada.Scheme.Model.PropertyGrid
         private static readonly object[] ColorArr = null;
 
         private IWindowsFormsEditorService editorSvc = null;
-        private ListBox listBox = null;
         private Brush textBrush = null;
 
 
@@ -110,7 +109,7 @@ namespace Scada.Scheme.Model.PropertyGrid
             if (context != null && context.Instance != null && editorSvc != null)
             {
                 // создание и заполнение выпадающего списка
-                listBox = new ListBox();
+                ListBox listBox = new ListBox();
                 textBrush = new SolidBrush(listBox.ForeColor);
 
                 listBox.BorderStyle = BorderStyle.None;
@@ -163,6 +162,10 @@ namespace Scada.Scheme.Model.PropertyGrid
                     value = selItem;
                 else if (selItem is Color)
                     value = ((Color)selItem).Name;
+
+                // очистка ресурсов выпадающего списка и кисти
+                listBox.Dispose();
+                textBrush.Dispose();
             }
 
             return value;
@@ -179,7 +182,7 @@ namespace Scada.Scheme.Model.PropertyGrid
             e.DrawBackground();
 
             // отображение значка и текста элемента
-            object item = listBox.Items[e.Index];
+            object item = ((ListBox)sender).Items[e.Index];
             Color color;
             string text;
 

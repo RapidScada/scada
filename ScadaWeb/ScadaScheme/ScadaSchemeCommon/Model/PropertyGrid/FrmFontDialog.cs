@@ -134,6 +134,12 @@ namespace Scada.Scheme.Model.PropertyGrid
             }
         }
 
+        private void FrmFontDialog_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            // очистка ресурсов кисти
+            textBrush.Dispose();
+        }
+
         private void cbFontName_DrawItem(object sender, DrawItemEventArgs e)
         {
             // отображение заднего фона элемента

@@ -179,6 +179,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Font";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmFontDialog_FormClosed);
             this.Load += new System.EventHandler(this.FrmFontDialog_Load);
             this.gbStyle.ResumeLayout(false);
             this.gbStyle.PerformLayout();
