@@ -716,6 +716,7 @@ namespace Scada.Scheme.Editor
                 BaseComponent component = (BaseComponent)Activator.CreateInstance(componentType);
                 component.ID = SchemeView.GetNextComponentID();
                 component.Location = new Point(x, y);
+                component.SchemeDoc = SchemeView.SchemeDoc;
                 component.ItemChanged += Scheme_ItemChanged;
 
                 // добавление компонента на схему

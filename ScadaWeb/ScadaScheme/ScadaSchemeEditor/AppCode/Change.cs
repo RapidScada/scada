@@ -162,7 +162,7 @@ namespace Scada.Scheme.Editor
                     break;
 
                 case SchemeChangeTypes.ImageAdded:
-                    ChangedObject = new ImageDTO((Image)ChangedObject);
+                    changeDTO.ChangedObject = new ImageDTO((Image)ChangedObject);
                     break;
             }
 
