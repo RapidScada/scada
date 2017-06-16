@@ -37,8 +37,8 @@ namespace Scada.Scheme.Model.PropertyGrid
     /// </summary>
     internal partial class FrmConditionDialog : Form
     {
-        private List<Condition> conditions; // ссылка на редактируемые условия
-        IObservableItem observableItem;     // элемент, изменения которого отслеживаются
+        private List<Condition> conditions;     // ссылка на редактируемые условия
+        ISchemeDocAvailable schemeDocAvailable; // объект, предоставляющий свойства документа схемы
 
 
         /// <summary>
@@ -52,16 +52,16 @@ namespace Scada.Scheme.Model.PropertyGrid
         /// <summary>
         /// Конструктор
         /// </summary>
-        public FrmConditionDialog(List<Condition> conditions, IObservableItem observableItem)
+        public FrmConditionDialog(List<Condition> conditions, ISchemeDocAvailable schemeDocAvailable)
             : this()
         {
             if (conditions == null)
                 throw new ArgumentNullException("conditions");
-            if (observableItem == null)
-                throw new ArgumentNullException("observableItem");
+            if (schemeDocAvailable == null)
+                throw new ArgumentNullException("schemeDocAvailable");
 
             this.conditions = conditions;
-            this.observableItem = observableItem;
+            this.schemeDocAvailable = schemeDocAvailable;
         }
 
 
@@ -143,7 +143,7 @@ namespace Scada.Scheme.Model.PropertyGrid
         private void btnAdd_Click(object sender, EventArgs e)
         {
             // добавление условия
-            Condition cond = new Condition();
+            Condition cond = new Condition() { SchemeDoc = schemeDocAvailable.SchemeDoc };
             lbCond.SelectedIndex = lbCond.Items.Add(cond);
             propGrid.Select();
         }

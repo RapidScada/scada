@@ -686,7 +686,7 @@ scada.scheme.EditableScheme.prototype.createDom = function (opt_controlRight) {
             if (thisScheme.newComponentMode) {
                 // add new component
                 var offset = divScheme.offset();
-                thisScheme._addComponent(event.pageX - offset.left, event.pageY - offset.top);
+                thisScheme._addComponent(event.pageX - parseInt(offset.left), event.pageY - parseInt(offset.top));
             } else {
                 // deselect all components
                 console.log(scada.utils.getCurTime() + " Scheme background is clicked.");
@@ -725,7 +725,8 @@ scada.scheme.EditableScheme.prototype.createDom = function (opt_controlRight) {
 
                 if (thisScheme.newComponentMode) {
                     var offset = divScheme.offset();
-                    thisScheme.status = "X: " + (event.pageX - offset.left) + ", Y: " + (event.pageY - offset.top);
+                    thisScheme.status = "X: " + (event.pageX - parseInt(offset.left)) +
+                        ", Y: " + (event.pageY - parseInt(offset.top));
                 } else {
                     thisScheme.status = "";
                 }
