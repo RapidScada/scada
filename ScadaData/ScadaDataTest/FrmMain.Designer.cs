@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.pnlTop = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnOpen = new System.Windows.Forms.Button();
             this.btnFilter = new System.Windows.Forms.Button();
@@ -42,13 +43,14 @@
             this.rbSnapshot = new System.Windows.Forms.RadioButton();
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblRecordCount = new System.Windows.Forms.Label();
             this.pnlTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlTop
             // 
+            this.pnlTop.Controls.Add(this.lblRecordCount);
             this.pnlTop.Controls.Add(this.label1);
             this.pnlTop.Controls.Add(this.btnSave);
             this.pnlTop.Controls.Add(this.btnOpen);
@@ -66,6 +68,15 @@
             this.pnlTop.Name = "pnlTop";
             this.pnlTop.Size = new System.Drawing.Size(484, 116);
             this.pnlTop.TabIndex = 0;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(10, 14);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(56, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Data type:";
             // 
             // btnSave
             // 
@@ -190,14 +201,15 @@
             this.openFileDialog.InitialDirectory = "C:\\SCADA\\ArchiveDAT\\Events";
             this.openFileDialog.Title = "Открыть";
             // 
-            // label1
+            // lblRecordCount
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 14);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(56, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Data type:";
+            this.lblRecordCount.AutoSize = true;
+            this.lblRecordCount.Location = new System.Drawing.Point(239, 92);
+            this.lblRecordCount.Name = "lblRecordCount";
+            this.lblRecordCount.Size = new System.Drawing.Size(84, 13);
+            this.lblRecordCount.TabIndex = 12;
+            this.lblRecordCount.Text = "Record count: 0";
+            this.lblRecordCount.Visible = false;
             // 
             // FrmMain
             // 
@@ -233,6 +245,7 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblRecordCount;
     }
 }
 

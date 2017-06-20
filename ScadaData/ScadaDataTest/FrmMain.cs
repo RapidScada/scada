@@ -47,6 +47,15 @@ namespace ScadaDataTest
             srezTable = null;
         }
 
+
+        private void ShowRecordCount()
+        {
+            lblRecordCount.Text = "Record count: " + 
+                (dataTable == null ? "-" : dataTable.DefaultView.Count.ToString());
+            lblRecordCount.Visible = true;
+        }
+
+
         private void rbTableType_CheckedChanged(object sender, EventArgs e)
         {
         }
@@ -68,7 +77,10 @@ namespace ScadaDataTest
         private void btnFilter_Click(object sender, EventArgs e)
         {
             if (dataTable != null)
+            {
                 dataTable.DefaultView.RowFilter = txtFilter.Text;
+                ShowRecordCount();
+            }
         }
 
         private void btnOpen_Click(object sender, EventArgs e)
@@ -112,6 +124,10 @@ namespace ScadaDataTest
             {
                 dataTable = null;
                 ScadaUiUtils.ShowError(ex.Message);
+            }
+            finally
+            {
+                ShowRecordCount();
             }
         }
 
