@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,14 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2010
- * Modified : 2014
+ * Modified : 2017
  */
 
 using Scada.Data.Tables;
+using Scada.UI;
 using System;
 using System.Data;
+using System.IO;
 using System.Windows.Forms;
 
 namespace ScadaDataTest
@@ -36,47 +38,29 @@ namespace ScadaDataTest
     public partial class FrmMain : Form
     {
         private DataTable dataTable;
+        private SrezTable srezTable;
 
         public FrmMain()
         {
             InitializeComponent();
             dataTable = null;
+            srezTable = null;
         }
 
-        private void btnOpen_Click(object sender, EventArgs e)
+        private void rbTableType_CheckedChanged(object sender, EventArgs e)
         {
-            if (rbSrez.Checked)
-            {
-                dataTable = new DataTable("SrezTable");
-                SrezAdapter sa = new SrezAdapter();
-                sa.FileName = txtFileName.Text;
-                sa.Fill(dataTable);
-            }
-            else if (rbEvent.Checked)
-            {
-                dataTable = new DataTable("EventTable");
-                EventAdapter ea = new EventAdapter();
-                ea.FileName = txtFileName.Text;
-                ea.Fill(dataTable);
-            }
-            else // rbBase.Checked
-            {
-                dataTable = new DataTable("BaseTable");
-                BaseAdapter ba = new BaseAdapter();
-                ba.FileName = txtFileName.Text;
-                ba.Fill(dataTable, true);
-            }
-
-            dataGridView.DataSource = dataTable;
         }
 
         private void btnFileName_Click(object sender, EventArgs e)
         {
             string fileName = txtFileName.Text.Trim();
-            if (fileName != "")
-                openFileDialog.FileName = fileName;
+            openFileDialog.InitialDirectory = string.IsNullOrEmpty(fileName) ?
+                "" : Path.GetDirectoryName(fileName);
+            openFileDialog.FileName = "";
+
             if (openFileDialog.ShowDialog() == DialogResult.OK)
                 txtFileName.Text = openFileDialog.FileName;
+
             txtFileName.Focus();
             txtFileName.DeselectAll();
         }
@@ -85,6 +69,105 @@ namespace ScadaDataTest
         {
             if (dataTable != null)
                 dataTable.DefaultView.RowFilter = txtFilter.Text;
+        }
+
+        private void btnOpen_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (rbSnapshot.Checked)
+                {
+                    dataTable = new DataTable("SrezTable");
+                    srezTable = new SrezTable();
+                    SrezAdapter sa = new SrezAdapter();
+                    sa.FileName = txtFileName.Text;
+                    sa.Fill(dataTable);
+                    sa.Fill(srezTable);
+                    dataTable.RowChanged += DataTable_RowChanged;
+                    dataTable.Columns["DateTime"].ReadOnly = true;
+                    dataTable.Columns["CnlNum"].ReadOnly = true;
+                }
+                else if (rbEvent.Checked)
+                {
+                    dataTable = new DataTable("EventTable");
+                    srezTable = null;
+                    EventAdapter ea = new EventAdapter();
+                    ea.FileName = txtFileName.Text;
+                    ea.Fill(dataTable);
+                }
+                else // rbBase.Checked
+                {
+                    dataTable = new DataTable("BaseTable");
+                    srezTable = null;
+                    BaseAdapter ba = new BaseAdapter();
+                    ba.FileName = txtFileName.Text;
+                    ba.Fill(dataTable, true);
+                }
+
+                dataTable.DefaultView.AllowNew = !rbSnapshot.Checked;
+                dataTable.DefaultView.AllowEdit = true;
+                dataGridView.DataSource = dataTable;
+            }
+            catch (Exception ex)
+            {
+                dataTable = null;
+                ScadaUiUtils.ShowError(ex.Message);
+            }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dataTable == null)
+                {
+                    ScadaUiUtils.ShowWarning("Table is not initialized.");
+                }
+                else
+                {
+                    if (rbSnapshot.Checked)
+                    {
+                        SrezAdapter sa = new SrezAdapter();
+                        sa.FileName = txtFileName.Text;
+                        sa.Update(srezTable);
+                    }
+                    else if (rbEvent.Checked)
+                    {
+                        EventAdapter ea = new EventAdapter();
+                        ea.FileName = txtFileName.Text;
+                        ea.Update(dataTable);
+                    }
+                    else // rbBase.Checked
+                    {
+                        BaseAdapter ba = new BaseAdapter();
+                        ba.FileName = txtFileName.Text;
+                        ba.Update(dataTable);
+                    }
+
+                    ScadaUiUtils.ShowInfo("Data saved successfully.");
+                }
+            }
+            catch (Exception ex)
+            {
+                ScadaUiUtils.ShowError(ex.Message);
+            }
+        }
+
+        private void DataTable_RowChanged(object sender, DataRowChangeEventArgs e)
+        {
+            // pass row changes from dataTable to srezTable
+            if (e.Action == DataRowAction.Change)
+            {
+                DataRow row = e.Row;
+                SrezTableLight.Srez srez;
+
+                if (srezTable.SrezList.TryGetValue((DateTime)row["DateTime"], out srez))
+                {
+                    SrezTable.CnlData cnlData = new SrezTableLight.CnlData((double)row["Val"], (int)row["Stat"]);
+                    srez.SetCnlData((int)row["CnlNum"], cnlData);
+                    srezTable.MarkSrezAsModified(srez as SrezTable.Srez);
+                }
+            }
         }
     }
 }
