@@ -76,13 +76,13 @@ namespace Scada.Comm.Devices.AB
         public static void Init()
         {
             Localization.Dict dict;
-            if (Localization.Dictionaries.TryGetValue("Scada.Comm.Devices.AddressBook", out dict))
+            if (Localization.Dictionaries.TryGetValue("Scada.Comm.Devices.AB", out dict))
             {
                 LoadAddressBookError = dict.GetPhrase("LoadAddressBookError", LoadAddressBookError);
                 SaveAddressBookError = dict.GetPhrase("SaveAddressBookError", SaveAddressBookError);
             }
 
-            if (Localization.Dictionaries.TryGetValue("Scada.Comm.Devices.AddressBook.FrmAddressBook", out dict))
+            if (Localization.Dictionaries.TryGetValue("Scada.Comm.Devices.AB.FrmAddressBook", out dict))
             {
                 NewContactGroup = dict.GetPhrase("NewContactGroup", NewContactGroup);
                 NewContact = dict.GetPhrase("NewContact", NewContact);
