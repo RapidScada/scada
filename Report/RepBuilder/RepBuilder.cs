@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,12 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2016
+ * Modified : 2017
  */
 
+using System;
 using System.IO;
+using System.Web;
 using System.Windows.Forms;
 
 namespace Utils.Report
@@ -140,6 +142,35 @@ namespace Utils.Report
             finally
             {
                 outStream.Close();
+            }
+        }
+
+        /// <summary>
+        /// Генерировать отчёт для загрузки через браузер
+        /// </summary>
+        public virtual void Generate(object[] repParams, string templateDir, string fileName, HttpResponse response)
+        {
+            if (response == null)
+                throw new ArgumentNullException("response");
+
+            try
+            {
+                response.ClearHeaders();
+                response.ClearContent();
+
+                response.ContentType = "application/octet-stream";
+                if (!string.IsNullOrEmpty(fileName))
+                    response.AppendHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
+
+                SetParams(repParams);
+                Make(response.OutputStream, templateDir);
+            }
+            catch
+            {
+                response.ClearHeaders();
+                response.ClearContent();
+                response.ContentType = "text/html";
+                throw;
             }
         }
     }
