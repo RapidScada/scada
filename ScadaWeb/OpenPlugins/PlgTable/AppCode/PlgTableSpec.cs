@@ -39,7 +39,7 @@ namespace Scada.Web.Plugins
         /// <summary>
         /// Версия плагина
         /// </summary>
-        internal const string PlgVersion = "5.0.0.1";
+        internal const string PlgVersion = "5.0.0.2";
 
         private DictUpdater dictUpdater; // объект для обновления словаря плагина
 

@@ -47,53 +47,11 @@ namespace Scada.Web
 
 
         /// <summary>
-        /// Генерировать отчёт для загрузки через браузер
-        /// </summary>
-        [Obsolete("Move the method to RepBuilder class.")]
-        public static void GenerateReport(RepBuilder repBuilder, object[] repParams, 
-            string templateDir, string fileName, HttpResponse response)
-        {
-            if (repBuilder == null)
-                throw new ArgumentNullException("repBuilder");
-            if (response == null)
-                throw new ArgumentNullException("response");
-
-            try
-            {
-                response.ClearHeaders();
-                response.ClearContent();
-
-                response.ContentType = "application/octet-stream";
-                if (!string.IsNullOrEmpty(fileName))
-                    response.AppendHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
-
-                repBuilder.SetParams(repParams);
-                repBuilder.Make(response.OutputStream, templateDir);
-            }
-            catch
-            {
-                response.ClearHeaders();
-                response.ClearContent();
-                response.ContentType = "text/html";
-                throw;
-            }
-        }
-
-        /// <summary>
         /// Сформировать имя файла отчёта
         /// </summary>
         public static string BuildFileName(string prefix, string extension)
         {
             return prefix + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + "." + extension;
-        }
-
-        /// <summary>
-        /// Записать сообщение о генерации отчёта в журнал
-        /// </summary>
-        [Obsolete("Get rid of RepBuilder dependency here.")]
-        public static void WriteGenerationAction(Log log, RepBuilder repBuilder, UserData userData)
-        {
-            log.WriteAction(string.Format(WebPhrases.GenReport, repBuilder.RepName, userData.UserProps.UserName));
         }
 
         /// <summary>
