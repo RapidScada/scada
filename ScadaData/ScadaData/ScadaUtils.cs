@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -279,7 +279,7 @@ namespace Scada
             {
                 try
                 {
-                    buf[bufIndex] = byte.Parse(s.Substring(strIndex, 2), NumberStyles.HexNumber);
+                    buf[bufIndex] = byte.Parse(s.Substring(strIndex, 2), NumberStyles.AllowHexSpecifier);
                     bufIndex++;
                     convBytes++;
                     strIndex += 2;
