@@ -34,9 +34,6 @@
     <Reference Include="Log">
       <HintPath>..\..\Log\bin\Release\Log.dll</HintPath>
     </Reference>
-    <Reference Include="RepBuilder">
-      <HintPath>..\..\Report\RepBuilder\bin\Release\RepBuilder.dll</HintPath>
-    </Reference>
     <Reference Include="ScadaData">
       <HintPath>..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
     </Reference>
