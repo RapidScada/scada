@@ -1,0 +1,62 @@
+﻿/*
+ * Copyright 2017 Mikhail Shiryaev
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ * 
+ * Product  : Rapid SCADA
+ * Module   : ScadaSchemeCommon
+ * Summary  : The base class for scheme data transfer objects
+ * 
+ * Author   : Mikhail Shiryaev
+ * Created  : 2017
+ * Modified : 2017
+ */
+
+using Scada.Web;
+
+namespace Scada.Scheme.DataTransfer
+{
+    /// <summary>
+    /// The base class for scheme data transfer objects
+    /// <para>Базовый класс для объектов передачи данных схемы</para>
+    /// </summary>
+    public class SchemeDTO : DataTransferObject
+    {
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        public SchemeDTO()
+            : base()
+        {
+            ViewStamp = 0;
+            EditorUnknown = false;
+        }
+
+
+        /// <summary>
+        /// Получить или установить метку представления, уникальную в пределах приложения
+        /// </summary>
+        public long ViewStamp { get; set; }
+
+        /// <summary>
+        /// Получить или установить признак, что заданный в запросе редактор схем неизвестен
+        /// </summary>
+        public bool EditorUnknown { get; set; }
+
+        /// <summary>
+        /// Скрыть поле данных
+        /// </summary>
+        protected new object Data { get; set; }
+    }
+}

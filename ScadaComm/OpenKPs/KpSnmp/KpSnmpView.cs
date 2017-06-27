@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2016
+ * Modified : 2017
  */
 
 using Scada.Comm.Devices.KpSnmp;
@@ -37,6 +37,12 @@ namespace Scada.Comm.Devices
     /// </summary>
     public class KpSnmpView : KPView
     {
+        /// <summary>
+        /// Версия библиотеки КП
+        /// </summary>
+        internal const string KpVersion = "5.0.0.0";
+
+
         /// <summary>
         /// Конструктор для общей настройки библиотеки КП
         /// </summary>
@@ -98,6 +104,17 @@ namespace Scada.Comm.Devices
                     "x - bytes in the hexadecimal form separated by spaces,\n" +
                     "d - bytes in the decimal form separated by spaces,\n" +
                     "n - null value.";
+            }
+        }
+
+        /// <summary>
+        /// Получить версию библиотеки КП
+        /// </summary>
+        public override string Version
+        {
+            get
+            {
+                return KpVersion;
             }
         }
 

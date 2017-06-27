@@ -18,6 +18,7 @@
     <script type="text/javascript">
         var phrases = <%= phrases %>;
     </script>
+    <script type="text/javascript" src="js/api/checkbrowser.js"></script>
     <script type="text/javascript" src="js/login.js"></script>
 </head>
 <body>

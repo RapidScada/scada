@@ -2440,6 +2440,10 @@ namespace Scada.Server.Svc
                     // запись события и выполнение действий модулей
                     WriteEvent(ev);
                 }
+
+                // отмена передачи команды, если номер команды не задан
+                if (ctrlCnl.CmdNum <= 0)
+                    passToClients = false;
             }
         }
     }

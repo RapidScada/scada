@@ -202,6 +202,9 @@ namespace Scada.Comm.Ctrl
             // установка формата времени опроса КП
             timeKpTime.CustomFormat = Localization.Culture.DateTimeFormat.LongTimePattern;
 
+            // установка максимально допустимого адреса КП
+            numKpAddress.Maximum = int.MaxValue;
+
             // установка имён столбцов списков для перевода формы
             colParamName.Name = "colParamName";
             colParamValue.Name = "colParamValue";

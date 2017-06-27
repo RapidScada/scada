@@ -114,6 +114,7 @@
     <Content Include="content\en\use-cases\opc-standard-files\opc_vals_en.png" />
     <Content Include="content\ru\installation-and-run\manual-installation.html" />
     <Content Include="content\ru\installation-and-run\module-installation.html" />
+    <Content Include="content\ru\installation-and-run\software-installation-files\win7_features_dotnet_ru.png" />
     <Content Include="content\ru\modules\index.html" />
     <Content Include="content\ru\modules\mod-auto-control-files\mod_auto_control_ru.png" />
     <Content Include="content\ru\modules\mod-auto-control.html" />
@@ -178,7 +179,6 @@
     <Content Include="content\ru\installation-and-run\software-installation-files\web_params_ru.png" />
     <Content Include="content\ru\installation-and-run\software-installation-files\win10_features_dotnet_ru.png" />
     <Content Include="content\ru\installation-and-run\software-installation-files\win10_features_iis_ru.png" />
-    <Content Include="content\ru\installation-and-run\software-installation-files\win7_features_dotnet_en.png" />
     <Content Include="content\ru\installation-and-run\software-installation-files\win7_features_iis_ru.png" />
     <Content Include="content\ru\installation-and-run\software-installation.html" />
     <Content Include="content\ru\installation-and-run\software-update.html" />
@@ -270,10 +270,14 @@
     <Content Include="js\jquery.min.js" />
     <Content Include="lib\prism\prism.css" />
     <Content Include="lib\prism\prism.js" />
+    <Content Include="robots.txt" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sitemap.ashx.cs">
+      <DependentUpon>Sitemap.ashx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="compilerconfig.json" />
@@ -288,6 +292,8 @@
     <Content Include="css\search.less" />
     <Content Include="css\cover.less" />
     <Content Include="css\variables.less" />
+    <Content Include="Sitemap.ashx" />
+    <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

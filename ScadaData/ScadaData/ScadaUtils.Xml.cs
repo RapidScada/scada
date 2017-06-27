@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2014
- * Modified : 2016
+ * Modified : 2017
  */
 
 using System;
@@ -144,24 +144,33 @@ namespace Scada
         }
 
         /// <summary>
+        /// Получить XML-элемент параметра
+        /// </summary>
+        public static XmlElement GetParamElem(this XmlElement parentXmlElem, string paramName)
+        {
+            XmlNodeList xmlNodes = parentXmlElem.SelectNodes(string.Format("Param[@name='{0}'][1]", paramName));
+            return xmlNodes.Count > 0 ? xmlNodes[0] as XmlElement : null;
+        }
+
+        /// <summary>
         /// Получить строковое значение дочернего XML-узла
         /// </summary>
         /// <remarks>Если XML-узел не существует, вызывается исключение InvalidOperationException</remarks>
-        public static string GetChildAsString(this XmlNode parentXmlNode, string childNodeName)
+        public static string GetChildAsString(this XmlNode parentXmlNode, string childNodeName, string defaultVal = "")
         {
             XmlNode node = parentXmlNode.SelectSingleNode(childNodeName);
-            return node == null ? "" : node.InnerText;
+            return node == null ? defaultVal : node.InnerText;
         }
 
         /// <summary>
         /// Получить логическое значение дочернего XML-узла
         /// </summary>
-        public static bool GetChildAsBool(this XmlNode parentXmlNode, string childNodeName)
+        public static bool GetChildAsBool(this XmlNode parentXmlNode, string childNodeName, bool defaultVal = false)
         {
             try
             {
                 XmlNode node = parentXmlNode.SelectSingleNode(childNodeName);
-                return node == null ? false : bool.Parse(node.InnerText);
+                return node == null ? defaultVal : bool.Parse(node.InnerText);
             }
             catch (FormatException)
             {
@@ -172,12 +181,12 @@ namespace Scada
         /// <summary>
         /// Получить целое значение дочернего XML-узла
         /// </summary>
-        public static int GetChildAsInt(this XmlNode parentXmlNode, string childNodeName)
+        public static int GetChildAsInt(this XmlNode parentXmlNode, string childNodeName, int defaultVal = 0)
         {
             try
             {
                 XmlNode node = parentXmlNode.SelectSingleNode(childNodeName);
-                return node == null ? 0 : int.Parse(node.InnerText);
+                return node == null ? defaultVal : int.Parse(node.InnerText);
             }
             catch (FormatException)
             {
@@ -188,12 +197,12 @@ namespace Scada
         /// <summary>
         /// Получить вещественное значение дочернего XML-узла
         /// </summary>
-        public static double GetChildAsDouble(this XmlNode parentXmlNode, string childNodeName)
+        public static double GetChildAsDouble(this XmlNode parentXmlNode, string childNodeName, double defaultVal = 0)
         {
             try
             {
                 XmlNode node = parentXmlNode.SelectSingleNode(childNodeName);
-                return node == null ? 0.0 : XmlParseDouble(node.InnerText);
+                return node == null ? defaultVal : XmlParseDouble(node.InnerText);
             }
             catch (FormatException)
             {
@@ -259,14 +268,23 @@ namespace Scada
         }
 
         /// <summary>
+        /// Получить строковое значение атрибута XML-элемента
+        /// </summary>
+        public static string GetAttrAsString(this XmlElement xmlElem, string attrName, string defaultVal = "")
+        {
+            return xmlElem.HasAttribute(attrName) ?
+                xmlElem.GetAttribute(attrName) : defaultVal;
+        }
+
+        /// <summary>
         /// Получить логическое значение атрибута XML-элемента
         /// </summary>
-        public static bool GetAttrAsBool(this XmlElement xmlElem, string attrName)
+        public static bool GetAttrAsBool(this XmlElement xmlElem, string attrName, bool defaultVal = false)
         {
             try
             {
                 return xmlElem.HasAttribute(attrName) ? 
-                    bool.Parse(xmlElem.GetAttribute(attrName)) : false;
+                    bool.Parse(xmlElem.GetAttribute(attrName)) : defaultVal;
             }
             catch (FormatException)
             {
@@ -277,12 +295,12 @@ namespace Scada
         /// <summary>
         /// Получить целое значение атрибута XML-элемента
         /// </summary>
-        public static int GetAttrAsInt(this XmlElement xmlElem, string attrName)
+        public static int GetAttrAsInt(this XmlElement xmlElem, string attrName, int defaultVal = 0)
         {
             try
             {
                 return xmlElem.HasAttribute(attrName) ? 
-                    int.Parse(xmlElem.GetAttribute(attrName)) : 0;
+                    int.Parse(xmlElem.GetAttribute(attrName)) : defaultVal;
             }
             catch (FormatException)
             {
@@ -293,12 +311,12 @@ namespace Scada
         /// <summary>
         /// Получить вещественное значение атрибута XML-элемента
         /// </summary>
-        public static double GetAttrAsDouble(this XmlElement xmlElem, string attrName)
+        public static double GetAttrAsDouble(this XmlElement xmlElem, string attrName, double defaultVal = 0)
         {
             try
             {
                 return xmlElem.HasAttribute(attrName) ? 
-                    XmlParseDouble(xmlElem.GetAttribute(attrName)) : 0.0;
+                    XmlParseDouble(xmlElem.GetAttribute(attrName)) : defaultVal;
             }
             catch (FormatException)
             {

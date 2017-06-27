@@ -1,0 +1,10 @@
+﻿[
+  {
+    "outputFile": "css/controls/notifier.css",
+    "inputFile": "css/controls/notifier.less"
+  },
+  {
+    "outputFile": "plugins/Scheme/css/schemeform.css",
+    "inputFile": "plugins/Scheme/css/schemeform.less"
+  }
+]

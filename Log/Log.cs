@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2005
- * Modified : 2016
+ * Modified : 2017
  */
 
 using System;
@@ -35,7 +35,7 @@ namespace Utils
     /// Log file implementation
     /// <para>Реализация файла журнала</para>
     /// </summary>
-    public class Log
+    public class Log : ILog
     {
         /// <summary>
         /// Типы действий, записываемые в журнал

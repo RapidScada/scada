@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,11 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2017
  */
 
 using System;
-using System.Web;
 using Utils;
-using Utils.Report;
 
 namespace Scada.Web
 {
@@ -47,51 +45,11 @@ namespace Scada.Web
 
 
         /// <summary>
-        /// Генерировать отчёт для загрузки через браузер
-        /// </summary>
-        public static void GenerateReport(RepBuilder repBuilder, object[] repParams, 
-            string templateDir, string fileName, HttpResponse response)
-        {
-            if (repBuilder == null)
-                throw new ArgumentNullException("repBuilder");
-            if (response == null)
-                throw new ArgumentNullException("response");
-
-            try
-            {
-                response.ClearHeaders();
-                response.ClearContent();
-
-                response.ContentType = "application/octet-stream";
-                if (!string.IsNullOrEmpty(fileName))
-                    response.AppendHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
-
-                repBuilder.SetParams(repParams);
-                repBuilder.Make(response.OutputStream, templateDir);
-            }
-            catch
-            {
-                response.ClearHeaders();
-                response.ClearContent();
-                response.ContentType = "text/html";
-                throw;
-            }
-        }
-
-        /// <summary>
         /// Сформировать имя файла отчёта
         /// </summary>
         public static string BuildFileName(string prefix, string extension)
         {
             return prefix + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + "." + extension;
-        }
-
-        /// <summary>
-        /// Записать сообщение о генерации отчёта в журнал
-        /// </summary>
-        public static void WriteGenerationAction(Log log, RepBuilder repBuilder, UserData userData)
-        {
-            log.WriteAction(string.Format(WebPhrases.GenReport, repBuilder.RepName, userData.UserProps.UserName));
         }
 
         /// <summary>

@@ -1,0 +1,42 @@
+﻿@import "../../../css/common/globalvar.less";
+@import "../../Scheme/css/scheme.less";
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: @scheme-back-color;
+    font-family: @scheme-font-family;
+    font-size: @data-font-size;
+    overflow: hidden;
+}
+
+#divAlertWrapper {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%
+}
+
+/* Alert style is similar to Bootstrap */
+#divAlertWrapper .alert {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    font-family: @secondary-font-family;
+    font-size: @form-font-size;
+    padding: 15px;
+    text-align: center;
+}
+
+.scheme-wrapper {
+    border: 0px solid #ddd;
+}
+
+.scheme.new-component-mode,
+.scheme.new-component-mode .comp {
+    cursor: crosshair !important;
+}
+
+.comp.selected {
+    border: 1px dashed lime !important;
+}

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WebSettings>
+  <CommSettings>
+    <Param name="ServerHost" value="localhost" descr="SCADA-Server host or IP address" />
+    <Param name="ServerPort" value="10000" descr="SCADA-Server TCP port number" />
+    <Param name="ServerUser" value="ScadaWeb" descr="User name for the connection" />
+    <Param name="ServerPwd" value="12345" descr="User password for the connection" />
+    <Param name="ServerTimeout" value="10000" descr="Response timeout, ms" />
+  </CommSettings>
+</WebSettings>

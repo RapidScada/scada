@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,12 +51,6 @@ namespace Scada
         /// <remarks>Совпадает с началом отсчёта времени в OLE Automation и Delphi</remarks>
         public static readonly DateTime ScadaEpoch = new DateTime(1899, 12, 30, 0, 0, 0, DateTimeKind.Utc);
 
-        /// <summary>
-        /// Длительность хранения данных в cookies
-        /// </summary>
-        [Obsolete("Use Scada.Web.WebUtils")]
-        public static readonly TimeSpan CookieExpiration = TimeSpan.FromDays(30);
-
         private static NumberFormatInfo nfi; // формат вещественных чисел
 
 
@@ -66,6 +60,26 @@ namespace Scada
         static ScadaUtils()
         {
             nfi = (NumberFormatInfo)CultureInfo.CurrentCulture.NumberFormat.Clone();
+        }
+
+
+        /// <summary>
+        /// Удалить пробелы из строки
+        /// </summary>
+        private static string RemoveWhiteSpace(string s)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            if (s != null)
+            {
+                foreach (char c in s)
+                {
+                    if (!char.IsWhiteSpace(c))
+                        sb.Append(c);
+                }
+            }
+
+            return sb.ToString();
         }
 
 
@@ -90,33 +104,12 @@ namespace Scada
         }
 
         /// <summary>
-        /// Выделить час, минуту и секунду из закодированного вещественного значения времени
+        /// Закодировать дату и время в вещественное значение времени
         /// </summary>
-        [Obsolete]
-        public static void DecodeTime(double time, out int hour, out int min, out int sec)
+        /// <remarks>Совместим с методом DateTime.ToOADate()</remarks>
+        public static double EncodeDateTime(DateTime dateTime)
         {
-            const double hh = 1.0 / 24;                  // 1 час
-            const double mm = 1.0 / 24 / 60;             // 1 мин
-            const double ms = 1.0 / 24 / 60 / 60 / 1000; // 1 мс
-
-            if (time < 0)
-                time = -time;
-
-            time += ms;
-            time -= Math.Truncate(time); // (int)time работает некорректно для чисел time > int.MaxValue
-            hour = (int)(time * 24);
-            time -= hour * hh;
-            min = (int)(time * 24 * 60);
-            time -= min * mm;
-            sec = (int)(time * 24 * 60 * 60);
-        }
-
-        /// <summary>
-        /// Комбинировать заданные дату и время в единое значение
-        /// </summary>
-        public static DateTime CombineDateTime(DateTime date, double time)
-        {
-            return date.AddDays(time - Math.Truncate(time));
+            return (dateTime - ScadaEpoch).TotalDays;
         }
 
         /// <summary>
@@ -129,12 +122,51 @@ namespace Scada
         }
 
         /// <summary>
-        /// Закодировать дату и время в вещественное значение времени
+        /// Комбинировать заданные дату и время в единое значение
         /// </summary>
-        /// <remarks>Совместим с методом DateTime.ToOADate()</remarks>
-        public static double EncodeDateTime(DateTime dateTime)
+        public static DateTime CombineDateTime(DateTime date, double time)
         {
-            return (dateTime - ScadaEpoch).TotalDays;
+            return date.AddDays(time - Math.Truncate(time));
+        }
+
+        /// <summary>
+        /// Закодировать первые 8 символов строки ASCII в вещественное число
+        /// </summary>
+        public static double EncodeAscii(string s)
+        {
+            byte[] buf = new byte[8];
+            int len = Math.Min(8, s.Length);
+            Encoding.ASCII.GetBytes(s, 0, len, buf, 0);
+            return BitConverter.ToDouble(buf, 0);
+        }
+
+        /// <summary>
+        /// Декодировать вещественное число, преобразовав его в строку ASCII
+        /// </summary>
+        public static string DecodeAscii(double val)
+        {
+            byte[] buf = BitConverter.GetBytes(val);
+            return Encoding.ASCII.GetString(buf).TrimEnd((char)0);
+        }
+
+        /// <summary>
+        /// Закодировать первые 4 символа строки Unicode в вещественное число
+        /// </summary>
+        public static double EncodeUnicode(string s)
+        {
+            byte[] buf = new byte[8];
+            int len = Math.Min(4, s.Length);
+            Encoding.Unicode.GetBytes(s, 0, len, buf, 0);
+            return BitConverter.ToDouble(buf, 0);
+        }
+
+        /// <summary>
+        /// Декодировать вещественное число, преобразовав его в строку Unicode
+        /// </summary>
+        public static string DecodeUnicode(double val)
+        {
+            byte[] buf = BitConverter.GetBytes(val);
+            return Encoding.Unicode.GetString(buf).TrimEnd((char)0);
         }
 
         /// <summary>
@@ -234,78 +266,45 @@ namespace Scada
                 sb.Append(bytes[i].ToString("X2"));
             return sb.ToString();
         }
+        
+        /// <summary>
+        /// Преобразовать строку 16-ричных чисел в массив байт, используя существующий массив
+        /// </summary>
+        public static bool HexToBytes(string s, int strIndex, byte[] buf, int bufIndex, int byteCount)
+        {
+            int strLen = s == null ? 0 : s.Length;
+            int convBytes = 0;
+
+            while (strIndex < strLen && convBytes < byteCount)
+            {
+                try
+                {
+                    buf[bufIndex] = byte.Parse(s.Substring(strIndex, 2), NumberStyles.AllowHexSpecifier);
+                    bufIndex++;
+                    convBytes++;
+                    strIndex += 2;
+                }
+                catch (FormatException)
+                {
+                    return false;
+                }
+            }
+
+            return convBytes > 0;
+        }
 
         /// <summary>
-        /// Преобразовать строку 16-ричных чисел в массив байт
+        /// Преобразовать строку 16-ричных чисел в массив байт, создав новый массив
         /// </summary>
         public static bool HexToBytes(string s, out byte[] bytes, bool skipWhiteSpace = false)
         {
+            if (skipWhiteSpace)
+                s = RemoveWhiteSpace(s);
+
             int strLen = s == null ? 0 : s.Length;
             int bufLen = strLen / 2;
-            byte[] buf = new byte[bufLen];
-
-            int strInd = 0;
-            int bufInd = 0;
-            bool parseOK = true;
-
-            while (strInd < strLen && parseOK)
-            {
-                if (skipWhiteSpace)
-                {
-                    while (strInd < strLen && char.IsWhiteSpace(s[strInd]))
-                    {
-                        strInd++;
-                    }
-                    if (strInd == strLen)
-                        break;
-                }
-
-                try
-                {
-                    buf[bufInd] = byte.Parse(s.Substring(strInd, 2), NumberStyles.HexNumber);
-                    bufInd++;
-                    strInd += 2;
-                }
-                catch
-                {
-                    parseOK = false;
-                }
-            }
-
-            if (parseOK && bufInd > 0)
-            {
-                if (bufInd < bufLen)
-                {
-                    bytes = new byte[bufInd];
-                    Array.Copy(buf, 0, bytes, 0, bufInd);
-                }
-                else
-                {
-                    bytes = buf;
-                }
-                return true;
-            }
-            else
-            {
-                bytes = buf;
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Преобразовать дату и время в вещественное число побайтно
-        /// </summary>
-        public static double DateTimeToDouble(DateTime dateTime)
-        {
-            return BitConverter.ToDouble(BitConverter.GetBytes(dateTime.ToBinary()), 0);
-        }
-
-        /// <summary>
-        /// Преобразовать вещественное число в дату и время побайтно
-        /// </summary>
-        public static DateTime DoubleToDateTime(double value)
-        {
-            return DateTime.FromBinary(BitConverter.ToInt64(BitConverter.GetBytes(value), 0));
+            bytes = new byte[bufLen];
+            return HexToBytes(s, 0, bytes, 0, bufLen);
         }
 
         /// <summary>
@@ -370,29 +369,6 @@ namespace Scada
             {
                 return DateTime.MinValue;
             }
-        }
-
-
-        /// <summary>
-        /// Отключить кэширование страницы
-        /// </summary>
-        [Obsolete("Use Scada.Web.WebUtils")]
-        public static void DisablePageCache(HttpResponse response)
-        {
-            if (response != null)
-            {
-                response.AppendHeader("Pragma", "No-cache");
-                response.AppendHeader("Cache-Control", "no-store, no-cache, must-revalidate, post-check=0, pre-check=0");
-            }
-        }
-
-        /// <summary>
-        /// Преобразовать строку для вывода на веб-страницу, заменив "\n" на тег "br"
-        /// </summary>
-        [Obsolete("Use Scada.Web.WebUtils")]
-        public static string HtmlEncodeWithBreak(string s)
-        {
-            return HttpUtility.HtmlEncode(s).Replace("\n", "<br />");
         }
     }
 }

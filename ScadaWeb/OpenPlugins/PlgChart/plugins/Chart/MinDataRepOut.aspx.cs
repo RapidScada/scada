@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2017
  */
 
 using Scada.Client;
@@ -64,9 +64,8 @@ namespace Scada.Web.Plugins.Chart
 
             // генерация отчёта
             RepBuilder repBuilder = new MinDataRepBuilder(appData.DataAccess);
-            RepUtils.WriteGenerationAction(appData.Log, repBuilder, userData);
-            RepUtils.GenerateReport(
-                repBuilder,
+            RepUtils.WriteGenerationAction(appData.Log, repBuilder.RepName, userData);
+            repBuilder.Generate(
                 new object[] { cnlNums, startDate, period, viewTitle },
                 Server.MapPath("~/plugins/Chart/templates/"),
                 RepUtils.BuildFileName("MinData", "xml"),
