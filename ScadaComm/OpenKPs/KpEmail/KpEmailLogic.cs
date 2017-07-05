@@ -236,11 +236,6 @@ namespace Scada.Comm.Devices
                     "Error sending email to {0}: {1}", message.To.ToString(), ex.Message));
                 return false;
             }
-            finally
-            {
-                // пауза позволяет ограничить скорость отправки писем
-                Thread.Sleep(ReqParams.Delay);
-            }
         }
 
         /// <summary>
@@ -270,7 +265,7 @@ namespace Scada.Comm.Devices
                 writeState = false;
             }
 
-            Thread.Sleep(ReqParams.Delay);
+            Thread.Sleep(ScadaUtils.ThreadDelay);
         }
 
         /// <summary>
@@ -294,6 +289,9 @@ namespace Scada.Comm.Devices
                     {
                         if (SendMessage(message))
                             lastCommSucc = true;
+
+                        // задержка позволяет ограничить скорость отправки писем
+                        Thread.Sleep(ReqParams.Delay);
                     }
                     else
                     {
