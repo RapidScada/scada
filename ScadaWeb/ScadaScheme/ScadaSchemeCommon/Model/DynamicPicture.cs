@@ -37,7 +37,7 @@ namespace Scada.Scheme.Model
     /// Динамический рисунок
     /// </summary>
     [Serializable]
-    public class DynamicPicture : StaticPicture
+    public class DynamicPicture : StaticPicture, IDynamicComponent
     {
         /// <summary>
         /// Конструктор
