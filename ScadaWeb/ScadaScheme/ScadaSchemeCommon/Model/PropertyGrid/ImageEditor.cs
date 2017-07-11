@@ -23,9 +23,10 @@
  * Modified : 2017
  */
 
- #pragma warning disable 1591 // CS1591: Missing XML comment for publicly visible type or member
+#pragma warning disable 1591 // CS1591: Missing XML comment for publicly visible type or member
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;
@@ -40,6 +41,27 @@ namespace Scada.Scheme.Model.PropertyGrid
     /// </summary>
     public class ImageEditor : UITypeEditor
     {
+        private SchemeDocument GetSchemeDoc(object instance)
+        {
+            SchemeDocument schemeDoc = null;
+
+            if (instance is ISchemeDocAvailable)
+            {
+                schemeDoc = ((ISchemeDocAvailable)instance).SchemeDoc;
+            }
+            else if (instance is ICollection)
+            {
+                foreach (object obj in (ICollection)instance)
+                {
+                    schemeDoc = GetSchemeDoc(obj);
+                    if (schemeDoc == null)
+                        break;
+                }
+            }
+
+            return schemeDoc;
+        }
+
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
             IWindowsFormsEditorService editorSvc = provider == null ? null :
@@ -47,25 +69,28 @@ namespace Scada.Scheme.Model.PropertyGrid
 
             if (context != null && context.Instance != null && editorSvc != null)
             {
-                Type propType = context.PropertyDescriptor.PropertyType;
+                SchemeDocument schemeDoc = GetSchemeDoc(context.Instance);
 
-                if (propType == typeof(Dictionary<string, Image>) && context.Instance is SchemeDocument)
+                if (schemeDoc != null)
                 {
-                    // редактирование словаря изображений
-                    Dictionary<string, Image> images = (Dictionary<string, Image>)value;
-                    SchemeDocument schemeDoc = (SchemeDocument)context.Instance;
-                    FrmImageDialog frmImageDialog = new FrmImageDialog(images, schemeDoc);
-                    editorSvc.ShowDialog(frmImageDialog);
-                }
-                else if (propType == typeof(string) && context.Instance is ISchemeDocAvailable)
-                {
-                    // выбор изображения
-                    string imageName = (value ?? "").ToString();
-                    SchemeDocument schemeDoc = ((ISchemeDocAvailable)context.Instance).SchemeDoc;
-                    FrmImageDialog frmImageDialog = new FrmImageDialog(imageName, schemeDoc.Images, schemeDoc);
+                    Type propType = context.PropertyDescriptor.PropertyType;
 
-                    if (editorSvc.ShowDialog(frmImageDialog) == DialogResult.OK)
-                        value = frmImageDialog.SelectedImageName;
+                    if (propType == typeof(Dictionary<string, Image>))
+                    {
+                        // редактирование словаря изображений
+                        Dictionary<string, Image> images = (Dictionary<string, Image>)value;
+                        FrmImageDialog frmImageDialog = new FrmImageDialog(images, schemeDoc);
+                        editorSvc.ShowDialog(frmImageDialog);
+                    }
+                    else if (propType == typeof(string))
+                    {
+                        // выбор изображения
+                        string imageName = (value ?? "").ToString();
+                        FrmImageDialog frmImageDialog = new FrmImageDialog(imageName, schemeDoc.Images, schemeDoc);
+
+                        if (editorSvc.ShowDialog(frmImageDialog) == DialogResult.OK)
+                            value = frmImageDialog.SelectedImageName;
+                    }
                 }
             }
 
