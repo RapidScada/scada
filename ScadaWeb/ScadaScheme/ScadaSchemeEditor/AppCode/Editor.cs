@@ -618,7 +618,9 @@ namespace Scada.Scheme.Editor
                     saveOK = SchemeView.SaveToFile(fileName, out errMsg);
                 }
 
-                if (!saveOK)
+                if (saveOK)
+                    Modified = false;
+                else
                     log.WriteError(errMsg);
 
                 return saveOK;

@@ -32,6 +32,7 @@ function addContents(context) {
     addArticle(context, "modules/", "Modules");
     addArticle(context, "modules/mod-auto-control.html", "Automatic Control Module", 1);
     addArticle(context, "modules/mod-db-export.html", "Export to Database Module", 1);
+    addArticle(context, "modules/mod-rapid-gate.html", "Rapid Gate Module", 1);
     addArticle(context, "modules/plg-chart-pro.html", "Chart Pro Plugin", 1);
     addArticle(context, "modules/plg-dashboard.html", "Dashboard Plugin", 1);
     addArticle(context, "modules/plg-elastic-report.html", "Elastic Report Plugin", 1);

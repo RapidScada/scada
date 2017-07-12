@@ -32,6 +32,7 @@ function addContents(context) {
     addArticle(context, "modules/", "Модули");
     addArticle(context, "modules/mod-auto-control.html", "Модуль автоматического управления", 1);
     addArticle(context, "modules/mod-db-export.html", "Модуль экспорта в БД", 1);
+    addArticle(context, "modules/mod-rapid-gate.html", "Модуль Быстрый шлюз", 1);
     addArticle(context, "modules/plg-chart-pro.html", "Плагин Графики Про", 1);
     addArticle(context, "modules/plg-dashboard.html", "Плагин Дэшборды", 1);
     addArticle(context, "modules/plg-elastic-report.html", "Плагин Гибкий отчёт", 1);

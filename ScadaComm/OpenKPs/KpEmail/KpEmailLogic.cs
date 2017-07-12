@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2017
  * 
  * Description
  * Sending email notifications.
@@ -265,7 +265,7 @@ namespace Scada.Comm.Devices
                 writeState = false;
             }
 
-            Thread.Sleep(ReqParams.Delay);
+            Thread.Sleep(ScadaUtils.ThreadDelay);
         }
 
         /// <summary>
@@ -289,6 +289,9 @@ namespace Scada.Comm.Devices
                     {
                         if (SendMessage(message))
                             lastCommSucc = true;
+
+                        // задержка позволяет ограничить скорость отправки писем
+                        Thread.Sleep(ReqParams.Delay);
                     }
                     else
                     {

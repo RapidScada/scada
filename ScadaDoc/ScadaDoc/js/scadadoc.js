@@ -4,7 +4,8 @@ function createLayout() {
     var articleElems = $("body").children();
     articleElems.detach();
 
-    var layoutElem = $("<div class='sd-contents-wrapper'><div class='sd-contents'></div></div>" +
+    var layoutElem = $("<div class='sd-contents-wrapper'>" +
+        "<!--googleoff: index--><div class='sd-contents'></div><!--googleon: index--></div>" +
         "<div class='sd-article-wrapper'><div class='sd-article'></div></div>");
     $("body").append(layoutElem);
     $("body").css("overflow", "hidden");

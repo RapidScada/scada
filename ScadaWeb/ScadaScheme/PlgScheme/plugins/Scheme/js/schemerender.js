@@ -723,14 +723,14 @@ scada.scheme.DynamicPictureRenderer.prototype.updateData = function (component, 
 
     if (divComp && curCnlDataExt) {
         // choose the image depending on the conditions
-        var imageName = props.Image ? props.Image.Name : "";
+        var imageName = props.ImageName;
 
         if (curCnlDataExt.Stat && props.Conditions) {
             var cnlVal = curCnlDataExt.Val;
 
             for (var cond of props.Conditions) {
                 if (scada.scheme.calc.conditionSatisfied(cond, cnlVal)) {
-                    imageName = cond.Image ? cond.Image.Name : "";
+                    imageName = cond.ImageName;
                     break;
                 }
             }
