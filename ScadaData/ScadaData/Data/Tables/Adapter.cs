@@ -165,6 +165,5 @@ namespace Scada.Data.Tables
                 return DateTime.MinValue;
             }
         }
-
     }
 }
