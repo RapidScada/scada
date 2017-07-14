@@ -174,9 +174,7 @@
     <Compile Include="AppCode\Table\EventsRepBuilder.cs" />
     <Compile Include="AppCode\Table\SampleWndSpec.cs" />
     <Compile Include="AppCode\Table\EventsWndSpec.cs" />
-    <Compile Include="AppCode\Table\PlgPhrases.cs" />
     <Compile Include="AppCode\PlgTableSpec.cs" />
-    <Compile Include="AppCode\Table\TableView.cs" />
     <Compile Include="AppCode\Table\TableViewSpec.cs" />
     <Compile Include="plugins\Table\Command.aspx.cs">
       <DependentUpon>Command.aspx</DependentUpon>
@@ -251,6 +249,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="log\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PlgTableCommon\PlgTableCommon.csproj">
+      <Project>{f0dd8f7e-f741-47b3-925c-10b05f0112a7}</Project>
+      <Name>PlgTableCommon</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

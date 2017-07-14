@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,12 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2016
+ * Modified : 2017
  */
 
 using Scada;
 using Scada.UI;
+using Scada.Web.Plugins.Table;
 using System;
 using System.Diagnostics;
 using System.Windows.Forms;
@@ -37,7 +38,6 @@ namespace ScadaTableEditor
     /// </summary>
     public partial class FrmAbout : Form
     {
-        private const string Version = "5.0.0.0"; // версия приложения
         private static FrmAbout frmAbout = null;  // форма о программе
 
         private string exeDir;  // директория исполняемого файла приложения
@@ -93,14 +93,14 @@ namespace ScadaTableEditor
                     activePictureBox = pbAboutRu;
                     pbAboutEn.Visible = false;
                     lblVersionEn.Visible = false;
-                    lblVersionRu.Text = "Версия " + Version;
+                    lblVersionRu.Text = "Версия " + TableUtils.TableVersion;
                 }
                 else
                 {
                     activePictureBox = pbAboutEn;
                     pbAboutRu.Visible = false;
                     lblVersionRu.Visible = false;
-                    lblVersionEn.Text = "Version " + Version;
+                    lblVersionEn.Text = "Version " + TableUtils.TableVersion;
                 }
 
                 // загрузка изображения и гиперссылки из файлов, если они существуют

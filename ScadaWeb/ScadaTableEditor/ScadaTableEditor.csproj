@@ -64,8 +64,8 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PlgTable">
-      <HintPath>..\OpenPlugins\PlgTable\bin\PlgTable.dll</HintPath>
+    <Reference Include="PlgTableCommon">
+      <HintPath>..\OpenPlugins\PlgTableCommon\bin\Release\PlgTableCommon.dll</HintPath>
     </Reference>
     <Reference Include="ScadaData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : PlgTable
+ * Module   : PlgTableCommon
  * Summary  : The phrases used by the plugin
  * 
  * Author   : Mikhail Shiryaev
