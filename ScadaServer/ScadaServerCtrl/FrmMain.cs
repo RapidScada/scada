@@ -201,7 +201,7 @@ namespace Scada.Server.Ctrl
             get
             {
                 if (serverComm == null)
-                    serverComm = new ServerComm(commSettings);
+                    serverComm = new ServerComm(commSettings, new LogStub());
                 return serverComm;
             }
         }
@@ -228,27 +228,21 @@ namespace Scada.Server.Ctrl
         {
             string errMsg;
 
-            if (Localization.LoadingRequired(appDirs.LangDir, "ScadaData"))
-            {
-                if (Localization.LoadDictionaries(appDirs.LangDir, "ScadaData", out errMsg))
-                    CommonPhrases.Init();
-                else
-                    sbError.AppendLine(errMsg);
-            }
+            if (Localization.LoadDictionaries(appDirs.LangDir, "ScadaData", out errMsg))
+                CommonPhrases.Init();
+            else
+                sbError.AppendLine(errMsg);
 
-            if (Localization.LoadingRequired(appDirs.LangDir, "ScadaServer"))
+            if (Localization.LoadDictionaries(appDirs.LangDir, "ScadaServer", out errMsg))
             {
-                if (Localization.LoadDictionaries(appDirs.LangDir, "ScadaServer", out errMsg))
-                {
-                    ModPhrases.InitFromDictionaries();
-                    Translator.TranslateForm(this, "Scada.Server.Ctrl.FrmMain", toolTip, cmsNotify);
-                    AppPhrases.Init();
-                    TranslateTree();
-                }
-                else
-                {
-                    sbError.AppendLine(errMsg);
-                }
+                ModPhrases.InitFromDictionaries();
+                Translator.TranslateForm(this, "Scada.Server.Ctrl.FrmMain", toolTip, cmsNotify);
+                AppPhrases.Init();
+                TranslateTree();
+            }
+            else
+            {
+                sbError.AppendLine(errMsg);
             }
         }
 

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2017
  */
 
 #pragma warning disable 1591 // отключение warning CS1591: Missing XML comment for publicly visible type or member
@@ -55,10 +55,10 @@ namespace Scada.Server.Modules
 
         private static void SetToDefault()
         {
-            SaveModSettingsConfirm = "Настройки модуля были изменены. Сохранить изменения?";
-            LoadModSettingsError = "Ошибка при загрузке настроек модуля";
-            SaveModSettingsError = "Ошибка при сохранении настроек модуля";
-            ConfigureModule = "Сконфигурируйте модуль и перезапустите службу SCADA-Сервера";
+            SaveModSettingsConfirm = Localization.Dict.GetEmptyPhrase("SaveModSettingsConfirm");
+            LoadModSettingsError = Localization.Dict.GetEmptyPhrase("LoadModSettingsError");
+            SaveModSettingsError = Localization.Dict.GetEmptyPhrase("SaveModSettingsError");
+            ConfigureModule = Localization.Dict.GetEmptyPhrase("ConfigureModule");
         }
 
         private static void InitOnLocalization()

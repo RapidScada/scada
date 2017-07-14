@@ -34,6 +34,7 @@ using System.Threading;
 using Utils;
 using Scada.Data.Models;
 using Scada.Data.Tables;
+using Scada.Server.Modules;
 
 namespace Scada.Server.Svc
 {
@@ -41,7 +42,7 @@ namespace Scada.Server.Svc
     /// Communication with clients
     /// <para>Взаимодействие с клиентами</para>
     /// </ummary>
-    sealed class Comm
+    sealed class Comm : IServerCommands
     {
         /// <summary>
         /// Директории на SCADA-Сервере
@@ -1379,6 +1380,14 @@ namespace Scada.Server.Svc
             }
 
             return clientsInfo.ToString();
+        }
+        
+        /// <summary>
+        /// Отправить команду ТУ по заданному каналу управления
+        /// </summary>
+        public void SendCommand(int ctrlCnlNum, Command cmd, int userID)
+        {
+
         }
 
         /// <summary>

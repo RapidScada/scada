@@ -280,7 +280,7 @@ namespace Scada.Server.Svc
                         modLogic.Settings = Settings;
                         modLogic.WriteToLog = AppLog.WriteAction;
                         modLogic.ServerData = this;
-                        modLogic.PassCommand = comm.PassCommand;
+                        modLogic.ServerCommands = comm;
                         modules.Add(modLogic);
                         AppLog.WriteAction(string.Format(Localization.UseRussian ? 
                             "Загружен модуль из файла {0}" : "Module is loaded from the file {0}", 

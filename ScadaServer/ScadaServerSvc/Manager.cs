@@ -90,13 +90,10 @@ namespace Scada.Server.Svc
                 else
                     appLog.WriteAction(errMsg, Log.ActTypes.Error);
 
-                if (Localization.LoadingRequired(mainLogic.AppDirs.LangDir, "ScadaServer"))
-                {
-                    if (Localization.LoadDictionaries(mainLogic.AppDirs.LangDir, "ScadaServer", out errMsg))
-                        ModPhrases.InitFromDictionaries();
-                    else
-                        appLog.WriteAction(errMsg, Log.ActTypes.Error);
-                }
+                if (Localization.LoadDictionaries(mainLogic.AppDirs.LangDir, "ScadaServer", out errMsg))
+                    ModPhrases.InitFromDictionaries();
+                else
+                    appLog.WriteAction(errMsg, Log.ActTypes.Error);
 
                 // запуск работы SCADA-Сервера
                 if (!mainLogic.Start())

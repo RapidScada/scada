@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaServerDictionaries>
+  <Dictionary key="Scada.Server.Modules">
+    <Phrase key="SaveModSettingsConfirm">Настройки модуля были изменены. Сохранить изменения?</Phrase>
+    <Phrase key="LoadModSettingsError">Ошибка при загрузке настроек модуля</Phrase>
+    <Phrase key="SaveModSettingsError">Ошибка при сохранении настроек модуля</Phrase>
+    <Phrase key="ConfigureModule">Сконфигурируйте модуль и перезапустите службу SCADA-Сервера</Phrase>
+  </Dictionary>
+</ScadaServerDictionaries>
