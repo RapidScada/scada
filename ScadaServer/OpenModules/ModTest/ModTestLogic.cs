@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2014
+ * Modified : 2017
  * 
  * Description
  * Server module for testing.
@@ -88,7 +88,7 @@ namespace Scada.Server.Modules
                 cmd.KPNum = MyKpNum;
                 cmd.CmdNum = MyCmdNum;
                 cmd.CmdVal = MyCmdVal;
-                PassCommand(cmd);
+                ServerCommands.PassCommand(cmd);
             }
         }
 
