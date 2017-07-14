@@ -2361,7 +2361,7 @@ namespace Scada.Server.Svc
         {
             passToClients = false;
 
-            if (serverIsReady && ctrlCnl != null)
+            if (serverIsReady && ctrlCnl != null && cmd != null)
             {
                 int ctrlCnlNum = ctrlCnl.CtrlCnlNum;
 

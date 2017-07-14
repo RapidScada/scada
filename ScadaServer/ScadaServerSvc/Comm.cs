@@ -776,16 +776,21 @@ namespace Scada.Server.Svc
                         byte cmdTypeID = inBuf[5];
                         int ctrlCnlNum = BitConverter.ToUInt16(inBuf, 6);
                         MainLogic.CtrlCnl ctrlCnl = mainLogic.GetCtrlCnl(ctrlCnlNum);
-                        
-                        string notFoundStr = ctrlCnl == null ? Localization.UseRussian ? 
-                            " (не найден)" : " (not found)" : "";
-                        appLog.WriteAction(string.Format(Localization.UseRussian ? 
-                            "Команда ТУ: канал упр. = {0}{1}, ид. польз. = {2}" :
-                            "Command: out channel = {0}{1}, user ID = {2}", 
-                            ctrlCnlNum, notFoundStr, cmdUserID));
 
-                        if (ctrlCnl != null)
+                        if (ctrlCnl == null)
                         {
+                            appLog.WriteAction(string.Format(Localization.UseRussian ?
+                                "Команда ТУ на несуществующий канал упр. {0}, ид. польз. = {1}" :
+                                "Command to nonexistent out channel {0}, user ID = {1}",
+                                ctrlCnlNum, cmdUserID));
+                        }
+                        else
+                        {
+                            appLog.WriteAction(string.Format(Localization.UseRussian ?
+                                "Команда ТУ: канал упр. = {0}, ид. польз. = {1}" :
+                                "Command: out channel = {0}, user ID = {1}",
+                                ctrlCnlNum, cmdUserID));
+
                             // создание команды ТУ
                             Command ctrlCmd = new Command(cmdTypeID);
                             ctrlCmd.CmdData = new byte[BitConverter.ToUInt16(inBuf, 8)];
@@ -807,9 +812,9 @@ namespace Scada.Server.Svc
                             bool passToClients;
                             mainLogic.ProcCommand(ctrlCnl, ctrlCmd, cmdUserID, out passToClients);
 
-                            // передача команды ТУ подключенным клиентам
                             if (passToClients)
                             {
+                                // передача команды ТУ подключенным клиентам
                                 ctrlCmd.PrepareCmdData();
                                 foreach (ClientInfo cl in clients)
                                     if (cl.UserRoleID == BaseValues.Roles.App)
@@ -1385,23 +1390,59 @@ namespace Scada.Server.Svc
         /// <summary>
         /// Отправить команду ТУ по заданному каналу управления
         /// </summary>
+        /// <remarks>Метод вызывается серверными модулями</remarks>
         public void SendCommand(int ctrlCnlNum, Command cmd, int userID)
         {
+            if (cmd == null)
+                throw new ArgumentNullException("cmd");
 
+            MainLogic.CtrlCnl ctrlCnl = mainLogic.GetCtrlCnl(ctrlCnlNum);
+
+            if (ctrlCnl == null)
+            {
+                appLog.WriteAction(string.Format(Localization.UseRussian ?
+                    "Команда ТУ на несуществующий канал упр. {0}, ид. польз. = {1}" :
+                    "Command to nonexistent out channel {0}, user ID = {1}",
+                    ctrlCnlNum, userID));
+            }
+            else
+            {
+                appLog.WriteAction(string.Format(Localization.UseRussian ?
+                    "Команда ТУ: канал упр. = {0}, ид. польз. = {1}" :
+                    "Command: out channel = {0}, user ID = {1}",
+                    ctrlCnlNum, userID));
+
+                // обработка команды ТУ
+                bool passToClients;
+                mainLogic.ProcCommand(ctrlCnl, cmd, userID, out passToClients);
+
+                if (passToClients)
+                {
+                    // передача команды ТУ подключенным клиентам
+                    PassCommand(cmd);
+                }
+                else if (cmd.CmdNum > 0)
+                {
+                    appLog.WriteAction(Localization.UseRussian ?
+                        "Команда ТУ отменена" :
+                        "Command is canceled");
+                }
+            }
         }
 
         /// <summary>
         /// Передать команду ТУ подключенным клиентам
         /// </summary>
+        /// <remarks>Метод вызывается серверными модулями</remarks>
         public void PassCommand(Command cmd)
         {
+            if (cmd == null)
+                throw new ArgumentNullException("cmd");
+
             lock (cmdBuf)
             {
-                if (cmd != null)
-                {
-                    cmd.PrepareCmdData();
-                    cmdBuf.Add(cmd);
-                }
+                cmd.PrepareCmdData();
+                cmdBuf.Add(cmd);
             }
         }
     }
