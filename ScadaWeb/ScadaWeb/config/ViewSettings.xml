@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<ViewSettings>
-  <ViewSet name="Server Equipment" directory="Servers\">
-    <View type="TableView" fileName="ServerRoom.tbl">Server room</View>
-    <View type="SchemeView" fileName="ServerRoom.sch">Server room (scheme)</View>
-    <View type="TableView" fileName="OpcDemo.tbl">OPC Demo</View>
-  </ViewSet>
-</ViewSettings>
