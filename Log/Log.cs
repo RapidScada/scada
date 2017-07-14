@@ -79,6 +79,10 @@ namespace Utils
         /// Делегат записи строки в журнал
         /// </summary>
         public delegate void WriteLineDelegate(string text);
+        /// <summary>
+        /// Делегат записи действия в журнал
+        /// </summary>
+        public delegate void WriteActionDelegate(string text, ActTypes actType);
 
         /// <summary>
         /// Вместимость (макс. размер) файла по умолчанию, 1 МБ
