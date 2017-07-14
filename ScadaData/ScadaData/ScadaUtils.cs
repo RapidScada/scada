@@ -41,10 +41,13 @@ namespace Scada
     public static partial class ScadaUtils
     {
         /// <summary>
+        /// Версия данной библиотеки
+        /// </summary>
+        internal const string LibVersion = "5.1.0.0";
+        /// <summary>
         /// Задержка потока для экономии ресурсов, мс
         /// </summary>
         public const int ThreadDelay = 100;
-
         /// <summary>
         /// Начало отчёта времени, которое используется приложениями Rapid SCADA
         /// </summary>

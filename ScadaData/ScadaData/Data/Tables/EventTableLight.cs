@@ -243,53 +243,10 @@ namespace Scada.Data.Tables
         /// Время последего успешного заполнения таблицы
         /// </summary>
         protected DateTime lastFillTime;
-
         /// <summary>
         /// Список всех событий
         /// </summary>
         protected List<Event> allEvents;
-        /// <summary>
-        /// Отфильтрованный список событий
-        /// </summary>
-        protected List<Event> filteredEvents;
-        /// <summary>
-        /// Сохранённая для повторного доступа часть отфильтрованного списка событий, 
-        /// начиная с определённого номера события
-        /// </summary>
-        protected List<Event> eventsCache;
-        /// <summary>
-        /// Сохранённая для повторного доступа конечная часть отфильтрованного списка событий
-        /// </summary>
-        protected List<Event> lastEventsCache;
-        /// <summary>
-        /// Начальный номер события, заданный при получении eventsCache
-        /// </summary>
-        protected int startEvNum;
-        /// <summary>
-        /// Количество запрошенных событий при получении lastEventsCache
-        /// </summary>
-        protected int lastEvCnt;
-
-        /// <summary>
-        /// Фильтры таблицы событий
-        /// </summary>
-        protected EventFilters filters;
-        /// <summary>
-        /// Номер объекта, по которому фильтруется таблица
-        /// </summary>
-        protected int objNumFilter;
-        /// <summary>
-        /// Номер КП, по которому фильтруется таблица
-        /// </summary>
-        protected int kpNumFilter;
-        /// <summary>
-        /// Номер параметра, по которому фильтруется таблица
-        /// </summary>
-        protected int paramNumFilter;
-        /// <summary>
-        /// Упорядоченный список каналов, по которым фильтруется таблица
-        /// </summary>
-        protected List<int> cnlsFilter;
 
 
         /// <summary>
@@ -302,17 +259,6 @@ namespace Scada.Data.Tables
             lastFillTime = DateTime.MinValue;
 
             allEvents = new List<Event>();
-            filteredEvents = null;
-            eventsCache = null;
-            lastEventsCache = null;
-            startEvNum = 0;
-            lastEvCnt = 0;
-
-            filters = EventFilters.None;
-            objNumFilter = 0;
-            kpNumFilter = 0;
-            paramNumFilter = 0;
-            cnlsFilter = null;
         }
 
 
@@ -366,7 +312,6 @@ namespace Scada.Data.Tables
             }
         }
         
-
         /// <summary>
         /// Получить список всех событий
         /// </summary>
@@ -378,148 +323,6 @@ namespace Scada.Data.Tables
             }
         }
 
-        /// <summary>
-        /// Получить отфильтрованный список событий
-        /// </summary>
-        [Obsolete]
-        public List<Event> FilteredEvents
-        {
-            get
-            {
-                if (filteredEvents == null)
-                {
-                    // создание и заполнение отфильтрованного списка событий
-                    filteredEvents = new List<Event>();
-                    foreach (Event ev in allEvents)
-                    {
-                        if (EventVisible(ev))
-                            filteredEvents.Add(ev);
-                    }
-                }                
-                return filteredEvents;
-            }
-        }
-
-        /// <summary>
-        /// Получить или установить фильтры таблицы событий
-        /// </summary>
-        [Obsolete]
-        public EventFilters Filters
-        {
-            get
-            {
-                return filters;
-            }
-            set
-            {
-                if (filters != value)
-                {
-                    filters = value;
-                    filteredEvents = null;
-                    eventsCache = null;
-                    lastEventsCache = null;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Получить или установить номер объекта, по которому фильтруется таблица
-        /// </summary>
-        [Obsolete]
-        public int ObjNumFilter
-        {
-            get
-            {
-                return objNumFilter;
-            }
-            set
-            {
-                if (objNumFilter != value)
-                {
-                    objNumFilter = value;
-                    filteredEvents = null;
-                    eventsCache = null;
-                    lastEventsCache = null;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Получить или установить номер КП, по которому фильтруется таблица
-        /// </summary>
-        [Obsolete]
-        public int KPNumFilter
-        {
-            get
-            {
-                return kpNumFilter;
-            }
-            set
-            {
-                if (kpNumFilter != value)
-                {
-                    kpNumFilter = value;
-                    filteredEvents = null;
-                    eventsCache = null;
-                    lastEventsCache = null;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Получить или установить номер параметра, по которому фильтруется таблица
-        /// </summary>
-        [Obsolete]
-        public int ParamNumFilter
-        {
-            get
-            {
-                return paramNumFilter;
-            }
-            set
-            {
-                if (paramNumFilter != value)
-                {
-                    paramNumFilter = value;
-                    filteredEvents = null;
-                    eventsCache = null;
-                    lastEventsCache = null;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Получить или установить список каналов, по которому фильтруется таблица
-        /// </summary>
-        [Obsolete]
-        public List<int> CnlsFilter
-        {
-            get
-            {
-                return cnlsFilter;
-            }
-            set
-            {
-                cnlsFilter = value;
-                if (cnlsFilter != null)
-                    cnlsFilter.Sort();
-                filteredEvents = null;
-                eventsCache = null;
-                lastEventsCache = null;
-            }
-        }
-
-
-        /// <summary>
-        /// Проверить, что событие является видимым с установленными фильтрами
-        /// </summary>
-        protected bool EventVisible(Event ev)
-        {
-            return !((filters & EventFilters.Obj) > 0 && ev.ObjNum != objNumFilter ||
-                (filters & EventFilters.KP) > 0 && ev.KPNum != kpNumFilter ||
-                (filters & EventFilters.Param) > 0 && ev.ParamID != paramNumFilter ||
-                (filters & EventFilters.Cnls) > 0 && (cnlsFilter == null || cnlsFilter.BinarySearch(ev.CnlNum) < 0));
-        }
 
         /// <summary>
         /// Добавить событие в таблицу
@@ -527,9 +330,6 @@ namespace Scada.Data.Tables
         public void AddEvent(Event ev)
         {
             allEvents.Add(ev);
-            filteredEvents = null;
-            eventsCache = null;
-            lastEventsCache = null;
         }
 
         /// <summary>
@@ -538,76 +338,6 @@ namespace Scada.Data.Tables
         public void Clear()
         {
             allEvents.Clear();
-            filteredEvents = null;
-            eventsCache = null;
-            lastEventsCache = null;
-        }
-
-        /// <summary>
-        /// Получить часть отфильтрованного списка событий, начиная с заданного номера события
-        /// </summary>
-        [Obsolete]
-        public List<Event> GetEvents(int startEvNum)
-        {
-            if (eventsCache == null || this.startEvNum != startEvNum)
-            {
-                eventsCache = new List<Event>();
-                this.startEvNum = startEvNum;
-
-                int ind = startEvNum < 0 ? 0 : startEvNum - 1;
-                int cnt = allEvents.Count;
-
-                while (ind < cnt)
-                {
-                    Event ev = allEvents[ind];
-                    if (EventVisible(ev))
-                        eventsCache.Add(ev);
-                    ind++;
-                }
-            }
-
-            return eventsCache;
-        }
-
-        /// <summary>
-        /// Получить конечную часть отфильтрованного списка событий
-        /// </summary>
-        [Obsolete]
-        public List<Event> GetLastEvents(int count)
-        {
-            if (lastEventsCache == null || lastEvCnt != count)
-            {
-                lastEventsCache = new List<Event>();
-                lastEvCnt = count;
-
-                if (count > 0)
-                {
-                    if (filteredEvents == null)
-                    {
-                        int ind = allEvents.Count - 1;
-                        int cnt = 0; // количество полученных событий
-
-                        while (ind >= 0 && cnt < count)
-                        {
-                            Event ev = allEvents[ind];
-                            if (EventVisible(ev))
-                            {
-                                lastEventsCache.Insert(0, ev);
-                                cnt++;
-                            }
-                            ind--;
-                        }
-                    }
-                    else
-                    {
-                        int cnt = filteredEvents.Count < count ? filteredEvents.Count : count;
-                        if (cnt > 0)
-                            lastEventsCache.AddRange(filteredEvents.GetRange(filteredEvents.Count - cnt, cnt));
-                    }
-                }
-            }
-
-            return lastEventsCache;
         }
 
         /// <summary>

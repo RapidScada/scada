@@ -106,11 +106,6 @@ namespace Scada.Client
             Itf = 0x06
         }
 
-        /// <summary>
-        /// Делегат записи в журнал работы
-        /// </summary>
-        public delegate void WriteToLogDelegate(string text);
-
 
         /// <summary>
         /// Таймаут отправки данных по TCP, мс
@@ -137,11 +132,11 @@ namespace Scada.Client
         /// <summary>
         /// Журнал работы
         /// </summary>
-        protected Log log;
+        protected ILog log;
         /// <summary>
         /// Метод записи в журнал работы
         /// </summary>
-        protected WriteToLogDelegate writeToLog { get; set; }
+        protected Log.WriteLineDelegate writeToLog { get; set; }
         /// <summary>
         /// TCP-клиент для обмена данными со SCADA-Сервером
         /// </summary>
@@ -192,22 +187,9 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Конструктор с установкой настроек соединения со SCADA-Сервером
-        /// </summary>
-        /// <remarks>Используется журнал работы Scada.Client.AppData.Log</remarks>
-        [Obsolete("ILog interface and LogStub class should be developed")]
-        public ServerComm(CommSettings commSettings)
-            : this()
-        {
-            this.commSettings = commSettings;
-            this.log = null;
-            this.writeToLog = null;
-        }
-
-        /// <summary>
         /// Конструктор с установкой настроек соединения со SCADA-Сервером и журнала работы
         /// </summary>
-        public ServerComm(CommSettings commSettings, Log log)
+        public ServerComm(CommSettings commSettings, ILog log)
             : this()
         {
             this.commSettings = commSettings;
@@ -218,8 +200,7 @@ namespace Scada.Client
         /// <summary>
         /// Конструктор с установкой настроек соединения со SCADA-Сервером и метода записи в журнал работы
         /// </summary>
-        [Obsolete("ILog interface should be developed")]
-        public ServerComm(CommSettings commSettings, WriteToLogDelegate writeToLog)
+        public ServerComm(CommSettings commSettings, Log.WriteLineDelegate writeToLog)
             : this()
         {
             this.commSettings = commSettings;
@@ -358,12 +339,12 @@ namespace Scada.Client
         /// <summary>
         /// Записать действие в журнал работы
         /// </summary>
-        protected void WriteAction(string actText, Log.ActTypes actType)
+        protected void WriteAction(string text, Log.ActTypes actType)
         {
             if (log != null)
-                log.WriteAction(actText, actType);
+                log.WriteAction(text, actType);
             else if (writeToLog != null)
-                writeToLog(actText);
+                writeToLog(text);
         }
 
         /// <summary>
