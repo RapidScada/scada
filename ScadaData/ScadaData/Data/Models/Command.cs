@@ -102,8 +102,7 @@ namespace Scada.Data.Models
         /// </summary>
         public string GetCmdDataStr()
         {
-            try { return CmdData == null ? "" : Encoding.Default.GetString(CmdData); }
-            catch { return ""; }
+            return CmdDataToStr(CmdData);
         }
 
         /// <summary>
@@ -181,6 +180,16 @@ namespace Scada.Data.Models
             }
 
             return sb.ToString();
+        }
+
+
+        /// <summary>
+        /// Преобразовать данные команды в строку 
+        /// </summary>
+        public static string CmdDataToStr(byte[] cmdData)
+        {
+            try { return cmdData == null ? "" : Encoding.Default.GetString(cmdData); }
+            catch { return ""; }
         }
 
         /// <summary>
