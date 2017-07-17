@@ -182,5 +182,13 @@ namespace Scada.Data.Models
 
             return sb.ToString();
         }
+
+        /// <summary>
+        /// Преобразовать строку в данные команды
+        /// </summary>
+        public static byte[] StrToCmdData(string s)
+        {
+            return Encoding.Default.GetBytes(s);
+        }
     }
 }
