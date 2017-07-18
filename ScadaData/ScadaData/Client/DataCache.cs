@@ -206,98 +206,9 @@ namespace Scada.Client
                     "Заполнение свойств входных каналов" :
                     "Fill input channels properties");
 
-                DataTable tblInCnl = BaseTables.InCnlTable;
-                DataView viewObj = BaseTables.ObjTable.DefaultView;
-                DataView viewKP = BaseTables.KPTable.DefaultView;
-                DataView viewParam = BaseTables.ParamTable.DefaultView;
-                DataView viewFormat = BaseTables.FormatTable.DefaultView;
-                DataView viewUnit = BaseTables.UnitTable.DefaultView;
-
-                // установка сортировки для последующего поиска строк
-                viewObj.Sort = "ObjNum";
-                viewKP.Sort = "KPNum";
-                viewParam.Sort = "ParamID";
-                viewFormat.Sort = "FormatID";
-                viewUnit.Sort = "UnitID";
-
-                int inCnlCnt = tblInCnl.Rows.Count; // количество входных каналов
-                InCnlProps[] newCnlProps = new InCnlProps[inCnlCnt];
-
-                for (int i = 0; i < inCnlCnt; i++)
-                {
-                    DataRow inCnlRow = tblInCnl.Rows[i];
-                    InCnlProps cnlProps = new InCnlProps();
-
-                    // определение свойств, не использующих внешних ключей
-                    cnlProps.CnlNum = (int)inCnlRow["CnlNum"];
-                    cnlProps.CnlName = (string)inCnlRow["Name"];
-                    cnlProps.CnlTypeID = (int)inCnlRow["CnlTypeID"];
-                    cnlProps.ObjNum = (int)inCnlRow["ObjNum"];
-                    cnlProps.KPNum = (int)inCnlRow["KPNum"];
-                    cnlProps.Signal = (int)inCnlRow["Signal"];
-                    cnlProps.FormulaUsed = (bool)inCnlRow["FormulaUsed"];
-                    cnlProps.Formula = (string)inCnlRow["Formula"];
-                    cnlProps.Averaging = (bool)inCnlRow["Averaging"];
-                    cnlProps.ParamID = (int)inCnlRow["ParamID"];
-                    cnlProps.FormatID = (int)inCnlRow["FormatID"];
-                    cnlProps.UnitID = (int)inCnlRow["UnitID"];
-                    cnlProps.CtrlCnlNum = (int)inCnlRow["CtrlCnlNum"];
-                    cnlProps.EvEnabled = (bool)inCnlRow["EvEnabled"];
-                    cnlProps.EvSound = (bool)inCnlRow["EvSound"];
-                    cnlProps.EvOnChange = (bool)inCnlRow["EvOnChange"];
-                    cnlProps.EvOnUndef = (bool)inCnlRow["EvOnUndef"];
-                    cnlProps.LimLowCrash = (double)inCnlRow["LimLowCrash"];
-                    cnlProps.LimLow = (double)inCnlRow["LimLow"];
-                    cnlProps.LimHigh = (double)inCnlRow["LimHigh"];
-                    cnlProps.LimHighCrash = (double)inCnlRow["LimHighCrash"];
-
-                    // определение наименования объекта
-                    int objRowInd = viewObj.Find(cnlProps.ObjNum);
-                    if (objRowInd >= 0)
-                        cnlProps.ObjName = (string)viewObj[objRowInd]["Name"];
-
-                    // определение наименования КП
-                    int kpRowInd = viewKP.Find(cnlProps.KPNum);
-                    if (kpRowInd >= 0)
-                        cnlProps.KPName = (string)viewKP[kpRowInd]["Name"];
-
-                    // определение наименования параметра и имени файла значка
-                    int paramRowInd = viewParam.Find(cnlProps.ParamID);
-                    if (paramRowInd >= 0)
-                    {
-                        DataRowView paramRowView = viewParam[paramRowInd];
-                        cnlProps.ParamName = (string)paramRowView["Name"];
-                        cnlProps.IconFileName = (string)paramRowView["IconFileName"];
-                    }
-
-                    // определение формата вывода
-                    int formatRowInd = viewFormat.Find(inCnlRow["FormatID"]);
-                    if (formatRowInd >= 0)
-                    {
-                        DataRowView formatRowView = viewFormat[formatRowInd];
-                        cnlProps.ShowNumber = (bool)formatRowView["ShowNumber"];
-                        cnlProps.DecDigits = (int)formatRowView["DecDigits"];
-                    }
-
-                    // определение размерностей
-                    int unitRowInd = viewUnit.Find(cnlProps.UnitID);
-                    if (unitRowInd >= 0)
-                    {
-                        DataRowView unitRowView = viewUnit[unitRowInd];
-                        cnlProps.UnitName = (string)unitRowView["Name"];
-                        cnlProps.UnitSign = (string)unitRowView["Sign"];
-                        string[] unitArr = cnlProps.UnitArr = 
-                            cnlProps.UnitSign.Split(FieldSeparator, StringSplitOptions.None);
-                        for (int j = 0; j < unitArr.Length; j++)
-                            unitArr[j] = unitArr[j].Trim();
-                        if (unitArr.Length == 1 && unitArr[0] == "")
-                            cnlProps.UnitArr = null;
-                    }
-
-                    newCnlProps[i] = cnlProps;
-                }
-
-                CnlProps = newCnlProps;
+                ConfDAO confDAO = new ConfDAO(BaseTables);
+                List<InCnlProps> cnlPropsList = confDAO.GetInCnlProps();
+                CnlProps = cnlPropsList.ToArray();
             }
             catch (Exception ex)
             {
@@ -318,65 +229,9 @@ namespace Scada.Client
                     "Заполнение свойств каналов управления" :
                     "Fill output channels properties");
 
-                DataTable tblCtrlCnl = BaseTables.CtrlCnlTable;
-                DataView viewObj = BaseTables.ObjTable.DefaultView;
-                DataView viewKP = BaseTables.KPTable.DefaultView;
-                DataView viewCmdVal = BaseTables.CmdValTable.DefaultView;
-
-                // установка сортировки для последующего поиска строк
-                viewObj.Sort = "ObjNum";
-                viewKP.Sort = "KPNum";
-                viewCmdVal.Sort = "CmdValID";
-
-                int ctrlCnlCnt = tblCtrlCnl.Rows.Count;
-                CtrlCnlProps[] newCtrlCnlProps = new CtrlCnlProps[ctrlCnlCnt];
-
-                for (int i = 0; i < ctrlCnlCnt; i++)
-                {
-                    DataRow ctrlCnlRow = tblCtrlCnl.Rows[i];
-                    CtrlCnlProps ctrlCnlProps = new CtrlCnlProps();
-
-                    // определение свойств, не использующих внешних ключей
-                    ctrlCnlProps.CtrlCnlNum = (int)ctrlCnlRow["CtrlCnlNum"];
-                    ctrlCnlProps.CtrlCnlName = (string)ctrlCnlRow["Name"];
-                    ctrlCnlProps.CmdTypeID = (int)ctrlCnlRow["CmdTypeID"];
-                    ctrlCnlProps.ObjNum = (int)ctrlCnlRow["ObjNum"];
-                    ctrlCnlProps.KPNum = (int)ctrlCnlRow["KPNum"];
-                    ctrlCnlProps.CmdNum = (int)ctrlCnlRow["CmdNum"];
-                    ctrlCnlProps.CmdValID = (int)ctrlCnlRow["CmdValID"];
-                    ctrlCnlProps.FormulaUsed = (bool)ctrlCnlRow["FormulaUsed"];
-                    ctrlCnlProps.Formula = (string)ctrlCnlRow["Formula"];
-                    ctrlCnlProps.EvEnabled = (bool)ctrlCnlRow["EvEnabled"];
-
-                    // определение наименования объекта
-                    int objRowInd = viewObj.Find(ctrlCnlProps.ObjNum);
-                    if (objRowInd >= 0)
-                        ctrlCnlProps.ObjName = (string)viewObj[objRowInd]["Name"];
-
-                    // определение наименования КП
-                    int kpRowInd = viewKP.Find(ctrlCnlProps.KPNum);
-                    if (kpRowInd >= 0)
-                        ctrlCnlProps.KPName = (string)viewKP[kpRowInd]["Name"];
-
-                    // определение значений команды
-                    int cmdValInd = viewCmdVal.Find(ctrlCnlProps.CmdValID);
-                    if (cmdValInd >= 0)
-                    {
-                        DataRowView cmdValRowView = viewCmdVal[cmdValInd];
-                        ctrlCnlProps.CmdValName = (string)cmdValRowView["Name"];
-                        ctrlCnlProps.CmdVal = (string)cmdValRowView["Val"];
-                        string[] cmdValArr = ctrlCnlProps.CmdValArr = 
-                            ctrlCnlProps.CmdVal.Split(FieldSeparator, StringSplitOptions.None);
-                        for (int j = 0; j < cmdValArr.Length; j++)
-                            cmdValArr[j] = cmdValArr[j].Trim();
-                        if (cmdValArr.Length == 1 && cmdValArr[0] == "")
-                            ctrlCnlProps.CmdValArr = null;
-                    }
-
-                    newCtrlCnlProps[i] = ctrlCnlProps;
-                }
-
-                CtrlCnlProps = newCtrlCnlProps;
+                ConfDAO confDAO = new ConfDAO(BaseTables);
+                List<CtrlCnlProps> ctrlCnlPropsList = confDAO.GetCtrlCnlProps();
+                CtrlCnlProps = ctrlCnlPropsList.ToArray();
             }
             catch (Exception ex)
             {
@@ -397,19 +252,8 @@ namespace Scada.Client
                     "Заполнение свойств статусов входных каналов" :
                     "Fill input channel statuses properties");
 
-                DataTable tblEvType = BaseTables.EvTypeTable;
-                int statusCnt = tblEvType.Rows.Count;
-                SortedList<int, CnlStatProps> newCnlStatProps = new SortedList<int, CnlStatProps>(statusCnt);
-
-                for (int i = 0; i < statusCnt; i++)
-                {
-                    DataRow row = tblEvType.Rows[i];
-                    CnlStatProps cnlStatProps = new CnlStatProps((int)row["CnlStatus"]) {
-                        Color = (string)row["Color"], Name = (string)row["Name"] };
-                    newCnlStatProps.Add(cnlStatProps.Status, cnlStatProps);
-                }
-
-                CnlStatProps = newCnlStatProps;
+                ConfDAO confDAO = new ConfDAO(BaseTables);
+                CnlStatProps = confDAO.GetCnlStatProps();
             }
             catch (Exception ex)
             {
