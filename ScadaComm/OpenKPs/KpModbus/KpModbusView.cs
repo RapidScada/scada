@@ -24,7 +24,7 @@
  */
 
 using Scada.Comm.Devices.KpModbus;
-using Scada.Data.Tables;
+using Scada.Data.Configuration;
 using Scada.UI;
 using System;
 using System.Collections.Generic;

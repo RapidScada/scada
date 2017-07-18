@@ -57,7 +57,7 @@
     <Compile Include="Data\Models\DispEvent.cs" />
     <Compile Include="Data\Models\UserProps.cs" />
     <Compile Include="Data\Tables\Adapter.cs" />
-    <Compile Include="Data\Tables\BaseTables.cs" />
+    <Compile Include="Data\Configuration\BaseTables.cs" />
     <Compile Include="Client\BaseView.cs" />
     <Compile Include="Client\DataCache.cs" />
     <Compile Include="Client\DataAccess.cs" />
@@ -68,10 +68,10 @@
     <Compile Include="Client\ServerComm.cs" />
     <Compile Include="Data\Models\EntityRights.cs" />
     <Compile Include="Data\Models\UiObjProps.cs" />
-    <Compile Include="Data\Tables\ConfDAO.cs" />
+    <Compile Include="Data\Configuration\ConfDAO.cs" />
     <Compile Include="FileListener.cs" />
     <Compile Include="Data\Tables\BaseAdapter.cs" />
-    <Compile Include="Data\Tables\BaseValues.cs" />
+    <Compile Include="Data\Configuration\BaseValues.cs" />
     <Compile Include="CommonPhrases.cs" />
     <Compile Include="Data\Tables\EventAdapter.cs" />
     <Compile Include="Data\Tables\EventTableLight.cs" />

@@ -35,6 +35,7 @@ using Utils;
 using Scada.Data.Models;
 using Scada.Data.Tables;
 using Scada.Server.Modules;
+using Scada.Data.Configuration;
 
 namespace Scada.Server.Svc
 {

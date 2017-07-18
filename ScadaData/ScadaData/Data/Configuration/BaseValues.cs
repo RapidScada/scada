@@ -27,7 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Scada.Data.Tables
+namespace Scada.Data.Configuration
 {
     /// <summary>
     /// The main values from the configuration database

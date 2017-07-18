@@ -26,7 +26,7 @@
 using System;
 using System.Data;
 
-namespace Scada.Data.Tables
+namespace Scada.Data.Configuration
 {
     /// <summary>
     /// The tables of the configuration database

@@ -29,6 +29,7 @@
 using Lextm.SharpSnmpLib;
 using Lextm.SharpSnmpLib.Messaging;
 using Scada.Comm.Devices.KpSnmp;
+using Scada.Data.Configuration;
 using Scada.Data.Models;
 using Scada.Data.Tables;
 using System;

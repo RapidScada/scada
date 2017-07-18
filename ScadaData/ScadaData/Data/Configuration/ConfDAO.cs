@@ -27,7 +27,7 @@ using Scada.Data.Models;
 using System;
 using System.Collections.Generic;
 
-namespace Scada.Data.Tables
+namespace Scada.Data.Configuration
 {
     /// <summary>
     /// Access to the configuration database

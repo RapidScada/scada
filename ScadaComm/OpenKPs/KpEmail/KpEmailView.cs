@@ -25,7 +25,7 @@
 
 using Scada.Comm.Devices.AB;
 using Scada.Comm.Devices.KpEmail;
-using Scada.Data.Tables;
+using Scada.Data.Configuration;
 
 namespace Scada.Comm.Devices
 {

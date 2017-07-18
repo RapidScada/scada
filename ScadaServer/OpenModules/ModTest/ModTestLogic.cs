@@ -26,6 +26,7 @@
  * Server module for testing.
  */
 
+using Scada.Data.Configuration;
 using Scada.Data.Models;
 using Scada.Data.Tables;
 using System;

@@ -25,6 +25,7 @@
 
 #undef DETAILED_LOG // выводить в журнал подробную информацию об обмене данными со SCADA-Сервером
 
+using Scada.Data.Configuration;
 using Scada.Data.Models;
 using Scada.Data.Tables;
 using System;

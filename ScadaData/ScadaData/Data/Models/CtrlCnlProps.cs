@@ -23,6 +23,7 @@
  * Modified : 2016
  */
 
+using Scada.Data.Configuration;
 using Scada.Data.Tables;
 using System;
 using System.Collections;

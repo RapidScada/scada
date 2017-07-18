@@ -24,7 +24,7 @@
  */
 
 using Scada.Comm.Devices.AB;
-using Scada.Data.Tables;
+using Scada.Data.Configuration;
 using System.Collections.Generic;
 
 namespace Scada.Comm.Devices

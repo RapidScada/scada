@@ -24,7 +24,7 @@
  */
 
 using Scada.Comm.Devices.KpSnmp;
-using Scada.Data.Tables;
+using Scada.Data.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
