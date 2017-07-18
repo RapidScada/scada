@@ -23,6 +23,10 @@
  * Modified : 2017
  */
 
+using Scada.Data.Configuration;
+using Scada.Data.Models;
+using Scada.Data.Tables;
+using Scada.Server.Modules;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
@@ -32,10 +36,6 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using Utils;
-using Scada.Data.Models;
-using Scada.Data.Tables;
-using Scada.Server.Modules;
-using Scada.Data.Configuration;
 
 namespace Scada.Server.Svc
 {
