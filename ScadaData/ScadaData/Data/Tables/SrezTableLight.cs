@@ -47,8 +47,6 @@ namespace Scada.Data.Tables
             /// <summary>
             /// Конструктор
             /// </summary>
-            /// <param name="val">Значение</param>
-            /// <param name="stat">Статус</param>
             public CnlData(double val, int stat)
                 : this()
             {
@@ -80,8 +78,6 @@ namespace Scada.Data.Tables
             /// <summary>
             /// Конструктор
             /// </summary>
-            /// <param name="dateTime">Временная метка среза</param>
-            /// <param name="cnlCnt">Количество входных каналов</param>
             public Srez(DateTime dateTime, int cnlCnt)
             {
                 if (cnlCnt < 0)
@@ -92,8 +88,6 @@ namespace Scada.Data.Tables
             /// <summary>
             /// Конструктор
             /// </summary>
-            /// <param name="dateTime">Временная метка среза</param>
-            /// <param name="sourceSrez">Срез, который является источником данных</param>
             public Srez(DateTime dateTime, Srez sourceSrez)
             {
                 if (sourceSrez == null)
@@ -106,9 +100,19 @@ namespace Scada.Data.Tables
             /// <summary>
             /// Конструктор
             /// </summary>
-            /// <param name="dateTime">Временная метка среза</param>
-            /// <param name="cnlNums">Номера каналов среза, упорядоченные по возростанию</param>
-            /// <param name="sourceSrez">Срез, который является источником данных</param>
+            /// <remarks>Номера каналов должны быть упорядочены по возростанию</remarks>
+            public Srez(DateTime dateTime, int[] cnlNums)
+            {
+                if (cnlNums == null)
+                    throw new ArgumentNullException("cnlNums");
+
+                InitData(dateTime, cnlNums.Length);
+                cnlNums.CopyTo(CnlNums, 0);
+            }
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            /// <remarks>Номера каналов должны быть упорядочены по возростанию</remarks>
             public Srez(DateTime dateTime, int[] cnlNums, Srez sourceSrez)
             {
                 if (cnlNums == null)
@@ -119,7 +123,7 @@ namespace Scada.Data.Tables
                 int cnlCnt = cnlNums.Length;
                 InitData(dateTime, cnlCnt);
 
-                for (int i = 0, cnt = cnlCnt; i < cnt; i++)
+                for (int i = 0; i < cnlCnt; i++)
                 {
                     int cnlNum = cnlNums[i];
                     CnlData cnlData;

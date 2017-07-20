@@ -448,11 +448,13 @@ namespace Scada.Data.Tables
 
                 // установка позиции записи кратной размеру данных события
                 stream.Seek(0, SeekOrigin.End);
-                long offset = stream.Position / EventDataSize * EventDataSize;
+                long evInd = stream.Position / EventDataSize;
+                long offset = evInd * EventDataSize;
                 stream.Seek(offset, SeekOrigin.Begin);
 
                 // запись события
                 writer.Write(CreateEventBuffer(ev));
+                ev.Number = (int)evInd + 1;
             }
             finally
             {
