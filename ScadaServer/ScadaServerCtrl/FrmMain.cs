@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2016
+ * Modified : 2017
  */
 
 using Scada.Client;
@@ -682,9 +682,8 @@ namespace Scada.Server.Ctrl
 
         private void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
-            string errMsg = CommonPhrases.UnhandledException + ":\r\n" + e.Exception.Message;
-            errLog.WriteAction(errMsg, Log.ActTypes.Exception);
-            ScadaUiUtils.ShowError(errMsg);
+            errLog.WriteException(e.Exception, CommonPhrases.UnhandledException);
+            ScadaUiUtils.ShowError(CommonPhrases.UnhandledException + ":\r\n" + e.Exception.Message);
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
