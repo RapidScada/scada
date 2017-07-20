@@ -188,7 +188,7 @@ namespace Scada.Data.Models
         /// </summary>
         public static string CmdDataToStr(byte[] cmdData)
         {
-            try { return cmdData == null ? "" : Encoding.Default.GetString(cmdData); }
+            try { return cmdData == null ? "" : Encoding.UTF8.GetString(cmdData); }
             catch { return ""; }
         }
 
@@ -197,7 +197,7 @@ namespace Scada.Data.Models
         /// </summary>
         public static byte[] StrToCmdData(string s)
         {
-            return Encoding.Default.GetBytes(s);
+            return Encoding.UTF8.GetBytes(s);
         }
     }
 }
