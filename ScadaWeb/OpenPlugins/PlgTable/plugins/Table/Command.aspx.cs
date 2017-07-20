@@ -24,12 +24,11 @@
  */
 
 using Scada.Client;
+using Scada.Data.Configuration;
 using Scada.Data.Models;
-using Scada.Data.Tables;
 using Scada.UI;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Web;
 using System.Web.UI.WebControls;
 
@@ -85,7 +84,7 @@ namespace Scada.Web.Plugins.Table
             }
             else if (rbStr.Checked)
             {
-                cmdData = Encoding.Default.GetBytes(txtCmdData.Text);
+                cmdData = Command.StrToCmdData(txtCmdData.Text);
                 return true;
             }
             else
