@@ -35,6 +35,12 @@ namespace Scada.Server.Modules
     public interface IServerData
     {
         /// <summary>
+        /// Получить текущий срез, содержащий данные заданных каналов
+        /// </summary>
+        /// <remarks>Номера каналов должны быть упорядочены по возрастанию</remarks>
+        SrezTableLight.Srez GetCurSnapshot(int[] cnlNums);
+
+        /// <summary>
         /// Получить срез, содержащий данные заданных каналов
         /// </summary>
         /// <remarks>Номера каналов должны быть упорядочены по возрастанию</remarks>

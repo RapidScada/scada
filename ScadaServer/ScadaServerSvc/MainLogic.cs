@@ -778,7 +778,7 @@ namespace Scada.Server.Svc
 
                 // цикл работы сервера
                 nowDT = DateTime.MaxValue;
-                DateTime today = nowDT.Date;
+                DateTime today;
                 DateTime prevDT;
                 DateTime writeCurSrezDT = DateTime.MinValue;
                 DateTime writeMinSrezDT = DateTime.MinValue;
@@ -787,6 +787,7 @@ namespace Scada.Server.Svc
                 DateTime calcHrDT = DateTime.MinValue;
                 DateTime clearCacheDT = nowDT;
 
+                bool calcDR = drCnls.Count > 0;
                 bool writeCur = Settings.WriteCur || Settings.WriteCurCopy;
                 bool writeCurOnMod = Settings.WriteCurPer <= 0;
                 bool writeMin = (Settings.WriteMin || Settings.WriteMinCopy) && Settings.WriteMinPer > 0;
@@ -829,8 +830,11 @@ namespace Scada.Server.Svc
                         SetUnreliable();
 
                         // вычисление дорасчётных каналов и выполнение действий модулей
-                        CalcDRCnls(drCnls, curSrez, true);
-                        RaiseOnCurDataCalculated(drCnlNums, curSrez);
+                        if (calcDR)
+                        {
+                            CalcDRCnls(drCnls, curSrez, true);
+                            RaiseOnCurDataCalculated(drCnlNums, curSrez);
+                        }
 
                         // вычисление минутных каналов и выполнение действий модулей
                         if (calcMinDT <= nowDT)
@@ -2005,53 +2009,62 @@ namespace Scada.Server.Svc
         {
             try
             {
-                SrezTableLight destSnapshotTable;
+                SrezTableLight destSnapshotTable = null;
                 int cnlCnt = cnlNums == null ? 0 : cnlNums.Length;
 
                 if (serverIsReady && cnlCnt > 0)
                 {
-                    // получение кэша таблицы срезов
-                    SrezTableCache srezTableCache = GetSrezTableCache(date.Date, snapshotType);
+                    destSnapshotTable = new SrezTableLight();
 
-                    lock (srezTableCache)
+                    if (snapshotType == SnapshotTypes.Cur)
                     {
-                        // заполнение таблицы срезов в кэше
-                        srezTableCache.FillSrezTable();
-
-                        // создание новой таблицы срезов и копирование в неё данных заданных каналов
-                        SrezTable srcSnapshotTable = srezTableCache.SrezTable;
-                        SrezTable.SrezDescr prevSnapshotDescr = null;
-                        int[] cnlNumIndexes = new int[cnlCnt];
-                        destSnapshotTable = new SrezTableLight();
-
-                        foreach (SrezTable.Srez srcSnapshot in srcSnapshotTable.SrezList.Values)
+                        lock (curSrez)
                         {
-                            // определение индексов каналов
-                            if (!srcSnapshot.SrezDescr.Equals(prevSnapshotDescr))
-                            {
-                                for (int i = 0; i < cnlCnt; i++)
-                                    cnlNumIndexes[i] = Array.BinarySearch<int>(srcSnapshot.CnlNums, cnlNums[i]);
-                            }
-
-                            // создание и заполнение среза, содержащего заданные каналы
-                            SrezTableLight.Srez destSnapshot = new SrezTableLight.Srez(srcSnapshot.DateTime, cnlCnt);
-
-                            for (int i = 0; i < cnlCnt; i++)
-                            {
-                                destSnapshot.CnlNums[i] = cnlNums[i];
-                                int cnlNumInd = cnlNumIndexes[i];
-                                destSnapshot.CnlData[i] = cnlNumInd < 0 ?
-                                    SrezTableLight.CnlData.Empty : srcSnapshot.CnlData[cnlNumInd];
-                            }
-
+                            SrezTableLight.Srez destSnapshot = new SrezTableLight.Srez(DateTime.MinValue, cnlNums, curSrez);
                             destSnapshotTable.SrezList.Add(destSnapshot.DateTime, destSnapshot);
-                            prevSnapshotDescr = srcSnapshot.SrezDescr;
                         }
                     }
-                }
-                else
-                {
-                    destSnapshotTable = null;
+                    else
+                    {
+                        // получение кэша таблицы срезов
+                        SrezTableCache srezTableCache = GetSrezTableCache(date.Date, snapshotType);
+
+                        lock (srezTableCache)
+                        {
+                            // заполнение таблицы срезов в кэше
+                            srezTableCache.FillSrezTable();
+
+                            // создание новой таблицы срезов и копирование в неё данных заданных каналов
+                            SrezTable srcSnapshotTable = srezTableCache.SrezTable;
+                            SrezTable.SrezDescr prevSnapshotDescr = null;
+                            int[] cnlNumIndexes = new int[cnlCnt];
+
+                            foreach (SrezTable.Srez srcSnapshot in srcSnapshotTable.SrezList.Values)
+                            {
+                                // определение индексов каналов
+                                if (!srcSnapshot.SrezDescr.Equals(prevSnapshotDescr))
+                                {
+                                    for (int i = 0; i < cnlCnt; i++)
+                                        cnlNumIndexes[i] = Array.BinarySearch(srcSnapshot.CnlNums, cnlNums[i]);
+                                }
+
+                                // создание и заполнение среза, содержащего заданные каналы
+                                SrezTableLight.Srez destSnapshot = 
+                                    new SrezTableLight.Srez(srcSnapshot.DateTime, cnlCnt);
+
+                                for (int i = 0; i < cnlCnt; i++)
+                                {
+                                    destSnapshot.CnlNums[i] = cnlNums[i];
+                                    int cnlNumInd = cnlNumIndexes[i];
+                                    destSnapshot.CnlData[i] = cnlNumInd < 0 ?
+                                        SrezTableLight.CnlData.Empty : srcSnapshot.CnlData[cnlNumInd];
+                                }
+
+                                destSnapshotTable.SrezList.Add(destSnapshot.DateTime, destSnapshot);
+                                prevSnapshotDescr = srcSnapshot.SrezDescr;
+                            }
+                        }
+                    }
                 }
 
                 return destSnapshotTable;
@@ -2066,6 +2079,15 @@ namespace Scada.Server.Svc
         }
 
         /// <summary>
+        /// Получить текущий срез, содержащий данные заданных каналов
+        /// </summary>
+        /// <remarks>Номера каналов должны быть упорядочены по возрастанию</remarks>
+        public SrezTableLight.Srez GetCurSnapshot(int[] cnlNums)
+        {
+            return GetSnapshot(DateTime.MinValue, SnapshotTypes.Cur, cnlNums);
+        }
+
+        /// <summary>
         /// Получить срез, содержащий данные заданных каналов
         /// </summary>
         /// <remarks>Номера каналов должны быть упорядочены по возрастанию</remarks>
@@ -2077,29 +2099,30 @@ namespace Scada.Server.Svc
 
                 if (serverIsReady && cnlCnt > 0)
                 {
-                    // получение кэша таблицы срезов
-                    SrezTableCache srezTableCache = GetSrezTableCache(dateTime.Date, snapshotType);
-
-                    // создание среза с заданными каналами
-                    SrezTableLight.Srez destSnapshot = new SrezTableLight.Srez(dateTime, cnlCnt);
-
-                    lock (srezTableCache)
+                    if (snapshotType == SnapshotTypes.Cur)
                     {
-                        // заполнение таблицы срезов в кэше
-                        srezTableCache.FillSrezTable();
-                        SrezTableLight.Srez srcSnapshot = srezTableCache.SrezTable.GetSrez(dateTime);
-
-                        // копирование номеров каналов и данных в новый срез
-                        for (int i = 0; i < cnlCnt; i++)
+                        lock (curSrez)
                         {
-                            int cnlNum = cnlNums[i];
-                            destSnapshot.CnlNums[i] = cnlNum;
-                            destSnapshot.CnlData[i] = srcSnapshot == null ?
-                                SrezTableLight.CnlData.Empty : srcSnapshot.GetCnlData(cnlNum);
+                            return new SrezTableLight.Srez(DateTime.MinValue, cnlNums, curSrez);
                         }
                     }
+                    else
+                    {
+                        // получение кэша таблицы срезов
+                        SrezTableCache srezTableCache = GetSrezTableCache(dateTime.Date, snapshotType);
 
-                    return destSnapshot;
+                        lock (srezTableCache)
+                        {
+                            // заполнение таблицы срезов в кэше
+                            srezTableCache.FillSrezTable();
+                            SrezTableLight.Srez srcSnapshot = srezTableCache.SrezTable.GetSrez(dateTime);
+
+                            // создание среза с заданными каналами
+                            return srcSnapshot == null ?
+                                new SrezTableLight.Srez(dateTime, cnlNums) :
+                                new SrezTableLight.Srez(dateTime, cnlNums, srcSnapshot);
+                        }
+                    }
                 }
                 else
                 {

@@ -24,6 +24,7 @@
  */
 
 using Scada.Client;
+using Scada.Data.Models;
 using Scada.Data.Tables;
 using Scada.Server.Modules;
 using Scada.Svc;
@@ -1407,7 +1408,7 @@ namespace Scada.Server.Ctrl
                 }
                 else if (cmdDataStr.Length > 0)
                 {
-                    cmdData = Encoding.Default.GetBytes(cmdDataStr);
+                    cmdData = Command.StrToCmdData(cmdDataStr);
                 }
                 else
                 {
