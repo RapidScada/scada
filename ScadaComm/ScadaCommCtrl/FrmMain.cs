@@ -2686,7 +2686,7 @@ namespace Scada.Comm.Ctrl
                     }
                     else if (cmdDataStr.Length > 0)
                     {
-                        cmd.CmdData = Encoding.Default.GetBytes(cmdDataStr);
+                        cmd.CmdData = Command.StrToCmdData(cmdDataStr);
                         cmdOK = true;
                     }
                     else
