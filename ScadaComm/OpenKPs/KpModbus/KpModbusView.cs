@@ -39,6 +39,12 @@ namespace Scada.Comm.Devices
     public class KpModbusView : KPView
     {
         /// <summary>
+        /// Версия библиотеки КП
+        /// </summary>
+        internal const string KpVersion = "5.0.0.1";
+
+
+        /// <summary>
         /// Конструктор для общей настройки библиотеки КП
         /// </summary>
         public KpModbusView()
@@ -79,6 +85,17 @@ namespace Scada.Comm.Devices
                     "template file name.\n\n" +
                     "Commands:\n" +
                     "defined by template (standard or binary).";
+            }
+        }
+
+        /// <summary>
+        /// Получить версию библиотеки КП
+        /// </summary>
+        public override string Version
+        {
+            get
+            {
+                return KpVersion;
             }
         }
 

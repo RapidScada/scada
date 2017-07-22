@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2009
- * Modified : 2016
+ * Modified : 2017
  */
 
 using Scada.Comm.Devices.AB;
@@ -35,6 +35,12 @@ namespace Scada.Comm.Devices
     /// </summary>
     public sealed class KpSmsView : KPView
     {
+        /// <summary>
+        /// Версия библиотеки КП
+        /// </summary>
+        internal const string KpVersion = "5.0.0.1";
+
+
         /// <summary>
         /// Конструктор для общей настройки библиотеки КП
         /// </summary>
@@ -78,6 +84,17 @@ namespace Scada.Comm.Devices
                     "group_name;message\n" +
                     "contact_name;message\n" +
                     "email;message";
+            }
+        }
+
+        /// <summary>
+        /// Получить версию библиотеки КП
+        /// </summary>
+        public override string Version
+        {
+            get
+            {
+                return KpVersion;
             }
         }
 
