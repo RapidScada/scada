@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\FormulaTester.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,6 +29,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\FormulaTester.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ScadaData">
@@ -41,7 +43,8 @@
     <Compile Include="..\..\ScadaServerSvc\CalcEngine.cs">
       <Link>CalcEngine.cs</Link>
     </Compile>
-    <Compile Include="CustomFormulas.Example.cs" />
+    <Compile Include="CustomFormulas.cs" />
+    <Compile Include="FormulaTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
