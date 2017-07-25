@@ -32,5 +32,35 @@
         <li>Save the module configuration.</li>
         <li>Restart the Server service by clicking <img src="../../common-images/restart.png" />.</li>
     </ol>
+
+    <h2>Variables of Telecontrol Commands</h2>
+    <p>String data of telecontrol command, which are send on trigger firing, can contain variables. Variables are written in braces.</p>
+    <p>The following variables are supported:</p>
+    <table class="sd-article-table">
+        <tr>
+            <th>Variable</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>{n}</td>
+            <td>The current value of the channel n with unit</td>
+        </tr>
+        <tr>
+            <td>{Now}</td>
+            <td>The current date and time on the server</td>
+        </tr>
+        <tr>
+            <td>{CnlVal}, {CnlStat}</td>
+            <td>Value and status of the input channel those caused the trigger firing</td>
+        </tr>
+        <tr>
+            <td>{EvNum}, {EvTime}, {EvObj}, {EvDev}, {EvCnl}, {EvText}</td>
+            <td>Parameters of the event that caused the trigger firing: number, date and time, object, device, channel and description</td>
+        </tr>
+        <tr>
+            <td>{CmdVal}, {CmdDataStr}, {CmdDataHex}</td>
+            <td>Parameters of the command that caused the trigger firing: value, data as a string, data in hexadecimal representation</td>
+        </tr>
+    </table>
 </body>
 </html>
