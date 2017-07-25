@@ -57,7 +57,8 @@ namespace Scada.Scheme.Model.PropertyGrid
 
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
-            return UITypeEditorEditStyle.Modal;
+            return context != null && context.Instance is BaseComponent ?
+                UITypeEditorEditStyle.Modal : UITypeEditorEditStyle.None;
         }
     }
 }
