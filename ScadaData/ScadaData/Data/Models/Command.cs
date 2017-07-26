@@ -197,7 +197,7 @@ namespace Scada.Data.Models
         /// </summary>
         public static byte[] StrToCmdData(string s)
         {
-            return Encoding.UTF8.GetBytes(s);
+            return s == null ? new byte[0] : Encoding.UTF8.GetBytes(s);
         }
     }
 }
