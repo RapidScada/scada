@@ -2143,82 +2143,85 @@ namespace Scada.Server.Svc
         /// </summary>
         public bool ProcCurData(SrezTableLight.Srez receivedSrez)
         {
-            lock (curSrez) lock (calculator)
+            try
             {
-                try
+                if (serverIsReady)
                 {
-                    if (serverIsReady)
+                    int cnlCnt = receivedSrez == null ? 0 : receivedSrez.CnlNums.Length;
+
+                    if (cnlCnt > 0)
                     {
-                        procSrez = curSrez;
-                        int cnlCnt = receivedSrez == null ? 0 : receivedSrez.CnlNums.Length;
-
-                        for (int i = 0; i < cnlCnt; i++)
+                        lock (curSrez) lock (calculator)
                         {
-                            int cnlNum = receivedSrez.CnlNums[i];
-                            int cnlInd = curSrez.GetCnlIndex(cnlNum);
-                            InCnl inCnl;
+                            procSrez = curSrez;
 
-                            if (inCnls.TryGetValue(cnlNum, out inCnl) && cnlInd >= 0) // входной канал существует
+                            for (int i = 0; i < cnlCnt; i++)
                             {
-                                if (inCnl.CnlTypeID == BaseValues.CnlTypes.TS ||
-                                    inCnl.CnlTypeID == BaseValues.CnlTypes.TI)
-                                {
-                                    // вычисление новых данных входного канала
-                                    SrezTableLight.CnlData oldCnlData = curSrez.CnlData[cnlInd];
-                                    SrezTableLight.CnlData newCnlData = receivedSrez.CnlData[i];
-                                    CalcCnlData(inCnl, oldCnlData, ref newCnlData);
+                                int cnlNum = receivedSrez.CnlNums[i];
+                                int cnlInd = curSrez.GetCnlIndex(cnlNum);
+                                InCnl inCnl;
 
-                                    // расчёт данных для усреднения
-                                    if (inCnl.Averaging && newCnlData.Stat > BaseValues.CnlStatuses.Undefined &&
-                                        newCnlData.Stat != BaseValues.CnlStatuses.FormulaError &&
-                                        newCnlData.Stat != BaseValues.CnlStatuses.Unreliable)
+                                if (inCnls.TryGetValue(cnlNum, out inCnl) && cnlInd >= 0) // входной канал существует
+                                {
+                                    if (inCnl.CnlTypeID == BaseValues.CnlTypes.TS ||
+                                        inCnl.CnlTypeID == BaseValues.CnlTypes.TI)
                                     {
-                                        minAvgData[cnlInd].Sum += newCnlData.Val;
-                                        minAvgData[cnlInd].Cnt++;
-                                        hrAvgData[cnlInd].Sum += newCnlData.Val;
-                                        hrAvgData[cnlInd].Cnt++;
+                                        // вычисление новых данных входного канала
+                                        SrezTableLight.CnlData oldCnlData = curSrez.CnlData[cnlInd];
+                                        SrezTableLight.CnlData newCnlData = receivedSrez.CnlData[i];
+                                        CalcCnlData(inCnl, oldCnlData, ref newCnlData);
+
+                                        // расчёт данных для усреднения
+                                        if (inCnl.Averaging && newCnlData.Stat > BaseValues.CnlStatuses.Undefined &&
+                                            newCnlData.Stat != BaseValues.CnlStatuses.FormulaError &&
+                                            newCnlData.Stat != BaseValues.CnlStatuses.Unreliable)
+                                        {
+                                            minAvgData[cnlInd].Sum += newCnlData.Val;
+                                            minAvgData[cnlInd].Cnt++;
+                                            hrAvgData[cnlInd].Sum += newCnlData.Val;
+                                            hrAvgData[cnlInd].Cnt++;
+                                        }
+
+                                        // запись новых данных в текущий срез
+                                        curSrez.CnlData[cnlInd] = newCnlData;
+
+                                        // генерация события
+                                        GenEvent(inCnl, oldCnlData, newCnlData);
+
+                                        // обновление информации об активности канала
+                                        activeDTs[cnlInd] = DateTime.Now;
                                     }
-
-                                    // запись новых данных в текущий срез
-                                    curSrez.CnlData[cnlInd] = newCnlData;
-
-                                    // генерация события
-                                    GenEvent(inCnl, oldCnlData, newCnlData);
-
-                                    // обновление информации об активности канала
-                                    activeDTs[cnlInd] = DateTime.Now;
-                                }
-                                else
-                                {
-                                    // запись новых данных в текущий срез без вычислений для дорасчётных каналов
-                                    curSrez.CnlData[cnlInd] = receivedSrez.CnlData[i];
+                                    else
+                                    {
+                                        // запись новых данных в текущий срез без вычислений для дорасчётных каналов
+                                        curSrez.CnlData[cnlInd] = receivedSrez.CnlData[i];
+                                    }
                                 }
                             }
                         }
 
                         // выполнение действий модулей
-                        if (cnlCnt > 0)
-                            RaiseOnCurDataProcessed(receivedSrez.CnlNums, curSrez);
+                        RaiseOnCurDataProcessed(receivedSrez.CnlNums, curSrez);
+                    }
 
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    return true;
                 }
-                catch (Exception ex)
+                else
                 {
-                    AppLog.WriteException(ex, Localization.UseRussian ?
-                        "Ошибка при обработке новых текущих данных" :
-                        "Error processing the new current data");
                     return false;
                 }
-                finally
-                {
-                    procSrez = null;
-                    curSrezMod = true;
-                }
+            }
+            catch (Exception ex)
+            {
+                AppLog.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при обработке новых текущих данных" :
+                    "Error processing new current data");
+                return false;
+            }
+            finally
+            {
+                procSrez = null;
+                curSrezMod = true;
             }
         }
 
@@ -2295,7 +2298,7 @@ namespace Scada.Server.Svc
             {
                 AppLog.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при обработке новых архивных данных" : 
-                    "Error processing the new archive data");
+                    "Error processing new archive data");
                 return false;
             }
         }
