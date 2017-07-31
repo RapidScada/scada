@@ -824,36 +824,50 @@ namespace Scada.Server.Svc
                         ClearArchive(Settings.ArcCopyDir + "Events", "e*.dat", today.AddDays(-Settings.StoreEvPer));
                     }
 
+                    bool calcMinDR = calcMinDT <= nowDT; // необходимо вычислить минутные каналы
+                    bool calcHrDR = calcHrDT <= nowDT;   // необходимо вычислить часовые каналы
+
                     lock (curSrez)
                     {
                         // установка недостоверности неактивных каналов
                         SetUnreliable();
 
-                        // вычисление дорасчётных каналов и выполнение действий модулей
+                        // вычисление дорасчётных каналов
                         if (calcDR)
                         {
                             CalcDRCnls(drCnls, curSrez, true);
-                            RaiseOnCurDataCalculated(drCnlNums, curSrez);
                         }
 
-                        // вычисление минутных каналов и выполнение действий модулей
-                        if (calcMinDT <= nowDT)
+                        // вычисление минутных каналов
+                        if (calcMinDR)
                         {
                             CalcDRCnls(drmCnls, curSrez, true);
-                            RaiseOnCurDataCalculated(drmCnlNums, curSrez);
                             calcMinDT = CalcNextTime(nowDT, 60);
                             curSrezMod = true;
                         }
 
-                        // вычисление часовых каналов и выполнение действий модулей
-                        if (calcHrDT <= nowDT)
+                        // вычисление часовых каналов
+                        if (calcHrDR)
                         {
                             CalcDRCnls(drhCnls, curSrez, true);
-                            RaiseOnCurDataCalculated(drhCnlNums, curSrez);
                             calcHrDT = CalcNextTime(nowDT, 3600);
                             curSrezMod = true;
                         }
+                    }
 
+                    // выполнение действий модулей без блокировки текущего среза
+                    if (calcDR)
+                        RaiseOnCurDataCalculated(drCnlNums, curSrez);
+
+                    if (calcMinDR)
+                        RaiseOnCurDataCalculated(drmCnlNums, curSrez);
+
+                    if (calcHrDR)
+                        RaiseOnCurDataCalculated(drhCnlNums, curSrez);
+
+                    // запись срезов
+                    lock (curSrez)
+                    {
                         // запись текущего среза
                         if ((writeCurSrezDT <= nowDT || writeCurOnMod && curSrezMod) && writeCur)
                         {
