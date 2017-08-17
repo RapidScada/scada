@@ -24,7 +24,7 @@
  */
 
 using Scada.Comm.Devices.KpModbus;
-using Scada.Data.Tables;
+using Scada.Data.Configuration;
 using Scada.UI;
 using System;
 using System.Collections.Generic;
@@ -38,6 +38,12 @@ namespace Scada.Comm.Devices
     /// </summary>
     public class KpModbusView : KPView
     {
+        /// <summary>
+        /// Версия библиотеки КП
+        /// </summary>
+        internal const string KpVersion = "5.0.0.1";
+
+
         /// <summary>
         /// Конструктор для общей настройки библиотеки КП
         /// </summary>
@@ -79,6 +85,17 @@ namespace Scada.Comm.Devices
                     "template file name.\n\n" +
                     "Commands:\n" +
                     "defined by template (standard or binary).";
+            }
+        }
+
+        /// <summary>
+        /// Получить версию библиотеки КП
+        /// </summary>
+        public override string Version
+        {
+            get
+            {
+                return KpVersion;
             }
         }
 

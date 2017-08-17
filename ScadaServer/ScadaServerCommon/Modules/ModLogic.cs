@@ -45,17 +45,6 @@ namespace Scada.Server.Modules
 
 
         /// <summary>
-        /// Делегат записи в журнал приложения
-        /// </summary>
-        public delegate void WriteToLogDelegate(string actText, Log.ActTypes actType);
-
-        /// <summary>
-        /// Делегат передачи команды ТУ
-        /// </summary>
-        public delegate void PassCommandDelegate(Command cmd);
-
-        
-        /// <summary>
         /// Конструктор
         /// </summary>
         public ModLogic()
@@ -64,7 +53,7 @@ namespace Scada.Server.Modules
             Settings = null;
             WriteToLog = null;
             ServerData = null;
-            PassCommand = null;
+            ServerCommands = null;
         }
 
 
@@ -98,7 +87,7 @@ namespace Scada.Server.Modules
         /// <summary>
         /// Получить или установить метод записи в журнал приложения
         /// </summary>
-        public WriteToLogDelegate WriteToLog { get; set; }
+        public Log.WriteActionDelegate WriteToLog { get; set; }
 
         /// <summary>
         /// Получить или установить объект для доступа к данным сервера
@@ -106,9 +95,9 @@ namespace Scada.Server.Modules
         public IServerData ServerData { get; set; }
 
         /// <summary>
-        /// Получить или установить метод передачи команды ТУ
+        /// Получить или установить объект для отправки команд
         /// </summary>
-        public PassCommandDelegate PassCommand { get; set; }
+        public IServerCommands ServerCommands { get; set; }
 
 
         /// <summary>

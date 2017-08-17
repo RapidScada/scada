@@ -23,6 +23,7 @@
  * Modified : 2017
  */
 
+using Scada.Data.Configuration;
 using Scada.Data.Models;
 using Scada.Data.Tables;
 using System;
@@ -218,6 +219,36 @@ namespace Scada.Client
                     textIsNumber = false;
                 }
             }
+        }
+
+        /// <summary>
+        /// Форматировать значение команды
+        /// </summary>
+        public string FormatCmdVal(double cmdVal, CtrlCnlProps ctrlCnlProps)
+        {
+            if (ctrlCnlProps == null || ctrlCnlProps.CmdValID <= 0)
+            {
+                nfi.NumberDecimalDigits = DefDecDig;
+                nfi.NumberDecimalSeparator = defDecSep;
+                nfi.NumberGroupSeparator = defGrSep;
+                return cmdVal.ToString("N", nfi);
+            }
+            else
+            {
+                int cmdValArrLen = ctrlCnlProps.CmdValArr == null ? 0 : ctrlCnlProps.CmdValArr.Length;
+
+                if (cmdValArrLen > 0)
+                {
+                    int cmdInd = (int)cmdVal;
+                    if (cmdInd < 0)
+                        cmdInd = 0;
+                    else if (cmdInd >= cmdValArrLen)
+                        cmdInd = cmdValArrLen - 1;
+                    return ctrlCnlProps.CmdValArr[cmdInd];
+                }
+            }
+
+            return NoVal;
         }
 
         /// <summary>

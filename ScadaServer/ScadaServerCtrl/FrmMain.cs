@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,11 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2016
+ * Modified : 2017
  */
 
 using Scada.Client;
+using Scada.Data.Models;
 using Scada.Data.Tables;
 using Scada.Server.Modules;
 using Scada.Svc;
@@ -201,7 +202,7 @@ namespace Scada.Server.Ctrl
             get
             {
                 if (serverComm == null)
-                    serverComm = new ServerComm(commSettings);
+                    serverComm = new ServerComm(commSettings, new LogStub());
                 return serverComm;
             }
         }
@@ -228,27 +229,21 @@ namespace Scada.Server.Ctrl
         {
             string errMsg;
 
-            if (Localization.LoadingRequired(appDirs.LangDir, "ScadaData"))
-            {
-                if (Localization.LoadDictionaries(appDirs.LangDir, "ScadaData", out errMsg))
-                    CommonPhrases.Init();
-                else
-                    sbError.AppendLine(errMsg);
-            }
+            if (Localization.LoadDictionaries(appDirs.LangDir, "ScadaData", out errMsg))
+                CommonPhrases.Init();
+            else
+                sbError.AppendLine(errMsg);
 
-            if (Localization.LoadingRequired(appDirs.LangDir, "ScadaServer"))
+            if (Localization.LoadDictionaries(appDirs.LangDir, "ScadaServer", out errMsg))
             {
-                if (Localization.LoadDictionaries(appDirs.LangDir, "ScadaServer", out errMsg))
-                {
-                    ModPhrases.InitFromDictionaries();
-                    Translator.TranslateForm(this, "Scada.Server.Ctrl.FrmMain", toolTip, cmsNotify);
-                    AppPhrases.Init();
-                    TranslateTree();
-                }
-                else
-                {
-                    sbError.AppendLine(errMsg);
-                }
+                ModPhrases.InitFromDictionaries();
+                Translator.TranslateForm(this, "Scada.Server.Ctrl.FrmMain", toolTip, cmsNotify);
+                AppPhrases.Init();
+                TranslateTree();
+            }
+            else
+            {
+                sbError.AppendLine(errMsg);
             }
         }
 
@@ -688,9 +683,8 @@ namespace Scada.Server.Ctrl
 
         private void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
-            string errMsg = CommonPhrases.UnhandledException + ":\r\n" + e.Exception.Message;
-            errLog.WriteAction(errMsg, Log.ActTypes.Exception);
-            ScadaUiUtils.ShowError(errMsg);
+            errLog.WriteException(e.Exception, CommonPhrases.UnhandledException);
+            ScadaUiUtils.ShowError(CommonPhrases.UnhandledException + ":\r\n" + e.Exception.Message);
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
@@ -1414,7 +1408,7 @@ namespace Scada.Server.Ctrl
                 }
                 else if (cmdDataStr.Length > 0)
                 {
-                    cmdData = Encoding.Default.GetBytes(cmdDataStr);
+                    cmdData = Command.StrToCmdData(cmdDataStr);
                 }
                 else
                 {

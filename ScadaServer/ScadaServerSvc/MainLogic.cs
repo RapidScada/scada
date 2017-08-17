@@ -23,6 +23,7 @@
  * Modified : 2017
  */
 
+using Scada.Data.Configuration;
 using Scada.Data.Models;
 using Scada.Data.Tables;
 using Scada.Server.Modules;
@@ -280,7 +281,7 @@ namespace Scada.Server.Svc
                         modLogic.Settings = Settings;
                         modLogic.WriteToLog = AppLog.WriteAction;
                         modLogic.ServerData = this;
-                        modLogic.PassCommand = comm.PassCommand;
+                        modLogic.ServerCommands = comm;
                         modules.Add(modLogic);
                         AppLog.WriteAction(string.Format(Localization.UseRussian ? 
                             "Загружен модуль из файла {0}" : "Module is loaded from the file {0}", 
@@ -777,7 +778,7 @@ namespace Scada.Server.Svc
 
                 // цикл работы сервера
                 nowDT = DateTime.MaxValue;
-                DateTime today = nowDT.Date;
+                DateTime today;
                 DateTime prevDT;
                 DateTime writeCurSrezDT = DateTime.MinValue;
                 DateTime writeMinSrezDT = DateTime.MinValue;
@@ -786,6 +787,7 @@ namespace Scada.Server.Svc
                 DateTime calcHrDT = DateTime.MinValue;
                 DateTime clearCacheDT = nowDT;
 
+                bool calcDR = drCnls.Count > 0;
                 bool writeCur = Settings.WriteCur || Settings.WriteCurCopy;
                 bool writeCurOnMod = Settings.WriteCurPer <= 0;
                 bool writeMin = (Settings.WriteMin || Settings.WriteMinCopy) && Settings.WriteMinPer > 0;
@@ -822,33 +824,50 @@ namespace Scada.Server.Svc
                         ClearArchive(Settings.ArcCopyDir + "Events", "e*.dat", today.AddDays(-Settings.StoreEvPer));
                     }
 
+                    bool calcMinDR = calcMinDT <= nowDT; // необходимо вычислить минутные каналы
+                    bool calcHrDR = calcHrDT <= nowDT;   // необходимо вычислить часовые каналы
+
                     lock (curSrez)
                     {
                         // установка недостоверности неактивных каналов
                         SetUnreliable();
 
-                        // вычисление дорасчётных каналов и выполнение действий модулей
-                        CalcDRCnls(drCnls, curSrez, true);
-                        RaiseOnCurDataCalculated(drCnlNums, curSrez);
+                        // вычисление дорасчётных каналов
+                        if (calcDR)
+                        {
+                            CalcDRCnls(drCnls, curSrez, true);
+                        }
 
-                        // вычисление минутных каналов и выполнение действий модулей
-                        if (calcMinDT <= nowDT)
+                        // вычисление минутных каналов
+                        if (calcMinDR)
                         {
                             CalcDRCnls(drmCnls, curSrez, true);
-                            RaiseOnCurDataCalculated(drmCnlNums, curSrez);
                             calcMinDT = CalcNextTime(nowDT, 60);
                             curSrezMod = true;
                         }
 
-                        // вычисление часовых каналов и выполнение действий модулей
-                        if (calcHrDT <= nowDT)
+                        // вычисление часовых каналов
+                        if (calcHrDR)
                         {
                             CalcDRCnls(drhCnls, curSrez, true);
-                            RaiseOnCurDataCalculated(drhCnlNums, curSrez);
                             calcHrDT = CalcNextTime(nowDT, 3600);
                             curSrezMod = true;
                         }
+                    }
 
+                    // выполнение действий модулей без блокировки текущего среза
+                    if (calcDR)
+                        RaiseOnCurDataCalculated(drCnlNums, curSrez);
+
+                    if (calcMinDR)
+                        RaiseOnCurDataCalculated(drmCnlNums, curSrez);
+
+                    if (calcHrDR)
+                        RaiseOnCurDataCalculated(drhCnlNums, curSrez);
+
+                    // запись срезов
+                    lock (curSrez)
+                    {
                         // запись текущего среза
                         if ((writeCurSrezDT <= nowDT || writeCurOnMod && curSrezMod) && writeCur)
                         {
@@ -2004,53 +2023,62 @@ namespace Scada.Server.Svc
         {
             try
             {
-                SrezTableLight destSnapshotTable;
+                SrezTableLight destSnapshotTable = null;
                 int cnlCnt = cnlNums == null ? 0 : cnlNums.Length;
 
                 if (serverIsReady && cnlCnt > 0)
                 {
-                    // получение кэша таблицы срезов
-                    SrezTableCache srezTableCache = GetSrezTableCache(date.Date, snapshotType);
+                    destSnapshotTable = new SrezTableLight();
 
-                    lock (srezTableCache)
+                    if (snapshotType == SnapshotTypes.Cur)
                     {
-                        // заполнение таблицы срезов в кэше
-                        srezTableCache.FillSrezTable();
-
-                        // создание новой таблицы срезов и копирование в неё данных заданных каналов
-                        SrezTable srcSnapshotTable = srezTableCache.SrezTable;
-                        SrezTable.SrezDescr prevSnapshotDescr = null;
-                        int[] cnlNumIndexes = new int[cnlCnt];
-                        destSnapshotTable = new SrezTableLight();
-
-                        foreach (SrezTable.Srez srcSnapshot in srcSnapshotTable.SrezList.Values)
+                        lock (curSrez)
                         {
-                            // определение индексов каналов
-                            if (!srcSnapshot.SrezDescr.Equals(prevSnapshotDescr))
-                            {
-                                for (int i = 0; i < cnlCnt; i++)
-                                    cnlNumIndexes[i] = Array.BinarySearch<int>(srcSnapshot.CnlNums, cnlNums[i]);
-                            }
-
-                            // создание и заполнение среза, содержащего заданные каналы
-                            SrezTableLight.Srez destSnapshot = new SrezTableLight.Srez(srcSnapshot.DateTime, cnlCnt);
-
-                            for (int i = 0; i < cnlCnt; i++)
-                            {
-                                destSnapshot.CnlNums[i] = cnlNums[i];
-                                int cnlNumInd = cnlNumIndexes[i];
-                                destSnapshot.CnlData[i] = cnlNumInd < 0 ?
-                                    SrezTableLight.CnlData.Empty : srcSnapshot.CnlData[cnlNumInd];
-                            }
-
+                            SrezTableLight.Srez destSnapshot = new SrezTableLight.Srez(DateTime.MinValue, cnlNums, curSrez);
                             destSnapshotTable.SrezList.Add(destSnapshot.DateTime, destSnapshot);
-                            prevSnapshotDescr = srcSnapshot.SrezDescr;
                         }
                     }
-                }
-                else
-                {
-                    destSnapshotTable = null;
+                    else
+                    {
+                        // получение кэша таблицы срезов
+                        SrezTableCache srezTableCache = GetSrezTableCache(date.Date, snapshotType);
+
+                        lock (srezTableCache)
+                        {
+                            // заполнение таблицы срезов в кэше
+                            srezTableCache.FillSrezTable();
+
+                            // создание новой таблицы срезов и копирование в неё данных заданных каналов
+                            SrezTable srcSnapshotTable = srezTableCache.SrezTable;
+                            SrezTable.SrezDescr prevSnapshotDescr = null;
+                            int[] cnlNumIndexes = new int[cnlCnt];
+
+                            foreach (SrezTable.Srez srcSnapshot in srcSnapshotTable.SrezList.Values)
+                            {
+                                // определение индексов каналов
+                                if (!srcSnapshot.SrezDescr.Equals(prevSnapshotDescr))
+                                {
+                                    for (int i = 0; i < cnlCnt; i++)
+                                        cnlNumIndexes[i] = Array.BinarySearch(srcSnapshot.CnlNums, cnlNums[i]);
+                                }
+
+                                // создание и заполнение среза, содержащего заданные каналы
+                                SrezTableLight.Srez destSnapshot = 
+                                    new SrezTableLight.Srez(srcSnapshot.DateTime, cnlCnt);
+
+                                for (int i = 0; i < cnlCnt; i++)
+                                {
+                                    destSnapshot.CnlNums[i] = cnlNums[i];
+                                    int cnlNumInd = cnlNumIndexes[i];
+                                    destSnapshot.CnlData[i] = cnlNumInd < 0 ?
+                                        SrezTableLight.CnlData.Empty : srcSnapshot.CnlData[cnlNumInd];
+                                }
+
+                                destSnapshotTable.SrezList.Add(destSnapshot.DateTime, destSnapshot);
+                                prevSnapshotDescr = srcSnapshot.SrezDescr;
+                            }
+                        }
+                    }
                 }
 
                 return destSnapshotTable;
@@ -2065,6 +2093,15 @@ namespace Scada.Server.Svc
         }
 
         /// <summary>
+        /// Получить текущий срез, содержащий данные заданных каналов
+        /// </summary>
+        /// <remarks>Номера каналов должны быть упорядочены по возрастанию</remarks>
+        public SrezTableLight.Srez GetCurSnapshot(int[] cnlNums)
+        {
+            return GetSnapshot(DateTime.MinValue, SnapshotTypes.Cur, cnlNums);
+        }
+
+        /// <summary>
         /// Получить срез, содержащий данные заданных каналов
         /// </summary>
         /// <remarks>Номера каналов должны быть упорядочены по возрастанию</remarks>
@@ -2076,29 +2113,30 @@ namespace Scada.Server.Svc
 
                 if (serverIsReady && cnlCnt > 0)
                 {
-                    // получение кэша таблицы срезов
-                    SrezTableCache srezTableCache = GetSrezTableCache(dateTime.Date, snapshotType);
-
-                    // создание среза с заданными каналами
-                    SrezTableLight.Srez destSnapshot = new SrezTableLight.Srez(dateTime, cnlCnt);
-
-                    lock (srezTableCache)
+                    if (snapshotType == SnapshotTypes.Cur)
                     {
-                        // заполнение таблицы срезов в кэше
-                        srezTableCache.FillSrezTable();
-                        SrezTableLight.Srez srcSnapshot = srezTableCache.SrezTable.GetSrez(dateTime);
-
-                        // копирование номеров каналов и данных в новый срез
-                        for (int i = 0; i < cnlCnt; i++)
+                        lock (curSrez)
                         {
-                            int cnlNum = cnlNums[i];
-                            destSnapshot.CnlNums[i] = cnlNum;
-                            destSnapshot.CnlData[i] = srcSnapshot == null ?
-                                SrezTableLight.CnlData.Empty : srcSnapshot.GetCnlData(cnlNum);
+                            return new SrezTableLight.Srez(DateTime.MinValue, cnlNums, curSrez);
                         }
                     }
+                    else
+                    {
+                        // получение кэша таблицы срезов
+                        SrezTableCache srezTableCache = GetSrezTableCache(dateTime.Date, snapshotType);
 
-                    return destSnapshot;
+                        lock (srezTableCache)
+                        {
+                            // заполнение таблицы срезов в кэше
+                            srezTableCache.FillSrezTable();
+                            SrezTableLight.Srez srcSnapshot = srezTableCache.SrezTable.GetSrez(dateTime);
+
+                            // создание среза с заданными каналами
+                            return srcSnapshot == null ?
+                                new SrezTableLight.Srez(dateTime, cnlNums) :
+                                new SrezTableLight.Srez(dateTime, cnlNums, srcSnapshot);
+                        }
+                    }
                 }
                 else
                 {
@@ -2119,82 +2157,85 @@ namespace Scada.Server.Svc
         /// </summary>
         public bool ProcCurData(SrezTableLight.Srez receivedSrez)
         {
-            lock (curSrez) lock (calculator)
+            try
             {
-                try
+                if (serverIsReady)
                 {
-                    if (serverIsReady)
+                    int cnlCnt = receivedSrez == null ? 0 : receivedSrez.CnlNums.Length;
+
+                    if (cnlCnt > 0)
                     {
-                        procSrez = curSrez;
-                        int cnlCnt = receivedSrez == null ? 0 : receivedSrez.CnlNums.Length;
-
-                        for (int i = 0; i < cnlCnt; i++)
+                        lock (curSrez) lock (calculator)
                         {
-                            int cnlNum = receivedSrez.CnlNums[i];
-                            int cnlInd = curSrez.GetCnlIndex(cnlNum);
-                            InCnl inCnl;
+                            procSrez = curSrez;
 
-                            if (inCnls.TryGetValue(cnlNum, out inCnl) && cnlInd >= 0) // входной канал существует
+                            for (int i = 0; i < cnlCnt; i++)
                             {
-                                if (inCnl.CnlTypeID == BaseValues.CnlTypes.TS ||
-                                    inCnl.CnlTypeID == BaseValues.CnlTypes.TI)
-                                {
-                                    // вычисление новых данных входного канала
-                                    SrezTableLight.CnlData oldCnlData = curSrez.CnlData[cnlInd];
-                                    SrezTableLight.CnlData newCnlData = receivedSrez.CnlData[i];
-                                    CalcCnlData(inCnl, oldCnlData, ref newCnlData);
+                                int cnlNum = receivedSrez.CnlNums[i];
+                                int cnlInd = curSrez.GetCnlIndex(cnlNum);
+                                InCnl inCnl;
 
-                                    // расчёт данных для усреднения
-                                    if (inCnl.Averaging && newCnlData.Stat > BaseValues.CnlStatuses.Undefined &&
-                                        newCnlData.Stat != BaseValues.CnlStatuses.FormulaError &&
-                                        newCnlData.Stat != BaseValues.CnlStatuses.Unreliable)
+                                if (inCnls.TryGetValue(cnlNum, out inCnl) && cnlInd >= 0) // входной канал существует
+                                {
+                                    if (inCnl.CnlTypeID == BaseValues.CnlTypes.TS ||
+                                        inCnl.CnlTypeID == BaseValues.CnlTypes.TI)
                                     {
-                                        minAvgData[cnlInd].Sum += newCnlData.Val;
-                                        minAvgData[cnlInd].Cnt++;
-                                        hrAvgData[cnlInd].Sum += newCnlData.Val;
-                                        hrAvgData[cnlInd].Cnt++;
+                                        // вычисление новых данных входного канала
+                                        SrezTableLight.CnlData oldCnlData = curSrez.CnlData[cnlInd];
+                                        SrezTableLight.CnlData newCnlData = receivedSrez.CnlData[i];
+                                        CalcCnlData(inCnl, oldCnlData, ref newCnlData);
+
+                                        // расчёт данных для усреднения
+                                        if (inCnl.Averaging && newCnlData.Stat > BaseValues.CnlStatuses.Undefined &&
+                                            newCnlData.Stat != BaseValues.CnlStatuses.FormulaError &&
+                                            newCnlData.Stat != BaseValues.CnlStatuses.Unreliable)
+                                        {
+                                            minAvgData[cnlInd].Sum += newCnlData.Val;
+                                            minAvgData[cnlInd].Cnt++;
+                                            hrAvgData[cnlInd].Sum += newCnlData.Val;
+                                            hrAvgData[cnlInd].Cnt++;
+                                        }
+
+                                        // запись новых данных в текущий срез
+                                        curSrez.CnlData[cnlInd] = newCnlData;
+
+                                        // генерация события
+                                        GenEvent(inCnl, oldCnlData, newCnlData);
+
+                                        // обновление информации об активности канала
+                                        activeDTs[cnlInd] = DateTime.Now;
                                     }
-
-                                    // запись новых данных в текущий срез
-                                    curSrez.CnlData[cnlInd] = newCnlData;
-
-                                    // генерация события
-                                    GenEvent(inCnl, oldCnlData, newCnlData);
-
-                                    // обновление информации об активности канала
-                                    activeDTs[cnlInd] = DateTime.Now;
-                                }
-                                else
-                                {
-                                    // запись новых данных в текущий срез без вычислений для дорасчётных каналов
-                                    curSrez.CnlData[cnlInd] = receivedSrez.CnlData[i];
+                                    else
+                                    {
+                                        // запись новых данных в текущий срез без вычислений для дорасчётных каналов
+                                        curSrez.CnlData[cnlInd] = receivedSrez.CnlData[i];
+                                    }
                                 }
                             }
                         }
 
                         // выполнение действий модулей
-                        if (cnlCnt > 0)
-                            RaiseOnCurDataProcessed(receivedSrez.CnlNums, curSrez);
+                        RaiseOnCurDataProcessed(receivedSrez.CnlNums, curSrez);
+                    }
 
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    return true;
                 }
-                catch (Exception ex)
+                else
                 {
-                    AppLog.WriteException(ex, Localization.UseRussian ?
-                        "Ошибка при обработке новых текущих данных" :
-                        "Error processing the new current data");
                     return false;
                 }
-                finally
-                {
-                    procSrez = null;
-                    curSrezMod = true;
-                }
+            }
+            catch (Exception ex)
+            {
+                AppLog.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при обработке новых текущих данных" :
+                    "Error processing new current data");
+                return false;
+            }
+            finally
+            {
+                procSrez = null;
+                curSrezMod = true;
             }
         }
 
@@ -2271,7 +2312,7 @@ namespace Scada.Server.Svc
             {
                 AppLog.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при обработке новых архивных данных" : 
-                    "Error processing the new archive data");
+                    "Error processing new archive data");
                 return false;
             }
         }
@@ -2361,7 +2402,7 @@ namespace Scada.Server.Svc
         {
             passToClients = false;
 
-            if (serverIsReady && ctrlCnl != null)
+            if (serverIsReady && ctrlCnl != null && cmd != null)
             {
                 int ctrlCnlNum = ctrlCnl.CtrlCnlNum;
 

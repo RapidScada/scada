@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,10 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2016
+ * Modified : 2017
  */
 
-using Scada.Data.Tables;
+using Scada.Data.Configuration;
 using System;
 using System.Text;
 
@@ -57,6 +57,7 @@ namespace Scada.Data.Models
             CmdNum = 0;
             CmdVal = 0.0;
             CmdData = null;
+            RecursionLevel = 0;
         }
 
 
@@ -90,14 +91,18 @@ namespace Scada.Data.Models
         /// </summary>
         public byte[] CmdData { get; set; }
 
+        /// <summary>
+        /// Уровень рекурсии при отправке команды из серверных модулей
+        /// </summary>
+        public int RecursionLevel { get; set; }
+
 
         /// <summary>
         /// Получить данные команды, преобразованные в строку
         /// </summary>
         public string GetCmdDataStr()
         {
-            try { return CmdData == null ? "" : Encoding.Default.GetString(CmdData); }
-            catch { return ""; }
+            return CmdDataToStr(CmdData);
         }
 
         /// <summary>
@@ -175,6 +180,24 @@ namespace Scada.Data.Models
             }
 
             return sb.ToString();
+        }
+
+
+        /// <summary>
+        /// Преобразовать данные команды в строку 
+        /// </summary>
+        public static string CmdDataToStr(byte[] cmdData)
+        {
+            try { return cmdData == null ? "" : Encoding.UTF8.GetString(cmdData); }
+            catch { return ""; }
+        }
+
+        /// <summary>
+        /// Преобразовать строку в данные команды
+        /// </summary>
+        public static byte[] StrToCmdData(string s)
+        {
+            return s == null ? new byte[0] : Encoding.UTF8.GetBytes(s);
         }
     }
 }

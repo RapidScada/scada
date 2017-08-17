@@ -23,8 +23,8 @@
  * Modified : 2017
  */
 
+using Scada.Data.Configuration;
 using Scada.Data.Models;
-using Scada.Data.Tables;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -58,7 +58,7 @@ namespace Scada.Comm
         /// <summary>
         /// Версия Коммуникатора
         /// </summary>
-        public const string AppVersion = "5.0.0.2";
+        public const string AppVersion = "5.0.1.0";
 
         /// <summary>
         /// Формат даты и времени для вывода в журнал линии связи

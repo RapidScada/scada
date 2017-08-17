@@ -29,7 +29,6 @@ using Scada.Data.Tables;
 using Scada.UI;
 using System;
 using System.Drawing;
-using System.Web.UI.WebControls;
 
 namespace Scada.Web.Plugins.Table
 {
@@ -91,9 +90,12 @@ namespace Scada.Web.Plugins.Table
                     if (!rights.ViewRight)
                         throw new ScadaException(CommonPhrases.NoRights);
 
-                    BaseView view = userData.UserViews.GetView(viewID, true);
-                    if (!view.ContainsCnl(ev.CnlNum))
-                        throw new ScadaException(CommonPhrases.NoRights);
+                    if (!userData.UserRights.ViewAllRight)
+                    {
+                        BaseView view = userData.UserViews.GetView(viewID, true);
+                        if (!view.ContainsCnl(ev.CnlNum))
+                            throw new ScadaException(CommonPhrases.NoRights);
+                    }
 
                     btnSubmit.Visible = pnlTip.Visible = 
                         rights.ControlRight && !ev.Checked;

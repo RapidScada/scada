@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2016
+ * Modified : 2017
  */
 
 using Scada;
@@ -558,28 +558,22 @@ namespace ScadaTableEditor
             string langDir = exeDir + "Lang\\";
             string errMsg;
 
-            if (Localization.LoadingRequired(langDir, "ScadaData"))
-            {
-                if (Localization.LoadDictionaries(langDir, "ScadaData", out errMsg))
-                    CommonPhrases.Init();
-                else
-                    ScadaUiUtils.ShowError(errMsg);
-            }
+            if (Localization.LoadDictionaries(langDir, "ScadaData", out errMsg))
+                CommonPhrases.Init();
+            else
+                ScadaUiUtils.ShowError(errMsg);
 
-            if (Localization.LoadingRequired(langDir, "ScadaTableEditor"))
+            if (Localization.LoadDictionaries(langDir, "ScadaTableEditor", out errMsg))
             {
-                if (Localization.LoadDictionaries(langDir, "ScadaTableEditor", out errMsg))
-                {
-                    Translator.TranslateForm(this, "ScadaTableEditor.FrmMain", toolTip);
-                    PlgPhrases.Init();
-                    AppPhrases.Init();
-                    openFileDialog.Filter = AppPhrases.OpenFileFilter;
-                    saveFileDialog.Filter = AppPhrases.SaveFileFilter;
-                }
-                else
-                {
-                    ScadaUiUtils.ShowError(errMsg);
-                }
+                Translator.TranslateForm(this, "ScadaTableEditor.FrmMain", toolTip);
+                PlgPhrases.Init();
+                AppPhrases.Init();
+                openFileDialog.Filter = AppPhrases.OpenFileFilter;
+                saveFileDialog.Filter = AppPhrases.SaveFileFilter;
+            }
+            else
+            {
+                ScadaUiUtils.ShowError(errMsg);
             }
 
             // настройка элементов управления

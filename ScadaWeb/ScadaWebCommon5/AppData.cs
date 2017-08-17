@@ -24,7 +24,7 @@
  */
 
 using Scada.Client;
-using Scada.Data.Tables;
+using Scada.Data.Configuration;
 using Scada.Web.Plugins;
 using Scada.Web.Shell;
 using System;

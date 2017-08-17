@@ -24,7 +24,7 @@
  */
 
 using Scada.Comm.Devices.KpSnmp;
-using Scada.Data.Tables;
+using Scada.Data.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -40,7 +40,7 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Версия библиотеки КП
         /// </summary>
-        internal const string KpVersion = "5.0.0.0";
+        internal const string KpVersion = "5.0.0.1";
 
 
         /// <summary>

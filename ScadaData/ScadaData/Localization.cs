@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2014
- * Modified : 2016
+ * Modified : 2017
  */
 
 using Microsoft.Win32;
@@ -332,16 +332,6 @@ namespace Scada
                     "Dictionary file not found: ") + fileName;
                 return false;
             }
-        }
-
-        /// <summary>
-        /// Определить, что загрузка словаря необходима: 
-        /// не используется русская локализация или существует файл словаря
-        /// </summary>
-        [Obsolete("Load dictionary anyway.")]
-        public static bool LoadingRequired(string directory, string fileNamePrefix)
-        {
-            return !UseRussian || File.Exists(GetDictionaryFileName(directory, fileNamePrefix));
         }
 
 

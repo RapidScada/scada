@@ -41,37 +41,37 @@ namespace Scada.Server.Svc
         /// The channel number for which the formula is calculated
         /// <para>Номер канала, для которого вычисляется формула </para>
         /// </summary>
-        private int curCnlNum;
+        protected int curCnlNum;
         /// <summary>
         /// Input channel data transmitted to the server before the calculation
         /// <para>Передаваемые серверу данные входного канала до расчёта</para>
         /// </summary>
-        private SrezTableLight.CnlData initialCnlData;
+        protected SrezTableLight.CnlData initialCnlData;
         /// <summary>
         /// Standard command value transmitted to the server before the calculation
         /// <para>Передаваемое серверу значение стандартной команды управления до расчёта</para>
         /// </summary>
-        private double initialCmdVal;
+        protected double initialCmdVal;
         /// <summary>
         /// Binary command data transmitted to the server before the calculation
         /// <para>Передаваемые серверу данные бинарной команды управления до расчёта</para>
         /// </summary>
-        private byte[] initialCmdData;
+        protected byte[] initialCmdData;
         /// <summary>
         /// Calculate the input channel formula flag
         /// <para>Признак вычисления формулы входного канала</para>
         /// </summary>
-        private bool calcInCnl;
+        protected bool calcInCnl;
         /// <summary>
         /// Method of getting input channel data
         /// <para>Метод получения данных входного канала</para>
         /// </summary>
-        private Func<int, SrezTableLight.CnlData> getCnlData;
+        protected Func<int, SrezTableLight.CnlData> getCnlData;
         /// <summary>
         /// Method of setting input channel data
         /// <para>Метод установки данных входного канала</para>
         /// </summary>
-        private Action<int, SrezTableLight.CnlData> setCnlData;
+        protected Action<int, SrezTableLight.CnlData> setCnlData;
 
 
         /// <summary>
@@ -215,7 +215,7 @@ namespace Scada.Server.Svc
         /// Starts the input channel data calculation
         /// <para>Начать вычисление данных входного канала</para>
         /// </summary>
-        private void BeginCalcCnlData(int cnlNum, SrezTableLight.CnlData initialCnlData)
+        protected void BeginCalcCnlData(int cnlNum, SrezTableLight.CnlData initialCnlData)
         {
             curCnlNum = cnlNum;
             this.initialCnlData = initialCnlData;
@@ -228,7 +228,7 @@ namespace Scada.Server.Svc
         /// Ends the input channel data calculation
         /// <para>Завершить вычисление данных входного канала</para>
         /// </summary>
-        private void EndCalcCnlData()
+        protected void EndCalcCnlData()
         {
             curCnlNum = -1;
             initialCnlData = SrezTableLight.CnlData.Empty;
@@ -239,7 +239,7 @@ namespace Scada.Server.Svc
         /// Starts the command value or data calculation
         /// <para>Начать вычисление значения или данных команды</para>
         /// </summary>
-        private void BeginCalcCmdData(int ctrlCnlNum, double initialCmdVal, byte[] initialCmdData)
+        protected void BeginCalcCmdData(int ctrlCnlNum, double initialCmdVal, byte[] initialCmdData)
         {
             curCnlNum = ctrlCnlNum;
             this.initialCnlData = SrezTableLight.CnlData.Empty;
@@ -251,7 +251,7 @@ namespace Scada.Server.Svc
         /// Ends the command value or data calculation
         /// <para>Завершить вычисление значения или данных команды</para>
         /// </summary>
-        private void EndCalcCmdData()
+        protected void EndCalcCmdData()
         {
             curCnlNum = -1;
             initialCmdVal = 0.0;

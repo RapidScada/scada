@@ -31,6 +31,8 @@ namespace Scada.Comm.Devices
     /// </summary>
     public sealed class KpTestView : KPView
     {
+        internal const string KpVersion = "5.0.0.1";
+
         public KpTestView()
             : this(0)
         {
@@ -55,6 +57,14 @@ namespace Scada.Comm.Devices
                     "Commands:\n" +
                     "1 (binary) - send data as string.\n" +
                     "2 (binary) - send data as array of bytes.";
+            }
+        }
+
+        public override string Version
+        {
+            get
+            {
+                return KpVersion;
             }
         }
     }

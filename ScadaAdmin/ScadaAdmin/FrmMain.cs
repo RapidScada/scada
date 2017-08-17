@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2010
- * Modified : 2016
+ * Modified : 2017
  */
 
 using Scada;
@@ -590,31 +590,25 @@ namespace ScadaAdmin
             string langDir = AppData.ExeDir + "Lang\\";
             string errMsg;
 
-            if (Localization.LoadingRequired(langDir, "ScadaData"))
-            {
-                if (Localization.LoadDictionaries(langDir, "ScadaData", out errMsg))
-                    CommonPhrases.Init();
-                else
-                    ScadaUiUtils.ShowError(errMsg);
-            }
+            if (Localization.LoadDictionaries(langDir, "ScadaData", out errMsg))
+                CommonPhrases.Init();
+            else
+                ScadaUiUtils.ShowError(errMsg);
 
-            if (Localization.LoadingRequired(langDir, "ScadaAdmin"))
+            if (Localization.LoadDictionaries(langDir, "ScadaAdmin", out errMsg))
             {
-                if (Localization.LoadDictionaries(langDir, "ScadaAdmin", out errMsg))
-                {
-                    Translator.TranslateForm(this, "ScadaAdmin.FrmMain", null, contextExpolorer, contextInCnls);
-                    AppPhrases.Init();
-                    winControl.MessageText = AppPhrases.SelectTable;
-                    winControl.SaveReqCaption = AppPhrases.SaveReqCaption;
-                    winControl.SaveReqQuestion = AppPhrases.SaveReqQuestion;
-                    winControl.SaveReqYes = AppPhrases.SaveReqYes;
-                    winControl.SaveReqNo = AppPhrases.SaveReqNo;
-                    winControl.SaveReqCancel = AppPhrases.SaveReqCancel;
-                }
-                else
-                {
-                    ScadaUiUtils.ShowError(errMsg);
-                }
+                Translator.TranslateForm(this, "ScadaAdmin.FrmMain", null, contextExpolorer, contextInCnls);
+                AppPhrases.Init();
+                winControl.MessageText = AppPhrases.SelectTable;
+                winControl.SaveReqCaption = AppPhrases.SaveReqCaption;
+                winControl.SaveReqQuestion = AppPhrases.SaveReqQuestion;
+                winControl.SaveReqYes = AppPhrases.SaveReqYes;
+                winControl.SaveReqNo = AppPhrases.SaveReqNo;
+                winControl.SaveReqCancel = AppPhrases.SaveReqCancel;
+            }
+            else
+            {
+                ScadaUiUtils.ShowError(errMsg);
             }
 
             // инициализация дерева проводника

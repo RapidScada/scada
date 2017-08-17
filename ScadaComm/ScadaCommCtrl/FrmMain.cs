@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,13 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2008
- * Modified : 2016
+ * Modified : 2017
  */
 
 using Scada.Client;
 using Scada.Comm.Channels;
 using Scada.Comm.Devices;
+using Scada.Data.Configuration;
 using Scada.Data.Models;
 using Scada.Data.Tables;
 using Scada.Svc;
@@ -292,27 +293,21 @@ namespace Scada.Comm.Ctrl
         {
             string errMsg;
 
-            if (Localization.LoadingRequired(appDirs.LangDir, "ScadaData"))
-            {
-                if (Localization.LoadDictionaries(appDirs.LangDir, "ScadaData", out errMsg))
-                    CommonPhrases.Init();
-                else
-                    sbError.AppendLine(errMsg);
-            }
+            if (Localization.LoadDictionaries(appDirs.LangDir, "ScadaData", out errMsg))
+                CommonPhrases.Init();
+            else
+                sbError.AppendLine(errMsg);
 
-            if (Localization.LoadingRequired(appDirs.LangDir, "ScadaComm"))
+            if (Localization.LoadDictionaries(appDirs.LangDir, "ScadaComm", out errMsg))
             {
-                if (Localization.LoadDictionaries(appDirs.LangDir, "ScadaComm", out errMsg))
-                {
-                    Translator.TranslateForm(this, "Scada.Comm.Ctrl.FrmMain", toolTip, cmsNotify, cmsLine, cmsKP);
-                    AppPhrases.Init();
-                    CommPhrases.InitFromDictionaries();
-                    TranslateTree();
-                }
-                else
-                {
-                    sbError.AppendLine(errMsg);
-                }
+                Translator.TranslateForm(this, "Scada.Comm.Ctrl.FrmMain", toolTip, cmsNotify, cmsLine, cmsKP);
+                AppPhrases.Init();
+                CommPhrases.InitFromDictionaries();
+                TranslateTree();
+            }
+            else
+            {
+                sbError.AppendLine(errMsg);
             }
         }
 
@@ -2691,7 +2686,7 @@ namespace Scada.Comm.Ctrl
                     }
                     else if (cmdDataStr.Length > 0)
                     {
-                        cmd.CmdData = Encoding.Default.GetBytes(cmdDataStr);
+                        cmd.CmdData = Command.StrToCmdData(cmdDataStr);
                         cmdOK = true;
                     }
                     else
