@@ -20,7 +20,7 @@
     <Phrase key="LoadCommSettingsError">Ошибка при загрузке настроек соединения с сервером</Phrase>
     <Phrase key="SaveCommSettingsError">Ошибка при сохранении настроек соединения с сервером</Phrase>
     <Phrase key="GridDataError">Ошибка при работе с данными</Phrase>
-    <Phrase key="IntegerRequired">Требуется целое число</Phrase>
+    <Phrase key="IntegerRequired">Требуется целое число.</Phrase>
     <Phrase key="IntegerRangingRequired">Требуется целое число в диапазоне от {0} до {1}.</Phrase>
     <Phrase key="RealRequired">Требуется вещественное число.</Phrase>
     <Phrase key="NonemptyRequired">Требуется непустое значение.</Phrase>
