@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KpModbus", "KpModbus\KpModbus.csproj", "{7CBF4A4B-E1A2-428E-8F68-EDD2FCE3088B}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddressBook", "AddressBook\AddressBook.csproj", "{CB3BC544-51CB-4A40-8CF0-4B769C01F996}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KpEmail", "KpEmail\KpEmail.csproj", "{1529A2A2-53FC-446B-AE13-FF564C4DEC32}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KpHttpNotif", "KpHttpNotif\KpHttpNotif.csproj", "{866BA66F-804A-4C6B-B0D2-8D8064AE1EEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{1529A2A2-53FC-446B-AE13-FF564C4DEC32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1529A2A2-53FC-446B-AE13-FF564C4DEC32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1529A2A2-53FC-446B-AE13-FF564C4DEC32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{866BA66F-804A-4C6B-B0D2-8D8064AE1EEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{866BA66F-804A-4C6B-B0D2-8D8064AE1EEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{866BA66F-804A-4C6B-B0D2-8D8064AE1EEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{866BA66F-804A-4C6B-B0D2-8D8064AE1EEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
