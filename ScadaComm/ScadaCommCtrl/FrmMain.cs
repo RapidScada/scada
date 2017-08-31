@@ -175,7 +175,6 @@ namespace Scada.Comm.Ctrl
         private bool changing;              // происходит программное изменение элементов управления
 
         private ServerComm serverComm;      // объект для обмена данными со SCADA-Сервером
-        private bool baseTablesReceived;    // таблицы базы конфигурации получены
         private DataTable tblCommLine;      // таблица линий связи из базы конфигурации
         private DataTable tblKP;            // таблица КП из базы конфигурации
         private DataTable tblKPType;        // таблица типов КП из базы конфигурации
@@ -252,7 +251,6 @@ namespace Scada.Comm.Ctrl
             changing = false;
 
             serverComm = null;
-            baseTablesReceived = false;
             tblCommLine = new DataTable();
             tblKP = new DataTable();
             tblKPType = new DataTable();
@@ -862,7 +860,7 @@ namespace Scada.Comm.Ctrl
                 serverComm.ReceiveBaseTable("kptype.dat", tblKPType))
             {
                 errMsg = "";
-                baseTablesReceived = true;
+                return true;
             }
             else
             {
@@ -873,10 +871,8 @@ namespace Scada.Comm.Ctrl
                 if (errMsg.Length > 0 && !errMsg.EndsWith("."))
                     errMsg += ".";
 
-                baseTablesReceived = false;
+                return false;
             }
-
-            return baseTablesReceived;
         }
 
         /// <summary>
@@ -1507,15 +1503,8 @@ namespace Scada.Comm.Ctrl
 
         private void miImportLines_Click(object sender, EventArgs e)
         {
-            // приём таблиц базы конфигурации при необходимости
             string errMsg;
-            if (!baseTablesReceived && !ReceiveBaseTables(out errMsg))
-            {
-                errLog.WriteAction(errMsg);
-                ScadaUiUtils.ShowError(errMsg);
-            }
-
-            if (baseTablesReceived)
+            if (ReceiveBaseTables(out errMsg))
             {
                 FrmImport frmImport;
                 if (FrmImport.Import(tblCommLine, tblKP, errLog, out frmImport) == DialogResult.OK)
@@ -1579,6 +1568,11 @@ namespace Scada.Comm.Ctrl
                         treeView.EndUpdate();
                     }
                 }
+            }
+            else
+            {
+                errLog.WriteError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
             }
         }
 
@@ -2423,15 +2417,8 @@ namespace Scada.Comm.Ctrl
         {
             if (lastLine != null)
             {
-                // приём таблиц базы конфигурации при необходимости
                 string errMsg;
-                if (!baseTablesReceived && !ReceiveBaseTables(out errMsg))
-                {
-                    errLog.WriteAction(errMsg);
-                    ScadaUiUtils.ShowError(errMsg);
-                }
-
-                if (baseTablesReceived)
+                if (ReceiveBaseTables(out errMsg))
                 {
                     FrmImport frmImport;
                     if (FrmImport.Import(tblKP, lastLine.Number, errLog, out frmImport) == DialogResult.OK)
@@ -2496,7 +2483,13 @@ namespace Scada.Comm.Ctrl
                         }
                     }
                 }
+                else
+                {
+                    errLog.WriteError(errMsg);
+                    ScadaUiUtils.ShowError(errMsg);
+                }
             }
+
             lvReqSequence.Focus();
         }
 
