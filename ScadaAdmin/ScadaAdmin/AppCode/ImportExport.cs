@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2017
  */
 
 using Ionic.Zip;
@@ -32,6 +32,7 @@ using System.Data;
 using System.Data.SqlServerCe;
 using System.IO;
 using System.Text;
+using System.Threading;
 
 namespace ScadaAdmin
 {
@@ -41,6 +42,12 @@ namespace ScadaAdmin
     /// </summary>
     internal static class ImportExport
     {
+        /// <summary>
+        /// Задержка перед созданием архива для надежного закрытия соединения с БД, мс
+        /// </summary>
+        private const int ZipDelay = 500;
+
+
         /// <summary>
         /// Вывести в журнал заголовок с подчёркиванием
         /// </summary>
@@ -477,7 +484,10 @@ namespace ScadaAdmin
                 try
                 {
                     if (wasConnected)
+                    {
                         AppData.Conn.Close(); // для сохранения изменений
+                        Thread.Sleep(ZipDelay);
+                    }
 
                     // создание архива
                     using (ZipFile zip = new ZipFile())
