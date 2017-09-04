@@ -224,10 +224,13 @@
     <Phrase key="cbDevSelMode.Items[1]">By First Package</Phrase>
     <Phrase key="cbDevSelMode.Items[2]">DLL Determined</Phrase>
     <Phrase key="pbDevSelModeHint.ToolTip">The method of binding a new incoming connection to a device:&#13;&#10;By IP Address - remote IP address equals a device call number.&#13;&#10;By First Package - a first package received from a device contains the device call number.&#13;&#10;DLL Determined - algorithm is implemented in the device library.</Phrase>
+    <Phrase key="gbConnection">Connection</Phrase>
     <Phrase key="lblTcpPort">Local TCP port</Phrase>
     <Phrase key="pbTcpPortHint.ToolTip">Local TCP port for incoming connections.&#13;&#10;Incoming connections must be allowed by a firewall.</Phrase>
     <Phrase key="lblInactiveTime">Inactive time, sec</Phrase>
     <Phrase key="pbInactiveTimeHint.ToolTip">Duration of connection inactivity before disconnect.</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Channels.FrmCommUdpProps">
     <Phrase key="this">UDP Properties</Phrase>
@@ -238,12 +241,15 @@
     <Phrase key="cbDevSelMode.Items[0]">By IP Address</Phrase>
     <Phrase key="cbDevSelMode.Items[1]">DLL Determined</Phrase>
     <Phrase key="pbDevSelModeHint.ToolTip">The method of binding received data to a device in Slave mode:&#13;&#10;By IP Address - remote IP address equals a device call number.&#13;&#10;DLL Determined - algorithm is implemented in the device library.</Phrase>
+    <Phrase key="gbConnection">Connection</Phrase>
     <Phrase key="lblLocalUdpPort">Local UDP port</Phrase>
     <Phrase key="pbLocalUdpPortHint.ToolTip">Local UDP port for incoming connections.&#13;&#10;Incoming connections must be allowed by a firewall.</Phrase>
     <Phrase key="lblRemoteUdpPort">Remote UDP port</Phrase>
     <Phrase key="pbRemoteUdpPortHint.ToolTip">Remote UDP port is the same for all devices of the communication line.</Phrase>
     <Phrase key="lblRemoteIpAddress">Remote IP address</Phrase>
     <Phrase key="pbRemoteIpAddressHint.ToolTip">The default remote IP address.&#13;&#10;It can be used, for example, if the devices are connected via an Ethernet - Serial gateway.</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Devices">
     <Phrase key="SaveKpSettingsConfirm">Device settings have been modified. Save the changes?</Phrase>
