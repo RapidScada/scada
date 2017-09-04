@@ -202,13 +202,15 @@
     <Phrase key="cbConnMode.Items[1]">Shared</Phrase>
     <Phrase key="pbConnModeHint.ToolTip">Individual - SCADA-Communicator establishes an individual TCP connection with each device.&#13;&#10;Shared - SCADA-Communicator establishes a single shared connection for all devices of the communication line&#13;&#10;using specified remote IP address.&#13;&#10;Shared connection is used, for example, if the devices are connected via an Ethernet - Serial gateway.</Phrase>
     <Phrase key="gbConnection">Connection</Phrase>
-    <Phrase key="lblIpAddress">Remote IP address</Phrase>
-    <Phrase key="pbIpAddressHint.ToolTip">Remote IP address in case of using shared connection.</Phrase>
+    <Phrase key="lblHost">Remote host</Phrase>
+    <Phrase key="pbHostHint.ToolTip">Remote DNS name or IP address in case of using shared connection.</Phrase>
     <Phrase key="lblTcpPort">Remote TCP port</Phrase>
     <Phrase key="pbTcpPortHint.ToolTip">In individual connection mode it is used as a default TCP port if no port is specified for a device.&#13;&#10;In shared connection mode the parameter is required.&#13;&#10;The 502 port is the default Modbus TCP port.</Phrase>
+    <Phrase key="lblReconnectAfter">Reconnect, sec</Phrase>
+    <Phrase key="pbReconnectAfterHint.ToolTip">Specifies time interval to reconnect after an unsuccessful attempt.</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
-    <Phrase key="IpAddressRequired">IP address is required.</Phrase>
+    <Phrase key="HostRequired">Host is required.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Channels.FrmCommTcpServerProps">
     <Phrase key="this">TCP Server Properties</Phrase>

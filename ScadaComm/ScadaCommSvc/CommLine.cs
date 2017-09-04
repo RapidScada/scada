@@ -1756,7 +1756,7 @@ namespace Scada.Comm.Svc
                         "Ошибка при инициализации канала связи: " :
                         "Error initializing communication channel: ") + ex.Message;
                     commLine.log.WriteAction(errMsg);
-                    throw new Exception(errMsg);
+                    throw new ScadaException(errMsg);
                 }
             }
 

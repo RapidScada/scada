@@ -38,12 +38,12 @@ namespace Scada.Comm.Channels
     public class SerialConnection : Connection
     {
         /// <summary>
-        /// Периодичность попыток открытия порта, с
+        /// Интервал повторного открытия порта, с
         /// </summary>
-        protected const int OpenPeriod = 5;
+        protected const int ReopenAfter = 5;
 
         /// <summary>
-        /// Дата и время неудачной попытки открытия порта
+        /// Дата и время неудачной попытки открытия порта (UTC)
         /// </summary>
         protected DateTime openFailDT;
 
@@ -305,9 +305,8 @@ namespace Scada.Comm.Channels
         public void Open()
         {
             WriteError = false;
-            DateTime nowDT = DateTime.Now;
 
-            if ((nowDT - openFailDT).TotalSeconds >= OpenPeriod || nowDT < openFailDT /*время переведено назад*/)
+            if ((DateTime.UtcNow - openFailDT).TotalSeconds >= ReopenAfter)
             {
                 try
                 {
@@ -316,8 +315,9 @@ namespace Scada.Comm.Channels
                 }
                 catch (Exception ex)
                 {
-                    openFailDT = nowDT;
-                    throw new Exception((Localization.UseRussian ?
+                    // время получено повторно, т.к. попытка открытия порта может быть продолжительной
+                    openFailDT = DateTime.UtcNow;
+                    throw new ScadaException((Localization.UseRussian ?
                         "Ошибка при открытии последовательного порта: " :
                         "Error opening serial port: ") + ex.Message, ex);
                 }
@@ -327,7 +327,7 @@ namespace Scada.Comm.Channels
                 throw new InvalidOperationException(string.Format(Localization.UseRussian ?
                     "Попытка открытия последовательного порта может быть не ранее, чем через {0} с после предыдущей." :
                     "Attempt to open serial port can not be earlier than {0} seconds after the previous.",
-                    OpenPeriod));
+                    ReopenAfter));
             }
         }
 

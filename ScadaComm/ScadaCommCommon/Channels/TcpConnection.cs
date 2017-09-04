@@ -49,9 +49,9 @@ namespace Scada.Comm.Channels
         /// </summary>
         protected const int DefaultMaxLineSize = 1000;
         /// <summary>
-        /// Периодичность попыток установки TCP-соединения, с
+        /// Интервал повторного подключения по умолчанию, с
         /// </summary>
-        protected const int ConnectPeriod = 5;
+        public const int DefaultReconnectAfter = 5;
         /// <summary>
         /// Обозначение активности для строкового представления соединения
         /// </summary>
@@ -63,7 +63,7 @@ namespace Scada.Comm.Channels
         /// </summary>
         protected int maxLineSize;
         /// <summary>
-        /// Дата и время неудачной попытки соединения
+        /// Дата и время неудачной попытки соединения (UTC)
         /// </summary>
         protected DateTime connFailDT;
         /// <summary>
@@ -91,6 +91,7 @@ namespace Scada.Comm.Channels
             maxLineSize = DefaultMaxLineSize;
             connFailDT = DateTime.MinValue;
             relatedKPList = null;
+            ReconnectAfter = DefaultReconnectAfter;
 
             InternalInit(tcpClient);
         }
@@ -116,6 +117,11 @@ namespace Scada.Comm.Channels
         /// Получить поток данных TCP-соединения
         /// </summary>
         public NetworkStream NetStream { get; protected set; }
+
+        /// <summary>
+        /// Получить или установить интервал повторного подключения, с
+        /// </summary>
+        public int ReconnectAfter { get; set; }
 
         /// <summary>
         /// Получить или установить максимальный размер считываемых строк
@@ -451,35 +457,57 @@ namespace Scada.Comm.Channels
 
 
         /// <summary>
+        /// Проверить возможность установки TCP-соединения
+        /// </summary>
+        public bool CanOpen(out string reason)
+        {
+            if ((DateTime.UtcNow - connFailDT).TotalSeconds >= ReconnectAfter)
+            {
+                reason = "";
+                return true;
+            }
+            else
+            {
+                reason = string.Format(Localization.UseRussian ?
+                    "Попытка установки TCP-соединения может быть не ранее, чем через {0} с после предыдущей." :
+                    "Attempt to establish TCP connection can not be earlier than {0} seconds after the previous.",
+                    ReconnectAfter);
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Установить TCP-соединение
         /// </summary>
-        public void Open(IPAddress addr, int port)
+        public void Open(string host, int port)
         {
-            DateTime nowDT = DateTime.Now;
-
-            if ((nowDT - connFailDT).TotalSeconds >= ConnectPeriod || nowDT < connFailDT /*время переведено назад*/)
+            string reason;
+            if (CanOpen(out reason))
             {
                 try
                 {
-                    TcpClient.Connect(addr, port);
+                    IPAddress addr;
+                    if (IPAddress.TryParse(host, out addr))
+                        TcpClient.Connect(addr, port);
+                    else
+                        TcpClient.Connect(host, port);
+
                     TakeNetStream();
                     TakeAddresses();
                     connFailDT = DateTime.MinValue;
                 }
                 catch (Exception ex)
                 {
-                    connFailDT = nowDT;
-                    throw new Exception((Localization.UseRussian ? 
+                    // время получено повторно, т.к. попытка соединеня может быть продолжительной
+                    connFailDT = DateTime.UtcNow;
+                    throw new ScadaException((Localization.UseRussian ?
                         "Ошибка при установке TCP-соединения: " :
                         "Error establishing TCP connection: ") + ex.Message, ex);
                 }
             }
             else
             {
-                throw new InvalidOperationException(string.Format(Localization.UseRussian ?
-                    "Попытка установки TCP-соединения может быть не ранее, чем через {0} с после предыдущей." :
-                    "Attempt to establish TCP connection can not be earlier than {0} seconds after the previous.",
-                    ConnectPeriod));
+                throw new InvalidOperationException(reason);
             }
         }
 

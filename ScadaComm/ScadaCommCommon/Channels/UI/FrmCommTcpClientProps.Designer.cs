@@ -40,18 +40,23 @@
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.gbConnection = new System.Windows.Forms.GroupBox();
-            this.pbIpAddressHint = new System.Windows.Forms.PictureBox();
+            this.pbReconnectAfterHint = new System.Windows.Forms.PictureBox();
+            this.lblReconnectAfter = new System.Windows.Forms.Label();
+            this.numReconnectAfter = new System.Windows.Forms.NumericUpDown();
+            this.pbHostHint = new System.Windows.Forms.PictureBox();
             this.pbTcpPortHint = new System.Windows.Forms.PictureBox();
             this.numTcpPort = new System.Windows.Forms.NumericUpDown();
-            this.txtIpAddress = new System.Windows.Forms.TextBox();
+            this.txtHost = new System.Windows.Forms.TextBox();
             this.lblTcpPort = new System.Windows.Forms.Label();
-            this.lblIpAddress = new System.Windows.Forms.Label();
+            this.lblHost = new System.Windows.Forms.Label();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.gbMode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbBehaviorHint)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbConnModeHint)).BeginInit();
             this.gbConnection.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbIpAddressHint)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbReconnectAfterHint)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numReconnectAfter)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbHostHint)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbTcpPortHint)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTcpPort)).BeginInit();
             this.SuspendLayout();
@@ -143,7 +148,7 @@
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(186, 188);
+            this.btnOK.Location = new System.Drawing.Point(186, 214);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 2;
@@ -153,7 +158,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(267, 188);
+            this.btnCancel.Location = new System.Drawing.Point(267, 214);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 3;
@@ -163,30 +168,71 @@
             // 
             // gbConnection
             // 
-            this.gbConnection.Controls.Add(this.pbIpAddressHint);
+            this.gbConnection.Controls.Add(this.pbReconnectAfterHint);
+            this.gbConnection.Controls.Add(this.lblReconnectAfter);
+            this.gbConnection.Controls.Add(this.numReconnectAfter);
+            this.gbConnection.Controls.Add(this.pbHostHint);
             this.gbConnection.Controls.Add(this.pbTcpPortHint);
             this.gbConnection.Controls.Add(this.numTcpPort);
-            this.gbConnection.Controls.Add(this.txtIpAddress);
+            this.gbConnection.Controls.Add(this.txtHost);
             this.gbConnection.Controls.Add(this.lblTcpPort);
-            this.gbConnection.Controls.Add(this.lblIpAddress);
+            this.gbConnection.Controls.Add(this.lblHost);
             this.gbConnection.Location = new System.Drawing.Point(12, 104);
             this.gbConnection.Name = "gbConnection";
             this.gbConnection.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbConnection.Size = new System.Drawing.Size(330, 78);
+            this.gbConnection.Size = new System.Drawing.Size(330, 104);
             this.gbConnection.TabIndex = 1;
             this.gbConnection.TabStop = false;
             this.gbConnection.Text = "Соединение";
             // 
-            // pbIpAddressHint
+            // pbReconnectAfterHint
             // 
-            this.pbIpAddressHint.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
-            this.pbIpAddressHint.Location = new System.Drawing.Point(301, 21);
-            this.pbIpAddressHint.Name = "pbIpAddressHint";
-            this.pbIpAddressHint.Size = new System.Drawing.Size(16, 16);
-            this.pbIpAddressHint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pbIpAddressHint.TabIndex = 6;
-            this.pbIpAddressHint.TabStop = false;
-            this.toolTip.SetToolTip(this.pbIpAddressHint, "Удалённый IP-адрес при использовании общего соединения.");
+            this.pbReconnectAfterHint.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
+            this.pbReconnectAfterHint.Location = new System.Drawing.Point(301, 73);
+            this.pbReconnectAfterHint.Name = "pbReconnectAfterHint";
+            this.pbReconnectAfterHint.Size = new System.Drawing.Size(16, 16);
+            this.pbReconnectAfterHint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pbReconnectAfterHint.TabIndex = 9;
+            this.pbReconnectAfterHint.TabStop = false;
+            this.toolTip.SetToolTip(this.pbReconnectAfterHint, "Задаёт интервал времени для повторного подключения после неудачной попытки.");
+            // 
+            // lblReconnectAfter
+            // 
+            this.lblReconnectAfter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblReconnectAfter.Location = new System.Drawing.Point(13, 75);
+            this.lblReconnectAfter.Name = "lblReconnectAfter";
+            this.lblReconnectAfter.Size = new System.Drawing.Size(126, 13);
+            this.lblReconnectAfter.TabIndex = 4;
+            this.lblReconnectAfter.Text = "Переподключение, с";
+            this.lblReconnectAfter.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // numReconnectAfter
+            // 
+            this.numReconnectAfter.Location = new System.Drawing.Point(145, 71);
+            this.numReconnectAfter.Maximum = new decimal(new int[] {
+            3600,
+            0,
+            0,
+            0});
+            this.numReconnectAfter.Name = "numReconnectAfter";
+            this.numReconnectAfter.Size = new System.Drawing.Size(150, 20);
+            this.numReconnectAfter.TabIndex = 5;
+            this.numReconnectAfter.Value = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            // 
+            // pbHostHint
+            // 
+            this.pbHostHint.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
+            this.pbHostHint.Location = new System.Drawing.Point(301, 21);
+            this.pbHostHint.Name = "pbHostHint";
+            this.pbHostHint.Size = new System.Drawing.Size(16, 16);
+            this.pbHostHint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pbHostHint.TabIndex = 6;
+            this.pbHostHint.TabStop = false;
+            this.toolTip.SetToolTip(this.pbHostHint, "Удалённое DNS-имя или IP-адрес при использовании общего соединения.");
             // 
             // pbTcpPortHint
             // 
@@ -222,13 +268,13 @@
             0});
             this.numTcpPort.ValueChanged += new System.EventHandler(this.control_Changed);
             // 
-            // txtIpAddress
+            // txtHost
             // 
-            this.txtIpAddress.Location = new System.Drawing.Point(145, 19);
-            this.txtIpAddress.Name = "txtIpAddress";
-            this.txtIpAddress.Size = new System.Drawing.Size(150, 20);
-            this.txtIpAddress.TabIndex = 1;
-            this.txtIpAddress.TextChanged += new System.EventHandler(this.control_Changed);
+            this.txtHost.Location = new System.Drawing.Point(145, 19);
+            this.txtHost.Name = "txtHost";
+            this.txtHost.Size = new System.Drawing.Size(150, 20);
+            this.txtHost.TabIndex = 1;
+            this.txtHost.TextChanged += new System.EventHandler(this.control_Changed);
             // 
             // lblTcpPort
             // 
@@ -240,15 +286,15 @@
             this.lblTcpPort.Text = "Удалённый TCP-порт";
             this.lblTcpPort.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // lblIpAddress
+            // lblHost
             // 
-            this.lblIpAddress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblIpAddress.Location = new System.Drawing.Point(13, 23);
-            this.lblIpAddress.Name = "lblIpAddress";
-            this.lblIpAddress.Size = new System.Drawing.Size(126, 13);
-            this.lblIpAddress.TabIndex = 0;
-            this.lblIpAddress.Text = "Удалённый IP-адрес";
-            this.lblIpAddress.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lblHost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblHost.Location = new System.Drawing.Point(13, 23);
+            this.lblHost.Name = "lblHost";
+            this.lblHost.Size = new System.Drawing.Size(126, 13);
+            this.lblHost.TabIndex = 0;
+            this.lblHost.Text = "Удалённый хост";
+            this.lblHost.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // toolTip
             // 
@@ -260,7 +306,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(354, 223);
+            this.ClientSize = new System.Drawing.Size(354, 249);
             this.Controls.Add(this.gbConnection);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.btnCancel);
@@ -279,7 +325,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbConnModeHint)).EndInit();
             this.gbConnection.ResumeLayout(false);
             this.gbConnection.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbIpAddressHint)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbReconnectAfterHint)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numReconnectAfter)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbHostHint)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbTcpPortHint)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTcpPort)).EndInit();
             this.ResumeLayout(false);
@@ -297,13 +345,16 @@
         private System.Windows.Forms.Label lblConnMode;
         private System.Windows.Forms.GroupBox gbConnection;
         private System.Windows.Forms.Label lblTcpPort;
-        private System.Windows.Forms.Label lblIpAddress;
-        private System.Windows.Forms.TextBox txtIpAddress;
+        private System.Windows.Forms.Label lblHost;
+        private System.Windows.Forms.TextBox txtHost;
         private System.Windows.Forms.NumericUpDown numTcpPort;
         private System.Windows.Forms.PictureBox pbConnModeHint;
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.PictureBox pbTcpPortHint;
         private System.Windows.Forms.PictureBox pbBehaviorHint;
-        private System.Windows.Forms.PictureBox pbIpAddressHint;
+        private System.Windows.Forms.PictureBox pbHostHint;
+        private System.Windows.Forms.NumericUpDown numReconnectAfter;
+        private System.Windows.Forms.PictureBox pbReconnectAfterHint;
+        private System.Windows.Forms.Label lblReconnectAfter;
     }
 }

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2017
  */
 
 using Scada.UI;
@@ -77,8 +77,9 @@ namespace Scada.Comm.Channels.UI
             cbBehavior.Text = settings.Behavior.ToString();
             cbConnMode.SetSelectedItem(settings.ConnMode, 
                 new Dictionary<string, int>() { { "Individual", 0 }, { "Shared", 1 } });
-            txtIpAddress.Text = settings.IpAddress;
+            txtHost.Text = settings.Host;
             numTcpPort.SetValue(settings.TcpPort);
+            numReconnectAfter.SetValue(settings.ReconnectAfter);
 
             modified = false;
         }
@@ -90,32 +91,41 @@ namespace Scada.Comm.Channels.UI
 
         private void cbConnMode_SelectedIndexChanged(object sender, EventArgs e)
         {
-            txtIpAddress.Enabled = cbConnMode.SelectedIndex == 1; // Shared
+            bool sharedConnMode = cbConnMode.SelectedIndex == 1;
+            txtHost.Enabled = sharedConnMode;
+            numReconnectAfter.Enabled = !sharedConnMode;
             modified = true;
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            // изменение настроек в соответствии с элементами управления
-            if (modified)
-            {
-                settings.Behavior = cbBehavior.ParseText<CommChannelLogic.OperatingBehaviors>();
-                settings.ConnMode = (CommTcpChannelLogic.ConnectionModes)cbConnMode.GetSelectedItem(
-                    new Dictionary<int, object>() { 
-                        { 0, CommTcpChannelLogic.ConnectionModes.Individual }, 
+            CommTcpChannelLogic.ConnectionModes newConnMode = 
+                (CommTcpChannelLogic.ConnectionModes)cbConnMode.GetSelectedItem(
+                    new Dictionary<int, object>() {
+                        { 0, CommTcpChannelLogic.ConnectionModes.Individual },
                         { 1, CommTcpChannelLogic.ConnectionModes.Shared } });
-                settings.IpAddress = txtIpAddress.Text;
-                settings.TcpPort = Convert.ToInt32(numTcpPort.Value);
 
-                settings.SetCommCnlParams(commCnlParams);
+            if (newConnMode == CommTcpChannelLogic.ConnectionModes.Shared &&
+                string.IsNullOrWhiteSpace(txtHost.Text)) // проверка настроек
+            {
+                ScadaUiUtils.ShowError(CommPhrases.HostRequired);
             }
-
-            // проверка настроек
-            if (settings.ConnMode == CommTcpChannelLogic.ConnectionModes.Shared &&
-                string.IsNullOrWhiteSpace(settings.IpAddress))
-                ScadaUiUtils.ShowError(CommPhrases.IpAddressRequired);
             else
+            {
+                // изменение настроек в соответствии с элементами управления
+                if (modified)
+                {
+                    settings.Behavior = cbBehavior.ParseText<CommChannelLogic.OperatingBehaviors>();
+                    settings.ConnMode = newConnMode;
+                    settings.Host = txtHost.Text;
+                    settings.TcpPort = Convert.ToInt32(numTcpPort.Value);
+                    settings.ReconnectAfter = Convert.ToInt32(numReconnectAfter.Value);
+
+                    settings.SetCommCnlParams(commCnlParams);
+                }
+
                 DialogResult = DialogResult.OK;
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

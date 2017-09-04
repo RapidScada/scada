@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2017
  */
 
 using System;
@@ -49,13 +49,13 @@ namespace Scada.Comm.Channels
                 else if (commCnlType.Equals(CommUdpLogic.CommCnlType, StringComparison.OrdinalIgnoreCase))
                     return new CommUdpLogic();
                 else
-                    throw new Exception(Localization.UseRussian ?
+                    throw new ScadaException(Localization.UseRussian ?
                         "Неизвестный канал связи." :
                         "Unknown communication channel.");
             }
             catch (Exception ex)
             {
-                throw new Exception(string.Format(Localization.UseRussian ?
+                throw new ScadaException(string.Format(Localization.UseRussian ?
                     "Ошибка при создании экземпляра класса канала связи {0}: {1}" :
                     "Error creating communication channel logic instance of the class {0}: {1}", 
                     commCnlType, ex.Message), ex);

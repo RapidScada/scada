@@ -58,7 +58,7 @@ namespace Scada.Comm
         /// <summary>
         /// Версия Коммуникатора
         /// </summary>
-        public const string AppVersion = "5.0.2.0";
+        public const string AppVersion = "5.1.0.0";
 
         /// <summary>
         /// Формат даты и времени для вывода в журнал линии связи
@@ -150,37 +150,51 @@ namespace Scada.Comm
                 sbResult.Insert(0, "0");
             return sbResult.ToString();
         }
-        
+
         /// <summary>
-        /// Извлечь IP-адрес и порт из позывного КП
+        /// Извлечь хост и порт из позывного КП
         /// </summary>
-        public static void ExtractAddrAndPort(string callNum, int defaultPort, out IPAddress addr, out int port)
+        public static void ExtractHostAndPort(string callNum, int defaultPort, out string host, out int port)
         {
-            string addrStr;
             string portStr;
             int ind = callNum.IndexOf(':');
 
             if (ind >= 0)
             {
-                addrStr = callNum.Substring(0, ind);
+                host = callNum.Substring(0, ind);
                 portStr = callNum.Substring(ind + 1);
             }
             else
             {
-                addrStr = callNum;
+                host = callNum;
                 portStr = "";
             }
 
-            try
-            { 
-                addr = IPAddress.Parse(addrStr);
-                port = portStr == "" ? defaultPort : int.Parse(portStr);
+            if (portStr == "")
+            {
+                port = defaultPort;
             }
-            catch (FormatException) 
-            { 
-                throw new FormatException(Localization.UseRussian ? 
-                    "Некорректный IP-адрес или порт." : 
-                    "IP address or port is incorrect."); 
+            else if (!(int.TryParse(portStr, out port) && port > 0))
+            {
+                throw new FormatException(Localization.UseRussian ?
+                    "Некорректный порт." :
+                    "Port is incorrect.");
+            }
+        }
+
+        /// <summary>
+        /// Извлечь IP-адрес и порт из позывного КП
+        /// </summary>
+        public static void ExtractAddrAndPort(string callNum, int defaultPort, out IPAddress addr, out int port)
+        {
+            string host;
+            ExtractHostAndPort(callNum, defaultPort, out host, out port);
+
+            if (!IPAddress.TryParse(host, out addr))
+            {
+                throw new FormatException(Localization.UseRussian ?
+                    "Некорректный IP-адрес." :
+                    "IP address is incorrect.");
             }
         }
 

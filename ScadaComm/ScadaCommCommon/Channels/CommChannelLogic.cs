@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2017
  */
 
 using Scada.Comm.Devices;
@@ -168,7 +168,7 @@ namespace Scada.Comm.Channels
             foreach (KPLogic kpLogic in kpList)
             {
                 if (!kpLogic.CheckBehaviorSupport(Behavior))
-                    throw new Exception(string.Format(Localization.UseRussian ? 
+                    throw new ScadaException(string.Format(Localization.UseRussian ? 
                         "Поведение {0} канала связи не поддерживается {1}." : 
                         "{0} behavior of the communication channel is not supprted by {1}", 
                         Behavior, kpLogic.Caption));

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2017
  */
 
 #pragma warning disable 1591 // отключение warning CS1591: Missing XML comment for publicly visible type or member
@@ -50,7 +50,7 @@ namespace Scada.Comm
         public static string IncorrectLineSettings { get; private set; }
 
         // Словарь Scada.Comm.Channels.FrmCommTcpClientProps
-        public static string IpAddressRequired { get; private set; }
+        public static string HostRequired { get; private set; }
 
         // Словарь Scada.Comm.Devices
         public static string SaveKpSettingsConfirm { get; private set; }
@@ -95,7 +95,7 @@ namespace Scada.Comm
             IncorrectKPSettings = "Некорректные параметры КП {0}";
             IncorrectLineSettings = "Некорректная конфигурация линии связи {0}";
 
-            IpAddressRequired = "Требуется IP-адрес.";
+            HostRequired = "Требуется имя хоста.";
 
             SaveKpSettingsConfirm = "Настройки КП были изменены. Сохранить изменения?";
             LoadKpDllSettingsError = "Ошибка при загрузке настроек библиотеки КП";
@@ -173,7 +173,9 @@ namespace Scada.Comm
             }
 
             if (Localization.Dictionaries.TryGetValue("Scada.Comm.Channels.FrmCommTcpClientProps", out dict))
-                IpAddressRequired = dict.GetPhrase("IpAddressRequired", IpAddressRequired);
+            {
+                HostRequired = dict.GetPhrase("HostRequired", HostRequired);
+            }
 
             if (Localization.Dictionaries.TryGetValue("Scada.Comm.Devices", out dict))
             {
