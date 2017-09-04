@@ -761,7 +761,7 @@ namespace Scada.Comm
                     paramsElem.AppendParamElem("CmdEnabled", commLine.CmdEnabled,
                         "Команды ТУ разрешены", "Commands enabled");
                     paramsElem.AppendParamElem("ReqAfterCmd", commLine.ReqAfterCmd,
-                        "Запрос после команды ТУ", "Request after command");
+                        "Опрос КП после команды ТУ", "Request device after command");
                     paramsElem.AppendParamElem("DetailedLog", commLine.DetailedLog,
                         "Записывать в журнал подробную информацию", "Write detailed information to the log");
 

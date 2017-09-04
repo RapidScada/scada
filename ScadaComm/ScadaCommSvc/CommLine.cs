@@ -135,7 +135,7 @@ namespace Scada.Comm.Svc
         private int reqTriesCnt;          // количество попыток перезапроса КП при ошибке
         private int cycleDelay;           // пауза после цикла опроса, мс
         private bool cmdEnabled;          // разрешены ли команды ТУ
-        private bool reqAfterCmd;         // запрос после команды ТУ
+        private bool reqAfterCmd;         // опрос КП после команды ТУ
         private bool detailedLog;         // признак записи в журнал линии связи подробной информации
         private int sendAllDataPer;       // период передачи на сервер всех данных КП, с
         private AppDirs appDirs;          // директории приложения

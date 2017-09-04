@@ -48,6 +48,7 @@
     <Phrase key="lblReqTriesCnt">Device request retries count on error</Phrase>
     <Phrase key="lblCycleDelay">Delay after request cycle, ms</Phrase>
     <Phrase key="lblCmdEnabled">Commands enabled</Phrase>
+    <Phrase key="lblReqAfterCmd">Request device after command</Phrase>
     <Phrase key="lblDetailedLog">Detailed log</Phrase>
     <Phrase key="pageCustomParams">Custom Parameters</Phrase>
     <Phrase key="btnAddParam.ToolTip">Add parameter</Phrase>
