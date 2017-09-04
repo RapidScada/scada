@@ -211,6 +211,8 @@
             this.cmsKP = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miKpProps = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlMain = new System.Windows.Forms.Panel();
+            this.lblReqAfterCmd = new System.Windows.Forms.Label();
+            this.chkReqAfterCmd = new System.Windows.Forms.CheckBox();
             this.cmsLine.SuspendLayout();
             this.cmsNotify.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -1023,6 +1025,8 @@
             // 
             // gbLineParams
             // 
+            this.gbLineParams.Controls.Add(this.chkReqAfterCmd);
+            this.gbLineParams.Controls.Add(this.lblReqAfterCmd);
             this.gbLineParams.Controls.Add(this.lblDetailedLog);
             this.gbLineParams.Controls.Add(this.chkDetailedLog);
             this.gbLineParams.Controls.Add(this.lblCmdEnabled);
@@ -1031,10 +1035,10 @@
             this.gbLineParams.Controls.Add(this.numCycleDelay);
             this.gbLineParams.Controls.Add(this.numReqTriesCnt);
             this.gbLineParams.Controls.Add(this.lblReqTriesCnt);
-            this.gbLineParams.Location = new System.Drawing.Point(6, 301);
+            this.gbLineParams.Location = new System.Drawing.Point(6, 279);
             this.gbLineParams.Name = "gbLineParams";
             this.gbLineParams.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbLineParams.Size = new System.Drawing.Size(392, 128);
+            this.gbLineParams.Size = new System.Drawing.Size(392, 154);
             this.gbLineParams.TabIndex = 2;
             this.gbLineParams.TabStop = false;
             this.gbLineParams.Text = "Параметры связи";
@@ -1042,20 +1046,20 @@
             // lblDetailedLog
             // 
             this.lblDetailedLog.AutoSize = true;
-            this.lblDetailedLog.Location = new System.Drawing.Point(13, 101);
+            this.lblDetailedLog.Location = new System.Drawing.Point(13, 127);
             this.lblDetailedLog.Name = "lblDetailedLog";
             this.lblDetailedLog.Size = new System.Drawing.Size(105, 13);
-            this.lblDetailedLog.TabIndex = 6;
+            this.lblDetailedLog.TabIndex = 8;
             this.lblDetailedLog.Text = "Подробный журнал";
             this.lblDetailedLog.Click += new System.EventHandler(this.lblDetailedLog_Click);
             // 
             // chkDetailedLog
             // 
             this.chkDetailedLog.AutoSize = true;
-            this.chkDetailedLog.Location = new System.Drawing.Point(342, 101);
+            this.chkDetailedLog.Location = new System.Drawing.Point(342, 127);
             this.chkDetailedLog.Name = "chkDetailedLog";
             this.chkDetailedLog.Size = new System.Drawing.Size(15, 14);
-            this.chkDetailedLog.TabIndex = 7;
+            this.chkDetailedLog.TabIndex = 9;
             this.chkDetailedLog.UseVisualStyleBackColor = true;
             this.chkDetailedLog.CheckedChanged += new System.EventHandler(this.chkDetailedLog_CheckedChanged);
             // 
@@ -1143,7 +1147,7 @@
             this.gbCommChannel.Location = new System.Drawing.Point(6, 77);
             this.gbCommChannel.Name = "gbCommChannel";
             this.gbCommChannel.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbCommChannel.Size = new System.Drawing.Size(392, 218);
+            this.gbCommChannel.Size = new System.Drawing.Size(392, 196);
             this.gbCommChannel.TabIndex = 1;
             this.gbCommChannel.TabStop = false;
             this.gbCommChannel.Text = "Канал связи";
@@ -1155,7 +1159,7 @@
             this.txtCommCnlParams.Name = "txtCommCnlParams";
             this.txtCommCnlParams.ReadOnly = true;
             this.txtCommCnlParams.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtCommCnlParams.Size = new System.Drawing.Size(366, 133);
+            this.txtCommCnlParams.Size = new System.Drawing.Size(366, 111);
             this.txtCommCnlParams.TabIndex = 4;
             // 
             // lblCommCnlParams
@@ -2229,6 +2233,26 @@
             this.pnlMain.Size = new System.Drawing.Size(654, 465);
             this.pnlMain.TabIndex = 1;
             // 
+            // lblReqAfterCmd
+            // 
+            this.lblReqAfterCmd.AutoSize = true;
+            this.lblReqAfterCmd.Location = new System.Drawing.Point(13, 101);
+            this.lblReqAfterCmd.Name = "lblReqAfterCmd";
+            this.lblReqAfterCmd.Size = new System.Drawing.Size(144, 13);
+            this.lblReqAfterCmd.TabIndex = 6;
+            this.lblReqAfterCmd.Text = "Запрос после команды ТУ";
+            this.lblReqAfterCmd.Click += new System.EventHandler(this.lblReqAfterCmd_Click);
+            // 
+            // chkReqAfterCmd
+            // 
+            this.chkReqAfterCmd.AutoSize = true;
+            this.chkReqAfterCmd.Location = new System.Drawing.Point(342, 101);
+            this.chkReqAfterCmd.Name = "chkReqAfterCmd";
+            this.chkReqAfterCmd.Size = new System.Drawing.Size(15, 14);
+            this.chkReqAfterCmd.TabIndex = 7;
+            this.chkReqAfterCmd.UseVisualStyleBackColor = true;
+            this.chkReqAfterCmd.CheckedChanged += new System.EventHandler(this.chkReqAfterCmd_CheckedChanged);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2489,6 +2513,8 @@
         private System.Windows.Forms.Button btnCommCnlProps;
         private System.Windows.Forms.TextBox txtCommCnlParams;
         private System.Windows.Forms.Label lblCommCnlParams;
+        private System.Windows.Forms.Label lblReqAfterCmd;
+        private System.Windows.Forms.CheckBox chkReqAfterCmd;
     }
 }
 

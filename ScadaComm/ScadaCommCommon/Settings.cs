@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2008
- * Modified : 2015
+ * Modified : 2017
  */
 
 using Scada.Comm.Channels;
@@ -137,6 +137,7 @@ namespace Scada.Comm
                 ReqTriesCnt = 3;
                 CycleDelay = 0;
                 CmdEnabled = false;
+                ReqAfterCmd = false;
                 DetailedLog = true;
 
                 CustomParams = new SortedList<string, string>();
@@ -192,6 +193,10 @@ namespace Scada.Comm
             /// </summary>
             public bool CmdEnabled { get; set; }
             /// <summary>
+            /// Получить или установить необходимость опроса КП после команды ТУ
+            /// </summary>
+            public bool ReqAfterCmd { get; set; }
+            /// <summary>
             /// Получить или установить признак записи в журнал линии связи подробной информации
             /// </summary>
             public bool DetailedLog { get; set; }
@@ -225,6 +230,7 @@ namespace Scada.Comm
                 commLine.ReqTriesCnt = ReqTriesCnt;
                 commLine.CycleDelay = CycleDelay;
                 commLine.CmdEnabled = CmdEnabled;
+                commLine.ReqAfterCmd = ReqAfterCmd;
                 commLine.DetailedLog = DetailedLog;
 
                 commLine.CustomParams = new SortedList<string, string>();
@@ -525,6 +531,8 @@ namespace Scada.Comm
                             commLine.CycleDelay = int.Parse(val);
                         else if (nameL == "cmdenabled")
                             commLine.CmdEnabled = bool.Parse(val);
+                        else if (nameL == "reqaftercmd")
+                            commLine.ReqAfterCmd = bool.Parse(val);
                         else if (nameL == "detailedlog")
                             commLine.DetailedLog = bool.Parse(val);
                     }
@@ -752,6 +760,8 @@ namespace Scada.Comm
                         "Задержка после цикла опроса, мс", "Delay after request cycle, ms");
                     paramsElem.AppendParamElem("CmdEnabled", commLine.CmdEnabled,
                         "Команды ТУ разрешены", "Commands enabled");
+                    paramsElem.AppendParamElem("ReqAfterCmd", commLine.ReqAfterCmd,
+                        "Запрос после команды ТУ", "Request after command");
                     paramsElem.AppendParamElem("DetailedLog", commLine.DetailedLog,
                         "Записывать в журнал подробную информацию", "Write detailed information to the log");
 

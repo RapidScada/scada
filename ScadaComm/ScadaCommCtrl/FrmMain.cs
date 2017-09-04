@@ -741,6 +741,7 @@ namespace Scada.Comm.Ctrl
                 numReqTriesCnt.SetValue(lastLine.ReqTriesCnt);
                 numCycleDelay.SetValue(lastLine.CycleDelay);
                 chkCmdEnabled.Checked = lastLine.CmdEnabled;
+                chkReqAfterCmd.Checked = lastLine.ReqAfterCmd;
                 chkDetailedLog.Checked = lastLine.DetailedLog;
 
                 changing = false;
@@ -1971,6 +1972,20 @@ namespace Scada.Comm.Ctrl
         private void lblCmdEnabled_Click(object sender, EventArgs e)
         {
             chkCmdEnabled.Checked = !chkCmdEnabled.Checked;
+        }
+
+        private void chkReqAfterCmd_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!changing && lastLine != null)
+            {
+                lastLine.ReqAfterCmd = chkReqAfterCmd.Checked;
+                SetModified();
+            }
+        }
+
+        private void lblReqAfterCmd_Click(object sender, EventArgs e)
+        {
+            chkReqAfterCmd.Checked = !chkReqAfterCmd.Checked;
         }
 
         private void chkDetailedLog_CheckedChanged(object sender, EventArgs e)
