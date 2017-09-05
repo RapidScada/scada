@@ -254,6 +254,8 @@ namespace Scada.Comm.Channels
             {
                 // общее соединение для всех КП
                 sharedTcpConn = new TcpConnection(new TcpClient());
+                sharedTcpConn.ReconnectAfter = settings.ReconnectAfter;
+
                 foreach (KPLogic kpLogic in kpList)
                 {
                     kpLogic.Connection = sharedTcpConn;
