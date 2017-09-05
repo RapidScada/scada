@@ -222,6 +222,7 @@
             0,
             0,
             0});
+            this.numReconnectAfter.ValueChanged += new System.EventHandler(this.control_Changed);
             // 
             // pbHostHint
             // 

@@ -376,7 +376,8 @@ namespace Scada.Comm.Channels
                 }
                 else
                 {
-                    WriteToLog(reason);
+                    WriteToLog("");
+                    WriteToLog(string.Format("{0} {1}", CommUtils.GetNowDT(), reason));
                 }
             }
         }
