@@ -91,9 +91,7 @@ namespace Scada.Comm.Channels.UI
 
         private void cbConnMode_SelectedIndexChanged(object sender, EventArgs e)
         {
-            bool sharedConnMode = cbConnMode.SelectedIndex == 1;
-            txtHost.Enabled = sharedConnMode;
-            numReconnectAfter.Enabled = !sharedConnMode;
+            txtHost.Enabled = cbConnMode.SelectedIndex == 1; // Shared
             modified = true;
         }
 

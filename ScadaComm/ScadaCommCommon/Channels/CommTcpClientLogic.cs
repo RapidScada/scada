@@ -100,11 +100,9 @@ namespace Scada.Comm.Channels
             /// </summary>
             public void SetCommCnlParams(SortedList<string, string> commCnlParams)
             {
-                bool sharedConnMode = ConnMode == ConnectionModes.Shared;
-                commCnlParams["Host"] = sharedConnMode ? Host : "";
+                commCnlParams["Host"] = ConnMode == ConnectionModes.Shared ? Host : "";
                 commCnlParams["TcpPort"] = TcpPort.ToString();
-                commCnlParams["ReconnectAfter"] = 
-                    (sharedConnMode ? TcpConnection.DefaultReconnectAfter : ReconnectAfter).ToString();
+                commCnlParams["ReconnectAfter"] = ReconnectAfter.ToString();
                 commCnlParams["Behavior"] = Behavior.ToString();
                 commCnlParams["ConnMode"] = ConnMode.ToString();
             }
