@@ -259,7 +259,7 @@
     <Phrase key="SaveKpDllSettingsError">Error saving device library settings</Phrase>
     <Phrase key="LoadKpSettingsError">Error loading device settings</Phrase>
     <Phrase key="SaveKpSettingsError">Error saving device settings</Phrase>
-    <Phrase key="SettingsRequired">Create the settings and restart the Communicator service</Phrase>
+    <Phrase key="ConfigureKp">Create the device settings and restart the Communicator service</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Devices.KPFactory">
     <Phrase key="GetViewTypeError">Error getting device interface type from the library {0}</Phrase>

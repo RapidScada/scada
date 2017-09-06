@@ -58,7 +58,7 @@ namespace Scada.Comm
         public static string SaveKpDllSettingsError { get; private set; }
         public static string LoadKpSettingsError { get; private set; }
         public static string SaveKpSettingsError { get; private set; }
-        public static string SettingsRequired { get; private set; }
+        public static string ConfigureKp { get; private set; }
 
         // Словарь Scada.Comm.Devices.KPFactory
         public static string GetViewTypeError { get; private set; }
@@ -74,6 +74,7 @@ namespace Scada.Comm
         public static string WriteDataError { get; private set; }
         public static string WriteLineError { get; private set; }
         public static string ClearDataStreamError { get; private set; }
+        public static string NormalKpExecImpossible { get; private set; }
         public static string IllegalCommand { get; private set; }
         public static string IncorrectCmdData { get; private set; }
         public static string NoCmdData { get; private set; }
@@ -103,7 +104,7 @@ namespace Scada.Comm
             SaveKpDllSettingsError = "Ошибка при сохранении настроек библиотеки КП";
             LoadKpSettingsError = "Ошибка при загрузке настроек КП";
             SaveKpSettingsError = "Ошибка при сохранении настроек КП";
-            SettingsRequired = "Создайте настройки и перезапустите службу Коммуникатора.";
+            ConfigureKp = "Создайте настройки КП и перезапустите службу Коммуникатора.";
 
             GetViewTypeError = "Ошибка при получении типа интерфейса КП из библиотеки {0}";
             CreateViewError = "Ошибка при создании экземпляра класса интерфейса КП {0}";
@@ -122,6 +123,7 @@ namespace Scada.Comm
                 WriteDataError = "Ошибка при записи данных";
                 WriteLineError = "Ошибка при записи строки";
                 ClearDataStreamError = "Ошибка при очистке потока данных";
+                NormalKpExecImpossible = "Нормальная работа КП невозможна";
                 IllegalCommand = "Недопустимая команда";
                 IncorrectCmdData = "Некорректные данные команды";
                 NoCmdData = "Отсутствуют данные команды";
@@ -144,6 +146,7 @@ namespace Scada.Comm
                 WriteDataError = "Error writing data";
                 WriteLineError = "Error writing line";
                 ClearDataStreamError = "Error clearing data stream";
+                NormalKpExecImpossible = "Normal device execution is impossible";
                 IllegalCommand = "Illegal command";
                 IncorrectCmdData = "Incorrect command data";
                 NoCmdData = "No command data";
@@ -186,7 +189,7 @@ namespace Scada.Comm
                 SaveKpDllSettingsError = dict.GetPhrase("SaveKpDllSettingsError", SaveKpDllSettingsError);
                 LoadKpSettingsError = dict.GetPhrase("LoadKpSettingsError", LoadKpSettingsError);
                 SaveKpSettingsError = dict.GetPhrase("SaveKpSettingsError", SaveKpSettingsError);
-                SettingsRequired = dict.GetPhrase("SettingsRequired", SettingsRequired);
+                ConfigureKp = dict.GetPhrase("ConfigureKp", ConfigureKp);
             }
 
             if (Localization.Dictionaries.TryGetValue("Scada.Comm.Devices.KPFactory", out dict))
