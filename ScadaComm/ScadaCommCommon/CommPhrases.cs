@@ -58,6 +58,7 @@ namespace Scada.Comm
         public static string SaveKpDllSettingsError { get; private set; }
         public static string LoadKpSettingsError { get; private set; }
         public static string SaveKpSettingsError { get; private set; }
+        public static string SettingsRequired { get; private set; }
 
         // Словарь Scada.Comm.Devices.KPFactory
         public static string GetViewTypeError { get; private set; }
@@ -102,6 +103,7 @@ namespace Scada.Comm
             SaveKpDllSettingsError = "Ошибка при сохранении настроек библиотеки КП";
             LoadKpSettingsError = "Ошибка при загрузке настроек КП";
             SaveKpSettingsError = "Ошибка при сохранении настроек КП";
+            SettingsRequired = "Создайте настройки и перезапустите службу Коммуникатора.";
 
             GetViewTypeError = "Ошибка при получении типа интерфейса КП из библиотеки {0}";
             CreateViewError = "Ошибка при создании экземпляра класса интерфейса КП {0}";
@@ -184,6 +186,7 @@ namespace Scada.Comm
                 SaveKpDllSettingsError = dict.GetPhrase("SaveKpDllSettingsError", SaveKpDllSettingsError);
                 LoadKpSettingsError = dict.GetPhrase("LoadKpSettingsError", LoadKpSettingsError);
                 SaveKpSettingsError = dict.GetPhrase("SaveKpSettingsError", SaveKpSettingsError);
+                SettingsRequired = dict.GetPhrase("SettingsRequired", SettingsRequired);
             }
 
             if (Localization.Dictionaries.TryGetValue("Scada.Comm.Devices.KPFactory", out dict))
