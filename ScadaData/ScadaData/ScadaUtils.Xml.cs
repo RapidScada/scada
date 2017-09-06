@@ -195,6 +195,22 @@ namespace Scada
         }
 
         /// <summary>
+        /// Получить 64-битное целое значение дочернего XML-узла
+        /// </summary>
+        public static long GetChildAsLong(this XmlNode parentXmlNode, string childNodeName, long defaultVal = 0)
+        {
+            try
+            {
+                XmlNode node = parentXmlNode.SelectSingleNode(childNodeName);
+                return node == null ? defaultVal : long.Parse(node.InnerText);
+            }
+            catch (FormatException)
+            {
+                throw NewXmlNodeFormatException(childNodeName);
+            }
+        }
+
+        /// <summary>
         /// Получить вещественное значение дочернего XML-узла
         /// </summary>
         public static double GetChildAsDouble(this XmlNode parentXmlNode, string childNodeName, double defaultVal = 0)
@@ -301,6 +317,22 @@ namespace Scada
             {
                 return xmlElem.HasAttribute(attrName) ? 
                     int.Parse(xmlElem.GetAttribute(attrName)) : defaultVal;
+            }
+            catch (FormatException)
+            {
+                throw NewXmlAttrFormatException(attrName);
+            }
+        }
+
+        /// <summary>
+        /// Получить 64-битное целое значение атрибута XML-элемента
+        /// </summary>
+        public static long GetAttrAsLong(this XmlElement xmlElem, string attrName, long defaultVal = 0)
+        {
+            try
+            {
+                return xmlElem.HasAttribute(attrName) ?
+                    long.Parse(xmlElem.GetAttribute(attrName)) : defaultVal;
             }
             catch (FormatException)
             {
