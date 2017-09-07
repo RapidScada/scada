@@ -85,6 +85,8 @@ namespace Scada.Comm
         public static string ResponseCrcError { get; private set; }
         public static string IncorrectResponseLength { get; private set; }
         public static string IncorrectResponseFormat { get; private set; }
+        public static string On { get; private set; }
+        public static string Off { get; private set; }
 
 
         private static void SetToDefault()
@@ -134,6 +136,8 @@ namespace Scada.Comm
                 ResponseCrcError = "Ошибка CRC!";
                 IncorrectResponseLength = "Некорректная длина ответа!";
                 IncorrectResponseFormat = "Некорректный формат ответа!";
+                On = "Вкл";
+                Off = "Откл";
             }
             else
             {
@@ -157,6 +161,8 @@ namespace Scada.Comm
                 ResponseCrcError = "CRC error!";
                 IncorrectResponseLength = "Incorrect response length!";
                 IncorrectResponseFormat = "Incorrect response format!";
+                On = "On";
+                Off = "Off";
             }
         }
 
