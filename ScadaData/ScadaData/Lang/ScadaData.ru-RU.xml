@@ -92,4 +92,12 @@
     <Phrase key="CompCodeIs">Код компьютера: {0}</Phrase>
     <Phrase key="RegistrationFailed">Ошибка регистрации.</Phrase>
   </Dictionary>
+  <Dictionary key="KeyGen.UI">
+    <Phrase key="lblCompCode">Код компьютера</Phrase>
+    <Phrase key="lblCompCodeTip">Перезапустите службу, чтобы получить код компьютера.</Phrase>
+    <Phrase key="lblRegKey">Регистрационный ключ</Phrase>
+    <Phrase key="llblGetPermanentKey">Заказать постоянный ключ</Phrase>
+    <Phrase key="llblGetTrialKey">Получить пробный ключ</Phrase>
+    <Phrase key="lblKeyStatus">Статус ключа</Phrase>
+  </Dictionary>
 </ScadaDataDictionaries>

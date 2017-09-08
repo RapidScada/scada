@@ -835,14 +835,11 @@ namespace Scada.Comm.Svc
             if (dirsExist)
             {
                 // локализация ScadaData.dll
-                if (!Localization.UseRussian)
-                {
-                    string errMsg;
-                    if (Localization.LoadDictionaries(AppDirs.LangDir, "ScadaData", out errMsg))
-                        CommonPhrases.Init();
-                    else
-                        AppLog.WriteAction(errMsg, Log.ActTypes.Error);
-                }
+                string errMsg;
+                if (Localization.LoadDictionaries(AppDirs.LangDir, "ScadaData", out errMsg))
+                    CommonPhrases.Init();
+                else
+                    AppLog.WriteAction(errMsg, Log.ActTypes.Error);
 
                 // запуск работы
                 if (!StartOperation())
