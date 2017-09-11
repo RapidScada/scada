@@ -40,6 +40,8 @@
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.gbConnection = new System.Windows.Forms.GroupBox();
+            this.pbStayConnectedHint = new System.Windows.Forms.PictureBox();
+            this.chkStayConnected = new System.Windows.Forms.CheckBox();
             this.pbReconnectAfterHint = new System.Windows.Forms.PictureBox();
             this.lblReconnectAfter = new System.Windows.Forms.Label();
             this.numReconnectAfter = new System.Windows.Forms.NumericUpDown();
@@ -54,6 +56,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbBehaviorHint)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbConnModeHint)).BeginInit();
             this.gbConnection.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbStayConnectedHint)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbReconnectAfterHint)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numReconnectAfter)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbHostHint)).BeginInit();
@@ -148,7 +151,7 @@
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(186, 214);
+            this.btnOK.Location = new System.Drawing.Point(186, 238);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 2;
@@ -158,7 +161,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(267, 214);
+            this.btnCancel.Location = new System.Drawing.Point(267, 238);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 3;
@@ -168,6 +171,8 @@
             // 
             // gbConnection
             // 
+            this.gbConnection.Controls.Add(this.pbStayConnectedHint);
+            this.gbConnection.Controls.Add(this.chkStayConnected);
             this.gbConnection.Controls.Add(this.pbReconnectAfterHint);
             this.gbConnection.Controls.Add(this.lblReconnectAfter);
             this.gbConnection.Controls.Add(this.numReconnectAfter);
@@ -180,10 +185,35 @@
             this.gbConnection.Location = new System.Drawing.Point(12, 104);
             this.gbConnection.Name = "gbConnection";
             this.gbConnection.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbConnection.Size = new System.Drawing.Size(330, 104);
+            this.gbConnection.Size = new System.Drawing.Size(330, 128);
             this.gbConnection.TabIndex = 1;
             this.gbConnection.TabStop = false;
             this.gbConnection.Text = "Соединение";
+            // 
+            // pbStayConnectedHint
+            // 
+            this.pbStayConnectedHint.Image = global::Scada.Comm.Properties.Resources.info_tooltip;
+            this.pbStayConnectedHint.Location = new System.Drawing.Point(301, 99);
+            this.pbStayConnectedHint.Name = "pbStayConnectedHint";
+            this.pbStayConnectedHint.Size = new System.Drawing.Size(16, 16);
+            this.pbStayConnectedHint.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pbStayConnectedHint.TabIndex = 11;
+            this.pbStayConnectedHint.TabStop = false;
+            this.toolTip.SetToolTip(this.pbStayConnectedHint, "Если параметр установлен, то соединение между сеансами связи сохраняется.\r\nВ прот" +
+        "ивном случае соединение разрывается после каждого сеанса.");
+            // 
+            // chkStayConnected
+            // 
+            this.chkStayConnected.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkStayConnected.AutoSize = true;
+            this.chkStayConnected.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkStayConnected.Location = new System.Drawing.Point(25, 99);
+            this.chkStayConnected.Name = "chkStayConnected";
+            this.chkStayConnected.Size = new System.Drawing.Size(134, 17);
+            this.chkStayConnected.TabIndex = 6;
+            this.chkStayConnected.Text = "Оставаться на связи";
+            this.chkStayConnected.UseVisualStyleBackColor = true;
+            this.chkStayConnected.CheckedChanged += new System.EventHandler(this.control_Changed);
             // 
             // pbReconnectAfterHint
             // 
@@ -307,7 +337,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(354, 249);
+            this.ClientSize = new System.Drawing.Size(354, 273);
             this.Controls.Add(this.gbConnection);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.btnCancel);
@@ -326,6 +356,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbConnModeHint)).EndInit();
             this.gbConnection.ResumeLayout(false);
             this.gbConnection.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbStayConnectedHint)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbReconnectAfterHint)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numReconnectAfter)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbHostHint)).EndInit();
@@ -357,5 +388,7 @@
         private System.Windows.Forms.NumericUpDown numReconnectAfter;
         private System.Windows.Forms.PictureBox pbReconnectAfterHint;
         private System.Windows.Forms.Label lblReconnectAfter;
+        private System.Windows.Forms.CheckBox chkStayConnected;
+        private System.Windows.Forms.PictureBox pbStayConnectedHint;
     }
 }

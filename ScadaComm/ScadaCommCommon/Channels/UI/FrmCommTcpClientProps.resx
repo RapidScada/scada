@@ -120,6 +120,9 @@
   <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
   <data name="pbConnModeHint.ToolTip" xml:space="preserve">
     <value>Индивидуальное - SCADA-Коммуникатор устанавливает отдельное TCP-соединение с каждым устройством.
 Общее - SCADA-Коммуникатор устанавливает одно общее соединение для всех устройств на линии связи, 

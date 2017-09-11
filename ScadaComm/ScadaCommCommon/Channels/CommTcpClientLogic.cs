@@ -53,6 +53,7 @@ namespace Scada.Comm.Channels
                 Host = "";
                 TcpPort = 502; // порт, используемый Modbus TCP по умолчанию
                 ReconnectAfter = TcpConnection.DefaultReconnectAfter;
+                StayConnected = true;
                 Behavior = OperatingBehaviors.Master;
                 ConnMode = ConnectionModes.Individual;
             }
@@ -69,6 +70,10 @@ namespace Scada.Comm.Channels
             /// Получить или установить интервал повторного подключения, с
             /// </summary>
             public int ReconnectAfter { get; set; }
+            /// <summary>
+            /// Получить или установить признак, что необходимо оставаться на связи
+            /// </summary>
+            public bool StayConnected { get; set; }
             /// <summary>
             /// Получить или установить режим работы канала связи
             /// </summary>
@@ -92,6 +97,7 @@ namespace Scada.Comm.Channels
 
                 TcpPort = commCnlParams.GetIntParam("TcpPort", requireParams && sharedConnMode, TcpPort);
                 ReconnectAfter = commCnlParams.GetIntParam("ReconnectAfter", false, ReconnectAfter);
+                StayConnected = commCnlParams.GetBoolParam("StayConnected", false, StayConnected);
                 Behavior = commCnlParams.GetEnumParam("Behavior", false, Behavior);
             }
 
@@ -103,6 +109,7 @@ namespace Scada.Comm.Channels
                 commCnlParams["Host"] = ConnMode == ConnectionModes.Shared ? Host : "";
                 commCnlParams["TcpPort"] = TcpPort.ToString();
                 commCnlParams["ReconnectAfter"] = ReconnectAfter.ToString();
+                commCnlParams["StayConnected"] = StayConnected.ToString();
                 commCnlParams["Behavior"] = Behavior.ToString();
                 commCnlParams["ConnMode"] = ConnMode.ToString();
             }
@@ -387,8 +394,8 @@ namespace Scada.Comm.Channels
         /// </summary>
         public override void AfterSession(KPLogic kpLogic)
         {
-            // разрыв соединения, если сеанс опроса КП завершён с ошибкой
-            if (kpLogic.WorkState == KPLogic.WorkStates.Error && Behavior == OperatingBehaviors.Master)
+            // разрыв соединения согласно настройкам, а также если сеанс опроса КП завершён с ошибкой
+            if (!settings.StayConnected || kpLogic.WorkState == KPLogic.WorkStates.Error)
             {
                 TcpConnection tcpConn = kpLogic.Connection as TcpConnection;
                 if (tcpConn != null && tcpConn.Connected)

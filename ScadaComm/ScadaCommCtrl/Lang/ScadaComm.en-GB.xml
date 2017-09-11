@@ -208,6 +208,8 @@
     <Phrase key="pbTcpPortHint.ToolTip">In individual connection mode it is used as a default TCP port if no port is specified for a device.&#13;&#10;In shared connection mode the parameter is required.&#13;&#10;The 502 port is the default Modbus TCP port.</Phrase>
     <Phrase key="lblReconnectAfter">Reconnect, sec</Phrase>
     <Phrase key="pbReconnectAfterHint.ToolTip">Specifies time interval to reconnect after an unsuccessful attempt.</Phrase>
+    <Phrase key="chkStayConnected">Stay connected</Phrase>
+    <Phrase key="pbStayConnectedHint.ToolTip">If set, the connection is active between communication sessions.&#13;&#10;Otherwise, the connection is terminated after each session.</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
     <Phrase key="HostRequired">Host is required.</Phrase>

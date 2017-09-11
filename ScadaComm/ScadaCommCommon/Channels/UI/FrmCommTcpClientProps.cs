@@ -80,6 +80,7 @@ namespace Scada.Comm.Channels.UI
             txtHost.Text = settings.Host;
             numTcpPort.SetValue(settings.TcpPort);
             numReconnectAfter.SetValue(settings.ReconnectAfter);
+            chkStayConnected.Checked = settings.StayConnected;
 
             modified = false;
         }
@@ -118,6 +119,7 @@ namespace Scada.Comm.Channels.UI
                     settings.Host = txtHost.Text;
                     settings.TcpPort = Convert.ToInt32(numTcpPort.Value);
                     settings.ReconnectAfter = Convert.ToInt32(numReconnectAfter.Value);
+                    settings.StayConnected = chkStayConnected.Checked;
 
                     settings.SetCommCnlParams(commCnlParams);
                 }
