@@ -96,6 +96,7 @@
     <Content Include="content\en\modules\index.html" />
     <Content Include="content\en\modules\kp-telegram-files\bot_father.png" />
     <Content Include="content\en\modules\kp-telegram-files\new_group.png" />
+    <Content Include="content\en\modules\kp-telegram.html" />
     <Content Include="content\en\modules\mod-auto-control-files\mod_auto_control_en.png" />
     <Content Include="content\en\modules\mod-db-export.html" />
     <Content Include="content\en\modules\mod-rapid-gate.html" />
@@ -125,7 +126,9 @@
     <Content Include="content\ru\modules\kp-telegram-files\kp_telegram_config_ru.png" />
     <Content Include="content\ru\modules\kp-telegram-files\kp_telegram_reg_ru.png" />
     <Content Include="content\ru\modules\kp-telegram-files\new_group.png" />
+    <Content Include="content\en\modules\kp-telegram-files\send_cmd_en.png" />
     <Content Include="content\ru\modules\kp-telegram-files\send_cmd_ru.png" />
+    <Content Include="content\en\modules\kp-telegram-files\test_group_en.png" />
     <Content Include="content\ru\modules\kp-telegram-files\test_group_ru.png" />
     <Content Include="content\ru\modules\kp-telegram.html" />
     <Content Include="content\ru\modules\mod-auto-control-files\mod_auto_control_ru.png" />
