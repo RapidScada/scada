@@ -45,7 +45,7 @@ namespace ScadaAdmin
         /// <summary>
         /// Задержка перед созданием архива для надежного закрытия соединения с БД, мс
         /// </summary>
-        private const int ZipDelay = 500;
+        private const int ZipDelay = 200;
 
 
         /// <summary>
@@ -478,8 +478,9 @@ namespace ScadaAdmin
 
                 // резервирование
                 bool wasConnected = AppData.Connected;
-                string backupFileName = backupDir + Path.GetFileNameWithoutExtension(baseSDFFileName) +
-                    DateTime.Now.ToString("_yyyy-MM-dd_HH-mm-ss") + ".zip";
+                string backupPrefix = backupDir + Path.GetFileNameWithoutExtension(baseSDFFileName) +
+                    DateTime.Now.ToString("_yyyy-MM-dd_HH-mm-ss");
+                string backupFileName = backupPrefix + ".zip";
 
                 try
                 {
@@ -489,12 +490,19 @@ namespace ScadaAdmin
                         Thread.Sleep(ZipDelay);
                     }
 
+                    // создание временной копии базы конфигурации
+                    string tempFileName = backupPrefix + Path.GetExtension(baseSDFFileName);
+                    File.Copy(baseSDFFileName, tempFileName, true);
+
                     // создание архива
                     using (ZipFile zip = new ZipFile())
                     {
-                        zip.AddFile(baseSDFFileName, "");
+                        zip.AddFile(tempFileName, "");
                         zip.Save(backupFileName);
                     }
+
+                    // удаление временного файла
+                    File.Delete(tempFileName);
                 }
                 finally
                 {
