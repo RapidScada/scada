@@ -104,8 +104,13 @@ a:hover {
   text-align: center;
   margin: 20px 0 20px;
 }
-.sd-article-image img {
+.sd-article-image img,
+img.sd-article-image {
   max-width: 100%;
+}
+.sd-article-image.border img,
+img.sd-article-image.border {
+  border: 1px solid #ddd;
 }
 table.sd-article-table {
   border-collapse: collapse;
