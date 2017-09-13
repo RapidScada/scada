@@ -478,9 +478,8 @@ namespace ScadaAdmin
 
                 // резервирование
                 bool wasConnected = AppData.Connected;
-                string backupPrefix = backupDir + Path.GetFileNameWithoutExtension(baseSDFFileName) +
-                    DateTime.Now.ToString("_yyyy-MM-dd_HH-mm-ss");
-                string backupFileName = backupPrefix + ".zip";
+                string backupFileName = backupDir + Path.GetFileNameWithoutExtension(baseSDFFileName) +
+                    DateTime.Now.ToString("_yyyy-MM-dd_HH-mm-ss") + ".zip";
 
                 try
                 {
@@ -491,7 +490,7 @@ namespace ScadaAdmin
                     }
 
                     // создание временной копии базы конфигурации
-                    string tempFileName = backupPrefix + Path.GetExtension(baseSDFFileName);
+                    string tempFileName = backupDir + Path.GetFileName(baseSDFFileName);
                     File.Copy(baseSDFFileName, tempFileName, true);
 
                     // создание архива
