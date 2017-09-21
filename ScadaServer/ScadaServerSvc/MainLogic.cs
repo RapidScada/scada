@@ -2188,7 +2188,8 @@ namespace Scada.Server.Svc
                                             CalcCnlData(inCnl, oldCnlData, ref newCnlData);
 
                                             // расчёт данных для усреднения
-                                            if (inCnl.Averaging && newCnlData.Stat > BaseValues.CnlStatuses.Undefined &&
+                                            if (inCnl.Averaging && 
+                                                newCnlData.Stat > BaseValues.CnlStatuses.Undefined &&
                                                 newCnlData.Stat != BaseValues.CnlStatuses.FormulaError &&
                                                 newCnlData.Stat != BaseValues.CnlStatuses.Unreliable)
                                             {
