@@ -317,47 +317,5 @@ namespace Scada.Comm.Channels
 
             return sbInfo.ToString();
         }
-
-        /// <summary>
-        /// Найти КП на линии связи
-        /// </summary>
-        /// <remarks>Временно, необходимо перенести в класс линии связи</remarks>
-        public KPLogic FindKPLogic(int address, string callNum)
-        {
-            return null;
-            /*bool addrEmpty = address <= 0;
-            bool callNumEmpty = string.IsNullOrEmpty(callNum);
-
-            if (addrEmpty && callNumEmpty)
-            {
-                return null;
-            }
-            else if (addrEmpty)
-            {
-                // поиск в словаре по позывному
-                KPLogic foundKPLogic;
-                return kpCallNumDict.TryGetValue(callNum, out foundKPLogic) ? foundKPLogic : null;
-            }
-            else if (callNumEmpty)
-            {
-                // поиск в словаре по адресу
-                KPLogic foundKPLogic;
-                return kpAddrDict.TryGetValue(address, out foundKPLogic) ? foundKPLogic : null;
-            }
-            else
-            {
-                // поиск в списке по адресу и позывному
-                KPLogic foundKPLogic = null;
-                foreach (KPLogic kpLogic in kpList)
-                {
-                    if (kpLogic.Address == address && kpLogic.CallNum == callNum)
-                    {
-                        foundKPLogic = kpLogic;
-                        break;
-                    }
-                }
-                return foundKPLogic;
-            }*/
-        }
     }
 }
