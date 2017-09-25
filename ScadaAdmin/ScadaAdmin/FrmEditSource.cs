@@ -42,8 +42,16 @@ namespace ScadaAdmin
         public FrmEditSource()
         {
             InitializeComponent();
+
+            Source = "";
+            MaxLength = 1000;
         }
 
+
+        /// <summary>
+        /// Получить или установить макс. длину исходного кода
+        /// </summary>
+        public int MaxLength { get; set; }
 
         /// <summary>
         /// Получить или установить исходный код
@@ -56,7 +64,9 @@ namespace ScadaAdmin
             // перевод формы
             Translator.TranslateForm(this, "ScadaAdmin.FrmEditSource");
             // вывод исходного кода
-            txtSource.Text = Source; 
+            txtSource.MaxLength = MaxLength;
+            Source = Source ?? "";
+            txtSource.Text = Source.Length <= MaxLength ? Source : Source.Substring(0, MaxLength); 
         }
 
         private void txtSource_TextChanged(object sender, EventArgs e)
