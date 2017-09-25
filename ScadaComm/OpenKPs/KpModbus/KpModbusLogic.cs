@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2015
- * 
- * Description
- * Interacting with controllers via Modbus protocol.
+ * Modified : 2017
  */
 
 using Scada.Comm.Devices.KpModbus;
@@ -111,25 +108,6 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Установка неопределённого статуса тегов КП, соотвующих элементам группы
-        /// </summary>
-        private void InvalTagsData(Modbus.ElemGroup elemGroup)
-        {
-            if (elemGroup == null)
-            {
-                int len = KPTags == null ? 0 : KPTags.Length;
-                for (int i = 0; i < len; i++)
-                    SetCurData(i, curData[i].Val, BaseValues.CnlStatuses.Undefined);
-            }
-            else
-            {
-                int len = elemGroup.ElemVals.Length;
-                for (int i = 0, j = elemGroup.StartKPTagInd + i; i < len; i++, j++)
-                    SetCurData(j, curData[j].Val, BaseValues.CnlStatuses.Undefined);
-            }
-        }
-
-        /// <summary>
         /// Преобразовать данные тега КП в строку
         /// </summary>
         protected override string ConvertTagDataToStr(int signal, SrezTableLight.CnlData tagData)
@@ -191,7 +169,7 @@ namespace Scada.Comm.Devices
                         while (elemGroupInd < elemGroupCnt)
                         {
                             elemGroup = elemGroups[elemGroupInd];
-                            InvalTagsData(elemGroup);
+                            InvalidateCurData(elemGroup.StartKPTagInd, elemGroup.ElemVals.Length);
                             elemGroupInd++;
                         }
                     }
