@@ -55,7 +55,7 @@ namespace Scada.Comm.Devices
             }
             catch (Exception ex)
             {
-                throw new Exception(string.Format(Localization.UseRussian ?
+                throw new ScadaException(string.Format(Localization.UseRussian ?
                     "Ошибка при получении типа логики КП из библиотеки {0}: {1}" :
                     "Error getting device logic type from the library {0}: {1}", dllName, ex.Message), ex);
             }
@@ -77,7 +77,7 @@ namespace Scada.Comm.Devices
             }
             catch (Exception ex)
             {
-                throw new Exception(string.Format(Localization.UseRussian ?
+                throw new ScadaException(string.Format(Localization.UseRussian ?
                     "Ошибка при создании экземпляра класса логики КП {0}: {1}" :
                     "Error creating device logic instance of the class {0}: {1}", kpLogicType.Name, ex.Message), ex);
             }
@@ -96,7 +96,7 @@ namespace Scada.Comm.Devices
             }
             catch (Exception ex)
             {
-                throw new Exception(string.Format(CommPhrases.GetViewTypeError, dllName) +
+                throw new ScadaException(string.Format(CommPhrases.GetViewTypeError, dllName) +
                     ":\r\n" + ex.Message, ex);
             }
         }
@@ -126,7 +126,7 @@ namespace Scada.Comm.Devices
             }
             catch (Exception ex)
             {
-                throw new Exception(string.Format(CommPhrases.CreateViewError, kpViewType.Name) + 
+                throw new ScadaException(string.Format(CommPhrases.CreateViewError, kpViewType.Name) + 
                     ":\r\n" + ex.Message, ex);
             }
         }

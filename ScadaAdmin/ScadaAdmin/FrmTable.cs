@@ -561,8 +561,11 @@ namespace ScadaAdmin
                     {
                         // вызов формы редактирования исходного кода
                         dataGridView.EndEdit();
-                        FrmEditSource frmEditSource = new FrmEditSource();
-                        frmEditSource.Source = cell.Value.ToString();
+                        FrmEditSource frmEditSource = new FrmEditSource()
+                        {
+                            MaxLength = Table.Columns[colName].MaxLength,
+                            Source = cell.Value.ToString()
+                        };
 
                         if (frmEditSource.ShowDialog() == DialogResult.OK)
                         {

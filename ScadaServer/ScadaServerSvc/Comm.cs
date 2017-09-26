@@ -449,11 +449,11 @@ namespace Scada.Server.Svc
                 }
             }
         }
-        
+
         /// <summary>
         /// Проверить, содержит ли список групп безопасности заданную роль пользователя
         /// </summary>
-        public static bool GroupsContain(List<string> groups, string roleName)
+        private static bool GroupsContain(List<string> groups, string roleName)
         {
             roleName = "CN=" + roleName;
             foreach (string group in groups)
@@ -598,7 +598,7 @@ namespace Scada.Server.Svc
                                     CmdDescrs[cmd], client.Address), Log.ActTypes.Action);
 
                             // обработка команды
-                            ProcCommand(client, cmd, cmdLen);
+                            ProcCommCommand(client, cmd, cmdLen);
                         }
                     }
                 }
@@ -625,9 +625,9 @@ namespace Scada.Server.Svc
         }
         
         /// <summary>
-        /// Обработать полученную команду
+        /// Обработать команду протокола обмена данными
         /// </summary>
-        private void ProcCommand(ClientInfo client, byte cmd, int cmdLen)
+        private void ProcCommCommand(ClientInfo client, byte cmd, int cmdLen)
         {
             bool sendResp = true;    // отправить ответ на команду
             int respDataLen = 0;     // длина данных ответа на команду
@@ -796,18 +796,7 @@ namespace Scada.Server.Svc
                             Command ctrlCmd = new Command(cmdTypeID);
                             ctrlCmd.CmdData = new byte[BitConverter.ToUInt16(inBuf, 8)];
                             Array.Copy(inBuf, 10, ctrlCmd.CmdData, 0, ctrlCmd.CmdData.Length);
-
-                            if (cmdTypeID == BaseValues.CmdTypes.Standard || cmdTypeID == BaseValues.CmdTypes.Binary)
-                            {
-                                ctrlCmd.KPNum = (ushort)ctrlCnl.KPNum;
-                                ctrlCmd.CmdNum = (ushort)ctrlCnl.CmdNum;
-                                if (cmdTypeID == BaseValues.CmdTypes.Standard && ctrlCmd.CmdData.Length == 8)
-                                    ctrlCmd.CmdVal = BitConverter.ToDouble(ctrlCmd.CmdData, 0);
-                            }
-                            else if (cmdTypeID == BaseValues.CmdTypes.Request)
-                            {
-                                ctrlCmd.KPNum = BitConverter.ToUInt16(inBuf, 10);
-                            }
+                            FillCommandProps(ctrlCmd, ctrlCnl);
 
                             // обработка команды ТУ
                             bool passToClients;
@@ -1127,6 +1116,27 @@ namespace Scada.Server.Svc
         }
 
         /// <summary>
+        /// Заполнить свойства команды ТУ на основе канала управления
+        /// </summary>
+        private void FillCommandProps(Command cmd, MainLogic.CtrlCnl ctrlCnl)
+        {
+            int cmdTypeID = cmd.CmdTypeID;
+
+            if (cmdTypeID == BaseValues.CmdTypes.Standard || cmdTypeID == BaseValues.CmdTypes.Binary)
+            {
+                cmd.KPNum = (ushort)ctrlCnl.KPNum;
+                cmd.CmdNum = (ushort)ctrlCnl.CmdNum;
+
+                if (cmdTypeID == BaseValues.CmdTypes.Standard && cmd.CmdData.Length == 8)
+                    cmd.CmdVal = BitConverter.ToDouble(cmd.CmdData, 0);
+            }
+            else if (cmdTypeID == BaseValues.CmdTypes.Request)
+            {
+                cmd.KPNum = (ushort)ctrlCnl.KPNum;
+            }
+        }
+
+        /// <summary>
         /// Проверить правильность имени и пароля пользователя, получить его роль
         /// </summary>
         /// <remarks>Если пароль пустой, то он не проверяется</remarks>
@@ -1412,6 +1422,9 @@ namespace Scada.Server.Svc
                     "Команда ТУ: канал упр. = {0}, ид. польз. = {1}" :
                     "Command: out channel = {0}, user ID = {1}",
                     ctrlCnlNum, userID));
+
+                // заполнение свойств команды ТУ
+                FillCommandProps(cmd, ctrlCnl);
 
                 // обработка команды ТУ
                 bool passToClients;

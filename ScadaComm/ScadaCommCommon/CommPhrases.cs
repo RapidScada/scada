@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2017
  */
 
 #pragma warning disable 1591 // отключение warning CS1591: Missing XML comment for publicly visible type or member
@@ -50,7 +50,7 @@ namespace Scada.Comm
         public static string IncorrectLineSettings { get; private set; }
 
         // Словарь Scada.Comm.Channels.FrmCommTcpClientProps
-        public static string IpAddressRequired { get; private set; }
+        public static string HostRequired { get; private set; }
 
         // Словарь Scada.Comm.Devices
         public static string SaveKpSettingsConfirm { get; private set; }
@@ -58,6 +58,7 @@ namespace Scada.Comm
         public static string SaveKpDllSettingsError { get; private set; }
         public static string LoadKpSettingsError { get; private set; }
         public static string SaveKpSettingsError { get; private set; }
+        public static string ConfigureKp { get; private set; }
 
         // Словарь Scada.Comm.Devices.KPFactory
         public static string GetViewTypeError { get; private set; }
@@ -73,6 +74,7 @@ namespace Scada.Comm
         public static string WriteDataError { get; private set; }
         public static string WriteLineError { get; private set; }
         public static string ClearDataStreamError { get; private set; }
+        public static string NormalKpExecImpossible { get; private set; }
         public static string IllegalCommand { get; private set; }
         public static string IncorrectCmdData { get; private set; }
         public static string NoCmdData { get; private set; }
@@ -83,6 +85,8 @@ namespace Scada.Comm
         public static string ResponseCrcError { get; private set; }
         public static string IncorrectResponseLength { get; private set; }
         public static string IncorrectResponseFormat { get; private set; }
+        public static string On { get; private set; }
+        public static string Off { get; private set; }
 
 
         private static void SetToDefault()
@@ -95,13 +99,14 @@ namespace Scada.Comm
             IncorrectKPSettings = "Некорректные параметры КП {0}";
             IncorrectLineSettings = "Некорректная конфигурация линии связи {0}";
 
-            IpAddressRequired = "Требуется IP-адрес.";
+            HostRequired = "Требуется имя хоста.";
 
             SaveKpSettingsConfirm = "Настройки КП были изменены. Сохранить изменения?";
             LoadKpDllSettingsError = "Ошибка при загрузке настроек библиотеки КП";
             SaveKpDllSettingsError = "Ошибка при сохранении настроек библиотеки КП";
             LoadKpSettingsError = "Ошибка при загрузке настроек КП";
             SaveKpSettingsError = "Ошибка при сохранении настроек КП";
+            ConfigureKp = "Создайте настройки КП и перезапустите службу Коммуникатора.";
 
             GetViewTypeError = "Ошибка при получении типа интерфейса КП из библиотеки {0}";
             CreateViewError = "Ошибка при создании экземпляра класса интерфейса КП {0}";
@@ -120,6 +125,7 @@ namespace Scada.Comm
                 WriteDataError = "Ошибка при записи данных";
                 WriteLineError = "Ошибка при записи строки";
                 ClearDataStreamError = "Ошибка при очистке потока данных";
+                NormalKpExecImpossible = "Нормальная работа КП невозможна";
                 IllegalCommand = "Недопустимая команда";
                 IncorrectCmdData = "Некорректные данные команды";
                 NoCmdData = "Отсутствуют данные команды";
@@ -130,6 +136,8 @@ namespace Scada.Comm
                 ResponseCrcError = "Ошибка CRC!";
                 IncorrectResponseLength = "Некорректная длина ответа!";
                 IncorrectResponseFormat = "Некорректный формат ответа!";
+                On = "Вкл";
+                Off = "Откл";
             }
             else
             {
@@ -142,6 +150,7 @@ namespace Scada.Comm
                 WriteDataError = "Error writing data";
                 WriteLineError = "Error writing line";
                 ClearDataStreamError = "Error clearing data stream";
+                NormalKpExecImpossible = "Normal device execution is impossible";
                 IllegalCommand = "Illegal command";
                 IncorrectCmdData = "Incorrect command data";
                 NoCmdData = "No command data";
@@ -152,6 +161,8 @@ namespace Scada.Comm
                 ResponseCrcError = "CRC error!";
                 IncorrectResponseLength = "Incorrect response length!";
                 IncorrectResponseFormat = "Incorrect response format!";
+                On = "On";
+                Off = "Off";
             }
         }
 
@@ -173,7 +184,9 @@ namespace Scada.Comm
             }
 
             if (Localization.Dictionaries.TryGetValue("Scada.Comm.Channels.FrmCommTcpClientProps", out dict))
-                IpAddressRequired = dict.GetPhrase("IpAddressRequired", IpAddressRequired);
+            {
+                HostRequired = dict.GetPhrase("HostRequired", HostRequired);
+            }
 
             if (Localization.Dictionaries.TryGetValue("Scada.Comm.Devices", out dict))
             {
@@ -182,6 +195,7 @@ namespace Scada.Comm
                 SaveKpDllSettingsError = dict.GetPhrase("SaveKpDllSettingsError", SaveKpDllSettingsError);
                 LoadKpSettingsError = dict.GetPhrase("LoadKpSettingsError", LoadKpSettingsError);
                 SaveKpSettingsError = dict.GetPhrase("SaveKpSettingsError", SaveKpSettingsError);
+                ConfigureKp = dict.GetPhrase("ConfigureKp", ConfigureKp);
             }
 
             if (Localization.Dictionaries.TryGetValue("Scada.Comm.Devices.KPFactory", out dict))

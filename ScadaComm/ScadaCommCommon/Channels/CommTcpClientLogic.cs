@@ -50,20 +50,30 @@ namespace Scada.Comm.Channels
             public Settings()
             {
                 // установка значений по умолчанию
-                IpAddress = "";
+                Host = "";
                 TcpPort = 502; // порт, используемый Modbus TCP по умолчанию
-                Behavior = CommChannelLogic.OperatingBehaviors.Master;
+                ReconnectAfter = TcpConnection.DefaultReconnectAfter;
+                StayConnected = true;
+                Behavior = OperatingBehaviors.Master;
                 ConnMode = ConnectionModes.Individual;
             }
 
             /// <summary>
-            /// Получить или установить удалённый IP-адрес
+            /// Получить или установить удалённый хост
             /// </summary>
-            public string IpAddress { get; set; }
+            public string Host { get; set; }
             /// <summary>
             /// Получить или установить удалённый TCP-порт по умолчанию
             /// </summary>
             public int TcpPort { get; set; }
+            /// <summary>
+            /// Получить или установить интервал повторного подключения, с
+            /// </summary>
+            public int ReconnectAfter { get; set; }
+            /// <summary>
+            /// Получить или установить признак, что необходимо оставаться на связи
+            /// </summary>
+            public bool StayConnected { get; set; }
             /// <summary>
             /// Получить или установить режим работы канала связи
             /// </summary>
@@ -78,11 +88,17 @@ namespace Scada.Comm.Channels
             /// </summary>
             public void Init(SortedList<string, string> commCnlParams, bool requireParams = true)
             {
-                ConnMode = commCnlParams.GetEnumParam<ConnectionModes>("ConnMode", requireParams, ConnMode);
+                ConnMode = commCnlParams.GetEnumParam("ConnMode", requireParams, ConnMode);
                 bool sharedConnMode = ConnMode == ConnectionModes.Shared;
-                IpAddress = commCnlParams.GetStringParam("IpAddress", requireParams && sharedConnMode, IpAddress);
+
+                Host = commCnlParams.GetStringParam("IpAddress", false, Host); // для обратной совместимости
+                if (Host == "")
+                    Host = commCnlParams.GetStringParam("Host", requireParams && sharedConnMode, Host);
+
                 TcpPort = commCnlParams.GetIntParam("TcpPort", requireParams && sharedConnMode, TcpPort);
-                Behavior = commCnlParams.GetEnumParam<OperatingBehaviors>("Behavior", false, Behavior);
+                ReconnectAfter = commCnlParams.GetIntParam("ReconnectAfter", false, ReconnectAfter);
+                StayConnected = commCnlParams.GetBoolParam("StayConnected", false, StayConnected);
+                Behavior = commCnlParams.GetEnumParam("Behavior", false, Behavior);
             }
 
             /// <summary>
@@ -90,8 +106,10 @@ namespace Scada.Comm.Channels
             /// </summary>
             public void SetCommCnlParams(SortedList<string, string> commCnlParams)
             {
-                commCnlParams["IpAddress"] = ConnMode == ConnectionModes.Shared ? IpAddress : "";
+                commCnlParams["Host"] = ConnMode == ConnectionModes.Shared ? Host : "";
                 commCnlParams["TcpPort"] = TcpPort.ToString();
+                commCnlParams["ReconnectAfter"] = ReconnectAfter.ToString();
+                commCnlParams["StayConnected"] = StayConnected.ToString();
                 commCnlParams["Behavior"] = Behavior.ToString();
                 commCnlParams["ConnMode"] = ConnMode.ToString();
             }
@@ -243,8 +261,12 @@ namespace Scada.Comm.Channels
             {
                 // общее соединение для всех КП
                 sharedTcpConn = new TcpConnection(new TcpClient());
+                sharedTcpConn.ReconnectAfter = settings.ReconnectAfter;
+
                 foreach (KPLogic kpLogic in kpList)
+                {
                     kpLogic.Connection = sharedTcpConn;
+                }
             }
             else
             {
@@ -254,8 +276,8 @@ namespace Scada.Comm.Channels
                 {
                     foreach (KPLogic kpLogic in kpByCallNumList)
                     {
-                        int timeout = kpLogic.ReqParams.Timeout;
                         TcpConnection tcpConn = new TcpConnection(new TcpClient());
+                        tcpConn.ReconnectAfter = settings.ReconnectAfter;
                         tcpConnList.Add(tcpConn);
                         tcpConn.AddRelatedKP(kpLogic);
                         kpLogic.Connection = tcpConn;
@@ -324,36 +346,45 @@ namespace Scada.Comm.Channels
             TcpConnection tcpConn = kpLogic.Connection as TcpConnection;
             if (tcpConn != null && !tcpConn.Connected)
             {
-                try
+                string reason;
+                if (tcpConn.CanOpen(out reason))
                 {
-                    // определение IP-адреса и TCP-порта
-                    IPAddress addr;
-                    int port;
-
-                    if (tcpConn == sharedTcpConn)
+                    try
                     {
-                        addr = IPAddress.Parse(settings.IpAddress);
-                        port = settings.TcpPort;
+                        // определение IP-адреса и TCP-порта
+                        string host;
+                        int port;
+
+                        if (tcpConn == sharedTcpConn)
+                        {
+                            host = settings.Host;
+                            port = settings.TcpPort;
+                        }
+                        else
+                        {
+                            CommUtils.ExtractHostAndPort(kpLogic.CallNum, settings.TcpPort, out host, out port);
+                        }
+
+                        // установка соединения
+                        WriteToLog("");
+                        WriteToLog(string.Format(Localization.UseRussian ?
+                            "{0} Установка TCP-соединения с {1}:{2}" :
+                            "{0} Establish a TCP connection with {1}:{2}", CommUtils.GetNowDT(), host, port));
+
+                        if (tcpConn.NetStream != null) // соединение уже было открыто, но разорвано
+                            tcpConn.Renew();
+
+                        tcpConn.Open(host, port);
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        CommUtils.ExtractAddrAndPort(kpLogic.CallNum, settings.TcpPort, out addr, out port);
+                        WriteToLog(ex.Message);
                     }
-
-                    // установка соединения
-                    WriteToLog("");
-                    WriteToLog(string.Format(Localization.UseRussian ? 
-                        "{0} Установка TCP-соединения с {1}:{2}" :
-                        "{0} Establish a TCP connection with {1}:{2}", CommUtils.GetNowDT(), addr, port));
-
-                    if (tcpConn.NetStream != null) // соединение уже было открыто, но разорвано
-                        tcpConn.Renew();
-
-                    tcpConn.Open(addr, port);
                 }
-                catch (Exception ex)
+                else
                 {
-                    WriteToLog(ex.Message);
+                    WriteToLog("");
+                    WriteToLog(string.Format("{0} {1}", CommUtils.GetNowDT(), reason));
                 }
             }
         }
@@ -363,8 +394,8 @@ namespace Scada.Comm.Channels
         /// </summary>
         public override void AfterSession(KPLogic kpLogic)
         {
-            // разрыв соединения, если сеанс опроса КП завершён с ошибкой
-            if (kpLogic.WorkState == KPLogic.WorkStates.Error && Behavior == OperatingBehaviors.Master)
+            // разрыв соединения согласно настройкам, а также если сеанс опроса КП завершён с ошибкой
+            if (!settings.StayConnected || kpLogic.WorkState == KPLogic.WorkStates.Error)
             {
                 TcpConnection tcpConn = kpLogic.Connection as TcpConnection;
                 if (tcpConn != null && tcpConn.Connected)

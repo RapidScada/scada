@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<KpEmailDictionaries>
+  <Dictionary key="Scada.Comm.Devices.HttpNotif.UI.FrmDevProps">
+    <Phrase key="this">HTTP-уведомления - Свойства КП {0}</Phrase>
+    <Phrase key="lblReqUrl">URL запроса</Phrase>
+    <Phrase key="btnAddressBook">Адресная книга</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+  </Dictionary>
+</KpEmailDictionaries>

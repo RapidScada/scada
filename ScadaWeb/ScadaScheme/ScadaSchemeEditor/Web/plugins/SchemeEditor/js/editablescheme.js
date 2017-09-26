@@ -744,7 +744,8 @@ scada.scheme.EditableScheme.prototype.createDom = function (opt_controlRight) {
                 thisScheme.status = "";
             }
         })
-        .on("selectstart", ".comp", false);
+        .on("selectstart", ".comp", false)
+        .on("dragstart", false);
 }
 
 // Iteration of getting scheme changes

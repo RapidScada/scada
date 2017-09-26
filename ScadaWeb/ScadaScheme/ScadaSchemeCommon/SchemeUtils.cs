@@ -34,7 +34,7 @@ namespace Scada.Scheme
         /// <summary>
         /// Версия схем
         /// </summary>
-        public const string SchemeVersion = "5.1.0.3";
+        public const string SchemeVersion = "5.1.0.4";
 
         /// <summary>
         /// Проверить, что метки представления соответствуют друг другу

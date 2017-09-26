@@ -92,4 +92,12 @@
     <Phrase key="CompCodeIs">Computer code: {0}</Phrase>
     <Phrase key="RegistrationFailed">Registration failed.</Phrase>
   </Dictionary>
+  <Dictionary key="KeyGen.UI">
+    <Phrase key="lblCompCode">Computer code</Phrase>
+    <Phrase key="lblCompCodeTip">Restart the service to get the computer code.</Phrase>
+    <Phrase key="lblRegKey">Registration key</Phrase>
+    <Phrase key="llblGetPermanentKey">Purchase a permanent key</Phrase>
+    <Phrase key="llblGetTrialKey">Get a trial key</Phrase>
+    <Phrase key="lblKeyStatus">Key status</Phrase>
+  </Dictionary>
 </ScadaDataDictionaries>

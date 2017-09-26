@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2015
+ * Modified : 2017
  */
 
 using Scada.Comm.Devices.KpModbus;
@@ -41,7 +41,7 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Версия библиотеки КП
         /// </summary>
-        internal const string KpVersion = "5.0.0.1";
+        internal const string KpVersion = "5.0.0.2";
 
 
         /// <summary>

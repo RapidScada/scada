@@ -67,7 +67,7 @@
             this.lblVersionRu.Name = "lblVersionRu";
             this.lblVersionRu.Size = new System.Drawing.Size(80, 12);
             this.lblVersionRu.TabIndex = 0;
-            this.lblVersionRu.Text = "Версия 4.4.0.0";
+            this.lblVersionRu.Text = "Версия 5.0.0.0";
             this.lblVersionRu.TextAlign = System.Drawing.ContentAlignment.TopRight;
             this.lblVersionRu.Click += new System.EventHandler(this.FrmAbout_Click);
             // 
@@ -91,7 +91,7 @@
             this.lblVersionEn.Name = "lblVersionEn";
             this.lblVersionEn.Size = new System.Drawing.Size(80, 12);
             this.lblVersionEn.TabIndex = 1;
-            this.lblVersionEn.Text = "Version 4.4.0.0";
+            this.lblVersionEn.Text = "Version 5.0.0.0";
             this.lblVersionEn.Click += new System.EventHandler(this.FrmAbout_Click);
             // 
             // FrmAbout

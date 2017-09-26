@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2016
+ * Modified : 2017
  */
 
 using Scada.Comm.Devices;
@@ -104,9 +104,9 @@ namespace Scada.Comm.Channels
             {
                 TcpPort = commCnlParams.GetIntParam("TcpPort", requireParams, TcpPort);
                 InactiveTime = commCnlParams.GetIntParam("InactiveTime", false, InactiveTime);
-                Behavior = commCnlParams.GetEnumParam<OperatingBehaviors>("Behavior", false, Behavior);
-                ConnMode = commCnlParams.GetEnumParam<ConnectionModes>("ConnMode", false, ConnMode);
-                DevSelMode = commCnlParams.GetEnumParam<DeviceSelectionModes>("DevSelMode", false, DevSelMode);
+                Behavior = commCnlParams.GetEnumParam("Behavior", false, Behavior);
+                ConnMode = commCnlParams.GetEnumParam("ConnMode", false, ConnMode);
+                DevSelMode = commCnlParams.GetEnumParam("DevSelMode", false, DevSelMode);
             }
 
             /// <summary>

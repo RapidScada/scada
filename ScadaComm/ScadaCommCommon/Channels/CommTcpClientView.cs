@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2017
  */
 
 using Scada.Comm.Channels.UI;
@@ -75,15 +75,17 @@ namespace Scada.Comm.Channels
                 return Localization.UseRussian ?
                     "Канал связи TCP-клиент.\n\n" +
                     "Параметры канала связи:\n" +
-                    "IpAddress - удалённый IP-адрес в режиме соединения Shared,\n" +
+                    "Host - удалённое DNS-имя или IP-адрес в режиме соединения Shared,\n" +
                     "TcpPort - удалённый TCP-порт по умолчанию,\n" +
+                    "ReconnectAfter - интервал повторного подключения, с,\n" +
                     "Behavior - поведение (Master, Slave),\n" +
                     "ConnMode - режим соединения (Individual, Shared)." :
 
                     "TCP client communication channel.\n\n" +
                     "Communication channel parameters:\n" +
-                    "IpAddress - remote IP address in Shared connection mode,\n" +
+                    "Host - remote DNS name or IP address in Shared connection mode,\n" +
                     "TcpPort - remote TCP port by default," +
+                    "ReconnectAfter - reconnection interval, sec,\n" +
                     "Behavior - operating behavior (Master, Slave),\n" +
                     "ConnMode - connection mode (Individual, Shared).";
             }
@@ -114,8 +116,9 @@ namespace Scada.Comm.Channels
         {
             CommTcpClientLogic.Settings defSett = new CommTcpClientLogic.Settings();
             return BuildPropsInfo(commCnlParams,
-                new string[] { "IpAddress", "TcpPort", "Behavior", "ConnMode" },
-                new object[] { defSett.IpAddress, defSett.TcpPort, defSett.Behavior, defSett.ConnMode });
+                new string[] { "Host", "TcpPort", "ReconnectAfter", "Behavior", "ConnMode" },
+                new object[] { defSett.Host, defSett.TcpPort, defSett.ReconnectAfter, defSett.Behavior,
+                    defSett.ConnMode });
         }
     }
 }

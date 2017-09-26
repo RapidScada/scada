@@ -30,6 +30,7 @@ function addContents(context) {
     addArticle(context, "software-configuration/creating-views.html", "Создание представлений", 1);
 
     addArticle(context, "modules/", "Модули");
+    addArticle(context, "modules/kp-telegram.html", "Драйвер Telegram", 1);
     addArticle(context, "modules/mod-auto-control.html", "Модуль автоматического управления", 1);
     addArticle(context, "modules/mod-db-export.html", "Модуль экспорта в БД", 1);
     addArticle(context, "modules/mod-rapid-gate.html", "Модуль Быстрый шлюз", 1);

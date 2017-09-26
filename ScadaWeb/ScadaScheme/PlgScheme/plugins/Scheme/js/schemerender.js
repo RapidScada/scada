@@ -541,16 +541,21 @@ scada.scheme.DynamicTextRenderer.prototype._restoreUnderline = function (jqObj, 
 scada.scheme.DynamicTextRenderer.prototype.createDom = function (component, renderContext) {
     scada.scheme.StaticTextRenderer.prototype.createDom.call(this, component, renderContext);
 
+    var ShowValueKinds = scada.scheme.ShowValueKinds;
     var props = component.props;
     var spanComp = component.dom.first();
     var spanText = component.dom.children();
+    var cnlNum = props.InCnlNum;
+
+    if (props.ShowValue > ShowValueKinds.NOT_SHOW && !props.Text) {
+        spanText.text("[" + cnlNum + "]");
+    }
 
     this.setToolTip(spanComp, props.ToolTip);
     this.bindAction(spanComp, component, renderContext);
 
     // apply properties on hover
     var thisRenderer = this;
-    var cnlNum = props.InCnlNum;
 
     spanComp.hover(
         function () {
