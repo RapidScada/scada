@@ -60,12 +60,25 @@
     <Compile Include="Modbus\Protocol\ModbusUtils.cs" />
     <Compile Include="Modbus\Protocol\TableTypes.cs" />
     <Compile Include="Modbus\Protocol\TransModes.cs" />
+    <Compile Include="Modbus\UI\CtrlCmd.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Modbus\UI\CtrlCmd.Designer.cs">
+      <DependentUpon>CtrlCmd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Modbus\UI\CtrlElem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Modbus\UI\CtrlElem.Designer.cs">
+      <DependentUpon>CtrlElem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modbus\UI\CtrlElemGroup.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Modbus\UI\CtrlElemGroup.Designer.cs">
       <DependentUpon>CtrlElemGroup.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modbus\UI\ElemInfo.cs" />
     <Compile Include="Modbus\UI\FrmDevProps.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -96,6 +109,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Modbus\UI\CtrlCmd.resx">
+      <DependentUpon>CtrlCmd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modbus\UI\CtrlElem.resx">
+      <DependentUpon>CtrlElem.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Modbus\UI\CtrlElemGroup.resx">
       <DependentUpon>CtrlElemGroup.cs</DependentUpon>
     </EmbeddedResource>

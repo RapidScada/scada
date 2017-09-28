@@ -127,7 +127,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             if (elemGroup != null)
             {
                 elemGroup.Active = chkGrActive.Checked;
-                OnObjectChanged();
+                OnObjectChanged(); // требуется обновить только узел группы
             }
         }
 
@@ -137,7 +137,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             if (elemGroup != null)
             {
                 elemGroup.Name = txtGrName.Text;
-                OnObjectChanged();
+                OnObjectChanged(); // требуется обновить только узел группы
             }
         }
 
@@ -173,13 +173,11 @@ namespace Scada.Comm.Devices.Modbus.UI
                     // установка типа элементов группы по умолчанию
                     ElemTypes elemType = elemGroup.DefElemType;
                     foreach (Elem elem in elemGroup.Elems)
+                    {
                         elem.ElemType = elemType;
+                    }
 
-                    // обновление узлов дерева
-                    //UpdateElemGroupNode();
-                    //UpdateElemNodes();
-
-                    OnObjectChanged();
+                    OnObjectChanged(); // требуется обновить узлы группы и её элементов
                 }
             }
         }
@@ -190,17 +188,15 @@ namespace Scada.Comm.Devices.Modbus.UI
             if (elemGroup != null)
             {
                 elemGroup.Address = (ushort)(numGrAddress.Value - 1);
-                //UpdateElemNodes();
-                OnObjectChanged();
+                OnObjectChanged(); // требуется обновить элементы группы
             }
         }
 
         private void numGrElemCnt_ValueChanged(object sender, EventArgs e)
         {
             // изменение количества элементов в группе
-            /*if (elemGroup != null)
+            if (elemGroup != null)
             {
-                //treeView.BeginUpdate();
                 int elemCnt = elemGroup.Elems.Count;
                 int newElemCnt = (int)numGrElemCnt.Value;
 
@@ -214,20 +210,9 @@ namespace Scada.Comm.Devices.Modbus.UI
                     for (int elemInd = 0; elemInd < newElemCnt; elemInd++)
                     {
                         if (elemInd < elemCnt)
-                        {
                             elemAddr += (ushort)elemGroup.Elems[elemInd].Length;
-                        }
                         else
-                        {
-                            ElemInfo elemInfo = new ElemInfo();
-                            elemInfo.Elem = new Elem() { ElemType = elemType };
-                            elemInfo.Address = elemAddr;
-                            elemInfo.ElemGroup = selElemGroup;
-
-                            selElemGroup.Elems.Add(elemInfo.Elem);
-                            selNode.Nodes.Add(NewElemNode(elemInfo));
-                            elemAddr += elemLen;
-                        }
+                            elemGroup.Elems.Add(new Elem() { ElemType = elemType });
                     }
                 }
                 else if (elemCnt > newElemCnt)
@@ -235,15 +220,12 @@ namespace Scada.Comm.Devices.Modbus.UI
                     // удаление лишних элементов
                     for (int i = newElemCnt; i < elemCnt; i++)
                     {
-                        selElemGroup.Elems.RemoveAt(newElemCnt);
-                        selNode.Nodes.RemoveAt(newElemCnt);
+                        elemGroup.Elems.RemoveAt(newElemCnt);
                     }
                 }
 
-                UpdateSignals(selNode);
-                OnObjectChanged();
-                //treeView.EndUpdate();
-            }*/
+                OnObjectChanged(); // требуется обновить создать или удалить узлы элементов и пересчитать сигналы
+            }
         }
     }
 }

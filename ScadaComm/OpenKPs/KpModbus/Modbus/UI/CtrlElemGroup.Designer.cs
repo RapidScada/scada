@@ -58,7 +58,7 @@
             this.gbElemGroup.Name = "gbElemGroup";
             this.gbElemGroup.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
             this.gbElemGroup.Size = new System.Drawing.Size(280, 167);
-            this.gbElemGroup.TabIndex = 3;
+            this.gbElemGroup.TabIndex = 0;
             this.gbElemGroup.TabStop = false;
             this.gbElemGroup.Text = "Element group parameters";
             // 

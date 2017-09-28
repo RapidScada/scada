@@ -60,7 +60,7 @@
             this.gbDevice.Size = new System.Drawing.Size(259, 65);
             this.gbDevice.TabIndex = 1;
             this.gbDevice.TabStop = false;
-            this.gbDevice.Text = "КП";
+            this.gbDevice.Text = "Device";
             // 
             // btnBrowseDevTemplate
             // 
@@ -70,7 +70,7 @@
             this.btnBrowseDevTemplate.Name = "btnBrowseDevTemplate";
             this.btnBrowseDevTemplate.Size = new System.Drawing.Size(20, 20);
             this.btnBrowseDevTemplate.TabIndex = 2;
-            this.toolTip.SetToolTip(this.btnBrowseDevTemplate, "Выбрать шаблон");
+            this.toolTip.SetToolTip(this.btnBrowseDevTemplate, "Browse for template");
             this.btnBrowseDevTemplate.UseVisualStyleBackColor = true;
             this.btnBrowseDevTemplate.Click += new System.EventHandler(this.btnBrowseDevTemplate_Click);
             // 
@@ -82,7 +82,7 @@
             this.btnCreateDevTemplate.Name = "btnCreateDevTemplate";
             this.btnCreateDevTemplate.Size = new System.Drawing.Size(20, 20);
             this.btnCreateDevTemplate.TabIndex = 3;
-            this.toolTip.SetToolTip(this.btnCreateDevTemplate, "Создать новый шаблон");
+            this.toolTip.SetToolTip(this.btnCreateDevTemplate, "Create new template");
             this.btnCreateDevTemplate.UseVisualStyleBackColor = true;
             this.btnCreateDevTemplate.Click += new System.EventHandler(this.btnCreateDevTemplate_Click);
             // 
@@ -94,7 +94,7 @@
             this.btnEditDevTemplate.Name = "btnEditDevTemplate";
             this.btnEditDevTemplate.Size = new System.Drawing.Size(20, 20);
             this.btnEditDevTemplate.TabIndex = 4;
-            this.toolTip.SetToolTip(this.btnEditDevTemplate, "Редактировать шаблон");
+            this.toolTip.SetToolTip(this.btnEditDevTemplate, "Edit template");
             this.btnEditDevTemplate.UseVisualStyleBackColor = true;
             this.btnEditDevTemplate.Click += new System.EventHandler(this.btnEditDevTemplate_Click);
             // 
@@ -111,9 +111,9 @@
             this.lblDevTemplate.AutoSize = true;
             this.lblDevTemplate.Location = new System.Drawing.Point(10, 16);
             this.lblDevTemplate.Name = "lblDevTemplate";
-            this.lblDevTemplate.Size = new System.Drawing.Size(106, 13);
+            this.lblDevTemplate.Size = new System.Drawing.Size(84, 13);
             this.lblDevTemplate.TabIndex = 0;
-            this.lblDevTemplate.Text = "Шаблон устройства";
+            this.lblDevTemplate.Text = "Device template";
             // 
             // gbCommLine
             // 
@@ -125,7 +125,7 @@
             this.gbCommLine.Size = new System.Drawing.Size(259, 66);
             this.gbCommLine.TabIndex = 0;
             this.gbCommLine.TabStop = false;
-            this.gbCommLine.Text = "Линия связи";
+            this.gbCommLine.Text = "Communication line";
             // 
             // cbTransMode
             // 
@@ -146,9 +146,9 @@
             this.lblTransMode.AutoSize = true;
             this.lblTransMode.Location = new System.Drawing.Point(10, 16);
             this.lblTransMode.Name = "lblTransMode";
-            this.lblTransMode.Size = new System.Drawing.Size(56, 13);
+            this.lblTransMode.Size = new System.Drawing.Size(46, 13);
             this.lblTransMode.TabIndex = 0;
-            this.lblTransMode.Text = "Протокол";
+            this.lblTransMode.Text = "Protocol";
             // 
             // btnOK
             // 
@@ -167,7 +167,7 @@
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 3;
-            this.btnCancel.Text = "Отмена";
+            this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
@@ -195,7 +195,7 @@
             this.Name = "FrmDevProps";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Свойства КП {0}";
+            this.Text = "Device {0} Properties";
             this.Load += new System.EventHandler(this.FrmDevProps_Load);
             this.gbDevice.ResumeLayout(false);
             this.gbDevice.PerformLayout();

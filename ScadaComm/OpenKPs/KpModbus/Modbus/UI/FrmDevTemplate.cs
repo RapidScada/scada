@@ -38,52 +38,6 @@ namespace Scada.Comm.Devices.Modbus.UI
     public partial class FrmDevTemplate : Form
     {
         /// <summary>
-        /// Информация об элементе группы
-        /// </summary>
-        private class ElemInfo
-        {
-            /// <summary>
-            /// Получить или установить элемент
-            /// </summary>
-            public Elem Elem { get; set; }
-            /// <summary>
-            /// Получить или установить группу элементов, в которую входит элемент
-            /// </summary>
-            public ElemGroup ElemGroup { get; set; }
-            /// <summary>
-            /// Получить или установить адрес, начинающийся от 0
-            /// </summary>
-            public ushort Address { get; set; }
-            /// <summary>
-            /// Получить или установить сигнал КП
-            /// </summary>
-            public int Signal { get; set; }
-            /// <summary>
-            /// Получить строковую запись диапазона адресов элемента
-            /// </summary>
-            public string AddressRange
-            {
-                get
-                {
-                    return (Address + 1).ToString() + 
-                        (Elem == null || Elem.Length <= 1 ? "" : " - " + (Address + Elem.Length));
-                }
-            }
-            /// <summary>
-            /// Получить обозначение элемента в дереве
-            /// </summary>
-            public string Caption
-            {
-                get
-                {
-                    int addr = Address + 1;
-                    return (Elem == null || Elem.Name == "" ? KpPhrases.DefElemName : Elem.Name) + 
-                        " (" + AddressRange + ")";
-                }
-            }
-        }
-
-        /// <summary>
         /// Имя файла нового шаблона устройства
         /// </summary>
         private const string NewFileName = "KpModbus_NewTemplate.xml";
