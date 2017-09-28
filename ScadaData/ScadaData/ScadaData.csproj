@@ -86,6 +86,7 @@
     <Compile Include="Data\Tables\SrezTableLight.cs" />
     <Compile Include="Data\Tables\Trend.cs" />
     <Compile Include="ITreeNode.cs" />
+    <Compile Include="UI\ObjectChangedEventHandler.cs" />
     <Compile Include="UI\ScadaUiUtils.cs" />
     <Compile Include="UI\Translator.cs" />
     <Compile Include="UI\TreeViewUtils.cs" />
