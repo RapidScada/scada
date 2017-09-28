@@ -177,13 +177,10 @@ namespace Scada.Comm.Devices
         {
             // загрузка словарей
             string errMsg;
-            if (!Localization.UseRussian)
-            {
-                if (Localization.LoadDictionaries(AppDirs.LangDir, "KpModbus", out errMsg))
-                    KpPhrases.Init();
-                else
-                    ScadaUiUtils.ShowError(errMsg);
-            }
+            if (Localization.LoadDictionaries(AppDirs.LangDir, "KpModbus", out errMsg))
+                KpPhrases.Init();
+            else
+                ScadaUiUtils.ShowError(errMsg);
 
             if (Number > 0)
                 // отображение свойств КП

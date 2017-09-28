@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Группы элементов");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Команды");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Element groups");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Commands");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDevTemplate));
             this.treeView = new System.Windows.Forms.TreeView();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
@@ -110,20 +110,20 @@
             this.treeView.ImageList = this.imageList;
             this.treeView.Location = new System.Drawing.Point(13, 19);
             this.treeView.Name = "treeView";
-            treeNode3.ImageKey = "group.png";
-            treeNode3.Name = "grsNode";
-            treeNode3.SelectedImageKey = "group.png";
-            treeNode3.Text = "Группы элементов";
-            treeNode4.ImageIndex = 2;
-            treeNode4.Name = "cmdsNode";
-            treeNode4.SelectedImageKey = "cmds.png";
-            treeNode4.Text = "Команды";
+            treeNode1.ImageKey = "group.png";
+            treeNode1.Name = "grsNode";
+            treeNode1.SelectedImageKey = "group.png";
+            treeNode1.Text = "Element groups";
+            treeNode2.ImageIndex = 2;
+            treeNode2.Name = "cmdsNode";
+            treeNode2.SelectedImageKey = "cmds.png";
+            treeNode2.Text = "Commands";
             this.treeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode3,
-            treeNode4});
+            treeNode1,
+            treeNode2});
             this.treeView.SelectedImageIndex = 0;
             this.treeView.ShowRootLines = false;
-            this.treeView.Size = new System.Drawing.Size(254, 372);
+            this.treeView.Size = new System.Drawing.Size(254, 469);
             this.treeView.TabIndex = 0;
             this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
             // 
@@ -163,7 +163,7 @@
             this.btnNew.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnNew.Name = "btnNew";
             this.btnNew.Size = new System.Drawing.Size(23, 22);
-            this.btnNew.ToolTipText = "Создать новый шаблон";
+            this.btnNew.ToolTipText = "Create new template";
             this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
             // 
             // btnOpen
@@ -173,7 +173,7 @@
             this.btnOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnOpen.Name = "btnOpen";
             this.btnOpen.Size = new System.Drawing.Size(23, 22);
-            this.btnOpen.ToolTipText = "Открыть шаблон";
+            this.btnOpen.ToolTipText = "Open template";
             this.btnOpen.Click += new System.EventHandler(this.btnOpen_Click);
             // 
             // btnSave
@@ -183,7 +183,7 @@
             this.btnSave.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(23, 22);
-            this.btnSave.ToolTipText = "Сохранить шаблон";
+            this.btnSave.ToolTipText = "Save template";
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnSaveAs
@@ -193,7 +193,7 @@
             this.btnSaveAs.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnSaveAs.Name = "btnSaveAs";
             this.btnSaveAs.Size = new System.Drawing.Size(23, 22);
-            this.btnSaveAs.ToolTipText = "Сохранить шаблон как";
+            this.btnSaveAs.ToolTipText = "Save template as";
             this.btnSaveAs.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // toolStripSeparator
@@ -208,7 +208,7 @@
             this.btnAddElemGroup.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnAddElemGroup.Name = "btnAddElemGroup";
             this.btnAddElemGroup.Size = new System.Drawing.Size(23, 22);
-            this.btnAddElemGroup.ToolTipText = "Добавить группу элементов";
+            this.btnAddElemGroup.ToolTipText = "Add element group";
             this.btnAddElemGroup.Click += new System.EventHandler(this.btnAddElemGroup_Click);
             // 
             // btnAddElem
@@ -218,7 +218,7 @@
             this.btnAddElem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnAddElem.Name = "btnAddElem";
             this.btnAddElem.Size = new System.Drawing.Size(23, 22);
-            this.btnAddElem.ToolTipText = "Добавить элемент";
+            this.btnAddElem.ToolTipText = "Add element";
             this.btnAddElem.Click += new System.EventHandler(this.btnAddElem_Click);
             // 
             // btnAddCmd
@@ -228,7 +228,7 @@
             this.btnAddCmd.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnAddCmd.Name = "btnAddCmd";
             this.btnAddCmd.Size = new System.Drawing.Size(23, 22);
-            this.btnAddCmd.ToolTipText = "Добавить команду";
+            this.btnAddCmd.ToolTipText = "Add command";
             this.btnAddCmd.Click += new System.EventHandler(this.btnAddCmd_Click);
             // 
             // btnMoveUp
@@ -238,7 +238,7 @@
             this.btnMoveUp.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnMoveUp.Name = "btnMoveUp";
             this.btnMoveUp.Size = new System.Drawing.Size(23, 22);
-            this.btnMoveUp.ToolTipText = "Переместить вверх";
+            this.btnMoveUp.ToolTipText = "Move up";
             this.btnMoveUp.Click += new System.EventHandler(this.btnMoveUp_Click);
             // 
             // btnMoveDown
@@ -248,7 +248,7 @@
             this.btnMoveDown.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnMoveDown.Name = "btnMoveDown";
             this.btnMoveDown.Size = new System.Drawing.Size(23, 22);
-            this.btnMoveDown.ToolTipText = "Переместить вниз";
+            this.btnMoveDown.ToolTipText = "Move down";
             this.btnMoveDown.Click += new System.EventHandler(this.btnMoveDown_Click);
             // 
             // btnDelete
@@ -258,7 +258,7 @@
             this.btnDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(23, 22);
-            this.btnDelete.ToolTipText = "Удалить";
+            this.btnDelete.ToolTipText = "Delete";
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // gbDevTemplate
@@ -267,10 +267,10 @@
             this.gbDevTemplate.Location = new System.Drawing.Point(12, 28);
             this.gbDevTemplate.Name = "gbDevTemplate";
             this.gbDevTemplate.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbDevTemplate.Size = new System.Drawing.Size(280, 404);
+            this.gbDevTemplate.Size = new System.Drawing.Size(280, 501);
             this.gbDevTemplate.TabIndex = 1;
             this.gbDevTemplate.TabStop = false;
-            this.gbDevTemplate.Text = "Шаблон устройства";
+            this.gbDevTemplate.Text = "Device template";
             // 
             // gbElemGroup
             // 
@@ -289,16 +289,16 @@
             this.gbElemGroup.Size = new System.Drawing.Size(280, 167);
             this.gbElemGroup.TabIndex = 2;
             this.gbElemGroup.TabStop = false;
-            this.gbElemGroup.Text = "Параметры группы элементов";
+            this.gbElemGroup.Text = "Element group parameters";
             // 
             // chkGrActive
             // 
             this.chkGrActive.AutoSize = true;
             this.chkGrActive.Location = new System.Drawing.Point(13, 19);
             this.chkGrActive.Name = "chkGrActive";
-            this.chkGrActive.Size = new System.Drawing.Size(85, 17);
+            this.chkGrActive.Size = new System.Drawing.Size(56, 17);
             this.chkGrActive.TabIndex = 0;
-            this.chkGrActive.Text = "Активность";
+            this.chkGrActive.Text = "Active";
             this.chkGrActive.UseVisualStyleBackColor = true;
             this.chkGrActive.CheckedChanged += new System.EventHandler(this.chkGrActive_CheckedChanged);
             // 
@@ -307,9 +307,9 @@
             this.lblGrElemCnt.AutoSize = true;
             this.lblGrElemCnt.Location = new System.Drawing.Point(140, 118);
             this.lblGrElemCnt.Name = "lblGrElemCnt";
-            this.lblGrElemCnt.Size = new System.Drawing.Size(124, 13);
+            this.lblGrElemCnt.Size = new System.Drawing.Size(75, 13);
             this.lblGrElemCnt.TabIndex = 7;
-            this.lblGrElemCnt.Text = "Количество элементов";
+            this.lblGrElemCnt.Text = "Element count";
             // 
             // numGrElemCnt
             // 
@@ -347,9 +347,9 @@
             this.lblGrName.AutoSize = true;
             this.lblGrName.Location = new System.Drawing.Point(10, 39);
             this.lblGrName.Name = "lblGrName";
-            this.lblGrName.Size = new System.Drawing.Size(83, 13);
+            this.lblGrName.Size = new System.Drawing.Size(35, 13);
             this.lblGrName.TabIndex = 1;
-            this.lblGrName.Text = "Наименование";
+            this.lblGrName.Text = "Name";
             // 
             // numGrAddress
             // 
@@ -379,28 +379,28 @@
             this.lblGrAddress.AutoSize = true;
             this.lblGrAddress.Location = new System.Drawing.Point(10, 118);
             this.lblGrAddress.Name = "lblGrAddress";
-            this.lblGrAddress.Size = new System.Drawing.Size(113, 13);
+            this.lblGrAddress.Size = new System.Drawing.Size(109, 13);
             this.lblGrAddress.TabIndex = 5;
-            this.lblGrAddress.Text = "Адрес нач. элемента";
+            this.lblGrAddress.Text = "Start element address";
             // 
             // lblGrTableType
             // 
             this.lblGrTableType.AutoSize = true;
             this.lblGrTableType.Location = new System.Drawing.Point(10, 78);
             this.lblGrTableType.Name = "lblGrTableType";
-            this.lblGrTableType.Size = new System.Drawing.Size(90, 13);
+            this.lblGrTableType.Size = new System.Drawing.Size(56, 13);
             this.lblGrTableType.TabIndex = 3;
-            this.lblGrTableType.Text = "Таблица данных";
+            this.lblGrTableType.Text = "Data table";
             // 
             // cbGrTableType
             // 
             this.cbGrTableType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbGrTableType.FormattingEnabled = true;
             this.cbGrTableType.Items.AddRange(new object[] {
-            "Discrete Inputs (Дискретные входы, 1X)",
-            "Coils (Флаги, 0X)",
-            "Input Registers (Входные регистры, 3X)",
-            "Holding Registers (Регистры хранения, 4X)"});
+            "Discretes Inputs (1X)",
+            "Coils (0X)",
+            "Input Registers (3X)",
+            "Holding Registers (4X)"});
             this.cbGrTableType.Location = new System.Drawing.Point(13, 94);
             this.cbGrTableType.Name = "cbGrTableType";
             this.cbGrTableType.Size = new System.Drawing.Size(254, 21);
@@ -644,7 +644,7 @@
             this.gbCmd.Controls.Add(this.lblCmdAddress);
             this.gbCmd.Controls.Add(this.lblCmdTableType);
             this.gbCmd.Controls.Add(this.cbCmdTableType);
-            this.gbCmd.Location = new System.Drawing.Point(298, 226);
+            this.gbCmd.Location = new System.Drawing.Point(298, 323);
             this.gbCmd.Name = "gbCmd";
             this.gbCmd.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
             this.gbCmd.Size = new System.Drawing.Size(280, 206);
@@ -816,7 +816,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(590, 444);
+            this.ClientSize = new System.Drawing.Size(590, 541);
             this.Controls.Add(this.gbElemGroup);
             this.Controls.Add(this.gbElem);
             this.Controls.Add(this.gbCmd);
@@ -825,6 +825,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(606, 500);
             this.Name = "FrmDevTemplate";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

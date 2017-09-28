@@ -52,18 +52,17 @@ namespace Scada.Comm.Devices.Modbus
 
         private static void SetToDefault()
         {
-            TemplFormTitle = "MODBUS. Редактор шаблонов устройств";
-            GrsNode = "Группы элементов";
-            CmdsNode = "Команды";
-            DefGrName = "<Группа элементов>";
-            DefElemName = "<Элемент>";
-            DefCmdName = "<Команда>";
-            SaveTemplateConfirm = "Шаблон устройства был изменён. Сохранить изменения?";
-            ElemCntExceeded = "Таблица данных допускает не более {0} элементов.";
-            ElemRemoveWarning = "Таблица данных допускает не более {0} элементов.\r\n" + 
-                "Лишние элементы будут удалены. Продолжить?";
+            TemplFormTitle = Localization.Dict.GetEmptyPhrase("TemplFormTitle");
+            GrsNode = Localization.Dict.GetEmptyPhrase("GrsNode");
+            CmdsNode = Localization.Dict.GetEmptyPhrase("CmdsNode");
+            DefGrName = Localization.Dict.GetEmptyPhrase("DefGrName");
+            DefElemName = Localization.Dict.GetEmptyPhrase("DefElemName");
+            DefCmdName = Localization.Dict.GetEmptyPhrase("DefCmdName");
+            SaveTemplateConfirm = Localization.Dict.GetEmptyPhrase("SaveTemplateConfirm");
+            ElemCntExceeded = Localization.Dict.GetEmptyPhrase("ElemCntExceeded");
+            ElemRemoveWarning = Localization.Dict.GetEmptyPhrase("ElemRemoveWarning");
 
-            TemplNotExists = "Файл шаблона устройства не существует.";
+            TemplNotExists = Localization.Dict.GetEmptyPhrase("TemplNotExists");
         }
 
         public static void Init()
@@ -83,7 +82,9 @@ namespace Scada.Comm.Devices.Modbus
             }
 
             if (Localization.Dictionaries.TryGetValue("Scada.Comm.Devices.KpModbus.FrmDevProps", out dict))
+            {
                 TemplNotExists = dict.GetPhrase("TemplNotExists", TemplNotExists);
+            }
         }
     }
 }

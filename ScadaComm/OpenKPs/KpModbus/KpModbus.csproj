@@ -60,6 +60,12 @@
     <Compile Include="Modbus\Protocol\ModbusUtils.cs" />
     <Compile Include="Modbus\Protocol\TableTypes.cs" />
     <Compile Include="Modbus\Protocol\TransModes.cs" />
+    <Compile Include="Modbus\UI\CtrlElemGroup.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Modbus\UI\CtrlElemGroup.Designer.cs">
+      <DependentUpon>CtrlElemGroup.cs</DependentUpon>
+    </Compile>
     <Compile Include="Modbus\UI\FrmDevProps.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -76,6 +82,12 @@
     <Compile Include="Modbus\Protocol\ModbusPoll.cs" />
     <Compile Include="KpModbusView.cs" />
     <Compile Include="Modbus\KpPhrases.cs" />
+    <Compile Include="Modbus\UI\FrmTemplateSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modbus\UI\FrmTemplateSettings.Designer.cs">
+      <DependentUpon>FrmTemplateSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -84,11 +96,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Modbus\UI\CtrlElemGroup.resx">
+      <DependentUpon>CtrlElemGroup.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Modbus\UI\FrmDevProps.resx">
       <DependentUpon>FrmDevProps.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Modbus\UI\FrmDevTemplate.resx">
       <DependentUpon>FrmDevTemplate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Modbus\UI\FrmTemplateSettings.resx">
+      <DependentUpon>FrmTemplateSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -96,6 +114,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Lang\KpModbus.ru-RU.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Lang\KpModbus.en-GB.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
