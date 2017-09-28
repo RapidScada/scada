@@ -49,7 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Modbus\Protocol\Cmd.cs" />
+    <Compile Include="Modbus\Protocol\ModbusCmd.cs" />
     <Compile Include="Modbus\Protocol\DataUnit.cs" />
     <Compile Include="Modbus\Protocol\DeviceModel.cs" />
     <Compile Include="Modbus\Protocol\Elem.cs" />
@@ -73,7 +73,7 @@
       <DependentUpon>FrmDevTemplate.cs</DependentUpon>
     </Compile>
     <Compile Include="KpModbusLogic.cs" />
-    <Compile Include="Modbus\Protocol\Modbus.cs" />
+    <Compile Include="Modbus\Protocol\ModbusPoll.cs" />
     <Compile Include="KpModbusView.cs" />
     <Compile Include="Modbus\KpPhrases.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
