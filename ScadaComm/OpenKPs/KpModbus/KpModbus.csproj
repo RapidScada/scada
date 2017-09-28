@@ -49,22 +49,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FrmDevProps.cs">
+    <Compile Include="Modbus\Protocol\Cmd.cs" />
+    <Compile Include="Modbus\Protocol\DataUnit.cs" />
+    <Compile Include="Modbus\Protocol\DeviceModel.cs" />
+    <Compile Include="Modbus\Protocol\Elem.cs" />
+    <Compile Include="Modbus\Protocol\ElemGroup.cs" />
+    <Compile Include="Modbus\Protocol\ElemTypes.cs" />
+    <Compile Include="Modbus\Protocol\FuncCodes.cs" />
+    <Compile Include="Modbus\Protocol\ModbusPhrases.cs" />
+    <Compile Include="Modbus\Protocol\ModbusUtils.cs" />
+    <Compile Include="Modbus\Protocol\TableTypes.cs" />
+    <Compile Include="Modbus\Protocol\TransModes.cs" />
+    <Compile Include="Modbus\UI\FrmDevProps.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FrmDevProps.Designer.cs">
+    <Compile Include="Modbus\UI\FrmDevProps.Designer.cs">
       <DependentUpon>FrmDevProps.cs</DependentUpon>
     </Compile>
-    <Compile Include="FrmDevTemplate.cs">
+    <Compile Include="Modbus\UI\FrmDevTemplate.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FrmDevTemplate.Designer.cs">
+    <Compile Include="Modbus\UI\FrmDevTemplate.Designer.cs">
       <DependentUpon>FrmDevTemplate.cs</DependentUpon>
     </Compile>
     <Compile Include="KpModbusLogic.cs" />
-    <Compile Include="Modbus.cs" />
+    <Compile Include="Modbus\Protocol\Modbus.cs" />
     <Compile Include="KpModbusView.cs" />
-    <Compile Include="KpPhrases.cs" />
+    <Compile Include="Modbus\KpPhrases.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -73,10 +84,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="FrmDevProps.resx">
+    <EmbeddedResource Include="Modbus\UI\FrmDevProps.resx">
       <DependentUpon>FrmDevProps.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FrmDevTemplate.resx">
+    <EmbeddedResource Include="Modbus\UI\FrmDevTemplate.resx">
       <DependentUpon>FrmDevTemplate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -103,10 +114,16 @@
     <Content Include="Res\save.png" />
     <Content Include="Res\save_as.png" />
     <Content Include="Res\up.png" />
+    <Content Include="Templates\KpModbus_Adam6015.xml" />
+    <Content Include="Templates\KpModbus_Bolid_S2000-T.xml" />
+    <Content Include="Templates\KpModbus_OWEN_MDDV.xml" />
+    <Content Include="Templates\KpModbus_OWEN_MU110-16R.xml" />
+    <Content Include="Templates\KpModbus_OWEN_MV110-16D.xml" />
+    <Content Include="Templates\KpModbus_OWEN_MV110-16D_DI.xml" />
+    <Content Include="Templates\KpModbus_OWEN_MV110-8A.xml" />
+    <Content Include="Templates\KpModbus_OWEN_MV110-8AS.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Templates\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

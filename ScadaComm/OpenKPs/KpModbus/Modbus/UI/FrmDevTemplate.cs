@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,15 +20,16 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2016
+ * Modified : 2017
  */
 
+using Scada.Comm.Devices.Modbus.Protocol;
 using Scada.UI;
 using System;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Scada.Comm.Devices.KpModbus
+namespace Scada.Comm.Devices.Modbus.UI
 {
     /// <summary>
     /// Editing device template form
@@ -44,11 +45,11 @@ namespace Scada.Comm.Devices.KpModbus
             /// <summary>
             /// Получить или установить элемент
             /// </summary>
-            public Modbus.Elem Elem { get; set; }
+            public Elem Elem { get; set; }
             /// <summary>
             /// Получить или установить группу элементов, в которую входит элемент
             /// </summary>
-            public Modbus.ElemGroup ElemGroup { get; set; }
+            public ElemGroup ElemGroup { get; set; }
             /// <summary>
             /// Получить или установить адрес, начинающийся от 0
             /// </summary>
@@ -87,20 +88,20 @@ namespace Scada.Comm.Devices.KpModbus
         /// </summary>
         private const string NewFileName = "KpModbus_NewTemplate.xml";
 
-        private AppDirs appDirs;                // директории приложения
-        private string initialFileName;         // имя файла шаблона для открытия при запуске формы
-        private string fileName;                // имя файла шаблона устройства
-        private bool saveOnly;                  // разрешена только команда сохранения при работе с файлами
+        private AppDirs appDirs;         // директории приложения
+        private string initialFileName;  // имя файла шаблона для открытия при запуске формы
+        private string fileName;         // имя файла шаблона устройства
+        private bool saveOnly;           // разрешена только команда сохранения при работе с файлами
 
-        private Modbus.DeviceModel devTemplate; // редактируемый шаблон устройства
-        private bool modified;                  // признак изменения шаблона устройства
-        private Modbus.ElemGroup selElemGroup;  // выбранная группа элементов
-        private ElemInfo selElemInfo;           // информация о выбранном элементе
-        private Modbus.Cmd selCmd;              // выбранная команда
-        private TreeNode selNode;               // выбранный узел дерева
-        private TreeNode grsNode;               // узел дерева "Группы элементов"
-        private TreeNode cmdsNode;              // узел дерева "Команды"
-        private bool procChangedEv;             // обрабатывать события на изменение данных
+        private DeviceModel devTemplate; // редактируемый шаблон устройства
+        private bool modified;           // признак изменения шаблона устройства
+        private ElemGroup selElemGroup;  // выбранная группа элементов
+        private ElemInfo selElemInfo;    // информация о выбранном элементе
+        private ModbusCmd selCmd;        // выбранная команда
+        private TreeNode selNode;        // выбранный узел дерева
+        private TreeNode grsNode;        // узел дерева "Группы элементов"
+        private TreeNode cmdsNode;       // узел дерева "Команды"
+        private bool procChangedEv;      // обрабатывать события на изменение данных
 
 
         /// <summary>
@@ -159,7 +160,7 @@ namespace Scada.Comm.Devices.KpModbus
         /// </summary>
         private void LoadTemplate(string fname)
         {
-            Modbus.DeviceModel templ = new Modbus.DeviceModel();
+            DeviceModel templ = new DeviceModel();
             string errMsg;
 
             if (templ.LoadTemplate(fname, out errMsg))
@@ -206,12 +207,12 @@ namespace Scada.Comm.Devices.KpModbus
             treeView.SelectedNode = grsNode;
 
             // заполнение узла групп элементов
-            foreach (Modbus.ElemGroup elemGroup in devTemplate.ElemGroups)
+            foreach (ElemGroup elemGroup in devTemplate.ElemGroups)
                 grsNode.Nodes.Add(NewElemGroupNode(elemGroup));
 
             // заполнение узла команд
-            foreach (Modbus.Cmd cmd in devTemplate.Cmds)
-                cmdsNode.Nodes.Add(NewCmdNode(cmd));
+            foreach (ModbusCmd modbusCmd in devTemplate.Cmds)
+                cmdsNode.Nodes.Add(NewCmdNode(modbusCmd));
 
             // раскрытие основных узлов дерева
             grsNode.Expand();
@@ -224,17 +225,17 @@ namespace Scada.Comm.Devices.KpModbus
         /// <summary>
         /// Создать узел группы элементов
         /// </summary>
-        private TreeNode NewElemGroupNode(Modbus.ElemGroup elemGroup)
+        private TreeNode NewElemGroupNode(ElemGroup elemGroup)
         {
             string name = elemGroup.Name == "" ? KpPhrases.DefGrName : elemGroup.Name;
-            TreeNode grNode = new TreeNode(name + " (" + Modbus.GetTableTypeName(elemGroup.TableType) + ")");
+            TreeNode grNode = new TreeNode(name + " (" + ModbusUtils.GetTableTypeName(elemGroup.TableType) + ")");
             grNode.ImageKey = grNode.SelectedImageKey = "group.png";
             grNode.Tag = elemGroup;
 
             ushort elemAddr = elemGroup.Address;
             int elemSig = elemGroup.StartKPTagInd + 1;
 
-            foreach (Modbus.Elem elem in elemGroup.Elems)
+            foreach (Elem elem in elemGroup.Elems)
             {
                 ElemInfo elemInfo = new ElemInfo();
                 elemInfo.Elem = elem;
@@ -263,13 +264,13 @@ namespace Scada.Comm.Devices.KpModbus
         /// <summary>
         /// Создать узел команды
         /// </summary>
-        private TreeNode NewCmdNode(Modbus.Cmd cmd)
+        private TreeNode NewCmdNode(ModbusCmd modbusCmd)
         {
-            string name = cmd.Name == "" ? KpPhrases.DefCmdName : cmd.Name;
+            string name = modbusCmd.Name == "" ? KpPhrases.DefCmdName : modbusCmd.Name;
             TreeNode cmdNode = new TreeNode(name + 
-                " (" + Modbus.GetTableTypeName(cmd.TableType) + ", " + (cmd.Address + 1) + ")");
+                " (" + ModbusUtils.GetTableTypeName(modbusCmd.TableType) + ", " + (modbusCmd.Address + 1) + ")");
             cmdNode.ImageKey = cmdNode.SelectedImageKey = "cmd.png";
-            cmdNode.Tag = cmd;
+            cmdNode.Tag = modbusCmd;
             return cmdNode;
         }
 
@@ -281,7 +282,7 @@ namespace Scada.Comm.Devices.KpModbus
             if (selElemGroup != null)
             {
                 string name = selElemGroup.Name == "" ? KpPhrases.DefGrName : selElemGroup.Name;
-                selNode.Text = name + " (" + Modbus.GetTableTypeName(selElemGroup.TableType) + ")";
+                selNode.Text = name + " (" + ModbusUtils.GetTableTypeName(selElemGroup.TableType) + ")";
             }
         }
 
@@ -295,9 +296,9 @@ namespace Scada.Comm.Devices.KpModbus
             if (grNode == null)
                 grNode = selNode;
 
-            if (grNode.Tag is Modbus.ElemGroup)
+            if (grNode.Tag is ElemGroup)
             {
-                Modbus.ElemGroup elemGroup = (Modbus.ElemGroup)grNode.Tag;
+                ElemGroup elemGroup = (ElemGroup)grNode.Tag;
                 ushort elemAddr = elemGroup.Address;
                 int elemSig = elemGroup.StartKPTagInd + 1;
 
@@ -320,12 +321,12 @@ namespace Scada.Comm.Devices.KpModbus
         private void UpdateSignals(TreeNode startGrNode)
         {
             // проверка корректности заданного узла дерева
-            if (!(startGrNode.Tag is Modbus.ElemGroup))
+            if (!(startGrNode.Tag is ElemGroup))
                 return;
 
             // определение начального индекса тегов КП
             TreeNode prevGrNode = startGrNode.PrevNode;
-            Modbus.ElemGroup prevElemGroup = prevGrNode == null ? null : prevGrNode.Tag as Modbus.ElemGroup;
+            ElemGroup prevElemGroup = prevGrNode == null ? null : prevGrNode.Tag as ElemGroup;
             int tagInd = prevElemGroup == null ? 0 : prevElemGroup.StartKPTagInd + prevElemGroup.Elems.Count;
 
             // обновление групп и их элементов
@@ -334,7 +335,7 @@ namespace Scada.Comm.Devices.KpModbus
             for (int i = startGrNode.Index; i < grNodeCnt; i++)
             {
                 TreeNode grNode = grsNode.Nodes[i];
-                Modbus.ElemGroup elemGroup = grNode.Tag as Modbus.ElemGroup;
+                ElemGroup elemGroup = grNode.Tag as ElemGroup;
                 int elemSig = tagInd + 1;
                 elemGroup.StartKPTagInd = tagInd;
                 tagInd += elemGroup.Elems.Count;
@@ -355,7 +356,7 @@ namespace Scada.Comm.Devices.KpModbus
             if (selCmd != null)
             {
                 string name = selCmd.Name == "" ? KpPhrases.DefCmdName : selCmd.Name;
-                selNode.Text = name + " (" + Modbus.GetTableTypeName(selCmd.TableType) + ", " + 
+                selNode.Text = name + " (" + ModbusUtils.GetTableTypeName(selCmd.TableType) + ", " + 
                     (selCmd.Address + 1) + ")";
             }
         }
@@ -364,7 +365,7 @@ namespace Scada.Comm.Devices.KpModbus
         /// <summary>
         /// Отобразить свойства группы элементов
         /// </summary>
-        private void ShowElemGroupProps(Modbus.ElemGroup elemGroup)
+        private void ShowElemGroupProps(ElemGroup elemGroup)
         {
             procChangedEv = false;
 
@@ -388,7 +389,7 @@ namespace Scada.Comm.Devices.KpModbus
                 cbGrTableType.SelectedIndex = (int)elemGroup.TableType;
                 numGrAddress.Value = elemGroup.Address + 1;
                 numGrElemCnt.Value = 1;
-                numGrElemCnt.Maximum = Modbus.ElemGroup.GetMaxElemCnt(elemGroup.TableType);
+                numGrElemCnt.Maximum = ElemGroup.GetMaxElemCnt(elemGroup.TableType);
                 numGrElemCnt.Value = elemGroup.Elems.Count;
                 gbElemGroup.Enabled = true;
             }
@@ -421,9 +422,9 @@ namespace Scada.Comm.Devices.KpModbus
                 txtElemName.Text = elemInfo.Elem.Name;
                 txtElemAddress.Text = elemInfo.AddressRange;
                 txtElemSignal.Text = elemInfo.Signal.ToString();
-                Modbus.ElemTypes elemType = elemInfo.Elem.ElemType;
+                ElemTypes elemType = elemInfo.Elem.ElemType;
 
-                if (elemType == Modbus.ElemTypes.Bool)
+                if (elemType == ElemTypes.Bool)
                 {
                     rbUShort.Enabled = rbShort.Enabled = rbUInt.Enabled = rbInt.Enabled = 
                         rbULong.Enabled = rbLong.Enabled = rbFloat.Enabled = rbDouble.Enabled = false;
@@ -442,28 +443,28 @@ namespace Scada.Comm.Devices.KpModbus
 
                 switch (elemType)
                 {
-                    case Modbus.ElemTypes.UShort:
+                    case ElemTypes.UShort:
                         rbUShort.Checked = true;
                         break;
-                    case Modbus.ElemTypes.Short:
+                    case ElemTypes.Short:
                         rbShort.Checked = true;
                         break;
-                    case Modbus.ElemTypes.UInt:
+                    case ElemTypes.UInt:
                         rbUInt.Checked = true;
                         break;
-                    case Modbus.ElemTypes.Int:
+                    case ElemTypes.Int:
                         rbInt.Checked = true;
                         break;
-                    case Modbus.ElemTypes.ULong:
+                    case ElemTypes.ULong:
                         rbULong.Checked = true;
                         break;
-                    case Modbus.ElemTypes.Long:
+                    case ElemTypes.Long:
                         rbLong.Checked = true;
                         break;
-                    case Modbus.ElemTypes.Float:
+                    case ElemTypes.Float:
                         rbFloat.Checked = true;
                         break;
-                    case Modbus.ElemTypes.Double:
+                    case ElemTypes.Double:
                         rbDouble.Checked = true;
                         break;
                     default:
@@ -480,7 +481,7 @@ namespace Scada.Comm.Devices.KpModbus
         /// <summary>
         /// Отобразить свойства команды
         /// </summary>
-        private void ShowCmdProps(Modbus.Cmd cmd)
+        private void ShowCmdProps(ModbusCmd modbusCmd)
         {
             procChangedEv = false;
 
@@ -488,7 +489,7 @@ namespace Scada.Comm.Devices.KpModbus
             gbElem.Visible = false;
             gbCmd.Visible = true;
 
-            if (cmd == null)
+            if (modbusCmd == null)
             {
                 cbCmdTableType.SelectedIndex = 0;
                 numCmdAddress.Value = 1;
@@ -499,13 +500,13 @@ namespace Scada.Comm.Devices.KpModbus
             }
             else
             {
-                cbCmdTableType.SelectedIndex = cmd.TableType == Modbus.TableTypes.Coils ? 0 : 1;
-                chkCmdMultiple.Checked = cmd.Multiple;
-                numCmdAddress.Value = cmd.Address + 1;
-                numCmdElemCnt.Value = cmd.ElemCnt;
-                numCmdElemCnt.Enabled = cmd.Multiple;
-                numCmdNum.Value = cmd.CmdNum;
-                txtCmdName.Text = cmd.Name;
+                cbCmdTableType.SelectedIndex = modbusCmd.TableType == TableTypes.Coils ? 0 : 1;
+                chkCmdMultiple.Checked = modbusCmd.Multiple;
+                numCmdAddress.Value = modbusCmd.Address + 1;
+                numCmdElemCnt.Value = modbusCmd.ElemCnt;
+                numCmdElemCnt.Enabled = modbusCmd.Multiple;
+                numCmdNum.Value = modbusCmd.CmdNum;
+                txtCmdName.Text = modbusCmd.Name;
                 gbCmd.Enabled = true;
             }
 
@@ -638,7 +639,7 @@ namespace Scada.Comm.Devices.KpModbus
             if (string.IsNullOrEmpty(initialFileName))
             {
                 saveFileDialog.FileName = NewFileName;
-                devTemplate = new Modbus.DeviceModel();
+                devTemplate = new DeviceModel();
                 FillTree();
             }
             else
@@ -660,7 +661,7 @@ namespace Scada.Comm.Devices.KpModbus
             if (CheckChanges())
             {
                 saveFileDialog.FileName = NewFileName;
-                devTemplate = new Modbus.DeviceModel();
+                devTemplate = new DeviceModel();
                 fileName = "";
                 SetFormTitle();
                 FillTree();
@@ -692,9 +693,9 @@ namespace Scada.Comm.Devices.KpModbus
         private void btnAddElemGroup_Click(object sender, EventArgs e)
         {
             // создание группы элементов и добавление в шаблон устройства
-            Modbus.ElemGroup elemGroup = new Modbus.ElemGroup(Modbus.TableTypes.DiscreteInputs);
-            elemGroup.Elems.Add(new Modbus.Elem());
-            int ind = selNode != null && selNode.Tag is Modbus.ElemGroup ? 
+            ElemGroup elemGroup = new ElemGroup(TableTypes.DiscreteInputs);
+            elemGroup.Elems.Add(new Elem());
+            int ind = selNode != null && selNode.Tag is ElemGroup ? 
                 selNode.Index + 1 : devTemplate.ElemGroups.Count;
             devTemplate.ElemGroups.Insert(ind, elemGroup);
 
@@ -713,8 +714,8 @@ namespace Scada.Comm.Devices.KpModbus
         private void btnAddElem_Click(object sender, EventArgs e)
         {
             // создание элемента и добавление в шаблон устройства
-            Modbus.ElemGroup elemGroup = selElemGroup == null ? selElemInfo.ElemGroup : selElemGroup;
-            int maxElemCnt = Modbus.ElemGroup.GetMaxElemCnt(elemGroup.TableType);
+            ElemGroup elemGroup = selElemGroup == null ? selElemInfo.ElemGroup : selElemGroup;
+            int maxElemCnt = ElemGroup.GetMaxElemCnt(elemGroup.TableType);
 
             if (elemGroup.Elems.Count >= maxElemCnt)
             {
@@ -724,7 +725,7 @@ namespace Scada.Comm.Devices.KpModbus
             }
 
             ElemInfo elemInfo = new ElemInfo();
-            elemInfo.Elem = new Modbus.Elem() { ElemType = elemGroup.DefElemType };
+            elemInfo.Elem = new Elem() { ElemType = elemGroup.DefElemType };
             elemInfo.ElemGroup = elemGroup;
             int ind = selNode.Tag is ElemInfo ? selNode.Index + 1 : elemGroup.Elems.Count;
             elemGroup.Elems.Insert(ind, elemInfo.Elem);
@@ -745,12 +746,12 @@ namespace Scada.Comm.Devices.KpModbus
         private void btnAddCmd_Click(object sender, EventArgs e)
         {
             // создание команды и добавление в шаблон устройства
-            Modbus.Cmd cmd = new Modbus.Cmd(Modbus.TableTypes.Coils);
-            int ind = selNode != null && selNode.Tag is Modbus.Cmd ? selNode.Index + 1 : devTemplate.Cmds.Count;
-            devTemplate.Cmds.Insert(ind, cmd);
+            ModbusCmd modbusCmd = new ModbusCmd(TableTypes.Coils);
+            int ind = selNode != null && selNode.Tag is ModbusCmd ? selNode.Index + 1 : devTemplate.Cmds.Count;
+            devTemplate.Cmds.Insert(ind, modbusCmd);
 
             // создание узла дерева команды
-            TreeNode cmdNode = NewCmdNode(cmd);
+            TreeNode cmdNode = NewCmdNode(modbusCmd);
             cmdsNode.Nodes.Insert(ind, cmdNode);
             treeView.SelectedNode = cmdNode;
             txtCmdName.Select();
@@ -768,7 +769,7 @@ namespace Scada.Comm.Devices.KpModbus
             if (selElemGroup != null)
             {
                 // перемещение группы элементов вверх
-                Modbus.ElemGroup prevElemGroup = prevNode.Tag as Modbus.ElemGroup;
+                ElemGroup prevElemGroup = prevNode.Tag as ElemGroup;
 
                 devTemplate.ElemGroups.RemoveAt(prevInd);
                 devTemplate.ElemGroups.Insert(prevInd + 1, prevElemGroup);
@@ -796,7 +797,7 @@ namespace Scada.Comm.Devices.KpModbus
             else if (selCmd != null)
             {
                 // перемещение команды вверх
-                Modbus.Cmd prevCmd = prevNode.Tag as Modbus.Cmd;
+                ModbusCmd prevCmd = prevNode.Tag as ModbusCmd;
 
                 devTemplate.Cmds.RemoveAt(prevInd);
                 devTemplate.Cmds.Insert(prevInd + 1, prevCmd);
@@ -822,7 +823,7 @@ namespace Scada.Comm.Devices.KpModbus
             if (selElemGroup != null)
             {
                 // перемещение группы элементов вниз
-                Modbus.ElemGroup nextElemGroup = nextNode.Tag as Modbus.ElemGroup;
+                ElemGroup nextElemGroup = nextNode.Tag as ElemGroup;
 
                 devTemplate.ElemGroups.RemoveAt(nextInd);
                 devTemplate.ElemGroups.Insert(nextInd - 1, nextElemGroup);
@@ -850,7 +851,7 @@ namespace Scada.Comm.Devices.KpModbus
             else if (selCmd != null)
             {
                 // перемещение команды вниз
-                Modbus.Cmd nextCmd = nextNode.Tag as Modbus.Cmd;
+                ModbusCmd nextCmd = nextNode.Tag as ModbusCmd;
 
                 devTemplate.Cmds.RemoveAt(nextInd);
                 devTemplate.Cmds.Insert(nextInd - 1, nextCmd);
@@ -878,7 +879,7 @@ namespace Scada.Comm.Devices.KpModbus
             else if (selElemInfo != null)
             {
                 // удаление элемента
-                Modbus.ElemGroup elemGroup = selElemInfo.ElemGroup;
+                ElemGroup elemGroup = selElemInfo.ElemGroup;
                 elemGroup.Elems.Remove(selElemInfo.Elem);
                 TreeNode grNode = selNode.Parent;
                 grsNode.Nodes.Remove(selNode);
@@ -904,9 +905,9 @@ namespace Scada.Comm.Devices.KpModbus
             // отображение выбранного объекта и его свойств
             selNode = e.Node;
             object tag = selNode.Tag;
-            selElemGroup = tag as Modbus.ElemGroup;
+            selElemGroup = tag as ElemGroup;
             selElemInfo = tag as ElemInfo;
-            selCmd = tag as Modbus.Cmd;
+            selCmd = tag as ModbusCmd;
 
             if (selElemGroup != null)
                 ShowElemGroupProps(selElemGroup);
@@ -957,8 +958,8 @@ namespace Scada.Comm.Devices.KpModbus
             // изменение типа таблицы данных группы элементов
             if (procChangedEv && selElemGroup != null)
             {
-                Modbus.TableTypes tableType = (Modbus.TableTypes)cbGrTableType.SelectedIndex;
-                int maxElemCnt = Modbus.ElemGroup.GetMaxElemCnt(tableType);
+                TableTypes tableType = (TableTypes)cbGrTableType.SelectedIndex;
+                int maxElemCnt = ElemGroup.GetMaxElemCnt(tableType);
 
                 bool cancel = selElemGroup.Elems.Count > maxElemCnt && 
                     MessageBox.Show(string.Format(KpPhrases.ElemRemoveWarning, maxElemCnt), CommonPhrases.QuestionCaption,
@@ -981,8 +982,8 @@ namespace Scada.Comm.Devices.KpModbus
                     selElemGroup.TableType = tableType;
 
                     // установка типа элементов группы по умолчанию
-                    Modbus.ElemTypes elemType = selElemGroup.DefElemType;
-                    foreach (Modbus.Elem elem in selElemGroup.Elems)
+                    ElemTypes elemType = selElemGroup.DefElemType;
+                    foreach (Elem elem in selElemGroup.Elems)
                         elem.ElemType = elemType;
 
                     // обновление узлов дерева
@@ -1017,8 +1018,8 @@ namespace Scada.Comm.Devices.KpModbus
                 if (elemCnt < newElemCnt)
                 {
                     // добавление новых элементов
-                    Modbus.ElemTypes elemType = selElemGroup.DefElemType;
-                    ushort elemLen = (ushort)Modbus.Elem.GetElemLength(elemType);
+                    ElemTypes elemType = selElemGroup.DefElemType;
+                    ushort elemLen = (ushort)Elem.GetElemLength(elemType);
                     ushort elemAddr = selElemGroup.Address;
 
                     for (int elemInd = 0; elemInd < newElemCnt; elemInd++)
@@ -1030,7 +1031,7 @@ namespace Scada.Comm.Devices.KpModbus
                         else
                         {
                             ElemInfo elemInfo = new ElemInfo();
-                            elemInfo.Elem = new Modbus.Elem() { ElemType = elemType };
+                            elemInfo.Elem = new Elem() { ElemType = elemType };
                             elemInfo.Address = elemAddr;
                             elemInfo.ElemGroup = selElemGroup;
 
@@ -1072,26 +1073,26 @@ namespace Scada.Comm.Devices.KpModbus
             // изменение типа элемента
             if (procChangedEv && selElemInfo != null)
             {
-                Modbus.Elem elem = selElemInfo.Elem;
+                Elem elem = selElemInfo.Elem;
 
                 if (rbUShort.Checked)
-                    elem.ElemType = Modbus.ElemTypes.UShort;
+                    elem.ElemType = ElemTypes.UShort;
                 else if (rbShort.Checked)
-                    elem.ElemType = Modbus.ElemTypes.Short;
+                    elem.ElemType = ElemTypes.Short;
                 else if (rbUInt.Checked)
-                    elem.ElemType = Modbus.ElemTypes.UInt;
+                    elem.ElemType = ElemTypes.UInt;
                 else if (rbInt.Checked)
-                    elem.ElemType = Modbus.ElemTypes.Int;
+                    elem.ElemType = ElemTypes.Int;
                 else if (rbULong.Checked)
-                    elem.ElemType = Modbus.ElemTypes.ULong;
+                    elem.ElemType = ElemTypes.ULong;
                 else if (rbLong.Checked)
-                    elem.ElemType = Modbus.ElemTypes.Long;
+                    elem.ElemType = ElemTypes.Long;
                 else if (rbFloat.Checked)
-                    elem.ElemType = Modbus.ElemTypes.Float;
+                    elem.ElemType = ElemTypes.Float;
                 else if (rbDouble.Checked)
-                    elem.ElemType = Modbus.ElemTypes.Double;
+                    elem.ElemType = ElemTypes.Double;
                 else
-                    elem.ElemType = Modbus.ElemTypes.Bool;
+                    elem.ElemType = ElemTypes.Bool;
 
                 txtElemAddress.Text = selElemInfo.AddressRange;
                 selNode.Text = selElemInfo.Caption;
@@ -1117,10 +1118,10 @@ namespace Scada.Comm.Devices.KpModbus
             if (procChangedEv && selCmd != null)
             {
                 selCmd.TableType = cbCmdTableType.SelectedIndex == 0 ?
-                    Modbus.TableTypes.Coils : Modbus.TableTypes.HoldingRegisters;
+                    TableTypes.Coils : TableTypes.HoldingRegisters;
 
                 // ограничение макс. количества элементов в группе
-                int maxElemCnt = Modbus.ElemGroup.GetMaxElemCnt(selCmd.TableType);
+                int maxElemCnt = ElemGroup.GetMaxElemCnt(selCmd.TableType);
                 if (numGrElemCnt.Value > maxElemCnt)
                     numGrElemCnt.Value = maxElemCnt;
                 numGrElemCnt.Maximum = maxElemCnt;
