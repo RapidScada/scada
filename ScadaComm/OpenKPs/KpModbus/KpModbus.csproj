@@ -94,13 +94,14 @@
     <Compile Include="KpModbusLogic.cs" />
     <Compile Include="Modbus\Protocol\ModbusPoll.cs" />
     <Compile Include="KpModbusView.cs" />
-    <Compile Include="Modbus\KpPhrases.cs" />
+    <Compile Include="Modbus\UI\KpPhrases.cs" />
     <Compile Include="Modbus\UI\FrmTemplateSettings.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Modbus\UI\FrmTemplateSettings.Designer.cs">
       <DependentUpon>FrmTemplateSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modbus\UI\TreeUpdateTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

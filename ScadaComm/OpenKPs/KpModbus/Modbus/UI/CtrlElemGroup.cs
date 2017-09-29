@@ -100,9 +100,9 @@ namespace Scada.Comm.Devices.Modbus.UI
         /// <summary>
         /// Вызвать событие ObjectChanged
         /// </summary>
-        private void OnObjectChanged()
+        private void OnObjectChanged(object changeArgument)
         {
-            ObjectChanged?.Invoke(this, elemGroup);
+            ObjectChanged?.Invoke(this, new ObjectChangedEventArgs(elemGroup, changeArgument));
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             if (elemGroup != null)
             {
                 elemGroup.Active = chkGrActive.Checked;
-                OnObjectChanged(); // требуется обновить только узел группы
+                OnObjectChanged(TreeUpdateTypes.CurrentNode);
             }
         }
 
@@ -137,7 +137,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             if (elemGroup != null)
             {
                 elemGroup.Name = txtGrName.Text;
-                OnObjectChanged(); // требуется обновить только узел группы
+                OnObjectChanged(TreeUpdateTypes.CurrentNode);
             }
         }
 
@@ -177,7 +177,7 @@ namespace Scada.Comm.Devices.Modbus.UI
                         elem.ElemType = elemType;
                     }
 
-                    OnObjectChanged(); // требуется обновить узлы группы и её элементов
+                    OnObjectChanged(TreeUpdateTypes.CurrentNode | TreeUpdateTypes.ChildNodes);
                 }
             }
         }
@@ -188,7 +188,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             if (elemGroup != null)
             {
                 elemGroup.Address = (ushort)(numGrAddress.Value - 1);
-                OnObjectChanged(); // требуется обновить элементы группы
+                OnObjectChanged(TreeUpdateTypes.ChildNodes);
             }
         }
 
@@ -224,7 +224,7 @@ namespace Scada.Comm.Devices.Modbus.UI
                     }
                 }
 
-                OnObjectChanged(); // требуется обновить создать или удалить узлы элементов и пересчитать сигналы
+                OnObjectChanged(TreeUpdateTypes.UpdateSignals);
             }
         }
     }

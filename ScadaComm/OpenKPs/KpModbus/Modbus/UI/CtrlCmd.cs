@@ -99,9 +99,9 @@ namespace Scada.Comm.Devices.Modbus.UI
         /// <summary>
         /// Вызвать событие ObjectChanged
         /// </summary>
-        private void OnObjectChanged()
+        private void OnObjectChanged(object changeArgument)
         {
-            ObjectChanged?.Invoke(this, modbusCmd);
+            ObjectChanged?.Invoke(this, new ObjectChangedEventArgs(modbusCmd, changeArgument));
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             if (modbusCmd != null)
             {
                 modbusCmd.Name = txtCmdName.Text;
-                OnObjectChanged(); // требуется обновить только узел данной команды
+                OnObjectChanged(TreeUpdateTypes.CurrentNode);
             }
         }
 
@@ -145,7 +145,7 @@ namespace Scada.Comm.Devices.Modbus.UI
                     numCmdElemCnt.Value = maxElemCnt;
                 numCmdElemCnt.Maximum = maxElemCnt;
 
-                OnObjectChanged(); // требуется обновить только узел данной команды
+                OnObjectChanged(TreeUpdateTypes.CurrentNode);
             }
         }
 
@@ -160,7 +160,7 @@ namespace Scada.Comm.Devices.Modbus.UI
                 if (!modbusCmd.Multiple)
                     numCmdElemCnt.Value = 1;
 
-                OnObjectChanged(); // обновления узлов дерева не требуется
+                OnObjectChanged(TreeUpdateTypes.None);
             }
         }
 
@@ -170,7 +170,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             if (modbusCmd != null)
             {
                 modbusCmd.Address = (ushort)(numCmdAddress.Value - 1);
-                OnObjectChanged(); // требуется обновить только узел данной команды
+                OnObjectChanged(TreeUpdateTypes.CurrentNode);
             }
         }
 
@@ -180,7 +180,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             if (modbusCmd != null)
             {
                 modbusCmd.ElemCnt = (int)numCmdElemCnt.Value;
-                OnObjectChanged(); // требуется обновить только узел данной команды
+                OnObjectChanged(TreeUpdateTypes.CurrentNode);
             }
         }
 
@@ -190,7 +190,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             if (modbusCmd != null)
             {
                 modbusCmd.CmdNum = (int)numCmdNum.Value;
-                OnObjectChanged(); // обновления узлов дерева не требуется
+                OnObjectChanged(TreeUpdateTypes.None);
             }
         }
     }

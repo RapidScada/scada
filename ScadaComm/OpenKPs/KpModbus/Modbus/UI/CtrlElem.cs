@@ -146,9 +146,9 @@ namespace Scada.Comm.Devices.Modbus.UI
         /// <summary>
         /// Вызвать событие ObjectChanged
         /// </summary>
-        private void OnObjectChanged()
+        private void OnObjectChanged(object changeArgument)
         {
-            ObjectChanged?.Invoke(this, elemInfo);
+            ObjectChanged?.Invoke(this, new ObjectChangedEventArgs(elemInfo, changeArgument));
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             if (elemInfo != null)
             {
                 elemInfo.Elem.Name = txtElemName.Text;
-                OnObjectChanged(); // требуется обновить только узел данного элемента
+                OnObjectChanged(TreeUpdateTypes.CurrentNode);
             }
         }
 
@@ -204,7 +204,7 @@ namespace Scada.Comm.Devices.Modbus.UI
                     elem.ElemType = ElemTypes.Bool;
 
                 txtElemAddress.Text = elemInfo.AddressRange;
-                OnObjectChanged(); // требуется обновить узел данного элемента и следующих за ним в группе
+                OnObjectChanged(TreeUpdateTypes.CurrentNode | TreeUpdateTypes.NextSiblings);
             }
         }
 
@@ -214,7 +214,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             if (elemInfo != null)
             {
                 elemInfo.Elem.ByteOrderStr = txtByteOrder.Text;
-                OnObjectChanged(); // обновления узлов дерева не требуется
+                OnObjectChanged(TreeUpdateTypes.None);
             }
         }
     }

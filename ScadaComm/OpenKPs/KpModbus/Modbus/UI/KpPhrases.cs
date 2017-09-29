@@ -23,7 +23,7 @@
  * Modified : 2017
  */
 
-namespace Scada.Comm.Devices.Modbus
+namespace Scada.Comm.Devices.Modbus.UI
 {
     /// <summary>
     /// The phrases used in the library
