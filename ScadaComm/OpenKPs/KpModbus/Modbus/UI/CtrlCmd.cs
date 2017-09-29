@@ -60,9 +60,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             }
             set
             {
-                if (value != null)
-                    modbusCmd = null; // чтобы не вызывалось событие ObjectChanged
-
+                modbusCmd = null; // чтобы не вызывалось событие ObjectChanged
                 ShowCmdProps(value);
                 modbusCmd = value;
             }

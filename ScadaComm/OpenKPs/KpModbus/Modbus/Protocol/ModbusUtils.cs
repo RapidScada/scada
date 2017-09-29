@@ -186,5 +186,13 @@ namespace Scada.Comm.Devices.Modbus.Protocol
 
             return descr;
         }
+
+        /// <summary>
+        /// Получить строковую запись диапазона адресов элемента
+        /// </summary>
+        public static string GetAddressRange(int address, int count)
+        {
+            return (address + 1).ToString() + (count <= 1 ? "" : " - " + (address + count));
+        }
     }
 }

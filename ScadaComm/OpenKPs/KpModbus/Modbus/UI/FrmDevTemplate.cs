@@ -55,7 +55,6 @@ namespace Scada.Comm.Devices.Modbus.UI
         private TreeNode selNode;        // выбранный узел дерева
         private TreeNode grsNode;        // узел дерева "Группы элементов"
         private TreeNode cmdsNode;       // узел дерева "Команды"
-        private bool procChangedEv;      // обрабатывать события на изменение данных
 
 
         /// <summary>
@@ -78,7 +77,6 @@ namespace Scada.Comm.Devices.Modbus.UI
             selNode = null;
             grsNode = treeView.Nodes["grsNode"];
             cmdsNode = treeView.Nodes["cmdsNode"];
-            procChangedEv = false;
         }
 
 
@@ -183,7 +181,7 @@ namespace Scada.Comm.Devices.Modbus.UI
         {
             string name = elemGroup.Name == "" ? KpPhrases.DefGrName : elemGroup.Name;
             TreeNode grNode = new TreeNode(name + " (" + ModbusUtils.GetTableTypeName(elemGroup.TableType) + ")");
-            grNode.ImageKey = grNode.SelectedImageKey = "group.png";
+            grNode.ImageKey = grNode.SelectedImageKey = elemGroup.Active ? "group.png" : "group_inactive.png";
             grNode.Tag = elemGroup;
 
             ushort elemAddr = elemGroup.Address;
@@ -235,8 +233,9 @@ namespace Scada.Comm.Devices.Modbus.UI
         {
             if (selElemGroup != null)
             {
-                string name = selElemGroup.Name == "" ? KpPhrases.DefGrName : selElemGroup.Name;
-                selNode.Text = name + " (" + ModbusUtils.GetTableTypeName(selElemGroup.TableType) + ")";
+                selNode.ImageKey = selNode.SelectedImageKey = selElemGroup.Active ? "group.png" : "group_inactive.png";
+                selNode.Text = (selElemGroup.Name == "" ? KpPhrases.DefGrName : selElemGroup.Name) + 
+                    " (" + ModbusUtils.GetTableTypeName(selElemGroup.TableType) + ")";
             }
         }
 
@@ -309,9 +308,9 @@ namespace Scada.Comm.Devices.Modbus.UI
         {
             if (selCmd != null)
             {
-                string name = selCmd.Name == "" ? KpPhrases.DefCmdName : selCmd.Name;
-                selNode.Text = name + " (" + ModbusUtils.GetTableTypeName(selCmd.TableType) + ", " + 
-                    (selCmd.Address + 1) + ")";
+                selNode.Text = (selCmd.Name == "" ? KpPhrases.DefCmdName : selCmd.Name) + 
+                    " (" + ModbusUtils.GetTableTypeName(selCmd.TableType) + ", " + 
+                    ModbusUtils.GetAddressRange(selCmd.Address, selCmd.ElemCnt) + ")";
             }
         }
 
@@ -321,34 +320,10 @@ namespace Scada.Comm.Devices.Modbus.UI
         /// </summary>
         private void ShowElemGroupProps(ElemGroup elemGroup)
         {
-            procChangedEv = false;
-
-            gbElemGroup.Visible = true;
-            gbElem.Visible = false;
-            gbCmd.Visible = false;
-
-            if (elemGroup == null)
-            {
-                chkGrActive.Checked = false;
-                txtGrName.Text = "";
-                cbGrTableType.SelectedIndex = 0;
-                numGrAddress.Value = 1;
-                numGrElemCnt.Value = 1;
-                gbElemGroup.Enabled = false;
-            }
-            else
-            {
-                chkGrActive.Checked = elemGroup.Active;
-                txtGrName.Text = elemGroup.Name;
-                cbGrTableType.SelectedIndex = (int)elemGroup.TableType;
-                numGrAddress.Value = elemGroup.Address + 1;
-                numGrElemCnt.Value = 1;
-                numGrElemCnt.Maximum = ElemGroup.GetMaxElemCnt(elemGroup.TableType);
-                numGrElemCnt.Value = elemGroup.Elems.Count;
-                gbElemGroup.Enabled = true;
-            }
-
-            procChangedEv = true;
+            ctrlElemGroup.Visible = true;
+            ctrlElemGroup.ElemGroup = elemGroup;
+            ctrlElem.Visible = false;
+            ctrlCmd.Visible = false;
         }
 
         /// <summary>
@@ -356,80 +331,10 @@ namespace Scada.Comm.Devices.Modbus.UI
         /// </summary>
         private void ShowElemProps(ElemInfo elemInfo)
         {
-            procChangedEv = false;
-
-            gbElemGroup.Visible = false;
-            gbElem.Visible = true;
-            gbCmd.Visible = false;
-
-            if (elemInfo == null)
-            {
-                txtElemName.Text = "";
-                txtElemAddress.Text = "";
-                txtElemSignal.Text = "";
-                rbBool.Checked = true;
-                txtByteOrder.Text = "";
-                gbElem.Enabled = false;
-            }
-            else
-            {
-                txtElemName.Text = elemInfo.Elem.Name;
-                txtElemAddress.Text = elemInfo.AddressRange;
-                txtElemSignal.Text = elemInfo.Signal.ToString();
-                ElemTypes elemType = elemInfo.Elem.ElemType;
-
-                if (elemType == ElemTypes.Bool)
-                {
-                    rbUShort.Enabled = rbShort.Enabled = rbUInt.Enabled = rbInt.Enabled = 
-                        rbULong.Enabled = rbLong.Enabled = rbFloat.Enabled = rbDouble.Enabled = false;
-                    rbBool.Enabled = true;
-                    txtByteOrder.Text = "";
-                    txtByteOrder.Enabled = false;
-                }
-                else
-                {
-                    rbUShort.Enabled = rbShort.Enabled = rbUInt.Enabled = rbInt.Enabled =
-                        rbULong.Enabled = rbLong.Enabled = rbFloat.Enabled = rbDouble.Enabled = true;
-                    rbBool.Enabled = false;
-                    txtByteOrder.Text = elemInfo.Elem.ByteOrderStr;
-                    txtByteOrder.Enabled = true;
-                }
-
-                switch (elemType)
-                {
-                    case ElemTypes.UShort:
-                        rbUShort.Checked = true;
-                        break;
-                    case ElemTypes.Short:
-                        rbShort.Checked = true;
-                        break;
-                    case ElemTypes.UInt:
-                        rbUInt.Checked = true;
-                        break;
-                    case ElemTypes.Int:
-                        rbInt.Checked = true;
-                        break;
-                    case ElemTypes.ULong:
-                        rbULong.Checked = true;
-                        break;
-                    case ElemTypes.Long:
-                        rbLong.Checked = true;
-                        break;
-                    case ElemTypes.Float:
-                        rbFloat.Checked = true;
-                        break;
-                    case ElemTypes.Double:
-                        rbDouble.Checked = true;
-                        break;
-                    default:
-                        rbBool.Checked = true;
-                        break;
-                }
-
-                gbElem.Enabled = true;
-            }
-
-            procChangedEv = true;
+            ctrlElemGroup.Visible = false;
+            ctrlElem.Visible = true;
+            ctrlElem.ElemInfo = elemInfo;
+            ctrlCmd.Visible = false;
         }
 
         /// <summary>
@@ -437,34 +342,10 @@ namespace Scada.Comm.Devices.Modbus.UI
         /// </summary>
         private void ShowCmdProps(ModbusCmd modbusCmd)
         {
-            procChangedEv = false;
-
-            gbElemGroup.Visible = false;
-            gbElem.Visible = false;
-            gbCmd.Visible = true;
-
-            if (modbusCmd == null)
-            {
-                cbCmdTableType.SelectedIndex = 0;
-                numCmdAddress.Value = 1;
-                numCmdElemCnt.Value = 1;
-                numCmdNum.Value = 1;
-                txtCmdName.Text = "";
-                gbCmd.Enabled = false;
-            }
-            else
-            {
-                cbCmdTableType.SelectedIndex = modbusCmd.TableType == TableTypes.Coils ? 0 : 1;
-                chkCmdMultiple.Checked = modbusCmd.Multiple;
-                numCmdAddress.Value = modbusCmd.Address + 1;
-                numCmdElemCnt.Value = modbusCmd.ElemCnt;
-                numCmdElemCnt.Enabled = modbusCmd.Multiple;
-                numCmdNum.Value = modbusCmd.CmdNum;
-                txtCmdName.Text = modbusCmd.Name;
-                gbCmd.Enabled = true;
-            }
-
-            procChangedEv = true;
+            ctrlElemGroup.Visible = false;
+            ctrlElem.Visible = false;
+            ctrlCmd.Visible = true;
+            ctrlCmd.ModbusCmd = modbusCmd;
         }
 
         /// <summary>
@@ -472,12 +353,9 @@ namespace Scada.Comm.Devices.Modbus.UI
         /// </summary>
         private void DisableProps()
         {
-            if (gbElemGroup.Visible)
-                ShowElemGroupProps(null);
-            else if (gbElem.Visible)
-                ShowElemProps(null);
-            else if (gbCmd.Visible)
-                ShowCmdProps(null);
+            ctrlElemGroup.ElemGroup = null;
+            ctrlElem.ElemInfo = null;
+            ctrlCmd.ModbusCmd = null;
         }
 
         /// <summary>
@@ -582,7 +460,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             // настройка элементов управления
             openFileDialog.InitialDirectory = appDirs.ConfigDir;
             saveFileDialog.InitialDirectory = appDirs.ConfigDir;
-            gbElem.Top = gbCmd.Top = gbElemGroup.Top;
+            ctrlElem.Top = ctrlCmd.Top = ctrlElemGroup.Top;
 
             if (saveOnly)
             {
@@ -659,7 +537,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             UpdateSignals(grNode);
             grNode.Expand();
             treeView.SelectedNode = grNode;
-            txtGrName.Select();
+            ctrlElemGroup.SetFocus();
 
             // установка признака изменения
             Modified = true;
@@ -691,7 +569,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             UpdateElemNodes(grNode);
             UpdateSignals(grNode);
             treeView.SelectedNode = elemNode;
-            txtElemName.Select();
+            ctrlElem.SetFocus();
 
             // установка признака изменения
             Modified = true;
@@ -708,7 +586,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             TreeNode cmdNode = NewCmdNode(modbusCmd);
             cmdsNode.Nodes.Insert(ind, cmdNode);
             treeView.SelectedNode = cmdNode;
-            txtCmdName.Select();
+            ctrlCmd.SetFocus();
 
             // установка признака изменения
             Modified = true;
@@ -885,261 +763,89 @@ namespace Scada.Comm.Devices.Modbus.UI
             btnDelete.Enabled = nodeIsOk;
         }
 
-
-        private void chkGrActive_CheckedChanged(object sender, EventArgs e)
+        private void ctrlElemGroup_ObjectChanged(object sender, ObjectChangedEventArgs e)
         {
-            // изменение наименования группы элементов
-            if (procChangedEv && selElemGroup != null)
-            {
-                selElemGroup.Active = chkGrActive.Checked;
-                Modified = true;
-            }
-        }
+            // установка признака изменения конфигурации
+            Modified = true;
 
-        private void txtGrName_TextChanged(object sender, EventArgs e)
-        {
-            // изменение наименования группы элементов
-            if (procChangedEv && selElemGroup != null)
-            {
-                selElemGroup.Name = txtGrName.Text;
+            // отображение изменений группы элементов в дереве
+            TreeUpdateTypes treeUpdateTypes = (TreeUpdateTypes)e.ChangeArgument;
+
+            if (treeUpdateTypes.HasFlag(TreeUpdateTypes.CurrentNode))
                 UpdateElemGroupNode();
-                Modified = true;
-            }
-        }
 
-        private void cbGrTableType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // изменение типа таблицы данных группы элементов
-            if (procChangedEv && selElemGroup != null)
-            {
-                TableTypes tableType = (TableTypes)cbGrTableType.SelectedIndex;
-                int maxElemCnt = ElemGroup.GetMaxElemCnt(tableType);
-
-                bool cancel = selElemGroup.Elems.Count > maxElemCnt && 
-                    MessageBox.Show(string.Format(KpPhrases.ElemRemoveWarning, maxElemCnt), CommonPhrases.QuestionCaption,
-                        MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) != DialogResult.Yes;
-
-                if (cancel)
-                {
-                    procChangedEv = false;
-                    cbGrTableType.SelectedIndex = (int)selElemGroup.TableType;
-                    procChangedEv = true;
-                }
-                else
-                {
-                    // ограничение макс. количества элементов в группе
-                    if (numGrElemCnt.Value > maxElemCnt)
-                        numGrElemCnt.Value = maxElemCnt;
-                    numGrElemCnt.Maximum = maxElemCnt;
-
-                    // установка типа таблицы данных
-                    selElemGroup.TableType = tableType;
-
-                    // установка типа элементов группы по умолчанию
-                    ElemTypes elemType = selElemGroup.DefElemType;
-                    foreach (Elem elem in selElemGroup.Elems)
-                        elem.ElemType = elemType;
-
-                    // обновление узлов дерева
-                    UpdateElemGroupNode();
-                    UpdateElemNodes();
-
-                    Modified = true;
-                }
-            }
-        }
-
-        private void numGrAddress_ValueChanged(object sender, EventArgs e)
-        {
-            // изменение адреса начального элемента в группе
-            if (procChangedEv && selElemGroup != null)
-            {
-                selElemGroup.Address = (ushort)(numGrAddress.Value - 1);
+            if (treeUpdateTypes.HasFlag(TreeUpdateTypes.ChildNodes))
                 UpdateElemNodes();
-                Modified = true;
-            }
-        }
 
-        private void numGrElemCnt_ValueChanged(object sender, EventArgs e)
-        {
-            // изменение количества элементов в группе
-            if (procChangedEv && selElemGroup != null)
+            if (treeUpdateTypes.HasFlag(TreeUpdateTypes.UpdateSignals))
             {
                 treeView.BeginUpdate();
-                int elemCnt = selElemGroup.Elems.Count;
-                int newElemCnt = (int)numGrElemCnt.Value;
+                int oldElemCnt = selNode.Nodes.Count;
+                int newElemCnt = selElemGroup.Elems.Count;
 
-                if (elemCnt < newElemCnt)
+                if (oldElemCnt < newElemCnt)
                 {
-                    // добавление новых элементов
-                    ElemTypes elemType = selElemGroup.DefElemType;
-                    ushort elemLen = (ushort)Elem.GetElemLength(elemType);
+                    // добавление узлов дерева для новых элементов
                     ushort elemAddr = selElemGroup.Address;
 
                     for (int elemInd = 0; elemInd < newElemCnt; elemInd++)
                     {
-                        if (elemInd < elemCnt)
-                        {
-                            elemAddr += (ushort)selElemGroup.Elems[elemInd].Length;
-                        }
-                        else
-                        {
-                            ElemInfo elemInfo = new ElemInfo();
-                            elemInfo.Elem = new Elem() { ElemType = elemType };
-                            elemInfo.Address = elemAddr;
-                            elemInfo.ElemGroup = selElemGroup;
+                        Elem elem = selElemGroup.Elems[elemInd];
 
-                            selElemGroup.Elems.Add(elemInfo.Elem);
+                        if (elemInd >= oldElemCnt)
+                        {
+                            ElemInfo elemInfo = new ElemInfo()
+                            {
+                                Elem = elem,
+                                Address = elemAddr,
+                                ElemGroup = selElemGroup
+                            };
+
                             selNode.Nodes.Add(NewElemNode(elemInfo));
-                            elemAddr += elemLen;
                         }
+
+                        elemAddr += (ushort)elem.Length;
                     }
                 }
-                else if (elemCnt > newElemCnt)
+                else if (oldElemCnt > newElemCnt)
                 {
-                    // удаление лишних элементов
-                    for (int i = newElemCnt; i < elemCnt; i++)
+                    // удаление лишних узлов дерева
+                    for (int i = newElemCnt; i < oldElemCnt; i++)
                     {
-                        selElemGroup.Elems.RemoveAt(newElemCnt);
                         selNode.Nodes.RemoveAt(newElemCnt);
                     }
                 }
 
                 UpdateSignals(selNode);
-                Modified = true;
                 treeView.EndUpdate();
             }
         }
 
-        private void txtElemName_TextChanged(object sender, EventArgs e)
+        private void ctrlElem_ObjectChanged(object sender, ObjectChangedEventArgs e)
         {
-            // изменение наименования элемента
-            if (procChangedEv && selElemInfo != null)
-            {
-                selElemInfo.Elem.Name = txtElemName.Text;
+            // установка признака изменения конфигурации
+            Modified = true;
+
+            // отображение изменений элемента в дереве
+            TreeUpdateTypes treeUpdateTypes = (TreeUpdateTypes)e.ChangeArgument;
+
+            if (treeUpdateTypes.HasFlag(TreeUpdateTypes.CurrentNode))
                 selNode.Text = selElemInfo.Caption;
-                Modified = true;
-            }
-        }
 
-        private void rbType_CheckedChanged(object sender, EventArgs e)
-        {
-            // изменение типа элемента
-            if (procChangedEv && selElemInfo != null)
-            {
-                Elem elem = selElemInfo.Elem;
-
-                if (rbUShort.Checked)
-                    elem.ElemType = ElemTypes.UShort;
-                else if (rbShort.Checked)
-                    elem.ElemType = ElemTypes.Short;
-                else if (rbUInt.Checked)
-                    elem.ElemType = ElemTypes.UInt;
-                else if (rbInt.Checked)
-                    elem.ElemType = ElemTypes.Int;
-                else if (rbULong.Checked)
-                    elem.ElemType = ElemTypes.ULong;
-                else if (rbLong.Checked)
-                    elem.ElemType = ElemTypes.Long;
-                else if (rbFloat.Checked)
-                    elem.ElemType = ElemTypes.Float;
-                else if (rbDouble.Checked)
-                    elem.ElemType = ElemTypes.Double;
-                else
-                    elem.ElemType = ElemTypes.Bool;
-
-                txtElemAddress.Text = selElemInfo.AddressRange;
-                selNode.Text = selElemInfo.Caption;
+            if (treeUpdateTypes.HasFlag(TreeUpdateTypes.NextSiblings))
                 UpdateElemNodes(selNode.Parent);
-                Modified = true;
-            }
         }
 
-        private void txtByteOrder_TextChanged(object sender, EventArgs e)
+        private void ctrlCmd_ObjectChanged(object sender, ObjectChangedEventArgs e)
         {
-            // изменение порядка байт элемента
-            if (procChangedEv && selElemInfo != null)
-            {
-                selElemInfo.Elem.ByteOrderStr = txtByteOrder.Text;
-                Modified = true;
-            }
-        }
+            // установка признака изменения конфигурации
+            Modified = true;
 
+            // отображение изменений команды в дереве
+            TreeUpdateTypes treeUpdateTypes = (TreeUpdateTypes)e.ChangeArgument;
 
-        private void cbCmdTableType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // изменение типа таблицы данных команды
-            if (procChangedEv && selCmd != null)
-            {
-                selCmd.TableType = cbCmdTableType.SelectedIndex == 0 ?
-                    TableTypes.Coils : TableTypes.HoldingRegisters;
-
-                // ограничение макс. количества элементов в группе
-                int maxElemCnt = ElemGroup.GetMaxElemCnt(selCmd.TableType);
-                if (numGrElemCnt.Value > maxElemCnt)
-                    numGrElemCnt.Value = maxElemCnt;
-                numGrElemCnt.Maximum = maxElemCnt;
-
-                // обновление узла дерева команды
+            if (treeUpdateTypes.HasFlag(TreeUpdateTypes.CurrentNode))
                 UpdateCmdNode();
-
-                Modified = true;
-            }
-        }
-
-        private void chkCmdMultiple_CheckedChanged(object sender, EventArgs e)
-        {
-            // изменение множественности команды
-            if (procChangedEv && selCmd != null)
-            {
-                selCmd.Multiple = chkCmdMultiple.Checked;
-                numCmdElemCnt.Enabled = selCmd.Multiple;
-                if (!selCmd.Multiple)
-                    numCmdElemCnt.Value = 1;
-                Modified = true;
-            }
-        }
-
-        private void numCmdAddress_ValueChanged(object sender, EventArgs e)
-        {
-            // изменение адреса команды
-            if (procChangedEv && selCmd != null)
-            {
-                selCmd.Address = (ushort)(numCmdAddress.Value - 1);
-                UpdateCmdNode();
-                Modified = true;
-            }
-        }
-
-        private void numCmdElemCnt_ValueChanged(object sender, EventArgs e)
-        {
-            // изменение количества элементов команды
-            if (procChangedEv && selCmd != null)
-            {
-                selCmd.ElemCnt = (int)numCmdElemCnt.Value;
-                Modified = true;
-            }
-        }
-
-        private void numCmdNum_ValueChanged(object sender, EventArgs e)
-        {
-            // изменение номера команды КП
-            if (procChangedEv && selCmd != null)
-            {
-                selCmd.CmdNum = (int)numCmdNum.Value;
-                Modified = true;
-            }
-        }
-
-        private void txtCmdName_TextChanged(object sender, EventArgs e)
-        {
-            // изменение наименования команды
-            if (procChangedEv && selCmd != null)
-            {
-                selCmd.Name = txtCmdName.Text;
-                UpdateCmdNode();
-                Modified = true;
-            }
         }
     }
 }

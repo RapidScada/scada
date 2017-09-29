@@ -151,6 +151,7 @@
     <Content Include="Res\edit.png" />
     <Content Include="Res\elem.png" />
     <Content Include="Res\group.png" />
+    <Content Include="Res\group_inactive.png" />
     <Content Include="Res\open.png" />
     <Content Include="Res\open_shift.png" />
     <Content Include="Res\save.png" />

@@ -61,9 +61,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             }
             set
             {
-                if (value != null)
-                    elemGroup = null; // чтобы не вызывалось событие ObjectChanged
-
+                elemGroup = null; // чтобы не вызывалось событие ObjectChanged
                 ShowElemGroupProps(value);
                 elemGroup = value;
             }
@@ -197,28 +195,24 @@ namespace Scada.Comm.Devices.Modbus.UI
             // изменение количества элементов в группе
             if (elemGroup != null)
             {
-                int elemCnt = elemGroup.Elems.Count;
+                int oldElemCnt = elemGroup.Elems.Count;
                 int newElemCnt = (int)numGrElemCnt.Value;
 
-                if (elemCnt < newElemCnt)
+                if (oldElemCnt < newElemCnt)
                 {
                     // добавление новых элементов
                     ElemTypes elemType = elemGroup.DefElemType;
                     ushort elemLen = (ushort)Elem.GetElemLength(elemType);
-                    ushort elemAddr = elemGroup.Address;
 
-                    for (int elemInd = 0; elemInd < newElemCnt; elemInd++)
+                    for (int elemInd = oldElemCnt; elemInd < newElemCnt; elemInd++)
                     {
-                        if (elemInd < elemCnt)
-                            elemAddr += (ushort)elemGroup.Elems[elemInd].Length;
-                        else
-                            elemGroup.Elems.Add(new Elem() { ElemType = elemType });
+                        elemGroup.Elems.Add(new Elem() { ElemType = elemType });
                     }
                 }
-                else if (elemCnt > newElemCnt)
+                else if (oldElemCnt > newElemCnt)
                 {
                     // удаление лишних элементов
-                    for (int i = newElemCnt; i < elemCnt; i++)
+                    for (int i = newElemCnt; i < oldElemCnt; i++)
                     {
                         elemGroup.Elems.RemoveAt(newElemCnt);
                     }

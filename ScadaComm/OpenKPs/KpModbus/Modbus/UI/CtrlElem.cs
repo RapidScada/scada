@@ -61,9 +61,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             }
             set
             {
-                if (value != null)
-                    elemInfo = null; // чтобы не вызывалось событие ObjectChanged
-
+                elemInfo = null; // чтобы не вызывалось событие ObjectChanged
                 ShowElemProps(value);
                 elemInfo = value;
             }

@@ -60,8 +60,7 @@ namespace Scada.Comm.Devices.Modbus.UI
         {
             get
             {
-                return (Address + 1).ToString() +
-                    (Elem == null || Elem.Length <= 1 ? "" : " - " + (Address + Elem.Length));
+                return ModbusUtils.GetAddressRange(Address, Elem.Length);
             }
         }
 
