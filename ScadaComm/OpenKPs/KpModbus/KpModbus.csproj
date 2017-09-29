@@ -156,6 +156,7 @@
     <Content Include="Res\open_shift.png" />
     <Content Include="Res\save.png" />
     <Content Include="Res\save_as.png" />
+    <Content Include="Res\settings.png" />
     <Content Include="Res\up.png" />
     <Content Include="Templates\KpModbus_Adam6015.xml" />
     <Content Include="Templates\KpModbus_Bolid_S2000-T.xml" />

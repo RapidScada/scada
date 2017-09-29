@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Element groups");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Commands");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Element groups");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Commands");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDevTemplate));
             this.treeView = new System.Windows.Forms.TreeView();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
@@ -39,7 +39,7 @@
             this.btnOpen = new System.Windows.Forms.ToolStripButton();
             this.btnSave = new System.Windows.Forms.ToolStripButton();
             this.btnSaveAs = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.btnAddElemGroup = new System.Windows.Forms.ToolStripButton();
             this.btnAddElem = new System.Windows.Forms.ToolStripButton();
             this.btnAddCmd = new System.Windows.Forms.ToolStripButton();
@@ -52,6 +52,8 @@
             this.ctrlElemGroup = new Scada.Comm.Devices.Modbus.UI.CtrlElemGroup();
             this.ctrlElem = new Scada.Comm.Devices.Modbus.UI.CtrlElem();
             this.ctrlCmd = new Scada.Comm.Devices.Modbus.UI.CtrlCmd();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnEditSettings = new System.Windows.Forms.ToolStripButton();
             this.toolStrip.SuspendLayout();
             this.gbDevTemplate.SuspendLayout();
             this.SuspendLayout();
@@ -66,17 +68,17 @@
             this.treeView.ImageList = this.imageList;
             this.treeView.Location = new System.Drawing.Point(13, 19);
             this.treeView.Name = "treeView";
-            treeNode1.ImageKey = "group.png";
-            treeNode1.Name = "grsNode";
-            treeNode1.SelectedImageKey = "group.png";
-            treeNode1.Text = "Element groups";
-            treeNode2.ImageIndex = 2;
-            treeNode2.Name = "cmdsNode";
-            treeNode2.SelectedImageKey = "cmds.png";
-            treeNode2.Text = "Commands";
+            treeNode3.ImageKey = "group.png";
+            treeNode3.Name = "grsNode";
+            treeNode3.SelectedImageKey = "group.png";
+            treeNode3.Text = "Element groups";
+            treeNode4.ImageIndex = 2;
+            treeNode4.Name = "cmdsNode";
+            treeNode4.SelectedImageKey = "cmds.png";
+            treeNode4.Text = "Commands";
             this.treeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
+            treeNode3,
+            treeNode4});
             this.treeView.SelectedImageIndex = 0;
             this.treeView.ShowRootLines = false;
             this.treeView.Size = new System.Drawing.Size(254, 469);
@@ -100,13 +102,15 @@
             this.btnOpen,
             this.btnSave,
             this.btnSaveAs,
-            this.toolStripSeparator,
+            this.toolStripSeparator1,
             this.btnAddElemGroup,
             this.btnAddElem,
             this.btnAddCmd,
             this.btnMoveUp,
             this.btnMoveDown,
-            this.btnDelete});
+            this.btnDelete,
+            this.toolStripSeparator2,
+            this.btnEditSettings});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Size = new System.Drawing.Size(590, 25);
@@ -153,10 +157,10 @@
             this.btnSaveAs.ToolTipText = "Save template as";
             this.btnSaveAs.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // toolStripSeparator
+            // toolStripSeparator1
             // 
-            this.toolStripSeparator.Name = "toolStripSeparator";
-            this.toolStripSeparator.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // btnAddElemGroup
             // 
@@ -276,6 +280,21 @@
             this.ctrlCmd.TabIndex = 4;
             this.ctrlCmd.ObjectChanged += new Scada.UI.ObjectChangedEventHandler(this.ctrlCmd_ObjectChanged);
             // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // btnEditSettings
+            // 
+            this.btnEditSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnEditSettings.Image = ((System.Drawing.Image)(resources.GetObject("btnEditSettings.Image")));
+            this.btnEditSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnEditSettings.Name = "btnEditSettings";
+            this.btnEditSettings.Size = new System.Drawing.Size(23, 22);
+            this.btnEditSettings.ToolTipText = "Edit template settings";
+            this.btnEditSettings.Click += new System.EventHandler(this.btnEditSettings_Click);
+            // 
             // FrmDevTemplate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -316,7 +335,7 @@
         private System.Windows.Forms.ToolStripButton btnMoveUp;
         private System.Windows.Forms.ToolStripButton btnMoveDown;
         private System.Windows.Forms.ToolStripButton btnDelete;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ImageList imageList;
         private System.Windows.Forms.GroupBox gbDevTemplate;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
@@ -326,5 +345,7 @@
         private CtrlCmd ctrlCmd;
         private CtrlElem ctrlElem;
         private CtrlElemGroup ctrlElemGroup;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripButton btnEditSettings;
     }
 }

@@ -731,6 +731,12 @@ namespace Scada.Comm.Devices.Modbus.UI
             Modified = true;
         }
 
+        private void btnEditSettings_Click(object sender, EventArgs e)
+        {
+            FrmTemplateSettings frmTemplateSettings = new FrmTemplateSettings();
+            frmTemplateSettings.ShowDialog();
+        }
+
 
         private void treeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
