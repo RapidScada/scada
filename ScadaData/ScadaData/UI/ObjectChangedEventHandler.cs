@@ -18,6 +18,6 @@ namespace Scada.UI
     /// <para>Представляет метод для обработки события, возникающего при изменении свойств объекта</para>
     /// </summary>
     public delegate void ObjectChangedEventHandler(
-        object sender, 
-        object changedObject);
+        object sender,
+        ObjectChangedEventArgs e);
 }
