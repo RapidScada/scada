@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <KpModbusDictionaries>
-  <Dictionary key="Scada.Comm.Devices.KpModbus.FrmDevTemplate">
+  <Dictionary key="Scada.Comm.Devices.Modbus.UI.FrmDevTemplate">
     <Phrase key="this">MODBUS. Device Template Editor</Phrase>
     <Phrase key="btnNew.ToolTip">Create new template</Phrase>
     <Phrase key="btnOpen.ToolTip">Open template</Phrase>
@@ -58,7 +58,7 @@
     <Phrase key="ElemCntExceeded">Data table allows not more than {0} elements.</Phrase>
     <Phrase key="ElemRemoveWarning">Data table allows not more than {0} elements.&#13;&#10;Extra items will be removed. Continue?</Phrase>
   </Dictionary>
-  <Dictionary key="Scada.Comm.Devices.KpModbus.FrmDevProps">
+  <Dictionary key="Scada.Comm.Devices.Modbus.UI.FrmDevProps">
     <Phrase key="this">Device {0} Properties</Phrase>
     <Phrase key="gbCommLine">Communication line</Phrase>
     <Phrase key="lblTransMode">Protocol</Phrase>
@@ -70,5 +70,17 @@
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
     <Phrase key="TemplNotExists">The device template file does not exist.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.Modbus.UI.FrmTemplateSettings">
+    <Phrase key="this">Template Settings</Phrase>
+    <Phrase key="lblAddressing">Addressing:</Phrase>
+    <Phrase key="rbZeroBased">Zero-based</Phrase>
+    <Phrase key="rbOneBased">One-based</Phrase>
+    <Phrase key="rbDec">Decimal</Phrase>
+    <Phrase key="rbHex">Hexadecimal</Phrase>
+    <Phrase key="lblDefByteOrder">Default byte order</Phrase>
+    <Phrase key="lblDefByteOrderExample">For example, 01234567</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
   </Dictionary>
 </KpModbusDictionaries>

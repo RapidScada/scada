@@ -51,7 +51,7 @@
   <ItemGroup>
     <Compile Include="Modbus\Protocol\ModbusCmd.cs" />
     <Compile Include="Modbus\Protocol\DataUnit.cs" />
-    <Compile Include="Modbus\Protocol\DeviceModel.cs" />
+    <Compile Include="Modbus\Protocol\DeviceTemplate.cs" />
     <Compile Include="Modbus\Protocol\Elem.cs" />
     <Compile Include="Modbus\Protocol\ElemGroup.cs" />
     <Compile Include="Modbus\Protocol\ElemTypes.cs" />

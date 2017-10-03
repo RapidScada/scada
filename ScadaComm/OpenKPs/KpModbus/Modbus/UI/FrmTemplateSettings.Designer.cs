@@ -179,8 +179,10 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FrmTemplateSettings";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Template Settings";
+            this.Load += new System.EventHandler(this.FrmTemplateSettings_Load);
             this.pnlBase.ResumeLayout(false);
             this.pnlBase.PerformLayout();
             this.pnlNotation.ResumeLayout(false);

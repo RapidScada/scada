@@ -83,7 +83,7 @@ namespace Scada.Comm.Devices.Modbus.UI
         private void FrmDevProps_Load(object sender, EventArgs e)
         {
             // перевод формы
-            Translator.TranslateForm(this, "Scada.Comm.Devices.KpModbus.FrmDevProps", toolTip);
+            Translator.TranslateForm(this, "Scada.Comm.Devices.Modbus.UI.FrmDevProps", toolTip);
 
             // вывод заголовка
             Text = string.Format(Text, kpNum);

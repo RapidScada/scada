@@ -115,9 +115,9 @@ namespace Scada.Comm.Devices
                     return null;
 
                 // загрузка шаблона устройства
-                DeviceModel template = new DeviceModel();
+                DeviceTemplate template = new DeviceTemplate();
                 string errMsg;
-                if (!template.LoadTemplate(fileName, out errMsg))
+                if (!template.Load(fileName, out errMsg))
                     throw new Exception(errMsg);
 
                 // создание прототипов каналов КП

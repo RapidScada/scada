@@ -47,7 +47,7 @@ namespace Scada.Comm.Devices.Modbus.UI
         private string fileName;         // имя файла шаблона устройства
         private bool saveOnly;           // разрешена только команда сохранения при работе с файлами
 
-        private DeviceModel devTemplate; // редактируемый шаблон устройства
+        private DeviceTemplate template; // редактируемый шаблон устройства
         private bool modified;           // признак изменения шаблона устройства
         private ElemGroup selElemGroup;  // выбранная группа элементов
         private ElemInfo selElemInfo;    // информация о выбранном элементе
@@ -69,7 +69,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             fileName = "";
             saveOnly = false;
 
-            devTemplate = null;
+            template = null;
             modified = false;
             selElemGroup = null;
             selElemInfo = null;
@@ -112,12 +112,12 @@ namespace Scada.Comm.Devices.Modbus.UI
         /// </summary>
         private void LoadTemplate(string fname)
         {
-            DeviceModel templ = new DeviceModel();
+            DeviceTemplate templ = new DeviceTemplate();
             string errMsg;
 
-            if (templ.LoadTemplate(fname, out errMsg))
+            if (templ.Load(fname, out errMsg))
             {
-                devTemplate = templ;
+                template = templ;
                 fileName = fname;
                 SetFormTitle();
                 FillTree();
@@ -159,11 +159,11 @@ namespace Scada.Comm.Devices.Modbus.UI
             treeView.SelectedNode = grsNode;
 
             // заполнение узла групп элементов
-            foreach (ElemGroup elemGroup in devTemplate.ElemGroups)
+            foreach (ElemGroup elemGroup in template.ElemGroups)
                 grsNode.Nodes.Add(NewElemGroupNode(elemGroup));
 
             // заполнение узла команд
-            foreach (ModbusCmd modbusCmd in devTemplate.Cmds)
+            foreach (ModbusCmd modbusCmd in template.Cmds)
                 cmdsNode.Nodes.Add(NewCmdNode(modbusCmd));
 
             // раскрытие основных узлов дерева
@@ -384,7 +384,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             {
                 // сохранение шаблона устройства
                 string errMsg;
-                if (devTemplate.SaveTemplate(newFileName, out errMsg))
+                if (template.Save(newFileName, out errMsg))
                 {
                     fileName = newFileName;
                     Modified = false;
@@ -454,7 +454,7 @@ namespace Scada.Comm.Devices.Modbus.UI
         private void FrmDevTemplate_Load(object sender, EventArgs e)
         {
             // перевод формы
-            Translator.TranslateForm(this, "Scada.Comm.Devices.KpModbus.FrmDevTemplate");
+            Translator.TranslateForm(this, "Scada.Comm.Devices.Modbus.UI.FrmDevTemplate");
             TranslateTree();
 
             // настройка элементов управления
@@ -471,7 +471,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             if (string.IsNullOrEmpty(initialFileName))
             {
                 saveFileDialog.FileName = NewFileName;
-                devTemplate = new DeviceModel();
+                template = new DeviceTemplate();
                 FillTree();
             }
             else
@@ -493,7 +493,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             if (CheckChanges())
             {
                 saveFileDialog.FileName = NewFileName;
-                devTemplate = new DeviceModel();
+                template = new DeviceTemplate();
                 fileName = "";
                 SetFormTitle();
                 FillTree();
@@ -528,8 +528,8 @@ namespace Scada.Comm.Devices.Modbus.UI
             ElemGroup elemGroup = new ElemGroup(TableTypes.DiscreteInputs);
             elemGroup.Elems.Add(new Elem());
             int ind = selNode != null && selNode.Tag is ElemGroup ? 
-                selNode.Index + 1 : devTemplate.ElemGroups.Count;
-            devTemplate.ElemGroups.Insert(ind, elemGroup);
+                selNode.Index + 1 : template.ElemGroups.Count;
+            template.ElemGroups.Insert(ind, elemGroup);
 
             // создание узла дерева группы элементов
             TreeNode grNode = NewElemGroupNode(elemGroup);
@@ -579,8 +579,8 @@ namespace Scada.Comm.Devices.Modbus.UI
         {
             // создание команды и добавление в шаблон устройства
             ModbusCmd modbusCmd = new ModbusCmd(TableTypes.Coils);
-            int ind = selNode != null && selNode.Tag is ModbusCmd ? selNode.Index + 1 : devTemplate.Cmds.Count;
-            devTemplate.Cmds.Insert(ind, modbusCmd);
+            int ind = selNode != null && selNode.Tag is ModbusCmd ? selNode.Index + 1 : template.Cmds.Count;
+            template.Cmds.Insert(ind, modbusCmd);
 
             // создание узла дерева команды
             TreeNode cmdNode = NewCmdNode(modbusCmd);
@@ -603,8 +603,8 @@ namespace Scada.Comm.Devices.Modbus.UI
                 // перемещение группы элементов вверх
                 ElemGroup prevElemGroup = prevNode.Tag as ElemGroup;
 
-                devTemplate.ElemGroups.RemoveAt(prevInd);
-                devTemplate.ElemGroups.Insert(prevInd + 1, prevElemGroup);
+                template.ElemGroups.RemoveAt(prevInd);
+                template.ElemGroups.Insert(prevInd + 1, prevElemGroup);
 
                 grsNode.Nodes.RemoveAt(prevInd);
                 grsNode.Nodes.Insert(prevInd + 1, prevNode);
@@ -631,8 +631,8 @@ namespace Scada.Comm.Devices.Modbus.UI
                 // перемещение команды вверх
                 ModbusCmd prevCmd = prevNode.Tag as ModbusCmd;
 
-                devTemplate.Cmds.RemoveAt(prevInd);
-                devTemplate.Cmds.Insert(prevInd + 1, prevCmd);
+                template.Cmds.RemoveAt(prevInd);
+                template.Cmds.Insert(prevInd + 1, prevCmd);
 
                 cmdsNode.Nodes.RemoveAt(prevInd);
                 cmdsNode.Nodes.Insert(prevInd + 1, prevNode);
@@ -657,8 +657,8 @@ namespace Scada.Comm.Devices.Modbus.UI
                 // перемещение группы элементов вниз
                 ElemGroup nextElemGroup = nextNode.Tag as ElemGroup;
 
-                devTemplate.ElemGroups.RemoveAt(nextInd);
-                devTemplate.ElemGroups.Insert(nextInd - 1, nextElemGroup);
+                template.ElemGroups.RemoveAt(nextInd);
+                template.ElemGroups.Insert(nextInd - 1, nextElemGroup);
 
                 grsNode.Nodes.RemoveAt(nextInd);
                 grsNode.Nodes.Insert(nextInd - 1, nextNode);
@@ -685,8 +685,8 @@ namespace Scada.Comm.Devices.Modbus.UI
                 // перемещение команды вниз
                 ModbusCmd nextCmd = nextNode.Tag as ModbusCmd;
 
-                devTemplate.Cmds.RemoveAt(nextInd);
-                devTemplate.Cmds.Insert(nextInd - 1, nextCmd);
+                template.Cmds.RemoveAt(nextInd);
+                template.Cmds.Insert(nextInd - 1, nextCmd);
 
                 cmdsNode.Nodes.RemoveAt(nextInd);
                 cmdsNode.Nodes.Insert(nextInd - 1, nextNode);
@@ -705,7 +705,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             if (selElemGroup != null)
             {
                 // удаление группы элементов
-                devTemplate.ElemGroups.Remove(selElemGroup);
+                template.ElemGroups.Remove(selElemGroup);
                 grsNode.Nodes.Remove(selNode);
             }
             else if (selElemInfo != null)
@@ -723,7 +723,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             else if (selCmd != null)
             {
                 // удаление команды
-                devTemplate.Cmds.Remove(selCmd);
+                template.Cmds.Remove(selCmd);
                 cmdsNode.Nodes.Remove(selNode);
             }
 

@@ -76,7 +76,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
 
 
         /// <summary>
-        /// Инициализировать массив, определяющий порядок байт, на основе строково записи вида '01234567'
+        /// Инициализировать массив, определяющий порядок байт, на основе строковой записи вида '01234567'
         /// </summary>
         public void InitByteOrder(string orderStr)
         {

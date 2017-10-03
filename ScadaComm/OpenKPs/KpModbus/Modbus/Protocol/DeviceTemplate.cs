@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : KpModbus
- * Summary  : Device model
+ * Summary  : Device template
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
@@ -30,20 +30,61 @@ using System.Xml;
 namespace Scada.Comm.Devices.Modbus.Protocol
 {
     /// <summary>
-    /// Device model
-    /// <para>Модель устройства</para>
+    /// Device template
+    /// <para>Шаблон устройства</para>
     /// </summary>
-    public class DeviceModel
+    public class DeviceTemplate
     {
+        /// <summary>
+        /// Настройки шаблона
+        /// </summary>
+        public class Settings
+        {
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public Settings()
+            {
+                ZeroAddr = false;
+                DecAddr = true;
+                DefByteOrder = null;
+                DefByteOrderStr = "";
+            }
+
+            /// <summary>
+            /// Получить или установить признак отображения адресов, начиная с 0
+            /// </summary>
+            public bool ZeroAddr { get; set; }
+            /// <summary>
+            /// Получить или установить признак отображения адресов в 10-тичной системе
+            /// </summary>
+            public bool DecAddr { get; set; }
+            /// <summary>
+            /// Получить или установить массив, определяющий порядок байт по умолчанию
+            /// </summary>
+            public int[] DefByteOrder { get; set; }
+            /// <summary>
+            /// Получить или установить строковую запись порядка байт по умолчанию
+            /// </summary>
+            public string DefByteOrderStr { get; set; }
+        }
+
+
         /// <summary>
         /// Конструктор
         /// </summary>
-        public DeviceModel()
+        public DeviceTemplate()
         {
+            Sett = new Settings();
             ElemGroups = new List<ElemGroup>();
             Cmds = new List<ModbusCmd>();
         }
 
+
+        /// <summary>
+        /// Получить настройки шаблона
+        /// </summary>
+        public Settings Sett { get; private set; }
 
         /// <summary>
         /// Получить список групп элементов
@@ -89,7 +130,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         /// <summary>
         /// Загрузить шаблон устройства
         /// </summary>
-        public bool LoadTemplate(string fileName, out string errMsg)
+        public bool Load(string fileName, out string errMsg)
         {
             try
             {
@@ -177,7 +218,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         /// <summary>
         /// Сохранить шаблон устройства
         /// </summary>
-        public bool SaveTemplate(string fileName, out string errMsg)
+        public bool Save(string fileName, out string errMsg)
         {
             try
             {
@@ -249,17 +290,17 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         /// <summary>
         /// Копировать модель устройства из заданной
         /// </summary>
-        public void CopyFrom(DeviceModel srcDeviceModel)
+        public void CopyFrom(DeviceTemplate srcTemplate)
         {
-            if (srcDeviceModel == null)
-                throw new ArgumentNullException("srcDeviceModel");
+            if (srcTemplate == null)
+                throw new ArgumentNullException("srcTemplate");
 
             // очистка списков групп элементов и команд
             ElemGroups.Clear();
             Cmds.Clear();
 
             // копирование групп элементов
-            foreach (ElemGroup srcGroup in srcDeviceModel.ElemGroups)
+            foreach (ElemGroup srcGroup in srcTemplate.ElemGroups)
             {
                 ElemGroup elemGroup = new ElemGroup(srcGroup.TableType)
                 {
@@ -285,7 +326,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             }
 
             // копирование команд
-            foreach (ModbusCmd srcCmd in srcDeviceModel.Cmds)
+            foreach (ModbusCmd srcCmd in srcTemplate.Cmds)
             {
                 Cmds.Add(new ModbusCmd(srcCmd.TableType)
                 {

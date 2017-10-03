@@ -42,7 +42,7 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Словарь шаблонов устройств для общих свойств линии связи
         /// </summary>
-        private class TemplateDict : Dictionary<string, DeviceModel>
+        private class TemplateDict : Dictionary<string, DeviceTemplate>
         {
             public override string ToString()
             {
@@ -60,14 +60,14 @@ namespace Scada.Comm.Devices
         /// </summary>
         private const int TcpConnectPer = 5;
 
-        private DeviceModel deviceModel;    // модель устройства, используемая данным КП
-        private TransModes transMode;       // режим передачи данных
-        private ModbusPoll modbusPoll;      // объект для опроса устройств по протоколу Modbus
-        private RequestDelegate request;    // метод выполнения запроса
-        private byte devAddr;               // адрес устройства
-        private List<ElemGroup> elemGroups; // активные запрашиваемые группы элементов
-        private int elemGroupCnt;           // количество активных групп элементов
-        private HashSet<int> floatSignals;  // множество сигналов, форматируемых как вещественное число
+        private DeviceTemplate deviceTemplate; // шаблон устройства, используемый данным КП
+        private TransModes transMode;          // режим передачи данных
+        private ModbusPoll modbusPoll;         // объект для опроса устройств по протоколу Modbus
+        private RequestDelegate request;       // метод выполнения запроса
+        private byte devAddr;                  // адрес устройства
+        private List<ElemGroup> elemGroups;    // активные запрашиваемые группы элементов
+        private int elemGroupCnt;              // количество активных групп элементов
+        private HashSet<int> floatSignals;     // множество сигналов, форматируемых как вещественное число
 
 
         /// <summary>
@@ -83,10 +83,10 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Получить из общих свойств линии связи или создать словарь шаблонов устройств
         /// </summary>
-        private Dictionary<string, DeviceModel> GetTemplates()
+        private Dictionary<string, DeviceTemplate> GetTemplates()
         {
-            Dictionary<string, DeviceModel> templates = CommonProps.ContainsKey("Templates") ?
-                CommonProps["Templates"] as Dictionary<string, DeviceModel> : null;
+            Dictionary<string, DeviceTemplate> templates = CommonProps.ContainsKey("Templates") ?
+                CommonProps["Templates"] as Dictionary<string, DeviceTemplate> : null;
 
             if (templates == null)
             {
@@ -126,7 +126,7 @@ namespace Scada.Comm.Devices
         {
             base.Session();
 
-            if (deviceModel == null)
+            if (deviceTemplate == null)
             {
                 WriteToLog(Localization.UseRussian ? 
                     "Нормальное взаимодействие с КП невозможно, т.к. шаблон устройства не загружен" :
@@ -196,7 +196,7 @@ namespace Scada.Comm.Devices
 
             if (CanSendCmd)
             {
-                ModbusCmd modbusCmd = deviceModel.FindCmd(cmd.CmdNum);
+                ModbusCmd modbusCmd = deviceTemplate.FindCmd(cmd.CmdNum);
 
                 if (modbusCmd != null &&
                     (modbusCmd.Multiple && (cmd.CmdTypeID == BaseValues.CmdTypes.Standard || 
@@ -251,7 +251,7 @@ namespace Scada.Comm.Devices
         public override void OnAddedToCommLine()
         {
             // загрузка шаблона устройства
-            deviceModel = null;
+            deviceTemplate = null;
             elemGroups = null;
             elemGroupCnt = 0;
             floatSignals = new HashSet<int>();
@@ -265,15 +265,15 @@ namespace Scada.Comm.Devices
             }
             else
             {
-                Dictionary<string, DeviceModel> templates = GetTemplates();
+                Dictionary<string, DeviceTemplate> templates = GetTemplates();
                 if (templates.ContainsKey(fileName))
                 {
-                    // создание модели устройства на основе модели, загруженной ранее
-                    DeviceModel template = templates[fileName];
+                    // создание шаблона устройства на основе шаблона, загруженного ранее
+                    DeviceTemplate template = templates[fileName];
                     if (template != null)
                     {
-                        deviceModel = new DeviceModel();
-                        deviceModel.CopyFrom(template);
+                        deviceTemplate = new DeviceTemplate();
+                        deviceTemplate.CopyFrom(template);
                     }
                 }
                 else
@@ -281,12 +281,12 @@ namespace Scada.Comm.Devices
                     WriteToLog(string.Format(Localization.UseRussian ? 
                         "{0} Загрузка шаблона устройства из файла {1}" :
                         "{0} Load device template from file {1}", CommUtils.GetNowDT(), fileName));
-                    DeviceModel template = new DeviceModel();
+                    DeviceTemplate template = new DeviceTemplate();
                     string errMsg;
 
-                    if (template.LoadTemplate(AppDirs.ConfigDir + fileName, out errMsg))
+                    if (template.Load(AppDirs.ConfigDir + fileName, out errMsg))
                     {
-                        deviceModel = template;
+                        deviceTemplate = template;
                         templates.Add(fileName, template);
                     }
                     else
@@ -297,19 +297,19 @@ namespace Scada.Comm.Devices
                 }
             }
 
-            if (deviceModel != null)
+            if (deviceTemplate != null)
             {
-                elemGroups = deviceModel.GetActiveElemGroups();
+                elemGroups = deviceTemplate.GetActiveElemGroups();
                 elemGroupCnt = elemGroups.Count;
             }
 
             // инициализация тегов КП на основе модели устройства
-            if (deviceModel.ElemGroups.Count > 0)
+            if (deviceTemplate.ElemGroups.Count > 0)
             {
                 List<TagGroup> tagGroups = new List<TagGroup>();
                 int tagInd = 0;
 
-                foreach (ElemGroup elemGroup in deviceModel.ElemGroups)
+                foreach (ElemGroup elemGroup in deviceTemplate.ElemGroups)
                 {
                     TagGroup tagGroup = new TagGroup(elemGroup.Name);
                     tagGroups.Add(tagGroup);
@@ -325,7 +325,7 @@ namespace Scada.Comm.Devices
                 }
 
                 InitKPTags(tagGroups);
-                CanSendCmd = deviceModel.Cmds.Count > 0;
+                CanSendCmd = deviceTemplate.Cmds.Count > 0;
             }
         }
 
@@ -356,11 +356,11 @@ namespace Scada.Comm.Devices
             modbusPoll.WriteToLog = WriteToLog;
 
             // формирование PDU и ADU
-            if (deviceModel != null)
+            if (deviceTemplate != null)
             {
                 devAddr = (byte)Address;
 
-                foreach (ElemGroup elemGroup in deviceModel.ElemGroups)
+                foreach (ElemGroup elemGroup in deviceTemplate.ElemGroups)
                 {
                     elemGroup.InitReqPDU();
                     elemGroup.InitReqADU(devAddr, transMode);

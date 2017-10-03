@@ -36,7 +36,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             SetToDefault();
         }
 
-        // Словарь Scada.Comm.Devices.KpModbus.FrmDevTemplate
+        // Словарь Scada.Comm.Devices.Modbus.UI.FrmDevTemplate
         public static string TemplFormTitle { get; private set; }
         public static string GrsNode { get; private set; }
         public static string CmdsNode { get; private set; }
@@ -47,7 +47,7 @@ namespace Scada.Comm.Devices.Modbus.UI
         public static string ElemCntExceeded { get; private set; }
         public static string ElemRemoveWarning { get; private set; }
 
-        // Словарь Scada.Comm.Devices.KpModbus.FrmDevProps
+        // Словарь Scada.Comm.Devices.Modbus.UI.FrmDevProps
         public static string TemplNotExists { get; private set; }
 
         private static void SetToDefault()
@@ -68,7 +68,7 @@ namespace Scada.Comm.Devices.Modbus.UI
         public static void Init()
         {
             Localization.Dict dict;
-            if (Localization.Dictionaries.TryGetValue("Scada.Comm.Devices.KpModbus.FrmDevTemplate", out dict))
+            if (Localization.Dictionaries.TryGetValue("Scada.Comm.Devices.Modbus.UI.FrmDevTemplate", out dict))
             {
                 TemplFormTitle = dict.GetPhrase("this", TemplFormTitle);
                 GrsNode = dict.GetPhrase("GrsNode", GrsNode);
@@ -81,7 +81,7 @@ namespace Scada.Comm.Devices.Modbus.UI
                 ElemRemoveWarning = dict.GetPhrase("ElemRemoveWarning", ElemRemoveWarning);
             }
 
-            if (Localization.Dictionaries.TryGetValue("Scada.Comm.Devices.KpModbus.FrmDevProps", out dict))
+            if (Localization.Dictionaries.TryGetValue("Scada.Comm.Devices.Modbus.UI.FrmDevProps", out dict))
             {
                 TemplNotExists = dict.GetPhrase("TemplNotExists", TemplNotExists);
             }
