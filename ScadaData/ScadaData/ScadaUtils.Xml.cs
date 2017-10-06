@@ -104,7 +104,7 @@ namespace Scada
         /// </summary>
         public static T XmlParseEnum<T>(string s) where T : struct
         {
-            return (T)Enum.Parse(typeof(T), s);
+            return (T)Enum.Parse(typeof(T), s, true);
         }
 
 
