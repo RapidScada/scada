@@ -229,12 +229,36 @@ namespace Scada
         /// <summary>
         /// Получить значение даты и времени дочернего XML-узла
         /// </summary>
-        public static DateTime GetChildAsDateTime(this XmlNode parentXmlNode, string childNodeName)
+        public static DateTime GetChildAsDateTime(this XmlNode parentXmlNode, string childNodeName, DateTime defaultVal)
         {
             try
             {
                 XmlNode node = parentXmlNode.SelectSingleNode(childNodeName);
-                return node == null ? DateTime.MinValue : XmlParseDateTime(node.InnerText);
+                return node == null ? defaultVal : XmlParseDateTime(node.InnerText);
+            }
+            catch (FormatException)
+            {
+                throw NewXmlNodeFormatException(childNodeName);
+            }
+        }
+
+        /// <summary>
+        /// Получить значение даты и времени дочернего XML-узла
+        /// </summary>
+        public static DateTime GetChildAsDateTime(this XmlNode parentXmlNode, string childNodeName)
+        {
+            return parentXmlNode.GetChildAsDateTime(childNodeName, DateTime.MinValue);
+        }
+
+        /// <summary>
+        /// Получить значение интервала времени дочернего XML-узла
+        /// </summary>
+        public static TimeSpan GetChildAsTimeSpan(this XmlNode parentXmlNode, string childNodeName, TimeSpan defaultVal)
+        {
+            try
+            {
+                XmlNode node = parentXmlNode.SelectSingleNode(childNodeName);
+                return node == null ? defaultVal : XmlParseTimeSpan(node.InnerText);
             }
             catch (FormatException)
             {
@@ -247,26 +271,19 @@ namespace Scada
         /// </summary>
         public static TimeSpan GetChildAsTimeSpan(this XmlNode parentXmlNode, string childNodeName)
         {
-            try
-            {
-                XmlNode node = parentXmlNode.SelectSingleNode(childNodeName);
-                return node == null ? TimeSpan.Zero : XmlParseTimeSpan(node.InnerText);
-            }
-            catch (FormatException)
-            {
-                throw NewXmlNodeFormatException(childNodeName);
-            }
+            return parentXmlNode.GetChildAsTimeSpan(childNodeName, TimeSpan.Zero);
         }
 
         /// <summary>
         /// Получить перечислимое значение дочернего XML-узла
         /// </summary>
-        public static T GetChildAsEnum<T>(this XmlNode parentXmlNode, string childNodeName) where T : struct
+        public static T GetChildAsEnum<T>(this XmlNode parentXmlNode, string childNodeName, 
+            T defaultVal = default(T)) where T : struct
         {
             try
             {
                 XmlNode node = parentXmlNode.SelectSingleNode(childNodeName);
-                return node == null ? default(T) : XmlParseEnum<T>(node.InnerText);
+                return node == null ? defaultVal : XmlParseEnum<T>(node.InnerText);
             }
             catch (FormatException)
             {
@@ -359,12 +376,36 @@ namespace Scada
         /// <summary>
         /// Получить значение даты и времени атрибута XML-элемента
         /// </summary>
-        public static DateTime GetAttrAsDateTime(this XmlElement xmlElem, string attrName)
+        public static DateTime GetAttrAsDateTime(this XmlElement xmlElem, string attrName, DateTime defaultVal)
         {
             try
             {
-                return xmlElem.HasAttribute(attrName) ? 
-                    XmlParseDateTime(xmlElem.GetAttribute(attrName)) : DateTime.MinValue;
+                return xmlElem.HasAttribute(attrName) ?
+                    XmlParseDateTime(xmlElem.GetAttribute(attrName)) : defaultVal;
+            }
+            catch (FormatException)
+            {
+                throw NewXmlAttrFormatException(attrName);
+            }
+        }
+
+        /// <summary>
+        /// Получить значение даты и времени атрибута XML-элемента
+        /// </summary>
+        public static DateTime GetAttrAsDateTime(this XmlElement xmlElem, string attrName)
+        {
+            return xmlElem.GetAttrAsDateTime(attrName, DateTime.MinValue);
+        }
+
+        /// <summary>
+        /// Получить значение интервала времени атрибута XML-элемента
+        /// </summary>
+        public static TimeSpan GetAttrAsTimeSpan(this XmlElement xmlElem, string attrName, TimeSpan defaultVal)
+        {
+            try
+            {
+                return xmlElem.HasAttribute(attrName) ?
+                    XmlParseTimeSpan(xmlElem.GetAttribute(attrName)) : defaultVal;
             }
             catch (FormatException)
             {
@@ -377,26 +418,19 @@ namespace Scada
         /// </summary>
         public static TimeSpan GetAttrAsTimeSpan(this XmlElement xmlElem, string attrName)
         {
-            try
-            {
-                return xmlElem.HasAttribute(attrName) ? 
-                    XmlParseTimeSpan(xmlElem.GetAttribute(attrName)) : TimeSpan.Zero;
-            }
-            catch (FormatException)
-            {
-                throw NewXmlAttrFormatException(attrName);
-            }
+            return xmlElem.GetAttrAsTimeSpan(attrName, TimeSpan.Zero);
         }
 
         /// <summary>
         /// Получить перечислимое значение атрибута XML-элемента
         /// </summary>
-        public static T GetAttrAsEnum<T>(this XmlElement xmlElem, string attrName) where T : struct
+        public static T GetAttrAsEnum<T>(this XmlElement xmlElem, string attrName, 
+            T defaultVal = default(T)) where T : struct
         {
             try
             {
-                return xmlElem.HasAttribute(attrName) ?
-                    XmlParseEnum<T>(xmlElem.GetAttribute(attrName)) : default(T);
+                return xmlElem.HasAttribute(attrName) ? 
+                    XmlParseEnum<T>(xmlElem.GetAttribute(attrName)) : defaultVal;
             }
             catch (FormatException)
             {
