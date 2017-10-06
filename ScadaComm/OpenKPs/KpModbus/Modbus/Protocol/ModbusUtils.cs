@@ -190,9 +190,39 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         /// <summary>
         /// Получить строковую запись диапазона адресов элемента
         /// </summary>
-        public static string GetAddressRange(int address, int count)
+        public static string GetAddressRange(int address, int count, bool zeroAddr, bool decAddr)
         {
-            return (address + 1).ToString() + (count <= 1 ? "" : " - " + (address + count));
+            if (!zeroAddr)
+                address++;
+
+            string format = decAddr ? "G" : "X";
+            string suffix = decAddr ? "" : "H";
+            return address.ToString(format) + suffix + 
+                (count <= 1 ? "" : " - " + (address + count - 1).ToString(format) + suffix);
+        }
+        
+        /// <summary>
+        /// Разобрать массив, определяющий порядок байт, из строковой записи вида '01234567'
+        /// </summary>
+        public static int[] ParseByteOrder(string byteOrderStr)
+        {
+            if (string.IsNullOrEmpty(byteOrderStr))
+            {
+                return null;
+            }
+            else
+            {
+                int len = byteOrderStr.Length;
+                int[] byteOrder = new int[len];
+
+                for (int i = 0; i < len; i++)
+                {
+                    int n;
+                    byteOrder[i] = int.TryParse(byteOrderStr[i].ToString(), out n) ? n : 0;
+                }
+
+                return byteOrder;
+            }
         }
     }
 }

@@ -76,30 +76,6 @@ namespace Scada.Comm.Devices.Modbus.Protocol
 
 
         /// <summary>
-        /// Инициализировать массив, определяющий порядок байт, на основе строковой записи вида '01234567'
-        /// </summary>
-        public void InitByteOrder(string orderStr)
-        {
-            if (string.IsNullOrEmpty(orderStr))
-            {
-                ByteOrder = null;
-                ByteOrderStr = "";
-            }
-            else
-            {
-                ByteOrderStr = orderStr;
-                int len = orderStr.Length;
-                ByteOrder = new int[len];
-
-                for (int i = 0; i < len; i++)
-                {
-                    int n;
-                    ByteOrder[i] = int.TryParse(orderStr[i].ToString(), out n) ? n : 0;
-                }
-            }
-        }
-
-        /// <summary>
         /// Получить длину элемента (количество адресов) в зависимости от типа элемента
         /// </summary>
         public static int GetElemLength(ElemTypes elemType)

@@ -189,11 +189,14 @@ namespace Scada.Comm.Devices.Modbus.UI
 
             foreach (Elem elem in elemGroup.Elems)
             {
-                ElemInfo elemInfo = new ElemInfo();
-                elemInfo.Elem = elem;
-                elemInfo.ElemGroup = elemGroup;
-                elemInfo.Address = elemAddr;
-                elemInfo.Signal = elemSig++;
+                ElemInfo elemInfo = new ElemInfo()
+                {
+                    Elem = elem,
+                    ElemGroup = elemGroup,
+                    Settings = template.Sett,
+                    Address = elemAddr,
+                    Signal = elemSig++
+                };
 
                 grNode.Nodes.Add(NewElemNode(elemInfo));
                 elemAddr += (ushort)elem.Length;
@@ -218,12 +221,21 @@ namespace Scada.Comm.Devices.Modbus.UI
         /// </summary>
         private TreeNode NewCmdNode(ModbusCmd modbusCmd)
         {
-            string name = modbusCmd.Name == "" ? KpPhrases.DefCmdName : modbusCmd.Name;
-            TreeNode cmdNode = new TreeNode(name + 
-                " (" + ModbusUtils.GetTableTypeName(modbusCmd.TableType) + ", " + (modbusCmd.Address + 1) + ")");
+            TreeNode cmdNode = new TreeNode(GetCmdCaption(modbusCmd));
             cmdNode.ImageKey = cmdNode.SelectedImageKey = "cmd.png";
             cmdNode.Tag = modbusCmd;
             return cmdNode;
+        }
+
+        /// <summary>
+        /// Получить обозначение команды в дереве
+        /// </summary>
+        private string GetCmdCaption(ModbusCmd modbusCmd)
+        {
+            return (string.IsNullOrEmpty(modbusCmd.Name) ? KpPhrases.DefCmdName : modbusCmd.Name) +
+                " (" + ModbusUtils.GetTableTypeName(modbusCmd.TableType) + ", " +
+                ModbusUtils.GetAddressRange(modbusCmd.Address, modbusCmd.ElemCnt,
+                    template.Sett.ZeroAddr, template.Sett.DecAddr) + ")";
         }
 
         /// <summary>
@@ -307,11 +319,7 @@ namespace Scada.Comm.Devices.Modbus.UI
         private void UpdateCmdNode()
         {
             if (selCmd != null)
-            {
-                selNode.Text = (selCmd.Name == "" ? KpPhrases.DefCmdName : selCmd.Name) + 
-                    " (" + ModbusUtils.GetTableTypeName(selCmd.TableType) + ", " + 
-                    ModbusUtils.GetAddressRange(selCmd.Address, selCmd.ElemCnt) + ")";
-            }
+                selNode.Text = GetCmdCaption(selCmd);
         }
 
 
@@ -321,6 +329,7 @@ namespace Scada.Comm.Devices.Modbus.UI
         private void ShowElemGroupProps(ElemGroup elemGroup)
         {
             ctrlElemGroup.Visible = true;
+            ctrlElemGroup.Settings = template.Sett;
             ctrlElemGroup.ElemGroup = elemGroup;
             ctrlElem.Visible = false;
             ctrlCmd.Visible = false;
@@ -559,6 +568,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             ElemInfo elemInfo = new ElemInfo();
             elemInfo.Elem = new Elem() { ElemType = elemGroup.DefElemType };
             elemInfo.ElemGroup = elemGroup;
+            elemInfo.Settings = template.Sett;
             int ind = selNode.Tag is ElemInfo ? selNode.Index + 1 : elemGroup.Elems.Count;
             elemGroup.Elems.Insert(ind, elemInfo.Elem);
 
@@ -733,8 +743,14 @@ namespace Scada.Comm.Devices.Modbus.UI
 
         private void btnEditSettings_Click(object sender, EventArgs e)
         {
-            FrmTemplateSettings frmTemplateSettings = new FrmTemplateSettings();
-            frmTemplateSettings.ShowDialog();
+            // редактирование настроек шаблона
+            if (FrmTemplateSettings.ShowDialog(template.Sett))
+            {
+                // полное обновление дерева
+                FillTree();
+                // установка признака изменения
+                Modified = true;
+            }
         }
 
 
@@ -803,8 +819,9 @@ namespace Scada.Comm.Devices.Modbus.UI
                             ElemInfo elemInfo = new ElemInfo()
                             {
                                 Elem = elem,
-                                Address = elemAddr,
-                                ElemGroup = selElemGroup
+                                ElemGroup = selElemGroup,
+                                Settings = template.Sett,
+                                Address = elemAddr
                             };
 
                             selNode.Nodes.Add(NewElemNode(elemInfo));

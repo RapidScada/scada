@@ -63,6 +63,7 @@
             this.rbZeroBased.TabStop = true;
             this.rbZeroBased.Text = "Zero-based";
             this.rbZeroBased.UseVisualStyleBackColor = true;
+            this.rbZeroBased.CheckedChanged += new System.EventHandler(this.control_Changed);
             // 
             // rbOneBased
             // 
@@ -103,6 +104,7 @@
             this.rbDec.TabStop = true;
             this.rbDec.Text = "Decimal";
             this.rbDec.UseVisualStyleBackColor = true;
+            this.rbDec.CheckedChanged += new System.EventHandler(this.control_Changed);
             // 
             // rbHex
             // 
@@ -140,6 +142,7 @@
             this.txtDefByteOrder.Name = "txtDefByteOrder";
             this.txtDefByteOrder.Size = new System.Drawing.Size(260, 20);
             this.txtDefByteOrder.TabIndex = 4;
+            this.txtDefByteOrder.TextChanged += new System.EventHandler(this.control_Changed);
             // 
             // btnCancel
             // 
@@ -153,6 +156,7 @@
             // 
             // btnOK
             // 
+            this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnOK.Location = new System.Drawing.Point(116, 138);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);

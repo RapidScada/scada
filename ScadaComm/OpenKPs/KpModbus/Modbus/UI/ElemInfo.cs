@@ -44,6 +44,11 @@ namespace Scada.Comm.Devices.Modbus.UI
         public ElemGroup ElemGroup { get; set; }
 
         /// <summary>
+        /// Получить или установить ссылку настройки шаблона
+        /// </summary>
+        public DeviceTemplate.Settings Settings { get; set; }
+
+        /// <summary>
         /// Получить или установить адрес, начинающийся от 0
         /// </summary>
         public ushort Address { get; set; }
@@ -60,7 +65,7 @@ namespace Scada.Comm.Devices.Modbus.UI
         {
             get
             {
-                return ModbusUtils.GetAddressRange(Address, Elem.Length);
+                return ModbusUtils.GetAddressRange(Address, Elem.Length, Settings.ZeroAddr, Settings.DecAddr);
             }
         }
 
@@ -71,8 +76,7 @@ namespace Scada.Comm.Devices.Modbus.UI
         {
             get
             {
-                int addr = Address + 1;
-                return (Elem == null || Elem.Name == "" ? KpPhrases.DefElemName : Elem.Name) +
+                return (string.IsNullOrEmpty(Elem.Name) ? KpPhrases.DefElemName : Elem.Name) + 
                     " (" + AddressRange + ")";
             }
         }

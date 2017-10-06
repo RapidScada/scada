@@ -47,8 +47,47 @@ namespace Scada.Comm.Devices.Modbus.UI
         {
             InitializeComponent();
             elemGroup = null;
+            Settings = null;
         }
 
+
+        /// <summary>
+        /// Получить признак отображения адресов, начиная с 0
+        /// </summary>
+        private bool ZeroAddr
+        {
+            get
+            {
+                return Settings == null ? false : Settings.ZeroAddr;
+            }
+        }
+
+        /// <summary>
+        /// Получить смещение адреса
+        /// </summary>
+        private int AddrShift
+        {
+            get
+            {
+                return ZeroAddr ? 0 : 1;
+            }
+        }
+
+        /// <summary>
+        /// Получить признак отображения адресов в 10-тичной системе
+        /// </summary>
+        private bool DecAddr
+        {
+            get
+            {
+                return Settings == null ? false : Settings.DecAddr;
+            }
+        }
+
+        /// <summary>
+        /// Получить или установить ссылку настройки шаблона
+        /// </summary>
+        public DeviceTemplate.Settings Settings { get; set; }
 
         /// <summary>
         /// Получить или установить редактируемую группу элементов
@@ -66,19 +105,24 @@ namespace Scada.Comm.Devices.Modbus.UI
                 elemGroup = value;
             }
         }
-        
+
 
         /// <summary>
         /// Отобразить свойства группы элементов
         /// </summary>
         private void ShowElemGroupProps(ElemGroup elemGroup)
         {
+            numGrAddress.Value = 1;
+            numGrAddress.Minimum = AddrShift;
+            numGrAddress.Maximum = ushort.MaxValue + AddrShift;
+            numGrAddress.Hexadecimal = !DecAddr;
+
             if (elemGroup == null)
             {
                 chkGrActive.Checked = false;
                 txtGrName.Text = "";
                 cbGrTableType.SelectedIndex = 0;
-                numGrAddress.Value = 1;
+                numGrAddress.Value = AddrShift;
                 numGrElemCnt.Value = 1;
                 gbElemGroup.Enabled = false;
             }
@@ -87,7 +131,7 @@ namespace Scada.Comm.Devices.Modbus.UI
                 chkGrActive.Checked = elemGroup.Active;
                 txtGrName.Text = elemGroup.Name;
                 cbGrTableType.SelectedIndex = (int)elemGroup.TableType;
-                numGrAddress.Value = elemGroup.Address + 1;
+                numGrAddress.Value = elemGroup.Address + AddrShift;
                 numGrElemCnt.Value = 1;
                 numGrElemCnt.Maximum = ElemGroup.GetMaxElemCnt(elemGroup.TableType);
                 numGrElemCnt.Value = elemGroup.Elems.Count;
@@ -185,7 +229,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             // изменение адреса начального элемента в группе
             if (elemGroup != null)
             {
-                elemGroup.Address = (ushort)(numGrAddress.Value - 1);
+                elemGroup.Address = (ushort)(numGrAddress.Value - AddrShift);
                 OnObjectChanged(TreeUpdateTypes.ChildNodes);
             }
         }

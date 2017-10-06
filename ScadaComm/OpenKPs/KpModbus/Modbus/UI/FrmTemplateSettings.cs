@@ -23,13 +23,9 @@
  * Modified : 2017
  */
 
+using Scada.Comm.Devices.Modbus.Protocol;
 using Scada.UI;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Scada.Comm.Devices.Modbus.UI
@@ -40,19 +36,81 @@ namespace Scada.Comm.Devices.Modbus.UI
     /// </summary>
     public partial class FrmTemplateSettings : Form
     {
+        private bool modified; // настройки изменены
+
+
         /// <summary>
-        /// Конструктор
+        /// Конструктор, ограничивающий создание формы без параметров
         /// </summary>
-        public FrmTemplateSettings()
+        private FrmTemplateSettings()
         {
             InitializeComponent();
         }
+
+
+        /// <summary>
+        /// Установить значения элементов управления в соответствии с настройками
+        /// </summary>
+        private void SettingsToControls(DeviceTemplate.Settings settings)
+        {
+            if (settings.ZeroAddr)
+                rbZeroBased.Checked = true;
+            else
+                rbOneBased.Checked = true;
+
+            if (settings.DecAddr)
+                rbDec.Checked = true;
+            else
+                rbHex.Checked = true;
+
+            txtDefByteOrder.Text = settings.DefByteOrderStr;
+            modified = false;
+        }
+
+        /// <summary>
+        /// Установить конфигурацию в соответствии с элементами управления 
+        /// </summary>
+        private void ControlsToSettings(DeviceTemplate.Settings settings)
+        {
+            settings.ZeroAddr = rbZeroBased.Checked;
+            settings.DecAddr = rbDec.Checked;
+            settings.DefByteOrderStr = txtDefByteOrder.Text;
+        }
+
+
+        /// <summary>
+        /// Отобразить форму модально
+        /// </summary>
+        /// <returns>Возвращает true, если настройки были изменены</returns>
+        public static bool ShowDialog(DeviceTemplate.Settings settings)
+        {
+            if (settings == null)
+                throw new ArgumentNullException("settings");
+
+            FrmTemplateSettings form = new FrmTemplateSettings();
+            form.SettingsToControls(settings);
+
+            if (form.ShowDialog() == DialogResult.OK && form.modified)
+            {
+                form.ControlsToSettings(settings);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
 
         private void FrmTemplateSettings_Load(object sender, EventArgs e)
         {
             // перевод формы
             Translator.TranslateForm(this, "Scada.Comm.Devices.Modbus.UI.FrmTemplateSettings");
+        }
 
+        private void control_Changed(object sender, EventArgs e)
+        {
+            modified = true;
         }
     }
 }
