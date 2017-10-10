@@ -22,6 +22,7 @@
     <Phrase key="cbGrTableType.Items[1]">Coils (0X)</Phrase>
     <Phrase key="cbGrTableType.Items[2]">Input Registers (3X)</Phrase>
     <Phrase key="cbGrTableType.Items[3]">Holding Registers (4X)</Phrase>
+    <Phrase key="lblFuncCode">Function code</Phrase>
     <Phrase key="lblGrAddress">Start element address</Phrase>
     <Phrase key="lblGrElemCnt">Element count</Phrase>
     <Phrase key="gbElem">Element parameters</Phrase>
@@ -54,6 +55,7 @@
     <Phrase key="DefGrName">&lt;Element group&gt;</Phrase>
     <Phrase key="DefElemName">&lt;Element&gt;</Phrase>
     <Phrase key="DefCmdName">&lt;Command&gt;</Phrase>
+    <Phrase key="AddressHint">{0}, starting from {1}</Phrase>
     <Phrase key="SaveTemplateConfirm">Template has been modified. Save the changes?</Phrase>
     <Phrase key="ElemCntExceeded">Data table allows not more than {0} elements.</Phrase>
     <Phrase key="ElemRemoveWarning">Data table allows not more than {0} elements.&#13;&#10;Extra items will be removed. Continue?</Phrase>

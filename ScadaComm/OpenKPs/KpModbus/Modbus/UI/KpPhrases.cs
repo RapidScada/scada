@@ -43,6 +43,7 @@ namespace Scada.Comm.Devices.Modbus.UI
         public static string DefGrName { get; private set; }
         public static string DefElemName { get; private set; }
         public static string DefCmdName { get; private set; }
+        public static string AddressHint { get; private set; }
         public static string SaveTemplateConfirm { get; private set; }
         public static string ElemCntExceeded { get; private set; }
         public static string ElemRemoveWarning { get; private set; }
@@ -58,6 +59,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             DefGrName = Localization.Dict.GetEmptyPhrase("DefGrName");
             DefElemName = Localization.Dict.GetEmptyPhrase("DefElemName");
             DefCmdName = Localization.Dict.GetEmptyPhrase("DefCmdName");
+            AddressHint = Localization.Dict.GetEmptyPhrase("AddressHint");
             SaveTemplateConfirm = Localization.Dict.GetEmptyPhrase("SaveTemplateConfirm");
             ElemCntExceeded = Localization.Dict.GetEmptyPhrase("ElemCntExceeded");
             ElemRemoveWarning = Localization.Dict.GetEmptyPhrase("ElemRemoveWarning");
@@ -76,6 +78,7 @@ namespace Scada.Comm.Devices.Modbus.UI
                 DefGrName = dict.GetPhrase("DefGrName", DefGrName);
                 DefElemName = dict.GetPhrase("DefElemName", DefElemName);
                 DefCmdName = dict.GetPhrase("DefCmdName", DefCmdName);
+                AddressHint = dict.GetPhrase("AddressHint", AddressHint);
                 SaveTemplateConfirm = dict.GetPhrase("SaveTemplateConfirm", SaveTemplateConfirm);
                 ElemCntExceeded = dict.GetPhrase("ElemCntExceeded", ElemCntExceeded);
                 ElemRemoveWarning = dict.GetPhrase("ElemRemoveWarning", ElemRemoveWarning);

@@ -22,6 +22,7 @@
     <Phrase key="cbGrTableType.Items[1]">Coils (Флаги, 0X)</Phrase>
     <Phrase key="cbGrTableType.Items[2]">Input Registers (Входные регистры, 3X)</Phrase>
     <Phrase key="cbGrTableType.Items[3]">Holding Registers (Регистры хранения, 4X)</Phrase>
+    <Phrase key="lblFuncCode">Код функции</Phrase>
     <Phrase key="lblGrAddress">Адрес нач. элемента</Phrase>
     <Phrase key="lblGrElemCnt">Количество элементов</Phrase>
     <Phrase key="gbElem">Параметры элемента</Phrase>
@@ -54,6 +55,7 @@
     <Phrase key="DefGrName">&lt;Группа элементов&gt;</Phrase>
     <Phrase key="DefElemName">&lt;Элемент&gt;</Phrase>
     <Phrase key="DefCmdName">&lt;Команда&gt;</Phrase>
+    <Phrase key="AddressHint">{0}, начиная с {1}</Phrase>
     <Phrase key="SaveTemplateConfirm">Шаблон устройства был изменён. Сохранить изменения?</Phrase>
     <Phrase key="ElemCntExceeded">Таблица данных допускает не более {0} элементов.</Phrase>
     <Phrase key="ElemRemoveWarning">Таблица данных допускает не более {0} элементов.&#13;&#10;Лишние элементы будут удалены. Продолжить?</Phrase>

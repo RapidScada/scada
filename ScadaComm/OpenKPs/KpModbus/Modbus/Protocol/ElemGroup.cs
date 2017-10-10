@@ -59,24 +59,8 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             StartKPTagInd = -1;
             StartSignal = 0;
 
-            // определение кода функции запроса
-            switch (tableType)
-            {
-                case TableTypes.DiscreteInputs:
-                    FuncCode = FuncCodes.ReadDiscreteInputs;
-                    break;
-                case TableTypes.Coils:
-                    FuncCode = FuncCodes.ReadCoils;
-                    break;
-                case TableTypes.InputRegisters:
-                    FuncCode = FuncCodes.ReadInputRegisters;
-                    break;
-                default: // TableTypes.HoldingRegisters:
-                    FuncCode = FuncCodes.ReadHoldingRegisters;
-                    break;
-            }
-
-            // определение кода функции, обозначающего исключение
+            // определение кодов функций
+            UpdateFuncCode();
             ExcFuncCode = (byte)(FuncCode | 0x80);
         }
 
@@ -234,6 +218,28 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             else
             {
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// Обновить код функции в соответствии с типом таблицы данных
+        /// </summary>
+        public void UpdateFuncCode()
+        {
+            switch (TableType)
+            {
+                case TableTypes.DiscreteInputs:
+                    FuncCode = FuncCodes.ReadDiscreteInputs;
+                    break;
+                case TableTypes.Coils:
+                    FuncCode = FuncCodes.ReadCoils;
+                    break;
+                case TableTypes.InputRegisters:
+                    FuncCode = FuncCodes.ReadInputRegisters;
+                    break;
+                default: // TableTypes.HoldingRegisters:
+                    FuncCode = FuncCodes.ReadHoldingRegisters;
+                    break;
             }
         }
 

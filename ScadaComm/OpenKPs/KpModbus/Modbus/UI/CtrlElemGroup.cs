@@ -85,6 +85,17 @@ namespace Scada.Comm.Devices.Modbus.UI
         }
 
         /// <summary>
+        /// Получить обозначение системы счисления адресов
+        /// </summary>
+        private string AddrNotation
+        {
+            get
+            {
+                return DecAddr ? "DEC" : "HEX";
+            }
+        }
+
+        /// <summary>
         /// Получить или установить ссылку настройки шаблона
         /// </summary>
         public DeviceTemplate.Settings Settings { get; set; }
@@ -116,6 +127,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             numGrAddress.Minimum = AddrShift;
             numGrAddress.Maximum = ushort.MaxValue + AddrShift;
             numGrAddress.Hexadecimal = !DecAddr;
+            ShowFuncCode(elemGroup);
 
             if (elemGroup == null)
             {
@@ -123,6 +135,7 @@ namespace Scada.Comm.Devices.Modbus.UI
                 txtGrName.Text = "";
                 cbGrTableType.SelectedIndex = 0;
                 numGrAddress.Value = AddrShift;
+                lblGrAddressHint.Text = "";
                 numGrElemCnt.Value = 1;
                 gbElemGroup.Enabled = false;
             }
@@ -132,11 +145,21 @@ namespace Scada.Comm.Devices.Modbus.UI
                 txtGrName.Text = elemGroup.Name;
                 cbGrTableType.SelectedIndex = (int)elemGroup.TableType;
                 numGrAddress.Value = elemGroup.Address + AddrShift;
+                lblGrAddressHint.Text = string.Format(KpPhrases.AddressHint, AddrNotation, AddrShift);
                 numGrElemCnt.Value = 1;
                 numGrElemCnt.Maximum = ElemGroup.GetMaxElemCnt(elemGroup.TableType);
                 numGrElemCnt.Value = elemGroup.Elems.Count;
                 gbElemGroup.Enabled = true;
             }
+        }
+
+        /// <summary>
+        /// Отобразить код функции группы элементов
+        /// </summary>
+        private void ShowFuncCode(ElemGroup elemGroup)
+        {
+            txtFuncCode.Text = elemGroup == null ? "" :
+                string.Format("{0} ({1}H)", elemGroup.FuncCode, elemGroup.FuncCode.ToString("X2"));
         }
 
         /// <summary>
@@ -211,6 +234,8 @@ namespace Scada.Comm.Devices.Modbus.UI
 
                     // установка типа таблицы данных
                     elemGroup.TableType = tableType;
+                    elemGroup.UpdateFuncCode();
+                    ShowFuncCode(elemGroup);
 
                     // установка типа элементов группы по умолчанию
                     ElemTypes elemType = elemGroup.DefElemType;
