@@ -128,20 +128,22 @@ namespace Scada.Comm.Devices.Modbus.UI
             numCmdAddress.Maximum = ushort.MaxValue + AddrShift;
             numCmdAddress.Hexadecimal = !DecAddr;
             ShowFuncCode(modbusCmd);
+            ShowByteOrder(modbusCmd);
 
             if (modbusCmd == null)
             {
+                txtCmdName.Text = "";
                 cbCmdTableType.SelectedIndex = 0;
                 numCmdAddress.Value = AddrShift;
                 lblCmdAddressHint.Text = "";
                 numCmdElemCnt.Value = 1;
                 numCmdNum.Value = 1;
-                txtCmdName.Text = "";
                 txtCmdByteOrder.Text = "";
                 gbCmd.Enabled = false;
             }
             else
             {
+                txtCmdName.Text = modbusCmd.Name;
                 cbCmdTableType.SelectedIndex = modbusCmd.TableType == TableTypes.Coils ? 0 : 1;
                 chkCmdMultiple.Checked = modbusCmd.Multiple;
                 numCmdAddress.Value = modbusCmd.Address + AddrShift;
@@ -151,7 +153,6 @@ namespace Scada.Comm.Devices.Modbus.UI
                 numCmdElemCnt.Value = modbusCmd.ElemCnt;
                 numCmdElemCnt.Enabled = modbusCmd.Multiple;
                 numCmdNum.Value = modbusCmd.CmdNum;
-                txtCmdName.Text = modbusCmd.Name;
                 gbCmd.Enabled = true;
             }
         }
@@ -163,6 +164,23 @@ namespace Scada.Comm.Devices.Modbus.UI
         {
             txtCmdFuncCode.Text = modbusCmd == null ? "" :
                 string.Format("{0} ({1}H)", modbusCmd.FuncCode, modbusCmd.FuncCode.ToString("X2"));
+        }
+
+        /// <summary>
+        /// Отобразить порядок байт команды
+        /// </summary>
+        private void ShowByteOrder(ModbusCmd modbusCmd)
+        {
+            if (modbusCmd != null && modbusCmd.ByteOrderEnabled)
+            {
+                txtCmdByteOrder.Text = modbusCmd.ByteOrderStr;
+                txtCmdByteOrder.Enabled = true;
+            }
+            else
+            {
+                txtCmdByteOrder.Text = "";
+                txtCmdByteOrder.Enabled = false;
+            }
         }
 
         /// <summary>
@@ -209,6 +227,7 @@ namespace Scada.Comm.Devices.Modbus.UI
                     TableTypes.HoldingRegisters;
                 modbusCmd.UpdateFuncCode();
                 ShowFuncCode(modbusCmd);
+                ShowByteOrder(modbusCmd);
 
                 // ограничение макс. количества элементов в группе
                 int maxElemCnt = DataUnit.GetMaxElemCnt(modbusCmd.TableType);
@@ -228,6 +247,7 @@ namespace Scada.Comm.Devices.Modbus.UI
                 modbusCmd.Multiple = chkCmdMultiple.Checked;
                 modbusCmd.UpdateFuncCode();
                 ShowFuncCode(modbusCmd);
+                ShowByteOrder(modbusCmd);
 
                 numCmdElemCnt.Enabled = modbusCmd.Multiple;
                 if (!modbusCmd.Multiple)
@@ -263,6 +283,16 @@ namespace Scada.Comm.Devices.Modbus.UI
             if (modbusCmd != null)
             {
                 modbusCmd.CmdNum = (int)numCmdNum.Value;
+                OnObjectChanged(TreeUpdateTypes.None);
+            }
+        }
+
+        private void txtCmdByteOrder_TextChanged(object sender, EventArgs e)
+        {
+            // изменение порядка байт команды
+            if (modbusCmd != null)
+            {
+                modbusCmd.ByteOrderStr = txtCmdByteOrder.Text;
                 OnObjectChanged(TreeUpdateTypes.None);
             }
         }

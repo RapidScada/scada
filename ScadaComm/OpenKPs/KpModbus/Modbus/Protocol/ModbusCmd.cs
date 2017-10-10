@@ -50,7 +50,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         public ModbusCmd(TableTypes tableType, bool multiple = false, int elemCnt = 1)
             : base(tableType)
         {
-            if (tableType == TableTypes.DiscreteInputs || tableType == TableTypes.InputRegisters)
+            if (!(tableType == TableTypes.Coils || tableType == TableTypes.HoldingRegisters))
                 throw new InvalidOperationException(ModbusPhrases.IllegalDataTable);
 
             reqDescr = "";
@@ -59,6 +59,8 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             Value = 0;
             Data = null;
             CmdNum = 1;
+            ByteOrder = null;
+            ByteOrderStr = "";
 
             // определение кодов функций
             UpdateFuncCode();
@@ -104,6 +106,27 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         /// Получить или установить номер команды КП
         /// </summary>
         public int CmdNum { get; set; }
+
+        /// <summary>
+        /// Получить или установить массив, определяющий порядок байт
+        /// </summary>
+        public int[] ByteOrder { get; set; }
+
+        /// <summary>
+        /// Получить или установить строковую запись порядка байт
+        /// </summary>
+        public string ByteOrderStr { get; set; }
+
+        /// <summary>
+        /// Получить признак, что для команды разрешено использование порядка байт
+        /// </summary>
+        public bool ByteOrderEnabled
+        {
+            get
+            {
+                return TableType == TableTypes.HoldingRegisters;
+            }
+        }
 
 
         /// <summary>

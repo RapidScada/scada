@@ -196,14 +196,11 @@ namespace Scada.Comm.Devices.Modbus.Protocol
 
                     foreach (XmlElement elemGroupElem in elemGroupsNode.ChildNodes)
                     {
-                        TableTypes tableType =
-                            (TableTypes)(Enum.Parse(typeof(TableTypes),
-                            elemGroupElem.GetAttribute("tableType"), true));
+                        TableTypes tableType = elemGroupElem.GetAttrAsEnum<TableTypes>("tableType");
                         ElemGroup elemGroup = new ElemGroup(tableType);
                         elemGroup.Name = elemGroupElem.GetAttribute("name");
                         elemGroup.Address = (ushort)elemGroupElem.GetAttrAsInt("address");
-                        string active = elemGroupElem.GetAttribute("active");
-                        elemGroup.Active = active == "" ? true : bool.Parse(active);
+                        elemGroup.Active = elemGroupElem.GetAttrAsBool("active", true);
                         elemGroup.StartKPTagInd = kpTagInd;
                         elemGroup.StartSignal = kpTagInd + 1;
 
@@ -234,16 +231,21 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                 {
                     foreach (XmlElement cmdElem in cmdsNode.ChildNodes)
                     {
-                        TableTypes tableType =
-                            (TableTypes)(Enum.Parse(typeof(TableTypes), cmdElem.GetAttribute("tableType"), true));
-                        string multiple = cmdElem.GetAttribute("multiple");
-                        string elemCnt = cmdElem.GetAttribute("elemCnt");
-                        ModbusCmd cmd = multiple == "" || elemCnt == "" ?
-                            new ModbusCmd(tableType) :
-                            new ModbusCmd(tableType, bool.Parse(multiple), int.Parse(elemCnt));
+                        ModbusCmd cmd = new ModbusCmd(
+                            cmdElem.GetAttrAsEnum<TableTypes>("tableType"), 
+                            cmdElem.GetAttrAsBool("multiple"), 
+                            cmdElem.GetAttrAsInt("elemCnt", 1));
                         cmd.Address = (ushort)cmdElem.GetAttrAsInt("address");
                         cmd.Name = cmdElem.GetAttribute("name");
                         cmd.CmdNum = cmdElem.GetAttrAsInt("cmdNum");
+
+                        if (cmd.ByteOrderEnabled)
+                        {
+                            cmd.ByteOrderStr = cmdElem.GetAttribute("byteOrder");
+                            cmd.ByteOrder = ModbusUtils.ParseByteOrder(cmd.ByteOrderStr);
+                            if (cmd.ByteOrder == null && Sett.DefByteOrder != null)
+                                cmd.ByteOrder = Sett.DefByteOrder;
+                        }
 
                         if (0 < cmd.CmdNum && cmd.CmdNum <= ushort.MaxValue)
                             Cmds.Add(cmd);
@@ -321,6 +323,8 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                     cmdElem.SetAttribute("address", cmd.Address);
                     cmdElem.SetAttribute("elemCnt", cmd.ElemCnt);
                     cmdElem.SetAttribute("cmdNum", cmd.CmdNum);
+                    if (cmd.ByteOrderEnabled)
+                        cmdElem.SetAttribute("byteOrder", cmd.ByteOrderStr);
                     cmdElem.SetAttribute("name", cmd.Name);
                 }
 
