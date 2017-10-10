@@ -60,13 +60,8 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             Data = null;
             CmdNum = 1;
 
-            // определение кода функции запроса
-            if (tableType == TableTypes.Coils)
-                FuncCode = multiple ? FuncCodes.WriteMultipleCoils : FuncCodes.WriteSingleCoil;
-            else
-                FuncCode = multiple ? FuncCodes.WriteMultipleRegisters : FuncCodes.WriteSingleRegister;
-
-            // определение кода функции, обозначающего исключение
+            // определение кодов функций
+            UpdateFuncCode();
             ExcFuncCode = (byte)(FuncCode | 0x80);
         }
 
@@ -186,6 +181,17 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Обновить код функции в соответствии с типом таблицы данных
+        /// </summary>
+        public void UpdateFuncCode()
+        {
+            if (TableType == TableTypes.Coils)
+                FuncCode = Multiple ? FuncCodes.WriteMultipleCoils : FuncCodes.WriteSingleCoil;
+            else
+                FuncCode = Multiple ? FuncCodes.WriteMultipleRegisters : FuncCodes.WriteSingleRegister;
         }
     }
 }

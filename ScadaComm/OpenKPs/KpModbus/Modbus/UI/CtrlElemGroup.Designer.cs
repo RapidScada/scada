@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             this.gbElemGroup = new System.Windows.Forms.GroupBox();
+            this.lblGrAddressHint = new System.Windows.Forms.Label();
+            this.txtGrFuncCode = new System.Windows.Forms.TextBox();
+            this.lblGrFuncCode = new System.Windows.Forms.Label();
             this.chkGrActive = new System.Windows.Forms.CheckBox();
             this.lblGrElemCnt = new System.Windows.Forms.Label();
             this.numGrElemCnt = new System.Windows.Forms.NumericUpDown();
@@ -38,9 +41,6 @@
             this.lblGrAddress = new System.Windows.Forms.Label();
             this.lblGrTableType = new System.Windows.Forms.Label();
             this.cbGrTableType = new System.Windows.Forms.ComboBox();
-            this.lblFuncCode = new System.Windows.Forms.Label();
-            this.txtFuncCode = new System.Windows.Forms.TextBox();
-            this.lblGrAddressHint = new System.Windows.Forms.Label();
             this.gbElemGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numGrElemCnt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numGrAddress)).BeginInit();
@@ -49,8 +49,8 @@
             // gbElemGroup
             // 
             this.gbElemGroup.Controls.Add(this.lblGrAddressHint);
-            this.gbElemGroup.Controls.Add(this.txtFuncCode);
-            this.gbElemGroup.Controls.Add(this.lblFuncCode);
+            this.gbElemGroup.Controls.Add(this.txtGrFuncCode);
+            this.gbElemGroup.Controls.Add(this.lblGrFuncCode);
             this.gbElemGroup.Controls.Add(this.chkGrActive);
             this.gbElemGroup.Controls.Add(this.lblGrElemCnt);
             this.gbElemGroup.Controls.Add(this.numGrElemCnt);
@@ -67,6 +67,32 @@
             this.gbElemGroup.TabIndex = 0;
             this.gbElemGroup.TabStop = false;
             this.gbElemGroup.Text = "Element group parameters";
+            // 
+            // lblGrAddressHint
+            // 
+            this.lblGrAddressHint.AutoSize = true;
+            this.lblGrAddressHint.Location = new System.Drawing.Point(144, 177);
+            this.lblGrAddressHint.Name = "lblGrAddressHint";
+            this.lblGrAddressHint.Size = new System.Drawing.Size(29, 13);
+            this.lblGrAddressHint.TabIndex = 9;
+            this.lblGrAddressHint.Text = "DEC";
+            // 
+            // txtGrFuncCode
+            // 
+            this.txtGrFuncCode.Location = new System.Drawing.Point(13, 134);
+            this.txtGrFuncCode.Name = "txtGrFuncCode";
+            this.txtGrFuncCode.ReadOnly = true;
+            this.txtGrFuncCode.Size = new System.Drawing.Size(124, 20);
+            this.txtGrFuncCode.TabIndex = 6;
+            // 
+            // lblGrFuncCode
+            // 
+            this.lblGrFuncCode.AutoSize = true;
+            this.lblGrFuncCode.Location = new System.Drawing.Point(10, 118);
+            this.lblGrFuncCode.Name = "lblGrFuncCode";
+            this.lblGrFuncCode.Size = new System.Drawing.Size(75, 13);
+            this.lblGrFuncCode.TabIndex = 5;
+            this.lblGrFuncCode.Text = "Function code";
             // 
             // chkGrActive
             // 
@@ -184,32 +210,6 @@
             this.cbGrTableType.TabIndex = 4;
             this.cbGrTableType.SelectedIndexChanged += new System.EventHandler(this.cbGrTableType_SelectedIndexChanged);
             // 
-            // lblFuncCode
-            // 
-            this.lblFuncCode.AutoSize = true;
-            this.lblFuncCode.Location = new System.Drawing.Point(10, 118);
-            this.lblFuncCode.Name = "lblFuncCode";
-            this.lblFuncCode.Size = new System.Drawing.Size(75, 13);
-            this.lblFuncCode.TabIndex = 5;
-            this.lblFuncCode.Text = "Function code";
-            // 
-            // txtFuncCode
-            // 
-            this.txtFuncCode.Location = new System.Drawing.Point(13, 134);
-            this.txtFuncCode.Name = "txtFuncCode";
-            this.txtFuncCode.ReadOnly = true;
-            this.txtFuncCode.Size = new System.Drawing.Size(254, 20);
-            this.txtFuncCode.TabIndex = 6;
-            // 
-            // lblGrAddressHint
-            // 
-            this.lblGrAddressHint.AutoSize = true;
-            this.lblGrAddressHint.Location = new System.Drawing.Point(144, 177);
-            this.lblGrAddressHint.Name = "lblGrAddressHint";
-            this.lblGrAddressHint.Size = new System.Drawing.Size(29, 13);
-            this.lblGrAddressHint.TabIndex = 9;
-            this.lblGrAddressHint.Text = "DEC";
-            // 
             // CtrlElemGroup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -237,8 +237,8 @@
         private System.Windows.Forms.Label lblGrAddress;
         private System.Windows.Forms.Label lblGrTableType;
         private System.Windows.Forms.ComboBox cbGrTableType;
-        private System.Windows.Forms.Label lblFuncCode;
-        private System.Windows.Forms.TextBox txtFuncCode;
+        private System.Windows.Forms.Label lblGrFuncCode;
+        private System.Windows.Forms.TextBox txtGrFuncCode;
         private System.Windows.Forms.Label lblGrAddressHint;
     }
 }

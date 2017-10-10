@@ -354,6 +354,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             ctrlElemGroup.Visible = false;
             ctrlElem.Visible = false;
             ctrlCmd.Visible = true;
+            ctrlCmd.Settings = template.Sett;
             ctrlCmd.ModbusCmd = modbusCmd;
         }
 
@@ -556,7 +557,7 @@ namespace Scada.Comm.Devices.Modbus.UI
         {
             // создание элемента и добавление в шаблон устройства
             ElemGroup elemGroup = selElemGroup == null ? selElemInfo.ElemGroup : selElemGroup;
-            int maxElemCnt = ElemGroup.GetMaxElemCnt(elemGroup.TableType);
+            int maxElemCnt = DataUnit.GetMaxElemCnt(elemGroup.TableType);
 
             if (elemGroup.Elems.Count >= maxElemCnt)
             {

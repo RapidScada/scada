@@ -220,7 +220,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                             elemGroup.Elems.Add(elem);
                         }
 
-                        if (0 < elemGroup.Elems.Count && elemGroup.Elems.Count <= ElemGroup.GetMaxElemCnt(tableType))
+                        if (0 < elemGroup.Elems.Count && elemGroup.Elems.Count <= DataUnit.GetMaxElemCnt(tableType))
                         {
                             ElemGroups.Add(elemGroup);
                             kpTagInd += elemGroup.Elems.Count;

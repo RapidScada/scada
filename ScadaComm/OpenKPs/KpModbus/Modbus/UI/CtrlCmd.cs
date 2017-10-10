@@ -46,8 +46,59 @@ namespace Scada.Comm.Devices.Modbus.UI
         public CtrlCmd()
         {
             InitializeComponent();
+            modbusCmd = null;
+            Settings = null;
         }
 
+
+        /// <summary>
+        /// Получить признак отображения адресов, начиная с 0
+        /// </summary>
+        private bool ZeroAddr
+        {
+            get
+            {
+                return Settings == null ? false : Settings.ZeroAddr;
+            }
+        }
+
+        /// <summary>
+        /// Получить смещение адреса
+        /// </summary>
+        private int AddrShift
+        {
+            get
+            {
+                return ZeroAddr ? 0 : 1;
+            }
+        }
+
+        /// <summary>
+        /// Получить признак отображения адресов в 10-тичной системе
+        /// </summary>
+        private bool DecAddr
+        {
+            get
+            {
+                return Settings == null ? false : Settings.DecAddr;
+            }
+        }
+
+        /// <summary>
+        /// Получить обозначение системы счисления адресов
+        /// </summary>
+        private string AddrNotation
+        {
+            get
+            {
+                return DecAddr ? "DEC" : "HEX";
+            }
+        }
+
+        /// <summary>
+        /// Получить или установить ссылку настройки шаблона
+        /// </summary>
+        public DeviceTemplate.Settings Settings { get; set; }
 
         /// <summary>
         /// Получить или установить редактируемую команду
@@ -72,26 +123,46 @@ namespace Scada.Comm.Devices.Modbus.UI
         /// </summary>
         private void ShowCmdProps(ModbusCmd modbusCmd)
         {
+            numCmdAddress.Value = 1;
+            numCmdAddress.Minimum = AddrShift;
+            numCmdAddress.Maximum = ushort.MaxValue + AddrShift;
+            numCmdAddress.Hexadecimal = !DecAddr;
+            ShowFuncCode(modbusCmd);
+
             if (modbusCmd == null)
             {
                 cbCmdTableType.SelectedIndex = 0;
-                numCmdAddress.Value = 1;
+                numCmdAddress.Value = AddrShift;
+                lblCmdAddressHint.Text = "";
                 numCmdElemCnt.Value = 1;
                 numCmdNum.Value = 1;
                 txtCmdName.Text = "";
+                txtCmdByteOrder.Text = "";
                 gbCmd.Enabled = false;
             }
             else
             {
                 cbCmdTableType.SelectedIndex = modbusCmd.TableType == TableTypes.Coils ? 0 : 1;
                 chkCmdMultiple.Checked = modbusCmd.Multiple;
-                numCmdAddress.Value = modbusCmd.Address + 1;
+                numCmdAddress.Value = modbusCmd.Address + AddrShift;
+                lblCmdAddressHint.Text = string.Format(KpPhrases.AddressHint, AddrNotation, AddrShift);
+                numCmdElemCnt.Value = 1;
+                numCmdElemCnt.Maximum = DataUnit.GetMaxElemCnt(modbusCmd.TableType);
                 numCmdElemCnt.Value = modbusCmd.ElemCnt;
                 numCmdElemCnt.Enabled = modbusCmd.Multiple;
                 numCmdNum.Value = modbusCmd.CmdNum;
                 txtCmdName.Text = modbusCmd.Name;
                 gbCmd.Enabled = true;
             }
+        }
+
+        /// <summary>
+        /// Отобразить код функции команды
+        /// </summary>
+        private void ShowFuncCode(ModbusCmd modbusCmd)
+        {
+            txtCmdFuncCode.Text = modbusCmd == null ? "" :
+                string.Format("{0} ({1}H)", modbusCmd.FuncCode, modbusCmd.FuncCode.ToString("X2"));
         }
 
         /// <summary>
@@ -136,9 +207,11 @@ namespace Scada.Comm.Devices.Modbus.UI
                 modbusCmd.TableType = cbCmdTableType.SelectedIndex == 0 ?
                     TableTypes.Coils :
                     TableTypes.HoldingRegisters;
+                modbusCmd.UpdateFuncCode();
+                ShowFuncCode(modbusCmd);
 
                 // ограничение макс. количества элементов в группе
-                int maxElemCnt = ElemGroup.GetMaxElemCnt(modbusCmd.TableType);
+                int maxElemCnt = DataUnit.GetMaxElemCnt(modbusCmd.TableType);
                 if (numCmdElemCnt.Value > maxElemCnt)
                     numCmdElemCnt.Value = maxElemCnt;
                 numCmdElemCnt.Maximum = maxElemCnt;
@@ -153,8 +226,10 @@ namespace Scada.Comm.Devices.Modbus.UI
             if (modbusCmd != null)
             {
                 modbusCmd.Multiple = chkCmdMultiple.Checked;
-                numCmdElemCnt.Enabled = modbusCmd.Multiple;
+                modbusCmd.UpdateFuncCode();
+                ShowFuncCode(modbusCmd);
 
+                numCmdElemCnt.Enabled = modbusCmd.Multiple;
                 if (!modbusCmd.Multiple)
                     numCmdElemCnt.Value = 1;
 

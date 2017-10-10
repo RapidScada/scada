@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.gbElem = new System.Windows.Forms.GroupBox();
-            this.lblByteOrderExample = new System.Windows.Forms.Label();
-            this.txtByteOrder = new System.Windows.Forms.TextBox();
-            this.lblByteOrder = new System.Windows.Forms.Label();
+            this.lblElemByteOrderExample = new System.Windows.Forms.Label();
+            this.txtElemByteOrder = new System.Windows.Forms.TextBox();
+            this.lblElemByteOrder = new System.Windows.Forms.Label();
             this.rbDouble = new System.Windows.Forms.RadioButton();
             this.rbLong = new System.Windows.Forms.RadioButton();
             this.rbULong = new System.Windows.Forms.RadioButton();
@@ -53,9 +53,9 @@
             // 
             // gbElem
             // 
-            this.gbElem.Controls.Add(this.lblByteOrderExample);
-            this.gbElem.Controls.Add(this.txtByteOrder);
-            this.gbElem.Controls.Add(this.lblByteOrder);
+            this.gbElem.Controls.Add(this.lblElemByteOrderExample);
+            this.gbElem.Controls.Add(this.txtElemByteOrder);
+            this.gbElem.Controls.Add(this.lblElemByteOrder);
             this.gbElem.Controls.Add(this.rbDouble);
             this.gbElem.Controls.Add(this.rbLong);
             this.gbElem.Controls.Add(this.rbULong);
@@ -80,32 +80,32 @@
             this.gbElem.TabStop = false;
             this.gbElem.Text = "Element parameters";
             // 
-            // lblByteOrderExample
+            // lblElemByteOrderExample
             // 
-            this.lblByteOrderExample.AutoSize = true;
-            this.lblByteOrderExample.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.lblByteOrderExample.Location = new System.Drawing.Point(143, 242);
-            this.lblByteOrderExample.Name = "lblByteOrderExample";
-            this.lblByteOrderExample.Size = new System.Drawing.Size(118, 13);
-            this.lblByteOrderExample.TabIndex = 18;
-            this.lblByteOrderExample.Text = "For example, 01234567";
+            this.lblElemByteOrderExample.AutoSize = true;
+            this.lblElemByteOrderExample.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.lblElemByteOrderExample.Location = new System.Drawing.Point(143, 242);
+            this.lblElemByteOrderExample.Name = "lblElemByteOrderExample";
+            this.lblElemByteOrderExample.Size = new System.Drawing.Size(118, 13);
+            this.lblElemByteOrderExample.TabIndex = 18;
+            this.lblElemByteOrderExample.Text = "For example, 01234567";
             // 
-            // txtByteOrder
+            // txtElemByteOrder
             // 
-            this.txtByteOrder.Location = new System.Drawing.Point(13, 238);
-            this.txtByteOrder.Name = "txtByteOrder";
-            this.txtByteOrder.Size = new System.Drawing.Size(124, 20);
-            this.txtByteOrder.TabIndex = 17;
-            this.txtByteOrder.TextChanged += new System.EventHandler(this.txtByteOrder_TextChanged);
+            this.txtElemByteOrder.Location = new System.Drawing.Point(13, 238);
+            this.txtElemByteOrder.Name = "txtElemByteOrder";
+            this.txtElemByteOrder.Size = new System.Drawing.Size(124, 20);
+            this.txtElemByteOrder.TabIndex = 17;
+            this.txtElemByteOrder.TextChanged += new System.EventHandler(this.txtByteOrder_TextChanged);
             // 
-            // lblByteOrder
+            // lblElemByteOrder
             // 
-            this.lblByteOrder.AutoSize = true;
-            this.lblByteOrder.Location = new System.Drawing.Point(10, 222);
-            this.lblByteOrder.Name = "lblByteOrder";
-            this.lblByteOrder.Size = new System.Drawing.Size(55, 13);
-            this.lblByteOrder.TabIndex = 16;
-            this.lblByteOrder.Text = "Byte order";
+            this.lblElemByteOrder.AutoSize = true;
+            this.lblElemByteOrder.Location = new System.Drawing.Point(10, 222);
+            this.lblElemByteOrder.Name = "lblElemByteOrder";
+            this.lblElemByteOrder.Size = new System.Drawing.Size(55, 13);
+            this.lblElemByteOrder.TabIndex = 16;
+            this.lblElemByteOrder.Text = "Byte order";
             // 
             // rbDouble
             // 
@@ -291,9 +291,9 @@
         #endregion
 
         private System.Windows.Forms.GroupBox gbElem;
-        private System.Windows.Forms.Label lblByteOrderExample;
-        private System.Windows.Forms.TextBox txtByteOrder;
-        private System.Windows.Forms.Label lblByteOrder;
+        private System.Windows.Forms.Label lblElemByteOrderExample;
+        private System.Windows.Forms.TextBox txtElemByteOrder;
+        private System.Windows.Forms.Label lblElemByteOrder;
         private System.Windows.Forms.RadioButton rbDouble;
         private System.Windows.Forms.RadioButton rbLong;
         private System.Windows.Forms.RadioButton rbULong;

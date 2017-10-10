@@ -289,10 +289,10 @@
             // ctrlCmd
             // 
             this.ctrlCmd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ctrlCmd.Location = new System.Drawing.Point(298, 323);
+            this.ctrlCmd.Location = new System.Drawing.Point(298, 206);
             this.ctrlCmd.ModbusCmd = null;
             this.ctrlCmd.Name = "ctrlCmd";
-            this.ctrlCmd.Size = new System.Drawing.Size(280, 206);
+            this.ctrlCmd.Size = new System.Drawing.Size(280, 323);
             this.ctrlCmd.TabIndex = 4;
             this.ctrlCmd.ObjectChanged += new Scada.UI.ObjectChangedEventHandler(this.ctrlCmd_ObjectChanged);
             // 

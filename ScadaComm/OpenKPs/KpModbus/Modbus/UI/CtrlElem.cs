@@ -79,7 +79,7 @@ namespace Scada.Comm.Devices.Modbus.UI
                 txtElemAddress.Text = "";
                 txtElemSignal.Text = "";
                 rbBool.Checked = true;
-                txtByteOrder.Text = "";
+                txtElemByteOrder.Text = "";
                 gbElem.Enabled = false;
             }
             else
@@ -94,16 +94,16 @@ namespace Scada.Comm.Devices.Modbus.UI
                     rbUShort.Enabled = rbShort.Enabled = rbUInt.Enabled = rbInt.Enabled =
                         rbULong.Enabled = rbLong.Enabled = rbFloat.Enabled = rbDouble.Enabled = false;
                     rbBool.Enabled = true;
-                    txtByteOrder.Text = "";
-                    txtByteOrder.Enabled = false;
+                    txtElemByteOrder.Text = "";
+                    txtElemByteOrder.Enabled = false;
                 }
                 else
                 {
                     rbUShort.Enabled = rbShort.Enabled = rbUInt.Enabled = rbInt.Enabled =
                         rbULong.Enabled = rbLong.Enabled = rbFloat.Enabled = rbDouble.Enabled = true;
                     rbBool.Enabled = false;
-                    txtByteOrder.Text = elemInfo.Elem.ByteOrderStr;
-                    txtByteOrder.Enabled = true;
+                    txtElemByteOrder.Text = elemInfo.Elem.ByteOrderStr;
+                    txtElemByteOrder.Enabled = true;
                 }
 
                 switch (elemType)
@@ -211,7 +211,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             // изменение порядка байт элемента
             if (elemInfo != null)
             {
-                elemInfo.Elem.ByteOrderStr = txtByteOrder.Text;
+                elemInfo.Elem.ByteOrderStr = txtElemByteOrder.Text;
                 OnObjectChanged(TreeUpdateTypes.None);
             }
         }

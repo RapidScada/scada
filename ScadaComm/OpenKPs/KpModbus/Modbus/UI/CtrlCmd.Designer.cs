@@ -40,6 +40,12 @@
             this.lblCmdAddress = new System.Windows.Forms.Label();
             this.lblCmdTableType = new System.Windows.Forms.Label();
             this.cbCmdTableType = new System.Windows.Forms.ComboBox();
+            this.txtCmdFuncCode = new System.Windows.Forms.TextBox();
+            this.lblCmdFuncCode = new System.Windows.Forms.Label();
+            this.lblCmdByteOrderExample = new System.Windows.Forms.Label();
+            this.txtCmdByteOrder = new System.Windows.Forms.TextBox();
+            this.lblCmdByteOrder = new System.Windows.Forms.Label();
+            this.lblCmdAddressHint = new System.Windows.Forms.Label();
             this.gbCmd.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numCmdElemCnt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCmdNum)).BeginInit();
@@ -48,6 +54,12 @@
             // 
             // gbCmd
             // 
+            this.gbCmd.Controls.Add(this.lblCmdAddressHint);
+            this.gbCmd.Controls.Add(this.lblCmdByteOrderExample);
+            this.gbCmd.Controls.Add(this.txtCmdByteOrder);
+            this.gbCmd.Controls.Add(this.lblCmdByteOrder);
+            this.gbCmd.Controls.Add(this.txtCmdFuncCode);
+            this.gbCmd.Controls.Add(this.lblCmdFuncCode);
             this.gbCmd.Controls.Add(this.chkCmdMultiple);
             this.gbCmd.Controls.Add(this.lblCmdElemCnt);
             this.gbCmd.Controls.Add(this.numCmdElemCnt);
@@ -62,7 +74,7 @@
             this.gbCmd.Location = new System.Drawing.Point(0, 0);
             this.gbCmd.Name = "gbCmd";
             this.gbCmd.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbCmd.Size = new System.Drawing.Size(280, 206);
+            this.gbCmd.Size = new System.Drawing.Size(280, 323);
             this.gbCmd.TabIndex = 0;
             this.gbCmd.TabStop = false;
             this.gbCmd.Text = "Command parameters";
@@ -81,15 +93,15 @@
             // lblCmdElemCnt
             // 
             this.lblCmdElemCnt.AutoSize = true;
-            this.lblCmdElemCnt.Location = new System.Drawing.Point(140, 118);
+            this.lblCmdElemCnt.Location = new System.Drawing.Point(10, 196);
             this.lblCmdElemCnt.Name = "lblCmdElemCnt";
             this.lblCmdElemCnt.Size = new System.Drawing.Size(75, 13);
-            this.lblCmdElemCnt.TabIndex = 7;
+            this.lblCmdElemCnt.TabIndex = 10;
             this.lblCmdElemCnt.Text = "Element count";
             // 
             // numCmdElemCnt
             // 
-            this.numCmdElemCnt.Location = new System.Drawing.Point(143, 134);
+            this.numCmdElemCnt.Location = new System.Drawing.Point(13, 212);
             this.numCmdElemCnt.Maximum = new decimal(new int[] {
             2000,
             0,
@@ -102,7 +114,7 @@
             0});
             this.numCmdElemCnt.Name = "numCmdElemCnt";
             this.numCmdElemCnt.Size = new System.Drawing.Size(124, 20);
-            this.numCmdElemCnt.TabIndex = 8;
+            this.numCmdElemCnt.TabIndex = 11;
             this.numCmdElemCnt.Value = new decimal(new int[] {
             1,
             0,
@@ -130,15 +142,15 @@
             // lblCmdNum
             // 
             this.lblCmdNum.AutoSize = true;
-            this.lblCmdNum.Location = new System.Drawing.Point(10, 157);
+            this.lblCmdNum.Location = new System.Drawing.Point(10, 235);
             this.lblCmdNum.Name = "lblCmdNum";
             this.lblCmdNum.Size = new System.Drawing.Size(92, 13);
-            this.lblCmdNum.TabIndex = 9;
+            this.lblCmdNum.TabIndex = 12;
             this.lblCmdNum.Text = "Command number";
             // 
             // numCmdNum
             // 
-            this.numCmdNum.Location = new System.Drawing.Point(13, 173);
+            this.numCmdNum.Location = new System.Drawing.Point(13, 251);
             this.numCmdNum.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -151,7 +163,7 @@
             0});
             this.numCmdNum.Name = "numCmdNum";
             this.numCmdNum.Size = new System.Drawing.Size(124, 20);
-            this.numCmdNum.TabIndex = 10;
+            this.numCmdNum.TabIndex = 13;
             this.numCmdNum.Value = new decimal(new int[] {
             1,
             0,
@@ -161,7 +173,7 @@
             // 
             // numCmdAddress
             // 
-            this.numCmdAddress.Location = new System.Drawing.Point(13, 134);
+            this.numCmdAddress.Location = new System.Drawing.Point(13, 173);
             this.numCmdAddress.Maximum = new decimal(new int[] {
             65536,
             0,
@@ -174,7 +186,7 @@
             0});
             this.numCmdAddress.Name = "numCmdAddress";
             this.numCmdAddress.Size = new System.Drawing.Size(124, 20);
-            this.numCmdAddress.TabIndex = 6;
+            this.numCmdAddress.TabIndex = 8;
             this.numCmdAddress.Value = new decimal(new int[] {
             1,
             0,
@@ -185,10 +197,10 @@
             // lblCmdAddress
             // 
             this.lblCmdAddress.AutoSize = true;
-            this.lblCmdAddress.Location = new System.Drawing.Point(10, 118);
+            this.lblCmdAddress.Location = new System.Drawing.Point(10, 157);
             this.lblCmdAddress.Name = "lblCmdAddress";
             this.lblCmdAddress.Size = new System.Drawing.Size(85, 13);
-            this.lblCmdAddress.TabIndex = 5;
+            this.lblCmdAddress.TabIndex = 7;
             this.lblCmdAddress.Text = "Element address";
             // 
             // lblCmdTableType
@@ -213,13 +225,65 @@
             this.cbCmdTableType.TabIndex = 3;
             this.cbCmdTableType.SelectedIndexChanged += new System.EventHandler(this.cbCmdTableType_SelectedIndexChanged);
             // 
+            // txtCmdFuncCode
+            // 
+            this.txtCmdFuncCode.Location = new System.Drawing.Point(13, 134);
+            this.txtCmdFuncCode.Name = "txtCmdFuncCode";
+            this.txtCmdFuncCode.ReadOnly = true;
+            this.txtCmdFuncCode.Size = new System.Drawing.Size(124, 20);
+            this.txtCmdFuncCode.TabIndex = 6;
+            // 
+            // lblCmdFuncCode
+            // 
+            this.lblCmdFuncCode.AutoSize = true;
+            this.lblCmdFuncCode.Location = new System.Drawing.Point(10, 118);
+            this.lblCmdFuncCode.Name = "lblCmdFuncCode";
+            this.lblCmdFuncCode.Size = new System.Drawing.Size(75, 13);
+            this.lblCmdFuncCode.TabIndex = 5;
+            this.lblCmdFuncCode.Text = "Function code";
+            // 
+            // lblCmdByteOrderExample
+            // 
+            this.lblCmdByteOrderExample.AutoSize = true;
+            this.lblCmdByteOrderExample.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.lblCmdByteOrderExample.Location = new System.Drawing.Point(143, 294);
+            this.lblCmdByteOrderExample.Name = "lblCmdByteOrderExample";
+            this.lblCmdByteOrderExample.Size = new System.Drawing.Size(118, 13);
+            this.lblCmdByteOrderExample.TabIndex = 16;
+            this.lblCmdByteOrderExample.Text = "For example, 01234567";
+            // 
+            // txtCmdByteOrder
+            // 
+            this.txtCmdByteOrder.Location = new System.Drawing.Point(13, 290);
+            this.txtCmdByteOrder.Name = "txtCmdByteOrder";
+            this.txtCmdByteOrder.Size = new System.Drawing.Size(124, 20);
+            this.txtCmdByteOrder.TabIndex = 15;
+            // 
+            // lblCmdByteOrder
+            // 
+            this.lblCmdByteOrder.AutoSize = true;
+            this.lblCmdByteOrder.Location = new System.Drawing.Point(10, 274);
+            this.lblCmdByteOrder.Name = "lblCmdByteOrder";
+            this.lblCmdByteOrder.Size = new System.Drawing.Size(55, 13);
+            this.lblCmdByteOrder.TabIndex = 14;
+            this.lblCmdByteOrder.Text = "Byte order";
+            // 
+            // lblCmdAddressHint
+            // 
+            this.lblCmdAddressHint.AutoSize = true;
+            this.lblCmdAddressHint.Location = new System.Drawing.Point(143, 177);
+            this.lblCmdAddressHint.Name = "lblCmdAddressHint";
+            this.lblCmdAddressHint.Size = new System.Drawing.Size(29, 13);
+            this.lblCmdAddressHint.TabIndex = 9;
+            this.lblCmdAddressHint.Text = "DEC";
+            // 
             // CtrlCmd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.gbCmd);
             this.Name = "CtrlCmd";
-            this.Size = new System.Drawing.Size(280, 206);
+            this.Size = new System.Drawing.Size(280, 323);
             this.gbCmd.ResumeLayout(false);
             this.gbCmd.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numCmdElemCnt)).EndInit();
@@ -243,5 +307,11 @@
         private System.Windows.Forms.Label lblCmdAddress;
         private System.Windows.Forms.Label lblCmdTableType;
         private System.Windows.Forms.ComboBox cbCmdTableType;
+        private System.Windows.Forms.TextBox txtCmdFuncCode;
+        private System.Windows.Forms.Label lblCmdFuncCode;
+        private System.Windows.Forms.Label lblCmdByteOrderExample;
+        private System.Windows.Forms.TextBox txtCmdByteOrder;
+        private System.Windows.Forms.Label lblCmdByteOrder;
+        private System.Windows.Forms.Label lblCmdAddressHint;
     }
 }

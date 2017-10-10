@@ -147,7 +147,7 @@ namespace Scada.Comm.Devices.Modbus.UI
                 numGrAddress.Value = elemGroup.Address + AddrShift;
                 lblGrAddressHint.Text = string.Format(KpPhrases.AddressHint, AddrNotation, AddrShift);
                 numGrElemCnt.Value = 1;
-                numGrElemCnt.Maximum = ElemGroup.GetMaxElemCnt(elemGroup.TableType);
+                numGrElemCnt.Maximum = DataUnit.GetMaxElemCnt(elemGroup.TableType);
                 numGrElemCnt.Value = elemGroup.Elems.Count;
                 gbElemGroup.Enabled = true;
             }
@@ -158,7 +158,7 @@ namespace Scada.Comm.Devices.Modbus.UI
         /// </summary>
         private void ShowFuncCode(ElemGroup elemGroup)
         {
-            txtFuncCode.Text = elemGroup == null ? "" :
+            txtGrFuncCode.Text = elemGroup == null ? "" :
                 string.Format("{0} ({1}H)", elemGroup.FuncCode, elemGroup.FuncCode.ToString("X2"));
         }
 
@@ -212,7 +212,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             if (elemGroup != null)
             {
                 TableTypes tableType = (TableTypes)cbGrTableType.SelectedIndex;
-                int maxElemCnt = ElemGroup.GetMaxElemCnt(tableType);
+                int maxElemCnt = DataUnit.GetMaxElemCnt(tableType);
 
                 bool cancel = elemGroup.Elems.Count > maxElemCnt &&
                     MessageBox.Show(string.Format(KpPhrases.ElemRemoveWarning, maxElemCnt), 

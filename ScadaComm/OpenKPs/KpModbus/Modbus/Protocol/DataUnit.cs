@@ -23,9 +23,6 @@
  * Modified : 2017
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Scada.Comm.Devices.Modbus.Protocol
@@ -208,6 +205,15 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             }
 
             return result;
+        }
+
+
+        /// <summary>
+        /// Получить максимально допустимое количество элементов
+        /// </summary>
+        public static int GetMaxElemCnt(TableTypes tableType)
+        {
+            return tableType == TableTypes.DiscreteInputs || tableType == TableTypes.Coils ? 2000 : 125;
         }
     }
 }
