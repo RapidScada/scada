@@ -32,9 +32,9 @@ namespace Scada.Comm.Devices.Modbus.Protocol
     public enum ElemTypes
     {
         /// <summary>
-        /// Логическое значение
+        /// Тип не определён
         /// </summary>
-        Bool,
+        Undefined,
 
         /// <summary>
         /// 2-байтное целое без знака
@@ -74,6 +74,11 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         /// <summary>
         /// 8-байтное вещественное с плавающей запятой
         /// </summary>
-        Double
+        Double,
+
+        /// <summary>
+        /// Логическое значение
+        /// </summary>
+        Bool
     }
 }

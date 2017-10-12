@@ -50,6 +50,16 @@
     <Phrase key="lblCmdFuncCode">Function code</Phrase>
     <Phrase key="lblCmdAddress">Element address</Phrase>
     <Phrase key="lblCmdElemType">Element type</Phrase>
+    <Phrase key="cbCmdElemType.Items[0]">Undefined</Phrase>
+    <Phrase key="cbCmdElemType.Items[1]">ushort (2 bytes)</Phrase>
+    <Phrase key="cbCmdElemType.Items[2]">short (2 bytes)</Phrase>
+    <Phrase key="cbCmdElemType.Items[3]">uint (4 bytes)</Phrase>
+    <Phrase key="cbCmdElemType.Items[4]">int (4 bytes)</Phrase>
+    <Phrase key="cbCmdElemType.Items[5]">ulong (8 bytes)</Phrase>
+    <Phrase key="cbCmdElemType.Items[6]">long (8 bytes)</Phrase>
+    <Phrase key="cbCmdElemType.Items[7]">float (4 bytes)</Phrase>
+    <Phrase key="cbCmdElemType.Items[8]">double (8 bytes)</Phrase>
+    <Phrase key="cbCmdElemType.Items[9]">bool (1 bit)</Phrase>
     <Phrase key="lblCmdElemCnt">Element count</Phrase>
     <Phrase key="lblCmdNum">Command number</Phrase>
     <Phrase key="lblCmdByteOrder">Byte order</Phrase>

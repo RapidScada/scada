@@ -50,6 +50,16 @@
     <Phrase key="lblCmdFuncCode">Код функции</Phrase>
     <Phrase key="lblCmdAddress">Адрес элемента</Phrase>
     <Phrase key="lblCmdElemType">Тип элементов</Phrase>
+    <Phrase key="cbCmdElemType.Items[0]">Не определён</Phrase>
+    <Phrase key="cbCmdElemType.Items[1]">ushort (2 байта)</Phrase>
+    <Phrase key="cbCmdElemType.Items[2]">short (2 байта)</Phrase>
+    <Phrase key="cbCmdElemType.Items[3]">uint (4 байта)</Phrase>
+    <Phrase key="cbCmdElemType.Items[4]">int (4 байта)</Phrase>
+    <Phrase key="cbCmdElemType.Items[5]">ulong (8 байт)</Phrase>
+    <Phrase key="cbCmdElemType.Items[6]">long (8 байт)</Phrase>
+    <Phrase key="cbCmdElemType.Items[7]">float (4 байта)</Phrase>
+    <Phrase key="cbCmdElemType.Items[8]">double (8 байт)</Phrase>
+    <Phrase key="cbCmdElemType.Items[9]">bool (1 бит)</Phrase>
     <Phrase key="lblCmdElemCnt">Количество элементов</Phrase>
     <Phrase key="lblCmdNum">Номер команды КП</Phrase>
     <Phrase key="lblCmdByteOrder">Порядок байт</Phrase>

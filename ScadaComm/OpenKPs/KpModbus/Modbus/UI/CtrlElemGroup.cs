@@ -271,8 +271,6 @@ namespace Scada.Comm.Devices.Modbus.UI
                 {
                     // добавление новых элементов
                     ElemTypes elemType = elemGroup.DefElemType;
-                    ushort elemLen = (ushort)Elem.GetElemLength(elemType);
-
                     for (int elemInd = oldElemCnt; elemInd < newElemCnt; elemInd++)
                     {
                         elemGroup.Elems.Add(new Elem() { ElemType = elemType });

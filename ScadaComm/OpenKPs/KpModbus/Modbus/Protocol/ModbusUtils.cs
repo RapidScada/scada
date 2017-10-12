@@ -262,5 +262,25 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         {
             ApplyByteOrder(src, dest, 0, dest.Length, byteOrder);
         }
+        
+        /// <summary>
+        /// Получить количество элементов (количество адресов) в зависимости от типа элемента
+        /// </summary>
+        public static int GetElemCount(ElemTypes elemType)
+        {
+            switch (elemType)
+            {
+                case ElemTypes.ULong:
+                case ElemTypes.Long:
+                case ElemTypes.Double:
+                    return 4;
+                case ElemTypes.UInt:
+                case ElemTypes.Int:
+                case ElemTypes.Float:
+                    return 2;
+                default:
+                    return 1;
+            }
+        }
     }
 }

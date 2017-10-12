@@ -55,7 +55,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
 
             reqDescr = "";
             Multiple = multiple;
-            ElemType = GetDefElemType(tableType);
+            ElemType = DefElemType;
             ElemCnt = elemCnt;
             ByteOrder = null;
             ByteOrderStr = "";

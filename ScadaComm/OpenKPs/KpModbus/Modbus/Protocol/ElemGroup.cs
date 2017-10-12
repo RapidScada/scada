@@ -266,8 +266,6 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             // расчёт значения
             switch (elem.ElemType)
             {
-                case ElemTypes.Bool:
-                    return buf[0] > 0 ? 1.0 : 0.0;
                 case ElemTypes.UShort:
                     return BitConverter.ToUInt16(buf, 0);
                 case ElemTypes.Short:
@@ -284,6 +282,8 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                     return BitConverter.ToSingle(buf, 0);
                 case ElemTypes.Double:
                     return BitConverter.ToDouble(buf, 0);
+                case ElemTypes.Bool:
+                    return buf[0] > 0 ? 1.0 : 0.0;
                 default:
                     return 0.0;
             }

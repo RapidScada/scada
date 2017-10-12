@@ -60,7 +60,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         {
             get
             {
-                return GetElemLength(ElemType);
+                return ModbusUtils.GetElemCount(ElemType);
             }
         }
 
@@ -73,26 +73,5 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         /// Получить или установить строковую запись порядка байт
         /// </summary>
         public string ByteOrderStr { get; set; }
-
-
-        /// <summary>
-        /// Получить длину элемента (количество адресов) в зависимости от типа элемента
-        /// </summary>
-        public static int GetElemLength(ElemTypes elemType)
-        {
-            switch (elemType)
-            {
-                case ElemTypes.ULong:
-                case ElemTypes.Long:
-                case ElemTypes.Double:
-                    return 4;
-                case ElemTypes.UInt:
-                case ElemTypes.Int:
-                case ElemTypes.Float:
-                    return 2;
-                default:
-                    return 1;
-            }
-        }
     }
 }

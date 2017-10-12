@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.gbCmd = new System.Windows.Forms.GroupBox();
+            this.lblCmdElemType = new System.Windows.Forms.Label();
+            this.cbCmdElemType = new System.Windows.Forms.ComboBox();
             this.lblCmdAddressHint = new System.Windows.Forms.Label();
             this.lblCmdByteOrderExample = new System.Windows.Forms.Label();
             this.txtCmdByteOrder = new System.Windows.Forms.TextBox();
@@ -46,8 +48,6 @@
             this.lblCmdAddress = new System.Windows.Forms.Label();
             this.lblCmdTableType = new System.Windows.Forms.Label();
             this.cbCmdTableType = new System.Windows.Forms.ComboBox();
-            this.cbCmdElemType = new System.Windows.Forms.ComboBox();
-            this.lblCmdElemType = new System.Windows.Forms.Label();
             this.gbCmd.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numCmdElemCnt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCmdNum)).BeginInit();
@@ -82,6 +82,36 @@
             this.gbCmd.TabIndex = 0;
             this.gbCmd.TabStop = false;
             this.gbCmd.Text = "Command parameters";
+            // 
+            // lblCmdElemType
+            // 
+            this.lblCmdElemType.AutoSize = true;
+            this.lblCmdElemType.Location = new System.Drawing.Point(10, 196);
+            this.lblCmdElemType.Name = "lblCmdElemType";
+            this.lblCmdElemType.Size = new System.Drawing.Size(68, 13);
+            this.lblCmdElemType.TabIndex = 10;
+            this.lblCmdElemType.Text = "Element type";
+            // 
+            // cbCmdElemType
+            // 
+            this.cbCmdElemType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbCmdElemType.FormattingEnabled = true;
+            this.cbCmdElemType.Items.AddRange(new object[] {
+            "Undefined",
+            "ushort (2 bytes)",
+            "short (2 bytes)",
+            "uint (4 bytes)",
+            "int (4 bytes)",
+            "ulong (8 bytes)",
+            "long (8 bytes)",
+            "float (4 bytes)",
+            "double (8 bytes)",
+            "bool (1 bit)"});
+            this.cbCmdElemType.Location = new System.Drawing.Point(13, 212);
+            this.cbCmdElemType.Name = "cbCmdElemType";
+            this.cbCmdElemType.Size = new System.Drawing.Size(124, 21);
+            this.cbCmdElemType.TabIndex = 11;
+            this.cbCmdElemType.SelectedIndexChanged += new System.EventHandler(this.cbCmdElemType_SelectedIndexChanged);
             // 
             // lblCmdAddressHint
             // 
@@ -281,24 +311,6 @@
             this.cbCmdTableType.Size = new System.Drawing.Size(254, 21);
             this.cbCmdTableType.TabIndex = 3;
             this.cbCmdTableType.SelectedIndexChanged += new System.EventHandler(this.cbCmdTableType_SelectedIndexChanged);
-            // 
-            // cbCmdElemType
-            // 
-            this.cbCmdElemType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbCmdElemType.FormattingEnabled = true;
-            this.cbCmdElemType.Location = new System.Drawing.Point(13, 212);
-            this.cbCmdElemType.Name = "cbCmdElemType";
-            this.cbCmdElemType.Size = new System.Drawing.Size(124, 21);
-            this.cbCmdElemType.TabIndex = 11;
-            // 
-            // lblCmdElemType
-            // 
-            this.lblCmdElemType.AutoSize = true;
-            this.lblCmdElemType.Location = new System.Drawing.Point(10, 196);
-            this.lblCmdElemType.Name = "lblCmdElemType";
-            this.lblCmdElemType.Size = new System.Drawing.Size(68, 13);
-            this.lblCmdElemType.TabIndex = 10;
-            this.lblCmdElemType.Text = "Element type";
             // 
             // CtrlCmd
             // 

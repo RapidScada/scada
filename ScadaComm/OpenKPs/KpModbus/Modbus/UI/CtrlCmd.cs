@@ -136,9 +136,10 @@ namespace Scada.Comm.Devices.Modbus.UI
                 cbCmdTableType.SelectedIndex = 0;
                 numCmdAddress.Value = AddrShift;
                 lblCmdAddressHint.Text = "";
+                cbCmdElemType.SelectedIndex = 0;
                 numCmdElemCnt.Value = 1;
-                numCmdNum.Value = 1;
                 txtCmdByteOrder.Text = "";
+                numCmdNum.Value = 1;
                 gbCmd.Enabled = false;
             }
             else
@@ -148,10 +149,11 @@ namespace Scada.Comm.Devices.Modbus.UI
                 chkCmdMultiple.Checked = modbusCmd.Multiple;
                 numCmdAddress.Value = modbusCmd.Address + AddrShift;
                 lblCmdAddressHint.Text = string.Format(KpPhrases.AddressHint, AddrNotation, AddrShift);
+                cbCmdElemType.SelectedIndex = (int)modbusCmd.ElemType;
                 numCmdElemCnt.Value = 1;
                 numCmdElemCnt.Maximum = DataUnit.GetMaxElemCnt(modbusCmd.TableType);
                 numCmdElemCnt.Value = modbusCmd.ElemCnt;
-                numCmdElemCnt.Enabled = modbusCmd.Multiple;
+                cbCmdElemType.Enabled = numCmdElemCnt.Enabled = modbusCmd.Multiple;
                 numCmdNum.Value = modbusCmd.CmdNum;
                 gbCmd.Enabled = true;
             }
@@ -229,7 +231,10 @@ namespace Scada.Comm.Devices.Modbus.UI
                 ShowFuncCode(modbusCmd);
                 ShowByteOrder(modbusCmd);
 
-                // ограничение макс. количества элементов в группе
+                // установка типа элементов команды по умолчанию
+                cbCmdElemType.SelectedIndex = (int)modbusCmd.DefElemType;
+
+                // ограничение макс. количества элементов в команде
                 int maxElemCnt = DataUnit.GetMaxElemCnt(modbusCmd.TableType);
                 if (numCmdElemCnt.Value > maxElemCnt)
                     numCmdElemCnt.Value = maxElemCnt;
@@ -249,7 +254,9 @@ namespace Scada.Comm.Devices.Modbus.UI
                 ShowFuncCode(modbusCmd);
                 ShowByteOrder(modbusCmd);
 
-                numCmdElemCnt.Enabled = modbusCmd.Multiple;
+                cbCmdElemType.SelectedIndex = (int)modbusCmd.DefElemType; // тип по умолчанию
+                cbCmdElemType.Enabled = numCmdElemCnt.Enabled = modbusCmd.Multiple;
+
                 if (!modbusCmd.Multiple)
                     numCmdElemCnt.Value = 1;
 
@@ -267,6 +274,17 @@ namespace Scada.Comm.Devices.Modbus.UI
             }
         }
 
+        private void cbCmdElemType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // изменение типа элементов
+            if (modbusCmd != null)
+            {
+                modbusCmd.ElemType = (ElemTypes)cbCmdElemType.SelectedIndex;
+                numCmdElemCnt.Value = ModbusUtils.GetElemCount(modbusCmd.ElemType);
+                OnObjectChanged(TreeUpdateTypes.None);
+            }
+        }
+
         private void numCmdElemCnt_ValueChanged(object sender, EventArgs e)
         {
             // изменение количества элементов команды
@@ -277,22 +295,22 @@ namespace Scada.Comm.Devices.Modbus.UI
             }
         }
 
-        private void numCmdNum_ValueChanged(object sender, EventArgs e)
-        {
-            // изменение номера команды КП
-            if (modbusCmd != null)
-            {
-                modbusCmd.CmdNum = (int)numCmdNum.Value;
-                OnObjectChanged(TreeUpdateTypes.None);
-            }
-        }
-
         private void txtCmdByteOrder_TextChanged(object sender, EventArgs e)
         {
             // изменение порядка байт команды
             if (modbusCmd != null)
             {
                 modbusCmd.ByteOrderStr = txtCmdByteOrder.Text;
+                OnObjectChanged(TreeUpdateTypes.None);
+            }
+        }
+
+        private void numCmdNum_ValueChanged(object sender, EventArgs e)
+        {
+            // изменение номера команды КП
+            if (modbusCmd != null)
+            {
+                modbusCmd.CmdNum = (int)numCmdNum.Value;
                 OnObjectChanged(TreeUpdateTypes.None);
             }
         }
