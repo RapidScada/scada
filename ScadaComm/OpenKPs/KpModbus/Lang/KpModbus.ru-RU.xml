@@ -49,6 +49,7 @@
     <Phrase key="chkCmdMultiple">Множественная команда</Phrase>
     <Phrase key="lblCmdFuncCode">Код функции</Phrase>
     <Phrase key="lblCmdAddress">Адрес элемента</Phrase>
+    <Phrase key="lblCmdElemType">Тип элементов</Phrase>
     <Phrase key="lblCmdElemCnt">Количество элементов</Phrase>
     <Phrase key="lblCmdNum">Номер команды КП</Phrase>
     <Phrase key="lblCmdByteOrder">Порядок байт</Phrase>

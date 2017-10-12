@@ -215,5 +215,14 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         {
             return tableType == TableTypes.DiscreteInputs || tableType == TableTypes.Coils ? 2000 : 125;
         }
+
+        /// <summary>
+        /// Получить тип элементов группы по умолчанию в зависимости от типа таблицы данных
+        /// </summary>
+        public static ElemTypes GetDefElemType(TableTypes tableType)
+        {
+            return tableType == TableTypes.DiscreteInputs || tableType == TableTypes.Coils ?
+                ElemTypes.Bool : ElemTypes.UShort;
+        }
     }
 }

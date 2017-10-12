@@ -71,7 +71,7 @@
             // lblGrAddressHint
             // 
             this.lblGrAddressHint.AutoSize = true;
-            this.lblGrAddressHint.Location = new System.Drawing.Point(144, 177);
+            this.lblGrAddressHint.Location = new System.Drawing.Point(140, 177);
             this.lblGrAddressHint.Name = "lblGrAddressHint";
             this.lblGrAddressHint.Size = new System.Drawing.Size(29, 13);
             this.lblGrAddressHint.TabIndex = 9;

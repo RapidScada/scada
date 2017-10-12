@@ -224,5 +224,43 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                 return byteOrder;
             }
         }
+
+        /// <summary>
+        /// Применить заданный порядок байт
+        /// </summary>
+        public static void ApplyByteOrder(byte[] src, byte[] dest, int destOffset, int destLenght, int[] byteOrder)
+        {
+            if (byteOrder == null)
+            {
+                // копирование данных без перестановок
+                for (int srcInd = 0, srcLen = src == null ? 0 : src.Length, 
+                    destInd = destOffset, destLastInd = destOffset + destLenght;
+                    destInd < destLastInd; srcInd++, destInd++)
+                {
+                    dest[destInd] = 0 <= srcInd && srcInd < srcLen ? src[srcInd] : (byte)0;
+                }
+            }
+            else
+            {
+                // копирование данных с учётом порядка байт
+                int srcLen = src == null ? 0 : src.Length;
+                int byteOrderLen = byteOrder.Length;
+
+                for (int destInd = destOffset, destLastInd = destOffset + destLenght; 
+                    destInd < destLastInd; destInd++)
+                {
+                    int srcInd = destInd < byteOrderLen ? byteOrder[destInd] : -1;
+                    dest[destInd] = 0 <= srcInd && srcInd < srcLen ? src[srcInd] : (byte)0;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Применить заданный порядок байт
+        /// </summary>
+        public static void ApplyByteOrder(byte[] src, byte[] dest, int[] byteOrder)
+        {
+            ApplyByteOrder(src, dest, 0, dest.Length, byteOrder);
+        }
     }
 }

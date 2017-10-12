@@ -206,8 +206,10 @@ namespace Scada.Comm.Devices
                     // формирование команды Modbus
                     if (modbusCmd.Multiple)
                     {
-                        modbusCmd.Data = cmd.CmdTypeID == BaseValues.CmdTypes.Standard ? 
-                            BitConverter.GetBytes(cmd.CmdVal) : cmd.CmdData;
+                        if (cmd.CmdTypeID == BaseValues.CmdTypes.Standard)
+                            modbusCmd.SetCmdData(cmd.CmdVal);
+                        else
+                            modbusCmd.Data = cmd.CmdData;
                     }
                     else
                     {

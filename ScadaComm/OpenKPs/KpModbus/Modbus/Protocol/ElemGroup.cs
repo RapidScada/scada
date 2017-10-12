@@ -252,23 +252,15 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             byte[] elemVal = ElemVals[elemInd];
             byte[] buf;
 
-            // перестановка байт, если для элемента задан порядок байт
-            int[] byteOrder = elem.ByteOrder;
-            if (byteOrder == null)
+            // перестановка байт в случае необходимости
+            if (elem.ByteOrder == null)
             {
                 buf = elemVal;
             }
             else
             {
-                int byteOrderLen = byteOrder.Length;
-                int elemValLen = elemVal.Length;
-                buf = new byte[elemValLen];
-
-                for (int i = 0; i < elemValLen; i++)
-                {
-                    int ind = i < byteOrderLen ? byteOrder[i] : -1;
-                    buf[i] = 0 <= ind && ind < elemValLen ? elemVal[ind] : (byte)0;
-                }
+                buf = new byte[elemVal.Length];
+                ModbusUtils.ApplyByteOrder(elemVal, buf, elem.ByteOrder);
             }
 
             // расчёт значения
@@ -295,15 +287,6 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                 default:
                     return 0.0;
             }
-        }
-
-        /// <summary>
-        /// Получить тип элементов группы по умолчанию в зависимости от типа таблицы данных
-        /// </summary>
-        public static ElemTypes GetDefElemType(TableTypes tableType)
-        {
-            return tableType == TableTypes.DiscreteInputs || tableType == TableTypes.Coils ?
-                ElemTypes.Bool : ElemTypes.UShort;
         }
     }
 }

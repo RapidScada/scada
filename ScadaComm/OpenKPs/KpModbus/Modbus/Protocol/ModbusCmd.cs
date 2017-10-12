@@ -55,12 +55,13 @@ namespace Scada.Comm.Devices.Modbus.Protocol
 
             reqDescr = "";
             Multiple = multiple;
+            ElemType = GetDefElemType(tableType);
             ElemCnt = elemCnt;
-            Value = 0;
-            Data = null;
-            CmdNum = 1;
             ByteOrder = null;
             ByteOrderStr = "";
+            CmdNum = 1;
+            Value = 0;
+            Data = null;
 
             // определение кодов функций
             UpdateFuncCode();
@@ -86,26 +87,27 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         /// Получить или установить признак множественной команды
         /// </summary>
         public bool Multiple { get; set; }
+        
+        /// <summary>
+        /// Получить или установить тип элементов команды
+        /// </summary>
+        public ElemTypes ElemType { get; set; }
+
+        /// <summary>
+        /// Получить тип элементов команды по умолчанию
+        /// </summary>
+        public ElemTypes DefElemType
+        {
+            get
+            {
+                return GetDefElemType(TableType);
+            }
+        }
 
         /// <summary>
         /// Получить или установить количество элементов, устанавливаемое множественной командой
         /// </summary>
         public int ElemCnt { get; set; }
-
-        /// <summary>
-        /// Получить или установить значение команды
-        /// </summary>
-        public ushort Value { get; set; }
-
-        /// <summary>
-        /// Получить или установить данные множественной команды
-        /// </summary>
-        public byte[] Data { get; set; }
-
-        /// <summary>
-        /// Получить или установить номер команды КП
-        /// </summary>
-        public int CmdNum { get; set; }
 
         /// <summary>
         /// Получить или установить массив, определяющий порядок байт
@@ -128,6 +130,21 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             }
         }
 
+        /// <summary>
+        /// Получить или установить номер команды КП
+        /// </summary>
+        public int CmdNum { get; set; }
+
+        /// <summary>
+        /// Получить или установить значение команды
+        /// </summary>
+        public ushort Value { get; set; }
+
+        /// <summary>
+        /// Получить или установить данные множественной команды
+        /// </summary>
+        public byte[] Data { get; set; }
+
 
         /// <summary>
         /// Инициализировать PDU запроса, рассчитать длину ответа
@@ -138,7 +155,8 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             {
                 // формирование PDU для команды WriteMultipleCoils или WriteMultipleRegisters
                 int byteCnt = TableType == TableTypes.Coils ?
-                    ((ElemCnt % 8 == 0) ? ElemCnt / 8 : ElemCnt / 8 + 1) : ElemCnt * 2;
+                    ((ElemCnt % 8 == 0) ? ElemCnt / 8 : ElemCnt / 8 + 1) : 
+                    ElemCnt * 2;
 
                 ReqPDU = new byte[6 + byteCnt];
                 ReqPDU[0] = FuncCode;
@@ -148,15 +166,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                 ReqPDU[4] = (byte)(ElemCnt % 256);
                 ReqPDU[5] = (byte)byteCnt;
 
-                int dataLen = Data == null ? 0 : Data.Length;
-                int len = Math.Min(dataLen, byteCnt);
-                int ind = 6;
-
-                for (int i = 0; i < len; i++)
-                    ReqPDU[ind++] = Data[i];
-
-                while (ind < byteCnt)
-                    ReqPDU[ind++] = 0x00;
+                ModbusUtils.ApplyByteOrder(Data, ReqPDU, 6, byteCnt, ByteOrder);
             }
             else
             {
@@ -173,8 +183,12 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                 }
                 else
                 {
-                    ReqPDU[3] = (byte)(Value / 256);
-                    ReqPDU[4] = (byte)(Value % 256);
+                    byte[] data = new byte[] 
+                    {
+                        (byte)(Value / 256),
+                        (byte)(Value % 256)
+                    };
+                    ModbusUtils.ApplyByteOrder(data, ReqPDU, 3, 2, ByteOrder);
                 }
             }
 
@@ -215,6 +229,49 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                 FuncCode = Multiple ? FuncCodes.WriteMultipleCoils : FuncCodes.WriteSingleCoil;
             else
                 FuncCode = Multiple ? FuncCodes.WriteMultipleRegisters : FuncCodes.WriteSingleRegister;
+        }
+
+        /// <summary>
+        /// Установить данные команды, преобразовав их в зависимости от типа элементов команды
+        /// </summary>
+        public void SetCmdData(double cmdVal)
+        {
+            bool reverse = true;
+
+            switch (ElemType)
+            {
+                case ElemTypes.UShort:
+                    Data = BitConverter.GetBytes((ushort)cmdVal);
+                    break;
+                case ElemTypes.Short:
+                    Data = BitConverter.GetBytes((short)cmdVal);
+                    break;
+                case ElemTypes.UInt:
+                    Data = BitConverter.GetBytes((uint)cmdVal);
+                    break;
+                case ElemTypes.Int:
+                    Data = BitConverter.GetBytes((int)cmdVal);
+                    break;
+                case ElemTypes.ULong:
+                    Data = BitConverter.GetBytes((ulong)cmdVal);
+                    break;
+                case ElemTypes.Long:
+                    Data = BitConverter.GetBytes((long)cmdVal);
+                    break;
+                case ElemTypes.Float:
+                    Data = BitConverter.GetBytes((float)cmdVal);
+                    break;
+                case ElemTypes.Double:
+                    Data = BitConverter.GetBytes(cmdVal);
+                    break;
+                default:
+                    Data = BitConverter.GetBytes(cmdVal);
+                    reverse = false;
+                    break;
+            }
+
+            if (reverse)
+                Array.Reverse(Data);
         }
     }
 }

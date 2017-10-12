@@ -49,6 +49,7 @@
     <Phrase key="chkCmdMultiple">Multiple</Phrase>
     <Phrase key="lblCmdFuncCode">Function code</Phrase>
     <Phrase key="lblCmdAddress">Element address</Phrase>
+    <Phrase key="lblCmdElemType">Element type</Phrase>
     <Phrase key="lblCmdElemCnt">Element count</Phrase>
     <Phrase key="lblCmdNum">Command number</Phrase>
     <Phrase key="lblCmdByteOrder">Byte order</Phrase>

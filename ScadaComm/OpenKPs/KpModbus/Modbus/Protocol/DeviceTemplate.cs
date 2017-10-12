@@ -235,6 +235,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                             cmdElem.GetAttrAsEnum<TableTypes>("tableType"), 
                             cmdElem.GetAttrAsBool("multiple"), 
                             cmdElem.GetAttrAsInt("elemCnt", 1));
+                        cmd.ElemType = cmdElem.GetAttrAsEnum("elemType", cmd.DefElemType);
                         cmd.Address = (ushort)cmdElem.GetAttrAsInt("address");
                         cmd.Name = cmdElem.GetAttribute("name");
                         cmd.CmdNum = cmdElem.GetAttrAsInt("cmdNum");
@@ -321,10 +322,11 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                     cmdElem.SetAttribute("tableType", cmd.TableType);
                     cmdElem.SetAttribute("multiple", cmd.Multiple);
                     cmdElem.SetAttribute("address", cmd.Address);
+                    cmdElem.SetAttribute("elemType", cmd.ElemType);
                     cmdElem.SetAttribute("elemCnt", cmd.ElemCnt);
-                    cmdElem.SetAttribute("cmdNum", cmd.CmdNum);
                     if (cmd.ByteOrderEnabled)
                         cmdElem.SetAttribute("byteOrder", cmd.ByteOrderStr);
+                    cmdElem.SetAttribute("cmdNum", cmd.CmdNum);
                     cmdElem.SetAttribute("name", cmd.Name);
                 }
 

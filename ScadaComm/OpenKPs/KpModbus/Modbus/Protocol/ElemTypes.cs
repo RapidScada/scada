@@ -76,5 +76,4 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         /// </summary>
         Double
     }
-
 }
