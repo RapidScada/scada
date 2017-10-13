@@ -89,12 +89,15 @@
   </Dictionary>
   <Dictionary key="Scada.Comm.Devices.Modbus.UI.FrmTemplateSettings">
     <Phrase key="this">Настройки шаблона</Phrase>
-    <Phrase key="lblAddressing">Адресация:</Phrase>
+    <Phrase key="gbAddressing">Адресация</Phrase>
     <Phrase key="rbZeroBased">Начиная с 0</Phrase>
     <Phrase key="rbOneBased">Начиная с 1</Phrase>
     <Phrase key="rbDec">10-тичная</Phrase>
     <Phrase key="rbHex">16-ричная</Phrase>
-    <Phrase key="lblDefByteOrder">Порядок байт по умолчанию</Phrase>
+    <Phrase key="gbDefByteOrder">Порядок байт по умолчанию</Phrase>
+    <Phrase key="lblDefByteOrder2">2 байта</Phrase>
+    <Phrase key="lblDefByteOrder4">4 байта</Phrase>
+    <Phrase key="lblDefByteOrder8">8 байт</Phrase>
     <Phrase key="lblDefByteOrderExample">Например, 01234567</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Отмена</Phrase>

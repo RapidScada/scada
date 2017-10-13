@@ -53,6 +53,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                 CrcError = "Ошибка CRC!";
                 LrcError = "Ошибка LRC!";
                 CommErrorWithExclamation = "Ошибка связи!";
+                IncorrectDevAddr = "Некорректный адрес устройства!";
                 IncorrectSymbol = "Некорректный символ!";
                 IncorrectAduLength = "Некорректная длина ADU!";
                 IncorrectMbap = "Некорректные данные MBAP Header!";
@@ -74,6 +75,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                 CrcError = "CRC error!";
                 LrcError = "LRC error!";
                 CommErrorWithExclamation = "Communication error!";
+                IncorrectDevAddr = "Incorrect device address!";
                 IncorrectSymbol = "Incorrect symbol!";
                 IncorrectAduLength = "Incorrect ADU length!";
                 IncorrectMbap = "Incorrect MBAP Header data!";
@@ -95,6 +97,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         public static string CrcError { get; set; }
         public static string LrcError { get; set; }
         public static string CommErrorWithExclamation { get; set; }
+        public static string IncorrectDevAddr { get; set; }
         public static string IncorrectSymbol { get; set; }
         public static string IncorrectAduLength { get; set; }
         public static string IncorrectMbap { get; set; }

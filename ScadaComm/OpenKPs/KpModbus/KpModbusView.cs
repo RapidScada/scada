@@ -23,7 +23,6 @@
  * Modified : 2017
  */
 
-using Scada.Comm.Devices.Modbus;
 using Scada.Comm.Devices.Modbus.Protocol;
 using Scada.Comm.Devices.Modbus.UI;
 using Scada.Data.Configuration;
@@ -129,7 +128,8 @@ namespace Scada.Comm.Devices
                 int signal = 1;
                 foreach (ElemGroup elemGroup in template.ElemGroups)
                 {
-                    bool isTS = elemGroup.TableType == TableTypes.DiscreteInputs || 
+                    bool isTS = 
+                        elemGroup.TableType == TableTypes.DiscreteInputs || 
                         elemGroup.TableType == TableTypes.Coils;
 
                     foreach (Elem elem in elemGroup.Elems)
@@ -154,7 +154,7 @@ namespace Scada.Comm.Devices
                 // создание прототипов каналов управления
                 foreach (ModbusCmd modbusCmd in template.Cmds)
                 {
-                    CtrlCnlPrototype ctrlCnl = modbusCmd.Multiple ?
+                    CtrlCnlPrototype ctrlCnl = modbusCmd.TableType == TableTypes.Coils && modbusCmd.Multiple ?
                         new CtrlCnlPrototype(modbusCmd.Name, BaseValues.CmdTypes.Binary) :
                         new CtrlCnlPrototype(modbusCmd.Name, BaseValues.CmdTypes.Standard);
                     ctrlCnl.CmdNum = modbusCmd.CmdNum;

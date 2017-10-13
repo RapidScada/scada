@@ -126,47 +126,59 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                 int pduLen;
                 int count;
 
-                if (InBuf[1] == dataUnit.FuncCode)
+                if (InBuf[0] != dataUnit.ReqADU[0]) // проверка адреса устройства в ответе
                 {
-                    // считывание окончания ответа
-                    pduLen = dataUnit.RespPduLen;
-                    count = dataUnit.RespAduLen - 5;
-
-                    readCnt = Connection.Read(InBuf, 5, count, Timeout, CommUtils.ProtocolLogFormats.Hex, out logText);
-                    ExecWriteToLog(logText);
+                    ExecWriteToLog(ModbusPhrases.IncorrectDevAddr);
                 }
-                else // устройство вернуло исключение
+                else if (!(InBuf[1] == dataUnit.FuncCode || InBuf[1] == dataUnit.ExcFuncCode))
                 {
-                    pduLen = 2;
-                    count = 0;
-                    readCnt = 0;
+                    ExecWriteToLog(ModbusPhrases.IncorrectPduFuncCode);
                 }
-
-                if (readCnt == count)
+                else
                 {
-                    if (InBuf[pduLen + 1] + InBuf[pduLen + 2] * 256 == ModbusUtils.CalcCRC16(InBuf, 0, pduLen + 1))
+                    if (InBuf[1] == dataUnit.FuncCode)
                     {
-                        // расшифровка ответа
-                        string errMsg;
+                        // считывание окончания ответа
+                        pduLen = dataUnit.RespPduLen;
+                        count = dataUnit.RespAduLen - 5;
 
-                        if (dataUnit.DecodeRespPDU(InBuf, 1, pduLen, out errMsg))
+                        readCnt = Connection.Read(InBuf, 5, count, Timeout, 
+                            CommUtils.ProtocolLogFormats.Hex, out logText);
+                        ExecWriteToLog(logText);
+                    }
+                    else // устройство вернуло исключение
+                    {
+                        pduLen = 2;
+                        count = 0;
+                        readCnt = 0;
+                    }
+
+                    if (readCnt == count)
+                    {
+                        if (InBuf[pduLen + 1] + InBuf[pduLen + 2] * 256 == ModbusUtils.CalcCRC16(InBuf, 0, pduLen + 1))
                         {
-                            ExecWriteToLog(ModbusPhrases.OK);
-                            result = true;
+                            // расшифровка ответа
+                            string errMsg;
+
+                            if (dataUnit.DecodeRespPDU(InBuf, 1, pduLen, out errMsg))
+                            {
+                                ExecWriteToLog(ModbusPhrases.OK);
+                                result = true;
+                            }
+                            else
+                            {
+                                ExecWriteToLog(errMsg + "!");
+                            }
                         }
                         else
                         {
-                            ExecWriteToLog(errMsg + "!");
+                            ExecWriteToLog(ModbusPhrases.CrcError);
                         }
                     }
                     else
                     {
-                        ExecWriteToLog(ModbusPhrases.CrcError);
+                        ExecWriteToLog(ModbusPhrases.CommErrorWithExclamation);
                     }
-                }
-                else
-                {
-                    ExecWriteToLog(ModbusPhrases.CommErrorWithExclamation);
                 }
             }
             else

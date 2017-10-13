@@ -368,7 +368,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                     cmdElem.SetAttribute("address", cmd.Address);
 
                     if (cmd.ElemTypeEnabled)
-                        cmdElem.SetAttribute("elemType", cmd.ElemType);
+                        cmdElem.SetAttribute("elemType", cmd.ElemType.ToString().ToLowerInvariant());
 
                     if (cmd.Multiple)
                         cmdElem.SetAttribute("elemCnt", cmd.ElemCnt);

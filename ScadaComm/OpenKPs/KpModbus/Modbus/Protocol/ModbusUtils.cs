@@ -243,13 +243,12 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             else
             {
                 // копирование данных с учётом порядка байт
-                int srcLen = src == null ? 0 : src.Length;
-                int byteOrderLen = byteOrder.Length;
-
-                for (int destInd = destOffset, destLastInd = destOffset + destLenght; 
-                    destInd < destLastInd; destInd++)
+                for (int ordInd = 0, ordLen = byteOrder.Length,
+                    srcLen = src == null ? 0 : src.Length,
+                    destInd = destOffset, destLastInd = destOffset + destLenght; 
+                    destInd < destLastInd; ordInd++, destInd++)
                 {
-                    int srcInd = destInd < byteOrderLen ? byteOrder[destInd] : -1;
+                    int srcInd = ordInd < ordLen ? byteOrder[ordInd] : -1;
                     dest[destInd] = 0 <= srcInd && srcInd < srcLen ? src[srcInd] : (byte)0;
                 }
             }

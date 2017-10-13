@@ -63,7 +63,9 @@ namespace Scada.Comm.Devices.Modbus.UI
             else
                 rbHex.Checked = true;
 
-            //txtDefByteOrder.Text = settings.DefByteOrderStr;
+            txtDefByteOrder2.Text = settings.DefByteOrder2;
+            txtDefByteOrder4.Text = settings.DefByteOrder4;
+            txtDefByteOrder8.Text = settings.DefByteOrder8;
             modified = false;
         }
 
@@ -74,7 +76,9 @@ namespace Scada.Comm.Devices.Modbus.UI
         {
             settings.ZeroAddr = rbZeroBased.Checked;
             settings.DecAddr = rbDec.Checked;
-            //settings.DefByteOrderStr = txtDefByteOrder.Text;
+            settings.DefByteOrder2 = txtDefByteOrder2.Text;
+            settings.DefByteOrder4 = txtDefByteOrder4.Text;
+            settings.DefByteOrder8 = txtDefByteOrder8.Text;
         }
 
 
