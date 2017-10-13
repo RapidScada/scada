@@ -153,7 +153,8 @@ namespace Scada.Comm.Devices.Modbus.UI
                 numCmdElemCnt.Value = 1;
                 numCmdElemCnt.Maximum = DataUnit.GetMaxElemCnt(modbusCmd.TableType);
                 numCmdElemCnt.Value = modbusCmd.ElemCnt;
-                cbCmdElemType.Enabled = numCmdElemCnt.Enabled = modbusCmd.Multiple;
+                cbCmdElemType.Enabled = modbusCmd.ElemTypeEnabled;
+                numCmdElemCnt.Enabled = modbusCmd.Multiple;
                 numCmdNum.Value = modbusCmd.CmdNum;
                 gbCmd.Enabled = true;
             }
@@ -255,7 +256,8 @@ namespace Scada.Comm.Devices.Modbus.UI
                 ShowByteOrder(modbusCmd);
 
                 cbCmdElemType.SelectedIndex = (int)modbusCmd.DefElemType; // тип по умолчанию
-                cbCmdElemType.Enabled = numCmdElemCnt.Enabled = modbusCmd.Multiple;
+                cbCmdElemType.Enabled = modbusCmd.ElemTypeEnabled;
+                numCmdElemCnt.Enabled = modbusCmd.Multiple;
 
                 if (!modbusCmd.Multiple)
                     numCmdElemCnt.Value = 1;
@@ -279,9 +281,21 @@ namespace Scada.Comm.Devices.Modbus.UI
             // изменение типа элементов
             if (modbusCmd != null)
             {
-                modbusCmd.ElemType = (ElemTypes)cbCmdElemType.SelectedIndex;
-                numCmdElemCnt.Value = ModbusUtils.GetElemCount(modbusCmd.ElemType);
-                OnObjectChanged(TreeUpdateTypes.None);
+                ElemTypes newElemType = (ElemTypes)cbCmdElemType.SelectedIndex;
+
+                if (modbusCmd.TableType == TableTypes.HoldingRegisters && newElemType == ElemTypes.Bool)
+                {
+                    // отмена выбора типа Bool для регистров хранения
+                    cbCmdElemType.SelectedIndexChanged -= cbCmdElemType_SelectedIndexChanged;
+                    cbCmdElemType.SelectedIndex = (int)modbusCmd.ElemType;
+                    cbCmdElemType.SelectedIndexChanged += cbCmdElemType_SelectedIndexChanged;
+                }
+                else
+                {
+                    modbusCmd.ElemType = newElemType;
+                    numCmdElemCnt.Value = ModbusUtils.GetElemCount(modbusCmd.ElemType);
+                    OnObjectChanged(TreeUpdateTypes.None);
+                }
             }
         }
 

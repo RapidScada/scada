@@ -40,6 +40,11 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         /// </summary>
         public class Settings
         {
+            // Порядок байт по умолчанию для значений длиной 2, 4 и 8 байт
+            private int[] defByteOrder2;
+            private int[] defByteOrder4;
+            private int[] defByteOrder8;
+
             /// <summary>
             /// Конструктор
             /// </summary>
@@ -57,48 +62,81 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             /// </summary>
             public bool DecAddr { get; set; }
             /// <summary>
-            /// Получить или установить массив, определяющий порядок байт по умолчанию
+            /// Получить или установить строковую запись порядка байт по умолчанию для значений длиной 2 байта
             /// </summary>
-            public int[] DefByteOrder { get; set; }
+            public string DefByteOrder2 { get; set; }
             /// <summary>
-            /// Получить или установить строковую запись порядка байт по умолчанию
+            /// Получить или установить строковую запись порядка байт по умолчанию для значений длиной 4 байта
             /// </summary>
-            public string DefByteOrderStr { get; set; }
+            public string DefByteOrder4 { get; set; }
+            /// <summary>
+            /// Получить или установить строковую запись порядка байт по умолчанию для значений длиной 8 байт
+            /// </summary>
+            public string DefByteOrder8 { get; set; }
 
             /// <summary>
             /// Установить настройки шаблона по умолчанию
             /// </summary>
             public void SetToDefault()
             {
+                defByteOrder2 = null;
+                defByteOrder4 = null;
+                defByteOrder8 = null;
+
                 ZeroAddr = false;
                 DecAddr = true;
-                DefByteOrder = null;
-                DefByteOrderStr = "";
+                DefByteOrder2 = "";
+                DefByteOrder4 = "";
+                DefByteOrder8 = "";
             }
             /// <summary>
             /// Загрузить настройки шаблона из XML-узла
             /// </summary>
-            public virtual void LoadFromXml(XmlElement settingsElem)
+            public void LoadFromXml(XmlElement settingsElem)
             {
                 if (settingsElem == null)
                     throw new ArgumentNullException("settingsElem");
 
                 ZeroAddr = settingsElem.GetChildAsBool("ZeroAddr", false);
                 DecAddr = settingsElem.GetChildAsBool("DecAddr", true);
-                DefByteOrderStr = settingsElem.GetChildAsString("DefByteOrder");
-                DefByteOrder = ModbusUtils.ParseByteOrder(DefByteOrderStr);
+                DefByteOrder2 = settingsElem.GetChildAsString("DefByteOrder2");
+                DefByteOrder4 = settingsElem.GetChildAsString("DefByteOrder4");
+                DefByteOrder8 = settingsElem.GetChildAsString("DefByteOrder8");
+
+                defByteOrder2 = ModbusUtils.ParseByteOrder(DefByteOrder2);
+                defByteOrder4 = ModbusUtils.ParseByteOrder(DefByteOrder4);
+                defByteOrder8 = ModbusUtils.ParseByteOrder(DefByteOrder8);
             }
             /// <summary>
             /// Сохранить настройки шаблона в XML-узле
             /// </summary>
-            public virtual void SaveToXml(XmlElement settingsElem)
+            public void SaveToXml(XmlElement settingsElem)
             {
                 if (settingsElem == null)
                     throw new ArgumentNullException("settingsElem");
 
                 settingsElem.AppendElem("ZeroAddr", ZeroAddr);
                 settingsElem.AppendElem("DecAddr", DecAddr);
-                settingsElem.AppendElem("DefByteOrder", DefByteOrderStr);
+                settingsElem.AppendElem("DefByteOrder2", DefByteOrder2);
+                settingsElem.AppendElem("DefByteOrder4", DefByteOrder4);
+                settingsElem.AppendElem("DefByteOrder8", DefByteOrder8);
+            }
+            /// <summary>
+            /// Получить подходящий порядок байт по умолчанию
+            /// </summary>
+            public int[] GetDefByteOrder(int elemCnt)
+            {
+                switch (elemCnt)
+                {
+                    case 1:
+                        return defByteOrder2;
+                    case 2:
+                        return defByteOrder4;
+                    case 4:
+                        return defByteOrder8;
+                    default:
+                        return null;
+                }
             }
         }
 
@@ -205,15 +243,22 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                         elemGroup.StartSignal = kpTagInd + 1;
 
                         XmlNodeList elemNodes = elemGroupElem.SelectNodes("Elem");
+                        ElemTypes defElemType = elemGroup.DefElemType;
+
                         foreach (XmlElement elemElem in elemNodes)
                         {
                             Elem elem = new Elem();
                             elem.Name = elemElem.GetAttribute("name");
-                            elem.ElemType = elemElem.GetAttrAsEnum("type", elemGroup.DefElemType);
-                            elem.ByteOrderStr = elemElem.GetAttribute("byteOrder");
-                            elem.ByteOrder = ModbusUtils.ParseByteOrder(elem.ByteOrderStr);
-                            if (elem.ByteOrder == null && Sett.DefByteOrder != null)
-                                elem.ByteOrder = Sett.DefByteOrder;
+                            elem.ElemType = elemElem.GetAttrAsEnum("type", defElemType);
+
+                            if (elemGroup.ByteOrderEnabled)
+                            {
+                                elem.ByteOrderStr = elemElem.GetAttribute("byteOrder");
+                                elem.ByteOrder = ModbusUtils.ParseByteOrder(elem.ByteOrderStr);
+                                if (elem.ByteOrder == null)
+                                    elem.ByteOrder = Sett.GetDefByteOrder(elem.Length);
+                            }
+
                             elemGroup.Elems.Add(elem);
                         }
 
@@ -244,8 +289,8 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                         {
                             cmd.ByteOrderStr = cmdElem.GetAttribute("byteOrder");
                             cmd.ByteOrder = ModbusUtils.ParseByteOrder(cmd.ByteOrderStr);
-                            if (cmd.ByteOrder == null && Sett.DefByteOrder != null)
-                                cmd.ByteOrder = Sett.DefByteOrder;
+                            if (cmd.ByteOrder == null)
+                                cmd.ByteOrder = Sett.GetDefByteOrder(cmd.ElemCnt);
                         }
 
                         if (0 < cmd.CmdNum && cmd.CmdNum <= ushort.MaxValue)
@@ -294,18 +339,17 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                     elemGroupElem.SetAttribute("name", elemGroup.Name);
                     elemGroupsElem.AppendChild(elemGroupElem);
 
-                    bool writeElemType = elemGroup.TableType == TableTypes.InputRegisters ||
-                        elemGroup.TableType == TableTypes.HoldingRegisters;
-
                     foreach (Elem elem in elemGroup.Elems)
                     {
                         XmlElement elemElem = xmlDoc.CreateElement("Elem");
                         elemElem.SetAttribute("name", elem.Name);
-                        if (writeElemType)
-                        {
+
+                        if (elemGroup.ElemTypeEnabled)
                             elemElem.SetAttribute("type", elem.ElemType.ToString().ToLowerInvariant());
+
+                        if (elemGroup.ByteOrderEnabled)
                             elemElem.SetAttribute("byteOrder", elem.ByteOrderStr);
-                        }
+
                         elemGroupElem.AppendChild(elemElem);
                     }
                 }
@@ -322,10 +366,16 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                     cmdElem.SetAttribute("tableType", cmd.TableType);
                     cmdElem.SetAttribute("multiple", cmd.Multiple);
                     cmdElem.SetAttribute("address", cmd.Address);
-                    cmdElem.SetAttribute("elemType", cmd.ElemType);
-                    cmdElem.SetAttribute("elemCnt", cmd.ElemCnt);
+
+                    if (cmd.ElemTypeEnabled)
+                        cmdElem.SetAttribute("elemType", cmd.ElemType);
+
+                    if (cmd.Multiple)
+                        cmdElem.SetAttribute("elemCnt", cmd.ElemCnt);
+
                     if (cmd.ByteOrderEnabled)
                         cmdElem.SetAttribute("byteOrder", cmd.ByteOrderStr);
+
                     cmdElem.SetAttribute("cmdNum", cmd.CmdNum);
                     cmdElem.SetAttribute("name", cmd.Name);
                 }

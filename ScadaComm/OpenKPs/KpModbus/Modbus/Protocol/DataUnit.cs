@@ -121,6 +121,39 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         /// </summary>
         public byte RespByteCnt { get; protected set; }
 
+        /// <summary>
+        /// Получить тип элементов по умолчанию
+        /// </summary>
+        public ElemTypes DefElemType
+        {
+            get
+            {
+                return GetDefElemType(TableType);
+            }
+        }
+
+        /// <summary>
+        /// Получить признак, что для блока данных или его элементов разрешено использование типов
+        /// </summary>
+        public virtual bool ElemTypeEnabled
+        {
+            get
+            {
+                return TableType == TableTypes.InputRegisters || TableType == TableTypes.HoldingRegisters;
+            }
+        }
+
+        /// <summary>
+        /// Получить признак, что для блока данных или его элементов разрешено использование порядка байт
+        /// </summary>
+        public virtual bool ByteOrderEnabled
+        {
+            get
+            {
+                return TableType == TableTypes.InputRegisters || TableType == TableTypes.HoldingRegisters;
+            }
+        }
+
 
         /// <summary>
         /// Инициализировать PDU запроса, рассчитать длину ответа
@@ -217,7 +250,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         }
 
         /// <summary>
-        /// Получить тип элементов группы по умолчанию в зависимости от типа таблицы данных
+        /// Получить тип элементов по умолчанию в зависимости от типа таблицы данных
         /// </summary>
         public static ElemTypes GetDefElemType(TableTypes tableType)
         {

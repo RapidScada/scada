@@ -86,17 +86,6 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         public int TotalElemLength { get; private set; }
 
         /// <summary>
-        /// Получить тип элементов группы по умолчанию
-        /// </summary>
-        public ElemTypes DefElemType
-        {
-            get
-            {
-                return GetDefElemType(TableType);
-            }
-        }
-
-        /// <summary>
         /// Получить описание запроса
         /// </summary>
         public override string ReqDescr

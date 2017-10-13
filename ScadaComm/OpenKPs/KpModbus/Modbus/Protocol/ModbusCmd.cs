@@ -94,18 +94,18 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         public ElemTypes ElemType { get; set; }
 
         /// <summary>
-        /// Получить тип элементов команды по умолчанию
+        /// Получить признак, что команды разрешено использование типов
         /// </summary>
-        public ElemTypes DefElemType
+        public override bool ElemTypeEnabled
         {
             get
             {
-                return GetDefElemType(TableType);
+                return TableType == TableTypes.HoldingRegisters && Multiple;
             }
         }
 
         /// <summary>
-        /// Получить или установить количество элементов, устанавливаемое множественной командой
+        /// Получить или установить количество элементов, устанавливаемое командой
         /// </summary>
         public int ElemCnt { get; set; }
 
@@ -118,17 +118,6 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         /// Получить или установить строковую запись порядка байт
         /// </summary>
         public string ByteOrderStr { get; set; }
-
-        /// <summary>
-        /// Получить признак, что для команды разрешено использование порядка байт
-        /// </summary>
-        public bool ByteOrderEnabled
-        {
-            get
-            {
-                return TableType == TableTypes.HoldingRegisters;
-            }
-        }
 
         /// <summary>
         /// Получить или установить номер команды КП
