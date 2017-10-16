@@ -74,6 +74,7 @@
     <Content Include="content\common-images\restart.png" />
     <Content Include="content\common-images\restart_blue.gif" />
     <Content Include="content\common-images\restart_yellow.gif" />
+    <Content Include="content\common-images\settings.png" />
     <Content Include="content\common-images\start.png" />
     <Content Include="content\common-images\stop.png" />
     <Content Include="content\en\index.html" />
@@ -112,6 +113,7 @@
     <Content Include="content\en\software-configuration\creating-views.html" />
     <Content Include="content\en\use-cases\index.html" />
     <Content Include="content\en\use-cases\modbus-protocol-files\modbus_table_itf_en.png" />
+    <Content Include="content\en\use-cases\modbus-protocol-files\modbus_template_settings_en.png" />
     <Content Include="content\en\use-cases\opc-standard-files\comm_svc_logon_en.png" />
     <Content Include="content\en\use-cases\opc-standard-files\dcom_config_en.png" />
     <Content Include="content\en\use-cases\opc-standard-files\opc_config_en.png" />
@@ -247,6 +249,7 @@
     <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_table_kp_ru.png" />
     <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_table_obj_ru.png" />
     <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_template_ru.png" />
+    <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_template_settings_ru.png" />
     <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_web1_ru.png" />
     <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_web2_ru.png" />
     <Content Include="content\ru\use-cases\modbus-protocol.html" />
