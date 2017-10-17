@@ -184,20 +184,35 @@ namespace Scada.Comm.Channels
         protected void UdpReceiveCallback(IAsyncResult ar)
         {
             // приём данных
-            IPEndPoint remoteEP = new IPEndPoint(IPAddress.Any, 0);
-            byte[] buf = udpConn.UdpClient.EndReceive(ar, ref remoteEP);
-            udpConn.RemoteAddress = remoteEP.Address.ToString();
-            udpConn.RemotePort = remoteEP.Port;
-            WriteToLog("");
-            WriteToLog(string.Format(Localization.UseRussian ? 
-                "{0} Получены данные от {1}:{2}" :
-                "{0} Data received from {1}:{2}", CommUtils.GetNowDT(), udpConn.RemoteAddress, udpConn.RemotePort));
-
-            if (buf == null)
+            byte[] buf;
+            try
             {
-                WriteToLog(Localization.UseRussian ? "Данные пусты" : "Data is empty");
+                IPEndPoint remoteEP = new IPEndPoint(IPAddress.Any, 0);
+                buf = udpConn.UdpClient.EndReceive(ar, ref remoteEP);
+                udpConn.RemoteAddress = remoteEP.Address.ToString();
+                udpConn.RemotePort = remoteEP.Port;
+                WriteToLog("");
+                WriteToLog(string.Format(Localization.UseRussian ?
+                    "{0} Получены данные от {1}:{2}" :
+                    "{0} Data received from {1}:{2}", 
+                    CommUtils.GetNowDT(), udpConn.RemoteAddress, udpConn.RemotePort));
+
+                if (buf == null)
+                {
+                    WriteToLog(Localization.UseRussian ?
+                        "Данные пусты" :
+                        "Data is empty");
+                }
             }
-            else if (kpListNotEmpty)
+            catch (Exception ex)
+            {
+                buf = null;
+                WriteToLog(string.Format(Localization.UseRussian ?
+                    "Ошибка при приёме данных: {0}" :
+                    "Error receiving data: {0}", ex.Message));
+            }
+
+            if (buf != null && kpListNotEmpty)
             {
                 if (settings.DevSelMode == DeviceSelectionModes.ByIPAddress)
                 {
