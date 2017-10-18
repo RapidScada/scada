@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2017
  */
 
 using Scada.UI;
@@ -29,7 +29,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Scada.Comm.Devices.KpModbus
+namespace Scada.Comm.Devices.Modbus.UI
 {
     /// <summary>
     /// Device and communication line properties form
@@ -83,7 +83,7 @@ namespace Scada.Comm.Devices.KpModbus
         private void FrmDevProps_Load(object sender, EventArgs e)
         {
             // перевод формы
-            Translator.TranslateForm(this, "Scada.Comm.Devices.KpModbus.FrmDevProps", toolTip);
+            Translator.TranslateForm(this, "Scada.Comm.Devices.Modbus.UI.FrmDevProps", toolTip);
 
             // вывод заголовка
             Text = string.Format(Text, kpNum);

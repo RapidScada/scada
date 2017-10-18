@@ -23,7 +23,8 @@
  * Modified : 2017
  */
 
-using Scada.Comm.Devices.KpModbus;
+using Scada.Comm.Devices.Modbus.Protocol;
+using Scada.Comm.Devices.Modbus.UI;
 using Scada.Data.Configuration;
 using Scada.UI;
 using System;
@@ -41,7 +42,7 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Версия библиотеки КП
         /// </summary>
-        internal const string KpVersion = "5.0.0.2";
+        internal const string KpVersion = "5.1.0.0";
 
 
         /// <summary>
@@ -113,9 +114,9 @@ namespace Scada.Comm.Devices
                     return null;
 
                 // загрузка шаблона устройства
-                Modbus.DeviceModel template = new Modbus.DeviceModel();
+                DeviceTemplate template = new DeviceTemplate();
                 string errMsg;
-                if (!template.LoadTemplate(fileName, out errMsg))
+                if (!template.Load(fileName, out errMsg))
                     throw new Exception(errMsg);
 
                 // создание прототипов каналов КП
@@ -125,12 +126,13 @@ namespace Scada.Comm.Devices
 
                 // создание прототипов входных каналов
                 int signal = 1;
-                foreach (Modbus.ElemGroup elemGroup in template.ElemGroups)
+                foreach (ElemGroup elemGroup in template.ElemGroups)
                 {
-                    bool isTS = elemGroup.TableType == Modbus.TableTypes.DiscreteInputs || 
-                        elemGroup.TableType == Modbus.TableTypes.Coils;
+                    bool isTS = 
+                        elemGroup.TableType == TableTypes.DiscreteInputs || 
+                        elemGroup.TableType == TableTypes.Coils;
 
-                    foreach (Modbus.Elem elem in elemGroup.Elems)
+                    foreach (Elem elem in elemGroup.Elems)
                     {
                         InCnlPrototype inCnl = isTS ?
                             new InCnlPrototype(elem.Name, BaseValues.CnlTypes.TS) :
@@ -150,14 +152,14 @@ namespace Scada.Comm.Devices
                 }
 
                 // создание прототипов каналов управления
-                foreach (Modbus.Cmd cmd in template.Cmds)
+                foreach (ModbusCmd modbusCmd in template.Cmds)
                 {
-                    CtrlCnlPrototype ctrlCnl = cmd.Multiple ?
-                        new CtrlCnlPrototype(cmd.Name, BaseValues.CmdTypes.Binary) :
-                        new CtrlCnlPrototype(cmd.Name, BaseValues.CmdTypes.Standard);
-                    ctrlCnl.CmdNum = cmd.CmdNum;
+                    CtrlCnlPrototype ctrlCnl = modbusCmd.TableType == TableTypes.Coils && modbusCmd.Multiple ?
+                        new CtrlCnlPrototype(modbusCmd.Name, BaseValues.CmdTypes.Binary) :
+                        new CtrlCnlPrototype(modbusCmd.Name, BaseValues.CmdTypes.Standard);
+                    ctrlCnl.CmdNum = modbusCmd.CmdNum;
 
-                    if (cmd.TableType == Modbus.TableTypes.Coils && !cmd.Multiple)
+                    if (modbusCmd.TableType == TableTypes.Coils && !modbusCmd.Multiple)
                         ctrlCnl.CmdValName = BaseValues.CmdValNames.OffOn;
 
                     ctrlCnls.Add(ctrlCnl);
@@ -175,13 +177,10 @@ namespace Scada.Comm.Devices
         {
             // загрузка словарей
             string errMsg;
-            if (!Localization.UseRussian)
-            {
-                if (Localization.LoadDictionaries(AppDirs.LangDir, "KpModbus", out errMsg))
-                    KpPhrases.Init();
-                else
-                    ScadaUiUtils.ShowError(errMsg);
-            }
+            if (Localization.LoadDictionaries(AppDirs.LangDir, "KpModbus", out errMsg))
+                KpPhrases.Init();
+            else
+                ScadaUiUtils.ShowError(errMsg);
 
             if (Number > 0)
                 // отображение свойств КП

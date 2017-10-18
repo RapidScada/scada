@@ -1009,9 +1009,8 @@ namespace Scada.Comm.Ctrl
 
         private void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
-            string errMsg = CommonPhrases.UnhandledException + ":\r\n" + e.Exception.Message;
-            errLog.WriteAction(errMsg, Log.ActTypes.Exception);
-            ScadaUiUtils.ShowError(errMsg);
+            errLog.WriteException(e.Exception, CommonPhrases.UnhandledException);
+            ScadaUiUtils.ShowError(CommonPhrases.UnhandledException + ":\r\n" + e.Exception.Message);
         }
 
         private void FrmMain_Load(object sender, EventArgs e)

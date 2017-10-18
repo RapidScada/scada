@@ -12,7 +12,7 @@
 
     <p class="sd-article-meta">
         Written by Rapid SCADA on January 5, 2015<br />
-        Updated on January 25, 2017
+        Updated on October 16, 2017
     </p>
 
     <p>This article describes how to configure communication with devices using Modbus protocol. Simple and robust, Modbus has since become a de facto standard communication protocol, and it is now a commonly available means of connecting industrial electronic devices (see <a href="https://en.wikipedia.org/wiki/Modbus" target="_blank">Wikipedia</a>). Rapid SCADA supports Modbus RTU, ASCII and TCP modes.</p>
@@ -140,15 +140,20 @@
 
     <p>Device template reflects the structure of Modbus packages. Requested data are combined into groups of elements. Each group has its name, data table, start address and element count. Each element is a tag of a device. Rapid SCADA identifies a tag by its signal number. A command is described by its name, data table and address. A command number identifies the command within Rapid SCADA.</p>
 
-    <p>Names of groups, elements and commands are arbitrary. What data tables and element addresses are available usually described in device manual. As written in Modbus standard, element addresses start with 1, but device manufacturers often numerate the first element as 0. In this case just add 1 to an address before entering it to device template.</p>
+    <p>Names of groups, elements and commands are arbitrary. The available data tables and element addresses are usually described in device manual. Depending on the manufacturer, addressing of elements can be zero-based or one-based, specified as decimal or hexadecimal numbers. By default, addresses start with 1 and represented as decimals. To switch template addressing, click the <img src="../../common-images/settings.png" /> button. Template settings dialog is opened (see Figure 10).</p>
+
+    <p class="sd-article-image">
+        <img src="modbus-protocol-files/modbus_template_settings_en.png" alt="Template settings" /><br />
+        Figure 10. Template settings
+    </p>
 
     <p>To save Communicator settings click the <img src="../../common-images/apply.png" /> button. Now it is recommended to start the Communicator service with the <img src="../../common-images/start.png" /> button and check communication with the device.</p>
 
-    <p>Click Device 101 "Test device" tree node to check the device state and the availability of data (see Figure 10). The data is not available immediately after start, retrieved values are shown when the first polling complete.</p>
+    <p>Click Device 101 "Test device" tree node to check the device state and the availability of data (see Figure 11). The data is not available immediately after start, retrieved values are shown when the first polling complete.</p>
 
     <p class="sd-article-image">
         <img src="modbus-protocol-files/modbus_data_en.png" alt="Device data" /><br />
-        Figure 10. Device data
+        Figure 11. Device data
     </p>
 
     <p>In case of losing communication with the device, use a communication line log to analyze the problem cause. To open the log, click the <em>Communication Line Stats</em> tree node and go to the <em>Communication Line Log</em> page. Data packages can be decoded by <a href="http://modbus.rapidscada.net/" target="_blank">Online Modbus Parser</a>.</p>
@@ -159,11 +164,11 @@
 
     <p>The automatic channel creation service helps to save a time. Click <em>Service &gt; Create Channels</em> in the main menu of the application.</p>
 
-    <p>On the form, which is shown in Figure 11, choose "Test line" in the drop down list, then tick the "Test device" row and choose "Test object" in the cell of the <em>Object</em> column. Set the channel numbering parameters to create channels having convenient numbers. Firstly press the <em>Calculate channel numbers</em> button, then press <em>Create</em>.</p>
+    <p>On the form, which is shown in Figure 12, choose "Test line" in the drop down list, then tick the "Test device" row and choose "Test object" in the cell of the <em>Object</em> column. Set the channel numbering parameters to create channels having convenient numbers. Firstly press the <em>Calculate channel numbers</em> button, then press <em>Create</em>.</p>
 
     <p class="sd-article-image">
         <img src="modbus-protocol-files/modbus_create_cnls_en.png" alt="Creation of channels" /><br />
-        Figure 11. Creation of channels
+        Figure 12. Creation of channels
     </p>
 
     <p>The channels are created automatically based on the device template that has been created and assigned to the device in the previous section of this article. To view created channels, click the <em>Input channels &gt; Test device</em> tree node and the <em>Output channels &gt; Test device</em> node. It is recommended to manually fill in the <em>Quantity</em> and <em>Unit</em> fields of the input channels and the <em>Command values</em> field of the output channels. However, in the case of the first experiment it is unnecessary.</p>
@@ -172,11 +177,11 @@
 
     <p>After editing the configuration database is complete, press the <img src="../../common-images/pass.gif" /> button to pass the changes to Server, and then restart Server and Communicator by <img src="../../common-images/restart_blue.gif" /> and <img src="../../common-images/restart_yellow.gif" /> buttons.</p>
 
-    <p>Open the <em>Device Data</em> page in Communicator and make sure that the input channels are bound to the device tags – the <em>Channel column</em> must contain numbers of the created input channels (see Figure 12).</p>
+    <p>Open the <em>Device Data</em> page in Communicator and make sure that the input channels are bound to the device tags – the <em>Channel column</em> must contain numbers of the created input channels (see Figure 13).</p>
 
     <p class="sd-article-image">
         <img src="modbus-protocol-files/modbus_data_with_cnls_en.png" alt="Device data bound to channels" /><br />
-        Figure 12. Device data bound to channels
+        Figure 13. Device data bound to channels
     </p>
 
     <p>As a result of described actions, data should be collected from the device and stored in the archive. It remains to customize user interface for an operator.</p>
@@ -185,34 +190,34 @@
 
     <p>Consider creating a table view for the Webstation application. To do this, the Table Editor application is needed. If displaying data in a graphical view is required, use Scheme Editor instead of Table editor.</p>
 
-    <p>Open Table Editor and fill in the table view as shown in Figure 13. Add a channel in the table (from the left side of the window to the right) by clicking the <img src="../../common-images/plus.png" /> button, double-clicking the channel row or by pressing Enter.</p>
+    <p>Open Table Editor and fill in the table view as shown in Figure 14. Add a channel in the table (from the left side of the window to the right) by clicking the <img src="../../common-images/plus.png" /> button, double-clicking the channel row or by pressing Enter.</p>
 
     <p>Save created table view in the TestTable.tbl file in the C:\SCADA\Interface\Test folder. Please note that folder names and file names of views must contain only Latin characters.</p>
 
     <p class="sd-article-image">
         <img src="modbus-protocol-files/modbus_table_editor_en.png" alt="Table editor" /><br />
-        Figure 13. Table editor
+        Figure 14. Table editor
     </p>
 
-    <p>To display a table view in Webstation, define it in the <em>Interface</em> table of the configuration database by the Administrator application as shown in Figure 14.</p>
+    <p>To display a table view in Webstation, define it in the <em>Interface</em> table of the configuration database by the Administrator application as shown in Figure 15.</p>
 
     <p class="sd-article-image">
         <img src="modbus-protocol-files/modbus_table_itf_en.png" alt="Adding a view in the Interface table" /><br />
-        Figure 14. Adding a view in the Interface table
+        Figure 15. Adding a view in the Interface table
     </p>
 
     <p>To apply the changes, send the database to Server by the <img src="../../common-images/pass.gif" /> button and restart the Server service by the <img src="../../common-images/restart_blue.gif" /> button.</p>
 
-    <p>Now start your browser and enter the address <a href="http://localhost/scada/" target="_blank">http://localhost/scada/</a>. On the login form use <em>admin / 12345</em> (see Figure 15). If the configuration carried out correctly, after logging in, you will see a table with the data obtained from the device, similar to Figure 16.</p>
+    <p>Now start your browser and enter the address <a href="http://localhost/scada/" target="_blank">http://localhost/scada/</a>. On the login form use <em>admin / 12345</em> (see Figure 16). If the configuration carried out correctly, after logging in, you will see a table with the data obtained from the device, similar to Figure 17.</p>
 
     <p class="sd-article-image">
         <img src="modbus-protocol-files/modbus_web1_en.png" alt="Login form" /><br />
-        Figure 15. Login form
+        Figure 16. Login form
     </p>
 
     <p class="sd-article-image">
         <img src="modbus-protocol-files/modbus_web2_en.png" alt="The Webstation application" /><br />
-        Figure 16. The Webstation application
+        Figure 17. The Webstation application
     </p>
 
     <h2>Modbus Tags Conversion</h2>

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,10 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2014
- * Modified : 2014
+ * Modified : 2017
  */
 
-namespace Scada.Comm.Devices.KpModbus
+namespace Scada.Comm.Devices.Modbus.UI
 {
     /// <summary>
     /// The phrases used in the library
@@ -36,40 +36,41 @@ namespace Scada.Comm.Devices.KpModbus
             SetToDefault();
         }
 
-        // Словарь Scada.Comm.Devices.KpModbus.FrmDevTemplate
+        // Словарь Scada.Comm.Devices.Modbus.UI.FrmDevTemplate
         public static string TemplFormTitle { get; private set; }
         public static string GrsNode { get; private set; }
         public static string CmdsNode { get; private set; }
         public static string DefGrName { get; private set; }
         public static string DefElemName { get; private set; }
         public static string DefCmdName { get; private set; }
+        public static string AddressHint { get; private set; }
         public static string SaveTemplateConfirm { get; private set; }
         public static string ElemCntExceeded { get; private set; }
         public static string ElemRemoveWarning { get; private set; }
 
-        // Словарь Scada.Comm.Devices.KpModbus.FrmDevProps
+        // Словарь Scada.Comm.Devices.Modbus.UI.FrmDevProps
         public static string TemplNotExists { get; private set; }
 
         private static void SetToDefault()
         {
-            TemplFormTitle = "MODBUS. Редактор шаблонов устройств";
-            GrsNode = "Группы элементов";
-            CmdsNode = "Команды";
-            DefGrName = "<Группа элементов>";
-            DefElemName = "<Элемент>";
-            DefCmdName = "<Команда>";
-            SaveTemplateConfirm = "Шаблон устройства был изменён. Сохранить изменения?";
-            ElemCntExceeded = "Таблица данных допускает не более {0} элементов.";
-            ElemRemoveWarning = "Таблица данных допускает не более {0} элементов.\r\n" + 
-                "Лишние элементы будут удалены. Продолжить?";
+            TemplFormTitle = Localization.Dict.GetEmptyPhrase("TemplFormTitle");
+            GrsNode = Localization.Dict.GetEmptyPhrase("GrsNode");
+            CmdsNode = Localization.Dict.GetEmptyPhrase("CmdsNode");
+            DefGrName = Localization.Dict.GetEmptyPhrase("DefGrName");
+            DefElemName = Localization.Dict.GetEmptyPhrase("DefElemName");
+            DefCmdName = Localization.Dict.GetEmptyPhrase("DefCmdName");
+            AddressHint = Localization.Dict.GetEmptyPhrase("AddressHint");
+            SaveTemplateConfirm = Localization.Dict.GetEmptyPhrase("SaveTemplateConfirm");
+            ElemCntExceeded = Localization.Dict.GetEmptyPhrase("ElemCntExceeded");
+            ElemRemoveWarning = Localization.Dict.GetEmptyPhrase("ElemRemoveWarning");
 
-            TemplNotExists = "Файл шаблона устройства не существует.";
+            TemplNotExists = Localization.Dict.GetEmptyPhrase("TemplNotExists");
         }
 
         public static void Init()
         {
             Localization.Dict dict;
-            if (Localization.Dictionaries.TryGetValue("Scada.Comm.Devices.KpModbus.FrmDevTemplate", out dict))
+            if (Localization.Dictionaries.TryGetValue("Scada.Comm.Devices.Modbus.UI.FrmDevTemplate", out dict))
             {
                 TemplFormTitle = dict.GetPhrase("this", TemplFormTitle);
                 GrsNode = dict.GetPhrase("GrsNode", GrsNode);
@@ -77,13 +78,16 @@ namespace Scada.Comm.Devices.KpModbus
                 DefGrName = dict.GetPhrase("DefGrName", DefGrName);
                 DefElemName = dict.GetPhrase("DefElemName", DefElemName);
                 DefCmdName = dict.GetPhrase("DefCmdName", DefCmdName);
+                AddressHint = dict.GetPhrase("AddressHint", AddressHint);
                 SaveTemplateConfirm = dict.GetPhrase("SaveTemplateConfirm", SaveTemplateConfirm);
                 ElemCntExceeded = dict.GetPhrase("ElemCntExceeded", ElemCntExceeded);
                 ElemRemoveWarning = dict.GetPhrase("ElemRemoveWarning", ElemRemoveWarning);
             }
 
-            if (Localization.Dictionaries.TryGetValue("Scada.Comm.Devices.KpModbus.FrmDevProps", out dict))
+            if (Localization.Dictionaries.TryGetValue("Scada.Comm.Devices.Modbus.UI.FrmDevProps", out dict))
+            {
                 TemplNotExists = dict.GetPhrase("TemplNotExists", TemplNotExists);
+            }
         }
     }
 }
