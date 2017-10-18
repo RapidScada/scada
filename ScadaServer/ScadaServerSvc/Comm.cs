@@ -1127,7 +1127,7 @@ namespace Scada.Server.Svc
                 cmd.KPNum = (ushort)ctrlCnl.KPNum;
                 cmd.CmdNum = (ushort)ctrlCnl.CmdNum;
 
-                if (cmdTypeID == BaseValues.CmdTypes.Standard && cmd.CmdData.Length == 8)
+                if (cmdTypeID == BaseValues.CmdTypes.Standard && cmd.CmdData != null && cmd.CmdData.Length == 8)
                     cmd.CmdVal = BitConverter.ToDouble(cmd.CmdData, 0);
             }
             else if (cmdTypeID == BaseValues.CmdTypes.Request)
