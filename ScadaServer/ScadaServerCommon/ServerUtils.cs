@@ -39,7 +39,7 @@ namespace Scada.Server
         /// <summary>
         /// Версия Сервера
         /// </summary>
-        public const string AppVersion = "5.1.0.1";
+        public const string AppVersion = "5.1.0.2";
         /// <summary>
         /// Старший байт номера версии Сервера
         /// </summary>
