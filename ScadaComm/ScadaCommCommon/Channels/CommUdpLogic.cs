@@ -175,7 +175,19 @@ namespace Scada.Comm.Channels
         /// </summary>
         protected void StartUdpReceive()
         {
-            udpConn.UdpClient.BeginReceive(new AsyncCallback(UdpReceiveCallback), null);
+            try
+            {
+                if (!udpConn.Connected)
+                    udpConn.Renew();
+
+                udpConn.UdpClient.BeginReceive(new AsyncCallback(UdpReceiveCallback), null);
+            }
+            catch (Exception ex)
+            {
+                WriteToLog(string.Format(Localization.UseRussian ?
+                    "Ошибка при запуске приёма данных: {0}" :
+                    "Error starting to receive data: {0}", ex.Message));
+            }
         }
 
         /// <summary>
@@ -183,33 +195,37 @@ namespace Scada.Comm.Channels
         /// </summary>
         protected void UdpReceiveCallback(IAsyncResult ar)
         {
-            // приём данных
-            byte[] buf;
-            try
-            {
-                IPEndPoint remoteEP = new IPEndPoint(IPAddress.Any, 0);
-                buf = udpConn.UdpClient.EndReceive(ar, ref remoteEP);
-                udpConn.RemoteAddress = remoteEP.Address.ToString();
-                udpConn.RemotePort = remoteEP.Port;
-                WriteToLog("");
-                WriteToLog(string.Format(Localization.UseRussian ?
-                    "{0} Получены данные от {1}:{2}" :
-                    "{0} Data received from {1}:{2}", 
-                    CommUtils.GetNowDT(), udpConn.RemoteAddress, udpConn.RemotePort));
+            // приём данных, если соединение установлено
+            byte[] buf = null;
 
-                if (buf == null)
-                {
-                    WriteToLog(Localization.UseRussian ?
-                        "Данные пусты" :
-                        "Data is empty");
-                }
-            }
-            catch (Exception ex)
+            if (udpConn.Connected)
             {
-                buf = null;
-                WriteToLog(string.Format(Localization.UseRussian ?
-                    "Ошибка при приёме данных: {0}" :
-                    "Error receiving data: {0}", ex.Message));
+                try
+                {
+                    IPEndPoint remoteEP = new IPEndPoint(IPAddress.Any, 0);
+                    buf = udpConn.UdpClient.EndReceive(ar, ref remoteEP);
+                    udpConn.RemoteAddress = remoteEP.Address.ToString();
+                    udpConn.RemotePort = remoteEP.Port;
+
+                    WriteToLog("");
+                    WriteToLog(string.Format(Localization.UseRussian ?
+                        "{0} Получены данные от {1}:{2}" :
+                        "{0} Data received from {1}:{2}",
+                        CommUtils.GetNowDT(), udpConn.RemoteAddress, udpConn.RemotePort));
+
+                    if (buf == null)
+                    {
+                        WriteToLog(Localization.UseRussian ?
+                            "Данные пусты" :
+                            "Data is empty");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    WriteToLog(string.Format(Localization.UseRussian ?
+                        "Ошибка при приёме данных: {0}" :
+                        "Error receiving data: {0}", ex.Message));
+                }
             }
 
             if (buf != null && kpListNotEmpty)
@@ -238,7 +254,8 @@ namespace Scada.Comm.Channels
                 }
             }
 
-            StartUdpReceive();
+            if (!terminated)
+                StartUdpReceive();
         }
 
 
@@ -276,6 +293,7 @@ namespace Scada.Comm.Channels
                 "{0} Локальный UDP-порт {1} открыт" :
                 "{0} Local UDP port {1} is open", CommUtils.GetNowDT(), settings.LocalUdpPort));
 
+            terminated = false;
             udpConn = new UdpConnection(udpClient, settings.LocalUdpPort, settings.RemoteUdpPort);
 
             // установка соединения всем КП на линии связи
@@ -305,7 +323,10 @@ namespace Scada.Comm.Channels
             kpCallNumDict.Clear();
 
             // закрытие соединения
-            udpConn.Close();
+            terminated = true;
+            if (udpConn != null)
+                udpConn.Close();
+
             WriteToLog("");
             WriteToLog(string.Format(Localization.UseRussian ?
                 "{0} Завершение приёма данных по UDP" :
@@ -318,8 +339,11 @@ namespace Scada.Comm.Channels
         public override void BeforeSession(KPLogic kpLogic)
         {
             if (udpConn != null && Behavior == OperatingBehaviors.Master)
-                udpConn.RemoteAddress = string.IsNullOrEmpty(kpLogic.CallNum) ? 
-                    settings.RemoteIpAddress : kpLogic.CallNum;
+            {
+                udpConn.RemoteAddress = string.IsNullOrEmpty(kpLogic.CallNum) ?
+                    settings.RemoteIpAddress : 
+                    kpLogic.CallNum;
+            }
         }
 
         /// <summary>
