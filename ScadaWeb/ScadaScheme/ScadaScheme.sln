@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaSchemeCommon", "ScadaSchemeCommon\ScadaSchemeCommon.csproj", "{B61C631D-5AB8-431A-93C9-3DC8B36878BB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaSchemeEditor", "ScadaSchemeEditor\ScadaSchemeEditor.csproj", "{E9317739-84F5-4207-87E3-F7AC6192EE48}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlgScheme", "PlgScheme\PlgScheme.csproj", "{36CBF606-7F85-4E46-BC7A-C86CACF675B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlgSchBasicComp", "PlgSchBasicComp\PlgSchBasicComp.csproj", "{85BD72F3-A9FC-4F6F-BE3A-5A045CF734AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{36CBF606-7F85-4E46-BC7A-C86CACF675B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36CBF606-7F85-4E46-BC7A-C86CACF675B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36CBF606-7F85-4E46-BC7A-C86CACF675B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85BD72F3-A9FC-4F6F-BE3A-5A045CF734AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85BD72F3-A9FC-4F6F-BE3A-5A045CF734AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85BD72F3-A9FC-4F6F-BE3A-5A045CF734AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85BD72F3-A9FC-4F6F-BE3A-5A045CF734AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
