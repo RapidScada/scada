@@ -53,6 +53,7 @@
     <Compile Include="DataTransfer\ImagesDTO.cs" />
     <Compile Include="DataTransfer\SchemeDocDTO.cs" />
     <Compile Include="DataTransfer\SchemeDTO.cs" />
+    <Compile Include="ISchemeComp.cs" />
     <Compile Include="Model\BaseComponent.cs" />
     <Compile Include="Model\DataTypes\Actions.cs" />
     <Compile Include="Model\DataTypes\CnlFilterExtenstions.cs" />

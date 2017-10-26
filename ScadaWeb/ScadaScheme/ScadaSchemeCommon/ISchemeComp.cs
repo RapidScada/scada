@@ -15,30 +15,21 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : Scheme Editor
- * Summary  : Specifies the functionality provided by the main form
+ * Module   : ScadaSchemeCommon
+ * Summary  : Indicates that a plugin provides scheme components
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
  * Modified : 2017
  */
 
-namespace Scada.Scheme.Editor
+namespace Scada.Scheme
 {
     /// <summary>
-    /// Specifies the functionality provided by the main form
-    /// <para>Определяет функционал, предоставляемый главной формой</para>
+    /// Indicates that a plugin provides scheme components
+    /// <para>Показывает, что плагин предоставляет компоненты схем</para>
     /// </summary>
-    public interface IMainForm
+    public interface ISchemeComp
     {
-        /// <summary>
-        /// Выполнить заданное действие
-        /// </summary>
-        void PerformAction(FormActions formAction);
-
-        /// <summary>
-        /// Получить состояние формы
-        /// </summary>
-        FormStateDTO GetFormState();
     }
 }
