@@ -49,5 +49,16 @@ namespace Scada.Web.Plugins
                 return PlgVersion;
             }
         }
+
+        /// <summary>
+        /// Получить префикс XML-элементов, содержащих свойства компонентов
+        /// </summary>
+        string ISchemeComp.XmlPrefix
+        {
+            get
+            {
+                return "basic";
+            }
+        }
     }
 }
