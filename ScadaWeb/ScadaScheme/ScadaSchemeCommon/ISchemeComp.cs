@@ -37,8 +37,8 @@ namespace Scada.Scheme
         string XmlPrefix { get; }
 
         /// <summary>
-        /// 
+        /// Получить фабрику для создания компонентов
         /// </summary>
-        //object GetComponentFactory();
+        ComponentFactory ComponentFactory { get; }
     }
 }

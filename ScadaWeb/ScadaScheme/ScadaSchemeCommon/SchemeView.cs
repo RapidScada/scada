@@ -211,7 +211,7 @@ namespace Scada.Scheme
                 SchemeDoc.SaveToXml(documentElem);
 
                 // запись компонентов схемы
-                XmlElement componentsElem = xmlDoc.CreateElement("Elements");
+                XmlElement componentsElem = xmlDoc.CreateElement("Components");
                 rootElem.AppendChild(componentsElem);
 
                 foreach (BaseComponent component in Components.Values)

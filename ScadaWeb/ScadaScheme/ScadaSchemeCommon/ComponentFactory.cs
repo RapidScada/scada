@@ -15,33 +15,27 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : ScadaWebCommon
- * Summary  : The class contains utility methods for the schemes
+ * Module   : ScadaSchemeCommon
+ * Summary  : The base class for creating scheme components
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
  * Modified : 2017
  */
 
+using Scada.Scheme.Model;
+
 namespace Scada.Scheme
 {
     /// <summary>
-    /// The class contains utility methods for the schemes
-    /// <para>Класс, содержащий вспомогательные методы для схем</para>
+    /// The base class for creating scheme components
+    /// <para>Базовый класс для создания компонентов схемы</para>
     /// </summary>
-    public static class SchemeUtils
+    public abstract class ComponentFactory
     {
         /// <summary>
-        /// Версия схем
+        /// Создать компонент схемы
         /// </summary>
-        public const string SchemeVersion = "5.2.0.0";
-
-        /// <summary>
-        /// Проверить, что метки представления соответствуют друг другу
-        /// </summary>
-        public static bool ViewStampsMatched(long viewStamp1, long viewStamp2)
-        {
-            return !(viewStamp1 > 0 && viewStamp2 > 0 && viewStamp1 != viewStamp2);
-        }
+        public abstract BaseComponent CreateComponent(string typeShortName);
     }
 }

@@ -60,5 +60,16 @@ namespace Scada.Web.Plugins
                 return "basic";
             }
         }
+
+        /// <summary>
+        /// Получить фабрику для создания компонентов
+        /// </summary>
+        ComponentFactory ISchemeComp.ComponentFactory
+        {
+            get
+            {
+                return null;
+            }
+        }
     }
 }
