@@ -31,7 +31,7 @@ namespace Scada.Scheme
     /// The base class for creating scheme components
     /// <para>Базовый класс для создания компонентов схемы</para>
     /// </summary>
-    public abstract class ComponentFactory
+    public abstract class CompFactory
     {
         /// <summary>
         /// Создать компонент схемы

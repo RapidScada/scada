@@ -48,7 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ComponentFactory.cs" />
+    <Compile Include="CompFactory.cs" />
+    <Compile Include="CompManager.cs" />
     <Compile Include="DataTransfer\ComponentsDTO.cs" />
     <Compile Include="DataTransfer\ImageDTO.cs" />
     <Compile Include="DataTransfer\ImagesDTO.cs" />

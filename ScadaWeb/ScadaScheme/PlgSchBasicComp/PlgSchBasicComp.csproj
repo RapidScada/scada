@@ -61,6 +61,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppCode\PlgSchBasicCompSpec.cs" />
+    <Compile Include="AppCode\SchBasicComp\BasicCompFactory.cs" />
+    <Compile Include="AppCode\SchBasicComp\Led.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

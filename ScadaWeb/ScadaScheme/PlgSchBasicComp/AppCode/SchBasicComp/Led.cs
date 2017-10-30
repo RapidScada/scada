@@ -15,30 +15,23 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : ScadaSchemeCommon
- * Summary  : Indicates that a plugin provides scheme components
+ * Module   : PlgSchBasicComp
+ * Summary  : Scheme component that represents led
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
  * Modified : 2017
  */
 
-namespace Scada.Scheme
+using Scada.Scheme.Model;
+
+namespace Scada.Web.Plugins.SchBasicComp
 {
     /// <summary>
-    /// Indicates that a plugin provides scheme components
-    /// <para>Показывает, что плагин предоставляет компоненты схем</para>
+    /// Scheme component that represents led
+    /// <para>Компонент схемы, представляющий светодиод</para>
     /// </summary>
-    public interface ISchemeComp
+    public class Led : BaseComponent
     {
-        /// <summary>
-        /// Получить префикс XML-элементов, содержащих свойства компонентов
-        /// </summary>
-        string XmlPrefix { get; }
-
-        /// <summary>
-        /// Получить фабрику для создания компонентов
-        /// </summary>
-        CompFactory CompFactory { get; }
     }
 }
