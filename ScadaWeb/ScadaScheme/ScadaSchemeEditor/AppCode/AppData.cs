@@ -169,6 +169,11 @@ namespace Scada.Scheme.Editor
             Log.WriteAction(Localization.UseRussian ?
                 "Инициализация общих данных Редактора схем" :
                 "Initialize common data of Scheme Editor");
+
+            // инициализация менеджера компонентов и загрузка компонентов
+            CompManager compManager = CompManager.GetInstance();
+            compManager.Init(AppDirs.WebDir, Log);
+            compManager.LoadCompFromFiles();
         }
 
         /// <summary>

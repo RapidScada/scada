@@ -112,26 +112,18 @@ namespace Scada.Scheme
             XmlNode componentsNode = rootElem.SelectSingleNode("Components") ?? rootElem.SelectSingleNode("Elements");
             if (componentsNode != null)
             {
-                foreach (XmlNode componentNode in componentsNode.ChildNodes)
+                CompManager compManager = CompManager.GetInstance();
+
+                foreach (XmlNode compNode in componentsNode.ChildNodes)
                 {
                     // создание компонента
-                    string nodeName = componentNode.Name.ToLowerInvariant();
-                    BaseComponent component = null;
-
-                    if (nodeName == "statictext")
-                        component = new StaticText();
-                    else if (nodeName == "dynamictext")
-                        component = new DynamicText();
-                    else if (nodeName == "staticpicture")
-                        component = new StaticPicture();
-                    else if (nodeName == "dynamicpicture")
-                        component = new DynamicPicture();
+                    BaseComponent component = compManager.CreateComponent(compNode);
 
                     if (component != null)
                     {
                         // загрузка компонента и добавление его в представление
                         component.SchemeDoc = SchemeDoc;
-                        component.LoadFromXml(componentNode);
+                        component.LoadFromXml(compNode);
                         Components[component.ID] = component;
 
                         // добавление входных каналов представления

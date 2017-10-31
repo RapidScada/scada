@@ -103,9 +103,14 @@ namespace Scada.Web.Plugins
         /// </summary>
         public override void Init()
         {
+            // создание объекта для обновления словаря
             dictUpdater = new DictUpdater(
                 string.Format("{0}Scheme{1}lang{1}", AppDirs.PluginsDir, Path.DirectorySeparatorChar), 
                 "PlgScheme", null, Log);
+
+            // инициализация менеджера компонентов
+            CompManager compManager = CompManager.GetInstance();
+            compManager.Init(AppData.GetAppData().AppDirs, Log);
         }
 
         /// <summary>
@@ -113,7 +118,12 @@ namespace Scada.Web.Plugins
         /// </summary>
         public override void OnUserLogin(UserData userData)
         {
+            // обновление словаря
             dictUpdater.Update();
+
+            // извлечение компонентов из плагинов
+            CompManager compManager = CompManager.GetInstance();
+            compManager.RetrieveCompFromPlugins(userData.PluginSpecs);
         }
     }
 }
