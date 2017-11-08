@@ -98,6 +98,15 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
+        /// Установить окончание строки в соединении для режима ASCII
+        /// </summary>
+        private void SetNewLine()
+        {
+            if (Connection != null && transMode == TransModes.ASCII)
+                Connection.NewLine = ModbusUtils.CRLF;
+        }
+
+        /// <summary>
         /// Установить значения тегов КП в соответствии со значениями элементов группы
         /// </summary>
         private void SetTagsData(ElemGroup elemGroup)
@@ -353,6 +362,8 @@ namespace Scada.Comm.Devices
                     break;
             }
 
+            SetNewLine();
+
             // настройка объекта, реализующего протокол Modbus
             modbusPoll.Timeout = ReqParams.Timeout;
             modbusPoll.WriteToLog = WriteToLog;
@@ -375,8 +386,7 @@ namespace Scada.Comm.Devices
         /// </summary>
         public override void OnConnectionSet()
         {
-            if (transMode == TransModes.ASCII)
-                Connection.NewLine = ModbusUtils.CRLF;
+            SetNewLine();
             modbusPoll.Connection = Connection;
         }
     }
