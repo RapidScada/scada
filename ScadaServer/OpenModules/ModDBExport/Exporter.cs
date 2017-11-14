@@ -237,9 +237,14 @@ namespace Scada.Server.Modules.DBExport
         {
             if (ExportParams.ExportCurData)
             {
+                DbTransaction trans = null;
                 SrezTableLight.Srez srez = null;
+
                 try
                 {
+                    trans = DataSource.Connection.BeginTransaction();
+                    DataSource.ExportCurDataCmd.Transaction = trans;
+
                     for (int i = 0; i < BundleSize; i++)
                     {
                         // извлечение среза из очереди
@@ -257,13 +262,20 @@ namespace Scada.Server.Modules.DBExport
                         expCurSrezCnt++;
                         exportError = false;
                     }
+
+                    trans.Commit();
                 }
                 catch (Exception ex)
                 {
+                    if (trans != null)
+                        trans.Rollback();
+
                     // возврат среза в очередь
                     if (srez != null)
+                    {
                         lock (curSrezQueue)
                             curSrezQueue.Enqueue(srez);
+                    }
 
                     log.WriteAction(string.Format(Localization.UseRussian ?
                         "Ошибка при экспорте текущих данных в БД {0}: {1}" :
@@ -281,33 +293,45 @@ namespace Scada.Server.Modules.DBExport
         {
             if (ExportParams.ExportArcData)
             {
-                SrezTableLight.Srez sres = null;
+                DbTransaction trans = null;
+                SrezTableLight.Srez srez = null;
+
                 try
                 {
+                    trans = DataSource.Connection.BeginTransaction();
+                    DataSource.ExportArcDataCmd.Transaction = trans;
+
                     for (int i = 0; i < BundleSize; i++)
                     {
                         // извлечение среза из очереди
                         lock (arcSrezQueue)
                         {
                             if (arcSrezQueue.Count > 0)
-                                sres = arcSrezQueue.Dequeue();
+                                srez = arcSrezQueue.Dequeue();
                             else
                                 break;
                         }
 
                         // экспорт
-                        ExportSrez(DataSource.ExportArcDataCmd, sres);
+                        ExportSrez(DataSource.ExportArcDataCmd, srez);
 
                         expArcSrezCnt++;
                         exportError = false;
                     }
+
+                    trans.Commit();
                 }
                 catch (Exception ex)
                 {
+                    if (trans != null)
+                        trans.Rollback();
+
                     // возврат среза в очередь
-                    if (sres != null)
+                    if (srez != null)
+                    {
                         lock (arcSrezQueue)
-                            arcSrezQueue.Enqueue(sres);
+                            arcSrezQueue.Enqueue(srez);
+                    }
 
                     log.WriteAction(string.Format(Localization.UseRussian ?
                         "Ошибка при экспорте архивных данных в БД {0}: {1}" :
@@ -325,9 +349,14 @@ namespace Scada.Server.Modules.DBExport
         {
             if (ExportParams.ExportEvents)
             {
+                DbTransaction trans = null;
                 EventTableLight.Event ev = null;
+
                 try
                 {
+                    trans = DataSource.Connection.BeginTransaction();
+                    DataSource.ExportEventCmd.Transaction = trans;
+
                     for (int i = 0; i < BundleSize; i++)
                     {
                         // извлечение события из очереди
@@ -345,13 +374,20 @@ namespace Scada.Server.Modules.DBExport
                         expEvCnt++;
                         exportError = false;
                     }
+
+                    trans.Commit();
                 }
                 catch (Exception ex)
                 {
-                    // возврат среза в очередь
+                    if (trans != null)
+                        trans.Rollback();
+
+                    // возврат события в очередь
                     if (ev != null)
+                    {
                         lock (evQueue)
                             evQueue.Enqueue(ev);
+                    }
 
                     log.WriteAction(string.Format(Localization.UseRussian ?
                         "Ошибка при экспорте событий в БД {0}: {1}" :
