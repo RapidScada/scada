@@ -531,7 +531,7 @@ namespace Scada.Scheme.Editor
         /// </summary>
         public string GetWebPageFilePath(string webDir)
         {
-            return webDir + @"plugins\SchemeEditor\" + WebPageFileName;
+            return Path.Combine(webDir, "plugins", "SchemeEditor", WebPageFileName);
         }
 
         /// <summary>
