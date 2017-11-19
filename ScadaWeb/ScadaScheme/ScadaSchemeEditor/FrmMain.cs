@@ -176,7 +176,7 @@ namespace Scada.Scheme.Editor
             }
             else
             {
-                loadOK = editor.LoadSchemeFromFile(ofdScheme.FileName, out errMsg);
+                loadOK = editor.LoadSchemeFromFile(fileName, out errMsg);
             }
 
             appData.AssignViewStamp(editor.SchemeView);
