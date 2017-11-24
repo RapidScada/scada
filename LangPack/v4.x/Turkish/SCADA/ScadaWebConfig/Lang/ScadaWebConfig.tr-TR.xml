@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaWebConfigDictionaries>
+  <Dictionary key="Scada.Web.ViewSettings">
+    <Phrase key="LoadViewSettingsError">Görünüm ayarları yüklenirken hata oluştu.</Phrase>
+    <Phrase key="SaveViewSettingsError">Görünüm ayarları kaydedilirken hata oluştu</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WebSettings">
+    <Phrase key="LoadWebSettingsError">Web ayarları dosyadan yüklenirken hata oluştu.</Phrase>
+    <Phrase key="SaveWebSettingsError">Web ayarları kaydedilirken hata oluştu.</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaWebConfig.FrmMain">
+    <Phrase key="this">SCADA-Web Yapılandırıcı</Phrase>
+    <Phrase key="lblConfigDir">Yapılandırma dizini</Phrase>
+    <Phrase key="tabComm">Bağlantı</Phrase>
+    <Phrase key="lblServerHost">Sunucu</Phrase>
+    <Phrase key="lblServerPort">Port</Phrase>
+    <Phrase key="lblServerTimeout">Zaman aşımı</Phrase>
+    <Phrase key="lblServerUser">Kullanıcı</Phrase>
+    <Phrase key="lblServerPwd">Şifre</Phrase>
+    <Phrase key="tabWeb">Uygulama</Phrase>
+    <Phrase key="lblSrezRefrFreq">Veri yenileme frekansı, saniye</Phrase>
+    <Phrase key="lblEventRefrFreq">Olay yenileme frekansı, saniye</Phrase>
+    <Phrase key="lblEventCnt">Görünür olaylar sayısı</Phrase>
+    <Phrase key="chkEventFltr">Görünüm olay filtresini Varsayılan olarak ayarla</Phrase>
+    <Phrase key="lblDiagBreak">Break between diagramm points&#13;&#10;connected using line, sec</Phrase>
+    <Phrase key="chkCmdEnabled">Komutlar etkin</Phrase>
+    <Phrase key="chkSimpleCmd">Basit komut gönder</Phrase>
+    <Phrase key="chkRemEnabled">Oturum hatırlama etkin</Phrase>
+    <Phrase key="tabView">Görünüm</Phrase>
+    <Phrase key="btnAddViewSet">Ayar ekle</Phrase>
+    <Phrase key="btnAddView">Görüntü ekle</Phrase>
+    <Phrase key="btnDelete">sil</Phrase>
+    <Phrase key="btnUp">yukarı</Phrase>
+    <Phrase key="btnDown">Aşağı</Phrase>
+    <Phrase key="lblName">isim</Phrase>
+    <Phrase key="lblDir">Dizin</Phrase>
+    <Phrase key="lblFile">Dosya</Phrase>
+    <Phrase key="lblType">Tip</Phrase>
+    <Phrase key="cbType.Items[0]">Tablo</Phrase>
+    <Phrase key="cbType.Items[1]">plan</Phrase>
+    <Phrase key="cbType.Items[2]">yüz</Phrase>
+    <Phrase key="cbType.Items[3]">Web psayfası</Phrase>
+    <Phrase key="btnSave">Kaydet</Phrase>
+    <Phrase key="btnCancel">İptal</Phrase>
+    <Phrase key="btnClose">Kapat</Phrase>
+    <Phrase key="ChooseConfigDir">Yapılandırma dizini seçin</Phrase>
+    <Phrase key="ChooseViewFile">Görünüm dosyasını seçin</Phrase>
+    <Phrase key="FileFilter">Görüntü (*.tbl;*.ofm;*.sch;*.fcs)|*.tbl;*.ofm;*.sch;*.fcs|Web sayfası (*.aspx;*.htm;*.html)|*.aspx;*.htm;*.html|Tüm dosyalar (*.*)|*.*</Phrase>
+    <Phrase key="ChooseSetToAddView">Choose set to add view.</Phrase>
+    <Phrase key="ChooseViewToDelete">Choose set or view to delete.</Phrase>
+    <Phrase key="ChooseViewToMove">Choose set or view to move.</Phrase>
+    <Phrase key="NewViewSetName">Yeni görüntü ayarı</Phrase>
+    <Phrase key="NewViewTitle">Yeni görüntü</Phrase>
+    <Phrase key="LoadConfigDirError">Yapılandırma dizini yüklenirken hata oluştu</Phrase>
+    <Phrase key="SaveConfigDirError">Yapılandırma dizini kaydedilirken hata oluştu</Phrase>
+    <Phrase key="ParseViewTitleError">Görüntü etiketi ayrıştırılırken hata oluştu.</Phrase>
+  </Dictionary>
+</ScadaWebConfigDictionaries>

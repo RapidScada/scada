@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaWebConfigDictionaries>
+  <Dictionary key="Scada.Web.ViewSettings">
+    <Phrase key="LoadViewSettingsError">Įkeliant vaizdo nustatymus iš failo įvyko klaida</Phrase>
+    <Phrase key="SaveViewSettingsError">Išsaugant vaizdo nustatymus į failą įvyko klaida</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WebSettings">
+    <Phrase key="LoadWebSettingsError">Įkeliant tinklapio nustatymus iš failo įvyko klaida</Phrase>
+    <Phrase key="SaveWebSettingsError">Išsaugant tinklapio nustatymus į failą įvyko klaida</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaWebConfig.FrmMain">
+    <Phrase key="this">SCADA-Web Tinklapių Konfigūratorius</Phrase>
+    <Phrase key="lblConfigDir">Konfigūravimo Direktorija</Phrase>
+    <Phrase key="tabComm">Prisijungimas</Phrase>
+    <Phrase key="lblServerHost">Serveris</Phrase>
+    <Phrase key="lblServerPort">Sąsaja</Phrase>
+    <Phrase key="lblServerTimeout">Laikas baigėsi</Phrase>
+    <Phrase key="lblServerUser">Vartotojas</Phrase>
+    <Phrase key="lblServerPwd">Slaptažodis</Phrase>
+    <Phrase key="tabWeb">Tinklapis</Phrase>
+    <Phrase key="lblSrezRefrFreq">Duomenų atnaujinimo dažnis, sek</Phrase>
+    <Phrase key="lblEventRefrFreq">Įvykių atnaujinimo dažnis, sek</Phrase>
+    <Phrase key="lblEventCnt">Matomų įvykių kiekis</Phrase>
+    <Phrase key="chkEventFltr">Pakeisti 'Vaizdo' įvykių filtrą į numatytuosius</Phrase>
+    <Phrase key="lblDiagBreak">Lūžis tarp diagramos taškų&#13;&#10;sujungtų linija, sek</Phrase>
+    <Phrase key="chkCmdEnabled">Komandos įgalintos</Phrase>
+    <Phrase key="chkSimpleCmd">Paprastų komandų siuntimas</Phrase>
+    <Phrase key="chkRemEnabled">Prisijungimo įsiminimas įgalintas</Phrase>
+    <Phrase key="tabView">Vaizdai</Phrase>
+    <Phrase key="btnAddViewSet">Pridėti rinkinį</Phrase>
+    <Phrase key="btnAddView">Pridėti vaizdą</Phrase>
+    <Phrase key="btnDelete">Ištrinti</Phrase>
+    <Phrase key="btnUp">Aukštyn</Phrase>
+    <Phrase key="btnDown">Žemyn</Phrase>
+    <Phrase key="lblName">Pavadinimas</Phrase>
+    <Phrase key="lblDir">Direktorija</Phrase>
+    <Phrase key="lblFile">Failas</Phrase>
+    <Phrase key="lblType">Tipas</Phrase>
+    <Phrase key="cbType.Items[0]">Lentelė</Phrase>
+    <Phrase key="cbType.Items[1]">Schema</Phrase>
+    <Phrase key="cbType.Items[2]">Veidai</Phrase>
+    <Phrase key="cbType.Items[3]">Tinklapis</Phrase>
+    <Phrase key="btnSave">Išsaugoti</Phrase>
+    <Phrase key="btnCancel">Atšaukti</Phrase>
+    <Phrase key="btnClose">Uždaryti</Phrase>
+    <Phrase key="ChooseConfigDir">Pasirinkti konfigūracijos direktoriją</Phrase>
+    <Phrase key="ChooseViewFile">Pasirinkti vaizdo failą</Phrase>
+    <Phrase key="FileFilter">Vaizdai (*.tbl;*.ofm;*.sch;*.fcs)|*.tbl;*.ofm;*.sch;*.fcs|Tinklapiai (*.aspx;*.htm;*.html)|*.aspx;*.htm;*.html|Visi Failai (*.*)|*.*</Phrase>
+    <Phrase key="ChooseSetToAddView">Pasirinkti rinkinį vaizdui pridėti.</Phrase>
+    <Phrase key="ChooseViewToDelete">Pasirinkti vaizdą ar rinkinį ištrynimui.</Phrase>
+    <Phrase key="ChooseViewToMove">Pasirinkti vaizdą ar rinkinį perkėlimui.</Phrase>
+    <Phrase key="NewViewSetName">Naujas vaizdų rinkinys</Phrase>
+    <Phrase key="NewViewTitle">Naujas vaizdas</Phrase>
+    <Phrase key="LoadConfigDirError">Įkeliant kofigūravimo direktoriją iš failo įvyko klaida</Phrase>
+    <Phrase key="SaveConfigDirError">Išsaugant kofigūravimo direktoriją į failą įvyko klaida</Phrase>
+    <Phrase key="ParseViewTitleError">Apdorojant vaizdo antraštę įvyko klaida</Phrase>
+  </Dictionary>
+</ScadaWebConfigDictionaries>

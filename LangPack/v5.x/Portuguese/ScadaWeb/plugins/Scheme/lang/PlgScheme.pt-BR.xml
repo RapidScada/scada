@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PlgSchemeDictionaries>
+  <Dictionary key="Scada.Web.Plugins.Scheme.WFrmScheme">
+    <Phrase key="this">Scheme - Rapid SCADA</Phrase>
+    <Phrase key="lblFitScreenBtn.ToolTip">Ajustar à tela</Phrase>
+    <Phrase key="lblFitWidthBtn.ToolTip">Ajustar à largura </Phrase>
+    <Phrase key="lblZoomOutBtn.ToolTip">Reduzir Zoom</Phrase>
+    <Phrase key="lblZoomInBtn.ToolTip">Ampliar Zoom</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Scheme.WFrmScheme.Js">
+    <Phrase key="LoadSchemeError">Erro ao carregar esquema. Tente recarregá-lo</Phrase>
+    <Phrase key="UpdateError">Erro ao atualizar dados do esquema</Phrase>
+    <Phrase key="ReloadButton">Recarregar</Phrase>
+  </Dictionary>
+</PlgSchemeDictionaries>

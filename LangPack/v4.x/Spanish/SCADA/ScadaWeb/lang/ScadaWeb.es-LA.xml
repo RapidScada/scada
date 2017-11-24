@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaWebDictionaries>
+  <Dictionary key="Scada.Report">
+    <Phrase key="GenReport">Genere el informe "{0}" del usuario {1}</Phrase>
+    <Phrase key="GenReportError">Error que genera el informe "{0}": {1}</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web">
+    <Phrase key="NotLoggedOn">Usuario no conectado.</Phrase>
+    <Phrase key="UnableLoadView">Incapaz de cargar visión.</Phrase>
+    <Phrase key="IncorrectDate">Fecha incorrecta de datos solicitados.</Phrase>
+    <Phrase key="ErrorFormat">Error: {0}</Phrase>
+    <Phrase key="ServerUnavailable">el servidor no disponible</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Diag">
+    <Phrase key="DiagCnlNotFound">Canal de la entrada {0} no encontrado en la base de datos de la configuración.</Phrase>
+    <Phrase key="DiagCnlsUndefined">Los canales del diagrama son indeterminados.</Phrase>
+    <Phrase key="CnlCntExceeded">Es posible seleccionar {no más de 0} canales.</Phrase>
+    <Phrase key="CnlNotSelected">Los canales no se seleccionan.</Phrase>
+    <Phrase key="DayCntExceeded">El período tiene que ser {no más de 0} días.</Phrase>
+    <Phrase key="DiagPageClosed">La página del diagrama se ha cerrado.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Diag.WFrmDiag">
+    <Phrase key="this">SCADA - Diagram</Phrase>
+    <Phrase key="lblReqDTCaption">Generado</Phrase>
+    <Phrase key="divLoadDataMsg">Carga de datos</Phrase>
+    <Phrase key="divLoadDataErrMsg">Error de carga de datos</Phrase>
+    <Phrase key="lblNotSupported">Tiene que mejorar el navegador para mostrar el diagrama.</Phrase>
+    <Phrase key="divResetZoom.ToolTip">Acercamiento del reinicio</Phrase>
+    <Phrase key="btnSelectDiagCnls">Seleccione canales</Phrase>
+    <Phrase key="btnShowData">Muestre datos</Phrase>
+    <Phrase key="btnChangePeriod">Período del cambio</Phrase>
+    <Phrase key="btnHideData">Esconda datos</Phrase>
+    <Phrase key="btnRefreshDiag">Refrescar</Phrase>
+    <Phrase key="btnExportPdf">PDF</Phrase>
+    <Phrase key="btnExportPng">PNG</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Diag.WFrmDiagCnls">
+    <Phrase key="this">Seleccione canales</Phrase>
+    <Phrase key="btnSelect">Seleccionar</Phrase>
+    <Phrase key="btnClose">Cerrar</Phrase>
+    <Phrase key="DiagSelColumn">Seleccionar</Phrase>
+    <Phrase key="DiagCnlColumn">En canal</Phrase>
+    <Phrase key="DiagObjColumn">Objeto</Phrase>
+    <Phrase key="DiagKPColumn">Dispositivo</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Diag.WFrmDiagPeriod">
+    <Phrase key="this">Seleccione período</Phrase>
+    <Phrase key="lblDate1">De</Phrase>
+    <Phrase key="lblDate2">A</Phrase>
+    <Phrase key="btnSelect">Seleccionar</Phrase>
+    <Phrase key="btnClose">Cerrar</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.MainData">
+    <Phrase key="EventChecked">Sí</Phrase>
+    <Phrase key="EventUnchecked">No</Phrase>
+    <Phrase key="CommSettingsNotLoaded">los ajustes de comunicación del servidor no se cargan</Phrase>
+    <Phrase key="WrongPassword">el nombre de usuario o la contraseña son incorrectos</Phrase>
+    <Phrase key="NoRightsL">privilegios insuficientes</Phrase>
+    <Phrase key="IllegalRole">недопустимая роль пользователя</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.RepHrEvTable">
+    <Phrase key="NoReportData">Ningunos datos para generación del informe.</Phrase>
+    <Phrase key="HourDataPage">Datos de la hora</Phrase>
+    <Phrase key="EventsPage">Acontecimientos</Phrase>
+    <Phrase key="HourDataTitle">{0} - datos de la Hora por "{1}" visión. Generado {2}</Phrase>
+    <Phrase key="AllEventsTitle">{0} - todos los acontecimientos. Generado {1}</Phrase>
+    <Phrase key="EventsByViewTitle">{0} - Acontecimientos por "{1}" visión. Generado {2}</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.TableView">
+    <Phrase key="LoadParamTableError">Error que carga mesa de parámetros de archivo</Phrase>
+    <Phrase key="SaveParamTableError">Error que salva mesa de parámetros a archivo</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.ViewSettings">
+    <Phrase key="LoadViewSettingsError">Error que carga ajustes de visión de archivo</Phrase>
+    <Phrase key="SaveViewSettingsError">Error que salva ajustes de visión a archivo</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WebSettings">
+    <Phrase key="LoadWebSettingsError">Error que carga ajustes de web de archivo</Phrase>
+    <Phrase key="SaveWebSettingsError">Error que salva ajustes de web a archivo</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmCalendar">
+    <Phrase key="this">Seleccione fecha</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmCmdSend">
+    <Phrase key="this">Comando</Phrase>
+    <Phrase key="lblCtrlCnlCaption">Canal:</Phrase>
+    <Phrase key="lblObjCaption">Objeto:</Phrase>
+    <Phrase key="lblKPCaption">Dispositivo:</Phrase>
+    <Phrase key="lblPassword">Contraseña</Phrase>
+    <Phrase key="lblCmd1">Comando:</Phrase>
+    <Phrase key="lblCmd2">Comando:</Phrase>
+    <Phrase key="lblCmdVal">Valor</Phrase>
+    <Phrase key="lblDataType">Tipo de datos</Phrase>
+    <Phrase key="rbStr">Cuerda</Phrase>
+    <Phrase key="rbHex">Hexadecimal</Phrase>
+    <Phrase key="lblCmdData">Datos</Phrase>
+    <Phrase key="btnExecute">Ejecutar</Phrase>
+    <Phrase key="btnCancel">Cancelar</Phrase>
+    <Phrase key="lblResultSuccessful">La orden está en la cola para la ejecución</Phrase>
+    <Phrase key="lblResultFailed">La orden no se ha ejecutado</Phrase>
+    <Phrase key="btnClose">Cerrar</Phrase>
+    <Phrase key="OutCnlNotFound">Canal {0} no encontrado.</Phrase>
+    <Phrase key="CmdNotSelected">la orden no se selecciona</Phrase>
+    <Phrase key="IncorrectCmdVal">valor de la orden incorrecto</Phrase>
+    <Phrase key="IncorrectCmdData">datos de la orden hexadecimales incorrectos</Phrase>
+    <Phrase key="EmptyCmdData">los datos de la orden son vacíos</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmError">
+    <Phrase key="this">SCADA - error de aplicación</Phrase>
+    <Phrase key="lblMessage">Error de aplicación</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmEvCheck">
+    <Phrase key="this">Control del acontecimiento</Phrase>
+    <Phrase key="lblNumCaption">Número:</Phrase>
+    <Phrase key="lblDateCaption">Fecha:</Phrase>
+    <Phrase key="lblTimeCaption">Tiempo:</Phrase>
+    <Phrase key="lblObjCaption">Objeto:</Phrase>
+    <Phrase key="lblKPCaption">Dispositivo:</Phrase>
+    <Phrase key="lblCnlCaption">Canal:</Phrase>
+    <Phrase key="lblEventCaption">Evento:</Phrase>
+    <Phrase key="btnCheck">Comprobar</Phrase>
+    <Phrase key="btnCancel">Cancelar</Phrase>
+    <Phrase key="lblResultSuccessful">El control se ha hecho con éxito</Phrase>
+    <Phrase key="lblResultFailed">El control no se ha hecho</Phrase>
+    <Phrase key="btnClose">Cerrar</Phrase>
+    <Phrase key="IncorrectEvDate">Fecha del acontecimiento incorrecta.</Phrase>
+    <Phrase key="IncorrectEvNum">Número del acontecimiento incorrecto.</Phrase>
+    <Phrase key="EventNotFound">acontecimiento no encontrado</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmEvents">
+    <Phrase key="this">Acontecimientos</Phrase>
+    <Phrase key="lblEvents">Eventos:</Phrase>
+    <Phrase key="rbEvAll">Todos</Phrase>
+    <Phrase key="rbEvView">Por vista</Phrase>
+    <Phrase key="lblEvPause">Pausa</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmEvTable">
+    <Phrase key="this">Tabla de Eventos</Phrase>
+    <Phrase key="lblNumColumn">Número</Phrase>
+    <Phrase key="lblDateColumn">Fecha</Phrase>
+    <Phrase key="lblTimeColumn">Tiempo</Phrase>
+    <Phrase key="lblObjColumn">Objeto</Phrase>
+    <Phrase key="lblKPColumn">Dispositivo</Phrase>
+    <Phrase key="lblCnlColumn">Canal</Phrase>
+    <Phrase key="lblEventColumn">Evento</Phrase>
+    <Phrase key="lblCheckColumn">Comprobar</Phrase>
+    <Phrase key="lblNoData">No hay Eventos</Phrase>
+    <Phrase key="lblLoading">Carga...</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmInfo">
+    <Phrase key="this">SCADA - información</Phrase>
+    <Phrase key="lblTitle">Información sobre SCADA-red</Phrase>
+    <Phrase key="lblVersionCation">Versión:</Phrase>
+    <Phrase key="lblServerCaption">Servidor:</Phrase>
+    <Phrase key="lblUserCaption">Usuario:</Phrase>
+    <Phrase key="lblUserNotLoggedOn">&lt;Not logged on&gt;</Phrase>
+    <Phrase key="btnBack">Volver</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmLogin">
+    <Phrase key="this">SCADA - entrada al sistema</Phrase>
+    <Phrase key="lblLoginTitle">Entrada al sistema</Phrase>
+    <Phrase key="lblLoggedOnTitle">Conectado</Phrase>
+    <Phrase key="lblName">Nombre</Phrase>
+    <Phrase key="lblPassword">Contraseña</Phrase>
+    <Phrase key="lblViewSet">Set Vista</Phrase>
+    <Phrase key="btnEnter">Entrada al sistema</Phrase>
+    <Phrase key="chkRememberUser">recordar</Phrase>
+    <Phrase key="btnExit">Salida</Phrase>
+    <Phrase key="UnableLogin">Incapaz a entrada al sistema: {0}.</Phrase>
+    <Phrase key="NoViewSetRights">derechos insuficientes de abrir juego de visión seleccionado</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmMain">
+    <Phrase key="lblDate">Fecha</Phrase>
+    <Phrase key="rbStage1">0-11 h</Phrase>
+    <Phrase key="rbStage2">12-23 h</Phrase>
+    <Phrase key="rbStageFull">0-23 h</Phrase>
+    <Phrase key="imgHome.ToolTip">Entrada al sistema</Phrase>
+    <Phrase key="imgExcel.ToolTip">Exportación a Excel</Phrase>
+    <Phrase key="imgReport.ToolTip">Informes</Phrase>
+    <Phrase key="imgInfo.ToolTip">Información</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmTableView">
+    <Phrase key="this">Visión de la mesa</Phrase>
+    <Phrase key="lblNoData">La visión de la mesa es vacía.</Phrase>
+    <Phrase key="ItemColumn">Artículo</Phrase>
+    <Phrase key="CurColumn">PERRO CALLEJERO</Phrase>
+    <Phrase key="InCnlNumHint">En canal num.: </Phrase>
+    <Phrase key="OutCnlNumHint">Canal num.: </Phrase>
+    <Phrase key="ObjectHint">Objeto: </Phrase>
+    <Phrase key="KPHint">Dispositivo: </Phrase>
+    <Phrase key="ParamHint">Cantidad: </Phrase>
+    <Phrase key="UnitHint">Unidad: </Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmReport">
+    <Phrase key="this">SCADA - informes</Phrase>
+    <Phrase key="lblReportList">Informes disponibles:</Phrase>
+    <Phrase key="lblNoReports">Los informes disponibles fallan</Phrase>
+  </Dictionary>
+</ScadaWebDictionaries>

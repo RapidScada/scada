@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<KpModbusDictionaries>
+  <Dictionary key="Scada.Comm.KP.FrmDevTemplate">
+    <Phrase key="this">MODBUS. Cihaz Template Düzenleyicisi</Phrase>
+    <Phrase key="btnNew.ToolTip">Yeni templateoluştur </Phrase>
+    <Phrase key="btnOpen.ToolTip">Template aç</Phrase>
+    <Phrase key="btnSave.ToolTip">Template kaydet</Phrase>
+    <Phrase key="btnSaveAs.ToolTip">Template farklı kaydet</Phrase>
+    <Phrase key="btnAddElemGroup.ToolTip">Element grup ekle</Phrase>
+    <Phrase key="btnAddElem.ToolTip">Element ekle</Phrase>
+    <Phrase key="btnAddCmd.ToolTip">Komut ekle</Phrase>
+    <Phrase key="btnMoveUp.ToolTip">Yukarı</Phrase>
+    <Phrase key="btnMoveDown.ToolTip">Aşağı</Phrase>
+    <Phrase key="btnDelete.ToolTip">Sil</Phrase>
+    <Phrase key="gbDevTemplate">Cihaz template</Phrase>
+    <Phrase key="gbElemGroup">Element grup parametreleri</Phrase>
+    <Phrase key="lblGrName">Ad</Phrase>
+    <Phrase key="lblGrTableType">Veri tablosu</Phrase>
+    <Phrase key="cbGrTableType.Items[0]">Discretes Inputs (1X)</Phrase>
+    <Phrase key="cbGrTableType.Items[1]">Coils (0X)</Phrase>
+    <Phrase key="cbGrTableType.Items[2]">Input Registers (3X)</Phrase>
+    <Phrase key="cbGrTableType.Items[3]">Holding Registers (4X)</Phrase>
+    <Phrase key="lblGrAddress">Başlangıç element adres</Phrase>
+    <Phrase key="lblGrElemCnt">Element sayısı</Phrase>
+    <Phrase key="gbElem">Element parametreleri</Phrase>
+    <Phrase key="lblElemName">Ad</Phrase>
+    <Phrase key="lblElemAddress">Adres</Phrase>
+    <Phrase key="lblElemSignal">Sinyal</Phrase>
+    <Phrase key="lblElemType">Tip:</Phrase>
+    <Phrase key="rbUShort">ushort (2 bytes)</Phrase>
+    <Phrase key="rbShort">short (2 bytes)</Phrase>
+    <Phrase key="rbUInt">uint (4 bytes)</Phrase>
+    <Phrase key="rbInt">int (4 bytes)</Phrase>
+    <Phrase key="rbFloat">float (4 bytes)</Phrase>
+    <Phrase key="rbBool">bool (1 bit)</Phrase>
+    <Phrase key="gbCmd">Komut parametreleri</Phrase>
+    <Phrase key="lblCmdName">Ad</Phrase>
+    <Phrase key="lblCmdTableType">Veri tablosu</Phrase>
+    <Phrase key="cbCmdTableType.Items[0]">Coils (0X)</Phrase>
+    <Phrase key="cbCmdTableType.Items[1]">Holding Registers (4X)</Phrase>
+    <Phrase key="chkCmdMultiple">Çoklu</Phrase>
+    <Phrase key="lblCmdAddress">Element adres</Phrase>
+    <Phrase key="lblCmdElemCnt">Element sayısı</Phrase>
+    <Phrase key="lblCmdNum">KOmut numarası</Phrase>
+    <Phrase key="GrsNode">Element grupları</Phrase>
+    <Phrase key="CmdsNode">Komutlar</Phrase>
+    <Phrase key="DefGrName">&lt;Element grup&gt;</Phrase>
+    <Phrase key="DefElemName">&lt;Element&gt;</Phrase>
+    <Phrase key="DefCmdName">&lt;Komut&gt;</Phrase>
+    <Phrase key="SaveTemplateConfirm">Template değişti. Kaydedilsin mi?</Phrase>
+    <Phrase key="ElemCntExceeded">Veri tablosu {0} den fazla elemente izin vermiyor.</Phrase>
+    <Phrase key="ElemRemoveWarning">Veri tablosu {0} den fazla elemente izin vermiyor.&#13;&#10;Ekstra elementler kaldırılıcak. Devam edilsin mi?</Phrase>
+  </Dictionary>
+</KpModbusDictionaries>

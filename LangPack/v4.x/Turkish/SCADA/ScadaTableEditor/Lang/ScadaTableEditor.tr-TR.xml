@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaTableEditorDictionaries>
+  <Dictionary key="Scada.Web.TableView">
+    <Phrase key="LoadTableViewError">Görüntü yüklenirken hata oluştu</Phrase>
+    <Phrase key="SaveTableViewError">Görüntü kaydedilirken hata oluştu</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaTableEditor.FrmMain">
+    <Phrase key="this">SCADA-Table Editor</Phrase>
+    <Phrase key="miFile">&amp;Dosya</Phrase>
+    <Phrase key="miFileNew">Oluştur</Phrase>
+    <Phrase key="miFileOpen">Aç...</Phrase>
+    <Phrase key="miFileSave">Kaydet</Phrase>
+    <Phrase key="miFileSaveAs">Farklı kaydet...</Phrase>
+    <Phrase key="miFileExit">Çıkış</Phrase>
+    <Phrase key="miSettings">&amp;Ayarlar</Phrase>
+    <Phrase key="miSettingsParams">Parametreler...</Phrase>
+    <Phrase key="miHelp">&amp;Yardım</Phrase>
+    <Phrase key="miHelpAbout">Hakkında</Phrase>
+    <Phrase key="btnFileNew.ToolTip">Yeni tablo görünümü oluştur</Phrase>
+    <Phrase key="btnFileOpen.ToolTip">Tablo görünümü aç</Phrase>
+    <Phrase key="btnFileSave.ToolTip">Tablo görünümü kaydet</Phrase>
+    <Phrase key="btnSettingsParams.ToolTip">Parametreler</Phrase>
+    <Phrase key="gbBase">Veritabanını yapılandır</Phrase>
+    <Phrase key="lblCnlFilterByObj">Obje</Phrase>
+    <Phrase key="lblCnlFilterByKP">Cihaz</Phrase>
+    <Phrase key="btnFilterCnlsByObj.ToolTip">obje tarafından filtre</Phrase>
+    <Phrase key="btnFilterCnlsByKP.ToolTip">Cihaz tarafından filtre</Phrase>
+    <Phrase key="btnRefreshBase.ToolTip">konfirügasyon Veritabanı verisini güncelle</Phrase>
+    <Phrase key="rbInCnls">Giriş kanalları</Phrase>
+    <Phrase key="rbCtrlCnls">Çıkış kanalları</Phrase>
+    <Phrase key="colCnlNum">sayı</Phrase>
+    <Phrase key="colCnlName">isim</Phrase>
+    <Phrase key="gbTableView">Düzenlenen Tablo görünümü</Phrase>
+    <Phrase key="lblTableTitle">Başlık</Phrase>
+    <Phrase key="lblTableItems">Ürün</Phrase>
+    <Phrase key="btnAddItem.ToolTip">Yapılandırma veritabanına öğe ekle</Phrase>
+    <Phrase key="btnAddEmptyItem.ToolTip">Boş öğe ekle</Phrase>
+    <Phrase key="btnMoveUpItem.ToolTip">Seçilen öğeyi yukarı taşı</Phrase>
+    <Phrase key="btnMoveDownItem.ToolTip">Seçilen öğeyi aşagı taşı</Phrase>
+    <Phrase key="btnDeleteItem.ToolTip">seçilen öğeyi sil</Phrase>
+    <Phrase key="btnShowItemInfo.ToolTip">seçilen öğenin bilgisini göster</Phrase>
+    <Phrase key="colItemCnlNum">In ch.</Phrase>
+    <Phrase key="colItemCtrlCnlNum">Out ch.</Phrase>
+    <Phrase key="colItemCaption">Başlık</Phrase>
+    <Phrase key="colItemHidden">Gizli</Phrase>
+    <Phrase key="OpenFileFilter">Tablo görünümü(*.tbl; *.ofm)|*.tbl;*.ofm|All Files (*.*)|*.*</Phrase>
+    <Phrase key="SaveFileFilter">Tablo görünümü (*.tbl)|*.tbl|All Files (*.*)|*.*</Phrase>
+    <Phrase key="SaveConfirm">Tablo görünümü değiştirildi.Yapılan değişiklikler Kaydedilsin mi?</Phrase>
+    <Phrase key="AllObjItem">&lt;tüm obje&gt;</Phrase>
+    <Phrase key="AllKPItem">&lt;tüm cihazlar&gt;</Phrase>
+    <Phrase key="LoadBaseError">Veritabanı yapılandırma yüklenirken hata oluştu</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaTableEditor.FrmItemInfo">
+    <Phrase key="this">Öğe bilgisi</Phrase>
+    <Phrase key="gbInCnl">Giriş kanalı</Phrase>
+    <Phrase key="lblInCnl">Kanal</Phrase>
+    <Phrase key="lblInCnlObj">Obje</Phrase>
+    <Phrase key="lblInCnlKP">Cihaz</Phrase>
+    <Phrase key="gbCtrlCnl">Çıkış kanalı</Phrase>
+    <Phrase key="lblCtrlCnl">Kanal</Phrase>
+    <Phrase key="lblCtrlCnlObj">Obje</Phrase>
+    <Phrase key="lblCtrlCnlKP">Cihaz</Phrase>
+    <Phrase key="btnClose">Kapat</Phrase>
+    <Phrase key="GetInCnlError">Giriş kanalı bilgileri alınırken hata oluştu</Phrase>
+    <Phrase key="GetCtrlCnlError">Çıkış kanalı bilgileri alınırken hata oluştu</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaTableEditor.FrmSettings">
+    <Phrase key="this">Ayarlar</Phrase>
+    <Phrase key="lblBaseDATDir">Konfigürasyon veritabanı dizini (DAT)</Phrase>
+    <Phrase key="btnOK">Tamam</Phrase>
+    <Phrase key="btnCancel">İptal</Phrase>
+  </Dictionary>
+</ScadaTableEditorDictionaries>

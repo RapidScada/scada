@@ -1,0 +1,6 @@
+Language                 : Lithuanian
+Culture name:            : lt-LT
+Rapid SCADA version      : 4.5
+Rapid SCADA applications : All
+Author                   : Valdas Valančius
+Author's email           : valdasval@gmail.com

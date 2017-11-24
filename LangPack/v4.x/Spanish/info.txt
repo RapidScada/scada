@@ -1,0 +1,6 @@
+Language                 : Spanish
+Culture name:            : es-LA
+Rapid SCADA version      : 4.5
+Rapid SCADA applications : All
+Author                   : Jesus Escoto Lopez
+Author's email           : jeeslo@gmail.com

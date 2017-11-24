@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<KpSmsDictionaries>
+  <Dictionary key="Scada.Comm.Devices.KpSms.FrmPhonebook">
+    <Phrase key="this">SMS</Phrase>
+    <Phrase key="btnCreateGroup.ToolTip">Crea un grupo</Phrase>
+    <Phrase key="btnCreateNumber.ToolTip">Crear número</Phrase>
+    <Phrase key="btnEdit.ToolTip">Editar</Phrase>
+    <Phrase key="btnDelete.ToolTip">Borrar</Phrase>
+    <Phrase key="btnCutNumber.ToolTip">Cortar Numero</Phrase>
+    <Phrase key="btnCopyNumber.ToolTip">Copiar Numero</Phrase>
+    <Phrase key="btnPasteNumber.ToolTip">Pegar Numero</Phrase>
+    <Phrase key="btnSave">Guardar</Phrase>
+    <Phrase key="btnClose">Cerrar</Phrase>
+    <Phrase key="PhonebookNode">Directorio telefónico</Phrase>
+    <Phrase key="PhoneGroupExists">El grupo ya existe.</Phrase>
+    <Phrase key="UpdatePhoneNumberConfirm">El número ya existe en el grupo. ¿Actualizar?</Phrase>
+    <Phrase key="SavePhonebookConfirm">La guía telefónica se han modificado. ¿Guardar los cambios?</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.KpSms.FrmPhoneGroup">
+    <Phrase key="this">Grupo de los números de teléfono</Phrase>
+    <Phrase key="lblName">Nombre</Phrase>
+    <Phrase key="btnCreate">Crear</Phrase>
+    <Phrase key="btnChange">Modificar</Phrase>
+    <Phrase key="btnCancel">Cancelar</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.KpSms.FrmPhoneNumber">
+    <Phrase key="this">Número de teléfono</Phrase>
+    <Phrase key="lblNumber">Número</Phrase>
+    <Phrase key="lblName">Nombre del dueño</Phrase>
+    <Phrase key="btnCreate">Crear</Phrase>
+    <Phrase key="btnChange">Modificar</Phrase>
+    <Phrase key="btnCancel">Cancelar</Phrase>
+  </Dictionary>
+</KpSmsDictionaries>

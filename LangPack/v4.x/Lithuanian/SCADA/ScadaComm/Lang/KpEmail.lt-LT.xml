@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<KpEmailDictionaries>
+  <Dictionary key="Scada.Comm.Devices.KpEmail.FrmConfig">
+    <Phrase key="this">El. Pašto - Prietaiso {0} Konfigūracija</Phrase>
+    <Phrase key="lblHost">SMTP serveris</Phrase>
+    <Phrase key="lblPort">Sąsaja</Phrase>
+    <Phrase key="lblUser">Vartotojas</Phrase>
+    <Phrase key="lblPassword">Slaptažodis</Phrase>
+    <Phrase key="lblUserDisplayName">Rodomas vartotojo vardas</Phrase>
+    <Phrase key="chkEnableSsl">Naudoti SSL</Phrase>
+    <Phrase key="btnEditAddressBook">Adresų knyga</Phrase>
+    <Phrase key="btnOK">Gerai</Phrase>
+    <Phrase key="btnCancel">Atšaukti</Phrase>
+  </Dictionary>
+</KpEmailDictionaries>

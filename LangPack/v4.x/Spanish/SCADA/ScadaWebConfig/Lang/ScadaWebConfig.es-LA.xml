@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaWebConfigDictionaries>
+  <Dictionary key="Scada.Web.ViewSettings">
+    <Phrase key="LoadViewSettingsError">Error al cargar el archivo de configuración de vista</Phrase>
+    <Phrase key="SaveViewSettingsError">Error al guardar la configuración de vista para presentar</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WebSettings">
+    <Phrase key="LoadWebSettingsError">Error al cargar los ajustes web de archivo</Phrase>
+    <Phrase key="SaveWebSettingsError">Error al guardar la configuración de WEB para presentar</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaWebConfig.FrmMain">
+    <Phrase key="this">SCADA-Web Configurador</Phrase>
+    <Phrase key="lblConfigDir">Directorio de configuracion</Phrase>
+    <Phrase key="tabComm">Conexion</Phrase>
+    <Phrase key="lblServerHost">Servidor</Phrase>
+    <Phrase key="lblServerPort">Puerto</Phrase>
+    <Phrase key="lblServerTimeout">Tiempo muerto</Phrase>
+    <Phrase key="lblServerUser">Usuario</Phrase>
+    <Phrase key="lblServerPwd">Contraseña</Phrase>
+    <Phrase key="tabWeb">Aplicacion</Phrase>
+    <Phrase key="lblSrezRefrFreq">Frecuencia de actualización de datos, sec</Phrase>
+    <Phrase key="lblEventRefrFreq">Frecuencia de refresco de eventos, sec</Phrase>
+    <Phrase key="lblEventCnt">Contador visible de eventos</Phrase>
+    <Phrase key="chkEventFltr">Seleccion 'Ver' filtro de eventos de forma predeterminada</Phrase>
+    <Phrase key="lblDiagBreak">Descanso entre puntos diagramm&#13;&#10;conectado a través de la línea, sec</Phrase>
+    <Phrase key="chkCmdEnabled">Habilitar comandos</Phrase>
+    <Phrase key="chkSimpleCmd">Envío de comandos simples</Phrase>
+    <Phrase key="chkRemEnabled">Recordar activar Login</Phrase>
+    <Phrase key="tabView">Vista</Phrase>
+    <Phrase key="btnAddViewSet">Añadir set</Phrase>
+    <Phrase key="btnAddView">Añadir vista</Phrase>
+    <Phrase key="btnDelete">Borrar</Phrase>
+    <Phrase key="btnUp">Arriba</Phrase>
+    <Phrase key="btnDown">Abajo</Phrase>
+    <Phrase key="lblName">Nombre</Phrase>
+    <Phrase key="lblDir">Directorio</Phrase>
+    <Phrase key="lblFile">Archivo</Phrase>
+    <Phrase key="lblType">Tipo</Phrase>
+    <Phrase key="cbType.Items[0]">Tabla</Phrase>
+    <Phrase key="cbType.Items[1]">Esquema</Phrase>
+    <Phrase key="cbType.Items[2]">Faces</Phrase>
+    <Phrase key="cbType.Items[3]">Pagina Web</Phrase>
+    <Phrase key="btnSave">Guardar</Phrase>
+    <Phrase key="btnCancel">Cancelar</Phrase>
+    <Phrase key="btnClose">Cerrar</Phrase>
+    <Phrase key="ChooseConfigDir">Elegir directorio de configuración</Phrase>
+    <Phrase key="ChooseViewFile">Elija archivo de vista</Phrase>
+    <Phrase key="FileFilter">Vistas (*.tbl;*.ofm;*.sch;*.fcs)|*.tbl;*.ofm;*.sch;*.fcs|Paginas WEB (*.aspx;*.htm;*.html)|*.aspx;*.htm;*.html|Todos los Archivo (*.*)|*.*</Phrase>
+    <Phrase key="ChooseSetToAddView">Elija un conjunto de añadir vista.</Phrase>
+    <Phrase key="ChooseViewToDelete">Elija establecer o ver a borrar.</Phrase>
+    <Phrase key="ChooseViewToMove">Elija establecer o ver a moverse.</Phrase>
+    <Phrase key="NewViewSetName">Nueva seleccion de vista</Phrase>
+    <Phrase key="NewViewTitle">Nueva vista</Phrase>
+    <Phrase key="LoadConfigDirError">Error al cargar el archivo directorio de configuracion</Phrase>
+    <Phrase key="SaveConfigDirError">Error al guardar directorio de configuracion al archivo</Phrase>
+    <Phrase key="ParseViewTitleError">Error al analizar vista del titulo</Phrase>
+  </Dictionary>
+</ScadaWebConfigDictionaries>
