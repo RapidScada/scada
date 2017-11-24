@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ScadaServerDictionaries>
+<ScadaSchemeEditorDictionaries>
   <Dictionary key="Scada.Scheme.Editor.Editor">
     <Phrase key="EditorTitle">Scheme Editor</Phrase>
   </Dictionary>
@@ -94,4 +94,4 @@
     <Phrase key="LoadImageError">Error loading image</Phrase>
     <Phrase key="SaveImageError">Error saving image</Phrase>
   </Dictionary>
-</ScadaServerDictionaries>
+</ScadaSchemeEditorDictionaries>

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ScadaServerDictionaries>
+<ScadaSchemeEditorDictionaries>
   <Dictionary key="Scada.Scheme.Editor.Editor">
     <Phrase key="EditorTitle">Редактор схем</Phrase>
   </Dictionary>
@@ -289,4 +289,4 @@
     <Phrase key="Center">По центру</Phrase>
     <Phrase key="Bottom">Снизу</Phrase>
   </Dictionary>
-</ScadaServerDictionaries>
+</ScadaSchemeEditorDictionaries>
