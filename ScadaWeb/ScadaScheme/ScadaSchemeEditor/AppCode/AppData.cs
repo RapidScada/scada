@@ -152,7 +152,7 @@ namespace Scada.Scheme.Editor
 
 
         /// <summary>
-        /// Инициализировать общие данные веб-приложения
+        /// Инициализировать общие данные Редактора схем
         /// </summary>
         public void Init(string exeDir, IMainForm mainForm)
         {

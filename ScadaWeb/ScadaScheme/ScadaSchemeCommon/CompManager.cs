@@ -27,6 +27,7 @@ using Scada.Scheme.Model;
 using Scada.Web.Plugins;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Xml;
 using Utils;
 
@@ -38,11 +39,16 @@ namespace Scada.Scheme
     /// </summary>
     public sealed class CompManager
     {
+        /// <summary>
+        /// Маска для поиска файлов библиотек компонентов
+        /// </summary>
+        private const string CompLibMask = "plgsch*comp.dll";
+
         private static readonly CompManager instance; // экземпляр объекта менеджера
 
         private Web.AppDirs webAppDirs; // директории веб-приложения
         private ILog log;               // журнал приложения
-        private Dictionary<string, CompFactory> compFactories; // фабрики компонентов
+        private Dictionary<string, CompFactory> compFactories; // фабрики компонентов, ключ - XML-префикс
 
 
         /// <summary>
@@ -61,6 +67,16 @@ namespace Scada.Scheme
             webAppDirs = new Web.AppDirs();
             log = new LogStub();
             compFactories = new Dictionary<string, CompFactory>();
+        }
+
+
+        /// <summary>
+        /// Добавить фабрику компонентов плагина в словарь
+        /// </summary>
+        private void AddCompFactory(ISchemeComp schemeComp)
+        {
+            if (!string.IsNullOrEmpty(schemeComp.XmlPrefix))
+                compFactories[schemeComp.XmlPrefix] = schemeComp.CompFactory;
         }
 
 
@@ -100,6 +116,31 @@ namespace Scada.Scheme
                 log.WriteAction(Localization.UseRussian ?
                     "Загрузка компонентов из файлов" :
                     "Load components from files");
+                compFactories.Clear();
+
+                DirectoryInfo dirInfo = new DirectoryInfo(webAppDirs.BinDir);
+                FileInfo[] fileInfoArr = dirInfo.GetFiles(CompLibMask, SearchOption.TopDirectoryOnly);
+
+                foreach (FileInfo fileInfo in fileInfoArr)
+                {
+                    string errMsg;
+                    PluginSpec pluginSpec = PluginSpec.CreateFromDll(fileInfo.FullName, out errMsg);
+
+                    if (pluginSpec == null)
+                    {
+                        log.WriteError(errMsg);
+                    }
+                    else if (pluginSpec is ISchemeComp)
+                    {
+                        AddCompFactory((ISchemeComp)pluginSpec);
+                    }
+                    else
+                    {
+                        log.WriteError(string.Format(Localization.UseRussian ? 
+                            "Библиотека {0} не предоставляет компоненты схем" : 
+                            "The assembly {0} does not provide scheme components", fileInfo.FullName));
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -119,15 +160,14 @@ namespace Scada.Scheme
                 log.WriteAction(Localization.UseRussian ?
                     "Извлечение компонентов из установленных плагинов" :
                     "Retrieve components from the installed plugins");
+                compFactories.Clear();
 
                 if (pluginSpecs != null)
                 {
                     foreach (PluginSpec pluginSpec in pluginSpecs)
                     {
                         if (pluginSpec is ISchemeComp)
-                        {
-                            ISchemeComp schemeComp = (ISchemeComp)pluginSpec;
-                        }
+                            AddCompFactory((ISchemeComp)pluginSpec);
                     }
                 }
             }
@@ -147,24 +187,33 @@ namespace Scada.Scheme
             if (compNode == null)
                 throw new ArgumentNullException("compNode");
 
-            string xmlPrefix = compNode.Prefix;
-            string nodeName = compNode.Name.ToLowerInvariant();
-            CompFactory compFactory;
+            try
+            {
+                string xmlPrefix = compNode.Prefix;
+                string nodeName = compNode.Name.ToLowerInvariant();
+                CompFactory compFactory;
 
-            if (string.IsNullOrEmpty(xmlPrefix))
-            {
-                if (nodeName == "statictext")
-                    return new StaticText();
-                else if (nodeName == "dynamictext")
-                    return new DynamicText();
-                else if (nodeName == "staticpicture")
-                    return new StaticPicture();
-                else if (nodeName == "dynamicpicture")
-                    return new DynamicPicture();
+                if (string.IsNullOrEmpty(xmlPrefix))
+                {
+                    if (nodeName == "statictext")
+                        return new StaticText();
+                    else if (nodeName == "dynamictext")
+                        return new DynamicText();
+                    else if (nodeName == "staticpicture")
+                        return new StaticPicture();
+                    else if (nodeName == "dynamicpicture")
+                        return new DynamicPicture();
+                }
+                else if (compFactories.TryGetValue(xmlPrefix, out compFactory))
+                {
+                    return compFactory.CreateComponent(nodeName);
+                }
             }
-            else if (compFactories.TryGetValue(xmlPrefix, out compFactory))
+            catch (Exception ex)
             {
-                return compFactory.CreateComponent(nodeName);
+                log.WriteException(ex, string.Format(Localization.UseRussian ?
+                    "Ошибка при создании компонента на основе XML-узла \"{0}\"" :
+                    "Error creating component based on the XML node \"{0}\"", compNode.Name));
             }
 
             return null;
