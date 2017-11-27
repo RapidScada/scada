@@ -15,47 +15,82 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : ScadaSchemeCommon
- * Summary  : The base class for scheme component library specification
+ * Module   : PlgSchBasicComp
+ * Summary  : Specification of the basic scheme components library
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
  * Modified : 2017
  */
 
+using Scada.Scheme;
+using Scada.Web.Properties;
 using System.Collections.Generic;
 
-namespace Scada.Scheme
+namespace Scada.Web.Plugins.SchBasicComp
 {
     /// <summary>
-    /// The base class for scheme component library specification
-    /// <para>Родительский класс спецификации библиотеки компонентов схем</para>
+    /// Specification of the basic scheme components library
+    /// <para>Спецификация библиотеки основных компонентов схемы</para>
     /// </summary>
-    public abstract class CompLibSpec
+    public class BasicCompLibSpec : CompLibSpec
     {
         /// <summary>
         /// Получить префикс XML-элементов
         /// </summary>
-        public abstract string XmlPrefix { get; }
+        public override string XmlPrefix
+        {
+            get
+            {
+                return "basic";
+            }
+        }
 
         /// <summary>
         /// Получить пространство имён XML-элементов
         /// </summary>
-        public abstract string XmlNs { get; }
+        public override string XmlNs
+        {
+            get
+            {
+                return "urn:rapidscada:scheme:basic";
+            }
+        }
 
         /// <summary>
         /// Получить заголовок группы в редакторе
         /// </summary>
-        public abstract string GroupHeader { get; }
+        public override string GroupHeader
+        {
+            get
+            {
+                return Localization.UseRussian ? "Основные" : "Basic";
+            }
+        }
 
         /// <summary>
         /// Получить элементы списка компонентов в редакторе
         /// </summary>
-        public abstract List<CompItem> CompItems { get; }
+        public override List<CompItem> CompItems
+        {
+            get
+            {
+                return new List<CompItem>()
+                {
+                    new CompItem(Resources.test, "Led", typeof(Led))
+                };
+            }
+        }
 
         /// <summary>
         /// Получить фабрику для создания компонентов
         /// </summary>
-        public abstract CompFactory CompFactory { get; }
+        public override CompFactory CompFactory
+        {
+            get
+            {
+                return new BasicCompFactory();
+            }
+        }
     }
 }

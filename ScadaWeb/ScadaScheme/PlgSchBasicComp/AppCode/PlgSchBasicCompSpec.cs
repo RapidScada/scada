@@ -24,9 +24,7 @@
  */
 
 using Scada.Scheme;
-using System;
-using System.Collections.Generic;
-using System.Web;
+using Scada.Web.Plugins.SchBasicComp;
 
 namespace Scada.Web.Plugins
 {
@@ -80,24 +78,13 @@ namespace Scada.Web.Plugins
         }
 
         /// <summary>
-        /// Получить префикс XML-элементов, содержащих свойства компонентов
+        /// Получить спецификацию библиотеки компонентов
         /// </summary>
-        string ISchemeComp.XmlPrefix
+        CompLibSpec ISchemeComp.CompLibSpec
         {
             get
             {
-                return "basic";
-            }
-        }
-
-        /// <summary>
-        /// Получить фабрику для создания компонентов
-        /// </summary>
-        CompFactory ISchemeComp.CompFactory
-        {
-            get
-            {
-                return null;
+                return new BasicCompLibSpec();
             }
         }
     }

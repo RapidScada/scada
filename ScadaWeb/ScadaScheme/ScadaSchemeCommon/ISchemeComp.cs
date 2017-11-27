@@ -32,13 +32,8 @@ namespace Scada.Scheme
     public interface ISchemeComp
     {
         /// <summary>
-        /// Получить префикс XML-элементов, содержащих свойства компонентов
+        /// Получить спецификацию библиотеки компонентов
         /// </summary>
-        string XmlPrefix { get; }
-
-        /// <summary>
-        /// Получить фабрику для создания компонентов
-        /// </summary>
-        CompFactory CompFactory { get; }
+        CompLibSpec CompLibSpec { get; }
     }
 }

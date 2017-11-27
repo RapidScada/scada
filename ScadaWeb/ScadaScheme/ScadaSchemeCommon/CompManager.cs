@@ -75,8 +75,10 @@ namespace Scada.Scheme
         /// </summary>
         private void AddCompFactory(ISchemeComp schemeComp)
         {
-            if (!string.IsNullOrEmpty(schemeComp.XmlPrefix))
-                compFactories[schemeComp.XmlPrefix] = schemeComp.CompFactory;
+            CompLibSpec compLibSpec = schemeComp.CompLibSpec;
+
+            if (!string.IsNullOrEmpty(compLibSpec.XmlPrefix))
+                compFactories[compLibSpec.XmlPrefix] = compLibSpec.CompFactory;
         }
 
 
