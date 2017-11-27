@@ -51,7 +51,7 @@ namespace Scada.Scheme
         /// <summary>
         /// Получить спецификации компонентов, которые содержит библиотека
         /// </summary>
-        public abstract List<object> CompSpecs { get; }
+        public abstract List<CompSpec> CompSpecs { get; }
 
         /// <summary>
         /// Получить фабрику для создания компонентов

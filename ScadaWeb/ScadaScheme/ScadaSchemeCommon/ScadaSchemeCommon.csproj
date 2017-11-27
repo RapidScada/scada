@@ -49,7 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CompFactory.cs" />
+    <Compile Include="CompLibSpec.cs" />
     <Compile Include="CompManager.cs" />
+    <Compile Include="CompSpec.cs" />
     <Compile Include="DataTransfer\ComponentsDTO.cs" />
     <Compile Include="DataTransfer\ImageDTO.cs" />
     <Compile Include="DataTransfer\ImagesDTO.cs" />
