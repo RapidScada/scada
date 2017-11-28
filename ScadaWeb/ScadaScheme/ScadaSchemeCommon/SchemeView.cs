@@ -216,7 +216,7 @@ namespace Scada.Scheme
                     // добавление пространства имён
                     if (compLibSpec != null && !prefixes.Contains(compLibSpec.XmlPrefix))
                     {
-                        // TODO: добавить пр. имён
+                        rootElem.SetAttribute("xmlns:" + compLibSpec.XmlPrefix, compLibSpec.XmlNs);
                         prefixes.Add(compLibSpec.XmlPrefix);
                     }
 

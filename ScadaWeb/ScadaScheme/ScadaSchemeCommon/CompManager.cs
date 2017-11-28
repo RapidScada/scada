@@ -52,8 +52,8 @@ namespace Scada.Scheme
         /// </summary>
         private static readonly CompManager instance;
 
-        private Web.AppDirs webAppDirs; // директории веб-приложения
-        private ILog log;               // журнал приложения
+        private string binDir; // директория исполняемых файлов
+        private ILog log;      // журнал приложения
         private List<CompLibSpec> allSpecs;                    // все спецификации библиотек
         private Dictionary<string, CompFactory> factsByPrefix; // фабрики компонентов, ключ - XML-префикс
         private Dictionary<string, CompLibSpec> specsByType;   // спецификации библиотек, ключ - имя типа компонента
@@ -80,7 +80,7 @@ namespace Scada.Scheme
         /// </summary>
         private CompManager()
         {
-            webAppDirs = new Web.AppDirs();
+            binDir = "";
             log = new LogStub();
             allSpecs = new List<CompLibSpec>();
             factsByPrefix = new Dictionary<string, CompFactory>();
@@ -131,26 +131,14 @@ namespace Scada.Scheme
         /// <summary>
         /// Инициализировать менеджер компонентов
         /// </summary>
-        public void Init(string webAppDir, Log log)
+        public void Init(string binDir, Log log)
         {
+            if (string.IsNullOrEmpty(binDir))
+                throw new ArgumentException("Directory must not be empty.", "binDir");
             if (log == null)
                 throw new ArgumentNullException("log");
 
-            webAppDirs.Init(webAppDir);
-            this.log = log;
-        }
-
-        /// <summary>
-        /// Инициализировать менеджер компонентов
-        /// </summary>
-        public void Init(Web.AppDirs webAppDirs, Log log)
-        {
-            if (webAppDirs == null)
-                throw new ArgumentNullException("webAppDirs");
-            if (log == null)
-                throw new ArgumentNullException("log");
-
-            this.webAppDirs = webAppDirs;
+            this.binDir = binDir;
             this.log = log;
         }
 
@@ -166,7 +154,7 @@ namespace Scada.Scheme
                     "Load components from files");
 
                 ClearDicts();
-                DirectoryInfo dirInfo = new DirectoryInfo(webAppDirs.BinDir);
+                DirectoryInfo dirInfo = new DirectoryInfo(binDir);
                 FileInfo[] fileInfoArr = dirInfo.GetFiles(CompLibMask, SearchOption.TopDirectoryOnly);
 
                 foreach (FileInfo fileInfo in fileInfoArr)
@@ -238,7 +226,7 @@ namespace Scada.Scheme
             try
             {
                 string xmlPrefix = compNode.Prefix;
-                string nodeName = compNode.Name.ToLowerInvariant();
+                string nodeName = compNode.LocalName.ToLowerInvariant();
                 CompFactory compFactory;
 
                 if (string.IsNullOrEmpty(xmlPrefix))

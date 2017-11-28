@@ -177,7 +177,7 @@ namespace Scada.Scheme.Editor
                 "Initialize common data of Scheme Editor");
 
             // инициализация менеджера компонентов и загрузка компонентов
-            CompManager.Init(AppDirs.WebDir, Log);
+            CompManager.Init(AppDirs.ExeDir, Log);
             CompManager.LoadCompFromFiles();
         }
 

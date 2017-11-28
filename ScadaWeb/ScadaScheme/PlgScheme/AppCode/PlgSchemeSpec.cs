@@ -110,7 +110,7 @@ namespace Scada.Web.Plugins
 
             // инициализация менеджера компонентов
             CompManager compManager = CompManager.GetInstance();
-            compManager.Init(AppData.GetAppData().AppDirs, Log);
+            compManager.Init(AppData.GetAppData().AppDirs.BinDir, Log);
         }
 
         /// <summary>
