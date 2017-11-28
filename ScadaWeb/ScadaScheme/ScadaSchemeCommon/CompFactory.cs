@@ -24,6 +24,7 @@
  */
 
 using Scada.Scheme.Model;
+using System;
 
 namespace Scada.Scheme
 {
@@ -34,8 +35,18 @@ namespace Scada.Scheme
     public abstract class CompFactory
     {
         /// <summary>
+        /// Определить, что имена типов равны
+        /// </summary>
+        protected bool NameEquals(string expectedShortName, string expectedFullName, 
+            string actualName, bool nameIsShort)
+        {
+            return string.Equals(nameIsShort ? expectedShortName : expectedFullName, 
+                actualName, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
         /// Создать компонент схемы
         /// </summary>
-        public abstract BaseComponent CreateComponent(string typeShortName);
+        public abstract BaseComponent CreateComponent(string typeName, bool nameIsShort);
     }
 }

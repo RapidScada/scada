@@ -25,7 +25,6 @@
 
 using Scada.Scheme;
 using Scada.Scheme.Model;
-using System;
 
 namespace Scada.Web.Plugins.SchBasicComp
 {
@@ -38,12 +37,9 @@ namespace Scada.Web.Plugins.SchBasicComp
         /// <summary>
         /// Создать компонент схемы
         /// </summary>
-        public override BaseComponent CreateComponent(string typeShortName)
+        public override BaseComponent CreateComponent(string typeName, bool nameIsShort)
         {
-            if (typeShortName == null)
-                throw new ArgumentNullException("typeShortName");
-
-            if (typeShortName.Equals("Led", StringComparison.OrdinalIgnoreCase))
+            if (NameEquals("Led", (typeof(Led)).FullName, typeName, nameIsShort))
                 return new Led();
             else
                 return null;

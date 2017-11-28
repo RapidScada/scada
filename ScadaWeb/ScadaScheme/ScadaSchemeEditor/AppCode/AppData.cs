@@ -65,8 +65,9 @@ namespace Scada.Scheme.Editor
             viewStampCntr = 0;
 
             AppDirs = new AppDirs();
+            CompManager = CompManager.GetInstance();
             Log = new Log(Log.Formats.Full);
-            Editor = new Editor(Log);
+            Editor = new Editor(CompManager, Log);
             MainForm = null;
         }
 
@@ -75,6 +76,11 @@ namespace Scada.Scheme.Editor
         /// Получить директории приложения
         /// </summary>
         public AppDirs AppDirs { get; private set; }
+
+        /// <summary>
+        /// Получить менеджер компонентов схемы
+        /// </summary>
+        public CompManager CompManager { get; private set; }
 
         /// <summary>
         /// Получить журнал приложения
@@ -171,9 +177,8 @@ namespace Scada.Scheme.Editor
                 "Initialize common data of Scheme Editor");
 
             // инициализация менеджера компонентов и загрузка компонентов
-            CompManager compManager = CompManager.GetInstance();
-            compManager.Init(AppDirs.WebDir, Log);
-            compManager.LoadCompFromFiles();
+            CompManager.Init(AppDirs.WebDir, Log);
+            CompManager.LoadCompFromFiles();
         }
 
         /// <summary>

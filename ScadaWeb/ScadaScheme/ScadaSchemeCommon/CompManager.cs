@@ -43,8 +43,14 @@ namespace Scada.Scheme
         /// Маска для поиска файлов библиотек компонентов
         /// </summary>
         private const string CompLibMask = "plgsch*comp.dll";
-
-        private static readonly CompManager instance; // экземпляр объекта менеджера
+        /// <summary>
+        /// Стандартные типы компонентов, ключ - полное имя типа
+        /// </summary>
+        private static readonly Dictionary<string, Type> StandardCompTypes;
+        /// <summary>
+        /// Экземпляр объекта менеджера
+        /// </summary>
+        private static readonly CompManager instance;
 
         private Web.AppDirs webAppDirs; // директории веб-приложения
         private ILog log;               // журнал приложения
@@ -58,6 +64,14 @@ namespace Scada.Scheme
         /// </summary>
         static CompManager()
         {
+            StandardCompTypes = new Dictionary<string, Type>()
+            {
+                { typeof(StaticText).FullName, typeof(StaticText) },
+                { typeof(DynamicText).FullName, typeof(DynamicText) },
+                { typeof(StaticPicture).FullName, typeof(StaticPicture) },
+                { typeof(DynamicPicture).FullName, typeof(DynamicPicture) }
+            };
+
             instance = new CompManager();
         }
 
@@ -240,7 +254,7 @@ namespace Scada.Scheme
                 }
                 else if (factsByPrefix.TryGetValue(xmlPrefix, out compFactory) && compFactory != null)
                 {
-                    return compFactory.CreateComponent(nodeName);
+                    return compFactory.CreateComponent(nodeName, true);
                 }
             }
             catch (Exception ex)
@@ -251,6 +265,55 @@ namespace Scada.Scheme
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Создать компонент заданного типа
+        /// </summary>
+        public BaseComponent CreateComponent(string compTypeName)
+        {
+            try
+            {
+                Type compType;
+                CompLibSpec compLibSpec;
+
+                if (StandardCompTypes.TryGetValue(compTypeName, out compType))
+                {
+                    return (BaseComponent)Activator.CreateInstance(compType);
+                }
+                else if (specsByType.TryGetValue(compTypeName, out compLibSpec))
+                {
+                    BaseComponent comp = compLibSpec.CompFactory.CreateComponent(compTypeName, false);
+
+                    if (comp == null)
+                    {
+                        throw new ScadaException(string.Format(Localization.UseRussian ?
+                            "Фабрика компонентов вернула пустой результат." :
+                            "Component factory returned an empty result."));
+                    }
+
+                    return comp;
+                }
+                else
+                {
+                    throw new ScadaException(string.Format(Localization.UseRussian ?
+                        "Неизвестный тип компонента." :
+                        "Unknown component type."));
+                }
+            }
+            catch (Exception ex)
+            {
+                string errMsg = string.Format(Localization.UseRussian ?
+                    "Ошибка при создании компонента типа \"{0}\"" :
+                    "Error creating component of the type \"{0}\"", compTypeName);
+
+                if (ex is ScadaException)
+                    log.WriteError(errMsg + ": " + ex.Message);
+                else 
+                    log.WriteException(ex, errMsg);
+
+                return null;
+            }
         }
 
         /// <summary>
@@ -292,6 +355,7 @@ namespace Scada.Scheme
             Array.Sort(headers, specs);
             return specs;
         }
+
 
         /// <summary>
         /// Получить единственный экземпляр менеджера

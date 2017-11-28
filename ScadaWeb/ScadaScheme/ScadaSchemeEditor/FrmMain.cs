@@ -28,14 +28,11 @@ using Scada.Scheme.Model.DataTypes;
 using Scada.Scheme.Model.PropertyGrid;
 using Scada.UI;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using Utils;
-using CM = System.ComponentModel;
 
 namespace Scada.Scheme.Editor
 {
@@ -155,24 +152,33 @@ namespace Scada.Scheme.Editor
         /// </summary>
         private void FillComponentTypes()
         {
-            CompManager compManager = CompManager.GetInstance();
-            CompLibSpec[] specs = compManager.GetSortedSpecs();
-
             try
             {
                 lvCompTypes.BeginUpdate();
+                CompLibSpec[] specs = appData.CompManager.GetSortedSpecs();
 
                 foreach (CompLibSpec spec in specs)
                 {
                     ListViewGroup listViewGroup = new ListViewGroup(spec.GroupHeader);
 
+                    // добавление элемента с указателем
+                    lvCompTypes.Items.Add(new ListViewItem(
+                        "Pointer", "pointer.png", listViewGroup) { IndentCount = 1 });
+
+                    // добавление компонентов
                     foreach (CompItem compItem in spec.CompItems)
                     {
-                        ListViewItem listViewItem = new ListViewItem(compItem.DisplayName, listViewGroup)
+                        string imageKey = "image" + ilCompTypes.Images.Count;
+                        ilCompTypes.Images.Add(imageKey, compItem.Icon);
+
+                        lvCompTypes.Items.Add(new ListViewItem()
                         {
+                            Text = compItem.DisplayName,
+                            ImageKey = imageKey,
                             Tag = compItem.CompType?.FullName,
+                            Group = listViewGroup,
                             IndentCount = 1
-                        };
+                        });
                     }
 
                     lvCompTypes.Groups.Add(listViewGroup);
@@ -576,6 +582,7 @@ namespace Scada.Scheme.Editor
             // настройка элментов управления
             lvCompTypes.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
             lblStatus.Text = "";
+            FillComponentTypes();
 
             // создание новой схемы
             InitScheme();

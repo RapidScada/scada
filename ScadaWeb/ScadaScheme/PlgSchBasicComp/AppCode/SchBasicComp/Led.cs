@@ -24,6 +24,7 @@
  */
 
 using Scada.Scheme.Model;
+using System;
 
 namespace Scada.Web.Plugins.SchBasicComp
 {
@@ -31,6 +32,7 @@ namespace Scada.Web.Plugins.SchBasicComp
     /// Scheme component that represents led
     /// <para>Компонент схемы, представляющий светодиод</para>
     /// </summary>
+    [Serializable]
     public class Led : BaseComponent
     {
     }
