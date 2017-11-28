@@ -151,6 +151,40 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
+        /// Заполнить список типов компонентов
+        /// </summary>
+        private void FillComponentTypes()
+        {
+            CompManager compManager = CompManager.GetInstance();
+            CompLibSpec[] specs = compManager.GetSortedSpecs();
+
+            try
+            {
+                lvCompTypes.BeginUpdate();
+
+                foreach (CompLibSpec spec in specs)
+                {
+                    ListViewGroup listViewGroup = new ListViewGroup(spec.GroupHeader);
+
+                    foreach (CompItem compItem in spec.CompItems)
+                    {
+                        ListViewItem listViewItem = new ListViewItem(compItem.DisplayName, listViewGroup)
+                        {
+                            Tag = compItem.CompType?.FullName,
+                            IndentCount = 1
+                        };
+                    }
+
+                    lvCompTypes.Groups.Add(listViewGroup);
+                }
+            }
+            finally
+            {
+                lvCompTypes.EndUpdate();
+            }
+        }
+
+        /// <summary>
         /// Открыть браузер со страницей редактора
         /// </summary>
         private void OpenBrowser()

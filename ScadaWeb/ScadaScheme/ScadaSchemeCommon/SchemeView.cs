@@ -203,12 +203,28 @@ namespace Scada.Scheme
                 SchemeDoc.SaveToXml(documentElem);
 
                 // запись компонентов схемы
+                CompManager compManager = CompManager.GetInstance();
+                HashSet<string> prefixes = new HashSet<string>();
                 XmlElement componentsElem = xmlDoc.CreateElement("Components");
                 rootElem.AppendChild(componentsElem);
 
                 foreach (BaseComponent component in Components.Values)
                 {
-                    XmlElement componentElem = xmlDoc.CreateElement(component.GetType().Name);
+                    Type compType = component.GetType();
+                    CompLibSpec compLibSpec = compManager.GetSpecByType(compType);
+
+                    // добавление пространства имён
+                    if (compLibSpec != null && !prefixes.Contains(compLibSpec.XmlPrefix))
+                    {
+                        // TODO: добавить пр. имён
+                        prefixes.Add(compLibSpec.XmlPrefix);
+                    }
+
+                    // создание компонента
+                    XmlElement componentElem = compLibSpec == null ?
+                        xmlDoc.CreateElement(compType.Name) /*стандартный компонент*/ :
+                        xmlDoc.CreateElement(compLibSpec.XmlPrefix, compType.Name, compLibSpec.XmlNs);
+
                     componentsElem.AppendChild(componentElem);
                     component.SaveToXml(componentElem);
                 }

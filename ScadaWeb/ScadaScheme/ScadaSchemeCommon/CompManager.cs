@@ -48,7 +48,9 @@ namespace Scada.Scheme
 
         private Web.AppDirs webAppDirs; // директории веб-приложения
         private ILog log;               // журнал приложения
-        private Dictionary<string, CompFactory> compFactories; // фабрики компонентов, ключ - XML-префикс
+        private List<CompLibSpec> allSpecs;                    // все спецификации библиотек
+        private Dictionary<string, CompFactory> factsByPrefix; // фабрики компонентов, ключ - XML-префикс
+        private Dictionary<string, CompLibSpec> specsByType;   // спецификации библиотек, ключ - имя типа компонента
 
 
         /// <summary>
@@ -66,19 +68,49 @@ namespace Scada.Scheme
         {
             webAppDirs = new Web.AppDirs();
             log = new LogStub();
-            compFactories = new Dictionary<string, CompFactory>();
+            allSpecs = new List<CompLibSpec>();
+            factsByPrefix = new Dictionary<string, CompFactory>();
+            specsByType = new Dictionary<string, CompLibSpec>();
         }
 
 
         /// <summary>
-        /// Добавить фабрику компонентов плагина в словарь
+        /// Очистить словари
         /// </summary>
-        private void AddCompFactory(ISchemeComp schemeComp)
+        private void ClearDicts()
+        {
+            allSpecs.Clear();
+            factsByPrefix.Clear();
+            specsByType.Clear();
+        }
+
+        /// <summary>
+        /// Добавить компоненты в словари
+        /// </summary>
+        private void AddComponents(ISchemeComp schemeComp)
         {
             CompLibSpec compLibSpec = schemeComp.CompLibSpec;
 
-            if (!string.IsNullOrEmpty(compLibSpec.XmlPrefix))
-                compFactories[compLibSpec.XmlPrefix] = compLibSpec.CompFactory;
+            if (compLibSpec != null && compLibSpec.Validate())
+            {
+                allSpecs.Add(compLibSpec);
+                factsByPrefix[compLibSpec.XmlPrefix] = compLibSpec.CompFactory;
+
+                foreach (CompItem compItem in compLibSpec.CompItems)
+                {
+                    if (compItem.CompType != null)
+                        specsByType[compItem.CompType.FullName] = compLibSpec;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Проверить, что тип компонента относится к стандартным типам
+        /// </summary>
+        private bool TypeIsStrandard(Type compType)
+        {
+            return compType == typeof(StaticText) || compType == typeof(DynamicText) || 
+                compType == typeof(StaticPicture) || compType == typeof(DynamicPicture);
         }
 
 
@@ -118,8 +150,8 @@ namespace Scada.Scheme
                 log.WriteAction(Localization.UseRussian ?
                     "Загрузка компонентов из файлов" :
                     "Load components from files");
-                compFactories.Clear();
 
+                ClearDicts();
                 DirectoryInfo dirInfo = new DirectoryInfo(webAppDirs.BinDir);
                 FileInfo[] fileInfoArr = dirInfo.GetFiles(CompLibMask, SearchOption.TopDirectoryOnly);
 
@@ -134,7 +166,7 @@ namespace Scada.Scheme
                     }
                     else if (pluginSpec is ISchemeComp)
                     {
-                        AddCompFactory((ISchemeComp)pluginSpec);
+                        AddComponents((ISchemeComp)pluginSpec);
                     }
                     else
                     {
@@ -162,14 +194,14 @@ namespace Scada.Scheme
                 log.WriteAction(Localization.UseRussian ?
                     "Извлечение компонентов из установленных плагинов" :
                     "Retrieve components from the installed plugins");
-                compFactories.Clear();
+                ClearDicts();
 
                 if (pluginSpecs != null)
                 {
                     foreach (PluginSpec pluginSpec in pluginSpecs)
                     {
                         if (pluginSpec is ISchemeComp)
-                            AddCompFactory((ISchemeComp)pluginSpec);
+                            AddComponents((ISchemeComp)pluginSpec);
                     }
                 }
             }
@@ -206,7 +238,7 @@ namespace Scada.Scheme
                     else if (nodeName == "dynamicpicture")
                         return new DynamicPicture();
                 }
-                else if (compFactories.TryGetValue(xmlPrefix, out compFactory))
+                else if (factsByPrefix.TryGetValue(xmlPrefix, out compFactory) && compFactory != null)
                 {
                     return compFactory.CreateComponent(nodeName);
                 }
@@ -219,6 +251,46 @@ namespace Scada.Scheme
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Получить спецификацию библиотеки по типу компонента
+        /// </summary>
+        public CompLibSpec GetSpecByType(Type compType)
+        {
+            if (compType == null)
+                throw new ArgumentNullException("compType");
+
+            if (TypeIsStrandard(compType))
+            {
+                return null;
+            }
+            else
+            {
+                CompLibSpec compLibSpec;
+                specsByType.TryGetValue(compType.FullName, out compLibSpec);
+                return compLibSpec;
+            }
+        }
+
+        /// <summary>
+        /// Получить спецификации библиотек, отсортированные по заголовкам групп
+        /// </summary>
+        public CompLibSpec[] GetSortedSpecs()
+        {
+            int specCnt = allSpecs.Count;
+            string[] headers = new string[specCnt];
+            CompLibSpec[] specs = new CompLibSpec[specCnt];
+
+            for (int i = 0; i < specCnt; i++)
+            {
+                CompLibSpec spec = allSpecs[i];
+                headers[i] = spec.GroupHeader;
+                specs[i] = spec;
+            }
+
+            Array.Sort(headers, specs);
+            return specs;
         }
 
         /// <summary>

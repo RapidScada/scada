@@ -68,29 +68,24 @@ namespace Scada.Web.Plugins.SchBasicComp
             }
         }
 
+
         /// <summary>
-        /// Получить элементы списка компонентов в редакторе
+        /// Создать элементы списка компонентов
         /// </summary>
-        public override List<CompItem> CompItems
+        protected override List<CompItem> CreateCompItems()
         {
-            get
+            return new List<CompItem>()
             {
-                return new List<CompItem>()
-                {
-                    new CompItem(Resources.test, "Led", typeof(Led))
-                };
-            }
+                new CompItem(Resources.test, "Led", typeof(Led))
+            };
         }
 
         /// <summary>
-        /// Получить фабрику для создания компонентов
+        /// Создать фабрику компонентов
         /// </summary>
-        public override CompFactory CompFactory
+        protected override CompFactory CreateCompFactory()
         {
-            get
-            {
-                return new BasicCompFactory();
-            }
+            return new BasicCompFactory();
         }
     }
 }

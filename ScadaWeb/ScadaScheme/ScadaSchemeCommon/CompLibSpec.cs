@@ -34,6 +34,26 @@ namespace Scada.Scheme
     public abstract class CompLibSpec
     {
         /// <summary>
+        /// Элементы списка компонентов в редакторе
+        /// </summary>
+        protected List<CompItem> compItems;
+        /// <summary>
+        /// Фабрика для создания компонентов
+        /// </summary>
+        protected CompFactory compFactory;
+
+
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        public CompLibSpec()
+        {
+            compItems = null;
+            compFactory = null;
+        }
+
+
+        /// <summary>
         /// Получить префикс XML-элементов
         /// </summary>
         public abstract string XmlPrefix { get; }
@@ -51,11 +71,51 @@ namespace Scada.Scheme
         /// <summary>
         /// Получить элементы списка компонентов в редакторе
         /// </summary>
-        public abstract List<CompItem> CompItems { get; }
+        public List<CompItem> CompItems
+        {
+            get
+            {
+                if (compItems == null)
+                    compItems = CreateCompItems();
+                return compItems;
+            }
+        }
 
         /// <summary>
         /// Получить фабрику для создания компонентов
         /// </summary>
-        public abstract CompFactory CompFactory { get; }
+        public CompFactory CompFactory
+        {
+            get
+            {
+                if (compFactory == null)
+                    compFactory = CreateCompFactory();
+                return compFactory;
+            }
+        }
+
+
+        /// <summary>
+        /// Создать элементы списка компонентов
+        /// </summary>
+        protected abstract List<CompItem> CreateCompItems();
+
+        /// <summary>
+        /// Создать фабрику компонентов
+        /// </summary>
+        protected abstract CompFactory CreateCompFactory();
+
+        /// <summary>
+        /// Проверить корректность реализации библиотеки компонентов
+        /// </summary>
+        public bool Validate()
+        {
+            return 
+                !string.IsNullOrEmpty(XmlPrefix) && 
+                !string.IsNullOrEmpty(XmlNs) &&
+                !string.IsNullOrEmpty(GroupHeader) &&
+                CompItems != null && CompItems.Count > 0 &&
+                CompFactory != null;
+        }
     }
 }
