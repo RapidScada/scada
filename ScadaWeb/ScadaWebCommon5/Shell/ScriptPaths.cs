@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2017 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2017
  */
 
 using System.Text;
@@ -74,17 +74,16 @@ namespace Scada.Web.Shell
         /// </summary>
         public string GenerateHtml()
         {
-            const string ScriptTemplate = "<script type='text/javascript' src='{0}'></script>";
             StringBuilder sbHtml = new StringBuilder();
 
             if (!string.IsNullOrEmpty(ChartScriptPath))
-                sbHtml.AppendLine(string.Format(ScriptTemplate, VirtualPathUtility.ToAbsolute(ChartScriptPath)));
+                sbHtml.AppendLine(string.Format(WebUtils.ScriptTemplate, VirtualPathUtility.ToAbsolute(ChartScriptPath)));
 
             if (!string.IsNullOrEmpty(CmdScriptPath))
-                sbHtml.AppendLine(string.Format(ScriptTemplate, VirtualPathUtility.ToAbsolute(CmdScriptPath)));
+                sbHtml.AppendLine(string.Format(WebUtils.ScriptTemplate, VirtualPathUtility.ToAbsolute(CmdScriptPath)));
 
             if (!string.IsNullOrEmpty(EventAckScriptPath))
-                sbHtml.AppendLine(string.Format(ScriptTemplate, VirtualPathUtility.ToAbsolute(EventAckScriptPath)));
+                sbHtml.AppendLine(string.Format(WebUtils.ScriptTemplate, VirtualPathUtility.ToAbsolute(EventAckScriptPath)));
 
             return sbHtml.ToString();
         }
