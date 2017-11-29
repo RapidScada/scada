@@ -57,6 +57,7 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Resources\test.png" />
     <Content Include="plugins\SchBasicComp\js\basiccomprender.js" />
     <Content Include="Web.config" />
