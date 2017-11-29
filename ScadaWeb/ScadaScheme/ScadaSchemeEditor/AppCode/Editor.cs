@@ -91,7 +91,11 @@ namespace Scada.Scheme.Editor
         /// <summary>
         /// Имя файла веб-страницы редактора
         /// </summary>
-        public const string WebPageFileName = "editor.html";
+        private const string WebPageFileName = "editor.html";
+        /// <summary>
+        /// Путь к директории плагинов относительно веб-страницы редактора
+        /// </summary>
+        private const string PluginsRoot = "../";
         /// <summary>
         /// Имя файла схемы по умолчанию
         /// </summary>
@@ -538,17 +542,44 @@ namespace Scada.Scheme.Editor
                     }
                 }
 
-                // создание файла веб-страницы
-                StringBuilder sbCustomScript = new StringBuilder();
-                sbCustomScript
+                // формирование списка стилей компонентов схемы
+                StringBuilder sbCompStyles = new StringBuilder();
+                List<string> compStyles = compManager.GetAllStyles();
+
+                foreach (string stylePath in compStyles)
+                {
+                    sbCompStyles.AppendFormat(WebUtils.StyleTemplate, PluginsRoot + stylePath).AppendLine();
+                }
+
+                // формирование списка скриптов компонентов схемы
+                StringBuilder sbCompScripts = new StringBuilder();
+                List<string> compScripts = compManager.GetAllScripts();
+
+                foreach (string scriptPath in compScripts)
+                {
+                    sbCompScripts.AppendFormat(WebUtils.ScriptTemplate, PluginsRoot + scriptPath).AppendLine();
+                }
+
+                // формирование скрипта редактора
+                StringBuilder sbEditorScript = new StringBuilder();
+                sbEditorScript
+                    .AppendLine("<script type=\"text/javascript\">")
                     .AppendFormat("var editorID = '{0}';", EditorID)
                     .AppendLine()
                     .Append("var phrases = ")
                     .Append(WebUtils.DictionaryToJs("Scada.Scheme.Editor.Js"))
                     .AppendLine(";")
-                    .AppendFormat("var serviceUrl = '{0}';", serviceUrl);
-                string webPageContent = string.Format(webPageTemplate, sbCustomScript.ToString());
+                    .AppendFormat("var serviceUrl = '{0}';", serviceUrl)
+                    .AppendLine()
+                    .Append("</script>");
 
+                // формирование содержимого веб-страницы
+                string webPageContent = string.Format(webPageTemplate, 
+                    sbCompStyles.ToString(), 
+                    sbCompScripts.ToString(), 
+                    sbEditorScript.ToString());
+
+                // запись файла веб-страницы
                 using (StreamWriter writer = new StreamWriter(GetWebPageFilePath(webDir), false, Encoding.UTF8))
                 {
                     writer.Write(webPageContent);

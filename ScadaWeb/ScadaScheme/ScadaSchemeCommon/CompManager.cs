@@ -344,6 +344,36 @@ namespace Scada.Scheme
             return specs;
         }
 
+        /// <summary>
+        /// Получить объединённый список стилей компонентов
+        /// </summary>
+        public List<string> GetAllStyles()
+        {
+            List<string> allStyles = new List<string>();
+
+            foreach (CompLibSpec spec in allSpecs)
+            {
+                allStyles.AddRange(spec.Styles);
+            }
+
+            return allStyles;
+        }
+
+        /// <summary>
+        /// Получить объединённый список скриптов компонентов
+        /// </summary>
+        public List<string> GetAllScripts()
+        {
+            List<string> allScripts = new List<string>();
+
+            foreach (CompLibSpec spec in allSpecs)
+            {
+                allScripts.AddRange(spec.Scripts);
+            }
+
+            return allScripts;
+        }
+
 
         /// <summary>
         /// Получить единственный экземпляр менеджера

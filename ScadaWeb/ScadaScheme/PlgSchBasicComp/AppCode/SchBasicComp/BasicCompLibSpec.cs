@@ -68,6 +68,34 @@ namespace Scada.Web.Plugins.SchBasicComp
             }
         }
 
+        /// <summary>
+        /// Получить ссылки на файлы CSS, которые необходимы для работы компонентов
+        /// </summary>
+        public override List<string> Styles
+        {
+            get
+            {
+                return new List<string>()
+                {
+                    "SchBasicComp/css/basiccomp.min.css"
+                };
+            }
+        }
+
+        /// <summary>
+        /// Получить ссылки на файлы JavaScript, которые необходимы для работы компонентов
+        /// </summary>
+        public override List<string> Scripts
+        {
+            get
+            {
+                return new List<string>()
+                {
+                    "SchBasicComp/js/basiccomprender.js"
+                };
+            }
+        }
+
 
         /// <summary>
         /// Создать элементы списка компонентов
