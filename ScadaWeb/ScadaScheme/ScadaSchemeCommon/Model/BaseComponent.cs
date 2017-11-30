@@ -50,6 +50,11 @@ namespace Scada.Scheme.Model
         /// </summary>
         [NonSerialized]
         protected SchemeDocument schemeDoc;
+        /// <summary>
+        /// Ссылка на объект, контролирующий загрузку классов при клонировании
+        /// </summary>
+        [NonSerialized]
+        protected SerializationBinder serBinder;
 
 
         /// <summary>
@@ -57,12 +62,14 @@ namespace Scada.Scheme.Model
         /// </summary>
         public BaseComponent()
         {
+            schemeDoc = null;
+            serBinder = null;
+
             ID = 0;
             Name = "";
             Location = Point.Default;
             Size = Size.Default;
             ZIndex = 0;
-            SchemeDoc = null;
         }
 
 
@@ -194,7 +201,7 @@ namespace Scada.Scheme.Model
         /// </summary>
         public virtual BaseComponent Clone()
         {
-            BaseComponent clonedComponent = (BaseComponent)ScadaUtils.DeepClone(this);
+            BaseComponent clonedComponent = (BaseComponent)ScadaUtils.DeepClone(this, serBinder);
             clonedComponent.SchemeDoc = SchemeDoc;
             clonedComponent.ItemChanged += ItemChanged;
             return clonedComponent;

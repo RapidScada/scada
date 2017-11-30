@@ -35,5 +35,13 @@ namespace Scada.Web.Plugins.SchBasicComp
     [Serializable]
     public class Led : BaseComponent
     {
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        public Led()
+            : base()
+        {
+            serBinder = PlgUtils.SerializationBinder;
+        }
     }
 }
