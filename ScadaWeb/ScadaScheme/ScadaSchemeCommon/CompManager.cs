@@ -109,7 +109,7 @@ namespace Scada.Scheme
         /// <summary>
         /// Добавить компоненты в словари
         /// </summary>
-        private void AddComponents(ISchemeComp schemeComp)
+        private bool AddComponents(ISchemeComp schemeComp)
         {
             CompLibSpec compLibSpec = schemeComp.CompLibSpec;
             string errMsg;
@@ -126,12 +126,16 @@ namespace Scada.Scheme
                         if (compItem != null && compItem.CompType != null)
                             specsByType[compItem.CompType.FullName] = compLibSpec;
                     }
+
+                    return true;
                 }
                 else if (!string.IsNullOrEmpty(errMsg))
                 {
                     LoadErrors.Add(errMsg);
                 }
             }
+
+            return false;
         }
 
         /// <summary>
@@ -175,8 +179,9 @@ namespace Scada.Scheme
 
                 foreach (FileInfo fileInfo in fileInfoArr)
                 {
+                    string fileName = fileInfo.FullName;
                     string errMsg;
-                    PluginSpec pluginSpec = PluginSpec.CreateFromDll(fileInfo.FullName, out errMsg);
+                    PluginSpec pluginSpec = PluginSpec.CreateFromDll(fileName, out errMsg);
 
                     if (pluginSpec == null)
                     {
@@ -184,13 +189,24 @@ namespace Scada.Scheme
                     }
                     else if (pluginSpec is ISchemeComp)
                     {
-                        AddComponents((ISchemeComp)pluginSpec);
+                        if (AddComponents((ISchemeComp)pluginSpec))
+                        {
+                            log.WriteAction(string.Format(Localization.UseRussian ?
+                                "Загружены компоненты из файла {0}" :
+                                "Components are loaded from the file {0}", fileName));
+                        }
+                        else
+                        {
+                            log.WriteAction(string.Format(Localization.UseRussian ?
+                                "Не удалось загрузить компоненты из файла {0}" :
+                                "Unable to load components from the file {0}", fileName));
+                        }
                     }
                     else
                     {
                         log.WriteError(string.Format(Localization.UseRussian ? 
                             "Библиотека {0} не предоставляет компоненты схем" : 
-                            "The assembly {0} does not provide scheme components", fileInfo.FullName));
+                            "The assembly {0} does not provide scheme components", fileName));
                     }
                 }
             }
