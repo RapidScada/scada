@@ -39,7 +39,10 @@ namespace Scada.Scheme
         }
 
         // Словарь Scada.Scheme.CompManager
-        public static string Aaa { get; private set; }
+        public static string UnknownComponent { get; private set; }
+        public static string CompLibraryNotFound { get; private set; }
+        public static string UnableCreateComponent { get; private set; }
+        public static string ErrorCreatingComponent { get; private set; }
 
         // Словарь Scada.Scheme.SchemeView
         public static string LoadSchemeViewError { get; private set; }
@@ -65,6 +68,11 @@ namespace Scada.Scheme
 
         private static void SetToDefault()
         {
+            UnknownComponent = Localization.Dict.GetEmptyPhrase("UnknownComponent");
+            CompLibraryNotFound = Localization.Dict.GetEmptyPhrase("CompLibraryNotFound");
+            UnableCreateComponent = Localization.Dict.GetEmptyPhrase("UnableCreateComponent");
+            ErrorCreatingComponent = Localization.Dict.GetEmptyPhrase("ErrorCreatingComponent");
+
             LoadSchemeViewError = Localization.Dict.GetEmptyPhrase("LoadSchemeViewError");
             SaveSchemeViewError = Localization.Dict.GetEmptyPhrase("SaveSchemeViewError");
             IncorrectFileFormat = Localization.Dict.GetEmptyPhrase("IncorrectFileFormat");
@@ -88,6 +96,14 @@ namespace Scada.Scheme
         public static void Init()
         {
             Localization.Dict dict;
+            if (Localization.Dictionaries.TryGetValue("Scada.Scheme.CompManager", out dict))
+            {
+                UnknownComponent = dict.GetPhrase("UnknownComponent", UnknownComponent);
+                CompLibraryNotFound = dict.GetPhrase("CompLibraryNotFound", CompLibraryNotFound);
+                UnableCreateComponent = dict.GetPhrase("UnableCreateComponent", UnableCreateComponent);
+                ErrorCreatingComponent = dict.GetPhrase("ErrorCreatingComponent", ErrorCreatingComponent);
+            }
+
             if (Localization.Dictionaries.TryGetValue("Scada.Scheme.SchemeView", out dict))
             {
                 LoadSchemeViewError = dict.GetPhrase("LoadSchemeViewError", LoadSchemeViewError);

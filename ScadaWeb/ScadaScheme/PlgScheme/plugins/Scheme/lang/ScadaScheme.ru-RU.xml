@@ -1,5 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PlgSchemeDictionaries>
+  <Dictionary key="Scada.Scheme.CompManager">
+    <Phrase key="UnknownComponent">Неизвестный компонент {0}</Phrase>
+    <Phrase key="CompLibraryNotFound">Не найдена библиотека для компонента {0}</Phrase>
+    <Phrase key="UnableCreateComponent">Невозможно создать компонент {0}</Phrase>
+    <Phrase key="ErrorCreatingComponent">Ошибка при создании компонента {0}</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Scheme.SchemeView">
     <Phrase key="LoadSchemeViewError">Ошибка при загрузке схемы из файла</Phrase>
     <Phrase key="SaveSchemeViewError">Ошибка при сохранении схемы в файл</Phrase>

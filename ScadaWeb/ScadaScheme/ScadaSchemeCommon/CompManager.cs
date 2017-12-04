@@ -240,30 +240,42 @@ namespace Scada.Scheme
                 throw new ArgumentNullException("compNode");
 
             errMgs = "";
+            string nodeName = compNode.Name;
+
             try
             {
                 string xmlPrefix = compNode.Prefix;
-                string nodeName = compNode.LocalName.ToLowerInvariant();
+                string localName = compNode.LocalName.ToLowerInvariant();
                 CompFactory compFactory;
 
                 if (string.IsNullOrEmpty(xmlPrefix))
                 {
-                    if (nodeName == "statictext")
+                    if (localName == "statictext")
                         return new StaticText();
-                    else if (nodeName == "dynamictext")
+                    else if (localName == "dynamictext")
                         return new DynamicText();
-                    else if (nodeName == "staticpicture")
+                    else if (localName == "staticpicture")
                         return new StaticPicture();
-                    else if (nodeName == "dynamicpicture")
+                    else if (localName == "dynamicpicture")
                         return new DynamicPicture();
+                    else
+                        errMgs = string.Format(SchemePhrases.UnknownComponent, nodeName);
                 }
                 else if (factsByPrefix.TryGetValue(xmlPrefix, out compFactory))
                 {
-                    return compFactory.CreateComponent(nodeName, true);
+                    BaseComponent comp = compFactory.CreateComponent(localName, true);
+                    if (comp == null)
+                        errMgs = string.Format(SchemePhrases.UnableCreateComponent, nodeName);
+                    return comp;
+                }
+                else
+                {
+                    errMgs = string.Format(SchemePhrases.CompLibraryNotFound, nodeName);
                 }
             }
             catch (Exception ex)
             {
+                errMgs = string.Format(SchemePhrases.ErrorCreatingComponent, nodeName);
                 log.WriteException(ex, string.Format(Localization.UseRussian ?
                     "Ошибка при создании компонента на основе XML-узла \"{0}\"" :
                     "Error creating component based on the XML node \"{0}\"", compNode.Name));

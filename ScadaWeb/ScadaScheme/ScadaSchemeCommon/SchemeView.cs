@@ -131,28 +131,27 @@ namespace Scada.Scheme
 
                     if (component == null)
                     {
+                        component = new UnknownComponent() { XmlNode = compNode };
                         if (errNodeNames.Add(compNode.Name))
                             LoadErrors.Add(errMsg);
                     }
-                    else
+
+                    // загрузка компонента и добавление его в представление
+                    component.SchemeDoc = SchemeDoc;
+                    component.LoadFromXml(compNode);
+                    Components[component.ID] = component;
+
+                    // добавление входных каналов представления
+                    if (component is IDynamicComponent)
                     {
-                        // загрузка компонента и добавление его в представление
-                        component.SchemeDoc = SchemeDoc;
-                        component.LoadFromXml(compNode);
-                        Components[component.ID] = component;
-
-                        // добавление входных каналов представления
-                        if (component is IDynamicComponent)
-                        {
-                            IDynamicComponent dynamicComponent = (IDynamicComponent)component;
-                            AddCnlNum(dynamicComponent.InCnlNum);
-                            AddCtrlCnlNum(dynamicComponent.CtrlCnlNum);
-                        }
-
-                        // определение макс. идентификатора компонентов
-                        if (component.ID > maxComponentID)
-                            maxComponentID = component.ID;
+                        IDynamicComponent dynamicComponent = (IDynamicComponent)component;
+                        AddCnlNum(dynamicComponent.InCnlNum);
+                        AddCtrlCnlNum(dynamicComponent.CtrlCnlNum);
                     }
+
+                    // определение макс. идентификатора компонентов
+                    if (component.ID > maxComponentID)
+                        maxComponentID = component.ID;
                 }
             }
 
@@ -225,23 +224,30 @@ namespace Scada.Scheme
 
                 foreach (BaseComponent component in Components.Values)
                 {
-                    Type compType = component.GetType();
-                    CompLibSpec compLibSpec = compManager.GetSpecByType(compType);
-
-                    // добавление пространства имён
-                    if (compLibSpec != null && !prefixes.Contains(compLibSpec.XmlPrefix))
+                    if (component is UnknownComponent)
                     {
-                        rootElem.SetAttribute("xmlns:" + compLibSpec.XmlPrefix, compLibSpec.XmlNs);
-                        prefixes.Add(compLibSpec.XmlPrefix);
+                        componentsElem.AppendChild(((UnknownComponent)component).XmlNode);
                     }
+                    else
+                    {
+                        Type compType = component.GetType();
+                        CompLibSpec compLibSpec = compManager.GetSpecByType(compType);
 
-                    // создание компонента
-                    XmlElement componentElem = compLibSpec == null ?
-                        xmlDoc.CreateElement(compType.Name) /*стандартный компонент*/ :
-                        xmlDoc.CreateElement(compLibSpec.XmlPrefix, compType.Name, compLibSpec.XmlNs);
+                        // добавление пространства имён
+                        if (compLibSpec != null && !prefixes.Contains(compLibSpec.XmlPrefix))
+                        {
+                            rootElem.SetAttribute("xmlns:" + compLibSpec.XmlPrefix, compLibSpec.XmlNs);
+                            prefixes.Add(compLibSpec.XmlPrefix);
+                        }
 
-                    componentsElem.AppendChild(componentElem);
-                    component.SaveToXml(componentElem);
+                        // создание XML-элемента компонента
+                        XmlElement componentElem = compLibSpec == null ?
+                            xmlDoc.CreateElement(compType.Name) /*стандартный компонент*/ :
+                            xmlDoc.CreateElement(compLibSpec.XmlPrefix, compType.Name, compLibSpec.XmlNs);
+
+                        componentsElem.AppendChild(componentElem);
+                        component.SaveToXml(componentElem);
+                    }
                 }
 
                 // запись изображений схемы
