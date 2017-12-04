@@ -38,6 +38,9 @@ namespace Scada.Scheme
             SetToDefault();
         }
 
+        // Словарь Scada.Scheme.CompManager
+        public static string Aaa { get; private set; }
+
         // Словарь Scada.Scheme.SchemeView
         public static string LoadSchemeViewError { get; private set; }
         public static string SaveSchemeViewError { get; private set; }

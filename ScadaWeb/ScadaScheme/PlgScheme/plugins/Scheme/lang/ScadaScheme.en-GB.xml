@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PlgSchemeDictionaries>
+  <Dictionary key="Scada.Scheme.SchemeView">
+    <Phrase key="LoadSchemeViewError">Error loading scheme from file</Phrase>
+    <Phrase key="SaveSchemeViewError">Error saving scheme to file</Phrase>
+    <Phrase key="IncorrectFileFormat">Incorrect format of the scheme file</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.PropertyGrid">
+    <Phrase key="StringConvertError">Unable to convert string</Phrase>
+    <Phrase key="StringUniqueError">Property value must be unique</Phrase>
+    <Phrase key="TrueValue">Yes</Phrase>
+    <Phrase key="FalseValue">No</Phrase>
+    <Phrase key="EmptyValue">(None)</Phrase>
+    <Phrase key="CollectionValue">(Collection)</Phrase>
+    <Phrase key="BoldSymbol">B</Phrase>
+    <Phrase key="ItalicSymbol">I</Phrase>
+    <Phrase key="UnderlineSymbol">U</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmCnlFilterDialog">
+    <Phrase key="this">Channel Filter</Phrase>
+    <Phrase key="lblCnlNums">Input channels numbers</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmConditionDialog">
+    <Phrase key="this">Image Output Conditions</Phrase>
+    <Phrase key="lblCond">Conditions</Phrase>
+    <Phrase key="lblProps">Condition properties</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmFontDialog">
+    <Phrase key="this">Font</Phrase>
+    <Phrase key="lblFontName">Font</Phrase>
+    <Phrase key="lblFontSize">Size</Phrase>
+    <Phrase key="gbStyle">Style</Phrase>
+    <Phrase key="chkBold">Bold</Phrase>
+    <Phrase key="chkItalic">Italic</Phrase>
+    <Phrase key="chkUnderline">Underline</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmImageDialog">
+    <Phrase key="this">Images</Phrase>
+    <Phrase key="lblImages">Images</Phrase>
+    <Phrase key="lblImageProps">Image properties</Phrase>
+    <Phrase key="lblPreview">Preview</Phrase>
+    <Phrase key="btnSelectEmpty">Empty</Phrase>
+    <Phrase key="btnSelect">Select</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
+    <Phrase key="ImageFileFilter">Images (*.jpg;*.png;*.gif;*.svg)|*.jpg;*.png;*.gif;*.svg|All Files (*.*)|*.*</Phrase>
+    <Phrase key="DisplayImageError">Error displaying image</Phrase>
+    <Phrase key="LoadImageError">Error loading image</Phrase>
+    <Phrase key="SaveImageError">Error saving image</Phrase>
+  </Dictionary>
+</PlgSchemeDictionaries>

@@ -73,9 +73,8 @@ namespace Scada
             /// </summary>
             public static string GetFileName(string directory, string fileNamePrefix, string cultureName)
             {
-                return directory + fileNamePrefix +
-                    (string.IsNullOrEmpty(cultureName) ? "" : "." + cultureName) + 
-                    ".xml";
+                return ScadaUtils.NormalDir(directory) + 
+                    fileNamePrefix + (string.IsNullOrEmpty(cultureName) ? "" : "." + cultureName) +  ".xml";
             }
             /// <summary>
             /// Получить фразу из словаря по ключу или значение по умолчанию при её отсутствии

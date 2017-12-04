@@ -54,6 +54,7 @@ namespace Scada.Scheme
             maxComponentID = 0;
             SchemeDoc = new SchemeDocument();
             Components = new SortedList<int, BaseComponent>();
+            LoadErrors = new List<string>();
         }
 
 
@@ -66,6 +67,12 @@ namespace Scada.Scheme
         /// Получить компоненты схемы, ключ - идентификатор компонента
         /// </summary>
         public SortedList<int, BaseComponent> Components { get; protected set; }
+
+        /// <summary>
+        /// Получить ошибки при загрузке схемы
+        /// </summary>
+        /// <remarks>Необходимо для контроля загрузки библиотек и компонентов</remarks>
+        public List<string> LoadErrors { get; protected set; }
 
 
         /// <summary>
@@ -112,14 +119,22 @@ namespace Scada.Scheme
             XmlNode componentsNode = rootElem.SelectSingleNode("Components") ?? rootElem.SelectSingleNode("Elements");
             if (componentsNode != null)
             {
+                HashSet<string> errNodeNames = new HashSet<string>(); // имена узлов незагруженных компонентов
                 CompManager compManager = CompManager.GetInstance();
+                LoadErrors.AddRange(compManager.LoadErrors);
 
                 foreach (XmlNode compNode in componentsNode.ChildNodes)
                 {
                     // создание компонента
-                    BaseComponent component = compManager.CreateComponent(compNode);
+                    string errMsg;
+                    BaseComponent component = compManager.CreateComponent(compNode, out errMsg);
 
-                    if (component != null)
+                    if (component == null)
+                    {
+                        if (errNodeNames.Add(compNode.Name))
+                            LoadErrors.Add(errMsg);
+                    }
+                    else
                     {
                         // загрузка компонента и добавление его в представление
                         component.SchemeDoc = SchemeDoc;
@@ -265,6 +280,7 @@ namespace Scada.Scheme
             maxComponentID = 0;
             SchemeDoc.SetToDefault();
             Components.Clear();
+            LoadErrors.Clear();
         }
 
         /// <summary>

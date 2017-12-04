@@ -89,10 +89,14 @@ namespace Scada.Scheme.Editor
             else
                 log.WriteError(errMsg);
 
+            if (Localization.LoadDictionaries(appData.AppDirs.LangDir, "ScadaScheme", out errMsg))
+                SchemePhrases.Init();
+            else
+                log.WriteError(errMsg);
+
             if (Localization.LoadDictionaries(appData.AppDirs.LangDir, "ScadaSchemeEditor", out errMsg))
             {
                 Translator.TranslateForm(this, "Scada.Scheme.Editor.FrmMain");
-                SchemePhrases.Init();
                 AppPhrases.Init();
                 ofdScheme.Filter = sfdScheme.Filter = AppPhrases.SchemeFileFilter;
             }

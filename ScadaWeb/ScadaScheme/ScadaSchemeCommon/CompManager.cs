@@ -85,7 +85,14 @@ namespace Scada.Scheme
             allSpecs = new List<CompLibSpec>();
             factsByPrefix = new Dictionary<string, CompFactory>();
             specsByType = new Dictionary<string, CompLibSpec>();
+            LoadErrors = new List<string>();
         }
+
+
+        /// <summary>
+        /// Получить ошибки при загрузке библиотек
+        /// </summary>
+        public List<string> LoadErrors { get; private set; }
 
 
         /// <summary>
@@ -96,6 +103,7 @@ namespace Scada.Scheme
             allSpecs.Clear();
             factsByPrefix.Clear();
             specsByType.Clear();
+            LoadErrors.Clear();
         }
 
         /// <summary>
@@ -104,16 +112,24 @@ namespace Scada.Scheme
         private void AddComponents(ISchemeComp schemeComp)
         {
             CompLibSpec compLibSpec = schemeComp.CompLibSpec;
+            string errMsg;
 
-            if (compLibSpec != null && compLibSpec.Validate())
+            if (compLibSpec != null)
             {
-                allSpecs.Add(compLibSpec);
-                factsByPrefix[compLibSpec.XmlPrefix] = compLibSpec.CompFactory;
-
-                foreach (CompItem compItem in compLibSpec.CompItems)
+                if (compLibSpec.Validate(out errMsg) && compLibSpec.CompFactory != null)
                 {
-                    if (compItem.CompType != null)
-                        specsByType[compItem.CompType.FullName] = compLibSpec;
+                    allSpecs.Add(compLibSpec);
+                    factsByPrefix[compLibSpec.XmlPrefix] = compLibSpec.CompFactory;
+
+                    foreach (CompItem compItem in compLibSpec.CompItems)
+                    {
+                        if (compItem != null && compItem.CompType != null)
+                            specsByType[compItem.CompType.FullName] = compLibSpec;
+                    }
+                }
+                else if (!string.IsNullOrEmpty(errMsg))
+                {
+                    LoadErrors.Add(errMsg);
                 }
             }
         }
@@ -218,11 +234,12 @@ namespace Scada.Scheme
         /// <summary>
         /// Создать компонент на основе XML-узла
         /// </summary>
-        public BaseComponent CreateComponent(XmlNode compNode)
+        public BaseComponent CreateComponent(XmlNode compNode, out string errMgs)
         {
             if (compNode == null)
                 throw new ArgumentNullException("compNode");
 
+            errMgs = "";
             try
             {
                 string xmlPrefix = compNode.Prefix;
@@ -240,7 +257,7 @@ namespace Scada.Scheme
                     else if (nodeName == "dynamicpicture")
                         return new DynamicPicture();
                 }
-                else if (factsByPrefix.TryGetValue(xmlPrefix, out compFactory) && compFactory != null)
+                else if (factsByPrefix.TryGetValue(xmlPrefix, out compFactory))
                 {
                     return compFactory.CreateComponent(nodeName, true);
                 }

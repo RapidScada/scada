@@ -152,6 +152,14 @@
       <Link>Web\plugins\Scheme\js\schemerender.js</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\PlgScheme\plugins\Scheme\lang\ScadaScheme.en-GB.xml">
+      <Link>Lang\ScadaScheme.en-GB.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\PlgScheme\plugins\Scheme\lang\ScadaScheme.ru-RU.xml">
+      <Link>Lang\ScadaScheme.ru-RU.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Lang\ScadaSchemeEditor.ru-RU.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
