@@ -120,6 +120,7 @@ namespace Scada.Scheme.Editor
                 attrTranslator.TranslateAttrs(typeof(DynamicText));
                 attrTranslator.TranslateAttrs(typeof(StaticPicture));
                 attrTranslator.TranslateAttrs(typeof(DynamicPicture));
+                attrTranslator.TranslateAttrs(typeof(UnknownComponent));
                 attrTranslator.TranslateAttrs(typeof(Condition));
                 attrTranslator.TranslateAttrs(typeof(FrmImageDialog.ImageListItem));
             }

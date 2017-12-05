@@ -23,6 +23,7 @@
  * Modified : 2017
  */
 
+using Scada.Scheme.Model.PropertyGrid;
 using System;
 using System.Web.Script.Serialization;
 using System.Xml;
@@ -44,5 +45,28 @@ namespace Scada.Scheme.Model
         /// </summary>
         [CM.Browsable(false), ScriptIgnore]
         public XmlNode XmlNode { get; set; }
+
+        /// <summary>
+        /// Получить наименование XML-узла
+        /// </summary>
+        #region Attributes
+        [DisplayName("XML node"), Category(Categories.Design)]
+        [Description("The XML node that contains component properties in the scheme file.")]
+        #endregion
+        public string XmlNodeName
+        {
+            get
+            {
+                return XmlNode == null ? "" : XmlNode.Name;
+            }
+        }
+
+        /// <summary>
+        /// Вернуть строковое представление объекта
+        /// </summary>
+        public override string ToString()
+        {
+            return BuildDisplayName(XmlNodeName);
+        }
     }
 }

@@ -17,12 +17,12 @@ var controlRight = controlRight || false;
 
 // Load the scheme
 function loadScheme(viewID) {
-    scheme.load(viewID, function (success, errors) {
+    scheme.load(viewID, function (success) {
         if (success) {
             if (!DEBUG_MODE) {
                 // show errors
-                if (Array.isArray(errors) && errors.length > 0) {
-                    notifier.addNotification(errors.join("<br/>"),
+                if (Array.isArray(scheme.loadErrors) && scheme.loadErrors.length > 0) {
+                    notifier.addNotification(scheme.loadErrors.join("<br/>"),
                         scada.NotifTypes.ERROR, notifier.INFINITE_NOTIF_LIFETIME);
                 }
 

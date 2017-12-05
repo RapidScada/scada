@@ -210,6 +210,11 @@
     <Phrase key="CtrlCnlNum.Category">Данные</Phrase>
     <Phrase key="CtrlCnlNum.Description">Номер канала управления, связанного с рисунком.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.UnknownComponent">
+    <Phrase key="XmlNodeName.DisplayName">XML-узел</Phrase>
+    <Phrase key="XmlNodeName.Category">Дизайн</Phrase>
+    <Phrase key="XmlNodeName.Description">XML-узел, содержащий свойства компонента в файле схемы.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Scheme.Model.DataTypes.Actions">
     <Phrase key="None">Не задано</Phrase>
     <Phrase key="DrawDiagram">Построить график</Phrase>

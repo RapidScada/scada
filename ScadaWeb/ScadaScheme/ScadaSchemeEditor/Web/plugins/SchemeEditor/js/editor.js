@@ -16,6 +16,12 @@ var serviceUrl = serviceUrl || "http://localhost:10001/ScadaSchemeEditor/SchemeE
 function loadScheme(editorID) {
     scheme.load(editorID, function (success) {
         if (success) {
+            // show errors
+            if (Array.isArray(scheme.loadErrors) && scheme.loadErrors.length > 0) {
+                showAlert(scheme.loadErrors.join("<br/>"));
+            }
+
+            // show scheme
             scheme.createDom(true);
             startGettingChanges();
         } else {

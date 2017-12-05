@@ -167,5 +167,36 @@ namespace Scada.Web.Plugins.Scheme
                 return GetErrorDtoJs(ex);
             }
         }
+
+        /// <summary>
+        /// Получить ошибки при загрузке схемы
+        /// </summary>
+        /// <remarks>Возвращает SchemeDTO в формате в JSON</remarks>
+        [OperationContract]
+        [WebGet]
+        public string GetLoadErrors(int viewID, long viewStamp)
+        {
+            try
+            {
+                UserRights userRights;
+                AppData.CheckLoggedOn(out userRights);
+
+                SchemeView schemeView = GetSchemeView(viewID, userRights);
+                SchemeDTO dto = new SchemeDTO();
+                dto.ViewStamp = schemeView.Stamp;
+
+                if (SchemeUtils.ViewStampsMatched(viewStamp, schemeView.Stamp))
+                    dto.Data = schemeView.LoadErrors.ToArray();
+
+                return JsSerializer.Serialize(dto);
+            }
+            catch (Exception ex)
+            {
+                AppData.Log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении ошибок при загрузке схемы с ид.={0}" :
+                    "Error getting loading errors of the scheme with ID={0}", viewID);
+                return GetErrorDtoJs(ex);
+            }
+        }
     }
 }

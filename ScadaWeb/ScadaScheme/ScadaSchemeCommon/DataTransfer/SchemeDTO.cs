@@ -53,10 +53,5 @@ namespace Scada.Scheme.DataTransfer
         /// Получить или установить признак, что заданный в запросе редактор схем неизвестен
         /// </summary>
         public bool EditorUnknown { get; set; }
-
-        /// <summary>
-        /// Скрыть поле данных
-        /// </summary>
-        protected new object Data { get; set; }
     }
 }
