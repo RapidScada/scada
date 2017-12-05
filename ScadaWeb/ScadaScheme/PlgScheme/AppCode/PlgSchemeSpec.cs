@@ -108,7 +108,7 @@ namespace Scada.Web.Plugins
             // создание объектов для обновления словарей
             string dir = Path.Combine(AppDirs.PluginsDir, "Scheme", "lang");
             schemeDictUpdater = new DictUpdater(dir, "ScadaScheme", null, Log);
-            pluginDictUpdater = new DictUpdater(dir, "PlgScheme", null, Log);
+            pluginDictUpdater = new DictUpdater(dir, "PlgScheme", SchemePhrases.Init, Log);
 
             // инициализация менеджера компонентов
             CompManager compManager = CompManager.GetInstance();
