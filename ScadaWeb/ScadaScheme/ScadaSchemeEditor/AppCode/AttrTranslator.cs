@@ -26,7 +26,6 @@
 using Scada.Scheme.Model.PropertyGrid;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using CM = System.ComponentModel;
 
 namespace Scada.Scheme.Editor
