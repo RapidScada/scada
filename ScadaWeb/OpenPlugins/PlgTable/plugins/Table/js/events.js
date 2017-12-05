@@ -323,7 +323,7 @@ function updateEvents(full, callback) {
 function startFullUpdatingEvents() {
     updateEvents(true, function (success) {
         if (!success) {
-            notifier.addNotification(phrases.UpdateEventsError, true, notifier.DEF_NOTIF_LIFETIME);
+            notifier.addNotification(phrases.UpdateEventsError, scada.NotifTypes.ERROR, notifier.DEF_NOTIF_LIFETIME);
         }
 
         fullUpdateTimeoutID = setTimeout(startFullUpdatingEvents, arcRefrRate);
@@ -334,7 +334,7 @@ function startFullUpdatingEvents() {
 function startPartialUpdatingEvents() {
     updateEvents(false, function (success) {
         if (!success) {
-            notifier.addNotification(phrases.UpdateEventsError, true, notifier.DEF_NOTIF_LIFETIME);
+            notifier.addNotification(phrases.UpdateEventsError, scada.NotifTypes.ERROR, notifier.DEF_NOTIF_LIFETIME);
         }
 
         partUpdateTimeoutID = setTimeout(startPartialUpdatingEvents, dataRefrRate);

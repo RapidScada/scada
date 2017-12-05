@@ -13,6 +13,12 @@
 // Rapid SCADA namespace
 var scada = scada || {};
 
+// Notification types enumeration
+scada.NotifTypes = {
+    INFO: 0,
+    ERROR: 1,
+};
+
 // Notifier type
 scada.Notifier = function (selector) {
     // jQuery object of the notification area
@@ -29,7 +35,7 @@ scada.Notifier = function (selector) {
 };
 
 // Add notification to the notification area
-scada.Notifier.prototype.addNotification = function (messageHtml, error, lifetime) {
+scada.Notifier.prototype.addNotification = function (messageHtml, notifType, lifetime) {
     // remove the previous message if it is equal the new
     var divPrevMessage = this._notifier.children(".message:last");
 
@@ -40,12 +46,12 @@ scada.Notifier.prototype.addNotification = function (messageHtml, error, lifetim
     // add the new message
     var divMessage = $("<div class='message'></div>").html(messageHtml);
 
-    if (error) {
+    if (notifType == scada.NotifTypes.ERROR) {
         divMessage.addClass("error");
     }
 
     if (lifetime) {
-        divMessage.attr("data-expires", Date.now() + lifetime);
+        divMessage.data("expires", Date.now() + lifetime);
     }
 
     this._notifier
@@ -65,7 +71,7 @@ scada.Notifier.prototype.clearOutdatedNotifications = function () {
         var removed = false;
 
         $.each(messages, function () {
-            var expires = $(this).attr("data-expires");
+            var expires = $(this).data("expires");
             if (expires < nowMs) {
                 $(this).remove();
                 removed = true;

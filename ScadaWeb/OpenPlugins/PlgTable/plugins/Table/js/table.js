@@ -341,7 +341,7 @@ function updateHourData(callback) {
 function startUpdatingCurData() {
     updateCurData(function (success) {
         if (!success) {
-            notifier.addNotification(phrases.UpdateCurDataError, true, notifier.DEF_NOTIF_LIFETIME);
+            notifier.addNotification(phrases.UpdateCurDataError, scada.NotifTypes.ERROR, notifier.DEF_NOTIF_LIFETIME);
         }
 
         setTimeout(startUpdatingCurData, dataRefrRate);
@@ -352,7 +352,7 @@ function startUpdatingCurData() {
 function startUpdatingHourData() {
     updateHourData(function (success) {
         if (!success) {
-            notifier.addNotification(phrases.UpdateHourDataError, true, notifier.DEF_NOTIF_LIFETIME);
+            notifier.addNotification(phrases.UpdateHourDataError, scada.NotifTypes.ERROR, notifier.DEF_NOTIF_LIFETIME);
         }
 
         updateHourDataTimeoutID = setTimeout(startUpdatingHourData, arcRefrRate);

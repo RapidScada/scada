@@ -482,7 +482,8 @@ scada.scheme.Scheme.prototype.clear = function () {
 };
 
 // Load the scheme
-// callback is a function (success)
+// callback is a function (success, errors),
+// errors is an array of strings contains non-critical errors occurred when loading scheme
 scada.scheme.Scheme.prototype.load = function (viewOrEditorID, callback) {
     console.info(scada.utils.getCurTime() + " Start loading scheme");
     this.parentDomElem.addClass("loading");

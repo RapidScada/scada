@@ -17,9 +17,16 @@ var controlRight = controlRight || false;
 
 // Load the scheme
 function loadScheme(viewID) {
-    scheme.load(viewID, function (success) {
+    scheme.load(viewID, function (success, errors) {
         if (success) {
             if (!DEBUG_MODE) {
+                // show errors
+                if (Array.isArray(errors) && errors.length > 0) {
+                    notifier.addNotification(errors.join("<br/>"),
+                        scada.NotifTypes.ERROR, notifier.INFINITE_NOTIF_LIFETIME);
+                }
+
+                // show scheme
                 scheme.createDom(controlRight);
                 loadScale();
                 displayScale();
@@ -28,7 +35,7 @@ function loadScheme(viewID) {
         } else {
             notifier.addNotification(phrases.LoadSchemeError +
                 " <input type='button' value='" + phrases.ReloadButton + "' onclick='reloadScheme()' />",
-                true, notifier.INFINITE_NOTIF_LIFETIME);
+                scada.NotifTypes.ERROR, notifier.INFINITE_NOTIF_LIFETIME);
         }
     });
 }
@@ -42,7 +49,7 @@ function reloadScheme() {
 function startUpdatingScheme() {
     scheme.updateData(scada.clientAPI, function (success) {
         if (!success) {
-            notifier.addNotification(phrases.UpdateError, true, notifier.DEF_NOTIF_LIFETIME);
+            notifier.addNotification(phrases.UpdateError, scada.NotifTypes.ERROR, notifier.DEF_NOTIF_LIFETIME);
         }
 
         setTimeout(startUpdatingScheme, refrRate);
@@ -152,7 +159,8 @@ function initDebugTools() {
     });
 
     $("#spanAddNotifBtn").click(function () {
-        notifier.addNotification(scada.utils.getCurTime() + " Test notification", false, notifier.DEF_NOTIF_LIFETIME);
+        notifier.addNotification(scada.utils.getCurTime() + " Test notification",
+            scada.NotifTypes.INFO, notifier.DEF_NOTIF_LIFETIME);
     });
 }
 
