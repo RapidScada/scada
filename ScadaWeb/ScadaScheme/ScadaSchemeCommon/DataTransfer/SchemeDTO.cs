@@ -50,7 +50,7 @@ namespace Scada.Scheme.DataTransfer
         public long ViewStamp { get; set; }
 
         /// <summary>
-        /// Получить или установить признак, что заданный в запросе редактор схем неизвестен
+        /// Получить или установить признак, что заданный в запросе Редактор схем неизвестен
         /// </summary>
         public bool EditorUnknown { get; set; }
     }

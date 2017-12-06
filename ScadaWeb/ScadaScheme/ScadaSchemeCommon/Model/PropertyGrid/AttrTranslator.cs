@@ -15,26 +15,25 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : Scheme Editor
- * Summary  : Main form of the application
+ * Module   : ScadaSchemeCommon
+ * Summary  : Type attributes translation
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
  * Modified : 2017
  */
 
-using Scada.Scheme.Model.PropertyGrid;
 using System;
 using System.Collections.Generic;
 using CM = System.ComponentModel;
 
-namespace Scada.Scheme.Editor
+namespace Scada.Scheme.Model.PropertyGrid
 {
     /// <summary>
     /// Type attributes translation
     /// <para>Перевод атрибутов типа</para>
     /// </summary>
-    internal class AttrTranslator
+    public class AttrTranslator
     {
         /// <summary>
         /// Атрибуты свойства

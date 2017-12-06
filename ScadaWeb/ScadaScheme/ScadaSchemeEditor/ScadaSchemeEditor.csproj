@@ -62,7 +62,6 @@
     <Compile Include="AppCode\AppData.cs" />
     <Compile Include="AppCode\AppDirs.cs" />
     <Compile Include="AppCode\AppPhrases.cs" />
-    <Compile Include="AppCode\AttrTranslator.cs" />
     <Compile Include="AppCode\Change.cs" />
     <Compile Include="AppCode\Editor.cs" />
     <Compile Include="AppCode\ChangesDTO.cs" />

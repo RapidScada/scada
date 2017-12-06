@@ -189,6 +189,8 @@ namespace Scada.Scheme
                     }
                     else if (pluginSpec is ISchemeComp)
                     {
+                        pluginSpec.Init();
+
                         if (AddComponents((ISchemeComp)pluginSpec))
                         {
                             log.WriteAction(string.Format(Localization.UseRussian ?

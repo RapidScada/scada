@@ -78,6 +78,7 @@
     <Compile Include="Model\ISchemeDocAvailable.cs" />
     <Compile Include="Model\ItemChangedEventHandler.cs" />
     <Compile Include="Model\IUniqueItem.cs" />
+    <Compile Include="Model\PropertyGrid\AttrTranslator.cs" />
     <Compile Include="Model\PropertyGrid\BooleanConverter.cs" />
     <Compile Include="Model\PropertyGrid\Categories.cs" />
     <Compile Include="Model\PropertyGrid\CategoryAttribute.cs" />

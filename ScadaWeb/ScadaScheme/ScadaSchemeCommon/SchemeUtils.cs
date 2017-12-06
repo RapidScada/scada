@@ -23,6 +23,8 @@
  * Modified : 2017
  */
 
+using System.Reflection;
+
 namespace Scada.Scheme
 {
     /// <summary>
@@ -37,11 +39,22 @@ namespace Scada.Scheme
         public const string SchemeVersion = "5.2.0.0";
 
         /// <summary>
+        /// Получить признак, что запущен Редактор схем
+        /// </summary>
+        public static bool EditorMode
+        {
+            get
+            {                
+                return Assembly.GetEntryAssembly().GetName().Name == "ScadaSchemeEditor";
+            }
+        }
+
+        /// <summary>
         /// Проверить, что метки представления соответствуют друг другу
         /// </summary>
-        public static bool ViewStampsMatched(long viewStamp1, long viewStamp2)
+        public static bool ViewStampsMatched(long browserViewStamp, long serverViewStamp)
         {
-            return !(viewStamp1 > 0 && viewStamp2 > 0 && viewStamp1 != viewStamp2);
+            return serverViewStamp > 0 && (browserViewStamp == 0 || browserViewStamp == serverViewStamp);
         }
     }
 }
