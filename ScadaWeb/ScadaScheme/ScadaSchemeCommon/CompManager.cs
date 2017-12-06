@@ -24,6 +24,7 @@
  */
 
 using Scada.Scheme.Model;
+using Scada.Scheme.Model.PropertyGrid;
 using Scada.Web.Plugins;
 using System;
 using System.Collections.Generic;
@@ -109,7 +110,7 @@ namespace Scada.Scheme
         /// <summary>
         /// Добавить компоненты в словари
         /// </summary>
-        private bool AddComponents(ISchemeComp schemeComp)
+        private bool AddComponents(ISchemeComp schemeComp, AttrTranslator attrTranslator)
         {
             CompLibSpec compLibSpec = schemeComp.CompLibSpec;
             string errMsg;
@@ -124,7 +125,11 @@ namespace Scada.Scheme
                     foreach (CompItem compItem in compLibSpec.CompItems)
                     {
                         if (compItem != null && compItem.CompType != null)
+                        {
                             specsByType[compItem.CompType.FullName] = compLibSpec;
+                            if (attrTranslator != null)
+                                attrTranslator.TranslateAttrs(compItem.CompType);
+                        }
                     }
 
                     return true;
@@ -174,6 +179,7 @@ namespace Scada.Scheme
                     "Load components from files");
 
                 ClearDicts();
+                AttrTranslator attrTranslator = new AttrTranslator();
                 DirectoryInfo dirInfo = new DirectoryInfo(binDir);
                 FileInfo[] fileInfoArr = dirInfo.GetFiles(CompLibMask, SearchOption.TopDirectoryOnly);
 
@@ -191,7 +197,7 @@ namespace Scada.Scheme
                     {
                         pluginSpec.Init();
 
-                        if (AddComponents((ISchemeComp)pluginSpec))
+                        if (AddComponents((ISchemeComp)pluginSpec, attrTranslator))
                         {
                             log.WriteAction(string.Format(Localization.UseRussian ?
                                 "Загружены компоненты из файла {0}" :
@@ -237,7 +243,7 @@ namespace Scada.Scheme
                     foreach (PluginSpec pluginSpec in pluginSpecs)
                     {
                         if (pluginSpec is ISchemeComp)
-                            AddComponents((ISchemeComp)pluginSpec);
+                            AddComponents((ISchemeComp)pluginSpec, null);
                     }
                 }
             }

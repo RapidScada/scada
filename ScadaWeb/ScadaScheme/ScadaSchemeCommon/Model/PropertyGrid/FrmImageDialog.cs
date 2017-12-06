@@ -26,9 +26,6 @@
 using Scada.UI;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
 
@@ -38,140 +35,8 @@ namespace Scada.Scheme.Model.PropertyGrid
     /// Form for editing image dictionary
     /// <para>Форма редактирования словаря изображений</para>
     /// </summary>
-    public partial class FrmImageDialog : Form
+    internal partial class FrmImageDialog : Form
     {
-        /// <summary>
-        /// Элемент списка изображений
-        /// </summary>
-        public class ImageListItem : IUniqueItem
-        {
-            private const string ImageCat = "Image";            // наименование категории изображения
-            private Func<string, bool> imageNameIsUniqueMethod; // метод проверки наименования на уникальность
-            private System.Drawing.Image source;                // источник данных изображения
-
-            /// <summary>
-            /// Конструктор, ограничивающий создание объекта без параметров
-            /// </summary>
-            private ImageListItem()
-            {
-            }
-            /// <summary>
-            /// Конструктор
-            /// </summary>
-            public ImageListItem(Image image, Func<string, bool> imageNameIsUniqueMethod)
-            {
-                if (image == null)
-                    throw new ArgumentNullException("image");
-                if (imageNameIsUniqueMethod == null)
-                    throw new ArgumentNullException("imageNameIsUniqueMethod");
-
-                this.imageNameIsUniqueMethod = imageNameIsUniqueMethod;
-                source = null;
-
-                Image = image;
-                Name = image.Name;
-                DataSize = 0;
-                ImageSize = Size.Empty;
-                Format = "";
-            }
-
-            /// <summary>
-            /// Получить изображение
-            /// </summary>
-            #region Attributes
-            [Browsable(false)]
-            #endregion
-            public Image Image { get; private set; }
-            /// <summary>
-            /// Получить источник данных изображения
-            /// </summary>
-            #region Attributes
-            [Browsable(false)]
-            #endregion
-            public System.Drawing.Image Source
-            {
-                get
-                {
-                    if (source == null)
-                        LoadImage();
-                    return source;
-                }
-            }
-            /// <summary>
-            /// Получить или установить наименование изображения
-            /// </summary>
-            #region Attributes
-            [DisplayName("Name"), Category(ImageCat)]
-            [TypeConverter(typeof(UniqueStringConverter))]
-            #endregion
-            public string Name { get; set; }
-            /// <summary>
-            /// Получить размер данных изображения
-            /// </summary>
-            #region Attributes
-            [DisplayName("Data size"), Category(ImageCat)]
-            #endregion
-            public int DataSize { get; private set; }
-            /// <summary>
-            /// Получить размер изображения
-            /// </summary>
-            #region Attributes
-            [DisplayName("Size"), Category(ImageCat)]
-            #endregion
-            public Size ImageSize { get; private set; }
-            /// <summary>
-            /// Получить формат данных изображения
-            /// </summary>
-            #region Attributes
-            [DisplayName("Format"), Category(ImageCat)]
-            #endregion
-            public string Format { get; private set; }
-
-            /// <summary>
-            /// Загрузить изображение из его данных
-            /// </summary>
-            private void LoadImage()
-            {
-                if (Image == null || Image.Data == null)
-                {
-                    source = null;
-                }
-                else
-                {
-                    // using не используется, т.к. поток memStream должен существовать одновременно с изображением
-                    MemoryStream memStream = new MemoryStream(Image.Data);
-                    source = System.Drawing.Image.FromStream(memStream);
-                    DataSize = (int)memStream.Length;
-                    ImageSize = new Size(Source.Width, Source.Height);
-
-                    ImageFormat imageFormat = Source.RawFormat;
-                    if (imageFormat.Equals(ImageFormat.Gif))
-                        Format = "Gif";
-                    else if (imageFormat.Equals(ImageFormat.Jpeg))
-                        Format = "Jpeg";
-                    else if (imageFormat.Equals(ImageFormat.Png))
-                        Format = "Png";
-                    else
-                        Format = "";
-                }
-            }
-            /// <summary>
-            /// Проверить наименование на уникальность
-            /// </summary>
-            public bool KeyIsUnique(string key)
-            {
-                return imageNameIsUniqueMethod(key);
-            }
-            /// <summary>
-            /// Получить строковое представление объекта
-            /// </summary>
-            public override string ToString()
-            {
-                return Name;
-            }
-        }
-
-
         private Dictionary<string, Image> images; // словарь изображений схемы
         IObservableItem observableItem;           // элемент, изменения которого отслеживаются
 

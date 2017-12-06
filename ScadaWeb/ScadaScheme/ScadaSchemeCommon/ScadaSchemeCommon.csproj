@@ -118,6 +118,7 @@
     </Compile>
     <Compile Include="Model\PropertyGrid\ImageConverter.cs" />
     <Compile Include="Model\PropertyGrid\ImageEditor.cs" />
+    <Compile Include="Model\PropertyGrid\ImageListItem.cs" />
     <Compile Include="Model\PropertyGrid\PointConverter.cs" />
     <Compile Include="Model\PropertyGrid\SizeConverter.cs" />
     <Compile Include="Model\PropertyGrid\UniqueStringConverter.cs" />
