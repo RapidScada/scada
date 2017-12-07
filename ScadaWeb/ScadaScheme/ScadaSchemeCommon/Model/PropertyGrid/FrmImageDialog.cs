@@ -47,6 +47,7 @@ namespace Scada.Scheme.Model.PropertyGrid
         private FrmImageDialog()
         {
             InitializeComponent();
+            ImageDir = "";
         }
 
         /// <summary>
@@ -96,6 +97,11 @@ namespace Scada.Scheme.Model.PropertyGrid
         /// Получить наименование выбранного изображения
         /// </summary>
         public string SelectedImageName { get; private set; }
+
+        /// <summary>
+        /// Получить или установить директорию, из которой открывались изображения
+        /// </summary>
+        public string ImageDir { get; set; }
 
 
         /// <summary>
@@ -194,6 +200,9 @@ namespace Scada.Scheme.Model.PropertyGrid
             Translator.TranslateForm(this, "Scada.Scheme.Model.PropertyGrid.FrmImageDialog");
             openFileDialog.Filter = saveFileDialog.Filter = SchemePhrases.ImageFileFilter;
 
+            // установка начальной директории изображений
+            openFileDialog.InitialDirectory = ImageDir;
+
             // заполнение списка изображений
             FillImageList();
 
@@ -276,7 +285,9 @@ namespace Scada.Scheme.Model.PropertyGrid
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
+                ImageDir = openFileDialog.InitialDirectory = Path.GetDirectoryName(openFileDialog.FileName);
                 Image image;
+
                 if (LoadImage(openFileDialog.FileName, out image))
                 {
                     string name = Path.GetFileName(openFileDialog.FileName);

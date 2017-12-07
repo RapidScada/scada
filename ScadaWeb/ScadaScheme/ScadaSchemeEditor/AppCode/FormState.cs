@@ -124,6 +124,16 @@ namespace Scada.Scheme.Editor
         /// </summary>
         public int Height { get; set; }
 
+        /// <summary>
+        /// Получить или установить директорию, из которой открывались схемы
+        /// </summary>
+        public string SchemeDir { get; set; }
+
+        /// <summary>
+        /// Получить или установить директорию, из которой открывались изображения
+        /// </summary>
+        public string ImageDir { get; set; }
+
 
         /// <summary>
         /// Установить значения по умолчанию
@@ -138,6 +148,8 @@ namespace Scada.Scheme.Editor
             Top = 0;
             Width = 0;
             Height = 0;
+            SchemeDir = "";
+            ImageDir = "";
         }
 
         /// <summary>
@@ -171,6 +183,8 @@ namespace Scada.Scheme.Editor
                     Top = rootElem.GetChildAsInt("Top");
                     Width = rootElem.GetChildAsInt("Width");
                     Height = rootElem.GetChildAsInt("Height");
+                    SchemeDir = rootElem.GetChildAsString("SchemeDir");
+                    ImageDir = rootElem.GetChildAsString("ImageDir");
                     IsEmpty = false;
                 }
 
@@ -203,6 +217,8 @@ namespace Scada.Scheme.Editor
                 rootElem.AppendElem("Top", Top);
                 rootElem.AppendElem("Width", Width);
                 rootElem.AppendElem("Height", Height);
+                rootElem.AppendElem("SchemeDir", SchemeDir);
+                rootElem.AppendElem("ImageDir", ImageDir);
 
                 xmlDoc.Save(fileName);
                 errMsg = "";

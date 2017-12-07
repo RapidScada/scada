@@ -595,7 +595,12 @@ namespace Scada.Scheme.Editor
             // загрузка состояния формы
             FormState formState = new FormState();
             string errMsg;
-            if (!formState.Load(appData.AppDirs.ConfigDir + FormState.DefFileName, out errMsg))
+            if (formState.Load(appData.AppDirs.ConfigDir + FormState.DefFileName, out errMsg))
+            {
+                ImageEditor.ImageDir = formState.ImageDir;
+                ofdScheme.InitialDirectory = formState.SchemeDir;
+            }
+            else
             {
                 log.WriteError(errMsg);
                 ScadaUiUtils.ShowError(errMsg);
@@ -626,7 +631,10 @@ namespace Scada.Scheme.Editor
         {
             // сохранение состояния формы
             FormState formState = new FormState(this);
+            formState.SchemeDir = ofdScheme.InitialDirectory;
+            formState.ImageDir = ImageEditor.ImageDir;
             string errMsg;
+
             if (!formState.Save(appData.AppDirs.ConfigDir + FormState.DefFileName, out errMsg))
             {
                 log.WriteError(errMsg);
@@ -725,12 +733,13 @@ namespace Scada.Scheme.Editor
             // открытие схемы из файла
             if (ConfirmCloseScheme())
             {
-                ofdScheme.InitialDirectory = string.IsNullOrEmpty(editor.FileName) ? 
-                    "" : Path.GetDirectoryName(editor.FileName);
                 ofdScheme.FileName = "";
 
                 if (ofdScheme.ShowDialog() == DialogResult.OK)
+                {
+                    ofdScheme.InitialDirectory = Path.GetDirectoryName(ofdScheme.FileName);
                     InitScheme(ofdScheme.FileName);
+                }
             }
         }
 
