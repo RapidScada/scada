@@ -179,7 +179,7 @@ namespace Scada.Scheme.Editor
             // инициализация менеджера компонентов и загрузка компонентов
             Web.AppDirs webAppDirs = new Web.AppDirs();
             webAppDirs.Init(AppDirs.WebDir);
-            CompManager.Init(webAppDirs.BinDir/*AppDirs.ExeDir*/, Log);
+            CompManager.Init(webAppDirs.BinDir, Log);
             CompManager.LoadCompFromFiles();
         }
 
