@@ -25,6 +25,7 @@
 
 using Scada.Client;
 using System;
+using System.IO;
 using System.ServiceModel;
 using System.Text;
 using Utils;
@@ -65,6 +66,7 @@ namespace Scada.Scheme.Editor
             viewStampCntr = 0;
 
             AppDirs = new AppDirs();
+            Settings = new Settings();
             CompManager = CompManager.GetInstance();
             Log = new Log(Log.Formats.Full);
             Editor = new Editor(CompManager, Log);
@@ -76,6 +78,11 @@ namespace Scada.Scheme.Editor
         /// Получить директории приложения
         /// </summary>
         public AppDirs AppDirs { get; private set; }
+
+        /// <summary>
+        /// Получить настройки приложения
+        /// </summary>
+        public Settings Settings { get; private set; }
 
         /// <summary>
         /// Получить менеджер компонентов схемы
@@ -175,8 +182,24 @@ namespace Scada.Scheme.Editor
             Log.WriteAction(Localization.UseRussian ?
                 "Инициализация общих данных Редактора схем" :
                 "Initialize common data of Scheme Editor");
+        }
 
-            // инициализация менеджера компонентов и загрузка компонентов
+        /// <summary>
+        /// Загрузить компоненты
+        /// </summary>
+        public void LoadComponents()
+        {
+            if (Directory.Exists(Settings.WebDir))
+            {
+                AppDirs.WebDir = Settings.WebDir;
+            }
+            else
+            {
+                Log.WriteError(Localization.UseRussian ?
+                    "Не существует директория веб-интерфейса, указанная в настройках" :
+                    "Web interface directory, specified in the settings, does not exist");
+            }
+
             Web.AppDirs webAppDirs = new Web.AppDirs();
             webAppDirs.Init(AppDirs.WebDir);
             CompManager.Init(webAppDirs.BinDir, Log);

@@ -42,14 +42,15 @@ namespace Scada.Scheme.Editor
     /// </summary>
     public partial class FrmMain : Form, IMainForm
     {
-        private readonly AppData appData;  // общие данные приложения
-        private readonly Log log;          // журнал приложения
-        private readonly Editor editor;    // редактор
+        private readonly AppData appData;   // общие данные приложения
+        private readonly Settings settings; // настройки приложения
+        private readonly Log log;           // журнал приложения
+        private readonly Editor editor;     // редактор
 
-        private Mutex mutex;               // объект для проверки запуска второй копии приложения
-        private bool compTypesChanging;    // пользователь изменяет выбранный элемент lvCompTypes
-        private bool schCompChanging;      // пользователь изменяет выбранный элемент cbSchComp
-        private FormStateDTO formStateDTO; // состояние формы для передачи
+        private Mutex mutex;                // объект для проверки запуска второй копии приложения
+        private bool compTypesChanging;     // пользователь изменяет выбранный элемент lvCompTypes
+        private bool schCompChanging;       // пользователь изменяет выбранный элемент cbSchComp
+        private FormStateDTO formStateDTO;  // состояние формы для передачи
 
 
         /// <summary>
@@ -60,6 +61,7 @@ namespace Scada.Scheme.Editor
             InitializeComponent();
 
             appData = AppData.GetAppData();
+            settings = appData.Settings;
             log = appData.Log;
             editor = appData.Editor;
             mutex = null;
@@ -584,6 +586,17 @@ namespace Scada.Scheme.Editor
                 return;
             }
 
+            // загрузка настроек приложения
+            string errMsg;
+            if (!settings.Load(appData.AppDirs.ConfigDir + Settings.DefFileName, out errMsg))
+            {
+                log.WriteError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
+            }
+
+            // загрузка компонентов
+            appData.LoadComponents();
+
             // настройка элментов управления
             lvCompTypes.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
             lblStatus.Text = "";
@@ -594,7 +607,6 @@ namespace Scada.Scheme.Editor
 
             // загрузка состояния формы
             FormState formState = new FormState();
-            string errMsg;
             if (formState.Load(appData.AppDirs.ConfigDir + FormState.DefFileName, out errMsg))
             {
                 ImageEditor.ImageDir = formState.ImageDir;
