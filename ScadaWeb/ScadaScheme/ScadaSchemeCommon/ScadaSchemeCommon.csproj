@@ -41,6 +41,9 @@
     <Reference Include="ScadaWebCommon5">
       <HintPath>..\..\ScadaWebCommon5\bin\Release\ScadaWebCommon5.dll</HintPath>
     </Reference>
+    <Reference Include="Svg">
+      <HintPath>..\..\..\..\dll\Svg.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.Extensions" />
