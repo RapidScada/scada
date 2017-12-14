@@ -45,6 +45,7 @@ namespace Scada.Scheme.Editor
 
         // Словарь Scada.Scheme.Editor.FrmSettings
         public static string WebDirNotExists { get; private set; }
+        public static string ChooseWebDir { get; private set; }
 
         // Словарь Scada.Scheme.Editor.Editor
         public static string EditorTitle { get; private set; }
@@ -62,6 +63,7 @@ namespace Scada.Scheme.Editor
             RestartNeeded = Localization.Dict.GetEmptyPhrase("RestartNeeded");
 
             WebDirNotExists = Localization.Dict.GetEmptyPhrase("WebDirNotExists");
+            ChooseWebDir = Localization.Dict.GetEmptyPhrase("ChooseWebDir");
 
             EditorTitle = Localization.Dict.GetEmptyPhrase("EditorTitle");
 
@@ -84,6 +86,7 @@ namespace Scada.Scheme.Editor
             if (Localization.Dictionaries.TryGetValue("Scada.Scheme.Editor.FrmSettings", out dict))
             {
                 WebDirNotExists = dict.GetPhrase("WebDirNotExists", WebDirNotExists);
+                ChooseWebDir = dict.GetPhrase("ChooseWebDir", ChooseWebDir);
             }
 
             if (Localization.Dictionaries.TryGetValue("Scada.Scheme.Editor.Editor", out dict))

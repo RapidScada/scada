@@ -34,6 +34,7 @@
             this.btnWebDir = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.SuspendLayout();
             // 
             // lblWebDir
@@ -116,5 +117,6 @@
         private System.Windows.Forms.Button btnWebDir;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
     }
 }

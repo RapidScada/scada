@@ -16,6 +16,7 @@
     <Phrase key="btnEditRedo.ToolTip">Вернуть (Ctrl+Y)</Phrase>
     <Phrase key="btnSchemePointer.ToolTip">Отменить добавление компонента (Esc)</Phrase>
     <Phrase key="btnSchemeDelete.ToolTip">Удалить выбранные компоненты (Del)</Phrase>
+    <Phrase key="btnSettingsOptions.ToolTip">Настройки</Phrase>
     <Phrase key="btnHelpAbout.ToolTip">О программе</Phrase>
     <Phrase key="pageComponents">Компоненты</Phrase>
     <Phrase key="pageProperties">Свойства</Phrase>
@@ -37,6 +38,7 @@
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Отмена</Phrase>
     <Phrase key="WebDirNotExists">Директория веб-приложения не существует.</Phrase>
+    <Phrase key="ChooseWebDir">Выберите директорию веб-приложения</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Editor.FormState">
     <Phrase key="LoadFormStateError">Ошибка при загрузке состояния формы</Phrase>

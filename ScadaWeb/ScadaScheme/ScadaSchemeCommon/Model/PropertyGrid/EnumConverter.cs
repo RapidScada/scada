@@ -52,7 +52,7 @@ namespace Scada.Scheme.Model.PropertyGrid
         {
             if (enumDict == null)
             {
-                // получение значение из атрибута
+                // получение значения из атрибута
                 FieldInfo fi = enumType.GetField(fieldName);
                 DescriptionAttribute da =
                     (DescriptionAttribute)Attribute.GetCustomAttribute(fi, typeof(DescriptionAttribute));
@@ -60,7 +60,7 @@ namespace Scada.Scheme.Model.PropertyGrid
             }
             else
             {
-                // получение значение из словаря
+                // получение значения из словаря
                 return enumDict.GetPhrase(fieldName, fieldName);
             }
         }

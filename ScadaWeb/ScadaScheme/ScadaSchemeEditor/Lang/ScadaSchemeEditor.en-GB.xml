@@ -16,6 +16,7 @@
     <Phrase key="btnEditRedo.ToolTip">Redo (Ctrl+Y)</Phrase>
     <Phrase key="btnSchemePointer.ToolTip">Cancel adding component (Esc)</Phrase>
     <Phrase key="btnSchemeDelete.ToolTip">Delete selected components (Del)</Phrase>
+    <Phrase key="btnSettingsOptions.ToolTip">Settings</Phrase>
     <Phrase key="btnHelpAbout.ToolTip">About</Phrase>
     <Phrase key="pageComponents">Components</Phrase>
     <Phrase key="pageProperties">Properties</Phrase>
@@ -37,6 +38,7 @@
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
     <Phrase key="WebDirNotExists">Web application directory does not exist.</Phrase>
+    <Phrase key="ChooseWebDir">Choose the web application directory</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Editor.FormState">
     <Phrase key="LoadFormStateError">Error loading form state</Phrase>

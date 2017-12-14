@@ -827,7 +827,7 @@ namespace Scada.Scheme.Editor
             editor.DeleteSelected();
         }
 
-        private void btnSettings_Click(object sender, EventArgs e)
+        private void btnSettingsOptions_Click(object sender, EventArgs e)
         {
             // отображение формы настроек
             if (FrmSettings.ShowDialog(settings))
