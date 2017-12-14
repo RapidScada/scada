@@ -29,6 +29,14 @@
     <Phrase key="FailedToStartEditor">Failed to start Scada Editor.&#13;&#10;See the details in&#13;&#10;{0}</Phrase>
     <Phrase key="SchemeFileFilter">Schemes (*.sch)|*.sch|All Files (*.*)|*.*</Phrase>
     <Phrase key="SaveSchemeConfirm">The scheme has been modified. Save the changes?</Phrase>
+    <Phrase key="RestartNeeded">Settings changes will take effect after restarting the application.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Editor.FrmSettings">
+    <Phrase key="this">Settings</Phrase>
+    <Phrase key="lblWebDir">Web application directory</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+    <Phrase key="WebDirNotExists">Web application directory does not exist.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Editor.FormState">
     <Phrase key="LoadFormStateError">Error loading form state</Phrase>

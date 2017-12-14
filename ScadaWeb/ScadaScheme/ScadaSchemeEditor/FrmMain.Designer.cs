@@ -30,12 +30,12 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
-            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Standard", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("Pointer", "pointer.png");
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("Static Text", "comp_st.png");
-            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("Dynamic Text", "comp_dt.png");
-            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("Static Picture", "comp_sp.png");
-            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem("Dynamic Picture", "comp_dp.png");
+            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Standard", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem("Pointer", "pointer.png");
+            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem("Static Text", "comp_st.png");
+            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem("Dynamic Text", "comp_dt.png");
+            System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem("Static Picture", "comp_sp.png");
+            System.Windows.Forms.ListViewItem listViewItem10 = new System.Windows.Forms.ListViewItem("Dynamic Picture", "comp_dp.png");
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.btnFileNew = new System.Windows.Forms.ToolStripButton();
             this.btnFileOpen = new System.Windows.Forms.ToolStripButton();
@@ -52,7 +52,7 @@
             this.sep3 = new System.Windows.Forms.ToolStripSeparator();
             this.btnEditPointer = new System.Windows.Forms.ToolStripButton();
             this.btnEditDelete = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.sep4 = new System.Windows.Forms.ToolStripSeparator();
             this.btnHelpAbout = new System.Windows.Forms.ToolStripButton();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
@@ -66,6 +66,7 @@
             this.cbSchComp = new System.Windows.Forms.ComboBox();
             this.ofdScheme = new System.Windows.Forms.OpenFileDialog();
             this.sfdScheme = new System.Windows.Forms.SaveFileDialog();
+            this.btnSettings = new System.Windows.Forms.ToolStripButton();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.tabControl.SuspendLayout();
@@ -90,7 +91,8 @@
             this.sep3,
             this.btnEditPointer,
             this.btnEditDelete,
-            this.toolStripSeparator1,
+            this.sep4,
+            this.btnSettings,
             this.btnHelpAbout});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
@@ -233,10 +235,10 @@
             this.btnEditDelete.ToolTipText = "Delete selected components (Del)";
             this.btnEditDelete.Click += new System.EventHandler(this.btnEditDelete_Click);
             // 
-            // toolStripSeparator1
+            // sep4
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            this.sep4.Name = "sep4";
+            this.sep4.Size = new System.Drawing.Size(6, 25);
             // 
             // btnHelpAbout
             // 
@@ -294,32 +296,32 @@
             this.colCompName});
             this.lvCompTypes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvCompTypes.FullRowSelect = true;
-            listViewGroup1.Header = "Standard";
-            listViewGroup1.Name = "lvgStandard";
+            listViewGroup2.Header = "Standard";
+            listViewGroup2.Name = "lvgStandard";
             this.lvCompTypes.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup1});
+            listViewGroup2});
             this.lvCompTypes.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.lvCompTypes.HideSelection = false;
-            listViewItem1.Group = listViewGroup1;
-            listViewItem1.IndentCount = 1;
-            listViewItem2.Group = listViewGroup1;
-            listViewItem2.IndentCount = 1;
-            listViewItem2.Tag = "Scada.Scheme.Model.StaticText";
-            listViewItem3.Group = listViewGroup1;
-            listViewItem3.IndentCount = 1;
-            listViewItem3.Tag = "Scada.Scheme.Model.DynamicText";
-            listViewItem4.Group = listViewGroup1;
-            listViewItem4.IndentCount = 1;
-            listViewItem4.Tag = "Scada.Scheme.Model.StaticPicture";
-            listViewItem5.Group = listViewGroup1;
-            listViewItem5.IndentCount = 1;
-            listViewItem5.Tag = "Scada.Scheme.Model.DynamicPicture";
+            listViewItem6.Group = listViewGroup2;
+            listViewItem6.IndentCount = 1;
+            listViewItem7.Group = listViewGroup2;
+            listViewItem7.IndentCount = 1;
+            listViewItem7.Tag = "Scada.Scheme.Model.StaticText";
+            listViewItem8.Group = listViewGroup2;
+            listViewItem8.IndentCount = 1;
+            listViewItem8.Tag = "Scada.Scheme.Model.DynamicText";
+            listViewItem9.Group = listViewGroup2;
+            listViewItem9.IndentCount = 1;
+            listViewItem9.Tag = "Scada.Scheme.Model.StaticPicture";
+            listViewItem10.Group = listViewGroup2;
+            listViewItem10.IndentCount = 1;
+            listViewItem10.Tag = "Scada.Scheme.Model.DynamicPicture";
             this.lvCompTypes.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1,
-            listViewItem2,
-            listViewItem3,
-            listViewItem4,
-            listViewItem5});
+            listViewItem6,
+            listViewItem7,
+            listViewItem8,
+            listViewItem9,
+            listViewItem10});
             this.lvCompTypes.LabelWrap = false;
             this.lvCompTypes.Location = new System.Drawing.Point(3, 3);
             this.lvCompTypes.MultiSelect = false;
@@ -360,6 +362,7 @@
             // propertyGrid
             // 
             this.propertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGrid.LineColor = System.Drawing.SystemColors.ControlDark;
             this.propertyGrid.Location = new System.Drawing.Point(3, 24);
             this.propertyGrid.Name = "propertyGrid";
             this.propertyGrid.Size = new System.Drawing.Size(295, 411);
@@ -386,6 +389,16 @@
             // 
             this.sfdScheme.DefaultExt = "*.sch";
             this.sfdScheme.Filter = "Schemes (*.sch)|*.sch|All Files (*.*)|*.*";
+            // 
+            // btnSettings
+            // 
+            this.btnSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnSettings.Image = ((System.Drawing.Image)(resources.GetObject("btnSettings.Image")));
+            this.btnSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.Size = new System.Drawing.Size(23, 20);
+            this.btnSettings.ToolTipText = "Settings";
+            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
             // 
             // FrmMain
             // 
@@ -447,12 +460,13 @@
         private System.Windows.Forms.ToolStripButton btnFileOpenBrowser;
         private System.Windows.Forms.ToolStripButton btnEditUndo;
         private System.Windows.Forms.ToolStripButton btnEditRedo;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripSeparator sep4;
         private System.Windows.Forms.OpenFileDialog ofdScheme;
         private System.Windows.Forms.SaveFileDialog sfdScheme;
         private System.Windows.Forms.ListView lvCompTypes;
         private System.Windows.Forms.ImageList ilCompTypes;
         private System.Windows.Forms.ColumnHeader colCompName;
+        private System.Windows.Forms.ToolStripButton btnSettings;
     }
 }
 

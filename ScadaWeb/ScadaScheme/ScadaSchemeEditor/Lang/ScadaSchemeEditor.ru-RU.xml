@@ -29,6 +29,14 @@
     <Phrase key="FailedToStartEditor">Не удалось запустить Редактор схем.&#13;&#10;Смотрите подробности в &#13;&#10;{0}</Phrase>
     <Phrase key="SchemeFileFilter">Схемы (*.sch)|*.sch|Все файлы (*.*)|*.*</Phrase>
     <Phrase key="SaveSchemeConfirm">Схема была изменена. Сохранить изменения?</Phrase>
+    <Phrase key="RestartNeeded">Изменения настроек вступят в силу после перезапуска приложения.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Editor.FrmSettings">
+    <Phrase key="this">Настройки</Phrase>
+    <Phrase key="lblWebDir">Директория веб-приложения</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+    <Phrase key="WebDirNotExists">Директория веб-приложения не существует.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Editor.FormState">
     <Phrase key="LoadFormStateError">Ошибка при загрузке состояния формы</Phrase>

@@ -827,6 +827,19 @@ namespace Scada.Scheme.Editor
             editor.DeleteSelected();
         }
 
+        private void btnSettings_Click(object sender, EventArgs e)
+        {
+            // отображение формы настроек
+            if (FrmSettings.ShowDialog(settings))
+            {
+                string errMsg;
+                if (settings.Save(appData.AppDirs.ConfigDir + Settings.DefFileName, out errMsg))
+                    ScadaUiUtils.ShowInfo(AppPhrases.RestartNeeded);
+                else
+                    ScadaUiUtils.ShowError(errMsg);
+            }
+        }
+
         private void btnHelpAbout_Click(object sender, EventArgs e)
         {
             // отображение формы о программе
