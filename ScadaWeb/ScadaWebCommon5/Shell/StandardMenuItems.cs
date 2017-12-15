@@ -51,12 +51,16 @@ namespace Scada.Web.Shell
         /// </summary>
         Config = 4,
         /// <summary>
+        ///  Регистрация
+        /// </summary>
+        Reg = 8,
+        /// <summary>
         ///  Плагины
         /// </summary>
-        Plugins = 8,
+        Plugins = 16,
         /// <summary>
         ///  О приложении
         /// </summary>
-        About = 16
+        About = 32
     }
 }
