@@ -3,7 +3,7 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2017
  *
  * Requires:
  * - jquery
@@ -168,7 +168,7 @@ scada.clientAPI = {
     // callback is a function (success, loggedOn)
     // URL example: http://webserver/scada/ClientApiSvc.svc/CheckLoggedOn
     checkLoggedOn: function (callback) {
-        this._request("ClientApiSvc.svc/CheckLoggedOn", "", callback, false);
+        this._request("ClientApiSvc.svc/CheckLoggedOn", "", callback, null);
     },
 
     // Get current data of the input channel.

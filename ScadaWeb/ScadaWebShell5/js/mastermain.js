@@ -47,14 +47,15 @@ scada.masterMain = {
     _checkLoggedOn: function () {
         var thisObj = this;
         scada.clientAPI.checkLoggedOn(function (success, loggedOn) {
-            if (loggedOn) {
-                // enqueue the next check
-                setTimeout(function () { thisObj._checkLoggedOn(); }, thisObj.CHECK_LOGGEDON_RATE);
-            } else {
+            if (loggedOn === false) {
                 // redirect to login page
                 setTimeout(function () {
                     location.href = scada.env.rootPath + "Login.aspx?return=" + encodeURIComponent(location.href);
                 }, thisObj.LOGIN_DELAY);
+            } else {
+                // loggedOn is true or null
+                // enqueue the next check
+                setTimeout(function () { thisObj._checkLoggedOn(); }, thisObj.CHECK_LOGGEDON_RATE);
             }
         });
     },
