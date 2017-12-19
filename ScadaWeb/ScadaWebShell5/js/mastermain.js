@@ -180,6 +180,12 @@ scada.masterMain = {
         }
     },
 
+    // Select the specified view in the explorer tree
+    selectView: function (viewID) {
+        $("#divMainExplorer .node").removeClass("selected");
+        $("#divMainExplorer .node[data-view=" + viewID + "]").addClass("selected");
+    },
+
     // Start cyclic checking user logged on
     startCheckingLoggedOn: function () {
         var thisObj = this;

@@ -252,6 +252,16 @@ scada.utils = {
         }
     },
 
+    // Set frame source creating new frame to prevent writing frame history. Returns the new frame
+    setFrameSrc: function (jqFrame, url) {
+        var frameParent = jqFrame.parent();
+        var frameClone = jqFrame.clone();
+        jqFrame.remove();
+        frameClone.attr("src", url);
+        frameClone.appendTo(frameParent);
+        return frameClone;
+    },
+
     // Detect if iOS is used
     iOS: function () {
         return /iPad|iPhone|iPod/.test(navigator.platform);
