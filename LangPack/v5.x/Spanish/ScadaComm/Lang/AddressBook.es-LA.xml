@@ -1,0 +1,30 @@
+﻿﻿<?xml version="1.0" encoding="utf-8" ?>
+<AddressBookDictionaries>
+  <Dictionary key="Scada.Comm.Devices.AB">
+    <Phrase key="LoadAddressBookError">Error al cargar agenda de direcciones</Phrase>
+    <Phrase key="SaveAddressBookError">Error al salvar agenda de dirección</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.AB.FrmAddressBook">
+    <Phrase key="this">Agenda de dirección</Phrase>
+    <Phrase key="btnAddContactGroup.ToolTip">Agregue el grupo del contacto</Phrase>
+    <Phrase key="btnAddContact.ToolTip">Agregue el contacto</Phrase>
+    <Phrase key="btnAddPhoneNumber.ToolTip">Agregue el número de teléfono</Phrase>
+    <Phrase key="btnAddEmail.ToolTip">Agregue el email</Phrase>
+    <Phrase key="btnEdit.ToolTip">Corrija</Phrase>
+    <Phrase key="btnDelete.ToolTip">Cancelación</Phrase>
+    <Phrase key="btnSave">Excepto</Phrase>
+    <Phrase key="btnClose">Cierre</Phrase>
+    <Phrase key="AddressBookNode">Agenda de dirección</Phrase>
+    <Phrase key="NewContactGroup">Nuevo grupo</Phrase>
+    <Phrase key="NewContact">Nuevo contacto</Phrase>
+    <Phrase key="NewPhoneNumber">Nuevo número de teléfono</Phrase>
+    <Phrase key="NewEmail">Email nuevo</Phrase>
+    <Phrase key="ContactGroupExists">El grupo del contacto ya existe.</Phrase>
+    <Phrase key="ContactExists">El contacto existe ya en el grupo.</Phrase>
+    <Phrase key="PhoneNumberExists">El contacto contiene ya el número de teléfono especificado.</Phrase>
+    <Phrase key="EmailExists">El contacto contiene ya el email especificado.</Phrase>
+    <Phrase key="IncorrectEmail">El email es incorrecto.</Phrase>
+    <Phrase key="EmptyValueNotAllowed">El valor vacío no se permite.</Phrase>
+    <Phrase key="SavePhonebookConfirm">Se ha modificado el libro de dirección. ¿Aceptar los cambios?</Phrase>
+  </Dictionary>
+</AddressBookDictionaries>

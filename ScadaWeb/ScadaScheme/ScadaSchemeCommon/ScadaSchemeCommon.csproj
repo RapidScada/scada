@@ -41,6 +41,9 @@
     <Reference Include="ScadaWebCommon5">
       <HintPath>..\..\ScadaWebCommon5\bin\Release\ScadaWebCommon5.dll</HintPath>
     </Reference>
+    <Reference Include="Svg">
+      <HintPath>..\..\..\..\dll\Svg.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.Extensions" />
@@ -48,11 +51,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CompFactory.cs" />
+    <Compile Include="CompLibSpec.cs" />
+    <Compile Include="CompManager.cs" />
+    <Compile Include="CompItem.cs" />
     <Compile Include="DataTransfer\ComponentsDTO.cs" />
     <Compile Include="DataTransfer\ImageDTO.cs" />
     <Compile Include="DataTransfer\ImagesDTO.cs" />
     <Compile Include="DataTransfer\SchemeDocDTO.cs" />
     <Compile Include="DataTransfer\SchemeDTO.cs" />
+    <Compile Include="ISchemeComp.cs" />
     <Compile Include="Model\BaseComponent.cs" />
     <Compile Include="Model\DataTypes\Actions.cs" />
     <Compile Include="Model\DataTypes\CnlFilterExtenstions.cs" />
@@ -73,6 +81,7 @@
     <Compile Include="Model\ISchemeDocAvailable.cs" />
     <Compile Include="Model\ItemChangedEventHandler.cs" />
     <Compile Include="Model\IUniqueItem.cs" />
+    <Compile Include="Model\PropertyGrid\AttrTranslator.cs" />
     <Compile Include="Model\PropertyGrid\BooleanConverter.cs" />
     <Compile Include="Model\PropertyGrid\Categories.cs" />
     <Compile Include="Model\PropertyGrid\CategoryAttribute.cs" />
@@ -112,6 +121,7 @@
     </Compile>
     <Compile Include="Model\PropertyGrid\ImageConverter.cs" />
     <Compile Include="Model\PropertyGrid\ImageEditor.cs" />
+    <Compile Include="Model\PropertyGrid\ImageListItem.cs" />
     <Compile Include="Model\PropertyGrid\PointConverter.cs" />
     <Compile Include="Model\PropertyGrid\SizeConverter.cs" />
     <Compile Include="Model\PropertyGrid\UniqueStringConverter.cs" />
@@ -120,6 +130,7 @@
     <Compile Include="Model\StaticPicture.cs" />
     <Compile Include="Model\StaticText.cs" />
     <Compile Include="Model\DataTypes\VerticalAlignments.cs" />
+    <Compile Include="Model\UnknownComponent.cs" />
     <Compile Include="SchemeUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SchemeView.cs" />

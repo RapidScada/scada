@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaWebDictionaries>
+  <Dictionary key="Scada.Report">
+    <Phrase key="GenReport">Rapor Oluştur  &quot;{0}&quot; Kullanıcı {1}</Phrase>
+    <Phrase key="GenReportError">Rapor oluşturulurken Hata oluştu &quot;{0}&quot;: {1}</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web">
+    <Phrase key="NotLoggedOn">Kullanıcı oturum açmamış.</Phrase>
+    <Phrase key="UnableLoadView">Görüntü yüklenemiyor.</Phrase>
+    <Phrase key="IncorrectDate">İstenilen verilerin tarihi hatalı.</Phrase>
+    <Phrase key="ErrorFormat">Hata: {0}</Phrase>
+    <Phrase key="ServerUnavailable">Sunucu müsait degil.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.MainData">
+    <Phrase key="EventChecked">Evet</Phrase>
+    <Phrase key="EventUnchecked">Hayır</Phrase>
+    <Phrase key="CommSettingsNotLoaded">Sunucu bağlantı ayarları yüklenemedi</Phrase>
+    <Phrase key="WrongPassword">Kullanıcı adı veya sifre hatalı</Phrase>
+    <Phrase key="NoRightsL">Yetkiniz yetersiz</Phrase>
+    <Phrase key="IllegalRole">Geçersiz kullanıcı türü</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.RepHrEvTable">
+    <Phrase key="NoReportData">Rapor oluşturulması için veri yok.</Phrase>
+    <Phrase key="HourDataPage">Saat verileri</Phrase>
+    <Phrase key="EventsPage">Olaylar</Phrase>
+    <Phrase key="HourDataTitle">{0} - saat verileri &quot;{1}&quot; görüntülendi. Oluşturuldu {2}</Phrase>
+    <Phrase key="AllEventsTitle">{0} - Tüm olaylar. Oluşturuldu {1}</Phrase>
+    <Phrase key="EventsByViewTitle">{0} - Olaylar &quot;{1}&quot; görüntülendi. Oluşturuldu {2}</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.TableView">
+    <Phrase key="LoadParamTableError">Parametreler yüklenirken Hata oluştu.</Phrase>
+    <Phrase key="SaveParamTableError">Parametreler kayıt edilirken hat oluştu</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.ViewSettings">
+    <Phrase key="LoadViewSettingsError">Ayarlar yüklenirken hata oluştu.</Phrase>
+    <Phrase key="SaveViewSettingsError">Görüntü ayarlarını kaydederken Hata oluştu.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WebSettings">
+    <Phrase key="LoadWebSettingsError">Web ayarlarını dosyadan yüklerken hata oluştu</Phrase>
+    <Phrase key="SaveWebSettingsError">Web Ayarlarını kaydederken Hata oluştu</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmCalendar">
+    <Phrase key="this">Tarih seç</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmCmdSend">
+    <Phrase key="this">Komut</Phrase>
+    <Phrase key="lblCtrlCnlCaption">Dış kanal:</Phrase>
+    <Phrase key="lblObjCaption">Obje:</Phrase>
+    <Phrase key="lblKPCaption">Cihaz:</Phrase>
+    <Phrase key="lblPassword">Şifre</Phrase>
+    <Phrase key="lblCmd1">Komut:</Phrase>
+    <Phrase key="lblCmd2">Komut:</Phrase>
+    <Phrase key="lblCmdVal">Değer</Phrase>
+    <Phrase key="lblDataType">Veri tipi</Phrase>
+    <Phrase key="rbStr">Alfanumerik</Phrase>
+    <Phrase key="rbHex">Hex</Phrase>
+    <Phrase key="lblCmdData">Veri</Phrase>
+    <Phrase key="btnExecute">Çalıştır</Phrase>
+    <Phrase key="btnCancel">İptal</Phrase>
+    <Phrase key="lblResultSuccessful">Komut uygulama için sırada</Phrase>
+    <Phrase key="lblResultFailed">Komut sonlandırılamadı</Phrase>
+    <Phrase key="btnClose">Kapat</Phrase>
+    <Phrase key="OutCnlNotFound">Dış kanal {0} bulunamadı.</Phrase>
+    <Phrase key="CmdNotSelected">Komut seçili değil</Phrase>
+    <Phrase key="IncorrectCmdVal">Yanlış komut değeri</Phrase>
+    <Phrase key="IncorrectCmdData">Yanlış hex.komut verileri</Phrase>
+    <Phrase key="EmptyCmdData">Komut verileri boş</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmDiag">
+    <Phrase key="this">SCADA - Diagram</Phrase>
+    <Phrase key="lblReqDTCaption">Oluşturulan</Phrase>
+    <Phrase key="lblNotSupported">Tarayıcınızı güncelleyin.</Phrase>
+    <Phrase key="divResetZoom.ToolTip">Reset zoom</Phrase>
+    <Phrase key="btnSelectDiagCnls">Kanalları seçin</Phrase>
+    <Phrase key="btnShowData">Verileri göster</Phrase>
+    <Phrase key="btnHideData">Verileri gizle</Phrase>
+    <Phrase key="btnRefreshDiag">Yenile</Phrase>
+    <Phrase key="DiagCnlsUndefined">Tanımsız diyagram kanalları.</Phrase>
+    <Phrase key="DiagCnlNotFound">Giriş kanalı {0} yapılandırma veritabanında bulunamadı.</Phrase>
+    <Phrase key="CnlCntExceeded">{0} den fazla kanal seçmek mümkün değildir.</Phrase>
+    <Phrase key="CnlNotSelected">Kanallar seçili değil.</Phrase>
+    <Phrase key="DiagPageClosed">Diyagram sayfası kapatıldı.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmDiagCnls">
+    <Phrase key="this">Seçili kanallar</Phrase>
+    <Phrase key="btnSelect">Seçili</Phrase>
+    <Phrase key="btnClose">Kapat</Phrase>
+    <Phrase key="DiagSelColumn">Seçili</Phrase>
+    <Phrase key="DiagCnlColumn">Input Kanal</Phrase>
+    <Phrase key="DiagObjColumn">Obje</Phrase>
+    <Phrase key="DiagKPColumn">Cihaz</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmError">
+    <Phrase key="this">SCADA - Uygulama hatası</Phrase>
+    <Phrase key="lblMessage">Uygulama Hatası</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmEvCheck">
+    <Phrase key="this">Olay kontrol</Phrase>
+    <Phrase key="lblNumCaption">Sayı:</Phrase>
+    <Phrase key="lblDateCaption">Tarih:</Phrase>
+    <Phrase key="lblTimeCaption">Saat:</Phrase>
+    <Phrase key="lblObjCaption">Obje:</Phrase>
+    <Phrase key="lblKPCaption">Cihaz:</Phrase>
+    <Phrase key="lblCnlCaption">Kanal:</Phrase>
+    <Phrase key="lblEventCaption">Olay:</Phrase>
+    <Phrase key="btnCheck">Kontrol</Phrase>
+    <Phrase key="btnCancel">İptal</Phrase>
+    <Phrase key="lblResultSuccessful">Kontrol başarıyla yapılmıştır.</Phrase>
+    <Phrase key="lblResultFailed">Kontrol yapılmamıştır.</Phrase>
+    <Phrase key="btnClose">Kapat</Phrase>
+    <Phrase key="IncorrectEvDate">Yanlış olay tarihi.</Phrase>
+    <Phrase key="IncorrectEvNum">Yanlış olay numarası.</Phrase>
+    <Phrase key="EventNotFound">Olay bulunamadı</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmEvents">
+    <Phrase key="this">Olaylar</Phrase>
+    <Phrase key="lblEvents">Olaylar:</Phrase>
+    <Phrase key="rbEvAll">Tümü</Phrase>
+    <Phrase key="rbEvView">görünüm tarafından</Phrase>
+    <Phrase key="lblEvPause">Durma</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmEvTable">
+    <Phrase key="this">Olay tablosu</Phrase>
+    <Phrase key="lblNumColumn">Sayı</Phrase>
+    <Phrase key="lblDateColumn">Tarih</Phrase>
+    <Phrase key="lblTimeColumn">Saat</Phrase>
+    <Phrase key="lblObjColumn">Obje</Phrase>
+    <Phrase key="lblKPColumn">Cihaz</Phrase>
+    <Phrase key="lblCnlColumn">Kanal</Phrase>
+    <Phrase key="lblEventColumn">Olay</Phrase>
+    <Phrase key="lblCheckColumn">Kontrol</Phrase>
+    <Phrase key="lblNoData">Olay yok</Phrase>
+    <Phrase key="lblLoading">Yükleniyor...</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmInfo">
+    <Phrase key="this">SCADA - bilgi</Phrase>
+    <Phrase key="lblTitle">SCADA-Web hakkında bilgi</Phrase>
+    <Phrase key="lblVersionCation">Versiyon:</Phrase>
+    <Phrase key="lblServerCaption">Sunucu:</Phrase>
+    <Phrase key="lblUserCaption">Kullanıcı:</Phrase>
+    <Phrase key="lblUserNotLoggedOn">&lt;Oturum açmamış&gt;</Phrase>
+    <Phrase key="btnBack">Geri dön</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmLogin">
+    <Phrase key="this">SCADA - giriş</Phrase>
+    <Phrase key="lblLoginTitle">Giriş yap</Phrase>
+    <Phrase key="lblLoggedOnTitle">Giriş yapıldı</Phrase>
+    <Phrase key="lblName">İsim</Phrase>
+    <Phrase key="lblPassword">Şifre</Phrase>
+    <Phrase key="lblViewSet">Görünüm ayarı</Phrase>
+    <Phrase key="btnEnter">Giriş</Phrase>
+    <Phrase key="chkRememberUser">hatırla</Phrase>
+    <Phrase key="btnExit">Çıkış</Phrase>
+    <Phrase key="UnableLogin">Giriş yapılamıyor: {0}.</Phrase>
+    <Phrase key="NoViewSetRights">Görünüm ayarlarını açmak için yetkiniz yok</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmMain">
+    <Phrase key="lblDate">Tarih</Phrase>
+    <Phrase key="rbStage1">0-11 s</Phrase>
+    <Phrase key="rbStage2">12-23 s</Phrase>
+    <Phrase key="rbStageFull">0-23 s</Phrase>
+    <Phrase key="imgHome.ToolTip">Giriş</Phrase>
+    <Phrase key="imgExcel.ToolTip">Excel'e aktar</Phrase>
+    <Phrase key="imgReport.ToolTip">Raporlar</Phrase>
+    <Phrase key="imgInfo.ToolTip">Bilgi</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmTableView">
+    <Phrase key="this">Tablo görünümü</Phrase>
+    <Phrase key="lblNoData">Tablo görünümü boş.</Phrase>
+    <Phrase key="ItemColumn">Madde</Phrase>
+    <Phrase key="CurColumn">CUR</Phrase>
+    <Phrase key="InCnlNumHint">giriş kanal num.: </Phrase>
+    <Phrase key="OutCnlNumHint">Çıkış kanal num.: </Phrase>
+    <Phrase key="ObjectHint">Obje: </Phrase>
+    <Phrase key="KPHint">Cihaz: </Phrase>
+    <Phrase key="ParamHint">Adet: </Phrase>
+    <Phrase key="UnitHint">Birim: </Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmReport">
+    <Phrase key="this">SCADA - Raporlar</Phrase>
+    <Phrase key="lblReportList">Mevcut raporlar:</Phrase>
+    <Phrase key="lblNoReports">Mevcut raporlar eksik</Phrase>
+  </Dictionary>
+</ScadaWebDictionaries>

@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaSchemeEditorDictionaries>
+  <Dictionary key="Scada.Scheme.Editor.FrmMain">
+    <Phrase key="this">SCADA-Schemų Redaktorius</Phrase>
+    <Phrase key="miFile">&amp;Rinkmena</Phrase>
+    <Phrase key="miFileNew">Sukurti</Phrase>
+    <Phrase key="miFileOpen">Įkelti...</Phrase>
+    <Phrase key="miFileSave">Išsaugoti</Phrase>
+    <Phrase key="miFileSaveAs">Išsaugoti As...</Phrase>
+    <Phrase key="miFileExit">Išeiti</Phrase>
+    <Phrase key="miEdit">&amp;Redaguoti</Phrase>
+    <Phrase key="miEditCut">Iškirpti</Phrase>
+    <Phrase key="miEditCopy">Kopijuoti</Phrase>
+    <Phrase key="miEditPaste">Įklijuoti</Phrase>
+    <Phrase key="miScheme">&amp;Schema</Phrase>
+    <Phrase key="miSchemeAddStText">Pridėti statinį tekstą</Phrase>
+    <Phrase key="miSchemeAddDynText">Pridėti dinaminį tekstą</Phrase>
+    <Phrase key="miSchemeAddStPic">Pridėti statinį paveislą</Phrase>
+    <Phrase key="miSchemeAddDynPic">Pridėti dinaminį paveislą</Phrase>
+    <Phrase key="miSchemeCancelAddElem">Atšaukti elemento pridėjimą</Phrase>
+    <Phrase key="miSchemeDelElem">Ištrinti pasirinktą elementą</Phrase>
+    <Phrase key="miHelp">&amp;Pagalba</Phrase>
+    <Phrase key="miHelpAbout">Apie</Phrase>
+    <Phrase key="btnFileNew.ToolTip">Sukurti naują schemą</Phrase>
+    <Phrase key="btnFileOpen.ToolTip">Įkelti schemą</Phrase>
+    <Phrase key="btnFileSave.ToolTip">Išsaugoti schemą</Phrase>
+    <Phrase key="btnEditCut.ToolTip">Iškirpti schemos elementą</Phrase>
+    <Phrase key="btnEditCopy.ToolTip">Kopijuoti schemos elementą</Phrase>
+    <Phrase key="btnEditPaste.ToolTip">Įklijuoti schemos elementą</Phrase>
+    <Phrase key="btnSchemeAddStText.ToolTip">Pridėti statinį tekstą</Phrase>
+    <Phrase key="btnSchemeAddDynText.ToolTip">Pridėti dinaminį tekstą</Phrase>
+    <Phrase key="btnSchemeAddStPic.ToolTip">Pridėti statinį paveislą</Phrase>
+    <Phrase key="btnSchemeAddDynPic.ToolTip">Pridėti dinaminį paveislą</Phrase>
+    <Phrase key="btnSchemeCancelAddElem.ToolTip">Atšaukti elemento pridėjimą</Phrase>
+    <Phrase key="btnSchemeDelElem.ToolTip">Ištrinti pasirinktą elementą</Phrase>
+    <Phrase key="lblNoSelObj">Pasirinkti elementą savybių redagavimui</Phrase>
+    <Phrase key="FileFilter">Schemos (*.sch)|*.sch|Visi Failai (*.*)|*.*</Phrase>
+    <Phrase key="SaveConfirm">Schema buvo pakeista. Ar išsaugoti pakeitimus?</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.EditorData">
+    <Phrase key="LoadSchemeError">Įkeliant schemą iš failo įvyko klaida</Phrase>
+    <Phrase key="SaveSchemeError">Išsaugant schemą į failą įvyko klaida</Phrase>
+    <Phrase key="FileNameUndefined">Nenurodytas failo pavadinimas.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.FrmCnlsFilterDialog">
+    <Phrase key="this">Kanalų filtras</Phrase>
+    <Phrase key="lblCnlNums">Įvesties kanalų numeriai</Phrase>
+    <Phrase key="btnOK">Gerai</Phrase>
+    <Phrase key="btnCancel">Atšaukti</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.FrmCondDialog">
+    <Phrase key="this">Paveikslo rodymo sąlygos</Phrase>
+    <Phrase key="lblCond">Sąlyga</Phrase>
+    <Phrase key="lblProps">Pasirinkti sąlygos savybes</Phrase>
+    <Phrase key="btnOK">Gerai</Phrase>
+    <Phrase key="btnCancel">Atšaukti</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.FrmFontDialog">
+    <Phrase key="this">Šriftas</Phrase>
+    <Phrase key="lblFontName">Šriftas</Phrase>
+    <Phrase key="lblFontSize">Dydis</Phrase>
+    <Phrase key="gbStyle">Stilius</Phrase>
+    <Phrase key="chkBold">Paryškintas</Phrase>
+    <Phrase key="chkItalic">Kursyvas</Phrase>
+    <Phrase key="chkUnderline">Pabrauktas</Phrase>
+    <Phrase key="btnOK">Gerai</Phrase>
+    <Phrase key="btnCancel">Atšaukti</Phrase>
+    <Phrase key="SizeInteger">Dydis turi būti sveikas skaičius.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.FrmImageDialog">
+    <Phrase key="this">Paveikslai</Phrase>
+    <Phrase key="lblImages">Paveikslai</Phrase>
+    <Phrase key="lblImageProps">Paveikslo savybės</Phrase>
+    <Phrase key="lblPreview">Preview</Phrase>
+    <Phrase key="btnClear">Išvalyti</Phrase>
+    <Phrase key="btnSelect">Pasirinkti</Phrase>
+    <Phrase key="btnClose">Uždaryti</Phrase>
+    <Phrase key="LoadImageError">Įkeliant paveikslą įvyko klaida</Phrase>
+    <Phrase key="SaveImageError">Išsaugant paveikslą įvyko klaida</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.SchemeView">
+    <Phrase key="StringConvertError">Nepavyko konvertuoti eilutės</Phrase>
+    <Phrase key="NameUniqueError">Pavadinimas negali kartotis.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.MainPage">
+    <Phrase key="Loading">Įkeliama...</Phrase>
+    <Phrase key="SchemeNotLoaded">Schema neįkelta</Phrase>
+    <Phrase key="ErrorDrawingScheme">Piešiant schemą įvyko klaida</Phrase>
+    <Phrase key="WcfError">WCF serviso klaida</Phrase>
+    <Phrase key="UnableGetSettings">Nepavyko gauti programos nustatymų</Phrase>
+    <Phrase key="UnableLoadScheme">Nepavyko įkelti schemos</Phrase>
+    <Phrase key="UnableLoadCnlData">Nepavyko įkelti įvesties kanalo duomenų</Phrase>
+    <Phrase key="ErrorExecutingAction">Įvykdant veiksmą įvyko klaida</Phrase>
+    <Phrase key="WcfAddrUndefined">WCF serviso adresas yra nenurodytas</Phrase>
+  </Dictionary>
+</ScadaSchemeEditorDictionaries>

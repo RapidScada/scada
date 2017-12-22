@@ -103,7 +103,8 @@ namespace Scada.Comm.Devices.Modbus.UI
         /// </summary>
         private void SetFormTitle()
         {
-            Text = KpPhrases.TemplFormTitle + " - " + (fileName == "" ? NewFileName : Path.GetFileName(fileName)) +
+            Text = KpPhrases.TemplFormTitle + " - " + 
+                (fileName == "" ? NewFileName : Path.GetFileName(fileName)) +
                 (Modified ? "*" : "");
         }
 
@@ -112,20 +113,15 @@ namespace Scada.Comm.Devices.Modbus.UI
         /// </summary>
         private void LoadTemplate(string fname)
         {
-            DeviceTemplate templ = new DeviceTemplate();
+            template = new DeviceTemplate();
+            fileName = fname;
+            SetFormTitle();
             string errMsg;
 
-            if (templ.Load(fname, out errMsg))
-            {
-                template = templ;
-                fileName = fname;
-                SetFormTitle();
-                FillTree();
-            }
-            else
-            {
+            if (!template.Load(fname, out errMsg))
                 ScadaUiUtils.ShowError(errMsg);
-            }
+
+            FillTree();
         }
 
         /// <summary>

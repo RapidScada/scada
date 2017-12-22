@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaTableEditorDictionaries>
+  <Dictionary key="Scada.Web.TableView">
+    <Phrase key="LoadTableViewError">Įkeliant lentelės vaizdą iš failo įvyko klaida</Phrase>
+    <Phrase key="SaveTableViewError">Išsaugant lentelės vaizdą į failą įvyko klaida</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaTableEditor.FrmMain">
+    <Phrase key="this">SCADA-Lentelių Redaktorius</Phrase>
+    <Phrase key="miFile">&amp;Failas</Phrase>
+    <Phrase key="miFileNew">Sukurti</Phrase>
+    <Phrase key="miFileOpen">Įkelti...</Phrase>
+    <Phrase key="miFileSave">Išsaugoti</Phrase>
+    <Phrase key="miFileSaveAs">Išsaugoti Kaip...</Phrase>
+    <Phrase key="miFileExit">Išeiti</Phrase>
+    <Phrase key="miSettings">&amp;Nustatymai</Phrase>
+    <Phrase key="miSettingsParams">Parameterai...</Phrase>
+    <Phrase key="miHelp">&amp;Pagalba</Phrase>
+    <Phrase key="miHelpAbout">Apie</Phrase>
+    <Phrase key="btnFileNew.ToolTip">Sukurti naują lentelės vaizdą</Phrase>
+    <Phrase key="btnFileOpen.ToolTip">Įkelti lentelės vaizdą</Phrase>
+    <Phrase key="btnFileSave.ToolTip">Išsaugoti lentelės vaizdą</Phrase>
+    <Phrase key="btnSettingsParams.ToolTip">Parameterai</Phrase>
+    <Phrase key="gbBase">Konfigūravimo Duomenų Bazė</Phrase>
+    <Phrase key="lblCnlFilterByObj">Objektas</Phrase>
+    <Phrase key="lblCnlFilterByKP">Prietaisas</Phrase>
+    <Phrase key="btnFilterCnlsByObj.ToolTip">Filtras pagal objektus</Phrase>
+    <Phrase key="btnFilterCnlsByKP.ToolTip">Filtras pagal prietaisus</Phrase>
+    <Phrase key="btnRefreshBase.ToolTip">Atnaujinti konfigūravimo duomenų bazės duomenis</Phrase>
+    <Phrase key="rbInCnls">Įvesties kanalai</Phrase>
+    <Phrase key="rbCtrlCnls">Išvesties kanalai</Phrase>
+    <Phrase key="colCnlNum">Nr.</Phrase>
+    <Phrase key="colCnlName">Pavadinimas</Phrase>
+    <Phrase key="gbTableView">Redaguotas lentelės vaizdas</Phrase>
+    <Phrase key="lblTableTitle">Pavadinimas</Phrase>
+    <Phrase key="lblTableItems">Įrašai</Phrase>
+    <Phrase key="btnAddItem.ToolTip">Pridėti įrašą iš konfigūravimo duomenų bazės</Phrase>
+    <Phrase key="btnAddEmptyItem.ToolTip">Pridėti tuščią įrašą</Phrase>
+    <Phrase key="btnMoveUpItem.ToolTip">Perkelti pasirinktą įrašą aukštyn</Phrase>
+    <Phrase key="btnMoveDownItem.ToolTip">Perkelti pasirinktą įrašą žemyn</Phrase>
+    <Phrase key="btnDeleteItem.ToolTip">Ištrinti pasirinktus įrašus</Phrase>
+    <Phrase key="btnShowItemInfo.ToolTip">Parodyti pasirinkto įrašo informaciją</Phrase>
+    <Phrase key="colItemCnlNum">Įv. kanl.</Phrase>
+    <Phrase key="colItemCtrlCnlNum">Išv. kanl.</Phrase>
+    <Phrase key="colItemCaption">Antraštė</Phrase>
+    <Phrase key="colItemHidden">Paslėptas</Phrase>
+    <Phrase key="OpenFileFilter">Lentelių Vaizdai (*.tbl; *.ofm)|*.tbl;*.ofm|Visi Failai (*.*)|*.*</Phrase>
+    <Phrase key="SaveFileFilter">Lentelių Vaizdai (*.tbl)|*.tbl|Visi Failai (*.*)|*.*</Phrase>
+    <Phrase key="SaveConfirm">Lentelės vaizdas buvo pakeistas. Ar išsaugoti pakeitimus?</Phrase>
+    <Phrase key="AllObjItem">&lt;Visi objektai&gt;</Phrase>
+    <Phrase key="AllKPItem">&lt;Visi prietaisai&gt;</Phrase>
+    <Phrase key="LoadBaseError">Įkeliant konfigūravimo duomenų bazę įvyko klaida</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaTableEditor.FrmItemInfo">
+    <Phrase key="this">Įrašo Informacija</Phrase>
+    <Phrase key="gbInCnl">Įvesties kanalas</Phrase>
+    <Phrase key="lblInCnl">Kanalas</Phrase>
+    <Phrase key="lblInCnlObj">Objektas</Phrase>
+    <Phrase key="lblInCnlKP">Prietaisas</Phrase>
+    <Phrase key="gbCtrlCnl">Išvesties Kanalas</Phrase>
+    <Phrase key="lblCtrlCnl">Kanalas</Phrase>
+    <Phrase key="lblCtrlCnlObj">Objektas</Phrase>
+    <Phrase key="lblCtrlCnlKP">Prietaisas</Phrase>
+    <Phrase key="btnClose">Uždaryti</Phrase>
+    <Phrase key="GetInCnlError">Gaunant įvesties kanalo informaciją įvyko klaida</Phrase>
+    <Phrase key="GetCtrlCnlError">Gaunant išvesties kanalo informaciją įvyko klaida</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaTableEditor.FrmSettings">
+    <Phrase key="this">Nustatymai</Phrase>
+    <Phrase key="lblBaseDATDir">Konfigūravimo duomenų bazė DAT formatu</Phrase>
+    <Phrase key="btnOK">Gerai</Phrase>
+    <Phrase key="btnCancel">Atšaukti</Phrase>
+  </Dictionary>
+</ScadaTableEditorDictionaries>

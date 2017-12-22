@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaSchemeEditorConfig>
+  <Param name="WebDir" value="C:\SCADA\ScadaWeb\" descr="Web application directory" />
+</ScadaSchemeEditorConfig>

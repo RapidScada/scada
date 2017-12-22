@@ -52,7 +52,8 @@
             this.sep3 = new System.Windows.Forms.ToolStripSeparator();
             this.btnEditPointer = new System.Windows.Forms.ToolStripButton();
             this.btnEditDelete = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.sep4 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnSettingsOptions = new System.Windows.Forms.ToolStripButton();
             this.btnHelpAbout = new System.Windows.Forms.ToolStripButton();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
@@ -90,7 +91,8 @@
             this.sep3,
             this.btnEditPointer,
             this.btnEditDelete,
-            this.toolStripSeparator1,
+            this.sep4,
+            this.btnSettingsOptions,
             this.btnHelpAbout});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
@@ -233,10 +235,20 @@
             this.btnEditDelete.ToolTipText = "Delete selected components (Del)";
             this.btnEditDelete.Click += new System.EventHandler(this.btnEditDelete_Click);
             // 
-            // toolStripSeparator1
+            // sep4
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            this.sep4.Name = "sep4";
+            this.sep4.Size = new System.Drawing.Size(6, 25);
+            // 
+            // btnSettingsOptions
+            // 
+            this.btnSettingsOptions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnSettingsOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnSettingsOptions.Image")));
+            this.btnSettingsOptions.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnSettingsOptions.Name = "btnSettingsOptions";
+            this.btnSettingsOptions.Size = new System.Drawing.Size(23, 20);
+            this.btnSettingsOptions.ToolTipText = "Settings";
+            this.btnSettingsOptions.Click += new System.EventHandler(this.btnSettingsOptions_Click);
             // 
             // btnHelpAbout
             // 
@@ -360,6 +372,7 @@
             // propertyGrid
             // 
             this.propertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGrid.LineColor = System.Drawing.SystemColors.ControlDark;
             this.propertyGrid.Location = new System.Drawing.Point(3, 24);
             this.propertyGrid.Name = "propertyGrid";
             this.propertyGrid.Size = new System.Drawing.Size(295, 411);
@@ -447,12 +460,13 @@
         private System.Windows.Forms.ToolStripButton btnFileOpenBrowser;
         private System.Windows.Forms.ToolStripButton btnEditUndo;
         private System.Windows.Forms.ToolStripButton btnEditRedo;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripSeparator sep4;
         private System.Windows.Forms.OpenFileDialog ofdScheme;
         private System.Windows.Forms.SaveFileDialog sfdScheme;
         private System.Windows.Forms.ListView lvCompTypes;
         private System.Windows.Forms.ImageList ilCompTypes;
         private System.Windows.Forms.ColumnHeader colCompName;
+        private System.Windows.Forms.ToolStripButton btnSettingsOptions;
     }
 }
 

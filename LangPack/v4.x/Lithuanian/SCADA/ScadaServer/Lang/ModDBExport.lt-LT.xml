@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModDBExportDictionaries>
+  <Dictionary key="Scada.Server.Modules.DBExport.FrmDBExportConfig">
+    <Phrase key="this">Eksportuoti į DB</Phrase>
+    <Phrase key="ddbAddDataSource.ToolTip">Pridėti duomenų šaltinį</Phrase>
+    <Phrase key="btnDelDataSource.ToolTip">Ištrinti duomenų šaltinį</Phrase>
+    <Phrase key="btnManualExport.ToolTip">Rankinis eksportas</Phrase>
+    <Phrase key="lblInstruction">Pridėti duomenų šaltinius</Phrase>
+    <Phrase key="pageConnection">Prisijungimas</Phrase>
+    <Phrase key="lblServer">Serveris</Phrase>
+    <Phrase key="lblDatabase">Duomenų bazė</Phrase>
+    <Phrase key="lblUser">Vartotojas</Phrase>
+    <Phrase key="lblPassword">Slaptažodis</Phrase>
+    <Phrase key="lblConnectionString">Prisijungimo eilutė</Phrase>
+    <Phrase key="pageExportCurDataQuery">Dabartiniai Duomenys</Phrase>
+    <Phrase key="pageExportArcDataQuery">Archyvo Duomenys</Phrase>
+    <Phrase key="pageExportEventQuery">Įvykiai</Phrase>
+    <Phrase key="chkExport">Eksportuoti</Phrase>
+    <Phrase key="btnSave">Išsaugoti</Phrase>
+    <Phrase key="btnCancel">Atšaukti</Phrase>
+    <Phrase key="btnClose">Uždaryti</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Server.Modules.DBExport.FrmManualExport">
+    <Phrase key="this">Rankinis Eksportas</Phrase>
+    <Phrase key="lblDataSource">Duomenų šaltinis</Phrase>
+    <Phrase key="gbCurData">Dabartiniai duomenys</Phrase>
+    <Phrase key="lblCurDataCtrlCnlNum">Išvesties kanalas</Phrase>
+    <Phrase key="btnExportCurData">Eksportuoti</Phrase>
+    <Phrase key="gbArcData">Archyvo duomenys</Phrase>
+    <Phrase key="lblArcDataCtrlCnlNum">Išvesties kanalas</Phrase>
+    <Phrase key="lblArcDataDateTime">Data ir laikas</Phrase>
+    <Phrase key="btnExportArcData">Eksportuoti</Phrase>
+    <Phrase key="gbEvents">Įvykiai</Phrase>
+    <Phrase key="lblEventsCtrlCnlNum">Išvesties kanalas</Phrase>
+    <Phrase key="lblEventsDate">Data</Phrase>
+    <Phrase key="btnExportEvents">Eksportuoti</Phrase>
+    <Phrase key="btnOK">Gerai</Phrase>
+    <Phrase key="btnCancel">Atšaukti</Phrase>
+  </Dictionary>
+</ModDBExportDictionaries>

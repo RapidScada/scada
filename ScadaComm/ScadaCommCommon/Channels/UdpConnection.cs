@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2017
  */
 
 using System;
@@ -45,6 +45,10 @@ namespace Scada.Comm.Channels
         /// </summary>
         protected const int DatagramReceiveTimeout = 10;
 
+        /// <summary>
+        /// Признак, что соединение установлено
+        /// </summary>
+        protected bool connected;
         /// <summary>
         /// Буфер неполностью считанной датаграммы
         /// </summary>
@@ -71,15 +75,22 @@ namespace Scada.Comm.Channels
             if (udpClient == null)
                 throw new ArgumentNullException("udpClient");
 
-            datagramBuf = null;
-            bufReadPos = 0;
-
-            UdpClient = udpClient;
-            UdpClient.Client.SendTimeout = DefaultWriteTimeout;
             LocalPort = localPort;
             RemotePort = remotePort;
+            InternalInit(udpClient);
         }
 
+
+        /// <summary>
+        /// Получить признак, что соединение установлено
+        /// </summary>
+        public override bool Connected
+        {
+            get
+            {
+                return connected;
+            }
+        }
 
         /// <summary>
         /// Получить UDP-клиента
@@ -96,6 +107,19 @@ namespace Scada.Comm.Channels
         /// </summary>
         public int RemotePort { get; set; }
 
+
+        /// <summary>
+        /// Инициализировать соединение
+        /// </summary>
+        protected void InternalInit(UdpClient udpClient)
+        {
+            connected = true;
+            datagramBuf = null;
+            bufReadPos = 0;
+
+            UdpClient = udpClient;
+            UdpClient.Client.SendTimeout = DefaultWriteTimeout;
+        }
 
         /// <summary>
         /// Создать объект IPEndPoint, описывающий удалённый хост
@@ -389,8 +413,26 @@ namespace Scada.Comm.Channels
         /// </summary>
         public void Close()
         {
-            try { UdpClient.Close(); }
-            catch { }
+            try
+            {
+                UdpClient.Close();
+            }
+            catch
+            {
+            }
+            finally
+            {
+                connected = false;
+            }
+        }
+
+        /// <summary>
+        /// Восстановить UDP-соединение
+        /// </summary>
+        public void Renew()
+        {
+            Close();
+            InternalInit(new UdpClient(LocalPort));
         }
 
         /// <summary>

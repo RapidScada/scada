@@ -28,14 +28,11 @@ using Scada.Scheme.Model.DataTypes;
 using Scada.Scheme.Model.PropertyGrid;
 using Scada.UI;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using Utils;
-using CM = System.ComponentModel;
 
 namespace Scada.Scheme.Editor
 {
@@ -45,14 +42,15 @@ namespace Scada.Scheme.Editor
     /// </summary>
     public partial class FrmMain : Form, IMainForm
     {
-        private readonly AppData appData;  // общие данные приложения
-        private readonly Log log;          // журнал приложения
-        private readonly Editor editor;    // редактор
+        private readonly AppData appData;   // общие данные приложения
+        private readonly Settings settings; // настройки приложения
+        private readonly Log log;           // журнал приложения
+        private readonly Editor editor;     // редактор
 
-        private Mutex mutex;               // объект для проверки запуска второй копии приложения
-        private bool compTypesChanging;    // пользователь изменяет выбранный элемент lvCompTypes
-        private bool schCompChanging;      // пользователь изменяет выбранный элемент cbSchComp
-        private FormStateDTO formStateDTO; // состояние формы для передачи
+        private Mutex mutex;                // объект для проверки запуска второй копии приложения
+        private bool compTypesChanging;     // пользователь изменяет выбранный элемент lvCompTypes
+        private bool schCompChanging;       // пользователь изменяет выбранный элемент cbSchComp
+        private FormStateDTO formStateDTO;  // состояние формы для передачи
 
 
         /// <summary>
@@ -63,6 +61,7 @@ namespace Scada.Scheme.Editor
             InitializeComponent();
 
             appData = AppData.GetAppData();
+            settings = appData.Settings;
             log = appData.Log;
             editor = appData.Editor;
             mutex = null;
@@ -92,10 +91,14 @@ namespace Scada.Scheme.Editor
             else
                 log.WriteError(errMsg);
 
+            if (Localization.LoadDictionaries(appData.AppDirs.LangDir, "ScadaScheme", out errMsg))
+                SchemePhrases.Init();
+            else
+                log.WriteError(errMsg);
+
             if (Localization.LoadDictionaries(appData.AppDirs.LangDir, "ScadaSchemeEditor", out errMsg))
             {
                 Translator.TranslateForm(this, "Scada.Scheme.Editor.FrmMain");
-                SchemePhrases.Init();
                 AppPhrases.Init();
                 ofdScheme.Filter = sfdScheme.Filter = AppPhrases.SchemeFileFilter;
             }
@@ -119,8 +122,9 @@ namespace Scada.Scheme.Editor
                 attrTranslator.TranslateAttrs(typeof(DynamicText));
                 attrTranslator.TranslateAttrs(typeof(StaticPicture));
                 attrTranslator.TranslateAttrs(typeof(DynamicPicture));
+                attrTranslator.TranslateAttrs(typeof(UnknownComponent));
                 attrTranslator.TranslateAttrs(typeof(Condition));
-                attrTranslator.TranslateAttrs(typeof(FrmImageDialog.ImageListItem));
+                attrTranslator.TranslateAttrs(typeof(ImageListItem));
             }
             catch (Exception ex)
             {
@@ -151,6 +155,49 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
+        /// Заполнить список типов компонентов
+        /// </summary>
+        private void FillComponentTypes()
+        {
+            try
+            {
+                lvCompTypes.BeginUpdate();
+                CompLibSpec[] specs = appData.CompManager.GetSortedSpecs();
+
+                foreach (CompLibSpec spec in specs)
+                {
+                    ListViewGroup listViewGroup = new ListViewGroup(spec.GroupHeader);
+
+                    // добавление элемента с указателем
+                    lvCompTypes.Items.Add(new ListViewItem(
+                        "Pointer", "pointer.png", listViewGroup) { IndentCount = 1 });
+
+                    // добавление компонентов
+                    foreach (CompItem compItem in spec.CompItems)
+                    {
+                        string imageKey = "image" + ilCompTypes.Images.Count;
+                        ilCompTypes.Images.Add(imageKey, compItem.Icon);
+
+                        lvCompTypes.Items.Add(new ListViewItem()
+                        {
+                            Text = compItem.DisplayName,
+                            ImageKey = imageKey,
+                            Tag = compItem.CompType?.FullName,
+                            Group = listViewGroup,
+                            IndentCount = 1
+                        });
+                    }
+
+                    lvCompTypes.Groups.Add(listViewGroup);
+                }
+            }
+            finally
+            {
+                lvCompTypes.EndUpdate();
+            }
+        }
+
+        /// <summary>
         /// Открыть браузер со страницей редактора
         /// </summary>
         private void OpenBrowser()
@@ -176,7 +223,7 @@ namespace Scada.Scheme.Editor
             }
             else
             {
-                loadOK = editor.LoadSchemeFromFile(ofdScheme.FileName, out errMsg);
+                loadOK = editor.LoadSchemeFromFile(fileName, out errMsg);
             }
 
             appData.AssignViewStamp(editor.SchemeView);
@@ -539,17 +586,33 @@ namespace Scada.Scheme.Editor
                 return;
             }
 
+            // загрузка настроек приложения
+            string errMsg;
+            if (!settings.Load(appData.AppDirs.ConfigDir + Settings.DefFileName, out errMsg))
+            {
+                log.WriteError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
+            }
+
+            // загрузка компонентов
+            appData.LoadComponents();
+
             // настройка элментов управления
             lvCompTypes.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
             lblStatus.Text = "";
+            FillComponentTypes();
 
             // создание новой схемы
             InitScheme();
 
             // загрузка состояния формы
             FormState formState = new FormState();
-            string errMsg;
-            if (!formState.Load(appData.AppDirs.ConfigDir + FormState.DefFileName, out errMsg))
+            if (formState.Load(appData.AppDirs.ConfigDir + FormState.DefFileName, out errMsg))
+            {
+                ImageEditor.ImageDir = formState.ImageDir;
+                ofdScheme.InitialDirectory = formState.SchemeDir;
+            }
+            else
             {
                 log.WriteError(errMsg);
                 ScadaUiUtils.ShowError(errMsg);
@@ -580,7 +643,10 @@ namespace Scada.Scheme.Editor
         {
             // сохранение состояния формы
             FormState formState = new FormState(this);
+            formState.SchemeDir = ofdScheme.InitialDirectory;
+            formState.ImageDir = ImageEditor.ImageDir;
             string errMsg;
+
             if (!formState.Save(appData.AppDirs.ConfigDir + FormState.DefFileName, out errMsg))
             {
                 log.WriteError(errMsg);
@@ -679,12 +745,13 @@ namespace Scada.Scheme.Editor
             // открытие схемы из файла
             if (ConfirmCloseScheme())
             {
-                ofdScheme.InitialDirectory = string.IsNullOrEmpty(editor.FileName) ? 
-                    "" : Path.GetDirectoryName(editor.FileName);
                 ofdScheme.FileName = "";
 
                 if (ofdScheme.ShowDialog() == DialogResult.OK)
+                {
+                    ofdScheme.InitialDirectory = Path.GetDirectoryName(ofdScheme.FileName);
                     InitScheme(ofdScheme.FileName);
+                }
             }
         }
 
@@ -758,6 +825,19 @@ namespace Scada.Scheme.Editor
         {
             // удаление выбранных компонентов схемы
             editor.DeleteSelected();
+        }
+
+        private void btnSettingsOptions_Click(object sender, EventArgs e)
+        {
+            // отображение формы настроек
+            if (FrmSettings.ShowDialog(settings))
+            {
+                string errMsg;
+                if (settings.Save(appData.AppDirs.ConfigDir + Settings.DefFileName, out errMsg))
+                    ScadaUiUtils.ShowInfo(AppPhrases.RestartNeeded);
+                else
+                    ScadaUiUtils.ShowError(errMsg);
+            }
         }
 
         private void btnHelpAbout_Click(object sender, EventArgs e)

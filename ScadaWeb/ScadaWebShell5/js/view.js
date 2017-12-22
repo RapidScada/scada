@@ -31,12 +31,12 @@ scada.view = {
                 var newUrl = this.dependsOnView && viewID > 0 ?
                     scada.utils.setQueryParam("viewID", viewID, this.url) :
                     this.url;
-                var frameDataWindow = $("#frameDataWindow");
+                var frameDataWindow = scada.utils.setFrameSrc($("#frameDataWindow"), newUrl);
                 frameDataWindow
-                .load(function () {
+                .off("load")
+                .on("load", function () {
                     viewHub.addDataWindow(frameDataWindow[0].contentWindow);
-                })
-                .attr("src", newUrl);
+                });
             }
         },
         // Clear the data window and release resources
@@ -55,6 +55,11 @@ scada.view = {
     // Page title just after loading
     initialPageTitle: "",
 
+
+    // Get URL of the view page that contains view frame
+    _getUrl: function (viewID) {
+        return "View.aspx?viewID=" + viewID;
+    },
 
     // Get outer height of the specified object considering its displaying
     _getOuterHeight: function (jqObj) {
@@ -169,19 +174,31 @@ scada.view = {
     },
 
     // Load the specified view and reload an active data window
-    loadView: function (viewID, viewUrl) {
-        // load view
+    loadView: function (viewID, viewUrl, opt_from_history) {
+        console.log(scada.utils.getCurTime() + " Load view " + viewID + " by " + viewUrl);
+
+        // write history manually
+        var state = null;
+        if (!opt_from_history && viewHub.curViewID > 0) {
+            state = { viewID: viewID, viewUrl: "" };
+            history.pushState(state, "", this._getUrl(viewID));
+        }
+
+        // load the specified view
         document.title = this.initialPageTitle;
         viewHub.curViewID = viewID;
-        var frameView = $("#frameView");
+        var frameView = scada.utils.setFrameSrc($("#frameView"), viewUrl);
+        var thisObj = this;
 
         frameView
         .off("load")
         .on("load", function () {
             var wnd = frameView[0].contentWindow;
+
             // add the view to the view hub
             viewHub.addView(wnd);
 
+            // update document title
             try {
                 // set the page title the same as the frame title
                 document.title = wnd.document.title;
@@ -190,8 +207,13 @@ scada.view = {
                 // security error if the frame has the different origin
                 document.title = phrases.ExternalLinkTitle;
             }
-        })
-        .attr("src", viewUrl);
+
+            // update view URL in the history
+            if (state != null) {
+                state.viewUrl = wnd.location.href;
+                history.replaceState(state, "", thisObj._getUrl(viewID));
+            }
+        });
 
         // reload a data window with the new view ID
         if (this._dataWindow.dependsOnView) {
@@ -252,6 +274,18 @@ $(document).ready(function () {
     $(window).on(scada.EventTypes.VIEW_TITLE_CHANGED, function (event, sender, extraParams) {
         if (sender == viewHub.viewWindow) {
             document.title = extraParams;
+        }
+    });
+
+    // process history
+    $(window).on("popstate", function (event) {
+        var state = event.originalEvent.state;
+        if (state) {
+            scada.view.loadView(state.viewID, state.viewUrl, true);
+            scada.masterMain.selectView(state.viewID);
+        } else {
+            scada.view.loadView(initialViewID, initialViewUrl, true);
+            scada.masterMain.selectView(initialViewID);
         }
     });
 

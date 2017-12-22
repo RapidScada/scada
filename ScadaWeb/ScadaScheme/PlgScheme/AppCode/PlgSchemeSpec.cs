@@ -36,7 +36,8 @@ namespace Scada.Web.Plugins
     /// </summary>
     public class PlgSchemeSpec : PluginSpec
     {
-        private DictUpdater dictUpdater; // объект для обновления словаря плагина
+        private DictUpdater schemeDictUpdater; // объект для обновления словаря схем
+        private DictUpdater pluginDictUpdater; // объект для обновления словаря плагина
 
 
         /// <summary>
@@ -45,7 +46,8 @@ namespace Scada.Web.Plugins
         public PlgSchemeSpec()
             : base()
         {
-            dictUpdater = null;
+            schemeDictUpdater = null;
+            pluginDictUpdater = null;
         }
 
 
@@ -103,9 +105,14 @@ namespace Scada.Web.Plugins
         /// </summary>
         public override void Init()
         {
-            dictUpdater = new DictUpdater(
-                string.Format("{0}Scheme{1}lang{1}", AppDirs.PluginsDir, Path.DirectorySeparatorChar), 
-                "PlgScheme", null, Log);
+            // создание объектов для обновления словарей
+            string dir = Path.Combine(AppDirs.PluginsDir, "Scheme", "lang");
+            schemeDictUpdater = new DictUpdater(dir, "ScadaScheme", null, Log);
+            pluginDictUpdater = new DictUpdater(dir, "PlgScheme", SchemePhrases.Init, Log);
+
+            // инициализация менеджера компонентов
+            CompManager compManager = CompManager.GetInstance();
+            compManager.Init(AppData.GetAppData().AppDirs.BinDir, Log);
         }
 
         /// <summary>
@@ -113,7 +120,13 @@ namespace Scada.Web.Plugins
         /// </summary>
         public override void OnUserLogin(UserData userData)
         {
-            dictUpdater.Update();
+            // обновление словарей
+            schemeDictUpdater.Update();
+            pluginDictUpdater.Update();
+
+            // извлечение компонентов из плагинов
+            CompManager compManager = CompManager.GetInstance();
+            compManager.RetrieveCompFromPlugins(userData.PluginSpecs);
         }
     }
 }

@@ -34,7 +34,8 @@ using CM = System.ComponentModel;
 namespace Scada.Scheme.Model
 {
     /// <summary>
-    /// Динамический рисунок
+    /// Scheme component that represents dynamic picture
+    /// <para>Компонент схемы, представляющий динамический рисунок</para>
     /// </summary>
     [Serializable]
     public class DynamicPicture : StaticPicture, IDynamicComponent

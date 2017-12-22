@@ -754,6 +754,15 @@ scada.scheme.DynamicPictureRenderer.prototype.updateData = function (component, 
     }
 };
 
+/********** Unknown Component Renderer **********/
+
+scada.scheme.UnknownComponentRenderer = function () {
+    scada.scheme.Renderer.call(this);
+};
+
+scada.scheme.UnknownComponentRenderer.prototype = Object.create(scada.scheme.Renderer.prototype);
+scada.scheme.UnknownComponentRenderer.constructor = scada.scheme.UnknownComponentRenderer;
+
 /********** Render Context **********/
 
 // Render context type
@@ -776,4 +785,6 @@ scada.scheme.rendererMap = new Map([
     ["Scada.Scheme.Model.StaticText", new scada.scheme.StaticTextRenderer()],
     ["Scada.Scheme.Model.DynamicText", new scada.scheme.DynamicTextRenderer()],
     ["Scada.Scheme.Model.StaticPicture", new scada.scheme.StaticPictureRenderer()],
-    ["Scada.Scheme.Model.DynamicPicture", new scada.scheme.DynamicPictureRenderer()]]);
+    ["Scada.Scheme.Model.DynamicPicture", new scada.scheme.DynamicPictureRenderer()],
+    ["Scada.Scheme.Model.UnknownComponent", new scada.scheme.UnknownComponentRenderer()]
+]);

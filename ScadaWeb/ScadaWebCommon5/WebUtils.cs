@@ -40,7 +40,15 @@ namespace Scada.Web
         /// <summary>
         /// Версия веб-приложения
         /// </summary>
-        public const string AppVersion = "5.0.3.0";
+        public const string AppVersion = "5.0.3.1";
+        /// <summary>
+        /// Шиблон для вставки стилей на веб-страницу
+        /// </summary>
+        public const string StyleTemplate = "<link href=\"{0}\" rel=\"stylesheet\" type=\"text/css\" />";
+        /// <summary>
+        /// Шиблон для вставки скрипта на веб-страницу
+        /// </summary>
+        public const string ScriptTemplate = "<script type=\"text/javascript\" src=\"{0}\"></script>";
         /// <summary>
         /// Начало отчёта времени в Unix, которое используется в Javascript реализации даты
         /// </summary>

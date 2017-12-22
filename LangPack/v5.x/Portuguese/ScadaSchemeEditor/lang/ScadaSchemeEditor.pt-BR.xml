@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScadaSchemeEditorDictionaries>
+  <Dictionary key="Scada.Scheme.Editor.Editor">
+    <Phrase key="EditorTitle">SCADA-Scheme Editor</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Editor.FrmMain">
+    <Phrase key="btnFileNew.ToolTip">Criar (Ctrl+N)</Phrase>
+    <Phrase key="btnFileOpen.ToolTip">Abrir (Ctrl+O)</Phrase>
+    <Phrase key="btnFileSave.ToolTip">Salvar (Ctrl+S)</Phrase>
+    <Phrase key="miFileSaveAs">Salvar como...</Phrase>
+    <Phrase key="btnFileOpenBrowser.ToolTip">Abrir nova aba</Phrase>
+    <Phrase key="btnEditCut.ToolTip">Cortar (Ctrl+X)</Phrase>
+    <Phrase key="btnEditCopy.ToolTip">Copiar (Ctrl+C)</Phrase>
+    <Phrase key="btnEditPaste.ToolTip">Colar (Ctrl+V)</Phrase>
+    <Phrase key="btnEditUndo.ToolTip">Desfazer (Ctrl+Z)</Phrase>
+    <Phrase key="btnEditRedo.ToolTip">Refazer (Ctrl+Y)</Phrase>
+    <Phrase key="btnSchemePointer.ToolTip">Cancenlar elemento de adição (Esc)</Phrase>
+    <Phrase key="btnSchemeDelete.ToolTip">Deletar componentes (Del)</Phrase>
+    <Phrase key="btnHelpAbout.ToolTip">Sobre</Phrase>
+    <Phrase key="pageComponents">Componentes</Phrase>
+    <Phrase key="pageProperties">Propriedades</Phrase>
+    <Phrase key="lvgStandard">Padrão</Phrase>
+    <Phrase key="lvCompTypes.Items[0]">Ponteiro</Phrase>
+    <Phrase key="lvCompTypes.Items[1]">Texto Estático</Phrase>
+    <Phrase key="lvCompTypes.Items[2]">Texto Dinâmico</Phrase>
+    <Phrase key="lvCompTypes.Items[3]">Imagem Estática</Phrase>
+    <Phrase key="lvCompTypes.Items[4]">Imagem Dinâmica</Phrase>
+    <Phrase key="CloseSecondInstance">Scheme Editor já esta aberto.&#13;&#10;A segunda instância será fechada.</Phrase>
+    <Phrase key="FailedToStartEditor">Erro ao iniciar Scada Editor.&#13;&#10;Veja os detalhes em&#13;&#10;{0}</Phrase>
+    <Phrase key="SchemeFileFilter">Esquemas (*.sch)|*.sch|Todos Arquivos (*.*)|*.*</Phrase>
+    <Phrase key="SaveSchemeConfirm">O esquema foi modificado. Salvar as mudanças?</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Editor.FormState">
+    <Phrase key="LoadFormStateError">Erro ao carrear esquema do arquivo</Phrase>
+    <Phrase key="SaveFormStateError">Erro ao salvar esquema do arquivo</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Editor.Js">
+    <Phrase key="UnableLoadScheme">Impossível de fazer upload para a página da web.</Phrase>
+    <Phrase key="PageNotValid">A página da web não é a mais atual, é recomendado que a feche.</Phrase>
+    <Phrase key="DataError">Erro ao precessar data.</Phrase>
+    <Phrase key="EditorClosed">Scheme Editor provávelmente está fechado. É recomendado que feche a página da web.</Phrase>
+    <Phrase key="BrowserOutdated">O seu browser está desatualizado. Por favor, faça o update da ultima versão do seu browser.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.SchemeView">
+    <Phrase key="LoadSchemeViewError">Erro ao carregar esquema</Phrase>
+    <Phrase key="SaveSchemeViewError">Erro ao salvar o esquema</Phrase>
+    <Phrase key="IncorrectFileFormat">Esquema com formato incorreto</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.PropertyGrid">
+    <Phrase key="StringConvertError">Impossível de converter a string</Phrase>
+    <Phrase key="StringUniqueError">A Propriedade do valor deve ser único</Phrase>
+    <Phrase key="TrueValue">Sim</Phrase>
+    <Phrase key="FalseValue">Não</Phrase>
+    <Phrase key="EmptyValue">(Vazio)</Phrase>
+    <Phrase key="CollectionValue">(Coleção)</Phrase>
+    <Phrase key="BoldSymbol">N</Phrase>
+    <Phrase key="ItalicSymbol">I</Phrase>
+    <Phrase key="UnderlineSymbol">S</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmCnlFilterDialog">
+    <Phrase key="this">Filtro</Phrase>
+    <Phrase key="lblCnlNums">Numero de canal de entrada</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancelar</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmConditionDialog">
+    <Phrase key="this">Estado de imagem de saída</Phrase>
+    <Phrase key="lblCond">Condições</Phrase>
+    <Phrase key="lblProps">Propriedades de estado</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancelar</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmFontDialog">
+    <Phrase key="this">Fonte</Phrase>
+    <Phrase key="lblFontName">Fonte</Phrase>
+    <Phrase key="lblFontSize">Tamanho</Phrase>
+    <Phrase key="gbStyle">Estilo</Phrase>
+    <Phrase key="chkBold">Negrito</Phrase>
+    <Phrase key="chkItalic">Italico</Phrase>
+    <Phrase key="chkUnderline">Sublinhado</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancelar</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmImageDialog">
+    <Phrase key="this">Imagens</Phrase>
+    <Phrase key="lblImages">Imagens</Phrase>
+    <Phrase key="lblImageProps">Propriedades de Imagem</Phrase>
+    <Phrase key="lblPreview">Pré-visualizar</Phrase>
+    <Phrase key="btnSelectEmpty">Vazio</Phrase>
+    <Phrase key="btnSelect">Selecionar</Phrase>
+    <Phrase key="btnClose">Fechar</Phrase>
+    <Phrase key="ImageFileFilter">Imagens (*.jpg;*.png;*.gif;*.svg)|*.jpg;*.png;*.gif;*.svg|Todos Arquivos (*.*)|*.*</Phrase>
+    <Phrase key="DisplayImageError">Erro ao exibir imagem</Phrase>
+    <Phrase key="LoadImageError">Erro ao carregar imagem</Phrase>
+    <Phrase key="SaveImageError">Erro ao salvar imagem</Phrase>
+  </Dictionary>
+</ScadaSchemeEditorDictionaries>

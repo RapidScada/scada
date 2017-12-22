@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DevTemplate>
+  <ElemGroups>
+    <ElemGroup name="Дискретные входы" tableType="InputRegisters" address="51">
+      <Elem name="Входы 1-8" type="ushort" byteOrder="" />
+    </ElemGroup>
+    <ElemGroup name="Счётчики" tableType="InputRegisters" address="64">
+      <Elem name="Счётчик 1" type="ushort" byteOrder="" />
+      <Elem name="Счётчик 2" type="ushort" byteOrder="" />
+      <Elem name="Счётчик 3" type="ushort" byteOrder="" />
+      <Elem name="Счётчик 4" type="ushort" byteOrder="" />
+      <Elem name="Счётчик 5" type="ushort" byteOrder="" />
+      <Elem name="Счётчик 6" type="ushort" byteOrder="" />
+      <Elem name="Счётчик 7" type="ushort" byteOrder="" />
+      <Elem name="Счётчик 8" type="ushort" byteOrder="" />
+    </ElemGroup>
+  </ElemGroups>
+  <Cmds>
+    <Cmd name="Установка счётчика 1" tableType="HoldingRegisters" multiple="true" address="64" elemCnt="1" cmdNum="1" />
+    <Cmd name="Установка счётчика 2" tableType="HoldingRegisters" multiple="true" address="65" elemCnt="1" cmdNum="1" />
+    <Cmd name="Установка счётчика 3" tableType="HoldingRegisters" multiple="true" address="66" elemCnt="1" cmdNum="1" />
+    <Cmd name="Установка счётчика 4" tableType="HoldingRegisters" multiple="true" address="67" elemCnt="1" cmdNum="1" />
+    <Cmd name="Установка счётчика 5" tableType="HoldingRegisters" multiple="true" address="68" elemCnt="1" cmdNum="1" />
+    <Cmd name="Установка счётчика 6" tableType="HoldingRegisters" multiple="true" address="69" elemCnt="1" cmdNum="1" />
+    <Cmd name="Установка счётчика 7" tableType="HoldingRegisters" multiple="true" address="70" elemCnt="1" cmdNum="1" />
+    <Cmd name="Установка счётчика 8" tableType="HoldingRegisters" multiple="true" address="71" elemCnt="1" cmdNum="1" />
+  </Cmds>
+</DevTemplate>

@@ -96,6 +96,8 @@
     <Content Include="plugins\Scheme\js\schemecommon.js" />
     <Content Include="plugins\Scheme\js\schememodel.js" />
     <Content Include="plugins\Scheme\js\schemerender.js" />
+    <Content Include="plugins\Scheme\lang\ScadaScheme.ru-RU.xml" />
+    <Content Include="plugins\Scheme\lang\ScadaScheme.en-GB.xml" />
     <Content Include="plugins\Scheme\lang\PlgScheme.en-GB.xml" />
     <Content Include="plugins\Scheme\lang\PlgScheme.ru-RU.xml" />
     <Content Include="plugins\Scheme\Scheme.aspx" />

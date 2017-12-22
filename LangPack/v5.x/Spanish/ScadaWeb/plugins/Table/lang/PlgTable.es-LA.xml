@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PlgTableDictionaries>
+  <Dictionary key="Scada.Web.Plugins.Table.EventsRepBuilder">
+    <Phrase key="EventsWorksheet">Eventos</Phrase>
+    <Phrase key="AllEventsTitle">Todos los Eventos, {0}</Phrase>
+    <Phrase key="EventsByViewTitle">{0}, {1}</Phrase>
+    <Phrase key="EventsGen">Generado </Phrase>
+    <Phrase key="NumCol">Numero</Phrase>
+    <Phrase key="TimeCol">Fecha y Hora</Phrase>
+    <Phrase key="ObjCol">Objectos</Phrase>
+    <Phrase key="DevCol">Dispositivo</Phrase>
+    <Phrase key="CnlCol">Canal</Phrase>
+    <Phrase key="TextCol">Descripcion</Phrase>
+    <Phrase key="AckCol">Ack</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.HourDataRepBuilder">
+    <Phrase key="HourDataWorksheet">Hourly Data</Phrase>
+    <Phrase key="HourDataTitle">{0}, {1}, {2}</Phrase>
+    <Phrase key="HourDataGen">Generado </Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.EventsWndSpec">
+    <Phrase key="EventsTitle">Eventos</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.TableView">
+    <Phrase key="LoadTableViewError">Error al cargar la vista de la tabla desde el archivo</Phrase>
+    <Phrase key="SaveTableViewError">Error al guardar la vista de tabla en el archivo</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmCommand">
+    <Phrase key="this">Comando - Rapid SCADA</Phrase>
+    <Phrase key="lblCtrlCnlNotFound">Canal de Salida {0} no encontrado.</Phrase>
+    <Phrase key="lblWrongPwd">Contraseña incorrecta.</Phrase>
+    <Phrase key="lblNoRights">Insuficientes privilegios.</Phrase>
+    <Phrase key="lblIncorrectCmdVal">Valor de comando incorrecto.</Phrase>
+    <Phrase key="lblIncorrectCmdData">Datos de comando incorrectos.</Phrase>
+    <Phrase key="lblCtrlCnlCaption">Canal de salida:</Phrase>
+    <Phrase key="lblObjCaption">Objecto:</Phrase>
+    <Phrase key="lblDevCaption">Dispositivo:</Phrase>
+    <Phrase key="lblPassword">Contraseña</Phrase>
+    <Phrase key="lblCmdVal">Valor</Phrase>
+    <Phrase key="lblCommand">Comando</Phrase>
+    <Phrase key="lblCmdData">Datos</Phrase>
+    <Phrase key="lblStr">String</Phrase>
+    <Phrase key="lblHex">Hexadecimal</Phrase>
+    <Phrase key="lblCmdEnqueded">El comando se pone en cola para su ejecución.</Phrase>
+    <Phrase key="lblCloseAfter">La ventana se cerrará después de</Phrase>
+    <Phrase key="lblSec">sec.</Phrase>
+    <Phrase key="lblCmdNotSent">No se puede enviar el comando. El servidor no está disponible.</Phrase>
+    <Phrase key="lblCmdRejected">El comando es rechazado por el servidor.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmEventAck">
+    <Phrase key="this">Reconocimiento del evento - Rapid SCADA</Phrase>
+    <Phrase key="lblEventNotFound">Evento no encontrado.</Phrase>
+    <Phrase key="lblAckNotSent">No se puede enviar el acuse de recibo. El servidor no está disponible.</Phrase>
+    <Phrase key="lblAckRejected">El reconocimiento es rechazado por el servidor.</Phrase>
+    <Phrase key="lblNumCaption">Número:</Phrase>
+    <Phrase key="lblTimeCaption">Fecha y hora:</Phrase>
+    <Phrase key="lblObjCaption">Objecto:</Phrase>
+    <Phrase key="lblDevCaption">Dispositivo:</Phrase>
+    <Phrase key="lblCnlCaption">Canal:</Phrase>
+    <Phrase key="lblTextCaption">Descripcion:</Phrase>
+    <Phrase key="lblAckCaption">Admitido:</Phrase>
+    <Phrase key="lblByUser">por {0}</Phrase>
+    <Phrase key="lblTip">Haga clic en el botón Aceptar para confirmar el evento.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmEvents">
+    <Phrase key="lblAllEventsBtn">Todos los eventos</Phrase>
+    <Phrase key="lblEventsByViewBtn">Eventos por vista</Phrase>
+    <Phrase key="lblNumCol">Numbero</Phrase>
+    <Phrase key="lblTimeCol">Fecha y hora</Phrase>
+    <Phrase key="lblObjCol">Objecto</Phrase>
+    <Phrase key="lblDevCol">Dispositivo</Phrase>
+    <Phrase key="lblCnlCol">Canal</Phrase>
+    <Phrase key="lblTextCol">Descripcion</Phrase>
+    <Phrase key="lblAckCol">Ack</Phrase>
+    <Phrase key="lblNoEvents">No hay eventos</Phrase>
+    <Phrase key="lblLoading">Cargando...</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmEvents.Js">
+    <Phrase key="UpdateEventsError">Error al actualizar eventos</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmTable">
+    <Phrase key="SelectedDay">Día seleccionado:</Phrase>
+    <Phrase key="PreviousDay">El día anterior:</Phrase>
+    <Phrase key="PrevDayItem">Anterior. </Phrase>
+    <Phrase key="ItemCol">Item</Phrase>
+    <Phrase key="CurCol">Presente</Phrase>
+    <Phrase key="InCnlHint">Canal de entrada: </Phrase>
+    <Phrase key="CtrlCnlHint">Canal de salida: </Phrase>
+    <Phrase key="ObjectHint">Objecto: </Phrase>
+    <Phrase key="DeviceHint">Dispositivo: </Phrase>
+    <Phrase key="QuantityHint">Cantidad: </Phrase>
+    <Phrase key="UnitHint">Unidad: </Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmTable.Js">
+    <Phrase key="UpdateCurDataError">Error al actualizar los datos actuales</Phrase>
+    <Phrase key="UpdateHourDataError">Error al actualizar los datos por hora</Phrase>
+  </Dictionary>
+</PlgTableDictionaries>

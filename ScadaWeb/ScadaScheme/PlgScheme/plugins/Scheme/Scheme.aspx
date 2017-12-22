@@ -10,6 +10,7 @@
     <link href="~/lib/open-sans/css/open-sans.css" rel="stylesheet" type="text/css" />
     <link href="~/css/controls/notifier.min.css" rel="stylesheet" type="text/css" />
     <link href="~/plugins/Scheme/css/schemeform.min.css" rel="stylesheet" type="text/css" />
+    <%= compStyles %>
     <script type="text/javascript" src="../../lib/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="../../js/api/utils.js"></script>
     <script type="text/javascript" src="../../js/api/clientapi.js"></script>
@@ -19,6 +20,7 @@
     <script type="text/javascript" src="js/schemecommon.js"></script>
     <script type="text/javascript" src="js/schememodel.js"></script>
     <script type="text/javascript" src="js/schemerender.js"></script>
+    <%= compScripts %>
     <script type="text/javascript">
         var DEBUG_MODE = <%= debugMode ? "true" : "false" %>;
         var viewID = <%= viewID %>;

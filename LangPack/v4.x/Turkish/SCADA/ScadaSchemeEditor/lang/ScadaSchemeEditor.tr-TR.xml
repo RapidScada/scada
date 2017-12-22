@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaSchemeEditorDictionaries>
+  <Dictionary key="Scada.Scheme.Editor.FrmMain">
+    <Phrase key="this">SCADA-Scheme Tasarım</Phrase>
+    <Phrase key="miFile">&amp;Dosya</Phrase>
+    <Phrase key="miFileNew">Yeni</Phrase>
+    <Phrase key="miFileOpen">Aç...</Phrase>
+    <Phrase key="miFileSave">Kaydet</Phrase>
+    <Phrase key="miFileSaveAs">Farklı kaydet...</Phrase>
+    <Phrase key="miFileExit">Çıkış</Phrase>
+    <Phrase key="miEdit">&amp;Düzenle</Phrase>
+    <Phrase key="miEditCut">Kes</Phrase>
+    <Phrase key="miEditCopy">Kopyala</Phrase>
+    <Phrase key="miEditPaste">Yapıştır</Phrase>
+    <Phrase key="miScheme">&amp;Şema</Phrase>
+    <Phrase key="miSchemeAddStText">Statik text ekle</Phrase>
+    <Phrase key="miSchemeAddDynText">Dinamik text ekle</Phrase>
+    <Phrase key="miSchemeAddStPic">Statik resim ekle</Phrase>
+    <Phrase key="miSchemeAddDynPic">Dinamik resim ekle</Phrase>
+    <Phrase key="miSchemeCancelAddElem">Eleman eklemekten vazgeç</Phrase>
+    <Phrase key="miSchemeDelElem">Seçili elemanı sil</Phrase>
+    <Phrase key="miHelp">&amp;Yardım</Phrase>
+    <Phrase key="miHelpAbout">Hakkında</Phrase>
+    <Phrase key="btnFileNew.ToolTip">Yeni şema oluştur</Phrase>
+    <Phrase key="btnFileOpen.ToolTip">Şema aç</Phrase>
+    <Phrase key="btnFileSave.ToolTip">Şema kaydet</Phrase>
+    <Phrase key="btnEditCut.ToolTip">Şema elemanını kes</Phrase>
+    <Phrase key="btnEditCopy.ToolTip">Şema elemanını kopyala</Phrase>
+    <Phrase key="btnEditPaste.ToolTip">Şema elemanını yapıştır</Phrase>
+    <Phrase key="btnSchemeAddStText.ToolTip">Statik text ekle</Phrase>
+    <Phrase key="btnSchemeAddDynText.ToolTip">Dinamik text ekle</Phrase>
+    <Phrase key="btnSchemeAddStPic.ToolTip">Statik resim ekle</Phrase>
+    <Phrase key="btnSchemeAddDynPic.ToolTip">Dinamik resim ekle</Phrase>
+    <Phrase key="btnSchemeCancelAddElem.ToolTip">Eleman eklemekten vazgeç</Phrase>
+    <Phrase key="btnSchemeDelElem.ToolTip">Seçili elemanı sil</Phrase>
+    <Phrase key="lblNoSelObj">Düzenlemek için eleman seçin</Phrase>
+    <Phrase key="FileFilter">ŞEmalar (*.sch)|*.sch|All Files (*.*)|*.*</Phrase>
+    <Phrase key="SaveConfirm">Şemada değişiklik var. Kaydedilsin mi?</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.EditorData">
+    <Phrase key="LoadSchemeError">Şema dosyası yüklenirken hata oluştu</Phrase>
+    <Phrase key="SaveSchemeError">Şema dosyası kaydedilirken hata oluştu</Phrase>
+    <Phrase key="FileNameUndefined">Dosya adı tanımsız.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.FrmCnlsFilterDialog">
+    <Phrase key="this">Kanal filtre</Phrase>
+    <Phrase key="lblCnlNums">Input kanal numaraları</Phrase>
+    <Phrase key="btnOK">Tamam</Phrase>
+    <Phrase key="btnCancel">Vazgeç</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.FrmCondDialog">
+    <Phrase key="this">Resim için koşullar</Phrase>
+    <Phrase key="lblCond">Koşullar</Phrase>
+    <Phrase key="lblProps">Seçili koşul özellikleri</Phrase>
+    <Phrase key="btnOK">Tamam</Phrase>
+    <Phrase key="btnCancel">Vazgeç</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.FrmFontDialog">
+    <Phrase key="this">Font</Phrase>
+    <Phrase key="lblFontName">Font</Phrase>
+    <Phrase key="lblFontSize">Yükseklik</Phrase>
+    <Phrase key="gbStyle">Stil</Phrase>
+    <Phrase key="chkBold">Kalın</Phrase>
+    <Phrase key="chkItalic">İtalik</Phrase>
+    <Phrase key="chkUnderline">Altı çizili</Phrase>
+    <Phrase key="btnOK">Tamam</Phrase>
+    <Phrase key="btnCancel">Vazgeç</Phrase>
+    <Phrase key="SizeInteger">Yüksekllik tamsayı olmalı.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.FrmImageDialog">
+    <Phrase key="this">Resimler</Phrase>
+    <Phrase key="lblImages">Resimler</Phrase>
+    <Phrase key="lblImageProps">Resim özellikleri</Phrase>
+    <Phrase key="lblPreview">Önzileme</Phrase>
+    <Phrase key="btnClear">Temizle</Phrase>
+    <Phrase key="btnSelect">Seç</Phrase>
+    <Phrase key="btnClose">Kapat</Phrase>
+    <Phrase key="LoadImageError">Resim yükleme hatası</Phrase>
+    <Phrase key="SaveImageError">Resim kaydetme hatası</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.SchemeView">
+    <Phrase key="StringConvertError">Alfanumeric karakterlere dönüşütürülemiyor</Phrase>
+    <Phrase key="NameUniqueError">İsim benzersiz olmalı.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.MainPage">
+    <Phrase key="Loading">Yükleniyor...</Phrase>
+    <Phrase key="SchemeNotLoaded">Şema yüklenemedi</Phrase>
+    <Phrase key="ErrorDrawingScheme">Şema çizilemedi</Phrase>
+    <Phrase key="WcfError">WCF servis hatası</Phrase>
+    <Phrase key="UnableGetSettings">Uygulama ayarları getirilemedi</Phrase>
+    <Phrase key="UnableLoadScheme">Şema yüklenemiyor</Phrase>
+    <Phrase key="UnableLoadCnlData">Input kanalları yüklenemedi</Phrase>
+    <Phrase key="ErrorExecutingAction">Action çalıştırılamadı</Phrase>
+    <Phrase key="WcfAddrUndefined">WCF servis adresi tanımsız</Phrase>
+  </Dictionary>
+</ScadaSchemeEditorDictionaries>

@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : ScadaSchemeCommon
+ * Module   : Scheme Editor
  * Summary  : Specifies the functionality provided by the main form
  * 
  * Author   : Mikhail Shiryaev

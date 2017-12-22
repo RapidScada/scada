@@ -62,7 +62,6 @@
     <Compile Include="AppCode\AppData.cs" />
     <Compile Include="AppCode\AppDirs.cs" />
     <Compile Include="AppCode\AppPhrases.cs" />
-    <Compile Include="AppCode\AttrTranslator.cs" />
     <Compile Include="AppCode\Change.cs" />
     <Compile Include="AppCode\Editor.cs" />
     <Compile Include="AppCode\ChangesDTO.cs" />
@@ -84,6 +83,12 @@
     <Compile Include="FrmMain.Designer.cs">
       <DependentUpon>FrmMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSettings.Designer.cs">
+      <DependentUpon>FrmSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AppCode\SchemeEditorSvc.cs" />
@@ -92,6 +97,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSettings.resx">
+      <DependentUpon>FrmSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -152,6 +160,17 @@
       <Link>Web\plugins\Scheme\js\schemerender.js</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\PlgScheme\plugins\Scheme\lang\ScadaScheme.en-GB.xml">
+      <Link>Lang\ScadaScheme.en-GB.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\PlgScheme\plugins\Scheme\lang\ScadaScheme.ru-RU.xml">
+      <Link>Lang\ScadaScheme.ru-RU.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\ScadaSchemeEditorConfig.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Lang\ScadaSchemeEditor.ru-RU.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -191,7 +210,6 @@
     <EmbeddedResource Include="Web\plugins\SchemeEditor\editor.html" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Config\" />
     <Folder Include="Log\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

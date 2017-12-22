@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<KpSmmpDictionaries>
+  <Dictionary key="Scada.Comm.Devices.KpSnmp.FrmConfig">
+    <Phrase key="this">SNMP - Prietaiso {0} Konfigūracija</Phrase>
+    <Phrase key="btnAddVarGroup.ToolTip">Pridėti kintamūjų grupę</Phrase>
+    <Phrase key="btnAddVariable.ToolTip">Pridėti kintamajį</Phrase>
+    <Phrase key="btnEdit.ToolTip">Redaguoti</Phrase>
+    <Phrase key="btnMoveUp.ToolTip">Perkelti aukštyn</Phrase>
+    <Phrase key="btnMoveDown.ToolTip">Perkelti žemyn</Phrase>
+    <Phrase key="btnDelete.ToolTip">Ištrinti</Phrase>
+    <Phrase key="btnSettings.ToolTip">Nustatymai</Phrase>
+    <Phrase key="btnSave">Išsaugoti</Phrase>
+    <Phrase key="btnClose">Uždaryti</Phrase>
+    <Phrase key="DeviceNode">Prietaisas</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.KpSnmp.FrmSettings">
+    <Phrase key="this">Nustatymai</Phrase>
+    <Phrase key="lblReadCommunity">Skaityti bendruomenę</Phrase>
+    <Phrase key="lblWriteCommunity">Rašyti bendruomę</Phrase>
+    <Phrase key="lblSnmpVersion">SNMP versija</Phrase>
+    <Phrase key="btnOK">Gerai</Phrase>
+    <Phrase key="btnCancel">Atšaukti</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.KpSnmp.FrmVarGroup">
+    <Phrase key="this">Kintamūjų grupė</Phrase>
+    <Phrase key="lblName">Pavadinimas</Phrase>
+    <Phrase key="btnAdd">Pridėti</Phrase>
+    <Phrase key="btnChange">Pakeisti</Phrase>
+    <Phrase key="btnCancel">Atšaukti</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.KpSnmp.FrmVariable">
+    <Phrase key="this">Kintamasis</Phrase>
+    <Phrase key="lblName">Sąvininko vardas</Phrase>
+    <Phrase key="lblOID">OID</Phrase>
+    <Phrase key="lblSignal">Signalas</Phrase>
+    <Phrase key="btnAdd">Pridėti</Phrase>
+    <Phrase key="btnChange">Pakeisti</Phrase>
+    <Phrase key="btnCancel">Atšaukti</Phrase>
+    <Phrase key="IncorrectOID">Netinkamas OID</Phrase>
+  </Dictionary>
+</KpSmmpDictionaries>

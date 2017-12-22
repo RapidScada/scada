@@ -1,0 +1,80 @@
+﻿﻿<?xml version="1.0" encoding="utf-8" ?>
+<PlgTableDictionaries>
+  <Dictionary key="Scada.Web.Plugins.Table.EventsWndSpec">
+    <Phrase key="EventsTitle">Acontecimientos</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.TableView">
+    <Phrase key="LoadTableViewError">Error al cargar el archivo de vista de tabla</Phrase>
+    <Phrase key="SaveTableViewError">Error al guardar el achivo de vista de tabla</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmCommand">
+    <Phrase key="this">Comando - RapidScada</Phrase>
+    <Phrase key="lblCtrlCnlNotFound">Canal de la salida {0} no encontrado.</Phrase>
+    <Phrase key="lblWrongPwd">Contraseña incorrecta.</Phrase>
+    <Phrase key="lblNoRights">Insuficientes Privilegios.</Phrase>
+    <Phrase key="lblIncorrectCmdVal">Valor incorrecto del comando.</Phrase>
+    <Phrase key="lblIncorrectCmdData">Datos incorrectos del comando.</Phrase>
+    <Phrase key="lblCtrlCnlCaption">Canal de Salida:</Phrase>
+    <Phrase key="lblObjCaption">Objeto:</Phrase>
+    <Phrase key="lblDevCaption">Dispositivo:</Phrase>
+    <Phrase key="lblPassword">Contraseña</Phrase>
+    <Phrase key="lblCmdVal">Valor</Phrase>
+    <Phrase key="lblCommand">Comando</Phrase>
+    <Phrase key="lblCmdData">Datos</Phrase>
+    <Phrase key="lblStr">Secuencia</Phrase>
+    <Phrase key="lblHex">Hexadecimal</Phrase>
+    <Phrase key="lblCmdEnqueded">El comando enqueued para la ejecución.</Phrase>
+    <Phrase key="lblCloseAfter">La ventana será cerrada después</Phrase>
+    <Phrase key="lblSec">sec.</Phrase>
+    <Phrase key="lblCmdNotSent">Incapaz enviar el comando. El servidor es inaccesible.</Phrase>
+    <Phrase key="lblCmdRejected">El comando es rechazado por el servidor.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmEventAck">
+    <Phrase key="this">Reconocimiento de eventos - RapidScada</Phrase>
+    <Phrase key="lblEventNotFound">Evento no encontrado.</Phrase>
+    <Phrase key="lblAckNotSent">No se puede enviar el acuse de recibo. El servidor es inaccesible.</Phrase>
+    <Phrase key="lblAckRejected">El el acuse de recibo es rechazado por el servidor.</Phrase>
+    <Phrase key="lblNumCaption">Número:</Phrase>
+    <Phrase key="lblTimeCaption">Fecha y hora:</Phrase>
+    <Phrase key="lblObjCaption">Objeto:</Phrase>
+    <Phrase key="lblDevCaption">Dispositivo:</Phrase>
+    <Phrase key="lblCnlCaption">Canal:</Phrase>
+    <Phrase key="lblTextCaption">Descripción:</Phrase>
+    <Phrase key="lblAckCaption">Reconocido:</Phrase>
+    <Phrase key="lblByUser">por {0}</Phrase>
+    <Phrase key="lblTip">Click en ACEPTAR del teclado para reconocer el acontecimiento.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmEvents">
+    <Phrase key="lblAllEventsBtn">Todos los eventos</Phrase>
+    <Phrase key="lblEventsByViewBtn">Vista de eventos</Phrase>
+    <Phrase key="lblNumCol">Número</Phrase>
+    <Phrase key="lblTimeCol">Fecha y Hora</Phrase>
+    <Phrase key="lblObjCol">Objeto</Phrase>
+    <Phrase key="lblDevCol">Dispositivo</Phrase>
+    <Phrase key="lblCnlCol">Canal</Phrase>
+    <Phrase key="lblTextCol">Descripción</Phrase>
+    <Phrase key="lblAckCol">Ack</Phrase>
+    <Phrase key="lblNoEvents">No eventos</Phrase>
+    <Phrase key="lblLoading">Cargando…</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmEvents.Js">
+    <Phrase key="UpdateEventsError">Error actualizando eventos</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmTable">
+    <Phrase key="SelectedDay">Día seleccionado:</Phrase>
+    <Phrase key="PreviousDay">Día anterior:</Phrase>
+    <Phrase key="PrevDayItem">Anterior. </Phrase>
+    <Phrase key="ItemCol">Artículo</Phrase>
+    <Phrase key="CurCol">Actual</Phrase>
+    <Phrase key="InCnlHint">Canal Entrada: </Phrase>
+    <Phrase key="CtrlCnlHint">Canal Salida: </Phrase>
+    <Phrase key="ObjectHint">Objeto: </Phrase>
+    <Phrase key="DeviceHint">Dispositivo: </Phrase>
+    <Phrase key="QuantityHint">Cantidad: </Phrase>
+    <Phrase key="UnitHint">Unidad: </Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmTable.Js">
+    <Phrase key="UpdateCurDataError">Error al actualizar los datos actuales</Phrase>
+    <Phrase key="UpdateHourDataError">Error al actualizar los datos cada hora</Phrase>
+  </Dictionary>
+</PlgTableDictionaries>

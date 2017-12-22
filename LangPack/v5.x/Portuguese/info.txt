@@ -1,0 +1,7 @@
+Language                 : Portuguese
+Culture name:            : pt-BR
+Rapid SCADA version      : 5.4.0
+Rapid SCADA applications : All
+Author                   : AGPR5
+Author's email           : agpr5@agpr5.com
+Updated by               : Joao Vitor Cesar

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<AddressBookDictionaries>
+  <Dictionary key="Scada.Comm.Devices.AddressBook">
+    <Phrase key="LoadAddressBookError">Nepavyko įkelti adresų knygos</Phrase>
+    <Phrase key="SaveAddressBookError">Nepavyko išsaugoti adresų knygą</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.AddressBook.FrmAddressBook">
+    <Phrase key="this">Adresų Knyga</Phrase>
+    <Phrase key="btnAddContactGroup.ToolTip">Pridėti kontaktų grupę</Phrase>
+    <Phrase key="btnAddContact.ToolTip">Pridėti kontaktą</Phrase>
+    <Phrase key="btnAddPhoneNumber.ToolTip">Pridėti telefono numerį</Phrase>
+    <Phrase key="btnAddEmail.ToolTip">Pridėti el. paštą</Phrase>
+    <Phrase key="btnEdit.ToolTip">Redaguoti</Phrase>
+    <Phrase key="btnDelete.ToolTip">Trinti</Phrase>
+    <Phrase key="btnSave">Išsaugoti</Phrase>
+    <Phrase key="btnClose">Uždaryti</Phrase>
+    <Phrase key="AddressBookNode">Adresų Knyga</Phrase>
+    <Phrase key="NewContactGroup">Nauja grupė</Phrase>
+    <Phrase key="NewContact">Naujas kontaktas</Phrase>
+    <Phrase key="NewPhoneNumber">Naujas telefono numeris</Phrase>
+    <Phrase key="NewEmail">Naujas el. paštas</Phrase>
+    <Phrase key="ContactGroupExists">Tokia kontaktų grupė jau egzistuoja.</Phrase>
+    <Phrase key="ContactExists">Toks kontaktas jau yra grupėje.</Phrase>
+    <Phrase key="PhoneNumberExists">Kontaktas jau turi nurodytą telefono numerį.</Phrase>
+    <Phrase key="EmailExists">Kontaktas jau turi nurodytą el. paštą.</Phrase>
+    <Phrase key="IncorrectEmail">El. pašto adresas netinkamas.</Phrase>
+    <Phrase key="EmptyValueNotAllowed">Reikšmė negali būti tuščia.</Phrase>
+    <Phrase key="SavePhonebookConfirm">Adresų knyga buvo pakeista. Išsaugoti pakeitimus?</Phrase>
+  </Dictionary>
+</AddressBookDictionaries>

@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaSchemeEditorDictionaries>
+  <Dictionary key="Scada.Scheme.Editor.FrmMain">
+    <Phrase key="this">SCADA-Scheme Editor</Phrase>
+    <Phrase key="miFile">&amp;Archivo</Phrase>
+    <Phrase key="miFileNew">Crear</Phrase>
+    <Phrase key="miFileOpen">Abrir...</Phrase>
+    <Phrase key="miFileSave">Guardar</Phrase>
+    <Phrase key="miFileSaveAs">Guardar como...</Phrase>
+    <Phrase key="miFileExit">Salir</Phrase>
+    <Phrase key="miEdit">&amp;Editar</Phrase>
+    <Phrase key="miEditCut">Cortar</Phrase>
+    <Phrase key="miEditCopy">Copiar</Phrase>
+    <Phrase key="miEditPaste">Pegar</Phrase>
+    <Phrase key="miScheme">&amp;Esquema</Phrase>
+    <Phrase key="miSchemeAddStText">Agregar texto estatico</Phrase>
+    <Phrase key="miSchemeAddDynText">Agregar texto dinamico</Phrase>
+    <Phrase key="miSchemeAddStPic">Agregar imagen statica</Phrase>
+    <Phrase key="miSchemeAddDynPic">Agregar imagen dinamica</Phrase>
+    <Phrase key="miSchemeCancelAddElem">Cancelar elemento de adición</Phrase>
+    <Phrase key="miSchemeDelElem">Borrar elemento seleccionado</Phrase>
+    <Phrase key="miHelp">&amp;Ayuda</Phrase>
+    <Phrase key="miHelpAbout">Acerca</Phrase>
+    <Phrase key="btnFileNew.ToolTip">Crear nuevo esquema</Phrase>
+    <Phrase key="btnFileOpen.ToolTip">Abrir esquema</Phrase>
+    <Phrase key="btnFileSave.ToolTip">Guardar esquema</Phrase>
+    <Phrase key="btnEditCut.ToolTip">Cortar elemento esquema</Phrase>
+    <Phrase key="btnEditCopy.ToolTip">Copiar elemento esquema</Phrase>
+    <Phrase key="btnEditPaste.ToolTip">Pegar elemento esquema</Phrase>
+    <Phrase key="btnSchemeAddStText.ToolTip">Agregar texto estatico</Phrase>
+    <Phrase key="btnSchemeAddDynText.ToolTip">Agregar texto dinamico</Phrase>
+    <Phrase key="btnSchemeAddStPic.ToolTip">Agregar imagen estatica</Phrase>
+    <Phrase key="btnSchemeAddDynPic.ToolTip">Agregar imagen dinamica</Phrase>
+    <Phrase key="btnSchemeCancelAddElem.ToolTip">Cancelar elemento de adicion</Phrase>
+    <Phrase key="btnSchemeDelElem.ToolTip">Borrar elemento seleccionado</Phrase>
+    <Phrase key="lblNoSelObj">Seleccionar elemento para editar sus propiedades</Phrase>
+    <Phrase key="FileFilter">Esquemas (*.sch)|*.sch|Todos los Archivos (*.*)|*.*</Phrase>
+    <Phrase key="SaveConfirm">El esquema a sido modificado. Guardar los cambios?</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.EditorData">
+    <Phrase key="LoadSchemeError">Error al cargar el esquema de archivo</Phrase>
+    <Phrase key="SaveSchemeError">Error al guardar esquema de archivo</Phrase>
+    <Phrase key="FileNameUndefined">Nombre del archivo no está definido.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.FrmCnlsFilterDialog">
+    <Phrase key="this">Filtro de canal</Phrase>
+    <Phrase key="lblCnlNums">Numeros de canales de entrada</Phrase>
+    <Phrase key="btnOK">Aceptar</Phrase>
+    <Phrase key="btnCancel">Cancelar</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.FrmCondDialog">
+    <Phrase key="this">Condiciones para la salida de la imagen</Phrase>
+    <Phrase key="lblCond">Condiciones</Phrase>
+    <Phrase key="lblProps">Seleccion de propiedades de condiciones</Phrase>
+    <Phrase key="btnOK">Aceptar</Phrase>
+    <Phrase key="btnCancel">Cancelar</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.FrmFontDialog">
+    <Phrase key="this">Fuente</Phrase>
+    <Phrase key="lblFontName">Fuente</Phrase>
+    <Phrase key="lblFontSize">Tamaño</Phrase>
+    <Phrase key="gbStyle">Estilo</Phrase>
+    <Phrase key="chkBold">Negrita</Phrase>
+    <Phrase key="chkItalic">Italico</Phrase>
+    <Phrase key="chkUnderline">Subrayar</Phrase>
+    <Phrase key="btnOK">Aceptar</Phrase>
+    <Phrase key="btnCancel">Cancelar</Phrase>
+    <Phrase key="SizeInteger">El tamaño debe ser un entero.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.FrmImageDialog">
+    <Phrase key="this">Imagenes</Phrase>
+    <Phrase key="lblImages">Imagenes</Phrase>
+    <Phrase key="lblImageProps">Propiedades de la Imagen</Phrase>
+    <Phrase key="lblPreview">Previa</Phrase>
+    <Phrase key="btnClear">Limpiar</Phrase>
+    <Phrase key="btnSelect">Seleccionar</Phrase>
+    <Phrase key="btnClose">Cerrar</Phrase>
+    <Phrase key="LoadImageError">Error al cargar la imagen</Phrase>
+    <Phrase key="SaveImageError">Error al guardar la imagen</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.SchemeView">
+    <Phrase key="StringConvertError">No se convertir string</Phrase>
+    <Phrase key="NameUniqueError">El nombre debe ser único.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.MainPage">
+    <Phrase key="Loading">Cargando...</Phrase>
+    <Phrase key="SchemeNotLoaded">Esquema no está cargado</Phrase>
+    <Phrase key="ErrorDrawingScheme">Error del esquema grafico</Phrase>
+    <Phrase key="WcfError">Error de servicio WCF</Phrase>
+    <Phrase key="UnableGetSettings">No se puede obtener configuración de la aplicación</Phrase>
+    <Phrase key="UnableLoadScheme">No se puede cargar esquema</Phrase>
+    <Phrase key="UnableLoadCnlData">No se puede cargar datos de los canales de entrada</Phrase>
+    <Phrase key="ErrorExecutingAction">Error al ejecutar la acción</Phrase>
+    <Phrase key="WcfAddrUndefined">Dirección del servicio WCF no está definido</Phrase>
+  </Dictionary>
+</ScadaSchemeEditorDictionaries>
