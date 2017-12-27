@@ -89,26 +89,6 @@ namespace Scada
                 assembly.GetType(typeName, true, false) :
                 Type.GetType(string.Format("{0}, {1}", typeName, assemblyName), 
                     assemblyResolver, typeResolver, true, false);
-
-            /*try
-            {
-                Assembly asm = assembly ?? Assembly.GetExecutingAssembly();
-                return asm.GetType(typeName, true, true);
-            }
-            catch
-            {
-                if (typeName.Contains("System.Collections.Generic.List"))
-                {
-                    // удаление информации о сборке
-                    int ind1 = typeName.IndexOf(",");
-                    int ind2 = typeName.IndexOf("]");
-                    if (ind1 < ind2)
-                        typeName = typeName.Remove(ind1, ind2 - ind1);
-                }
-
-                return Type.GetType(string.Format("{0}, {1}", typeName, assemblyName), 
-                    assemblyResolver, typeResolver, true, true);
-            }*/
         }
     }
 }
