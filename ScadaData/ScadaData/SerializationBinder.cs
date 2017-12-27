@@ -28,6 +28,15 @@ namespace Scada
         /// Сборка, в которой производится поиск типов
         /// </summary>
         protected Assembly assembly;
+        /// <summary>
+        /// Функция извлечения сборок по имени
+        /// </summary>
+        protected Func<AssemblyName, Assembly> assemblyResolver;
+        /// <summary>
+        /// Функция извлечения типов по имени
+        /// </summary>
+        protected Func<Assembly, string, bool, Type> typeResolver;
+
 
         /// <summary>
         /// Конструктор
@@ -35,7 +44,8 @@ namespace Scada
         public SerializationBinder()
             : base()
         {
-            assembly = null;
+            assembly = Assembly.GetExecutingAssembly();
+            InitResolvers();
         }
 
         /// <summary>
@@ -44,15 +54,43 @@ namespace Scada
         public SerializationBinder(Assembly assembly)
             : base()
         {
+            if (assembly == null)
+                throw new ArgumentNullException("assembly");
+
             this.assembly = assembly;
+            InitResolvers();
         }
+
+        /// <summary>
+        /// Инициализировать функции извлечения сборок и типов
+        /// </summary>
+        protected void InitResolvers()
+        {
+            assemblyResolver = (AssemblyName asmName) =>
+            {
+                return string.Equals(asmName.FullName, assembly.FullName, StringComparison.Ordinal) ?
+                    assembly :
+                    Assembly.Load(asmName);
+            };
+
+            typeResolver = (Assembly asm, string typeName, bool ignoreCase) =>
+            {
+                return asm.GetType(typeName, false, ignoreCase);
+            };
+        }
+
 
         /// <summary>
         /// Управляет привязкой сериализованного объекта к типу
         /// </summary>
         public override Type BindToType(string assemblyName, string typeName)
         {
-            try
+            return string.Equals(assemblyName, assembly.FullName, StringComparison.Ordinal) ?
+                assembly.GetType(typeName, true, false) :
+                Type.GetType(string.Format("{0}, {1}", typeName, assemblyName), 
+                    assemblyResolver, typeResolver, true, false);
+
+            /*try
             {
                 Assembly asm = assembly ?? Assembly.GetExecutingAssembly();
                 return asm.GetType(typeName, true, true);
@@ -68,8 +106,9 @@ namespace Scada
                         typeName = typeName.Remove(ind1, ind2 - ind1);
                 }
 
-                return Type.GetType(string.Format("{0}, {1}", typeName, assemblyName), true, true);
-            }
+                return Type.GetType(string.Format("{0}, {1}", typeName, assemblyName), 
+                    assemblyResolver, typeResolver, true, true);
+            }*/
         }
     }
 }
