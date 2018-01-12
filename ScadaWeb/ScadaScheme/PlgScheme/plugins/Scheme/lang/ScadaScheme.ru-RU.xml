@@ -29,7 +29,7 @@
     <Phrase key="btnCancel">Отмена</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmConditionDialog">
-    <Phrase key="this">Условия вывода изображений</Phrase>
+    <Phrase key="this">Условия</Phrase>
     <Phrase key="lblCond">Условия</Phrase>
     <Phrase key="lblProps">Свойства условия</Phrase>
     <Phrase key="btnOK">OK</Phrase>

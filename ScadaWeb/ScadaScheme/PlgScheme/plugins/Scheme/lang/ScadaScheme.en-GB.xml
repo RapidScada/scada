@@ -29,7 +29,7 @@
     <Phrase key="btnCancel">Cancel</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmConditionDialog">
-    <Phrase key="this">Image Output Conditions</Phrase>
+    <Phrase key="this">Conditions</Phrase>
     <Phrase key="lblCond">Conditions</Phrase>
     <Phrase key="lblProps">Condition properties</Phrase>
     <Phrase key="btnOK">OK</Phrase>
