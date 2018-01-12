@@ -103,7 +103,7 @@ namespace Scada.Scheme.Model
         [DisplayName("Conditions"), Category(Categories.Behavior)]
         [Description("The conditions for image output depending on the value of the input channel.")]
         [CM.DefaultValue(null), CM.TypeConverter(typeof(CollectionConverter))]
-        [CM.Editor(typeof(ConditionEditor), typeof(UITypeEditor))]
+        [CM.Editor(typeof(ImageConditionEditor), typeof(UITypeEditor))]
         #endregion
         public List<Condition> Conditions { get; protected set; }
 
@@ -147,7 +147,7 @@ namespace Scada.Scheme.Model
                 XmlNodeList conditionNodes = conditionsNode.SelectNodes("Condition");
                 foreach (XmlNode conditionNode in conditionNodes)
                 {
-                    Condition condition = new Condition();
+                    Condition condition = new ImageCondition();
                     condition.SchemeDoc = SchemeDoc;
                     condition.LoadFromXml(conditionNode);
                     Conditions.Add(condition);

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,12 +23,14 @@
  * Modified : 2018
  */
 
+using Scada.Scheme;
 using Scada.Scheme.Model;
 using Scada.Scheme.Model.DataTypes;
 using Scada.Scheme.Model.PropertyGrid;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Design;
+using System.Xml;
 using CM = System.ComponentModel;
 
 namespace Scada.Web.Plugins.SchBasicComp
@@ -48,6 +50,10 @@ namespace Scada.Web.Plugins.SchBasicComp
         {
             serBinder = PlgUtils.SerializationBinder;
 
+            BorderColor = "Black";
+            BorderOpacity = 50;
+            BorderWidth = 3;
+            FillColor = SchemeUtils.StatusColor;
             Action = Actions.None;
             Conditions = new List<Condition>();
             ToolTip = "";
@@ -72,6 +78,7 @@ namespace Scada.Web.Plugins.SchBasicComp
         #region Attributes
         [DisplayName("Border opacity"), Category(Categories.Appearance)]
         [Description("The border opacity percentage of the component.")]
+        [CM.DefaultValue(100)]
         #endregion
         public int BorderOpacity { get; set; }
 
@@ -81,6 +88,7 @@ namespace Scada.Web.Plugins.SchBasicComp
         #region Attributes
         [DisplayName("Border width"), Category(Categories.Appearance)]
         [Description("The border width of the component in pixels.")]
+        [CM.DefaultValue(0)]
         #endregion
         public int BorderWidth { get; set; }
 
@@ -111,7 +119,7 @@ namespace Scada.Web.Plugins.SchBasicComp
         [DisplayName("Conditions"), Category(Categories.Behavior)]
         [Description("The conditions determining the fill color depending on the value of the input channel.")]
         [CM.DefaultValue(null), CM.TypeConverter(typeof(CollectionConverter))]
-        [CM.Editor(typeof(ConditionEditor), typeof(UITypeEditor))]
+        [CM.Editor(typeof(ColorConditionEditor), typeof(UITypeEditor))]
         #endregion
         public List<Condition> Conditions { get; protected set; }
 
@@ -143,5 +151,78 @@ namespace Scada.Web.Plugins.SchBasicComp
         [CM.DefaultValue(0)]
         #endregion
         public int CtrlCnlNum { get; set; }
+        
+        
+        /// <summary>
+        /// Загрузить конфигурацию компонента из XML-узла
+        /// </summary>
+        public override void LoadFromXml(XmlNode xmlNode)
+        {
+            base.LoadFromXml(xmlNode);
+
+            BorderColor = xmlNode.GetChildAsString("BorderColor");
+            BorderOpacity = xmlNode.GetChildAsInt("BorderOpacity");
+            BorderWidth = xmlNode.GetChildAsInt("BorderWidth");
+            FillColor = xmlNode.GetChildAsString("FillColor");
+            Action = xmlNode.GetChildAsEnum<Actions>("Action");
+
+            XmlNode conditionsNode = xmlNode.SelectSingleNode("Conditions");
+            if (conditionsNode != null)
+            {
+                Conditions = new List<Condition>();
+                XmlNodeList conditionNodes = conditionsNode.SelectNodes("Condition");
+                foreach (XmlNode conditionNode in conditionNodes)
+                {
+                    Condition condition = new ColorCondition();
+                    condition.SchemeDoc = SchemeDoc;
+                    condition.LoadFromXml(conditionNode);
+                    Conditions.Add(condition);
+                }
+            }
+
+            ToolTip = xmlNode.GetChildAsString("ToolTip");
+            InCnlNum = xmlNode.GetChildAsInt("InCnlNum");
+            CtrlCnlNum = xmlNode.GetChildAsInt("CtrlCnlNum");
+        }
+
+        /// <summary>
+        /// Сохранить конфигурацию компонента в XML-узле
+        /// </summary>
+        public override void SaveToXml(XmlElement xmlElem)
+        {
+            base.SaveToXml(xmlElem);
+
+            xmlElem.AppendElem("BorderColor", BorderColor);
+            xmlElem.AppendElem("BorderOpacity", BorderOpacity);
+            xmlElem.AppendElem("BorderWidth", BorderWidth);
+            xmlElem.AppendElem("FillColor", FillColor);
+            xmlElem.AppendElem("Action", Action);
+
+            XmlElement conditionsElem = xmlElem.AppendElem("Conditions");
+            foreach (Condition condition in Conditions)
+            {
+                XmlElement conditionElem = conditionsElem.AppendElem("Condition");
+                condition.SaveToXml(conditionElem);
+            }
+
+            xmlElem.AppendElem("ToolTip", ToolTip);
+            xmlElem.AppendElem("InCnlNum", InCnlNum);
+            xmlElem.AppendElem("CtrlCnlNum", CtrlCnlNum);
+        }
+
+        /// <summary>
+        /// Клонировать объект
+        /// </summary>
+        public override BaseComponent Clone()
+        {
+            Led clonedComponent = (Led)base.Clone();
+
+            foreach (Condition condition in clonedComponent.Conditions)
+            {
+                condition.SchemeDoc = SchemeDoc;
+            }
+
+            return clonedComponent;
+        }
     }
 }

@@ -15,25 +15,30 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : ScadaSchemeCommon
- * Summary  : Specifies objects which provide scheme document properties
+ * Module   : PlgSchBasicComp
+ * Summary  : Color condition editor for PropertyGrid
  * 
  * Author   : Mikhail Shiryaev
- * Created  : 2017
+ * Created  : 2018
  * Modified : 2018
  */
 
-namespace Scada.Scheme.Model
+using Scada.Scheme.Model.PropertyGrid;
+
+namespace Scada.Web.Plugins.SchBasicComp
 {
     /// <summary>
-    /// Specifies objects which provide scheme document properties
-    /// <para>Определяет объекты, который предоставляет свойства документа схемы</para>
+    /// Color condition editor for PropertyGrid
+    /// <para>Редактор условий вывода цветов для PropertyGrid</para>
     /// </summary>
-    public interface ISchemeDocAvailable
+    public class ColorConditionEditor : ConditionEditor
     {
         /// <summary>
-        /// Получить ссылку на свойства документа схемы
+        /// Конструктор
         /// </summary>
-        SchemeDocument SchemeDoc { get; }
+        public ColorConditionEditor()
+            : base(typeof(ColorCondition))
+        {
+        }
     }
 }

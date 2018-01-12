@@ -66,6 +66,8 @@
     <Compile Include="AppCode\PlgSchBasicCompSpec.cs" />
     <Compile Include="AppCode\SchBasicComp\BasicCompFactory.cs" />
     <Compile Include="AppCode\SchBasicComp\BasicCompLibSpec.cs" />
+    <Compile Include="AppCode\SchBasicComp\ColorCondition.cs" />
+    <Compile Include="AppCode\SchBasicComp\ColorConditionEditor.cs" />
     <Compile Include="AppCode\SchBasicComp\Led.cs" />
     <Compile Include="AppCode\SchBasicComp\PlgUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -107,7 +109,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>63687</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

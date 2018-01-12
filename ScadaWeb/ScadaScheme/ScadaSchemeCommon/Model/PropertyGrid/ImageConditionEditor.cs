@@ -16,24 +16,29 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaSchemeCommon
- * Summary  : Specifies objects which provide scheme document properties
+ * Summary  : Image condition editor for PropertyGrid
  * 
  * Author   : Mikhail Shiryaev
- * Created  : 2017
+ * Created  : 2018
  * Modified : 2018
  */
 
-namespace Scada.Scheme.Model
+using Scada.Scheme.Model.DataTypes;
+
+namespace Scada.Scheme.Model.PropertyGrid
 {
     /// <summary>
-    /// Specifies objects which provide scheme document properties
-    /// <para>Определяет объекты, который предоставляет свойства документа схемы</para>
+    /// Image condition editor for PropertyGrid
+    /// <para>Редактор условий вывода изображений для PropertyGrid</para>
     /// </summary>
-    public interface ISchemeDocAvailable
+    public class ImageConditionEditor : ConditionEditor
     {
         /// <summary>
-        /// Получить ссылку на свойства документа схемы
+        /// Конструктор
         /// </summary>
-        SchemeDocument SchemeDoc { get; }
+        public ImageConditionEditor()
+            : base(typeof(ImageCondition))
+        {
+        }
     }
 }

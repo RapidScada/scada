@@ -202,7 +202,8 @@ namespace Scada.Scheme.Model
         public virtual BaseComponent Clone()
         {
             BaseComponent clonedComponent = (BaseComponent)ScadaUtils.DeepClone(this, serBinder);
-            clonedComponent.SchemeDoc = SchemeDoc;
+            clonedComponent.schemeDoc = SchemeDoc;
+            clonedComponent.serBinder = serBinder;
             clonedComponent.ItemChanged += ItemChanged;
             return clonedComponent;
         }

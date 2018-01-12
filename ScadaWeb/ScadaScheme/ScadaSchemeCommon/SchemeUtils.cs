@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2018
  */
 
 using System.Reflection;
@@ -37,6 +37,10 @@ namespace Scada.Scheme
         /// Версия схем
         /// </summary>
         public const string SchemeVersion = "5.2.0.0";
+        /// <summary>
+        /// Цвет, устанавливаемый в зависимости от статуса входного канала
+        /// </summary>
+        public const string StatusColor = "Status";
 
         /// <summary>
         /// Получить признак, что запущен Редактор схем
