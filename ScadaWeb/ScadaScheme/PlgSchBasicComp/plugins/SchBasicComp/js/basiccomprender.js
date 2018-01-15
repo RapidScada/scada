@@ -23,52 +23,49 @@ scada.scheme.LedRenderer.constructor = scada.scheme.LedRenderer;
 scada.scheme.LedRenderer.prototype.createDom = function (component, renderContext) {
     var props = component.props;
 
-    var spanComp = $("<span id='comp" + component.id + "'></span>");
-    var spanText = $("<span></span>");
+    var divComp = $("<div id='comp" + component.id + "'></div>");
+    this.prepareComponent(divComp, component, true);
+    this.setBackColor(spanComp, props.FillColor);
+    divComp.css("border-radius", "50%");
 
-    this.prepareComponent(spanComp, component);
-    /*this.setBackColor(spanComp, props.BackColor);
-    this.setBorderColor(spanComp, props.BorderColor, true);
-    this.setFont(spanComp, props.Font);
-    this.setForeColor(spanComp, props.ForeColor);
-
-    if (props.AutoSize) {
-        this.setWordWrap(spanText, false);
-    } else {
-        spanComp.css("display", "table");
-
-        spanText
-            .css({
-                "display": "table-cell",
-                "overflow": "hidden",
-                "max-width": props.Size.Width,
-                "width": props.Size.Width,
-                "height": props.Size.Height
-            });
-
-        this.setHAlign(spanComp, props.HAlign);
-        this.setVAlign(spanText, props.VAlign);
-        this.setWordWrap(spanText, props.WordWrap);
-    }
-
-    spanText.text(props.Text);
-    spanComp.append(spanText);*/
-
-    spanText.text("I'm led!");
-    spanComp.append(spanText);
-
-    component.dom = spanComp;
+    component.dom = divComp;
 };
 
 scada.scheme.LedRenderer.prototype.setSize = function (component, width, height) {
-    component.props.Size = { Width: width, Height: height };
+    scada.scheme.ComponentRenderer.prototype.setSize.call(this, component, width, height);
 
-    var spanText = component.dom.children();
-    spanText.css({
-        "max-width": width,
-        "width": width,
-        "height": height
-    });
+    // TODO: set size of the border
+};
+
+scada.scheme.LedRenderer.prototype.updateData = function (component, renderContext) {
+    var props = component.props;
+    var divComp = component.dom;
+    var curCnlDataExt = renderContext.curCnlDataMap.get(props.InCnlNum);
+
+    if (divComp && curCnlDataExt) {
+        // set fill color
+        var fillColor = props.FillColor;
+
+        // define fill color according to the channel status
+        if (fillColor == this.STATUS_COLOR) {
+            fillColor = curCnlDataExt.Color;
+        }
+
+        // define fill color according to the led conditions and channel value
+        if (curCnlDataExt.Stat && props.Conditions) {
+            var cnlVal = curCnlDataExt.Val;
+
+            for (var cond of props.Conditions) {
+                if (scada.scheme.calc.conditionSatisfied(cond, cnlVal)) {
+                    fillColor = cond.Color;
+                    break;
+                }
+            }
+        }
+
+        // apply fill color
+        divComp.css("background-color", fillColor);
+    }
 };
 
 /********** Renderer Map **********/

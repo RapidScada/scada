@@ -43,6 +43,12 @@ namespace Scada.Web.Plugins.SchBasicComp
     public class Led : BaseComponent, IDynamicComponent
     {
         /// <summary>
+        /// Размер по умолчанию
+        /// </summary>
+        public static readonly Size DefaultSize = new Size(30, 30);
+
+
+        /// <summary>
         /// Конструктор
         /// </summary>
         public Led()
@@ -59,6 +65,7 @@ namespace Scada.Web.Plugins.SchBasicComp
             ToolTip = "";
             InCnlNum = 0;
             CtrlCnlNum = 0;
+            Size = DefaultSize;
         }
 
 
