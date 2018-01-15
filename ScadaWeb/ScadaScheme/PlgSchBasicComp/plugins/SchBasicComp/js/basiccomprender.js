@@ -25,8 +25,9 @@ scada.scheme.LedRenderer.prototype.createDom = function (component, renderContex
 
     var divComp = $("<div id='comp" + component.id + "'></div>");
     this.prepareComponent(divComp, component, true);
-    this.setBackColor(spanComp, props.FillColor);
-    divComp.css("border-radius", "50%");
+    this.setBackColor(divComp, props.FillColor);
+    divComp.css("border-radius", "50%")
+    divComp.addClass("basic-led");
 
     component.dom = divComp;
 };
