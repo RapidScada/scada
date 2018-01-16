@@ -54,12 +54,6 @@ scada.scheme.LedRenderer.prototype.createDom = function (component, renderContex
     component.dom = divComp;
 };
 
-scada.scheme.LedRenderer.prototype.setSize = function (component, width, height) {
-    scada.scheme.ComponentRenderer.prototype.setSize.call(this, component, width, height);
-
-    // TODO: set size of the border
-};
-
 scada.scheme.LedRenderer.prototype.updateData = function (component, renderContext) {
     var props = component.props;
     var divComp = component.dom;
