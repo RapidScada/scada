@@ -23,19 +23,35 @@ scada.scheme.LedRenderer.constructor = scada.scheme.LedRenderer;
 scada.scheme.LedRenderer.prototype.createDom = function (component, renderContext) {
     var props = component.props;
 
-    var divComp = $("<div id='comp" + component.id + "'></div>");
+    var divComp = $("<div id='comp" + component.id + "'>" +
+        "<div class='basic-led-fill'><div class='basic-led-border'></div></div></div>");
+    var divFill = divComp.children().first();
+    var divBorder = divFill.children().first();
+
     this.prepareComponent(divComp, component, true);
-    this.setBackColor(divComp, props.FillColor);
-    divComp.css("border-radius", "50%")
-    divComp.addClass("basic-led");
+    this.setBorderColor(divComp, null, true);
+    this.setBackColor(divFill, props.FillColor);
+    this.setToolTip(divBorder, props.ToolTip);
+    this.bindAction(divBorder, component, renderContext);
+
+    if (props.BorderWidth > 0) {
+        this.setBorderColor(divBorder, props.BorderColor, true);
+
+        var opacity = props.BorderOpacity / 100;
+        if (opacity < 0) {
+            opacity = 0;
+        } else if (opacity > 1) {
+            opacity = 1;
+        }
+
+        divBorder.css({
+            "border-width": Math.min(props.BorderWidth, props.Size.Width / 2),
+            "border-style" : "solid",
+            "opacity": opacity
+        });
+    }
 
     component.dom = divComp;
-};
-
-scada.scheme.LedRenderer.prototype.setSize = function (component, width, height) {
-    scada.scheme.ComponentRenderer.prototype.setSize.call(this, component, width, height);
-
-    // TODO: set size of the border
 };
 
 scada.scheme.LedRenderer.prototype.updateData = function (component, renderContext) {
@@ -65,7 +81,14 @@ scada.scheme.LedRenderer.prototype.updateData = function (component, renderConte
         }
 
         // apply fill color
-        divComp.css("background-color", fillColor);
+        var divFill = divComp.children().first();
+        divFill.css("background-color", fillColor);
+
+        // set border color
+        if (props.BorderColor == this.STATUS_COLOR) {
+            var divBorder = divFill.children().first();
+            divBorder.css("border-color", curCnlDataExt.Color);
+        }
     }
 };
 

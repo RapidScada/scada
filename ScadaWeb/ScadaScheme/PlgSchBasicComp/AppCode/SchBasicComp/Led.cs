@@ -57,11 +57,12 @@ namespace Scada.Web.Plugins.SchBasicComp
             serBinder = PlgUtils.SerializationBinder;
 
             BorderColor = "Black";
-            BorderOpacity = 50;
+            BorderOpacity = 30;
             BorderWidth = 3;
-            FillColor = SchemeUtils.StatusColor;
+            FillColor = "Silver";
             Action = Actions.None;
             Conditions = new List<Condition>();
+            AddDefaultConditions();
             ToolTip = "";
             InCnlNum = 0;
             CtrlCnlNum = 0;
@@ -160,6 +161,24 @@ namespace Scada.Web.Plugins.SchBasicComp
         public int CtrlCnlNum { get; set; }
         
         
+        /// <summary>
+        /// Добавить условия по умолчанию
+        /// </summary>
+        protected void AddDefaultConditions()
+        {
+            Conditions.Add(new ColorCondition()
+            {
+                CompareOperator1 = CompareOperators.LessThanEqual,
+                Color = "Red"
+            });
+
+            Conditions.Add(new ColorCondition()
+            {
+                CompareOperator1 = CompareOperators.GreaterThan,
+                Color = "Green"
+            });
+        }
+
         /// <summary>
         /// Загрузить конфигурацию компонента из XML-узла
         /// </summary>
