@@ -104,7 +104,7 @@ namespace Scada.Web.Plugins.SchBasicComp
         {
             return new List<CompItem>()
             {
-                new CompItem(Resources.test, typeof(Led))
+                new CompItem(Resources.led, typeof(Led))
             };
         }
 

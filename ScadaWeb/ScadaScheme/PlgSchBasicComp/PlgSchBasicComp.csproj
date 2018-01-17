@@ -71,11 +71,11 @@
     <Content Include="plugins\SchBasicComp\lang\PlgSchBasicComp.en-GB.xml" />
     <Content Include="plugins\SchBasicComp\lang\PlgSchBasicComp.ru-RU.xml" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
-    <None Include="Resources\test.png" />
     <Content Include="plugins\SchBasicComp\css\basiccomp.min.css">
       <DependentUpon>basiccomp.css</DependentUpon>
     </Content>
     <Content Include="plugins\SchBasicComp\js\basiccomprender.js" />
+    <None Include="Resources\led.png" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
