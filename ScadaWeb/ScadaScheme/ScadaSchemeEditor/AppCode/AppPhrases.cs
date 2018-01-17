@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2018
  */
 
 namespace Scada.Scheme.Editor
@@ -39,6 +39,7 @@ namespace Scada.Scheme.Editor
         // Словарь Scada.Scheme.Editor.FrmMain
         public static string CloseSecondInstance { get; private set; }
         public static string FailedToStartEditor { get; private set; }
+        public static string PointerItem { get; private set; }
         public static string SchemeFileFilter { get; private set; }
         public static string SaveSchemeConfirm { get; private set; }
         public static string RestartNeeded { get; private set; }
@@ -58,6 +59,7 @@ namespace Scada.Scheme.Editor
         {
             CloseSecondInstance = Localization.Dict.GetEmptyPhrase("CloseSecondInstance");
             FailedToStartEditor = Localization.Dict.GetEmptyPhrase("FailedToStartEditor");
+            PointerItem = Localization.Dict.GetEmptyPhrase("PointerItem");
             SchemeFileFilter = Localization.Dict.GetEmptyPhrase("SchemeFileFilter");
             SaveSchemeConfirm = Localization.Dict.GetEmptyPhrase("SaveSchemeConfirm");
             RestartNeeded = Localization.Dict.GetEmptyPhrase("RestartNeeded");
@@ -78,6 +80,7 @@ namespace Scada.Scheme.Editor
             {
                 CloseSecondInstance = dict.GetPhrase("CloseSecondInstance", CloseSecondInstance);
                 FailedToStartEditor = dict.GetPhrase("FailedToStartEditor", FailedToStartEditor);
+                PointerItem = dict.GetPhrase("PointerItem", PointerItem);
                 SchemeFileFilter = dict.GetPhrase("SchemeFileFilter", SchemeFileFilter);
                 SaveSchemeConfirm = dict.GetPhrase("SaveSchemeConfirm", SaveSchemeConfirm);
                 RestartNeeded = dict.GetPhrase("RestartNeeded", RestartNeeded);

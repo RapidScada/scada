@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2018
  */
 
 using System;
@@ -37,8 +37,21 @@ namespace Scada.Scheme
         /// <summary>
         /// Конструктор
         /// </summary>
+        public CompItem(Image icon, Type compType)
+            : this(icon, GetDisplayName(compType), compType)
+        {
+        }
+
+        /// <summary>
+        /// Конструктор
+        /// </summary>
         public CompItem(Image icon, string displayName, Type compType)
         {
+            if (string.IsNullOrEmpty(displayName))
+                throw new ArgumentException("Display name must not be empty.", "displayName");
+            if (compType == null)
+                throw new ArgumentNullException("compType");
+
             Icon = icon;
             DisplayName = displayName;
             CompType = compType;
@@ -59,5 +72,17 @@ namespace Scada.Scheme
         /// Получить тип компонента
         /// </summary>
         public Type CompType { get; }
+
+
+        /// <summary>
+        /// Получить отображаемое наименование из словарей
+        /// </summary>
+        private static string GetDisplayName(Type compType)
+        {
+            Localization.Dict dict;
+            return Localization.Dictionaries.TryGetValue(compType.FullName, out dict) ?
+                dict.GetPhrase("DisplayName", compType.Name) :
+                compType.Name;
+        }
     }
 }

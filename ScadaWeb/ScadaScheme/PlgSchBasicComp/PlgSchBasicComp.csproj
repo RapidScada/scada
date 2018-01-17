@@ -68,6 +68,8 @@
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
     <Content Include="packages.config" />
+    <Content Include="plugins\SchBasicComp\lang\PlgSchBasicComp.en-GB.xml" />
+    <Content Include="plugins\SchBasicComp\lang\PlgSchBasicComp.ru-RU.xml" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Resources\test.png" />
     <Content Include="plugins\SchBasicComp\css\basiccomp.min.css">

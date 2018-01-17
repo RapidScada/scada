@@ -356,6 +356,7 @@
             this.ilCompTypes.Images.SetKeyName(2, "comp_dt.png");
             this.ilCompTypes.Images.SetKeyName(3, "comp_sp.png");
             this.ilCompTypes.Images.SetKeyName(4, "comp_dp.png");
+            this.ilCompTypes.Images.SetKeyName(5, "component.png");
             // 
             // pageProperties
             // 

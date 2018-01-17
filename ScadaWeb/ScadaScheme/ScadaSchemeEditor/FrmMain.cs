@@ -42,6 +42,11 @@ namespace Scada.Scheme.Editor
     /// </summary>
     public partial class FrmMain : Form, IMainForm
     {
+        /// <summary>
+        /// Ключ иконки компонента по умолчанию
+        /// </summary>
+        private const string DefCompIcon = "component.png";
+
         private readonly AppData appData;   // общие данные приложения
         private readonly Settings settings; // настройки приложения
         private readonly Log log;           // журнал приложения
@@ -124,6 +129,7 @@ namespace Scada.Scheme.Editor
                 attrTranslator.TranslateAttrs(typeof(DynamicPicture));
                 attrTranslator.TranslateAttrs(typeof(UnknownComponent));
                 attrTranslator.TranslateAttrs(typeof(Condition));
+                attrTranslator.TranslateAttrs(typeof(ImageCondition));
                 attrTranslator.TranslateAttrs(typeof(ImageListItem));
             }
             catch (Exception ex)
@@ -170,19 +176,27 @@ namespace Scada.Scheme.Editor
 
                     // добавление элемента с указателем
                     lvCompTypes.Items.Add(new ListViewItem(
-                        "Pointer", "pointer.png", listViewGroup) { IndentCount = 1 });
+                        AppPhrases.PointerItem, "pointer.png", listViewGroup) { IndentCount = 1 });
 
                     // добавление компонентов
                     foreach (CompItem compItem in spec.CompItems)
                     {
-                        string imageKey = "image" + ilCompTypes.Images.Count;
-                        ilCompTypes.Images.Add(imageKey, compItem.Icon);
+                        string imageKey;
+                        if (compItem.Icon == null)
+                        {
+                            imageKey = DefCompIcon;
+                        }
+                        else
+                        {
+                            imageKey = "image" + ilCompTypes.Images.Count;
+                            ilCompTypes.Images.Add(imageKey, compItem.Icon);
+                        }
 
                         lvCompTypes.Items.Add(new ListViewItem()
                         {
                             Text = compItem.DisplayName,
                             ImageKey = imageKey,
-                            Tag = compItem.CompType?.FullName,
+                            Tag = compItem.CompType.FullName,
                             Group = listViewGroup,
                             IndentCount = 1
                         });
@@ -568,6 +582,10 @@ namespace Scada.Scheme.Editor
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
+#if DEBUG
+            System.Diagnostics.Debugger.Launch();
+#endif
+
             // инициализация общих данных приложения
             appData.Init(Path.GetDirectoryName(Application.ExecutablePath), this);
 

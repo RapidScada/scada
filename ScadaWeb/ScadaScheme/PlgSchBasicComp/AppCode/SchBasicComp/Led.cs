@@ -23,7 +23,6 @@
  * Modified : 2018
  */
 
-using Scada.Scheme;
 using Scada.Scheme.Model;
 using Scada.Scheme.Model.DataTypes;
 using Scada.Scheme.Model.PropertyGrid;

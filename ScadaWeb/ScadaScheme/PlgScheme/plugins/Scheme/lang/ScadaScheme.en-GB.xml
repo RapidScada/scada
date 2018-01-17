@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<PlgSchemeDictionaries>
+<ScadaSchemeDictionaries>
   <Dictionary key="Scada.Scheme.CompManager">
     <Phrase key="UnknownComponent">Unknown component {0}</Phrase>
     <Phrase key="CompLibraryNotFound">No library found for component {0}</Phrase>
@@ -59,4 +59,4 @@
     <Phrase key="LoadImageError">Error loading image</Phrase>
     <Phrase key="SaveImageError">Error saving image</Phrase>
   </Dictionary>
-</PlgSchemeDictionaries>
+</ScadaSchemeDictionaries>

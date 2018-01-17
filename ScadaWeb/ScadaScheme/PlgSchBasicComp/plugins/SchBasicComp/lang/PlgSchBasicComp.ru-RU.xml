@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<PlgSchBasicCompDictionaries>
+  <Dictionary key="Scada.Web.Plugins.SchBasicComp.ColorCondition">
+    <Phrase key="Color.DisplayName">Цвет</Phrase>
+    <Phrase key="Color.Category">Внешний вид</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.SchBasicComp.Led">
+    <Phrase key="DisplayName">Светодиод</Phrase>
+    <Phrase key="BorderColor.DisplayName">Цвет рамки</Phrase>
+    <Phrase key="BorderColor.Category">Внешний вид</Phrase>
+    <Phrase key="BorderColor.Description">Цвет рамки компонента.</Phrase>
+    <Phrase key="BorderOpacity.DisplayName">Непрозрачность рамки</Phrase>
+    <Phrase key="BorderOpacity.Category">Внешний вид</Phrase>
+    <Phrase key="BorderOpacity.Description">Процент непрозрачности рамки компонента.</Phrase>
+    <Phrase key="BorderWidth.DisplayName">Ширина рамки</Phrase>
+    <Phrase key="BorderWidth.Category">Внешний вид</Phrase>
+    <Phrase key="BorderWidth.Description">Ширина рамки компонента.</Phrase>
+    <Phrase key="FillColor.DisplayName">Цвет заливки</Phrase>
+    <Phrase key="FillColor.Category">Внешний вид</Phrase>
+    <Phrase key="FillColor.Description">Цвет заливки компонента.</Phrase>
+    <Phrase key="Action.DisplayName">Действие</Phrase>
+    <Phrase key="Action.Category">Поведение</Phrase>
+    <Phrase key="Action.Description">Действие, выполняемое по щелчку левой кнопкой мыши на компоненте.</Phrase>
+    <Phrase key="Conditions.DisplayName">Условия</Phrase>
+    <Phrase key="Conditions.Category">Поведение</Phrase>
+    <Phrase key="Conditions.Description">Условия, определяющие цвет заливки в зависимости от значения входного канала.</Phrase>
+    <Phrase key="ToolTip.DisplayName">Подсказка</Phrase>
+    <Phrase key="ToolTip.Category">Поведение</Phrase>
+    <Phrase key="ToolTip.Description">Всплывающая подсказка, которая отображается при наведении указателя мыши на компонент.</Phrase>
+    <Phrase key="InCnlNum.DisplayName">Входной канал</Phrase>
+    <Phrase key="InCnlNum.Category">Данные</Phrase>
+    <Phrase key="InCnlNum.Description">Номер входного канала, связанного с компонентом.</Phrase>
+    <Phrase key="CtrlCnlNum.DisplayName">Канал управления</Phrase>
+    <Phrase key="CtrlCnlNum.Category">Данные</Phrase>
+    <Phrase key="CtrlCnlNum.Description">Номер канала управления, связанного с компонентом.</Phrase>
+  </Dictionary>
+</PlgSchBasicCompDictionaries>
