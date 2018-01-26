@@ -69,7 +69,7 @@ scada.scheme.LedRenderer.prototype.updateData = function (component, renderConte
         }
 
         // define fill color according to the led conditions and channel value
-        if (curCnlDataExt.Stat && props.Conditions) {
+        if (curCnlDataExt.Stat > 0 && props.Conditions) {
             var cnlVal = curCnlDataExt.Val;
 
             for (var cond of props.Conditions) {
@@ -92,7 +92,32 @@ scada.scheme.LedRenderer.prototype.updateData = function (component, renderConte
     }
 };
 
+/********** Toggle Renderer **********/
+
+scada.scheme.ToggleRenderer = function () {
+    scada.scheme.ComponentRenderer.call(this);
+};
+
+scada.scheme.ToggleRenderer.prototype = Object.create(scada.scheme.ComponentRenderer.prototype);
+scada.scheme.ToggleRenderer.constructor = scada.scheme.ToggleRenderer;
+
+scada.scheme.ToggleRenderer.prototype.createDom = function (component, renderContext) {
+    var props = component.props;
+
+    var divComp = $("<div id='comp" + component.id + "' class='basic-toggle undef'>" +
+        "<div class='basic-toggle-lever'></div></div>");
+
+    this.prepareComponent(divComp, component, true);
+    this.setBorderColor(divComp, null, true);
+    this.setBackColor(divFill, props.FillColor);
+    this.setToolTip(divBorder, props.ToolTip);
+    this.bindAction(divBorder, component, renderContext);
+
+    component.dom = divComp;
+}
+
 /********** Renderer Map **********/
 
 // Add components to the renderer map
 scada.scheme.rendererMap.set("Scada.Web.Plugins.SchBasicComp.Led", new scada.scheme.LedRenderer());
+scada.scheme.rendererMap.set("Scada.Web.Plugins.SchBasicComp.Toggle", new scada.scheme.ToggleRenderer());
