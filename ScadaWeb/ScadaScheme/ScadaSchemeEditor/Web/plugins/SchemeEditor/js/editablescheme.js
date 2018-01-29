@@ -116,16 +116,16 @@ scada.scheme.Dragging = function () {
 };
 
 // Get drag mode depending on the pointer position over the element
-scada.scheme.Dragging.prototype._getDragMode = function (jqElem, pageX, pageY, singleSelection) {
+scada.scheme.Dragging.prototype._getDragMode = function (compJqObj, pageX, pageY, singleSelection) {
     var DragModes = scada.scheme.DragModes;
-    var component = jqElem.data("component");
+    var component = compJqObj.data("component");
 
     if (singleSelection && component && component.renderer.allowResizing(component)) {
-        var elemOffset = jqElem.offset();
+        var elemOffset = compJqObj.offset();
         var elemPtrX = pageX - elemOffset.left;
         var elemPtrY = pageY - elemOffset.top;
-        var compW = jqElem.outerWidth();
-        var compH = jqElem.outerHeight();
+        var compW = compJqObj.outerWidth();
+        var compH = compJqObj.outerHeight();
 
         if (compW >= this.MIN_SIZE && compH >= this.MIN_SIZE) {
             // check if the cursor is over the border
@@ -187,14 +187,14 @@ scada.scheme.Dragging.prototype._resizeElem = function (jqElem, width, height) {
 };
 
 // Define the cursor depending on the pointer position
-scada.scheme.Dragging.prototype.defineCursor = function (jqElem, pageX, pageY, singleSelection) {
+scada.scheme.Dragging.prototype.defineCursor = function (jqObj, pageX, pageY, singleSelection) {
     var DragModes = scada.scheme.DragModes;
-    var compElem = jqElem.closest(".comp");
+    var compElem = jqObj.closest(".comp");
 
     if (compElem.length > 0) {
         var cursor = "";
 
-        if (compElem.is(".selected")) {
+        if (compElem.parent(".comp-frame").is(".selected")) {
             var dragMode = this._getDragMode(compElem, pageX, pageY, singleSelection);
 
             if (dragMode == DragModes.NW_RESIZE || dragMode == DragModes.SE_RESIZE) {
@@ -491,12 +491,12 @@ scada.scheme.EditableScheme.prototype._processSelection = function (selCompIDs) 
         if (idSet.has(selCompID)) {
             idSet.delete(selCompID);
         } else {
-            divScheme.find("#comp" + selCompID).addClass("selected");
+            divScheme.find("#comp" + selCompID).parent(".comp-frame").addClass("selected");
         }
     }
 
     for (var deselCompID of idSet) {
-        divScheme.find("#comp" + deselCompID).removeClass("selected");
+        divScheme.find("#comp" + deselCompID).parent(".comp-frame").removeClass("selected");
     }
 
     this.selComponentIDs = Array.isArray(selCompIDs) ? selCompIDs : [];
@@ -693,10 +693,10 @@ scada.scheme.EditableScheme.prototype.createDom = function (opt_controlRight) {
                 thisScheme._changeSelection(SelectActions.DESELECT_ALL);
             }
         })
-        .on("mousedown", ".comp", function (event) {
+        .on("mousedown", ".comp-frame", function (event) {
             if (!thisScheme.newComponentMode) {
                 // select or deselect component and start dragging
-                var componentID = $(this).data("id");
+                var componentID = $(this).children(".comp").data("id");
                 var selected = $(this).hasClass("selected");
                 console.log(scada.utils.getCurTime() + " Component with ID=" + componentID + " is clicked.");
 
@@ -706,13 +706,13 @@ scada.scheme.EditableScheme.prototype.createDom = function (opt_controlRight) {
                         componentID);
                 } else {
                     if (!selected) {
-                        divScheme.find(".comp.selected").removeClass("selected");
+                        divScheme.find(".comp-frame.selected").removeClass("selected");
                         $(this).addClass("selected");
                         thisScheme._changeSelection(SelectActions.SELECT, componentID);
                     }
 
                     thisScheme.dragging.startDragging(
-                        $(this), divScheme.find(".comp.selected"), event.pageX, event.pageY);
+                        $(this), divScheme.find(".comp-frame.selected .comp"), event.pageX, event.pageY);
                 }
 
                 event.stopPropagation();
@@ -744,7 +744,7 @@ scada.scheme.EditableScheme.prototype.createDom = function (opt_controlRight) {
                 thisScheme.status = "";
             }
         })
-        .on("selectstart", ".comp", false)
+        .on("selectstart", ".comp-frame", false)
         .on("dragstart", false);
 }
 

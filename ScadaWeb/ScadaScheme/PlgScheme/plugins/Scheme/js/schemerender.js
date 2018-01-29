@@ -340,7 +340,6 @@ scada.scheme.ComponentRenderer.prototype.setToolTip = function (jqObj, toolTip) 
 scada.scheme.ComponentRenderer.prototype.prepareComponent = function (jqObj, component, opt_setSize) {
     var props = component.props;
     jqObj.css({
-        "position": "absolute",
         "z-index": props.ZIndex,
         "left": props.Location.X - this.BORDER_WIDTH,
         "top": props.Location.Y - this.BORDER_WIDTH,

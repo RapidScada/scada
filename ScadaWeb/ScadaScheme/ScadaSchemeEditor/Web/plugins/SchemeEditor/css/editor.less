@@ -37,6 +37,16 @@ body {
     cursor: crosshair !important;
 }
 
-.comp.selected {
-    border: 1px dashed lime !important;
+.scheme .comp-frame {
+    border: 1px solid transparent;
+    display: inline;
+    position: absolute;
+}
+
+.scheme .comp-frame .comp {
+    position: static;
+}
+
+.scheme .comp-frame.selected {
+    border: 1px dashed lime;
 }

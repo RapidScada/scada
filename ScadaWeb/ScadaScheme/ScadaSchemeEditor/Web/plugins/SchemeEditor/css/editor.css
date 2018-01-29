@@ -9,6 +9,7 @@
 }
 .scheme .comp {
   background-clip: padding-box;
+  position: absolute;
 }
 body {
   margin: 0;
@@ -41,6 +42,14 @@ body {
 .scheme.new-component-mode .comp {
   cursor: crosshair !important;
 }
-.comp.selected {
-  border: 1px dashed lime !important;
+.scheme .comp-frame {
+  border: 1px solid transparent;
+  display: inline;
+  position: absolute;
+}
+.scheme .comp-frame .comp {
+  position: static;
+}
+.scheme .comp-frame.selected {
+  border: 1px dashed lime;
 }

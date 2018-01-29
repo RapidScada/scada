@@ -9,6 +9,7 @@
 }
 .scheme .comp {
   background-clip: padding-box;
+  position: absolute;
 }
 body {
   margin: 0;
