@@ -3,7 +3,7 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2017
+ * Modified : 2018
  *
  * Requires:
  * - jquery
@@ -61,8 +61,6 @@ scada.scheme.Scheme = function (editMode) {
     this.LOAD_COMP_CNT = 100;
     // Total data size of images received by a one request, 1 MB
     this.LOAD_IMG_SIZE = 1048576;
-    // Component frame width in edit mode
-    this.COMP_FRAME_WIDTH = 1;
 
     // Input channel filter for request current data
     this._cnlFilter = null;
@@ -498,30 +496,6 @@ scada.scheme.Scheme.prototype._loadErrors = function (viewOrEditorID, callback) 
     });
 };
 
-// Wrap the component with a frame needed in edit mode
-scada.scheme.Scheme.prototype._wrapComponent = function (component) {
-    // copy and clear position of the component
-    var compDomElem = component.dom;
-    var left = parseInt(compDomElem.css("left"));
-    var top = parseInt(compDomElem.css("top"));
-    var zIndex = compDomElem.css("z-index");
-
-    compDomElem.css({
-        "left": "",
-        "top": "",
-        "z-index": ""
-    });
-
-    // wrap the component
-    return $("<div class='comp-frame'></div>")
-        .css({
-            "left": left - this.COMP_FRAME_WIDTH,
-            "top": top - this.COMP_FRAME_WIDTH,
-            "z-index": zIndex
-        })
-        .append(compDomElem);
-};
-
 // Update the component using the current input channel data
 scada.scheme.Scheme.prototype._updateComponentData = function (component) {
     try {
@@ -586,8 +560,8 @@ scada.scheme.Scheme.prototype.createDom = function (opt_controlRight) {
         try {
             component.renderer.createDom(component, this.renderContext);
             if (this.dom) {
-                var compDomElem = this.renderContext.editMode ? this._wrapComponent(component) : component.dom;
-                this.dom.append(compDomElem);
+                var elem = this.renderContext.editMode ? component.renderer.wrap(component) : component.dom;
+                this.dom.append(elem);
             }
         }
         catch (ex) {

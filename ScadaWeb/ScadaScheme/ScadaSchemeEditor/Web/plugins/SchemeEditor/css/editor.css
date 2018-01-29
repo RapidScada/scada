@@ -42,14 +42,14 @@ body {
 .scheme.new-component-mode .comp {
   cursor: crosshair !important;
 }
-.scheme .comp-frame {
+.scheme .comp-wrapper {
   border: 1px solid transparent;
   display: inline;
   position: absolute;
 }
-.scheme .comp-frame .comp {
+.scheme .comp-wrapper .comp {
   position: static;
 }
-.scheme .comp-frame.selected {
+.scheme .comp-wrapper.selected {
   border: 1px dashed lime;
 }

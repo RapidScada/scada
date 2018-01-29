@@ -3,7 +3,7 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2018
  *
  * Requires:
  * - jquery
@@ -158,31 +158,31 @@ scada.scheme.Dragging.prototype._getDragMode = function (compJqObj, pageX, pageY
 };
 
 // Move element horizontally during dragging
-scada.scheme.Dragging.prototype._moveElemHor = function (jqElem, dx) {
+scada.scheme.Dragging.prototype._moveElemHor = function (compJqObj, dx) {
     this.lastDx = dx;
     this.moved = true;
-    var component = jqElem.data("component");
-    var startLocation = jqElem.data("start-location");
+    var component = compJqObj.data("component");
+    var startLocation = compJqObj.data("start-location");
     var location = component.renderer.getLocation(component);
     component.renderer.setLocation(component, startLocation.x + dx, location.y);
 };
 
 // Move element vertically during dragging
-scada.scheme.Dragging.prototype._moveElemVert = function (jqElem, dy) {
+scada.scheme.Dragging.prototype._moveElemVert = function (compJqObj, dy) {
     this.lastDy = dy;
     this.moved = true;
-    var component = jqElem.data("component");
-    var startLocation = jqElem.data("start-location");
+    var component = compJqObj.data("component");
+    var startLocation = compJqObj.data("start-location");
     var location = component.renderer.getLocation(component);
     component.renderer.setLocation(component, location.x, startLocation.y + dy);
 };
 
 // Resize element during dragging
-scada.scheme.Dragging.prototype._resizeElem = function (jqElem, width, height) {
+scada.scheme.Dragging.prototype._resizeElem = function (compJqObj, width, height) {
     this.lastW = width;
     this.lastH = height;
     this.resized = true;
-    var component = jqElem.data("component");
+    var component = compJqObj.data("component");
     component.renderer.setSize(component, width, height);
 };
 
@@ -194,7 +194,7 @@ scada.scheme.Dragging.prototype.defineCursor = function (jqObj, pageX, pageY, si
     if (compElem.length > 0) {
         var cursor = "";
 
-        if (compElem.parent(".comp-frame").is(".selected")) {
+        if (compElem.parent(".comp-wrapper").is(".selected")) {
             var dragMode = this._getDragMode(compElem, pageX, pageY, singleSelection);
 
             if (dragMode == DragModes.NW_RESIZE || dragMode == DragModes.SE_RESIZE) {
@@ -215,17 +215,17 @@ scada.scheme.Dragging.prototype.defineCursor = function (jqObj, pageX, pageY, si
 };
 
 // Start dragging the specified elements
-scada.scheme.Dragging.prototype.startDragging = function (captJqElem, selJqElem, pageX, pageY) {
+scada.scheme.Dragging.prototype.startDragging = function (captCompJqObj, selCompJqObj, pageX, pageY) {
     var DragModes = scada.scheme.DragModes;
 
-    this.mode = this._getDragMode(captJqElem, pageX, pageY, selJqElem.length <= 1);
+    this.mode = this._getDragMode(captCompJqObj, pageX, pageY, selCompJqObj.length <= 1);
     this.startX = pageX;
     this.startY = pageY;
     this.lastDx = 0;
     this.lastDy = 0;
     this.lastW = 0;
     this.lastH = 0;
-    this.draggedElem = selJqElem;
+    this.draggedElem = selCompJqObj;
     this.moved = false;
     this.resized = false;
 
@@ -430,31 +430,25 @@ scada.scheme.EditableScheme.prototype._updateSchemeProps = function (parsedSchem
 scada.scheme.EditableScheme.prototype._updateComponentProps = function (parsedComponent) {
     try {
         var newComponent = new scada.scheme.Component(parsedComponent);
-        newComponent.renderer = scada.scheme.rendererMap.get(newComponent.type);
+        var renderer = scada.scheme.rendererMap.get(newComponent.type);
+        newComponent.renderer = renderer;
 
-        if (newComponent.renderer) {
-            newComponent.renderer.createDom(newComponent, this.renderContext);
+        if (renderer) {
+            renderer.createDom(newComponent, this.renderContext);
 
             if (newComponent.dom) {
                 newComponent.dom.first().data("component", newComponent);
                 var componentID = parsedComponent.ID;
                 var oldComponent = this.componentMap.get(componentID);
+                this.componentMap.set(componentID, newComponent);
 
-                if (oldComponent) {
-                    if (oldComponent.dom) {
-                        // copy selection
-                        if (oldComponent.dom.hasClass("selected")) {
-                            newComponent.dom.addClass("selected");
-                        }
-
-                        // replace component
-                        this.componentMap.set(componentID, newComponent);
-                        oldComponent.dom.replaceWith(newComponent.dom);
-                    }
+                if (oldComponent && oldComponent.dom) {
+                    // replace component in the DOM
+                    oldComponent.dom.replaceWith(newComponent.dom);
+                    renderer.setWrapperLocation(newComponent);
                 } else {
-                    // add component
-                    this.componentMap.set(componentID, newComponent);
-                    this.dom.append(newComponent.dom);
+                    // add component into the DOM
+                    this.dom.append(renderer.wrap(newComponent));
                 }
             }
         }
@@ -491,12 +485,12 @@ scada.scheme.EditableScheme.prototype._processSelection = function (selCompIDs) 
         if (idSet.has(selCompID)) {
             idSet.delete(selCompID);
         } else {
-            divScheme.find("#comp" + selCompID).parent(".comp-frame").addClass("selected");
+            divScheme.find("#comp" + selCompID).parent(".comp-wrapper").addClass("selected");
         }
     }
 
     for (var deselCompID of idSet) {
-        divScheme.find("#comp" + deselCompID).parent(".comp-frame").removeClass("selected");
+        divScheme.find("#comp" + deselCompID).parent(".comp-wrapper").removeClass("selected");
     }
 
     this.selComponentIDs = Array.isArray(selCompIDs) ? selCompIDs : [];
@@ -693,10 +687,11 @@ scada.scheme.EditableScheme.prototype.createDom = function (opt_controlRight) {
                 thisScheme._changeSelection(SelectActions.DESELECT_ALL);
             }
         })
-        .on("mousedown", ".comp-frame", function (event) {
+        .on("mousedown", ".comp-wrapper", function (event) {
             if (!thisScheme.newComponentMode) {
                 // select or deselect component and start dragging
-                var componentID = $(this).children(".comp").data("id");
+                var compElem = $(this).children(".comp");
+                var componentID = compElem.data("id");
                 var selected = $(this).hasClass("selected");
                 console.log(scada.utils.getCurTime() + " Component with ID=" + componentID + " is clicked.");
 
@@ -706,13 +701,13 @@ scada.scheme.EditableScheme.prototype.createDom = function (opt_controlRight) {
                         componentID);
                 } else {
                     if (!selected) {
-                        divScheme.find(".comp-frame.selected").removeClass("selected");
+                        divScheme.find(".comp-wrapper.selected").removeClass("selected");
                         $(this).addClass("selected");
                         thisScheme._changeSelection(SelectActions.SELECT, componentID);
                     }
 
                     thisScheme.dragging.startDragging(
-                        $(this), divScheme.find(".comp-frame.selected .comp"), event.pageX, event.pageY);
+                        compElem, divScheme.find(".comp-wrapper.selected .comp"), event.pageX, event.pageY);
                 }
 
                 event.stopPropagation();
@@ -744,7 +739,7 @@ scada.scheme.EditableScheme.prototype.createDom = function (opt_controlRight) {
                 thisScheme.status = "";
             }
         })
-        .on("selectstart", ".comp-frame", false)
+        .on("selectstart", ".comp-wrapper", false)
         .on("dragstart", false);
 }
 

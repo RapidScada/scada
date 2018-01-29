@@ -3,7 +3,7 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2017
+ * Modified : 2018
  *
  * Requires:
  * - jquery
@@ -37,6 +37,8 @@ scada.scheme.Renderer = function () {
     this.DEF_BACK_COLOR = "transparent";
     // Default border color
     this.DEF_BORDER_COLOR = "transparent";
+    // Width of the wrapper frame of a component in edit mode
+    this.COMP_FRAME_WIDTH = 1;
     // Component border width if border presents
     this.BORDER_WIDTH = 1;
 };
@@ -341,8 +343,8 @@ scada.scheme.ComponentRenderer.prototype.prepareComponent = function (jqObj, com
     var props = component.props;
     jqObj.css({
         "z-index": props.ZIndex,
-        "left": props.Location.X - this.BORDER_WIDTH,
-        "top": props.Location.Y - this.BORDER_WIDTH,
+        "left": props.Location.X,
+        "top": props.Location.Y,
         "border-width": this.BORDER_WIDTH,
         "border-style": "solid"
     });
@@ -417,11 +419,32 @@ scada.scheme.ComponentRenderer.prototype.setLocation = function (component, x, y
     component.props.Location = { X: x, Y: y };
 
     if (component.dom) {
-        component.dom.css({
-            "left": x - this.BORDER_WIDTH,
-            "top": y - this.BORDER_WIDTH
-        });
+        var compParent = component.dom.parent();
+
+        if (compParent.is(".comp-wrapper")) {
+            compParent.css({
+                "left": x - this.COMP_FRAME_WIDTH,
+                "top": y - this.COMP_FRAME_WIDTH,
+                "z-index": component.dom.css("z-index")
+            });
+
+            component.dom.css({
+                "left": "",
+                "top": ""
+            });
+        } else {
+            component.dom.css({
+                "left": x,
+                "top": y
+            });
+        }
     }
+};
+
+// Set location of the component wrapper in edit mode
+scada.scheme.ComponentRenderer.prototype.setWrapperLocation = function (component) {
+    var location = this.getLocation(component);
+    this.setLocation(component, location.x, location.y);
 };
 
 // Get size of the component. Returns an object containing the properties width and height
@@ -454,6 +477,13 @@ scada.scheme.ComponentRenderer.prototype.setSize = function (component, width, h
 // Check the possibility of resizing in edit mode
 scada.scheme.ComponentRenderer.prototype.allowResizing = function (component) {
     return true;
+};
+
+// Wrap the component with a frame needed in edit mode
+scada.scheme.ComponentRenderer.prototype.wrap = function (component) {
+    var compWrapper = $("<div class='comp-wrapper'></div>").append(component.dom);
+    this.setWrapperLocation(component);
+    return compWrapper;
 };
 
 /********** Static Text Renderer **********/
