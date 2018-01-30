@@ -23,19 +23,16 @@ scada.scheme.LedRenderer.constructor = scada.scheme.LedRenderer;
 scada.scheme.LedRenderer.prototype.createDom = function (component, renderContext) {
     var props = component.props;
 
-    var divComp = $("<div id='comp" + component.id + "'>" +
-        "<div class='basic-led-fill'><div class='basic-led-border'></div></div></div>");
-    var divFill = divComp.children().first();
-    var divBorder = divFill.children().first();
-
+    var divComp = $("<div id='comp" + component.id + "' class='basic-led'></div>");
     this.prepareComponent(divComp, component, true);
-    this.setBorderColor(divComp, null, true);
-    this.setBackColor(divFill, props.FillColor);
-    this.setToolTip(divBorder, props.ToolTip);
-    this.bindAction(divBorder, component, renderContext);
+    this.setBackColor(divComp, props.FillColor);
+    this.setToolTip(divComp, props.ToolTip);
+    this.bindAction(divComp, component, renderContext);
 
     if (props.BorderWidth > 0) {
-        this.setBorderColor(divBorder, props.BorderColor, true);
+        var divBorder = $("<div class='basic-led-border'></div>").appendTo(divComp);
+        this.setBorderColor(divBorder, props.BorderColor);
+        this.setBorderWidth(divBorder, props.BorderWidth);
 
         var opacity = props.BorderOpacity / 100;
         if (opacity < 0) {
@@ -44,11 +41,8 @@ scada.scheme.LedRenderer.prototype.createDom = function (component, renderContex
             opacity = 1;
         }
 
-        divBorder.css({
-            "border-width": Math.min(props.BorderWidth, props.Size.Width / 2),
-            "border-style" : "solid",
-            "opacity": opacity
-        });
+        divBorder.css("opacity", opacity);
+        divComp.append(divBorder);
     }
 
     component.dom = divComp;
@@ -81,12 +75,11 @@ scada.scheme.LedRenderer.prototype.updateData = function (component, renderConte
         }
 
         // apply fill color
-        var divFill = divComp.children().first();
-        divFill.css("background-color", fillColor);
+        divComp.css("background-color", fillColor);
 
         // set border color
         if (props.BorderColor == this.STATUS_COLOR) {
-            var divBorder = divFill.children().first();
+            var divBorder = divComp.children(".basic-led-border");
             divBorder.css("border-color", curCnlDataExt.Color);
         }
     }

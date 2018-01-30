@@ -39,8 +39,6 @@ scada.scheme.Renderer = function () {
     this.DEF_BORDER_COLOR = "transparent";
     // Width of the wrapper frame of a component in edit mode
     this.COMP_FRAME_WIDTH = 1;
-    // Component border width if border presents
-    this.BORDER_WIDTH = 1;
 };
 
 // Set fore color of the jQuery object
@@ -67,6 +65,21 @@ scada.scheme.Renderer.prototype.setBorderColor = function (jqObj, borderColor, o
         jqObj.css("border-color", borderColor == this.STATUS_COLOR ? this.DEF_BORDER_COLOR : borderColor);
     } else if (opt_removeIfEmpty) {
         jqObj.css("border-color", "transparent");
+    }
+};
+
+// Set border width and style of the jQuery object
+scada.scheme.Renderer.prototype.setBorderWidth = function (jqObj, borderWidth, opt_removeIfEmpty) {
+    if (Number.isInteger(borderWidth) && borderWidth > 0) {
+        jqObj.css({
+            "border-style": "solid",
+            "border-width": borderWidth
+        });
+    } else if (opt_removeIfEmpty) {
+        jqObj.css({
+            "border-style": "none",
+            "border-width": ""
+        });
     }
 };
 
@@ -342,11 +355,9 @@ scada.scheme.ComponentRenderer.prototype.setToolTip = function (jqObj, toolTip) 
 scada.scheme.ComponentRenderer.prototype.prepareComponent = function (jqObj, component, opt_setSize) {
     var props = component.props;
     jqObj.css({
-        "z-index": props.ZIndex,
         "left": props.Location.X,
         "top": props.Location.Y,
-        "border-width": this.BORDER_WIDTH,
-        "border-style": "solid"
+        "z-index": props.ZIndex
     });
 
     if (opt_setSize) {
@@ -425,7 +436,7 @@ scada.scheme.ComponentRenderer.prototype.setLocation = function (component, x, y
             compParent.css({
                 "left": x - this.COMP_FRAME_WIDTH,
                 "top": y - this.COMP_FRAME_WIDTH,
-                "z-index": component.dom.css("z-index")
+                "z-index": component.props.ZIndex
             });
 
             component.dom.css({
@@ -504,11 +515,13 @@ scada.scheme.StaticTextRenderer.prototype.createDom = function (component, rende
 
     this.prepareComponent(spanComp, component);
     this.setBackColor(spanComp, props.BackColor);
-    this.setBorderColor(spanComp, props.BorderColor, true);
+    this.setBorderColor(spanComp, props.BorderColor);
+    this.setBorderWidth(spanComp, props.BorderWidth);
     this.setFont(spanComp, props.Font);
     this.setForeColor(spanComp, props.ForeColor);
 
     if (props.AutoSize) {
+        spanComp.css("display", "inline-block");
         this.setWordWrap(spanText, false);
     } else {
         spanComp.css("display", "table");
@@ -660,7 +673,8 @@ scada.scheme.StaticPictureRenderer.prototype.createDom = function (component, re
 
     var divComp = $("<div id='comp" + component.id + "'></div>");
     this.prepareComponent(divComp, component, true);
-    this.setBorderColor(divComp, props.BorderColor, true);
+    this.setBorderColor(divComp, props.BorderColor);
+    this.setBorderWidth(divComp, props.BorderWidth);
 
     // set image
     switch (props.ImageStretch) {

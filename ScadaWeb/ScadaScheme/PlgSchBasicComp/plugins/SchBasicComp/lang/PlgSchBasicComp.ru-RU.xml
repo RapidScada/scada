@@ -6,15 +6,15 @@
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.SchBasicComp.Led">
     <Phrase key="DisplayName">Светодиод</Phrase>
-    <Phrase key="BorderColor.DisplayName">Цвет рамки</Phrase>
+    <Phrase key="BorderColor.DisplayName">Цвет границы</Phrase>
     <Phrase key="BorderColor.Category">Внешний вид</Phrase>
-    <Phrase key="BorderColor.Description">Цвет рамки компонента.</Phrase>
+    <Phrase key="BorderColor.Description">Цвет границы компонента.</Phrase>
     <Phrase key="BorderOpacity.DisplayName">Непрозрачность рамки</Phrase>
     <Phrase key="BorderOpacity.Category">Внешний вид</Phrase>
-    <Phrase key="BorderOpacity.Description">Процент непрозрачности рамки компонента.</Phrase>
-    <Phrase key="BorderWidth.DisplayName">Ширина рамки</Phrase>
+    <Phrase key="BorderOpacity.Description">Процент непрозрачности границы компонента.</Phrase>
+    <Phrase key="BorderWidth.DisplayName">Ширина границы</Phrase>
     <Phrase key="BorderWidth.Category">Внешний вид</Phrase>
-    <Phrase key="BorderWidth.Description">Ширина рамки компонента.</Phrase>
+    <Phrase key="BorderWidth.Description">Ширина границы компонента.</Phrase>
     <Phrase key="FillColor.DisplayName">Цвет заливки</Phrase>
     <Phrase key="FillColor.Category">Внешний вид</Phrase>
     <Phrase key="FillColor.Description">Цвет заливки компонента.</Phrase>

@@ -119,15 +119,15 @@
     <Phrase key="ZIndex.Description">Порядок отображения компонента схемы по оси Z.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Model.StaticText">
-    <Phrase key="AutoSize.DisplayName">Авто размер</Phrase>
-    <Phrase key="AutoSize.Category">Макет</Phrase>
-    <Phrase key="AutoSize.Description">Автоматическая установка размера надписи по содержимому.</Phrase>
     <Phrase key="BackColor.DisplayName">Цвет фона</Phrase>
     <Phrase key="BackColor.Category">Внешний вид</Phrase>
     <Phrase key="BackColor.Description">Цвет фона компонента.</Phrase>
-    <Phrase key="BorderColor.DisplayName">Цвет рамки</Phrase>
+    <Phrase key="BorderColor.DisplayName">Цвет границы</Phrase>
     <Phrase key="BorderColor.Category">Внешний вид</Phrase>
-    <Phrase key="BorderColor.Description">Цвет рамки компонента.</Phrase>
+    <Phrase key="BorderColor.Description">Цвет границы компонента.</Phrase>
+    <Phrase key="BorderWidth.DisplayName">Ширина границы</Phrase>
+    <Phrase key="BorderWidth.Category">Внешний вид</Phrase>
+    <Phrase key="BorderWidth.Description">Ширина границы компонента.</Phrase>
     <Phrase key="ForeColor.DisplayName">Цвет текста</Phrase>
     <Phrase key="ForeColor.Category">Внешний вид</Phrase>
     <Phrase key="ForeColor.Description">Основной цвет компонента, используемый для отображения текста.</Phrase>
@@ -137,15 +137,18 @@
     <Phrase key="Text.DisplayName">Текст</Phrase>
     <Phrase key="Text.Category">Внешний вид</Phrase>
     <Phrase key="Text.Description">Текст компонента.</Phrase>
-    <Phrase key="WordWrap.DisplayName">Перенос по словам</Phrase>
-    <Phrase key="WordWrap.Category">Внешний вид</Phrase>
-    <Phrase key="WordWrap.Description">Автоматический перенос текста по словам.</Phrase>
     <Phrase key="HAlign.DisplayName">Гор. выравнивание</Phrase>
     <Phrase key="HAlign.Category">Внешний вид</Phrase>
     <Phrase key="HAlign.Description">Горизонтальное выравнивание текста внутри компонента.</Phrase>
     <Phrase key="VAlign.DisplayName">Верт. выравнивание</Phrase>
     <Phrase key="VAlign.Category">Внешний вид</Phrase>
     <Phrase key="VAlign.Description">Вертикальное выравнивание текста внутри компонента.</Phrase>
+    <Phrase key="WordWrap.DisplayName">Перенос по словам</Phrase>
+    <Phrase key="WordWrap.Category">Внешний вид</Phrase>
+    <Phrase key="WordWrap.Description">Автоматический перенос текста по словам.</Phrase>
+    <Phrase key="AutoSize.DisplayName">Авто размер</Phrase>
+    <Phrase key="AutoSize.Category">Макет</Phrase>
+    <Phrase key="AutoSize.Description">Автоматическая установка размера надписи по содержимому.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Model.DynamicText">
     <Phrase key="ToolTip.DisplayName">Подсказка</Phrase>
@@ -177,9 +180,12 @@
     <Phrase key="CtrlCnlNum.Description">Номер канала управления, связанного с компонентом.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Model.StaticPicture">
-    <Phrase key="BorderColor.DisplayName">Цвет рамки</Phrase>
+    <Phrase key="BorderColor.DisplayName">Цвет границы</Phrase>
     <Phrase key="BorderColor.Category">Внешний вид</Phrase>
-    <Phrase key="BorderColor.Description">Цвет рамки компонента.</Phrase>
+    <Phrase key="BorderColor.Description">Цвет границы компонента.</Phrase>
+    <Phrase key="BorderWidth.DisplayName">Ширина границы</Phrase>
+    <Phrase key="BorderWidth.Category">Внешний вид</Phrase>
+    <Phrase key="BorderWidth.Description">Ширина границы компонента.</Phrase>
     <Phrase key="ImageName.DisplayName">Изображение</Phrase>
     <Phrase key="ImageName.Category">Внешний вид</Phrase>
     <Phrase key="ImageName.Description">Изображение из коллекции изображений схемы.</Phrase>

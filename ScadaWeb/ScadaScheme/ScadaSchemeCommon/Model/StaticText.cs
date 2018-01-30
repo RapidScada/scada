@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.Scheme.Model.DataTypes;
@@ -51,27 +51,18 @@ namespace Scada.Scheme.Model
         /// </summary>
         public StaticText()
         {
-            AutoSize = true;
             BackColor = "";
             BorderColor = "";
+            BorderWidth = 0;
             ForeColor = "";
             Font = null;
             Text = DefaultText;
-            WordWrap = false;
             HAlign = HorizontalAlignments.Left;
             VAlign = VerticalAlignments.Top;
+            WordWrap = false;
+            AutoSize = true;
         }
 
-
-        /// <summary>
-        /// Получить или установить признак авто размера
-        /// </summary>
-        #region Attributes
-        [DisplayName("Auto size"), Category(Categories.Layout)]
-        [Description("Automatic resizing based on content size.")]
-        [CM.DefaultValue(true), CM.TypeConverter(typeof(BooleanConverter))]
-        #endregion
-        public bool AutoSize { get; set; }
 
         /// <summary>
         /// Получить или установить цвет фона
@@ -84,7 +75,7 @@ namespace Scada.Scheme.Model
         public string BackColor { get; set; }
 
         /// <summary>
-        /// Получить или установить цвет рамки
+        /// Получить или установить цвет границы
         /// </summary>
         #region Attributes
         [DisplayName("Border color"), Category(Categories.Appearance)]
@@ -92,6 +83,15 @@ namespace Scada.Scheme.Model
         [CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
         #endregion
         public string BorderColor { get; set; }
+
+        /// <summary>
+        /// Получить или установить ширину границы
+        /// </summary>
+        #region Attributes
+        [DisplayName("Border width"), Category(Categories.Appearance)]
+        [Description("The border width of the component in pixels.")]
+        #endregion
+        public int BorderWidth { get; set; }
 
         /// <summary>
         /// Получить или установить цвет текста
@@ -122,16 +122,6 @@ namespace Scada.Scheme.Model
         public string Text { get; set; }
 
         /// <summary>
-        /// Получить или установить признак переноса текста по словам
-        /// </summary>
-        #region Attributes
-        [DisplayName("Word wrap"), Category(Categories.Appearance)]
-        [Description("Text is automatically word-wrapped.")]
-        [CM.DefaultValue(false), CM.TypeConverter(typeof(BooleanConverter))]
-        #endregion
-        public bool WordWrap { get; set; }
-
-        /// <summary>
         /// Получить или установить горизонтальное выравнивание
         /// </summary>
         #region Attributes
@@ -151,6 +141,26 @@ namespace Scada.Scheme.Model
         #endregion
         public VerticalAlignments VAlign { get; set; }
 
+        /// <summary>
+        /// Получить или установить признак переноса текста по словам
+        /// </summary>
+        #region Attributes
+        [DisplayName("Word wrap"), Category(Categories.Appearance)]
+        [Description("Text is automatically word-wrapped.")]
+        [CM.DefaultValue(false), CM.TypeConverter(typeof(BooleanConverter))]
+        #endregion
+        public bool WordWrap { get; set; }
+
+        /// <summary>
+        /// Получить или установить признак авто размера
+        /// </summary>
+        #region Attributes
+        [DisplayName("Auto size"), Category(Categories.Layout)]
+        [Description("Automatic resizing based on content size.")]
+        [CM.DefaultValue(true), CM.TypeConverter(typeof(BooleanConverter))]
+        #endregion
+        public bool AutoSize { get; set; }
+
 
         /// <summary>
         /// Загрузить конфигурацию компонента из XML-узла
@@ -159,15 +169,16 @@ namespace Scada.Scheme.Model
         {
             base.LoadFromXml(xmlNode);
 
-            AutoSize = xmlNode.GetChildAsBool("AutoSize");
             BackColor = xmlNode.GetChildAsString("BackColor");
             BorderColor = xmlNode.GetChildAsString("BorderColor");
+            BorderWidth = xmlNode.GetChildAsInt("BorderWidth");
             ForeColor = xmlNode.GetChildAsString("ForeColor");
             Font = Font.GetChildAsFont(xmlNode, "Font");
             Text = xmlNode.GetChildAsString("Text");
-            WordWrap = xmlNode.GetChildAsBool("WordWrap");
             HAlign = xmlNode.GetChildAsEnum<HorizontalAlignments>("HAlign");
             VAlign = xmlNode.GetChildAsEnum<VerticalAlignments>("VAlign");
+            WordWrap = xmlNode.GetChildAsBool("WordWrap");
+            AutoSize = xmlNode.GetChildAsBool("AutoSize");
         }
 
         /// <summary>
@@ -177,15 +188,16 @@ namespace Scada.Scheme.Model
         {
             base.SaveToXml(xmlElem);
 
-            xmlElem.AppendElem("AutoSize", AutoSize);
             xmlElem.AppendElem("BackColor", BackColor);
             xmlElem.AppendElem("BorderColor", BorderColor);
+            xmlElem.AppendElem("BorderWidth", BorderWidth);
             xmlElem.AppendElem("ForeColor", ForeColor);
             Font.AppendElem(xmlElem, "Font", Font);
             xmlElem.AppendElem("Text", Text);
-            xmlElem.AppendElem("WordWrap", WordWrap);
             xmlElem.AppendElem("HAlign", HAlign);
             xmlElem.AppendElem("VAlign", VAlign);
+            xmlElem.AppendElem("WordWrap", WordWrap);
+            xmlElem.AppendElem("AutoSize", AutoSize);
         }
 
         /// <summary>

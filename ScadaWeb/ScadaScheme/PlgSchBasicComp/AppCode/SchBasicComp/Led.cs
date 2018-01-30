@@ -89,7 +89,7 @@ namespace Scada.Web.Plugins.SchBasicComp
         public int BorderOpacity { get; set; }
 
         /// <summary>
-        /// Получить или установить толщину границы
+        /// Получить или установить ширину границы
         /// </summary>
         #region Attributes
         [DisplayName("Border width"), Category(Categories.Appearance)]

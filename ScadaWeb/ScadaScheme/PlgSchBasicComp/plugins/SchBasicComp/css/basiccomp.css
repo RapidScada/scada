@@ -1,8 +1,9 @@
-﻿.comp .basic-led-fill,
+﻿.comp.basic-led {
+  border-radius: 50%;
+}
 .comp .basic-led-border {
   width: 100%;
   height: 100%;
-  border: none;
   border-radius: 50%;
   box-sizing: border-box;
 }
