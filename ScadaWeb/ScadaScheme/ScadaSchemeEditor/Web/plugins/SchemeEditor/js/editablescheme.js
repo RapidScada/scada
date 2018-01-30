@@ -189,7 +189,7 @@ scada.scheme.Dragging.prototype._resizeElem = function (compJqObj, width, height
 // Define the cursor depending on the pointer position
 scada.scheme.Dragging.prototype.defineCursor = function (jqObj, pageX, pageY, singleSelection) {
     var DragModes = scada.scheme.DragModes;
-    var compElem = jqObj.closest(".comp");
+    var compElem = jqObj.is(".comp-wrapper") ? jqObj.children(".comp") : jqObj.closest(".comp");
 
     if (compElem.length > 0) {
         var cursor = "";
@@ -210,7 +210,7 @@ scada.scheme.Dragging.prototype.defineCursor = function (jqObj, pageX, pageY, si
             }
         }
 
-        compElem.css("cursor", cursor);
+        jqObj.css("cursor", cursor);
     }
 };
 
@@ -384,7 +384,7 @@ scada.scheme.EditableScheme.prototype._processChanges = function (changes) {
                 if (component) {
                     this.componentMap.delete(component.id);
                     if (component.dom) {
-                        component.dom.remove();
+                        component.dom.parent(".comp-wrapper").remove();
                     }
                 }
                 break;

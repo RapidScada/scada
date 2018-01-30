@@ -97,15 +97,27 @@ scada.scheme.ToggleRenderer.constructor = scada.scheme.ToggleRenderer;
 scada.scheme.ToggleRenderer.prototype.createDom = function (component, renderContext) {
     var props = component.props;
 
-    var divComp = $("<div id='comp" + component.id + "' class='basic-toggle undef'>" +
-        "<div class='basic-toggle-lever'></div></div>");
+    var divComp = $("<div id='comp" + component.id + "' class='basic-toggle undef'></div>");
+    var divLever = $("<div class='basic-toggle-lever'></div>");
 
     this.prepareComponent(divComp, component, true);
-    this.setBorderColor(divComp, null, true);
-    this.setBackColor(divFill, props.FillColor);
-    this.setToolTip(divBorder, props.ToolTip);
-    this.bindAction(divBorder, component, renderContext);
+    this.setBackColor(divComp, props.BackColor);
+    this.setBorderColor(divComp, props.BorderColor);
+    this.setBorderWidth(divComp, props.BorderWidth);
+    this.setToolTip(divComp, props.ToolTip);
+    this.bindAction(divComp, component, renderContext);
 
+    var minSize = Math.min(props.Size.Width, props.Size.Height);
+    divComp.css("border-radius", minSize / 2);
+
+    // lever
+    this.setBackColor(divLever, props.LeverColor);
+    divLever.css({
+        "width": minSize,
+        "height": minSize
+    });
+
+    divComp.append(divLever);
     component.dom = divComp;
 }
 

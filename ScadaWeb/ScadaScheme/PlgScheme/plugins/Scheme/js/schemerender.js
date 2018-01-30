@@ -36,7 +36,7 @@ scada.scheme.Renderer = function () {
     // Default background color
     this.DEF_BACK_COLOR = "transparent";
     // Default border color
-    this.DEF_BORDER_COLOR = "transparent";
+    this.DEF_BORDER_COLOR = "gray";
     // Width of the wrapper frame of a component in edit mode
     this.COMP_FRAME_WIDTH = 1;
 };
@@ -187,7 +187,10 @@ scada.scheme.SchemeRenderer.prototype.updateDom = function (component, renderCon
             "transform-origin": "left top" // for scaling
         });
 
-        this.setBackColor($("body"), props.BackColor, true);
+        if (!renderContext.editMode) {
+            this.setBackColor($("body"), props.BackColor, true);
+        }
+
         this.setBackColor(divScheme, props.BackColor, true);
         this.setFont(divScheme, props.Font, true);
         this.setForeColor(divScheme, props.ForeColor, true);
