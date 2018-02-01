@@ -108,13 +108,17 @@ scada.scheme.ToggleRenderer.prototype.createDom = function (component, renderCon
     this.bindAction(divComp, component, renderContext);
 
     var minSize = Math.min(props.Size.Width, props.Size.Height);
-    divComp.css("border-radius", minSize / 2);
+    divComp.css({
+        "border-radius": minSize / 2,
+        "padding": props.Padding
+    });
 
     // lever
     this.setBackColor(divLever, props.LeverColor);
+    var leverSize = minSize - props.Padding * 2;
     divLever.css({
-        "width": minSize,
-        "height": minSize
+        "width": leverSize,
+        "height": leverSize
     });
 
     divComp.append(divLever);

@@ -108,7 +108,7 @@ namespace Scada.Web.Plugins.SchBasicComp
         public string LeverColor { get; set; }
 
         /// <summary>
-        /// Получить или установить толщину границы
+        /// Получить или установить отступ
         /// </summary>
         #region Attributes
         [DisplayName("Padding"), Category(Categories.Appearance)]
