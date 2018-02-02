@@ -115,7 +115,7 @@ scada.scheme.ToggleRenderer.prototype.createDom = function (component, renderCon
 
     // lever
     this.setBackColor(divLever, props.LeverColor);
-    var leverSize = minSize - props.Padding * 2;
+    var leverSize = minSize - (props.BorderWidth + props.Padding) * 2;
     divLever.css({
         "width": leverSize,
         "height": leverSize
