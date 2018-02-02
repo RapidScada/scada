@@ -76,6 +76,7 @@
     </Content>
     <Content Include="plugins\SchBasicComp\js\basiccomprender.js" />
     <None Include="Resources\led.png" />
+    <None Include="Resources\toggle.png" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

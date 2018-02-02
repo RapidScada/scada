@@ -31,12 +31,8 @@ scada.scheme = scada.scheme || {};
 scada.scheme.Renderer = function () {
     // Color bound to an input channel status
     this.STATUS_COLOR = "Status";
-    // Default foreground color
-    this.DEF_FORE_COLOR = "black";
-    // Default background color
-    this.DEF_BACK_COLOR = "transparent";
-    // Default border color
-    this.DEF_BORDER_COLOR = "gray";
+    // Color displayed in edit mode for the Status color
+    this.STATUS_DISPLAY_COLOR = "Silver";
     // Width of the wrapper frame of a component in edit mode
     this.COMP_FRAME_WIDTH = 1;
 };
@@ -44,7 +40,7 @@ scada.scheme.Renderer = function () {
 // Set fore color of the jQuery object
 scada.scheme.Renderer.prototype.setForeColor = function (jqObj, foreColor, opt_removeIfEmpty) {
     if (foreColor) {
-        jqObj.css("color", foreColor == this.STATUS_COLOR ? this.DEF_FORE_COLOR : foreColor);
+        jqObj.css("color", foreColor == this.STATUS_COLOR ? this.STATUS_DISPLAY_COLOR : foreColor);
     } else if (opt_removeIfEmpty) {
         jqObj.css("color", "");
     }
@@ -53,7 +49,7 @@ scada.scheme.Renderer.prototype.setForeColor = function (jqObj, foreColor, opt_r
 // Set background color of the jQuery object
 scada.scheme.Renderer.prototype.setBackColor = function (jqObj, backColor, opt_removeIfEmpty) {
     if (backColor) {
-        jqObj.css("background-color", backColor == this.STATUS_COLOR ? this.DEF_BACK_COLOR : backColor);
+        jqObj.css("background-color", backColor == this.STATUS_COLOR ? this.STATUS_DISPLAY_COLOR : backColor);
     } else if (opt_removeIfEmpty) {
         jqObj.css("background-color", "");
     }
@@ -62,7 +58,7 @@ scada.scheme.Renderer.prototype.setBackColor = function (jqObj, backColor, opt_r
 // Set border color of the jQuery object
 scada.scheme.Renderer.prototype.setBorderColor = function (jqObj, borderColor, opt_removeIfEmpty) {
     if (borderColor) {
-        jqObj.css("border-color", borderColor == this.STATUS_COLOR ? this.DEF_BORDER_COLOR : borderColor);
+        jqObj.css("border-color", borderColor == this.STATUS_COLOR ? this.STATUS_DISPLAY_COLOR : borderColor);
     } else if (opt_removeIfEmpty) {
         jqObj.css("border-color", "transparent");
     }
@@ -691,7 +687,8 @@ scada.scheme.StaticPictureRenderer.prototype.createDom = function (component, re
 
     divComp.css({
         "background-repeat": "no-repeat",
-        "background-position": "center"
+        "background-position": "center",
+        "background-clip": "padding-box"
     });
 
     var image = renderContext.getImage(props.ImageName);

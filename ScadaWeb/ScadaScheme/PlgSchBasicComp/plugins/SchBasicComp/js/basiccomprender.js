@@ -97,7 +97,8 @@ scada.scheme.ToggleRenderer.constructor = scada.scheme.ToggleRenderer;
 scada.scheme.ToggleRenderer.prototype.createDom = function (component, renderContext) {
     var props = component.props;
 
-    var divComp = $("<div id='comp" + component.id + "' class='basic-toggle undef'></div>");
+    var divComp = $("<div id='comp" + component.id + "' class='basic-toggle'></div>");
+    var divContainer = $("<div class='basic-toggle-container'></div>");
     var divLever = $("<div class='basic-toggle-lever'></div>");
 
     this.prepareComponent(divComp, component, true);
@@ -121,9 +122,49 @@ scada.scheme.ToggleRenderer.prototype.createDom = function (component, renderCon
         "height": leverSize
     });
 
-    divComp.append(divLever);
+    divContainer.append(divLever);
+    divComp.append(divContainer);
     component.dom = divComp;
 }
+
+scada.scheme.ToggleRenderer.prototype.updateData = function (component, renderContext) {
+    var props = component.props;
+    var divComp = component.dom;
+    var curCnlDataExt = renderContext.curCnlDataMap.get(props.InCnlNum);
+
+    if (divComp) {
+        divComp.removeClass("undef");
+        divComp.removeClass("on");
+        divComp.removeClass("off");
+
+        if (curCnlDataExt) {
+            if (curCnlDataExt.Stat > 0) {
+                if (curCnlDataExt.Val > 0) {
+                    divComp.addClass("on");
+                } else {
+                    divComp.addClass("off");
+                }
+            } else {
+                divComp.removeClass("undef");
+            }
+
+            // set colors that depend on status
+            var statusColor = curCnlDataExt.Color;
+
+            if (props.BackColor == this.STATUS_COLOR) {
+                divComp.css("background-color", statusColor);
+            }
+
+            if (props.BorderColor == this.STATUS_COLOR) {
+                divComp.css("border-color", statusColor);
+            }
+
+            if (props.LeverColor == this.STATUS_COLOR) {
+                divComp.children("basic-toggle-lever").css("background-color", statusColor);
+            }
+        }
+    }
+};
 
 /********** Renderer Map **********/
 
