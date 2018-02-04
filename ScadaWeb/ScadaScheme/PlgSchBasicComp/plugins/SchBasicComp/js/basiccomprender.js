@@ -3,7 +3,7 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2017
+ * Modified : 2018
  *
  * Requires:
  * - jquery
@@ -94,6 +94,27 @@ scada.scheme.ToggleRenderer = function () {
 scada.scheme.ToggleRenderer.prototype = Object.create(scada.scheme.ComponentRenderer.prototype);
 scada.scheme.ToggleRenderer.constructor = scada.scheme.ToggleRenderer;
 
+scada.scheme.ToggleRenderer.prototype._applySize = function (divComp, divContainer, divLever, component) {
+    var props = component.props;
+    var borders = (props.BorderWidth + props.Padding) * 2;
+    var minSize = Math.min(props.Size.Width, props.Size.Height);
+
+    divComp.css({
+        "border-radius": minSize / 2,
+        "padding": props.Padding
+    });
+
+    divContainer.css({
+        "width": props.Size.Width - borders,
+        "height": props.Size.Height - borders
+    });
+
+    divLever.css({
+        "width": minSize - borders,
+        "height": minSize - borders
+    });
+};
+
 scada.scheme.ToggleRenderer.prototype.createDom = function (component, renderContext) {
     var props = component.props;
 
@@ -107,25 +128,24 @@ scada.scheme.ToggleRenderer.prototype.createDom = function (component, renderCon
     this.setBorderWidth(divComp, props.BorderWidth);
     this.setToolTip(divComp, props.ToolTip);
     this.bindAction(divComp, component, renderContext);
-
-    var minSize = Math.min(props.Size.Width, props.Size.Height);
-    divComp.css({
-        "border-radius": minSize / 2,
-        "padding": props.Padding
-    });
-
-    // lever
     this.setBackColor(divLever, props.LeverColor);
-    var leverSize = minSize - (props.BorderWidth + props.Padding) * 2;
-    divLever.css({
-        "width": leverSize,
-        "height": leverSize
-    });
+    this._applySize(divComp, divContainer, divLever, component);
 
     divContainer.append(divLever);
     divComp.append(divContainer);
     component.dom = divComp;
-}
+};
+
+scada.scheme.ToggleRenderer.prototype.setSize = function (component, width, height) {
+    scada.scheme.ComponentRenderer.prototype.setSize.call(this, component, width, height);
+
+    if (component.dom) {
+        var divComp = component.dom;
+        var divContainer = divComp.children(".basic-toggle-container");
+        var divLever = divContainer.children(".basic-toggle-lever");
+        this._applySize(divComp, divContainer, divLever, component);
+    }
+};
 
 scada.scheme.ToggleRenderer.prototype.updateData = function (component, renderContext) {
     var props = component.props;
