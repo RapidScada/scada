@@ -171,7 +171,8 @@ namespace Scada.Scheme.Model
 
             BackColor = xmlNode.GetChildAsString("BackColor");
             BorderColor = xmlNode.GetChildAsString("BorderColor");
-            BorderWidth = xmlNode.GetChildAsInt("BorderWidth");
+            BorderWidth = xmlNode.GetChildAsInt("BorderWidth",
+                string.IsNullOrEmpty(BorderColor) ? 0 : 1 /*для обратной совместимости*/);
             ForeColor = xmlNode.GetChildAsString("ForeColor");
             Font = Font.GetChildAsFont(xmlNode, "Font");
             Text = xmlNode.GetChildAsString("Text");
