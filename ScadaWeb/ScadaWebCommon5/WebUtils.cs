@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2017
+ * Modified : 2018
  */
 
 using System;
@@ -40,7 +40,7 @@ namespace Scada.Web
         /// <summary>
         /// Версия веб-приложения
         /// </summary>
-        public const string AppVersion = "5.0.3.1";
+        public const string AppVersion = "5.0.4.1";
         /// <summary>
         /// Шиблон для вставки стилей на веб-страницу
         /// </summary>

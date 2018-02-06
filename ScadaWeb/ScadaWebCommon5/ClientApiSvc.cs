@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2018
  */
 
 using Scada.Client;
@@ -156,13 +156,13 @@ namespace Scada.Web
         /// </summary>
         private static readonly JavaScriptSerializer JsSerializer = new JavaScriptSerializer() { MaxJsonLength = MaxJsonLen };
         /// <summary>
-        /// Обеспечивает форматирование данных входных каналов и событий
-        /// </summary>
-        private static readonly DataFormatter DataFormatter = new DataFormatter();
-        /// <summary>
         /// Общие данные веб-приложения
         /// </summary>
         private static readonly AppData AppData = AppData.GetAppData();
+        /// <summary>
+        /// Обеспечивает форматирование данных входных каналов и событий
+        /// </summary>
+        private static DataFormatter DataFormatter = new DataFormatter();
 
 
         /// <summary>
@@ -673,6 +673,16 @@ namespace Scada.Web
                     "Error parsing date and time");
                 return GetErrorDtoJs(ex);
             }
+        }
+
+
+        /// <summary>
+        /// Пересоздать объект для форматирования
+        /// </summary>
+        /// <remarks>Необходимо вызвать при смене культуры веб-приложения</remarks>
+        public static void RefreshDataFormatter()
+        {
+            DataFormatter = new DataFormatter();
         }
     }
 }
