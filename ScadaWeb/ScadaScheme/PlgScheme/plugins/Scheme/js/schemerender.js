@@ -524,15 +524,15 @@ scada.scheme.StaticTextRenderer.prototype.createDom = function (component, rende
         this.setWordWrap(spanText, false);
     } else {
         spanComp.css("display", "table");
+        var borders = props.BorderWidth * 2;
 
-        spanText
-            .css({
-                "display": "table-cell",
-                "overflow": "hidden",
-                "max-width": props.Size.Width,
-                "width": props.Size.Width,
-                "height": props.Size.Height
-            });
+        spanText.css({
+            "display": "table-cell",
+            "overflow": "hidden",
+            "max-width": props.Size.Width - borders,
+            "width": props.Size.Width - borders,
+            "height": props.Size.Height - borders
+        });
 
         this.setHAlign(spanComp, props.HAlign);
         this.setVAlign(spanText, props.VAlign);
@@ -678,7 +678,9 @@ scada.scheme.StaticPictureRenderer.prototype.createDom = function (component, re
     // set image
     switch (props.ImageStretch) {
         case ImageStretches.FILL:
-            divComp.css("background-size", props.Size.Width + "px " + props.Size.Height + "px");
+            var borders = props.BorderWidth * 2;
+            divComp.css("background-size", (props.Size.Width - borders) + "px " +
+                (props.Size.Height - borders) + "px");
             break;
         case ImageStretches.ZOOM:
             divComp.css("background-size", "contain");

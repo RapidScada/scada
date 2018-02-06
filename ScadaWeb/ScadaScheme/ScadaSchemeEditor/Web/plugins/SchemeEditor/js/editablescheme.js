@@ -825,7 +825,7 @@ scada.scheme.EditableScheme.prototype.processKey = function (keyChar, keyCode, c
             dy = move;
         }
 
-        this._getSchemeDiv().find(".comp.selected").each(function () {
+        this._getSchemeDiv().find(".comp-wrapper.selected").each(function () {
             var offset = $(this).offset();
             $(this).offset({ left: offset.left + dx, top: offset.top + dy });
         });

@@ -122,7 +122,7 @@ scada.scheme.ToggleRenderer.prototype.createDom = function (component, renderCon
     var divContainer = $("<div class='basic-toggle-container'></div>");
     var divLever = $("<div class='basic-toggle-lever'></div>");
 
-    this.prepareComponent(divComp, component, true);
+    this.prepareComponent(divComp, component);
     this.setBackColor(divComp, props.BackColor);
     this.setBorderColor(divComp, props.BorderColor);
     this.setBorderWidth(divComp, props.BorderWidth);
