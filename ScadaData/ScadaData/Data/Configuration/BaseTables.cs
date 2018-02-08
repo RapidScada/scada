@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2018
  */
 
 using System;
@@ -56,6 +56,7 @@ namespace Scada.Data.Configuration
                 CnlTypeTable = new DataTable("CnlType"),
                 CmdTypeTable = new DataTable("CmdType"),
                 EvTypeTable = new DataTable("EvType"),
+                KPTypeTable = new DataTable("KPType"),
                 ParamTable = new DataTable("Param"),
                 UnitTable = new DataTable("Unit"),
                 CmdValTable = new DataTable("CmdVal"),
@@ -126,6 +127,11 @@ namespace Scada.Data.Configuration
         /// Получить таблицу типов событий
         /// </summary>
         public DataTable EvTypeTable { get; protected set; }
+
+        /// <summary>
+        /// Получить таблицу типов КП
+        /// </summary>
+        public DataTable KPTypeTable { get; protected set; }
 
         /// <summary>
         /// Получить таблицу величин (параметров)

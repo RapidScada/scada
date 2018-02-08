@@ -54,6 +54,9 @@
     <Compile Include="Client\ISupportLoading.cs" />
     <Compile Include="Client\ViewCache.cs" />
     <Compile Include="Data\Models\CnlStatProps.cs" />
+    <Compile Include="Data\Models\CommLine.cs" />
+    <Compile Include="Data\Models\Obj.cs" />
+    <Compile Include="Data\Models\Device.cs" />
     <Compile Include="Data\Models\DispEvent.cs" />
     <Compile Include="Data\Models\UserProps.cs" />
     <Compile Include="Data\Tables\Adapter.cs" />
