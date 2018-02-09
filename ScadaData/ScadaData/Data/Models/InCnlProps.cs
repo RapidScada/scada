@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2005
- * Modified : 2015
+ * Modified : 2018
  */
 
 using Scada.Data.Configuration;
@@ -70,9 +70,11 @@ namespace Scada.Data.Models
         /// </summary>
         public InCnlProps(int cnlNum, string cnlName, int cnlTypeID)
         {
+            Active = true;
             CnlNum = cnlNum;
             CnlName = cnlName;
             CnlTypeID = cnlTypeID;
+            CnlTypeName = "";
             ObjNum = 0;
             ObjName = "";
             KPNum = 0;
@@ -85,6 +87,7 @@ namespace Scada.Data.Models
             ParamName = "";
             IconFileName = "";
             FormatID = 0;
+            FormatName = "";
             ShowNumber = true;
             DecDigits = 3;
             UnitID = 0;
@@ -104,6 +107,11 @@ namespace Scada.Data.Models
 
 
         /// <summary>
+        /// Получить или установить признак активности
+        /// </summary>
+        public bool Active { get; set; }
+
+        /// <summary>
         /// Получить или установить номер входного канала
         /// </summary>
         public int CnlNum { get; set; }
@@ -117,6 +125,11 @@ namespace Scada.Data.Models
         /// Получить или установить идентификатор типа канала
         /// </summary>
         public int CnlTypeID { get; set; }
+
+        /// <summary>
+        /// Получить или установить наименование типа канала
+        /// </summary>
+        public string CnlTypeName { get; set; }
 
         /// <summary>
         /// Получить или установить номер объекта
@@ -177,6 +190,11 @@ namespace Scada.Data.Models
         /// Получить или установить идентификатор формата
         /// </summary>
         public int FormatID { get; set; }
+
+        /// <summary>
+        /// Получить или установить наименование формата
+        /// </summary>
+        public string FormatName { get; set; }
 
         /// <summary>
         /// Получить или установить признак вывода значения канала как числа
