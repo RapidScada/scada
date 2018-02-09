@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PlgConfigDictionaries>
+  <Dictionary key="Scada.Web.Plugins.Config.WFrmPlugins">
+    <Phrase key="this">Встановлені плагіни - Rapid SCADA</Phrase>
+    <Phrase key="lblTitle">Встановлені плагіни</Phrase>
+    <Phrase key="NameCol">Найменування</Phrase>
+    <Phrase key="DescrCol">Опис</Phrase>
+    <Phrase key="StateCol">Стан</Phrase>
+    <Phrase key="ActivateBtn">Активувати</Phrase>
+    <Phrase key="DeactivateBtn">Деактивувати</Phrase>
+    <Phrase key="InactiveState">Неактивний</Phrase>
+    <Phrase key="ActiveState">Активний</Phrase>
+    <Phrase key="NotLoadedState">Не завантажений</Phrase>
+    <Phrase key="PluginActivated">Плагін активований успішно.</Phrase>
+    <Phrase key="PluginDeactivated">Плагін деактививаний успішно.</Phrase>
+    <Phrase key="PluginVersion">Версія </Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Config.WFrmWebConfig">
+    <Phrase key="this">Конфігурація веб-програми - Rapid SCADA</Phrase>
+    <Phrase key="lblTitle">Конфігурація веб-програми</Phrase>
+    <Phrase key="lblConnection">З'єднання з Сервером</Phrase>
+    <Phrase key="lblServerHost">Сервер</Phrase>
+    <Phrase key="lblServerPort">Порт</Phrase>
+    <Phrase key="lblServerTimeout">Таймаут</Phrase>
+    <Phrase key="txtServerTimeoutUnit">мс</Phrase>
+    <Phrase key="lblServerUser">Користувач</Phrase>
+    <Phrase key="lblServerPwd">Пароль</Phrase>
+    <Phrase key="lblServerPwdHelp">Залиште пустим, щоб не змінювати.</Phrase>
+    <Phrase key="lblCommonParams">Параметри програми</Phrase>
+    <Phrase key="lblCulture">Культура</Phrase>
+    <Phrase key="lblCultureHelp">Приклад: en-GB. Пуста - по замовчуванню.</Phrase>
+    <Phrase key="lblDataRefrRate">Частота оновлення даних</Phrase>
+    <Phrase key="lbltxtDataRefrRateUnit">мс</Phrase>
+    <Phrase key="lblArcRefrRate">Частота оновлення архівів</Phrase>
+    <Phrase key="lblArcRefrRateUnit">мс</Phrase>
+    <Phrase key="lblDispEventCnt">Кількість відображених подій</Phrase>
+    <Phrase key="lblChartGap">Розрив графіка</Phrase>
+    <Phrase key="lblChartGapUnit">с</Phrase>
+    <Phrase key="lblStartPage">Початкова сторінка</Phrase>
+    <Phrase key="lblStartPageHelp">Приклад: ~/plugins/MyPlugin/MyPage.aspx</Phrase>
+    <Phrase key="lblCmdEnabled">Дозволити команди ТУ</Phrase>
+    <Phrase key="lblCmdPassword">Вимагати пароль при відправленні команди</Phrase>
+    <Phrase key="lblRemEnabled">Дозволити запам'ятовувати вхід користувача</Phrase>
+    <Phrase key="lblViewsFromBase">Завантажувати настройки відображень із бази</Phrase>
+    <Phrase key="lblShareStats">Поділитися безликою статистикой з розробниками</Phrase>
+    <Phrase key="lblChartScript">Плагін графіків</Phrase>
+    <Phrase key="lblCmdScript">Плагін команд</Phrase>
+    <Phrase key="lblEventAckScript">Плагін квітування</Phrase>
+    <Phrase key="btnSave">Зберегти конфігурацію</Phrase>
+    <Phrase key="UnknownPlugin">Невідомий плагін</Phrase>
+    <Phrase key="IncorrectFields">Наступні поля некоректні:</Phrase>
+    <Phrase key="ConfigSaved">Конфігурація збережена успішно.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.PlgConfigSpec">
+    <Phrase key="WebConfigMenuItem">Веб-програма</Phrase>
+    <Phrase key="InstalledPluginsMenuItem">Встановлені</Phrase>
+  </Dictionary>
+</PlgConfigDictionaries>

@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaWebDictionaries>
+  <Dictionary key="Scada.Web">
+    <Phrase key="NotLoggedOn">Користувач не ввійшов в систему.</Phrase>
+    <Phrase key="IncorrectDate">Некоректна дата запрошуваних даних.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.AppData">
+    <Phrase key="ServerUnavailable">Сервер недоступний.</Phrase>
+    <Phrase key="WrongPassword">Невірне ім'я користувача або пароль.</Phrase>
+    <Phrase key="IllegalRole">Недопустима роль користувача.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Dialogs.WFrmConfirm">
+    <Phrase key="this">Підтвердження</Phrase>
+    <Phrase key="lblConfirm">Вы впевнені?</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.MasterMain">
+    <Phrase key="lbtnMainLogout">Вийти</Phrase>
+    <Phrase key="lblMainFullscreenBtn.ToolTip">На весь екран</Phrase>
+    <Phrase key="lblMainNormalViewBtn.ToolTip">Нормальний вид</Phrase>
+    <Phrase key="lblMainMenuTab">Головне меню</Phrase>
+    <Phrase key="lblMainExplorerTab">Відображення</Phrase>
+    <Phrase key="lblMainCollapseMenu">Згорнути меню</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.ModalButtons.Js">
+    <Phrase key="ok">OK</Phrase>
+    <Phrase key="yes">Так</Phrase>
+    <Phrase key="no">Ні</Phrase>
+    <Phrase key="execute">Виконати</Phrase>
+    <Phrase key="cancel">Відміна</Phrase>
+    <Phrase key="close">Закрити</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Report">
+    <Phrase key="GenReport">Генерація звіту &quot;{0}&quot; користувачем {1}</Phrase>
+    <Phrase key="IncorrectRepTemplate">Некоректний шаблон звіту.</Phrase>
+    <Phrase key="IncorrectStartDate">Некоректна дата початку.</Phrase>
+    <Phrase key="IncorrectEndDate">Некоректна дата закінчення.</Phrase>
+    <Phrase key="IncorrectPeriod">Дата початку повинна бути менша або рівна даті закінчення.</Phrase>
+    <Phrase key="DayPeriodTooLong">Максимальна довжина періоду {0} дн.</Phrase>
+    <Phrase key="MonthPeriodTooLong">Максимальна довжина періоду {0} міс.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.UserRights">
+    <Phrase key="CnlNumsEmptyError">Номера каналів не задані.</Phrase>
+    <Phrase key="CnlsViewsCountError">Невідповідність кількості каналів і ід. відображень.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.ViewSettings">
+    <Phrase key="LoadViewSettingsError">Помилка при завантаженні налаштувань відображень</Phrase>
+    <Phrase key="SaveViewSettingsError">Помилка при збереженні налаштувань відображень</Phrase>
+    <Phrase key="LoadViewSettingsBaseError">Помилка при завантаженні налаштувань відображень із бази конфігурації</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WebSettings">
+    <Phrase key="LoadWebSettingsError">Помилка при завантаженні налаштувань веб-програми</Phrase>
+    <Phrase key="SaveWebSettingsError">Помилка при збереженні налаштувань веб-програми</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmAbout">
+    <Phrase key="this">Про програму - Rapid SCADA</Phrase>
+    <Phrase key="hlAppName">Вебстанція</Phrase>
+    <Phrase key="hlAppName.NavigateUrl">http://rapidscada.ru</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmError">
+    <Phrase key="this">Помилка програми - Rapid SCADA</Phrase>
+    <Phrase key="lblTitle">Помилка програми</Phrase>
+    <Phrase key="lblErrMsg">Трапилась помилка програми. Якщо вона повторюється часто, зверніться в службу підтримки, будь ласка.</Phrase>
+    <Phrase key="lblErrDetailsCaption">Додаткова інформація:</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmLogin">
+    <Phrase key="this">Вхід в систему - Rapid SCADA</Phrase>
+    <Phrase key="hlRapidScada.NavigateUrl">http://rapidscada.ru</Phrase>
+    <Phrase key="lblUsername">Ім'я користувача</Phrase>
+    <Phrase key="lblPassword">Пароль</Phrase>
+    <Phrase key="lblRememberMe">Запам'ятати мене</Phrase>
+    <Phrase key="btnLogin">Ввійти</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmLogin.Js">
+    <Phrase key="BrowserOutdated">Ваш браузер застарів. Встановіть сучасний браузер, будь ласка.</Phrase>
+    <Phrase key="CookiesDisabled">Файлы cookie заборонені. Дозвольте їх, будь ласка.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmNoView">
+    <Phrase key="this">Відображення не існує - Rapid SCADA</Phrase>
+    <Phrase key="lblViewNotExist">Запрошене відображення не існує або у Вас недостатньо прав для доступу до нього.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmReports">
+    <Phrase key="this">Звіти - Rapid SCADA</Phrase>
+    <Phrase key="lblTitle">Доступні звіти</Phrase>
+    <Phrase key="lblNoReports">Немає доступних звітів</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmUser">
+    <Phrase key="this">Профіль користувача - Rapid SCADA</Phrase>
+    <Phrase key="lblTitle">Профіль користувача</Phrase>
+    <Phrase key="lblUserNameCaption">Ім'я користувача:</Phrase>
+    <Phrase key="lblRoleNameCaption">Роль:</Phrase>
+    <Phrase key="lblGeneralRightsTitle">Основні права</Phrase>
+    <Phrase key="lblViewAllRightCaption">Перегляд всіх даних:</Phrase>
+    <Phrase key="lblControlAllRightCaption">Управління всіма пристроями:</Phrase>
+    <Phrase key="lblConfigRightCaption">Конфігурування системи:</Phrase>
+    <Phrase key="RightYes">Так</Phrase>
+    <Phrase key="RightNo">Ні</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmView">
+    <Phrase key="this">Відображення - Rapid SCADA</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmView.Js">
+    <Phrase key="ExternalLinkTitle">Зовнішнє посилання - Rapid SCADA</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Shell.MenuItem">
+    <Phrase key="ReportsMenuItem">Звіти</Phrase>
+    <Phrase key="AdminMenuItem">Адміністрування</Phrase>
+    <Phrase key="ConfigMenuItem">Конфігурація</Phrase>
+    <Phrase key="RegMenuItem">Реєстрація</Phrase>
+    <Phrase key="PluginsMenuItem">Плагіни</Phrase>
+    <Phrase key="AboutMenuItem">Про програму</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Shell.RememberMe">
+    <Phrase key="SecurityViolation">Виявлено порушення безпеки. Негайно зверніться до системного адміністратора.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Shell.UserContent">
+    <Phrase key="ReportNotFound">Звіт з ід.={0} не знайдений.</Phrase>
+    <Phrase key="UnexpectedReportSpec">Звіт з ід.={0} має невідповідний тип специфікації.</Phrase>
+    <Phrase key="DataWndNotFound">Вікно даних з ід.={0} не знайдено.</Phrase>
+    <Phrase key="UnexpectedDataWndSpec">Вікно даних з ід.={0} має невідповідний тип специфікації.</Phrase>
+  </Dictionary>
+</ScadaWebDictionaries>

@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaSchemeEditorDictionaries>
+  <Dictionary key="Scada.Scheme.Editor.Editor">
+    <Phrase key="EditorTitle">Scada-Редактор схем</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Editor.FrmMain">
+    <Phrase key="btnFileNew.ToolTip">Створити нову схему (Ctrl+N)</Phrase>
+    <Phrase key="btnFileOpen.ToolTip">Відкрити схему (Ctrl+O)</Phrase>
+    <Phrase key="btnFileSave.ToolTip">Зберегти схему (Ctrl+S)</Phrase>
+    <Phrase key="miFileSaveAs">Зберегти як...</Phrase>
+    <Phrase key="btnFileOpenBrowser.ToolTip">Відкрити нову вкладку браузера</Phrase>
+    <Phrase key="btnEditCut.ToolTip">Вирізати компоненти схеми (Ctrl+X)</Phrase>
+    <Phrase key="btnEditCopy.ToolTip">Копіювати компоненти схеми (Ctrl+C)</Phrase>
+    <Phrase key="btnEditPaste.ToolTip">Вставити компоненти схеми (Ctrl+V)</Phrase>
+    <Phrase key="btnEditUndo.ToolTip">Відмінити (Ctrl+Z)</Phrase>
+    <Phrase key="btnEditRedo.ToolTip">Повернути (Ctrl+Y)</Phrase>
+    <Phrase key="btnSchemePointer.ToolTip">Відмінити додавання компонента (Esc)</Phrase>
+    <Phrase key="btnSchemeDelete.ToolTip">Видалити обрані компоненти (Del)</Phrase>
+    <Phrase key="btnSettingsOptions.ToolTip">Налаштування</Phrase>
+    <Phrase key="btnHelpAbout.ToolTip">Довідка</Phrase>
+    <Phrase key="pageComponents">Компоненти</Phrase>
+    <Phrase key="pageProperties">Властивості</Phrase>
+    <Phrase key="lvgStandard">Стандартні</Phrase>
+    <Phrase key="lvCompTypes.Items[0]">Вказівник</Phrase>
+    <Phrase key="lvCompTypes.Items[1]">Статичний напис</Phrase>
+    <Phrase key="lvCompTypes.Items[2]">Динамічний напис</Phrase>
+    <Phrase key="lvCompTypes.Items[3]">Статичний малюнок</Phrase>
+    <Phrase key="lvCompTypes.Items[4]">Динамічний малюнок</Phrase>
+    <Phrase key="CloseSecondInstance">Scada-Редактор схем вже запущений.&#13;&#10;Другий екземпляр програми буде закритий.</Phrase>
+    <Phrase key="FailedToStartEditor">Невдача при запуску Scada-Редактора схем.&#13;&#10;Дивіться деталі тут&#13;&#10;{0}</Phrase>
+    <Phrase key="SchemeFileFilter">Схеми (*.sch)|*.sch|Всі файли (*.*)|*.*</Phrase>
+    <Phrase key="SaveSchemeConfirm">Схема була змінена. Зберегти зміни?</Phrase>
+    <Phrase key="RestartNeeded">Зміна налаштувань відбудеться після перезавантаження програми.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Editor.FrmSettings">
+    <Phrase key="this">Налаштування</Phrase>
+    <Phrase key="lblWebDir">Директорія Web-програми</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Відміна</Phrase>
+    <Phrase key="WebDirNotExists">Директорія Web-програми не існує.</Phrase>
+    <Phrase key="ChooseWebDir">Виберіть директорію web-програми</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Editor.FormState">
+    <Phrase key="LoadFormStateError">Помилка завантаження стану форми</Phrase>
+    <Phrase key="SaveFormStateError">Помилка збереження стану форми</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Editor.Js">
+    <Phrase key="UnableLoadScheme">Нездатний завантажити схему до web сторінки.</Phrase>
+    <Phrase key="PageNotValid">Web сторінка більше не актуальна. Рекомендується закрити її.</Phrase>
+    <Phrase key="DataError">Помилка обробки даних.</Phrase>
+    <Phrase key="EditorClosed">SCADA-Редактор схем ймовірно був закритий. Рекомендується закрити web сторінку.</Phrase>
+    <Phrase key="BrowserOutdated">Ваш браузер застарів. Будь ласка, оновіть браузер.</Phrase>
+  </Dictionary>
+</ScadaSchemeEditorDictionaries>

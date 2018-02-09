@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PlgSchemeDictionaries>
+  <Dictionary key="Scada.Scheme.CompManager">
+    <Phrase key="UnknownComponent">Невідомий компонент {0}</Phrase>
+    <Phrase key="CompLibraryNotFound">Не знайдена библіотека для компонента {0}</Phrase>
+    <Phrase key="UnableCreateComponent">Неможливо створити компонент {0}</Phrase>
+    <Phrase key="ErrorCreatingComponent">Помилка при створенні компонента {0}</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.SchemeView">
+    <Phrase key="LoadSchemeViewError">Помилка при завантаженні схеми із файлу</Phrase>
+    <Phrase key="SaveSchemeViewError">Помилка при збереженні схеми в файл</Phrase>
+    <Phrase key="IncorrectFileFormat">Некоректний формат файлу схеми</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.PropertyGrid">
+    <Phrase key="StringConvertError">Неможливо перетворити стрічку</Phrase>
+    <Phrase key="StringUniqueError">Значення властивості повинно бути унікальним</Phrase>
+    <Phrase key="TrueValue">Так</Phrase>
+    <Phrase key="FalseValue">Ні</Phrase>
+    <Phrase key="EmptyValue">(Порожній)</Phrase>
+    <Phrase key="CollectionValue">(Колекція)</Phrase>
+    <Phrase key="BoldSymbol">Ж</Phrase>
+    <Phrase key="ItalicSymbol">К</Phrase>
+    <Phrase key="UnderlineSymbol">П</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmCnlFilterDialog">
+    <Phrase key="this">Фільтр для каналів</Phrase>
+    <Phrase key="lblCnlNums">Номери вхідних каналів</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Відміна</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmConditionDialog">
+    <Phrase key="this">Умови виводу зображень</Phrase>
+    <Phrase key="lblCond">Умови</Phrase>
+    <Phrase key="lblProps">Властивості умови</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Відміна</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmFontDialog">
+    <Phrase key="this">Шрифт</Phrase>
+    <Phrase key="lblFontName">Шрифт</Phrase>
+    <Phrase key="lblFontSize">Розмір</Phrase>
+    <Phrase key="gbStyle">Стиль</Phrase>
+    <Phrase key="chkBold">Жирний</Phrase>
+    <Phrase key="chkItalic">Курсив</Phrase>
+    <Phrase key="chkUnderline">Підкреслений</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Відміна</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmImageDialog">
+    <Phrase key="this">Зображення</Phrase>
+    <Phrase key="lblImages">Зображення</Phrase>
+    <Phrase key="lblImageProps">Властивості зображення</Phrase>
+    <Phrase key="lblPreview">Попередній перегляд</Phrase>
+    <Phrase key="btnSelectEmpty">Пусте</Phrase>
+    <Phrase key="btnSelect">Вибрати</Phrase>
+    <Phrase key="btnClose">Закрити</Phrase>
+    <Phrase key="ImageFileFilter">Зображення (*.jpg;*.png;*.gif;*.svg)|*.jpg;*.png;*.gif;*.svg|Всі файли (*.*)|*.*</Phrase>
+    <Phrase key="DisplayImageError">Помилка при відображенні зображення</Phrase>
+    <Phrase key="LoadImageError">Помилка при завантаженні зображення</Phrase>
+    <Phrase key="SaveImageError">Помилка при збереженні зображення</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmImageDialog+ImageListItem">
+    <Phrase key="Name.DisplayName">Найменування</Phrase>
+    <Phrase key="Name.Category">Зображення</Phrase>
+    <Phrase key="DataSize.DisplayName">Розмір даних</Phrase>
+    <Phrase key="DataSize.Category">Зображення</Phrase>
+    <Phrase key="ImageSize.DisplayName">Розмір</Phrase>
+    <Phrase key="ImageSize.Category">Зображення</Phrase>
+    <Phrase key="Format.DisplayName">Формат</Phrase>
+    <Phrase key="Format.Category">Зображення</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.SchemeDocument">
+    <Phrase key="Version.DisplayName">Версія</Phrase>
+    <Phrase key="Version.Category">Дизайн</Phrase>
+    <Phrase key="Version.Description">Версія редактора схем, в якому збережений файл схеми.</Phrase>
+    <Phrase key="Size.DisplayName">Розмір</Phrase>
+    <Phrase key="Size.Category">Макет</Phrase>
+    <Phrase key="Size.Description">Розмір схеми в пікселях.</Phrase>
+    <Phrase key="BackColor.DisplayName">Колір фону</Phrase>
+    <Phrase key="BackColor.Category">Зовнішній вид</Phrase>
+    <Phrase key="BackColor.Description">Колір фону схеми.</Phrase>
+    <Phrase key="BackImageName.DisplayName">Фонове зображення</Phrase>
+    <Phrase key="BackImageName.Category">Зовнішній вид</Phrase>
+    <Phrase key="BackImageName.Description">Фонове зображення схеми.</Phrase>
+    <Phrase key="Font.DisplayName">Шрифт</Phrase>
+    <Phrase key="Font.Category">Зовнішній вид</Phrase>
+    <Phrase key="Font.Description">Шрифт, що застосовується для відображення тексту на схемі.</Phrase>
+    <Phrase key="ForeColor.DisplayName">Основной колір</Phrase>
+    <Phrase key="ForeColor.Category">Зовнішній вид</Phrase>
+    <Phrase key="ForeColor.Description">Основной колір схеми, що застосовується для відображення тексту.</Phrase>
+    <Phrase key="Title.DisplayName">Заголовок</Phrase>
+    <Phrase key="Title.Category">Зовнішній вид</Phrase>
+    <Phrase key="Title.Description">Заголовок схеми.</Phrase>
+    <Phrase key="CnlFilter.DisplayName">Фільтр по каналам</Phrase>
+    <Phrase key="CnlFilter.Category">Дані</Phrase>
+    <Phrase key="CnlFilter.Description">Вхідні каналы, що застосовуються як фільтр для виводу події по схемі.</Phrase>
+    <Phrase key="Images.DisplayName">Зображення</Phrase>
+    <Phrase key="Images.Category">Дані</Phrase>
+    <Phrase key="Images.Description">Колекція зображень, що застосовуються на схемі.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.BaseComponent">
+    <Phrase key="ID.DisplayName">Ідентифікатор</Phrase>
+    <Phrase key="ID.Category">Дизайн</Phrase>
+    <Phrase key="ID.Description">Унікальний ідентифікатор компонента схеми.</Phrase>
+    <Phrase key="Name.DisplayName">Найменування</Phrase>
+    <Phrase key="Name.Category">Дизайн</Phrase>
+    <Phrase key="Name.Description">Найменування компонента схеми.</Phrase>
+    <Phrase key="TypeName.DisplayName">Ім'я типу</Phrase>
+    <Phrase key="TypeName.Category">Дизайн</Phrase>
+    <Phrase key="TypeName.Description">Повне ім'я типу компонента схеми.</Phrase>
+    <Phrase key="Location.DisplayName">Положення</Phrase>
+    <Phrase key="Location.Category">Макет</Phrase>
+    <Phrase key="Location.Description">Координати лівого верхнього кута компонента схеми.</Phrase>
+    <Phrase key="Size.DisplayName">Розмір</Phrase>
+    <Phrase key="Size.Category">Макет</Phrase>
+    <Phrase key="Size.Description">Розмір компонента схеми в пікселях.</Phrase>
+    <Phrase key="ZIndex.DisplayName">Порядок</Phrase>
+    <Phrase key="ZIndex.Category">Макет</Phrase>
+    <Phrase key="ZIndex.Description">Порядок відображення компонента схеми по осі Z.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.StaticText">
+    <Phrase key="AutoSize.DisplayName">Авто розмір</Phrase>
+    <Phrase key="AutoSize.Category">Макет</Phrase>
+    <Phrase key="AutoSize.Description">Автоматичне встановлення розміру напису згідно змісту.</Phrase>
+    <Phrase key="BackColor.DisplayName">Колір фону</Phrase>
+    <Phrase key="BackColor.Category">Зовнішній вид</Phrase>
+    <Phrase key="BackColor.Description">Колір фону напису.</Phrase>
+    <Phrase key="BorderColor.DisplayName">Колір рамки</Phrase>
+    <Phrase key="BorderColor.Category">Зовнішній вид</Phrase>
+    <Phrase key="BorderColor.Description">Колір рамки напису.</Phrase>
+    <Phrase key="ForeColor.DisplayName">Колір тексту</Phrase>
+    <Phrase key="ForeColor.Category">Зовнішній вид</Phrase>
+    <Phrase key="ForeColor.Description">Основной колір напису, що застосовується для відображення тексту.</Phrase>
+    <Phrase key="Font.DisplayName">Шрифт</Phrase>
+    <Phrase key="Font.Category">Зовнішній вид</Phrase>
+    <Phrase key="Font.Description">Шрифт, що застосовується для відображення тексту напису.</Phrase>
+    <Phrase key="Text.DisplayName">Текст</Phrase>
+    <Phrase key="Text.Category">Зовнішній вид</Phrase>
+    <Phrase key="Text.Description">Текст напису.</Phrase>
+    <Phrase key="WordWrap.DisplayName">Перенесення за словами</Phrase>
+    <Phrase key="WordWrap.Category">Зовнішній вид</Phrase>
+    <Phrase key="WordWrap.Description">Автоматичне перенесення тексту за словами.</Phrase>
+    <Phrase key="HAlign.DisplayName">Гор. вирівнювання</Phrase>
+    <Phrase key="HAlign.Category">Зовнішній вид</Phrase>
+    <Phrase key="HAlign.Description">Горизонтальне вирівнювання тексту всередині напису.</Phrase>
+    <Phrase key="VAlign.DisplayName">Верт. вирівнювання</Phrase>
+    <Phrase key="VAlign.Category">Зовнішній вид</Phrase>
+    <Phrase key="VAlign.Description">Вертикальне вирівнювання тексту всередині напису.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.DynamicText">
+    <Phrase key="ToolTip.DisplayName">Підказка</Phrase>
+    <Phrase key="ToolTip.Category">Поведінка</Phrase>
+    <Phrase key="ToolTip.Description">Виринаюча підказка, яка відображається при наведенні вказівника миші на напис.</Phrase>
+    <Phrase key="UnderlineOnHover.DisplayName">Підкреслювання при наведенні</Phrase>
+    <Phrase key="UnderlineOnHover.Category">Поведінка</Phrase>
+    <Phrase key="UnderlineOnHover.Description">Підкреслювання напису при наведенні вказівника миші.</Phrase>
+    <Phrase key="BackColorOnHover.DisplayName">Колір фону при наведенні</Phrase>
+    <Phrase key="BackColorOnHover.Category">Поведінка</Phrase>
+    <Phrase key="BackColorOnHover.Description">Колір фону напису при наведенні вказівника миші.</Phrase>
+    <Phrase key="BorderColorOnHover.DisplayName">Колір рамки при наведенні</Phrase>
+    <Phrase key="BorderColorOnHover.Category">Поведінка</Phrase>
+    <Phrase key="BorderColorOnHover.Description">Колір рамки напису при наведенні вказівника миші.</Phrase>
+    <Phrase key="ForeColorOnHover.DisplayName">Колір тексту при наведенні</Phrase>
+    <Phrase key="ForeColorOnHover.Category">Поведінка</Phrase>
+    <Phrase key="ForeColorOnHover.Description">Основний колір напису, що застосовується для відображення тексту при наведенні вказівника миші.</Phrase>
+    <Phrase key="Action.DisplayName">Дія</Phrase>
+    <Phrase key="Action.Category">Поведінка</Phrase>
+    <Phrase key="Action.Description">Дія, яка виконується при натисканні лівої кнопки миші на написі.</Phrase>
+    <Phrase key="ShowValue.DisplayName">Вивід значення</Phrase>
+    <Phrase key="ShowValue.Category">Поведінка</Phrase>
+    <Phrase key="ShowValue.Description">Вивід значення вхідного каналу, пов'язаного з написом.</Phrase>
+    <Phrase key="InCnlNum.DisplayName">Вхідний канал</Phrase>
+    <Phrase key="InCnlNum.Category">Дані</Phrase>
+    <Phrase key="InCnlNum.Description">Номер вхідного каналу, що пов'язаний з написом.</Phrase>
+    <Phrase key="CtrlCnlNum.DisplayName">Канал управління</Phrase>
+    <Phrase key="CtrlCnlNum.Category">Дані</Phrase>
+    <Phrase key="CtrlCnlNum.Description">Номер каналу управління, що пов'язаний с написом.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.StaticPicture">
+    <Phrase key="BorderColor.DisplayName">Колір рамки</Phrase>
+    <Phrase key="BorderColor.Category">Зовнішній вид</Phrase>
+    <Phrase key="BorderColor.Description">Колір рамки малюнка.</Phrase>
+    <Phrase key="ImageName.DisplayName">Зображення</Phrase>
+    <Phrase key="ImageName.Category">Зовнішній вид</Phrase>
+    <Phrase key="ImageName.Description">Зображення із колекції зображень схеми.</Phrase>
+    <Phrase key="ImageStretch.DisplayName">Розтягнення</Phrase>
+    <Phrase key="ImageStretch.Category">Зовнішній вид</Phrase>
+    <Phrase key="ImageStretch.Description">Розтягнення зображення.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.DynamicPicture">
+    <Phrase key="ToolTip.DisplayName">Підказка</Phrase>
+    <Phrase key="ToolTip.Category">Поведінка</Phrase>
+    <Phrase key="ToolTip.Description">Виринаюча підказка, яка відображається при наведенні вказівника миші на малюнок.</Phrase>
+    <Phrase key="ImageOnHoverName.DisplayName">Зображення при наведенні</Phrase>
+    <Phrase key="ImageOnHoverName.Category">Поведінка</Phrase>
+    <Phrase key="ImageOnHoverName.Description">Зображення, що відображається при наведенні вказівника миші.</Phrase>
+    <Phrase key="BorderColorOnHover.DisplayName">Колір рамки при наведенні</Phrase>
+    <Phrase key="BorderColorOnHover.Category">Поведінка</Phrase>
+    <Phrase key="BorderColorOnHover.Description">колір рамки малюнка при наведенні вказівника миші.</Phrase>
+    <Phrase key="Action.DisplayName">Дія</Phrase>
+    <Phrase key="Action.Category">Поведінка</Phrase>
+    <Phrase key="Action.Description">Дія, що виконується при натисканні лівої кнопки миші на малюнку.</Phrase>
+    <Phrase key="Conditions.DisplayName">Умови</Phrase>
+    <Phrase key="Conditions.Category">Поведінка</Phrase>
+    <Phrase key="Conditions.Description">Умови для виводу зображень в залежності від значення вхідного каналу.</Phrase>
+    <Phrase key="InCnlNum.DisplayName">Вхідний канал</Phrase>
+    <Phrase key="InCnlNum.Category">Дані</Phrase>
+    <Phrase key="InCnlNum.Description">Номер вхідного каналу, пов'язаного з малюнком.</Phrase>
+    <Phrase key="CtrlCnlNum.DisplayName">Канал управління</Phrase>
+    <Phrase key="CtrlCnlNum.Category">Дані</Phrase>
+    <Phrase key="CtrlCnlNum.Description">Номер каналу управління, пов'язаного з малюнком.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.UnknownComponent">
+    <Phrase key="XmlNodeName.DisplayName">XML-вузол</Phrase>
+    <Phrase key="XmlNodeName.Category">Дизайн</Phrase>
+    <Phrase key="XmlNodeName.Description">XML-вузол, що містить властивості компонента в файлі схеми.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.DataTypes.Actions">
+    <Phrase key="None">Не задано</Phrase>
+    <Phrase key="DrawDiagram">Побудувати графік</Phrase>
+    <Phrase key="SendCommand">Відправити команду</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.DataTypes.Condition">
+    <Phrase key="CompareOperator1.DisplayName">Опер. порівн. 1</Phrase>
+    <Phrase key="CompareOperator1.Category">Умова</Phrase>
+    <Phrase key="CompareArgument1.DisplayName">Аргумент 1</Phrase>
+    <Phrase key="CompareArgument1.Category">Умова</Phrase>
+    <Phrase key="LogicalOperator.DisplayName">Логіч. опер.</Phrase>
+    <Phrase key="LogicalOperator.Category">Умова</Phrase>
+    <Phrase key="CompareOperator2.DisplayName">Опер. порівн. 2</Phrase>
+    <Phrase key="CompareOperator2.Category">Умова</Phrase>
+    <Phrase key="CompareArgument2.DisplayName">Аргумент 2</Phrase>
+    <Phrase key="CompareArgument2.Category">Умова</Phrase>
+    <Phrase key="ImageName.DisplayName">Зображення</Phrase>
+    <Phrase key="ImageName.Category">Зовнішній вид</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.DataTypes.HorizontalAlignments">
+    <Phrase key="Left">Зліва</Phrase>
+    <Phrase key="Center">По центру</Phrase>
+    <Phrase key="Right">Справа</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.DataTypes.ImageStretches">
+    <Phrase key="None">Не задано</Phrase>
+    <Phrase key="Fill">Заповнити розмір</Phrase>
+    <Phrase key="Zoom">Розтягнути пропорційно</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.DataTypes.LogicalOperators">
+    <Phrase key="None">Не заданий</Phrase>
+    <Phrase key="And">І</Phrase>
+    <Phrase key="Or">Або</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.DataTypes.ShowValueKinds">
+    <Phrase key="NotShow">Ні</Phrase>
+    <Phrase key="ShowWithUnit">З розмірністю</Phrase>
+    <Phrase key="ShowWithoutUnit">Без розмірності</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.DataTypes.VerticalAlignments">
+    <Phrase key="Top">Зверху</Phrase>
+    <Phrase key="Center">По центру</Phrase>
+    <Phrase key="Bottom">Знизу</Phrase>
+  </Dictionary>
+</PlgSchemeDictionaries>

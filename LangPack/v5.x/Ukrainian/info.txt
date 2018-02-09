@@ -1,0 +1,6 @@
+Language                 : Ukrainian
+Culture name:            : uk-UA
+Rapid SCADA version      : 5.5.0
+Rapid SCADA applications : All
+Author                   : Oliynyk Mykola
+Author's email           : oliynyk_mykola@ukr.net

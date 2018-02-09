@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PlgStoreDictionaries>
+  <Dictionary key="Scada.Web.Plugins.PlgStoreSpec">
+    <Phrase key="DownloadPluginsMenuItem">Завантажити</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Store.WFrmPluginInfo">
+    <Phrase key="this">Інформація про плагін - Rapid SCADA</Phrase>
+    <Phrase key="lblGeneralTab">Основне</Phrase>
+    <Phrase key="lblScreenshotsTab">Скріншоти</Phrase>
+    <Phrase key="lblDescrHdr">Опис</Phrase>
+    <Phrase key="lblPriceHdr">Ціна</Phrase>
+    <Phrase key="hlBuy">Натисніть, щоб купити</Phrase>
+    <Phrase key="hlBuy.NavigateUrl">http://rapidscada.ru/download-all-files/purchase-module/</Phrase>
+    <Phrase key="lblAuthorHdr">Автор</Phrase>
+    <Phrase key="lblUrlHdr">Веб-сторінка</Phrase>
+    <Phrase key="hlHome">Домашня сторінка</Phrase>
+    <Phrase key="hlDoc">Документація</Phrase>
+    <Phrase key="lblDownloadHdr">Завантажити</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Store.WFrmPluginInfo.Js">
+    <Phrase key="GetPluginInfoError">Не вдалося отримати інформацію про плагін</Phrase>
+    <Phrase key="FreePrice">Безплатно</Phrase>
+    <Phrase key="PersonalPrice">Особиста </Phrase>
+    <Phrase key="BusinessPrice">Бізнес </Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Store.WFrmStore">
+    <Phrase key="this">Завантажити плагіни - Rapid SCADA</Phrase>
+    <Phrase key="lblTitle">Завантажити плагіни</Phrase>
+    <Phrase key="NameCol">Найменування</Phrase>
+    <Phrase key="DescrCol">Опис</Phrase>
+    <Phrase key="PriceCol">Ціна</Phrase>
+    <Phrase key="AuthorCol">Автор</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Store.WFrmStore.Js">
+    <Phrase key="GetPluginsError">Не вдалося отримати список плагінів</Phrase>
+    <Phrase key="NoPlugins">Плагіни не знайдені</Phrase>
+    <Phrase key="PluginNew">Новий</Phrase>
+    <Phrase key="PluginInfoBtn">Інформація</Phrase>
+    <Phrase key="FreePrice">Безплатно</Phrase>
+    <Phrase key="PersonalPrice">Особиста </Phrase>
+    <Phrase key="BusinessPrice">Бізнес </Phrase>
+  </Dictionary>
+</PlgStoreDictionaries>
