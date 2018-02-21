@@ -367,6 +367,7 @@ function restartUpdatingHourData() {
 
 $(document).ready(function () {
     scada.clientAPI.rootPath = "../../";
+    scada.clientAPI.ajaxQueue = scada.ajaxQueueLocator.getAjaxQueue();
     setTitle();
     styleIOS();
     updateLayout();

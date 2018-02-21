@@ -1,5 +1,6 @@
 ﻿var scada = scada || {};
 var popup = new scada.Popup();
+var ajaxQueue = new scada.AjaxQueue(scada.env.rootPath);
 scada.view = scada.view || {}; // defined if the current page is View.aspx
 
 scada.masterMain = {
@@ -194,13 +195,14 @@ scada.masterMain = {
 };
 
 $(document).ready(function () {
-    // unbind events to avoid doubling in case of using ASP.NET AJAX
+    // unbind events to avoid doubling in case of using ASP.NET Ajax
     /*$(window).off();
     $(document).off();
     $("body").off();*/
 
     // page setup
     scada.clientAPI.rootPath = scada.env.rootPath;
+    scada.clientAPI.ajaxQueue = ajaxQueue;
     scada.dialogs.rootPath = scada.env.rootPath;
     scada.masterMain.updateLayout();
     scada.masterMain.chooseToolWindow();

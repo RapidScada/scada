@@ -26,9 +26,6 @@
 using Scada.UI;
 using Scada.Web.Shell;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Web;
 
 namespace Scada.Web
 {

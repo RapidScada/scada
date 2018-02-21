@@ -166,6 +166,7 @@ function initDebugTools() {
 
 $(document).ready(function () {
     scada.clientAPI.rootPath = "../../";
+    scada.clientAPI.ajaxQueue = scada.ajaxQueueLocator.getAjaxQueue();
     var divSchWrapper = $("#divSchWrapper");
     scheme.parentDomElem = divSchWrapper;
     initToolbar();

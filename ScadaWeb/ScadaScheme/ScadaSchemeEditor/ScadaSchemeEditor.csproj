@@ -193,6 +193,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="paintbrush.ico" />
+    <Content Include="Web\js\api\ajaxqueue.js" />
     <Content Include="Web\js\api\checkbrowser.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
