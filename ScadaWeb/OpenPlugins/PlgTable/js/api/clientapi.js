@@ -123,48 +123,42 @@ scada.clientAPI = {
 
     // Execute an Ajax request
     _request: function (operation, queryString, callback, errorResult) {
-        var settings = {
+        var ajaxObj = this.ajaxQueue ? this.ajaxQueue : $;
+
+        ajaxObj.ajax({
             url: (this.ajaxQueue ? this.ajaxQueue.rootPath : this.rootPath) + operation + queryString,
             method: "GET",
             dataType: "json",
             cache: false
-        };
-
-        var request = this.ajaxQueue ? new scada.AjaxRequest(settings) : $.ajax(settings);
-
-        request
-            .done(function (data, textStatus, jqXHR) {
-                try {
-                    var parsedData = $.parseJSON(data.d);
-                    if (parsedData.Success) {
-                        scada.utils.logSuccessfulRequest(operation/*, data*/);
-                        if (typeof parsedData.DataAge === "undefined") {
-                            callback(true, parsedData.Data);
-                        } else {
-                            callback(true, parsedData.Data, parsedData.DataAge);
-                        }
+        })
+        .done(function (data, textStatus, jqXHR) {
+            try {
+                var parsedData = $.parseJSON(data.d);
+                if (parsedData.Success) {
+                    scada.utils.logSuccessfulRequest(operation/*, data*/);
+                    if (typeof parsedData.DataAge === "undefined") {
+                        callback(true, parsedData.Data);
                     } else {
-                        scada.utils.logServiceError(operation, parsedData.ErrorMessage);
-                        callback(false, errorResult);
+                        callback(true, parsedData.Data, parsedData.DataAge);
                     }
+                } else {
+                    scada.utils.logServiceError(operation, parsedData.ErrorMessage);
+                    callback(false, errorResult);
                 }
-                catch (ex) {
-                    scada.utils.logProcessingError(operation, ex.message);
-                    if (typeof callback === "function") {
-                        callback(false, errorResult);
-                    }
-                }
-            })
-            .fail(function (jqXHR, textStatus, errorThrown) {
-                scada.utils.logFailedRequest(operation, jqXHR);
+            }
+            catch (ex) {
+                scada.utils.logProcessingError(operation, ex.message);
                 if (typeof callback === "function") {
                     callback(false, errorResult);
                 }
-            });
-
-        if (this.ajaxQueue) {
-            this.ajaxQueue.append(request);
-        }
+            }
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            scada.utils.logFailedRequest(operation, jqXHR);
+            if (typeof callback === "function") {
+                callback(false, errorResult);
+            }
+        });
     },
 
     // Perform user login.

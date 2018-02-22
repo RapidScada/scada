@@ -78,6 +78,13 @@ scada.AjaxQueue.prototype.append = function (ajaxRequest) {
     }
 };
 
+// Create new Ajax request and append it to the queue
+scada.AjaxQueue.prototype.ajax = function (settings) {
+    var ajaxRequest = new scada.AjaxRequest(settings);
+    this.append(ajaxRequest);
+    return ajaxRequest;
+};
+
 /********** Ajax Request **********/
 
 // Ajax request type

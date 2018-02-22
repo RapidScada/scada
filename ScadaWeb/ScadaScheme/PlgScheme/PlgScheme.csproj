@@ -75,6 +75,7 @@
     <Content Include="css\controls\notifier.min.css">
       <DependentUpon>notifier.css</DependentUpon>
     </Content>
+    <Content Include="js\api\ajaxqueue.js" />
     <Content Include="js\api\clientapi.js" />
     <Content Include="js\api\eventtypes.js" />
     <Content Include="js\api\utils.js" />
@@ -161,7 +162,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>51034</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

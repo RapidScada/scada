@@ -202,7 +202,7 @@ scada.scheme.Scheme.prototype._loadSchemeDoc = function (viewOrEditorID, callbac
     var operation = this.serviceUrl + "GetSchemeDoc";
     var thisScheme = this;
 
-    var req = new scada.AjaxRequest({
+    this.ajaxQueue.ajax({
         url: operation +
             this._getAccessParamStr(viewOrEditorID) +
             "&viewStamp=" + this.viewStamp,
@@ -234,8 +234,7 @@ scada.scheme.Scheme.prototype._loadSchemeDoc = function (viewOrEditorID, callbac
     .fail(function (jqXHR, textStatus, errorThrown) {
         scada.utils.logFailedRequest(operation, jqXHR);
         callback(false, false);
-    })
-    .appendTo(thisScheme.ajaxQueue);
+    });
 };
 
 // Obtain received scheme document properties
@@ -270,7 +269,7 @@ scada.scheme.Scheme.prototype._loadComponents = function (viewOrEditorID, callba
     var operation = this.serviceUrl + "GetComponents";
     var thisScheme = this;
 
-    var req = new scada.AjaxRequest({
+    this.ajaxQueue.ajax({
         url: operation +
             this._getAccessParamStr(viewOrEditorID) +
             "&viewStamp=" + this.viewStamp +
@@ -306,8 +305,7 @@ scada.scheme.Scheme.prototype._loadComponents = function (viewOrEditorID, callba
     .fail(function (jqXHR, textStatus, errorThrown) {
         scada.utils.logFailedRequest(operation, jqXHR);
         callback(false, false);
-    })
-    .appendTo(thisScheme.ajaxQueue);
+    });
 };
 
 // Obtain received scheme components
@@ -373,7 +371,7 @@ scada.scheme.Scheme.prototype._loadImages = function (viewOrEditorID, callback) 
     var operation = this.serviceUrl + "GetImages";
     var thisScheme = this;
 
-    var req = new scada.AjaxRequest({
+    this.ajaxQueue.ajax({
         url: operation +
             this._getAccessParamStr(viewOrEditorID) +
             "&viewStamp=" + this.viewStamp +
@@ -409,8 +407,7 @@ scada.scheme.Scheme.prototype._loadImages = function (viewOrEditorID, callback) 
     .fail(function (jqXHR, textStatus, errorThrown) {
         scada.utils.logFailedRequest(operation, jqXHR);
         callback(false, false);
-    })
-    .appendTo(thisScheme.ajaxQueue);
+    });
 };
 
 // Obtain received scheme images
@@ -468,7 +465,7 @@ scada.scheme.Scheme.prototype._loadErrors = function (viewOrEditorID, callback) 
     var operation = this.serviceUrl + "GetLoadErrors";
     var thisScheme = this;
 
-    var req = new scada.AjaxRequest({
+    this.ajaxQueue.ajax({
         url: operation +
             this._getAccessParamStr(viewOrEditorID) +
             "&viewStamp=" + this.viewStamp,
@@ -502,8 +499,7 @@ scada.scheme.Scheme.prototype._loadErrors = function (viewOrEditorID, callback) 
     .fail(function (jqXHR, textStatus, errorThrown) {
         scada.utils.logFailedRequest(operation, jqXHR);
         callback(false, false);
-    })
-    .appendTo(thisScheme.ajaxQueue);
+    });
 };
 
 // Update the component using the current input channel data
