@@ -39,9 +39,11 @@ namespace Scada.Web.Plugins.SchBasicComp
         /// </summary>
         public override BaseComponent CreateComponent(string typeName, bool nameIsShort)
         {
-            if (NameEquals("Led", (typeof(Led)).FullName, typeName, nameIsShort))
+            if (NameEquals("Button", (typeof(Button)).FullName, typeName, nameIsShort))
+                return new Button();
+            else if (NameEquals("Led", (typeof(Led)).FullName, typeName, nameIsShort))
                 return new Led();
-            if (NameEquals("Toggle", (typeof(Toggle)).FullName, typeName, nameIsShort))
+            else if (NameEquals("Toggle", (typeof(Toggle)).FullName, typeName, nameIsShort))
                 return new Toggle();
             else
                 return null;
