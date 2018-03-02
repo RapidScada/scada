@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.Scheme.Model.DataTypes;
@@ -53,7 +53,6 @@ namespace Scada.Scheme.Model
             : base()
         {
             Text = DefaultText;
-            ToolTip = "";
             UnderlineOnHover = false;
             BackColorOnHover = "";
             BorderColorOnHover = "";
@@ -64,15 +63,6 @@ namespace Scada.Scheme.Model
             CtrlCnlNum = 0;
         }
 
-
-        /// <summary>
-        /// Получить или установить подсказку
-        /// </summary>
-        #region Attributes
-        [DisplayName("Tooltip"), Category(Categories.Behavior)]
-        [Description("The pop-up hint that displays when user rests the pointer on the component.")]
-        #endregion
-        public string ToolTip { get; set; }
 
         /// <summary>
         /// Получить или установить признак подчёркивания при наведении указателя мыши
@@ -162,7 +152,6 @@ namespace Scada.Scheme.Model
         {
             base.LoadFromXml(xmlNode);
 
-            ToolTip = xmlNode.GetChildAsString("ToolTip");
             UnderlineOnHover = xmlNode.GetChildAsBool("UnderlineOnHover");
             BackColorOnHover = xmlNode.GetChildAsString("BackColorOnHover");
             BorderColorOnHover = xmlNode.GetChildAsString("BorderColorOnHover");
@@ -180,7 +169,6 @@ namespace Scada.Scheme.Model
         {
             base.SaveToXml(xmlElem);
 
-            xmlElem.AppendElem("ToolTip", ToolTip);
             xmlElem.AppendElem("UnderlineOnHover", UnderlineOnHover);
             xmlElem.AppendElem("BackColorOnHover", BackColorOnHover);
             xmlElem.AppendElem("BorderColorOnHover", BorderColorOnHover);

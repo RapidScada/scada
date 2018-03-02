@@ -55,29 +55,18 @@ namespace Scada.Web.Plugins.SchBasicComp
         {
             serBinder = PlgUtils.SerializationBinder;
 
+            BackColor = "Silver";
             BorderColor = "Black";
-            BorderOpacity = 30;
             BorderWidth = 3;
-            FillColor = "Silver";
+            BorderOpacity = 30;
             Action = Actions.None;
             Conditions = new List<Condition>();
             AddDefaultConditions();
-            ToolTip = "";
             InCnlNum = 0;
             CtrlCnlNum = 0;
             Size = DefaultSize;
         }
 
-
-        /// <summary>
-        /// Получить или установить цвет границы
-        /// </summary>
-        #region Attributes
-        [DisplayName("Border color"), Category(Categories.Appearance)]
-        [Description("The border color of the component.")]
-        [CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
-        #endregion
-        public string BorderColor { get; set; }
 
         /// <summary>
         /// Получить или установить непрозрачность границы
@@ -87,25 +76,6 @@ namespace Scada.Web.Plugins.SchBasicComp
         [Description("The border opacity percentage of the component.")]
         #endregion
         public int BorderOpacity { get; set; }
-
-        /// <summary>
-        /// Получить или установить ширину границы
-        /// </summary>
-        #region Attributes
-        [DisplayName("Border width"), Category(Categories.Appearance)]
-        [Description("The border width of the component in pixels.")]
-        #endregion
-        public int BorderWidth { get; set; }
-
-        /// <summary>
-        /// Получить или установить цвет заливки
-        /// </summary>
-        #region Attributes
-        [DisplayName("Fill color"), Category(Categories.Appearance)]
-        [Description("The fill color of the component.")]
-        [CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
-        #endregion
-        public string FillColor { get; set; }
 
         /// <summary>
         /// Получить или установить действие
@@ -127,15 +97,6 @@ namespace Scada.Web.Plugins.SchBasicComp
         [CM.Editor(typeof(ColorConditionEditor), typeof(UITypeEditor))]
         #endregion
         public List<Condition> Conditions { get; protected set; }
-
-        /// <summary>
-        /// Получить или установить подсказку
-        /// </summary>
-        #region Attributes
-        [DisplayName("Tooltip"), Category(Categories.Behavior)]
-        [Description("The pop-up hint that displays when user rests the pointer on the component.")]
-        #endregion
-        public string ToolTip { get; set; }
 
         /// <summary>
         /// Получить или установить номер входного канала
@@ -183,10 +144,7 @@ namespace Scada.Web.Plugins.SchBasicComp
         {
             base.LoadFromXml(xmlNode);
 
-            BorderColor = xmlNode.GetChildAsString("BorderColor");
             BorderOpacity = xmlNode.GetChildAsInt("BorderOpacity");
-            BorderWidth = xmlNode.GetChildAsInt("BorderWidth");
-            FillColor = xmlNode.GetChildAsString("FillColor");
             Action = xmlNode.GetChildAsEnum<Actions>("Action");
 
             XmlNode conditionsNode = xmlNode.SelectSingleNode("Conditions");
@@ -215,10 +173,7 @@ namespace Scada.Web.Plugins.SchBasicComp
         {
             base.SaveToXml(xmlElem);
 
-            xmlElem.AppendElem("BorderColor", BorderColor);
             xmlElem.AppendElem("BorderOpacity", BorderOpacity);
-            xmlElem.AppendElem("BorderWidth", BorderWidth);
-            xmlElem.AppendElem("FillColor", FillColor);
             xmlElem.AppendElem("Action", Action);
 
             XmlElement conditionsElem = xmlElem.AppendElem("Conditions");

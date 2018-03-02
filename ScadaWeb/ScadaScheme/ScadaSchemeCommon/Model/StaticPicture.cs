@@ -52,25 +52,6 @@ namespace Scada.Scheme.Model
 
 
         /// <summary>
-        /// Получить или установить цвет границы
-        /// </summary>
-        #region Attributes
-        [DisplayName("Border color"), Category(Categories.Appearance)]
-        [Description("The border color of the component.")]
-        [CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
-        #endregion
-        public string BorderColor { get; set; }
-
-        /// <summary>
-        /// Получить или установить ширину границы
-        /// </summary>
-        #region Attributes
-        [DisplayName("Border width"), Category(Categories.Appearance)]
-        [Description("The border width of the component in pixels.")]
-        #endregion
-        public int BorderWidth { get; set; }
-
-        /// <summary>
         /// Получить или установить наименование изображения
         /// </summary>
         #region Attributes
@@ -99,9 +80,6 @@ namespace Scada.Scheme.Model
         {
             base.LoadFromXml(xmlNode);
 
-            BorderColor = xmlNode.GetChildAsString("BorderColor");
-            BorderWidth = xmlNode.GetChildAsInt("BorderWidth", 
-                string.IsNullOrEmpty(BorderColor) ? 0 : 1 /*для обратной совместимости*/);
             ImageName = xmlNode.GetChildAsString("ImageName");
             ImageStretch = xmlNode.GetChildAsEnum<ImageStretches>("ImageStretch");
         }
@@ -113,8 +91,6 @@ namespace Scada.Scheme.Model
         {
             base.SaveToXml(xmlElem);
 
-            xmlElem.AppendElem("BorderColor", BorderColor);
-            xmlElem.AppendElem("BorderWidth", BorderWidth);
             xmlElem.AppendElem("ImageName", ImageName);
             xmlElem.AppendElem("ImageStretch", ImageStretch);
         }

@@ -50,15 +50,6 @@ namespace Scada.Web.Plugins.SchBasicComp
         public Actions Action { get; set; }
 
         /// <summary>
-        /// Получить или установить подсказку
-        /// </summary>
-        #region Attributes
-        [DisplayName("Tooltip"), Category(Categories.Behavior)]
-        [Description("The pop-up hint that displays when user rests the pointer on the component.")]
-        #endregion
-        public string ToolTip { get; set; }
-
-        /// <summary>
         /// Получить или установить номер входного канала
         /// </summary>
         #region Attributes

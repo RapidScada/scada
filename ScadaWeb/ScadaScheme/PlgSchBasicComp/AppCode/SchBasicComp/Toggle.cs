@@ -61,41 +61,11 @@ namespace Scada.Web.Plugins.SchBasicComp
             LeverColor = "White";
             Padding = 0;
             Action = Actions.SendCommand;
-            ToolTip = "";
             InCnlNum = 0;
             CtrlCnlNum = 0;
             Size = DefaultSize;
         }
 
-
-        /// <summary>
-        /// Получить или установить цвет фона
-        /// </summary>
-        #region Attributes
-        [DisplayName("Back color"), Category(Categories.Appearance)]
-        [Description("The background color of the component.")]
-        [CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
-        #endregion
-        public string BackColor { get; set; }
-
-        /// <summary>
-        /// Получить или установить цвет границы
-        /// </summary>
-        #region Attributes
-        [DisplayName("Border color"), Category(Categories.Appearance)]
-        [Description("The border color of the component.")]
-        [CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
-        #endregion
-        public string BorderColor { get; set; }
-
-        /// <summary>
-        /// Получить или установить ширину границы
-        /// </summary>
-        #region Attributes
-        [DisplayName("Border width"), Category(Categories.Appearance)]
-        [Description("The border width of the component in pixels.")]
-        #endregion
-        public int BorderWidth { get; set; }
 
         /// <summary>
         /// Получить или установить цвет рычажка тумблера
@@ -127,15 +97,6 @@ namespace Scada.Web.Plugins.SchBasicComp
         public Actions Action { get; set; }
 
         /// <summary>
-        /// Получить или установить подсказку
-        /// </summary>
-        #region Attributes
-        [DisplayName("Tooltip"), Category(Categories.Behavior)]
-        [Description("The pop-up hint that displays when user rests the pointer on the component.")]
-        #endregion
-        public string ToolTip { get; set; }
-
-        /// <summary>
         /// Получить или установить номер входного канала
         /// </summary>
         #region Attributes
@@ -163,13 +124,9 @@ namespace Scada.Web.Plugins.SchBasicComp
         {
             base.LoadFromXml(xmlNode);
 
-            BackColor = xmlNode.GetChildAsString("BackColor");
-            BorderColor = xmlNode.GetChildAsString("BorderColor");
-            BorderWidth = xmlNode.GetChildAsInt("BorderWidth");
             LeverColor = xmlNode.GetChildAsString("LeverColor");
             Padding = xmlNode.GetChildAsInt("Padding");
             Action = xmlNode.GetChildAsEnum<Actions>("Action");
-            ToolTip = xmlNode.GetChildAsString("ToolTip");
             InCnlNum = xmlNode.GetChildAsInt("InCnlNum");
             CtrlCnlNum = xmlNode.GetChildAsInt("CtrlCnlNum");
         }
@@ -181,13 +138,9 @@ namespace Scada.Web.Plugins.SchBasicComp
         {
             base.SaveToXml(xmlElem);
 
-            xmlElem.AppendElem("BackColor", BackColor);
-            xmlElem.AppendElem("BorderColor", BorderColor);
-            xmlElem.AppendElem("BorderWidth", BorderWidth);
             xmlElem.AppendElem("LeverColor", LeverColor);
             xmlElem.AppendElem("Padding", Padding);
             xmlElem.AppendElem("Action", Action);
-            xmlElem.AppendElem("ToolTip", ToolTip);
             xmlElem.AppendElem("InCnlNum", InCnlNum);
             xmlElem.AppendElem("CtrlCnlNum", CtrlCnlNum);
         }

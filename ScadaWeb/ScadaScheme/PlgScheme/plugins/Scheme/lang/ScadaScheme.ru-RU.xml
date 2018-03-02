@@ -99,6 +99,21 @@
     <Phrase key="Images.Description">Коллекция изображений, используемых на схеме.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Model.BaseComponent">
+    <Phrase key="BackColor.DisplayName">Цвет фона</Phrase>
+    <Phrase key="BackColor.Category">Внешний вид</Phrase>
+    <Phrase key="BackColor.Description">Цвет фона компонента.</Phrase>
+    <Phrase key="BorderColor.DisplayName">Цвет границы</Phrase>
+    <Phrase key="BorderColor.Category">Внешний вид</Phrase>
+    <Phrase key="BorderColor.Description">Цвет границы компонента.</Phrase>
+    <Phrase key="BorderOpacity.DisplayName">Непрозрачность рамки</Phrase>
+    <Phrase key="BorderOpacity.Category">Внешний вид</Phrase>
+    <Phrase key="BorderOpacity.Description">Процент непрозрачности границы компонента.</Phrase>
+    <Phrase key="BorderWidth.DisplayName">Ширина границы</Phrase>
+    <Phrase key="BorderWidth.Category">Внешний вид</Phrase>
+    <Phrase key="BorderWidth.Description">Ширина границы компонента.</Phrase>
+    <Phrase key="ToolTip.DisplayName">Подсказка</Phrase>
+    <Phrase key="ToolTip.Category">Поведение</Phrase>
+    <Phrase key="ToolTip.Description">Всплывающая подсказка, которая отображается при наведении указателя мыши на компонент.</Phrase>
     <Phrase key="ID.DisplayName">Идентификатор</Phrase>
     <Phrase key="ID.Category">Дизайн</Phrase>
     <Phrase key="ID.Description">Уникальный идентификатор компонента схемы.</Phrase>
@@ -119,15 +134,6 @@
     <Phrase key="ZIndex.Description">Порядок отображения компонента схемы по оси Z.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Model.StaticText">
-    <Phrase key="BackColor.DisplayName">Цвет фона</Phrase>
-    <Phrase key="BackColor.Category">Внешний вид</Phrase>
-    <Phrase key="BackColor.Description">Цвет фона компонента.</Phrase>
-    <Phrase key="BorderColor.DisplayName">Цвет границы</Phrase>
-    <Phrase key="BorderColor.Category">Внешний вид</Phrase>
-    <Phrase key="BorderColor.Description">Цвет границы компонента.</Phrase>
-    <Phrase key="BorderWidth.DisplayName">Ширина границы</Phrase>
-    <Phrase key="BorderWidth.Category">Внешний вид</Phrase>
-    <Phrase key="BorderWidth.Description">Ширина границы компонента.</Phrase>
     <Phrase key="ForeColor.DisplayName">Цвет текста</Phrase>
     <Phrase key="ForeColor.Category">Внешний вид</Phrase>
     <Phrase key="ForeColor.Description">Основной цвет компонента, используемый для отображения текста.</Phrase>
@@ -151,18 +157,15 @@
     <Phrase key="AutoSize.Description">Автоматическая установка размера надписи по содержимому.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Model.DynamicText">
-    <Phrase key="ToolTip.DisplayName">Подсказка</Phrase>
-    <Phrase key="ToolTip.Category">Поведение</Phrase>
-    <Phrase key="ToolTip.Description">Всплывающая подсказка, которая отображается при наведении указателя мыши на компонент.</Phrase>
     <Phrase key="UnderlineOnHover.DisplayName">Подчёркивание при наведени</Phrase>
     <Phrase key="UnderlineOnHover.Category">Поведение</Phrase>
     <Phrase key="UnderlineOnHover.Description">Подчёркивание надписи при наведени указателя мыши.</Phrase>
     <Phrase key="BackColorOnHover.DisplayName">Цвет фона при наведении</Phrase>
     <Phrase key="BackColorOnHover.Category">Поведение</Phrase>
     <Phrase key="BackColorOnHover.Description">Цвет фона надписи при наведении указателя мыши.</Phrase>
-    <Phrase key="BorderColorOnHover.DisplayName">Цвет рамки при наведени</Phrase>
+    <Phrase key="BorderColorOnHover.DisplayName">Цвет границы при наведени</Phrase>
     <Phrase key="BorderColorOnHover.Category">Поведение</Phrase>
-    <Phrase key="BorderColorOnHover.Description">Цвет рамки надписи при наведени указателя мыши.</Phrase>
+    <Phrase key="BorderColorOnHover.Description">Цвет границы надписи при наведени указателя мыши.</Phrase>
     <Phrase key="ForeColorOnHover.DisplayName">Цвет текста при наведени</Phrase>
     <Phrase key="ForeColorOnHover.Category">Поведение</Phrase>
     <Phrase key="ForeColorOnHover.Description">Основной цвет надписи, используемый для отображения текста при наведени указателя мыши.</Phrase>
@@ -180,12 +183,6 @@
     <Phrase key="CtrlCnlNum.Description">Номер канала управления, связанного с компонентом.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Model.StaticPicture">
-    <Phrase key="BorderColor.DisplayName">Цвет границы</Phrase>
-    <Phrase key="BorderColor.Category">Внешний вид</Phrase>
-    <Phrase key="BorderColor.Description">Цвет границы компонента.</Phrase>
-    <Phrase key="BorderWidth.DisplayName">Ширина границы</Phrase>
-    <Phrase key="BorderWidth.Category">Внешний вид</Phrase>
-    <Phrase key="BorderWidth.Description">Ширина границы компонента.</Phrase>
     <Phrase key="ImageName.DisplayName">Изображение</Phrase>
     <Phrase key="ImageName.Category">Внешний вид</Phrase>
     <Phrase key="ImageName.Description">Изображение из коллекции изображений схемы.</Phrase>
@@ -194,15 +191,15 @@
     <Phrase key="ImageStretch.Description">Растяжение изображения.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Model.DynamicPicture">
-    <Phrase key="ToolTip.DisplayName">Подсказка</Phrase>
-    <Phrase key="ToolTip.Category">Поведение</Phrase>
-    <Phrase key="ToolTip.Description">Всплывающая подсказка, которая отображается при наведении указателя мыши на компонент.</Phrase>
+    <Phrase key="BackColorOnHover.DisplayName">Цвет фона при наведении</Phrase>
+    <Phrase key="BackColorOnHover.Category">Поведение</Phrase>
+    <Phrase key="BackColorOnHover.Description">Цвет фона рисунка при наведении указателя мыши.</Phrase>
+    <Phrase key="BorderColorOnHover.DisplayName">Цвет границы при наведени</Phrase>
+    <Phrase key="BorderColorOnHover.Category">Поведение</Phrase>
+    <Phrase key="BorderColorOnHover.Description">Цвет границы рисунка при наведени указателя мыши.</Phrase>
     <Phrase key="ImageOnHoverName.DisplayName">Изображение при наведении</Phrase>
     <Phrase key="ImageOnHoverName.Category">Поведение</Phrase>
     <Phrase key="ImageOnHoverName.Description">Изображение, отображаемое при наведении указателя мыши.</Phrase>
-    <Phrase key="BorderColorOnHover.DisplayName">Цвет рамки при наведени</Phrase>
-    <Phrase key="BorderColorOnHover.Category">Поведение</Phrase>
-    <Phrase key="BorderColorOnHover.Description">Цвет рамки рисунка при наведени указателя мыши.</Phrase>
     <Phrase key="Action.DisplayName">Действие</Phrase>
     <Phrase key="Action.Category">Поведение</Phrase>
     <Phrase key="Action.Description">Действие, выполняемое по щелчку левой кнопкой мыши на компоненте.</Phrase>

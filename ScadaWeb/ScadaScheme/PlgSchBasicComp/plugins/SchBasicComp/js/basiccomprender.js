@@ -25,8 +25,6 @@ scada.scheme.LedRenderer.prototype.createDom = function (component, renderContex
 
     var divComp = $("<div id='comp" + component.id + "' class='basic-led'></div>");
     this.prepareComponent(divComp, component, true);
-    this.setBackColor(divComp, props.FillColor);
-    this.setToolTip(divComp, props.ToolTip);
     this.bindAction(divComp, component, renderContext);
 
     if (props.BorderWidth > 0) {
@@ -54,28 +52,28 @@ scada.scheme.LedRenderer.prototype.updateData = function (component, renderConte
     var curCnlDataExt = renderContext.curCnlDataMap.get(props.InCnlNum);
 
     if (divComp && curCnlDataExt) {
-        // set fill color
-        var fillColor = props.FillColor;
+        // set background color
+        var backColor = props.BackColor;
 
-        // define fill color according to the channel status
-        if (fillColor == this.STATUS_COLOR) {
-            fillColor = curCnlDataExt.Color;
+        // define background color according to the channel status
+        if (backColor == this.STATUS_COLOR) {
+            backColor = curCnlDataExt.Color;
         }
 
-        // define fill color according to the led conditions and channel value
+        // define background color according to the led conditions and channel value
         if (curCnlDataExt.Stat > 0 && props.Conditions) {
             var cnlVal = curCnlDataExt.Val;
 
             for (var cond of props.Conditions) {
                 if (scada.scheme.calc.conditionSatisfied(cond, cnlVal)) {
-                    fillColor = cond.Color;
+                    backColor = cond.Color;
                     break;
                 }
             }
         }
 
-        // apply fill color
-        divComp.css("background-color", fillColor);
+        // apply background color
+        divComp.css("background-color", backColor);
 
         // set border color
         if (props.BorderColor == this.STATUS_COLOR) {
@@ -123,10 +121,6 @@ scada.scheme.ToggleRenderer.prototype.createDom = function (component, renderCon
     var divLever = $("<div class='basic-toggle-lever'></div>");
 
     this.prepareComponent(divComp, component);
-    this.setBackColor(divComp, props.BackColor);
-    this.setBorderColor(divComp, props.BorderColor);
-    this.setBorderWidth(divComp, props.BorderWidth);
-    this.setToolTip(divComp, props.ToolTip);
     this.bindAction(divComp, component, renderContext);
     this.setBackColor(divLever, props.LeverColor);
     this._applySize(divComp, divContainer, divLever, component);

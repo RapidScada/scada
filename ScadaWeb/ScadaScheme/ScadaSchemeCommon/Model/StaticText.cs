@@ -51,9 +51,6 @@ namespace Scada.Scheme.Model
         /// </summary>
         public StaticText()
         {
-            BackColor = "";
-            BorderColor = "";
-            BorderWidth = 0;
             ForeColor = "";
             Font = null;
             Text = DefaultText;
@@ -63,35 +60,6 @@ namespace Scada.Scheme.Model
             AutoSize = true;
         }
 
-
-        /// <summary>
-        /// Получить или установить цвет фона
-        /// </summary>
-        #region Attributes
-        [DisplayName("Back color"), Category(Categories.Appearance)]
-        [Description("The background color of the component.")]
-        [CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
-        #endregion
-        public string BackColor { get; set; }
-
-        /// <summary>
-        /// Получить или установить цвет границы
-        /// </summary>
-        #region Attributes
-        [DisplayName("Border color"), Category(Categories.Appearance)]
-        [Description("The border color of the component.")]
-        [CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
-        #endregion
-        public string BorderColor { get; set; }
-
-        /// <summary>
-        /// Получить или установить ширину границы
-        /// </summary>
-        #region Attributes
-        [DisplayName("Border width"), Category(Categories.Appearance)]
-        [Description("The border width of the component in pixels.")]
-        #endregion
-        public int BorderWidth { get; set; }
 
         /// <summary>
         /// Получить или установить цвет текста
@@ -169,10 +137,6 @@ namespace Scada.Scheme.Model
         {
             base.LoadFromXml(xmlNode);
 
-            BackColor = xmlNode.GetChildAsString("BackColor");
-            BorderColor = xmlNode.GetChildAsString("BorderColor");
-            BorderWidth = xmlNode.GetChildAsInt("BorderWidth",
-                string.IsNullOrEmpty(BorderColor) ? 0 : 1 /*для обратной совместимости*/);
             ForeColor = xmlNode.GetChildAsString("ForeColor");
             Font = Font.GetChildAsFont(xmlNode, "Font");
             Text = xmlNode.GetChildAsString("Text");
@@ -189,9 +153,6 @@ namespace Scada.Scheme.Model
         {
             base.SaveToXml(xmlElem);
 
-            xmlElem.AppendElem("BackColor", BackColor);
-            xmlElem.AppendElem("BorderColor", BorderColor);
-            xmlElem.AppendElem("BorderWidth", BorderWidth);
             xmlElem.AppendElem("ForeColor", ForeColor);
             Font.AppendElem(xmlElem, "Font", Font);
             xmlElem.AppendElem("Text", Text);

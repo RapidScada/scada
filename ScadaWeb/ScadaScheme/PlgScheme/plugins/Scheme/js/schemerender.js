@@ -368,6 +368,11 @@ scada.scheme.ComponentRenderer.prototype.prepareComponent = function (jqObj, com
 
     jqObj.addClass("comp");
     jqObj.data("id", props.ID);
+
+    this.setBackColor(jqObj, props.BackColor);
+    this.setBorderColor(jqObj, props.BorderColor);
+    this.setBorderWidth(jqObj, props.BorderWidth);
+    this.setToolTip(jqObj, props.ToolTip);
 };
 
 // Bind user action to the component
@@ -513,9 +518,6 @@ scada.scheme.StaticTextRenderer.prototype.createDom = function (component, rende
     var spanText = $("<span></span>");
 
     this.prepareComponent(spanComp, component);
-    this.setBackColor(spanComp, props.BackColor);
-    this.setBorderColor(spanComp, props.BorderColor);
-    this.setBorderWidth(spanComp, props.BorderWidth);
     this.setFont(spanComp, props.Font);
     this.setForeColor(spanComp, props.ForeColor);
 
@@ -592,7 +594,6 @@ scada.scheme.DynamicTextRenderer.prototype.createDom = function (component, rend
         spanText.text("[" + cnlNum + "]");
     }
 
-    this.setToolTip(spanComp, props.ToolTip);
     this.bindAction(spanComp, component, renderContext);
 
     // apply properties on hover
@@ -634,21 +635,22 @@ scada.scheme.DynamicTextRenderer.prototype.updateData = function (component, ren
             }
 
             // choose and set colors of the component
+            var statusColor = curCnlDataExt.Color;
             var isHovered = spanComp.is(":hover");
             var backColor = this.chooseColor(isHovered, props.BackColor, props.BackColorOnHover);
             var borderColor = this.chooseColor(isHovered, props.BorderColor, props.BorderColorOnHover);
             var foreColor = this.chooseColor(isHovered, props.ForeColor, props.ForeColorOnHover);
 
             if (backColor == this.STATUS_COLOR) {
-                spanComp.css("background-color", curCnlDataExt.Color);
+                spanComp.css("background-color", statusColor);
             }
 
             if (borderColor == this.STATUS_COLOR) {
-                spanComp.css("border-color", curCnlDataExt.Color);
+                spanComp.css("border-color", statusColor);
             }
 
             if (foreColor == this.STATUS_COLOR) {
-                spanComp.css("color", curCnlDataExt.Color);
+                spanComp.css("color", statusColor);
             }
         } else if (props.InCnlNum > 0) {
             spanText.text("");
@@ -672,8 +674,6 @@ scada.scheme.StaticPictureRenderer.prototype.createDom = function (component, re
 
     var divComp = $("<div id='comp" + component.id + "'></div>");
     this.prepareComponent(divComp, component, true);
-    this.setBorderColor(divComp, props.BorderColor);
-    this.setBorderWidth(divComp, props.BorderWidth);
 
     // set image
     switch (props.ImageStretch) {
@@ -739,7 +739,6 @@ scada.scheme.DynamicPictureRenderer.prototype.createDom = function (component, r
     var props = component.props;
     var divComp = component.dom;
 
-    this.setToolTip(divComp, props.ToolTip);
     this.bindAction(divComp, component, renderContext);
 
     // apply properties on hover
@@ -748,6 +747,7 @@ scada.scheme.DynamicPictureRenderer.prototype.createDom = function (component, r
 
     divComp.hover(
         function () {
+            thisRenderer.setDynamicBackColor(divComp, props.BackColorOnHover, cnlNum, renderContext);
             thisRenderer.setDynamicBorderColor(divComp, props.BorderColorOnHover, cnlNum, renderContext);
 
             if (cnlNum <= 0) {
@@ -756,6 +756,7 @@ scada.scheme.DynamicPictureRenderer.prototype.createDom = function (component, r
             }
         },
         function () {
+            thisRenderer.setDynamicBackColor(divComp, props.BackColor, cnlNum, renderContext, true);
             thisRenderer.setDynamicBorderColor(divComp, props.BorderColor, cnlNum, renderContext, true);
 
             if (cnlNum <= 0) {
@@ -790,11 +791,18 @@ scada.scheme.DynamicPictureRenderer.prototype.updateData = function (component, 
         var image = renderContext.imageMap.get(imageName);
         this.setBackgroundImage(divComp, image, true);
 
-        // set border color
-        var borderColor = this.chooseColor(divComp.is(":hover"), props.BorderColor, props.BorderColorOnHover);
+        // choose and set colors of the component
+        var statusColor = curCnlDataExt.Color;
+        var isHovered = divComp.is(":hover");
+        var backColor = this.chooseColor(isHovered, props.BackColor, props.BackColorOnHover);
+        var borderColor = this.chooseColor(isHovered, props.BorderColor, props.BorderColorOnHover);
+
+        if (props.BackColor == this.STATUS_COLOR) {
+            divComp.css("background-color", statusColor);
+        }
 
         if (borderColor == this.STATUS_COLOR) {
-            divComp.css("border-color", curCnlDataExt.Color);
+            divComp.css("border-color", statusColor);
         }
     }
 };
