@@ -69,7 +69,9 @@
     </None>
     <Content Include="packages.config" />
     <Content Include="plugins\SchBasicComp\lang\PlgSchBasicComp.en-GB.xml" />
-    <Content Include="plugins\SchBasicComp\lang\PlgSchBasicComp.ru-RU.xml" />
+    <Content Include="plugins\SchBasicComp\lang\PlgSchBasicComp.ru-RU.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <Content Include="plugins\SchBasicComp\css\basiccomp.min.css">
       <DependentUpon>basiccomp.css</DependentUpon>
@@ -83,6 +85,7 @@
     <Compile Include="AppCode\PlgSchBasicCompSpec.cs" />
     <Compile Include="AppCode\SchBasicComp\BasicCompFactory.cs" />
     <Compile Include="AppCode\SchBasicComp\BasicCompLibSpec.cs" />
+    <Compile Include="AppCode\SchBasicComp\BoundProperties.cs" />
     <Compile Include="AppCode\SchBasicComp\Button.cs" />
     <Compile Include="AppCode\SchBasicComp\ColorCondition.cs" />
     <Compile Include="AppCode\SchBasicComp\ColorConditionEditor.cs" />

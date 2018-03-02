@@ -1,5 +1,40 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <PlgSchBasicCompDictionaries>
+  <Dictionary key="Scada.Web.Plugins.SchBasicComp.BoundProperties">
+    <Phrase key="None">Не задано</Phrase>
+    <Phrase key="Enabled">Доступность</Phrase>
+    <Phrase key="Visible">Видимость</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.SchBasicComp.Button">
+    <Phrase key="DisplayName">Кнопка</Phrase>
+    <Phrase key="ForeColor.DisplayName">Цвет текста</Phrase>
+    <Phrase key="ForeColor.Category">Внешний вид</Phrase>
+    <Phrase key="ForeColor.Description">Основной цвет компонента, используемый для отображения текста.</Phrase>
+    <Phrase key="Font.DisplayName">Шрифт</Phrase>
+    <Phrase key="Font.Category">Внешний вид</Phrase>
+    <Phrase key="Font.Description">Шрифт, используемый для отображения текста компонента.</Phrase>
+    <Phrase key="ImageName.DisplayName">Изображение</Phrase>
+    <Phrase key="ImageName.Category">Внешний вид</Phrase>
+    <Phrase key="ImageName.Description">Изображение из коллекции изображений схемы.</Phrase>
+    <Phrase key="ImageSize.DisplayName">Размер изображения</Phrase>
+    <Phrase key="ImageSize.Category">Внешний вид</Phrase>
+    <Phrase key="ImageSize.Description">Размер изображения на кнопке в пикселях.</Phrase>
+    <Phrase key="Text.DisplayName">Текст</Phrase>
+    <Phrase key="Text.Category">Внешний вид</Phrase>
+    <Phrase key="Text.Description">Текст компонента.</Phrase>
+    <Phrase key="Action.DisplayName">Действие</Phrase>
+    <Phrase key="Action.Category">Поведение</Phrase>
+    <Phrase key="Action.Description">Действие, выполняемое по щелчку левой кнопкой мыши на компоненте.</Phrase>
+    <Phrase key="BoundProperty.DisplayName">Привязанное свойство</Phrase>
+    <Phrase key="BoundProperty.Category">Поведение</Phrase>
+    <Phrase key="BoundProperty.Description">Свойство кнопки, которое привязано к входному каналу, связанному с компонентом.</Phrase>
+    <Phrase key="InCnlNum.DisplayName">Входной канал</Phrase>
+    <Phrase key="InCnlNum.Category">Данные</Phrase>
+    <Phrase key="InCnlNum.Description">Номер входного канала, связанного с компонентом.</Phrase>
+    <Phrase key="CtrlCnlNum.DisplayName">Канал управления</Phrase>
+    <Phrase key="CtrlCnlNum.Category">Данные</Phrase>
+    <Phrase key="CtrlCnlNum.Description">Номер канала управления, связанного с компонентом.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.Plugins.SchBasicComp.ColorCondition">
     <Phrase key="Color.DisplayName">Цвет</Phrase>
     <Phrase key="Color.Category">Внешний вид</Phrase>
@@ -23,5 +58,21 @@
     <Phrase key="CtrlCnlNum.Description">Номер канала управления, связанного с компонентом.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.SchBasicComp.Toggle">
+    <Phrase key="DisplayName">Тумблер</Phrase>
+    <Phrase key="LeverColor.DisplayName">Цвет рычажка</Phrase>
+    <Phrase key="LeverColor.Category">Внешний вид</Phrase>
+    <Phrase key="LeverColor.Description">Цвет рычажка тумблера.</Phrase>
+    <Phrase key="Padding.DisplayName">Отступ</Phrase>
+    <Phrase key="Padding.Category">Внешний вид</Phrase>
+    <Phrase key="Padding.Description">Пространство вокруг рычага тумблера в пикселях.</Phrase>
+    <Phrase key="Action.DisplayName">Действие</Phrase>
+    <Phrase key="Action.Category">Поведение</Phrase>
+    <Phrase key="Action.Description">Действие, выполняемое по щелчку левой кнопкой мыши на компоненте.</Phrase>
+    <Phrase key="InCnlNum.DisplayName">Входной канал</Phrase>
+    <Phrase key="InCnlNum.Category">Данные</Phrase>
+    <Phrase key="InCnlNum.Description">Номер входного канала, связанного с компонентом.</Phrase>
+    <Phrase key="CtrlCnlNum.DisplayName">Канал управления</Phrase>
+    <Phrase key="CtrlCnlNum.Category">Данные</Phrase>
+    <Phrase key="CtrlCnlNum.Description">Номер канала управления, связанного с компонентом.</Phrase>
   </Dictionary>
 </PlgSchBasicCompDictionaries>

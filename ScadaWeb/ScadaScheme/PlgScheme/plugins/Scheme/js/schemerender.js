@@ -37,28 +37,27 @@ scada.scheme.Renderer = function () {
     this.COMP_FRAME_WIDTH = 1;
 };
 
-// Set fore color of the jQuery object
-scada.scheme.Renderer.prototype.setForeColor = function (jqObj, foreColor, opt_removeIfEmpty) {
-    if (foreColor) {
-        jqObj.css("color", foreColor == this.STATUS_COLOR ? this.STATUS_DISPLAY_COLOR : foreColor);
-    } else if (opt_removeIfEmpty) {
-        jqObj.css("color", "");
-    }
-};
-
 // Set background color of the jQuery object
-scada.scheme.Renderer.prototype.setBackColor = function (jqObj, backColor, opt_removeIfEmpty) {
+scada.scheme.Renderer.prototype.setBackColor = function (jqObj, backColor, opt_removeIfEmpty, opt_statusColor) {
     if (backColor) {
-        jqObj.css("background-color", backColor == this.STATUS_COLOR ? this.STATUS_DISPLAY_COLOR : backColor);
+        if (backColor == this.STATUS_COLOR) {
+            jqObj.css("background-color", opt_statusColor ? opt_statusColor : this.STATUS_DISPLAY_COLOR);
+        } else {
+            jqObj.css("background-color", backColor);
+        }
     } else if (opt_removeIfEmpty) {
         jqObj.css("background-color", "");
     }
 };
 
 // Set border color of the jQuery object
-scada.scheme.Renderer.prototype.setBorderColor = function (jqObj, borderColor, opt_removeIfEmpty) {
+scada.scheme.Renderer.prototype.setBorderColor = function (jqObj, borderColor, opt_removeIfEmpty, opt_statusColor) {
     if (borderColor) {
-        jqObj.css("border-color", borderColor == this.STATUS_COLOR ? this.STATUS_DISPLAY_COLOR : borderColor);
+        if (borderColor == this.STATUS_COLOR) {
+            jqObj.css("border-color", opt_statusColor ? opt_statusColor : this.STATUS_DISPLAY_COLOR);
+        } else {
+            jqObj.css("border-color", borderColor);
+        }
     } else if (opt_removeIfEmpty) {
         jqObj.css("border-color", "transparent");
     }
@@ -76,6 +75,19 @@ scada.scheme.Renderer.prototype.setBorderWidth = function (jqObj, borderWidth, o
             "border-style": "none",
             "border-width": ""
         });
+    }
+};
+
+// Set fore color of the jQuery object
+scada.scheme.Renderer.prototype.setForeColor = function (jqObj, foreColor, opt_removeIfEmpty, opt_statusColor) {
+    if (foreColor) {
+        if (foreColor == this.STATUS_COLOR) {
+            jqObj.css("color", opt_statusColor ? opt_statusColor : this.STATUS_DISPLAY_COLOR);
+        } else {
+            jqObj.css("color", foreColor);
+        }
+    } else if (opt_removeIfEmpty) {
+        jqObj.css("color", "");
     }
 };
 
@@ -282,25 +294,25 @@ scada.scheme.ComponentRenderer.prototype._getDynamicColor = function (color, cnl
 };
 
 // Set fore color of the jQuery object that may depend on input channel status
-scada.scheme.Renderer.prototype.setDynamicForeColor = function (jqObj, foreColor,
+scada.scheme.ComponentRenderer.prototype.setDynamicForeColor = function (jqObj, foreColor,
     cnlNum, renderContext, opt_removeIfEmpty) {
     this.setForeColor(jqObj, this._getDynamicColor(foreColor, cnlNum, renderContext), opt_removeIfEmpty);
 };
 
 // Set background color of the jQuery object that may depend on input channel status
-scada.scheme.Renderer.prototype.setDynamicBackColor = function (jqObj, backColor,
+scada.scheme.ComponentRenderer.prototype.setDynamicBackColor = function (jqObj, backColor,
     cnlNum, renderContext, opt_removeIfEmpty) {
     this.setBackColor(jqObj, this._getDynamicColor(backColor, cnlNum, renderContext), opt_removeIfEmpty);
 };
 
 // Set border color of the jQuery object that may depend on input channel status
-scada.scheme.Renderer.prototype.setDynamicBorderColor = function (jqObj, borderColor,
+scada.scheme.ComponentRenderer.prototype.setDynamicBorderColor = function (jqObj, borderColor,
     cnlNum, renderContext, opt_removeIfEmpty) {
     this.setBorderColor(jqObj, this._getDynamicColor(borderColor, cnlNum, renderContext), opt_removeIfEmpty);
 };
 
 // Choose a color according to hover state
-scada.scheme.Renderer.prototype.chooseColor = function (isHovered, color, colorOnHover) {
+scada.scheme.ComponentRenderer.prototype.chooseColor = function (isHovered, color, colorOnHover) {
     return isHovered && colorOnHover ? colorOnHover : color;
 };
 
@@ -351,27 +363,30 @@ scada.scheme.ComponentRenderer.prototype.setToolTip = function (jqObj, toolTip) 
 };
 
 // Set primary css properties of the jQuery object of the scheme component
-scada.scheme.ComponentRenderer.prototype.prepareComponent = function (jqObj, component, opt_setSize) {
+scada.scheme.ComponentRenderer.prototype.prepareComponent = function (jqObj, component, opt_skipSize, opt_skipColors) {
     var props = component.props;
-    jqObj.css({
-        "left": props.Location.X,
-        "top": props.Location.Y,
-        "z-index": props.ZIndex
-    });
+    jqObj
+        .addClass("comp")
+        .data("id", props.ID)
+        .css({
+            "left": props.Location.X,
+            "top": props.Location.Y,
+            "z-index": props.ZIndex
+        });
 
-    if (opt_setSize) {
+    if (!opt_skipSize) {
         jqObj.css({
             "width": props.Size.Width,
             "height": props.Size.Height
         });
     }
 
-    jqObj.addClass("comp");
-    jqObj.data("id", props.ID);
+    if (!opt_skipColors) {
+        this.setBackColor(jqObj, props.BackColor);
+        this.setBorderColor(jqObj, props.BorderColor);
+        this.setBorderWidth(jqObj, props.BorderWidth);
+    }
 
-    this.setBackColor(jqObj, props.BackColor);
-    this.setBorderColor(jqObj, props.BorderColor);
-    this.setBorderWidth(jqObj, props.BorderWidth);
     this.setToolTip(jqObj, props.ToolTip);
 };
 
@@ -517,7 +532,7 @@ scada.scheme.StaticTextRenderer.prototype.createDom = function (component, rende
     var spanComp = $("<span id='comp" + component.id + "'></span>");
     var spanText = $("<span></span>");
 
-    this.prepareComponent(spanComp, component);
+    this.prepareComponent(spanComp, component, true);
     this.setFont(spanComp, props.Font);
     this.setForeColor(spanComp, props.ForeColor);
 
@@ -637,21 +652,14 @@ scada.scheme.DynamicTextRenderer.prototype.updateData = function (component, ren
             // choose and set colors of the component
             var statusColor = curCnlDataExt.Color;
             var isHovered = spanComp.is(":hover");
+
             var backColor = this.chooseColor(isHovered, props.BackColor, props.BackColorOnHover);
             var borderColor = this.chooseColor(isHovered, props.BorderColor, props.BorderColorOnHover);
             var foreColor = this.chooseColor(isHovered, props.ForeColor, props.ForeColorOnHover);
 
-            if (backColor == this.STATUS_COLOR) {
-                spanComp.css("background-color", statusColor);
-            }
-
-            if (borderColor == this.STATUS_COLOR) {
-                spanComp.css("border-color", statusColor);
-            }
-
-            if (foreColor == this.STATUS_COLOR) {
-                spanComp.css("color", statusColor);
-            }
+            this.setBackColor(spanComp, backColor, true, statusColor)
+            this.setBorderColor(spanComp, borderColor, true, statusColor)
+            this.setForeColor(spanComp, foreColor, true, statusColor)
         } else if (props.InCnlNum > 0) {
             spanText.text("");
         }
@@ -673,7 +681,7 @@ scada.scheme.StaticPictureRenderer.prototype.createDom = function (component, re
     var props = component.props;
 
     var divComp = $("<div id='comp" + component.id + "'></div>");
-    this.prepareComponent(divComp, component, true);
+    this.prepareComponent(divComp, component);
 
     // set image
     switch (props.ImageStretch) {
@@ -794,16 +802,12 @@ scada.scheme.DynamicPictureRenderer.prototype.updateData = function (component, 
         // choose and set colors of the component
         var statusColor = curCnlDataExt.Color;
         var isHovered = divComp.is(":hover");
+
         var backColor = this.chooseColor(isHovered, props.BackColor, props.BackColorOnHover);
         var borderColor = this.chooseColor(isHovered, props.BorderColor, props.BorderColorOnHover);
 
-        if (props.BackColor == this.STATUS_COLOR) {
-            divComp.css("background-color", statusColor);
-        }
-
-        if (borderColor == this.STATUS_COLOR) {
-            divComp.css("border-color", statusColor);
-        }
+        this.setBackColor(divComp, backColor, true, statusColor)
+        this.setBorderColor(divComp, borderColor, true, statusColor)
     }
 };
 

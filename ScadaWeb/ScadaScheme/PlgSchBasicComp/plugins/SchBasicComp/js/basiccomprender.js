@@ -11,6 +11,24 @@
  * - schemerender.js
  */
 
+/********** Button Renderer **********/
+
+scada.scheme.ButtonRenderer = function () {
+    scada.scheme.ComponentRenderer.call(this);
+};
+
+scada.scheme.ButtonRenderer.prototype = Object.create(scada.scheme.ComponentRenderer.prototype);
+scada.scheme.ButtonRenderer.constructor = scada.scheme.ButtonRenderer;
+
+scada.scheme.ButtonRenderer.prototype.createDom = function (component, renderContext) {
+    var props = component.props;
+
+    var btnComp = $("<button id='comp" + component.id + "'>test</button>");
+    this.prepareComponent(btnComp, component, true);
+
+    component.dom = btnComp;
+};
+
 /********** Led Renderer **********/
 
 scada.scheme.LedRenderer = function () {
@@ -24,7 +42,8 @@ scada.scheme.LedRenderer.prototype.createDom = function (component, renderContex
     var props = component.props;
 
     var divComp = $("<div id='comp" + component.id + "' class='basic-led'></div>");
-    this.prepareComponent(divComp, component, true);
+    this.prepareComponent(divComp, component, false, true);
+    this.setBackColor(divComp, props.BackColor);
     this.bindAction(divComp, component, renderContext);
 
     if (props.BorderWidth > 0) {
@@ -120,7 +139,7 @@ scada.scheme.ToggleRenderer.prototype.createDom = function (component, renderCon
     var divContainer = $("<div class='basic-toggle-container'></div>");
     var divLever = $("<div class='basic-toggle-lever'></div>");
 
-    this.prepareComponent(divComp, component);
+    this.prepareComponent(divComp, component, true);
     this.bindAction(divComp, component, renderContext);
     this.setBackColor(divLever, props.LeverColor);
     this._applySize(divComp, divContainer, divLever, component);
@@ -164,14 +183,8 @@ scada.scheme.ToggleRenderer.prototype.updateData = function (component, renderCo
 
             // set colors that depend on status
             var statusColor = curCnlDataExt.Color;
-
-            if (props.BackColor == this.STATUS_COLOR) {
-                divComp.css("background-color", statusColor);
-            }
-
-            if (props.BorderColor == this.STATUS_COLOR) {
-                divComp.css("border-color", statusColor);
-            }
+            this.setBackColor(divComp, props.BackColor, true, statusColor)
+            this.setBorderColor(divComp, props.BorderColor, true, statusColor)
 
             if (props.LeverColor == this.STATUS_COLOR) {
                 divComp.children("basic-toggle-lever").css("background-color", statusColor);
@@ -183,5 +196,6 @@ scada.scheme.ToggleRenderer.prototype.updateData = function (component, renderCo
 /********** Renderer Map **********/
 
 // Add components to the renderer map
+scada.scheme.rendererMap.set("Scada.Web.Plugins.SchBasicComp.Button", new scada.scheme.ButtonRenderer());
 scada.scheme.rendererMap.set("Scada.Web.Plugins.SchBasicComp.Led", new scada.scheme.LedRenderer());
 scada.scheme.rendererMap.set("Scada.Web.Plugins.SchBasicComp.Toggle", new scada.scheme.ToggleRenderer());
