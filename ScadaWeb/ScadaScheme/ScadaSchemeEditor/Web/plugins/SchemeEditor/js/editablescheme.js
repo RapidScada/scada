@@ -464,7 +464,7 @@ scada.scheme.EditableScheme.prototype._refreshImages = function (imageNames) {
     try {
         this.renderer.refreshImages(this, this.renderContext, imageNames);
 
-        for (var component of this.components) {
+        for (var component of this.componentMap.values()) {
             component.renderer.refreshImages(component, this.renderContext, imageNames);
         }
     }

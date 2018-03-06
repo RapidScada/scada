@@ -15,6 +15,7 @@
 }
 .comp .basic-button-icon img {
   display: block;
+  margin-right: 3px;
 }
 /* Led */
 .comp.basic-led {
