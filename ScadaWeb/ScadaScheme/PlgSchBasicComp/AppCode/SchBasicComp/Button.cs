@@ -200,5 +200,13 @@ namespace Scada.Web.Plugins.SchBasicComp
             xmlElem.AppendElem("InCnlNum", InCnlNum);
             xmlElem.AppendElem("CtrlCnlNum", CtrlCnlNum);
         }
+
+        /// <summary>
+        /// Вернуть строковое представление объекта
+        /// </summary>
+        public override string ToString()
+        {
+            return BuildDisplayName(Text);
+        }
     }
 }

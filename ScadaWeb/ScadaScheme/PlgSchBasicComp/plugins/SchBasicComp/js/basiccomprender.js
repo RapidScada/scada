@@ -23,9 +23,31 @@ scada.scheme.ButtonRenderer.constructor = scada.scheme.ButtonRenderer;
 scada.scheme.ButtonRenderer.prototype.createDom = function (component, renderContext) {
     var props = component.props;
 
-    var btnComp = $("<button id='comp" + component.id + "'>test</button>");
-    this.prepareComponent(btnComp, component, true);
+    var btnComp = $("<button id='comp" + component.id + "'></button>");
+    var btnContainer = $("<div class='basic-button-container'><div class='basic-button-content'>" +
+        "<div class='basic-button-icon'></div><div class='basic-button-label'></div></div></div>");
 
+    this.prepareComponent(btnComp, component);
+    this.setFont(btnComp, props.Font);
+    this.setForeColor(btnComp, props.ForeColor);
+
+    // set image
+    var image = renderContext.getImage(props.ImageName);
+
+    if (image) {
+        $("<img />")
+            .css({
+                "width": props.ImageSize.Width,
+                "height": props.ImageSize.Height
+            })
+            .attr("src", this.imageToDataURL(image))
+            .appendTo(btnContainer.find(".basic-button-icon"));
+    }
+
+    // set text
+    btnContainer.find(".basic-button-label").text(props.Text);
+
+    btnComp.append(btnContainer);
     component.dom = btnComp;
 };
 

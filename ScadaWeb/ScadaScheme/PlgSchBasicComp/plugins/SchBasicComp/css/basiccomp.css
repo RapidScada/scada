@@ -1,4 +1,22 @@
-﻿/* Led */
+﻿/* Button */
+.basic-button-container {
+  display: inline-block;
+  text-align: center;
+  vertical-align: top;
+  /*to avoid extra space*/
+}
+.comp .basic-button-content {
+  display: table-row;
+}
+.comp .basic-button-icon,
+.comp .basic-button-label {
+  display: table-cell;
+  vertical-align: middle;
+}
+.comp .basic-button-icon img {
+  display: block;
+}
+/* Led */
 .comp.basic-led {
   border-radius: 50%;
 }
