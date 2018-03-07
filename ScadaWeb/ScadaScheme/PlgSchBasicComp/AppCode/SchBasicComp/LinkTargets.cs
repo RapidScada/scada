@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : PlgSchBasicComp
- * Summary  : Component properties that can be bound to an input channel
+ * Summary  : Navigation targets for a link
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
@@ -29,34 +29,26 @@ using CM = System.ComponentModel;
 namespace Scada.Web.Plugins.SchBasicComp
 {
     /// <summary>
-    /// Component properties that can be bound to an input channel
-    /// <para>Свойства компонента, которые могут быть привязаны к входному каналу</para>
+    /// Navigation targets for a link
+    /// <para>Цели перехода по ссылке</para>
     /// </summary>
     [CM.TypeConverter(typeof(EnumConverter))]
-    public enum BoundProperties
+    public enum LinkTargets
     {
         /// <summary>
-        /// Не задано
+        /// То же окно
         /// </summary>
         #region Attributes
-        [Description("None")]
+        [Description("Same frame")]
         #endregion
-        None,
+        Self,
 
         /// <summary>
-        /// Доступность
+        /// Новая вкладка
         /// </summary>
         #region Attributes
-        [Description("Enabled")]
+        [Description("New tab")]
         #endregion
-        Enabled,
-
-        /// <summary>
-        /// Видимость
-        /// </summary>
-        #region Attributes
-        [Description("Visible")]
-        #endregion
-        Visible
+        Blank
     }
 }

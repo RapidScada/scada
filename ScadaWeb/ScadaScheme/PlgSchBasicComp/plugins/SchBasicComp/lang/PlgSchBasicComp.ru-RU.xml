@@ -57,6 +57,34 @@
     <Phrase key="CtrlCnlNum.Category">Данные</Phrase>
     <Phrase key="CtrlCnlNum.Description">Номер канала управления, связанного с компонентом.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.SchBasicComp.Link">
+    <Phrase key="DisplayName">Ссылка</Phrase>
+    <Phrase key="BackColorOnHover.DisplayName">Цвет фона при наведении</Phrase>
+    <Phrase key="BackColorOnHover.Category">Поведение</Phrase>
+    <Phrase key="BackColorOnHover.Description">Цвет фона надписи при наведении указателя мыши.</Phrase>
+    <Phrase key="BorderColorOnHover.DisplayName">Цвет границы при наведени</Phrase>
+    <Phrase key="BorderColorOnHover.Category">Поведение</Phrase>
+    <Phrase key="BorderColorOnHover.Description">Цвет границы надписи при наведени указателя мыши.</Phrase>
+    <Phrase key="ForeColorOnHover.DisplayName">Цвет текста при наведени</Phrase>
+    <Phrase key="ForeColorOnHover.Category">Поведение</Phrase>
+    <Phrase key="ForeColorOnHover.Description">Основной цвет надписи, используемый для отображения текста при наведени указателя мыши.</Phrase>
+    <Phrase key="UnderlineOnHover.DisplayName">Подчёркивание при наведени</Phrase>
+    <Phrase key="UnderlineOnHover.Category">Поведение</Phrase>
+    <Phrase key="UnderlineOnHover.Description">Подчёркивание надписи при наведени указателя мыши.</Phrase>
+    <Phrase key="Target.DisplayName">Цель</Phrase>
+    <Phrase key="Target.Category">Навигация</Phrase>
+    <Phrase key="Target.Description">Целевое окно для перехода.</Phrase>
+    <Phrase key="Url.DisplayName">Адрес</Phrase>
+    <Phrase key="Url.Category">Навигация</Phrase>
+    <Phrase key="Url.Description">Адрес для перехода.</Phrase>
+    <Phrase key="ViewID.DisplayName">Представление</Phrase>
+    <Phrase key="ViewID.Category">Навигация</Phrase>
+    <Phrase key="ViewID.Description">Идентификатор представления для перехода.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.SchBasicComp.LinkTargets">
+    <Phrase key="Self">То же окно</Phrase>
+    <Phrase key="Blank">Новая вкладка</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.Plugins.SchBasicComp.Toggle">
     <Phrase key="DisplayName">Тумблер</Phrase>
     <Phrase key="LeverColor.DisplayName">Цвет рычажка</Phrase>

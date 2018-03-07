@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : ScadaSchemeCommon
+ * Module   : Scheme Editor
  * Summary  : Single scheme change
  * 
  * Author   : Mikhail Shiryaev

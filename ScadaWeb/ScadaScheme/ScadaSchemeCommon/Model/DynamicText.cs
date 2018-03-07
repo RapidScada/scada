@@ -53,26 +53,16 @@ namespace Scada.Scheme.Model
             : base()
         {
             Text = DefaultText;
-            UnderlineOnHover = false;
             BackColorOnHover = "";
             BorderColorOnHover = "";
             ForeColorOnHover = "";
+            UnderlineOnHover = false;
             Action = Actions.None;
             ShowValue = ShowValueKinds.ShowWithUnit;
             InCnlNum = 0;
             CtrlCnlNum = 0;
         }
 
-
-        /// <summary>
-        /// Получить или установить признак подчёркивания при наведении указателя мыши
-        /// </summary>
-        #region Attributes
-        [DisplayName("Underline on hover"), Category(Categories.Behavior)]
-        [Description("Underline text when user rests the pointer on the component.")]
-        [CM.DefaultValue(false), CM.TypeConverter(typeof(BooleanConverter))]
-        #endregion
-        public bool UnderlineOnHover { get; set; }
 
         /// <summary>
         /// Получить или установить цвет фона при наведении указателя мыши
@@ -103,6 +93,16 @@ namespace Scada.Scheme.Model
         [CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
         #endregion
         public string ForeColorOnHover { get; set; }
+
+        /// <summary>
+        /// Получить или установить признак подчёркивания при наведении указателя мыши
+        /// </summary>
+        #region Attributes
+        [DisplayName("Underline on hover"), Category(Categories.Behavior)]
+        [Description("Underline text when user rests the pointer on the component.")]
+        [CM.DefaultValue(false), CM.TypeConverter(typeof(BooleanConverter))]
+        #endregion
+        public bool UnderlineOnHover { get; set; }
 
         /// <summary>
         /// Получить или установить действие
@@ -152,10 +152,10 @@ namespace Scada.Scheme.Model
         {
             base.LoadFromXml(xmlNode);
 
-            UnderlineOnHover = xmlNode.GetChildAsBool("UnderlineOnHover");
             BackColorOnHover = xmlNode.GetChildAsString("BackColorOnHover");
             BorderColorOnHover = xmlNode.GetChildAsString("BorderColorOnHover");
             ForeColorOnHover = xmlNode.GetChildAsString("ForeColorOnHover");
+            UnderlineOnHover = xmlNode.GetChildAsBool("UnderlineOnHover");
             Action = xmlNode.GetChildAsEnum<Actions>("Action");
             ShowValue = xmlNode.GetChildAsEnum<ShowValueKinds>("ShowValue");
             InCnlNum = xmlNode.GetChildAsInt("InCnlNum");
@@ -169,10 +169,10 @@ namespace Scada.Scheme.Model
         {
             base.SaveToXml(xmlElem);
 
-            xmlElem.AppendElem("UnderlineOnHover", UnderlineOnHover);
             xmlElem.AppendElem("BackColorOnHover", BackColorOnHover);
             xmlElem.AppendElem("BorderColorOnHover", BorderColorOnHover);
             xmlElem.AppendElem("ForeColorOnHover", ForeColorOnHover);
+            xmlElem.AppendElem("UnderlineOnHover", UnderlineOnHover);
             xmlElem.AppendElem("Action", Action);
             xmlElem.AppendElem("ShowValue", ShowValue);
             xmlElem.AppendElem("InCnlNum", InCnlNum);

@@ -80,6 +80,7 @@
     <None Include="Resources\led.png" />
     <None Include="Resources\toggle.png" />
     <None Include="Resources\button.png" />
+    <None Include="Resources\link.png" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -92,6 +93,7 @@
     <Compile Include="AppCode\SchBasicComp\ColorConditionEditor.cs" />
     <Compile Include="AppCode\SchBasicComp\Led.cs" />
     <Compile Include="AppCode\SchBasicComp\Link.cs" />
+    <Compile Include="AppCode\SchBasicComp\LinkTargets.cs" />
     <Compile Include="AppCode\SchBasicComp\PlgUtils.cs" />
     <Compile Include="AppCode\SchBasicComp\Toggle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
