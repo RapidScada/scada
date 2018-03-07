@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : PlgSchBasicComp
- * Summary  : Scheme component that represents button
+ * Summary  : Scheme component that represents a button
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
@@ -34,7 +34,7 @@ using CM = System.ComponentModel;
 namespace Scada.Web.Plugins.SchBasicComp
 {
     /// <summary>
-    /// Scheme component that represents button
+    /// Scheme component that represents a button
     /// <para>Компонент схемы, представляющий кнопку</para>
     /// </summary>
     [Serializable]

@@ -106,6 +106,7 @@ namespace Scada.Web.Plugins.SchBasicComp
             {
                 new CompItem(Resources.button, typeof(Button)),
                 new CompItem(Resources.led, typeof(Led)),
+                new CompItem(null /*Resources.link*/, typeof(Link)),
                 new CompItem(Resources.toggle, typeof(Toggle))
             };
         }

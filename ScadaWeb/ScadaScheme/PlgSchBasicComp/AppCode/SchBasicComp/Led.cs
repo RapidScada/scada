@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : PlgSchBasicComp
- * Summary  : Scheme component that represents led
+ * Summary  : Scheme component that represents a led
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
@@ -35,7 +35,7 @@ using CM = System.ComponentModel;
 namespace Scada.Web.Plugins.SchBasicComp
 {
     /// <summary>
-    /// Scheme component that represents led
+    /// Scheme component that represents a led
     /// <para>Компонент схемы, представляющий светодиод</para>
     /// </summary>
     [Serializable]

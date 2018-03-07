@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : PlgSchBasicComp
- * Summary  : Scheme component that represents toggle switch
+ * Summary  : Scheme component that represents a toggle switch
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
@@ -35,7 +35,7 @@ using CM = System.ComponentModel;
 namespace Scada.Web.Plugins.SchBasicComp
 {
     /// <summary>
-    /// Scheme component that represents toggle switch
+    /// Scheme component that represents a toggle switch
     /// <para>Компонент схемы, представляющий тумблер</para>
     /// </summary>
     [Serializable]

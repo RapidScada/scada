@@ -43,6 +43,8 @@ namespace Scada.Web.Plugins.SchBasicComp
                 return new Button();
             else if (NameEquals("Led", (typeof(Led)).FullName, typeName, nameIsShort))
                 return new Led();
+            else if (NameEquals("Link", (typeof(Link)).FullName, typeName, nameIsShort))
+                return new Link();
             else if (NameEquals("Toggle", (typeof(Toggle)).FullName, typeName, nameIsShort))
                 return new Toggle();
             else

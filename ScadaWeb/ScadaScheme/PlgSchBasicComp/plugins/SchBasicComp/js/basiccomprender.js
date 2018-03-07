@@ -170,6 +170,15 @@ scada.scheme.LedRenderer.prototype.updateData = function (component, renderConte
     }
 };
 
+/********** Link Renderer **********/
+
+scada.scheme.LinkRenderer = function () {
+    scada.scheme.StaticTextRenderer.call(this);
+};
+
+scada.scheme.LinkRenderer.prototype = Object.create(scada.scheme.StaticTextRenderer.prototype);
+scada.scheme.LinkRenderer.constructor = scada.scheme.LinkRenderer;
+
 /********** Toggle Renderer **********/
 
 scada.scheme.ToggleRenderer = function () {
@@ -266,4 +275,5 @@ scada.scheme.ToggleRenderer.prototype.updateData = function (component, renderCo
 // Add components to the renderer map
 scada.scheme.rendererMap.set("Scada.Web.Plugins.SchBasicComp.Button", new scada.scheme.ButtonRenderer());
 scada.scheme.rendererMap.set("Scada.Web.Plugins.SchBasicComp.Led", new scada.scheme.LedRenderer());
+scada.scheme.rendererMap.set("Scada.Web.Plugins.SchBasicComp.Link", new scada.scheme.LinkRenderer());
 scada.scheme.rendererMap.set("Scada.Web.Plugins.SchBasicComp.Toggle", new scada.scheme.ToggleRenderer());
