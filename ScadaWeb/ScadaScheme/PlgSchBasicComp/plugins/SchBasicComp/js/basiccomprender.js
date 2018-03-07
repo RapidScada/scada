@@ -20,21 +20,42 @@ scada.scheme.ButtonRenderer = function () {
 scada.scheme.ButtonRenderer.prototype = Object.create(scada.scheme.ComponentRenderer.prototype);
 scada.scheme.ButtonRenderer.constructor = scada.scheme.ButtonRenderer;
 
+// Set enabled or visibility of the button
+scada.scheme.ButtonRenderer.prototype._setState = function (btnComp, boundProperty, state) {
+    if (boundProperty == 1 /*Enabled*/) {
+        if (state) {
+            btnComp.removeClass("disabled").prop("disabled", false);
+        } else {
+            btnComp.addClass("disabled").prop("disabled", true);
+        }
+    } else if (boundProperty == 2 /*Visible*/) {
+        if (state) {
+            btnComp.removeClass("hidden");
+        } else {
+            btnComp.addClass("hidden");
+        }
+    }
+};
+
 scada.scheme.ButtonRenderer.prototype.createDom = function (component, renderContext) {
     var props = component.props;
 
-    var btnComp = $("<button id='comp" + component.id + "'></button>");
+    var btnComp = $("<button id='comp" + component.id + "' class='basic-button'></button>");
     var btnContainer = $("<div class='basic-button-container'><div class='basic-button-content'>" +
         "<div class='basic-button-icon'></div><div class='basic-button-label'></div></div></div>");
 
     this.prepareComponent(btnComp, component);
     this.setFont(btnComp, props.Font);
     this.setForeColor(btnComp, props.ForeColor);
+    this.bindAction(btnComp, component, renderContext);
+
+    if (!renderContext.editMode) {
+        this._setState(btnComp, props.BoundProperty, false);
+    }
 
     // set image
-    var image = renderContext.getImage(props.ImageName);
-
-    if (image) {
+    if (props.ImageName) {
+        var image = renderContext.getImage(props.ImageName);
         $("<img />")
             .css({
                 "width": props.ImageSize.Width,
@@ -50,6 +71,31 @@ scada.scheme.ButtonRenderer.prototype.createDom = function (component, renderCon
     btnComp.append(btnContainer);
     component.dom = btnComp;
 };
+
+scada.scheme.ButtonRenderer.prototype.refreshImages = function (component, renderContext, imageNames) {
+    if (component.dom) {
+        var props = component.props;
+
+        if (Array.isArray(imageNames) && imageNames.includes(props.ImageName)) {
+            var btnComp = component.dom;
+            var image = renderContext.getImage(props.ImageName);
+            btnComp.find("img").attr("src", this.imageToDataURL(image));
+        }
+    }
+};
+
+scada.scheme.ButtonRenderer.prototype.updateData = function (component, renderContext) {
+    var props = component.props;
+
+    if (props.BoundProperty) {
+        var btnComp = component.dom;
+        var curCnlDataExt = renderContext.curCnlDataMap.get(props.InCnlNum);
+
+        if (btnComp && curCnlDataExt) {
+            this._setState(btnComp, props.BoundProperty, curCnlDataExt.Val > 0 && curCnlDataExt.Stat > 0);
+        }
+    }
+}
 
 /********** Led Renderer **********/
 

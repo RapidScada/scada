@@ -123,7 +123,9 @@ scada.scheme.Renderer.prototype.setBackgroundImage = function (jqObj, image, opt
 
 // Returns a data URI containing a representation of the image
 scada.scheme.Renderer.prototype.imageToDataURL = function (image) {
-    return "data:" + (image.MediaType ? image.MediaType : "image/png") + ";base64," + image.Data
+    return image ?
+        "data:" + (image.MediaType ? image.MediaType : "image/png") + ";base64," + image.Data :
+        "";
 };
 
 // Returns a css property value for the image data URI
