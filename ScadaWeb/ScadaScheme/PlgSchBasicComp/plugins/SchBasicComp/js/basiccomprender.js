@@ -179,6 +179,56 @@ scada.scheme.LinkRenderer = function () {
 scada.scheme.LinkRenderer.prototype = Object.create(scada.scheme.StaticTextRenderer.prototype);
 scada.scheme.LinkRenderer.constructor = scada.scheme.LinkRenderer;
 
+scada.scheme.LinkRenderer.prototype._setUnderline = function (jqObj, underline) {
+    // this method was copied from DynamicTextRenderer
+    if (underline) {
+        jqObj.css("text-decoration", "underline");
+    }
+};
+
+scada.scheme.LinkRenderer.prototype._restoreUnderline = function (jqObj, font) {
+    // this method was copied from DynamicTextRenderer
+    jqObj.css("text-decoration", font && font.Underline ? "underline" : "none");
+};
+
+scada.scheme.LinkRenderer.prototype.createDom = function (component, renderContext) {
+    scada.scheme.StaticTextRenderer.prototype.createDom.call(this, component, renderContext);
+
+    var spanComp = component.dom.first();
+    spanComp.addClass("basic-link");
+
+    // apply properties on hover
+    var props = component.props;
+    var thisRenderer = this;
+
+    spanComp.hover(
+        function () {
+            thisRenderer.setBackColor(spanComp, props.BackColorOnHover);
+            thisRenderer.setBorderColor(spanComp, props.BorderColorOnHover);
+            thisRenderer.setForeColor(spanComp, props.ForeColorOnHover);
+            thisRenderer._setUnderline(spanComp, props.UnderlineOnHover);
+        },
+        function () {
+            thisRenderer.setBackColor(spanComp, props.BackColor, true);
+            thisRenderer.setBorderColor(spanComp, props.BorderColor, true);
+            thisRenderer.setForeColor(spanComp, props.ForeColor, true);
+            thisRenderer._restoreUnderline(spanComp, props.Font);
+        }
+    );
+
+    // link
+    if (props.Url || props.ViewID) {
+        spanComp.addClass("action");
+
+        if (!renderContext.editMode) {
+            spanComp.click(function () {
+                // navigate
+                console.warn("Link is not implemented");
+            });
+        }
+    }
+};
+
 /********** Toggle Renderer **********/
 
 scada.scheme.ToggleRenderer = function () {

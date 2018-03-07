@@ -402,7 +402,7 @@ scada.scheme.ComponentRenderer.prototype.bindAction = function (jqObj, component
         action == Actions.SEND_COMMAND && props.CtrlCnlNum > 0 && renderContext.controlRight;
 
     if (actionIsBound) {
-        jqObj.css("cursor", "pointer");
+        jqObj.addClass("action");
 
         if (!renderContext.editMode) {
             var viewHub = scada.scheme.viewHub;

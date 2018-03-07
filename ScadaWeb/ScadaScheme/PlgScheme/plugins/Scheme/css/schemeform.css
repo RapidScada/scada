@@ -11,6 +11,9 @@
   box-sizing: border-box;
   position: absolute;
 }
+.scheme .comp.action {
+  cursor: pointer;
+}
 body {
   margin: 0;
   padding: 0;
