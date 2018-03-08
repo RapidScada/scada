@@ -56,11 +56,6 @@ scada.view = {
     initialPageTitle: "",
 
 
-    // Get URL of the view page that contains view frame
-    _getUrl: function (viewID) {
-        return "View.aspx?viewID=" + viewID;
-    },
-
     // Get outer height of the specified object considering its displaying
     _getOuterHeight: function (jqObj) {
         return jqObj.css("display") == "none" ? 0 : jqObj.outerHeight();
@@ -181,14 +176,13 @@ scada.view = {
         var state = null;
         if (!opt_from_history && viewHub.curViewID > 0) {
             state = { viewID: viewID, viewUrl: "" };
-            history.pushState(state, "", this._getUrl(viewID));
+            history.pushState(state, "", scada.utils.getViewUrl(viewID));
         }
 
         // load the specified view
         document.title = this.initialPageTitle;
         viewHub.curViewID = viewID;
         var frameView = scada.utils.setFrameSrc($("#frameView"), viewUrl);
-        var thisObj = this;
 
         frameView
         .off("load")
@@ -211,7 +205,7 @@ scada.view = {
             // update view URL in the history
             if (state != null) {
                 state.viewUrl = wnd.location.href;
-                history.replaceState(state, "", thisObj._getUrl(viewID));
+                history.replaceState(state, "", scada.utils.getViewUrl(viewID));
             }
         });
 

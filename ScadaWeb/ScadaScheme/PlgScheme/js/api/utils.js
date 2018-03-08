@@ -3,7 +3,7 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2018
  *
  * No dependencies
  */
@@ -13,7 +13,7 @@ var scada = scada || {};
 
 // JavaScript utilities object
 scada.utils = {
-    // Prospective browser scrollbar width
+    // Assumed browser scrollbar width
     _SCROLLBAR_WIDTH: 20,
 
     // z-index that moves element to the front
@@ -282,5 +282,10 @@ scada.utils = {
                 });
             }
         }
+    },
+
+    // Get URL of the view by its ID
+    getViewUrl: function (viewID) {
+        return "View.aspx?viewID=" + viewID;
     }
 };

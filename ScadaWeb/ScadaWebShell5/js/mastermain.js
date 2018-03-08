@@ -177,7 +177,7 @@ scada.masterMain = {
         if (scada.view.loadView) {
             scada.view.loadView(viewID, viewUrl);
         } else {
-            location.href = scada.env.rootPath + "View.aspx?viewID=" + viewID;
+            location.href = scada.env.rootPath + scada.utils.getViewUrl(viewID);
         }
     },
 

@@ -42,7 +42,6 @@
             ID="lblEventsByViewBtn" runat="server" CssClass="tool-btn" Text="Events by View"></asp:Label><span 
             id="spanExportBtn" class="tool-btn no-ios"><i class="fa fa-print"></i></span><div id="divDebugTools"><span 
                 id="spanTitleChangedBtn" class="tool-btn">TitleChanged</span><span 
-                id="spanNavigateBtn" class="tool-btn">Navigate</span><span 
                 id="spanDateChangedBtn" class="tool-btn">DateChanged</span>
             </div>
         </div>

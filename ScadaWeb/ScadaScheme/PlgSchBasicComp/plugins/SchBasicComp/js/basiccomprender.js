@@ -217,13 +217,28 @@ scada.scheme.LinkRenderer.prototype.createDom = function (component, renderConte
     );
 
     // link
-    if (props.Url || props.ViewID) {
+    if (props.Url || props.ViewID > 0) {
         spanComp.addClass("action");
 
         if (!renderContext.editMode) {
             spanComp.click(function () {
+                // determine URL to navigate
+                var url = props.Url;
+
+                if (props.ViewID > 0 && scada.scheme.viewHub) {
+                    url = scada.scheme.viewHub.getFullViewUrl(props.ViewID);
+                }
+
                 // navigate
-                console.warn("Link is not implemented");
+                if (url) {
+                    if (props.Target > 0 /*Blank*/) {
+                        window.open(url);
+                    } else {
+                        window.top.location = url;
+                    }
+                } else {
+                    console.warn("URL is undefined");
+                }
             });
         }
     }

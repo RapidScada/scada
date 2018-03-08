@@ -3,7 +3,7 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2018
  *
  * No dependencies
  */
@@ -19,10 +19,6 @@ scada.EventTypes = {
     // View title has been changed.
     // Event parameter: title
     VIEW_TITLE_CHANGED: "scada:viewTitleChanged",
-
-    // Before navigate to another view
-    // Event parameter: view id
-    VIEW_NAVIGATE: "scada:viewNavigate",
 
     // Current view date has been changed
     // Event parameter: date
