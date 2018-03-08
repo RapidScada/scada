@@ -58,7 +58,7 @@ namespace Scada.Web.Plugins.SchBasicComp
             BackColorOnHover = "";
             BorderColorOnHover = "";
             ForeColorOnHover = "";
-            UnderlineOnHover = false;
+            UnderlineOnHover = true;
         }
 
 
