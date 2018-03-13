@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2018
  */
 
 using Scada.UI;
@@ -86,7 +86,7 @@ namespace Scada.Web
         /// </summary>
         protected string GenStatsHtml()
         {
-            return appData.Stats.GenerateHtml(userData.WebSettings.ShareStats);
+            return appData.Stats.GenerateHtml(userData.WebSettings.ShareStats, Request.IsSecureConnection);
         }
 
 
