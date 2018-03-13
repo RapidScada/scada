@@ -25,6 +25,7 @@
 
 using Scada.Scheme;
 using Scada.Scheme.DataTransfer;
+using Scada.Scheme.Model;
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
@@ -209,22 +210,31 @@ namespace Scada.Web.Plugins.Scheme
         {
             try
             {
-                UserRights userRights;
-                AppData.CheckLoggedOn(out userRights);
-                SchemeView schemeView = GetSchemeView(viewID, userRights);
+                UserShot userShot;
+                AppData.UserMonitor.CheckLoggedOn(out userShot);
 
-                if (schemeView.Components.ContainsKey(componentID) /*добавить проверки*/)
+                if (!(userShot.WebSettings.CmdEnabled && userShot.UserRights.GetUiObjRights(viewID).ControlRight))
+                    throw new ScadaException(CommonPhrases.NoRights);
+
+                SchemeView schemeView = AppData.ViewCache.GetView<SchemeView>(viewID, true);
+                BaseComponent comp;
+                bool sendOK;
+                bool result;
+
+                if (schemeView.Components.TryGetValue(componentID, out comp) && comp is IDynamicComponent &&
+                    /*((IDynamicComponent)comp).Action == Actions.SendCommandNow &&*/
+                    ((IDynamicComponent)comp).CtrlCnlNum == ctrlCnlNum)
                 {
-                    //bool result;
-                    //bool sendOK = AppData.ServerComm.SendStandardCommand(
-                    //    userData.UserProps.UserID, ctrlCnlNum, cmdVal, out result);
+                    sendOK = AppData.ServerComm.SendStandardCommand(
+                        userShot.UserProps.UserID, ctrlCnlNum, cmdVal, out result);
                 }
                 else
                 {
-
+                    sendOK = false;
+                    result = false;
                 }
 
-                return "";
+                return JsSerializer.Serialize(new DataTransferObject(sendOK && result));
             }
             catch (Exception ex)
             {
