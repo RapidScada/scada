@@ -3,7 +3,7 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2018
  *
  * Requires:
  * - jquery
@@ -29,13 +29,21 @@ scada.treeView = {
         }
     },
 
-    // Expand selected tree node
+    // Expand the selected tree node
     _expandSelectedTreeNode: function (allNodes) {
         var selNodes = allNodes.filter(".selected");
         var parDivs = selNodes.parentsUntil(".tree-view", ".child-nodes");
 
         parDivs.prev(".node").find(".expander").addClass("expanded");
         parDivs.css("display", "block");
+    },
+
+    // Select and expand the tree node
+    selectNode: function (node) {
+        var treeNodes = node.closest(".tree-view").find(".node");
+        treeNodes.removeClass("selected");
+        node.addClass("selected");
+        this._expandSelectedTreeNode(treeNodes);
     },
 
     // Tune tree view elements and bind events

@@ -183,8 +183,7 @@ scada.masterMain = {
 
     // Select the specified view in the explorer tree
     selectView: function (viewID) {
-        $("#divMainExplorer .node").removeClass("selected");
-        $("#divMainExplorer .node[data-view=" + viewID + "]").addClass("selected");
+        scada.treeView.selectNode($("#divMainExplorer .node[data-view=" + viewID + "]"));
     },
 
     // Start cyclic checking user logged on
