@@ -23,15 +23,11 @@
  * Modified : 2018
  */
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Web;
-using System.Web.SessionState;
+using Scada.Data.Models;
 using Scada.Web.Plugins;
 using Scada.Web.Shell;
-using System.Web.Hosting;
-using Scada.Data.Models;
+using System;
+using System.Collections.Generic;
 
 namespace Scada.Web
 {
@@ -79,7 +75,6 @@ namespace Scada.Web
         /// Получить идентификатор сессии
         /// </summary>
         public string SessionID { get; protected set; }
-
 
         /// <summary>
         /// Получить признак, выполнен ли вход пользователя в систему
