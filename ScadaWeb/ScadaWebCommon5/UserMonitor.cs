@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,10 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2018
  */
 
+using Scada.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -267,20 +268,20 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Проверить, что пользователь вошёл в систему, и получить его имя
+        /// Проверить, что пользователь вошёл в систему, и получить его свойства
         /// </summary>
-        public bool UserIsLoggedOn(WebOperationContext webOpContext, out string username)
+        public bool UserIsLoggedOn(WebOperationContext webOpContext, out UserProps userProps)
         {
             UserData userData;
 
             if (TryGetUserData(webOpContext, out userData) && userData.LoggedOn && userData.UserProps != null)
             {
-                username = userData.UserProps.UserName;
+                userProps = userData.UserProps;
                 return true;
             }
             else
             {
-                username = "";
+                userProps = null;
                 return false;
             }
         }
@@ -299,11 +300,11 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Проверить, что пользователь вошёл систему, и получить его имя
+        /// Проверить, что пользователь вошёл систему, и получить его свойства
         /// </summary>
-        public bool CheckLoggedOn(out string username, bool throwOnFail = true)
+        public bool CheckLoggedOn(out UserProps userProps, bool throwOnFail = true)
         {
-            if (UserIsLoggedOn(WebOperationContext.Current, out username))
+            if (UserIsLoggedOn(WebOperationContext.Current, out userProps))
                 return true;
             else if (throwOnFail)
                 throw new ScadaException(WebPhrases.NotLoggedOn);
