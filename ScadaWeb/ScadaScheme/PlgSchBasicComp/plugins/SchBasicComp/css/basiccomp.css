@@ -46,7 +46,7 @@
   box-sizing: border-box;
 }
 .comp.basic-toggle.undef .basic-toggle-container {
-  display: none;
+  visibility: hidden;
 }
 .comp.basic-toggle.off .basic-toggle-container {
   vertical-align: bottom;

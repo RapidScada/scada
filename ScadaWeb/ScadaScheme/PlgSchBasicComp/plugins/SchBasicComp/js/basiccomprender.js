@@ -306,6 +306,7 @@ scada.scheme.ToggleRenderer.prototype.updateData = function (component, renderCo
     var props = component.props;
     var divComp = component.dom;
     var curCnlDataExt = renderContext.curCnlDataMap.get(props.InCnlNum);
+    component.cmdVal = 0;
 
     if (divComp) {
         divComp.removeClass("undef");
@@ -318,9 +319,10 @@ scada.scheme.ToggleRenderer.prototype.updateData = function (component, renderCo
                     divComp.addClass("on");
                 } else {
                     divComp.addClass("off");
+                    component.cmdVal = 1; // a command turns it on
                 }
             } else {
-                divComp.removeClass("undef");
+                divComp.addClass("undef");
             }
 
             // set colors that depend on status
