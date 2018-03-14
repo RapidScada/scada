@@ -1,5 +1,10 @@
-﻿// Scheme object
-var scheme = new scada.scheme.Scheme();
+﻿// Rapid SCADA namespace
+var scada = scada || {};
+// Scheme namespace
+scada.scheme = scada.scheme || {};
+
+// Scheme object
+var scheme = null;
 // Notifier control
 var notifier = null;
 // Possible scale values
@@ -14,6 +19,14 @@ var refrRate = refrRate || 1000;
 var phrases = phrases || {};
 // View control right
 var controlRight = controlRight || false;
+
+// Scheme environment object
+scada.scheme.env = {
+    // Send telecommand
+    sendCommand: function (ctrlCnlNum, cmdVal, viewID, componentID) {
+
+    }
+};
 
 // Load the scheme
 function loadScheme(viewID) {
@@ -90,8 +103,9 @@ function getPrevScale() {
     var curScale = scheme.scale;
     for (var i = scaleVals.length - 1; i >= 0; i--) {
         var prevScale = scaleVals[i];
-        if (curScale > prevScale)
+        if (curScale > prevScale) {
             return prevScale;
+        }
     }
     return curScale;
 }
@@ -101,8 +115,9 @@ function getNextScale() {
     var curScale = scheme.scale;
     for (var i = 0, len = scaleVals.length; i < len; i++) {
         var nextScale = scaleVals[i];
-        if (curScale < nextScale)
+        if (curScale < nextScale) {
             return nextScale;
+        }
     }
     return curScale;
 }
@@ -168,6 +183,7 @@ $(document).ready(function () {
     scada.clientAPI.rootPath = "../../";
     scada.clientAPI.ajaxQueue = scada.ajaxQueueLocator.getAjaxQueue();
     var divSchWrapper = $("#divSchWrapper");
+    scheme = new scada.scheme.Scheme();
     scheme.parentDomElem = divSchWrapper;
     initToolbar();
     scada.utils.styleIOS(divSchWrapper);

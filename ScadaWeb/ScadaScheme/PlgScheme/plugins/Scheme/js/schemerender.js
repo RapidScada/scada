@@ -399,7 +399,8 @@ scada.scheme.ComponentRenderer.prototype.bindAction = function (jqObj, component
     var action = props.Action;
     var actionIsBound =
         action == Actions.DRAW_DIAGRAM && props.InCnlNum > 0 ||
-        action == Actions.SEND_COMMAND && props.CtrlCnlNum > 0 && renderContext.controlRight;
+        (action == Actions.SEND_COMMAND || action == Actions.SEND_COMMAND_NOW) &&
+        props.CtrlCnlNum > 0 && renderContext.controlRight;
 
     if (actionIsBound) {
         jqObj.addClass("action");
@@ -418,12 +419,18 @@ scada.scheme.ComponentRenderer.prototype.bindAction = function (jqObj, component
                             console.warn("Dialogs object is undefined");
                         }
                         break;
+
                     case Actions.SEND_COMMAND:
                         if (dialogs) {
                             dialogs.showCmd(props.CtrlCnlNum, viewHub.curViewID);
                         } else {
                             console.warn("Dialogs object is undefined");
                         }
+                        break;
+
+                    case Actions.SEND_COMMAND_NOW:
+                        // props.CtrlCnlNum, component.cmdVal, viewHub.curViewID, component.id
+                        console.warn("Send command now");
                         break;
                 }
             });

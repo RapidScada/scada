@@ -589,7 +589,6 @@ scada.scheme.Scheme.prototype.updateData = function (clientAPI, callback) {
 
             if (curCnlDataMap) {
                 thisScheme.renderContext.curCnlDataMap = curCnlDataMap;
-                thisScheme.renderContext.imageMap = thisScheme.imageMap;
 
                 for (var component of thisScheme.componentMap.values()) {
                     thisScheme._updateComponentData(component);
@@ -625,6 +624,8 @@ scada.scheme.Component = function (componentProps) {
 
     // Component ID
     this.id = componentProps.ID;
+    // Telecommand value in case of direct sending
+    this.cmdVal = 0;
 };
 
 scada.scheme.Component.prototype = Object.create(scada.scheme.BaseComponent.prototype);

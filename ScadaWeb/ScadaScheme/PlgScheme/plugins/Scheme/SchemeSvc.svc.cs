@@ -26,6 +26,7 @@
 using Scada.Scheme;
 using Scada.Scheme.DataTransfer;
 using Scada.Scheme.Model;
+using Scada.Scheme.Model.DataTypes;
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
@@ -222,7 +223,7 @@ namespace Scada.Web.Plugins.Scheme
                 bool result;
 
                 if (schemeView.Components.TryGetValue(componentID, out comp) && comp is IDynamicComponent &&
-                    /*((IDynamicComponent)comp).Action == Actions.SendCommandNow &&*/
+                    ((IDynamicComponent)comp).Action == Actions.SendCommandNow &&
                     ((IDynamicComponent)comp).CtrlCnlNum == ctrlCnlNum)
                 {
                     sendOK = AppData.ServerComm.SendStandardCommand(

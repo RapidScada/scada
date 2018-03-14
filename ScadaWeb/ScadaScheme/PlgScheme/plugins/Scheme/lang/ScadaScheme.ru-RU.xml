@@ -222,6 +222,7 @@
     <Phrase key="None">Не задано</Phrase>
     <Phrase key="DrawDiagram">Построить график</Phrase>
     <Phrase key="SendCommand">Отправить команду</Phrase>
+    <Phrase key="SendCommandNow">Отправить команду сразу</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Model.DataTypes.Condition">
     <Phrase key="CompareOperator1.DisplayName">Опер. сравн. 1</Phrase>

@@ -23,6 +23,8 @@
  * Modified : 2018
  */
 
+using Scada.Scheme.Model.DataTypes;
+
 namespace Scada.Scheme.Model
 {
     /// <summary>
@@ -31,6 +33,10 @@ namespace Scada.Scheme.Model
     /// </summary>
     public interface IDynamicComponent
     {
+        /// <summary>
+        /// Получить действие
+        /// </summary>
+        Actions Action { get; }
 
         /// <summary>
         /// Получить номер входного канала
