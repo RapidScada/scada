@@ -429,8 +429,12 @@ scada.scheme.ComponentRenderer.prototype.bindAction = function (jqObj, component
                         break;
 
                     case Actions.SEND_COMMAND_NOW:
-                        // props.CtrlCnlNum, component.cmdVal, viewHub.curViewID, component.id
-                        console.warn("Send command now");
+                        if (renderContext.schemeEnv) {
+                            renderContext.schemeEnv.sendCommand(props.CtrlCnlNum, component.cmdVal,
+                                viewHub.curViewID, component.id);
+                        } else {
+                            console.warn("Scheme environment object is undefined");
+                        }
                         break;
                 }
             });
@@ -835,6 +839,7 @@ scada.scheme.UnknownComponentRenderer.constructor = scada.scheme.UnknownComponen
 scada.scheme.RenderContext = function () {
     this.curCnlDataMap = null;
     this.editMode = false;
+    this.schemeEnv = null;
     this.imageMap = null;
     this.controlRight = true;
 };

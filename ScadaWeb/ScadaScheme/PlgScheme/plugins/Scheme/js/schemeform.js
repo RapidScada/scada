@@ -20,11 +20,15 @@ var phrases = phrases || {};
 // View control right
 var controlRight = controlRight || false;
 
-// Scheme environment object
+// Scheme environment object accessible by the scheme and its components
 scada.scheme.env = {
     // Send telecommand
     sendCommand: function (ctrlCnlNum, cmdVal, viewID, componentID) {
-
+        scheme.sendCommand(ctrlCnlNum, cmdVal, viewID, componentID, function (success) {
+            if (!success) {
+                notifier.addNotification(phrases.UnableSendCommand, scada.NotifTypes.ERROR, notifier.DEF_NOTIF_LIFETIME);
+            }
+        });
     }
 };
 
@@ -180,11 +184,17 @@ function initDebugTools() {
 }
 
 $(document).ready(function () {
+    // setup client API
     scada.clientAPI.rootPath = "../../";
     scada.clientAPI.ajaxQueue = scada.ajaxQueueLocator.getAjaxQueue();
+
+    // create scheme
     var divSchWrapper = $("#divSchWrapper");
     scheme = new scada.scheme.Scheme();
+    scheme.schemeEnv = scada.scheme.env;
     scheme.parentDomElem = divSchWrapper;
+
+    // setup user interface
     initToolbar();
     scada.utils.styleIOS(divSchWrapper);
     updateLayout();

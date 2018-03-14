@@ -65,12 +65,16 @@ scada.scheme.Scheme = function (opt_editMode) {
     this.LOAD_COMP_CNT = 100;
     // Total data size of images received by a one request, 1 MB
     this.LOAD_IMG_SIZE = 1048576;
+    // Timeout of command frame closing, ms
+    this.CLOSE_CMD_TIMEOUT = 1000;
 
     // Input channel filter for request current data
     this._cnlFilter = null;
 
     // Indicates whether the scheme is used by an editor
     this.editMode = !!opt_editMode;
+    // Scheme environment
+    this.schemeEnv = null;
     // Ajax queue used for request sequencing. Must be not null
     this.ajaxQueue = scada.ajaxQueueLocator.getAjaxQueue();
     // WCF-service URL
@@ -516,6 +520,30 @@ scada.scheme.Scheme.prototype._updateComponentData = function (component) {
     }
 };
 
+// Open frame of sending command
+scada.scheme.Scheme.prototype._openCommandFrame = function () {
+    if (this.dom) {
+        var frameID = "cmd" + Date.now();
+        this.dom.append("<div id='" + frameID + "' class='cmd-frame'></div>");
+        return frameID;
+    } else {
+        return null;
+    }
+}
+
+// Close frame of sending command
+scada.scheme.Scheme.prototype._closeCommandFrame = function (opt_frameID) {
+    if (this.dom) {
+        if (opt_frameID) {
+            // remove specified frame
+            this.dom.children("#" + opt_frameID).remove();
+        } else {
+            // remove all command frames
+            this.dom.children(".cmd-frame").remove();
+        }
+    }
+}
+
 // Clear the scheme
 scada.scheme.Scheme.prototype.clear = function () {
     this.props = null;
@@ -547,6 +575,7 @@ scada.scheme.Scheme.prototype.load = function (viewOrEditorID, callback) {
 // Create DOM content of the scheme
 scada.scheme.Scheme.prototype.createDom = function (opt_controlRight) {
     this.renderContext.editMode = this.editMode;
+    this.renderContext.schemeEnv = this.schemeEnv;
     this.renderContext.imageMap = this.imageMap;
     this.renderContext.controlRight = typeof opt_controlRight === "undefined" ?
         true : opt_controlRight;
@@ -614,6 +643,52 @@ scada.scheme.Scheme.prototype.setScale = function (scale) {
         console.error("Error scaling the scheme:", ex.message);
     }
 };
+
+// Send telecommand
+// callback is a function (success)
+scada.scheme.Scheme.prototype.sendCommand = function (ctrlCnlNum, cmdVal, viewID, componentID, callback) {
+    var operation = this.serviceUrl + "SendCommand";
+    var thisScheme = this;
+
+    var frameID = this._openCommandFrame();
+    var closeTimeoutID = setTimeout(this._closeCommandFrame.bind(this), this.CLOSE_CMD_TIMEOUT, frameID);
+
+    var failCallback = function () {
+        clearTimeout(closeTimeoutID);
+        thisScheme._closeCommandFrame(frameID);
+        callback(false);
+    };
+
+    this.ajaxQueue.ajax({
+        url: operation +
+            "?ctrlCnlNum=" + ctrlCnlNum +
+            "&cmdVal=" + cmdVal +
+            "&viewID=" + viewID +
+            "&componentID=" + componentID,
+        method: "GET",
+        dataType: "json",
+        cache: false
+    })
+    .done(function (data, textStatus, jqXHR) {
+        var parsedData = $.parseJSON(data.d);
+        if (parsedData.Success) {
+            scada.utils.logSuccessfulRequest(operation);
+            if (parsedData.Data) {
+                callback(true);
+            } else {
+                console.warn("Unable to send command");
+                failCallback();
+            }
+        } else {
+            scada.utils.logServiceError(operation, parsedData.ErrorMessage);
+            failCallback();
+        }
+    })
+    .fail(function (jqXHR, textStatus, errorThrown) {
+        scada.utils.logFailedRequest(operation, jqXHR);
+        failCallback();
+    });
+}
 
 /********** Component **********/
 

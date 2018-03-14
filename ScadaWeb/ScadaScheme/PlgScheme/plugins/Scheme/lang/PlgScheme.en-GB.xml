@@ -9,7 +9,8 @@
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Scheme.WFrmScheme.Js">
     <Phrase key="LoadSchemeError">Scheme loading failed. Try to reload scheme</Phrase>
-    <Phrase key="UpdateError">Error updating scheme data</Phrase>
     <Phrase key="ReloadButton">Reload</Phrase>
+    <Phrase key="UnableSendCommand">Unable to send command</Phrase>
+    <Phrase key="UpdateError">Error updating scheme data</Phrase>
   </Dictionary>
 </PlgSchemeDictionaries>
