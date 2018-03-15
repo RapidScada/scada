@@ -29,7 +29,6 @@ using Scada.Data.Tables;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
 using Utils;
 
 namespace Scada.Client
