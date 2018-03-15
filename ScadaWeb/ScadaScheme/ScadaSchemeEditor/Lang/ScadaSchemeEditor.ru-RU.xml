@@ -46,6 +46,7 @@
     <Phrase key="lvCompTypes.Items[4]">Динамический рисунок</Phrase>
     <Phrase key="CloseSecondInstance">Редактор схем уже запущен.&#13;&#10;Вторая копия будет закрыта.</Phrase>
     <Phrase key="FailedToStartEditor">Не удалось запустить Редактор схем.&#13;&#10;Смотрите подробности в &#13;&#10;{0}</Phrase>
+    <Phrase key="OpenBrowserError">Ошибка при открытии браузера</Phrase>
     <Phrase key="PointerItem">Указатель</Phrase>
     <Phrase key="SchemeFileFilter">Схемы (*.sch)|*.sch|Все файлы (*.*)|*.*</Phrase>
     <Phrase key="SaveSchemeConfirm">Схема была изменена. Сохранить изменения?</Phrase>
@@ -54,6 +55,10 @@
   <Dictionary key="Scada.Scheme.Editor.FrmSettings">
     <Phrase key="this">Настройки</Phrase>
     <Phrase key="lblWebDir">Директория веб-приложения</Phrase>
+    <Phrase key="gbBrowser">Браузер</Phrase>
+    <Phrase key="rbDefault">По умолчанию</Phrase>
+    <Phrase key="rbChrome">Chrome</Phrase>
+    <Phrase key="rbFirefox">Firefox</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Отмена</Phrase>
     <Phrase key="WebDirNotExists">Директория веб-приложения не существует.</Phrase>

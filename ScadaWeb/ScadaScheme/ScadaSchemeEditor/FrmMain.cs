@@ -216,9 +216,39 @@ namespace Scada.Scheme.Editor
         /// </summary>
         private void OpenBrowser()
         {
-            Uri startUri = new Uri(editor.GetWebPageFilePath(appData.AppDirs.WebDir));
-            //Process.Start("firefox", startUri.AbsoluteUri);
-            Process.Start(startUri.AbsoluteUri);
+            string path = editor.GetWebPageFilePath(appData.AppDirs.WebDir);
+
+            if (File.Exists(path))
+            {
+                try
+                {
+                    Uri startUri = new Uri(path);
+
+                    switch (settings.Browser)
+                    {
+                        case Settings.Browsers.Chrome:
+                            Process.Start("chrome", startUri.AbsoluteUri);
+                            break;
+                        case Settings.Browsers.Firefox:
+                            Process.Start("firefox", startUri.AbsoluteUri);
+                            break;
+                        default: // Settings.Browsers.Default:
+                            Process.Start(startUri.AbsoluteUri);
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log.WriteException(ex, AppPhrases.OpenBrowserError);
+                    ScadaUiUtils.ShowError(AppPhrases.OpenBrowserError + ":" + Environment.NewLine + ex.Message);
+                }
+            }
+            else
+            {
+                string errMsg = string.Format(CommonPhrases.NamedFileNotFound, path);
+                log.WriteError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
+            }
         }
 
         /// <summary>
@@ -814,13 +844,19 @@ namespace Scada.Scheme.Editor
         private void miToolsOptions_Click(object sender, EventArgs e)
         {
             // отображение формы настроек
-            if (FrmSettings.ShowDialog(settings))
+            bool restartNeeded;
+            if (FrmSettings.ShowDialog(settings, out restartNeeded))
             {
                 string errMsg;
                 if (settings.Save(appData.AppDirs.ConfigDir + Settings.DefFileName, out errMsg))
-                    ScadaUiUtils.ShowInfo(AppPhrases.RestartNeeded);
+                {
+                    if (restartNeeded)
+                        ScadaUiUtils.ShowInfo(AppPhrases.RestartNeeded);
+                }
                 else
+                {
                     ScadaUiUtils.ShowError(errMsg);
+                }
             }
         }
 

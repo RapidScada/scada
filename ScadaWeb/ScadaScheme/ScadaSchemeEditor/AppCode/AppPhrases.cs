@@ -39,6 +39,7 @@ namespace Scada.Scheme.Editor
         // Словарь Scada.Scheme.Editor.FrmMain
         public static string CloseSecondInstance { get; private set; }
         public static string FailedToStartEditor { get; private set; }
+        public static string OpenBrowserError { get; private set; }
         public static string PointerItem { get; private set; }
         public static string SchemeFileFilter { get; private set; }
         public static string SaveSchemeConfirm { get; private set; }
@@ -59,6 +60,7 @@ namespace Scada.Scheme.Editor
         {
             CloseSecondInstance = Localization.Dict.GetEmptyPhrase("CloseSecondInstance");
             FailedToStartEditor = Localization.Dict.GetEmptyPhrase("FailedToStartEditor");
+            OpenBrowserError = Localization.Dict.GetEmptyPhrase("OpenBrowserError");
             PointerItem = Localization.Dict.GetEmptyPhrase("PointerItem");
             SchemeFileFilter = Localization.Dict.GetEmptyPhrase("SchemeFileFilter");
             SaveSchemeConfirm = Localization.Dict.GetEmptyPhrase("SaveSchemeConfirm");
@@ -80,6 +82,7 @@ namespace Scada.Scheme.Editor
             {
                 CloseSecondInstance = dict.GetPhrase("CloseSecondInstance", CloseSecondInstance);
                 FailedToStartEditor = dict.GetPhrase("FailedToStartEditor", FailedToStartEditor);
+                OpenBrowserError = dict.GetPhrase("OpenBrowserError", OpenBrowserError);
                 PointerItem = dict.GetPhrase("PointerItem", PointerItem);
                 SchemeFileFilter = dict.GetPhrase("SchemeFileFilter", SchemeFileFilter);
                 SaveSchemeConfirm = dict.GetPhrase("SaveSchemeConfirm", SaveSchemeConfirm);

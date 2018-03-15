@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2018
  */
 
 using System;
@@ -35,6 +35,16 @@ namespace Scada.Scheme.Editor
     /// </summary>
     internal class Settings
     {
+        /// <summary>
+        /// Браузеры для редактирования схемы
+        /// </summary>
+        public enum Browsers
+        {
+            Default,
+            Chrome,
+            Firefox
+        }
+
         /// <summary>
         /// Имя файла настроек по умолчанию
         /// </summary>
@@ -55,6 +65,11 @@ namespace Scada.Scheme.Editor
         /// </summary>
         public string WebDir { get; set; }
 
+        /// <summary>
+        /// Получить или установить браузер
+        /// </summary>
+        public Browsers Browser { get; set; }
+
 
         /// <summary>
         /// Установить настройки приложения по умолчанию
@@ -62,6 +77,7 @@ namespace Scada.Scheme.Editor
         private void SetToDefault()
         {
             WebDir = @"C:\SCADA\ScadaWeb\";
+            Browser = Browsers.Default;
         }
 
         /// <summary>
@@ -88,8 +104,17 @@ namespace Scada.Scheme.Editor
                     string nameL = name.ToLowerInvariant();
                     string val = paramElem.GetAttribute("value");
 
-                    if (nameL == "webdir")
-                        WebDir = ScadaUtils.NormalDir(val);
+                    try
+                    {
+                        if (nameL == "webdir")
+                            WebDir = ScadaUtils.NormalDir(val);
+                        else if (nameL == "browser")
+                            Browser = (Browsers)Enum.Parse(typeof(Browsers), val, true);
+                    }
+                    catch
+                    {
+                        throw new Exception(string.Format(CommonPhrases.IncorrectXmlParamVal, name));
+                    }
                 }
 
                 errMsg = "";
@@ -119,6 +144,8 @@ namespace Scada.Scheme.Editor
                 xmlDoc.AppendChild(rootElem);
                 rootElem.AppendParamElem("WebDir", WebDir, 
                     "Директория веб-приложения", "Web application directory");
+                rootElem.AppendParamElem("Browser", Browser,
+                    "Браузер для редактирования схемы", "Browser for scheme editing");
 
                 // сохранение в файле
                 xmlDoc.Save(fileName);

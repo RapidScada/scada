@@ -46,6 +46,7 @@
     <Phrase key="lvCompTypes.Items[4]">Dynamic Picture</Phrase>
     <Phrase key="CloseSecondInstance">Scheme Editor already started.&#13;&#10;The second instance will be closed.</Phrase>
     <Phrase key="FailedToStartEditor">Failed to start Scada Editor.&#13;&#10;See the details in&#13;&#10;{0}</Phrase>
+    <Phrase key="OpenBrowserError">Error opening browser</Phrase>
     <Phrase key="PointerItem">Pointer</Phrase>
     <Phrase key="SchemeFileFilter">Schemes (*.sch)|*.sch|All Files (*.*)|*.*</Phrase>
     <Phrase key="SaveSchemeConfirm">The scheme has been modified. Save the changes?</Phrase>
@@ -54,6 +55,10 @@
   <Dictionary key="Scada.Scheme.Editor.FrmSettings">
     <Phrase key="this">Options</Phrase>
     <Phrase key="lblWebDir">Web application directory</Phrase>
+    <Phrase key="gbBrowser">Browser</Phrase>
+    <Phrase key="rbDefault">Default</Phrase>
+    <Phrase key="rbChrome">Chrome</Phrase>
+    <Phrase key="rbFirefox">Firefox</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
     <Phrase key="WebDirNotExists">Web application directory does not exist.</Phrase>
