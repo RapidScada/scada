@@ -40,7 +40,7 @@
             this.btnFileNew = new System.Windows.Forms.ToolStripButton();
             this.btnFileOpen = new System.Windows.Forms.ToolStripButton();
             this.btnFileSave = new System.Windows.Forms.ToolStripSplitButton();
-            this.miFileSaveAs = new System.Windows.Forms.ToolStripMenuItem();
+            this.miFileSaveAs2 = new System.Windows.Forms.ToolStripMenuItem();
             this.btnFileOpenBrowser = new System.Windows.Forms.ToolStripButton();
             this.sep1 = new System.Windows.Forms.ToolStripSeparator();
             this.btnEditCut = new System.Windows.Forms.ToolStripButton();
@@ -52,9 +52,6 @@
             this.sep3 = new System.Windows.Forms.ToolStripSeparator();
             this.btnEditPointer = new System.Windows.Forms.ToolStripButton();
             this.btnEditDelete = new System.Windows.Forms.ToolStripButton();
-            this.sep4 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnSettingsOptions = new System.Windows.Forms.ToolStripButton();
-            this.btnHelpAbout = new System.Windows.Forms.ToolStripButton();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControl = new System.Windows.Forms.TabControl();
@@ -67,11 +64,35 @@
             this.cbSchComp = new System.Windows.Forms.ComboBox();
             this.ofdScheme = new System.Windows.Forms.OpenFileDialog();
             this.sfdScheme = new System.Windows.Forms.SaveFileDialog();
+            this.menuStrip = new System.Windows.Forms.MenuStrip();
+            this.miFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.miFileNew = new System.Windows.Forms.ToolStripMenuItem();
+            this.miFileOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.miFileSave = new System.Windows.Forms.ToolStripMenuItem();
+            this.miFileSaveAs = new System.Windows.Forms.ToolStripMenuItem();
+            this.miFileOpenBrowser = new System.Windows.Forms.ToolStripMenuItem();
+            this.miFileSep = new System.Windows.Forms.ToolStripSeparator();
+            this.miFileExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.miEdit = new System.Windows.Forms.ToolStripMenuItem();
+            this.miEditCut = new System.Windows.Forms.ToolStripMenuItem();
+            this.miEditCopy = new System.Windows.Forms.ToolStripMenuItem();
+            this.miEditPaste = new System.Windows.Forms.ToolStripMenuItem();
+            this.miEditSep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.miEditUndo = new System.Windows.Forms.ToolStripMenuItem();
+            this.miEditRedo = new System.Windows.Forms.ToolStripMenuItem();
+            this.miEditSep2 = new System.Windows.Forms.ToolStripSeparator();
+            this.miEditPointer = new System.Windows.Forms.ToolStripMenuItem();
+            this.miEditDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.miTools = new System.Windows.Forms.ToolStripMenuItem();
+            this.miToolsOptions = new System.Windows.Forms.ToolStripMenuItem();
+            this.miHelp = new System.Windows.Forms.ToolStripMenuItem();
+            this.miHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.pageComponents.SuspendLayout();
             this.pageProperties.SuspendLayout();
+            this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip
@@ -90,11 +111,8 @@
             this.btnEditRedo,
             this.sep3,
             this.btnEditPointer,
-            this.btnEditDelete,
-            this.sep4,
-            this.btnSettingsOptions,
-            this.btnHelpAbout});
-            this.toolStrip.Location = new System.Drawing.Point(0, 0);
+            this.btnEditDelete});
+            this.toolStrip.Location = new System.Drawing.Point(0, 24);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Size = new System.Drawing.Size(309, 25);
             this.toolStrip.TabIndex = 0;
@@ -108,7 +126,7 @@
             this.btnFileNew.Name = "btnFileNew";
             this.btnFileNew.Size = new System.Drawing.Size(23, 22);
             this.btnFileNew.ToolTipText = "Create new scheme (Ctrl+N)";
-            this.btnFileNew.Click += new System.EventHandler(this.btnFileNew_Click);
+            this.btnFileNew.Click += new System.EventHandler(this.miFileNew_Click);
             // 
             // btnFileOpen
             // 
@@ -118,27 +136,27 @@
             this.btnFileOpen.Name = "btnFileOpen";
             this.btnFileOpen.Size = new System.Drawing.Size(23, 22);
             this.btnFileOpen.ToolTipText = "Open scheme (Ctrl+O)";
-            this.btnFileOpen.Click += new System.EventHandler(this.btnFileOpen_Click);
+            this.btnFileOpen.Click += new System.EventHandler(this.miFileOpen_Click);
             // 
             // btnFileSave
             // 
             this.btnFileSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.btnFileSave.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.miFileSaveAs});
+            this.miFileSaveAs2});
             this.btnFileSave.Image = ((System.Drawing.Image)(resources.GetObject("btnFileSave.Image")));
             this.btnFileSave.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnFileSave.Name = "btnFileSave";
             this.btnFileSave.Size = new System.Drawing.Size(32, 22);
             this.btnFileSave.ToolTipText = "Save scheme (Ctrl+S)";
-            this.btnFileSave.ButtonClick += new System.EventHandler(this.btnFileSave_ButtonClick);
+            this.btnFileSave.ButtonClick += new System.EventHandler(this.miFileSave_Click);
             // 
-            // miFileSaveAs
+            // miFileSaveAs2
             // 
-            this.miFileSaveAs.Image = ((System.Drawing.Image)(resources.GetObject("miFileSaveAs.Image")));
-            this.miFileSaveAs.Name = "miFileSaveAs";
-            this.miFileSaveAs.Size = new System.Drawing.Size(123, 22);
-            this.miFileSaveAs.Text = "Save As...";
-            this.miFileSaveAs.Click += new System.EventHandler(this.miFileSaveAs_Click);
+            this.miFileSaveAs2.Image = ((System.Drawing.Image)(resources.GetObject("miFileSaveAs2.Image")));
+            this.miFileSaveAs2.Name = "miFileSaveAs2";
+            this.miFileSaveAs2.Size = new System.Drawing.Size(123, 22);
+            this.miFileSaveAs2.Text = "Save As...";
+            this.miFileSaveAs2.Click += new System.EventHandler(this.miFileSaveAs_Click);
             // 
             // btnFileOpenBrowser
             // 
@@ -148,7 +166,7 @@
             this.btnFileOpenBrowser.Name = "btnFileOpenBrowser";
             this.btnFileOpenBrowser.Size = new System.Drawing.Size(23, 22);
             this.btnFileOpenBrowser.ToolTipText = "Open new browser tab";
-            this.btnFileOpenBrowser.Click += new System.EventHandler(this.btnFileOpenBrowser_Click);
+            this.btnFileOpenBrowser.Click += new System.EventHandler(this.miFileOpenBrowser_Click);
             // 
             // sep1
             // 
@@ -163,7 +181,7 @@
             this.btnEditCut.Name = "btnEditCut";
             this.btnEditCut.Size = new System.Drawing.Size(23, 22);
             this.btnEditCut.ToolTipText = "Cut scheme components (Ctrl+X)";
-            this.btnEditCut.Click += new System.EventHandler(this.btnEditCut_Click);
+            this.btnEditCut.Click += new System.EventHandler(this.miEditCut_Click);
             // 
             // btnEditCopy
             // 
@@ -173,7 +191,7 @@
             this.btnEditCopy.Name = "btnEditCopy";
             this.btnEditCopy.Size = new System.Drawing.Size(23, 22);
             this.btnEditCopy.ToolTipText = "Copy scheme components (Ctrl+C)";
-            this.btnEditCopy.Click += new System.EventHandler(this.btnEditCopy_Click);
+            this.btnEditCopy.Click += new System.EventHandler(this.miEditCopy_Click);
             // 
             // btnEditPaste
             // 
@@ -183,7 +201,7 @@
             this.btnEditPaste.Name = "btnEditPaste";
             this.btnEditPaste.Size = new System.Drawing.Size(23, 22);
             this.btnEditPaste.ToolTipText = "Paste scheme components (Ctrl+V)";
-            this.btnEditPaste.Click += new System.EventHandler(this.btnEditPaste_Click);
+            this.btnEditPaste.Click += new System.EventHandler(this.miEditPaste_Click);
             // 
             // sep2
             // 
@@ -198,7 +216,7 @@
             this.btnEditUndo.Name = "btnEditUndo";
             this.btnEditUndo.Size = new System.Drawing.Size(23, 22);
             this.btnEditUndo.ToolTipText = "Undo (Ctrl+Z)";
-            this.btnEditUndo.Click += new System.EventHandler(this.btnEditUndo_Click);
+            this.btnEditUndo.Click += new System.EventHandler(this.miEditUndo_Click);
             // 
             // btnEditRedo
             // 
@@ -208,7 +226,7 @@
             this.btnEditRedo.Name = "btnEditRedo";
             this.btnEditRedo.Size = new System.Drawing.Size(23, 22);
             this.btnEditRedo.ToolTipText = "Redo (Ctrl+Y)";
-            this.btnEditRedo.Click += new System.EventHandler(this.btnEditRedo_Click);
+            this.btnEditRedo.Click += new System.EventHandler(this.miEditRedo_Click);
             // 
             // sep3
             // 
@@ -223,7 +241,7 @@
             this.btnEditPointer.Name = "btnEditPointer";
             this.btnEditPointer.Size = new System.Drawing.Size(23, 22);
             this.btnEditPointer.ToolTipText = "Cancel adding component (Esc)";
-            this.btnEditPointer.Click += new System.EventHandler(this.btnEditPointer_Click);
+            this.btnEditPointer.Click += new System.EventHandler(this.miEditPointer_Click);
             // 
             // btnEditDelete
             // 
@@ -233,32 +251,7 @@
             this.btnEditDelete.Name = "btnEditDelete";
             this.btnEditDelete.Size = new System.Drawing.Size(23, 22);
             this.btnEditDelete.ToolTipText = "Delete selected components (Del)";
-            this.btnEditDelete.Click += new System.EventHandler(this.btnEditDelete_Click);
-            // 
-            // sep4
-            // 
-            this.sep4.Name = "sep4";
-            this.sep4.Size = new System.Drawing.Size(6, 25);
-            // 
-            // btnSettingsOptions
-            // 
-            this.btnSettingsOptions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnSettingsOptions.Image = ((System.Drawing.Image)(resources.GetObject("btnSettingsOptions.Image")));
-            this.btnSettingsOptions.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnSettingsOptions.Name = "btnSettingsOptions";
-            this.btnSettingsOptions.Size = new System.Drawing.Size(23, 20);
-            this.btnSettingsOptions.ToolTipText = "Settings";
-            this.btnSettingsOptions.Click += new System.EventHandler(this.btnSettingsOptions_Click);
-            // 
-            // btnHelpAbout
-            // 
-            this.btnHelpAbout.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnHelpAbout.Image = ((System.Drawing.Image)(resources.GetObject("btnHelpAbout.Image")));
-            this.btnHelpAbout.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnHelpAbout.Name = "btnHelpAbout";
-            this.btnHelpAbout.Size = new System.Drawing.Size(23, 20);
-            this.btnHelpAbout.ToolTipText = "About";
-            this.btnHelpAbout.Click += new System.EventHandler(this.btnHelpAbout_Click);
+            this.btnEditDelete.Click += new System.EventHandler(this.miEditDelete_Click);
             // 
             // statusStrip
             // 
@@ -281,11 +274,11 @@
             this.tabControl.Controls.Add(this.pageComponents);
             this.tabControl.Controls.Add(this.pageProperties);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl.Location = new System.Drawing.Point(0, 25);
+            this.tabControl.Location = new System.Drawing.Point(0, 49);
             this.tabControl.Multiline = true;
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(309, 464);
+            this.tabControl.Size = new System.Drawing.Size(309, 440);
             this.tabControl.TabIndex = 1;
             this.tabControl.MouseEnter += new System.EventHandler(this.FrmMain_MouseEnter);
             // 
@@ -295,7 +288,7 @@
             this.pageComponents.Location = new System.Drawing.Point(4, 22);
             this.pageComponents.Name = "pageComponents";
             this.pageComponents.Padding = new System.Windows.Forms.Padding(3);
-            this.pageComponents.Size = new System.Drawing.Size(301, 438);
+            this.pageComponents.Size = new System.Drawing.Size(301, 414);
             this.pageComponents.TabIndex = 2;
             this.pageComponents.Text = "Components";
             this.pageComponents.UseVisualStyleBackColor = true;
@@ -336,7 +329,7 @@
             this.lvCompTypes.Location = new System.Drawing.Point(3, 3);
             this.lvCompTypes.MultiSelect = false;
             this.lvCompTypes.Name = "lvCompTypes";
-            this.lvCompTypes.Size = new System.Drawing.Size(295, 432);
+            this.lvCompTypes.Size = new System.Drawing.Size(295, 408);
             this.lvCompTypes.SmallImageList = this.ilCompTypes;
             this.lvCompTypes.TabIndex = 0;
             this.lvCompTypes.UseCompatibleStateImageBehavior = false;
@@ -351,12 +344,12 @@
             // 
             this.ilCompTypes.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilCompTypes.ImageStream")));
             this.ilCompTypes.TransparentColor = System.Drawing.Color.Transparent;
-            this.ilCompTypes.Images.SetKeyName(0, "pointer.png");
-            this.ilCompTypes.Images.SetKeyName(1, "comp_st.png");
-            this.ilCompTypes.Images.SetKeyName(2, "comp_dt.png");
-            this.ilCompTypes.Images.SetKeyName(3, "comp_sp.png");
-            this.ilCompTypes.Images.SetKeyName(4, "comp_dp.png");
-            this.ilCompTypes.Images.SetKeyName(5, "component.png");
+            this.ilCompTypes.Images.SetKeyName(0, "comp_dp.png");
+            this.ilCompTypes.Images.SetKeyName(1, "comp_dt.png");
+            this.ilCompTypes.Images.SetKeyName(2, "comp_sp.png");
+            this.ilCompTypes.Images.SetKeyName(3, "comp_st.png");
+            this.ilCompTypes.Images.SetKeyName(4, "component.png");
+            this.ilCompTypes.Images.SetKeyName(5, "pointer.png");
             // 
             // pageProperties
             // 
@@ -365,7 +358,7 @@
             this.pageProperties.Location = new System.Drawing.Point(4, 22);
             this.pageProperties.Name = "pageProperties";
             this.pageProperties.Padding = new System.Windows.Forms.Padding(3);
-            this.pageProperties.Size = new System.Drawing.Size(301, 438);
+            this.pageProperties.Size = new System.Drawing.Size(301, 414);
             this.pageProperties.TabIndex = 0;
             this.pageProperties.Text = "Properties";
             this.pageProperties.UseVisualStyleBackColor = true;
@@ -376,7 +369,7 @@
             this.propertyGrid.LineColor = System.Drawing.SystemColors.ControlDark;
             this.propertyGrid.Location = new System.Drawing.Point(3, 24);
             this.propertyGrid.Name = "propertyGrid";
-            this.propertyGrid.Size = new System.Drawing.Size(295, 411);
+            this.propertyGrid.Size = new System.Drawing.Size(295, 387);
             this.propertyGrid.TabIndex = 1;
             this.propertyGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.propertyGrid_PropertyValueChanged);
             // 
@@ -401,6 +394,208 @@
             this.sfdScheme.DefaultExt = "*.sch";
             this.sfdScheme.Filter = "Schemes (*.sch)|*.sch|All Files (*.*)|*.*";
             // 
+            // menuStrip
+            // 
+            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miFile,
+            this.miEdit,
+            this.miTools,
+            this.miHelp});
+            this.menuStrip.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Size = new System.Drawing.Size(309, 24);
+            this.menuStrip.TabIndex = 3;
+            // 
+            // miFile
+            // 
+            this.miFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miFileNew,
+            this.miFileOpen,
+            this.miFileSave,
+            this.miFileSaveAs,
+            this.miFileOpenBrowser,
+            this.miFileSep,
+            this.miFileExit});
+            this.miFile.Name = "miFile";
+            this.miFile.Size = new System.Drawing.Size(37, 20);
+            this.miFile.Text = "&File";
+            // 
+            // miFileNew
+            // 
+            this.miFileNew.Image = ((System.Drawing.Image)(resources.GetObject("miFileNew.Image")));
+            this.miFileNew.Name = "miFileNew";
+            this.miFileNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+            this.miFileNew.Size = new System.Drawing.Size(155, 22);
+            this.miFileNew.Text = "Create";
+            this.miFileNew.Click += new System.EventHandler(this.miFileNew_Click);
+            // 
+            // miFileOpen
+            // 
+            this.miFileOpen.Image = ((System.Drawing.Image)(resources.GetObject("miFileOpen.Image")));
+            this.miFileOpen.Name = "miFileOpen";
+            this.miFileOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.miFileOpen.Size = new System.Drawing.Size(155, 22);
+            this.miFileOpen.Text = "Open...";
+            this.miFileOpen.Click += new System.EventHandler(this.miFileOpen_Click);
+            // 
+            // miFileSave
+            // 
+            this.miFileSave.Image = ((System.Drawing.Image)(resources.GetObject("miFileSave.Image")));
+            this.miFileSave.Name = "miFileSave";
+            this.miFileSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.miFileSave.Size = new System.Drawing.Size(155, 22);
+            this.miFileSave.Text = "Save";
+            this.miFileSave.Click += new System.EventHandler(this.miFileSave_Click);
+            // 
+            // miFileSaveAs
+            // 
+            this.miFileSaveAs.Image = ((System.Drawing.Image)(resources.GetObject("miFileSaveAs.Image")));
+            this.miFileSaveAs.Name = "miFileSaveAs";
+            this.miFileSaveAs.Size = new System.Drawing.Size(155, 22);
+            this.miFileSaveAs.Text = "SaveAs...";
+            this.miFileSaveAs.Click += new System.EventHandler(this.miFileSaveAs_Click);
+            // 
+            // miFileOpenBrowser
+            // 
+            this.miFileOpenBrowser.Image = ((System.Drawing.Image)(resources.GetObject("miFileOpenBrowser.Image")));
+            this.miFileOpenBrowser.Name = "miFileOpenBrowser";
+            this.miFileOpenBrowser.Size = new System.Drawing.Size(155, 22);
+            this.miFileOpenBrowser.Text = "Open browser";
+            this.miFileOpenBrowser.Click += new System.EventHandler(this.miFileOpenBrowser_Click);
+            // 
+            // miFileSep
+            // 
+            this.miFileSep.Name = "miFileSep";
+            this.miFileSep.Size = new System.Drawing.Size(152, 6);
+            // 
+            // miFileExit
+            // 
+            this.miFileExit.Image = ((System.Drawing.Image)(resources.GetObject("miFileExit.Image")));
+            this.miFileExit.Name = "miFileExit";
+            this.miFileExit.Size = new System.Drawing.Size(155, 22);
+            this.miFileExit.Text = "Exit";
+            this.miFileExit.Click += new System.EventHandler(this.miFileExit_Click);
+            // 
+            // miEdit
+            // 
+            this.miEdit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miEditCut,
+            this.miEditCopy,
+            this.miEditPaste,
+            this.miEditSep1,
+            this.miEditUndo,
+            this.miEditRedo,
+            this.miEditSep2,
+            this.miEditPointer,
+            this.miEditDelete});
+            this.miEdit.Name = "miEdit";
+            this.miEdit.Size = new System.Drawing.Size(39, 20);
+            this.miEdit.Text = "&Edit";
+            // 
+            // miEditCut
+            // 
+            this.miEditCut.Image = ((System.Drawing.Image)(resources.GetObject("miEditCut.Image")));
+            this.miEditCut.Name = "miEditCut";
+            this.miEditCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
+            this.miEditCut.Size = new System.Drawing.Size(144, 22);
+            this.miEditCut.Text = "Cut";
+            this.miEditCut.Click += new System.EventHandler(this.miEditCut_Click);
+            // 
+            // miEditCopy
+            // 
+            this.miEditCopy.Image = ((System.Drawing.Image)(resources.GetObject("miEditCopy.Image")));
+            this.miEditCopy.Name = "miEditCopy";
+            this.miEditCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.miEditCopy.Size = new System.Drawing.Size(144, 22);
+            this.miEditCopy.Text = "Copy";
+            this.miEditCopy.Click += new System.EventHandler(this.miEditCopy_Click);
+            // 
+            // miEditPaste
+            // 
+            this.miEditPaste.Image = ((System.Drawing.Image)(resources.GetObject("miEditPaste.Image")));
+            this.miEditPaste.Name = "miEditPaste";
+            this.miEditPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
+            this.miEditPaste.Size = new System.Drawing.Size(144, 22);
+            this.miEditPaste.Text = "Paste";
+            this.miEditPaste.Click += new System.EventHandler(this.miEditPaste_Click);
+            // 
+            // miEditSep1
+            // 
+            this.miEditSep1.Name = "miEditSep1";
+            this.miEditSep1.Size = new System.Drawing.Size(141, 6);
+            // 
+            // miEditUndo
+            // 
+            this.miEditUndo.Image = ((System.Drawing.Image)(resources.GetObject("miEditUndo.Image")));
+            this.miEditUndo.Name = "miEditUndo";
+            this.miEditUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
+            this.miEditUndo.Size = new System.Drawing.Size(144, 22);
+            this.miEditUndo.Text = "Undo";
+            this.miEditUndo.Click += new System.EventHandler(this.miEditUndo_Click);
+            // 
+            // miEditRedo
+            // 
+            this.miEditRedo.Image = ((System.Drawing.Image)(resources.GetObject("miEditRedo.Image")));
+            this.miEditRedo.Name = "miEditRedo";
+            this.miEditRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
+            this.miEditRedo.Size = new System.Drawing.Size(144, 22);
+            this.miEditRedo.Text = "Redo";
+            this.miEditRedo.Click += new System.EventHandler(this.miEditRedo_Click);
+            // 
+            // miEditSep2
+            // 
+            this.miEditSep2.Name = "miEditSep2";
+            this.miEditSep2.Size = new System.Drawing.Size(141, 6);
+            // 
+            // miEditPointer
+            // 
+            this.miEditPointer.Image = ((System.Drawing.Image)(resources.GetObject("miEditPointer.Image")));
+            this.miEditPointer.Name = "miEditPointer";
+            this.miEditPointer.Size = new System.Drawing.Size(144, 22);
+            this.miEditPointer.Text = "Pointer";
+            this.miEditPointer.Click += new System.EventHandler(this.miEditPointer_Click);
+            // 
+            // miEditDelete
+            // 
+            this.miEditDelete.Image = ((System.Drawing.Image)(resources.GetObject("miEditDelete.Image")));
+            this.miEditDelete.Name = "miEditDelete";
+            this.miEditDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
+            this.miEditDelete.Size = new System.Drawing.Size(144, 22);
+            this.miEditDelete.Text = "Delete";
+            this.miEditDelete.Click += new System.EventHandler(this.miEditDelete_Click);
+            // 
+            // miTools
+            // 
+            this.miTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miToolsOptions});
+            this.miTools.Name = "miTools";
+            this.miTools.Size = new System.Drawing.Size(47, 20);
+            this.miTools.Text = "&Tools";
+            // 
+            // miToolsOptions
+            // 
+            this.miToolsOptions.Image = ((System.Drawing.Image)(resources.GetObject("miToolsOptions.Image")));
+            this.miToolsOptions.Name = "miToolsOptions";
+            this.miToolsOptions.Size = new System.Drawing.Size(125, 22);
+            this.miToolsOptions.Text = "Options...";
+            this.miToolsOptions.Click += new System.EventHandler(this.miToolsOptions_Click);
+            // 
+            // miHelp
+            // 
+            this.miHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miHelpAbout});
+            this.miHelp.Name = "miHelp";
+            this.miHelp.Size = new System.Drawing.Size(44, 20);
+            this.miHelp.Text = "&Help";
+            // 
+            // miHelpAbout
+            // 
+            this.miHelpAbout.Image = ((System.Drawing.Image)(resources.GetObject("miHelpAbout.Image")));
+            this.miHelpAbout.Name = "miHelpAbout";
+            this.miHelpAbout.Size = new System.Drawing.Size(107, 22);
+            this.miHelpAbout.Text = "About";
+            this.miHelpAbout.Click += new System.EventHandler(this.miHelpAbout_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -408,9 +603,11 @@
             this.ClientSize = new System.Drawing.Size(309, 511);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.toolStrip);
+            this.Controls.Add(this.menuStrip);
             this.Controls.Add(this.statusStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
+            this.MainMenuStrip = this.menuStrip;
             this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(200, 300);
             this.Name = "FrmMain";
@@ -431,6 +628,8 @@
             this.tabControl.ResumeLayout(false);
             this.pageComponents.ResumeLayout(false);
             this.pageProperties.ResumeLayout(false);
+            this.menuStrip.ResumeLayout(false);
+            this.menuStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -451,23 +650,43 @@
         private System.Windows.Forms.ToolStripStatusLabel lblStatus;
         private System.Windows.Forms.ToolStripSeparator sep1;
         private System.Windows.Forms.ToolStripSplitButton btnFileSave;
-        private System.Windows.Forms.ToolStripMenuItem miFileSaveAs;
+        private System.Windows.Forms.ToolStripMenuItem miFileSaveAs2;
         private System.Windows.Forms.ToolStripButton btnEditPaste;
         private System.Windows.Forms.ToolStripSeparator sep2;
         private System.Windows.Forms.ToolStripButton btnEditPointer;
         private System.Windows.Forms.ToolStripButton btnEditDelete;
         private System.Windows.Forms.ToolStripSeparator sep3;
-        private System.Windows.Forms.ToolStripButton btnHelpAbout;
         private System.Windows.Forms.ToolStripButton btnFileOpenBrowser;
         private System.Windows.Forms.ToolStripButton btnEditUndo;
         private System.Windows.Forms.ToolStripButton btnEditRedo;
-        private System.Windows.Forms.ToolStripSeparator sep4;
         private System.Windows.Forms.OpenFileDialog ofdScheme;
         private System.Windows.Forms.SaveFileDialog sfdScheme;
         private System.Windows.Forms.ListView lvCompTypes;
         private System.Windows.Forms.ImageList ilCompTypes;
         private System.Windows.Forms.ColumnHeader colCompName;
-        private System.Windows.Forms.ToolStripButton btnSettingsOptions;
+        private System.Windows.Forms.MenuStrip menuStrip;
+        private System.Windows.Forms.ToolStripMenuItem miFile;
+        private System.Windows.Forms.ToolStripMenuItem miFileNew;
+        private System.Windows.Forms.ToolStripMenuItem miFileOpen;
+        private System.Windows.Forms.ToolStripMenuItem miFileSave;
+        private System.Windows.Forms.ToolStripMenuItem miFileSaveAs;
+        private System.Windows.Forms.ToolStripSeparator miFileSep;
+        private System.Windows.Forms.ToolStripMenuItem miFileExit;
+        private System.Windows.Forms.ToolStripMenuItem miEdit;
+        private System.Windows.Forms.ToolStripMenuItem miTools;
+        private System.Windows.Forms.ToolStripMenuItem miHelp;
+        private System.Windows.Forms.ToolStripMenuItem miEditCut;
+        private System.Windows.Forms.ToolStripMenuItem miEditCopy;
+        private System.Windows.Forms.ToolStripMenuItem miEditPaste;
+        private System.Windows.Forms.ToolStripSeparator miEditSep1;
+        private System.Windows.Forms.ToolStripMenuItem miEditUndo;
+        private System.Windows.Forms.ToolStripMenuItem miEditRedo;
+        private System.Windows.Forms.ToolStripSeparator miEditSep2;
+        private System.Windows.Forms.ToolStripMenuItem miEditPointer;
+        private System.Windows.Forms.ToolStripMenuItem miEditDelete;
+        private System.Windows.Forms.ToolStripMenuItem miToolsOptions;
+        private System.Windows.Forms.ToolStripMenuItem miHelpAbout;
+        private System.Windows.Forms.ToolStripMenuItem miFileOpenBrowser;
     }
 }
 

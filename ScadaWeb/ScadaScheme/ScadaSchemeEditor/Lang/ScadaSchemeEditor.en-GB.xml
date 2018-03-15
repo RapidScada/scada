@@ -4,10 +4,30 @@
     <Phrase key="EditorTitle">Scheme Editor</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Editor.FrmMain">
+    <Phrase key="miFile">&amp;File</Phrase>
+    <Phrase key="miFileNew">Create</Phrase>
+    <Phrase key="miFileOpen">Open...</Phrase>
+    <Phrase key="miFileSave">Save</Phrase>
+    <Phrase key="miFileSaveAs">Save As...</Phrase>
+    <Phrase key="miFileOpenBrowser">Open browser</Phrase>
+    <Phrase key="miFileImport">Import...</Phrase>
+    <Phrase key="miFileExit">Exit</Phrase>
+    <Phrase key="miEdit">&amp;Edit</Phrase>
+    <Phrase key="miEditCut">Cut</Phrase>
+    <Phrase key="miEditCopy">Copy</Phrase>
+    <Phrase key="miEditPaste">Paste</Phrase>
+    <Phrase key="miEditUndo">Undo</Phrase>
+    <Phrase key="miEditRedo">Redo</Phrase>
+    <Phrase key="miEditPointer">Pointer</Phrase>
+    <Phrase key="miEditDelete">Delete</Phrase>
+    <Phrase key="miTools">&amp;Tools</Phrase>
+    <Phrase key="miToolsOptions">Options...</Phrase>
+    <Phrase key="miHelp">&amp;Help</Phrase>
+    <Phrase key="miHelpAbout">About</Phrase>
     <Phrase key="btnFileNew.ToolTip">Create new scheme (Ctrl+N)</Phrase>
     <Phrase key="btnFileOpen.ToolTip">Open scheme (Ctrl+O)</Phrase>
     <Phrase key="btnFileSave.ToolTip">Save scheme (Ctrl+S)</Phrase>
-    <Phrase key="miFileSaveAs">Save As...</Phrase>
+    <Phrase key="miFileSaveAs2">Save As...</Phrase>
     <Phrase key="btnFileOpenBrowser.ToolTip">Open new browser tab</Phrase>
     <Phrase key="btnEditCut.ToolTip">Cut scheme components (Ctrl+X)</Phrase>
     <Phrase key="btnEditCopy.ToolTip">Copy scheme components (Ctrl+C)</Phrase>
@@ -16,8 +36,6 @@
     <Phrase key="btnEditRedo.ToolTip">Redo (Ctrl+Y)</Phrase>
     <Phrase key="btnSchemePointer.ToolTip">Cancel adding component (Esc)</Phrase>
     <Phrase key="btnSchemeDelete.ToolTip">Delete selected components (Del)</Phrase>
-    <Phrase key="btnSettingsOptions.ToolTip">Settings</Phrase>
-    <Phrase key="btnHelpAbout.ToolTip">About</Phrase>
     <Phrase key="pageComponents">Components</Phrase>
     <Phrase key="pageProperties">Properties</Phrase>
     <Phrase key="lvgStandard">Standard</Phrase>
@@ -34,7 +52,7 @@
     <Phrase key="RestartNeeded">Settings changes will take effect after restarting the application.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Editor.FrmSettings">
-    <Phrase key="this">Settings</Phrase>
+    <Phrase key="this">Options</Phrase>
     <Phrase key="lblWebDir">Web application directory</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
