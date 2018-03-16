@@ -26,6 +26,7 @@
 using Scada.Data.Configuration;
 using System;
 using System.Collections;
+using System.Globalization;
 
 namespace Scada.Data.Models
 {
@@ -90,6 +91,7 @@ namespace Scada.Data.Models
             FormatName = "";
             ShowNumber = true;
             DecDigits = 3;
+            FormatInfo = null;
             UnitID = 0;
             UnitName = "";
             UnitSign = "";
@@ -205,6 +207,12 @@ namespace Scada.Data.Models
         /// Получить или установить количество знаков дробной части при выводе значения
         /// </summary>
         public int DecDigits { get; set; }
+
+        /// <summary>
+        /// Получить или установить форматирование значения
+        /// </summary>
+        /// <remarks>Свойство необходимо для оптимизации форматирования значений канала</remarks>
+        public NumberFormatInfo FormatInfo { get; set; }
 
         /// <summary>
         /// Получить или установить идентификатор размерности
