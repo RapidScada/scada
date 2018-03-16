@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PlgRegistrationDictionaries>
+  <Dictionary key="Scada.Web.Plugins.Registration">
+    <Phrase key="this">Реєстрація - Rapid SCADA</Phrase>
+    <Phrase key="lblTitle">Реєстрація {0}</Phrase>
+    <Phrase key="lblCompCode">Код комп'ютера</Phrase>
+    <Phrase key="lblRegKey">Реєстраційний ключ</Phrase>
+    <Phrase key="hlGetPermanentKey">Замовити постійний ключ</Phrase>
+    <Phrase key="hlGetTrialKey">Отримати пробний ключ</Phrase>
+    <Phrase key="lblKeyStatus">Статус ключа</Phrase>
+    <Phrase key="btnSaveKey">Зберегти ключ</Phrase>
+    <Phrase key="RegDataMissed">Реєстрацийні дані відсутні.</Phrase>
+    <Phrase key="RegDataTypeMismatch">Невідповідність типу реєстраційних даних.</Phrase>
+  </Dictionary>
+</PlgRegistrationDictionaries>

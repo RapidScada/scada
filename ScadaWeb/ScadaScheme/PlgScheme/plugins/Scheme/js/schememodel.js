@@ -3,15 +3,19 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2017
+ * Modified : 2018
  *
  * Requires:
  * - jquery
  * - utils.js
+ * - ajaxqueue.js
  * - schemerender.js
  *
  * At runtime:
  * - clientapi.js
+ *
+ * Requires external object:
+ * - ajaxQueue
  *
  * Inheritance hierarchy:
  * BaseComponent
@@ -53,7 +57,7 @@ scada.scheme.LoadStates = {
 /********** Scheme **********/
 
 // Scheme type
-scada.scheme.Scheme = function (editMode) {
+scada.scheme.Scheme = function (opt_editMode) {
     scada.scheme.BaseComponent.call(this);
     this.renderer = new scada.scheme.SchemeRenderer();
 
@@ -61,14 +65,20 @@ scada.scheme.Scheme = function (editMode) {
     this.LOAD_COMP_CNT = 100;
     // Total data size of images received by a one request, 1 MB
     this.LOAD_IMG_SIZE = 1048576;
+    // Timeout of command frame closing, ms
+    this.CLOSE_CMD_TIMEOUT = 1000;
 
     // Input channel filter for request current data
     this._cnlFilter = null;
 
     // Indicates whether the scheme is used by an editor
-    this.editMode = !!editMode;
+    this.editMode = !!opt_editMode;
+    // Scheme environment
+    this.schemeEnv = null;
+    // Ajax queue used for request sequencing. Must be not null
+    this.ajaxQueue = scada.ajaxQueueLocator.getAjaxQueue();
     // WCF-service URL
-    this.serviceUrl = "SchemeSvc.svc/";
+    this.serviceUrl = this.ajaxQueue.rootPath + "plugins/Scheme/SchemeSvc.svc/";
     // Scheme loading state
     this.loadState = scada.scheme.LoadStates.UNDEFINED;
     // Scheme view ID
@@ -196,7 +206,7 @@ scada.scheme.Scheme.prototype._loadSchemeDoc = function (viewOrEditorID, callbac
     var operation = this.serviceUrl + "GetSchemeDoc";
     var thisScheme = this;
 
-    $.ajax({
+    this.ajaxQueue.ajax({
         url: operation +
             this._getAccessParamStr(viewOrEditorID) +
             "&viewStamp=" + this.viewStamp,
@@ -263,7 +273,7 @@ scada.scheme.Scheme.prototype._loadComponents = function (viewOrEditorID, callba
     var operation = this.serviceUrl + "GetComponents";
     var thisScheme = this;
 
-    $.ajax({
+    this.ajaxQueue.ajax({
         url: operation +
             this._getAccessParamStr(viewOrEditorID) +
             "&viewStamp=" + this.viewStamp +
@@ -300,7 +310,7 @@ scada.scheme.Scheme.prototype._loadComponents = function (viewOrEditorID, callba
         scada.utils.logFailedRequest(operation, jqXHR);
         callback(false, false);
     });
-}
+};
 
 // Obtain received scheme components
 scada.scheme.Scheme.prototype._obtainComponents = function (parsedData) {
@@ -365,7 +375,7 @@ scada.scheme.Scheme.prototype._loadImages = function (viewOrEditorID, callback) 
     var operation = this.serviceUrl + "GetImages";
     var thisScheme = this;
 
-    $.ajax({
+    this.ajaxQueue.ajax({
         url: operation +
             this._getAccessParamStr(viewOrEditorID) +
             "&viewStamp=" + this.viewStamp +
@@ -402,7 +412,7 @@ scada.scheme.Scheme.prototype._loadImages = function (viewOrEditorID, callback) 
         scada.utils.logFailedRequest(operation, jqXHR);
         callback(false, false);
     });
-}
+};
 
 // Obtain received scheme images
 scada.scheme.Scheme.prototype._obtainImages = function (parsedData) {
@@ -459,7 +469,7 @@ scada.scheme.Scheme.prototype._loadErrors = function (viewOrEditorID, callback) 
     var operation = this.serviceUrl + "GetLoadErrors";
     var thisScheme = this;
 
-    $.ajax({
+    this.ajaxQueue.ajax({
         url: operation +
             this._getAccessParamStr(viewOrEditorID) +
             "&viewStamp=" + this.viewStamp,
@@ -494,7 +504,7 @@ scada.scheme.Scheme.prototype._loadErrors = function (viewOrEditorID, callback) 
         scada.utils.logFailedRequest(operation, jqXHR);
         callback(false, false);
     });
-}
+};
 
 // Update the component using the current input channel data
 scada.scheme.Scheme.prototype._updateComponentData = function (component) {
@@ -509,6 +519,30 @@ scada.scheme.Scheme.prototype._updateComponentData = function (component) {
         component.dom = null;
     }
 };
+
+// Open frame of sending command
+scada.scheme.Scheme.prototype._openCommandFrame = function () {
+    if (this.dom) {
+        var frameID = "cmd" + Date.now();
+        this.dom.append("<div id='" + frameID + "' class='cmd-frame'></div>");
+        return frameID;
+    } else {
+        return null;
+    }
+}
+
+// Close frame of sending command
+scada.scheme.Scheme.prototype._closeCommandFrame = function (opt_frameID) {
+    if (this.dom) {
+        if (opt_frameID) {
+            // remove specified frame
+            this.dom.children("#" + opt_frameID).remove();
+        } else {
+            // remove all command frames
+            this.dom.children(".cmd-frame").remove();
+        }
+    }
+}
 
 // Clear the scheme
 scada.scheme.Scheme.prototype.clear = function () {
@@ -541,6 +575,7 @@ scada.scheme.Scheme.prototype.load = function (viewOrEditorID, callback) {
 // Create DOM content of the scheme
 scada.scheme.Scheme.prototype.createDom = function (opt_controlRight) {
     this.renderContext.editMode = this.editMode;
+    this.renderContext.schemeEnv = this.schemeEnv;
     this.renderContext.imageMap = this.imageMap;
     this.renderContext.controlRight = typeof opt_controlRight === "undefined" ?
         true : opt_controlRight;
@@ -560,7 +595,8 @@ scada.scheme.Scheme.prototype.createDom = function (opt_controlRight) {
         try {
             component.renderer.createDom(component, this.renderContext);
             if (this.dom) {
-                this.dom.append(component.dom);
+                var elem = this.renderContext.editMode ? component.renderer.wrap(component) : component.dom;
+                this.dom.append(elem);
             }
         }
         catch (ex) {
@@ -582,7 +618,6 @@ scada.scheme.Scheme.prototype.updateData = function (clientAPI, callback) {
 
             if (curCnlDataMap) {
                 thisScheme.renderContext.curCnlDataMap = curCnlDataMap;
-                thisScheme.renderContext.imageMap = thisScheme.imageMap;
 
                 for (var component of thisScheme.componentMap.values()) {
                     thisScheme._updateComponentData(component);
@@ -607,6 +642,52 @@ scada.scheme.Scheme.prototype.setScale = function (scale) {
     catch (ex) {
         console.error("Error scaling the scheme:", ex.message);
     }
+};
+
+// Send telecommand
+// callback is a function (success)
+scada.scheme.Scheme.prototype.sendCommand = function (ctrlCnlNum, cmdVal, viewID, componentID, callback) {
+    var operation = this.serviceUrl + "SendCommand";
+    var thisScheme = this;
+
+    var frameID = this._openCommandFrame();
+    var closeTimeoutID = setTimeout(this._closeCommandFrame.bind(this), this.CLOSE_CMD_TIMEOUT, frameID);
+
+    var failCallback = function () {
+        clearTimeout(closeTimeoutID);
+        thisScheme._closeCommandFrame(frameID);
+        callback(false);
+    };
+
+    this.ajaxQueue.ajax({
+        url: operation +
+            "?ctrlCnlNum=" + ctrlCnlNum +
+            "&cmdVal=" + cmdVal +
+            "&viewID=" + viewID +
+            "&componentID=" + componentID,
+        method: "GET",
+        dataType: "json",
+        cache: false
+    })
+    .done(function (data, textStatus, jqXHR) {
+        var parsedData = $.parseJSON(data.d);
+        if (parsedData.Success) {
+            scada.utils.logSuccessfulRequest(operation);
+            if (parsedData.Data) {
+                callback(true);
+            } else {
+                console.warn("Unable to send command");
+                failCallback();
+            }
+        } else {
+            scada.utils.logServiceError(operation, parsedData.ErrorMessage);
+            failCallback();
+        }
+    })
+    .fail(function (jqXHR, textStatus, errorThrown) {
+        scada.utils.logFailedRequest(operation, jqXHR);
+        failCallback();
+    });
 }
 
 /********** Component **********/
@@ -618,6 +699,8 @@ scada.scheme.Component = function (componentProps) {
 
     // Component ID
     this.id = componentProps.ID;
+    // Telecommand value in case of direct sending
+    this.cmdVal = 0;
 };
 
 scada.scheme.Component.prototype = Object.create(scada.scheme.BaseComponent.prototype);

@@ -1,5 +1,10 @@
-﻿// Scheme object
-var scheme = new scada.scheme.Scheme();
+﻿// Rapid SCADA namespace
+var scada = scada || {};
+// Scheme namespace
+scada.scheme = scada.scheme || {};
+
+// Scheme object
+var scheme = null;
 // Notifier control
 var notifier = null;
 // Possible scale values
@@ -14,6 +19,18 @@ var refrRate = refrRate || 1000;
 var phrases = phrases || {};
 // View control right
 var controlRight = controlRight || false;
+
+// Scheme environment object accessible by the scheme and its components
+scada.scheme.env = {
+    // Send telecommand
+    sendCommand: function (ctrlCnlNum, cmdVal, viewID, componentID) {
+        scheme.sendCommand(ctrlCnlNum, cmdVal, viewID, componentID, function (success) {
+            if (!success) {
+                notifier.addNotification(phrases.UnableSendCommand, scada.NotifTypes.ERROR, notifier.DEF_NOTIF_LIFETIME);
+            }
+        });
+    }
+};
 
 // Load the scheme
 function loadScheme(viewID) {
@@ -90,8 +107,9 @@ function getPrevScale() {
     var curScale = scheme.scale;
     for (var i = scaleVals.length - 1; i >= 0; i--) {
         var prevScale = scaleVals[i];
-        if (curScale > prevScale)
+        if (curScale > prevScale) {
             return prevScale;
+        }
     }
     return curScale;
 }
@@ -101,8 +119,9 @@ function getNextScale() {
     var curScale = scheme.scale;
     for (var i = 0, len = scaleVals.length; i < len; i++) {
         var nextScale = scaleVals[i];
-        if (curScale < nextScale)
+        if (curScale < nextScale) {
             return nextScale;
+        }
     }
     return curScale;
 }
@@ -165,9 +184,17 @@ function initDebugTools() {
 }
 
 $(document).ready(function () {
+    // setup client API
     scada.clientAPI.rootPath = "../../";
+    scada.clientAPI.ajaxQueue = scada.ajaxQueueLocator.getAjaxQueue();
+
+    // create scheme
     var divSchWrapper = $("#divSchWrapper");
+    scheme = new scada.scheme.Scheme();
+    scheme.schemeEnv = scada.scheme.env;
     scheme.parentDomElem = divSchWrapper;
+
+    // setup user interface
     initToolbar();
     scada.utils.styleIOS(divSchWrapper);
     updateLayout();

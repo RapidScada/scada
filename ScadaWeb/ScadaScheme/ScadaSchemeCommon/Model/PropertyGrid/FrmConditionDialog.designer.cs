@@ -170,7 +170,7 @@
             this.Name = "FrmConditionDialog";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Image Output Conditions";
+            this.Text = "Conditions";
             this.Load += new System.EventHandler(this.FrmConditionDialog_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

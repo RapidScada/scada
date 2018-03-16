@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,13 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2005
- * Modified : 2015
+ * Modified : 2018
  */
 
 using Scada.Data.Configuration;
 using System;
 using System.Collections;
+using System.Globalization;
 
 namespace Scada.Data.Models
 {
@@ -70,9 +71,11 @@ namespace Scada.Data.Models
         /// </summary>
         public InCnlProps(int cnlNum, string cnlName, int cnlTypeID)
         {
+            Active = true;
             CnlNum = cnlNum;
             CnlName = cnlName;
             CnlTypeID = cnlTypeID;
+            CnlTypeName = "";
             ObjNum = 0;
             ObjName = "";
             KPNum = 0;
@@ -85,8 +88,10 @@ namespace Scada.Data.Models
             ParamName = "";
             IconFileName = "";
             FormatID = 0;
+            FormatName = "";
             ShowNumber = true;
             DecDigits = 3;
+            FormatInfo = null;
             UnitID = 0;
             UnitName = "";
             UnitSign = "";
@@ -104,6 +109,11 @@ namespace Scada.Data.Models
 
 
         /// <summary>
+        /// Получить или установить признак активности
+        /// </summary>
+        public bool Active { get; set; }
+
+        /// <summary>
         /// Получить или установить номер входного канала
         /// </summary>
         public int CnlNum { get; set; }
@@ -117,6 +127,11 @@ namespace Scada.Data.Models
         /// Получить или установить идентификатор типа канала
         /// </summary>
         public int CnlTypeID { get; set; }
+
+        /// <summary>
+        /// Получить или установить наименование типа канала
+        /// </summary>
+        public string CnlTypeName { get; set; }
 
         /// <summary>
         /// Получить или установить номер объекта
@@ -179,6 +194,11 @@ namespace Scada.Data.Models
         public int FormatID { get; set; }
 
         /// <summary>
+        /// Получить или установить наименование формата
+        /// </summary>
+        public string FormatName { get; set; }
+
+        /// <summary>
         /// Получить или установить признак вывода значения канала как числа
         /// </summary>
         public bool ShowNumber { get; set; }
@@ -187,6 +207,12 @@ namespace Scada.Data.Models
         /// Получить или установить количество знаков дробной части при выводе значения
         /// </summary>
         public int DecDigits { get; set; }
+
+        /// <summary>
+        /// Получить или установить форматирование значения
+        /// </summary>
+        /// <remarks>Свойство необходимо для оптимизации форматирования значений канала</remarks>
+        public NumberFormatInfo FormatInfo { get; set; }
 
         /// <summary>
         /// Получить или установить идентификатор размерности

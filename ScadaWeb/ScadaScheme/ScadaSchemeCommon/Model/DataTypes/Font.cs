@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.Scheme.Model.PropertyGrid;
@@ -47,7 +47,7 @@ namespace Scada.Scheme.Model.DataTypes
         /// <summary>
         /// Размер по умолчанию
         /// </summary>
-        public const int DefaultSize = 11;
+        public const int DefaultSize = 12;
         /// <summary>
         /// Шрифт по умолчанию
         /// </summary>

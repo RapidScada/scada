@@ -174,9 +174,8 @@
             // openFileDialog
             // 
             this.openFileDialog.DefaultExt = "*.xml";
-            this.openFileDialog.Filter = "Файлы шаблонов (*.xml)|*.xml|Все файлы (*.*)|*.*";
+            this.openFileDialog.Filter = "Template Files (*.xml)|*.xml|All Files (*.*)|*.*";
             this.openFileDialog.FilterIndex = 0;
-            this.openFileDialog.Title = "Открыть файл";
             // 
             // FrmDevProps
             // 

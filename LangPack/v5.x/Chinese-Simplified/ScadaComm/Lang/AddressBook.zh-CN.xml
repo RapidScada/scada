@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<AddressBookDictionaries>
+  <Dictionary key="Scada.Comm.Devices.AddressBook">
+    <Phrase key="LoadAddressBookError">加载通讯录时出错</Phrase>
+    <Phrase key="SaveAddressBookError">保存通讯录时出错</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.AddressBook.FrmAddressBook">
+    <Phrase key="this">地址簿</Phrase>
+    <Phrase key="btnAddContactGroup.ToolTip">添加分组</Phrase>
+    <Phrase key="btnAddContact.ToolTip">添加联系人</Phrase>
+    <Phrase key="btnAddPhoneNumber.ToolTip">添加电话号码</Phrase>
+    <Phrase key="btnAddEmail.ToolTip">添加邮箱</Phrase>
+    <Phrase key="btnEdit.ToolTip">编辑</Phrase>
+    <Phrase key="btnDelete.ToolTip">删除</Phrase>
+    <Phrase key="btnSave">保存</Phrase>
+    <Phrase key="btnClose">关闭</Phrase>
+    <Phrase key="AddressBookNode">通讯录</Phrase>
+    <Phrase key="NewContactGroup">新组</Phrase>
+    <Phrase key="NewContact">新联系人</Phrase>
+    <Phrase key="NewPhoneNumber">新电话号码</Phrase>
+    <Phrase key="NewEmail">新邮箱</Phrase>
+    <Phrase key="ContactGroupExists">分组已存在。</Phrase>
+    <Phrase key="ContactExists">该联系人已经存在于组中。</Phrase>
+    <Phrase key="PhoneNumberExists">联系人已经包含指定的电话号码。</Phrase>
+    <Phrase key="EmailExists">联系人已经包含指定的邮箱。</Phrase>
+    <Phrase key="IncorrectEmail">邮箱地址不正确。</Phrase>
+    <Phrase key="EmptyValueNotAllowed">不允许空值。</Phrase>
+    <Phrase key="SavePhonebookConfirm">通讯录已被修改，是否保存？</Phrase>
+  </Dictionary>
+</AddressBookDictionaries>

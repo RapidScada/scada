@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.Scheme.Model.DataTypes;
@@ -30,6 +30,7 @@ using System.Text;
 using Scada.Scheme.Model.PropertyGrid;
 using CM = System.ComponentModel;
 using System.Web.Script.Serialization;
+using System.Drawing.Design;
 
 namespace Scada.Scheme.Model
 {
@@ -65,6 +66,10 @@ namespace Scada.Scheme.Model
             schemeDoc = null;
             serBinder = null;
 
+            BackColor = "";
+            BorderColor = "";
+            BorderWidth = 0;
+            ToolTip = "";
             ID = 0;
             Name = "";
             Location = Point.Default;
@@ -72,6 +77,44 @@ namespace Scada.Scheme.Model
             ZIndex = 0;
         }
 
+
+        /// <summary>
+        /// Получить или установить цвет фона
+        /// </summary>
+        #region Attributes
+        [DisplayName("Back color"), Category(Categories.Appearance)]
+        [Description("The background color of the component.")]
+        [CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
+        #endregion
+        public string BackColor { get; set; }
+
+        /// <summary>
+        /// Получить или установить цвет границы
+        /// </summary>
+        #region Attributes
+        [DisplayName("Border color"), Category(Categories.Appearance)]
+        [Description("The border color of the component.")]
+        [CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
+        #endregion
+        public string BorderColor { get; set; }
+
+        /// <summary>
+        /// Получить или установить ширину границы
+        /// </summary>
+        #region Attributes
+        [DisplayName("Border width"), Category(Categories.Appearance)]
+        [Description("The border width of the component in pixels.")]
+        #endregion
+        public int BorderWidth { get; set; }
+
+        /// <summary>
+        /// Получить или установить подсказку
+        /// </summary>
+        #region Attributes
+        [DisplayName("Tooltip"), Category(Categories.Behavior)]
+        [Description("The pop-up hint that displays when user rests the pointer on the component.")]
+        #endregion
+        public string ToolTip { get; set; }
 
         /// <summary>
         /// Получить или установить идентификатор
@@ -174,6 +217,12 @@ namespace Scada.Scheme.Model
             if (xmlNode == null)
                 throw new ArgumentNullException("xmlNode");
 
+            BackColor = xmlNode.GetChildAsString("BackColor");
+            BorderColor = xmlNode.GetChildAsString("BorderColor");
+            BorderWidth = xmlNode.GetChildAsInt("BorderWidth");
+            BorderWidth = xmlNode.GetChildAsInt("BorderWidth",
+                string.IsNullOrEmpty(BorderColor) ? 0 : 1 /*для обратной совместимости*/);
+            ToolTip = xmlNode.GetChildAsString("ToolTip");
             ID = xmlNode.GetChildAsInt("ID");
             Name = xmlNode.GetChildAsString("Name");
             Location = Point.GetChildAsPoint(xmlNode, "Location");
@@ -189,6 +238,10 @@ namespace Scada.Scheme.Model
             if (xmlElem == null)
                 throw new ArgumentNullException("xmlElem");
 
+            xmlElem.AppendElem("BackColor", BackColor);
+            xmlElem.AppendElem("BorderColor", BorderColor);
+            xmlElem.AppendElem("BorderWidth", BorderWidth);
+            xmlElem.AppendElem("ToolTip", ToolTip);
             xmlElem.AppendElem("ID", ID);
             xmlElem.AppendElem("Name", Name);
             Point.AppendElem(xmlElem, "Location", Location);
@@ -202,7 +255,8 @@ namespace Scada.Scheme.Model
         public virtual BaseComponent Clone()
         {
             BaseComponent clonedComponent = (BaseComponent)ScadaUtils.DeepClone(this, serBinder);
-            clonedComponent.SchemeDoc = SchemeDoc;
+            clonedComponent.schemeDoc = SchemeDoc;
+            clonedComponent.serBinder = serBinder;
             clonedComponent.ItemChanged += ItemChanged;
             return clonedComponent;
         }

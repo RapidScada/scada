@@ -66,6 +66,7 @@
     <Compile Include="Model\DataTypes\CnlFilterExtenstions.cs" />
     <Compile Include="Model\DataTypes\CompareOperators.cs" />
     <Compile Include="Model\DataTypes\Condition.cs" />
+    <Compile Include="Model\DataTypes\ImageCondition.cs" />
     <Compile Include="Model\DataTypes\ImageStretches.cs" />
     <Compile Include="Model\DataTypes\LogicalOperators.cs" />
     <Compile Include="Model\DataTypes\Point.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Model\PropertyGrid\CnlFilterEditor.cs" />
     <Compile Include="Model\PropertyGrid\CollectionConverter.cs" />
     <Compile Include="Model\PropertyGrid\ColorEditor.cs" />
+    <Compile Include="Model\PropertyGrid\ImageConditionEditor.cs" />
     <Compile Include="Model\PropertyGrid\ConditionEditor.cs" />
     <Compile Include="Model\PropertyGrid\DescriptionAttribute.cs" />
     <Compile Include="Model\PropertyGrid\DisplayNameAttribute.cs" />

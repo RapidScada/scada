@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,13 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.Scheme;
+using Scada.Scheme.Model.PropertyGrid;
 using Scada.Web.Plugins.SchBasicComp;
+using System.IO;
 
 namespace Scada.Web.Plugins
 {
@@ -39,7 +41,7 @@ namespace Scada.Web.Plugins
         /// </summary>
         internal const string PlgVersion = "5.0.0.0";
 
-
+        
         /// <summary>
         /// Получить наименование плагина
         /// </summary>
@@ -85,6 +87,28 @@ namespace Scada.Web.Plugins
             get
             {
                 return new BasicCompLibSpec();
+            }
+        }
+
+        
+        /// <summary>
+        /// Инициализировать плагин
+        /// </summary>
+        public override void Init()
+        {
+            if (SchemeUtils.EditorMode)
+            {
+                // загрузка словарей
+                string errMsg;
+                if (!Localization.LoadDictionaries(Path.Combine(AppDirs.PluginsDir, "SchBasicComp", "lang"),
+                    "PlgSchBasicComp", out errMsg))
+                {
+                    Log.WriteError(errMsg);
+                }
+
+                // перевод атрибутов классов, которые используются при редактировании, но не являются компонентами схем
+                AttrTranslator attrTranslator = new AttrTranslator();
+                attrTranslator.TranslateAttrs(typeof(ColorCondition));
             }
         }
     }

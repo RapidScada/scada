@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.Scheme.Model;
@@ -42,6 +42,11 @@ namespace Scada.Scheme.Editor
     /// </summary>
     public partial class FrmMain : Form, IMainForm
     {
+        /// <summary>
+        /// Ключ иконки компонента по умолчанию
+        /// </summary>
+        private const string DefCompIcon = "component.png";
+
         private readonly AppData appData;   // общие данные приложения
         private readonly Settings settings; // настройки приложения
         private readonly Log log;           // журнал приложения
@@ -124,6 +129,7 @@ namespace Scada.Scheme.Editor
                 attrTranslator.TranslateAttrs(typeof(DynamicPicture));
                 attrTranslator.TranslateAttrs(typeof(UnknownComponent));
                 attrTranslator.TranslateAttrs(typeof(Condition));
+                attrTranslator.TranslateAttrs(typeof(ImageCondition));
                 attrTranslator.TranslateAttrs(typeof(ImageListItem));
             }
             catch (Exception ex)
@@ -170,19 +176,27 @@ namespace Scada.Scheme.Editor
 
                     // добавление элемента с указателем
                     lvCompTypes.Items.Add(new ListViewItem(
-                        "Pointer", "pointer.png", listViewGroup) { IndentCount = 1 });
+                        AppPhrases.PointerItem, "pointer.png", listViewGroup) { IndentCount = 1 });
 
                     // добавление компонентов
                     foreach (CompItem compItem in spec.CompItems)
                     {
-                        string imageKey = "image" + ilCompTypes.Images.Count;
-                        ilCompTypes.Images.Add(imageKey, compItem.Icon);
+                        string imageKey;
+                        if (compItem.Icon == null)
+                        {
+                            imageKey = DefCompIcon;
+                        }
+                        else
+                        {
+                            imageKey = "image" + ilCompTypes.Images.Count;
+                            ilCompTypes.Images.Add(imageKey, compItem.Icon);
+                        }
 
                         lvCompTypes.Items.Add(new ListViewItem()
                         {
                             Text = compItem.DisplayName,
                             ImageKey = imageKey,
-                            Tag = compItem.CompType?.FullName,
+                            Tag = compItem.CompType.FullName,
                             Group = listViewGroup,
                             IndentCount = 1
                         });
@@ -202,9 +216,39 @@ namespace Scada.Scheme.Editor
         /// </summary>
         private void OpenBrowser()
         {
-            Uri startUri = new Uri(editor.GetWebPageFilePath(appData.AppDirs.WebDir));
-            //Process.Start("firefox", startUri.AbsoluteUri);
-            Process.Start(startUri.AbsoluteUri);
+            string path = editor.GetWebPageFilePath(appData.AppDirs.WebDir);
+
+            if (File.Exists(path))
+            {
+                try
+                {
+                    Uri startUri = new Uri(path);
+
+                    switch (settings.Browser)
+                    {
+                        case Settings.Browsers.Chrome:
+                            Process.Start("chrome", startUri.AbsoluteUri);
+                            break;
+                        case Settings.Browsers.Firefox:
+                            Process.Start("firefox", startUri.AbsoluteUri);
+                            break;
+                        default: // Settings.Browsers.Default:
+                            Process.Start(startUri.AbsoluteUri);
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log.WriteException(ex, AppPhrases.OpenBrowserError);
+                    ScadaUiUtils.ShowError(AppPhrases.OpenBrowserError + ":" + Environment.NewLine + ex.Message);
+                }
+            }
+            else
+            {
+                string errMsg = string.Format(CommonPhrases.NamedFileNotFound, path);
+                log.WriteError(errMsg);
+                ScadaUiUtils.ShowError(errMsg);
+            }
         }
 
         /// <summary>
@@ -434,34 +478,34 @@ namespace Scada.Scheme.Editor
                 switch (formAction)
                 {
                     case FormActions.New:
-                        btnFileNew_Click(null, null);
+                        miFileNew_Click(null, null);
                         break;
                     case FormActions.Open:
-                        btnFileOpen_Click(null, null);
+                        miFileOpen_Click(null, null);
                         break;
                     case FormActions.Save:
-                        btnFileSave_ButtonClick(null, null);
+                        miFileSave_Click(null, null);
                         break;
                     case FormActions.Cut:
-                        btnEditCut_Click(null, null);
+                        miEditCut_Click(null, null);
                         break;
                     case FormActions.Copy:
-                        btnEditCopy_Click(null, null);
+                        miEditCopy_Click(null, null);
                         break;
                     case FormActions.Paste:
-                        btnEditPaste_Click(null, null);
+                        miEditPaste_Click(null, null);
                         break;
                     case FormActions.Undo:
-                        btnEditUndo_Click(null, null);
+                        miEditUndo_Click(null, null);
                         break;
                     case FormActions.Redo:
-                        btnEditRedo_Click(null, null);
+                        miEditRedo_Click(null, null);
                         break;
                     case FormActions.Pointer:
-                        btnEditPointer_Click(null, null);
+                        miEditPointer_Click(null, null);
                         break;
                     case FormActions.Delete:
-                        btnEditDelete_Click(null, null);
+                        miEditDelete_Click(null, null);
                         break;
                 }
             });
@@ -568,6 +612,10 @@ namespace Scada.Scheme.Editor
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
+#if DEBUG
+            System.Diagnostics.Debugger.Launch();
+#endif
+
             // инициализация общих данных приложения
             appData.Init(Path.GetDirectoryName(Application.ExecutablePath), this);
 
@@ -680,67 +728,28 @@ namespace Scada.Scheme.Editor
 
         private void FrmMain_KeyDown(object sender, KeyEventArgs e)
         {
-            // реализация горячих клавиш
-            if (e.Control)
+            // реализация горячих клавиш, которые не обрабатываются автоматически главным меню
+            if (ActiveControl == propertyGrid)
             {
-                switch (e.KeyCode)
-                {
-                    case Keys.N:
-                        btnFileNew_Click(null, null);
-                        break;
-                    case Keys.O:
-                        btnFileOpen_Click(null, null);
-                        break;
-                    case Keys.S:
-                        btnFileSave_ButtonClick(null, null);
-                        break;
-                }
-
-                if (ActiveControl != propertyGrid)
-                {
-                    switch (e.KeyCode)
-                    {
-                        case Keys.X:
-                            btnEditCut_Click(null, null);
-                            break;
-                        case Keys.C:
-                            btnEditCopy_Click(null, null);
-                            break;
-                        case Keys.V:
-                            btnEditPaste_Click(null, null);
-                            break;
-                        case Keys.Z:
-                            btnEditUndo_Click(null, null);
-                            break;
-                        case Keys.Y:
-                            btnEditRedo_Click(null, null);
-                            break;
-                    }
-                }
+                if (e.KeyCode == Keys.Delete)
+                    e.Handled = true;
             }
-            else if (ActiveControl != propertyGrid)
+            else
             {
-                switch (e.KeyCode)
-                {
-                    case Keys.Escape:
-                        btnEditPointer_Click(null, null);
-                        break;
-                    case Keys.Delete:
-                        btnEditDelete_Click(null, null);
-                        break;
-                }
+                if (e.KeyCode == Keys.Escape)
+                    miEditPointer_Click(null, null);
             }
         }
 
 
-        private void btnFileNew_Click(object sender, EventArgs e)
+        private void miFileNew_Click(object sender, EventArgs e)
         {
             // создание новой схемы
             if (ConfirmCloseScheme())
                 InitScheme();
         }
 
-        private void btnFileOpen_Click(object sender, EventArgs e)
+        private void miFileOpen_Click(object sender, EventArgs e)
         {
             // открытие схемы из файла
             if (ConfirmCloseScheme())
@@ -755,7 +764,7 @@ namespace Scada.Scheme.Editor
             }
         }
 
-        private void btnFileSave_ButtonClick(object sender, EventArgs e)
+        private void miFileSave_Click(object sender, EventArgs e)
         {
             // сохранение схемы
             SaveScheme(false);
@@ -767,31 +776,36 @@ namespace Scada.Scheme.Editor
             SaveScheme(true);
         }
 
-        private void btnFileOpenBrowser_Click(object sender, EventArgs e)
+        private void miFileOpenBrowser_Click(object sender, EventArgs e)
         {
             OpenBrowser();
         }
 
-        private void btnEditCut_Click(object sender, EventArgs e)
+        private void miFileExit_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void miEditCut_Click(object sender, EventArgs e)
         {
             // копирование в буфер обмена и удаление выбранных компонентов схемы
             editor.CopyToClipboard();
             editor.DeleteSelected();
         }
 
-        private void btnEditCopy_Click(object sender, EventArgs e)
+        private void miEditCopy_Click(object sender, EventArgs e)
         {
             // копировать выбранные компоненты в буфер обмена
             editor.CopyToClipboard();
         }
 
-        private void btnEditPaste_Click(object sender, EventArgs e)
+        private void miEditPaste_Click(object sender, EventArgs e)
         {
             // включение режима вставки компонентов
             editor.PointerMode = Editor.PointerModes.Paste;
         }
 
-        private void btnEditUndo_Click(object sender, EventArgs e)
+        private void miEditUndo_Click(object sender, EventArgs e)
         {
             // отмена последнего действия
             schCompChanging = true;
@@ -803,7 +817,7 @@ namespace Scada.Scheme.Editor
             ShowSchemeSelection();
         }
 
-        private void btnEditRedo_Click(object sender, EventArgs e)
+        private void miEditRedo_Click(object sender, EventArgs e)
         {
             // возврат последнего действия
             schCompChanging = true;
@@ -815,32 +829,38 @@ namespace Scada.Scheme.Editor
             ShowSchemeSelection();
         }
 
-        private void btnEditPointer_Click(object sender, EventArgs e)
+        private void miEditPointer_Click(object sender, EventArgs e)
         {
             // включение режима выбора компонентов
             editor.PointerMode = Editor.PointerModes.Select;
         }
 
-        private void btnEditDelete_Click(object sender, EventArgs e)
+        private void miEditDelete_Click(object sender, EventArgs e)
         {
             // удаление выбранных компонентов схемы
             editor.DeleteSelected();
         }
 
-        private void btnSettingsOptions_Click(object sender, EventArgs e)
+        private void miToolsOptions_Click(object sender, EventArgs e)
         {
             // отображение формы настроек
-            if (FrmSettings.ShowDialog(settings))
+            bool restartNeeded;
+            if (FrmSettings.ShowDialog(settings, out restartNeeded))
             {
                 string errMsg;
                 if (settings.Save(appData.AppDirs.ConfigDir + Settings.DefFileName, out errMsg))
-                    ScadaUiUtils.ShowInfo(AppPhrases.RestartNeeded);
+                {
+                    if (restartNeeded)
+                        ScadaUiUtils.ShowInfo(AppPhrases.RestartNeeded);
+                }
                 else
+                {
                     ScadaUiUtils.ShowError(errMsg);
+                }
             }
         }
 
-        private void btnHelpAbout_Click(object sender, EventArgs e)
+        private void miHelpAbout_Click(object sender, EventArgs e)
         {
             // отображение формы о программе
             FrmAbout.ShowAbout(appData.AppDirs.ExeDir, log, this);

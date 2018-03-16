@@ -75,6 +75,7 @@
     <Compile Include="Shell\UserMenu.cs" />
     <Compile Include="Shell\UserViews.cs" />
     <Compile Include="Shell\ViewNode.cs" />
+    <Compile Include="UserShot.cs" />
     <Compile Include="WebUtils.cs" />
     <Compile Include="Shell\MenuItem.cs" />
     <Compile Include="Shell\StandardMenuItems.cs" />

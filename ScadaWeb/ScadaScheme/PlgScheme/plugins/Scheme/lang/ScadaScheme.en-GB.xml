@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<PlgSchemeDictionaries>
+<ScadaSchemeDictionaries>
   <Dictionary key="Scada.Scheme.CompManager">
     <Phrase key="UnknownComponent">Unknown component {0}</Phrase>
     <Phrase key="CompLibraryNotFound">No library found for component {0}</Phrase>
@@ -29,7 +29,7 @@
     <Phrase key="btnCancel">Cancel</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmConditionDialog">
-    <Phrase key="this">Image Output Conditions</Phrase>
+    <Phrase key="this">Conditions</Phrase>
     <Phrase key="lblCond">Conditions</Phrase>
     <Phrase key="lblProps">Condition properties</Phrase>
     <Phrase key="btnOK">OK</Phrase>
@@ -59,4 +59,4 @@
     <Phrase key="LoadImageError">Error loading image</Phrase>
     <Phrase key="SaveImageError">Error saving image</Phrase>
   </Dictionary>
-</PlgSchemeDictionaries>
+</ScadaSchemeDictionaries>

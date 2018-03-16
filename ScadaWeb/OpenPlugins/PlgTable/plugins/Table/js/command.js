@@ -8,11 +8,12 @@ function startCountdown() {
     var spanCountdown = $("#spanCountdown");
 
     var countdownFunc = function () {
-        if (closeTimeout) {
+        if (closeTimeout > 1) {
             closeTimeout--;
             spanCountdown.text(closeTimeout);
             setTimeout(countdownFunc, 1000);
         } else {
+            spanCountdown.text("0");
             if (popup) {
                 popup.closeModal(window, true);
             }

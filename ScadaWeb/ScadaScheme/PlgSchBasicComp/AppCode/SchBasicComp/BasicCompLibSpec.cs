@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.Scheme;
@@ -104,7 +104,10 @@ namespace Scada.Web.Plugins.SchBasicComp
         {
             return new List<CompItem>()
             {
-                new CompItem(Resources.test, "Led", typeof(Led))
+                new CompItem(Resources.button, typeof(Button)),
+                new CompItem(Resources.led, typeof(Led)),
+                new CompItem(Resources.link, typeof(Link)),
+                new CompItem(Resources.toggle, typeof(Toggle))
             };
         }
 

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,13 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.Scheme;
 using Scada.Scheme.DataTransfer;
+using Scada.Scheme.Model;
+using Scada.Scheme.Model.DataTypes;
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
@@ -195,6 +197,51 @@ namespace Scada.Web.Plugins.Scheme
                 AppData.Log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при получении ошибок при загрузке схемы с ид.={0}" :
                     "Error getting loading errors of the scheme with ID={0}", viewID);
+                return GetErrorDtoJs(ex);
+            }
+        }
+
+        /// <summary>
+        /// Отправить команду ТУ со схемы
+        /// </summary>
+        /// <remarks>Возвращает DataTransferObject в формате в JSON</remarks>
+        [OperationContract]
+        [WebGet]
+        public string SendCommand(int ctrlCnlNum, double cmdVal, int viewID, int componentID)
+        {
+            try
+            {
+                UserShot userShot;
+                AppData.UserMonitor.CheckLoggedOn(out userShot);
+
+                if (!(userShot.WebSettings.CmdEnabled && userShot.UserRights.GetUiObjRights(viewID).ControlRight))
+                    throw new ScadaException(CommonPhrases.NoRights);
+
+                SchemeView schemeView = AppData.ViewCache.GetView<SchemeView>(viewID, true);
+                BaseComponent comp;
+                bool sendOK;
+                bool result;
+
+                if (schemeView.Components.TryGetValue(componentID, out comp) && comp is IDynamicComponent &&
+                    ((IDynamicComponent)comp).Action == Actions.SendCommandNow &&
+                    ((IDynamicComponent)comp).CtrlCnlNum == ctrlCnlNum)
+                {
+                    sendOK = AppData.ServerComm.SendStandardCommand(
+                        userShot.UserProps.UserID, ctrlCnlNum, cmdVal, out result);
+                }
+                else
+                {
+                    sendOK = false;
+                    result = false;
+                }
+
+                return JsSerializer.Serialize(new DataTransferObject(sendOK && result));
+            }
+            catch (Exception ex)
+            {
+                AppData.Log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при отправке команды ТУ со схемы с ид.={0}" :
+                    "Error sending telecommand from the scheme with ID={0}", viewID);
                 return GetErrorDtoJs(ex);
             }
         }

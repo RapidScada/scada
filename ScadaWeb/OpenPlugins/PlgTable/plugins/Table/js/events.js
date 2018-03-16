@@ -352,6 +352,7 @@ function restartUpdatingEvents() {
 
 $(document).ready(function () {
     scada.clientAPI.rootPath = "../../";
+    scada.clientAPI.ajaxQueue = scada.ajaxQueueLocator.getAjaxQueue();
     styleIOS();
     updateLayout();
     initViewDate();

@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<KpSmmpDictionaries>
+  <Dictionary key="Scada.Comm.Devices.KpSnmp.FrmConfig">
+    <Phrase key="this">配置SNMP - 设备{0}</Phrase>
+    <Phrase key="btnAddVarGroup.ToolTip">添加变量组</Phrase>
+    <Phrase key="btnAddVariable.ToolTip">添加变量</Phrase>
+    <Phrase key="btnEdit.ToolTip">编辑</Phrase>
+    <Phrase key="btnMoveUp.ToolTip">上移</Phrase>
+    <Phrase key="btnMoveDown.ToolTip">下移</Phrase>
+    <Phrase key="btnDelete.ToolTip">删除</Phrase>
+    <Phrase key="btnSettings.ToolTip">设置</Phrase>
+    <Phrase key="btnSave">保存</Phrase>
+    <Phrase key="btnClose">关闭</Phrase>
+    <Phrase key="DeviceNode">设备</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.KpSnmp.FrmSettings">
+    <Phrase key="this">设置</Phrase>
+    <Phrase key="lblReadCommunity">阅读内容</Phrase>
+    <Phrase key="lblWriteCommunity">写内容</Phrase>
+    <Phrase key="lblSnmpVersion">SNMP版本</Phrase>
+    <Phrase key="btnOK">确认</Phrase>
+    <Phrase key="btnCancel">取消</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.KpSnmp.FrmVarGroup">
+    <Phrase key="this">变量组</Phrase>
+    <Phrase key="lblName">名称</Phrase>
+    <Phrase key="btnAdd">添加</Phrase>
+    <Phrase key="btnChange">更改</Phrase>
+    <Phrase key="btnCancel">取消</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.KpSnmp.FrmVariable">
+    <Phrase key="this">变量</Phrase>
+    <Phrase key="lblName">用户名称</Phrase>
+    <Phrase key="lblOID">OID</Phrase>
+    <Phrase key="chkBits">BITS (OctetString的扩展)</Phrase>
+    <Phrase key="lblSignal">标号</Phrase>
+    <Phrase key="btnAdd">添加</Phrase>
+    <Phrase key="btnChange">更改</Phrase>
+    <Phrase key="btnCancel">取消</Phrase>
+    <Phrase key="IncorrectOID">OID错误</Phrase>
+  </Dictionary>
+</KpSmmpDictionaries>

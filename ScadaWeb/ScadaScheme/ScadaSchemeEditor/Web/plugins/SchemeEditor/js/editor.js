@@ -1,6 +1,8 @@
 ﻿// Data exchange rate, ms
 var GET_CHANGES_RATE = 300;
 
+// Ajax queue
+var ajaxQueue = new scada.AjaxQueue();
 // Scheme object
 var scheme = new scada.scheme.EditableScheme();
 

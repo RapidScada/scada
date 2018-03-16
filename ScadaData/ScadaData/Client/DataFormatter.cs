@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.Data.Configuration;
@@ -81,17 +81,9 @@ namespace Scada.Client
         protected static readonly TimeSpan CurDataVisibleSpan = TimeSpan.FromMinutes(15);
 
         /// <summary>
-        /// Формат вещественных чисел
+        /// Формат вещественных чисел по умолчанию
         /// </summary>
-        protected readonly NumberFormatInfo nfi;
-        /// <summary>
-        /// Разделитель дробной части по умолчанию
-        /// </summary>
-        protected readonly string defDecSep;
-        /// <summary>
-        /// Разделитель групп цифр по умолчанию
-        /// </summary>
-        protected readonly string defGrSep;
+        protected readonly NumberFormatInfo defNfi;
 
 
         /// <summary>
@@ -107,9 +99,26 @@ namespace Scada.Client
         /// </summary>
         public DataFormatter(CultureInfo cultureInfo)
         {
-            nfi = (NumberFormatInfo)cultureInfo.NumberFormat.Clone();
-            defDecSep = nfi.NumberDecimalSeparator;
-            defGrSep = nfi.NumberGroupSeparator;
+            defNfi = (NumberFormatInfo)cultureInfo.NumberFormat.Clone();
+            defNfi.NumberDecimalDigits = DefDecDig;
+        }
+
+
+        /// <summary>
+        /// Создать формат чисел на основе формата по умолчанию
+        /// </summary>
+        protected NumberFormatInfo CreateFormatInfo(int decDig, string decSep, string grSep)
+        {
+            NumberFormatInfo nfi = (NumberFormatInfo)defNfi.Clone();
+            nfi.NumberDecimalDigits = decDig;
+
+            if (decSep != null)
+                nfi.NumberDecimalSeparator = decSep;
+
+            if (grSep != null)
+                nfi.NumberGroupSeparator = grSep;
+
+            return nfi;
         }
 
 
@@ -160,12 +169,28 @@ namespace Scada.Client
 
                     if (cnlPropsIsNull || cnlProps.ShowNumber)
                     {
+                        // получение размерности
                         string unit = unitArrLen > 0 ? " " + cnlProps.UnitArr[0] : "";
 
-                        nfi.NumberDecimalDigits = cnlPropsIsNull ? DefDecDig : cnlProps.DecDigits;
-                        nfi.NumberDecimalSeparator = decSep == null ? defDecSep : decSep;
-                        nfi.NumberGroupSeparator = grSep == null ? defGrSep : grSep;
+                        // определение формата числа
+                        NumberFormatInfo nfi;
 
+                        if (cnlPropsIsNull)
+                        {
+                            nfi = decSep == null && grSep == null ? 
+                                defNfi : 
+                                CreateFormatInfo(DefDecDig, decSep, grSep);
+                        }
+                        else if (cnlProps.FormatInfo == null)
+                        {
+                            nfi = cnlProps.FormatInfo = CreateFormatInfo(cnlProps.DecDigits, decSep, grSep);
+                        }
+                        else
+                        {
+                            nfi = cnlProps.FormatInfo;
+                        }
+
+                        // форматирование значения
                         text = val.ToString("N", nfi);
                         textWithUnit = text + unit;
                         textIsNumber = true;
@@ -228,10 +253,7 @@ namespace Scada.Client
         {
             if (ctrlCnlProps == null || ctrlCnlProps.CmdValID <= 0)
             {
-                nfi.NumberDecimalDigits = DefDecDig;
-                nfi.NumberDecimalSeparator = defDecSep;
-                nfi.NumberGroupSeparator = defGrSep;
-                return cmdVal.ToString("N", nfi);
+                return cmdVal.ToString("N", defNfi);
             }
             else
             {

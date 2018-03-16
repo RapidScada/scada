@@ -3,7 +3,7 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2018
  *
  * No dependencies
  */
@@ -13,7 +13,7 @@ var scada = scada || {};
 
 // JavaScript utilities object
 scada.utils = {
-    // Prospective browser scrollbar width
+    // Assumed browser scrollbar width
     _SCROLLBAR_WIDTH: 20,
 
     // z-index that moves element to the front
@@ -106,6 +106,17 @@ scada.utils = {
         }
     },
 
+    // Convert the value of the query string parameter to an array of integers
+    queryParamToIntArray: function (paramVal) {
+        var arr = [];
+
+        for (var elemStr of paramVal.split(",")) {
+            arr.push(parseInt(elemStr));
+        }
+
+        return arr;
+    },
+
     // Convert array to a query string parameter by joining array elements with a comma
     arrayToQueryParam: function (arr) {
         var queryParam = arr ? (Array.isArray(arr) ? arr.join(",") : arr) : "";
@@ -115,9 +126,11 @@ scada.utils = {
 
     // Extract year, month and day from the date, and join them into a query string
     dateToQueryString: function (date) {
-        return "year=" + date.getFullYear() +
+        return date ? 
+            "year=" + date.getFullYear() +
             "&month=" + (date.getMonth() + 1) +
-            "&day=" + date.getDate();
+            "&day=" + date.getDate() :
+            "";
     },
 
     // Returns the current time string
@@ -150,6 +163,16 @@ scada.utils = {
         console.error(this.getCurTime() + " Error processing request '" + operation + "'" +
             (opt_message ? ": " + opt_message : ""));
     },
+
+    // Check that the frame is accessible by the same-origin policy
+    frameAvailable(frameWnd) {
+        try {
+            var x = frameWnd.location.href;
+            return true;
+        } catch (ex) {
+            return false;
+        }
+    },        
 
     // Check if browser is in fullscreen mode
     // See https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API
@@ -229,6 +252,16 @@ scada.utils = {
         }
     },
 
+    // Set frame source creating new frame to prevent writing frame history. Returns the new frame
+    setFrameSrc: function (jqFrame, url) {
+        var frameParent = jqFrame.parent();
+        var frameClone = jqFrame.clone();
+        jqFrame.remove();
+        frameClone.attr("src", url);
+        frameClone.appendTo(frameParent);
+        return frameClone;
+    },
+
     // Detect if iOS is used
     iOS: function () {
         return /iPad|iPhone|iPod/.test(navigator.platform);
@@ -249,5 +282,10 @@ scada.utils = {
                 });
             }
         }
+    },
+
+    // Get URL of the view by its ID
+    getViewUrl: function (viewID) {
+        return "View.aspx?viewID=" + viewID;
     }
 };

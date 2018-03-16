@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.Scheme.Model.PropertyGrid;
@@ -51,6 +51,12 @@ namespace Scada.Scheme.Model.DataTypes
         /// Отправить команду
         /// </summary>
         [Description("Send command")]
-        SendCommand
+        SendCommand,
+
+        /// <summary>
+        /// Отправить команду сразу
+        /// </summary>
+        [Description("Send command now")]
+        SendCommandNow
     }
 }

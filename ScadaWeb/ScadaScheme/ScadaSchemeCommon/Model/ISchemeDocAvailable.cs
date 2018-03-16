@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2018
  */
 
 namespace Scada.Scheme.Model
@@ -29,7 +29,7 @@ namespace Scada.Scheme.Model
     /// Specifies objects which provide scheme document properties
     /// <para>Определяет объекты, который предоставляет свойства документа схемы</para>
     /// </summary>
-    interface ISchemeDocAvailable
+    public interface ISchemeDocAvailable
     {
         /// <summary>
         /// Получить ссылку на свойства документа схемы

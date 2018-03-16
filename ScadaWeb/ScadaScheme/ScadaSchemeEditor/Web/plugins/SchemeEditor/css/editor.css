@@ -8,12 +8,16 @@
   background-repeat: no-repeat;
 }
 .scheme .comp {
-  background-clip: padding-box;
+  box-sizing: border-box;
+  position: absolute;
+}
+.scheme .comp.action {
+  cursor: pointer;
 }
 body {
   margin: 0;
   padding: 0;
-  background-color: white;
+  background-color: #f1f1f1;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 12px;
   overflow: hidden;
@@ -41,6 +45,14 @@ body {
 .scheme.new-component-mode .comp {
   cursor: crosshair !important;
 }
-.comp.selected {
-  border: 1px dashed lime !important;
+.scheme .comp-wrapper {
+  border: 1px solid transparent;
+  display: inline;
+  position: absolute;
+}
+.scheme .comp-wrapper .comp {
+  position: static;
+}
+.scheme .comp-wrapper.selected {
+  border: 1px dashed lime;
 }

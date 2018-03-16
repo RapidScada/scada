@@ -3,11 +3,12 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2017
+ * Modified : 2018
  *
  * Requires:
  * - jquery
  * - utils.js
+ * - ajaxqueue.js
  */
 
 // Rapid SCADA namespace
@@ -117,10 +118,15 @@ scada.clientAPI = {
     // Web service root path
     rootPath: "",
 
-    // Execute an AJAX request
+    // Ajax queue used for request sequencing. Can be null
+    ajaxQueue: null,
+
+    // Execute an Ajax request
     _request: function (operation, queryString, callback, errorResult) {
-        $.ajax({
-            url: this.rootPath + operation + queryString,
+        var ajaxObj = this.ajaxQueue ? this.ajaxQueue : $;
+
+        ajaxObj.ajax({
+            url: (this.ajaxQueue ? this.ajaxQueue.rootPath : this.rootPath) + operation + queryString,
             method: "GET",
             dataType: "json",
             cache: false
@@ -139,7 +145,7 @@ scada.clientAPI = {
                     scada.utils.logServiceError(operation, parsedData.ErrorMessage);
                     callback(false, errorResult);
                 }
-            } 
+            }
             catch (ex) {
                 scada.utils.logProcessingError(operation, ex.message);
                 if (typeof callback === "function") {

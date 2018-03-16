@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.UI;
@@ -84,6 +84,7 @@ namespace Scada.Comm.Devices.Modbus.UI
         {
             // перевод формы
             Translator.TranslateForm(this, "Scada.Comm.Devices.Modbus.UI.FrmDevProps", toolTip);
+            openFileDialog.Filter = KpPhrases.TemplateFileFilter;
 
             // вывод заголовка
             Text = string.Format(Text, kpNum);

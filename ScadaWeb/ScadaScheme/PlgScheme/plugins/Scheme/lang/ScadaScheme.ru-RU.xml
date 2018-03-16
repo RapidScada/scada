@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<PlgSchemeDictionaries>
+<ScadaSchemeDictionaries>
   <Dictionary key="Scada.Scheme.CompManager">
     <Phrase key="UnknownComponent">Неизвестный компонент {0}</Phrase>
     <Phrase key="CompLibraryNotFound">Не найдена библиотека для компонента {0}</Phrase>
@@ -29,7 +29,7 @@
     <Phrase key="btnCancel">Отмена</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmConditionDialog">
-    <Phrase key="this">Условия вывода изображений</Phrase>
+    <Phrase key="this">Условия</Phrase>
     <Phrase key="lblCond">Условия</Phrase>
     <Phrase key="lblProps">Свойства условия</Phrase>
     <Phrase key="btnOK">OK</Phrase>
@@ -59,7 +59,7 @@
     <Phrase key="LoadImageError">Ошибка при загрузке изображения</Phrase>
     <Phrase key="SaveImageError">Ошибка при сохранении изображения</Phrase>
   </Dictionary>
-  <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmImageDialog+ImageListItem">
+  <Dictionary key="Scada.Scheme.Model.PropertyGrid.ImageListItem">
     <Phrase key="Name.DisplayName">Наименование</Phrase>
     <Phrase key="Name.Category">Изображение</Phrase>
     <Phrase key="DataSize.DisplayName">Размер данных</Phrase>
@@ -99,6 +99,21 @@
     <Phrase key="Images.Description">Коллекция изображений, используемых на схеме.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Model.BaseComponent">
+    <Phrase key="BackColor.DisplayName">Цвет фона</Phrase>
+    <Phrase key="BackColor.Category">Внешний вид</Phrase>
+    <Phrase key="BackColor.Description">Цвет фона компонента.</Phrase>
+    <Phrase key="BorderColor.DisplayName">Цвет границы</Phrase>
+    <Phrase key="BorderColor.Category">Внешний вид</Phrase>
+    <Phrase key="BorderColor.Description">Цвет границы компонента.</Phrase>
+    <Phrase key="BorderOpacity.DisplayName">Непрозрачность рамки</Phrase>
+    <Phrase key="BorderOpacity.Category">Внешний вид</Phrase>
+    <Phrase key="BorderOpacity.Description">Процент непрозрачности границы компонента.</Phrase>
+    <Phrase key="BorderWidth.DisplayName">Ширина границы</Phrase>
+    <Phrase key="BorderWidth.Category">Внешний вид</Phrase>
+    <Phrase key="BorderWidth.Description">Ширина границы компонента.</Phrase>
+    <Phrase key="ToolTip.DisplayName">Подсказка</Phrase>
+    <Phrase key="ToolTip.Category">Поведение</Phrase>
+    <Phrase key="ToolTip.Description">Всплывающая подсказка, которая отображается при наведении указателя мыши на компонент.</Phrase>
     <Phrase key="ID.DisplayName">Идентификатор</Phrase>
     <Phrase key="ID.Category">Дизайн</Phrase>
     <Phrase key="ID.Description">Уникальный идентификатор компонента схемы.</Phrase>
@@ -119,67 +134,55 @@
     <Phrase key="ZIndex.Description">Порядок отображения компонента схемы по оси Z.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Model.StaticText">
-    <Phrase key="AutoSize.DisplayName">Авто размер</Phrase>
-    <Phrase key="AutoSize.Category">Макет</Phrase>
-    <Phrase key="AutoSize.Description">Автоматическая установка размера надписи по содержимому.</Phrase>
-    <Phrase key="BackColor.DisplayName">Цвет фона</Phrase>
-    <Phrase key="BackColor.Category">Внешний вид</Phrase>
-    <Phrase key="BackColor.Description">Цвет фона надписи.</Phrase>
-    <Phrase key="BorderColor.DisplayName">Цвет рамки</Phrase>
-    <Phrase key="BorderColor.Category">Внешний вид</Phrase>
-    <Phrase key="BorderColor.Description">Цвет рамки надписи.</Phrase>
     <Phrase key="ForeColor.DisplayName">Цвет текста</Phrase>
     <Phrase key="ForeColor.Category">Внешний вид</Phrase>
-    <Phrase key="ForeColor.Description">Основной цвет надписи, используемый для отображения текста.</Phrase>
+    <Phrase key="ForeColor.Description">Основной цвет компонента, используемый для отображения текста.</Phrase>
     <Phrase key="Font.DisplayName">Шрифт</Phrase>
     <Phrase key="Font.Category">Внешний вид</Phrase>
-    <Phrase key="Font.Description">Шрифт, используемый для отображения текста надписи.</Phrase>
+    <Phrase key="Font.Description">Шрифт, используемый для отображения текста компонента.</Phrase>
     <Phrase key="Text.DisplayName">Текст</Phrase>
     <Phrase key="Text.Category">Внешний вид</Phrase>
-    <Phrase key="Text.Description">Текст надписи.</Phrase>
+    <Phrase key="Text.Description">Текст компонента.</Phrase>
+    <Phrase key="HAlign.DisplayName">Гор. выравнивание</Phrase>
+    <Phrase key="HAlign.Category">Внешний вид</Phrase>
+    <Phrase key="HAlign.Description">Горизонтальное выравнивание текста внутри компонента.</Phrase>
+    <Phrase key="VAlign.DisplayName">Верт. выравнивание</Phrase>
+    <Phrase key="VAlign.Category">Внешний вид</Phrase>
+    <Phrase key="VAlign.Description">Вертикальное выравнивание текста внутри компонента.</Phrase>
     <Phrase key="WordWrap.DisplayName">Перенос по словам</Phrase>
     <Phrase key="WordWrap.Category">Внешний вид</Phrase>
     <Phrase key="WordWrap.Description">Автоматический перенос текста по словам.</Phrase>
-    <Phrase key="HAlign.DisplayName">Гор. выравнивание</Phrase>
-    <Phrase key="HAlign.Category">Внешний вид</Phrase>
-    <Phrase key="HAlign.Description">Горизонтальное выравнивание текста внутри надписи.</Phrase>
-    <Phrase key="VAlign.DisplayName">Верт. выравнивание</Phrase>
-    <Phrase key="VAlign.Category">Внешний вид</Phrase>
-    <Phrase key="VAlign.Description">Вертикальное выравнивание текста внутри надписи.</Phrase>
+    <Phrase key="AutoSize.DisplayName">Авто размер</Phrase>
+    <Phrase key="AutoSize.Category">Макет</Phrase>
+    <Phrase key="AutoSize.Description">Автоматическая установка размера надписи по содержимому.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Model.DynamicText">
-    <Phrase key="ToolTip.DisplayName">Подсказка</Phrase>
-    <Phrase key="ToolTip.Category">Поведение</Phrase>
-    <Phrase key="ToolTip.Description">Всплывающая подсказка, которая отображается при наведении указателя мыши на надпись.</Phrase>
-    <Phrase key="UnderlineOnHover.DisplayName">Подчёркивание при наведени</Phrase>
-    <Phrase key="UnderlineOnHover.Category">Поведение</Phrase>
-    <Phrase key="UnderlineOnHover.Description">Подчёркивание надписи при наведени указателя мыши.</Phrase>
     <Phrase key="BackColorOnHover.DisplayName">Цвет фона при наведении</Phrase>
     <Phrase key="BackColorOnHover.Category">Поведение</Phrase>
     <Phrase key="BackColorOnHover.Description">Цвет фона надписи при наведении указателя мыши.</Phrase>
-    <Phrase key="BorderColorOnHover.DisplayName">Цвет рамки при наведени</Phrase>
+    <Phrase key="BorderColorOnHover.DisplayName">Цвет границы при наведени</Phrase>
     <Phrase key="BorderColorOnHover.Category">Поведение</Phrase>
-    <Phrase key="BorderColorOnHover.Description">Цвет рамки надписи при наведени указателя мыши.</Phrase>
+    <Phrase key="BorderColorOnHover.Description">Цвет границы надписи при наведени указателя мыши.</Phrase>
     <Phrase key="ForeColorOnHover.DisplayName">Цвет текста при наведени</Phrase>
     <Phrase key="ForeColorOnHover.Category">Поведение</Phrase>
     <Phrase key="ForeColorOnHover.Description">Основной цвет надписи, используемый для отображения текста при наведени указателя мыши.</Phrase>
+    <Phrase key="UnderlineOnHover.DisplayName">Подчёркивание при наведени</Phrase>
+    <Phrase key="UnderlineOnHover.Category">Поведение</Phrase>
+    <Phrase key="UnderlineOnHover.Description">Подчёркивание надписи при наведени указателя мыши.</Phrase>
     <Phrase key="Action.DisplayName">Действие</Phrase>
     <Phrase key="Action.Category">Поведение</Phrase>
-    <Phrase key="Action.Description">Действие, выполняемое по щелчку левой кнопкой мыши на надписи.</Phrase>
+    <Phrase key="Action.Description">Действие, выполняемое по щелчку левой кнопкой мыши на компоненте.</Phrase>
     <Phrase key="ShowValue.DisplayName">Вывод значения</Phrase>
     <Phrase key="ShowValue.Category">Поведение</Phrase>
-    <Phrase key="ShowValue.Description">Вывод значения входного канала, связанного с надписью.</Phrase>
+    <Phrase key="ShowValue.Description">Вывод значения входного канала, связанного с компонентом.</Phrase>
     <Phrase key="InCnlNum.DisplayName">Входной канал</Phrase>
     <Phrase key="InCnlNum.Category">Данные</Phrase>
-    <Phrase key="InCnlNum.Description">Номер входного канала, связанного с надписью.</Phrase>
+    <Phrase key="InCnlNum.Description">Номер входного канала, связанного с компонентом.</Phrase>
     <Phrase key="CtrlCnlNum.DisplayName">Канал управления</Phrase>
     <Phrase key="CtrlCnlNum.Category">Данные</Phrase>
-    <Phrase key="CtrlCnlNum.Description">Номер канала управления, связанного с надписью.</Phrase>
+    <Phrase key="CtrlCnlNum.Description">Номер канала управления, связанного с компонентом.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Model.StaticPicture">
-    <Phrase key="BorderColor.DisplayName">Цвет рамки</Phrase>
-    <Phrase key="BorderColor.Category">Внешний вид</Phrase>
-    <Phrase key="BorderColor.Description">Цвет рамки рисунка.</Phrase>
     <Phrase key="ImageName.DisplayName">Изображение</Phrase>
     <Phrase key="ImageName.Category">Внешний вид</Phrase>
     <Phrase key="ImageName.Description">Изображение из коллекции изображений схемы.</Phrase>
@@ -188,27 +191,27 @@
     <Phrase key="ImageStretch.Description">Растяжение изображения.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Model.DynamicPicture">
-    <Phrase key="ToolTip.DisplayName">Подсказка</Phrase>
-    <Phrase key="ToolTip.Category">Поведение</Phrase>
-    <Phrase key="ToolTip.Description">Всплывающая подсказка, которая отображается при наведении указателя мыши на рисунок.</Phrase>
+    <Phrase key="BackColorOnHover.DisplayName">Цвет фона при наведении</Phrase>
+    <Phrase key="BackColorOnHover.Category">Поведение</Phrase>
+    <Phrase key="BackColorOnHover.Description">Цвет фона рисунка при наведении указателя мыши.</Phrase>
+    <Phrase key="BorderColorOnHover.DisplayName">Цвет границы при наведени</Phrase>
+    <Phrase key="BorderColorOnHover.Category">Поведение</Phrase>
+    <Phrase key="BorderColorOnHover.Description">Цвет границы рисунка при наведени указателя мыши.</Phrase>
     <Phrase key="ImageOnHoverName.DisplayName">Изображение при наведении</Phrase>
     <Phrase key="ImageOnHoverName.Category">Поведение</Phrase>
     <Phrase key="ImageOnHoverName.Description">Изображение, отображаемое при наведении указателя мыши.</Phrase>
-    <Phrase key="BorderColorOnHover.DisplayName">Цвет рамки при наведени</Phrase>
-    <Phrase key="BorderColorOnHover.Category">Поведение</Phrase>
-    <Phrase key="BorderColorOnHover.Description">Цвет рамки рисунка при наведени указателя мыши.</Phrase>
     <Phrase key="Action.DisplayName">Действие</Phrase>
     <Phrase key="Action.Category">Поведение</Phrase>
-    <Phrase key="Action.Description">Действие, выполняемое по щелчку левой кнопкой мыши на рисунке.</Phrase>
+    <Phrase key="Action.Description">Действие, выполняемое по щелчку левой кнопкой мыши на компоненте.</Phrase>
     <Phrase key="Conditions.DisplayName">Условия</Phrase>
     <Phrase key="Conditions.Category">Поведение</Phrase>
     <Phrase key="Conditions.Description">Условия для вывода изображений в зависимости от значения входного канала.</Phrase>
     <Phrase key="InCnlNum.DisplayName">Входной канал</Phrase>
     <Phrase key="InCnlNum.Category">Данные</Phrase>
-    <Phrase key="InCnlNum.Description">Номер входного канала, связанного с рисунком.</Phrase>
+    <Phrase key="InCnlNum.Description">Номер входного канала, связанного с компонентом.</Phrase>
     <Phrase key="CtrlCnlNum.DisplayName">Канал управления</Phrase>
     <Phrase key="CtrlCnlNum.Category">Данные</Phrase>
-    <Phrase key="CtrlCnlNum.Description">Номер канала управления, связанного с рисунком.</Phrase>
+    <Phrase key="CtrlCnlNum.Description">Номер канала управления, связанного с компонентом.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Model.UnknownComponent">
     <Phrase key="XmlNodeName.DisplayName">XML-узел</Phrase>
@@ -219,6 +222,7 @@
     <Phrase key="None">Не задано</Phrase>
     <Phrase key="DrawDiagram">Построить график</Phrase>
     <Phrase key="SendCommand">Отправить команду</Phrase>
+    <Phrase key="SendCommandNow">Отправить команду сразу</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Model.DataTypes.Condition">
     <Phrase key="CompareOperator1.DisplayName">Опер. сравн. 1</Phrase>
@@ -231,13 +235,15 @@
     <Phrase key="CompareOperator2.Category">Условие</Phrase>
     <Phrase key="CompareArgument2.DisplayName">Аргумент 2</Phrase>
     <Phrase key="CompareArgument2.Category">Условие</Phrase>
-    <Phrase key="ImageName.DisplayName">Изображение</Phrase>
-    <Phrase key="ImageName.Category">Внешний вид</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Model.DataTypes.HorizontalAlignments">
     <Phrase key="Left">Слева</Phrase>
     <Phrase key="Center">По центру</Phrase>
     <Phrase key="Right">Справа</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.DataTypes.ImageCondition">
+    <Phrase key="ImageName.DisplayName">Изображение</Phrase>
+    <Phrase key="ImageName.Category">Внешний вид</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Model.DataTypes.ImageStretches">
     <Phrase key="None">Не задано</Phrase>
@@ -259,4 +265,4 @@
     <Phrase key="Center">По центру</Phrase>
     <Phrase key="Bottom">Снизу</Phrase>
   </Dictionary>
-</PlgSchemeDictionaries>
+</ScadaSchemeDictionaries>
