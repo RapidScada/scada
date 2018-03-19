@@ -174,12 +174,13 @@ namespace Scada.Client
 
                         // определение формата числа
                         NumberFormatInfo nfi;
+                        bool sepDefined = !(decSep == null && grSep == null);
 
-                        if (cnlPropsIsNull)
+                        if (cnlPropsIsNull || sepDefined)
                         {
-                            nfi = decSep == null && grSep == null ? 
-                                defNfi : 
-                                CreateFormatInfo(DefDecDig, decSep, grSep);
+                            nfi = sepDefined ? 
+                                CreateFormatInfo(DefDecDig, decSep, grSep) :
+                                defNfi;
                         }
                         else if (cnlProps.FormatInfo == null)
                         {
