@@ -28,7 +28,10 @@
   <Plugins>
     <Plugin fileName="PlgChart.dll" />
     <Plugin fileName="PlgConfig.dll" />
+    <Plugin fileName="PlgRegistration.dll" />
+    <Plugin fileName="PlgSchBasicComp.dll" />
     <Plugin fileName="PlgScheme.dll" />
+    <Plugin fileName="PlgStore.dll" />
     <Plugin fileName="PlgTable.dll" />
     <Plugin fileName="PlgWebPage.dll" />
   </Plugins>
