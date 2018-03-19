@@ -7,7 +7,7 @@
     <ProjectGuid>{620CFDFB-6484-4EDF-9764-D01C90C1FFA8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ScadaAgentWcf</RootNamespace>
+    <RootNamespace>Scada.Agent.Wcf</RootNamespace>
     <AssemblyName>ScadaAgentWcf</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -38,6 +38,12 @@
   <ItemGroup>
     <Compile Include="AgentSvc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ScadaAgentCore\ScadaAgentCore.csproj">
+      <Project>{5163526d-91e4-414d-97fe-090e1e7fda6b}</Project>
+      <Name>ScadaAgentCore</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,14 +1,16 @@
 ﻿using System.ServiceModel;
 
-namespace ScadaAgentWcf
+namespace Scada.Agent.Wcf
 {
     [ServiceContract]
     public class AgentSvc
     {
+        private static ScadaManager mngr = new ScadaManager();
+
         [OperationContract]
         public double Sum(double a, double b)
         {
-            return a + b;
+            return mngr.Sum(a, b);
         }
     }
 }
