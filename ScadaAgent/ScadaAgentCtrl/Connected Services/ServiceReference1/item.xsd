@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:10002/ScadaAgent/ScadaAgentSvc/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Scada.Agent" />
   <xs:element name="Sum">
     <xs:complexType>
       <xs:sequence>
@@ -13,6 +14,49 @@
       <xs:sequence>
         <xs:element minOccurs="0" name="SumResult" type="xs:double" />
       </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetSessionID">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetSessionIDResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetSessionIDResult" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Login">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="sessionID" type="xs:long" />
+        <xs:element minOccurs="0" name="username" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="encryptedPassword" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="scadaInstanceName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LoginResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="LoginResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ServiceCommand">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="sessionID" type="xs:long" />
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Scada.Agent" minOccurs="0" name="command" type="q1:ServiceCommands" />
+        <xs:element minOccurs="0" name="service" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ServiceCommandResponse">
+    <xs:complexType>
+      <xs:sequence />
     </xs:complexType>
   </xs:element>
 </xs:schema>

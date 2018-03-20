@@ -14,6 +14,7 @@ namespace Scada.Agent.Ctrl
         {
             AgentSvcClient client = new AgentSvcClient();
             double sum = client.Sum(2, 2);
+            //client.ServiceCommand(0, ServiceCommands.Restart, 0);
             client.Close();
 
             MessageBox.Show(sum.ToString());

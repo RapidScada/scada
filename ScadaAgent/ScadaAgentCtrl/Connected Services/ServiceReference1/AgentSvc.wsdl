@@ -4,6 +4,7 @@
     <xsd:schema targetNamespace="http://tempuri.org/Imports">
       <xsd:import schemaLocation="http://localhost:10002/ScadaAgent/ScadaAgentSvc/?xsd=xsd0" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://localhost:10002/ScadaAgent/ScadaAgentSvc/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:10002/ScadaAgent/ScadaAgentSvc/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Scada.Agent" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="AgentSvc_Sum_InputMessage">
@@ -12,16 +13,73 @@
   <wsdl:message name="AgentSvc_Sum_OutputMessage">
     <wsdl:part name="parameters" element="tns:SumResponse" />
   </wsdl:message>
+  <wsdl:message name="AgentSvc_GetSessionID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetSessionID" />
+  </wsdl:message>
+  <wsdl:message name="AgentSvc_GetSessionID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetSessionIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="AgentSvc_Login_InputMessage">
+    <wsdl:part name="parameters" element="tns:Login" />
+  </wsdl:message>
+  <wsdl:message name="AgentSvc_Login_OutputMessage">
+    <wsdl:part name="parameters" element="tns:LoginResponse" />
+  </wsdl:message>
+  <wsdl:message name="AgentSvc_ServiceCommand_InputMessage">
+    <wsdl:part name="parameters" element="tns:ServiceCommand" />
+  </wsdl:message>
+  <wsdl:message name="AgentSvc_ServiceCommand_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ServiceCommandResponse" />
+  </wsdl:message>
   <wsdl:portType name="AgentSvc">
     <wsdl:operation name="Sum">
       <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/Sum" message="tns:AgentSvc_Sum_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/AgentSvc/SumResponse" message="tns:AgentSvc_Sum_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSessionID">
+      <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/GetSessionID" message="tns:AgentSvc_GetSessionID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/AgentSvc/GetSessionIDResponse" message="tns:AgentSvc_GetSessionID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Login">
+      <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/Login" message="tns:AgentSvc_Login_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/AgentSvc/LoginResponse" message="tns:AgentSvc_Login_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ServiceCommand">
+      <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/ServiceCommand" message="tns:AgentSvc_ServiceCommand_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/AgentSvc/ServiceCommandResponse" message="tns:AgentSvc_ServiceCommand_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_AgentSvc" type="tns:AgentSvc">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="Sum">
       <soap:operation soapAction="http://tempuri.org/AgentSvc/Sum" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSessionID">
+      <soap:operation soapAction="http://tempuri.org/AgentSvc/GetSessionID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Login">
+      <soap:operation soapAction="http://tempuri.org/AgentSvc/Login" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ServiceCommand">
+      <soap:operation soapAction="http://tempuri.org/AgentSvc/ServiceCommand" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

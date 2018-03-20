@@ -18,6 +18,7 @@ namespace ScadaAgentMono
                 agentSvcHost = new ServiceHost(typeof(AgentSvc));
                 ServiceBehaviorAttribute behavior =
                     agentSvcHost.Description.Behaviors.Find<ServiceBehaviorAttribute>();
+                behavior.ConcurrencyMode = ConcurrencyMode.Multiple;
                 behavior.InstanceContextMode = InstanceContextMode.Single;
                 behavior.UseSynchronizationContext = false;
                 agentSvcHost.Open();
