@@ -16,37 +16,34 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaAgentCore
- * Summary  : The class contains utility cryptographic methods
+ * Summary  : Service commands
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
  * Modified : 2018
  */
 
-using System;
-using System.Security.Cryptography;
-
 namespace Scada.Agent
 {
     /// <summary>
-    /// The class contains utility cryptographic methods
-    /// <para>Класс, содержащий вспомогательные криптографические методы</para>
+    /// Service commands
+    /// <para>Команды сервиса</para>
     /// </summary>
-    public static class CryptoUtils
+    public enum ServiceCommand
     {
         /// <summary>
-        /// Генератор криптографически защищённых случайных чисел
+        /// Запустить
         /// </summary>
-        private static readonly RNGCryptoServiceProvider Rng = new RNGCryptoServiceProvider();
+        Start,
 
         /// <summary>
-        /// Получить случайное 64-битное целое
+        /// Остановить
         /// </summary>
-        public static long GetRandomLong()
-        {
-            byte[] randomArr = new byte[8];
-            Rng.GetBytes(randomArr);
-            return BitConverter.ToInt64(randomArr, 0);
-        }
+        Stop,
+
+        /// <summary>
+        /// Перезапустить
+        /// </summary>
+        Restart
     }
 }

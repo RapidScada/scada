@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.ServiceModel;
 
 namespace Scada.Agent.Wcf
@@ -28,8 +29,15 @@ namespace Scada.Agent.Wcf
         }
 
         [OperationContract]
-        public bool ControlService(long sessionID, ScadaApps service, ServiceCommands command)
+        public bool ControlService(long sessionID, ScadaApps service, ServiceCommand command)
         {
+            return true;
+        }
+
+        [OperationContract]
+        public bool GetServiceStatus(long sessionID, ScadaApps service, out bool isRunning)
+        {
+            isRunning = true;
             return true;
         }
 
@@ -41,10 +49,35 @@ namespace Scada.Agent.Wcf
         }
 
         [OperationContract]
-        public bool GetConfig(long sessionID, ScadaApps app, out Stream stream)
+        public Stream DownloadConfig(long sessionID, ConfigOptions configOptions)
+        {
+            return null;
+        }
+
+        [OperationContract]
+        public bool UploadConfig(/*long sessionID, ConfigOptions configOptions,*/ Stream stream)
         {
             stream = null;
             return true;
+        }
+
+        [OperationContract]
+        public bool FindFiles(long sessionID, AppPath appPath, out ICollection<string> paths)
+        {
+            paths = null;
+            return true;
+        }
+
+        [OperationContract]
+        public Stream DownloadFile(long sessionID, AppPath appPath)
+        {
+            return null;
+        }
+
+        [OperationContract]
+        public Stream DownloadFileRest(long sessionID, AppPath appPath, long position)
+        {
+            return null;
         }
     }
 }

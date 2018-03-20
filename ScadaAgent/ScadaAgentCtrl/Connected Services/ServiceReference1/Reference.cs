@@ -34,10 +34,10 @@ namespace Scada.Agent.Ctrl.ServiceReference1 {
         System.Threading.Tasks.Task<bool> LoginAsync(long sessionID, string username, string encryptedPassword, string scadaInstanceName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/ServiceCommand", ReplyAction="http://tempuri.org/AgentSvc/ServiceCommandResponse")]
-        void ServiceCommand(long sessionID, Scada.Agent.ServiceCommands command, int service);
+        void ServiceCommand(long sessionID, Scada.Agent.ServiceCommand command, int service);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/ServiceCommand", ReplyAction="http://tempuri.org/AgentSvc/ServiceCommandResponse")]
-        System.Threading.Tasks.Task ServiceCommandAsync(long sessionID, Scada.Agent.ServiceCommands command, int service);
+        System.Threading.Tasks.Task ServiceCommandAsync(long sessionID, Scada.Agent.ServiceCommand command, int service);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -91,11 +91,11 @@ namespace Scada.Agent.Ctrl.ServiceReference1 {
             return base.Channel.LoginAsync(sessionID, username, encryptedPassword, scadaInstanceName);
         }
         
-        public void ServiceCommand(long sessionID, Scada.Agent.ServiceCommands command, int service) {
+        public void ServiceCommand(long sessionID, Scada.Agent.ServiceCommand command, int service) {
             base.Channel.ServiceCommand(sessionID, command, service);
         }
         
-        public System.Threading.Tasks.Task ServiceCommandAsync(long sessionID, Scada.Agent.ServiceCommands command, int service) {
+        public System.Threading.Tasks.Task ServiceCommandAsync(long sessionID, Scada.Agent.ServiceCommand command, int service) {
             return base.Channel.ServiceCommandAsync(sessionID, command, service);
         }
     }

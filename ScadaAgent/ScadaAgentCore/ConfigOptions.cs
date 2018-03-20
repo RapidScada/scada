@@ -16,37 +16,36 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaAgentCore
- * Summary  : The class contains utility cryptographic methods
+ * Summary  : Configuration transfer parameters
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
  * Modified : 2018
  */
 
-using System;
-using System.Security.Cryptography;
+using System.Collections.Generic;
 
 namespace Scada.Agent
 {
     /// <summary>
-    /// The class contains utility cryptographic methods
-    /// <para>Класс, содержащий вспомогательные криптографические методы</para>
+    /// Configuration transfer parameters
+    /// <para>Параметры передачи конфигурации</para>
     /// </summary>
-    public static class CryptoUtils
+    public class ConfigOptions
     {
         /// <summary>
-        /// Генератор криптографически защищённых случайных чисел
+        /// Получить или установить приложение
         /// </summary>
-        private static readonly RNGCryptoServiceProvider Rng = new RNGCryptoServiceProvider();
+        public ScadaApps ScadaApp { get; set; }
 
         /// <summary>
-        /// Получить случайное 64-битное целое
+        /// Получить или установить директорию приложения
         /// </summary>
-        public static long GetRandomLong()
-        {
-            byte[] randomArr = new byte[8];
-            Rng.GetBytes(randomArr);
-            return BitConverter.ToInt64(randomArr, 0);
-        }
+        public AppFolder AppFolder { get; set; }
+
+        /// <summary>
+        /// Получить или установить исключаемые пути
+        /// </summary>
+        public ICollection<string> ExcludedPaths { get; private set; }
     }
 }

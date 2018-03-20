@@ -16,37 +16,39 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaAgentCore
- * Summary  : The class contains utility cryptographic methods
+ * Summary  : Application folders
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
  * Modified : 2018
  */
 
-using System;
-using System.Security.Cryptography;
-
 namespace Scada.Agent
 {
     /// <summary>
-    /// The class contains utility cryptographic methods
-    /// <para>Класс, содержащий вспомогательные криптографические методы</para>
+    /// Application folders
+    /// <para>Папки приложения</para>
     /// </summary>
-    public static class CryptoUtils
+    public enum AppFolder
     {
         /// <summary>
-        /// Генератор криптографически защищённых случайных чисел
+        /// Не определена
         /// </summary>
-        private static readonly RNGCryptoServiceProvider Rng = new RNGCryptoServiceProvider();
+        Undef,
 
         /// <summary>
-        /// Получить случайное 64-битное целое
+        /// Конфигурация
         /// </summary>
-        public static long GetRandomLong()
-        {
-            byte[] randomArr = new byte[8];
-            Rng.GetBytes(randomArr);
-            return BitConverter.ToInt64(randomArr, 0);
-        }
+        Config,
+
+        /// <summary>
+        /// Журналы
+        /// </summary>
+        Log,
+
+        /// <summary>
+        /// Хранилище
+        /// </summary>
+        Storage
     }
 }
