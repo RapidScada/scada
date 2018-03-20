@@ -18,4 +18,4 @@ C:\SCADA\ScadaTableEditor\Lang
 C:\SCADA\ScadaWeb\lang
 
 To add a new language support, create copies of *.en-GB.xml files and give the file names according to your culture. In this example en means English language and GB is Great Britain.
-Using your favorite text editor (Notepad++ is OK) translate the phrases in the created xml files. Then open SCADA-Administrator application, go to Settings > Language menu and enter your localization name, for example, es-LA
+Using your favorite text editor (Notepad++ is OK) translate the phrases in the created xml files. Then open the Administrator application, go to Settings > Language menu and enter your localization name, for example, es-LA
