@@ -77,6 +77,24 @@
     <None Include="Connected Services\ServiceReference1\item2.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Connected Services\ServiceReference1\item3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ServiceReference1\item31.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ServiceReference1\Scada.Agent.Ctrl.ServiceReference1.FindFilesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceReference1\Scada.Agent.Ctrl.ServiceReference1.GetInstalledAppsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceReference1\Scada.Agent.Ctrl.ServiceReference1.GetServiceStatusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceReference1\Scada.Agent.Ctrl.ServiceReference1.GetSessionIDResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

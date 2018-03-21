@@ -71,7 +71,11 @@ namespace Scada.Agent.Wcf
         [OperationContract]
         public Stream DownloadFile(long sessionID, AppPath appPath)
         {
-            return null;
+            byte[] buffer = System.Text.Encoding.ASCII.GetBytes("hello");
+            MemoryStream stream = new MemoryStream(buffer.Length);
+            stream.Write(buffer, 0, buffer.Length);
+            stream.Position = 0;
+            return stream;
         }
 
         [OperationContract]

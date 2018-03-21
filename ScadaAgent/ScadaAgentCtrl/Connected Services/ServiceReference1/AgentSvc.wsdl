@@ -5,6 +5,8 @@
       <xsd:import schemaLocation="http://localhost:10002/ScadaAgent/ScadaAgentSvc/?xsd=xsd0" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://localhost:10002/ScadaAgent/ScadaAgentSvc/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import schemaLocation="http://localhost:10002/ScadaAgent/ScadaAgentSvc/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Scada.Agent" />
+      <xsd:import schemaLocation="http://localhost:10002/ScadaAgent/ScadaAgentSvc/?xsd=xsd3" namespace="http://schemas.microsoft.com/Message" />
+      <xsd:import schemaLocation="http://localhost:10002/ScadaAgent/ScadaAgentSvc/?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="AgentSvc_Sum_InputMessage">
@@ -25,11 +27,53 @@
   <wsdl:message name="AgentSvc_Login_OutputMessage">
     <wsdl:part name="parameters" element="tns:LoginResponse" />
   </wsdl:message>
-  <wsdl:message name="AgentSvc_ServiceCommand_InputMessage">
-    <wsdl:part name="parameters" element="tns:ServiceCommand" />
+  <wsdl:message name="AgentSvc_ControlService_InputMessage">
+    <wsdl:part name="parameters" element="tns:ControlService" />
   </wsdl:message>
-  <wsdl:message name="AgentSvc_ServiceCommand_OutputMessage">
-    <wsdl:part name="parameters" element="tns:ServiceCommandResponse" />
+  <wsdl:message name="AgentSvc_ControlService_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ControlServiceResponse" />
+  </wsdl:message>
+  <wsdl:message name="AgentSvc_GetServiceStatus_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetServiceStatus" />
+  </wsdl:message>
+  <wsdl:message name="AgentSvc_GetServiceStatus_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetServiceStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="AgentSvc_GetInstalledApps_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetInstalledApps" />
+  </wsdl:message>
+  <wsdl:message name="AgentSvc_GetInstalledApps_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetInstalledAppsResponse" />
+  </wsdl:message>
+  <wsdl:message name="AgentSvc_DownloadConfig_InputMessage">
+    <wsdl:part name="parameters" element="tns:DownloadConfig" />
+  </wsdl:message>
+  <wsdl:message name="AgentSvc_DownloadConfig_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DownloadConfigResponse" />
+  </wsdl:message>
+  <wsdl:message name="AgentSvc_UploadConfig_InputMessage">
+    <wsdl:part name="parameters" element="tns:UploadConfig" />
+  </wsdl:message>
+  <wsdl:message name="AgentSvc_UploadConfig_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UploadConfigResponse" />
+  </wsdl:message>
+  <wsdl:message name="AgentSvc_FindFiles_InputMessage">
+    <wsdl:part name="parameters" element="tns:FindFiles" />
+  </wsdl:message>
+  <wsdl:message name="AgentSvc_FindFiles_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FindFilesResponse" />
+  </wsdl:message>
+  <wsdl:message name="AgentSvc_DownloadFile_InputMessage">
+    <wsdl:part name="parameters" element="tns:DownloadFile" />
+  </wsdl:message>
+  <wsdl:message name="AgentSvc_DownloadFile_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DownloadFileResponse" />
+  </wsdl:message>
+  <wsdl:message name="AgentSvc_DownloadFileRest_InputMessage">
+    <wsdl:part name="parameters" element="tns:DownloadFileRest" />
+  </wsdl:message>
+  <wsdl:message name="AgentSvc_DownloadFileRest_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DownloadFileRestResponse" />
   </wsdl:message>
   <wsdl:portType name="AgentSvc">
     <wsdl:operation name="Sum">
@@ -44,9 +88,37 @@
       <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/Login" message="tns:AgentSvc_Login_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/AgentSvc/LoginResponse" message="tns:AgentSvc_Login_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="ServiceCommand">
-      <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/ServiceCommand" message="tns:AgentSvc_ServiceCommand_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/AgentSvc/ServiceCommandResponse" message="tns:AgentSvc_ServiceCommand_OutputMessage" />
+    <wsdl:operation name="ControlService">
+      <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/ControlService" message="tns:AgentSvc_ControlService_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/AgentSvc/ControlServiceResponse" message="tns:AgentSvc_ControlService_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetServiceStatus">
+      <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/GetServiceStatus" message="tns:AgentSvc_GetServiceStatus_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/AgentSvc/GetServiceStatusResponse" message="tns:AgentSvc_GetServiceStatus_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInstalledApps">
+      <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/GetInstalledApps" message="tns:AgentSvc_GetInstalledApps_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/AgentSvc/GetInstalledAppsResponse" message="tns:AgentSvc_GetInstalledApps_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DownloadConfig">
+      <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/DownloadConfig" message="tns:AgentSvc_DownloadConfig_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/AgentSvc/DownloadConfigResponse" message="tns:AgentSvc_DownloadConfig_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UploadConfig">
+      <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/UploadConfig" message="tns:AgentSvc_UploadConfig_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/AgentSvc/UploadConfigResponse" message="tns:AgentSvc_UploadConfig_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FindFiles">
+      <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/FindFiles" message="tns:AgentSvc_FindFiles_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/AgentSvc/FindFilesResponse" message="tns:AgentSvc_FindFiles_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DownloadFile">
+      <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/DownloadFile" message="tns:AgentSvc_DownloadFile_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/AgentSvc/DownloadFileResponse" message="tns:AgentSvc_DownloadFile_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DownloadFileRest">
+      <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/DownloadFileRest" message="tns:AgentSvc_DownloadFileRest_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/AgentSvc/DownloadFileRestResponse" message="tns:AgentSvc_DownloadFileRest_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_AgentSvc" type="tns:AgentSvc">
@@ -78,8 +150,71 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="ServiceCommand">
-      <soap:operation soapAction="http://tempuri.org/AgentSvc/ServiceCommand" style="document" />
+    <wsdl:operation name="ControlService">
+      <soap:operation soapAction="http://tempuri.org/AgentSvc/ControlService" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetServiceStatus">
+      <soap:operation soapAction="http://tempuri.org/AgentSvc/GetServiceStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInstalledApps">
+      <soap:operation soapAction="http://tempuri.org/AgentSvc/GetInstalledApps" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DownloadConfig">
+      <soap:operation soapAction="http://tempuri.org/AgentSvc/DownloadConfig" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UploadConfig">
+      <soap:operation soapAction="http://tempuri.org/AgentSvc/UploadConfig" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindFiles">
+      <soap:operation soapAction="http://tempuri.org/AgentSvc/FindFiles" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DownloadFile">
+      <soap:operation soapAction="http://tempuri.org/AgentSvc/DownloadFile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DownloadFileRest">
+      <soap:operation soapAction="http://tempuri.org/AgentSvc/DownloadFileRest" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
