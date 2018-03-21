@@ -60,11 +60,12 @@ namespace Scada.Agent.Ctrl.ServiceReference1 {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/DownloadConfig", ReplyAction="http://tempuri.org/AgentSvc/DownloadConfigResponse")]
         System.Threading.Tasks.Task<System.IO.Stream> DownloadConfigAsync(long sessionID, Scada.Agent.ConfigOptions configOptions);
         
+        // CODEGEN: Generating message contract since the operation UploadConfig is neither RPC nor document wrapped.
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/UploadConfig", ReplyAction="http://tempuri.org/AgentSvc/UploadConfigResponse")]
-        bool UploadConfig(System.IO.Stream stream);
+        Scada.Agent.Ctrl.ServiceReference1.UploadConfigResponse UploadConfig(Scada.Agent.Ctrl.ServiceReference1.ConfigUploadMessage request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/UploadConfig", ReplyAction="http://tempuri.org/AgentSvc/UploadConfigResponse")]
-        System.Threading.Tasks.Task<bool> UploadConfigAsync(System.IO.Stream stream);
+        System.Threading.Tasks.Task<Scada.Agent.Ctrl.ServiceReference1.UploadConfigResponse> UploadConfigAsync(Scada.Agent.Ctrl.ServiceReference1.ConfigUploadMessage request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/FindFiles", ReplyAction="http://tempuri.org/AgentSvc/FindFilesResponse")]
         Scada.Agent.Ctrl.ServiceReference1.FindFilesResponse FindFiles(Scada.Agent.Ctrl.ServiceReference1.FindFilesRequest request);
@@ -188,6 +189,41 @@ namespace Scada.Agent.Ctrl.ServiceReference1 {
         public GetInstalledAppsResponse(bool GetInstalledAppsResult, Scada.Agent.ScadaApps installedApps) {
             this.GetInstalledAppsResult = GetInstalledAppsResult;
             this.installedApps = installedApps;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConfigUploadMessage", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    public partial class ConfigUploadMessage {
+        
+        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        public Scada.Agent.ConfigOptions ConfigOptions;
+        
+        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
+        public long SessionID;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        public System.IO.Stream Stream;
+        
+        public ConfigUploadMessage() {
+        }
+        
+        public ConfigUploadMessage(Scada.Agent.ConfigOptions ConfigOptions, long SessionID, System.IO.Stream Stream) {
+            this.ConfigOptions = ConfigOptions;
+            this.SessionID = SessionID;
+            this.Stream = Stream;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class UploadConfigResponse {
+        
+        public UploadConfigResponse() {
         }
     }
     
@@ -341,12 +377,30 @@ namespace Scada.Agent.Ctrl.ServiceReference1 {
             return base.Channel.DownloadConfigAsync(sessionID, configOptions);
         }
         
-        public bool UploadConfig(System.IO.Stream stream) {
-            return base.Channel.UploadConfig(stream);
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Scada.Agent.Ctrl.ServiceReference1.UploadConfigResponse Scada.Agent.Ctrl.ServiceReference1.AgentSvc.UploadConfig(Scada.Agent.Ctrl.ServiceReference1.ConfigUploadMessage request) {
+            return base.Channel.UploadConfig(request);
         }
         
-        public System.Threading.Tasks.Task<bool> UploadConfigAsync(System.IO.Stream stream) {
-            return base.Channel.UploadConfigAsync(stream);
+        public void UploadConfig(Scada.Agent.ConfigOptions ConfigOptions, long SessionID, System.IO.Stream Stream) {
+            Scada.Agent.Ctrl.ServiceReference1.ConfigUploadMessage inValue = new Scada.Agent.Ctrl.ServiceReference1.ConfigUploadMessage();
+            inValue.ConfigOptions = ConfigOptions;
+            inValue.SessionID = SessionID;
+            inValue.Stream = Stream;
+            Scada.Agent.Ctrl.ServiceReference1.UploadConfigResponse retVal = ((Scada.Agent.Ctrl.ServiceReference1.AgentSvc)(this)).UploadConfig(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Scada.Agent.Ctrl.ServiceReference1.UploadConfigResponse> Scada.Agent.Ctrl.ServiceReference1.AgentSvc.UploadConfigAsync(Scada.Agent.Ctrl.ServiceReference1.ConfigUploadMessage request) {
+            return base.Channel.UploadConfigAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Scada.Agent.Ctrl.ServiceReference1.UploadConfigResponse> UploadConfigAsync(Scada.Agent.ConfigOptions ConfigOptions, long SessionID, System.IO.Stream Stream) {
+            Scada.Agent.Ctrl.ServiceReference1.ConfigUploadMessage inValue = new Scada.Agent.Ctrl.ServiceReference1.ConfigUploadMessage();
+            inValue.ConfigOptions = ConfigOptions;
+            inValue.SessionID = SessionID;
+            inValue.Stream = Stream;
+            return ((Scada.Agent.Ctrl.ServiceReference1.AgentSvc)(this)).UploadConfigAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]

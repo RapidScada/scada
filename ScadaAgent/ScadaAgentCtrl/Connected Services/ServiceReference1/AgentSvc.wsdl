@@ -51,12 +51,14 @@
   <wsdl:message name="AgentSvc_DownloadConfig_OutputMessage">
     <wsdl:part name="parameters" element="tns:DownloadConfigResponse" />
   </wsdl:message>
-  <wsdl:message name="AgentSvc_UploadConfig_InputMessage">
-    <wsdl:part name="parameters" element="tns:UploadConfig" />
+  <wsdl:message name="ConfigUploadMessage">
+    <wsdl:part name="parameters" element="tns:ConfigUploadMessage" />
   </wsdl:message>
-  <wsdl:message name="AgentSvc_UploadConfig_OutputMessage">
-    <wsdl:part name="parameters" element="tns:UploadConfigResponse" />
+  <wsdl:message name="ConfigUploadMessage_Headers">
+    <wsdl:part name="ConfigOptions" element="tns:ConfigOptions" />
+    <wsdl:part name="SessionID" element="tns:SessionID" />
   </wsdl:message>
+  <wsdl:message name="AgentSvc_UploadConfig_OutputMessage" />
   <wsdl:message name="AgentSvc_FindFiles_InputMessage">
     <wsdl:part name="parameters" element="tns:FindFiles" />
   </wsdl:message>
@@ -105,7 +107,7 @@
       <wsdl:output wsaw:Action="http://tempuri.org/AgentSvc/DownloadConfigResponse" message="tns:AgentSvc_DownloadConfig_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="UploadConfig">
-      <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/UploadConfig" message="tns:AgentSvc_UploadConfig_InputMessage" />
+      <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/UploadConfig" name="ConfigUploadMessage" message="tns:ConfigUploadMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/AgentSvc/UploadConfigResponse" message="tns:AgentSvc_UploadConfig_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="FindFiles">
@@ -188,7 +190,9 @@
     </wsdl:operation>
     <wsdl:operation name="UploadConfig">
       <soap:operation soapAction="http://tempuri.org/AgentSvc/UploadConfig" style="document" />
-      <wsdl:input>
+      <wsdl:input name="ConfigUploadMessage">
+        <soap:header message="tns:ConfigUploadMessage_Headers" part="ConfigOptions" use="literal" />
+        <soap:header message="tns:ConfigUploadMessage_Headers" part="SessionID" use="literal" />
         <soap:body use="literal" />
       </wsdl:input>
       <wsdl:output>

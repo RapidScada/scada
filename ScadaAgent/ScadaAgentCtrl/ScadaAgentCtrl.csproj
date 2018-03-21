@@ -95,6 +95,9 @@
     <None Include="Connected Services\ServiceReference1\Scada.Agent.Ctrl.ServiceReference1.GetSessionIDResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Connected Services\ServiceReference1\Scada.Agent.Ctrl.ServiceReference1.UploadConfigResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
