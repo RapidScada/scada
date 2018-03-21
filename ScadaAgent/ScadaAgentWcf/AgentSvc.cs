@@ -10,11 +10,6 @@ namespace Scada.Agent.Wcf
     {
         private static ScadaManager mngr = new ScadaManager();
 
-        [OperationContract]
-        public double Sum(double a, double b)
-        {
-            return mngr.Sum(a, b);
-        }
 
         [OperationContract]
         public bool GetSessionID(out long sessionID)
