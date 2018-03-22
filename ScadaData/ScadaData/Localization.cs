@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,9 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2014
- * Modified : 2017
+ * Modified : 2018
  */
 
-using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -166,11 +165,17 @@ namespace Scada
         {
             try
             {
-                using (RegistryKey key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64)
+#if NETSTANDARD2_0
+                return "";
+#else
+                using (Microsoft.Win32.RegistryKey key = 
+                    Microsoft.Win32.RegistryKey.OpenBaseKey(Microsoft.Win32.RegistryHive.LocalMachine, 
+                    Microsoft.Win32.RegistryView.Registry64)
                     .OpenSubKey("Software\\SCADA", false))
                 {
                     return key.GetValue("Culture").ToString();
                 }
+#endif
             }
             catch
             {
@@ -224,9 +229,15 @@ namespace Scada
         {
             try
             {
-                using (RegistryKey key = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64).
+#if !NETSTANDARD2_0
+                using (Microsoft.Win32.RegistryKey key =
+                    Microsoft.Win32.RegistryKey.OpenBaseKey(Microsoft.Win32.RegistryHive.LocalMachine,
+                    Microsoft.Win32.RegistryView.Registry64).
                     CreateSubKey("Software\\SCADA"))
+                {
                     key.SetValue("Culture", cultureName);
+                }
+#endif
                 errMsg = "";
                 return true;
             }
