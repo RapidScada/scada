@@ -15,8 +15,8 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : Scheme Editor
- * Summary  : ScadaAgentCore
+ * Module   : ScadaAgentCore
+ * Summary  : Application directories
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
@@ -25,13 +25,13 @@
 
 using System.IO;
 
-namespace Scada.Scheme.Editor
+namespace Scada.Agent
 {
     /// <summary>
     /// Application directories
     /// <para>Директории приложения</para>
     /// </summary>
-    internal class AppDirs
+    public class AppDirs
     {
         /// <summary>
         /// Конструктор
