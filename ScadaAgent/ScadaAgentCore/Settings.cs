@@ -23,9 +23,7 @@
  * Modified : 2018
  */
 
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Scada.Agent
 {
@@ -41,8 +39,22 @@ namespace Scada.Agent
         /// </summary>
         public class ScadaInstance
         {
-            public string Name { get; set; }
+            /// <summary>
+            /// Конструктор
+            /// </summary>
+            public ScadaInstance()
+            {
+                Name = "";
+                Directory = "";
+            }
 
+            /// <summary>
+            /// Получить или установить наименование
+            /// </summary>
+            public string Name { get; set; }
+            /// <summary>
+            /// Получить или установить директорию
+            /// </summary>
             public string Directory { get; set; }
         }
 
@@ -52,15 +64,9 @@ namespace Scada.Agent
         /// </summary>
         public Settings()
         {
-            Culture = "";
             Instances = new List<ScadaInstance>();
         }
 
-
-        /// <summary>
-        /// Получить или установить культуру агента
-        /// </summary>
-        public string Culture { get; set; }
 
         /// <summary>
         /// Получить настройки экземпляров систем
