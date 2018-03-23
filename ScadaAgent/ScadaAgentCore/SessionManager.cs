@@ -23,6 +23,7 @@
  * Modified : 2018
  */
 
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Utils;
@@ -36,9 +37,17 @@ namespace Scada.Agent
     public class SessionManager
     {
         /// <summary>
+        /// Макс. количество сессий
+        /// </summary>
+        private const int MaxSessionCnt = 100;
+        /// <summary>
         /// Количество попыток получения уникального ид. сессии
         /// </summary>
         private const int GetIDAttemtps = 100;
+        /// <summary>
+        /// Время жизни сессии, если нет активности
+        /// </summary>
+        private readonly TimeSpan SessionLifetime = TimeSpan.FromMinutes(1);
 
         private Dictionary<long, Session> sessions; // список сессий, ключ - ид. сессии
         private ILog log; // журнал приложения
@@ -68,30 +77,38 @@ namespace Scada.Agent
         {
             lock (sessions)
             {
-                long sessionID = CryptoUtils.GetRandomLong();
-                int attempt = 0;
-                bool duplicated;
+                long sessionID = 0;
+                bool sessionOK = false;
 
-                while (duplicated = sessions.ContainsKey(sessionID) && ++attempt <= GetIDAttemtps)
+                if (sessions.Count < MaxSessionCnt)
                 {
                     sessionID = CryptoUtils.GetRandomLong();
+                    int attempt = 0;
+                    bool duplicated;
+
+                    while (duplicated = sessions.ContainsKey(sessionID) && ++attempt <= GetIDAttemtps)
+                    {
+                        sessionID = CryptoUtils.GetRandomLong();
+                    }
+
+                    sessionOK = !duplicated;
                 }
 
-                if (duplicated)
+                if (sessionOK)
+                {
+                    Session session = new Session(sessionID);
+                    sessions.Add(sessionID, session);
+                    log.WriteAction(string.Format(Localization.UseRussian ?
+                        "Создана сессия с ид. {0}" :
+                        "Session with ID {0} created", sessionID));
+                    return session;
+                }
+                else
                 {
                     log.WriteError(Localization.UseRussian ?
                         "Не удалось создать сессию" :
                         "Unable to create session");
                     return null;
-                }
-                else
-                {
-                    Session session = new Session(sessionID);
-                    sessions.Add(sessionID, session);
-                    log.WriteAction(string.Format(Localization.UseRussian ? 
-                        "Создана сессия с ид. {0}" : 
-                        "Session with ID {0} created", sessionID));
-                    return session;
                 }
             }
         }
@@ -112,7 +129,22 @@ namespace Scada.Agent
         /// </summary>
         public void RemoveInactiveSessions()
         {
+            DateTime utcNowDT = DateTime.UtcNow;
+            List<long> keysToRemove = new List<long>();
 
+            lock (sessions)
+            {
+                foreach (KeyValuePair<long, Session> pair in sessions)
+                {
+                    if (utcNowDT - pair.Value.ActivityDT > SessionLifetime)
+                        keysToRemove.Add(pair.Key);
+                }
+
+                foreach (long key in keysToRemove)
+                {
+                    sessions.Remove(key);
+                }
+            }
         }
 
         /// <summary>

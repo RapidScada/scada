@@ -54,6 +54,7 @@ namespace Scada.Agent
         {
             AppDirs = new AppDirs();
             Log = new Log(Log.Formats.Full);
+            SessionManager = new SessionManager(Log);
         }
 
 
@@ -67,11 +68,16 @@ namespace Scada.Agent
         /// </summary>
         public Log Log { get; private set; }
 
+        /// <summary>
+        /// Получить менеджер сессий
+        /// </summary>
+        public SessionManager SessionManager { get; private set; }
+
 
         /// <summary>
         /// Получить общие данные агента
         /// </summary>
-        public static AppData GetAppData()
+        public static AppData GetInstance()
         {
             return appDataInstance;
         }

@@ -62,7 +62,7 @@ namespace Scada.Agent
         /// <summary>
         /// Получить IP-адрес подключения
         /// </summary>
-        public string IpAddress { get; protected set; }
+        public string IpAddress { get; set; }
 
         /// <summary>
         /// Получить или установить признак, выполнен ли вход пользователя в систему
@@ -77,7 +77,16 @@ namespace Scada.Agent
         /// <summary>
         /// Получить или установить дату и время последней активности (UTC)
         /// </summary>
-        public DateTime ActivityDT { get; set; }
+        public DateTime ActivityDT { get; private set; }
+
+
+        /// <summary>
+        /// Зарегистрировать активность
+        /// </summary>
+        public void RegisterActivity()
+        {
+            ActivityDT = DateTime.UtcNow;
+        }
 
         /// <summary>
         /// Вернуть строковое представление объекта

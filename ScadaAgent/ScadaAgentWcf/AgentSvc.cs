@@ -8,11 +8,35 @@ namespace Scada.Agent.Wcf
     [ServiceContract]
     public class AgentSvc
     {
+        /// <summary>
+        /// Данные приложения
+        /// </summary>
+        private static AppData appData = AppData.GetInstance();
+        /// <summary>
+        /// Менеджер сессий
+        /// </summary>
+        private static SessionManager sessionManager = appData.SessionManager;
+
+
+        /// <summary>
+        /// Создать новую сессию
+        /// </summary>
         [OperationContract]
-        public bool GetSessionID(out long sessionID)
+        public bool CreateSession(out long sessionID)
         {
-            sessionID = CryptoUtils.GetRandomLong();
-            return true;
+            Session session = sessionManager.CreateSession();
+
+            if (session == null)
+            {
+                sessionID = 0;
+                return false;
+            }
+            else
+            {
+                session.IpAddress = ""; // TODO
+                sessionID = session.ID;
+                return true;
+            }
         }
 
         [OperationContract]
