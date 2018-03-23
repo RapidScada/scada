@@ -24,6 +24,7 @@
  */
 
 using System;
+using System.Text;
 
 namespace Scada.Agent
 {
@@ -46,6 +47,7 @@ namespace Scada.Agent
         public Session(long sessionID)
         {
             ID = sessionID;
+            IpAddress = "";
             LoggedOn = false;
             Username = "";
             ActivityDT = DateTime.UtcNow;
@@ -56,6 +58,11 @@ namespace Scada.Agent
         /// Получить идентификатор сессии
         /// </summary>
         public long ID { get; private set; }
+
+        /// <summary>
+        /// Получить IP-адрес подключения
+        /// </summary>
+        public string IpAddress { get; protected set; }
 
         /// <summary>
         /// Получить или установить признак, выполнен ли вход пользователя в систему
@@ -71,5 +78,21 @@ namespace Scada.Agent
         /// Получить или установить дату и время последней активности (UTC)
         /// </summary>
         public DateTime ActivityDT { get; set; }
+
+        /// <summary>
+        /// Вернуть строковое представление объекта
+        /// </summary>
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("[").Append(ID).Append("] ").Append(IpAddress);
+
+            if (LoggedOn)
+                sb.Append("; ").Append(Username);
+
+            sb.Append("; ").Append(ActivityDT.ToString("T", Localization.Culture));
+
+            return sb.ToString();
+        }
     }
 }

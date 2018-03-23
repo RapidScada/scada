@@ -35,7 +35,13 @@ namespace Scada.Agent
     /// </summary>
     public class SessionManager
     {
+        /// <summary>
+        /// Количество попыток получения уникального ид. сессии
+        /// </summary>
+        private const int GetIDAttemtps = 100;
+
         private Dictionary<long, Session> sessions; // список сессий, ключ - ид. сессии
+        private ILog log; // журнал приложения
 
 
         /// <summary>
@@ -50,6 +56,7 @@ namespace Scada.Agent
         /// </summary>
         public SessionManager(ILog log)
         {
+            this.log = log;
             sessions = new Dictionary<long, Session>();
         }
 
@@ -59,7 +66,34 @@ namespace Scada.Agent
         /// </summary>
         public Session CreateSession()
         {
-            return null;
+            lock (sessions)
+            {
+                long sessionID = CryptoUtils.GetRandomLong();
+                int attempt = 0;
+                bool duplicated;
+
+                while (duplicated = sessions.ContainsKey(sessionID) && ++attempt <= GetIDAttemtps)
+                {
+                    sessionID = CryptoUtils.GetRandomLong();
+                }
+
+                if (duplicated)
+                {
+                    log.WriteError(Localization.UseRussian ?
+                        "Не удалось создать сессию" :
+                        "Unable to create session");
+                    return null;
+                }
+                else
+                {
+                    Session session = new Session(sessionID);
+                    sessions.Add(sessionID, session);
+                    log.WriteAction(string.Format(Localization.UseRussian ? 
+                        "Создана сессия с ид. {0}" : 
+                        "Session with ID {0} created", sessionID));
+                    return session;
+                }
+            }
         }
 
         /// <summary>
@@ -92,8 +126,7 @@ namespace Scada.Agent
             {
                 foreach (Session session in sessions.Values)
                 {
-                    // TODO
-                    sbInfo.Append(session.ID).AppendLine();
+                    sbInfo.AppendLine(session.ToString());
                 }
             }
 
