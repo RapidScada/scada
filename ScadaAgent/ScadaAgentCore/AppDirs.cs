@@ -39,6 +39,7 @@ namespace Scada.Agent
         public AppDirs()
         {
             ExeDir = "";
+            CmdDir = "";
             ConfigDir = "";
             LangDir = "";
             LogDir = "";
@@ -50,7 +51,13 @@ namespace Scada.Agent
         /// Получить директорию исполняемого файла
         /// </summary>
         public string ExeDir { get; protected set; }
-        
+
+        /// <summary>
+        /// Получить директорию команд
+        /// </summary>
+        /// <remarks>Используется консольным приложением</remarks>
+        public string CmdDir { get; protected set; }
+
         /// <summary>
         /// Получить директорию конфигурации
         /// </summary>
@@ -71,6 +78,25 @@ namespace Scada.Agent
         /// </summary>
         public string TempDir { get; set; }
 
+        /// <summary>
+        /// Проверить существование директорий, исключая необязательную директорию команд
+        /// </summary>
+        public bool Exist
+        {
+            get
+            {
+                string[] dirs = GetRequiredDirs();
+
+                foreach (string dir in dirs)
+                {
+                    if (!Directory.Exists(dir))
+                        return false;
+                }
+
+                return true;
+            }
+        }
+
 
         /// <summary>
         /// Инициализировать директории на основе директории исполняемого файла приложения
@@ -78,10 +104,19 @@ namespace Scada.Agent
         public void Init(string exeDir)
         {
             ExeDir = ScadaUtils.NormalDir(exeDir);
+            CmdDir = ExeDir + "Cmd" + Path.DirectorySeparatorChar;
             ConfigDir = ExeDir + "Config" + Path.DirectorySeparatorChar;
             LangDir = ExeDir + "Lang" + Path.DirectorySeparatorChar;
             LogDir = ExeDir + "Log" + Path.DirectorySeparatorChar;
             TempDir = ExeDir + "Temp" + Path.DirectorySeparatorChar;
+        }
+
+        /// <summary>
+        /// Получить необходимые директории
+        /// </summary>
+        public string[] GetRequiredDirs()
+        {
+            return new string[] { ConfigDir, ConfigDir, LangDir, LogDir, TempDir };
         }
     }
 }

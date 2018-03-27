@@ -36,6 +36,11 @@ namespace Scada.Agent
     /// </summary>
     public sealed class AppData
     {
+        /// <summary>
+        /// Имя файла журнала приложения без директории
+        /// </summary>
+        private const string LogFileName = "ScadaAgent.log";
+
         private static readonly AppData appDataInstance; // экземпляр объекта AppData
 
 
@@ -73,6 +78,19 @@ namespace Scada.Agent
         /// </summary>
         public SessionManager SessionManager { get; private set; }
 
+
+        /// <summary>
+        /// Инициализировать общие данные агента
+        /// </summary>
+        public void Init(string exeDir)
+        {
+            // инициализация директорий приложения
+            AppDirs.Init(exeDir);
+
+            // настройка журнала приложения
+            Log.FileName = AppDirs.LogDir + LogFileName;
+            Log.Encoding = Encoding.UTF8;
+        }
 
         /// <summary>
         /// Получить общие данные агента

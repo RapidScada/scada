@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.ServiceModel;
 
-namespace Scada.Agent.Wcf
+namespace Scada.Agent.Net
 {
     [MessageContract]
     public class ConfigUploadMessage

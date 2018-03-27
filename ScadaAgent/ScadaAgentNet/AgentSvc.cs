@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
 
-namespace Scada.Agent.Wcf
+namespace Scada.Agent.Net
 {
     [ServiceContract]
     public class AgentSvc
@@ -16,6 +17,26 @@ namespace Scada.Agent.Wcf
         /// Менеджер сессий
         /// </summary>
         private static SessionManager sessionManager = appData.SessionManager;
+
+
+        /// <summary>
+        /// Получить IP-адрес текущего подключения
+        /// </summary>
+        private string GetClientIP()
+        {
+            try
+            {
+                OperationContext context = OperationContext.Current;
+                MessageProperties props = context.IncomingMessageProperties;
+                RemoteEndpointMessageProperty remoteEndPoint =
+                       (RemoteEndpointMessageProperty)props[RemoteEndpointMessageProperty.Name];
+                return remoteEndPoint.Address;
+            }
+            catch
+            {
+                return "";
+            }
+        }
 
 
         /// <summary>
@@ -33,7 +54,7 @@ namespace Scada.Agent.Wcf
             }
             else
             {
-                session.IpAddress = ""; // TODO
+                session.IpAddress = GetClientIP();
                 sessionID = session.ID;
                 return true;
             }

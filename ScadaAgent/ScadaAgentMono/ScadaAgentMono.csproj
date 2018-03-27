@@ -32,8 +32,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Log.Std, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Log\Log.Std\bin\Release\netstandard2.0\Log.Std.dll</HintPath>
+    </Reference>
+    <Reference Include="ScadaData.Std, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ScadaData\ScadaData.Std\bin\Release\netstandard2.0\ScadaData.Std.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ServiceModel" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -43,9 +50,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ScadaAgentWcf\ScadaAgentWcf.csproj">
-      <Project>{620cfdfb-6484-4edf-9764-d01c90c1ffa8}</Project>
-      <Name>ScadaAgentWcf</Name>
+    <ProjectReference Include="..\ScadaAgentCore\ScadaAgentCore.csproj">
+      <Project>{5163526d-91e4-414d-97fe-090e1e7fda6b}</Project>
+      <Name>ScadaAgentCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ScadaAgentNet\ScadaAgentNet.csproj">
+      <Project>{c377283b-858b-4efc-a560-e90ff2f26b03}</Project>
+      <Name>ScadaAgentNet</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -65,7 +65,7 @@ namespace Scada.Agent
         /// </summary>
         public SessionManager(ILog log)
         {
-            this.log = log;
+            this.log = log ?? throw new ArgumentNullException("log");
             sessions = new Dictionary<long, Session>();
         }
 

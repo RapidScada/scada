@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ScadaAgentWcf")]
+[assembly: AssemblyTitle("ScadaAgentNet")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ScadaAgentWcf")]
+[assembly: AssemblyProduct("ScadaAgentNet")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("620cfdfb-6484-4edf-9764-d01c90c1ffa8")]
+[assembly: Guid("c377283b-858b-4efc-a560-e90ff2f26b03")]
 
 // Version information for an assembly consists of the following four values:
 //
