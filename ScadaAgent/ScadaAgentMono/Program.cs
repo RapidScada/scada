@@ -46,9 +46,12 @@ namespace ScadaAgentMono
             // запуск агента
             Console.WriteLine("Starting Agent...");
             AgentManager agentManager = new AgentManager();
-            agentManager.StartAgent();
 
-            Console.WriteLine("Agent is started");
+            if (agentManager.StartAgent())
+                Console.WriteLine("Agent is started successfully");
+            else
+                Console.WriteLine("Agent is started with errors");
+
             Console.WriteLine("Press 'x' or create 'agentstop' file to stop Agent");
 
             // остановка службы при нажатии 'x' или обнаружении файла остановки

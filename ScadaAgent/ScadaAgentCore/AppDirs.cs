@@ -116,7 +116,7 @@ namespace Scada.Agent
         /// </summary>
         public string[] GetRequiredDirs()
         {
-            return new string[] { ConfigDir, ConfigDir, LangDir, LogDir, TempDir };
+            return new string[] { ConfigDir, LangDir, LogDir, TempDir };
         }
     }
 }

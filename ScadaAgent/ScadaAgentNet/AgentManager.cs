@@ -128,7 +128,7 @@ namespace Scada.Agent.Net
         /// <summary>
         /// Запустить агента
         /// </summary>
-        public void StartAgent()
+        public bool StartAgent()
         {
             // инициализация общих данных
             AppData appData = AppData.GetInstance();
@@ -154,30 +154,27 @@ namespace Scada.Agent.Net
                 // запуск
                 agentLogic = new AgentLogic(appData.SessionManager, appData.Log);
 
-                if (!(StartWcfService() && agentLogic.StartProcessing()))
+                if (StartWcfService() && agentLogic.StartProcessing())
+                {
+                    return true;
+                }
+                else
                 {
                     log.WriteError(Localization.UseRussian ?
                         "Нормальная работа программы невозможна" :
                         "Normal program execution is impossible");
+                    return false;
                 }
             }
             else
             {
-                string errMsg = string.Format(Localization.UseRussian ?
+                log.WriteError(string.Format(Localization.UseRussian ?
                     "Необходимые директории не существуют:{0}{1}{0}" +
                     "Нормальная работа программы невозможна" :
                     "The required directories do not exist:{0}{1}{0}" +
                     "Normal program execution is impossible",
-                    Environment.NewLine, string.Join(Environment.NewLine, appData.AppDirs.GetRequiredDirs()));
-
-                try
-                {
-                    if (EventLog.SourceExists("ScadaAgent"))
-                        EventLog.WriteEvent("ScadaAgent", new EventInstance(0, 0, EventLogEntryType.Error), errMsg);
-                }
-                catch { }
-
-                log.WriteError(errMsg);
+                    Environment.NewLine, string.Join(Environment.NewLine, appData.AppDirs.GetRequiredDirs())));
+                return false;
             }
         }
 
