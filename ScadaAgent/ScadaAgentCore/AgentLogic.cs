@@ -41,6 +41,14 @@ namespace Scada.Agent
         /// Время ожидания остановки потока, мс
         /// </summary>
         private const int WaitForStop = 10000;
+        /// <summary>
+        /// Период обработки сессий
+        /// </summary>
+        private static readonly TimeSpan SessProcPeriod = TimeSpan.FromSeconds(5);
+        /// <summary>
+        /// Период записи в файл информации о работе приложения
+        /// </summary>
+        private static readonly TimeSpan WriteInfoPeriod = TimeSpan.FromSeconds(1);
 
         private SessionManager sessionManager; // ссылка на менджер сессий
         private ILog log;                      // журнал приложения
@@ -74,15 +82,41 @@ namespace Scada.Agent
         {
             try
             {
+                DateTime sessProcDT = DateTime.MinValue; // время обработки сессий
+                DateTime writeInfoDT = DateTime.MinValue; // время записи информации о работе приложения
+
                 while (!terminated)
                 {
+                    DateTime utcNow = DateTime.UtcNow;
+
+                    // удаление неактивных сессий
+                    if (utcNow - sessProcDT >= SessProcPeriod)
+                    {
+                        sessProcDT = utcNow;
+                        sessionManager.RemoveInactiveSessions();
+                    }
+
+                    // запись информации о работе приложения
+                    if (utcNow - writeInfoDT >= WriteInfoPeriod)
+                    {
+                        writeInfoDT = utcNow;
+                        WriteInfo();
+                    }
+
                     Thread.Sleep(ScadaUtils.ThreadDelay);
                 }
             }
             finally
             {
-
+                WriteInfo();
             }
+        }
+
+        /// <summary>
+        /// Записать в файл информацию о работе приложения
+        /// </summary>
+        private void WriteInfo()
+        {
         }
 
 
