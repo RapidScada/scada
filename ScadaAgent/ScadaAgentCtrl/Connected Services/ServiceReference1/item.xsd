@@ -3,30 +3,15 @@
   <xs:import schemaLocation="http://localhost:10002/ScadaAgent/ScadaAgentSvc/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Scada.Agent" />
   <xs:import schemaLocation="http://localhost:10002/ScadaAgent/ScadaAgentSvc/?xsd=xsd3" namespace="http://schemas.microsoft.com/Message" />
   <xs:import schemaLocation="http://localhost:10002/ScadaAgent/ScadaAgentSvc/?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
-  <xs:element name="Sum">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="a" type="xs:double" />
-        <xs:element minOccurs="0" name="b" type="xs:double" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="SumResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="SumResult" type="xs:double" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="GetSessionID">
+  <xs:element name="CreateSession">
     <xs:complexType>
       <xs:sequence />
     </xs:complexType>
   </xs:element>
-  <xs:element name="GetSessionIDResponse">
+  <xs:element name="CreateSessionResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="GetSessionIDResult" type="xs:boolean" />
+        <xs:element minOccurs="0" name="CreateSessionResult" type="xs:boolean" />
         <xs:element minOccurs="0" name="sessionID" type="xs:long" />
       </xs:sequence>
     </xs:complexType>

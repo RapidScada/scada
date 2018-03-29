@@ -151,7 +151,7 @@ namespace Scada.Agent.Net
                     log.WriteError(errMsg);
 
                 // запуск
-                agentLogic = new AgentLogic(appData.SessionManager, appData.Log);
+                agentLogic = new AgentLogic(appData.SessionManager, appData.AppDirs, appData.Log);
 
                 if (StartWcfService() && agentLogic.StartProcessing())
                 {

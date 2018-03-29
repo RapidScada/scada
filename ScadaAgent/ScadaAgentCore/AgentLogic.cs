@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading;
 using Utils;
@@ -37,6 +38,26 @@ namespace Scada.Agent
     /// </summary>
     public sealed class AgentLogic
     {
+        /// <summary>
+        /// Состояния работы агента
+        /// </summary>
+        private enum WorkState
+        {
+            Undefined = 0,
+            Normal = 1,
+            Error = 2,
+            Terminated = 3
+        }
+
+        /// <summary>
+        /// Наименования состояний работы на английском
+        /// </summary>
+        private static readonly string[] WorkStateNamesEn = { "undefined", "normal", "error", "terminated" };
+        /// <summary>
+        /// Наименования состояний работы на русском
+        /// </summary>
+        private static readonly string[] WorkStateNamesRu = { "не определено", "норма", "ошибка", "завершён" };
+
         /// <summary>
         /// Время ожидания остановки потока, мс
         /// </summary>
@@ -51,9 +72,14 @@ namespace Scada.Agent
         private static readonly TimeSpan WriteInfoPeriod = TimeSpan.FromSeconds(1);
 
         private SessionManager sessionManager; // ссылка на менджер сессий
+        private AppDirs appDirs;               // директории приложения
         private ILog log;                      // журнал приложения
         private Thread thread;                 // поток работы сервера
         private volatile bool terminated;      // необходимо завершить работу потока
+        private string infoFileName;           // полное имя файла информации
+        private DateTime utcStartDT;           // дата и время запуска (UTC)
+        private DateTime startDT;              // дата и время запуска
+        private WorkState workState;           // состояние работы
 
 
         /// <summary>
@@ -66,14 +92,31 @@ namespace Scada.Agent
         /// <summary>
         /// Конструктор
         /// </summary>
-        public AgentLogic(SessionManager sessionManager, ILog log)
+        public AgentLogic(SessionManager sessionManager, AppDirs appDirs, ILog log)
         {
             this.sessionManager = sessionManager ?? throw new ArgumentNullException("sessionManager");
+            this.appDirs = appDirs ?? throw new ArgumentNullException("appDirs");
             this.log = log ?? throw new ArgumentNullException("log");
+
             thread = null;
             terminated = false;
+            infoFileName = appDirs.LogDir + AppData.InfoFileName;
+            utcStartDT = startDT = DateTime.MinValue;
+            workState = WorkState.Undefined;
         }
 
+
+        /// <summary>
+        /// Подготовить обработку логики
+        /// </summary>
+        private void PrepareProcessing()
+        {
+            terminated = false;
+            utcStartDT = DateTime.UtcNow;
+            startDT = utcStartDT.ToLocalTime();
+            workState = WorkState.Normal;
+            WriteInfo();
+        }
 
         /// <summary>
         /// Цикл работы агента (метод вызывается в отдельном потоке)
@@ -87,27 +130,42 @@ namespace Scada.Agent
 
                 while (!terminated)
                 {
-                    DateTime utcNow = DateTime.UtcNow;
-
-                    // удаление неактивных сессий
-                    if (utcNow - sessProcDT >= SessProcPeriod)
+                    try
                     {
-                        sessProcDT = utcNow;
-                        sessionManager.RemoveInactiveSessions();
-                    }
+                        DateTime utcNow = DateTime.UtcNow;
 
-                    // запись информации о работе приложения
-                    if (utcNow - writeInfoDT >= WriteInfoPeriod)
+                        // удаление неактивных сессий
+                        if (utcNow - sessProcDT >= SessProcPeriod)
+                        {
+                            sessProcDT = utcNow;
+                            sessionManager.RemoveInactiveSessions();
+                        }
+
+                        // запись информации о работе приложения
+                        if (utcNow - writeInfoDT >= WriteInfoPeriod)
+                        {
+                            writeInfoDT = utcNow;
+                            WriteInfo();
+                        }
+
+                        Thread.Sleep(ScadaUtils.ThreadDelay);
+                    }
+                    catch (ThreadAbortException)
                     {
-                        writeInfoDT = utcNow;
-                        WriteInfo();
                     }
-
-                    Thread.Sleep(ScadaUtils.ThreadDelay);
+                    catch (Exception ex)
+                    {
+                        log.WriteException(ex, Localization.UseRussian ?
+                            "Ошибка в цикле работы агента" :
+                            "Error in the agent work cycle");
+                        Thread.Sleep(ScadaUtils.ThreadDelay);
+                    }
                 }
             }
             finally
             {
+                sessionManager.RemoveAllSessions();
+                workState = WorkState.Terminated;
                 WriteInfo();
             }
         }
@@ -117,6 +175,59 @@ namespace Scada.Agent
         /// </summary>
         private void WriteInfo()
         {
+            try
+            {
+                // формирование информации
+                StringBuilder sbInfo = new StringBuilder();
+                TimeSpan workSpan = DateTime.UtcNow - utcStartDT;
+                string workSpanStr = workSpan.Days > 0 ? 
+                    workSpan.ToString(@"d\.hh\:mm\:ss") :
+                    workSpan.ToString(@"hh\:mm\:ss");
+
+                if (Localization.UseRussian)
+                {
+                    sbInfo
+                        .AppendLine("Агент")
+                        .AppendLine("-----")
+                        .Append("Запуск       : ").AppendLine(startDT.ToLocalizedString())
+                        .Append("Время работы : ").AppendLine(workSpanStr)
+                        .Append("Состояние    : ").AppendLine(WorkStateNamesRu[(int)workState])
+                        .Append("Версия       : ").AppendLine(AgentUtils.AppVersion)
+                        .AppendLine()
+                        .AppendLine("Активные сессии")
+                        .AppendLine("---------------");
+                }
+                else
+                {
+                    sbInfo
+                        .AppendLine("Agent")
+                        .AppendLine("-----")
+                        .Append("Started        : ").AppendLine(startDT.ToLocalizedString())
+                        .Append("Execution time : ").AppendLine(workSpanStr)
+                        .Append("State          : ").AppendLine(WorkStateNamesEn[(int)workState])
+                        .Append("Version        : ").AppendLine(AgentUtils.AppVersion)
+                        .AppendLine()
+                        .AppendLine("Active Sessions")
+                        .AppendLine("---------------");
+                }
+
+                sbInfo.Append(sessionManager.GetInfo());
+
+                // запись в файл
+                using (StreamWriter writer = new StreamWriter(infoFileName, false, Encoding.UTF8))
+                {
+                    writer.Write(sbInfo.ToString());
+                }
+            }
+            catch (ThreadAbortException)
+            {
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при записи в файл информации о работе приложения" :
+                    "Error writing application information to the file");
+            }
         }
 
 
@@ -132,7 +243,7 @@ namespace Scada.Agent
                     log.WriteAction(Localization.UseRussian ?
                         "Запуск обработки логики" :
                         "Start logic processing");
-                    terminated = false;
+                    PrepareProcessing();
                     thread = new Thread(new ThreadStart(Execute));
                     thread.Start();
                 }
@@ -153,8 +264,8 @@ namespace Scada.Agent
             {
                 if (thread == null)
                 {
-                    //workState = WorkStateNames.Error;
-                    //WriteInfo();
+                    workState = WorkState.Error;
+                    WriteInfo();
                 }
             }
 
@@ -191,8 +302,8 @@ namespace Scada.Agent
             }
             catch (Exception ex)
             {
-                //workState = WorkStateNames.Error;
-                //WriteInfo();
+                workState = WorkState.Error;
+                WriteInfo();
                 log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при остановке обработки логики" :
                     "Error stopping logic processing");

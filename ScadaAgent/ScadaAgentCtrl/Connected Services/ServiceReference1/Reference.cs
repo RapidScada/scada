@@ -15,18 +15,12 @@ namespace Scada.Agent.Ctrl.ServiceReference1 {
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference1.AgentSvc")]
     public interface AgentSvc {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/Sum", ReplyAction="http://tempuri.org/AgentSvc/SumResponse")]
-        double Sum(double a, double b);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/Sum", ReplyAction="http://tempuri.org/AgentSvc/SumResponse")]
-        System.Threading.Tasks.Task<double> SumAsync(double a, double b);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/GetSessionID", ReplyAction="http://tempuri.org/AgentSvc/GetSessionIDResponse")]
-        Scada.Agent.Ctrl.ServiceReference1.GetSessionIDResponse GetSessionID(Scada.Agent.Ctrl.ServiceReference1.GetSessionIDRequest request);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/CreateSession", ReplyAction="http://tempuri.org/AgentSvc/CreateSessionResponse")]
+        Scada.Agent.Ctrl.ServiceReference1.CreateSessionResponse CreateSession(Scada.Agent.Ctrl.ServiceReference1.CreateSessionRequest request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/GetSessionID", ReplyAction="http://tempuri.org/AgentSvc/GetSessionIDResponse")]
-        System.Threading.Tasks.Task<Scada.Agent.Ctrl.ServiceReference1.GetSessionIDResponse> GetSessionIDAsync(Scada.Agent.Ctrl.ServiceReference1.GetSessionIDRequest request);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/CreateSession", ReplyAction="http://tempuri.org/AgentSvc/CreateSessionResponse")]
+        System.Threading.Tasks.Task<Scada.Agent.Ctrl.ServiceReference1.CreateSessionResponse> CreateSessionAsync(Scada.Agent.Ctrl.ServiceReference1.CreateSessionRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/Login", ReplyAction="http://tempuri.org/AgentSvc/LoginResponse")]
         bool Login(long sessionID, string username, string encryptedPassword, string scadaInstanceName);
@@ -89,29 +83,29 @@ namespace Scada.Agent.Ctrl.ServiceReference1 {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="GetSessionID", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
-    public partial class GetSessionIDRequest {
+    [System.ServiceModel.MessageContractAttribute(WrapperName="CreateSession", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    public partial class CreateSessionRequest {
         
-        public GetSessionIDRequest() {
+        public CreateSessionRequest() {
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="GetSessionIDResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
-    public partial class GetSessionIDResponse {
+    [System.ServiceModel.MessageContractAttribute(WrapperName="CreateSessionResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    public partial class CreateSessionResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public bool GetSessionIDResult;
+        public bool CreateSessionResult;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
         public long sessionID;
         
-        public GetSessionIDResponse() {
+        public CreateSessionResponse() {
         }
         
-        public GetSessionIDResponse(bool GetSessionIDResult, long sessionID) {
-            this.GetSessionIDResult = GetSessionIDResult;
+        public CreateSessionResponse(bool CreateSessionResult, long sessionID) {
+            this.CreateSessionResult = CreateSessionResult;
             this.sessionID = sessionID;
         }
     }
@@ -294,28 +288,20 @@ namespace Scada.Agent.Ctrl.ServiceReference1 {
                 base(binding, remoteAddress) {
         }
         
-        public double Sum(double a, double b) {
-            return base.Channel.Sum(a, b);
-        }
-        
-        public System.Threading.Tasks.Task<double> SumAsync(double a, double b) {
-            return base.Channel.SumAsync(a, b);
-        }
-        
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Scada.Agent.Ctrl.ServiceReference1.GetSessionIDResponse Scada.Agent.Ctrl.ServiceReference1.AgentSvc.GetSessionID(Scada.Agent.Ctrl.ServiceReference1.GetSessionIDRequest request) {
-            return base.Channel.GetSessionID(request);
+        Scada.Agent.Ctrl.ServiceReference1.CreateSessionResponse Scada.Agent.Ctrl.ServiceReference1.AgentSvc.CreateSession(Scada.Agent.Ctrl.ServiceReference1.CreateSessionRequest request) {
+            return base.Channel.CreateSession(request);
         }
         
-        public bool GetSessionID(out long sessionID) {
-            Scada.Agent.Ctrl.ServiceReference1.GetSessionIDRequest inValue = new Scada.Agent.Ctrl.ServiceReference1.GetSessionIDRequest();
-            Scada.Agent.Ctrl.ServiceReference1.GetSessionIDResponse retVal = ((Scada.Agent.Ctrl.ServiceReference1.AgentSvc)(this)).GetSessionID(inValue);
+        public bool CreateSession(out long sessionID) {
+            Scada.Agent.Ctrl.ServiceReference1.CreateSessionRequest inValue = new Scada.Agent.Ctrl.ServiceReference1.CreateSessionRequest();
+            Scada.Agent.Ctrl.ServiceReference1.CreateSessionResponse retVal = ((Scada.Agent.Ctrl.ServiceReference1.AgentSvc)(this)).CreateSession(inValue);
             sessionID = retVal.sessionID;
-            return retVal.GetSessionIDResult;
+            return retVal.CreateSessionResult;
         }
         
-        public System.Threading.Tasks.Task<Scada.Agent.Ctrl.ServiceReference1.GetSessionIDResponse> GetSessionIDAsync(Scada.Agent.Ctrl.ServiceReference1.GetSessionIDRequest request) {
-            return base.Channel.GetSessionIDAsync(request);
+        public System.Threading.Tasks.Task<Scada.Agent.Ctrl.ServiceReference1.CreateSessionResponse> CreateSessionAsync(Scada.Agent.Ctrl.ServiceReference1.CreateSessionRequest request) {
+            return base.Channel.CreateSessionAsync(request);
         }
         
         public bool Login(long sessionID, string username, string encryptedPassword, string scadaInstanceName) {

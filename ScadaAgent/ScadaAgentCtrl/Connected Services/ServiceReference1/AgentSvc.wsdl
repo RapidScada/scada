@@ -9,17 +9,11 @@
       <xsd:import schemaLocation="http://localhost:10002/ScadaAgent/ScadaAgentSvc/?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
     </xsd:schema>
   </wsdl:types>
-  <wsdl:message name="AgentSvc_Sum_InputMessage">
-    <wsdl:part name="parameters" element="tns:Sum" />
+  <wsdl:message name="AgentSvc_CreateSession_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateSession" />
   </wsdl:message>
-  <wsdl:message name="AgentSvc_Sum_OutputMessage">
-    <wsdl:part name="parameters" element="tns:SumResponse" />
-  </wsdl:message>
-  <wsdl:message name="AgentSvc_GetSessionID_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetSessionID" />
-  </wsdl:message>
-  <wsdl:message name="AgentSvc_GetSessionID_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetSessionIDResponse" />
+  <wsdl:message name="AgentSvc_CreateSession_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateSessionResponse" />
   </wsdl:message>
   <wsdl:message name="AgentSvc_Login_InputMessage">
     <wsdl:part name="parameters" element="tns:Login" />
@@ -78,13 +72,9 @@
     <wsdl:part name="parameters" element="tns:DownloadFileRestResponse" />
   </wsdl:message>
   <wsdl:portType name="AgentSvc">
-    <wsdl:operation name="Sum">
-      <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/Sum" message="tns:AgentSvc_Sum_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/AgentSvc/SumResponse" message="tns:AgentSvc_Sum_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="GetSessionID">
-      <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/GetSessionID" message="tns:AgentSvc_GetSessionID_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/AgentSvc/GetSessionIDResponse" message="tns:AgentSvc_GetSessionID_OutputMessage" />
+    <wsdl:operation name="CreateSession">
+      <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/CreateSession" message="tns:AgentSvc_CreateSession_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/AgentSvc/CreateSessionResponse" message="tns:AgentSvc_CreateSession_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="Login">
       <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/Login" message="tns:AgentSvc_Login_InputMessage" />
@@ -125,17 +115,8 @@
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_AgentSvc" type="tns:AgentSvc">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="Sum">
-      <soap:operation soapAction="http://tempuri.org/AgentSvc/Sum" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetSessionID">
-      <soap:operation soapAction="http://tempuri.org/AgentSvc/GetSessionID" style="document" />
+    <wsdl:operation name="CreateSession">
+      <soap:operation soapAction="http://tempuri.org/AgentSvc/CreateSession" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

@@ -23,8 +23,6 @@
  * Modified : 2018
  */
 
-using System;
-using System.Collections.Generic;
 using System.Text;
 using Utils;
 
@@ -40,6 +38,10 @@ namespace Scada.Agent
         /// Имя файла журнала приложения без директории
         /// </summary>
         private const string LogFileName = "ScadaAgent.log";
+        /// <summary>
+        /// Имя файла информации о работе приложения
+        /// </summary>
+        public const string InfoFileName = "ScadaAgent.txt";
 
         private static readonly AppData appDataInstance; // экземпляр объекта AppData
 

@@ -148,21 +148,41 @@ namespace Scada.Agent
         }
 
         /// <summary>
+        /// Удалить все сессии
+        /// </summary>
+        public void RemoveAllSessions()
+        {
+            lock (sessions)
+            {
+                sessions.Clear();
+            }
+        }
+
+        /// <summary>
         /// Получить информацию о сессиях
         /// </summary>
         public string GetInfo()
         {
-            StringBuilder sbInfo = new StringBuilder();
-
             lock (sessions)
             {
-                foreach (Session session in sessions.Values)
+                if (sessions.Count > 0)
                 {
-                    sbInfo.AppendLine(session.ToString());
+                    StringBuilder sbInfo = new StringBuilder();
+
+                    foreach (Session session in sessions.Values)
+                    {
+                        sbInfo.AppendLine(session.ToString());
+                    }
+
+                    return sbInfo.ToString();
+                }
+                else
+                {
+                    return Localization.UseRussian ?
+                        "Нет" :
+                        "No";
                 }
             }
-
-            return sbInfo.ToString();
         }
     }
 }

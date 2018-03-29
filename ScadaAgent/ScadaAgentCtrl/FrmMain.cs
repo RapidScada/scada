@@ -18,9 +18,6 @@ namespace Scada.Agent.Ctrl
 
             try
             {
-                double sum = client.Sum(2, 2);
-                MessageBox.Show(sum.ToString());
-
                 Stream stream = client.DownloadFile(0, AppPath.Base);
                 if (stream == null)
                 {
@@ -73,6 +70,21 @@ namespace Scada.Agent.Ctrl
             finally
             {
                 stream?.Close();
+                client.Close();
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            AgentSvcClient client = new AgentSvcClient();
+
+            try
+            {
+                client.CreateSession(out long sessionID);
+                MessageBox.Show("Session ID = " + sessionID);
+            }
+            finally
+            {
                 client.Close();
             }
         }

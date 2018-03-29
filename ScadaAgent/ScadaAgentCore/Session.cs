@@ -99,7 +99,7 @@ namespace Scada.Agent
             if (LoggedOn)
                 sb.Append("; ").Append(Username);
 
-            sb.Append("; ").Append(ActivityDT.ToString("T", Localization.Culture));
+            sb.Append("; ").Append(ActivityDT.ToLocalTime().ToString("T", Localization.Culture));
 
             return sb.ToString();
         }
