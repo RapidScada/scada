@@ -31,5 +31,12 @@ namespace Scada.Agent
     /// </summary>
     public class InstanceManager
     {
+        /// <summary>
+        /// Получить экземпляр системы по наименованию
+        /// </summary>
+        public ScadaInstance GetScadaInstance(string name)
+        {
+            return null;
+        }
     }
 }

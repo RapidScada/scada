@@ -1,22 +1,56 @@
-﻿using System;
+﻿/*
+ * Copyright 2018 Mikhail Shiryaev
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ * 
+ * Product  : Rapid SCADA
+ * Module   : ScadaAgentNet
+ * Summary  : WCF service for interacting with the agent
+ * 
+ * Author   : Mikhail Shiryaev
+ * Created  : 2018
+ * Modified : 2018
+ */
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using Utils;
 
 namespace Scada.Agent.Net
 {
+    /// <summary>
+    /// WCF service for interacting with the agent
+    /// <para>WCF-сервис для взаимодействия с агентом</para>
+    /// </summary>
     [ServiceContract]
     public class AgentSvc
     {
         /// <summary>
         /// Данные приложения
         /// </summary>
-        private static AppData appData = AppData.GetInstance();
+        private static readonly AppData AppData = AppData.GetInstance();
+        /// <summary>
+        /// Журнал приложения
+        /// </summary>
+        private static readonly ILog Log = AppData.Log;
         /// <summary>
         /// Менеджер сессий
         /// </summary>
-        private static SessionManager sessionManager = appData.SessionManager;
+        private static readonly SessionManager SessionManager = AppData.SessionManager;
 
 
         /// <summary>
@@ -38,6 +72,27 @@ namespace Scada.Agent.Net
             }
         }
 
+        /// <summary>
+        /// Попытаться получить сессию по идентификатору
+        /// </summary>
+        private bool TryGetSession(long sessionID, out Session session)
+        {
+            session = SessionManager.GetSession(sessionID);
+
+            if (session == null)
+            {
+                Log.WriteError(string.Format(Localization.UseRussian ?
+                    "Сессия с ид. {0} не найдена" :
+                    "Session with ID {0} not found"));
+                return false;
+            }
+            else
+            {
+                session.RegisterActivity();
+                return true;
+            }
+        }
+
 
         /// <summary>
         /// Создать новую сессию
@@ -45,7 +100,7 @@ namespace Scada.Agent.Net
         [OperationContract]
         public bool CreateSession(out long sessionID)
         {
-            Session session = sessionManager.CreateSession();
+            Session session = SessionManager.CreateSession();
 
             if (session == null)
             {
@@ -60,18 +115,34 @@ namespace Scada.Agent.Net
             }
         }
 
+        /// <summary>
+        /// Войти в систему
+        /// </summary>
         [OperationContract]
         public bool Login(long sessionID, string username, string encryptedPassword, string scadaInstanceName)
         {
-            return true;
+            if (TryGetSession(sessionID, out Session session))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
+        /// <summary>
+        /// Управлять службой
+        /// </summary>
         [OperationContract]
         public bool ControlService(long sessionID, ScadaApps service, ServiceCommand command)
         {
             return true;
         }
 
+        /// <summary>
+        /// Получить статус службы
+        /// </summary>
         [OperationContract]
         public bool GetServiceStatus(long sessionID, ScadaApps service, out bool isRunning)
         {
@@ -79,6 +150,9 @@ namespace Scada.Agent.Net
             return true;
         }
 
+        /// <summary>
+        /// Получить установленные приложения экземпляра системы
+        /// </summary>
         [OperationContract]
         public bool GetInstalledApps(long sessionID, out ScadaApps installedApps)
         {
@@ -86,12 +160,18 @@ namespace Scada.Agent.Net
             return true;
         }
 
+        /// <summary>
+        /// Скачать конфигурацию
+        /// </summary>
         [OperationContract]
         public Stream DownloadConfig(long sessionID, ConfigOptions configOptions)
         {
             return null;
         }
 
+        /// <summary>
+        /// Загрузить конфигурацию
+        /// </summary>
         [OperationContract]
         public void UploadConfig(ConfigUploadMessage configUploadMessage)
         {
@@ -123,6 +203,9 @@ namespace Scada.Agent.Net
             //return true;
         }
 
+        /// <summary>
+        /// Найти файлы
+        /// </summary>
         [OperationContract]
         public bool FindFiles(long sessionID, AppPath appPath, out ICollection<string> paths)
         {
@@ -130,6 +213,9 @@ namespace Scada.Agent.Net
             return true;
         }
 
+        /// <summary>
+        /// Скачать файл
+        /// </summary>
         [OperationContract]
         public Stream DownloadFile(long sessionID, AppPath appPath)
         {
@@ -142,6 +228,9 @@ namespace Scada.Agent.Net
             return stream;
         }
 
+        /// <summary>
+        /// Скачать часть файла с заданной позиции
+        /// </summary>
         [OperationContract]
         public Stream DownloadFileRest(long sessionID, AppPath appPath, long position)
         {
