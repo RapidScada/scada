@@ -67,6 +67,10 @@ namespace Scada.Agent
         /// </summary>
         private static readonly TimeSpan SessProcPeriod = TimeSpan.FromSeconds(5);
         /// <summary>
+        /// Период удаления временных файлов
+        /// </summary>
+        private static readonly TimeSpan RemoveTempPeriod = TimeSpan.FromMinutes(1);
+        /// <summary>
         /// Период записи в файл информации о работе приложения
         /// </summary>
         private static readonly TimeSpan WriteInfoPeriod = TimeSpan.FromSeconds(1);
@@ -119,13 +123,30 @@ namespace Scada.Agent
         }
 
         /// <summary>
+        /// Удалить устаревшие временные файлы
+        /// </summary>
+        private void RemoveOutdatedTempFiles()
+        {
+            // TODO
+        }
+
+        /// <summary>
+        /// Удалить все временные файлы
+        /// </summary>
+        private void RemoveAllTempFiles()
+        {
+            // TODO
+        }
+
+        /// <summary>
         /// Цикл работы агента (метод вызывается в отдельном потоке)
         /// </summary>
         private void Execute()
         {
             try
             {
-                DateTime sessProcDT = DateTime.MinValue; // время обработки сессий
+                DateTime sessProcDT = DateTime.MinValue;  // время обработки сессий
+                DateTime remTempDT = DateTime.MinValue;   // время удаления временных файлов
                 DateTime writeInfoDT = DateTime.MinValue; // время записи информации о работе приложения
 
                 while (!terminated)
@@ -139,6 +160,13 @@ namespace Scada.Agent
                         {
                             sessProcDT = utcNow;
                             sessionManager.RemoveInactiveSessions();
+                        }
+
+                        // удаление устаревших временных файлов
+                        if (utcNow - remTempDT >= RemoveTempPeriod)
+                        {
+                            remTempDT = utcNow;
+                            RemoveOutdatedTempFiles();
                         }
 
                         // запись информации о работе приложения
@@ -165,6 +193,8 @@ namespace Scada.Agent
             finally
             {
                 sessionManager.RemoveAllSessions();
+                RemoveAllTempFiles();
+
                 workState = WorkState.Terminated;
                 WriteInfo();
             }
