@@ -114,7 +114,7 @@ namespace Scada.Agent
         /// </summary>
         public string GetTempFileName(string prefix = "", string extension = "")
         {
-            return 
+            return AppDirs.TempDir +
                 (string.IsNullOrEmpty(prefix) ? "temp" : prefix) + 
                 "-" + (++tempFileNameCntr) + 
                 "." + (string.IsNullOrEmpty(extension) ? "tmp" : extension);
