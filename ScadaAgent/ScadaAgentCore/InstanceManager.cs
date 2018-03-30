@@ -23,6 +23,10 @@
  * Modified : 2018
  */
 
+using System;
+using System.Collections.Concurrent;
+using Utils;
+
 namespace Scada.Agent
 {
     /// <summary>
@@ -31,12 +35,37 @@ namespace Scada.Agent
     /// </summary>
     public class InstanceManager
     {
+        private Settings settings; // настройки агента
+        private ILog log;          // журнал приложения
+        private ConcurrentDictionary<string, object> locks; // объекты для блокировки экземпларов систем
+
+
+        /// <summary>
+        /// Конструктор, ограничивающий создание объекта без параметров
+        /// </summary>
+        private InstanceManager()
+        {
+        }
+
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        public InstanceManager(Settings settings, ILog log)
+        {
+            this.settings = settings ?? throw new ArgumentNullException("settings");
+            this.log = log ?? throw new ArgumentNullException("log");
+            locks = new ConcurrentDictionary<string, object>();
+        }
+
+
         /// <summary>
         /// Получить экземпляр системы по наименованию
         /// </summary>
         public ScadaInstance GetScadaInstance(string name)
         {
-            return null;
+            object syncRoot = locks.GetOrAdd(name, (key) => { return new object(); });
+            ScadaInstance scadaInstance = new ScadaInstance(name, syncRoot);
+            return scadaInstance;
         }
     }
 }

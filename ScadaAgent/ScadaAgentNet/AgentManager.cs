@@ -140,41 +140,40 @@ namespace Scada.Agent.Net
                 "Агент {0} запущен" :
                 "Agent {0} started", AgentUtils.AppVersion));
 
-
             if (appData.AppDirs.Exist)
             {
                 // локализация
-                string errMsg;
-                if (Localization.LoadDictionaries(appData.AppDirs.LangDir, "ScadaData", out errMsg))
+                if (Localization.LoadDictionaries(appData.AppDirs.LangDir, "ScadaData", out string errMsg))
                     CommonPhrases.Init();
                 else
                     log.WriteError(errMsg);
 
                 // запуск
+                string settingsFileName = appData.AppDirs.ConfigDir + Settings.DefFileName;
                 agentLogic = new AgentLogic(appData.SessionManager, appData.AppDirs, appData.Log);
 
-                if (StartWcfService() && agentLogic.StartProcessing())
+                if (appData.Settings.Load(settingsFileName, out errMsg) &&
+                    StartWcfService() && agentLogic.StartProcessing())
                 {
                     return true;
                 }
-                else
+                else if (!string.IsNullOrEmpty(errMsg))
                 {
-                    log.WriteError(Localization.UseRussian ?
-                        "Нормальная работа программы невозможна" :
-                        "Normal program execution is impossible");
-                    return false;
+                    log.WriteError(errMsg);
                 }
             }
             else
             {
                 log.WriteError(string.Format(Localization.UseRussian ?
-                    "Необходимые директории не существуют:{0}{1}{0}" +
-                    "Нормальная работа программы невозможна" :
-                    "The required directories do not exist:{0}{1}{0}" +
-                    "Normal program execution is impossible",
+                    "Необходимые директории не существуют:{0}{1}" :
+                    "The required directories do not exist:{0}{1}",
                     Environment.NewLine, string.Join(Environment.NewLine, appData.AppDirs.GetRequiredDirs())));
-                return false;
             }
+
+            log.WriteError(Localization.UseRussian ?
+                "Нормальная работа программы невозможна" :
+                "Normal program execution is impossible");
+            return false;
         }
 
         /// <summary>

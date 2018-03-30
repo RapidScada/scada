@@ -40,6 +40,11 @@ namespace Scada.Agent.Net
     public class AgentSvc
     {
         /// <summary>
+        /// Размер буфера для приёма файлов
+        /// </summary>
+        private int ReceiveBufSize = 1024;
+
+        /// <summary>
         /// Данные приложения
         /// </summary>
         private static readonly AppData AppData = AppData.GetInstance();
@@ -51,6 +56,10 @@ namespace Scada.Agent.Net
         /// Менеджер сессий
         /// </summary>
         private static readonly SessionManager SessionManager = AppData.SessionManager;
+        /// <summary>
+        /// Менеджер экземпляров систем
+        /// </summary>
+        private static readonly InstanceManager InstanceManager = AppData.InstanceManager;
 
 
         /// <summary>
@@ -83,13 +92,83 @@ namespace Scada.Agent.Net
             {
                 Log.WriteError(string.Format(Localization.UseRussian ?
                     "Сессия с ид. {0} не найдена" :
-                    "Session with ID {0} not found"));
+                    "Session with ID {0} not found", sessionID));
                 return false;
             }
             else
             {
                 session.RegisterActivity();
                 return true;
+            }
+        }
+
+        /// <summary>
+        /// Попытаться получить экземпляр системы по ид. сессии
+        /// </summary>
+        private bool TryGetScadaInstance(long sessionID, out ScadaInstance scadaInstance)
+        {
+            if (TryGetSession(sessionID, out Session session))
+            {
+                scadaInstance = session.LoggedOn ? session.ScadaInstance : null;
+
+                if (scadaInstance == null)
+                {
+                    Log.WriteError(string.Format(Localization.UseRussian ?
+                        "Экземпляр системы не определён для сессии с ид. {0}" :
+                        "System instance is not defined for a session with ID {0}", sessionID));
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                scadaInstance = null;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Проверить сообщение для загрузки конфигурации
+        /// </summary>
+        private bool ValidateMessage(ConfigUploadMessage message)
+        {
+            return message != null && message.ConfigOptions != null || message.Stream != null;
+        }
+
+        /// <summary>
+        /// Принять файл
+        /// </summary>
+        private bool ReceiveFile(Stream srcStream, string destFileName)
+        {
+            try
+            {
+                DateTime t0 = DateTime.UtcNow;
+                byte[] buffer = new byte[ReceiveBufSize];
+
+                using (FileStream destStream = File.Create(destFileName))
+                {
+                    int readCnt;
+                    while ((readCnt = srcStream.Read(buffer, 0, ReceiveBufSize)) > 0)
+                    {
+                        destStream.Write(buffer, 0, readCnt);
+                    }
+                }
+
+                Log.WriteAction(string.Format(Localization.UseRussian ?
+                    "Файл {0} принят успешно за {1} мс" :
+                    "File {0} received successfully in {1} ms", 
+                    Path.GetFileName(destFileName), (int)(DateTime.UtcNow - t0).TotalMilliseconds));
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при приёме файла" :
+                    "Error receiving file");
+                return false;
             }
         }
 
@@ -123,12 +202,29 @@ namespace Scada.Agent.Net
         {
             if (TryGetSession(sessionID, out Session session))
             {
-                return true;
+                session.ClearUser();
+                ScadaInstance scadaInstance = InstanceManager.GetScadaInstance(scadaInstanceName);
+
+                if (scadaInstance == null)
+                {
+                    Log.WriteError(string.Format(Localization.UseRussian ?
+                        "Экземпляр системы с наименованием \"{0}\" не найден" :
+                        "System instance named \"{0}\" not found", scadaInstanceName));
+                }
+                else if (scadaInstance.ValidateUser(username, encryptedPassword, out string errMsg))
+                {
+                    session.SetUser(username, scadaInstance);
+                    return true;
+                }
+                else
+                {
+                    Log.WriteError(string.Format(Localization.UseRussian ?
+                        "Пользователь {0} не прошёл проверку - {1}" :
+                        "User {0} failed validation - {1}", username, errMsg));
+                }
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
         /// <summary>
@@ -166,6 +262,18 @@ namespace Scada.Agent.Net
         [OperationContract]
         public Stream DownloadConfig(long sessionID, ConfigOptions configOptions)
         {
+            if (TryGetScadaInstance(sessionID, out ScadaInstance scadaInstance))
+            {
+                lock (scadaInstance.SyncRoot)
+                {
+                    string tempFileName = AppData.GetTempFileName("download-config", "zip");
+                    if (scadaInstance.PackConfig(tempFileName, configOptions))
+                    {
+                        return File.Open(tempFileName, FileMode.Open, FileAccess.Read, FileShare.None);
+                    }
+                }
+            }
+
             return null;
         }
 
@@ -175,32 +283,23 @@ namespace Scada.Agent.Net
         [OperationContract]
         public void UploadConfig(ConfigUploadMessage configUploadMessage)
         {
-            if (configUploadMessage.Stream == null)
+            if (ValidateMessage(configUploadMessage))
             {
-                System.Console.WriteLine("configUploadMessage.Stream is null");
-            }
-            else
-            {
-                /*byte[] buf = new byte[100];
-                int cnt = configUploadMessage.Stream.Read(buf, 0, buf.Length);
-                string s = System.Text.Encoding.ASCII.GetString(buf, 0, cnt);
-                System.Console.WriteLine(s);*/
-
-                DateTime t0 = DateTime.UtcNow;
-                byte[] buf = new byte[1024];
-                Stream saver = File.Create("file2.txt");
-                int cnt;
-
-                while ((cnt = configUploadMessage.Stream.Read(buf, 0, buf.Length)) > 0)
+                if (TryGetScadaInstance(configUploadMessage.SessionID, out ScadaInstance scadaInstance))
                 {
-                    saver.Write(buf, 0, cnt);
+                    string tempFileName = AppData.GetTempFileName("upload-config", "zip");
+                    if (ReceiveFile(configUploadMessage.Stream, tempFileName))
+                    {
+                        scadaInstance.UnpackConfig(tempFileName, configUploadMessage.ConfigOptions);
+                    }
                 }
-
-                saver.Close();
-                Console.WriteLine("Done in " + (int)(DateTime.UtcNow - t0).TotalMilliseconds + " ms");
             }
-
-            //return true;
+            else 
+            {
+                Log.WriteError(Localization.UseRussian ?
+                    "Загружаемая конфигурация не определена или некорректна" :
+                    "Uploaded configuration is undefined or incorrect");
+            }
         }
 
         /// <summary>

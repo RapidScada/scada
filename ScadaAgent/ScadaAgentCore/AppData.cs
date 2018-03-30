@@ -44,6 +44,7 @@ namespace Scada.Agent
         public const string InfoFileName = "ScadaAgent.txt";
 
         private static readonly AppData appDataInstance; // экземпляр объекта AppData
+        private int tempFileNameCntr; // счётчик временных файлов
 
 
         /// <summary>
@@ -59,9 +60,13 @@ namespace Scada.Agent
         /// </summary>
         private AppData()
         {
+            tempFileNameCntr = 0;
+
             AppDirs = new AppDirs();
+            Settings = new Settings();
             Log = new Log(Log.Formats.Full);
             SessionManager = new SessionManager(Log);
+            InstanceManager = new InstanceManager(Settings, Log);
         }
 
 
@@ -69,6 +74,11 @@ namespace Scada.Agent
         /// Получить директории приложения
         /// </summary>
         public AppDirs AppDirs { get; private set; }
+
+        /// <summary>
+        /// Получить настройки агента
+        /// </summary>
+        public Settings Settings { get; private set; }
 
         /// <summary>
         /// Получить журнал приложения
@@ -79,6 +89,11 @@ namespace Scada.Agent
         /// Получить менеджер сессий
         /// </summary>
         public SessionManager SessionManager { get; private set; }
+
+        /// <summary>
+        /// Получить менеджер экземпляров систем
+        /// </summary>
+        public InstanceManager InstanceManager { get; private set; }
 
 
         /// <summary>
@@ -92,6 +107,17 @@ namespace Scada.Agent
             // настройка журнала приложения
             Log.FileName = AppDirs.LogDir + LogFileName;
             Log.Encoding = Encoding.UTF8;
+        }
+
+        /// <summary>
+        /// Получить имя временного файла
+        /// </summary>
+        public string GetTempFileName(string prefix = "", string extension = "")
+        {
+            return 
+                (string.IsNullOrEmpty(prefix) ? "temp" : prefix) + 
+                "-" + (++tempFileNameCntr) + 
+                "." + (string.IsNullOrEmpty(extension) ? "tmp" : extension);
         }
 
         /// <summary>

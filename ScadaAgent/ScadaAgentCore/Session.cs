@@ -50,6 +50,7 @@ namespace Scada.Agent
             IpAddress = "";
             LoggedOn = false;
             Username = "";
+            ScadaInstance = null;
             ActivityDT = DateTime.UtcNow;
         }
 
@@ -65,7 +66,7 @@ namespace Scada.Agent
         public string IpAddress { get; set; }
 
         /// <summary>
-        /// Получить или установить признак, выполнен ли вход пользователя в систему
+        /// Получить или установить признак, авторизован ли пользователь агента
         /// </summary>
         public bool LoggedOn { get; set; }
 
@@ -73,6 +74,11 @@ namespace Scada.Agent
         /// Получить или установить имя пользователя
         /// </summary>
         public string Username { get; set; }
+
+        /// <summary>
+        /// Получить или установить экземпляр системы
+        /// </summary>
+        public ScadaInstance ScadaInstance { get; set; }
 
         /// <summary>
         /// Получить или установить дату и время последней активности (UTC)
@@ -86,6 +92,26 @@ namespace Scada.Agent
         public void RegisterActivity()
         {
             ActivityDT = DateTime.UtcNow;
+        }
+
+        /// <summary>
+        /// Установить данные авторизованного пользователя
+        /// </summary>
+        public void SetUser(string username, ScadaInstance scadaInstance)
+        {
+            LoggedOn = true;
+            Username = username;
+            ScadaInstance = scadaInstance;
+        }
+
+        /// <summary>
+        /// Очистить данные, связанные с пользователем
+        /// </summary>
+        public void ClearUser()
+        {
+            LoggedOn = false;
+            Username = "";
+            ScadaInstance = null;
         }
 
         /// <summary>

@@ -34,7 +34,7 @@ namespace Scada.Agent
         /// <summary>
         /// Путь базы конфигурации
         /// </summary>
-        public static AppPath Base = new AppPath(ScadaApps.None, AppFolder.Config, "");
+        public static readonly AppPath Base = new AppPath(ScadaApps.None, AppFolder.Config, "");
 
 
         /// <summary>

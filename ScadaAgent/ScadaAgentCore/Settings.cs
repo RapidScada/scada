@@ -23,7 +23,10 @@
  * Modified : 2018
  */
 
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Xml;
 
 namespace Scada.Agent
 {
@@ -34,29 +37,9 @@ namespace Scada.Agent
     public class Settings
     {
         /// <summary>
-        /// Agent settings for the system instance
-        /// <para>Настройки агента для экземплара системы</para>
+        /// Имя файла настроек по умолчанию
         /// </summary>
-        public class ScadaInstance
-        {
-            /// <summary>
-            /// Конструктор
-            /// </summary>
-            public ScadaInstance()
-            {
-                Name = "";
-                Directory = "";
-            }
-
-            /// <summary>
-            /// Получить или установить наименование
-            /// </summary>
-            public string Name { get; set; }
-            /// <summary>
-            /// Получить или установить директорию
-            /// </summary>
-            public string Directory { get; set; }
-        }
+        public const string DefFileName = "ScadaAgentConfig.xml";
 
 
         /// <summary>
@@ -64,13 +47,64 @@ namespace Scada.Agent
         /// </summary>
         public Settings()
         {
-            Instances = new List<ScadaInstance>();
+            Instances = new List<ScadaInstanceSettings>();
         }
 
 
         /// <summary>
         /// Получить настройки экземпляров систем
         /// </summary>
-        public List<ScadaInstance> Instances { get; private set; }
+        public List<ScadaInstanceSettings> Instances { get; private set; }
+
+
+        /// <summary>
+        /// Установить значения настроек по умолчанию
+        /// </summary>
+        private void SetToDefault()
+        {
+            Instances.Clear();
+        }
+
+
+        /// <summary>
+        /// Загрузить настройки из файла
+        /// </summary>
+        public bool Load(string fileName, out string errMsg)
+        {
+            // установка значений по умолчанию
+            SetToDefault();
+
+            try
+            {
+                if (!File.Exists(fileName))
+                    throw new FileNotFoundException(string.Format(CommonPhrases.NamedFileNotFound, fileName));
+
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.Load(fileName);
+                XmlElement rootElem = xmlDoc.DocumentElement;
+
+                XmlNode instancesNode = rootElem.SelectSingleNode("Instances");
+                if (instancesNode != null)
+                {
+                    XmlNodeList instanceNodeList = instancesNode.SelectNodes("Instance");
+                    foreach (XmlElement instanceElem in instanceNodeList)
+                    {
+                        Instances.Add(new ScadaInstanceSettings()
+                        {
+                            Name = instanceElem.GetAttribute("name"),
+                            Directory = instanceElem.GetAttribute("directory")
+                        });
+                    }
+                }
+
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = CommonPhrases.LoadAppSettingsError + ":" + Environment.NewLine + ex.Message;
+                return false;
+            }
+        }
     }
 }
