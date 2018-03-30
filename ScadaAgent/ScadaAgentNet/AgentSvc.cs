@@ -287,10 +287,13 @@ namespace Scada.Agent.Net
             {
                 if (TryGetScadaInstance(configUploadMessage.SessionID, out ScadaInstance scadaInstance))
                 {
-                    string tempFileName = AppData.GetTempFileName("upload-config", "zip");
-                    if (ReceiveFile(configUploadMessage.Stream, tempFileName))
+                    lock (scadaInstance.SyncRoot)
                     {
-                        scadaInstance.UnpackConfig(tempFileName, configUploadMessage.ConfigOptions);
+                        string tempFileName = AppData.GetTempFileName("upload-config", "zip");
+                        if (ReceiveFile(configUploadMessage.Stream, tempFileName))
+                        {
+                            scadaInstance.UnpackConfig(tempFileName, configUploadMessage.ConfigOptions);
+                        }
                     }
                 }
             }
