@@ -18,7 +18,7 @@ namespace Scada.Agent.Ctrl
 
             try
             {
-                Stream stream = client.DownloadFile(0, AppPath.Base);
+                Stream stream = client.DownloadFile(0, new RelPath());
                 if (stream == null)
                 {
                     MessageBox.Show("Stream is null.");

@@ -89,7 +89,7 @@
     <None Include="Connected Services\ServiceReference1\Scada.Agent.Ctrl.ServiceReference1.FindFilesResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Connected Services\ServiceReference1\Scada.Agent.Ctrl.ServiceReference1.GetInstalledAppsResponse.datasource">
+    <None Include="Connected Services\ServiceReference1\Scada.Agent.Ctrl.ServiceReference1.GetAvailableConfigResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Connected Services\ServiceReference1\Scada.Agent.Ctrl.ServiceReference1.GetServiceStatusResponse.datasource">

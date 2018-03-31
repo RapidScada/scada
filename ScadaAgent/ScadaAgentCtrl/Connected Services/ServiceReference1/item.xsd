@@ -37,7 +37,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="sessionID" type="xs:long" />
-        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Scada.Agent" minOccurs="0" name="service" type="q1:ScadaApps" />
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Scada.Agent" minOccurs="0" name="serviceApp" type="q1:ServiceApp" />
         <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/Scada.Agent" minOccurs="0" name="command" type="q2:ServiceCommand" />
       </xs:sequence>
     </xs:complexType>
@@ -53,7 +53,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="sessionID" type="xs:long" />
-        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/Scada.Agent" minOccurs="0" name="service" type="q3:ScadaApps" />
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/Scada.Agent" minOccurs="0" name="serviceApp" type="q3:ServiceApp" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -65,18 +65,18 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="GetInstalledApps">
+  <xs:element name="GetAvailableConfig">
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="sessionID" type="xs:long" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="GetInstalledAppsResponse">
+  <xs:element name="GetAvailableConfigResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="GetInstalledAppsResult" type="xs:boolean" />
-        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Scada.Agent" minOccurs="0" name="installedApps" type="q4:ScadaApps" />
+        <xs:element minOccurs="0" name="GetAvailableConfigResult" type="xs:boolean" />
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Scada.Agent" minOccurs="0" name="configParts" type="q4:ConfigParts" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -108,7 +108,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="sessionID" type="xs:long" />
-        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/Scada.Agent" minOccurs="0" name="appPath" nillable="true" type="q9:AppPath" />
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/Scada.Agent" minOccurs="0" name="relPath" nillable="true" type="q9:RelPath" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -124,7 +124,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="sessionID" type="xs:long" />
-        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/Scada.Agent" minOccurs="0" name="appPath" nillable="true" type="q11:AppPath" />
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/Scada.Agent" minOccurs="0" name="relPath" nillable="true" type="q11:RelPath" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -139,7 +139,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="sessionID" type="xs:long" />
-        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/Scada.Agent" minOccurs="0" name="appPath" nillable="true" type="q13:AppPath" />
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/Scada.Agent" minOccurs="0" name="relPath" nillable="true" type="q13:RelPath" />
         <xs:element minOccurs="0" name="position" type="xs:long" />
       </xs:sequence>
     </xs:complexType>

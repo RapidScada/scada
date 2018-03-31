@@ -33,11 +33,11 @@
   <wsdl:message name="AgentSvc_GetServiceStatus_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetServiceStatusResponse" />
   </wsdl:message>
-  <wsdl:message name="AgentSvc_GetInstalledApps_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetInstalledApps" />
+  <wsdl:message name="AgentSvc_GetAvailableConfig_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAvailableConfig" />
   </wsdl:message>
-  <wsdl:message name="AgentSvc_GetInstalledApps_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetInstalledAppsResponse" />
+  <wsdl:message name="AgentSvc_GetAvailableConfig_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAvailableConfigResponse" />
   </wsdl:message>
   <wsdl:message name="AgentSvc_DownloadConfig_InputMessage">
     <wsdl:part name="parameters" element="tns:DownloadConfig" />
@@ -88,9 +88,9 @@
       <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/GetServiceStatus" message="tns:AgentSvc_GetServiceStatus_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/AgentSvc/GetServiceStatusResponse" message="tns:AgentSvc_GetServiceStatus_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="GetInstalledApps">
-      <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/GetInstalledApps" message="tns:AgentSvc_GetInstalledApps_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/AgentSvc/GetInstalledAppsResponse" message="tns:AgentSvc_GetInstalledApps_OutputMessage" />
+    <wsdl:operation name="GetAvailableConfig">
+      <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/GetAvailableConfig" message="tns:AgentSvc_GetAvailableConfig_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/AgentSvc/GetAvailableConfigResponse" message="tns:AgentSvc_GetAvailableConfig_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="DownloadConfig">
       <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/DownloadConfig" message="tns:AgentSvc_DownloadConfig_InputMessage" />
@@ -151,8 +151,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetInstalledApps">
-      <soap:operation soapAction="http://tempuri.org/AgentSvc/GetInstalledApps" style="document" />
+    <wsdl:operation name="GetAvailableConfig">
+      <soap:operation soapAction="http://tempuri.org/AgentSvc/GetAvailableConfig" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

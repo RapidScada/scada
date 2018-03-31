@@ -66,7 +66,7 @@ namespace Scada.Agent
         /// </summary>
         public bool ValidateUser(string username, string encryptedPassword, out string errMsg)
         {
-            // ограничить кол-во попыток
+            // TODO: реализовать и ограничить кол-во попыток
             errMsg = "";
             return true;
         }

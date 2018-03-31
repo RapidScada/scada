@@ -32,9 +32,9 @@ namespace Scada.Agent
     public enum AppFolder
     {
         /// <summary>
-        /// Не определена
+        /// Корневая
         /// </summary>
-        Undef,
+        Root,
 
         /// <summary>
         /// Конфигурация

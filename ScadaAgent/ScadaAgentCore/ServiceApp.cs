@@ -16,42 +16,29 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaAgentCore
- * Summary  : Applications
+ * Summary  : Service applications
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
  * Modified : 2018
  */
 
-using System;
-
 namespace Scada.Agent
 {
     /// <summary>
-    /// Applications
-    /// <para>Приложения</para>
+    /// Service applications
+    /// <para>Приложения-сервисы</para>
     /// </summary>
-    [Flags]
-    public enum ScadaApps
+    public enum ServiceApp
     {
-        /// <summary>
-        /// Не задано
-        /// </summary>
-        None = 0,
-
         /// <summary>
         /// Сервер
         /// </summary>
-        Server = 1,
+        Server,
 
         /// <summary>
         /// Коммуникатор
         /// </summary>
-        Communicator = 2,
-
-        /// <summary>
-        /// Вебстанция
-        /// </summary>
-        Webstation = 4
+        Communicator
     }
 }

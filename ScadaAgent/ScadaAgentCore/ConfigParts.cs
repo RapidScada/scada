@@ -16,31 +16,52 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaAgentCore
- * Summary  : Configuration transfer parameters
+ * Summary  : Parts of the configuration
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
  * Modified : 2018
  */
 
-using System.Collections.Generic;
+using System;
 
 namespace Scada.Agent
 {
     /// <summary>
-    /// Configuration transfer parameters
-    /// <para>Параметры передачи конфигурации</para>
+    /// Parts of the configuration
+    /// <para>Части конфигурации</para>
     /// </summary>
-    public class ConfigOptions
+    [Flags]
+    public enum ConfigParts
     {
         /// <summary>
-        /// Получить или установить части конфигурации
+        /// Не задано
         /// </summary>
-        public ConfigParts ConfigParts { get; set; }
+        None = 0,
 
         /// <summary>
-        /// Получить или установить исключаемые пути
+        /// База конфигурации
         /// </summary>
-        public ICollection<RelPath> ExcludedPaths { get; private set; }
+        Base = 1,
+
+        /// <summary>
+        /// Сервер
+        /// </summary>
+        Server = 2,
+
+        /// <summary>
+        /// Коммуникатор
+        /// </summary>
+        Communicator = 4,
+
+        /// <summary>
+        /// Вебстанция
+        /// </summary>
+        Webstation = 8,
+
+        /// <summary>
+        /// Вся конфигурация
+        /// </summary>
+        All = Base | Server | Communicator | Webstation
     }
 }

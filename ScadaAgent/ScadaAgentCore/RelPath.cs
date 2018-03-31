@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaAgentCore
- * Summary  : Path relative to an application
+ * Summary  : Relative path
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
@@ -26,40 +26,34 @@
 namespace Scada.Agent
 {
     /// <summary>
-    /// Path relative to an application
-    /// <para>Путь относительно приложения</para>
+    /// Relative path
+    /// <para>Относительный путь</para>
     /// </summary>
-    public class AppPath
+    public class RelPath
     {
-        /// <summary>
-        /// Путь базы конфигурации
-        /// </summary>
-        public static readonly AppPath Base = new AppPath(ScadaApps.None, AppFolder.Config, "");
-
-
         /// <summary>
         /// Конструктор
         /// </summary>
-        public AppPath() 
-            : this(ScadaApps.None, AppFolder.Undef, "")
+        public RelPath() 
+            : this(ConfigParts.None, AppFolder.Root, "")
         {
         }
 
         /// <summary>
         /// Конструктор
         /// </summary>
-        public AppPath(ScadaApps scadaApp, AppFolder appFolder, string path)
+        public RelPath(ConfigParts configPart, AppFolder appFolder, string path)
         {
-            ScadaApp = scadaApp;
+            ConfigPart = configPart;
             AppFolder = appFolder;
             Path = path ?? "";
         }
 
 
         /// <summary>
-        /// Получить или установить приложение
+        /// Получить или установить часть конфигурации
         /// </summary>
-        public ScadaApps ScadaApp { get; set; }
+        public ConfigParts ConfigPart { get; set; }
 
         /// <summary>
         /// Получить или установить папку приложения

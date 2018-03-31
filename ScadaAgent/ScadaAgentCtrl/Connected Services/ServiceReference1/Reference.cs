@@ -29,10 +29,10 @@ namespace Scada.Agent.Ctrl.ServiceReference1 {
         System.Threading.Tasks.Task<bool> LoginAsync(long sessionID, string username, string encryptedPassword, string scadaInstanceName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/ControlService", ReplyAction="http://tempuri.org/AgentSvc/ControlServiceResponse")]
-        bool ControlService(long sessionID, Scada.Agent.ScadaApps service, Scada.Agent.ServiceCommand command);
+        bool ControlService(long sessionID, Scada.Agent.ServiceApp serviceApp, Scada.Agent.ServiceCommand command);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/ControlService", ReplyAction="http://tempuri.org/AgentSvc/ControlServiceResponse")]
-        System.Threading.Tasks.Task<bool> ControlServiceAsync(long sessionID, Scada.Agent.ScadaApps service, Scada.Agent.ServiceCommand command);
+        System.Threading.Tasks.Task<bool> ControlServiceAsync(long sessionID, Scada.Agent.ServiceApp serviceApp, Scada.Agent.ServiceCommand command);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/GetServiceStatus", ReplyAction="http://tempuri.org/AgentSvc/GetServiceStatusResponse")]
         Scada.Agent.Ctrl.ServiceReference1.GetServiceStatusResponse GetServiceStatus(Scada.Agent.Ctrl.ServiceReference1.GetServiceStatusRequest request);
@@ -41,12 +41,12 @@ namespace Scada.Agent.Ctrl.ServiceReference1 {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/GetServiceStatus", ReplyAction="http://tempuri.org/AgentSvc/GetServiceStatusResponse")]
         System.Threading.Tasks.Task<Scada.Agent.Ctrl.ServiceReference1.GetServiceStatusResponse> GetServiceStatusAsync(Scada.Agent.Ctrl.ServiceReference1.GetServiceStatusRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/GetInstalledApps", ReplyAction="http://tempuri.org/AgentSvc/GetInstalledAppsResponse")]
-        Scada.Agent.Ctrl.ServiceReference1.GetInstalledAppsResponse GetInstalledApps(Scada.Agent.Ctrl.ServiceReference1.GetInstalledAppsRequest request);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/GetAvailableConfig", ReplyAction="http://tempuri.org/AgentSvc/GetAvailableConfigResponse")]
+        Scada.Agent.Ctrl.ServiceReference1.GetAvailableConfigResponse GetAvailableConfig(Scada.Agent.Ctrl.ServiceReference1.GetAvailableConfigRequest request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/GetInstalledApps", ReplyAction="http://tempuri.org/AgentSvc/GetInstalledAppsResponse")]
-        System.Threading.Tasks.Task<Scada.Agent.Ctrl.ServiceReference1.GetInstalledAppsResponse> GetInstalledAppsAsync(Scada.Agent.Ctrl.ServiceReference1.GetInstalledAppsRequest request);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/GetAvailableConfig", ReplyAction="http://tempuri.org/AgentSvc/GetAvailableConfigResponse")]
+        System.Threading.Tasks.Task<Scada.Agent.Ctrl.ServiceReference1.GetAvailableConfigResponse> GetAvailableConfigAsync(Scada.Agent.Ctrl.ServiceReference1.GetAvailableConfigRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/DownloadConfig", ReplyAction="http://tempuri.org/AgentSvc/DownloadConfigResponse")]
         System.IO.Stream DownloadConfig(long sessionID, Scada.Agent.ConfigOptions configOptions);
@@ -69,16 +69,16 @@ namespace Scada.Agent.Ctrl.ServiceReference1 {
         System.Threading.Tasks.Task<Scada.Agent.Ctrl.ServiceReference1.FindFilesResponse> FindFilesAsync(Scada.Agent.Ctrl.ServiceReference1.FindFilesRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/DownloadFile", ReplyAction="http://tempuri.org/AgentSvc/DownloadFileResponse")]
-        System.IO.Stream DownloadFile(long sessionID, Scada.Agent.AppPath appPath);
+        System.IO.Stream DownloadFile(long sessionID, Scada.Agent.RelPath relPath);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/DownloadFile", ReplyAction="http://tempuri.org/AgentSvc/DownloadFileResponse")]
-        System.Threading.Tasks.Task<System.IO.Stream> DownloadFileAsync(long sessionID, Scada.Agent.AppPath appPath);
+        System.Threading.Tasks.Task<System.IO.Stream> DownloadFileAsync(long sessionID, Scada.Agent.RelPath relPath);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/DownloadFileRest", ReplyAction="http://tempuri.org/AgentSvc/DownloadFileRestResponse")]
-        System.IO.Stream DownloadFileRest(long sessionID, Scada.Agent.AppPath appPath, long position);
+        System.IO.Stream DownloadFileRest(long sessionID, Scada.Agent.RelPath relPath, long position);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/DownloadFileRest", ReplyAction="http://tempuri.org/AgentSvc/DownloadFileRestResponse")]
-        System.Threading.Tasks.Task<System.IO.Stream> DownloadFileRestAsync(long sessionID, Scada.Agent.AppPath appPath, long position);
+        System.Threading.Tasks.Task<System.IO.Stream> DownloadFileRestAsync(long sessionID, Scada.Agent.RelPath relPath, long position);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -119,14 +119,14 @@ namespace Scada.Agent.Ctrl.ServiceReference1 {
         public long sessionID;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
-        public Scada.Agent.ScadaApps service;
+        public Scada.Agent.ServiceApp serviceApp;
         
         public GetServiceStatusRequest() {
         }
         
-        public GetServiceStatusRequest(long sessionID, Scada.Agent.ScadaApps service) {
+        public GetServiceStatusRequest(long sessionID, Scada.Agent.ServiceApp serviceApp) {
             this.sessionID = sessionID;
-            this.service = service;
+            this.serviceApp = serviceApp;
         }
     }
     
@@ -152,37 +152,37 @@ namespace Scada.Agent.Ctrl.ServiceReference1 {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="GetInstalledApps", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
-    public partial class GetInstalledAppsRequest {
+    [System.ServiceModel.MessageContractAttribute(WrapperName="GetAvailableConfig", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    public partial class GetAvailableConfigRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public long sessionID;
         
-        public GetInstalledAppsRequest() {
+        public GetAvailableConfigRequest() {
         }
         
-        public GetInstalledAppsRequest(long sessionID) {
+        public GetAvailableConfigRequest(long sessionID) {
             this.sessionID = sessionID;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="GetInstalledAppsResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
-    public partial class GetInstalledAppsResponse {
+    [System.ServiceModel.MessageContractAttribute(WrapperName="GetAvailableConfigResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    public partial class GetAvailableConfigResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
-        public bool GetInstalledAppsResult;
+        public bool GetAvailableConfigResult;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
-        public Scada.Agent.ScadaApps installedApps;
+        public Scada.Agent.ConfigParts configParts;
         
-        public GetInstalledAppsResponse() {
+        public GetAvailableConfigResponse() {
         }
         
-        public GetInstalledAppsResponse(bool GetInstalledAppsResult, Scada.Agent.ScadaApps installedApps) {
-            this.GetInstalledAppsResult = GetInstalledAppsResult;
-            this.installedApps = installedApps;
+        public GetAvailableConfigResponse(bool GetAvailableConfigResult, Scada.Agent.ConfigParts configParts) {
+            this.GetAvailableConfigResult = GetAvailableConfigResult;
+            this.configParts = configParts;
         }
     }
     
@@ -230,14 +230,14 @@ namespace Scada.Agent.Ctrl.ServiceReference1 {
         public long sessionID;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
-        public Scada.Agent.AppPath appPath;
+        public Scada.Agent.RelPath relPath;
         
         public FindFilesRequest() {
         }
         
-        public FindFilesRequest(long sessionID, Scada.Agent.AppPath appPath) {
+        public FindFilesRequest(long sessionID, Scada.Agent.RelPath relPath) {
             this.sessionID = sessionID;
-            this.appPath = appPath;
+            this.relPath = relPath;
         }
     }
     
@@ -312,12 +312,12 @@ namespace Scada.Agent.Ctrl.ServiceReference1 {
             return base.Channel.LoginAsync(sessionID, username, encryptedPassword, scadaInstanceName);
         }
         
-        public bool ControlService(long sessionID, Scada.Agent.ScadaApps service, Scada.Agent.ServiceCommand command) {
-            return base.Channel.ControlService(sessionID, service, command);
+        public bool ControlService(long sessionID, Scada.Agent.ServiceApp serviceApp, Scada.Agent.ServiceCommand command) {
+            return base.Channel.ControlService(sessionID, serviceApp, command);
         }
         
-        public System.Threading.Tasks.Task<bool> ControlServiceAsync(long sessionID, Scada.Agent.ScadaApps service, Scada.Agent.ServiceCommand command) {
-            return base.Channel.ControlServiceAsync(sessionID, service, command);
+        public System.Threading.Tasks.Task<bool> ControlServiceAsync(long sessionID, Scada.Agent.ServiceApp serviceApp, Scada.Agent.ServiceCommand command) {
+            return base.Channel.ControlServiceAsync(sessionID, serviceApp, command);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -325,10 +325,10 @@ namespace Scada.Agent.Ctrl.ServiceReference1 {
             return base.Channel.GetServiceStatus(request);
         }
         
-        public bool GetServiceStatus(long sessionID, Scada.Agent.ScadaApps service, out bool isRunning) {
+        public bool GetServiceStatus(long sessionID, Scada.Agent.ServiceApp serviceApp, out bool isRunning) {
             Scada.Agent.Ctrl.ServiceReference1.GetServiceStatusRequest inValue = new Scada.Agent.Ctrl.ServiceReference1.GetServiceStatusRequest();
             inValue.sessionID = sessionID;
-            inValue.service = service;
+            inValue.serviceApp = serviceApp;
             Scada.Agent.Ctrl.ServiceReference1.GetServiceStatusResponse retVal = ((Scada.Agent.Ctrl.ServiceReference1.AgentSvc)(this)).GetServiceStatus(inValue);
             isRunning = retVal.isRunning;
             return retVal.GetServiceStatusResult;
@@ -339,20 +339,20 @@ namespace Scada.Agent.Ctrl.ServiceReference1 {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Scada.Agent.Ctrl.ServiceReference1.GetInstalledAppsResponse Scada.Agent.Ctrl.ServiceReference1.AgentSvc.GetInstalledApps(Scada.Agent.Ctrl.ServiceReference1.GetInstalledAppsRequest request) {
-            return base.Channel.GetInstalledApps(request);
+        Scada.Agent.Ctrl.ServiceReference1.GetAvailableConfigResponse Scada.Agent.Ctrl.ServiceReference1.AgentSvc.GetAvailableConfig(Scada.Agent.Ctrl.ServiceReference1.GetAvailableConfigRequest request) {
+            return base.Channel.GetAvailableConfig(request);
         }
         
-        public bool GetInstalledApps(long sessionID, out Scada.Agent.ScadaApps installedApps) {
-            Scada.Agent.Ctrl.ServiceReference1.GetInstalledAppsRequest inValue = new Scada.Agent.Ctrl.ServiceReference1.GetInstalledAppsRequest();
+        public bool GetAvailableConfig(long sessionID, out Scada.Agent.ConfigParts configParts) {
+            Scada.Agent.Ctrl.ServiceReference1.GetAvailableConfigRequest inValue = new Scada.Agent.Ctrl.ServiceReference1.GetAvailableConfigRequest();
             inValue.sessionID = sessionID;
-            Scada.Agent.Ctrl.ServiceReference1.GetInstalledAppsResponse retVal = ((Scada.Agent.Ctrl.ServiceReference1.AgentSvc)(this)).GetInstalledApps(inValue);
-            installedApps = retVal.installedApps;
-            return retVal.GetInstalledAppsResult;
+            Scada.Agent.Ctrl.ServiceReference1.GetAvailableConfigResponse retVal = ((Scada.Agent.Ctrl.ServiceReference1.AgentSvc)(this)).GetAvailableConfig(inValue);
+            configParts = retVal.configParts;
+            return retVal.GetAvailableConfigResult;
         }
         
-        public System.Threading.Tasks.Task<Scada.Agent.Ctrl.ServiceReference1.GetInstalledAppsResponse> GetInstalledAppsAsync(Scada.Agent.Ctrl.ServiceReference1.GetInstalledAppsRequest request) {
-            return base.Channel.GetInstalledAppsAsync(request);
+        public System.Threading.Tasks.Task<Scada.Agent.Ctrl.ServiceReference1.GetAvailableConfigResponse> GetAvailableConfigAsync(Scada.Agent.Ctrl.ServiceReference1.GetAvailableConfigRequest request) {
+            return base.Channel.GetAvailableConfigAsync(request);
         }
         
         public System.IO.Stream DownloadConfig(long sessionID, Scada.Agent.ConfigOptions configOptions) {
@@ -394,10 +394,10 @@ namespace Scada.Agent.Ctrl.ServiceReference1 {
             return base.Channel.FindFiles(request);
         }
         
-        public bool FindFiles(long sessionID, Scada.Agent.AppPath appPath, out string[] paths) {
+        public bool FindFiles(long sessionID, Scada.Agent.RelPath relPath, out string[] paths) {
             Scada.Agent.Ctrl.ServiceReference1.FindFilesRequest inValue = new Scada.Agent.Ctrl.ServiceReference1.FindFilesRequest();
             inValue.sessionID = sessionID;
-            inValue.appPath = appPath;
+            inValue.relPath = relPath;
             Scada.Agent.Ctrl.ServiceReference1.FindFilesResponse retVal = ((Scada.Agent.Ctrl.ServiceReference1.AgentSvc)(this)).FindFiles(inValue);
             paths = retVal.paths;
             return retVal.FindFilesResult;
@@ -407,20 +407,20 @@ namespace Scada.Agent.Ctrl.ServiceReference1 {
             return base.Channel.FindFilesAsync(request);
         }
         
-        public System.IO.Stream DownloadFile(long sessionID, Scada.Agent.AppPath appPath) {
-            return base.Channel.DownloadFile(sessionID, appPath);
+        public System.IO.Stream DownloadFile(long sessionID, Scada.Agent.RelPath relPath) {
+            return base.Channel.DownloadFile(sessionID, relPath);
         }
         
-        public System.Threading.Tasks.Task<System.IO.Stream> DownloadFileAsync(long sessionID, Scada.Agent.AppPath appPath) {
-            return base.Channel.DownloadFileAsync(sessionID, appPath);
+        public System.Threading.Tasks.Task<System.IO.Stream> DownloadFileAsync(long sessionID, Scada.Agent.RelPath relPath) {
+            return base.Channel.DownloadFileAsync(sessionID, relPath);
         }
         
-        public System.IO.Stream DownloadFileRest(long sessionID, Scada.Agent.AppPath appPath, long position) {
-            return base.Channel.DownloadFileRest(sessionID, appPath, position);
+        public System.IO.Stream DownloadFileRest(long sessionID, Scada.Agent.RelPath relPath, long position) {
+            return base.Channel.DownloadFileRest(sessionID, relPath, position);
         }
         
-        public System.Threading.Tasks.Task<System.IO.Stream> DownloadFileRestAsync(long sessionID, Scada.Agent.AppPath appPath, long position) {
-            return base.Channel.DownloadFileRestAsync(sessionID, appPath, position);
+        public System.Threading.Tasks.Task<System.IO.Stream> DownloadFileRestAsync(long sessionID, Scada.Agent.RelPath relPath, long position) {
+            return base.Channel.DownloadFileRestAsync(sessionID, relPath, position);
         }
     }
 }

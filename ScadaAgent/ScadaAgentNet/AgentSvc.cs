@@ -231,7 +231,7 @@ namespace Scada.Agent.Net
         /// Управлять службой
         /// </summary>
         [OperationContract]
-        public bool ControlService(long sessionID, ScadaApps service, ServiceCommand command)
+        public bool ControlService(long sessionID, ServiceApp serviceApp, ServiceCommand command)
         {
             return true;
         }
@@ -240,19 +240,19 @@ namespace Scada.Agent.Net
         /// Получить статус службы
         /// </summary>
         [OperationContract]
-        public bool GetServiceStatus(long sessionID, ScadaApps service, out bool isRunning)
+        public bool GetServiceStatus(long sessionID, ServiceApp serviceApp, out bool isRunning)
         {
             isRunning = true;
             return true;
         }
 
         /// <summary>
-        /// Получить установленные приложения экземпляра системы
+        /// Получить доступные части конфигурации экземпляра системы
         /// </summary>
         [OperationContract]
-        public bool GetInstalledApps(long sessionID, out ScadaApps installedApps)
+        public bool GetAvailableConfig(long sessionID, out ConfigParts configParts)
         {
-            installedApps = ScadaApps.None;
+            configParts = ConfigParts.All;
             return true;
         }
 
@@ -309,7 +309,7 @@ namespace Scada.Agent.Net
         /// Найти файлы
         /// </summary>
         [OperationContract]
-        public bool FindFiles(long sessionID, AppPath appPath, out ICollection<string> paths)
+        public bool FindFiles(long sessionID, RelPath relPath, out ICollection<string> paths)
         {
             paths = null;
             return true;
@@ -319,7 +319,7 @@ namespace Scada.Agent.Net
         /// Скачать файл
         /// </summary>
         [OperationContract]
-        public Stream DownloadFile(long sessionID, AppPath appPath)
+        public Stream DownloadFile(long sessionID, RelPath relPath)
         {
             /*byte[] buffer = System.Text.Encoding.ASCII.GetBytes("hello");
             MemoryStream stream = new MemoryStream(buffer.Length);
@@ -334,7 +334,7 @@ namespace Scada.Agent.Net
         /// Скачать часть файла с заданной позиции
         /// </summary>
         [OperationContract]
-        public Stream DownloadFileRest(long sessionID, AppPath appPath, long position)
+        public Stream DownloadFileRest(long sessionID, RelPath relPath, long position)
         {
             return null;
         }
