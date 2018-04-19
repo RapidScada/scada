@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2018
  */
 
 using Scada.Client;
@@ -203,10 +203,13 @@ namespace Scada.Web.Plugins.Table
             for (int i = 0, cnt = tableView.Items.Count; i < cnt; i++)
             {
                 viewItem = tableView.Items[i];
-                cnlProps = viewItem.CnlNum > 0 ? dataAccess.GetCnlProps(viewItem.CnlNum) : null;
-                Row newRow = itemRowTemplate.Clone();
-                ExcelProc(newRow);
-                table.AppendRow(newRow);
+                if (!viewItem.Hidden)
+                {
+                    cnlProps = viewItem.CnlNum > 0 ? dataAccess.GetCnlProps(viewItem.CnlNum) : null;
+                    Row newRow = itemRowTemplate.Clone();
+                    ExcelProc(newRow);
+                    table.AppendRow(newRow);
+                }
             }
         }
 
