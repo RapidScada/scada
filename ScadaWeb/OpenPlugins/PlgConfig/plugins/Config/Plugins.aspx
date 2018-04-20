@@ -30,7 +30,7 @@
                     ID="lbtnActivate" runat="server" CssClass="btn-confirm" CommandName="Activate" CommandArgument='<%# Eval("FileName") %>'><%= PlgPhrases.ActivateBtn %></asp:LinkButton><asp:LinkButton 
                     ID="lbtnDeactivate" runat="server" CssClass="btn-confirm" CommandName="Deactivate" CommandArgument='<%# Eval("FileName") %>'><%= PlgPhrases.DeactivateBtn %></asp:LinkButton>
                 <td><%# WebUtils.HtmlEncodeWithBreak(Eval("FullDescr")) %></td>
-                <td><%# StateToStr((PlaginStates)Eval("State")) %></td>
+                <td class="state-cell"><%# StateToStr((PlaginStates)Eval("State")) %></td>
             </tr>
         </ItemTemplate>
         <FooterTemplate>

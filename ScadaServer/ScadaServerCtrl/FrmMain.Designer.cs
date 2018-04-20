@@ -2512,7 +2512,6 @@
             // 
             this.dlgMod.DefaultExt = "*.dll";
             this.dlgMod.Filter = "Модули (*.dll)|*.dll|Все файлы (*.*)|*.*";
-            this.dlgMod.Title = "Выберите файл модуля";
             // 
             // FrmMain
             // 

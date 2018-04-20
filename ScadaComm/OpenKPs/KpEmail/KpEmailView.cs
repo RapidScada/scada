@@ -38,7 +38,7 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Версия библиотеки КП
         /// </summary>
-        internal const string KpVersion = "5.0.0.1";
+        internal const string KpVersion = "5.0.0.2";
 
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace Scada.Comm.Devices
         {
             get
             {
-                return new KPReqParams() { Timeout = 10000, Delay = 200 };
+                return new KPReqParams(10000, 200);
             }
         }
 

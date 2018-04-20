@@ -139,12 +139,6 @@ namespace Scada.Server.Svc
             "Execution time : {1}" + Environment.NewLine +
             "State          : {2}" + Environment.NewLine +
             "Version        : {3}";
-        /// <summary>
-        /// Формат описания события на команду ТУ
-        /// </summary>
-        private static readonly string EventOnCmdFormat = Localization.UseRussian ?
-            "Команда ТУ: канал упр. = {0}, ид. польз. = {1}, значение = {2}, данные = {3}" :
-            "Command: out channel = {0}, user ID = {1}, value = {2}, data = {3}";
 
         private string infoFileName;               // полное имя файла информации
         private Thread thread;                     // поток работы сервера

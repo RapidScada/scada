@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2014
- * Modified : 2017
+ * Modified : 2018
  */
 
 namespace Scada.Comm.Devices.Modbus.UI
@@ -47,6 +47,7 @@ namespace Scada.Comm.Devices.Modbus.UI
         public static string SaveTemplateConfirm { get; private set; }
         public static string ElemCntExceeded { get; private set; }
         public static string ElemRemoveWarning { get; private set; }
+        public static string TemplateFileFilter { get; private set; }
 
         // Словарь Scada.Comm.Devices.Modbus.UI.FrmDevProps
         public static string TemplNotExists { get; private set; }
@@ -63,6 +64,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             SaveTemplateConfirm = Localization.Dict.GetEmptyPhrase("SaveTemplateConfirm");
             ElemCntExceeded = Localization.Dict.GetEmptyPhrase("ElemCntExceeded");
             ElemRemoveWarning = Localization.Dict.GetEmptyPhrase("ElemRemoveWarning");
+            TemplateFileFilter = Localization.Dict.GetEmptyPhrase("TemplateFileFilter");
 
             TemplNotExists = Localization.Dict.GetEmptyPhrase("TemplNotExists");
         }
@@ -82,6 +84,7 @@ namespace Scada.Comm.Devices.Modbus.UI
                 SaveTemplateConfirm = dict.GetPhrase("SaveTemplateConfirm", SaveTemplateConfirm);
                 ElemCntExceeded = dict.GetPhrase("ElemCntExceeded", ElemCntExceeded);
                 ElemRemoveWarning = dict.GetPhrase("ElemRemoveWarning", ElemRemoveWarning);
+                TemplateFileFilter = dict.GetPhrase("TemplateFileFilter", TemplateFileFilter);
             }
 
             if (Localization.Dictionaries.TryGetValue("Scada.Comm.Devices.Modbus.UI.FrmDevProps", out dict))

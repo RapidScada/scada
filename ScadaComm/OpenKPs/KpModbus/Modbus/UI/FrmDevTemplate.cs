@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.Comm.Devices.Modbus.Protocol;
@@ -103,7 +103,8 @@ namespace Scada.Comm.Devices.Modbus.UI
         /// </summary>
         private void SetFormTitle()
         {
-            Text = KpPhrases.TemplFormTitle + " - " + (fileName == "" ? NewFileName : Path.GetFileName(fileName)) +
+            Text = KpPhrases.TemplFormTitle + " - " + 
+                (fileName == "" ? NewFileName : Path.GetFileName(fileName)) +
                 (Modified ? "*" : "");
         }
 
@@ -112,20 +113,15 @@ namespace Scada.Comm.Devices.Modbus.UI
         /// </summary>
         private void LoadTemplate(string fname)
         {
-            DeviceTemplate templ = new DeviceTemplate();
+            template = new DeviceTemplate();
+            fileName = fname;
+            SetFormTitle();
             string errMsg;
 
-            if (templ.Load(fname, out errMsg))
-            {
-                template = templ;
-                fileName = fname;
-                SetFormTitle();
-                FillTree();
-            }
-            else
-            {
+            if (!template.Load(fname, out errMsg))
                 ScadaUiUtils.ShowError(errMsg);
-            }
+
+            FillTree();
         }
 
         /// <summary>
@@ -465,6 +461,7 @@ namespace Scada.Comm.Devices.Modbus.UI
         {
             // перевод формы
             Translator.TranslateForm(this, "Scada.Comm.Devices.Modbus.UI.FrmDevTemplate");
+            openFileDialog.Filter = saveFileDialog.Filter = KpPhrases.TemplateFileFilter;
             TranslateTree();
 
             // настройка элементов управления

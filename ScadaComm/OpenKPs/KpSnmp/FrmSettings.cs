@@ -23,7 +23,6 @@
  * Modified : 2016
  */
 
-using Lextm.SharpSnmpLib;
 using Scada.UI;
 using System;
 using System.Windows.Forms;

@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModDBExportDictionaries>
+  <Dictionary key="Scada.Server.Modules.DBExport.FrmDBExportConfig">
+    <Phrase key="this">Exportar a DB</Phrase>
+    <Phrase key="ddbAddDataSource.ToolTip">Añadir origen de datos</Phrase>
+    <Phrase key="btnDelDataSource.ToolTip">Borrar origen de datos</Phrase>
+    <Phrase key="btnManualExport.ToolTip">Exportar Manual</Phrase>
+    <Phrase key="lblInstruction">Añadir fuentes de datos</Phrase>
+    <Phrase key="pageConnection">Conexion</Phrase>
+    <Phrase key="lblServer">Servidor</Phrase>
+    <Phrase key="lblDatabase">Base de Datos</Phrase>
+    <Phrase key="lblUser">Usuario</Phrase>
+    <Phrase key="lblPassword">Contraseña</Phrase>
+    <Phrase key="lblConnectionString">Conexion string</Phrase>
+    <Phrase key="pageExportCurDataQuery">Datos actuales</Phrase>
+    <Phrase key="pageExportArcDataQuery">Archivo de datos</Phrase>
+    <Phrase key="pageExportEventQuery">Eventos</Phrase>
+    <Phrase key="chkExport">Exportar</Phrase>
+    <Phrase key="btnSave">Guardar</Phrase>
+    <Phrase key="btnCancel">Cancelar</Phrase>
+    <Phrase key="btnClose">Cerrar</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Server.Modules.DBExport.FrmManualExport">
+    <Phrase key="this">Exportar manual</Phrase>
+    <Phrase key="lblDataSource">Origen de datos</Phrase>
+    <Phrase key="gbCurData">Datos actuales</Phrase>
+    <Phrase key="lblCurDataCtrlCnlNum">Canal de salida</Phrase>
+    <Phrase key="btnExportCurData">Exportar</Phrase>
+    <Phrase key="gbArcData">Archivo de datos</Phrase>
+    <Phrase key="lblArcDataCtrlCnlNum">Canal de salida</Phrase>
+    <Phrase key="lblArcDataDateTime">Fecha y hora</Phrase>
+    <Phrase key="btnExportArcData">Exportar</Phrase>
+    <Phrase key="gbEvents">Eventos</Phrase>
+    <Phrase key="lblEventsCtrlCnlNum">Canal de Salida</Phrase>
+    <Phrase key="lblEventsDate">Fecha</Phrase>
+    <Phrase key="btnExportEvents">Exportar</Phrase>
+    <Phrase key="btnOK">Aceptar</Phrase>
+    <Phrase key="btnCancel">Cancelar</Phrase>
+  </Dictionary>
+</ModDBExportDictionaries>

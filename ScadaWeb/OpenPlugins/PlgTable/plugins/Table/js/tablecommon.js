@@ -116,7 +116,6 @@ function initDebugTools() {
 
     $(window).on(
         scada.EventTypes.VIEW_TITLE_CHANGED + " " +
-        scada.EventTypes.VIEW_NAVIGATE + " " +
         scada.EventTypes.VIEW_DATE_CHANGED,
         function (event, sender, extraParams) {
             notifier.addNotification(scada.utils.getCurTime() + " Receive: " +
@@ -127,11 +126,6 @@ function initDebugTools() {
         $("#spanTitleChangedBtn").click(function () {
             notifier.addNotification(scada.utils.getCurTime() + " Send: VIEW_TITLE_CHANGED");
             viewHub.notify(scada.EventTypes.VIEW_TITLE_CHANGED, window, "Title " + Math.random());
-        });
-
-        $("#spanNavigateBtn").click(function () {
-            notifier.addNotification(scada.utils.getCurTime() + " Send: VIEW_NAVIGATE");
-            viewHub.notify(scada.EventTypes.VIEW_NAVIGATE, window, 100);
         });
 
         $("#spanDateChangedBtn").click(function () {

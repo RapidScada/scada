@@ -105,6 +105,7 @@
     <Phrase key="ReportsMenuItem">Reports</Phrase>
     <Phrase key="AdminMenuItem">Administration</Phrase>
     <Phrase key="ConfigMenuItem">Configuration</Phrase>
+    <Phrase key="RegMenuItem">Registration</Phrase>
     <Phrase key="PluginsMenuItem">Plugins</Phrase>
     <Phrase key="AboutMenuItem">About</Phrase>
   </Dictionary>

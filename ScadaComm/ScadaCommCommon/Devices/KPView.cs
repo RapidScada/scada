@@ -125,11 +125,9 @@ namespace Scada.Comm.Devices
             {
                 if (customParams == null)
                     throw new ArgumentNullException("customParams");
-                if (cmdLine == null)
-                    throw new ArgumentNullException("cmdLine");
 
                 CustomParams = customParams;
-                CmdLine = cmdLine;
+                CmdLine = cmdLine ?? "";
                 Modified = false;
             }
 

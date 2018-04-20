@@ -1,5 +1,6 @@
 ﻿var scada = scada || {};
 var popup = new scada.Popup();
+var ajaxQueue = new scada.AjaxQueue(scada.env.rootPath);
 scada.view = scada.view || {}; // defined if the current page is View.aspx
 
 scada.masterMain = {
@@ -47,14 +48,15 @@ scada.masterMain = {
     _checkLoggedOn: function () {
         var thisObj = this;
         scada.clientAPI.checkLoggedOn(function (success, loggedOn) {
-            if (loggedOn) {
-                // enqueue the next check
-                setTimeout(function () { thisObj._checkLoggedOn(); }, thisObj.CHECK_LOGGEDON_RATE);
-            } else {
+            if (loggedOn === false) {
                 // redirect to login page
                 setTimeout(function () {
                     location.href = scada.env.rootPath + "Login.aspx?return=" + encodeURIComponent(location.href);
                 }, thisObj.LOGIN_DELAY);
+            } else {
+                // loggedOn is true or null
+                // enqueue the next check
+                setTimeout(function () { thisObj._checkLoggedOn(); }, thisObj.CHECK_LOGGEDON_RATE);
             }
         });
     },
@@ -175,8 +177,13 @@ scada.masterMain = {
         if (scada.view.loadView) {
             scada.view.loadView(viewID, viewUrl);
         } else {
-            location.href = scada.env.rootPath + "View.aspx?viewID=" + viewID;
+            location.href = scada.env.rootPath + scada.utils.getViewUrl(viewID);
         }
+    },
+
+    // Select the specified view in the explorer tree
+    selectView: function (viewID) {
+        scada.treeView.selectNode($("#divMainExplorer .node[data-view=" + viewID + "]"));
     },
 
     // Start cyclic checking user logged on
@@ -187,13 +194,14 @@ scada.masterMain = {
 };
 
 $(document).ready(function () {
-    // unbind events to avoid doubling in case of using ASP.NET AJAX
+    // unbind events to avoid doubling in case of using ASP.NET Ajax
     /*$(window).off();
     $(document).off();
     $("body").off();*/
 
     // page setup
     scada.clientAPI.rootPath = scada.env.rootPath;
+    scada.clientAPI.ajaxQueue = ajaxQueue;
     scada.dialogs.rootPath = scada.env.rootPath;
     scada.masterMain.updateLayout();
     scada.masterMain.chooseToolWindow();

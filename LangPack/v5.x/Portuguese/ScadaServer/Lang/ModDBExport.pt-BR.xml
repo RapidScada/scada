@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModDBExportDictionaries>
+  <Dictionary key="Scada.Server.Modules.DBExport.FrmDBExportConfig">
+    <Phrase key="this">Exportar para DB</Phrase>
+    <Phrase key="ddbAddDataSource.ToolTip">Adicionar origem de dados</Phrase>
+    <Phrase key="btnDelDataSource.ToolTip">Deletar origem de dados</Phrase>
+    <Phrase key="btnManualExport.ToolTip">Exportar Manual</Phrase>
+    <Phrase key="lblInstruction">Adicionar fontes de dados</Phrase>
+    <Phrase key="pageConnection">Conexão</Phrase>
+    <Phrase key="lblServer">Servidor</Phrase>
+    <Phrase key="lblDatabase">Base de Dados</Phrase>
+    <Phrase key="lblUser">Usuário</Phrase>
+    <Phrase key="lblPassword">Senha</Phrase>
+    <Phrase key="lblConnectionString">Conexão string</Phrase>
+    <Phrase key="pageExportCurDataQuery">Dados atuais</Phrase>
+    <Phrase key="pageExportArcDataQuery">Arquivo de dados</Phrase>
+    <Phrase key="pageExportEventQuery">Eventos</Phrase>
+    <Phrase key="chkExport">Exportar</Phrase>
+    <Phrase key="btnSave">Salvar</Phrase>
+    <Phrase key="btnCancel">Cancelar</Phrase>
+    <Phrase key="btnClose">Fechar</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Server.Modules.DBExport.FrmManualExport">
+    <Phrase key="this">Exportar Manual</Phrase>
+    <Phrase key="lblDataSource">Origem de dados</Phrase>
+    <Phrase key="gbCurData">Dados atuais</Phrase>
+    <Phrase key="lblCurDataCtrlCnlNum">Canal de saída</Phrase>
+    <Phrase key="btnExportCurData">Exportar</Phrase>
+    <Phrase key="gbArcData">Arquivo de dados</Phrase>
+    <Phrase key="lblArcDataCtrlCnlNum">Canal de saída</Phrase>
+    <Phrase key="lblArcDataDateTime">Data e hora</Phrase>
+    <Phrase key="btnExportArcData">Exportar</Phrase>
+    <Phrase key="gbEvents">Eventos</Phrase>
+    <Phrase key="lblEventsCtrlCnlNum">Canal de Saída</Phrase>
+    <Phrase key="lblEventsDate">Data</Phrase>
+    <Phrase key="btnExportEvents">Exportar</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancelar</Phrase>
+  </Dictionary>
+</ModDBExportDictionaries>

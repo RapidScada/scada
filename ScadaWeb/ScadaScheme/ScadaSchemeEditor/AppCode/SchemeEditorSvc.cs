@@ -192,6 +192,38 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
+        /// Получить ошибки при загрузке схемы
+        /// </summary>
+        /// <remarks>Возвращает SchemeDTO в формате в JSON</remarks>
+        [OperationContract]
+        [WebGet]
+        public string GetLoadErrors(string editorID, long viewStamp)
+        {
+            try
+            {
+                AllowAccess();
+                SchemeDTO dto = new SchemeDTO();
+
+                if (CheckArguments(editorID, viewStamp, dto))
+                {
+                    lock (Editor.SchemeView.SyncRoot)
+                    {
+                        dto.Data = Editor.SchemeView.LoadErrors.ToArray();
+                    }
+                }
+
+                return JsSerializer.Serialize(dto);
+            }
+            catch (Exception ex)
+            {
+                AppData.Log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении ошибок при загрузке схемы" :
+                    "Error getting loading errors of the scheme");
+                return JsSerializer.GetErrorJson(ex);
+            }
+        }
+
+        /// <summary>
         /// Получить изменения схемы
         /// </summary>
         /// <remarks>Возвращает ChangesDTO в формате в JSON</remarks>

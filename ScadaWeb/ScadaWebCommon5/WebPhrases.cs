@@ -77,6 +77,7 @@ namespace Scada.Web
         public static string ReportsMenuItem { get; private set; }
         public static string AdminMenuItem { get; private set; }
         public static string ConfigMenuItem { get; private set; }
+        public static string RegMenuItem { get; private set; }
         public static string PluginsMenuItem { get; private set; }
         public static string AboutMenuItem { get; private set; }
 
@@ -122,6 +123,7 @@ namespace Scada.Web
             ReportsMenuItem = Localization.Dict.GetEmptyPhrase("ReportsMenuItem");
             AdminMenuItem = Localization.Dict.GetEmptyPhrase("AdminMenuItem");
             ConfigMenuItem = Localization.Dict.GetEmptyPhrase("ConfigMenuItem");
+            RegMenuItem = Localization.Dict.GetEmptyPhrase("RegMenuItem");
             PluginsMenuItem = Localization.Dict.GetEmptyPhrase("PluginsMenuItem");
             AboutMenuItem = Localization.Dict.GetEmptyPhrase("AboutMenuItem");
 
@@ -190,6 +192,7 @@ namespace Scada.Web
                 ReportsMenuItem = dict.GetPhrase("ReportsMenuItem", ReportsMenuItem);
                 AdminMenuItem = dict.GetPhrase("AdminMenuItem", AdminMenuItem);
                 ConfigMenuItem = dict.GetPhrase("ConfigMenuItem", ConfigMenuItem);
+                RegMenuItem = dict.GetPhrase("RegMenuItem", RegMenuItem);
                 PluginsMenuItem = dict.GetPhrase("PluginsMenuItem", PluginsMenuItem);
                 AboutMenuItem = dict.GetPhrase("AboutMenuItem", AboutMenuItem);
             }

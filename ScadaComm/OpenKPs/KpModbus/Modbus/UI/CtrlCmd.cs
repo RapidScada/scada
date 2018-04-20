@@ -271,7 +271,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             // изменение адреса команды
             if (modbusCmd != null)
             {
-                modbusCmd.Address = (ushort)(numCmdAddress.Value - 1);
+                modbusCmd.Address = (ushort)(numCmdAddress.Value - AddrShift);
                 OnObjectChanged(TreeUpdateTypes.CurrentNode);
             }
         }

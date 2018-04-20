@@ -122,15 +122,23 @@ namespace Scada.Web
                 if (!alertIsEmpty)
                     AddShowAlertScript(alert);
 
-                // обработка сохранённого входа в систему
-                if (alertIsEmpty && !userData.LoggedOn && userData.WebSettings.RemEnabled)
+                // переход на стартовую страницу, если вход выполнен
+                if (alertIsEmpty)
                 {
-                    string username;
-                    if (appData.RememberMe.ValidateUser(Context, out username, out alert) && 
-                        userData.Login(username, out alert))
+                    if (userData.LoggedOn)
+                    {
                         GoToStartPage();
-                    else if (alert != "")
-                        AddShowAlertScript(alert);
+                    }
+                    else if (userData.WebSettings.RemEnabled)
+                    {
+                        // обработка сохранённого входа в систему
+                        string username;
+                        if (appData.RememberMe.ValidateUser(Context, out username, out alert) &&
+                            userData.Login(username, out alert))
+                            GoToStartPage();
+                        else if (alert != "")
+                            AddShowAlertScript(alert);
+                    }
                 }
 
                 // настройка элементов управления

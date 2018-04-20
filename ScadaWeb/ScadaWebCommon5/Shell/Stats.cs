@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2018
  */
 
 using System;
@@ -168,16 +168,17 @@ namespace Scada.Web.Shell
         /// <summary>
         /// Генерировать HTML-код для передачи статистики
         /// </summary>
-        public string GenerateHtml(bool shareStats, string customData = "")
+        public string GenerateHtml(bool shareStats, bool useHttps, string customData = "")
         {
             if (shareStats)
             {
                 StringBuilder sbHtml = new StringBuilder();
                 sbHtml
                     .Append("<iframe id='frameStats' src='")
+                    .Append(useHttps ? "https://" : "http://")
                     .AppendFormat(UrlTemplates.Stats, GetServerID());
 
-                if (string.IsNullOrEmpty(customData))
+                if (!string.IsNullOrEmpty(customData))
                     sbHtml.Append("#").Append(HttpUtility.UrlEncode(customData));
 
                 sbHtml.Append("'></iframe>");

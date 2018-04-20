@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,10 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2018
  */
+
+using System.Reflection;
 
 namespace Scada.Scheme
 {
@@ -34,14 +36,29 @@ namespace Scada.Scheme
         /// <summary>
         /// Версия схем
         /// </summary>
-        public const string SchemeVersion = "5.1.0.4";
+        public const string SchemeVersion = "5.2.1.0";
+        /// <summary>
+        /// Цвет, устанавливаемый в зависимости от статуса входного канала
+        /// </summary>
+        public const string StatusColor = "Status";
+
+        /// <summary>
+        /// Получить признак, что запущен Редактор схем
+        /// </summary>
+        public static bool EditorMode
+        {
+            get
+            {                
+                return Assembly.GetEntryAssembly().GetName().Name == "ScadaSchemeEditor";
+            }
+        }
 
         /// <summary>
         /// Проверить, что метки представления соответствуют друг другу
         /// </summary>
-        public static bool ViewStampsMatched(long viewStamp1, long viewStamp2)
+        public static bool ViewStampsMatched(long browserViewStamp, long serverViewStamp)
         {
-            return !(viewStamp1 > 0 && viewStamp2 > 0 && viewStamp1 != viewStamp2);
+            return serverViewStamp > 0 && (browserViewStamp == 0 || browserViewStamp == serverViewStamp);
         }
     }
 }

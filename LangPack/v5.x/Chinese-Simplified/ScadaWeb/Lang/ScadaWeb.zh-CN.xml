@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaWebDictionaries>
+  <Dictionary key="Scada.Web">
+    <Phrase key="NotLoggedOn">用户未登录。</Phrase>
+    <Phrase key="IncorrectDate">请求的数据日期不正确。</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.AppData">
+    <Phrase key="ServerUnavailable">服务器不可用。</Phrase>
+    <Phrase key="WrongPassword">用户名或密码错误。</Phrase>
+    <Phrase key="IllegalRole">非法用户权限。</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Dialogs.WFrmConfirm">
+    <Phrase key="this">确认</Phrase>
+    <Phrase key="lblConfirm">你确定吗?</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.MasterMain">
+    <Phrase key="lbtnMainLogout">注销</Phrase>
+    <Phrase key="lblMainFullscreenBtn.ToolTip">全屏</Phrase>
+    <Phrase key="lblMainNormalViewBtn.ToolTip">正常视图</Phrase>
+    <Phrase key="lblMainMenuTab">主菜单</Phrase>
+    <Phrase key="lblMainExplorerTab">查看</Phrase>
+    <Phrase key="lblMainCollapseMenu">折叠菜单</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.ModalButtons.Js">
+    <Phrase key="ok">确认</Phrase>
+    <Phrase key="yes">是</Phrase>
+    <Phrase key="no">否</Phrase>
+    <Phrase key="execute">执行</Phrase>
+    <Phrase key="cancel">取消</Phrase>
+    <Phrase key="close">关闭</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Report">
+    <Phrase key="GenReport">生成 &quot;{0}&quot; 用户报表{1}</Phrase>
+    <Phrase key="IncorrectRepTemplate">报表模板不正确。</Phrase>
+    <Phrase key="IncorrectStartDate">开始日期不正确。</Phrase>
+    <Phrase key="IncorrectEndDate">结束日期不正确。</Phrase>
+    <Phrase key="IncorrectPeriod">开始日期必须小于或等于结束日期。</Phrase>
+    <Phrase key="DayPeriodTooLong">最长期限为{0}天。</Phrase>
+    <Phrase key="MonthPeriodTooLong">最长期限为{0}个月。</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.UserRights">
+    <Phrase key="CnlNumsEmptyError">未指定信道号。</Phrase>
+    <Phrase key="CnlsViewsCountError">信道数量和视图ID不匹配。</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.ViewSettings">
+    <Phrase key="LoadViewSettingsError">加载视图设置时出错。</Phrase>
+    <Phrase key="SaveViewSettingsError">保存视图设置时出错。</Phrase>
+    <Phrase key="LoadViewSettingsBaseError">从配置数据库加载视图设置时出错。</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WebSettings">
+    <Phrase key="LoadWebSettingsError">加载Web应用程序设置时出错。</Phrase>
+    <Phrase key="SaveWebSettingsError">保存Web应用程序设置时出错。</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmAbout">
+    <Phrase key="this">中科航宇<小车控制系统>—关于</Phrase>
+    <Phrase key="hlAppName">网站</Phrase>
+    <Phrase key="hlAppName.NavigateUrl">http://rapidscada.org</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmError">
+    <Phrase key="this">应用程序错误—中科航宇<小车控制系统></Phrase>
+    <Phrase key="lblTitle">应用程序错误</Phrase>
+    <Phrase key="lblErrMsg">发生应用程序错误。如果经常重复，请联系支持。</Phrase>
+    <Phrase key="lblErrDetailsCaption">详情:</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmLogin">
+    <Phrase key="this">中科航宇<小车控制系统>—登录</Phrase>
+    <Phrase key="hlRapidScada.NavigateUrl">http://rapidscada.org</Phrase>
+    <Phrase key="lblUsername">用户名</Phrase>
+    <Phrase key="lblPassword">密码</Phrase>
+    <Phrase key="lblRememberMe">记住我</Phrase>
+    <Phrase key="btnLogin">登录</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmLogin.Js">
+    <Phrase key="BrowserOutdated">您的浏览器版本过低。&lt;br/&gt;请更新到最新版本。</Phrase>
+    <Phrase key="CookiesDisabled">Cookie已禁用。请启用Cookie。</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmNoView">
+    <Phrase key="this">中科航宇<小车控制系统>—无视图</Phrase>
+    <Phrase key="lblViewNotExist">请求的视图不存在或您没有足够的访问权限。</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmReports">
+    <Phrase key="this">中科航宇<小车控制系统>—报表</Phrase>
+    <Phrase key="lblTitle">可用报表</Phrase>
+    <Phrase key="lblNoReports">N无可用报表</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmUser">
+    <Phrase key="this">中科航宇<小车控制系统>—用户资料</Phrase>
+    <Phrase key="lblTitle">用户资料</Phrase>
+    <Phrase key="lblUserNameCaption">用户名:</Phrase>
+    <Phrase key="lblRoleNameCaption">权限:</Phrase>
+    <Phrase key="lblGeneralRightsTitle">一般权限</Phrase>
+    <Phrase key="lblViewAllRightCaption">查看所有数据:</Phrase>
+    <Phrase key="lblControlAllRightCaption">控制所有设备:</Phrase>
+    <Phrase key="lblConfigRightCaption">系统配置：</Phrase>
+    <Phrase key="RightYes">是</Phrase>
+    <Phrase key="RightNo">否</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmView">
+    <Phrase key="this">中科航宇<小车控制系统>—查看</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmView.Js">
+    <Phrase key="ExternalLinkTitle">中科航宇<小车控制系统>—外部链接</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Shell.MenuItem">
+    <Phrase key="ReportsMenuItem">报表</Phrase>
+    <Phrase key="AdminMenuItem">管理</Phrase>
+    <Phrase key="ConfigMenuItem">配置</Phrase>
+    <Phrase key="AboutMenuItem">关于</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Shell.RememberMe">
+    <Phrase key="SecurityViolation">检测到安全违规，立即与系统管理员联系。</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Shell.UserContent">
+    <Phrase key="ReportNotFound">没有找到ID = {0}的报表。</Phrase>
+    <Phrase key="UnexpectedReportSpec">ID = {0}的报表具有异常的规格类型。</Phrase>
+    <Phrase key="DataWndNotFound">找不到ID = {0}的数据窗口。</Phrase>
+    <Phrase key="UnexpectedDataWndSpec">ID = {0}的数据窗口具有异常的规格类型。</Phrase>
+  </Dictionary>
+</ScadaWebDictionaries>

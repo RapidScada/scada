@@ -1,0 +1,15 @@
+﻿﻿<?xml version="1.0" encoding="utf-8" ?>
+<KpEmailDictionaries>
+  <Dictionary key="Scada.Comm.Devices.KpEmail.FrmConfig">
+    <Phrase key="this">Email - Dispositivo {0} Configuracion</Phrase>
+    <Phrase key="lblHost">Servidor SMTP</Phrase>
+    <Phrase key="lblPort">Puerto</Phrase>
+    <Phrase key="lblUser">Usuario</Phrase>
+    <Phrase key="lblPassword">Contraseña</Phrase>
+    <Phrase key="lblUserDisplayName">Ver Nombre usuario</Phrase>
+    <Phrase key="chkEnableSsl">Utilice el SSL</Phrase>
+    <Phrase key="btnEditAddressBook">Agenda de dirección</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancelación</Phrase>
+  </Dictionary>
+</KpEmailDictionaries>

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<KpEmailDictionaries>
+  <Dictionary key="Scada.Comm.Devices.KpEmail.FrmConfig">
+    <Phrase key="this">配置电子邮件 - 设备{0}</Phrase>
+    <Phrase key="lblHost">SMTP服务器</Phrase>
+    <Phrase key="lblPort">端口</Phrase>
+    <Phrase key="lblUser">用户</Phrase>
+    <Phrase key="lblPassword">密码</Phrase>
+    <Phrase key="lblUserDisplayName">用户显示名称</Phrase>
+    <Phrase key="chkEnableSsl">使用SSL</Phrase>
+    <Phrase key="btnEditAddressBook">通讯录</Phrase>
+    <Phrase key="btnOK">确认</Phrase>
+    <Phrase key="btnCancel">取消</Phrase>
+  </Dictionary>
+</KpEmailDictionaries>

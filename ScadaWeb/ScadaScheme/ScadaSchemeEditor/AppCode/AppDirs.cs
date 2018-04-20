@@ -67,9 +67,9 @@ namespace Scada.Scheme.Editor
         public string LogDir { get; protected set; }
 
         /// <summary>
-        /// Получить директорию веб-интерфейса
+        /// Получить или установить директорию веб-интерфейса
         /// </summary>
-        public string WebDir { get; protected set; }
+        public string WebDir { get; set; }
 
 
         /// <summary>

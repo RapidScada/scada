@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PlgChartDictionaries>
+  <Dictionary key="Scada.Web.Plugins.Chart">
+    <Phrase key="PerfWarning">Попередження! Дуже багато каналів можуть знизити продуктивність.</Phrase>
+    <Phrase key="AddCnlBtn">Додати</Phrase>
+    <Phrase key="RemoveCnlBtn">Видалити</Phrase>
+    <Phrase key="CnlInfoBtn">Інфо</Phrase>
+    <Phrase key="ObjectHint">Об'ект: </Phrase>
+    <Phrase key="DeviceHint">КП: </Phrase>
+    <Phrase key="ViewHint">Відображення: </Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Chart.MinDataRepBuilder">
+    <Phrase key="MinDataWorksheet">Хвилинні дані</Phrase>
+    <Phrase key="MinDataGen">Отримано: </Phrase>
+    <Phrase key="CnlsCaption">Вхідні канали:</Phrase>
+    <Phrase key="TimeColTitle">Година</Phrase>
+    <Phrase key="ValColTitle">Канал {0}</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Chart.WFrmChart">
+    <Phrase key="this">Графік - Rapid SCADA</Phrase>
+    <Phrase key="lblGenerated">Отримано</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Chart.WFrmMinDataRep">
+    <Phrase key="this">Звіт за хвилинними даними - Rapid SCADA</Phrase>
+    <Phrase key="lblTitle">Звіт за хвилинними даними</Phrase>
+    <Phrase key="lblDateFrom">Початок</Phrase>
+    <Phrase key="lblDateTo">Закінчення</Phrase>
+    <Phrase key="btnAddCnls">Додати канали</Phrase>
+    <Phrase key="lblSelCnls">Вибрані канали:</Phrase>
+    <Phrase key="lblNoSelCnls">Вхідні канали не вибрані</Phrase>
+    <Phrase key="btnGenReport">Завантажити звіт</Phrase>
+    <Phrase key="lblGenStarted">Звіт формується. Буль ласка, зачекайте...</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Chart.WFrmSelectCnls">
+    <Phrase key="this">Вибір каналів - Rapid SCADA</Phrase>
+    <Phrase key="lblLoading">Завантаження...</Phrase>
+    <Phrase key="lblUnableLoadView">Не вдалося завантажити відображення</Phrase>
+    <Phrase key="lblNoCnlsByView">Вхідні канали не знайдені</Phrase>
+  </Dictionary>
+</PlgChartDictionaries>

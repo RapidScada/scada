@@ -91,40 +91,26 @@ namespace Scada.Scheme.Editor
         /// <summary>
         /// Имя файла веб-страницы редактора
         /// </summary>
-        public const string WebPageFileName = "editor.html";
+        private const string WebPageFileName = "editor.html";
+        /// <summary>
+        /// Путь к директории плагинов относительно веб-страницы редактора
+        /// </summary>
+        private const string PluginsRoot = "../";
         /// <summary>
         /// Имя файла схемы по умолчанию
         /// </summary>
         public const string DefSchemeFileName = "NewScheme.sch";
 
-        /// <summary>
-        /// Типы компонентов, поддерживаемые редактором. Ключ - полное имя типа
-        /// </summary>
-        private static readonly Dictionary<string, Type> ComponentTypes;
-
-        private readonly Log log;         // журнал приложения
-        private List<Change> changes;     // изменения схемы
-        private bool modified;            // признак изменения схемы
-        private long changeStampCntr;     // счётчик для генерации меток изменений схемы
-        private PointerModes pointerMode; // режим указателя мыши редактора
-        private string status;            // статус редактора
+        private readonly CompManager compManager;  // менеджер компонентов
+        private readonly Log log;                  // журнал приложения
+        private List<Change> changes;              // изменения схемы
+        private bool modified;                     // признак изменения схемы
+        private long changeStampCntr;              // счётчик для генерации меток изменений схемы
+        private PointerModes pointerMode;          // режим указателя мыши редактора
+        private string status;                     // статус редактора
         private List<BaseComponent> selComponents; // выбранные компоненты схемы
         private List<BaseComponent> clipboard;     // буфер обмена, содержащий скопированные компоненты
 
-
-        /// <summary>
-        /// Статический конструктор
-        /// </summary>
-        static Editor()
-        {
-            ComponentTypes = new Dictionary<string, Type>()
-            {
-                { typeof(StaticText).FullName, typeof(StaticText) },
-                { typeof(DynamicText).FullName, typeof(DynamicText) },
-                { typeof(StaticPicture).FullName, typeof(StaticPicture) },
-                { typeof(DynamicPicture).FullName, typeof(DynamicPicture) }
-            };
-        }
 
         /// <summary>
         /// Конструктор, ограничивающий создание объекта без параметров
@@ -136,11 +122,14 @@ namespace Scada.Scheme.Editor
         /// <summary>
         /// Конструктор
         /// </summary>
-        public Editor(Log log)
+        public Editor(CompManager compManager, Log log)
         {
+            if (compManager == null)
+                throw new ArgumentNullException("compManager");
             if (log == null)
                 throw new ArgumentNullException("log");
 
+            this.compManager = compManager;
             this.log = log;
             changes = new List<Change>();
             changeStampCntr = 0;
@@ -531,7 +520,7 @@ namespace Scada.Scheme.Editor
         /// </summary>
         public string GetWebPageFilePath(string webDir)
         {
-            return webDir + @"plugins\SchemeEditor\" + WebPageFileName;
+            return Path.Combine(webDir, "plugins", "SchemeEditor", WebPageFileName);
         }
 
         /// <summary>
@@ -553,17 +542,44 @@ namespace Scada.Scheme.Editor
                     }
                 }
 
-                // создание файла веб-страницы
-                StringBuilder sbCustomScript = new StringBuilder();
-                sbCustomScript
+                // формирование списка стилей компонентов схемы
+                StringBuilder sbCompStyles = new StringBuilder();
+                List<string> compStyles = compManager.GetAllStyles();
+
+                foreach (string stylePath in compStyles)
+                {
+                    sbCompStyles.AppendFormat(WebUtils.StyleTemplate, PluginsRoot + stylePath).AppendLine();
+                }
+
+                // формирование списка скриптов компонентов схемы
+                StringBuilder sbCompScripts = new StringBuilder();
+                List<string> compScripts = compManager.GetAllScripts();
+
+                foreach (string scriptPath in compScripts)
+                {
+                    sbCompScripts.AppendFormat(WebUtils.ScriptTemplate, PluginsRoot + scriptPath).AppendLine();
+                }
+
+                // формирование скрипта редактора
+                StringBuilder sbEditorScript = new StringBuilder();
+                sbEditorScript
+                    .AppendLine("<script type=\"text/javascript\">")
                     .AppendFormat("var editorID = '{0}';", EditorID)
                     .AppendLine()
                     .Append("var phrases = ")
                     .Append(WebUtils.DictionaryToJs("Scada.Scheme.Editor.Js"))
                     .AppendLine(";")
-                    .AppendFormat("var serviceUrl = '{0}';", serviceUrl);
-                string webPageContent = string.Format(webPageTemplate, sbCustomScript.ToString());
+                    .AppendFormat("var serviceUrl = '{0}';", serviceUrl)
+                    .AppendLine()
+                    .Append("</script>");
 
+                // формирование содержимого веб-страницы
+                string webPageContent = string.Format(webPageTemplate, 
+                    sbCompStyles.ToString(), 
+                    sbCompScripts.ToString(), 
+                    sbEditorScript.ToString());
+
+                // запись файла веб-страницы
                 using (StreamWriter writer = new StreamWriter(GetWebPageFilePath(webDir), false, Encoding.UTF8))
                 {
                     writer.Write(webPageContent);
@@ -698,48 +714,52 @@ namespace Scada.Scheme.Editor
             {
                 // проверка возможности создания компонента
                 if (SchemeView == null)
-                    throw new ScadaException(Localization.UseRussian ? 
+                {
+                    throw new ScadaException(Localization.UseRussian ?
                         "Схема не загружена." :
                         "Scheme is not loaded.");
+                }
 
                 if (string.IsNullOrEmpty(NewComponentTypeName))
-                    throw new ScadaException(Localization.UseRussian ? 
+                {
+                    throw new ScadaException(Localization.UseRussian ?
                         "Не определён тип создаваемого компонента." :
                         "Type of the creating component is not defined.");
-
-                // получение типа компонента
-                Type componentType;
-                if (!ComponentTypes.TryGetValue(NewComponentTypeName, out componentType))
-                    throw new ScadaException(string.Format(Localization.UseRussian ?
-                        "Не найден тип создаваемого компонента {0}." :
-                        "Type of the creating component {0} not found.", NewComponentTypeName));
+                }
 
                 // создание компонента
-                BaseComponent component = (BaseComponent)Activator.CreateInstance(componentType);
-                component.ID = SchemeView.GetNextComponentID();
-                component.Location = new Point(x, y);
-                component.SchemeDoc = SchemeView.SchemeDoc;
-                component.ItemChanged += Scheme_ItemChanged;
+                BaseComponent component = compManager.CreateComponent(NewComponentTypeName);
 
-                // добавление компонента на схему
-                lock (SchemeView.SyncRoot)
+                if (component == null)
                 {
-                    SchemeView.Components[component.ID] = component;
+                    return false;
                 }
-
-                SchemeView.SchemeDoc.OnItemChanged(SchemeChangeTypes.ComponentAdded, component);
-
-                // выбор добавленного компонента
-                lock (selComponents)
+                else
                 {
-                    selComponents.Clear();
-                    selComponents.Add(component);
+                    component.ID = SchemeView.GetNextComponentID();
+                    component.Location = new Point(x, y);
+                    component.SchemeDoc = SchemeView.SchemeDoc;
+                    component.ItemChanged += Scheme_ItemChanged;
+
+                    // добавление компонента на схему
+                    lock (SchemeView.SyncRoot)
+                    {
+                        SchemeView.Components[component.ID] = component;
+                    }
+
+                    SchemeView.SchemeDoc.OnItemChanged(SchemeChangeTypes.ComponentAdded, component);
+
+                    // выбор добавленного компонента
+                    lock (selComponents)
+                    {
+                        selComponents.Clear();
+                        selComponents.Add(component);
+                    }
+
+                    OnSelectionChanged();
+                    PointerMode = PointerModes.Select;
+                    return true;
                 }
-
-                OnSelectionChanged();
-                PointerMode = PointerModes.Select;
-
-                return true;
             }
             catch (ScadaException ex)
             {

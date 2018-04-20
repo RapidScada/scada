@@ -73,6 +73,7 @@
     <Phrase key="SaveTemplateConfirm">Template has been modified. Save the changes?</Phrase>
     <Phrase key="ElemCntExceeded">Data table allows not more than {0} elements.</Phrase>
     <Phrase key="ElemRemoveWarning">Data table allows not more than {0} elements.&#13;&#10;Extra items will be removed. Continue?</Phrase>
+    <Phrase key="TemplateFileFilter">Template Files (*.xml)|*.xml|All Files (*.*)|*.*</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Devices.Modbus.UI.FrmDevProps">
     <Phrase key="this">Device {0} Properties</Phrase>

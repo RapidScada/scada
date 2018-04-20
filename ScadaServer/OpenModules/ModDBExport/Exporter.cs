@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2018
  * 
  * Description
  * Server module for real time data export from Rapid SCADA to DB.
@@ -156,6 +156,17 @@ namespace Scada.Server.Modules.DBExport
         }
 
         /// <summary>
+        /// Безопасно откатить транзакцию
+        /// </summary>
+        private void SafeRollback(DbTransaction trans)
+        {
+            if (trans != null)
+            {
+                try { trans.Rollback(); } catch { }
+            }
+        }
+
+        /// <summary>
         /// Цикл работы менеждера (метод вызывается в отдельном потоке)
         /// </summary>
         private void Execute()
@@ -237,9 +248,14 @@ namespace Scada.Server.Modules.DBExport
         {
             if (ExportParams.ExportCurData)
             {
+                DbTransaction trans = null;
                 SrezTableLight.Srez srez = null;
+
                 try
                 {
+                    trans = DataSource.Connection.BeginTransaction();
+                    DataSource.ExportCurDataCmd.Transaction = trans;
+
                     for (int i = 0; i < BundleSize; i++)
                     {
                         // извлечение среза из очереди
@@ -257,13 +273,19 @@ namespace Scada.Server.Modules.DBExport
                         expCurSrezCnt++;
                         exportError = false;
                     }
+
+                    trans.Commit();
                 }
                 catch (Exception ex)
                 {
+                    SafeRollback(trans);
+
                     // возврат среза в очередь
                     if (srez != null)
+                    {
                         lock (curSrezQueue)
                             curSrezQueue.Enqueue(srez);
+                    }
 
                     log.WriteAction(string.Format(Localization.UseRussian ?
                         "Ошибка при экспорте текущих данных в БД {0}: {1}" :
@@ -281,33 +303,44 @@ namespace Scada.Server.Modules.DBExport
         {
             if (ExportParams.ExportArcData)
             {
-                SrezTableLight.Srez sres = null;
+                DbTransaction trans = null;
+                SrezTableLight.Srez srez = null;
+
                 try
                 {
+                    trans = DataSource.Connection.BeginTransaction();
+                    DataSource.ExportArcDataCmd.Transaction = trans;
+
                     for (int i = 0; i < BundleSize; i++)
                     {
                         // извлечение среза из очереди
                         lock (arcSrezQueue)
                         {
                             if (arcSrezQueue.Count > 0)
-                                sres = arcSrezQueue.Dequeue();
+                                srez = arcSrezQueue.Dequeue();
                             else
                                 break;
                         }
 
                         // экспорт
-                        ExportSrez(DataSource.ExportArcDataCmd, sres);
+                        ExportSrez(DataSource.ExportArcDataCmd, srez);
 
                         expArcSrezCnt++;
                         exportError = false;
                     }
+
+                    trans.Commit();
                 }
                 catch (Exception ex)
                 {
+                    SafeRollback(trans);
+
                     // возврат среза в очередь
-                    if (sres != null)
+                    if (srez != null)
+                    {
                         lock (arcSrezQueue)
-                            arcSrezQueue.Enqueue(sres);
+                            arcSrezQueue.Enqueue(srez);
+                    }
 
                     log.WriteAction(string.Format(Localization.UseRussian ?
                         "Ошибка при экспорте архивных данных в БД {0}: {1}" :
@@ -325,9 +358,14 @@ namespace Scada.Server.Modules.DBExport
         {
             if (ExportParams.ExportEvents)
             {
+                DbTransaction trans = null;
                 EventTableLight.Event ev = null;
+
                 try
                 {
+                    trans = DataSource.Connection.BeginTransaction();
+                    DataSource.ExportEventCmd.Transaction = trans;
+
                     for (int i = 0; i < BundleSize; i++)
                     {
                         // извлечение события из очереди
@@ -345,13 +383,19 @@ namespace Scada.Server.Modules.DBExport
                         expEvCnt++;
                         exportError = false;
                     }
+
+                    trans.Commit();
                 }
                 catch (Exception ex)
                 {
-                    // возврат среза в очередь
+                    SafeRollback(trans);
+
+                    // возврат события в очередь
                     if (ev != null)
+                    {
                         lock (evQueue)
                             evQueue.Enqueue(ev);
+                    }
 
                     log.WriteAction(string.Format(Localization.UseRussian ?
                         "Ошибка при экспорте событий в БД {0}: {1}" :

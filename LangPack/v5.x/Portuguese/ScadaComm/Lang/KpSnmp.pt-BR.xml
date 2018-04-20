@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<KpSmmpDictionaries>
+  <Dictionary key="Scada.Comm.Devices.KpSnmp.FrmConfig">
+    <Phrase key="this">SNMP - {0} configurações do dispositivo</Phrase>
+    <Phrase key="btnAddVarGroup.ToolTip">Adicionar variável ao grupo</Phrase>
+    <Phrase key="btnAddVariable.ToolTip">Adicionar variável</Phrase>
+    <Phrase key="btnEdit.ToolTip">Editar</Phrase>
+    <Phrase key="btnMoveUp.ToolTip">Mover acima</Phrase>
+    <Phrase key="btnMoveDown.ToolTip">Mover abaixo</Phrase>
+    <Phrase key="btnDelete.ToolTip">Apagar</Phrase>
+    <Phrase key="btnSettings.ToolTip">Ajustes</Phrase>
+    <Phrase key="btnSave">Salvar</Phrase>
+    <Phrase key="btnClose">Fechar</Phrase>
+    <Phrase key="DeviceNode">Dispositivo</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.KpSnmp.FrmSettings">
+    <Phrase key="this">Ajustes</Phrase>
+    <Phrase key="lblReadCommunity">Ler comunidade</Phrase>
+    <Phrase key="lblWriteCommunity">Escrever a comunidade</Phrase>
+    <Phrase key="lblSnmpVersion">Versão SNMP</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancelar</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.KpSnmp.FrmVarGroup">
+    <Phrase key="this">Grupo de variáveis</Phrase>
+    <Phrase key="lblName">Nome</Phrase>
+    <Phrase key="btnAdd">Adicionar</Phrase>
+    <Phrase key="btnChange">Modificar</Phrase>
+    <Phrase key="btnCancel">Cancelar</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.KpSnmp.FrmVariable">
+    <Phrase key="this">Variável</Phrase>
+    <Phrase key="lblName">Nome do proprietário</Phrase>
+    <Phrase key="lblOID">OID</Phrase>
+    <Phrase key="chkBits">BITS (extensão de OctetString)</Phrase>
+    <Phrase key="lblSignal">Sinal</Phrase>
+    <Phrase key="btnAdd">Adicionar</Phrase>
+    <Phrase key="btnChange">Modificar</Phrase>
+    <Phrase key="btnCancel">Cancelar</Phrase>
+    <Phrase key="IncorrectOID">OID incorreto</Phrase>
+  </Dictionary>
+</KpSmmpDictionaries>

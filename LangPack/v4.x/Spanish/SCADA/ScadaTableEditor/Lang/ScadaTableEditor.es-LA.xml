@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaTableEditorDictionaries>
+  <Dictionary key="Scada.Web.TableView">
+    <Phrase key="LoadTableViewError">Error al cargar el archivo de vista de tabla</Phrase>
+    <Phrase key="SaveTableViewError">Error al guardar archivo de vista de tabla</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaTableEditor.FrmMain">
+    <Phrase key="this">Editor SCADA-Table</Phrase>
+    <Phrase key="miFile">&amp;Archivo</Phrase>
+    <Phrase key="miFileNew">Crear</Phrase>
+    <Phrase key="miFileOpen">Abrir...</Phrase>
+    <Phrase key="miFileSave">Guardar</Phrase>
+    <Phrase key="miFileSaveAs">Guardar como...</Phrase>
+    <Phrase key="miFileExit">Salir</Phrase>
+    <Phrase key="miSettings">&amp;Configuracion</Phrase>
+    <Phrase key="miSettingsParams">Parametros...</Phrase>
+    <Phrase key="miHelp">&amp;Ayuda</Phrase>
+    <Phrase key="miHelpAbout">Acerca</Phrase>
+    <Phrase key="btnFileNew.ToolTip">Crear nueva vista de tabla</Phrase>
+    <Phrase key="btnFileOpen.ToolTip">Abrir Vista de tabla</Phrase>
+    <Phrase key="btnFileSave.ToolTip">Guardar vista de tabla</Phrase>
+    <Phrase key="btnSettingsParams.ToolTip">Parametros</Phrase>
+    <Phrase key="gbBase">Configuracion de Base de Datos</Phrase>
+    <Phrase key="lblCnlFilterByObj">Objeto</Phrase>
+    <Phrase key="lblCnlFilterByKP">Dispositivo</Phrase>
+    <Phrase key="btnFilterCnlsByObj.ToolTip">Filtrar Objetos</Phrase>
+    <Phrase key="btnFilterCnlsByKP.ToolTip">Filtrar Dispositivos</Phrase>
+    <Phrase key="btnRefreshBase.ToolTip">Actualizar la configuracion de Base de Datos</Phrase>
+    <Phrase key="rbInCnls">Canales de Entrada</Phrase>
+    <Phrase key="rbCtrlCnls">Canales de Salida</Phrase>
+    <Phrase key="colCnlNum">Num.</Phrase>
+    <Phrase key="colCnlName">Nombre</Phrase>
+    <Phrase key="gbTableView">Editar vista de tabla</Phrase>
+    <Phrase key="lblTableTitle">Titulo</Phrase>
+    <Phrase key="lblTableItems">Articulo</Phrase>
+    <Phrase key="btnAddItem.ToolTip">Agregar el artículo a partir de configuracion de base de datos</Phrase>
+    <Phrase key="btnAddEmptyItem.ToolTip">Agregar articulos vacios</Phrase>
+    <Phrase key="btnMoveUpItem.ToolTip">Mover articulos seleccionados hacia arriba</Phrase>
+    <Phrase key="btnMoveDownItem.ToolTip">Mover articulos seleccionados hacia abajo</Phrase>
+    <Phrase key="btnDeleteItem.ToolTip">Borrar articulos seleccionados</Phrase>
+    <Phrase key="btnShowItemInfo.ToolTip">Mostrar informacion de articulos seleccionados</Phrase>
+    <Phrase key="colItemCnlNum">In ch.</Phrase>
+    <Phrase key="colItemCtrlCnlNum">Out ch.</Phrase>
+    <Phrase key="colItemCaption">Titulo</Phrase>
+    <Phrase key="colItemHidden">Ocultar</Phrase>
+    <Phrase key="OpenFileFilter">Vistas de Tabla (*.tbl; *.ofm)|*.tbl;*.ofm|Todos los archivos (*.*)|*.*</Phrase>
+    <Phrase key="SaveFileFilter">Vistas de Tabla (*.tbl)|*.tbl|Todos los archivos (*.*)|*.*</Phrase>
+    <Phrase key="SaveConfirm">La vista de tabla a sido modificada. Guardar los cambios?</Phrase>
+    <Phrase key="AllObjItem">&lt;Todos los Objetos&gt;</Phrase>
+    <Phrase key="AllKPItem">&lt;Todos los Dispositivos&gt;</Phrase>
+    <Phrase key="LoadBaseError">Error al cargar configuracion de la Base de Datos</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaTableEditor.FrmItemInfo">
+    <Phrase key="this">Informacion del Articulo</Phrase>
+    <Phrase key="gbInCnl">Canal de Entrada</Phrase>
+    <Phrase key="lblInCnl">Canal</Phrase>
+    <Phrase key="lblInCnlObj">Objecto</Phrase>
+    <Phrase key="lblInCnlKP">Dispositivo</Phrase>
+    <Phrase key="gbCtrlCnl">Canal de Salida</Phrase>
+    <Phrase key="lblCtrlCnl">Canal</Phrase>
+    <Phrase key="lblCtrlCnlObj">Objecto</Phrase>
+    <Phrase key="lblCtrlCnlKP">Dispositivo</Phrase>
+    <Phrase key="btnClose">Cerrar</Phrase>
+    <Phrase key="GetInCnlError">Error al obtener la información del canal de entrada</Phrase>
+    <Phrase key="GetCtrlCnlError">Error al obtener la información del canal de salida</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaTableEditor.FrmSettings">
+    <Phrase key="this">Ajustes</Phrase>
+    <Phrase key="lblBaseDATDir">Directorio de configuracion de la Base de Datos para formato DAT</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancelar</Phrase>
+  </Dictionary>
+</ScadaTableEditorDictionaries>

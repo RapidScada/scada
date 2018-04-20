@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2018
  */
 
 namespace Scada.Scheme.Editor
@@ -39,8 +39,15 @@ namespace Scada.Scheme.Editor
         // Словарь Scada.Scheme.Editor.FrmMain
         public static string CloseSecondInstance { get; private set; }
         public static string FailedToStartEditor { get; private set; }
+        public static string OpenBrowserError { get; private set; }
+        public static string PointerItem { get; private set; }
         public static string SchemeFileFilter { get; private set; }
         public static string SaveSchemeConfirm { get; private set; }
+        public static string RestartNeeded { get; private set; }
+
+        // Словарь Scada.Scheme.Editor.FrmSettings
+        public static string WebDirNotExists { get; private set; }
+        public static string ChooseWebDir { get; private set; }
 
         // Словарь Scada.Scheme.Editor.Editor
         public static string EditorTitle { get; private set; }
@@ -53,8 +60,14 @@ namespace Scada.Scheme.Editor
         {
             CloseSecondInstance = Localization.Dict.GetEmptyPhrase("CloseSecondInstance");
             FailedToStartEditor = Localization.Dict.GetEmptyPhrase("FailedToStartEditor");
+            OpenBrowserError = Localization.Dict.GetEmptyPhrase("OpenBrowserError");
+            PointerItem = Localization.Dict.GetEmptyPhrase("PointerItem");
             SchemeFileFilter = Localization.Dict.GetEmptyPhrase("SchemeFileFilter");
             SaveSchemeConfirm = Localization.Dict.GetEmptyPhrase("SaveSchemeConfirm");
+            RestartNeeded = Localization.Dict.GetEmptyPhrase("RestartNeeded");
+
+            WebDirNotExists = Localization.Dict.GetEmptyPhrase("WebDirNotExists");
+            ChooseWebDir = Localization.Dict.GetEmptyPhrase("ChooseWebDir");
 
             EditorTitle = Localization.Dict.GetEmptyPhrase("EditorTitle");
 
@@ -69,8 +82,17 @@ namespace Scada.Scheme.Editor
             {
                 CloseSecondInstance = dict.GetPhrase("CloseSecondInstance", CloseSecondInstance);
                 FailedToStartEditor = dict.GetPhrase("FailedToStartEditor", FailedToStartEditor);
+                OpenBrowserError = dict.GetPhrase("OpenBrowserError", OpenBrowserError);
+                PointerItem = dict.GetPhrase("PointerItem", PointerItem);
                 SchemeFileFilter = dict.GetPhrase("SchemeFileFilter", SchemeFileFilter);
                 SaveSchemeConfirm = dict.GetPhrase("SaveSchemeConfirm", SaveSchemeConfirm);
+                RestartNeeded = dict.GetPhrase("RestartNeeded", RestartNeeded);
+            }
+
+            if (Localization.Dictionaries.TryGetValue("Scada.Scheme.Editor.FrmSettings", out dict))
+            {
+                WebDirNotExists = dict.GetPhrase("WebDirNotExists", WebDirNotExists);
+                ChooseWebDir = dict.GetPhrase("ChooseWebDir", ChooseWebDir);
             }
 
             if (Localization.Dictionaries.TryGetValue("Scada.Scheme.Editor.Editor", out dict))

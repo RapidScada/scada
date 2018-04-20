@@ -1,0 +1,92 @@
+﻿﻿<?xml version="1.0" encoding="utf-8" ?>
+<ScadaWebDictionaries>
+  <Dictionary key="Scada.Web">
+    <Phrase key="NotLoggedOn">Usuario no entrado.</Phrase>
+    <Phrase key="IncorrectDate">Fecha incorrecta de los datos solicitados.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.AppData">
+    <Phrase key="ServerUnavailable">El servidor es inaccesible.</Phrase>
+    <Phrase key="WrongPassword">Username incorrecto o contraseña.</Phrase>
+    <Phrase key="NoRights">Insuficientes Privilegios.</Phrase>
+    <Phrase key="IllegalRole">Rol ilegal del usuario.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.MasterMain">
+    <Phrase key="lbtnMainLogout">Logout</Phrase>
+    <Phrase key="lblMainFullscreenBtn.ToolTip">Pantalla completa</Phrase>
+    <Phrase key="lblMainNormalViewBtn.ToolTip">Visión normal</Phrase>
+    <Phrase key="lblMainMenuTab">Menú principal</Phrase>
+    <Phrase key="lblMainExplorerTab">Vistas</Phrase>
+    <Phrase key="lblMainCollapseMenu">Esconder Menu</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.MasterMain.Js.ModalButtons">
+    <Phrase key="ok">AUTORIZACIÓN</Phrase>
+    <Phrase key="yes">Sí</Phrase>
+    <Phrase key="no">No</Phrase>
+    <Phrase key="execute">Ejecútese</Phrase>
+    <Phrase key="cancel">Cancelación</Phrase>
+    <Phrase key="close">Cierre</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.ViewSettings">
+    <Phrase key="LoadViewSettingsError">Error al Cargar ajustes de vista</Phrase>
+    <Phrase key="SaveViewSettingsError">Error al Guardar ajustes de vista</Phrase>
+    <Phrase key="LoadViewSettingsBaseError">Error al Cargar ajustes de vista de configuracion de Base de Datos</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WebSettings">
+    <Phrase key="LoadWebSettingsError">Error cargando ajustes de aplicacion Web</Phrase>
+    <Phrase key="SaveWebSettingsError">Error guardando ajustes de aplicacion Web</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmAbout">
+    <Phrase key="this">Acerca - RapidScada</Phrase>
+    <Phrase key="hlAppName">Webstation</Phrase>
+    <Phrase key="hlAppName.NavigateUrl">http://www.RapidScada.org</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmError">
+    <Phrase key="this">Error del uso - RapidScada</Phrase>
+    <Phrase key="lblTitle">Error del uso</Phrase>
+    <Phrase key="lblErrMsg">Un error de la aplicacion ocurrió. Si repite a menudo, pongase en contacto con soporte tecnico.</Phrase>
+    <Phrase key="lblErrDetailsCaption">Detalles:</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmLogin">
+    <Phrase key="this">Conexión - RapidScada</Phrase>
+    <Phrase key="hlRapidScada.NavigateUrl">http://www.RapidScada.org</Phrase>
+    <Phrase key="lblUsername">Usuario</Phrase>
+    <Phrase key="lblPassword">Contraseña</Phrase>
+    <Phrase key="lblRememberMe">Recuérdeme</Phrase>
+    <Phrase key="btnLogin">Conexión</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmLogin.Js">
+    <Phrase key="BrowserOutdated">Su browser es. Br&lt; anticuado&gt; actualice por favor a un browser moderno.</Phrase>
+    <Phrase key="CookiesDisabled">Las Cookies desactivadas. Active por favor las cookies.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmNoView">
+    <Phrase key="this">Ninguna visión - RapidScada</Phrase>
+    <Phrase key="lblViewNotExist">La vista solicitada no existe o tiene privilegios insuficientes para acceder a ella.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmUser">
+    <Phrase key="this">Perfil de usuario - RapidScada</Phrase>
+    <Phrase key="lblTitle">Perfil de usuario</Phrase>
+    <Phrase key="lblUserNameCaption">Usuario:</Phrase>
+    <Phrase key="lblRoleNameCaption">Rol:</Phrase>
+    <Phrase key="lblGeneralRightsTitle">Privilegios generales</Phrase>
+    <Phrase key="lblViewAllRightCaption">Vea todas las vistas:</Phrase>
+    <Phrase key="lblControlAllRightCaption">Controle todos los dispositivos:</Phrase>
+    <Phrase key="lblConfigRightCaption">Configuración de sistema:</Phrase>
+    <Phrase key="RightYes">Sí</Phrase>
+    <Phrase key="RightNo">No</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmView">
+    <Phrase key="this">Ver - RapidScada</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmView.Js">
+    <Phrase key="ExternalLinkTitle">Link externo - RapidScada</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Shell.MenuItem">
+    <Phrase key="ReportsMenuItem">Informes</Phrase>
+    <Phrase key="AdminMenuItem">Administración</Phrase>
+    <Phrase key="ConfigMenuItem">Configuración</Phrase>
+    <Phrase key="AboutMenuItem">Acerca</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Shell.RememberMe">
+    <Phrase key="SecurityViolation">Se detecta la violación de la seguridad. Entre inmediatamente en contacto con su administrador del sistema.</Phrase>
+  </Dictionary>
+</ScadaWebDictionaries>

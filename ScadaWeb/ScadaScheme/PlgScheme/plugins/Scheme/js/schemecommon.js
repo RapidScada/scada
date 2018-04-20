@@ -3,7 +3,7 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2018
  *
  * Requires:
  * - jquery
@@ -62,7 +62,8 @@ scada.scheme.ImageStretches = {
 scada.scheme.Actions = {
     NONE: 0,
     DRAW_DIAGRAM: 1,
-    SEND_COMMAND: 2
+    SEND_COMMAND: 2,
+    SEND_COMMAND_NOW: 3
 };
 
 // Kinds of displaying input channel value of a dynamic component

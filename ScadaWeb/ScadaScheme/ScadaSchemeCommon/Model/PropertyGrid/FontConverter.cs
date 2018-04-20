@@ -37,6 +37,9 @@ namespace Scada.Scheme.Model.PropertyGrid
     /// </summary>
     internal class FontConverter : TypeConverter
     {
+        private static readonly char[] FieldSep = new char[] { ';' };
+
+
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
             if (destinationType == typeof(string))
@@ -68,6 +71,45 @@ namespace Scada.Scheme.Model.PropertyGrid
             {
                 return base.ConvertTo(context, culture, value, destinationType);
             }
+        }
+
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+        {
+            return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
+        }
+
+        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+        {
+            if (value is string)
+            {
+                string[] parts = ((string)value).Split(FieldSep, StringSplitOptions.RemoveEmptyEntries);
+                int partsLen = parts.Length;
+
+                if (partsLen > 0)
+                {
+                    Font font = new Font();
+                    font.Name = parts[0];
+
+                    for (int i = 1; i < partsLen; i++)
+                    {
+                        string part = parts[i].Trim();
+                        int size;
+
+                        if (part.Equals(SchemePhrases.BoldSymbol, StringComparison.OrdinalIgnoreCase))
+                            font.Bold = true;
+                        else if (part.Equals(SchemePhrases.ItalicSymbol, StringComparison.OrdinalIgnoreCase))
+                            font.Italic = true;
+                        else if (part.Equals(SchemePhrases.UnderlineSymbol, StringComparison.OrdinalIgnoreCase))
+                            font.Underline = true;
+                        else if (int.TryParse(part, out size))
+                            font.Size = size;
+                    }
+
+                    return font;
+                }
+            }
+
+            return null;
         }
     }
 }

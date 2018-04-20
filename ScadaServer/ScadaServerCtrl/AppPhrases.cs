@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2014
- * Modified : 2016
+ * Modified : 2018
  */
 
 namespace Scada.Server.Ctrl
@@ -76,6 +76,7 @@ namespace Scada.Server.Ctrl
         public static string ChooseItfDir { get; private set; }
         public static string ChooseArcDir { get; private set; }
         public static string ChooseArcCopyDir { get; private set; }
+        public static string ModuleFileFilter { get; private set; }
         public static string ModuleAlreadyAdded { get; private set; }
         public static string IncorrectCnlNum { get; private set; }
         public static string IncorrectCnlVal { get; private set; }
@@ -130,6 +131,7 @@ namespace Scada.Server.Ctrl
             ChooseItfDir = "Выберите директорию интерфейса";
             ChooseArcDir = "Выберите директорию архива в формате DAT";
             ChooseArcCopyDir = "Выберите директорию копии архива в формате DAT";
+            ModuleFileFilter = "Модули (*.dll)|*.dll|Все файлы (*.*)|*.*";
             ModuleAlreadyAdded = "Модуль уже добавлен.";
             IncorrectCnlNum = "Некорректный номер канала.";
             IncorrectCnlVal = "Некорректное значение канала.";
@@ -192,6 +194,7 @@ namespace Scada.Server.Ctrl
                 ChooseItfDir = dict.GetPhrase("ChooseItfDir", ChooseItfDir);
                 ChooseArcDir = dict.GetPhrase("ChooseArcDir", ChooseArcDir);
                 ChooseArcCopyDir = dict.GetPhrase("ChooseArcCopyDir", ChooseArcCopyDir);
+                ModuleFileFilter = dict.GetPhrase("ModuleFileFilter", ModuleFileFilter);
                 ModuleAlreadyAdded = dict.GetPhrase("ModuleAlreadyAdded", ModuleAlreadyAdded);
                 IncorrectCnlNum = dict.GetPhrase("IncorrectCnlNum", IncorrectCnlNum);
                 IncorrectCnlVal = dict.GetPhrase("IncorrectCnlVal", IncorrectCnlVal);

@@ -41,6 +41,12 @@ namespace Scada.Scheme.Model.PropertyGrid
     /// </summary>
     public class ImageEditor : UITypeEditor
     {
+        /// <summary>
+        /// Директория, из которой открывались изображения
+        /// </summary>
+        public static string ImageDir = "";
+
+
         private SchemeDocument GetSchemeDoc(object instance)
         {
             SchemeDocument schemeDoc = null;
@@ -79,17 +85,22 @@ namespace Scada.Scheme.Model.PropertyGrid
                     {
                         // редактирование словаря изображений
                         Dictionary<string, Image> images = (Dictionary<string, Image>)value;
-                        FrmImageDialog frmImageDialog = new FrmImageDialog(images, schemeDoc);
+                        FrmImageDialog frmImageDialog = new FrmImageDialog(images, schemeDoc) { ImageDir = ImageDir };
                         editorSvc.ShowDialog(frmImageDialog);
+                        ImageDir = frmImageDialog.ImageDir;
                     }
                     else if (propType == typeof(string))
                     {
                         // выбор изображения
                         string imageName = (value ?? "").ToString();
-                        FrmImageDialog frmImageDialog = new FrmImageDialog(imageName, schemeDoc.Images, schemeDoc);
+                        FrmImageDialog frmImageDialog = 
+                            new FrmImageDialog(imageName, schemeDoc.Images, schemeDoc) { ImageDir = ImageDir };
 
                         if (editorSvc.ShowDialog(frmImageDialog) == DialogResult.OK)
+                        {
                             value = frmImageDialog.SelectedImageName;
+                            ImageDir = frmImageDialog.ImageDir;
+                        }
                     }
                 }
             }

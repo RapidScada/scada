@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaSchemeCommon
- * Summary  : Editor of image output conditions for PropertyGrid
+ * Summary  : The base class of condition editor for PropertyGrid
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2018
  */
 
 #pragma warning disable 1591 // CS1591: Missing XML comment for publicly visible type or member
@@ -35,11 +35,22 @@ using System.Windows.Forms.Design;
 namespace Scada.Scheme.Model.PropertyGrid
 {
     /// <summary>
-    /// Editor of image output conditions for PropertyGrid
-    /// Редактор условий вывода изображений для PropertyGrid
+    /// The base class of condition editor for PropertyGrid
+    /// <para>Базовый класс редактора условий для PropertyGrid</para>
     /// </summary>
-    public class ConditionEditor : UITypeEditor
+    public abstract class ConditionEditor : UITypeEditor
     {
+        protected readonly Type conditionType;
+
+        public ConditionEditor(Type conditionType)
+            : base()
+        {
+            if (conditionType == null)
+                throw new ArgumentNullException("conditionType");
+
+            this.conditionType = conditionType;
+        }
+
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
             IWindowsFormsEditorService editorSvc = provider == null ? null :
@@ -49,7 +60,7 @@ namespace Scada.Scheme.Model.PropertyGrid
             {
                 List<Condition> conditions = (List<Condition>)value;
                 BaseComponent component = (BaseComponent)context.Instance;
-                editorSvc.ShowDialog(new FrmConditionDialog(conditions, component));
+                editorSvc.ShowDialog(new FrmConditionDialog(conditions, conditionType, component));
             }
 
             return value;

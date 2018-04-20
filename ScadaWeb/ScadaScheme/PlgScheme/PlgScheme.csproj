@@ -75,6 +75,7 @@
     <Content Include="css\controls\notifier.min.css">
       <DependentUpon>notifier.css</DependentUpon>
     </Content>
+    <Content Include="js\api\ajaxqueue.js" />
     <Content Include="js\api\clientapi.js" />
     <Content Include="js\api\eventtypes.js" />
     <Content Include="js\api\utils.js" />
@@ -96,6 +97,8 @@
     <Content Include="plugins\Scheme\js\schemecommon.js" />
     <Content Include="plugins\Scheme\js\schememodel.js" />
     <Content Include="plugins\Scheme\js\schemerender.js" />
+    <Content Include="plugins\Scheme\lang\ScadaScheme.ru-RU.xml" />
+    <Content Include="plugins\Scheme\lang\ScadaScheme.en-GB.xml" />
     <Content Include="plugins\Scheme\lang\PlgScheme.en-GB.xml" />
     <Content Include="plugins\Scheme\lang\PlgScheme.ru-RU.xml" />
     <Content Include="plugins\Scheme\Scheme.aspx" />
@@ -159,7 +162,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>51034</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

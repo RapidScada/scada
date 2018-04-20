@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.Scheme.Model.DataTypes;
@@ -34,7 +34,8 @@ using CM = System.ComponentModel;
 namespace Scada.Scheme.Model
 {
     /// <summary>
-    /// Динамический рисунок
+    /// Scheme component that represents dynamic picture
+    /// <para>Компонент схемы, представляющий динамический рисунок</para>
     /// </summary>
     [Serializable]
     public class DynamicPicture : StaticPicture, IDynamicComponent
@@ -45,9 +46,9 @@ namespace Scada.Scheme.Model
         public DynamicPicture()
             : base()
         {
-            ToolTip = "";
-            ImageOnHoverName = "";
+            BackColorOnHover = "";
             BorderColorOnHover = "";
+            ImageOnHoverName = "";
             Action = Actions.None;
             Conditions = new List<Condition>();
             InCnlNum = 0;
@@ -56,13 +57,24 @@ namespace Scada.Scheme.Model
 
 
         /// <summary>
-        /// Получить или установить подсказку
+        /// Получить или установить цвет фона при наведении указателя мыши
         /// </summary>
         #region Attributes
-        [DisplayName("Tooltip"), Category(Categories.Behavior)]
-        [Description("The pop-up hint that displays when user rests the pointer on the component.")]
+        [DisplayName("Back color on hover"), Category(Categories.Behavior)]
+        [Description("The background color of the component when user rests the pointer on it.")]
+        [CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
         #endregion
-        public string ToolTip { get; set; }
+        public string BackColorOnHover { get; set; }
+
+        /// <summary>
+        /// Получить или установить цвет рамки при наведении указателя мыши
+        /// </summary>
+        #region Attributes
+        [DisplayName("Border color on hover"), Category(Categories.Behavior)]
+        [Description("The border color of the component when user rests the pointer on it.")]
+        [CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
+        #endregion
+        public string BorderColorOnHover { get; set; }
 
         /// <summary>
         /// Получить или установить наименование изображения, отображаемого при наведении указателя мыши
@@ -74,16 +86,6 @@ namespace Scada.Scheme.Model
         [CM.DefaultValue("")]
         #endregion
         public string ImageOnHoverName { get; set; }
-
-        /// <summary>
-        /// Получить или установить цвет рамки при наведении указателя мыши
-        /// </summary>
-        #region Attributes
-        [DisplayName("Border color on hover"), Category(Categories.Behavior)]
-        [Description("The border color of the component when user rests the pointer on it.")]
-        [CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
-        #endregion
-        public string BorderColorOnHover { get; set; }
 
         /// <summary>
         /// Получить или установить действие
@@ -102,7 +104,7 @@ namespace Scada.Scheme.Model
         [DisplayName("Conditions"), Category(Categories.Behavior)]
         [Description("The conditions for image output depending on the value of the input channel.")]
         [CM.DefaultValue(null), CM.TypeConverter(typeof(CollectionConverter))]
-        [CM.Editor(typeof(ConditionEditor), typeof(UITypeEditor))]
+        [CM.Editor(typeof(ImageConditionEditor), typeof(UITypeEditor))]
         #endregion
         public List<Condition> Conditions { get; protected set; }
 
@@ -134,9 +136,9 @@ namespace Scada.Scheme.Model
         {
             base.LoadFromXml(xmlNode);
 
-            ToolTip = xmlNode.GetChildAsString("ToolTip");
-            ImageOnHoverName = xmlNode.GetChildAsString("ImageOnHoverName");
+            BackColorOnHover = xmlNode.GetChildAsString("BackColorOnHover");
             BorderColorOnHover = xmlNode.GetChildAsString("BorderColorOnHover");
+            ImageOnHoverName = xmlNode.GetChildAsString("ImageOnHoverName");
             Action = xmlNode.GetChildAsEnum<Actions>("Action");
 
             XmlNode conditionsNode = xmlNode.SelectSingleNode("Conditions");
@@ -146,7 +148,7 @@ namespace Scada.Scheme.Model
                 XmlNodeList conditionNodes = conditionsNode.SelectNodes("Condition");
                 foreach (XmlNode conditionNode in conditionNodes)
                 {
-                    Condition condition = new Condition();
+                    Condition condition = new ImageCondition();
                     condition.SchemeDoc = SchemeDoc;
                     condition.LoadFromXml(conditionNode);
                     Conditions.Add(condition);
@@ -164,9 +166,9 @@ namespace Scada.Scheme.Model
         {
             base.SaveToXml(xmlElem);
 
-            xmlElem.AppendElem("ToolTip", ToolTip);
-            xmlElem.AppendElem("ImageOnHoverName", ImageOnHoverName);
+            xmlElem.AppendElem("BackColorOnHover", BackColorOnHover);
             xmlElem.AppendElem("BorderColorOnHover", BorderColorOnHover);
+            xmlElem.AppendElem("ImageOnHoverName", ImageOnHoverName);
             xmlElem.AppendElem("Action", Action);
 
             XmlElement conditionsElem = xmlElem.AppendElem("Conditions");

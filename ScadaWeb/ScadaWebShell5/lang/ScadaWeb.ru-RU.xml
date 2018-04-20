@@ -105,6 +105,7 @@
     <Phrase key="ReportsMenuItem">Отчёты</Phrase>
     <Phrase key="AdminMenuItem">Администрирование</Phrase>
     <Phrase key="ConfigMenuItem">Конфигурация</Phrase>
+    <Phrase key="RegMenuItem">Регистрация</Phrase>
     <Phrase key="PluginsMenuItem">Плагины</Phrase>
     <Phrase key="AboutMenuItem">О приложении</Phrase>
   </Dictionary>

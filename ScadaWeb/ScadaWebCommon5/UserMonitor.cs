@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,10 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2018
  */
 
+using Scada.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -38,14 +39,14 @@ namespace Scada.Web
     public class UserMonitor
     {
         /// <summary>
-        /// Класс, позволяющий сравнивать данные пользователей
+        /// Класс, позволяющий сравнивать снимки данных пользователей
         /// </summary>
-        protected class UserDataComparer : IComparer<UserData>
+        protected class UserShotComparer : IComparer<UserShot>
         {
             /// <summary>
             /// Сравнить два объекта
             /// </summary>
-            public int Compare(UserData x, UserData y)
+            public int Compare(UserShot x, UserShot y)
             {
                 int comp1 = x.LoggedOn.CompareTo(y.LoggedOn);
                 if (comp1 == 0)
@@ -65,9 +66,9 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Объект для сравнения данных пользователей для сортировки
+        /// Объект для сравнения снимков данных пользователей для сортировки
         /// </summary>
-        protected static readonly UserDataComparer UserDataComp = new UserDataComparer();
+        protected static readonly UserShotComparer UserShotComp = new UserShotComparer();
         /// <summary>
         /// Журнал
         /// </summary>
@@ -257,7 +258,7 @@ namespace Scada.Web
             if (TryGetUserData(webOpContext, out userData) && userData.LoggedOn && userData.UserRights != null)
             {
                 userRights = userData.UserRights;
-                return true;
+                return userData.LoggedOn; // свойство могло измениться в другом потоке
             }
             else
             {
@@ -267,20 +268,20 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Проверить, что пользователь вошёл в систему, и получить его имя
+        /// Проверить, что пользователь вошёл в систему, и получить его снимок
         /// </summary>
-        public bool UserIsLoggedOn(WebOperationContext webOpContext, out string username)
+        public bool UserIsLoggedOn(WebOperationContext webOpContext, out UserShot userShot)
         {
             UserData userData;
 
-            if (TryGetUserData(webOpContext, out userData) && userData.LoggedOn && userData.UserProps != null)
+            if (TryGetUserData(webOpContext, out userData) && userData.LoggedOn)
             {
-                username = userData.UserProps.UserName;
-                return true;
+                userShot = new UserShot(userData);
+                return userData.LoggedOn; // свойство могло измениться в другом потоке
             }
             else
             {
-                username = "";
+                userShot = null;
                 return false;
             }
         }
@@ -299,11 +300,11 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Проверить, что пользователь вошёл систему, и получить его имя
+        /// Проверить, что пользователь вошёл систему, и получить снимок его данных
         /// </summary>
-        public bool CheckLoggedOn(out string username, bool throwOnFail = true)
+        public bool CheckLoggedOn(out UserShot userShot, bool throwOnFail = true)
         {
-            if (UserIsLoggedOn(WebOperationContext.Current, out username))
+            if (UserIsLoggedOn(WebOperationContext.Current, out userShot))
                 return true;
             else if (throwOnFail)
                 throw new ScadaException(WebPhrases.NotLoggedOn);
@@ -312,33 +313,33 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Получить данные активных пользователей
+        /// Получить снимки данных активных пользователей
         /// </summary>
-        public UserData[] GetActiveUsers()
+        public UserShot[] GetActiveUsers()
         {
             try
             {
                 lock (userDataDict)
                 {
-                    UserData[] userDataArr = new UserData[userDataDict.Count];
+                    UserShot[] userShotArr = new UserData[userDataDict.Count];
                     int i = 0;
 
                     foreach (UserData userData in userDataDict.Values)
                     {
-                        userDataArr[i] = userData;
+                        userShotArr[i] = new UserShot(userData);
                         i++;
                     }
 
 
-                    Array.Sort(userDataArr, UserDataComp);
-                    return userDataArr;
+                    Array.Sort(userShotArr, UserShotComp);
+                    return userShotArr;
                 }
             }
             catch (Exception ex)
             {
                 log.WriteException(ex, Localization.UseRussian ?
-                    "Ошибка при получении данных активных пользователей" :
-                    "Error getting the active users data");
+                    "Ошибка при получении снимков данных активных пользователей" :
+                    "Error getting snapshots of the active users data");
                 return new UserData[0];
             }
         }

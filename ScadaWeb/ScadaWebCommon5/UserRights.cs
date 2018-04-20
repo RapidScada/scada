@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaWebCommon
- * Summary  : Rights of the web application user
+ * Summary  : Application user rights
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
@@ -32,8 +32,8 @@ using System.Collections.Generic;
 namespace Scada.Web
 {
     /// <summary>
-    /// Rights of the web application user
-    /// <para>Права пользователя веб-приложения</para>
+    /// Application user rights
+    /// <para>Права пользователя приложения</para>
     /// </summary>
     public class UserRights
     {

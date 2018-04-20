@@ -13,6 +13,7 @@
     <link href="~/plugins/Table/css/table.min.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../../lib/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="../../js/api/utils.js"></script>
+    <script type="text/javascript" src="../../js/api/ajaxqueue.js"></script>
     <script type="text/javascript" src="../../js/api/clientapi.js"></script>
     <script type="text/javascript" src="../../js/api/eventtypes.js"></script>
     <script type="text/javascript" src="../../js/api/viewhub.js"></script>
@@ -39,7 +40,6 @@
         id="spanTime" class="tool-ctrl"><%= selTimeFromHtml %> - <%= selTimeToHtml %></span><span 
         id="spanExportBtn" class="tool-btn no-ios"><i class="fa fa-print"></i></span><div id="divDebugTools"><span 
             id="spanTitleChangedBtn" class="tool-btn">TitleChanged</span><span 
-            id="spanNavigateBtn" class="tool-btn">Navigate</span><span 
             id="spanDateChangedBtn" class="tool-btn">DateChanged</span>
         </div>
     </div>

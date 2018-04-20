@@ -9,7 +9,8 @@
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Scheme.WFrmScheme.Js">
     <Phrase key="LoadSchemeError">Ошибка при загрузке схемы. Попробуйте перезагрузить схему</Phrase>
-    <Phrase key="UpdateError">Ошибка при обновлении данных схемы</Phrase>
     <Phrase key="ReloadButton">Перезагрузить</Phrase>
+    <Phrase key="UnableSendCommand">Не удалось отправить команду</Phrase>
+    <Phrase key="UpdateError">Ошибка при обновлении данных схемы</Phrase>
   </Dictionary>
 </PlgSchemeDictionaries>

@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaWebDictionaries>
+  <Dictionary key="Scada.Report">
+    <Phrase key="GenReport">Ataskaita sugeneruota  &quot;{0}&quot; vartotojas {1}</Phrase>
+    <Phrase key="GenReportError">Generuojant ataskaitą įvyko klaida &quot;{0}&quot;: {1}</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web">
+    <Phrase key="NotLoggedOn">Vartotojas neprisijungęs.</Phrase>
+    <Phrase key="UnableLoadView">Nepavyksta įkelti vaizdo.</Phrase>
+    <Phrase key="IncorrectDate">Neteisinga užklaustų duomenų data.</Phrase>
+    <Phrase key="ErrorFormat">Klaida: {0}</Phrase>
+    <Phrase key="ServerUnavailable">serveris nepasiekiamas</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Diag">
+    <Phrase key="DiagCnlNotFound">Įvesties kanalas {0} nerastas konfigūravimo duomenų bazėje.</Phrase>
+    <Phrase key="DiagCnlsUndefined">Nenurodyti diagramos kanalai.</Phrase>
+    <Phrase key="CnlCntExceeded">Neįmanoma pasirinkti daugiau kaip {0} kanalų.</Phrase>
+    <Phrase key="CnlNotSelected">Nepasirinkti kanalai.</Phrase>
+    <Phrase key="DayCntExceeded">Periodas negali būti didesnis nei {0} dienos(-ų).</Phrase>
+    <Phrase key="DiagPageClosed">Diagramos puslapis buvo uždarytas.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Diag.WFrmDiag">
+    <Phrase key="this">SCADA - Diagrama</Phrase>
+    <Phrase key="lblReqDTCaption">Sugeneruota</Phrase>
+    <Phrase key="divLoadDataMsg">Duomenys įkeliami</Phrase>
+    <Phrase key="divLoadDataErrMsg">Duomenų įkėlimo klaida</Phrase>
+    <Phrase key="lblNotSupported">Kad būtų galima atvaizduoti diagramą, reikia atnaujinti naršyklę.</Phrase>
+    <Phrase key="divResetZoom.ToolTip">Sumažinti</Phrase>
+    <Phrase key="btnSelectDiagCnls">Pasirinkti kanalus</Phrase>
+    <Phrase key="btnShowData">Rodyti duomenis</Phrase>
+    <Phrase key="btnChangePeriod">Pakeisti Periodą</Phrase>
+    <Phrase key="btnHideData">Slėpti Duomenis</Phrase>
+    <Phrase key="btnRefreshDiag">Atnaujinti</Phrase>
+    <Phrase key="btnExportPdf">PDF</Phrase>
+    <Phrase key="btnExportPng">PNG</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Diag.WFrmDiagCnls">
+    <Phrase key="this">Pasirinkti kanalus</Phrase>
+    <Phrase key="btnSelect">Pasirinkti</Phrase>
+    <Phrase key="btnClose">Uždaryti</Phrase>
+    <Phrase key="DiagSelColumn">Pasirinkti</Phrase>
+    <Phrase key="DiagCnlColumn">Įvesties kanalas</Phrase>
+    <Phrase key="DiagObjColumn">Objektas</Phrase>
+    <Phrase key="DiagKPColumn">Prietaisas</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Diag.WFrmDiagPeriod">
+    <Phrase key="this">Pasirinkti periodą</Phrase>
+    <Phrase key="lblDate1">From</Phrase>
+    <Phrase key="lblDate2">Į</Phrase>
+    <Phrase key="btnSelect">Pasirinkti</Phrase>
+    <Phrase key="btnClose">Uždaryti</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.MainData">
+    <Phrase key="EventChecked">Taip</Phrase>
+    <Phrase key="EventUnchecked">Ne</Phrase>
+    <Phrase key="CommSettingsNotLoaded">neįkelti serverio komunikavimo parametrai</Phrase>
+    <Phrase key="WrongPassword">neteisingas vartotojo vardas arba slaptažodis</Phrase>
+    <Phrase key="NoRightsL">nepakankamos teisės</Phrase>
+    <Phrase key="IllegalRole">neleistina vartotojo rolė</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.RepHrEvTable">
+    <Phrase key="NoReportData">Ataskaitos generavimui nėra duomenų.</Phrase>
+    <Phrase key="HourDataPage">Valandos duomenys</Phrase>
+    <Phrase key="EventsPage">Įvykiai</Phrase>
+    <Phrase key="HourDataTitle">{0} - Valandos duomenys pagal &quot;{1}&quot; vaizdą. Sugeneruota {2}</Phrase>
+    <Phrase key="AllEventsTitle">{0} - Visi įvykiai. Sugeneruota {1}</Phrase>
+    <Phrase key="EventsByViewTitle">{0} - Įvykiai pagal &quot;{1}&quot; vaizdą. Sugeneruota {2}</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.TableView">
+    <Phrase key="LoadParamTableError">Įkeliant parametrų lentelę iš failo įvyko klaida</Phrase>
+    <Phrase key="SaveParamTableError">Išsaugant parametrų lentelę į failą įvyko klaida</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.ViewSettings">
+    <Phrase key="LoadViewSettingsError">Įkeliant vaizdo nustatymus iš failo įvyko klaida</Phrase>
+    <Phrase key="SaveViewSettingsError">Išsaugant vaizdo nustatymus į failą įvyko klaida</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WebSettings">
+    <Phrase key="LoadWebSettingsError">Įkeliant tinklapio nustatymus iš failo įvyko klaida</Phrase>
+    <Phrase key="SaveWebSettingsError">Išsaugant tinklapio nustatymus į failą įvyko klaida</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmCalendar">
+    <Phrase key="this">Pasirinkti Datą</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmCmdSend">
+    <Phrase key="this">Komanda</Phrase>
+    <Phrase key="lblCtrlCnlCaption">Išvesties kanalas:</Phrase>
+    <Phrase key="lblObjCaption">Objektas:</Phrase>
+    <Phrase key="lblKPCaption">Prietaisas:</Phrase>
+    <Phrase key="lblPassword">Slaptažodis</Phrase>
+    <Phrase key="lblCmd1">Komanda:</Phrase>
+    <Phrase key="lblCmd2">Komanda:</Phrase>
+    <Phrase key="lblCmdVal">Reikšmė</Phrase>
+    <Phrase key="lblDataType">Duomenų tipas</Phrase>
+    <Phrase key="rbStr">Simbolių Eilutė</Phrase>
+    <Phrase key="rbHex">Šešioliktainiai</Phrase>
+    <Phrase key="lblCmdData">Duomenys</Phrase>
+    <Phrase key="btnExecute">Vykdyti</Phrase>
+    <Phrase key="btnCancel">Atšaukti</Phrase>
+    <Phrase key="lblResultSuccessful">Komanda yra eilėje vykdymui</Phrase>
+    <Phrase key="lblResultFailed">Komanda neįvykdyta</Phrase>
+    <Phrase key="btnClose">Uždaryti</Phrase>
+    <Phrase key="OutCnlNotFound">Išvesties kanalas {0} nerastas.</Phrase>
+    <Phrase key="CmdNotSelected">nepasirinkta komanda</Phrase>
+    <Phrase key="IncorrectCmdVal">neteisinga komandos reikšmė</Phrase>
+    <Phrase key="IncorrectCmdData">neteisingi šešioliktainiai komandos duomenys</Phrase>
+    <Phrase key="EmptyCmdData">nėra komandos duomenų</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmError">
+    <Phrase key="this">SCADA - Programos klaida</Phrase>
+    <Phrase key="lblMessage">Programos klaida</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmEvCheck">
+    <Phrase key="this">Įvykių patikrinimas</Phrase>
+    <Phrase key="lblNumCaption">Numeris:</Phrase>
+    <Phrase key="lblDateCaption">Data:</Phrase>
+    <Phrase key="lblTimeCaption">Laikas:</Phrase>
+    <Phrase key="lblObjCaption">Objektas:</Phrase>
+    <Phrase key="lblKPCaption">Prietaisas:</Phrase>
+    <Phrase key="lblCnlCaption">Kanalas:</Phrase>
+    <Phrase key="lblEventCaption">Įvykis:</Phrase>
+    <Phrase key="btnCheck">Patikrinti</Phrase>
+    <Phrase key="btnCancel">Atšaukti</Phrase>
+    <Phrase key="lblResultSuccessful">Sėkmingai patikrinta</Phrase>
+    <Phrase key="lblResultFailed">nepatikrinta</Phrase>
+    <Phrase key="btnClose">Uždaryti</Phrase>
+    <Phrase key="IncorrectEvDate">Neteisinga įvykio data.</Phrase>
+    <Phrase key="IncorrectEvNum">Neteisingas įvykio numeris.</Phrase>
+    <Phrase key="EventNotFound">įvykis nerastas</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmEvents">
+    <Phrase key="this">Įvykiai</Phrase>
+    <Phrase key="lblEvents">Įvykiai:</Phrase>
+    <Phrase key="rbEvAll">Visi</Phrase>
+    <Phrase key="rbEvView">Pagal vaizdą</Phrase>
+    <Phrase key="lblEvPause">Pausė</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmEvTable">
+    <Phrase key="this">Įvykių lentelė</Phrase>
+    <Phrase key="lblNumColumn">Numeris</Phrase>
+    <Phrase key="lblDateColumn">Data</Phrase>
+    <Phrase key="lblTimeColumn">Laikas</Phrase>
+    <Phrase key="lblObjColumn">Objektas</Phrase>
+    <Phrase key="lblKPColumn">Prietaisas</Phrase>
+    <Phrase key="lblCnlColumn">Kanalas</Phrase>
+    <Phrase key="lblEventColumn">Įvykis</Phrase>
+    <Phrase key="lblCheckColumn">Patikrinti</Phrase>
+    <Phrase key="lblNoData">Nėra Įvykių</Phrase>
+    <Phrase key="lblLoading">Įkeliama...</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmInfo">
+    <Phrase key="this">SCADA - Informacija</Phrase>
+    <Phrase key="lblTitle">Informacija apie SCADA-Web</Phrase>
+    <Phrase key="lblVersionCation">Versija:</Phrase>
+    <Phrase key="lblServerCaption">Serveris:</Phrase>
+    <Phrase key="lblUserCaption">Vartotojas:</Phrase>
+    <Phrase key="lblUserNotLoggedOn">&lt;Neprisijungęs&gt;</Phrase>
+    <Phrase key="btnBack">Grįžti atgal</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmLogin">
+    <Phrase key="this">SCADA - Prisijungimas</Phrase>
+    <Phrase key="lblLoginTitle">Prisijungti</Phrase>
+    <Phrase key="lblLoggedOnTitle">Prisijungta</Phrase>
+    <Phrase key="lblName">Vardas</Phrase>
+    <Phrase key="lblPassword">Slaptažodis</Phrase>
+    <Phrase key="lblViewSet">Vaizdas</Phrase>
+    <Phrase key="btnEnter">Prisijungti</Phrase>
+    <Phrase key="chkRememberUser">įsiminti</Phrase>
+    <Phrase key="btnExit">Išeiti</Phrase>
+    <Phrase key="UnableLogin">Nepavyksta prisijungti: {0}.</Phrase>
+    <Phrase key="NoViewSetRights">nepakankamos teisės atverti pasirinktam vaizdui</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmMain">
+    <Phrase key="lblDate">Data</Phrase>
+    <Phrase key="rbStage1">0-11 h</Phrase>
+    <Phrase key="rbStage2">12-23 h</Phrase>
+    <Phrase key="rbStageFull">0-23 h</Phrase>
+    <Phrase key="imgHome.ToolTip">Prisijungti</Phrase>
+    <Phrase key="imgExcel.ToolTip">Eksportuoti į Excel</Phrase>
+    <Phrase key="imgReport.ToolTip">Ataskaitos</Phrase>
+    <Phrase key="imgInfo.ToolTip">Informacija</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmTableView">
+    <Phrase key="this">Lentelės Vaizdas</Phrase>
+    <Phrase key="lblNoData">Nėra rodytinų duomenų.</Phrase>
+    <Phrase key="ItemColumn">Įtaisas</Phrase>
+    <Phrase key="CurColumn">Dabar</Phrase>
+    <Phrase key="InCnlNumHint">Įvesties kanalo Nr.: </Phrase>
+    <Phrase key="OutCnlNumHint">Išvesties kanalo Nr.: </Phrase>
+    <Phrase key="ObjectHint">Objektas: </Phrase>
+    <Phrase key="KPHint">Prietaisas: </Phrase>
+    <Phrase key="ParamHint">Kiekis: </Phrase>
+    <Phrase key="UnitHint">Vienetai: </Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmReport">
+    <Phrase key="this">SCADA - Ataskaitos</Phrase>
+    <Phrase key="lblReportList">Esamos ataskaitos:</Phrase>
+    <Phrase key="lblNoReports">Ataskaitų nėra</Phrase>
+  </Dictionary>
+</ScadaWebDictionaries>

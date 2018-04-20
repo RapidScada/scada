@@ -1,0 +1,278 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaCommDictionaries>
+  <Dictionary key="Scada.Comm.Ctrl.FrmImport">
+    <Phrase key="this">Líneas de comunicación de importación y dispositivos</Phrase>
+    <Phrase key="lblSelectData">Seleccione los datos importados</Phrase>
+    <Phrase key="btnImport">Importación</Phrase>
+    <Phrase key="btnClose">Cerrar</Phrase>
+    <Phrase key="ImportAlternateTitle">Dispositivos de importación - línea {0}</Phrase>
+    <Phrase key="NoImportData">Ningunos datos para importar.</Phrase>
+    <Phrase key="PrepareImportFormError1">El error que prepara líneas de comunicación y dispositivos importa la forma</Phrase>
+    <Phrase key="PrepareImportFormError2">El error que prepara dispositivos importa la forma</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Ctrl.FrmMain">
+    <Phrase key="this">SCADA-comunicador</Phrase>
+    <Phrase key="btnServiceStart.ToolTip">Comience servicio del SCADA-comunicador</Phrase>
+    <Phrase key="btnServiceStop.ToolTip">Pare servicio del SCADA-comunicador</Phrase>
+    <Phrase key="btnServiceRestart.ToolTip">Reanude servicio del SCADA-comunicador</Phrase>
+    <Phrase key="btnSettingsApply.ToolTip">Aplique cambios de ajustes</Phrase>
+    <Phrase key="btnSettingsCancel.ToolTip">Anule cambios de ajustes</Phrase>
+    <Phrase key="btnSettingsUpdate.ToolTip">Ajustes de actualización según la base de datos de la configuración</Phrase>
+    <Phrase key="btnAbout.ToolTip">Acerca</Phrase>
+    <Phrase key="pageCommonParams">Parámetros comunes</Phrase>
+    <Phrase key="gbServer">Conexión con SCADA-servidor</Phrase>
+    <Phrase key="chkServerUse">Use SCADA-servidor</Phrase>
+    <Phrase key="lblServerHost">Servidor</Phrase>
+    <Phrase key="lblServerPort">Puerto</Phrase>
+    <Phrase key="lblServerTimeout">Intervalo de espera</Phrase>
+    <Phrase key="lblServerUser">Usuario</Phrase>
+    <Phrase key="lblServerPwd">Contraseña</Phrase>
+    <Phrase key="gbPerformance">Rendimiento</Phrase>
+    <Phrase key="lblWaitForStop">Esperando las líneas de comunicación temrination, milisegundo</Phrase>
+    <Phrase key="lblRefrParams">Enviando todo el período de datos del dispositivo, segundo</Phrase>
+    <Phrase key="pageKpDlls">Bibliotecas del dispositivo</Phrase>
+    <Phrase key="lblKpDllDescr">Descripción</Phrase>
+    <Phrase key="btnKpDllProps">Propiedades</Phrase>
+    <Phrase key="pageLineParams">Parámetros de la línea de comunicación</Phrase>
+    <Phrase key="gbCommLine">Línea de comunicación</Phrase>
+    <Phrase key="chkLineActive">Activo</Phrase>
+    <Phrase key="chkLineBind">Ligado a servidor</Phrase>
+    <Phrase key="lblLineNumber">Número</Phrase>
+    <Phrase key="lnlLineName">Nombre</Phrase>
+    <Phrase key="gbCommChannel">Canal de comunicación</Phrase>
+    <Phrase key="lblCommCnlType">Escribir a máquina</Phrase>
+    <Phrase key="cbCommCnlType.Items[0]">Indeterminado</Phrase>
+    <Phrase key="btnCommCnlProps">Propiedades</Phrase>
+    <Phrase key="lblCommCnlParams">Parámetros</Phrase>
+    <Phrase key="gbLineParams">Parámetros de comunicación</Phrase>
+    <Phrase key="lblReqTriesCnt">La solicitud del dispositivo procesa de nuevo a la cuenta en el error</Phrase>
+    <Phrase key="lblCycleDelay">Tardanza después de ciclo de solicitud, milisegundo</Phrase>
+    <Phrase key="lblCmdEnabled">Órdenes permitidas</Phrase>
+    <Phrase key="lblDetailedLog">Tronco detallado</Phrase>
+    <Phrase key="pageCustomParams">Parámetros de encargo</Phrase>
+    <Phrase key="btnAddParam.ToolTip">Añada parámetro</Phrase>
+    <Phrase key="btnMoveUpParam.ToolTip">Suba el parámetro seleccionado</Phrase>
+    <Phrase key="btnMoveDownParam.ToolTip">Baje el parámetro seleccionado</Phrase>
+    <Phrase key="btnDelParam.ToolTip">Suprima el parámetro seleccionado</Phrase>
+    <Phrase key="colParamName">Nombre</Phrase>
+    <Phrase key="colParamValue">Valor</Phrase>
+    <Phrase key="gbSelectedParam">Parámetro seleccionado</Phrase>
+    <Phrase key="lblParamOrder">Num.</Phrase>
+    <Phrase key="lblParamName">Nombre</Phrase>
+    <Phrase key="lblParamValue">Valor</Phrase>
+    <Phrase key="lblParamDescr">Descripción</Phrase>
+    <Phrase key="btnAddKP.ToolTip">Añada dispositivo</Phrase>
+    <Phrase key="btnMoveUpKP.ToolTip">Suba el dispositivo seleccionado</Phrase>
+    <Phrase key="btnMoveDownKP.ToolTip">Baje el dispositivo seleccionado</Phrase>
+    <Phrase key="btnDelKP.ToolTip">Suprima el dispositivo seleccionado</Phrase>
+    <Phrase key="btnImportKP.ToolTip">Dispositivos de importación de la base de datos de la configuración</Phrase>
+    <Phrase key="btnCutKP.ToolTip">Corte el dispositivo seleccionado</Phrase>
+    <Phrase key="btnCopyKP.ToolTip">Copie el dispositivo seleccionado</Phrase>
+    <Phrase key="btnPasteKP.ToolTip">Dispositivo de pasta</Phrase>
+    <Phrase key="pageReqSequence">Secuencia de solicitud</Phrase>
+    <Phrase key="colKpOrder">Num.</Phrase>
+    <Phrase key="colKpActive">Activo</Phrase>
+    <Phrase key="colKpBind">Atado</Phrase>
+    <Phrase key="colKpNumber">Número</Phrase>
+    <Phrase key="colKpName">Nombre</Phrase>
+    <Phrase key="colKpDll">DLL</Phrase>
+    <Phrase key="colKpAddress">Dirección</Phrase>
+    <Phrase key="colCallNum">Signatura</Phrase>
+    <Phrase key="colKpTimeout">Intervalo de espera</Phrase>
+    <Phrase key="colKpDelay">Tardanza</Phrase>
+    <Phrase key="colKpTime">Tiempo</Phrase>
+    <Phrase key="colKpPeriod">Período</Phrase>
+    <Phrase key="colKpCmdLine">Línea de comandos</Phrase>
+    <Phrase key="gbSelectedKP">Dispositivo seleccionado</Phrase>
+    <Phrase key="chkKpActive">Activo</Phrase>
+    <Phrase key="chkKpBind">Atado</Phrase>
+    <Phrase key="lblKpNum">Número</Phrase>
+    <Phrase key="lblKpName">Nombre</Phrase>
+    <Phrase key="lblKpDll">DLL</Phrase>
+    <Phrase key="lblKpAddress">Dirección</Phrase>
+    <Phrase key="lblCallNum">Signatura</Phrase>
+    <Phrase key="lblKpTimeout">Intervalo de espera</Phrase>
+    <Phrase key="lblKpDelay">Tardanza</Phrase>
+    <Phrase key="lblKpTime">Tiempo</Phrase>
+    <Phrase key="lblKpPeriod">Período</Phrase>
+    <Phrase key="lblCmdLine">Línea de comandos</Phrase>
+    <Phrase key="btnResetReqParams.ToolTip">Fije parámetros de solicitud del dispositivo para faltar</Phrase>
+    <Phrase key="btnKpProps.ToolTip">Propiedades del dispositivo</Phrase>
+    <Phrase key="pageLineState">Estado de la línea de comunicación</Phrase>
+    <Phrase key="pageLineLog">Tronco de la línea de comunicación</Phrase>
+    <Phrase key="chkLineLogPause">Pausa</Phrase>
+    <Phrase key="pageKpData">Datos del dispositivo</Phrase>
+    <Phrase key="pageKpCmd">Órdenes</Phrase>
+    <Phrase key="gbCmdPwd">Contraseña</Phrase>
+    <Phrase key="gbKpCmd">Orden</Phrase>
+    <Phrase key="lblCmdNum">Número de la orden</Phrase>
+    <Phrase key="rbCmdStand">Estándar</Phrase>
+    <Phrase key="rbCmdBin">Binario</Phrase>
+    <Phrase key="rbCmdReq">Solicitud</Phrase>
+    <Phrase key="lblCmdVal">Valor</Phrase>
+    <Phrase key="btnCmdValOff">Off</Phrase>
+    <Phrase key="btnCmdValOn">On</Phrase>
+    <Phrase key="rbCmdStr">Cuerda</Phrase>
+    <Phrase key="rbCmdHex">Hexadecimal</Phrase>
+    <Phrase key="btnSendCmd">Enviar</Phrase>
+    <Phrase key="pageStats">Stats</Phrase>
+    <Phrase key="lblAppState">Estado</Phrase>
+    <Phrase key="lblAppLog">Log</Phrase>
+    <Phrase key="miNotifyOpen">Abierto</Phrase>
+    <Phrase key="miNotifyStart">Comenzar</Phrase>
+    <Phrase key="miNotifyStop">Pararse</Phrase>
+    <Phrase key="miNotifyRestart">Reiniciar</Phrase>
+    <Phrase key="miNotifyExit">Salida</Phrase>
+    <Phrase key="miAddLine">Añada la línea de comunicación</Phrase>
+    <Phrase key="miMoveUpLine">Subir</Phrase>
+    <Phrase key="miMoveDownLine">Bajar</Phrase>
+    <Phrase key="miDelLine">Suprima la línea de comunicación</Phrase>
+    <Phrase key="miImportLines">Líneas de comunicación de importación y dispositivos</Phrase>
+    <Phrase key="miStartLine">Comience la línea de comunicación</Phrase>
+    <Phrase key="miStopLine">Pare la línea de comunicación</Phrase>
+    <Phrase key="miRestartLine">Reanude la línea de comunicación</Phrase>
+    <Phrase key="miKpProps">Propiedades</Phrase>
+    <Phrase key="CommonParamsNode">Parámetros comunes</Phrase>
+    <Phrase key="KpDllsNode">Bibliotecas del dispositivo</Phrase>
+    <Phrase key="LinesNode">Líneas de comunicación</Phrase>
+    <Phrase key="LineStatsNode">Línea de comunicación Stats</Phrase>
+    <Phrase key="StatsNode">Stats</Phrase>
+    <Phrase key="ServiceState">Estado del servicio del SCADA-comunicador: {0}</Phrase>
+    <Phrase key="RestartNeeded">Los cambios de ajustes entrarán en vigor después del servicio del SCADA-comunicador que se reactiva.</Phrase>
+    <Phrase key="Yes">Sí</Phrase>
+    <Phrase key="No">No</Phrase>
+    <Phrase key="ReceiveBaseTableError">Error que recibe las tablas de base de datos de la configuración</Phrase>
+    <Phrase key="UpdateSettingsCompleted">La actualización de ajustes según la base de datos de la configuración completada con éxito.</Phrase>
+    <Phrase key="UpdateSettingsError">Error que actualiza ajustes según la base de datos de la configuración</Phrase>
+    <Phrase key="GetKpTypeInfoError">El error que consigue el dispositivo escribe a máquina la información</Phrase>
+    <Phrase key="SecondInstanceClosed">La aplicación de control del SCADA-comunicador ya comenzó.
+El segundo caso se cerrará.</Phrase>
+    <Phrase key="CheckSecondInstanceError">Control de error el segundo principio del caso de aplicación</Phrase>
+    <Phrase key="ServiceNotInstalled">El servicio del SCADA-comunicador no se instala.</Phrase>
+    <Phrase key="SaveSettingsConfirm">Los ajustes del SCADA-comunicador se han modificado.
+¿Salve los cambios?</Phrase>
+    <Phrase key="ServiceStartFailed">El principio del servicio del SCADA-comunicador falló</Phrase>
+    <Phrase key="ServiceStopFailed">La parada del servicio del SCADA-comunicador falló</Phrase>
+    <Phrase key="ServiceRestartFailed">El servicio del SCADA-comunicador se reactiva fallado</Phrase>
+    <Phrase key="ImportLinesAndKpError">Líneas de comunicación de importación de error y dispositivos</Phrase>
+    <Phrase key="ImportKpError">Dispositivos de importación de error</Phrase>
+    <Phrase key="ResetReqParamsError">El error que fija el dispositivo solicita que parámetros falten</Phrase>
+    <Phrase key="ShowKpPropsUnsupported">{0} no apoya propiedades del dispositivo del espectáculo.</Phrase>
+    <Phrase key="ShowKpPropsError">Error mostrando propiedades del dispositivo</Phrase>
+    <Phrase key="ShowCommCnlPropsError">Error mostrando propiedades del canal de comunicación</Phrase>
+    <Phrase key="UnknownDLL">DLL desconocido.</Phrase>
+    <Phrase key="IncorrectCmdVal">El valor de la orden es incorrecto.</Phrase>
+    <Phrase key="IncorrectHexCmdData">Los datos de la orden hexadecimales son incorrectos.</Phrase>
+    <Phrase key="CmdDataRequired">Los datos de la orden se requieren.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.CommUtils">
+    <Phrase key="ParamRequired">El parámetro "{0}" se requiere.</Phrase>
+    <Phrase key="IncorrectParamVal">Valor incorrecto del parámetro "{0}".</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Settings">
+    <Phrase key="LineCaption">Línea</Phrase>
+    <Phrase key="KPCaption">Dispositivo</Phrase>
+    <Phrase key="IncorrectKPSettings">Parámetros incorrectos del dispositivo {0}</Phrase>
+    <Phrase key="IncorrectLineSettings">Parámetros incorrectos de la línea de comunicación {0}</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Channels.FrmCommSerialProps">
+    <Phrase key="this">Propiedades del puerto en serie</Phrase>
+    <Phrase key="gbPort">Puerto</Phrase>
+    <Phrase key="lblPortName">Puerto</Phrase>
+    <Phrase key="lblBaudRate">Velocidad de transmisión</Phrase>
+    <Phrase key="lblDataBits">Trozos de datos</Phrase>
+    <Phrase key="lblParity">Paridad</Phrase>
+    <Phrase key="cbParity.Items[0]">Incluso</Phrase>
+    <Phrase key="cbParity.Items[1]">Raro</Phrase>
+    <Phrase key="cbParity.Items[2]">Ninguno</Phrase>
+    <Phrase key="cbParity.Items[3]">Mark</Phrase>
+    <Phrase key="cbParity.Items[4]">Espacio</Phrase>
+    <Phrase key="lblStopBits">Pare trozos</Phrase>
+    <Phrase key="gbMode">Modo de operaciones</Phrase>
+    <Phrase key="lblBehavior">Comportamiento</Phrase>
+    <Phrase key="btnOK">Ok</Phrase>
+    <Phrase key="btnCancel">Cancelar</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Channels.FrmCommTcpClientProps">
+    <Phrase key="this">Propiedades del cliente de TCP</Phrase>
+    <Phrase key="gbMode">Modo de operaciones</Phrase>
+    <Phrase key="lblBehavior">Comportamiento</Phrase>
+    <Phrase key="pbBehaviorHint.ToolTip">Maestro - el SCADA-comunicador envía la solicitud a un dispositivo y recibe la respuesta.
+Esclavo - el SCADA-comunicador pasivamente espera datos de un dispositivo.</Phrase>
+    <Phrase key="lblConnMode">Conexión</Phrase>
+    <Phrase key="cbConnMode.Items[0]">Individuo</Phrase>
+    <Phrase key="cbConnMode.Items[1]">Compartido</Phrase>
+    <Phrase key="pbConnModeHint.ToolTip">Individuo - el SCADA-comunicador establece una conexión TCP individual con cada dispositivo.
+Compartido - el SCADA-comunicador establece una conexión compartida sola para todos los dispositivos de la línea de comunicación
+la utilización especificó la Dirección IP remota.
+La conexión compartida se usa, por ejemplo, si los dispositivos se relacionan vía Ethernet - entrada Consecutiva.</Phrase>
+    <Phrase key="gbConnection">Conexión</Phrase>
+    <Phrase key="lblIpAddress">Dirección IP remota</Phrase>
+    <Phrase key="pbIpAddressHint.ToolTip">Dirección IP remota en caso de utilización de conexión compartida.</Phrase>
+    <Phrase key="lblTcpPort">Puerto TCP remoto</Phrase>
+    <Phrase key="pbTcpPortHint.ToolTip">En el modo de conexión individual se usa como una falta puerto de TCP si ningún puerto se especifica para un dispositivo.
+En el modo de conexión compartido el parámetro se requiere.
+El 502 puerto es la falta Modbus TCP puerto.</Phrase>
+    <Phrase key="btnOK">Ok</Phrase>
+    <Phrase key="btnCancel">Cancelar</Phrase>
+    <Phrase key="IpAddressRequired">La dirección IP se requiere.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Channels.FrmCommTcpServerProps">
+    <Phrase key="this">Propiedades del servidor de TCP</Phrase>
+    <Phrase key="gbMode">Modo de operaciones</Phrase>
+    <Phrase key="lblBehavior">Comportamiento</Phrase>
+    <Phrase key="pbBehaviorHint.ToolTip">El maestro - después de establecer al SCADA-comunicador de conexión envía la solicitud a un dispositivo y recibe la respuesta.
+Esclavo - el SCADA-comunicador pasivamente espera datos de un dispositivo.</Phrase>
+    <Phrase key="lblConnMode">Conexión</Phrase>
+    <Phrase key="cbConnMode.Items[0]">Individuo</Phrase>
+    <Phrase key="cbConnMode.Items[1]">Compartido</Phrase>
+    <Phrase key="pbConnModeHint.ToolTip">Individuo - el SCADA-comunicador establece una conexión TCP individual con cada dispositivo.
+Compartido - el SCADA-comunicador establece una conexión compartida sola para todos los dispositivos de la línea de comunicación.
+La conexión compartida se usa, por ejemplo, si los dispositivos se relacionan vía Ethernet - entrada Consecutiva.</Phrase>
+    <Phrase key="lblDevSelMode">Selección del dispositivo</Phrase>
+    <Phrase key="cbDevSelMode.Items[0]">Por dirección IP</Phrase>
+    <Phrase key="cbDevSelMode.Items[1]">Por primer paquete</Phrase>
+    <Phrase key="cbDevSelMode.Items[2]">DLL decidido</Phrase>
+    <Phrase key="pbDevSelModeHint.ToolTip">El método de ligar una nueva conexión de entrada con un dispositivo:
+Por la Dirección IP - la Dirección IP remota iguala una signatura del dispositivo.
+Por el Primer Paquete - un primer paquete recibido de un dispositivo contiene la signatura del dispositivo.
+DLL Decidido - algoritmo se pone en práctica en la biblioteca del dispositivo.</Phrase>
+    <Phrase key="lblTcpPort">Puerto TCP local</Phrase>
+    <Phrase key="pbTcpPortHint.ToolTip">Puerto TCP local para conexiones de entrada.
+Las conexiones de entrada deben ser permitidas por un cortafuego.</Phrase>
+    <Phrase key="lblInactiveTime">Tiempo inactivo, segundo</Phrase>
+    <Phrase key="pbInactiveTimeHint.ToolTip">La duración de la inactividad de conexión antes desconecta.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Channels.FrmCommUdpProps">
+    <Phrase key="this">Propiedades de UDP</Phrase>
+    <Phrase key="gbMode">Modo de operaciones</Phrase>
+    <Phrase key="lblBehavior">Comportamiento</Phrase>
+    <Phrase key="pbBehaviorHint.ToolTip">Maestro - el SCADA-comunicador envía la solicitud a un dispositivo y recibe la respuesta.
+Esclavo - el SCADA-comunicador pasivamente espera datos de un dispositivo.</Phrase>
+    <Phrase key="lblDevSelMode">Selección del dispositivo</Phrase>
+    <Phrase key="cbDevSelMode.Items[0]">Por dirección IP</Phrase>
+    <Phrase key="cbDevSelMode.Items[1]">DLL decidido</Phrase>
+    <Phrase key="pbDevSelModeHint.ToolTip">El método de ligar recibió datos a un dispositivo en el modo del Esclavo:
+Por la Dirección IP - la Dirección IP remota iguala una signatura del dispositivo.
+DLL Decidido - algoritmo se pone en práctica en la biblioteca del dispositivo.</Phrase>
+    <Phrase key="lblLocalUdpPort">Puerto UDP local</Phrase>
+    <Phrase key="pbLocalUdpPortHint.ToolTip">Puerto UDP local para conexiones de entrada.
+Las conexiones de entrada deben ser permitidas por un cortafuego.</Phrase>
+    <Phrase key="lblRemoteUdpPort">Puerto UDP remoto</Phrase>
+    <Phrase key="pbRemoteUdpPortHint.ToolTip">El puerto UDP remoto es lo mismo para todos los dispositivos de la línea de comunicación.</Phrase>
+    <Phrase key="lblRemoteIpAddress">Dirección IP remota</Phrase>
+    <Phrase key="pbRemoteIpAddressHint.ToolTip">La falta Dirección IP remota.
+Se puede usar, por ejemplo, si los dispositivos se relacionan vía Ethernet - entrada Consecutiva.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices">
+    <Phrase key="SaveKpSettingsConfirm">Los ajustes del dispositivo se han modificado. ¿Salve los cambios?</Phrase>
+    <Phrase key="LoadKpDllSettingsError">Error que carga ajustes de la biblioteca del dispositivo</Phrase>
+    <Phrase key="SaveKpDllSettingsError">Error que salva ajustes de la biblioteca del dispositivo</Phrase>
+    <Phrase key="LoadKpSettingsError">Error que carga ajustes del dispositivo</Phrase>
+    <Phrase key="SaveKpSettingsError">Error que salva ajustes del dispositivo</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.KPFactory">
+    <Phrase key="GetViewTypeError">El error que consigue el dispositivo conecta el tipo de la biblioteca {0}</Phrase>
+    <Phrase key="CreateViewError">El error que crea el dispositivo conecta el caso de la clase {0}</Phrase>
+  </Dictionary>
+</ScadaCommDictionaries>
