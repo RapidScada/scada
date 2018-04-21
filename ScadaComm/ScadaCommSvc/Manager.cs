@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.Data.Models;
@@ -42,10 +42,6 @@ namespace Scada.Comm.Svc
     /// </summary>
     internal sealed class Manager
     {
-        /// <summary>
-        /// Имя файла конфигурации
-        /// </summary>
-        private const string ConfigFileName = "ScadaCommSvcConfig.xml";
         /// <summary>
         /// Имя основного Log-файла программы
         /// </summary>
@@ -628,7 +624,7 @@ namespace Scada.Comm.Svc
                         // загрузка линии связи из файла кофигурации
                         string errMsg;
                         Settings.CommLine commLineSett; 
-                        if (Settings.LoadCommLine(AppDirs.ConfigDir + ConfigFileName, lineNum, 
+                        if (Settings.LoadCommLine(AppDirs.ConfigDir + Settings.DefFileName, lineNum, 
                             out commLineSett, out errMsg))
                         {
                             if (commLineSett == null)
