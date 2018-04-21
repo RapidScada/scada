@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaTableEditorDictionaries>
+  <Dictionary key="Scada.Web.Plugins.Table.TableView">
+    <Phrase key="LoadTableViewError">Помилка завантаження табличного перегляду з файлу</Phrase>
+    <Phrase key="SaveTableViewError">Помилка збереження табличного перегляду до файлу</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaTableEditor.FrmMain">
+    <Phrase key="this">SCADA-Редактор таблиць</Phrase>
+    <Phrase key="miFile">&amp;Файл</Phrase>
+    <Phrase key="miFileNew">Створити</Phrase>
+    <Phrase key="miFileOpen">Відкрити...</Phrase>
+    <Phrase key="miFileSave">Зберегти</Phrase>
+    <Phrase key="miFileSaveAs">Зберегти як...</Phrase>
+    <Phrase key="miFileExit">Вихід</Phrase>
+    <Phrase key="miSettings">&amp;Налаштування</Phrase>
+    <Phrase key="miSettingsParams">Параметри...</Phrase>
+    <Phrase key="miHelp">&amp;Довідка</Phrase>
+    <Phrase key="miHelpAbout">Про програму</Phrase>
+    <Phrase key="btnFileNew.ToolTip">Створити новий табличний перегляд</Phrase>
+    <Phrase key="btnFileOpen.ToolTip">Відкрити табличний перегляд</Phrase>
+    <Phrase key="btnFileSave.ToolTip">Зберегти табличний перегляд</Phrase>
+    <Phrase key="btnSettingsParams.ToolTip">Параметри</Phrase>
+    <Phrase key="gbBase">Конфігурація бази даних</Phrase>
+    <Phrase key="lblCnlFilterByObj">Об'єкт</Phrase>
+    <Phrase key="lblCnlFilterByKP">КП</Phrase>
+    <Phrase key="btnFilterCnlsByObj.ToolTip">Фільтрувати за Об'єктами</Phrase>
+    <Phrase key="btnFilterCnlsByKP.ToolTip">Фільтрувати за КП</Phrase>
+    <Phrase key="btnRefreshBase.ToolTip">Оновити дані конфігурації бази даних</Phrase>
+    <Phrase key="rbInCnls">Вхідні канали</Phrase>
+    <Phrase key="rbCtrlCnls">Канали управління</Phrase>
+    <Phrase key="colCnlNum">№</Phrase>
+    <Phrase key="colCnlName">Ім'я</Phrase>
+    <Phrase key="gbTableView">Табличний перегляд</Phrase>
+    <Phrase key="lblTableTitle">Заголовок</Phrase>
+    <Phrase key="lblTableItems">Елементи</Phrase>
+    <Phrase key="btnAddItem.ToolTip">Додати елемент з конфігурації бази даних</Phrase>
+    <Phrase key="btnAddEmptyItem.ToolTip">Додати пустий елемент</Phrase>
+    <Phrase key="btnMoveUpItem.ToolTip">Перемістити вибраний елемент вгору</Phrase>
+    <Phrase key="btnMoveDownItem.ToolTip">Перемістити вибраний елемент вниз</Phrase>
+    <Phrase key="btnDeleteItem.ToolTip">Видалити вибраний елемент</Phrase>
+    <Phrase key="btnShowItemInfo.ToolTip">Показати інформацію по вибраному елементу</Phrase>
+    <Phrase key="colItemCnlNum">Вх.канал</Phrase>
+    <Phrase key="colItemCtrlCnlNum">Канал упр.</Phrase>
+    <Phrase key="colItemCaption">Позначення</Phrase>
+    <Phrase key="colItemHidden">Сховати</Phrase>
+    <Phrase key="OpenFileFilter">Табличні перегляди (*.tbl; *.ofm)|*.tbl;*.ofm|Всі файли (*.*)|*.*</Phrase>
+    <Phrase key="SaveFileFilter">Табличні перегляди (*.tbl)|*.tbl|Всі файли (*.*)|*.*</Phrase>
+    <Phrase key="SaveConfirm">Табличний перегляд був змінений. Зберегти зміни?</Phrase>
+    <Phrase key="AllObjItem">&lt;Всі об'єкти&gt;</Phrase>
+    <Phrase key="AllKPItem">&lt;Всі КП&gt;</Phrase>
+    <Phrase key="LoadBaseError">Помилка завантаження конфігурації бази даних</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaTableEditor.FrmItemInfo">
+    <Phrase key="this">Інформація про елемент</Phrase>
+    <Phrase key="gbInCnl">Вхідний канал</Phrase>
+    <Phrase key="lblInCnl">Канал</Phrase>
+    <Phrase key="lblInCnlObj">Об'ект</Phrase>
+    <Phrase key="lblInCnlKP">КП</Phrase>
+    <Phrase key="gbCtrlCnl">Канал управління</Phrase>
+    <Phrase key="lblCtrlCnl">Канал</Phrase>
+    <Phrase key="lblCtrlCnlObj">Об'ект</Phrase>
+    <Phrase key="lblCtrlCnlKP">КП</Phrase>
+    <Phrase key="btnClose">Закрити</Phrase>
+    <Phrase key="GetInCnlError">Помилка отримання інформації про вхідний канал</Phrase>
+    <Phrase key="GetCtrlCnlError">Помилка отримання інформації про канал управління</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaTableEditor.FrmSettings">
+    <Phrase key="this">Налаштування</Phrase>
+    <Phrase key="lblBaseDATDir">Директорія конфігурації бази даних в DAT форматі</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Відміна</Phrase>
+  </Dictionary>
+</ScadaTableEditorDictionaries>

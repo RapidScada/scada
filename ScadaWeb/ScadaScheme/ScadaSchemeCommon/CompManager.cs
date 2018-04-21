@@ -24,6 +24,7 @@
  */
 
 using Scada.Scheme.Model;
+using Scada.Scheme.Model.PropertyGrid;
 using Scada.Web.Plugins;
 using System;
 using System.Collections.Generic;
@@ -52,8 +53,8 @@ namespace Scada.Scheme
         /// </summary>
         private static readonly CompManager instance;
 
-        private Web.AppDirs webAppDirs; // директории веб-приложения
-        private ILog log;               // журнал приложения
+        private string binDir; // директория исполняемых файлов
+        private ILog log;      // журнал приложения
         private List<CompLibSpec> allSpecs;                    // все спецификации библиотек
         private Dictionary<string, CompFactory> factsByPrefix; // фабрики компонентов, ключ - XML-префикс
         private Dictionary<string, CompLibSpec> specsByType;   // спецификации библиотек, ключ - имя типа компонента
@@ -80,12 +81,19 @@ namespace Scada.Scheme
         /// </summary>
         private CompManager()
         {
-            webAppDirs = new Web.AppDirs();
+            binDir = "";
             log = new LogStub();
             allSpecs = new List<CompLibSpec>();
             factsByPrefix = new Dictionary<string, CompFactory>();
             specsByType = new Dictionary<string, CompLibSpec>();
+            LoadErrors = new List<string>();
         }
+
+
+        /// <summary>
+        /// Получить ошибки при загрузке библиотек
+        /// </summary>
+        public List<string> LoadErrors { get; private set; }
 
 
         /// <summary>
@@ -96,26 +104,43 @@ namespace Scada.Scheme
             allSpecs.Clear();
             factsByPrefix.Clear();
             specsByType.Clear();
+            LoadErrors.Clear();
         }
 
         /// <summary>
         /// Добавить компоненты в словари
         /// </summary>
-        private void AddComponents(ISchemeComp schemeComp)
+        private bool AddComponents(ISchemeComp schemeComp, AttrTranslator attrTranslator)
         {
             CompLibSpec compLibSpec = schemeComp.CompLibSpec;
+            string errMsg;
 
-            if (compLibSpec != null && compLibSpec.Validate())
+            if (compLibSpec != null)
             {
-                allSpecs.Add(compLibSpec);
-                factsByPrefix[compLibSpec.XmlPrefix] = compLibSpec.CompFactory;
-
-                foreach (CompItem compItem in compLibSpec.CompItems)
+                if (compLibSpec.Validate(out errMsg) && compLibSpec.CompFactory != null)
                 {
-                    if (compItem.CompType != null)
-                        specsByType[compItem.CompType.FullName] = compLibSpec;
+                    allSpecs.Add(compLibSpec);
+                    factsByPrefix[compLibSpec.XmlPrefix] = compLibSpec.CompFactory;
+
+                    foreach (CompItem compItem in compLibSpec.CompItems)
+                    {
+                        if (compItem != null && compItem.CompType != null)
+                        {
+                            specsByType[compItem.CompType.FullName] = compLibSpec;
+                            if (attrTranslator != null)
+                                attrTranslator.TranslateAttrs(compItem.CompType);
+                        }
+                    }
+
+                    return true;
+                }
+                else if (!string.IsNullOrEmpty(errMsg))
+                {
+                    LoadErrors.Add(errMsg);
                 }
             }
+
+            return false;
         }
 
         /// <summary>
@@ -131,26 +156,14 @@ namespace Scada.Scheme
         /// <summary>
         /// Инициализировать менеджер компонентов
         /// </summary>
-        public void Init(string webAppDir, Log log)
+        public void Init(string binDir, Log log)
         {
+            if (string.IsNullOrEmpty(binDir))
+                throw new ArgumentException("Directory must not be empty.", "binDir");
             if (log == null)
                 throw new ArgumentNullException("log");
 
-            webAppDirs.Init(webAppDir);
-            this.log = log;
-        }
-
-        /// <summary>
-        /// Инициализировать менеджер компонентов
-        /// </summary>
-        public void Init(Web.AppDirs webAppDirs, Log log)
-        {
-            if (webAppDirs == null)
-                throw new ArgumentNullException("webAppDirs");
-            if (log == null)
-                throw new ArgumentNullException("log");
-
-            this.webAppDirs = webAppDirs;
+            this.binDir = binDir;
             this.log = log;
         }
 
@@ -166,13 +179,15 @@ namespace Scada.Scheme
                     "Load components from files");
 
                 ClearDicts();
-                DirectoryInfo dirInfo = new DirectoryInfo(webAppDirs.BinDir);
+                AttrTranslator attrTranslator = new AttrTranslator();
+                DirectoryInfo dirInfo = new DirectoryInfo(binDir);
                 FileInfo[] fileInfoArr = dirInfo.GetFiles(CompLibMask, SearchOption.TopDirectoryOnly);
 
                 foreach (FileInfo fileInfo in fileInfoArr)
                 {
+                    string fileName = fileInfo.FullName;
                     string errMsg;
-                    PluginSpec pluginSpec = PluginSpec.CreateFromDll(fileInfo.FullName, out errMsg);
+                    PluginSpec pluginSpec = PluginSpec.CreateFromDll(fileName, out errMsg);
 
                     if (pluginSpec == null)
                     {
@@ -180,13 +195,26 @@ namespace Scada.Scheme
                     }
                     else if (pluginSpec is ISchemeComp)
                     {
-                        AddComponents((ISchemeComp)pluginSpec);
+                        pluginSpec.Init();
+
+                        if (AddComponents((ISchemeComp)pluginSpec, attrTranslator))
+                        {
+                            log.WriteAction(string.Format(Localization.UseRussian ?
+                                "Загружены компоненты из файла {0}" :
+                                "Components are loaded from the file {0}", fileName));
+                        }
+                        else
+                        {
+                            log.WriteAction(string.Format(Localization.UseRussian ?
+                                "Не удалось загрузить компоненты из файла {0}" :
+                                "Unable to load components from the file {0}", fileName));
+                        }
                     }
                     else
                     {
                         log.WriteError(string.Format(Localization.UseRussian ? 
                             "Библиотека {0} не предоставляет компоненты схем" : 
-                            "The assembly {0} does not provide scheme components", fileInfo.FullName));
+                            "The assembly {0} does not provide scheme components", fileName));
                     }
                 }
             }
@@ -215,7 +243,7 @@ namespace Scada.Scheme
                     foreach (PluginSpec pluginSpec in pluginSpecs)
                     {
                         if (pluginSpec is ISchemeComp)
-                            AddComponents((ISchemeComp)pluginSpec);
+                            AddComponents((ISchemeComp)pluginSpec, null);
                     }
                 }
             }
@@ -230,35 +258,48 @@ namespace Scada.Scheme
         /// <summary>
         /// Создать компонент на основе XML-узла
         /// </summary>
-        public BaseComponent CreateComponent(XmlNode compNode)
+        public BaseComponent CreateComponent(XmlNode compNode, out string errMgs)
         {
             if (compNode == null)
                 throw new ArgumentNullException("compNode");
 
+            errMgs = "";
+            string nodeName = compNode.Name;
+
             try
             {
                 string xmlPrefix = compNode.Prefix;
-                string nodeName = compNode.Name.ToLowerInvariant();
+                string localName = compNode.LocalName.ToLowerInvariant();
                 CompFactory compFactory;
 
                 if (string.IsNullOrEmpty(xmlPrefix))
                 {
-                    if (nodeName == "statictext")
+                    if (localName == "statictext")
                         return new StaticText();
-                    else if (nodeName == "dynamictext")
+                    else if (localName == "dynamictext")
                         return new DynamicText();
-                    else if (nodeName == "staticpicture")
+                    else if (localName == "staticpicture")
                         return new StaticPicture();
-                    else if (nodeName == "dynamicpicture")
+                    else if (localName == "dynamicpicture")
                         return new DynamicPicture();
+                    else
+                        errMgs = string.Format(SchemePhrases.UnknownComponent, nodeName);
                 }
-                else if (factsByPrefix.TryGetValue(xmlPrefix, out compFactory) && compFactory != null)
+                else if (factsByPrefix.TryGetValue(xmlPrefix, out compFactory))
                 {
-                    return compFactory.CreateComponent(nodeName, true);
+                    BaseComponent comp = compFactory.CreateComponent(localName, true);
+                    if (comp == null)
+                        errMgs = string.Format(SchemePhrases.UnableCreateComponent, nodeName);
+                    return comp;
+                }
+                else
+                {
+                    errMgs = string.Format(SchemePhrases.CompLibraryNotFound, nodeName);
                 }
             }
             catch (Exception ex)
             {
+                errMgs = string.Format(SchemePhrases.ErrorCreatingComponent, nodeName);
                 log.WriteException(ex, string.Format(Localization.UseRussian ?
                     "Ошибка при создании компонента на основе XML-узла \"{0}\"" :
                     "Error creating component based on the XML node \"{0}\"", compNode.Name));
@@ -354,6 +395,36 @@ namespace Scada.Scheme
 
             Array.Sort(headers, specs);
             return specs;
+        }
+
+        /// <summary>
+        /// Получить объединённый список стилей компонентов
+        /// </summary>
+        public List<string> GetAllStyles()
+        {
+            List<string> allStyles = new List<string>();
+
+            foreach (CompLibSpec spec in allSpecs)
+            {
+                allStyles.AddRange(spec.Styles);
+            }
+
+            return allStyles;
+        }
+
+        /// <summary>
+        /// Получить объединённый список скриптов компонентов
+        /// </summary>
+        public List<string> GetAllScripts()
+        {
+            List<string> allScripts = new List<string>();
+
+            foreach (CompLibSpec spec in allSpecs)
+            {
+                allScripts.AddRange(spec.Scripts);
+            }
+
+            return allScripts;
         }
 
 

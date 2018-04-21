@@ -212,6 +212,7 @@
     <Phrase key="ChooseItfDir">Choose the interface directory</Phrase>
     <Phrase key="ChooseArcDir">Choose the archive in DAT format directory</Phrase>
     <Phrase key="ChooseArcCopyDir">Choose the archive copy in DAT format directory</Phrase>
+    <Phrase key="ModuleFileFilter">Modules (*.dll)|*.dll|All Files (*.*)|*.*</Phrase>
     <Phrase key="ModuleAlreadyAdded">The module is already added.</Phrase>
     <Phrase key="IncorrectCnlNum">The channel number is incorrect.</Phrase>
     <Phrase key="IncorrectCnlVal">The channel value is incorrect.</Phrase>

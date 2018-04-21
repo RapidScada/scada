@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,18 +20,17 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2007
- * Modified : 2016
+ * Modified : 2018
  */
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Web;
-using System.Web.SessionState;
+using Scada.Data.Models;
 using Scada.Web.Plugins;
 using Scada.Web.Shell;
+using System;
+using System.IO;
+using System.Web;
 using System.Web.Hosting;
-using Scada.Data.Models;
+using System.Web.SessionState;
 
 namespace Scada.Web
 {
@@ -39,9 +38,11 @@ namespace Scada.Web
     /// Application user data
     /// <para>Данные пользователя приложения</para>
     /// </summary>
-    /// <remarks>Inheritance is impossible because class is shared by different modules
-    /// <para>Наследование невозможно, т.к. класс совместно используется различными модулями</para></remarks>
-    public sealed class UserData
+    /// <remarks>Inheritance is impossible because class is shared by different modules. 
+    /// The class is not thread safe
+    /// <para>Наследование невозможно, т.к. класс совместно используется различными модулями. 
+    /// Класс не является потокобезопасным</para></remarks>
+    public sealed class UserData : UserShot
     {
         /// <summary>
         /// Общие данные веб-приложения
@@ -60,78 +61,6 @@ namespace Scada.Web
             ClearUser();
             ClearAppDataRefs();
         }
-
-
-        /// <summary>
-        /// Получить IP-адрес пользователя
-        /// </summary>
-        public string IpAddress { get; private set; }
-
-        /// <summary>
-        /// Получить идентификатор сессии
-        /// </summary>
-        public string SessionID { get; private set; }
-
-
-        /// <summary>
-        /// Получить признак, выполнен ли вход пользователя в систему
-        /// </summary>
-        public bool LoggedOn { get; private set; }
-
-        /// <summary>
-        /// Получить дату и время входа пользователя в систему
-        /// </summary>
-        public DateTime LogonDT { get; private set; }
-
-        /// <summary>
-        /// Получить свойства пользователя
-        /// </summary>
-        /// <remarks>Объект пересоздаётся после входа в систему</remarks>
-        public UserProps UserProps { get; private set; }
-
-        /// <summary>
-        /// Получить права пользователя
-        /// </summary>
-        /// <remarks>Объект пересоздаётся после входа в систему.
-        /// Объект после инициализации не изменяется экземпляром данного класса и не должен изменяться извне,
-        /// таким образом, чтение его данных является потокобезопасным</remarks>
-        public UserRights UserRights { get; private set; }
-
-        /// <summary>
-        /// Получить меню пользователя
-        /// </summary>
-        public UserMenu UserMenu { get; private set; }
-
-        /// <summary>
-        /// Получить представления пользователя
-        /// </summary>
-        public UserViews UserViews { get; private set; }
-
-        /// <summary>
-        /// Получить контент пользователя
-        /// </summary>
-        public UserContent UserContent { get; private set; }
-
-
-        /// <summary>
-        /// Получить ссылку на настройки веб-приложения
-        /// </summary>
-        public WebSettings WebSettings { get; private set; }
-
-        /// <summary>
-        /// Получить ссылку на настройки представлений
-        /// </summary>
-        public ViewSettings ViewSettings { get; private set; }
-
-        /// <summary>
-        /// Получить ссылку на список спецификаций плагинов
-        /// </summary>
-        public List<PluginSpec> PluginSpecs { get; private set; }
-
-        /// <summary>
-        /// Получить ссылку на словарь спецификаций объектов пользовательского интерфейса, ключ - код типа объекта
-        /// </summary>
-        public Dictionary<string, UiObjSpec> UiObjSpecs { get; private set; }
 
 
         /// <summary>
@@ -233,11 +162,13 @@ namespace Scada.Web
                 LogonDT = DateTime.Now;
 
                 // заполнение свойств пользователя
-                UserProps = new UserProps();
-                UserProps.UserID = AppData.DataAccess.GetUserID(username);
-                UserProps.UserName = username;
-                UserProps.RoleID = roleID;
-                UserProps.RoleName = AppData.DataAccess.GetRoleName(roleID);
+                UserProps = new UserProps()
+                {
+                    UserID = AppData.DataAccess.GetUserID(username),
+                    UserName = username,
+                    RoleID = roleID,
+                    RoleName = AppData.DataAccess.GetRoleName(roleID)
+                };
 
                 if (password == null)
                 {

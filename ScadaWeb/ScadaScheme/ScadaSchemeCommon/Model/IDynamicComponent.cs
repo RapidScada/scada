@@ -20,8 +20,10 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2018
  */
+
+using Scada.Scheme.Model.DataTypes;
 
 namespace Scada.Scheme.Model
 {
@@ -29,8 +31,12 @@ namespace Scada.Scheme.Model
     /// Specifies scheme components bound to input or output channels
     /// <para>Определяет компоненты схемы, привязаные к входным каналам или каналам управления</para>
     /// </summary>
-    interface IDynamicComponent
+    public interface IDynamicComponent
     {
+        /// <summary>
+        /// Получить действие
+        /// </summary>
+        Actions Action { get; }
 
         /// <summary>
         /// Получить номер входного канала

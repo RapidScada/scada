@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModDBExportDictionaries>
+  <Dictionary key="Scada.Server.Modules.DBExport.FrmDBExportConfig">
+    <Phrase key="this">导出到数据库</Phrase>
+    <Phrase key="ddbAddDataSource.ToolTip">添加数据源</Phrase>
+    <Phrase key="btnDelDataSource.ToolTip">删除数据源</Phrase>
+    <Phrase key="btnManualExport.ToolTip">手动导出</Phrase>
+    <Phrase key="lblInstruction">添加数据源</Phrase>
+    <Phrase key="pageConnection">连接</Phrase>
+    <Phrase key="lblServer">服务器</Phrase>
+    <Phrase key="lblDatabase">数据库</Phrase>
+    <Phrase key="lblUser">用户</Phrase>
+    <Phrase key="lblPassword">密码</Phrase>
+    <Phrase key="lblConnectionString">连接字符串</Phrase>
+    <Phrase key="pageExportCurDataQuery">当前数据</Phrase>
+    <Phrase key="pageExportArcDataQuery">存档数据</Phrase>
+    <Phrase key="pageExportEventQuery">事件</Phrase>
+    <Phrase key="chkExport">导出</Phrase>
+    <Phrase key="btnSave">保存</Phrase>
+    <Phrase key="btnCancel">取消</Phrase>
+    <Phrase key="btnClose">关闭</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Server.Modules.DBExport.FrmManualExport">
+    <Phrase key="this">手动导出</Phrase>
+    <Phrase key="lblDataSource">数据源</Phrase>
+    <Phrase key="gbCurData">当前数据</Phrase>
+    <Phrase key="lblCurDataCtrlCnlNum">输出信道</Phrase>
+    <Phrase key="btnExportCurData">导出</Phrase>
+    <Phrase key="gbArcData">存档数据</Phrase>
+    <Phrase key="lblArcDataCtrlCnlNum">输出信道</Phrase>
+    <Phrase key="lblArcDataDateTime">日期和时间</Phrase>
+    <Phrase key="btnExportArcData">导出</Phrase>
+    <Phrase key="gbEvents">事件</Phrase>
+    <Phrase key="lblEventsCtrlCnlNum">输出信道</Phrase>
+    <Phrase key="lblEventsDate">日期</Phrase>
+    <Phrase key="btnExportEvents">导出</Phrase>
+    <Phrase key="btnOK">确认</Phrase>
+    <Phrase key="btnCancel">取消</Phrase>
+  </Dictionary>
+</ModDBExportDictionaries>

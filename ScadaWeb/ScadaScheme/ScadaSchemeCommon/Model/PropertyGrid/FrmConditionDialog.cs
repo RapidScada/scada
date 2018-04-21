@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.Scheme.Model.DataTypes;
@@ -38,6 +38,7 @@ namespace Scada.Scheme.Model.PropertyGrid
     internal partial class FrmConditionDialog : Form
     {
         private List<Condition> conditions;     // ссылка на редактируемые условия
+        private Type conditionType;             // тип редактируемых условий
         ISchemeDocAvailable schemeDocAvailable; // объект, предоставляющий свойства документа схемы
 
 
@@ -52,15 +53,19 @@ namespace Scada.Scheme.Model.PropertyGrid
         /// <summary>
         /// Конструктор
         /// </summary>
-        public FrmConditionDialog(List<Condition> conditions, ISchemeDocAvailable schemeDocAvailable)
+        public FrmConditionDialog(List<Condition> conditions, Type conditionType, 
+            ISchemeDocAvailable schemeDocAvailable)
             : this()
         {
             if (conditions == null)
                 throw new ArgumentNullException("conditions");
+            if (conditionType == null)
+                throw new ArgumentNullException("conditionType");
             if (schemeDocAvailable == null)
                 throw new ArgumentNullException("schemeDocAvailable");
 
             this.conditions = conditions;
+            this.conditionType = conditionType;
             this.schemeDocAvailable = schemeDocAvailable;
         }
 
@@ -143,7 +148,8 @@ namespace Scada.Scheme.Model.PropertyGrid
         private void btnAdd_Click(object sender, EventArgs e)
         {
             // добавление условия
-            Condition cond = new Condition() { SchemeDoc = schemeDocAvailable.SchemeDoc };
+            Condition cond = (Condition)Activator.CreateInstance(conditionType);
+            cond.SchemeDoc = schemeDocAvailable.SchemeDoc;
             lbCond.SelectedIndex = lbCond.Items.Add(cond);
             propGrid.Select();
         }

@@ -33,13 +33,16 @@
   <ItemGroup>
     <Reference Include="Log, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Log\bin\Release\Log.dll</HintPath>
+      <HintPath>..\..\..\Log\Log\bin\Release\Log.dll</HintPath>
     </Reference>
     <Reference Include="ScadaData">
       <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
     </Reference>
     <Reference Include="ScadaWebCommon5">
       <HintPath>..\..\ScadaWebCommon5\bin\Release\ScadaWebCommon5.dll</HintPath>
+    </Reference>
+    <Reference Include="Svg">
+      <HintPath>..\..\..\..\dll\Svg.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
@@ -63,6 +66,7 @@
     <Compile Include="Model\DataTypes\CnlFilterExtenstions.cs" />
     <Compile Include="Model\DataTypes\CompareOperators.cs" />
     <Compile Include="Model\DataTypes\Condition.cs" />
+    <Compile Include="Model\DataTypes\ImageCondition.cs" />
     <Compile Include="Model\DataTypes\ImageStretches.cs" />
     <Compile Include="Model\DataTypes\LogicalOperators.cs" />
     <Compile Include="Model\DataTypes\Point.cs" />
@@ -78,6 +82,7 @@
     <Compile Include="Model\ISchemeDocAvailable.cs" />
     <Compile Include="Model\ItemChangedEventHandler.cs" />
     <Compile Include="Model\IUniqueItem.cs" />
+    <Compile Include="Model\PropertyGrid\AttrTranslator.cs" />
     <Compile Include="Model\PropertyGrid\BooleanConverter.cs" />
     <Compile Include="Model\PropertyGrid\Categories.cs" />
     <Compile Include="Model\PropertyGrid\CategoryAttribute.cs" />
@@ -85,6 +90,7 @@
     <Compile Include="Model\PropertyGrid\CnlFilterEditor.cs" />
     <Compile Include="Model\PropertyGrid\CollectionConverter.cs" />
     <Compile Include="Model\PropertyGrid\ColorEditor.cs" />
+    <Compile Include="Model\PropertyGrid\ImageConditionEditor.cs" />
     <Compile Include="Model\PropertyGrid\ConditionEditor.cs" />
     <Compile Include="Model\PropertyGrid\DescriptionAttribute.cs" />
     <Compile Include="Model\PropertyGrid\DisplayNameAttribute.cs" />
@@ -117,6 +123,7 @@
     </Compile>
     <Compile Include="Model\PropertyGrid\ImageConverter.cs" />
     <Compile Include="Model\PropertyGrid\ImageEditor.cs" />
+    <Compile Include="Model\PropertyGrid\ImageListItem.cs" />
     <Compile Include="Model\PropertyGrid\PointConverter.cs" />
     <Compile Include="Model\PropertyGrid\SizeConverter.cs" />
     <Compile Include="Model\PropertyGrid\UniqueStringConverter.cs" />
@@ -125,6 +132,7 @@
     <Compile Include="Model\StaticPicture.cs" />
     <Compile Include="Model\StaticText.cs" />
     <Compile Include="Model\DataTypes\VerticalAlignments.cs" />
+    <Compile Include="Model\UnknownComponent.cs" />
     <Compile Include="SchemeUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SchemeView.cs" />

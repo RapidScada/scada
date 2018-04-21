@@ -1,6 +1,8 @@
 ﻿// Data exchange rate, ms
 var GET_CHANGES_RATE = 300;
 
+// Ajax queue
+var ajaxQueue = new scada.AjaxQueue();
 // Scheme object
 var scheme = new scada.scheme.EditableScheme();
 
@@ -16,6 +18,12 @@ var serviceUrl = serviceUrl || "http://localhost:10001/ScadaSchemeEditor/SchemeE
 function loadScheme(editorID) {
     scheme.load(editorID, function (success) {
         if (success) {
+            // show errors
+            if (Array.isArray(scheme.loadErrors) && scheme.loadErrors.length > 0) {
+                showAlert(scheme.loadErrors.join("<br/>"));
+            }
+
+            // show scheme
             scheme.createDom(true);
             startGettingChanges();
         } else {

@@ -23,6 +23,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,7 +45,7 @@
   <ItemGroup>
     <Reference Include="Log, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Log\bin\Release\Log.dll</HintPath>
+      <HintPath>..\..\Log\Log\bin\Release\Log.dll</HintPath>
     </Reference>
     <Reference Include="ScadaData, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -183,6 +184,7 @@
     <Content Include="images\treeview\document.png" />
     <Content Include="images\treeview\folder.png" />
     <Content Include="index.htm" />
+    <Content Include="js\api\ajaxqueue.js" />
     <Content Include="js\api\checkbrowser.js" />
     <Content Include="js\api\clientapi.js" />
     <Content Include="js\api\export.js" />

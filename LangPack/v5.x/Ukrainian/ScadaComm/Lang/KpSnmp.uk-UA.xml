@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<KpSmmpDictionaries>
+  <Dictionary key="Scada.Comm.Devices.KpSnmp.FrmConfig">
+    <Phrase key="this">SNMP - Конфігурація КП {0}</Phrase>
+    <Phrase key="btnAddVarGroup.ToolTip">Додати групу змінних</Phrase>
+    <Phrase key="btnAddVariable.ToolTip">Додати змінну</Phrase>
+    <Phrase key="btnEdit.ToolTip">Редагувати</Phrase>
+    <Phrase key="btnMoveUp.ToolTip">Перемістити вгору</Phrase>
+    <Phrase key="btnMoveDown.ToolTip">Перемістити вниз</Phrase>
+    <Phrase key="btnDelete.ToolTip">Видалити</Phrase>
+    <Phrase key="btnSettings.ToolTip">Налаштування</Phrase>
+    <Phrase key="btnSave">Зберегти</Phrase>
+    <Phrase key="btnClose">Закрити</Phrase>
+    <Phrase key="DeviceNode">КП</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.KpSnmp.FrmSettings">
+    <Phrase key="this">Налаштування</Phrase>
+    <Phrase key="lblReadCommunity">Пароль на читання</Phrase>
+    <Phrase key="lblWriteCommunity">Пароль на запис</Phrase>
+    <Phrase key="lblSnmpVersion">Версія SNMP</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Відміна</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.KpSnmp.FrmVarGroup">
+    <Phrase key="this">Група змінних</Phrase>
+    <Phrase key="lblName">Ім'я</Phrase>
+    <Phrase key="btnAdd">Додати</Phrase>
+    <Phrase key="btnChange">Змінити</Phrase>
+    <Phrase key="btnCancel">Відміна</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.KpSnmp.FrmVariable">
+    <Phrase key="this">Змінна</Phrase>
+    <Phrase key="lblName">Ім'я</Phrase>
+    <Phrase key="lblOID">OID</Phrase>
+    <Phrase key="chkBits">BITS (розширення OctetString)</Phrase>
+    <Phrase key="lblSignal">Сигнал</Phrase>
+    <Phrase key="btnAdd">Додати</Phrase>
+    <Phrase key="btnChange">Змінити</Phrase>
+    <Phrase key="btnCancel">Відміна</Phrase>
+    <Phrase key="IncorrectOID">Некоректний OID</Phrase>
+  </Dictionary>
+</KpSmmpDictionaries>

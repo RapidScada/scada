@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2017
+ * Modified : 2018
  * 
  * Description
  * Server module for real time data export from Rapid SCADA to DB.
@@ -156,6 +156,17 @@ namespace Scada.Server.Modules.DBExport
         }
 
         /// <summary>
+        /// Безопасно откатить транзакцию
+        /// </summary>
+        private void SafeRollback(DbTransaction trans)
+        {
+            if (trans != null)
+            {
+                try { trans.Rollback(); } catch { }
+            }
+        }
+
+        /// <summary>
         /// Цикл работы менеждера (метод вызывается в отдельном потоке)
         /// </summary>
         private void Execute()
@@ -267,8 +278,7 @@ namespace Scada.Server.Modules.DBExport
                 }
                 catch (Exception ex)
                 {
-                    if (trans != null)
-                        trans.Rollback();
+                    SafeRollback(trans);
 
                     // возврат среза в очередь
                     if (srez != null)
@@ -323,8 +333,7 @@ namespace Scada.Server.Modules.DBExport
                 }
                 catch (Exception ex)
                 {
-                    if (trans != null)
-                        trans.Rollback();
+                    SafeRollback(trans);
 
                     // возврат среза в очередь
                     if (srez != null)
@@ -379,8 +388,7 @@ namespace Scada.Server.Modules.DBExport
                 }
                 catch (Exception ex)
                 {
-                    if (trans != null)
-                        trans.Rollback();
+                    SafeRollback(trans);
 
                     // возврат события в очередь
                     if (ev != null)

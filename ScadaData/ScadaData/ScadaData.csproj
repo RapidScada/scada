@@ -39,8 +39,9 @@
     <DocumentationFile>bin\Release\ScadaData.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Log">
-      <HintPath>..\..\Log\bin\Release\Log.dll</HintPath>
+    <Reference Include="Log, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Log\Log\bin\Release\Log.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -54,6 +55,9 @@
     <Compile Include="Client\ISupportLoading.cs" />
     <Compile Include="Client\ViewCache.cs" />
     <Compile Include="Data\Models\CnlStatProps.cs" />
+    <Compile Include="Data\Models\CommLine.cs" />
+    <Compile Include="Data\Models\Obj.cs" />
+    <Compile Include="Data\Models\Device.cs" />
     <Compile Include="Data\Models\DispEvent.cs" />
     <Compile Include="Data\Models\UserProps.cs" />
     <Compile Include="Data\Tables\Adapter.cs" />
@@ -86,6 +90,7 @@
     <Compile Include="Data\Tables\SrezTableLight.cs" />
     <Compile Include="Data\Tables\Trend.cs" />
     <Compile Include="ITreeNode.cs" />
+    <Compile Include="SerializationBinder.cs" />
     <Compile Include="UI\ObjectChangedEventArgs.cs" />
     <Compile Include="UI\ObjectChangedEventHandler.cs" />
     <Compile Include="UI\ScadaUiUtils.cs" />

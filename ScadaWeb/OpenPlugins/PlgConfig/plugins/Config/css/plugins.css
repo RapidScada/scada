@@ -39,6 +39,10 @@ label {
 td.name-cell span {
   font-weight: 600;
 }
+tr.state-inactive td.name-cell,
+tr.state-inactive td.state-cell {
+  color: #aaa;
+}
 tr.state-notloaded {
   color: #a00;
 }

@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModDBExportDictionaries>
+  <Dictionary key="Scada.Server.Modules.DBExport.FrmDBExportConfig">
+    <Phrase key="this">Експорт до бази даних</Phrase>
+    <Phrase key="ddbAddDataSource.ToolTip">Додати джерело даних</Phrase>
+    <Phrase key="btnDelDataSource.ToolTip">Видалити джерело даних</Phrase>
+    <Phrase key="btnManualExport.ToolTip">Ручний експорт</Phrase>
+    <Phrase key="lblInstruction">Додати джерела даних</Phrase>
+    <Phrase key="pageConnection">З'єднання</Phrase>
+    <Phrase key="lblServer">Сервер</Phrase>
+    <Phrase key="lblDatabase">База даних</Phrase>
+    <Phrase key="lblUser">Користувач</Phrase>
+    <Phrase key="lblPassword">Пароль</Phrase>
+    <Phrase key="lblConnectionString">Стрічка з'єднання</Phrase>
+    <Phrase key="pageExportCurDataQuery">Поточні дані</Phrase>
+    <Phrase key="pageExportArcDataQuery">Архівні дані</Phrase>
+    <Phrase key="pageExportEventQuery">Події</Phrase>
+    <Phrase key="chkExport">Експорт</Phrase>
+    <Phrase key="btnSave">Зберегти</Phrase>
+    <Phrase key="btnCancel">Відміна</Phrase>
+    <Phrase key="btnClose">Закрити</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Server.Modules.DBExport.FrmManualExport">
+    <Phrase key="this">Ручний експорт</Phrase>
+    <Phrase key="lblDataSource">Джерело даних</Phrase>
+    <Phrase key="gbCurData">Поточні дані</Phrase>
+    <Phrase key="lblCurDataCtrlCnlNum">Канал управління</Phrase>
+    <Phrase key="btnExportCurData">Експорт</Phrase>
+    <Phrase key="gbArcData">Архівні дані</Phrase>
+    <Phrase key="lblArcDataCtrlCnlNum">Канал управління</Phrase>
+    <Phrase key="lblArcDataDateTime">Дата і година</Phrase>
+    <Phrase key="btnExportArcData">Експорт</Phrase>
+    <Phrase key="gbEvents">Події</Phrase>
+    <Phrase key="lblEventsCtrlCnlNum">Канал управління</Phrase>
+    <Phrase key="lblEventsDate">Дата</Phrase>
+    <Phrase key="btnExportEvents">Експорт</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Відміна</Phrase>
+  </Dictionary>
+</ModDBExportDictionaries>

@@ -291,6 +291,7 @@ namespace Scada.Web.Plugins.Config
         /// </summary>
         private void ReloadPlugins()
         {
+            appData.ViewCache.Cache.Clear();
             userData.ReLogin();
             userData.CheckLoggedOn(true);
             repPlugins.DataSource = GetAllPlugins();

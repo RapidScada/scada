@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,15 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaSchemeCommon
- * Summary  : Image output condition
+ * Summary  : The base class defining the condition
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.Scheme.Model.PropertyGrid;
 using System;
-using System.Drawing.Design;
 using System.Text;
 using System.Web.Script.Serialization;
 using System.Xml;
@@ -34,11 +33,11 @@ using CM = System.ComponentModel;
 namespace Scada.Scheme.Model.DataTypes
 {
     /// <summary>
-    /// Image output condition
-    /// <para>Условие вывода изображения</para>
+    /// The base class defining the condition
+    /// <para>Базовый класс, определяющий условие</para>
     /// </summary>
     [Serializable]
-    public class Condition : ISchemeDocAvailable
+    public abstract class Condition : ISchemeDocAvailable
     {
         /// <summary>
         /// Наименование категории условия
@@ -62,7 +61,6 @@ namespace Scada.Scheme.Model.DataTypes
             LogicalOperator = LogicalOperators.None;
             CompareOperator2 = CompareOperators.LessThan;
             CompareArgument2 = 0.0;
-            ImageName = "";
             SchemeDoc = null;
         }
 
@@ -109,16 +107,6 @@ namespace Scada.Scheme.Model.DataTypes
         [CM.DefaultValue(0.0)]
         #endregion
         public double CompareArgument2 { get; set; }
-
-        /// <summary>
-        /// Получить или установить наименование изображения, отображаемого при выполнении условия
-        /// </summary>
-        #region Attributes
-        [DisplayName("Image"), Category(Categories.Appearance)]
-        [CM.TypeConverter(typeof(ImageConverter)), CM.Editor(typeof(ImageEditor), typeof(UITypeEditor))]
-        [CM.DefaultValue("")]
-        #endregion
-        public string ImageName { get; set; }
 
         /// <summary>
         /// Получить или установить ссылку на свойства документа схемы
@@ -179,7 +167,7 @@ namespace Scada.Scheme.Model.DataTypes
         /// <summary>
         /// Загрузить условие из XML-узла
         /// </summary>
-        public void LoadFromXml(XmlNode xmlNode)
+        public virtual void LoadFromXml(XmlNode xmlNode)
         {
             if (xmlNode == null)
                 throw new ArgumentNullException("xmlNode");
@@ -189,13 +177,12 @@ namespace Scada.Scheme.Model.DataTypes
             CompareOperator2 = xmlNode.GetChildAsEnum<CompareOperators>("CompareOperator2");
             CompareArgument2 = xmlNode.GetChildAsDouble("CompareArgument2");
             LogicalOperator = xmlNode.GetChildAsEnum<LogicalOperators>("LogicalOperator");
-            ImageName = xmlNode.GetChildAsString("ImageName");
         }
 
         /// <summary>
         /// Сохранить условие в XML-узле
         /// </summary>
-        public void SaveToXml(XmlElement xmlElem)
+        public virtual void SaveToXml(XmlElement xmlElem)
         {
             if (xmlElem == null)
                 throw new ArgumentNullException("xmlElem");
@@ -205,13 +192,12 @@ namespace Scada.Scheme.Model.DataTypes
             xmlElem.AppendElem("CompareOperator2", CompareOperator2);
             xmlElem.AppendElem("CompareArgument2", CompareArgument2);
             xmlElem.AppendElem("LogicalOperator", LogicalOperator);
-            xmlElem.AppendElem("ImageName", ImageName);
         }
 
         /// <summary>
         /// Клонировать объект
         /// </summary>
-        public Condition Clone()
+        public virtual Condition Clone()
         {
             Condition clonedCondition = (Condition)ScadaUtils.DeepClone(this);
             clonedCondition.SchemeDoc = SchemeDoc;

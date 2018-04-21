@@ -31,6 +31,10 @@ namespace Scada.Scheme.Model.PropertyGrid
     /// Categories of PropertyGrid
     /// <para>Категории PropertyGrid</para>
     /// </summary>
+    /// <remarks>
+    /// Predefined categories:
+    /// https://msdn.microsoft.com/en-us/library/system.componentmodel.categoryattribute(v=vs.110).aspx
+    /// </remarks>
     public static class Categories
     {
         public const string Appearance = "Appearance";

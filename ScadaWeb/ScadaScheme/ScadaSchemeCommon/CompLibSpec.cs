@@ -94,6 +94,30 @@ namespace Scada.Scheme
             }
         }
 
+        /// <summary>
+        /// Получить ссылки на файлы CSS, которые необходимы для работы компонентов
+        /// </summary>
+        /// <remarks>Путь указывается относительно директории плагинов</remarks>
+        public virtual List<string> Styles
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Получить ссылки на файлы JavaScript, которые необходимы для работы компонентов
+        /// </summary>
+        /// <remarks>Путь указывается относительно директории плагинов</remarks>
+        public virtual List<string> Scripts
+        {
+            get
+            {
+                return null;
+            }
+        }
+
 
         /// <summary>
         /// Создать элементы списка компонентов
@@ -106,10 +130,11 @@ namespace Scada.Scheme
         protected abstract CompFactory CreateCompFactory();
 
         /// <summary>
-        /// Проверить корректность реализации библиотеки компонентов
+        /// Проверить, что библиотека компонентов пригодна к использованию
         /// </summary>
-        public bool Validate()
+        public virtual bool Validate(out string errMsg)
         {
+            errMsg = "";
             return 
                 !string.IsNullOrEmpty(XmlPrefix) && 
                 !string.IsNullOrEmpty(XmlNs) &&

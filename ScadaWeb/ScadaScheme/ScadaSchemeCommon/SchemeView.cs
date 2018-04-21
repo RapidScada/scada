@@ -54,6 +54,7 @@ namespace Scada.Scheme
             maxComponentID = 0;
             SchemeDoc = new SchemeDocument();
             Components = new SortedList<int, BaseComponent>();
+            LoadErrors = new List<string>();
         }
 
 
@@ -66,6 +67,12 @@ namespace Scada.Scheme
         /// Получить компоненты схемы, ключ - идентификатор компонента
         /// </summary>
         public SortedList<int, BaseComponent> Components { get; protected set; }
+
+        /// <summary>
+        /// Получить ошибки при загрузке схемы
+        /// </summary>
+        /// <remarks>Необходимо для контроля загрузки библиотек и компонентов</remarks>
+        public List<string> LoadErrors { get; protected set; }
 
 
         /// <summary>
@@ -112,32 +119,39 @@ namespace Scada.Scheme
             XmlNode componentsNode = rootElem.SelectSingleNode("Components") ?? rootElem.SelectSingleNode("Elements");
             if (componentsNode != null)
             {
+                HashSet<string> errNodeNames = new HashSet<string>(); // имена узлов незагруженных компонентов
                 CompManager compManager = CompManager.GetInstance();
+                LoadErrors.AddRange(compManager.LoadErrors);
 
                 foreach (XmlNode compNode in componentsNode.ChildNodes)
                 {
                     // создание компонента
-                    BaseComponent component = compManager.CreateComponent(compNode);
+                    string errMsg;
+                    BaseComponent component = compManager.CreateComponent(compNode, out errMsg);
 
-                    if (component != null)
+                    if (component == null)
                     {
-                        // загрузка компонента и добавление его в представление
-                        component.SchemeDoc = SchemeDoc;
-                        component.LoadFromXml(compNode);
-                        Components[component.ID] = component;
-
-                        // добавление входных каналов представления
-                        if (component is IDynamicComponent)
-                        {
-                            IDynamicComponent dynamicComponent = (IDynamicComponent)component;
-                            AddCnlNum(dynamicComponent.InCnlNum);
-                            AddCtrlCnlNum(dynamicComponent.CtrlCnlNum);
-                        }
-
-                        // определение макс. идентификатора компонентов
-                        if (component.ID > maxComponentID)
-                            maxComponentID = component.ID;
+                        component = new UnknownComponent() { XmlNode = compNode };
+                        if (errNodeNames.Add(compNode.Name))
+                            LoadErrors.Add(errMsg);
                     }
+
+                    // загрузка компонента и добавление его в представление
+                    component.SchemeDoc = SchemeDoc;
+                    component.LoadFromXml(compNode);
+                    Components[component.ID] = component;
+
+                    // добавление входных каналов представления
+                    if (component is IDynamicComponent)
+                    {
+                        IDynamicComponent dynamicComponent = (IDynamicComponent)component;
+                        AddCnlNum(dynamicComponent.InCnlNum);
+                        AddCtrlCnlNum(dynamicComponent.CtrlCnlNum);
+                    }
+
+                    // определение макс. идентификатора компонентов
+                    if (component.ID > maxComponentID)
+                        maxComponentID = component.ID;
                 }
             }
 
@@ -210,23 +224,30 @@ namespace Scada.Scheme
 
                 foreach (BaseComponent component in Components.Values)
                 {
-                    Type compType = component.GetType();
-                    CompLibSpec compLibSpec = compManager.GetSpecByType(compType);
-
-                    // добавление пространства имён
-                    if (compLibSpec != null && !prefixes.Contains(compLibSpec.XmlPrefix))
+                    if (component is UnknownComponent)
                     {
-                        // TODO: добавить пр. имён
-                        prefixes.Add(compLibSpec.XmlPrefix);
+                        componentsElem.AppendChild(((UnknownComponent)component).XmlNode);
                     }
+                    else
+                    {
+                        Type compType = component.GetType();
+                        CompLibSpec compLibSpec = compManager.GetSpecByType(compType);
 
-                    // создание компонента
-                    XmlElement componentElem = compLibSpec == null ?
-                        xmlDoc.CreateElement(compType.Name) /*стандартный компонент*/ :
-                        xmlDoc.CreateElement(compLibSpec.XmlPrefix, compType.Name, compLibSpec.XmlNs);
+                        // добавление пространства имён
+                        if (compLibSpec != null && !prefixes.Contains(compLibSpec.XmlPrefix))
+                        {
+                            rootElem.SetAttribute("xmlns:" + compLibSpec.XmlPrefix, compLibSpec.XmlNs);
+                            prefixes.Add(compLibSpec.XmlPrefix);
+                        }
 
-                    componentsElem.AppendChild(componentElem);
-                    component.SaveToXml(componentElem);
+                        // создание XML-элемента компонента
+                        XmlElement componentElem = compLibSpec == null ?
+                            xmlDoc.CreateElement(compType.Name) /*стандартный компонент*/ :
+                            xmlDoc.CreateElement(compLibSpec.XmlPrefix, compType.Name, compLibSpec.XmlNs);
+
+                        componentsElem.AppendChild(componentElem);
+                        component.SaveToXml(componentElem);
+                    }
                 }
 
                 // запись изображений схемы
@@ -265,6 +286,7 @@ namespace Scada.Scheme
             maxComponentID = 0;
             SchemeDoc.SetToDefault();
             Components.Clear();
+            LoadErrors.Clear();
         }
 
         /// <summary>

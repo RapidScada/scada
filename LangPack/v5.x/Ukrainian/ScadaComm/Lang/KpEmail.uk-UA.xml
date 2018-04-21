@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<KpEmailDictionaries>
+  <Dictionary key="Scada.Comm.Devices.KpEmail.FrmConfig">
+    <Phrase key="this">Електронна адреса - Конфігурація КП {0}</Phrase>
+    <Phrase key="lblHost">SMTP сервер</Phrase>
+    <Phrase key="lblPort">Порт</Phrase>
+    <Phrase key="lblUser">Користувач</Phrase>
+    <Phrase key="lblPassword">Пароль</Phrase>
+    <Phrase key="lblUserDisplayName">Відображуване ім'я користувача</Phrase>
+    <Phrase key="chkEnableSsl">Застосовувати SSL</Phrase>
+    <Phrase key="btnEditAddressBook">Адресна книга</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Відміна</Phrase>
+  </Dictionary>
+</KpEmailDictionaries>

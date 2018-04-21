@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.Scheme.Model.DataTypes;
@@ -45,20 +45,11 @@ namespace Scada.Scheme.Model
         public StaticPicture()
         {
             BorderColor = "Gray";
+            BorderWidth = 1;
             ImageName = "";
             ImageStretch = ImageStretches.None;
         }
 
-
-        /// <summary>
-        /// Получить или установить цвет рамки
-        /// </summary>
-        #region Attributes
-        [DisplayName("Border color"), Category(Categories.Appearance)]
-        [Description("The border color of the component.")]
-        [CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
-        #endregion
-        public string BorderColor { get; set; }
 
         /// <summary>
         /// Получить или установить наименование изображения
@@ -89,7 +80,6 @@ namespace Scada.Scheme.Model
         {
             base.LoadFromXml(xmlNode);
 
-            BorderColor = xmlNode.GetChildAsString("BorderColor");
             ImageName = xmlNode.GetChildAsString("ImageName");
             ImageStretch = xmlNode.GetChildAsEnum<ImageStretches>("ImageStretch");
         }
@@ -101,7 +91,6 @@ namespace Scada.Scheme.Model
         {
             base.SaveToXml(xmlElem);
 
-            xmlElem.AppendElem("BorderColor", BorderColor);
             xmlElem.AppendElem("ImageName", ImageName);
             xmlElem.AppendElem("ImageStretch", ImageStretch);
         }

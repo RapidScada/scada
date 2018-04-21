@@ -3,7 +3,7 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2018
  *
  * No dependencies
  */
@@ -13,7 +13,7 @@ var scada = scada || {};
 
 // JavaScript utilities object
 scada.utils = {
-    // Prospective browser scrollbar width
+    // Assumed browser scrollbar width
     _SCROLLBAR_WIDTH: 20,
 
     // z-index that moves element to the front
@@ -252,6 +252,16 @@ scada.utils = {
         }
     },
 
+    // Set frame source creating new frame to prevent writing frame history. Returns the new frame
+    setFrameSrc: function (jqFrame, url) {
+        var frameParent = jqFrame.parent();
+        var frameClone = jqFrame.clone();
+        jqFrame.remove();
+        frameClone.attr("src", url);
+        frameClone.appendTo(frameParent);
+        return frameClone;
+    },
+
     // Detect if iOS is used
     iOS: function () {
         return /iPad|iPhone|iPod/.test(navigator.platform);
@@ -272,5 +282,10 @@ scada.utils = {
                 });
             }
         }
+    },
+
+    // Get URL of the view by its ID
+    getViewUrl: function (viewID) {
+        return "View.aspx?viewID=" + viewID;
     }
 };

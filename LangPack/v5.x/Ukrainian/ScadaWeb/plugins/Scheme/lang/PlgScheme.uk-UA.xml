@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PlgSchemeDictionaries>
+  <Dictionary key="Scada.Web.Plugins.Scheme.WFrmScheme">
+    <Phrase key="this">Схема - Rapid SCADA</Phrase>
+    <Phrase key="lblFitScreenBtn.ToolTip">По розміру екрану</Phrase>
+    <Phrase key="lblFitWidthBtn.ToolTip">По ширині</Phrase>
+    <Phrase key="lblZoomOutBtn.ToolTip">Зменшити</Phrase>
+    <Phrase key="lblZoomInBtn.ToolTip">Збільшити</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Scheme.WFrmScheme.Js">
+    <Phrase key="LoadSchemeError">Помилка при завантаженні схеми. Спробуйте перезавантажити схему</Phrase>
+    <Phrase key="UpdateError">Помилка при поновленні даних схеми</Phrase>
+    <Phrase key="ReloadButton">Перезавантажити</Phrase>
+  </Dictionary>
+</PlgSchemeDictionaries>

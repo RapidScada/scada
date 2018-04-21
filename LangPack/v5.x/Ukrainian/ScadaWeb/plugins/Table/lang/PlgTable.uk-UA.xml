@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PlgTableDictionaries>
+  <Dictionary key="Scada.Web.Plugins.Table.EventsRepBuilder">
+    <Phrase key="EventsWorksheet">Події</Phrase>
+    <Phrase key="AllEventsTitle">Всі події, {0}</Phrase>
+    <Phrase key="EventsByViewTitle">{0}, {1}</Phrase>
+    <Phrase key="EventsGen">Отримано </Phrase>
+    <Phrase key="NumCol">Номер</Phrase>
+    <Phrase key="TimeCol">Дата і година</Phrase>
+    <Phrase key="ObjCol">Об'єкт</Phrase>
+    <Phrase key="DevCol">КП</Phrase>
+    <Phrase key="CnlCol">Канал</Phrase>
+    <Phrase key="TextCol">Опис</Phrase>
+    <Phrase key="AckCol">Квіт</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.HourDataRepBuilder">
+    <Phrase key="HourDataWorksheet">Погодинні дані</Phrase>
+    <Phrase key="HourDataTitle">{0}, {1}, {2}</Phrase>
+    <Phrase key="HourDataGen">Отримано </Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.EventsWndSpec">
+    <Phrase key="EventsTitle">Події</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.TableView">
+    <Phrase key="LoadTableViewError">Помилка при завантаженні табличного відображення із файлу</Phrase>
+    <Phrase key="SaveTableViewError">Помилка при збереженні табличного відображення в файл</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmCommand">
+    <Phrase key="this">Команда - Rapid SCADA</Phrase>
+    <Phrase key="lblCtrlCnlNotFound">Канал управління {0} не знайдений.</Phrase>
+    <Phrase key="lblWrongPwd">Невірний пароль.</Phrase>
+    <Phrase key="lblNoRights">Недостатньо прав.</Phrase>
+    <Phrase key="lblIncorrectCmdVal">Некоректне значення команди.</Phrase>
+    <Phrase key="lblIncorrectCmdData">Некоректні дані команди.</Phrase>
+    <Phrase key="lblCtrlCnlCaption">Канал упр.:</Phrase>
+    <Phrase key="lblObjCaption">Об'єкт:</Phrase>
+    <Phrase key="lblDevCaption">КП:</Phrase>
+    <Phrase key="lblPassword">Пароль</Phrase>
+    <Phrase key="lblCmdVal">Значення</Phrase>
+    <Phrase key="lblCommand">Команда</Phrase>
+    <Phrase key="lblCmdData">Дані</Phrase>
+    <Phrase key="lblStr">Стрічка</Phrase>
+    <Phrase key="lblHex">16-ові дані</Phrase>
+    <Phrase key="lblCmdEnqueded">Команда поставлена в чергу на виконання.</Phrase>
+    <Phrase key="lblCloseAfter">Вікно буде закрите через</Phrase>
+    <Phrase key="lblSec">с.</Phrase>
+    <Phrase key="lblCmdNotSent">Неможливо відправити команду. Сервер недоступний.</Phrase>
+    <Phrase key="lblCmdRejected">Команда відхилена сервером.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmEventAck">
+    <Phrase key="this">Квітування події - Rapid SCADA</Phrase>
+    <Phrase key="lblEventNotFound">Подію не знайдено.</Phrase>
+    <Phrase key="lblAckNotSent">Неможливо відправити команду квітування. Сервер недоступний.</Phrase>
+    <Phrase key="lblAckRejected">Команда квітування відхилена сервером.</Phrase>
+    <Phrase key="lblNumCaption">Номер:</Phrase>
+    <Phrase key="lblTimeCaption">Дата і година:</Phrase>
+    <Phrase key="lblObjCaption">Об'єкт:</Phrase>
+    <Phrase key="lblDevCaption">КП:</Phrase>
+    <Phrase key="lblCnlCaption">Канал:</Phrase>
+    <Phrase key="lblTextCaption">Опис:</Phrase>
+    <Phrase key="lblAckCaption">Квітування:</Phrase>
+    <Phrase key="lblByUser">користувачем {0}</Phrase>
+    <Phrase key="lblTip">Натисніть кнопку OK, щоби квітувати подію.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmEvents">
+    <Phrase key="lblAllEventsBtn">Всі події</Phrase>
+    <Phrase key="lblEventsByViewBtn">По відображенню</Phrase>
+    <Phrase key="lblNumCol">Номер</Phrase>
+    <Phrase key="lblTimeCol">Дата і година</Phrase>
+    <Phrase key="lblObjCol">Об'єкт</Phrase>
+    <Phrase key="lblDevCol">КП</Phrase>
+    <Phrase key="lblCnlCol">Канал</Phrase>
+    <Phrase key="lblTextCol">Опис</Phrase>
+    <Phrase key="lblAckCol">Квіт</Phrase>
+    <Phrase key="lblNoEvents">Немає подій</Phrase>
+    <Phrase key="lblLoading">Завантаження...</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmEvents.Js">
+    <Phrase key="UpdateEventsError">Помилка при оновленні подій</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmTable">
+    <Phrase key="SelectedDay">Обрана доба:</Phrase>
+    <Phrase key="PreviousDay">Попередня доба:</Phrase>
+    <Phrase key="PrevDayItem">Попер. </Phrase>
+    <Phrase key="ItemCol">Елемент</Phrase>
+    <Phrase key="CurCol">Поточні</Phrase>
+    <Phrase key="InCnlHint">Вх. канал: </Phrase>
+    <Phrase key="CtrlCnlHint">Канал упр.: </Phrase>
+    <Phrase key="ObjectHint">Об'єкт: </Phrase>
+    <Phrase key="DeviceHint">КП: </Phrase>
+    <Phrase key="QuantityHint">Величина: </Phrase>
+    <Phrase key="UnitHint">Розмірність: </Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmTable.Js">
+    <Phrase key="UpdateCurDataError">Помилка при оновленні поточних даних</Phrase>
+    <Phrase key="UpdateHourDataError">Помилка при оновленні годинних даних</Phrase>
+  </Dictionary>
+</PlgTableDictionaries>

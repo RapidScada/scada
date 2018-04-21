@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2008
- * Modified : 2016
+ * Modified : 2018
  */
 
 using Scada.Data.Configuration;
@@ -71,9 +71,11 @@ namespace Scada.Data.Models
         /// </summary>
         public CtrlCnlProps(int ctrlCnlNum, string ctrlCnlName, int cmdTypeID)
         {
+            Active = true;
             CtrlCnlNum = ctrlCnlNum;
             CtrlCnlName = ctrlCnlName;
             CmdTypeID = cmdTypeID;
+            CmdTypeName = "";
             ObjNum = 0;
             ObjName = "";
             KPNum = 0;
@@ -90,6 +92,11 @@ namespace Scada.Data.Models
 
 
         /// <summary>
+        /// Получить или установить признак активности
+        /// </summary>
+        public bool Active { get; set; }
+
+        /// <summary>
         /// Получить или установить номер канала управления
         /// </summary>
         public int CtrlCnlNum { get; set; }
@@ -103,6 +110,11 @@ namespace Scada.Data.Models
         /// Получить или установить идентификатор типа команды
         /// </summary>
         public int CmdTypeID { get; set; }
+
+        /// <summary>
+        /// Получить или установить наименование типа команды
+        /// </summary>
+        public string CmdTypeName { get; set; }
 
         /// <summary>
         /// Получить или установить номер объекта

@@ -3,11 +3,12 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2018
  *
  * Requires:
  * - jquery
  * - utils.js
+ * - ajaxqueue.js
  */
 
 // Rapid SCADA namespace
@@ -59,10 +60,13 @@ scada.Event = function () {
 
 /********** Auxiliary Request Parameters **********/
 
-// Input channel filter type
+// Input channel filter type.
+// Only one filter criteria is applied, others are ignored. Filter criteria priority: cnlNums, viewID
 scada.CnlFilter = function () {
-    // Filter by the explicitly specified input channel numbers. No other filtering is applied
+    // Filter by the explicitly specified input channel numbers
     this.cnlNums = [];
+    // View IDs correspond to the input channels for rights validation
+    this.viewIDs = [];
     // Filter by input channels included in the view
     this.viewID = 0;
 };
@@ -70,6 +74,7 @@ scada.CnlFilter = function () {
 // Convert the input channel filter to a query string
 scada.CnlFilter.prototype.toQueryString = function () {
     return "cnlNums=" + scada.utils.arrayToQueryParam(this.cnlNums) +
+        "&viewIDs=" + scada.utils.arrayToQueryParam(this.viewIDs) +
         "&viewID=" + (this.viewID ? this.viewID : 0);
 };
 
@@ -113,10 +118,15 @@ scada.clientAPI = {
     // Web service root path
     rootPath: "",
 
-    // Execute an AJAX request
+    // Ajax queue used for request sequencing. Can be null
+    ajaxQueue: null,
+
+    // Execute an Ajax request
     _request: function (operation, queryString, callback, errorResult) {
-        $.ajax({
-            url: this.rootPath + operation + queryString,
+        var ajaxObj = this.ajaxQueue ? this.ajaxQueue : $;
+
+        ajaxObj.ajax({
+            url: (this.ajaxQueue ? this.ajaxQueue.rootPath : this.rootPath) + operation + queryString,
             method: "GET",
             dataType: "json",
             cache: false
@@ -135,7 +145,7 @@ scada.clientAPI = {
                     scada.utils.logServiceError(operation, parsedData.ErrorMessage);
                     callback(false, errorResult);
                 }
-            } 
+            }
             catch (ex) {
                 scada.utils.logProcessingError(operation, ex.message);
                 if (typeof callback === "function") {
@@ -164,7 +174,7 @@ scada.clientAPI = {
     // callback is a function (success, loggedOn)
     // URL example: http://webserver/scada/ClientApiSvc.svc/CheckLoggedOn
     checkLoggedOn: function (callback) {
-        this._request("ClientApiSvc.svc/CheckLoggedOn", "", callback, false);
+        this._request("ClientApiSvc.svc/CheckLoggedOn", "", callback, null);
     },
 
     // Get current data of the input channel.
@@ -176,7 +186,7 @@ scada.clientAPI = {
 
     // Get extended current data by the specified filter.
     // callback is a function (success, cnlDataExtArr)
-    // URL example: http://webserver/scada/ClientApiSvc.svc/GetCurCnlDataExt?cnlNums=&viewID=1
+    // URL example: http://webserver/scada/ClientApiSvc.svc/GetCurCnlDataExt?cnlNums=&viewIDs=&viewID=1
     getCurCnlDataExt: function (cnlFilter, callback) {
         this._request("ClientApiSvc.svc/GetCurCnlDataExt", "?" + cnlFilter.toQueryString(), callback, []);
     },
@@ -184,7 +194,7 @@ scada.clientAPI = {
     // Get hourly data by the specified filter.
     // dataAge is an array of dates in milliseconds,
     // callback is a function (success, hourCnlDataArr, dataAge)
-    // URL example: http://webserver/scada/ClientApiSvc.svc/GetHourCnlData?year=2016&month=1&day=1&startHour=0&endHour=23&cnlNums=&viewID=1&existing=true&dataAge=
+    // URL example: http://webserver/scada/ClientApiSvc.svc/GetHourCnlData?year=2016&month=1&day=1&startHour=0&endHour=23&cnlNums=&viewIDs=&viewID=1&existing=true&dataAge=
     getHourCnlData: function (hourPeriod, cnlFilter, selectMode, dataAge, callback) {
         this._request("ClientApiSvc.svc/GetHourCnlData",
             "?" + hourPeriod.toQueryString() + "&" + cnlFilter.toQueryString() + "&existing=" + selectMode +
@@ -194,7 +204,7 @@ scada.clientAPI = {
 
     // Get events by the specified filter.
     // callback is a function (success, eventArr, dataAge)
-    // URL example: http://webserver/scada/ClientApiSvc.svc/GetEvents?year=2016&month=1&day=1&cnlNums=&viewID=1&lastCount=100&startEvNum=0&dataAge=0
+    // URL example: http://webserver/scada/ClientApiSvc.svc/GetEvents?year=2016&month=1&day=1&cnlNums=&viewIDs=&viewID=1&lastCount=100&startEvNum=0&dataAge=0
     getEvents: function (date, cnlFilter, lastCount, startEvNum, dataAge, callback) {
         this._request("ClientApiSvc.svc/GetEvents",
             "?" + scada.utils.dateToQueryString(date) + "&" + cnlFilter.toQueryString() +

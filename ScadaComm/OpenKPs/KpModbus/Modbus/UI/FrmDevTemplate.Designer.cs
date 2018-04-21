@@ -254,16 +254,14 @@
             // openFileDialog
             // 
             this.openFileDialog.DefaultExt = "*.xml";
-            this.openFileDialog.Filter = "Файлы шаблонов (*.xml)|*.xml|Все файлы (*.*)|*.*";
+            this.openFileDialog.Filter = "Template Files (*.xml)|*.xml|All Files (*.*)|*.*";
             this.openFileDialog.FilterIndex = 0;
-            this.openFileDialog.Title = "Открыть файл";
             // 
             // saveFileDialog
             // 
             this.saveFileDialog.DefaultExt = "*.xml";
-            this.saveFileDialog.Filter = "Файлы шаблонов (*.xml)|*.xml|Все файлы (*.*)|*.*";
+            this.saveFileDialog.Filter = "Template Files (*.xml)|*.xml|All Files (*.*)|*.*";
             this.saveFileDialog.FilterIndex = 0;
-            this.saveFileDialog.Title = "Сохранить файл";
             // 
             // ctrlElemGroup
             // 

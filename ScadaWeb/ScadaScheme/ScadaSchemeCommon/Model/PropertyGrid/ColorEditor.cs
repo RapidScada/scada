@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2018
  */
 
 #pragma warning disable 1591 // CS1591: Missing XML comment for publicly visible type or member
@@ -96,7 +96,7 @@ namespace Scada.Scheme.Model.PropertyGrid
             }
 
             colorList.Sort(new ColorComparer());
-            colorList.Insert(0, "Status");
+            colorList.Insert(0, SchemeUtils.StatusColor);
             ColorArr = colorList.ToArray();
         }
 

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<AddressBookDictionaries>
+  <Dictionary key="Scada.Comm.Devices.AB">
+    <Phrase key="LoadAddressBookError">Помилка завантаження адресної книги</Phrase>
+    <Phrase key="SaveAddressBookError">Помилка збереження адресної книги</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.AB.FrmAddressBook">
+    <Phrase key="this">Адресна Книга</Phrase>
+    <Phrase key="btnAddContactGroup.ToolTip">Додати групу контактів</Phrase>
+    <Phrase key="btnAddContact.ToolTip">Додати контакт</Phrase>
+    <Phrase key="btnAddPhoneNumber.ToolTip">Додати номер телефону</Phrase>
+    <Phrase key="btnAddEmail.ToolTip">Додати електронну адресу</Phrase>
+    <Phrase key="btnEdit.ToolTip">Редагувати</Phrase>
+    <Phrase key="btnDelete.ToolTip">Видалити</Phrase>
+    <Phrase key="btnSave">Зберегти</Phrase>
+    <Phrase key="btnClose">Закрити</Phrase>
+    <Phrase key="AddressBookNode">Адресна книга</Phrase>
+    <Phrase key="NewContactGroup">Нова група</Phrase>
+    <Phrase key="NewContact">Новий контакт</Phrase>
+    <Phrase key="NewPhoneNumber">Новий номер телефону</Phrase>
+    <Phrase key="NewEmail">Нова електронна адреса</Phrase>
+    <Phrase key="ContactGroupExists">Група контактів вже існує.</Phrase>
+    <Phrase key="ContactExists">Контакт в групі вже існує.</Phrase>
+    <Phrase key="PhoneNumberExists">Контакт вже містить даний номер телефону.</Phrase>
+    <Phrase key="EmailExists">Контакт вже містить дану електронну адресу.</Phrase>
+    <Phrase key="IncorrectEmail">Некоректна електронна адреса.</Phrase>
+    <Phrase key="EmptyValueNotAllowed">Пусте значення не дозволене.</Phrase>
+    <Phrase key="SavePhonebookConfirm">Адресна книга була змінена. Зберегти зміни?</Phrase>
+  </Dictionary>
+</AddressBookDictionaries>
