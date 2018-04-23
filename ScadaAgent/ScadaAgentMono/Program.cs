@@ -23,13 +23,11 @@
  * Modified : 2018
  */
 
-using Scada;
-using Scada.Agent;
 using Scada.Agent.Net;
 using System;
 using System.Threading;
 
-namespace ScadaAgentMono
+namespace Scada.Agent.Mono
 {
     /// <summary>
     /// Agent console appliction tested on Mono .NET framework

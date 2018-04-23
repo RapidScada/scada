@@ -43,10 +43,12 @@ namespace Scada.Agent
         /// <summary>
         /// Конструктор
         /// </summary>
-        public ScadaInstance(string name, object syncRoot)
+        public ScadaInstance(ScadaInstanceSettings settings, object syncRoot)
         {
-            Name = name ?? throw new ArgumentNullException("name");
+            Settings = settings ?? throw new ArgumentNullException("settings");
             SyncRoot = syncRoot ?? throw new ArgumentNullException("syncRoot");
+
+            Name = settings.Name;
         }
 
 
@@ -54,6 +56,11 @@ namespace Scada.Agent
         /// Получить наименование
         /// </summary>
         public string Name { get; private set; }
+
+        /// <summary>
+        /// Получить настройки экземпляра системы
+        /// </summary>
+        public ScadaInstanceSettings Settings { get; private set; }
 
         /// <summary>
         /// Получить или установить объект для синхронизации доступа к экземпляру системы

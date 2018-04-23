@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{45E8CD64-3FB3-4B29-BFD4-2823D8F2AA02}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>ScadaAgentMono</RootNamespace>
+    <RootNamespace>Scada.Agent.Mono</RootNamespace>
     <AssemblyName>ScadaAgentMono</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

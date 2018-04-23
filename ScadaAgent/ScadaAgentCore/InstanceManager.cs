@@ -63,9 +63,16 @@ namespace Scada.Agent
         /// </summary>
         public ScadaInstance GetScadaInstance(string name)
         {
-            object syncRoot = locks.GetOrAdd(name, (key) => { return new object(); });
-            ScadaInstance scadaInstance = new ScadaInstance(name, syncRoot);
-            return scadaInstance;
+            if (settings.Instances.TryGetValue(name, out ScadaInstanceSettings instanceSettings))
+            {
+                object syncRoot = locks.GetOrAdd(name, (key) => { return new object(); });
+                ScadaInstance scadaInstance = new ScadaInstance(instanceSettings, syncRoot);
+                return scadaInstance;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

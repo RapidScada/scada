@@ -47,14 +47,14 @@ namespace Scada.Agent
         /// </summary>
         public Settings()
         {
-            Instances = new List<ScadaInstanceSettings>();
+            Instances = new SortedList<string, ScadaInstanceSettings>();
         }
 
 
         /// <summary>
-        /// Получить настройки экземпляров систем
+        /// Получить настройки экземпляров систем, ключ - наименование экземпляра
         /// </summary>
-        public List<ScadaInstanceSettings> Instances { get; private set; }
+        public SortedList<string, ScadaInstanceSettings> Instances { get; private set; }
 
 
         /// <summary>
@@ -89,11 +89,13 @@ namespace Scada.Agent
                     XmlNodeList instanceNodeList = instancesNode.SelectNodes("Instance");
                     foreach (XmlElement instanceElem in instanceNodeList)
                     {
-                        Instances.Add(new ScadaInstanceSettings()
+                        ScadaInstanceSettings instanceSettings = new ScadaInstanceSettings()
                         {
                             Name = instanceElem.GetAttribute("name"),
                             Directory = instanceElem.GetAttribute("directory")
-                        });
+                        };
+
+                        Instances[instanceSettings.Name] = instanceSettings;
                     }
                 }
 
