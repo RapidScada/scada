@@ -34,31 +34,38 @@
               </xs:appinfo>
             </xs:annotation>
           </xs:enumeration>
-          <xs:enumeration value="Server">
+          <xs:enumeration value="Interface">
             <xs:annotation>
               <xs:appinfo>
                 <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
               </xs:appinfo>
             </xs:annotation>
           </xs:enumeration>
-          <xs:enumeration value="Communicator">
+          <xs:enumeration value="Server">
             <xs:annotation>
               <xs:appinfo>
                 <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
               </xs:appinfo>
             </xs:annotation>
           </xs:enumeration>
-          <xs:enumeration value="Webstation">
+          <xs:enumeration value="Communicator">
             <xs:annotation>
               <xs:appinfo>
                 <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">8</EnumerationValue>
               </xs:appinfo>
             </xs:annotation>
           </xs:enumeration>
+          <xs:enumeration value="Webstation">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">16</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
           <xs:enumeration value="All">
             <xs:annotation>
               <xs:appinfo>
-                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">15</EnumerationValue>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">31</EnumerationValue>
               </xs:appinfo>
             </xs:annotation>
           </xs:enumeration>

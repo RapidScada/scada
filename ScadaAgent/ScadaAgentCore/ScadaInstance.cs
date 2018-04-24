@@ -24,6 +24,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using Utils;
@@ -75,23 +76,12 @@ namespace Scada.Agent
 
 
         /// <summary>
-        /// Получить директорию части конфигурации
+        /// ???
         /// </summary>
-        private string GetConfigPartDir(ConfigParts configPart)
+        private void MakeAbsolutePath(ICollection<RelPath> relPaths, out List<string> dirs, out List<string> fileNames)
         {
-            switch (configPart)
-            {
-                case ConfigParts.Base:
-                    return Settings.Directory + "BaseDAT" + Path.DirectorySeparatorChar;
-                case ConfigParts.Server:
-                    return Settings.Directory + "ScadaServer" + Path.DirectorySeparatorChar;
-                case ConfigParts.Communicator:
-                    return Settings.Directory + "ScadaComm" + Path.DirectorySeparatorChar;
-                case ConfigParts.Webstation:
-                    return Settings.Directory + "ScadaWeb" + Path.DirectorySeparatorChar;
-                default:
-                    return "";
-            }
+            dirs = null;
+            fileNames = null;
         }
 
         /// <summary>
@@ -116,23 +106,6 @@ namespace Scada.Agent
             }
         }
 
-        /// <summary>
-        /// Упаковать базу конфигурации
-        /// </summary>
-        private void PackBase(ZipArchive zipArchive)
-        {
-            PackDir(zipArchive, Settings.Directory + "BaseDAT", false, "BaseDAT/");
-        }
-
-        /// <summary>
-        /// Упаковать конфигурацию сервера
-        /// </summary>
-        private void PackServerConfig(ZipArchive zipArchive)
-        {
-            PackDir(zipArchive, Path.Combine(Settings.Directory, "ScadaServer", "Config"), true, 
-                "ScadaServer/Config/");
-        }
-
 
         /// <summary>
         /// Проверить пароль и права пользователя
@@ -155,12 +128,29 @@ namespace Scada.Agent
                     new FileStream(destFileName, FileMode.Create, FileAccess.Write, FileShare.None))
                 {
                     ZipArchive zipArchive = new ZipArchive(fileStream, ZipArchiveMode.Create);
+                    ConfigParts configParts = configOptions.ConfigParts;
 
-                    if (configOptions.ConfigParts.HasFlag(ConfigParts.Base))
-                        PackBase(zipArchive);
+                    if (configParts.HasFlag(ConfigParts.Base))
+                        PackDir(zipArchive, Settings.Directory + "BaseDAT", false, "BaseDAT/");
 
-                    if (configOptions.ConfigParts.HasFlag(ConfigParts.Server))
-                        PackServerConfig(zipArchive);
+                    if (configParts.HasFlag(ConfigParts.Interface))
+                        PackDir(zipArchive, Settings.Directory + "Interface", true, "Interface/");
+
+                    if (configParts.HasFlag(ConfigParts.Server))
+                        PackDir(zipArchive, Path.Combine(Settings.Directory, "ScadaServer", "Config"), true,
+                            "ScadaServer/Config/");
+
+                    if (configParts.HasFlag(ConfigParts.Communicator))
+                        PackDir(zipArchive, Path.Combine(Settings.Directory, "ScadaComm", "Config"), true,
+                            "ScadaComm/Config/");
+
+                    if (configParts.HasFlag(ConfigParts.Webstation))
+                    {
+                        PackDir(zipArchive, Path.Combine(Settings.Directory, "ScadaWeb", "config"), true, 
+                            "ScadaWeb/config/");
+                        PackDir(zipArchive, Path.Combine(Settings.Directory, "ScadaWeb", "storage"), true,
+                            "ScadaWeb/storage/");
+                    }
 
                     return true;
                 }

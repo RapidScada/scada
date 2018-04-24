@@ -45,23 +45,28 @@ namespace Scada.Agent
         Base = 1,
 
         /// <summary>
+        /// Интерфейс
+        /// </summary>
+        Interface = 2,
+
+        /// <summary>
         /// Сервер
         /// </summary>
-        Server = 2,
+        Server = 4,
 
         /// <summary>
         /// Коммуникатор
         /// </summary>
-        Communicator = 4,
+        Communicator = 8,
 
         /// <summary>
         /// Вебстанция
         /// </summary>
-        Webstation = 8,
+        Webstation = 16,
 
         /// <summary>
         /// Вся конфигурация
         /// </summary>
-        All = Base | Server | Communicator | Webstation
+        All = Base | Interface | Server | Communicator | Webstation
     }
 }
