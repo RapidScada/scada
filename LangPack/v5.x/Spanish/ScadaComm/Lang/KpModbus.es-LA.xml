@@ -1,4 +1,4 @@
-﻿﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <KpModbusDictionaries>
   <Dictionary key="Scada.Comm.Devices.KpModbus.FrmDevTemplate">
     <Phrase key="this">MODBUS. Editor de la plantilla del dispositivo</Phrase>

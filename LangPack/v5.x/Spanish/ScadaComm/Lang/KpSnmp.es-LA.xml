@@ -1,4 +1,4 @@
-﻿﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <KpSmmpDictionaries>
   <Dictionary key="Scada.Comm.Devices.KpSnmp.FrmConfig">
     <Phrase key="this">SNMP - {0} configuraciones del dispositivo</Phrase>

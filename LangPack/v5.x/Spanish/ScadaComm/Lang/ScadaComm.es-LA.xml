@@ -1,4 +1,4 @@
-﻿﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ScadaCommDictionaries>
   <Dictionary key="Scada.Comm.Ctrl.FrmImport">
     <Phrase key="this">Importación de líneas y dispositivos de comunicación</Phrase>

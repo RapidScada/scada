@@ -1,4 +1,4 @@
-﻿﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ScadaAdminDictionaries>
   <Dictionary key="ScadaAdmin">
     <Phrase key="BaseSDFFileNotFound">El archivo de base de datos de la configuración en el formato de SDF {0} no encontrado.</Phrase>
@@ -12,7 +12,7 @@
     <Phrase key="ImportFileUndefied">El archivo de la importación es indefinido.</Phrase>
     <Phrase key="ImportFileNotExist">El archivo de la importación no existe.</Phrase>
     <Phrase key="ImportTitle">Importar configuracion de Base de Datos</Phrase>
-    <Phrase key="ImportTableTitle">Importar tabla de configuracion Base de Datos; &quot;{0}&quot;</Phrase
+    <Phrase key="ImportTableTitle">Importar tabla de configuracion Base de Datos; &quot;{0}&quot;</Phrase>
     <Phrase key="ImportSource">Archivo de Origen: </Phrase>
     <Phrase key="LoadTableError">Error al Importar carga de tabla</Phrase>
     <Phrase key="SrcTableColumns">Columnas de la tabla de la Origen</Phrase>
