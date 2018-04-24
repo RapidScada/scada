@@ -92,7 +92,7 @@ namespace Scada.Agent
                         ScadaInstanceSettings instanceSettings = new ScadaInstanceSettings()
                         {
                             Name = instanceElem.GetAttribute("name"),
-                            Directory = instanceElem.GetAttribute("directory")
+                            Directory = ScadaUtils.NormalDir(instanceElem.GetAttribute("directory"))
                         };
 
                         Instances[instanceSettings.Name] = instanceSettings;

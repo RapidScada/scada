@@ -24,6 +24,9 @@
  */
 
 using System;
+using System.IO;
+using System.IO.Compression;
+using Utils;
 
 namespace Scada.Agent
 {
@@ -33,6 +36,9 @@ namespace Scada.Agent
     /// </summary>
     public class ScadaInstance
     {
+        private ILog log; // журнал приложения
+
+
         /// <summary>
         /// Конструктор, ограничивающий создание объекта без параметров
         /// </summary>
@@ -43,11 +49,11 @@ namespace Scada.Agent
         /// <summary>
         /// Конструктор
         /// </summary>
-        public ScadaInstance(ScadaInstanceSettings settings, object syncRoot)
+        public ScadaInstance(ScadaInstanceSettings settings, object syncRoot, ILog log)
         {
             Settings = settings ?? throw new ArgumentNullException("settings");
             SyncRoot = syncRoot ?? throw new ArgumentNullException("syncRoot");
-
+            this.log = log ?? throw new ArgumentNullException("log");
             Name = settings.Name;
         }
 
@@ -69,6 +75,66 @@ namespace Scada.Agent
 
 
         /// <summary>
+        /// Получить директорию части конфигурации
+        /// </summary>
+        private string GetConfigPartDir(ConfigParts configPart)
+        {
+            switch (configPart)
+            {
+                case ConfigParts.Base:
+                    return Settings.Directory + "BaseDAT" + Path.DirectorySeparatorChar;
+                case ConfigParts.Server:
+                    return Settings.Directory + "ScadaServer" + Path.DirectorySeparatorChar;
+                case ConfigParts.Communicator:
+                    return Settings.Directory + "ScadaComm" + Path.DirectorySeparatorChar;
+                case ConfigParts.Webstation:
+                    return Settings.Directory + "ScadaWeb" + Path.DirectorySeparatorChar;
+                default:
+                    return "";
+            }
+        }
+
+        /// <summary>
+        /// Упаковать директорию
+        /// </summary>
+        private void PackDir(ZipArchive zipArchive, string srcDir, bool recursively, string entryPrefix)
+        {
+            srcDir = ScadaUtils.NormalDir(srcDir);
+            int srcDirLen = srcDir.Length;
+            DirectoryInfo srcDirInfo = new DirectoryInfo(srcDir);
+            FileInfo[] fileInfoArr = srcDirInfo.GetFiles("*.*", 
+                recursively ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
+
+            foreach (FileInfo fileInfo in fileInfoArr)
+            {
+                if (!fileInfo.Extension.Equals(".bak", StringComparison.OrdinalIgnoreCase))
+                {
+                    string entryName = fileInfo.FullName.Substring(srcDirLen).Replace('\\', '/');
+                    zipArchive.CreateEntryFromFile(fileInfo.FullName, entryPrefix + entryName,
+                        CompressionLevel.Fastest);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Упаковать базу конфигурации
+        /// </summary>
+        private void PackBase(ZipArchive zipArchive)
+        {
+            PackDir(zipArchive, Settings.Directory + "BaseDAT", false, "BaseDAT/");
+        }
+
+        /// <summary>
+        /// Упаковать конфигурацию сервера
+        /// </summary>
+        private void PackServerConfig(ZipArchive zipArchive)
+        {
+            PackDir(zipArchive, Path.Combine(Settings.Directory, "ScadaServer", "Config"), true, 
+                "ScadaServer/Config/");
+        }
+
+
+        /// <summary>
         /// Проверить пароль и права пользователя
         /// </summary>
         public bool ValidateUser(string username, string encryptedPassword, out string errMsg)
@@ -83,7 +149,30 @@ namespace Scada.Agent
         /// </summary>
         public bool PackConfig(string destFileName, ConfigOptions configOptions)
         {
-            return false;
+            try
+            {
+                using (FileStream fileStream = 
+                    new FileStream(destFileName, FileMode.Create, FileAccess.Write, FileShare.None))
+                {
+                    ZipArchive zipArchive = new ZipArchive(fileStream, ZipArchiveMode.Create);
+
+                    if (configOptions.ConfigParts.HasFlag(ConfigParts.Base))
+                        PackBase(zipArchive);
+
+                    if (configOptions.ConfigParts.HasFlag(ConfigParts.Server))
+                        PackServerConfig(zipArchive);
+
+                    return true;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ? 
+                    "Ошибка при упаковке конфигурации в архив" :
+                    "Error packing configuration into archive");
+                return false;
+            }
         }
 
         /// <summary>

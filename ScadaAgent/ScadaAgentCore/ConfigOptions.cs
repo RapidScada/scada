@@ -34,6 +34,16 @@ namespace Scada.Agent
     public class ConfigOptions
     {
         /// <summary>
+        /// Конструктор
+        /// </summary>
+        public ConfigOptions()
+        {
+            ConfigParts = ConfigParts.All;
+            ExcludedPaths = new List<RelPath>();
+        }
+
+
+        /// <summary>
         /// Получить или установить части конфигурации
         /// </summary>
         public ConfigParts ConfigParts { get; set; }

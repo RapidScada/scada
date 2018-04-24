@@ -7,10 +7,14 @@ namespace Scada.Agent.Ctrl
 {
     public partial class FrmMain : Form
     {
+        private long sessionID = 0;
+
+
         public FrmMain()
         {
             InitializeComponent();
         }
+
 
         private void button1_Click(object sender, System.EventArgs e)
         {
@@ -18,7 +22,25 @@ namespace Scada.Agent.Ctrl
 
             try
             {
-                Stream stream = client.DownloadFile(0, new RelPath());
+                client.CreateSession(out sessionID);
+                client.Login(sessionID, "admin", "", "Default");
+                MessageBox.Show("Session ID = " + sessionID);
+            }
+            finally
+            {
+                client.Close();
+            }
+        }
+
+        private void button2_Click(object sender, System.EventArgs e)
+        {
+            AgentSvcClient client = new AgentSvcClient();
+
+            try
+            {
+                //Stream stream = client.DownloadFile(sessionID, new RelPath());
+                Stream stream = client.DownloadConfig(sessionID, new ConfigOptions());
+
                 if (stream == null)
                 {
                     MessageBox.Show("Stream is null.");
@@ -27,7 +49,7 @@ namespace Scada.Agent.Ctrl
                 {
                     DateTime t0 = DateTime.UtcNow;
                     byte[] buf = new byte[1024];
-                    Stream saver = File.Create(@"D:\file1.txt");
+                    Stream saver = File.Create(@"C:\SCADA\file1.txt");
                     int cnt;
 
                     while ((cnt = stream.Read(buf, 0, buf.Length)) > 0)
@@ -49,7 +71,7 @@ namespace Scada.Agent.Ctrl
             }
         }
 
-        private void button2_Click(object sender, System.EventArgs e)
+        private void button3_Click(object sender, EventArgs e)
         {
             AgentSvcClient client = new AgentSvcClient();
             Stream stream = null;
@@ -63,28 +85,13 @@ namespace Scada.Agent.Ctrl
                 stream.Write(buffer, 0, buffer.Length);
                 stream.Position = 0;*/
 
-                stream = File.Open(@"D:\big.txt", FileMode.Open);
-                client.UploadConfig(configOptions, 0, stream);
+                stream = File.Open(@"C:\SCADA\big.txt", FileMode.Open);
+                client.UploadConfig(configOptions, sessionID, stream);
                 MessageBox.Show("Done");
             }
             finally
             {
                 stream?.Close();
-                client.Close();
-            }
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            AgentSvcClient client = new AgentSvcClient();
-
-            try
-            {
-                client.CreateSession(out long sessionID);
-                MessageBox.Show("Session ID = " + sessionID);
-            }
-            finally
-            {
                 client.Close();
             }
         }

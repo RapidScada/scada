@@ -66,7 +66,7 @@ namespace Scada.Agent
             if (settings.Instances.TryGetValue(name, out ScadaInstanceSettings instanceSettings))
             {
                 object syncRoot = locks.GetOrAdd(name, (key) => { return new object(); });
-                ScadaInstance scadaInstance = new ScadaInstance(instanceSettings, syncRoot);
+                ScadaInstance scadaInstance = new ScadaInstance(instanceSettings, syncRoot, log);
                 return scadaInstance;
             }
             else
