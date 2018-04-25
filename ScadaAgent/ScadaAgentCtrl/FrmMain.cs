@@ -49,7 +49,7 @@ namespace Scada.Agent.Ctrl
                 {
                     DateTime t0 = DateTime.UtcNow;
                     byte[] buf = new byte[1024];
-                    Stream saver = File.Create(@"C:\SCADA\file1.txt");
+                    Stream saver = File.Create(@"C:\SCADA\config.zip");
                     int cnt;
 
                     while ((cnt = stream.Read(buf, 0, buf.Length)) > 0)
@@ -78,6 +78,7 @@ namespace Scada.Agent.Ctrl
 
             try
             {
+                DateTime t0 = DateTime.UtcNow;
                 ConfigOptions configOptions = new ConfigOptions();
 
                 /*byte[] buffer = System.Text.Encoding.ASCII.GetBytes("I'm Muzzy");
@@ -85,9 +86,9 @@ namespace Scada.Agent.Ctrl
                 stream.Write(buffer, 0, buffer.Length);
                 stream.Position = 0;*/
 
-                stream = File.Open(@"C:\SCADA\big.txt", FileMode.Open);
+                stream = File.Open(@"C:\SCADA\config.zip", FileMode.Open);
                 client.UploadConfig(configOptions, sessionID, stream);
-                MessageBox.Show("Done");
+                MessageBox.Show("Done in " + (int)(DateTime.UtcNow - t0).TotalMilliseconds + " ms");
             }
             finally
             {

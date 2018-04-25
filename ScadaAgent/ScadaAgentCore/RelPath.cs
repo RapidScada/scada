@@ -42,7 +42,7 @@ namespace Scada.Agent
         /// <summary>
         /// Конструктор
         /// </summary>
-        public RelPath(ConfigParts configPart, AppFolder appFolder, string path)
+        public RelPath(ConfigParts configPart, AppFolder appFolder, string path = "")
         {
             ConfigPart = configPart;
             AppFolder = appFolder;

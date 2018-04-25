@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ScadaAgentConfig>
   <Instances>
-    <Instance name="Default" directory="C:\SCADA" />
+    <Instance name="Default" directory="C:\SCADA2" />
   </Instances>
 </ScadaAgentConfig>
