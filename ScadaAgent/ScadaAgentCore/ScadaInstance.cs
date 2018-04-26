@@ -221,17 +221,6 @@ namespace Scada.Agent
         }
 
         /// <summary>
-        /// Получить абсолютный путь из относительного
-        /// </summary>
-        private string GetAbsPath(RelPath relPath)
-        {
-            return Path.Combine(Settings.Directory, 
-                GetConfigPartDir(relPath.ConfigPart, null), 
-                GetAppFolderDir(relPath.AppFolder, null, relPath.ConfigPart == ConfigParts.Webstation), 
-                relPath.Path);
-        }
-
-        /// <summary>
         /// Разделить исключаемые пути по группам
         /// </summary>
         private PathDict SeparatePaths(ICollection<RelPath> relPaths)
@@ -372,6 +361,47 @@ namespace Scada.Agent
         }
 
         /// <summary>
+        /// Получить абсолютный путь из относительного
+        /// </summary>
+        public string GetAbsPath(RelPath relPath)
+        {
+            return Path.Combine(Settings.Directory,
+                GetConfigPartDir(relPath.ConfigPart, null),
+                GetAppFolderDir(relPath.AppFolder, null, relPath.ConfigPart == ConfigParts.Webstation),
+                relPath.Path);
+        }
+
+        /// <summary>
+        /// Получить доступные части конфигурации
+        /// </summary>
+        public bool GetAvailableConfig(out ConfigParts configParts)
+        {
+            try
+            {
+                configParts = ConfigParts.None;
+
+                foreach (ConfigParts configPart in AllConfigParts)
+                {
+                    string configPartDir = Settings.Directory + 
+                        GetConfigPartDir(configPart, Path.DirectorySeparatorChar);
+
+                    if (Directory.Exists(configPartDir))
+                        configParts |= configPart;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении доступных частей конфигурации" :
+                    "Error getting available parts of the configuration");
+                configParts = ConfigParts.None;
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Упаковать конфигурацию в архив
         /// </summary>
         public bool PackConfig(string destFileName, ConfigOptions configOptions)
@@ -458,6 +488,47 @@ namespace Scada.Agent
                 log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при распаковке конфигурации из архива" :
                     "Error unpacking configuration from archive");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Обзор директории
+        /// </summary>
+        public bool Browse(RelPath relPath, out ICollection<string> directories, out ICollection<string> files)
+        {
+            try
+            {
+                string absPath = GetAbsPath(relPath);
+                DirectoryInfo dirInfo = new DirectoryInfo(absPath);
+
+                // получение поддиректорий
+                directories = new List<string>();
+                DirectoryInfo[] subdirInfoArr = dirInfo.GetDirectories("*", SearchOption.TopDirectoryOnly);
+
+                foreach (DirectoryInfo subdirInfo in subdirInfoArr)
+                {
+                    directories.Add(subdirInfo.Name);
+                }
+
+                // получение файлов
+                files = new List<string>();
+                FileInfo[] fileInfoArr = dirInfo.GetFiles("*", SearchOption.TopDirectoryOnly);
+
+                foreach (FileInfo fileInfo in fileInfoArr)
+                {
+                    files.Add(fileInfo.Name);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                   "Ошибка при обзоре директории" :
+                   "Error browsing directory");
+                directories = null;
+                files = null;
                 return false;
             }
         }

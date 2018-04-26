@@ -252,8 +252,15 @@ namespace Scada.Agent.Net
         [OperationContract]
         public bool GetAvailableConfig(long sessionID, out ConfigParts configParts)
         {
-            configParts = ConfigParts.All;
-            return true;
+            if (TryGetScadaInstance(sessionID, out ScadaInstance scadaInstance))
+            {
+                return scadaInstance.GetAvailableConfig(out configParts);
+            }
+            else
+            {
+                configParts = ConfigParts.None;
+                return false;
+            }
         }
 
         /// <summary>
@@ -306,13 +313,22 @@ namespace Scada.Agent.Net
         }
 
         /// <summary>
-        /// Найти файлы
+        /// Обзор директории
         /// </summary>
         [OperationContract]
-        public bool FindFiles(long sessionID, RelPath relPath, out ICollection<string> paths)
+        public bool Browse(long sessionID, RelPath relPath, 
+            out ICollection<string> directories, out ICollection<string> files)
         {
-            paths = null;
-            return true;
+            if (TryGetScadaInstance(sessionID, out ScadaInstance scadaInstance))
+            {
+                return scadaInstance.Browse(relPath, out directories, out files);
+            }
+            else
+            {
+                directories = null;
+                files = null;
+                return false;
+            }
         }
 
         /// <summary>
@@ -321,13 +337,7 @@ namespace Scada.Agent.Net
         [OperationContract]
         public Stream DownloadFile(long sessionID, RelPath relPath)
         {
-            /*byte[] buffer = System.Text.Encoding.ASCII.GetBytes("hello");
-            MemoryStream stream = new MemoryStream(buffer.Length);
-            stream.Write(buffer, 0, buffer.Length);
-            stream.Position = 0;*/
-
-            Stream stream = File.Open("big.txt", FileMode.Open);
-            return stream;
+            return DownloadFileRest(sessionID, relPath, 0);
         }
 
         /// <summary>
@@ -336,7 +346,34 @@ namespace Scada.Agent.Net
         [OperationContract]
         public Stream DownloadFileRest(long sessionID, RelPath relPath, long position)
         {
-            return null;
+            if (TryGetScadaInstance(sessionID, out ScadaInstance scadaInstance))
+            {
+                try
+                {
+                    string path = scadaInstance.GetAbsPath(relPath);
+                    Stream stream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+
+                    if (position > 0)
+                        stream.Position = position;
+
+                    return stream;
+                }
+                catch (FileNotFoundException)
+                {
+                    return null;
+                }
+                catch (Exception ex)
+                {
+                    Log.WriteException(ex, Localization.UseRussian ?
+                        "Ошибка при открытии файла" :
+                        "Error opening file");
+                    return null;
+                }
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }
