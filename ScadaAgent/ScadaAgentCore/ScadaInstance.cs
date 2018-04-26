@@ -25,8 +25,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Text;
 using Utils;
 
 namespace Scada.Agent
@@ -134,6 +136,56 @@ namespace Scada.Agent
         /// </summary>
         public object SyncRoot { get; private set; }
 
+
+        /// <summary>
+        /// Получить директорию сервиса
+        /// </summary>
+        private string GetServiceDir(ServiceApp serviceApp, char? directorySeparator)
+        {
+            switch (serviceApp)
+            {
+                case ServiceApp.Server:
+                    return GetConfigPartDir(ConfigParts.Server, directorySeparator);
+                case ServiceApp.Communicator:
+                    return GetConfigPartDir(ConfigParts.Communicator, directorySeparator);
+                default:
+                    throw new ArgumentException("Unknown service.");
+            }
+        }
+
+        /// <summary>
+        /// Получить имя файла статуса сервиса
+        /// </summary>
+        private string GetServiceStatusFile(ServiceApp serviceApp)
+        {
+            switch (serviceApp)
+            {
+                case ServiceApp.Server:
+                    return "ScadaServerSvc.txt";
+                case ServiceApp.Communicator:
+                    return "ScadaCommSvc.txt";
+                default:
+                    throw new ArgumentException("Unknown service.");
+            }
+        }
+
+        /// <summary>
+        /// Получить имя файла команды сервиса
+        /// </summary>
+        private string GetServiceBatchFile(ServiceCommand command)
+        {
+            string ext = AgentUtils.IsWindows ? ".bat" : ".sh";
+
+            switch (command)
+            {
+                case ServiceCommand.Start:
+                    return "svc_start" + ext;
+                case ServiceCommand.Stop:
+                    return "svc_stop" + ext;
+                default: // ServiceCommand.Restart
+                    return "svc_restart" + ext;
+            }
+        }
 
         /// <summary>
         /// Получить относительные пути конфигурации, соответствующие заданным частям
@@ -358,6 +410,86 @@ namespace Scada.Agent
             // TODO: реализовать и ограничить кол-во попыток
             errMsg = "";
             return true;
+        }
+
+        /// <summary>
+        /// Управлять службой
+        /// </summary>
+        public bool ControlService(ServiceApp serviceApp, ServiceCommand command)
+        {
+            try
+            {
+                string batchFileName = Path.Combine(Settings.Directory,
+                    GetServiceDir(serviceApp, null), GetServiceBatchFile(command));
+                Process.Start(batchFileName);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                   "Ошибка при управлении службой" :
+                   "Error controlling service");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Получить статус службы
+        /// </summary>
+        public bool GetServiceStatus(ServiceApp serviceApp, out ServiceStatus status)
+        {
+            try
+            {
+                status = ServiceStatus.Undefined;
+                string statusFileName = Path.Combine(Settings.Directory, 
+                    GetServiceDir(serviceApp, null), GetAppFolderDir(AppFolder.Log, null),
+                    GetServiceStatusFile(serviceApp));
+
+                if (File.Exists(statusFileName))
+                {
+                    string[] lines = File.ReadAllLines(statusFileName, Encoding.UTF8);
+
+                    foreach (string line in lines)
+                    {
+                        if (line.StartsWith("State", StringComparison.Ordinal) ||
+                            line.StartsWith("Состояние", StringComparison.Ordinal))
+                        {
+                            int colonInd = line.IndexOf(':');
+
+                            if (colonInd > 0)
+                            {
+                                string statusStr = line.Substring(colonInd + 1).Trim();
+
+                                if (statusStr.Equals("normal", StringComparison.OrdinalIgnoreCase) ||
+                                    statusStr.Equals("норма", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    status = ServiceStatus.Normal;
+                                }
+                                else if (statusStr.Equals("stopped", StringComparison.OrdinalIgnoreCase) ||
+                                    statusStr.Equals("остановлен", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    status = ServiceStatus.Stopped;
+                                }
+                                else if (statusStr.Equals("error", StringComparison.OrdinalIgnoreCase) ||
+                                    statusStr.Equals("ошибка", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    status = ServiceStatus.Error;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                   "Ошибка при получении статуса службы" :
+                   "Error getting service status");
+                status = ServiceStatus.Undefined;
+                return false;
+            }
         }
 
         /// <summary>

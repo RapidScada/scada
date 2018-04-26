@@ -15,38 +15,40 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : ScadaServerCommon
- * Summary  : The class contains utility methods for Agent
+ * Module   : ScadaAgentCore
+ * Summary  : Service statuses
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
  * Modified : 2018
  */
 
-using System.Runtime.InteropServices;
-
 namespace Scada.Agent
 {
     /// <summary>
-    /// The class contains utility methods for Agent
-    /// <para>Класс, содержащий вспомогательные методы для Агента</para>
+    /// Service statuses
+    /// <para>Статусы службы</para>
     /// </summary>
-    public static class AgentUtils
+    public enum ServiceStatus
     {
         /// <summary>
-        /// Версия Агента
+        /// Не определён
         /// </summary>
-        public const string AppVersion = "5.0.0.0";
+        Undefined,
 
         /// <summary>
-        /// Проверить, что программное обеспечение работает под управлением Windows
+        /// Норма
         /// </summary>
-        public static bool IsWindows
-        {
-            get
-            {
-                return RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-            }
-        }
+        Normal,
+
+        /// <summary>
+        /// Остановлен
+        /// </summary>
+        Stopped,
+
+        /// <summary>
+        /// Ошибка
+        /// </summary>
+        Error
     }
 }

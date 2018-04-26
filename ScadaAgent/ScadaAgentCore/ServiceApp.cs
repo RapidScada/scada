@@ -27,7 +27,7 @@ namespace Scada.Agent
 {
     /// <summary>
     /// Service applications
-    /// <para>Приложения-сервисы</para>
+    /// <para>Приложения-службы</para>
     /// </summary>
     public enum ServiceApp
     {

@@ -233,17 +233,31 @@ namespace Scada.Agent.Net
         [OperationContract]
         public bool ControlService(long sessionID, ServiceApp serviceApp, ServiceCommand command)
         {
-            return true;
+            if (TryGetScadaInstance(sessionID, out ScadaInstance scadaInstance))
+            {
+                return scadaInstance.ControlService(serviceApp, command);
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>
         /// Получить статус службы
         /// </summary>
         [OperationContract]
-        public bool GetServiceStatus(long sessionID, ServiceApp serviceApp, out bool isRunning)
+        public bool GetServiceStatus(long sessionID, ServiceApp serviceApp, out ServiceStatus status)
         {
-            isRunning = true;
-            return true;
+            if (TryGetScadaInstance(sessionID, out ScadaInstance scadaInstance))
+            {
+                return scadaInstance.GetServiceStatus(serviceApp, out status);
+            }
+            else
+            {
+                status = ServiceStatus.Undefined;
+                return false;
+            }
         }
 
         /// <summary>
