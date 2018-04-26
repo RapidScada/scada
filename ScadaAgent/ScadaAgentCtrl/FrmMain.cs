@@ -23,8 +23,12 @@ namespace Scada.Agent.Ctrl
             try
             {
                 client.CreateSession(out sessionID);
-                client.Login(sessionID, "admin", "", "Default");
                 MessageBox.Show("Session ID = " + sessionID);
+
+                if (client.Login(sessionID, "admin", "", "Default", out string errMsg))
+                    MessageBox.Show("Login OK");
+                else
+                    MessageBox.Show(errMsg);
             }
             finally
             {

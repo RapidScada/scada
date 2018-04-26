@@ -83,16 +83,19 @@
     <None Include="Connected Services\ServiceReference1\item31.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\ServiceReference1\Scada.Agent.Ctrl.ServiceReference1.CreateSessionResponse.datasource">
+    <None Include="Connected Services\ServiceReference1\Scada.Agent.Ctrl.ServiceReference1.BrowseResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Connected Services\ServiceReference1\Scada.Agent.Ctrl.ServiceReference1.FindFilesResponse.datasource">
+    <None Include="Connected Services\ServiceReference1\Scada.Agent.Ctrl.ServiceReference1.CreateSessionResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Connected Services\ServiceReference1\Scada.Agent.Ctrl.ServiceReference1.GetAvailableConfigResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Connected Services\ServiceReference1\Scada.Agent.Ctrl.ServiceReference1.GetServiceStatusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\ServiceReference1\Scada.Agent.Ctrl.ServiceReference1.LoginResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Connected Services\ServiceReference1\Scada.Agent.Ctrl.ServiceReference1.UploadConfigResponse.datasource">

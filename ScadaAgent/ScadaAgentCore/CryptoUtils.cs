@@ -39,6 +39,7 @@ namespace Scada.Agent
         /// </summary>
         private static readonly RNGCryptoServiceProvider Rng = new RNGCryptoServiceProvider();
 
+
         /// <summary>
         /// Получить случайное 64-битное целое
         /// </summary>
@@ -47,6 +48,24 @@ namespace Scada.Agent
             byte[] randomArr = new byte[8];
             Rng.GetBytes(randomArr);
             return BitConverter.ToInt64(randomArr, 0);
+        }
+
+        /// <summary>
+        /// Зашифровать пароль
+        /// </summary>
+        public static string EncryptPassword(string password)
+        {
+            // TODO
+            return password;
+        }
+
+        /// <summary>
+        /// Дешифровать пароль
+        /// </summary>
+        public static string DecryptPassword(string encryptedPassword)
+        {
+            // TODO
+            return encryptedPassword;
         }
     }
 }

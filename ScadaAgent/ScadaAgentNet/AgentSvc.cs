@@ -198,30 +198,46 @@ namespace Scada.Agent.Net
         /// Войти в систему
         /// </summary>
         [OperationContract]
-        public bool Login(long sessionID, string username, string encryptedPassword, string scadaInstanceName)
+        public bool Login(long sessionID, string username, string encryptedPassword, string scadaInstanceName,
+            out string errMsg)
         {
             if (TryGetSession(sessionID, out Session session))
             {
                 session.ClearUser();
                 ScadaInstance scadaInstance = InstanceManager.GetScadaInstance(scadaInstanceName);
+                string password = CryptoUtils.DecryptPassword(encryptedPassword);
 
                 if (scadaInstance == null)
                 {
+                    errMsg = Localization.UseRussian ?
+                       "Экземпляр системы не найден." :
+                       "System instance not found.";
+
                     Log.WriteError(string.Format(Localization.UseRussian ?
                         "Экземпляр системы с наименованием \"{0}\" не найден" :
                         "System instance named \"{0}\" not found", scadaInstanceName));
                 }
-                else if (scadaInstance.ValidateUser(username, encryptedPassword, out string errMsg))
+                else if (scadaInstance.ValidateUser(username, password, out errMsg))
                 {
+                    Log.WriteError(string.Format(Localization.UseRussian ?
+                        "Пользователь {0} подключился к {1}" :
+                        "User {0} connected to {1}", username, scadaInstanceName));
                     session.SetUser(username, scadaInstance);
                     return true;
                 }
                 else
                 {
                     Log.WriteError(string.Format(Localization.UseRussian ?
-                        "Пользователь {0} не прошёл проверку - {1}" :
-                        "User {0} failed validation - {1}", username, errMsg));
+                        "Пользователь {0} не прошёл проверку для подключения к {1} - {2}" :
+                        "User {0} failed validation to connect to {1} - {2}", 
+                        username, scadaInstanceName, errMsg));
                 }
+            }
+            else
+            {
+                errMsg = Localization.UseRussian ?
+                    "Сессия не найдена." :
+                    "Session not found.";
             }
 
             return false;

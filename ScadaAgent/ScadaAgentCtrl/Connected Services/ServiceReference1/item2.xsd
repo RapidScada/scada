@@ -16,6 +16,15 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="ServiceCommand" nillable="true" type="tns:ServiceCommand" />
+  <xs:simpleType name="ServiceStatus">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Undefined" />
+      <xs:enumeration value="Normal" />
+      <xs:enumeration value="Stopped" />
+      <xs:enumeration value="Error" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ServiceStatus" nillable="true" type="tns:ServiceStatus" />
   <xs:simpleType name="ConfigParts">
     <xs:list>
       <xs:simpleType>

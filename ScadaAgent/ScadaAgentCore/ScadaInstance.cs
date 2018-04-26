@@ -405,7 +405,7 @@ namespace Scada.Agent
         /// <summary>
         /// Проверить пароль и права пользователя
         /// </summary>
-        public bool ValidateUser(string username, string encryptedPassword, out string errMsg)
+        public bool ValidateUser(string username, string password, out string errMsg)
         {
             // TODO: реализовать и ограничить кол-во попыток
             errMsg = "";

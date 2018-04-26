@@ -30,6 +30,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="LoginResult" type="xs:boolean" />
+        <xs:element minOccurs="0" name="errMsg" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -61,7 +62,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="GetServiceStatusResult" type="xs:boolean" />
-        <xs:element minOccurs="0" name="isRunning" type="xs:boolean" />
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Scada.Agent" minOccurs="0" name="status" type="q4:ServiceStatus" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -76,7 +77,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="GetAvailableConfigResult" type="xs:boolean" />
-        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Scada.Agent" minOccurs="0" name="configParts" type="q4:ConfigParts" />
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/Scada.Agent" minOccurs="0" name="configParts" type="q5:ConfigParts" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -84,39 +85,40 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="sessionID" type="xs:long" />
-        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/Scada.Agent" minOccurs="0" name="configOptions" nillable="true" type="q5:ConfigOptions" />
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/Scada.Agent" minOccurs="0" name="configOptions" nillable="true" type="q6:ConfigOptions" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="DownloadConfigResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q6="http://schemas.microsoft.com/Message" name="DownloadConfigResult" type="q6:StreamBody" />
+        <xs:element xmlns:q7="http://schemas.microsoft.com/Message" name="DownloadConfigResult" type="q7:StreamBody" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="ConfigUploadMessage">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q7="http://schemas.microsoft.com/Message" name="Stream" type="q7:StreamBody" />
+        <xs:element xmlns:q8="http://schemas.microsoft.com/Message" name="Stream" type="q8:StreamBody" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/Scada.Agent" name="ConfigOptions" nillable="true" type="q8:ConfigOptions" />
+  <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/Scada.Agent" name="ConfigOptions" nillable="true" type="q9:ConfigOptions" />
   <xs:element name="SessionID" type="xs:long" />
-  <xs:element name="FindFiles">
+  <xs:element name="Browse">
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="sessionID" type="xs:long" />
-        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/Scada.Agent" minOccurs="0" name="relPath" nillable="true" type="q9:RelPath" />
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/Scada.Agent" minOccurs="0" name="relPath" nillable="true" type="q10:RelPath" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="FindFilesResponse">
+  <xs:element name="BrowseResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="FindFilesResult" type="xs:boolean" />
-        <xs:element xmlns:q10="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="paths" nillable="true" type="q10:ArrayOfstring" />
+        <xs:element minOccurs="0" name="BrowseResult" type="xs:boolean" />
+        <xs:element xmlns:q11="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="directories" nillable="true" type="q11:ArrayOfstring" />
+        <xs:element xmlns:q12="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="files" nillable="true" type="q12:ArrayOfstring" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -124,14 +126,14 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="sessionID" type="xs:long" />
-        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/Scada.Agent" minOccurs="0" name="relPath" nillable="true" type="q11:RelPath" />
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/Scada.Agent" minOccurs="0" name="relPath" nillable="true" type="q13:RelPath" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="DownloadFileResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q12="http://schemas.microsoft.com/Message" name="DownloadFileResult" type="q12:StreamBody" />
+        <xs:element xmlns:q14="http://schemas.microsoft.com/Message" name="DownloadFileResult" type="q14:StreamBody" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -139,7 +141,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="sessionID" type="xs:long" />
-        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/Scada.Agent" minOccurs="0" name="relPath" nillable="true" type="q13:RelPath" />
+        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/Scada.Agent" minOccurs="0" name="relPath" nillable="true" type="q15:RelPath" />
         <xs:element minOccurs="0" name="position" type="xs:long" />
       </xs:sequence>
     </xs:complexType>
@@ -147,7 +149,7 @@
   <xs:element name="DownloadFileRestResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q14="http://schemas.microsoft.com/Message" name="DownloadFileRestResult" type="q14:StreamBody" />
+        <xs:element xmlns:q16="http://schemas.microsoft.com/Message" name="DownloadFileRestResult" type="q16:StreamBody" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
