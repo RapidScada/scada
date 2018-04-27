@@ -316,7 +316,7 @@ namespace Scada
             if (HexToBytes(s, out byte[] bytes, skipWhiteSpace))
                 return bytes;
             else
-                throw new ArgumentException(CommonPhrases.NotHexadecimal, "s");
+                throw new FormatException(CommonPhrases.NotHexadecimal);
         }
 
         /// <summary>
