@@ -23,8 +23,11 @@
  * Modified : 2018
  */
 
+using Scada.Data.Configuration;
+using Scada.Data.Tables;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -94,12 +97,17 @@ namespace Scada.Agent
         }
 
         /// <summary>
+        /// Макс. количество попыток проверки пользователя
+        /// </summary>
+        private const int MaxValidateUserAttempts = 3;
+        /// <summary>
         /// Все части конфигурации в виде массива
         /// </summary>
         private static ConfigParts[] AllConfigParts = { ConfigParts.Base, ConfigParts.Interface,
             ConfigParts.Server, ConfigParts.Communicator, ConfigParts.Webstation };
 
         private ILog log; // журнал приложения
+        private int validateUserAttemptNum; // номер попытки проверки пользователя
 
 
         /// <summary>
@@ -117,6 +125,7 @@ namespace Scada.Agent
             Settings = settings ?? throw new ArgumentNullException("settings");
             SyncRoot = syncRoot ?? throw new ArgumentNullException("syncRoot");
             this.log = log ?? throw new ArgumentNullException("log");
+            validateUserAttemptNum = 0;
             Name = settings.Name;
         }
 
@@ -403,13 +412,61 @@ namespace Scada.Agent
 
 
         /// <summary>
-        /// Проверить пароль и права пользователя
+        /// Проверить пользователя
         /// </summary>
+        /// <remarks>Проверяется имя пользователя, пароль и роль</remarks>
         public bool ValidateUser(string username, string password, out string errMsg)
         {
-            // TODO: реализовать и ограничить кол-во попыток
-            errMsg = "";
-            return true;
+            try
+            {
+                // проверка количества попыток
+                if (validateUserAttemptNum > MaxValidateUserAttempts)
+                {
+                    errMsg = Localization.UseRussian ?
+                        "Превышено количество попыток входа" :
+                        "Number of login attempts exceeded";
+                    return false;
+                }
+
+                if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
+                {
+                    // открытие таблицы пользователей
+                    BaseAdapter baseAdapter = new BaseAdapter();
+                    DataTable userTable = new DataTable();
+                    baseAdapter.FileName = Path.Combine(Settings.Directory,
+                        GetConfigPartDir(ConfigParts.Base, null), "user.dat");
+                    baseAdapter.Fill(userTable, false);
+
+                    // поиск и проверка информации о пользователе
+                    userTable.CaseSensitive = false;
+                    DataRow[] rows = userTable.Select(string.Format("Name = '{0}'", username));
+
+                    if (rows.Length > 0)
+                    {
+                        DataRow row = rows[0];
+                        if ((string)row["Password"] == password && (int)row["RoleID"] == BaseValues.Roles.Admin)
+                        {
+                            validateUserAttemptNum = 0;
+                            errMsg = "";
+                            return true;
+                        }
+                    }
+                }
+
+                validateUserAttemptNum++;
+                errMsg = Localization.UseRussian ?
+                    "Неверное имя пользователя или пароль" :
+                    "Invalid username or password";
+                return false;
+            }
+            catch (Exception ex)
+            {
+                errMsg = Localization.UseRussian ?
+                   "Ошибка при проверке пользователя" :
+                   "Error validating user";
+                log.WriteException(ex, errMsg);
+                return false;
+            }
         }
 
         /// <summary>

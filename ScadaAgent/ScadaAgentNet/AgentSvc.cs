@@ -205,13 +205,13 @@ namespace Scada.Agent.Net
             {
                 session.ClearUser();
                 ScadaInstance scadaInstance = InstanceManager.GetScadaInstance(scadaInstanceName);
-                string password = CryptoUtils.DecryptPassword(encryptedPassword);
+                string password = CryptoUtils.DecryptPassword(encryptedPassword, sessionID);
 
                 if (scadaInstance == null)
                 {
                     errMsg = Localization.UseRussian ?
-                       "Экземпляр системы не найден." :
-                       "System instance not found.";
+                       "Экземпляр системы не найден" :
+                       "System instance not found";
 
                     Log.WriteError(string.Format(Localization.UseRussian ?
                         "Экземпляр системы с наименованием \"{0}\" не найден" :
@@ -236,8 +236,8 @@ namespace Scada.Agent.Net
             else
             {
                 errMsg = Localization.UseRussian ?
-                    "Сессия не найдена." :
-                    "Session not found.";
+                    "Сессия не найдена" :
+                    "Session not found";
             }
 
             return false;

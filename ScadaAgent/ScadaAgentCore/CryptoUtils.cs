@@ -53,7 +53,7 @@ namespace Scada.Agent
         /// <summary>
         /// Зашифровать пароль
         /// </summary>
-        public static string EncryptPassword(string password)
+        public static string EncryptPassword(string password, long sessionID)
         {
             // TODO
             return password;
@@ -62,7 +62,7 @@ namespace Scada.Agent
         /// <summary>
         /// Дешифровать пароль
         /// </summary>
-        public static string DecryptPassword(string encryptedPassword)
+        public static string DecryptPassword(string encryptedPassword, long sessionID)
         {
             // TODO
             return encryptedPassword;

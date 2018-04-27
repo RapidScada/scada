@@ -41,9 +41,9 @@ namespace Scada.Agent
         /// </summary>
         private const int MaxSessionCnt = 100;
         /// <summary>
-        /// Количество попыток получения уникального ид. сессии
+        /// Макс. количество попыток получения уникального ид. сессии
         /// </summary>
-        private const int GetIDAttemtps = 100;
+        private const int MaxGetSessionIDAttempts = 100;
         /// <summary>
         /// Время жизни сессии, если нет активности
         /// </summary>
@@ -83,10 +83,10 @@ namespace Scada.Agent
                 if (sessions.Count < MaxSessionCnt)
                 {
                     sessionID = CryptoUtils.GetRandomLong();
-                    int attempt = 0;
+                    int attemptNum = 0;
                     bool duplicated;
 
-                    while (duplicated = sessions.ContainsKey(sessionID) && ++attempt <= GetIDAttemtps)
+                    while (duplicated = sessions.ContainsKey(sessionID) && ++attemptNum <= MaxGetSessionIDAttempts)
                     {
                         sessionID = CryptoUtils.GetRandomLong();
                     }
