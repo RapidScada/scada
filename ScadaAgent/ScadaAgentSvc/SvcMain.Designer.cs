@@ -1,6 +1,6 @@
-﻿namespace ScadaAgentService
+﻿namespace Scada.Agent.Svc
 {
-    partial class Service1
+    partial class SvcMain
     {
         /// <summary> 
         /// Required designer variable.

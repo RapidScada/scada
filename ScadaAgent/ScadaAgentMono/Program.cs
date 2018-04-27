@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : Agent Console Application
- * Summary  : Agent console appliction tested on Mono .NET framework
+ * Summary  : Agent console application designed for Mono .NET framework
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
@@ -30,8 +30,8 @@ using System.Threading;
 namespace Scada.Agent.Mono
 {
     /// <summary>
-    /// Agent console appliction tested on Mono .NET framework
-    /// <para>Консольное приложение агента, протестированное на Mono .NET framework</para>
+    /// Agent console application designed for Mono .NET framework
+    /// <para>Консольное приложение агента, предназначенное для Mono .NET framework</para>
     /// </summary>
     class Program
     {
