@@ -90,26 +90,26 @@ namespace Scada
         /// <summary>
         /// Зашифровать строку
         /// </summary>
-        public static string Encrypt(string s, byte[] secretKey, byte[] vector)
+        public static string Encrypt(string s, byte[] secretKey, byte[] iv)
         {
-            return BytesToHex(EncryptBytes(Encoding.UTF8.GetBytes(s), secretKey, vector));
+            return BytesToHex(EncryptBytes(Encoding.UTF8.GetBytes(s), secretKey, iv));
         }
 
         /// <summary>
         /// Зашифровать массив байт
         /// </summary>
-        public static byte[] EncryptBytes(byte[] bytes, byte[] secretKey, byte[] vector)
+        public static byte[] EncryptBytes(byte[] bytes, byte[] secretKey, byte[] iv)
         {
             RijndaelManaged alg = null;
 
             try
             {
-                alg = new RijndaelManaged() { Key = secretKey, IV = vector };
+                alg = new RijndaelManaged() { Key = secretKey, IV = iv };
 
                 using (MemoryStream memStream = new MemoryStream())
                 {
                     using (CryptoStream cryptoStream =
-                        new CryptoStream(memStream, alg.CreateEncryptor(secretKey, vector), CryptoStreamMode.Write))
+                        new CryptoStream(memStream, alg.CreateEncryptor(secretKey, iv), CryptoStreamMode.Write))
                     {
                         cryptoStream.Write(bytes, 0, bytes.Length);
                     }
@@ -126,26 +126,26 @@ namespace Scada
         /// <summary>
         /// Дешифровать строку
         /// </summary>
-        public static string Decrypt(string s, byte[] secretKey, byte[] vector)
+        public static string Decrypt(string s, byte[] secretKey, byte[] iv)
         {
-            return Encoding.UTF8.GetString(DecryptBytes(HexToBytes(s), secretKey, vector));
+            return Encoding.UTF8.GetString(DecryptBytes(HexToBytes(s), secretKey, iv));
         }
 
         /// <summary>
         /// Дешифровать массив байт
         /// </summary>
-        public static byte[] DecryptBytes(byte[] bytes, byte[] secretKey, byte[] vector)
+        public static byte[] DecryptBytes(byte[] bytes, byte[] secretKey, byte[] iv)
         {
             RijndaelManaged alg = null;
 
             try
             {
-                alg = new RijndaelManaged() { Key = secretKey, IV = vector };
+                alg = new RijndaelManaged() { Key = secretKey, IV = iv };
 
                 using (MemoryStream memStream = new MemoryStream(bytes))
                 {
                     using (CryptoStream cryptoStream =
-                        new CryptoStream(memStream, alg.CreateDecryptor(secretKey, vector), CryptoStreamMode.Read))
+                        new CryptoStream(memStream, alg.CreateDecryptor(secretKey, iv), CryptoStreamMode.Read))
                     {
                         return ReadToEnd(cryptoStream);
                     }
