@@ -205,7 +205,6 @@ namespace Scada.Agent.Net
             {
                 session.ClearUser();
                 ScadaInstance scadaInstance = InstanceManager.GetScadaInstance(scadaInstanceName);
-                string password = CryptoUtils.DecryptPassword(encryptedPassword, sessionID);
 
                 if (scadaInstance == null)
                 {
@@ -217,20 +216,26 @@ namespace Scada.Agent.Net
                         "Экземпляр системы с наименованием \"{0}\" не найден" :
                         "System instance named \"{0}\" not found", scadaInstanceName));
                 }
-                else if (scadaInstance.ValidateUser(username, password, out errMsg))
-                {
-                    Log.WriteError(string.Format(Localization.UseRussian ?
-                        "Пользователь {0} подключился к {1}" :
-                        "User {0} connected to {1}", username, scadaInstanceName));
-                    session.SetUser(username, scadaInstance);
-                    return true;
-                }
                 else
                 {
-                    Log.WriteError(string.Format(Localization.UseRussian ?
-                        "Пользователь {0} не прошёл проверку для подключения к {1} - {2}" :
-                        "User {0} failed validation to connect to {1} - {2}", 
-                        username, scadaInstanceName, errMsg));
+                    string password = CryptoUtils.SafelyDecryptPassword(encryptedPassword, sessionID,
+                        AppData.Settings.SecretKey, AppData.Settings.IV);
+
+                    if (scadaInstance.ValidateUser(username, password, out errMsg))
+                    {
+                        Log.WriteError(string.Format(Localization.UseRussian ?
+                            "Пользователь {0} подключился к {1}" :
+                            "User {0} connected to {1}", username, scadaInstanceName));
+                        session.SetUser(username, scadaInstance);
+                        return true;
+                    }
+                    else
+                    {
+                        Log.WriteError(string.Format(Localization.UseRussian ?
+                            "Пользователь {0} не прошёл проверку для подключения к {1} - {2}" :
+                            "User {0} failed validation to connect to {1} - {2}",
+                            username, scadaInstanceName, errMsg));
+                    }
                 }
             }
             else

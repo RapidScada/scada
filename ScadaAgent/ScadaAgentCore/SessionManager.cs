@@ -82,13 +82,13 @@ namespace Scada.Agent
 
                 if (sessions.Count < MaxSessionCnt)
                 {
-                    sessionID = CryptoUtils.GetRandomLong();
+                    sessionID = ScadaUtils.GetRandomLong();
                     int attemptNum = 0;
                     bool duplicated;
 
                     while (duplicated = sessions.ContainsKey(sessionID) && ++attemptNum <= MaxGetSessionIDAttempts)
                     {
-                        sessionID = CryptoUtils.GetRandomLong();
+                        sessionID = ScadaUtils.GetRandomLong();
                     }
 
                     sessionOK = !duplicated;

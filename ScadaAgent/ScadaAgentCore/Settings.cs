@@ -48,8 +48,19 @@ namespace Scada.Agent
         public Settings()
         {
             Instances = new SortedList<string, ScadaInstanceSettings>();
+            SetToDefault();
         }
 
+
+        /// <summary>
+        /// Получить секретный ключ для шифрования паролей
+        /// </summary>
+        public byte[] SecretKey { get; private set; }
+
+        /// <summary>
+        /// Получить вектор инициализации для шифрования паролей
+        /// </summary>
+        public byte[] IV { get; private set; }
 
         /// <summary>
         /// Получить настройки экземпляров систем, ключ - наименование экземпляра
@@ -62,6 +73,8 @@ namespace Scada.Agent
         /// </summary>
         private void SetToDefault()
         {
+            SecretKey = null;
+            IV = null;
             Instances.Clear();
         }
 
@@ -83,6 +96,29 @@ namespace Scada.Agent
                 xmlDoc.Load(fileName);
                 XmlElement rootElem = xmlDoc.DocumentElement;
 
+                // загрузка секретного ключа
+                if (ScadaUtils.HexToBytes(rootElem.GetChildAsString("SecretKey"), out byte[] secretKey) &&
+                    secretKey.Length == ScadaUtils.SecretKeySize)
+                {
+                    SecretKey = secretKey;
+                }
+                else
+                {
+                    throw new ScadaException(string.Format(CommonPhrases.IncorrectXmlNodeVal, "SecretKey"));
+                }
+
+                // загрузка вектора инициализации
+                if (ScadaUtils.HexToBytes(rootElem.GetChildAsString("IV"), out byte[] iv) &&
+                    iv.Length == ScadaUtils.IVSize)
+                {
+                    IV = iv;
+                }
+                else
+                {
+                    throw new ScadaException(string.Format(CommonPhrases.IncorrectXmlNodeVal, "IV"));
+                }
+
+                // загрузка настроек экземпляров систем
                 XmlNode instancesNode = rootElem.SelectSingleNode("Instances");
                 if (instancesNode != null)
                 {
