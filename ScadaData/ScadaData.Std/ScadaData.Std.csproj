@@ -42,6 +42,7 @@
     <Compile Include="..\ScadaData\ITreeNode.cs" Link="ITreeNode.cs" />
     <Compile Include="..\ScadaData\Localization.cs" Link="Localization.cs" />
     <Compile Include="..\ScadaData\ScadaException.cs" Link="ScadaException.cs" />
+    <Compile Include="..\ScadaData\ScadaUtils.Crypto.cs" Link="ScadaUtils.Crypto.cs" />
     <Compile Include="..\ScadaData\ScadaUtils.cs" Link="ScadaUtils.cs" />
     <Compile Include="..\ScadaData\ScadaUtils.Xml.cs" Link="ScadaUtils.Xml.cs" />
     <Compile Include="..\ScadaData\SerializationBinder.cs" Link="SerializationBinder.cs" />

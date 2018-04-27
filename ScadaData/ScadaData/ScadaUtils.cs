@@ -26,11 +26,8 @@
 using System;
 using System.Globalization;
 using System.IO;
-using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Security.Cryptography;
 using System.Text;
-using System.Web;
 
 namespace Scada
 {
@@ -43,7 +40,7 @@ namespace Scada
         /// <summary>
         /// Версия данной библиотеки
         /// </summary>
-        internal const string LibVersion = "5.1.0.0";
+        internal const string LibVersion = "5.1.1.0";
         /// <summary>
         /// Задержка потока для экономии ресурсов, мс
         /// </summary>
@@ -308,22 +305,6 @@ namespace Scada
             int bufLen = strLen / 2;
             bytes = new byte[bufLen];
             return HexToBytes(s, 0, bytes, 0, bufLen);
-        }
-
-        /// <summary>
-        /// Вычислить хеш-функцию MD5 по массиву байт
-        /// </summary>
-        public static string ComputeHash(byte[] bytes)
-        {
-            return BytesToHex(MD5.Create().ComputeHash(bytes));
-        }
-
-        /// <summary>
-        /// Вычислить хеш-функцию MD5 по строке
-        /// </summary>
-        public static string ComputeHash(string s)
-        {
-            return ComputeHash(Encoding.UTF8.GetBytes(s));
         }
         
         /// <summary>
