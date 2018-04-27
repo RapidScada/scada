@@ -218,8 +218,8 @@ namespace Scada.Agent.Net
                 }
                 else
                 {
-                    string password = CryptoUtils.SafelyDecryptPassword(encryptedPassword, sessionID,
-                        AppData.Settings.SecretKey, AppData.Settings.IV);
+                    string password = CryptoUtils.SafelyDecryptPassword(encryptedPassword, sessionID, 
+                        AppData.Settings.SecretKey);
 
                     if (scadaInstance.ValidateUser(username, password, out errMsg))
                     {

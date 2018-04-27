@@ -47,8 +47,8 @@ namespace Scada.Agent
         /// </summary>
         public Settings()
         {
+            SecretKey = null;
             Instances = new SortedList<string, ScadaInstanceSettings>();
-            SetToDefault();
         }
 
 
@@ -56,11 +56,6 @@ namespace Scada.Agent
         /// Получить секретный ключ для шифрования паролей
         /// </summary>
         public byte[] SecretKey { get; private set; }
-
-        /// <summary>
-        /// Получить вектор инициализации для шифрования паролей
-        /// </summary>
-        public byte[] IV { get; private set; }
 
         /// <summary>
         /// Получить настройки экземпляров систем, ключ - наименование экземпляра
@@ -74,7 +69,6 @@ namespace Scada.Agent
         private void SetToDefault()
         {
             SecretKey = null;
-            IV = null;
             Instances.Clear();
         }
 
@@ -105,17 +99,6 @@ namespace Scada.Agent
                 else
                 {
                     throw new ScadaException(string.Format(CommonPhrases.IncorrectXmlNodeVal, "SecretKey"));
-                }
-
-                // загрузка вектора инициализации
-                if (ScadaUtils.HexToBytes(rootElem.GetChildAsString("IV"), out byte[] iv) &&
-                    iv.Length == ScadaUtils.IVSize)
-                {
-                    IV = iv;
-                }
-                else
-                {
-                    throw new ScadaException(string.Format(CommonPhrases.IncorrectXmlNodeVal, "IV"));
                 }
 
                 // загрузка настроек экземпляров систем

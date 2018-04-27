@@ -35,46 +35,46 @@ namespace Scada.Agent
     public static class CryptoUtils
     {
         /// <summary>
-        /// Зашифровать пароль
+        /// Создать вектор инициализации на освнове ид. сессии
         /// </summary>
-        public static string EncryptPassword(string password, long sessionID, byte[] secretKey, byte[] vector)
+        private static byte[] CreateIV(long sessionID)
         {
-            byte[] pwdBuf = Encoding.UTF8.GetBytes(password);
+            byte[] iv = new byte[ScadaUtils.IVSize];
             byte[] sessBuf = BitConverter.GetBytes(sessionID);
+            int sessBufLen = sessBuf.Length;
 
-            for (int i = 0, cnt = Math.Min(pwdBuf.Length, sessBuf.Length); i < cnt; i++)
+            for (int i = 0; i < ScadaUtils.IVSize; i++)
             {
-                pwdBuf[i] ^= sessBuf[i];
+                iv[i] = sessBuf[i % sessBufLen];
             }
 
-            return ScadaUtils.BytesToHex(ScadaUtils.EncryptBytes(pwdBuf, secretKey, vector));
+            return iv;
+        }
+
+        /// <summary>
+        /// Зашифровать пароль
+        /// </summary>
+        public static string EncryptPassword(string password, long sessionID, byte[] secretKey)
+        {
+            return ScadaUtils.Encrypt(password, secretKey, CreateIV(sessionID));
         }
 
         /// <summary>
         /// Дешифровать пароль
         /// </summary>
-        public static string DecryptPassword(string encryptedPassword, long sessionID, byte[] secretKey, byte[] vector)
+        public static string DecryptPassword(string encryptedPassword, long sessionID, byte[] secretKey)
         {
-            byte[] pwdBuf = ScadaUtils.HexToBytes(encryptedPassword);
-            byte[] sessBuf = BitConverter.GetBytes(sessionID);
-
-            for (int i = 0, cnt = Math.Min(pwdBuf.Length, sessBuf.Length); i < cnt; i++)
-            {
-                pwdBuf[i] ^= sessBuf[i];
-            }
-
-            return Encoding.UTF8.GetString(ScadaUtils.DecryptBytes(pwdBuf, secretKey, vector));
+            return ScadaUtils.Decrypt(encryptedPassword, secretKey, CreateIV(sessionID));
         }
 
         /// <summary>
         /// Дешифровать пароль, не вызывая исключений в случае ошибки
         /// </summary>
-        public static string SafelyDecryptPassword(string encryptedPassword, long sessionID, 
-            byte[] secretKey, byte[] vector)
+        public static string SafelyDecryptPassword(string encryptedPassword, long sessionID, byte[] secretKey)
         {
             try
             {
-                return DecryptPassword(encryptedPassword, sessionID, secretKey, vector);
+                return DecryptPassword(encryptedPassword, sessionID, secretKey);
             }
             catch
             {
