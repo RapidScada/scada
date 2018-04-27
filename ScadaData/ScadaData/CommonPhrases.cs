@@ -64,6 +64,7 @@ namespace Scada
         public static string DateTimeRequired { get; private set; }
         public static string LineLengthLimit { get; private set; }
         public static string NotNumber { get; private set; }
+        public static string NotHexadecimal { get; private set; }
         public static string LoadImageError { get; private set; }
         public static string LoadHyperlinkError { get; private set; }
         public static string IncorrectFileFormat { get; private set; }
@@ -136,6 +137,7 @@ namespace Scada
             DateTimeRequired = Localization.Dict.GetEmptyPhrase("DateTimeRequired");
             LineLengthLimit = Localization.Dict.GetEmptyPhrase("LineLengthLimit");
             NotNumber = Localization.Dict.GetEmptyPhrase("NotNumber");
+            NotHexadecimal = Localization.Dict.GetEmptyPhrase("NotHexadecimal");
             LoadImageError = Localization.Dict.GetEmptyPhrase("LoadImageError");
             LoadHyperlinkError = Localization.Dict.GetEmptyPhrase("LoadHyperlinkError");
             IncorrectFileFormat = Localization.Dict.GetEmptyPhrase("IncorrectFileFormat");
@@ -212,6 +214,7 @@ namespace Scada
                 DateTimeRequired = dict.GetPhrase("DateTimeRequired", DateTimeRequired);
                 LineLengthLimit = dict.GetPhrase("LineLengthLimit", LineLengthLimit);
                 NotNumber = dict.GetPhrase("NotNumber", NotNumber);
+                NotHexadecimal = dict.GetPhrase("NotHexadecimal", NotHexadecimal);
                 LoadImageError = dict.GetPhrase("LoadImageError", LoadImageError);
                 LoadHyperlinkError = dict.GetPhrase("LoadHyperlinkError", LoadHyperlinkError);
                 NoData = dict.GetPhrase("NoData", NoData);

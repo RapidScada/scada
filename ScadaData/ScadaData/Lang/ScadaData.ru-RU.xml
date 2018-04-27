@@ -27,6 +27,7 @@
     <Phrase key="DateTimeRequired">Требуется дата и время.</Phrase>
     <Phrase key="LineLengthLimit">Длина строки должна быть не более {0} символов.</Phrase>
     <Phrase key="NotNumber">&quot;{0}&quot; не является числом.</Phrase>
+    <Phrase key="NotHexadecimal">Строка не является 16-ричной записью.</Phrase>
     <Phrase key="LoadImageError">Ошибка при загрузке изображения из файла:&#13;&#10;{0}</Phrase>
     <Phrase key="LoadHyperlinkError">Ошибка при загрузке гиперссылки из файла:&#13;&#10;{0}</Phrase>
     <Phrase key="IncorrectFileFormat">Некорректный формат файла.</Phrase>

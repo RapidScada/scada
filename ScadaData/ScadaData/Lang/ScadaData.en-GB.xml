@@ -27,6 +27,7 @@
     <Phrase key="DateTimeRequired">Date and time are required.</Phrase>
     <Phrase key="LineLengthLimit">The string length must be {0} symbols or less.</Phrase>
     <Phrase key="NotNumber">&quot;{0}&quot; is not a number.</Phrase>
+    <Phrase key="NotHexadecimal">String is not hexadecimal.</Phrase>
     <Phrase key="LoadImageError">Error loading image from file:&#13;&#10;{0}</Phrase>
     <Phrase key="LoadHyperlinkError">Error loading hyperlink from file:&#13;&#10;{0}</Phrase>
     <Phrase key="IncorrectFileFormat">Incorrect file format.</Phrase>

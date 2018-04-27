@@ -24,6 +24,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -36,6 +37,28 @@ namespace Scada
         /// Генератор криптографически защищённых случайных чисел
         /// </summary>
         private static readonly RNGCryptoServiceProvider Rng = new RNGCryptoServiceProvider();
+
+        /// <summary>
+        /// Размер секретного ключа, байт
+        /// </summary>
+        public const int SecretKeySize = 32;
+        /// <summary>
+        /// Размер вектора инициализации, байт
+        /// </summary>
+        public const int IVSize = 16;
+
+
+        /// <summary>
+        /// Считать все данные из потока
+        /// </summary>
+        private static byte[] ReadToEnd(Stream inputStream)
+        {
+            using (MemoryStream memStream = new MemoryStream())
+            {
+                inputStream.CopyTo(memStream);
+                return memStream.ToArray();
+            }
+        }
 
 
         /// <summary>
@@ -69,6 +92,14 @@ namespace Scada
         /// </summary>
         public static string Encrypt(string s, byte[] secretKey, byte[] vector)
         {
+            return BytesToHex(EncryptBytes(Encoding.UTF8.GetBytes(s), secretKey, vector));
+        }
+
+        /// <summary>
+        /// Зашифровать массив байт
+        /// </summary>
+        public static byte[] EncryptBytes(byte[] bytes, byte[] secretKey, byte[] vector)
+        {
             RijndaelManaged alg = null;
 
             try
@@ -80,11 +111,10 @@ namespace Scada
                     using (CryptoStream cryptoStream =
                         new CryptoStream(memStream, alg.CreateEncryptor(secretKey, vector), CryptoStreamMode.Write))
                     {
-                        using (StreamWriter writer = new StreamWriter(cryptoStream))
-                            writer.Write(s);
+                        cryptoStream.Write(bytes, 0, bytes.Length);
                     }
 
-                    return BytesToHex(memStream.ToArray());
+                    return memStream.ToArray();
                 }
             }
             finally
@@ -98,22 +128,26 @@ namespace Scada
         /// </summary>
         public static string Decrypt(string s, byte[] secretKey, byte[] vector)
         {
-            if (!HexToBytes(s, out byte[] encryptedData))
-                throw new ArgumentException("String is not hexadecimal.", "s");
+            return Encoding.UTF8.GetString(DecryptBytes(HexToBytes(s), secretKey, vector));
+        }
 
+        /// <summary>
+        /// Дешифровать массив байт
+        /// </summary>
+        public static byte[] DecryptBytes(byte[] bytes, byte[] secretKey, byte[] vector)
+        {
             RijndaelManaged alg = null;
 
             try
             {
                 alg = new RijndaelManaged() { Key = secretKey, IV = vector };
 
-                using (MemoryStream memStream = new MemoryStream(encryptedData))
+                using (MemoryStream memStream = new MemoryStream(bytes))
                 {
                     using (CryptoStream cryptoStream =
                         new CryptoStream(memStream, alg.CreateDecryptor(secretKey, vector), CryptoStreamMode.Read))
                     {
-                        using (StreamReader reader = new StreamReader(cryptoStream))
-                            return reader.ReadToEnd();
+                        return ReadToEnd(cryptoStream);
                     }
                 }
             }
