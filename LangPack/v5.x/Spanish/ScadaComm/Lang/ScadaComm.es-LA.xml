@@ -234,8 +234,8 @@
     <Phrase key="lblBehavior">Comportamiento</Phrase>
     <Phrase key="pbBehaviorHint.ToolTip">Master - SCADA-Communicator envía solicitud a un dispositivo y recibe respuesta.&#13;&#10;Slave - SCADA-Communicator espera pasivamente los datos de un dispositivo.</Phrase>
     <Phrase key="lblDevSelMode">Selección del dispositivo</Phrase>
-    <Phrase key="cbDevSelMode.Items[0]">Por dirección IP</Phrase
-	<Phrase key="cbDevSelMode.Items[1]">DLL determinado</Phrase>
+    <Phrase key="cbDevSelMode.Items[0]">Por dirección IP</Phrase>
+	  <Phrase key="cbDevSelMode.Items[1]">DLL determinado</Phrase>
     <Phrase key="pbDevSelModeHint.ToolTip">El método de enlazar los datos recibidos a un dispositivo en modo esclavo:&#13;&#10;Por dirección IP: la dirección IP remota equivale a un número de llamada del dispositivo.&#13;&#10;DLL Determined - algoritmo se implementa en la biblioteca de dispositivos.</Phrase>
     <Phrase key="lblLocalUdpPort">Puerto local de UDP</Phrase>
     <Phrase key="pbLocalUdpPortHint.ToolTip">Puerto UDP local para conexiones entrantes.&#13;&#10;Las conexiones entrantes deben ser permitidas por un firewall.</Phrase>

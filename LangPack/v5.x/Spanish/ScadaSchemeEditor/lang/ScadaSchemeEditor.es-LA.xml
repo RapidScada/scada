@@ -36,7 +36,7 @@
     <Phrase key="lblNoSelObj">Seleccionar elemento para editar sus propiedades</Phrase>
     <Phrase key="FileFilter">Esquemas (*.sch)|*.sch|Todos los Archivos (*.*)|*.*</Phrase>
     <Phrase key="SaveConfirm">El esquema a sido modificado. Guardar los cambios?</Phrase>
-	<Phrase key="UseArrows">Utilice las llaves de flecha para mover el elemento seleccionado.</Phrase>
+	  <Phrase key="UseArrows">Utilice las llaves de flecha para mover el elemento seleccionado.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.EditorData">
     <Phrase key="LoadSchemeError">Error al cargar el esquema de archivo</Phrase>
