@@ -6,5 +6,5 @@
     cause the file to be unrecognizable by the program.
 -->
 <GenericObjectDataSource DisplayName="BrowseResponse" Version="1.0" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
-   <TypeInfo>Scada.Agent.Ctrl.ServiceReference1.BrowseResponse</TypeInfo>
+   <TypeInfo>Scada.Agent.Ctrl.ServiceReference1.BrowseResponse, ScadaAgentCtrl, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</TypeInfo>
 </GenericObjectDataSource>

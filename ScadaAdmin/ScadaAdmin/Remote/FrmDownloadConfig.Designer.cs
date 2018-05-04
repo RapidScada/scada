@@ -30,16 +30,16 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDownloadConfig));
             this.gbConnection = new System.Windows.Forms.GroupBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.btnBaseSDFFile = new System.Windows.Forms.Button();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.button4 = new System.Windows.Forms.Button();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.btnRemoveConn = new System.Windows.Forms.Button();
+            this.btnEditConn = new System.Windows.Forms.Button();
+            this.btnCreateConn = new System.Windows.Forms.Button();
+            this.cbConnection = new System.Windows.Forms.ComboBox();
+            this.rbSaveToDir = new System.Windows.Forms.RadioButton();
+            this.txtDestDir = new System.Windows.Forms.TextBox();
+            this.btnBrowseDestDir = new System.Windows.Forms.Button();
+            this.rbSaveToArc = new System.Windows.Forms.RadioButton();
+            this.btnSelectDestFile = new System.Windows.Forms.Button();
+            this.txtDestFile = new System.Windows.Forms.TextBox();
             this.btnDownload = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.gbOptions = new System.Windows.Forms.GroupBox();
@@ -49,10 +49,10 @@
             // 
             // gbConnection
             // 
-            this.gbConnection.Controls.Add(this.button3);
-            this.gbConnection.Controls.Add(this.button2);
-            this.gbConnection.Controls.Add(this.button1);
-            this.gbConnection.Controls.Add(this.comboBox1);
+            this.gbConnection.Controls.Add(this.btnRemoveConn);
+            this.gbConnection.Controls.Add(this.btnEditConn);
+            this.gbConnection.Controls.Add(this.btnCreateConn);
+            this.gbConnection.Controls.Add(this.cbConnection);
             this.gbConnection.Location = new System.Drawing.Point(12, 12);
             this.gbConnection.Name = "gbConnection";
             this.gbConnection.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
@@ -61,96 +61,98 @@
             this.gbConnection.TabStop = false;
             this.gbConnection.Text = "Подключение к серверу";
             // 
-            // comboBox1
+            // btnRemoveConn
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(13, 20);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(200, 21);
-            this.comboBox1.TabIndex = 0;
+            this.btnRemoveConn.Location = new System.Drawing.Point(381, 19);
+            this.btnRemoveConn.Name = "btnRemoveConn";
+            this.btnRemoveConn.Size = new System.Drawing.Size(75, 23);
+            this.btnRemoveConn.TabIndex = 3;
+            this.btnRemoveConn.Text = "Удалить";
+            this.btnRemoveConn.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // btnEditConn
             // 
-            this.button1.Location = new System.Drawing.Point(219, 19);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Создать";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnEditConn.Location = new System.Drawing.Point(300, 19);
+            this.btnEditConn.Name = "btnEditConn";
+            this.btnEditConn.Size = new System.Drawing.Size(75, 23);
+            this.btnEditConn.TabIndex = 2;
+            this.btnEditConn.Text = "Настроить";
+            this.btnEditConn.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // btnCreateConn
             // 
-            this.button2.Location = new System.Drawing.Point(300, 19);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Настроить";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnCreateConn.Location = new System.Drawing.Point(219, 19);
+            this.btnCreateConn.Name = "btnCreateConn";
+            this.btnCreateConn.Size = new System.Drawing.Size(75, 23);
+            this.btnCreateConn.TabIndex = 1;
+            this.btnCreateConn.Text = "Создать";
+            this.btnCreateConn.UseVisualStyleBackColor = true;
             // 
-            // button3
+            // cbConnection
             // 
-            this.button3.Location = new System.Drawing.Point(381, 19);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "Удалить";
-            this.button3.UseVisualStyleBackColor = true;
+            this.cbConnection.FormattingEnabled = true;
+            this.cbConnection.Location = new System.Drawing.Point(13, 20);
+            this.cbConnection.Name = "cbConnection";
+            this.cbConnection.Size = new System.Drawing.Size(200, 21);
+            this.cbConnection.TabIndex = 0;
             // 
-            // radioButton1
+            // rbSaveToDir
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(13, 19);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(154, 17);
-            this.radioButton1.TabIndex = 0;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Сохранить в директорию:";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.rbSaveToDir.AutoSize = true;
+            this.rbSaveToDir.Checked = true;
+            this.rbSaveToDir.Location = new System.Drawing.Point(13, 19);
+            this.rbSaveToDir.Name = "rbSaveToDir";
+            this.rbSaveToDir.Size = new System.Drawing.Size(154, 17);
+            this.rbSaveToDir.TabIndex = 0;
+            this.rbSaveToDir.TabStop = true;
+            this.rbSaveToDir.Text = "Сохранить в директорию:";
+            this.rbSaveToDir.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // txtDestDir
             // 
-            this.textBox1.Location = new System.Drawing.Point(13, 43);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(417, 20);
-            this.textBox1.TabIndex = 1;
+            this.txtDestDir.Location = new System.Drawing.Point(13, 43);
+            this.txtDestDir.Name = "txtDestDir";
+            this.txtDestDir.Size = new System.Drawing.Size(417, 20);
+            this.txtDestDir.TabIndex = 1;
+            this.txtDestDir.Text = "C:\\SCADA\\";
             // 
-            // btnBaseSDFFile
+            // btnBrowseDestDir
             // 
-            this.btnBaseSDFFile.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnBaseSDFFile.Image = ((System.Drawing.Image)(resources.GetObject("btnBaseSDFFile.Image")));
-            this.btnBaseSDFFile.Location = new System.Drawing.Point(436, 43);
-            this.btnBaseSDFFile.Name = "btnBaseSDFFile";
-            this.btnBaseSDFFile.Size = new System.Drawing.Size(20, 20);
-            this.btnBaseSDFFile.TabIndex = 2;
-            this.btnBaseSDFFile.UseVisualStyleBackColor = true;
+            this.btnBrowseDestDir.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnBrowseDestDir.Image = ((System.Drawing.Image)(resources.GetObject("btnBrowseDestDir.Image")));
+            this.btnBrowseDestDir.Location = new System.Drawing.Point(436, 43);
+            this.btnBrowseDestDir.Name = "btnBrowseDestDir";
+            this.btnBrowseDestDir.Size = new System.Drawing.Size(20, 20);
+            this.btnBrowseDestDir.TabIndex = 2;
+            this.btnBrowseDestDir.UseVisualStyleBackColor = true;
             // 
-            // radioButton2
+            // rbSaveToArc
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(13, 69);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(122, 17);
-            this.radioButton2.TabIndex = 3;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "Сохранить в архив:";
-            this.radioButton2.UseVisualStyleBackColor = true;
+            this.rbSaveToArc.AutoSize = true;
+            this.rbSaveToArc.Location = new System.Drawing.Point(13, 69);
+            this.rbSaveToArc.Name = "rbSaveToArc";
+            this.rbSaveToArc.Size = new System.Drawing.Size(122, 17);
+            this.rbSaveToArc.TabIndex = 3;
+            this.rbSaveToArc.TabStop = true;
+            this.rbSaveToArc.Text = "Сохранить в архив:";
+            this.rbSaveToArc.UseVisualStyleBackColor = true;
             // 
-            // button4
+            // btnSelectDestFile
             // 
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button4.Image = ((System.Drawing.Image)(resources.GetObject("button4.Image")));
-            this.button4.Location = new System.Drawing.Point(436, 92);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(20, 20);
-            this.button4.TabIndex = 5;
-            this.button4.UseVisualStyleBackColor = true;
+            this.btnSelectDestFile.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnSelectDestFile.Image = ((System.Drawing.Image)(resources.GetObject("btnSelectDestFile.Image")));
+            this.btnSelectDestFile.Location = new System.Drawing.Point(436, 92);
+            this.btnSelectDestFile.Name = "btnSelectDestFile";
+            this.btnSelectDestFile.Size = new System.Drawing.Size(20, 20);
+            this.btnSelectDestFile.TabIndex = 5;
+            this.btnSelectDestFile.UseVisualStyleBackColor = true;
             // 
-            // textBox2
+            // txtDestFile
             // 
-            this.textBox2.Location = new System.Drawing.Point(13, 92);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(417, 20);
-            this.textBox2.TabIndex = 4;
+            this.txtDestFile.Location = new System.Drawing.Point(13, 92);
+            this.txtDestFile.Name = "txtDestFile";
+            this.txtDestFile.Size = new System.Drawing.Size(417, 20);
+            this.txtDestFile.TabIndex = 4;
             // 
             // btnDownload
             // 
@@ -160,6 +162,7 @@
             this.btnDownload.TabIndex = 2;
             this.btnDownload.Text = "Скачать";
             this.btnDownload.UseVisualStyleBackColor = true;
+            this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
             // 
             // btnClose
             // 
@@ -173,12 +176,12 @@
             // 
             // gbOptions
             // 
-            this.gbOptions.Controls.Add(this.radioButton1);
-            this.gbOptions.Controls.Add(this.textBox1);
-            this.gbOptions.Controls.Add(this.btnBaseSDFFile);
-            this.gbOptions.Controls.Add(this.button4);
-            this.gbOptions.Controls.Add(this.radioButton2);
-            this.gbOptions.Controls.Add(this.textBox2);
+            this.gbOptions.Controls.Add(this.rbSaveToDir);
+            this.gbOptions.Controls.Add(this.txtDestDir);
+            this.gbOptions.Controls.Add(this.btnBrowseDestDir);
+            this.gbOptions.Controls.Add(this.btnSelectDestFile);
+            this.gbOptions.Controls.Add(this.rbSaveToArc);
+            this.gbOptions.Controls.Add(this.txtDestFile);
             this.gbOptions.Location = new System.Drawing.Point(12, 73);
             this.gbOptions.Name = "gbOptions";
             this.gbOptions.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
@@ -202,7 +205,9 @@
             this.MinimizeBox = false;
             this.Name = "FrmDownloadConfig";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Скачивание конфигурации";
+            this.Load += new System.EventHandler(this.FrmDownloadConfig_Load);
             this.gbConnection.ResumeLayout(false);
             this.gbOptions.ResumeLayout(false);
             this.gbOptions.PerformLayout();
@@ -213,16 +218,16 @@
         #endregion
 
         private System.Windows.Forms.GroupBox gbConnection;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button btnBaseSDFFile;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Button btnRemoveConn;
+        private System.Windows.Forms.Button btnEditConn;
+        private System.Windows.Forms.Button btnCreateConn;
+        private System.Windows.Forms.ComboBox cbConnection;
+        private System.Windows.Forms.RadioButton rbSaveToDir;
+        private System.Windows.Forms.TextBox txtDestDir;
+        private System.Windows.Forms.Button btnBrowseDestDir;
+        private System.Windows.Forms.RadioButton rbSaveToArc;
+        private System.Windows.Forms.Button btnSelectDestFile;
+        private System.Windows.Forms.TextBox txtDestFile;
         private System.Windows.Forms.Button btnDownload;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.GroupBox gbOptions;
