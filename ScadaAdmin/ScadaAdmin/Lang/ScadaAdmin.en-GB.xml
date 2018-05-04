@@ -239,6 +239,10 @@
     <Phrase key="miServiceCnlsMap">Channel Map...</Phrase>
     <Phrase key="miServiceRestartServer">Restart SCADA-Server</Phrase>
     <Phrase key="miServiceRestartComm">Restart SCADA-Communicator</Phrase>
+    <Phrase key="miRemote">&amp;Remote Server</Phrase>
+    <Phrase key="miRemoteDownload">Download Configuration...</Phrase>
+    <Phrase key="miRemoteUpload">Upload Configuration...</Phrase>
+    <Phrase key="miRemoteStatus">Server Status...</Phrase>
     <Phrase key="miSettings">&amp;Settings</Phrase>
     <Phrase key="miSettingsParams">Parameters...</Phrase>
     <Phrase key="miSettingsLanguage">Language...</Phrase>
