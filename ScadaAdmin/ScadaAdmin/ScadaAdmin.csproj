@@ -83,6 +83,8 @@
     </Reference>
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -96,6 +98,11 @@
     <Compile Include="AppCode\AppPhrases.cs" />
     <Compile Include="AppCode\CreateCnls.cs" />
     <Compile Include="AppCode\ImportExport.cs" />
+    <Compile Include="Connected Services\AgentSvcRef\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="FrmLanguage.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -183,6 +190,24 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Remote\FrmDownloadConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Remote\FrmDownloadConfig.Designer.cs">
+      <DependentUpon>FrmDownloadConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Remote\FrmServerStatus.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Remote\FrmServerStatus.Designer.cs">
+      <DependentUpon>FrmServerStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Remote\FrmUploadConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Remote\FrmUploadConfig.Designer.cs">
+      <DependentUpon>FrmUploadConfig.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="FrmAbout.resx">
       <DependentUpon>FrmAbout.cs</DependentUpon>
     </EmbeddedResource>
@@ -235,8 +260,33 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Remote\FrmDownloadConfig.resx">
+      <DependentUpon>FrmDownloadConfig.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="app.manifest" />
+    <None Include="Connected Services\AgentSvcRef\AgentSvc.wsdl" />
+    <None Include="Connected Services\AgentSvcRef\item.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\AgentSvcRef\item1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\AgentSvcRef\item2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\AgentSvcRef\item3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\AgentSvcRef\item4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\AgentSvcRef\ScadaAdmin.AgentSvcRef.ConfigParts.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\AgentSvcRef\ScadaAdmin.AgentSvcRef.ServiceStatus.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -258,6 +308,13 @@
       <Link>Lang\ScadaData.ru-RU.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Connected Services\AgentSvcRef\item.disco" />
+    <None Include="Connected Services\AgentSvcRef\configuration91.svcinfo" />
+    <None Include="Connected Services\AgentSvcRef\configuration.svcinfo" />
+    <None Include="Connected Services\AgentSvcRef\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="database.ico" />
     <Content Include="Lang\ScadaAdmin.ru-RU.xml">
       <SubType>Designer</SubType>
@@ -268,7 +325,12 @@
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\AgentSvcRef\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

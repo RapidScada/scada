@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,12 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2010
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada;
 using Scada.UI;
+using ScadaAdmin.Remote;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -1025,6 +1026,27 @@ namespace ScadaAdmin
             {
                 Cursor = Cursors.Default;
             }
+        }
+
+        private void miRemoteDownload_Click(object sender, EventArgs e)
+        {
+            // открытие формы скачивания конфигурации
+            FrmDownloadConfig frmDownloadConfig = new FrmDownloadConfig();
+            frmDownloadConfig.ShowDialog();
+        }
+
+        private void miRemoteUpload_Click(object sender, EventArgs e)
+        {
+            // открытие формы передачи конфигурации
+            FrmUploadConfig frmUploadConfig = new FrmUploadConfig();
+            frmUploadConfig.ShowDialog();
+        }
+
+        private void miRemoteStatus_Click(object sender, EventArgs e)
+        {
+            // открытие формы статуса сервера
+            FrmServerStatus frmServerStatus = new FrmServerStatus();
+            frmServerStatus.ShowDialog();
         }
 
         private void miWindowCloseActive_Click(object sender, EventArgs e)

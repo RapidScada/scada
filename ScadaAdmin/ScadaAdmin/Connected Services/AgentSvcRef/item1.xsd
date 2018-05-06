@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Scada.Agent" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Scada.Agent" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:10002/ScadaAgent/ScadaAgentSvc/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:simpleType name="ServiceApp">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Server" />
+      <xs:enumeration value="Communicator" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ServiceApp" nillable="true" type="tns:ServiceApp" />
+  <xs:simpleType name="ServiceCommand">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Start" />
+      <xs:enumeration value="Stop" />
+      <xs:enumeration value="Restart" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ServiceCommand" nillable="true" type="tns:ServiceCommand" />
+  <xs:simpleType name="ServiceStatus">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Undefined" />
+      <xs:enumeration value="Normal" />
+      <xs:enumeration value="Stopped" />
+      <xs:enumeration value="Error" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ServiceStatus" nillable="true" type="tns:ServiceStatus" />
+  <xs:simpleType name="ConfigParts">
+    <xs:list>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="None">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">0</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Base">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Interface">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Server">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Communicator">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">8</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Webstation">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">16</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="All">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">31</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:list>
+  </xs:simpleType>
+  <xs:element name="ConfigParts" nillable="true" type="tns:ConfigParts" />
+  <xs:complexType name="ConfigOptions">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ConfigParts" type="tns:ConfigParts" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ConfigOptions" nillable="true" type="tns:ConfigOptions" />
+  <xs:complexType name="RelPath">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AppFolder" type="tns:AppFolder" />
+      <xs:element minOccurs="0" name="ConfigPart" type="tns:ConfigParts" />
+      <xs:element minOccurs="0" name="Path" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RelPath" nillable="true" type="tns:RelPath" />
+  <xs:simpleType name="AppFolder">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Root" />
+      <xs:enumeration value="Config" />
+      <xs:enumeration value="Log" />
+      <xs:enumeration value="Storage" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="AppFolder" nillable="true" type="tns:AppFolder" />
+</xs:schema>
