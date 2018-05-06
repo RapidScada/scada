@@ -48,8 +48,9 @@ namespace Scada.Scheme
         public static bool EditorMode
         {
             get
-            {                
-                return Assembly.GetEntryAssembly().GetName().Name == "ScadaSchemeEditor";
+            {
+                Assembly asm = Assembly.GetEntryAssembly();
+                return asm != null && asm.GetName().Name == "ScadaSchemeEditor";
             }
         }
 
