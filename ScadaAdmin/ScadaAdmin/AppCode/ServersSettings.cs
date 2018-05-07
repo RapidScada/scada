@@ -35,7 +35,7 @@ namespace ScadaAdmin
     /// Settings of interaction with remote servers
     /// <para>Настройки взаимодействия с удалёнными серверами</para>
     /// </summary>
-    internal class ServersSettings
+    public class ServersSettings
     {
         /// <summary>
         /// Remote server connection settings
@@ -109,6 +109,22 @@ namespace ScadaAdmin
                 ScadaInstance = xmlNode.GetChildAsString("ScadaInstance");
                 SecretKey = ScadaUtils.HexToBytes(xmlNode.GetChildAsString("SecretKey"));
             }
+            /// <summary>
+            /// Сохранить настройки в XML-узле
+            /// </summary>
+            public void SaveToXml(XmlElement xmlElem)
+            {
+                if (xmlElem == null)
+                    throw new ArgumentNullException("xmlElem");
+
+                xmlElem.AppendElem("Name", Name);
+                xmlElem.AppendElem("Host", Host);
+                xmlElem.AppendElem("Port", Port);
+                xmlElem.AppendElem("Username", Username);
+                xmlElem.AppendElem("Password", Password);
+                xmlElem.AppendElem("ScadaInstance", ScadaInstance);
+                xmlElem.AppendElem("SecretKey", ScadaUtils.BytesToHex(SecretKey));
+            }
         }
 
         /// <summary>
@@ -158,6 +174,18 @@ namespace ScadaAdmin
                 SaveToDir = xmlNode.GetChildAsBool("SaveToDir", true);
                 DestDir = xmlNode.GetChildAsString("DestDir", @"C:\SCADA\");
                 DestFile = xmlNode.GetChildAsString("DestFile");
+            }
+            /// <summary>
+            /// Сохранить настройки в XML-узле
+            /// </summary>
+            public void SaveToXml(XmlElement xmlElem)
+            {
+                if (xmlElem == null)
+                    throw new ArgumentNullException("xmlElem");
+
+                xmlElem.AppendElem("SaveToDir", SaveToDir);
+                xmlElem.AppendElem("DestDir", DestDir);
+                xmlElem.AppendElem("DestFile", DestFile);
             }
         }
 
@@ -220,6 +248,23 @@ namespace ScadaAdmin
                     }
                 }
             }
+            /// <summary>
+            /// Сохранить настройки в XML-узле
+            /// </summary>
+            public void SaveToXml(XmlElement xmlElem)
+            {
+                if (xmlElem == null)
+                    throw new ArgumentNullException("xmlElem");
+
+                xmlElem.AppendElem("SrcDir", SrcDir);
+                xmlElem.AppendElem("AllFiles", AllFiles);
+
+                XmlElement selectedFilesElem = xmlElem.AppendElem("SelectedFiles");
+                foreach (string path in SelectedFiles)
+                {
+                    selectedFilesElem.AppendElem("Path", path);
+                }
+            }
         }
 
         /// <summary>
@@ -270,6 +315,25 @@ namespace ScadaAdmin
                 XmlNode uploadNode = xmlNode.SelectSingleNode("Upload");
                 if (uploadNode != null)
                     Upload.LoadFromXml(uploadNode);
+            }
+            /// <summary>
+            /// Сохранить настройки в XML-узле
+            /// </summary>
+            public void SaveToXml(XmlElement xmlElem)
+            {
+                if (xmlElem == null)
+                    throw new ArgumentNullException("xmlElem");
+
+                Connection.SaveToXml(xmlElem.AppendElem("Connection"));
+                Download.SaveToXml(xmlElem.AppendElem("Download"));
+                Upload.SaveToXml(xmlElem.AppendElem("Upload"));
+            }
+            /// <summary>
+            /// Получить строковое представление объекта
+            /// </summary>
+            public override string ToString()
+            {
+                return Connection.Name;
             }
         }
 

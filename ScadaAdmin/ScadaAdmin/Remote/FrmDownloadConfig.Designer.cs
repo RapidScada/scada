@@ -29,11 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDownloadConfig));
-            this.gbConnection = new System.Windows.Forms.GroupBox();
-            this.btnRemoveConn = new System.Windows.Forms.Button();
-            this.btnEditConn = new System.Windows.Forms.Button();
-            this.btnCreateConn = new System.Windows.Forms.Button();
-            this.cbConnection = new System.Windows.Forms.ComboBox();
             this.rbSaveToDir = new System.Windows.Forms.RadioButton();
             this.txtDestDir = new System.Windows.Forms.TextBox();
             this.btnBrowseDestDir = new System.Windows.Forms.Button();
@@ -43,58 +38,9 @@
             this.btnDownload = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.gbOptions = new System.Windows.Forms.GroupBox();
-            this.gbConnection.SuspendLayout();
+            this.ctrlServerConn = new ScadaAdmin.Remote.CtrlServerConn();
             this.gbOptions.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // gbConnection
-            // 
-            this.gbConnection.Controls.Add(this.btnRemoveConn);
-            this.gbConnection.Controls.Add(this.btnEditConn);
-            this.gbConnection.Controls.Add(this.btnCreateConn);
-            this.gbConnection.Controls.Add(this.cbConnection);
-            this.gbConnection.Location = new System.Drawing.Point(12, 12);
-            this.gbConnection.Name = "gbConnection";
-            this.gbConnection.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbConnection.Size = new System.Drawing.Size(469, 55);
-            this.gbConnection.TabIndex = 0;
-            this.gbConnection.TabStop = false;
-            this.gbConnection.Text = "Подключение к серверу";
-            // 
-            // btnRemoveConn
-            // 
-            this.btnRemoveConn.Location = new System.Drawing.Point(381, 19);
-            this.btnRemoveConn.Name = "btnRemoveConn";
-            this.btnRemoveConn.Size = new System.Drawing.Size(75, 23);
-            this.btnRemoveConn.TabIndex = 3;
-            this.btnRemoveConn.Text = "Удалить";
-            this.btnRemoveConn.UseVisualStyleBackColor = true;
-            // 
-            // btnEditConn
-            // 
-            this.btnEditConn.Location = new System.Drawing.Point(300, 19);
-            this.btnEditConn.Name = "btnEditConn";
-            this.btnEditConn.Size = new System.Drawing.Size(75, 23);
-            this.btnEditConn.TabIndex = 2;
-            this.btnEditConn.Text = "Настроить";
-            this.btnEditConn.UseVisualStyleBackColor = true;
-            // 
-            // btnCreateConn
-            // 
-            this.btnCreateConn.Location = new System.Drawing.Point(219, 19);
-            this.btnCreateConn.Name = "btnCreateConn";
-            this.btnCreateConn.Size = new System.Drawing.Size(75, 23);
-            this.btnCreateConn.TabIndex = 1;
-            this.btnCreateConn.Text = "Создать";
-            this.btnCreateConn.UseVisualStyleBackColor = true;
-            // 
-            // cbConnection
-            // 
-            this.cbConnection.FormattingEnabled = true;
-            this.cbConnection.Location = new System.Drawing.Point(13, 20);
-            this.cbConnection.Name = "cbConnection";
-            this.cbConnection.Size = new System.Drawing.Size(200, 21);
-            this.cbConnection.TabIndex = 0;
             // 
             // rbSaveToDir
             // 
@@ -190,16 +136,23 @@
             this.gbOptions.TabStop = false;
             this.gbOptions.Text = "Параметры скачивания";
             // 
+            // ctrlServerConn
+            // 
+            this.ctrlServerConn.Location = new System.Drawing.Point(12, 12);
+            this.ctrlServerConn.Name = "ctrlServerConn";
+            this.ctrlServerConn.Size = new System.Drawing.Size(469, 55);
+            this.ctrlServerConn.TabIndex = 0;
+            // 
             // FrmDownloadConfig
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(493, 239);
+            this.Controls.Add(this.ctrlServerConn);
             this.Controls.Add(this.gbOptions);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnDownload);
-            this.Controls.Add(this.gbConnection);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -208,7 +161,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Скачивание конфигурации";
             this.Load += new System.EventHandler(this.FrmDownloadConfig_Load);
-            this.gbConnection.ResumeLayout(false);
             this.gbOptions.ResumeLayout(false);
             this.gbOptions.PerformLayout();
             this.ResumeLayout(false);
@@ -216,12 +168,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.GroupBox gbConnection;
-        private System.Windows.Forms.Button btnRemoveConn;
-        private System.Windows.Forms.Button btnEditConn;
-        private System.Windows.Forms.Button btnCreateConn;
-        private System.Windows.Forms.ComboBox cbConnection;
         private System.Windows.Forms.RadioButton rbSaveToDir;
         private System.Windows.Forms.TextBox txtDestDir;
         private System.Windows.Forms.Button btnBrowseDestDir;
@@ -231,5 +177,6 @@
         private System.Windows.Forms.Button btnDownload;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.GroupBox gbOptions;
+        private CtrlServerConn ctrlServerConn;
     }
 }
