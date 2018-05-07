@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2014
- * Modified : 2016
+ * Modified : 2018
  */
 
 using Scada;
@@ -193,6 +193,10 @@ namespace ScadaAdmin
         public static string DeleteRowsConfirm { get; private set; }
         public static string ClearTableConfirm { get; private set; }
 
+        // Словарь ScadaAdmin.ServersSettings
+        public static string LoadServersSettingsError { get; private set; }
+        public static string SaveServersSettingsError { get; private set; }
+
         // Словарь ScadaAdmin.Tables
         public static string UpdateDataError { get; private set; }
         public static string FillSchemaError { get; private set; }
@@ -354,6 +358,9 @@ namespace ScadaAdmin
             DeleteRowsConfirm = "Вы уверены, что хотите удалить строки?";
             ClearTableConfirm = "Вы уверены, что хотите очистить таблицу?";
 
+            LoadServersSettingsError = "Ошибка при загрузке настроек взаимодействия с удалёнными серверами";
+            SaveServersSettingsError = "Ошибка при сохранении настроек взаимодействия с удалёнными серверами";
+
             UpdateDataError = "Ошибка при сохранении изменений таблицы в БД";
             FillSchemaError = "Ошибка при получении схемы данных таблицы";
             DataRequired = "Столбец \"{0}\" не может содержать пустых значений.";
@@ -474,7 +481,9 @@ namespace ScadaAdmin
             }
 
             if (Localization.Dictionaries.TryGetValue("ScadaAdmin.FrmImport", out dict))
+            {
                 ArchiveItem = dict.GetPhrase("ArchiveItem", ArchiveItem);
+            }
 
             if (Localization.Dictionaries.TryGetValue("ScadaAdmin.FrmInCnlProps", out dict))
             {
@@ -493,7 +502,9 @@ namespace ScadaAdmin
             }
 
             if (Localization.Dictionaries.TryGetValue("ScadaAdmin.FrmLanguage", out dict))
+            {
                 IncorrectLanguage = dict.GetPhrase("IncorrectLanguage", IncorrectLanguage);
+            }
 
             if (Localization.Dictionaries.TryGetValue("ScadaAdmin.FrmMain", out dict))
             {
@@ -544,6 +555,12 @@ namespace ScadaAdmin
                 DeleteRowConfirm = dict.GetPhrase("DeleteRowConfirm", DeleteRowConfirm);
                 DeleteRowsConfirm = dict.GetPhrase("DeleteRowsConfirm", DeleteRowsConfirm);
                 ClearTableConfirm = dict.GetPhrase("ClearTableConfirm", ClearTableConfirm);
+            }
+
+            if (Localization.Dictionaries.TryGetValue("ScadaAdmin.ServersSettings", out dict))
+            {
+                LoadServersSettingsError = dict.GetPhrase("LoadServersSettingsError", LoadServersSettingsError);
+                SaveServersSettingsError = dict.GetPhrase("SaveServersSettingsError", SaveServersSettingsError);
             }
 
             if (Localization.Dictionaries.TryGetValue("ScadaAdmin.Tables", out dict))

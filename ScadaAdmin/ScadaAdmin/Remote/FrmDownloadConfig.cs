@@ -1,4 +1,5 @@
-﻿using ScadaAdmin.AgentSvcRef;
+﻿using Scada;
+using ScadaAdmin.AgentSvcRef;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,6 +18,33 @@ namespace ScadaAdmin.Remote
             InitializeComponent();
         }
 
+
+        /// <summary>
+        /// Создать вектор инициализации на освнове ид. сессии
+        /// </summary>
+        private static byte[] CreateIV(long sessionID)
+        {
+            byte[] iv = new byte[ScadaUtils.IVSize];
+            byte[] sessBuf = BitConverter.GetBytes(sessionID);
+            int sessBufLen = sessBuf.Length;
+
+            for (int i = 0; i < ScadaUtils.IVSize; i++)
+            {
+                iv[i] = sessBuf[i % sessBufLen];
+            }
+
+            return iv;
+        }
+
+        /// <summary>
+        /// Зашифровать пароль
+        /// </summary>
+        private static string EncryptPassword(string password, long sessionID, byte[] secretKey)
+        {
+            return ScadaUtils.Encrypt(password, secretKey, CreateIV(sessionID));
+        }
+
+
         private void FrmDownloadConfig_Load(object sender, EventArgs e)
         {
 
@@ -31,7 +59,10 @@ namespace ScadaAdmin.Remote
                 client.CreateSession(out long sessionID);
                 MessageBox.Show("Session ID = " + sessionID);
 
-                if (client.Login(out string errMsg, sessionID, "admin", "", "Default"))
+                byte[] secretKey = ScadaUtils.HexToBytes("5ABF5A7FD01752A2F1DFD21370B96EA462B0AE5C66A64F8901C9E1E2A06E40F1");
+                string encryptedPassword = EncryptPassword("12345", sessionID, secretKey);
+
+                if (client.Login(out string errMsg, sessionID, "admin", encryptedPassword, "Default"))
                     MessageBox.Show("Login OK");
                 else
                     MessageBox.Show(errMsg);

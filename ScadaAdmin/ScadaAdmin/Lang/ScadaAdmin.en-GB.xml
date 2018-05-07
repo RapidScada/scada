@@ -351,6 +351,10 @@
     <Phrase key="DeleteRowsConfirm">Are you sure you want to delete the rows?</Phrase>
     <Phrase key="ClearTableConfirm">Are you sure you want to clear the table?</Phrase>
   </Dictionary>
+  <Dictionary key="ScadaAdmin.ServersSettings">
+    <Phrase key="LoadServersSettingsError">Error loading settings of interaction with remote servers</Phrase>
+    <Phrase key="SaveServersSettingsError">Error saving settings of interaction with remote servers</Phrase>
+  </Dictionary>
   <Dictionary key="ScadaAdmin.Tables">
     <Phrase key="UpdateDataError">Error saving the table changes to the database</Phrase>
     <Phrase key="FillSchemaError">Error getting the data table schema</Phrase>
