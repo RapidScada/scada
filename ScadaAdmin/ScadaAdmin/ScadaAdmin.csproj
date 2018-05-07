@@ -95,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppCode\AppData.cs" />
+    <Compile Include="AppCode\AppDirs.cs" />
     <Compile Include="AppCode\AppPhrases.cs" />
     <Compile Include="AppCode\CreateCnls.cs" />
     <Compile Include="AppCode\ImportExport.cs" />
@@ -315,6 +316,9 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <Content Include="Config\ScadaAdminConfig.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="database.ico" />
     <Content Include="Lang\ScadaAdmin.ru-RU.xml">
       <SubType>Designer</SubType>

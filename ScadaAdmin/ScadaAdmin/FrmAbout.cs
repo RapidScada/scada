@@ -99,7 +99,7 @@ namespace ScadaAdmin
                 // загрузка изображения и гиперссылки из файлов, если они существуют
                 bool imgLoaded;
                 string errMsg;
-                if (ScadaUiUtils.LoadAboutForm(AppData.ExeDir, this, activePictureBox, lblWebsite,
+                if (ScadaUiUtils.LoadAboutForm(AppData.AppDirs.ExeDir, this, activePictureBox, lblWebsite,
                     out imgLoaded, out linkUrl, out errMsg))
                 {
                     if (imgLoaded)

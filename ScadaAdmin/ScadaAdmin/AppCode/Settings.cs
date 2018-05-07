@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2010
- * Modified : 2016
+ * Modified : 2018
  */
 
 using System;
@@ -182,7 +182,7 @@ namespace ScadaAdmin
             AppSett.SetToDefault();
 
             // загрузка из файла
-            string fileName = AppData.ExeDir + AppSettingsFileName;
+            string fileName = AppData.AppDirs.ConfigDir + AppSettingsFileName;
 
             try
             {
@@ -258,7 +258,7 @@ namespace ScadaAdmin
                     "Автоматически резервировать базу конфигурации", "Automatically backup the configuration database");
 
                 // сохранение в файле
-                xmlDoc.Save(AppData.ExeDir + AppSettingsFileName);
+                xmlDoc.Save(AppData.AppDirs.ConfigDir + AppSettingsFileName);
                 errMsg = "";
                 return true;
             }
@@ -279,7 +279,7 @@ namespace ScadaAdmin
             FormSt.SetToDefault();
 
             // загрузка из файла
-            string fileName = AppData.ExeDir + FormStateFileName;
+            string fileName = AppData.AppDirs.ConfigDir + FormStateFileName;
 
             if (File.Exists(fileName))
             {
@@ -353,7 +353,7 @@ namespace ScadaAdmin
                 rootElem.AppendParamElem("ExplorerWidth", FormSt.ExplorerWidth);
 
                 // сохранение в файле
-                xmlDoc.Save(AppData.ExeDir + FormStateFileName);
+                xmlDoc.Save(AppData.AppDirs.ConfigDir + FormStateFileName);
                 errMsg = "";
                 return true;
             }

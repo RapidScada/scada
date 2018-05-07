@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaAdminConfig>
+  <Param name="BaseSDFFile" value="C:\SCADA\BaseSDF\ScadaBase.sdf" descr="Configuration database file in SDF format" />
+  <Param name="BaseDATDir" value="C:\SCADA\BaseDAT\" descr="Configuration database in DAT format directory" />
+  <Param name="BackupDir" value="C:\SCADA\ScadaAdmin\Backup\" descr="Configuration database backup directory" />
+  <Param name="CommDir" value="C:\SCADA\ScadaComm\" descr="SCADA-Communicator directory" />
+  <Param name="AutoBackupBase" value="true" descr="Automatically backup the configuration database" />
+</ScadaAdminConfig>
