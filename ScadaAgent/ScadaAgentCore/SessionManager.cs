@@ -125,17 +125,6 @@ namespace Scada.Agent
         }
 
         /// <summary>
-        /// Удалить заданную сессию
-        /// </summary>
-        public void RemoveSession(long sessionID)
-        {
-            lock (sessions)
-            {
-                sessions.Remove(sessionID);
-            }
-        }
-
-        /// <summary>
         /// Удалить неактивные сессии
         /// </summary>
         public void RemoveInactiveSessions()

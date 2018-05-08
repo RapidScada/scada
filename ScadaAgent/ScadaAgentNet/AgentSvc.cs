@@ -218,7 +218,7 @@ namespace Scada.Agent.Net
 
                     if (scadaInstance.ValidateUser(username, password, out errMsg))
                     {
-                        Log.WriteError(string.Format(Localization.UseRussian ?
+                        Log.WriteAction(string.Format(Localization.UseRussian ?
                             "Пользователь {0} подключился к {1}" :
                             "User {0} connected to {1}", username, scadaInstanceName));
                         session.SetUser(username, scadaInstance);
@@ -404,16 +404,6 @@ namespace Scada.Agent.Net
             {
                 return null;
             }
-        }
-        
-        /// <summary>
-        /// Закрыть сессию
-        /// </summary>
-        /// <remarks>Неактивные сессии также закрываются автоматически по таймауту</remarks>
-        [OperationContract]
-        public void CloseSession(long sessionID)
-        {
-            SessionManager.RemoveSession(sessionID);
         }
     }
 }
