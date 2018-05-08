@@ -42,7 +42,7 @@ namespace Scada.Agent.Net
         /// <summary>
         /// Размер буфера для приёма файлов
         /// </summary>
-        private int ReceiveBufSize = 1024;
+        private const int ReceiveBufSize = 10240;
 
         /// <summary>
         /// Данные приложения
@@ -146,15 +146,10 @@ namespace Scada.Agent.Net
             try
             {
                 DateTime t0 = DateTime.UtcNow;
-                byte[] buffer = new byte[ReceiveBufSize];
 
                 using (FileStream destStream = File.Create(destFileName))
                 {
-                    int readCnt;
-                    while ((readCnt = srcStream.Read(buffer, 0, ReceiveBufSize)) > 0)
-                    {
-                        destStream.Write(buffer, 0, readCnt);
-                    }
+                    srcStream.CopyTo(destStream, ReceiveBufSize);
                 }
 
                 Log.WriteAction(string.Format(Localization.UseRussian ?
@@ -409,6 +404,16 @@ namespace Scada.Agent.Net
             {
                 return null;
             }
+        }
+        
+        /// <summary>
+        /// Закрыть сессию
+        /// </summary>
+        /// <remarks>Неактивные сессии также закрываются автоматически по таймауту</remarks>
+        [OperationContract]
+        public void CloseSession(long sessionID)
+        {
+            SessionManager.RemoveSession(sessionID);
         }
     }
 }
