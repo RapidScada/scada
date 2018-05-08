@@ -4,6 +4,18 @@
     <Phrase key="BaseSDFFileNotFound">The configuration database file in SDF format {0} not found.</Phrase>
     <Phrase key="RefreshRequired">&#13;&#10;Update the open tables to display the changes.</Phrase>
   </Dictionary>
+  <Dictionary key="ScadaAdmin.DownloadUpload">
+    <Phrase key="DownloadTitle">{0} Download Configuration</Phrase>
+    <Phrase key="ConnectionName">Connection : {0}</Phrase>
+    <Phrase key="SessionCreated">Session {0} created</Phrase>
+    <Phrase key="UnableCreateSession">Unable to create session</Phrase>
+    <Phrase key="LoggedOn">Logged on</Phrase>
+    <Phrase key="UnableLogin">Unable to login - {0}</Phrase>
+    <Phrase key="DownloadDataEmpty">No data to download</Phrase>
+    <Phrase key="DownloadCompleted">Download completed successfully in {0} sec</Phrase>
+    <Phrase key="DownloadSuccessful">Download completed successfully</Phrase>
+    <Phrase key="DownloadError">Error downloading configuration</Phrase>
+  </Dictionary>
   <Dictionary key="ScadaAdmin.ImportExport">
     <Phrase key="ChooseBaseTableFile">Choose a configuration database table file</Phrase>
     <Phrase key="ChooseBaseArchiveFile">Choose a configuration database archive file</Phrase>

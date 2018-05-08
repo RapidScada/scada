@@ -98,6 +98,7 @@
     <Compile Include="AppCode\AppDirs.cs" />
     <Compile Include="AppCode\AppPhrases.cs" />
     <Compile Include="AppCode\CreateCnls.cs" />
+    <Compile Include="AppCode\DownloadUpload.cs" />
     <Compile Include="AppCode\ImportExport.cs" />
     <Compile Include="AppCode\ServersSettings.cs" />
     <Compile Include="Connected Services\AgentSvcRef\Reference.cs">

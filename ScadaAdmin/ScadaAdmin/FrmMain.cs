@@ -553,6 +553,8 @@ namespace ScadaAdmin
             miServiceCreateCnls.Enabled = connected;
             miServiceCloneCnls.Enabled = connected;
             miServiceCnlsMap.Enabled = connected;
+            miRemoteDownload.Enabled = connected;
+            miRemoteUpload.Enabled = connected;
         }
 
         /// <summary>

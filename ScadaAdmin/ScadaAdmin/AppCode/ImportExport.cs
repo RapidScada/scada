@@ -49,20 +49,11 @@ namespace ScadaAdmin
 
 
         /// <summary>
-        /// Вывести в журнал заголовок с подчёркиванием
-        /// </summary>
-        private static void WriteTitle(StreamWriter writer, string title)
-        {
-            writer.WriteLine(title);
-            writer.WriteLine(new string('-', title.Length));
-        }
-
-        /// <summary>
         /// Вывести в журнал столбцы таблицы
         /// </summary>
         private static void WriteColumns(StreamWriter writer, DataTable dataTable, string subTitle)
         {
-            WriteTitle(writer, subTitle);
+            AppUtils.WriteTitle(writer, subTitle);
             if (dataTable.Columns.Count > 0)
             {
                 foreach (DataColumn column in dataTable.Columns)
@@ -103,7 +94,7 @@ namespace ScadaAdmin
             if (writer != null)
             {
                 writer.WriteLine();
-                WriteTitle(writer, string.Format(AppPhrases.ImportTableTitle, 
+                AppUtils.WriteTitle(writer, string.Format(AppPhrases.ImportTableTitle, 
                     destTableInfo.Name + " (" + destTableInfo.Header + ")"));
                 writer.WriteLine();
                 WriteColumns(writer, srcTable, AppPhrases.SrcTableColumns);
@@ -170,13 +161,13 @@ namespace ScadaAdmin
             // вывод результата и ошибок в журнал импорта
             if (writer != null)
             {
-                WriteTitle(writer, AppPhrases.ImportTableResult);
+                AppUtils.WriteTitle(writer, AppPhrases.ImportTableResult);
                 writer.WriteLine(msg);
 
                 if (errRowCnt > 0)
                 {
                     writer.WriteLine();
-                    WriteTitle(writer, AppPhrases.ImportTableErrors);
+                    AppUtils.WriteTitle(writer, AppPhrases.ImportTableErrors);
 
                     foreach (DataRow row in errRows)
                     {
@@ -216,7 +207,8 @@ namespace ScadaAdmin
                     writer = new StreamWriter(logFileName, false, Encoding.UTF8);
                     logCreated = true;
 
-                    WriteTitle(writer, DateTime.Now.ToString("G", Localization.Culture) + " " + AppPhrases.ImportTitle);
+                    AppUtils.WriteTitle(writer, DateTime.Now.ToString("G", Localization.Culture) + " " + 
+                        AppPhrases.ImportTitle);
                     writer.WriteLine(AppPhrases.ImportSource + srcFileName);
                 }
 
@@ -291,7 +283,8 @@ namespace ScadaAdmin
                     writer = new StreamWriter(logFileName, false, Encoding.UTF8);
                     logCreated = true;
 
-                    WriteTitle(writer, DateTime.Now.ToString("G", Localization.Culture) + " " + AppPhrases.ImportTitle);
+                    AppUtils.WriteTitle(writer, DateTime.Now.ToString("G", Localization.Culture) + " " + 
+                        AppPhrases.ImportTitle);
                     writer.WriteLine(AppPhrases.ImportSource + srcFileName);
                 }
 
@@ -300,7 +293,9 @@ namespace ScadaAdmin
                     // получение словаря всех файлов архива с именами в нижнем регистре
                     Dictionary<string, ZipEntry> zipEntries = new Dictionary<string, ZipEntry>(zipFile.Count);
                     foreach (ZipEntry zipEntry in zipFile)
+                    {
                         zipEntries.Add(zipEntry.FileName.ToLowerInvariant(), zipEntry);
+                    }
 
                     // импорт таблиц из тех, которые содержатся в архиве
                     int totalUpdRowCnt = 0;
@@ -349,7 +344,7 @@ namespace ScadaAdmin
                     if (logCreated)
                     {
                         writer.WriteLine();
-                        WriteTitle(writer, AppPhrases.ImportResult);
+                        AppUtils.WriteTitle(writer, AppPhrases.ImportResult);
                         writer.WriteLine(msg);
                     }
 

@@ -42,6 +42,18 @@ namespace ScadaAdmin
         public static string BaseSDFFileNotFound { get; private set; }
         public static string RefreshRequired { get; private set; }
 
+        // Словарь ScadaAdmin.DownloadUpload
+        public static string DownloadTitle { get; private set; }
+        public static string ConnectionName { get; private set; }
+        public static string SessionCreated { get; private set; }
+        public static string UnableCreateSession { get; private set; }
+        public static string LoggedOn { get; private set; }
+        public static string UnableLogin { get; private set; }
+        public static string DownloadDataEmpty { get; private set; }
+        public static string DownloadCompleted { get; private set; }
+        public static string DownloadSuccessful { get; private set; }
+        public static string DownloadError { get; private set; }
+
         // Словарь ScadaAdmin.ImportExport
         public static string ChooseBaseTableFile { get; private set; }
         public static string ChooseBaseArchiveFile { get; private set; }
@@ -217,6 +229,17 @@ namespace ScadaAdmin
             BaseSDFFileNotFound = "Файл базы конфигурации в формате SDF {0} не найден.";
             RefreshRequired = "\r\nОбновите открытые таблицы, чтобы отобразить изменения.";
 
+            DownloadTitle = "{0} Скачивание конфигурации";
+            ConnectionName = "Соединение : {0}";
+            SessionCreated = "Создана сессия {0}";
+            UnableCreateSession = "Не удалось создать сессию";
+            LoggedOn = "Вход в систему выполнен";
+            UnableLogin = "Не удалось войти в систему - {0}";
+            DownloadDataEmpty = "Отсутствуют данные для скачивания";
+            DownloadCompleted = "Скачивание завершено успешно за {0} с";
+            DownloadSuccessful = "Скачивание завершено успешно";
+            DownloadError = "Ошибка при скачивании конфигурации";
+
             ChooseBaseTableFile = "Выберите файл таблицы базы конфигурации";
             ChooseBaseArchiveFile = "Выберите файл архива базы конфигурации";
             BaseTableFileFilter = "Таблицы базы конфигурации|*.dat|Все файлы|*.*";
@@ -383,6 +406,20 @@ namespace ScadaAdmin
             {
                 BaseSDFFileNotFound = dict.GetPhrase("BaseSDFFileNotFound", BaseSDFFileNotFound);
                 RefreshRequired = dict.GetPhrase("RefreshRequired", RefreshRequired);
+            }
+
+            if (Localization.Dictionaries.TryGetValue("ScadaAdmin.DownloadUpload", out dict))
+            {
+                DownloadTitle = dict.GetPhrase("DownloadTitle", DownloadTitle);
+                ConnectionName = dict.GetPhrase("ConnectionName", ConnectionName);
+                SessionCreated = dict.GetPhrase("SessionCreated", SessionCreated);
+                UnableCreateSession = dict.GetPhrase("UnableCreateSession", UnableCreateSession);
+                LoggedOn = dict.GetPhrase("LoggedOn", LoggedOn);
+                UnableLogin = dict.GetPhrase("UnableLogin", UnableLogin);
+                DownloadDataEmpty = dict.GetPhrase("DownloadDataEmpty", DownloadDataEmpty);
+                DownloadCompleted = dict.GetPhrase("DownloadCompleted", DownloadCompleted);
+                DownloadSuccessful = dict.GetPhrase("DownloadSuccessful", DownloadSuccessful);
+                DownloadError = dict.GetPhrase("DownloadError", DownloadError);
             }
 
             if (Localization.Dictionaries.TryGetValue("ScadaAdmin.ImportExport", out dict))
