@@ -172,7 +172,7 @@ namespace ScadaAdmin
                     throw new ArgumentNullException("xmlNode");
 
                 SaveToDir = xmlNode.GetChildAsBool("SaveToDir", true);
-                DestDir = xmlNode.GetChildAsString("DestDir", @"C:\SCADA\");
+                DestDir = ScadaUtils.NormalDir(xmlNode.GetChildAsString("DestDir", @"C:\SCADA\"));
                 DestFile = xmlNode.GetChildAsString("DestFile");
             }
             /// <summary>
@@ -235,7 +235,7 @@ namespace ScadaAdmin
                     throw new ArgumentNullException("xmlNode");
 
                 SelectedFiles.Clear();
-                SrcDir = xmlNode.GetChildAsString("SrcDir", @"C:\SCADA\");
+                SrcDir = ScadaUtils.NormalDir(xmlNode.GetChildAsString("SrcDir", @"C:\SCADA\"));
                 AllFiles = xmlNode.GetChildAsBool("AllFiles", true);
 
                 XmlNode selectedFilesNode = xmlNode.SelectSingleNode("SelectedFiles");
@@ -400,7 +400,23 @@ namespace ScadaAdmin
         {
             try
             {
-                // TODO: implement saving
+                XmlDocument xmlDoc = new XmlDocument();
+
+                XmlDeclaration xmlDecl = xmlDoc.CreateXmlDeclaration("1.0", "utf-8", null);
+                xmlDoc.AppendChild(xmlDecl);
+
+                XmlElement rootElem = xmlDoc.CreateElement("RemoteServers");
+                xmlDoc.AppendChild(rootElem);
+
+                foreach (ServerSettings serverSettings in Servers.Values)
+                {
+                    serverSettings.SaveToXml(rootElem.AppendElem("RemoteServer"));
+                }
+
+                string bakName = fileName + ".bak";
+                File.Copy(fileName, bakName, true);
+                xmlDoc.Save(fileName);
+
                 errMsg = "";
                 return true;
             }

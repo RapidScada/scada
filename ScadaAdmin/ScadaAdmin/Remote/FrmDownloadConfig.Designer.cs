@@ -38,6 +38,8 @@
             this.btnDownload = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.gbOptions = new System.Windows.Forms.GroupBox();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.ctrlServerConn = new ScadaAdmin.Remote.CtrlServerConn();
             this.gbOptions.SuspendLayout();
             this.SuspendLayout();
@@ -53,6 +55,7 @@
             this.rbSaveToDir.TabStop = true;
             this.rbSaveToDir.Text = "Сохранить в директорию:";
             this.rbSaveToDir.UseVisualStyleBackColor = true;
+            this.rbSaveToDir.CheckedChanged += new System.EventHandler(this.rbSaveToDir_CheckedChanged);
             // 
             // txtDestDir
             // 
@@ -61,6 +64,7 @@
             this.txtDestDir.Size = new System.Drawing.Size(417, 20);
             this.txtDestDir.TabIndex = 1;
             this.txtDestDir.Text = "C:\\SCADA\\";
+            this.txtDestDir.TextChanged += new System.EventHandler(this.txtDestDir_TextChanged);
             // 
             // btnBrowseDestDir
             // 
@@ -71,6 +75,7 @@
             this.btnBrowseDestDir.Size = new System.Drawing.Size(20, 20);
             this.btnBrowseDestDir.TabIndex = 2;
             this.btnBrowseDestDir.UseVisualStyleBackColor = true;
+            this.btnBrowseDestDir.Click += new System.EventHandler(this.btnBrowseDestDir_Click);
             // 
             // rbSaveToArc
             // 
@@ -82,6 +87,7 @@
             this.rbSaveToArc.TabStop = true;
             this.rbSaveToArc.Text = "Сохранить в архив:";
             this.rbSaveToArc.UseVisualStyleBackColor = true;
+            this.rbSaveToArc.CheckedChanged += new System.EventHandler(this.rbSaveToArc_CheckedChanged);
             // 
             // btnSelectDestFile
             // 
@@ -92,6 +98,7 @@
             this.btnSelectDestFile.Size = new System.Drawing.Size(20, 20);
             this.btnSelectDestFile.TabIndex = 5;
             this.btnSelectDestFile.UseVisualStyleBackColor = true;
+            this.btnSelectDestFile.Click += new System.EventHandler(this.btnSelectDestFile_Click);
             // 
             // txtDestFile
             // 
@@ -99,6 +106,7 @@
             this.txtDestFile.Name = "txtDestFile";
             this.txtDestFile.Size = new System.Drawing.Size(417, 20);
             this.txtDestFile.TabIndex = 4;
+            this.txtDestFile.TextChanged += new System.EventHandler(this.txtDestFile_TextChanged);
             // 
             // btnDownload
             // 
@@ -136,12 +144,25 @@
             this.gbOptions.TabStop = false;
             this.gbOptions.Text = "Параметры скачивания";
             // 
+            // openFileDialog
+            // 
+            this.openFileDialog.CheckFileExists = false;
+            this.openFileDialog.DefaultExt = "*.zip";
+            this.openFileDialog.Filter = "Архивы (*.zip)|*.zip|Все файлы (*.*)|*.*";
+            this.openFileDialog.Title = "Выберите файл архива для сохранения конфигурации";
+            // 
+            // folderBrowserDialog
+            // 
+            this.folderBrowserDialog.Description = "Выберите директорию для сохранения конфигурации";
+            // 
             // ctrlServerConn
             // 
             this.ctrlServerConn.Location = new System.Drawing.Point(12, 12);
             this.ctrlServerConn.Name = "ctrlServerConn";
+            this.ctrlServerConn.ServersSettings = null;
             this.ctrlServerConn.Size = new System.Drawing.Size(469, 55);
             this.ctrlServerConn.TabIndex = 0;
+            this.ctrlServerConn.SelectedSettingsChanged += new System.EventHandler(this.ctrlServerConn_SelectedSettingsChanged);
             // 
             // FrmDownloadConfig
             // 
@@ -178,5 +199,7 @@
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.GroupBox gbOptions;
         private CtrlServerConn ctrlServerConn;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
     }
 }
