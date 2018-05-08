@@ -50,7 +50,6 @@ namespace ScadaAdmin
         public static string LoggedOn { get; private set; }
         public static string UnableLogin { get; private set; }
         public static string DownloadDataEmpty { get; private set; }
-        public static string DownloadCompleted { get; private set; }
         public static string DownloadSuccessful { get; private set; }
         public static string DownloadError { get; private set; }
 
@@ -236,8 +235,7 @@ namespace ScadaAdmin
             LoggedOn = "Вход в систему выполнен";
             UnableLogin = "Не удалось войти в систему - {0}";
             DownloadDataEmpty = "Отсутствуют данные для скачивания";
-            DownloadCompleted = "Скачивание завершено успешно за {0} с";
-            DownloadSuccessful = "Скачивание завершено успешно";
+            DownloadSuccessful = "Скачивание завершено успешно за {0} с.";
             DownloadError = "Ошибка при скачивании конфигурации";
 
             ChooseBaseTableFile = "Выберите файл таблицы базы конфигурации";
@@ -417,7 +415,6 @@ namespace ScadaAdmin
                 LoggedOn = dict.GetPhrase("LoggedOn", LoggedOn);
                 UnableLogin = dict.GetPhrase("UnableLogin", UnableLogin);
                 DownloadDataEmpty = dict.GetPhrase("DownloadDataEmpty", DownloadDataEmpty);
-                DownloadCompleted = dict.GetPhrase("DownloadCompleted", DownloadCompleted);
                 DownloadSuccessful = dict.GetPhrase("DownloadSuccessful", DownloadSuccessful);
                 DownloadError = dict.GetPhrase("DownloadError", DownloadError);
             }

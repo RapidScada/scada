@@ -12,8 +12,7 @@
     <Phrase key="LoggedOn">Logged on</Phrase>
     <Phrase key="UnableLogin">Unable to login - {0}</Phrase>
     <Phrase key="DownloadDataEmpty">No data to download</Phrase>
-    <Phrase key="DownloadCompleted">Download completed successfully in {0} sec</Phrase>
-    <Phrase key="DownloadSuccessful">Download completed successfully</Phrase>
+    <Phrase key="DownloadSuccessful">Download completed successfully in {0} sec.</Phrase>
     <Phrase key="DownloadError">Error downloading configuration</Phrase>
   </Dictionary>
   <Dictionary key="ScadaAdmin.ImportExport">

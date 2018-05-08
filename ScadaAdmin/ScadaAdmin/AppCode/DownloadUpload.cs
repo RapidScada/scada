@@ -164,8 +164,8 @@ namespace ScadaAdmin
                     }
                 }
 
-                writer.WriteLine(AppPhrases.DownloadCompleted, (int)(DateTime.UtcNow - t0).TotalSeconds);
-                msg = AppPhrases.DownloadSuccessful;
+                msg = string.Format(AppPhrases.DownloadSuccessful, (int)(DateTime.UtcNow - t0).TotalSeconds);
+                writer.WriteLine(msg);
                 return true;
             }
             catch (Exception ex)
