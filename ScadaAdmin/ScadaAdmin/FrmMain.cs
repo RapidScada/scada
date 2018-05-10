@@ -117,6 +117,7 @@ namespace ScadaAdmin
 
             allNodes = new List<TreeNode>();
             preventDblClick = false;
+            settings = AppData.Settings;
             frmReplace = null;
         }
 
@@ -394,7 +395,7 @@ namespace ScadaAdmin
                 // соединение с БД
                 if (connectNeeded)
                 {
-                    AppData.Connect(settings.AppSett.BaseSDFFile);
+                    AppData.Connect();
 
                     nodDB.ImageKey = nodDB.SelectedImageKey = "db.gif";
                     nodSystem.Expand();
@@ -619,7 +620,6 @@ namespace ScadaAdmin
             SetItemsEnabledOnWindowAction();
 
             // загрузка состояния формы
-            settings = new Settings();
             settings.LoadFormState();
             if (settings.FormSt.IsEmpty)
             {
@@ -852,9 +852,11 @@ namespace ScadaAdmin
             // создание и отоборажение формы импорта таблицы
             FrmImport frmImport = new FrmImport();
             FrmTable frmTable = winControl.ActiveForm as FrmTable;
+
             if (frmTable != null && frmTable.Table != null)
                 frmImport.DefaultTableName = frmTable.Table.TableName;
-            frmImport.DefaultDirectory = settings.AppSett.BaseDATDir;
+
+            frmImport.DefaultBaseDATDir = settings.AppSett.BaseDATDir;
             frmImport.ShowDialog();
         }
 

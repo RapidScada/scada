@@ -61,6 +61,9 @@ namespace ScadaAdmin.Remote
             if (downloadSettings == null)
             {
                 gbOptions.Enabled = false;
+                rbSaveToDir.Checked = true;
+                txtDestDir.Text = txtDestFile.Text = "";
+                chkImportBase.Checked = false;
                 btnDownload.Enabled = false;
             }
             else
@@ -87,6 +90,7 @@ namespace ScadaAdmin.Remote
 
                 txtDestDir.Text = downloadSettings.DestDir;
                 txtDestFile.Text = downloadSettings.DestFile;
+                chkImportBase.Checked = downloadSettings.ImportBase;
             }
         }
 
@@ -98,6 +102,7 @@ namespace ScadaAdmin.Remote
             downloadSettings.SaveToDir = rbSaveToDir.Checked;
             downloadSettings.DestDir = txtDestDir.Text;
             downloadSettings.DestFile = txtDestFile.Text;
+            downloadSettings.ImportBase = chkImportBase.Checked;
         }
 
         /// <summary>
@@ -123,7 +128,25 @@ namespace ScadaAdmin.Remote
             if (downloadOK)
             {
                 ScadaUiUtils.ShowInfo(msg);
-                // TODO: запуск импорта, если это отмечено в настройках скачивания
+
+                // запуск импорта
+                ServersSettings.DownloadSettings downloadSettings = serverSettings.Download;
+                if (downloadSettings.ImportBase)
+                {
+                    FrmImport frmImport = new FrmImport();
+                    if (downloadSettings.SaveToDir)
+                    {
+                        frmImport.DefaultSelection = FrmImport.SelectedItem.AllTables;
+                        frmImport.DefaultBaseDATDir = Path.Combine(downloadSettings.DestDir, "BaseDAT");
+                    }
+                    else
+                    {
+                        frmImport.DefaultSelection = FrmImport.SelectedItem.Archive;
+                        frmImport.DefaultArcFileName = downloadSettings.DestFile;
+                        frmImport.DefaultBaseDATDir = AppData.Settings.AppSett.BaseDATDir;
+                    }
+                    frmImport.ShowDialog();
+                }
             }
             else
             {
@@ -138,6 +161,13 @@ namespace ScadaAdmin.Remote
 
         private void FrmDownloadConfig_Load(object sender, EventArgs e)
         {
+            // перевод формы
+            Translator.TranslateForm(this, "ScadaAdmin.Remote.CtrlServerConn");
+            Translator.TranslateForm(this, "ScadaAdmin.Remote.FrmDownloadConfig");
+            openFileDialog.Title = AppPhrases.ChooseArchiveFile;
+            openFileDialog.Filter = AppPhrases.ArchiveFileFilter;
+            folderBrowserDialog.Description = AppPhrases.ChooseConfigDir;
+
             // загрузка настроек
             if (!serversSettings.Load(AppData.AppDirs.ConfigDir + ServersSettings.DefFileName, out string errMsg))
             {
@@ -169,12 +199,7 @@ namespace ScadaAdmin.Remote
             downloadSettingsModified = true;
         }
 
-        private void txtDestDir_TextChanged(object sender, EventArgs e)
-        {
-            downloadSettingsModified = true;
-        }
-
-        private void txtDestFile_TextChanged(object sender, EventArgs e)
+        private void downloadControl_Changed(object sender, EventArgs e)
         {
             downloadSettingsModified = true;
         }

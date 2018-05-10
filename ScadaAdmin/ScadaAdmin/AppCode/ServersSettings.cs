@@ -153,6 +153,10 @@ namespace ScadaAdmin
             /// Получить или установить имя файла архива для сохранения конфигурации
             /// </summary>
             public string DestFile { get; set; }
+            /// <summary>
+            /// Получить или установить признак запуска импорта базы конфигурации после скачивания
+            /// </summary>
+            public bool ImportBase { get; set; }
 
             /// <summary>
             /// Установить настройки по умолчанию
@@ -162,6 +166,7 @@ namespace ScadaAdmin
                 SaveToDir = true;
                 DestDir = @"C:\SCADA\";
                 DestFile = "";
+                ImportBase = true;
             }
             /// <summary>
             /// Загрузить настройки из XML-узла
@@ -173,7 +178,8 @@ namespace ScadaAdmin
 
                 SaveToDir = xmlNode.GetChildAsBool("SaveToDir", true);
                 DestDir = ScadaUtils.NormalDir(xmlNode.GetChildAsString("DestDir", @"C:\SCADA\"));
-                DestFile = xmlNode.GetChildAsString("DestFile");
+                DestFile = xmlNode.GetChildAsString("DestFile", @"C:\SCADA\config.zip");
+                ImportBase = xmlNode.GetChildAsBool("ImportBase", true);
             }
             /// <summary>
             /// Сохранить настройки в XML-узле
@@ -186,6 +192,7 @@ namespace ScadaAdmin
                 xmlElem.AppendElem("SaveToDir", SaveToDir);
                 xmlElem.AppendElem("DestDir", DestDir);
                 xmlElem.AppendElem("DestFile", DestFile);
+                xmlElem.AppendElem("ImportBase", ImportBase);
             }
         }
 

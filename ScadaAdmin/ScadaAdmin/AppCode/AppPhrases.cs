@@ -55,11 +55,11 @@ namespace ScadaAdmin
 
         // Словарь ScadaAdmin.ImportExport
         public static string ChooseBaseTableFile { get; private set; }
-        public static string ChooseBaseArchiveFile { get; private set; }
+        public static string ChooseArchiveFile { get; private set; }
         public static string BaseTableFileFilter { get; private set; }
-        public static string BaseArchiveFileFilter { get; private set; }
-        public static string ImportFileUndefied { get; private set; }
+        public static string ArchiveFileFilter { get; private set; }
         public static string ImportFileNotExist { get; private set; }
+        public static string ImportDirNotExist { get; private set; }
         public static string ImportTitle { get; private set; }
         public static string ImportTableTitle { get; private set; }
         public static string ImportSource { get; private set; }
@@ -76,6 +76,7 @@ namespace ScadaAdmin
         public static string ImportTableResult { get; private set; }
         public static string ImportTableErrors { get; private set; }
         public static string ImportTableError { get; private set; }
+        public static string ImportAllTablesError { get; private set; }
         public static string ImportArchiveError { get; private set; }
         public static string ExportFileUndefied { get; private set; }
         public static string ExportDirUndefied { get; private set; }
@@ -142,6 +143,7 @@ namespace ScadaAdmin
         public static string FillKPGridError { get; private set; }
 
         // Словарь ScadaAdmin.FrmImport
+        public static string AllTablesItem { get; private set; }
         public static string ArchiveItem { get; private set; }
 
         // Словарь ScadaAdmin.FrmInCnlProps
@@ -223,6 +225,9 @@ namespace ScadaAdmin
         public static string GetInCnlNumsError { get; private set; }
         public static string GetCtrlCnlNumsError { get; private set; }
 
+        // Словарь ScadaAdmin.Remote
+        public static string ChooseConfigDir { get; private set; }
+
         private static void SetToDefault()
         {
             BaseSDFFileNotFound = "Файл базы конфигурации в формате SDF {0} не найден.";
@@ -239,14 +244,14 @@ namespace ScadaAdmin
             DownloadError = "Ошибка при скачивании конфигурации";
 
             ChooseBaseTableFile = "Выберите файл таблицы базы конфигурации";
-            ChooseBaseArchiveFile = "Выберите файл архива базы конфигурации";
-            BaseTableFileFilter = "Таблицы базы конфигурации|*.dat|Все файлы|*.*";
-            BaseArchiveFileFilter = "Архив базы конфигурации|*.zip|Все файлы|*.*";
-            ImportFileUndefied = "Импортируемый файл не определён.";
+            ChooseArchiveFile = "Выберите файл архива конфигурации";
+            BaseTableFileFilter = "Таблицы базы конфигурации (*.dat)|*.dat|Все файлы (*.*)|*.*";
+            ArchiveFileFilter = "Архив конфигурации (*.zip)|*.zip|Все файлы (*.*)|*.*";
             ImportFileNotExist = "Импортируемый файл не существует.";
+            ImportDirNotExist = "Импортируемая директория не существует.";
             ImportTitle = "Импорт базы конфигурации";
             ImportTableTitle = "Импорт таблицы базы конфигурации \"{0}\"";
-            ImportSource = "Исходный файл : ";
+            ImportSource = "Исходный файл или директория : ";
             LoadTableError = "Ошибка при загрузке импортируемой таблицы";
             SrcTableColumns = "Поля исходной таблицы";
             DestTableColumns = "Поля таблицы, в которую производится импорт";
@@ -261,6 +266,8 @@ namespace ScadaAdmin
             ImportTableResult = "Результат импорта таблицы";
             ImportTableErrors = "Ошибки импорта таблицы";
             ImportTableError = "Ошибка при импорте таблицы базы конфигурации";
+            ImportAllTablesError = "Ошибка при импорте всех таблиц базы конфигурации";
+            ImportArchiveError = "Ошибка при импорте базы конфигурации из архива";
             ExportFileUndefied = "Файл экспорта не определён.";
             ExportDirUndefied = "Директория экспорта не определена.";
             ExportDirNotExists = "Директория экспорта не существует.";
@@ -323,6 +330,7 @@ namespace ScadaAdmin
             FillKPFilterError = "Ошибка при заполнении фильтра КП";
             FillKPGridError = "Ошибка при заполнении таблицы выбора КП";
 
+            AllTablesItem = "Все таблицы";
             ArchiveItem = "Таблицы из архива";
 
             ShowInCnlPropsError = "Ошибка при отображении свойств входного канала";
@@ -395,6 +403,8 @@ namespace ScadaAdmin
             GetCtrlCnlNameError = "Ошибка при получении наименования канала управления";
             GetInCnlNumsError = "Ошибка при получении номеров входных каналов";
             GetCtrlCnlNumsError = "Ошибка при получении номеров каналов управления";
+
+            ChooseConfigDir = "Выберите директорию конфигурации";
         }
 
         public static void Init()
@@ -422,11 +432,11 @@ namespace ScadaAdmin
             if (Localization.Dictionaries.TryGetValue("ScadaAdmin.ImportExport", out dict))
             {
                 ChooseBaseTableFile = dict.GetPhrase("ChooseBaseTableFile", ChooseBaseTableFile);
-                ChooseBaseArchiveFile = dict.GetPhrase("ChooseBaseArchiveFile", ChooseBaseArchiveFile);
+                ChooseArchiveFile = dict.GetPhrase("ChooseArchiveFile", ChooseArchiveFile);
                 BaseTableFileFilter = dict.GetPhrase("BaseTableFileFilter", BaseTableFileFilter);
-                BaseArchiveFileFilter = dict.GetPhrase("BaseArchiveFileFilter", BaseArchiveFileFilter);
-                ImportFileUndefied = dict.GetPhrase("ImportFileUndefied", ImportFileUndefied);
+                ArchiveFileFilter = dict.GetPhrase("ArchiveFileFilter", ArchiveFileFilter);
                 ImportFileNotExist = dict.GetPhrase("ImportFileNotExist", ImportFileNotExist);
+                ImportDirNotExist = dict.GetPhrase("ImportDirNotExist", ImportDirNotExist);
                 ImportTitle = dict.GetPhrase("ImportTitle", ImportTitle);
                 ImportTableTitle = dict.GetPhrase("ImportTableTitle", ImportTableTitle);
                 ImportSource = dict.GetPhrase("ImportSource", ImportSource);
@@ -443,6 +453,8 @@ namespace ScadaAdmin
                 ImportTableResult = dict.GetPhrase("ImportTableResult", ImportTableResult);
                 ImportTableErrors = dict.GetPhrase("ImportTableErrors", ImportTableErrors);
                 ImportTableError = dict.GetPhrase("ImportError", ImportTableError);
+                ImportAllTablesError = dict.GetPhrase("ImportAllTablesError", ImportAllTablesError);
+                ImportArchiveError = dict.GetPhrase("ImportArchiveError", ImportArchiveError);
                 ExportFileUndefied = dict.GetPhrase("ExportFileUndefied", ExportFileUndefied);
                 ExportDirUndefied = dict.GetPhrase("ExportDirUndefied", ExportDirUndefied);
                 ExportDirNotExists = dict.GetPhrase("ExportDirNotExists", ExportDirNotExists);
@@ -516,6 +528,7 @@ namespace ScadaAdmin
 
             if (Localization.Dictionaries.TryGetValue("ScadaAdmin.FrmImport", out dict))
             {
+                AllTablesItem = dict.GetPhrase("AllTablesItem", AllTablesItem);
                 ArchiveItem = dict.GetPhrase("ArchiveItem", ArchiveItem);
             }
 
@@ -612,6 +625,11 @@ namespace ScadaAdmin
                 GetCtrlCnlNameError = dict.GetPhrase("GetCtrlCnlNameError", GetCtrlCnlNameError);
                 GetInCnlNumsError = dict.GetPhrase("GetInCnlNumsError", GetInCnlNumsError);
                 GetCtrlCnlNumsError = dict.GetPhrase("GetCtrlCnlNumsError", GetCtrlCnlNumsError);
+            }
+
+            if (Localization.Dictionaries.TryGetValue("ScadaAdmin.Remote", out dict))
+            {
+                ChooseConfigDir = dict.GetPhrase("ChooseConfigDir", ChooseConfigDir);
             }
         }
     }

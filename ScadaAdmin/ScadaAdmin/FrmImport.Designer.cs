@@ -47,7 +47,8 @@
             this.lblFinalID = new System.Windows.Forms.Label();
             this.lblStartID = new System.Windows.Forms.Label();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.chkImportLog = new System.Windows.Forms.CheckBox();
+            this.lblDirectory = new System.Windows.Forms.Label();
+            this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.gbIDs.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numNewStartID)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numFinalID)).BeginInit();
@@ -56,7 +57,7 @@
             // 
             // btnImport
             // 
-            this.btnImport.Location = new System.Drawing.Point(152, 188);
+            this.btnImport.Location = new System.Drawing.Point(152, 162);
             this.btnImport.Name = "btnImport";
             this.btnImport.Size = new System.Drawing.Size(75, 23);
             this.btnImport.TabIndex = 7;
@@ -67,7 +68,7 @@
             // btnClose
             // 
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(233, 188);
+            this.btnClose.Location = new System.Drawing.Point(233, 162);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
             this.btnClose.TabIndex = 8;
@@ -242,17 +243,14 @@
             this.openFileDialog.Filter = "Таблицы базы конфигурации|*.dat|Все файлы|*.*";
             this.openFileDialog.Title = "Выберите файл таблицы базы конфигурации";
             // 
-            // chkImportLog
+            // lblDirectory
             // 
-            this.chkImportLog.AutoSize = true;
-            this.chkImportLog.Checked = true;
-            this.chkImportLog.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkImportLog.Location = new System.Drawing.Point(25, 164);
-            this.chkImportLog.Name = "chkImportLog";
-            this.chkImportLog.Size = new System.Drawing.Size(169, 17);
-            this.chkImportLog.TabIndex = 6;
-            this.chkImportLog.Text = "Записать в журнал импорта";
-            this.chkImportLog.UseVisualStyleBackColor = true;
+            this.lblDirectory.AutoSize = true;
+            this.lblDirectory.Location = new System.Drawing.Point(51, 49);
+            this.lblDirectory.Name = "lblDirectory";
+            this.lblDirectory.Size = new System.Drawing.Size(69, 13);
+            this.lblDirectory.TabIndex = 9;
+            this.lblDirectory.Text = "Директория";
             // 
             // FrmImport
             // 
@@ -260,8 +258,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(320, 223);
-            this.Controls.Add(this.chkImportLog);
+            this.ClientSize = new System.Drawing.Size(320, 197);
+            this.Controls.Add(this.lblDirectory);
             this.Controls.Add(this.gbIDs);
             this.Controls.Add(this.btnImport);
             this.Controls.Add(this.btnClose);
@@ -308,6 +306,7 @@
         private System.Windows.Forms.CheckBox chkNewStartID;
         private System.Windows.Forms.CheckBox chkFinalID;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
-        private System.Windows.Forms.CheckBox chkImportLog;
+        private System.Windows.Forms.Label lblDirectory;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
     }
 }

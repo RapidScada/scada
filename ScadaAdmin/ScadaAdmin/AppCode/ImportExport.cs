@@ -109,7 +109,8 @@ namespace ScadaAdmin
 
                 if (tryToUpdate)
                 {
-                    int newID = (int)srcRow[idColName] + shiftID;
+                    object curID = srcRow[idColName];
+                    object newID = curID is int ? (int)curID + shiftID : curID;
                     int rowInd = destTable.DefaultView.Find(newID); // таблица отсортирована по ключу
                     if (rowInd >= 0)
                         destRow = destTable.DefaultView[rowInd].Row;
@@ -187,14 +188,14 @@ namespace ScadaAdmin
             int minID, int maxID, int newMinID, string logFileName, out bool logCreated, out string msg)
         {
             // проверка аргументов метода
-            if (string.IsNullOrWhiteSpace(srcFileName))
-                throw new ArgumentException(AppPhrases.ImportFileUndefied);
-
-            if (!File.Exists(srcFileName))
-                throw new FileNotFoundException(AppPhrases.ImportFileNotExist);
+            if (srcFileName == null)
+                throw new ArgumentNullException("srcFileName");
 
             if (destTableInfo == null)
                 throw new ArgumentNullException("destTableInfo");
+
+            if (logFileName == null)
+                throw new ArgumentNullException("logFileName");
 
             logCreated = false;
             StreamWriter writer = null;
@@ -202,15 +203,15 @@ namespace ScadaAdmin
             try
             {
                 // создание журнала импорта и вывод параметров импорта
-                if (!string.IsNullOrEmpty(logFileName))
-                {
-                    writer = new StreamWriter(logFileName, false, Encoding.UTF8);
-                    logCreated = true;
+                writer = new StreamWriter(logFileName, false, Encoding.UTF8);
+                logCreated = true;
+                AppUtils.WriteTitle(writer, DateTime.Now.ToString("G", Localization.Culture) + " " + 
+                    AppPhrases.ImportTitle);
+                writer.WriteLine(AppPhrases.ImportSource + srcFileName);
 
-                    AppUtils.WriteTitle(writer, DateTime.Now.ToString("G", Localization.Culture) + " " + 
-                        AppPhrases.ImportTitle);
-                    writer.WriteLine(AppPhrases.ImportSource + srcFileName);
-                }
+                // проверка существования импортируемого файла
+                if (!File.Exists(srcFileName))
+                    throw new FileNotFoundException(AppPhrases.ImportFileNotExist);
 
                 // загрузка импортируемой таблицы в формате DAT
                 BaseAdapter baseAdapter = new BaseAdapter();
@@ -257,20 +258,20 @@ namespace ScadaAdmin
         }
 
         /// <summary>
-        /// Импортировать архив базы конфигурации (патч)
+        /// Импортировать все таблицы базы конфигурации из заданной директории
         /// </summary>
-        public static bool ImportArchive(string srcFileName, List<Tables.TableInfo> destTableInfoList,
+        public static bool ImportAllTables(string srcDir, List<Tables.TableInfo> destTableInfoList,
             string logFileName, out bool logCreated, out string msg)
         {
             // проверка аргументов метода
-            if (string.IsNullOrWhiteSpace(srcFileName))
-                throw new ArgumentException(AppPhrases.ImportFileUndefied);
-
-            if (!File.Exists(srcFileName))
-                throw new FileNotFoundException(AppPhrases.ImportFileNotExist);
+            if (srcDir == null)
+                throw new ArgumentNullException("srcDir");
 
             if (destTableInfoList == null)
                 throw new ArgumentNullException("destTableInfoList");
+
+            if (logFileName == null)
+                throw new ArgumentNullException("logFileName");
 
             logCreated = false;
             StreamWriter writer = null;
@@ -278,15 +279,108 @@ namespace ScadaAdmin
             try
             {
                 // создание журнала импорта и вывод параметров импорта
-                if (!string.IsNullOrEmpty(logFileName))
-                {
-                    writer = new StreamWriter(logFileName, false, Encoding.UTF8);
-                    logCreated = true;
+                writer = new StreamWriter(logFileName, false, Encoding.UTF8);
+                logCreated = true;
+                AppUtils.WriteTitle(writer, DateTime.Now.ToString("G", Localization.Culture) + " " +
+                    AppPhrases.ImportTitle);
+                writer.WriteLine(AppPhrases.ImportSource + srcDir);
 
-                    AppUtils.WriteTitle(writer, DateTime.Now.ToString("G", Localization.Culture) + " " + 
-                        AppPhrases.ImportTitle);
-                    writer.WriteLine(AppPhrases.ImportSource + srcFileName);
+                // проверка существования импортируемой директории
+                if (!Directory.Exists(srcDir))
+                    throw new DirectoryNotFoundException(AppPhrases.ImportDirNotExist);
+
+                // импорт таблиц, файлы которых существуют в заданной директории
+                int totalUpdRowCnt = 0;
+                int totalErrRowCnt = 0;
+                int updRowCnt;
+                int errRowCnt;
+                srcDir = ScadaUtils.NormalDir(srcDir);
+
+                foreach (Tables.TableInfo destTableInfo in destTableInfoList)
+                {
+                    string srcFileName = srcDir + destTableInfo.FileName;
+
+                    if (File.Exists(srcFileName))
+                    {
+                        // загрузка импортируемой таблицы в формате DAT
+                        BaseAdapter baseAdapter = new BaseAdapter();
+                        DataTable srcTable = new DataTable();
+                        baseAdapter.FileName = srcFileName;
+
+                        try
+                        {
+                            baseAdapter.Fill(srcTable, true);
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new Exception(AppPhrases.LoadTableError + ":\r\n" + ex.Message);
+                        }
+
+                        // импорт таблицы
+                        string s;
+                        ImportTable(srcTable, destTableInfo, 0, writer, out updRowCnt, out errRowCnt, out s);
+                        totalUpdRowCnt += updRowCnt;
+                        totalErrRowCnt += errRowCnt;
+                    }
                 }
+
+                msg = totalErrRowCnt == 0 ? string.Format(AppPhrases.ImportCompleted, totalUpdRowCnt) :
+                    string.Format(AppPhrases.ImportCompletedWithErr, totalUpdRowCnt, totalErrRowCnt);
+
+                // вывод результата в журнал импорта
+                writer.WriteLine();
+                AppUtils.WriteTitle(writer, AppPhrases.ImportResult);
+                writer.WriteLine(msg);
+
+                if (totalUpdRowCnt > 0)
+                    msg += AppPhrases.RefreshRequired;
+                return totalErrRowCnt == 0;
+            }
+            catch (Exception ex)
+            {
+                msg = AppPhrases.ImportAllTablesError + ":\r\n" + ex.Message;
+                try { if (logCreated) writer.WriteLine(msg); }
+                catch { }
+                return false;
+            }
+            finally
+            {
+                try { writer.Close(); }
+                catch { }
+            }
+        }
+
+        /// <summary>
+        /// Импортировать архив базы конфигурации (патч)
+        /// </summary>
+        public static bool ImportArchive(string srcFileName, List<Tables.TableInfo> destTableInfoList,
+            string logFileName, out bool logCreated, out string msg)
+        {
+            // проверка аргументов метода
+            if (srcFileName == null)
+                throw new ArgumentNullException("srcFileName");
+
+            if (destTableInfoList == null)
+                throw new ArgumentNullException("destTableInfoList");
+
+            if (logFileName == null)
+                throw new ArgumentNullException("logFileName");
+
+            logCreated = false;
+            StreamWriter writer = null;
+
+            try
+            {
+                // создание журнала импорта и вывод параметров импорта
+                writer = new StreamWriter(logFileName, false, Encoding.UTF8);
+                logCreated = true;
+                AppUtils.WriteTitle(writer, DateTime.Now.ToString("G", Localization.Culture) + " " + 
+                    AppPhrases.ImportTitle);
+                writer.WriteLine(AppPhrases.ImportSource + srcFileName);
+
+                // проверка существования импортируемого файла
+                if (!File.Exists(srcFileName))
+                    throw new FileNotFoundException(AppPhrases.ImportFileNotExist);
 
                 using (ZipFile zipFile = ZipFile.Read(srcFileName))
                 {
@@ -294,7 +388,13 @@ namespace ScadaAdmin
                     Dictionary<string, ZipEntry> zipEntries = new Dictionary<string, ZipEntry>(zipFile.Count);
                     foreach (ZipEntry zipEntry in zipFile)
                     {
-                        zipEntries.Add(zipEntry.FileName.ToLowerInvariant(), zipEntry);
+                        string fileName = zipEntry.FileName.ToLowerInvariant();
+                        if (fileName.StartsWith("basedat/", StringComparison.Ordinal) ||
+                            fileName.StartsWith("basedat\\", StringComparison.Ordinal))
+                        {
+                            fileName = fileName.Substring("basedat/".Length);
+                            zipEntries.Add(fileName, zipEntry);
+                        }
                     }
 
                     // импорт таблиц из тех, которые содержатся в архиве
@@ -341,12 +441,9 @@ namespace ScadaAdmin
                         string.Format(AppPhrases.ImportCompletedWithErr, totalUpdRowCnt, totalErrRowCnt);
 
                     // вывод результата в журнал импорта
-                    if (logCreated)
-                    {
-                        writer.WriteLine();
-                        AppUtils.WriteTitle(writer, AppPhrases.ImportResult);
-                        writer.WriteLine(msg);
-                    }
+                    writer.WriteLine();
+                    AppUtils.WriteTitle(writer, AppPhrases.ImportResult);
+                    writer.WriteLine(msg);
 
                     if (totalUpdRowCnt > 0)
                         msg += AppPhrases.RefreshRequired;

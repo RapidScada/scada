@@ -39,9 +39,32 @@ namespace ScadaAdmin
     public partial class FrmImport : Form
     {
         /// <summary>
-        /// Имя файла архива базы конфигурации
+        /// Элемент выпадающего списка для иморта всех таблиц
         /// </summary>
-        public const string BaseDATArcFileName = "BaseDAT.zip";
+        private class ImportAllTablesItem
+        {
+            public override string ToString()
+            {
+                return AppPhrases.AllTablesItem;
+            }
+        }
+
+        /// <summary>
+        /// Элемент выпадающего списка для иморта из архива
+        /// </summary>
+        private class ImportArchiveItem
+        {
+            public override string ToString()
+            {
+                return AppPhrases.ArchiveItem;
+            }
+        }
+
+        /// <summary>
+        /// Выбранный элемент при открытии формы
+        /// </summary>
+        public enum SelectedItem { Table, AllTables, Archive };
+
 
         /// <summary>
         /// Конструктор
@@ -50,10 +73,17 @@ namespace ScadaAdmin
         {
             InitializeComponent();
 
+            DefaultSelection = SelectedItem.Table;
             DefaultTableName = "";
-            DefaultDirectory = "";
+            DefaultArcFileName = "";
+            DefaultBaseDATDir = "";
         }
 
+
+        /// <summary>
+        /// Выбранный элемент по умолчанию
+        /// </summary>
+        public SelectedItem DefaultSelection { get; set; }
 
         /// <summary>
         /// Получить или установить имя таблицы, выбранной по умолчанию
@@ -61,9 +91,14 @@ namespace ScadaAdmin
         public string DefaultTableName { get; set; }
 
         /// <summary>
+        /// Получить или установить имя файла архива конфигурации по умолчанию
+        /// </summary>
+        public string DefaultArcFileName { get; set; }
+
+        /// <summary>
         /// Получить или установить директорию по умолчанию
         /// </summary>
-        public string DefaultDirectory { get; set; }
+        public string DefaultBaseDATDir { get; set; }
 
 
         private void FrmImport_Load(object sender, EventArgs e)
@@ -71,62 +106,109 @@ namespace ScadaAdmin
             // перевод формы
             Translator.TranslateForm(this, "ScadaAdmin.FrmImport");
 
+            // настройка элементов управления
+            lblDirectory.Left = lblFileName.Left;
+
+            // определение имени файла архива по умолчанию
+            if (string.IsNullOrEmpty(DefaultArcFileName) && !string.IsNullOrEmpty(DefaultBaseDATDir))
+                DefaultArcFileName = Path.GetFullPath(DefaultBaseDATDir + @"..\config.zip");
+
             // заполнение выпадающего списка таблиц
-            int selInd = 0;
+            int tableInd = 0;
 
             foreach (Tables.TableInfo tableInfo in Tables.TableInfoList)
             {
                 int ind = cbTable.Items.Add(tableInfo);
                 if (tableInfo.Name == DefaultTableName)
-                    selInd = ind;
+                    tableInd = ind;
             }
 
-            cbTable.Items.Add(AppPhrases.ArchiveItem);
+            int allTablesInd = cbTable.Items.Add(new ImportAllTablesItem());
+            int archiveInd = cbTable.Items.Add(new ImportArchiveItem());
 
-            if (cbTable.Items.Count > 0)
-                cbTable.SelectedIndex = selInd;
+            // выбор элемента списка
+            switch (DefaultSelection)
+            {
+                case SelectedItem.AllTables:
+                    cbTable.SelectedIndex = allTablesInd;
+                    break;
+                case SelectedItem.Archive:
+                    cbTable.SelectedIndex = archiveInd;
+                    break;
+                default: // SelectedItem.Table
+                    cbTable.SelectedIndex = tableInd;
+                    break;
+            }
         }
 
         private void cbTable_SelectedIndexChanged(object sender, EventArgs e)
         {
             // установка имени файла таблицы
-            Tables.TableInfo tableInfo = cbTable.SelectedItem as Tables.TableInfo;
+            object selItem = cbTable.SelectedItem;
             
-            if (tableInfo == null)
+            if (selItem is ImportAllTablesItem)
             {
-                txtFileName.Text = DefaultDirectory + BaseDATArcFileName;
+                lblFileName.Visible = false;
+                lblDirectory.Visible = true;
+                txtFileName.Text = DefaultBaseDATDir;
                 gbIDs.Enabled = false;
             }
-            else
+            else if (selItem is ImportArchiveItem)
             {
-                txtFileName.Text = DefaultDirectory + tableInfo.FileName;
-                gbIDs.Enabled = tableInfo.IDColName != "";
+                lblFileName.Visible = true;
+                lblDirectory.Visible = false;
+                txtFileName.Text = DefaultArcFileName;
+                gbIDs.Enabled = false;
+            }
+            else if (selItem is Tables.TableInfo tableInfo)
+            {
+                lblFileName.Visible = true;
+                lblDirectory.Visible = false;
+                txtFileName.Text = DefaultBaseDATDir + tableInfo.FileName;
+                gbIDs.Enabled = tableInfo.HasIntID;
             }
         }
 
         private void btnBrowse_Click(object sender, EventArgs e)
         {
-            // настройка диалога открытия файла
-            string fileName = txtFileName.Text.Trim();
-            if (fileName.EndsWith("zip", StringComparison.OrdinalIgnoreCase))
+            if (lblFileName.Visible)
             {
-                openFileDialog.Title = AppPhrases.ChooseBaseArchiveFile;
-                openFileDialog.Filter = AppPhrases.BaseArchiveFileFilter;
+                // выбор импортируемого файла
+                if (cbTable.SelectedItem is ImportArchiveItem)
+                {
+                    openFileDialog.Title = AppPhrases.ChooseArchiveFile;
+                    openFileDialog.Filter = AppPhrases.ArchiveFileFilter;
+                }
+                else
+                {
+                    openFileDialog.Title = AppPhrases.ChooseBaseTableFile;
+                    openFileDialog.Filter = AppPhrases.BaseTableFileFilter;
+                }
+
+                string fileName = txtFileName.Text.Trim();
+                openFileDialog.FileName = fileName;
+
+                if (fileName != "")
+                    openFileDialog.InitialDirectory = Path.GetDirectoryName(fileName);
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    txtFileName.Text = openFileDialog.FileName;
+
+                txtFileName.Focus();
+                txtFileName.DeselectAll();
             }
             else
             {
-                openFileDialog.Title = AppPhrases.ChooseBaseTableFile;
-                openFileDialog.Filter = AppPhrases.BaseTableFileFilter;
-            }
+                // выбор директории
+                folderBrowserDialog.SelectedPath = txtFileName.Text.Trim();
+                folderBrowserDialog.Description = CommonPhrases.ChooseBaseDATDir;
 
-            // выбор файла таблицы
-            openFileDialog.FileName = fileName;
-            if (fileName != "")
-                openFileDialog.InitialDirectory = Path.GetDirectoryName(fileName);
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-                txtFileName.Text = openFileDialog.FileName;
-            txtFileName.Focus();
-            txtFileName.DeselectAll();
+                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                    txtFileName.Text = ScadaUtils.NormalDir(folderBrowserDialog.SelectedPath);
+
+                txtFileName.Focus();
+                txtFileName.DeselectAll();
+            }
         }
 
         private void chkStartID_CheckedChanged(object sender, EventArgs e)
@@ -147,16 +229,21 @@ namespace ScadaAdmin
         private void btnImport_Click(object sender, EventArgs e)
         {
             // импорт выбранной таблицы из формата DAT
-            Tables.TableInfo tableInfo = cbTable.SelectedItem as Tables.TableInfo;
-
             if (AppData.Connected)
             {
-                string logFileName = chkImportLog.Checked ? AppData.AppDirs.LogDir + "ScadaAdminImport.txt" : "";
+                object selItem = cbTable.SelectedItem;
+                string logFileName = AppData.AppDirs.LogDir + "ScadaAdminImport.txt";
                 bool importOK;
                 bool logCreated;
                 string msg;
 
-                if (tableInfo == null)
+                if (selItem is ImportAllTablesItem)
+                {
+                    // импорт всех таблиц из директории
+                    importOK = ImportExport.ImportAllTables(txtFileName.Text, Tables.TableInfoList,
+                        logFileName, out logCreated, out msg);
+                }
+                else if (selItem is ImportArchiveItem)
                 {
                     // импорт архива
                     importOK = ImportExport.ImportArchive(txtFileName.Text, Tables.TableInfoList, 
@@ -165,22 +252,27 @@ namespace ScadaAdmin
                 else
                 {
                     // импорт таблицы
-                    int minID = gbIDs.Enabled && chkStartID.Checked ? Convert.ToInt32(numStartID.Value) : 1;
+                    Tables.TableInfo tableInfo = (Tables.TableInfo)selItem;
+                    int minID = gbIDs.Enabled && chkStartID.Checked ? Convert.ToInt32(numStartID.Value) : 0;
                     int maxID = gbIDs.Enabled && chkFinalID.Checked ? Convert.ToInt32(numFinalID.Value) : int.MaxValue;
                     int newMinID = gbIDs.Enabled && chkNewStartID.Checked ? Convert.ToInt32(numNewStartID.Value) : 0;
                     importOK = ImportExport.ImportTable(txtFileName.Text, tableInfo, minID, maxID, newMinID,
                         logFileName, out logCreated, out msg);
                 }
 
-                // отображение сообщения о результате импорта
+                // отображение сообщения о результате
                 if (importOK)
+                {
                     ScadaUiUtils.ShowInfo(msg);
+                }
                 else
+                {
                     AppUtils.ProcError(msg);
 
-                // отображение журанала в блокноте
-                if (logCreated)
-                    Process.Start(logFileName);
+                    // отображение журнала в блокноте
+                    if (logCreated)
+                        Process.Start(logFileName);
+                }
             }
         }
     }

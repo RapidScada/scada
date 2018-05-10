@@ -59,6 +59,7 @@ namespace ScadaAdmin
                 Encoding = Encoding.UTF8
             };
 
+            Settings = new Settings();
             Conn =  new SqlCeConnection();
         }
 
@@ -73,6 +74,11 @@ namespace ScadaAdmin
         /// </summary>
         public static Log ErrLog { get; private set; }
 
+
+        /// <summary>
+        /// Получить настройки приложения
+        /// </summary>
+        public static Settings Settings { get; private set; }
 
         /// <summary>
         /// Получить соединение с БД
@@ -94,10 +100,12 @@ namespace ScadaAdmin
         /// <summary>
         /// Соединиться с БД, используя заданную в файле Web.Config строку связи
         /// </summary>
-        public static void Connect(string baseSdfFileName)
+        public static void Connect()
         {
             if (Conn.State != ConnectionState.Closed)
                 Disconnect();
+
+            string baseSdfFileName = Settings.AppSett.BaseSDFFile;
 
             if (!File.Exists(baseSdfFileName))
                 throw new FileNotFoundException(string.Format(AppPhrases.BaseSDFFileNotFound, baseSdfFileName));

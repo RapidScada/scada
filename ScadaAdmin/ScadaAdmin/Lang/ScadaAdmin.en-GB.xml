@@ -17,14 +17,14 @@
   </Dictionary>
   <Dictionary key="ScadaAdmin.ImportExport">
     <Phrase key="ChooseBaseTableFile">Choose a configuration database table file</Phrase>
-    <Phrase key="ChooseBaseArchiveFile">Choose a configuration database archive file</Phrase>
-    <Phrase key="BaseTableFileFilter">Configuration Database Tables|*.dat|All Files|*.*</Phrase>
-    <Phrase key="BaseArchiveFileFilter">Configuration Database Archive|*.zip|All Files|*.*</Phrase>
-    <Phrase key="ImportFileUndefied">Import file is undefined.</Phrase>
+    <Phrase key="ChooseArchiveFile">Choose a configuration archive file</Phrase>
+    <Phrase key="BaseTableFileFilter">Configuration Database Tables (*.dat)|*.dat|All Files (*.*)|*.*</Phrase>
+    <Phrase key="ArchiveFileFilter">Configuration Archive (*.zip)|*.zip|All Files (*.*)|*.*</Phrase>
     <Phrase key="ImportFileNotExist">Import file does not exist.</Phrase>
+    <Phrase key="ImportDirNotExist">Import directory does not exist.</Phrase>
     <Phrase key="ImportTitle">Import Configuration Database</Phrase>
     <Phrase key="ImportTableTitle">Import Configuration Database Table &quot;{0}&quot;</Phrase>
-    <Phrase key="ImportSource">Source file : </Phrase>
+    <Phrase key="ImportSource">Source file or directory : </Phrase>
     <Phrase key="LoadTableError">Error loading imported table</Phrase>
     <Phrase key="SrcTableColumns">Columns of the Source Table</Phrase>
     <Phrase key="DestTableColumns">Columns of the Destination Table</Phrase>
@@ -37,7 +37,9 @@
     <Phrase key="ImportResult">Import Result</Phrase>
     <Phrase key="ImportTableResult">Import Table Result</Phrase>
     <Phrase key="ImportTableErrors">Import Table Errors</Phrase>
-    <Phrase key="ImportError">Error import the configuration database table</Phrase>
+    <Phrase key="ImportTableError">Error import the configuration database table</Phrase>
+    <Phrase key="ImportAllTablesError">Error import all tables of the configuration database</Phrase>
+    <Phrase key="ImportArchiveError">Error import the configuration database from archive</Phrase>
     <Phrase key="ExportFileUndefied">Export file is undefined.</Phrase>
     <Phrase key="ExportDirUndefied">Export directory is undefined.</Phrase>
     <Phrase key="ExportDirNotExists">Export directory does not exist.</Phrase>
@@ -166,13 +168,14 @@
     <Phrase key="this">Import from File</Phrase>
     <Phrase key="lblTable">Table</Phrase>
     <Phrase key="lblFileName">File</Phrase>
+    <Phrase key="lblDirectory">Directory</Phrase>
     <Phrase key="gbIDs">Identifiers</Phrase>
     <Phrase key="lblStartID">Start</Phrase>
     <Phrase key="lblFinalID">Final</Phrase>
     <Phrase key="lblNewStartID">New start</Phrase>
-    <Phrase key="chkImportLog">Write to import log</Phrase>
     <Phrase key="btnImport">Import</Phrase>
     <Phrase key="btnClose">Close</Phrase>
+    <Phrase key="AllTablesItem">All tables</Phrase>
     <Phrase key="ArchiveItem">Tables from archive</Phrase>
   </Dictionary>
   <Dictionary key="ScadaAdmin.FrmInCnlProps">
@@ -513,5 +516,23 @@
     <Phrase key="Password">Password</Phrase>
     <Phrase key="RoleID">Role</Phrase>
     <Phrase key="Descr">Description</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaAdmin.Remote">
+    <Phrase key="ChooseConfigDir">Choose a configuration directory</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaAdmin.Remote.CtrlServerConn">
+    <Phrase key="gbConnection">Connection to server</Phrase>
+    <Phrase key="btnCreateConn">Create</Phrase>
+    <Phrase key="btnEditConn">Edit</Phrase>
+    <Phrase key="btnRemoveConn">Remove</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaAdmin.Remote.FrmDownloadConfig">
+    <Phrase key="this">Download Configuration</Phrase>
+    <Phrase key="gbOptions">Download options</Phrase>
+    <Phrase key="rbSaveToDir">Save to directory:</Phrase>
+    <Phrase key="rbSaveToArc">Save to archive:</Phrase>
+    <Phrase key="chkImportBase">Import the configuration database to SDF format after downloading</Phrase>
+    <Phrase key="btnDownload">Download</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
   </Dictionary>
 </ScadaAdminDictionaries>

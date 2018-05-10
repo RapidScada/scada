@@ -48,12 +48,14 @@ namespace ScadaAdmin
             /// <summary>
             /// Конструктор
             /// </summary>
-            public TableInfo(string name, string header, GetTableDelegate getTable, string idColName)
+            public TableInfo(string name, string header, GetTableDelegate getTable, string idColName, 
+                bool hasIntID = true)
             {
                 Name = name;
                 Header = header;
                 GetTable = getTable;
                 IDColName = idColName;
+                HasIntID = !string.IsNullOrEmpty(idColName) && hasIntID;
             }
 
             /// <summary>
@@ -82,6 +84,10 @@ namespace ScadaAdmin
             /// Получить наименование столбца идентификатора, если он числовой и определяется одним столбцом
             /// </summary>
             public string IDColName { get; private set; }
+            /// <summary>
+            /// Таблица имеет целочисленный идентификатор
+            /// </summary>
+            public bool HasIntID { get; private set; }
 
             /// <summary>
             /// Получить строковое представление объекта
@@ -135,7 +141,7 @@ namespace ScadaAdmin
             TableInfoList.Add(new TableInfo("Unit", CommonPhrases.UnitTable, GetUnitTable, "UnitID"));
             TableInfoList.Add(new TableInfo("CmdVal", CommonPhrases.CmdValTable, GetCmdValTable, "CmdValID"));
             TableInfoList.Add(new TableInfo("Format", CommonPhrases.FormatTable, GetFormatTable, "FormatID"));
-            TableInfoList.Add(new TableInfo("Formula", CommonPhrases.FormulaTable, GetFormulaTable, ""));
+            TableInfoList.Add(new TableInfo("Formula", CommonPhrases.FormulaTable, GetFormulaTable, "Name", false));
         }
 
 
@@ -745,8 +751,7 @@ namespace ScadaAdmin
             {
                 if (dataTable != null)
                 {
-                    string tableName = dataTable.TableName == "User" ? "[User]" : dataTable.TableName;
-                    string sql = "select * from " + tableName;
+                    string sql = "select * from [" + dataTable.TableName + "]";
                     SqlCeDataAdapter adapter = new SqlCeDataAdapter(sql, AppData.Conn);
                     adapter.ContinueUpdateOnError = true;
                     adapter.FillSchema(dataTable, SchemaType.Source);
