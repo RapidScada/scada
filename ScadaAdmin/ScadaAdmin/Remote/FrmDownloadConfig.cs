@@ -95,6 +95,28 @@ namespace ScadaAdmin.Remote
         }
 
         /// <summary>
+        /// Проверить настройки скачивания конфигурации
+        /// </summary>
+        private bool ValidateDownloadSettings()
+        {
+            if (rbSaveToDir.Checked)
+            {
+                if (string.IsNullOrWhiteSpace(txtDestDir.Text))
+                {
+                    ScadaUiUtils.ShowError(AppPhrases.DestDirRequired);
+                    return false;
+                }
+            }
+            else if (string.IsNullOrWhiteSpace(txtDestFile.Text))
+            {
+                ScadaUiUtils.ShowError(AppPhrases.DestFileRequired);
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Применить настройки скачивания конфигурации
         /// </summary>
         private void ApplyDownloadSettings(ServersSettings.DownloadSettings downloadSettings)
@@ -237,7 +259,7 @@ namespace ScadaAdmin.Remote
             // проверка настроек и скачивание конфигурации
             ServersSettings.ServerSettings serverSettings = ctrlServerConn.SelectedSettings;
 
-            if (serverSettings != null)
+            if (serverSettings != null && ValidateDownloadSettings())
             {
                 if (downloadSettingsModified)
                 {

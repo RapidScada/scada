@@ -534,5 +534,7 @@
     <Phrase key="chkImportBase">Import the configuration database to SDF format after downloading</Phrase>
     <Phrase key="btnDownload">Download</Phrase>
     <Phrase key="btnClose">Close</Phrase>
+    <Phrase key="DestDirRequired">Directory is required.</Phrase>
+    <Phrase key="DestFileRequired">Archive file name is required.</Phrase>
   </Dictionary>
 </ScadaAdminDictionaries>
