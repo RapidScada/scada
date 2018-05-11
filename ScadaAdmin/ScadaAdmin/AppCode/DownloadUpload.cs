@@ -66,6 +66,33 @@ namespace ScadaAdmin
                 string.Format("http://{0}:{1}/ScadaAgent/ScadaAgentSvc/", host, port));
         }
 
+        /// <summary>
+        /// Соединиться с Агентом
+        /// </summary>
+        private static void Connect(ServersSettings.ConnectionSettings connectionSettings, 
+            StreamWriter writer, out AgentSvcClient client, out long sessionID)
+        {
+            // настройка соединения
+            client = new AgentSvcClient();
+            client.Endpoint.Address = GetEpAddress(connectionSettings.Host, connectionSettings.Port);
+
+            // создание сессии
+            if (client.CreateSession(out sessionID))
+                writer.WriteLine(AppPhrases.SessionCreated, sessionID);
+            else
+                throw new ScadaException(AppPhrases.UnableCreateSession);
+
+            // вход в систему
+            string encryptedPassword = ScadaUtils.Encrypt(connectionSettings.Password,
+                connectionSettings.SecretKey, CreateIV(sessionID));
+
+            if (client.Login(out string errMsg, sessionID, connectionSettings.Username,
+                encryptedPassword, connectionSettings.ScadaInstance))
+                writer.WriteLine(AppPhrases.LoggedOn);
+            else
+                throw new ScadaException(string.Format(AppPhrases.UnableLogin, errMsg));
+        }
+
 
         /// <summary>
         /// Скачать конфигурацию
@@ -85,35 +112,16 @@ namespace ScadaAdmin
             try
             {
                 DateTime t0 = DateTime.UtcNow;
-                ServersSettings.ConnectionSettings connectionSettings = serverSettings.Connection;
-
                 writer = new StreamWriter(logFileName, false, Encoding.UTF8);
                 logCreated = true;
 
                 AppUtils.WriteTitle(writer,
                     string.Format(AppPhrases.DownloadTitle, DateTime.Now.ToString("G", Localization.Culture)));
-                writer.WriteLine(AppPhrases.ConnectionName, connectionSettings.Name);
+                writer.WriteLine(AppPhrases.ConnectionName, serverSettings.Connection.Name);
                 writer.WriteLine();
 
-                // настройка соединения
-                client = new AgentSvcClient();
-                client.Endpoint.Address = GetEpAddress(connectionSettings.Host, connectionSettings.Port);
-
-                // создание сессии
-                if (client.CreateSession(out long sessionID))
-                    writer.WriteLine(AppPhrases.SessionCreated, sessionID);
-                else
-                    throw new ScadaException(AppPhrases.UnableCreateSession);
-
-                // вход в систему
-                string encryptedPassword = ScadaUtils.Encrypt(connectionSettings.Password,
-                    connectionSettings.SecretKey, CreateIV(sessionID));
-
-                if (client.Login(out string errMsg, sessionID, connectionSettings.Username, 
-                    encryptedPassword, connectionSettings.ScadaInstance))
-                    writer.WriteLine(AppPhrases.LoggedOn);
-                else
-                    throw new ScadaException(string.Format(AppPhrases.UnableLogin, errMsg));
+                // соединение с Агентом
+                Connect(serverSettings.Connection, writer, out client, out long sessionID);
 
                 // скачивание конфигурации
                 Stream downloadStream = client.DownloadConfig(sessionID,
@@ -207,16 +215,42 @@ namespace ScadaAdmin
 
             try
             {
+                DateTime t0 = DateTime.UtcNow;
+
+                writer = new StreamWriter(logFileName, false, Encoding.UTF8);
+                logCreated = true;
+
+                AppUtils.WriteTitle(writer,
+                    string.Format(AppPhrases.UploadTitle, DateTime.Now.ToString("G", Localization.Culture)));
+                writer.WriteLine(AppPhrases.ConnectionName, connectionSettings.Name);
+                writer.WriteLine();
+
+                // соединение с Агентом
+                Connect(connectionSettings, writer, out client, out long sessionID);
+
+                // архивирование конфигурации
+                MemoryStream outStream = new MemoryStream(); // поток закрывается автоматически с помощью WCF
+
+                using (ZipFile zipFile = new ZipFile())
+                {
+                    zipFile.Save(outStream);
+                }
 
                 // передача конфигурации
-                ConfigOptions configOptions = new ConfigOptions() { ConfigParts = configParts };
-                long sessionID = 0;
-                client.UploadConfig(configOptions, sessionID, null);
+                client.UploadConfig(new ConfigOptions() { ConfigParts = configParts }, sessionID, outStream);
 
+                msg = string.Format(AppPhrases.UploadSuccessful, (int)(DateTime.UtcNow - t0).TotalSeconds);
+                writer.WriteLine(msg);
+                return true;
             }
             catch (Exception ex)
             {
+                msg = AppPhrases.UploadError + ":\r\n" + ex.Message;
 
+                try { writer?.WriteLine(msg); }
+                catch { }
+
+                return false;
             }
             finally
             {

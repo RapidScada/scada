@@ -52,6 +52,9 @@ namespace ScadaAdmin
         public static string DownloadDataEmpty { get; private set; }
         public static string DownloadSuccessful { get; private set; }
         public static string DownloadError { get; private set; }
+        public static string UploadTitle { get; private set; }
+        public static string UploadSuccessful { get; private set; }
+        public static string UploadError { get; private set; }
 
         // Словарь ScadaAdmin.ImportExport
         public static string ChooseBaseTableFile { get; private set; }
