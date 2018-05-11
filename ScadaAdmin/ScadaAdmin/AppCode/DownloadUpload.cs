@@ -27,6 +27,7 @@ using Ionic.Zip;
 using Scada;
 using ScadaAdmin.AgentSvcRef;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.ServiceModel;
 using System.Text;
@@ -185,6 +186,49 @@ namespace ScadaAdmin
                 try { client?.Close(); }
                 catch { }
             }
+        }
+
+        /// <summary>
+        /// Передать конфигурацию
+        /// </summary>
+        public static bool UploadConfig(ServersSettings.ConnectionSettings connectionSettings,
+            List<string> fileNames, ConfigParts configParts, string logFileName, out bool logCreated, out string msg)
+        {
+            if (connectionSettings == null)
+                throw new ArgumentNullException("connectionSettings");
+            if (fileNames == null)
+                throw new ArgumentNullException("fileNames");
+            if (logFileName == null)
+                throw new ArgumentNullException("logFileName");
+
+            logCreated = false;
+            StreamWriter writer = null;
+            AgentSvcClient client = null;
+
+            try
+            {
+
+                // передача конфигурации
+                ConfigOptions configOptions = new ConfigOptions() { ConfigParts = configParts };
+                long sessionID = 0;
+                client.UploadConfig(configOptions, sessionID, null);
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                try { writer?.Close(); }
+                catch { }
+
+                try { client?.Close(); }
+                catch { }
+            }
+
+            msg = "!!!";
+            return true;
         }
     }
 }

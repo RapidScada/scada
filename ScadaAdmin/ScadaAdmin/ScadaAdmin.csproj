@@ -275,6 +275,9 @@
     <EmbeddedResource Include="Remote\FrmDownloadConfig.resx">
       <DependentUpon>FrmDownloadConfig.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Remote\FrmUploadConfig.resx">
+      <DependentUpon>FrmUploadConfig.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="app.manifest" />
     <None Include="Connected Services\AgentSvcRef\AgentSvc.wsdl" />

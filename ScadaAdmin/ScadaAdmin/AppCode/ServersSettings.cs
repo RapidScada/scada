@@ -216,10 +216,6 @@ namespace ScadaAdmin
             /// </summary>
             public string SrcDir { get; set; }
             /// <summary>
-            /// Получить или установить признак передачи всех файлов конфигурации
-            /// </summary>
-            public bool AllFiles { get; set; }
-            /// <summary>
             /// Получить выбранные для передачи файлы конфигурации
             /// </summary>
             public List<string> SelectedFiles { get; private set; }
@@ -230,7 +226,6 @@ namespace ScadaAdmin
             private void SetToDefault()
             {
                 SrcDir = @"C:\SCADA\";
-                AllFiles = true;
                 SelectedFiles.Clear();
             }
             /// <summary>
@@ -241,10 +236,9 @@ namespace ScadaAdmin
                 if (xmlNode == null)
                     throw new ArgumentNullException("xmlNode");
 
-                SelectedFiles.Clear();
                 SrcDir = ScadaUtils.NormalDir(xmlNode.GetChildAsString("SrcDir", @"C:\SCADA\"));
-                AllFiles = xmlNode.GetChildAsBool("AllFiles", true);
 
+                SelectedFiles.Clear();
                 XmlNode selectedFilesNode = xmlNode.SelectSingleNode("SelectedFiles");
                 if (selectedFilesNode != null)
                 {
@@ -264,7 +258,6 @@ namespace ScadaAdmin
                     throw new ArgumentNullException("xmlElem");
 
                 xmlElem.AppendElem("SrcDir", SrcDir);
-                xmlElem.AppendElem("AllFiles", AllFiles);
 
                 XmlElement selectedFilesElem = xmlElem.AppendElem("SelectedFiles");
                 foreach (string path in SelectedFiles)
