@@ -601,7 +601,7 @@ namespace Scada.Agent
                 PathDict pathDict = SeparatePaths(configOptions.ExcludedPaths);
 
                 using (FileStream fileStream = 
-                    new FileStream(destFileName, FileMode.Create, FileAccess.Write, FileShare.None))
+                    new FileStream(destFileName, FileMode.Create, FileAccess.Write, FileShare.Read))
                 {
                     using (ZipArchive zipArchive = new ZipArchive(fileStream, ZipArchiveMode.Create))
                     {

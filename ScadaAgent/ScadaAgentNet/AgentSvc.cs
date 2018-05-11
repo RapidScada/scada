@@ -306,7 +306,7 @@ namespace Scada.Agent.Net
                     string tempFileName = AppData.GetTempFileName("download-config", "zip");
                     if (scadaInstance.PackConfig(tempFileName, configOptions))
                     {
-                        return File.Open(tempFileName, FileMode.Open, FileAccess.Read, FileShare.None);
+                        return File.Open(tempFileName, FileMode.Open, FileAccess.Read, FileShare.Read);
                     }
                 }
             }
