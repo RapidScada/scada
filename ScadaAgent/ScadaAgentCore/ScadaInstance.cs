@@ -282,22 +282,37 @@ namespace Scada.Agent
         }
 
         /// <summary>
-        /// Разделить исключаемые пути по группам
+        /// Подготовить исключаемые пути: разделить по группам, применить поиск файлов по маске
         /// </summary>
-        private PathDict SeparatePaths(ICollection<RelPath> relPaths)
+        private PathDict PrepareExcludedPaths(ICollection<RelPath> relPaths)
         {
             PathDict pathDict = new PathDict();
 
             foreach (RelPath relPath in relPaths)
             {
                 PathList pathList = pathDict.GetOrAdd(relPath.ConfigPart, relPath.AppFolder);
-                string absPath = GetAbsPath(relPath);
-                char lastPathSym = absPath[absPath.Length - 1];
+                bool pathIsMask = relPath.IsMask;
+                string[] absPathArr;
 
-                if (lastPathSym == Path.DirectorySeparatorChar || lastPathSym == Path.AltDirectorySeparatorChar)
-                    pathList.Dirs.Add(absPath);
+                if (relPath.IsMask)
+                {
+                    string dir = GetAbsPath(relPath.ConfigPart, relPath.AppFolder, "");
+                    absPathArr = Directory.GetFiles(dir, relPath.Path);
+                }
                 else
-                    pathList.Files.Add(absPath);
+                {
+                    absPathArr = new string[] { GetAbsPath(relPath) };
+                }
+
+                foreach (string absPath in absPathArr)
+                {
+                    char lastPathSym = absPath[absPath.Length - 1];
+
+                    if (lastPathSym == Path.DirectorySeparatorChar || lastPathSym == Path.AltDirectorySeparatorChar)
+                        pathList.Dirs.Add(absPath);
+                    else
+                        pathList.Files.Add(absPath);
+                }
             }
 
             return pathDict;
@@ -554,10 +569,18 @@ namespace Scada.Agent
         /// </summary>
         public string GetAbsPath(RelPath relPath)
         {
+            return GetAbsPath(relPath.ConfigPart, relPath.AppFolder, relPath.Path);
+        }
+
+        /// <summary>
+        /// Получить абсолютный путь из относительного
+        /// </summary>
+        public string GetAbsPath(ConfigParts configPart, AppFolder appFolder, string path)
+        {
             return Path.Combine(Settings.Directory,
-                GetConfigPartDir(relPath.ConfigPart, null),
-                GetAppFolderDir(relPath.AppFolder, null, relPath.ConfigPart == ConfigParts.Webstation),
-                relPath.Path);
+                GetConfigPartDir(configPart, Path.DirectorySeparatorChar),
+                GetAppFolderDir(appFolder, Path.DirectorySeparatorChar, configPart == ConfigParts.Webstation),
+                path);
         }
 
         /// <summary>
@@ -598,7 +621,7 @@ namespace Scada.Agent
             try
             {
                 List<RelPath> configPaths = GetConfigPaths(configOptions.ConfigParts);
-                PathDict pathDict = SeparatePaths(configOptions.ExcludedPaths);
+                PathDict excludedPathDict = PrepareExcludedPaths(configOptions.ExcludedPaths);
 
                 using (FileStream fileStream = 
                     new FileStream(destFileName, FileMode.Create, FileAccess.Write, FileShare.Read))
@@ -607,7 +630,7 @@ namespace Scada.Agent
                     {
                         foreach (RelPath relPath in configPaths)
                         {
-                            PackDir(zipArchive, relPath, pathDict);
+                            PackDir(zipArchive, relPath, excludedPathDict);
                         }
 
                         return true;
@@ -632,7 +655,7 @@ namespace Scada.Agent
             {
                 // удаление существующей конфигурации
                 List<RelPath> configPaths = GetConfigPaths(configOptions.ConfigParts);
-                PathDict pathDict = SeparatePaths(configOptions.ExcludedPaths);
+                PathDict pathDict = PrepareExcludedPaths(configOptions.ExcludedPaths);
 
                 foreach (RelPath relPath in configPaths)
                 {

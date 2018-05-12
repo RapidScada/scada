@@ -64,5 +64,16 @@ namespace Scada.Agent
         /// Получить или установить путь относительно папки приложения
         /// </summary>
         public string Path { get; set; }
+
+        /// <summary>
+        /// Получить признак, что путь является маской для поиска файлов
+        /// </summary>
+        public bool IsMask
+        {
+            get
+            {
+                return Path != null && (Path.IndexOf('*') >= 0 || Path.IndexOf('?') >= 0);
+            }
+        }
     }
 }

@@ -14,6 +14,15 @@
     <Phrase key="DownloadDataEmpty">No data to download</Phrase>
     <Phrase key="DownloadSuccessful">Download completed successfully in {0} sec.</Phrase>
     <Phrase key="DownloadError">Error downloading configuration</Phrase>
+    <Phrase key="UploadTitle">{0} Upload Configuration</Phrase>
+    <Phrase key="NoConfigInSrc">Configuration is missing in the specified source.</Phrase>
+    <Phrase key="ConfigUploaded">Configuration uploaded</Phrase>
+    <Phrase key="ServerRestarted">The Server service restarted</Phrase>
+    <Phrase key="UnableRestartServer">Unable to restart the Server service</Phrase>
+    <Phrase key="CommRestarted">The Communicator service restarted</Phrase>
+    <Phrase key="UnableRestartComm">Unable to restart the Communicator service</Phrase>
+    <Phrase key="UploadSuccessful">Upload completed successfully in {0} sec.</Phrase>
+    <Phrase key="UploadError">Error uploading configuration</Phrase>
   </Dictionary>
   <Dictionary key="ScadaAdmin.ImportExport">
     <Phrase key="ChooseBaseTableFile">Choose a configuration database table file</Phrase>
@@ -531,6 +540,7 @@
     <Phrase key="gbOptions">Download options</Phrase>
     <Phrase key="rbSaveToDir">Save to directory:</Phrase>
     <Phrase key="rbSaveToArc">Save to archive:</Phrase>
+    <Phrase key="chkIncludeSpecificFiles">Including server specific files such as registration keys</Phrase>
     <Phrase key="chkImportBase">Import the configuration database to SDF format after downloading</Phrase>
     <Phrase key="btnDownload">Download</Phrase>
     <Phrase key="btnClose">Close</Phrase>

@@ -63,8 +63,10 @@ namespace ScadaAdmin.Remote
             if (uploadSettings == null)
             {
                 gbOptions.Enabled = false;
-                txtSrcDir.Text = "";
+                rbGetFromDir.Checked = true;
+                txtSrcDir.Text = txtSrcFile.Text = "";
                 tvFiles.Nodes.Clear();
+                chkClearSpecificFiles.Checked = false;
                 btnUpload.Enabled = false;
             }
             else
@@ -72,7 +74,14 @@ namespace ScadaAdmin.Remote
                 gbOptions.Enabled = true;
                 txtSrcDir.Text = uploadSettings.SrcDir;
                 FillTreeView(uploadSettings);
+                txtSrcFile.Text = uploadSettings.SrcFile;
+                chkClearSpecificFiles.Checked = uploadSettings.ClearSpecificFiles;
                 btnUpload.Enabled = true;
+
+                if (uploadSettings.GetFromDir)
+                    rbGetFromDir.Checked = true;
+                else
+                    rbGetFromArc.Checked = true;
             }
         }
 
@@ -190,24 +199,29 @@ namespace ScadaAdmin.Remote
         }
 
         /// <summary>
-        /// Извлечь параметры передачи конфигурации
+        /// Конвертировать базу конфигурации в формат DAT, если необходимо
         /// </summary>
-        public void RetrieveUploadOptions(out List<string> fileNames, out ConfigParts configParts)
+        private void ConvertBaseToDAT(string srcDir)
         {
-            fileNames = new List<string>();
-            configParts = ConfigParts.All;
+            string workBaseDATDir = ScadaUtils.NormalDir(AppData.Settings.AppSett.BaseDATDir);
+            string srcBaseDATDir = Path.Combine(srcDir, "BaseDAT\\");
+
+            if (string.Equals(workBaseDATDir, srcBaseDATDir, StringComparison.OrdinalIgnoreCase))
+            {
+                if (!ImportExport.PassBase(Tables.TableInfoList, workBaseDATDir, out string msg))
+                    AppUtils.ProcError(msg);
+            }
         }
 
         /// <summary>
         /// Передать конфигурацию
         /// </summary>
-        private void UploadConfig(ServersSettings.ConnectionSettings connectionSettings,
-            string rootDir, List<string> fileNames, ConfigParts configParts)
+        private void UploadConfig(ServersSettings.ServerSettings serverSettings)
         {
             // передача
             string logFileName = AppData.AppDirs.LogDir + "ScadaAdminUpload.txt";
-            bool uploadOK = DownloadUpload.UploadConfig(connectionSettings,
-                rootDir, fileNames, configParts, logFileName, out bool logCreated, out string msg);
+            bool uploadOK = DownloadUpload.UploadConfig(serverSettings,
+                logFileName, out bool logCreated, out string msg);
 
             // отображение сообщения о результате
             if (uploadOK)
@@ -249,9 +263,56 @@ namespace ScadaAdmin.Remote
             uploadSettingsModified = false;
         }
 
+        private void rbGet_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((RadioButton)sender).Checked) // чтобы исключить двойное срабатывание
+            {
+                bool getFromDir = rbGetFromDir.Checked;
+                txtSrcDir.Enabled = getFromDir;
+                btnBrowseSrcDir.Enabled = getFromDir;
+                tvFiles.Enabled = getFromDir;
+                txtSrcFile.Enabled = !getFromDir;
+                btnSelectSrcFile.Enabled = !getFromDir;
+                uploadSettingsModified = true;
+            }
+        }
+
+        private void uploadControl_Changed(object sender, EventArgs e)
+        {
+            uploadSettingsModified = true;
+        }
+
+        private void tvFiles_AfterCheck(object sender, TreeViewEventArgs e)
+        {
+            uploadSettingsModified = true;
+        }
+
         private void btnBrowseSrcDir_Click(object sender, EventArgs e)
         {
+            // выбор директории конфигурации
+            folderBrowserDialog.SelectedPath = txtSrcDir.Text.Trim();
 
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                txtSrcDir.Text = ScadaUtils.NormalDir(folderBrowserDialog.SelectedPath);
+
+            txtSrcDir.Focus();
+            txtSrcDir.DeselectAll();
+        }
+
+        private void btnSelectSrcFile_Click(object sender, EventArgs e)
+        {
+            // выбор файла архива конфигурации
+            string fileName = txtSrcFile.Text.Trim();
+            openFileDialog.FileName = fileName;
+
+            if (fileName != "")
+                openFileDialog.InitialDirectory = Path.GetDirectoryName(fileName);
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+                txtSrcFile.Text = openFileDialog.FileName;
+
+            txtSrcFile.Focus();
+            txtSrcFile.DeselectAll();
         }
 
         private void btnUpload_Click(object sender, EventArgs e)
@@ -267,8 +328,10 @@ namespace ScadaAdmin.Remote
                     SaveServersSettings();
                 }
 
-                RetrieveUploadOptions(out List<string> fileNames, out ConfigParts configParts);
-                UploadConfig(serverSettings.Connection, serverSettings.Upload.SrcDir, fileNames, configParts);
+                if (serverSettings.Upload.GetFromDir)
+                    ConvertBaseToDAT(serverSettings.Upload.SrcDir);
+
+                UploadConfig(serverSettings);
             }
         }
     }

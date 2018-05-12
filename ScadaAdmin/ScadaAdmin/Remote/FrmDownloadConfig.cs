@@ -63,34 +63,23 @@ namespace ScadaAdmin.Remote
                 gbOptions.Enabled = false;
                 rbSaveToDir.Checked = true;
                 txtDestDir.Text = txtDestFile.Text = "";
+                chkIncludeSpecificFiles.Checked = false;
                 chkImportBase.Checked = false;
                 btnDownload.Enabled = false;
             }
             else
             {
                 gbOptions.Enabled = true;
+                txtDestDir.Text = downloadSettings.DestDir;
+                txtDestFile.Text = downloadSettings.DestFile;
+                chkIncludeSpecificFiles.Checked = downloadSettings.IncludeSpecificFiles;
+                chkImportBase.Checked = downloadSettings.ImportBase;
                 btnDownload.Enabled = true;
 
                 if (downloadSettings.SaveToDir)
-                {
                     rbSaveToDir.Checked = true;
-                    txtDestDir.Enabled = true;
-                    btnBrowseDestDir.Enabled = true;
-                    txtDestFile.Enabled = false;
-                    btnSelectDestFile.Enabled = false;
-                }
                 else
-                {
                     rbSaveToArc.Checked = true;
-                    txtDestDir.Enabled = false;
-                    btnBrowseDestDir.Enabled = false;
-                    txtDestFile.Enabled = true;
-                    btnSelectDestFile.Enabled = true;
-                }
-
-                txtDestDir.Text = downloadSettings.DestDir;
-                txtDestFile.Text = downloadSettings.DestFile;
-                chkImportBase.Checked = downloadSettings.ImportBase;
             }
         }
 
@@ -124,6 +113,7 @@ namespace ScadaAdmin.Remote
             downloadSettings.SaveToDir = rbSaveToDir.Checked;
             downloadSettings.DestDir = txtDestDir.Text;
             downloadSettings.DestFile = txtDestFile.Text;
+            downloadSettings.IncludeSpecificFiles = chkIncludeSpecificFiles.Checked;
             downloadSettings.ImportBase = chkImportBase.Checked;
         }
 
@@ -207,18 +197,17 @@ namespace ScadaAdmin.Remote
             downloadSettingsModified = false;
         }
 
-        private void rbSaveToDir_CheckedChanged(object sender, EventArgs e)
+        private void rbSave_CheckedChanged(object sender, EventArgs e)
         {
-            txtDestDir.Enabled = rbSaveToDir.Checked;
-            btnBrowseDestDir.Enabled = rbSaveToDir.Checked;
-            downloadSettingsModified = true;
-        }
-
-        private void rbSaveToArc_CheckedChanged(object sender, EventArgs e)
-        {
-            txtDestFile.Enabled = rbSaveToArc.Checked;
-            btnSelectDestFile.Enabled = rbSaveToArc.Checked;
-            downloadSettingsModified = true;
+            if (((RadioButton)sender).Checked) // чтобы исключить двойное срабатывание
+            {
+                bool saveToDir = rbSaveToDir.Checked;
+                txtDestDir.Enabled = saveToDir;
+                btnBrowseDestDir.Enabled = saveToDir;
+                txtDestFile.Enabled = !saveToDir;
+                btnSelectDestFile.Enabled = !saveToDir;
+                downloadSettingsModified = true;
+            }
         }
 
         private void downloadControl_Changed(object sender, EventArgs e)

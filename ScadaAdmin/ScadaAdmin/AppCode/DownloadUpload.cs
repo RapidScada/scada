@@ -123,6 +123,7 @@ namespace ScadaAdmin
             out string outFileName, out ConfigParts configParts)
         {
             srcDir = ScadaUtils.NormalDir(srcDir);
+            int srcDirLen = srcDir.Length;
             outFileName = srcDir + "upload-config_" +
                 DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".zip";
             configParts = ConfigParts.None;
@@ -136,7 +137,16 @@ namespace ScadaAdmin
 
                     if (Directory.Exists(path)) // путь является директорией
                     {
-
+                        string[] filesInDir = Directory.GetFiles(path, "*", SearchOption.AllDirectories);
+                        foreach (string fileName in filesInDir)
+                        {
+                            if (Path.GetExtension(fileName) != ".bak")
+                            {
+                                string dirInArc = Path.GetDirectoryName(fileName.Substring(srcDirLen))
+                                    .Replace('\\', '/');
+                                zipFile.AddFile(path, dirInArc);
+                            }
+                        }
                     }
                     else if (File.Exists(path))
                     {
@@ -215,16 +225,21 @@ namespace ScadaAdmin
                 Connect(serverSettings.Connection, writer, out client, out long sessionID);
 
                 // скачивание конфигурации
-                Stream downloadStream = client.DownloadConfig(sessionID,
-                    new ConfigOptions() { ConfigParts = ConfigParts.All });
+                ServersSettings.DownloadSettings downloadSettings = serverSettings.Download;
+                ConfigOptions configOptions = new ConfigOptions() { ConfigParts = ConfigParts.All };
+
+                if (!downloadSettings.IncludeSpecificFiles)
+                    configOptions.ExcludedPaths = ExcludedPaths;
+
+                Stream downloadStream = client.DownloadConfig(sessionID, configOptions);
 
                 if (downloadStream == null)
                     throw new ScadaException(AppPhrases.DownloadDataEmpty);
 
-                if (serverSettings.Download.SaveToDir)
+                if (downloadSettings.SaveToDir)
                 {
                     // сохранение в директорию
-                    string destDir = serverSettings.Download.DestDir;
+                    string destDir = downloadSettings.DestDir;
                     Directory.CreateDirectory(destDir);
                     string tempFileName = destDir + "download-config_" + 
                         DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".zip";
@@ -255,7 +270,7 @@ namespace ScadaAdmin
                 else
                 {
                     // сохранение в файл
-                    string destFile = serverSettings.Download.DestFile;
+                    string destFile = downloadSettings.DestFile;
                     Directory.CreateDirectory(Path.GetDirectoryName(destFile));
 
                     using (FileStream destStream = File.Create(destFile))
@@ -320,20 +335,21 @@ namespace ScadaAdmin
                 // подготовка конфигурации для передачи
                 ServersSettings.UploadSettings uploadSettings = serverSettings.Upload;
                 ConfigOptions configOptions = new ConfigOptions();
+                ConfigParts configParts;
                 string outFileName;
                 bool deleteOutFile;
 
                 if (uploadSettings.GetFromDir)
                 {
                     PackConfig(uploadSettings.SrcDir, uploadSettings.SelectedFiles, 
-                        out outFileName, out ConfigParts configParts);
+                        out outFileName, out configParts);
                     configOptions.ConfigParts = configParts;
                     deleteOutFile = true;
                 }
                 else
                 {
                     outFileName = uploadSettings.SrcFile;
-                    configOptions.ConfigParts = GetConfigParts(outFileName);
+                    configOptions.ConfigParts = configParts = GetConfigParts(outFileName);
                     deleteOutFile = false;
                 }
 
@@ -347,95 +363,29 @@ namespace ScadaAdmin
                 using (Stream outStream = File.Open(outFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
                     client.UploadConfig(configOptions, sessionID, outStream);
+                    writer.WriteLine(AppPhrases.ConfigUploaded);
                 }
 
                 // удаление временного файла
                 if (deleteOutFile)
                     File.Delete(outFileName);
 
-                msg = string.Format(AppPhrases.UploadSuccessful, (int)(DateTime.UtcNow - t0).TotalSeconds);
-                writer.WriteLine(msg);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                msg = AppPhrases.UploadError + ":\r\n" + ex.Message;
-
-                try { writer?.WriteLine(msg); }
-                catch { }
-
-                return false;
-            }
-            finally
-            {
-                try { writer?.Close(); }
-                catch { }
-
-                try { client?.Close(); }
-                catch { }
-            }
-        }
-
-        /// <summary>
-        /// Передать конфигурацию
-        /// </summary>
-        public static bool UploadConfig(ServersSettings.ConnectionSettings connectionSettings,
-            string rootDir, List<string> fileNames, ConfigParts configParts, string logFileName, 
-            out bool logCreated, out string msg)
-        {
-            if (connectionSettings == null)
-                throw new ArgumentNullException("connectionSettings");
-            if (rootDir == null)
-                throw new ArgumentNullException("rootDir");
-            if (fileNames == null)
-                throw new ArgumentNullException("fileNames");
-            if (logFileName == null)
-                throw new ArgumentNullException("logFileName");
-
-            logCreated = false;
-            StreamWriter writer = null;
-            AgentSvcClient client = null;
-
-            try
-            {
-                DateTime t0 = DateTime.UtcNow;
-
-                writer = new StreamWriter(logFileName, false, Encoding.UTF8);
-                logCreated = true;
-
-                AppUtils.WriteTitle(writer,
-                    string.Format(AppPhrases.UploadTitle, DateTime.Now.ToString("G", Localization.Culture)));
-                writer.WriteLine(AppPhrases.ConnectionName, connectionSettings.Name);
-                writer.WriteLine();
-
-                // соединение с Агентом
-                Connect(connectionSettings, writer, out client, out long sessionID);
-
-                // архивирование конфигурации
-                MemoryStream outStream = new MemoryStream(); // поток закрывается автоматически с помощью WCF
-
-                using (ZipFile zipFile = new ZipFile())
+                // перезапуск служб на удалённом сервере
+                if (configParts.HasFlag(ConfigParts.Base) || configParts.HasFlag(ConfigParts.Server))
                 {
-                    rootDir = ScadaUtils.NormalDir(rootDir);
-                    int rootDirLen = rootDir.Length;
-
-                    foreach (string fileName in fileNames)
-                    {
-                        if (!File.Exists(fileName))
-                            throw new FileNotFoundException(string.Format(CommonPhrases.NamedFileNotFound, fileName));
-
-                        //if (!fileName.StartsWith(rootDir, StringComparison.Ordinal))
-                        //    throw new ScadaException(AppPhrases.FileOutsideRoot);
-
-                        string pathInArc = fileName.Substring(rootDirLen).Replace('\\', '/');
-                        zipFile.AddFile(fileName, pathInArc);
-                    }
-
-                    zipFile.Save(outStream);
+                    if (client.ControlService(sessionID, ServiceApp.Server, ServiceCommand.Restart))
+                        writer.WriteLine(AppPhrases.ServerRestarted);
+                    else
+                        writer.WriteLine(AppPhrases.UnableRestartServer);
                 }
 
-                // передача конфигурации
-                client.UploadConfig(new ConfigOptions() { ConfigParts = configParts }, sessionID, outStream);
+                if (configParts.HasFlag(ConfigParts.Base) || configParts.HasFlag(ConfigParts.Communicator))
+                {
+                    if (client.ControlService(sessionID, ServiceApp.Communicator, ServiceCommand.Restart))
+                        writer.WriteLine(AppPhrases.CommRestarted);
+                    else
+                        writer.WriteLine(AppPhrases.UnableRestartComm);
+                }
 
                 msg = string.Format(AppPhrases.UploadSuccessful, (int)(DateTime.UtcNow - t0).TotalSeconds);
                 writer.WriteLine(msg);

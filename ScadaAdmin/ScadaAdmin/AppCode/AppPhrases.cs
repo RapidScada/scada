@@ -54,6 +54,11 @@ namespace ScadaAdmin
         public static string DownloadError { get; private set; }
         public static string UploadTitle { get; private set; }
         public static string NoConfigInSrc { get; private set; }
+        public static string ConfigUploaded { get; private set; }
+        public static string ServerRestarted { get; private set; }
+        public static string UnableRestartServer { get; private set; }
+        public static string CommRestarted { get; private set; }
+        public static string UnableRestartComm { get; private set; }
         public static string UploadSuccessful { get; private set; }
         public static string UploadError { get; private set; }
 
@@ -250,6 +255,15 @@ namespace ScadaAdmin
             DownloadDataEmpty = "Отсутствуют данные для скачивания";
             DownloadSuccessful = "Скачивание завершено успешно за {0} с.";
             DownloadError = "Ошибка при скачивании конфигурации";
+            UploadTitle = "{0} Передача конфигурации";
+            NoConfigInSrc = "Конфигурация отсутствует в заданном источнике.";
+            ConfigUploaded = "Конфигурация передана";
+            ServerRestarted = "Служба Сервера перезапущена";
+            UnableRestartServer = "Не удалось перезапустить службу Сервера";
+            CommRestarted = "Служба Коммуникатора перезапущена";
+            UnableRestartComm = "Не удалось перезапустить службу Коммуникатора";
+            UploadSuccessful = "Передача завершена успешно за {0} с.";
+            UploadError = "Ошибка при передаче конфигурации";
 
             ChooseBaseTableFile = "Выберите файл таблицы базы конфигурации";
             ChooseArchiveFile = "Выберите файл архива конфигурации";
@@ -438,6 +452,15 @@ namespace ScadaAdmin
                 DownloadDataEmpty = dict.GetPhrase("DownloadDataEmpty", DownloadDataEmpty);
                 DownloadSuccessful = dict.GetPhrase("DownloadSuccessful", DownloadSuccessful);
                 DownloadError = dict.GetPhrase("DownloadError", DownloadError);
+                UploadTitle = dict.GetPhrase("UploadTitle", UploadTitle);
+                NoConfigInSrc = dict.GetPhrase("NoConfigInSrc", NoConfigInSrc);
+                ConfigUploaded = dict.GetPhrase("ConfigUploaded", ConfigUploaded);
+                ServerRestarted = dict.GetPhrase("ServerRestarted", ServerRestarted);
+                UnableRestartServer = dict.GetPhrase("UnableRestartServer", UnableRestartServer);
+                CommRestarted = dict.GetPhrase("CommRestarted", CommRestarted);
+                UnableRestartComm = dict.GetPhrase("UnableRestartComm", UnableRestartComm);
+                UploadSuccessful = dict.GetPhrase("UploadSuccessful", UploadSuccessful);
+                UploadError = dict.GetPhrase("UploadError", UploadError);
             }
 
             if (Localization.Dictionaries.TryGetValue("ScadaAdmin.ImportExport", out dict))
