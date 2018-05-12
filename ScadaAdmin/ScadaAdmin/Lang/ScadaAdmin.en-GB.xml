@@ -21,7 +21,7 @@
     <Phrase key="UnableRestartServer">Unable to restart the Server service</Phrase>
     <Phrase key="CommRestarted">The Communicator service restarted</Phrase>
     <Phrase key="UnableRestartComm">Unable to restart the Communicator service</Phrase>
-    <Phrase key="UploadSuccessful">Upload completed successfully in {0} sec.</Phrase>
+    <Phrase key="UploadSuccessful">Upload completed successfully in {0} sec.&#13;&#10;Check the remote server.</Phrase>
     <Phrase key="UploadError">Error uploading configuration</Phrase>
   </Dictionary>
   <Dictionary key="ScadaAdmin.ImportExport">

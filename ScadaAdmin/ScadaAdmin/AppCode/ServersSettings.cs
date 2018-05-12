@@ -265,7 +265,7 @@ namespace ScadaAdmin
                 XmlNode selectedFilesNode = xmlNode.SelectSingleNode("SelectedFiles");
                 if (selectedFilesNode != null)
                 {
-                    XmlNodeList pathNodeList = xmlNode.SelectNodes("Path");
+                    XmlNodeList pathNodeList = selectedFilesNode.SelectNodes("Path");
                     foreach (XmlNode pathNode in pathNodeList)
                     {
                         SelectedFiles.Add(pathNode.InnerText);

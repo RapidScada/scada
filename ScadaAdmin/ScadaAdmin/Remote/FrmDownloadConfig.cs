@@ -132,9 +132,11 @@ namespace ScadaAdmin.Remote
         private void DownloadConfig(ServersSettings.ServerSettings serverSettings)
         {
             // скачивание
+            Cursor = Cursors.WaitCursor;
             string logFileName = AppData.AppDirs.LogDir + "ScadaAdminDownload.txt";
             bool downloadOK = DownloadUpload.DownloadConfig(serverSettings,
                 logFileName, out bool logCreated, out string msg);
+            Cursor = Cursors.Default;
 
             // отображение сообщения о результате
             if (downloadOK)

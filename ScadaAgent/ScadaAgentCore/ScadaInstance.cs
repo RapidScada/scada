@@ -288,30 +288,34 @@ namespace Scada.Agent
         {
             PathDict pathDict = new PathDict();
 
-            foreach (RelPath relPath in relPaths)
+            if (relPaths != null)
             {
-                PathList pathList = pathDict.GetOrAdd(relPath.ConfigPart, relPath.AppFolder);
-                bool pathIsMask = relPath.IsMask;
-                string[] absPathArr;
-
-                if (relPath.IsMask)
+                foreach (RelPath relPath in relPaths)
                 {
-                    string dir = GetAbsPath(relPath.ConfigPart, relPath.AppFolder, "");
-                    absPathArr = Directory.GetFiles(dir, relPath.Path);
-                }
-                else
-                {
-                    absPathArr = new string[] { GetAbsPath(relPath) };
-                }
+                    PathList pathList = pathDict.GetOrAdd(relPath.ConfigPart, relPath.AppFolder);
+                    bool pathIsMask = relPath.IsMask;
+                    string[] absPathArr;
 
-                foreach (string absPath in absPathArr)
-                {
-                    char lastPathSym = absPath[absPath.Length - 1];
-
-                    if (lastPathSym == Path.DirectorySeparatorChar || lastPathSym == Path.AltDirectorySeparatorChar)
-                        pathList.Dirs.Add(absPath);
+                    if (relPath.IsMask)
+                    {
+                        string dir = GetAbsPath(relPath.ConfigPart, relPath.AppFolder, "");
+                        absPathArr = Directory.Exists(dir) ? 
+                            Directory.GetFiles(dir, relPath.Path) : new string[0];
+                    }
                     else
-                        pathList.Files.Add(absPath);
+                    {
+                        absPathArr = new string[] { GetAbsPath(relPath) };
+                    }
+
+                    foreach (string absPath in absPathArr)
+                    {
+                        char lastSym = absPath[absPath.Length - 1];
+
+                        if (lastSym == Path.DirectorySeparatorChar || lastSym == Path.AltDirectorySeparatorChar)
+                            pathList.Dirs.Add(absPath);
+                        else
+                            pathList.Files.Add(absPath);
+                    }
                 }
             }
 
@@ -368,22 +372,20 @@ namespace Scada.Agent
         /// <summary>
         /// Очистить директорию
         /// </summary>
-        private void ClearDir(string dir, PathList excludedPaths, out bool dirEmpty)
+        private void ClearDir(DirectoryInfo dirInfo, PathList excludedPaths, out bool dirEmpty)
         {
-            if (excludedPaths.Dirs.Contains(dir))
+            if (excludedPaths.Dirs.Contains(dirInfo.FullName))
             {
                 dirEmpty = false;
             }
             else
             {
-                DirectoryInfo dirInfo = new DirectoryInfo(dir);
-
                 // очистка поддиректорий
                 DirectoryInfo[] subdirInfoArr = dirInfo.GetDirectories("*", SearchOption.TopDirectoryOnly);
 
                 foreach (DirectoryInfo subdirInfo in subdirInfoArr)
                 {
-                    ClearDir(subdirInfo.FullName, excludedPaths, out bool subdirEmpty);
+                    ClearDir(subdirInfo, excludedPaths, out bool subdirEmpty);
                     if (subdirEmpty)
                         subdirInfo.Delete();
                 }
@@ -407,8 +409,13 @@ namespace Scada.Agent
         /// </summary>
         private void ClearDir(RelPath relPath, PathDict excludedPathDict)
         {
-            ClearDir(GetAbsPath(relPath), excludedPathDict.GetOrAdd(relPath.ConfigPart, relPath.AppFolder), 
-                out bool dirEmpty);
+            DirectoryInfo dirInfo = new DirectoryInfo(GetAbsPath(relPath));
+
+            if (dirInfo.Exists)
+            {
+                ClearDir(dirInfo, excludedPathDict.GetOrAdd(relPath.ConfigPart, relPath.AppFolder),
+                    out bool dirEmpty);
+            }
         }
 
         /// <summary>
@@ -493,8 +500,19 @@ namespace Scada.Agent
             {
                 string batchFileName = Path.Combine(Settings.Directory,
                     GetServiceDir(serviceApp, null), GetServiceBatchFile(command));
-                Process.Start(batchFileName);
-                return true;
+
+                if (File.Exists(batchFileName))
+                {
+                    Process.Start(batchFileName);
+                    return true;
+                }
+                else
+                {
+                    log.WriteError(string.Format(Localization.UseRussian ?
+                        "Не найден файл для управления службой {0}" :
+                        "File {0} for service control not found", batchFileName));
+                    return false;
+                }
             }
             catch (Exception ex)
             {

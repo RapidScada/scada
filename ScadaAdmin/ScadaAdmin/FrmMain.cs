@@ -797,13 +797,13 @@ namespace ScadaAdmin
             if (AppData.Connected)
             {
                 // резервное копирование файла базы конфигурации
-                string msg;
-                if (settings.AppSett.AutoBackupBase && 
-                    !ImportExport.BackupSDF(settings.AppSett.BaseSDFFile, settings.AppSett.BackupDir, out msg))
+                Settings.AppSettings appSettings = settings.AppSett;
+                if (appSettings.AutoBackupBase && 
+                    !ImportExport.BackupSDF(appSettings.BaseSDFFile, appSettings.BackupDir, out string msg))
                     AppUtils.ProcError(msg);
 
                 // конвертирование базы конфигурации в формат DAT
-                if (ImportExport.PassBase(Tables.TableInfoList, settings.AppSett.BaseDATDir, out msg))
+                if (ImportExport.PassBase(Tables.TableInfoList, appSettings.BaseDATDir, out msg))
                     ScadaUiUtils.ShowInfo(msg);
                 else
                     AppUtils.ProcError(msg);

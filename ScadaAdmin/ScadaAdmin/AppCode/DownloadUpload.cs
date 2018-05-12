@@ -144,7 +144,7 @@ namespace ScadaAdmin
                             {
                                 string dirInArc = Path.GetDirectoryName(fileName.Substring(srcDirLen))
                                     .Replace('\\', '/');
-                                zipFile.AddFile(path, dirInArc);
+                                zipFile.AddFile(fileName, dirInArc);
                             }
                         }
                     }
@@ -154,6 +154,8 @@ namespace ScadaAdmin
                         zipFile.AddFile(path, dirInArc);
                     }
                 }
+
+                zipFile.Save();
             }
         }
 
