@@ -92,13 +92,13 @@ namespace ScadaAdmin.Remote
             {
                 if (string.IsNullOrWhiteSpace(txtDestDir.Text))
                 {
-                    ScadaUiUtils.ShowError(AppPhrases.DestDirRequired);
+                    ScadaUiUtils.ShowError(AppPhrases.ConfigDirRequired);
                     return false;
                 }
             }
             else if (string.IsNullOrWhiteSpace(txtDestFile.Text))
             {
-                ScadaUiUtils.ShowError(AppPhrases.DestFileRequired);
+                ScadaUiUtils.ShowError(AppPhrases.ConfigArcRequired);
                 return false;
             }
 

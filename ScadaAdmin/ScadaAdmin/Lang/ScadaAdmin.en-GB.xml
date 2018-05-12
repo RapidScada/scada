@@ -528,6 +528,8 @@
   </Dictionary>
   <Dictionary key="ScadaAdmin.Remote">
     <Phrase key="ChooseConfigDir">Choose a configuration directory</Phrase>
+    <Phrase key="ConfigDirRequired">Configuration directory is required.</Phrase>
+    <Phrase key="ConfigArcRequired">File name of a configuration archive is required.</Phrase>
   </Dictionary>
   <Dictionary key="ScadaAdmin.Remote.CtrlServerConn">
     <Phrase key="gbConnection">Connection to server</Phrase>
@@ -544,7 +546,15 @@
     <Phrase key="chkImportBase">Import the configuration database to SDF format after downloading</Phrase>
     <Phrase key="btnDownload">Download</Phrase>
     <Phrase key="btnClose">Close</Phrase>
-    <Phrase key="DestDirRequired">Directory is required.</Phrase>
-    <Phrase key="DestFileRequired">Archive file name is required.</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaAdmin.Remote.FrmUploadConfig">
+    <Phrase key="this">Upload Configuration</Phrase>
+    <Phrase key="gbOptions">Upload options</Phrase>
+    <Phrase key="rbGetFromDir">Configuration directory:</Phrase>
+    <Phrase key="lblFiles">Files to upload</Phrase>
+    <Phrase key="rbGetFromArc">Configuration archive file:</Phrase>
+    <Phrase key="chkClearSpecificFiles">Clear server specific files such as registration keys</Phrase>
+    <Phrase key="btnUpload">Upload</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
   </Dictionary>
 </ScadaAdminDictionaries>

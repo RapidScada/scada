@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmUploadConfig));
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("BaseDAT\\");
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("C:\\SCADA\\", new System.Windows.Forms.TreeNode[] {
@@ -46,6 +47,7 @@
             this.btnUpload = new System.Windows.Forms.Button();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.ilTree = new System.Windows.Forms.ImageList(this.components);
             this.ctrlServerConn = new ScadaAdmin.Remote.CtrlServerConn();
             this.gbOptions.SuspendLayout();
             this.SuspendLayout();
@@ -124,6 +126,8 @@
             // tvFiles
             // 
             this.tvFiles.CheckBoxes = true;
+            this.tvFiles.ImageIndex = 0;
+            this.tvFiles.ImageList = this.ilTree;
             this.tvFiles.Location = new System.Drawing.Point(13, 81);
             this.tvFiles.Name = "tvFiles";
             treeNode1.Name = "Node1";
@@ -132,9 +136,12 @@
             treeNode2.Text = "C:\\SCADA\\";
             this.tvFiles.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode2});
+            this.tvFiles.SelectedImageIndex = 0;
             this.tvFiles.Size = new System.Drawing.Size(443, 237);
             this.tvFiles.TabIndex = 4;
             this.tvFiles.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.tvFiles_AfterCheck);
+            this.tvFiles.BeforeCollapse += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvFiles_BeforeCollapse);
+            this.tvFiles.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvFiles_BeforeExpand);
             // 
             // lblFiles
             // 
@@ -197,6 +204,14 @@
             this.openFileDialog.Filter = "Архивы конфигурации (*.zip)|*.zip|Все файлы (*.*)|*.*";
             this.openFileDialog.Title = "Выберите файл архива конфигурации";
             // 
+            // ilTree
+            // 
+            this.ilTree.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilTree.ImageStream")));
+            this.ilTree.TransparentColor = System.Drawing.Color.Transparent;
+            this.ilTree.Images.SetKeyName(0, "folder_closed2.png");
+            this.ilTree.Images.SetKeyName(1, "folder_open2.png");
+            this.ilTree.Images.SetKeyName(2, "file.png");
+            // 
             // ctrlServerConn
             // 
             this.ctrlServerConn.Location = new System.Drawing.Point(12, 12);
@@ -247,5 +262,6 @@
         private System.Windows.Forms.TextBox txtSrcFile;
         private System.Windows.Forms.CheckBox chkClearSpecificFiles;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.ImageList ilTree;
     }
 }

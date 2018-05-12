@@ -236,10 +236,8 @@ namespace ScadaAdmin
 
         // Словарь ScadaAdmin.Remote
         public static string ChooseConfigDir { get; private set; }
-
-        // Словарь ScadaAdmin.FrmDownloadConfig
-        public static string DestDirRequired { get; private set; }
-        public static string DestFileRequired { get; private set; }
+        public static string ConfigDirRequired { get; private set; }
+        public static string ConfigArcRequired { get; private set; }
 
         private static void SetToDefault()
         {
@@ -428,9 +426,8 @@ namespace ScadaAdmin
             GetCtrlCnlNumsError = "Ошибка при получении номеров каналов управления";
 
             ChooseConfigDir = "Выберите директорию конфигурации";
-
-            DestDirRequired = "Укажите директорию.";
-            DestFileRequired = "Укажите файл архива.";
+            ConfigDirRequired = "Укажите директорию конфигурации.";
+            ConfigArcRequired = "Укажите имя файла архива конфигурации.";
         }
 
         public static void Init()
@@ -665,12 +662,8 @@ namespace ScadaAdmin
             if (Localization.Dictionaries.TryGetValue("ScadaAdmin.Remote", out dict))
             {
                 ChooseConfigDir = dict.GetPhrase("ChooseConfigDir", ChooseConfigDir);
-            }
-
-            if (Localization.Dictionaries.TryGetValue("ScadaAdmin.Remote.FrmDownloadConfig", out dict))
-            {
-                DestDirRequired = dict.GetPhrase("DestDirRequired", DestDirRequired);
-                DestFileRequired = dict.GetPhrase("DestFileRequired", DestFileRequired);
+                ConfigDirRequired = dict.GetPhrase("ConfigDirRequired", ConfigDirRequired);
+                ConfigArcRequired = dict.GetPhrase("ConfigArcRequired", ConfigArcRequired);
             }
         }
     }

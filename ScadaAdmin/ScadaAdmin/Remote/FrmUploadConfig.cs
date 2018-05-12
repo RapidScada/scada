@@ -55,8 +55,14 @@ namespace ScadaAdmin.Remote
             public bool IsDirectory { get; set; }
         }
 
+        // Ключи пиктограмм узлов дерева
+        private const string FolderClosedImageKey = "folder_closed2.png";
+        private const string FolderOpenImageKey = "folder_open2.png";
+        private const string FileImageKey = "file.png";
+
         private ServersSettings serversSettings; // настройки взаимодействия с удалёнными серверами
         private bool uploadSettingsModified;     // последние выбранные настройки передачи были изменены
+        private TreeNode rootNode;               // корневой узел дерева
 
 
         /// <summary>
@@ -65,8 +71,10 @@ namespace ScadaAdmin.Remote
         public FrmUploadConfig()
         {
             InitializeComponent();
+
             serversSettings = new ServersSettings();
             uploadSettingsModified = false;
+            rootNode = null;
         }
 
 
@@ -88,7 +96,7 @@ namespace ScadaAdmin.Remote
             {
                 gbOptions.Enabled = true;
                 txtSrcDir.Text = uploadSettings.SrcDir;
-                FillTreeView(uploadSettings);
+                FillTreeView(uploadSettings.SrcDir, uploadSettings.SelectedFiles);
                 txtSrcFile.Text = uploadSettings.SrcFile;
                 chkClearSpecificFiles.Checked = uploadSettings.ClearSpecificFiles;
                 btnUpload.Enabled = true;
@@ -103,30 +111,30 @@ namespace ScadaAdmin.Remote
         /// <summary>
         /// Заполнить дерево выбранных файлов
         /// </summary>
-        private void FillTreeView(ServersSettings.UploadSettings uploadSettings)
+        private void FillTreeView(string srcDir, List<string> selectedFiles)
         {
             try
             {
                 tvFiles.BeginUpdate();
                 tvFiles.Nodes.Clear();
 
-                string srcDir = ScadaUtils.NormalDir(uploadSettings.SrcDir);
+                srcDir = ScadaUtils.NormalDir(srcDir);
                 int srcDirLen = srcDir.Length;
-                TreeNode rootNode = tvFiles.Nodes.Add(srcDir);
+                rootNode = tvFiles.Nodes.Add(srcDir);
 
                 // добавление узла базы конфигурации
-                HashSet<string> selectedFiles = new HashSet<string>(uploadSettings.SelectedFiles);
-                AddDirToTreeView(rootNode, srcDir + "BaseDAT\\", srcDirLen, selectedFiles);
+                HashSet<string> selFiles = new HashSet<string>(selectedFiles);
+                AddDirToTreeView(rootNode, srcDir + "BaseDAT\\", srcDirLen, selFiles);
 
                 // добавление узла интерфейса
-                AddDirToTreeView(rootNode, srcDir + "Interface\\", srcDirLen, selectedFiles);
+                AddDirToTreeView(rootNode, srcDir + "Interface\\", srcDirLen, selFiles);
 
                 // добавление узла Коммуникатора
                 string commDir = srcDir + "ScadaComm\\";
                 if (Directory.Exists(commDir))
                 {
                     TreeNode commNode = rootNode.Nodes.Add("ScadaComm\\");
-                    AddDirToTreeView(commNode, commDir + "Config\\", srcDirLen, selectedFiles);
+                    AddDirToTreeView(commNode, commDir + "Config\\", srcDirLen, selFiles);
                 }
 
                 // добавление узла Сервера
@@ -134,7 +142,7 @@ namespace ScadaAdmin.Remote
                 if (Directory.Exists(serverDir))
                 {
                     TreeNode serverNode = rootNode.Nodes.Add("ScadaServer\\");
-                    AddDirToTreeView(serverNode, serverDir + "Config\\", srcDirLen, selectedFiles);
+                    AddDirToTreeView(serverNode, serverDir + "Config\\", srcDirLen, selFiles);
                 }
 
                 // добавление узла Вебстанции
@@ -142,8 +150,8 @@ namespace ScadaAdmin.Remote
                 if (Directory.Exists(webDir))
                 {
                     TreeNode serverNode = rootNode.Nodes.Add("ScadaWeb\\");
-                    AddDirToTreeView(serverNode, webDir + "config\\", srcDirLen, selectedFiles);
-                    AddDirToTreeView(serverNode, webDir + "storage\\", srcDirLen, selectedFiles);
+                    AddDirToTreeView(serverNode, webDir + "config\\", srcDirLen, selFiles);
+                    AddDirToTreeView(serverNode, webDir + "storage\\", srcDirLen, selFiles);
                 }
 
                 rootNode.Expand();
@@ -157,20 +165,21 @@ namespace ScadaAdmin.Remote
         /// <summary>
         /// Добавить директорию в дерево
         /// </summary>
-        private void AddDirToTreeView(TreeNode parentNode, string dir, int rootDirLen, HashSet<string> selectedFiles)
+        private void AddDirToTreeView(TreeNode parentNode, string dir, int rootDirLen, HashSet<string> selFiles)
         {
-            AddDirToTreeView(parentNode, new DirectoryInfo(dir), rootDirLen, selectedFiles);
+            AddDirToTreeView(parentNode, new DirectoryInfo(dir), rootDirLen, selFiles);
         }
 
         /// <summary>
         /// Добавить директорию в дерево
         /// </summary>
         private void AddDirToTreeView(TreeNode parentNode, DirectoryInfo dirInfo, 
-            int rootDirLen, HashSet<string> selectedFiles)
+            int rootDirLen, HashSet<string> selFiles)
         {
             if (dirInfo.Exists)
             {
-                TreeNode dirNode = parentNode.Nodes.Add(dirInfo.Name + "\\");
+                TreeNode dirNode = parentNode.Nodes.Add(dirInfo.Name);
+                dirNode.ImageKey = dirNode.SelectedImageKey = FolderClosedImageKey;
                 string dirNodePath = ScadaUtils.NormalDir(dirInfo.FullName.Substring(rootDirLen));
                 dirNode.Tag = new NodeInfo() { Path = dirNodePath, IsDirectory = true };
 
@@ -179,7 +188,7 @@ namespace ScadaAdmin.Remote
 
                 foreach (DirectoryInfo subdirInfo in subdirInfoArr)
                 {
-                    AddDirToTreeView(dirNode, subdirInfo, rootDirLen, selectedFiles);
+                    AddDirToTreeView(dirNode, subdirInfo, rootDirLen, selFiles);
                 }
 
                 // добавление файлов
@@ -190,16 +199,17 @@ namespace ScadaAdmin.Remote
                     if (fileInfo.Extension != ".bak")
                     {
                         TreeNode fileNode = dirNode.Nodes.Add(fileInfo.Name);
+                        fileNode.ImageKey = fileNode.SelectedImageKey = FileImageKey;
                         string fileNodePath = fileInfo.FullName.Substring(rootDirLen);
                         fileNode.Tag = new NodeInfo() { Path = fileNodePath, IsDirectory = false };
 
-                        if (selectedFiles.Contains(fileNodePath))
+                        if (selFiles.Contains(fileNodePath))
                             fileNode.Checked = true;
                     }
                 }
 
                 // выбор узла и его дочерних узлов после того, как они добавлены в дерево
-                if (selectedFiles.Contains(dirNodePath))
+                if (selFiles.Contains(dirNodePath))
                 {
                     dirNode.Checked = true;
                     CheckAllChildNodes(dirNode, true);
@@ -224,6 +234,20 @@ namespace ScadaAdmin.Remote
         /// </summary>
         private bool ValidateUploadSettings()
         {
+            if (rbGetFromDir.Checked)
+            {
+                if (string.IsNullOrWhiteSpace(txtSrcDir.Text))
+                {
+                    ScadaUiUtils.ShowError(AppPhrases.ConfigDirRequired);
+                    return false;
+                }
+            }
+            else if (string.IsNullOrWhiteSpace(txtSrcFile.Text))
+            {
+                ScadaUiUtils.ShowError(AppPhrases.ConfigArcRequired);
+                return false;
+            }
+
             return true;
         }
 
@@ -238,7 +262,7 @@ namespace ScadaAdmin.Remote
             uploadSettings.ClearSpecificFiles = chkClearSpecificFiles.Checked;
 
             uploadSettings.SelectedFiles.Clear();
-            TraverseNodes(tvFiles.Nodes[0]);
+            TraverseNodes(rootNode);
 
             // Получить выбранные файлы на основе выбранных узлов дерева
             void TraverseNodes(TreeNode node)
@@ -321,6 +345,8 @@ namespace ScadaAdmin.Remote
             // перевод формы
             Translator.TranslateForm(this, "ScadaAdmin.Remote.CtrlServerConn");
             Translator.TranslateForm(this, "ScadaAdmin.Remote.FrmUploadConfig");
+            openFileDialog.Title = AppPhrases.ChooseArchiveFile;
+            openFileDialog.Filter = AppPhrases.ArchiveFileFilter;
             folderBrowserDialog.Description = AppPhrases.ChooseConfigDir;
 
             // загрузка настроек
@@ -361,11 +387,40 @@ namespace ScadaAdmin.Remote
 
         private void tvFiles_AfterCheck(object sender, TreeViewEventArgs e)
         {
-            // установка выбора для дочерних узлов
             if (e.Action != TreeViewAction.Unknown)
-                CheckAllChildNodes(e.Node, e.Node.Checked);
+            {
+                // установка или снятие выбора для дочерних узлов
+                TreeNode node = e.Node;
+                CheckAllChildNodes(node, node.Checked);
+
+                // снятие выбора родительских узлов
+                if (!node.Checked)
+                {
+                    while (node.Parent != null)
+                    {
+                        node = node.Parent;
+                        node.Checked = false;
+                    }
+                }
+            }
 
             uploadSettingsModified = true;
+        }
+
+        private void tvFiles_BeforeCollapse(object sender, TreeViewCancelEventArgs e)
+        {
+            // установка пиктограммы узла дерева
+            TreeNode node = e.Node;
+            if (node == rootNode || node.Tag is NodeInfo nodeInfo && nodeInfo.IsDirectory)
+                node.ImageKey = node.SelectedImageKey = FolderClosedImageKey;
+        }
+
+        private void tvFiles_BeforeExpand(object sender, TreeViewCancelEventArgs e)
+        {
+            // установка пиктограммы узла дерева
+            TreeNode node = e.Node;
+            if (node == rootNode || node.Tag is NodeInfo nodeInfo && nodeInfo.IsDirectory)
+                node.ImageKey = node.SelectedImageKey = FolderOpenImageKey;
         }
 
         private void btnBrowseSrcDir_Click(object sender, EventArgs e)
@@ -374,7 +429,10 @@ namespace ScadaAdmin.Remote
             folderBrowserDialog.SelectedPath = txtSrcDir.Text.Trim();
 
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
                 txtSrcDir.Text = ScadaUtils.NormalDir(folderBrowserDialog.SelectedPath);
+                FillTreeView(txtSrcDir.Text, ctrlServerConn.SelectedSettings.Upload.SelectedFiles);
+            }
 
             txtSrcDir.Focus();
             txtSrcDir.DeselectAll();
