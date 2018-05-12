@@ -53,6 +53,7 @@ namespace ScadaAdmin
         public static string DownloadSuccessful { get; private set; }
         public static string DownloadError { get; private set; }
         public static string UploadTitle { get; private set; }
+        public static string NoConfigInSrc { get; private set; }
         public static string UploadSuccessful { get; private set; }
         public static string UploadError { get; private set; }
 

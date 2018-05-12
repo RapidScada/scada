@@ -94,6 +94,9 @@ namespace ScadaAdmin.AgentSvcRef {
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private ScadaAdmin.AgentSvcRef.ConfigParts ConfigPartsField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private ScadaAdmin.AgentSvcRef.RelPath[] ExcludedPathsField;
+        
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
@@ -113,6 +116,19 @@ namespace ScadaAdmin.AgentSvcRef {
                 if ((this.ConfigPartsField.Equals(value) != true)) {
                     this.ConfigPartsField = value;
                     this.RaisePropertyChanged("ConfigParts");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public ScadaAdmin.AgentSvcRef.RelPath[] ExcludedPaths {
+            get {
+                return this.ExcludedPathsField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ExcludedPathsField, value) != true)) {
+                    this.ExcludedPathsField = value;
+                    this.RaisePropertyChanged("ExcludedPaths");
                 }
             }
         }

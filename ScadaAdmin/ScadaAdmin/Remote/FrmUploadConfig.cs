@@ -202,12 +202,12 @@ namespace ScadaAdmin.Remote
         /// Передать конфигурацию
         /// </summary>
         private void UploadConfig(ServersSettings.ConnectionSettings connectionSettings,
-            List<string> fileNames, ConfigParts configParts)
+            string rootDir, List<string> fileNames, ConfigParts configParts)
         {
             // передача
             string logFileName = AppData.AppDirs.LogDir + "ScadaAdminUpload.txt";
             bool uploadOK = DownloadUpload.UploadConfig(connectionSettings,
-                fileNames, configParts, logFileName, out bool logCreated, out string msg);
+                rootDir, fileNames, configParts, logFileName, out bool logCreated, out string msg);
 
             // отображение сообщения о результате
             if (uploadOK)
@@ -268,7 +268,7 @@ namespace ScadaAdmin.Remote
                 }
 
                 RetrieveUploadOptions(out List<string> fileNames, out ConfigParts configParts);
-                UploadConfig(serverSettings.Connection, fileNames, configParts);
+                UploadConfig(serverSettings.Connection, serverSettings.Upload.SrcDir, fileNames, configParts);
             }
         }
     }

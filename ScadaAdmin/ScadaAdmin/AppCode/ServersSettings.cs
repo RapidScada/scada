@@ -154,6 +154,10 @@ namespace ScadaAdmin
             /// </summary>
             public string DestFile { get; set; }
             /// <summary>
+            /// Получить или установить признак скачивания файлов, специфичных для экземпляра системы
+            /// </summary>
+            public bool IncludeSpecificFiles { get; set; }
+            /// <summary>
             /// Получить или установить признак запуска импорта базы конфигурации после скачивания
             /// </summary>
             public bool ImportBase { get; set; }
@@ -164,8 +168,9 @@ namespace ScadaAdmin
             private void SetToDefault()
             {
                 SaveToDir = true;
-                DestDir = @"C:\SCADA\";
+                DestDir = "";
                 DestFile = "";
+                IncludeSpecificFiles = true;
                 ImportBase = true;
             }
             /// <summary>
@@ -179,6 +184,7 @@ namespace ScadaAdmin
                 SaveToDir = xmlNode.GetChildAsBool("SaveToDir", true);
                 DestDir = ScadaUtils.NormalDir(xmlNode.GetChildAsString("DestDir", @"C:\SCADA\"));
                 DestFile = xmlNode.GetChildAsString("DestFile", @"C:\SCADA\config.zip");
+                IncludeSpecificFiles = xmlNode.GetChildAsBool("IncludeSpecificFiles", true);
                 ImportBase = xmlNode.GetChildAsBool("ImportBase", true);
             }
             /// <summary>
@@ -192,6 +198,7 @@ namespace ScadaAdmin
                 xmlElem.AppendElem("SaveToDir", SaveToDir);
                 xmlElem.AppendElem("DestDir", DestDir);
                 xmlElem.AppendElem("DestFile", DestFile);
+                xmlElem.AppendElem("IncludeSpecificFiles", IncludeSpecificFiles);
                 xmlElem.AppendElem("ImportBase", ImportBase);
             }
         }
@@ -212,6 +219,10 @@ namespace ScadaAdmin
             }
 
             /// <summary>
+            /// Получить или установить признак передачи из директории
+            /// </summary>
+            public bool GetFromDir { get; set; }
+            /// <summary>
             /// Получить или установить директорию конфигурации
             /// </summary>
             public string SrcDir { get; set; }
@@ -219,14 +230,25 @@ namespace ScadaAdmin
             /// Получить выбранные для передачи файлы конфигурации
             /// </summary>
             public List<string> SelectedFiles { get; private set; }
+            /// <summary>
+            /// Получить или установить имя файла архива для передачи
+            /// </summary>
+            public string SrcFile { get; set; }
+            /// <summary>
+            /// Получить или установить признак очистки файлов, специфичных для экземпляра системы
+            /// </summary>
+            public bool ClearSpecificFiles { get; set; }
 
             /// <summary>
             /// Установить настройки по умолчанию
             /// </summary>
             private void SetToDefault()
             {
-                SrcDir = @"C:\SCADA\";
+                GetFromDir = true;
+                SrcDir = "";
                 SelectedFiles.Clear();
+                SrcFile = "";
+                ClearSpecificFiles = true;
             }
             /// <summary>
             /// Загрузить настройки из XML-узла
@@ -236,6 +258,7 @@ namespace ScadaAdmin
                 if (xmlNode == null)
                     throw new ArgumentNullException("xmlNode");
 
+                GetFromDir = xmlNode.GetChildAsBool("GetFromDir", true);
                 SrcDir = ScadaUtils.NormalDir(xmlNode.GetChildAsString("SrcDir", @"C:\SCADA\"));
 
                 SelectedFiles.Clear();
@@ -248,6 +271,9 @@ namespace ScadaAdmin
                         SelectedFiles.Add(pathNode.InnerText);
                     }
                 }
+
+                SrcFile = xmlNode.GetChildAsString("SrcFile", @"C:\SCADA\config.zip");
+                ClearSpecificFiles = xmlNode.GetChildAsBool("ClearSpecificFiles", true);
             }
             /// <summary>
             /// Сохранить настройки в XML-узле
@@ -257,6 +283,7 @@ namespace ScadaAdmin
                 if (xmlElem == null)
                     throw new ArgumentNullException("xmlElem");
 
+                xmlElem.AppendElem("GetFromDir", GetFromDir);
                 xmlElem.AppendElem("SrcDir", SrcDir);
 
                 XmlElement selectedFilesElem = xmlElem.AppendElem("SelectedFiles");
@@ -264,6 +291,9 @@ namespace ScadaAdmin
                 {
                     selectedFilesElem.AppendElem("Path", path);
                 }
+
+                xmlElem.AppendElem("SrcFile", SrcFile);
+                xmlElem.AppendElem("ClearSpecificFiles", ClearSpecificFiles);
             }
         }
 

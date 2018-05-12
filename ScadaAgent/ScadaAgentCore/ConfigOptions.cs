@@ -51,6 +51,6 @@ namespace Scada.Agent
         /// <summary>
         /// Получить или установить исключаемые пути
         /// </summary>
-        public ICollection<RelPath> ExcludedPaths { get; private set; }
+        public ICollection<RelPath> ExcludedPaths { get; set; }
     }
 }

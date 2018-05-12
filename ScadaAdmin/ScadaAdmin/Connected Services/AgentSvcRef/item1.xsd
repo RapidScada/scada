@@ -86,9 +86,16 @@
   <xs:complexType name="ConfigOptions">
     <xs:sequence>
       <xs:element minOccurs="0" name="ConfigParts" type="tns:ConfigParts" />
+      <xs:element minOccurs="0" name="ExcludedPaths" nillable="true" type="tns:ArrayOfRelPath" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ConfigOptions" nillable="true" type="tns:ConfigOptions" />
+  <xs:complexType name="ArrayOfRelPath">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RelPath" nillable="true" type="tns:RelPath" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRelPath" nillable="true" type="tns:ArrayOfRelPath" />
   <xs:complexType name="RelPath">
     <xs:sequence>
       <xs:element minOccurs="0" name="AppFolder" type="tns:AppFolder" />
