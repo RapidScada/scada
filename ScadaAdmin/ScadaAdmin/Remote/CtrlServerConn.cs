@@ -23,6 +23,7 @@
  * Modified : 2018
  */
 
+using Scada;
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
@@ -31,7 +32,7 @@ namespace ScadaAdmin.Remote
 {
     /// <summary>
     /// Control for selecting a connection to a remote server
-    /// <para>Элемент управления для выбора соединения с удалённым сервером</para>
+    /// <para>Элемент управления для выбора подключения к удалённому серверу</para>
     /// </summary>
     public partial class CtrlServerConn : UserControl
     {
@@ -60,7 +61,7 @@ namespace ScadaAdmin.Remote
             set
             {
                 serversSettings = value;
-                FillServerList();
+                FillConnList();
             }
         }
 
@@ -77,30 +78,62 @@ namespace ScadaAdmin.Remote
 
 
         /// <summary>
-        /// Заполнить список серверов
+        /// Заполнить список подключений
         /// </summary>
-        private void FillServerList()
+        private void FillConnList()
         {
             try
             {
                 cbConnection.BeginUpdate();
                 cbConnection.Items.Clear();
+                int selInd = 0;
 
                 if (serversSettings != null)
                 {
+                    string defConnName = AppData.Settings.FormSt.ServerConn;
+
                     foreach (ServersSettings.ServerSettings serverSettings in serversSettings.Servers.Values)
                     {
-                        cbConnection.Items.Add(serverSettings);
+                        int ind = cbConnection.Items.Add(serverSettings);
+                        if (string.Equals(serverSettings.Connection.Name, defConnName))
+                            selInd = ind;
                     }
                 }
 
                 if (cbConnection.Items.Count > 0)
-                    cbConnection.SelectedIndex = 0;
+                    cbConnection.SelectedIndex = selInd;
             }
             finally
             {
                 cbConnection.EndUpdate();
             }
+        }
+
+        /// <summary>
+        /// Добавить настройки сервера в общие настройки и выпадающий список
+        /// </summary>
+        private void AddToLists(ServersSettings.ServerSettings serverSettings)
+        {
+            // добавление в общие настройки
+            string connName = serverSettings.Connection.Name;
+            serversSettings.Servers.Add(connName, serverSettings);
+
+            // добавление в выпадающий список
+            int ind = serversSettings.Servers.IndexOfKey(connName);
+            if (ind >= 0)
+            {
+                cbConnection.Items.Insert(ind, serverSettings);
+                cbConnection.SelectedIndex = ind;
+            }
+        }
+
+        /// <summary>
+        /// Сохранить настройки взаимодействия с удалёнными серверами
+        /// </summary>
+        private void SaveServersSettings()
+        {
+            if (!serversSettings.Save(AppData.AppDirs.ConfigDir + ServersSettings.DefFileName, out string errMsg))
+                AppUtils.ProcError(errMsg);
         }
 
         /// <summary>
@@ -121,7 +154,83 @@ namespace ScadaAdmin.Remote
 
         private void cbConnection_SelectedIndexChanged(object sender, EventArgs e)
         {
+            btnCreateConn.Enabled = serversSettings != null;
+            btnEditConn.Enabled = btnRemoveConn.Enabled = SelectedSettings != null;
             OnSelectedSettingsChanged();
+        }
+
+        private void btnCreateConn_Click(object sender, EventArgs e)
+        {
+            // создание новых настроек
+            ServersSettings.ServerSettings serverSettings = new ServersSettings.ServerSettings();
+            FrmConnSettings frmConnSettings = new FrmConnSettings()
+            {
+                ConnectionSettings = serverSettings.Connection,
+                ExistingNames = ServersSettings.GetExistingNames()
+            };
+
+            if (frmConnSettings.ShowDialog() == DialogResult.OK)
+            {
+                AddToLists(serverSettings);
+                SaveServersSettings();
+            }
+        }
+
+        private void btnEditConn_Click(object sender, EventArgs e)
+        {
+            // редактирование настроек
+            ServersSettings.ServerSettings serverSettings = SelectedSettings;
+            string oldName = serverSettings.Connection.Name;
+
+            FrmConnSettings frmConnSettings = new FrmConnSettings()
+            {
+                ConnectionSettings = serverSettings.Connection,
+                ExistingNames = ServersSettings.GetExistingNames(oldName)
+            };
+
+            if (frmConnSettings.ShowDialog() == DialogResult.OK)
+            {
+                // обновление наименования, если оно изменилось
+                if (!string.Equals(oldName, serverSettings.Connection.Name, StringComparison.Ordinal))
+                {
+                    serversSettings.Servers.Remove(oldName);
+                    cbConnection.BeginUpdate();
+                    cbConnection.Items.RemoveAt(cbConnection.SelectedIndex);
+                    AddToLists(serverSettings);
+                    cbConnection.EndUpdate();
+                }
+
+                // сохранение настроек
+                SaveServersSettings();
+            }
+        }
+
+        private void btnRemoveConn_Click(object sender, EventArgs e)
+        {
+            // удаление настроек
+            if (MessageBox.Show(AppPhrases.DeleteConnConfirm, CommonPhrases.QuestionCaption, 
+                MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                // удаление из общих настроек
+                ServersSettings.ServerSettings serverSettings = SelectedSettings;
+                serversSettings.Servers.Remove(serverSettings.Connection.Name);
+
+                // удаление из выпадающего списка
+                cbConnection.BeginUpdate();
+                int selInd = cbConnection.SelectedIndex;
+                cbConnection.Items.RemoveAt(selInd);
+
+                if (cbConnection.Items.Count > 0)
+                {
+                    cbConnection.SelectedIndex = selInd >= cbConnection.Items.Count ? 
+                        cbConnection.Items.Count - 1 : selInd;
+                }
+
+                cbConnection.EndUpdate();
+
+                // сохранение настроек
+                SaveServersSettings();
+            }
         }
     }
 }

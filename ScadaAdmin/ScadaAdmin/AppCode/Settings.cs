@@ -125,6 +125,10 @@ namespace ScadaAdmin
             /// Получить или установить ширину дерева проводника
             /// </summary>
             public int ExplorerWidth { get; set; }
+            /// <summary>
+            /// Получить или установить наименование соединения с удалённым сервером
+            /// </summary>
+            public string ServerConn { get; set; }
 
             /// <summary>
             /// Установить состояние главной формы по умолчанию
@@ -138,6 +142,7 @@ namespace ScadaAdmin
                 Height = 0;
                 Maximized = false;
                 ExplorerWidth = 0;
+                ServerConn = "";
             }
         }
 
@@ -310,6 +315,8 @@ namespace ScadaAdmin
                                 FormSt.Maximized = bool.Parse(val);
                             else if (nameL == "explorerwidth")
                                 FormSt.ExplorerWidth = int.Parse(val);
+                            else if (nameL == "serverconn")
+                                FormSt.ServerConn = val;
                         }
                         catch
                         {
@@ -351,6 +358,7 @@ namespace ScadaAdmin
                 rootElem.AppendParamElem("Height", FormSt.Height);
                 rootElem.AppendParamElem("Maximized", FormSt.Maximized);
                 rootElem.AppendParamElem("ExplorerWidth", FormSt.ExplorerWidth);
+                rootElem.AppendParamElem("ServerConn", FormSt.ServerConn);
 
                 // сохранение в файле
                 xmlDoc.Save(AppData.AppDirs.ConfigDir + FormStateFileName);

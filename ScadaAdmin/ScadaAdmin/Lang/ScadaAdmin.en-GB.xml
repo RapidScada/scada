@@ -537,6 +537,21 @@
     <Phrase key="btnCreateConn">Create</Phrase>
     <Phrase key="btnEditConn">Edit</Phrase>
     <Phrase key="btnRemoveConn">Remove</Phrase>
+    <Phrase key="DeleteConnConfirm">Are you sure you want to delete the connection?</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaAdmin.Remote.FrmConnSettings">
+    <Phrase key="this">Connection Settings</Phrase>
+    <Phrase key="lblName">Name</Phrase>
+    <Phrase key="lblHost">Server</Phrase>
+    <Phrase key="lblPort">Port</Phrase>
+    <Phrase key="lblUsername">Username</Phrase>
+    <Phrase key="lblPassword">Password</Phrase>
+    <Phrase key="lblScadaInstance">System instance</Phrase>
+    <Phrase key="lblSecretKey">Secret key</Phrase>
+    <Phrase key="btnGenSecretKey.ToolTip">Generate secret key</Phrase>
+    <Phrase key="EmptyFieldsNotAllowed">Empty field values are not allowed.</Phrase>
+    <Phrase key="ConnNameDuplicated">A connection with this name already exists.</Phrase>
+    <Phrase key="IncorrectSecretKey">Incorrect secret key.</Phrase>
   </Dictionary>
   <Dictionary key="ScadaAdmin.Remote.FrmDownloadConfig">
     <Phrase key="this">Download Configuration</Phrase>

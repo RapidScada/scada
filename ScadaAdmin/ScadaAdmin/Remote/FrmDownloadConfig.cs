@@ -255,6 +255,7 @@ namespace ScadaAdmin.Remote
                     SaveServersSettings();
                 }
 
+                AppData.Settings.FormSt.ServerConn = serverSettings.Connection.Name;
                 DownloadConfig(serverSettings);
             }
         }

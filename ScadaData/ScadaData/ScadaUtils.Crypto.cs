@@ -72,6 +72,16 @@ namespace Scada
         }
 
         /// <summary>
+        /// Получить случайный массив байт
+        /// </summary>
+        public static byte[] GetRandomBytes(int count)
+        {
+            byte[] randomArr = new byte[count];
+            Rng.GetBytes(randomArr);
+            return randomArr;
+        }
+
+        /// <summary>
         /// Вычислить хеш-функцию MD5 по массиву байт
         /// </summary>
         public static string ComputeHash(byte[] bytes)

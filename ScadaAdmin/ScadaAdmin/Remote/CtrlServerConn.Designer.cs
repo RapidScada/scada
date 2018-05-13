@@ -58,6 +58,7 @@
             this.btnRemoveConn.TabIndex = 3;
             this.btnRemoveConn.Text = "Удалить";
             this.btnRemoveConn.UseVisualStyleBackColor = true;
+            this.btnRemoveConn.Click += new System.EventHandler(this.btnRemoveConn_Click);
             // 
             // btnEditConn
             // 
@@ -67,6 +68,7 @@
             this.btnEditConn.TabIndex = 2;
             this.btnEditConn.Text = "Настроить";
             this.btnEditConn.UseVisualStyleBackColor = true;
+            this.btnEditConn.Click += new System.EventHandler(this.btnEditConn_Click);
             // 
             // btnCreateConn
             // 
@@ -76,6 +78,7 @@
             this.btnCreateConn.TabIndex = 1;
             this.btnCreateConn.Text = "Создать";
             this.btnCreateConn.UseVisualStyleBackColor = true;
+            this.btnCreateConn.Click += new System.EventHandler(this.btnCreateConn_Click);
             // 
             // cbConnection
             // 

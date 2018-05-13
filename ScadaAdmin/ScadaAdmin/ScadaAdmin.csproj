@@ -199,6 +199,12 @@
     <Compile Include="Remote\CtrlServerConn.Designer.cs">
       <DependentUpon>CtrlServerConn.cs</DependentUpon>
     </Compile>
+    <Compile Include="Remote\FrmConnSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Remote\FrmConnSettings.Designer.cs">
+      <DependentUpon>FrmConnSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Remote\FrmDownloadConfig.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -271,6 +277,9 @@
     </Compile>
     <EmbeddedResource Include="Remote\CtrlServerConn.resx">
       <DependentUpon>CtrlServerConn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Remote\FrmConnSettings.resx">
+      <DependentUpon>FrmConnSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Remote\FrmDownloadConfig.resx">
       <DependentUpon>FrmDownloadConfig.cs</DependentUpon>

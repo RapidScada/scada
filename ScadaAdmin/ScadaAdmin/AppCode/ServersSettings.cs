@@ -38,6 +38,15 @@ namespace ScadaAdmin
     public class ServersSettings
     {
         /// <summary>
+        /// Директория конфигурации по умолчанию
+        /// </summary>
+        private const string DefConfigDir = @"C:\SCADA\";
+        /// <summary>
+        /// Архив конфигурации по умолчанию
+        /// </summary>
+        private const string DefConfigArc = @"C:\SCADA\config.zip";
+
+        /// <summary>
         /// Remote server connection settings
         /// <para>Настройки подключения к удалённому серверу</para>
         /// </summary>
@@ -168,8 +177,8 @@ namespace ScadaAdmin
             private void SetToDefault()
             {
                 SaveToDir = true;
-                DestDir = "";
-                DestFile = "";
+                DestDir = DefConfigDir;
+                DestFile = DefConfigArc;
                 IncludeSpecificFiles = true;
                 ImportBase = true;
             }
@@ -182,8 +191,8 @@ namespace ScadaAdmin
                     throw new ArgumentNullException("xmlNode");
 
                 SaveToDir = xmlNode.GetChildAsBool("SaveToDir", true);
-                DestDir = ScadaUtils.NormalDir(xmlNode.GetChildAsString("DestDir", @"C:\SCADA\"));
-                DestFile = xmlNode.GetChildAsString("DestFile", @"C:\SCADA\config.zip");
+                DestDir = ScadaUtils.NormalDir(xmlNode.GetChildAsString("DestDir", DefConfigDir));
+                DestFile = xmlNode.GetChildAsString("DestFile", DefConfigArc);
                 IncludeSpecificFiles = xmlNode.GetChildAsBool("IncludeSpecificFiles", true);
                 ImportBase = xmlNode.GetChildAsBool("ImportBase", true);
             }
@@ -245,9 +254,9 @@ namespace ScadaAdmin
             private void SetToDefault()
             {
                 GetFromDir = true;
-                SrcDir = "";
+                SrcDir = DefConfigDir;
                 SelectedFiles.Clear();
-                SrcFile = "";
+                SrcFile = DefConfigArc;
                 ClearSpecificFiles = true;
             }
             /// <summary>
@@ -259,7 +268,7 @@ namespace ScadaAdmin
                     throw new ArgumentNullException("xmlNode");
 
                 GetFromDir = xmlNode.GetChildAsBool("GetFromDir", true);
-                SrcDir = ScadaUtils.NormalDir(xmlNode.GetChildAsString("SrcDir", @"C:\SCADA\"));
+                SrcDir = ScadaUtils.NormalDir(xmlNode.GetChildAsString("SrcDir", DefConfigDir));
 
                 SelectedFiles.Clear();
                 XmlNode selectedFilesNode = xmlNode.SelectSingleNode("SelectedFiles");
@@ -272,7 +281,7 @@ namespace ScadaAdmin
                     }
                 }
 
-                SrcFile = xmlNode.GetChildAsString("SrcFile", @"C:\SCADA\config.zip");
+                SrcFile = xmlNode.GetChildAsString("SrcFile", DefConfigArc);
                 ClearSpecificFiles = xmlNode.GetChildAsBool("ClearSpecificFiles", true);
             }
             /// <summary>
@@ -455,6 +464,22 @@ namespace ScadaAdmin
                 errMsg = AppPhrases.SaveServersSettingsError + ":" + Environment.NewLine + ex.Message;
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Получить наименования существующих подключений
+        /// </summary>
+        public HashSet<string> GetExistingNames(string exceptName = null)
+        {
+            HashSet<string> existingNames = new HashSet<string>();
+
+            foreach (ServerSettings serverSettings in Servers.Values)
+            {
+                if (!string.Equals(serverSettings.Connection.Name, exceptName, StringComparison.Ordinal))
+                    existingNames.Add(serverSettings.Connection.Name);
+            }
+
+            return existingNames;
         }
     }
 }

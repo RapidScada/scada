@@ -240,6 +240,14 @@ namespace ScadaAdmin
         public static string ConfigDirRequired { get; private set; }
         public static string ConfigArcRequired { get; private set; }
 
+        // Словарь ScadaAdmin.Remote.CtrlServerConn
+        public static string DeleteConnConfirm { get; private set; }
+
+        // Словарь ScadaAdmin.Remote.FrmConnSettings
+        public static string EmptyFieldsNotAllowed { get; private set; }
+        public static string ConnNameDuplicated { get; private set; }
+        public static string IncorrectSecretKey { get; private set; }
+
         // Словарь ScadaAdmin.Remote.FrmServerStatus
         public static string UndefinedSvcStatus { get; private set; }
         public static string NormalSvcStatus { get; private set; }
@@ -436,6 +444,12 @@ namespace ScadaAdmin
             ChooseConfigDir = "Выберите директорию конфигурации";
             ConfigDirRequired = "Укажите директорию конфигурации.";
             ConfigArcRequired = "Укажите имя файла архива конфигурации.";
+
+            DeleteConnConfirm = "Вы уверены, что хотите удалить подключение?";
+
+            EmptyFieldsNotAllowed = "Пустые значения полей не допускаются.";
+            ConnNameDuplicated = "Соединение с таким наименованием уже существует.";
+            IncorrectSecretKey = "Некорректный секретный ключ.";
 
             UndefinedSvcStatus = "Не определён";
             NormalSvcStatus = "Норма";
@@ -678,6 +692,18 @@ namespace ScadaAdmin
                 ChooseConfigDir = dict.GetPhrase("ChooseConfigDir", ChooseConfigDir);
                 ConfigDirRequired = dict.GetPhrase("ConfigDirRequired", ConfigDirRequired);
                 ConfigArcRequired = dict.GetPhrase("ConfigArcRequired", ConfigArcRequired);
+            }
+
+            if (Localization.Dictionaries.TryGetValue("ScadaAdmin.Remote.CtrlServerConn", out dict))
+            {
+                DeleteConnConfirm = dict.GetPhrase("DeleteConnConfirm", DeleteConnConfirm);
+            }
+
+            if (Localization.Dictionaries.TryGetValue("ScadaAdmin.Remote.FrmConnSettings", out dict))
+            {
+                EmptyFieldsNotAllowed = dict.GetPhrase("EmptyFieldsNotAllowed", EmptyFieldsNotAllowed);
+                ConnNameDuplicated = dict.GetPhrase("ConnNameDuplicated", ConnNameDuplicated);
+                IncorrectSecretKey = dict.GetPhrase("IncorrectSecretKey", IncorrectSecretKey);
             }
 
             if (Localization.Dictionaries.TryGetValue("ScadaAdmin.Remote.FrmServerStatus", out dict))

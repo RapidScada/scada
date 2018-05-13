@@ -113,6 +113,7 @@ namespace ScadaAdmin.Remote
                 btnConnect.Enabled = false;
                 btnDisconnect.Enabled = true;
                 gbStatus.Enabled = true;
+                AppData.Settings.FormSt.ServerConn = ctrlServerConn.SelectedSettings.Connection.Name;
                 timer.Start();
             }
         }

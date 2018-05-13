@@ -467,6 +467,7 @@ namespace ScadaAdmin.Remote
                 if (serverSettings.Upload.GetFromDir)
                     ConvertBaseToDAT(serverSettings.Upload.SrcDir);
 
+                AppData.Settings.FormSt.ServerConn = serverSettings.Connection.Name;
                 UploadConfig(serverSettings);
             }
         }
