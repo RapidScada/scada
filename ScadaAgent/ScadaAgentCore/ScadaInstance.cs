@@ -503,7 +503,11 @@ namespace Scada.Agent
 
                 if (File.Exists(batchFileName))
                 {
-                    Process.Start(batchFileName);
+                    Process.Start(new ProcessStartInfo()
+                    {
+                        FileName = batchFileName,
+                        UseShellExecute = false
+                    });
                     return true;
                 }
                 else
