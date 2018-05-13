@@ -184,10 +184,7 @@ namespace ScadaAdmin.Remote
 
             // загрузка настроек
             if (!serversSettings.Load(AppData.AppDirs.ConfigDir + ServersSettings.DefFileName, out string errMsg))
-            {
-                AppData.ErrLog.WriteError(errMsg);
-                ScadaUiUtils.ShowError(errMsg);
-            }
+                AppUtils.ProcError(errMsg);
 
             // отображение настроек
             ctrlServerConn.ServersSettings = serversSettings;

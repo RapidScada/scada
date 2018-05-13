@@ -120,7 +120,7 @@ namespace ScadaAdmin.Remote
 
                 srcDir = ScadaUtils.NormalDir(srcDir);
                 int srcDirLen = srcDir.Length;
-                rootNode = tvFiles.Nodes.Add(srcDir);
+                rootNode = tvFiles.Nodes.Add(srcDir.TrimEnd('\\'));
 
                 // добавление узла базы конфигурации
                 HashSet<string> selFiles = new HashSet<string>(selectedFiles);
@@ -133,7 +133,7 @@ namespace ScadaAdmin.Remote
                 string commDir = srcDir + "ScadaComm\\";
                 if (Directory.Exists(commDir))
                 {
-                    TreeNode commNode = rootNode.Nodes.Add("ScadaComm\\");
+                    TreeNode commNode = rootNode.Nodes.Add("ScadaComm");
                     AddDirToTreeView(commNode, commDir + "Config\\", srcDirLen, selFiles);
                 }
 
@@ -141,7 +141,7 @@ namespace ScadaAdmin.Remote
                 string serverDir = srcDir + "ScadaServer\\";
                 if (Directory.Exists(serverDir))
                 {
-                    TreeNode serverNode = rootNode.Nodes.Add("ScadaServer\\");
+                    TreeNode serverNode = rootNode.Nodes.Add("ScadaServer");
                     AddDirToTreeView(serverNode, serverDir + "Config\\", srcDirLen, selFiles);
                 }
 
@@ -149,7 +149,7 @@ namespace ScadaAdmin.Remote
                 string webDir = srcDir + "ScadaWeb\\";
                 if (Directory.Exists(webDir))
                 {
-                    TreeNode serverNode = rootNode.Nodes.Add("ScadaWeb\\");
+                    TreeNode serverNode = rootNode.Nodes.Add("ScadaWeb");
                     AddDirToTreeView(serverNode, webDir + "config\\", srcDirLen, selFiles);
                     AddDirToTreeView(serverNode, webDir + "storage\\", srcDirLen, selFiles);
                 }
@@ -351,10 +351,7 @@ namespace ScadaAdmin.Remote
 
             // загрузка настроек
             if (!serversSettings.Load(AppData.AppDirs.ConfigDir + ServersSettings.DefFileName, out string errMsg))
-            {
-                AppData.ErrLog.WriteError(errMsg);
-                ScadaUiUtils.ShowError(errMsg);
-            }
+                AppUtils.ProcError(errMsg);
 
             // отображение настроек
             ctrlServerConn.ServersSettings = serversSettings;

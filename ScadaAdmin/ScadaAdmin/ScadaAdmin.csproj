@@ -275,6 +275,9 @@
     <EmbeddedResource Include="Remote\FrmDownloadConfig.resx">
       <DependentUpon>FrmDownloadConfig.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Remote\FrmServerStatus.resx">
+      <DependentUpon>FrmServerStatus.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Remote\FrmUploadConfig.resx">
       <DependentUpon>FrmUploadConfig.cs</DependentUpon>
     </EmbeddedResource>

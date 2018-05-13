@@ -101,7 +101,7 @@ namespace ScadaAdmin
 
             // создание сессии
             if (client.CreateSession(out sessionID))
-                writer.WriteLine(AppPhrases.SessionCreated, sessionID);
+                writer?.WriteLine(AppPhrases.SessionCreated, sessionID);
             else
                 throw new ScadaException(AppPhrases.UnableCreateSession);
 
@@ -111,7 +111,7 @@ namespace ScadaAdmin
 
             if (client.Login(out string errMsg, sessionID, connectionSettings.Username,
                 encryptedPassword, connectionSettings.ScadaInstance))
-                writer.WriteLine(AppPhrases.LoggedOn);
+                writer?.WriteLine(AppPhrases.LoggedOn);
             else
                 throw new ScadaException(string.Format(AppPhrases.UnableLogin, errMsg));
         }
@@ -409,6 +409,27 @@ namespace ScadaAdmin
 
                 try { client?.Close(); }
                 catch { }
+            }
+        }
+
+        /// <summary>
+        /// Соединиться с Агентом
+        /// </summary>
+        public static bool Connect(ServersSettings.ConnectionSettings connectionSettings,
+            out AgentSvcClient client, out long sessionID, out string errMsg)
+        {
+            try
+            {
+                Connect(connectionSettings, null, out client, out sessionID);
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                client = null;
+                sessionID = 0;
+                errMsg = AppPhrases.ConnectAgentError + ":\r\n" + ex.Message;
+                return false;
             }
         }
     }

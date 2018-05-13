@@ -49,6 +49,7 @@ namespace ScadaAdmin
         public static string UnableCreateSession { get; private set; }
         public static string LoggedOn { get; private set; }
         public static string UnableLogin { get; private set; }
+        public static string ConnectAgentError { get; private set; }
         public static string DownloadDataEmpty { get; private set; }
         public static string DownloadSuccessful { get; private set; }
         public static string DownloadError { get; private set; }
@@ -239,6 +240,12 @@ namespace ScadaAdmin
         public static string ConfigDirRequired { get; private set; }
         public static string ConfigArcRequired { get; private set; }
 
+        // Словарь ScadaAdmin.Remote.FrmServerStatus
+        public static string UndefinedSvcStatus { get; private set; }
+        public static string NormalSvcStatus { get; private set; }
+        public static string StoppedSvcStatus { get; private set; }
+        public static string ErrorSvcStatus { get; private set; }
+
         private static void SetToDefault()
         {
             BaseSDFFileNotFound = "Файл базы конфигурации в формате SDF {0} не найден.";
@@ -250,6 +257,7 @@ namespace ScadaAdmin
             UnableCreateSession = "Не удалось создать сессию";
             LoggedOn = "Вход в систему выполнен";
             UnableLogin = "Не удалось войти в систему - {0}";
+            ConnectAgentError = "Ошибка при соединении с Агентом";
             DownloadDataEmpty = "Отсутствуют данные для скачивания";
             DownloadSuccessful = "Скачивание завершено успешно за {0} с.";
             DownloadError = "Ошибка при скачивании конфигурации";
@@ -428,6 +436,11 @@ namespace ScadaAdmin
             ChooseConfigDir = "Выберите директорию конфигурации";
             ConfigDirRequired = "Укажите директорию конфигурации.";
             ConfigArcRequired = "Укажите имя файла архива конфигурации.";
+
+            UndefinedSvcStatus = "Не определён";
+            NormalSvcStatus = "Норма";
+            StoppedSvcStatus = "Остановлен";
+            ErrorSvcStatus = "Ошибка";
         }
 
         public static void Init()
@@ -447,6 +460,7 @@ namespace ScadaAdmin
                 UnableCreateSession = dict.GetPhrase("UnableCreateSession", UnableCreateSession);
                 LoggedOn = dict.GetPhrase("LoggedOn", LoggedOn);
                 UnableLogin = dict.GetPhrase("UnableLogin", UnableLogin);
+                ConnectAgentError = dict.GetPhrase("ConnectAgentError", ConnectAgentError);
                 DownloadDataEmpty = dict.GetPhrase("DownloadDataEmpty", DownloadDataEmpty);
                 DownloadSuccessful = dict.GetPhrase("DownloadSuccessful", DownloadSuccessful);
                 DownloadError = dict.GetPhrase("DownloadError", DownloadError);
@@ -664,6 +678,14 @@ namespace ScadaAdmin
                 ChooseConfigDir = dict.GetPhrase("ChooseConfigDir", ChooseConfigDir);
                 ConfigDirRequired = dict.GetPhrase("ConfigDirRequired", ConfigDirRequired);
                 ConfigArcRequired = dict.GetPhrase("ConfigArcRequired", ConfigArcRequired);
+            }
+
+            if (Localization.Dictionaries.TryGetValue("ScadaAdmin.Remote.FrmServerStatus", out dict))
+            {
+                UndefinedSvcStatus = dict.GetPhrase("UndefinedSvcStatus", UndefinedSvcStatus);
+                NormalSvcStatus = dict.GetPhrase("NormalSvcStatus", NormalSvcStatus);
+                StoppedSvcStatus = dict.GetPhrase("StoppedSvcStatus", StoppedSvcStatus);
+                ErrorSvcStatus = dict.GetPhrase("ErrorSvcStatus", ErrorSvcStatus);
             }
         }
     }
