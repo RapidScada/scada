@@ -329,7 +329,7 @@ namespace Scada.Agent
         {
             srcDir = ScadaUtils.NormalDir(srcDir);
 
-            if (!excludedPaths.Dirs.Contains(srcDir))
+            if (!excludedPaths.Dirs.Contains(srcDir) && Directory.Exists(srcDir))
             {
                 DirectoryInfo srcDirInfo = new DirectoryInfo(srcDir);
 
