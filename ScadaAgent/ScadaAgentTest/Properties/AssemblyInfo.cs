@@ -1,16 +1,16 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
+﻿using Scada.Agent;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ScadaAgentCtrl")]
+[assembly: AssemblyTitle("ScadaAgentTest")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ScadaAgentCtrl")]
-[assembly: AssemblyCopyright("Copyright ©  2018")]
+[assembly: AssemblyProduct("Rapid SCADA")]
+[assembly: AssemblyCopyright("Copyright © 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("67aee6a7-0f2e-4273-8253-231e6bf3c943")]
+[assembly: Guid("c5b4f9fa-e4ae-418e-9ce8-8cb92c9cbfb8")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion(AgentUtils.AppVersion)]
+[assembly: AssemblyFileVersion(AgentUtils.AppVersion)]

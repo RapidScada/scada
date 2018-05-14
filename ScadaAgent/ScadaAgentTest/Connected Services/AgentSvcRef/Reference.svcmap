@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="f2db4ff7-b006-495a-a399-c5af30a5b594" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:10002/ScadaAgent/ScadaAgentSvc/" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="AgentSvc.wsdl" MetadataType="Wsdl" ID="162bb4d0-5235-438d-95c2-c1fe1077b088" SourceId="1" SourceUrl="http://localhost:10002/ScadaAgent/ScadaAgentSvc/?wsdl" />
+    <MetadataFile FileName="item.xsd" MetadataType="Schema" ID="14825eeb-bb40-42bc-9ff3-91251653a579" SourceId="1" SourceUrl="http://localhost:10002/ScadaAgent/ScadaAgentSvc/?xsd=xsd4" />
+    <MetadataFile FileName="item1.xsd" MetadataType="Schema" ID="047f217f-13b9-4309-8b40-8e827d63efbe" SourceId="1" SourceUrl="http://localhost:10002/ScadaAgent/ScadaAgentSvc/?xsd=xsd2" />
+    <MetadataFile FileName="item2.xsd" MetadataType="Schema" ID="8ef48eaa-c61d-45ff-b98a-b9dc33c69e64" SourceId="1" SourceUrl="http://localhost:10002/ScadaAgent/ScadaAgentSvc/?xsd=xsd3" />
+    <MetadataFile FileName="item3.xsd" MetadataType="Schema" ID="c5edfa86-92d6-4a83-a94d-92caee2fe9f6" SourceId="1" SourceUrl="http://localhost:10002/ScadaAgent/ScadaAgentSvc/?xsd=xsd0" />
+    <MetadataFile FileName="item4.xsd" MetadataType="Schema" ID="cef26175-0daf-46f3-82f1-7d278dfbdacb" SourceId="1" SourceUrl="http://localhost:10002/ScadaAgent/ScadaAgentSvc/?xsd=xsd1" />
+    <MetadataFile FileName="item.disco" MetadataType="Disco" ID="68f5054f-4520-47ab-a701-bbe4b93d9a71" SourceId="1" SourceUrl="http://localhost:10002/ScadaAgent/ScadaAgentSvc/?disco" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Scada.Agent.Ctrl
+namespace Scada.Agent.Test
 {
     static class Program
     {

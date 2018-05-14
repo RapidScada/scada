@@ -8,26 +8,26 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Scada.Agent.Ctrl.ServiceReference1 {
+namespace Scada.Agent.Test.AgentSvcRef {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference1.AgentSvc")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="AgentSvcRef.AgentSvc")]
     public interface AgentSvc {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/CreateSession", ReplyAction="http://tempuri.org/AgentSvc/CreateSessionResponse")]
-        Scada.Agent.Ctrl.ServiceReference1.CreateSessionResponse CreateSession(Scada.Agent.Ctrl.ServiceReference1.CreateSessionRequest request);
+        Scada.Agent.Test.AgentSvcRef.CreateSessionResponse CreateSession(Scada.Agent.Test.AgentSvcRef.CreateSessionRequest request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/CreateSession", ReplyAction="http://tempuri.org/AgentSvc/CreateSessionResponse")]
-        System.Threading.Tasks.Task<Scada.Agent.Ctrl.ServiceReference1.CreateSessionResponse> CreateSessionAsync(Scada.Agent.Ctrl.ServiceReference1.CreateSessionRequest request);
+        System.Threading.Tasks.Task<Scada.Agent.Test.AgentSvcRef.CreateSessionResponse> CreateSessionAsync(Scada.Agent.Test.AgentSvcRef.CreateSessionRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/Login", ReplyAction="http://tempuri.org/AgentSvc/LoginResponse")]
-        Scada.Agent.Ctrl.ServiceReference1.LoginResponse Login(Scada.Agent.Ctrl.ServiceReference1.LoginRequest request);
+        Scada.Agent.Test.AgentSvcRef.LoginResponse Login(Scada.Agent.Test.AgentSvcRef.LoginRequest request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/Login", ReplyAction="http://tempuri.org/AgentSvc/LoginResponse")]
-        System.Threading.Tasks.Task<Scada.Agent.Ctrl.ServiceReference1.LoginResponse> LoginAsync(Scada.Agent.Ctrl.ServiceReference1.LoginRequest request);
+        System.Threading.Tasks.Task<Scada.Agent.Test.AgentSvcRef.LoginResponse> LoginAsync(Scada.Agent.Test.AgentSvcRef.LoginRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/ControlService", ReplyAction="http://tempuri.org/AgentSvc/ControlServiceResponse")]
         bool ControlService(long sessionID, Scada.Agent.ServiceApp serviceApp, Scada.Agent.ServiceCommand command);
@@ -36,18 +36,18 @@ namespace Scada.Agent.Ctrl.ServiceReference1 {
         System.Threading.Tasks.Task<bool> ControlServiceAsync(long sessionID, Scada.Agent.ServiceApp serviceApp, Scada.Agent.ServiceCommand command);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/GetServiceStatus", ReplyAction="http://tempuri.org/AgentSvc/GetServiceStatusResponse")]
-        Scada.Agent.Ctrl.ServiceReference1.GetServiceStatusResponse GetServiceStatus(Scada.Agent.Ctrl.ServiceReference1.GetServiceStatusRequest request);
+        Scada.Agent.Test.AgentSvcRef.GetServiceStatusResponse GetServiceStatus(Scada.Agent.Test.AgentSvcRef.GetServiceStatusRequest request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/GetServiceStatus", ReplyAction="http://tempuri.org/AgentSvc/GetServiceStatusResponse")]
-        System.Threading.Tasks.Task<Scada.Agent.Ctrl.ServiceReference1.GetServiceStatusResponse> GetServiceStatusAsync(Scada.Agent.Ctrl.ServiceReference1.GetServiceStatusRequest request);
+        System.Threading.Tasks.Task<Scada.Agent.Test.AgentSvcRef.GetServiceStatusResponse> GetServiceStatusAsync(Scada.Agent.Test.AgentSvcRef.GetServiceStatusRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/GetAvailableConfig", ReplyAction="http://tempuri.org/AgentSvc/GetAvailableConfigResponse")]
-        Scada.Agent.Ctrl.ServiceReference1.GetAvailableConfigResponse GetAvailableConfig(Scada.Agent.Ctrl.ServiceReference1.GetAvailableConfigRequest request);
+        Scada.Agent.Test.AgentSvcRef.GetAvailableConfigResponse GetAvailableConfig(Scada.Agent.Test.AgentSvcRef.GetAvailableConfigRequest request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/GetAvailableConfig", ReplyAction="http://tempuri.org/AgentSvc/GetAvailableConfigResponse")]
-        System.Threading.Tasks.Task<Scada.Agent.Ctrl.ServiceReference1.GetAvailableConfigResponse> GetAvailableConfigAsync(Scada.Agent.Ctrl.ServiceReference1.GetAvailableConfigRequest request);
+        System.Threading.Tasks.Task<Scada.Agent.Test.AgentSvcRef.GetAvailableConfigResponse> GetAvailableConfigAsync(Scada.Agent.Test.AgentSvcRef.GetAvailableConfigRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/DownloadConfig", ReplyAction="http://tempuri.org/AgentSvc/DownloadConfigResponse")]
         System.IO.Stream DownloadConfig(long sessionID, Scada.Agent.ConfigOptions configOptions);
@@ -57,17 +57,17 @@ namespace Scada.Agent.Ctrl.ServiceReference1 {
         
         // CODEGEN: Generating message contract since the operation UploadConfig is neither RPC nor document wrapped.
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/UploadConfig", ReplyAction="http://tempuri.org/AgentSvc/UploadConfigResponse")]
-        Scada.Agent.Ctrl.ServiceReference1.UploadConfigResponse UploadConfig(Scada.Agent.Ctrl.ServiceReference1.ConfigUploadMessage request);
+        Scada.Agent.Test.AgentSvcRef.UploadConfigResponse UploadConfig(Scada.Agent.Test.AgentSvcRef.ConfigUploadMessage request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/UploadConfig", ReplyAction="http://tempuri.org/AgentSvc/UploadConfigResponse")]
-        System.Threading.Tasks.Task<Scada.Agent.Ctrl.ServiceReference1.UploadConfigResponse> UploadConfigAsync(Scada.Agent.Ctrl.ServiceReference1.ConfigUploadMessage request);
+        System.Threading.Tasks.Task<Scada.Agent.Test.AgentSvcRef.UploadConfigResponse> UploadConfigAsync(Scada.Agent.Test.AgentSvcRef.ConfigUploadMessage request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/Browse", ReplyAction="http://tempuri.org/AgentSvc/BrowseResponse")]
-        Scada.Agent.Ctrl.ServiceReference1.BrowseResponse Browse(Scada.Agent.Ctrl.ServiceReference1.BrowseRequest request);
+        Scada.Agent.Test.AgentSvcRef.BrowseResponse Browse(Scada.Agent.Test.AgentSvcRef.BrowseRequest request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/Browse", ReplyAction="http://tempuri.org/AgentSvc/BrowseResponse")]
-        System.Threading.Tasks.Task<Scada.Agent.Ctrl.ServiceReference1.BrowseResponse> BrowseAsync(Scada.Agent.Ctrl.ServiceReference1.BrowseRequest request);
+        System.Threading.Tasks.Task<Scada.Agent.Test.AgentSvcRef.BrowseResponse> BrowseAsync(Scada.Agent.Test.AgentSvcRef.BrowseRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/DownloadFile", ReplyAction="http://tempuri.org/AgentSvc/DownloadFileResponse")]
         System.IO.Stream DownloadFile(long sessionID, Scada.Agent.RelPath relPath);
@@ -315,12 +315,12 @@ namespace Scada.Agent.Ctrl.ServiceReference1 {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface AgentSvcChannel : Scada.Agent.Ctrl.ServiceReference1.AgentSvc, System.ServiceModel.IClientChannel {
+    public interface AgentSvcChannel : Scada.Agent.Test.AgentSvcRef.AgentSvc, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class AgentSvcClient : System.ServiceModel.ClientBase<Scada.Agent.Ctrl.ServiceReference1.AgentSvc>, Scada.Agent.Ctrl.ServiceReference1.AgentSvc {
+    public partial class AgentSvcClient : System.ServiceModel.ClientBase<Scada.Agent.Test.AgentSvcRef.AgentSvc>, Scada.Agent.Test.AgentSvcRef.AgentSvc {
         
         public AgentSvcClient() {
         }
@@ -342,38 +342,38 @@ namespace Scada.Agent.Ctrl.ServiceReference1 {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Scada.Agent.Ctrl.ServiceReference1.CreateSessionResponse Scada.Agent.Ctrl.ServiceReference1.AgentSvc.CreateSession(Scada.Agent.Ctrl.ServiceReference1.CreateSessionRequest request) {
+        Scada.Agent.Test.AgentSvcRef.CreateSessionResponse Scada.Agent.Test.AgentSvcRef.AgentSvc.CreateSession(Scada.Agent.Test.AgentSvcRef.CreateSessionRequest request) {
             return base.Channel.CreateSession(request);
         }
         
         public bool CreateSession(out long sessionID) {
-            Scada.Agent.Ctrl.ServiceReference1.CreateSessionRequest inValue = new Scada.Agent.Ctrl.ServiceReference1.CreateSessionRequest();
-            Scada.Agent.Ctrl.ServiceReference1.CreateSessionResponse retVal = ((Scada.Agent.Ctrl.ServiceReference1.AgentSvc)(this)).CreateSession(inValue);
+            Scada.Agent.Test.AgentSvcRef.CreateSessionRequest inValue = new Scada.Agent.Test.AgentSvcRef.CreateSessionRequest();
+            Scada.Agent.Test.AgentSvcRef.CreateSessionResponse retVal = ((Scada.Agent.Test.AgentSvcRef.AgentSvc)(this)).CreateSession(inValue);
             sessionID = retVal.sessionID;
             return retVal.CreateSessionResult;
         }
         
-        public System.Threading.Tasks.Task<Scada.Agent.Ctrl.ServiceReference1.CreateSessionResponse> CreateSessionAsync(Scada.Agent.Ctrl.ServiceReference1.CreateSessionRequest request) {
+        public System.Threading.Tasks.Task<Scada.Agent.Test.AgentSvcRef.CreateSessionResponse> CreateSessionAsync(Scada.Agent.Test.AgentSvcRef.CreateSessionRequest request) {
             return base.Channel.CreateSessionAsync(request);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Scada.Agent.Ctrl.ServiceReference1.LoginResponse Scada.Agent.Ctrl.ServiceReference1.AgentSvc.Login(Scada.Agent.Ctrl.ServiceReference1.LoginRequest request) {
+        Scada.Agent.Test.AgentSvcRef.LoginResponse Scada.Agent.Test.AgentSvcRef.AgentSvc.Login(Scada.Agent.Test.AgentSvcRef.LoginRequest request) {
             return base.Channel.Login(request);
         }
         
         public bool Login(long sessionID, string username, string encryptedPassword, string scadaInstanceName, out string errMsg) {
-            Scada.Agent.Ctrl.ServiceReference1.LoginRequest inValue = new Scada.Agent.Ctrl.ServiceReference1.LoginRequest();
+            Scada.Agent.Test.AgentSvcRef.LoginRequest inValue = new Scada.Agent.Test.AgentSvcRef.LoginRequest();
             inValue.sessionID = sessionID;
             inValue.username = username;
             inValue.encryptedPassword = encryptedPassword;
             inValue.scadaInstanceName = scadaInstanceName;
-            Scada.Agent.Ctrl.ServiceReference1.LoginResponse retVal = ((Scada.Agent.Ctrl.ServiceReference1.AgentSvc)(this)).Login(inValue);
+            Scada.Agent.Test.AgentSvcRef.LoginResponse retVal = ((Scada.Agent.Test.AgentSvcRef.AgentSvc)(this)).Login(inValue);
             errMsg = retVal.errMsg;
             return retVal.LoginResult;
         }
         
-        public System.Threading.Tasks.Task<Scada.Agent.Ctrl.ServiceReference1.LoginResponse> LoginAsync(Scada.Agent.Ctrl.ServiceReference1.LoginRequest request) {
+        public System.Threading.Tasks.Task<Scada.Agent.Test.AgentSvcRef.LoginResponse> LoginAsync(Scada.Agent.Test.AgentSvcRef.LoginRequest request) {
             return base.Channel.LoginAsync(request);
         }
         
@@ -386,37 +386,37 @@ namespace Scada.Agent.Ctrl.ServiceReference1 {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Scada.Agent.Ctrl.ServiceReference1.GetServiceStatusResponse Scada.Agent.Ctrl.ServiceReference1.AgentSvc.GetServiceStatus(Scada.Agent.Ctrl.ServiceReference1.GetServiceStatusRequest request) {
+        Scada.Agent.Test.AgentSvcRef.GetServiceStatusResponse Scada.Agent.Test.AgentSvcRef.AgentSvc.GetServiceStatus(Scada.Agent.Test.AgentSvcRef.GetServiceStatusRequest request) {
             return base.Channel.GetServiceStatus(request);
         }
         
         public bool GetServiceStatus(long sessionID, Scada.Agent.ServiceApp serviceApp, out Scada.Agent.ServiceStatus status) {
-            Scada.Agent.Ctrl.ServiceReference1.GetServiceStatusRequest inValue = new Scada.Agent.Ctrl.ServiceReference1.GetServiceStatusRequest();
+            Scada.Agent.Test.AgentSvcRef.GetServiceStatusRequest inValue = new Scada.Agent.Test.AgentSvcRef.GetServiceStatusRequest();
             inValue.sessionID = sessionID;
             inValue.serviceApp = serviceApp;
-            Scada.Agent.Ctrl.ServiceReference1.GetServiceStatusResponse retVal = ((Scada.Agent.Ctrl.ServiceReference1.AgentSvc)(this)).GetServiceStatus(inValue);
+            Scada.Agent.Test.AgentSvcRef.GetServiceStatusResponse retVal = ((Scada.Agent.Test.AgentSvcRef.AgentSvc)(this)).GetServiceStatus(inValue);
             status = retVal.status;
             return retVal.GetServiceStatusResult;
         }
         
-        public System.Threading.Tasks.Task<Scada.Agent.Ctrl.ServiceReference1.GetServiceStatusResponse> GetServiceStatusAsync(Scada.Agent.Ctrl.ServiceReference1.GetServiceStatusRequest request) {
+        public System.Threading.Tasks.Task<Scada.Agent.Test.AgentSvcRef.GetServiceStatusResponse> GetServiceStatusAsync(Scada.Agent.Test.AgentSvcRef.GetServiceStatusRequest request) {
             return base.Channel.GetServiceStatusAsync(request);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Scada.Agent.Ctrl.ServiceReference1.GetAvailableConfigResponse Scada.Agent.Ctrl.ServiceReference1.AgentSvc.GetAvailableConfig(Scada.Agent.Ctrl.ServiceReference1.GetAvailableConfigRequest request) {
+        Scada.Agent.Test.AgentSvcRef.GetAvailableConfigResponse Scada.Agent.Test.AgentSvcRef.AgentSvc.GetAvailableConfig(Scada.Agent.Test.AgentSvcRef.GetAvailableConfigRequest request) {
             return base.Channel.GetAvailableConfig(request);
         }
         
         public bool GetAvailableConfig(long sessionID, out Scada.Agent.ConfigParts configParts) {
-            Scada.Agent.Ctrl.ServiceReference1.GetAvailableConfigRequest inValue = new Scada.Agent.Ctrl.ServiceReference1.GetAvailableConfigRequest();
+            Scada.Agent.Test.AgentSvcRef.GetAvailableConfigRequest inValue = new Scada.Agent.Test.AgentSvcRef.GetAvailableConfigRequest();
             inValue.sessionID = sessionID;
-            Scada.Agent.Ctrl.ServiceReference1.GetAvailableConfigResponse retVal = ((Scada.Agent.Ctrl.ServiceReference1.AgentSvc)(this)).GetAvailableConfig(inValue);
+            Scada.Agent.Test.AgentSvcRef.GetAvailableConfigResponse retVal = ((Scada.Agent.Test.AgentSvcRef.AgentSvc)(this)).GetAvailableConfig(inValue);
             configParts = retVal.configParts;
             return retVal.GetAvailableConfigResult;
         }
         
-        public System.Threading.Tasks.Task<Scada.Agent.Ctrl.ServiceReference1.GetAvailableConfigResponse> GetAvailableConfigAsync(Scada.Agent.Ctrl.ServiceReference1.GetAvailableConfigRequest request) {
+        public System.Threading.Tasks.Task<Scada.Agent.Test.AgentSvcRef.GetAvailableConfigResponse> GetAvailableConfigAsync(Scada.Agent.Test.AgentSvcRef.GetAvailableConfigRequest request) {
             return base.Channel.GetAvailableConfigAsync(request);
         }
         
@@ -429,47 +429,47 @@ namespace Scada.Agent.Ctrl.ServiceReference1 {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Scada.Agent.Ctrl.ServiceReference1.UploadConfigResponse Scada.Agent.Ctrl.ServiceReference1.AgentSvc.UploadConfig(Scada.Agent.Ctrl.ServiceReference1.ConfigUploadMessage request) {
+        Scada.Agent.Test.AgentSvcRef.UploadConfigResponse Scada.Agent.Test.AgentSvcRef.AgentSvc.UploadConfig(Scada.Agent.Test.AgentSvcRef.ConfigUploadMessage request) {
             return base.Channel.UploadConfig(request);
         }
         
         public void UploadConfig(Scada.Agent.ConfigOptions ConfigOptions, long SessionID, System.IO.Stream Stream) {
-            Scada.Agent.Ctrl.ServiceReference1.ConfigUploadMessage inValue = new Scada.Agent.Ctrl.ServiceReference1.ConfigUploadMessage();
+            Scada.Agent.Test.AgentSvcRef.ConfigUploadMessage inValue = new Scada.Agent.Test.AgentSvcRef.ConfigUploadMessage();
             inValue.ConfigOptions = ConfigOptions;
             inValue.SessionID = SessionID;
             inValue.Stream = Stream;
-            Scada.Agent.Ctrl.ServiceReference1.UploadConfigResponse retVal = ((Scada.Agent.Ctrl.ServiceReference1.AgentSvc)(this)).UploadConfig(inValue);
+            Scada.Agent.Test.AgentSvcRef.UploadConfigResponse retVal = ((Scada.Agent.Test.AgentSvcRef.AgentSvc)(this)).UploadConfig(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Scada.Agent.Ctrl.ServiceReference1.UploadConfigResponse> Scada.Agent.Ctrl.ServiceReference1.AgentSvc.UploadConfigAsync(Scada.Agent.Ctrl.ServiceReference1.ConfigUploadMessage request) {
+        System.Threading.Tasks.Task<Scada.Agent.Test.AgentSvcRef.UploadConfigResponse> Scada.Agent.Test.AgentSvcRef.AgentSvc.UploadConfigAsync(Scada.Agent.Test.AgentSvcRef.ConfigUploadMessage request) {
             return base.Channel.UploadConfigAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Scada.Agent.Ctrl.ServiceReference1.UploadConfigResponse> UploadConfigAsync(Scada.Agent.ConfigOptions ConfigOptions, long SessionID, System.IO.Stream Stream) {
-            Scada.Agent.Ctrl.ServiceReference1.ConfigUploadMessage inValue = new Scada.Agent.Ctrl.ServiceReference1.ConfigUploadMessage();
+        public System.Threading.Tasks.Task<Scada.Agent.Test.AgentSvcRef.UploadConfigResponse> UploadConfigAsync(Scada.Agent.ConfigOptions ConfigOptions, long SessionID, System.IO.Stream Stream) {
+            Scada.Agent.Test.AgentSvcRef.ConfigUploadMessage inValue = new Scada.Agent.Test.AgentSvcRef.ConfigUploadMessage();
             inValue.ConfigOptions = ConfigOptions;
             inValue.SessionID = SessionID;
             inValue.Stream = Stream;
-            return ((Scada.Agent.Ctrl.ServiceReference1.AgentSvc)(this)).UploadConfigAsync(inValue);
+            return ((Scada.Agent.Test.AgentSvcRef.AgentSvc)(this)).UploadConfigAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Scada.Agent.Ctrl.ServiceReference1.BrowseResponse Scada.Agent.Ctrl.ServiceReference1.AgentSvc.Browse(Scada.Agent.Ctrl.ServiceReference1.BrowseRequest request) {
+        Scada.Agent.Test.AgentSvcRef.BrowseResponse Scada.Agent.Test.AgentSvcRef.AgentSvc.Browse(Scada.Agent.Test.AgentSvcRef.BrowseRequest request) {
             return base.Channel.Browse(request);
         }
         
         public bool Browse(long sessionID, Scada.Agent.RelPath relPath, out string[] directories, out string[] files) {
-            Scada.Agent.Ctrl.ServiceReference1.BrowseRequest inValue = new Scada.Agent.Ctrl.ServiceReference1.BrowseRequest();
+            Scada.Agent.Test.AgentSvcRef.BrowseRequest inValue = new Scada.Agent.Test.AgentSvcRef.BrowseRequest();
             inValue.sessionID = sessionID;
             inValue.relPath = relPath;
-            Scada.Agent.Ctrl.ServiceReference1.BrowseResponse retVal = ((Scada.Agent.Ctrl.ServiceReference1.AgentSvc)(this)).Browse(inValue);
+            Scada.Agent.Test.AgentSvcRef.BrowseResponse retVal = ((Scada.Agent.Test.AgentSvcRef.AgentSvc)(this)).Browse(inValue);
             directories = retVal.directories;
             files = retVal.files;
             return retVal.BrowseResult;
         }
         
-        public System.Threading.Tasks.Task<Scada.Agent.Ctrl.ServiceReference1.BrowseResponse> BrowseAsync(Scada.Agent.Ctrl.ServiceReference1.BrowseRequest request) {
+        public System.Threading.Tasks.Task<Scada.Agent.Test.AgentSvcRef.BrowseResponse> BrowseAsync(Scada.Agent.Test.AgentSvcRef.BrowseRequest request) {
             return base.Channel.BrowseAsync(request);
         }
         
