@@ -12,14 +12,17 @@
     </Connection>
     <Download>
       <SaveToDir>true</SaveToDir>
-      <DestDir>C:\SCADA\</DestDir>
-      <DestFile></DestFile>
+      <DestDir>C:\SCADA3\</DestDir>
+      <DestFile>C:\SCADA\config.zip</DestFile>
+      <IncludeSpecificFiles>true</IncludeSpecificFiles>
+      <ImportBase>true</ImportBase>
     </Download>
     <Upload>
+      <GetFromDir>true</GetFromDir>
       <SrcDir>C:\SCADA\</SrcDir>
-      <AllFiles>true</AllFiles>
-      <SelectedFiles>        
-      </SelectedFiles>
+      <SelectedFiles />
+      <SrcFile>C:\SCADA\config.zip</SrcFile>
+      <ClearSpecificFiles>true</ClearSpecificFiles>
     </Upload>
   </RemoteServer>
 </RemoteServers>
