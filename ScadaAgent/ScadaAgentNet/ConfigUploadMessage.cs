@@ -23,6 +23,7 @@
  * Modified : 2018
  */
 
+using System;
 using System.IO;
 using System.ServiceModel;
 
@@ -33,7 +34,7 @@ namespace Scada.Agent.Net
     /// <para>Сообщение для загрузки конфигурации</para>
     /// </summary>
     [MessageContract]
-    public class ConfigUploadMessage
+    public class ConfigUploadMessage : IDisposable
     {
         /// <summary>
         /// Идентификатор сессии
@@ -52,5 +53,18 @@ namespace Scada.Agent.Net
         /// </summary>
         [MessageBodyMember]
         public Stream Stream;
+
+
+        /// <summary>
+        /// Очистить ресурсы объекта
+        /// </summary>
+        public void Dispose()
+        {
+            if (Stream != null)
+            {
+                Stream.Close();
+                Stream = null;
+            }
+        }
     }
 }
