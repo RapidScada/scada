@@ -31,17 +31,17 @@
             this.components = new System.ComponentModel.Container();
             this.ctrlServerConn = new ScadaAdmin.Remote.CtrlServerConn();
             this.gbAction = new System.Windows.Forms.GroupBox();
-            this.btnConnect = new System.Windows.Forms.Button();
             this.btnDisconnect = new System.Windows.Forms.Button();
+            this.btnConnect = new System.Windows.Forms.Button();
             this.gbStatus = new System.Windows.Forms.GroupBox();
-            this.lblServerStatus = new System.Windows.Forms.Label();
-            this.txtServerStatus = new System.Windows.Forms.TextBox();
-            this.btnRestartServer = new System.Windows.Forms.Button();
+            this.txtUpdateTime = new System.Windows.Forms.TextBox();
+            this.lblUpdateTime = new System.Windows.Forms.Label();
             this.btnRestartComm = new System.Windows.Forms.Button();
             this.txtCommStatus = new System.Windows.Forms.TextBox();
             this.lblCommStatus = new System.Windows.Forms.Label();
-            this.txtUpdateTime = new System.Windows.Forms.TextBox();
-            this.lblUpdateTime = new System.Windows.Forms.Label();
+            this.btnRestartServer = new System.Windows.Forms.Button();
+            this.txtServerStatus = new System.Windows.Forms.TextBox();
+            this.lblServerStatus = new System.Windows.Forms.Label();
             this.btnClose = new System.Windows.Forms.Button();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.gbAction.SuspendLayout();
@@ -69,16 +69,6 @@
             this.gbAction.TabStop = false;
             this.gbAction.Text = "Действия";
             // 
-            // btnConnect
-            // 
-            this.btnConnect.Location = new System.Drawing.Point(13, 19);
-            this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(100, 23);
-            this.btnConnect.TabIndex = 0;
-            this.btnConnect.Text = "Соединиться";
-            this.btnConnect.UseVisualStyleBackColor = true;
-            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
-            // 
             // btnDisconnect
             // 
             this.btnDisconnect.Location = new System.Drawing.Point(119, 19);
@@ -88,6 +78,16 @@
             this.btnDisconnect.Text = "Разъединиться";
             this.btnDisconnect.UseVisualStyleBackColor = true;
             this.btnDisconnect.Click += new System.EventHandler(this.btnDisconnect_Click);
+            // 
+            // btnConnect
+            // 
+            this.btnConnect.Location = new System.Drawing.Point(13, 19);
+            this.btnConnect.Name = "btnConnect";
+            this.btnConnect.Size = new System.Drawing.Size(100, 23);
+            this.btnConnect.TabIndex = 0;
+            this.btnConnect.Text = "Соединиться";
+            this.btnConnect.UseVisualStyleBackColor = true;
+            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
             // gbStatus
             // 
@@ -107,32 +107,22 @@
             this.gbStatus.TabStop = false;
             this.gbStatus.Text = "Статус";
             // 
-            // lblServerStatus
+            // txtUpdateTime
             // 
-            this.lblServerStatus.AutoSize = true;
-            this.lblServerStatus.Location = new System.Drawing.Point(13, 24);
-            this.lblServerStatus.Name = "lblServerStatus";
-            this.lblServerStatus.Size = new System.Drawing.Size(91, 13);
-            this.lblServerStatus.TabIndex = 0;
-            this.lblServerStatus.Text = "Служба Сервера";
+            this.txtUpdateTime.Location = new System.Drawing.Point(150, 78);
+            this.txtUpdateTime.Name = "txtUpdateTime";
+            this.txtUpdateTime.ReadOnly = true;
+            this.txtUpdateTime.Size = new System.Drawing.Size(200, 20);
+            this.txtUpdateTime.TabIndex = 7;
             // 
-            // txtServerStatus
+            // lblUpdateTime
             // 
-            this.txtServerStatus.Location = new System.Drawing.Point(150, 20);
-            this.txtServerStatus.Name = "txtServerStatus";
-            this.txtServerStatus.ReadOnly = true;
-            this.txtServerStatus.Size = new System.Drawing.Size(200, 20);
-            this.txtServerStatus.TabIndex = 1;
-            // 
-            // btnRestartServer
-            // 
-            this.btnRestartServer.Location = new System.Drawing.Point(356, 19);
-            this.btnRestartServer.Name = "btnRestartServer";
-            this.btnRestartServer.Size = new System.Drawing.Size(100, 23);
-            this.btnRestartServer.TabIndex = 2;
-            this.btnRestartServer.Text = "Перезапустить";
-            this.btnRestartServer.UseVisualStyleBackColor = true;
-            this.btnRestartServer.Click += new System.EventHandler(this.btnRestartServer_Click);
+            this.lblUpdateTime.AutoSize = true;
+            this.lblUpdateTime.Location = new System.Drawing.Point(13, 82);
+            this.lblUpdateTime.Name = "lblUpdateTime";
+            this.lblUpdateTime.Size = new System.Drawing.Size(103, 13);
+            this.lblUpdateTime.TabIndex = 6;
+            this.lblUpdateTime.Text = "Время обновления";
             // 
             // btnRestartComm
             // 
@@ -161,22 +151,32 @@
             this.lblCommStatus.TabIndex = 3;
             this.lblCommStatus.Text = "Служба Коммуникатора";
             // 
-            // txtUpdateTime
+            // btnRestartServer
             // 
-            this.txtUpdateTime.Location = new System.Drawing.Point(150, 78);
-            this.txtUpdateTime.Name = "txtUpdateTime";
-            this.txtUpdateTime.ReadOnly = true;
-            this.txtUpdateTime.Size = new System.Drawing.Size(200, 20);
-            this.txtUpdateTime.TabIndex = 7;
+            this.btnRestartServer.Location = new System.Drawing.Point(356, 19);
+            this.btnRestartServer.Name = "btnRestartServer";
+            this.btnRestartServer.Size = new System.Drawing.Size(100, 23);
+            this.btnRestartServer.TabIndex = 2;
+            this.btnRestartServer.Text = "Перезапустить";
+            this.btnRestartServer.UseVisualStyleBackColor = true;
+            this.btnRestartServer.Click += new System.EventHandler(this.btnRestartServer_Click);
             // 
-            // lblUpdateTime
+            // txtServerStatus
             // 
-            this.lblUpdateTime.AutoSize = true;
-            this.lblUpdateTime.Location = new System.Drawing.Point(13, 82);
-            this.lblUpdateTime.Name = "lblUpdateTime";
-            this.lblUpdateTime.Size = new System.Drawing.Size(103, 13);
-            this.lblUpdateTime.TabIndex = 6;
-            this.lblUpdateTime.Text = "Время обновления";
+            this.txtServerStatus.Location = new System.Drawing.Point(150, 20);
+            this.txtServerStatus.Name = "txtServerStatus";
+            this.txtServerStatus.ReadOnly = true;
+            this.txtServerStatus.Size = new System.Drawing.Size(200, 20);
+            this.txtServerStatus.TabIndex = 1;
+            // 
+            // lblServerStatus
+            // 
+            this.lblServerStatus.AutoSize = true;
+            this.lblServerStatus.Location = new System.Drawing.Point(13, 24);
+            this.lblServerStatus.Name = "lblServerStatus";
+            this.lblServerStatus.Size = new System.Drawing.Size(91, 13);
+            this.lblServerStatus.TabIndex = 0;
+            this.lblServerStatus.Text = "Служба Сервера";
             // 
             // btnClose
             // 
@@ -210,6 +210,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Статус сервера";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmServerStatus_FormClosed);
             this.Load += new System.EventHandler(this.FrmServerStatus_Load);
             this.gbAction.ResumeLayout(false);
             this.gbStatus.ResumeLayout(false);

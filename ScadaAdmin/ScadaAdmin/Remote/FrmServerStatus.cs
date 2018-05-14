@@ -100,6 +100,11 @@ namespace ScadaAdmin.Remote
             ctrlServerConn.ServersSettings = serversSettings;
         }
 
+        private void FrmServerStatus_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            timer.Stop();
+        }
+
         private void ctrlServerConn_SelectedSettingsChanged(object sender, EventArgs e)
         {
             Disconnect();
