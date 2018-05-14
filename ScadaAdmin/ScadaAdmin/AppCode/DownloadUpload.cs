@@ -281,6 +281,7 @@ namespace ScadaAdmin
                     }
                 }
 
+                downloadStream.Close();
                 msg = string.Format(AppPhrases.DownloadSuccessful, (int)(DateTime.UtcNow - t0).TotalSeconds);
                 writer.WriteLine(msg);
                 return true;
