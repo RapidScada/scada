@@ -51,7 +51,7 @@ namespace Scada.Web.Plugins
             {
                 return Localization.UseRussian ?
                     "Основные компоненты схем" :
-                    "Basic scheme components";
+                    "Basic Scheme Components";
             }
         }
 
