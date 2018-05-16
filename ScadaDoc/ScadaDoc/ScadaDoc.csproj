@@ -22,6 +22,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -118,6 +119,12 @@
     <Content Include="content\en\use-cases\opc-standard-files\dcom_config_en.png" />
     <Content Include="content\en\use-cases\opc-standard-files\opc_config_en.png" />
     <Content Include="content\en\use-cases\opc-standard-files\opc_vals_en.png" />
+    <Content Include="content\en\use-cases\remote-server-management.html" />
+    <Content Include="content\en\version-history\administrator-history.html" />
+    <Content Include="content\en\version-history\communicator-history.html" />
+    <Content Include="content\en\version-history\index.html" />
+    <Content Include="content\en\version-history\server-history.html" />
+    <Content Include="content\en\version-history\webstation-history.html" />
     <Content Include="content\ru\installation-and-run\manual-installation.html" />
     <Content Include="content\ru\installation-and-run\module-installation.html" />
     <Content Include="content\ru\installation-and-run\software-installation-files\win7_features_dotnet_ru.png" />
@@ -258,6 +265,7 @@
     <Content Include="content\ru\use-cases\opc-standard-files\opc_config_ru.png" />
     <Content Include="content\ru\use-cases\opc-standard-files\opc_vals_ru.png" />
     <Content Include="content\ru\use-cases\opc-standard.html" />
+    <Content Include="content\ru\use-cases\remote-server-management.html" />
     <Content Include="content\ru\version-history\communicator-drivers-history.html" />
     <Content Include="content\ru\version-history\index.html" />
     <Content Include="content\ru\version-history\server-modules-history.html" />

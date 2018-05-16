@@ -41,6 +41,7 @@ function addContents(context) {
     addArticle(context, "use-cases/", "Сценарии использования");
     addArticle(context, "use-cases/modbus-protocol.html", "Подключение устройств по протоколу Modbus", 1);
     addArticle(context, "use-cases/opc-standard.html", "Подключение устройств с использованием стандарта OPC", 1);
+    addArticle(context, "use-cases/remote-server-management.html", "Управление удалённым сервером с помощью Агента", 1);
 
     addArticle(context, "version-history/", "История версий");
     addArticle(context, "version-history/scada-history.html", "История Rapid SCADA", 1);
