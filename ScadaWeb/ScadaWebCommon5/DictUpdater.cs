@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2018
  */
 
 using System;
@@ -49,7 +49,7 @@ namespace Scada.Web
         /// <summary>
         /// Журнал
         /// </summary>
-        protected readonly Log log;
+        protected readonly ILog log;
         /// <summary>
         /// Первое обновление настроек
         /// </summary>
@@ -66,7 +66,7 @@ namespace Scada.Web
         /// <summary>
         /// Конструктор
         /// </summary>
-        public DictUpdater(string directory, string fileNamePrefix, Action initPhrasesAction, Log log = null)
+        public DictUpdater(string directory, string fileNamePrefix, Action initPhrasesAction, ILog log = null)
         {
             if (directory == null)
                 throw new ArgumentNullException("directory");

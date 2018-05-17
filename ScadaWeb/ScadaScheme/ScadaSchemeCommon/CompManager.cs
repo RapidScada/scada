@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,12 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.Scheme.Model;
 using Scada.Scheme.Model.PropertyGrid;
+using Scada.Web;
 using Scada.Web.Plugins;
 using System;
 using System.Collections.Generic;
@@ -53,8 +54,8 @@ namespace Scada.Scheme
         /// </summary>
         private static readonly CompManager instance;
 
-        private string binDir; // директория исполняемых файлов
-        private ILog log;      // журнал приложения
+        private AppDirs appDirs; // директории веб-приложения
+        private ILog log;        // журнал приложения
         private List<CompLibSpec> allSpecs;                    // все спецификации библиотек
         private Dictionary<string, CompFactory> factsByPrefix; // фабрики компонентов, ключ - XML-префикс
         private Dictionary<string, CompLibSpec> specsByType;   // спецификации библиотек, ключ - имя типа компонента
@@ -81,7 +82,7 @@ namespace Scada.Scheme
         /// </summary>
         private CompManager()
         {
-            binDir = "";
+            appDirs = null;
             log = new LogStub();
             allSpecs = new List<CompLibSpec>();
             factsByPrefix = new Dictionary<string, CompFactory>();
@@ -156,15 +157,10 @@ namespace Scada.Scheme
         /// <summary>
         /// Инициализировать менеджер компонентов
         /// </summary>
-        public void Init(string binDir, Log log)
+        public void Init(AppDirs appDirs, ILog log)
         {
-            if (string.IsNullOrEmpty(binDir))
-                throw new ArgumentException("Directory must not be empty.", "binDir");
-            if (log == null)
-                throw new ArgumentNullException("log");
-
-            this.binDir = binDir;
-            this.log = log;
+            this.appDirs = appDirs ?? throw new ArgumentNullException("appDirs");
+            this.log = log ?? throw new ArgumentNullException("log");
         }
 
         /// <summary>
@@ -180,7 +176,7 @@ namespace Scada.Scheme
 
                 ClearDicts();
                 AttrTranslator attrTranslator = new AttrTranslator();
-                DirectoryInfo dirInfo = new DirectoryInfo(binDir);
+                DirectoryInfo dirInfo = new DirectoryInfo(appDirs.BinDir);
                 FileInfo[] fileInfoArr = dirInfo.GetFiles(CompLibMask, SearchOption.TopDirectoryOnly);
 
                 foreach (FileInfo fileInfo in fileInfoArr)
@@ -195,6 +191,8 @@ namespace Scada.Scheme
                     }
                     else if (pluginSpec is ISchemeComp)
                     {
+                        pluginSpec.AppDirs = appDirs;
+                        pluginSpec.Log = log;
                         pluginSpec.Init();
 
                         if (AddComponents((ISchemeComp)pluginSpec, attrTranslator))
