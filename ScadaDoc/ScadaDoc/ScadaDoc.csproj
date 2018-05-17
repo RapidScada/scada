@@ -119,7 +119,12 @@
     <Content Include="content\en\use-cases\opc-standard-files\dcom_config_en.png" />
     <Content Include="content\en\use-cases\opc-standard-files\opc_config_en.png" />
     <Content Include="content\en\use-cases\opc-standard-files\opc_vals_en.png" />
+    <Content Include="content\en\use-cases\remote-server-management-files\server_connection_en.png" />
     <Content Include="content\en\use-cases\remote-server-management-files\server_download1_en.png" />
+    <Content Include="content\en\use-cases\remote-server-management-files\server_download2_en.png" />
+    <Content Include="content\en\use-cases\remote-server-management-files\server_status_en.png" />
+    <Content Include="content\en\use-cases\remote-server-management-files\server_upload1_en.png" />
+    <Content Include="content\en\use-cases\remote-server-management-files\server_upload2_en.png" />
     <Content Include="content\en\use-cases\remote-server-management.html" />
     <Content Include="content\en\version-history\administrator-history.html" />
     <Content Include="content\en\version-history\communicator-history.html" />
@@ -266,7 +271,12 @@
     <Content Include="content\ru\use-cases\opc-standard-files\opc_config_ru.png" />
     <Content Include="content\ru\use-cases\opc-standard-files\opc_vals_ru.png" />
     <Content Include="content\ru\use-cases\opc-standard.html" />
+    <Content Include="content\ru\use-cases\remote-server-management-files\server_connection_ru.png" />
     <Content Include="content\ru\use-cases\remote-server-management-files\server_download1_ru.png" />
+    <Content Include="content\ru\use-cases\remote-server-management-files\server_download2_ru.png" />
+    <Content Include="content\ru\use-cases\remote-server-management-files\server_status_ru.png" />
+    <Content Include="content\ru\use-cases\remote-server-management-files\server_upload1_ru.png" />
+    <Content Include="content\ru\use-cases\remote-server-management-files\server_upload2_ru.png" />
     <Content Include="content\ru\use-cases\remote-server-management.html" />
     <Content Include="content\ru\version-history\communicator-drivers-history.html" />
     <Content Include="content\ru\version-history\index.html" />
