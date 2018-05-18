@@ -48,7 +48,7 @@ namespace Scada.Web.Plugins
         public PluginSpec()
         {
             appDirs = new AppDirs();
-            log = null;
+            log = new LogStub();
         }
 
 
