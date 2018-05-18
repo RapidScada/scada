@@ -497,7 +497,7 @@
             this.miEditCut.Image = ((System.Drawing.Image)(resources.GetObject("miEditCut.Image")));
             this.miEditCut.Name = "miEditCut";
             this.miEditCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.miEditCut.Size = new System.Drawing.Size(144, 22);
+            this.miEditCut.Size = new System.Drawing.Size(180, 22);
             this.miEditCut.Text = "Cut";
             this.miEditCut.Click += new System.EventHandler(this.miEditCut_Click);
             // 
@@ -506,7 +506,7 @@
             this.miEditCopy.Image = ((System.Drawing.Image)(resources.GetObject("miEditCopy.Image")));
             this.miEditCopy.Name = "miEditCopy";
             this.miEditCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.miEditCopy.Size = new System.Drawing.Size(144, 22);
+            this.miEditCopy.Size = new System.Drawing.Size(180, 22);
             this.miEditCopy.Text = "Copy";
             this.miEditCopy.Click += new System.EventHandler(this.miEditCopy_Click);
             // 
@@ -515,21 +515,21 @@
             this.miEditPaste.Image = ((System.Drawing.Image)(resources.GetObject("miEditPaste.Image")));
             this.miEditPaste.Name = "miEditPaste";
             this.miEditPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.miEditPaste.Size = new System.Drawing.Size(144, 22);
+            this.miEditPaste.Size = new System.Drawing.Size(180, 22);
             this.miEditPaste.Text = "Paste";
             this.miEditPaste.Click += new System.EventHandler(this.miEditPaste_Click);
             // 
             // miEditSep1
             // 
             this.miEditSep1.Name = "miEditSep1";
-            this.miEditSep1.Size = new System.Drawing.Size(141, 6);
+            this.miEditSep1.Size = new System.Drawing.Size(177, 6);
             // 
             // miEditUndo
             // 
             this.miEditUndo.Image = ((System.Drawing.Image)(resources.GetObject("miEditUndo.Image")));
             this.miEditUndo.Name = "miEditUndo";
             this.miEditUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.miEditUndo.Size = new System.Drawing.Size(144, 22);
+            this.miEditUndo.Size = new System.Drawing.Size(180, 22);
             this.miEditUndo.Text = "Undo";
             this.miEditUndo.Click += new System.EventHandler(this.miEditUndo_Click);
             // 
@@ -538,20 +538,20 @@
             this.miEditRedo.Image = ((System.Drawing.Image)(resources.GetObject("miEditRedo.Image")));
             this.miEditRedo.Name = "miEditRedo";
             this.miEditRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.miEditRedo.Size = new System.Drawing.Size(144, 22);
+            this.miEditRedo.Size = new System.Drawing.Size(180, 22);
             this.miEditRedo.Text = "Redo";
             this.miEditRedo.Click += new System.EventHandler(this.miEditRedo_Click);
             // 
             // miEditSep2
             // 
             this.miEditSep2.Name = "miEditSep2";
-            this.miEditSep2.Size = new System.Drawing.Size(141, 6);
+            this.miEditSep2.Size = new System.Drawing.Size(177, 6);
             // 
             // miEditPointer
             // 
             this.miEditPointer.Image = ((System.Drawing.Image)(resources.GetObject("miEditPointer.Image")));
             this.miEditPointer.Name = "miEditPointer";
-            this.miEditPointer.Size = new System.Drawing.Size(144, 22);
+            this.miEditPointer.Size = new System.Drawing.Size(180, 22);
             this.miEditPointer.Text = "Pointer";
             this.miEditPointer.Click += new System.EventHandler(this.miEditPointer_Click);
             // 
@@ -559,8 +559,7 @@
             // 
             this.miEditDelete.Image = ((System.Drawing.Image)(resources.GetObject("miEditDelete.Image")));
             this.miEditDelete.Name = "miEditDelete";
-            this.miEditDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.miEditDelete.Size = new System.Drawing.Size(144, 22);
+            this.miEditDelete.Size = new System.Drawing.Size(180, 22);
             this.miEditDelete.Text = "Delete";
             this.miEditDelete.Click += new System.EventHandler(this.miEditDelete_Click);
             // 
@@ -576,7 +575,7 @@
             // 
             this.miToolsOptions.Image = ((System.Drawing.Image)(resources.GetObject("miToolsOptions.Image")));
             this.miToolsOptions.Name = "miToolsOptions";
-            this.miToolsOptions.Size = new System.Drawing.Size(125, 22);
+            this.miToolsOptions.Size = new System.Drawing.Size(180, 22);
             this.miToolsOptions.Text = "Options...";
             this.miToolsOptions.Click += new System.EventHandler(this.miToolsOptions_Click);
             // 

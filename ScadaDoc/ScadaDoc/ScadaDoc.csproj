@@ -129,6 +129,7 @@
     <Content Include="content\en\version-history\administrator-history.html" />
     <Content Include="content\en\version-history\communicator-history.html" />
     <Content Include="content\en\version-history\index.html" />
+    <Content Include="content\en\version-history\scheme-editor-history.html" />
     <Content Include="content\en\version-history\server-history.html" />
     <Content Include="content\en\version-history\webstation-history.html" />
     <Content Include="content\ru\installation-and-run\manual-installation.html" />
