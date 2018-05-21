@@ -11,6 +11,7 @@ function addContents(context) {
     addArticle(context, "software-overview/applications/administrator-application.html", "Приложение Администратор", 2);
     addArticle(context, "software-overview/applications/table-editor-application.html", "Приложение Редактор таблиц", 2);
     addArticle(context, "software-overview/applications/scheme-editor-application.html", "Приложение Редактор схем", 2);
+    addArticle(context, "software-overview/roadmap.html", "Дорожная карта", 1);
 
     addArticle(context, "installation-and-run/", "Установка и запуск");
     addArticle(context, "installation-and-run/system-requirements.html", "Системные требования", 1);
