@@ -167,7 +167,7 @@ namespace Scada.Comm.Channels
                 int curInd = offset;
                 SerialPort.ReadTimeout = 0;
 
-                while (readCnt <= maxCount && !stopReceived && startDT <= nowDT && nowDT <= stopDT)
+                while (readCnt < maxCount && !stopReceived && startDT <= nowDT && nowDT <= stopDT)
                 {
                     bool readOk;
                     try { readOk = SerialPort.Read(buffer, curInd, 1) > 0; }

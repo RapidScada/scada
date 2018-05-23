@@ -11,6 +11,7 @@ function addContents(context) {
     addArticle(context, "software-overview/applications/administrator-application.html", "Administrator Application", 2);
     addArticle(context, "software-overview/applications/table-editor-application.html", "Table Editor Application", 2);
     addArticle(context, "software-overview/applications/scheme-editor-application.html", "Scheme Editor Application", 2);
+    addArticle(context, "software-overview/roadmap.html", "Roadmap", 1);
 
     addArticle(context, "installation-and-run/", "Installation and Run");
     addArticle(context, "installation-and-run/system-requirements.html", "System Requirements", 1);
@@ -41,7 +42,13 @@ function addContents(context) {
     addArticle(context, "use-cases/", "Use Cases");
     addArticle(context, "use-cases/modbus-protocol.html", "Connecting Devices Using Modbus Protocol", 1);
     addArticle(context, "use-cases/opc-standard.html", "Connecting Devices Using OPC Standard", 1);
+    addArticle(context, "use-cases/remote-server-management.html", "Managing Remote Server using Agent", 1);
 
-    /*addArticle(context, "", "Version History");
-    addArticle(context, "version-history/scada-history.html", "History of Rapid SCADA", 1);*/
+    addArticle(context, "version-history/", "Version History");
+    addArticle(context, "version-history/scada-history.html", "History of Rapid SCADA", 1);
+    addArticle(context, "version-history/server-history.html", "Server History", 1);
+    addArticle(context, "version-history/communicator-history.html", "Communicator History", 1);
+    addArticle(context, "version-history/administrator-history.html", "Administrator History", 1);
+    addArticle(context, "version-history/webstation-history.html", "Webstation History", 1);
+    addArticle(context, "version-history/scheme-editor-history.html", "Scheme Editor History", 1);
 }

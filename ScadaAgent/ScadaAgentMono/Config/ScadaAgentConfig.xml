@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaAgentConfig>
+  <SecretKey>5ABF5A7FD01752A2F1DFD21370B96EA462B0AE5C66A64F8901C9E1E2A06E40F1</SecretKey>
+  <Instances>
+    <Instance name="Default" directory="/opt/scada/" />
+  </Instances>
+</ScadaAgentConfig>

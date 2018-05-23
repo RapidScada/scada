@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2018
  */
 
 using Scada.Scheme;
@@ -112,7 +112,7 @@ namespace Scada.Web.Plugins
 
             // инициализация менеджера компонентов
             CompManager compManager = CompManager.GetInstance();
-            compManager.Init(AppData.GetAppData().AppDirs.BinDir, Log);
+            compManager.Init(AppData.GetAppData().AppDirs, Log);
         }
 
         /// <summary>

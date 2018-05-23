@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2010
- * Modified : 2014
+ * Modified : 2018
  */
 
 using System.Data;
@@ -50,24 +50,35 @@ namespace ScadaAdmin
         /// </summary>
         static AppData()
         {
-            ExeDir = ScadaUtils.NormalDir(Path.GetDirectoryName(Application.ExecutablePath));
-            ErrLog = new Log(Log.Formats.Full);
-            ErrLog.FileName = ExeDir + ErrFileName;
-            ErrLog.Encoding = Encoding.UTF8;
+            AppDirs = new AppDirs();
+            AppDirs.Init(Path.GetDirectoryName(Application.ExecutablePath));
+
+            ErrLog = new Log(Log.Formats.Full)
+            {
+                FileName = AppDirs.LogDir + ErrFileName,
+                Encoding = Encoding.UTF8
+            };
+
+            Settings = new Settings();
             Conn =  new SqlCeConnection();
         }
 
 
         /// <summary>
-        /// Получить директорию исполняемого файла приложения
+        /// Получить директории приложения
         /// </summary>
-        public static string ExeDir { get; private set; }
+        public static AppDirs AppDirs { get; private set; }
 
         /// <summary>
         /// Получить журнал ошибок приложения
         /// </summary>
         public static Log ErrLog { get; private set; }
 
+
+        /// <summary>
+        /// Получить настройки приложения
+        /// </summary>
+        public static Settings Settings { get; private set; }
 
         /// <summary>
         /// Получить соединение с БД
@@ -89,10 +100,12 @@ namespace ScadaAdmin
         /// <summary>
         /// Соединиться с БД, используя заданную в файле Web.Config строку связи
         /// </summary>
-        public static void Connect(string baseSdfFileName)
+        public static void Connect()
         {
             if (Conn.State != ConnectionState.Closed)
                 Disconnect();
+
+            string baseSdfFileName = Settings.AppSett.BaseSDFFile;
 
             if (!File.Exists(baseSdfFileName))
                 throw new FileNotFoundException(string.Format(AppPhrases.BaseSDFFileNotFound, baseSdfFileName));

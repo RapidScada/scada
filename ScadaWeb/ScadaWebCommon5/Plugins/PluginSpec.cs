@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2018
  */
 
 using Scada.Web.Shell;
@@ -39,7 +39,7 @@ namespace Scada.Web.Plugins
     public abstract class PluginSpec
     {
         private AppDirs appDirs; // директории веб-приложения
-        private Log log;         // журнал
+        private ILog log;        // журнал
 
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Scada.Web.Plugins
         public PluginSpec()
         {
             appDirs = new AppDirs();
-            log = null;
+            log = new LogStub();
         }
 
 
@@ -122,16 +122,14 @@ namespace Scada.Web.Plugins
             }
             set
             {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-                appDirs = value;
+                appDirs = value ?? throw new ArgumentNullException("value");
             }
         }
 
         /// <summary>
         /// Получить или установить журнал
         /// </summary>
-        public Log Log
+        public ILog Log
         {
             get
             {
@@ -139,9 +137,7 @@ namespace Scada.Web.Plugins
             }
             set
             {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-                log = value;
+                log = value ?? throw new ArgumentNullException("value");
             }
         }
 

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,12 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2010
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada;
 using Scada.UI;
+using ScadaAdmin.Remote;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -116,6 +117,7 @@ namespace ScadaAdmin
 
             allNodes = new List<TreeNode>();
             preventDblClick = false;
+            settings = AppData.Settings;
             frmReplace = null;
         }
 
@@ -393,7 +395,7 @@ namespace ScadaAdmin
                 // соединение с БД
                 if (connectNeeded)
                 {
-                    AppData.Connect(settings.AppSett.BaseSDFFile);
+                    AppData.Connect();
 
                     nodDB.ImageKey = nodDB.SelectedImageKey = "db.gif";
                     nodSystem.Expand();
@@ -552,6 +554,8 @@ namespace ScadaAdmin
             miServiceCreateCnls.Enabled = connected;
             miServiceCloneCnls.Enabled = connected;
             miServiceCnlsMap.Enabled = connected;
+            miRemoteDownload.Enabled = connected;
+            miRemoteUpload.Enabled = connected;
         }
 
         /// <summary>
@@ -587,15 +591,12 @@ namespace ScadaAdmin
         private void FrmMain_Load(object sender, EventArgs e)
         {
             // локализация приложения
-            string langDir = AppData.ExeDir + "Lang\\";
-            string errMsg;
-
-            if (Localization.LoadDictionaries(langDir, "ScadaData", out errMsg))
+            if (Localization.LoadDictionaries(AppData.AppDirs.LangDir, "ScadaData", out string errMsg))
                 CommonPhrases.Init();
             else
                 ScadaUiUtils.ShowError(errMsg);
 
-            if (Localization.LoadDictionaries(langDir, "ScadaAdmin", out errMsg))
+            if (Localization.LoadDictionaries(AppData.AppDirs.LangDir, "ScadaAdmin", out errMsg))
             {
                 Translator.TranslateForm(this, "ScadaAdmin.FrmMain", null, contextExpolorer, contextInCnls);
                 AppPhrases.Init();
@@ -619,7 +620,6 @@ namespace ScadaAdmin
             SetItemsEnabledOnWindowAction();
 
             // загрузка состояния формы
-            settings = new Settings();
             settings.LoadFormState();
             if (settings.FormSt.IsEmpty)
             {
@@ -797,13 +797,13 @@ namespace ScadaAdmin
             if (AppData.Connected)
             {
                 // резервное копирование файла базы конфигурации
-                string msg;
-                if (settings.AppSett.AutoBackupBase && 
-                    !ImportExport.BackupSDF(settings.AppSett.BaseSDFFile, settings.AppSett.BackupDir, out msg))
+                Settings.AppSettings appSettings = settings.AppSett;
+                if (appSettings.AutoBackupBase && 
+                    !ImportExport.BackupSDF(appSettings.BaseSDFFile, appSettings.BackupDir, out string msg))
                     AppUtils.ProcError(msg);
 
                 // конвертирование базы конфигурации в формат DAT
-                if (ImportExport.PassBase(Tables.TableInfoList, settings.AppSett.BaseDATDir, out msg))
+                if (ImportExport.PassBase(Tables.TableInfoList, appSettings.BaseDATDir, out msg))
                     ScadaUiUtils.ShowInfo(msg);
                 else
                     AppUtils.ProcError(msg);
@@ -852,9 +852,11 @@ namespace ScadaAdmin
             // создание и отоборажение формы импорта таблицы
             FrmImport frmImport = new FrmImport();
             FrmTable frmTable = winControl.ActiveForm as FrmTable;
+
             if (frmTable != null && frmTable.Table != null)
                 frmImport.DefaultTableName = frmTable.Table.TableName;
-            frmImport.DefaultDirectory = settings.AppSett.BaseDATDir;
+
+            frmImport.DefaultBaseDATDir = settings.AppSett.BaseDATDir;
             frmImport.ShowDialog();
         }
 
@@ -1025,6 +1027,27 @@ namespace ScadaAdmin
             {
                 Cursor = Cursors.Default;
             }
+        }
+
+        private void miRemoteDownload_Click(object sender, EventArgs e)
+        {
+            // открытие формы скачивания конфигурации
+            FrmDownloadConfig frmDownloadConfig = new FrmDownloadConfig();
+            frmDownloadConfig.ShowDialog();
+        }
+
+        private void miRemoteUpload_Click(object sender, EventArgs e)
+        {
+            // открытие формы передачи конфигурации
+            FrmUploadConfig frmUploadConfig = new FrmUploadConfig();
+            frmUploadConfig.ShowDialog();
+        }
+
+        private void miRemoteStatus_Click(object sender, EventArgs e)
+        {
+            // открытие формы статуса сервера
+            FrmServerStatus frmServerStatus = new FrmServerStatus();
+            frmServerStatus.ShowDialog();
         }
 
         private void miWindowCloseActive_Click(object sender, EventArgs e)

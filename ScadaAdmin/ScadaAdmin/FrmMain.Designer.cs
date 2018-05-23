@@ -100,6 +100,10 @@
             this.miExplorerRefresh = new System.Windows.Forms.ToolStripMenuItem();
             this.contextInCnls = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miInCnlProps = new System.Windows.Forms.ToolStripMenuItem();
+            this.miRemote = new System.Windows.Forms.ToolStripMenuItem();
+            this.miRemoteDownload = new System.Windows.Forms.ToolStripMenuItem();
+            this.miRemoteUpload = new System.Windows.Forms.ToolStripMenuItem();
+            this.miRemoteStatus = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain.SuspendLayout();
             this.toolMain.SuspendLayout();
             this.statusMain.SuspendLayout();
@@ -116,6 +120,7 @@
             this.miEdit,
             this.miView,
             this.miService,
+            this.miRemote,
             this.miSettings,
             this.miWindow,
             this.miHelp});
@@ -364,14 +369,14 @@
             // 
             this.miSettingsParams.Image = ((System.Drawing.Image)(resources.GetObject("miSettingsParams.Image")));
             this.miSettingsParams.Name = "miSettingsParams";
-            this.miSettingsParams.Size = new System.Drawing.Size(147, 22);
+            this.miSettingsParams.Size = new System.Drawing.Size(180, 22);
             this.miSettingsParams.Text = "Параметры...";
             this.miSettingsParams.Click += new System.EventHandler(this.miSettingsParams_Click);
             // 
             // miSettingsLanguage
             // 
             this.miSettingsLanguage.Name = "miSettingsLanguage";
-            this.miSettingsLanguage.Size = new System.Drawing.Size(147, 22);
+            this.miSettingsLanguage.Size = new System.Drawing.Size(180, 22);
             this.miSettingsLanguage.Text = "Язык...";
             this.miSettingsLanguage.Click += new System.EventHandler(this.miSettingsLanguage_Click);
             // 
@@ -740,6 +745,37 @@
             this.miInCnlProps.Text = "Свойства канала";
             this.miInCnlProps.Click += new System.EventHandler(this.miInCnlProps_Click);
             // 
+            // miRemote
+            // 
+            this.miRemote.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miRemoteDownload,
+            this.miRemoteUpload,
+            this.miRemoteStatus});
+            this.miRemote.Name = "miRemote";
+            this.miRemote.Size = new System.Drawing.Size(122, 20);
+            this.miRemote.Text = "&Удаленный сервер";
+            // 
+            // miRemoteDownload
+            // 
+            this.miRemoteDownload.Name = "miRemoteDownload";
+            this.miRemoteDownload.Size = new System.Drawing.Size(221, 22);
+            this.miRemoteDownload.Text = "Скачать конфигурацию...";
+            this.miRemoteDownload.Click += new System.EventHandler(this.miRemoteDownload_Click);
+            // 
+            // miRemoteUpload
+            // 
+            this.miRemoteUpload.Name = "miRemoteUpload";
+            this.miRemoteUpload.Size = new System.Drawing.Size(221, 22);
+            this.miRemoteUpload.Text = "Передать конфигурацию...";
+            this.miRemoteUpload.Click += new System.EventHandler(this.miRemoteUpload_Click);
+            // 
+            // miRemoteStatus
+            // 
+            this.miRemoteStatus.Name = "miRemoteStatus";
+            this.miRemoteStatus.Size = new System.Drawing.Size(221, 22);
+            this.miRemoteStatus.Text = "Статус сервера...";
+            this.miRemoteStatus.Click += new System.EventHandler(this.miRemoteStatus_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -848,6 +884,10 @@
         private System.Windows.Forms.ToolStripButton btnRestartComm;
         private System.Windows.Forms.ToolStripSeparator sepFifth;
         private System.Windows.Forms.ToolStripMenuItem miSettingsLanguage;
+        private System.Windows.Forms.ToolStripMenuItem miRemote;
+        private System.Windows.Forms.ToolStripMenuItem miRemoteDownload;
+        private System.Windows.Forms.ToolStripMenuItem miRemoteUpload;
+        private System.Windows.Forms.ToolStripMenuItem miRemoteStatus;
     }
 }
 

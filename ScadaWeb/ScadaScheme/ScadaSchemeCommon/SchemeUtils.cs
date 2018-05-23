@@ -36,7 +36,7 @@ namespace Scada.Scheme
         /// <summary>
         /// Версия схем
         /// </summary>
-        public const string SchemeVersion = "5.2.1.0";
+        public const string SchemeVersion = "5.2.1.1";
         /// <summary>
         /// Цвет, устанавливаемый в зависимости от статуса входного канала
         /// </summary>
@@ -48,8 +48,9 @@ namespace Scada.Scheme
         public static bool EditorMode
         {
             get
-            {                
-                return Assembly.GetEntryAssembly().GetName().Name == "ScadaSchemeEditor";
+            {
+                Assembly asm = Assembly.GetEntryAssembly();
+                return asm != null && asm.GetName().Name == "ScadaSchemeEditor";
             }
         }
 

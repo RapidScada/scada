@@ -26,11 +26,8 @@
 using System;
 using System.Globalization;
 using System.IO;
-using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Security.Cryptography;
 using System.Text;
-using System.Web;
 
 namespace Scada
 {
@@ -43,7 +40,16 @@ namespace Scada
         /// <summary>
         /// Версия данной библиотеки
         /// </summary>
-        internal const string LibVersion = "5.1.0.0";
+        internal const string LibVersion = "5.1.1.0";
+        /// <summary>
+        /// Формат вещественных чисел с разделителем точкой
+        /// </summary>
+        private static readonly NumberFormatInfo NfiDot;
+        /// <summary>
+        /// Формат вещественных чисел с разделителем запятой
+        /// </summary>
+        private static readonly NumberFormatInfo NfiComma;
+
         /// <summary>
         /// Задержка потока для экономии ресурсов, мс
         /// </summary>
@@ -54,15 +60,15 @@ namespace Scada
         /// <remarks>Совпадает с началом отсчёта времени в OLE Automation и Delphi</remarks>
         public static readonly DateTime ScadaEpoch = new DateTime(1899, 12, 30, 0, 0, 0, DateTimeKind.Utc);
 
-        private static NumberFormatInfo nfi; // формат вещественных чисел
-
 
         /// <summary>
         /// Конструктор
         /// </summary>
         static ScadaUtils()
         {
-            nfi = (NumberFormatInfo)CultureInfo.CurrentCulture.NumberFormat.Clone();
+            NfiDot = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
+            NfiComma = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
+            NfiComma.NumberDecimalSeparator = ",";
         }
 
 
@@ -230,11 +236,7 @@ namespace Scada
         /// <remarks>Метод работает с разделителями целой части '.' и ','</remarks>
         public static double ParseDouble(string s)
         {
-            lock (nfi)
-            {
-                nfi.NumberDecimalSeparator = s.Contains(".") ? "." : ",";
-                return double.Parse(s, nfi);
-            }
+            return double.Parse(s, s.Contains(".") ? NfiDot : NfiComma);
         }
 
         /// <summary>
@@ -243,11 +245,7 @@ namespace Scada
         /// <remarks>Метод работает с разделителями целой части '.' и ','</remarks>
         public static bool TryParseDouble(string s, out double result)
         {
-            lock (nfi)
-            {
-                nfi.NumberDecimalSeparator = s.Contains(".") ? "." : ",";
-                return double.TryParse(s, NumberStyles.Float, nfi, out result);
-            }
+            return double.TryParse(s, NumberStyles.Float, s.Contains(".") ? NfiDot : NfiComma, out result);
         }
 
         /// <summary>
@@ -311,21 +309,16 @@ namespace Scada
         }
 
         /// <summary>
-        /// Вычислить хеш-функцию MD5 по массиву байт
+        /// Преобразовать строку 16-ричных чисел в массив байт
         /// </summary>
-        public static string ComputeHash(byte[] bytes)
+        public static byte[] HexToBytes(string s, bool skipWhiteSpace = false)
         {
-            return BytesToHex(MD5.Create().ComputeHash(bytes));
+            if (HexToBytes(s, out byte[] bytes, skipWhiteSpace))
+                return bytes;
+            else
+                throw new FormatException(CommonPhrases.NotHexadecimal);
         }
 
-        /// <summary>
-        /// Вычислить хеш-функцию MD5 по строке
-        /// </summary>
-        public static string ComputeHash(string s)
-        {
-            return ComputeHash(Encoding.UTF8.GetBytes(s));
-        }
-        
         /// <summary>
         /// Глубокое (полное) клонирование объекта
         /// </summary>

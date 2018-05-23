@@ -1,0 +1,64 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\ScadaData\Cache.cs" Link="Cache.cs" />
+    <Compile Include="..\ScadaData\Client\BaseView.cs" Link="Client\BaseView.cs" />
+    <Compile Include="..\ScadaData\Client\CommSettings.cs" Link="Client\CommSettings.cs" />
+    <Compile Include="..\ScadaData\Client\DataAccess.cs" Link="Client\DataAccess.cs" />
+    <Compile Include="..\ScadaData\Client\DataCache.cs" Link="Client\DataCache.cs" />
+    <Compile Include="..\ScadaData\Client\DataFormatter.cs" Link="Client\DataFormatter.cs" />
+    <Compile Include="..\ScadaData\Client\ISupportLoading.cs" Link="Client\ISupportLoading.cs" />
+    <Compile Include="..\ScadaData\Client\ServerComm.cs" Link="Client\ServerComm.cs" />
+    <Compile Include="..\ScadaData\Client\ViewCache.cs" Link="Client\ViewCache.cs" />
+    <Compile Include="..\ScadaData\CommonPhrases.cs" Link="CommonPhrases.cs" />
+    <Compile Include="..\ScadaData\Data\Configuration\BaseTables.cs" Link="Data\Configuration\BaseTables.cs" />
+    <Compile Include="..\ScadaData\Data\Configuration\BaseValues.cs" Link="Data\Configuration\BaseValues.cs" />
+    <Compile Include="..\ScadaData\Data\Configuration\ConfDAO.cs" Link="Data\Configuration\ConfDAO.cs" />
+    <Compile Include="..\ScadaData\Data\Models\CnlStatProps.cs" Link="Data\Models\CnlStatProps.cs" />
+    <Compile Include="..\ScadaData\Data\Models\Command.cs" Link="Data\Models\Command.cs" />
+    <Compile Include="..\ScadaData\Data\Models\CommLine.cs" Link="Data\Models\CommLine.cs" />
+    <Compile Include="..\ScadaData\Data\Models\CtrlCnlProps.cs" Link="Data\Models\CtrlCnlProps.cs" />
+    <Compile Include="..\ScadaData\Data\Models\Device.cs" Link="Data\Models\Device.cs" />
+    <Compile Include="..\ScadaData\Data\Models\DispEvent.cs" Link="Data\Models\DispEvent.cs" />
+    <Compile Include="..\ScadaData\Data\Models\EntityRights.cs" Link="Data\Models\EntityRights.cs" />
+    <Compile Include="..\ScadaData\Data\Models\InCnlProps.cs" Link="Data\Models\InCnlProps.cs" />
+    <Compile Include="..\ScadaData\Data\Models\Obj.cs" Link="Data\Models\Obj.cs" />
+    <Compile Include="..\ScadaData\Data\Models\UiObjProps.cs" Link="Data\Models\UiObjProps.cs" />
+    <Compile Include="..\ScadaData\Data\Models\UserProps.cs" Link="Data\Models\UserProps.cs" />
+    <Compile Include="..\ScadaData\Data\Tables\Adapter.cs" Link="Data\Tables\Adapter.cs" />
+    <Compile Include="..\ScadaData\Data\Tables\BaseAdapter.cs" Link="Data\Tables\BaseAdapter.cs" />
+    <Compile Include="..\ScadaData\Data\Tables\EventAdapter.cs" Link="Data\Tables\EventAdapter.cs" />
+    <Compile Include="..\ScadaData\Data\Tables\EventTableLight.cs" Link="Data\Tables\EventTableLight.cs" />
+    <Compile Include="..\ScadaData\Data\Tables\SrezAdapter.cs" Link="Data\Tables\SrezAdapter.cs" />
+    <Compile Include="..\ScadaData\Data\Tables\SrezTable.cs" Link="Data\Tables\SrezTable.cs" />
+    <Compile Include="..\ScadaData\Data\Tables\SrezTableLight.cs" Link="Data\Tables\SrezTableLight.cs" />
+    <Compile Include="..\ScadaData\Data\Tables\Trend.cs" Link="Data\Tables\Trend.cs" />
+    <Compile Include="..\ScadaData\FileListener.cs" Link="FileListener.cs" />
+    <Compile Include="..\ScadaData\ISettings.cs" Link="ISettings.cs" />
+    <Compile Include="..\ScadaData\ITreeNode.cs" Link="ITreeNode.cs" />
+    <Compile Include="..\ScadaData\Localization.cs" Link="Localization.cs" />
+    <Compile Include="..\ScadaData\ScadaException.cs" Link="ScadaException.cs" />
+    <Compile Include="..\ScadaData\ScadaUtils.Crypto.cs" Link="ScadaUtils.Crypto.cs" />
+    <Compile Include="..\ScadaData\ScadaUtils.cs" Link="ScadaUtils.cs" />
+    <Compile Include="..\ScadaData\ScadaUtils.Xml.cs" Link="ScadaUtils.Xml.cs" />
+    <Compile Include="..\ScadaData\SerializationBinder.cs" Link="SerializationBinder.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Client\" />
+    <Folder Include="Data\Configuration\" />
+    <Folder Include="Data\Models\" />
+    <Folder Include="Data\Tables\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Log.Std">
+      <HintPath>..\..\Log\Log.Std\bin\Release\netstandard2.0\Log.Std.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

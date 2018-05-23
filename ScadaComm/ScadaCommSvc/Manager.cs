@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.Data.Models;
@@ -43,9 +43,43 @@ namespace Scada.Comm.Svc
     internal sealed class Manager
     {
         /// <summary>
-        /// Имя файла конфигурации
+        /// Наименования состояний работы
         /// </summary>
-        private const string ConfigFileName = "ScadaCommSvcConfig.xml";
+        private static class WorkStateNames
+        {
+            /// <summary>
+            /// Статический конструктор
+            /// </summary>
+            static WorkStateNames()
+            {
+                if (Localization.UseRussian)
+                {
+                    Normal = "норма";
+                    Stopped = "остановлен";
+                    Error = "ошибка";
+                }
+                else
+                {
+                    Normal = "normal";
+                    Stopped = "stopped";
+                    Error = "error";
+                }
+            }
+
+            /// <summary>
+            /// Норма
+            /// </summary>
+            public static readonly string Normal;
+            /// <summary>
+            /// Остановлен
+            /// </summary>
+            public static readonly string Stopped;
+            /// <summary>
+            /// Ошибка
+            /// </summary>
+            public static readonly string Error;
+        }
+
         /// <summary>
         /// Имя основного Log-файла программы
         /// </summary>
@@ -70,6 +104,7 @@ namespace Scada.Comm.Svc
         private string infoFileName;              // полное имя файла информации
         private Thread startThread;               // поток повторения попыток запуска
         private DateTime startDT;                 // дата и время запуска работы
+        private string workState;                 // состояние работы
         private bool linesStarted;                // потоки линий связи запущены
         private string[] lineCaptions;            // обозначения линий связи
         private object lineCmdLock;               // объект для синхронизации выполнения команд над линиями связи
@@ -87,6 +122,7 @@ namespace Scada.Comm.Svc
             infoFileName = "";
             startThread = null;
             startDT = DateTime.MinValue;
+            workState = "";
             linesStarted = false;
             lineCaptions = null;
             lineCmdLock = new object();
@@ -290,7 +326,7 @@ namespace Scada.Comm.Svc
                 StringBuilder sbInfo = new StringBuilder();
 
                 TimeSpan workSpan = DateTime.Now - startDT;
-                string workStr = workSpan.Days > 0 ? workSpan.ToString(@"d\.hh\:mm\:ss") :
+                string workDur = workSpan.Days > 0 ? workSpan.ToString(@"d\.hh\:mm\:ss") :
                     workSpan.ToString(@"hh\:mm\:ss");
 
                 if (Localization.UseRussian)
@@ -299,7 +335,8 @@ namespace Scada.Comm.Svc
                         .AppendLine("SCADA-Коммуникатор")
                         .AppendLine("------------------")
                         .Append("Запуск       : ").AppendLine(startDT.ToLocalizedString())
-                        .Append("Время работы : ").AppendLine(workStr)
+                        .Append("Время работы : ").AppendLine(workDur)
+                        .Append("Состояние    : ").AppendLine(workState)
                         .Append("Версия       : ").AppendLine(CommUtils.AppVersion)
                         .Append("SCADA-Сервер : ").AppendLine(Settings.Params.ServerUse ?
                             (ServerComm == null ? "не инициализирован" : ServerComm.CommStateDescr) :
@@ -314,7 +351,8 @@ namespace Scada.Comm.Svc
                         .AppendLine("SCADA-Communicator")
                         .AppendLine("------------------")
                         .Append("Started        : ").AppendLine(startDT.ToLocalizedString())
-                        .Append("Execution time : ").AppendLine(workStr)
+                        .Append("Execution time : ").AppendLine(workDur)
+                        .Append("State          : ").AppendLine(workState)
                         .Append("Version        : ").AppendLine(CommUtils.AppVersion)
                         .Append("SCADA-Server   : ").AppendLine(Settings.Params.ServerUse ?
                             (ServerComm == null ? "not initialized" : ServerComm.CommStateDescr) :
@@ -402,6 +440,7 @@ namespace Scada.Comm.Svc
             }
             else
             {
+                workState = WorkStateNames.Error;
                 WriteInfo();
                 return false;
             }
@@ -506,14 +545,20 @@ namespace Scada.Comm.Svc
                     commandReader.StartThread();
                 }
 
-                // запуск потока записи информации о работе приложения
                 if (linesStarted)
                 {
+                    // запуск потока записи информации о работе приложения
                     infoThread = new Thread(new ThreadStart(WriteInfoExecute));
                     infoThread.Start();
-                }
 
-                return linesStarted;
+                    workState = WorkStateNames.Normal;
+                    return true;
+                }
+                else
+                {
+                    workState = WorkStateNames.Error;
+                    return false;
+                }
             }
             catch (Exception ex)
             {
@@ -599,6 +644,7 @@ namespace Scada.Comm.Svc
                 Thread.Sleep(ScadaUtils.ThreadDelay);
 
                 // запись информации о работе программы
+                workState = WorkStateNames.Stopped;
                 WriteInfo();
             }
             catch (Exception ex)
@@ -628,7 +674,7 @@ namespace Scada.Comm.Svc
                         // загрузка линии связи из файла кофигурации
                         string errMsg;
                         Settings.CommLine commLineSett; 
-                        if (Settings.LoadCommLine(AppDirs.ConfigDir + ConfigFileName, lineNum, 
+                        if (Settings.LoadCommLine(AppDirs.ConfigDir + Settings.DefFileName, lineNum, 
                             out commLineSett, out errMsg))
                         {
                             if (commLineSett == null)
@@ -843,9 +889,11 @@ namespace Scada.Comm.Svc
 
                 // запуск работы
                 if (!StartOperation())
-                    AppLog.WriteAction(Localization.UseRussian ? 
+                {
+                    AppLog.WriteAction(Localization.UseRussian ?
                         "Нормальная работа программы невозможна." :
                         "Normal program execution is impossible.", Log.ActTypes.Error);
+                }
             }
             else
             {

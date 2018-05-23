@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.Data.Configuration;
@@ -58,7 +58,7 @@ namespace Scada.Comm
         /// <summary>
         /// Версия Коммуникатора
         /// </summary>
-        public const string AppVersion = "5.1.0.2";
+        public const string AppVersion = "5.1.0.3";
 
         /// <summary>
         /// Формат даты и времени для вывода в журнал линии связи

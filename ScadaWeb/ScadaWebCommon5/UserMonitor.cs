@@ -321,7 +321,7 @@ namespace Scada.Web
             {
                 lock (userDataDict)
                 {
-                    UserShot[] userShotArr = new UserData[userDataDict.Count];
+                    UserShot[] userShotArr = new UserShot[userDataDict.Count];
                     int i = 0;
 
                     foreach (UserData userData in userDataDict.Values)

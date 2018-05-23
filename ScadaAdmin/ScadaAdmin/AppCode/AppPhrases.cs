@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2014
- * Modified : 2016
+ * Modified : 2018
  */
 
 using Scada;
@@ -42,13 +42,34 @@ namespace ScadaAdmin
         public static string BaseSDFFileNotFound { get; private set; }
         public static string RefreshRequired { get; private set; }
 
+        // Словарь ScadaAdmin.DownloadUpload
+        public static string DownloadTitle { get; private set; }
+        public static string ConnectionName { get; private set; }
+        public static string SessionCreated { get; private set; }
+        public static string UnableCreateSession { get; private set; }
+        public static string LoggedOn { get; private set; }
+        public static string UnableLogin { get; private set; }
+        public static string ConnectAgentError { get; private set; }
+        public static string DownloadDataEmpty { get; private set; }
+        public static string DownloadSuccessful { get; private set; }
+        public static string DownloadError { get; private set; }
+        public static string UploadTitle { get; private set; }
+        public static string NoConfigInSrc { get; private set; }
+        public static string ConfigUploaded { get; private set; }
+        public static string ServerRestarted { get; private set; }
+        public static string UnableRestartServer { get; private set; }
+        public static string CommRestarted { get; private set; }
+        public static string UnableRestartComm { get; private set; }
+        public static string UploadSuccessful { get; private set; }
+        public static string UploadError { get; private set; }
+
         // Словарь ScadaAdmin.ImportExport
         public static string ChooseBaseTableFile { get; private set; }
-        public static string ChooseBaseArchiveFile { get; private set; }
+        public static string ChooseArchiveFile { get; private set; }
         public static string BaseTableFileFilter { get; private set; }
-        public static string BaseArchiveFileFilter { get; private set; }
-        public static string ImportFileUndefied { get; private set; }
+        public static string ArchiveFileFilter { get; private set; }
         public static string ImportFileNotExist { get; private set; }
+        public static string ImportDirNotExist { get; private set; }
         public static string ImportTitle { get; private set; }
         public static string ImportTableTitle { get; private set; }
         public static string ImportSource { get; private set; }
@@ -65,6 +86,7 @@ namespace ScadaAdmin
         public static string ImportTableResult { get; private set; }
         public static string ImportTableErrors { get; private set; }
         public static string ImportTableError { get; private set; }
+        public static string ImportAllTablesError { get; private set; }
         public static string ImportArchiveError { get; private set; }
         public static string ExportFileUndefied { get; private set; }
         public static string ExportDirUndefied { get; private set; }
@@ -131,6 +153,7 @@ namespace ScadaAdmin
         public static string FillKPGridError { get; private set; }
 
         // Словарь ScadaAdmin.FrmImport
+        public static string AllTablesItem { get; private set; }
         public static string ArchiveItem { get; private set; }
 
         // Словарь ScadaAdmin.FrmInCnlProps
@@ -193,6 +216,10 @@ namespace ScadaAdmin
         public static string DeleteRowsConfirm { get; private set; }
         public static string ClearTableConfirm { get; private set; }
 
+        // Словарь ScadaAdmin.ServersSettings
+        public static string LoadServersSettingsError { get; private set; }
+        public static string SaveServersSettingsError { get; private set; }
+
         // Словарь ScadaAdmin.Tables
         public static string UpdateDataError { get; private set; }
         public static string FillSchemaError { get; private set; }
@@ -208,20 +235,60 @@ namespace ScadaAdmin
         public static string GetInCnlNumsError { get; private set; }
         public static string GetCtrlCnlNumsError { get; private set; }
 
+        // Словарь ScadaAdmin.Remote
+        public static string ChooseConfigDir { get; private set; }
+        public static string ConfigDirRequired { get; private set; }
+        public static string ConfigArcRequired { get; private set; }
+
+        // Словарь ScadaAdmin.Remote.CtrlServerConn
+        public static string DeleteConnConfirm { get; private set; }
+
+        // Словарь ScadaAdmin.Remote.FrmConnSettings
+        public static string EmptyFieldsNotAllowed { get; private set; }
+        public static string ConnNameDuplicated { get; private set; }
+        public static string IncorrectSecretKey { get; private set; }
+
+        // Словарь ScadaAdmin.Remote.FrmServerStatus
+        public static string UndefinedSvcStatus { get; private set; }
+        public static string NormalSvcStatus { get; private set; }
+        public static string StoppedSvcStatus { get; private set; }
+        public static string ErrorSvcStatus { get; private set; }
+
         private static void SetToDefault()
         {
             BaseSDFFileNotFound = "Файл базы конфигурации в формате SDF {0} не найден.";
             RefreshRequired = "\r\nОбновите открытые таблицы, чтобы отобразить изменения.";
 
+            DownloadTitle = "{0} Скачивание конфигурации";
+            ConnectionName = "Соединение : {0}";
+            SessionCreated = "Создана сессия {0}";
+            UnableCreateSession = "Не удалось создать сессию";
+            LoggedOn = "Вход в систему выполнен";
+            UnableLogin = "Не удалось войти в систему - {0}";
+            ConnectAgentError = "Ошибка при соединении с Агентом";
+            DownloadDataEmpty = "Отсутствуют данные для скачивания";
+            DownloadSuccessful = "Скачивание завершено успешно за {0} с.";
+            DownloadError = "Ошибка при скачивании конфигурации";
+            UploadTitle = "{0} Передача конфигурации";
+            NoConfigInSrc = "Конфигурация отсутствует в заданном источнике.";
+            ConfigUploaded = "Конфигурация передана";
+            ServerRestarted = "Служба Сервера перезапущена";
+            UnableRestartServer = "Не удалось перезапустить службу Сервера";
+            CommRestarted = "Служба Коммуникатора перезапущена";
+            UnableRestartComm = "Не удалось перезапустить службу Коммуникатора";
+            UploadSuccessful = "Передача завершена успешно за {0} с.\r\n" +
+                "Проверьте работоспособность удалённого сервера.";
+            UploadError = "Ошибка при передаче конфигурации";
+
             ChooseBaseTableFile = "Выберите файл таблицы базы конфигурации";
-            ChooseBaseArchiveFile = "Выберите файл архива базы конфигурации";
-            BaseTableFileFilter = "Таблицы базы конфигурации|*.dat|Все файлы|*.*";
-            BaseArchiveFileFilter = "Архив базы конфигурации|*.zip|Все файлы|*.*";
-            ImportFileUndefied = "Импортируемый файл не определён.";
+            ChooseArchiveFile = "Выберите файл архива конфигурации";
+            BaseTableFileFilter = "Таблицы базы конфигурации (*.dat)|*.dat|Все файлы (*.*)|*.*";
+            ArchiveFileFilter = "Архив конфигурации (*.zip)|*.zip|Все файлы (*.*)|*.*";
             ImportFileNotExist = "Импортируемый файл не существует.";
+            ImportDirNotExist = "Импортируемая директория не существует.";
             ImportTitle = "Импорт базы конфигурации";
             ImportTableTitle = "Импорт таблицы базы конфигурации \"{0}\"";
-            ImportSource = "Исходный файл : ";
+            ImportSource = "Исходный файл или директория : ";
             LoadTableError = "Ошибка при загрузке импортируемой таблицы";
             SrcTableColumns = "Поля исходной таблицы";
             DestTableColumns = "Поля таблицы, в которую производится импорт";
@@ -236,6 +303,8 @@ namespace ScadaAdmin
             ImportTableResult = "Результат импорта таблицы";
             ImportTableErrors = "Ошибки импорта таблицы";
             ImportTableError = "Ошибка при импорте таблицы базы конфигурации";
+            ImportAllTablesError = "Ошибка при импорте всех таблиц базы конфигурации";
+            ImportArchiveError = "Ошибка при импорте базы конфигурации из архива";
             ExportFileUndefied = "Файл экспорта не определён.";
             ExportDirUndefied = "Директория экспорта не определена.";
             ExportDirNotExists = "Директория экспорта не существует.";
@@ -298,6 +367,7 @@ namespace ScadaAdmin
             FillKPFilterError = "Ошибка при заполнении фильтра КП";
             FillKPGridError = "Ошибка при заполнении таблицы выбора КП";
 
+            AllTablesItem = "Все таблицы";
             ArchiveItem = "Таблицы из архива";
 
             ShowInCnlPropsError = "Ошибка при отображении свойств входного канала";
@@ -354,6 +424,9 @@ namespace ScadaAdmin
             DeleteRowsConfirm = "Вы уверены, что хотите удалить строки?";
             ClearTableConfirm = "Вы уверены, что хотите очистить таблицу?";
 
+            LoadServersSettingsError = "Ошибка при загрузке настроек взаимодействия с удалёнными серверами";
+            SaveServersSettingsError = "Ошибка при сохранении настроек взаимодействия с удалёнными серверами";
+
             UpdateDataError = "Ошибка при сохранении изменений таблицы в БД";
             FillSchemaError = "Ошибка при получении схемы данных таблицы";
             DataRequired = "Столбец \"{0}\" не может содержать пустых значений.";
@@ -367,6 +440,21 @@ namespace ScadaAdmin
             GetCtrlCnlNameError = "Ошибка при получении наименования канала управления";
             GetInCnlNumsError = "Ошибка при получении номеров входных каналов";
             GetCtrlCnlNumsError = "Ошибка при получении номеров каналов управления";
+
+            ChooseConfigDir = "Выберите директорию конфигурации";
+            ConfigDirRequired = "Укажите директорию конфигурации.";
+            ConfigArcRequired = "Укажите имя файла архива конфигурации.";
+
+            DeleteConnConfirm = "Вы уверены, что хотите удалить подключение?";
+
+            EmptyFieldsNotAllowed = "Пустые значения полей не допускаются.";
+            ConnNameDuplicated = "Соединение с таким наименованием уже существует.";
+            IncorrectSecretKey = "Некорректный секретный ключ.";
+
+            UndefinedSvcStatus = "Не определён";
+            NormalSvcStatus = "Норма";
+            StoppedSvcStatus = "Остановлен";
+            ErrorSvcStatus = "Ошибка";
         }
 
         public static void Init()
@@ -378,14 +466,37 @@ namespace ScadaAdmin
                 RefreshRequired = dict.GetPhrase("RefreshRequired", RefreshRequired);
             }
 
+            if (Localization.Dictionaries.TryGetValue("ScadaAdmin.DownloadUpload", out dict))
+            {
+                DownloadTitle = dict.GetPhrase("DownloadTitle", DownloadTitle);
+                ConnectionName = dict.GetPhrase("ConnectionName", ConnectionName);
+                SessionCreated = dict.GetPhrase("SessionCreated", SessionCreated);
+                UnableCreateSession = dict.GetPhrase("UnableCreateSession", UnableCreateSession);
+                LoggedOn = dict.GetPhrase("LoggedOn", LoggedOn);
+                UnableLogin = dict.GetPhrase("UnableLogin", UnableLogin);
+                ConnectAgentError = dict.GetPhrase("ConnectAgentError", ConnectAgentError);
+                DownloadDataEmpty = dict.GetPhrase("DownloadDataEmpty", DownloadDataEmpty);
+                DownloadSuccessful = dict.GetPhrase("DownloadSuccessful", DownloadSuccessful);
+                DownloadError = dict.GetPhrase("DownloadError", DownloadError);
+                UploadTitle = dict.GetPhrase("UploadTitle", UploadTitle);
+                NoConfigInSrc = dict.GetPhrase("NoConfigInSrc", NoConfigInSrc);
+                ConfigUploaded = dict.GetPhrase("ConfigUploaded", ConfigUploaded);
+                ServerRestarted = dict.GetPhrase("ServerRestarted", ServerRestarted);
+                UnableRestartServer = dict.GetPhrase("UnableRestartServer", UnableRestartServer);
+                CommRestarted = dict.GetPhrase("CommRestarted", CommRestarted);
+                UnableRestartComm = dict.GetPhrase("UnableRestartComm", UnableRestartComm);
+                UploadSuccessful = dict.GetPhrase("UploadSuccessful", UploadSuccessful);
+                UploadError = dict.GetPhrase("UploadError", UploadError);
+            }
+
             if (Localization.Dictionaries.TryGetValue("ScadaAdmin.ImportExport", out dict))
             {
                 ChooseBaseTableFile = dict.GetPhrase("ChooseBaseTableFile", ChooseBaseTableFile);
-                ChooseBaseArchiveFile = dict.GetPhrase("ChooseBaseArchiveFile", ChooseBaseArchiveFile);
+                ChooseArchiveFile = dict.GetPhrase("ChooseArchiveFile", ChooseArchiveFile);
                 BaseTableFileFilter = dict.GetPhrase("BaseTableFileFilter", BaseTableFileFilter);
-                BaseArchiveFileFilter = dict.GetPhrase("BaseArchiveFileFilter", BaseArchiveFileFilter);
-                ImportFileUndefied = dict.GetPhrase("ImportFileUndefied", ImportFileUndefied);
+                ArchiveFileFilter = dict.GetPhrase("ArchiveFileFilter", ArchiveFileFilter);
                 ImportFileNotExist = dict.GetPhrase("ImportFileNotExist", ImportFileNotExist);
+                ImportDirNotExist = dict.GetPhrase("ImportDirNotExist", ImportDirNotExist);
                 ImportTitle = dict.GetPhrase("ImportTitle", ImportTitle);
                 ImportTableTitle = dict.GetPhrase("ImportTableTitle", ImportTableTitle);
                 ImportSource = dict.GetPhrase("ImportSource", ImportSource);
@@ -402,6 +513,8 @@ namespace ScadaAdmin
                 ImportTableResult = dict.GetPhrase("ImportTableResult", ImportTableResult);
                 ImportTableErrors = dict.GetPhrase("ImportTableErrors", ImportTableErrors);
                 ImportTableError = dict.GetPhrase("ImportError", ImportTableError);
+                ImportAllTablesError = dict.GetPhrase("ImportAllTablesError", ImportAllTablesError);
+                ImportArchiveError = dict.GetPhrase("ImportArchiveError", ImportArchiveError);
                 ExportFileUndefied = dict.GetPhrase("ExportFileUndefied", ExportFileUndefied);
                 ExportDirUndefied = dict.GetPhrase("ExportDirUndefied", ExportDirUndefied);
                 ExportDirNotExists = dict.GetPhrase("ExportDirNotExists", ExportDirNotExists);
@@ -474,7 +587,10 @@ namespace ScadaAdmin
             }
 
             if (Localization.Dictionaries.TryGetValue("ScadaAdmin.FrmImport", out dict))
+            {
+                AllTablesItem = dict.GetPhrase("AllTablesItem", AllTablesItem);
                 ArchiveItem = dict.GetPhrase("ArchiveItem", ArchiveItem);
+            }
 
             if (Localization.Dictionaries.TryGetValue("ScadaAdmin.FrmInCnlProps", out dict))
             {
@@ -493,7 +609,9 @@ namespace ScadaAdmin
             }
 
             if (Localization.Dictionaries.TryGetValue("ScadaAdmin.FrmLanguage", out dict))
+            {
                 IncorrectLanguage = dict.GetPhrase("IncorrectLanguage", IncorrectLanguage);
+            }
 
             if (Localization.Dictionaries.TryGetValue("ScadaAdmin.FrmMain", out dict))
             {
@@ -546,6 +664,12 @@ namespace ScadaAdmin
                 ClearTableConfirm = dict.GetPhrase("ClearTableConfirm", ClearTableConfirm);
             }
 
+            if (Localization.Dictionaries.TryGetValue("ScadaAdmin.ServersSettings", out dict))
+            {
+                LoadServersSettingsError = dict.GetPhrase("LoadServersSettingsError", LoadServersSettingsError);
+                SaveServersSettingsError = dict.GetPhrase("SaveServersSettingsError", SaveServersSettingsError);
+            }
+
             if (Localization.Dictionaries.TryGetValue("ScadaAdmin.Tables", out dict))
             {
                 UpdateDataError = dict.GetPhrase("UpdateDataError", UpdateDataError);
@@ -561,6 +685,33 @@ namespace ScadaAdmin
                 GetCtrlCnlNameError = dict.GetPhrase("GetCtrlCnlNameError", GetCtrlCnlNameError);
                 GetInCnlNumsError = dict.GetPhrase("GetInCnlNumsError", GetInCnlNumsError);
                 GetCtrlCnlNumsError = dict.GetPhrase("GetCtrlCnlNumsError", GetCtrlCnlNumsError);
+            }
+
+            if (Localization.Dictionaries.TryGetValue("ScadaAdmin.Remote", out dict))
+            {
+                ChooseConfigDir = dict.GetPhrase("ChooseConfigDir", ChooseConfigDir);
+                ConfigDirRequired = dict.GetPhrase("ConfigDirRequired", ConfigDirRequired);
+                ConfigArcRequired = dict.GetPhrase("ConfigArcRequired", ConfigArcRequired);
+            }
+
+            if (Localization.Dictionaries.TryGetValue("ScadaAdmin.Remote.CtrlServerConn", out dict))
+            {
+                DeleteConnConfirm = dict.GetPhrase("DeleteConnConfirm", DeleteConnConfirm);
+            }
+
+            if (Localization.Dictionaries.TryGetValue("ScadaAdmin.Remote.FrmConnSettings", out dict))
+            {
+                EmptyFieldsNotAllowed = dict.GetPhrase("EmptyFieldsNotAllowed", EmptyFieldsNotAllowed);
+                ConnNameDuplicated = dict.GetPhrase("ConnNameDuplicated", ConnNameDuplicated);
+                IncorrectSecretKey = dict.GetPhrase("IncorrectSecretKey", IncorrectSecretKey);
+            }
+
+            if (Localization.Dictionaries.TryGetValue("ScadaAdmin.Remote.FrmServerStatus", out dict))
+            {
+                UndefinedSvcStatus = dict.GetPhrase("UndefinedSvcStatus", UndefinedSvcStatus);
+                NormalSvcStatus = dict.GetPhrase("NormalSvcStatus", NormalSvcStatus);
+                StoppedSvcStatus = dict.GetPhrase("StoppedSvcStatus", StoppedSvcStatus);
+                ErrorSvcStatus = dict.GetPhrase("ErrorSvcStatus", ErrorSvcStatus);
             }
         }
     }

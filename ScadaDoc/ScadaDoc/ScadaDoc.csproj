@@ -22,6 +22,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -111,6 +112,7 @@
     <Content Include="content\en\software-configuration\communication-with-devices.html" />
     <Content Include="content\en\software-configuration\creating-views-files\scada_admin_itf_en.png" />
     <Content Include="content\en\software-configuration\creating-views.html" />
+    <Content Include="content\en\software-overview\roadmap.html" />
     <Content Include="content\en\use-cases\index.html" />
     <Content Include="content\en\use-cases\modbus-protocol-files\modbus_table_itf_en.png" />
     <Content Include="content\en\use-cases\modbus-protocol-files\modbus_template_settings_en.png" />
@@ -118,6 +120,19 @@
     <Content Include="content\en\use-cases\opc-standard-files\dcom_config_en.png" />
     <Content Include="content\en\use-cases\opc-standard-files\opc_config_en.png" />
     <Content Include="content\en\use-cases\opc-standard-files\opc_vals_en.png" />
+    <Content Include="content\en\use-cases\remote-server-management-files\server_connection_en.png" />
+    <Content Include="content\en\use-cases\remote-server-management-files\server_download1_en.png" />
+    <Content Include="content\en\use-cases\remote-server-management-files\server_download2_en.png" />
+    <Content Include="content\en\use-cases\remote-server-management-files\server_status_en.png" />
+    <Content Include="content\en\use-cases\remote-server-management-files\server_upload1_en.png" />
+    <Content Include="content\en\use-cases\remote-server-management-files\server_upload2_en.png" />
+    <Content Include="content\en\use-cases\remote-server-management.html" />
+    <Content Include="content\en\version-history\administrator-history.html" />
+    <Content Include="content\en\version-history\communicator-history.html" />
+    <Content Include="content\en\version-history\index.html" />
+    <Content Include="content\en\version-history\scheme-editor-history.html" />
+    <Content Include="content\en\version-history\server-history.html" />
+    <Content Include="content\en\version-history\webstation-history.html" />
     <Content Include="content\ru\installation-and-run\manual-installation.html" />
     <Content Include="content\ru\installation-and-run\module-installation.html" />
     <Content Include="content\ru\installation-and-run\software-installation-files\win7_features_dotnet_ru.png" />
@@ -226,6 +241,7 @@
     <Content Include="content\ru\software-overview\applications\server-application-files\scada_server_ru.png" />
     <Content Include="content\ru\software-overview\applications\server-application.html" />
     <Content Include="content\ru\software-overview\index.html" />
+    <Content Include="content\ru\software-overview\roadmap.html" />
     <Content Include="content\ru\software-overview\software-architecture-files\scada_arc_ru.png" />
     <Content Include="content\ru\software-overview\software-architecture.html" />
     <Content Include="content\ru\software-overview\software-purpose.html" />
@@ -258,6 +274,13 @@
     <Content Include="content\ru\use-cases\opc-standard-files\opc_config_ru.png" />
     <Content Include="content\ru\use-cases\opc-standard-files\opc_vals_ru.png" />
     <Content Include="content\ru\use-cases\opc-standard.html" />
+    <Content Include="content\ru\use-cases\remote-server-management-files\server_connection_ru.png" />
+    <Content Include="content\ru\use-cases\remote-server-management-files\server_download1_ru.png" />
+    <Content Include="content\ru\use-cases\remote-server-management-files\server_download2_ru.png" />
+    <Content Include="content\ru\use-cases\remote-server-management-files\server_status_ru.png" />
+    <Content Include="content\ru\use-cases\remote-server-management-files\server_upload1_ru.png" />
+    <Content Include="content\ru\use-cases\remote-server-management-files\server_upload2_ru.png" />
+    <Content Include="content\ru\use-cases\remote-server-management.html" />
     <Content Include="content\ru\version-history\communicator-drivers-history.html" />
     <Content Include="content\ru\version-history\index.html" />
     <Content Include="content\ru\version-history\server-modules-history.html" />

@@ -4,16 +4,37 @@
     <Phrase key="BaseSDFFileNotFound">The configuration database file in SDF format {0} not found.</Phrase>
     <Phrase key="RefreshRequired">&#13;&#10;Update the open tables to display the changes.</Phrase>
   </Dictionary>
+  <Dictionary key="ScadaAdmin.DownloadUpload">
+    <Phrase key="DownloadTitle">{0} Download Configuration</Phrase>
+    <Phrase key="ConnectionName">Connection : {0}</Phrase>
+    <Phrase key="SessionCreated">Session {0} created</Phrase>
+    <Phrase key="UnableCreateSession">Unable to create session</Phrase>
+    <Phrase key="LoggedOn">Logged on</Phrase>
+    <Phrase key="UnableLogin">Unable to login - {0}</Phrase>
+    <Phrase key="ConnectAgentError">Error connecting to Agent</Phrase>
+    <Phrase key="DownloadDataEmpty">No data to download</Phrase>
+    <Phrase key="DownloadSuccessful">Download completed successfully in {0} sec.</Phrase>
+    <Phrase key="DownloadError">Error downloading configuration</Phrase>
+    <Phrase key="UploadTitle">{0} Upload Configuration</Phrase>
+    <Phrase key="NoConfigInSrc">Configuration is missing in the specified source.</Phrase>
+    <Phrase key="ConfigUploaded">Configuration uploaded</Phrase>
+    <Phrase key="ServerRestarted">The Server service restarted</Phrase>
+    <Phrase key="UnableRestartServer">Unable to restart the Server service</Phrase>
+    <Phrase key="CommRestarted">The Communicator service restarted</Phrase>
+    <Phrase key="UnableRestartComm">Unable to restart the Communicator service</Phrase>
+    <Phrase key="UploadSuccessful">Upload completed successfully in {0} sec.&#13;&#10;Check the remote server.</Phrase>
+    <Phrase key="UploadError">Error uploading configuration</Phrase>
+  </Dictionary>
   <Dictionary key="ScadaAdmin.ImportExport">
     <Phrase key="ChooseBaseTableFile">Choose a configuration database table file</Phrase>
-    <Phrase key="ChooseBaseArchiveFile">Choose a configuration database archive file</Phrase>
-    <Phrase key="BaseTableFileFilter">Configuration Database Tables|*.dat|All Files|*.*</Phrase>
-    <Phrase key="BaseArchiveFileFilter">Configuration Database Archive|*.zip|All Files|*.*</Phrase>
-    <Phrase key="ImportFileUndefied">Import file is undefined.</Phrase>
+    <Phrase key="ChooseArchiveFile">Choose a configuration archive file</Phrase>
+    <Phrase key="BaseTableFileFilter">Configuration Database Tables (*.dat)|*.dat|All Files (*.*)|*.*</Phrase>
+    <Phrase key="ArchiveFileFilter">Configuration Archive (*.zip)|*.zip|All Files (*.*)|*.*</Phrase>
     <Phrase key="ImportFileNotExist">Import file does not exist.</Phrase>
+    <Phrase key="ImportDirNotExist">Import directory does not exist.</Phrase>
     <Phrase key="ImportTitle">Import Configuration Database</Phrase>
     <Phrase key="ImportTableTitle">Import Configuration Database Table &quot;{0}&quot;</Phrase>
-    <Phrase key="ImportSource">Source file : </Phrase>
+    <Phrase key="ImportSource">Source file or directory : </Phrase>
     <Phrase key="LoadTableError">Error loading imported table</Phrase>
     <Phrase key="SrcTableColumns">Columns of the Source Table</Phrase>
     <Phrase key="DestTableColumns">Columns of the Destination Table</Phrase>
@@ -26,7 +47,9 @@
     <Phrase key="ImportResult">Import Result</Phrase>
     <Phrase key="ImportTableResult">Import Table Result</Phrase>
     <Phrase key="ImportTableErrors">Import Table Errors</Phrase>
-    <Phrase key="ImportError">Error import the configuration database table</Phrase>
+    <Phrase key="ImportTableError">Error import the configuration database table</Phrase>
+    <Phrase key="ImportAllTablesError">Error import all tables of the configuration database</Phrase>
+    <Phrase key="ImportArchiveError">Error import the configuration database from archive</Phrase>
     <Phrase key="ExportFileUndefied">Export file is undefined.</Phrase>
     <Phrase key="ExportDirUndefied">Export directory is undefined.</Phrase>
     <Phrase key="ExportDirNotExists">Export directory does not exist.</Phrase>
@@ -155,13 +178,14 @@
     <Phrase key="this">Import from File</Phrase>
     <Phrase key="lblTable">Table</Phrase>
     <Phrase key="lblFileName">File</Phrase>
+    <Phrase key="lblDirectory">Directory</Phrase>
     <Phrase key="gbIDs">Identifiers</Phrase>
     <Phrase key="lblStartID">Start</Phrase>
     <Phrase key="lblFinalID">Final</Phrase>
     <Phrase key="lblNewStartID">New start</Phrase>
-    <Phrase key="chkImportLog">Write to import log</Phrase>
     <Phrase key="btnImport">Import</Phrase>
     <Phrase key="btnClose">Close</Phrase>
+    <Phrase key="AllTablesItem">All tables</Phrase>
     <Phrase key="ArchiveItem">Tables from archive</Phrase>
   </Dictionary>
   <Dictionary key="ScadaAdmin.FrmInCnlProps">
@@ -239,6 +263,10 @@
     <Phrase key="miServiceCnlsMap">Channel Map...</Phrase>
     <Phrase key="miServiceRestartServer">Restart SCADA-Server</Phrase>
     <Phrase key="miServiceRestartComm">Restart SCADA-Communicator</Phrase>
+    <Phrase key="miRemote">&amp;Remote Server</Phrase>
+    <Phrase key="miRemoteDownload">Download Configuration...</Phrase>
+    <Phrase key="miRemoteUpload">Upload Configuration...</Phrase>
+    <Phrase key="miRemoteStatus">Server Status...</Phrase>
     <Phrase key="miSettings">&amp;Settings</Phrase>
     <Phrase key="miSettingsParams">Parameters...</Phrase>
     <Phrase key="miSettingsLanguage">Language...</Phrase>
@@ -346,6 +374,10 @@
     <Phrase key="DeleteRowConfirm">Are you sure you want to delete the row?</Phrase>
     <Phrase key="DeleteRowsConfirm">Are you sure you want to delete the rows?</Phrase>
     <Phrase key="ClearTableConfirm">Are you sure you want to clear the table?</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaAdmin.ServersSettings">
+    <Phrase key="LoadServersSettingsError">Error loading settings of interaction with remote servers</Phrase>
+    <Phrase key="SaveServersSettingsError">Error saving settings of interaction with remote servers</Phrase>
   </Dictionary>
   <Dictionary key="ScadaAdmin.Tables">
     <Phrase key="UpdateDataError">Error saving the table changes to the database</Phrase>
@@ -494,5 +526,68 @@
     <Phrase key="Password">Password</Phrase>
     <Phrase key="RoleID">Role</Phrase>
     <Phrase key="Descr">Description</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaAdmin.Remote">
+    <Phrase key="ChooseConfigDir">Choose a configuration directory</Phrase>
+    <Phrase key="ConfigDirRequired">Configuration directory is required.</Phrase>
+    <Phrase key="ConfigArcRequired">File name of a configuration archive is required.</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaAdmin.Remote.CtrlServerConn">
+    <Phrase key="gbConnection">Connection to server</Phrase>
+    <Phrase key="btnCreateConn">Create</Phrase>
+    <Phrase key="btnEditConn">Edit</Phrase>
+    <Phrase key="btnRemoveConn">Remove</Phrase>
+    <Phrase key="DeleteConnConfirm">Are you sure you want to delete the connection?</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaAdmin.Remote.FrmConnSettings">
+    <Phrase key="this">Connection Settings</Phrase>
+    <Phrase key="lblName">Name</Phrase>
+    <Phrase key="lblHost">Server</Phrase>
+    <Phrase key="lblPort">Port</Phrase>
+    <Phrase key="lblUsername">Username</Phrase>
+    <Phrase key="lblPassword">Password</Phrase>
+    <Phrase key="lblScadaInstance">System instance</Phrase>
+    <Phrase key="lblSecretKey">Secret key</Phrase>
+    <Phrase key="btnGenSecretKey.ToolTip">Generate secret key</Phrase>
+    <Phrase key="EmptyFieldsNotAllowed">Empty field values are not allowed.</Phrase>
+    <Phrase key="ConnNameDuplicated">A connection with this name already exists.</Phrase>
+    <Phrase key="IncorrectSecretKey">Incorrect secret key.</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaAdmin.Remote.FrmDownloadConfig">
+    <Phrase key="this">Download Configuration</Phrase>
+    <Phrase key="gbOptions">Download options</Phrase>
+    <Phrase key="rbSaveToDir">Save to directory:</Phrase>
+    <Phrase key="rbSaveToArc">Save to archive:</Phrase>
+    <Phrase key="chkIncludeSpecificFiles">Including server specific files such as registration keys</Phrase>
+    <Phrase key="chkImportBase">Import the configuration database to SDF format after downloading</Phrase>
+    <Phrase key="btnDownload">Download</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaAdmin.Remote.FrmServerStatus">
+    <Phrase key="this">Server Status</Phrase>
+    <Phrase key="gbAction">Actions</Phrase>
+    <Phrase key="btnConnect">Connect</Phrase>
+    <Phrase key="btnDisconnect">Disconnect</Phrase>
+    <Phrase key="gbStatus">Status</Phrase>
+    <Phrase key="lblServerStatus">Server service</Phrase>
+    <Phrase key="btnRestartServer">Restart</Phrase>
+    <Phrase key="lblCommStatus">Communicator service</Phrase>
+    <Phrase key="btnRestartComm">Restart</Phrase>
+    <Phrase key="lblUpdateTime">Update time</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
+    <Phrase key="UndefinedSvcStatus">Undefined</Phrase>
+    <Phrase key="NormalSvcStatus">Normal</Phrase>
+    <Phrase key="StoppedSvcStatus">Stopped</Phrase>
+    <Phrase key="ErrorSvcStatus">Error</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaAdmin.Remote.FrmUploadConfig">
+    <Phrase key="this">Upload Configuration</Phrase>
+    <Phrase key="gbOptions">Upload options</Phrase>
+    <Phrase key="rbGetFromDir">Configuration directory:</Phrase>
+    <Phrase key="lblFiles">Files to upload</Phrase>
+    <Phrase key="rbGetFromArc">Configuration archive file:</Phrase>
+    <Phrase key="chkClearSpecificFiles">Clear server specific files such as registration keys</Phrase>
+    <Phrase key="btnUpload">Upload</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
   </Dictionary>
 </ScadaAdminDictionaries>

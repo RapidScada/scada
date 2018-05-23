@@ -728,16 +728,10 @@ namespace Scada.Scheme.Editor
 
         private void FrmMain_KeyDown(object sender, KeyEventArgs e)
         {
-            // реализация горячих клавиш, которые не обрабатываются автоматически главным меню
-            if (ActiveControl == propertyGrid)
+            // реализация горячих клавиш, которые не заданы для элементов главного меню
+            if (ActiveControl != propertyGrid && e.KeyCode == Keys.Escape)
             {
-                if (e.KeyCode == Keys.Delete)
-                    e.Handled = true;
-            }
-            else
-            {
-                if (e.KeyCode == Keys.Escape)
-                    miEditPointer_Click(null, null);
+                miEditPointer_Click(null, null);
             }
         }
 

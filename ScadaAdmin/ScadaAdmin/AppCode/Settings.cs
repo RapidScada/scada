@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2010
- * Modified : 2016
+ * Modified : 2018
  */
 
 using System;
@@ -125,6 +125,10 @@ namespace ScadaAdmin
             /// Получить или установить ширину дерева проводника
             /// </summary>
             public int ExplorerWidth { get; set; }
+            /// <summary>
+            /// Получить или установить наименование соединения с удалённым сервером
+            /// </summary>
+            public string ServerConn { get; set; }
 
             /// <summary>
             /// Установить состояние главной формы по умолчанию
@@ -138,6 +142,7 @@ namespace ScadaAdmin
                 Height = 0;
                 Maximized = false;
                 ExplorerWidth = 0;
+                ServerConn = "";
             }
         }
 
@@ -182,7 +187,7 @@ namespace ScadaAdmin
             AppSett.SetToDefault();
 
             // загрузка из файла
-            string fileName = AppData.ExeDir + AppSettingsFileName;
+            string fileName = AppData.AppDirs.ConfigDir + AppSettingsFileName;
 
             try
             {
@@ -258,7 +263,7 @@ namespace ScadaAdmin
                     "Автоматически резервировать базу конфигурации", "Automatically backup the configuration database");
 
                 // сохранение в файле
-                xmlDoc.Save(AppData.ExeDir + AppSettingsFileName);
+                xmlDoc.Save(AppData.AppDirs.ConfigDir + AppSettingsFileName);
                 errMsg = "";
                 return true;
             }
@@ -279,7 +284,7 @@ namespace ScadaAdmin
             FormSt.SetToDefault();
 
             // загрузка из файла
-            string fileName = AppData.ExeDir + FormStateFileName;
+            string fileName = AppData.AppDirs.ConfigDir + FormStateFileName;
 
             if (File.Exists(fileName))
             {
@@ -310,6 +315,8 @@ namespace ScadaAdmin
                                 FormSt.Maximized = bool.Parse(val);
                             else if (nameL == "explorerwidth")
                                 FormSt.ExplorerWidth = int.Parse(val);
+                            else if (nameL == "serverconn")
+                                FormSt.ServerConn = val;
                         }
                         catch
                         {
@@ -351,9 +358,10 @@ namespace ScadaAdmin
                 rootElem.AppendParamElem("Height", FormSt.Height);
                 rootElem.AppendParamElem("Maximized", FormSt.Maximized);
                 rootElem.AppendParamElem("ExplorerWidth", FormSt.ExplorerWidth);
+                rootElem.AppendParamElem("ServerConn", FormSt.ServerConn);
 
                 // сохранение в файле
-                xmlDoc.Save(AppData.ExeDir + FormStateFileName);
+                xmlDoc.Save(AppData.AppDirs.ConfigDir + FormStateFileName);
                 errMsg = "";
                 return true;
             }
