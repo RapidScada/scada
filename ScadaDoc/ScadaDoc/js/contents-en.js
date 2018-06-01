@@ -48,6 +48,7 @@ function addContents(context) {
     addArticle(context, "version-history/scada-history.html", "History of Rapid SCADA", 1);
     addArticle(context, "version-history/server-history.html", "Server History", 1);
     addArticle(context, "version-history/communicator-history.html", "Communicator History", 1);
+    addArticle(context, "version-history/communicator-drivers-history.html", "History of Communicator Drivers", 1);
     addArticle(context, "version-history/administrator-history.html", "Administrator History", 1);
     addArticle(context, "version-history/webstation-history.html", "Webstation History", 1);
     addArticle(context, "version-history/scheme-editor-history.html", "Scheme Editor History", 1);

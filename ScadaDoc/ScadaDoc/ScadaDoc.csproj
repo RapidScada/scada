@@ -128,6 +128,7 @@
     <Content Include="content\en\use-cases\remote-server-management-files\server_upload2_en.png" />
     <Content Include="content\en\use-cases\remote-server-management.html" />
     <Content Include="content\en\version-history\administrator-history.html" />
+    <Content Include="content\en\version-history\communicator-drivers-history.html" />
     <Content Include="content\en\version-history\communicator-history.html" />
     <Content Include="content\en\version-history\index.html" />
     <Content Include="content\en\version-history\scheme-editor-history.html" />

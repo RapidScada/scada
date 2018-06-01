@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.Comm.Devices.Modbus.Protocol;
@@ -29,6 +29,7 @@ using Scada.Data.Models;
 using Scada.Data.Tables;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 
 namespace Scada.Comm.Devices
@@ -293,9 +294,10 @@ namespace Scada.Comm.Devices
                         "{0} Загрузка шаблона устройства из файла {1}" :
                         "{0} Load device template from file {1}", CommUtils.GetNowDT(), fileName));
                     DeviceTemplate template = new DeviceTemplate();
-                    string errMsg;
+                    string filePath = Path.IsPathRooted(fileName) ? 
+                        fileName : Path.Combine(AppDirs.ConfigDir, fileName);
 
-                    if (template.Load(AppDirs.ConfigDir + fileName, out errMsg))
+                    if (template.Load(filePath, out string errMsg))
                     {
                         deviceTemplate = template;
                         templates.Add(fileName, template);

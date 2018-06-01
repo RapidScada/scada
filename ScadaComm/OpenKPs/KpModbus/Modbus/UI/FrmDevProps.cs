@@ -59,7 +59,26 @@ namespace Scada.Comm.Devices.Modbus.UI
             FrmDevTemplate.ShowDialog(appDirs, true, ref fileName);
 
             if (!string.IsNullOrEmpty(fileName))
-                txtDevTemplate.Text = Path.GetFileName(fileName);
+                txtDevTemplate.Text = MakeRelative(fileName);
+        }
+
+        /// <summary>
+        /// Преобразовать имя файла, которое задано относительно директории конфигурации, в абсолютное
+        /// </summary>
+        private string MakeAbsolute(string fileName)
+        {
+            return Path.IsPathRooted(fileName) ?
+                fileName : Path.Combine(appDirs.ConfigDir, fileName);
+        }
+
+        /// <summary>
+        /// Преобразовать имя файла в относительное по отношению к директории конфигурации, 
+        /// если файл находится внутри этой директоии
+        /// </summary>
+        private string MakeRelative(string fileName)
+        {
+            return fileName.StartsWith(appDirs.ConfigDir, StringComparison.OrdinalIgnoreCase) ?
+                fileName.Substring(appDirs.ConfigDir.Length) : fileName;
         }
 
         /// <summary>
@@ -115,7 +134,7 @@ namespace Scada.Comm.Devices.Modbus.UI
         {
             openFileDialog.FileName = "";
             if (openFileDialog.ShowDialog() == DialogResult.OK)
-                txtDevTemplate.Text = Path.GetFileName(openFileDialog.FileName);
+                txtDevTemplate.Text = MakeRelative(openFileDialog.FileName);
             txtDevTemplate.Select();
         }
 
@@ -127,14 +146,14 @@ namespace Scada.Comm.Devices.Modbus.UI
 
         private void btnEditDevTemplate_Click(object sender, EventArgs e)
         {
-            EditDevTemplate(appDirs.ConfigDir + txtDevTemplate.Text);
+            EditDevTemplate(MakeAbsolute(txtDevTemplate.Text));
             txtDevTemplate.Select();
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
             // проверка существования файла шаблона устройства
-            if (!File.Exists(appDirs.ConfigDir + txtDevTemplate.Text))
+            if (!File.Exists(MakeAbsolute(txtDevTemplate.Text)))
             {
                 ScadaUiUtils.ShowError(KpPhrases.TemplNotExists);
                 return;
