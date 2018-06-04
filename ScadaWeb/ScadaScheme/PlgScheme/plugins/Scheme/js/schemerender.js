@@ -484,10 +484,17 @@ scada.scheme.ComponentRenderer.prototype.setLocation = function (component, x, y
     }
 };
 
-// Set location of the component wrapper in edit mode
-scada.scheme.ComponentRenderer.prototype.setWrapperLocation = function (component) {
+// Set properties of the component wrapper in edit mode
+scada.scheme.ComponentRenderer.prototype.setWrapperProps = function (component) {
+    // set location
     var location = this.getLocation(component);
     this.setLocation(component, location.x, location.y);
+
+    // set font
+    if (component.props && component.dom) {
+        var wrapper = component.dom.parent(".comp-wrapper");
+        this.setFont(wrapper, component.props.Font, true);
+    }
 };
 
 // Get size of the component. Returns an object containing the properties width and height
@@ -525,7 +532,7 @@ scada.scheme.ComponentRenderer.prototype.allowResizing = function (component) {
 // Wrap the component with a frame needed in edit mode
 scada.scheme.ComponentRenderer.prototype.wrap = function (component) {
     var compWrapper = $("<div class='comp-wrapper'></div>").append(component.dom);
-    this.setWrapperLocation(component);
+    this.setWrapperProps(component);
     return compWrapper;
 };
 

@@ -445,7 +445,7 @@ scada.scheme.EditableScheme.prototype._updateComponentProps = function (parsedCo
                 if (oldComponent && oldComponent.dom) {
                     // replace component in the DOM
                     oldComponent.dom.replaceWith(newComponent.dom);
-                    renderer.setWrapperLocation(newComponent);
+                    renderer.setWrapperProps(newComponent);
                 } else {
                     // add component into the DOM
                     this.dom.append(renderer.wrap(newComponent));

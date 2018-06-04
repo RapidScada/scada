@@ -36,7 +36,7 @@ namespace Scada.Scheme
         /// <summary>
         /// Версия схем
         /// </summary>
-        public const string SchemeVersion = "5.2.1.1";
+        public const string SchemeVersion = "5.2.1.2";
         /// <summary>
         /// Цвет, устанавливаемый в зависимости от статуса входного канала
         /// </summary>
