@@ -158,6 +158,7 @@
     <Content Include="content\ru\modules\plg-elastic-report.html" />
     <Content Include="content\ru\modules\plg-dashboard.html" />
     <Content Include="content\ru\modules\plg-chart-pro.html" />
+    <Content Include="content\ru\modules\plg-map.html" />
     <Content Include="content\ru\software-configuration\communication-with-devices-files\scada_comm_import_ru.png" />
     <Content Include="content\ru\software-configuration\communication-with-devices-files\scada_comm_line_ru.png" />
     <Content Include="content\en\software-configuration\communication-with-devices-files\scada_comm_req_seq_en.png" />
