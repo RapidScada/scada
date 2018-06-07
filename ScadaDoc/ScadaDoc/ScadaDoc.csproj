@@ -134,6 +134,7 @@
     <Content Include="content\en\version-history\scheme-editor-history.html" />
     <Content Include="content\en\version-history\server-history.html" />
     <Content Include="content\en\version-history\webstation-history.html" />
+    <Content Include="content\en\version-history\webstation-plugins-history.html" />
     <Content Include="content\ru\installation-and-run\manual-installation.html" />
     <Content Include="content\ru\installation-and-run\module-installation.html" />
     <Content Include="content\ru\installation-and-run\software-installation-files\win7_features_dotnet_ru.png" />
