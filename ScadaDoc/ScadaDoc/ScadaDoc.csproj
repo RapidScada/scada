@@ -109,6 +109,7 @@
     <Content Include="content\en\modules\plg-elastic-report.html" />
     <Content Include="content\en\modules\plg-map-files\interface_table_map_en.png" />
     <Content Include="content\en\modules\plg-map-files\map_example_en.png" />
+    <Content Include="content\en\modules\plg-map.html" />
     <Content Include="content\en\software-configuration\communication-with-devices-files\scada_comm_import_en.png" />
     <Content Include="content\en\software-configuration\communication-with-devices-files\scada_comm_line_en.png" />
     <Content Include="content\en\software-configuration\communication-with-devices.html" />
@@ -160,6 +161,8 @@
     <Content Include="content\ru\modules\plg-elastic-report.html" />
     <Content Include="content\ru\modules\plg-dashboard.html" />
     <Content Include="content\ru\modules\plg-chart-pro.html" />
+    <Content Include="content\ru\modules\plg-map-files\interface_table_map_ru.png" />
+    <Content Include="content\ru\modules\plg-map-files\map_example_ru.png" />
     <Content Include="content\ru\modules\plg-map.html" />
     <Content Include="content\ru\software-configuration\communication-with-devices-files\scada_comm_import_ru.png" />
     <Content Include="content\ru\software-configuration\communication-with-devices-files\scada_comm_line_ru.png" />
@@ -348,9 +351,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="content\ru\modules\plg-map-files\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
