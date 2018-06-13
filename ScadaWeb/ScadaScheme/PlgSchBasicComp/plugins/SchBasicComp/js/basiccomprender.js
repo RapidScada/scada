@@ -2,7 +2,7 @@
  * Basic components rendering
  *
  * Author   : Mikhail Shiryaev
- * Created  : 2016
+ * Created  : 2017
  * Modified : 2018
  *
  * Requires:
