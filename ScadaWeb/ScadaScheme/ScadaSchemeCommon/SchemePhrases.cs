@@ -55,6 +55,7 @@ namespace Scada.Scheme
         public static string TrueValue { get; private set; }
         public static string FalseValue { get; private set; }
         public static string EmptyValue { get; private set; }
+        public static string ObjectValue { get; private set; }
         public static string CollectionValue { get; private set; }
         public static string BoldSymbol { get; private set; }
         public static string ItalicSymbol { get; private set; }
@@ -82,6 +83,7 @@ namespace Scada.Scheme
             TrueValue = Localization.Dict.GetEmptyPhrase("TrueValue");
             FalseValue = Localization.Dict.GetEmptyPhrase("FalseValue");
             EmptyValue = Localization.Dict.GetEmptyPhrase("EmptyValue");
+            ObjectValue = Localization.Dict.GetEmptyPhrase("ObjectValue");
             CollectionValue = Localization.Dict.GetEmptyPhrase("CollectionValue");
             BoldSymbol = Localization.Dict.GetEmptyPhrase("BoldSymbol");
             ItalicSymbol = Localization.Dict.GetEmptyPhrase("ItalicSymbol");
@@ -118,6 +120,7 @@ namespace Scada.Scheme
                 TrueValue = dict.GetPhrase("TrueValue", TrueValue);
                 FalseValue = dict.GetPhrase("FalseValue", FalseValue);
                 EmptyValue = dict.GetPhrase("EmptyValue", EmptyValue);
+                ObjectValue = dict.GetPhrase("ObjectValue", ObjectValue);
                 CollectionValue = dict.GetPhrase("CollectionValue", CollectionValue);
                 BoldSymbol = dict.GetPhrase("BoldSymbol", BoldSymbol);
                 ItalicSymbol = dict.GetPhrase("ItalicSymbol", ItalicSymbol);

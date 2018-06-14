@@ -17,6 +17,7 @@
     <Phrase key="TrueValue">Да</Phrase>
     <Phrase key="FalseValue">Нет</Phrase>
     <Phrase key="EmptyValue">(Нет)</Phrase>
+    <Phrase key="ObjectValue">(Объект)</Phrase>
     <Phrase key="CollectionValue">(Коллекция)</Phrase>
     <Phrase key="BoldSymbol">Ж</Phrase>
     <Phrase key="ItalicSymbol">К</Phrase>
