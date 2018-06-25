@@ -86,14 +86,12 @@ scada.scheme.ButtonRenderer.prototype.refreshImages = function (component, rende
 
 scada.scheme.ButtonRenderer.prototype.updateData = function (component, renderContext) {
     var props = component.props;
+    var btnComp = component.dom;
 
-    if (props.BoundProperty) {
-        var btnComp = component.dom;
+    if (btnComp && props.InCnlNum > 0 && props.BoundProperty) {
         var curCnlDataExt = renderContext.curCnlDataMap.get(props.InCnlNum);
-
-        if (btnComp && curCnlDataExt) {
-            this._setState(btnComp, props.BoundProperty, curCnlDataExt.Val > 0 && curCnlDataExt.Stat > 0);
-        }
+        var state = curCnlDataExt && curCnlDataExt.Val > 0 && curCnlDataExt.Stat > 0;
+        this._setState(btnComp, props.BoundProperty, state);
     }
 }
 
@@ -136,36 +134,39 @@ scada.scheme.LedRenderer.prototype.createDom = function (component, renderContex
 scada.scheme.LedRenderer.prototype.updateData = function (component, renderContext) {
     var props = component.props;
     var divComp = component.dom;
-    var curCnlDataExt = renderContext.curCnlDataMap.get(props.InCnlNum);
 
-    if (divComp && curCnlDataExt) {
-        // set background color
+    if (divComp && props.InCnlNum > 0) {
+        var curCnlDataExt = renderContext.curCnlDataMap.get(props.InCnlNum);
         var backColor = props.BackColor;
 
-        // define background color according to the channel status
-        if (backColor == this.STATUS_COLOR) {
-            backColor = curCnlDataExt.Color;
-        }
+        if (curCnlDataExt) {
+            // define background color according to the channel status
+            if (backColor == this.STATUS_COLOR) {
+                backColor = curCnlDataExt.Color;
+            }
 
-        // define background color according to the led conditions and channel value
-        if (curCnlDataExt.Stat > 0 && props.Conditions) {
-            var cnlVal = curCnlDataExt.Val;
+            // define background color according to the led conditions and channel value
+            if (curCnlDataExt.Stat > 0 && props.Conditions) {
+                var cnlVal = curCnlDataExt.Val;
 
-            for (var cond of props.Conditions) {
-                if (scada.scheme.calc.conditionSatisfied(cond, cnlVal)) {
-                    backColor = cond.Color;
-                    break;
+                for (var cond of props.Conditions) {
+                    if (scada.scheme.calc.conditionSatisfied(cond, cnlVal)) {
+                        backColor = cond.Color;
+                        break;
+                    }
                 }
             }
-        }
 
-        // apply background color
-        divComp.css("background-color", backColor);
+            // apply background color
+            divComp.css("background-color", backColor);
 
-        // set border color
-        if (props.BorderColor == this.STATUS_COLOR) {
-            var divBorder = divComp.children(".basic-led-border");
-            divBorder.css("border-color", curCnlDataExt.Color);
+            // set border color
+            if (props.BorderColor == this.STATUS_COLOR) {
+                var divBorder = divComp.children(".basic-led-border");
+                divBorder.css("border-color", curCnlDataExt.Color);
+            }
+        } else {
+            this.setBackColor(divComp, backColor, true);
         }
     }
 };
@@ -286,6 +287,10 @@ scada.scheme.ToggleRenderer.prototype.createDom = function (component, renderCon
     this.setBackColor(divLever, props.LeverColor);
     this._applySize(divComp, divContainer, divLever, component);
 
+    if (!renderContext.editMode) {
+        divComp.addClass("undef");
+    }
+
     divContainer.append(divLever);
     divComp.append(divContainer);
     component.dom = divComp;
@@ -305,10 +310,10 @@ scada.scheme.ToggleRenderer.prototype.setSize = function (component, width, heig
 scada.scheme.ToggleRenderer.prototype.updateData = function (component, renderContext) {
     var props = component.props;
     var divComp = component.dom;
-    var curCnlDataExt = renderContext.curCnlDataMap.get(props.InCnlNum);
     component.cmdVal = 0;
 
-    if (divComp) {
+    if (divComp && props.InCnlNum > 0) {
+        var curCnlDataExt = renderContext.curCnlDataMap.get(props.InCnlNum);
         divComp.removeClass("undef");
         divComp.removeClass("on");
         divComp.removeClass("off");
@@ -334,7 +339,7 @@ scada.scheme.ToggleRenderer.prototype.updateData = function (component, renderCo
                 // execute the find method if the color depends on status
                 divComp.find(".basic-toggle-lever").css("background-color", statusColor);
             }
-        } else if (props.InCnlNum > 0) {
+        } else {
             divComp.addClass("undef");
         }
     }

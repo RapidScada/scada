@@ -651,12 +651,13 @@ scada.scheme.DynamicTextRenderer.prototype.createDom = function (component, rend
 };
 
 scada.scheme.DynamicTextRenderer.prototype.updateData = function (component, renderContext) {
-    if (component.dom) {
+    var props = component.props;
+    var spanComp = component.dom;
+
+    if (spanComp && props.InCnlNum > 0) {
         var ShowValueKinds = scada.scheme.ShowValueKinds;
-        var props = component.props;
-        var spanComp = component.dom;
         var spanText = spanComp.children();
-        var curCnlDataExt = props.InCnlNum > 0 ? renderContext.curCnlDataMap.get(props.InCnlNum) : null;
+        var curCnlDataExt = renderContext.curCnlDataMap.get(props.InCnlNum);
 
         if (curCnlDataExt) {
             // show value of the appropriate input channel
@@ -680,7 +681,7 @@ scada.scheme.DynamicTextRenderer.prototype.updateData = function (component, ren
             this.setBackColor(spanComp, backColor, true, statusColor)
             this.setBorderColor(spanComp, borderColor, true, statusColor)
             this.setForeColor(spanComp, foreColor, true, statusColor)
-        } else if (props.InCnlNum > 0) {
+        } else {
             spanText.text("");
         }
     }
@@ -798,36 +799,41 @@ scada.scheme.DynamicPictureRenderer.prototype.createDom = function (component, r
 scada.scheme.DynamicPictureRenderer.prototype.updateData = function (component, renderContext) {
     var props = component.props;
     var divComp = component.dom;
-    var curCnlDataExt = renderContext.curCnlDataMap.get(props.InCnlNum);
 
-    if (divComp && curCnlDataExt) {
-        // choose the image depending on the conditions
+    if (divComp && props.InCnlNum > 0) {
+        var curCnlDataExt = renderContext.curCnlDataMap.get(props.InCnlNum);
         var imageName = props.ImageName;
 
-        if (curCnlDataExt.Stat && props.Conditions) {
-            var cnlVal = curCnlDataExt.Val;
+        if (curCnlDataExt) {
+            // choose an image depending on the conditions
+            if (curCnlDataExt.Stat && props.Conditions) {
+                var cnlVal = curCnlDataExt.Val;
 
-            for (var cond of props.Conditions) {
-                if (scada.scheme.calc.conditionSatisfied(cond, cnlVal)) {
-                    imageName = cond.ImageName;
-                    break;
+                for (var cond of props.Conditions) {
+                    if (scada.scheme.calc.conditionSatisfied(cond, cnlVal)) {
+                        imageName = cond.ImageName;
+                        break;
+                    }
                 }
             }
+
+            // set the image
+            var image = renderContext.imageMap.get(imageName);
+            this.setBackgroundImage(divComp, image, true);
+
+            // choose and set colors of the component
+            var statusColor = curCnlDataExt.Color;
+            var isHovered = divComp.is(":hover");
+
+            var backColor = this.chooseColor(isHovered, props.BackColor, props.BackColorOnHover);
+            var borderColor = this.chooseColor(isHovered, props.BorderColor, props.BorderColorOnHover);
+
+            this.setBackColor(divComp, backColor, true, statusColor);
+            this.setBorderColor(divComp, borderColor, true, statusColor);
+        } else {
+            var image = renderContext.getImage(imageName);
+            this.setBackgroundImage(divComp, image, true);
         }
-
-        // set the image
-        var image = renderContext.imageMap.get(imageName);
-        this.setBackgroundImage(divComp, image, true);
-
-        // choose and set colors of the component
-        var statusColor = curCnlDataExt.Color;
-        var isHovered = divComp.is(":hover");
-
-        var backColor = this.chooseColor(isHovered, props.BackColor, props.BackColorOnHover);
-        var borderColor = this.chooseColor(isHovered, props.BorderColor, props.BorderColorOnHover);
-
-        this.setBackColor(divComp, backColor, true, statusColor)
-        this.setBorderColor(divComp, borderColor, true, statusColor)
     }
 };
 
