@@ -331,8 +331,11 @@ scada.scheme.ToggleRenderer.prototype.updateData = function (component, renderCo
             this.setBorderColor(divComp, props.BorderColor, true, statusColor)
 
             if (props.LeverColor == this.STATUS_COLOR) {
-                divComp.children("basic-toggle-lever").css("background-color", statusColor);
+                // execute the find method if the color depends on status
+                divComp.find(".basic-toggle-lever").css("background-color", statusColor);
             }
+        } else if (props.InCnlNum > 0) {
+            divComp.addClass("undef");
         }
     }
 };
