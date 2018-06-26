@@ -54,9 +54,10 @@ namespace Scada.Scheme
         /// </summary>
         private static readonly CompManager instance;
 
-        private AppDirs appDirs; // директории веб-приложения
-        private ILog log;        // журнал приложения
-        private List<CompLibSpec> allSpecs;                    // все спецификации библиотек
+        private readonly object syncLock;   // объект для синхронизации доступа
+        private AppDirs appDirs;            // директории веб-приложения
+        private ILog log;                   // журнал приложения
+        private List<CompLibSpec> allSpecs; // все спецификации библиотек
         private Dictionary<string, CompFactory> factsByPrefix; // фабрики компонентов, ключ - XML-префикс
         private Dictionary<string, CompLibSpec> specsByType;   // спецификации библиотек, ключ - имя типа компонента
 
@@ -82,6 +83,7 @@ namespace Scada.Scheme
         /// </summary>
         private CompManager()
         {
+            syncLock = new object();
             appDirs = null;
             log = new LogStub();
             allSpecs = new List<CompLibSpec>();
@@ -170,49 +172,51 @@ namespace Scada.Scheme
         {
             try
             {
-                log.WriteAction(Localization.UseRussian ?
+                lock (syncLock)
+                {
+                    log.WriteAction(Localization.UseRussian ?
                     "Загрузка компонентов из файлов" :
                     "Load components from files");
 
-                ClearDicts();
-                AttrTranslator attrTranslator = new AttrTranslator();
-                DirectoryInfo dirInfo = new DirectoryInfo(appDirs.BinDir);
-                FileInfo[] fileInfoArr = dirInfo.GetFiles(CompLibMask, SearchOption.TopDirectoryOnly);
+                    ClearDicts();
+                    AttrTranslator attrTranslator = new AttrTranslator();
+                    DirectoryInfo dirInfo = new DirectoryInfo(appDirs.BinDir);
+                    FileInfo[] fileInfoArr = dirInfo.GetFiles(CompLibMask, SearchOption.TopDirectoryOnly);
 
-                foreach (FileInfo fileInfo in fileInfoArr)
-                {
-                    string fileName = fileInfo.FullName;
-                    string errMsg;
-                    PluginSpec pluginSpec = PluginSpec.CreateFromDll(fileName, out errMsg);
-
-                    if (pluginSpec == null)
+                    foreach (FileInfo fileInfo in fileInfoArr)
                     {
-                        log.WriteError(errMsg);
-                    }
-                    else if (pluginSpec is ISchemeComp)
-                    {
-                        pluginSpec.AppDirs = appDirs;
-                        pluginSpec.Log = log;
-                        pluginSpec.Init();
+                        string fileName = fileInfo.FullName;
+                        PluginSpec pluginSpec = PluginSpec.CreateFromDll(fileName, out string errMsg);
 
-                        if (AddComponents((ISchemeComp)pluginSpec, attrTranslator))
+                        if (pluginSpec == null)
                         {
-                            log.WriteAction(string.Format(Localization.UseRussian ?
-                                "Загружены компоненты из файла {0}" :
-                                "Components are loaded from the file {0}", fileName));
+                            log.WriteError(errMsg);
+                        }
+                        else if (pluginSpec is ISchemeComp)
+                        {
+                            pluginSpec.AppDirs = appDirs;
+                            pluginSpec.Log = log;
+                            pluginSpec.Init();
+
+                            if (AddComponents((ISchemeComp)pluginSpec, attrTranslator))
+                            {
+                                log.WriteAction(string.Format(Localization.UseRussian ?
+                                    "Загружены компоненты из файла {0}" :
+                                    "Components are loaded from the file {0}", fileName));
+                            }
+                            else
+                            {
+                                log.WriteAction(string.Format(Localization.UseRussian ?
+                                    "Не удалось загрузить компоненты из файла {0}" :
+                                    "Unable to load components from the file {0}", fileName));
+                            }
                         }
                         else
                         {
-                            log.WriteAction(string.Format(Localization.UseRussian ?
-                                "Не удалось загрузить компоненты из файла {0}" :
-                                "Unable to load components from the file {0}", fileName));
+                            log.WriteError(string.Format(Localization.UseRussian ?
+                                "Библиотека {0} не предоставляет компоненты схем" :
+                                "The assembly {0} does not provide scheme components", fileName));
                         }
-                    }
-                    else
-                    {
-                        log.WriteError(string.Format(Localization.UseRussian ? 
-                            "Библиотека {0} не предоставляет компоненты схем" : 
-                            "The assembly {0} does not provide scheme components", fileName));
                     }
                 }
             }
@@ -231,17 +235,20 @@ namespace Scada.Scheme
         {
             try
             {
-                log.WriteAction(Localization.UseRussian ?
+                lock (syncLock)
+                {
+                    log.WriteAction(Localization.UseRussian ?
                     "Извлечение компонентов из установленных плагинов" :
                     "Retrieve components from the installed plugins");
-                ClearDicts();
+                    ClearDicts();
 
-                if (pluginSpecs != null)
-                {
-                    foreach (PluginSpec pluginSpec in pluginSpecs)
+                    if (pluginSpecs != null)
                     {
-                        if (pluginSpec is ISchemeComp)
-                            AddComponents((ISchemeComp)pluginSpec, null);
+                        foreach (PluginSpec pluginSpec in pluginSpecs)
+                        {
+                            if (pluginSpec is ISchemeComp)
+                                AddComponents((ISchemeComp)pluginSpec, null);
+                        }
                     }
                 }
             }
@@ -256,48 +263,50 @@ namespace Scada.Scheme
         /// <summary>
         /// Создать компонент на основе XML-узла
         /// </summary>
-        public BaseComponent CreateComponent(XmlNode compNode, out string errMgs)
+        public BaseComponent CreateComponent(XmlNode compNode, out string errMsg)
         {
             if (compNode == null)
                 throw new ArgumentNullException("compNode");
 
-            errMgs = "";
+            errMsg = "";
             string nodeName = compNode.Name;
 
             try
             {
-                string xmlPrefix = compNode.Prefix;
-                string localName = compNode.LocalName.ToLowerInvariant();
-                CompFactory compFactory;
+                lock (syncLock)
+                {
+                    string xmlPrefix = compNode.Prefix;
+                    string localName = compNode.LocalName.ToLowerInvariant();
 
-                if (string.IsNullOrEmpty(xmlPrefix))
-                {
-                    if (localName == "statictext")
-                        return new StaticText();
-                    else if (localName == "dynamictext")
-                        return new DynamicText();
-                    else if (localName == "staticpicture")
-                        return new StaticPicture();
-                    else if (localName == "dynamicpicture")
-                        return new DynamicPicture();
+                    if (string.IsNullOrEmpty(xmlPrefix))
+                    {
+                        if (localName == "statictext")
+                            return new StaticText();
+                        else if (localName == "dynamictext")
+                            return new DynamicText();
+                        else if (localName == "staticpicture")
+                            return new StaticPicture();
+                        else if (localName == "dynamicpicture")
+                            return new DynamicPicture();
+                        else
+                            errMsg = string.Format(SchemePhrases.UnknownComponent, nodeName);
+                    }
+                    else if (factsByPrefix.TryGetValue(xmlPrefix, out CompFactory compFactory))
+                    {
+                        BaseComponent comp = compFactory.CreateComponent(localName, true);
+                        if (comp == null)
+                            errMsg = string.Format(SchemePhrases.UnableCreateComponent, nodeName);
+                        return comp;
+                    }
                     else
-                        errMgs = string.Format(SchemePhrases.UnknownComponent, nodeName);
-                }
-                else if (factsByPrefix.TryGetValue(xmlPrefix, out compFactory))
-                {
-                    BaseComponent comp = compFactory.CreateComponent(localName, true);
-                    if (comp == null)
-                        errMgs = string.Format(SchemePhrases.UnableCreateComponent, nodeName);
-                    return comp;
-                }
-                else
-                {
-                    errMgs = string.Format(SchemePhrases.CompLibraryNotFound, nodeName);
+                    {
+                        errMsg = string.Format(SchemePhrases.CompLibraryNotFound, nodeName);
+                    }
                 }
             }
             catch (Exception ex)
             {
-                errMgs = string.Format(SchemePhrases.ErrorCreatingComponent, nodeName);
+                errMsg = string.Format(SchemePhrases.ErrorCreatingComponent, nodeName);
                 log.WriteException(ex, string.Format(Localization.UseRussian ?
                     "Ошибка при создании компонента на основе XML-узла \"{0}\"" :
                     "Error creating component based on the XML node \"{0}\"", compNode.Name));
@@ -313,31 +322,31 @@ namespace Scada.Scheme
         {
             try
             {
-                Type compType;
-                CompLibSpec compLibSpec;
-
-                if (StandardCompTypes.TryGetValue(compTypeName, out compType))
+                lock (syncLock)
                 {
-                    return (BaseComponent)Activator.CreateInstance(compType);
-                }
-                else if (specsByType.TryGetValue(compTypeName, out compLibSpec))
-                {
-                    BaseComponent comp = compLibSpec.CompFactory.CreateComponent(compTypeName, false);
+                    if (StandardCompTypes.TryGetValue(compTypeName, out Type compType))
+                    {
+                        return (BaseComponent)Activator.CreateInstance(compType);
+                    }
+                    else if (specsByType.TryGetValue(compTypeName, out CompLibSpec compLibSpec))
+                    {
+                        BaseComponent comp = compLibSpec.CompFactory.CreateComponent(compTypeName, false);
 
-                    if (comp == null)
+                        if (comp == null)
+                        {
+                            throw new ScadaException(string.Format(Localization.UseRussian ?
+                                "Фабрика компонентов вернула пустой результат." :
+                                "Component factory returned an empty result."));
+                        }
+
+                        return comp;
+                    }
+                    else
                     {
                         throw new ScadaException(string.Format(Localization.UseRussian ?
-                            "Фабрика компонентов вернула пустой результат." :
-                            "Component factory returned an empty result."));
+                            "Неизвестный тип компонента." :
+                            "Unknown component type."));
                     }
-
-                    return comp;
-                }
-                else
-                {
-                    throw new ScadaException(string.Format(Localization.UseRussian ?
-                        "Неизвестный тип компонента." :
-                        "Unknown component type."));
                 }
             }
             catch (Exception ex)
@@ -369,9 +378,11 @@ namespace Scada.Scheme
             }
             else
             {
-                CompLibSpec compLibSpec;
-                specsByType.TryGetValue(compType.FullName, out compLibSpec);
-                return compLibSpec;
+                lock (syncLock)
+                {
+                    specsByType.TryGetValue(compType.FullName, out CompLibSpec compLibSpec);
+                    return compLibSpec;
+                }
             }
         }
 
@@ -380,19 +391,22 @@ namespace Scada.Scheme
         /// </summary>
         public CompLibSpec[] GetSortedSpecs()
         {
-            int specCnt = allSpecs.Count;
-            string[] headers = new string[specCnt];
-            CompLibSpec[] specs = new CompLibSpec[specCnt];
-
-            for (int i = 0; i < specCnt; i++)
+            lock (syncLock)
             {
-                CompLibSpec spec = allSpecs[i];
-                headers[i] = spec.GroupHeader;
-                specs[i] = spec;
-            }
+                int specCnt = allSpecs.Count;
+                string[] headers = new string[specCnt];
+                CompLibSpec[] specs = new CompLibSpec[specCnt];
 
-            Array.Sort(headers, specs);
-            return specs;
+                for (int i = 0; i < specCnt; i++)
+                {
+                    CompLibSpec spec = allSpecs[i];
+                    headers[i] = spec.GroupHeader;
+                    specs[i] = spec;
+                }
+
+                Array.Sort(headers, specs);
+                return specs;
+            }
         }
 
         /// <summary>
@@ -400,14 +414,17 @@ namespace Scada.Scheme
         /// </summary>
         public List<string> GetAllStyles()
         {
-            List<string> allStyles = new List<string>();
-
-            foreach (CompLibSpec spec in allSpecs)
+            lock (syncLock)
             {
-                allStyles.AddRange(spec.Styles);
-            }
+                List<string> allStyles = new List<string>();
 
-            return allStyles;
+                foreach (CompLibSpec spec in allSpecs)
+                {
+                    allStyles.AddRange(spec.Styles);
+                }
+
+                return allStyles;
+            }
         }
 
         /// <summary>
@@ -415,14 +432,17 @@ namespace Scada.Scheme
         /// </summary>
         public List<string> GetAllScripts()
         {
-            List<string> allScripts = new List<string>();
-
-            foreach (CompLibSpec spec in allSpecs)
+            lock (syncLock)
             {
-                allScripts.AddRange(spec.Scripts);
-            }
+                List<string> allScripts = new List<string>();
 
-            return allScripts;
+                foreach (CompLibSpec spec in allSpecs)
+                {
+                    allScripts.AddRange(spec.Scripts);
+                }
+
+                return allScripts;
+            }
         }
 
 
