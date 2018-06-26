@@ -92,6 +92,7 @@
     <Phrase key="CheckRegistration">Проверка регистрации &quot;{0}&quot;:</Phrase>
     <Phrase key="CompCodeIs">Код компьютера: {0}</Phrase>
     <Phrase key="RegistrationFailed">Ошибка регистрации.</Phrase>
+    <Phrase key="RegistrationFailedFor">Ошибка регистрации для &quot;{0}&quot;.</Phrase>
   </Dictionary>
   <Dictionary key="KeyGen.UI">
     <Phrase key="lblCompCode">Код компьютера</Phrase>

@@ -92,6 +92,7 @@
     <Phrase key="CheckRegistration">Check &quot;{0}&quot; registration:</Phrase>
     <Phrase key="CompCodeIs">Computer code: {0}</Phrase>
     <Phrase key="RegistrationFailed">Registration failed.</Phrase>
+    <Phrase key="RegistrationFailedFor">Registration failed for &quot;{0}&quot;.</Phrase>
   </Dictionary>
   <Dictionary key="KeyGen.UI">
     <Phrase key="lblCompCode">Computer code</Phrase>
