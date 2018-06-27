@@ -857,6 +857,19 @@ scada.scheme.RenderContext = function () {
     this.controlRight = true;
 };
 
+// Get defined channel data even if they don't exist in the map
+scada.scheme.RenderContext.prototype.getCnlDataExt = function (cnlNum) {
+    var curCnlDataExt = this.curCnlDataMap.get(cnlNum);
+
+    if (!curCnlDataExt) {
+        curCnlDataExt = new scada.CnlDataExt();
+        var renderer = new scada.scheme.Renderer();
+        curCnlDataExt.Color = renderer.STATUS_DISPLAY_COLOR;
+    }
+
+    return curCnlDataExt;
+};
+
 // Get scheme image object by the image name
 scada.scheme.RenderContext.prototype.getImage = function (imageName) {
     return this.imageMap.get(imageName);
