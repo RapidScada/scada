@@ -82,7 +82,7 @@ namespace Scada.Scheme.Model
         /// Получить или установить цвет фона
         /// </summary>
         #region Attributes
-        [DisplayName("Back color"), Category(Categories.Appearance)]
+        [DisplayName("Background color"), Category(Categories.Appearance)]
         [Description("The background color of the component.")]
         [CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
         #endregion

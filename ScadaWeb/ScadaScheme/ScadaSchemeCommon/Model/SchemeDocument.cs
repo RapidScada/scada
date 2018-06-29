@@ -79,7 +79,7 @@ namespace Scada.Scheme.Model
         /// Получить или установить цвет фона
         /// </summary>
         #region Attributes
-        [DisplayName("Back color"), Category(Categories.Appearance)]
+        [DisplayName("Background color"), Category(Categories.Appearance)]
         [Description("The background color of the scheme.")]
         [CM.DefaultValue("White"), CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
         #endregion
@@ -109,7 +109,7 @@ namespace Scada.Scheme.Model
         /// Получить или установить основной цвет
         /// </summary>
         #region Attributes
-        [DisplayName("Fore color"), Category(Categories.Appearance)]
+        [DisplayName("Foreground color"), Category(Categories.Appearance)]
         [Description("The foreground color of the scheme, which is used to display text.")]
         [CM.DefaultValue("Black"), CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
         #endregion
