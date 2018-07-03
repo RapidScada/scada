@@ -3,7 +3,7 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2017
+ * Modified : 2018
  *
  * Requires:
  * - jquery
@@ -45,9 +45,10 @@ scada.ModalSizes = {
 /********** Modal Dialog Options **********/
 
 // Modal dialog options class
-scada.ModalOptions = function (buttons, opt_size) {
+scada.ModalOptions = function (buttons, opt_size, opt_height) {
     this.buttons = buttons;
     this.size = opt_size ? opt_size : scada.ModalSizes.NORMAL;
+    this.height = opt_height ? opt_height : 0;
 }
 
 /********** Popup **********/
@@ -107,10 +108,7 @@ scada.Popup.prototype._getOffset = function (elem) {
 // Get caption for the specified modal dialog button
 scada.Popup.prototype._getModalButtonCaption = function (btn) {
     var btnCaption = scada.modalButtonCaptions ? scada.modalButtonCaptions[btn] : null;
-    if (!btnCaption) {
-        btnCaption = btn;
-    }
-    return btnCaption;
+    return btnCaption ? btnCaption : btn;
 }
 
 // Get html markup of a modal dialog footer buttons
@@ -118,14 +116,13 @@ scada.Popup.prototype._genModalButtonsHtml = function (buttons) {
     var html = "";
 
     for (var btn of buttons) {
-        var btnCaption = this._getModalButtonCaption(btn);
         var subclass = btn == scada.ModalButtons.OK || btn == scada.ModalButtons.YES ? "btn-primary" :
             (btn == scada.ModalButtons.EXEC ? "btn-danger" : "btn-default");
         var dismiss = btn == scada.ModalButtons.CANCEL || btn == scada.ModalButtons.CLOSE ?
             " data-dismiss='modal'" : "";
 
-        html += "<button type='button' class='btn " + subclass +
-            "' data-result='" + btn + "'" + dismiss + ">" + btnCaption + "</button>";
+        html += "<button type='button' class='btn " + subclass + "' data-result='" + btn + "'" + dismiss + ">" +
+            this._getModalButtonCaption(btn) + "</button>";
     }
 
     return html;
@@ -326,6 +323,7 @@ scada.Popup.prototype.showModal = function (url, opt_options, opt_callback) {
         var frameBody = modalFrame.contents().find("body");
         var frameWidth = frameBody.outerWidth(true);
         var frameHeight = frameBody.outerHeight(true);
+        var specifiedHeight = opt_options ? opt_options.height : 0;
 
         // tune the modal
         var modalPaddings = parseInt(modalBody.css("padding-left")) + parseInt(modalBody.css("padding-right"));
@@ -335,7 +333,7 @@ scada.Popup.prototype.showModal = function (url, opt_options, opt_callback) {
         // set the frame style
         modalFrame.css({
             "width": "100%",
-            "height": frameHeight,
+            "height": specifiedHeight ? specifiedHeight : frameHeight,
             "position": "",
             "opacity": 1.0
         });
@@ -353,7 +351,9 @@ scada.Popup.prototype.showModal = function (url, opt_options, opt_callback) {
         // display the modal
         modalElem
         .on('shown.bs.modal', function () {
-            modalFrame.css("height", frameBody.outerHeight(true)); // final height update
+            if (!specifiedHeight) {
+                modalFrame.css("height", frameBody.outerHeight(true)); // final update of the height
+            }
             tempOverlay.remove();
             modalFrame.focus();
         })

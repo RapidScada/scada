@@ -226,10 +226,19 @@ scada.scheme.LinkRenderer.prototype.createDom = function (component, renderConte
 
                 // navigate
                 if (url) {
-                    if (props.Target > 0 /*Blank*/) {
-                        window.open(url);
-                    } else {
-                        window.top.location = url;
+                    switch (props.Target) {
+                        case 1: // Blank
+                            window.open(url);
+                            break;
+                        case 2: // Popup
+                            var popup = scada.popupLocator.getPopup();
+                            if (popup) {
+                                popup.showModal(url, new scada.ModalOptions(null, scada.ModalSizes.NORMAL, 300));
+                            }
+                            break;
+                        default: // Self
+                            window.top.location = url;
+                            break;
                     }
                 } else {
                     console.warn("URL is undefined");

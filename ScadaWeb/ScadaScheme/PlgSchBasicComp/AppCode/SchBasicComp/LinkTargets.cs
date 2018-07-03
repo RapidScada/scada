@@ -49,6 +49,14 @@ namespace Scada.Web.Plugins.SchBasicComp
         #region Attributes
         [Description("New tab")]
         #endregion
-        Blank
+        Blank,
+
+        /// <summary>
+        /// Всплывающее окно
+        /// </summary>
+        #region Attributes
+        [Description("Popup")]
+        #endregion
+        Popup
     }
 }

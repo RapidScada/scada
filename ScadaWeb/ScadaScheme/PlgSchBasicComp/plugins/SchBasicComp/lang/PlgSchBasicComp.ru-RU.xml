@@ -84,6 +84,7 @@
   <Dictionary key="Scada.Web.Plugins.SchBasicComp.LinkTargets">
     <Phrase key="Self">То же окно</Phrase>
     <Phrase key="Blank">Новая вкладка</Phrase>
+    <Phrase key="Popup">Всплывающее окно</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.SchBasicComp.Toggle">
     <Phrase key="DisplayName">Тумблер</Phrase>
