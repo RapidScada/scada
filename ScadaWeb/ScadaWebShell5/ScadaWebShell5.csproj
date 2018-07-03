@@ -237,6 +237,7 @@
     <Content Include="Reports.aspx" />
     <Content Include="User.aspx" />
     <Content Include="View.aspx" />
+    <Content Include="ViewPopup.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -313,6 +314,13 @@
     </Compile>
     <Compile Include="View.aspx.designer.cs">
       <DependentUpon>View.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewPopup.aspx.cs">
+      <DependentUpon>ViewPopup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewPopup.aspx.designer.cs">
+      <DependentUpon>ViewPopup.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

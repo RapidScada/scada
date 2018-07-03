@@ -156,13 +156,22 @@ scada.scheme.SchemeRenderer = function () {
 scada.scheme.SchemeRenderer.prototype = Object.create(scada.scheme.Renderer.prototype);
 scada.scheme.SchemeRenderer.constructor = scada.scheme.SchemeRenderer;
 
-// Get browser document title
-scada.scheme.SchemeRenderer.prototype._getDocTitle = function (schemeTitle) {
-    var docTitle = document.title;
-    var dashInd = docTitle.lastIndexOf(" - ");
-    var appName = dashInd >= 0 ? docTitle.substring(dashInd + 3) : docTitle;
-    return (schemeTitle ? schemeTitle + " - " : schemeTitle) + appName;
-};
+scada.scheme.SchemeRenderer.prototype._setTitle = function(title) {
+    if (title) {
+        document.title = title + " - " + phrases.ProductName;
+
+        // set title of a popup in case the scheme is in the popup
+        var popup = scada.popupLocator.getPopup();
+        if (popup) {
+            popup.setModalTitle(window, document.title);
+        }
+
+        // send notification about title change
+        if (scada.scheme.viewHub) {
+            scada.scheme.viewHub.notify(scada.EventTypes.VIEW_TITLE_CHANGED, window, document.title);
+        }
+    }
+}
 
 scada.scheme.SchemeRenderer.prototype.createDom = function (component, renderContext) {
     var divScheme = $("<div class='scheme'></div>");
@@ -226,12 +235,7 @@ scada.scheme.SchemeRenderer.prototype.updateDom = function (component, renderCon
 
         // set title
         if (!renderContext.editMode) {
-            var oldTitle = document.title;
-            document.title = this._getDocTitle(props.Title);
-
-            if (scada.scheme.viewHub && oldTitle != document.title) {
-                scada.scheme.viewHub.notify(scada.EventTypes.VIEW_TITLE_CHANGED, window, document.title);
-            }
+            this._setTitle(props.Title);
         }
     }
 };

@@ -285,7 +285,7 @@ scada.utils = {
     },
 
     // Get URL of the view by its ID
-    getViewUrl: function (viewID) {
-        return "View.aspx?viewID=" + viewID;
+    getViewUrl: function (viewID, opt_isPopup) {
+        return (opt_isPopup ? "ViewPopup.aspx?viewID=" : "View.aspx?viewID=") + viewID;
     }
 };

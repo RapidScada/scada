@@ -31,7 +31,7 @@ namespace Scada.Web.Plugins.WebPage
 {
     /// <summary>
     /// Load the page specified by the view
-    /// <para>Загружает веб-страницу, заданную для представления </para>
+    /// <para>Загружает веб-страницу, заданную для представления</para>
     /// </summary>
     public partial class WFrmLanding : System.Web.UI.Page
     {

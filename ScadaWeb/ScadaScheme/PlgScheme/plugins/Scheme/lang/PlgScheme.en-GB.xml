@@ -8,6 +8,7 @@
     <Phrase key="lblZoomInBtn.ToolTip">Zoom In</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Scheme.WFrmScheme.Js">
+    <Phrase key="ProductName">Rapid SCADA</Phrase>
     <Phrase key="LoadSchemeError">Scheme loading failed. Try to reload scheme</Phrase>
     <Phrase key="ReloadButton">Reload</Phrase>
     <Phrase key="UnableSendCommand">Unable to send command</Phrase>

@@ -211,20 +211,18 @@ scada.scheme.LinkRenderer.prototype.createDom = function (component, renderConte
         }
     );
 
-    // link
+    // configure link
     if (props.Url || props.ViewID > 0) {
         spanComp.addClass("action");
 
         if (!renderContext.editMode) {
             spanComp.click(function () {
-                // determine URL to navigate
                 var url = props.Url;
 
                 if (props.ViewID > 0 && scada.scheme.viewHub) {
-                    url = scada.scheme.viewHub.getFullViewUrl(props.ViewID);
+                    url = scada.scheme.viewHub.getFullViewUrl(props.ViewID, props.Target == 2 /*Popup*/);
                 }
 
-                // navigate
                 if (url) {
                     switch (props.Target) {
                         case 1: // Blank

@@ -8,6 +8,7 @@
     <Phrase key="lblZoomInBtn.ToolTip">Увеличить</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Scheme.WFrmScheme.Js">
+    <Phrase key="ProductName">Rapid SCADA</Phrase>
     <Phrase key="LoadSchemeError">Ошибка при загрузке схемы. Попробуйте перезагрузить схему</Phrase>
     <Phrase key="ReloadButton">Перезагрузить</Phrase>
     <Phrase key="UnableSendCommand">Не удалось отправить команду</Phrase>
