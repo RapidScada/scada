@@ -22,6 +22,9 @@ var controlRight = controlRight || false;
 
 // Scheme environment object accessible by the scheme and its components
 scada.scheme.env = {
+    // Localized phrases
+    phrases: phrases,
+
     // Send telecommand
     sendCommand: function (ctrlCnlNum, cmdVal, viewID, componentID) {
         scheme.sendCommand(ctrlCnlNum, cmdVal, viewID, componentID, function (success) {
@@ -144,6 +147,15 @@ function saveScale(opt_scale) {
     localStorage.setItem("Scheme.SchemeScale", opt_scale ? opt_scale : scheme.scale);
 }
 
+// Update the scheme scale if the scheme should fit size
+function updateScale() {
+    var scale = localStorage.getItem("Scheme.SchemeScale");
+    if (scale && !$.isNumeric(scale)) {
+        scheme.setScale(scale);
+        displayScale();
+    }
+}
+
 // Update layout of the top level div elements
 function updateLayout() {
     var divNotif = $("#divNotif");
@@ -203,6 +215,7 @@ $(document).ready(function () {
 
     $(window).on("resize " + scada.EventTypes.UPDATE_LAYOUT, function () {
         updateLayout();
+        updateScale();
     });
 
     if (DEBUG_MODE) {

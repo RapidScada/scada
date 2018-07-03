@@ -576,6 +576,7 @@ scada.scheme.Scheme.prototype.load = function (viewOrEditorID, callback) {
 scada.scheme.Scheme.prototype.createDom = function (opt_controlRight) {
     this.renderContext.editMode = this.editMode;
     this.renderContext.schemeEnv = this.schemeEnv;
+    this.renderContext.viewID = this.viewID;
     this.renderContext.imageMap = this.imageMap;
     this.renderContext.controlRight = typeof opt_controlRight === "undefined" ?
         true : opt_controlRight;

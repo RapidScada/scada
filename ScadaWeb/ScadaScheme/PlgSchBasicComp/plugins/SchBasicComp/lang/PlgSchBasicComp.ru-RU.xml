@@ -71,6 +71,9 @@
     <Phrase key="UnderlineOnHover.DisplayName">Подчёркивание при наведени</Phrase>
     <Phrase key="UnderlineOnHover.Category">Поведение</Phrase>
     <Phrase key="UnderlineOnHover.Description">Подчёркивание надписи при наведени указателя мыши.</Phrase>
+    <Phrase key="PopupSize.DisplayName">Размер всплывающего окна</Phrase>
+    <Phrase key="PopupSize.Category">Навигация</Phrase>
+    <Phrase key="PopupSize.Description">Размер всплывающего окна для соответствующей цели.</Phrase>
     <Phrase key="Target.DisplayName">Цель</Phrase>
     <Phrase key="Target.Category">Навигация</Phrase>
     <Phrase key="Target.Description">Целевое окно для перехода.</Phrase>
@@ -81,10 +84,15 @@
     <Phrase key="ViewID.Category">Навигация</Phrase>
     <Phrase key="ViewID.Description">Идентификатор представления для перехода.</Phrase>
   </Dictionary>
-  <Dictionary key="Scada.Web.Plugins.SchBasicComp.LinkTargets">
+  <Dictionary key="Scada.Web.Plugins.SchBasicComp.LinkTarget">
     <Phrase key="Self">То же окно</Phrase>
     <Phrase key="Blank">Новая вкладка</Phrase>
     <Phrase key="Popup">Всплывающее окно</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.SchBasicComp.PopupWidth">
+    <Phrase key="Normal">Нормальная</Phrase>
+    <Phrase key="Small">Маленькая</Phrase>
+    <Phrase key="Large">Большая</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.SchBasicComp.Toggle">
     <Phrase key="DisplayName">Тумблер</Phrase>

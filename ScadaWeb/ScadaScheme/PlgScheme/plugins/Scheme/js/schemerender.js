@@ -156,9 +156,9 @@ scada.scheme.SchemeRenderer = function () {
 scada.scheme.SchemeRenderer.prototype = Object.create(scada.scheme.Renderer.prototype);
 scada.scheme.SchemeRenderer.constructor = scada.scheme.SchemeRenderer;
 
-scada.scheme.SchemeRenderer.prototype._setTitle = function(title) {
+scada.scheme.SchemeRenderer.prototype._setTitle = function (title, renderContext) {
     if (title) {
-        document.title = title + " - " + phrases.ProductName;
+        document.title = title + " - " + renderContext.schemeEnv.phrases.ProductName;
 
         // set title of a popup in case the scheme is in the popup
         var popup = scada.popupLocator.getPopup();
@@ -235,7 +235,7 @@ scada.scheme.SchemeRenderer.prototype.updateDom = function (component, renderCon
 
         // set title
         if (!renderContext.editMode) {
-            this._setTitle(props.Title);
+            this._setTitle(props.Title, renderContext);
         }
     }
 };
@@ -418,7 +418,7 @@ scada.scheme.ComponentRenderer.prototype.bindAction = function (jqObj, component
                     case Actions.DRAW_DIAGRAM:
                         if (dialogs) {
                             var date = viewHub.curViewDateMs ? new Date(viewHub.curViewDateMs) : new Date();
-                            dialogs.showChart(props.InCnlNum, viewHub.curViewID, date);
+                            dialogs.showChart(props.InCnlNum, renderContext.viewID, date);
                         } else {
                             console.warn("Dialogs object is undefined");
                         }
@@ -426,7 +426,7 @@ scada.scheme.ComponentRenderer.prototype.bindAction = function (jqObj, component
 
                     case Actions.SEND_COMMAND:
                         if (dialogs) {
-                            dialogs.showCmd(props.CtrlCnlNum, viewHub.curViewID);
+                            dialogs.showCmd(props.CtrlCnlNum, renderContext.viewID);
                         } else {
                             console.warn("Dialogs object is undefined");
                         }
@@ -435,7 +435,7 @@ scada.scheme.ComponentRenderer.prototype.bindAction = function (jqObj, component
                     case Actions.SEND_COMMAND_NOW:
                         if (renderContext.schemeEnv) {
                             renderContext.schemeEnv.sendCommand(props.CtrlCnlNum, component.cmdVal,
-                                viewHub.curViewID, component.id);
+                                renderContext.viewID, component.id);
                         } else {
                             console.warn("Scheme environment object is undefined");
                         }
@@ -846,6 +846,7 @@ scada.scheme.RenderContext = function () {
     this.curCnlDataMap = null;
     this.editMode = false;
     this.schemeEnv = null;
+    this.viewID = 0;
     this.imageMap = null;
     this.controlRight = true;
 };

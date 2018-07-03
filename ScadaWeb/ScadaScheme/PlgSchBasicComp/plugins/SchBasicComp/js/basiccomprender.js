@@ -231,7 +231,8 @@ scada.scheme.LinkRenderer.prototype.createDom = function (component, renderConte
                         case 2: // Popup
                             var popup = scada.popupLocator.getPopup();
                             if (popup) {
-                                popup.showModal(url, new scada.ModalOptions(null, scada.ModalSizes.NORMAL, 300));
+                                popup.showModal(url,
+                                    new scada.ModalOptions(null, props.PopupSize.Width, props.PopupSize.Height));
                             }
                             break;
                         default: // Self
