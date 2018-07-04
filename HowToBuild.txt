@@ -1,6 +1,6 @@
 How to Build Rapid SCADA
 ------------------------
-Microsoft Visual Studio 2015 or higher is needed. Visual Studio Community is OK.
+Microsoft Visual Studio 2017 is needed. Visual Studio Community is OK.
 
 1. Download the source code from SCADA and DLL repositories:
    https://github.com/RapidScada/scada
@@ -17,6 +17,6 @@ Microsoft Visual Studio 2015 or higher is needed. Visual Studio Community is OK.
    ScadaWeb,
    ScadaScheme.
 
-   Use the Release configuration so that the links are correct.
+   Switch to the Release configuration so that the references are correct.
 
 3. Enjoy the binaries built by yourself.
