@@ -7,18 +7,12 @@
  *
  * Requires:
  * - jquery
- *
- * Optional:
- * - viewhub.js
  */
 
 // Rapid SCADA namespace
 var scada = scada || {};
 // Scheme namespace
 scada.scheme = scada.scheme || {};
-
-// The view hub object
-scada.scheme.viewHub = scada.viewHubLocator ? scada.viewHubLocator.getViewHub() : null;
 
 // Compare operators enumeration
 scada.scheme.CompareOperators = {

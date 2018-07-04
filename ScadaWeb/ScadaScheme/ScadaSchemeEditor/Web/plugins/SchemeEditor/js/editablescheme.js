@@ -342,7 +342,8 @@ scada.scheme.Dragging.prototype.getStatus = function () {
 
 // Editable scheme type
 scada.scheme.EditableScheme = function () {
-    scada.scheme.Scheme.call(this, true);
+    scada.scheme.Scheme.call(this);
+    this.editMode = true;
 
     // Editor grid step
     this.GRID_STEP = 5;

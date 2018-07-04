@@ -219,8 +219,8 @@ scada.scheme.LinkRenderer.prototype.createDom = function (component, renderConte
             spanComp.click(function () {
                 var url = props.Url;
 
-                if (props.ViewID > 0 && scada.scheme.viewHub) {
-                    url = scada.scheme.viewHub.getFullViewUrl(props.ViewID, props.Target == 2 /*Popup*/);
+                if (props.ViewID > 0 && renderContext.schemeEnv.viewHub) {
+                    url = renderContext.schemeEnv.viewHub.getFullViewUrl(props.ViewID, props.Target == 2 /*Popup*/);
                 }
 
                 if (url) {

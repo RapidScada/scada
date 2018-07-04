@@ -261,6 +261,10 @@
     <Phrase key="ShowWithUnit">С размерностью</Phrase>
     <Phrase key="ShowWithoutUnit">Без размерности</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.DataTypes.Size">
+    <Phrase key="Width.DisplayName">Ширина</Phrase>
+    <Phrase key="Height.DisplayName">Высота</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Scheme.Model.DataTypes.VerticalAlignments">
     <Phrase key="Top">Сверху</Phrase>
     <Phrase key="Center">По центру</Phrase>

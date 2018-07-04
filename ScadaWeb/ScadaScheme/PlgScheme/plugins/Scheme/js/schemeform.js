@@ -24,6 +24,8 @@ var controlRight = controlRight || false;
 scada.scheme.env = {
     // Localized phrases
     phrases: phrases,
+    // The view hub object
+    viewHub: scada.viewHubLocator ? scada.viewHubLocator.getViewHub() : null,
 
     // Send telecommand
     sendCommand: function (ctrlCnlNum, cmdVal, viewID, componentID) {

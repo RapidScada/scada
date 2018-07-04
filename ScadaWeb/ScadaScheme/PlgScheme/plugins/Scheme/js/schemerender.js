@@ -167,8 +167,8 @@ scada.scheme.SchemeRenderer.prototype._setTitle = function (title, renderContext
         }
 
         // send notification about title change
-        if (scada.scheme.viewHub) {
-            scada.scheme.viewHub.notify(scada.EventTypes.VIEW_TITLE_CHANGED, window, document.title);
+        if (renderContext.schemeEnv.viewHub) {
+            renderContext.schemeEnv.viewHub.notify(scada.EventTypes.VIEW_TITLE_CHANGED, window, document.title);
         }
     }
 }
@@ -410,7 +410,7 @@ scada.scheme.ComponentRenderer.prototype.bindAction = function (jqObj, component
         jqObj.addClass("action");
 
         if (!renderContext.editMode) {
-            var viewHub = scada.scheme.viewHub;
+            var viewHub = renderContext.schemeEnv.viewHub;
             var dialogs = viewHub ? viewHub.dialogs : null;
 
             jqObj.click(function () {

@@ -57,7 +57,7 @@ scada.scheme.LoadStates = {
 /********** Scheme **********/
 
 // Scheme type
-scada.scheme.Scheme = function (opt_editMode) {
+scada.scheme.Scheme = function () {
     scada.scheme.BaseComponent.call(this);
     this.renderer = new scada.scheme.SchemeRenderer();
 
@@ -72,7 +72,7 @@ scada.scheme.Scheme = function (opt_editMode) {
     this._cnlFilter = null;
 
     // Indicates whether the scheme is used by an editor
-    this.editMode = !!opt_editMode;
+    this.editMode = false;
     // Scheme environment
     this.schemeEnv = null;
     // Ajax queue used for request sequencing. Must be not null

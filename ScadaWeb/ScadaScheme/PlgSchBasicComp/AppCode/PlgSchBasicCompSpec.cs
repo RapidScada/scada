@@ -109,6 +109,7 @@ namespace Scada.Web.Plugins
                 // перевод атрибутов классов, которые используются при редактировании, но не являются компонентами схем
                 AttrTranslator attrTranslator = new AttrTranslator();
                 attrTranslator.TranslateAttrs(typeof(ColorCondition));
+                attrTranslator.TranslateAttrs(typeof(PopupSize));
             }
         }
     }

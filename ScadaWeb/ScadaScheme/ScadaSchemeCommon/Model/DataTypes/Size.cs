@@ -25,8 +25,8 @@
 
 using Scada.Scheme.Model.PropertyGrid;
 using System;
-using System.ComponentModel;
 using System.Xml;
+using CM = System.ComponentModel;
 
 namespace Scada.Scheme.Model.DataTypes
 {
@@ -34,7 +34,7 @@ namespace Scada.Scheme.Model.DataTypes
     /// Size in two-dimensional space
     /// <para>Размер в двумерном пространстве</para>
     /// </summary>
-    [TypeConverter(typeof(SizeConverter))]
+    [CM.TypeConverter(typeof(SizeConverter))]
     [Serializable]
     public struct Size
     {
@@ -62,11 +62,13 @@ namespace Scada.Scheme.Model.DataTypes
         /// <summary>
         /// Получить или установить ширину
         /// </summary>
+        [DisplayName("Width")]
         public int Width { get; set; }
 
         /// <summary>
         /// Получить или установить высоту
         /// </summary>
+        [DisplayName("Height")]
         public int Height { get; set; }
 
 

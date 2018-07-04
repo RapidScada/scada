@@ -34,7 +34,7 @@ namespace Scada.Web.Plugins.SchBasicComp
     /// Size of a popup
     /// <para>Размер всплывающего окна</para>
     /// </summary>
-    [CM.TypeConverter(typeof(ExpandableObjectConverter))]
+    [CM.TypeConverter(typeof(PopupSizeConverter))]
     [Serializable]
     public struct PopupSize
     {
@@ -58,11 +58,13 @@ namespace Scada.Web.Plugins.SchBasicComp
         /// <summary>
         /// Получить или установить ширину
         /// </summary>
+        [DisplayName("Width")]
         public PopupWidth Width { get; set; }
 
         /// <summary>
         /// Получить или установить высоту
         /// </summary>
+        [DisplayName("Height")]
         public int Height { get; set; }
 
 

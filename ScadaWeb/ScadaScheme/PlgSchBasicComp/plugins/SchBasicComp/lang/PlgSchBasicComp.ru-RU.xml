@@ -89,6 +89,10 @@
     <Phrase key="Blank">Новая вкладка</Phrase>
     <Phrase key="Popup">Всплывающее окно</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.SchBasicComp.PopupSize">
+    <Phrase key="Width.DisplayName">Ширина</Phrase>
+    <Phrase key="Height.DisplayName">Высота</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.Plugins.SchBasicComp.PopupWidth">
     <Phrase key="Normal">Нормальная</Phrase>
     <Phrase key="Small">Маленькая</Phrase>
