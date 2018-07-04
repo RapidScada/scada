@@ -49,12 +49,15 @@ scada.ModalOptions = function (buttons, opt_size, opt_height) {
     this.buttons = buttons;
     this.size = opt_size ? opt_size : scada.ModalSizes.NORMAL;
     this.height = opt_height ? opt_height : 0;
-}
+};
 
 /********** Popup **********/
 
 // Popup dialogs manipulation type
 scada.Popup = function () {
+    // Maximum length of a title
+    this.MAX_TITLE_LEN = 50;
+
     // Window that holds popups
     this._holderWindow = window;
 };
@@ -109,7 +112,7 @@ scada.Popup.prototype._getOffset = function (elem) {
 scada.Popup.prototype._getModalButtonCaption = function (btn) {
     var btnCaption = scada.modalButtonCaptions ? scada.modalButtonCaptions[btn] : null;
     return btnCaption ? btnCaption : btn;
-}
+};
 
 // Get html markup of a modal dialog footer buttons
 scada.Popup.prototype._genModalButtonsHtml = function (buttons) {
@@ -126,14 +129,19 @@ scada.Popup.prototype._genModalButtonsHtml = function (buttons) {
     }
 
     return html;
-}
+};
 
 // Find modal button by result
 scada.Popup.prototype._findModalButton = function (modalWnd, btn) {
     var frame = $(modalWnd.frameElement);
     var modalElem = frame.closest(".modal");
     return modalElem.find(".modal-footer button[data-result='" + btn + "']");
-}
+};
+
+// Truncate the title if it is too long
+scada.Popup.prototype._truncateTitle = function (s) {
+    return s.length <= this.MAX_TITLE_LEN ? s : s.substr(0, this.MAX_TITLE_LEN) + "…";
+};
 
 // Show popup with the specified url as a dropdown menu below the anchorElem.
 // opt_callback is a function (dialogResult, extraParams)
@@ -181,7 +189,7 @@ scada.Popup.prototype.showDropdown = function (url, anchorElem, opt_callback) {
     .on("load", function () {
         // remove the popup on press Escape key in the frame
         var frameWnd = frame[0].contentWindow;
-        if (frameWnd.$) {
+        if (scada.utils.checkAccessToFrame(frameWnd) && frameWnd.$) {
             var jqFrameDoc = frameWnd.$(frameWnd.document);
             jqFrameDoc.ready(function () {
                 jqFrameDoc
@@ -305,11 +313,12 @@ scada.Popup.prototype.showModal = function (url, opt_options, opt_callback) {
     }
 
     // load the frame
+    var thisObj = this;
     modalFrame
     .on("load", function () {
         // remove the modal on press Escape key in the frame
         var frameWnd = modalFrame[0].contentWindow;
-        if (frameWnd.$) {
+        if (scada.utils.checkAccessToFrame(frameWnd) && frameWnd.$) {
             var jqFrameDoc = frameWnd.$(frameWnd.document);
             jqFrameDoc.ready(function () {
                 jqFrameDoc
@@ -326,9 +335,11 @@ scada.Popup.prototype.showModal = function (url, opt_options, opt_callback) {
         var specifiedHeight = opt_options ? opt_options.height : 0;
 
         // tune the modal
+        var frameWnd = modalFrame[0].contentWindow;
+        var frameAccessible = scada.utils.checkAccessToFrame(frameWnd);
         var modalPaddings = parseInt(modalBody.css("padding-left")) + parseInt(modalBody.css("padding-right"));
-        modalElem.find(".modal-content").css("min-width", frameWidth + modalPaddings)
-        modalElem.find(".modal-title").text(modalFrame[0].contentWindow.document.title);
+        modalElem.find(".modal-content").css("min-width", frameWidth + modalPaddings);
+        modalElem.find(".modal-title").text(thisObj._truncateTitle(frameAccessible ? frameWnd.document.title : url));
 
         // set the frame style
         modalFrame.css({
@@ -339,14 +350,15 @@ scada.Popup.prototype.showModal = function (url, opt_options, opt_callback) {
         });
 
         // raise event on modal button click
-        modalElem.find(".modal-footer button").click(function () {
-            var result = $(this).data("result");
-            var frameWnd = modalFrame[0].contentWindow;
-            var frameJq = frameWnd.$;
-            if (result && frameJq) {
-                frameJq(frameWnd).trigger(scada.EventTypes.MODAL_BTN_CLICK, result);
-            }
-        });
+        if (frameAccessible && frameWnd.$) {
+            modalElem.find(".modal-footer button").click(function () {
+                var result = $(this).data("result");
+
+                if (result) {
+                    frameWnd.$(frameWnd).trigger(scada.EventTypes.MODAL_BTN_CLICK, result);
+                }
+            });
+        }
 
         // display the modal
         modalElem
@@ -373,7 +385,7 @@ scada.Popup.prototype.showModal = function (url, opt_options, opt_callback) {
 // Close the modal dialog
 scada.Popup.prototype.closeModal = function (modalWnd, dialogResult, extraParams) {
     this.setModalResult(modalWnd, dialogResult, extraParams).modal("hide");
-}
+};
 
 // Update the modal dialog height according to a frame height
 scada.Popup.prototype.updateModalHeight = function (modalWnd) {
@@ -393,7 +405,7 @@ scada.Popup.prototype.updateModalHeight = function (modalWnd) {
     }
 
     modalElem.modal("handleUpdate");
-}
+};
 
 // Set dialog result for the whole modal dialog
 scada.Popup.prototype.setModalResult = function (modalWnd, dialogResult, extraParams) {
@@ -402,18 +414,18 @@ scada.Popup.prototype.setModalResult = function (modalWnd, dialogResult, extraPa
         .data("dialog-result", dialogResult)
         .data("extra-params", extraParams);
     return modalElem;
-}
+};
 
 // Set title of the modal dialog
 scada.Popup.prototype.setModalTitle = function (modalWnd, title) {
     var modalElem = $(modalWnd.frameElement).closest(".modal");
     modalElem.find(".modal-title").text(title);
-}
+};
 
 // Show or hide the button of the modal dialog
 scada.Popup.prototype.setButtonVisible = function (modalWnd, btn, val) {
     this._findModalButton(modalWnd, btn).css("display", val ? "" : "none");
-}
+};
 
 // Enable or disable the button of the modal dialog
 scada.Popup.prototype.setButtonEnabled = function (modalWnd, btn, val) {
@@ -423,7 +435,7 @@ scada.Popup.prototype.setButtonEnabled = function (modalWnd, btn, val) {
     } else {
         btnElem.attr("disabled", "disabled");
     }
-}
+};
 
 /********** Popup Locator **********/
 
