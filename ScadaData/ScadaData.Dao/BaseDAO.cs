@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2018
  */
 
 using System;
@@ -49,17 +49,9 @@ namespace Scada.Dao
 
 
         /// <summary>
-        /// Удалить все начальные и конечные знаки пробелов, заменить null на пустую строку
-        /// </summary>
-        protected void Trim(ref string s)
-        {
-            s = s == null ? "" : s.Trim();
-        }
-
-        /// <summary>
         /// Получить шаблон для поиска с помощью выражения LIKE
         /// </summary>
-        protected string GetLikePattern(string filter)
+        protected string BuildLikePattern(string filter)
         {
             return filter == null ?
                 "" :

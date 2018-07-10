@@ -28,6 +28,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\ScadaData.Dao.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Npgsql">
@@ -40,6 +41,7 @@
     <Compile Include="BaseDAO.cs" />
     <Compile Include="PgSqlDAO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RequestParams.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
