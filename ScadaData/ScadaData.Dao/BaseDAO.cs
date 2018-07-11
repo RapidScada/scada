@@ -81,5 +81,37 @@ namespace Scada.Dao
         {
             return value == null || value == DBNull.Value ? DateTime.MinValue : (DateTime)value;
         }
+        
+        /// <summary>
+        /// Получить значение строки для записи в БД
+        /// </summary>
+        protected object GetParamValue(string s)
+        {
+            return string.IsNullOrEmpty(s) ? DBNull.Value : (object)s.Trim();
+        }
+
+        /// <summary>
+        /// Получить значение идентификатора для записи в БД
+        /// </summary>
+        protected object GetParamValue(int id)
+        {
+            return id <= 0 ? DBNull.Value : (object)id;
+        }
+
+        /// <summary>
+        /// Получить значение вещественного числа для записи в БД
+        /// </summary>
+        protected object GetParamValue(double value)
+        {
+            return double.IsNaN(value) ? DBNull.Value : (object)value;
+        }
+
+        /// <summary>
+        /// Получить значение даты и времени для записи в БД
+        /// </summary>
+        protected object GetParamValue(DateTime value)
+        {
+            return value == DateTime.MinValue ? DBNull.Value : (object)value;
+        }
     }
 }
