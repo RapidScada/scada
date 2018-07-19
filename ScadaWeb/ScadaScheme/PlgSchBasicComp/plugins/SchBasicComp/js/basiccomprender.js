@@ -268,6 +268,7 @@ scada.scheme.ToggleRenderer.prototype._applySize = function (divComp, divContain
 
     divContainer.css({
         "width": props.Size.Width - borders,
+        "min-width": props.Size.Width - borders, // required for scaling
         "height": props.Size.Height - borders
     });
 
