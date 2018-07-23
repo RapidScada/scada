@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2018
  */
 
 using System;
@@ -39,12 +39,19 @@ namespace Scada.Web
 
 
         /// <summary>
-        /// Получить значение параметра из строки запроса как целое число
+        /// Получить логическое значение параметра из строки запроса
+        /// </summary>
+        public static bool GetParamAsBool(this NameValueCollection queryString, string paramName)
+        {
+            return bool.TryParse(queryString[paramName], out bool paramVal) ? paramVal : false;
+        }
+
+        /// <summary>
+        /// Получить целое значение параметра из строки запроса
         /// </summary>
         public static int GetParamAsInt(this NameValueCollection queryString, string paramName)
         {
-            int paramVal;
-            return int.TryParse(queryString[paramName], out paramVal) ? paramVal : 0;
+            return int.TryParse(queryString[paramName], out int paramVal) ? paramVal : 0;
         }
 
         /// <summary>
@@ -53,10 +60,9 @@ namespace Scada.Web
         public static DateTime GetParamAsDate(this NameValueCollection queryString,
             string yearParamName = "year", string monthParamName = "month", string dayParamName = "day")
         {
-            int year, month, day;
-            int.TryParse(queryString[yearParamName], out year);
-            int.TryParse(queryString[monthParamName], out month);
-            int.TryParse(queryString[dayParamName], out day);
+            int.TryParse(queryString[yearParamName], out int year);
+            int.TryParse(queryString[monthParamName], out int month);
+            int.TryParse(queryString[dayParamName], out int day);
 
             if (year == 0 && month == 0 && day == 0)
             {
@@ -75,11 +81,11 @@ namespace Scada.Web
         public static DateTime GetParamAsDate(this NameValueCollection queryString, string paramName)
         {
             string dateStr = queryString[paramName];
-            DateTime dateTime;
 
             if (string.IsNullOrEmpty(dateStr))
                 return DateTime.Today;
-            else if (DateTime.TryParse(dateStr, DateTimeFormatInfo.InvariantInfo, DateTimeStyles.None, out dateTime))
+            else if (DateTime.TryParse(dateStr, DateTimeFormatInfo.InvariantInfo, DateTimeStyles.None, 
+                out DateTime dateTime))
                 return dateTime.Date;
             else
                 throw new ScadaException(WebPhrases.IncorrectDate);
