@@ -24,7 +24,9 @@
  */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Scada.Comm.Devices.Modbus.Protocol
 {
@@ -150,7 +152,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             for (int i = 0; i < elemCnt; i++)
             {
                 Elem elem = Elems[i];
-                byte[] elemVal = new byte[elem.ElemType == ElemTypes.Bool ? 1 : elem.Length * 2];
+                byte[] elemVal = new byte[(elem.ElemType == ElemTypes.Bool && TableType!=TableTypes.HoldingRegisters) ? 1 : elem.Length * 2];
                 Array.Clear(elemVal, 0, elemVal.Length);
                 ElemVals[i] = elemVal;
             }
@@ -195,7 +197,6 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                             byteNum += elemValLen;
                         }
                     }
-
                     return true;
                 }
                 else
@@ -242,7 +243,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             byte[] buf;
 
             // перестановка байт в случае необходимости
-            if (elem.ByteOrder == null)
+            if (elem.ByteOrder == null || elem.ElemType==ElemTypes.Bool)
             {
                 buf = elemVal;
             }
@@ -272,7 +273,33 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                 case ElemTypes.Double:
                     return BitConverter.ToDouble(buf, 0);
                 case ElemTypes.Bool:
-                    return buf[0] > 0 ? 1.0 : 0.0;
+                    {
+                        if (TableType == TableTypes.HoldingRegisters)
+                        {
+                            int bitOffset = Convert.ToInt32(elem.ByteOrderStr);
+                            BitArray bArr = null;
+                            if (elem.Length==4)
+                            {
+                                UInt64 longVal = BitConverter.ToUInt64(buf, 0);
+                                bArr = new BitArray(BitConverter.GetBytes(longVal).ToArray());
+                            }
+                            else if (elem.Length==2)
+                            {
+                                UInt32 intVal = BitConverter.ToUInt32(buf, 0);
+                                bArr = new BitArray(BitConverter.GetBytes(intVal).ToArray());
+                            }
+                            else
+                            {
+                                ushort shortVal = BitConverter.ToUInt16(buf, 0);
+                                bArr = new BitArray(BitConverter.GetBytes(shortVal).ToArray());
+                            }                            
+                            return bArr.Get(bitOffset) ? 1.0 : 0.0;
+                        }
+                        else
+                        {
+                            return buf[0] > 0 ? 1.0 : 0.0;
+                        }
+                    }
                 default:
                     return 0.0;
             }

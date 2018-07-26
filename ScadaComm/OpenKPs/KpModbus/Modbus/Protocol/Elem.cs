@@ -23,6 +23,8 @@
  * Modified : 2017
  */
 
+using System;
+
 namespace Scada.Comm.Devices.Modbus.Protocol
 {
     /// <summary>
@@ -60,7 +62,27 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         {
             get
             {
-                return ModbusUtils.GetElemCount(ElemType);
+                if (ElemType == ElemTypes.Bool)
+                {
+                    int offset = 0;
+                    if (Int32.TryParse(ByteOrderStr, out offset))
+                    {
+                        if (offset >= 32)
+                            return 4;
+                        if (offset >= 16)
+                            return 2;
+                        else
+                            return 1;
+                    }
+                    else
+                    {
+                        return 1;
+                    }
+                }
+                else
+                {
+                    return ModbusUtils.GetElemCount(ElemType);
+                }
             }
         }
 
