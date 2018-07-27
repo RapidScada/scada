@@ -136,6 +136,7 @@
     <Content Include="content\en\version-history\index.html" />
     <Content Include="content\en\version-history\scheme-editor-history.html" />
     <Content Include="content\en\version-history\server-history.html" />
+    <Content Include="content\en\version-history\server-modules-history.html" />
     <Content Include="content\en\version-history\webstation-history.html" />
     <Content Include="content\en\version-history\webstation-plugins-history.html" />
     <Content Include="content\ru\installation-and-run\manual-installation.html" />
