@@ -29,3 +29,6 @@
   display: inline-block;
   overflow: hidden;
 }
+.modal-footer .btn-primary {
+  min-width: 75px;
+}
