@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScadaTableEditorDictionaries>
+  <Dictionary key="Scada.Web.Plugins.Table.TableView">
+    <Phrase key="LoadTableViewError">Tablo görünümü dosyadan yüklenirken hata oluştu</Phrase>
+    <Phrase key="SaveTableViewError">Tablo görünümü dosyaya kaydedilirken hata oluştu</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaTableEditor.FrmMain">
+    <Phrase key="this">SCADA-Tablo Düzenleyici</Phrase>
+    <Phrase key="miFile">&amp;Dosya</Phrase>
+    <Phrase key="miFileNew">Yeni</Phrase>
+    <Phrase key="miFileOpen">Aç...</Phrase>
+    <Phrase key="miFileSave">Kaydet</Phrase>
+    <Phrase key="miFileSaveAs">Farklı Kaydet...</Phrase>
+    <Phrase key="miFileExit">Çıkış</Phrase>
+    <Phrase key="miSettings">&amp;Ayarlar</Phrase>
+    <Phrase key="miSettingsParams">Parametreler...</Phrase>
+    <Phrase key="miHelp">&amp;Yardım</Phrase>
+    <Phrase key="miHelpAbout">Hakkında</Phrase>
+    <Phrase key="btnFileNew.ToolTip">Yeni tablo görünümü oluştur</Phrase>
+    <Phrase key="btnFileOpen.ToolTip">Tablo görünümü aç</Phrase>
+    <Phrase key="btnFileSave.ToolTip">Tablo görünümü kaydet</Phrase>
+    <Phrase key="btnSettingsParams.ToolTip">Parametreler</Phrase>
+    <Phrase key="gbBase">Veritabanı ayarları</Phrase>
+    <Phrase key="lblCnlFilterByObj">Nesne</Phrase>
+    <Phrase key="lblCnlFilterByKP">Cihaz</Phrase>
+    <Phrase key="btnFilterCnlsByObj.ToolTip">Nesne Filtrele</Phrase>
+    <Phrase key="btnFilterCnlsByKP.ToolTip">Cihaz Filtrele</Phrase>
+    <Phrase key="btnRefreshBase.ToolTip">Veri tabanı verilerini yenile</Phrase>
+    <Phrase key="rbInCnls">Giriş Kanalları</Phrase>
+    <Phrase key="rbCtrlCnls">Çıkış Kanalları</Phrase>
+    <Phrase key="colCnlNum">Sayı</Phrase>
+    <Phrase key="colCnlName">Adı</Phrase>
+    <Phrase key="gbTableView">Tablo Görünümü</Phrase>
+    <Phrase key="lblTableTitle">Başlık</Phrase>
+    <Phrase key="lblTableItems">Satır</Phrase>
+    <Phrase key="btnAddItem.ToolTip">Ayar Veritabanına Satır Ekle</Phrase>
+    <Phrase key="btnAddEmptyItem.ToolTip">Boş satır ekle</Phrase>
+    <Phrase key="btnMoveUpItem.ToolTip">Seçili satırı yukarı taşı</Phrase>
+    <Phrase key="btnMoveDownItem.ToolTip">Seçili satırı aşağı taşı</Phrase>
+    <Phrase key="btnDeleteItem.ToolTip">Seçili Satırı Sil</Phrase>
+    <Phrase key="btnShowItemInfo.ToolTip">Seçili satır bilgisini göster</Phrase>
+    <Phrase key="colItemCnlNum">Gir. Kan.</Phrase>
+    <Phrase key="colItemCtrlCnlNum">Çık. Kan.</Phrase>
+    <Phrase key="colItemCaption">Başlık</Phrase>
+    <Phrase key="colItemHidden">Gizli</Phrase>
+    <Phrase key="OpenFileFilter">Tablo Görünümü (*.tbl; *.ofm)|*.tbl;*.ofm|Tüm Dosyalar (*.*)|*.*</Phrase>
+    <Phrase key="SaveFileFilter">Tablo Görünümü (*.tbl)|*.tbl|Tüm Dosyalar (*.*)|*.*</Phrase>
+    <Phrase key="SaveConfirm">Tablo görünümünde değişiklikler var kaydedilsin mi?</Phrase>
+    <Phrase key="AllObjItem">&lt;Tüm Nesneler&gt;</Phrase>
+    <Phrase key="AllKPItem">&lt;Tüm Cihazlar&gt;</Phrase>
+    <Phrase key="LoadBaseError">Yapılandırma Veritabanı yüklenirken hata oluştu</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaTableEditor.FrmItemInfo">
+    <Phrase key="this">Satır Bilgisi</Phrase>
+    <Phrase key="gbInCnl">Giriş Kanalı</Phrase>
+    <Phrase key="lblInCnl">Kanal</Phrase>
+    <Phrase key="lblInCnlObj">Nesne</Phrase>
+    <Phrase key="lblInCnlKP">Cihaz</Phrase>
+    <Phrase key="gbCtrlCnl">Çıkış Kanalı</Phrase>
+    <Phrase key="lblCtrlCnl">Kanal</Phrase>
+    <Phrase key="lblCtrlCnlObj">Nesne</Phrase>
+    <Phrase key="lblCtrlCnlKP">Cihaz</Phrase>
+    <Phrase key="btnClose">Kapat</Phrase>
+    <Phrase key="GetInCnlError">Giriş Kanal bilgileri getirilirken hata oluştu.</Phrase>
+    <Phrase key="GetCtrlCnlError">Çıkış Kanal bilgileri getirilirken hata oluştu.</Phrase>
+  </Dictionary>
+  <Dictionary key="ScadaTableEditor.FrmSettings">
+    <Phrase key="this">Ayarlar</Phrase>
+    <Phrase key="lblBaseDATDir">DAT biçimindeki yapılandırma veritabanı dizini</Phrase>
+    <Phrase key="btnOK">Tamam</Phrase>
+    <Phrase key="btnCancel">İptal</Phrase>
+  </Dictionary>
+</ScadaTableEditorDictionaries>
