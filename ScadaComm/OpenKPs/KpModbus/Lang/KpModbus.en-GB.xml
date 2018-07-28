@@ -40,6 +40,7 @@
     <Phrase key="rbDouble">double (8 bytes)</Phrase>
     <Phrase key="rbBool">bool (1 bit)</Phrase>
     <Phrase key="lblElemByteOrder">Byte order</Phrase>
+    <Phrase key="lblElemBitoffset">Bit offset</Phrase>
     <Phrase key="lblElemByteOrderExample">For example, 01234567</Phrase>
     <Phrase key="gbCmd">Command parameters</Phrase>
     <Phrase key="lblCmdName">Name</Phrase>

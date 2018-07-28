@@ -89,21 +89,36 @@ namespace Scada.Comm.Devices.Modbus.UI
                 txtElemSignal.Text = elemInfo.Signal.ToString();
                 ElemTypes elemType = elemInfo.Elem.ElemType;
 
-                if (elemType == ElemTypes.Bool)
+                if (elemInfo.ElemGroup.TableType != TableTypes.HoldingRegisters)
                 {
-                    rbUShort.Enabled = rbShort.Enabled = rbUInt.Enabled = rbInt.Enabled =
-                        rbULong.Enabled = rbLong.Enabled = rbFloat.Enabled = rbDouble.Enabled = false;
-                    rbBool.Enabled = true;
-                    txtElemByteOrder.Text = "";
-                    txtElemByteOrder.Enabled = false;
+
+                    if (elemType == ElemTypes.Bool)
+                    {
+                        rbUShort.Enabled = rbShort.Enabled = rbUInt.Enabled = rbInt.Enabled =
+                            rbULong.Enabled = rbLong.Enabled = rbFloat.Enabled = rbDouble.Enabled = false;
+                        rbBool.Enabled = true;
+                        txtElemByteOrder.Text = "";
+                        txtElemByteOrder.Enabled = false;
+                    }
+                    else
+                    {
+                        rbUShort.Enabled = rbShort.Enabled = rbUInt.Enabled = rbInt.Enabled =
+                            rbULong.Enabled = rbLong.Enabled = rbFloat.Enabled = rbDouble.Enabled = true;
+                        rbBool.Enabled = false;
+                        txtElemByteOrder.Text = elemInfo.Elem.ByteOrderStr;
+                        txtElemByteOrder.Enabled = true;
+                    }
                 }
                 else
                 {
                     rbUShort.Enabled = rbShort.Enabled = rbUInt.Enabled = rbInt.Enabled =
-                        rbULong.Enabled = rbLong.Enabled = rbFloat.Enabled = rbDouble.Enabled = true;
-                    rbBool.Enabled = false;
+                            rbULong.Enabled = rbLong.Enabled = rbFloat.Enabled = rbDouble.Enabled = rbBool.Enabled = true;
                     txtElemByteOrder.Text = elemInfo.Elem.ByteOrderStr;
                     txtElemByteOrder.Enabled = true;
+                    rbBool.CheckedChanged -= RbBool_CheckedChanged;
+                    rbBool.CheckedChanged += RbBool_CheckedChanged;
+                    lblElemByteOrder.Visible = !rbBool.Checked;
+                    lblElemBitoffset.Visible = rbBool.Checked;
                 }
 
                 switch (elemType)
@@ -139,6 +154,12 @@ namespace Scada.Comm.Devices.Modbus.UI
 
                 gbElem.Enabled = true;
             }
+        }
+
+        private void RbBool_CheckedChanged(object sender, EventArgs e)
+        {
+            lblElemByteOrder.Visible = !rbBool.Checked;
+            lblElemBitoffset.Visible = rbBool.Checked;
         }
 
         /// <summary>

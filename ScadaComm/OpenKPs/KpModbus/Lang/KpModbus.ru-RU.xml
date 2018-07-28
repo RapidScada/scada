@@ -39,6 +39,7 @@
     <Phrase key="rbFloat">float (4 байта)</Phrase>
     <Phrase key="rbDouble">double (8 байта)</Phrase>
     <Phrase key="rbBool">bool (1 бит)</Phrase>
+    <Phrase key="lblElemBitoffset">Смещение бит</Phrase>
     <Phrase key="lblElemByteOrder">Порядок байт</Phrase>
     <Phrase key="lblElemByteOrderExample">Например, 01234567</Phrase>
     <Phrase key="gbCmd">Параметры команды</Phrase>

@@ -48,11 +48,13 @@
             this.lblElemSignal = new System.Windows.Forms.Label();
             this.txtElemName = new System.Windows.Forms.TextBox();
             this.lblElemName = new System.Windows.Forms.Label();
+            this.lblElemBitoffset = new System.Windows.Forms.Label();
             this.gbElem.SuspendLayout();
             this.SuspendLayout();
             // 
             // gbElem
             // 
+            this.gbElem.Controls.Add(this.lblElemBitoffset);
             this.gbElem.Controls.Add(this.lblElemByteOrderExample);
             this.gbElem.Controls.Add(this.txtElemByteOrder);
             this.gbElem.Controls.Add(this.lblElemByteOrder);
@@ -275,6 +277,15 @@
             this.lblElemName.TabIndex = 0;
             this.lblElemName.Text = "Name";
             // 
+            // lblElemBitoffset
+            // 
+            this.lblElemBitoffset.AutoSize = true;
+            this.lblElemBitoffset.Location = new System.Drawing.Point(12, 222);
+            this.lblElemBitoffset.Name = "lblElemBitoffset";
+            this.lblElemBitoffset.Size = new System.Drawing.Size(48, 13);
+            this.lblElemBitoffset.TabIndex = 19;
+            this.lblElemBitoffset.Text = "Bit offset";
+            // 
             // CtrlElem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -310,5 +321,6 @@
         private System.Windows.Forms.Label lblElemSignal;
         private System.Windows.Forms.TextBox txtElemName;
         private System.Windows.Forms.Label lblElemName;
+        private System.Windows.Forms.Label lblElemBitoffset;
     }
 }
