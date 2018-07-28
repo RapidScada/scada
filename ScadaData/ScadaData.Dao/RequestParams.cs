@@ -53,6 +53,17 @@ namespace Scada.Dao
             /// Gets or sets the parameter value
             /// </summary>
             public object Value { get; set; }
+
+            /// <summary>
+            /// Adds the parameter to the command
+            /// </summary>
+            public virtual void AddToCommand(DbCommand command)
+            {
+                DbParameter dbParam = command.CreateParameter();
+                dbParam.ParameterName = ParameterName;
+                dbParam.Value = Value;
+                command.Parameters.Add(dbParam);
+            }
         }
 
 
@@ -125,10 +136,7 @@ namespace Scada.Dao
 
             foreach (Param param in ParamList)
             {
-                DbParameter dbParam = command.CreateParameter();
-                dbParam.ParameterName = param.ParameterName;
-                dbParam.Value = param.Value;
-                command.Parameters.Add(dbParam);
+                param.AddToCommand(command);
             }
         }
     }
