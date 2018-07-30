@@ -342,7 +342,8 @@ scada.scheme.Dragging.prototype.getStatus = function () {
 
 // Editable scheme type
 scada.scheme.EditableScheme = function () {
-    scada.scheme.Scheme.call(this, true);
+    scada.scheme.Scheme.call(this);
+    this.editMode = true;
 
     // Editor grid step
     this.GRID_STEP = 5;
@@ -445,7 +446,7 @@ scada.scheme.EditableScheme.prototype._updateComponentProps = function (parsedCo
                 if (oldComponent && oldComponent.dom) {
                     // replace component in the DOM
                     oldComponent.dom.replaceWith(newComponent.dom);
-                    renderer.setWrapperLocation(newComponent);
+                    renderer.setWrapperProps(newComponent);
                 } else {
                     // add component into the DOM
                     this.dom.append(renderer.wrap(newComponent));
@@ -465,7 +466,9 @@ scada.scheme.EditableScheme.prototype._refreshImages = function (imageNames) {
         this.renderer.refreshImages(this, this.renderContext, imageNames);
 
         for (var component of this.componentMap.values()) {
-            component.renderer.refreshImages(component, this.renderContext, imageNames);
+            if (component.dom) {
+                component.renderer.refreshImages(component, this.renderContext, imageNames);
+            }
         }
     }
     catch (ex) {

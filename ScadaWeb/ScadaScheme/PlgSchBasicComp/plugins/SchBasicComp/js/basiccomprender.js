@@ -2,7 +2,7 @@
  * Basic components rendering
  *
  * Author   : Mikhail Shiryaev
- * Created  : 2016
+ * Created  : 2017
  * Modified : 2018
  *
  * Requires:
@@ -73,27 +73,23 @@ scada.scheme.ButtonRenderer.prototype.createDom = function (component, renderCon
 };
 
 scada.scheme.ButtonRenderer.prototype.refreshImages = function (component, renderContext, imageNames) {
-    if (component.dom) {
-        var props = component.props;
+    var props = component.props;
 
-        if (Array.isArray(imageNames) && imageNames.includes(props.ImageName)) {
-            var btnComp = component.dom;
-            var image = renderContext.getImage(props.ImageName);
-            btnComp.find("img").attr("src", this.imageToDataURL(image));
-        }
+    if (Array.isArray(imageNames) && imageNames.includes(props.ImageName)) {
+        var btnComp = component.dom;
+        var image = renderContext.getImage(props.ImageName);
+        btnComp.find("img").attr("src", this.imageToDataURL(image));
     }
 };
 
 scada.scheme.ButtonRenderer.prototype.updateData = function (component, renderContext) {
     var props = component.props;
 
-    if (props.BoundProperty) {
+    if (props.InCnlNum > 0 && props.BoundProperty) {
         var btnComp = component.dom;
-        var curCnlDataExt = renderContext.curCnlDataMap.get(props.InCnlNum);
-
-        if (btnComp && curCnlDataExt) {
-            this._setState(btnComp, props.BoundProperty, curCnlDataExt.Val > 0 && curCnlDataExt.Stat > 0);
-        }
+        var cnlDataExt = renderContext.getCnlDataExt(props.InCnlNum);
+        var state = cnlDataExt.Val > 0 && cnlDataExt.Stat > 0;
+        this._setState(btnComp, props.BoundProperty, state);
     }
 }
 
@@ -135,21 +131,20 @@ scada.scheme.LedRenderer.prototype.createDom = function (component, renderContex
 
 scada.scheme.LedRenderer.prototype.updateData = function (component, renderContext) {
     var props = component.props;
-    var divComp = component.dom;
-    var curCnlDataExt = renderContext.curCnlDataMap.get(props.InCnlNum);
 
-    if (divComp && curCnlDataExt) {
-        // set background color
+    if (props.InCnlNum > 0) {
+        var divComp = component.dom;
+        var cnlDataExt = renderContext.getCnlDataExt(props.InCnlNum);
         var backColor = props.BackColor;
 
         // define background color according to the channel status
         if (backColor == this.STATUS_COLOR) {
-            backColor = curCnlDataExt.Color;
+            backColor = cnlDataExt.Color;
         }
 
         // define background color according to the led conditions and channel value
-        if (curCnlDataExt.Stat > 0 && props.Conditions) {
-            var cnlVal = curCnlDataExt.Val;
+        if (cnlDataExt.Stat > 0 && props.Conditions) {
+            var cnlVal = cnlDataExt.Val;
 
             for (var cond of props.Conditions) {
                 if (scada.scheme.calc.conditionSatisfied(cond, cnlVal)) {
@@ -165,7 +160,7 @@ scada.scheme.LedRenderer.prototype.updateData = function (component, renderConte
         // set border color
         if (props.BorderColor == this.STATUS_COLOR) {
             var divBorder = divComp.children(".basic-led-border");
-            divBorder.css("border-color", curCnlDataExt.Color);
+            divBorder.css("border-color", cnlDataExt.Color);
         }
     }
 };
@@ -216,25 +211,33 @@ scada.scheme.LinkRenderer.prototype.createDom = function (component, renderConte
         }
     );
 
-    // link
+    // configure link
     if (props.Url || props.ViewID > 0) {
         spanComp.addClass("action");
 
         if (!renderContext.editMode) {
             spanComp.click(function () {
-                // determine URL to navigate
                 var url = props.Url;
 
-                if (props.ViewID > 0 && scada.scheme.viewHub) {
-                    url = scada.scheme.viewHub.getFullViewUrl(props.ViewID);
+                if (props.ViewID > 0 && renderContext.schemeEnv.viewHub) {
+                    url = renderContext.schemeEnv.viewHub.getFullViewUrl(props.ViewID, props.Target == 2 /*Popup*/);
                 }
 
-                // navigate
                 if (url) {
-                    if (props.Target > 0 /*Blank*/) {
-                        window.open(url);
-                    } else {
-                        window.top.location = url;
+                    switch (props.Target) {
+                        case 1: // Blank
+                            window.open(url);
+                            break;
+                        case 2: // Popup
+                            var popup = scada.popupLocator.getPopup();
+                            if (popup) {
+                                popup.showModal(url,
+                                    new scada.ModalOptions(null, props.PopupSize.Width, props.PopupSize.Height));
+                            }
+                            break;
+                        default: // Self
+                            window.top.location = url;
+                            break;
                     }
                 } else {
                     console.warn("URL is undefined");
@@ -265,6 +268,7 @@ scada.scheme.ToggleRenderer.prototype._applySize = function (divComp, divContain
 
     divContainer.css({
         "width": props.Size.Width - borders,
+        "min-width": props.Size.Width - borders, // required for scaling
         "height": props.Size.Height - borders
     });
 
@@ -286,6 +290,10 @@ scada.scheme.ToggleRenderer.prototype.createDom = function (component, renderCon
     this.setBackColor(divLever, props.LeverColor);
     this._applySize(divComp, divContainer, divLever, component);
 
+    if (!renderContext.editMode) {
+        divComp.addClass("undef");
+    }
+
     divContainer.append(divLever);
     divComp.append(divContainer);
     component.dom = divComp;
@@ -294,45 +302,43 @@ scada.scheme.ToggleRenderer.prototype.createDom = function (component, renderCon
 scada.scheme.ToggleRenderer.prototype.setSize = function (component, width, height) {
     scada.scheme.ComponentRenderer.prototype.setSize.call(this, component, width, height);
 
-    if (component.dom) {
-        var divComp = component.dom;
-        var divContainer = divComp.children(".basic-toggle-container");
-        var divLever = divContainer.children(".basic-toggle-lever");
-        this._applySize(divComp, divContainer, divLever, component);
-    }
+    var divComp = component.dom;
+    var divContainer = divComp.children(".basic-toggle-container");
+    var divLever = divContainer.children(".basic-toggle-lever");
+    this._applySize(divComp, divContainer, divLever, component);
 };
 
 scada.scheme.ToggleRenderer.prototype.updateData = function (component, renderContext) {
     var props = component.props;
-    var divComp = component.dom;
-    var curCnlDataExt = renderContext.curCnlDataMap.get(props.InCnlNum);
     component.cmdVal = 0;
 
-    if (divComp) {
+    if (props.InCnlNum > 0) {
+        var divComp = component.dom;
+        var cnlDataExt = renderContext.getCnlDataExt(props.InCnlNum);
+
         divComp.removeClass("undef");
         divComp.removeClass("on");
         divComp.removeClass("off");
 
-        if (curCnlDataExt) {
-            if (curCnlDataExt.Stat > 0) {
-                if (curCnlDataExt.Val > 0) {
-                    divComp.addClass("on");
-                } else {
-                    divComp.addClass("off");
-                    component.cmdVal = 1; // a command turns it on
-                }
+        if (cnlDataExt.Stat > 0) {
+            if (cnlDataExt.Val > 0) {
+                divComp.addClass("on");
             } else {
-                divComp.addClass("undef");
+                divComp.addClass("off");
+                component.cmdVal = 1; // a command turns it on
             }
+        } else {
+            divComp.addClass("undef");
+        }
 
-            // set colors that depend on status
-            var statusColor = curCnlDataExt.Color;
-            this.setBackColor(divComp, props.BackColor, true, statusColor)
-            this.setBorderColor(divComp, props.BorderColor, true, statusColor)
+        // set colors that depend on status
+        var statusColor = cnlDataExt.Color;
+        this.setBackColor(divComp, props.BackColor, true, statusColor)
+        this.setBorderColor(divComp, props.BorderColor, true, statusColor)
 
-            if (props.LeverColor == this.STATUS_COLOR) {
-                divComp.children("basic-toggle-lever").css("background-color", statusColor);
-            }
+        if (props.LeverColor == this.STATUS_COLOR) {
+            // execute the find method if the color depends on status
+            divComp.find(".basic-toggle-lever").css("background-color", statusColor);
         }
     }
 };

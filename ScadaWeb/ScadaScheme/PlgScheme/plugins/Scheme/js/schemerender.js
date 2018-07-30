@@ -156,13 +156,22 @@ scada.scheme.SchemeRenderer = function () {
 scada.scheme.SchemeRenderer.prototype = Object.create(scada.scheme.Renderer.prototype);
 scada.scheme.SchemeRenderer.constructor = scada.scheme.SchemeRenderer;
 
-// Get browser document title
-scada.scheme.SchemeRenderer.prototype._getDocTitle = function (schemeTitle) {
-    var docTitle = document.title;
-    var dashInd = docTitle.lastIndexOf(" - ");
-    var appName = dashInd >= 0 ? docTitle.substring(dashInd + 3) : docTitle;
-    return (schemeTitle ? schemeTitle + " - " : schemeTitle) + appName;
-};
+scada.scheme.SchemeRenderer.prototype._setTitle = function (title, renderContext) {
+    if (title) {
+        document.title = title + " - " + renderContext.schemeEnv.phrases.ProductName;
+
+        // set title of a popup in case the scheme is in the popup
+        var popup = scada.popupLocator.getPopup();
+        if (popup) {
+            popup.setModalTitle(window, document.title);
+        }
+
+        // send notification about title change
+        if (renderContext.schemeEnv.viewHub) {
+            renderContext.schemeEnv.viewHub.notify(scada.EventTypes.VIEW_TITLE_CHANGED, window, document.title);
+        }
+    }
+}
 
 scada.scheme.SchemeRenderer.prototype.createDom = function (component, renderContext) {
     var divScheme = $("<div class='scheme'></div>");
@@ -226,12 +235,7 @@ scada.scheme.SchemeRenderer.prototype.updateDom = function (component, renderCon
 
         // set title
         if (!renderContext.editMode) {
-            var oldTitle = document.title;
-            document.title = this._getDocTitle(props.Title);
-
-            if (scada.scheme.viewHub && oldTitle != document.title) {
-                scada.scheme.viewHub.notify(scada.EventTypes.VIEW_TITLE_CHANGED, window, document.title);
-            }
+            this._setTitle(props.Title, renderContext);
         }
     }
 };
@@ -406,7 +410,7 @@ scada.scheme.ComponentRenderer.prototype.bindAction = function (jqObj, component
         jqObj.addClass("action");
 
         if (!renderContext.editMode) {
-            var viewHub = scada.scheme.viewHub;
+            var viewHub = renderContext.schemeEnv.viewHub;
             var dialogs = viewHub ? viewHub.dialogs : null;
 
             jqObj.click(function () {
@@ -414,7 +418,7 @@ scada.scheme.ComponentRenderer.prototype.bindAction = function (jqObj, component
                     case Actions.DRAW_DIAGRAM:
                         if (dialogs) {
                             var date = viewHub.curViewDateMs ? new Date(viewHub.curViewDateMs) : new Date();
-                            dialogs.showChart(props.InCnlNum, viewHub.curViewID, date);
+                            dialogs.showChart(props.InCnlNum, renderContext.viewID, date);
                         } else {
                             console.warn("Dialogs object is undefined");
                         }
@@ -422,7 +426,7 @@ scada.scheme.ComponentRenderer.prototype.bindAction = function (jqObj, component
 
                     case Actions.SEND_COMMAND:
                         if (dialogs) {
-                            dialogs.showCmd(props.CtrlCnlNum, viewHub.curViewID);
+                            dialogs.showCmd(props.CtrlCnlNum, renderContext.viewID);
                         } else {
                             console.warn("Dialogs object is undefined");
                         }
@@ -431,7 +435,7 @@ scada.scheme.ComponentRenderer.prototype.bindAction = function (jqObj, component
                     case Actions.SEND_COMMAND_NOW:
                         if (renderContext.schemeEnv) {
                             renderContext.schemeEnv.sendCommand(props.CtrlCnlNum, component.cmdVal,
-                                viewHub.curViewID, component.id);
+                                renderContext.viewID, component.id);
                         } else {
                             console.warn("Scheme environment object is undefined");
                         }
@@ -484,10 +488,17 @@ scada.scheme.ComponentRenderer.prototype.setLocation = function (component, x, y
     }
 };
 
-// Set location of the component wrapper in edit mode
-scada.scheme.ComponentRenderer.prototype.setWrapperLocation = function (component) {
+// Set properties of the component wrapper in edit mode
+scada.scheme.ComponentRenderer.prototype.setWrapperProps = function (component) {
+    // set location
     var location = this.getLocation(component);
     this.setLocation(component, location.x, location.y);
+
+    // set font
+    if (component.props && component.dom) {
+        var wrapper = component.dom.parent(".comp-wrapper");
+        this.setFont(wrapper, component.props.Font, true);
+    }
 };
 
 // Get size of the component. Returns an object containing the properties width and height
@@ -525,7 +536,7 @@ scada.scheme.ComponentRenderer.prototype.allowResizing = function (component) {
 // Wrap the component with a frame needed in edit mode
 scada.scheme.ComponentRenderer.prototype.wrap = function (component) {
     var compWrapper = $("<div class='comp-wrapper'></div>").append(component.dom);
-    this.setWrapperLocation(component);
+    this.setWrapperProps(component);
     return compWrapper;
 };
 
@@ -644,38 +655,35 @@ scada.scheme.DynamicTextRenderer.prototype.createDom = function (component, rend
 };
 
 scada.scheme.DynamicTextRenderer.prototype.updateData = function (component, renderContext) {
-    if (component.dom) {
+    var props = component.props;
+
+    if (props.InCnlNum > 0) {
         var ShowValueKinds = scada.scheme.ShowValueKinds;
-        var props = component.props;
         var spanComp = component.dom;
         var spanText = spanComp.children();
-        var curCnlDataExt = props.InCnlNum > 0 ? renderContext.curCnlDataMap.get(props.InCnlNum) : null;
+        var cnlDataExt = renderContext.getCnlDataExt(props.InCnlNum);
 
-        if (curCnlDataExt) {
-            // show value of the appropriate input channel
-            switch (props.ShowValue) {
-                case ShowValueKinds.SHOW_WITH_UNIT:
-                    spanText.text(curCnlDataExt.TextWithUnit);
-                    break;
-                case ShowValueKinds.SHOW_WITHOUT_UNIT:
-                    spanText.text(curCnlDataExt.Text);
-                    break;
-            }
-
-            // choose and set colors of the component
-            var statusColor = curCnlDataExt.Color;
-            var isHovered = spanComp.is(":hover");
-
-            var backColor = this.chooseColor(isHovered, props.BackColor, props.BackColorOnHover);
-            var borderColor = this.chooseColor(isHovered, props.BorderColor, props.BorderColorOnHover);
-            var foreColor = this.chooseColor(isHovered, props.ForeColor, props.ForeColorOnHover);
-
-            this.setBackColor(spanComp, backColor, true, statusColor)
-            this.setBorderColor(spanComp, borderColor, true, statusColor)
-            this.setForeColor(spanComp, foreColor, true, statusColor)
-        } else if (props.InCnlNum > 0) {
-            spanText.text("");
+        // show value of the appropriate input channel
+        switch (props.ShowValue) {
+            case ShowValueKinds.SHOW_WITH_UNIT:
+                spanText.text(cnlDataExt.TextWithUnit);
+                break;
+            case ShowValueKinds.SHOW_WITHOUT_UNIT:
+                spanText.text(cnlDataExt.Text);
+                break;
         }
+
+        // choose and set colors of the component
+        var statusColor = cnlDataExt.Color;
+        var isHovered = spanComp.is(":hover");
+
+        var backColor = this.chooseColor(isHovered, props.BackColor, props.BackColorOnHover);
+        var borderColor = this.chooseColor(isHovered, props.BorderColor, props.BorderColorOnHover);
+        var foreColor = this.chooseColor(isHovered, props.ForeColor, props.ForeColorOnHover);
+
+        this.setBackColor(spanComp, backColor, true, statusColor)
+        this.setBorderColor(spanComp, borderColor, true, statusColor)
+        this.setForeColor(spanComp, foreColor, true, statusColor)
     }
 };
 
@@ -721,14 +729,12 @@ scada.scheme.StaticPictureRenderer.prototype.createDom = function (component, re
 };
 
 scada.scheme.StaticPictureRenderer.prototype.refreshImages = function (component, renderContext, imageNames) {
-    if (component.dom) {
-        var props = component.props;
+    var props = component.props;
 
-        if (Array.isArray(imageNames) && imageNames.includes(props.ImageName)) {
-            var divComp = component.dom;
-            var image = renderContext.getImage(props.ImageName);
-            this.setBackgroundImage(divComp, image, true);
-        }
+    if (Array.isArray(imageNames) && imageNames.includes(props.ImageName)) {
+        var divComp = component.dom;
+        var image = renderContext.getImage(props.ImageName);
+        this.setBackgroundImage(divComp, image, true);
     }
 };
 
@@ -790,15 +796,15 @@ scada.scheme.DynamicPictureRenderer.prototype.createDom = function (component, r
 
 scada.scheme.DynamicPictureRenderer.prototype.updateData = function (component, renderContext) {
     var props = component.props;
-    var divComp = component.dom;
-    var curCnlDataExt = renderContext.curCnlDataMap.get(props.InCnlNum);
 
-    if (divComp && curCnlDataExt) {
-        // choose the image depending on the conditions
+    if (props.InCnlNum > 0) {
+        var divComp = component.dom;
+        var cnlDataExt = renderContext.getCnlDataExt(props.InCnlNum);
         var imageName = props.ImageName;
 
-        if (curCnlDataExt.Stat && props.Conditions) {
-            var cnlVal = curCnlDataExt.Val;
+        // choose an image depending on the conditions
+        if (cnlDataExt.Stat && props.Conditions) {
+            var cnlVal = cnlDataExt.Val;
 
             for (var cond of props.Conditions) {
                 if (scada.scheme.calc.conditionSatisfied(cond, cnlVal)) {
@@ -813,14 +819,14 @@ scada.scheme.DynamicPictureRenderer.prototype.updateData = function (component, 
         this.setBackgroundImage(divComp, image, true);
 
         // choose and set colors of the component
-        var statusColor = curCnlDataExt.Color;
+        var statusColor = cnlDataExt.Color;
         var isHovered = divComp.is(":hover");
 
         var backColor = this.chooseColor(isHovered, props.BackColor, props.BackColorOnHover);
         var borderColor = this.chooseColor(isHovered, props.BorderColor, props.BorderColorOnHover);
 
-        this.setBackColor(divComp, backColor, true, statusColor)
-        this.setBorderColor(divComp, borderColor, true, statusColor)
+        this.setBackColor(divComp, backColor, true, statusColor);
+        this.setBorderColor(divComp, borderColor, true, statusColor);
     }
 };
 
@@ -840,8 +846,22 @@ scada.scheme.RenderContext = function () {
     this.curCnlDataMap = null;
     this.editMode = false;
     this.schemeEnv = null;
+    this.viewID = 0;
     this.imageMap = null;
     this.controlRight = true;
+};
+
+// Get defined channel data even if they don't exist in the map
+scada.scheme.RenderContext.prototype.getCnlDataExt = function (cnlNum) {
+    var curCnlDataExt = this.curCnlDataMap.get(cnlNum);
+
+    if (!curCnlDataExt) {
+        curCnlDataExt = new scada.CnlDataExt();
+        var renderer = new scada.scheme.Renderer();
+        curCnlDataExt.Color = renderer.STATUS_DISPLAY_COLOR;
+    }
+
+    return curCnlDataExt;
 };
 
 // Get scheme image object by the image name

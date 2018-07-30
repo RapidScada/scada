@@ -38,6 +38,7 @@ function addContents(context) {
     addArticle(context, "modules/plg-chart-pro.html", "Chart Pro Plugin", 1);
     addArticle(context, "modules/plg-dashboard.html", "Dashboard Plugin", 1);
     addArticle(context, "modules/plg-elastic-report.html", "Elastic Report Plugin", 1);
+    addArticle(context, "modules/plg-map.html", "Map Plugin", 1);
 
     addArticle(context, "use-cases/", "Use Cases");
     addArticle(context, "use-cases/modbus-protocol.html", "Connecting Devices Using Modbus Protocol", 1);
@@ -47,8 +48,11 @@ function addContents(context) {
     addArticle(context, "version-history/", "Version History");
     addArticle(context, "version-history/scada-history.html", "History of Rapid SCADA", 1);
     addArticle(context, "version-history/server-history.html", "Server History", 1);
+    addArticle(context, "version-history/server-modules-history.html", "History of Server Modules", 1);
     addArticle(context, "version-history/communicator-history.html", "Communicator History", 1);
+    addArticle(context, "version-history/communicator-drivers-history.html", "History of Communicator Drivers", 1);
     addArticle(context, "version-history/administrator-history.html", "Administrator History", 1);
     addArticle(context, "version-history/webstation-history.html", "Webstation History", 1);
+    addArticle(context, "version-history/webstation-plugins-history.html", "History of Webstation Plugins", 1);
     addArticle(context, "version-history/scheme-editor-history.html", "Scheme Editor History", 1);
 }

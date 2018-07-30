@@ -80,7 +80,7 @@ namespace Scada.Web.Plugins.SchBasicComp
         /// Получить или установить цвет текста
         /// </summary>
         #region Attributes
-        [DisplayName("Fore color"), Category(Categories.Appearance)]
+        [DisplayName("Foreground color"), Category(Categories.Appearance)]
         [Description("The foreground color of the component, which is used to display text.")]
         [CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
         #endregion

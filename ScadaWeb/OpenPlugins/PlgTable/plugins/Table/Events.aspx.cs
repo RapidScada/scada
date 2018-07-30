@@ -66,7 +66,7 @@ namespace Scada.Web.Plugins.Table
             if (!(userData.LoggedOn && userData.UserRights.GetUiObjRights(viewID).ViewRight))
                 Response.Redirect(UrlTemplates.NoView);
 
-            // загрузка представления в кеш для последующего получения событий через API
+            // загрузка представления в кэш для последующего получения событий через API
             BaseView view = userData.UserViews.GetView(viewID);
             if (view == null)
                 Response.Redirect(UrlTemplates.NoView);

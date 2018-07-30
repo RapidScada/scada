@@ -39,7 +39,7 @@ namespace Scada.Web.Plugins
         /// <summary>
         /// Версия плагина
         /// </summary>
-        internal const string PlgVersion = "5.0.0.0";
+        internal const string PlgVersion = "5.0.1.0";
 
         
         /// <summary>
@@ -109,6 +109,7 @@ namespace Scada.Web.Plugins
                 // перевод атрибутов классов, которые используются при редактировании, но не являются компонентами схем
                 AttrTranslator attrTranslator = new AttrTranslator();
                 attrTranslator.TranslateAttrs(typeof(ColorCondition));
+                attrTranslator.TranslateAttrs(typeof(PopupSize));
             }
         }
     }

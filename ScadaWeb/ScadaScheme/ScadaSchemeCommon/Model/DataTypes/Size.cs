@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,13 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.Scheme.Model.PropertyGrid;
 using System;
-using System.ComponentModel;
 using System.Xml;
+using CM = System.ComponentModel;
 
 namespace Scada.Scheme.Model.DataTypes
 {
@@ -34,10 +34,14 @@ namespace Scada.Scheme.Model.DataTypes
     /// Size in two-dimensional space
     /// <para>Размер в двумерном пространстве</para>
     /// </summary>
-    [TypeConverter(typeof(SizeConverter))]
+    [CM.TypeConverter(typeof(SizeConverter))]
     [Serializable]
     public struct Size
     {
+        /// <summary>
+        /// Нулевой размер
+        /// </summary>
+        public static readonly Size Zero = new Size(0, 0);
         /// <summary>
         /// Размер по умолчанию
         /// </summary>
@@ -58,22 +62,24 @@ namespace Scada.Scheme.Model.DataTypes
         /// <summary>
         /// Получить или установить ширину
         /// </summary>
+        [DisplayName("Width")]
         public int Width { get; set; }
 
         /// <summary>
         /// Получить или установить высоту
         /// </summary>
+        [DisplayName("Height")]
         public int Height { get; set; }
 
 
         /// <summary>
         /// Получить значение дочернего XML-узла в виде размера
         /// </summary>
-        public static Size GetChildAsSize(XmlNode parentXmlNode, string childNodeName)
+        public static Size GetChildAsSize(XmlNode parentXmlNode, string childNodeName, Size? defaultSize = null)
         {
             XmlNode node = parentXmlNode.SelectSingleNode(childNodeName);
             return node == null ?
-                Default :
+                (defaultSize ?? Default) :
                 new Size(node.GetChildAsInt("Width"), node.GetChildAsInt("Height"));
         }
 

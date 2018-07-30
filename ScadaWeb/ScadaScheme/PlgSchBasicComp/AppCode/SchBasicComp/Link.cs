@@ -59,6 +59,11 @@ namespace Scada.Web.Plugins.SchBasicComp
             BorderColorOnHover = "";
             ForeColorOnHover = "";
             UnderlineOnHover = true;
+
+            PopupSize = PopupSize.Default;
+            Target = LinkTarget.Self;
+            Url = "";
+            ViewID = 0;
         }
 
 
@@ -104,14 +109,23 @@ namespace Scada.Web.Plugins.SchBasicComp
 
 
         /// <summary>
+        /// Получить или установить размер всплывающего окна
+        /// </summary>
+        #region Attributes
+        [DisplayName("Popup size"), Category("Navigation")]
+        [Description("The size of a popup for the appropriate target.")]
+        #endregion
+        public PopupSize PopupSize { get; set; }
+
+        /// <summary>
         /// Получить или установить целевое окно для перехода
         /// </summary>
         #region Attributes
         [DisplayName("Target"), Category("Navigation")]
         [Description("The target frame for the link.")]
-        [CM.DefaultValue(LinkTargets.Self)]
+        [CM.DefaultValue(LinkTarget.Self)]
         #endregion
-        public LinkTargets Target { get; set; }
+        public LinkTarget Target { get; set; }
 
         /// <summary>
         /// Получить или установить адрес для перехода
@@ -144,7 +158,8 @@ namespace Scada.Web.Plugins.SchBasicComp
             BorderColorOnHover = xmlNode.GetChildAsString("BorderColorOnHover");
             ForeColorOnHover = xmlNode.GetChildAsString("ForeColorOnHover");
             UnderlineOnHover = xmlNode.GetChildAsBool("UnderlineOnHover");
-            Target = xmlNode.GetChildAsEnum<LinkTargets>("Target");
+            PopupSize = PopupSize.GetChildAsSize(xmlNode, "PopupSize");
+            Target = xmlNode.GetChildAsEnum<LinkTarget>("Target");
             Url = xmlNode.GetChildAsString("Url");
             ViewID = xmlNode.GetChildAsInt("ViewID");
         }
@@ -160,6 +175,7 @@ namespace Scada.Web.Plugins.SchBasicComp
             xmlElem.AppendElem("BorderColorOnHover", BorderColorOnHover);
             xmlElem.AppendElem("ForeColorOnHover", ForeColorOnHover);
             xmlElem.AppendElem("UnderlineOnHover", UnderlineOnHover);
+            PopupSize.AppendElem(xmlElem, "PopupSize", PopupSize);
             xmlElem.AppendElem("Target", Target);
             xmlElem.AppendElem("Url", Url);
             xmlElem.AppendElem("ViewID", ViewID);

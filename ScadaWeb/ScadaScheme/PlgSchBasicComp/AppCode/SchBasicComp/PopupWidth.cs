@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : PlgSchBasicComp
- * Summary  : Navigation targets for a link
+ * Summary  : Possible widths of a popup
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
@@ -29,26 +29,34 @@ using CM = System.ComponentModel;
 namespace Scada.Web.Plugins.SchBasicComp
 {
     /// <summary>
-    /// Navigation targets for a link
-    /// <para>Цели перехода по ссылке</para>
+    /// Possible widths of a popup
+    /// <para>Варианты ширины всплывающего окна</para>
     /// </summary>
     [CM.TypeConverter(typeof(EnumConverter))]
-    public enum LinkTargets
+    public enum PopupWidth
     {
         /// <summary>
-        /// То же окно
+        /// Нормальная
         /// </summary>
         #region Attributes
-        [Description("Same frame")]
+        [Description("Normal")]
         #endregion
-        Self,
+        Normal,
 
         /// <summary>
-        /// Новая вкладка
+        /// Маленькая
         /// </summary>
         #region Attributes
-        [Description("New tab")]
+        [Description("Small")]
         #endregion
-        Blank
+        Small,
+
+        /// <summary>
+        /// Большая
+        /// </summary>
+        #region Attributes
+        [Description("Large")]
+        #endregion
+        Large
     }
 }

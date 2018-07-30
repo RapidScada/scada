@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.Data.Configuration;
@@ -770,6 +770,9 @@ namespace Scada.Server.Svc
                     activeDTs[i] = nowDT;
                 }
 
+                // инициализация списка генерируемых событий
+                List<EventTableLight.Event> events = new List<EventTableLight.Event>();
+
                 // цикл работы сервера
                 nowDT = DateTime.MaxValue;
                 DateTime today;
@@ -824,18 +827,18 @@ namespace Scada.Server.Svc
                     lock (curSrez)
                     {
                         // установка недостоверности неактивных каналов
-                        SetUnreliable();
+                        SetUnreliable(events);
 
                         // вычисление дорасчётных каналов
                         if (calcDR)
                         {
-                            CalcDRCnls(drCnls, curSrez, true);
+                            CalcDRCnls(drCnls, curSrez, events);
                         }
 
                         // вычисление минутных каналов
                         if (calcMinDR)
                         {
-                            CalcDRCnls(drmCnls, curSrez, true);
+                            CalcDRCnls(drmCnls, curSrez, events);
                             calcMinDT = CalcNextTime(nowDT, 60);
                             curSrezMod = true;
                         }
@@ -843,10 +846,20 @@ namespace Scada.Server.Svc
                         // вычисление часовых каналов
                         if (calcHrDR)
                         {
-                            CalcDRCnls(drhCnls, curSrez, true);
+                            CalcDRCnls(drhCnls, curSrez, events);
                             calcHrDT = CalcNextTime(nowDT, 3600);
                             curSrezMod = true;
                         }
+                    }
+
+                    // запись событий и их обработка с помощью модулей без блокировки текущего среза
+                    if (events.Count > 0)
+                    {
+                        foreach (EventTableLight.Event ev in events)
+                        {
+                            WriteEvent(ev);
+                        }
+                        events.Clear();
                     }
 
                     // выполнение действий модулей без блокировки текущего среза
@@ -1236,7 +1249,7 @@ namespace Scada.Server.Svc
 
                 // вычисление дорасчётных каналов, если добавленый срез изменился
                 if (changed)
-                    CalcDRCnls(drCnls, newSrez, false);
+                    CalcDRCnls(drCnls, newSrez, null);
 
                 // запись изменений таблицы срезов
                 srezAdapter.Update(srezTable);
@@ -1328,7 +1341,7 @@ namespace Scada.Server.Svc
                 }
 
                 // вычисление дорасчётных каналов
-                CalcDRCnls(drCnls, srez, false);
+                CalcDRCnls(drCnls, srez, null);
 
                 if (addSrez)
                     srezTable.AddSrez(srez);
@@ -1506,7 +1519,8 @@ namespace Scada.Server.Svc
         /// <summary>
         /// Генерировать событие в соответствии со свойствами и данными входного канала
         /// </summary>
-        private void GenEvent(InCnl inCnl, SrezTableLight.CnlData oldCnlData, SrezTableLight.CnlData newCnlData)
+        private EventTableLight.Event GenEvent(InCnl inCnl, 
+            SrezTableLight.CnlData oldCnlData, SrezTableLight.CnlData newCnlData)
         {
             if (inCnl.EvEnabled)
             {
@@ -1534,28 +1548,29 @@ namespace Scada.Server.Svc
                     oldStat != newStat)
                 {
                     // создание события
-                    EventTableLight.Event ev = new EventTableLight.Event();
-                    ev.DateTime = DateTime.Now;
-                    ev.ObjNum = inCnl.ObjNum;
-                    ev.KPNum = inCnl.KPNum;
-                    ev.ParamID = inCnl.ParamID;
-                    ev.CnlNum = inCnl.CnlNum;
-                    ev.OldCnlVal = oldCnlData.Val;
-                    ev.OldCnlStat = oldStat;
-                    ev.NewCnlVal = newCnlData.Val;
-                    ev.NewCnlStat = dataChanged && oldStat == BaseValues.CnlStatuses.Defined && 
-                        newStat == BaseValues.CnlStatuses.Defined ? BaseValues.CnlStatuses.Changed : newStat;
-
-                    // запись события и выполнение действий модулей
-                    WriteEvent(ev);
+                    return new EventTableLight.Event()
+                    {
+                        DateTime = DateTime.Now,
+                        ObjNum = inCnl.ObjNum,
+                        KPNum = inCnl.KPNum,
+                        ParamID = inCnl.ParamID,
+                        CnlNum = inCnl.CnlNum,
+                        OldCnlVal = oldCnlData.Val,
+                        OldCnlStat = oldStat,
+                        NewCnlVal = newCnlData.Val,
+                        NewCnlStat = dataChanged && oldStat == BaseValues.CnlStatuses.Defined &&
+                            newStat == BaseValues.CnlStatuses.Defined ? BaseValues.CnlStatuses.Changed : newStat
+                    };
                 }
             }
+
+            return null;
         }
 
         /// <summary>
         /// Вычислить дорасчётные каналы
         /// </summary>
-        private void CalcDRCnls(List<InCnl> inCnls, SrezTableLight.Srez srez, bool genEvents)
+        private void CalcDRCnls(List<InCnl> inCnls, SrezTableLight.Srez srez, List<EventTableLight.Event> outEvents)
         {
             lock (calculator)
             {
@@ -1579,8 +1594,12 @@ namespace Scada.Server.Svc
                             srez.CnlData[cnlInd] = newCnlData;
 
                             // генерация события
-                            if (genEvents)
-                                GenEvent(inCnl, oldCnlData, newCnlData);
+                            if (outEvents != null)
+                            {
+                                EventTableLight.Event ev = GenEvent(inCnl, oldCnlData, newCnlData);
+                                if (ev != null)
+                                    outEvents.Add(ev);
+                            }
                         }
                     }
                 }
@@ -1600,7 +1619,7 @@ namespace Scada.Server.Svc
         /// <summary>
         /// Установить недостоверность неактивных каналов
         /// </summary>
-        private void SetUnreliable()
+        private void SetUnreliable(List<EventTableLight.Event> outEvents)
         {
             if (Settings.InactUnrelTime > 0)
             {
@@ -1625,7 +1644,12 @@ namespace Scada.Server.Svc
                         curSrezMod = true;
 
                         // генерация события
-                        GenEvent(inCnl, oldCnlData, newCnlData);
+                        if (outEvents != null)
+                        {
+                            EventTableLight.Event ev = GenEvent(inCnl, oldCnlData, newCnlData);
+                            if (ev != null)
+                                outEvents.Add(ev);
+                        }
                     }
                 }
             }
@@ -2159,6 +2183,8 @@ namespace Scada.Server.Svc
 
                     if (cnlCnt > 0)
                     {
+                        List<EventTableLight.Event> events = new List<EventTableLight.Event>();
+
                         lock (curSrez) lock (calculator)
                         {
                             try
@@ -2197,7 +2223,9 @@ namespace Scada.Server.Svc
                                             curSrez.CnlData[cnlInd] = newCnlData;
 
                                             // генерация события
-                                            GenEvent(inCnl, oldCnlData, newCnlData);
+                                            EventTableLight.Event ev = GenEvent(inCnl, oldCnlData, newCnlData);
+                                            if (ev != null)
+                                                events.Add(ev);
 
                                             // обновление информации об активности канала
                                             activeDTs[cnlInd] = DateTime.Now;
@@ -2215,6 +2243,12 @@ namespace Scada.Server.Svc
                                 procSrez = null;
                                 curSrezMod = true;
                             }
+                        }
+
+                        // запись событий и их обработка с помощью модулей
+                        foreach (EventTableLight.Event ev in events)
+                        {
+                            WriteEvent(ev);
                         }
 
                         // выполнение действий модулей

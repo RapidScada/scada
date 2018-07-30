@@ -95,8 +95,11 @@
     <Compile Include="AppCode\SchBasicComp\ColorConditionEditor.cs" />
     <Compile Include="AppCode\SchBasicComp\Led.cs" />
     <Compile Include="AppCode\SchBasicComp\Link.cs" />
-    <Compile Include="AppCode\SchBasicComp\LinkTargets.cs" />
+    <Compile Include="AppCode\SchBasicComp\PopupWidth.cs" />
+    <Compile Include="AppCode\SchBasicComp\LinkTarget.cs" />
     <Compile Include="AppCode\SchBasicComp\PlgUtils.cs" />
+    <Compile Include="AppCode\SchBasicComp\PopupSize.cs" />
+    <Compile Include="AppCode\SchBasicComp\PopupSizeConverter.cs" />
     <Compile Include="AppCode\SchBasicComp\Toggle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

@@ -194,7 +194,7 @@ namespace Scada.Web.Plugins.Table
             }
             else
             {
-                // загружка представления в старом формате
+                // загрузка представления в старом формате
                 const int IdentLen = 10; // длина идентификатора в файле таблицы
                 StreamReader reader = null;
 

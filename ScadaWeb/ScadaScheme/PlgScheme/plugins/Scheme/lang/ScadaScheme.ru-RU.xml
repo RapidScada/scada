@@ -17,6 +17,7 @@
     <Phrase key="TrueValue">Да</Phrase>
     <Phrase key="FalseValue">Нет</Phrase>
     <Phrase key="EmptyValue">(Нет)</Phrase>
+    <Phrase key="ObjectValue">(Объект)</Phrase>
     <Phrase key="CollectionValue">(Коллекция)</Phrase>
     <Phrase key="BoldSymbol">Ж</Phrase>
     <Phrase key="ItalicSymbol">К</Phrase>
@@ -259,6 +260,10 @@
     <Phrase key="NotShow">Нет</Phrase>
     <Phrase key="ShowWithUnit">С размерностью</Phrase>
     <Phrase key="ShowWithoutUnit">Без размерности</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.DataTypes.Size">
+    <Phrase key="Width.DisplayName">Ширина</Phrase>
+    <Phrase key="Height.DisplayName">Высота</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Model.DataTypes.VerticalAlignments">
     <Phrase key="Top">Сверху</Phrase>

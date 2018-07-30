@@ -254,7 +254,7 @@ namespace Scada.Web.Plugins.Table
             if (!rights.ViewRight)
                 Response.Redirect(UrlTemplates.NoView);
 
-            // загрузка представления в кеш для последующего получения данных через API
+            // загрузка представления в кэш для последующего получения данных через API
             TableView tableView = appData.ViewCache.GetView<TableView>(viewID);
             if (tableView == null)
                 Response.Redirect(UrlTemplates.NoView);

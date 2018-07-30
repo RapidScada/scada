@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2018
  */
 
 using System;
@@ -49,17 +49,9 @@ namespace Scada.Dao
 
 
         /// <summary>
-        /// Удалить все начальные и конечные знаки пробелов, заменить null на пустую строку
-        /// </summary>
-        protected void Trim(ref string s)
-        {
-            s = s == null ? "" : s.Trim();
-        }
-
-        /// <summary>
         /// Получить шаблон для поиска с помощью выражения LIKE
         /// </summary>
-        protected string GetLikePattern(string filter)
+        protected string BuildLikePattern(string filter)
         {
             return filter == null ?
                 "" :
@@ -88,6 +80,38 @@ namespace Scada.Dao
         protected DateTime ConvertToDateTime(object value)
         {
             return value == null || value == DBNull.Value ? DateTime.MinValue : (DateTime)value;
+        }
+        
+        /// <summary>
+        /// Получить значение строки для записи в БД
+        /// </summary>
+        protected object GetParamValue(string s)
+        {
+            return string.IsNullOrEmpty(s) ? DBNull.Value : (object)s.Trim();
+        }
+
+        /// <summary>
+        /// Получить значение идентификатора для записи в БД
+        /// </summary>
+        protected object GetParamValue(int id)
+        {
+            return id <= 0 ? DBNull.Value : (object)id;
+        }
+
+        /// <summary>
+        /// Получить значение вещественного числа для записи в БД
+        /// </summary>
+        protected object GetParamValue(double value)
+        {
+            return double.IsNaN(value) ? DBNull.Value : (object)value;
+        }
+
+        /// <summary>
+        /// Получить значение даты и времени для записи в БД
+        /// </summary>
+        protected object GetParamValue(DateTime value)
+        {
+            return value == DateTime.MinValue ? DBNull.Value : (object)value;
         }
     }
 }

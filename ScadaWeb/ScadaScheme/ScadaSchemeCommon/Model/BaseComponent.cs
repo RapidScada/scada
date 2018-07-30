@@ -24,13 +24,13 @@
  */
 
 using Scada.Scheme.Model.DataTypes;
-using System.Xml;
-using System;
-using System.Text;
 using Scada.Scheme.Model.PropertyGrid;
-using CM = System.ComponentModel;
-using System.Web.Script.Serialization;
+using System;
 using System.Drawing.Design;
+using System.Text;
+using System.Web.Script.Serialization;
+using System.Xml;
+using CM = System.ComponentModel;
 
 namespace Scada.Scheme.Model
 {
@@ -82,7 +82,7 @@ namespace Scada.Scheme.Model
         /// Получить или установить цвет фона
         /// </summary>
         #region Attributes
-        [DisplayName("Back color"), Category(Categories.Appearance)]
+        [DisplayName("Background color"), Category(Categories.Appearance)]
         [Description("The background color of the component.")]
         [CM.Editor(typeof(ColorEditor), typeof(UITypeEditor))]
         #endregion

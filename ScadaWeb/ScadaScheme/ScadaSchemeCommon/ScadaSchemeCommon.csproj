@@ -90,6 +90,7 @@
     <Compile Include="Model\PropertyGrid\CnlFilterEditor.cs" />
     <Compile Include="Model\PropertyGrid\CollectionConverter.cs" />
     <Compile Include="Model\PropertyGrid\ColorEditor.cs" />
+    <Compile Include="Model\PropertyGrid\ExpandableObjectConverter.cs" />
     <Compile Include="Model\PropertyGrid\ImageConditionEditor.cs" />
     <Compile Include="Model\PropertyGrid\ConditionEditor.cs" />
     <Compile Include="Model\PropertyGrid\DescriptionAttribute.cs" />

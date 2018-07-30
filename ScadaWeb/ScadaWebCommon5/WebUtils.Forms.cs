@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,10 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2018
  */
 
+using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -63,7 +64,15 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Отобразить сообщение на панели
+        /// Отобразить текст исключения на панели
+        /// </summary>
+        public static void ShowAlert(this Panel pnlMessage, Exception ex)
+        {
+            pnlMessage.ShowAlert((ex.InnerException ?? ex).Message);
+        }
+
+        /// <summary>
+        /// Сделать видимым сообщение на панели
         /// </summary>
         public static void ShowAlert(this Panel pnlMessage, Label lblMessage)
         {

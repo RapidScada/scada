@@ -111,10 +111,20 @@ namespace Scada.Web.Plugins.Scheme
             if (!rights.ViewRight)
                 Response.Redirect(UrlTemplates.NoView);
 
-            // загрузка представления в кеш, чтобы проверить, что оно доступно, присвоить метку
-            // и обеспечить возможность получения данных входных каналов через API,
-            // ошибка будет записана в журнал приложения
-            SchemeView schemeView = appData.ViewCache.GetView<SchemeView>(viewID);
+            // проверка схемы на ошибки, если она уже содержится в кэше
+            if (appData.ViewCache.GetViewFromCache(viewID) is SchemeView schemeView && 
+                schemeView.LoadErrors.Count > 0)
+            {
+                // удаление представления с ошибками из кэша для повторной загрузки
+                appData.ViewCache.Cache.RemoveItem(viewID);
+                schemeView = null;
+            }
+
+            // получение актуальной схемы из кэша или от сервера, 
+            // чтобы проверить, что представление доступно, присвоить метку и 
+            // обеспечить возможность получения данных входных каналов через API,
+            // возможные ошибки записываются в журнал приложения
+            schemeView = appData.ViewCache.GetView<SchemeView>(viewID);
             if (schemeView == null)
                 Response.Redirect(UrlTemplates.NoView);
             else

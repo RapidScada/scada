@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2017
+ * Modified : 2018
  */
 
 using System;
@@ -307,6 +307,17 @@ namespace Scada
                 }
 
                 LastRemoveDT = nowDT;
+            }
+        }
+
+        /// <summary>
+        /// Удалить элемент по ключу
+        /// </summary>
+        public void RemoveItem(TKey key)
+        {
+            lock (this)
+            {
+                items.Remove(key);
             }
         }
 

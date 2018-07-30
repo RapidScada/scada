@@ -18,6 +18,7 @@
     <script type="text/javascript" src="../../js/api/eventtypes.js"></script>
     <script type="text/javascript" src="../../js/api/viewhub.js"></script>
     <script type="text/javascript" src="../../js/controls/notifier.js"></script>
+    <script type="text/javascript" src="../../js/controls/popup.js"></script>
     <script type="text/javascript" src="js/schemecommon.js"></script>
     <script type="text/javascript" src="js/schememodel.js"></script>
     <script type="text/javascript" src="js/schemerender.js"></script>
