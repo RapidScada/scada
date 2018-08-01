@@ -31,11 +31,19 @@
     <DocumentationFile>bin\Release\ScadaAdminCommon.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Log">
+      <HintPath>..\..\..\Log\bin\Release\Log.dll</HintPath>
+    </Reference>
+    <Reference Include="ScadaData">
+      <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminUtils.cs" />
+    <Compile Include="Project\ConfigBase.cs" />
+    <Compile Include="Project\ScadaProject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
