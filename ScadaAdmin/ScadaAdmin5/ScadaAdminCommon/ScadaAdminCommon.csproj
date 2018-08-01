@@ -43,6 +43,8 @@
   <ItemGroup>
     <Compile Include="AdminUtils.cs" />
     <Compile Include="Project\ConfigBase.cs" />
+    <Compile Include="Project\Interface.cs" />
+    <Compile Include="Project\Machine.cs" />
     <Compile Include="Project\ScadaProject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
