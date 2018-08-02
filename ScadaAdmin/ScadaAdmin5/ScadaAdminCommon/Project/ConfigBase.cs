@@ -23,6 +23,7 @@
  * Modified : 2018
  */
 
+using Scada.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -35,5 +36,14 @@ namespace Scada.Admin.Project
     /// </summary>
     public class ConfigBase
     {
+        /// <summary>
+        /// Gets devices
+        /// </summary>
+        public List<Device> Devices { get; protected set; }
+
+        /// <summary>
+        /// Gets objects (locations)
+        /// </summary>
+        public List<Obj> Objects { get; protected set; }
     }
 }

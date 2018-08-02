@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaAdminCommon
- * Summary  : A computer where the applications run
+ * Summary  : Represents a system instance that consists of one or more applications
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
@@ -32,10 +32,24 @@ using System.Threading.Tasks;
 namespace Scada.Admin.Project
 {
     /// <summary>
-    /// A computer where the applications run
-    /// <para>Компьютер, на котором выполняются приложения</para>
+    /// Represents a system instance that consists of one or more applications
+    /// <para>Представляет экземпляр системы, состоящий из одного или нескольких приложений</para>
     /// </summary>
-    public class Machine
+    public class Instance
     {
+        /// <summary>
+        /// Gets or sets the object represents the Server application
+        /// </summary>
+        public ServerApp ServerApp { get; set; }
+
+        /// <summary>
+        /// Gets or sets the object represents the Communicator application
+        /// </summary>
+        public CommApp CommApp { get; set; }
+
+        /// <summary>
+        /// Gets or sets the object represents the Webstation application
+        /// </summary>
+        public WebApp WebApp { get; set; }
     }
 }

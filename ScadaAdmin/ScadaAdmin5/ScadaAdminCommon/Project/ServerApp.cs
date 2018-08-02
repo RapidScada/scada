@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaAdminCommon
- * Summary  : Represents a project of a configuration
+ * Summary  : Represents the Server application
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
@@ -25,40 +25,21 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Scada.Admin.Project
 {
     /// <summary>
-    /// Represents a project of a configuration
-    /// <para>Представляет проект конфигурации</para>
+    /// Represents the Server application
+    /// <para>Представляет приложение Сервер</para>
     /// </summary>
-    public class ScadaProject
+    public class ServerApp
     {
         /// <summary>
-        /// Initializes a new instance of the class
+        /// Gets the settings of the application
         /// </summary>
-        public ScadaProject()
-        {
-            ConfigBase = new ConfigBase();
-            Interface = new Interface();
-            Instances = new List<Instance>();
-        }
-
-
-        /// <summary>
-        /// Gets the configuration database
-        /// </summary>
-        public ConfigBase ConfigBase { get; protected set; }
-
-        /// <summary>
-        /// Gets the interface metadata
-        /// </summary>
-        public Interface Interface { get; protected set; }
-
-        /// <summary>
-        /// Gets the instances including the appropriate settings of the applications
-        /// </summary>
-        public List<Instance> Instances { get; protected set; }
+        public Server.Settings Settings { get; protected set; }
     }
 }
