@@ -23,23 +23,39 @@
  * Modified : 2018
  */
 
-using Scada.Admin.App;
+using Scada.Admin.App.Code;
+using Scada.Admin.App.Forms;
+using Scada.UI;
 using System;
+using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Scada.Admin
 {
     static class Program
     {
+        private static AppData appData; // common data of the application
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()
         {
+            appData = new AppData();
+            appData.Init(Path.GetDirectoryName(Application.ExecutablePath));
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FrmMain());
+            Application.ThreadException += Application_ThreadException;
+            Application.Run(new FrmMain(appData));
+        }
+
+        private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
+        {
+            appData.Log.WriteException(e.Exception, CommonPhrases.UnhandledException);
+            ScadaUiUtils.ShowError(CommonPhrases.UnhandledException + ":" + Environment.NewLine + e.Exception.Message);
         }
     }
 }

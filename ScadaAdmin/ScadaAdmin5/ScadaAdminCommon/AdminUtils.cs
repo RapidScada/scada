@@ -34,6 +34,6 @@ namespace Scada.Admin
         /// <summary>
         /// Version of Administrator
         /// </summary>
-        public const string AppVersion = "5.1.0.4";
+        public const string AppVersion = "5.5.0.0";
     }
 }

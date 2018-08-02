@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminUtils.cs" />
+    <Compile Include="AppDirs.cs" />
     <Compile Include="Project\ConfigBase.cs" />
     <Compile Include="Project\Interface.cs" />
     <Compile Include="Project\Instance.cs" />

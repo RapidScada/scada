@@ -23,8 +23,6 @@
  * Modified : 2018
  */
 
-using System;
-using System.Collections.Generic;
 using System.Text;
 using Utils;
 
@@ -34,27 +32,28 @@ namespace Scada.Admin.App.Code
     /// Common data of the application
     /// <para>Общие данные приложения</para>
     /// </summary>
-    internal sealed class AppData
+    public sealed class AppData
     {
-        private static readonly AppData appDataInstance; // the instance of the AppData class
+        /// <summary>
+        /// Short name of the application log file
+        /// </summary>
+        private const string LogFileName = "ScadaAdmin.log";
 
 
         /// <summary>
-        /// Initializes the class
+        /// Initializes a new instance of the class
         /// </summary>
-        static AppData()
+        public AppData()
         {
-            appDataInstance = new AppData();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the class and prevents creating objects of the class from outside
-        /// </summary>
-        private AppData()
-        {
+            AppDirs = new AppDirs();
             Log = new Log(Log.Formats.Full);
         }
 
+
+        /// <summary>
+        /// Gets the application directories
+        /// </summary>
+        public AppDirs AppDirs { get; private set; }
 
         /// <summary>
         /// Получить журнал приложения
@@ -63,11 +62,29 @@ namespace Scada.Admin.App.Code
 
 
         /// <summary>
-        /// Gets the instance of the common data
+        /// Initialize the common data
         /// </summary>
-        public static AppData GetInstance()
+        public void Init(string exeDir)
         {
-            return appDataInstance;
+            AppDirs.Init(exeDir);
+
+            Log.FileName = AppDirs.LogDir + LogFileName;
+            Log.Encoding = Encoding.UTF8;
+            Log.WriteBreak();
+            Log.WriteAction(string.Format(Localization.UseRussian ?
+                    "Администратор {0} запущен" :
+                    "Administrator {0} is started", AdminUtils.AppVersion));
+        }
+
+        /// <summary>
+        /// Make finalization steps
+        /// </summary>
+        public void FinalizeApp()
+        {
+            Log.WriteAction(Localization.UseRussian ?
+                "Работа Администратора завершена" :
+                "Administrator is shutdown");
+            Log.WriteBreak();
         }
     }
 }

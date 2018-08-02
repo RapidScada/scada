@@ -35,6 +35,10 @@
     <Reference Include="Log">
       <HintPath>..\..\..\Log\Log\bin\Release\Log.dll</HintPath>
     </Reference>
+    <Reference Include="ScadaData, Version=5.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -51,6 +55,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\FrmMain.resx">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -80,6 +87,16 @@
       <Project>{A44976DE-7907-45F3-BBA3-137C2F5E120F}</Project>
       <Name>ScadaAdminCommon</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\ScadaData\ScadaData\Lang\ScadaData.en-GB.xml">
+      <Link>Lang\ScadaData.en-GB.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\ScadaData\ScadaData\Lang\ScadaData.ru-RU.xml">
+      <Link>Lang\ScadaData.ru-RU.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
