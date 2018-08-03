@@ -16,67 +16,48 @@
  * 
  * Product  : Rapid SCADA
  * Module   : Administrator
- * Summary  : Common data of the application
+ * Summary  : Represents an object associated with a tree node
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
  * Modified : 2018
  */
 
-using System.Text;
-using Utils;
+using System;
+using System.Windows.Forms;
 
 namespace Scada.Admin.App.Code
 {
     /// <summary>
-    /// Common data of the application
-    /// <para>Общие данные приложения</para>
+    /// Represents an object associated with a tree node
+    /// <para>Представляет объект, связанный с узлом дерева</para>
     /// </summary>
-    public sealed class AppData
+    internal class TreeNodeTag
     {
-        /// <summary>
-        /// Short name of the application error log file
-        /// </summary>
-        private const string ErrFileName = "ScadaAdmin.err";
-
-
         /// <summary>
         /// Initializes a new instance of the class
         /// </summary>
-        public AppData()
+        public TreeNodeTag()
         {
-            AppDirs = new AppDirs();
-            ErrLog = new Log(Log.Formats.Full);
+            FormType = null;
+            Arguments = null;
+            ExistingForm = null;
         }
 
 
         /// <summary>
-        /// Gets the application directories
+        /// Gets or sets the type of form to create
         /// </summary>
-        public AppDirs AppDirs { get; private set; }
+        public Type FormType { get; set; }
 
         /// <summary>
-        /// Gets the application error log
+        /// Gets or sets the form creation arguments
         /// </summary>
-        public Log ErrLog { get; private set; }
-
+        public object Arguments { get; set; }
 
         /// <summary>
-        /// Initialize the common data
+        /// Gets or sets a form that already exists
         /// </summary>
-        public void Init(string exeDir)
-        {
-            AppDirs.Init(exeDir);
-
-            ErrLog.FileName = AppDirs.LogDir + ErrFileName;
-            ErrLog.Encoding = Encoding.UTF8;
-        }
-
-        /// <summary>
-        /// Make finalization steps
-        /// </summary>
-        public void FinalizeApp()
-        {
-        }
+        public Form ExistingForm { get; set; }
     }
 }

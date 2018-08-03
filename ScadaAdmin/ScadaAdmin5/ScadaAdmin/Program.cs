@@ -54,7 +54,7 @@ namespace Scada.Admin
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
-            appData.Log.WriteException(e.Exception, CommonPhrases.UnhandledException);
+            appData.ErrLog.WriteException(e.Exception, CommonPhrases.UnhandledException);
             ScadaUiUtils.ShowError(CommonPhrases.UnhandledException + ":" + Environment.NewLine + e.Exception.Message);
         }
     }

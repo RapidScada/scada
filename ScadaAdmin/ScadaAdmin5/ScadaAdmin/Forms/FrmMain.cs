@@ -29,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,6 +44,23 @@ namespace Scada.Admin.App.Forms
     /// </summary>
     public partial class FrmMain : Form
     {
+        /// <summary>
+        /// Hyperlink to the documentation in English
+        /// </summary>
+        private const string DocEnUrl = "http://doc.rapidscada.net/content/en/";
+        /// <summary>
+        /// Hyperlink to the documentation in Russian
+        /// </summary>
+        private const string DocRuUrl = "http://doc.rapidscada.net/content/ru/";
+        /// <summary>
+        /// Hyperlink to the support in English
+        /// </summary>
+        private const string SupportEnUrl = "https://forum.rapidscada.org/";
+        /// <summary>
+        /// Hyperlink to the support in Russian
+        /// </summary>
+        private const string SupportRuUrl = "https://forum.rapidscada.ru/";
+
         private AppData appData;  // common data of the application
         private readonly Log log; // application log
 
@@ -62,7 +80,7 @@ namespace Scada.Admin.App.Forms
             : this()
         {
             this.appData = appData ?? throw new ArgumentNullException("appData");
-            log = appData.Log;
+            log = appData.ErrLog;
         }
 
 
@@ -88,10 +106,67 @@ namespace Scada.Admin.App.Forms
             }
         }
 
+        /// <summary>
+        /// Fill the explorer tree according to the opened project
+        /// </summary>
+        private void FillTreeView()
+        {
+            tvExplorer.BeginUpdate();
+            TreeNode node1 = new TreeNode("Root");
+            tvExplorer.Nodes.Add(node1);
+
+            TreeNode node2 = new TreeNode("Child 1");
+            node2.Tag = new TreeNodeTag()
+            {
+                FormType = typeof(FrmBaseTable)
+            };
+            node1.Nodes.Add(node2);
+
+            TreeNode node3 = new TreeNode("Child 2");
+            node3.Tag = new TreeNodeTag()
+            {
+                FormType = typeof(FrmBaseTable)
+            };
+            node1.Nodes.Add(node3);
+
+            node1.Expand();
+            tvExplorer.EndUpdate();
+        }
+
+        /// <summary>
+        /// Execute an action related to the node
+        /// </summary>
+        private void ExecNodeAction(TreeNodeTag tag)
+        {
+            if (tag.ExistingForm == null)
+            {
+                if (tag.FormType != null)
+                {
+                    // create a new form
+                    object formObj = tag.Arguments == null ? 
+                        Activator.CreateInstance(tag.FormType) :
+                        Activator.CreateInstance(tag.FormType, tag.Arguments);
+
+                    // display the form
+                    if (formObj is Form form)
+                    {
+                        tag.ExistingForm = form;
+                        wctrlMain.AddForm(form, "", null);
+                    }
+                }
+            }
+            else
+            {
+                // activate the existing form
+                wctrlMain.ActivateForm(tag.ExistingForm);
+            }
+        }
+
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
             LocalizeForm();
+            FillTreeView();
         }
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -102,6 +177,81 @@ namespace Scada.Admin.App.Forms
         private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
         {
             appData.FinalizeApp();
+        }
+
+
+        private void tvExplorer_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            //MessageBox.Show(e.Clicks.ToString());
+        }
+
+        private void tvExplorer_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left && e.Node.Tag is TreeNodeTag tag)
+                ExecNodeAction(tag);
+        }
+
+
+        private void miFileNew_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void miFileOpen_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void miFileSave_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void miFileSaveAs_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void miFileExit_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void miEditCut_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void miEditCopy_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void miEditPaste_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void miToolsOptions_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void miHelpDoc_Click(object sender, EventArgs e)
+        {
+            // open the documentation
+            Process.Start(Localization.UseRussian ? DocRuUrl : DocEnUrl);
+        }
+
+        private void miHelpSupport_Click(object sender, EventArgs e)
+        {
+            // open the support forum
+            Process.Start(Localization.UseRussian ? SupportRuUrl : SupportEnUrl);
+        }
+
+        private void miHelpAbout_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
