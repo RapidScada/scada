@@ -27,37 +27,34 @@ using Scada.Admin.App.Code;
 using Scada.UI;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq;
 using System.Windows.Forms;
 using Utils;
+using WinControl;
 
 namespace Scada.Admin.App.Forms
 {
     /// <summary>
-    /// Main form of the application
-    /// <para>Главная форма приложения</para>
+    /// Main form of the application.
+    /// <para>Главная форма приложения.</para>
     /// </summary>
     public partial class FrmMain : Form
     {
         /// <summary>
-        /// Hyperlink to the documentation in English
+        /// Hyperlink to the documentation in English.
         /// </summary>
         private const string DocEnUrl = "http://doc.rapidscada.net/content/en/";
         /// <summary>
-        /// Hyperlink to the documentation in Russian
+        /// Hyperlink to the documentation in Russian.
         /// </summary>
         private const string DocRuUrl = "http://doc.rapidscada.net/content/ru/";
         /// <summary>
-        /// Hyperlink to the support in English
+        /// Hyperlink to the support in English.
         /// </summary>
         private const string SupportEnUrl = "https://forum.rapidscada.org/";
         /// <summary>
-        /// Hyperlink to the support in Russian
+        /// Hyperlink to the support in Russian.
         /// </summary>
         private const string SupportRuUrl = "https://forum.rapidscada.ru/";
 
@@ -66,7 +63,7 @@ namespace Scada.Admin.App.Forms
 
 
         /// <summary>
-        /// Initializes a new instance of the class
+        /// Initializes a new instance of the class.
         /// </summary>
         private FrmMain()
         {
@@ -74,7 +71,7 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
-        /// Initializes a new instance of the class
+        /// Initializes a new instance of the class.
         /// </summary>
         public FrmMain(AppData appData)
             : this()
@@ -85,7 +82,7 @@ namespace Scada.Admin.App.Forms
 
 
         /// <summary>
-        /// Apply localization to the form
+        /// Applies localization to the form.
         /// </summary>
         private void LocalizeForm()
         {
@@ -107,7 +104,7 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
-        /// Fill the explorer tree according to the opened project
+        /// Fills the explorer tree according to the opened project.
         /// </summary>
         private void FillTreeView()
         {
@@ -134,32 +131,49 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
-        /// Execute an action related to the node
+        /// Executes an action related to the node.
         /// </summary>
-        private void ExecNodeAction(TreeNodeTag tag)
+        private void ExecNodeAction(TreeNode treeNode)
         {
-            if (tag.ExistingForm == null)
+            if (treeNode.Tag is TreeNodeTag tag)
             {
-                if (tag.FormType != null)
+                if (tag.ExistingForm == null)
                 {
-                    // create a new form
-                    object formObj = tag.Arguments == null ? 
-                        Activator.CreateInstance(tag.FormType) :
-                        Activator.CreateInstance(tag.FormType, tag.Arguments);
-
-                    // display the form
-                    if (formObj is Form form)
+                    if (tag.FormType != null)
                     {
-                        tag.ExistingForm = form;
-                        wctrlMain.AddForm(form, "", null);
+                        // create a new form
+                        object formObj = tag.Arguments == null ?
+                            Activator.CreateInstance(tag.FormType) :
+                            Activator.CreateInstance(tag.FormType, tag.Arguments);
+
+                        // display the form
+                        if (formObj is Form form)
+                        {
+                            tag.ExistingForm = form;
+                            wctrlMain.AddForm(form, "", null, treeNode);
+                        }
                     }
                 }
+                else
+                {
+                    // activate the existing form
+                    wctrlMain.ActivateForm(tag.ExistingForm);
+                }
             }
-            else
+        }
+
+        /// <summary>
+        /// Finds a tree node tag that relates to the specified child form.
+        /// </summary>
+        private TreeNodeTag FindNodeTag(Form childForm)
+        {
+            foreach (TreeNode node in TreeViewUtils.IterateNodes(tvExplorer.Nodes))
             {
-                // activate the existing form
-                wctrlMain.ActivateForm(tag.ExistingForm);
+                if (node.Tag is TreeNodeTag tag && tag.ExistingForm == childForm)
+                    return tag;
             }
+
+            return null;
         }
 
 
@@ -187,8 +201,26 @@ namespace Scada.Admin.App.Forms
 
         private void tvExplorer_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            if (e.Button == MouseButtons.Left && e.Node.Tag is TreeNodeTag tag)
-                ExecNodeAction(tag);
+            if (e.Button == MouseButtons.Left)
+                ExecNodeAction(e.Node);
+        }
+
+        private void wctrlMain_ChildFormClosed(object sender, ChildFormClosedEventArgs e)
+        {
+            // clear the form pointer of the node
+            TreeNodeTag nodeTag;
+
+            if (e.ChildForm is IChildForm childForm)
+            {
+                nodeTag = childForm.ChildFormTag.TreeNode.Tag as TreeNodeTag;
+            }
+            else
+            {
+                nodeTag = FindNodeTag(e.ChildForm);
+            }
+
+            if (nodeTag != null)
+                nodeTag.ExistingForm = null;
         }
 
 
