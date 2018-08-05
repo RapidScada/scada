@@ -336,14 +336,9 @@ namespace ScadaAdmin
 
                     if (frmTable != null)
                     {
-                        IWinControllable itfWin = frmTable as IWinControllable;
-                        itfWin.WinInfo = new WinInfo();
-                        itfWin.WinInfo.TreeNode = node;
-
                         frmTable.FormClosed += ChildFormClosed;
                         nodeInfo.Form = frmTable;
-
-                        winControl.AddForm(frmTable, "", ilTree.Images[imageKey]);
+                        winControl.AddForm(frmTable, "", ilTree.Images[imageKey], node);
                     }
                 }
                 else
@@ -360,8 +355,8 @@ namespace ScadaAdmin
         private void ChildFormClosed(object sender, FormClosedEventArgs e)
         {
             // очистка ссылки на форму, связанную с узлом дерева
-            IWinControllable itfWin = sender as IWinControllable;
-            TreeNode treeNode = itfWin == null || itfWin.WinInfo == null ? null : itfWin.WinInfo.TreeNode;
+            TreeNode treeNode = sender is IChildForm childForm ? childForm.ChildFormTag?.TreeNode : null;
+
             if (treeNode == null)
             {
                 foreach (TreeNode node in allNodes)
@@ -376,8 +371,7 @@ namespace ScadaAdmin
             }
             else
             {
-                NodeInfo nodeInfo = treeNode.Tag as NodeInfo;
-                if (nodeInfo != null)
+                if (treeNode.Tag is NodeInfo nodeInfo)
                     nodeInfo.Form = null;
             }
         }
