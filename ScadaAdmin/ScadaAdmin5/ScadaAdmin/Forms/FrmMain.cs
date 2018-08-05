@@ -24,6 +24,7 @@
  */
 
 using Scada.Admin.App.Code;
+using Scada.Admin.Project;
 using Scada.UI;
 using System;
 using System.Collections.Generic;
@@ -58,8 +59,9 @@ namespace Scada.Admin.App.Forms
         /// </summary>
         private const string SupportRuUrl = "https://forum.rapidscada.ru/";
 
-        private AppData appData;  // common data of the application
-        private readonly Log log; // application log
+        private readonly AppData appData; // common data of the application
+        private readonly Log log;         // application log
+        private ScadaProject project;     // project to work on
 
 
         /// <summary>
@@ -78,6 +80,7 @@ namespace Scada.Admin.App.Forms
         {
             this.appData = appData ?? throw new ArgumentNullException("appData");
             log = appData.ErrLog;
+            project = null;
         }
 
 
