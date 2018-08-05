@@ -465,15 +465,15 @@ namespace Scada.UI
 
 
         /// <summary>
-        /// Получить выбранный в дереве объект справочника
+        /// Получить объект выбранного узла дерева
         /// </summary>
         public static object GetSelectedObject(this TreeView treeView)
         {
-            return treeView.SelectedNode == null ? null : treeView.SelectedNode.Tag;
+            return treeView.SelectedNode?.Tag;
         }
 
         /// <summary>
-        /// Получить выбранный в дереве объект справочника
+        /// Обновить текст выбранного узла дерева в соответствии со строковым представленем его объекта
         /// </summary>
         public static void UpdateSelectedNodeText(this TreeView treeView)
         {
@@ -488,6 +488,23 @@ namespace Scada.UI
         public static void SetImageKey(this TreeNode treeNode, string imageKey)
         {
             treeNode.ImageKey = treeNode.SelectedImageKey = imageKey;
+        }
+
+
+        /// <summary>
+        /// Рекурсивный обход узлов дерева
+        /// </summary>
+        public static IEnumerable<TreeNode> IterateNodes(TreeNodeCollection nodes)
+        {
+            foreach (TreeNode node in nodes)
+            {
+                yield return node;
+
+                foreach (TreeNode childNode in IterateNodes(node.Nodes))
+                {
+                    yield return childNode;
+                }
+            }
         }
     }
 }
