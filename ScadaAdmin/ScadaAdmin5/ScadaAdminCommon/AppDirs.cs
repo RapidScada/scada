@@ -28,13 +28,13 @@ using System.IO;
 namespace Scada.Admin
 {
     /// <summary>
-    /// Application directories
-    /// <para>Директории приложения</para>
+    /// Application directories.
+    /// <para>Директории приложения.</para>
     /// </summary>
     public class AppDirs
     {
         /// <summary>
-        /// Initializes a new instance of the class
+        /// Initializes a new instance of the class.
         /// </summary>
         public AppDirs()
         {
@@ -46,28 +46,28 @@ namespace Scada.Admin
 
 
         /// <summary>
-        /// Gets the directory of the executable file
+        /// Gets the directory of the executable file.
         /// </summary>
         public string ExeDir { get; protected set; }
 
         /// <summary>
-        /// Gets the directory of the application configuration
+        /// Gets the directory of the application configuration.
         /// </summary>
         public string ConfigDir { get; protected set; }
 
         /// <summary>
-        /// Gets the directory of the language files
+        /// Gets the directory of the language files.
         /// </summary>
         public string LangDir { get; protected set; }
 
         /// <summary>
-        /// Gets the directory of the log files
+        /// Gets the directory of the log files.
         /// </summary>
         public string LogDir { get; protected set; }
 
 
         /// <summary>
-        /// Initializes the directories based on the directory of the executable file
+        /// Initializes the directories based on the directory of the executable file.
         /// </summary>
         public void Init(string exeDir)
         {

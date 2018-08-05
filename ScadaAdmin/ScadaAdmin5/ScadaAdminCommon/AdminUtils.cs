@@ -26,13 +26,13 @@
 namespace Scada.Admin
 {
     /// <summary>
-    /// The class contains utility methods for Administrator and its libraries
-    /// <para>Класс, содержащий вспомогательные методы для Администратора и его библиотек</para>
+    /// The class contains utility methods for Administrator and its libraries.
+    /// <para>Класс, содержащий вспомогательные методы для Администратора и его библиотек.</para>
     /// </summary>
     public static class AdminUtils
     {
         /// <summary>
-        /// Version of Administrator
+        /// Version of Administrator.
         /// </summary>
         public const string AppVersion = "5.5.0.0";
     }

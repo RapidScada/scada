@@ -29,19 +29,19 @@ using Utils;
 namespace Scada.Admin.App.Code
 {
     /// <summary>
-    /// Common data of the application
-    /// <para>Общие данные приложения</para>
+    /// Common data of the application.
+    /// <para>Общие данные приложения.</para>
     /// </summary>
     public sealed class AppData
     {
         /// <summary>
-        /// Short name of the application error log file
+        /// Short name of the application error log file.
         /// </summary>
         private const string ErrFileName = "ScadaAdmin.err";
 
 
         /// <summary>
-        /// Initializes a new instance of the class
+        /// Initializes a new instance of the class.
         /// </summary>
         public AppData()
         {
@@ -51,18 +51,18 @@ namespace Scada.Admin.App.Code
 
 
         /// <summary>
-        /// Gets the application directories
+        /// Gets the application directories.
         /// </summary>
         public AppDirs AppDirs { get; private set; }
 
         /// <summary>
-        /// Gets the application error log
+        /// Gets the application error log.
         /// </summary>
         public Log ErrLog { get; private set; }
 
 
         /// <summary>
-        /// Initialize the common data
+        /// Initializes the common data.
         /// </summary>
         public void Init(string exeDir)
         {
@@ -73,7 +73,7 @@ namespace Scada.Admin.App.Code
         }
 
         /// <summary>
-        /// Make finalization steps
+        /// Makes finalization steps.
         /// </summary>
         public void FinalizeApp()
         {

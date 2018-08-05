@@ -29,13 +29,13 @@ using System.Windows.Forms;
 namespace Scada.Admin.App.Code
 {
     /// <summary>
-    /// Represents an object associated with a tree node
-    /// <para>Представляет объект, связанный с узлом дерева</para>
+    /// Represents an object associated with a tree node.
+    /// <para>Представляет объект, связанный с узлом дерева.</para>
     /// </summary>
     internal class TreeNodeTag
     {
         /// <summary>
-        /// Initializes a new instance of the class
+        /// Initializes a new instance of the class.
         /// </summary>
         public TreeNodeTag()
         {
@@ -46,17 +46,17 @@ namespace Scada.Admin.App.Code
 
 
         /// <summary>
-        /// Gets or sets the type of form to create
+        /// Gets or sets the type of form to create.
         /// </summary>
         public Type FormType { get; set; }
 
         /// <summary>
-        /// Gets or sets the form creation arguments
+        /// Gets or sets the form creation arguments.
         /// </summary>
         public object Arguments { get; set; }
 
         /// <summary>
-        /// Gets or sets a form that already exists
+        /// Gets or sets a form that already exists.
         /// </summary>
         public Form ExistingForm { get; set; }
     }
