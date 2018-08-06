@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             this.msMain = new System.Windows.Forms.MenuStrip();
             this.miFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,6 +57,7 @@
             this.splVert = new System.Windows.Forms.Splitter();
             this.pnlRight = new System.Windows.Forms.Panel();
             this.wctrlMain = new WinControl.WinControl();
+            this.ilExplorer = new System.Windows.Forms.ImageList(this.components);
             this.msMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.pnlLeft.SuspendLayout();
@@ -266,8 +268,12 @@
             // 
             this.tvExplorer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tvExplorer.HideSelection = false;
+            this.tvExplorer.ImageIndex = 0;
+            this.tvExplorer.ImageList = this.ilExplorer;
             this.tvExplorer.Location = new System.Drawing.Point(0, 0);
             this.tvExplorer.Name = "tvExplorer";
+            this.tvExplorer.SelectedImageIndex = 0;
+            this.tvExplorer.ShowRootLines = false;
             this.tvExplorer.Size = new System.Drawing.Size(250, 340);
             this.tvExplorer.TabIndex = 0;
             this.tvExplorer.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvExplorer_NodeMouseClick);
@@ -307,6 +313,20 @@
             this.wctrlMain.Size = new System.Drawing.Size(431, 340);
             this.wctrlMain.TabIndex = 0;
             this.wctrlMain.ChildFormClosed += new System.EventHandler<WinControl.ChildFormClosedEventArgs>(this.wctrlMain_ChildFormClosed);
+            // 
+            // ilExplorer
+            // 
+            this.ilExplorer.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilExplorer.ImageStream")));
+            this.ilExplorer.TransparentColor = System.Drawing.Color.Transparent;
+            this.ilExplorer.Images.SetKeyName(0, "comm.png");
+            this.ilExplorer.Images.SetKeyName(1, "database.png");
+            this.ilExplorer.Images.SetKeyName(2, "folder_closed.png");
+            this.ilExplorer.Images.SetKeyName(3, "folder_open.png");
+            this.ilExplorer.Images.SetKeyName(4, "interface.png");
+            this.ilExplorer.Images.SetKeyName(5, "project.png");
+            this.ilExplorer.Images.SetKeyName(6, "server.png");
+            this.ilExplorer.Images.SetKeyName(7, "table.png");
+            this.ilExplorer.Images.SetKeyName(8, "instance.png");
             // 
             // FrmMain
             // 
@@ -367,6 +387,7 @@
         private System.Windows.Forms.ToolStripButton btnFileNew;
         private System.Windows.Forms.TreeView tvExplorer;
         private WinControl.WinControl wctrlMain;
+        private System.Windows.Forms.ImageList ilExplorer;
     }
 }
 
