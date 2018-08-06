@@ -61,6 +61,7 @@ namespace Scada.Admin.App.Forms
 
         private readonly AppData appData; // common data of the application
         private readonly Log log;         // application log
+        private readonly ExplorerBuilder explorerBuilder; // object to manipulate the explorer tree
         private ScadaProject project;     // project to work on
 
 
@@ -80,6 +81,7 @@ namespace Scada.Admin.App.Forms
         {
             this.appData = appData ?? throw new ArgumentNullException("appData");
             log = appData.ErrLog;
+            explorerBuilder = new ExplorerBuilder(tvExplorer);
             project = null;
         }
 
@@ -104,33 +106,6 @@ namespace Scada.Admin.App.Forms
             {
                 log.WriteError(errMsg);
             }
-        }
-
-        /// <summary>
-        /// Fills the explorer tree according to the opened project.
-        /// </summary>
-        private void FillTreeView()
-        {
-            tvExplorer.BeginUpdate();
-            TreeNode node1 = new TreeNode("Root");
-            tvExplorer.Nodes.Add(node1);
-
-            TreeNode node2 = new TreeNode("Child 1");
-            node2.Tag = new TreeNodeTag()
-            {
-                FormType = typeof(FrmBaseTable)
-            };
-            node1.Nodes.Add(node2);
-
-            TreeNode node3 = new TreeNode("Child 2");
-            node3.Tag = new TreeNodeTag()
-            {
-                FormType = typeof(FrmBaseTable)
-            };
-            node1.Nodes.Add(node3);
-
-            node1.Expand();
-            tvExplorer.EndUpdate();
         }
 
         /// <summary>
@@ -179,11 +154,20 @@ namespace Scada.Admin.App.Forms
             return null;
         }
 
+        /// <summary>
+        /// Creates and displays a new project
+        /// </summary>
+        private void CreateProject()
+        {
+            project = new ScadaProject();
+            explorerBuilder.CreateNodes(project);
+        }
+
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
             LocalizeForm();
-            FillTreeView();
+            CreateProject();
         }
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)

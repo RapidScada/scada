@@ -30,16 +30,17 @@ using System.Text;
 namespace Scada.Admin.Project
 {
     /// <summary>
-    /// Represents a project of a configuration
-    /// <para>Представляет проект конфигурации</para>
+    /// Represents a project of a configuration.
+    /// <para>Представляет проект конфигурации.</para>
     /// </summary>
     public class ScadaProject
     {
         /// <summary>
-        /// Initializes a new instance of the class
+        /// Initializes a new instance of the class.
         /// </summary>
         public ScadaProject()
         {
+            Name = "";
             ConfigBase = new ConfigBase();
             Interface = new Interface();
             Instances = new List<Instance>();
@@ -47,17 +48,22 @@ namespace Scada.Admin.Project
 
 
         /// <summary>
-        /// Gets the configuration database
+        /// Gets or sets the name of the project.
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets the configuration database.
         /// </summary>
         public ConfigBase ConfigBase { get; protected set; }
 
         /// <summary>
-        /// Gets the interface metadata
+        /// Gets the interface metadata.
         /// </summary>
         public Interface Interface { get; protected set; }
 
         /// <summary>
-        /// Gets the instances including the appropriate settings of the applications
+        /// Gets the instances including the appropriate settings of the applications.
         /// </summary>
         public List<Instance> Instances { get; protected set; }
     }
