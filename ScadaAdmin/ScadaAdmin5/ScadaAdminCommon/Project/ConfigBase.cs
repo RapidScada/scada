@@ -31,19 +31,29 @@ using System.Text;
 namespace Scada.Admin.Project
 {
     /// <summary>
-    /// The configuration database and the basis of a configuration
-    /// <para>База данных конфигурации и основа конфигурации</para>
+    /// The configuration database and the basis of a configuration.
+    /// <para>База данных конфигурации и основа конфигурации.</para>
     /// </summary>
     public class ConfigBase
     {
         /// <summary>
-        /// Gets devices
+        /// Initializes a new instance of the class.
         /// </summary>
-        public List<Device> Devices { get; protected set; }
+        public ConfigBase()
+        {
+            ObjTable = new BaseTable<Obj>("Obj", CommonPhrases.ObjTable);
+            KPTable = new BaseTable<Device>("KP", CommonPhrases.KPTable);
+        }
+
 
         /// <summary>
-        /// Gets objects (locations)
+        /// Gets the object (location) table.
         /// </summary>
-        public List<Obj> Objects { get; protected set; }
+        public BaseTable<Obj> ObjTable { get; protected set; }
+
+        /// <summary>
+        /// Gets the device table.
+        /// </summary>
+        public BaseTable<Device> KPTable { get; protected set; }
     }
 }

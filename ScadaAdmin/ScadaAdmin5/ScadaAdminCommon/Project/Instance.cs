@@ -38,6 +38,17 @@ namespace Scada.Admin.Project
     public class Instance
     {
         /// <summary>
+        /// The default instance name.
+        /// </summary>
+        public const string DefaultName = "Default";
+
+
+        /// <summary>
+        /// Gets or sets the name of the instance.
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
         /// Gets or sets the object represents the Server application
         /// </summary>
         public ServerApp ServerApp { get; set; }

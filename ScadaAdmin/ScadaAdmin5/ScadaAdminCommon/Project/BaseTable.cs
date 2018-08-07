@@ -16,64 +16,55 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaAdminCommon
- * Summary  : Represents a project of a configuration
+ * Summary  : Represents the table of the configuration database
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
  * Modified : 2018
  */
 
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Scada.Admin.Project
 {
     /// <summary>
-    /// Represents a project of a configuration.
-    /// <para>Представляет проект конфигурации.</para>
+    /// Represents the table of the configuration database.
+    /// <para>Представляет таблицу базы конфигурации.</para>
     /// </summary>
-    public class ScadaProject
+    public class BaseTable<T>
     {
         /// <summary>
-        /// The default project name.
+        /// Initializes a new instance of the class.
         /// </summary>
-        public const string DefaultName = "NewProject";
-
+        public BaseTable()
+            : this("", "")
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public ScadaProject()
+        public BaseTable(string name, string title)
         {
-            Name = DefaultName;
-            ConfigBase = new ConfigBase();
-            Interface = new Interface();
-            Instances = new List<Instance>
-            {
-                new Instance() { Name = Instance.DefaultName }
-            };
+            Name = name ?? "";
+            Title = title ?? "";
+            Rows = new List<T>();
         }
 
 
         /// <summary>
-        /// Gets or sets the name of the project.
+        /// Gets or sets the table name.
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets the configuration database.
+        /// Gets or sets the table title.
         /// </summary>
-        public ConfigBase ConfigBase { get; protected set; }
+        public string Title { get; set; }
 
         /// <summary>
-        /// Gets the interface metadata.
+        /// Gets rows.
         /// </summary>
-        public Interface Interface { get; protected set; }
-
-        /// <summary>
-        /// Gets the instances including the appropriate settings of the applications.
-        /// </summary>
-        public List<Instance> Instances { get; protected set; }
+        public List<T> Rows { get; protected set; }
     }
 }

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ScadaAdminDictionaries>
+  <Dictionary key="Scada.Admin.App.Code.ExplorerBuilder">
+    <Phrase key="BaseNode">Configuration Database</Phrase>
+    <Phrase key="InterfaceNode">Interface</Phrase>
+    <Phrase key="InstancesNode">Instances</Phrase>
+  </Dictionary>
+</ScadaAdminDictionaries>

@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\AppData.cs" />
+    <Compile Include="Code\AppPhrases.cs" />
     <Compile Include="Code\ExplorerBuilder.cs" />
     <Compile Include="Code\TreeNodeTag.cs" />
     <Compile Include="Forms\FrmBaseTable.cs">
@@ -115,6 +116,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="lamp.ico" />
+    <Content Include="Lang\ScadaAdmin.ru-RU.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Lang\ScadaAdmin.en-GB.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

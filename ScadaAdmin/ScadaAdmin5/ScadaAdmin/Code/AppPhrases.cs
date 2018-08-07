@@ -15,8 +15,8 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : ScadaAdminCommon
- * Summary  : Represents the Server application
+ * Module   : Administrator
+ * Summary  : The phrases used in the application
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
@@ -29,17 +29,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Scada.Admin.Project
+namespace Scada.Admin.App.Code
 {
     /// <summary>
-    /// Represents the Server application.
-    /// <para>Представляет приложение Сервер.</para>
+    /// The phrases used in the application.
+    /// <para>Фразы, используемые приложением.</para>
     /// </summary>
-    public class ServerApp
+    internal static class AppPhrases
     {
-        /// <summary>
-        /// Gets the settings of the application.
-        /// </summary>
-        public Server.Settings Settings { get; protected set; }
+        // Scada.Admin.App.Code.ExplorerBuilder
+        public static string BaseNode { get; private set; }
+        public static string InterfaceNode { get; private set; }
+        public static string InstancesNode { get; private set; }
+
+        public static void Init()
+        {
+            Localization.Dict dict = Localization.GetDictionary("Scada.Admin.App.Code.ExplorerBuilder");
+            BaseNode = dict.GetPhrase("BaseNode");
+            InterfaceNode = dict.GetPhrase("InterfaceNode");
+            InstancesNode = dict.GetPhrase("InstancesNode");
+        }
     }
 }

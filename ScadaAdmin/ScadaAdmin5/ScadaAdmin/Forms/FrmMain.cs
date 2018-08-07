@@ -99,13 +99,14 @@ namespace Scada.Admin.App.Forms
             if (Localization.LoadDictionaries(appData.AppDirs.LangDir, "ScadaAdmin", out errMsg))
             {
                 Translator.TranslateForm(this, "Scada.Admin.App.Forms.FrmMain");
-                //AppPhrases.Init();
                 //ofdScheme.Filter = sfdScheme.Filter = AppPhrases.SchemeFileFilter;
             }
             else
             {
                 log.WriteError(errMsg);
             }
+
+            AppPhrases.Init();
         }
 
         /// <summary>
