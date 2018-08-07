@@ -54,10 +54,10 @@
             this.ssMain = new System.Windows.Forms.StatusStrip();
             this.pnlLeft = new System.Windows.Forms.Panel();
             this.tvExplorer = new System.Windows.Forms.TreeView();
+            this.ilExplorer = new System.Windows.Forms.ImageList(this.components);
             this.splVert = new System.Windows.Forms.Splitter();
             this.pnlRight = new System.Windows.Forms.Panel();
             this.wctrlMain = new WinControl.WinControl();
-            this.ilExplorer = new System.Windows.Forms.ImageList(this.components);
             this.msMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.pnlLeft.SuspendLayout();
@@ -279,6 +279,22 @@
             this.tvExplorer.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvExplorer_NodeMouseClick);
             this.tvExplorer.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvExplorer_NodeMouseDoubleClick);
             // 
+            // ilExplorer
+            // 
+            this.ilExplorer.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilExplorer.ImageStream")));
+            this.ilExplorer.TransparentColor = System.Drawing.Color.Transparent;
+            this.ilExplorer.Images.SetKeyName(0, "comm.png");
+            this.ilExplorer.Images.SetKeyName(1, "database.png");
+            this.ilExplorer.Images.SetKeyName(2, "folder_closed.png");
+            this.ilExplorer.Images.SetKeyName(3, "folder_open.png");
+            this.ilExplorer.Images.SetKeyName(4, "instance.png");
+            this.ilExplorer.Images.SetKeyName(5, "instances.png");
+            this.ilExplorer.Images.SetKeyName(6, "interface.png");
+            this.ilExplorer.Images.SetKeyName(7, "project.png");
+            this.ilExplorer.Images.SetKeyName(8, "server.png");
+            this.ilExplorer.Images.SetKeyName(9, "table.png");
+            this.ilExplorer.Images.SetKeyName(10, "webstation.png");
+            // 
             // splVert
             // 
             this.splVert.Location = new System.Drawing.Point(250, 49);
@@ -313,20 +329,6 @@
             this.wctrlMain.Size = new System.Drawing.Size(431, 340);
             this.wctrlMain.TabIndex = 0;
             this.wctrlMain.ChildFormClosed += new System.EventHandler<WinControl.ChildFormClosedEventArgs>(this.wctrlMain_ChildFormClosed);
-            // 
-            // ilExplorer
-            // 
-            this.ilExplorer.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilExplorer.ImageStream")));
-            this.ilExplorer.TransparentColor = System.Drawing.Color.Transparent;
-            this.ilExplorer.Images.SetKeyName(0, "comm.png");
-            this.ilExplorer.Images.SetKeyName(1, "database.png");
-            this.ilExplorer.Images.SetKeyName(2, "folder_closed.png");
-            this.ilExplorer.Images.SetKeyName(3, "folder_open.png");
-            this.ilExplorer.Images.SetKeyName(4, "interface.png");
-            this.ilExplorer.Images.SetKeyName(5, "project.png");
-            this.ilExplorer.Images.SetKeyName(6, "server.png");
-            this.ilExplorer.Images.SetKeyName(7, "table.png");
-            this.ilExplorer.Images.SetKeyName(8, "instance.png");
             // 
             // FrmMain
             // 

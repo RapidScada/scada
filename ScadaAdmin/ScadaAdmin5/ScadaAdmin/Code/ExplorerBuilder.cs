@@ -75,9 +75,25 @@ namespace Scada.Admin.App.Code
                 interfaceNode.ImageKey = interfaceNode.SelectedImageKey = "interface.png";
                 projectNode.Nodes.Add(interfaceNode);
 
-                TreeNode instanceNode = new TreeNode("Instance"); // TODO: foreach
+                TreeNode instancesNode = new TreeNode("Instances"); // TODO: phrase
+                instancesNode.ImageKey = instancesNode.SelectedImageKey = "instances.png";
+                projectNode.Nodes.Add(instancesNode);
+
+                TreeNode instanceNode = new TreeNode("Default"); // TODO: foreach
                 instanceNode.ImageKey = instanceNode.SelectedImageKey = "instance.png";
-                projectNode.Nodes.Add(instanceNode);
+                instancesNode.Nodes.Add(instanceNode);
+
+                TreeNode serverNode = new TreeNode("Server");
+                serverNode.ImageKey = serverNode.SelectedImageKey = "server.png";
+                instanceNode.Nodes.Add(serverNode);
+
+                TreeNode commNode = new TreeNode("Communicator");
+                commNode.ImageKey = commNode.SelectedImageKey = "comm.png";
+                instanceNode.Nodes.Add(commNode);
+
+                TreeNode webNode = new TreeNode("Webstation");
+                webNode.ImageKey = webNode.SelectedImageKey = "webstation.png";
+                instanceNode.Nodes.Add(webNode);
 
                 //node3.Tag = new TreeNodeTag()
                 //{
