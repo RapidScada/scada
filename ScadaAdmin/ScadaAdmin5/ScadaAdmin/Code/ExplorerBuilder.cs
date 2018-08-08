@@ -27,6 +27,7 @@ using Scada.Admin.App.Forms;
 using Scada.Admin.Project;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -64,6 +65,7 @@ namespace Scada.Admin.App.Code
             sysTableNode.ImageKey = sysTableNode.SelectedImageKey = "folder_closed.png";
 
             sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.ObjTable));
+            sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.BaseTables.ObjTable));
             //sysTableNode.Nodes.Add(CreateBaseTableNode(CommonPhrases.CommLineTable));
             //sysTableNode.Nodes.Add(CreateBaseTableNode(CommonPhrases.KPTable));
             //sysTableNode.Nodes.Add(CreateBaseTableNode(CommonPhrases.InCnlTable));
@@ -102,6 +104,22 @@ namespace Scada.Admin.App.Code
             {
                 FormType = typeof(FrmBaseTable),
                 Arguments = table
+            };
+            return baseTableNode;
+        }
+
+        /// <summary>
+        /// Creates a node that represents the table of the configuration database.
+        /// </summary>
+        private TreeNode CreateBaseTableNode(DataTable dataTable)
+        {
+            BaseTableTag tableTag = dataTable.ExtendedProperties["BaseTableTag"] as BaseTableTag;
+            TreeNode baseTableNode = new TreeNode(tableTag == null ? dataTable.TableName : tableTag.Title);
+            baseTableNode.ImageKey = baseTableNode.SelectedImageKey = "table.png";
+            baseTableNode.Tag = new TreeNodeTag()
+            {
+                FormType = typeof(FrmBaseTable),
+                Arguments = dataTable
             };
             return baseTableNode;
         }

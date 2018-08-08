@@ -48,12 +48,14 @@
       <HintPath>..\..\..\ScadaWeb\ScadaWebCommon5\bin\Release\ScadaWebCommon5.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminUtils.cs" />
     <Compile Include="AppDirs.cs" />
     <Compile Include="Project\BaseTable.cs" />
+    <Compile Include="Project\BaseTableTag.cs" />
     <Compile Include="Project\ConfigBase.cs" />
     <Compile Include="Project\Interface.cs" />
     <Compile Include="Project\Instance.cs" />

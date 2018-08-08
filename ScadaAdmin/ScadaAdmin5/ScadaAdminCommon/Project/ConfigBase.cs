@@ -23,9 +23,11 @@
  * Modified : 2018
  */
 
+using Scada.Data.Configuration;
 using Scada.Data.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 
 namespace Scada.Admin.Project
@@ -48,6 +50,16 @@ namespace Scada.Admin.Project
             {
                 ObjTable.Rows.Add(new Obj() { ObjNum = i, Name = "a", Descr = "b" });
             }
+
+            BaseTables = new BaseTables();
+            BaseTables.ObjTable.ExtendedProperties["BaseTableTag"] = 
+                new BaseTableTag() { Title = CommonPhrases.ObjTable };
+            BaseTables.ObjTable.Columns.AddRange(new DataColumn[] 
+            {
+                new DataColumn("ObjNum", typeof(int)),
+                new DataColumn("Name", typeof(string)),
+                new DataColumn("Descr", typeof(string))
+            });
         }
 
 
@@ -60,5 +72,10 @@ namespace Scada.Admin.Project
         /// Gets the device table.
         /// </summary>
         public Table<Device> KPTable { get; protected set; }
+
+        /// <summary>
+        /// Gets all tables of the configuration database.
+        /// </summary>
+        public BaseTables BaseTables { get; protected set; }
     }
 }

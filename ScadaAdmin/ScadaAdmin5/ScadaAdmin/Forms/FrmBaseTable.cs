@@ -21,7 +21,8 @@ namespace Scada.Admin.App.Forms
 {
     public partial class FrmBaseTable : Form, IChildForm
     {
-        protected BaseTable table;
+        protected BaseTable baseTable;
+        protected DataTable dataTable;
 
 
         public FrmBaseTable()
@@ -29,10 +30,16 @@ namespace Scada.Admin.App.Forms
             InitializeComponent();
         }
 
-        public FrmBaseTable(BaseTable table)
+        public FrmBaseTable(BaseTable baseTable)
             : this()
         {
-            this.table = table ?? throw new ArgumentNullException("table");
+            this.baseTable = baseTable ?? throw new ArgumentNullException("baseTable");
+        }
+
+        public FrmBaseTable(DataTable dataTable)
+            : this()
+        {
+            this.dataTable = dataTable ?? throw new ArgumentNullException("dataTable");
         }
 
 
@@ -41,34 +48,47 @@ namespace Scada.Admin.App.Forms
 
         public void Save()
         {
-            DataTable testTable = new DataTable("Test");
-            testTable.Columns.Add("Col1", typeof(string));
-            testTable.Columns.Add("Col2", typeof(string));
-            for (int i = 0; i < 10000; i++)
-            {
-                DataRow row = testTable.NewRow();
-                row[0] = "test";
-                row[1] = "aaa";
-                testTable.Rows.Add(row);
-            }
-
             DateTime t0 = DateTime.UtcNow;
-            string fileName = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "Log", table.Name + ".xml");
 
-            using (XmlWriter writer = XmlWriter.Create(fileName, new XmlWriterSettings() { Indent = true }))
+            if (baseTable != null)
             {
-                testTable.WriteXml(writer);
+                string fileName = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "Log",
+                    baseTable.Name + ".xml");
+
+                baseTable.Save(fileName);
             }
-            //table.Save(fileName);
+            else if (dataTable != null)
+            {
+                string fileName = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "Log",
+                    dataTable.TableName + ".xml");
+
+                using (XmlWriter writer = XmlWriter.Create(fileName, new XmlWriterSettings() { Indent = true }))
+                {
+                    dataTable.WriteXml(writer);
+                }
+            }
+
             MessageBox.Show((DateTime.UtcNow - t0).TotalSeconds.ToString() + " sec");
         }
 
 
         private void FrmBaseTable_Load(object sender, EventArgs e)
         {
-            bindingSource.DataSource = table.Rows;
-            ColumnBuilder columnBuilder = new ColumnBuilder();
-            dataGridView.Columns.AddRange(columnBuilder.CreateColumns(table));
+            if (baseTable != null)
+            {
+                Text = baseTable.Title;
+                bindingSource.DataSource = baseTable.Rows;
+                ColumnBuilder columnBuilder = new ColumnBuilder();
+                dataGridView.Columns.AddRange(columnBuilder.CreateColumns(baseTable));
+            }
+            else if (dataTable != null)
+            {
+                Text = dataTable.TableName;
+                bindingSource.DataSource = dataTable;
+                ColumnBuilder columnBuilder = new ColumnBuilder();
+                dataGridView.Columns.AddRange(columnBuilder.CreateColumns(dataTable));
+            }
+
             ScadaUiUtils.AutoResizeColumns(dataGridView);
         }
     }

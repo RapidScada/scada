@@ -2,6 +2,7 @@
 using Scada.Data.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,6 +28,26 @@ namespace Scada.Admin.App.Code
                 throw new ArgumentNullException("table");
 
             if (table.ItemType == typeof(Obj))
+            {
+                return new DataGridViewColumn[]
+                {
+                    NewTextBoxColumn("ObjNum"),
+                    NewTextBoxColumn("Name"),
+                    NewTextBoxColumn("Descr")
+                };
+            }
+            else
+            {
+                return new DataGridViewColumn[0];
+            }
+        }
+
+        public DataGridViewColumn[] CreateColumns(DataTable dataTable)
+        {
+            if (dataTable == null)
+                throw new ArgumentNullException("dataTable");
+
+            if (dataTable.TableName == "Obj")
             {
                 return new DataGridViewColumn[]
                 {
