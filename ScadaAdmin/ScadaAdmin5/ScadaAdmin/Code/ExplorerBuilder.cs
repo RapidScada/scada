@@ -94,14 +94,14 @@ namespace Scada.Admin.App.Code
         /// <summary>
         /// Creates a node that represents the table of the configuration database.
         /// </summary>
-        private TreeNode CreateBaseTableNode<T>(BaseTable<T> baseTable)
+        private TreeNode CreateBaseTableNode(BaseTable table)
         {
-            TreeNode baseTableNode = new TreeNode(baseTable.Title);
+            TreeNode baseTableNode = new TreeNode(table.Title);
             baseTableNode.ImageKey = baseTableNode.SelectedImageKey = "table.png";
             baseTableNode.Tag = new TreeNodeTag()
             {
                 FormType = typeof(FrmBaseTable),
-                //Arguments = baseTable
+                Arguments = table
             };
             return baseTableNode;
         }

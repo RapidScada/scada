@@ -41,19 +41,24 @@ namespace Scada.Admin.Project
         /// </summary>
         public ConfigBase()
         {
-            ObjTable = new BaseTable<Obj>("Obj", CommonPhrases.ObjTable);
-            KPTable = new BaseTable<Device>("KP", CommonPhrases.KPTable);
+            ObjTable = new Table<Obj>("Obj", CommonPhrases.ObjTable);
+            KPTable = new Table<Device>("KP", CommonPhrases.KPTable);
+
+            for (int i = 1; i <= 10000; i++)
+            {
+                ObjTable.Rows.Add(new Obj() { ObjNum = i, Name = "a", Descr = "b" });
+            }
         }
 
 
         /// <summary>
         /// Gets the object (location) table.
         /// </summary>
-        public BaseTable<Obj> ObjTable { get; protected set; }
+        public Table<Obj> ObjTable { get; protected set; }
 
         /// <summary>
         /// Gets the device table.
         /// </summary>
-        public BaseTable<Device> KPTable { get; protected set; }
+        public Table<Device> KPTable { get; protected set; }
     }
 }

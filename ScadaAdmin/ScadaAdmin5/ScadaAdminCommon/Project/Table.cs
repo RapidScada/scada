@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaAdminCommon
- * Summary  : The base class of the configuration database tables
+ * Summary  : Represents the table of the configuration database with typed items
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
@@ -25,59 +25,59 @@
 
 using System;
 using System.Collections;
-using System.Xml;
-using System.Xml.Serialization;
+using System.Collections.Generic;
 
 namespace Scada.Admin.Project
 {
     /// <summary>
-    /// The base class of the configuration database tables.
-    /// <para>Базовый класс таблиц базы конфигурации.</para>
+    /// Represents the table of the configuration database with typed items.
+    /// <para>Представляет таблицу базы конфигурации с типизированными элементами.</para>
     /// </summary>
-    public abstract class BaseTable
+    public class Table<T> : BaseTable
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public BaseTable(string name, string title)
+        public Table()
+            : this("", "")
         {
-            Name = name ?? "";
-            Title = title ?? "";
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the class.
+        /// </summary>
+        public Table(string name, string title)
+            : base(name, title)
+        {
+            Items = new List<T>();
         }
 
 
         /// <summary>
-        /// Gets or sets the table name.
+        /// Get the typed items of the table.
         /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets the table title.
-        /// </summary>
-        public string Title { get; set; }
+        public List<T> Items { get; protected set; }
 
         /// <summary>
         /// Gets the type of the table items.
         /// </summary>
-        public abstract Type ItemType { get; }
+        public override Type ItemType
+        {
+            get
+            {
+                return typeof(T);
+            }
+        }
 
         /// <summary>
         /// Gets the rows.
         /// </summary>
-        public abstract IList Rows { get; }
-
-
-        /// <summary>
-        /// Saves the table to the specified file.
-        /// </summary>
-        public void Save(string fileName)
+        public override IList Rows
         {
-            XmlSerializer serializer = new XmlSerializer(Rows.GetType());
-            XmlWriterSettings writerSettings = new XmlWriterSettings() { Indent = true };
-
-            using (XmlWriter writer = XmlWriter.Create(fileName, writerSettings))
+            get
             {
-                serializer.Serialize(writer, Rows);
+                return Items as IList;
             }
         }
     }

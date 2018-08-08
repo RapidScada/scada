@@ -224,7 +224,10 @@ namespace Scada.Admin.App.Forms
 
         private void miFileSave_Click(object sender, EventArgs e)
         {
-
+            if (wctrlMain.ActiveForm is IChildForm childForm)
+            {
+                childForm.Save();
+            }
         }
 
         private void miFileSaveAs_Click(object sender, EventArgs e)
