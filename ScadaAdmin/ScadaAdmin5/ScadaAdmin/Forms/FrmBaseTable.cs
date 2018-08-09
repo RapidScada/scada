@@ -74,6 +74,23 @@ namespace Scada.Admin.App.Forms
 
         private void FrmBaseTable_Load(object sender, EventArgs e)
         {
+            /*Table<Obj> myTable = new Table<Obj>();
+            for (int i = 1; i <= 10000; i++)
+            {
+                myTable.Rows.Add(new Obj() { ObjNum = i, Name = "aa", Descr = "bb" });
+            }
+
+            BindingList<Obj> bl = new BindingList<Obj>(myTable.Items);
+            bindingSource.DataSource = bl;
+            ColumnBuilder columnBuilder = new ColumnBuilder();
+            dataGridView.Columns.AddRange(columnBuilder.CreateColumns(myTable));*/
+
+            if (AdminUtils.IsRunningOnMono)
+            {
+                // because of the bug in Mono 5.12.0.301
+                dataGridView.AllowUserToAddRows = false;
+            }
+
             if (baseTable != null)
             {
                 Text = baseTable.Title;

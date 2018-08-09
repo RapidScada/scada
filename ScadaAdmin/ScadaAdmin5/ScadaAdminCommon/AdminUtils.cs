@@ -23,6 +23,8 @@
  * Modified : 2018
  */
 
+using System;
+
 namespace Scada.Admin
 {
     /// <summary>
@@ -35,5 +37,10 @@ namespace Scada.Admin
         /// Version of Administrator.
         /// </summary>
         public const string AppVersion = "5.5.0.0";
+
+        /// <summary>
+        /// Determines that the application is running on Mono Framework.
+        /// </summary>
+        public static readonly bool IsRunningOnMono = Type.GetType("Mono.Runtime") != null;
     }
 }
