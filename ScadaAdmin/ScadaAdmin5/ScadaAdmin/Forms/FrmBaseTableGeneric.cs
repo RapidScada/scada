@@ -29,7 +29,7 @@ namespace Scada.Admin.App.Forms
             Text = baseTable.Title + " - FrmBaseTableGeneric";
             bindingSource.DataSource = baseTable.Items.ToDataTable();
             ColumnBuilder columnBuilder = new ColumnBuilder();
-            dataGridView.Columns.AddRange(columnBuilder.CreateColumns(baseTable));
+            dataGridView.Columns.AddRange(columnBuilder.CreateColumns(baseTable.ItemType));
             dataGridView.AutoResizeColumns();
         }
 

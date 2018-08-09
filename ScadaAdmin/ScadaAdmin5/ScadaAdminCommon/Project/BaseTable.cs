@@ -23,6 +23,7 @@
  * Modified : 2018
  */
 
+using System;
 using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Serialization;
@@ -63,6 +64,17 @@ namespace Scada.Admin.Project
         /// Gets or sets the table title.
         /// </summary>
         public string Title { get; set; }
+
+        /// <summary>
+        /// Gets the type of the table items.
+        /// </summary>
+        public Type ItemType
+        {
+            get
+            {
+                return typeof(T);
+            }
+        }
 
         /// <summary>
         /// Gets the table items.

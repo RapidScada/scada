@@ -23,14 +23,8 @@
  * Modified : 2018
  */
 
-using Scada.Admin.Project;
 using Scada.Data.Models;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Scada.Admin.App.Code
@@ -41,7 +35,10 @@ namespace Scada.Admin.App.Code
     /// </summary>
     internal class ColumnBuilder
     {
-        private static DataGridViewTextBoxColumn NewTextBoxColumn(string dataPropertyName)
+        /// <summary>
+        /// Creates a new column that hosts text cells.
+        /// </summary>
+        private DataGridViewTextBoxColumn NewTextBoxColumn(string dataPropertyName)
         {
             return new DataGridViewTextBoxColumn
             {
@@ -51,24 +48,29 @@ namespace Scada.Admin.App.Code
             };
         }
 
-        public DataGridViewColumn[] CreateColumns<T>(BaseTable<T> baseTable)
+        /// <summary>
+        /// Creates columns for the object table.
+        /// </summary>
+        private DataGridViewColumn[] CreateObjTableColumns()
         {
-            if (baseTable == null)
-                throw new ArgumentNullException("table");
-
-            if (typeof(T) == typeof(Obj))
+            return new DataGridViewColumn[]
             {
-                return new DataGridViewColumn[]
-                {
                     NewTextBoxColumn("ObjNum"),
                     NewTextBoxColumn("Name"),
                     NewTextBoxColumn("Descr")
-                };
-            }
+            };
+        }
+
+
+        /// <summary>
+        /// Creates columns for the specified table
+        /// </summary>
+        public DataGridViewColumn[] CreateColumns(Type itemType)
+        {
+            if (itemType == typeof(Obj))
+                return CreateObjTableColumns();
             else
-            {
                 return new DataGridViewColumn[0];
-            }
         }
     }
 }
