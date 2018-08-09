@@ -22,32 +22,12 @@ namespace Scada.Admin.App.Code
             };
         }
 
-        public DataGridViewColumn[] CreateColumns(BaseTable table)
+        public DataGridViewColumn[] CreateColumns<T>(BaseTable<T> baseTable)
         {
-            if (table == null)
+            if (baseTable == null)
                 throw new ArgumentNullException("table");
 
-            if (table.ItemType == typeof(Obj))
-            {
-                return new DataGridViewColumn[]
-                {
-                    NewTextBoxColumn("ObjNum"),
-                    NewTextBoxColumn("Name"),
-                    NewTextBoxColumn("Descr")
-                };
-            }
-            else
-            {
-                return new DataGridViewColumn[0];
-            }
-        }
-
-        public DataGridViewColumn[] CreateColumns(DataTable dataTable)
-        {
-            if (dataTable == null)
-                throw new ArgumentNullException("dataTable");
-
-            if (dataTable.TableName == "Obj")
+            if (typeof(T) == typeof(Obj))
             {
                 return new DataGridViewColumn[]
                 {

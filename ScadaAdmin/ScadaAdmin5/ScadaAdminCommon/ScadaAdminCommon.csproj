@@ -55,13 +55,11 @@
     <Compile Include="AdminUtils.cs" />
     <Compile Include="AppDirs.cs" />
     <Compile Include="Project\BaseTable.cs" />
-    <Compile Include="Project\BaseTableTag.cs" />
     <Compile Include="Project\ConfigBase.cs" />
     <Compile Include="Project\Interface.cs" />
     <Compile Include="Project\Instance.cs" />
     <Compile Include="Project\ScadaProject.cs" />
     <Compile Include="Project\CommApp.cs" />
-    <Compile Include="Project\Table.cs" />
     <Compile Include="Project\WebApp.cs" />
     <Compile Include="Project\ServerApp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

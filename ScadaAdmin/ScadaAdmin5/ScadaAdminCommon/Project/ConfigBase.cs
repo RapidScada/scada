@@ -23,12 +23,7 @@
  * Modified : 2018
  */
 
-using Scada.Data.Configuration;
 using Scada.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Text;
 
 namespace Scada.Admin.Project
 {
@@ -43,39 +38,24 @@ namespace Scada.Admin.Project
         /// </summary>
         public ConfigBase()
         {
-            ObjTable = new Table<Obj>("Obj", CommonPhrases.ObjTable);
-            KPTable = new Table<Device>("KP", CommonPhrases.KPTable);
+            ObjTable = new BaseTable<Obj>("Obj", CommonPhrases.ObjTable);
+            KPTable = new BaseTable<Device>("KP", CommonPhrases.KPTable);
 
             for (int i = 1; i <= 10000; i++)
             {
-                ObjTable.Rows.Add(new Obj() { ObjNum = i, Name = "a", Descr = "b" });
+                ObjTable.Items.Add(new Obj() { ObjNum = i, Name = "a", Descr = "b" });
             }
-
-            BaseTables = new BaseTables();
-            BaseTables.ObjTable.ExtendedProperties["BaseTableTag"] = 
-                new BaseTableTag() { Title = CommonPhrases.ObjTable };
-            BaseTables.ObjTable.Columns.AddRange(new DataColumn[] 
-            {
-                new DataColumn("ObjNum", typeof(int)),
-                new DataColumn("Name", typeof(string)),
-                new DataColumn("Descr", typeof(string))
-            });
         }
 
 
         /// <summary>
         /// Gets the object (location) table.
         /// </summary>
-        public Table<Obj> ObjTable { get; protected set; }
+        public BaseTable<Obj> ObjTable { get; protected set; }
 
         /// <summary>
         /// Gets the device table.
         /// </summary>
-        public Table<Device> KPTable { get; protected set; }
-
-        /// <summary>
-        /// Gets all tables of the configuration database.
-        /// </summary>
-        public BaseTables BaseTables { get; protected set; }
+        public BaseTable<Device> KPTable { get; protected set; }
     }
 }

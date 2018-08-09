@@ -56,12 +56,16 @@
     <Compile Include="Code\AppPhrases.cs" />
     <Compile Include="Code\ColumnBuilder.cs" />
     <Compile Include="Code\ExplorerBuilder.cs" />
+    <Compile Include="Code\ListConverter.cs" />
     <Compile Include="Code\TreeNodeTag.cs" />
     <Compile Include="Forms\FrmBaseTable.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\FrmBaseTable.Designer.cs">
       <DependentUpon>FrmBaseTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmBaseTableGeneric.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\FrmMain.cs">
       <SubType>Form</SubType>

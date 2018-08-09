@@ -16,26 +16,33 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaAdminCommon
- * Summary  : The base class of the configuration database tables
+ * Summary  : Represents the table of the configuration database
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
  * Modified : 2018
  */
 
-using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Serialization;
 
 namespace Scada.Admin.Project
 {
     /// <summary>
-    /// The base class of the configuration database tables.
-    /// <para>Базовый класс таблиц базы конфигурации.</para>
+    /// Represents the table of the configuration database.
+    /// <para>Представляет таблицу базы конфигурации.</para>
     /// </summary>
-    public abstract class BaseTable
+    public class BaseTable<T>
     {
+        /// <summary>
+        /// Initializes a new instance of the class.
+        /// </summary>
+        public BaseTable()
+            : this("", "")
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
@@ -43,6 +50,7 @@ namespace Scada.Admin.Project
         {
             Name = name ?? "";
             Title = title ?? "";
+            Items = new List<T>();
         }
 
 
@@ -57,14 +65,9 @@ namespace Scada.Admin.Project
         public string Title { get; set; }
 
         /// <summary>
-        /// Gets the type of the table items.
+        /// Gets the table items.
         /// </summary>
-        public abstract Type ItemType { get; }
-
-        /// <summary>
-        /// Gets the rows.
-        /// </summary>
-        public abstract IList Rows { get; }
+        public List<T> Items { get; protected set; }
 
 
         /// <summary>
@@ -72,12 +75,12 @@ namespace Scada.Admin.Project
         /// </summary>
         public void Save(string fileName)
         {
-            XmlSerializer serializer = new XmlSerializer(Rows.GetType());
+            XmlSerializer serializer = new XmlSerializer(Items.GetType());
             XmlWriterSettings writerSettings = new XmlWriterSettings() { Indent = true };
 
             using (XmlWriter writer = XmlWriter.Create(fileName, writerSettings))
             {
-                serializer.Serialize(writer, Rows);
+                serializer.Serialize(writer, Items);
             }
         }
     }

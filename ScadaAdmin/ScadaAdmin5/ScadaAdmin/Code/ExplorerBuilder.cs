@@ -25,6 +25,7 @@
 
 using Scada.Admin.App.Forms;
 using Scada.Admin.Project;
+using Scada.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -65,29 +66,28 @@ namespace Scada.Admin.App.Code
             sysTableNode.ImageKey = sysTableNode.SelectedImageKey = "folder_closed.png";
 
             sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.ObjTable));
-            sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.BaseTables.ObjTable));
-            //sysTableNode.Nodes.Add(CreateBaseTableNode(CommonPhrases.CommLineTable));
-            //sysTableNode.Nodes.Add(CreateBaseTableNode(CommonPhrases.KPTable));
-            //sysTableNode.Nodes.Add(CreateBaseTableNode(CommonPhrases.InCnlTable));
-            //sysTableNode.Nodes.Add(CreateBaseTableNode(CommonPhrases.CtrlCnlTable));
-            //sysTableNode.Nodes.Add(CreateBaseTableNode(CommonPhrases.RoleTable));
-            //sysTableNode.Nodes.Add(CreateBaseTableNode(CommonPhrases.UserTable));
-            //sysTableNode.Nodes.Add(CreateBaseTableNode(CommonPhrases.InterfaceTable));
-            //sysTableNode.Nodes.Add(CreateBaseTableNode(CommonPhrases.RightTable));
+            //sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.CommLineTable));
+            sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.KPTable));
+            //sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.InCnlTable));
+            //sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.CtrlCnlTable));
+            //sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.RoleTable));
+            //sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.UserTable));
+            //sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.InterfaceTable));
+            //sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.RightTable));
             baseNode.Nodes.Add(sysTableNode);
 
             TreeNode dictTableNode = new TreeNode("Dictionaries"); // TODO: phrase
             dictTableNode.ImageKey = dictTableNode.SelectedImageKey = "folder_closed.png";
 
-            //dictTableNode.Nodes.Add(CreateBaseTableNode(CommonPhrases.CnlTypeTable));
-            //dictTableNode.Nodes.Add(CreateBaseTableNode(CommonPhrases.CmdTypeTable));
-            //dictTableNode.Nodes.Add(CreateBaseTableNode(CommonPhrases.EvTypeTable));
-            //dictTableNode.Nodes.Add(CreateBaseTableNode(CommonPhrases.KPTypeTable));
-            //dictTableNode.Nodes.Add(CreateBaseTableNode(CommonPhrases.ParamTable));
-            //dictTableNode.Nodes.Add(CreateBaseTableNode(CommonPhrases.UnitTable));
-            //dictTableNode.Nodes.Add(CreateBaseTableNode(CommonPhrases.CmdValTable));
-            //dictTableNode.Nodes.Add(CreateBaseTableNode(CommonPhrases.FormatTable));
-            //dictTableNode.Nodes.Add(CreateBaseTableNode(CommonPhrases.FormulaTable));
+            //dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.CnlTypeTable));
+            //dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.CmdTypeTable));
+            //dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.EvTypeTable));
+            //dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.KPTypeTable));
+            //dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.ParamTable));
+            //dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.UnitTable));
+            //dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.CmdValTable));
+            //dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.FormatTable));
+            //dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.FormulaTable));
             baseNode.Nodes.Add(dictTableNode);
 
             return baseNode;
@@ -96,30 +96,14 @@ namespace Scada.Admin.App.Code
         /// <summary>
         /// Creates a node that represents the table of the configuration database.
         /// </summary>
-        private TreeNode CreateBaseTableNode(BaseTable table)
+        private TreeNode CreateBaseTableNode<T>(BaseTable<T> baseTable)
         {
-            TreeNode baseTableNode = new TreeNode(table.Title);
+            TreeNode baseTableNode = new TreeNode(baseTable.Title);
             baseTableNode.ImageKey = baseTableNode.SelectedImageKey = "table.png";
             baseTableNode.Tag = new TreeNodeTag()
             {
-                FormType = typeof(FrmBaseTable),
-                Arguments = table
-            };
-            return baseTableNode;
-        }
-
-        /// <summary>
-        /// Creates a node that represents the table of the configuration database.
-        /// </summary>
-        private TreeNode CreateBaseTableNode(DataTable dataTable)
-        {
-            BaseTableTag tableTag = dataTable.ExtendedProperties["BaseTableTag"] as BaseTableTag;
-            TreeNode baseTableNode = new TreeNode(tableTag == null ? dataTable.TableName : tableTag.Title);
-            baseTableNode.ImageKey = baseTableNode.SelectedImageKey = "table.png";
-            baseTableNode.Tag = new TreeNodeTag()
-            {
-                FormType = typeof(FrmBaseTable),
-                Arguments = dataTable
+                FormType = typeof(FrmBaseTableGeneric<T>),
+                Arguments = baseTable
             };
             return baseTableNode;
         }
