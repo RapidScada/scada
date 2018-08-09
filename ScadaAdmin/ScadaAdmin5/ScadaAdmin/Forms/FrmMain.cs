@@ -43,26 +43,26 @@ namespace Scada.Admin.App.Forms
     public partial class FrmMain : Form
     {
         /// <summary>
-        /// Hyperlink to the documentation in English.
+        /// The hyperlink to the documentation in English.
         /// </summary>
         private const string DocEnUrl = "http://doc.rapidscada.net/content/en/";
         /// <summary>
-        /// Hyperlink to the documentation in Russian.
+        /// The hyperlink to the documentation in Russian.
         /// </summary>
         private const string DocRuUrl = "http://doc.rapidscada.net/content/ru/";
         /// <summary>
-        /// Hyperlink to the support in English.
+        /// The hyperlink to the support in English.
         /// </summary>
         private const string SupportEnUrl = "https://forum.rapidscada.org/";
         /// <summary>
-        /// Hyperlink to the support in Russian.
+        /// The hyperlink to the support in Russian.
         /// </summary>
         private const string SupportRuUrl = "https://forum.rapidscada.ru/";
 
-        private readonly AppData appData; // common data of the application
-        private readonly Log log;         // application log
-        private readonly ExplorerBuilder explorerBuilder; // object to manipulate the explorer tree
-        private ScadaProject project;     // project to work on
+        private readonly AppData appData; // the common data of the application
+        private readonly Log log;         // the application log
+        private readonly ExplorerBuilder explorerBuilder; // the object to manipulate the explorer tree
+        private ScadaProject project;     // the project under development
 
 
         /// <summary>

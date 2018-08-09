@@ -53,7 +53,7 @@ namespace Scada.Admin.App.Code
         /// <summary>
         /// Gets or sets the form creation arguments.
         /// </summary>
-        public object Arguments { get; set; }
+        public object[] Arguments { get; set; }
 
         /// <summary>
         /// Gets or sets a form that already exists.

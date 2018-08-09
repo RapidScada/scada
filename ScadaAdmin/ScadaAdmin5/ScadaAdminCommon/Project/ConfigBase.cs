@@ -45,6 +45,11 @@ namespace Scada.Admin.Project
             {
                 ObjTable.Items.Add(new Obj() { ObjNum = i, Name = "a", Descr = "b" });
             }
+
+            for (int i = 1; i <= 10; i++)
+            {
+                KPTable.Items.Add(new Device() { DevNum = i, Name = "dev" + i });
+            }
         }
 
 

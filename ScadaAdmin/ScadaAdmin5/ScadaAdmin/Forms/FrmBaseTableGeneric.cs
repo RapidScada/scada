@@ -13,22 +13,24 @@ namespace Scada.Admin.App.Forms
 {
     public class FrmBaseTableGeneric<T> : FrmBaseTable, IChildForm
     {
-        private BaseTable<T> baseTable;
+        private readonly BaseTable<T> baseTable; // the table being edited
+        private readonly ScadaProject project;   // the project under development
 
 
-        public FrmBaseTableGeneric(BaseTable<T> baseTable)
+        public FrmBaseTableGeneric(BaseTable<T> baseTable, ScadaProject project)
             : base()
         {
             this.baseTable = baseTable ?? throw new ArgumentNullException("baseTable");
+            this.project = project ?? throw new ArgumentNullException("project");
         }
 
 
         protected override void MyLoad()
         {
             base.MyLoad();
-            Text = baseTable.Title + " - FrmBaseTableGeneric";
+            Text = baseTable.Title;
             bindingSource.DataSource = baseTable.Items.ToDataTable();
-            ColumnBuilder columnBuilder = new ColumnBuilder();
+            ColumnBuilder columnBuilder = new ColumnBuilder(project.ConfigBase);
             dataGridView.Columns.AddRange(columnBuilder.CreateColumns(baseTable.ItemType));
             dataGridView.AutoResizeColumns();
         }
