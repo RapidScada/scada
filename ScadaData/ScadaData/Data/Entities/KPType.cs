@@ -36,20 +36,11 @@ namespace Scada.Data.Entities
     [Serializable]
     public class KPType
     {
-        public KPType()
-        {
-            KPTypeID = 0;
-            Name = "";
-            DllFileName = 0;
-            Descr = "";
-        }
-
-
         public int KPTypeID { get; set; }
 
         public string Name { get; set; }
 
-        public int DllFileName { get; set; }
+        public string DllFileName { get; set; }
 
         public string Descr { get; set; }
     }

@@ -117,9 +117,10 @@ namespace Scada.Admin.App.Code
         /// <summary>
         /// Translates the column headers.
         /// </summary>
-        private DataGridViewColumn[] TranslateHeaders(string dictName, DataGridViewColumn[] columns)
+        private DataGridViewColumn[] TranslateHeaders(string tableName, DataGridViewColumn[] columns)
         {
-            if (Localization.Dictionaries.TryGetValue(dictName, out Localization.Dict dict))
+            if (Localization.Dictionaries.TryGetValue("Scada.Admin.App.Code.ColumnBuilder." + tableName, 
+                out Localization.Dict dict))
             {
                 foreach (DataGridViewColumn col in columns)
                 {
@@ -137,7 +138,7 @@ namespace Scada.Admin.App.Code
         /// </summary>
         private DataGridViewColumn[] CreateObjTableColumns()
         {
-            return TranslateHeaders("Scada.Admin.App.BaseTables.ObjTable", new DataGridViewColumn[]
+            return TranslateHeaders("ObjTable", new DataGridViewColumn[]
             {
                     NewTextBoxColumn("ObjNum"),
                     NewTextBoxColumn("Name"),
@@ -150,7 +151,7 @@ namespace Scada.Admin.App.Code
         /// </summary>
         private DataGridViewColumn[] CreateKPTableColumns()
         {
-            return TranslateHeaders("Scada.Admin.App.BaseTables.KPTable", new DataGridViewColumn[]
+            return TranslateHeaders("KPTable", new DataGridViewColumn[]
             {
                 NewTextBoxColumn("KPNum"),
                 NewTextBoxColumn("Name"),

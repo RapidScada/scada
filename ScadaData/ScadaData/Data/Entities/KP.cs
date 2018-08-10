@@ -37,25 +37,13 @@ namespace Scada.Data.Entities
     [Serializable]
     public class KP
     {
-        public KP()
-        {
-            KPNum = 0;
-            Name = "";
-            KPTypeID = 0;
-            Address = 0;
-            CallNum = "";
-            CommLineNum = null;
-            Descr = "";
-        }
-
-
         public int KPNum { get; set; }
 
         public string Name { get; set; }
 
         public int KPTypeID { get; set; }
 
-        public int Address { get; set; }
+        public int? Address { get; set; }
 
         public string CallNum { get; set; }
 

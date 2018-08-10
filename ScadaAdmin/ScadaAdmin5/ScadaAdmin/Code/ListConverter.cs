@@ -48,13 +48,13 @@ namespace Scada.Admin.App.Code
             foreach (PropertyDescriptor prop in props)
             {
                 bool isNullable = prop.PropertyType.IsNullable();
-                bool isRefType = !prop.PropertyType.IsValueType;
+                bool isClass = prop.PropertyType.IsClass;
 
                 dataTable.Columns.Add(new DataColumn()
                 {
                     ColumnName = prop.Name,
                     DataType = isNullable ? Nullable.GetUnderlyingType(prop.PropertyType) : prop.PropertyType,
-                    AllowDBNull = isNullable || isRefType || allowNull
+                    AllowDBNull = isNullable || isClass || allowNull
                 });
             }
 

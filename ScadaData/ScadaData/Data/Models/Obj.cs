@@ -23,12 +23,15 @@
  * Modified : 2018
  */
 
+using System;
+
 namespace Scada.Data.Models
 {
     /// <summary>
     /// Object (location) properties
     /// <para>Свойства объекта (локации)</para>
     /// </summary>
+    [Obsolete("Use Scada.Data.Entities.*")]
     public class Obj
     {
         /// <summary>

@@ -36,14 +36,6 @@ namespace Scada.Data.Entities
     [Serializable]
     public class Obj
     {
-        public Obj()
-        {
-            ObjNum = 0;
-            Name = "";
-            Descr = "";
-        }
-
-
         public int ObjNum { get; set; }
 
         public string Name { get; set; }

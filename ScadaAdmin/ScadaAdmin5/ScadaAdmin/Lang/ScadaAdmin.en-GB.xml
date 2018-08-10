@@ -1,8 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ScadaAdminDictionaries>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.KPTable">
+    <Phrase key="KPNum">Number</Phrase>
+    <Phrase key="Name">Name</Phrase>
+    <Phrase key="KPTypeID">Device Type</Phrase>
+    <Phrase key="Address">Address</Phrase>
+    <Phrase key="CallNum">Call Number</Phrase>
+    <Phrase key="CommLineNum">Communication Line</Phrase>
+    <Phrase key="Descr">Description</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.ObjTable">
+    <Phrase key="ObjNum">Number</Phrase>
+    <Phrase key="Name">Name</Phrase>
+    <Phrase key="Descr">Description</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Code.ExplorerBuilder">
     <Phrase key="BaseNode">Configuration Database</Phrase>
+    <Phrase key="SysTableNode">System</Phrase>
+    <Phrase key="DictTableNode">Dictionaries</Phrase>
     <Phrase key="InterfaceNode">Interface</Phrase>
     <Phrase key="InstancesNode">Instances</Phrase>
+    <Phrase key="ServerNode">Server</Phrase>
+    <Phrase key="CommNode">Communicator</Phrase>
+    <Phrase key="WebNode">Webstation</Phrase>
   </Dictionary>
 </ScadaAdminDictionaries>

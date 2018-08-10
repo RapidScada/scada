@@ -1,8 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ScadaAdminDictionaries>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.KPTable">
+    <Phrase key="KPNum">Номер</Phrase>
+    <Phrase key="Name">Наименование</Phrase>
+    <Phrase key="KPTypeID">Тип КП</Phrase>
+    <Phrase key="Address">Адрес</Phrase>
+    <Phrase key="CallNum">Позывной</Phrase>
+    <Phrase key="CommLineNum">Линия связи</Phrase>
+    <Phrase key="Descr">Описание</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.ObjTable">
+    <Phrase key="ObjNum">Номер</Phrase>
+    <Phrase key="Name">Наименование</Phrase>
+    <Phrase key="Descr">Описание</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Code.ExplorerBuilder">
     <Phrase key="BaseNode">База конфигурации</Phrase>
+    <Phrase key="SysTableNode">Система</Phrase>
+    <Phrase key="DictTableNode">Справочники</Phrase>
     <Phrase key="InterfaceNode">Интерфейс</Phrase>
     <Phrase key="InstancesNode">Экземпляры</Phrase>
+    <Phrase key="ServerNode">Сервер</Phrase>
+    <Phrase key="CommNode">Коммуникатор</Phrase>
+    <Phrase key="WebNode">Вебстанция</Phrase>
   </Dictionary>
 </ScadaAdminDictionaries>

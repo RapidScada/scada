@@ -64,7 +64,7 @@ namespace Scada.Admin.App.Code
             TreeNode baseNode = new TreeNode(AppPhrases.BaseNode);
             baseNode.ImageKey = baseNode.SelectedImageKey = "database.png";
 
-            TreeNode sysTableNode = new TreeNode("System"); // TODO: phrase
+            TreeNode sysTableNode = new TreeNode(AppPhrases.SysTableNode);
             sysTableNode.ImageKey = sysTableNode.SelectedImageKey = "folder_closed.png";
 
             sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.ObjTable));
@@ -78,7 +78,7 @@ namespace Scada.Admin.App.Code
             //sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.RightTable));
             baseNode.Nodes.Add(sysTableNode);
 
-            TreeNode dictTableNode = new TreeNode("Dictionaries"); // TODO: phrase
+            TreeNode dictTableNode = new TreeNode(AppPhrases.DictTableNode);
             dictTableNode.ImageKey = dictTableNode.SelectedImageKey = "folder_closed.png";
 
             //dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.CnlTypeTable));
@@ -118,15 +118,15 @@ namespace Scada.Admin.App.Code
             TreeNode instanceNode = new TreeNode(instance.Name);
             instanceNode.ImageKey = instanceNode.SelectedImageKey = "instance.png";
 
-            TreeNode serverNode = new TreeNode("Server");
+            TreeNode serverNode = new TreeNode(AppPhrases.ServerNode);
             serverNode.ImageKey = serverNode.SelectedImageKey = "server.png";
             instanceNode.Nodes.Add(serverNode);
 
-            TreeNode commNode = new TreeNode("Communicator");
+            TreeNode commNode = new TreeNode(AppPhrases.CommNode);
             commNode.ImageKey = commNode.SelectedImageKey = "comm.png";
             instanceNode.Nodes.Add(commNode);
 
-            TreeNode webNode = new TreeNode("Webstation");
+            TreeNode webNode = new TreeNode(AppPhrases.WebNode);
             webNode.ImageKey = webNode.SelectedImageKey = "webstation.png";
             instanceNode.Nodes.Add(webNode);
 

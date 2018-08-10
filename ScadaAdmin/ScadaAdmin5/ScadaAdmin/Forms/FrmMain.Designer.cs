@@ -32,8 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             this.msMain = new System.Windows.Forms.MenuStrip();
             this.miFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.miFileNew = new System.Windows.Forms.ToolStripMenuItem();
-            this.miFileOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.miFileNewProject = new System.Windows.Forms.ToolStripMenuItem();
+            this.miFileOpenProject = new System.Windows.Forms.ToolStripMenuItem();
             this.miFileSave = new System.Windows.Forms.ToolStripMenuItem();
             this.miFileSaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.miFileSep = new System.Windows.Forms.ToolStripSeparator();
@@ -79,8 +79,8 @@
             // miFile
             // 
             this.miFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.miFileNew,
-            this.miFileOpen,
+            this.miFileNewProject,
+            this.miFileOpenProject,
             this.miFileSave,
             this.miFileSaveAs,
             this.miFileSep,
@@ -89,30 +89,30 @@
             this.miFile.Size = new System.Drawing.Size(37, 20);
             this.miFile.Text = "&File";
             // 
-            // miFileNew
+            // miFileNewProject
             // 
-            this.miFileNew.Image = ((System.Drawing.Image)(resources.GetObject("miFileNew.Image")));
-            this.miFileNew.Name = "miFileNew";
-            this.miFileNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.miFileNew.Size = new System.Drawing.Size(155, 22);
-            this.miFileNew.Text = "Create";
-            this.miFileNew.Click += new System.EventHandler(this.miFileNew_Click);
+            this.miFileNewProject.Image = ((System.Drawing.Image)(resources.GetObject("miFileNewProject.Image")));
+            this.miFileNewProject.Name = "miFileNewProject";
+            this.miFileNewProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+            this.miFileNewProject.Size = new System.Drawing.Size(195, 22);
+            this.miFileNewProject.Text = "New Project...";
+            this.miFileNewProject.Click += new System.EventHandler(this.miFileNewProject_Click);
             // 
-            // miFileOpen
+            // miFileOpenProject
             // 
-            this.miFileOpen.Image = ((System.Drawing.Image)(resources.GetObject("miFileOpen.Image")));
-            this.miFileOpen.Name = "miFileOpen";
-            this.miFileOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.miFileOpen.Size = new System.Drawing.Size(155, 22);
-            this.miFileOpen.Text = "Open...";
-            this.miFileOpen.Click += new System.EventHandler(this.miFileOpen_Click);
+            this.miFileOpenProject.Image = ((System.Drawing.Image)(resources.GetObject("miFileOpenProject.Image")));
+            this.miFileOpenProject.Name = "miFileOpenProject";
+            this.miFileOpenProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.miFileOpenProject.Size = new System.Drawing.Size(195, 22);
+            this.miFileOpenProject.Text = "Open Project...";
+            this.miFileOpenProject.Click += new System.EventHandler(this.miFileOpenProject_Click);
             // 
             // miFileSave
             // 
             this.miFileSave.Image = ((System.Drawing.Image)(resources.GetObject("miFileSave.Image")));
             this.miFileSave.Name = "miFileSave";
             this.miFileSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.miFileSave.Size = new System.Drawing.Size(155, 22);
+            this.miFileSave.Size = new System.Drawing.Size(190, 22);
             this.miFileSave.Text = "Save";
             this.miFileSave.Click += new System.EventHandler(this.miFileSave_Click);
             // 
@@ -120,20 +120,20 @@
             // 
             this.miFileSaveAs.Image = ((System.Drawing.Image)(resources.GetObject("miFileSaveAs.Image")));
             this.miFileSaveAs.Name = "miFileSaveAs";
-            this.miFileSaveAs.Size = new System.Drawing.Size(155, 22);
+            this.miFileSaveAs.Size = new System.Drawing.Size(190, 22);
             this.miFileSaveAs.Text = "Save As...";
             this.miFileSaveAs.Click += new System.EventHandler(this.miFileSaveAs_Click);
             // 
             // miFileSep
             // 
             this.miFileSep.Name = "miFileSep";
-            this.miFileSep.Size = new System.Drawing.Size(152, 6);
+            this.miFileSep.Size = new System.Drawing.Size(187, 6);
             // 
             // miFileExit
             // 
             this.miFileExit.Image = ((System.Drawing.Image)(resources.GetObject("miFileExit.Image")));
             this.miFileExit.Name = "miFileExit";
-            this.miFileExit.Size = new System.Drawing.Size(155, 22);
+            this.miFileExit.Size = new System.Drawing.Size(190, 22);
             this.miFileExit.Text = "Exit";
             this.miFileExit.Click += new System.EventHandler(this.miFileExit_Click);
             // 
@@ -370,8 +370,8 @@
         private System.Windows.Forms.Panel pnlRight;
         private System.Windows.Forms.ToolStripMenuItem miFile;
         private System.Windows.Forms.ToolStripMenuItem miEdit;
-        private System.Windows.Forms.ToolStripMenuItem miFileNew;
-        private System.Windows.Forms.ToolStripMenuItem miFileOpen;
+        private System.Windows.Forms.ToolStripMenuItem miFileNewProject;
+        private System.Windows.Forms.ToolStripMenuItem miFileOpenProject;
         private System.Windows.Forms.ToolStripMenuItem miFileSave;
         private System.Windows.Forms.ToolStripMenuItem miFileSaveAs;
         private System.Windows.Forms.ToolStripSeparator miFileSep;

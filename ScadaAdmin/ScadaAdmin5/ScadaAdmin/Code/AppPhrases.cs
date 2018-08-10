@@ -39,15 +39,25 @@ namespace Scada.Admin.App.Code
     {
         // Scada.Admin.App.Code.ExplorerBuilder
         public static string BaseNode { get; private set; }
+        public static string SysTableNode { get; private set; }
+        public static string DictTableNode { get; private set; }
         public static string InterfaceNode { get; private set; }
         public static string InstancesNode { get; private set; }
+        public static string ServerNode { get; private set; }
+        public static string CommNode { get; private set; }
+        public static string WebNode { get; private set; }
 
         public static void Init()
         {
             Localization.Dict dict = Localization.GetDictionary("Scada.Admin.App.Code.ExplorerBuilder");
             BaseNode = dict.GetPhrase("BaseNode");
+            SysTableNode = dict.GetPhrase("SysTableNode");
+            DictTableNode = dict.GetPhrase("DictTableNode");
             InterfaceNode = dict.GetPhrase("InterfaceNode");
             InstancesNode = dict.GetPhrase("InstancesNode");
+            ServerNode = dict.GetPhrase("ServerNode");
+            CommNode = dict.GetPhrase("CommNode");
+            WebNode = dict.GetPhrase("WebNode");
         }
     }
 }
