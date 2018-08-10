@@ -24,8 +24,10 @@
  */
 
 using Scada.Admin.Project;
-using Scada.Data.Models;
+using Scada.Data.Entities;
 using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Windows.Forms;
 
 namespace Scada.Admin.App.Code
@@ -84,11 +86,32 @@ namespace Scada.Admin.App.Code
         /// <summary>
         /// Creates a new column that hosts cells which values are selected from a combo box.
         /// </summary>
-        private DataGridViewComboBoxColumn NewComboBoxColumn(
-            string dataPropertyName, string displayMember, object dataSource, bool cloneDataSource = true)
+        private DataGridViewComboBoxColumn NewComboBoxColumn<T>(
+            string dataPropertyName, string displayMember, IList<T> dataSource, bool addEmptyRow = false)
         {
-            return NewComboBoxColumn(dataPropertyName, dataPropertyName, displayMember, 
-                cloneDataSource ? ScadaUtils.DeepClone(dataSource) : dataSource);
+            return NewComboBoxColumn(dataPropertyName, dataPropertyName, displayMember,
+                CreateComboBoxSource(dataSource, dataPropertyName, displayMember, addEmptyRow));
+        }
+
+        /// <summary>
+        /// Creates a data table for using as a data source of a combo box.
+        /// </summary>
+        private DataTable CreateComboBoxSource<T>(
+            IList<T> list, string valueMember, string displayMember, bool addEmptyRow)
+        {
+            DataTable dataTable = list.ToDataTable(true);
+
+            if (addEmptyRow)
+            {
+                DataRow emptyRow = dataTable.NewRow();
+                emptyRow[valueMember] = DBNull.Value;
+                emptyRow[displayMember] = " ";
+                dataTable.Rows.Add(emptyRow);
+            }
+
+            dataTable.DefaultView.Sort = displayMember;
+
+            return dataTable;
         }
 
         /// <summary>
@@ -129,15 +152,12 @@ namespace Scada.Admin.App.Code
         {
             return TranslateHeaders("Scada.Admin.App.BaseTables.KPTable", new DataGridViewColumn[]
             {
-                //NewTextBoxColumn("KPNum"),
-                NewTextBoxColumn("DevNum"),
+                NewTextBoxColumn("KPNum"),
                 NewTextBoxColumn("Name"),
-                //NewComboBoxColumn("KPTypeID", "Name", configBase.KPTypeTable.Items),
-                NewComboBoxColumn("DevNum", "Name", configBase.KPTable.Items, false), // TODO: cloneDataSource = true
+                NewComboBoxColumn("KPTypeID", "Name", configBase.KPTypeTable.Items),
                 NewTextBoxColumn("Address"),
                 NewTextBoxColumn("CallNum"),
-                //NewComboBoxColumn("CommLineNum",
-                //    GetCommLineTable().Rows.Add(DBNull.Value, " ").Table, "Name", "CommLineNum"),
+                NewComboBoxColumn("CommLineNum", "Name", configBase.CommLineTable.Items, true),
                 NewTextBoxColumn("Descr")
             });
         }
@@ -150,7 +170,7 @@ namespace Scada.Admin.App.Code
         {
             if (itemType == typeof(Obj))
                 return CreateObjTableColumns();
-            else if (itemType == typeof(Device))
+            else if (itemType == typeof(KP))
                 return CreateKPTableColumns();
             else
                 return new DataGridViewColumn[0];

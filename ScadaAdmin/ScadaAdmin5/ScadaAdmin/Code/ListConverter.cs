@@ -39,16 +39,26 @@ namespace Scada.Admin.App.Code
         /// <summary>
         /// Converts the list to a data table.
         /// </summary>
-        public static DataTable ToDataTable<T>(this IList<T> list)
+        public static DataTable ToDataTable<T>(this IList<T> list, bool allowNull = false)
         {
+            // create columns
             PropertyDescriptorCollection props = TypeDescriptor.GetProperties(typeof(T));
             DataTable dataTable = new DataTable();
 
             foreach (PropertyDescriptor prop in props)
             {
-                dataTable.Columns.Add(prop.Name, prop.PropertyType);
+                bool isNullable = prop.PropertyType.IsNullable();
+                bool isRefType = !prop.PropertyType.IsValueType;
+
+                dataTable.Columns.Add(new DataColumn()
+                {
+                    ColumnName = prop.Name,
+                    DataType = isNullable ? Nullable.GetUnderlyingType(prop.PropertyType) : prop.PropertyType,
+                    AllowDBNull = isNullable || isRefType || allowNull
+                });
             }
 
+            // copy data
             int propCnt = props.Count;
             object[] values = new object[propCnt];
 

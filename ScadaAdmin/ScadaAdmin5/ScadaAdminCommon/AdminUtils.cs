@@ -42,5 +42,14 @@ namespace Scada.Admin
         /// Determines that the application is running on Mono Framework.
         /// </summary>
         public static readonly bool IsRunningOnMono = Type.GetType("Mono.Runtime") != null;
+
+
+        /// <summary>
+        /// Identifies a nullable type.
+        /// </summary>
+        public static bool IsNullable(this Type type)
+        {
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+        }
     }
 }
