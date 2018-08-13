@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="Code\AppData.cs" />
     <Compile Include="Code\AppPhrases.cs" />
+    <Compile Include="Code\AppState.cs" />
     <Compile Include="Code\ColumnBuilder.cs" />
     <Compile Include="Code\ExplorerBuilder.cs" />
     <Compile Include="Code\ListConverter.cs" />

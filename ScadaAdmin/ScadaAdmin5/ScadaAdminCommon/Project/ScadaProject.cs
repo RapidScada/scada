@@ -75,5 +75,31 @@ namespace Scada.Admin.Project
         /// Gets the instances including the appropriate settings of the applications.
         /// </summary>
         public List<Instance> Instances { get; protected set; }
+
+
+        /// <summary>
+        /// Loads the project from the specified file.
+        /// </summary>
+        public void Load(string fileName)
+        {
+
+        }
+
+        /// <summary>
+        /// Saves the project to the specified file.
+        /// </summary>
+        public void Save(string fileName)
+        {
+        }
+
+        /// <summary>
+        /// Loads the project description from the specified project file.
+        /// </summary>
+        public static bool LoadDescription(string fileName, out string description, out string errMsg)
+        {
+            description = "test";
+            errMsg = "";
+            return true;
+        }
     }
 }

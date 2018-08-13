@@ -39,6 +39,11 @@ namespace Scada.Admin
         public const string AppVersion = "5.5.0.0";
 
         /// <summary>
+        /// Extension of a project file.
+        /// </summary>
+        public const string ProjectExt = ".rsproj";
+
+        /// <summary>
         /// Determines that the application is running on Mono Framework.
         /// </summary>
         public static readonly bool IsRunningOnMono = Type.GetType("Mono.Runtime") != null;

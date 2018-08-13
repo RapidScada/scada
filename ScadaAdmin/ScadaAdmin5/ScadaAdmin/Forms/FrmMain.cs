@@ -215,7 +215,7 @@ namespace Scada.Admin.App.Forms
         private void miFileNewProject_Click(object sender, EventArgs e)
         {
             // create a new project
-            FrmNewProject frmNewProject = new FrmNewProject();
+            FrmNewProject frmNewProject = new FrmNewProject(appData);
             frmNewProject.ShowDialog();
         }
 

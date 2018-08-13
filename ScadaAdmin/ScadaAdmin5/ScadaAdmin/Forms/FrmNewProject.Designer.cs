@@ -34,7 +34,11 @@
             this.txtLocation = new System.Windows.Forms.TextBox();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.btnBrowse = new System.Windows.Forms.Button();
+            this.btnBrowseLocation = new System.Windows.Forms.Button();
+            this.cbTemplate = new System.Windows.Forms.ComboBox();
+            this.lblTemplate = new System.Windows.Forms.Label();
+            this.btnBrowseTemplate = new System.Windows.Forms.Button();
+            this.txtTemplateDescr = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // lblName
@@ -50,7 +54,7 @@
             // 
             this.txtName.Location = new System.Drawing.Point(12, 25);
             this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(300, 20);
+            this.txtName.Size = new System.Drawing.Size(400, 20);
             this.txtName.TabIndex = 1;
             // 
             // lblLocation
@@ -66,36 +70,75 @@
             // 
             this.txtLocation.Location = new System.Drawing.Point(12, 64);
             this.txtLocation.Name = "txtLocation";
-            this.txtLocation.Size = new System.Drawing.Size(300, 20);
+            this.txtLocation.Size = new System.Drawing.Size(400, 20);
             this.txtLocation.TabIndex = 3;
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(237, 102);
+            this.btnOK.Location = new System.Drawing.Point(337, 196);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 5;
+            this.btnOK.TabIndex = 9;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(318, 102);
+            this.btnCancel.Location = new System.Drawing.Point(418, 196);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 6;
+            this.btnCancel.TabIndex = 10;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
-            // btnBrowse
+            // btnBrowseLocation
             // 
-            this.btnBrowse.Location = new System.Drawing.Point(318, 63);
-            this.btnBrowse.Name = "btnBrowse";
-            this.btnBrowse.Size = new System.Drawing.Size(75, 23);
-            this.btnBrowse.TabIndex = 4;
-            this.btnBrowse.Text = "Browse...";
-            this.btnBrowse.UseVisualStyleBackColor = true;
+            this.btnBrowseLocation.Location = new System.Drawing.Point(418, 63);
+            this.btnBrowseLocation.Name = "btnBrowseLocation";
+            this.btnBrowseLocation.Size = new System.Drawing.Size(75, 23);
+            this.btnBrowseLocation.TabIndex = 4;
+            this.btnBrowseLocation.Text = "Browse...";
+            this.btnBrowseLocation.UseVisualStyleBackColor = true;
+            this.btnBrowseLocation.Click += new System.EventHandler(this.btnBrowseLocation_Click);
+            // 
+            // cbTemplate
+            // 
+            this.cbTemplate.FormattingEnabled = true;
+            this.cbTemplate.Location = new System.Drawing.Point(12, 103);
+            this.cbTemplate.Name = "cbTemplate";
+            this.cbTemplate.Size = new System.Drawing.Size(400, 21);
+            this.cbTemplate.TabIndex = 6;
+            this.cbTemplate.TextChanged += new System.EventHandler(this.cbTemplate_TextChanged);
+            // 
+            // lblTemplate
+            // 
+            this.lblTemplate.AutoSize = true;
+            this.lblTemplate.Location = new System.Drawing.Point(9, 87);
+            this.lblTemplate.Name = "lblTemplate";
+            this.lblTemplate.Size = new System.Drawing.Size(51, 13);
+            this.lblTemplate.TabIndex = 5;
+            this.lblTemplate.Text = "Template";
+            // 
+            // btnBrowseTemplate
+            // 
+            this.btnBrowseTemplate.Location = new System.Drawing.Point(418, 102);
+            this.btnBrowseTemplate.Name = "btnBrowseTemplate";
+            this.btnBrowseTemplate.Size = new System.Drawing.Size(75, 23);
+            this.btnBrowseTemplate.TabIndex = 7;
+            this.btnBrowseTemplate.Text = "Browse...";
+            this.btnBrowseTemplate.UseVisualStyleBackColor = true;
+            this.btnBrowseTemplate.Click += new System.EventHandler(this.btnBrowseTemplate_Click);
+            // 
+            // txtTemplateDescr
+            // 
+            this.txtTemplateDescr.Location = new System.Drawing.Point(12, 130);
+            this.txtTemplateDescr.Multiline = true;
+            this.txtTemplateDescr.Name = "txtTemplateDescr";
+            this.txtTemplateDescr.ReadOnly = true;
+            this.txtTemplateDescr.Size = new System.Drawing.Size(400, 50);
+            this.txtTemplateDescr.TabIndex = 8;
             // 
             // FrmNewProject
             // 
@@ -103,8 +146,12 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(405, 137);
-            this.Controls.Add(this.btnBrowse);
+            this.ClientSize = new System.Drawing.Size(505, 231);
+            this.Controls.Add(this.txtTemplateDescr);
+            this.Controls.Add(this.btnBrowseTemplate);
+            this.Controls.Add(this.lblTemplate);
+            this.Controls.Add(this.cbTemplate);
+            this.Controls.Add(this.btnBrowseLocation);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.txtLocation);
@@ -118,6 +165,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "New Project";
+            this.Load += new System.EventHandler(this.FrmNewProject_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -131,6 +179,10 @@
         private System.Windows.Forms.TextBox txtLocation;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Button btnBrowse;
+        private System.Windows.Forms.Button btnBrowseLocation;
+        private System.Windows.Forms.ComboBox cbTemplate;
+        private System.Windows.Forms.Label lblTemplate;
+        private System.Windows.Forms.Button btnBrowseTemplate;
+        private System.Windows.Forms.TextBox txtTemplateDescr;
     }
 }

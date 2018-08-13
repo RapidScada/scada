@@ -47,6 +47,7 @@ namespace Scada.Admin.App.Code
         {
             AppDirs = new AppDirs();
             ErrLog = new Log(Log.Formats.Full);
+            AppState = new AppState();
         }
 
 
@@ -60,6 +61,11 @@ namespace Scada.Admin.App.Code
         /// </summary>
         public Log ErrLog { get; private set; }
 
+        /// <summary>
+        /// Gets the state of application controls.
+        /// </summary>
+        public AppState AppState { get; private set; }
+
 
         /// <summary>
         /// Initializes the common data.
@@ -70,6 +76,8 @@ namespace Scada.Admin.App.Code
 
             ErrLog.FileName = AppDirs.LogDir + ErrFileName;
             ErrLog.Encoding = Encoding.UTF8;
+
+            AppState.Init(exeDir);
         }
 
         /// <summary>

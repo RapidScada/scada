@@ -42,6 +42,7 @@ namespace Scada.Admin
             ConfigDir = "";
             LangDir = "";
             LogDir = "";
+            TemplateDir = "";
         }
 
 
@@ -65,6 +66,11 @@ namespace Scada.Admin
         /// </summary>
         public string LogDir { get; protected set; }
 
+        /// <summary>
+        /// Gets the directory of the project templates.
+        /// </summary>
+        public string TemplateDir { get; protected set; }
+
 
         /// <summary>
         /// Initializes the directories based on the directory of the executable file.
@@ -75,6 +81,7 @@ namespace Scada.Admin
             ConfigDir = ExeDir + "Config" + Path.DirectorySeparatorChar;
             LangDir = ExeDir + "Lang" + Path.DirectorySeparatorChar;
             LogDir = ExeDir + "Log" + Path.DirectorySeparatorChar;
+            TemplateDir = ExeDir + "Templates" + Path.DirectorySeparatorChar;
         }
     }
 }
