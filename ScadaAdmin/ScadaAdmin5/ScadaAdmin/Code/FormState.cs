@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : Administrator
- * Summary  : State of application controls
+ * Summary  : State of form controls.
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
@@ -26,29 +26,55 @@
 namespace Scada.Admin.App.Code
 {
     /// <summary>
-    /// State of application controls.
-    /// <para>Состояние элементов управления в приложении.</para>
+    /// State of form controls.
+    /// <para>Состояние элементов управления формы.</para>
     /// </summary>
-    public class AppState
+    public class FormState
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public AppState()
+        public FormState()
         {
             SetToDefault();
         }
 
 
         /// <summary>
-        /// Gets the state of the main form controls.
+        /// Tests whether the form state is empty.
         /// </summary>
-        public FormState MainFormState { get; private set; }
+        public bool IsEmpty
+        {
+            get
+            {
+                return Width > 0 && Height > 0;
+            }
+        }
 
         /// <summary>
-        /// Gets or sets the directory of projects.
+        /// Gets or sets the form horizontal position.
         /// </summary>
-        public string ProjectDir { get; set; }
+        public int Left { get; set; }
+
+        /// <summary>
+        /// Gets or sets the form vertical position.
+        /// </summary>
+        public int Top { get; set; }
+
+        /// <summary>
+        /// Gets or sets the form width.
+        /// </summary>
+        public int Width { get; set; }
+
+        /// <summary>
+        /// Gets or sets the form height.
+        /// </summary>
+        public int Height { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the form is maximized.
+        /// </summary>
+        public bool Maximized { get; set; }
 
 
         /// <summary>
@@ -56,8 +82,11 @@ namespace Scada.Admin.App.Code
         /// </summary>
         private void SetToDefault()
         {
-            MainFormState = new FormState();
-            ProjectDir = AdminUtils.IsRunningOnWin ? @"C:\SCADA\Projects\" : "";
+            Left = 0;
+            Top = 0;
+            Width = 0;
+            Height = 0;
+            Maximized = false;
         }
     }
 }

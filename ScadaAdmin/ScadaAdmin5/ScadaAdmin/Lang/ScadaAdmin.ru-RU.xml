@@ -24,4 +24,18 @@
     <Phrase key="CommNode">Коммуникатор</Phrase>
     <Phrase key="WebNode">Вебстанция</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmMain">
+    <Phrase key="ProjectFileFilter">Проекты (*.rsproj)|*.rsproj|Все файлы (*.*)|*.*.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmNewProject">
+    <Phrase key="this">Новый проект</Phrase>
+    <Phrase key="lblName">Наименование проекта</Phrase>
+    <Phrase key="lblLocation">Расположение</Phrase>
+    <Phrase key="btnBrowseLocation">Обзор...</Phrase>
+    <Phrase key="lblTemplate">Шаблон</Phrase>
+    <Phrase key="btnBrowseTemplate">Обзор...</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+    <Phrase key="ChooseProjectLocation">Выберите расположение проекта.</Phrase>
+  </Dictionary>
 </ScadaAdminDictionaries>

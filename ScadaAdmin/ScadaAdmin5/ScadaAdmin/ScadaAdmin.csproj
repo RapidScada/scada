@@ -72,6 +72,7 @@
     <Compile Include="Code\AppState.cs" />
     <Compile Include="Code\ColumnBuilder.cs" />
     <Compile Include="Code\ExplorerBuilder.cs" />
+    <Compile Include="Code\FormState.cs" />
     <Compile Include="Code\ListConverter.cs" />
     <Compile Include="Code\TreeNodeTag.cs" />
     <Compile Include="Forms\FrmBaseTable.cs">

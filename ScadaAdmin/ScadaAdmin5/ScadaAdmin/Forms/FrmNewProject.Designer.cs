@@ -39,6 +39,8 @@
             this.lblTemplate = new System.Windows.Forms.Label();
             this.btnBrowseTemplate = new System.Windows.Forms.Button();
             this.txtTemplateDescr = new System.Windows.Forms.TextBox();
+            this.fbdLocation = new System.Windows.Forms.FolderBrowserDialog();
+            this.ofdTemplate = new System.Windows.Forms.OpenFileDialog();
             this.SuspendLayout();
             // 
             // lblName
@@ -184,5 +186,7 @@
         private System.Windows.Forms.Label lblTemplate;
         private System.Windows.Forms.Button btnBrowseTemplate;
         private System.Windows.Forms.TextBox txtTemplateDescr;
+        private System.Windows.Forms.FolderBrowserDialog fbdLocation;
+        private System.Windows.Forms.OpenFileDialog ofdTemplate;
     }
 }

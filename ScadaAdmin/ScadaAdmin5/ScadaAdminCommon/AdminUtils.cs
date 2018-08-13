@@ -44,10 +44,25 @@ namespace Scada.Admin
         public const string ProjectExt = ".rsproj";
 
         /// <summary>
+        /// Determines that the application is running on Windows.
+        /// </summary>
+        public static readonly bool IsRunningOnWin = IsWindows(Environment.OSVersion);
+
+        /// <summary>
         /// Determines that the application is running on Mono Framework.
         /// </summary>
         public static readonly bool IsRunningOnMono = Type.GetType("Mono.Runtime") != null;
 
+
+        /// <summary>
+        /// Check whether the application is running on Windows.
+        /// </summary>
+        private static bool IsWindows(OperatingSystem os)
+        {
+            PlatformID pid = os.Platform;
+            return pid == PlatformID.Win32NT || pid == PlatformID.Win32S || 
+                pid == PlatformID.Win32Windows || pid == PlatformID.WinCE;
+        }
 
         /// <summary>
         /// Identifies a nullable type.

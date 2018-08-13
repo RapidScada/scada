@@ -92,12 +92,21 @@ namespace Scada.Admin.Project
         {
         }
 
+
+        /// <summary>
+        /// Creates a new project with the specified parameters.
+        /// </summary>
+        public static ScadaProject Create(string name, string location, string template)
+        {
+            return new ScadaProject();
+        }
+
         /// <summary>
         /// Loads the project description from the specified project file.
         /// </summary>
         public static bool LoadDescription(string fileName, out string description, out string errMsg)
         {
-            description = "test";
+            description = fileName;
             errMsg = "";
             return true;
         }

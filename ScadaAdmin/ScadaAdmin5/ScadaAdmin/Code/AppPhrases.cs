@@ -47,6 +47,12 @@ namespace Scada.Admin.App.Code
         public static string CommNode { get; private set; }
         public static string WebNode { get; private set; }
 
+        // Scada.Admin.App.Forms.FrmMain
+        public static string ProjectFileFilter { get; private set; }
+
+        // Scada.Admin.App.Forms.FrmNewProject
+        public static string ChooseProjectLocation { get; private set; }
+
         public static void Init()
         {
             Localization.Dict dict = Localization.GetDictionary("Scada.Admin.App.Code.ExplorerBuilder");
@@ -58,6 +64,12 @@ namespace Scada.Admin.App.Code
             ServerNode = dict.GetPhrase("ServerNode");
             CommNode = dict.GetPhrase("CommNode");
             WebNode = dict.GetPhrase("WebNode");
+
+            dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmMain");
+            ProjectFileFilter = dict.GetPhrase("ProjectFileFilter");
+
+            dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmNewProject");
+            ChooseProjectLocation = dict.GetPhrase("ChooseProjectLocation");
         }
     }
 }

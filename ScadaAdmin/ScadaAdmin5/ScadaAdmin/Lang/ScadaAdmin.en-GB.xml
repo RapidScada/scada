@@ -24,4 +24,18 @@
     <Phrase key="CommNode">Communicator</Phrase>
     <Phrase key="WebNode">Webstation</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmMain">
+    <Phrase key="ProjectFileFilter">Projects (*.rsproj)|*.rsproj|All Files (*.*)|*.*.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmNewProject">
+    <Phrase key="this">New Project</Phrase>
+    <Phrase key="lblName">Project name</Phrase>
+    <Phrase key="lblLocation">Location</Phrase>
+    <Phrase key="btnBrowseLocation">Browse...</Phrase>
+    <Phrase key="lblTemplate">Template</Phrase>
+    <Phrase key="btnBrowseTemplate">Browse...</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+    <Phrase key="ChooseProjectLocation">Choose the project location.</Phrase>
+  </Dictionary>
 </ScadaAdminDictionaries>

@@ -76,8 +76,6 @@ namespace Scada.Admin.App.Code
 
             ErrLog.FileName = AppDirs.LogDir + ErrFileName;
             ErrLog.Encoding = Encoding.UTF8;
-
-            AppState.Init(exeDir);
         }
 
         /// <summary>
