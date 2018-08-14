@@ -82,7 +82,7 @@ namespace Scada.Admin.App.Forms
         {
             this.appData = appData ?? throw new ArgumentNullException("appData");
             log = appData.ErrLog;
-            explorerBuilder = new ExplorerBuilder(tvExplorer);
+            explorerBuilder = new ExplorerBuilder(appData, tvExplorer);
             project = null;
         }
 

@@ -42,6 +42,7 @@ namespace Scada.Admin.App.Code
     /// </summary>
     internal class ExplorerBuilder
     {
+        private readonly AppData appData;   // the common data of the application
         private readonly TreeView treeView; // the manipulated tree view 
         private ScadaProject project;       // the current project to build tree
 
@@ -49,8 +50,9 @@ namespace Scada.Admin.App.Code
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public ExplorerBuilder(TreeView treeView)
+        public ExplorerBuilder(AppData appData, TreeView treeView)
         {
+            this.appData = appData ?? throw new ArgumentNullException("appData");
             this.treeView = treeView ?? throw new ArgumentNullException("treeView");
             project = null;
         }
@@ -105,7 +107,7 @@ namespace Scada.Admin.App.Code
             baseTableNode.Tag = new TreeNodeTag()
             {
                 FormType = typeof(FrmBaseTableGeneric<T>),
-                Arguments = new object[] { baseTable, project }
+                Arguments = new object[] { appData, project, baseTable }
             };
             return baseTableNode;
         }

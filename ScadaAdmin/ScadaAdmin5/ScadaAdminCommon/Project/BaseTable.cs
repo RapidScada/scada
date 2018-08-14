@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -83,6 +84,19 @@ namespace Scada.Admin.Project
 
 
         /// <summary>
+        /// Loads the table from the specified file.
+        /// </summary>
+        public void Load(string fileName)
+        {
+            XmlSerializer serializer = new XmlSerializer(Items.GetType());
+
+            using (XmlReader reader = XmlReader.Create(fileName))
+            {
+                Items = (List<T>)serializer.Deserialize(reader);
+            }
+        }
+
+        /// <summary>
         /// Saves the table to the specified file.
         /// </summary>
         public void Save(string fileName)
@@ -94,6 +108,14 @@ namespace Scada.Admin.Project
             {
                 serializer.Serialize(writer, Items);
             }
+        }
+
+        /// <summary>
+        /// Gets the table file name.
+        /// </summary>
+        public string GetFileName(string baseDir)
+        {
+            return Path.Combine(baseDir, Name + ".xml");
         }
     }
 }

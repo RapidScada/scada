@@ -37,5 +37,9 @@ namespace Scada.Admin.Project
     /// </summary>
     public class Interface
     {
+        /// <summary>
+        /// Gets or sets the directory of the interface files.
+        /// </summary>
+        public string InterfaceDir { get; set; }
     }
 }

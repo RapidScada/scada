@@ -44,6 +44,12 @@ namespace Scada.Admin.Project
 
 
         /// <summary>
+        /// The project file name.
+        /// </summary>
+        protected string fileName;
+
+
+        /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         public ScadaProject()
@@ -60,7 +66,28 @@ namespace Scada.Admin.Project
         /// <summary>
         /// Gets the project file name.
         /// </summary>
-        public string FileName { get; protected set; }
+        public string FileName
+        {
+            get
+            {
+                return fileName;
+            }
+            protected set
+            {
+                fileName = value;
+
+                if (string.IsNullOrEmpty(fileName))
+                {
+                    ConfigBase.BaseDir = "";
+                    Interface.InterfaceDir = "";
+                }
+                else
+                {
+                    ConfigBase.BaseDir = Path.Combine(Path.GetDirectoryName(FileName), "BaseXML");
+                    Interface.InterfaceDir = Path.Combine(Path.GetDirectoryName(FileName), "Interface");
+                }
+            }
+        }
 
         /// <summary>
         /// Gets or sets the project description.
