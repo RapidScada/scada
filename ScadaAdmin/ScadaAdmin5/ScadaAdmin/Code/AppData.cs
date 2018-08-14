@@ -23,6 +23,7 @@
  * Modified : 2018
  */
 
+using Scada.UI;
 using System.Text;
 using Utils;
 
@@ -83,6 +84,15 @@ namespace Scada.Admin.App.Code
         /// </summary>
         public void FinalizeApp()
         {
+        }
+
+        /// <summary>
+        /// Writes the error to the log and displays a error message.
+        /// </summary>
+        public void ProcError(string message)
+        {
+            ErrLog.WriteError(message);
+            ScadaUiUtils.ShowError(message);
         }
     }
 }

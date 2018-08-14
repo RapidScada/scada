@@ -37,5 +37,17 @@
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
     <Phrase key="ChooseProjectLocation">Choose the project location.</Phrase>
+    <Phrase key="ProjectNameEmpty">The project name can not be empty.</Phrase>
+    <Phrase key="ProjectNameInvalid">The project name contains invalid characters.</Phrase>
+    <Phrase key="ProjectLocationNotExists">The project location does not exist.</Phrase>
+    <Phrase key="ProjectAlreadyExists">The project with the same name already exists.</Phrase>
+    <Phrase key="ProjectTemplateEmpty">Creating a project without a template is not recommended. Continue?</Phrase>
+    <Phrase key="ProjectTemplateNotFound">The project template not found.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.Project.ScadaProject">
+    <Phrase key="CreateProjectError">Error creating project</Phrase>
+    <Phrase key="LoadProjectError">Error loading project</Phrase>
+    <Phrase key="SaveProjectError">Error saving project</Phrase>
+    <Phrase key="LoadProjectDescrError">Error loading project description</Phrase>
   </Dictionary>
 </ScadaAdminDictionaries>

@@ -27,14 +27,8 @@ using Scada.Admin.App.Code;
 using Scada.Admin.Project;
 using Scada.UI;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Scada.Admin.App.Forms
@@ -51,6 +45,7 @@ namespace Scada.Admin.App.Forms
         private class TemplateItem
         {
             public string Name { get; set; }
+            public string FileName { get; set; }
             public string Descr { get; set; }
 
             public override string ToString()
@@ -77,6 +72,41 @@ namespace Scada.Admin.App.Forms
             : this()
         {
             this.appData = appData ?? throw new ArgumentNullException("appData");
+        }
+
+
+        /// <summary>
+        /// Gets the project name.
+        /// </summary>
+        public string ProjectName
+        {
+            get
+            {
+                return txtName.Text.Trim();
+            }
+        }
+        
+        /// <summary>
+        /// Gets the project location.
+        /// </summary>
+        public string ProjectLocation
+        {
+            get
+            {
+                return txtLocation.Text.Trim();
+            }
+        }
+
+        /// <summary>
+        /// Gets the file name of the project template.
+        /// </summary>
+        public string ProjectTemplate
+        {
+            get
+            {
+                return cbTemplate.SelectedItem is TemplateItem templateItem ?
+                    templateItem.FileName : cbTemplate.Text.Trim();
+            }
         }
 
 
@@ -108,6 +138,7 @@ namespace Scada.Admin.App.Forms
                                 cbTemplate.Items.Add(new TemplateItem()
                                 {
                                     Name = projectFileInfo.Name,
+                                    FileName = projectFileInfo.FullName,
                                     Descr = description
                                 });
 
@@ -158,7 +189,52 @@ namespace Scada.Admin.App.Forms
         /// </summary>
         private bool ValidateFields()
         {
-            // TODO: translate
+            string name = ProjectName;
+            string location = ProjectLocation;
+            string template = ProjectTemplate;
+
+            // validate the name
+            if (name == "")
+            {
+                ScadaUiUtils.ShowError(AppPhrases.ProjectNameEmpty);
+                return false;
+            }
+
+            if (name.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0 || 
+                name.Contains(Path.DirectorySeparatorChar) || name.Contains(Path.AltDirectorySeparatorChar))
+            {
+                ScadaUiUtils.ShowError(AppPhrases.ProjectNameInvalid);
+                return false;
+            }
+
+            // validate the location
+            if (!Directory.Exists(location))
+            {
+                ScadaUiUtils.ShowError(AppPhrases.ProjectLocationNotExists);
+                return false;
+            }
+
+            if (Directory.Exists(Path.Combine(location, name)))
+            {
+                ScadaUiUtils.ShowError(AppPhrases.ProjectAlreadyExists);
+                return false;
+            }
+
+            // validate the template
+            if (template == "")
+            {
+                if (MessageBox.Show(AppPhrases.ProjectTemplateEmpty, CommonPhrases.QuestionCaption, 
+                    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) != DialogResult.Yes)
+                {
+                    return false;
+                }
+            }
+            else if (!File.Exists(template))
+            {
+                ScadaUiUtils.ShowError(AppPhrases.ProjectTemplateNotFound);
+                return false;
+            }
+
             return true;
         }
 
@@ -205,9 +281,7 @@ namespace Scada.Admin.App.Forms
         private void btnOK_Click(object sender, EventArgs e)
         {
             if (ValidateFields())
-            {
                 DialogResult = DialogResult.OK;
-            }
         }
     }
 }

@@ -144,6 +144,8 @@ namespace Scada.Admin.App.Code
             try
             {
                 treeView.BeginUpdate();
+                treeView.Nodes.Clear();
+
                 TreeNode projectNode = new TreeNode(project.Name);
                 projectNode.ImageKey = projectNode.SelectedImageKey = "project.png";
                 treeView.Nodes.Add(projectNode);

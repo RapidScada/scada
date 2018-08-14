@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminPhrases.cs" />
     <Compile Include="AdminUtils.cs" />
     <Compile Include="AppDirs.cs" />
     <Compile Include="Project\BaseTable.cs" />

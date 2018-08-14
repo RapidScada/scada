@@ -52,6 +52,12 @@ namespace Scada.Admin.App.Code
 
         // Scada.Admin.App.Forms.FrmNewProject
         public static string ChooseProjectLocation { get; private set; }
+        public static string ProjectNameEmpty { get; private set; }
+        public static string ProjectNameInvalid { get; private set; }
+        public static string ProjectLocationNotExists { get; private set; }
+        public static string ProjectAlreadyExists { get; private set; }
+        public static string ProjectTemplateEmpty { get; private set; }
+        public static string ProjectTemplateNotFound { get; private set; }
 
         public static void Init()
         {
@@ -70,6 +76,12 @@ namespace Scada.Admin.App.Code
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmNewProject");
             ChooseProjectLocation = dict.GetPhrase("ChooseProjectLocation");
+            ProjectNameEmpty = dict.GetPhrase("ProjectNameEmpty");
+            ProjectNameInvalid = dict.GetPhrase("ProjectNameInvalid");
+            ProjectLocationNotExists = dict.GetPhrase("ProjectLocationNotExists");
+            ProjectAlreadyExists = dict.GetPhrase("ProjectAlreadyExists");
+            ProjectTemplateEmpty = dict.GetPhrase("ProjectTemplateEmpty");
+            ProjectTemplateNotFound = dict.GetPhrase("ProjectTemplateNotFound");
         }
     }
 }

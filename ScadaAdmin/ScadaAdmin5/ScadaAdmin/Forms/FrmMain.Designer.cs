@@ -58,6 +58,7 @@
             this.splVert = new System.Windows.Forms.Splitter();
             this.pnlRight = new System.Windows.Forms.Panel();
             this.wctrlMain = new WinControl.WinControl();
+            this.ofdProject = new System.Windows.Forms.OpenFileDialog();
             this.msMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.pnlLeft.SuspendLayout();
@@ -112,7 +113,7 @@
             this.miFileSave.Image = ((System.Drawing.Image)(resources.GetObject("miFileSave.Image")));
             this.miFileSave.Name = "miFileSave";
             this.miFileSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.miFileSave.Size = new System.Drawing.Size(190, 22);
+            this.miFileSave.Size = new System.Drawing.Size(195, 22);
             this.miFileSave.Text = "Save";
             this.miFileSave.Click += new System.EventHandler(this.miFileSave_Click);
             // 
@@ -120,20 +121,20 @@
             // 
             this.miFileSaveAs.Image = ((System.Drawing.Image)(resources.GetObject("miFileSaveAs.Image")));
             this.miFileSaveAs.Name = "miFileSaveAs";
-            this.miFileSaveAs.Size = new System.Drawing.Size(190, 22);
+            this.miFileSaveAs.Size = new System.Drawing.Size(195, 22);
             this.miFileSaveAs.Text = "Save As...";
             this.miFileSaveAs.Click += new System.EventHandler(this.miFileSaveAs_Click);
             // 
             // miFileSep
             // 
             this.miFileSep.Name = "miFileSep";
-            this.miFileSep.Size = new System.Drawing.Size(187, 6);
+            this.miFileSep.Size = new System.Drawing.Size(192, 6);
             // 
             // miFileExit
             // 
             this.miFileExit.Image = ((System.Drawing.Image)(resources.GetObject("miFileExit.Image")));
             this.miFileExit.Name = "miFileExit";
-            this.miFileExit.Size = new System.Drawing.Size(190, 22);
+            this.miFileExit.Size = new System.Drawing.Size(195, 22);
             this.miFileExit.Text = "Exit";
             this.miFileExit.Click += new System.EventHandler(this.miFileExit_Click);
             // 
@@ -390,6 +391,7 @@
         private System.Windows.Forms.TreeView tvExplorer;
         private WinControl.WinControl wctrlMain;
         private System.Windows.Forms.ImageList ilExplorer;
+        private System.Windows.Forms.OpenFileDialog ofdProject;
     }
 }
 

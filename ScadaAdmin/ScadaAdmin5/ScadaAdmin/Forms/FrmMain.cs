@@ -29,6 +29,7 @@ using Scada.UI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Utils;
@@ -99,13 +100,14 @@ namespace Scada.Admin.App.Forms
             if (Localization.LoadDictionaries(appData.AppDirs.LangDir, "ScadaAdmin", out errMsg))
             {
                 Translator.TranslateForm(this, "Scada.Admin.App.Forms.FrmMain");
-                //ofdScheme.Filter = sfdScheme.Filter = AppPhrases.SchemeFileFilter;
+                ofdProject.Filter = AppPhrases.ProjectFileFilter;
             }
             else
             {
                 log.WriteError(errMsg);
             }
 
+            AdminPhrases.Init();
             AppPhrases.Init();
         }
 
@@ -219,13 +221,34 @@ namespace Scada.Admin.App.Forms
 
             if (frmNewProject.ShowDialog() == DialogResult.OK)
             {
-
+                if (ScadaProject.Create(frmNewProject.ProjectName, frmNewProject.ProjectLocation,
+                    frmNewProject.ProjectTemplate, out ScadaProject newProject, out string errMsg))
+                {
+                    project = newProject;
+                    explorerBuilder.CreateNodes(project);
+                }
+                else
+                {
+                    appData.ProcError(errMsg);
+                }
             }
         }
 
         private void miFileOpenProject_Click(object sender, EventArgs e)
         {
+            // open project
+            ofdProject.FileName = "";
 
+            if (ofdProject.ShowDialog() == DialogResult.OK)
+            {
+                ofdProject.InitialDirectory = Path.GetDirectoryName(ofdProject.FileName);
+                project = new ScadaProject();
+
+                if (!project.Load(ofdProject.FileName, out string errMsg))
+                    appData.ProcError(errMsg);
+
+                explorerBuilder.CreateNodes(project);
+            }
         }
 
         private void miFileSave_Click(object sender, EventArgs e)

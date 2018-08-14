@@ -37,5 +37,17 @@
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Отмена</Phrase>
     <Phrase key="ChooseProjectLocation">Выберите расположение проекта.</Phrase>
+    <Phrase key="ProjectNameEmpty">Наименование проекта не может быть пустым.</Phrase>
+    <Phrase key="ProjectNameInvalid">Наименование проекта содержит недопустимые символы.</Phrase>
+    <Phrase key="ProjectLocationNotExists">Расположение проекта не существует.</Phrase>
+    <Phrase key="ProjectAlreadyExists">Проект с таким наименованием уже существует.</Phrase>
+    <Phrase key="ProjectTemplateEmpty">Создание проекта без шаблона не рекомендуется. Продолжить?</Phrase>
+    <Phrase key="ProjectTemplateNotFound">Шаблон проекта не найден.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.Project.ScadaProject">
+    <Phrase key="CreateProjectError">Ошибка при создании проекта</Phrase>
+    <Phrase key="LoadProjectError">Ошибка при загрузке проекта</Phrase>
+    <Phrase key="SaveProjectError">Ошибка при сохранении проекта</Phrase>
+    <Phrase key="LoadProjectDescrError">Ошибка при загрузке описания проекта</Phrase>
   </Dictionary>
 </ScadaAdminDictionaries>
