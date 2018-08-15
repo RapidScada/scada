@@ -43,8 +43,6 @@ namespace Scada.Admin.Project
             KPTypeTable = new BaseTable<KPType>("KPType", "KPTypeID", CommonPhrases.KPTypeTable);
             ObjTable = new BaseTable<Obj>("Obj", "ObjNum", CommonPhrases.ObjTable);
             BaseDir = "";
-
-            CreateDemoData(); // TODO: remove
         }
 
 
@@ -72,26 +70,5 @@ namespace Scada.Admin.Project
         /// Gets or sets the directory of the configuration database files.
         /// </summary>
         public string BaseDir { get; set; }
-
-
-        /// <summary>
-        /// Temporary method.
-        /// </summary>
-        private void CreateDemoData()
-        {
-            CommLineTable.Items.Add(1, new CommLine() { CommLineNum = 1, Name = "Test Line" });
-
-            for (int i = 1; i <= 10; i++)
-            {
-                KPTable.Items.Add(i, new KP() { KPNum = i, Name = "dev" + i, KPTypeID = 1, CommLineNum = 1 });
-            }
-
-            KPTypeTable.Items.Add(1, new KPType() { KPTypeID = 1, Name = "Test KP type" });
-
-            for (int i = 1; i <= 10000; i++)
-            {
-                ObjTable.Items.Add(i, new Obj() { ObjNum = i, Name = "Obj" + i, Descr = "b" });
-            }
-        }
     }
 }
