@@ -184,6 +184,7 @@
             this.Name = "FrmBaseTable";
             this.Text = "FrmBaseTable";
             this.Load += new System.EventHandler(this.FrmBaseTable_Load);
+            this.Shown += new System.EventHandler(this.FrmBaseTable_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator)).EndInit();
             this.bindingNavigator.ResumeLayout(false);
             this.bindingNavigator.PerformLayout();

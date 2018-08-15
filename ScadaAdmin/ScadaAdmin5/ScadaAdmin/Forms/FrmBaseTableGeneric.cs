@@ -26,6 +26,7 @@
 using Scada.Admin.App.Code;
 using Scada.Admin.Project;
 using System;
+using System.Data;
 using System.IO;
 using WinControl;
 
@@ -40,6 +41,7 @@ namespace Scada.Admin.App.Forms
         private readonly AppData appData;        // the common data of the application
         private readonly ScadaProject project;   // the project under development
         private readonly BaseTable<T> baseTable; // the table being edited
+        private DataTable dataTable;             // the table used by a grid view control
 
 
         /// <summary>
@@ -51,6 +53,8 @@ namespace Scada.Admin.App.Forms
             this.appData = appData ?? throw new ArgumentNullException("appData");
             this.project = project ?? throw new ArgumentNullException("project");
             this.baseTable = baseTable ?? throw new ArgumentNullException("baseTable");
+            dataTable = null;
+            Text = baseTable.Title;
         }
 
 
@@ -61,14 +65,18 @@ namespace Scada.Admin.App.Forms
 
 
         /// <summary>
-        /// Performs actions on load.
+        /// Loads the table data.
         /// </summary>
-        protected override void LoadForm()
+        protected override void LoadTableData()
         {
-            base.LoadForm();
+            base.LoadTableData();
             LoadBaseTable();
-            Text = baseTable.Title;
-            bindingSource.DataSource = baseTable.Items.ToDataTable();
+
+            dataTable = baseTable.Items.ToDataTable();
+            dataTable.RowChanged += dataTable_RowChanged;
+            dataTable.RowDeleted += dataTable_RowDeleted;
+            bindingSource.DataSource = dataTable;
+
             ColumnBuilder columnBuilder = new ColumnBuilder(project.ConfigBase);
             dataGridView.Columns.AddRange(columnBuilder.CreateColumns(baseTable.ItemType));
             dataGridView.AutoResizeColumns();
@@ -93,6 +101,15 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
+        /// Copies the changes from a one table to another.
+        /// </summary>
+        private void RetrieveChanges()
+        {
+            baseTable.Items.RetrieveChanges(dataTable);
+            ChildFormTag.Modified = true;
+        }
+
+        /// <summary>
         /// Saves the table.
         /// </summary>
         public void Save()
@@ -100,12 +117,26 @@ namespace Scada.Admin.App.Forms
             try
             {
                 string fileName = baseTable.GetFileName(project.ConfigBase.BaseDir);
+                Directory.CreateDirectory(project.ConfigBase.BaseDir);
                 baseTable.Save(fileName);
             }
             catch (Exception ex)
             {
                 appData.ProcError(ex.Message); // TODO: message
             }
+        }
+
+
+        private void dataTable_RowChanged(object sender, DataRowChangeEventArgs e)
+        {
+            if (e.Action == DataRowAction.Add || e.Action == DataRowAction.Change)
+                RetrieveChanges();
+        }
+
+        private void dataTable_RowDeleted(object sender, DataRowChangeEventArgs e)
+        {
+            if (e.Action == DataRowAction.Delete)
+                RetrieveChanges();
         }
     }
 }

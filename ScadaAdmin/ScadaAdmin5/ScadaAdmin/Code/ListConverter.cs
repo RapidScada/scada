@@ -81,10 +81,21 @@ namespace Scada.Admin.App.Code
         public static void RetrieveChanges<T>(this IList<T> list, DataTable dataTable)
         {
             DataView addedRowsView = new DataView(dataTable, "", "", DataViewRowState.Added);
+            DataView modifiedRowsView = new DataView(dataTable, "", "", DataViewRowState.ModifiedCurrent);
+            DataView deletedRowsView = new DataView(dataTable, "", "", DataViewRowState.Deleted);
+            PropertyDescriptorCollection props = TypeDescriptor.GetProperties(typeof(T));
 
             foreach (DataRowView rowView in addedRowsView)
             {
+                T item = Activator.CreateInstance<T>();
 
+                foreach (PropertyDescriptor prop in props)
+                {
+                    object value = rowView[prop.Name];
+                    prop.SetValue(item, value);
+                }
+
+                list.Add(item);
             }
         }
     }

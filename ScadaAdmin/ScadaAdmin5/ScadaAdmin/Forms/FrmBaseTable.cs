@@ -42,10 +42,16 @@ namespace Scada.Admin.App.Forms
             InitializeComponent();
         }
 
+
         /// <summary>
-        /// Performs actions on load.
+        /// Loads the table data.
         /// </summary>
-        protected virtual void LoadForm()
+        protected virtual void LoadTableData()
+        {
+        }
+
+
+        private void FrmBaseTable_Load(object sender, EventArgs e)
         {
             if (AdminUtils.IsRunningOnMono)
             {
@@ -54,9 +60,9 @@ namespace Scada.Admin.App.Forms
             }
         }
 
-        private void FrmBaseTable_Load(object sender, EventArgs e)
+        private void FrmBaseTable_Shown(object sender, EventArgs e)
         {
-            LoadForm();
+            LoadTableData();
         }
     }
 }

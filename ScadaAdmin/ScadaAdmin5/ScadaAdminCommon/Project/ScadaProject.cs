@@ -115,15 +115,13 @@ namespace Scada.Admin.Project
         /// </summary>
         private void SetToDefault()
         {
+            fileName = "";
+
             Name = DefaultName;
-            FileName = "";
             Description = "";
             ConfigBase = new ConfigBase();
             Interface = new Interface();
-            Instances = new List<Instance>
-            {
-                new Instance() { Name = Instance.DefaultName }
-            };
+            Instances = new List<Instance>();
         }
 
         /// <summary>
