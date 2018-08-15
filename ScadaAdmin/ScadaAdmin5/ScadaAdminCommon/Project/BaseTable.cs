@@ -25,6 +25,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
@@ -38,21 +40,24 @@ namespace Scada.Admin.Project
     public class BaseTable<T>
     {
         /// <summary>
-        /// Initializes a new instance of the class.
+        /// The primary key of the table.
         /// </summary>
-        public BaseTable()
-            : this("", "")
-        {
-        }
+        protected string primaryKey;
+        /// <summary>
+        /// The property that is a primary key.
+        /// </summary>
+        protected PropertyDescriptor primaryKeyProp;
+
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public BaseTable(string name, string title)
+        public BaseTable(string name, string primaryKey, string title)
         {
-            Name = name ?? "";
-            Title = title ?? "";
-            Items = new List<T>();
+            Name = name;
+            PrimaryKey = primaryKey;
+            Title = title;
+            Items = new SortedDictionary<int, T>();
         }
 
 
@@ -60,6 +65,33 @@ namespace Scada.Admin.Project
         /// Gets or sets the table name.
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the primary key of the table.
+        /// </summary>
+        public string PrimaryKey
+        {
+            get
+            {
+                return primaryKey;
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                    throw new ArgumentException("The primary key can not be empty.");
+
+                PropertyDescriptor prop = TypeDescriptor.GetProperties(ItemType)[value];
+
+                if (prop == null)
+                    throw new ArgumentException("The primary key property not found.");
+
+                if (prop.PropertyType != typeof(int))
+                    throw new ArgumentException("The primary key must be an integer.");
+
+                primaryKey = value;
+                primaryKeyProp = prop;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the table title.
@@ -78,21 +110,83 @@ namespace Scada.Admin.Project
         }
 
         /// <summary>
-        /// Gets the table items.
+        /// Gets the table items sorted by primary key.
         /// </summary>
-        public List<T> Items { get; protected set; }
+        public SortedDictionary<int, T> Items { get; protected set; }
 
+
+        /// <summary>
+        /// Gets the primary key value of the item.
+        /// </summary>
+        protected int GetPrimaryKey(T item)
+        {
+            return (int)primaryKeyProp.GetValue(item);
+        }
+
+        /// <summary>
+        /// Gets the table file name.
+        /// </summary>
+        protected string GetFileName(string directory)
+        {
+            return Path.Combine(directory, Name + ".xml");
+        }
+
+
+        /// <summary>
+        /// Adds an item into the table.
+        /// </summary>
+        public void Add(T item)
+        {
+            Items.Add(GetPrimaryKey(item), item);
+        }
+
+        /// <summary>
+        /// Sets an item of the table.
+        /// </summary>
+        public void Set(T item)
+        {
+            Items[GetPrimaryKey(item)] = item;
+        }
 
         /// <summary>
         /// Loads the table from the specified file.
         /// </summary>
         public void Load(string fileName)
         {
-            XmlSerializer serializer = new XmlSerializer(Items.GetType());
+            Items.Clear();
+            List<T> list;
+            XmlSerializer serializer = new XmlSerializer(typeof(List<T>));
 
             using (XmlReader reader = XmlReader.Create(fileName))
             {
-                Items = (List<T>)serializer.Deserialize(reader);
+                list = (List<T>)serializer.Deserialize(reader);
+            }
+
+            foreach (T item in list)
+            {
+                Items.Add(GetPrimaryKey(item), item);
+            }
+        }
+
+        /// <summary>
+        /// Tries to load the table from the specified file.
+        /// </summary>
+        public bool Load(string directory, out string errMsg)
+        {
+            try
+            {
+                string fileName = GetFileName(directory);
+
+                if (File.Exists(fileName))
+                    Load(fileName);
+
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = AdminPhrases.LoadBaseTableError + ": " + ex.Message;
+                return false;
             }
         }
 
@@ -101,21 +195,33 @@ namespace Scada.Admin.Project
         /// </summary>
         public void Save(string fileName)
         {
-            XmlSerializer serializer = new XmlSerializer(Items.GetType());
+            List<T> list = new List<T>(Items.Values);
+            XmlSerializer serializer = new XmlSerializer(list.GetType());
             XmlWriterSettings writerSettings = new XmlWriterSettings() { Indent = true };
 
             using (XmlWriter writer = XmlWriter.Create(fileName, writerSettings))
             {
-                serializer.Serialize(writer, Items);
+                serializer.Serialize(writer, list);
             }
         }
 
         /// <summary>
-        /// Gets the table file name.
+        /// Tries to save the table to the specified file.
         /// </summary>
-        public string GetFileName(string baseDir)
+        public bool Save(string directory, out string errMsg)
         {
-            return Path.Combine(baseDir, Name + ".xml");
+            try
+            {
+                Directory.CreateDirectory(directory);
+                Save(GetFileName(directory));
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = AdminPhrases.SaveBaseTableError + ": " + ex.Message;
+                return false;
+            }
         }
     }
 }

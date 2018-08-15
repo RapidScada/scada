@@ -73,7 +73,7 @@
     <Compile Include="Code\ColumnBuilder.cs" />
     <Compile Include="Code\ExplorerBuilder.cs" />
     <Compile Include="Code\FormState.cs" />
-    <Compile Include="Code\ListConverter.cs" />
+    <Compile Include="Code\TableConverter.cs" />
     <Compile Include="Code\TreeNodeTag.cs" />
     <Compile Include="Forms\FrmBaseTable.cs">
       <SubType>Form</SubType>

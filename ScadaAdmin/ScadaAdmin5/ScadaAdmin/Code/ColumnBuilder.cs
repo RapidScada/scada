@@ -54,7 +54,7 @@ namespace Scada.Admin.App.Code
         /// <summary>
         /// Creates a new column that hosts text cells.
         /// </summary>
-        private DataGridViewTextBoxColumn NewTextBoxColumn(string dataPropertyName)
+        private DataGridViewColumn NewTextBoxColumn(string dataPropertyName)
         {
             return new DataGridViewTextBoxColumn
             {
@@ -67,27 +67,29 @@ namespace Scada.Admin.App.Code
         /// <summary>
         /// Creates a new column that hosts cells which values are selected from a combo box.
         /// </summary>
-        private DataGridViewComboBoxColumn NewComboBoxColumn(
+        private DataGridViewColumn NewComboBoxColumn(
             string dataPropertyName, string valueMember, string displayMember, object dataSource)
         {
-            return new DataGridViewComboBoxColumn
-            {
-                Name = dataPropertyName,
-                HeaderText = dataPropertyName,
-                DataPropertyName = dataPropertyName,
-                ValueMember = valueMember,
-                DisplayMember = displayMember,
-                DataSource = dataSource,
-                SortMode = DataGridViewColumnSortMode.Automatic,
-                DisplayStyleForCurrentCellOnly = true
-            };
+            return AdminUtils.IsRunningOnMono ?
+                NewTextBoxColumn(dataPropertyName) /*because of the bugs in Mono*/ :
+                new DataGridViewComboBoxColumn
+                {
+                    Name = dataPropertyName,
+                    HeaderText = dataPropertyName,
+                    DataPropertyName = dataPropertyName,
+                    ValueMember = valueMember,
+                    DisplayMember = displayMember,
+                    DataSource = dataSource,
+                    SortMode = DataGridViewColumnSortMode.Automatic,
+                    DisplayStyleForCurrentCellOnly = true
+                };
         }
 
         /// <summary>
         /// Creates a new column that hosts cells which values are selected from a combo box.
         /// </summary>
-        private DataGridViewComboBoxColumn NewComboBoxColumn<T>(
-            string dataPropertyName, string displayMember, IList<T> dataSource, bool addEmptyRow = false)
+        private DataGridViewColumn NewComboBoxColumn<T>(
+            string dataPropertyName, string displayMember, BaseTable<T> dataSource, bool addEmptyRow = false)
         {
             return NewComboBoxColumn(dataPropertyName, dataPropertyName, displayMember,
                 CreateComboBoxSource(dataSource, dataPropertyName, displayMember, addEmptyRow));
@@ -97,9 +99,9 @@ namespace Scada.Admin.App.Code
         /// Creates a data table for using as a data source of a combo box.
         /// </summary>
         private DataTable CreateComboBoxSource<T>(
-            IList<T> list, string valueMember, string displayMember, bool addEmptyRow)
+            BaseTable<T> baseTable, string valueMember, string displayMember, bool addEmptyRow)
         {
-            DataTable dataTable = list.ToDataTable(true);
+            DataTable dataTable = baseTable.ToDataTable(true);
 
             if (addEmptyRow)
             {
@@ -155,10 +157,10 @@ namespace Scada.Admin.App.Code
             {
                 NewTextBoxColumn("KPNum"),
                 NewTextBoxColumn("Name"),
-                NewComboBoxColumn("KPTypeID", "Name", configBase.KPTypeTable.Items),
+                NewComboBoxColumn("KPTypeID", "Name", configBase.KPTypeTable),
                 NewTextBoxColumn("Address"),
                 NewTextBoxColumn("CallNum"),
-                NewComboBoxColumn("CommLineNum", "Name", configBase.CommLineTable.Items, true),
+                NewComboBoxColumn("CommLineNum", "Name", configBase.CommLineTable, true),
                 NewTextBoxColumn("Descr")
             });
         }

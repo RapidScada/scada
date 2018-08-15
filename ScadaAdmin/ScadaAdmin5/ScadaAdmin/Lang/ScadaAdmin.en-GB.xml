@@ -49,5 +49,7 @@
     <Phrase key="LoadProjectError">Error loading project</Phrase>
     <Phrase key="SaveProjectError">Error saving project</Phrase>
     <Phrase key="LoadProjectDescrError">Error loading project description</Phrase>
+    <Phrase key="LoadBaseTableError">Error loading table of the configuration database</Phrase>
+    <Phrase key="SaveBaseTableError">Error saving table of the configuration database</Phrase>
   </Dictionary>
 </ScadaAdminDictionaries>

@@ -38,6 +38,8 @@ namespace Scada.Admin
         public static string LoadProjectError { get; private set; }
         public static string SaveProjectError { get; private set; }
         public static string LoadProjectDescrError { get; private set; }
+        public static string LoadBaseTableError { get; private set; }
+        public static string SaveBaseTableError { get; private set; }
 
         public static void Init()
         {
@@ -46,6 +48,8 @@ namespace Scada.Admin
             LoadProjectError = dict.GetPhrase("LoadProjectError");
             SaveProjectError = dict.GetPhrase("SaveProjectError");
             LoadProjectDescrError = dict.GetPhrase("LoadProjectDescrError");
+            LoadBaseTableError = dict.GetPhrase("LoadBaseTableError");
+            SaveBaseTableError = dict.GetPhrase("SaveBaseTableError");
         }
     }
 }

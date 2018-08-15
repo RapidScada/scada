@@ -27,7 +27,6 @@ using Scada.Admin.App.Code;
 using Scada.Admin.Project;
 using System;
 using System.Data;
-using System.IO;
 using WinControl;
 
 namespace Scada.Admin.App.Forms
@@ -38,7 +37,6 @@ namespace Scada.Admin.App.Forms
     /// </summary>
     public class FrmBaseTableGeneric<T> : FrmBaseTable, IChildForm
     {
-        private readonly AppData appData;        // the common data of the application
         private readonly ScadaProject project;   // the project under development
         private readonly BaseTable<T> baseTable; // the table being edited
         private DataTable dataTable;             // the table used by a grid view control
@@ -48,9 +46,8 @@ namespace Scada.Admin.App.Forms
         /// Initializes a new instance of the class.
         /// </summary>
         public FrmBaseTableGeneric(AppData appData, ScadaProject project, BaseTable<T> baseTable)
-            : base()
+            : base(appData)
         {
-            this.appData = appData ?? throw new ArgumentNullException("appData");
             this.project = project ?? throw new ArgumentNullException("project");
             this.baseTable = baseTable ?? throw new ArgumentNullException("baseTable");
             dataTable = null;
@@ -70,9 +67,11 @@ namespace Scada.Admin.App.Forms
         protected override void LoadTableData()
         {
             base.LoadTableData();
-            LoadBaseTable();
 
-            dataTable = baseTable.Items.ToDataTable();
+            if (!baseTable.Load(project.ConfigBase.BaseDir, out string errMsg))
+                appData.ProcError(errMsg);
+
+            dataTable = baseTable.ToDataTable();
             dataTable.RowChanged += dataTable_RowChanged;
             dataTable.RowDeleted += dataTable_RowDeleted;
             bindingSource.DataSource = dataTable;
@@ -83,29 +82,11 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
-        /// Loads a table from file.
-        /// </summary>
-        private void LoadBaseTable()
-        {
-            try
-            {
-                string fileName = baseTable.GetFileName(project.ConfigBase.BaseDir);
-
-                if (File.Exists(fileName))
-                    baseTable.Load(fileName);
-            }
-            catch (Exception ex)
-            {
-                appData.ProcError(ex.Message); // TODO: message
-            }
-        }
-
-        /// <summary>
         /// Copies the changes from a one table to another.
         /// </summary>
         private void RetrieveChanges()
         {
-            baseTable.Items.RetrieveChanges(dataTable);
+            baseTable.RetrieveChanges(dataTable);
             ChildFormTag.Modified = true;
         }
 
@@ -114,16 +95,10 @@ namespace Scada.Admin.App.Forms
         /// </summary>
         public void Save()
         {
-            try
-            {
-                string fileName = baseTable.GetFileName(project.ConfigBase.BaseDir);
-                Directory.CreateDirectory(project.ConfigBase.BaseDir);
-                baseTable.Save(fileName);
-            }
-            catch (Exception ex)
-            {
-                appData.ProcError(ex.Message); // TODO: message
-            }
+            if (baseTable.Save(project.ConfigBase.BaseDir, out string errMsg))
+                ChildFormTag.Modified = false;
+            else
+                appData.ProcError(errMsg);
         }
 
 

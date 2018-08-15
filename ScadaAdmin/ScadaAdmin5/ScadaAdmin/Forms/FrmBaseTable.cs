@@ -23,6 +23,7 @@
  * Modified : 2018
  */
 
+using Scada.Admin.App.Code;
 using System;
 using System.Windows.Forms;
 
@@ -34,12 +35,23 @@ namespace Scada.Admin.App.Forms
     /// </summary>
     public partial class FrmBaseTable : Form
     {
+        protected readonly AppData appData; // the common data of the application
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         public FrmBaseTable()
         {
             InitializeComponent();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the class.
+        /// </summary>
+        public FrmBaseTable(AppData appData)
+            : this()
+        {
+            this.appData = appData ?? throw new ArgumentNullException("appData");
         }
 
 
@@ -63,6 +75,12 @@ namespace Scada.Admin.App.Forms
         private void FrmBaseTable_Shown(object sender, EventArgs e)
         {
             LoadTableData();
+        }
+
+        private void dataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            appData.ProcError(e.Exception);
+            e.ThrowException = false;
         }
     }
 }

@@ -49,5 +49,7 @@
     <Phrase key="LoadProjectError">Ошибка при загрузке проекта</Phrase>
     <Phrase key="SaveProjectError">Ошибка при сохранении проекта</Phrase>
     <Phrase key="LoadProjectDescrError">Ошибка при загрузке описания проекта</Phrase>
+    <Phrase key="LoadBaseTableError">Ошибка при загрузке таблицы базы конфигурации</Phrase>
+    <Phrase key="SaveBaseTableError">Ошибка при сохранении таблицы базы конфигурации</Phrase>
   </Dictionary>
 </ScadaAdminDictionaries>

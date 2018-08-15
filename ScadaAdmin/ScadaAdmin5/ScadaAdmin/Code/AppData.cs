@@ -24,6 +24,7 @@
  */
 
 using Scada.UI;
+using System;
 using System.Text;
 using Utils;
 
@@ -93,6 +94,15 @@ namespace Scada.Admin.App.Code
         {
             ErrLog.WriteError(message);
             ScadaUiUtils.ShowError(message);
+        }
+
+        /// <summary>
+        /// Writes the error to the log and displays a error message.
+        /// </summary>
+        public void ProcError(Exception ex, string message = null)
+        {
+            ErrLog.WriteException(ex, message);
+            ScadaUiUtils.ShowError(message ?? ex.Message);
         }
     }
 }
