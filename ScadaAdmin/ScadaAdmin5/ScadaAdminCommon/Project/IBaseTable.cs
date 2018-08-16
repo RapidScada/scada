@@ -15,33 +15,25 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : ScadaData
- * Summary  : Represents a unit as the configuration database entity
+ * Module   : ScadaAdminCommon
+ * Summary  : Defines functionality to operate with the tables of the configuration database.
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
  * Modified : 2018
  */
 
-#pragma warning disable 1591 // Missing XML comment for publicly visible type or member
-
-using System;
-
-namespace Scada.Data.Entities
+namespace Scada.Admin.Project
 {
     /// <summary>
-    /// Represents a unit as the configuration database entity.
-    /// <para>Представляет размерность как сущность базы конфигурации.</para>
+    /// Defines functionality to operate with the tables of the configuration database.
+    /// <para>Определяет функциональность для работы с таблицами базы данных конфигурации.</para>
     /// </summary>
-    [Serializable]
-    public class Unit
+    public interface IBaseTable
     {
-        public int UnitID { get; set; }
-
-        public string Name { get; set; }
-
-        public string Sign { get; set; }
-
-        public string Descr { get; set; }
+        /// <summary>
+        /// Gets or sets the table name.
+        /// </summary>
+        string Name { get; set; }
     }
 }

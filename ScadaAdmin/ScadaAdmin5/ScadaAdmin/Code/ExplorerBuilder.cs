@@ -70,28 +70,28 @@ namespace Scada.Admin.App.Code
             sysTableNode.ImageKey = sysTableNode.SelectedImageKey = "folder_closed.png";
 
             sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.ObjTable));
-            //sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.CommLineTable));
+            sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.CommLineTable));
             sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.KPTable));
-            //sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.InCnlTable));
-            //sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.CtrlCnlTable));
-            //sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.RoleTable));
-            //sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.UserTable));
-            //sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.InterfaceTable));
-            //sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.RightTable));
+            sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.InCnlTable));
+            sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.CtrlCnlTable));
+            sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.RoleTable));
+            sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.UserTable));
+            sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.InterfaceTable));
+            sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.RightTable));
             baseNode.Nodes.Add(sysTableNode);
 
             TreeNode dictTableNode = new TreeNode(AppPhrases.DictTableNode);
             dictTableNode.ImageKey = dictTableNode.SelectedImageKey = "folder_closed.png";
 
-            //dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.CnlTypeTable));
-            //dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.CmdTypeTable));
-            //dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.EvTypeTable));
-            //dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.KPTypeTable));
-            //dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.ParamTable));
-            //dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.UnitTable));
-            //dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.CmdValTable));
-            //dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.FormatTable));
-            //dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.FormulaTable));
+            dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.CnlTypeTable));
+            dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.CmdTypeTable));
+            dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.EvTypeTable));
+            dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.KPTypeTable));
+            dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.ParamTable));
+            dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.UnitTable));
+            dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.CmdValTable));
+            dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.FormatTable));
+            dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.FormulaTable));
             baseNode.Nodes.Add(dictTableNode);
 
             return baseNode;

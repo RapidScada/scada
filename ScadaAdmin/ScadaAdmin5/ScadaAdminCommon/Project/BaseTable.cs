@@ -37,7 +37,7 @@ namespace Scada.Admin.Project
     /// Represents the table of the configuration database.
     /// <para>Представляет таблицу базы конфигурации.</para>
     /// </summary>
-    public class BaseTable<T>
+    public class BaseTable<T> : IBaseTable
     {
         /// <summary>
         /// The primary key of the table.

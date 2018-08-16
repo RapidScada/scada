@@ -1,5 +1,87 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ScadaAdminDictionaries>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.CmdTypeTable">
+    <Phrase key="CmdTypeID">ID</Phrase>
+    <Phrase key="Name">Name</Phrase>
+    <Phrase key="Descr">Description</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.CmdValTable">
+    <Phrase key="CmdValID">ID</Phrase>
+    <Phrase key="Name">Name</Phrase>
+    <Phrase key="Val">Value</Phrase>
+    <Phrase key="Descr">Description</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.CnlTypeTable">
+    <Phrase key="CnlTypeID">ID</Phrase>
+    <Phrase key="Name">Name</Phrase>
+    <Phrase key="ShtName">Short Name</Phrase>
+    <Phrase key="Descr">Description</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.CommLineTable">
+    <Phrase key="CommLineNum">Number</Phrase>
+    <Phrase key="Name">Name</Phrase>
+    <Phrase key="Descr">Description</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.CtrlCnlTable">
+    <Phrase key="CtrlCnlNum">Number</Phrase>
+    <Phrase key="Active">Active</Phrase>
+    <Phrase key="Name">Name</Phrase>
+    <Phrase key="CmdTypeID">Command Type</Phrase>
+    <Phrase key="ObjNum">Object</Phrase>
+    <Phrase key="KPNum">Device</Phrase>
+    <Phrase key="CmdNum">Command Number</Phrase>
+    <Phrase key="CmdValID">Command Values</Phrase>
+    <Phrase key="FormulaUsed">Formula Used</Phrase>
+    <Phrase key="Formula">Formula</Phrase>
+    <Phrase key="EvEnabled">Write Events</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.EvTypeTable">
+    <Phrase key="CnlStatus">Status</Phrase>
+    <Phrase key="Name">Name</Phrase>
+    <Phrase key="Color">Color</Phrase>
+    <Phrase key="Descr">Description</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.FormatTable">
+    <Phrase key="FormatID">ID</Phrase>
+    <Phrase key="Name">Name</Phrase>
+    <Phrase key="ShowNumber">Show Number</Phrase>
+    <Phrase key="DecDigits">Decimal Digits</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.FormulaTable">
+    <Phrase key="FormulaID">ID</Phrase>
+    <Phrase key="Name">Name</Phrase>
+    <Phrase key="Source">Source Code</Phrase>
+    <Phrase key="Descr">Description</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.InCnlTable">
+    <Phrase key="CnlNum">Number</Phrase>
+    <Phrase key="Active">Active</Phrase>
+    <Phrase key="Name">Name</Phrase>
+    <Phrase key="CnlTypeID">Channel Type</Phrase>
+    <Phrase key="ObjNum">Object</Phrase>
+    <Phrase key="KPNum">Device</Phrase>
+    <Phrase key="Signal">Signal</Phrase>
+    <Phrase key="FormulaUsed">Formula Used</Phrase>
+    <Phrase key="Formula">Formula</Phrase>
+    <Phrase key="Averaging">Averaging</Phrase>
+    <Phrase key="ParamID">Quantity</Phrase>
+    <Phrase key="FormatID">Format</Phrase>
+    <Phrase key="UnitID">Unit</Phrase>
+    <Phrase key="CtrlCnlNum">Output Channel</Phrase>
+    <Phrase key="EvEnabled">Write Events</Phrase>
+    <Phrase key="EvSound">Event Sound</Phrase>
+    <Phrase key="EvOnChange">Event on Change</Phrase>
+    <Phrase key="EvOnUndef">Event on Undefined</Phrase>
+    <Phrase key="LimLowCrash">Lower Alarm Limit</Phrase>
+    <Phrase key="LimLow">Lower Limit</Phrase>
+    <Phrase key="LimHigh">Upper Limit</Phrase>
+    <Phrase key="LimHighCrash">Upper Alarm Limit</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.InterfaceTable">
+    <Phrase key="ItfID">ID</Phrase>
+    <Phrase key="Name">Path</Phrase>
+    <Phrase key="Descr">Title</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.KPTable">
     <Phrase key="KPNum">Number</Phrase>
     <Phrase key="Name">Name</Phrase>
@@ -9,9 +91,46 @@
     <Phrase key="CommLineNum">Communication Line</Phrase>
     <Phrase key="Descr">Description</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.KPTypeTable">
+    <Phrase key="KPTypeID">ID</Phrase>
+    <Phrase key="Name">Name</Phrase>
+    <Phrase key="DllFileName">DLL Filename</Phrase>
+    <Phrase key="Descr">Description</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.ObjTable">
     <Phrase key="ObjNum">Number</Phrase>
     <Phrase key="Name">Name</Phrase>
+    <Phrase key="Descr">Description</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.ParamTable">
+    <Phrase key="ParamID">ID</Phrase>
+    <Phrase key="Name">Name</Phrase>
+    <Phrase key="Sign">Sign</Phrase>
+    <Phrase key="IconFileName">Icon Filename</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.RightTable">
+    <Phrase key="RightID">ID</Phrase>
+    <Phrase key="ItfID">Interface Object</Phrase>
+    <Phrase key="RoleID">Role</Phrase>
+    <Phrase key="ViewRight">View</Phrase>
+    <Phrase key="CtrlRight">Control</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.RoleTable">
+    <Phrase key="RoleID">ID</Phrase>
+    <Phrase key="Name">Name</Phrase>
+    <Phrase key="Descr">Description</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.UnitTable">
+    <Phrase key="UnitID">ID</Phrase>
+    <Phrase key="Name">Name</Phrase>
+    <Phrase key="Sign">Sign</Phrase>
+    <Phrase key="Descr">Description</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.UserTable">
+    <Phrase key="UserID">ID</Phrase>
+    <Phrase key="Name">Name</Phrase>
+    <Phrase key="Password">Password</Phrase>
+    <Phrase key="RoleID">Role</Phrase>
     <Phrase key="Descr">Description</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Code.ExplorerBuilder">
