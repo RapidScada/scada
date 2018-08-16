@@ -16,45 +16,59 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaAdminCommon
- * Summary  :  Provides data exchange between instances of BaseTable and DataTable
+ * Summary  : Provides data exchange between instances of BaseTable and DataTable
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
  * Modified : 2018
  */
 
-using Scada.Admin.Project;
 using System;
 using System.ComponentModel;
 using System.Data;
 
-namespace Scada.Admin.App.Code
+namespace Scada.Admin.Project
 {
     /// <summary>
     /// Provides data exchange between instances of BaseTable and DataTable.
     /// <para>Обеспечивает обмен данными между экземплярами BaseTable и DataTable.</para>
     /// </summary>
-    internal static class TableConverter
+    public static class TableConverter
     {
         /// <summary>
         /// Creates a new item getting values from the row.
         /// </summary>
         private static T CreateItem<T>(DataRow row, PropertyDescriptorCollection props)
         {
-            T item = Activator.CreateInstance<T>();
+            return (T)CreateItem(typeof(T), row, props);
+        }
+
+        /// <summary>
+        /// Creates a new item getting values from the row.
+        /// </summary>
+        public static object CreateItem(Type itemType, DataRow row, PropertyDescriptorCollection props)
+        {
+            object item = Activator.CreateInstance(itemType);
 
             foreach (PropertyDescriptor prop in props)
             {
-                object value = row[prop.Name];
-                if (value != DBNull.Value)
-                    prop.SetValue(item, value);
+                try
+                {
+                    object value = row[prop.Name];
+                    if (value != DBNull.Value)
+                        prop.SetValue(item, value);
+                }
+                catch (ArgumentException)
+                {
+                    // column not found
+                }
             }
 
             return item;
         }
 
         /// <summary>
-        /// Converts the list to a data table.
+        /// Converts the BaseTable to a DataTable.
         /// </summary>
         public static DataTable ToDataTable<T>(this BaseTable<T> baseTable, bool allowNull = false)
         {
@@ -102,7 +116,7 @@ namespace Scada.Admin.App.Code
         }
 
         /// <summary>
-        /// Copies the changes from the table to the list.
+        /// Copies the changes from the DataTable to the BaseTable.
         /// </summary>
         public static void RetrieveChanges<T>(this BaseTable<T> baseTable, DataTable dataTable)
         {
@@ -126,16 +140,10 @@ namespace Scada.Admin.App.Code
                 int origKey = (int)row[baseTable.PrimaryKey, DataRowVersion.Original];
                 int curKey = (int)row[baseTable.PrimaryKey, DataRowVersion.Current];
 
-                if (origKey == curKey)
-                {
-                    baseTable.Set(item);
-                }
-                else
-                {
+                if (origKey != curKey)
                     baseTable.Items.Remove(origKey);
-                    baseTable.Add(item);
-                }
 
+                baseTable.AddItem(item);
                 row.AcceptChanges();
             }
 
@@ -145,7 +153,7 @@ namespace Scada.Admin.App.Code
             foreach (DataRow row in addedRows)
             {
                 T item = CreateItem<T>(row, props);
-                baseTable.Add(item);
+                baseTable.AddItem(item);
                 row.AcceptChanges();
             }
         }

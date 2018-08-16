@@ -133,19 +133,20 @@ namespace Scada.Admin.Project
 
 
         /// <summary>
-        /// Adds an item into the table.
+        /// Adds or updates an item in the table.
         /// </summary>
-        public void Add(T item)
+        public void AddItem(T item)
         {
-            Items.Add(GetPrimaryKey(item), item);
+            Items[GetPrimaryKey(item)] = item;
         }
 
         /// <summary>
-        /// Sets an item of the table.
+        /// Adds or updates an item in the table.
         /// </summary>
-        public void Set(T item)
+        public void AddObject(object obj)
         {
-            Items[GetPrimaryKey(item)] = item;
+            if (obj is T item)
+                AddItem(item);
         }
 
         /// <summary>

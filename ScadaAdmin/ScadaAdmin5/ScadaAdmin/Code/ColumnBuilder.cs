@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : ScadaAdminCommon
+ * Module   : Administrator
  * Summary  : Creates columns for a DataGridView control
  * 
  * Author   : Mikhail Shiryaev
@@ -26,7 +26,6 @@
 using Scada.Admin.Project;
 using Scada.Data.Entities;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
 

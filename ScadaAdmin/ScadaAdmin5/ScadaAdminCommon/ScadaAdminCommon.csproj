@@ -65,6 +65,7 @@
     <Compile Include="Project\WebApp.cs" />
     <Compile Include="Project\ServerApp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Project\TableConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Extensions\" />

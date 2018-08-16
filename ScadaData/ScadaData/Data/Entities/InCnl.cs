@@ -36,7 +36,7 @@ namespace Scada.Data.Entities
     [Serializable]
     public class InCnl
     {
-        public int InCnlNum { get; set; }
+        public int CnlNum { get; set; }
 
         public bool Active { get; set; }
 

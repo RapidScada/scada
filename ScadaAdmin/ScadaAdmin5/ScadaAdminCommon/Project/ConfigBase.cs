@@ -48,7 +48,7 @@ namespace Scada.Admin.Project
                 EvTypeTable = new BaseTable<EvType>("EvType", "CnlStatus", CommonPhrases.EvTypeTable),
                 FormatTable = new BaseTable<Format>("Format", "FormatID", CommonPhrases.FormatTable),
                 FormulaTable = new BaseTable<Formula>("Formula", "FormulaID", CommonPhrases.FormulaTable),
-                InCnlTable = new BaseTable<InCnl>("InCnl", "InCnlNum", CommonPhrases.InCnlTable),
+                InCnlTable = new BaseTable<InCnl>("InCnl", "CnlNum", CommonPhrases.InCnlTable),
                 InterfaceTable = new BaseTable<Data.Entities.Interface>("Interface", "ItfID", 
                     CommonPhrases.InterfaceTable),
                 KPTable = new BaseTable<KP>("KP", "KPNum", CommonPhrases.KPTable),

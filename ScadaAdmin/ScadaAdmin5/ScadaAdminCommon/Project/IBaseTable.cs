@@ -23,6 +23,8 @@
  * Modified : 2018
  */
 
+using System;
+
 namespace Scada.Admin.Project
 {
     /// <summary>
@@ -35,5 +37,26 @@ namespace Scada.Admin.Project
         /// Gets or sets the table name.
         /// </summary>
         string Name { get; set; }
+
+        /// <summary>
+        /// Gets the type of the table items.
+        /// </summary>
+        Type ItemType { get; }
+
+
+        /// <summary>
+        /// Adds or updates an item in the table.
+        /// </summary>
+        void AddObject(object obj);
+
+        /// <summary>
+        /// Loads the table from the specified file.
+        /// </summary>
+        void Load(string fileName);
+
+        /// <summary>
+        /// Saves the table to the specified file.
+        /// </summary>
+        void Save(string fileName);
     }
 }
