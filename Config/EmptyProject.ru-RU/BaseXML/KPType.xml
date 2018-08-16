@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfKPType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <KPType>
+    <KPTypeID>201</KPTypeID>
+    <Name>ВКТ-4М исп. 1.2</Name>
+    <DllFileName>KpVkt4M.dll</DllFileName>
+    <Descr>Тепловычислитель ВКТ-4М исп. 1.2 производства ЗАО "НПФ Теплоком"</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>202</KPTypeID>
+    <Name>ВКТ-7 модели 01-03</Name>
+    <DllFileName>KpVkt7.dll</DllFileName>
+    <Descr>Тепловычислитель ВКТ-7 модели 01 - 03 производства ЗАО "НПФ Теплоком"</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>203</KPTypeID>
+    <Name>Parsec NC-xxxx</Name>
+    <DllFileName>KpNc.dll</DllFileName>
+    <Descr>Контроллер доступа Parsec NC-xxxx производства ООО "НПО Релвест СБ"</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>204</KPTypeID>
+    <Name>Болид С2000</Name>
+    <DllFileName>KpS2000.dll</DllFileName>
+    <Descr>Пульт С2000 и устройства ОПС производства НВП "Болид"</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>205</KPTypeID>
+    <Name>SMS-центр</Name>
+    <DllFileName>KpSms.dll</DllFileName>
+    <Descr>Отправка, приём и обработка SMS с использованием AT-команд</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>206</KPTypeID>
+    <Name>Signal-3</Name>
+    <DllFileName>KpSignal3.dll</DllFileName>
+    <Descr>Охранное устройство Signal-3</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>207</KPTypeID>
+    <Name>АЧЦ-RS-232</Name>
+    <DllFileName>KpClockE.dll</DllFileName>
+    <Descr>Часы АЧЦ-RS-232 производства ОАО "Завод Эталон"</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>208</KPTypeID>
+    <Name>ЦЭ6850</Name>
+    <DllFileName>KpCE6850.dll</DllFileName>
+    <Descr>Электросчётчик ЦЭ6850 (6822, 6823, 6827, 6828, 6850М) производства ОАО "Энергомера"</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>209</KPTypeID>
+    <Name>ADAM-6015</Name>
+    <DllFileName>KpAdam6015.dll</DllFileName>
+    <Descr>Модуль аналогового ввода для термометров сопротивления Advantech ADAM-6015</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>210</KPTypeID>
+    <Name>ADAM-4068</Name>
+    <DllFileName>KpAdam4068.dll</DllFileName>
+    <Descr>Модуль релейной коммутации Advantech ADAM-4068</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>211</KPTypeID>
+    <Name>BarcodeScanner</Name>
+    <DllFileName>KpBarcodeScanner.dll</DllFileName>
+    <Descr>Приём данных со сканера штрихкодов</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>212</KPTypeID>
+    <Name>СКУД</Name>
+    <DllFileName>KpAccess.dll</DllFileName>
+    <Descr>Управление доступом: взаимодействие со считывателями, релейными модулями, контроллерами доступа</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>213</KPTypeID>
+    <Name>Часовой</Name>
+    <DllFileName>KpGuardGate.dll</DllFileName>
+    <Descr>Экспорт входов и выходов в систему Часовой</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>214</KPTypeID>
+    <Name>Modbus</Name>
+    <DllFileName>KpModbus.dll</DllFileName>
+    <Descr>Взаимодействие с контроллерами по протоколу Modbus</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>215</KPTypeID>
+    <Name>OPC</Name>
+    <DllFileName>KpOpc.dll</DllFileName>
+    <Descr>Взаимодействие с контроллерами по спецификации OPC</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>216</KPTypeID>
+    <Name>Болид С2000-ПП</Name>
+    <DllFileName>KpS2000PP.dll</DllFileName>
+    <Descr>Преобразователь протокола С2000-ПП производства НВП "Болид"</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>217</KPTypeID>
+    <Name>СИ ИГЛА</Name>
+    <DllFileName>KpIgla.dll</DllFileName>
+    <Descr>СИ ИГЛА производства ООО "НПП "ИИТ"</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>218</KPTypeID>
+    <Name>ИВТМ-7М</Name>
+    <DllFileName>KpIvtm7M.dll</DllFileName>
+    <Descr>Термогигрометр ИВТМ-7М производства ЗАО "ЭКСИС"</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>219</KPTypeID>
+    <Name>СПТ943</Name>
+    <DllFileName>KpSPT943.dll</DllFileName>
+    <Descr>Тепловычислитель СПТ943 производства АО НПФ ЛОГИКА</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>220</KPTypeID>
+    <Name>SNMP</Name>
+    <DllFileName>KpSnmp.dll</DllFileName>
+    <Descr>Взаимодействие с контроллерами по протоколу SNMP</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>221</KPTypeID>
+    <Name>Email</Name>
+    <DllFileName>KpEmail.dll</DllFileName>
+    <Descr>Отправка уведомлений по электронной почте</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>222</KPTypeID>
+    <Name>Wiren Board ST</Name>
+    <DllFileName>KpWirenBoardST.dll</DllFileName>
+    <Descr>Контроллер Wiren Board с заказной прошивкой Sensor-Tools</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>223</KPTypeID>
+    <Name>HTTP-уведомления</Name>
+    <DllFileName>KpHttpNotif.dll</DllFileName>
+    <Descr>Отправка уведомлений с помощью HTTP-запросов</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>224</KPTypeID>
+    <Name>Telegram</Name>
+    <DllFileName>KpTelegram.dll</DllFileName>
+    <Descr>Отправка уведомлений через Telegram</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>225</KPTypeID>
+    <Name>Ратеос Азимут</Name>
+    <DllFileName>KpAzimuth.dll</DllFileName>
+    <Descr>Контроллеры Азимут производства ООО "Ратеос"</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>226</KPTypeID>
+    <Name>CE30X</Name>
+    <DllFileName>KpCE301.dll</DllFileName>
+    <Descr>Электросчётчики CE30X, использующие стандарт IEC 61107-2011, производства АО "Концерн Энергомера"</Descr>
+  </KPType>
+</ArrayOfKPType>

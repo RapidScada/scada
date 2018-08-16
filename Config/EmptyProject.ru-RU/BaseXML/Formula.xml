@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfFormula xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Formula>
+    <FormulaID>1</FormulaID>
+    <Name>DayBeg</Name>
+    <Source>public bool DayBeg()
+{
+    DateTime nowDT = DateTime.Now;
+    DateTime execDT;
+    if ((nowDT.Hour == 0 &amp;&amp; nowDT.Minute &gt; 0 || nowDT.Hour == 1) &amp;&amp;
+        (!DayBegDict.TryGetValue(CnlNum, out execDT) || execDT.Date &lt; nowDT.Date))
+    {
+        DayBegDict[CnlNum] = nowDT;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}</Source>
+    <Descr>Возвращает true один раз для вычисляемого канала в начале суток</Descr>
+  </Formula>
+  <Formula>
+    <FormulaID>2</FormulaID>
+    <Name>DayBegDict</Name>
+    <Source>public Dictionary&lt;int, DateTime&gt; DayBegDict = new Dictionary&lt;int, DateTime&gt;();</Source>
+    <Descr>Словарь времени сработки функции DayBeg по каждому каналу</Descr>
+  </Formula>
+  <Formula>
+    <FormulaID>3</FormulaID>
+    <Name>DecodeDate</Name>
+    <Source>DateTime DecodeDate(double dateTime)
+{
+  return ScadaUtils.DecodeDateTime(dateTime);
+}</Source>
+    <Descr>Возвращает дату и время, декодируя значение типа double</Descr>
+  </Formula>
+  <Formula>
+    <FormulaID>4</FormulaID>
+    <Name>EncodeAscii</Name>
+    <Source>double EncodeAscii(string s)
+{
+  return ScadaUtils.EncodeAscii(s);
+}</Source>
+    <Descr>Возвращает число, упаковывая первые 8 символов строки ASCII</Descr>
+  </Formula>
+  <Formula>
+    <FormulaID>5</FormulaID>
+    <Name>EncodeDate</Name>
+    <Source>double EncodeDate(DateTime dateTime)
+{
+  return ScadaUtils.EncodeDateTime(dateTime);
+}</Source>
+    <Descr>Возвращает число в результате кодирования даты и времени</Descr>
+  </Formula>
+  <Formula>
+    <FormulaID>6</FormulaID>
+    <Name>EncodeUnicode</Name>
+    <Source>double EncodeUnicode(string s)
+{
+  return ScadaUtils.EncodeUnicode(s);
+}</Source>
+    <Descr>Возвращает число, упаковывая первые 4 символа строки Unicode</Descr>
+  </Formula>
+  <Formula>
+    <FormulaID>7</FormulaID>
+    <Name>GetBit</Name>
+    <Source>public double GetBit(double val, int n)
+{
+    UInt64 uintVal = (UInt64)val;
+    return (uintVal &gt;&gt; n) &amp; 1;
+}</Source>
+    <Descr>Возвращает бит n значения val</Descr>
+  </Formula>
+  <Formula>
+    <FormulaID>8</FormulaID>
+    <Name>GetByte</Name>
+    <Source>double GetByte(double val, int n)
+{
+    UInt64 uintVal = (UInt64)val;
+    return (uintVal &gt;&gt; (n * 8)) &amp; 0xFF;
+}</Source>
+    <Descr>Возвращает байт n значения val</Descr>
+  </Formula>
+  <Formula>
+    <FormulaID>9</FormulaID>
+    <Name>HourBeg</Name>
+    <Source>public bool HourBeg()
+{
+    DateTime nowDT = DateTime.Now;
+    DateTime execDT;
+    if (nowDT.Minute == 1 &amp;&amp; (!HourBegDict.TryGetValue(CnlNum, out execDT) || 
+        execDT &lt; new DateTime(nowDT.Year, nowDT.Month, nowDT.Day, nowDT.Hour, 0, 0)))
+    {
+        HourBegDict[CnlNum] = nowDT;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}</Source>
+    <Descr>Возвращает true один раз для вычисляемого канала в начале часа</Descr>
+  </Formula>
+  <Formula>
+    <FormulaID>10</FormulaID>
+    <Name>HourBegDict</Name>
+    <Source>public Dictionary&lt;int, DateTime&gt; HourBegDict = new Dictionary&lt;int, DateTime&gt;();</Source>
+    <Descr>Словарь времени сработки функции HourBeg по каждому каналу</Descr>
+  </Formula>
+  <Formula>
+    <FormulaID>11</FormulaID>
+    <Name>MonthBeg</Name>
+    <Source>public bool MonthBeg()
+{
+    DateTime nowDT = DateTime.Now;
+    DateTime execDT;
+    if (nowDT.Day == 1 &amp;&amp; (nowDT.Hour == 0 &amp;&amp; nowDT.Minute &gt; 0 || nowDT.Hour == 1) &amp;&amp;
+        (!MonthBegDict.TryGetValue(CnlNum, out execDT) || execDT.Date &lt; nowDT.Date))
+    {
+        MonthBegDict[CnlNum] = nowDT;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}</Source>
+    <Descr>Возвращает true один раз для вычисляемого канала в начале месяца</Descr>
+  </Formula>
+  <Formula>
+    <FormulaID>12</FormulaID>
+    <Name>MonthBegDict</Name>
+    <Source>public Dictionary&lt;int, DateTime&gt; MonthBegDict = new Dictionary&lt;int, DateTime&gt;();</Source>
+    <Descr>Словарь времени сработки функции MonthBeg по каждому каналу</Descr>
+  </Formula>
+</ArrayOfFormula>
