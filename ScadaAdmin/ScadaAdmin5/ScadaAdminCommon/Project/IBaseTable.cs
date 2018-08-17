@@ -39,6 +39,11 @@ namespace Scada.Admin.Project
         string Name { get; set; }
 
         /// <summary>
+        /// Gets the short file name of the table.
+        /// </summary>
+        string FileName { get; }
+
+        /// <summary>
         /// Gets the type of the table items.
         /// </summary>
         Type ItemType { get; }

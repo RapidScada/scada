@@ -44,10 +44,14 @@
             this.bindingNavigatorMoveLastItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.dataGridView = new System.Windows.Forms.DataGridView();
+            this.pnlError = new System.Windows.Forms.Panel();
+            this.lblError = new System.Windows.Forms.Label();
+            this.btnCloseError = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator)).BeginInit();
             this.bindingNavigator.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
+            this.pnlError.SuspendLayout();
             this.SuspendLayout();
             // 
             // bindingNavigator
@@ -68,7 +72,7 @@
             this.bindingNavigatorSeparator2,
             this.bindingNavigatorAddNewItem,
             this.bindingNavigatorDeleteItem});
-            this.bindingNavigator.Location = new System.Drawing.Point(0, 0);
+            this.bindingNavigator.Location = new System.Drawing.Point(0, 40);
             this.bindingNavigator.MoveFirstItem = this.bindingNavigatorMoveFirstItem;
             this.bindingNavigator.MoveLastItem = this.bindingNavigatorMoveLastItem;
             this.bindingNavigator.MoveNextItem = this.bindingNavigatorMoveNextItem;
@@ -76,7 +80,7 @@
             this.bindingNavigator.Name = "bindingNavigator";
             this.bindingNavigator.PositionItem = this.bindingNavigatorPositionItem;
             this.bindingNavigator.Size = new System.Drawing.Size(584, 25);
-            this.bindingNavigator.TabIndex = 0;
+            this.bindingNavigator.TabIndex = 1;
             // 
             // bindingNavigatorAddNewItem
             // 
@@ -169,11 +173,48 @@
             this.dataGridView.AutoGenerateColumns = false;
             this.dataGridView.DataSource = this.bindingSource;
             this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView.Location = new System.Drawing.Point(0, 25);
+            this.dataGridView.Location = new System.Drawing.Point(0, 65);
             this.dataGridView.Name = "dataGridView";
-            this.dataGridView.Size = new System.Drawing.Size(584, 336);
-            this.dataGridView.TabIndex = 1;
+            this.dataGridView.Size = new System.Drawing.Size(584, 296);
+            this.dataGridView.TabIndex = 2;
             this.dataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridView_DataError);
+            // 
+            // pnlError
+            // 
+            this.pnlError.AutoSize = true;
+            this.pnlError.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(222)))), ((int)(((byte)(222)))));
+            this.pnlError.Controls.Add(this.btnCloseError);
+            this.pnlError.Controls.Add(this.lblError);
+            this.pnlError.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlError.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(68)))), ((int)(((byte)(66)))));
+            this.pnlError.Location = new System.Drawing.Point(0, 0);
+            this.pnlError.Name = "pnlError";
+            this.pnlError.Size = new System.Drawing.Size(584, 40);
+            this.pnlError.TabIndex = 0;
+            this.pnlError.Visible = false;
+            // 
+            // lblError
+            // 
+            this.lblError.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblError.Location = new System.Drawing.Point(0, 0);
+            this.lblError.Name = "lblError";
+            this.lblError.Padding = new System.Windows.Forms.Padding(5);
+            this.lblError.Size = new System.Drawing.Size(479, 40);
+            this.lblError.TabIndex = 0;
+            this.lblError.Text = "Error message";
+            this.lblError.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // btnCloseError
+            // 
+            this.btnCloseError.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCloseError.Location = new System.Drawing.Point(497, 8);
+            this.btnCloseError.Name = "btnCloseError";
+            this.btnCloseError.Size = new System.Drawing.Size(75, 23);
+            this.btnCloseError.TabIndex = 1;
+            this.btnCloseError.Text = "Close";
+            this.btnCloseError.UseVisualStyleBackColor = true;
+            this.btnCloseError.Click += new System.EventHandler(this.btnCloseError_Click);
             // 
             // FrmBaseTable
             // 
@@ -182,6 +223,7 @@
             this.ClientSize = new System.Drawing.Size(584, 361);
             this.Controls.Add(this.dataGridView);
             this.Controls.Add(this.bindingNavigator);
+            this.Controls.Add(this.pnlError);
             this.Name = "FrmBaseTable";
             this.Text = "FrmBaseTable";
             this.Load += new System.EventHandler(this.FrmBaseTable_Load);
@@ -191,6 +233,7 @@
             this.bindingNavigator.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
+            this.pnlError.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -212,5 +255,8 @@
         private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator2;
         protected System.Windows.Forms.BindingSource bindingSource;
         protected System.Windows.Forms.DataGridView dataGridView;
+        private System.Windows.Forms.Panel pnlError;
+        private System.Windows.Forms.Label lblError;
+        private System.Windows.Forms.Button btnCloseError;
     }
 }

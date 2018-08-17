@@ -99,6 +99,17 @@ namespace Scada.Admin.Project
         public string Title { get; set; }
 
         /// <summary>
+        /// Gets the short file name of the table.
+        /// </summary>
+        public string FileName
+        {
+            get
+            {
+                return Name + ".xml";
+            }
+        }
+
+        /// <summary>
         /// Gets the type of the table items.
         /// </summary>
         public Type ItemType
@@ -118,17 +129,9 @@ namespace Scada.Admin.Project
         /// <summary>
         /// Gets the primary key value of the item.
         /// </summary>
-        protected int GetPrimaryKey(T item)
+        protected int GetPkValue(T item)
         {
             return (int)primaryKeyProp.GetValue(item);
-        }
-
-        /// <summary>
-        /// Gets the table file name.
-        /// </summary>
-        protected string GetFileName(string directory)
-        {
-            return Path.Combine(directory, Name + ".xml");
         }
 
 
@@ -137,7 +140,7 @@ namespace Scada.Admin.Project
         /// </summary>
         public void AddItem(T item)
         {
-            Items[GetPrimaryKey(item)] = item;
+            Items[GetPkValue(item)] = item;
         }
 
         /// <summary>
@@ -154,18 +157,25 @@ namespace Scada.Admin.Project
         /// </summary>
         public void Load(string fileName)
         {
-            Items.Clear();
-            List<T> list;
-            XmlSerializer serializer = new XmlSerializer(typeof(List<T>));
-
-            using (XmlReader reader = XmlReader.Create(fileName))
+            try
             {
-                list = (List<T>)serializer.Deserialize(reader);
+                Items.Clear();
+                List<T> list;
+                XmlSerializer serializer = new XmlSerializer(typeof(List<T>));
+
+                using (XmlReader reader = XmlReader.Create(fileName))
+                {
+                    list = (List<T>)serializer.Deserialize(reader);
+                }
+
+                foreach (T item in list)
+                {
+                    Items.Add(GetPkValue(item), item);
+                }
             }
-
-            foreach (T item in list)
+            catch (Exception ex)
             {
-                Items.Add(GetPrimaryKey(item), item);
+                throw new ScadaException(string.Format(AdminPhrases.LoadBaseTableError, Title, ex.Message), ex);
             }
         }
 
@@ -176,7 +186,7 @@ namespace Scada.Admin.Project
         {
             try
             {
-                string fileName = GetFileName(directory);
+                string fileName = Path.Combine(directory, FileName);
 
                 if (File.Exists(fileName))
                     Load(fileName);
@@ -184,9 +194,14 @@ namespace Scada.Admin.Project
                 errMsg = "";
                 return true;
             }
+            catch (ScadaException ex)
+            {
+                errMsg = ex.Message;
+                return false;
+            }
             catch (Exception ex)
             {
-                errMsg = AdminPhrases.LoadBaseTableError + ": " + ex.Message;
+                errMsg = string.Format(AdminPhrases.LoadBaseTableError, Title, ex.Message);
                 return false;
             }
         }
@@ -196,13 +211,20 @@ namespace Scada.Admin.Project
         /// </summary>
         public void Save(string fileName)
         {
-            List<T> list = new List<T>(Items.Values);
-            XmlSerializer serializer = new XmlSerializer(list.GetType());
-            XmlWriterSettings writerSettings = new XmlWriterSettings() { Indent = true };
-
-            using (XmlWriter writer = XmlWriter.Create(fileName, writerSettings))
+            try
             {
-                serializer.Serialize(writer, list);
+                List<T> list = new List<T>(Items.Values);
+                XmlSerializer serializer = new XmlSerializer(list.GetType());
+                XmlWriterSettings writerSettings = new XmlWriterSettings() { Indent = true };
+
+                using (XmlWriter writer = XmlWriter.Create(fileName, writerSettings))
+                {
+                    serializer.Serialize(writer, list);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ScadaException(string.Format(AdminPhrases.SaveBaseTableError, Title, ex.Message), ex);
             }
         }
 
@@ -214,13 +236,19 @@ namespace Scada.Admin.Project
             try
             {
                 Directory.CreateDirectory(directory);
-                Save(GetFileName(directory));
+                string fileName = Path.Combine(directory, FileName);
+                Save(fileName);
                 errMsg = "";
                 return true;
             }
+            catch (ScadaException ex)
+            {
+                errMsg = ex.Message;
+                return false;
+            }
             catch (Exception ex)
             {
-                errMsg = AdminPhrases.SaveBaseTableError + ": " + ex.Message;
+                errMsg = string.Format(AdminPhrases.SaveBaseTableError, Title, ex.Message);
                 return false;
             }
         }

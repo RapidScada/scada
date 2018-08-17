@@ -143,6 +143,10 @@
     <Phrase key="CommNode">Communicator</Phrase>
     <Phrase key="WebNode">Webstation</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmBaseTable">
+    <Phrase key="GridViewError">Error displaying table, the {0} column</Phrase>
+    <Phrase key="ColumnLabel">Column: </Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmMain">
     <Phrase key="ProjectFileFilter">Projects (*.rsproj)|*.rsproj|All Files (*.*)|*.*.</Phrase>
   </Dictionary>
@@ -163,12 +167,15 @@
     <Phrase key="ProjectTemplateEmpty">Creating a project without a template is not recommended. Continue?</Phrase>
     <Phrase key="ProjectTemplateNotFound">The project template not found.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.Project.ConfigBase">
+    <Phrase key="LoadConfigBaseError">Error loading the configuration database</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.Project.ScadaProject">
     <Phrase key="CreateProjectError">Error creating project</Phrase>
     <Phrase key="LoadProjectError">Error loading project</Phrase>
     <Phrase key="SaveProjectError">Error saving project</Phrase>
     <Phrase key="LoadProjectDescrError">Error loading project description</Phrase>
-    <Phrase key="LoadBaseTableError">Error loading table of the configuration database</Phrase>
-    <Phrase key="SaveBaseTableError">Error saving table of the configuration database</Phrase>
+    <Phrase key="LoadBaseTableError">Error loading the {0} table: {1}</Phrase>
+    <Phrase key="SaveBaseTableError">Error saving the {0} table: {1}</Phrase>
   </Dictionary>
 </ScadaAdminDictionaries>

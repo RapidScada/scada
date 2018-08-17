@@ -68,7 +68,7 @@ namespace Scada.Admin.App.Forms
         {
             base.LoadTableData();
 
-            if (!baseTable.Load(project.ConfigBase.BaseDir, out string errMsg))
+            if (!project.ConfigBase.Load(out string errMsg))
                 appData.ProcError(errMsg);
 
             dataTable = baseTable.ToDataTable();

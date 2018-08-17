@@ -24,6 +24,8 @@
  */
 
 using Scada.Data.Entities;
+using System;
+using System.IO;
 
 namespace Scada.Admin.Project
 {
@@ -62,6 +64,7 @@ namespace Scada.Admin.Project
             };
 
             BaseDir = "";
+            Loaded = false;
         }
 
 
@@ -160,9 +163,46 @@ namespace Scada.Admin.Project
         /// </summary>
         public IBaseTable[] AllTables { get; protected set; }
 
+
         /// <summary>
         /// Gets or sets the directory of the configuration database files.
         /// </summary>
         public string BaseDir { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether the tables are loaded.
+        /// </summary>
+        public bool Loaded { get; protected set; }
+
+
+        /// <summary>
+        /// Loads the configuration database if needed.
+        /// </summary>
+        public bool Load(out string errMsg)
+        {
+            try
+            {
+                if (!Loaded)
+                {
+                    foreach (IBaseTable baseTable in AllTables)
+                    {
+                        string fileName = Path.Combine(BaseDir, baseTable.FileName);
+
+                        if (File.Exists(fileName))
+                            baseTable.Load(fileName);
+                    }
+
+                    Loaded = true;
+                }
+
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = AdminPhrases.LoadConfigBaseError + ": " + ex.Message;
+                return false;
+            }
+        }
     }
 }

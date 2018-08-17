@@ -25,6 +25,7 @@
 
 using Scada.Admin.App.Code;
 using System;
+using System.Data;
 using System.Windows.Forms;
 
 namespace Scada.Admin.App.Forms
@@ -36,6 +37,7 @@ namespace Scada.Admin.App.Forms
     public partial class FrmBaseTable : Form
     {
         protected readonly AppData appData; // the common data of the application
+
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -62,6 +64,23 @@ namespace Scada.Admin.App.Forms
         {
         }
 
+        /// <summary>
+        /// Shows error message in the error panel.
+        /// </summary>
+        protected void ShowError(string message)
+        {
+            lblError.Text = message;
+            pnlError.Visible = true;
+        }
+
+        /// <summary>
+        /// Hides the error panel.
+        /// </summary>
+        protected void HideError()
+        {
+            pnlError.Visible = false;
+        }
+
 
         private void FrmBaseTable_Load(object sender, EventArgs e)
         {
@@ -79,8 +98,18 @@ namespace Scada.Admin.App.Forms
 
         private void dataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
-            appData.ProcError(e.Exception);
+            // write and display a error
+            string columnName = e.ColumnIndex >= 0 ? dataGridView.Columns[e.ColumnIndex].HeaderText : "";
+            string columnPhrase = e.ColumnIndex >= 0 ? Environment.NewLine + AppPhrases.ColumnLabel + columnName : "";
+
+            appData.ErrLog.WriteException(e.Exception, string.Format(AppPhrases.GridViewError, columnName));
+            ShowError(e.Exception.Message + columnPhrase);
             e.ThrowException = false;
+        }
+
+        private void btnCloseError_Click(object sender, EventArgs e)
+        {
+            HideError();
         }
     }
 }

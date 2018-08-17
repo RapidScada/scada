@@ -33,6 +33,9 @@ namespace Scada.Admin
     /// </summary>
     public static class AdminPhrases
     {
+        // Scada.Admin.Project.ConfigBase
+        public static string LoadConfigBaseError { get; private set; }
+
         // Scada.Admin.Project.ScadaProject
         public static string CreateProjectError { get; private set; }
         public static string LoadProjectError { get; private set; }
@@ -43,7 +46,10 @@ namespace Scada.Admin
 
         public static void Init()
         {
-            Localization.Dict dict = Localization.GetDictionary("Scada.Admin.Project.ScadaProject");
+            Localization.Dict dict = Localization.GetDictionary("Scada.Admin.Project.ConfigBase");
+            LoadConfigBaseError = dict.GetPhrase("LoadConfigBaseError");
+
+            dict = Localization.GetDictionary("Scada.Admin.Project.ScadaProject");
             CreateProjectError = dict.GetPhrase("CreateProjectError");
             LoadProjectError = dict.GetPhrase("LoadProjectError");
             SaveProjectError = dict.GetPhrase("SaveProjectError");
