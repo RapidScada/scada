@@ -107,7 +107,7 @@ namespace Scada.Admin.App.Code
             baseTableNode.Tag = new TreeNodeTag()
             {
                 FormType = typeof(FrmBaseTableGeneric<T>),
-                Arguments = new object[] { appData, project, baseTable }
+                FormArgs = new object[] { appData, project, baseTable }
             };
             return baseTableNode;
         }
@@ -119,18 +119,11 @@ namespace Scada.Admin.App.Code
         {
             TreeNode instanceNode = new TreeNode(instance.Name);
             instanceNode.ImageKey = instanceNode.SelectedImageKey = "instance.png";
+            instanceNode.Tag = new TreeNodeTag() { RelatedObject = instance };
 
-            TreeNode serverNode = new TreeNode(AppPhrases.ServerNode);
-            serverNode.ImageKey = serverNode.SelectedImageKey = "server.png";
-            instanceNode.Nodes.Add(serverNode);
-
-            TreeNode commNode = new TreeNode(AppPhrases.CommNode);
-            commNode.ImageKey = commNode.SelectedImageKey = "comm.png";
-            instanceNode.Nodes.Add(commNode);
-
-            TreeNode webNode = new TreeNode(AppPhrases.WebNode);
-            webNode.ImageKey = webNode.SelectedImageKey = "webstation.png";
-            instanceNode.Nodes.Add(webNode);
+            TreeNode emptyNode = new TreeNode(AppPhrases.EmptyNode);
+            emptyNode.ImageKey = emptyNode.SelectedImageKey = "empty.png";
+            instanceNode.Nodes.Add(emptyNode);
 
             return instanceNode;
         }
@@ -150,17 +143,21 @@ namespace Scada.Admin.App.Code
 
                 TreeNode projectNode = new TreeNode(project.Name);
                 projectNode.ImageKey = projectNode.SelectedImageKey = "project.png";
+                projectNode.Tag = new TreeNodeTag() { RelatedObject = project };
                 treeView.Nodes.Add(projectNode);
 
                 TreeNode baseNode = CreateBaseNode(project.ConfigBase);
+                baseNode.Tag = new TreeNodeTag() { RelatedObject = project.ConfigBase };
                 projectNode.Nodes.Add(baseNode);
 
                 TreeNode interfaceNode = new TreeNode(AppPhrases.InterfaceNode);
                 interfaceNode.ImageKey = interfaceNode.SelectedImageKey = "interface.png";
+                interfaceNode.Tag = new TreeNodeTag() { RelatedObject = project.Interface };
                 projectNode.Nodes.Add(interfaceNode);
 
                 TreeNode instancesNode = new TreeNode(AppPhrases.InstancesNode);
                 instancesNode.ImageKey = instancesNode.SelectedImageKey = "instances.png";
+                instancesNode.Tag = new TreeNodeTag() { RelatedObject = project.Instances };
                 projectNode.Nodes.Add(instancesNode);
 
                 foreach (Instance instance in project.Instances)
@@ -171,6 +168,46 @@ namespace Scada.Admin.App.Code
 
                 projectNode.Expand();
                 instancesNode.Expand();
+            }
+            finally
+            {
+                treeView.EndUpdate();
+            }
+        }
+
+        /// <summary>
+        /// Fills the instance node by child nodes.
+        /// </summary>
+        public void FillInstanceNode(TreeNode instanceNode, Instance instance)
+        {
+            try
+            {
+                treeView.BeginUpdate();
+                instanceNode.Nodes.Clear();
+
+                if (instance.ServerApp.Enabled)
+                {
+                    TreeNode serverNode = new TreeNode(AppPhrases.ServerNode);
+                    serverNode.ImageKey = serverNode.SelectedImageKey = "server.png";
+                    serverNode.Tag = new TreeNodeTag() { RelatedObject = instance.ServerApp };
+                    instanceNode.Nodes.Add(serverNode);
+                }
+
+                if (instance.CommApp.Enabled)
+                {
+                    TreeNode commNode = new TreeNode(AppPhrases.CommNode);
+                    commNode.ImageKey = commNode.SelectedImageKey = "comm.png";
+                    commNode.Tag = new TreeNodeTag() { RelatedObject = instance.CommApp };
+                    instanceNode.Nodes.Add(commNode);
+                }
+
+                if (instance.WebApp.Enabled)
+                {
+                    TreeNode webNode = new TreeNode(AppPhrases.WebNode);
+                    webNode.ImageKey = webNode.SelectedImageKey = "webstation.png";
+                    webNode.Tag = new TreeNodeTag() { RelatedObject = instance.WebApp };
+                    instanceNode.Nodes.Add(webNode);
+                }
             }
             finally
             {

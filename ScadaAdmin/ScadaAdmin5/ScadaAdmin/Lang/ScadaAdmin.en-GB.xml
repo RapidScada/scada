@@ -142,6 +142,7 @@
     <Phrase key="ServerNode">Server</Phrase>
     <Phrase key="CommNode">Communicator</Phrase>
     <Phrase key="WebNode">Webstation</Phrase>
+    <Phrase key="EmptyNode">Empty</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmBaseTable">
     <Phrase key="GridViewError">Error displaying table, the {0} column</Phrase>

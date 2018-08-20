@@ -40,8 +40,9 @@ namespace Scada.Admin.App.Code
         public TreeNodeTag()
         {
             FormType = null;
-            Arguments = null;
+            FormArgs = null;
             ExistingForm = null;
+            RelatedObject = null;
         }
 
 
@@ -53,11 +54,16 @@ namespace Scada.Admin.App.Code
         /// <summary>
         /// Gets or sets the form creation arguments.
         /// </summary>
-        public object[] Arguments { get; set; }
+        public object[] FormArgs { get; set; }
 
         /// <summary>
         /// Gets or sets a form that already exists.
         /// </summary>
         public Form ExistingForm { get; set; }
+
+        /// <summary>
+        /// Gets or sets the object related to the node.
+        /// </summary>
+        public object RelatedObject { get; set; }
     }
 }

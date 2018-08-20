@@ -123,9 +123,9 @@ namespace Scada.Admin.App.Forms
                     if (tag.FormType != null)
                     {
                         // create a new form
-                        object formObj = tag.Arguments == null ?
+                        object formObj = tag.FormArgs == null ?
                             Activator.CreateInstance(tag.FormType) :
-                            Activator.CreateInstance(tag.FormType, tag.Arguments);
+                            Activator.CreateInstance(tag.FormType, tag.FormArgs);
 
                         // display the form
                         if (formObj is Form form)
@@ -193,6 +193,25 @@ namespace Scada.Admin.App.Forms
         {
             if (e.Button == MouseButtons.Left)
                 ExecNodeAction(e.Node);
+        }
+
+        private void tvExplorer_BeforeExpand(object sender, TreeViewCancelEventArgs e)
+        {
+            // load application settings of the instance
+            if (e.Node.Tag is TreeNodeTag treeNodeTag && 
+                treeNodeTag.RelatedObject is Instance instance && 
+                !instance.AppSettingsLoaded)
+            {
+                if (instance.LoadAppSettings(out string errMsg))
+                    explorerBuilder.FillInstanceNode(e.Node, instance);
+                else
+                    appData.ProcError(errMsg);
+            }
+        }
+
+        private void tvExplorer_BeforeCollapse(object sender, TreeViewCancelEventArgs e)
+        {
+
         }
 
         private void wctrlMain_ChildFormClosed(object sender, ChildFormClosedEventArgs e)

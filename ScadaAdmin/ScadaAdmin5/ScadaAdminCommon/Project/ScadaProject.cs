@@ -83,8 +83,14 @@ namespace Scada.Admin.Project
                 }
                 else
                 {
-                    ConfigBase.BaseDir = Path.Combine(Path.GetDirectoryName(FileName), "BaseXML");
-                    Interface.InterfaceDir = Path.Combine(Path.GetDirectoryName(FileName), "Interface");
+                    string projectDir = Path.GetDirectoryName(FileName);
+                    ConfigBase.BaseDir = Path.Combine(projectDir, "BaseXML");
+                    Interface.InterfaceDir = Path.Combine(projectDir, "Interface");
+
+                    foreach (Instance instance in Instances)
+                    {
+                        instance.InstanceDir = Path.Combine(projectDir, "Instances", instance.Name);
+                    }
                 }
             }
         }
@@ -158,11 +164,13 @@ namespace Scada.Admin.Project
             if (instancesNode != null)
             {
                 XmlNodeList instanceNodes = instancesNode.SelectNodes("Instance");
+                string projectDir = Path.GetDirectoryName(FileName);
 
                 foreach (XmlNode instanceNode in instanceNodes)
                 {
                     Instance instance = new Instance();
                     instance.LoadFromXml(instanceNode);
+                    instance.InstanceDir = Path.Combine(projectDir, "Instances", instance.Name);
                     Instances.Add(instance);
                 }
             }

@@ -70,5 +70,10 @@ namespace Scada.Admin.Project
 
             xmlElem.SetAttribute("enabled", Enabled);
         }
+
+        /// <summary>
+        /// Gets the full file name of the application settings.
+        /// </summary>
+        public abstract string GetSettingsPath(string parentDir);
     }
 }

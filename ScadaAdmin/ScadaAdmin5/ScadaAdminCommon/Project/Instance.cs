@@ -23,8 +23,10 @@
  * Modified : 2018
  */
 
+using Scada.Web;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -53,6 +55,8 @@ namespace Scada.Admin.Project
             ServerApp = new ServerApp();
             CommApp = new CommApp();
             WebApp = new WebApp();
+            InstanceDir = "";
+            AppSettingsLoaded = false;
         }
 
 
@@ -75,6 +79,16 @@ namespace Scada.Admin.Project
         /// Gets or sets the object represents the Webstation application.
         /// </summary>
         public WebApp WebApp { get; set; }
+
+        /// <summary>
+        /// Gets or sets the directory of the instance files.
+        /// </summary>
+        public string InstanceDir { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether the application settings are loaded.
+        /// </summary>
+        public bool AppSettingsLoaded { get; protected set; }
 
 
         /// <summary>
@@ -108,6 +122,29 @@ namespace Scada.Admin.Project
             ServerApp.SaveToXml(xmlElem.AppendElem("ServerApp"));
             CommApp.SaveToXml(xmlElem.AppendElem("CommApp"));
             WebApp.SaveToXml(xmlElem.AppendElem("WebApp"));
+        }
+
+        /// <summary>
+        /// Loads the application settings if needed.
+        /// </summary>
+        public bool LoadAppSettings(out string errMsg)
+        {
+            if (AppSettingsLoaded)
+            {
+                errMsg = "";
+                return true;
+            }
+            else if (ServerApp.Settings.Load(ServerApp.GetSettingsPath(InstanceDir), out errMsg) &&
+                CommApp.Settings.Load(CommApp.GetSettingsPath(InstanceDir), out errMsg) &&
+                WebApp.Settings.LoadFromFile(WebApp.GetSettingsPath(InstanceDir), out errMsg))
+            {
+                AppSettingsLoaded = true;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

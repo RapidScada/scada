@@ -24,6 +24,7 @@
  */
 
 using Scada.Web;
+using System.IO;
 
 namespace Scada.Admin.Project
 {
@@ -46,5 +47,13 @@ namespace Scada.Admin.Project
         /// Gets the settings of the application
         /// </summary>
         public WebSettings Settings { get; protected set; }
+
+        /// <summary>
+        /// Gets the full file name of the application settings.
+        /// </summary>
+        public override string GetSettingsPath(string parentDir)
+        {
+            return Path.Combine(parentDir, "ScadaWeb", "config", WebSettings.DefFileName);
+        }
     }
 }

@@ -23,6 +23,8 @@
  * Modified : 2018
  */
 
+using System.IO;
+
 namespace Scada.Admin.Project
 {
     /// <summary>
@@ -44,5 +46,13 @@ namespace Scada.Admin.Project
         /// Gets the settings of the application.
         /// </summary>
         public Comm.Settings Settings { get; protected set; }
+
+        /// <summary>
+        /// Gets the full file name of the application settings.
+        /// </summary>
+        public override string GetSettingsPath(string parentDir)
+        {
+            return Path.Combine(parentDir, "ScadaComm", "Config", Comm.Settings.DefFileName);
+        }
     }
 }

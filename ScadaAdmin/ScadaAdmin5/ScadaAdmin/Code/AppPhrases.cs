@@ -46,6 +46,7 @@ namespace Scada.Admin.App.Code
         public static string ServerNode { get; private set; }
         public static string CommNode { get; private set; }
         public static string WebNode { get; private set; }
+        public static string EmptyNode { get; private set; }
 
         // Scada.Admin.App.Forms.FrmBaseTable
         public static string GridViewError { get; private set; }
@@ -74,6 +75,7 @@ namespace Scada.Admin.App.Code
             ServerNode = dict.GetPhrase("ServerNode");
             CommNode = dict.GetPhrase("CommNode");
             WebNode = dict.GetPhrase("WebNode");
+            EmptyNode = dict.GetPhrase("EmptyNode");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmBaseTable");
             GridViewError = dict.GetPhrase("GridViewError");

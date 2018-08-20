@@ -142,6 +142,7 @@
     <Phrase key="ServerNode">Сервер</Phrase>
     <Phrase key="CommNode">Коммуникатор</Phrase>
     <Phrase key="WebNode">Вебстанция</Phrase>
+    <Phrase key="EmptyNode">Пусто</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmBaseTable">
     <Phrase key="GridViewError">Ошибка при отображении таблицы, столбец {0}</Phrase>

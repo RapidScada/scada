@@ -277,6 +277,8 @@
             this.tvExplorer.ShowRootLines = false;
             this.tvExplorer.Size = new System.Drawing.Size(250, 340);
             this.tvExplorer.TabIndex = 0;
+            this.tvExplorer.BeforeCollapse += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvExplorer_BeforeCollapse);
+            this.tvExplorer.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvExplorer_BeforeExpand);
             this.tvExplorer.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvExplorer_NodeMouseClick);
             this.tvExplorer.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvExplorer_NodeMouseDoubleClick);
             // 
@@ -286,15 +288,16 @@
             this.ilExplorer.TransparentColor = System.Drawing.Color.Transparent;
             this.ilExplorer.Images.SetKeyName(0, "comm.png");
             this.ilExplorer.Images.SetKeyName(1, "database.png");
-            this.ilExplorer.Images.SetKeyName(2, "folder_closed.png");
-            this.ilExplorer.Images.SetKeyName(3, "folder_open.png");
-            this.ilExplorer.Images.SetKeyName(4, "instance.png");
-            this.ilExplorer.Images.SetKeyName(5, "instances.png");
-            this.ilExplorer.Images.SetKeyName(6, "interface.png");
-            this.ilExplorer.Images.SetKeyName(7, "project.png");
-            this.ilExplorer.Images.SetKeyName(8, "server.png");
-            this.ilExplorer.Images.SetKeyName(9, "table.png");
-            this.ilExplorer.Images.SetKeyName(10, "webstation.png");
+            this.ilExplorer.Images.SetKeyName(2, "empty.png");
+            this.ilExplorer.Images.SetKeyName(3, "folder_closed.png");
+            this.ilExplorer.Images.SetKeyName(4, "folder_open.png");
+            this.ilExplorer.Images.SetKeyName(5, "instance.png");
+            this.ilExplorer.Images.SetKeyName(6, "instances.png");
+            this.ilExplorer.Images.SetKeyName(7, "interface.png");
+            this.ilExplorer.Images.SetKeyName(8, "project.png");
+            this.ilExplorer.Images.SetKeyName(9, "server.png");
+            this.ilExplorer.Images.SetKeyName(10, "table.png");
+            this.ilExplorer.Images.SetKeyName(11, "webstation.png");
             // 
             // splVert
             // 
