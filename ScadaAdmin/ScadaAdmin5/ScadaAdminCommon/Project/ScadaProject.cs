@@ -149,8 +149,23 @@ namespace Scada.Admin.Project
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load(fileName);
 
-            XmlNode rootNode = xmlDoc.DocumentElement;
-            Description = rootNode.GetChildAsString("Description");
+            XmlElement rootElem = xmlDoc.DocumentElement;
+            Description = rootElem.GetChildAsString("Description");
+
+            // load instances
+            XmlNode instancesNode = rootElem.SelectSingleNode("Instances");
+
+            if (instancesNode != null)
+            {
+                XmlNodeList instanceNodes = instancesNode.SelectNodes("Instance");
+
+                foreach (XmlNode instanceNode in instanceNodes)
+                {
+                    Instance instance = new Instance();
+                    instance.LoadFromXml(instanceNode);
+                    Instances.Add(instance);
+                }
+            }
         }
 
         /// <summary>
@@ -187,6 +202,17 @@ namespace Scada.Admin.Project
             rootElem.AppendElem("Version", AdminUtils.AppVersion);
             rootElem.AppendElem("Description", Description);
             xmlDoc.AppendChild(rootElem);
+
+            // save intances
+            XmlElement instancesElem = xmlDoc.CreateElement("Instances");
+            xmlDoc.AppendChild(instancesElem);
+
+            foreach (Instance instance in Instances)
+            {
+                XmlElement instanceElem = xmlDoc.CreateElement("Instance");
+                instance.SaveToXml(instanceElem);
+                instancesElem.AppendChild(instanceElem);
+            }
 
             xmlDoc.Save(fileName);
         }

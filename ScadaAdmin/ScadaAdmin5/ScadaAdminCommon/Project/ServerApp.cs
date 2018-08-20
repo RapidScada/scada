@@ -23,20 +23,23 @@
  * Modified : 2018
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Scada.Admin.Project
 {
     /// <summary>
     /// Represents the Server application.
     /// <para>Представляет приложение Сервер.</para>
     /// </summary>
-    public class ServerApp
+    public class ServerApp : ScadaApp
     {
+        /// <summary>
+        /// Initializes a new instance of the class.
+        /// </summary>
+        public ServerApp()
+            : base()
+        {
+            Settings = new Server.Settings();
+        }
+
         /// <summary>
         /// Gets the settings of the application.
         /// </summary>

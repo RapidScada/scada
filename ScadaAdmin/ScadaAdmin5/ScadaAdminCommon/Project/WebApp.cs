@@ -24,11 +24,6 @@
  */
 
 using Scada.Web;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Scada.Admin.Project
 {
@@ -36,8 +31,17 @@ namespace Scada.Admin.Project
     /// Represents the Webstation application
     /// <para>Представляет приложение Вебстанция</para>
     /// </summary>
-    public class WebApp
+    public class WebApp : ScadaApp
     {
+        /// <summary>
+        /// Initializes a new instance of the class.
+        /// </summary>
+        public WebApp()
+            : base()
+        {
+            Settings = new WebSettings();
+        }
+
         /// <summary>
         /// Gets the settings of the application
         /// </summary>

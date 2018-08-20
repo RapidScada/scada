@@ -23,22 +23,25 @@
  * Modified : 2018
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Scada.Admin.Project
 {
     /// <summary>
-    /// Represents the Communicator application
-    /// <para>Представляет приложение Коммуникатор</para>
+    /// Represents the Communicator application.
+    /// <para>Представляет приложение Коммуникатор.</para>
     /// </summary>
-    public class CommApp
+    public class CommApp : ScadaApp
     {
         /// <summary>
-        /// Gets the settings of the application
+        /// Initializes a new instance of the class.
+        /// </summary>
+        public CommApp()
+            : base()
+        {
+            Settings = new Comm.Settings();
+        }
+
+        /// <summary>
+        /// Gets the settings of the application.
         /// </summary>
         public Comm.Settings Settings { get; protected set; }
     }

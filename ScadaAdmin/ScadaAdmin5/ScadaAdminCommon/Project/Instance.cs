@@ -28,12 +28,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Scada.Admin.Project
 {
     /// <summary>
-    /// Represents a system instance that consists of one or more applications
-    /// <para>Представляет экземпляр системы, состоящий из одного или нескольких приложений</para>
+    /// Represents a system instance that consists of one or more applications.
+    /// <para>Представляет экземпляр системы, состоящий из одного или нескольких приложений.</para>
     /// </summary>
     public class Instance
     {
@@ -44,23 +45,69 @@ namespace Scada.Admin.Project
 
 
         /// <summary>
+        /// Initializes a new instance of the class.
+        /// </summary>
+        public Instance()
+        {
+            Name = "";
+            ServerApp = new ServerApp();
+            CommApp = new CommApp();
+            WebApp = new WebApp();
+        }
+
+
+        /// <summary>
         /// Gets or sets the name of the instance.
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the object represents the Server application
+        /// Gets or sets the object represents the Server application.
         /// </summary>
         public ServerApp ServerApp { get; set; }
 
         /// <summary>
-        /// Gets or sets the object represents the Communicator application
+        /// Gets or sets the object represents the Communicator application.
         /// </summary>
         public CommApp CommApp { get; set; }
 
         /// <summary>
-        /// Gets or sets the object represents the Webstation application
+        /// Gets or sets the object represents the Webstation application.
         /// </summary>
         public WebApp WebApp { get; set; }
+
+
+        /// <summary>
+        /// Loads the instance configuration from the XML node.
+        /// </summary>
+        public void LoadFromXml(XmlNode xmlNode)
+        {
+            if (xmlNode == null)
+                throw new ArgumentNullException("xmlNode");
+
+            Name = xmlNode.GetChildAsString("Name");
+
+            if (xmlNode.SelectSingleNode("ServerApp") is XmlElement serverAppElem)
+                ServerApp.LoadFromXml(serverAppElem);
+
+            if (xmlNode.SelectSingleNode("CommApp") is XmlElement commAppElem)
+                CommApp.LoadFromXml(commAppElem);
+
+            if (xmlNode.SelectSingleNode("WebApp") is XmlElement webAppElem)
+                WebApp.LoadFromXml(webAppElem);
+        }
+
+        /// <summary>
+        /// Saves the instance configuration into the XML node.
+        /// </summary>
+        public void SaveToXml(XmlElement xmlElem)
+        {
+            if (xmlElem == null)
+                throw new ArgumentNullException("xmlElem");
+
+            ServerApp.SaveToXml(xmlElem.AppendElem("ServerApp"));
+            CommApp.SaveToXml(xmlElem.AppendElem("CommApp"));
+            WebApp.SaveToXml(xmlElem.AppendElem("WebApp"));
+        }
     }
 }
