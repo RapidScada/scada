@@ -7,7 +7,7 @@
     <ProjectGuid>{0978C09D-9F0C-4242-8646-FA8EB90FEFB9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ScadaServerShell</RootNamespace>
+    <RootNamespace>Scada.Server.Shell</RootNamespace>
     <AssemblyName>ScadaServerShell</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -29,13 +29,21 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\ScadaServerShell.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ScadaData, Version=5.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\ServerShell.cs" />
+    <Compile Include="Code\ServerShellPhrases.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -43,6 +51,13 @@
       <Project>{3CA67403-5B85-489A-B7B4-81D682B23146}</Project>
       <Name>ScadaServerCommon</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Forms\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Lang\ScadaServer.en-GB.xml" />
+    <Content Include="Lang\ScadaServer.ru-RU.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

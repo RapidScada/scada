@@ -57,6 +57,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
     </Reference>
+    <Reference Include="ScadaServerCommon, Version=5.1.0.4, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ScadaServer\ScadaServer\ScadaServerCommon\bin\Release\ScadaServerCommon.dll</HintPath>
+    </Reference>
+    <Reference Include="ScadaServerShell">
+      <HintPath>..\..\..\ScadaServer\ScadaServer\ScadaServerShell\bin\Release\ScadaServerShell.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -73,7 +80,6 @@
     <Compile Include="Code\ColumnBuilder.cs" />
     <Compile Include="Code\ExplorerBuilder.cs" />
     <Compile Include="Code\FormState.cs" />
-    <Compile Include="Code\TreeNodeTag.cs" />
     <Compile Include="Forms\FrmBaseTable.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -154,6 +160,14 @@
     </Content>
     <Content Include="..\..\..\ScadaData\ScadaData\Lang\ScadaData.ru-RU.xml">
       <Link>Lang\ScadaData.ru-RU.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\ScadaServer\ScadaServer\ScadaServerShell\Lang\ScadaServer.en-GB.xml">
+      <Link>Lang\ScadaServer.en-GB.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\ScadaServer\ScadaServer\ScadaServerShell\Lang\ScadaServer.ru-RU.xml">
+      <Link>Lang\ScadaServer.ru-RU.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="lamp.ico" />

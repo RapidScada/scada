@@ -25,13 +25,9 @@
 
 using Scada.Admin.App.Forms;
 using Scada.Admin.Project;
-using Scada.Data.Models;
+using Scada.Server.Shell.Code;
+using Scada.UI;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Scada.Admin.App.Code
@@ -42,17 +38,19 @@ namespace Scada.Admin.App.Code
     /// </summary>
     internal class ExplorerBuilder
     {
-        private readonly AppData appData;   // the common data of the application
-        private readonly TreeView treeView; // the manipulated tree view 
-        private ScadaProject project;       // the current project to build tree
+        private readonly AppData appData;         // the common data of the application
+        private readonly ServerShell serverShell; // the shell to edit Server settings
+        private readonly TreeView treeView;       // the manipulated tree view 
+        private ScadaProject project;             // the current project to build tree
 
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public ExplorerBuilder(AppData appData, TreeView treeView)
+        public ExplorerBuilder(AppData appData, ServerShell serverShell, TreeView treeView)
         {
             this.appData = appData ?? throw new ArgumentNullException("appData");
+            this.serverShell = serverShell ?? throw new ArgumentNullException("serverShell");
             this.treeView = treeView ?? throw new ArgumentNullException("treeView");
             project = null;
         }
@@ -190,6 +188,7 @@ namespace Scada.Admin.App.Code
                     TreeNode serverNode = new TreeNode(AppPhrases.ServerNode);
                     serverNode.ImageKey = serverNode.SelectedImageKey = "server.png";
                     serverNode.Tag = new TreeNodeTag() { RelatedObject = instance.ServerApp };
+                    serverNode.Nodes.AddRange(serverShell.GetTreeNodes(instance.ServerApp.Settings));
                     instanceNode.Nodes.Add(serverNode);
                 }
 

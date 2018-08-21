@@ -114,6 +114,7 @@
     <Compile Include="UI\ObjectChangedEventHandler.cs" />
     <Compile Include="UI\ScadaUiUtils.cs" />
     <Compile Include="UI\Translator.cs" />
+    <Compile Include="UI\TreeNodeTag.cs" />
     <Compile Include="UI\TreeViewUtils.cs" />
   </ItemGroup>
   <ItemGroup>

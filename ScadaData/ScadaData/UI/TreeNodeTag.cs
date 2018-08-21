@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : Administrator
+ * Module   : ScadaData
  * Summary  : Represents an object associated with a tree node
  * 
  * Author   : Mikhail Shiryaev
@@ -26,13 +26,13 @@
 using System;
 using System.Windows.Forms;
 
-namespace Scada.Admin.App.Code
+namespace Scada.UI
 {
     /// <summary>
     /// Represents an object associated with a tree node.
     /// <para>Представляет объект, связанный с узлом дерева.</para>
     /// </summary>
-    internal class TreeNodeTag
+    public class TreeNodeTag
     {
         /// <summary>
         /// Initializes a new instance of the class.

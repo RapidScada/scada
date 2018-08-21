@@ -25,6 +25,8 @@
 
 using Scada.Admin.App.Code;
 using Scada.Admin.Project;
+using Scada.Server.Modules;
+using Scada.Server.Shell.Code;
 using Scada.UI;
 using System;
 using System.Collections.Generic;
@@ -62,6 +64,7 @@ namespace Scada.Admin.App.Forms
 
         private readonly AppData appData; // the common data of the application
         private readonly Log log;         // the application log
+        private readonly ServerShell serverShell;         // the shell to edit Server settings
         private readonly ExplorerBuilder explorerBuilder; // the object to manipulate the explorer tree
         private ScadaProject project;     // the project under development
 
@@ -82,7 +85,8 @@ namespace Scada.Admin.App.Forms
         {
             this.appData = appData ?? throw new ArgumentNullException("appData");
             log = appData.ErrLog;
-            explorerBuilder = new ExplorerBuilder(appData, tvExplorer);
+            serverShell = new ServerShell();
+            explorerBuilder = new ExplorerBuilder(appData, serverShell, tvExplorer);
             project = null;
         }
 
@@ -92,11 +96,11 @@ namespace Scada.Admin.App.Forms
         /// </summary>
         private void LocalizeForm()
         {
-            if (Localization.LoadDictionaries(appData.AppDirs.LangDir, "ScadaData", out string errMsg))
-                CommonPhrases.Init();
-            else
+            // load common dictionaries
+            if (!Localization.LoadDictionaries(appData.AppDirs.LangDir, "ScadaData", out string errMsg))
                 log.WriteError(errMsg);
 
+            // load Administrator dictionaries
             if (Localization.LoadDictionaries(appData.AppDirs.LangDir, "ScadaAdmin", out errMsg))
             {
                 Translator.TranslateForm(this, "Scada.Admin.App.Forms.FrmMain");
@@ -107,8 +111,18 @@ namespace Scada.Admin.App.Forms
                 log.WriteError(errMsg);
             }
 
+            // load Server dictionaries
+            if (!Localization.LoadDictionaries(appData.AppDirs.LangDir, "ScadaServer", out errMsg))
+                log.WriteError(errMsg);
+
+            // read phrases from the dictionaries
+            CommonPhrases.Init();
+
             AdminPhrases.Init();
             AppPhrases.Init();
+
+            ModPhrases.InitFromDictionaries();
+            ServerShellPhrases.Init();
         }
 
         /// <summary>
