@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaServerMono", "ScadaSer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaServerEngine", "ScadaServerEngine\ScadaServerEngine.csproj", "{DCC9E55D-92D6-4464-B5B9-0593DE57C64F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaServerShell", "ScadaServerShell\ScadaServerShell.csproj", "{0978C09D-9F0C-4242-8646-FA8EB90FEFB9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -100,6 +102,24 @@ Global
 		{DCC9E55D-92D6-4464-B5B9-0593DE57C64F}.ReleaseEn|Mixed Platforms.Build.0 = Release|Any CPU
 		{DCC9E55D-92D6-4464-B5B9-0593DE57C64F}.ReleaseEn|x86.ActiveCfg = Release|Any CPU
 		{DCC9E55D-92D6-4464-B5B9-0593DE57C64F}.ReleaseEn|x86.Build.0 = Release|Any CPU
+		{0978C09D-9F0C-4242-8646-FA8EB90FEFB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0978C09D-9F0C-4242-8646-FA8EB90FEFB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0978C09D-9F0C-4242-8646-FA8EB90FEFB9}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{0978C09D-9F0C-4242-8646-FA8EB90FEFB9}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{0978C09D-9F0C-4242-8646-FA8EB90FEFB9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0978C09D-9F0C-4242-8646-FA8EB90FEFB9}.Debug|x86.Build.0 = Debug|Any CPU
+		{0978C09D-9F0C-4242-8646-FA8EB90FEFB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0978C09D-9F0C-4242-8646-FA8EB90FEFB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0978C09D-9F0C-4242-8646-FA8EB90FEFB9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{0978C09D-9F0C-4242-8646-FA8EB90FEFB9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{0978C09D-9F0C-4242-8646-FA8EB90FEFB9}.Release|x86.ActiveCfg = Release|Any CPU
+		{0978C09D-9F0C-4242-8646-FA8EB90FEFB9}.Release|x86.Build.0 = Release|Any CPU
+		{0978C09D-9F0C-4242-8646-FA8EB90FEFB9}.ReleaseEn|Any CPU.ActiveCfg = Release|Any CPU
+		{0978C09D-9F0C-4242-8646-FA8EB90FEFB9}.ReleaseEn|Any CPU.Build.0 = Release|Any CPU
+		{0978C09D-9F0C-4242-8646-FA8EB90FEFB9}.ReleaseEn|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{0978C09D-9F0C-4242-8646-FA8EB90FEFB9}.ReleaseEn|Mixed Platforms.Build.0 = Release|Any CPU
+		{0978C09D-9F0C-4242-8646-FA8EB90FEFB9}.ReleaseEn|x86.ActiveCfg = Release|Any CPU
+		{0978C09D-9F0C-4242-8646-FA8EB90FEFB9}.ReleaseEn|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
