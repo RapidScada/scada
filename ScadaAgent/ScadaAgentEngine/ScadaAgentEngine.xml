@@ -1,0 +1,833 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ScadaAgentEngine</name>
+    </assembly>
+    <members>
+        <member name="T:Scada.Agent.AgentLogic">
+            <summary>
+            Implementation of the agent main logic 
+            <para>Реализация основной логики агента</para>
+            </summary>
+        </member>
+        <member name="T:Scada.Agent.AgentLogic.WorkState">
+            <summary>
+            Состояния работы агента
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.AgentLogic.WorkStateNamesEn">
+            <summary>
+            Наименования состояний работы на английском
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.AgentLogic.WorkStateNamesRu">
+            <summary>
+            Наименования состояний работы на русском
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.AgentLogic.WaitForStop">
+            <summary>
+            Время ожидания остановки потока, мс
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.AgentLogic.SessProcPeriod">
+            <summary>
+            Период обработки сессий
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.AgentLogic.DelTempFilePeriod">
+            <summary>
+            Период удаления временных файлов
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.AgentLogic.TempFileLifetime">
+            <summary>
+            Время жизни временных файлов
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.AgentLogic.WriteInfoPeriod">
+            <summary>
+            Период записи в файл информации о работе приложения
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.AgentLogic.#ctor">
+            <summary>
+            Конструктор, ограничивающий создание объекта без параметров
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.AgentLogic.#ctor(Scada.Agent.SessionManager,Scada.Agent.AppDirs,Utils.ILog)">
+            <summary>
+            Конструктор
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.AgentLogic.PrepareProcessing">
+            <summary>
+            Подготовить обработку логики
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.AgentLogic.DeleteOutdatedTempFiles">
+            <summary>
+            Удалить устаревшие временные файлы
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.AgentLogic.DeleteAllTempFiles">
+            <summary>
+            Удалить все временные файлы
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.AgentLogic.Execute">
+            <summary>
+            Цикл работы агента (метод вызывается в отдельном потоке)
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.AgentLogic.WriteInfo">
+            <summary>
+            Записать в файл информацию о работе приложения
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.AgentLogic.StartProcessing">
+            <summary>
+            Запустить обработку логики
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.AgentLogic.StopProcessing">
+            <summary>
+            Остановить обработку логики
+            </summary>
+        </member>
+        <member name="T:Scada.Agent.AgentUtils">
+            <summary>
+            The class contains utility methods for Agent
+            <para>Класс, содержащий вспомогательные методы для Агента</para>
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.AgentUtils.AppVersion">
+            <summary>
+            Версия Агента
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.AgentUtils.IsWindows">
+            <summary>
+            Проверить, что программное обеспечение работает под управлением Windows
+            </summary>
+        </member>
+        <member name="T:Scada.Agent.AppData">
+            <summary>
+            Common data of the agent
+            <para>Общие данные агента</para>
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.AppData.LogFileName">
+            <summary>
+            Имя файла журнала приложения без директории
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.AppData.InfoFileName">
+            <summary>
+            Имя файла информации о работе приложения
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.AppData.#cctor">
+            <summary>
+            Статический конструктор
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.AppData.#ctor">
+            <summary>
+            Конструктор, ограничивающий создание объекта из других классов
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.AppData.AppDirs">
+            <summary>
+            Получить директории приложения
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.AppData.Settings">
+            <summary>
+            Получить настройки агента
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.AppData.Log">
+            <summary>
+            Получить журнал приложения
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.AppData.SessionManager">
+            <summary>
+            Получить менеджер сессий
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.AppData.InstanceManager">
+            <summary>
+            Получить менеджер экземпляров систем
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.AppData.Init(System.String)">
+            <summary>
+            Инициализировать общие данные агента
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.AppData.GetTempFileName(System.String,System.String)">
+            <summary>
+            Получить имя временного файла
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.AppData.GetInstance">
+            <summary>
+            Получить общие данные агента
+            </summary>
+        </member>
+        <member name="T:Scada.Agent.AppDirs">
+            <summary>
+            Application directories
+            <para>Директории приложения</para>
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.AppDirs.#ctor">
+            <summary>
+            Конструктор
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.AppDirs.ExeDir">
+            <summary>
+            Получить директорию исполняемого файла
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.AppDirs.CmdDir">
+            <summary>
+            Получить директорию команд
+            </summary>
+            <remarks>Используется консольным приложением</remarks>
+        </member>
+        <member name="P:Scada.Agent.AppDirs.ConfigDir">
+            <summary>
+            Получить директорию конфигурации
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.AppDirs.LangDir">
+            <summary>
+            Получить директорию языковых файлов
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.AppDirs.LogDir">
+            <summary>
+            Получить директорию журналов
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.AppDirs.TempDir">
+            <summary>
+            Получить или установить директорию временных файлов
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.AppDirs.Exist">
+            <summary>
+            Проверить существование директорий, исключая необязательную директорию команд
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.AppDirs.Init(System.String)">
+            <summary>
+            Инициализировать директории на основе директории исполняемого файла приложения
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.AppDirs.GetRequiredDirs">
+            <summary>
+            Получить необходимые директории
+            </summary>
+        </member>
+        <member name="T:Scada.Agent.AppFolder">
+            <summary>
+            Application folders
+            <para>Папки приложения</para>
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.AppFolder.Root">
+            <summary>
+            Корневая
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.AppFolder.Config">
+            <summary>
+            Конфигурация
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.AppFolder.Log">
+            <summary>
+            Журналы
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.AppFolder.Storage">
+            <summary>
+            Хранилище
+            </summary>
+        </member>
+        <member name="T:Scada.Agent.ConfigOptions">
+            <summary>
+            Configuration transfer parameters
+            <para>Параметры передачи конфигурации</para>
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.ConfigOptions.#ctor">
+            <summary>
+            Конструктор
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.ConfigOptions.ConfigParts">
+            <summary>
+            Получить или установить части конфигурации
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.ConfigOptions.ExcludedPaths">
+            <summary>
+            Получить или установить исключаемые пути
+            </summary>
+        </member>
+        <member name="T:Scada.Agent.ConfigParts">
+            <summary>
+            Parts of the configuration
+            <para>Части конфигурации</para>
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ConfigParts.None">
+            <summary>
+            Не задано
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ConfigParts.Base">
+            <summary>
+            База конфигурации
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ConfigParts.Interface">
+            <summary>
+            Интерфейс
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ConfigParts.Server">
+            <summary>
+            Сервер
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ConfigParts.Communicator">
+            <summary>
+            Коммуникатор
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ConfigParts.Webstation">
+            <summary>
+            Вебстанция
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ConfigParts.All">
+            <summary>
+            Вся конфигурация
+            </summary>
+        </member>
+        <member name="T:Scada.Agent.CryptoUtils">
+            <summary>
+            The class contains utility cryptographic methods
+            <para>Класс, содержащий вспомогательные криптографические методы</para>
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.CryptoUtils.CreateIV(System.Int64)">
+            <summary>
+            Создать вектор инициализации на освнове ид. сессии
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.CryptoUtils.EncryptPassword(System.String,System.Int64,System.Byte[])">
+            <summary>
+            Зашифровать пароль
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.CryptoUtils.DecryptPassword(System.String,System.Int64,System.Byte[])">
+            <summary>
+            Дешифровать пароль
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.CryptoUtils.SafelyDecryptPassword(System.String,System.Int64,System.Byte[])">
+            <summary>
+            Дешифровать пароль, не вызывая исключений в случае ошибки
+            </summary>
+        </member>
+        <member name="T:Scada.Agent.InstanceManager">
+            <summary>
+            System instance manager
+            <para>Менеджер экземпляров систем</para>
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.InstanceManager.#ctor">
+            <summary>
+            Конструктор, ограничивающий создание объекта без параметров
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.InstanceManager.#ctor(Scada.Agent.Settings,Utils.ILog)">
+            <summary>
+            Конструктор
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.InstanceManager.GetScadaInstance(System.String)">
+            <summary>
+            Получить экземпляр системы по наименованию
+            </summary>
+        </member>
+        <member name="T:Scada.Agent.RelPath">
+            <summary>
+            Relative path
+            <para>Относительный путь</para>
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.RelPath.#ctor">
+            <summary>
+            Конструктор
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.RelPath.#ctor(Scada.Agent.ConfigParts,Scada.Agent.AppFolder,System.String)">
+            <summary>
+            Конструктор
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.RelPath.ConfigPart">
+            <summary>
+            Получить или установить часть конфигурации
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.RelPath.AppFolder">
+            <summary>
+            Получить или установить папку приложения
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.RelPath.Path">
+            <summary>
+            Получить или установить путь относительно папки приложения
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.RelPath.IsMask">
+            <summary>
+            Получить признак, что путь является маской для поиска файлов
+            </summary>
+        </member>
+        <member name="T:Scada.Agent.ScadaInstance">
+            <summary>
+            Object for manipulating a system instance
+            <para>Объект для манипуляций с экземпляром системы</para>
+            </summary>
+        </member>
+        <member name="T:Scada.Agent.ScadaInstance.PathList">
+            <summary>
+            Список путей
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.ScadaInstance.PathList.#ctor">
+            <summary>
+            Конструктор
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.ScadaInstance.PathList.Dirs">
+            <summary>
+            Получить абсолютные пути директорий
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.ScadaInstance.PathList.Files">
+            <summary>
+            Получить абсолютные пути файлов
+            </summary>
+        </member>
+        <member name="T:Scada.Agent.ScadaInstance.PathDict">
+            <summary>
+            Справочник путей, сгруппированных по частям конфигурации и папкам приложения
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.ScadaInstance.PathDict.GetOrAdd(Scada.Agent.ConfigParts,Scada.Agent.AppFolder)">
+            <summary>
+            Получить или создать список путей
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ScadaInstance.MaxValidateUserAttempts">
+            <summary>
+            Макс. количество попыток проверки пользователя
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ScadaInstance.AllConfigParts">
+            <summary>
+            Все части конфигурации в виде массива
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.ScadaInstance.#ctor">
+            <summary>
+            Конструктор, ограничивающий создание объекта без параметров
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.ScadaInstance.#ctor(Scada.Agent.ScadaInstanceSettings,System.Object,Utils.ILog)">
+            <summary>
+            Конструктор
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.ScadaInstance.Name">
+            <summary>
+            Получить наименование
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.ScadaInstance.Settings">
+            <summary>
+            Получить настройки экземпляра системы
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.ScadaInstance.SyncRoot">
+            <summary>
+            Получить или установить объект для синхронизации доступа к экземпляру системы
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.ScadaInstance.GetServiceDir(Scada.Agent.ServiceApp,System.Nullable{System.Char})">
+            <summary>
+            Получить директорию сервиса
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.ScadaInstance.GetServiceStatusFile(Scada.Agent.ServiceApp)">
+            <summary>
+            Получить имя файла статуса сервиса
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.ScadaInstance.GetServiceBatchFile(Scada.Agent.ServiceCommand)">
+            <summary>
+            Получить имя файла команды сервиса
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.ScadaInstance.GetConfigPaths(Scada.Agent.ConfigParts)">
+            <summary>
+            Получить относительные пути конфигурации, соответствующие заданным частям
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.ScadaInstance.GetConfigPartDir(Scada.Agent.ConfigParts,System.Nullable{System.Char})">
+            <summary>
+            Получить директорию части конфигурации
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.ScadaInstance.GetAppFolderDir(Scada.Agent.AppFolder,System.Nullable{System.Char},System.Boolean)">
+            <summary>
+            Получить директорию папки приложения
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.ScadaInstance.GetAppFolderDir(Scada.Agent.ConfigParts,Scada.Agent.AppFolder,System.Char)">
+            <summary>
+            Получить директорию папки приложения
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.ScadaInstance.PrepareExcludedPaths(System.Collections.Generic.ICollection{Scada.Agent.RelPath})">
+            <summary>
+            Подготовить исключаемые пути: разделить по группам, применить поиск файлов по маске
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.ScadaInstance.PackDir(System.IO.Compression.ZipArchive,System.String,System.String,Scada.Agent.ScadaInstance.PathList)">
+            <summary>
+            Упаковать директорию
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.ScadaInstance.PackDir(System.IO.Compression.ZipArchive,Scada.Agent.RelPath,Scada.Agent.ScadaInstance.PathDict)">
+            <summary>
+            Упаковать директорию
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.ScadaInstance.ClearDir(System.IO.DirectoryInfo,Scada.Agent.ScadaInstance.PathList,System.Boolean@)">
+            <summary>
+            Очистить директорию
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.ScadaInstance.ClearDir(Scada.Agent.RelPath,Scada.Agent.ScadaInstance.PathDict)">
+            <summary>
+            Очистить директорию
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.ScadaInstance.StartsWith(System.String,System.Collections.Generic.ICollection{System.String},System.StringComparison)">
+            <summary>
+            Проверить, что строка начинается хотя бы с одного из заданных значений
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.ScadaInstance.ValidateUser(System.String,System.String,System.String@)">
+            <summary>
+            Проверить пользователя
+            </summary>
+            <remarks>Проверяется имя пользователя, пароль и роль</remarks>
+        </member>
+        <member name="M:Scada.Agent.ScadaInstance.ControlService(Scada.Agent.ServiceApp,Scada.Agent.ServiceCommand)">
+            <summary>
+            Управлять службой
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.ScadaInstance.GetServiceStatus(Scada.Agent.ServiceApp,Scada.Agent.ServiceStatus@)">
+            <summary>
+            Получить статус службы
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.ScadaInstance.GetAbsPath(Scada.Agent.RelPath)">
+            <summary>
+            Получить абсолютный путь из относительного
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.ScadaInstance.GetAbsPath(Scada.Agent.ConfigParts,Scada.Agent.AppFolder,System.String)">
+            <summary>
+            Получить абсолютный путь из относительного
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.ScadaInstance.GetAvailableConfig(Scada.Agent.ConfigParts@)">
+            <summary>
+            Получить доступные части конфигурации
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.ScadaInstance.PackConfig(System.String,Scada.Agent.ConfigOptions)">
+            <summary>
+            Упаковать конфигурацию в архив
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.ScadaInstance.UnpackConfig(System.String,Scada.Agent.ConfigOptions)">
+            <summary>
+            Распаковать архив конфигурации
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.ScadaInstance.Browse(Scada.Agent.RelPath,System.Collections.Generic.ICollection{System.String}@,System.Collections.Generic.ICollection{System.String}@)">
+            <summary>
+            Обзор директории
+            </summary>
+        </member>
+        <member name="T:Scada.Agent.ScadaInstanceSettings">
+            <summary>
+            Agent settings for the system instance
+            <para>Настройки агента для экземплара системы</para>
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.ScadaInstanceSettings.#ctor">
+            <summary>
+            Конструктор
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.ScadaInstanceSettings.Name">
+            <summary>
+            Получить или установить наименование
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.ScadaInstanceSettings.Directory">
+            <summary>
+            Получить или установить директорию
+            </summary>
+        </member>
+        <member name="T:Scada.Agent.ServiceApp">
+            <summary>
+            Service applications
+            <para>Приложения-службы</para>
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ServiceApp.Server">
+            <summary>
+            Сервер
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ServiceApp.Communicator">
+            <summary>
+            Коммуникатор
+            </summary>
+        </member>
+        <member name="T:Scada.Agent.ServiceCommand">
+            <summary>
+            Service commands
+            <para>Команды сервиса</para>
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ServiceCommand.Start">
+            <summary>
+            Запустить
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ServiceCommand.Stop">
+            <summary>
+            Остановить
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ServiceCommand.Restart">
+            <summary>
+            Перезапустить
+            </summary>
+        </member>
+        <member name="T:Scada.Agent.ServiceStatus">
+            <summary>
+            Service statuses
+            <para>Статусы службы</para>
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ServiceStatus.Undefined">
+            <summary>
+            Не определён
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ServiceStatus.Normal">
+            <summary>
+            Норма
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ServiceStatus.Stopped">
+            <summary>
+            Остановлен
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ServiceStatus.Error">
+            <summary>
+            Ошибка
+            </summary>
+        </member>
+        <member name="T:Scada.Agent.Session">
+            <summary>
+            Session of communication with the agent
+            <para>Сессия связи с агентом</para>
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.Session.#ctor">
+            <summary>
+            Конструктор, ограничивающий создание объекта без параметров
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.Session.#ctor(System.Int64)">
+            <summary>
+            Конструктор
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.Session.ID">
+            <summary>
+            Получить идентификатор сессии
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.Session.IpAddress">
+            <summary>
+            Получить IP-адрес подключения
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.Session.LoggedOn">
+            <summary>
+            Получить или установить признак, авторизован ли пользователь агента
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.Session.Username">
+            <summary>
+            Получить или установить имя пользователя
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.Session.ScadaInstance">
+            <summary>
+            Получить или установить экземпляр системы
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.Session.ActivityDT">
+            <summary>
+            Получить или установить дату и время последней активности (UTC)
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.Session.RegisterActivity">
+            <summary>
+            Зарегистрировать активность
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.Session.SetUser(System.String,Scada.Agent.ScadaInstance)">
+            <summary>
+            Установить данные авторизованного пользователя
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.Session.ClearUser">
+            <summary>
+            Очистить данные, связанные с пользователем
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.Session.ToString">
+            <summary>
+            Вернуть строковое представление объекта
+            </summary>
+        </member>
+        <member name="T:Scada.Agent.SessionManager">
+            <summary>
+            Session manager
+            <para>Менеджер сессий</para>
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.SessionManager.MaxSessionCnt">
+            <summary>
+            Макс. количество сессий
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.SessionManager.MaxGetSessionIDAttempts">
+            <summary>
+            Макс. количество попыток получения уникального ид. сессии
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.SessionManager.SessionLifetime">
+            <summary>
+            Время жизни сессии, если нет активности
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.SessionManager.#ctor">
+            <summary>
+            Конструктор, ограничивающий создание объекта без параметров
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.SessionManager.#ctor(Utils.ILog)">
+            <summary>
+            Конструктор
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.SessionManager.CreateSession">
+            <summary>
+            Создать сессию и добавить в список сессий
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.SessionManager.GetSession(System.Int64)">
+            <summary>
+            Получить сессию по идентификатору
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.SessionManager.RemoveInactiveSessions">
+            <summary>
+            Удалить неактивные сессии
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.SessionManager.RemoveAllSessions">
+            <summary>
+            Удалить все сессии
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.SessionManager.GetInfo">
+            <summary>
+            Получить информацию о сессиях
+            </summary>
+        </member>
+        <member name="T:Scada.Agent.Settings">
+            <summary>
+            Agent settings
+            <para>Настройки агента</para>
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.Settings.DefFileName">
+            <summary>
+            Имя файла настроек по умолчанию
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.Settings.#ctor">
+            <summary>
+            Конструктор
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.Settings.SecretKey">
+            <summary>
+            Получить секретный ключ для шифрования паролей
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.Settings.Instances">
+            <summary>
+            Получить настройки экземпляров систем, ключ - наименование экземпляра
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.Settings.SetToDefault">
+            <summary>
+            Установить значения настроек по умолчанию
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.Settings.Load(System.String,System.String@)">
+            <summary>
+            Загрузить настройки из файла
+            </summary>
+        </member>
+    </members>
+</doc>

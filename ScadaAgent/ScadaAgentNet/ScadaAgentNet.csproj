@@ -50,9 +50,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ScadaAgentCore\ScadaAgentCore.csproj">
-      <Project>{5163526d-91e4-414d-97fe-090e1e7fda6b}</Project>
-      <Name>ScadaAgentCore</Name>
+    <ProjectReference Include="..\ScadaAgentEngine\ScadaAgentEngine.csproj">
+      <Project>{f6408462-f893-4a24-8cb1-c331101f68d6}</Project>
+      <Name>ScadaAgentEngine</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

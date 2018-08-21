@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard2.0\ScadaAgentCore.xml</DocumentationFile>
+    <DocumentationFile>C:\GIT\rapidscada\scada\ScadaAgent\ScadaAgentEngine\ScadaAgentEngine.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

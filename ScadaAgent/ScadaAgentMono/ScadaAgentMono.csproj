@@ -51,9 +51,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ScadaAgentCore\ScadaAgentCore.csproj">
-      <Project>{5163526d-91e4-414d-97fe-090e1e7fda6b}</Project>
-      <Name>ScadaAgentCore</Name>
+    <ProjectReference Include="..\ScadaAgentEngine\ScadaAgentEngine.csproj">
+      <Project>{f6408462-f893-4a24-8cb1-c331101f68d6}</Project>
+      <Name>ScadaAgentEngine</Name>
     </ProjectReference>
     <ProjectReference Include="..\ScadaAgentNet\ScadaAgentNet.csproj">
       <Project>{c377283b-858b-4efc-a560-e90ff2f26b03}</Project>
