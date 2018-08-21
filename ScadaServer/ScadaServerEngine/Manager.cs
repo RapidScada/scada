@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.Server.Modules;
@@ -34,7 +34,7 @@ namespace Scada.Server.Svc
     /// Program execution management
     /// <para>Управление работой программы</para>
     /// </summary>
-    sealed class Manager
+    public sealed class Manager
     {
         private MainLogic mainLogic; // объект, реализующий логику сервера
         private Log appLog;          // журнал приложения

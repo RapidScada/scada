@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaServerCommon", "ScadaServerCommon\ScadaServerCommon.csproj", "{3CA67403-5B85-489A-B7B4-81D682B23146}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaServerSvc", "ScadaServerSvc\ScadaServerSvc.csproj", "{D876BF85-C99B-4C16-A053-8877C84E7E02}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaServerMono", "ScadaServerMono\ScadaServerMono.csproj", "{2E5ADC08-CAB8-4CF3-B2B3-D856EFEBBEC1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaServerEngine", "ScadaServerEngine\ScadaServerEngine.csproj", "{DCC9E55D-92D6-4464-B5B9-0593DE57C64F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -80,8 +82,29 @@ Global
 		{2E5ADC08-CAB8-4CF3-B2B3-D856EFEBBEC1}.ReleaseEn|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{2E5ADC08-CAB8-4CF3-B2B3-D856EFEBBEC1}.ReleaseEn|Mixed Platforms.Build.0 = Release|Any CPU
 		{2E5ADC08-CAB8-4CF3-B2B3-D856EFEBBEC1}.ReleaseEn|x86.ActiveCfg = Release|Any CPU
+		{DCC9E55D-92D6-4464-B5B9-0593DE57C64F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCC9E55D-92D6-4464-B5B9-0593DE57C64F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCC9E55D-92D6-4464-B5B9-0593DE57C64F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DCC9E55D-92D6-4464-B5B9-0593DE57C64F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{DCC9E55D-92D6-4464-B5B9-0593DE57C64F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DCC9E55D-92D6-4464-B5B9-0593DE57C64F}.Debug|x86.Build.0 = Debug|Any CPU
+		{DCC9E55D-92D6-4464-B5B9-0593DE57C64F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCC9E55D-92D6-4464-B5B9-0593DE57C64F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCC9E55D-92D6-4464-B5B9-0593DE57C64F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{DCC9E55D-92D6-4464-B5B9-0593DE57C64F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{DCC9E55D-92D6-4464-B5B9-0593DE57C64F}.Release|x86.ActiveCfg = Release|Any CPU
+		{DCC9E55D-92D6-4464-B5B9-0593DE57C64F}.Release|x86.Build.0 = Release|Any CPU
+		{DCC9E55D-92D6-4464-B5B9-0593DE57C64F}.ReleaseEn|Any CPU.ActiveCfg = Release|Any CPU
+		{DCC9E55D-92D6-4464-B5B9-0593DE57C64F}.ReleaseEn|Any CPU.Build.0 = Release|Any CPU
+		{DCC9E55D-92D6-4464-B5B9-0593DE57C64F}.ReleaseEn|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{DCC9E55D-92D6-4464-B5B9-0593DE57C64F}.ReleaseEn|Mixed Platforms.Build.0 = Release|Any CPU
+		{DCC9E55D-92D6-4464-B5B9-0593DE57C64F}.ReleaseEn|x86.ActiveCfg = Release|Any CPU
+		{DCC9E55D-92D6-4464-B5B9-0593DE57C64F}.ReleaseEn|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {62B788D3-3618-45F6-BBBA-D6FCE7279B5E}
 	EndGlobalSection
 EndGlobal
