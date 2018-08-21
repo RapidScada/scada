@@ -23,8 +23,10 @@
  * Modified : 2018
  */
 
+using Scada.Server.Shell.Properties;
 using Scada.UI;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Scada.Server.Shell.Code
@@ -46,9 +48,19 @@ namespace Scada.Server.Shell.Code
         /// <summary>
         /// Gets the images used by the explorer.
         /// </summary>
-        public ICollection<object> GetTreeViewImages()
+        public Dictionary<string, Image> GetTreeViewImages()
         {
-            return null;
+            return new Dictionary<string, Image>
+            {
+                { "server_archive.png", Resources.server_archive },
+                { "server_data.png", Resources.server_data },
+                { "server_event.png", Resources.server_event },
+                { "server_generator.png", Resources.server_generator },
+                { "server_module.png", Resources.server_module },
+                { "server_params.png", Resources.server_params },
+                { "server_save.png", Resources.server_save },
+                { "server_stats.png", Resources.server_stats }
+            };
         }
 
         /// <summary>

@@ -24,6 +24,7 @@
  */
 
 using Scada.Admin.App.Code;
+using Scada.Admin.App.Properties;
 using Scada.Admin.Project;
 using Scada.Server.Modules;
 using Scada.Server.Shell.Code;
@@ -31,6 +32,7 @@ using Scada.UI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -126,6 +128,32 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
+        /// Takes the explorer images and loads them into an image list.
+        /// </summary>
+        private void TakeExplorerImages()
+        {
+            // loading images from resources instead of storing in image list prevents them from corruption
+            ilExplorer.Images.Add("comm.png", Resources.comm);
+            ilExplorer.Images.Add("database.png", Resources.database);
+            ilExplorer.Images.Add("empty.png", Resources.empty);
+            ilExplorer.Images.Add("folder_closed.png", Resources.folder_closed);
+            ilExplorer.Images.Add("folder_open.png", Resources.folder_open);
+            ilExplorer.Images.Add("instance.png", Resources.instance);
+            ilExplorer.Images.Add("instances.png", Resources.instances);
+            ilExplorer.Images.Add("project.png", Resources.project);
+            ilExplorer.Images.Add("server.png", Resources.server);
+            ilExplorer.Images.Add("table.png", Resources.table);
+            ilExplorer.Images.Add("ui.png", Resources.ui);
+            ilExplorer.Images.Add("webstation.png", Resources.webstation);
+
+            // add Server images
+            foreach (KeyValuePair<string, Image> pair in serverShell.GetTreeViewImages())
+            {
+                ilExplorer.Images.Add(pair.Key, pair.Value);
+            }
+        }
+
+        /// <summary>
         /// Executes an action related to the node.
         /// </summary>
         private void ExecNodeAction(TreeNode treeNode)
@@ -184,6 +212,7 @@ namespace Scada.Admin.App.Forms
         private void FrmMain_Load(object sender, EventArgs e)
         {
             LocalizeForm();
+            TakeExplorerImages();
             CreateProject();
         }
 

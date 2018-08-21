@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Scada.Admin.App.Properties {
+namespace Scada.Server.Shell.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Scada.Admin.App.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Scada.Admin.App.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Scada.Server.Shell.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -63,9 +63,9 @@ namespace Scada.Admin.App.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap comm {
+        internal static System.Drawing.Bitmap server_archive {
             get {
-                object obj = ResourceManager.GetObject("comm", resourceCulture);
+                object obj = ResourceManager.GetObject("server_archive", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace Scada.Admin.App.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap database {
+        internal static System.Drawing.Bitmap server_data {
             get {
-                object obj = ResourceManager.GetObject("database", resourceCulture);
+                object obj = ResourceManager.GetObject("server_data", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,9 +83,9 @@ namespace Scada.Admin.App.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap empty {
+        internal static System.Drawing.Bitmap server_event {
             get {
-                object obj = ResourceManager.GetObject("empty", resourceCulture);
+                object obj = ResourceManager.GetObject("server_event", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -93,9 +93,9 @@ namespace Scada.Admin.App.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap folder_closed {
+        internal static System.Drawing.Bitmap server_generator {
             get {
-                object obj = ResourceManager.GetObject("folder_closed", resourceCulture);
+                object obj = ResourceManager.GetObject("server_generator", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -103,9 +103,9 @@ namespace Scada.Admin.App.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap folder_open {
+        internal static System.Drawing.Bitmap server_module {
             get {
-                object obj = ResourceManager.GetObject("folder_open", resourceCulture);
+                object obj = ResourceManager.GetObject("server_module", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -113,9 +113,9 @@ namespace Scada.Admin.App.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap instance {
+        internal static System.Drawing.Bitmap server_params {
             get {
-                object obj = ResourceManager.GetObject("instance", resourceCulture);
+                object obj = ResourceManager.GetObject("server_params", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -123,9 +123,9 @@ namespace Scada.Admin.App.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap instances {
+        internal static System.Drawing.Bitmap server_save {
             get {
-                object obj = ResourceManager.GetObject("instances", resourceCulture);
+                object obj = ResourceManager.GetObject("server_save", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -133,49 +133,9 @@ namespace Scada.Admin.App.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap project {
+        internal static System.Drawing.Bitmap server_stats {
             get {
-                object obj = ResourceManager.GetObject("project", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap server {
-            get {
-                object obj = ResourceManager.GetObject("server", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap table {
-            get {
-                object obj = ResourceManager.GetObject("table", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap ui {
-            get {
-                object obj = ResourceManager.GetObject("ui", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap webstation {
-            get {
-                object obj = ResourceManager.GetObject("webstation", resourceCulture);
+                object obj = ResourceManager.GetObject("server_stats", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

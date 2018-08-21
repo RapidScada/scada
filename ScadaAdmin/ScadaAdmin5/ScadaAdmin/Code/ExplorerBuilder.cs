@@ -149,7 +149,7 @@ namespace Scada.Admin.App.Code
                 projectNode.Nodes.Add(baseNode);
 
                 TreeNode interfaceNode = new TreeNode(AppPhrases.InterfaceNode);
-                interfaceNode.ImageKey = interfaceNode.SelectedImageKey = "interface.png";
+                interfaceNode.ImageKey = interfaceNode.SelectedImageKey = "ui.png";
                 interfaceNode.Tag = new TreeNodeTag() { RelatedObject = project.Interface };
                 projectNode.Nodes.Add(interfaceNode);
 

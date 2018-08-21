@@ -177,6 +177,19 @@
     <Content Include="Lang\ScadaAdmin.en-GB.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\ui.png" />
+    <None Include="Resources\webstation.png" />
+    <None Include="Resources\table.png" />
+    <None Include="Resources\server.png" />
+    <None Include="Resources\project.png" />
+    <None Include="Resources\instances.png" />
+    <None Include="Resources\instance.png" />
+    <None Include="Resources\folder_open.png" />
+    <None Include="Resources\folder_closed.png" />
+    <None Include="Resources\empty.png" />
+    <None Include="Resources\database.png" />
+    <None Include="Resources\comm.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

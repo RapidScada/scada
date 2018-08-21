@@ -284,20 +284,9 @@
             // 
             // ilExplorer
             // 
-            this.ilExplorer.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilExplorer.ImageStream")));
+            this.ilExplorer.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+            this.ilExplorer.ImageSize = new System.Drawing.Size(16, 16);
             this.ilExplorer.TransparentColor = System.Drawing.Color.Transparent;
-            this.ilExplorer.Images.SetKeyName(0, "comm.png");
-            this.ilExplorer.Images.SetKeyName(1, "database.png");
-            this.ilExplorer.Images.SetKeyName(2, "empty.png");
-            this.ilExplorer.Images.SetKeyName(3, "folder_closed.png");
-            this.ilExplorer.Images.SetKeyName(4, "folder_open.png");
-            this.ilExplorer.Images.SetKeyName(5, "instance.png");
-            this.ilExplorer.Images.SetKeyName(6, "instances.png");
-            this.ilExplorer.Images.SetKeyName(7, "interface.png");
-            this.ilExplorer.Images.SetKeyName(8, "project.png");
-            this.ilExplorer.Images.SetKeyName(9, "server.png");
-            this.ilExplorer.Images.SetKeyName(10, "table.png");
-            this.ilExplorer.Images.SetKeyName(11, "webstation.png");
             // 
             // splVert
             // 
