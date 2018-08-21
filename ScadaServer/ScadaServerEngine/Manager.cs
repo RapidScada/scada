@@ -28,7 +28,7 @@ using System;
 using System.Diagnostics;
 using Utils;
 
-namespace Scada.Server.Svc
+namespace Scada.Server.Engine
 {
     /// <summary>
     /// Program execution management

@@ -29,7 +29,7 @@ using System.Text;
 using Scada.Data;
 using Scada.Data.Tables;
 
-namespace Scada.Server.Svc
+namespace Scada.Server.Engine
 {
     /// <summary>
     /// Mechanism providing calculation of formulas

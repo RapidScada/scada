@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Microsoft.CSharp;
@@ -33,7 +33,7 @@ using System.Reflection;
 using System.Text;
 using Utils;
 
-namespace Scada.Server.Svc
+namespace Scada.Server.Engine
 {
     /// <summary>
     /// Channel calculator 
@@ -171,7 +171,7 @@ namespace Scada.Server.Svc
                 string source;
 
                 using (Stream stream = Assembly.GetExecutingAssembly().
-                    GetManifestResourceStream("Scada.Server.Svc.CalcEngine.cs"))
+                    GetManifestResourceStream("Scada.Server.Engine.CalcEngine.cs"))
                 {
                     using (StreamReader reader = new StreamReader(stream))
                     {
@@ -233,7 +233,8 @@ namespace Scada.Server.Svc
                 }
                 else
                 {
-                    Type calcEngineType = compilerResults.CompiledAssembly.GetType("Scada.Server.Svc.CalcEngine", true);
+                    Type calcEngineType = compilerResults.CompiledAssembly.GetType(
+                        "Scada.Server.Engine.CalcEngine", true);
                     calcEngine = Activator.CreateInstance(calcEngineType, 
                         new Func<int, SrezTableLight.CnlData>(mainLogic.GetProcSrezCnlData),
                         new Action<int, SrezTableLight.CnlData>(mainLogic.SetProcSrezCnlData));

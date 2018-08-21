@@ -36,7 +36,7 @@ using System.Text;
 using System.Threading;
 using Utils;
 
-namespace Scada.Server.Svc
+namespace Scada.Server.Engine
 {
     /// <summary>
     /// Main server logic implementation

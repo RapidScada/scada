@@ -28,7 +28,7 @@ using System.IO;
 using Scada.Data.Models;
 using Scada.Data.Tables;
 
-namespace Scada.Server.Svc
+namespace Scada.Server.Engine
 {
     partial class MainLogic
     {
