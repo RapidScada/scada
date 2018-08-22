@@ -173,7 +173,7 @@ namespace Scada.Admin.App.Forms
                         if (formObj is Form form)
                         {
                             tag.ExistingForm = form;
-                            wctrlMain.AddForm(form, "", null, treeNode);
+                            wctrlMain.AddForm(form, "", ilExplorer.Images[treeNode.ImageKey], treeNode);
                         }
                     }
                 }

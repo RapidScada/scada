@@ -18,4 +18,23 @@
     <Phrase key="GeneratorNode">Generator</Phrase>
     <Phrase key="StatsNode">Stats</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Server.Shell.Forms.FrmCommonParams">
+    <Phrase key="this">Common Parameters</Phrase>
+    <Phrase key="gbConn">Connection</Phrase>
+    <Phrase key="lblTcpPort">TCP port</Phrase>
+    <Phrase key="lblLdapPath">Domain controller</Phrase>
+    <Phrase key="gbDirs">Directories</Phrase>
+    <Phrase key="lblBaseDATDir">Configuration database in DAT format</Phrase>
+    <Phrase key="btnBrowseBaseDATDir">Browse...</Phrase>
+    <Phrase key="lblItfDir">Interface</Phrase>
+    <Phrase key="btnBrowseItfDir">Browse...</Phrase>
+    <Phrase key="lblArcDir">Archive in DAT format</Phrase>
+    <Phrase key="btnBrowseArcDir">Browse...</Phrase>
+    <Phrase key="lblArcCopyDir">Archive copy in DAT format</Phrase>
+    <Phrase key="btnBrowseArcCopyDir">Browse...</Phrase>
+    <Phrase key="chkDetailedLog">Detailed log</Phrase>
+    <Phrase key="ChooseItfDir">Choose the interface directory.</Phrase>
+    <Phrase key="ChooseArcDir">Choose the archive in DAT format directory.</Phrase>
+    <Phrase key="ChooseArcCopyDir">Choose the archive copy in DAT format directory.</Phrase>
+  </Dictionary>
 </ScadaServerDictionaries>

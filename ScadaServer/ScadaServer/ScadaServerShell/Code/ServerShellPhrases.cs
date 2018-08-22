@@ -45,6 +45,11 @@ namespace Scada.Server.Shell.Code
         public static string GeneratorNode { get; private set; }
         public static string StatsNode { get; private set; }
 
+        // Scada.Server.Shell.Forms.FrmCommonParams
+        public static string ChooseItfDir { get; private set; }
+        public static string ChooseArcDir { get; private set; }
+        public static string ChooseArcCopyDir { get; private set; }
+
         public static void Init()
         {
             Localization.Dict dict = Localization.GetDictionary("Scada.Server.Shell.Code.ServerShell");
@@ -58,6 +63,11 @@ namespace Scada.Server.Shell.Code
             ModulesNode = dict.GetPhrase("ModulesNode");
             GeneratorNode = dict.GetPhrase("GeneratorNode");
             StatsNode = dict.GetPhrase("StatsNode");
+
+            dict = Localization.GetDictionary("Scada.Server.Shell.Forms.FrmCommonParams");
+            ChooseItfDir = dict.GetPhrase("ChooseItfDir");
+            ChooseArcDir = dict.GetPhrase("ChooseArcDir");
+            ChooseArcCopyDir = dict.GetPhrase("ChooseArcCopyDir");
         }
     }
 }

@@ -23,6 +23,7 @@
  * Modified : 2018
  */
 
+using Scada.Server.Shell.Forms;
 using Scada.Server.Shell.Properties;
 using Scada.UI;
 using System.Collections.Generic;
@@ -76,7 +77,7 @@ namespace Scada.Server.Shell.Code
                     SelectedImageKey = "server_params.png",
                     Tag = new TreeNodeTag()
                     {
-                        FormType = null,
+                        FormType = typeof(FrmCommonParams),
                         FormArgs = new object[] { settings }
                     }
                 },

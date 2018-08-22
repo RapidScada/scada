@@ -18,4 +18,23 @@
     <Phrase key="GeneratorNode">Генератор</Phrase>
     <Phrase key="StatsNode">Статистика</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Server.Shell.Forms.FrmCommonParams">
+    <Phrase key="this">Общие параметры</Phrase>
+    <Phrase key="gbConn">Соединение</Phrase>
+    <Phrase key="lblTcpPort">TCP-порт</Phrase>
+    <Phrase key="lblLdapPath">Контроллер домена</Phrase>
+    <Phrase key="gbDirs">Директории</Phrase>
+    <Phrase key="lblBaseDATDir">База конфигурации в формате DAT</Phrase>
+    <Phrase key="btnBrowseBaseDATDir">Обзор...</Phrase>
+    <Phrase key="lblItfDir">Интерфейс</Phrase>
+    <Phrase key="btnBrowseItfDir">Обзор...</Phrase>
+    <Phrase key="lblArcDir">Архив в формате DAT</Phrase>
+    <Phrase key="btnBrowseArcDir">Обзор...</Phrase>
+    <Phrase key="lblArcCopyDir">Копия архива в формате DAT</Phrase>
+    <Phrase key="btnBrowseArcCopyDir">Обзор...</Phrase>
+    <Phrase key="chkDetailedLog">Подробный журнал</Phrase>
+    <Phrase key="ChooseItfDir">Выберите директорию интерфейса.</Phrase>
+    <Phrase key="ChooseArcDir">Выберите директорию архива в формате DAT.</Phrase>
+    <Phrase key="ChooseArcCopyDir">Выберите директорию копии архива в формате DAT.</Phrase>
+  </Dictionary>
 </ScadaServerDictionaries>
