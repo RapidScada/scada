@@ -87,7 +87,7 @@ namespace Scada.Server.Shell.Code
                     SelectedImageKey = "server_save.png",
                     Tag = new TreeNodeTag()
                     {
-                        FormType = null,
+                        FormType = typeof(FrmSaveParams),
                         FormArgs = new object[] { settings }
                     }
                 },

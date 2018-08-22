@@ -33,9 +33,9 @@ namespace Scada.Server.Shell.Forms
 {
     /// <summary>
     /// Form for editing common parameters of Server settings.
-    /// <para>Форма редактирования общих параметров настроек Сервера.</para>
+    /// <para>Форма редактирования общих параметров Сервера.</para>
     /// </summary>
-    public partial class FrmCommonParams : Form , IChildForm
+    public partial class FrmCommonParams : Form, IChildForm
     {
         private readonly Settings settings; // the application settings
         private bool changing; // controls are being changed programmatically
