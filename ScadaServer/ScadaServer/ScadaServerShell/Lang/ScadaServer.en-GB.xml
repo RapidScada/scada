@@ -37,6 +37,17 @@
     <Phrase key="ChooseArcDir">Choose the archive in DAT format directory.</Phrase>
     <Phrase key="ChooseArcCopyDir">Choose the archive copy in DAT format directory.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Server.Shell.Forms.FrmModules">
+    <Phrase key="this">Modules</Phrase>
+    <Phrase key="lblUnusedModules">Unused modules:</Phrase>
+    <Phrase key="btnActivate">Activate</Phrase>
+    <Phrase key="lblActiveModules">Active modules:</Phrase>
+    <Phrase key="btnDeactivate">Deactivate</Phrase>
+    <Phrase key="btnMoveUp">Move Up</Phrase>
+    <Phrase key="btnMoveDown">Move Down</Phrase>
+    <Phrase key="btnProperties">Properties</Phrase>
+    <Phrase key="lblDescr">Description</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmSaveParams">
     <Phrase key="gbCurData">Current Data</Phrase>
     <Phrase key="lblWriteCurPer">Writing period</Phrase>

@@ -34,7 +34,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 using Utils;
 using WinControl;
@@ -64,11 +63,12 @@ namespace Scada.Admin.App.Forms
         /// </summary>
         private const string SupportRuUrl = "https://forum.rapidscada.ru/";
 
-        private readonly AppData appData; // the common data of the application
-        private readonly Log log;         // the application log
+        private readonly AppData appData;                 // the common data of the application
+        private readonly Log log;                         // the application log
         private readonly ServerShell serverShell;         // the shell to edit Server settings
         private readonly ExplorerBuilder explorerBuilder; // the object to manipulate the explorer tree
-        private ScadaProject project;     // the project under development
+        private ScadaProject project;                     // the project under development
+        private ServerEnvironment serverEnvironment;      // the environment used by Server modules
 
 
         /// <summary>
@@ -90,6 +90,7 @@ namespace Scada.Admin.App.Forms
             serverShell = new ServerShell();
             explorerBuilder = new ExplorerBuilder(appData, serverShell, tvExplorer);
             project = null;
+            serverEnvironment = null;
         }
 
 
@@ -200,12 +201,24 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
-        /// Creates and displays a new project
+        /// Creates and displays a new project.
         /// </summary>
         private void CreateProject()
         {
             project = new ScadaProject();
             explorerBuilder.CreateNodes(project);
+        }
+
+        /// <summary>
+        /// Creates the Server environment object.
+        /// </summary>
+        private void CreateServerEnvironment()
+        {
+            serverEnvironment = new ServerEnvironment()
+            {
+                AppDirs = new Server.AppDirs(),
+                ModuleViews = new Dictionary<string, ModView>()
+            };
         }
 
 
@@ -214,6 +227,7 @@ namespace Scada.Admin.App.Forms
             LocalizeForm();
             TakeExplorerImages();
             CreateProject();
+            CreateServerEnvironment();
         }
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -246,7 +260,7 @@ namespace Scada.Admin.App.Forms
                 !instance.AppSettingsLoaded)
             {
                 if (instance.LoadAppSettings(out string errMsg))
-                    explorerBuilder.FillInstanceNode(e.Node, instance);
+                    explorerBuilder.FillInstanceNode(e.Node, instance, serverEnvironment);
                 else
                     appData.ProcError(errMsg);
             }

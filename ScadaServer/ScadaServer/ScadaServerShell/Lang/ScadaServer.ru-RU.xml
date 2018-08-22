@@ -37,6 +37,17 @@
     <Phrase key="ChooseArcDir">Выберите директорию архива в формате DAT.</Phrase>
     <Phrase key="ChooseArcCopyDir">Выберите директорию копии архива в формате DAT.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Server.Shell.Forms.FrmModules">
+    <Phrase key="this">Модули</Phrase>
+    <Phrase key="lblUnusedModules">Неиспользуемые модули:</Phrase>
+    <Phrase key="btnActivate">Активировать</Phrase>
+    <Phrase key="lblActiveModules">Активные модули:</Phrase>
+    <Phrase key="btnDeactivate">Деактивировать</Phrase>
+    <Phrase key="btnMoveUp">Вверх</Phrase>
+    <Phrase key="btnMoveDown">Вниз</Phrase>
+    <Phrase key="btnProperties">Свойства</Phrase>
+    <Phrase key="lblDescr">Описание</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmSaveParams">
     <Phrase key="this">Параметры записи</Phrase>
     <Phrase key="gbCurData">Текущие данные</Phrase>

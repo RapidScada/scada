@@ -108,6 +108,7 @@ namespace Scada.Server.Shell.Forms
 
             // events
             numStoreEvPer.SetValue(settings.StoreEvPer);
+            cbWriteEvPer.SelectedIndex = 0;
             chkWriteEv.Checked = settings.WriteEv;
             chkWriteEvCopy.Checked = settings.WriteEvCopy;
 

@@ -47,7 +47,7 @@ namespace Scada.Admin.App.Code
         /// </summary>
         public AppData()
         {
-            AppDirs = new AppDirs();
+            AppDirs = new AdminDirs();
             ErrLog = new Log(Log.Formats.Full);
             AppState = new AppState();
         }
@@ -56,7 +56,7 @@ namespace Scada.Admin.App.Code
         /// <summary>
         /// Gets the application directories.
         /// </summary>
-        public AppDirs AppDirs { get; private set; }
+        public AdminDirs AppDirs { get; private set; }
 
         /// <summary>
         /// Gets the application error log.

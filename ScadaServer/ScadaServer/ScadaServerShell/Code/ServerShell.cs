@@ -26,6 +26,7 @@
 using Scada.Server.Shell.Forms;
 using Scada.Server.Shell.Properties;
 using Scada.UI;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -67,8 +68,18 @@ namespace Scada.Server.Shell.Code
         /// <summary>
         /// Gets the tree nodes for the explorer.
         /// </summary>
-        public TreeNode[] GetTreeNodes(Settings settings)
+        public TreeNode[] GetTreeNodes(Settings settings, ServerEnvironment environment)
         {
+            // check the arguments
+            if (settings == null)
+                throw new ArgumentNullException("settings");
+
+            if (environment == null)
+                throw new ArgumentNullException("environment");
+
+            environment.Validate();
+
+            // create nodes
             return new TreeNode[]
             {
                 new TreeNode(ServerShellPhrases.CommonParamsNode)
@@ -89,6 +100,16 @@ namespace Scada.Server.Shell.Code
                     {
                         FormType = typeof(FrmSaveParams),
                         FormArgs = new object[] { settings }
+                    }
+                },
+                new TreeNode(ServerShellPhrases.ModulesNode)
+                {
+                    ImageKey = "server_module.png",
+                    SelectedImageKey = "server_module.png",
+                    Tag = new TreeNodeTag()
+                    {
+                        FormType = typeof(FrmModules),
+                        FormArgs = new object[] { settings, environment }
                     }
                 },
                 new TreeNode(ServerShellPhrases.ArchiveNode, 
@@ -138,16 +159,6 @@ namespace Scada.Server.Shell.Code
                 {
                     ImageKey = "server_archive.png",
                     SelectedImageKey = "server_archive.png"
-                },
-                new TreeNode(ServerShellPhrases.ModulesNode)
-                {
-                    ImageKey = "server_module.png",
-                    SelectedImageKey = "server_module.png",
-                    Tag = new TreeNodeTag()
-                    {
-                        FormType = null,
-                        FormArgs = new object[] { settings }
-                    }
                 },
                 new TreeNode(ServerShellPhrases.GeneratorNode)
                 {

@@ -54,7 +54,7 @@
   <ItemGroup>
     <Compile Include="AdminPhrases.cs" />
     <Compile Include="AdminUtils.cs" />
-    <Compile Include="AppDirs.cs" />
+    <Compile Include="AdminDirs.cs" />
     <Compile Include="Project\BaseTable.cs" />
     <Compile Include="Project\ConfigBase.cs" />
     <Compile Include="Project\IBaseTable.cs" />

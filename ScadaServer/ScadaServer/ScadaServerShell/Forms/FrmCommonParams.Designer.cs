@@ -70,11 +70,11 @@
             this.gbDirs.Controls.Add(this.lblItfDir);
             this.gbDirs.Controls.Add(this.txtBaseDATDir);
             this.gbDirs.Controls.Add(this.lblBaseDATDir);
-            this.gbDirs.Location = new System.Drawing.Point(12, 83);
+            this.gbDirs.Location = new System.Drawing.Point(12, 138);
             this.gbDirs.Name = "gbDirs";
             this.gbDirs.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
             this.gbDirs.Size = new System.Drawing.Size(500, 182);
-            this.gbDirs.TabIndex = 1;
+            this.gbDirs.TabIndex = 2;
             this.gbDirs.TabStop = false;
             this.gbDirs.Text = "Directories";
             // 
@@ -263,11 +263,11 @@
             // gbLog
             // 
             this.gbLog.Controls.Add(this.chkDetailedLog);
-            this.gbLog.Location = new System.Drawing.Point(12, 271);
+            this.gbLog.Location = new System.Drawing.Point(12, 83);
             this.gbLog.Name = "gbLog";
             this.gbLog.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
             this.gbLog.Size = new System.Drawing.Size(500, 49);
-            this.gbLog.TabIndex = 2;
+            this.gbLog.TabIndex = 1;
             this.gbLog.TabStop = false;
             this.gbLog.Text = "Logging";
             // 

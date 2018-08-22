@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaAdminCommon
- * Summary  : Application directories
+ * Summary  : Directories of the Administrator application
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
@@ -28,15 +28,15 @@ using System.IO;
 namespace Scada.Admin
 {
     /// <summary>
-    /// Application directories.
-    /// <para>Директории приложения.</para>
+    /// Directories of the Administrator application.
+    /// <para>Директории приложения Администратор.</para>
     /// </summary>
-    public class AppDirs
+    public class AdminDirs
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public AppDirs()
+        public AdminDirs()
         {
             ExeDir = "";
             ConfigDir = "";

@@ -46,6 +46,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\ServerEnvironment.cs" />
     <Compile Include="Code\ServerShell.cs" />
     <Compile Include="Code\ServerShellPhrases.cs" />
     <Compile Include="Forms\FrmCommonParams.cs">
@@ -53,6 +54,12 @@
     </Compile>
     <Compile Include="Forms\FrmCommonParams.Designer.cs">
       <DependentUpon>FrmCommonParams.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmModules.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmModules.Designer.cs">
+      <DependentUpon>FrmModules.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FrmSaveParams.cs">
       <SubType>Form</SubType>
@@ -89,6 +96,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Forms\FrmCommonParams.resx">
       <DependentUpon>FrmCommonParams.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmModules.resx">
+      <DependentUpon>FrmModules.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmSaveParams.resx">
       <DependentUpon>FrmSaveParams.cs</DependentUpon>

@@ -176,7 +176,7 @@ namespace Scada.Admin.App.Code
         /// <summary>
         /// Fills the instance node by child nodes.
         /// </summary>
-        public void FillInstanceNode(TreeNode instanceNode, Instance instance)
+        public void FillInstanceNode(TreeNode instanceNode, Instance instance, ServerEnvironment serverEnvironment)
         {
             try
             {
@@ -188,7 +188,8 @@ namespace Scada.Admin.App.Code
                     TreeNode serverNode = new TreeNode(AppPhrases.ServerNode);
                     serverNode.ImageKey = serverNode.SelectedImageKey = "server.png";
                     serverNode.Tag = new TreeNodeTag() { RelatedObject = instance.ServerApp };
-                    serverNode.Nodes.AddRange(serverShell.GetTreeNodes(instance.ServerApp.Settings));
+                    serverNode.Nodes.AddRange(serverShell.GetTreeNodes(
+                        instance.ServerApp.Settings, serverEnvironment));
                     instanceNode.Nodes.Add(serverNode);
                 }
 
