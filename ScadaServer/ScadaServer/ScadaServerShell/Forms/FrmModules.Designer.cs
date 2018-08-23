@@ -131,6 +131,7 @@
             this.lbActiveModules.Size = new System.Drawing.Size(352, 155);
             this.lbActiveModules.TabIndex = 3;
             this.lbActiveModules.SelectedIndexChanged += new System.EventHandler(this.lbActiveModules_SelectedIndexChanged);
+            this.lbActiveModules.DoubleClick += new System.EventHandler(this.lbActiveModules_DoubleClick);
             // 
             // tableLayoutPanel
             // 
@@ -162,8 +163,10 @@
             this.lbUnusedModules.MultiColumn = true;
             this.lbUnusedModules.Name = "lbUnusedModules";
             this.lbUnusedModules.Size = new System.Drawing.Size(352, 155);
+            this.lbUnusedModules.Sorted = true;
             this.lbUnusedModules.TabIndex = 1;
             this.lbUnusedModules.SelectedIndexChanged += new System.EventHandler(this.lbUnusedModules_SelectedIndexChanged);
+            this.lbUnusedModules.DoubleClick += new System.EventHandler(this.lbUnusedModules_DoubleClick);
             // 
             // pnlTopLeft
             // 

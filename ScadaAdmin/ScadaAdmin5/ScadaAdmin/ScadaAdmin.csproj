@@ -178,8 +178,8 @@
     <Content Include="Lang\ScadaAdmin.en-GB.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\chrome.png" />
     <None Include="Resources\ui.png" />
-    <None Include="Resources\webstation.png" />
     <None Include="Resources\table.png" />
     <None Include="Resources\server.png" />
     <None Include="Resources\project.png" />

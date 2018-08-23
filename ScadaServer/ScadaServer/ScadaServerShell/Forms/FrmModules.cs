@@ -89,34 +89,67 @@ namespace Scada.Server.Shell.Forms
         /// </summary>
         private void FillModuleLists()
         {
-            DirectoryInfo dirInfo = new DirectoryInfo(environment.AppDirs.ModDir);
-
-            FileInfo[] fileInfoArr = dirInfo.Exists ? 
-                dirInfo.GetFiles("Mod*.dll", SearchOption.TopDirectoryOnly) :
-                new FileInfo[0];
-
-            foreach (FileInfo fileInfo in fileInfoArr)
+            try
             {
-                ModuleItem moduleItem = new ModuleItem() { FileName = fileInfo.Name };
+                lbUnusedModules.BeginUpdate();
+                lbActiveModules.BeginUpdate();
 
-                try
+                // fill the list of active modules
+                foreach (string fileName in settings.ModuleFileNames)
                 {
-                    ModView modView = ModFactory.GetModView(fileInfo.FullName);
-                    modView.AppDirs = environment.AppDirs;
-
-                    moduleItem.Descr = modView.Descr;
-                    moduleItem.ModView = modView;
-                }
-                catch (Exception ex)
-                {
-                    moduleItem.Descr = ex.Message;
-                    moduleItem.ModView = null;
+                    lbActiveModules.Items.Add(new ModuleItem()
+                    {
+                        FileName = fileName,
+                        Descr = string.Format(ServerShellPhrases.ModuleNotFound, fileName),
+                        ModView = null
+                    });
                 }
 
-                if (settings.ModuleFileNames.Contains(moduleItem.FileName))
-                    lbActiveModules.Items.Add(moduleItem);
-                else
-                    lbUnusedModules.Items.Add(moduleItem);
+                // load modules from  DLLs
+                DirectoryInfo dirInfo = new DirectoryInfo(environment.AppDirs.ModDir);
+
+                FileInfo[] fileInfoArr = dirInfo.Exists ?
+                    dirInfo.GetFiles("Mod*.dll", SearchOption.TopDirectoryOnly) :
+                    new FileInfo[0];
+
+                foreach (FileInfo fileInfo in fileInfoArr)
+                {
+                    int itemIndex = settings.ModuleFileNames.IndexOf(fileInfo.Name);
+                    ModuleItem moduleItem;
+
+                    if (itemIndex >= 0)
+                    {
+                        moduleItem = (ModuleItem)lbActiveModules.Items[itemIndex];
+                    }
+                    else
+                    {
+                        moduleItem = new ModuleItem() { FileName = fileInfo.Name };
+                        lbUnusedModules.Items.Add(moduleItem);
+                    }
+
+                    try
+                    {
+                        ModView modView = ModFactory.GetModView(fileInfo.FullName);
+                        modView.AppDirs = environment.AppDirs;
+
+                        moduleItem.Descr = modView.Descr;
+                        moduleItem.ModView = modView;
+                    }
+                    catch (Exception ex)
+                    {
+                        moduleItem.Descr = ex.Message;
+                        moduleItem.ModView = null;
+                    }
+                }
+
+                // select an item
+                if (lbActiveModules.Items.Count > 0)
+                    lbActiveModules.SelectedIndex = 0;
+            }
+            finally
+            {
+                lbUnusedModules.EndUpdate();
+                lbActiveModules.EndUpdate();
             }
         }
 
@@ -127,6 +160,29 @@ namespace Scada.Server.Shell.Forms
         {
             if (item is ModuleItem moduleItem)
                 txtDescr.Text = moduleItem.Descr;
+        }
+
+        /// <summary>
+        /// Enables or disables the buttons.
+        /// </summary>
+        private void SetButtonsEnabled()
+        {
+            btnActivate.Enabled = lbUnusedModules.SelectedItem is ModuleItem;
+
+            if (lbActiveModules.SelectedItem is ModuleItem moduleItem)
+            {
+                btnDeactivate.Enabled = true;
+                btnMoveUp.Enabled = lbActiveModules.SelectedIndex > 0;
+                btnMoveDown.Enabled = lbActiveModules.SelectedIndex < lbActiveModules.Items.Count - 1;
+                btnProperties.Enabled = moduleItem.ModView != null && moduleItem.ModView.CanShowProps;
+            }
+            else
+            {
+                btnDeactivate.Enabled = false;
+                btnMoveUp.Enabled = false;
+                btnMoveDown.Enabled = false;
+                btnProperties.Enabled = false;
+            }
         }
 
         /// <summary>
@@ -142,41 +198,114 @@ namespace Scada.Server.Shell.Forms
         {
             Translator.TranslateForm(this, "Scada.Server.Shell.Forms.FrmModules");
             FillModuleLists();
+            SetButtonsEnabled();
         }
 
         private void btnActivate_Click(object sender, EventArgs e)
         {
+            // add the selected module to the settings
+            if (lbUnusedModules.SelectedItem is ModuleItem moduleItem &&
+                !settings.ModuleFileNames.Contains(moduleItem.FileName))
+            {
+                settings.ModuleFileNames.Add(moduleItem.FileName);
+                ChildFormTag.Modified = true;
 
+                lbUnusedModules.Items.RemoveAt(lbUnusedModules.SelectedIndex);
+                lbActiveModules.SelectedIndex = lbActiveModules.Items.Add(moduleItem);
+                lbActiveModules.Focus();
+            }
         }
 
         private void btnDeactivate_Click(object sender, EventArgs e)
         {
+            // remove the selected module from the settings
+            if (lbActiveModules.SelectedItem is ModuleItem moduleItem &&
+                settings.ModuleFileNames.Contains(moduleItem.FileName))
+            {
+                settings.ModuleFileNames.Remove(moduleItem.FileName);
+                ChildFormTag.Modified = true;
 
+                lbActiveModules.Items.RemoveAt(lbActiveModules.SelectedIndex);
+                lbUnusedModules.SelectedIndex = lbUnusedModules.Items.Add(moduleItem);
+                lbUnusedModules.Focus();
+            }
         }
 
         private void btnMoveUp_Click(object sender, EventArgs e)
         {
+            // move up the selected module
+            if (lbActiveModules.SelectedItem is ModuleItem moduleItem)
+            {
+                int curInd = lbActiveModules.SelectedIndex;
+                int prevInd = curInd - 1;
 
+                if (prevInd >= 0)
+                {
+                    settings.ModuleFileNames.RemoveAt(curInd);
+                    settings.ModuleFileNames.Insert(prevInd, moduleItem.FileName);
+                    ChildFormTag.Modified = true;
+
+                    lbActiveModules.Items.RemoveAt(curInd);
+                    lbActiveModules.Items.Insert(prevInd, moduleItem);
+                    lbActiveModules.SelectedIndex = prevInd;
+                    lbActiveModules.Focus();
+                }
+            }
         }
 
         private void btnMoveDown_Click(object sender, EventArgs e)
         {
+            // move down the selected module
+            if (lbActiveModules.SelectedItem is ModuleItem moduleItem)
+            {
+                int curInd = lbActiveModules.SelectedIndex;
+                int nextInd = curInd + 1;
 
+                if (nextInd < lbActiveModules.Items.Count)
+                {
+                    settings.ModuleFileNames.RemoveAt(curInd);
+                    settings.ModuleFileNames.Insert(nextInd, moduleItem.FileName);
+                    ChildFormTag.Modified = true;
+
+                    lbActiveModules.Items.RemoveAt(curInd);
+                    lbActiveModules.Items.Insert(nextInd, moduleItem);
+                    lbActiveModules.SelectedIndex = nextInd;
+                    lbActiveModules.Focus();
+                }
+            }
         }
 
         private void btnProperties_Click(object sender, EventArgs e)
         {
-
+            // show properties of the selected module
+            if (lbActiveModules.SelectedItem is ModuleItem moduleItem &&
+                moduleItem.ModView != null && moduleItem.ModView.CanShowProps)
+            {
+                lbActiveModules.Focus();
+                moduleItem.ModView.ShowProps();
+            }
         }
 
         private void lbUnusedModules_SelectedIndexChanged(object sender, EventArgs e)
         {
             ShowItemDescr(lbUnusedModules.SelectedItem);
+            SetButtonsEnabled();
         }
 
         private void lbActiveModules_SelectedIndexChanged(object sender, EventArgs e)
         {
             ShowItemDescr(lbActiveModules.SelectedItem);
+            SetButtonsEnabled();
+        }
+
+        private void lbUnusedModules_DoubleClick(object sender, EventArgs e)
+        {
+            btnActivate_Click(null, null);
+        }
+
+        private void lbActiveModules_DoubleClick(object sender, EventArgs e)
+        {
+            btnProperties_Click(null, null);
         }
     }
 }

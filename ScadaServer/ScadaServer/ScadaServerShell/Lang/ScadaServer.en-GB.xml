@@ -51,6 +51,7 @@
     <Phrase key="btnMoveDown">Move Down</Phrase>
     <Phrase key="btnProperties">Properties</Phrase>
     <Phrase key="lblDescr">Description</Phrase>
+    <Phrase key="ModuleNotFound">Module {0} not found.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmSaveParams">
     <Phrase key="gbCurData">Current Data</Phrase>

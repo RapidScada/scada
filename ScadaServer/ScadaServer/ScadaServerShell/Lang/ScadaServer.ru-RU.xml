@@ -51,6 +51,7 @@
     <Phrase key="btnMoveDown">Вниз</Phrase>
     <Phrase key="btnProperties">Свойства</Phrase>
     <Phrase key="lblDescr">Описание</Phrase>
+    <Phrase key="ModuleNotFound">Модуль {0} не найден.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmSaveParams">
     <Phrase key="this">Параметры записи</Phrase>

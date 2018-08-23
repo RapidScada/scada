@@ -40,7 +40,7 @@ namespace Scada.Admin.App.Code
             : base()
         {
             Init(serverDir);
-            ConfigDir = instance.ServerApp.GetConfigDir(instance.InstanceDir);
+            ConfigDir = ScadaUtils.NormalDir(instance.ServerApp.GetConfigDir(instance.InstanceDir));
         }
     }
 }
