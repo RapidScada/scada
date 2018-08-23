@@ -58,7 +58,7 @@ namespace Scada.Comm
         /// <summary>
         /// Версия Коммуникатора
         /// </summary>
-        public const string AppVersion = "5.1.0.3";
+        public const string AppVersion = "5.1.1.0";
 
         /// <summary>
         /// Формат даты и времени для вывода в журнал линии связи
