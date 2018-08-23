@@ -26,6 +26,7 @@
 using Scada.Admin.App.Code;
 using Scada.Admin.App.Properties;
 using Scada.Admin.Project;
+using Scada.Comm.Shell.Code;
 using Scada.Server.Modules;
 using Scada.Server.Shell.Code;
 using Scada.UI;
@@ -66,6 +67,7 @@ namespace Scada.Admin.App.Forms
         private readonly AppData appData;                 // the common data of the application
         private readonly Log log;                         // the application log
         private readonly ServerShell serverShell;         // the shell to edit Server settings
+        private readonly CommShell commShell;             // the shell to edit Communicator settings
         private readonly ExplorerBuilder explorerBuilder; // the object to manipulate the explorer tree
         private ScadaProject project;                     // the project under development
         private Dictionary<string, ModView> moduleViews;  // the user interface of the modules
@@ -88,6 +90,7 @@ namespace Scada.Admin.App.Forms
             this.appData = appData ?? throw new ArgumentNullException("appData");
             log = appData.ErrLog;
             serverShell = new ServerShell();
+            commShell = new CommShell();
             explorerBuilder = new ExplorerBuilder(appData, serverShell, tvExplorer);
             project = null;
             moduleViews = new Dictionary<string, ModView>();

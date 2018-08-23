@@ -1,3 +1,106 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ScadaCommDictionaries>
+  <Dictionary key="Scada.Comm.CommUtils">
+    <Phrase key="ParamRequired">Требуется параметр &quot;{0}&quot;.</Phrase>
+    <Phrase key="IncorrectParamVal">Некорректное значение параметра &quot;{0}&quot;.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Settings">
+    <Phrase key="LineCaption">Линия</Phrase>
+    <Phrase key="KPCaption">КП</Phrase>
+    <Phrase key="IncorrectKPSettings">Некорректные параметры КП {0}</Phrase>
+    <Phrase key="IncorrectLineSettings">Некорректная конфигурация линии связи {0}</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Channels.FrmCommSerialProps">
+    <Phrase key="this">Свойства: Последовательный порт</Phrase>
+    <Phrase key="gbPort">Порт</Phrase>
+    <Phrase key="lblPortName">Имя порта</Phrase>
+    <Phrase key="lblBaudRate">Скорость</Phrase>
+    <Phrase key="lblDataBits">Биты данных</Phrase>
+    <Phrase key="lblParity">Чётность</Phrase>
+    <Phrase key="cbParity.Items[0]">Чёт</Phrase>
+    <Phrase key="cbParity.Items[1]">Нечёт</Phrase>
+    <Phrase key="cbParity.Items[2]">Нет</Phrase>
+    <Phrase key="cbParity.Items[3]">Маркер (1)</Phrase>
+    <Phrase key="cbParity.Items[4]">Пробел (0)</Phrase>
+    <Phrase key="lblStopBits">Стоп. биты</Phrase>
+    <Phrase key="gbMode">Режим работы</Phrase>
+    <Phrase key="lblBehavior">Поведение</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Channels.FrmCommTcpClientProps">
+    <Phrase key="this">Свойства: TCP-клиент</Phrase>
+    <Phrase key="gbMode">Режим работы</Phrase>
+    <Phrase key="lblBehavior">Поведение</Phrase>
+    <Phrase key="pbBehaviorHint.ToolTip">Master - Коммуникатор отправляет запрос устройству и получает ответ.&#13;&#10;Slave - Коммуникатор пассивно ожидает данные от устройства.</Phrase>
+    <Phrase key="lblConnMode">Соединение</Phrase>
+    <Phrase key="cbConnMode.Items[0]">Индивидуальное</Phrase>
+    <Phrase key="cbConnMode.Items[1]">Общее</Phrase>
+    <Phrase key="pbConnModeHint.ToolTip">Индивидуальное - Коммуникатор устанавливает отдельное TCP-соединение с каждым устройством.&#13;&#10;Общее - Коммуникатор устанавливает одно общее соединение для всех устройств на линии связи,&#13;&#10;используя указанный удалённый IP-адрес. &#13;&#10;Общее соединение используется, например, если устройства подключены через шлюз Ethernet - Serial.</Phrase>
+    <Phrase key="gbConnection">Соединение</Phrase>
+    <Phrase key="lblHost">Удалённый хост</Phrase>
+    <Phrase key="pbHostHint.ToolTip">Удалённое DNS-имя или IP-адрес при использовании общего соединения.</Phrase>
+    <Phrase key="lblTcpPort">Удалённый TCP-порт</Phrase>
+    <Phrase key="pbTcpPortHint.ToolTip">В режиме индивидуального соединения используется как TCP-порт по умолчанию, если не указан порт для КП.&#13;&#10;В режиме общего соединения параметр  обязателен.&#13;&#10;Порт 502 используется Modbus TCP по умолчанию.</Phrase>
+    <Phrase key="lblReconnectAfter">Переподключение, с</Phrase>
+    <Phrase key="pbReconnectAfterHint.ToolTip">Задаёт интервал времени для повторного подключения после неудачной попытки.</Phrase>
+    <Phrase key="chkStayConnected">Оставаться на связи</Phrase>
+    <Phrase key="pbStayConnectedHint.ToolTip">Если параметр установлен, то соединение между сеансами связи сохраняется.&#13;&#10;В противном случае соединение разрывается после каждого сеанса.</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+    <Phrase key="HostRequired">Требуется имя хоста.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Channels.FrmCommTcpServerProps">
+    <Phrase key="this">Свойства: TCP-сервер</Phrase>
+    <Phrase key="gbMode">Режим работы</Phrase>
+    <Phrase key="lblBehavior">Поведение</Phrase>
+    <Phrase key="pbBehaviorHint.ToolTip">Master - после установки соединения Коммуникатор отправляет запрос устройству и получает ответ.&#13;&#10;Slave - Коммуникатор пассивно ожидает данные от устройства.</Phrase>
+    <Phrase key="lblConnMode">Соединение</Phrase>
+    <Phrase key="cbConnMode.Items[0]">Индивидуальное</Phrase>
+    <Phrase key="cbConnMode.Items[1]">Общее</Phrase>
+    <Phrase key="pbConnModeHint.ToolTip">Индивидуальное - Коммуникатор устанавливает отдельное TCP-соединение с каждым устройством.&#13;&#10;Общее - Коммуникатор устанавливает одно общее соединение для всех устройств на линии связи.&#13;&#10;Общее соединение используется, например, если устройства подключены через шлюз Ethernet - Serial.</Phrase>
+    <Phrase key="lblDevSelMode">Выбор КП</Phrase>
+    <Phrase key="cbDevSelMode.Items[0]">По IP-адресу</Phrase>
+    <Phrase key="cbDevSelMode.Items[1]">По первому пакету</Phrase>
+    <Phrase key="cbDevSelMode.Items[2]">Определяется DLL</Phrase>
+    <Phrase key="pbDevSelModeHint.ToolTip">Способ привязки нового входящего соединения к КП:&#13;&#10;По IP-адресу - удалённый IP-адрес устройства совпадает с позывным КП.&#13;&#10;По первому пакету - первый полученный от устройства пакет содержит позывной КП.&#13;&#10;Определяется DLL - алгоритм реализован в драйвере КП.</Phrase>
+    <Phrase key="gbConnection">Соединение</Phrase>
+    <Phrase key="lblTcpPort">Локальный TCP-порт</Phrase>
+    <Phrase key="pbTcpPortHint.ToolTip">Локальный TCP-порт для входящих соединений.&#13;&#10;Входящие соединения должны быть разрешены брандмауэром.</Phrase>
+    <Phrase key="lblInactiveTime">Неактивность, с</Phrase>
+    <Phrase key="pbInactiveTimeHint.ToolTip">Время неактивности соединения до отключения.</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Channels.FrmCommUdpProps">
+    <Phrase key="this">Свойства: UDP</Phrase>
+    <Phrase key="gbMode">Режим работы</Phrase>
+    <Phrase key="lblBehavior">Поведение</Phrase>
+    <Phrase key="pbBehaviorHint.ToolTip">Master - Коммуникатор отправляет запрос устройству и получает ответ.&#13;&#10;Slave - Коммуникатор пассивно ожидает данные от устройства.</Phrase>
+    <Phrase key="lblDevSelMode">Выбор КП</Phrase>
+    <Phrase key="cbDevSelMode.Items[0]">По IP-адресу</Phrase>
+    <Phrase key="cbDevSelMode.Items[1]">Определяется DLL</Phrase>
+    <Phrase key="pbDevSelModeHint.ToolTip">Способ привязки полученных данных к КП в режиме Slave:&#13;&#10;По IP-адресу - удалённый IP-адрес устройства совпадает с позывным КП.&#13;&#10;Определяется DLL - алгоритм реализован в драйвере КП.</Phrase>
+    <Phrase key="gbConnection">Соединение</Phrase>
+    <Phrase key="lblLocalUdpPort">Локальный UDP-порт</Phrase>
+    <Phrase key="pbLocalUdpPortHint.ToolTip">Локальный UDP-порт для входящих соединений.&#13;&#10;Входящие соединения должны быть разрешены брандмауэром.</Phrase>
+    <Phrase key="lblRemoteUdpPort">Удалённый UDP-порт</Phrase>
+    <Phrase key="pbRemoteUdpPortHint.ToolTip">Удалённый UDP-порт одинаковый для всех устройств на линии связи.</Phrase>
+    <Phrase key="lblRemoteIpAddress">Удалённый IP-адрес</Phrase>
+    <Phrase key="pbRemoteIpAddressHint.ToolTip">Удалённый IP-адрес по умолчанию.&#13;&#10;Может использоваться, например, если устройства подключены через шлюз Ethernet - Serial.</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices">
+    <Phrase key="SaveKpSettingsConfirm">Настройки КП были изменены. Сохранить изменения?</Phrase>
+    <Phrase key="LoadKpDllSettingsError">Ошибка при загрузке настроек драйвера КП</Phrase>
+    <Phrase key="SaveKpDllSettingsError">Ошибка при сохранении настроек драйвера КП</Phrase>
+    <Phrase key="LoadKpSettingsError">Ошибка при загрузке настроек КП</Phrase>
+    <Phrase key="SaveKpSettingsError">Ошибка при сохранении настроек КП</Phrase>
+    <Phrase key="ConfigureKp">Создайте настройки КП и перезапустите службу Коммуникатора.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.KPFactory">
+    <Phrase key="GetViewTypeError">Ошибка при получении типа интерфейса КП из библиотеки {0}</Phrase>
+    <Phrase key="CreateViewError">Ошибка при создании экземпляра класса интерфейса КП {0}</Phrase>
+  </Dictionary>
 </ScadaCommDictionaries>

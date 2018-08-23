@@ -32,11 +32,15 @@
     <DocumentationFile>bin\Release\ScadaCommShell.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ScadaData">
+      <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\CommShell.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -50,8 +54,13 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Code\" />
     <Folder Include="Forms\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ScadaCommCommon\ScadaCommCommon.csproj">
+      <Project>{7BAEAE0E-4694-41D7-BC29-F205AEF69741}</Project>
+      <Name>ScadaCommCommon</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

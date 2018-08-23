@@ -40,14 +40,6 @@ namespace Scada.Server.Shell.Code
     public class ServerShell
     {
         /// <summary>
-        /// Initializes a new instance of the class.
-        /// </summary>
-        public ServerShell()
-        {
-        }
-
-
-        /// <summary>
         /// Gets the images used by the explorer.
         /// </summary>
         public Dictionary<string, Image> GetTreeViewImages()
