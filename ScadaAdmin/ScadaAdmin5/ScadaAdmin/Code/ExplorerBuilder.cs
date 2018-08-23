@@ -204,7 +204,7 @@ namespace Scada.Admin.App.Code
                 if (instance.WebApp.Enabled)
                 {
                     TreeNode webNode = new TreeNode(AppPhrases.WebNode);
-                    webNode.ImageKey = webNode.SelectedImageKey = "webstation.png";
+                    webNode.ImageKey = webNode.SelectedImageKey = "chrome.png";
                     webNode.Tag = new TreeNodeTag() { RelatedObject = instance.WebApp };
                     instanceNode.Nodes.Add(webNode);
                 }

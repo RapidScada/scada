@@ -134,6 +134,7 @@ namespace Scada.Admin.App.Forms
         private void TakeExplorerImages()
         {
             // loading images from resources instead of storing in image list prevents them from corruption
+            ilExplorer.Images.Add("chrome.png", Resources.chrome);
             ilExplorer.Images.Add("comm.png", Resources.comm);
             ilExplorer.Images.Add("database.png", Resources.database);
             ilExplorer.Images.Add("empty.png", Resources.empty);
@@ -145,7 +146,6 @@ namespace Scada.Admin.App.Forms
             ilExplorer.Images.Add("server.png", Resources.server);
             ilExplorer.Images.Add("table.png", Resources.table);
             ilExplorer.Images.Add("ui.png", Resources.ui);
-            ilExplorer.Images.Add("webstation.png", Resources.webstation);
 
             // add Server images
             foreach (KeyValuePair<string, Image> pair in serverShell.GetTreeViewImages())
