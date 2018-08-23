@@ -34,13 +34,13 @@ using System.Text;
 using System.Threading;
 using Utils;
 
-namespace Scada.Comm.Svc
+namespace Scada.Comm.Engine
 {
     /// <summary>
     /// Program execution management
     /// <para>Управление работой программы</para>
     /// </summary>
-    internal sealed class Manager
+    public sealed class Manager
     {
         /// <summary>
         /// Наименования состояний работы
@@ -139,22 +139,22 @@ namespace Scada.Comm.Svc
         /// <summary>
         /// Получить директории приложения
         /// </summary>
-        public AppDirs AppDirs { get; private set; }
+        internal AppDirs AppDirs { get; private set; }
 
         /// <summary>
         /// Получить настройки приложения
         /// </summary>
-        public Settings Settings { get; private set; }
+        internal Settings Settings { get; private set; }
 
         /// <summary>
         /// Получить объект для обмена данными со SCADA-Сервером
         /// </summary>
-        public ServerCommEx ServerComm { get; private set; }
+        internal ServerCommEx ServerComm { get; private set; }
 
         /// <summary>
         /// Получить основной журнал приложения
         /// </summary>
-        public Log AppLog { get; private set; }
+        internal Log AppLog { get; private set; }
 
 
         /// <summary>

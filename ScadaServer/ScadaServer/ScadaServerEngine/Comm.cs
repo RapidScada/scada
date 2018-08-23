@@ -42,7 +42,7 @@ namespace Scada.Server.Engine
     /// <summary>
     /// Communication with clients
     /// <para>Взаимодействие с клиентами</para>
-    /// </ummary>
+    /// </summary>
     sealed class Comm : IServerCommands
     {
         /// <summary>

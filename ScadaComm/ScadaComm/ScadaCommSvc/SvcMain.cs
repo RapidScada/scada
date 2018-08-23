@@ -23,6 +23,7 @@
  * Modified : 2015
  */
 
+using Scada.Comm.Engine;
 using System.ServiceProcess;
 
 namespace Scada.Comm.Svc

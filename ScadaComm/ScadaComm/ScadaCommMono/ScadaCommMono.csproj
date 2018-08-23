@@ -46,18 +46,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\ScadaCommSvc\CommandReader.cs">
-      <Link>CommandReader.cs</Link>
-    </Compile>
-    <Compile Include="..\ScadaCommSvc\CommLine.cs">
-      <Link>CommLine.cs</Link>
-    </Compile>
-    <Compile Include="..\ScadaCommSvc\Manager.cs">
-      <Link>Manager.cs</Link>
-    </Compile>
-    <Compile Include="..\ScadaCommSvc\ServerCommEx.cs">
-      <Link>ServerCommEx.cs</Link>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -69,6 +57,10 @@
     <ProjectReference Include="..\ScadaCommCommon\ScadaCommCommon.csproj">
       <Project>{7baeae0e-4694-41d7-bc29-f205aef69741}</Project>
       <Name>ScadaCommCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ScadaCommEngine\ScadaCommEngine.csproj">
+      <Project>{3d222df3-9de8-4d03-b1da-11c2b9ec3368}</Project>
+      <Name>ScadaCommEngine</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

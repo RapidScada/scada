@@ -70,10 +70,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandReader.cs" />
-    <Compile Include="CommLine.cs" />
-    <Compile Include="Manager.cs" />
-    <Compile Include="ServerCommEx.cs" />
     <Compile Include="SvcInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -100,6 +96,10 @@
     <ProjectReference Include="..\ScadaCommCommon\ScadaCommCommon.csproj">
       <Project>{7baeae0e-4694-41d7-bc29-f205aef69741}</Project>
       <Name>ScadaCommCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ScadaCommEngine\ScadaCommEngine.csproj">
+      <Project>{3d222df3-9de8-4d03-b1da-11c2b9ec3368}</Project>
+      <Name>ScadaCommEngine</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

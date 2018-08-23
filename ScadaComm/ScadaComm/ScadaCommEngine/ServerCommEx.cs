@@ -30,7 +30,7 @@ using Scada.Data.Tables;
 using System.Collections.Generic;
 using Utils;
 
-namespace Scada.Comm.Svc
+namespace Scada.Comm.Engine
 {
     /// <summary>
     /// Communication with SCADA-Server adapted for SCADA-Communicator
@@ -58,7 +58,7 @@ namespace Scada.Comm.Svc
 
 
         /// <summary>
-        /// Преобразовать среза параметров в срез входных каналов
+        /// Преобразовать срез параметров в срез входных каналов
         /// </summary>
         private SrezTableLight.Srez ConvertSrez(KPLogic.TagSrez tagSrez)
         {

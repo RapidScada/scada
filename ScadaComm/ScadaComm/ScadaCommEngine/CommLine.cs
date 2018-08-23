@@ -36,7 +36,7 @@ using System.Text;
 using System.Threading;
 using Utils;
 
-namespace Scada.Comm.Svc
+namespace Scada.Comm.Engine
 {
     /// <summary>
     /// Communication line
