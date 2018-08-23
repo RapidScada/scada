@@ -49,6 +49,7 @@ namespace Scada.Admin.App.Code
         {
             AppDirs = new AdminDirs();
             ErrLog = new Log(Log.Formats.Full);
+            AppSettings = new AdminSettings();
             AppState = new AppState();
         }
 
@@ -62,6 +63,11 @@ namespace Scada.Admin.App.Code
         /// Gets the application error log.
         /// </summary>
         public Log ErrLog { get; private set; }
+
+        /// <summary>
+        /// Gets the application settings.
+        /// </summary>
+        public AdminSettings AppSettings { get; private set; }
 
         /// <summary>
         /// Gets the state of application controls.

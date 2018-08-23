@@ -28,36 +28,36 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.txtModDescr = new System.Windows.Forms.TextBox();
+            this.txtDescr = new System.Windows.Forms.TextBox();
             this.lblDescr = new System.Windows.Forms.Label();
             this.btnMoveUp = new System.Windows.Forms.Button();
             this.btnMoveDown = new System.Windows.Forms.Button();
             this.btnProperties = new System.Windows.Forms.Button();
             this.btnDeactivate = new System.Windows.Forms.Button();
             this.btnActivate = new System.Windows.Forms.Button();
-            this.lnActiveModules = new System.Windows.Forms.ListBox();
+            this.lbActiveModules = new System.Windows.Forms.ListBox();
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.lbUnusedModules = new System.Windows.Forms.ListBox();
             this.pnlTopLeft = new System.Windows.Forms.Panel();
-            this.pnlTopRight = new System.Windows.Forms.Panel();
             this.lblUnusedModules = new System.Windows.Forms.Label();
+            this.pnlTopRight = new System.Windows.Forms.Panel();
             this.lblActiveModules = new System.Windows.Forms.Label();
             this.tableLayoutPanel.SuspendLayout();
             this.pnlTopLeft.SuspendLayout();
             this.pnlTopRight.SuspendLayout();
             this.SuspendLayout();
             // 
-            // txtModDescr
+            // txtDescr
             // 
-            this.txtModDescr.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtDescr.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtModDescr.Location = new System.Drawing.Point(12, 241);
-            this.txtModDescr.Multiline = true;
-            this.txtModDescr.Name = "txtModDescr";
-            this.txtModDescr.ReadOnly = true;
-            this.txtModDescr.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtModDescr.Size = new System.Drawing.Size(710, 150);
-            this.txtModDescr.TabIndex = 2;
+            this.txtDescr.Location = new System.Drawing.Point(12, 241);
+            this.txtDescr.Multiline = true;
+            this.txtDescr.Name = "txtDescr";
+            this.txtDescr.ReadOnly = true;
+            this.txtDescr.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtDescr.Size = new System.Drawing.Size(710, 150);
+            this.txtDescr.TabIndex = 2;
             // 
             // lblDescr
             // 
@@ -77,6 +77,7 @@
             this.btnMoveUp.TabIndex = 2;
             this.btnMoveUp.Text = "Move Up";
             this.btnMoveUp.UseVisualStyleBackColor = true;
+            this.btnMoveUp.Click += new System.EventHandler(this.btnMoveUp_Click);
             // 
             // btnMoveDown
             // 
@@ -86,6 +87,7 @@
             this.btnMoveDown.TabIndex = 3;
             this.btnMoveDown.Text = "Move Down";
             this.btnMoveDown.UseVisualStyleBackColor = true;
+            this.btnMoveDown.Click += new System.EventHandler(this.btnMoveDown_Click);
             // 
             // btnProperties
             // 
@@ -95,6 +97,7 @@
             this.btnProperties.TabIndex = 4;
             this.btnProperties.Text = "Properties";
             this.btnProperties.UseVisualStyleBackColor = true;
+            this.btnProperties.Click += new System.EventHandler(this.btnProperties_Click);
             // 
             // btnDeactivate
             // 
@@ -104,6 +107,7 @@
             this.btnDeactivate.TabIndex = 1;
             this.btnDeactivate.Text = "Deactivate";
             this.btnDeactivate.UseVisualStyleBackColor = true;
+            this.btnDeactivate.Click += new System.EventHandler(this.btnDeactivate_Click);
             // 
             // btnActivate
             // 
@@ -113,19 +117,20 @@
             this.btnActivate.TabIndex = 1;
             this.btnActivate.Text = "Activate";
             this.btnActivate.UseVisualStyleBackColor = true;
+            this.btnActivate.Click += new System.EventHandler(this.btnActivate_Click);
             // 
-            // lnActiveModules
+            // lbActiveModules
             // 
-            this.lnActiveModules.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lnActiveModules.FormattingEnabled = true;
-            this.lnActiveModules.HorizontalScrollbar = true;
-            this.lnActiveModules.IntegralHeight = false;
-            this.lnActiveModules.Location = new System.Drawing.Point(358, 45);
-            this.lnActiveModules.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
-            this.lnActiveModules.MultiColumn = true;
-            this.lnActiveModules.Name = "lnActiveModules";
-            this.lnActiveModules.Size = new System.Drawing.Size(352, 155);
-            this.lnActiveModules.TabIndex = 3;
+            this.lbActiveModules.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbActiveModules.HorizontalScrollbar = true;
+            this.lbActiveModules.IntegralHeight = false;
+            this.lbActiveModules.Location = new System.Drawing.Point(358, 45);
+            this.lbActiveModules.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            this.lbActiveModules.MultiColumn = true;
+            this.lbActiveModules.Name = "lbActiveModules";
+            this.lbActiveModules.Size = new System.Drawing.Size(352, 155);
+            this.lbActiveModules.TabIndex = 3;
+            this.lbActiveModules.SelectedIndexChanged += new System.EventHandler(this.lbActiveModules_SelectedIndexChanged);
             // 
             // tableLayoutPanel
             // 
@@ -136,7 +141,7 @@
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel.Controls.Add(this.lbUnusedModules, 0, 1);
-            this.tableLayoutPanel.Controls.Add(this.lnActiveModules, 1, 1);
+            this.tableLayoutPanel.Controls.Add(this.lbActiveModules, 1, 1);
             this.tableLayoutPanel.Controls.Add(this.pnlTopLeft, 0, 0);
             this.tableLayoutPanel.Controls.Add(this.pnlTopRight, 1, 0);
             this.tableLayoutPanel.Location = new System.Drawing.Point(12, 12);
@@ -150,7 +155,6 @@
             // lbUnusedModules
             // 
             this.lbUnusedModules.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbUnusedModules.FormattingEnabled = true;
             this.lbUnusedModules.HorizontalScrollbar = true;
             this.lbUnusedModules.IntegralHeight = false;
             this.lbUnusedModules.Location = new System.Drawing.Point(0, 45);
@@ -159,6 +163,7 @@
             this.lbUnusedModules.Name = "lbUnusedModules";
             this.lbUnusedModules.Size = new System.Drawing.Size(352, 155);
             this.lbUnusedModules.TabIndex = 1;
+            this.lbUnusedModules.SelectedIndexChanged += new System.EventHandler(this.lbUnusedModules_SelectedIndexChanged);
             // 
             // pnlTopLeft
             // 
@@ -170,6 +175,15 @@
             this.pnlTopLeft.Name = "pnlTopLeft";
             this.pnlTopLeft.Size = new System.Drawing.Size(352, 45);
             this.pnlTopLeft.TabIndex = 0;
+            // 
+            // lblUnusedModules
+            // 
+            this.lblUnusedModules.AutoSize = true;
+            this.lblUnusedModules.Location = new System.Drawing.Point(-3, 0);
+            this.lblUnusedModules.Name = "lblUnusedModules";
+            this.lblUnusedModules.Size = new System.Drawing.Size(89, 13);
+            this.lblUnusedModules.TabIndex = 0;
+            this.lblUnusedModules.Text = "Unused modules:";
             // 
             // pnlTopRight
             // 
@@ -184,15 +198,6 @@
             this.pnlTopRight.Name = "pnlTopRight";
             this.pnlTopRight.Size = new System.Drawing.Size(352, 45);
             this.pnlTopRight.TabIndex = 1;
-            // 
-            // lblUnusedModules
-            // 
-            this.lblUnusedModules.AutoSize = true;
-            this.lblUnusedModules.Location = new System.Drawing.Point(-3, 0);
-            this.lblUnusedModules.Name = "lblUnusedModules";
-            this.lblUnusedModules.Size = new System.Drawing.Size(89, 13);
-            this.lblUnusedModules.TabIndex = 0;
-            this.lblUnusedModules.Text = "Unused modules:";
             // 
             // lblActiveModules
             // 
@@ -209,7 +214,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(734, 403);
             this.Controls.Add(this.tableLayoutPanel);
-            this.Controls.Add(this.txtModDescr);
+            this.Controls.Add(this.txtDescr);
             this.Controls.Add(this.lblDescr);
             this.Name = "FrmModules";
             this.Text = "Modules";
@@ -226,14 +231,14 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox txtModDescr;
+        private System.Windows.Forms.TextBox txtDescr;
         private System.Windows.Forms.Label lblDescr;
         private System.Windows.Forms.Button btnMoveUp;
         private System.Windows.Forms.Button btnMoveDown;
         private System.Windows.Forms.Button btnProperties;
         private System.Windows.Forms.Button btnDeactivate;
         private System.Windows.Forms.Button btnActivate;
-        private System.Windows.Forms.ListBox lnActiveModules;
+        private System.Windows.Forms.ListBox lbActiveModules;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel;
         private System.Windows.Forms.ListBox lbUnusedModules;
         private System.Windows.Forms.Panel pnlTopLeft;

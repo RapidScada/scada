@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminPhrases.cs" />
+    <Compile Include="AdminSettings.cs" />
     <Compile Include="AdminUtils.cs" />
     <Compile Include="AdminDirs.cs" />
     <Compile Include="Project\BaseTable.cs" />

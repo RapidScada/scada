@@ -6,6 +6,10 @@
     <Phrase key="SaveModSettingsError">Error saving module settings</Phrase>
     <Phrase key="ConfigureModule">Configure the module and restart SCADA-Server service</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Server.Modules.ModFactory">
+    <Phrase key="GetViewTypeError">Error getting module interface type from the library {0}: {1}</Phrase>
+    <Phrase key="CreateViewError">Error creating module interface instance of the class {0}: {1}</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Server.Shell.Code.ServerShell">
     <Phrase key="CommonParamsNode">Common Parameters</Phrase>
     <Phrase key="SaveParamsNode">Saving Parameters</Phrase>

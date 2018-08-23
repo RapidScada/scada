@@ -80,6 +80,7 @@
     <Compile Include="Code\ColumnBuilder.cs" />
     <Compile Include="Code\ExplorerBuilder.cs" />
     <Compile Include="Code\FormState.cs" />
+    <Compile Include="Code\ServerDirs.cs" />
     <Compile Include="Forms\FrmBaseTable.cs">
       <SubType>Form</SubType>
     </Compile>

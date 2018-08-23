@@ -16,53 +16,48 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaAdminCommon
- * Summary  : Represents the Server application
+ * Summary  : The class contains utility methods for Administrator and its libraries
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
  * Modified : 2018
  */
 
-using System.IO;
-
-namespace Scada.Admin.Project
+namespace Scada.Admin
 {
     /// <summary>
-    /// Represents the Server application.
-    /// <para>Представляет приложение Сервер.</para>
+    /// Administrator settings.
+    /// <para>Настройки Администратора.</para>
     /// </summary>
-    public class ServerApp : ScadaApp
+    public class AdminSettings
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public ServerApp()
-            : base()
+        public AdminSettings()
         {
-            Settings = new Server.Settings();
+            // TODO: load settings from file
+            if (AdminUtils.IsRunningOnWin)
+            {
+                ServerDir = @"C:\SCADA\ScadaServer\";
+                CommDir = @"C:\SCADA\ScadaComm\";
+            }
+            else
+            {
+                ServerDir = "/opt/scada/ScadaServer/";
+                CommDir = "/opt/scada/ScadaComm/";
+            }
         }
 
 
         /// <summary>
-        /// Gets the settings of the application.
+        /// Gets or sets the directory of the Server application.
         /// </summary>
-        public Server.Settings Settings { get; protected set; }
-
-
-        /// <summary>
-        /// Gets the directory of the application configuration.
-        /// </summary>
-        public override string GetConfigDir(string parentDir)
-        {
-            return Path.Combine(parentDir, "ScadaServer", "Config");
-        }
+        public string ServerDir { get; set; }
 
         /// <summary>
-        /// Gets the full file name of the application settings.
+        /// Gets or sets the directory of the Communicator application.
         /// </summary>
-        public override string GetSettingsPath(string parentDir)
-        {
-            return Path.Combine(GetConfigDir(parentDir), Server.Settings.DefFileName);
-        }
+        public string CommDir { get; set; }
     }
 }

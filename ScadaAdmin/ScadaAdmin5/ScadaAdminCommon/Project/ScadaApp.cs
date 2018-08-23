@@ -72,6 +72,11 @@ namespace Scada.Admin.Project
         }
 
         /// <summary>
+        /// Gets the directory of the application configuration.
+        /// </summary>
+        public abstract string GetConfigDir(string parentDir);
+
+        /// <summary>
         /// Gets the full file name of the application settings.
         /// </summary>
         public abstract string GetSettingsPath(string parentDir);

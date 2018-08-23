@@ -68,7 +68,7 @@ namespace Scada.Admin.App.Forms
         private readonly ServerShell serverShell;         // the shell to edit Server settings
         private readonly ExplorerBuilder explorerBuilder; // the object to manipulate the explorer tree
         private ScadaProject project;                     // the project under development
-        private ServerEnvironment serverEnvironment;      // the environment used by Server modules
+        private Dictionary<string, ModView> moduleViews;  // the user interface of the modules
 
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Scada.Admin.App.Forms
             serverShell = new ServerShell();
             explorerBuilder = new ExplorerBuilder(appData, serverShell, tvExplorer);
             project = null;
-            serverEnvironment = null;
+            moduleViews = new Dictionary<string, ModView>();
         }
 
 
@@ -210,14 +210,14 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
-        /// Creates the Server environment object.
+        /// Creates a new Server environment for the specified instance.
         /// </summary>
-        private void CreateServerEnvironment()
+        private ServerEnvironment CreateServerEnvironment(Instance instance)
         {
-            serverEnvironment = new ServerEnvironment()
+            return new ServerEnvironment()
             {
-                AppDirs = new Server.AppDirs(),
-                ModuleViews = new Dictionary<string, ModView>()
+                AppDirs = new ServerDirs(appData.AppSettings.ServerDir, instance),
+                ModuleViews = moduleViews
             };
         }
 
@@ -227,7 +227,6 @@ namespace Scada.Admin.App.Forms
             LocalizeForm();
             TakeExplorerImages();
             CreateProject();
-            CreateServerEnvironment();
         }
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -260,7 +259,7 @@ namespace Scada.Admin.App.Forms
                 !instance.AppSettingsLoaded)
             {
                 if (instance.LoadAppSettings(out string errMsg))
-                    explorerBuilder.FillInstanceNode(e.Node, instance, serverEnvironment);
+                    explorerBuilder.FillInstanceNode(e.Node, instance, CreateServerEnvironment(instance));
                 else
                     appData.ProcError(errMsg);
             }

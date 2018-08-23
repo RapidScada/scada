@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2017
+ * Modified : 2018
  */
 
 #pragma warning disable 1591 // отключение warning CS1591: Missing XML comment for publicly visible type or member
@@ -45,6 +45,10 @@ namespace Scada.Server.Modules
         public static string SaveModSettingsError { get; private set; }
         public static string ConfigureModule { get; private set; }
 
+        // Словарь Scada.Server.Modules.ModFactory
+        public static string GetViewTypeError { get; private set; }
+        public static string CreateViewError { get; private set; }
+
         // Фразы, устанавливаемые в зависимости от локализации, не загружая из словаря
         public static string StartModule { get; private set; }
         public static string StopModule { get; private set; }
@@ -59,6 +63,9 @@ namespace Scada.Server.Modules
             LoadModSettingsError = Localization.Dict.GetEmptyPhrase("LoadModSettingsError");
             SaveModSettingsError = Localization.Dict.GetEmptyPhrase("SaveModSettingsError");
             ConfigureModule = Localization.Dict.GetEmptyPhrase("ConfigureModule");
+
+            GetViewTypeError = Localization.Dict.GetEmptyPhrase("GetViewTypeError");
+            CreateViewError = Localization.Dict.GetEmptyPhrase("CreateViewError");
         }
 
         private static void InitOnLocalization()
@@ -92,6 +99,12 @@ namespace Scada.Server.Modules
                 LoadModSettingsError = dict.GetPhrase("LoadModSettingsError", LoadModSettingsError);
                 SaveModSettingsError = dict.GetPhrase("SaveModSettingsError", SaveModSettingsError);
                 ConfigureModule = dict.GetPhrase("ConfigureModule", ConfigureModule);
+            }
+
+            if (Localization.Dictionaries.TryGetValue("Scada.Server.Modules.ModFactory", out dict))
+            {
+                GetViewTypeError = dict.GetPhrase("GetViewTypeError", GetViewTypeError);
+                CreateViewError = dict.GetPhrase("CreateViewError", CreateViewError);
             }
         }
     }

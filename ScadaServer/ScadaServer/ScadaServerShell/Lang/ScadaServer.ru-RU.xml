@@ -6,6 +6,10 @@
     <Phrase key="SaveModSettingsError">Ошибка при сохранении настроек модуля</Phrase>
     <Phrase key="ConfigureModule">Сконфигурируйте модуль и перезапустите службу SCADA-Сервера</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Server.Modules.ModFactory">
+    <Phrase key="GetViewTypeError">Ошибка при получении типа интерфейса модуля из библиотеки {0}: {1}</Phrase>
+    <Phrase key="CreateViewError">Ошибка при создании экземпляра класса интерфейса модуля {0}: {1}</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Server.Shell.Code.ServerShell">
     <Phrase key="CommonParamsNode">Общие параметры</Phrase>
     <Phrase key="SaveParamsNode">Параметры записи</Phrase>

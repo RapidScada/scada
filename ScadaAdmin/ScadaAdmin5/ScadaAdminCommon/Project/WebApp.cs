@@ -43,17 +43,27 @@ namespace Scada.Admin.Project
             Settings = new WebSettings();
         }
 
+
         /// <summary>
         /// Gets the settings of the application
         /// </summary>
         public WebSettings Settings { get; protected set; }
+
+
+        /// <summary>
+        /// Gets the directory of the application configuration.
+        /// </summary>
+        public override string GetConfigDir(string parentDir)
+        {
+            return Path.Combine(parentDir, "ScadaWeb", "config");
+        }
 
         /// <summary>
         /// Gets the full file name of the application settings.
         /// </summary>
         public override string GetSettingsPath(string parentDir)
         {
-            return Path.Combine(parentDir, "ScadaWeb", "config", WebSettings.DefFileName);
+            return Path.Combine(GetConfigDir(parentDir), WebSettings.DefFileName);
         }
     }
 }

@@ -47,6 +47,7 @@
     <Compile Include="AppDirs.cs" />
     <Compile Include="Modules\IServerCommands.cs" />
     <Compile Include="Modules\IServerData.cs" />
+    <Compile Include="Modules\ModFactory.cs" />
     <Compile Include="ServerUtils.cs" />
     <Compile Include="Modules\ModView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
