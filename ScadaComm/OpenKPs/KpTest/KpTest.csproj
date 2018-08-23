@@ -40,8 +40,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Log\Log\bin\Release\Log.dll</HintPath>
     </Reference>
-    <Reference Include="ScadaCommCommon">
-      <HintPath>..\..\ScadaCommCommon\bin\Release\ScadaCommCommon.dll</HintPath>
+    <Reference Include="ScadaCommCommon, Version=5.1.0.3, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ScadaComm\ScadaCommCommon\bin\Release\ScadaCommCommon.dll</HintPath>
     </Reference>
     <Reference Include="ScadaData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
