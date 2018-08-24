@@ -37,11 +37,20 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\CommShell.cs" />
+    <Compile Include="Code\CommEnvironment.cs" />
+    <Compile Include="Code\CommShellPhrases.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Lang\ScadaComm.en-GB.xml">
@@ -52,6 +61,12 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\comm_stats.png" />
+    <None Include="Resources\comm_params.png" />
+    <None Include="Resources\comm_lines.png" />
+    <None Include="Resources\comm_line.png" />
+    <None Include="Resources\comm_driver.png" />
+    <None Include="Resources\comm_device.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Forms\" />
@@ -61,6 +76,12 @@
       <Project>{7BAEAE0E-4694-41D7-BC29-F205AEF69741}</Project>
       <Name>ScadaCommCommon</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

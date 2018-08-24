@@ -103,4 +103,14 @@
     <Phrase key="GetViewTypeError">Ошибка при получении типа интерфейса КП из библиотеки {0}</Phrase>
     <Phrase key="CreateViewError">Ошибка при создании экземпляра класса интерфейса КП {0}</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Comm.Shell.Code.CommShell">
+    <Phrase key="CommonParamsNode">Общие параметры</Phrase>
+    <Phrase key="DriversNode">Драйверы устройств</Phrase>
+    <Phrase key="LinesNode">Линии связи</Phrase>
+    <Phrase key="LineNode">[{0}] {1}</Phrase>
+    <Phrase key="LineParamsNode">Параметры линии</Phrase>
+    <Phrase key="LineStatsNode">Статистика линии</Phrase>
+    <Phrase key="DeviceNode">[{0}] {1}</Phrase>
+    <Phrase key="StatsNode">Статистика</Phrase>
+  </Dictionary>
 </ScadaCommDictionaries>

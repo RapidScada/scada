@@ -25,6 +25,7 @@
 
 using Scada.Admin.App.Forms;
 using Scada.Admin.Project;
+using Scada.Comm.Shell.Code;
 using Scada.Server.Shell.Code;
 using Scada.UI;
 using System;
@@ -40,6 +41,7 @@ namespace Scada.Admin.App.Code
     {
         private readonly AppData appData;         // the common data of the application
         private readonly ServerShell serverShell; // the shell to edit Server settings
+        private readonly CommShell commShell;     // the shell to edit Communicator settings
         private readonly TreeView treeView;       // the manipulated tree view 
         private ScadaProject project;             // the current project to build tree
 
@@ -47,10 +49,11 @@ namespace Scada.Admin.App.Code
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public ExplorerBuilder(AppData appData, ServerShell serverShell, TreeView treeView)
+        public ExplorerBuilder(AppData appData, ServerShell serverShell, CommShell commShell, TreeView treeView)
         {
             this.appData = appData ?? throw new ArgumentNullException("appData");
             this.serverShell = serverShell ?? throw new ArgumentNullException("serverShell");
+            this.commShell = commShell ?? throw new ArgumentNullException("commShell");
             this.treeView = treeView ?? throw new ArgumentNullException("treeView");
             project = null;
         }
@@ -176,7 +179,8 @@ namespace Scada.Admin.App.Code
         /// <summary>
         /// Fills the instance node by child nodes.
         /// </summary>
-        public void FillInstanceNode(TreeNode instanceNode, Instance instance, ServerEnvironment serverEnvironment)
+        public void FillInstanceNode(TreeNode instanceNode, Instance instance, 
+            ServerEnvironment serverEnvironment, CommEnvironment commEnvironment)
         {
             try
             {
@@ -198,6 +202,8 @@ namespace Scada.Admin.App.Code
                     TreeNode commNode = new TreeNode(AppPhrases.CommNode);
                     commNode.ImageKey = commNode.SelectedImageKey = "comm.png";
                     commNode.Tag = new TreeNodeTag() { RelatedObject = instance.CommApp };
+                    commNode.Nodes.AddRange(commShell.GetTreeNodes(
+                        instance.CommApp.Settings, commEnvironment));
                     instanceNode.Nodes.Add(commNode);
                 }
 

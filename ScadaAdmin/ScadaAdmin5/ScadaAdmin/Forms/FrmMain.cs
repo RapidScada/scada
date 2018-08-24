@@ -26,6 +26,8 @@
 using Scada.Admin.App.Code;
 using Scada.Admin.App.Properties;
 using Scada.Admin.Project;
+using Scada.Comm;
+using Scada.Comm.Devices;
 using Scada.Comm.Shell.Code;
 using Scada.Server.Modules;
 using Scada.Server.Shell.Code;
@@ -71,6 +73,7 @@ namespace Scada.Admin.App.Forms
         private readonly ExplorerBuilder explorerBuilder; // the object to manipulate the explorer tree
         private ScadaProject project;                     // the project under development
         private Dictionary<string, ModView> moduleViews;  // the user interface of the modules
+        private Dictionary<string, KPView> kpViews;       // the user interface of the drivers
 
 
         /// <summary>
@@ -91,9 +94,10 @@ namespace Scada.Admin.App.Forms
             log = appData.ErrLog;
             serverShell = new ServerShell();
             commShell = new CommShell();
-            explorerBuilder = new ExplorerBuilder(appData, serverShell, tvExplorer);
+            explorerBuilder = new ExplorerBuilder(appData, serverShell, commShell, tvExplorer);
             project = null;
             moduleViews = new Dictionary<string, ModView>();
+            kpViews = new Dictionary<string, KPView>();
         }
 
 
@@ -121,6 +125,10 @@ namespace Scada.Admin.App.Forms
             if (!Localization.LoadDictionaries(appData.AppDirs.LangDir, "ScadaServer", out errMsg))
                 log.WriteError(errMsg);
 
+            // load Communicator dictionaries
+            if (!Localization.LoadDictionaries(appData.AppDirs.LangDir, "ScadaComm", out errMsg))
+                log.WriteError(errMsg);
+
             // read phrases from the dictionaries
             CommonPhrases.Init();
 
@@ -129,6 +137,9 @@ namespace Scada.Admin.App.Forms
 
             ModPhrases.InitFromDictionaries();
             ServerShellPhrases.Init();
+
+            CommPhrases.InitFromDictionaries();
+            CommShellPhrases.Init();
         }
 
         /// <summary>
@@ -152,6 +163,12 @@ namespace Scada.Admin.App.Forms
 
             // add Server images
             foreach (KeyValuePair<string, Image> pair in serverShell.GetTreeViewImages())
+            {
+                ilExplorer.Images.Add(pair.Key, pair.Value);
+            }
+
+            // add Communicator images
+            foreach (KeyValuePair<string, Image> pair in commShell.GetTreeViewImages())
             {
                 ilExplorer.Images.Add(pair.Key, pair.Value);
             }
@@ -224,6 +241,18 @@ namespace Scada.Admin.App.Forms
             };
         }
 
+        /// <summary>
+        /// Creates a new Communicator environment for the specified instance.
+        /// </summary>
+        private CommEnvironment CreateCommEnvironment(Instance instance)
+        {
+            return new CommEnvironment()
+            {
+                AppDirs = new CommDirs(appData.AppSettings.CommDir, instance),
+                KPViews = kpViews
+            };
+        }
+
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
@@ -262,9 +291,14 @@ namespace Scada.Admin.App.Forms
                 !instance.AppSettingsLoaded)
             {
                 if (instance.LoadAppSettings(out string errMsg))
-                    explorerBuilder.FillInstanceNode(e.Node, instance, CreateServerEnvironment(instance));
+                {
+                    explorerBuilder.FillInstanceNode(e.Node, instance,
+                        CreateServerEnvironment(instance), CreateCommEnvironment(instance));
+                }
                 else
+                {
                     appData.ProcError(errMsg);
+                }
             }
         }
 

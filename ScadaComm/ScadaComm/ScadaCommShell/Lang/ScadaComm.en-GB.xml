@@ -103,4 +103,14 @@
     <Phrase key="GetViewTypeError">Error getting device interface type from the library {0}</Phrase>
     <Phrase key="CreateViewError">Error creating device interface instance of the class {0}</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Comm.Shell.Code.CommShell">
+    <Phrase key="CommonParamsNode">Common Parameters</Phrase>
+    <Phrase key="DriversNode">Device Drivers</Phrase>
+    <Phrase key="LinesNode">Communication Lines</Phrase>
+    <Phrase key="LineNode">[{0}] {1}</Phrase>
+    <Phrase key="LineParamsNode">Line Parameters</Phrase>
+    <Phrase key="LineStatsNode">Line Stats</Phrase>
+    <Phrase key="DeviceNode">[{0}] {1}</Phrase>
+    <Phrase key="StatsNode">Stats</Phrase>
+  </Dictionary>
 </ScadaCommDictionaries>
