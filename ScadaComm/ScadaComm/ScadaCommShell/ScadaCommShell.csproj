@@ -76,12 +76,12 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\comm_device.png" />
     <None Include="Resources\comm_stats.png" />
     <None Include="Resources\comm_params.png" />
     <None Include="Resources\comm_lines.png" />
     <None Include="Resources\comm_line.png" />
     <None Include="Resources\comm_driver.png" />
-    <None Include="Resources\comm_device.png" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

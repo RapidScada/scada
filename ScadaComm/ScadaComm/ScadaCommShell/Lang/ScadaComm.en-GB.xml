@@ -126,4 +126,10 @@
     <Phrase key="lblWaitForStop">Wait for communication lines termination, ms</Phrase>
     <Phrase key="lblSendAllDataPer">Period of sending all device data to Server, sec</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Comm.Shell.Forms.FrmDrivers">
+    <Phrase key="this">Drivers</Phrase>
+    <Phrase key="lblDrivers">Available drivers:</Phrase>
+    <Phrase key="btnProperties">Properties</Phrase>
+    <Phrase key="lblDescr">Description</Phrase>
+  </Dictionary>
 </ScadaCommDictionaries>

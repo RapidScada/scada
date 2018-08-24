@@ -54,7 +54,7 @@ namespace Scada.Comm.Shell.Code
                 { "comm_line.png", Resources.comm_line },
                 { "comm_lines.png", Resources.comm_lines },
                 { "comm_params.png", Resources.comm_params },
-                { "comm_stats.png", Resources.comm_stats },
+                { "comm_stats.png", Resources.comm_stats }
             };
         }
 
