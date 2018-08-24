@@ -972,7 +972,7 @@ namespace Scada.Comm.Ctrl
                     {
                         try
                         {
-                            KPView kpView = KPFactory.GetKPView(appDirs.KPDir, fileInfo.Name);
+                            KPView kpView = KPFactory.GetKPView(fileInfo.FullName);
                             kpView.AppDirs = appDirs;
                             KpDllInfo kpDllInfo = new KpDllInfo()
                             {

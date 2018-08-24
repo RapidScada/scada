@@ -45,7 +45,9 @@ namespace Scada.Server.Shell.Forms
         /// </summary>
         private class ModuleItem
         {
+            public bool IsInitialized { get; set; }
             public string FileName { get; set; }
+            public string FilePath { get; set; }
             public string Descr { get; set; }
             public ModView ModView { get; set; }
 
@@ -54,6 +56,7 @@ namespace Scada.Server.Shell.Forms
                 return FileName;
             }
         }
+
 
         private readonly Settings settings; // the application settings
         private readonly ServerEnvironment environment; // the application environment
@@ -99,13 +102,13 @@ namespace Scada.Server.Shell.Forms
                 {
                     lbActiveModules.Items.Add(new ModuleItem()
                     {
+                        IsInitialized = false,
                         FileName = fileName,
-                        Descr = string.Format(ServerShellPhrases.ModuleNotFound, fileName),
-                        ModView = null
+                        FilePath = Path.Combine(environment.AppDirs.ModDir, fileName)
                     });
                 }
 
-                // load modules from  DLLs
+                // read all available modules
                 DirectoryInfo dirInfo = new DirectoryInfo(environment.AppDirs.ModDir);
 
                 FileInfo[] fileInfoArr = dirInfo.Exists ?
@@ -114,31 +117,14 @@ namespace Scada.Server.Shell.Forms
 
                 foreach (FileInfo fileInfo in fileInfoArr)
                 {
-                    int itemIndex = settings.ModuleFileNames.IndexOf(fileInfo.Name);
-                    ModuleItem moduleItem;
-
-                    if (itemIndex >= 0)
+                    if (!settings.ModuleFileNames.Contains(fileInfo.Name))
                     {
-                        moduleItem = (ModuleItem)lbActiveModules.Items[itemIndex];
-                    }
-                    else
-                    {
-                        moduleItem = new ModuleItem() { FileName = fileInfo.Name };
-                        lbUnusedModules.Items.Add(moduleItem);
-                    }
-
-                    try
-                    {
-                        ModView modView = ModFactory.GetModView(fileInfo.FullName);
-                        modView.AppDirs = environment.AppDirs;
-
-                        moduleItem.Descr = modView.Descr;
-                        moduleItem.ModView = modView;
-                    }
-                    catch (Exception ex)
-                    {
-                        moduleItem.Descr = ex.Message;
-                        moduleItem.ModView = null;
+                        lbUnusedModules.Items.Add(new ModuleItem()
+                        {
+                            IsInitialized = false,
+                            FileName = fileInfo.Name,
+                            FilePath = fileInfo.FullName
+                        });
                     }
                 }
 
@@ -154,12 +140,48 @@ namespace Scada.Server.Shell.Forms
         }
 
         /// <summary>
+        /// Initializes the module item if needed.
+        /// </summary>
+        private void InitModuleItem(ModuleItem moduleItem)
+        {
+            if (!moduleItem.IsInitialized)
+            {
+                moduleItem.IsInitialized = true;
+
+                try
+                {
+                    if (File.Exists(moduleItem.FilePath))
+                    {
+                        ModView modView = ModFactory.GetModView(moduleItem.FilePath);
+                        modView.AppDirs = environment.AppDirs;
+
+                        moduleItem.Descr = modView.Descr?.Replace("\n", Environment.NewLine);
+                        moduleItem.ModView = modView;
+                    }
+                    else
+                    {
+                        moduleItem.Descr = string.Format(ServerShellPhrases.ModuleNotFound, moduleItem.FileName);
+                        moduleItem.ModView = null;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    moduleItem.Descr = ex.Message;
+                    moduleItem.ModView = null;
+                }
+            }
+        }
+
+        /// <summary>
         /// Shows a description of the specified item.
         /// </summary>
         private void ShowItemDescr(object item)
         {
             if (item is ModuleItem moduleItem)
+            {
+                InitModuleItem(moduleItem);
                 txtDescr.Text = moduleItem.Descr;
+            }
         }
 
         /// <summary>

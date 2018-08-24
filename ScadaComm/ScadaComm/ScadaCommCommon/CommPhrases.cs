@@ -108,8 +108,8 @@ namespace Scada.Comm
             SaveKpSettingsError = "Ошибка при сохранении настроек КП";
             ConfigureKp = "Создайте настройки КП и перезапустите службу Коммуникатора.";
 
-            GetViewTypeError = "Ошибка при получении типа интерфейса КП из библиотеки {0}";
-            CreateViewError = "Ошибка при создании экземпляра класса интерфейса КП {0}";
+            GetViewTypeError = "Ошибка при получении типа интерфейса КП из библиотеки {0}: {1}";
+            CreateViewError = "Ошибка при создании экземпляра класса интерфейса КП {0}: {1}";
         }
 
         private static void InitOnLocalization()

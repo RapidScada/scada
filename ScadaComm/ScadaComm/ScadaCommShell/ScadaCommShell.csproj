@@ -40,11 +40,26 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WinControl">
+      <HintPath>..\..\..\..\dll\WinControl.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\CommShell.cs" />
     <Compile Include="Code\CommEnvironment.cs" />
     <Compile Include="Code\CommShellPhrases.cs" />
+    <Compile Include="Forms\FrmCommonParams.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmCommonParams.Designer.cs">
+      <DependentUpon>FrmCommonParams.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmDrivers.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmDrivers.Designer.cs">
+      <DependentUpon>FrmDrivers.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -68,9 +83,7 @@
     <None Include="Resources\comm_driver.png" />
     <None Include="Resources\comm_device.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Forms\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\ScadaCommCommon\ScadaCommCommon.csproj">
       <Project>{7BAEAE0E-4694-41D7-BC29-F205AEF69741}</Project>
@@ -78,6 +91,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Forms\FrmCommonParams.resx">
+      <DependentUpon>FrmCommonParams.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmDrivers.resx">
+      <DependentUpon>FrmDrivers.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

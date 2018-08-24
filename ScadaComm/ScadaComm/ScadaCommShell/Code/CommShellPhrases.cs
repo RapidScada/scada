@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : Server Shell
+ * Module   : Communicator Shell
  * Summary  : The phrases used in the Communicator shell
  * 
  * Author   : Mikhail Shiryaev

@@ -86,27 +86,27 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Получить тип интерфейса КП из библиотеки
         /// </summary>
-        public static Type GetKPViewType(string kpDir, string dllName)
+        public static Type GetKPViewType(string dllPath)
         {
             try
             {
-                Assembly asm = Assembly.LoadFile(kpDir + dllName);
-                string typeFullName = "Scada.Comm.Devices." + Path.GetFileNameWithoutExtension(dllName) + "View";
+                Assembly asm = Assembly.LoadFile(dllPath);
+                string typeFullName = "Scada.Comm.Devices." + Path.GetFileNameWithoutExtension(dllPath) + "View";
                 return asm.GetType(typeFullName, true);
             }
             catch (Exception ex)
             {
-                throw new ScadaException(string.Format(CommPhrases.GetViewTypeError, dllName) +
-                    ":\r\n" + ex.Message, ex);
+                throw new ScadaException(string.Format(CommPhrases.GetViewTypeError, 
+                    Path.GetFileName(dllPath), ex.Message), ex);
             }
         }
         
         /// <summary>
         /// Получить экземпляр класса интерфейса КП, загрузив его тип из библиотеки
         /// </summary>
-        public static KPView GetKPView(string kpDir, string dllName, int kpNum = 0)
+        public static KPView GetKPView(string dllPath, int kpNum = 0)
         {
-            Type kpViewType = GetKPViewType(kpDir, dllName);
+            Type kpViewType = GetKPViewType(dllPath);
             return GetKPView(kpViewType, kpNum);
         }
 
@@ -126,8 +126,8 @@ namespace Scada.Comm.Devices
             }
             catch (Exception ex)
             {
-                throw new ScadaException(string.Format(CommPhrases.CreateViewError, kpViewType.Name) + 
-                    ":\r\n" + ex.Message, ex);
+                throw new ScadaException(string.Format(CommPhrases.CreateViewError, 
+                    kpViewType.Name, ex.Message), ex);
             }
         }
     }

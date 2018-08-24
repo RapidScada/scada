@@ -264,7 +264,7 @@
     <Phrase key="ConfigureKp">Create the device settings and restart the Communicator service</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Devices.KPFactory">
-    <Phrase key="GetViewTypeError">Error getting device interface type from the library {0}</Phrase>
-    <Phrase key="CreateViewError">Error creating device interface instance of the class {0}</Phrase>
+    <Phrase key="GetViewTypeError">Error getting device interface type from the library {0}: {1}</Phrase>
+    <Phrase key="CreateViewError">Error creating device interface instance of the class {0}: {1}</Phrase>
   </Dictionary>
 </ScadaCommDictionaries>

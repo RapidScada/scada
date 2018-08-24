@@ -100,8 +100,8 @@
     <Phrase key="ConfigureKp">Создайте настройки КП и перезапустите службу Коммуникатора.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Devices.KPFactory">
-    <Phrase key="GetViewTypeError">Ошибка при получении типа интерфейса КП из библиотеки {0}</Phrase>
-    <Phrase key="CreateViewError">Ошибка при создании экземпляра класса интерфейса КП {0}</Phrase>
+    <Phrase key="GetViewTypeError">Ошибка при получении типа интерфейса КП из библиотеки {0}: {1}</Phrase>
+    <Phrase key="CreateViewError">Ошибка при создании экземпляра класса интерфейса КП {0}: {1}</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Shell.Code.CommShell">
     <Phrase key="CommonParamsNode">Общие параметры</Phrase>
@@ -112,5 +112,18 @@
     <Phrase key="LineStatsNode">Статистика линии</Phrase>
     <Phrase key="DeviceNode">[{0}] {1}</Phrase>
     <Phrase key="StatsNode">Статистика</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Shell.Forms.FrmCommonParams">
+    <Phrase key="this">Общие параметры</Phrase>
+    <Phrase key="gbServerConn">Связь с Сервером</Phrase>
+    <Phrase key="chkServerUse">Взаимодействовать с Сервером</Phrase>
+    <Phrase key="lblServerHost">Сервер</Phrase>
+    <Phrase key="lblServerPort">Порт</Phrase>
+    <Phrase key="lblServerTimeout">Таймаут</Phrase>
+    <Phrase key="lblServerUser">Пользователь</Phrase>
+    <Phrase key="lblServerPwd">Пароль</Phrase>
+    <Phrase key="gbRuntimeOptions">Параметры выполнения</Phrase>
+    <Phrase key="lblWaitForStop">Ожидание остановки линий связи, мс</Phrase>
+    <Phrase key="lblSendAllDataPer">Период передачи на Сервер всех данных КП, с</Phrase>
   </Dictionary>
 </ScadaCommDictionaries>
