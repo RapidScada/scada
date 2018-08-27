@@ -137,8 +137,12 @@ namespace Scada.Comm.Shell.Forms
 
                 try
                 {
-                    KPView kpView = KPFactory.GetKPView(driverItem.FilePath);
-                    kpView.AppDirs = environment.AppDirs;
+                    if (!environment.KPViews.TryGetValue(driverItem.FileName, out KPView kpView))
+                    {
+                        kpView = KPFactory.GetKPView(driverItem.FilePath);
+                        kpView.AppDirs = environment.AppDirs;
+                        environment.KPViews[driverItem.FileName] = kpView;
+                    }
 
                     driverItem.Descr = kpView.KPDescr?.Replace("\n", Environment.NewLine);
                     driverItem.KPView = kpView;

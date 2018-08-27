@@ -150,13 +150,20 @@ namespace Scada.Server.Shell.Forms
 
                 try
                 {
-                    if (File.Exists(moduleItem.FilePath))
+                    if (environment.ModuleViews.TryGetValue(moduleItem.FileName, out ModView modView))
                     {
-                        ModView modView = ModFactory.GetModView(moduleItem.FilePath);
+                        moduleItem.Descr = CorrectItemDescr(modView.Descr);
+                        moduleItem.ModView = modView;
+                    }
+                    else if (File.Exists(moduleItem.FilePath))
+                    {
+                        modView = ModFactory.GetModView(moduleItem.FilePath);
                         modView.AppDirs = environment.AppDirs;
 
-                        moduleItem.Descr = modView.Descr?.Replace("\n", Environment.NewLine);
+                        moduleItem.Descr = CorrectItemDescr(modView.Descr);
                         moduleItem.ModView = modView;
+
+                        environment.ModuleViews[moduleItem.FileName] = modView;
                     }
                     else
                     {
@@ -170,6 +177,14 @@ namespace Scada.Server.Shell.Forms
                     moduleItem.ModView = null;
                 }
             }
+        }
+
+        /// <summary>
+        /// Correct the description of a module if needed.
+        /// </summary>
+        private string CorrectItemDescr(string s)
+        {
+            return s == null ? "" : s.Replace("\n", Environment.NewLine);
         }
 
         /// <summary>
