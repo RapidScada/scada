@@ -78,7 +78,9 @@ namespace Scada.Comm.Shell.Controls
         public CtrlLineMainParams()
         {
             InitializeComponent();
+
             changing = false;
+            CommLine = null;
         }
 
 
@@ -144,12 +146,6 @@ namespace Scada.Comm.Shell.Controls
             SettingsChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        /// <summary>
-        /// Occurs when the settings changes.
-        /// </summary>
-        [Category("Property Changed")]
-        public event EventHandler SettingsChanged;
-
 
         /// <summary>
         /// Setup the controls according to the settings.
@@ -196,6 +192,9 @@ namespace Scada.Comm.Shell.Controls
         /// </summary>
         public void ControlsToSettings()
         {
+            if (CommLine == null)
+                throw new InvalidOperationException("CommLine must not be null.");
+
             // communication line
             CommLine.Active = chkLineActive.Checked;
             CommLine.Bind = chkLineBound.Checked;
@@ -226,6 +225,12 @@ namespace Scada.Comm.Shell.Controls
             CommLine.ReqAfterCmd = chkReqAfterCmd.Checked;
             CommLine.DetailedLog = chkDetailedLog.Checked;
         }
+
+
+        /// <summary>
+        /// Occurs when the settings changes.
+        /// </summary>
+        public event EventHandler SettingsChanged;
 
 
         private void CtrlLineMainParams_Load(object sender, EventArgs e)

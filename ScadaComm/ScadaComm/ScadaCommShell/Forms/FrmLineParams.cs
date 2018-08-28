@@ -80,6 +80,7 @@ namespace Scada.Comm.Shell.Forms
         private void SettingsToControls()
         {
             ctrlLineMainParams.SettingsToControls();
+            ctrlLineCustomParams.SettingsToControls();
         }
 
         /// <summary>
@@ -88,6 +89,7 @@ namespace Scada.Comm.Shell.Forms
         private void ControlsToSettings()
         {
             ctrlLineMainParams.ControlsToSettings();
+            ctrlLineCustomParams.ControlsToSettings();
         }
 
         /// <summary>
@@ -105,6 +107,7 @@ namespace Scada.Comm.Shell.Forms
             Translator.TranslateForm(this, "Scada.Comm.Shell.Forms.FrmLineParams", ctrlLineReqSequence.toolTip);
             lbTabs.SelectedIndex = 0;
             ctrlLineMainParams.CommLine = commLine;
+            ctrlLineCustomParams.CommLine = commLine;
             SettingsToControls();
         }
 

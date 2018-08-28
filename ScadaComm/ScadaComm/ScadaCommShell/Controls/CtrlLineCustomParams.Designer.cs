@@ -72,6 +72,7 @@
             this.txtParamValue.Name = "txtParamValue";
             this.txtParamValue.Size = new System.Drawing.Size(268, 20);
             this.txtParamValue.TabIndex = 3;
+            this.txtParamValue.TextChanged += new System.EventHandler(this.txtParamValue_TextChanged);
             // 
             // txtParamName
             // 
@@ -79,6 +80,7 @@
             this.txtParamName.Name = "txtParamName";
             this.txtParamName.Size = new System.Drawing.Size(150, 20);
             this.txtParamName.TabIndex = 1;
+            this.txtParamName.TextChanged += new System.EventHandler(this.txtParamName_TextChanged);
             // 
             // lblParamName
             // 
@@ -109,6 +111,7 @@
             this.lvCustomParams.TabIndex = 2;
             this.lvCustomParams.UseCompatibleStateImageBehavior = false;
             this.lvCustomParams.View = System.Windows.Forms.View.Details;
+            this.lvCustomParams.SelectedIndexChanged += new System.EventHandler(this.lvCustomParams_SelectedIndexChanged);
             // 
             // colParamName
             // 
@@ -129,6 +132,7 @@
             this.btnAddCustomParam.TabIndex = 0;
             this.btnAddCustomParam.Text = "Add";
             this.btnAddCustomParam.UseVisualStyleBackColor = true;
+            this.btnAddCustomParam.Click += new System.EventHandler(this.btnAddCustomParam_Click);
             // 
             // btnDeleteCustomParam
             // 
@@ -138,6 +142,7 @@
             this.btnDeleteCustomParam.TabIndex = 1;
             this.btnDeleteCustomParam.Text = "Delete";
             this.btnDeleteCustomParam.UseVisualStyleBackColor = true;
+            this.btnDeleteCustomParam.Click += new System.EventHandler(this.btnDeleteCustomParam_Click);
             // 
             // CtrlLineCustomParams
             // 

@@ -63,14 +63,17 @@
             // 
             // ctrlLineCustomParams
             // 
+            this.ctrlLineCustomParams.CommLine = null;
             this.ctrlLineCustomParams.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ctrlLineCustomParams.Location = new System.Drawing.Point(150, 0);
             this.ctrlLineCustomParams.Name = "ctrlLineCustomParams";
             this.ctrlLineCustomParams.Size = new System.Drawing.Size(584, 461);
             this.ctrlLineCustomParams.TabIndex = 3;
+            this.ctrlLineCustomParams.SettingsChanged += new System.EventHandler(this.control_SettingsChanged);
             // 
             // ctrlLineMainParams
             // 
+            this.ctrlLineMainParams.CommLine = null;
             this.ctrlLineMainParams.Location = new System.Drawing.Point(159, 12);
             this.ctrlLineMainParams.Name = "ctrlLineMainParams";
             this.ctrlLineMainParams.Size = new System.Drawing.Size(550, 450);
