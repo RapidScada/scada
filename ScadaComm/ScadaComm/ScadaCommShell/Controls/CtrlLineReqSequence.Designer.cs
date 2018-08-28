@@ -162,6 +162,7 @@
             this.timeDevicePeriod.ShowUpDown = true;
             this.timeDevicePeriod.Size = new System.Drawing.Size(120, 20);
             this.timeDevicePeriod.TabIndex = 19;
+            this.timeDevicePeriod.Value = new System.DateTime(2018, 1, 1, 0, 1, 0, 0);
             // 
             // timeDeviceTime
             // 
@@ -172,7 +173,7 @@
             this.timeDeviceTime.ShowUpDown = true;
             this.timeDeviceTime.Size = new System.Drawing.Size(120, 20);
             this.timeDeviceTime.TabIndex = 17;
-            this.timeDeviceTime.Value = new System.DateTime(2010, 7, 9, 21, 51, 0, 0);
+            this.timeDeviceTime.Value = new System.DateTime(2018, 1, 1, 10, 0, 0, 0);
             // 
             // lblDeviceCmdLine
             // 
@@ -336,9 +337,9 @@
             this.chkDeviceBound.AutoSize = true;
             this.chkDeviceBound.Location = new System.Drawing.Point(94, 19);
             this.chkDeviceBound.Name = "chkDeviceBound";
-            this.chkDeviceBound.Size = new System.Drawing.Size(101, 17);
+            this.chkDeviceBound.Size = new System.Drawing.Size(103, 17);
             this.chkDeviceBound.TabIndex = 1;
-            this.chkDeviceBound.Text = "Bound to server";
+            this.chkDeviceBound.Text = "Bound to Server";
             this.chkDeviceBound.UseVisualStyleBackColor = true;
             // 
             // chkDeviceActive
@@ -593,6 +594,6 @@
         private System.Windows.Forms.Button btnCutDevice;
         private System.Windows.Forms.Button btnDeviceProps;
         private System.Windows.Forms.Button btnResetReqParams;
-        private System.Windows.Forms.ToolTip toolTip;
+        internal System.Windows.Forms.ToolTip toolTip;
     }
 }

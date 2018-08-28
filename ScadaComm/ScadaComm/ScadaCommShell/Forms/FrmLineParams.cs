@@ -23,6 +23,7 @@
  * Modified : 2018
  */
 
+using Scada.UI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -71,6 +72,7 @@ namespace Scada.Comm.Shell.Forms
 
         private void FrmLineParams_Load(object sender, EventArgs e)
         {
+            Translator.TranslateForm(this, "Scada.Comm.Shell.Forms.FrmLineParams", ctrlLineReqSequence.toolTip);
             lbTabs.SelectedIndex = 0;
         }
 
