@@ -25,14 +25,9 @@
 
 using Scada.UI;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using WinControl;
 
 namespace Scada.Comm.Shell.Forms
 {
@@ -40,8 +35,11 @@ namespace Scada.Comm.Shell.Forms
     /// Form for editing parameters of a communication line.
     /// <para>Форма редактирования параметров линии связи.</para>
     /// </summary>
-    public partial class FrmLineParams : Form
+    public partial class FrmLineParams : Form, IChildForm
     {
+        private Settings.CommLine commLine; // the communication line settings to edit
+
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
@@ -56,7 +54,14 @@ namespace Scada.Comm.Shell.Forms
         public FrmLineParams(Settings.CommLine commLine)
             : this()
         {
+            this.commLine = commLine ?? throw new ArgumentNullException("commLine");
         }
+
+
+        /// <summary>
+        /// Gets or sets the object associated with the form.
+        /// </summary>
+        public ChildFormTag ChildFormTag { get; set; }
 
 
         /// <summary>
@@ -69,11 +74,38 @@ namespace Scada.Comm.Shell.Forms
             ctrlLineReqSequence.Visible = tabIndex == 2;
         }
 
+        /// <summary>
+        /// Setup the controls according to the settings.
+        /// </summary>
+        private void SettingsToControls()
+        {
+            ctrlLineMainParams.SettingsToControls();
+        }
+
+        /// <summary>
+        /// Set the settings according to the controls.
+        /// </summary>
+        private void ControlsToSettings()
+        {
+            ctrlLineMainParams.ControlsToSettings();
+        }
+
+        /// <summary>
+        /// Saves the settings.
+        /// </summary>
+        public void Save()
+        {
+            ControlsToSettings();
+            ChildFormTag.Modified = false;
+        }
+
 
         private void FrmLineParams_Load(object sender, EventArgs e)
         {
             Translator.TranslateForm(this, "Scada.Comm.Shell.Forms.FrmLineParams", ctrlLineReqSequence.toolTip);
             lbTabs.SelectedIndex = 0;
+            ctrlLineMainParams.CommLine = commLine;
+            SettingsToControls();
         }
 
         private void lbTabs_DrawItem(object sender, DrawItemEventArgs e)
@@ -94,6 +126,11 @@ namespace Scada.Comm.Shell.Forms
         private void lbTabs_SelectedIndexChanged(object sender, EventArgs e)
         {
             DisplayControl(lbTabs.SelectedIndex);
+        }
+
+        private void control_SettingsChanged(object sender, EventArgs e)
+        {
+            ChildFormTag.Modified = true;
         }
     }
 }

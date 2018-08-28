@@ -85,6 +85,7 @@
             this.chkLineBound.TabIndex = 1;
             this.chkLineBound.Text = "Bound to Server";
             this.chkLineBound.UseVisualStyleBackColor = true;
+            this.chkLineBound.CheckedChanged += new System.EventHandler(this.control_Changed);
             // 
             // numLineNumber
             // 
@@ -97,6 +98,7 @@
             this.numLineNumber.Name = "numLineNumber";
             this.numLineNumber.Size = new System.Drawing.Size(75, 20);
             this.numLineNumber.TabIndex = 3;
+            this.numLineNumber.ValueChanged += new System.EventHandler(this.control_Changed);
             // 
             // txtLineName
             // 
@@ -104,6 +106,7 @@
             this.txtLineName.Name = "txtLineName";
             this.txtLineName.Size = new System.Drawing.Size(343, 20);
             this.txtLineName.TabIndex = 5;
+            this.txtLineName.TextChanged += new System.EventHandler(this.control_Changed);
             // 
             // lnlLineName
             // 
@@ -132,6 +135,7 @@
             this.chkLineActive.TabIndex = 0;
             this.chkLineActive.Text = "Active";
             this.chkLineActive.UseVisualStyleBackColor = true;
+            this.chkLineActive.CheckedChanged += new System.EventHandler(this.control_Changed);
             // 
             // gbLineParams
             // 
@@ -161,6 +165,7 @@
             this.chkReqAfterCmd.Size = new System.Drawing.Size(15, 14);
             this.chkReqAfterCmd.TabIndex = 7;
             this.chkReqAfterCmd.UseVisualStyleBackColor = true;
+            this.chkReqAfterCmd.CheckedChanged += new System.EventHandler(this.control_Changed);
             // 
             // lblReqAfterCmd
             // 
@@ -188,6 +193,7 @@
             this.chkDetailedLog.Size = new System.Drawing.Size(15, 14);
             this.chkDetailedLog.TabIndex = 9;
             this.chkDetailedLog.UseVisualStyleBackColor = true;
+            this.chkDetailedLog.CheckedChanged += new System.EventHandler(this.control_Changed);
             // 
             // lblCmdEnabled
             // 
@@ -206,6 +212,7 @@
             this.chkCmdEnabled.Size = new System.Drawing.Size(15, 14);
             this.chkCmdEnabled.TabIndex = 5;
             this.chkCmdEnabled.UseVisualStyleBackColor = true;
+            this.chkCmdEnabled.CheckedChanged += new System.EventHandler(this.control_Changed);
             // 
             // lblCycleDelay
             // 
@@ -232,6 +239,7 @@
             this.numCycleDelay.Name = "numCycleDelay";
             this.numCycleDelay.Size = new System.Drawing.Size(60, 20);
             this.numCycleDelay.TabIndex = 3;
+            this.numCycleDelay.ValueChanged += new System.EventHandler(this.control_Changed);
             // 
             // numReqTriesCnt
             // 
@@ -249,6 +257,7 @@
             0,
             0,
             0});
+            this.numReqTriesCnt.ValueChanged += new System.EventHandler(this.control_Changed);
             // 
             // lblReqTriesCnt
             // 
@@ -301,6 +310,7 @@
             this.btnCommCnlProps.TabIndex = 2;
             this.btnCommCnlProps.Text = "Properties";
             this.btnCommCnlProps.UseVisualStyleBackColor = true;
+            this.btnCommCnlProps.Click += new System.EventHandler(this.btnCommCnlProps_Click);
             // 
             // cbCommCnlType
             // 
@@ -312,6 +322,7 @@
             this.cbCommCnlType.Name = "cbCommCnlType";
             this.cbCommCnlType.Size = new System.Drawing.Size(328, 21);
             this.cbCommCnlType.TabIndex = 1;
+            this.cbCommCnlType.SelectedIndexChanged += new System.EventHandler(this.cbCommCnlType_SelectedIndexChanged);
             // 
             // lblCommCnlType
             // 
@@ -331,6 +342,7 @@
             this.Controls.Add(this.gbCommChannel);
             this.Name = "CtrlLineMainParams";
             this.Size = new System.Drawing.Size(550, 450);
+            this.Load += new System.EventHandler(this.CtrlLineMainParams_Load);
             this.gbCommLine.ResumeLayout(false);
             this.gbCommLine.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numLineNumber)).EndInit();

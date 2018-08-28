@@ -75,6 +75,7 @@
             this.ctrlLineMainParams.Name = "ctrlLineMainParams";
             this.ctrlLineMainParams.Size = new System.Drawing.Size(550, 450);
             this.ctrlLineMainParams.TabIndex = 2;
+            this.ctrlLineMainParams.SettingsChanged += new System.EventHandler(this.control_SettingsChanged);
             // 
             // FrmLineParams
             // 
