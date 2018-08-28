@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2017
+ * Modified : 2018
  */
 
 using System;
@@ -178,10 +178,9 @@ namespace Scada.UI
             {
                 ControlInfo controlInfo;
 
-                if (elem is WinForms.Control)
+                if (elem is WinForms.Control control)
                 {
                     // обработка обычного элемента управления
-                    WinForms.Control control = (WinForms.Control)elem;
                     if (!string.IsNullOrEmpty(control.Name) /*например, поле ввода и кнопки NumericUpDown*/ &&
                         controlInfoDict.TryGetValue(control.Name, out controlInfo))
                     {
@@ -193,22 +192,30 @@ namespace Scada.UI
 
                         if (controlInfo.Items != null)
                         {
-                            if (elem is WinForms.ComboBox)
+                            if (elem is WinForms.ComboBox comboBox)
                             {
-                                WinForms.ComboBox comboBox = (WinForms.ComboBox)elem;
-                                int cnt = Math.Min(comboBox.Items.Count, controlInfo.Items.Count);
-                                for (int i = 0; i < cnt; i++)
+                                for (int i = 0, cnt = Math.Min(comboBox.Items.Count, controlInfo.Items.Count); 
+                                    i < cnt; i++)
                                 {
                                     string itemText = controlInfo.Items[i];
                                     if (itemText != null)
                                         comboBox.Items[i] = itemText;
                                 }
                             }
-                            else if (elem is WinForms.ListView)
+                            else if (elem is WinForms.ListBox listBox)
                             {
-                                WinForms.ListView listView = (WinForms.ListView)elem;
-                                int cnt = Math.Min(listView.Items.Count, controlInfo.Items.Count);
-                                for (int i = 0; i < cnt; i++)
+                                for (int i = 0, cnt = Math.Min(listBox.Items.Count, controlInfo.Items.Count); 
+                                    i < cnt; i++)
+                                {
+                                    string itemText = controlInfo.Items[i];
+                                    if (itemText != null)
+                                        listBox.Items[i] = itemText;
+                                }
+                            }
+                            else if (elem is WinForms.ListView listView)
+                            {
+                                for (int i = 0, cnt = Math.Min(listView.Items.Count, controlInfo.Items.Count); 
+                                    i < cnt; i++)
                                 {
                                     string itemText = controlInfo.Items[i];
                                     if (itemText != null)
@@ -219,28 +226,24 @@ namespace Scada.UI
                     }
 
                     // запуск обработки вложенных элементов
-                    if (elem is WinForms.MenuStrip)
+                    if (elem is WinForms.MenuStrip menuStrip)
                     {
                         // запуск обработки элементов меню
-                        WinForms.MenuStrip menuStrip = (WinForms.MenuStrip)elem;
                         TranslateWinControls(menuStrip.Items, toolTip, controlInfoDict);
                     }
-                    else if (elem is WinForms.ToolStrip)
+                    else if (elem is WinForms.ToolStrip toolStrip)
                     {
                         // запуск обработки элементов панели инструментов
-                        WinForms.ToolStrip toolStrip = (WinForms.ToolStrip)elem;
                         TranslateWinControls(toolStrip.Items, toolTip, controlInfoDict);
                     }
-                    else if (elem is WinForms.DataGridView)
+                    else if (elem is WinForms.DataGridView dataGridView)
                     {
                         // запуск обработки столбцов таблицы
-                        WinForms.DataGridView dataGridView = (WinForms.DataGridView)elem;
                         TranslateWinControls(dataGridView.Columns, toolTip, controlInfoDict);
                     }
-                    else if (elem is WinForms.ListView)
+                    else if (elem is WinForms.ListView listView)
                     {
                         // запуск обработки столбцов и групп списка
-                        WinForms.ListView listView = (WinForms.ListView)elem;
                         TranslateWinControls(listView.Columns, toolTip, controlInfoDict);
                         TranslateWinControls(listView.Groups, toolTip, controlInfoDict);
                     }
@@ -249,44 +252,36 @@ namespace Scada.UI
                     if (control.HasChildren)
                         TranslateWinControls(control.Controls, toolTip, controlInfoDict);
                 }
-                else if (elem is WinForms.ToolStripItem)
+                else if (elem is WinForms.ToolStripItem toolStripItem)
                 {
                     // обработка элемента меню или элемента панели инструментов
-                    WinForms.ToolStripItem item = (WinForms.ToolStripItem)elem;
-                    if (controlInfoDict.TryGetValue(item.Name, out controlInfo))
+                    if (controlInfoDict.TryGetValue(toolStripItem.Name, out controlInfo))
                     {
                         if (controlInfo.Text != null)
-                            item.Text = controlInfo.Text;
+                            toolStripItem.Text = controlInfo.Text;
                         if (controlInfo.ToolTip != null)
-                            item.ToolTipText = controlInfo.ToolTip;
+                            toolStripItem.ToolTipText = controlInfo.ToolTip;
                     }
 
-                    if (elem is WinForms.ToolStripDropDownItem)
-                    {
-                        // запуск обработки элементов подменю
-                        WinForms.ToolStripDropDownItem dropDownItem = (WinForms.ToolStripDropDownItem)elem;
-                        if (dropDownItem.HasDropDownItems)
-                            TranslateWinControls(dropDownItem.DropDownItems, toolTip, controlInfoDict);
-                    }
+                    // запуск обработки элементов подменю
+                    if (elem is WinForms.ToolStripDropDownItem dropDownItem && dropDownItem.HasDropDownItems)
+                        TranslateWinControls(dropDownItem.DropDownItems, toolTip, controlInfoDict);
                 }
-                else if (elem is WinForms.DataGridViewColumn)
+                else if (elem is WinForms.DataGridViewColumn column)
                 {
                     // обработка столбца таблицы
-                    WinForms.DataGridViewColumn column = (WinForms.DataGridViewColumn)elem;
                     if (controlInfoDict.TryGetValue(column.Name, out controlInfo) && controlInfo.Text != null)
                         column.HeaderText = controlInfo.Text;
                 }
-                else if (elem is WinForms.ColumnHeader)
+                else if (elem is WinForms.ColumnHeader columnHeader)
                 {
                     // обработка столбца списка
-                    WinForms.ColumnHeader columnHeader = (WinForms.ColumnHeader)elem;
                     if (controlInfoDict.TryGetValue(columnHeader.Name, out controlInfo) && controlInfo.Text != null)
                         columnHeader.Text = controlInfo.Text;
                 }
-                else if (elem is WinForms.ListViewGroup)
+                else if (elem is WinForms.ListViewGroup listViewGroup)
                 {
                     // обработка группы списка
-                    WinForms.ListViewGroup listViewGroup = (WinForms.ListViewGroup)elem;
                     if (controlInfoDict.TryGetValue(listViewGroup.Name, out controlInfo) && controlInfo.Text != null)
                         listViewGroup.Header = controlInfo.Text;
                 }
@@ -304,74 +299,64 @@ namespace Scada.UI
 
             foreach (Control control in controls)
             {
-                ControlInfo controlInfo;
-
-                if (!string.IsNullOrEmpty(control.ID) && controlInfoDict.TryGetValue(control.ID, out controlInfo))
+                if (!string.IsNullOrEmpty(control.ID) && 
+                    controlInfoDict.TryGetValue(control.ID, out ControlInfo controlInfo))
                 {
-                    if (control is Label)
+                    if (control is Label label)
                     {
-                        Label label = (Label)control;
                         if (controlInfo.Text != null)
                             label.Text = controlInfo.Text;
                         if (controlInfo.ToolTip != null)
                             label.ToolTip = controlInfo.ToolTip;
                     }
-                    else if (control is TextBox)
+                    else if (control is TextBox textBox)
                     {
-                        TextBox textBox = (TextBox)control;
                         if (controlInfo.Text != null)
                             textBox.Text = controlInfo.Text;
                         if (controlInfo.ToolTip != null)
                             textBox.ToolTip = controlInfo.ToolTip;
                     }
-                    else if (control is CheckBox)
+                    else if (control is CheckBox checkBox)
                     {
-                        CheckBox checkBox = (CheckBox)control;
                         if (controlInfo.Text != null)
                             checkBox.Text = controlInfo.Text;
                         if (controlInfo.ToolTip != null)
                             checkBox.ToolTip = controlInfo.ToolTip;
                     }
-                    else if (control is HyperLink)
+                    else if (control is HyperLink hyperLink)
                     {
-                        HyperLink hyperLink = (HyperLink)control;
                         if (controlInfo.Text != null)
                             hyperLink.Text = controlInfo.Text;
-                        string navigateUrl;
-                        if (controlInfo.Props != null && controlInfo.Props.TryGetValue("NavigateUrl", out navigateUrl))
+                        if (controlInfo.Props != null && 
+                            controlInfo.Props.TryGetValue("NavigateUrl", out string navigateUrl))
                             hyperLink.NavigateUrl = navigateUrl;
                     }
-                    else if (control is Button)
+                    else if (control is Button button)
                     {
-                        Button button = (Button)control;
                         if (controlInfo.Text != null)
                             button.Text = controlInfo.Text;
                         if (controlInfo.ToolTip != null)
                             button.ToolTip = controlInfo.ToolTip;
                     }
-                    else if (control is LinkButton)
+                    else if (control is LinkButton linkButton)
                     {
-                        LinkButton linkButton = (LinkButton)control;
                         if (controlInfo.Text != null)
                             linkButton.Text = controlInfo.Text;
                         if (controlInfo.ToolTip != null)
                             linkButton.ToolTip = controlInfo.ToolTip;
                     }
-                    else if (control is Image)
+                    else if (control is Image image)
                     {
-                        Image image = (Image)control;
                         if (controlInfo.ToolTip != null)
                             image.ToolTip = controlInfo.ToolTip;
                     }
-                    else if (control is Panel)
+                    else if (control is Panel panel)
                     {
-                        Panel panel = (Panel)control;
                         if (controlInfo.ToolTip != null)
                             panel.ToolTip = controlInfo.ToolTip;
                     }
-                    else if (control is HiddenField)
+                    else if (control is HiddenField hiddenField)
                     {
-                        HiddenField hiddenField = (HiddenField)control;
                         if (controlInfo.Text != null)
                             hiddenField.Value = controlInfo.Text;
                     }
