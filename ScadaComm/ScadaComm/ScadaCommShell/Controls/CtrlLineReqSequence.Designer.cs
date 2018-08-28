@@ -127,6 +127,7 @@
             this.btnDeviceProps.TabIndex = 23;
             this.btnDeviceProps.Text = "Properies";
             this.btnDeviceProps.UseVisualStyleBackColor = true;
+            this.btnDeviceProps.Click += new System.EventHandler(this.btnDeviceProps_Click);
             // 
             // btnResetReqParams
             // 
@@ -137,6 +138,7 @@
             this.btnResetReqParams.Text = "Reset";
             this.toolTip.SetToolTip(this.btnResetReqParams, "Set the device request parameters to default");
             this.btnResetReqParams.UseVisualStyleBackColor = true;
+            this.btnResetReqParams.Click += new System.EventHandler(this.btnResetReqParams_Click);
             // 
             // cbDeviceDll
             // 
@@ -145,6 +147,7 @@
             this.cbDeviceDll.Name = "cbDeviceDll";
             this.cbDeviceDll.Size = new System.Drawing.Size(120, 21);
             this.cbDeviceDll.TabIndex = 7;
+            this.cbDeviceDll.SelectedIndexChanged += new System.EventHandler(this.cbDeviceDll_SelectedIndexChanged);
             // 
             // txtDeviceCmdLine
             // 
@@ -152,6 +155,7 @@
             this.txtDeviceCmdLine.Name = "txtDeviceCmdLine";
             this.txtDeviceCmdLine.Size = new System.Drawing.Size(424, 20);
             this.txtDeviceCmdLine.TabIndex = 21;
+            this.txtDeviceCmdLine.TextChanged += new System.EventHandler(this.txtDeviceCmdLine_TextChanged);
             // 
             // timeDevicePeriod
             // 
@@ -163,6 +167,7 @@
             this.timeDevicePeriod.Size = new System.Drawing.Size(120, 20);
             this.timeDevicePeriod.TabIndex = 19;
             this.timeDevicePeriod.Value = new System.DateTime(2018, 1, 1, 0, 1, 0, 0);
+            this.timeDevicePeriod.ValueChanged += new System.EventHandler(this.timeDevicePeriod_ValueChanged);
             // 
             // timeDeviceTime
             // 
@@ -174,6 +179,7 @@
             this.timeDeviceTime.Size = new System.Drawing.Size(120, 20);
             this.timeDeviceTime.TabIndex = 17;
             this.timeDeviceTime.Value = new System.DateTime(2018, 1, 1, 10, 0, 0, 0);
+            this.timeDeviceTime.ValueChanged += new System.EventHandler(this.timeDeviceTime_ValueChanged);
             // 
             // lblDeviceCmdLine
             // 
@@ -218,6 +224,7 @@
             this.numDeviceDelay.Name = "numDeviceDelay";
             this.numDeviceDelay.Size = new System.Drawing.Size(91, 20);
             this.numDeviceDelay.TabIndex = 15;
+            this.numDeviceDelay.ValueChanged += new System.EventHandler(this.numDeviceDelay_ValueChanged);
             // 
             // lblDeviceDelay
             // 
@@ -253,6 +260,7 @@
             this.numDeviceTimeout.Name = "numDeviceTimeout";
             this.numDeviceTimeout.Size = new System.Drawing.Size(75, 20);
             this.numDeviceTimeout.TabIndex = 13;
+            this.numDeviceTimeout.ValueChanged += new System.EventHandler(this.numDeviceTimeout_ValueChanged);
             // 
             // lblDeviceCallNum
             // 
@@ -269,6 +277,7 @@
             this.txtDeviceCallNum.Name = "txtDeviceCallNum";
             this.txtDeviceCallNum.Size = new System.Drawing.Size(343, 20);
             this.txtDeviceCallNum.TabIndex = 11;
+            this.txtDeviceCallNum.TextChanged += new System.EventHandler(this.txtDeviceCallNum_TextChanged);
             // 
             // lblDeviceAddress
             // 
@@ -285,6 +294,7 @@
             this.numDeviceAddress.Name = "numDeviceAddress";
             this.numDeviceAddress.Size = new System.Drawing.Size(75, 20);
             this.numDeviceAddress.TabIndex = 9;
+            this.numDeviceAddress.ValueChanged += new System.EventHandler(this.numDeviceAddress_ValueChanged);
             // 
             // lblDeviceDll
             // 
@@ -315,6 +325,7 @@
             this.numDeviceNumber.Name = "numDeviceNumber";
             this.numDeviceNumber.Size = new System.Drawing.Size(75, 20);
             this.numDeviceNumber.TabIndex = 3;
+            this.numDeviceNumber.ValueChanged += new System.EventHandler(this.numDeviceNumber_ValueChanged);
             // 
             // lblDeviceNumber
             // 
@@ -331,6 +342,7 @@
             this.txtDeviceName.Name = "txtDeviceName";
             this.txtDeviceName.Size = new System.Drawing.Size(217, 20);
             this.txtDeviceName.TabIndex = 5;
+            this.txtDeviceName.TextChanged += new System.EventHandler(this.txtDeviceName_TextChanged);
             // 
             // chkDeviceBound
             // 
@@ -341,6 +353,7 @@
             this.chkDeviceBound.TabIndex = 1;
             this.chkDeviceBound.Text = "Bound to Server";
             this.chkDeviceBound.UseVisualStyleBackColor = true;
+            this.chkDeviceBound.CheckedChanged += new System.EventHandler(this.chkDeviceBound_CheckedChanged);
             // 
             // chkDeviceActive
             // 
@@ -351,6 +364,7 @@
             this.chkDeviceActive.TabIndex = 0;
             this.chkDeviceActive.Text = "Active";
             this.chkDeviceActive.UseVisualStyleBackColor = true;
+            this.chkDeviceActive.CheckedChanged += new System.EventHandler(this.chkDeviceActive_CheckedChanged);
             // 
             // lvReqSequence
             // 
@@ -383,6 +397,7 @@
             this.lvReqSequence.TabIndex = 7;
             this.lvReqSequence.UseCompatibleStateImageBehavior = false;
             this.lvReqSequence.View = System.Windows.Forms.View.Details;
+            this.lvReqSequence.SelectedIndexChanged += new System.EventHandler(this.lvReqSequence_SelectedIndexChanged);
             // 
             // colDeviceOrder
             // 
@@ -462,6 +477,7 @@
             this.btnAddDevice.TabIndex = 0;
             this.btnAddDevice.Text = "Add";
             this.btnAddDevice.UseVisualStyleBackColor = true;
+            this.btnAddDevice.Click += new System.EventHandler(this.btnAddDevice_Click);
             // 
             // btnMoveUpDevice
             // 
@@ -471,6 +487,7 @@
             this.btnMoveUpDevice.TabIndex = 1;
             this.btnMoveUpDevice.Text = "Move Up";
             this.btnMoveUpDevice.UseVisualStyleBackColor = true;
+            this.btnMoveUpDevice.Click += new System.EventHandler(this.btnMoveUpDevice_Click);
             // 
             // btnMoveDownDevice
             // 
@@ -480,6 +497,7 @@
             this.btnMoveDownDevice.TabIndex = 2;
             this.btnMoveDownDevice.Text = "Move Down";
             this.btnMoveDownDevice.UseVisualStyleBackColor = true;
+            this.btnMoveDownDevice.Click += new System.EventHandler(this.btnMoveDownDevice_Click);
             // 
             // btnDeleteDevice
             // 
@@ -489,6 +507,7 @@
             this.btnDeleteDevice.TabIndex = 3;
             this.btnDeleteDevice.Text = "Delete";
             this.btnDeleteDevice.UseVisualStyleBackColor = true;
+            this.btnDeleteDevice.Click += new System.EventHandler(this.btnDeleteDevice_Click);
             // 
             // btnPasteDevice
             // 
@@ -500,6 +519,7 @@
             this.btnPasteDevice.TabIndex = 6;
             this.btnPasteDevice.Text = "Paste";
             this.btnPasteDevice.UseVisualStyleBackColor = true;
+            this.btnPasteDevice.Click += new System.EventHandler(this.btnPasteDevice_Click);
             // 
             // btnCopyDevice
             // 
@@ -510,6 +530,7 @@
             this.btnCopyDevice.TabIndex = 5;
             this.btnCopyDevice.Text = "Copy";
             this.btnCopyDevice.UseVisualStyleBackColor = true;
+            this.btnCopyDevice.Click += new System.EventHandler(this.btnCopyDevice_Click);
             // 
             // btnCutDevice
             // 
@@ -520,6 +541,7 @@
             this.btnCutDevice.TabIndex = 4;
             this.btnCutDevice.Text = "Cut";
             this.btnCutDevice.UseVisualStyleBackColor = true;
+            this.btnCutDevice.Click += new System.EventHandler(this.btnCutDevice_Click);
             // 
             // CtrlLineReqSequence
             // 

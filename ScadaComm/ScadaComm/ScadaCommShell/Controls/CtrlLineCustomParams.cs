@@ -73,7 +73,7 @@ namespace Scada.Comm.Shell.Controls
         }
 
         /// <summary>
-        /// Creates a new list box item that represents a custom parameter.
+        /// Creates a new list view item that represents a custom parameter.
         /// </summary>
         private ListViewItem CreateCustomParamItem(string name, string value)
         {
@@ -97,9 +97,19 @@ namespace Scada.Comm.Shell.Controls
             if (CommLine == null)
                 throw new InvalidOperationException("CommLine must not be null.");
 
-            foreach (KeyValuePair<string, string> pair in CommLine.CustomParams)
+            try
             {
-                lvCustomParams.Items.Add(CreateCustomParamItem(pair.Key, pair.Value));
+                lvCustomParams.BeginUpdate();
+                lvCustomParams.Items.Clear();
+
+                foreach (KeyValuePair<string, string> pair in CommLine.CustomParams)
+                {
+                    lvCustomParams.Items.Add(CreateCustomParamItem(pair.Key, pair.Value));
+                }
+            }
+            finally
+            {
+                lvCustomParams.EndUpdate();
             }
         }
 
@@ -184,25 +194,21 @@ namespace Scada.Comm.Shell.Controls
 
         private void txtParamName_TextChanged(object sender, EventArgs e)
         {
-            if (lvCustomParams.SelectedItems.Count > 0)
+            if (!changing && lvCustomParams.SelectedItems.Count > 0)
             {
                 ListViewItem item = lvCustomParams.SelectedItems[0];
                 item.SubItems[0].Text = txtParamName.Text;
-
-                if (!changing)
-                    OnSettingsChanged();
+                OnSettingsChanged();
             }
         }
 
         private void txtParamValue_TextChanged(object sender, EventArgs e)
         {
-            if (lvCustomParams.SelectedItems.Count > 0)
+            if (!changing && lvCustomParams.SelectedItems.Count > 0)
             {
                 ListViewItem item = lvCustomParams.SelectedItems[0];
                 item.SubItems[1].Text = txtParamValue.Text;
-
-                if (!changing)
-                    OnSettingsChanged();
+                OnSettingsChanged();
             }
         }
     }

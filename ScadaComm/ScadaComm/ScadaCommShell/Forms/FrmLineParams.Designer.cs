@@ -55,11 +55,13 @@
             // 
             // ctrlLineReqSequence
             // 
+            this.ctrlLineReqSequence.CommLine = null;
             this.ctrlLineReqSequence.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ctrlLineReqSequence.Location = new System.Drawing.Point(150, 0);
             this.ctrlLineReqSequence.Name = "ctrlLineReqSequence";
             this.ctrlLineReqSequence.Size = new System.Drawing.Size(584, 461);
             this.ctrlLineReqSequence.TabIndex = 4;
+            this.ctrlLineReqSequence.SettingsChanged += new System.EventHandler(this.control_SettingsChanged);
             // 
             // ctrlLineCustomParams
             // 

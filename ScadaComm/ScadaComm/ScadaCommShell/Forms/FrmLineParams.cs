@@ -81,6 +81,7 @@ namespace Scada.Comm.Shell.Forms
         {
             ctrlLineMainParams.SettingsToControls();
             ctrlLineCustomParams.SettingsToControls();
+            ctrlLineReqSequence.SettingsToControls();
         }
 
         /// <summary>
@@ -90,6 +91,7 @@ namespace Scada.Comm.Shell.Forms
         {
             ctrlLineMainParams.ControlsToSettings();
             ctrlLineCustomParams.ControlsToSettings();
+            ctrlLineReqSequence.ControlsToSettings();
         }
 
         /// <summary>
@@ -108,6 +110,7 @@ namespace Scada.Comm.Shell.Forms
             lbTabs.SelectedIndex = 0;
             ctrlLineMainParams.CommLine = commLine;
             ctrlLineCustomParams.CommLine = commLine;
+            ctrlLineReqSequence.CommLine = commLine;
             SettingsToControls();
         }
 
