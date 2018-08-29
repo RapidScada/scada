@@ -182,22 +182,120 @@ namespace Scada.Comm.Shell.Controls
 
         private void btnAddDevice_Click(object sender, EventArgs e)
         {
+            try
+            {
+                // add a new device
+                lvReqSequence.BeginUpdate();
+                int index = lvReqSequence.SelectedIndices.Count > 0 ?
+                    lvReqSequence.SelectedIndices[0] + 1 : lvReqSequence.Items.Count;
+                lvReqSequence.Items.Insert(index, CreateDeviceItem(new Settings.KP(), ref index)).Selected = true;
 
+                // update item numbers
+                for (int i = index, cnt = lvReqSequence.Items.Count; i < cnt; i++)
+                {
+                    lvReqSequence.Items[i].Text = (i + 1).ToString();
+                }
+            }
+            finally
+            {
+                lvReqSequence.EndUpdate();
+                numDeviceNumber.Focus();
+                OnSettingsChanged();
+            }
         }
 
         private void btnMoveUpDevice_Click(object sender, EventArgs e)
         {
+            // move up the selected item
+            if (lvReqSequence.SelectedIndices.Count > 0)
+            {
+                int index = lvReqSequence.SelectedIndices[0];
 
+                if (index > 0)
+                {
+                    try
+                    {
+                        lvReqSequence.BeginUpdate();
+                        ListViewItem item = lvReqSequence.Items[index];
+                        ListViewItem prevItem = lvReqSequence.Items[index - 1];
+
+                        lvReqSequence.Items.RemoveAt(index);
+                        lvReqSequence.Items.Insert(index - 1, item);
+
+                        item.Text = index.ToString();
+                        prevItem.Text = (index + 1).ToString();
+                    }
+                    finally
+                    {
+                        lvReqSequence.EndUpdate();
+                        lvReqSequence.Focus();
+                    }
+                }
+            }
         }
 
         private void btnMoveDownDevice_Click(object sender, EventArgs e)
         {
+            // move down the selected item
+            if (lvReqSequence.SelectedIndices.Count > 0)
+            {
+                int index = lvReqSequence.SelectedIndices[0];
 
+                if (index < lvReqSequence.Items.Count - 1)
+                {
+                    try
+                    {
+                        lvReqSequence.BeginUpdate();
+                        ListViewItem item = lvReqSequence.Items[index];
+                        ListViewItem nextItem = lvReqSequence.Items[index + 1];
+
+                        lvReqSequence.Items.RemoveAt(index);
+                        lvReqSequence.Items.Insert(index + 1, item);
+
+                        item.Text = (index + 2).ToString();
+                        nextItem.Text = (index + 1).ToString();
+                    }
+                    finally
+                    {
+                        lvReqSequence.EndUpdate();
+                        lvReqSequence.Focus();
+                    }
+                }
+            }
         }
 
         private void btnDeleteDevice_Click(object sender, EventArgs e)
         {
+            if (lvReqSequence.SelectedIndices.Count > 0)
+            {
+                try
+                {
+                    // delete the selected device
+                    lvReqSequence.BeginUpdate();
+                    int index = lvReqSequence.SelectedIndices[0];
+                    lvReqSequence.Items.RemoveAt(index);
 
+                    if (lvReqSequence.Items.Count > 0)
+                    {
+                        // select an item
+                        if (index >= lvReqSequence.Items.Count)
+                            index = lvReqSequence.Items.Count - 1;
+                        lvReqSequence.Items[index].Selected = true;
+
+                        // update item numbers
+                        for (int i = index, cnt = lvReqSequence.Items.Count; i < cnt; i++)
+                        {
+                            lvReqSequence.Items[i].Text = (i + 1).ToString();
+                        }
+                    }
+                }
+                finally
+                {
+                    lvReqSequence.EndUpdate();
+                    lvReqSequence.Focus();
+                    OnSettingsChanged();
+                }
+            }
         }
 
         private void btnCutDevice_Click(object sender, EventArgs e)

@@ -143,7 +143,7 @@ namespace Scada.Comm.Shell.Controls
             ListViewItem item = CreateCustomParamItem("", "");
             lvCustomParams.Items.Add(item);
             item.Selected = true;
-            lvCustomParams.Focus();
+            txtParamName.Focus();
             OnSettingsChanged();
         }
 
